@@ -1,60 +1,59 @@
-Return-Path: <stable+bounces-255935-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-256179-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 4InKAsGnGGpolwgAu9opvQ
-	(envelope-from <stable+bounces-255935-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:38:25 +0200
+	id WLT/L52qGGpolwgAu9opvQ
+	(envelope-from <stable+bounces-256179-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:50:37 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7B76E5F92E3
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:38:24 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8446D5F9ABC
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:50:37 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 3F814312AD23
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 20:31:32 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 421FD30C511B
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 20:43:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DCB1133372A;
-	Thu, 28 May 2026 20:31:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 382FD33D4FB;
+	Thu, 28 May 2026 20:42:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CWBQOCZi"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2DPzdJUM"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BA80625F7B9;
-	Thu, 28 May 2026 20:31:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1F79632ED5C;
+	Thu, 28 May 2026 20:42:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780000291; cv=none; b=QbpZ4y5iZkcLz5e5JE9ILyYR3jm7sWdLVQGcIqsGlDF0r9xLGA/5Ts/l/OARzoZQ6dLnnFThLj9cbVuLGkIEV6AukAxwSbYtPV0z5MxXJYOi04uxdkfcbEz2ejbTmxUw/jn61Pdf6fcCUgsQvanoqbIOBDKyxMmCUXFwrmGY3V0=
+	t=1780000977; cv=none; b=mNEaptD3+luoqlR6DKU3J+L1uuWWRpPC1k16tHeOr1oz3MMI0ZW8hGNqSSO0bmXm5AA6kPo3QenOzKnQmdUhcL0f6B5LdsZgONE13ZKv/SPZm8/jYRm8FL/XuFIW17rrym698h5TB7yIrEG84PiiaXCXQvy7zvkmNMwiSjB6gOw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780000291; c=relaxed/simple;
-	bh=+QI1LcKRaiIr9Q+hhdS2t9Qpr+BqOm6d4dUksywbrg4=;
+	s=arc-20240116; t=1780000977; c=relaxed/simple;
+	bh=r16XMtFqNdA2apvVbtgi8FeS+WsawJfP27i9iI5Jn9s=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=UEikkw0gou2O2mJDQ9M0V877mvpOsCy2SSH1JDeao3x9AD8HUVNRPkhwS1YGNjem2B8kFhbsIe9MluD/I+ryIQXrkDlbZQbRgzx99uDdIuH0sppkDpbE1V5ZhU1E+YxUIJWTw9nwQDxqzN32+3tcRHSsdB8v7OtPk/y5945olpE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CWBQOCZi; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 230401F000E9;
-	Thu, 28 May 2026 20:31:29 +0000 (UTC)
+	 MIME-Version; b=mQvL/X17Bm9H+4+rtCP9E93wXNAWknE7qKxnC+5ellM06S1mz0NuTW6rhjrtC6XSM7eUwTxp1nbM0WfriFNfDb6TgF0r5JwSxVLbYZFaOMCI5kkQPIxc5Upzt7UXLv7HcSYixzza3bSYhT8I8V/3KFkbJSOy4wyZ12IZbxHI1yc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2DPzdJUM; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7E4691F000E9;
+	Thu, 28 May 2026 20:42:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780000290;
-	bh=1qZeYeYvX5OuNoqB/zno8Tw8chGpCyfJ2ecGGOwdIjY=;
+	s=korg; t=1780000976;
+	bh=D/LtNd2B6QjR+pOB83rb4NjEb/5b4GE6ikpHROdcY9U=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=CWBQOCZi5WkR9K+gJpJfaqAfx2UTpHUWeicV207RRpoXAd4plintaxGzVysjoVwNf
-	 tV72UblEvRFHsg4tbhuL0a9wrSNS3P0WybjYcduHtXHKF9fOfWFBh+EJwI4haThEXJ
-	 WsF2lN37QyVZLJewQhcpIAWHlShxUWH4wzLRy2K4=
+	b=2DPzdJUMUJ9eM/6a9RGziTE81g5pZgzgZXmPqRd9d+DnUa3/nyKKp1jPOQ23luJmb
+	 AtNuaSrcKUa6d13OHe9FkzP6bxT9gYA7iyEbo2XEpOK9dtEY1BopNxhlLn+skXcq7+
+	 /EFHChAR8J7x437rhoFb1VDFcjJlHZdFdmV83Zd4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Aditya Garg <gargaditya@linux.microsoft.com>,
-	Haiyang Zhang <haiyangz@microsoft.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Felix Gu <ustc.gu@gmail.com>,
+	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 370/377] net: mana: validate rx_req_idx to prevent out-of-bounds array access
-Date: Thu, 28 May 2026 21:50:08 +0200
-Message-ID: <20260528194649.140843659@linuxfoundation.org>
+Subject: [PATCH 6.12 235/272] spi: mtk-snfi: Fix resource leak in mtk_snand_read_page_cache()
+Date: Thu, 28 May 2026 21:50:09 +0200
+Message-ID: <20260528194635.741797889@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260528194638.371537336@linuxfoundation.org>
-References: <20260528194638.371537336@linuxfoundation.org>
+In-Reply-To: <20260528194629.379955525@linuxfoundation.org>
+References: <20260528194629.379955525@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,81 +64,73 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-255935-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TO_DN_SOME(0.00)[];
+	TAGGED_FROM(0.00)[bounces-256179-lists,stable=lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[7];
-	MID_RHS_MATCH_FROM(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	NEURAL_HAM(-0.00)[-0.999];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim]
-X-Rspamd-Queue-Id: 7B76E5F92E3
+	MID_RHS_MATCH_FROM(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[6];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim,msgid.link:url]
+X-Rspamd-Queue-Id: 8446D5F9ABC
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Aditya Garg <gargaditya@linux.microsoft.com>
+From: Felix Gu <ustc.gu@gmail.com>
 
-[ Upstream commit b809d0409991b75a6cff846a5ac27c3062953f84 ]
+[ Upstream commit 496ba79b9496b8b3747cbc764ebd33ee7325e806 ]
 
-In mana_hwc_rx_event_handler(), rx_req_idx is derived from
-sge->address in DMA-coherent memory. In Confidential VMs
-(SEV-SNP/TDX), this memory is shared unencrypted and HW can modify
-WQE contents at any time. No bounds check exists on rx_req_idx,
-which can lead to an out-of-bounds access into reqs[].
+When DMA read times out in mtk_snand_read_page_cache(), the original code
+erroneously jumped to cleanup label which skips DMA unmapping and ECC
+disable, causing a resource leak.
 
-Add bounds check on rx_req_idx in mana_hwc_rx_event_handler() before
-using it to index the reqs[] array.
-
-Fixes: ca9c54d2d6a5 ("net: mana: Add a driver for Microsoft Azure Network Adapter (MANA)")
-Signed-off-by: Aditya Garg <gargaditya@linux.microsoft.com>
-Reviewed-by: Haiyang Zhang <haiyangz@microsoft.com>
-Link: https://patch.msgid.link/20260520051553.857120-1-gargaditya@linux.microsoft.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Fixes: 764f1b748164 ("spi: add driver for MTK SPI NAND Flash Interface")
+Signed-off-by: Felix Gu <ustc.gu@gmail.com>
+Link: https://patch.msgid.link/20260510-snfi-v1-1-bc375cf1af8e@gmail.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/microsoft/mana/hw_channel.c | 6 ++++++
- 1 file changed, 6 insertions(+)
+ drivers/spi/spi-mtk-snfi.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/net/ethernet/microsoft/mana/hw_channel.c b/drivers/net/ethernet/microsoft/mana/hw_channel.c
-index 1986bf493399f..5faf4ca75b0f4 100644
---- a/drivers/net/ethernet/microsoft/mana/hw_channel.c
-+++ b/drivers/net/ethernet/microsoft/mana/hw_channel.c
-@@ -265,6 +265,12 @@ static void mana_hwc_rx_event_handler(void *ctx, u32 gdma_rxq_id,
- 	rq_base_addr = hwc_rxq->msg_buf->mem_info.dma_handle;
- 	rx_req_idx = (sge->address - rq_base_addr) / hwc->max_req_msg_size;
+diff --git a/drivers/spi/spi-mtk-snfi.c b/drivers/spi/spi-mtk-snfi.c
+index 8234064921f36..20260f577f056 100644
+--- a/drivers/spi/spi-mtk-snfi.c
++++ b/drivers/spi/spi-mtk-snfi.c
+@@ -961,7 +961,7 @@ static int mtk_snand_read_page_cache(struct mtk_snand *snf,
+ 		    &snf->op_done, usecs_to_jiffies(SNFI_POLL_INTERVAL))) {
+ 		dev_err(snf->dev, "DMA timed out for reading from cache.\n");
+ 		ret = -ETIMEDOUT;
+-		goto cleanup;
++		goto cleanup2;
+ 	}
  
-+	if (rx_req_idx >= hwc_rxq->msg_buf->num_reqs) {
-+		dev_err(hwc->dev, "HWC RX: wrong rx_req_idx=%llu, num_reqs=%u\n",
-+			rx_req_idx, hwc_rxq->msg_buf->num_reqs);
-+		return;
-+	}
-+
- 	rx_req = &hwc_rxq->msg_buf->reqs[rx_req_idx];
- 	resp = (struct gdma_resp_hdr *)rx_req->buf_va;
- 
+ 	// Wait for BUS_SEC_CNTR returning expected value
 -- 
 2.53.0
 
