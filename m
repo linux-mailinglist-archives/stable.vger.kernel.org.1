@@ -1,61 +1,58 @@
-Return-Path: <stable+bounces-255618-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-255264-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id KCnNMfGjGGrClggAu9opvQ
-	(envelope-from <stable+bounces-255618-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:22:09 +0200
+	id 6OkTLhSfGGpblggAu9opvQ
+	(envelope-from <stable+bounces-255264-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:01:24 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3FB5F5F879E
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:22:09 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id DCB365F7AB3
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:01:23 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 64F4B303BDED
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 20:17:00 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 024C8300721F
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 20:00:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DF0422C11F9;
-	Thu, 28 May 2026 20:16:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B7E96409604;
+	Thu, 28 May 2026 20:00:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AqRPlN2E"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RiuhxJf9"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9CDE52580D7;
-	Thu, 28 May 2026 20:16:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8BBF4409623;
+	Thu, 28 May 2026 20:00:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779999417; cv=none; b=j4Hx4Nkn35LjsK68VRdj7Dtv9egoDjgXtl17JG8Z0ektbsWd6hMZj6gSvz9Bmc02WfjR8rBqvTvP8cEebkfKX2PjHnN9jYW54bv4S1moMemt0XS2opZBwuxnFnFtciSXp/n41OXEsdRwx6WJPNEiQdEkrpigY2ZFqeO7s9CMW9U=
+	t=1779998421; cv=none; b=dr+CxB1tKEn8GcdvpU2a2O0xGEkuAYnGIMH60KTWOMYGRd7m7mD2kIPXYVsGtA2NSGolk9Rg3neJl5+xtclBqJUrM7jZfI6OmlJvrg/43nVbWNhkZwUGLwDlqn611tQGKevHaZCJbZ4puqoX+5OCvGJqyoyf4jFeuA3p1dJMafI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779999417; c=relaxed/simple;
-	bh=91zkKtPncDfOWCI3vgHp3ykZdcQKJ12KJHXmAnZY5lU=;
+	s=arc-20240116; t=1779998421; c=relaxed/simple;
+	bh=6srub5BN0/+A9T3slFCL2MHrvqdfyD2BP9QdbSV6U3g=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=dw7t8YACmC2ziuEaE78RJ0wcf0S+cyKWlUiCu2bNlsiF/X72ioIQbD3xyumiswEei4Q1soHvyl3oRjSRQYcNin/mGDu89bSAVkDtMekAMigjzFwzseL44y3V1k+pXtuHe6FI3QcPajs+1hqEaz/IYxlXNazTInOupY5xqJQmvEI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AqRPlN2E; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 070331F000E9;
-	Thu, 28 May 2026 20:16:55 +0000 (UTC)
+	 MIME-Version; b=YcxLgB0bcqBAv/UUPcnB/hEIzJo3pc+neOMpa7vHOk4v+RKw8opD3CcxZRAIgAXc5O0C/eBYkSd3cvIEqnUhjt/OEpw1bTKzffLSZYd/00Aw3POvE+BvuH54ofytF4MoeVDGP+N6+7t+ucg1yH0c64hOONMmTIJNiJFVRguaiq4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RiuhxJf9; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E8A7C1F000E9;
+	Thu, 28 May 2026 20:00:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779999416;
-	bh=ESELkJclSphbeidEua48fSDi6qxCkNIhQFPUSIIy8K0=;
+	s=korg; t=1779998420;
+	bh=wyGzmtkaXDB3mVUBkXIZWNxTBvzRL+GMtQXwvmOq7+k=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=AqRPlN2EudHa170qV/knuZ8LKhpRXLFNH+SHQVQu5o4yUIg/1CNvHvrwL+dq3wIeC
-	 7jxlkVcq8aqx9Y/xpU30YZzhfPQFsFhnn7HmzhIxl/ooJ0RHXMZZFs4Ss2xbmd8S2t
-	 EE/Qm0ekK+Z/ryslyri0Md7GDFS1rFV0X6w7pYfI=
+	b=RiuhxJf9k+zEb9jsYShFXdJRDXuvfgS0zpZTy0/n2LJ8KKNJbwVVQQL2TtPnrWrDu
+	 N/Rx467LoRLRhs046NMM/Q3AAbjLvFnxaK8w2+nA5VNm3VV3Ev1Onj58vBWmhcKv+Q
+	 hq796U2NNrM0+Aa1plLegWFreqLVJYEaPbquYVDo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Zijing Yin <yzjaurora@gmail.com>,
-	=?UTF-8?q?R=C3=A9mi=20Denis-Courmont?= <remi@remlab.net>,
-	syzbot+9f4a135646b66c509935@syzkaller.appspotmail.com,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 6.18 059/377] phonet/pep: disable BH around forwarded sk_receive_skb()
+	Abdurrahman Hussain <abdurrahman@nexthop.ai>,
+	Guenter Roeck <linux@roeck-us.net>
+Subject: [PATCH 7.0 168/461] hwmon: (pmbus/adm1266) bounce blackbox records through a protocol-sized buffer
 Date: Thu, 28 May 2026 21:44:57 +0200
-Message-ID: <20260528194640.078573457@linuxfoundation.org>
+Message-ID: <20260528194651.921781248@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260528194638.371537336@linuxfoundation.org>
-References: <20260528194638.371537336@linuxfoundation.org>
+In-Reply-To: <20260528194646.819809818@linuxfoundation.org>
+References: <20260528194646.819809818@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,141 +62,106 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-0.66 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,remlab.net,syzkaller.appspotmail.com,google.com,kernel.org];
-	TAGGED_FROM(0.00)[bounces-255618-lists,stable=lfdr.de];
-	FROM_HAS_DN(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	TO_DN_SOME(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-255264-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
+	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
-	TAGGED_RCPT(0.00)[stable,9f4a135646b66c509935];
-	RCPT_COUNT_SEVEN(0.00)[8];
+	NEURAL_HAM(-0.00)[-1.000];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_FIVE(0.00)[5];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,appspotmail.com:email,syzkaller.appspot.com:url,remlab.net:email]
-X-Rspamd-Queue-Id: 3FB5F5F879E
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[nexthop.ai:email,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,roeck-us.net:email]
+X-Rspamd-Queue-Id: DCB365F7AB3
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+7.0-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Zijing Yin <yzjaurora@gmail.com>
+From: Abdurrahman Hussain <abdurrahman@nexthop.ai>
 
-commit dbc81608e3a653dea6cf403f20cae35468b8ab9c upstream.
+commit 43cae21424ff8e33894a0f86c6b80b840c049fd7 upstream.
 
-The networking receive path is usually run from softirq context, but
-protocols that take the socket lock may have packets stored in the
-backlog and processed later from process context. In that case
-release_sock() -> __release_sock() drops the slock with spin_unlock_bh()
-and then calls sk->sk_backlog_rcv() with bottom halves enabled.
+adm1266_pmbus_block_xfer() copies the device-supplied block payload
+into the caller-provided buffer using the device-supplied length:
 
-Typical sk_backlog_rcv handlers process the socket whose backlog is
-being drained, so the BH state at entry is irrelevant for the slocks
-they touch. pep_do_rcv() is different: when the inbound skb targets an
-existing PEP pipe, it forwards the skb to a different *child* socket
-via sk_receive_skb(). That helper takes the child slock with
-bh_lock_sock_nested(), which is just spin_lock_nested() and assumes BH
-is already off. The same child slock therefore ends up acquired with
-BH on (process path) and with BH off (softirq path):
+	memcpy(data_r, &msgs[1].buf[1], msgs[1].buf[0]);
 
-  process context                   softirq context
-  ---------------                   ---------------
-  release_sock(listener)            __netif_receive_skb()
-   __release_sock()                  phonet_rcv()
-    spin_unlock_bh()                  __sk_receive_skb(listener)
-    [BH now ENABLED]                  [BH already disabled]
-    sk_backlog_rcv:                   sk_backlog_rcv:
-     pep_do_rcv()                      pep_do_rcv()
-      sk_receive_skb(child)             sk_receive_skb(child)
-       bh_lock_sock_nested(child)        bh_lock_sock_nested(child)
-       => SOFTIRQ-ON-W                   => IN-SOFTIRQ-W
+The helper does not know how large data_r is and trusts the device to
+return at most one record's worth of bytes.  adm1266_nvmem_read_blackbox()
+violates that contract: it advances read_buff inside data->dev_mem in
+ADM1266_BLACKBOX_SIZE (64-byte) strides while the helper is willing to
+write up to ADM1266_PMBUS_BLOCK_MAX (255) bytes.  A device that returns
+more than 64 bytes on the trailing record (read_buff offset 1984 in
+the 2048-byte dev_mem allocation) overflows dev_mem by up to 191 bytes
+before the post-call
 
-Lockdep flags this as inconsistent lock state, and it can become a real
-self-deadlock if a softirq on the same CPU tries to receive to the same
-child socket while its slock is held in the BH-enabled path:
+	if (ret != ADM1266_BLACKBOX_SIZE)
+		return -EIO;
 
-  WARNING: inconsistent lock state
-  inconsistent {SOFTIRQ-ON-W} -> {IN-SOFTIRQ-W} usage.
-   (slock-AF_PHONET/1){+.?.}-{3:3}, at: __sk_receive_skb+0x1cf/0x900
-    __sk_receive_skb              net/core/sock.c:563
-    sk_receive_skb                include/net/sock.h:2022 [inline]
-    pep_do_rcv                    net/phonet/pep.c:675
-    sk_backlog_rcv                include/net/sock.h:1190
-    __release_sock                net/core/sock.c:3216
-    release_sock                  net/core/sock.c:3815
-    pep_sock_accept               net/phonet/pep.c:879
+can reject the response.
 
-Wrap the forwarded sk_receive_skb() in local_bh_disable() /
-local_bh_enable() so the child slock is always acquired with BH off.
-local_bh_disable() nests safely on the softirq path.
+Contain the fix in the caller without changing the helper signature:
+read each record into a 255-byte local bounce buffer that matches the
+helper's maximum output, validate the returned length, and only then
+copy exactly ADM1266_BLACKBOX_SIZE bytes into the dev_mem slot.
 
-Discovered via in-house syzkaller fuzzing; the same root cause also
-on the linux-6.1.y syzbot dashboard as extid 44f0626dd6284f02663c.
-Reproduced under KASAN + LOCKDEP + PROVE_LOCKING, reproducer:
-https://pastebin.com/A3t8xzCR
-
-Fixes: 9641458d3ec4 ("Phonet: Pipe End Point for Phonet Pipes protocol")
-Link: https://syzkaller.appspot.com/bug?extid=44f0626dd6284f02663c
+Fixes: 407dc802a9c0 ("hwmon: (pmbus/adm1266) Add Block process call")
 Cc: stable@vger.kernel.org
-Signed-off-by: Zijing Yin <yzjaurora@gmail.com>
-Acked-by: Rémi Denis-Courmont <remi@remlab.net>
-Reported-by: syzbot+9f4a135646b66c509935@syzkaller.appspotmail.com
-Reviewed-by: Eric Dumazet <edumazet@google.com>
-Link: https://patch.msgid.link/20260519172635.86304-1-yzjaurora@gmail.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Abdurrahman Hussain <abdurrahman@nexthop.ai>
+Link: https://lore.kernel.org/r/20260515-adm1266-fixes-v1-5-1c1ea1349cfe@nexthop.ai
+Signed-off-by: Guenter Roeck <linux@roeck-us.net>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/phonet/pep.c |   19 +++++++++++++++++--
- 1 file changed, 17 insertions(+), 2 deletions(-)
+ drivers/hwmon/pmbus/adm1266.c |    4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
---- a/net/phonet/pep.c
-+++ b/net/phonet/pep.c
-@@ -671,8 +671,23 @@ static int pep_do_rcv(struct sock *sk, s
+--- a/drivers/hwmon/pmbus/adm1266.c
++++ b/drivers/hwmon/pmbus/adm1266.c
+@@ -348,6 +348,7 @@ static void adm1266_init_debugfs(struct
  
- 	/* Look for an existing pipe handle */
- 	sknode = pep_find_pipe(&pn->hlist, &dst, pipe_handle);
--	if (sknode)
--		return sk_receive_skb(sknode, skb, 1);
-+	if (sknode) {
-+		int rc;
-+
-+		/* pep_do_rcv() runs from two contexts: from softirq via
-+		 * phonet_rcv() -> __sk_receive_skb() with BH disabled,
-+		 * and from process context via
-+		 * release_sock() -> __release_sock(), which drops
-+		 * the listener slock with spin_unlock_bh() before draining
-+		 * the backlog.  The child pipe slock is taken below via
-+		 * bh_lock_sock_nested(), which does not itself disable BH, so
-+		 * disable BH here to keep both acquire contexts consistent.
-+		 */
-+		local_bh_disable();
-+		rc = sk_receive_skb(sknode, skb, 1);
-+		local_bh_enable();
-+		return rc;
-+	}
+ static int adm1266_nvmem_read_blackbox(struct adm1266_data *data, u8 *read_buff)
+ {
++	u8 record[ADM1266_PMBUS_BLOCK_MAX];
+ 	int record_count;
+ 	char index;
+ 	u8 buf[I2C_SMBUS_BLOCK_MAX];
+@@ -365,13 +366,14 @@ static int adm1266_nvmem_read_blackbox(s
+ 		return -EIO;
  
- 	switch (hdr->message_id) {
- 	case PNS_PEP_CONNECT_REQ:
+ 	for (index = 0; index < record_count; index++) {
+-		ret = adm1266_pmbus_block_xfer(data, ADM1266_READ_BLACKBOX, 1, &index, read_buff);
++		ret = adm1266_pmbus_block_xfer(data, ADM1266_READ_BLACKBOX, 1, &index, record);
+ 		if (ret < 0)
+ 			return ret;
+ 
+ 		if (ret != ADM1266_BLACKBOX_SIZE)
+ 			return -EIO;
+ 
++		memcpy(read_buff, record, ADM1266_BLACKBOX_SIZE);
+ 		read_buff += ADM1266_BLACKBOX_SIZE;
+ 	}
+ 
 
 
 
