@@ -1,59 +1,61 @@
-Return-Path: <stable+bounces-255459-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-255818-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id KEEvIVmhGGqnlggAu9opvQ
-	(envelope-from <stable+bounces-255459-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:11:05 +0200
+	id oAYyLPimGGpolwgAu9opvQ
+	(envelope-from <stable+bounces-255818-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:35:04 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3A6D85F7FF7
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:11:05 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3F4B75F9047
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:35:04 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id C6914302316F
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 20:09:32 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id A991B304B2A4
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 20:26:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DC04D33F5B4;
-	Thu, 28 May 2026 20:09:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 078111EA65;
+	Thu, 28 May 2026 20:26:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="p51lI88N"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Kkgj3KP9"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B427C3164B7;
-	Thu, 28 May 2026 20:09:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D0997254B1F;
+	Thu, 28 May 2026 20:26:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779998971; cv=none; b=cKIvMYxR/FcPVU1WP0kEZ+NJWMkKIdlFTBxdFcLPerTx3FIV5qplgkKRP/+p5szs8+WozxjmUSvA/B1mxCqdlv1Gfnvh4C/Tj0f87QO/XnpRNMRB3LL1EnFaNVYKSsIekdGgZZgqv6743hVgi2adh7x80F8uvzCGz/jbKsXXfZg=
+	t=1779999965; cv=none; b=ntsl1bUmO9LtLcBSDP191j5qeiaRtr5OK3Iy6yZ96yReM9gh/K34yYcTW7yN2OWcCBq0Fh+Vz3EOdMAE1J7+Lrj022Cuk9ypnxOzSHeQ8Z04D+sy7LAXnAfN4dv7O7tfvvlGNWriLWlNqm5taVEctP3WaBo37DIEtQp7mmvPLGs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779998971; c=relaxed/simple;
-	bh=gNEH8lP9jnj9cVULMpXpoxf1MUAY70Q5ZuFLaE+zUVM=;
+	s=arc-20240116; t=1779999965; c=relaxed/simple;
+	bh=XEnLX9d6WFHor8TYIZa0jMbQC6E3+nxFuqQAPDQOAvA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=YusYybSbUf9zM8PRgm03mJSJ1LKO0xgTg+2jFPxdKqyCGL8HVIgpxuK4aY6rtdZZ6KLCeLm7dAVU6ClAF1ysLFq85rOB1gYo8pfmPn+rQorLYV6p6T/3S9obM4mTugy0Duon944Kv8StVggw+w9hMVULSJ6Yoji7uxafDPeWp5w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=p51lI88N; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E01BC1F000E9;
-	Thu, 28 May 2026 20:09:29 +0000 (UTC)
+	 MIME-Version; b=O97OyyA6SbA0tILIjM+Wnu75YKv13iqg5c7YV1c8svw4w+qXVyxRbhCXA0g6TKPH+Z5XHJXt3GZAiQ//D9PlTBAnMRUEun53VjPfllsQFqKXq3pfOqIlfWciUJnSHVEPOroyNBw+SwzUG9bVreRMdnZ6ZI+S2qY21P4S6cRaYJQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Kkgj3KP9; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3AA761F00A3A;
+	Thu, 28 May 2026 20:26:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779998970;
-	bh=neOxN2tUnYaKj51SKDSIs1Z0KiUF/22LO3tqOlWKmI8=;
+	s=korg; t=1779999964;
+	bh=6gzj2s8rVEsU0bI+4K77xtQdtqEADWtyvgA4ypsKxLA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=p51lI88NjZdjby5qCJxK9NpxmNQm38BI6i0cb78S/JuMJRUx9VpSvRBb6ZQyW8ZvT
-	 A6b3BOTlDcoO9mmiBGAxRJU/Y2YPAkKtHWapYjVQvaR8o3mHFpfYLwb0y/iofa1yvE
-	 RK5+HFN56kipgGBepAJ8qG1xs9N8s6dUvk0foNac=
+	b=Kkgj3KP9xChzpRd3usK72tANPwAs1loqN0vDW+K1VOv3rRI3d2n4S8kl4/NNg39x2
+	 HTH44FP1qNoie5QyUmEgGxM24yVWG35sltrO4g6QLn7kHZWRk4Z8Udv1YMsqJUoXCJ
+	 ZOB8/aaFVPkLSpL0RAR4qNlb3HyjBhGcolfHSMlU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Shuicheng Lin <shuicheng.lin@intel.com>,
-	Matt Roper <matthew.d.roper@intel.com>,
+	Nicolas Escande <nico.escande@gmail.com>,
+	Baochen Qiang <baochen.qiang@oss.qualcomm.com>,
+	Rameshkumar Sundaram <rameshkumar.sundaram@oss.qualcomm.com>,
+	Jeff Johnson <jeff.johnson@oss.qualcomm.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 7.0 363/461] drm/xe: Consolidate workaround entries for Wa_18033852989
+Subject: [PATCH 6.18 254/377] wifi: ath11k: fix error path leaks in some WMI WOW calls
 Date: Thu, 28 May 2026 21:48:12 +0200
-Message-ID: <20260528194657.943189738@linuxfoundation.org>
+Message-ID: <20260528194645.729952199@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260528194646.819809818@linuxfoundation.org>
-References: <20260528194646.819809818@linuxfoundation.org>
+In-Reply-To: <20260528194638.371537336@linuxfoundation.org>
+References: <20260528194638.371537336@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,94 +66,112 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	RCVD_TLS_LAST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-255459-lists,stable=lfdr.de];
-	TO_DN_SOME(0.00)[];
+	TAGGED_FROM(0.00)[bounces-255818-lists,stable=lfdr.de];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,oss.qualcomm.com,kernel.org];
+	MIME_TRACE(0.00)[0:+];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[8];
 	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	NEURAL_HAM(-0.00)[-0.999];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
+	TO_DN_SOME(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,linuxfoundation.org:mid,linuxfoundation.org:dkim,intel.com:email,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo]
-X-Rspamd-Queue-Id: 3A6D85F7FF7
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,msgid.link:url,linuxfoundation.org:mid,linuxfoundation.org:dkim,qualcomm.com:email]
+X-Rspamd-Queue-Id: 3F4B75F9047
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-7.0-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Matt Roper <matthew.d.roper@intel.com>
+From: Nicolas Escande <nico.escande@gmail.com>
 
-[ Upstream commit fe681e7b44d78fd77d79de21eca58c3b6bdcda0e ]
+[ Upstream commit 55dda532bbc261aef495e403c8900c5e2ab5fa34 ]
 
-Wa_18033852989 applies to all graphics versions from 20.01 through 20.04
-(inclusive).  Consolidate the RTP entries into a single range-based entry.
+Fix two instances where we used to directly return the result of
+ath11k_wmi_cmd_send(...). Because we did not check the return value, we
+also did not free the skb in the error path.
 
-Reviewed-by: Shuicheng Lin <shuicheng.lin@intel.com>
-Link: https://patch.msgid.link/20260220-forupstream-wa_cleanup-v2-19-b12005a05af6@intel.com
-Signed-off-by: Matt Roper <matthew.d.roper@intel.com>
-Stable-dep-of: a4660bd94973 ("drm/xe: Define and use MCR version of COMMON_SLICE_CHICKEN1")
+Fixes: 79802b13a492 ("ath11k: implement WoW enable and wakeup commands")
+Signed-off-by: Nicolas Escande <nico.escande@gmail.com>
+Reviewed-by: Baochen Qiang <baochen.qiang@oss.qualcomm.com>
+Reviewed-by: Rameshkumar Sundaram <rameshkumar.sundaram@oss.qualcomm.com>
+Link: https://patch.msgid.link/20260506134240.2284016-2-nico.escande@gmail.com
+Signed-off-by: Jeff Johnson <jeff.johnson@oss.qualcomm.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/xe/xe_wa.c | 12 ++++--------
- 1 file changed, 4 insertions(+), 8 deletions(-)
+ drivers/net/wireless/ath/ath11k/wmi.c | 19 ++++++++++++++++---
+ 1 file changed, 16 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/gpu/drm/xe/xe_wa.c b/drivers/gpu/drm/xe/xe_wa.c
-index c436d0ad51e77..6e3c44bc69daf 100644
---- a/drivers/gpu/drm/xe/xe_wa.c
-+++ b/drivers/gpu/drm/xe/xe_wa.c
-@@ -720,6 +720,10 @@ static const struct xe_rtp_entry_sr lrc_was[] = {
- 	  XE_RTP_RULES(GRAPHICS_VERSION_RANGE(2001, 2004), ENGINE_CLASS(RENDER)),
- 	  XE_RTP_ACTIONS(SET(XEHP_PSS_CHICKEN, FLSH_IGNORES_PSD))
- 	},
-+	{ XE_RTP_NAME("18033852989"),
-+	  XE_RTP_RULES(GRAPHICS_VERSION_RANGE(2001, 2004), ENGINE_CLASS(RENDER)),
-+	  XE_RTP_ACTIONS(SET(COMMON_SLICE_CHICKEN1, DISABLE_BOTTOM_CLIP_RECTANGLE_TEST))
-+	},
+diff --git a/drivers/net/wireless/ath/ath11k/wmi.c b/drivers/net/wireless/ath/ath11k/wmi.c
+index 110035dae8a61..e1b00dc811e7b 100644
+--- a/drivers/net/wireless/ath/ath11k/wmi.c
++++ b/drivers/net/wireless/ath/ath11k/wmi.c
+@@ -9191,6 +9191,7 @@ int ath11k_wmi_wow_host_wakeup_ind(struct ath11k *ar)
+ 	struct wmi_wow_host_wakeup_ind *cmd;
+ 	struct sk_buff *skb;
+ 	size_t len;
++	int ret;
  
- 	/* DG1 */
+ 	len = sizeof(*cmd);
+ 	skb = ath11k_wmi_alloc_skb(ar->wmi->wmi_ab, len);
+@@ -9204,14 +9205,20 @@ int ath11k_wmi_wow_host_wakeup_ind(struct ath11k *ar)
  
-@@ -776,10 +780,6 @@ static const struct xe_rtp_entry_sr lrc_was[] = {
+ 	ath11k_dbg(ar->ab, ATH11K_DBG_WMI, "tlv wow host wakeup ind\n");
  
- 	/* Xe2_LPG */
+-	return ath11k_wmi_cmd_send(ar->wmi, skb, WMI_WOW_HOSTWAKEUP_FROM_SLEEP_CMDID);
++	ret = ath11k_wmi_cmd_send(ar->wmi, skb, WMI_WOW_HOSTWAKEUP_FROM_SLEEP_CMDID);
++	if (ret) {
++		ath11k_warn(ar->ab, "failed to send WMI_WOW_HOSTWAKEUP_FROM_SLEEP_CMDID\n");
++		dev_kfree_skb(skb);
++	}
++
++	return ret;
+ }
  
--	{ XE_RTP_NAME("18033852989"),
--	  XE_RTP_RULES(GRAPHICS_VERSION(2004), ENGINE_CLASS(RENDER)),
--	  XE_RTP_ACTIONS(SET(COMMON_SLICE_CHICKEN1, DISABLE_BOTTOM_CLIP_RECTANGLE_TEST))
--	},
- 	{ XE_RTP_NAME("14021567978"),
- 	  XE_RTP_RULES(GRAPHICS_VERSION_RANGE(2001, XE_RTP_END_VERSION_UNDEFINED),
- 		       ENGINE_CLASS(RENDER)),
-@@ -827,10 +827,6 @@ static const struct xe_rtp_entry_sr lrc_was[] = {
- 	  XE_RTP_RULES(GRAPHICS_VERSION_RANGE(2001, 2002), ENGINE_CLASS(RENDER)),
- 	  XE_RTP_ACTIONS(SET(COMMON_SLICE_CHICKEN4, SBE_PUSH_CONSTANT_BEHIND_FIX_ENABLE))
- 	},
--	{ XE_RTP_NAME("18033852989"),
--	  XE_RTP_RULES(GRAPHICS_VERSION(2001), ENGINE_CLASS(RENDER)),
--	  XE_RTP_ACTIONS(SET(COMMON_SLICE_CHICKEN1, DISABLE_BOTTOM_CLIP_RECTANGLE_TEST))
--	},
+ int ath11k_wmi_wow_enable(struct ath11k *ar)
+ {
+ 	struct wmi_wow_enable_cmd *cmd;
+ 	struct sk_buff *skb;
+-	int len;
++	int ret, len;
  
- 	/* Xe3_LPG */
- 	{ XE_RTP_NAME("14021490052"),
+ 	len = sizeof(*cmd);
+ 	skb = ath11k_wmi_alloc_skb(ar->wmi->wmi_ab, len);
+@@ -9226,7 +9233,13 @@ int ath11k_wmi_wow_enable(struct ath11k *ar)
+ 	cmd->pause_iface_config = WOW_IFACE_PAUSE_ENABLED;
+ 	ath11k_dbg(ar->ab, ATH11K_DBG_WMI, "tlv wow enable\n");
+ 
+-	return ath11k_wmi_cmd_send(ar->wmi, skb, WMI_WOW_ENABLE_CMDID);
++	ret = ath11k_wmi_cmd_send(ar->wmi, skb, WMI_WOW_ENABLE_CMDID);
++	if (ret) {
++		ath11k_warn(ar->ab, "failed to send WMI_WOW_ENABLE_CMDID\n");
++		dev_kfree_skb(skb);
++	}
++
++	return ret;
+ }
+ 
+ int ath11k_wmi_scan_prob_req_oui(struct ath11k *ar,
 -- 
 2.53.0
 
