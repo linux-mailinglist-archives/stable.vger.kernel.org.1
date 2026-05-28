@@ -1,65 +1,63 @@
-Return-Path: <stable+bounces-256071-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-255435-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 4GIPA26pGGrclwgAu9opvQ
-	(envelope-from <stable+bounces-256071-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:45:34 +0200
+	id uBlFAv2iGGrJlggAu9opvQ
+	(envelope-from <stable+bounces-255435-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:18:05 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 934C95F97BC
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:45:33 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 975CE5F8549
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:18:04 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 23CB131C9204
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 20:37:55 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 6337231D15BF
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 20:08:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 23A2F2F1FEC;
-	Thu, 28 May 2026 20:37:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2A276339866;
+	Thu, 28 May 2026 20:08:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MPOXg0xM"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1b5dlvvh"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DF4E1313539;
-	Thu, 28 May 2026 20:37:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DB0862F260C;
+	Thu, 28 May 2026 20:08:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780000673; cv=none; b=EDAod0lDZGPHTCCYeeNYuQ4bNNQWMLnts2tg9cPbxD3G8IIWWswDaTRNWAqdnZyqoxi2Q2/F9fhqAN9uA6jATlfZEMJiYW2hoiCK1/0EBxQwqX0z09+suKkr84l3XcGNN3vfpLVHv0D9YXJF32WRQILxn2YQtUadQTuQrVikzKY=
+	t=1779998902; cv=none; b=AV3iBkCiXmLWdWxHn8T27yyPNvxU477Auzys48tDeo9ijCer2svouX7WKc6RC22xcLW6Y616hDxnHtunBBbo9z1BEARxHyBA+uPDLZb3fORYn55Tqx2Luz/dtmXJEoBEjlIH4ayZQ5LaK6VRRZw/CoY86BTQQojjRcqe6RIHq3E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780000673; c=relaxed/simple;
-	bh=DV6b5AKaIpCzbdN/HalwiuWPRYkH6JyZVKgihIRRHKA=;
+	s=arc-20240116; t=1779998902; c=relaxed/simple;
+	bh=6bvXFfldKtFwhHTLIAi1zNZJRrJvKrraF2nxNQH1TGQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=YwnbeSBYSljU89pXjCYKM4jSbtf6XumTqZsmm3wu2HHz4ySDRq8c2QBlrg1N+sGHkyE2PiMCNoOpr8zIiqLDXX6PMYsMhQD52BN2Cn3huj/84yv4CoPpFyH77sJ7+1XxWYFkAz6ca3If5FoWxTErabe/idTHkldwnIciS6GwHCc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MPOXg0xM; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4C9CB1F000E9;
-	Thu, 28 May 2026 20:37:52 +0000 (UTC)
+	 MIME-Version; b=fKfKNWHM4dXmE6NU3zfpBHuaGMtqBswePcgoF/MiheG9VycwpYClfwiIRzsSLxSrMQp4WjSbA6qv7r7mfdIxNAHv4IXLitlb3JcdKPCwj/CHzSpBnIMkGzaqnoQ8OLSHZc3yKa4hvZNtWEYBLq/cJgEdBFphKNF4eahTP99GM+w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1b5dlvvh; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 49F2E1F000E9;
+	Thu, 28 May 2026 20:08:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780000672;
-	bh=Lv0M0TzP4KI0gpm4PI7tsq2H2QZFnewMnNRiASsvOUE=;
+	s=korg; t=1779998900;
+	bh=sZtbClwEIUt414oryh26e5ZKWs/fXJzCcIhpix0MIqE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=MPOXg0xMDLAJpoaO1EfWHejUxgFyT7TUKVdN/h1MDWjJh+KTktP9ZHAU7JkcKkQeq
-	 QPBhnfXXPRYCTlHWeKb+wvDkJ60Jc1x16i0iBNUj2uuMO+uo+xvSgpaNIJV1wpUvoL
-	 m70z7w0Rj9m5/rvpb6u8QB2CM6ELXUziSrBtfJYg=
+	b=1b5dlvvhIAjOled5VphJh62eoZv0n5hC3XV3Ih0KAp4gdB/9zwYdtjUxjEeTMHeob
+	 fOamGCirUecbfwGJkuyvTEgYN87ygy4SuwF9AeVPlRY5C55zjnUvHGwE0oNbuVQHuM
+	 Vp45y1QqTc2ALzcKEUxIo+696L3/hZW0Zjg6Kprw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sunil Goutham <sgoutham@marvell.com>,
-	Linu Cherian <lcherian@marvell.com>,
-	Geetha sowjanya <gakula@marvell.com>,
-	hariprasad <hkelam@marvell.com>,
-	Subbaraya Sundeep <sbhatta@marvell.com>,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
-	stable <stable@kernel.org>,
-	Sam Daly <sam@samdaly.ie>,
-	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 6.12 092/272] octeontx2-af: CGX: add bounds check to cgx_speed_mbps index
-Date: Thu, 28 May 2026 21:47:46 +0200
-Message-ID: <20260528194631.955873392@linuxfoundation.org>
+	Jason Gunthorpe <jgg@nvidia.com>,
+	Pranjal Shrivastava <praan@google.com>,
+	Samiullah Khawaja <skhawaja@google.com>,
+	Mostafa Saleh <smostafa@google.com>,
+	Josua Mayer <josua@solid-run.com>,
+	Joerg Roedel <joerg.roedel@amd.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 7.0 338/461] iommu: Handle unmap error when iommu_debug is enabled
+Date: Thu, 28 May 2026 21:47:47 +0200
+Message-ID: <20260528194657.142497112@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260528194629.379955525@linuxfoundation.org>
-References: <20260528194629.379955525@linuxfoundation.org>
+In-Reply-To: <20260528194646.819809818@linuxfoundation.org>
+References: <20260528194646.819809818@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,91 +67,171 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-0.66 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_MISSING_CHARSET(0.50)[];
 	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-256071-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
 	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[12];
-	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	TAGGED_FROM(0.00)[bounces-255435-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_SEVEN(0.00)[10];
 	MID_RHS_MATCH_FROM(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable,netdev];
-	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,msgid.link:url,lunn.ch:email,marvell.com:email,samdaly.ie:email]
-X-Rspamd-Queue-Id: 934C95F97BC
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim,amd.com:email,solid-run.com:email,nvidia.com:email]
+X-Rspamd-Queue-Id: 975CE5F8549
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+7.0-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sam Daly <sam@samdaly.ie>
+From: Jason Gunthorpe <jgg@nvidia.com>
 
-commit c0bf0a4f3f1f5f57aa83e1400ba4f56f0abfd542 upstream.
+[ Upstream commit 0735c54804c709d1b292f3b6947cfb560b2ce552 ]
 
-cgx_speed_mbps has 13 elements but RESP_LINKSTAT_SPEED can yield values
-0-15. If it returns a value >= 13, this causes an out-of-bounds array
-access. Add a bounds check and default to speed 0 if the index is out of
-range.
+Sashiko noticed a latent bug where the map error flow called iommu_unmap()
+which calls iommu_debug_unmap_begin()/iommu_debug_unmap_end() however
+since this is an error path the map flow never actually established the
+original iommu_debug_map() it will malfunction.
 
-Fixes: 61071a871ea6 ("octeontx2-af: Forward CGX link notifications to PFs")
-Cc: Sunil Goutham <sgoutham@marvell.com>
-Cc: Linu Cherian <lcherian@marvell.com>
-Cc: Geetha sowjanya <gakula@marvell.com>
-Cc: hariprasad <hkelam@marvell.com>
-Cc: Subbaraya Sundeep <sbhatta@marvell.com>
-Cc: Andrew Lunn <andrew+netdev@lunn.ch>
-Cc: stable <stable@kernel.org>
-Signed-off-by: Sam Daly <sam@samdaly.ie>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Link: https://patch.msgid.link/2026051352-refined-demise-e88d@gregkh
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Lift the unmap error handling into iommu_map_nosync() and reorder it so
+the trace_map()/iommu_debug_map() records the partial mapping and then
+immediately unmaps it. This avoid creating the unbalanced tracking and
+provides saner tracing instead of a unmap unmatched to any map.
+
+Fixes: ccc21213f013 ("iommu: Add calls for IOMMU_DEBUG_PAGEALLOC")
+Signed-off-by: Jason Gunthorpe <jgg@nvidia.com>
+Reviewed-by: Pranjal Shrivastava <praan@google.com>
+Reviewed-by: Samiullah Khawaja <skhawaja@google.com>
+Reviewed-by: Mostafa Saleh <smostafa@google.com>
+Tested-by: Josua Mayer <josua@solid-run.com>
+Signed-off-by: Joerg Roedel <joerg.roedel@amd.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/marvell/octeontx2/af/cgx.c |    7 ++++++-
- 1 file changed, 6 insertions(+), 1 deletion(-)
+ drivers/iommu/iommu.c | 49 +++++++++++++++++--------------------------
+ 1 file changed, 19 insertions(+), 30 deletions(-)
 
---- a/drivers/net/ethernet/marvell/octeontx2/af/cgx.c
-+++ b/drivers/net/ethernet/marvell/octeontx2/af/cgx.c
-@@ -1286,13 +1286,18 @@ static inline void link_status_user_form
- 					   struct cgx_link_user_info *linfo,
- 					   struct cgx *cgx, u8 lmac_id)
- {
-+	unsigned int speed;
-+
- 	linfo->link_up = FIELD_GET(RESP_LINKSTAT_UP, lstat);
- 	linfo->full_duplex = FIELD_GET(RESP_LINKSTAT_FDUPLEX, lstat);
--	linfo->speed = cgx_speed_mbps[FIELD_GET(RESP_LINKSTAT_SPEED, lstat)];
- 	linfo->an = FIELD_GET(RESP_LINKSTAT_AN, lstat);
- 	linfo->fec = FIELD_GET(RESP_LINKSTAT_FEC, lstat);
- 	linfo->lmac_type_id = FIELD_GET(RESP_LINKSTAT_LMAC_TYPE, lstat);
+diff --git a/drivers/iommu/iommu.c b/drivers/iommu/iommu.c
+index 0c2a4beb6ac32..93c9081707401 100644
+--- a/drivers/iommu/iommu.c
++++ b/drivers/iommu/iommu.c
+@@ -2615,12 +2615,11 @@ static size_t iommu_pgsize(struct iommu_domain *domain, unsigned long iova,
  
-+	speed = FIELD_GET(RESP_LINKSTAT_SPEED, lstat);
-+	linfo->speed = speed < ARRAY_SIZE(cgx_speed_mbps) ?
-+		       cgx_speed_mbps[speed] : 0;
-+
- 	if (linfo->lmac_type_id >= LMAC_MODE_MAX) {
- 		dev_err(&cgx->pdev->dev, "Unknown lmac_type_id %d reported by firmware on cgx port%d:%d",
- 			linfo->lmac_type_id, cgx->cgx_id, lmac_id);
+ static int __iommu_map_domain_pgtbl(struct iommu_domain *domain,
+ 				    unsigned long iova, phys_addr_t paddr,
+-				    size_t size, int prot, gfp_t gfp)
++				    size_t size, int prot, gfp_t gfp,
++				    size_t *mapped)
+ {
+ 	const struct iommu_domain_ops *ops = domain->ops;
+-	unsigned long orig_iova = iova;
+ 	unsigned int min_pagesz;
+-	size_t orig_size = size;
+ 	int ret = 0;
+ 
+ 	if (WARN_ON(!ops->map_pages))
+@@ -2643,31 +2642,25 @@ static int __iommu_map_domain_pgtbl(struct iommu_domain *domain,
+ 	pr_debug("map: iova 0x%lx pa %pa size 0x%zx\n", iova, &paddr, size);
+ 
+ 	while (size) {
+-		size_t pgsize, count, mapped = 0;
++		size_t pgsize, count, op_mapped = 0;
+ 
+ 		pgsize = iommu_pgsize(domain, iova, paddr, size, &count);
+ 
+ 		pr_debug("mapping: iova 0x%lx pa %pa pgsize 0x%zx count %zu\n",
+ 			 iova, &paddr, pgsize, count);
+ 		ret = ops->map_pages(domain, iova, paddr, pgsize, count, prot,
+-				     gfp, &mapped);
++				     gfp, &op_mapped);
+ 		/*
+ 		 * Some pages may have been mapped, even if an error occurred,
+ 		 * so we should account for those so they can be unmapped.
+ 		 */
+-		size -= mapped;
+-
++		*mapped += op_mapped;
+ 		if (ret)
+-			break;
+-
+-		iova += mapped;
+-		paddr += mapped;
+-	}
++			return ret;
+ 
+-	/* unroll mapping in case something went wrong */
+-	if (ret) {
+-		iommu_unmap(domain, orig_iova, orig_size - size);
+-		return ret;
++		size -= op_mapped;
++		iova += op_mapped;
++		paddr += op_mapped;
+ 	}
+ 	return 0;
+ }
+@@ -2685,6 +2678,7 @@ int iommu_map_nosync(struct iommu_domain *domain, unsigned long iova,
+ 		phys_addr_t paddr, size_t size, int prot, gfp_t gfp)
+ {
+ 	struct pt_iommu *pt = iommupt_from_domain(domain);
++	size_t mapped = 0;
+ 	int ret;
+ 
+ 	might_sleep_if(gfpflags_allow_blocking(gfp));
+@@ -2696,24 +2690,19 @@ int iommu_map_nosync(struct iommu_domain *domain, unsigned long iova,
+ 				 __GFP_HIGHMEM))))
+ 		return -EINVAL;
+ 
+-	if (pt) {
+-		size_t mapped = 0;
+-
++	if (pt)
+ 		ret = pt->ops->map_range(pt, iova, paddr, size, prot, gfp,
+ 					 &mapped);
+-		if (ret) {
+-			iommu_unmap(domain, iova, mapped);
+-			return ret;
+-		}
+-	} else {
++	else
+ 		ret = __iommu_map_domain_pgtbl(domain, iova, paddr, size, prot,
+-					       gfp);
+-		if (ret)
+-			return ret;
+-	}
++					       gfp, &mapped);
+ 
+-	trace_map(iova, paddr, size);
+-	iommu_debug_map(domain, paddr, size);
++	trace_map(iova, paddr, mapped);
++	iommu_debug_map(domain, paddr, mapped);
++	if (ret) {
++		iommu_unmap(domain, iova, mapped);
++		return ret;
++	}
+ 	return 0;
+ }
+ 
+-- 
+2.53.0
+
 
 
 
