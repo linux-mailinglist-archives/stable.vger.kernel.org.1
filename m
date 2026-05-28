@@ -1,59 +1,59 @@
-Return-Path: <stable+bounces-255767-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-255438-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id cHJwEUemGGpolwgAu9opvQ
-	(envelope-from <stable+bounces-255767-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:32:07 +0200
+	id mJZfOm+iGGqblggAu9opvQ
+	(envelope-from <stable+bounces-255438-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:15:43 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id CC19F5F8E63
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:32:06 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8A0D55F8312
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:15:43 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 7231A31B661C
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 20:23:45 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 9E166309BB71
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 20:08:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6AE641EA65;
-	Thu, 28 May 2026 20:23:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EEE0332ABC0;
+	Thu, 28 May 2026 20:08:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LVAiTdjB"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="g/0shDrQ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2AAC52264D6;
-	Thu, 28 May 2026 20:23:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D49131A3157;
+	Thu, 28 May 2026 20:08:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779999824; cv=none; b=MNxhl6zo47akiJxtJw4jRsz1TIMVXBgAkZet34oJFp0J4jn+qFronULWL3x5LjQ9EtDjmlunEsVBUSnV9PicNGp+/m3pHJnunaPnG9zPupLbcKlU5WpI0z2sbCe6iMx6H5GVvB6F9vufBjup5Cz+DMO9eN67JxpM8lrlHYiAmaA=
+	t=1779998910; cv=none; b=WXEfO9hW1XmpdPr5UxJ3UhG9CkGn+HsYWEwHutluDgI0d1lqqQWkx/gtalMq5shScslZ5loBCYnGrNrF/epObP9Pd//QpuFd7X0EGBQPscAZ0usx9vHh19YzfFsoDwZJwaWr5VCOCBsmAw+GddMgOWz7h0cg+pxDhQlX7z17uQI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779999824; c=relaxed/simple;
-	bh=NZObOzgx85VMYh910Va0Ntq1xICTQqubhySDJUDK/vY=;
+	s=arc-20240116; t=1779998910; c=relaxed/simple;
+	bh=mGx5gXnBCU4tp3PpsosvV99QPOE/RiLDMKhzUBk45PE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=oC7XK463VUJe2AoX9PItlwzQc9qsdCbC0zoTUXqX/7fbZpU1ptC1TyzBJABtkB8jAD8pPOEOih0LWtOv7im9PxZjFMTUlQU8BFX/fvpBDKbnGaMM7xyqph1CbKzcbkIK+p3PXaZvFBOLQ+xc69VAMksV+EYG7TkcwbJbPTAwES4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LVAiTdjB; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 894681F000E9;
-	Thu, 28 May 2026 20:23:42 +0000 (UTC)
+	 MIME-Version; b=H7qRysHkW2XxHFek4hb+G9PUmHp3zfjh0eiRMFHr2j0NxFQgptlnk9Vi8dyPA5JJaUFFIjnWjL4LD5GgoUIwZCmRzX48FZ1vpSA5L3+dBdQH/SZtwhZ4bKis0N6Q48cqRGv2b1AEX/YOTcv53Qo4d2q/NqIQkSILSWetE5UL0f0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=g/0shDrQ; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 256C61F000E9;
+	Thu, 28 May 2026 20:08:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779999823;
-	bh=kl0DcB/ph8/bqjyzLrBLkX+HGzHK8QO4JfGnfZoHPRg=;
+	s=korg; t=1779998909;
+	bh=R/3KIoefdGKY8vtSDkJvrNzZRLkjHxxmt/C2TB8N0Lo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=LVAiTdjB+CsfFB01/5po6xuHl07oYsD+aj/OonO85/o8jtgE3rqmUjbIv8EugbeBf
-	 gZyosfPUTsNUSul6ugd7U8Qv3K2ILFUsyKUJROCFXrBmNAwV5rXBxrUzSS1hPB4lcm
-	 sMnB1F707ot9MYn58a2MyelUe2sOasFZ92aXEJwk=
+	b=g/0shDrQ3hnzfeSW+12KJYXrSiyCHvu/aqwdUu9lFrBNwd1AMxvI9aBMsCn2dNbMu
+	 3UroTO9FAc7wL8W295kT8lQPOBOFU6Jk16ojGWHMXsy7M1+JNlyt9uTBZuo1mD16Ut
+	 Fk2VUeePD36NoO0RJXL8CfZCLyq/awPxIdIyaIUE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jianpeng Chang <jianpeng.chang.cn@windriver.com>,
-	"Masami Hiramatsu (Google)" <mhiramat@kernel.org>,
+	Randy Dunlap <rdunlap@infradead.org>,
+	Paul Walmsley <pjw@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 205/377] kprobes: skip non-symbol addresses in kprobe_add_ksym_blacklist()
+Subject: [PATCH 7.0 314/461] riscv: Docs: fix unmatched quote warning
 Date: Thu, 28 May 2026 21:47:23 +0200
-Message-ID: <20260528194644.339279782@linuxfoundation.org>
+Message-ID: <20260528194656.385797582@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260528194638.371537336@linuxfoundation.org>
-References: <20260528194638.371537336@linuxfoundation.org>
+In-Reply-To: <20260528194646.819809818@linuxfoundation.org>
+References: <20260528194646.819809818@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -68,7 +68,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
@@ -78,7 +78,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-255767-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-255438-lists,stable=lfdr.de];
 	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
@@ -89,111 +89,47 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	TAGGED_RCPT(0.00)[stable];
 	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,windriver.com:email,linuxfoundation.org:mid,linuxfoundation.org:dkim]
-X-Rspamd-Queue-Id: CC19F5F8E63
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim,infradead.org:email,msgid.link:url]
+X-Rspamd-Queue-Id: 8A0D55F8312
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+7.0-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jianpeng Chang <jianpeng.chang.cn@windriver.com>
+From: Randy Dunlap <rdunlap@infradead.org>
 
-[ Upstream commit 307abfac04a254c09c5705d816b33354acee97a0 ]
+[ Upstream commit 50da1c9ccb70fc5250c37ac474b54ee072732ea3 ]
 
-When kprobe_add_area_blacklist() iterates through a section like
-.kprobes.text, the start address may not correspond to a named symbol.
-On ARM64 with CONFIG_DYNAMIC_FTRACE_WITH_CALL_OPS=y (introduced by
-commit baaf553d3bc3 ("arm64: Implement
-HAVE_DYNAMIC_FTRACE_WITH_CALL_OPS")), the compiler flag
--fpatchable-function-entry=4,2 inserts 2 NOPs before each function entry
-point for ftrace call_ops. These pre-function NOPs sit at the section base
-address, before the first named function symbol. The compiler emits a $x
-mapping symbol at offset 0x00 to mark the start of code, but
-find_kallsyms_symbol() ignores mapping symbols.
+'make htmldocs' complains about ``prctrl` -- so add a second '`' to
+avoid the warning.
 
-Without CONFIG_DYNAMIC_FTRACE_WITH_CALL_OPS (e.g. defconfig), no
-pre-function NOPs are inserted, the first function starts at offset
-0x00, and the bug does not trigger.
+Documentation/arch/riscv/zicfilp.rst:79: WARNING: Inline literal start-string without end-string. [docutils]
 
-This only affects modules that have a .kprobes.text section (i.e. those
-using the __kprobes annotation). Modules using NOKPROBE_SYMBOL() instead
-(like kretprobe_example.ko) blacklist exact function addresses via the
-_kprobe_blacklist section and are not affected.
-
-For kprobe_example.ko on ARM64 with -fpatchable-function-entry=4,2,
-the .kprobes.text section layout is:
-
-  offset 0x00: $x + 2 NOPs    (mapping symbol + ftrace preamble)
-  offset 0x08: handler_post   (64 bytes)
-  offset 0x50: handler_pre    (68 bytes)
-
-kprobe_add_area_blacklist() starts iterating from the section base
-address (offset 0x00), which only has the $x mapping symbol.
-kprobe_add_ksym_blacklist() then calls kallsyms_lookup_size_offset()
-for this address, which goes through:
-
-  kallsyms_lookup_size_offset()
-    -> module_address_lookup()
-      -> find_kallsyms_symbol()
-
-find_kallsyms_symbol() scans all module symbols to find the closest
-preceding symbol.
-
-Since no named text symbol exists at offset 0x00,
-find_kallsyms_symbol() picks __UNIQUE_ID_vermagic (a .modinfo symbol
-whose address is in the temporary image) as the "best" match. The
-computed "size" = next_text_symbol - modinfo_symbol spans across
-these two unrelated memory regions, creating a blacklist entry with
-a bogus range of tens of terabytes.
-
-Whether this causes a visible failure depends on address randomization,
-here is what happens on Raspberry Pi 4/5:
-
-  - On RPi5, the bogus size was ~35 TB. start + size stayed within
-    64-bit range, so the blacklist entry covered the entire kernel
-    text. register_kprobe() in the module's own init function failed
-    with -EINVAL.
-
-  - On RPi4, the bogus size was ~75 TB. start + size overflowed
-    64 bits and wrapped to a small address near zero. The range
-    check (addr >= start && addr < end) then failed because end
-    wrapped around, so the bogus entry was accidentally harmless
-    and kprobes worked by luck.
-
-The same bug exists on both machines, but randomization determines whether
-the integer overflow masks it or not.
-
-Fix this by adding notrace to the __kprobes macro. Functions in
-.kprobes.text are kprobe infrastructure handlers that should never be
-traced by ftrace. With notrace, the compiler stops inserting them and the
-non-symbol gap at the section start disappears entirely.
-
-Link: https://lore.kernel.org/all/20260506012706.2785785-1-jianpeng.chang.cn@windriver.com/
-
-Fixes: baaf553d3bc3 ("arm64: Implement HAVE_DYNAMIC_FTRACE_WITH_CALL_OPS")
-Signed-off-by: Jianpeng Chang <jianpeng.chang.cn@windriver.com>
-Signed-off-by: Masami Hiramatsu (Google) <mhiramat@kernel.org>
+Fixes: 08ee1559052b ("prctl: cfi: change the branch landing pad prctl()s to be more descriptive")
+Signed-off-by: Randy Dunlap <rdunlap@infradead.org>
+Link: https://patch.msgid.link/20260406232304.1892528-1-rdunlap@infradead.org
+Signed-off-by: Paul Walmsley <pjw@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/asm-generic/kprobes.h | 2 +-
+ Documentation/arch/riscv/zicfilp.rst | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/include/asm-generic/kprobes.h b/include/asm-generic/kprobes.h
-index 060eab094e5a2..5290a2b2e15a0 100644
---- a/include/asm-generic/kprobes.h
-+++ b/include/asm-generic/kprobes.h
-@@ -14,7 +14,7 @@ static unsigned long __used					\
- 	_kbl_addr_##fname = (unsigned long)fname;
- # define NOKPROBE_SYMBOL(fname)	__NOKPROBE_SYMBOL(fname)
- /* Use this to forbid a kprobes attach on very low level functions */
--# define __kprobes	__section(".kprobes.text")
-+# define __kprobes	notrace __section(".kprobes.text")
- # define nokprobe_inline	__always_inline
- #else
- # define NOKPROBE_SYMBOL(fname)
+diff --git a/Documentation/arch/riscv/zicfilp.rst b/Documentation/arch/riscv/zicfilp.rst
+index ab7d8e62ddaff..12b35969d17ad 100644
+--- a/Documentation/arch/riscv/zicfilp.rst
++++ b/Documentation/arch/riscv/zicfilp.rst
+@@ -78,7 +78,7 @@ the program.
+ 
+ Per-task indirect branch tracking state can be monitored and
+ controlled via the :c:macro:`PR_GET_CFI` and :c:macro:`PR_SET_CFI`
+-``prctl()` arguments (respectively), by supplying
++``prctl()`` arguments (respectively), by supplying
+ :c:macro:`PR_CFI_BRANCH_LANDING_PADS` as the second argument.  These
+ are architecture-agnostic, and will return -EINVAL if the underlying
+ functionality is not supported.
 -- 
 2.53.0
 
