@@ -1,59 +1,64 @@
-Return-Path: <stable+bounces-256172-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-256339-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id +E/pKIWqGGpolwgAu9opvQ
-	(envelope-from <stable+bounces-256172-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:50:13 +0200
+	id YBfeDmiuGGpolwgAu9opvQ
+	(envelope-from <stable+bounces-256339-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 23:06:48 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1B31A5F9A52
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:50:12 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id 548BD5FA3AC
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 23:06:46 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 21FBC30ADFD8
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 20:42:51 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id E6AFC30A7D28
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 20:50:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DFA0833439A;
-	Thu, 28 May 2026 20:42:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7CC20329396;
+	Thu, 28 May 2026 20:50:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="idqWyEee"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LaSajF78"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8808E33F5B4;
-	Thu, 28 May 2026 20:42:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4C47E318B96;
+	Thu, 28 May 2026 20:50:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780000957; cv=none; b=ZfVmw+Xd5lMwdz40q4rISZ39Am7CgMacLpzZm/Z+ZAPK3ja5jnJ39I8ElhA56JgsL8KD1q68E1OdVq8YXqFtnEpspNqMPuch452n3FoFUraqEwFj8RbhyswwJtDnTWtQmC857iwEQVx6NOiqCEWJEIxGDz84Cz/uiDKF0kMINa4=
+	t=1780001424; cv=none; b=TtA+nwR71OqMnTvsBGK6bp3H0FIr178NiHkZ0w50SOW1cUD2Lw750ob4mb4517zjE2nzkoqe1f6mwosxiamd2+J0SS9VyHDlAQLb7vz83eb18PPoMM+lMvMYFQKJWt+LRYJ3DvAgCmwoBM3ctVigH0OLujN735SX3b+rpGX6VQ4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780000957; c=relaxed/simple;
-	bh=b4iRT5Yd4C9DWPK0kFYKwqggyGBsNIxSLukIvb4URpA=;
+	s=arc-20240116; t=1780001424; c=relaxed/simple;
+	bh=MWAfV7a/LD9BFDdVQ5wjeo9kgEnoQIyaoCGEMcYkEzs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=lHtSwbqY3PCiQmMaRwibPBWE5eHGXQgYtFEvy9pZ8THGYAcq0TPpuISPyYuOlxdUmAcsJ1pvEODBHqCRUo2czVMffeEqd+KZNfi/cXPb1FiQpQ7bHd23t23yBD6mxYVRrpwdOXsT2uH/EeNmliLQ/0m2NT35e4hVXiN4rJJL2U0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=idqWyEee; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E6C461F000E9;
-	Thu, 28 May 2026 20:42:35 +0000 (UTC)
+	 MIME-Version; b=i+a/wHFlpi8uRBY943U2IdHYku35pLDXhPg06lLw3lIvuKXgzZE3kJQopKf24LGEt0cg31R+tMG2Oc35Z+OrjkOEj4iNoBDRX6KaO7jvdl6Il3JbA/mEZOgUGg5ay7LRY36EXk2fN+he2u5OOVK4LyH71ccHY1s92YHFOuA6pNI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LaSajF78; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B07AF1F000E9;
+	Thu, 28 May 2026 20:50:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780000956;
-	bh=z5LFjPvRDnAW4o0JP497YqUgAWFvzfduKFRydWVNyX8=;
+	s=korg; t=1780001423;
+	bh=q/3il1RqNKB4uh4QuANobvTKXSXIhudpRaKR3S+3l7A=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=idqWyEeew4WEjnywkrHoLmvpVFP9ZkvMti7/0EQKoABmjxfjF3vtF/Q45C2v9OabU
-	 AB1LOapScOhInNzOiwTmyJuW+LaM9P1xfZDwwFhdi+MZ+AgUAy0pEo2yMYedLrawPn
-	 CWoUJ+pNqqP11jc1n/Y0oMQcxiLlosVRkvnRe59k=
+	b=LaSajF78o5YxIcIBATVOwtqOLCoF8F/mMlzLSyWOu1SY9Rv73N5mncyDxdG513jtW
+	 TCmNw7MWCK8jsehV959V6ba6ZvN2deO4iTFTfSixhPO1Padxon8RB9FvI3wkHxVaTm
+	 cmrJLvsmyZgDn2O4jTl0sOpt84HxWG/jwKCxeXe0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
+	intel-wired-lan@lists.osuosl.org,
+	Bart Van Assche <bvanassche@acm.org>,
+	Aleksandr Loktionov <aleksandr.loktionov@intel.com>,
+	Przemek Kitszel <przemyslaw.kitszel@intel.com>,
+	Arpana Arland <arpanax.arland@intel.com>,
+	Jacob Keller <jacob.e.keller@intel.com>,
 	Jakub Kicinski <kuba@kernel.org>,
-	Chuck Lever <chuck.lever@oracle.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 229/272] tls: Preserve sk_err across recvmsg() when data has been copied
+Subject: [PATCH 6.6 123/186] ice: fix locking in ice_dcb_rebuild()
 Date: Thu, 28 May 2026 21:50:03 +0200
-Message-ID: <20260528194635.588397302@linuxfoundation.org>
+Message-ID: <20260528194932.264844146@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260528194629.379955525@linuxfoundation.org>
-References: <20260528194629.379955525@linuxfoundation.org>
+In-Reply-To: <20260528194928.941004471@linuxfoundation.org>
+References: <20260528194928.941004471@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -68,153 +73,85 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-256339-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-256172-lists,stable=lfdr.de];
-	TO_DN_SOME(0.00)[];
-	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[oracle.com:email,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,msgid.link:url,linuxfoundation.org:mid,linuxfoundation.org:dkim]
-X-Rspamd-Queue-Id: 1B31A5F9A52
+	TO_DN_SOME(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_SEVEN(0.00)[11];
+	MID_RHS_MATCH_FROM(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[intel.com:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,osuosl.org:email,msgid.link:url,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo]
+X-Rspamd-Queue-Id: 548BD5FA3AC
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Chuck Lever <chuck.lever@oracle.com>
+From: Bart Van Assche <bvanassche@acm.org>
 
-[ Upstream commit f508262ae9f21fe0e6c0749948b9dc7dd5a62a70 ]
+[ Upstream commit 0ded1f36ba4021cba50513e80be6b6e173710168 ]
 
-The sk_err check in tls_rx_rec_wait() consumes the error via
-sock_error(), which clears sk_err atomically. When the caller
-(tls_sw_recvmsg, tls_sw_splice_read, or tls_sw_read_sock) already
-has bytes copied to userspace, it returns those bytes and discards
-the error from this call. sk_err is now zero on the socket, so the
-next read syscall observes only RCV_SHUTDOWN and reports a clean
-EOF instead of the actual error (typically -ECONNRESET).
+Move the mutex_lock() call up to prevent that DCB settings change after
+the first ice_query_port_ets() call. The second ice_query_port_ets()
+call in ice_dcb_rebuild() is already protected by pf->tc_mutex.
 
-The race is reachable when tls_read_flush_backlog()'s periodic
-sk_flush_backlog() triggers tcp_reset() in the middle of a
-multi-record read.
+This also fixes a bug in an error path, as before taking the first
+"goto dcb_error" in the function jumped over mutex_lock() to
+mutex_unlock().
 
-Pass a has_copied flag to tls_rx_rec_wait(). When has_copied is
-false, consume sk_err via sock_error() as before. When has_copied
-is true, report the error from READ_ONCE() but leave sk_err set:
-the caller returns the byte count and discards the err from this
-call, and the next read syscall surfaces the preserved sk_err. This
-mirrors the tcp_recvmsg() preserve-and-surface pattern.
+This bug has been detected by the clang thread-safety analyzer.
 
-The decrypt-abort path is unaffected: tls_err_abort() raises
-sk_err to EBADMSG after tls_rx_rec_wait() returns, and nothing
-on the caller's return path consumes it, so the EBADMSG surfaces
-on the next read.
-
-tls_sw_splice_read() passes has_copied=false: it processes
-one record per call, so no bytes have been copied within the
-function when tls_rx_rec_wait() runs. A reset that arrives
-between iterations of splice_direct_to_actor() (the sendfile()
-path) is still consumed by sock_error() in the later call, and the
-outer loop returns the prior iterations' byte count and drops the
-error. tcp_splice_read() exhibits the same pattern at the iteration
-boundary; addressing it belongs at the splice_direct_to_actor()
-layer and is out of scope here.
-
-Fixes: c46b01839f7a ("tls: rx: periodically flush socket backlog")
-Suggested-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
-Link: https://patch.msgid.link/20260513125825.205189-1-cel@kernel.org
+Cc: intel-wired-lan@lists.osuosl.org
+Fixes: 242b5e068b25 ("ice: Fix DCB rebuild after reset")
+Signed-off-by: Bart Van Assche <bvanassche@acm.org>
+Reviewed-by: Aleksandr Loktionov <aleksandr.loktionov@intel.com>
+Reviewed-by: Przemek Kitszel <przemyslaw.kitszel@intel.com>
+Tested-by: Arpana Arland <arpanax.arland@intel.com>
+Signed-off-by: Jacob Keller <jacob.e.keller@intel.com>
+Link: https://patch.msgid.link/20260506-jk-iwl-net-2026-05-04-v2-6-a5ea4dc837a9@intel.com
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/tls/tls_sw.c | 20 ++++++++++++++------
- 1 file changed, 14 insertions(+), 6 deletions(-)
+ drivers/net/ethernet/intel/ice/ice_dcb_lib.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/net/tls/tls_sw.c b/net/tls/tls_sw.c
-index 7511cce76fbbf..129a8c778d32d 100644
---- a/net/tls/tls_sw.c
-+++ b/net/tls/tls_sw.c
-@@ -1366,9 +1366,14 @@ void tls_sw_splice_eof(struct socket *sock)
- 	mutex_unlock(&tls_ctx->tx_lock);
- }
+diff --git a/drivers/net/ethernet/intel/ice/ice_dcb_lib.c b/drivers/net/ethernet/intel/ice/ice_dcb_lib.c
+index 850db8e0e6b00..14d765247d73c 100644
+--- a/drivers/net/ethernet/intel/ice/ice_dcb_lib.c
++++ b/drivers/net/ethernet/intel/ice/ice_dcb_lib.c
+@@ -537,14 +537,14 @@ void ice_dcb_rebuild(struct ice_pf *pf)
+ 	struct ice_dcbx_cfg *err_cfg;
+ 	int ret;
  
-+/* When has_copied is true the caller has already moved bytes to
-+ * userspace. Report sk_err but leave it set so the next read
-+ * surfaces it instead of a spurious EOF, otherwise sk_err is
-+ * consumed via sock_error().
-+ */
- static int
- tls_rx_rec_wait(struct sock *sk, struct sk_psock *psock, bool nonblock,
--		bool released)
-+		bool released, bool has_copied)
- {
- 	struct tls_context *tls_ctx = tls_get_ctx(sk);
- 	struct tls_sw_context_rx *ctx = tls_sw_ctx_rx(tls_ctx);
-@@ -1382,8 +1387,11 @@ tls_rx_rec_wait(struct sock *sk, struct sk_psock *psock, bool nonblock,
- 		if (!sk_psock_queue_empty(psock))
- 			return 0;
- 
--		if (sk->sk_err)
-+		if (sk->sk_err) {
-+			if (has_copied)
-+				return -READ_ONCE(sk->sk_err);
- 			return sock_error(sk);
-+		}
- 
- 		if (ret < 0)
- 			return ret;
-@@ -1419,7 +1427,7 @@ tls_rx_rec_wait(struct sock *sk, struct sk_psock *psock, bool nonblock,
++	mutex_lock(&pf->tc_mutex);
++
+ 	ret = ice_query_port_ets(pf->hw.port_info, &buf, sizeof(buf), NULL);
+ 	if (ret) {
+ 		dev_err(dev, "Query Port ETS failed\n");
+ 		goto dcb_error;
  	}
  
- 	if (unlikely(!tls_strp_msg_load(&ctx->strp, released)))
--		return tls_rx_rec_wait(sk, psock, nonblock, false);
-+		return tls_rx_rec_wait(sk, psock, nonblock, false, has_copied);
- 
- 	return 1;
- }
-@@ -2077,7 +2085,7 @@ int tls_sw_recvmsg(struct sock *sk,
- 		int to_decrypt, chunk;
- 
- 		err = tls_rx_rec_wait(sk, psock, flags & MSG_DONTWAIT,
--				      released);
-+				      released, !!(decrypted + copied));
- 		if (err <= 0) {
- 			if (psock) {
- 				chunk = sk_msg_recvmsg(sk, psock, msg, len,
-@@ -2264,7 +2272,7 @@ ssize_t tls_sw_splice_read(struct socket *sock,  loff_t *ppos,
- 		struct tls_decrypt_arg darg;
- 
- 		err = tls_rx_rec_wait(sk, NULL, flags & SPLICE_F_NONBLOCK,
--				      true);
-+				      true, false);
- 		if (err <= 0)
- 			goto splice_read_end;
- 
-@@ -2350,7 +2358,7 @@ int tls_sw_read_sock(struct sock *sk, read_descriptor_t *desc,
- 		} else {
- 			struct tls_decrypt_arg darg;
- 
--			err = tls_rx_rec_wait(sk, NULL, true, released);
-+			err = tls_rx_rec_wait(sk, NULL, true, released, !!copied);
- 			if (err <= 0)
- 				goto read_sock_end;
+-	mutex_lock(&pf->tc_mutex);
+-
+ 	if (!pf->hw.port_info->qos_cfg.is_sw_lldp)
+ 		ice_cfg_etsrec_defaults(pf->hw.port_info);
  
 -- 
 2.53.0
