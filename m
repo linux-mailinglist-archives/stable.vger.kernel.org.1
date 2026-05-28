@@ -1,166 +1,350 @@
-Return-Path: <stable+bounces-254743-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-254747-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 2Eh2E770F2rNXQgAu9opvQ
-	(envelope-from <stable+bounces-254743-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 09:54:38 +0200
+	id 4I2xDWr1F2q5WAgAu9opvQ
+	(envelope-from <stable+bounces-254747-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 09:57:30 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id BCF945EE0FF
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 09:54:37 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6DEE75EE1F1
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 09:57:28 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id B541D311F469
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 07:50:34 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 1D13E313A844
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 07:52:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A5CD6335BA7;
-	Thu, 28 May 2026 07:50:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B4576316905;
+	Thu, 28 May 2026 07:52:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="lWHc7TyN"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JhVnltBK"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-dy1-f180.google.com (mail-dy1-f180.google.com [74.125.82.180])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1F20E315D29
-	for <stable@vger.kernel.org>; Thu, 28 May 2026 07:50:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=74.125.82.180
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779954630; cv=pass; b=HTVKkw75ZPrSMmWjkP75/THXIIqFFjXm0jOyTqV84515LyHusuFJXre03FG17RcRToGJVCJS/o+865gNTEjOSRMbuPgBqyg33au35KIVkgQqI4I/Eor4jIw2LbYBkGTsR4EXCpWkKDYln5JHe4oIJTHcPRroHXG2xOmVP3yAW7I=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779954630; c=relaxed/simple;
-	bh=t0V9M6e2VB4qcIJrywyyrYPhcdcYJQBM+oNk8gNRf+8=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=KCQB0Dr+xnmDpzxW5k6kQpu9Tg1xkUaBEkQWHXn92miV0KSh4uSmy6Tevl1HLLIHqqDtIsenFA/r/G3MtFjvpcIRFJhHALShDoaDtvIZLYgNxRRYupNkBDJrn1KdgdIE61WxZ2ta+H61KeYDZe4FHCtvp51MtmmdfCurroycm+o=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=lWHc7TyN; arc=pass smtp.client-ip=74.125.82.180
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
-Received: by mail-dy1-f180.google.com with SMTP id 5a478bee46e88-304d8e3bb72so688204eec.1
-        for <stable@vger.kernel.org>; Thu, 28 May 2026 00:50:28 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1779954628; cv=none;
-        d=google.com; s=arc-20240605;
-        b=REGGd0rHnrORyIWSlMx+OqYxXac52g+jkPO2Bgikv7bD0oqPjZahRcYxCZ8aSr/0Dz
-         g67UH2Oq2nTNf09sQFmhfcvYinuzuuTiAtgDrCo3LYAohWhcOGPenDo0C7wEakEuiNus
-         g8hhEcHCyjNbdmbZR6VM0x4D1RKgHEN4KvxsfSN803o7cVPSlk0PNZxNQaIQBkHHO5dC
-         ABaNcdJ72B/Wp/FhjsAUxwCSHtGv0WBqB6ZKzx6XlSSxhYQV7EVg/EYjk1AJD+ms3+hD
-         4A5t4Ap9hL7ZdE/lPlPPBWYM1I0P9lA50ZtK7PGL5SmAVuekBHOXi1kGiSnkaPT/a+II
-         iTXg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=t0V9M6e2VB4qcIJrywyyrYPhcdcYJQBM+oNk8gNRf+8=;
-        fh=U8UIX2RJCy6YVrfwl+CxOBXvl2NjRjVGIhrn98yaUx8=;
-        b=E1ZynYO4ALa0aW5rMb/VBE09ZW0uaMZF0l1CjfbdFw8LRhRbsb6fxOb7VISXBxNWN0
-         qKoSgZ7n3/7F2Iy92CZ1b6vWiN8BQ7YODpF0x5eU1BtRmsvZD2YitCHkX7mcnYRjxrb+
-         HTDpf/I94UucSZhFwJD4c/0VmCmeLZiRM3xoFsmx+kwSitJvCUnmVgn6r0LV34dRb2Fn
-         NQDfBAYV40ZmfPhnWs4E+Qhb4m6wgUo68ReXSQ7v4Rlm/l1kdCWUx3RvD7URWfk15Hbr
-         vq7JGkCXOBbehW/ATZMz4C1oOzfOA7WGlIQgZ7LAJ+sgjwdzEyDLomJjHlcWlnRN7Wvy
-         goZw==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1779954628; x=1780559428; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=t0V9M6e2VB4qcIJrywyyrYPhcdcYJQBM+oNk8gNRf+8=;
-        b=lWHc7TyNWIGIR0dQ+iuW/ZtSC7yNVk8aEnC9RNDr0gE+KlICoU6ZDPh4vVQWkdVhiM
-         TFDk9M+58z00ApW50L6cggsHVuJ+SwGjQZAB3K2XokuFzB8KzmZhDjKsukHmdQflSaJI
-         Y07mF5WmIlLD8kEANr0llyy5UPBth5QlUOmgWByckq+ZIVAYir1thzsWWt7KbLsENi97
-         kwsubOMY2p7txzET+G9qIve2lRnKmM7isi5NExkae9CosftvDr7gqo2b6fQfMmLVAyyy
-         8TdxDPgyuoXtIUorYMg3th7wnJtbqsZoKd+mtfp16Tu6V8PxYsBdzZ/oIGRjg+qERbzV
-         tVaA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1779954628; x=1780559428;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=t0V9M6e2VB4qcIJrywyyrYPhcdcYJQBM+oNk8gNRf+8=;
-        b=Ea0+k2n3eBMqhJeCU9R8R4Q5WrzkBCkSXhbGNRKYCBQRO0i53+cc1SAgiZ5GvOg0u3
-         CViZW7mL99l0xXJ59MnOXveuwE/vfl2EXuYAxVhTGGGmGZ42OnFhFWDTZFoufxL6zkIL
-         0Ejq7nWXhuQiykzdWPuIUwdlZ0gynpvWfTB6l0AxZ2ps4qysY/XBj96Mw+BEqnV5MwEc
-         Lgc/Sn1gyGOusz0+bvGVvJrjluFI5xbecxJpTOq6PrPuZCjDR7GWR4y51jKG8v4zDatx
-         +bGelF7MQgm9/mktj2oASNecOUf4Rl8u+D3NNo61gykyVdOD9MkcJfLrj/SSRpoCTB2i
-         YtMg==
-X-Forwarded-Encrypted: i=1; AFNElJ8Mfbs0TaCarh7+P6hQfUWWtJKqOvmhSVnpvDUfWh/qYqK0m4S5uPDbXtPa6JcK9UZ1L1GvwM8=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxNDbNyMfRP6meWgaH75QFs0S9xsGw3btpJYpSxSqhFk2XSgR96
-	uPCKn6zlR9USPm4lS56esUbx6TJJCmRYcREVBRrcYwNVFFoGggu7th/J6QXEezrPDcuvJP7PKTf
-	2dfhSFY6eBu2eVKbEa0inftAnTUqUfwEvYhB6W/Wv
-X-Gm-Gg: Acq92OF2tZn+DRLLYKeyvzH/6lurbscD+l29Xkp/FN1kz0hsgrjWqOB/2MHWkTcSeJ6
-	P+ismT+/JZu/q4nYIhyaiLbkj6Aovgap0yTFOOsxTzTrndFOZV1P0kA7dU42i/lS3GdI4CrCvk7
-	Gx1LMQo+jnrt6S+okrx4BIww2gBYzP557HY4Q70k3B9JK5/suvzeKNVyKhCqQL+pUgmkmSFYzsV
-	iEdtkPILBDoIlrffKopcOY1SgoJlqJrgB2zz86Ta3aqhhCtdjJ3VARrvHF93uQLe5IF71Yroqle
-	4xBTwwADTC9G1gKXmHEm9hPYf3bTq+XwRV5INGD/O5cSd2WbBgxkHYIOOPXXUe5oe6tiFtB7Obt
-	w5Y0l
-X-Received: by 2002:a05:693c:69d3:b0:304:5db8:daaa with SMTP id
- 5a478bee46e88-3045db9c438mr6096842eec.12.1779954627675; Thu, 28 May 2026
- 00:50:27 -0700 (PDT)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1B39332ED3A
+	for <stable@vger.kernel.org>; Thu, 28 May 2026 07:52:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1779954723; cv=none; b=XHv30LAiXC/KIA/+gCu7pQhl4zuE0SfBYDMtTUVeyMGQbdyrokXppTvuBZbP0/liJfKNhTSOKb89V9WX2QEdi5Led/5e1RralWyqGGS8gUPUtPqwYSaiAYkwXYr4qUmU5kbJ7bEnVJFnSNj+9fzxqj5R7qxOqYsKCkep+FAnAiA=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1779954723; c=relaxed/simple;
+	bh=fm003Evvd6Dy/1kkASzWIu/4s/eA14S1COVUI3z74zk=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=VqiANLIvA/8Su5lP1bHEXvzTwV38x9RDzThjD2YzhiDThyVmF2ddyGz2dX+L2ENHb5vyZN+jT0jsnh1LV4lY984w+GxLgF54NHNrnEspavGGlKTCkHsEmFGtjXMT5oeQDkRMpiMUnM8KvvwyGVGKqP39TRHptzwDvTaro69CFwM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JhVnltBK; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A99181F000E9;
+	Thu, 28 May 2026 07:52:00 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
+	s=korg; t=1779954721;
+	bh=L55X4L5SNrQ4puoHR0iRchn4RgLzCgrPw0fvmZYPYMs=;
+	h=Subject:To:Cc:From:Date;
+	b=JhVnltBKKIHeotw5LAKjMIwiD4g1KN5dStiHn6LrJXPGvJyaYL3DWCz/GJ1UmIzi5
+	 d2Kys0U42ppYfW8apxfpVyeEx2C2MFYau7onHMKwqK+EIwy8X3zzge0tBDk0qIkfvb
+	 pnMQAFuQhrsD/SWJQYQKeVj6rcpCd2ADWAuFPMyg=
+Subject: FAILED: patch "[PATCH] Bluetooth: fix UAF in l2cap_sock_cleanup_listen() vs" failed to apply to 5.15-stable tree
+To: safa.karakus@secunnix.com,luiz.von.dentz@intel.com,oss@fourdim.xyz
+Cc: <stable@vger.kernel.org>
+From: <gregkh@linuxfoundation.org>
+Date: Thu, 28 May 2026 09:51:07 +0200
+Message-ID: <2026052807-humped-occultist-d89d@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260527-set-extended-error-v1-1-407b4b466035@google.com>
-In-Reply-To: <20260527-set-extended-error-v1-1-407b4b466035@google.com>
-From: Alice Ryhl <aliceryhl@google.com>
-Date: Thu, 28 May 2026 09:50:11 +0200
-X-Gm-Features: AVHnY4INulTCcRwU6GdvWBSiFwJioZKqN5qt8BQbixvcN9LDNmBIpBZ3C8IQ-yw
-Message-ID: <CAH5fLggH-kXntkwF_m6=xv+AzEANKm5eX5rUV4sT3HCasheBuQ@mail.gmail.com>
-Subject: Re: [PATCH] rust_binder: fix setting the extended_error
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Carlos Llamas <cmllamas@google.com>
-Cc: Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun@kernel.org>, Gary Guo <gary@garyguo.net>, 
-	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
-	Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, 
-	Trevor Gross <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>, rust-for-linux@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Spamd-Result: default: False [-2.16 / 15.00];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=2];
-	DMARC_POLICY_ALLOW(-0.50)[google.com,reject];
-	R_DKIM_ALLOW(-0.20)[google.com:s=20251104];
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-Spamd-Result: default: False [2.34 / 15.00];
+	MID_END_EQ_FROM_USER_PART(4.00)[];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	MID_RHS_NOT_FQDN(0.50)[];
 	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-254743-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FREEMAIL_CC(0.00)[kernel.org,garyguo.net,protonmail.com,umich.edu,vger.kernel.org];
-	RCPT_COUNT_TWELVE(0.00)[13];
-	MIME_TRACE(0.00)[0:+];
-	FROM_HAS_DN(0.00)[];
+	TAGGED_FROM(0.00)[bounces-254747-lists,stable=lfdr.de];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[aliceryhl@google.com,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[google.com:+];
-	NEURAL_HAM(-0.00)[-1.000];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	TAGGED_RCPT(0.00)[stable];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	RCVD_COUNT_THREE(0.00)[4];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FROM_NO_DN(0.00)[];
 	MISSING_XM_UA(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,mail.gmail.com:mid]
-X-Rspamd-Queue-Id: BCF945EE0FF
+	NEURAL_HAM(-0.00)[-0.999];
+	TO_DN_NONE(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	RCPT_COUNT_THREE(0.00)[4];
+	TAGGED_RCPT(0.00)[stable];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,linuxfoundation.org:dkim,gregkh:email,intel.com:email,secunnix.com:email]
+X-Rspamd-Queue-Id: 6DEE75EE1F1
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-On Wed, May 27, 2026 at 3:41=E2=80=AFPM Alice Ryhl <aliceryhl@google.com> w=
-rote:
->
-> This code currently copies the ExtendedError struct to the stack,
-> modifies the copy, and then doesn't modify the original. Thus, fix it.
-> Clearly nobody actually uses this feature, because nobody noticed that
-> this is broken until they tried changing userspace to make some errors
-> fatal.
->
-> A test in userspace is being added along with this change.
->
-> Cc: stable@vger.kernel.org
-> Fixes: eafedbc7c050 ("rust_binder: add Rust Binder driver")
-> Signed-off-by: Alice Ryhl <aliceryhl@google.com>
 
-Hrm, looks like this patch is insufficient.
+The patch below does not apply to the 5.15-stable tree.
+If someone wants it applied there, or to any other stable or longterm
+tree, then please email the backport, including the original git commit
+id to <stable@vger.kernel.org>.
 
-Alice
+To reproduce the conflict and resubmit, you may use the following commands:
+
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.15.y
+git checkout FETCH_HEAD
+git cherry-pick -x ab1513597c6cf17cd1ad2a21e3b045421b48e022
+# <resolve conflicts, build, test, etc.>
+git commit -s
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2026052807-humped-occultist-d89d@gregkh' --subject-prefix 'PATCH 5.15.y' HEAD^..
+
+Possible dependencies:
+
+
+
+thanks,
+
+greg k-h
+
+------------------ original commit in Linus's tree ------------------
+
+From ab1513597c6cf17cd1ad2a21e3b045421b48e022 Mon Sep 17 00:00:00 2001
+From: =?UTF-8?q?Safa=20Karaku=C5=9F?= <safa.karakus@secunnix.com>
+Date: Sat, 16 May 2026 21:15:04 +0300
+Subject: [PATCH] Bluetooth: fix UAF in l2cap_sock_cleanup_listen() vs
+ l2cap_conn_del()
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+
+bt_accept_dequeue() unlinks a not-yet-accepted child from the parent
+accept queue and release_sock()s it before returning, so the returned
+sk has no caller reference and is unlocked.
+
+l2cap_sock_cleanup_listen() walks these children on listening-socket
+close.  A concurrent HCI disconnect drives hci_rx_work ->
+l2cap_conn_del() which runs l2cap_chan_del() + l2cap_sock_kill() and
+frees the child sk and its l2cap_chan; cleanup_listen() then uses both:
+
+  BUG: KASAN: slab-use-after-free in l2cap_sock_kill
+    l2cap_sock_kill / l2cap_sock_cleanup_listen / __x64_sys_close
+  Freed by: l2cap_conn_del -> l2cap_sock_close_cb -> l2cap_sock_kill
+
+This is distinct from the two fixes already in this area: commit
+e83f5e24da741 ("Bluetooth: serialize accept_q access") serialises the
+accept_q list/poll and takes temporary refs inside bt_accept_dequeue(),
+and CVE-2025-39860 serialises the userspace close()/accept() race by
+calling cleanup_listen() under lock_sock() in l2cap_sock_release().
+Neither covers l2cap_conn_del() running from hci_rx_work, so this UAF
+still reproduces on current bluetooth/master.
+
+Take the reference at the source: bt_accept_dequeue() does sock_hold()
+while sk is still locked, before release_sock(); callers sock_put().
+cleanup_listen() pins the chan with l2cap_chan_hold_unless_zero() under
+a brief child sk lock (serialising vs l2cap_sock_teardown_cb()), drops
+it before l2cap_chan_lock(), and skips a duplicate l2cap_sock_kill() on
+SOCK_DEAD.  conn->lock is not taken here: cleanup_listen() runs under
+the parent sk lock and that would invert
+conn->lock -> chan->lock -> sk_lock (lockdep).
+
+KASAN/SMP: an unprivileged listen/close vs HCI-disconnect race produced
+12 use-after-free reports per run before this change; 0, and no lockdep
+report, over 1600+ raced iterations after it on bluetooth/master.
+
+Fixes: 15f02b910562 ("Bluetooth: L2CAP: Add initial code for Enhanced Credit Based Mode")
+Cc: stable@vger.kernel.org
+Reported-by: Siwei Zhang <oss@fourdim.xyz>
+Reviewed-by: Siwei Zhang <oss@fourdim.xyz>
+Signed-off-by: Safa Karakuş <safa.karakus@secunnix.com>
+Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+
+diff --git a/net/bluetooth/af_bluetooth.c b/net/bluetooth/af_bluetooth.c
+index 9d68dd86023c..1a6aa3f8d4d6 100644
+--- a/net/bluetooth/af_bluetooth.c
++++ b/net/bluetooth/af_bluetooth.c
+@@ -340,6 +340,16 @@ restart:
+ 			if (newsock)
+ 				sock_graft(sk, newsock);
+ 
++			/* Hand the caller a reference taken while sk is
++			 * still locked.  bt_accept_unlink() just dropped
++			 * the accept-queue reference; without this hold a
++			 * concurrent teardown (e.g. l2cap_conn_del() ->
++			 * l2cap_sock_kill()) could free sk between
++			 * release_sock() and the caller using it.  Every
++			 * caller drops this with sock_put() when done.
++			 */
++			sock_hold(sk);
++
+ 			release_sock(sk);
+ 			if (next)
+ 				sock_put(next);
+diff --git a/net/bluetooth/iso.c b/net/bluetooth/iso.c
+index b971281f0a2b..d7af617cda45 100644
+--- a/net/bluetooth/iso.c
++++ b/net/bluetooth/iso.c
+@@ -751,6 +751,8 @@ static void iso_sock_cleanup_listen(struct sock *parent)
+ 	while ((sk = bt_accept_dequeue(parent, NULL))) {
+ 		iso_sock_close(sk);
+ 		iso_sock_kill(sk);
++		/* Drop the reference handed back by bt_accept_dequeue(). */
++		sock_put(sk);
+ 	}
+ 
+ 	/* If listening socket has a hcon, properly disconnect it */
+@@ -1356,8 +1358,13 @@ static int iso_sock_accept(struct socket *sock, struct socket *newsock,
+ 		}
+ 
+ 		ch = bt_accept_dequeue(sk, newsock);
+-		if (ch)
++		if (ch) {
++			/* Drop the bridging ref from bt_accept_dequeue();
++			 * the grafted socket keeps ch alive from here.
++			 */
++			sock_put(ch);
+ 			break;
++		}
+ 
+ 		if (!timeo) {
+ 			err = -EAGAIN;
+diff --git a/net/bluetooth/l2cap_sock.c b/net/bluetooth/l2cap_sock.c
+index cf590a67d364..b34e7da8d906 100644
+--- a/net/bluetooth/l2cap_sock.c
++++ b/net/bluetooth/l2cap_sock.c
+@@ -349,8 +349,13 @@ static int l2cap_sock_accept(struct socket *sock, struct socket *newsock,
+ 		}
+ 
+ 		nsk = bt_accept_dequeue(sk, newsock);
+-		if (nsk)
++		if (nsk) {
++			/* Drop the bridging ref from bt_accept_dequeue();
++			 * the grafted socket keeps nsk alive from here.
++			 */
++			sock_put(nsk);
+ 			break;
++		}
+ 
+ 		if (!timeo) {
+ 			err = -EAGAIN;
+@@ -1475,22 +1480,54 @@ static void l2cap_sock_cleanup_listen(struct sock *parent)
+ 	BT_DBG("parent %p state %s", parent,
+ 	       state_to_string(parent->sk_state));
+ 
+-	/* Close not yet accepted channels */
++	/* Close not yet accepted channels.
++	 *
++	 * bt_accept_dequeue() now returns sk with an extra reference held
++	 * (taken while sk was still locked) so a concurrent l2cap_conn_del()
++	 * -> l2cap_sock_kill() cannot free sk under us.
++	 *
++	 * cleanup_listen() runs under the parent sk lock, so unlike
++	 * l2cap_sock_shutdown() we must NOT take conn->lock here: that would
++	 * establish sk_lock -> conn->lock and invert the established
++	 * conn->lock -> chan->lock -> sk_lock order (lockdep deadlock).
++	 *
++	 * Instead, briefly take the child sk lock to fetch and pin its chan.
++	 * l2cap_conn_del() reaches the chan free only via
++	 * l2cap_chan_del() -> l2cap_sock_teardown_cb(), which itself takes
++	 * the child sk lock; holding it across l2cap_chan_hold_unless_zero()
++	 * therefore guarantees the chan cannot be freed while we read and
++	 * pin it (hold_unless_zero() additionally skips a chan already past
++	 * its last reference).  We then drop the sk lock before taking
++	 * chan->lock, so sk and chan locks are never held together.
++	 */
+ 	while ((sk = bt_accept_dequeue(parent, NULL))) {
+-		struct l2cap_chan *chan = l2cap_pi(sk)->chan;
++		struct l2cap_chan *chan;
++
++		lock_sock_nested(sk, L2CAP_NESTING_NORMAL);
++		chan = l2cap_chan_hold_unless_zero(l2cap_pi(sk)->chan);
++		release_sock(sk);
++		if (!chan) {
++			/* l2cap_conn_del() already tearing this child down */
++			sock_put(sk);
++			continue;
++		}
+ 
+ 		BT_DBG("child chan %p state %s", chan,
+ 		       state_to_string(chan->state));
+ 
+-		l2cap_chan_hold(chan);
+ 		l2cap_chan_lock(chan);
+-
+ 		__clear_chan_timer(chan);
+ 		l2cap_chan_close(chan, ECONNRESET);
+-		l2cap_sock_kill(sk);
+-
++		/* l2cap_conn_del() may already have killed this socket
++		 * (it sets SOCK_DEAD); skip the duplicate to avoid a
++		 * double sock_put()/l2cap_chan_put().
++		 */
++		if (!sock_flag(sk, SOCK_DEAD))
++			l2cap_sock_kill(sk);
+ 		l2cap_chan_unlock(chan);
++
+ 		l2cap_chan_put(chan);
++		sock_put(sk);
+ 	}
+ }
+ 
+diff --git a/net/bluetooth/rfcomm/sock.c b/net/bluetooth/rfcomm/sock.c
+index be6639cd6f59..bd7d959c6e9e 100644
+--- a/net/bluetooth/rfcomm/sock.c
++++ b/net/bluetooth/rfcomm/sock.c
+@@ -180,6 +180,8 @@ static void rfcomm_sock_cleanup_listen(struct sock *parent)
+ 	while ((sk = bt_accept_dequeue(parent, NULL))) {
+ 		rfcomm_sock_close(sk);
+ 		rfcomm_sock_kill(sk);
++		/* Drop the reference handed back by bt_accept_dequeue(). */
++		sock_put(sk);
+ 	}
+ 
+ 	parent->sk_state  = BT_CLOSED;
+@@ -497,8 +499,13 @@ static int rfcomm_sock_accept(struct socket *sock, struct socket *newsock,
+ 		}
+ 
+ 		nsk = bt_accept_dequeue(sk, newsock);
+-		if (nsk)
++		if (nsk) {
++			/* Drop the bridging ref from bt_accept_dequeue();
++			 * the grafted socket keeps nsk alive from here.
++			 */
++			sock_put(nsk);
+ 			break;
++		}
+ 
+ 		if (!timeo) {
+ 			err = -EAGAIN;
+diff --git a/net/bluetooth/sco.c b/net/bluetooth/sco.c
+index eba44525d41d..f1799c6a6f87 100644
+--- a/net/bluetooth/sco.c
++++ b/net/bluetooth/sco.c
+@@ -502,6 +502,8 @@ static void sco_sock_cleanup_listen(struct sock *parent)
+ 	while ((sk = bt_accept_dequeue(parent, NULL))) {
+ 		sco_sock_close(sk);
+ 		sco_sock_kill(sk);
++		/* Drop the reference handed back by bt_accept_dequeue(). */
++		sock_put(sk);
+ 	}
+ 
+ 	parent->sk_state  = BT_CLOSED;
+@@ -765,8 +767,13 @@ static int sco_sock_accept(struct socket *sock, struct socket *newsock,
+ 		}
+ 
+ 		ch = bt_accept_dequeue(sk, newsock);
+-		if (ch)
++		if (ch) {
++			/* Drop the bridging ref from bt_accept_dequeue();
++			 * the grafted socket keeps ch alive from here.
++			 */
++			sock_put(ch);
+ 			break;
++		}
+ 
+ 		if (!timeo) {
+ 			err = -EAGAIN;
+
 
