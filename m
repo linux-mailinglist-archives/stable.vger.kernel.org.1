@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-256036-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-255997-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id CJbPKB6pGGrclwgAu9opvQ
-	(envelope-from <stable+bounces-256036-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:44:14 +0200
+	id oDEWLHCoGGp+lwgAu9opvQ
+	(envelope-from <stable+bounces-255997-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:41:20 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1934F5F96BD
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:44:13 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4EB395F9527
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:41:20 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 909183104AD8
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 20:36:43 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 13900314B9B0
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 20:34:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 916E135CB8C;
-	Thu, 28 May 2026 20:36:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4E9273346BE;
+	Thu, 28 May 2026 20:34:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XKD9IMpQ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BEBSNdDN"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 47E4D3446C5;
-	Thu, 28 May 2026 20:36:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 29E59223328;
+	Thu, 28 May 2026 20:34:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780000575; cv=none; b=r17X8b5xH8MHEl02fbQhPMCSZar6v2nWiGMn9p4kPzuAZKYDw317kF+a/N+IalRQEntm2UHR7oGt8krZVUxbX8xXC4f8wRc3K3lzoJqQMBlxcRfNwBCwjfaPKJrHQpe4aPTa3oNUF0zILOVBZ9LF/HWef4h7kbsA/oXhaZu9MnQ=
+	t=1780000467; cv=none; b=lWsPV6Xg9agM4wVYJdzC68omJTxr2VeO9kx3nyl/m2AIZjkVmaQlgeHpYLzP6CKyi5mNUnUY2ky194fi55CzjfWRiwGhLp4qazQfWaGTbrtXb6SRwQKmUGlmVjjNDqfYjdr3C1j0RG2rAaQy04nKnWsCr64I/zjgMknVxJHFIFM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780000575; c=relaxed/simple;
-	bh=8M7Dy4bzk9g3H1o+agmdyXaPM8tc+9TiAsVf0IlKhy4=;
+	s=arc-20240116; t=1780000467; c=relaxed/simple;
+	bh=zLd1rD/QRWAqhYuOYSYuPBqu0a8Dat4LES9CJdtuEfI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=KqfjTWB1PwpHc2uUGHk9qqj+8jFylgW9dxkVvOLXWhWCHQtcDFg86BcTeSlzVB8wkVzPkFuCUayiGKVIArHGAllW2Co/hxSL3c/VZ6pXqQsrFyX3srdgXfyBTlSnuLTSxEcvcupo+eVrX/ZqoAJzRDnOSchGsrlsCY3ACPhEEvw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XKD9IMpQ; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A4DB61F000E9;
-	Thu, 28 May 2026 20:36:13 +0000 (UTC)
+	 MIME-Version; b=szRI2LRzOj+cxDYw60KvFYCoQGlWWEUIKmJDW034oI1wssdH7qZ6EU5quUU4qmIN47oeZUZuhF+4TOSvBYFsplz3ck2u4WdpQauIgHYEt4SSu1Y5AQRG1OP3v5JGXnAcVSbj1+ySVzwpODfd8GwGRIIRErB1KlHp91UMlETbc8k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BEBSNdDN; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 37FED1F000E9;
+	Thu, 28 May 2026 20:34:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780000574;
-	bh=NOTwMwfu5Dx0U+NaP4SVmN8SVwc5A7bVXKdQItLT1Gw=;
+	s=korg; t=1780000465;
+	bh=LK2AHTd7VXpiYUCBhqytL7kqjAo2Bslz05uOouTBSiE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=XKD9IMpQSk071F5bpbJE6x6UyjV/LVN2mcT19wMptCPA9C6jpIZn7wZTGJpGbTwVB
-	 uZt7qUeaMZYN+UVXBv5kZQkZSdixzfVMMhSfE8AhrTjM08ZmGIt57kTsO5bDoVj6Qe
-	 9k4PjkakDZhcFX+5JY8JEHSVgy39WEZ4OJ9EbOzI=
+	b=BEBSNdDNNibGG81l5xgApEbGmXkCXjpwhZBDdIxfJ5nqiK+hYYusyVTi/CMEpf36F
+	 UPTCuuL7h9EmoxICrSoUhh9otvoy3FV2XzYMlEWr/Z9Uxn1hFp05iZKt2Z7KNX6ik8
+	 0ydHUKOP6182Aojs600k3RghS6R1CcsbANVxh5uY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Junyi Liu <moss80199@gmail.com>,
-	Namjae Jeon <linkinjeon@kernel.org>,
+	Michael Bommarito <michael.bommarito@gmail.com>,
 	Steve French <stfrench@microsoft.com>
-Subject: [PATCH 6.12 046/272] ksmbd: validate SID in parent security descriptor during ACL inheritance
-Date: Thu, 28 May 2026 21:47:00 +0200
-Message-ID: <20260528194630.668032001@linuxfoundation.org>
+Subject: [PATCH 6.12 047/272] smb: client: require net admin for CIFS SWN netlink
+Date: Thu, 28 May 2026 21:47:01 +0200
+Message-ID: <20260528194630.697365481@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
 In-Reply-To: <20260528194629.379955525@linuxfoundation.org>
 References: <20260528194629.379955525@linuxfoundation.org>
@@ -64,35 +63,36 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-256036-lists,stable=lfdr.de];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,kernel.org,microsoft.com];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_TLS_LAST(0.00)[];
-	TO_DN_SOME(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	RCPT_COUNT_FIVE(0.00)[6];
+	TO_DN_SOME(0.00)[];
+	TAGGED_FROM(0.00)[bounces-255997-lists,stable=lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,microsoft.com];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	NEURAL_HAM(-0.00)[-1.000];
 	TAGGED_RCPT(0.00)[stable];
 	MID_RHS_MATCH_FROM(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[5];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim]
-X-Rspamd-Queue-Id: 1934F5F96BD
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo]
+X-Rspamd-Queue-Id: 4EB395F9527
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
@@ -100,131 +100,59 @@ X-Rspamd-Server: lfdr
 
 ------------------
 
-From: Junyi Liu <moss80199@gmail.com>
+From: Michael Bommarito <michael.bommarito@gmail.com>
 
-commit 69f030cf95488ae1186c72ac8c66fd279664ea7f upstream.
+commit d1ebfce2c1d161186a82e77590bf7da2ea1bce91 upstream.
 
-Introduce smb_validate_ntsd_sid() helper to safely validate Owner SID
-and Group SID inside the NT Security Descriptor (smb_ntsd) retrieved
-from the parent directory.
+CIFS_GENL_CMD_SWN_NOTIFY is the userspace witness-notify command.  The
+intended sender is the cifs.witness helper, but the generic-netlink
+operation currently has no capability flag, so any local process can send
+RESOURCE_CHANGE or CLIENT_MOVE notifications to the in-kernel witness
+handler.
 
+The same family exposes CIFS_GENL_MCGRP_SWN without multicast-group
+capability flags.  Register messages sent to that group include the witness
+registration id and, for NTLM-authenticated mounts, the username, domain,
+and password attributes copied from the CIFS session.  An unprivileged
+local process should not be able to join that group and receive those
+messages.
+
+Require CAP_NET_ADMIN for incoming SWN_NOTIFY commands with
+GENL_ADMIN_PERM, and require CAP_NET_ADMIN over the network namespace for
+joining the SWN multicast group with GENL_MCAST_CAP_NET_ADMIN.  The
+cifs.witness service runs with the privileges needed for both operations.
+
+Fixes: fed979a7e082 ("cifs: Set witness notification handler for messages from userspace daemon")
 Cc: stable@vger.kernel.org
-Signed-off-by: Junyi Liu <moss80199@gmail.com>
-Signed-off-by: Namjae Jeon <linkinjeon@kernel.org>
+Signed-off-by: Michael Bommarito <michael.bommarito@gmail.com>
+Assisted-by: Claude:claude-opus-4-7
 Signed-off-by: Steve French <stfrench@microsoft.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/smb/server/smbacl.c |   66 +++++++++++++++++++++++++++++++++++++------------
- 1 file changed, 50 insertions(+), 16 deletions(-)
+ fs/smb/client/netlink.c |    6 +++++-
+ 1 file changed, 5 insertions(+), 1 deletion(-)
 
---- a/fs/smb/server/smbacl.c
-+++ b/fs/smb/server/smbacl.c
-@@ -1096,6 +1096,40 @@ static int smb_append_inherited_ace(stru
- 	return 0;
- }
+--- a/fs/smb/client/netlink.c
++++ b/fs/smb/client/netlink.c
+@@ -33,13 +33,17 @@ static const struct nla_policy cifs_genl
+ static const struct genl_ops cifs_genl_ops[] = {
+ 	{
+ 		.cmd = CIFS_GENL_CMD_SWN_NOTIFY,
++		.flags = GENL_ADMIN_PERM,
+ 		.validate = GENL_DONT_VALIDATE_STRICT | GENL_DONT_VALIDATE_DUMP,
+ 		.doit = cifs_swn_notify,
+ 	},
+ };
  
-+static int smb_validate_ntsd_sid(struct smb_ntsd *pntsd, size_t pntsd_size,
-+				  unsigned int sid_offset, struct smb_sid **sid,
-+				  size_t *sid_size)
-+{
-+	size_t sid_end;
-+
-+	*sid = NULL;
-+	*sid_size = 0;
-+
-+	if (!sid_offset)
-+		return 0;
-+
-+	if (sid_offset < sizeof(struct smb_ntsd) ||
-+	    check_add_overflow(sid_offset, (size_t)CIFS_SID_BASE_SIZE,
-+			       &sid_end) ||
-+	    sid_end > pntsd_size)
-+		return -EINVAL;
-+
-+	*sid = (struct smb_sid *)((char *)pntsd + sid_offset);
-+	if ((*sid)->num_subauth > SID_MAX_SUB_AUTHORITIES)
-+		return -EINVAL;
-+
-+	if (check_add_overflow((size_t)CIFS_SID_BASE_SIZE,
-+			       sizeof(__le32) * (size_t)(*sid)->num_subauth,
-+			       &sid_end))
-+		return -EINVAL;
-+
-+	if (sid_offset > pntsd_size || sid_end > pntsd_size - sid_offset)
-+		return -EINVAL;
-+
-+	*sid_size = sid_end;
-+	return 0;
-+}
-+
- int smb_inherit_dacl(struct ksmbd_conn *conn,
- 		     const struct path *path,
- 		     unsigned int uid, unsigned int gid)
-@@ -1108,28 +1142,28 @@ int smb_inherit_dacl(struct ksmbd_conn *
- 	struct dentry *parent = path->dentry->d_parent;
- 	struct mnt_idmap *idmap = mnt_idmap(path->mnt);
- 	int inherited_flags = 0, flags = 0, i, nt_size = 0, pdacl_size;
--	int rc = 0, pntsd_type, pntsd_size, acl_len, aces_size;
-+	int rc = 0, pntsd_type, ppntsd_size, acl_len, aces_size;
- 	unsigned int dacloffset;
- 	size_t dacl_struct_end;
- 	u16 num_aces, ace_cnt = 0;
- 	char *aces_base;
- 	bool is_dir = S_ISDIR(d_inode(path->dentry)->i_mode);
+ static const struct genl_multicast_group cifs_genl_mcgrps[] = {
+-	[CIFS_GENL_MCGRP_SWN] = { .name = CIFS_GENL_MCGRP_SWN_NAME },
++	[CIFS_GENL_MCGRP_SWN] = {
++		.name = CIFS_GENL_MCGRP_SWN_NAME,
++		.flags = GENL_MCAST_CAP_NET_ADMIN,
++	},
+ };
  
--	pntsd_size = ksmbd_vfs_get_sd_xattr(conn, idmap,
-+	ppntsd_size = ksmbd_vfs_get_sd_xattr(conn, idmap,
- 					    parent, &parent_pntsd);
--	if (pntsd_size <= 0)
-+	if (ppntsd_size <= 0)
- 		return -ENOENT;
- 
- 	dacloffset = le32_to_cpu(parent_pntsd->dacloffset);
- 	if (!dacloffset ||
- 	    check_add_overflow(dacloffset, sizeof(struct smb_acl), &dacl_struct_end) ||
--	    dacl_struct_end > (size_t)pntsd_size) {
-+	    dacl_struct_end > (size_t)ppntsd_size) {
- 		rc = -EINVAL;
- 		goto free_parent_pntsd;
- 	}
- 
- 	parent_pdacl = (struct smb_acl *)((char *)parent_pntsd + dacloffset);
--	acl_len = pntsd_size - dacloffset;
-+	acl_len = ppntsd_size - dacloffset;
- 	num_aces = le16_to_cpu(parent_pdacl->num_aces);
- 	pntsd_type = le16_to_cpu(parent_pntsd->type);
- 	pdacl_size = le16_to_cpu(parent_pdacl->size);
-@@ -1243,19 +1277,19 @@ pass:
- 		struct smb_ntsd *pntsd;
- 		struct smb_acl *pdacl;
- 		struct smb_sid *powner_sid = NULL, *pgroup_sid = NULL;
--		int powner_sid_size = 0, pgroup_sid_size = 0, pntsd_size;
-+		size_t powner_sid_size = 0, pgroup_sid_size = 0, pntsd_size;
- 		size_t pntsd_alloc_size;
- 
--		if (parent_pntsd->osidoffset) {
--			powner_sid = (struct smb_sid *)((char *)parent_pntsd +
--					le32_to_cpu(parent_pntsd->osidoffset));
--			powner_sid_size = 1 + 1 + 6 + (powner_sid->num_subauth * 4);
--		}
--		if (parent_pntsd->gsidoffset) {
--			pgroup_sid = (struct smb_sid *)((char *)parent_pntsd +
--					le32_to_cpu(parent_pntsd->gsidoffset));
--			pgroup_sid_size = 1 + 1 + 6 + (pgroup_sid->num_subauth * 4);
--		}
-+		rc = smb_validate_ntsd_sid(parent_pntsd, ppntsd_size,
-+					   le32_to_cpu(parent_pntsd->osidoffset),
-+					   &powner_sid, &powner_sid_size);
-+		if (rc)
-+			goto free_aces_base;
-+		rc = smb_validate_ntsd_sid(parent_pntsd, ppntsd_size,
-+					   le32_to_cpu(parent_pntsd->gsidoffset),
-+					   &pgroup_sid, &pgroup_sid_size);
-+		if (rc)
-+			goto free_aces_base;
- 
- 		if (check_add_overflow(sizeof(struct smb_ntsd),
- 				       (size_t)powner_sid_size,
+ struct genl_family cifs_genl_family = {
 
 
 
