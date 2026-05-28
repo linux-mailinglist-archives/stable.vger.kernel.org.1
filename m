@@ -1,60 +1,61 @@
-Return-Path: <stable+bounces-256119-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-255520-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id yMHZBWWsGGpolwgAu9opvQ
-	(envelope-from <stable+bounces-256119-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:58:13 +0200
+	id +HVPEGqjGGrClggAu9opvQ
+	(envelope-from <stable+bounces-255520-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:19:54 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1157A5F9F0C
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:58:11 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9FEE15F865F
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:19:53 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 2084F30E89F7
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 20:40:19 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id B29D93193B24
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 20:12:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1A6FE3264DF;
-	Thu, 28 May 2026 20:40:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6005A352019;
+	Thu, 28 May 2026 20:12:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="07SuO69V"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vsgMnOKc"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DA80932AAD6;
-	Thu, 28 May 2026 20:40:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3533633CE8A;
+	Thu, 28 May 2026 20:12:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780000809; cv=none; b=UCdEuWGeXs4vAVptK3Nr4WDJWazyvkyrCkxkoPkDJJSQKp4JnsLomck+st69NC1fnblQvjY/Ayy89Mh/ht0onaK2TS9CrFpjEqEymgI7MELGDgWwLXV0vi1HaEfu7IwVBKuEfL9IrO8vCR8QX6I5T9QKwl/Zm58OGGDzfJwBKyE=
+	t=1779999142; cv=none; b=O/H/ZPAND9XSvUFNnqC+3U7taCGzbxo80d1VkkPFcbpBES5nFC6imdQR5BpqMiECLOYjvtzDBTO3nelDk7al0fMjIjMpFkpOJQlvo5KXy5KQCtmOzZuHfTk46/EywQpDrXnlIQFb7yH2djvwU2VUVo6tEK6Gi9LkNtU7JJhKcxU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780000809; c=relaxed/simple;
-	bh=oDdAkUtY1mh/QCtR9/mY5gUvnXCOK1Bp1k68KSgNePU=;
+	s=arc-20240116; t=1779999142; c=relaxed/simple;
+	bh=IK2iQtbnzdWm4Dq+Hsk3YciSN6Qlt2MYE58u9xg5Mmc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=dtJ0ZYcpUB+FijjhgTZY53zpGuUAYZ2lgx7AOLaMroC7Snhu8jzUpUzSw1He7KoHbDh/VU5bY+ZEdVvRUuFvbmZNUbfEdvFihTb8kIAr3dZjxEjbBQB1Bb7bz5ky3cZe6sXTOS9gcuSKZHwJUwLSJA/3GX8KyuqOO0waWejGZLk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=07SuO69V; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 43F6A1F00A3C;
-	Thu, 28 May 2026 20:40:08 +0000 (UTC)
+	 MIME-Version; b=jOj+vkjunaYKCfcH7pALFUL4q4lVwxW4dS2pKXzC2EnM/CXdWoDVXAoCnX1YxkrBJ+hZSQsua/1QN5ffO3NFWvRgZKQgpzHxPygZ/eQ+R6Fb+h0OHbX10p6pOZStkdmBAtTKikobaY6zrdwiltSM26UIWJBX8R+wfnEvZwKL3Ls=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vsgMnOKc; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 91DCE1F000E9;
+	Thu, 28 May 2026 20:12:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780000808;
-	bh=x9+WgMN1YiGV2D2w5b0Lhq7/ofrak+2J4gbHghfSQaE=;
+	s=korg; t=1779999141;
+	bh=3OZSCG1EXtf6+qZJs7Sxb5NecFhGtOcSK0Th0usTASo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=07SuO69Vh9I839Iy9Ow2I+CYeW00UcJJmFfJ+wEVikvZGgaPfyC8rX8sOIGhrSBjf
-	 nJ8TBxzBc8ZHARdQ9n0gNt6qrySVUyXMBItGRBNfq/7duIayHrqWEQG1Hnjwseb07F
-	 owMZAORu296UX30jiRFiKJplnTYzgANsLroVEWOA=
+	b=vsgMnOKcbee78+ei4rFzM51n/YLESZ920tw4rs/C6a/U9w7J67G1y6lXQf34dnFhT
+	 W4ir5wVGwYXKnNIMKjdp3PizZmRkPwDaILpY3VXsHwpf04K4Oqre6DVkfnCmIc3knk
+	 9mryzMcB0M9T9C2Os+H/hWeyYFJdxkGfmlE4w7BU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Damiano Melotti <melotti@google.com>,
-	Kuniyuki Iwashima <kuniyu@google.com>,
+	Alice Mikityanska <alice@isovalent.com>,
+	Willem de Bruijn <willemb@google.com>,
+	Gal Pressman <gal@nvidia.com>,
 	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 177/272] tcp: Fix imbalanced icsk_accept_queue count.
+Subject: [PATCH 7.0 422/461] udp: gso: Fix handling checksum in __udp_gso_segment
 Date: Thu, 28 May 2026 21:49:11 +0200
-Message-ID: <20260528194634.262413839@linuxfoundation.org>
+Message-ID: <20260528194659.717906814@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260528194629.379955525@linuxfoundation.org>
-References: <20260528194629.379955525@linuxfoundation.org>
+In-Reply-To: <20260528194646.819809818@linuxfoundation.org>
+References: <20260528194646.819809818@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,7 +70,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
@@ -77,7 +78,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-256119-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-255520-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
@@ -86,58 +87,90 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[7];
+	RCPT_COUNT_SEVEN(0.00)[8];
 	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim]
-X-Rspamd-Queue-Id: 1157A5F9F0C
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim,msgid.link:url,nvidia.com:email,isovalent.com:email]
+X-Rspamd-Queue-Id: 9FEE15F865F
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+7.0-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kuniyuki Iwashima <kuniyu@google.com>
+From: Alice Mikityanska <alice@isovalent.com>
 
-[ Upstream commit 7eca3292cac7c26dad4c236f51ba225c39a0523f ]
+[ Upstream commit 5f17ae0f595aeb560155ce98edbe44d3eacc7e40 ]
 
-When TCP socket migration happens in reqsk_timer_handler(),
-@sk_listener will be updated with the new listener.
+The cited commit started using msslen for uh->len, but still uses newlen
+to adjust uh->check. Although the checksum is ignored in most cases due
+to the hardware offload, __udp_gso_segment attempts to maintain the
+correct one. Fix uh->check and adjust it by the right value.
 
-When we call __inet_csk_reqsk_queue_drop(), the listener must
-be the one stored in req->rsk_listener.
+Additionally, after the fix, newlen becomes assigned and unused before
+the loop. The code can be simplified a bit if mss adjustment is dropped,
+so that newlen becomes equal to msslen before the loop, and msslen can
+be also dropped, saving a few lines of code.
 
-The cited commit accidentally replaced oreq->rsk_listener with
-sk_listener, leading to imbalanced icsk_accept_queue count.
+This brings us back to one variable, drops an unneeded arithmetic for
+mss, and fixes the UDP checksum.
 
-Let's pass the correct listener to __inet_csk_reqsk_queue_drop().
-
-Fixes: e8c526f2bdf1 ("tcp/dccp: Don't use timer_pending() in reqsk_queue_unlink().")
-Reported-by: Damiano Melotti <melotti@google.com>
-Signed-off-by: Kuniyuki Iwashima <kuniyu@google.com>
-Link: https://patch.msgid.link/20260506035954.1563147-3-kuniyu@google.com
+Fixes: b10b446ce7ad ("udp: gso: Use single MSS length in UDP header for GSO_PARTIAL")
+Signed-off-by: Alice Mikityanska <alice@isovalent.com>
+Reviewed-by: Willem de Bruijn <willemb@google.com>
+Signed-off-by: Gal Pressman <gal@nvidia.com>
+Link: https://patch.msgid.link/20260518062250.3019914-2-gal@nvidia.com
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/ipv4/inet_connection_sock.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ net/ipv4/udp_offload.c | 13 ++-----------
+ 1 file changed, 2 insertions(+), 11 deletions(-)
 
-diff --git a/net/ipv4/inet_connection_sock.c b/net/ipv4/inet_connection_sock.c
-index bf4e5f49030b7..dd39cabb39001 100644
---- a/net/ipv4/inet_connection_sock.c
-+++ b/net/ipv4/inet_connection_sock.c
-@@ -1172,7 +1172,7 @@ static void reqsk_timer_handler(struct timer_list *t)
+diff --git a/net/ipv4/udp_offload.c b/net/ipv4/udp_offload.c
+index 6b1654c1ad4ac..e831234326c41 100644
+--- a/net/ipv4/udp_offload.c
++++ b/net/ipv4/udp_offload.c
+@@ -483,11 +483,11 @@ struct sk_buff *__udp_gso_segment(struct sk_buff *gso_skb,
+ 	struct sock *sk = gso_skb->sk;
+ 	unsigned int sum_truesize = 0;
+ 	struct sk_buff *segs, *seg;
+-	__be16 newlen, msslen;
+ 	struct udphdr *uh;
+ 	unsigned int mss;
+ 	bool copy_dtor;
+ 	__sum16 check;
++	__be16 newlen;
+ 	int ret = 0;
+ 
+ 	mss = skb_shinfo(gso_skb)->gso_size;
+@@ -556,15 +556,6 @@ struct sk_buff *__udp_gso_segment(struct sk_buff *gso_skb,
+ 		return segs;
  	}
  
- drop:
--	__inet_csk_reqsk_queue_drop(sk_listener, oreq, true);
-+	__inet_csk_reqsk_queue_drop(oreq->rsk_listener, oreq, true);
- 	reqsk_put(oreq);
- }
+-	msslen = htons(sizeof(*uh) + mss);
+-
+-	/* GSO partial and frag_list segmentation only requires splitting
+-	 * the frame into an MSS multiple and possibly a remainder, both
+-	 * cases return a GSO skb. So update the mss now.
+-	 */
+-	if (skb_is_gso(segs))
+-		mss *= skb_shinfo(segs)->gso_segs;
+-
+ 	seg = segs;
+ 	uh = udp_hdr(seg);
  
+@@ -587,7 +578,7 @@ struct sk_buff *__udp_gso_segment(struct sk_buff *gso_skb,
+ 		if (!seg->next)
+ 			break;
+ 
+-		uh->len = msslen;
++		uh->len = newlen;
+ 		uh->check = check;
+ 
+ 		if (seg->ip_summed == CHECKSUM_PARTIAL)
 -- 
 2.53.0
 
