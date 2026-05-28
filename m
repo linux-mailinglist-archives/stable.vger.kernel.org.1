@@ -1,60 +1,60 @@
-Return-Path: <stable+bounces-255906-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-255545-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 0ICsG2enGGp+lwgAu9opvQ
-	(envelope-from <stable+bounces-255906-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:36:55 +0200
+	id 2O6aOW2iGGqblggAu9opvQ
+	(envelope-from <stable+bounces-255545-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:15:41 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 238F75F91CB
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:36:54 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id A30AE5F8308
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:15:41 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 0BA3C3104DEB
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 20:30:16 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 1E08230494D7
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 20:13:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7DFF03346BE;
-	Thu, 28 May 2026 20:30:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4E90A33CE8A;
+	Thu, 28 May 2026 20:13:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="g4rE0L+I"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MFJNc2NW"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4C02833F390;
-	Thu, 28 May 2026 20:30:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 32B7732ABC0;
+	Thu, 28 May 2026 20:13:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780000211; cv=none; b=SK9d3k69zIiUgTdihiB9es+dMuqyAFbBL8cPnkPFW66d62h7BMevbwljTJgvkpQ2RifCY49fsVFgg+q6megDblJ6zV500trroBpjJcjuh1qdG6BqHgLmYN8IgSxvpyrdy7S6q/f3S0Uv7q1evgQxpm7gdncTEZ/ZcLlGBUnWyuk=
+	t=1779999212; cv=none; b=S6Z5TvkXj9f8ZeGpCiaEjNhCzLhtBWNiuatgWH9FHQi8A441xYWK9JDdMrAvfS9x3wd+RgKcOqw02HjnLCXMShppufLu34jdfImJ6Q5DgFmkkgCigDQMuSME3ZDMlsi1z5Lpb0a3uy7wI4gr6+/7RQr/mVWFor2WXZfMUPukJWI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780000211; c=relaxed/simple;
-	bh=mAhRxLHXTfuoQbO5WRJIjUeRb8SVr7zygBCuscugs0k=;
+	s=arc-20240116; t=1779999212; c=relaxed/simple;
+	bh=wh7AIXiDb5622f4gfAgwQamYbt52JfoklRfCMZWVCg0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=tPX5mbXPgzjniw6XeAjFOGykLWOr76xC06zXnn4cLyvFqL1lU8aNY4GldIYiJDOk4c0F09U9LsaopTwCUqF/3bdPlgEPf09yOHQaa6ALTJdDG/sYzJuVHn53bg5+lEmQuO5cXcDbnm0e7F9WMs8uMtQ5S1zNsWDsRktqrMGov2Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=g4rE0L+I; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 544791F00A3A;
-	Thu, 28 May 2026 20:30:09 +0000 (UTC)
+	 MIME-Version; b=dtBb18H4gAULMpMhLYI/4UKQyWSF/qpzB8JoaacwQkPGtr1bajO0XDh9HnR7oN/ZFQySo0BXLHezkIO7/hiQwwrlbwIEBMdVb6eQ+Its7jzrDbK1uiETyMLb9ITpDXtTfkmAtaYz72olIjQmOMs9MX2pqhijR4D3VZ6H2j/HJus=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MFJNc2NW; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 90B9E1F000E9;
+	Thu, 28 May 2026 20:13:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780000209;
-	bh=HRp+OZzTzyVbi51o+qIimiQSR8m8su3XBA1tFn1Sptk=;
+	s=korg; t=1779999211;
+	bh=CW4CdnV/9tCSSu5DT1NWE5lHAlcQSkBK8Vu1fsbNiyU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=g4rE0L+I/KrjFNoSiiw+PDYui9KcGlMi1DGGxKKhwqx49r97n3YE5u9XOntAg2fxm
-	 tYwGVcpDgS7r6zY++1vKms8XH6J1SUBFLdp3bqzyeOFeEEtCQU8WT+TgDQOn11/YBv
-	 f6cCP490Ji5rV9ot3efLjMeHP8bF3aqetZJjDP7Y=
+	b=MFJNc2NW0YsyANmTDuecTwegAgBmcQB7Xr41Y1/4TOokkbRYWYQubhFG6Yt+EeyNV
+	 WzYkdbLHGSNRLBCXXCr/DqOQkI1XH1gHAbzoaTLphllhmetfj0MW0EMQPUiqSXCTsU
+	 tQgHLgSm/gnUdqRM9HRBNDthxjPQTCJr9OOCggoA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Nicolai Buchwitz <nb@tipi-net.de>,
-	Andrew Lunn <andrew@lunn.ch>,
+	Aditya Garg <gargaditya@linux.microsoft.com>,
+	Haiyang Zhang <haiyangz@microsoft.com>,
 	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 340/377] net: phy: honor eee_disabled_modes in phy_support_eee()
+Subject: [PATCH 7.0 449/461] net: mana: validate rx_req_idx to prevent out-of-bounds array access
 Date: Thu, 28 May 2026 21:49:38 +0200
-Message-ID: <20260528194648.267915588@linuxfoundation.org>
+Message-ID: <20260528194700.533979748@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260528194638.371537336@linuxfoundation.org>
-References: <20260528194638.371537336@linuxfoundation.org>
+In-Reply-To: <20260528194646.819809818@linuxfoundation.org>
+References: <20260528194646.819809818@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,7 +69,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
@@ -77,7 +77,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-255906-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-255545-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
@@ -86,63 +86,60 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
 	NEURAL_HAM(-0.00)[-1.000];
 	RCPT_COUNT_SEVEN(0.00)[7];
 	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,lunn.ch:email,msgid.link:url,linuxfoundation.org:mid,linuxfoundation.org:dkim,tipi-net.de:email]
-X-Rspamd-Queue-Id: 238F75F91CB
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,msgid.link:url]
+X-Rspamd-Queue-Id: A30AE5F8308
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+7.0-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Nicolai Buchwitz <nb@tipi-net.de>
+From: Aditya Garg <gargaditya@linux.microsoft.com>
 
-[ Upstream commit 3655063e083889ed4b79b7dda9cec65478dce09a ]
+[ Upstream commit b809d0409991b75a6cff846a5ac27c3062953f84 ]
 
-phy_support_eee() copies supported_eee into advertising_eee
-unconditionally, overwriting any filtering applied during phy_probe()
-based on DT eee-broken-* properties or driver-populated
-eee_disabled_modes. MAC drivers that call phy_support_eee() after
-probe (e.g. bcmgenet, fec, lan743x, lan78xx, r8169) then cause the PHY
-to advertise EEE for modes the user marked as broken.
+In mana_hwc_rx_event_handler(), rx_req_idx is derived from
+sge->address in DMA-coherent memory. In Confidential VMs
+(SEV-SNP/TDX), this memory is shared unencrypted and HW can modify
+WQE contents at any time. No bounds check exists on rx_req_idx,
+which can lead to an out-of-bounds access into reqs[].
 
-The symptom is that ethtool --show-eee on the local interface reports
-"not supported" (supported & ~eee_disabled_modes is empty) while the
-link partner sees EEE negotiated and active.
+Add bounds check on rx_req_idx in mana_hwc_rx_event_handler() before
+using it to index the reqs[] array.
 
-phy_probe() already filters advertising_eee via eee_disabled_modes
-after calling of_set_phy_eee_broken(). Apply the same mask in
-phy_support_eee() so the filtering survives the copy.
-
-Fixes: 49168d1980e2 ("net: phy: Add phy_support_eee() indicating MAC support EEE")
-Signed-off-by: Nicolai Buchwitz <nb@tipi-net.de>
-Reviewed-by: Andrew Lunn <andrew@lunn.ch>
-Link: https://patch.msgid.link/20260518-devel-phy-support-eee-fix-v2-1-05b52626fa68@tipi-net.de
+Fixes: ca9c54d2d6a5 ("net: mana: Add a driver for Microsoft Azure Network Adapter (MANA)")
+Signed-off-by: Aditya Garg <gargaditya@linux.microsoft.com>
+Reviewed-by: Haiyang Zhang <haiyangz@microsoft.com>
+Link: https://patch.msgid.link/20260520051553.857120-1-gargaditya@linux.microsoft.com
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/phy/phy_device.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/net/ethernet/microsoft/mana/hw_channel.c | 6 ++++++
+ 1 file changed, 6 insertions(+)
 
-diff --git a/drivers/net/phy/phy_device.c b/drivers/net/phy/phy_device.c
-index dea8b94286d15..5d76bd1ffe279 100644
---- a/drivers/net/phy/phy_device.c
-+++ b/drivers/net/phy/phy_device.c
-@@ -2818,7 +2818,8 @@ EXPORT_SYMBOL_GPL(phy_advertise_eee_all);
-  */
- void phy_support_eee(struct phy_device *phydev)
- {
--	linkmode_copy(phydev->advertising_eee, phydev->supported_eee);
-+	linkmode_andnot(phydev->advertising_eee, phydev->supported_eee,
-+			phydev->eee_disabled_modes);
- 	phydev->eee_cfg.tx_lpi_enabled = true;
- 	phydev->eee_cfg.eee_enabled = true;
- }
+diff --git a/drivers/net/ethernet/microsoft/mana/hw_channel.c b/drivers/net/ethernet/microsoft/mana/hw_channel.c
+index 12d73470fd6bb..dbaeedb6e7b1a 100644
+--- a/drivers/net/ethernet/microsoft/mana/hw_channel.c
++++ b/drivers/net/ethernet/microsoft/mana/hw_channel.c
+@@ -265,6 +265,12 @@ static void mana_hwc_rx_event_handler(void *ctx, u32 gdma_rxq_id,
+ 	rq_base_addr = hwc_rxq->msg_buf->mem_info.dma_handle;
+ 	rx_req_idx = (sge->address - rq_base_addr) / hwc->max_req_msg_size;
+ 
++	if (rx_req_idx >= hwc_rxq->msg_buf->num_reqs) {
++		dev_err(hwc->dev, "HWC RX: wrong rx_req_idx=%llu, num_reqs=%u\n",
++			rx_req_idx, hwc_rxq->msg_buf->num_reqs);
++		return;
++	}
++
+ 	rx_req = &hwc_rxq->msg_buf->reqs[rx_req_idx];
+ 	resp = (struct gdma_resp_hdr *)rx_req->buf_va;
+ 
 -- 
 2.53.0
 
