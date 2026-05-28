@@ -1,59 +1,59 @@
-Return-Path: <stable+bounces-255467-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-256052-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id MLM7LNqiGGrKlggAu9opvQ
-	(envelope-from <stable+bounces-255467-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:17:30 +0200
+	id CHMmGI+qGGoomAgAu9opvQ
+	(envelope-from <stable+bounces-256052-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:50:23 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4C8055F8487
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:17:30 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6904C5F9A78
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:50:21 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 46C3630E7D06
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 20:09:56 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 9855D300728F
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 20:37:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4C157339866;
-	Thu, 28 May 2026 20:09:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F0ED33368B5;
+	Thu, 28 May 2026 20:37:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QgmDgSbR"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hH5xyUCh"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 139C732B13B;
-	Thu, 28 May 2026 20:09:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BC9B733987F;
+	Thu, 28 May 2026 20:36:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779998994; cv=none; b=rzR+r4vlZNnsmPXAoa4cWdlgzA47E41Fw+5VYLMhncQthmxNqA1SsOAFXd374aIEx0JMMe9R2yGE4rgX/XHaBgvFplocCLPB7jk++HJYtSuNsdgnX+FRr4hafJQe8rlgSgFHVMbjIPTK/qp+mRfiHu4qAKmTRyZeHObIcq4YHUk=
+	t=1780000620; cv=none; b=ONaN6mCsERVtOLlBCoalYN1U9e+Z0snq6CuCY4hXIlPL9HAStLAj9EmupYiWGjaxcQ6NDwRDk9rWW8nGlNnePwuzIzmWGl5UXIvZXv7TkW7ACSh6+3fpslR2xu6en+copzFHbi0si1CGZ0PhsNNw0DSyRuxMTGp49VaULLUpNk8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779998994; c=relaxed/simple;
-	bh=SirmMhnourxEHjFF6D5LI1pZoMKLyjBGX4D9ldszF/g=;
+	s=arc-20240116; t=1780000620; c=relaxed/simple;
+	bh=A85F++yUEqb6CzGDwdDLGXDXsOfpkiu2kzUBcj37o0w=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=KeIoYPJgw5Csz/F5P0P8WGXSgYJ5hnR43G+bXzXySwXh4KjMnw5aTwuCS1y2dejNtzvT9nBDLTnzntemBwkd6ZiYwJPOVabVMEsodpMcyZEKjGabn4Ef7vysgiv7/0W/xNYQKMJPy6YE1YrgPZ+5kvKMmo+Gua3kPEMyRbYiEh0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QgmDgSbR; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 709391F000E9;
-	Thu, 28 May 2026 20:09:52 +0000 (UTC)
+	 MIME-Version; b=JF5q+N4XQpHRFUPmE4v1GpfuFxk8GXcrEus29PU7qbpqD1Tyy2v0a+eSLVUMOdt/Fzfp9/OK6NjhvbBpo52XoauESksucZtZKGxwFJfok0YE5SLV6COB6OqtPwXRhazICuJOuWPu0IzvrrSHEIdanVUkRDTIfNF519fzJKnS8L4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hH5xyUCh; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 25E1C1F000E9;
+	Thu, 28 May 2026 20:36:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779998993;
-	bh=Ep0CMyOa74bhudM/YOr/iniJs/FyNnnZ7ETbL1wJOhU=;
+	s=korg; t=1780000619;
+	bh=qwBOin913jkapR7XucR2cdZBDVAvqx+MW0s4M/fx3yc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=QgmDgSbR2GqB6tYgJgej6JT2EbKXOQ5gatkHNNHrMneB+cTjXiwmk9alMBqB7hubP
-	 rfaoW4BU4p56SsHWSg7aSbfUD3TF0KMCrgBfoKH1ZiXldE3PTV99DAC3g3DrozIFxX
-	 yY9VGIxM/hnoFn0/tCETkUe/RcbYoTA9FLDlUnro=
+	b=hH5xyUChOcslZsOt4e/tD+rqbEv70cPbP7tZXEA97BfEWiih/7dP2bKhlfbIdI9BQ
+	 EF6sf5QWghHCfVd2HEaO09HCVx9a315uUEp+uGpacHHIEoJuauYQdByx2/3uw9wpSs
+	 VLa+r621BQ8QcIkMQuh9nM/jOrXhGsaocWQ6DQFA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sashiko <sashiko-bot@kernel.org>,
-	Guenter Roeck <linux@roeck-us.net>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 7.0 353/461] hwmon: (lm90) Stop work before releasing hwmon device
-Date: Thu, 28 May 2026 21:48:02 +0200
-Message-ID: <20260528194657.633808557@linuxfoundation.org>
+	Lanqing Liu <lanqing.liu@unisoc.com>,
+	Johan Hovold <johan@kernel.org>,
+	Mark Brown <broonie@kernel.org>
+Subject: [PATCH 6.12 109/272] spi: sprd: fix error pointer deref after DMA setup failure
+Date: Thu, 28 May 2026 21:48:03 +0200
+Message-ID: <20260528194632.429014369@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260528194646.819809818@linuxfoundation.org>
-References: <20260528194646.819809818@linuxfoundation.org>
+In-Reply-To: <20260528194629.379955525@linuxfoundation.org>
+References: <20260528194629.379955525@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -68,7 +68,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
@@ -78,7 +78,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-255467-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-256052-lists,stable=lfdr.de];
 	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
@@ -89,119 +89,53 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	TAGGED_RCPT(0.00)[stable];
 	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,roeck-us.net:email,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo]
-X-Rspamd-Queue-Id: 4C8055F8487
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,sashiko.dev:url,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim]
+X-Rspamd-Queue-Id: 6904C5F9A78
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-7.0-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Guenter Roeck <linux@roeck-us.net>
+From: Johan Hovold <johan@kernel.org>
 
-[ Upstream commit b09a45601094c7f4ec4db8090b825fa61e169d93 ]
+commit 3d67fffb74267772d461c02c67f1eff893ad547d upstream.
 
-Sashiko reports:
+The driver falls back to PIO mode if DMA setup fails during probe.
 
-In lm90_probe(), the devm action to cancel the alert_work and report_work
-(lm90_restore_conf) is registered in lm90_init_client() before
-devm_hwmon_device_register_with_info() is called.
+Make sure to check the dma.enabled flag before trying to release the DMA
+channels also on late probe errors to avoid dereferencing an error
+pointer (or attempting to release a channel a second time).
 
-Because devm executes cleanup actions in reverse order during module
-unbind or probe failure, the hwmon device is unregistered and freed first.
+This issue was flagged by Sashiko when reviewing a devres allocation
+conversion patch.
 
-If lm90_alert_work() or lm90_report_alarms() runs in the window between
-the hwmon device being freed and the delayed works being cancelled,
-lm90_update_alarms() will dereference the freed data->hwmon_dev here.
-
-Fix the problem by canceling the workers separately after registering
-the hwmon device and before registering the interrupt handler. This ensures
-that the workers are canceled after interrupts are disabled and before
-the hwmon device is released. Add "shutdown" flag to indicate that device
-shutdown is in progress to prevent workers from being re-armed.
-
-Fixes: f6d0775119fb9 ("hwmon: (lm90) Rework alarm/status handling")
-Reported-by: Sashiko <sashiko-bot@kernel.org>
-Signed-off-by: Guenter Roeck <linux@roeck-us.net>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 386119bc7be9 ("spi: sprd: spi: sprd: Add DMA mode support")
+Link: https://sashiko.dev/#/patchset/20260505072909.618363-1-johan%40kernel.org?part=10
+Cc: stable@vger.kernel.org	# 5.1
+Cc: Lanqing Liu <lanqing.liu@unisoc.com>
+Signed-off-by: Johan Hovold <johan@kernel.org>
+Link: https://patch.msgid.link/20260512074733.915029-1-johan@kernel.org
+Signed-off-by: Mark Brown <broonie@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/hwmon/lm90.c | 24 ++++++++++++++++++++----
- 1 file changed, 20 insertions(+), 4 deletions(-)
+ drivers/spi/spi-sprd.c |    3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/hwmon/lm90.c b/drivers/hwmon/lm90.c
-index 3c10a5066b53d..c4a9dafff81d6 100644
---- a/drivers/hwmon/lm90.c
-+++ b/drivers/hwmon/lm90.c
-@@ -736,6 +736,7 @@ struct lm90_data {
- 	struct hwmon_chip_info chip;
- 	struct delayed_work alert_work;
- 	struct work_struct report_work;
-+	bool shutdown;		/* true if shutting down */
- 	bool valid;		/* true if register values are valid */
- 	bool alarms_valid;	/* true if status register values are valid */
- 	unsigned long last_updated; /* in jiffies */
-@@ -1154,6 +1155,9 @@ static void lm90_report_alarms(struct work_struct *work)
+--- a/drivers/spi/spi-sprd.c
++++ b/drivers/spi/spi-sprd.c
+@@ -993,7 +993,8 @@ err_rpm_put:
+ disable_clk:
+ 	clk_disable_unprepare(ss->clk);
+ release_dma:
+-	sprd_spi_dma_release(ss);
++	if (ss->dma.enable)
++		sprd_spi_dma_release(ss);
+ free_controller:
+ 	spi_controller_put(sctlr);
  
- static int lm90_update_alarms_locked(struct lm90_data *data, bool force)
- {
-+	if (data->shutdown)
-+		return 0;
-+
- 	if (force || !data->alarms_valid ||
- 	    time_after(jiffies, data->alarms_updated + msecs_to_jiffies(data->update_interval))) {
- 		struct i2c_client *client = data->client;
-@@ -2584,15 +2588,23 @@ static void lm90_restore_conf(void *_data)
- 	struct lm90_data *data = _data;
- 	struct i2c_client *client = data->client;
- 
--	cancel_delayed_work_sync(&data->alert_work);
--	cancel_work_sync(&data->report_work);
--
- 	/* Restore initial configuration */
- 	if (data->flags & LM90_HAVE_CONVRATE)
- 		lm90_write_convrate(data, data->convrate_orig);
- 	lm90_write_reg(client, LM90_REG_CONFIG1, data->config_orig);
- }
- 
-+static void lm90_stop_work(void *_data)
-+{
-+	struct lm90_data *data = _data;
-+
-+	hwmon_lock(data->hwmon_dev);
-+	data->shutdown = true;
-+	hwmon_unlock(data->hwmon_dev);
-+	cancel_delayed_work_sync(&data->alert_work);
-+	cancel_work_sync(&data->report_work);
-+}
-+
- static int lm90_init_client(struct i2c_client *client, struct lm90_data *data)
- {
- 	struct device_node *np = client->dev.of_node;
-@@ -2902,6 +2914,10 @@ static int lm90_probe(struct i2c_client *client)
- 
- 	data->hwmon_dev = hwmon_dev;
- 
-+	err = devm_add_action_or_reset(&client->dev, lm90_stop_work, data);
-+	if (err)
-+		return err;
-+
- 	if (client->irq) {
- 		dev_dbg(dev, "IRQ: %d\n", client->irq);
- 		err = devm_request_threaded_irq(dev, client->irq,
-@@ -2930,7 +2946,7 @@ static void lm90_alert(struct i2c_client *client, enum i2c_alert_protocol type,
- 		 */
- 		struct lm90_data *data = i2c_get_clientdata(client);
- 
--		if ((data->flags & LM90_HAVE_BROKEN_ALERT) &&
-+		if (!data->shutdown && (data->flags & LM90_HAVE_BROKEN_ALERT) &&
- 		    (data->current_alarms & data->alert_alarms)) {
- 			if (!(data->config & 0x80)) {
- 				dev_dbg(&client->dev, "Disabling ALERT#\n");
--- 
-2.53.0
-
 
 
 
