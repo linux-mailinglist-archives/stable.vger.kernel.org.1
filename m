@@ -1,59 +1,60 @@
-Return-Path: <stable+bounces-255972-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-255726-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id WHWdDSCoGGp+lwgAu9opvQ
-	(envelope-from <stable+bounces-255972-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:40:00 +0200
+	id 0EMvNeelGGoQlwgAu9opvQ
+	(envelope-from <stable+bounces-255726-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:30:31 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id A0A565F9442
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:39:58 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4274D5F8D81
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:30:31 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id C29F4313F9A3
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 20:33:15 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 267D2317F2A8
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 20:21:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3D50D3346BE;
-	Thu, 28 May 2026 20:33:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BE28E301472;
+	Thu, 28 May 2026 20:21:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="F7dpG6Ai"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Isq7Ntrj"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 03051223328;
-	Thu, 28 May 2026 20:33:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8DEF1257854;
+	Thu, 28 May 2026 20:21:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780000395; cv=none; b=g6E8cE1zO4TuQ/WUD91JG74J2yEc1UAif+8xGotz//HthNRNbgubmwHTUYOkt0r8MZzEtvQGYdrM7Xlovqk99p/P45W34FBVLJlapeg/FgCelY1TV7wslcJEpBQlRi/w0rqneclpECYu0lOhkoxCZCz0pMnvWQ+08QD5XIIqe/k=
+	t=1779999712; cv=none; b=bOoXYZARYPyBVAY8LjqzF9xyU+vG5RYziqvPFUBNi5o9l3ew2vbh5GWkUveG27ubOWXgRw76fPTLtAOIgdwt1filk9/RFAy85Lqij/insO1gdFqymoCFjydNWr0WV06gbqbNFUDkK1TpAizf0Be+j5wStp7+K77BtVxaVS7Ajqg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780000395; c=relaxed/simple;
-	bh=VUpgoCm0mrsL7o2t3QzO+wfWpITukjc9g6+SroksGYo=;
+	s=arc-20240116; t=1779999712; c=relaxed/simple;
+	bh=T6JKY+ufTmxHP84hy2mNFEyjWKLE9sveo4EB9dpbrFY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Z+8qBb32VN2QuD8sfVknHMGz0y7bjkIasmf00+mQJEKUHrPQzPi2y1a/ctfNw2Daya+LagWyyTUq0SafvTChz+vqAetl2Sa5ZS3Qr1/JR9ObROxkCdC8Z4wyb5EMQ3GIBEyPg278Bnmv3Jp+mtt7dN8Csgy0k6IWb77qkRfON1Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=F7dpG6Ai; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 614811F000E9;
-	Thu, 28 May 2026 20:33:13 +0000 (UTC)
+	 MIME-Version; b=BeWDWUeYkO9S1Fi8n9bN+NyO9NwHnbss8kxLsV/N3hqno+ZiskeDI9fchVpLZ89tjF24+IDY0ymbhyI53EnE4B9fng0VmY1vEBc8X9xKYTaSrDTeGSL5hF0NpKEIVU3yiEJJDEVa9lLQuuBlF+H3gpJ2D/5kMD789aMolUOj6wc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Isq7Ntrj; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B4E6A1F000E9;
+	Thu, 28 May 2026 20:21:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780000393;
-	bh=/QzahyJtnyC5xAeL9QXoiLMU1mjlnegM2FtQmR8BvtU=;
+	s=korg; t=1779999711;
+	bh=H/YautA+gWEG+KSTprjkM4GSg/tTX73fYH3cRp1NGCI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=F7dpG6Ai82cJzuyg/yabbEHnbo//GEmOq+ciGCi+4d7rlA9CQDcrVwwReyYalmmM6
-	 2jz4N2iS+L9HCiBE32hMJsehdZisfPFmTgcmIUU6xGgLGT8+IpvvkAVa1WHixGxAeJ
-	 f1JuwT5OH8vAQ+2Go9e7orSHafgxDc81/czvQeLs=
+	b=Isq7Ntrj4eFYf98q72caCJpiWTRkcrcOw57sMirKHsZhadhDwsvOD6v1vCrOCFBk+
+	 WEZ+0+SotyudhX3sWb8fX1cFst4bA8vx9rvpkBOUdV+18hOqiVEhWosj0c2kkSGBVi
+	 PLKuou+Ry4D+lXQBiuiQzgQ3VNcaliR6RVRIg3S4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ian Rogers <irogers@google.com>,
-	Namhyung Kim <namhyung@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 029/272] perf parse-events: Expose/rename config_term_name
+	Abdurrahman Hussain <abdurrahman@nexthop.ai>,
+	Bartosz Golaszewski <bartosz.golaszewski@oss.qualcomm.com>,
+	Linus Walleij <linusw@kernel.org>,
+	Guenter Roeck <linux@roeck-us.net>
+Subject: [PATCH 6.18 165/377] hwmon: (pmbus/adm1266) cap PDIO scan in get_multiple at ADM1266_PDIO_NR
 Date: Thu, 28 May 2026 21:46:43 +0200
-Message-ID: <20260528194630.204788372@linuxfoundation.org>
+Message-ID: <20260528194643.207240890@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260528194629.379955525@linuxfoundation.org>
-References: <20260528194629.379955525@linuxfoundation.org>
+In-Reply-To: <20260528194638.371537336@linuxfoundation.org>
+References: <20260528194638.371537336@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -68,150 +69,87 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-255726-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-255972-lists,stable=lfdr.de];
-	TO_DN_SOME(0.00)[];
-	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim]
-X-Rspamd-Queue-Id: A0A565F9442
+	TO_DN_SOME(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_SEVEN(0.00)[7];
+	MID_RHS_MATCH_FROM(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[roeck-us.net:email,nexthop.ai:email,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,qualcomm.com:email,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim]
+X-Rspamd-Queue-Id: 4274D5F8D81
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ian Rogers <irogers@google.com>
+From: Abdurrahman Hussain <abdurrahman@nexthop.ai>
 
-[ Upstream commit d2f3ecb0ca2099d13bf8bf69219214c1425dc453 ]
+commit d7834d92251baade796812876e95555e2066fa9f upstream.
 
-Expose config_term_name as parse_events__term_type_str so that PMUs not
-in pmu.c may access it.
+adm1266_gpio_get_multiple() iterates the PDIO portion of the
+caller-supplied mask using
 
-Signed-off-by: Ian Rogers <irogers@google.com>
-Acked-by: Namhyung Kim <namhyung@kernel.org>
-Link: https://lore.kernel.org/r/20241002032016.333748-4-irogers@google.com
-Signed-off-by: Namhyung Kim <namhyung@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+	for_each_set_bit_from(gpio_nr, mask,
+			      ADM1266_GPIO_NR + ADM1266_PDIO_STATUS) {
+		...
+	}
+
+where ADM1266_PDIO_STATUS is the PMBus command code (0xE9, i.e. 233),
+not the number of PDIO pins.  The intended upper bound is
+ADM1266_GPIO_NR + ADM1266_PDIO_NR = 25.
+
+gpiolib hands in a mask sized for gc.ngpio (= 25 bits on this chip),
+so the iteration walks find_next_bit() up to 242, reading up to 217
+extra bits (a handful of unsigned-long words: four on 64-bit, seven
+on 32-bit) of whatever lives past the end of the mask in the
+caller's stack.  Any incidental set bit in that range then drives a
+set_bit(gpio_nr, bits) call that writes past the end of the
+caller-supplied bits array too -- both out-of-bounds.
+
+Substitute ADM1266_PDIO_NR for the constant so the scan stops at the
+last real PDIO bit.
+
+Fixes: d98dfad35c38 ("hwmon: (pmbus/adm1266) Add support for GPIOs")
+Cc: stable@vger.kernel.org
+Signed-off-by: Abdurrahman Hussain <abdurrahman@nexthop.ai>
+Reviewed-by: Bartosz Golaszewski <bartosz.golaszewski@oss.qualcomm.com>
+Reviewed-by: Linus Walleij <linusw@kernel.org>
+Link: https://lore.kernel.org/r/20260518-adm1266-gpio-fixes-v3-1-e425e4f88139@nexthop.ai
+Signed-off-by: Guenter Roeck <linux@roeck-us.net>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- tools/perf/util/parse-events.c | 20 +++++++++++---------
- tools/perf/util/parse-events.h |  2 ++
- 2 files changed, 13 insertions(+), 9 deletions(-)
+ drivers/hwmon/pmbus/adm1266.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/tools/perf/util/parse-events.c b/tools/perf/util/parse-events.c
-index fcc4dab618bee..3d221608b13a5 100644
---- a/tools/perf/util/parse-events.c
-+++ b/tools/perf/util/parse-events.c
-@@ -801,7 +801,7 @@ static int check_type_val(struct parse_events_term *term,
+--- a/drivers/hwmon/pmbus/adm1266.c
++++ b/drivers/hwmon/pmbus/adm1266.c
+@@ -212,7 +212,7 @@ static int adm1266_gpio_get_multiple(str
+ 	status = read_buf[0] + (read_buf[1] << 8);
  
- static bool config_term_shrinked;
- 
--static const char *config_term_name(enum parse_events__term_type term_type)
-+const char *parse_events__term_type_str(enum parse_events__term_type term_type)
- {
- 	/*
- 	 * Update according to parse-events.l
-@@ -887,7 +887,7 @@ config_term_avail(enum parse_events__term_type term_type, struct parse_events_er
- 
- 		/* term_type is validated so indexing is safe */
- 		if (asprintf(&err_str, "'%s' is not usable in 'perf stat'",
--			     config_term_name(term_type)) >= 0)
-+			     parse_events__term_type_str(term_type)) >= 0)
- 			parse_events_error__handle(err, -1, err_str, NULL);
- 		return false;
+ 	*bits = 0;
+-	for_each_set_bit_from(gpio_nr, mask, ADM1266_GPIO_NR + ADM1266_PDIO_STATUS) {
++	for_each_set_bit_from(gpio_nr, mask, ADM1266_GPIO_NR + ADM1266_PDIO_NR) {
+ 		if (test_bit(gpio_nr - ADM1266_GPIO_NR, &status))
+ 			set_bit(gpio_nr, bits);
  	}
-@@ -1011,7 +1011,7 @@ do {									   \
- 	case PARSE_EVENTS__TERM_TYPE_HARDWARE:
- 	default:
- 		parse_events_error__handle(err, term->err_term,
--					strdup(config_term_name(term->type_term)),
-+					strdup(parse_events__term_type_str(term->type_term)),
- 					parse_events_formats_error_string(NULL));
- 		return -EINVAL;
- 	}
-@@ -1135,8 +1135,9 @@ static int config_term_tracepoint(struct perf_event_attr *attr,
- 	default:
- 		if (err) {
- 			parse_events_error__handle(err, term->err_term,
--						   strdup(config_term_name(term->type_term)),
--				strdup("valid terms: call-graph,stack-size\n"));
-+					strdup(parse_events__term_type_str(term->type_term)),
-+					strdup("valid terms: call-graph,stack-size\n")
-+				);
- 		}
- 		return -EINVAL;
- 	}
-@@ -2581,7 +2582,7 @@ int parse_events_term__num(struct parse_events_term **term,
- 	struct parse_events_term temp = {
- 		.type_val  = PARSE_EVENTS__TERM_TYPE_NUM,
- 		.type_term = type_term,
--		.config    = config ? : strdup(config_term_name(type_term)),
-+		.config    = config ? : strdup(parse_events__term_type_str(type_term)),
- 		.no_value  = no_value,
- 		.err_term  = loc_term ? loc_term->first_column : 0,
- 		.err_val   = loc_val  ? loc_val->first_column  : 0,
-@@ -2615,7 +2616,7 @@ int parse_events_term__term(struct parse_events_term **term,
- 			    void *loc_term, void *loc_val)
- {
- 	return parse_events_term__str(term, term_lhs, NULL,
--				      strdup(config_term_name(term_rhs)),
-+				      strdup(parse_events__term_type_str(term_rhs)),
- 				      loc_term, loc_val);
- }
- 
-@@ -2722,7 +2723,8 @@ int parse_events_terms__to_strbuf(const struct parse_events_terms *terms, struct
- 				if (ret < 0)
- 					return ret;
- 			} else if ((unsigned int)term->type_term < __PARSE_EVENTS__TERM_TYPE_NR) {
--				ret = strbuf_addf(sb, "%s=", config_term_name(term->type_term));
-+				ret = strbuf_addf(sb, "%s=",
-+						  parse_events__term_type_str(term->type_term));
- 				if (ret < 0)
- 					return ret;
- 			}
-@@ -2742,7 +2744,7 @@ static void config_terms_list(char *buf, size_t buf_sz)
- 
- 	buf[0] = '\0';
- 	for (i = 0; i < __PARSE_EVENTS__TERM_TYPE_NR; i++) {
--		const char *name = config_term_name(i);
-+		const char *name = parse_events__term_type_str(i);
- 
- 		if (!config_term_avail(i, NULL))
- 			continue;
-diff --git a/tools/perf/util/parse-events.h b/tools/perf/util/parse-events.h
-index 2b52f8d6aa29a..ac1feaaeb8d5d 100644
---- a/tools/perf/util/parse-events.h
-+++ b/tools/perf/util/parse-events.h
-@@ -168,6 +168,8 @@ struct parse_events_state {
- 	bool			   wild_card_pmus;
- };
- 
-+const char *parse_events__term_type_str(enum parse_events__term_type term_type);
-+
- bool parse_events__filter_pmu(const struct parse_events_state *parse_state,
- 			      const struct perf_pmu *pmu);
- void parse_events__shrink_config_terms(void);
--- 
-2.53.0
-
 
 
 
