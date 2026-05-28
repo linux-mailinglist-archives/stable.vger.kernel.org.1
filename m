@@ -1,58 +1,63 @@
-Return-Path: <stable+bounces-256096-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-256264-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id AOugBcKpGGpolwgAu9opvQ
-	(envelope-from <stable+bounces-256096-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:46:58 +0200
+	id sDsxEHWrGGpolwgAu9opvQ
+	(envelope-from <stable+bounces-256264-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:54:13 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id BC0E95F98B8
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:46:57 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id D8C355F9D16
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:54:12 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 90A18312F76C
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 20:39:05 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id E8F52300146A
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 20:46:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C96603016E1;
-	Thu, 28 May 2026 20:39:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7ABB32F1FEF;
+	Thu, 28 May 2026 20:46:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="S0jHA6pB"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cL2xvkyz"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A38EA298CB2;
-	Thu, 28 May 2026 20:39:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 41B862F9D85;
+	Thu, 28 May 2026 20:46:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780000743; cv=none; b=sD3nkrUSH+4r4DWuD9rynjmbPMBzEGZB18NIkMPGffB8dFGWhjglynSwJJqxmxC0sufVriO/oFoYQSY/ZAWO5p+41pMePAWo12x36oKxFVxYBvaW1kdYZFKBe+Ri9RI9XGk60RBXUrMEy9ZDWA/K6mrAIQ9g7IhyIXDaUEzc06c=
+	t=1780001213; cv=none; b=WcA5q5shVMD0SzmuoLKkyIc/bObzJIFlty55quryG0FqXAhaEx5SWnAXE2pH/q+O6h2Ihc/U1f8+sLd4we9iPmtA8McUO622rbEo+PTjzTceIxLMbDbLw8LtF9tFlvxENibEJs0b0y5c4fvLt7jeHKqd47YCNDq/Fryr9rCNzhM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780000743; c=relaxed/simple;
-	bh=tb+/7UeosWQwPkNiu3OqjylUB9SYoEEF62OjUCm9fi0=;
+	s=arc-20240116; t=1780001213; c=relaxed/simple;
+	bh=DyH6nBvdJDWOxPtPXiXN07/nhUZBeTQ9HMogrSs89Fk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=iz2hshUjNd/ObtXVlikXWmmVvhW6xsfOyETbtgrsgf+O/hKCRDNHWoLkrLqvctYit7Vr0MA9au0hEV9lXrPte/Ujf+dep1qO9I8kQ0WLnDNrHKWvbar+W0cW2jgmPejN/U3WfBBkmOnM/+phChVtrW2tByLmgvBiB76UbO0WI48=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=S0jHA6pB; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0D9B51F000E9;
-	Thu, 28 May 2026 20:39:01 +0000 (UTC)
+	 MIME-Version:Content-Type; b=O4ZYxZkl6s1f7UksamvwdE4CMafI2lJNv5Ivwep0DxPs+9057CdWrJAyvx/Ikay7zINBDIrlQEZMf7z8MjfHKSIf+TWpPzW+2XHbeSc1HS/ErYbHg/+5Z4jXeM/hhTUIEK0kPVHS/kf8UVEWT+tCWp3jwnL9bS7wUi0SDJUk+T0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cL2xvkyz; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A71FD1F000E9;
+	Thu, 28 May 2026 20:46:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780000742;
-	bh=7hkriVZD9Rrw1kotkyIwKjUBQ02YdDC9svs7kwPzAT4=;
+	s=korg; t=1780001212;
+	bh=xr46h6UztzwAmZSj9uqUArzdPxeGc9ON+/r32yn46vM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=S0jHA6pBqa22iJdzzs+54qH3CB3LVeFYbdU3I8Uc4uiGKW+ij2aak9MStZIqtiI/y
-	 BLk8UnhdU63mYZvrVLm/Q6HYXeui6YZE/r1zH5Vmu6XLwzgrrB/iDRZSA9oO6itgV5
-	 PCSO8e+50YcchhC+J8Pqbn3ByYsOTpJWk9bdnkH0=
+	b=cL2xvkyzbqZU9ESmgp7v7ythecvPpuGe1q2jWkgDBTXx250siyKe+Of7vgDvO0UXu
+	 dSfe5mCcOI72bgc2ytCiBNUtexoqJ/M9AJ7Dw//OAufgiYFP5GB62ONWA6ik0VfNL6
+	 Ab34AYf7vEaU3wWjzI/67Ro2WNUt8qx0Y4IyjKgc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sudeep Holla <sudeep.holla@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 153/272] firmware: arm_ffa: Unregister bus notifier on teardown for FF-A v1.0
+	Yizhou Zhao <zhaoyz24@mails.tsinghua.edu.cn>,
+	Yuxiang Yang <yangyx22@mails.tsinghua.edu.cn>,
+	Xuewei Feng <fengxw06@126.com>,
+	Qi Li <qli01@tsinghua.edu.cn>,
+	Ke Xu <xuke@tsinghua.edu.cn>,
+	Fernando Fernandez Mancera <fmancera@suse.de>,
+	Pablo Neira Ayuso <pablo@netfilter.org>
+Subject: [PATCH 6.6 047/186] netfilter: nft_inner: Fix IPv6 inner_thoff desync
 Date: Thu, 28 May 2026 21:48:47 +0200
-Message-ID: <20260528194633.645686512@linuxfoundation.org>
+Message-ID: <20260528194930.240082487@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260528194629.379955525@linuxfoundation.org>
-References: <20260528194629.379955525@linuxfoundation.org>
+In-Reply-To: <20260528194928.941004471@linuxfoundation.org>
+References: <20260528194928.941004471@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,114 +67,88 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	RCVD_TLS_LAST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,mails.tsinghua.edu.cn,126.com,tsinghua.edu.cn,suse.de,netfilter.org];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-256096-lists,stable=lfdr.de];
-	TO_DN_SOME(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	TAGGED_FROM(0.00)[bounces-256264-lists,stable=lfdr.de];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	RCVD_TLS_LAST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	TO_DN_SOME(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[5];
+	RCPT_COUNT_SEVEN(0.00)[10];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim,msgid.link:url]
-X-Rspamd-Queue-Id: BC0E95F98B8
+	DBL_BLOCKED_OPENRESOLVER(0.00)[netfilter.org:email,suse.de:email,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,tsinghua.edu.cn:email,z.ai:url]
+X-Rspamd-Queue-Id: D8C355F9D16
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sudeep Holla <sudeep.holla@kernel.org>
+From: Yizhou Zhao <zhaoyz24@mails.tsinghua.edu.cn>
 
-[ Upstream commit 6d3daa9b8d313f42d52e75590310f26a29b61b44 ]
+commit b6a91f68ebfed9c38e0e9150f58a9b85da07181c upstream.
 
-For FF-A v1.0 the driver registers a bus notifier to backfill UUID
-matching, but the notifier was never unregistered on cleanup paths.
-Track the registration state and unregister it during teardown and early
-partition-setup failure.
+In nft_inner_parse_l2l3(), when processing inner IPv6 packets,
+ipv6_find_hdr() correctly computes the transport header offset
+traversing all extension headers, but the result is immediately
+overwritten with nhoff + sizeof(_ip6h) (40 bytes), which only
+accounts for the IPv6 base header. This creates a desync between
+inner_thoff (wrong — points to extension header start) and l4proto
+(correct — e.g., IPPROTO_TCP), enabling transport header forgery
+and potential firewall bypass. This issue affects stable versions
+from Linux 6.2.
 
-Fixes: 9dd15934f60d ("firmware: arm_ffa: Move the FF-A v1.0 NULL UUID workaround to bus notifier")
-Link: https://patch.msgid.link/20260428-ffa_fixes-v2-5-8595ae450034@kernel.org
-Signed-off-by: Sudeep Holla <sudeep.holla@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+For comparison, the normal (non-inner) IPv6 path correctly
+preserves ipv6_find_hdr()'s result. Removing the incorrect overwrite
+ensures that ipv6_find_hdr()'s calculated transport header offset is
+preserved, thereby fixing the desynchronization.
+
+Fixes: 3a07327d10a0 ("netfilter: nft_inner: support for inner tunnel header matching")
+Cc: stable@vger.kernel.org
+Reported-by: Yizhou Zhao <zhaoyz24@mails.tsinghua.edu.cn>
+Reported-by: Yuxiang Yang <yangyx22@mails.tsinghua.edu.cn>
+Reported-by: Xuewei Feng <fengxw06@126.com>
+Reported-by: Qi Li <qli01@tsinghua.edu.cn>
+Reported-by: Ke Xu <xuke@tsinghua.edu.cn>
+Assisted-by: GLM:5.1 Z.ai
+Signed-off-by: Yizhou Zhao <zhaoyz24@mails.tsinghua.edu.cn>
+Reviewed-by: Fernando Fernandez Mancera <fmancera@suse.de>
+Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/firmware/arm_ffa/driver.c | 15 +++++++++++++++
- 1 file changed, 15 insertions(+)
+ net/netfilter/nft_inner.c |    1 -
+ 1 file changed, 1 deletion(-)
 
-diff --git a/drivers/firmware/arm_ffa/driver.c b/drivers/firmware/arm_ffa/driver.c
-index 6961cb44194a1..a6c5f89476c06 100644
---- a/drivers/firmware/arm_ffa/driver.c
-+++ b/drivers/firmware/arm_ffa/driver.c
-@@ -100,6 +100,7 @@ struct ffa_drv_info {
- 	bool mem_ops_native;
- 	bool msg_direct_req2_supp;
- 	bool bitmap_created;
-+	bool bus_notifier_registered;
- 	bool notif_enabled;
- 	unsigned int sched_recv_irq;
- 	unsigned int notif_pend_irq;
-@@ -1436,6 +1437,15 @@ static struct notifier_block ffa_bus_nb = {
- 	.notifier_call = ffa_bus_notifier,
- };
+--- a/net/netfilter/nft_inner.c
++++ b/net/netfilter/nft_inner.c
+@@ -156,7 +156,6 @@ static int nft_inner_parse_l2l3(const st
+ 			return -1;
  
-+static void ffa_bus_notifier_unregister(void)
-+{
-+	if (!drv_info->bus_notifier_registered)
-+		return;
-+
-+	bus_unregister_notifier(&ffa_bus_type, &ffa_bus_nb);
-+	drv_info->bus_notifier_registered = false;
-+}
-+
- static int ffa_xa_add_partition_info(struct ffa_device *dev)
- {
- 	struct ffa_dev_part_info *info;
-@@ -1519,6 +1529,8 @@ static void ffa_partitions_cleanup(void)
- 	struct list_head *phead;
- 	unsigned long idx;
- 
-+	ffa_bus_notifier_unregister();
-+
- 	/* Clean up/free all registered devices */
- 	ffa_devices_unregister();
- 
-@@ -1546,11 +1558,14 @@ static int ffa_setup_partitions(void)
- 		ret = bus_register_notifier(&ffa_bus_type, &ffa_bus_nb);
- 		if (ret)
- 			pr_err("Failed to register FF-A bus notifiers\n");
-+		else
-+			drv_info->bus_notifier_registered = true;
- 	}
- 
- 	count = ffa_partition_probe(&uuid_null, &pbuf);
- 	if (count <= 0) {
- 		pr_info("%s: No partitions found, error %d\n", __func__, count);
-+		ffa_bus_notifier_unregister();
- 		return -EINVAL;
- 	}
- 
--- 
-2.53.0
-
+ 		if (fragoff == 0) {
+-			thoff = nhoff + sizeof(_ip6h);
+ 			ctx->flags |= NFT_PAYLOAD_CTX_INNER_TH;
+ 			ctx->inner_thoff = thoff;
+ 			ctx->l4proto = l4proto;
 
 
 
