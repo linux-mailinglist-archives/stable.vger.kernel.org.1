@@ -1,59 +1,59 @@
-Return-Path: <stable+bounces-256214-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-256382-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 2AUTFCKrGGpolwgAu9opvQ
-	(envelope-from <stable+bounces-256214-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:52:50 +0200
+	id QDtgCzatGGpolwgAu9opvQ
+	(envelope-from <stable+bounces-256382-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 23:01:42 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id AA1C45F9C3B
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:52:49 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 27A525FA168
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 23:01:37 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 5FCF3318CE0C
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 20:44:38 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id AE15331502CB
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 20:52:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1EB3C317164;
-	Thu, 28 May 2026 20:44:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4E4F9348C7C;
+	Thu, 28 May 2026 20:52:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="d0m8Pa/K"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mSIleKfd"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E13932E7379;
-	Thu, 28 May 2026 20:44:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2075F309F1D;
+	Thu, 28 May 2026 20:52:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780001076; cv=none; b=qr5n32s3oVMi/seatgVIMUnnL6yKbrBUsmhjgOnrztN+MTi1kBjAArOwoTx9fUTO6mQR+K+WtuG7sIxqlsxuQMByq+zP4WTJ0+WVSIkZNh2LnaFFjcGtvNzKSzZ4NKYcYiLHGgIAjThAFS9VyUoie+L2zPedWJ6Zc/3y7Ocjw5w=
+	t=1780001544; cv=none; b=CSE4Uqe5Ch9onZgCPERMNgynfM4F56UxvFezrEtzGGQU2LLIdCa/LoS1IHLZYX7hhuW9FH1aaLqCZ/hWe7NZD4/RzVlggg6tQgRwwdvQzYyRv9SdBFVG/2W3Fz0y2ruRKZbX9nesJL6sJpXbsMNJucJZa5aM+Xqu/p141ltlxus=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780001076; c=relaxed/simple;
-	bh=oRD/mLUUctFsnSaT/DpHqeyq7YrVZ9Bbo50T6Ad6Ytk=;
+	s=arc-20240116; t=1780001544; c=relaxed/simple;
+	bh=EEgEWlBOxgANTc2UP4Dt4qA0aa3jGkucnG4a5IFpe/E=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=bn2YrirCJvRlG/Vh5WNW4RXQa75qc8RThErZqDjle2iXOQdfuIWaXwnZ2ZTiW2mBToVpf+e7R6QgAGB6dVtzryCuyOrd2EO0uErGbdU6e0hmqanwcrTh4rw9fbE3p5NE7AQS1AB7RSEcohof/EGwRr7jVQFx/JmbNwsuA+Zqw7E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=d0m8Pa/K; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id ED5A51F000E9;
-	Thu, 28 May 2026 20:44:34 +0000 (UTC)
+	 MIME-Version; b=mWPSqNwgexjzMZbMuzUPm+MgemtRd1Rr2icWWwilCnRT671tOk9kd74v9lnmHR3JrZQJ5xpQV+RQ/p1O2pDPotacU1NYOAmODa2e27JLoVciQdgLzg98dTGhF5ohFw5KSWpJBfzyB2IvWd6RqkU2ipBJxTTRcNlI7qYVvRxioKY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mSIleKfd; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7F3DE1F00A3C;
+	Thu, 28 May 2026 20:52:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780001075;
-	bh=xLRKZ1OdY8E6qYljuqbGBlKL4WQKT2wGvTc1xC7ruKg=;
+	s=korg; t=1780001543;
+	bh=+jK8UK2ryXynSCIfyfcBhzGp74VnFU6H3l5+mhaNsiE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=d0m8Pa/K7p4bWzYJeTptN5DKKmRw+NapIjeJuplUAlZpw9UAJU65yjTtxgBDr1QX0
-	 gmJ5KKa1fedZ2T/QMDScP3wuWzItbhFZGtJzTfWak31QmMreQnAhhOOhMJbYKG9PQC
-	 D8Zphp4o0j2DE/zLPt44QP4sqBGfUdbIlJONgbzg=
+	b=mSIleKfd4tnxc3e2YRZiN3ogdhZGyPyKM7LnEbf0pEVzqstUHUKKh0bn7hm6LioOp
+	 Jfnoc30h+PSGfePB5z5qRRcL+nCksXcakWTj1cHYA0LsqkgPhhiG1YsONx9W7LTs/a
+	 EAlsgzS7wuk2rC4lgzvfEyiKtTtn16k4fXM2+Uyw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Tiezhu Yang <yangtiezhu@loongson.cn>,
-	Huacai Chen <chenhuacai@loongson.cn>,
+	"Nikhil P. Rao" <nikhil.rao@amd.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 271/272] LoongArch: kprobes: Fix handling of fatal unrecoverable recursions
+Subject: [PATCH 6.6 165/186] pds_core: fix error handling in pdsc_devcmd_wait
 Date: Thu, 28 May 2026 21:50:45 +0200
-Message-ID: <20260528194636.660925062@linuxfoundation.org>
+Message-ID: <20260528194933.418686649@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260528194629.379955525@linuxfoundation.org>
-References: <20260528194629.379955525@linuxfoundation.org>
+In-Reply-To: <20260528194928.941004471@linuxfoundation.org>
+References: <20260528194928.941004471@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -68,7 +68,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
@@ -78,7 +78,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-256214-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-256382-lists,stable=lfdr.de];
 	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
@@ -89,84 +89,70 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	TAGGED_RCPT(0.00)[stable];
 	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,loongson.cn:email,linuxfoundation.org:mid,linuxfoundation.org:dkim]
-X-Rspamd-Queue-Id: AA1C45F9C3B
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,amd.com:email,linuxfoundation.org:mid,linuxfoundation.org:dkim]
+X-Rspamd-Queue-Id: 27A525FA168
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Tiezhu Yang <yangtiezhu@loongson.cn>
+From: Nikhil P. Rao <nikhil.rao@amd.com>
 
-[ Upstream commit 1c856e158fd34ef2c4475a81c1dc386329989938 ]
+[ Upstream commit 0e46b6635b03d29807f810c3b415c4755a3f958d ]
 
-KPROBE_HIT_SS and KPROBE_REENTER are two types of fatal recursions that
-can not be safely recovered in kprobes.
+Fix two cases where pdsc_devcmd_wait() returns stale success from
+the completion register instead of an error:
 
-KPROBE_HIT_SS means that a kprobe is hit during single-stepping. At
-this point, the architecture-specific single-step context is already
-active. Nested single-stepping would corrupt the state, as the kprobe
-control block (kcb) and hardware registers cannot safely store multiple
-levels of stepping state.
+1. FW crash: If firmware stops running, the wait loop breaks early with
+   running=false. The condition "if ((!done || timeout) && running)" is
+   false, so error handling is bypassed and stale status is returned.
+   Check !running first and return -ENXIO.
 
-KPROBE_REENTER means that a third-level recursion occurs when a probe
-is hit while the system is already handling a nested probe (second-
-level). The kcb only provides a single slot (prev_kprobe) to backup the
-state. When a third probe is hit, there is no more space to save the
-state without corrupting the first-level backup.
+2. Timeout: If a command times out, err is set to -ETIMEDOUT but then
+   overwritten by pdsc_err_to_errno(status) which reads stale status.
+   Return -ETIMEDOUT immediately after cleaning up.
 
-Kprobes work by replacing instructions with breakpoints. In order to
-execute the original instruction and continue, it must be moved to a
-temporary "single-step" slot. Since there is no backup space left to
-set up this slot safely, the CPU would be forced to return to the same
-original breakpoint address, triggering an endless loop.
+Both errors now propagate to pdsc_devcmd_locked() which queues
+health_work for recovery.
 
-Currently, the code only prints a warning and returns. This leads to
-an infinite re-entry loop as the CPU repeatedly hits the same trap and
-a "stuck" CPU core because preemption was disabled at the start of the
-handler and never re-enabled in this early return path.
-
-Fix the logic by:
-1. Merging KPROBE_HIT_SS and KPROBE_REENTER cases, as both represent
-   fatal recursions that cannot be safely recovered.
-2. Replacing WARN_ON_ONCE() with BUG() to terminate the system. This
-   aligns LoongArch with other architectures (x86, arm64, riscv) and
-   prevents stack overflow while providing diagnostic information.
-
-Fixes: 6d4cc40fb5f5 ("LoongArch: Add kprobes support")
-Signed-off-by: Tiezhu Yang <yangtiezhu@loongson.cn>
-Signed-off-by: Huacai Chen <chenhuacai@loongson.cn>
+Fixes: 45d76f492938 ("pds_core: set up device and adminq")
+Signed-off-by: Nikhil P. Rao <nikhil.rao@amd.com>
+Link: https://patch.msgid.link/20260515212907.998028-1-nikhil.rao@amd.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/loongarch/kernel/kprobes.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/net/ethernet/amd/pds_core/dev.c | 11 +++++++++--
+ 1 file changed, 9 insertions(+), 2 deletions(-)
 
-diff --git a/arch/loongarch/kernel/kprobes.c b/arch/loongarch/kernel/kprobes.c
-index 8ba391cfabb00..bd783ebed4cc9 100644
---- a/arch/loongarch/kernel/kprobes.c
-+++ b/arch/loongarch/kernel/kprobes.c
-@@ -184,16 +184,16 @@ static bool reenter_kprobe(struct kprobe *p, struct pt_regs *regs,
- 			   struct kprobe_ctlblk *kcb)
- {
- 	switch (kcb->kprobe_status) {
--	case KPROBE_HIT_SS:
- 	case KPROBE_HIT_SSDONE:
- 	case KPROBE_HIT_ACTIVE:
- 		kprobes_inc_nmissed_count(p);
- 		setup_singlestep(p, regs, kcb, 1);
- 		break;
-+	case KPROBE_HIT_SS:
- 	case KPROBE_REENTER:
- 		pr_warn("Failed to recover from reentered kprobes.\n");
- 		dump_kprobe(p);
--		WARN_ON_ONCE(1);
-+		BUG();
- 		break;
- 	default:
- 		WARN_ON(1);
+diff --git a/drivers/net/ethernet/amd/pds_core/dev.c b/drivers/net/ethernet/amd/pds_core/dev.c
+index e65a1632df505..0e9398503a04d 100644
+--- a/drivers/net/ethernet/amd/pds_core/dev.c
++++ b/drivers/net/ethernet/amd/pds_core/dev.c
+@@ -162,12 +162,19 @@ static int pdsc_devcmd_wait(struct pdsc *pdsc, u8 opcode, int max_seconds)
+ 		dev_dbg(dev, "DEVCMD %d %s after %ld secs\n",
+ 			opcode, pdsc_devcmd_str(opcode), duration / HZ);
+ 
+-	if ((!done || timeout) && running) {
++	if (!running) {
++		dev_err(dev, "DEVCMD %d %s fw not running\n",
++			opcode, pdsc_devcmd_str(opcode));
++		pdsc_devcmd_clean(pdsc);
++		return -ENXIO;
++	}
++
++	if (!done || timeout) {
+ 		dev_err(dev, "DEVCMD %d %s timeout, done %d timeout %d max_seconds=%d\n",
+ 			opcode, pdsc_devcmd_str(opcode), done, timeout,
+ 			max_seconds);
+-		err = -ETIMEDOUT;
+ 		pdsc_devcmd_clean(pdsc);
++		return -ETIMEDOUT;
+ 	}
+ 
+ 	status = pdsc_devcmd_status(pdsc);
 -- 
 2.53.0
 
