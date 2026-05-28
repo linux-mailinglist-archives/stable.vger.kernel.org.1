@@ -1,46 +1,46 @@
-Return-Path: <stable+bounces-255869-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-255870-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id cIurA9aoGGpolwgAu9opvQ
-	(envelope-from <stable+bounces-255869-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:43:02 +0200
+	id uBIvMzSmGGrClggAu9opvQ
+	(envelope-from <stable+bounces-255870-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:31:48 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 74E855F963B
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:43:01 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2B0455F8E29
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:31:48 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 9A28E314A369
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 20:28:26 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 359FF304993F
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 20:28:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E318A2F8E88;
-	Thu, 28 May 2026 20:28:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AA0372D9787;
+	Thu, 28 May 2026 20:28:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UFeeh1Bu"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lnZGwLZY"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9FB15DDC5;
-	Thu, 28 May 2026 20:28:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6C82BDDC5;
+	Thu, 28 May 2026 20:28:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780000105; cv=none; b=YGu+gT8Bo+kYfCiS5/QnoYYmMXQ+6JnicNcA1g0jkjaJw9AggEiPCV/X/sM01o+7/397tbM/0PPvQMICyt3Th03T5I/pyLlrMoaTdVf9XPHJ1P7b/aXJwTAKCVY9TWEURT0RRQoXwycSOBIQOHfJzHqZ290ljfpY25LrXl1Gj0I=
+	t=1780000108; cv=none; b=ma0vhK15YkNLpdRTmAS1i7X5IQamXilfWrjSBjaZq2M3wnsTEcdZOGMzCIhzktwGlaGMn2PiWeodmX1q1Tpis9i/vs8CjDLaSaBlQovx9OT3bAk/QH0CgrhKHFR9SyvwhRNLsNP8SgM4Mh8uRXfYTX91QePE8sF8CeINBl0kCng=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780000105; c=relaxed/simple;
-	bh=J0GFwJj4NzqFzYMNOd8QCsSKP28mWNczW7alQs/ZrdU=;
+	s=arc-20240116; t=1780000108; c=relaxed/simple;
+	bh=a1QomsdfB70E/57vKzoMzJZKyMS440Nj09bPNdoSetQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=q/cxLSzwjE6Om5BzN/NbXebF/ktMJa0m7ixTZxfXyMnXDAqLuDf0hGuqCa+JIxIM6aLfEhPA8cu+feA0VAxKbf9NJtGU+51A6VWzrrOC+tTVSl1GzsTeUlsYPHnc/jRyptqLUd8K2zH7XrLNdCsCEU/LFLsrKfHoIFF+QgwX/Ss=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UFeeh1Bu; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0A70A1F000E9;
-	Thu, 28 May 2026 20:28:23 +0000 (UTC)
+	 MIME-Version; b=GHohdf374NGNHIUd9Cm5+wIM7/unC9klGkjb2prwumxA70vus3pQnbpEAkyo+v8Hgr6VrZRssyoahYkDv8/7gGd2L1p1sd1+AanNPccoMhfOfPFYDJLSybzerjsAjrz73Rj4kyPz6oeHT3ElSUmdNqZgzrO3U0GbM0V/CkqK10o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lnZGwLZY; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CB1671F000E9;
+	Thu, 28 May 2026 20:28:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780000104;
-	bh=JEusPUpmA96RXDElESvr5tUVP54lDYlQMBZo93bcrYg=;
+	s=korg; t=1780000107;
+	bh=PMIofrwREG5agVpjVX8w658zTVOOHC7qN4Fma/PG+Go=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=UFeeh1BukS30RZ7628iGiu9C5a21b08KjyzBunQAo7PwX1lW8IFmN60bOFifPzB9O
-	 IO9QedD1BlBT9/pWhbYOzMy/SrJx43uJNFX6tsmyj33VhKzMj0o1jM8GCWMIQ9z5Y/
-	 7nQ5hnOvzmuwoV7eirxdok8JmfNBe6V4Ucfk67Gw=
+	b=lnZGwLZYEJasU5nJTeXlKDPt4hcTRqxcmZT9OMjb9e95fhYDM5ZfbIzoujo47GQ07
+	 VtBOR96GjurYdqi11tyC1oHleFUugvePOLNxByrGkxUKIJbnY3argkQjUMw8OVuUaQ
+	 l9cTKkE1TNVfHHCs930CI5KClURoKgbcWCnkXKfo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -49,9 +49,9 @@ Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	Boris Burkov <boris@bur.io>,
 	David Sterba <dsterba@suse.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 303/377] btrfs: check for subvolume before deleting squota qgroup
-Date: Thu, 28 May 2026 21:49:01 +0200
-Message-ID: <20260528194647.134514861@linuxfoundation.org>
+Subject: [PATCH 6.18 304/377] btrfs: fix squota accounting during enable generation
+Date: Thu, 28 May 2026 21:49:02 +0200
+Message-ID: <20260528194647.162851007@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
 In-Reply-To: <20260528194638.371537336@linuxfoundation.org>
 References: <20260528194638.371537336@linuxfoundation.org>
@@ -69,7 +69,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
@@ -77,7 +77,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-255869-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-255870-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
@@ -86,13 +86,13 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
 	NEURAL_HAM(-0.00)[-1.000];
 	RCPT_COUNT_SEVEN(0.00)[7];
 	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim,suse.com:email]
-X-Rspamd-Queue-Id: 74E855F963B
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,bur.io:email,suse.com:email,linuxfoundation.org:mid,linuxfoundation.org:dkim]
+X-Rspamd-Queue-Id: 2B0455F8E29
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
@@ -102,126 +102,126 @@ X-Rspamd-Server: lfdr
 
 From: Boris Burkov <boris@bur.io>
 
-[ Upstream commit 1e92637722ae4bd417f7a37e8d1485dc23b93935 ]
+[ Upstream commit d7c600554816b8ef70adffe078a0e360c055d82b ]
 
-The invariant that we want to maintain with subvolume qgroups is that
-the qgroup can only be deleted if there is no root. With squotas, we
-thought that it was sufficient to just check the usage, because we
-assumed that deleting a subvolume will drive it's qgroups usage to 0,
-and thus 0 usage implies no subvolume.
+The first transaction that enables squotas is special and a bit tricky.
+We have to set BTRFS_FS_QUOTA_ENABLED after the transaction to avoid a
+deadlock, so any delayed refs that run before we set the bit are not
+squota accounted. For data this is fine, we don't get an owner_ref, so
+there is no real harm, it's as if the extent predated squotas. However
+for metadata, the tree block will have gen == enable_gen so when we free
+it later, we will decrement the squota accounting, which can result in
+an underflow. Before it is freed, btrfs check shows errors, as we have
+mismatched usage between the node generations/owners and the squota
+values.
 
-However, this is false, for two reasons:
+There are two angles to this fix:
 
-- A subvol whose extents are all from before squotas was enabled.
-- A subvol that was created in this transaction and for which we have
-  not yet run any delayed refs.
+1. For extents that come in delayed_refs that run during the
+   enable_gen transaction, we must actually set enable_gen to the *next*
+   transaction. That is the first transaction that we can really
+   properly account in any way.
+2. For extents that come in between the end of our transaction handle
+   and the time we set the BTRFS_FS_QUOTA_ENABLED bit, we need an
+   additional bit, BTRFS_FS_SQUOTA_ENABLING which only affects recording
+   squota deltas, so we do pick up those extents. Otherwise, we would
+   miss them, even for enable_gen + 1.
 
-In both cases, deleting the qgroup breaks the desired invariant and we
-are left with a subvolume with no qgroup but squotas are enabled.
-
-Fix this by unifying the deletion check logic between full qgroups and
-squotas. Squotas do all the same checks *and* the additional usage == 0
-check, which is the one extra rule peculiar to squotas.
-
-Link: https://lore.kernel.org/linux-btrfs/adnBhWfJQ1n3hZC8@merlins.org/
-Fixes: a8df35619948 ("btrfs: forbid deleting live subvol qgroup")
+Fixes: bd7c1ea3a302 ("btrfs: qgroup: check generation when recording simple quota delta")
 Reviewed-by: Qu Wenruo <wqu@suse.com>
 Signed-off-by: Boris Burkov <boris@bur.io>
 Reviewed-by: David Sterba <dsterba@suse.com>
 Signed-off-by: David Sterba <dsterba@suse.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/btrfs/qgroup.c | 50 +++++++++++++++++++++++------------------------
- 1 file changed, 25 insertions(+), 25 deletions(-)
+ fs/btrfs/fs.h     |  1 +
+ fs/btrfs/qgroup.c | 31 +++++++++++++++++++++++++++----
+ 2 files changed, 28 insertions(+), 4 deletions(-)
 
+diff --git a/fs/btrfs/fs.h b/fs/btrfs/fs.h
+index acdb9e52f6fd7..eccc61463947b 100644
+--- a/fs/btrfs/fs.h
++++ b/fs/btrfs/fs.h
+@@ -136,6 +136,7 @@ enum {
+ 	BTRFS_FS_LOG_RECOVERING,
+ 	BTRFS_FS_OPEN,
+ 	BTRFS_FS_QUOTA_ENABLED,
++	BTRFS_FS_SQUOTA_ENABLING,
+ 	BTRFS_FS_UPDATE_UUID_TREE_GEN,
+ 	BTRFS_FS_CREATING_FREE_SPACE_TREE,
+ 	BTRFS_FS_BTREE_ERR,
 diff --git a/fs/btrfs/qgroup.c b/fs/btrfs/qgroup.c
-index c7bc2065bcd68..a0d364e009d88 100644
+index a0d364e009d88..261aa65019207 100644
 --- a/fs/btrfs/qgroup.c
 +++ b/fs/btrfs/qgroup.c
-@@ -1723,32 +1723,24 @@ int btrfs_create_qgroup(struct btrfs_trans_handle *trans, u64 qgroupid)
- 	return ret;
- }
+@@ -1111,7 +1111,13 @@ int btrfs_quota_enable(struct btrfs_fs_info *fs_info,
+ 	if (simple) {
+ 		fs_info->qgroup_flags |= BTRFS_QGROUP_STATUS_FLAG_SIMPLE_MODE;
+ 		btrfs_set_fs_incompat(fs_info, SIMPLE_QUOTA);
+-		btrfs_set_qgroup_status_enable_gen(leaf, ptr, trans->transid);
++		/*
++		 * Set the enable generation to the next transaction, as we cannot
++		 * ensure that extents written during this transaction will see any
++		 * state we have set here. So we should treat all extents of the
++		 * transaction as coming in before squotas was enabled.
++		 */
++		btrfs_set_qgroup_status_enable_gen(leaf, ptr, trans->transid + 1);
+ 	} else {
+ 		fs_info->qgroup_flags |= BTRFS_QGROUP_STATUS_FLAG_INCONSISTENT;
+ 	}
+@@ -1214,7 +1220,15 @@ int btrfs_quota_enable(struct btrfs_fs_info *fs_info,
+ 		goto out_free_path;
+ 	}
  
--static bool can_delete_parent_qgroup(struct btrfs_qgroup *qgroup)
--
-+static bool can_delete_parent_qgroup(struct btrfs_fs_info *fs_info, struct btrfs_qgroup *qgroup)
- {
- 	ASSERT(btrfs_qgroup_level(qgroup->qgroupid));
-+	if (btrfs_qgroup_mode(fs_info) == BTRFS_QGROUP_MODE_SIMPLE)
-+		squota_check_parent_usage(fs_info, qgroup);
- 	return list_empty(&qgroup->members);
- }
- 
- /*
-- * Return true if we can delete the squota qgroup and false otherwise.
-- *
-- * Rules for whether we can delete:
-- *
-- * A subvolume qgroup can be removed iff the subvolume is fully deleted, which
-- * is iff there is 0 usage in the qgroup.
-- *
-- * A higher level qgroup can be removed iff it has no members.
-- * Note: We audit its usage to warn on inconsitencies without blocking deletion.
-+ * Because a shared extent can outlive its owning subvolume, we cannot delete a
-+ * subvol squota qgroup until all of the extents it owns are gone, even if the
-+ * subvolume itself has been deleted.
-  */
--static bool can_delete_squota_qgroup(struct btrfs_fs_info *fs_info, struct btrfs_qgroup *qgroup)
-+static bool can_delete_squota_subvol_qgroup(struct btrfs_fs_info *fs_info,
-+					    struct btrfs_qgroup *qgroup)
- {
- 	ASSERT(btrfs_qgroup_mode(fs_info) == BTRFS_QGROUP_MODE_SIMPLE);
--
--	if (btrfs_qgroup_level(qgroup->qgroupid) > 0) {
--		squota_check_parent_usage(fs_info, qgroup);
--		return can_delete_parent_qgroup(qgroup);
--	}
-+	ASSERT(btrfs_qgroup_level(qgroup->qgroupid) == 0);
- 
- 	return !(qgroup->rfer || qgroup->excl || qgroup->rfer_cmpr || qgroup->excl_cmpr);
- }
-@@ -1762,14 +1754,11 @@ static int can_delete_qgroup(struct btrfs_fs_info *fs_info, struct btrfs_qgroup
- {
- 	struct btrfs_key key;
- 	BTRFS_PATH_AUTO_FREE(path);
--
--	/* Since squotas cannot be inconsistent, they have special rules for deletion. */
--	if (btrfs_qgroup_mode(fs_info) == BTRFS_QGROUP_MODE_SIMPLE)
--		return can_delete_squota_qgroup(fs_info, qgroup);
-+	int ret;
- 
- 	/* For higher level qgroup, we can only delete it if it has no child. */
- 	if (btrfs_qgroup_level(qgroup->qgroupid))
--		return can_delete_parent_qgroup(qgroup);
-+		return can_delete_parent_qgroup(fs_info, qgroup);
- 
- 	/*
- 	 * For level-0 qgroups, we can only delete it if it has no subvolume
-@@ -1785,10 +1774,21 @@ static int can_delete_qgroup(struct btrfs_fs_info *fs_info, struct btrfs_qgroup
- 		return -ENOMEM;
- 
- 	/*
--	 * The @ret from btrfs_find_root() exactly matches our definition for
--	 * the return value, thus can be returned directly.
-+	 * Any subvol qgroup, regardless of mode, cannot be deleted if the
-+	 * subvol still exists.
-+	 */
-+	ret = btrfs_find_root(fs_info->tree_root, &key, path, NULL, NULL);
+-	fs_info->qgroup_enable_gen = trans->transid;
 +	/*
-+	 * btrfs_find_root returns <0 on error, 0 if found, and >0 if not,
-+	 * so the "found" and "error" cases match our desired return values.
- 	 */
--	return btrfs_find_root(fs_info->tree_root, &key, path, NULL, NULL);
-+	if (ret <= 0)
-+		return ret;
-+
-+	/* Squotas require additional checks, even if the subvol is deleted. */
-+	if (btrfs_qgroup_mode(fs_info) == BTRFS_QGROUP_MODE_SIMPLE)
-+		return can_delete_squota_subvol_qgroup(fs_info, qgroup);
-+	return 1;
- }
++	 * Set fs_info->qgroup_enable_gen and BTRFS_FS_SQUOTA_ENABLING
++	 * under the transaction handle. We want to ensure that all extents in
++	 * the next transaction definitely see them.
++	 */
++	if (simple) {
++		fs_info->qgroup_enable_gen = trans->transid + 1;
++		set_bit(BTRFS_FS_SQUOTA_ENABLING, &fs_info->flags);
++	}
  
- int btrfs_remove_qgroup(struct btrfs_trans_handle *trans, u64 qgroupid)
+ 	mutex_unlock(&fs_info->qgroup_ioctl_lock);
+ 	/*
+@@ -1228,9 +1242,15 @@ int btrfs_quota_enable(struct btrfs_fs_info *fs_info,
+ 	 */
+ 	ret = btrfs_commit_transaction(trans);
+ 	trans = NULL;
++
+ 	mutex_lock(&fs_info->qgroup_ioctl_lock);
+-	if (ret)
++	if (ret) {
++		if (simple) {
++			clear_bit(BTRFS_FS_SQUOTA_ENABLING, &fs_info->flags);
++			fs_info->qgroup_enable_gen = 0;
++		}
+ 		goto out_free_path;
++	}
+ 
+ 	/*
+ 	 * Set quota enabled flag after committing the transaction, to avoid
+@@ -1240,6 +1260,8 @@ int btrfs_quota_enable(struct btrfs_fs_info *fs_info,
+ 	spin_lock(&fs_info->qgroup_lock);
+ 	fs_info->quota_root = quota_root;
+ 	set_bit(BTRFS_FS_QUOTA_ENABLED, &fs_info->flags);
++	if (simple)
++		clear_bit(BTRFS_FS_SQUOTA_ENABLING, &fs_info->flags);
+ 	spin_unlock(&fs_info->qgroup_lock);
+ 
+ 	/* Skip rescan for simple qgroups. */
+@@ -4930,7 +4952,8 @@ int btrfs_record_squota_delta(struct btrfs_fs_info *fs_info,
+ 	u64 num_bytes = delta->num_bytes;
+ 	const int sign = (delta->is_inc ? 1 : -1);
+ 
+-	if (btrfs_qgroup_mode(fs_info) != BTRFS_QGROUP_MODE_SIMPLE)
++	if (btrfs_qgroup_mode(fs_info) != BTRFS_QGROUP_MODE_SIMPLE &&
++	    !test_bit(BTRFS_FS_SQUOTA_ENABLING, &fs_info->flags))
+ 		return 0;
+ 
+ 	if (!btrfs_is_fstree(root))
 -- 
 2.53.0
 
