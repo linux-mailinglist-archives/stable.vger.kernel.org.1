@@ -1,59 +1,60 @@
-Return-Path: <stable+bounces-255404-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-255797-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id eKKHHCuiGGqblggAu9opvQ
-	(envelope-from <stable+bounces-255404-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:14:35 +0200
+	id IBVZEpCmGGpolwgAu9opvQ
+	(envelope-from <stable+bounces-255797-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:33:20 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id DC4D65F823B
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:14:34 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 94B805F8F09
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:33:19 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 0881F3027728
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 20:06:56 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id A82B43237E3A
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 20:25:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3B592335566;
-	Thu, 28 May 2026 20:06:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AA265254B1F;
+	Thu, 28 May 2026 20:25:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cB1BCHvx"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MG+faoYB"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 154CC304BB3;
-	Thu, 28 May 2026 20:06:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 660A52E7379;
+	Thu, 28 May 2026 20:25:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779998815; cv=none; b=M6iZ6e8xfEIvyPvA3M0c0mAUJr7GxwZ8EzyqeQE8Np5RvY1SGg4sJ2ebE7czIGW7PJ4g174D0uZlgou/a3tqKOJyd1mYYFQBiS42FofOh3zpP5VDVJF2fOCpxEog41AmjUXk99Aa5/kgOXHq4JOCGDJS+yPTefMDkSsfZ49vPOw=
+	t=1779999910; cv=none; b=nEVIrg/BiBtnUCCO+cVbDKA7BOLpIi4FIdyyqInno5l1Ti6bntvCnszKYs6712uJzmBRlNheL6E3m/QYHeOju4XboQOQytY6vPo297NDE6XBKxpTxtGDzTHDaNt9L1c2BaoqT+c5Y5bPzAJiyBamWPj1UIpoapQokYhQI4TcUIE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779998815; c=relaxed/simple;
-	bh=3eVBVN5TCxLu4O5MmMB1QXny8+mKj5jMhzsZ/gOze0U=;
+	s=arc-20240116; t=1779999910; c=relaxed/simple;
+	bh=SJpzVoGPsgnDTmRnWykec5gP0bIEeuumCHMVjNmZIho=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=GKLjBfD3uKgXLltKlb1JFafJXuhkQW3gqk41tSCzmvQrXkYpn2Bqf2feMh9BYyVfTSxUk+BqTxaxHqKhygGMAThH5Zsz6xRvngDAW246/uARXN+wDQFu0jx3t7sUfh3YHk6YASmRuOpfq/PWsCka8Jmzjt+PqAATmkbS/FTSA4Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cB1BCHvx; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 746B91F000E9;
-	Thu, 28 May 2026 20:06:53 +0000 (UTC)
+	 MIME-Version; b=gSVm7WrMXaybCnSxqi5lHPV0Wo/UasWeTOi+koBjLISsMGdT22RjqneNVSzM0xGX7bRgZTDLwrFnpUa9hC2gnGNwrX22j+JDPJ2SCHX6Wr7cxw0VE9Akz1iWcBKUU+8pEZGHnuL4MJvo+QVRpAShSOGRn/+wn1tsZNYmGc12AQI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MG+faoYB; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7EF511F000E9;
+	Thu, 28 May 2026 20:25:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779998814;
-	bh=ZffXEbx7USnP9a2pCG5yvbb3/xvqXEXePhEPl8kJBS4=;
+	s=korg; t=1779999909;
+	bh=yKBywVXni1z+WiW8wAsEPg1NeebmLvBRm48fWrf4fwA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=cB1BCHvxXaXCpnjdkd3sZWWcrGb1SL2EdzzQslrSztCXMfjABoCCcm1gOn2QJUd9m
-	 v9cFDe06nCQICncqsmxIcgX4cKY/QU8vlRMRdXV3hD+39D7SyhDV6z310omFO2aDuD
-	 M3TYV8neEUPVbW5dGWgCcfi2B927+oMIl8WPxncI=
+	b=MG+faoYBSBWGHjWOHxe2FJzdBwkbo/lUNeiO/2ogwcmYgpTO1WpUq3tfOulq3GTYs
+	 G8DD23hSAAapSHSY1+S7jqR6NBrhtCLe0mc86kR+K27Qn5WVg9NInuPbjWDhYdprh2
+	 5Z5BKaHHniITMCyq3tByKFDXb49tjJSZopOrsTvA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Felix Gu <ustc.gu@gmail.com>,
-	Rob Clark <robin.clark@oss.qualcomm.com>,
+	Tristan Madani <tristan@talencesecurity.com>,
+	Florian Westphal <fw@strlen.de>,
+	Pablo Neira Ayuso <pablo@netfilter.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 7.0 306/461] drm/msm/adreno: Fix a reference leak in a6xx_gpu_init()
-Date: Thu, 28 May 2026 21:47:15 +0200
-Message-ID: <20260528194656.133330902@linuxfoundation.org>
+Subject: [PATCH 6.18 198/377] netfilter: x_tables: unregister the templates first
+Date: Thu, 28 May 2026 21:47:16 +0200
+Message-ID: <20260528194644.140266619@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260528194646.819809818@linuxfoundation.org>
-References: <20260528194646.819809818@linuxfoundation.org>
+In-Reply-To: <20260528194638.371537336@linuxfoundation.org>
+References: <20260528194638.371537336@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,94 +65,198 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	TO_DN_SOME(0.00)[];
-	TAGGED_FROM(0.00)[bounces-255404-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,oss.qualcomm.com,kernel.org];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	URIBL_MULTI_FAIL(0.00)[strlen.de:server fail,sea.lore.kernel.org:server fail,linuxfoundation.org:server fail,netfilter.org:server fail,talencesecurity.com:server fail];
+	TAGGED_FROM(0.00)[bounces-255797-lists,stable=lfdr.de];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	FROM_HAS_DN(0.00)[];
+	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	NEURAL_HAM(-0.00)[-0.999];
-	TAGGED_RCPT(0.00)[stable];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[6];
+	NEURAL_HAM(-0.00)[-1.000];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim,qualcomm.com:email]
-X-Rspamd-Queue-Id: DC4D65F823B
+	TAGGED_RCPT(0.00)[stable];
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim,talencesecurity.com:email,strlen.de:email,netfilter.org:email]
+X-Rspamd-Queue-Id: 94B805F8F09
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-7.0-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Felix Gu <ustc.gu@gmail.com>
+From: Florian Westphal <fw@strlen.de>
 
-[ Upstream commit e64bca63647db1d5518198d6c5ca2dbcc66b182b ]
+[ Upstream commit d338693d778579b676a61346849bebd892427158 ]
 
-In a6xx_gpu_init(), node is obtained via of_parse_phandle().
-While there was a manual of_node_put() at the end of the
-common path, several early error returns would bypass this call,
-resulting in a reference leak.
-Fix this by using the __free(device_node) cleanup handler to
-release the reference when the variable goes out of scope.
+When the module is going away we need to zap the template
+first.  Else there is a small race window where userspace
+could instantiate a new table after the pernet exit function
+has removed the current table.
 
-Fixes: 5a903a44a984 ("drm/msm/a6xx: Introduce GMU wrapper support")
-Signed-off-by: Felix Gu <ustc.gu@gmail.com>
-Patchwork: https://patchwork.freedesktop.org/patch/700661/
-Message-ID: <20260124-a6xx_gpu-v1-1-fa0c8b2dcfb1@gmail.com>
-Signed-off-by: Rob Clark <robin.clark@oss.qualcomm.com>
+Fixes: fdacd57c79b7 ("netfilter: x_tables: never register tables by default")
+Reported-by: Tristan Madani <tristan@talencesecurity.com>
+Reviewed-by: Tristan Madani <tristan@talencesecurity.com>
+Closes: https://lore.kernel.org/netfilter-devel/20260429175613.1459342-1-tristmd@gmail.com/
+Signed-off-by: Florian Westphal <fw@strlen.de>
+Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/msm/adreno/a6xx_gpu.c | 5 ++---
- 1 file changed, 2 insertions(+), 3 deletions(-)
+ net/ipv4/netfilter/arptable_filter.c   | 2 +-
+ net/ipv4/netfilter/iptable_filter.c    | 2 +-
+ net/ipv4/netfilter/iptable_mangle.c    | 2 +-
+ net/ipv4/netfilter/iptable_raw.c       | 2 +-
+ net/ipv4/netfilter/iptable_security.c  | 2 +-
+ net/ipv6/netfilter/ip6table_filter.c   | 2 +-
+ net/ipv6/netfilter/ip6table_mangle.c   | 2 +-
+ net/ipv6/netfilter/ip6table_raw.c      | 2 +-
+ net/ipv6/netfilter/ip6table_security.c | 2 +-
+ 9 files changed, 9 insertions(+), 9 deletions(-)
 
-diff --git a/drivers/gpu/drm/msm/adreno/a6xx_gpu.c b/drivers/gpu/drm/msm/adreno/a6xx_gpu.c
-index ae61c204898cd..02a776ac9ab43 100644
---- a/drivers/gpu/drm/msm/adreno/a6xx_gpu.c
-+++ b/drivers/gpu/drm/msm/adreno/a6xx_gpu.c
-@@ -2607,7 +2607,6 @@ static struct msm_gpu *a6xx_gpu_init(struct drm_device *dev)
- 	struct platform_device *pdev = priv->gpu_pdev;
- 	struct adreno_platform_config *config = pdev->dev.platform_data;
- 	const struct adreno_info *info = config->info;
--	struct device_node *node;
- 	struct a6xx_gpu *a6xx_gpu;
- 	struct adreno_gpu *adreno_gpu;
- 	struct msm_gpu *gpu;
-@@ -2629,7 +2628,8 @@ static struct msm_gpu *a6xx_gpu_init(struct drm_device *dev)
- 	adreno_gpu->registers = NULL;
+diff --git a/net/ipv4/netfilter/arptable_filter.c b/net/ipv4/netfilter/arptable_filter.c
+index 78cd5ee24448f..359d00d74095b 100644
+--- a/net/ipv4/netfilter/arptable_filter.c
++++ b/net/ipv4/netfilter/arptable_filter.c
+@@ -82,8 +82,8 @@ static int __init arptable_filter_init(void)
  
- 	/* Check if there is a GMU phandle and set it up */
--	node = of_parse_phandle(pdev->dev.of_node, "qcom,gmu", 0);
-+	struct device_node *node __free(device_node) =
-+		of_parse_phandle(pdev->dev.of_node, "qcom,gmu", 0);
- 	/* FIXME: How do we gracefully handle this? */
- 	BUG_ON(!node);
+ static void __exit arptable_filter_fini(void)
+ {
+-	unregister_pernet_subsys(&arptable_filter_net_ops);
+ 	xt_unregister_template(&packet_filter);
++	unregister_pernet_subsys(&arptable_filter_net_ops);
+ 	kfree(arpfilter_ops);
+ }
  
-@@ -2676,7 +2676,6 @@ static struct msm_gpu *a6xx_gpu_init(struct drm_device *dev)
- 		ret = a6xx_gmu_wrapper_init(a6xx_gpu, node);
- 	else
- 		ret = a6xx_gmu_init(a6xx_gpu, node);
--	of_node_put(node);
- 	if (ret) {
- 		a6xx_destroy(&(a6xx_gpu->base.base));
- 		return ERR_PTR(ret);
+diff --git a/net/ipv4/netfilter/iptable_filter.c b/net/ipv4/netfilter/iptable_filter.c
+index 3ab908b747951..595bfb492b1c1 100644
+--- a/net/ipv4/netfilter/iptable_filter.c
++++ b/net/ipv4/netfilter/iptable_filter.c
+@@ -101,8 +101,8 @@ static int __init iptable_filter_init(void)
+ 
+ static void __exit iptable_filter_fini(void)
+ {
+-	unregister_pernet_subsys(&iptable_filter_net_ops);
+ 	xt_unregister_template(&packet_filter);
++	unregister_pernet_subsys(&iptable_filter_net_ops);
+ 	kfree(filter_ops);
+ }
+ 
+diff --git a/net/ipv4/netfilter/iptable_mangle.c b/net/ipv4/netfilter/iptable_mangle.c
+index 385d945d8ebea..db90db7057cc4 100644
+--- a/net/ipv4/netfilter/iptable_mangle.c
++++ b/net/ipv4/netfilter/iptable_mangle.c
+@@ -135,8 +135,8 @@ static int __init iptable_mangle_init(void)
+ 
+ static void __exit iptable_mangle_fini(void)
+ {
+-	unregister_pernet_subsys(&iptable_mangle_net_ops);
+ 	xt_unregister_template(&packet_mangler);
++	unregister_pernet_subsys(&iptable_mangle_net_ops);
+ 	kfree(mangle_ops);
+ }
+ 
+diff --git a/net/ipv4/netfilter/iptable_raw.c b/net/ipv4/netfilter/iptable_raw.c
+index 0e7f53964d0af..b46a790917306 100644
+--- a/net/ipv4/netfilter/iptable_raw.c
++++ b/net/ipv4/netfilter/iptable_raw.c
+@@ -100,9 +100,9 @@ static int __init iptable_raw_init(void)
+ 
+ static void __exit iptable_raw_fini(void)
+ {
++	xt_unregister_template(&packet_raw);
+ 	unregister_pernet_subsys(&iptable_raw_net_ops);
+ 	kfree(rawtable_ops);
+-	xt_unregister_template(&packet_raw);
+ }
+ 
+ module_init(iptable_raw_init);
+diff --git a/net/ipv4/netfilter/iptable_security.c b/net/ipv4/netfilter/iptable_security.c
+index d885443cb2679..2b89adc1e5751 100644
+--- a/net/ipv4/netfilter/iptable_security.c
++++ b/net/ipv4/netfilter/iptable_security.c
+@@ -89,9 +89,9 @@ static int __init iptable_security_init(void)
+ 
+ static void __exit iptable_security_fini(void)
+ {
++	xt_unregister_template(&security_table);
+ 	unregister_pernet_subsys(&iptable_security_net_ops);
+ 	kfree(sectbl_ops);
+-	xt_unregister_template(&security_table);
+ }
+ 
+ module_init(iptable_security_init);
+diff --git a/net/ipv6/netfilter/ip6table_filter.c b/net/ipv6/netfilter/ip6table_filter.c
+index e8992693e14a0..9dcd4501fe800 100644
+--- a/net/ipv6/netfilter/ip6table_filter.c
++++ b/net/ipv6/netfilter/ip6table_filter.c
+@@ -100,8 +100,8 @@ static int __init ip6table_filter_init(void)
+ 
+ static void __exit ip6table_filter_fini(void)
+ {
+-	unregister_pernet_subsys(&ip6table_filter_net_ops);
+ 	xt_unregister_template(&packet_filter);
++	unregister_pernet_subsys(&ip6table_filter_net_ops);
+ 	kfree(filter_ops);
+ }
+ 
+diff --git a/net/ipv6/netfilter/ip6table_mangle.c b/net/ipv6/netfilter/ip6table_mangle.c
+index 8dd4cd0c47bd4..ce2cbce9e3ed3 100644
+--- a/net/ipv6/netfilter/ip6table_mangle.c
++++ b/net/ipv6/netfilter/ip6table_mangle.c
+@@ -128,8 +128,8 @@ static int __init ip6table_mangle_init(void)
+ 
+ static void __exit ip6table_mangle_fini(void)
+ {
+-	unregister_pernet_subsys(&ip6table_mangle_net_ops);
+ 	xt_unregister_template(&packet_mangler);
++	unregister_pernet_subsys(&ip6table_mangle_net_ops);
+ 	kfree(mangle_ops);
+ }
+ 
+diff --git a/net/ipv6/netfilter/ip6table_raw.c b/net/ipv6/netfilter/ip6table_raw.c
+index fc9f6754028f2..8af0f8bd036dc 100644
+--- a/net/ipv6/netfilter/ip6table_raw.c
++++ b/net/ipv6/netfilter/ip6table_raw.c
+@@ -98,8 +98,8 @@ static int __init ip6table_raw_init(void)
+ 
+ static void __exit ip6table_raw_fini(void)
+ {
+-	unregister_pernet_subsys(&ip6table_raw_net_ops);
+ 	xt_unregister_template(&packet_raw);
++	unregister_pernet_subsys(&ip6table_raw_net_ops);
+ 	kfree(rawtable_ops);
+ }
+ 
+diff --git a/net/ipv6/netfilter/ip6table_security.c b/net/ipv6/netfilter/ip6table_security.c
+index 4df14a9bae782..66018b169b010 100644
+--- a/net/ipv6/netfilter/ip6table_security.c
++++ b/net/ipv6/netfilter/ip6table_security.c
+@@ -88,8 +88,8 @@ static int __init ip6table_security_init(void)
+ 
+ static void __exit ip6table_security_fini(void)
+ {
+-	unregister_pernet_subsys(&ip6table_security_net_ops);
+ 	xt_unregister_template(&security_table);
++	unregister_pernet_subsys(&ip6table_security_net_ops);
+ 	kfree(sectbl_ops);
+ }
+ 
 -- 
 2.53.0
 
