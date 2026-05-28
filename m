@@ -1,59 +1,58 @@
-Return-Path: <stable+bounces-256194-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-256316-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id SOZ2MrGqGGpolwgAu9opvQ
-	(envelope-from <stable+bounces-256194-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:50:57 +0200
+	id mHYxCyusGGpolwgAu9opvQ
+	(envelope-from <stable+bounces-256316-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:57:15 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5C7DC5F9B18
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:50:57 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id C7C1E5F9E79
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:57:14 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 07F7E30E658E
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 20:43:40 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 57C7D30A38D5
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 20:49:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8C45433372A;
-	Thu, 28 May 2026 20:43:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 936CA318B96;
+	Thu, 28 May 2026 20:49:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="iBuPA4oD"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PxgY/BgL"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 489DD317164;
-	Thu, 28 May 2026 20:43:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 75F162F9D85;
+	Thu, 28 May 2026 20:49:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780001019; cv=none; b=J9QO/ubUxdq+B5eitDHfBCRu1UUjO7r3a/rKzwYhi21LoH8IHLYUB0Pi6uonX5AmN0KgG13GAC+oeDhhPZougGFPTh9KV9euTz1x7+J05R+9oA+H5dAiBZXoNi/Jbb4qE3O2fxEej7mzsHhpXaUUqSM65n8by1NtiOvlhqFckZI=
+	t=1780001358; cv=none; b=AkRIrHs2Bvhei1Vm10oazLUgt0V6amfqb1RcInuQZ6ec6egjU2S/DCBsmG9pr9UF3FYyGWSegKHNJqiHBBXgH9dIHv+StfdZfwaBVIdMhDq0d8kTF/e0Ck1lnfaVxg1yEE5HsVPEb1O/XwPLUtlxs6oClC/wgHhG0YCK41De/fw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780001019; c=relaxed/simple;
-	bh=e+eEr9MaJZwzYq4ApfWLzQud6lctDZmJOU69l8TDGt0=;
+	s=arc-20240116; t=1780001358; c=relaxed/simple;
+	bh=/GmQOk1jBYhOvsoge1CT5YWWO4aT1akMENOyrfgYRto=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=WyyG6ugWS222Yg4D5AW0XbgUyNHGOVlpR078wMhFrGXS9BRW/Q3TJdmI77GCiyBldPAqEHFhoIjY13oOWyJ4PdlNLE5Aw/XV0i9olH4tO5JTCz7bzBrSHpVuRkgYBZa8J77avS7jhctlta6ouAXgNGriwAQ8JhM1daDJ8Om15rA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=iBuPA4oD; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 579FC1F000E9;
-	Thu, 28 May 2026 20:43:37 +0000 (UTC)
+	 MIME-Version; b=aytrIKPopzOo4NSNbHRIiWXfnOKR7GOhb4F5+fUysuUWDp+9qENfAXgHaqWx4rCjuXV217bBFFx1j7M3uZsLWYezWQlqZSUcAo1cJiQ+riljLNUHUDRzto8sf3sz2E/gPHy7P7lwkDgP8X+eAGt3j/M08e7Rzw3cHFS4oFKsj0k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PxgY/BgL; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D48BD1F000E9;
+	Thu, 28 May 2026 20:49:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780001017;
-	bh=HQ+pwfgioWd2oFnqmAwP0MZpwuOOnw0kOLgvVkoFWMA=;
+	s=korg; t=1780001357;
+	bh=bfoc6Dc0K/oSC5kIOZFYcC2+o0z7DEMRjiCuIZVUSmM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=iBuPA4oDmnfkTg4ELyVXxAYy0hVdpRKHf8QMQk1/6Q+r3bwsKjAOUZaDlaCzGvQt0
-	 16KsB/nbwnt1H08mJxba9hPLq6DFRxoQ3N2DHoJLDaMAeOozpxRNs+bxgQ2Zg8EFOA
-	 Q/8Wn4QC2LkbmQ5XQGYQ+GHX40fjNfHf/Us2VlrY=
+	b=PxgY/BgL24rsHJiUUHv6CWGysNOocOropwratW14OHhKAzX0RNKfLKNKgVuCTyFcG
+	 dTMYAD9ZC2+g2QJSJ0gIuOFbi/DV1yvWIjYeTYLzFOvOOtenGMuKkW4MGyM4FwODKW
+	 fhNBy7U6uw/v2SFBPMDCIrF1h0xkNc4+plf0PlPw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Linus Walleij <linusw@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
+	Sudeep Holla <sudeep.holla@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 204/272] net: ethernet: cortina: Carry over frag counter
+Subject: [PATCH 6.6 098/186] firmware: arm_ffa: Check for NULL FF-A ID table while driver registration
 Date: Thu, 28 May 2026 21:49:38 +0200
-Message-ID: <20260528194634.954794853@linuxfoundation.org>
+Message-ID: <20260528194931.581046137@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260528194629.379955525@linuxfoundation.org>
-References: <20260528194629.379955525@linuxfoundation.org>
+In-Reply-To: <20260528194928.941004471@linuxfoundation.org>
+References: <20260528194928.941004471@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -68,7 +67,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
@@ -78,7 +77,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-256194-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-256316-lists,stable=lfdr.de];
 	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
@@ -87,128 +86,57 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	NEURAL_HAM(-0.00)[-1.000];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
+	RCPT_COUNT_FIVE(0.00)[5];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,sashiko.dev:url,linuxfoundation.org:mid,linuxfoundation.org:dkim]
-X-Rspamd-Queue-Id: 5C7DC5F9B18
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,msgid.link:url,linuxfoundation.org:mid,linuxfoundation.org:dkim]
+X-Rspamd-Queue-Id: C7C1E5F9E79
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Linus Walleij <linusw@kernel.org>
+From: Sudeep Holla <sudeep.holla@kernel.org>
 
-[ Upstream commit ebd8ec2b309e3a447851b456ccaf8fb39f3661e7 ]
+[ Upstream commit 0a5e695095c557d2380131b613dea4e8d90371be ]
 
-The gmac_rx() NAPI poll function assembles packets in an
-SKB from a ring buffer.
+The bus match callback assumes that every FF-A driver provides an
+id_table and dereferences it unconditionally. Enforce that contract at
+registration time so a buggy client driver cannot crash the bus during
+match.
 
-If the ring buffer gets completely emptied during a poll cycle,
-we exit gmac_rx(), but the packet is not yet completely
-assembled in the SKB, yet the fragment counter frag_nr is
-reset to zero on the next invocation.
-
-Solve this by making the RX fragment counter a part of the
-port struct, and carry it over between invocations.
-
-Reset the fragment counter only right after calling
-napi_gro_frags(), on error (after calling napi_free_frags())
-or if stopping the port.
-
-Reset it in some place where not strictly necessary just to
-emphasize what is going on.
-
-This was found by Sashiko during normal patch review.
-
-Fixes: 4d5ae32f5e1e ("net: ethernet: Add a driver for Gemini gigabit ethernet")
-Link: https://sashiko.dev/#/patchset/20260505-gemini-ethernet-fix-v2-1-997c31d06079%40kernel.org
-Signed-off-by: Linus Walleij <linusw@kernel.org>
-Link: https://patch.msgid.link/20260509-gemini-ethernet-fixes-v1-3-6c5d20ddc35b@kernel.org
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Fixes: 92743071464f ("firmware: arm_ffa: Ensure drivers provide a probe function")
+Link: https://patch.msgid.link/20260428-ffa_fixes-v2-1-8595ae450034@kernel.org
+Signed-off-by: Sudeep Holla <sudeep.holla@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/cortina/gemini.c | 9 ++++++++-
- 1 file changed, 8 insertions(+), 1 deletion(-)
+ drivers/firmware/arm_ffa/bus.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/net/ethernet/cortina/gemini.c b/drivers/net/ethernet/cortina/gemini.c
-index 8fee13bd056ad..2ce8191ad5007 100644
---- a/drivers/net/ethernet/cortina/gemini.c
-+++ b/drivers/net/ethernet/cortina/gemini.c
-@@ -122,6 +122,7 @@ struct gemini_ethernet_port {
- 	struct hrtimer		rx_coalesce_timer;
- 	unsigned int		rx_coalesce_nsecs;
- 	struct sk_buff		*rx_skb;
-+	unsigned int		rx_frag_nr;
+diff --git a/drivers/firmware/arm_ffa/bus.c b/drivers/firmware/arm_ffa/bus.c
+index d885e1381072a..31e61602e7702 100644
+--- a/drivers/firmware/arm_ffa/bus.c
++++ b/drivers/firmware/arm_ffa/bus.c
+@@ -24,6 +24,8 @@ static int ffa_device_match(struct device *dev, struct device_driver *drv)
  
- 	unsigned int		freeq_refill;
- 	struct gmac_txq		txq[TX_QUEUE_NUM];
-@@ -1444,6 +1445,7 @@ static unsigned int gmac_rx(struct net_device *netdev, unsigned int budget)
- 	unsigned short m = (1 << port->rxq_order) - 1;
- 	struct gemini_ethernet *geth = port->geth;
- 	void __iomem *ptr_reg = port->rxq_rwptr;
-+	unsigned int frag_nr = port->rx_frag_nr;
- 	struct sk_buff *skb = port->rx_skb;
- 	unsigned int frame_len, frag_len;
- 	struct gmac_rxdesc *rx = NULL;
-@@ -1457,7 +1459,6 @@ static unsigned int gmac_rx(struct net_device *netdev, unsigned int budget)
- 	unsigned short r, w;
- 	union dma_rwptr rw;
- 	dma_addr_t mapping;
--	int frag_nr = 0;
+ 	id_table = to_ffa_driver(drv)->id_table;
+ 	ffa_dev = to_ffa_dev(dev);
++	if (!id_table)
++		return 0;
  
- 	spin_lock_irqsave(&geth->irq_lock, flags);
- 	rw.bits32 = readl(ptr_reg);
-@@ -1497,6 +1498,7 @@ static unsigned int gmac_rx(struct net_device *netdev, unsigned int budget)
- 				napi_free_frags(&port->napi);
- 				port->stats.rx_dropped++;
- 				skb = NULL;
-+				frag_nr = 0;
- 			}
- 			continue;
- 		}
-@@ -1507,6 +1509,7 @@ static unsigned int gmac_rx(struct net_device *netdev, unsigned int budget)
- 				napi_free_frags(&port->napi);
- 				port->stats.rx_dropped++;
- 				skb = NULL;
-+				frag_nr = 0;
- 			}
+ 	while (!uuid_is_null(&id_table->uuid)) {
+ 		/*
+@@ -107,7 +109,7 @@ int ffa_driver_register(struct ffa_driver *driver, struct module *owner,
+ {
+ 	int ret;
  
- 			skb = gmac_skb_if_good_frame(port, word0, frame_len);
-@@ -1541,6 +1544,7 @@ static unsigned int gmac_rx(struct net_device *netdev, unsigned int budget)
- 		if (word3.bits32 & EOF_BIT) {
- 			napi_gro_frags(&port->napi);
- 			skb = NULL;
-+			frag_nr = 0;
- 			--budget;
- 		}
- 		continue;
-@@ -1549,6 +1553,7 @@ static unsigned int gmac_rx(struct net_device *netdev, unsigned int budget)
- 		if (skb) {
- 			napi_free_frags(&port->napi);
- 			skb = NULL;
-+			frag_nr = 0;
- 		}
+-	if (!driver->probe)
++	if (!driver->probe || !driver->id_table)
+ 		return -EINVAL;
  
- 		if (mapping)
-@@ -1558,6 +1563,7 @@ static unsigned int gmac_rx(struct net_device *netdev, unsigned int budget)
- 	}
- 
- 	port->rx_skb = skb;
-+	port->rx_frag_nr = frag_nr;
- 	writew(r, ptr_reg);
- 	return budget;
- }
-@@ -1887,6 +1893,7 @@ static int gmac_stop(struct net_device *netdev)
- 	gmac_stop_dma(port);
- 	napi_disable(&port->napi);
- 	port->rx_skb = NULL;
-+	port->rx_frag_nr = 0;
- 
- 	gmac_enable_irq(netdev, 0);
- 	gmac_cleanup_rxq(netdev);
+ 	driver->driver.bus = &ffa_bus_type;
 -- 
 2.53.0
 
