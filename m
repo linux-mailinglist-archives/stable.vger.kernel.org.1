@@ -1,60 +1,59 @@
-Return-Path: <stable+bounces-255506-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-256258-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id AHw4DzijGGrClggAu9opvQ
-	(envelope-from <stable+bounces-255506-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:19:04 +0200
+	id oHM0Om2rGGpolwgAu9opvQ
+	(envelope-from <stable+bounces-256258-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:54:05 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id C66D35F85E8
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:19:03 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9301A5F9D08
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:54:05 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id ABDFB314326B
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 20:11:44 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id DBD053094F56
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 20:46:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5772532ABC0;
-	Thu, 28 May 2026 20:11:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D12CD2459DD;
+	Thu, 28 May 2026 20:46:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NGUncy9b"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WsHXH6wa"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0D728335566;
-	Thu, 28 May 2026 20:11:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9A378329396;
+	Thu, 28 May 2026 20:46:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779999103; cv=none; b=N8tC5embb/LDDxE4tbCapJLjafeGA4nC4fn3c7FbQsof5KbLxjazJYO+weAJkk4PaaJpLk9hsu5sI+8SGHWQQwgmdYXyAj2D0i8L8VCknbUfXDIauc4DoAAx4ZUaApFHgc6cGLu77GjCtbcg12iCaf0V8kerBAZuqHVOYwCgXBA=
+	t=1780001196; cv=none; b=KAyANv9b67Z6u4fOtZPuZIv9aKu8tGjShLQd06VLTkIiNHa74ws1dzPZK67THz4f1IAY6ZcD5JH1nHPOTT4ZENcG7MxgLza8vZY+XEGRoNZ50YhiMbw+s9b2u0dzFrV9tlw1WiFH6VZI6LAoWjBPC7P+tKXjNbwpxvUt/eJCkVQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779999103; c=relaxed/simple;
-	bh=V92dPWHQuZxMsqoriJDdu6cbNW+2wP89rgjJZahK/FE=;
+	s=arc-20240116; t=1780001196; c=relaxed/simple;
+	bh=iJDdPfzWWVTKfvyPB7Y82FpbI/txfSOnJiG4jhO/foU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=Dy7tpqUQxLU2DZTE1SI6s3ACBUvTqmDB6I9hYe8LAfprvl9yvU9waZoBnQFAx6bz9URwBBLKxstSSYy1LO4MIN8gNCi2dcfwmy1Hw0VzMeV84dF4uB1YHJqUX9ytelQFXIMYmVRIXFkyPnwA2Mm1HZK2ElThSRfLZVmDMsOA84I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NGUncy9b; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 315371F000E9;
-	Thu, 28 May 2026 20:11:41 +0000 (UTC)
+	 MIME-Version; b=op6/FTrbIPolRoVkils383El3Rs+3OcqIu8EgEvjWasiXIzYz4vX/WA88g7nIVFtBwkbOO0AFb+HE5zMUd7/XW2ZIVG798uQ+xKK4PhDQ21ChzhnPcM5J4moKKuBKwY+dNANIct+hkHXg9nl8St1C3qWJPMY+iC5pSgbtSljDmA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WsHXH6wa; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 02D381F000E9;
+	Thu, 28 May 2026 20:46:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779999101;
-	bh=KZoLrTvFrkaqlSrPaG76O9XnPRzjUEanUksKK3agcJo=;
+	s=korg; t=1780001195;
+	bh=cHAHQNozU7SypzteL4wSuuJ33bdKtzzGY8+SW6SLgZY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=NGUncy9bR6y7XVjH31lgde4Cy7mJDzicj6S8v2mNBnzFotAw6IzOnMlGNRigi3uvX
-	 gCLCc+YsryGOAWdRkR02iA5vnDOiglrRtX4iIWUQKlCbqwnzIIqGUXGNhlTnTGVBEV
-	 yiU+iT1OxS4WzkTkg0Zt3YLP4mElXGn51z66GYok=
+	b=WsHXH6waRYvV0VskYMd2Cp0s2EwKpHQh+pWSFO8ZQOnq9eGF5AzqL9NN0lpygrtYm
+	 U3cVF+tlXLzVVsMgOqROJya9pXxryBZkopR5Th+eBCy2IZxKC4r/PepyeUvM/y5jvN
+	 HuoeQKyjtKzsEDJwLD5Q7yFTTI4za8jW5m0biHxA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
-	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 7.0 392/461] platform/x86: intel-vbtn: Check ACPI_HANDLE() against NULL
-Date: Thu, 28 May 2026 21:48:41 +0200
-Message-ID: <20260528194658.811405408@linuxfoundation.org>
+	Nicolai Buchwitz <nb@tipi-net.de>,
+	Florian Fainelli <florian.fainelli@broadcom.com>,
+	Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 6.6 042/186] net: bcmgenet: keep RBUF EEE/PM disabled
+Date: Thu, 28 May 2026 21:48:42 +0200
+Message-ID: <20260528194930.102983554@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260528194646.819809818@linuxfoundation.org>
-References: <20260528194646.819809818@linuxfoundation.org>
+In-Reply-To: <20260528194928.941004471@linuxfoundation.org>
+References: <20260528194928.941004471@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,90 +63,99 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-2.16 / 15.00];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-255506-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	TO_DN_SOME(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	RCVD_TLS_LAST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-256258-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_SEVEN(0.00)[7];
+	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,linuxfoundation.org:mid,linuxfoundation.org:dkim,intel.com:email,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
-X-Rspamd-Queue-Id: C66D35F85E8
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tipi-net.de:email,msgid.link:url,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,broadcom.com:email,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim]
+X-Rspamd-Queue-Id: 9301A5F9D08
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-7.0-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+From: Nicolai Buchwitz <nb@tipi-net.de>
 
-[ Upstream commit a9f305c5a355efeb240d406d378491d9eec02d07 ]
+commit 9a1730245e416d11ad5c0f2c100061d61cc43f60 upstream.
 
-Every platform driver can be forced to match a device that doesn't match
-its list of device IDs because of device_match_driver_override(), so
-platform drivers that rely on the existence of a device's ACPI companion
-object need to verify its presence.
+Setting RBUF_EEE_EN | RBUF_PM_EN in RBUF_ENERGY_CTRL breaks the RX
+path on GENET hardware once MAC EEE becomes active. RX traffic stops
+flowing while the link stays up and the usual descriptor/RX error
+counters remain quiet. In that state the MAC still accepts frames
+(rbuf_ovflow_cnt keeps climbing) but RBUF no longer forwards them to
+DMA, so rx_packets is no longer incremented at the netdev level. On
+some boards the corruption ends up as a paging fault in
+skb_release_data via bcmgenet_rx_poll on an LPI exit.
 
-Accordingly, add a requisite ACPI_HANDLE() check against NULL to the
-platform/x86 intel-vbtn driver.
+Reproduced on Pi 4B (BCM2711 + BCM54213PE) and confirmed by Florian
+Fainelli on an internal Broadcom 4908-family board with the same crash
+signature. RBUF_PM_EN is not publicly documented.
 
-Fixes: 26173179fae1 ("platform/x86: intel-vbtn: Eval VBDL after registering our notifier")
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
-Reviewed-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Link: https://patch.msgid.link/3426431.aeNJFYEL58@rafael.j.wysocki
-Reviewed-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
-Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+This shows up more often now that phy_support_eee() enables EEE by
+default, but it also affects older kernels as soon as TX LPI is
+turned on via ethtool, so it is not specific to recent changes.
+
+Always clear RBUF_EEE_EN | RBUF_PM_EN in bcmgenet_eee_enable_set so
+the bits stay off across resets. UMAC and TBUF setup is left alone so
+TX-side EEE keeps working.
+
+Link: https://github.com/raspberrypi/linux/issues/7304
+Fixes: 6ef398ea60d9 ("net: bcmgenet: add EEE support")
+Cc: stable@vger.kernel.org
+Signed-off-by: Nicolai Buchwitz <nb@tipi-net.de>
+Reviewed-by: Florian Fainelli <florian.fainelli@broadcom.com>
+Link: https://patch.msgid.link/20260520184320.652053-1-nb@tipi-net.de
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/platform/x86/intel/vbtn.c | 6 +++++-
- 1 file changed, 5 insertions(+), 1 deletion(-)
+ drivers/net/ethernet/broadcom/genet/bcmgenet.c |    9 ++++-----
+ 1 file changed, 4 insertions(+), 5 deletions(-)
 
-diff --git a/drivers/platform/x86/intel/vbtn.c b/drivers/platform/x86/intel/vbtn.c
-index 9ca87e7075822..874023c38fd15 100644
---- a/drivers/platform/x86/intel/vbtn.c
-+++ b/drivers/platform/x86/intel/vbtn.c
-@@ -275,12 +275,16 @@ static bool intel_vbtn_has_switches(acpi_handle handle, bool dual_accel)
+--- a/drivers/net/ethernet/broadcom/genet/bcmgenet.c
++++ b/drivers/net/ethernet/broadcom/genet/bcmgenet.c
+@@ -1326,13 +1326,12 @@ void bcmgenet_eee_enable_set(struct net_
+ 		reg &= ~(TBUF_EEE_EN | TBUF_PM_EN);
+ 	bcmgenet_writel(reg, priv->base + off);
  
- static int intel_vbtn_probe(struct platform_device *device)
- {
--	acpi_handle handle = ACPI_HANDLE(&device->dev);
- 	bool dual_accel, has_buttons, has_switches;
- 	struct intel_vbtn_priv *priv;
-+	acpi_handle handle;
- 	acpi_status status;
- 	int err;
+-	/* Do the same for thing for RBUF */
++	/* RBUF EEE/PM can break the RX path on GENET. Keep it disabled. */
+ 	reg = bcmgenet_rbuf_readl(priv, RBUF_ENERGY_CTRL);
+-	if (enable)
+-		reg |= RBUF_EEE_EN | RBUF_PM_EN;
+-	else
++	if (reg & (RBUF_EEE_EN | RBUF_PM_EN)) {
+ 		reg &= ~(RBUF_EEE_EN | RBUF_PM_EN);
+-	bcmgenet_rbuf_writel(priv, reg, RBUF_ENERGY_CTRL);
++		bcmgenet_rbuf_writel(priv, reg, RBUF_ENERGY_CTRL);
++	}
  
-+	handle = ACPI_HANDLE(&device->dev);
-+	if (!handle)
-+		return -ENODEV;
-+
- 	dual_accel = dual_accel_detect();
- 	has_buttons = acpi_has_method(handle, "VBDL");
- 	has_switches = intel_vbtn_has_switches(handle, dual_accel);
--- 
-2.53.0
-
+ 	if (!enable && priv->clk_eee_enabled) {
+ 		clk_disable_unprepare(priv->clk_eee);
 
 
 
