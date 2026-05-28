@@ -1,61 +1,59 @@
-Return-Path: <stable+bounces-255978-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-255733-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id KHEVJJanGGp+lwgAu9opvQ
-	(envelope-from <stable+bounces-255978-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:37:42 +0200
+	id +EV6HxSmGGoQlwgAu9opvQ
+	(envelope-from <stable+bounces-255733-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:31:16 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 513805F9261
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:37:42 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id D5E865F8DDC
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:31:15 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id DB86D303ED2E
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 20:33:32 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id F408B33140AE
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 20:22:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2F7AF33987F;
-	Thu, 28 May 2026 20:33:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 195F433F5BE;
+	Thu, 28 May 2026 20:22:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JT0p3got"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Mc5rMrb3"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ED3112C15AC;
-	Thu, 28 May 2026 20:33:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EA091324B2C;
+	Thu, 28 May 2026 20:22:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780000412; cv=none; b=R8QxPa7PBKzzjFB/aN/botoYzddSbgNOF1uH88INeUFCSk1Mrxb+3rmL68K1369pmCDaBc0yXwA3ZqLAxzedDSUqSez2e6hBqy94TJUZr2ywhdC2PIfQIIPIvu9BTSoDRK/iTLeOtIydcj42s6BSKujwUYfT0BG6ZUaz1/dbT5w=
+	t=1779999731; cv=none; b=PJiHh03Slk9bmEUHvwlZJL/FQi6324BBarGLveRjXWhUZvpCP/alJ48Ls8yGzKZg0KR4zAq5v49uhyPqIMJmFClrPjoGE0l0JSFekMpBkIl3KErWQSb+BeB4J3AVtk8rzJ8rnvg9+7xLKV/aXqeiIPqXl48EHIEU909ip1sZ87U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780000412; c=relaxed/simple;
-	bh=iAB3NO0zk1Jyz/6+g0mEJ4bhn/sZnibdxwME8yYbAXc=;
+	s=arc-20240116; t=1779999731; c=relaxed/simple;
+	bh=nfTWjgukfUtGvYDhqO4akyow4WDKTRhDa+DSAdcz38Q=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=WGs0zIL2Y5alaRBNQpjQxWI9C2Fq7gUqm8P42lo2XuVGD39ZBNLMVg4k2JFg+w1tQ3gov06Eip0MdPKW87IBIEcRGJEVF88hr9+kddH1Obi50DaOMtzql17imHnv81LrJqyF1gCg4x7M9S5jp96Cbp0MsOH6aWA/+x3Ed3jV/fc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JT0p3got; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 10A8E1F00ACF;
-	Thu, 28 May 2026 20:33:29 +0000 (UTC)
+	 MIME-Version; b=hW0z4XKTVophxb2p4j9R7pqUDH3M3ucnGx71UU3BZslkA9xRkgsjGUdoojcymt3TuoE5f826wabDCcOUe+X19ToRl9mrWpaVqzSDyljNLBUTXPV5NkcWmbwmGzSVtorkvI80mDOgmoPozwWB40QKsX4dI/pKEUHljt1DgvotIEQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Mc5rMrb3; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 531A91F00A3A;
+	Thu, 28 May 2026 20:22:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780000410;
-	bh=/3AQhB3tqfXYF2URNfd49+zbNGdvFt27JYdLT4IxXwg=;
+	s=korg; t=1779999730;
+	bh=2Fe+0yt1q6uX4qwrOzn8YJrR0kqW1tn2hhaLaspM+qY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=JT0p3got5FWp/ETGDuySD9KAAxXLWezlKOsV0MJd6ihp9F+hszhPVp4tZHt7T6oHC
-	 XICGrGhZdU3F+X71FKte5UMY7vmfun0DbmJVHEuAdzcATPfafcppJzhH6foqFXsbiA
-	 r3gqJ4uz9uB90lWtuhRSX0yVTyk/K0diDS4g4b3A=
+	b=Mc5rMrb3w8S1ckgwWjj9jnSZLHJby9e1sI9FSB3lA1KbfzHeSjBBHplOYtIBHRzub
+	 bJw5nEDMlHSRJEBc0ZiWk1Xt8Yq+NVhZqG+MHhPPAZo1TRtqWKXt2xIgvcCxq6+GFl
+	 h6GlksGVaBM3oDgmHU/elV7v0uydw7/WAKVGpAfo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jiri Olsa <jolsa@kernel.org>,
-	Andrii Nakryiko <andrii@kernel.org>,
-	"Steven Rostedt (Google)" <rostedt@goodmis.org>,
-	Gyokhan Kochmarla <gyokhan@amazon.de>,
+	Marek Vasut <marek.vasut+renesas@mailbox.org>,
+	Geert Uytterhoeven <geert+renesas@glider.be>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 035/272] x86/fgraph: Fix return_to_handler regs.rsp value
+Subject: [PATCH 6.18 171/377] ARM: dts: renesas: genmai: Drop superfluous cells
 Date: Thu, 28 May 2026 21:46:49 +0200
-Message-ID: <20260528194630.368142111@linuxfoundation.org>
+Message-ID: <20260528194643.384597667@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260528194629.379955525@linuxfoundation.org>
-References: <20260528194629.379955525@linuxfoundation.org>
+In-Reply-To: <20260528194638.371537336@linuxfoundation.org>
+References: <20260528194638.371537336@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,100 +64,74 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	TAGGED_FROM(0.00)[bounces-255733-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	TO_DN_SOME(0.00)[];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-255978-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TO_DN_SOME(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	RCPT_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[8];
+	TAGGED_RCPT(0.00)[stable,renesas];
 	MID_RHS_MATCH_FROM(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[amazon.de:email,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim,goodmis.org:email]
-X-Rspamd-Queue-Id: 513805F9261
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,glider.be:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,1.18.168.128:email]
+X-Rspamd-Queue-Id: D5E865F8DDC
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jiri Olsa <jolsa@kernel.org>
+From: Marek Vasut <marek.vasut+renesas@mailbox.org>
 
-commit 8bc11700e0d23d4fdb7d8d5a73b2e95de427cabc upstream.
+[ Upstream commit 714e1d6bba0e0abe5c87c8e189a35fa690540df4 ]
 
-The previous change (Fixes commit) messed up the rsp register value,
-which is wrong because it's already adjusted with FRAME_SIZE, we need
-the original rsp value.
+Drop superfluous address-cells and size-cells to fix DTC W=1 warning:
 
-This change does not affect fprobe current kernel unwind, the !perf_hw_regs
-path perf_callchain_kernel:
+    arch/arm/boot/dts/renesas/r7s72100-genmai.dts:28.17-55.4: Warning (avoid_unnecessary_addr_size): /flash@18000000: unnecessary #address-cells/#size-cells without "ranges", "dma-ranges" or child "reg" or "ranges" property
 
-        if (perf_hw_regs(regs)) {
-                if (perf_callchain_store(entry, regs->ip))
-                        return;
-                unwind_start(&state, current, regs, NULL);
-        } else {
-                unwind_start(&state, current, NULL, (void *)regs->sp);
-        }
-
-which uses pt_regs.sp as first_frame boundary (FRAME_SIZE shift makes
-no difference, unwind stil stops at the right frame).
-
-This change fixes the other path when we want to unwind directly from
-pt_regs sp/fp/ip state, which is coming in following change.
-
-Fixes: 20a0bc10272f ("x86/fgraph,bpf: Fix stack ORC unwind from kprobe_multi return probe")
-Signed-off-by: Jiri Olsa <jolsa@kernel.org>
-Signed-off-by: Andrii Nakryiko <andrii@kernel.org>
-Reviewed-by: Steven Rostedt (Google) <rostedt@goodmis.org>
-Link: https://lore.kernel.org/bpf/20260126211837.472802-2-jolsa@kernel.org
-Signed-off-by: Gyokhan Kochmarla <gyokhan@amazon.de>
+Signed-off-by: Marek Vasut <marek.vasut+renesas@mailbox.org>
+Fixes: 30e0a8cf886cb459 ("ARM: dts: renesas: genmai: Add FLASH nodes")
+Reviewed-by: Geert Uytterhoeven <geert+renesas@glider.be>
+Link: https://patch.msgid.link/20260327234244.91707-6-marek.vasut+renesas@mailbox.org
+Signed-off-by: Geert Uytterhoeven <geert+renesas@glider.be>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/x86/kernel/ftrace_64.S | 5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+ arch/arm/boot/dts/renesas/r7s72100-genmai.dts | 3 ---
+ 1 file changed, 3 deletions(-)
 
-diff --git a/arch/x86/kernel/ftrace_64.S b/arch/x86/kernel/ftrace_64.S
-index 8a3cff618692c..143fc62bf6f88 100644
---- a/arch/x86/kernel/ftrace_64.S
-+++ b/arch/x86/kernel/ftrace_64.S
-@@ -349,6 +349,9 @@ SYM_CODE_START(return_to_handler)
- 	UNWIND_HINT_UNDEFINED
- 	ANNOTATE_NOENDBR
+diff --git a/arch/arm/boot/dts/renesas/r7s72100-genmai.dts b/arch/arm/boot/dts/renesas/r7s72100-genmai.dts
+index 3c37565097145..da552a66615e0 100644
+--- a/arch/arm/boot/dts/renesas/r7s72100-genmai.dts
++++ b/arch/arm/boot/dts/renesas/r7s72100-genmai.dts
+@@ -34,9 +34,6 @@ flash@18000000 {
+ 		clocks = <&mstp9_clks R7S72100_CLK_SPIBSC0>;
+ 		power-domains = <&cpg_clocks>;
  
-+	/* Store original rsp for pt_regs.sp value. */
-+	movq %rsp, %rdi
-+
- 	/* Restore return_to_handler value that got eaten by previous ret instruction. */
- 	subq $8, %rsp
- 	UNWIND_HINT_FUNC
-@@ -359,7 +362,7 @@ SYM_CODE_START(return_to_handler)
- 	movq %rax, RAX(%rsp)
- 	movq %rdx, RDX(%rsp)
- 	movq %rbp, RBP(%rsp)
--	movq %rsp, RSP(%rsp)
-+	movq %rdi, RSP(%rsp)
- 	movq %rsp, %rdi
- 
- 	call ftrace_return_to_handler
+-		#address-cells = <1>;
+-		#size-cells = <1>;
+-
+ 		partitions {
+ 			compatible = "fixed-partitions";
+ 			#address-cells = <1>;
 -- 
 2.53.0
 
