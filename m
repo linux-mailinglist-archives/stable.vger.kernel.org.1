@@ -1,62 +1,61 @@
-Return-Path: <stable+bounces-256132-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-255889-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id +PCDOAuqGGpolwgAu9opvQ
-	(envelope-from <stable+bounces-256132-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:48:11 +0200
+	id gEFmIyOnGGp+lwgAu9opvQ
+	(envelope-from <stable+bounces-255889-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:35:47 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 583E45F9943
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:48:11 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0C0205F90D1
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:35:46 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id E8A8B31F15F7
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 20:40:49 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 35D3B30ED674
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 20:29:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 596A91DE4E0;
-	Thu, 28 May 2026 20:40:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6E7E9317163;
+	Thu, 28 May 2026 20:29:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HPZhVcJ0"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Dc86kzx+"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2D7CB2139C9;
-	Thu, 28 May 2026 20:40:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 498CC1EA65;
+	Thu, 28 May 2026 20:29:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780000846; cv=none; b=rau2Tku9MyZkKRUPn6o6T4O1w5H6e2oDA3+712gXJ6JWmBhIYx/QAkg7ZjHDke3J4gUoOyODCq/WdOnMqB+Gh6hgAJDS5BEH0uBBnzPUYfwBx5nX1Nr56ph/PGj0Yu5bNv/jGAA8KyqcPQERKhl1Jt9En9UM0xBaAhU2pfZ18pM=
+	t=1780000163; cv=none; b=tM9EpgWq3FubqrwTgOErLnwgHX687zA6YCcT/2go2JVBn6FJpqYqZVvi7KUclVuBEdRvwRRqH2ZpeWM9bZXNX9Z+xqRb2x5DUTD4NrMnH8vIv6hH+5WF4etjkHnnIeIjbsSoy8lyOxJgM9XBAMLWcpG9NV/981ApP2pRBdgwrSw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780000846; c=relaxed/simple;
-	bh=dMFi9yfCkeQPTcNDMLVHS8oo/Tq5y/AXBdV8Z7IcA68=;
+	s=arc-20240116; t=1780000163; c=relaxed/simple;
+	bh=5OGdFqo2oWZ5l713qJMvkpU0PWQmv9u8eYDs6x+3UDo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=sTaMqnrkcqd1PQ+3EEXUslBJ4aO32Ykjzx9oajSi2cgVuKbcZj3sDdkCLjtB/ogbTwVefBuj9rv48alZwSSMZCFIbbxMSnX/zUAcDruabl95SXcewIWdlGf8wyWldW/3anjW09ewQdn/OWAhKcGSMdekJ/gh6XKkl285xreqxoY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HPZhVcJ0; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 920131F000E9;
-	Thu, 28 May 2026 20:40:44 +0000 (UTC)
+	 MIME-Version:Content-Type; b=IkxBn4icO7NfKZEPlOfvF3EXTjhnpzsNtLXp0ptH3DSgU4qj3GSw1sRvcgFhQw1RpSnTFP9mfpnXlJUyyf+m3Vr5fzO/Z8oNEliArGShSstPAseJ4rlpNvLvmlGr3sy9mPIHftl4NhMl4DvZzj6ErWMeRzQ+cfkADVxDBYFTw7s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Dc86kzx+; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A84141F000E9;
+	Thu, 28 May 2026 20:29:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780000845;
-	bh=hB+HF7biLeQXMxgUsr79vuiKZ1z57fexK3IdZNhhEB4=;
+	s=korg; t=1780000162;
+	bh=uPCsTjpYo7jKb+NffYUyZegteReDiKpe2qVl9PI2lX8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=HPZhVcJ0fJU8LUYR06T9y5NGCU4AS/YNAVDXOJ9wCrcrLIUmlgZWnOuRLT1lrOoPp
-	 eOh7T8pakCZpWkrmN0G6roltgrHiqoudHzb9B0k9w6bahhBHh7ddAtC1Dz0usV0/J8
-	 YYKdLwb+RiE5M3+lx6kOAbuEIBPubJOSddH9Rs84=
+	b=Dc86kzx+fNx/phWqyikWwxPxr5HJ81T8ILCvCNv9hxs4AZ41/fblM8O4NzOXuA9pd
+	 Szc02Rtx6K83kLL5tpmEYshRIbBWrL5EszbwkXzpyYru/oJ3yz9DzxAwKPsHyySHIt
+	 Zne9s47oJVPH/sq3CyVrBWDWf8cDFRN9rIvysjww=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Julian Braha <julianbraha@gmail.com>,
-	Gautam Menghani <gautam@linux.ibm.com>,
-	Amit Machhiwal <amachhiw@linux.ibm.com>,
-	Harsh Prateek Bora <harshpb@linux.ibm.com>,
-	Madhavan Srinivasan <maddy@linux.ibm.com>,
+	Mitul Golani <mitulkumar.ajitkumar.golani@intel.com>,
+	Ankit Nautiyal <ankit.k.nautiyal@intel.com>,
+	=?UTF-8?q?Ville=20Syrj=C3=A4l=C3=A4?= <ville.syrjala@linux.intel.com>,
+	Tvrtko Ursulin <tursulin@ursulin.net>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 189/272] powerpc: fix dead default for GUEST_STATE_BUFFER_TEST
+Subject: [PATCH 6.18 325/377] drm/i915/dp: Fix readback for target_rr in Adaptive Sync SDP
 Date: Thu, 28 May 2026 21:49:23 +0200
-Message-ID: <20260528194634.565584244@linuxfoundation.org>
+Message-ID: <20260528194647.817068577@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260528194629.379955525@linuxfoundation.org>
-References: <20260528194629.379955525@linuxfoundation.org>
+In-Reply-To: <20260528194638.371537336@linuxfoundation.org>
+References: <20260528194638.371537336@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,89 +65,77 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	TAGGED_FROM(0.00)[bounces-255889-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,linux.ibm.com,kernel.org];
-	TAGGED_FROM(0.00)[bounces-256132-lists,stable=lfdr.de];
-	PRECEDENCE_BULK(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	MIME_TRACE(0.00)[0:+];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[9];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
+	FROM_HAS_DN(0.00)[];
 	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim,msgid.link:url]
-X-Rspamd-Queue-Id: 583E45F9943
+	NEURAL_HAM(-0.00)[-1.000];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	MID_RHS_MATCH_FROM(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_SEVEN(0.00)[8];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,intel.com:email,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,ursulin.net:email,linuxfoundation.org:mid,linuxfoundation.org:dkim]
+X-Rspamd-Queue-Id: 0C0205F90D1
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Julian Braha <julianbraha@gmail.com>
+From: Ankit Nautiyal <ankit.k.nautiyal@intel.com>
 
-[ Upstream commit aef656a0e6c01796190bb5bd2bdba1c644ed7811 ]
+[ Upstream commit f87abd0c6604fb6cc31cc86fc7ccc6a576924352 ]
 
-The GUEST_STATE_BUFFER_TEST config option should default
-to KUNIT_ALL_TESTS so that if all tests are enabled then
-it is included, but currently the 'default KUNIT_ALL_TESTS'
-statement is shadowed by 'def_tristate n',
-meaning that this second default statement is currently dead code.
+Correct the bit-shift logic to properly readback the 10 bit target_rr from
+DB3 and DB4.
 
-It looks to me like the commit
-6ccbbc33f06a ("KVM: PPC: Add helper library for Guest State Buffers")
-intended to set the default to KUNIT_ALL_TESTS, but mistakenly
-missed the def_tristate.
+v2: Align the style with readback for vtotal. (Ville)
 
-This dead code was found by kconfirm, a static analysis tool for Kconfig.
-
-Fixes: 6ccbbc33f06a ("KVM: PPC: Add helper library for Guest State Buffers")
-Signed-off-by: Julian Braha <julianbraha@gmail.com>
-Tested-by: Gautam Menghani <gautam@linux.ibm.com>
-Reviewed-by: Amit Machhiwal <amachhiw@linux.ibm.com>
-Reviewed-by: Harsh Prateek Bora <harshpb@linux.ibm.com>
-Signed-off-by: Madhavan Srinivasan <maddy@linux.ibm.com>
-Link: https://patch.msgid.link/20260405161545.161006-1-julianbraha@gmail.com
+Fixes: 12ea89291603 ("drm/i915/dp: Add Read/Write support for Adaptive Sync SDP")
+Cc: Mitul Golani <mitulkumar.ajitkumar.golani@intel.com>
+Cc: Ankit Nautiyal <ankit.k.nautiyal@intel.com>
+Signed-off-by: Ankit Nautiyal <ankit.k.nautiyal@intel.com>
+Reviewed-by: Ville Syrjälä <ville.syrjala@linux.intel.com>
+Link: https://patch.msgid.link/20260511123218.1589830-2-ankit.k.nautiyal@intel.com
+(cherry picked from commit f7abc4af2b19240a145a221461dfe756cc01d74a)
+Signed-off-by: Tvrtko Ursulin <tursulin@ursulin.net>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/powerpc/Kconfig.debug | 3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
+ drivers/gpu/drm/i915/display/intel_dp.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/arch/powerpc/Kconfig.debug b/arch/powerpc/Kconfig.debug
-index 0bbec4afc0d59..1e2b51280e602 100644
---- a/arch/powerpc/Kconfig.debug
-+++ b/arch/powerpc/Kconfig.debug
-@@ -83,11 +83,10 @@ config MSI_BITMAP_SELFTEST
- 	depends on DEBUG_KERNEL
+diff --git a/drivers/gpu/drm/i915/display/intel_dp.c b/drivers/gpu/drm/i915/display/intel_dp.c
+index 61f22275403bf..a44fbac1e5e27 100644
+--- a/drivers/gpu/drm/i915/display/intel_dp.c
++++ b/drivers/gpu/drm/i915/display/intel_dp.c
+@@ -4899,7 +4899,7 @@ int intel_dp_as_sdp_unpack(struct drm_dp_as_sdp *as_sdp,
+ 	as_sdp->length = sdp->sdp_header.HB3 & DP_ADAPTIVE_SYNC_SDP_LENGTH;
+ 	as_sdp->mode = sdp->db[0] & DP_ADAPTIVE_SYNC_SDP_OPERATION_MODE;
+ 	as_sdp->vtotal = (sdp->db[2] << 8) | sdp->db[1];
+-	as_sdp->target_rr = (u64)sdp->db[3] | ((u64)sdp->db[4] & 0x3);
++	as_sdp->target_rr = ((sdp->db[4] & 0x3) << 8) | sdp->db[3];
+ 	as_sdp->target_rr_divider = sdp->db[4] & 0x20 ? true : false;
  
- config GUEST_STATE_BUFFER_TEST
--	def_tristate n
-+	def_tristate KUNIT_ALL_TESTS
- 	prompt "Enable Guest State Buffer unit tests"
- 	depends on KUNIT
- 	depends on KVM_BOOK3S_HV_POSSIBLE
--	default KUNIT_ALL_TESTS
- 	help
- 	  The Guest State Buffer is a data format specified in the PAPR.
- 	  It is by hcalls to communicate the state of L2 guests between
+ 	return 0;
 -- 
 2.53.0
 
