@@ -1,59 +1,60 @@
-Return-Path: <stable+bounces-255922-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-255556-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id cPFcN5GnGGp+lwgAu9opvQ
-	(envelope-from <stable+bounces-255922-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:37:37 +0200
+	id OJ3/KoCiGGrClggAu9opvQ
+	(envelope-from <stable+bounces-255556-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:16:00 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 860C85F924C
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:37:37 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id 72ED05F8352
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:16:00 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 37564311F473
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 20:30:56 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id E881B3056B21
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 20:14:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A642F2F39B4;
-	Thu, 28 May 2026 20:30:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D8EAA33CE8A;
+	Thu, 28 May 2026 20:14:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lxfF9q01"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vpxomfFG"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 82F1B223328;
-	Thu, 28 May 2026 20:30:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B0BE23254A8;
+	Thu, 28 May 2026 20:14:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780000255; cv=none; b=gE4XDqybpIuhr0xQi69FXe+vXqdUukTpZsppSAYM5XWzk7r+gUVQlRToSNfzJPZd+RfbVoChzx/hLvhGgpBVqiREwVb5jK+gaib9VOPcX12RYdurNnwVnJF4vmgjs80hPTuyZd0v3fet9jfLse4w8ycBmd6r7B/Qk1pRke7DL18=
+	t=1779999244; cv=none; b=YXbMUkk6O2X6NgB4zq+CnG6ANTQnoxw7c6Qd2YcHzWGfFWtjmYnXnLDZp+XhltTrLaSOplHAqYTAPZKS4jNPBF3UO7RmM2BGm5wU0BWX9oKA7k/j0fxSzf8Mz+hxAdevK/g2pLW+xt6p9fW0AustMWi5jTeLWeIDuD7sGL3rTFo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780000255; c=relaxed/simple;
-	bh=/Ir/0y8UEOtPzS7iA39NjedKtIqvQYDGDWWq3bVynYo=;
+	s=arc-20240116; t=1779999244; c=relaxed/simple;
+	bh=I80hdjl6n5beXAFJClYf9TXOASO6qduk/xqUlfqKmhA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=dr9kRclVwHmJ0BljE5omyWIScS3wWDl9aB1CIrN0II+7MDTACrKhN7md1dLb5anUDMpdcTQhmTNAI718YIXsh54enYhdP70eKrL6piAltfnB+/zXhbKCN7cq9dVW4aNVN7EmKg+OWlh1r46FWvk1ZxYXhJWy952DstV5dhY9JK0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lxfF9q01; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E17CA1F000E9;
-	Thu, 28 May 2026 20:30:53 +0000 (UTC)
+	 MIME-Version; b=jH8v4ZtEsQv3IGFWw151Mb3lOyCACnzu0WInsjEtcaAVd7rO9UiPUtrpHualHtzl74yaJNUAOED+ZP3GdjAT7QKAi6nIbZicyDttojDOMtrn+FxQqsN7oRXNgFKODDfnSpMo80/RLY2BSfhMY21mHCaqmG5tSbdmHOcFiiT767A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vpxomfFG; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 13BCB1F000E9;
+	Thu, 28 May 2026 20:14:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780000254;
-	bh=djIJBSZUXYabq6hObHfh5l3eB26tiG2CenoN1xGTQWw=;
+	s=korg; t=1779999243;
+	bh=Ebn2TKDtijNATtSnETxZz2VSpy7BN9O0zpJNQeTqk/8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=lxfF9q01nV/DWotsWKz3w+CR/QOGWa5MuTmbZObwQnxuPMvP6XtlxBlr7E/0xhZzE
-	 dVieiMkDNZiyXA9G7kIJsKMcLdr88Nf82eGqv2okSvM/X1RixJl+f02K4XUzf6AZnl
-	 1RkMjFcONoLF5NnyYsfUFnZWunkiBUvvf3hEKc90=
+	b=vpxomfFGwL4Qsf12bROtehGHB9rSbrhGvWqpD80ggRDqsRnNmn4PTUF/hh5q+HuD8
+	 dAwb9KxTB3bCKJJUPqbWsde5odd4vnKA65TI9KdajVA8XyVsLMJcPr2YHwLvXB0mB9
+	 Am/KEwA4pSopbaZTcw3An/r8XX+rRYe8p4ZLaLVE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Cunlong Li <shenxiaogll@gmail.com>,
-	Tejun Heo <tj@kernel.org>,
+	Damien Le Moal <dlemoal@kernel.org>,
+	Christoph Hellwig <hch@lst.de>,
+	Jens Axboe <axboe@kernel.dk>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 350/377] cgroup: rstat: relax NMI guard after switch to try_cmpxchg
+Subject: [PATCH 7.0 459/461] block: avoid use-after-free in disk_free_zone_resources()
 Date: Thu, 28 May 2026 21:49:48 +0200
-Message-ID: <20260528194648.561803667@linuxfoundation.org>
+Message-ID: <20260528194700.827257554@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260528194638.371537336@linuxfoundation.org>
-References: <20260528194638.371537336@linuxfoundation.org>
+In-Reply-To: <20260528194646.819809818@linuxfoundation.org>
+References: <20260528194646.819809818@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,93 +67,95 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-255922-lists,stable=lfdr.de];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,kernel.org];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_TLS_LAST(0.00)[];
-	TO_DN_SOME(0.00)[];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	RCPT_COUNT_FIVE(0.00)[6];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-255556-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
 	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	MID_RHS_MATCH_FROM(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim]
-X-Rspamd-Queue-Id: 860C85F924C
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,lst.de:email,msgid.link:url,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,kernel.dk:email]
+X-Rspamd-Queue-Id: 72ED05F8352
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+7.0-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Cunlong Li <shenxiaogll@gmail.com>
+From: Damien Le Moal <dlemoal@kernel.org>
 
-[ Upstream commit 22572dbcd3486e6c4dced877125bbf50e4e24edf ]
+[ Upstream commit f6982769910ecddabdb5b8b9afdab0bb8b6668ac ]
 
-Commit 36df6e3dbd7e ("cgroup: make css_rstat_updated nmi safe") used
-this_cpu_cmpxchg() for the lockless insertion, and therefore required
-both ARCH_HAVE_NMI_SAFE_CMPXCHG and ARCH_HAS_NMI_SAFE_THIS_CPU_OPS in
-the NMI guard: on archs without the latter, this_cpu_cmpxchg() falls
-back to "local_irq_save() + plain cmpxchg", and local_irq_save()
-cannot mask NMIs.
+The function disk_update_zone_resources() may call
+disk_free_zone_resources() in case of error, and following this,
+blk_revalidate_disk_zones() will again calls disk_free_zone_resources() if
+disk_update_zone_resources() failed. If a zone worker thread is being used
+(which is the default for a rotational media zoned device),
+disk_free_zone_resources() will try to stop the zone worker thread twice
+because disk->zone_wplugs_worker is not reset to NULL when the worker
+thread is stopped the first time.
 
-Commit 3309b63a2281 ("cgroup: rstat: use LOCK CMPXCHG in
-css_rstat_updated") later replaced this_cpu_cmpxchg() with plain
-try_cmpxchg() to fix cross-CPU lockless-list corruption, but left the
-NMI guard untouched.  After that switch, css_rstat_updated() no longer
-performs any this_cpu_*() RMW operations and only relies on the arch
-having NMI-safe cmpxchg, so ARCH_HAS_NMI_SAFE_THIS_CPU_OPS is no
-longer required in the guard.
+In disk_free_zone_resources(), fix this by correctly clearing
+disk->zone_wplugs_worker to NULL when the worker thread is stopped.
 
-Relax the guard accordingly so that archs which have HAVE_NMI and
-ARCH_HAVE_NMI_SAFE_CMPXCHG but not ARCH_HAS_NMI_SAFE_THIS_CPU_OPS
-(e.g. sparc, powerpc on PPC64/BOOK3S) can benefit from the existing
-CONFIG_MEMCG_NMI_SAFETY_REQUIRES_ATOMIC path.  Without this, the css
-is never queued in NMI on those archs, and the atomics staged by
-account_{slab,kmem}_nmi_safe() are not drained by flush_nmi_stats().
+And while at it, since disk_free_zone_resources() is always called after a
+failed call to disk_update_zone_resources(), remove the unnecessary call
+to disk_free_zone_resources() in disk_update_zone_resources().
 
-Fixes: 3309b63a2281 ("cgroup: rstat: use LOCK CMPXCHG in css_rstat_updated")
-Signed-off-by: Cunlong Li <shenxiaogll@gmail.com>
-Signed-off-by: Tejun Heo <tj@kernel.org>
+Fixes: 1365b6904fd0 ("block: allow submitting all zone writes from a single context")
+Signed-off-by: Damien Le Moal <dlemoal@kernel.org>
+Reviewed-by: Christoph Hellwig <hch@lst.de>
+Link: https://patch.msgid.link/20260522115622.588535-1-dlemoal@kernel.org
+Signed-off-by: Jens Axboe <axboe@kernel.dk>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/cgroup/rstat.c | 7 +++----
+ block/blk-zoned.c | 7 +++----
  1 file changed, 3 insertions(+), 4 deletions(-)
 
-diff --git a/kernel/cgroup/rstat.c b/kernel/cgroup/rstat.c
-index ed60ba119c687..de816a43db9f0 100644
---- a/kernel/cgroup/rstat.c
-+++ b/kernel/cgroup/rstat.c
-@@ -81,11 +81,10 @@ void __css_rstat_updated(struct cgroup_subsys_state *css, int cpu)
- 	lockdep_assert_preemption_disabled();
+diff --git a/block/blk-zoned.c b/block/blk-zoned.c
+index af724ce650801..fe29fe4b6dccc 100644
+--- a/block/blk-zoned.c
++++ b/block/blk-zoned.c
+@@ -2016,8 +2016,10 @@ static void disk_set_zones_cond_array(struct gendisk *disk, u8 *zones_cond)
  
- 	/*
--	 * For archs withnot nmi safe cmpxchg or percpu ops support, ignore
--	 * the requests from nmi context.
-+	 * The lockless insertion below relies on NMI-safe cmpxchg;
-+	 * bail out in NMI on archs that don't provide it.
- 	 */
--	if ((!IS_ENABLED(CONFIG_ARCH_HAVE_NMI_SAFE_CMPXCHG) ||
--	     !IS_ENABLED(CONFIG_ARCH_HAS_NMI_SAFE_THIS_CPU_OPS)) && in_nmi())
-+	if (!IS_ENABLED(CONFIG_ARCH_HAVE_NMI_SAFE_CMPXCHG) && in_nmi())
- 		return;
+ void disk_free_zone_resources(struct gendisk *disk)
+ {
+-	if (disk->zone_wplugs_worker)
++	if (disk->zone_wplugs_worker) {
+ 		kthread_stop(disk->zone_wplugs_worker);
++		disk->zone_wplugs_worker = NULL;
++	}
+ 	WARN_ON_ONCE(!list_empty(&disk->zone_wplugs_list));
  
- 	rstatc = css_rstat_cpu(css, cpu);
+ 	if (disk->zone_wplugs_wq) {
+@@ -2150,9 +2152,6 @@ static int disk_update_zone_resources(struct gendisk *disk,
+ 	ret = queue_limits_commit_update(q, &lim);
+ 
+ unfreeze:
+-	if (ret)
+-		disk_free_zone_resources(disk);
+-
+ 	blk_mq_unfreeze_queue(q, memflags);
+ 
+ 	return ret;
 -- 
 2.53.0
 
