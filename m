@@ -1,64 +1,59 @@
-Return-Path: <stable+bounces-256016-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-255771-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id iO5/BBipGGrclwgAu9opvQ
-	(envelope-from <stable+bounces-256016-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:44:08 +0200
+	id qNn3Eu2nGGp+lwgAu9opvQ
+	(envelope-from <stable+bounces-255771-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:39:09 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 186185F96A9
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:44:07 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id CB9945F93A4
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:39:08 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 121A530829FE
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 20:35:20 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id E50CD33A9341
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 20:23:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A5C5A3368B5;
-	Thu, 28 May 2026 20:35:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7DC3622652D;
+	Thu, 28 May 2026 20:23:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bekBTyZA"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2bzRjXo+"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7C3902C15AC;
-	Thu, 28 May 2026 20:35:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 430AE1EA65;
+	Thu, 28 May 2026 20:23:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780000519; cv=none; b=aItGp+l6NP8VjLf+gzqiBmghImB38omZnZPCJsMkg/d/ojwc/yRxqnnf0XdIjByjA7QNue9pBVy8WbeX0M4pjQYYmR2YM1Fi4svHwKORb0rzCDrfHUw+grFss882acr69k+sFT727bneFsop0EYBIRnRyCPDvFhYQ05Nb71/h+E=
+	t=1779999837; cv=none; b=FyzhbeAZdx33YWjryIv8q13as4Mm4U49maKKaPI3wcZZD1OPl8xbdC8ZfOWskC04aRPQRDNxkk1I/bRkJuFUwuyG+rGNX/9PFZhXSZPZK/mR7qYWU+toBsutsvk32hCOL2zXTyMgooCLwp0jNcVGsqRpG8/4tbi6XsZz1FHaJZY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780000519; c=relaxed/simple;
-	bh=qyGd92kSmf59891HHlxlEqRN559/GVD+YQa0hz4j9b0=;
+	s=arc-20240116; t=1779999837; c=relaxed/simple;
+	bh=QhK6moksvlDQ1KRieidy3Z3NAogC7OIG/OgNHuaKhsw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=G43OUYN7KRXlA7kOdpUT3tXsDHSZUrm6cRHqEreiCalRKCffniFgy9BUzFN1wiNEQWnfCskwfEmAQs8+dadXkhEmVRJMHK07DmnpIllfDd1kpPpy/rYYoh8tO8rPFQvGaYCicIkwFZoucK8wEI61o+w3Kuj84bRru4MxrLkwfQw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bekBTyZA; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E29811F000E9;
-	Thu, 28 May 2026 20:35:17 +0000 (UTC)
+	 MIME-Version; b=MmOWgFPvf0K76IhVF+c9puoYewPsRkxY4tt8qS0LZmkpKmxSev7QonDfSv8nai2jK5+momZ7RjpOiPVwjv00XqCNXBtGGd/I7pmJp6p/o6qBVYIdrYe+0XBZ9Qe2SppixIUCRO4G0QnomRu5huXNY3NbPITqX6ST9rmCyZl78UM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2bzRjXo+; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A0C061F000E9;
+	Thu, 28 May 2026 20:23:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780000518;
-	bh=fENgo3y7G2F93BDvwkVBrBrCzlrnazApy5qiFwzhlvc=;
+	s=korg; t=1779999836;
+	bh=RXgfGRj//gmR5vPPnqMpbxHEw5czYJMxBDXsJlfRNlY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=bekBTyZAVZTxhtshXASVTUH+zC6dE24Zy782iJv6NdrI5XNMJlUDqYKF8+LztkbS4
-	 lMk7Nx7MzVjGbR9m404jkf66H2PJFkkwiHtEY1sujduJslYQFX6ibP94nEOhcfGDRr
-	 hoVnMJHej6L/TNedCW1N7HoobsOkIvRS/LCU8QG4=
+	b=2bzRjXo+phu/gtjZJ8wQS/6pct2bd59MbgyZZ5eVgqJdfsjTjYr0cs27ddv6ujmn1
+	 4gXBszz2rmNAIji6lj2Hpbw7H9wC3jm9zPgs+VrrcyBAz5HS27rob8qHVsceLp0/PR
+	 chs0dy0rXqZuF0xJXBRsaaowYo+F8NDhZ97CjT7o=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable@kernel.org,
-	Yuan Tan <yuantan098@gmail.com>,
-	Yifan Wu <yifanwucs@gmail.com>,
-	Juefei Pu <tomapufckgml@gmail.com>,
-	Xin Liu <bird@lzu.edu.cn>,
-	Zhengchuan Liang <zcliangcn@gmail.com>,
-	Ren Wei <n05ec@lzu.edu.cn>,
-	Pablo Neira Ayuso <pablo@netfilter.org>
-Subject: [PATCH 6.12 073/272] netfilter: ip6t_hbh: reject oversized option lists
+	Mohsin Bashir <hmohsin@meta.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.18 209/377] net: shaper: Reject reparenting of existing nodes
 Date: Thu, 28 May 2026 21:47:27 +0200
-Message-ID: <20260528194631.420665023@linuxfoundation.org>
+Message-ID: <20260528194644.454305586@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260528194629.379955525@linuxfoundation.org>
-References: <20260528194629.379955525@linuxfoundation.org>
+In-Reply-To: <20260528194638.371537336@linuxfoundation.org>
+References: <20260528194638.371537336@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -73,84 +68,122 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,kernel.org,gmail.com,lzu.edu.cn,netfilter.org];
-	TAGGED_FROM(0.00)[bounces-256016-lists,stable=lfdr.de];
-	PRECEDENCE_BULK(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
+	RCVD_TLS_LAST(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	TAGGED_FROM(0.00)[bounces-255771-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[11];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[netfilter.org:email,lzu.edu.cn:email,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim]
-X-Rspamd-Queue-Id: 186185F96A9
+	RCPT_COUNT_FIVE(0.00)[6];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim,msgid.link:url,meta.com:email]
+X-Rspamd-Queue-Id: CB9945F93A4
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Zhengchuan Liang <zcliangcn@gmail.com>
+From: Mohsin Bashir <hmohsin@meta.com>
 
-commit 4322dcde6b4173c2d8e8e6118ed290794263bcc8 upstream.
+[ Upstream commit a77d5a069d959dc45f5f472d48cba37d8cba0f1c ]
 
-struct ip6t_opts stores at most IP6T_OPTS_OPTSNR option descriptors,
-but hbh_mt6_check() does not reject larger optsnr values supplied from
-userspace.
+When an existing node-scope shaper is moved to a different parent
+via the group operation, the framework fails to update the leaves
+count on both the old and new parent shapers. Only newly created
+nodes (handle.id == NET_SHAPER_ID_UNSPEC) trigger the parent
+leaves increment at line 1039.
 
-Validate optsnr in the rule setup path so only match data that fits the
-fixed-size opts array can be installed. This follows the existing xtables
-pattern of rejecting invalid user-provided counts in checkentry() and
-keeps the packet matching path unchanged.
+This causes the parent's leaves counter to diverge from the
+actual number of children in the xarray. When the node is later
+deleted, pre_del_node() allocates an array sized by the stale
+leaves count, but the xarray iteration finds more children than
+expected, hitting the WARN_ON_ONCE guard and returning -EINVAL.
 
-`struct ip6t_opts` has a fixed `opts[IP6T_OPTS_OPTSNR]` array,
-where `IP6T_OPTS_OPTSNR` is 16, then off-by-one array access is possible:
+Rather than adding reparenting support with complex leaves count
+bookkeeping, reject group calls that attempt to change an existing
+node's parent. Updates to an existing node's rate or leaves under
+the same parent remain permitted. We expect that for any modification
+of the topology user should always create new groups and let the
+kernel garbage collect the leaf-less nodes.
 
-[  137.924693][ T8692] UBSAN: array-index-out-of-bounds in ../net/ipv6/netfilter/ip6t_hbh.c:110:29
-[  137.926167][ T8692] index 16 is out of range for type '__u16 [16]'
-
-Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
-Cc: stable@kernel.org
-Reported-by: Yuan Tan <yuantan098@gmail.com>
-Reported-by: Yifan Wu <yifanwucs@gmail.com>
-Reported-by: Juefei Pu <tomapufckgml@gmail.com>
-Reported-by: Xin Liu <bird@lzu.edu.cn>
-Signed-off-by: Zhengchuan Liang <zcliangcn@gmail.com>
-Signed-off-by: Ren Wei <n05ec@lzu.edu.cn>
-Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 5d5d4700e75d ("net-shapers: implement NL group operation")
+Signed-off-by: Mohsin Bashir <hmohsin@meta.com>
+Link: https://patch.msgid.link/20260506233745.111895-1-mohsin.bashr@gmail.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/ipv6/netfilter/ip6t_hbh.c |    4 ++++
- 1 file changed, 4 insertions(+)
+ net/shaper/shaper.c | 30 +++++++++++++++++++++++-------
+ 1 file changed, 23 insertions(+), 7 deletions(-)
 
---- a/net/ipv6/netfilter/ip6t_hbh.c
-+++ b/net/ipv6/netfilter/ip6t_hbh.c
-@@ -168,6 +168,10 @@ static int hbh_mt6_check(const struct xt
- 		pr_debug("unknown flags %X\n", optsinfo->invflags);
- 		return -EINVAL;
- 	}
-+	if (optsinfo->optsnr > IP6T_OPTS_OPTSNR) {
-+		pr_debug("too many supported opts specified\n");
-+		return -EINVAL;
-+	}
+diff --git a/net/shaper/shaper.c b/net/shaper/shaper.c
+index be9999ab62e39..e41a82241230d 100644
+--- a/net/shaper/shaper.c
++++ b/net/shaper/shaper.c
+@@ -964,15 +964,22 @@ static int __net_shaper_group(struct net_shaper_binding *binding,
+ 	int i, ret;
  
- 	if (optsinfo->flags & IP6T_OPTS_NSTRICT) {
- 		pr_debug("Not strict - not implemented");
+ 	if (node->handle.scope == NET_SHAPER_SCOPE_NODE) {
++		struct net_shaper *cur = NULL;
++
+ 		new_node = node->handle.id == NET_SHAPER_ID_UNSPEC;
+ 
+-		if (!new_node && !net_shaper_lookup(binding, &node->handle)) {
+-			/* The related attribute is not available when
+-			 * reaching here from the delete() op.
+-			 */
+-			NL_SET_ERR_MSG_FMT(extack, "Node shaper %d:%d does not exists",
+-					   node->handle.scope, node->handle.id);
+-			return -ENOENT;
++		if (!new_node) {
++			cur = net_shaper_lookup(binding, &node->handle);
++			if (!cur) {
++				/* The related attribute is not available
++				 * when reaching here from the delete() op.
++				 */
++				NL_SET_ERR_MSG_FMT(extack,
++						   "Node shaper %d:%d does not exist",
++						   node->handle.scope,
++						   node->handle.id);
++				return -ENOENT;
++			}
+ 		}
+ 
+ 		/* When unspecified, the node parent scope is inherited from
+@@ -986,6 +993,15 @@ static int __net_shaper_group(struct net_shaper_binding *binding,
+ 				return ret;
+ 		}
+ 
++		if (cur && net_shaper_handle_cmp(&cur->parent,
++						 &node->parent)) {
++			NL_SET_ERR_MSG_FMT(extack,
++					   "Cannot reparent node shaper %d:%d",
++					   node->handle.scope,
++					   node->handle.id);
++			return -EOPNOTSUPP;
++		}
++
+ 	} else {
+ 		net_shaper_default_parent(&node->handle, &node->parent);
+ 	}
+-- 
+2.53.0
+
 
 
 
