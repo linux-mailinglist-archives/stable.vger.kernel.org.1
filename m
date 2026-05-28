@@ -1,59 +1,59 @@
-Return-Path: <stable+bounces-255564-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-255895-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id GH66DiCkGGrClggAu9opvQ
-	(envelope-from <stable+bounces-255564-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:22:56 +0200
+	id UKuWOzqnGGpolwgAu9opvQ
+	(envelope-from <stable+bounces-255895-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:36:11 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9EAE55F8804
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:22:55 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 746885F9131
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:36:10 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id ED610320BCD2
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 20:14:27 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id A039430F5D70
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 20:29:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7762D33F5B4;
-	Thu, 28 May 2026 20:14:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3A7FB317163;
+	Thu, 28 May 2026 20:29:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Gp/60j4p"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TMrn+pCf"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 36719352019;
-	Thu, 28 May 2026 20:14:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0A8091EA65;
+	Thu, 28 May 2026 20:29:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779999267; cv=none; b=RTLI4uUdy5fmULaoaT5JtRcktB+D22kIAy2XuLuHp9DqSyNQOmFgD35wJEVkU9AENJIVMqOyI1eZv/c4Guqgfw9Y+0V6i8ijnz5KcMSBCR+O2+jih69VS0lu8b1WSV1lAVTO16vl2WQH4BFdtcIESPhkxmYZ0uEeS2VxD0XDC1o=
+	t=1780000180; cv=none; b=aP7QrRQFaRKkt4My09GtneBd+5Ce8W172PU0rDb89+5jEIUbaI/yH1/hn5m84RUKUFwuS8Di2ARl4XCVa8wdFa0/rw3yYnZywldoC+74x4G10aeHqpf7qoCL3um3HXxBKGZPpFzlZwoD3wk2wTUjWF7ZTlVDXfIa6wIICdZPh5g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779999267; c=relaxed/simple;
-	bh=xG0hKcA2v4wDloHWl7exaeKiUEYMRXAMB9PYVhKDxlw=;
+	s=arc-20240116; t=1780000180; c=relaxed/simple;
+	bh=jtsU0nGGCpMxaHmql99hZsMf1mO8CC+W2QNxQlS72fg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=jMn6mbKEuLLYlkgg4XJ977fV11fm2ItDpFyC3xmyVxM6OQuCAUJG0IDCxM8MyrITsNTjn+UXtsBXo4NN//NqdOegdibpGv4oTx/ABRtRD6eRjpcBSaZ4xHxw3H+tqwxUdo2fWXXcnKpscS3Xs3KmvXLZ/SeYnhG+rGFfhl8H4sE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Gp/60j4p; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 94B641F000E9;
-	Thu, 28 May 2026 20:14:25 +0000 (UTC)
+	 MIME-Version:Content-Type; b=B+cnJjZBC4pwt6DPqT4m4c6cQOzEk+RW1gaujmXm+mJ/Ah72hAudcFTybAdtJADZnmyv+meovzUxk1xQomDJBnN6jsRQJ/bkkn0W1FskvOA7wUfWtHmu0X44rUg6cKHEQTM4fcnA160crVvGAg/X2zAYx6Kzx+Z/KRy18cQHxBA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TMrn+pCf; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6A5B11F000E9;
+	Thu, 28 May 2026 20:29:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779999266;
-	bh=u32zkViXeG+/vcX0vz9ODeNtpEZ9qSL7gHzj6LXIRQE=;
+	s=korg; t=1780000178;
+	bh=9qJdyN7Ax1oL1ero/jvpOz++zPX2L7R2D9oRFZFipGM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=Gp/60j4pNhiCouslB7Z/HfWysGogUTeH+g1KveqWBRCHKoSqG1SPj8EFZNmGym+XK
-	 8SEZ/6cheYihk/ohqj178JVZue3ndmxyJ/6l5ckPrVijLjT3xxuDqY2GKDTtghXTlV
-	 2UYbEXt0ahaXeof09dxNSiZ/f2WTcoPOuRAVf9zo=
+	b=TMrn+pCfNuqUvp2ADV6+kSZS+caTphuO101rkHv3n66YSnpHF3RC/Bni3+riOVVWa
+	 b2DhMYUCweP4GjGWVIPoPHBKmUmVYBrR4kd35TSDz/juyar4BcMr61bKt426WAHolu
+	 SYKTX2/qe/CRiMxCCU8fg+AvHRQZF5wLVDTiQSf8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Linus Walleij <linusw@kernel.org>,
-	Bartosz Golaszewski <bartosz.golaszewski@oss.qualcomm.com>,
+	Oliver White <oliverjwhite07@gmail.com>,
+	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 7.0 438/461] gpio: aggregator: stop using dev-sync-probe
-Date: Thu, 28 May 2026 21:49:27 +0200
-Message-ID: <20260528194700.209314430@linuxfoundation.org>
+Subject: [PATCH 6.18 330/377] platform/surface: aggregator_registry: omit battery & AC nodes on Surface Laptop 7
+Date: Thu, 28 May 2026 21:49:28 +0200
+Message-ID: <20260528194647.962934547@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260528194646.819809818@linuxfoundation.org>
-References: <20260528194646.819809818@linuxfoundation.org>
+In-Reply-To: <20260528194638.371537336@linuxfoundation.org>
+References: <20260528194638.371537336@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,195 +63,78 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
+	TAGGED_FROM(0.00)[bounces-255895-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-255564-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,linux.intel.com,kernel.org];
 	TO_DN_SOME(0.00)[];
+	MIME_TRACE(0.00)[0:+];
 	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	MID_RHS_MATCH_FROM(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
 	RCPT_COUNT_FIVE(0.00)[6];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[qualcomm.com:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,msgid.link:url]
-X-Rspamd-Queue-Id: 9EAE55F8804
+	DBL_BLOCKED_OPENRESOLVER(0.00)[intel.com:email,msgid.link:url,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim]
+X-Rspamd-Queue-Id: 746885F9131
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-7.0-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Bartosz Golaszewski <bartosz.golaszewski@oss.qualcomm.com>
+From: Oliver White <oliverjwhite07@gmail.com>
 
-[ Upstream commit 3a27f40b457053e6112a63d14590e4a3ff553b44 ]
+[ Upstream commit 0488073a6c84571dd3cffe581a4a73a5fceb099d ]
 
-dev-err-probe is an overengineered solution to a simple problem. Use a
-combination of wait_for_probe() and device_is_bound() to synchronously
-wait for the platform device to probe.
+Surface Laptop 7 exposes battery and AC status via Qualcomm PMIC GLINK
+qcom_battmgr. Registering the standard SSAM battery and AC client
+devices on this platform causes duplicate power-supply devices to
+appear.
 
-Reviewed-by: Linus Walleij <linusw@kernel.org>
-Link: https://patch.msgid.link/20260327-gpio-kill-dev-sync-probe-v1-2-efac254f1a1d@oss.qualcomm.com
-Signed-off-by: Bartosz Golaszewski <bartosz.golaszewski@oss.qualcomm.com>
-Stable-dep-of: 61fef83f239e ("gpio: aggregator: remove the software node when deactivating the aggregator")
+Drop the SSAM battery and AC nodes from the Surface Laptop 7 registry
+group so that only the qcom_battmgr power supplies are instantiated.
+
+Fixes: b27622f13172 ("platform/surface: Add OF support")
+Signed-off-by: Oliver White <oliverjwhite07@gmail.com>
+Link: https://patch.msgid.link/20260409034347.17381-1-oliverjwhite07@gmail.com
+Reviewed-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpio/Kconfig           |  1 -
- drivers/gpio/gpio-aggregator.c | 38 +++++++++++++++++++---------------
- 2 files changed, 21 insertions(+), 18 deletions(-)
+ drivers/platform/surface/surface_aggregator_registry.c | 2 --
+ 1 file changed, 2 deletions(-)
 
-diff --git a/drivers/gpio/Kconfig b/drivers/gpio/Kconfig
-index b45fb799e36c1..e63096002e92d 100644
---- a/drivers/gpio/Kconfig
-+++ b/drivers/gpio/Kconfig
-@@ -1986,7 +1986,6 @@ menu "Virtual GPIO drivers"
- config GPIO_AGGREGATOR
- 	tristate "GPIO Aggregator"
- 	select CONFIGFS_FS
--	select DEV_SYNC_PROBE
- 	help
- 	  Say yes here to enable the GPIO Aggregator, which provides a way to
- 	  aggregate existing GPIO lines into a new virtual GPIO chip.
-diff --git a/drivers/gpio/gpio-aggregator.c b/drivers/gpio/gpio-aggregator.c
-index 6c84ca3ff1b64..b53230065f50e 100644
---- a/drivers/gpio/gpio-aggregator.c
-+++ b/drivers/gpio/gpio-aggregator.c
-@@ -32,8 +32,6 @@
- #include <linux/gpio/forwarder.h>
- #include <linux/gpio/machine.h>
- 
--#include "dev-sync-probe.h"
--
- #define AGGREGATOR_MAX_GPIOS 512
- #define AGGREGATOR_LEGACY_PREFIX "_sysfs"
- 
-@@ -42,7 +40,7 @@
-  */
- 
- struct gpio_aggregator {
--	struct dev_sync_probe_data probe_data;
-+	struct platform_device *pdev;
- 	struct config_group group;
- 	struct gpiod_lookup_table *lookups;
- 	struct mutex lock;
-@@ -135,7 +133,7 @@ static bool gpio_aggregator_is_active(struct gpio_aggregator *aggr)
- {
- 	lockdep_assert_held(&aggr->lock);
- 
--	return aggr->probe_data.pdev && platform_get_drvdata(aggr->probe_data.pdev);
-+	return aggr->pdev && platform_get_drvdata(aggr->pdev);
- }
- 
- /* Only aggregators created via legacy sysfs can be "activating". */
-@@ -143,7 +141,7 @@ static bool gpio_aggregator_is_activating(struct gpio_aggregator *aggr)
- {
- 	lockdep_assert_held(&aggr->lock);
- 
--	return aggr->probe_data.pdev && !platform_get_drvdata(aggr->probe_data.pdev);
-+	return aggr->pdev && !platform_get_drvdata(aggr->pdev);
- }
- 
- static size_t gpio_aggregator_count_lines(struct gpio_aggregator *aggr)
-@@ -909,6 +907,7 @@ static int gpio_aggregator_activate(struct gpio_aggregator *aggr)
- {
- 	struct platform_device_info pdevinfo;
- 	struct gpio_aggregator_line *line;
-+	struct platform_device *pdev;
- 	struct fwnode_handle *swnode;
- 	unsigned int n = 0;
- 	int ret = 0;
-@@ -962,12 +961,23 @@ static int gpio_aggregator_activate(struct gpio_aggregator *aggr)
- 
- 	gpiod_add_lookup_table(aggr->lookups);
- 
--	ret = dev_sync_probe_register(&aggr->probe_data, &pdevinfo);
--	if (ret)
-+	pdev = platform_device_register_full(&pdevinfo);
-+	if (IS_ERR(pdev)) {
-+		ret = PTR_ERR(pdev);
- 		goto err_remove_lookup_table;
-+	}
- 
-+	wait_for_device_probe();
-+	if (!device_is_bound(&pdev->dev)) {
-+		ret = -ENXIO;
-+		goto err_unregister_pdev;
-+	}
-+
-+	aggr->pdev = pdev;
- 	return 0;
- 
-+err_unregister_pdev:
-+	platform_device_unregister(pdev);
- err_remove_lookup_table:
- 	gpiod_remove_lookup_table(aggr->lookups);
- 	kfree(aggr->lookups->dev_id);
-@@ -981,7 +991,8 @@ static int gpio_aggregator_activate(struct gpio_aggregator *aggr)
- 
- static void gpio_aggregator_deactivate(struct gpio_aggregator *aggr)
- {
--	dev_sync_probe_unregister(&aggr->probe_data);
-+	platform_device_unregister(aggr->pdev);
-+	aggr->pdev = NULL;
- 	gpiod_remove_lookup_table(aggr->lookups);
- 	kfree(aggr->lookups->dev_id);
- 	kfree(aggr->lookups);
-@@ -1145,7 +1156,7 @@ gpio_aggregator_device_dev_name_show(struct config_item *item, char *page)
- 
- 	guard(mutex)(&aggr->lock);
- 
--	pdev = aggr->probe_data.pdev;
-+	pdev = aggr->pdev;
- 	if (pdev)
- 		return sysfs_emit(page, "%s\n", dev_name(&pdev->dev));
- 
-@@ -1322,7 +1333,6 @@ gpio_aggregator_make_group(struct config_group *group, const char *name)
- 		return ERR_PTR(ret);
- 
- 	config_group_init_type_name(&aggr->group, name, &gpio_aggregator_device_type);
--	dev_sync_probe_init(&aggr->probe_data);
- 
- 	return &aggr->group;
- }
-@@ -1471,12 +1481,6 @@ static ssize_t gpio_aggregator_new_device_store(struct device_driver *driver,
- 	scnprintf(name, sizeof(name), "%s.%d", AGGREGATOR_LEGACY_PREFIX, aggr->id);
- 	config_group_init_type_name(&aggr->group, name, &gpio_aggregator_device_type);
- 
--	/*
--	 * Since the device created by sysfs might be toggled via configfs
--	 * 'live' attribute later, this initialization is needed.
--	 */
--	dev_sync_probe_init(&aggr->probe_data);
--
- 	/* Expose to configfs */
- 	res = configfs_register_group(&gpio_aggregator_subsys.su_group,
- 				      &aggr->group);
-@@ -1495,7 +1499,7 @@ static ssize_t gpio_aggregator_new_device_store(struct device_driver *driver,
- 		goto remove_table;
- 	}
- 
--	aggr->probe_data.pdev = pdev;
-+	aggr->pdev = pdev;
- 	module_put(THIS_MODULE);
- 	return count;
- 
+diff --git a/drivers/platform/surface/surface_aggregator_registry.c b/drivers/platform/surface/surface_aggregator_registry.c
+index a594d5fcfcfd1..d29158faba3e8 100644
+--- a/drivers/platform/surface/surface_aggregator_registry.c
++++ b/drivers/platform/surface/surface_aggregator_registry.c
+@@ -295,8 +295,6 @@ static const struct software_node *ssam_node_group_sl6[] = {
+ /* Devices for Surface Laptop 7. */
+ static const struct software_node *ssam_node_group_sl7[] = {
+ 	&ssam_node_root,
+-	&ssam_node_bat_ac,
+-	&ssam_node_bat_main,
+ 	&ssam_node_tmp_perf_profile_with_fan,
+ 	&ssam_node_fan_speed,
+ 	&ssam_node_hid_sam_keyboard,
 -- 
 2.53.0
 
