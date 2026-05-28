@@ -1,61 +1,61 @@
-Return-Path: <stable+bounces-255789-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-256059-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 4CkIJQKmGGrClggAu9opvQ
-	(envelope-from <stable+bounces-255789-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:30:58 +0200
+	id sJ/LOWapGGrclwgAu9opvQ
+	(envelope-from <stable+bounces-256059-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:45:26 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2D4E15F8DC7
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:30:58 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9AC6A5F9797
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:45:26 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id D345B312A709
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 20:24:53 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 3902A3114102
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 20:37:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E589D3002A0;
-	Thu, 28 May 2026 20:24:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 59EC41FC0EA;
+	Thu, 28 May 2026 20:37:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JnYpckib"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HT5pwHNU"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B0FB32FD7C3;
-	Thu, 28 May 2026 20:24:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BBB7130C343;
+	Thu, 28 May 2026 20:37:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779999887; cv=none; b=VnNxvLgzOpF7o/+Njlt/ynx7VjwKNZtiTlb6hGQSG9mfYiyEanqg1t01Nt4F/PFDoP1UuZhql2fdDsQy1/jXqxC1N6m3dLvrK/7qNGa73NFHwTtvGTAh/i9mNCg4ZTtlLo4bksRkDjdagfnOcBeLVX7I8nsQnyLEQj43bgcuk2U=
+	t=1780000640; cv=none; b=Ea6rQlQa8/54Afh6ZgAGtB71wosva6Oy+knsg5qGs5LyBYFzAwLiqlWAN85X9i5aMOAQ5EaJkTJL6G0tO9hh8cphrzdKdl4DFsehdNkJ7l8zuJhoCxFb1kayAt2vQbnpADv0Yj63prNpm/b40CTjv74mJSKjTkMpNgd05b3fea8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779999887; c=relaxed/simple;
-	bh=m/Uk/DJlaoAt7MtKwPDu4IGHpp8MIkF4PgVummuZpas=;
+	s=arc-20240116; t=1780000640; c=relaxed/simple;
+	bh=f9Ua00AYRq1C+T5EwhJdmaDNC4vyX63uEjuF5PLxHww=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=kLpVEh/wryh7MMhJcN7+7TVKL48TAgxi2904wGMVlpt3RJR06oxncd0oMs3XzC4lJEMqkZvvCL5qPanB256FAYIanytdKVgzaY/btfy9jHg7m2EncSxdkyKssJvWtdx42owvYdMfME+fYn0dNJna3MXDPoSnw+8hJq9GKe9XHrg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JnYpckib; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DFAF91F000E9;
-	Thu, 28 May 2026 20:24:45 +0000 (UTC)
+	 MIME-Version; b=ocNFt/rZRxoPKSehOOId3aqxAlO4ueDeDlJkNNyxjUHb2NxCfLSb2zoL65HuLcwhY6FGDkSLzaUmzcVpCcV7Uqf8QxsPiAdWbjZ1pQ+9d+hG2ZSchFkb99WUbYEs0GpacCH07PsZCpo/r2TDCNgkCpUbi+ZnN/sVk/uN2355izo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HT5pwHNU; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C7EB21F000E9;
+	Thu, 28 May 2026 20:37:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779999886;
-	bh=MOS/FMVOjUyWQUwK5zCrR66sOV412kc9OmbFN6HkJuk=;
+	s=korg; t=1780000639;
+	bh=S0Q5l8NzfOozXxJ+tXT5vQ3J9U5ZPtJCT44BvzVrkxU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=JnYpckibo7eRTx73nt5lBJo3H94GaOhlTHdhoUxig6XvoI4/sObhLIcmRol7urwWS
-	 17zkPN4nav/uRW8kAW1gogbxH0piZxHHhlnYMqgNrY2Lx1XrCzcxsx6kIOFlRmmXPX
-	 tlUbImd5ZwdSjiBQzl3SvfRiBTAd3e4tXtsYYy7A=
+	b=HT5pwHNUnngPV53Gprxdi58gwqyF0jaIR1vEYasWQWjsaOPAy0FssTbaMBjgFzfIU
+	 QRg9GhGRmN/gxu0/6GkdavDn8Gt+1Th3EFN6ixMmEb2hBBwemnUr8uwUhUFALJTWE5
+	 HIzc36SZUgTecQBKay7xrcpE3Bd4HkXDeAzdj9Z8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
-	Steven Rostedt <rostedt@goodmis.org>,
-	Jiayuan Chen <jiayuan.chen@linux.dev>,
-	Thomas Gleixner <tglx@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 225/377] irq_work: Fix use-after-free in irq_work_single() on PREEMPT_RT
+	Michael Bommarito <michael.bommarito@gmail.com>,
+	Simon Horman <horms@kernel.org>,
+	Rafal Romanowski <rafal.romanowski@intel.com>,
+	Tony Nguyen <anthony.l.nguyen@intel.com>,
+	Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 6.12 089/272] ixgbevf: fix use-after-free in VEPA multicast source pruning
 Date: Thu, 28 May 2026 21:47:43 +0200
-Message-ID: <20260528194644.905771180@linuxfoundation.org>
+Message-ID: <20260528194631.870590687@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260528194638.371537336@linuxfoundation.org>
-References: <20260528194638.371537336@linuxfoundation.org>
+In-Reply-To: <20260528194629.379955525@linuxfoundation.org>
+References: <20260528194629.379955525@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,102 +65,101 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-2.16 / 15.00];
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	R_MISSING_CHARSET(0.50)[];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-255789-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-256059-lists,stable=lfdr.de];
 	FROM_HAS_DN(0.00)[];
-	TO_DN_SOME(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	PRECEDENCE_BULK(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,kernel.org,intel.com];
+	MIME_TRACE(0.00)[0:+];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	MID_RHS_MATCH_FROM(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
 	RCPT_COUNT_SEVEN(0.00)[8];
+	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-0.999];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	TAGGED_RCPT(0.00)[stable];
+	TO_DN_SOME(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,linutronix.de:email,linux.dev:email,goodmis.org:email,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,msgid.link:url]
-X-Rspamd-Queue-Id: 2D4E15F8DC7
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,intel.com:email]
+X-Rspamd-Queue-Id: 9AC6A5F9797
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jiayuan Chen <jiayuan.chen@linux.dev>
+From: Michael Bommarito <michael.bommarito@gmail.com>
 
-[ Upstream commit 91840be8f710370607f949a627e070896faeddb8 ]
+commit 5d49b568c188dc77199d8d2b959c91da8cc27cf1 upstream.
 
-On PREEMPT_RT, non-HARD irq_work runs in per-CPU kthreads via
-run_irq_workd(), so irq_work_sync() uses rcuwait() to wait for BUSY==0.
+ixgbevf_clean_rx_irq() prunes frames whose source MAC matches the VF's
+own address (VEPA multicast workaround) by freeing the skb and
+continuing to the next descriptor:
 
-After irq_work_single() clears BUSY via atomic_cmpxchg(), it still
-dereferences @work for irq_work_is_hard() and rcuwait_wake_up().
+    dev_kfree_skb_irq(skb);
+    continue;
 
-An irq_work_sync() caller on another CPU that enters after BUSY is cleared
-can observe BUSY==0 immediately, return, and free the work before those
-accesses complete — causing a use-after-free.
+The skb pointer is declared outside the while loop and persists across
+iterations.  Because the continue skips the "skb = NULL" reset at the
+bottom of the loop, the next iteration enters the "else if (skb)" path
+and calls ixgbevf_add_rx_frag() on the freed skb, dereferencing
+skb_shinfo(skb)->nr_frags - a use-after-free in NAPI softirq context.
 
-Fix this by wrapping run_irq_workd() in guard(rcu)() so that the entire
-irq_work_single() execution is within an RCU read-side critical
-section. Then add synchronize_rcu() in irq_work_sync() after
-rcuwait_wait_event() to ensure the caller waits for the RCU grace period
-before returning, preventing premature frees.
+The sibling driver iavf already handles this correctly by nulling the
+pointer before continuing.  Apply the same pattern here.
 
-Fixes: 810979682ccc ("irq_work: Allow irq_work_sync() to sleep if irq_work() no IRQ support.")
-Suggested-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
-Suggested-by: Steven Rostedt <rostedt@goodmis.org>
-Signed-off-by: Jiayuan Chen <jiayuan.chen@linux.dev>
-Signed-off-by: Thomas Gleixner <tglx@kernel.org>
-Reviewed-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
-Link: https://patch.msgid.link/20260330073234.303732-1-jiayuan.chen@linux.dev
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+I do not have ixgbevf hardware; the bug was found by static analysis
+(scan_drop_continue_loops.py + semgrep drop_continue_in_loop, multi-tool
+corroboration with the highest score in the scan).  The UAF was confirmed
+under KASAN by loading a test module that reproduces the exact code
+pattern (alloc skb, kfree_skb, then read skb_shinfo(skb)->nr_frags):
+
+  BUG: KASAN: slab-use-after-free in ixgbevf_uaf_test_init+0x100/0x1000
+  Read of size 8 at addr 000000006163ae78 by task insmod/30
+  freed 208-byte region [000000006163adc0, 000000006163ae90)
+
+QEMU emulates igb (82576) but not ixgbe (82599), and the igbvf VF
+driver does not include the VEPA source pruning path, so a full
+end-to-end reproduction with emulated hardware was not possible.
+
+Fixes: bad17234ba70 ("ixgbevf: Change receive model to use double buffered page based receives")
+Cc: stable@vger.kernel.org
+Signed-off-by: Michael Bommarito <michael.bommarito@gmail.com>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Tested-by: Rafal Romanowski <rafal.romanowski@intel.com>
+Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
+Link: https://patch.msgid.link/20260515182419.1597859-8-anthony.l.nguyen@intel.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- kernel/irq_work.c | 7 +++++++
- 1 file changed, 7 insertions(+)
+ drivers/net/ethernet/intel/ixgbevf/ixgbevf_main.c |    1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/kernel/irq_work.c b/kernel/irq_work.c
-index 73f7e1fd4ab4d..bf411656c3160 100644
---- a/kernel/irq_work.c
-+++ b/kernel/irq_work.c
-@@ -292,6 +292,12 @@ void irq_work_sync(struct irq_work *work)
- 	    !arch_irq_work_has_interrupt()) {
- 		rcuwait_wait_event(&work->irqwait, !irq_work_is_busy(work),
- 				   TASK_UNINTERRUPTIBLE);
-+		/*
-+		 * Ensure irq_work_single() does not access @work
-+		 * after removing IRQ_WORK_BUSY. It is always
-+		 * accessed within a RCU-read section.
-+		 */
-+		synchronize_rcu();
- 		return;
- 	}
+--- a/drivers/net/ethernet/intel/ixgbevf/ixgbevf_main.c
++++ b/drivers/net/ethernet/intel/ixgbevf/ixgbevf_main.c
+@@ -1224,6 +1224,7 @@ static int ixgbevf_clean_rx_irq(struct i
+ 		    ether_addr_equal(rx_ring->netdev->dev_addr,
+ 				     eth_hdr(skb)->h_source)) {
+ 			dev_kfree_skb_irq(skb);
++			skb = NULL;
+ 			continue;
+ 		}
  
-@@ -302,6 +308,7 @@ EXPORT_SYMBOL_GPL(irq_work_sync);
- 
- static void run_irq_workd(unsigned int cpu)
- {
-+	guard(rcu)();
- 	irq_work_run_list(this_cpu_ptr(&lazy_list));
- }
- 
--- 
-2.53.0
-
 
 
 
