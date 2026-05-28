@@ -1,63 +1,61 @@
-Return-Path: <stable+bounces-255435-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-255840-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id uBlFAv2iGGrJlggAu9opvQ
-	(envelope-from <stable+bounces-255435-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:18:05 +0200
+	id 4HyeInKlGGoQlwgAu9opvQ
+	(envelope-from <stable+bounces-255840-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:28:34 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 975CE5F8549
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:18:04 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id C60005F8C64
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:28:33 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 6337231D15BF
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 20:08:23 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 8BA28304BF08
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 20:27:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2A276339866;
-	Thu, 28 May 2026 20:08:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AFC212F39B4;
+	Thu, 28 May 2026 20:27:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1b5dlvvh"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WBJcITC3"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DB0862F260C;
-	Thu, 28 May 2026 20:08:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8D8422E7379;
+	Thu, 28 May 2026 20:27:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779998902; cv=none; b=AV3iBkCiXmLWdWxHn8T27yyPNvxU477Auzys48tDeo9ijCer2svouX7WKc6RC22xcLW6Y616hDxnHtunBBbo9z1BEARxHyBA+uPDLZb3fORYn55Tqx2Luz/dtmXJEoBEjlIH4ayZQ5LaK6VRRZw/CoY86BTQQojjRcqe6RIHq3E=
+	t=1780000027; cv=none; b=L2GKNBKYRUJkx+7gmLOFs+ds+szdjwi+Dw7J0UPJC/HN9B4DRK66V+p31RNHPq4FbWq5AHz/c2c29H6iZPntWBsV/2WyR0fV+THI17VTdXI8Hv+MBCZXfOokfBH/LKOSjvywmANPd9kVLmVl6kWdWut1CDiSaOzcXmTRB/j49Iw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779998902; c=relaxed/simple;
-	bh=6bvXFfldKtFwhHTLIAi1zNZJRrJvKrraF2nxNQH1TGQ=;
+	s=arc-20240116; t=1780000027; c=relaxed/simple;
+	bh=rLSfbLG61J4aVjeCHoyxdJGqMoYWnlOrT3t7/BhcEX4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=fKfKNWHM4dXmE6NU3zfpBHuaGMtqBswePcgoF/MiheG9VycwpYClfwiIRzsSLxSrMQp4WjSbA6qv7r7mfdIxNAHv4IXLitlb3JcdKPCwj/CHzSpBnIMkGzaqnoQ8OLSHZc3yKa4hvZNtWEYBLq/cJgEdBFphKNF4eahTP99GM+w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1b5dlvvh; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 49F2E1F000E9;
-	Thu, 28 May 2026 20:08:20 +0000 (UTC)
+	 MIME-Version; b=h0URsSUuUWeP0IyOKfCCLmlcNWHcHc8cTaEul90Ty6NqmXhEOwEnJ5y4Mjj1k3BJLUn+22hMxXa0pKNf5EduqNBQOb6nXRPqKUI49goyC/9VK+Ofvual3PCwfPQDewcBpvplmGYRbL6Q72zt4CFuCLwa2tDZQvsYAjRer7k4xyg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WBJcITC3; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AB3491F000E9;
+	Thu, 28 May 2026 20:27:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779998900;
-	bh=sZtbClwEIUt414oryh26e5ZKWs/fXJzCcIhpix0MIqE=;
+	s=korg; t=1780000026;
+	bh=B34LusKSQy/NoTamNHwx3Q4yQ3QiQHST+l/b7aaLu/0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=1b5dlvvhIAjOled5VphJh62eoZv0n5hC3XV3Ih0KAp4gdB/9zwYdtjUxjEeTMHeob
-	 fOamGCirUecbfwGJkuyvTEgYN87ygy4SuwF9AeVPlRY5C55zjnUvHGwE0oNbuVQHuM
-	 Vp45y1QqTc2ALzcKEUxIo+696L3/hZW0Zjg6Kprw=
+	b=WBJcITC37B5OID2PAH4u4CcR6ovvzqJIN5GV+352Z8nesnVrUXfsHl0eiG2/qpWQy
+	 oZGspSfo0z9Ffw+WpwZU15+MkSd7Wna+hn19pEyRTkV4O9W4vKiTgPO93zAYzNkHUK
+	 9A21r+63jhtvttuY/zkfnGN2oHf87SjtJpiBvM5Q=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jason Gunthorpe <jgg@nvidia.com>,
-	Pranjal Shrivastava <praan@google.com>,
-	Samiullah Khawaja <skhawaja@google.com>,
-	Mostafa Saleh <smostafa@google.com>,
-	Josua Mayer <josua@solid-run.com>,
-	Joerg Roedel <joerg.roedel@amd.com>,
+	Damiano Melotti <melotti@google.com>,
+	Kuniyuki Iwashima <kuniyu@google.com>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 7.0 338/461] iommu: Handle unmap error when iommu_debug is enabled
+Subject: [PATCH 6.18 229/377] tcp: Fix out-of-bounds access for twsk in tcp_ao_established_key().
 Date: Thu, 28 May 2026 21:47:47 +0200
-Message-ID: <20260528194657.142497112@linuxfoundation.org>
+Message-ID: <20260528194645.023204832@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260528194646.819809818@linuxfoundation.org>
-References: <20260528194646.819809818@linuxfoundation.org>
+In-Reply-To: <20260528194638.371537336@linuxfoundation.org>
+References: <20260528194638.371537336@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -72,7 +70,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
@@ -80,7 +78,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-255435-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-255840-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
@@ -89,146 +87,64 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
 	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[10];
+	RCPT_COUNT_SEVEN(0.00)[8];
 	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim,amd.com:email,solid-run.com:email,nvidia.com:email]
-X-Rspamd-Queue-Id: 975CE5F8549
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,msgid.link:url,linuxfoundation.org:mid,linuxfoundation.org:dkim]
+X-Rspamd-Queue-Id: C60005F8C64
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-7.0-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jason Gunthorpe <jgg@nvidia.com>
+From: Kuniyuki Iwashima <kuniyu@google.com>
 
-[ Upstream commit 0735c54804c709d1b292f3b6947cfb560b2ce552 ]
+[ Upstream commit 03cb001ef87b3f8d859cf7f96329acf3d6235d29 ]
 
-Sashiko noticed a latent bug where the map error flow called iommu_unmap()
-which calls iommu_debug_unmap_begin()/iommu_debug_unmap_end() however
-since this is an error path the map flow never actually established the
-original iommu_debug_map() it will malfunction.
+lockdep_sock_is_held() was added in tcp_ao_established_key()
+by the cited commit.
 
-Lift the unmap error handling into iommu_map_nosync() and reorder it so
-the trace_map()/iommu_debug_map() records the partial mapping and then
-immediately unmaps it. This avoid creating the unbalanced tracking and
-provides saner tracing instead of a unmap unmatched to any map.
+It can be called from tcp_v[46]_timewait_ack() with twsk.
 
-Fixes: ccc21213f013 ("iommu: Add calls for IOMMU_DEBUG_PAGEALLOC")
-Signed-off-by: Jason Gunthorpe <jgg@nvidia.com>
-Reviewed-by: Pranjal Shrivastava <praan@google.com>
-Reviewed-by: Samiullah Khawaja <skhawaja@google.com>
-Reviewed-by: Mostafa Saleh <smostafa@google.com>
-Tested-by: Josua Mayer <josua@solid-run.com>
-Signed-off-by: Joerg Roedel <joerg.roedel@amd.com>
+Since it does not have sk->sk_lock, the lockdep annotation
+results in out-of-bound access.
+
+  $ pahole -C tcp_timewait_sock vmlinux | grep size
+  	/* size: 288, cachelines: 5, members: 8 */
+  $ pahole -C sock vmlinux | grep sk_lock
+  	socket_lock_t              sk_lock;              /*   440   192 */
+
+Let's not use lockdep_sock_is_held() for TCP_TIME_WAIT.
+
+Fixes: 6b2d11e2d8fc ("net/tcp: Add missing lockdep annotations for TCP-AO hlist traversals")
+Reported-by: Damiano Melotti <melotti@google.com>
+Signed-off-by: Kuniyuki Iwashima <kuniyu@google.com>
+Reviewed-by: Eric Dumazet <edumazet@google.com>
+Link: https://patch.msgid.link/20260508120853.4098365-1-kuniyu@google.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/iommu/iommu.c | 49 +++++++++++++++++--------------------------
- 1 file changed, 19 insertions(+), 30 deletions(-)
+ net/ipv4/tcp_ao.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/iommu/iommu.c b/drivers/iommu/iommu.c
-index 0c2a4beb6ac32..93c9081707401 100644
---- a/drivers/iommu/iommu.c
-+++ b/drivers/iommu/iommu.c
-@@ -2615,12 +2615,11 @@ static size_t iommu_pgsize(struct iommu_domain *domain, unsigned long iova,
- 
- static int __iommu_map_domain_pgtbl(struct iommu_domain *domain,
- 				    unsigned long iova, phys_addr_t paddr,
--				    size_t size, int prot, gfp_t gfp)
-+				    size_t size, int prot, gfp_t gfp,
-+				    size_t *mapped)
+diff --git a/net/ipv4/tcp_ao.c b/net/ipv4/tcp_ao.c
+index 849a69c1f497f..aa624434b5556 100644
+--- a/net/ipv4/tcp_ao.c
++++ b/net/ipv4/tcp_ao.c
+@@ -116,7 +116,8 @@ struct tcp_ao_key *tcp_ao_established_key(const struct sock *sk,
  {
- 	const struct iommu_domain_ops *ops = domain->ops;
--	unsigned long orig_iova = iova;
- 	unsigned int min_pagesz;
--	size_t orig_size = size;
- 	int ret = 0;
+ 	struct tcp_ao_key *key;
  
- 	if (WARN_ON(!ops->map_pages))
-@@ -2643,31 +2642,25 @@ static int __iommu_map_domain_pgtbl(struct iommu_domain *domain,
- 	pr_debug("map: iova 0x%lx pa %pa size 0x%zx\n", iova, &paddr, size);
- 
- 	while (size) {
--		size_t pgsize, count, mapped = 0;
-+		size_t pgsize, count, op_mapped = 0;
- 
- 		pgsize = iommu_pgsize(domain, iova, paddr, size, &count);
- 
- 		pr_debug("mapping: iova 0x%lx pa %pa pgsize 0x%zx count %zu\n",
- 			 iova, &paddr, pgsize, count);
- 		ret = ops->map_pages(domain, iova, paddr, pgsize, count, prot,
--				     gfp, &mapped);
-+				     gfp, &op_mapped);
- 		/*
- 		 * Some pages may have been mapped, even if an error occurred,
- 		 * so we should account for those so they can be unmapped.
- 		 */
--		size -= mapped;
--
-+		*mapped += op_mapped;
- 		if (ret)
--			break;
--
--		iova += mapped;
--		paddr += mapped;
--	}
-+			return ret;
- 
--	/* unroll mapping in case something went wrong */
--	if (ret) {
--		iommu_unmap(domain, orig_iova, orig_size - size);
--		return ret;
-+		size -= op_mapped;
-+		iova += op_mapped;
-+		paddr += op_mapped;
- 	}
- 	return 0;
- }
-@@ -2685,6 +2678,7 @@ int iommu_map_nosync(struct iommu_domain *domain, unsigned long iova,
- 		phys_addr_t paddr, size_t size, int prot, gfp_t gfp)
- {
- 	struct pt_iommu *pt = iommupt_from_domain(domain);
-+	size_t mapped = 0;
- 	int ret;
- 
- 	might_sleep_if(gfpflags_allow_blocking(gfp));
-@@ -2696,24 +2690,19 @@ int iommu_map_nosync(struct iommu_domain *domain, unsigned long iova,
- 				 __GFP_HIGHMEM))))
- 		return -EINVAL;
- 
--	if (pt) {
--		size_t mapped = 0;
--
-+	if (pt)
- 		ret = pt->ops->map_range(pt, iova, paddr, size, prot, gfp,
- 					 &mapped);
--		if (ret) {
--			iommu_unmap(domain, iova, mapped);
--			return ret;
--		}
--	} else {
-+	else
- 		ret = __iommu_map_domain_pgtbl(domain, iova, paddr, size, prot,
--					       gfp);
--		if (ret)
--			return ret;
--	}
-+					       gfp, &mapped);
- 
--	trace_map(iova, paddr, size);
--	iommu_debug_map(domain, paddr, size);
-+	trace_map(iova, paddr, mapped);
-+	iommu_debug_map(domain, paddr, mapped);
-+	if (ret) {
-+		iommu_unmap(domain, iova, mapped);
-+		return ret;
-+	}
- 	return 0;
- }
- 
+-	hlist_for_each_entry_rcu(key, &ao->head, node, lockdep_sock_is_held(sk)) {
++	hlist_for_each_entry_rcu(key, &ao->head, node,
++				 sk_fullsock(sk) && lockdep_sock_is_held(sk)) {
+ 		if ((sndid >= 0 && key->sndid != sndid) ||
+ 		    (rcvid >= 0 && key->rcvid != rcvid))
+ 			continue;
 -- 
 2.53.0
 
