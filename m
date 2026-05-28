@@ -1,61 +1,60 @@
-Return-Path: <stable+bounces-255522-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-255917-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id KDRpMBmiGGqblggAu9opvQ
-	(envelope-from <stable+bounces-255522-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:14:17 +0200
+	id 2JBHBIqnGGp+lwgAu9opvQ
+	(envelope-from <stable+bounces-255917-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:37:30 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6C7645F8207
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:14:17 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9AA6C5F9221
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:37:29 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 6FA9B307147C
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 20:12:29 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 65D8C311C200
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 20:30:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 073303FE37C;
-	Thu, 28 May 2026 20:12:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0B663318EE1;
+	Thu, 28 May 2026 20:30:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fq4nX2mT"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MqnA0uOt"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CA2C732ABC0;
-	Thu, 28 May 2026 20:12:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DC1DC25F7B9;
+	Thu, 28 May 2026 20:30:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779999147; cv=none; b=GCSvsvcw99IBa7T/sakfUHZnL4VohN7OXIgPTyLgUoHKg/zoC72KW2DSwERExgxjGZslJFEMH0THzz7F6HxGxJdyeS1BwT1H1Nu8zJcFpFTAql6UFG/Rw1IrSXDWP6fOudXAWV/S6GTkoBU3fN6BPxZaqdvfV0jODLMBNysdcds=
+	t=1780000241; cv=none; b=qcJYHpGcN9gvvopUN67H4pADkfNCXbmfwsLNk2IW39xwKl24XLloCyb1QSyW9gF58G/LD5qxfi9BlnI76MrhoPu7OmPhG9ZdqUoYuSWR/GRT/Xc6nY8JpMogeqw4rL5r0MxZWmEl9jfDFEjX5Qa7QLIfDWyp8VHd1qHowRwwSFE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779999147; c=relaxed/simple;
-	bh=9Z2fx+eAvYgJZiCSfOYsUNnaWs8aHFOGBuBq3s5wTgc=;
+	s=arc-20240116; t=1780000241; c=relaxed/simple;
+	bh=73fVXsSmgsMM9Ix/N2CCVmeV75Bq/VBdSS+BwimzGbw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ile7/Cip0yOVKePlyQUzP68dE/5LH0Gsa4Xxuv3Zy7VvWqbTLUev3SRHS+438XF5Gd9u8IylLeRVcdbjVXUWJVmpK+3NyvEXewu/DhpDNG2wPw0M/NrfmBZRrfTvE9vOlqnYVybRHwbiEGBuwKU8XEHJNouYfFk6ePX1KmhLbEw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fq4nX2mT; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 34C861F00A3A;
-	Thu, 28 May 2026 20:12:26 +0000 (UTC)
+	 MIME-Version; b=dXtc531zG995iHvSMF8Gaqe29metdT0j0mdHMcjJ8yspxIi7yCSfu3v03VQ9kvBN2E9cXmpkySdqniZyXfQFAeCidZGow7cAUglgxhvXH8fLGJimmPBcupAFd8WMP1E6ZdM/FclZEllaNWxOSDKyE7k2J/EWal7J00ALEqeAWSs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MqnA0uOt; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 02EF11F00A3A;
+	Thu, 28 May 2026 20:30:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779999146;
-	bh=B2yJ7TOkXQMD6Ijq+IBGvb5iBRCyDgYdU4Zi7+edqis=;
+	s=korg; t=1780000240;
+	bh=fFb1FMQUaMz1ht+pAUNGqeaqcwBDoFtYaYclsKvwlQI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=fq4nX2mTjxqxKY/guT+CcJ3dcvqPmmQPwbSU1OWJN0vc3PZwTKCcZjZn1vSlCeTir
-	 IvNsjGYHI6xd+vsr+CjAVq77+/dieFVGvcv8bp4DkANoK+Tsz0OUb5uUNuZPRonoAD
-	 QmplToMynbrnAhJBe4c3UJnrzJA4ov+qCTmxxMw4=
+	b=MqnA0uOtIUaA6Et4XAORhaRlLlm9vzWuPjSA2evRDcTeBilqt6C9sOhVjyaLEpHdd
+	 YT5p026k86NPEusDgyFYPTWEJzBUN9gJk7OkMa3YPb9li1sFsySMtDR3MqJnEgfdw1
+	 7EgL/6dID3F373fEuhETGdURlR9sBVs3FmRkccEc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Prathamesh Deshpande <prathameshdeshpande7@gmail.com>,
-	Simon Horman <horms@kernel.org>,
-	Tariq Toukan <tariqt@nvidia.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Daniele Ceraolo Spurio <daniele.ceraolospurio@intel.com>,
+	Shuicheng Lin <shuicheng.lin@intel.com>,
+	Rodrigo Vivi <rodrigo.vivi@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 7.0 424/461] net/mlx5e: Fix eswitch mode block underflow on IPsec acquire SA
+Subject: [PATCH 6.18 315/377] drm/xe/gsc: Fix double-free of managed BO in error path
 Date: Thu, 28 May 2026 21:49:13 +0200
-Message-ID: <20260528194659.779386491@linuxfoundation.org>
+Message-ID: <20260528194647.513566915@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260528194646.819809818@linuxfoundation.org>
-References: <20260528194646.819809818@linuxfoundation.org>
+In-Reply-To: <20260528194638.371537336@linuxfoundation.org>
+References: <20260528194638.371537336@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -70,90 +69,85 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,kernel.org,nvidia.com];
-	TAGGED_FROM(0.00)[bounces-255522-lists,stable=lfdr.de];
-	PRECEDENCE_BULK(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-255917-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[8];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
 	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[nvidia.com:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,msgid.link:url,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo]
-X-Rspamd-Queue-Id: 6C7645F8207
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_SEVEN(0.00)[7];
+	MID_RHS_MATCH_FROM(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,intel.com:email,linuxfoundation.org:mid,linuxfoundation.org:dkim]
+X-Rspamd-Queue-Id: 9AA6C5F9221
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-7.0-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Prathamesh Deshpande <prathameshdeshpande7@gmail.com>
+From: Shuicheng Lin <shuicheng.lin@intel.com>
 
-[ Upstream commit abe003b33223ff33552f291644bf35d9c2f992fb ]
+[ Upstream commit d3ded53fab90996e7d94a39049e11962dd066725 ]
 
-mlx5e_xfrm_add_state() handles acquire-flow temporary SAs by allocating
-software state and skipping hardware offload setup.
+The error path in xe_gsc_init_post_hwconfig() explicitly frees a BO
+allocated with xe_managed_bo_create_pin_map() via
+xe_bo_unpin_map_no_vm(). Since the managed BO already has a devm
+cleanup action registered, this causes a double-free when devm
+unwinds during probe failure.
 
-That path jumps to the common success label before taking the eswitch mode
-block. After tunnel-mode validation was moved earlier, the common success
-label unconditionally calls mlx5_eswitch_unblock_mode(). For acquire SAs,
-this decrements esw->offloads.num_block_mode without a matching increment.
+Remove the explicit free and let devm handle it, consistent with
+all other xe_managed_bo_create_pin_map() callers.
 
-Return directly after installing the acquire SA offload handle, so only the
-paths that successfully called mlx5_eswitch_block_mode() call the matching
-unblock.
-
-Fixes: 22239eb258bc ("net/mlx5e: Prevent tunnel reformat when tunnel mode not allowed")
-Signed-off-by: Prathamesh Deshpande <prathameshdeshpande7@gmail.com>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Reviewed-by: Tariq Toukan <tariqt@nvidia.com>
-Link: https://patch.msgid.link/20260510225903.13184-1-prathameshdeshpande7@gmail.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Fixes: 2e5d47fe7839 ("drm/xe/uc: Use managed bo for HuC and GSC objects")
+Reviewed-by: Daniele Ceraolo Spurio <daniele.ceraolospurio@intel.com>
+Assisted-by: Claude:claude-opus-4.6
+Link: https://patch.msgid.link/20260511154134.223696-1-shuicheng.lin@intel.com
+Signed-off-by: Shuicheng Lin <shuicheng.lin@intel.com>
+(cherry picked from commit 71d61e3e299a17139e47f980a4d6f425b2c59bf7)
+Signed-off-by: Rodrigo Vivi <rodrigo.vivi@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/mellanox/mlx5/core/en_accel/ipsec.c | 7 ++++---
- 1 file changed, 4 insertions(+), 3 deletions(-)
+ drivers/gpu/drm/xe/xe_gsc.c | 5 +----
+ 1 file changed, 1 insertion(+), 4 deletions(-)
 
-diff --git a/drivers/net/ethernet/mellanox/mlx5/core/en_accel/ipsec.c b/drivers/net/ethernet/mellanox/mlx5/core/en_accel/ipsec.c
-index 64e13747084ee..9c1f3d734911f 100644
---- a/drivers/net/ethernet/mellanox/mlx5/core/en_accel/ipsec.c
-+++ b/drivers/net/ethernet/mellanox/mlx5/core/en_accel/ipsec.c
-@@ -793,8 +793,10 @@ static int mlx5e_xfrm_add_state(struct net_device *dev,
- 	sa_entry->dev = dev;
- 	sa_entry->ipsec = ipsec;
- 	/* Check if this SA is originated from acquire flow temporary SA */
--	if (x->xso.flags & XFRM_DEV_OFFLOAD_FLAG_ACQ)
--		goto out;
-+	if (x->xso.flags & XFRM_DEV_OFFLOAD_FLAG_ACQ) {
-+		x->xso.offload_handle = (unsigned long)sa_entry;
-+		return 0;
-+	}
- 
- 	err = mlx5e_xfrm_validate_state(priv->mdev, x, extack);
- 	if (err)
-@@ -871,7 +873,6 @@ static int mlx5e_xfrm_add_state(struct net_device *dev,
- 		xa_unlock_bh(&ipsec->sadb);
+diff --git a/drivers/gpu/drm/xe/xe_gsc.c b/drivers/gpu/drm/xe/xe_gsc.c
+index 8371ec002e4ed..2a496987b8299 100644
+--- a/drivers/gpu/drm/xe/xe_gsc.c
++++ b/drivers/gpu/drm/xe/xe_gsc.c
+@@ -487,8 +487,7 @@ int xe_gsc_init_post_hwconfig(struct xe_gsc *gsc)
+ 				 EXEC_QUEUE_FLAG_PERMANENT, 0);
+ 	if (IS_ERR(q)) {
+ 		xe_gt_err(gt, "Failed to create queue for GSC submission\n");
+-		err = PTR_ERR(q);
+-		goto out_bo;
++		return PTR_ERR(q);
  	}
  
--out:
- 	x->xso.offload_handle = (unsigned long)sa_entry;
- 	if (allow_tunnel_mode)
- 		mlx5_eswitch_unblock_encap(priv->mdev);
+ 	wq = alloc_ordered_workqueue("gsc-ordered-wq", 0);
+@@ -511,8 +510,6 @@ int xe_gsc_init_post_hwconfig(struct xe_gsc *gsc)
+ 
+ out_q:
+ 	xe_exec_queue_put(q);
+-out_bo:
+-	xe_bo_unpin_map_no_vm(bo);
+ 	return err;
+ }
+ 
 -- 
 2.53.0
 
