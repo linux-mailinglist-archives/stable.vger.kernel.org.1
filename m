@@ -1,61 +1,60 @@
-Return-Path: <stable+bounces-255567-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-255207-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id IIdGEimkGGrClggAu9opvQ
-	(envelope-from <stable+bounces-255567-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:23:05 +0200
+	id OFosFGefGGpvlggAu9opvQ
+	(envelope-from <stable+bounces-255207-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:02:47 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id BE9AD5F8821
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:23:04 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id EBFC85F7B30
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:02:46 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 7225E3210D9C
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 20:14:36 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id D4A5F3137EF8
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 19:57:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 002D033F5BE;
-	Thu, 28 May 2026 20:14:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A4431400E0D;
+	Thu, 28 May 2026 19:57:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uqNx2vi2"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bXiYxjbM"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CE44733F5B4;
-	Thu, 28 May 2026 20:14:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5A85E3290B0;
+	Thu, 28 May 2026 19:57:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779999275; cv=none; b=HG1kzPv4qoivyAboVwJ2OfMPziG8E2WZaWy0seHOWy0y8LbNbqERnhsfY145WhNUaazvLcOy9JirUq4tHm0LLXatev1XmUbmn8KgO7+2LAPY2WjVv6IIVkmA4ou2YgaI861U9Ha2YYHWCFR+L/WK0ycDX+Wg2sPYBlyfZM2k6eA=
+	t=1779998262; cv=none; b=UmUTpgMNqJr9bUTCyQjaKgXyvI7o7h5LhX4RNtbwMhMqLTaNS1SMdn/UGjIWUUI0V1MUZf12qVCtj3EPCAhcJZuAF4fbpt9u5WlyadgZRE+C/pAHln3/gLJ9viRA0Ze7vhoQ5yqjUp8FkcwjEZfIntBE47b+OoUTqXvXKsQQ6VM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779999275; c=relaxed/simple;
-	bh=BVn/itGRbToTIf2FCsM2nGUDZCicfVb4PVQ0cm/ykfs=;
+	s=arc-20240116; t=1779998262; c=relaxed/simple;
+	bh=jbzFOr/g1ZOTYukvAShUgZa4ZAh5gSMJlbVNbIcKb3Q=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=dmFMfUEEGLBVvpxuGxLHvLIT5jxCSisiB4QuqDGjrSXFuqjXFB448mr7OOmLAMzY/HLOn9W82ORdc5e7I/WxpolOpPqoVSsx32QjN/T3rQs0ET7w3ArngZBoE/j6vF4Vpqb12qmNhTblFr5cu0+h5l9FlvRHdEHroDKj4dW+dIk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uqNx2vi2; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F1C2D1F000E9;
-	Thu, 28 May 2026 20:14:33 +0000 (UTC)
+	 MIME-Version; b=fqA2e8EyeeTpmux61FL5jkhHtZ8fP7B1wj8FS6BdEGLmmiiIMc7+AByWEOJVTSVCGVB2oWkPIAkfdO0wDiBz7YQT7pFZyQ42zJX3OSKAPNiB9nnnOFfYeAQIU+iQFSV2Lo25r4bUiVZSMPaxsn/lIDmNK5pubujwX5sUx1OS254=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bXiYxjbM; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B80121F000E9;
+	Thu, 28 May 2026 19:57:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779999274;
-	bh=MrlwMG6hLm3X/bsdOiBItSaxkJtcbZ3VZjkAnXwNLuc=;
+	s=korg; t=1779998261;
+	bh=Yj7IZeGK2xHJew5xzKcQBOklnw4LvwyHm7wvu+R/JM8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=uqNx2vi2vCILoVnPTH6u4zgYB5l8pQBfwyra9hKge+6V4PwyhAGMa2OE3xbZefuIl
-	 sI7wCrCTV4XrB8y5VdwV++22ZXc1A6BX5prS7URkB+0aapBGj/f5DNpRonzq50Z4FZ
-	 QgaLlrAAUFbLKQ1EkayCIblhaObZx5KLnRR2I5R0=
+	b=bXiYxjbMab0p7VU9XtOU5Mj2JjLIgbUTq7xygsasQCVhHfTL5mB1m/64zRj+qlxkz
+	 E5EGSDLfCbJ/5mXrNCE1RQWY3e8Buy0tOq57ExaGrUMbi180IF395ioKYiw5sgK4j1
+	 7XuIMXAG/tDIP+Mv+zDo6dKYLflEClua2OdggQ3w=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Matt Roper <matthew.d.roper@intel.com>,
-	Shuicheng Lin <shuicheng.lin@intel.com>,
-	Gustavo Sousa <gustavo.sousa@intel.com>,
-	Matthew Brost <matthew.brost@intel.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 001/377] drm/xe/hdcp: Add NULL check for media_gt in intel_hdcp_gsc_check_status()
+	Wayne Chang <waynec@nvidia.com>,
+	Wei-Cheng Chen <weichengc@nvidia.com>,
+	Jon Hunter <jonathanh@nvidia.com>,
+	Vinod Koul <vkoul@kernel.org>
+Subject: [PATCH 7.0 110/461] phy: tegra: xusb: Fix per-pad high-speed termination calibration
 Date: Thu, 28 May 2026 21:43:59 +0200
-Message-ID: <20260528194638.421602294@linuxfoundation.org>
+Message-ID: <20260528194650.152770345@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260528194638.371537336@linuxfoundation.org>
-References: <20260528194638.371537336@linuxfoundation.org>
+In-Reply-To: <20260528194646.819809818@linuxfoundation.org>
+References: <20260528194646.819809818@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -78,7 +77,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-255567-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-255207-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
@@ -89,82 +88,161 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	FROM_HAS_DN(0.00)[];
 	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[8];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,linuxfoundation.org:mid,linuxfoundation.org:dkim,intel.com:email,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
-X-Rspamd-Queue-Id: BE9AD5F8821
+	DBL_BLOCKED_OPENRESOLVER(0.00)[nvidia.com:email,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,msgid.link:url,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
+X-Rspamd-Queue-Id: EBFC85F7B30
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+7.0-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Gustavo Sousa <gustavo.sousa@intel.com>
+From: Wayne Chang <waynec@nvidia.com>
 
-commit 60a1e131a811b68703da58fd805ab359b704ab03 upstream.
+commit da110228b54f2e2143d97ea7151e0dc22e539d67 upstream.
 
-When media GT is disabled via configfs, there is no allocation for
-media_gt, which is kept as NULL.  In such scenario,
-intel_hdcp_gsc_check_status() results in a kernel pagefault error due to
-&gt->uc.gsc being evaluated as an invalid memory address.
+The existing code reads a single hs_term_range_adj value from bit field
+[10:7] of FUSE_SKU_CALIB_0 and applies it to all USB2 pads uniformly.
+However, on SoCs that support per-pad termination, each pad has its own
+hs_term_range_adj field: pad 0 in FUSE_SKU_CALIB_0[10:7], and pads 1-3
+in FUSE_USB_CALIB_EXT_0 at bit offsets [8:5], [12:9], and [16:13]
+respectively.
 
-Fix that by introducing a NULL check on media_gt and bailing out early
-if so.
+Fix the calibration by reading per-pad values from the appropriate fuse
+registers. For SoCs that do not support per-pad termination, replicate
+pad 0's value to all pads to maintain existing behavior.
 
-While at it, also drop the NULL check for gsc, since it can't be NULL if
-media_gt is not NULL.
+Add a has_per_pad_term flag to the SoC data to indicate whether per-pad
+termination values are available in FUSE_USB_CALIB_EXT_0.
 
-v2:
-  - Get address for gsc only after checking that gt is not NULL.
-    (Shuicheng)
-  - Drop the NULL check for gsc. (Shuicheng)
-v3:
-  - Add "Fixes" and "Cc: <stable...>" tags. (Matt)
-
-Fixes: 4af50beb4e0f ("drm/xe: Use gsc_proxy_init_done to check proxy status")
-Cc: <stable@vger.kernel.org> # v6.10+
-Reviewed-by: Matt Roper <matthew.d.roper@intel.com>
-Reviewed-by: Shuicheng Lin <shuicheng.lin@intel.com>
-Link: https://patch.msgid.link/20260416-check-for-null-media_gt-in-intel_hdcp_gsc_check_status-v2-1-9adb9fd3b621@intel.com
-Signed-off-by: Gustavo Sousa <gustavo.sousa@intel.com>
-(cherry picked from commit bfaf87e84ca3ca3f6e275f9ae56da47a8b55ffd1)
-Signed-off-by: Matthew Brost <matthew.brost@intel.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 1ef535c6ba8e ("phy: tegra: xusb: Add Tegra194 support")
+Cc: stable@vger.kernel.org
+Signed-off-by: Wayne Chang <waynec@nvidia.com>
+Signed-off-by: Wei-Cheng Chen <weichengc@nvidia.com>
+Reviewed-by: Jon Hunter <jonathanh@nvidia.com>
+Tested-by: Jon Hunter <jonathanh@nvidia.com>
+Link: https://patch.msgid.link/20260504033305.2283145-1-weichengc@nvidia.com
+Signed-off-by: Vinod Koul <vkoul@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/xe/display/xe_hdcp_gsc.c | 12 ++++++++++--
- 1 file changed, 10 insertions(+), 2 deletions(-)
+ drivers/phy/tegra/xusb-tegra186.c |   33 ++++++++++++++++++++++++++-------
+ drivers/phy/tegra/xusb.h          |    1 +
+ 2 files changed, 27 insertions(+), 7 deletions(-)
 
-diff --git a/drivers/gpu/drm/xe/display/xe_hdcp_gsc.c b/drivers/gpu/drm/xe/display/xe_hdcp_gsc.c
-index 4ae847b628e23..6324f526dcfab 100644
---- a/drivers/gpu/drm/xe/display/xe_hdcp_gsc.c
-+++ b/drivers/gpu/drm/xe/display/xe_hdcp_gsc.c
-@@ -35,11 +35,19 @@ bool intel_hdcp_gsc_check_status(struct drm_device *drm)
- 	struct xe_device *xe = to_xe_device(drm);
- 	struct xe_tile *tile = xe_device_get_root_tile(xe);
- 	struct xe_gt *gt = tile->media_gt;
--	struct xe_gsc *gsc = &gt->uc.gsc;
-+	struct xe_gsc *gsc;
- 	bool ret = true;
- 	unsigned int fw_ref;
+--- a/drivers/phy/tegra/xusb-tegra186.c
++++ b/drivers/phy/tegra/xusb-tegra186.c
+@@ -20,8 +20,8 @@
+ /* FUSE USB_CALIB registers */
+ #define HS_CURR_LEVEL_PADX_SHIFT(x)	((x) ? (11 + (x - 1) * 6) : 0)
+ #define HS_CURR_LEVEL_PAD_MASK		0x3f
+-#define HS_TERM_RANGE_ADJ_SHIFT		7
+-#define HS_TERM_RANGE_ADJ_MASK		0xf
++#define HS_TERM_RANGE_ADJ_PADX_SHIFT(x)	((x) ? (5 + (x - 1) * 4) : 7)
++#define HS_TERM_RANGE_ADJ_PAD_MASK	0xf
+ #define HS_SQUELCH_SHIFT		29
+ #define HS_SQUELCH_MASK			0x7
  
--	if (!gsc || !xe_uc_fw_is_enabled(&gsc->fw)) {
-+	if (!gt) {
-+		drm_dbg_kms(&xe->drm,
-+			    "not checking GSC status for HDCP2.x: media GT not present or disabled\n");
-+		return false;
+@@ -253,7 +253,7 @@
+ struct tegra_xusb_fuse_calibration {
+ 	u32 *hs_curr_level;
+ 	u32 hs_squelch;
+-	u32 hs_term_range_adj;
++	u32 *hs_term_range_adj;
+ 	u32 rpd_ctrl;
+ };
+ 
+@@ -930,7 +930,7 @@ static int tegra186_utmi_phy_power_on(st
+ 
+ 	value = padctl_readl(padctl, XUSB_PADCTL_USB2_OTG_PADX_CTL1(index));
+ 	value &= ~TERM_RANGE_ADJ(~0);
+-	value |= TERM_RANGE_ADJ(priv->calib.hs_term_range_adj);
++	value |= TERM_RANGE_ADJ(priv->calib.hs_term_range_adj[index]);
+ 	value &= ~RPD_CTRL(~0);
+ 	value |= RPD_CTRL(priv->calib.rpd_ctrl);
+ 	padctl_writel(padctl, value, XUSB_PADCTL_USB2_OTG_PADX_CTL1(index));
+@@ -1464,17 +1464,23 @@ static const char * const tegra186_usb3_
+ static int
+ tegra186_xusb_read_fuse_calibration(struct tegra186_xusb_padctl *padctl)
+ {
++	const struct tegra_xusb_padctl_soc *soc = padctl->base.soc;
+ 	struct device *dev = padctl->base.dev;
+ 	unsigned int i, count;
+ 	u32 value, *level;
++	u32 *hs_term_range_adj;
+ 	int err;
+ 
+-	count = padctl->base.soc->ports.usb2.count;
++	count = soc->ports.usb2.count;
+ 
+ 	level = devm_kcalloc(dev, count, sizeof(u32), GFP_KERNEL);
+ 	if (!level)
+ 		return -ENOMEM;
+ 
++	hs_term_range_adj = devm_kcalloc(dev, count, sizeof(u32), GFP_KERNEL);
++	if (!hs_term_range_adj)
++		return -ENOMEM;
++
+ 	err = tegra_fuse_readl(TEGRA_FUSE_SKU_CALIB_0, &value);
+ 	if (err)
+ 		return dev_err_probe(dev, err,
+@@ -1490,8 +1496,8 @@ tegra186_xusb_read_fuse_calibration(stru
+ 
+ 	padctl->calib.hs_squelch = (value >> HS_SQUELCH_SHIFT) &
+ 					HS_SQUELCH_MASK;
+-	padctl->calib.hs_term_range_adj = (value >> HS_TERM_RANGE_ADJ_SHIFT) &
+-						HS_TERM_RANGE_ADJ_MASK;
++	hs_term_range_adj[0] = (value >> HS_TERM_RANGE_ADJ_PADX_SHIFT(0)) &
++				HS_TERM_RANGE_ADJ_PAD_MASK;
+ 
+ 	err = tegra_fuse_readl(TEGRA_FUSE_USB_CALIB_EXT_0, &value);
+ 	if (err) {
+@@ -1503,6 +1509,17 @@ tegra186_xusb_read_fuse_calibration(stru
+ 
+ 	padctl->calib.rpd_ctrl = (value >> RPD_CTRL_SHIFT) & RPD_CTRL_MASK;
+ 
++	for (i = 1; i < count; i++) {
++		if (soc->has_per_pad_term)
++			hs_term_range_adj[i] =
++				(value >> HS_TERM_RANGE_ADJ_PADX_SHIFT(i)) &
++				HS_TERM_RANGE_ADJ_PAD_MASK;
++		else
++			hs_term_range_adj[i] = hs_term_range_adj[0];
 +	}
 +
-+	gsc = &gt->uc.gsc;
++	padctl->calib.hs_term_range_adj = hs_term_range_adj;
 +
-+	if (!xe_uc_fw_is_enabled(&gsc->fw)) {
- 		drm_dbg_kms(&xe->drm,
- 			    "GSC Components not ready for HDCP2.x\n");
- 		return false;
--- 
-2.53.0
-
+ 	return 0;
+ }
+ 
+@@ -1708,6 +1725,7 @@ const struct tegra_xusb_padctl_soc tegra
+ 	.num_supplies = ARRAY_SIZE(tegra194_xusb_padctl_supply_names),
+ 	.supports_gen2 = true,
+ 	.poll_trk_completed = true,
++	.has_per_pad_term = true,
+ };
+ EXPORT_SYMBOL_GPL(tegra194_xusb_padctl_soc);
+ 
+@@ -1732,6 +1750,7 @@ const struct tegra_xusb_padctl_soc tegra
+ 	.trk_hw_mode = false,
+ 	.trk_update_on_idle = true,
+ 	.supports_lp_cfg_en = true,
++	.has_per_pad_term = true,
+ };
+ EXPORT_SYMBOL_GPL(tegra234_xusb_padctl_soc);
+ #endif
+--- a/drivers/phy/tegra/xusb.h
++++ b/drivers/phy/tegra/xusb.h
+@@ -435,6 +435,7 @@ struct tegra_xusb_padctl_soc {
+ 	bool trk_hw_mode;
+ 	bool trk_update_on_idle;
+ 	bool supports_lp_cfg_en;
++	bool has_per_pad_term;
+ };
+ 
+ struct tegra_xusb_padctl {
 
 
 
