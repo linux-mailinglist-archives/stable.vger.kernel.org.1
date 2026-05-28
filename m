@@ -1,186 +1,233 @@
-Return-Path: <stable+bounces-255021-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-255022-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id qDFIH9tPGGpMiwgAu9opvQ
-	(envelope-from <stable+bounces-255021-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 16:23:23 +0200
+	id KOxQNlFSGGqwiwgAu9opvQ
+	(envelope-from <stable+bounces-255022-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 16:33:53 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2CA7A5F39EA
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 16:23:23 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 81AB75F3BEE
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 16:33:53 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 0C5433003821
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 14:23:17 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 1CDDE30173AB
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 14:27:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 260003B9937;
-	Thu, 28 May 2026 14:23:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="OzKwz3K3";
-	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="HrRnWQS9"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 51D2E3E5599;
+	Thu, 28 May 2026 14:27:04 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-oo1-f71.google.com (mail-oo1-f71.google.com [209.85.161.71])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8D9D83B7B96
-	for <stable@vger.kernel.org>; Thu, 28 May 2026 14:23:12 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 720233BB680
+	for <stable@vger.kernel.org>; Thu, 28 May 2026 14:27:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.161.71
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779978193; cv=none; b=kmT2742c+V5RrkYpXYwRD98IGcDjuP6IiWE7QyFOspSEkYSaI6wvXaWtFrMk4UxRxQIrG8JqyVIEzj2hIGaAOFZiYN8Zy9vm2xDr6TNIvuf5AZcN0BoJsCTkygZqDZzcw74T48U8wb3AtGV7eBPDEko70zxBmNCHtgqx+3+Q+zs=
+	t=1779978424; cv=none; b=R8vhYwtTm00IjcFEO9lKUUJ5YypoV20wZpAOs/+pNSGWbv/ZDPQizN1dvi7ND92m7y6qnsOvt0tAqSwU3bKAw4WV3nmLvn5209I9LI+obHCldVCrgaZz4Sbdtn+vcQmlPmYwdFAS0LXkHzozOnwR0/Hms9VO+xdhqYY7EUSkJmM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779978193; c=relaxed/simple;
-	bh=IZf6t8sPZN1B+G6nvb7rFXFrG/QkXWtEe0zXAaVYtPw=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=N7Wlj5wmOVK9fFcSXVigMvoNG2USWAnFGeBAHas1+JVCIrjY/p5fYLVoUNa5uUOwKfRxmk7CkMbonbr41lanDJGi77jIBnZqaZJlqAQllMhSm5b4RMA76vB6pt1Pvx6EP7Ui0Sgj1Kn/R03H7vDxo/qfcXV6X51zIsuT2MiA/Mw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=OzKwz3K3; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=HrRnWQS9; arc=none smtp.client-ip=170.10.129.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1779978191;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=T2ez4wLwO2XJ3M2x5UCP7Se5+Vs6+9kWYp+rbjdRbK0=;
-	b=OzKwz3K3QcHoq9OvuzMQAuc378zEMdMlIVHIpBoSFLBg2WfaU1xsKTZpKH4oQF+VGJk3Og
-	NWUYhp2mbItfM5rbCA4jE87HPS2lW3qdUqexC2xx87hkwAQKkCde6vFpmNzHV2zhUZ9/bN
-	MoJCDffhfjrvNwnq1+otV55L5HU3ZSw=
-Received: from mail-wr1-f69.google.com (mail-wr1-f69.google.com
- [209.85.221.69]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-303-0q4stIJQNOmIIDIaVTLz3w-1; Thu, 28 May 2026 10:23:10 -0400
-X-MC-Unique: 0q4stIJQNOmIIDIaVTLz3w-1
-X-Mimecast-MFC-AGG-ID: 0q4stIJQNOmIIDIaVTLz3w_1779978189
-Received: by mail-wr1-f69.google.com with SMTP id ffacd0b85a97d-44a71109b94so8590274f8f.3
-        for <stable@vger.kernel.org>; Thu, 28 May 2026 07:23:09 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=redhat.com; s=google; t=1779978189; x=1780582989; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=T2ez4wLwO2XJ3M2x5UCP7Se5+Vs6+9kWYp+rbjdRbK0=;
-        b=HrRnWQS9qYcAW4+E3phC/zhkVAJeDdGSh1rACdhSgCjgV5zhqscOV/fAUCXPzCM9hJ
-         dnNz7uR/Oie8+3XbRyhwa+qH8XCkHpwTh1G2sgNrtPymVkmdmkWcj0TIA+oJyfatU9eg
-         vY7GsrqYr0mNJtdodpzr7KizHm5ltwwDW3pK0r65Qbbs7SddqAauDBll5WDRLEh1Ttpy
-         aYXgJrEW136FoZLbDlRZux+/qGfEBqdh86+cZwnV+LGq6F+vcp/VC+0JgbLXVTJE8XAz
-         Jj1eYfeTQMk19wGqq7TCxhOKIdaNmV1pB+64bp98tiwepBqxsiD+/ukT19F9tcFCmDda
-         AKFw==
+	s=arc-20240116; t=1779978424; c=relaxed/simple;
+	bh=8dBQN3u9zxD5Dpe5kimj5AuyF1N0hn16euQa6Q6gauM=;
+	h=MIME-Version:Date:In-Reply-To:Message-ID:Subject:From:To:Cc:
+	 Content-Type; b=Ak1YNNHy6zWV+787dsUgfRc91uC6B3WExZM1XiVCo6NHteibXIoCcLvzI9VQQxQpVxqw7HS3j00BR9nFgAyLsahG+F6MZx2xkijlplF00ztGeRsoOuzYU9Ftadvk/LOsCzMUFd53NT0wcLuosaCDpzmZ6mZPG/lXm5iHg+i8dlQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com; arc=none smtp.client-ip=209.85.161.71
+Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com
+Received: by mail-oo1-f71.google.com with SMTP id 006d021491bc7-69db0927573so5540379eaf.1
+        for <stable@vger.kernel.org>; Thu, 28 May 2026 07:27:02 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1779978189; x=1780582989;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=T2ez4wLwO2XJ3M2x5UCP7Se5+Vs6+9kWYp+rbjdRbK0=;
-        b=q3cJq3mMczrYZ67o+mmw6m100YF51H4UtWk7wffk8Rs/kzaWHHX3Ty0bO1Ciq3WpkI
-         JdwkAGEmINaVdcUOQJ6Eru4owudk0xxQylvKdwwAAvBCuZmNpFckySJEhpPPojBrIM7b
-         w+WdEzqxHyCIvcGfTfdTX9NQO/TBr76bCnUWtFOg8CBDpz1yemVEA4m4oQvdO07MQ0Ul
-         JcGV5C8qGRUB+4x4FFetAW7lKoVbllwhW/AQMYU6I9r0DSwytftMnLbvO7MxVFhCYSoI
-         ZRZKDjksxHfpPYe+w+rvw06s77+rBXpQd7a4vryhSpDWpqCy+/DEbvFUbqmIATl3NATG
-         YY+A==
-X-Forwarded-Encrypted: i=1; AFNElJ9ZMJWoiYyif56e9hsHs8qDHj4OEWqWPHfdy7rPc9TQD60Moy2f0iyEMabif77VDdWuXV5P8jU=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxdX6ptOvpEJY+pIsAvCVMg7MdwnSWNwpi79VwCEqz5UP7Yok8t
-	lLvhc7E0Ew6bNd6gv1yKjTMYr6WnBnzPIiyZOIXyRA4X1DATw/hoCUd6QCBSTS0ZAM87Ao77j7V
-	N79J+Mi8TzRby1k+w5K8KGOoS9mlx07mTkYzrv/qepbDI/hgE6DL8SkMeJQ==
-X-Gm-Gg: Acq92OFOl2Pm/Kuyd8oXQ+V0hia2Tod30AY4npfJ7LMwFG9d+lkHQoSWRHALrop3gQA
-	0qzkOo8cw0HAnGw6OS7cLpImX+k47CElIugncZZT7aaHpWmIWIOtNIV1oY+/YxIFXZGXZ4bTRi3
-	CLpdkPzr7MlvkpEatdYTl8fQ8a1SXK9uE43z7TUQzQ4J71DDcn1ksZDWO7zTZx7SyMja48S4h3g
-	q/09FoE0mj3/nZdiqZoO6a04cSjB3vDDnaXqkXYgV9UN6hKv9J66F+r0wqUzdtxWxM70E1LCfU3
-	zjmffdxnd0jkhOCkR7TWtExa6emIkEhB4UvBsjkl57UULAE1NX0gY0UHnVj71sXg0zEfhtEiPDs
-	6rMI2b8AO7vxjj8ZCt53oJgKFwurCie70ZntCTdGS0ie7638xb8nWtPpSdXveDqSQfpnTrWvnAY
-	AhZUXy71H0490=
-X-Received: by 2002:a05:6000:25e3:b0:45e:73b4:85cc with SMTP id ffacd0b85a97d-45eb38a6b5amr42307151f8f.35.1779978188783;
-        Thu, 28 May 2026 07:23:08 -0700 (PDT)
-X-Received: by 2002:a05:6000:25e3:b0:45e:73b4:85cc with SMTP id ffacd0b85a97d-45eb38a6b5amr42307095f8f.35.1779978188310;
-        Thu, 28 May 2026 07:23:08 -0700 (PDT)
-Received: from maszat.piliscsaba.szeredi.hu (78-131-46-194.pool.digikabel.hu. [78.131.46.194])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-45edb5b1a28sm13876873f8f.26.2026.05.28.07.23.07
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 28 May 2026 07:23:07 -0700 (PDT)
-From: Miklos Szeredi <mszeredi@redhat.com>
-To: fuse-devel@lists.linux.dev
-Cc: =?UTF-8?q?Aur=C3=A9lien=20Bombo?= <abombo@microsoft.com>,
-	Greg Kurz <gkurz@redhat.com>,
-	stable@vger.kernel.org
-Subject: [PATCH] virtiofs: fix UAF on submount umount
-Date: Thu, 28 May 2026 16:23:05 +0200
-Message-ID: <20260528142306.1792392-1-mszeredi@redhat.com>
-X-Mailer: git-send-email 2.54.0
+        d=1e100.net; s=20251104; t=1779978421; x=1780583221;
+        h=cc:to:from:subject:message-id:in-reply-to:date:mime-version
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=DKd8lNtRk4Q8hVCyCTCRPaKBtTJU7lwZa3WnlORRuvU=;
+        b=maf/cUesSYw27FnLQkltvDRvG1X6PScRoHnsUmhUlreYY0Zf47NPnGKpJO1vko3lrx
+         mLlPbXoXYeAlYT+Iz9x15Mj8xDSEt6lg6WKiKmOdVJfjwUwK5hAddjFiBn1rg8fZO4cd
+         CsC9D47fYDdIf60rVS9VdWXxKuH7HUkwoPwAGesOeYghy8b7ZyRQ9+trpA6kakL8tATr
+         m09rhMCXOFDq/zDFGNmPGDcZuviJPyUORJ6EhEY+2x9hqk//prtIBUx4aXEhJ5q9tUda
+         vcg5o3ZSvqCSIwLsLqGdvl2Ycihd024FwfZ/9qE9mVknfS6zLzG1oIpISk851G3xOJn/
+         ZJTQ==
+X-Forwarded-Encrypted: i=1; AFNElJ8IEkEFcIu6yHFuNMtk7pLZxaM+v8x6hOIXEBYniQlA4St3dudf9hLItVJ4eV86YEiDhu3oKoY=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyY2Zclud+Fbs5VkLPe1rX7O5SiL6vi7NW3pr2brcq6AQdRlxUg
+	dNqWYmOLIC0ujLegmCkyDGxNGCsVR3RmGsXXlYIAGPlxL+8a4pVil9mVYPJN88T0EC4grDevBKy
+	MKvtkHcHcGW+v8/c/q1LJscLQtd4/SNLFgvBQav0ZPaPTYUvj0h6AjXDiTVk=
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-1.16 / 15.00];
-	MID_CONTAINS_FROM(1.00)[];
+X-Received: by 2002:a05:6820:1c9d:b0:69d:9f6a:9d2f with SMTP id
+ 006d021491bc7-69dfa918199mr695672eaf.38.1779978421526; Thu, 28 May 2026
+ 07:27:01 -0700 (PDT)
+Date: Thu, 28 May 2026 07:27:01 -0700
+In-Reply-To: <20260528072100.1163109-1-vulab@iscas.ac.cn>
+X-Google-Appengine-App-Id: s~syzkaller
+X-Google-Appengine-App-Id-Alias: syzkaller
+Message-ID: <6a1850b5.586c836d.2e3ab2.0001.GAE@google.com>
+Subject: [syzbot ci] Re: netfilter: ipvs: fix ct refcount leak when template
+ is invalid
+From: syzbot ci <syzbot+ci738d8a1aa6d8f478@syzkaller.appspotmail.com>
+To: coreteam@netfilter.org, davem@davemloft.net, edumazet@google.com, 
+	fw@strlen.de, horms@verge.net.au, ja@ssi.bg, kuba@kernel.org, 
+	linux-kernel@vger.kernel.org, lvs-devel@vger.kernel.org, 
+	netdev@vger.kernel.org, netfilter-devel@vger.kernel.org, pabeni@redhat.com, 
+	pablo@netfilter.org, phil@nwl.cc, stable@vger.kernel.org, vulab@iscas.ac.cn
+Cc: syzbot@lists.linux.dev, syzkaller-bugs@googlegroups.com
+Content-Type: text/plain; charset="UTF-8"
+X-Spamd-Result: default: False [-1.36 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[redhat.com,quarantine];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
-	R_DKIM_ALLOW(-0.20)[redhat.com:s=mimecast20190719,redhat.com:s=google];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	MAILLIST(-0.15)[generic];
+	DMARC_POLICY_SOFTFAIL(0.10)[appspotmail.com : SPF not aligned (relaxed), No valid DKIM,none];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	DKIM_TRACE(0.00)[redhat.com:+];
-	FROM_HAS_DN(0.00)[];
-	RCVD_TLS_LAST(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,googlesource.com:url,syzbot.org:url,googlegroups.com:email,appspotmail.com:email];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-255021-lists,stable=lfdr.de];
-	MIME_TRACE(0.00)[0:+];
-	RCPT_COUNT_THREE(0.00)[4];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
-	TO_DN_SOME(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[mszeredi@redhat.com,stable@vger.kernel.org];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[6];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
 	TAGGED_RCPT(0.00)[stable];
+	MIME_TRACE(0.00)[0:+];
+	MISSING_XM_UA(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	R_DKIM_NA(0.00)[];
+	RCPT_COUNT_TWELVE(0.00)[18];
+	FROM_NEQ_ENVFROM(0.00)[syzbot@syzkaller.appspotmail.com,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo]
-X-Rspamd-Queue-Id: 2CA7A5F39EA
+	PRECEDENCE_BULK(0.00)[];
+	TAGGED_FROM(0.00)[bounces-255022-lists,stable=lfdr.de,ci738d8a1aa6d8f478];
+	TO_DN_NONE(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[]
+X-Rspamd-Queue-Id: 81AB75F3BEE
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-iput() called from fuse_release_end() can Oops if the super block has
-already been destroyed.  Normally this is prevented by waiting for
-num_waiting to go down to zero before commencing with super block shutdown.
+syzbot ci has tested the following series
 
-This only works, however, for the last submount instance, as the wait
-counter is per connection, not per superblock.
+[v1] netfilter: ipvs: fix ct refcount leak when template is invalid
+https://lore.kernel.org/all/20260528072100.1163109-1-vulab@iscas.ac.cn
+* [PATCH] netfilter: ipvs: fix ct refcount leak when template is invalid
 
-Revert to using synchronous release requests for the auto_submounts case,
-which is virtiofs only at this time.
+and found the following issue:
+general protection fault in ip_vs_conn_put
 
-Reported-by: Aurélien Bombo <abombo@microsoft.com>
-Cc: Greg Kurz <gkurz@redhat.com>
-Closes: https://github.com/kata-containers/kata-containers/issues/12589
-Fixes: 26e5c67deb2e ("fuse: fix livelock in synchronous file put from fuseblk workers")
-Cc: stable@vger.kernel.org
-Signed-off-by: Miklos Szeredi <mszeredi@redhat.com>
+Full report is available here:
+https://ci.syzbot.org/series/fb773743-f223-4965-9f38-e5ea600ee724
+
+***
+
+general protection fault in ip_vs_conn_put
+
+tree:      nf-next
+URL:       https://kernel.googlesource.com/pub/scm/linux/kernel/git/netfilter/nf-next.git
+base:      aa064a614efcfa4c300609d1f01134e99a12ad10
+arch:      amd64
+compiler:  Debian clang version 21.1.8 (++20251221033036+2078da43e25a-1~exp1~20251221153213.50), Debian LLD 21.1.8
+config:    https://ci.syzbot.org/builds/3e6a154f-d578-4d43-94af-86e851702925/config
+syz repro: https://ci.syzbot.org/findings/518450a1-bd56-47bd-b214-be945f6ba221/syz_repro
+
+IPVS: sed: FWM 3 0x00000003 - no destination available
+Oops: general protection fault, probably for non-canonical address 0xdffffc0000000007: 0000 [#1] SMP KASAN PTI
+KASAN: null-ptr-deref in range [0x0000000000000038-0x000000000000003f]
+CPU: 1 UID: 0 PID: 5812 Comm: syz.1.18 Not tainted syzkaller #0 PREEMPT(full) 
+Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS 1.16.2-debian-1.16.2-1 04/01/2014
+RIP: 0010:ip_vs_conn_put+0x2b/0x240 net/netfilter/ipvs/ip_vs_conn.c:608
+Code: 0f 1e fa 55 41 57 41 56 41 55 41 54 53 48 89 fb 49 bc 00 00 00 00 00 fc ff df e8 40 cb c1 f7 4c 8d 73 3c 4d 89 f5 49 c1 ed 03 <43> 0f b6 44 25 00 84 c0 0f 85 9f 01 00 00 41 8b 2e 89 ee 81 e6 00
+RSP: 0018:ffffc90003d4eba8 EFLAGS: 00010203
+RAX: ffffffff8a03f980 RBX: 0000000000000000 RCX: ffff888169370000
+RDX: 0000000000000000 RSI: ffffffff8c28b740 RDI: 0000000000000000
+RBP: ffffc90003d4ee30 R08: ffff88823c6247d3 R09: 1ffff110478c48fa
+R10: dffffc0000000000 R11: ffffed10478c48fb R12: dffffc0000000000
+R13: 0000000000000007 R14: 000000000000003c R15: 0000000000000000
+FS:  00007faa344d36c0(0000) GS:ffff8882a9276000(0000) knlGS:0000000000000000
+CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+CR2: 00007faa33472780 CR3: 0000000169de6000 CR4: 00000000000006f0
+Call Trace:
+ <TASK>
+ ip_vs_sched_persist net/netfilter/ipvs/ip_vs_core.c:-1 [inline]
+ ip_vs_schedule+0x100f/0x1d90 net/netfilter/ipvs/ip_vs_core.c:688
+ udp_conn_schedule+0x391/0x7a0 net/netfilter/ipvs/ip_vs_proto_udp.c:78
+ ip_vs_try_to_schedule net/netfilter/ipvs/ip_vs_core.c:1659 [inline]
+ ip_vs_in_hook+0xc50/0x1bf0 net/netfilter/ipvs/ip_vs_core.c:2231
+ nf_hook_entry_hookfn include/linux/netfilter.h:158 [inline]
+ nf_hook_slow+0xc5/0x220 net/netfilter/core.c:619
+ nf_hook+0x22a/0x3a0 include/linux/netfilter.h:273
+ __ip_local_out+0x558/0x6a0 net/ipv4/ip_output.c:120
+ ip_local_out+0x2a/0x190 net/ipv4/ip_output.c:129
+ ip_send_skb+0x45/0xc0 net/ipv4/ip_output.c:1510
+ udp_send_skb+0x7e4/0xf70 net/ipv4/udp.c:1161
+ udp_sendmsg+0x1937/0x21a0 net/ipv4/udp.c:1443
+ udpv6_sendmsg+0x996/0x25c0 net/ipv6/udp.c:1523
+ sock_sendmsg_nosec net/socket.c:787 [inline]
+ __sock_sendmsg net/socket.c:802 [inline]
+ ____sys_sendmsg+0x5c7/0x9f0 net/socket.c:2698
+ ___sys_sendmsg+0x2a5/0x360 net/socket.c:2752
+ __sys_sendmsg net/socket.c:2784 [inline]
+ __do_sys_sendmsg net/socket.c:2789 [inline]
+ __se_sys_sendmsg net/socket.c:2787 [inline]
+ __x64_sys_sendmsg+0x1bd/0x2a0 net/socket.c:2787
+ do_syscall_x64 arch/x86/entry/syscall_64.c:63 [inline]
+ do_syscall_64+0x15f/0xf80 arch/x86/entry/syscall_64.c:94
+ entry_SYSCALL_64_after_hwframe+0x77/0x7f
+RIP: 0033:0x7faa3359ce59
+Code: ff c3 66 2e 0f 1f 84 00 00 00 00 00 0f 1f 44 00 00 48 89 f8 48 89 f7 48 89 d6 48 89 ca 4d 89 c2 4d 89 c8 4c 8b 4c 24 08 0f 05 <48> 3d 01 f0 ff ff 73 01 c3 48 c7 c1 e8 ff ff ff f7 d8 64 89 01 48
+RSP: 002b:00007faa344d3028 EFLAGS: 00000246 ORIG_RAX: 000000000000002e
+RAX: ffffffffffffffda RBX: 00007faa33815fa0 RCX: 00007faa3359ce59
+RDX: 0000000000000000 RSI: 0000200000000400 RDI: 0000000000000004
+RBP: 00007faa33632d6f R08: 0000000000000000 R09: 0000000000000000
+R10: 0000000000000000 R11: 0000000000000246 R12: 0000000000000000
+R13: 00007faa33816038 R14: 00007faa33815fa0 R15: 00007ffe8bd2ebb8
+ </TASK>
+Modules linked in:
+---[ end trace 0000000000000000 ]---
+RIP: 0010:ip_vs_conn_put+0x2b/0x240 net/netfilter/ipvs/ip_vs_conn.c:608
+Code: 0f 1e fa 55 41 57 41 56 41 55 41 54 53 48 89 fb 49 bc 00 00 00 00 00 fc ff df e8 40 cb c1 f7 4c 8d 73 3c 4d 89 f5 49 c1 ed 03 <43> 0f b6 44 25 00 84 c0 0f 85 9f 01 00 00 41 8b 2e 89 ee 81 e6 00
+RSP: 0018:ffffc90003d4eba8 EFLAGS: 00010203
+RAX: ffffffff8a03f980 RBX: 0000000000000000 RCX: ffff888169370000
+RDX: 0000000000000000 RSI: ffffffff8c28b740 RDI: 0000000000000000
+RBP: ffffc90003d4ee30 R08: ffff88823c6247d3 R09: 1ffff110478c48fa
+R10: dffffc0000000000 R11: ffffed10478c48fb R12: dffffc0000000000
+R13: 0000000000000007 R14: 000000000000003c R15: 0000000000000000
+FS:  00007faa344d36c0(0000) GS:ffff8882a9276000(0000) knlGS:0000000000000000
+CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+CR2: 00007faa335ea540 CR3: 0000000169de6000 CR4: 00000000000006f0
+----------------
+Code disassembly (best guess):
+   0:	0f 1e fa             	nop    %edx
+   3:	55                   	push   %rbp
+   4:	41 57                	push   %r15
+   6:	41 56                	push   %r14
+   8:	41 55                	push   %r13
+   a:	41 54                	push   %r12
+   c:	53                   	push   %rbx
+   d:	48 89 fb             	mov    %rdi,%rbx
+  10:	49 bc 00 00 00 00 00 	movabs $0xdffffc0000000000,%r12
+  17:	fc ff df
+  1a:	e8 40 cb c1 f7       	call   0xf7c1cb5f
+  1f:	4c 8d 73 3c          	lea    0x3c(%rbx),%r14
+  23:	4d 89 f5             	mov    %r14,%r13
+  26:	49 c1 ed 03          	shr    $0x3,%r13
+* 2a:	43 0f b6 44 25 00    	movzbl 0x0(%r13,%r12,1),%eax <-- trapping instruction
+  30:	84 c0                	test   %al,%al
+  32:	0f 85 9f 01 00 00    	jne    0x1d7
+  38:	41 8b 2e             	mov    (%r14),%ebp
+  3b:	89 ee                	mov    %ebp,%esi
+  3d:	81                   	.byte 0x81
+  3e:	e6 00                	out    %al,$0x0
+
+
+***
+
+If these findings have caused you to resend the series or submit a
+separate fix, please add the following tag to your commit message:
+  Tested-by: syzbot@syzkaller.appspotmail.com
+
 ---
- fs/fuse/file.c | 8 +++++++-
- 1 file changed, 7 insertions(+), 1 deletion(-)
+This report is generated by a bot. It may contain errors.
+syzbot ci engineers can be reached at syzkaller@googlegroups.com.
 
-diff --git a/fs/fuse/file.c b/fs/fuse/file.c
-index 3bdab8d03373..e8833e2a6610 100644
---- a/fs/fuse/file.c
-+++ b/fs/fuse/file.c
-@@ -380,8 +380,14 @@ void fuse_file_release(struct inode *inode, struct fuse_file *ff,
- 	 * aio and closes the fd before the aio completes.  Since aio takes its
- 	 * own ref to the file, the IO completion has to drop the ref, which is
- 	 * how the fuse server can end up closing its clients' files.
-+	 *
-+	 * Exception is virtio-fs, which is not affected by the above (server is
-+	 * on host, cannot close open files in guest).  Virtio-fs needs sync
-+	 * release, because the num_waiting mechanism to wait for all requests
-+	 * before commencing with fs shutdown doesn't work if submounts are
-+	 * used.
- 	 */
--	fuse_file_put(ff, false);
-+	fuse_file_put(ff, ff->fm->fc->auto_submounts);
- }
- 
- void fuse_release_common(struct file *file, bool isdir)
--- 
-2.54.0
+To test a patch for this bug, please reply with `#syz test`
+(should be on a separate line).
 
+The patch should be attached to the email.
+Note: arguments like custom git repos and branches are not supported.
 
