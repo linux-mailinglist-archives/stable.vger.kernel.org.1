@@ -1,57 +1,64 @@
-Return-Path: <stable+bounces-256234-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-256115-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id mPJpGjCrGGpolwgAu9opvQ
-	(envelope-from <stable+bounces-256234-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:53:04 +0200
+	id Ae7rGVWqGGoomAgAu9opvQ
+	(envelope-from <stable+bounces-256115-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:49:25 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1CE605F9C49
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:53:03 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id D036A5F99CE
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:49:24 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id B6683310B459
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 20:45:34 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id B9D3B3177B7C
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 20:40:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 96F08318B9D;
-	Thu, 28 May 2026 20:45:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DD5D8298CB2;
+	Thu, 28 May 2026 20:39:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wGWpibkg"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EhyZIpdq"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 70F1523394D;
-	Thu, 28 May 2026 20:45:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ACD6C2EF652;
+	Thu, 28 May 2026 20:39:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780001132; cv=none; b=iyfUxRVZRcNBOBhGh0ZYZ2M5md6EccFk8M5O+kFOQTJXONAgBkso5HuOgjXLQxQiJ3AoBa18gZAdV7UoRm8mbHjw4OVIUhehIx0nhjF/98vpDfAIIGaLFS3BVwRZr/CIbh4tXwdATzC9CfczuvqNv8nCqLVD7752OpdI3N1BAwU=
+	t=1780000798; cv=none; b=b7L4XsGnqQ+NjodmckqjsTbBatFp/MzOjHD7sn+58Ma106uN13vEVS2UxgZm05gqS/ZUkeWk83eW8yL5BMT304Xp///l/0XAzqUTy3Zmvn9UTf4/hB64xjcWVraR89/xHta2ARH88f3CufCHHhOAfUJp1qZGqHsYNz9HYIvjtFk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780001132; c=relaxed/simple;
-	bh=udNkUWk06BdbEJcdrmruoew4HWf3SiIfkWBz6oBnECU=;
+	s=arc-20240116; t=1780000798; c=relaxed/simple;
+	bh=Pv1hxwSS0qmckSEAUdX6qpXHsCmpZb+C7aI3thpOpig=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=FMbwnbBnBWmHg2V03imArsYoekbdhfZtTNImA0YZP9l32OBlngVXPumZN61hxlVQK5ZavRN+IyBHSsDkiSSvtiugKxKItsEcA0caFvp5SpHUtGt9GkXD9AChxBsbmO3iMqKHsD1OfqVJNgs4OqOt9DLGfgfNzQmD5fAQcchMqN4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wGWpibkg; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CD9B81F000E9;
-	Thu, 28 May 2026 20:45:30 +0000 (UTC)
+	 MIME-Version; b=GPLkYHJE2RDbXdE2Nk1IODVPqenQZZRa+l4sCBqvYWrfgBvJNkBkcvcdRO5PQskeBLgIiTS0kLUbYxCCTre6JiQZoUDVbyjrcl/B15PIuSDfrzZ9wab6dU9n+8+7sH5zWu8daQBsLwd9a4e1FFkSkhimWRZiKv7UAKVl5Hw3GS4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EhyZIpdq; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 14CA91F000E9;
+	Thu, 28 May 2026 20:39:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780001131;
-	bh=b5Qkk3N5y520gf526ffn+YEHhvc/71/LgPMw+VbMvW4=;
+	s=korg; t=1780000797;
+	bh=BeGqYcwzF0o4kvVey+9LNwdCW1wbbZhzE99BIk1PgYA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=wGWpibkgDMBTWSpOlXNcFcToAqFYAUWI6O94vexzdKmcKsE8VhWXCvVRwUV1ay/YB
-	 yY6/aXKkOKRUX9Hv+HKECiMbrzQMdl35aFgol/O950PuLOSNu4pEjC61LQOOXnZooq
-	 GWJRO+pXGPir47g67JRMgQUOvRpN1HSeRFyZ+oVk=
+	b=EhyZIpdq5V7hpX5UB+acwgEcCEqk/jJth2PZEvZBhkP93Ym/nLKKYY4mpGlML5LcN
+	 AARZ1GwQGM5yRMBDATb5kEHOJRGcnu5CoF7IMeL0z2ePvL7eY9zDlx7rAPsFsz6ANh
+	 J0PA+f6UJMAcbh1Dg1OHEFjohBJ5RNCiNX8D4y/8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 019/186] Revert "s390/cio: Update purge function to unregister the unused subchannels"
+	stable@kernel.org,
+	Yuan Tan <yuantan098@gmail.com>,
+	Yifan Wu <yifanwucs@gmail.com>,
+	Juefei Pu <tomapufckgml@gmail.com>,
+	Xin Liu <bird@lzu.edu.cn>,
+	Luxiao Xu <rakukuip@gmail.com>,
+	Ren Wei <n05ec@lzu.edu.cn>,
+	Sven Eckelmann <sven@narfation.org>
+Subject: [PATCH 6.12 125/272] batman-adv: fix tp_meter counter underflow during shutdown
 Date: Thu, 28 May 2026 21:48:19 +0200
-Message-ID: <20260528194929.474769081@linuxfoundation.org>
+Message-ID: <20260528194632.880139208@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260528194928.941004471@linuxfoundation.org>
-References: <20260528194928.941004471@linuxfoundation.org>
+In-Reply-To: <20260528194629.379955525@linuxfoundation.org>
+References: <20260528194629.379955525@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,107 +73,89 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-256234-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,kernel.org,gmail.com,lzu.edu.cn,narfation.org];
+	TAGGED_FROM(0.00)[bounces-256115-lists,stable=lfdr.de];
 	PRECEDENCE_BULK(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
 	FROM_HAS_DN(0.00)[];
-	RCPT_COUNT_THREE(0.00)[4];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[11];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
 	TO_DN_SOME(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim]
-X-Rspamd-Queue-Id: 1CE605F9C49
+	DBL_BLOCKED_OPENRESOLVER(0.00)[narfation.org:email,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,lzu.edu.cn:email,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim]
+X-Rspamd-Queue-Id: D036A5F99CE
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-This reverts commit c34b09cbd6fc06f0f234182e462a1b010d13a5a6.
+From: Luxiao Xu <rakukuip@gmail.com>
 
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+commit 94f3b133168d1c49895e7cc6afbcf1cc0b354602 upstream.
+
+batadv_tp_sender_shutdown() unconditionally decrements the "sending"
+atomic counter. If multiple paths (e.g. timeout, user cancel, and
+normal finish) call this function, the counter can underflow to -1.
+
+Since the sender logic treats any non-zero value as "still sending",
+a negative value causes the sender kthread to loop indefinitely.
+This leads to a use-after-free when the interface is removed while
+the zombie thread is still active.
+
+Fix this by using atomic_xchg() to ensure the counter only transitions
+from 1 to 0 once.
+
+Fixes: 33a3bb4a3345 ("batman-adv: throughput meter implementation")
+Cc: stable@kernel.org
+Reported-by: Yuan Tan <yuantan098@gmail.com>
+Reported-by: Yifan Wu <yifanwucs@gmail.com>
+Reported-by: Juefei Pu <tomapufckgml@gmail.com>
+Reported-by: Xin Liu <bird@lzu.edu.cn>
+Signed-off-by: Luxiao Xu <rakukuip@gmail.com>
+Signed-off-by: Ren Wei <n05ec@lzu.edu.cn>
+[sven: added missing change in batadv_tp_send]
+Signed-off-by: Sven Eckelmann <sven@narfation.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/s390/cio/device.c | 37 +++++++++++++------------------------
- 1 file changed, 13 insertions(+), 24 deletions(-)
+ net/batman-adv/tp_meter.c |    4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/s390/cio/device.c b/drivers/s390/cio/device.c
-index 93307ca75c10b..e623359862ea2 100644
---- a/drivers/s390/cio/device.c
-+++ b/drivers/s390/cio/device.c
-@@ -1318,34 +1318,23 @@ void ccw_device_schedule_recovery(void)
- 	spin_unlock_irqrestore(&recovery_lock, flags);
- }
- 
--static int purge_fn(struct subchannel *sch, void *data)
-+static int purge_fn(struct device *dev, void *data)
+--- a/net/batman-adv/tp_meter.c
++++ b/net/batman-adv/tp_meter.c
+@@ -451,7 +451,7 @@ static void batadv_tp_sender_end(struct
+ static void batadv_tp_sender_shutdown(struct batadv_tp_vars *tp_vars,
+ 				      enum batadv_tp_meter_reason reason)
  {
--	struct ccw_device *cdev;
--
--	spin_lock_irq(sch->lock);
--	if (sch->st != SUBCHANNEL_TYPE_IO || !sch->schib.pmcw.dnv)
--		goto unlock;
--
--	if (!is_blacklisted(sch->schid.ssid, sch->schib.pmcw.dev))
--		goto unlock;
--
--	cdev = sch_get_cdev(sch);
--	if (cdev) {
--		if (cdev->private->state != DEV_STATE_OFFLINE)
--			goto unlock;
-+	struct ccw_device *cdev = to_ccwdev(dev);
-+	struct ccw_dev_id *id = &cdev->private->dev_id;
-+	struct subchannel *sch = to_subchannel(cdev->dev.parent);
+-	if (!atomic_dec_and_test(&tp_vars->sending))
++	if (atomic_xchg(&tp_vars->sending, 0) != 1)
+ 		return;
  
--		if (atomic_cmpxchg(&cdev->private->onoff, 0, 1) != 0)
--			goto unlock;
-+	spin_lock_irq(cdev->ccwlock);
-+	if (is_blacklisted(id->ssid, id->devno) &&
-+	    (cdev->private->state == DEV_STATE_OFFLINE) &&
-+	    (atomic_cmpxchg(&cdev->private->onoff, 0, 1) == 0)) {
-+		CIO_MSG_EVENT(3, "ccw: purging 0.%x.%04x\n", id->ssid,
-+			      id->devno);
- 		ccw_device_sched_todo(cdev, CDEV_TODO_UNREG);
-+		css_sched_sch_todo(sch, SCH_TODO_UNREG);
- 		atomic_set(&cdev->private->onoff, 0);
- 	}
--
--	css_sched_sch_todo(sch, SCH_TODO_UNREG);
--	CIO_MSG_EVENT(3, "ccw: purging 0.%x.%04x%s\n", sch->schid.ssid,
--		      sch->schib.pmcw.dev, cdev ? "" : " (no cdev)");
--
--unlock:
--	spin_unlock_irq(sch->lock);
-+	spin_unlock_irq(cdev->ccwlock);
- 	/* Abort loop in case of pending signal. */
- 	if (signal_pending(current))
- 		return -EINTR;
-@@ -1361,7 +1350,7 @@ static int purge_fn(struct subchannel *sch, void *data)
- int ccw_purge_blacklisted(void)
- {
- 	CIO_MSG_EVENT(2, "ccw: purging blacklisted devices\n");
--	for_each_subchannel_staged(purge_fn, NULL, NULL);
-+	bus_for_each_dev(&ccw_bus_type, NULL, NULL, purge_fn);
- 	return 0;
- }
- 
--- 
-2.53.0
-
+ 	tp_vars->reason = reason;
+@@ -885,7 +885,7 @@ static int batadv_tp_send(void *arg)
+ 				   "Meter: %s() cannot send packets (%d)\n",
+ 				   __func__, err);
+ 			/* ensure nobody else tries to stop the thread now */
+-			if (atomic_dec_and_test(&tp_vars->sending))
++			if (atomic_xchg(&tp_vars->sending, 0) == 1)
+ 				tp_vars->reason = err;
+ 			break;
+ 		}
 
 
 
