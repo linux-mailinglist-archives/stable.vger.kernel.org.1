@@ -1,58 +1,59 @@
-Return-Path: <stable+bounces-256005-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-255406-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id QDh1EkypGGpolwgAu9opvQ
-	(envelope-from <stable+bounces-256005-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:45:00 +0200
+	id cGpANcugGGqblggAu9opvQ
+	(envelope-from <stable+bounces-255406-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:08:43 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id A85705F9723
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:44:59 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8D3AF5F7E88
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:08:43 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 52F2C3116230
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 20:34:49 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id AAE6B302E313
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 20:07:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EC9E633CE8A;
-	Thu, 28 May 2026 20:34:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D3ED4335566;
+	Thu, 28 May 2026 20:07:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="V/gD3Hx2"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wyCaR2YG"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C395D223328;
-	Thu, 28 May 2026 20:34:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B3DFA2F260C;
+	Thu, 28 May 2026 20:06:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780000488; cv=none; b=CcnTEcmwgysqlkuo8bvFFVkhyTdhImEv7ieA0AKIGHmYPGdwLTmKNBiC5GoZ9O8UKf583bZmPbNUsfxES42cx5EK+x5ZutR/jqL5tEpCrFBTHX4J7+m/8uvsRzMOILd0/QQk0BLPDf98LrXnEY2oJGt4mGYPYJfKU+RBl471HxY=
+	t=1779998820; cv=none; b=qOAygbBZ1UF0AXLqM0LbWKxcubVTrUibbjYEKu+hhK7CGpY9F7s6dn0HbHCMi0E9/87mLbru9mlpbK/NE1rBMpTUapAmp64DLZUD6IxypEtkiwVLncBfSffAYud6z5ZsTHjnXJ8YvAF+J3S1J+r1zjVAOtZ7YfFYqRR6AY40mKI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780000488; c=relaxed/simple;
-	bh=iPyEJFYZaXDmX8bYoDaE6itN1xSN1SX//t0jLi/Qz6U=;
+	s=arc-20240116; t=1779998820; c=relaxed/simple;
+	bh=DeoiKbWlagdmsTuwBO6ORZp/hpR81pBPflW4ZDwfIz8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=aGdYjaCkWmNg48foq0lxNoD6pEMQvhoNWVlnd47fNTYB+tcAoIOuUzTNgBZvy02DvJx/vhlAKeR+ysfyI/y+N9bC08ao1vtfXX2mHaWToAK21Mn3Cc819movc2T2nXFn/VRTaKtHI1O2UkbQN3gnCh/hQh92SKTFvL4t9diA6yY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=V/gD3Hx2; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2EFD11F000E9;
-	Thu, 28 May 2026 20:34:47 +0000 (UTC)
+	 MIME-Version; b=HHrWkRQEqny6B0TWBfxNMevrubT1nLqEF/n2f0XpWdP9G9D43SUTg+zRFhkxv8RI74+r55T1P70zijOy0qR1GgmwNzYbPKFJPhaDsXxv9KS8xkTKH7ADatk1sgdq1PcXB8htO6NxZ1mw9+Nd3T7Vj8aMgt9GlavyS2aWfuEifwI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wyCaR2YG; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1E1881F000E9;
+	Thu, 28 May 2026 20:06:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780000487;
-	bh=9aSkkHmH2/JTBuKi+P96e/9KFTe+6ZDhIjoVoARJwLI=;
+	s=korg; t=1779998819;
+	bh=JFHAifFNzPKD1ePx6trOREGbJmwGo9o21eGhkJo2FsE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=V/gD3Hx2+qSksesJhMEB1YwEnHLZfow1ykZcfn1JE/8Mjon19sRqH4vVVIAn26k1Q
-	 2UI3NjvLJZ+RqJvl27kDvu/puMwM1hgIbxR4+gthstvw2EHov6oPMi+qPCMY8Toi8m
-	 RvrdC0gJTziULOSH07FrbCjqt9F/kK8aMmbKtlEk=
+	b=wyCaR2YGwUKdaxYqhBkioRLCn0HEcdrD7qpiWqTl41AXvMHktdIOYc9YB0yfFOHVI
+	 ESfK1Ee7nNG/MkjejNmj5uBDkqWG995zmmfa40FMgCWkVBU8Qq04kb/KTHEnj3xgLK
+	 UnNXAIe/wUrkWh1wYHc3VwH0Sps3Athhl6JCIPQg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	David Carlier <devnexen@gmail.com>,
-	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
-Subject: [PATCH 6.12 063/272] Bluetooth: ISO: drop ISO_END frames received without prior ISO_START
+	Rob Clark <robin.clark@oss.qualcomm.com>,
+	Akhil P Oommen <akhilpo@oss.qualcomm.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 7.0 308/461] drm/msm/a6xx: Restore sysprof_active
 Date: Thu, 28 May 2026 21:47:17 +0200
-Message-ID: <20260528194631.142166750@linuxfoundation.org>
+Message-ID: <20260528194656.193929602@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260528194629.379955525@linuxfoundation.org>
-References: <20260528194629.379955525@linuxfoundation.org>
+In-Reply-To: <20260528194646.819809818@linuxfoundation.org>
+References: <20260528194646.819809818@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,82 +66,80 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-256005-lists,stable=lfdr.de];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,intel.com];
 	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	RCPT_COUNT_FIVE(0.00)[5];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-255406-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[stable];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,intel.com:email,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
-X-Rspamd-Queue-Id: A85705F9723
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim,qualcomm.com:email]
+X-Rspamd-Queue-Id: 8D3AF5F7E88
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+7.0-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: David Carlier <devnexen@gmail.com>
+From: Rob Clark <robin.clark@oss.qualcomm.com>
 
-commit 84c24fb151fc1179355296d7ff29129ac7c42129 upstream.
+[ Upstream commit 7a529ff48b99011c946e6d8addd071c06d3ccdae ]
 
-ISO data PDUs carry a packet-boundary flag indicating START, CONT, END
-or SINGLE. The ISO_CONT branch of iso_recv() guards against a missing
-ISO_START by checking conn->rx_len before touching conn->rx_skb, but
-ISO_END does not.
+This got lost in the shuffle somehow when moving the vfunc table to
+catalogue.  Fixes inhibiting IFPC when userspace is collecting perfcntr
+data.
 
-If a peer sends an ISO_END as the first packet on a fresh ISO
-connection, conn->rx_skb is still NULL and conn->rx_len is zero, so
-skb_put(conn->rx_skb, ...) dereferences NULL and oopses. For BIS,
-where receivers sync to a broadcaster without pairing, any broadcaster
-on the air can trigger this.
-
-Mirror the ISO_CONT check at the top of ISO_END so a stray end fragment
-is logged and dropped instead of crashing the host.
-
-Fixes: ccf74f2390d6 ("Bluetooth: Add BTPROTO_ISO socket type")
-Cc: stable@vger.kernel.org
-Assisted-by: Claude:claude-opus-4-7
-Signed-off-by: David Carlier <devnexen@gmail.com>
-Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 491fadb2b818 ("drm/msm/adreno: Move adreno_gpu_func to catalogue")
+Signed-off-by: Rob Clark <robin.clark@oss.qualcomm.com>
+Reviewed-by: Akhil P Oommen <akhilpo@oss.qualcomm.com>
+Patchwork: https://patchwork.freedesktop.org/patch/717780/
+Message-ID: <20260411150312.257937-1-robin.clark@oss.qualcomm.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/bluetooth/iso.c |    5 +++++
- 1 file changed, 5 insertions(+)
+ drivers/gpu/drm/msm/adreno/a6xx_gpu.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
---- a/net/bluetooth/iso.c
-+++ b/net/bluetooth/iso.c
-@@ -2319,6 +2319,11 @@ void iso_recv(struct hci_conn *hcon, str
- 		break;
- 
- 	case ISO_END:
-+		if (!conn->rx_len) {
-+			BT_ERR("Unexpected end frame (len %d)", skb->len);
-+			goto drop;
-+		}
-+
- 		skb_copy_from_linear_data(skb, skb_put(conn->rx_skb, skb->len),
- 					  skb->len);
- 		conn->rx_len -= skb->len;
+diff --git a/drivers/gpu/drm/msm/adreno/a6xx_gpu.c b/drivers/gpu/drm/msm/adreno/a6xx_gpu.c
+index 02a776ac9ab43..3e26b60d7f678 100644
+--- a/drivers/gpu/drm/msm/adreno/a6xx_gpu.c
++++ b/drivers/gpu/drm/msm/adreno/a6xx_gpu.c
+@@ -2725,6 +2725,7 @@ const struct adreno_gpu_funcs a6xx_gpu_funcs = {
+ 		.create_private_vm = a6xx_create_private_vm,
+ 		.get_rptr = a6xx_get_rptr,
+ 		.progress = a6xx_progress,
++		.sysprof_setup = a6xx_gmu_sysprof_setup,
+ 	},
+ 	.init = a6xx_gpu_init,
+ 	.get_timestamp = a6xx_gmu_get_timestamp,
+@@ -2793,6 +2794,7 @@ const struct adreno_gpu_funcs a7xx_gpu_funcs = {
+ 		.create_private_vm = a6xx_create_private_vm,
+ 		.get_rptr = a6xx_get_rptr,
+ 		.progress = a6xx_progress,
++		.sysprof_setup = a6xx_gmu_sysprof_setup,
+ 	},
+ 	.init = a6xx_gpu_init,
+ 	.get_timestamp = a6xx_gmu_get_timestamp,
+-- 
+2.53.0
+
 
 
 
