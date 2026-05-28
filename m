@@ -1,61 +1,62 @@
-Return-Path: <stable+bounces-255815-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-256246-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id iCM9JsqlGGrClggAu9opvQ
-	(envelope-from <stable+bounces-255815-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:30:02 +0200
+	id WBM1KC2rGGpolwgAu9opvQ
+	(envelope-from <stable+bounces-256246-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:53:01 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 602B15F8D33
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:30:02 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0EB1F5F9C42
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:53:00 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 765EB3096E3F
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 20:26:13 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 7445B300C90B
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 20:46:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 91B90334C0D;
-	Thu, 28 May 2026 20:25:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5598B317142;
+	Thu, 28 May 2026 20:46:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CSozyXjH"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RUhsjvLr"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6BC91254B1F;
-	Thu, 28 May 2026 20:25:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1F8DD329396;
+	Thu, 28 May 2026 20:46:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779999957; cv=none; b=WaMNiExEgI54SRQ5de6taW/FNo4AB0NAAjO/j0FTMQaHRH405EWA/vMsS9x+asgpfqk6dVY2wsV3OXlpy2xw/b/Oukhxu4CD1rLCnCqRgL1curq539Q9bseSD0P+g6Ksu00NTaFXmXYi/spvEoaNdTvwUgdY38muddp4/6EI2RM=
+	t=1780001163; cv=none; b=Lfof4QOe7XHV3jlYPwa2mDczsc8UA9KzId/nZWIl4eonBuFXyHqUQxykEWvHUp9UqKbmJnUbe0AWq0JAu0qlu9w5vEUs91vZXFIPUDqbNcAvRWbLbDYq5s1lqdez6E1kewmqjH0gsVGWo4SI4QZcZpBRuBajwAVbF74dDX7q48Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779999957; c=relaxed/simple;
-	bh=GYeBkCbGGGUdPThR61kMWT6SvzNV1GI1wVBZxXJ03c8=;
+	s=arc-20240116; t=1780001163; c=relaxed/simple;
+	bh=+pnl8gWNipPDj94bFopiT+L0L8WbiYMiZRRgJVRwQLY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=Zl4YDlRgCsBh9w29EWCt9DIWmmvBqH87iBSZcpLC5BC1ekpR7isvj7odaGFArl3ey9wE20wer+IBCyE5SmPYhpGMjNmKRtRiJ8vvGx5BxND8obq1UxaPqsgZsnMXz2oX/g+LOqKrCKqt80KHkJh9D3o5sIvW7cGxKeg48FcMUxI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CSozyXjH; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C9D071F000E9;
-	Thu, 28 May 2026 20:25:55 +0000 (UTC)
+	 MIME-Version; b=XsEpB7JacxjfavHO8Ydj4Sy9abyS5RgCnDHiyPbN/Ijus2eTZQBfuOHuWyb/uCTpdJ2rEwaFbGNW3Gdj3fs0369vKDcs9SvAhRrqAcSnpFToM+gy0kAYWRSTHSPjdMwxqV5/09I7/vLEvWuToPc7zzJffzqKvnC/3/a77vdLWQ0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RUhsjvLr; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8508A1F000E9;
+	Thu, 28 May 2026 20:46:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779999956;
-	bh=dsBHlr7vZgJ8sWDRnZuvFt/pKJxqQAvZkE8lpU63xMU=;
+	s=korg; t=1780001162;
+	bh=ijH5aBh08Ap4bop8xV0c9XVlkVmxiBXPkOCnSuUciIs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=CSozyXjHvUVtaf0XJBAuLiYc4x/35oefwCgN40p2A027/AGQ4Mku4/IlR3stNNViD
-	 1uGzq3FBB0TN7WO5Gl4qYhwPZjPBP3wRbiW4Ajf8MXTVTByPugO21Tw7bi88AyXPzz
-	 aWmK1FBQ+rvZk+cDktrvcsSxmfYfcVNZ80MYM74U=
+	b=RUhsjvLrWqN6k3h5qLAdcxwaxQ7j7yFOwG+LyOFBPyCUWKFeEm8lSSIAi6J93BAtd
+	 KT/XdCFHEiE8nqWZgMEXe1VlnEAW1ixFH6JlynF9VNPTQUIMN+UK3bDneYe3LfZJqp
+	 gEcCJSeeLxnmfo69HTWoyWplpQshVI4sEuogo7p4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Andreas Haarmann-Thiemann <eitschman@nebelreich.de>,
-	Linus Walleij <linusw@kernel.org>,
-	Alexander Lobakin <aleksander.lobakin@intel.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	syzbot+56b6a844a4ea74487b7b@syzkaller.appspotmail.com,
+	Johannes Berg <johannes@sipsolutions.net>,
+	Deepanshu Kartikey <kartikey406@gmail.com>,
+	Johannes Berg <johannes.berg@intel.com>,
+	Li hongliang <1468888505@139.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 251/377] net: ethernet: cortina: Drop half-assembled SKB
+Subject: [PATCH 6.6 009/186] wifi: mac80211: check tdls flag in ieee80211_tdls_oper
 Date: Thu, 28 May 2026 21:48:09 +0200
-Message-ID: <20260528194645.643231672@linuxfoundation.org>
+Message-ID: <20260528194929.202881705@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260528194638.371537336@linuxfoundation.org>
-References: <20260528194638.371537336@linuxfoundation.org>
+In-Reply-To: <20260528194928.941004471@linuxfoundation.org>
+References: <20260528194928.941004471@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,84 +66,84 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-2.16 / 15.00];
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
+	R_MISSING_CHARSET(0.50)[];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-255815-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-256246-lists,stable=lfdr.de];
 	FROM_HAS_DN(0.00)[];
-	TO_DN_SOME(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	PRECEDENCE_BULK(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,syzkaller.appspotmail.com,sipsolutions.net,gmail.com,intel.com,139.com,kernel.org];
+	MIME_TRACE(0.00)[0:+];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[9];
 	MID_RHS_MATCH_FROM(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_SEVEN(0.00)[8];
+	NEURAL_HAM(-0.00)[-1.000];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	TAGGED_RCPT(0.00)[stable,56b6a844a4ea74487b7b];
+	TO_DN_SOME(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[intel.com:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,msgid.link:url,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo]
-X-Rspamd-Queue-Id: 602B15F8D33
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,139.com:email,appspotmail.com:email,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,intel.com:email,syzkaller.appspot.com:url,linuxfoundation.org:mid,linuxfoundation.org:dkim,sipsolutions.net:email]
+X-Rspamd-Queue-Id: 0EB1F5F9C42
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Andreas Haarmann-Thiemann <eitschman@nebelreich.de>
+From: Deepanshu Kartikey <kartikey406@gmail.com>
 
-[ Upstream commit b266bacba796ff5c4dcd2ae2fc08aacf7ab39153 ]
+[ Upstream commit 7d73872d949c488a1d7c308031d6a9d89b5e0a8b ]
 
-In gmac_rx() (drivers/net/ethernet/cortina/gemini.c), when
-gmac_get_queue_page() returns NULL for the second page of a multi-page
-fragment, the driver logs an error and continues — but does not free the
-partially assembled skb that was being assembled via napi_build_skb() /
-napi_get_frags().
+When NL80211_TDLS_ENABLE_LINK is called, the code only checks if the
+station exists but not whether it is actually a TDLS station. This
+allows the operation to proceed for non-TDLS stations, causing
+unintended side effects like modifying channel context and HT
+protection before failing.
 
-Free the in-progress partially assembled skb via napi_free_frags()
-and increase the number of dropped frames appropriately
-and assign the skb pointer NULL to make sure it is not lingering
-around, matching the pattern already used elsewhere in the driver.
+Add a check for sta->sta.tdls early in the ENABLE_LINK case, before
+any side effects occur, to ensure the operation is only allowed for
+actual TDLS peers.
 
-Fixes: 4d5ae32f5e1e ("net: ethernet: Add a driver for Gemini gigabit ethernet")
-Signed-off-by: Andreas Haarmann-Thiemann <eitschman@nebelreich.de>
-Signed-off-by: Linus Walleij <linusw@kernel.org>
-Reviewed-by: Alexander Lobakin <aleksander.lobakin@intel.com>
-Link: https://patch.msgid.link/20260505-gemini-ethernet-fix-v2-1-997c31d06079@kernel.org
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Reported-by: syzbot+56b6a844a4ea74487b7b@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=56b6a844a4ea74487b7b
+Tested-by: syzbot+56b6a844a4ea74487b7b@syzkaller.appspotmail.com
+Suggested-by: Johannes Berg <johannes@sipsolutions.net>
+Signed-off-by: Deepanshu Kartikey <kartikey406@gmail.com>
+Link: https://patch.msgid.link/20260313092417.520807-1-kartikey406@gmail.com
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+Signed-off-by: Li hongliang <1468888505@139.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/cortina/gemini.c | 5 +++++
- 1 file changed, 5 insertions(+)
+ net/mac80211/tdls.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/net/ethernet/cortina/gemini.c b/drivers/net/ethernet/cortina/gemini.c
-index 7cf3ed7215a30..63f444e13d6f2 100644
---- a/drivers/net/ethernet/cortina/gemini.c
-+++ b/drivers/net/ethernet/cortina/gemini.c
-@@ -1494,6 +1494,11 @@ static unsigned int gmac_rx(struct net_device *netdev, unsigned int budget)
- 		gpage = gmac_get_queue_page(geth, port, mapping + PAGE_SIZE);
- 		if (!gpage) {
- 			dev_err(geth->dev, "could not find mapping\n");
-+			if (skb) {
-+				napi_free_frags(&port->napi);
-+				port->stats.rx_dropped++;
-+				skb = NULL;
-+			}
- 			continue;
- 		}
- 		page = gpage->page;
+diff --git a/net/mac80211/tdls.c b/net/mac80211/tdls.c
+index 0fd353fec9fc6..c3622f779d120 100644
+--- a/net/mac80211/tdls.c
++++ b/net/mac80211/tdls.c
+@@ -1481,7 +1481,7 @@ int ieee80211_tdls_oper(struct wiphy *wiphy, struct net_device *dev,
+ 
+ 		mutex_lock(&local->sta_mtx);
+ 		sta = sta_info_get(sdata, peer);
+-		if (!sta) {
++		if (!sta || !sta->sta.tdls) {
+ 			mutex_unlock(&local->sta_mtx);
+ 			ret = -ENOLINK;
+ 			break;
 -- 
 2.53.0
 
