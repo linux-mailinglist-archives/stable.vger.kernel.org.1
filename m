@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-255103-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-255104-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 2HipHiCdGGr+lQgAu9opvQ
-	(envelope-from <stable+bounces-255103-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 21:53:04 +0200
+	id WCp3Cx6dGGr+lQgAu9opvQ
+	(envelope-from <stable+bounces-255104-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 21:53:02 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7AD7F5F75B1
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 21:53:03 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9E6F65F75AA
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 21:53:00 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 75840301071E
+	by tor.lore.kernel.org (Postfix) with ESMTP id D4474300F1AB
 	for <lists+stable@lfdr.de>; Thu, 28 May 2026 19:52:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 54EA33126D0;
-	Thu, 28 May 2026 19:52:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 347713290B0;
+	Thu, 28 May 2026 19:52:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qDJz3VXJ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fGzvnoi4"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3A18F31159C;
-	Thu, 28 May 2026 19:52:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 03EE3347C6;
+	Thu, 28 May 2026 19:52:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779997976; cv=none; b=M2EEy0gcGRbgXBkWnHrgA+hRQvfV5094fBS27gRvaT6cN4JdjtGSBvey0D0Y5Xv9QOmLu17RRXqoCaIDJK8sdHkFtEnO7E2kIioe4gsjSzMVht49vQX0xTAbz+gDMwc/QdriZtpUhqesueYFFIO3tiTNsCf0v52qlCzBfO6gqnY=
+	t=1779997979; cv=none; b=ZmG6AWcXSPFURzDDUFp5pHK9iYpsECnzJ6TdtHQdpUxcbQqq0nCN05enMsaWHjcOODLoKyhhhx84zWYL/jMntkUnqlwc49URJ/PXaBkto5LubuOo93AlnAffpJAAzt28JDUqSQMnG7zDCE7/kLyiHy3qqTdoerXAcbj0y3Hb5jY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779997976; c=relaxed/simple;
-	bh=iymlFJRWxbRKZuzf2kXTZ3KCrfqaEPWk8bafW37N0x0=;
+	s=arc-20240116; t=1779997979; c=relaxed/simple;
+	bh=Legz/L/ibEQDiv2VSSp4GZdV+PBgL6Gw9rdHbYNoL8E=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=fvRuiOnDhQqDrz2kqKCl0h4PUCWp+KKdCbO0aqMHCRexzpB+3/dJClR9dKgHfFgKpFbU2tqYn5X7FQejCvSBfq9gsH4BKFEkKw1THmDSowW9D3a3YQsGcBaTmRd2OX/9CtvSEBePlc+Oba5MqhWxV1QWQEEN73QgCHIi5UTEw58=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qDJz3VXJ; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 427DF1F000E9;
-	Thu, 28 May 2026 19:52:54 +0000 (UTC)
+	 MIME-Version; b=ZyU/jFNiuoQo3037k/ZBeS0v5UZSStbSjwuYDEyA3qYrRZSACUwyhXhvOfKd09TcKgxF+UvockmaN+tYaTuSCqbCgSSFzaxG1vjBd/owWc+sFlfCOsqMiGTxEUyt/B0k4HxuCpWORhQprnBGF4Y0FWyS8PIulbimFikssQp6Rrc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fGzvnoi4; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 123471F000E9;
+	Thu, 28 May 2026 19:52:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779997974;
-	bh=qYs+Hc25GsIvivGsvSDByMZc/x1eN0cSKgGFfe+RFv8=;
+	s=korg; t=1779997977;
+	bh=r0tbH5D9gAKnjZ0Z6AJ+5sUx3nnT92s5Gzbjc+tyHM4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=qDJz3VXJ8jZb/kGbHwDuuwEDqQL4wgzkELyc9iirQqURM3P5Ornol8cvXXmv6lmjy
-	 mjm8/0coDfNjdEsWIJXW/pUoIkE925X4apfThKr3hfLVKy6yo8Ri/uYsBY+bVHvKXy
-	 fe110VgL+bXvnFcx4cPEg9eTQSOKF7MiiXKWAWPM=
+	b=fGzvnoi4dTQIqqwghdBjKnnhqpp4coVwG3EC1TySn9t0LfJHIPAxko7g5YdTUbs2W
+	 fG6Ub2RscDrap9F2svz9pdM1HFkJmCPKOCRWBRjWTyguSw70t0WBUg9VAKqKepZbfE
+	 lJtqeWrFPBIscrO3utNF7LE0dCe1Mu+y5fPYzYhU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	SeongJae Park <sj@kernel.org>,
-	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 7.0 010/461] mm/damon/sysfs-schemes: call missing mem_cgroup_iter_break()
-Date: Thu, 28 May 2026 21:42:19 +0200
-Message-ID: <20260528194647.145459409@linuxfoundation.org>
+	Jeremy Laratro <research@aradex.io>,
+	Namjae Jeon <linkinjeon@kernel.org>,
+	Steve French <stfrench@microsoft.com>
+Subject: [PATCH 7.0 011/461] ksmbd: fix null pointer dereference in compare_guid_key()
+Date: Thu, 28 May 2026 21:42:20 +0200
+Message-ID: <20260528194647.177006020@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
 In-Reply-To: <20260528194646.819809818@linuxfoundation.org>
 References: <20260528194646.819809818@linuxfoundation.org>
@@ -67,7 +68,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
@@ -77,7 +78,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-255103-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-255104-lists,stable=lfdr.de];
 	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
@@ -86,11 +87,11 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	NEURAL_HAM(-0.00)[-1.000];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[5];
+	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,linux-foundation.org:email,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo]
-X-Rspamd-Queue-Id: 7AD7F5F75B1
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim]
+X-Rspamd-Queue-Id: 9E6F65F75AA
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
@@ -98,37 +99,74 @@ X-Rspamd-Server: lfdr
 
 ------------------
 
-From: SeongJae Park <sj@kernel.org>
+From: Jeremy Laratro <research@aradex.io>
 
-commit d4e7b5c4cc353f154d5ab8bb2e1ce7714d77a6e9 upstream.
+commit 4b83cbc4c15f09b000cc06f033f64b0824b6dc87 upstream.
 
-damon_sysfs_memcg_path_to_id() breaks mem_cgroup_iter() loop without
-calling mem_cgroup_iter_break().  This leaks the cgroup reference.  Fix
-the issue by calling mem_cgroup_iter_break() before the break.
+session_fd_check() walks the per-inode m_op_list during durable-handle
+session teardown and sets op->conn = NULL for every opinfo whose conn
+matched the closing session's connection. The matching opinfo, however,
+stays linked in its per-ClientGuid lease_table_list entry's lb->lease_list
+because destroy_lease_table() only runs on full TCP-connection teardown,
+not on SESSION_LOGOFF.
 
-The issue was discovered [1] by Sashiko.
+If the same TCP connection then negotiates a fresh session with the
+same ClientGuid (ClientGuid is bound to NEGOTIATE, not the session, and
+is unchanged across LOGOFF + SETUP) and issues a SMB2 CREATE with a
+lease context on a different inode, find_same_lease_key() walks
+lb->lease_list, reaches the stale opinfo, and calls compare_guid_key(),
+which unconditionally dereferences opinfo->conn->ClientGUID. The conn
+pointer is NULL and the kernel panics.
 
-Link: https://lore.kernel.org/20260426173625.86521-1-sj@kernel.org
-Link: https://lore.kernel.org/20260423004148.74722-1-sj@kernel.org [1]
-Fixes: 29cbb9a13f05 ("mm/damon/sysfs-schemes: implement scheme filters")
-Signed-off-by: SeongJae Park <sj@kernel.org>
-Cc: <stable@vger.kernel.org> # 6.3.x
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Reproducer requires only a successful SMB2 SESSION_SETUP and a share
+configured with 'durable handles = yes'. KASAN report on mainline
+70390501d194:
+
+  general protection fault, probably for non-canonical address
+  0xdffffc0000000069: 0000 [#1] SMP KASAN PTI
+  KASAN: null-ptr-deref in range [0x0000000000000348-0x000000000000034f]
+  Workqueue: ksmbd-io handle_ksmbd_work
+  RIP: 0010:bcmp+0x5b/0x230
+  Call Trace:
+   compare_guid_key+0x4b/0xd0
+   find_same_lease_key+0x324/0x690
+   smb2_open+0x6aea/0x8e60
+   handle_ksmbd_work+0x796/0xee0
+   ...
+
+Faulting address 0x348 is the offset of ClientGUID within struct
+ksmbd_conn, confirming opinfo->conn was NULL.
+
+Read opinfo->conn once and bail out if it has been cleared by a
+concurrent session_fd_check(). A half-detached opinfo cannot be the
+owner of an active lease, so returning 0 is the correct match result.
+
+Fixes: c8efcc786146 ("ksmbd: add support for durable handles v1/v2")
+Cc: stable@vger.kernel.org
+Signed-off-by: Jeremy Laratro <research@aradex.io>
+Acked-by: Namjae Jeon <linkinjeon@kernel.org>
+Signed-off-by: Steve French <stfrench@microsoft.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- mm/damon/sysfs-schemes.c |    1 +
- 1 file changed, 1 insertion(+)
+ fs/smb/server/oplock.c |    6 +++++-
+ 1 file changed, 5 insertions(+), 1 deletion(-)
 
---- a/mm/damon/sysfs-schemes.c
-+++ b/mm/damon/sysfs-schemes.c
-@@ -2537,6 +2537,7 @@ static int damon_sysfs_memcg_path_to_id(
- 		if (damon_sysfs_memcg_path_eq(memcg, path, memcg_path)) {
- 			*id = mem_cgroup_id(memcg);
- 			found = true;
-+			mem_cgroup_iter_break(NULL, memcg);
- 			break;
- 		}
- 	}
+--- a/fs/smb/server/oplock.c
++++ b/fs/smb/server/oplock.c
+@@ -484,8 +484,12 @@ static inline int compare_guid_key(struc
+ 				   const char *guid1, const char *key1)
+ {
+ 	const char *guid2, *key2;
++	struct ksmbd_conn *conn;
+ 
+-	guid2 = opinfo->conn->ClientGUID;
++	conn = READ_ONCE(opinfo->conn);
++	if (!conn)
++		return 0;
++	guid2 = conn->ClientGUID;
+ 	key2 = opinfo->o_lease->lease_key;
+ 	if (!memcmp(guid1, guid2, SMB2_CLIENT_GUID_SIZE) &&
+ 	    !memcmp(key1, key2, SMB2_LEASE_KEY_SIZE))
 
 
 
