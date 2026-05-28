@@ -1,60 +1,59 @@
-Return-Path: <stable+bounces-256372-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-256204-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 4DVDBnqsGGphmAgAu9opvQ
-	(envelope-from <stable+bounces-256372-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:58:34 +0200
+	id cIdeCfSqGGoomAgAu9opvQ
+	(envelope-from <stable+bounces-256204-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:52:04 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8BFFF5F9F44
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:58:33 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 73FE15F9BB6
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:52:03 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 7B251304E255
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 20:51:59 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 8EBD7314E634
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 20:44:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 96728330307;
-	Thu, 28 May 2026 20:51:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 294052EF652;
+	Thu, 28 May 2026 20:44:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mXiM+Kqy"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Z3aTtSED"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 57994304BB3;
-	Thu, 28 May 2026 20:51:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D990F1E511;
+	Thu, 28 May 2026 20:44:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780001516; cv=none; b=pQmsr0psPHqNF9l3j+boHirNx+IuZHGfcieJSBrrkGsDFpYzUM/pHRCzDsTdThtsdHQ4T+O1FttxbcqZp0lT1OG3o3gkne+u8+67gUsmUHhwB7qtCIMzps1D2Xbn6RHGJt1ghOcR8kENfKKrB0N/Gne5NvQGzxJGXiQa0yF5kKo=
+	t=1780001047; cv=none; b=CTy99A5vLKW8yZM+yZqo/3bvNniailOL9/BEhioEFBB+Mfhc/AJihlnbtAI9aJ0KlgEcMrBOs/7+6Z4T1XCaTAxSQ3Ysb0AEtkudPE7+V5KN2/CUrbpVsF/wf15gQsWnyW7wKvtW60z/G+qkKikzRMnteDFDqEpQhzt3Ji2FDpQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780001516; c=relaxed/simple;
-	bh=BPut+zJe0IRlxOBZl6O8tAekQX6hQxst1zPDCaoWRqE=;
+	s=arc-20240116; t=1780001047; c=relaxed/simple;
+	bh=QWkkFEshJX6WPiEJMtUBBk2C5T3/yG4UtfSWHyBFtkw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=dxEEGGoayTRlxc7QhSm7ycIJatytv9pFqkPYlt5uBxiFYbNts/9fN7JQwqjmja7vKSn2656LJrwkhY0EtznlRv0tKcQbLnXufDLxG0xzEiYR0GXSC3dQm+/wDSKnADTHZ73V1J6S6Ux3Jb6pEksTh1RwSVMy/EQkTJjLP5fkxMg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mXiM+Kqy; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B661F1F000E9;
-	Thu, 28 May 2026 20:51:54 +0000 (UTC)
+	 MIME-Version; b=DMMe/VZ0e8AjnXXUM1eLl76zovf1x13R9hPHsKCGrTsXQsWqxK/gA+VZ1UwBjgWBPjYoAaskj3yD93+I7fy953mC6ZQg4n5F7Dsva9L8eunxBFEA/X6HwvOkmXKz8zNPjh3ZqUeU6h5f8RGz2FN3ghVIRwPeVazVJbslSfyD5dI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Z3aTtSED; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 44A511F000E9;
+	Thu, 28 May 2026 20:44:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780001515;
-	bh=baWXi7sKQk7kTydhrRkUoQPXn9lK6PZ0bPsFp/7aKYo=;
+	s=korg; t=1780001045;
+	bh=906j89eY76Z44UKi+xjJ17alY+qTmQBqNN1bFX8DK0g=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=mXiM+Kqy40tg2Cv+FhE/Pkmu2S+zDJTkXleEltFD6fWYwgBDNTfGTVIpINBhxUd5u
-	 XdUjhZt74JrNTB0wZxKZbwwihCUPzdc7GhWWQGwUwvPPVkN/mR10LicM7xvQEsiM6L
-	 +EokyvodFP1vEb5w4daZQHlyDJVVOXJ5fIV67Jkw=
+	b=Z3aTtSEDrJj6HTO8PXgEagOJCrZpqgz0fBtyqb7AOhFvNALwaGgE/+VOCSLg8L0FX
+	 ZD2xE9xpJtp9aaFYxF24nue8ReqPCUZaSLB8DNzMQpPbSuOyye4Ukdgp+jt2CjpxpJ
+	 M6aaJKeT2Lv1Q2+r39l/Us2vE9MZuckBYi8ZTphc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Daniel Golle <daniel@makrotopia.org>,
-	"Chester A. Unal" <chester.a.unal@arinc9.com>,
-	Paolo Abeni <pabeni@redhat.com>,
+	Xingwang Xiang <v3rdant.xiang@gmail.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 156/186] net: dsa: mt7530: preserve VLAN tags on trapped link-local frames
+Subject: [PATCH 6.12 262/272] bpf, skmsg: fix verdict sk_data_ready racing with ktls rx
 Date: Thu, 28 May 2026 21:50:36 +0200
-Message-ID: <20260528194933.168604072@linuxfoundation.org>
+Message-ID: <20260528194636.427766286@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260528194928.941004471@linuxfoundation.org>
-References: <20260528194928.941004471@linuxfoundation.org>
+In-Reply-To: <20260528194629.379955525@linuxfoundation.org>
+References: <20260528194629.379955525@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,130 +64,117 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-256372-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TO_DN_SOME(0.00)[];
+	TAGGED_FROM(0.00)[bounces-256204-lists,stable=lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[7];
-	MID_RHS_MATCH_FROM(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	NEURAL_HAM(-0.00)[-0.999];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,makrotopia.org:email,msgid.link:url,linuxfoundation.org:mid,linuxfoundation.org:dkim]
-X-Rspamd-Queue-Id: 8BFFF5F9F44
+	MID_RHS_MATCH_FROM(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[6];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,msgid.link:url,linuxfoundation.org:mid,linuxfoundation.org:dkim]
+X-Rspamd-Queue-Id: 73FE15F9BB6
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Daniel Golle <daniel@makrotopia.org>
+From: Xingwang Xiang <v3rdant.xiang@gmail.com>
 
-[ Upstream commit 3ac85bcfd404b588298c95c6fba8aad4ad334f57 ]
+[ Upstream commit ddf8029623a1af20e984c040e89ff918158397ab ]
 
-The BPC, RGAC1 and RGAC2 registers control the handling of link-local
-frames with reserved MAC DAs (01:80:C2:00:00:0x). These frames are
-correctly trapped to the CPU port, but the egress VLAN tag attribute was
-set to MT7530_VLAN_EG_UNTAGGED which causes the switch to strip any
-VLAN tags from trapped frames before they reach the CPU.
+sk_psock_strp_data_ready() already checks tls_sw_has_ctx_rx() and
+defers to psock->saved_data_ready when a TLS RX context is present,
+avoiding a conflict with the TLS strparser's ownership of the receive
+queue (commit e91de6afa81c, "bpf: Fix running sk_skb program types
+with ktls").
 
-This causes VLAN-tagged link-local frames (STP BPDUs, LLDP, PTP Peer
-Delay Requests) to arrive at the CPU without their VLAN tag, so they
-are delivered to the base network interface instead of the VLAN
-sub-interface. The DSA local_termination selftest confirms this: all
-link-local protocol tests on VLAN upper interfaces fail.
+sk_psock_verdict_data_ready() has no equivalent guard.  When a socket
+is inserted into a sockmap (BPF_SK_SKB_VERDICT) before TLS RX is
+configured, tls_sw_strparser_arm() saves sk_psock_verdict_data_ready
+as rx_ctx->saved_data_ready.  On data arrival:
 
-Set the EG_TAG attribute to MT7530_VLAN_EG_DISABLED (system default)
-so that the switch does not modify VLAN tags in trapped frames. This
-way VLAN-tagged frames retain their original tag and are delivered to
-the correct VLAN sub-interface, matching the behavior of non-trapped
-frames which pass through without VLAN tag modification.
+  tls_data_ready -> tls_strp_data_ready -> tls_rx_msg_ready
+    -> saved_data_ready() = sk_psock_verdict_data_ready()
+      -> tcp_read_skb() drains sk_receive_queue via __skb_unlink()
+         without calling tcp_eat_skb(), so copied_seq is not advanced.
 
-Fixes: 69ddba9d170b ("net: dsa: mt7530: fix handling of all link-local frames")
-Signed-off-by: Daniel Golle <daniel@makrotopia.org>
-Acked-by: Chester A. Unal <chester.a.unal@arinc9.com>
-Link: https://patch.msgid.link/891e0cd34db2a5fe20ceb73283a81fb5f71427ca.1778766629.git.daniel@makrotopia.org
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+tls_strp_msg_load() then finds tcp_inq() >= full_len (stale), calls
+tcp_recv_skb() on the now-empty queue, hits WARN_ON_ONCE(!first), and
+returns with rx_ctx->strp.anchor.frag_list pointing at a psock-owned
+(potentially freed) skb.  tls_decrypt_sg() subsequently walks that
+frag_list: use-after-free.
+
+Apply the same fix as sk_psock_strp_data_ready(): if a TLS RX context
+is present, call psock->saved_data_ready (sock_def_readable) to wake
+recv() waiters and return immediately, leaving the receive queue
+untouched.  TLS retains sole ownership of the queue and decrypts the
+record normally through tls_sw_recvmsg().
+
+Fixes: ef5659280eb1 ("bpf, sockmap: Allow skipping sk_skb parser program")
+Signed-off-by: Xingwang Xiang <v3rdant.xiang@gmail.com>
+Link: https://patch.msgid.link/20260517145630.20521-2-v3rdant.xiang@gmail.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/dsa/mt7530.c | 27 +++++++++++++++------------
- 1 file changed, 15 insertions(+), 12 deletions(-)
+ net/core/skmsg.c | 9 +++++++--
+ 1 file changed, 7 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/net/dsa/mt7530.c b/drivers/net/dsa/mt7530.c
-index ed783943c73c7..8d889bc5f3d1b 100644
---- a/drivers/net/dsa/mt7530.c
-+++ b/drivers/net/dsa/mt7530.c
-@@ -1174,37 +1174,40 @@ static void mt7530_setup_port5(struct dsa_switch *ds, phy_interface_t interface)
- static void
- mt753x_trap_frames(struct mt7530_priv *priv)
+diff --git a/net/core/skmsg.c b/net/core/skmsg.c
+index e1e0283e53c1d..fbaee3d09990b 100644
+--- a/net/core/skmsg.c
++++ b/net/core/skmsg.c
+@@ -1267,12 +1267,19 @@ static int sk_psock_verdict_recv(struct sock *sk, struct sk_buff *skb)
+ static void sk_psock_verdict_data_ready(struct sock *sk)
  {
--	/* Trap 802.1X PAE frames and BPDUs to the CPU port(s) and egress them
--	 * VLAN-untagged.
-+	/* Trap 802.1X PAE frames and BPDUs to the CPU port(s) and egress
-+	 * them with the EG_TAG attribute set to disabled (system default)
-+	 * so that any VLAN tags in the frame are not modified by the
-+	 * switch egress VLAN tag processing. This preserves VLAN tags
-+	 * for reception on VLAN sub-interfaces.
- 	 */
- 	mt7530_rmw(priv, MT753X_BPC,
- 		   PAE_BPDU_FR | PAE_EG_TAG_MASK | PAE_PORT_FW_MASK |
- 			   BPDU_EG_TAG_MASK | BPDU_PORT_FW_MASK,
--		   PAE_BPDU_FR | PAE_EG_TAG(MT7530_VLAN_EG_UNTAGGED) |
-+		   PAE_BPDU_FR | PAE_EG_TAG(MT7530_VLAN_EG_DISABLED) |
- 			   PAE_PORT_FW(TO_CPU_FW_CPU_ONLY) |
--			   BPDU_EG_TAG(MT7530_VLAN_EG_UNTAGGED) |
-+			   BPDU_EG_TAG(MT7530_VLAN_EG_DISABLED) |
- 			   TO_CPU_FW_CPU_ONLY);
+ 	const struct proto_ops *ops = NULL;
++	struct sk_psock *psock;
+ 	struct socket *sock;
+ 	int copied;
  
--	/* Trap frames with :01 and :02 MAC DAs to the CPU port(s) and egress
--	 * them VLAN-untagged.
-+	/* Trap frames with :01 and :02 MAC DAs to the CPU port(s) and
-+	 * egress them with EG_TAG disabled.
- 	 */
- 	mt7530_rmw(priv, MT753X_RGAC1,
- 		   R02_BPDU_FR | R02_EG_TAG_MASK | R02_PORT_FW_MASK |
- 			   R01_BPDU_FR | R01_EG_TAG_MASK | R01_PORT_FW_MASK,
--		   R02_BPDU_FR | R02_EG_TAG(MT7530_VLAN_EG_UNTAGGED) |
-+		   R02_BPDU_FR | R02_EG_TAG(MT7530_VLAN_EG_DISABLED) |
- 			   R02_PORT_FW(TO_CPU_FW_CPU_ONLY) | R01_BPDU_FR |
--			   R01_EG_TAG(MT7530_VLAN_EG_UNTAGGED) |
-+			   R01_EG_TAG(MT7530_VLAN_EG_DISABLED) |
- 			   TO_CPU_FW_CPU_ONLY);
+ 	trace_sk_data_ready(sk);
  
--	/* Trap frames with :03 and :0E MAC DAs to the CPU port(s) and egress
--	 * them VLAN-untagged.
-+	/* Trap frames with :03 and :0E MAC DAs to the CPU port(s) and
-+	 * egress them with EG_TAG disabled.
- 	 */
- 	mt7530_rmw(priv, MT753X_RGAC2,
- 		   R0E_BPDU_FR | R0E_EG_TAG_MASK | R0E_PORT_FW_MASK |
- 			   R03_BPDU_FR | R03_EG_TAG_MASK | R03_PORT_FW_MASK,
--		   R0E_BPDU_FR | R0E_EG_TAG(MT7530_VLAN_EG_UNTAGGED) |
-+		   R0E_BPDU_FR | R0E_EG_TAG(MT7530_VLAN_EG_DISABLED) |
- 			   R0E_PORT_FW(TO_CPU_FW_CPU_ONLY) | R03_BPDU_FR |
--			   R03_EG_TAG(MT7530_VLAN_EG_UNTAGGED) |
-+			   R03_EG_TAG(MT7530_VLAN_EG_DISABLED) |
- 			   TO_CPU_FW_CPU_ONLY);
- }
+ 	rcu_read_lock();
++	psock = sk_psock(sk);
++	if (psock && tls_sw_has_ctx_rx(sk)) {
++		psock->saved_data_ready(sk);
++		rcu_read_unlock();
++		return;
++	}
+ 	sock = READ_ONCE(sk->sk_socket);
+ 	if (likely(sock))
+ 		ops = READ_ONCE(sock->ops);
+@@ -1282,8 +1289,6 @@ static void sk_psock_verdict_data_ready(struct sock *sk)
  
+ 	copied = ops->read_skb(sk, sk_psock_verdict_recv);
+ 	if (copied >= 0) {
+-		struct sk_psock *psock;
+-
+ 		rcu_read_lock();
+ 		psock = sk_psock(sk);
+ 		if (psock)
 -- 
 2.53.0
 
