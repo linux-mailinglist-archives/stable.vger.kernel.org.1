@@ -1,59 +1,60 @@
-Return-Path: <stable+bounces-256093-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-255849-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id aPNsMgSpGGpolwgAu9opvQ
-	(envelope-from <stable+bounces-256093-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:43:48 +0200
+	id +CkJAr2lGGoQlwgAu9opvQ
+	(envelope-from <stable+bounces-255849-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:29:49 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7A9055F9689
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:43:48 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id 067965F8D1D
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:29:47 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 76043301E55A
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 20:38:56 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id CDF95305600A
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 20:27:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7E6E031159C;
-	Thu, 28 May 2026 20:38:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D1AC633D6F0;
+	Thu, 28 May 2026 20:27:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AOxA2N+U"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kDfrRKZf"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 422092BF3E2;
-	Thu, 28 May 2026 20:38:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 90E7E32A3FF;
+	Thu, 28 May 2026 20:27:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780000735; cv=none; b=edYluabKhj3K0FW/0ASQ2OfODCuAXR12dE4epSASSMuGVHOeGRVe8v4dvSLNat+BqQKymJ1zveFQrGBh660o9NFFTG+jAeeuDr2XgNPsIudGEkRVIKBD+mt71rVZePppos4UgzkITSxvZmXGRjkyZ1f/RayO4P/htok8zRcf/aQ=
+	t=1780000052; cv=none; b=jIu4Et+ZwwAmTcr/cE8Km/jegngOkahyPiHj9ub5QfWUrGUJkW8lS8T+A37Bkqn9omTy/vPeUbkFVaQAGsSESdRnAJOpnGMZvh326e3ZQqsN16BfRKWRHn6cNaP/Vioqra9CVJWSz4BpFXMhi+Ngfx9yylTwunzccp6BM+qOBIU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780000735; c=relaxed/simple;
-	bh=vn6PzvzkdEmv3bvQDXT6zUc26yXCTPddpXEVQodFUA8=;
+	s=arc-20240116; t=1780000052; c=relaxed/simple;
+	bh=6oC/0yoCxSFpl0jG8K94hzwuW1u2xJf+7QCe9kWEkx4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=bwJYhy71tbwDcRqvgDoqCOYF7bvfipNESILK3lwYuRwXgW04bni/Oyyeh7/0ZidKJJx+6e2wXWnCJwTCCllr8Vc1Ub4EjIez5n0kD2ftFMmfFTzZMlJApHNkBmTTLyQsW8/Or5ys4hl/Kv4ush4LyhlBz5LPCZxlYKx/+OQ31aA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AOxA2N+U; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9FD711F000E9;
-	Thu, 28 May 2026 20:38:53 +0000 (UTC)
+	 MIME-Version; b=liP48h+rQThPyxmn01PK5yazIXaqsG/Kvucv2NHwkuV9sLgaUclDn+NKceKmxVrrOVeY+UQgaCFgu9pgv6RILnM9q+BtlDdUKlw/TLtujFJJw0l/lcP+PLB2mFW3O70qcyAsBtg8EpSKLmSB/jivXctGwUYmLZH4fSWU87ZkPIw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kDfrRKZf; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BB9291F00ADE;
+	Thu, 28 May 2026 20:27:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780000734;
-	bh=3KQjGmZZcGNrGU8kcItdPXGxo2/aOb2AJiiFqCtdZCE=;
+	s=korg; t=1780000051;
+	bh=vueji10p+Up9QLbNCYafMpKKO3EVdwfk9OF8yzuw13A=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=AOxA2N+UDmdYfPLoTU5h8nLHicb613v36FrUpS25mGRIxfUAHQE5qJVxVNokrMqFc
-	 TeZHSP4A+gokK5BfPuRaUOgHBYkG7WrrJ6zRTgRFjCibaxKuwNgrFnaVO/6DCtkpjD
-	 9F/R38hQ0YpBihLe5OKK6mG3LRSh4/Z0S6ZHDk2w=
+	b=kDfrRKZfp9nAD1SwqIQx2WhBR1XzsNytOUq6MOFyOHJQcOhoQVDJ9PHJDAl0C/V1s
+	 L22GYMtsHgMwxY5GYytQMzfniYpSN4gipmUrjnlKfXkwvkJB1RXMBU/PinRbCfV2Xh
+	 4b22zmWSVyuYLhDKeRTXy83KRoMkauThQtCGDHqE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Viresh Kumar <viresh.kumar@linaro.org>,
-	Sudeep Holla <sudeep.holla@arm.com>,
+	Hyunwoo Kim <imv4bel@gmail.com>,
+	Sabrina Dubroca <sd@queasysnail.net>,
+	Antonio Quartulli <antonio@openvpn.net>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 150/272] firmware: arm_ffa: Unregister the FF-A devices when cleaning up the partitions
+Subject: [PATCH 6.18 286/377] ovpn: fix race between deleting interface and adding new peer
 Date: Thu, 28 May 2026 21:48:44 +0200
-Message-ID: <20260528194633.569115040@linuxfoundation.org>
+Message-ID: <20260528194646.633525718@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260528194629.379955525@linuxfoundation.org>
-References: <20260528194629.379955525@linuxfoundation.org>
+In-Reply-To: <20260528194638.371537336@linuxfoundation.org>
+References: <20260528194638.371537336@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -68,129 +69,154 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,queasysnail.net,openvpn.net,kernel.org];
+	TAGGED_FROM(0.00)[bounces-255849-lists,stable=lfdr.de];
 	PRECEDENCE_BULK(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-256093-lists,stable=lfdr.de];
-	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linaro.org:email,arm.com:email,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim]
-X-Rspamd-Queue-Id: 7A9055F9689
+	TAGGED_RCPT(0.00)[stable];
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[openvpn.net:email,queasysnail.net:email,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim]
+X-Rspamd-Queue-Id: 067965F8D1D
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sudeep Holla <sudeep.holla@arm.com>
+From: Antonio Quartulli <antonio@openvpn.net>
 
-[ Upstream commit 46dcd68aaccac0812c12ec3f4e59c8963e2760ad ]
+[ Upstream commit 982422b11e6f95f766a8cd2c2b1cbdb77e234a61 ]
 
-Both the FF-A core and the bus were in a single module before the
-commit 18c250bd7ed0 ("firmware: arm_ffa: Split bus and driver into distinct modules").
+While deleting an existing ovpn interface, there is a very
+narrow window where adding a new peer via netlink may cause
+the netdevice to hang and prevent its unregistration.
 
-The arm_ffa_bus_exit() takes care of unregistering all the FF-A devices.
-Now that there are 2 distinct modules, if the core driver is unloaded and
-reloaded, it will end up adding duplicate FF-A devices as the previously
-registered devices weren't unregistered when we cleaned up the modules.
+It may happen during ovpn_dellink(), when all existing peers are
+freed and the device is queued for deregistration, but a
+CMD_PEER_NEW message comes in adding a new peer that takes again
+a reference to the netdev.
 
-Fix the same by unregistering all the FF-A devices on the FF-A bus during
-the cleaning up of the partitions and hence the cleanup of the module.
+At this point there is no way to release the device because we are
+under the assumption that all peers were already released.
 
-Fixes: 18c250bd7ed0 ("firmware: arm_ffa: Split bus and driver into distinct modules")
-Tested-by: Viresh Kumar <viresh.kumar@linaro.org>
-Message-Id: <20250217-ffa_updates-v3-8-bd1d9de615e7@arm.com>
-Signed-off-by: Sudeep Holla <sudeep.holla@arm.com>
-Stable-dep-of: 6d3daa9b8d31 ("firmware: arm_ffa: Unregister bus notifier on teardown for FF-A v1.0")
+Fix the race condition by releasing all peers in ndo_uninit(),
+when the netdevice has already been removed from the netdev
+list.
+
+Also ovpn_peer_add() has now an extra check that forces the
+function to bail out if the device reg_state is not REGISTERED.
+This way any incoming CMD_PEER_NEW racing with the interface
+deletion routine will simply stop before adding the peer.
+
+Note that the above check happens while holding the netdev_lock
+to prevent racing netdev state changes.
+
+ovpn_dellink() is now empty and can be removed.
+
+Reported-by: Hyunwoo Kim <imv4bel@gmail.com>
+Closes: https://lore.kernel.org/netdev/aaVgJ16edTfQkYbx@v4bel/
+Suggested-by: Sabrina Dubroca <sd@queasysnail.net>
+Fixes: 80747caef33d ("ovpn: introduce the ovpn_peer object")
+Reviewed-by: Sabrina Dubroca <sd@queasysnail.net>
+Signed-off-by: Antonio Quartulli <antonio@openvpn.net>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/firmware/arm_ffa/bus.c    | 3 ++-
- drivers/firmware/arm_ffa/driver.c | 7 ++++---
- include/linux/arm_ffa.h           | 3 +++
- 3 files changed, 9 insertions(+), 4 deletions(-)
+ drivers/net/ovpn/main.c | 12 ++----------
+ drivers/net/ovpn/peer.c | 21 ++++++++++++++++++---
+ 2 files changed, 20 insertions(+), 13 deletions(-)
 
-diff --git a/drivers/firmware/arm_ffa/bus.c b/drivers/firmware/arm_ffa/bus.c
-index ef41815c0109e..50bbc18599f74 100644
---- a/drivers/firmware/arm_ffa/bus.c
-+++ b/drivers/firmware/arm_ffa/bus.c
-@@ -162,11 +162,12 @@ static int __ffa_devices_unregister(struct device *dev, void *data)
- 	return 0;
- }
- 
--static void ffa_devices_unregister(void)
-+void ffa_devices_unregister(void)
+diff --git a/drivers/net/ovpn/main.c b/drivers/net/ovpn/main.c
+index 1bb1afe766a41..3f76b1b0e5f60 100644
+--- a/drivers/net/ovpn/main.c
++++ b/drivers/net/ovpn/main.c
+@@ -92,6 +92,8 @@ static void ovpn_net_uninit(struct net_device *dev)
  {
- 	bus_for_each_dev(&ffa_bus_type, NULL, NULL,
- 			 __ffa_devices_unregister);
- }
-+EXPORT_SYMBOL_GPL(ffa_devices_unregister);
+ 	struct ovpn_priv *ovpn = netdev_priv(dev);
  
- bool ffa_device_is_valid(struct ffa_device *ffa_dev)
++	disable_delayed_work_sync(&ovpn->keepalive_work);
++	ovpn_peers_free(ovpn, NULL, OVPN_DEL_PEER_REASON_TEARDOWN);
+ 	gro_cells_destroy(&ovpn->gro_cells);
+ }
+ 
+@@ -208,15 +210,6 @@ static int ovpn_newlink(struct net_device *dev,
+ 	return register_netdevice(dev);
+ }
+ 
+-static void ovpn_dellink(struct net_device *dev, struct list_head *head)
+-{
+-	struct ovpn_priv *ovpn = netdev_priv(dev);
+-
+-	cancel_delayed_work_sync(&ovpn->keepalive_work);
+-	ovpn_peers_free(ovpn, NULL, OVPN_DEL_PEER_REASON_TEARDOWN);
+-	unregister_netdevice_queue(dev, head);
+-}
+-
+ static int ovpn_fill_info(struct sk_buff *skb, const struct net_device *dev)
  {
-diff --git a/drivers/firmware/arm_ffa/driver.c b/drivers/firmware/arm_ffa/driver.c
-index 84c4fe40d5279..63030a3849a87 100644
---- a/drivers/firmware/arm_ffa/driver.c
-+++ b/drivers/firmware/arm_ffa/driver.c
-@@ -1492,10 +1492,8 @@ static int ffa_setup_partitions(void)
+ 	struct ovpn_priv *ovpn = netdev_priv(dev);
+@@ -235,7 +228,6 @@ static struct rtnl_link_ops ovpn_link_ops = {
+ 	.policy = ovpn_policy,
+ 	.maxtype = IFLA_OVPN_MAX,
+ 	.newlink = ovpn_newlink,
+-	.dellink = ovpn_dellink,
+ 	.fill_info = ovpn_fill_info,
+ };
  
- 	/* Allocate for the host */
- 	ret = ffa_xa_add_partition_info(drv_info->vm_id);
--	if (ret) {
--		/* Already registered devices are freed on bus_exit */
-+	if (ret)
- 		ffa_partitions_cleanup();
--	}
+diff --git a/drivers/net/ovpn/peer.c b/drivers/net/ovpn/peer.c
+index a3d856724b84a..87a83321f1dd5 100644
+--- a/drivers/net/ovpn/peer.c
++++ b/drivers/net/ovpn/peer.c
+@@ -1029,14 +1029,29 @@ static int ovpn_peer_add_p2p(struct ovpn_priv *ovpn, struct ovpn_peer *peer)
+  */
+ int ovpn_peer_add(struct ovpn_priv *ovpn, struct ovpn_peer *peer)
+ {
++	int ret = -ENODEV;
++
++	/* Prevent adding new peers while destroying the ovpn interface.
++	 * Failing to do so would end up holding the device reference
++	 * endlessly hostage of the new peer object with no chance of
++	 * release..
++	 */
++	netdev_lock(ovpn->dev);
++	if (ovpn->dev->reg_state != NETREG_REGISTERED)
++		goto out;
++
+ 	switch (ovpn->mode) {
+ 	case OVPN_MODE_MP:
+-		return ovpn_peer_add_mp(ovpn, peer);
++		ret = ovpn_peer_add_mp(ovpn, peer);
++		break;
+ 	case OVPN_MODE_P2P:
+-		return ovpn_peer_add_p2p(ovpn, peer);
++		ret = ovpn_peer_add_p2p(ovpn, peer);
++		break;
+ 	}
++out:
++	netdev_unlock(ovpn->dev);
  
- 	return ret;
+-	return -EOPNOTSUPP;
++	return ret;
  }
-@@ -1505,6 +1503,9 @@ static void ffa_partitions_cleanup(void)
- 	struct ffa_dev_part_info *info;
- 	unsigned long idx;
  
-+	/* Clean up/free all registered devices */
-+	ffa_devices_unregister();
-+
- 	xa_for_each(&drv_info->partition_info, idx, info) {
- 		xa_erase(&drv_info->partition_info, idx);
- 		kfree(info);
-diff --git a/include/linux/arm_ffa.h b/include/linux/arm_ffa.h
-index 74169dd0f6594..53f2837ce7df4 100644
---- a/include/linux/arm_ffa.h
-+++ b/include/linux/arm_ffa.h
-@@ -176,6 +176,7 @@ void ffa_device_unregister(struct ffa_device *ffa_dev);
- int ffa_driver_register(struct ffa_driver *driver, struct module *owner,
- 			const char *mod_name);
- void ffa_driver_unregister(struct ffa_driver *driver);
-+void ffa_devices_unregister(void);
- bool ffa_device_is_valid(struct ffa_device *ffa_dev);
- 
- #else
-@@ -188,6 +189,8 @@ ffa_device_register(const struct ffa_partition_info *part_info,
- 
- static inline void ffa_device_unregister(struct ffa_device *dev) {}
- 
-+static inline void ffa_devices_unregister(void) {}
-+
- static inline int
- ffa_driver_register(struct ffa_driver *driver, struct module *owner,
- 		    const char *mod_name)
+ /**
 -- 
 2.53.0
 
