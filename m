@@ -1,58 +1,59 @@
-Return-Path: <stable+bounces-255220-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-255574-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id eJGOA1+eGGpAlggAu9opvQ
-	(envelope-from <stable+bounces-255220-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 21:58:23 +0200
+	id CFo0BYyjGGrClggAu9opvQ
+	(envelope-from <stable+bounces-255574-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:20:28 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9FF2E5F78CC
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 21:58:22 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id CAAB55F86C5
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:20:27 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 552C630144C6
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 19:58:21 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 0BAC03014C56
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 20:14:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6FDD5344DAC;
-	Thu, 28 May 2026 19:58:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3DF8D3F870F;
+	Thu, 28 May 2026 20:14:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hveX7Kua"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QyvPNxah"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 41A4834040F;
-	Thu, 28 May 2026 19:58:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1D97833F5BE;
+	Thu, 28 May 2026 20:14:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779998300; cv=none; b=LH67UraDimjQ7E0tUDLsLTk8ohJMUUVvKFjSTr/zzyg37kztSw+33tOPiDEK2IVuf9+9olNaZlWpStrUurXqt7f1nk1jsjS+bffDqBqjLavpNa61XtABF4bInMkqZUOUeKx7gDa6nlPEE+rlEBXw3W1lrW59FvPq3lVmQE8DDsg=
+	t=1779999295; cv=none; b=jHUNue072edmJ8MfwIg2sOjk24Nz27yonXv44Ny//hzz+upWlmisG9m665Sya79j/UEdsF4kF5+pfo3kseVCCQzK0liplU1ygCoMu62DZrkOztNse6AM+aP4YKM73D1tZfETadQaFWJssvwk++ErfyVX8KEhlNLLS7z7wdxOTHI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779998300; c=relaxed/simple;
-	bh=6PaE4H+UpHxqVLWgvffdXb4YpqWgWS7/LE56/JxcDHc=;
+	s=arc-20240116; t=1779999295; c=relaxed/simple;
+	bh=JG1U5ZF7fGeBA1K2w7AZi7mjWhvdSrxLirSX8zlOiKo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=K7jCYE/qts+VG9Q9Dqy4/zqBNkbxz0OSUV+6Xbtdq+8b10b8IPnlKbAEailKCwP0aNR6xGL//1Adg9ZjjSOF7J8GKQhw0MRuRp02I3YAdS/BmpiBzji5xcP91Km8BSueAosncZSW7DEBWwFz4IsAbBunu1ILQXDj26zkWum1JUA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hveX7Kua; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2C4E21F000E9;
-	Thu, 28 May 2026 19:58:17 +0000 (UTC)
+	 MIME-Version; b=F/fk+bzo40gACzL/or2T3rbb/UoMxdreBV9m9eBt4VSPUs8mZWu2cvDHRapjGisXU/M5id7O/dVDwMajerS5YY653Job/OcYiEl5KAwdUvOP07+a5GI3MM6Objy6STRgFtICXoyYEwSiYeSMNMnRyPPWl66OAMAaer4dfIO8NXQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QyvPNxah; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7A5341F000E9;
+	Thu, 28 May 2026 20:14:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779998298;
-	bh=U1lU1OsDVXjJzOCo5/LCWy9ci1sZErqUJZfqibx0XIo=;
+	s=korg; t=1779999294;
+	bh=k5Hes0x6jlNQIZOw5Wa0cUxO1zCzvIsUarwnGGa1WR8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=hveX7KuaXJHnfeUn/76jk0f1kkekfciRSdr9Sa50+VlR8xD9vbyqtbH8wIpoiQKi+
-	 sA2p6EmZfqSAGBcKKd9H0xLaryw0DsVCbQ4GyD2ogxvLahy1KPDydoHhtMAsMYJwNB
-	 T3rT/Q3oQpvGkmLAdlpcIGxhiM9IsMxYKOviewL0=
+	b=QyvPNxah5HzUUoMdYTCE/B0Tc87vO2zy1CGzpXdte1gbrri/ejnrCRiTQdIisBLii
+	 oGyWXFjZtVVmaohnO0hwYsgPSSXlzKo1f583O/+9k5+BS0qBakeNm2uk/75MPhYj9M
+	 Xj/DiFFQAwBdfYi1QwnmcOzc+C/sJQB3Rj94bBWo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Tiezhu Yang <yangtiezhu@loongson.cn>,
-	Huacai Chen <chenhuacai@loongson.cn>
-Subject: [PATCH 7.0 125/461] LoongArch: kprobes: Use larch_insn_text_copy() to patch instructions
+	Tommy Kelly <linux@tkel.ly>,
+	Damien Le Moal <dlemoal@kernel.org>,
+	Niklas Cassel <cassel@kernel.org>
+Subject: [PATCH 6.18 016/377] ata: libata-scsi: do not use the deferred QC feature for ATA_DEFER_PORT
 Date: Thu, 28 May 2026 21:44:14 +0200
-Message-ID: <20260528194650.602464486@linuxfoundation.org>
+Message-ID: <20260528194638.858445078@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260528194646.819809818@linuxfoundation.org>
-References: <20260528194646.819809818@linuxfoundation.org>
+In-Reply-To: <20260528194638.371537336@linuxfoundation.org>
+References: <20260528194638.371537336@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -67,7 +68,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
@@ -77,7 +78,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-255220-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-255574-lists,stable=lfdr.de];
 	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
@@ -86,83 +87,66 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	NEURAL_HAM(-0.00)[-1.000];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[5];
+	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,loongson.cn:email]
-X-Rspamd-Queue-Id: 9FF2E5F78CC
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,tkel.ly:email]
+X-Rspamd-Queue-Id: CAAB55F86C5
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-7.0-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Tiezhu Yang <yangtiezhu@loongson.cn>
+From: Niklas Cassel <cassel@kernel.org>
 
-commit e3ef9a28f558d1cbf0b42d6dcd16c60da557562b upstream.
+commit ce4548807d2e4ae48fd0dbe38865467369877913 upstream.
 
-On SMP systems, kprobe handlers would occasionally fail to execute on
-certain CPU cores. The issue is hard to reproduce and typically occurs
-randomly under high system load.
+The deferred QC feature was meant to handle mixed NCQ and non-NCQ commands,
+i.e. for return value ATA_DEFER_LINK.
 
-The root cause is a software-side instruction hazard. According to the
-LoongArch Reference Manual, while the cache coherency is maintained by
-hardware, software must explicitly use the "IBAR" instruction to ensure
-the instruction fetch unit (IFU) observes the effects of recent stores.
+ATA_DEFER_PORT is returned by PATA drivers, but also certain SATA drivers
+like sata_mv and sata_sil24 that uses ap->excl_link to workaround hardware
+bugs in these HBAs. Regardless of the reason, using the deferred QC feature
+for ATA_DEFER_PORT is always wrong, and will break the ap->excl_link usage
+of the SATA drivers that rely on that feature.
 
-The current arch_arm_kprobe() and arch_disarm_kprobe() only execute the
-"IBAR" barrier (via flush_insn_slot -> local_flush_icache_range) on the
-local CPU. This leaves a vulnerable window where remote CPU cores may
-continue executing stale instructions from their pipelines or prefetch
-buffers, as they have not executed an "IBAR" since the code modification.
+Modify ata_scsi_qc_issue() to only use the deferred QC feature when mixing
+NCQ and non-NCQ commands, i.e. ATA_DEFER_LINK.
 
-Switch to larch_insn_text_copy() to fix this:
-1. Synchronization: It uses stop_machine_cpuslocked() to synchronize all
-   online CPUs, ensuring no CPU is executing the target code area during
-   modification.
-2. Visibility: By passing cpu_online_mask to stop_machine_cpuslocked(),
-   the callback text_copy_cb() is executed on all online cores. Each CPU
-   core invokes local_flush_icache_range() to execute "IBAR", clearing
-   instruction hazards system-wide and ensuring the "break" instruction
-   is visible to the fetch units of all cores.
-3. Robustness: It properly manages memory write permissions (ROX/RW) for
-   the kernel text segment during patching, ensuring compatibility with
-   CONFIG_STRICT_KERNEL_RWX.
-
-Cc: <stable@vger.kernel.org>  # 6.18+
-Fixes: 6d4cc40fb5f5 ("LoongArch: Add kprobes support")
-Signed-off-by: Tiezhu Yang <yangtiezhu@loongson.cn>
-Signed-off-by: Huacai Chen <chenhuacai@loongson.cn>
+Fixes: 0ea84089dbf6 ("ata: libata-scsi: avoid Non-NCQ command starvation")
+Tested-by: Tommy Kelly <linux@tkel.ly>
+Reviewed-by: Damien Le Moal <dlemoal@kernel.org>
+Signed-off-by: Niklas Cassel <cassel@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/loongarch/kernel/kprobes.c |   10 ++++++----
- 1 file changed, 6 insertions(+), 4 deletions(-)
+ drivers/ata/libata-scsi.c |    5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
---- a/arch/loongarch/kernel/kprobes.c
-+++ b/arch/loongarch/kernel/kprobes.c
-@@ -60,16 +60,18 @@ NOKPROBE_SYMBOL(arch_prepare_kprobe);
- /* Install breakpoint in text */
- void arch_arm_kprobe(struct kprobe *p)
- {
--	*p->addr = KPROBE_BP_INSN;
--	flush_insn_slot(p);
-+	u32 insn = KPROBE_BP_INSN;
-+
-+	larch_insn_text_copy(p->addr, &insn, LOONGARCH_INSN_SIZE);
- }
- NOKPROBE_SYMBOL(arch_arm_kprobe);
+--- a/drivers/ata/libata-scsi.c
++++ b/drivers/ata/libata-scsi.c
+@@ -1789,11 +1789,11 @@ static int ata_scsi_qc_issue(struct ata_
+ 		goto defer_qc;
+ 	case ATA_DEFER_PORT:
+ 		ret = SCSI_MLQUEUE_HOST_BUSY;
+-		goto defer_qc;
++		goto free_qc;
+ 	default:
+ 		WARN_ON_ONCE(1);
+ 		ret = SCSI_MLQUEUE_HOST_BUSY;
+-		goto defer_qc;
++		goto free_qc;
+ 	}
  
- /* Remove breakpoint from text */
- void arch_disarm_kprobe(struct kprobe *p)
- {
--	*p->addr = p->opcode;
--	flush_insn_slot(p);
-+	u32 insn = p->opcode;
-+
-+	larch_insn_text_copy(p->addr, &insn, LOONGARCH_INSN_SIZE);
- }
- NOKPROBE_SYMBOL(arch_disarm_kprobe);
+ issue_qc:
+@@ -1813,6 +1813,7 @@ defer_qc:
+ 		return 0;
+ 	}
+ 
++free_qc:
+ 	/* Force a requeue of the command to defer its execution. */
+ 	ata_qc_free(qc);
  
 
 
