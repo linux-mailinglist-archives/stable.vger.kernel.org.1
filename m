@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-255137-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-255103-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id mMplAISdGGr+lQgAu9opvQ
-	(envelope-from <stable+bounces-255137-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 21:54:44 +0200
+	id 2HipHiCdGGr+lQgAu9opvQ
+	(envelope-from <stable+bounces-255103-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 21:53:04 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 75D2B5F7698
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 21:54:43 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7AD7F5F75B1
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 21:53:03 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 10DA830166F3
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 19:54:30 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 75840301071E
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 19:52:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DB83533CE8A;
-	Thu, 28 May 2026 19:54:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 54EA33126D0;
+	Thu, 28 May 2026 19:52:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fa9Fkc3C"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qDJz3VXJ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B5AA0314A95;
-	Thu, 28 May 2026 19:54:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3A18F31159C;
+	Thu, 28 May 2026 19:52:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779998069; cv=none; b=CGhSPV4UmXqAurr3vQI4/BZ6T5Zju9C4xptZO7rPk0gHKYLuqeG1JKQ1fgNj+KGg3TzMw8XrL2rTYjSnSnRYkelAVYDLG9BXaFufvjQkY4603rYx7IGkp/ug0XBIhKb808LXhiKDG67aDBTN2VY7LOOxAbpCiPedIU6fRPwy1Kg=
+	t=1779997976; cv=none; b=M2EEy0gcGRbgXBkWnHrgA+hRQvfV5094fBS27gRvaT6cN4JdjtGSBvey0D0Y5Xv9QOmLu17RRXqoCaIDJK8sdHkFtEnO7E2kIioe4gsjSzMVht49vQX0xTAbz+gDMwc/QdriZtpUhqesueYFFIO3tiTNsCf0v52qlCzBfO6gqnY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779998069; c=relaxed/simple;
-	bh=dy/QzXOovBBNwOwthvxPweV59KUBMrivFq/jjINIqIY=;
+	s=arc-20240116; t=1779997976; c=relaxed/simple;
+	bh=iymlFJRWxbRKZuzf2kXTZ3KCrfqaEPWk8bafW37N0x0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=DMyX7yBdlUrC2qUAkuuwgw+UaTjdYr1UhJxa1U3wYUd9uYDtCWA7vE5y0X2W6uUe5xynN94/uJH7e4pG7zcAiFfBYd/RuIc07PJnYcEcGoQaEcLcGoNYDfaDLbnEE03z5he0YY6a8moLA1gyik2q7QTAnDXQ2YTM/NJ5/1RMBlU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fa9Fkc3C; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E5D3A1F000E9;
-	Thu, 28 May 2026 19:54:27 +0000 (UTC)
+	 MIME-Version; b=fvRuiOnDhQqDrz2kqKCl0h4PUCWp+KKdCbO0aqMHCRexzpB+3/dJClR9dKgHfFgKpFbU2tqYn5X7FQejCvSBfq9gsH4BKFEkKw1THmDSowW9D3a3YQsGcBaTmRd2OX/9CtvSEBePlc+Oba5MqhWxV1QWQEEN73QgCHIi5UTEw58=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qDJz3VXJ; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 427DF1F000E9;
+	Thu, 28 May 2026 19:52:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779998068;
-	bh=PUsco5vfJxBUi8BoJMOCpZKS3F7+Lh9UZWMqH2XRthk=;
+	s=korg; t=1779997974;
+	bh=qYs+Hc25GsIvivGsvSDByMZc/x1eN0cSKgGFfe+RFv8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=fa9Fkc3Cbn/1aqg2nUGR5etRc9tK7TQWsbNp3+IqXmFi4nVR4QyeAvUdyH2DSSQW4
-	 7UjuE8gUifvqB0eUIzHDWGKpGEtG/TX+jx3vLIfmQ0cYLexsNJtgyjALBvT6xZlHZ3
-	 7yzlnPnYUN0C9Lq6dG1sgZk/Vzbmo87GyYebGmag=
+	b=qDJz3VXJ8jZb/kGbHwDuuwEDqQL4wgzkELyc9iirQqURM3P5Ornol8cvXXmv6lmjy
+	 mjm8/0coDfNjdEsWIJXW/pUoIkE925X4apfThKr3hfLVKy6yo8Ri/uYsBY+bVHvKXy
+	 fe110VgL+bXvnFcx4cPEg9eTQSOKF7MiiXKWAWPM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Rajat Jain <rajatja@google.com>,
-	stable <stable@kernel.org>,
-	"Rafael J. Wysocki (Intel)" <rafael@kernel.org>,
-	Danilo Krummrich <dakr@kernel.org>
-Subject: [PATCH 7.0 009/461] sysfs: dont remove existing directory on update failure
-Date: Thu, 28 May 2026 21:42:18 +0200
-Message-ID: <20260528194647.114837707@linuxfoundation.org>
+	SeongJae Park <sj@kernel.org>,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 7.0 010/461] mm/damon/sysfs-schemes: call missing mem_cgroup_iter_break()
+Date: Thu, 28 May 2026 21:42:19 +0200
+Message-ID: <20260528194647.145459409@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
 In-Reply-To: <20260528194646.819809818@linuxfoundation.org>
 References: <20260528194646.819809818@linuxfoundation.org>
@@ -69,30 +67,30 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-255137-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-255103-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[7];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,msgid.link:url]
-X-Rspamd-Queue-Id: 75D2B5F7698
+	RCPT_COUNT_FIVE(0.00)[5];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,linux-foundation.org:email,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo]
+X-Rspamd-Queue-Id: 7AD7F5F75B1
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
@@ -100,44 +98,37 @@ X-Rspamd-Server: lfdr
 
 ------------------
 
-From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+From: SeongJae Park <sj@kernel.org>
 
-commit 237557b8a81ab948e8332f7c0058e758f081c0a3 upstream.
+commit d4e7b5c4cc353f154d5ab8bb2e1ce7714d77a6e9 upstream.
 
-When sysfs_update_group() is called for a named group and create_files()
-fails (e.g. -ENOMEM), internal_create_group() calls kernfs_remove(kn) on
-the group directory.  In the update path, kn was obtained via
-kernfs_find_and_get() and refers to a directory that already existed
-before this call.  Removing it silently destroys a sysfs group that the
-caller did not create.
+damon_sysfs_memcg_path_to_id() breaks mem_cgroup_iter() loop without
+calling mem_cgroup_iter_break().  This leaks the cgroup reference.  Fix
+the issue by calling mem_cgroup_iter_break() before the break.
 
-Only remove the directory if we created it ourselves.  On update failure
-the directory remains as it is left empty by remove_files() inside
-create_files(), but can be repopulated by a retry.
+The issue was discovered [1] by Sashiko.
 
-Cc: Rajat Jain <rajatja@google.com>
-Fixes: c855cf2759d2 ("sysfs: Fix internal_create_group() for named group updates")
-Cc: stable <stable@kernel.org>
-Assisted-by: gkh_clanker_t1000
-Reviewed-by: Rafael J. Wysocki (Intel) <rafael@kernel.org>
-Reviewed-by: Danilo Krummrich <dakr@kernel.org>
-Link: https://patch.msgid.link/2026052003-uniquely-hastily-c093@gregkh
+Link: https://lore.kernel.org/20260426173625.86521-1-sj@kernel.org
+Link: https://lore.kernel.org/20260423004148.74722-1-sj@kernel.org [1]
+Fixes: 29cbb9a13f05 ("mm/damon/sysfs-schemes: implement scheme filters")
+Signed-off-by: SeongJae Park <sj@kernel.org>
+Cc: <stable@vger.kernel.org> # 6.3.x
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/sysfs/group.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ mm/damon/sysfs-schemes.c |    1 +
+ 1 file changed, 1 insertion(+)
 
---- a/fs/sysfs/group.c
-+++ b/fs/sysfs/group.c
-@@ -188,7 +188,7 @@ static int internal_create_group(struct
- 	kernfs_get(kn);
- 	error = create_files(kn, kobj, uid, gid, grp, update);
- 	if (error) {
--		if (grp->name)
-+		if (grp->name && !update)
- 			kernfs_remove(kn);
+--- a/mm/damon/sysfs-schemes.c
++++ b/mm/damon/sysfs-schemes.c
+@@ -2537,6 +2537,7 @@ static int damon_sysfs_memcg_path_to_id(
+ 		if (damon_sysfs_memcg_path_eq(memcg, path, memcg_path)) {
+ 			*id = mem_cgroup_id(memcg);
+ 			found = true;
++			mem_cgroup_iter_break(NULL, memcg);
+ 			break;
+ 		}
  	}
- 	kernfs_put(kn);
 
 
 
