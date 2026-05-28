@@ -1,60 +1,59 @@
-Return-Path: <stable+bounces-255367-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-255368-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id aPnEOE+hGGqblggAu9opvQ
-	(envelope-from <stable+bounces-255367-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:10:55 +0200
+	id CCPlKwSiGGqblggAu9opvQ
+	(envelope-from <stable+bounces-255368-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:13:56 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 80BBE5F7FE0
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:10:55 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1116D5F81CB
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:13:55 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 61F7430FFFC6
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 20:05:29 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 65B313232819
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 20:05:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6401E40F8DA;
-	Thu, 28 May 2026 20:05:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 04167409E1C;
+	Thu, 28 May 2026 20:05:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PkPunZQW"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IzdDOjU5"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ED2F040DFC6;
-	Thu, 28 May 2026 20:05:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B47E833065C;
+	Thu, 28 May 2026 20:05:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779998711; cv=none; b=B200g+GXa0g7omzi1nFy1dzyox7VKNCTGxkRRocw/vgaICoDQMwkU1e8L91grqau++wtL24Rir9eoh6RU/FsDSRgo42Xd60igT7JIYfIdE25/fLohuJ7OJDP7r9cvRtrSZWPts37iiqZx4v9FsxvlUkdxlBmLFx87UO99xFiZMw=
+	t=1779998713; cv=none; b=XaQslgM8WaKwgM/j+JPaZQUCbwmEjCCtl0ukjO43BVJmpUbOkB4C4yKXeM8Ox0RYoz54OSUMvBvaxTqXbD0whKaZB1LcwLa/JRkcqmbCtT8hoCmkmJAGUQ+msV4B7ZR7kouDr7i0cpXpkkE2CpbNkjkfs+JKNDCsp/+j0hK01pU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779998711; c=relaxed/simple;
-	bh=2D+CXg+n3jI/DTE71YrMXEv871DCuskxojmse+QRYUU=;
+	s=arc-20240116; t=1779998713; c=relaxed/simple;
+	bh=rZi7BIY6KSq9sP+x3ZPQ6prc9h8upvnCe/ykifN9vEA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=tAJVhPNjrYgw1ZmiVzgmLWC1GF47MUKG9aEVYagQJhU0HebP04IhQ1NKtlODWEUeeSUj+56ckaoVLQgn1pBK38O++E9e3mVe1mSi2EfMkdC30irmRUUxngUnCLaybuyA32zUWRkxd/GsLuFZknQ6pqjVO5Xj0+l7UqQMRnlkUHo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PkPunZQW; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 53EF51F000E9;
-	Thu, 28 May 2026 20:05:09 +0000 (UTC)
+	 MIME-Version; b=J3w7t8KIE3B26Sb5WKIXqoCDlbR2oNrlPX/ZQ8nsJdJ0Of/5Tw4sSAR0LHCixXu7hNFdXRBH+eCUJuv+YD95w7z+3rx0e7Re7/+HVkEKyI4got76ide4XEOvMBU1CrWDjrn3TZhNfHAjMtLuHY3CxLB3FPa5xV7VlU+/5dGKQhQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IzdDOjU5; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1D0F61F000E9;
+	Thu, 28 May 2026 20:05:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779998709;
-	bh=yWeAELww2xxxdusmKrZdJB5nB9UIs3CCePDUrPLHgu8=;
+	s=korg; t=1779998712;
+	bh=TrWz2AvGzVpJ0jRyFEiX52TuMClE7PYID+L/NfdGNHE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=PkPunZQW1bQPmDszNO59NvI786defRvvLxo/wPU7MKqMIfcoLzdHBSowpJwu4MhKt
-	 eskaSq9ffcMgv2tfXFL9wWCRPoZZ1aznnscPGNXwB3optPWG8bRIBPo31iZubqq0Fr
-	 tCBhnVBt9tjm/AfMBL40z4X4sttWQwUfZkZvLn+A=
+	b=IzdDOjU5rGj3/JyH1y6eX9qmz6HPtz0YXxKwcm348w0B8Pjd5vlD/gxpQhpBvBGwx
+	 J7MjtDNzTyUd2oigP9nUV70qCm8nV6cRraG8AZKp2llHH1K2ctTrHo3wcqIhJjXxZz
+	 bkRSeYrLvpE/8bl45JCRF5ltxMoUZ2VmQax5Wtr4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
 	David Howells <dhowells@redhat.com>,
-	Paulo Alcantara <pc@manguebit.org>,
-	Matthew Wilcox <willy@infradead.org>,
-	netfs@lists.linux.dev,
+	Marc Dionne <marc.dionne@auristor.com>,
+	linux-afs@lists.infradead.org,
 	linux-fsdevel@vger.kernel.org,
 	Christian Brauner <brauner@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 7.0 269/461] netfs: Fix netfs_read_folio() to wait on writeback
-Date: Thu, 28 May 2026 21:46:38 +0200
-Message-ID: <20260528194654.955655689@linuxfoundation.org>
+Subject: [PATCH 7.0 270/461] netfs, afs: Fix write skipping in dir/link writepages
+Date: Thu, 28 May 2026 21:46:39 +0200
+Message-ID: <20260528194654.984963048@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
 In-Reply-To: <20260528194646.819809818@linuxfoundation.org>
 References: <20260528194646.819809818@linuxfoundation.org>
@@ -72,7 +71,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
@@ -80,7 +79,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-255367-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-255368-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
@@ -89,13 +88,13 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[10];
+	RCPT_COUNT_SEVEN(0.00)[9];
 	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,sashiko.dev:url,infradead.org:email,linux.dev:email,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,manguebit.org:email,msgid.link:url]
-X-Rspamd-Queue-Id: 80BBE5F7FE0
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,msgid.link:url,auristor.com:email,infradead.org:email,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
+X-Rspamd-Queue-Id: 1116D5F81CB
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
@@ -105,40 +104,86 @@ X-Rspamd-Server: lfdr
 
 From: David Howells <dhowells@redhat.com>
 
-[ Upstream commit ded0c6f1606061148c202825f7e53d711f9f84cf ]
+[ Upstream commit 9871938f99cc6cb266a77265491660e2375271f5 ]
 
-Fix netfs_read_folio() to wait for an ongoing writeback to complete so that
-it can trust the dirty flag and whatever is attached to folio->private
-(folio->private may get cleaned up by the collector before it clears the
-writeback flag).
+Fix netfs_write_single() and afs_single_writepages() to better handle a
+write that would be skipped due to lock contention and WB_SYNC_NONE by
+returning 1 from netfs_write_single() if it skipped and making
+afs_single_writepages() skip also.  If a skip occurs, the inode must be
+re-marked as the VFS may have cleared the mark.
 
-Fixes: ee4cdf7ba857 ("netfs: Speed up buffered reading")
-Closes: https://sashiko.dev/#/patchset/20260414082004.3756080-1-dhowells%40redhat.com
+This is really only theoretical for directories in netfs_write_single() as
+the only path to that is through afs_single_writepages() that takes the
+->validate_lock around it, thereby serialising it.
+
+Fixes: 6dd80936618c ("afs: Use netfslib for directories")
 Signed-off-by: David Howells <dhowells@redhat.com>
-Link: https://patch.msgid.link/20260512123404.719402-23-dhowells@redhat.com
-cc: Paulo Alcantara <pc@manguebit.org>
-cc: Matthew Wilcox <willy@infradead.org>
-cc: netfs@lists.linux.dev
+Link: https://patch.msgid.link/20260512123404.719402-24-dhowells@redhat.com
+cc: Marc Dionne <marc.dionne@auristor.com>
+cc: linux-afs@lists.infradead.org
 cc: linux-fsdevel@vger.kernel.org
 Signed-off-by: Christian Brauner <brauner@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/netfs/buffered_read.c | 2 ++
- 1 file changed, 2 insertions(+)
+ fs/afs/dir.c           | 11 ++++++++++-
+ fs/netfs/write_issue.c |  7 ++++++-
+ 2 files changed, 16 insertions(+), 2 deletions(-)
 
-diff --git a/fs/netfs/buffered_read.c b/fs/netfs/buffered_read.c
-index 83d0b8153e96e..76d0f6a29abab 100644
---- a/fs/netfs/buffered_read.c
-+++ b/fs/netfs/buffered_read.c
-@@ -503,6 +503,8 @@ int netfs_read_folio(struct file *file, struct folio *folio)
- 	struct netfs_inode *ctx = netfs_inode(mapping->host);
- 	int ret;
+diff --git a/fs/afs/dir.c b/fs/afs/dir.c
+index 78caef3f13388..068a892d39c4e 100644
+--- a/fs/afs/dir.c
++++ b/fs/afs/dir.c
+@@ -2206,7 +2206,14 @@ int afs_single_writepages(struct address_space *mapping,
+ 	/* Need to lock to prevent the folio queue and folios from being thrown
+ 	 * away.
+ 	 */
+-	down_read(&dvnode->validate_lock);
++	if (!down_read_trylock(&dvnode->validate_lock)) {
++		if (wbc->sync_mode == WB_SYNC_NONE) {
++			/* The VFS will have undirtied the inode. */
++			netfs_single_mark_inode_dirty(&dvnode->netfs.inode);
++			return 0;
++		}
++		down_read(&dvnode->validate_lock);
++	}
  
-+	folio_wait_writeback(folio);
-+
- 	if (folio_test_dirty(folio))
- 		return netfs_read_gaps(file, folio);
+ 	if (is_dir ?
+ 	    test_bit(AFS_VNODE_DIR_VALID, &dvnode->flags) :
+@@ -2214,6 +2221,8 @@ int afs_single_writepages(struct address_space *mapping,
+ 		iov_iter_folio_queue(&iter, ITER_SOURCE, dvnode->directory, 0, 0,
+ 				     i_size_read(&dvnode->netfs.inode));
+ 		ret = netfs_writeback_single(mapping, wbc, &iter);
++		if (ret == 1)
++			ret = 0; /* Skipped write due to lock conflict. */
+ 	}
  
+ 	up_read(&dvnode->validate_lock);
+diff --git a/fs/netfs/write_issue.c b/fs/netfs/write_issue.c
+index 03961622996be..c03c7cc45e471 100644
+--- a/fs/netfs/write_issue.c
++++ b/fs/netfs/write_issue.c
+@@ -830,6 +830,9 @@ static int netfs_write_folio_single(struct netfs_io_request *wreq,
+  *
+  * Write a monolithic, non-pagecache object back to the server and/or
+  * the cache.
++ *
++ * Return: 0 if successful; 1 if skipped due to lock conflict and WB_SYNC_NONE;
++ * or a negative error code.
+  */
+ int netfs_writeback_single(struct address_space *mapping,
+ 			   struct writeback_control *wbc,
+@@ -846,8 +849,10 @@ int netfs_writeback_single(struct address_space *mapping,
+ 
+ 	if (!mutex_trylock(&ictx->wb_lock)) {
+ 		if (wbc->sync_mode == WB_SYNC_NONE) {
++			/* The VFS will have undirtied the inode. */
++			netfs_single_mark_inode_dirty(&ictx->inode);
+ 			netfs_stat(&netfs_n_wb_lock_skip);
+-			return 0;
++			return 1;
+ 		}
+ 		netfs_stat(&netfs_n_wb_lock_wait);
+ 		mutex_lock(&ictx->wb_lock);
 -- 
 2.53.0
 
