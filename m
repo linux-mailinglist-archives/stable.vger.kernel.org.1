@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-256380-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-256391-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id wHFhEletGGpolwgAu9opvQ
-	(envelope-from <stable+bounces-256380-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 23:02:15 +0200
+	id OCSDB66sGGphmAgAu9opvQ
+	(envelope-from <stable+bounces-256391-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:59:26 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id A58D75FA1D8
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 23:02:14 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8E4D95FA007
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:59:25 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 2C1C13059A6B
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 20:52:19 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 6BBBE30C7606
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 20:52:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DD19C316905;
-	Thu, 28 May 2026 20:52:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 545F41A9B46;
+	Thu, 28 May 2026 20:52:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZYoErqX2"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="C7NeBMqO"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8D8C827603A;
-	Thu, 28 May 2026 20:52:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 33D9F2F1FEF;
+	Thu, 28 May 2026 20:52:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780001538; cv=none; b=cZleaFzS1Bt1Vs74bv3bUtxGmV9HS2ZQtfWuBkM047ad0LYybl40ZsRVd0WsWsg35bPrMidvHlCS3c4KyLsDgKEFcU5Q/OR+ASeQbWIqV1CEnO3UunJgv/zkGkK7axCkkgQokhVmG9q33MwvJK1k3LIJ22CjsBlDaosQIzphxPQ=
+	t=1780001569; cv=none; b=uXnhN3hdfRXhMY/hGsQ68Kyi8NlLVYYPDm3XG1dKSqMBrp5C28/pzgYUDiK8grGzVmgciirfBROmmGKG1sh1j3qVmrhbyTb/nykK1m5OnBCaqxAFDEv57SDjAR63YdM4O1yjcXWHykuDF/CWd9I+JE+66/0YBHS4HJmyDyZSNE0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780001538; c=relaxed/simple;
-	bh=pjXOQBtiNrG+oGwsUUrbYz9H/E0OA+sUlucbzpi38VA=;
+	s=arc-20240116; t=1780001569; c=relaxed/simple;
+	bh=CmCuYzUFQY7jV/L9MgEW2eD4k8mulQZdUaSUlxPXlu8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=rEd7Nad+cKxan0xJqhquxv9kimAzTcXPRJbV++zwss3RkDoAkyIr48vi9d7zew5rxrf82SZiWzc7mD9Ag8C+kTNFNOBRuu9s9TvHcdC8WYPp2EuYeYTYu/ebrejRzdImuOeEJleTAiTpnFCs8U4ZIv0TSnM6ymwq6NAkipPxD5o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZYoErqX2; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E97B11F000E9;
-	Thu, 28 May 2026 20:52:16 +0000 (UTC)
+	 MIME-Version; b=NSLeZjR/pPELgYfiFBFxph6tvJavCKP8Frb4Xfw8RxQVUhhLyuFNBC1pmkX2v1S7DnziU2hHO6AWNMyF0KCsntimEmS1EIBpZzZpDasyDyveniGbLSyoCdoX0TFbldLNOiWyl3j9w+mJB3YmxtTscj54DbLj823u9acaTqSK3TE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=C7NeBMqO; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 929511F000E9;
+	Thu, 28 May 2026 20:52:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780001537;
-	bh=KaMqL5A355LXOOtmh0iadIqs2ctMwryEEn6Oq4pXax4=;
+	s=korg; t=1780001568;
+	bh=3PLEm6MYg8I1AZoanLJ27mdoE0ovo//v24HOnWkOv1M=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=ZYoErqX2rDDy2s2p1hIaLm8R8MqHCuNU1f22RcRylyCyud+wiRozweIpUgDg+vZtM
-	 btIIrhLf+2gfFU87rFhN0lp+ym6B+k6sNBvGFoQ9//nk6ZcxCzHO4wcktfQsOdXGNT
-	 46Kuun7YarLcdchzrofwv6oc6y90afimdeByGMaM=
+	b=C7NeBMqOFybDtaT5XbUeoGpsVW4QVMbju5NaCpqo1EDTxV5Pu5cm6oe4oixTsJBrD
+	 j/pcL4z4dmoxGpKZ93xvppWZgObm36I4qrzO+fKNSBda+tAvkqGYLbTk3jVL2out6a
+	 p8nzKbYDcjMaSpIO1qv7oDyHHLQmSwRAgyYt2GO0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Oleksij Rempel <o.rempel@pengutronix.de>,
 	Andrew Lunn <andrew@lunn.ch>,
-	"Russell King (Oracle)" <rmk+kernel@armlinux.org.uk>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Sven Schuchmann <schuchmann@schleissheimer.de>,
+	Paolo Abeni <pabeni@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 146/186] net: phy: c45: add genphy_c45_pma_read_ext_abilities() function
-Date: Thu, 28 May 2026 21:50:26 +0200
-Message-ID: <20260528194932.895010543@linuxfoundation.org>
+Subject: [PATCH 6.6 147/186] net: phy: DP83TC811: add reading of abilities
+Date: Thu, 28 May 2026 21:50:27 +0200
+Message-ID: <20260528194932.923449984@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
 In-Reply-To: <20260528194928.941004471@linuxfoundation.org>
 References: <20260528194928.941004471@linuxfoundation.org>
@@ -66,35 +65,34 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	TAGGED_FROM(0.00)[bounces-256380-lists,stable=lfdr.de];
-	FROM_HAS_DN(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_TLS_LAST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-256391-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	PRECEDENCE_BULK(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[8];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable,kernel];
 	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[pengutronix.de:email,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim,lunn.ch:email,armlinux.org.uk:email]
-X-Rspamd-Queue-Id: A58D75FA1D8
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_SEVEN(0.00)[7];
+	MID_RHS_MATCH_FROM(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[lunn.ch:email,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,msgid.link:url,linuxfoundation.org:mid,linuxfoundation.org:dkim,schleissheimer.de:email]
+X-Rspamd-Queue-Id: 8E4D95FA007
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
@@ -102,190 +100,38 @@ X-Rspamd-Server: lfdr
 
 ------------------
 
-From: Oleksij Rempel <o.rempel@pengutronix.de>
+From: Sven Schuchmann <schuchmann@schleissheimer.de>
 
-[ Upstream commit 0c476157085fe2ad13b9bec70ea672e86647fa1a ]
+[ Upstream commit c78bdba7b9666020c0832150a4fc4c0aebc7c6ac ]
 
-Move part of the genphy_c45_pma_read_abilities() code to a separate
-function.
+At this time the driver is not listing any speeds
+it supports. This should be ETHTOOL_LINK_MODE_100baseT1_Full_BIT
+for DP83TC811. Add the missing call for phylib to read the abilities.
 
-Some PHYs do not implement PMA/PMD status 2 register (Register 1.8) but
-do implement PMA/PMD extended ability register (Register 1.11). To make
-use of it, we need to be able to access this part of code separately.
-
-Signed-off-by: Oleksij Rempel <o.rempel@pengutronix.de>
+Fixes: b753a9faaf9a ("net: phy: DP83TC811: Introduce support for the DP83TC811 phy")
+Suggested-by: Andrew Lunn <andrew@lunn.ch>
+Signed-off-by: Sven Schuchmann <schuchmann@schleissheimer.de>
 Reviewed-by: Andrew Lunn <andrew@lunn.ch>
-Reviewed-by: Russell King (Oracle) <rmk+kernel@armlinux.org.uk>
-Link: https://lore.kernel.org/r/20231212054144.87527-2-o.rempel@pengutronix.de
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Stable-dep-of: c78bdba7b966 ("net: phy: DP83TC811: add reading of abilities")
+Link: https://patch.msgid.link/20260512071949.6218-1-schuchmann@schleissheimer.de
+[pabeni@redhat.com: dropped revision history]
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/phy/phy-c45.c | 129 ++++++++++++++++++++++----------------
- include/linux/phy.h       |   1 +
- 2 files changed, 75 insertions(+), 55 deletions(-)
+ drivers/net/phy/dp83tc811.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/net/phy/phy-c45.c b/drivers/net/phy/phy-c45.c
-index 8e6fd4962c486..747d14bf152c3 100644
---- a/drivers/net/phy/phy-c45.c
-+++ b/drivers/net/phy/phy-c45.c
-@@ -919,6 +919,79 @@ int genphy_c45_pma_baset1_read_abilities(struct phy_device *phydev)
- }
- EXPORT_SYMBOL_GPL(genphy_c45_pma_baset1_read_abilities);
- 
-+/**
-+ * genphy_c45_pma_read_ext_abilities - read supported link modes from PMA
-+ * @phydev: target phy_device struct
-+ *
-+ * Read the supported link modes from the PMA/PMD extended ability register
-+ * (Register 1.11).
-+ */
-+int genphy_c45_pma_read_ext_abilities(struct phy_device *phydev)
-+{
-+	int val;
-+
-+	val = phy_read_mmd(phydev, MDIO_MMD_PMAPMD, MDIO_PMA_EXTABLE);
-+	if (val < 0)
-+		return val;
-+
-+	linkmode_mod_bit(ETHTOOL_LINK_MODE_10000baseLRM_Full_BIT,
-+			 phydev->supported,
-+			 val & MDIO_PMA_EXTABLE_10GBLRM);
-+	linkmode_mod_bit(ETHTOOL_LINK_MODE_10000baseT_Full_BIT,
-+			 phydev->supported,
-+			 val & MDIO_PMA_EXTABLE_10GBT);
-+	linkmode_mod_bit(ETHTOOL_LINK_MODE_10000baseKX4_Full_BIT,
-+			 phydev->supported,
-+			 val & MDIO_PMA_EXTABLE_10GBKX4);
-+	linkmode_mod_bit(ETHTOOL_LINK_MODE_10000baseKR_Full_BIT,
-+			 phydev->supported,
-+			 val & MDIO_PMA_EXTABLE_10GBKR);
-+	linkmode_mod_bit(ETHTOOL_LINK_MODE_1000baseT_Full_BIT,
-+			 phydev->supported,
-+			 val & MDIO_PMA_EXTABLE_1000BT);
-+	linkmode_mod_bit(ETHTOOL_LINK_MODE_1000baseKX_Full_BIT,
-+			 phydev->supported,
-+			 val & MDIO_PMA_EXTABLE_1000BKX);
-+
-+	linkmode_mod_bit(ETHTOOL_LINK_MODE_100baseT_Full_BIT,
-+			 phydev->supported,
-+			 val & MDIO_PMA_EXTABLE_100BTX);
-+	linkmode_mod_bit(ETHTOOL_LINK_MODE_100baseT_Half_BIT,
-+			 phydev->supported,
-+			 val & MDIO_PMA_EXTABLE_100BTX);
-+
-+	linkmode_mod_bit(ETHTOOL_LINK_MODE_10baseT_Full_BIT,
-+			 phydev->supported,
-+			 val & MDIO_PMA_EXTABLE_10BT);
-+	linkmode_mod_bit(ETHTOOL_LINK_MODE_10baseT_Half_BIT,
-+			 phydev->supported,
-+			 val & MDIO_PMA_EXTABLE_10BT);
-+
-+	if (val & MDIO_PMA_EXTABLE_NBT) {
-+		val = phy_read_mmd(phydev, MDIO_MMD_PMAPMD,
-+				   MDIO_PMA_NG_EXTABLE);
-+		if (val < 0)
-+			return val;
-+
-+		linkmode_mod_bit(ETHTOOL_LINK_MODE_2500baseT_Full_BIT,
-+				 phydev->supported,
-+				 val & MDIO_PMA_NG_EXTABLE_2_5GBT);
-+
-+		linkmode_mod_bit(ETHTOOL_LINK_MODE_5000baseT_Full_BIT,
-+				 phydev->supported,
-+				 val & MDIO_PMA_NG_EXTABLE_5GBT);
-+	}
-+
-+	if (val & MDIO_PMA_EXTABLE_BT1) {
-+		val = genphy_c45_pma_baset1_read_abilities(phydev);
-+		if (val < 0)
-+			return val;
-+	}
-+
-+	return 0;
-+}
-+EXPORT_SYMBOL_GPL(genphy_c45_pma_read_ext_abilities);
-+
- /**
-  * genphy_c45_pma_read_abilities - read supported link modes from PMA
-  * @phydev: target phy_device struct
-@@ -962,63 +1035,9 @@ int genphy_c45_pma_read_abilities(struct phy_device *phydev)
- 			 val & MDIO_PMA_STAT2_10GBER);
- 
- 	if (val & MDIO_PMA_STAT2_EXTABLE) {
--		val = phy_read_mmd(phydev, MDIO_MMD_PMAPMD, MDIO_PMA_EXTABLE);
-+		val = genphy_c45_pma_read_ext_abilities(phydev);
- 		if (val < 0)
- 			return val;
--
--		linkmode_mod_bit(ETHTOOL_LINK_MODE_10000baseLRM_Full_BIT,
--				 phydev->supported,
--				 val & MDIO_PMA_EXTABLE_10GBLRM);
--		linkmode_mod_bit(ETHTOOL_LINK_MODE_10000baseT_Full_BIT,
--				 phydev->supported,
--				 val & MDIO_PMA_EXTABLE_10GBT);
--		linkmode_mod_bit(ETHTOOL_LINK_MODE_10000baseKX4_Full_BIT,
--				 phydev->supported,
--				 val & MDIO_PMA_EXTABLE_10GBKX4);
--		linkmode_mod_bit(ETHTOOL_LINK_MODE_10000baseKR_Full_BIT,
--				 phydev->supported,
--				 val & MDIO_PMA_EXTABLE_10GBKR);
--		linkmode_mod_bit(ETHTOOL_LINK_MODE_1000baseT_Full_BIT,
--				 phydev->supported,
--				 val & MDIO_PMA_EXTABLE_1000BT);
--		linkmode_mod_bit(ETHTOOL_LINK_MODE_1000baseKX_Full_BIT,
--				 phydev->supported,
--				 val & MDIO_PMA_EXTABLE_1000BKX);
--
--		linkmode_mod_bit(ETHTOOL_LINK_MODE_100baseT_Full_BIT,
--				 phydev->supported,
--				 val & MDIO_PMA_EXTABLE_100BTX);
--		linkmode_mod_bit(ETHTOOL_LINK_MODE_100baseT_Half_BIT,
--				 phydev->supported,
--				 val & MDIO_PMA_EXTABLE_100BTX);
--
--		linkmode_mod_bit(ETHTOOL_LINK_MODE_10baseT_Full_BIT,
--				 phydev->supported,
--				 val & MDIO_PMA_EXTABLE_10BT);
--		linkmode_mod_bit(ETHTOOL_LINK_MODE_10baseT_Half_BIT,
--				 phydev->supported,
--				 val & MDIO_PMA_EXTABLE_10BT);
--
--		if (val & MDIO_PMA_EXTABLE_NBT) {
--			val = phy_read_mmd(phydev, MDIO_MMD_PMAPMD,
--					   MDIO_PMA_NG_EXTABLE);
--			if (val < 0)
--				return val;
--
--			linkmode_mod_bit(ETHTOOL_LINK_MODE_2500baseT_Full_BIT,
--					 phydev->supported,
--					 val & MDIO_PMA_NG_EXTABLE_2_5GBT);
--
--			linkmode_mod_bit(ETHTOOL_LINK_MODE_5000baseT_Full_BIT,
--					 phydev->supported,
--					 val & MDIO_PMA_NG_EXTABLE_5GBT);
--		}
--
--		if (val & MDIO_PMA_EXTABLE_BT1) {
--			val = genphy_c45_pma_baset1_read_abilities(phydev);
--			if (val < 0)
--				return val;
--		}
- 	}
- 
- 	/* This is optional functionality. If not supported, we may get an error
-diff --git a/include/linux/phy.h b/include/linux/phy.h
-index a57e799b1de18..586973404ad47 100644
---- a/include/linux/phy.h
-+++ b/include/linux/phy.h
-@@ -1857,6 +1857,7 @@ int genphy_c45_an_config_aneg(struct phy_device *phydev);
- int genphy_c45_an_disable_aneg(struct phy_device *phydev);
- int genphy_c45_read_mdix(struct phy_device *phydev);
- int genphy_c45_pma_read_abilities(struct phy_device *phydev);
-+int genphy_c45_pma_read_ext_abilities(struct phy_device *phydev);
- int genphy_c45_pma_baset1_read_abilities(struct phy_device *phydev);
- int genphy_c45_read_eee_abilities(struct phy_device *phydev);
- int genphy_c45_pma_baset1_read_master_slave(struct phy_device *phydev);
+diff --git a/drivers/net/phy/dp83tc811.c b/drivers/net/phy/dp83tc811.c
+index 7ea32fb77190c..5425a95352f9f 100644
+--- a/drivers/net/phy/dp83tc811.c
++++ b/drivers/net/phy/dp83tc811.c
+@@ -393,6 +393,7 @@ static struct phy_driver dp83811_driver[] = {
+ 		.config_init = dp83811_config_init,
+ 		.config_aneg = dp83811_config_aneg,
+ 		.soft_reset = dp83811_phy_reset,
++		.get_features = genphy_c45_pma_read_ext_abilities,
+ 		.get_wol = dp83811_get_wol,
+ 		.set_wol = dp83811_set_wol,
+ 		.config_intr = dp83811_config_intr,
 -- 
 2.53.0
 
