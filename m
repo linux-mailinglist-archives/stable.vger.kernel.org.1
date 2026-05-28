@@ -1,57 +1,59 @@
-Return-Path: <stable+bounces-255995-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-255959-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id mIHTCNGnGGp+lwgAu9opvQ
-	(envelope-from <stable+bounces-255995-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:38:41 +0200
+	id +O0cKuSoGGpolwgAu9opvQ
+	(envelope-from <stable+bounces-255959-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:43:16 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id E18A25F931C
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:38:40 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 34B2A5F9661
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:43:16 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id DC9BE3064CD5
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 20:34:22 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id C4215314C863
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 20:32:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 66B8932AAA0;
-	Thu, 28 May 2026 20:34:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0FBE433C51D;
+	Thu, 28 May 2026 20:32:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QfNudNmn"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gaLgfCiO"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 37A35223328;
-	Thu, 28 May 2026 20:34:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CC71B25F7B9;
+	Thu, 28 May 2026 20:32:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780000461; cv=none; b=u9VGVcD0kHC1iglUHyKBiqOnNvi8uhfQQOAcFyYYGxO+6Vdjk44E776bhyXzXlRk6BC2DMpPlBkDhCmjxt0K8HOx0W2RDIM06ouAYA+mxZjb/6WiaWL7IHf/AcusZalznQXnt8C/C6EY3lY2pcTdLStRkpO/qOaq420vhKlLLnk=
+	t=1780000358; cv=none; b=rfEX0m1igDF5jsreg7EzNIgwhnegnyoO8545YSN7gsskJKSd3DfSSMKooN2WndxBEI5KoMUoPHS6GJURBr0AdCaTDhXb2eHqbNMCMeBxsmjg2DEvpfbo8HHT0N+pNk8MTwCdROIXbZfAK54tphGgTx560LyaXL9NIniIVjdcKqQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780000461; c=relaxed/simple;
-	bh=KR2RVqmprACWSu2LDJZQXWTQ1UgNGM6Q1SIWvqgJJhQ=;
+	s=arc-20240116; t=1780000358; c=relaxed/simple;
+	bh=5S0JcrHqSXBplwqJ3SMyZGywdumIaFmjBKlb3c4CA1Y=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=qf9mNARLzEbSY2qKMKUT4isdae1EiFVp/Oh4DUdPrjS7c7tBzH8iXmTrWxpEwQBAI2ZCHrVrVRjj1tG1nyXw0yfbESVC49+mMHtKSITMNY4MtqE6PcBVFQ80zvurKb//rLfrifgGPAgAvZOEZwLOvV0tHbyrdkqpUl8vaQEtTrM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QfNudNmn; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 960901F000E9;
-	Thu, 28 May 2026 20:34:19 +0000 (UTC)
+	 MIME-Version; b=HG0q5rG4ykK9hyE101BKPl8jk1IqET0DCUzUZ6Obbfv3yf7f/rjxLQ19nz4Pz6H3z7cuqcvOBCbMrzHHEyCG4KWJ9f8CaymQBBt5ZhoJrY4xfOvKVzxL5DEzFIbQwZCtB0+kEzVY9td+dQGcaSF3zYZ8Ic5cLpJ/mSCbTdb+18c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gaLgfCiO; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3CF641F000E9;
+	Thu, 28 May 2026 20:32:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780000460;
-	bh=RYibwaKoe2zYhxdAxMIjvy5Dl6P5lCM0rQhsH7roFaw=;
+	s=korg; t=1780000357;
+	bh=dzFWxreiYZ1Qi06heBa6xo9sh45XUX9RfKxII02EeZU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=QfNudNmn4gnsHm46PgSb7YHu3kgRDZiqZpMNBriYmLJQqmFVqgZRpcVZorvWgV8+1
-	 UMHQlEqmmj85L6hRGIJoFgo/vOucgMJdBRnvkrb+35lrH4ez6ABXdCZc3/b1su8bEo
-	 /AJFmSt2unAAgC0awNgWsYb9ADshI7SajbDd8d18=
+	b=gaLgfCiOKr8FP8qlghPaR8wSFbiced0lhsF+3dnVdPYI2qi+SJ8ULbKZSxsJ2X+4Q
+	 9pNm/NTd4A2Xh0f1x3M7sPlEf2Ly36JqH7vAct75ca/7tzhYS0rezizcglpxp+HbnW
+	 kFwRiFX74Zt/iJC/YAtTIMtlLjh5Ohipy2idM8M8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Huacai Chen <chenhuacai@loongson.cn>,
+	Yuri Andriaccio <yurand2000@gmail.com>,
+	Juri Lelli <juri.lelli@redhat.com>,
 	"Peter Zijlstra (Intel)" <peterz@infradead.org>,
+	Valentin Schneider <vschneid@redhat.com>,
 	Lukas Beckmann <lbckmnn@mailbox.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 016/272] sched/deadline: Fix dl_server_stopped()
-Date: Thu, 28 May 2026 21:46:30 +0200
-Message-ID: <20260528194629.837279267@linuxfoundation.org>
+Subject: [PATCH 6.12 017/272] sched/deadline: Always stop dl-server before changing parameters
+Date: Thu, 28 May 2026 21:46:31 +0200
+Message-ID: <20260528194629.863626682@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
 In-Reply-To: <20260528194629.379955525@linuxfoundation.org>
 References: <20260528194629.379955525@linuxfoundation.org>
@@ -69,30 +71,31 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	RCVD_TLS_LAST(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,redhat.com,infradead.org,mailbox.org,kernel.org];
+	TAGGED_FROM(0.00)[bounces-255959-lists,stable=lfdr.de];
+	PRECEDENCE_BULK(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FROM_HAS_DN(0.00)[];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-255995-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TO_DN_SOME(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
-	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[7];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[9];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[infradead.org:email,mailbox.org:email,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim]
-X-Rspamd-Queue-Id: E18A25F931C
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,infradead.org:email,mailbox.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim]
+X-Rspamd-Queue-Id: 34B2A5F9661
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
@@ -100,37 +103,51 @@ X-Rspamd-Server: lfdr
 
 ------------------
 
-From: Huacai Chen <chenhuacai@loongson.cn>
+From: Juri Lelli <juri.lelli@redhat.com>
 
-commit 4717432dfd99bbd015b6782adca216c6f9340038 upstream.
+commit bb4700adc3abec34c0a38b64f66258e4e233fc16 upstream.
 
-Commit cccb45d7c429 ("sched/deadline: Less agressive dl_server handling")
-introduces dl_server_stopped(). But it is obvious that dl_server_stopped()
-should return true if dl_se->dl_server_active is 0.
+Commit cccb45d7c4295 ("sched/deadline: Less agressive dl_server
+handling") reduced dl-server overhead by delaying disabling servers only
+after there are no fair task around for a whole period, which means that
+deadline entities are not dequeued right away on a server stop event.
+However, the delay opens up a window in which a request for changing
+server parameters can break per-runqueue running_bw tracking, as
+reported by Yuri.
 
-Fixes: cccb45d7c429 ("sched/deadline: Less agressive dl_server handling")
-Signed-off-by: Huacai Chen <chenhuacai@loongson.cn>
+Close the problematic window by unconditionally calling dl_server_stop()
+before applying the new parameters (ensuring deadline entities go
+through an actual dequeue).
+
+Fixes: cccb45d7c4295 ("sched/deadline: Less agressive dl_server handling")
+Reported-by: Yuri Andriaccio <yurand2000@gmail.com>
+Signed-off-by: Juri Lelli <juri.lelli@redhat.com>
 Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Link: https://lkml.kernel.org/r/20250809130419.1980742-1-chenhuacai@loongson.cn
+Reviewed-by: Valentin Schneider <vschneid@redhat.com>
+Link: https://lore.kernel.org/r/20250721-upstream-fix-dlserver-lessaggressive-b4-v1-1-4ebc10c87e40@redhat.com
 Signed-off-by: Lukas Beckmann <lbckmnn@mailbox.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/sched/deadline.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ kernel/sched/debug.c | 6 ++----
+ 1 file changed, 2 insertions(+), 4 deletions(-)
 
-diff --git a/kernel/sched/deadline.c b/kernel/sched/deadline.c
-index 9c5fa95b345a5..6ff9055a69811 100644
---- a/kernel/sched/deadline.c
-+++ b/kernel/sched/deadline.c
-@@ -1879,7 +1879,7 @@ void dl_server_stop(struct sched_dl_entity *dl_se)
- static bool dl_server_stopped(struct sched_dl_entity *dl_se)
- {
- 	if (!dl_se->dl_server_active)
--		return false;
-+		return true;
+diff --git a/kernel/sched/debug.c b/kernel/sched/debug.c
+index 7d14e9fa53ac3..564ea17ae405e 100644
+--- a/kernel/sched/debug.c
++++ b/kernel/sched/debug.c
+@@ -378,10 +378,8 @@ static ssize_t sched_fair_server_write(struct file *filp, const char __user *ubu
+ 			return  -EINVAL;
+ 		}
  
- 	if (dl_se->dl_server_idle) {
- 		dl_server_stop(dl_se);
+-		if (rq->cfs.h_nr_queued) {
+-			update_rq_clock(rq);
+-			dl_server_stop(&rq->fair_server);
+-		}
++		update_rq_clock(rq);
++		dl_server_stop(&rq->fair_server);
+ 
+ 		retval = dl_server_apply_params(&rq->fair_server, runtime, period, 0);
+ 
 -- 
 2.53.0
 
