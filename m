@@ -1,59 +1,59 @@
-Return-Path: <stable+bounces-255269-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-255624-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id IBhtGSOfGGpAlggAu9opvQ
-	(envelope-from <stable+bounces-255269-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:01:39 +0200
+	id aJoNLO2iGGrClggAu9opvQ
+	(envelope-from <stable+bounces-255624-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:17:49 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 707365F7ACA
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:01:38 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id 777615F84F9
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:17:49 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 743B8303EDE7
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 20:00:36 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id EB5F93017E54
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 20:17:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B6DEC40963A;
-	Thu, 28 May 2026 20:00:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7500B2DF6E6;
+	Thu, 28 May 2026 20:17:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AtrVDRR2"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0/km+8er"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 83D221AA1D2;
-	Thu, 28 May 2026 20:00:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 534DC24A047;
+	Thu, 28 May 2026 20:17:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779998435; cv=none; b=PwfM4ky6ZjM+VMh6v9ZBzv6KaUa7mA6bucLTFTNpXHjCNUWfJshxbeBTNw8CeuajdVumeLXiThELNbe+KTt1GtaGA/JCuBTZS1lmUvh9t0WEFDigOBxwbxVVwserpV7IwHMdTxMSsFYuR2zh87SGU61uWOgbK/VtZwZpTi4mJLk=
+	t=1779999434; cv=none; b=XSR4EJeW7xm4ekh30ubfIC4D8ouuPaJYnrrKdnoF6DCa2Dlz49CwkuJJ+xkQ0PNvineMsW509wD49yaBeEa+E1BwqzijI2JlBs3Pmk2oXS9RPqyVfa4idJTrO03PY698erAFiNWygKWc+7Ja/g1YNggwalFxvs58DqopZDqc1fg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779998435; c=relaxed/simple;
-	bh=wJHC9TJazX1DaT40+sXss4oyFyvwysziKu6dGnW+A30=;
+	s=arc-20240116; t=1779999434; c=relaxed/simple;
+	bh=s+X75Aku/hlmv3/bAZLp9cqrlzoWEFm4fbqde+iXGfE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=QZ7q6U8hoVe2qoDJf1KTeftwWrxGqT/neoXIR40E6dIMIrvVDyZ0jEjBAWs5gYUDdzVCNdHBkc1lb32Xy2SdjsxXD4kU6Kny9EkbJWYckvKZPOVqwsHPE7QIFLNbq14irPaT1lpEJRvbHyCwlvccBLokl/8IztaOI3OYC81grmk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AtrVDRR2; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E33F71F00A3A;
-	Thu, 28 May 2026 20:00:33 +0000 (UTC)
+	 MIME-Version; b=Nu8wQp23K96of5VAGyPvMLuB2Mbqf4cTBpJHLLXzQIyJrE20/Ycq6hbbA/nD8RB6lqGzhX4i52hQXcJlKO6UM5PDZkBXzfbVziVd5NtIQMkhb6HbgcdslcEK9qlCTukGg0jFOVLMyWnPdsRs9wQgv2Dg0+reVCL8KtYTQvXRwpc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0/km+8er; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B16FD1F000E9;
+	Thu, 28 May 2026 20:17:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779998434;
-	bh=oNSCT0WHLF4yN9kDaph3f8rx9ebDJprNBf5VELOJM7Y=;
+	s=korg; t=1779999433;
+	bh=90SYLBPWQXIoRMsfGOuAhFitMjm96cwr6nrG0uMUeEQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=AtrVDRR2yCiTgOA3TgNgdu1ap6pogoIstWxFx2oZZj6R2XPPKRdGPvUt+goa6coEO
-	 F7XNontPub1Zi0S4iR7NBkwVPk1f2QDLmXBkvRokuIiv7q9NMBeTHMa8YEndoC3U0n
-	 56K1OQE75QPpC8RZA/1XpUQY+a691G2JH06hAodY=
+	b=0/km+8er1g58JPfU5Pqd2Paw6MPD5FremSs1PtISGxYc5Xa3o+1rvDCq6X6ZaBAsC
+	 hA0yah7Pd4MO8JFwRfwawhGUp6rs7aoXD/OTShSSUHhyRhcVfS/Sdco4TMhv2g9Zk6
+	 smmeUQ1YjzOHly57iOvklNeiH038rREEGICI1L/c=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Abdurrahman Hussain <abdurrahman@nexthop.ai>,
-	Bartosz Golaszewski <bartosz.golaszewski@oss.qualcomm.com>,
-	Guenter Roeck <linux@roeck-us.net>
-Subject: [PATCH 7.0 173/461] hwmon: (pmbus/adm1266) reject short block-read responses in the GPIO accessors
+	Jonas Jelonek <jelonek.jonas@gmail.com>,
+	Oleksij Rempel <o.rempel@pengutronix.de>,
+	Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 6.18 064/377] net: pse-pd: fix sign on -ENOENT check in of_load_pse_pis()
 Date: Thu, 28 May 2026 21:45:02 +0200
-Message-ID: <20260528194652.076024820@linuxfoundation.org>
+Message-ID: <20260528194640.218715444@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260528194646.819809818@linuxfoundation.org>
-References: <20260528194646.819809818@linuxfoundation.org>
+In-Reply-To: <20260528194638.371537336@linuxfoundation.org>
+References: <20260528194638.371537336@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,107 +64,79 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	RCVD_TLS_LAST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-255269-lists,stable=lfdr.de];
 	TO_DN_SOME(0.00)[];
-	FROM_HAS_DN(0.00)[];
+	TAGGED_FROM(0.00)[bounces-255624-lists,stable=lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,pengutronix.de,kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	FROM_HAS_DN(0.00)[];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	NEURAL_HAM(-0.00)[-0.999];
 	TAGGED_RCPT(0.00)[stable];
+	MID_RHS_MATCH_FROM(0.00)[];
 	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,roeck-us.net:email,qualcomm.com:email,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,nexthop.ai:email]
-X-Rspamd-Queue-Id: 707365F7ACA
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,pengutronix.de:email,msgid.link:url]
+X-Rspamd-Queue-Id: 777615F84F9
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-7.0-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Abdurrahman Hussain <abdurrahman@nexthop.ai>
+From: Jonas Jelonek <jelonek.jonas@gmail.com>
 
-commit a7232f68c43ca62f545049b7f5fbfc75137b843b upstream.
+commit 33d35975cbead3fa6b738ee57e5e45e14fbe0886 upstream.
 
-adm1266_gpio_get() and adm1266_gpio_get_multiple() both compose the
-pin-status word as
+of_count_phandle_with_args() returns the count on success and a negative
+errno on failure, including -ENOENT when the "pairsets" property is
+absent. The existing comparison in of_load_pse_pis() checks against
+ENOENT (positive 2) instead of -ENOENT, so the branch is taken for any
+error return: legitimate DTs that omit "pairsets" trigger a spurious
+"wrong number of pairsets" error and probe fails with -EINVAL.
 
-	pins_status = read_buf[0] + (read_buf[1] << 8);
+Compare against -ENOENT so a missing "pairsets" property is correctly
+treated as "this PI has no pairsets, continue".
 
-right after i2c_smbus_read_block_data(), guarding only against an
-error return.  A well-behaved device returns 2 bytes for
-GPIO_STATUS/PDIO_STATUS, but the helper happily reports a 0- or
-1-byte response too.  If the device returns 0 bytes, both read_buf
-slots are uninitialized stack memory; if it returns 1 byte, read_buf[1]
-is.
-
-The composed value then flows through set_bit() into the caller's
-*bits in adm1266_gpio_get_multiple(), or into the return value of
-adm1266_gpio_get(), and ends up in userspace via gpiolib (sysfs and
-the char-dev ioctls).  That leaks a few bits of kernel stack per
-request on any device whose firmware glitch, bus error, or hostile
-slave produces a short block-read response.
-
-Add the missing length check to both call sites and surface a short
-response as -EIO.
-
-Fixes: d98dfad35c38 ("hwmon: (pmbus/adm1266) Add support for GPIOs")
+Fixes: 9be9567a7c59 ("net: pse-pd: Add support for PSE PIs")
 Cc: stable@vger.kernel.org
-Signed-off-by: Abdurrahman Hussain <abdurrahman@nexthop.ai>
-Reviewed-by: Bartosz Golaszewski <bartosz.golaszewski@oss.qualcomm.com>
-Link: https://lore.kernel.org/r/20260518-adm1266-gpio-fixes-v3-3-e425e4f88139@nexthop.ai
-Signed-off-by: Guenter Roeck <linux@roeck-us.net>
+Signed-off-by: Jonas Jelonek <jelonek.jonas@gmail.com>
+Acked-by: Oleksij Rempel <o.rempel@pengutronix.de>
+Link: https://patch.msgid.link/20260515143103.1721888-1-jelonek.jonas@gmail.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/hwmon/pmbus/adm1266.c |    6 ++++++
- 1 file changed, 6 insertions(+)
+ drivers/net/pse-pd/pse_core.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/hwmon/pmbus/adm1266.c
-+++ b/drivers/hwmon/pmbus/adm1266.c
-@@ -176,6 +176,8 @@ static int adm1266_gpio_get(struct gpio_
- 	ret = i2c_smbus_read_block_data(data->client, pmbus_cmd, read_buf);
- 	if (ret < 0)
- 		return ret;
-+	if (ret < 2)
-+		return -EIO;
- 
- 	pins_status = read_buf[0] + (read_buf[1] << 8);
- 	if (offset < ADM1266_GPIO_NR)
-@@ -196,6 +198,8 @@ static int adm1266_gpio_get_multiple(str
- 	ret = i2c_smbus_read_block_data(data->client, ADM1266_GPIO_STATUS, read_buf);
- 	if (ret < 0)
- 		return ret;
-+	if (ret < 2)
-+		return -EIO;
- 
- 	status = read_buf[0] + (read_buf[1] << 8);
- 
-@@ -208,6 +212,8 @@ static int adm1266_gpio_get_multiple(str
- 	ret = i2c_smbus_read_block_data(data->client, ADM1266_PDIO_STATUS, read_buf);
- 	if (ret < 0)
- 		return ret;
-+	if (ret < 2)
-+		return -EIO;
- 
- 	status = read_buf[0] + (read_buf[1] << 8);
- 
+--- a/drivers/net/pse-pd/pse_core.c
++++ b/drivers/net/pse-pd/pse_core.c
+@@ -210,7 +210,7 @@ static int of_load_pse_pis(struct pse_co
+ 			ret = of_load_pse_pi_pairsets(node, &pi, ret);
+ 			if (ret)
+ 				goto out;
+-		} else if (ret != ENOENT) {
++		} else if (ret != -ENOENT) {
+ 			dev_err(pcdev->dev,
+ 				"error: wrong number of pairsets. Should be 1 or 2, got %d (%pOF)\n",
+ 				ret, node);
 
 
 
