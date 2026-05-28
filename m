@@ -1,58 +1,62 @@
-Return-Path: <stable+bounces-256042-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-255837-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id yJslK8moGGpolwgAu9opvQ
-	(envelope-from <stable+bounces-256042-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:42:49 +0200
+	id MPGjEoymGGpolwgAu9opvQ
+	(envelope-from <stable+bounces-255837-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:33:16 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 55B765F962B
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:42:48 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id DF5E55F8EFB
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:33:15 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 13A9430B353F
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 20:37:01 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 9C0DA309B381
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 20:27:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 34876352FA5;
-	Thu, 28 May 2026 20:36:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0A9FA32C923;
+	Thu, 28 May 2026 20:26:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gx4+l3ey"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GehrZ58j"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0584C35DA65;
-	Thu, 28 May 2026 20:36:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CA62A32A3FF;
+	Thu, 28 May 2026 20:26:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780000592; cv=none; b=tuJurmnD7CJEHksMLeQO0Zxl+NtEaSRCulH0TLruUn+922gzdIqovFG4OBjd+56KH4dlB3hv8CDP7ENBz19DtpPwYcTk6zu6gIcLrA0oPuY+fzKjWSGgNR2qsF/yDj0RBF4gP8och62KvBhCoj24C1YjzEawrdsjIO4srws2O7Q=
+	t=1780000018; cv=none; b=FMQE5pd20JiFMXM35ce53hwChNhCV7Pgxh8wBezSbSP24ywDTzWCmvMKUwxBWqAXZpJuz8ClJTtPwn268F3jz/z0yt8HY8PuB9/15bTx5q0tKJS0V4lRS/2Vy2hNvEdVAz+BxdiqKP14M8zgWuBUy5loVXO1BN0zZk0q/4hjsDU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780000592; c=relaxed/simple;
-	bh=e1ylb7LGsB8mAanEubvfzi8U1F6XcHO/3tQrPlLfaM4=;
+	s=arc-20240116; t=1780000018; c=relaxed/simple;
+	bh=NEUV/d0TJe7/+MdjUXKMTYFQj+t/Q0SWkEzP43GDjTg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Cp57qrJldQyIyhQGOw6NCREMlZrnEbox7JF1aLgA3NHAMkTIpVG5a7sqwuogNCJl/bEaWQRPKO27O3PLqaEwSieBINHcyA0XROCKUXncDOmOb8x1yEv5eLUI8Wad+L5EQxyddnF6qz1b7CDnXAxgrDb5W6AOb/YvC5JQ3Gh8w9o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gx4+l3ey; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 638921F000E9;
-	Thu, 28 May 2026 20:36:30 +0000 (UTC)
+	 MIME-Version; b=dYJCT+brPQk4sPov5Gap7Dm9jq9IkvgErlnHta3+JFKox9XpHmttJEF3hPoBjsFAxtA/EXLVmxxph7K4QpiZRhP845IC1TL4hSN5o8clYymUlu/2XMt1TXt2pDMzi5SOhbnWi6p6zVSiL60rP2G/budSVss2CB6UiyS0axwqwCc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GehrZ58j; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3B0381F000E9;
+	Thu, 28 May 2026 20:26:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780000590;
-	bh=xMYCQib99tmPsFfrBMXr73aYiNb3TyA5MZgt2phTriI=;
+	s=korg; t=1780000017;
+	bh=CCB1QA4JI/BThIw+gSgMlC6bv4qWbC6vi46d4VxsqkY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=gx4+l3eyR9WA4id7frKASLbZLqL8PxgNzEzUewlhxt5fXJMOjFj7+qWrHmSTfSvWC
-	 FPOR2VovxBdCcw3GfUxbrxkNRf/cbp+dsffcqnTY5XebSrK2iGIQFMIo/E4UaVNrHX
-	 nLXPz95cPiHCJlt8mK2jbqBAw9CtIlSy/oIPYaR4=
+	b=GehrZ58jn73pnXXTny6Eg6FeWk3197F/sbm1D8MnlLu62CXowz4Mv0iw8XYCsrIs6
+	 ziw2n1GbPtLkb/fx4ibUnS1NlORTmaH6Rue6PFxBslizAAryb/X9Llfn6YgFNw9l2+
+	 I+mvJpipO+jGv3my+u5NFcjzLseXH6Sf5Gv0coqM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Vladimir Murzin <vladimir.murzin@arm.com>,
-	Catalin Marinas <catalin.marinas@arm.com>
-Subject: [PATCH 6.12 100/272] arm64: probes: Handle probes on hinted conditional branch instructions
+	David Howells <dhowells@redhat.com>,
+	Paulo Alcantara <pc@manguebit.org>,
+	netfs@lists.linux.dev,
+	linux-fsdevel@vger.kernel.org,
+	Christian Brauner <brauner@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.18 236/377] netfs: Fix overrun check in netfs_extract_user_iter()
 Date: Thu, 28 May 2026 21:47:54 +0200
-Message-ID: <20260528194632.181882237@linuxfoundation.org>
+Message-ID: <20260528194645.222309417@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260528194629.379955525@linuxfoundation.org>
-References: <20260528194629.379955525@linuxfoundation.org>
+In-Reply-To: <20260528194638.371537336@linuxfoundation.org>
+References: <20260528194638.371537336@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -67,68 +71,113 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
+	URIBL_MULTI_FAIL(0.00)[msgid.link:server fail,sashiko.dev:server fail,manguebit.org:server fail,sto.lore.kernel.org:server fail,linuxfoundation.org:server fail,linux.dev:server fail];
+	TAGGED_FROM(0.00)[bounces-255837-lists,stable=lfdr.de];
 	PRECEDENCE_BULK(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-256042-lists,stable=lfdr.de];
-	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[5];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[9];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[arm.com:email,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim]
-X-Rspamd-Queue-Id: 55B765F962B
+	TAGGED_RCPT(0.00)[stable];
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,sashiko.dev:url,linux.dev:email,manguebit.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim]
+X-Rspamd-Queue-Id: DF5E55F8EFB
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Vladimir Murzin <vladimir.murzin@arm.com>
+From: David Howells <dhowells@redhat.com>
 
-commit 2ccd8ff980b50e842481bae71102fa3883fc4377 upstream.
+[ Upstream commit 0ef37eef83fad3542ee06db2940433ae1a92b39d ]
 
-BC.cond instructions introduced by FEAT_HBC cannot be executed
-out-of-line, like other branch instructions. However, they can be
-simulated in the same way as B.cond instructions.
+Fix netfs_extract_user_iter() so that if iov_iter_extract_pages() overfills
+pages[], then those pages don't get included in the iterator constructed at
+the end of the function.  If there was an overfill, memory corruption has
+already happened.
 
-Extend the B.cond decoder mask to match BC.cond instructions as well,
-and handle them using the existing B.cond simulation path.
-
-Fixes: 7f86d128e437 ("arm64: add HWCAP for FEAT_HBC (hinted conditional branches)")
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Vladimir Murzin <vladimir.murzin@arm.com>
-Signed-off-by: Catalin Marinas <catalin.marinas@arm.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 85dd2c8ff368 ("netfs: Add a function to extract a UBUF or IOVEC into a BVEC iterator")
+Closes: https://sashiko.dev/#/patchset/20260427154639.180684-1-dhowells%40redhat.com
+Signed-off-by: David Howells <dhowells@redhat.com>
+Link: https://patch.msgid.link/20260512123404.719402-11-dhowells@redhat.com
+cc: Paulo Alcantara <pc@manguebit.org>
+cc: netfs@lists.linux.dev
+cc: linux-fsdevel@vger.kernel.org
+Signed-off-by: Christian Brauner <brauner@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/include/asm/insn.h |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ fs/netfs/iterator.c | 26 +++++++++++++++++---------
+ 1 file changed, 17 insertions(+), 9 deletions(-)
 
---- a/arch/arm64/include/asm/insn.h
-+++ b/arch/arm64/include/asm/insn.h
-@@ -405,7 +405,7 @@ __AARCH64_INSN_FUNCS(cbz,	0x7F000000, 0x
- __AARCH64_INSN_FUNCS(cbnz,	0x7F000000, 0x35000000)
- __AARCH64_INSN_FUNCS(tbz,	0x7F000000, 0x36000000)
- __AARCH64_INSN_FUNCS(tbnz,	0x7F000000, 0x37000000)
--__AARCH64_INSN_FUNCS(bcond,	0xFF000010, 0x54000000)
-+__AARCH64_INSN_FUNCS(bcond,	0xFF000000, 0x54000000)
- __AARCH64_INSN_FUNCS(svc,	0xFFE0001F, 0xD4000001)
- __AARCH64_INSN_FUNCS(hvc,	0xFFE0001F, 0xD4000002)
- __AARCH64_INSN_FUNCS(smc,	0xFFE0001F, 0xD4000003)
+diff --git a/fs/netfs/iterator.c b/fs/netfs/iterator.c
+index 429e4396e1b00..b375567e0520e 100644
+--- a/fs/netfs/iterator.c
++++ b/fs/netfs/iterator.c
+@@ -72,21 +72,24 @@ ssize_t netfs_extract_user_iter(struct iov_iter *orig, size_t orig_len,
+ 			break;
+ 		}
+ 
+-		if (ret > count) {
+-			pr_err("get_pages rc=%zd more than %zu\n", ret, count);
++		if (WARN(ret > count,
++			 "%s: extract_pages overrun %zd > %zu bytes\n",
++			 __func__, ret, count)) {
++			ret = -EIO;
+ 			break;
+ 		}
+ 
+-		count -= ret;
+-		ret += offset;
+-		cur_npages = DIV_ROUND_UP(ret, PAGE_SIZE);
+-
+-		if (npages + cur_npages > max_pages) {
+-			pr_err("Out of bvec array capacity (%u vs %u)\n",
+-			       npages + cur_npages, max_pages);
++		cur_npages = DIV_ROUND_UP(offset + ret, PAGE_SIZE);
++		if (WARN(cur_npages > max_pages - npages,
++			 "%s: extract_pages overrun %u > %u pages\n",
++			 __func__, npages + cur_npages, max_pages)) {
++			ret = -EIO;
+ 			break;
+ 		}
+ 
++		count -= ret;
++		ret += offset;
++
+ 		for (i = 0; i < cur_npages; i++) {
+ 			len = ret > PAGE_SIZE ? PAGE_SIZE : ret;
+ 			bvec_set_page(bv + npages + i, *pages++, len - offset, offset);
+@@ -97,6 +100,11 @@ ssize_t netfs_extract_user_iter(struct iov_iter *orig, size_t orig_len,
+ 		npages += cur_npages;
+ 	}
+ 
++	/* Note: Don't try to clean up after EIO.  Either we got no pages, so
++	 * nothing to clean up, or we got a buffer overrun, memory corruption
++	 * and can't trust the stuff in the buffer (a WARN was emitted).
++	 */
++
+ 	if (ret < 0 && (ret == -ENOMEM || npages == 0)) {
+ 		for (i = 0; i < npages; i++)
+ 			unpin_user_page(bv[i].bv_page);
+-- 
+2.53.0
+
 
 
 
