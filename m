@@ -1,60 +1,61 @@
-Return-Path: <stable+bounces-255556-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-256156-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id OJ3/KoCiGGrClggAu9opvQ
-	(envelope-from <stable+bounces-255556-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:16:00 +0200
+	id SC/rLtarGGpolwgAu9opvQ
+	(envelope-from <stable+bounces-256156-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:55:50 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 72ED05F8352
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:16:00 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id CB2995F9E14
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:55:49 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id E881B3056B21
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 20:14:05 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id D5013307C0E3
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 20:42:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D8EAA33CE8A;
-	Thu, 28 May 2026 20:14:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 98CB232F764;
+	Thu, 28 May 2026 20:41:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vpxomfFG"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="k0s7S4uM"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B0BE23254A8;
-	Thu, 28 May 2026 20:14:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E12DD3016E1;
+	Thu, 28 May 2026 20:41:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779999244; cv=none; b=YXbMUkk6O2X6NgB4zq+CnG6ANTQnoxw7c6Qd2YcHzWGfFWtjmYnXnLDZp+XhltTrLaSOplHAqYTAPZKS4jNPBF3UO7RmM2BGm5wU0BWX9oKA7k/j0fxSzf8Mz+hxAdevK/g2pLW+xt6p9fW0AustMWi5jTeLWeIDuD7sGL3rTFo=
+	t=1780000913; cv=none; b=rR9Byc2Y4m84HM+YPvg6x/UE/ZTFaqe30hDQ9DUPvYFYBNMdKZrIjnJ95WZvn5i8uMCC0wIBCukSNtFyJB9S2Obc2pqbIiDK+F6YVTH5vctrngaofAdv1+8HC24PuElO5uLSbleFMugq5t+zKFKLZCm00mJ9UzZeXS6mcDinv7s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779999244; c=relaxed/simple;
-	bh=I80hdjl6n5beXAFJClYf9TXOASO6qduk/xqUlfqKmhA=;
+	s=arc-20240116; t=1780000913; c=relaxed/simple;
+	bh=qioKSYp+a5cgAR+VtvzKw/Fz7o5x2vtNOHva+dn3JJo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=jH8v4ZtEsQv3IGFWw151Mb3lOyCACnzu0WInsjEtcaAVd7rO9UiPUtrpHualHtzl74yaJNUAOED+ZP3GdjAT7QKAi6nIbZicyDttojDOMtrn+FxQqsN7oRXNgFKODDfnSpMo80/RLY2BSfhMY21mHCaqmG5tSbdmHOcFiiT767A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vpxomfFG; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 13BCB1F000E9;
-	Thu, 28 May 2026 20:14:02 +0000 (UTC)
+	 MIME-Version; b=uInVv24IMGUS9VkrnvgyMs3qhiopXkWiso8fYYFg9i1iKaU8jSLxWqj3+Ep5dBwY4cvRwRe+LuMZuMpcaRZUPD9Gs+2Pd7sN2tAjSrGW9T2C2puqX+86PA/h1W7Tk+VPxkctRnf/zcUm0oLrzesP3ZBuj3jhzHvEZw04YJeWCWs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=k0s7S4uM; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4B2FF1F000E9;
+	Thu, 28 May 2026 20:41:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779999243;
-	bh=Ebn2TKDtijNATtSnETxZz2VSpy7BN9O0zpJNQeTqk/8=;
+	s=korg; t=1780000911;
+	bh=0ejHhOtW5tu267UASDXYFRKbMnjFuY+WcnSEWpnVAfU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=vpxomfFGwL4Qsf12bROtehGHB9rSbrhGvWqpD80ggRDqsRnNmn4PTUF/hh5q+HuD8
-	 dAwb9KxTB3bCKJJUPqbWsde5odd4vnKA65TI9KdajVA8XyVsLMJcPr2YHwLvXB0mB9
-	 Am/KEwA4pSopbaZTcw3An/r8XX+rRYe8p4ZLaLVE=
+	b=k0s7S4uMosIVBbBFbJNpMp/cdvs14k3GjMXa5GEL/Yoil+hOA8ZbkZaxLFjdBRmUC
+	 Df3GwqJIa0VszG62j+K8TTHQX7KIha8gx2y1vEVbEP51m6qs6E+ppmkb5ijzRgBDDq
+	 EtKNej8Ytyu5IIHGhNYA+6JrCcdlXxD8aKD6037c=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Damien Le Moal <dlemoal@kernel.org>,
-	Christoph Hellwig <hch@lst.de>,
+	Caleb Sander Mateos <csander@purestorage.com>,
+	Keith Busch <kbusch@kernel.org>,
+	Anuj Gupta <anuj20.g@samsung.com>,
 	Jens Axboe <axboe@kernel.dk>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 7.0 459/461] block: avoid use-after-free in disk_free_zone_resources()
+Subject: [PATCH 6.12 214/272] block: drop direction param from bio_integrity_copy_user()
 Date: Thu, 28 May 2026 21:49:48 +0200
-Message-ID: <20260528194700.827257554@linuxfoundation.org>
+Message-ID: <20260528194635.209643260@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260528194646.819809818@linuxfoundation.org>
-References: <20260528194646.819809818@linuxfoundation.org>
+In-Reply-To: <20260528194629.379955525@linuxfoundation.org>
+References: <20260528194629.379955525@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,7 +70,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
@@ -77,7 +78,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-255556-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-256156-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
@@ -86,76 +87,96 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
 	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[7];
+	RCPT_COUNT_SEVEN(0.00)[8];
 	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,lst.de:email,msgid.link:url,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,kernel.dk:email]
-X-Rspamd-Queue-Id: 72ED05F8352
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,kernel.dk:email,linuxfoundation.org:mid,linuxfoundation.org:dkim]
+X-Rspamd-Queue-Id: CB2995F9E14
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-7.0-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Damien Le Moal <dlemoal@kernel.org>
+From: Caleb Sander Mateos <csander@purestorage.com>
 
-[ Upstream commit f6982769910ecddabdb5b8b9afdab0bb8b6668ac ]
+[ Upstream commit c09a8b00f850d3ca0af998bff1fac4a3f6d11768 ]
 
-The function disk_update_zone_resources() may call
-disk_free_zone_resources() in case of error, and following this,
-blk_revalidate_disk_zones() will again calls disk_free_zone_resources() if
-disk_update_zone_resources() failed. If a zone worker thread is being used
-(which is the default for a rotational media zoned device),
-disk_free_zone_resources() will try to stop the zone worker thread twice
-because disk->zone_wplugs_worker is not reset to NULL when the worker
-thread is stopped the first time.
+direction is determined from bio, which is already passed in. Compute
+op_is_write(bio_op(bio)) directly instead of converting it to an iter
+direction and back to a bool.
 
-In disk_free_zone_resources(), fix this by correctly clearing
-disk->zone_wplugs_worker to NULL when the worker thread is stopped.
-
-And while at it, since disk_free_zone_resources() is always called after a
-failed call to disk_update_zone_resources(), remove the unnecessary call
-to disk_free_zone_resources() in disk_update_zone_resources().
-
-Fixes: 1365b6904fd0 ("block: allow submitting all zone writes from a single context")
-Signed-off-by: Damien Le Moal <dlemoal@kernel.org>
-Reviewed-by: Christoph Hellwig <hch@lst.de>
-Link: https://patch.msgid.link/20260522115622.588535-1-dlemoal@kernel.org
+Signed-off-by: Caleb Sander Mateos <csander@purestorage.com>
+Reviewed-by: Keith Busch <kbusch@kernel.org>
+Reviewed-by: Anuj Gupta <anuj20.g@samsung.com>
+Link: https://lore.kernel.org/r/20250603183133.1178062-1-csander@purestorage.com
 Signed-off-by: Jens Axboe <axboe@kernel.dk>
+Stable-dep-of: 8582792cf23b ("block: bio-integrity: Fix null-ptr-deref in bio_integrity_map_user()")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- block/blk-zoned.c | 7 +++----
- 1 file changed, 3 insertions(+), 4 deletions(-)
+ block/bio-integrity.c | 17 +++++------------
+ 1 file changed, 5 insertions(+), 12 deletions(-)
 
-diff --git a/block/blk-zoned.c b/block/blk-zoned.c
-index af724ce650801..fe29fe4b6dccc 100644
---- a/block/blk-zoned.c
-+++ b/block/blk-zoned.c
-@@ -2016,8 +2016,10 @@ static void disk_set_zones_cond_array(struct gendisk *disk, u8 *zones_cond)
+diff --git a/block/bio-integrity.c b/block/bio-integrity.c
+index 785adefc5f3c3..6801754838bc1 100644
+--- a/block/bio-integrity.c
++++ b/block/bio-integrity.c
+@@ -196,10 +196,9 @@ int bio_integrity_add_page(struct bio *bio, struct page *page,
+ EXPORT_SYMBOL(bio_integrity_add_page);
  
- void disk_free_zone_resources(struct gendisk *disk)
+ static int bio_integrity_copy_user(struct bio *bio, struct bio_vec *bvec,
+-				   int nr_vecs, unsigned int len,
+-				   unsigned int direction)
++				   int nr_vecs, unsigned int len)
  {
--	if (disk->zone_wplugs_worker)
-+	if (disk->zone_wplugs_worker) {
- 		kthread_stop(disk->zone_wplugs_worker);
-+		disk->zone_wplugs_worker = NULL;
-+	}
- 	WARN_ON_ONCE(!list_empty(&disk->zone_wplugs_list));
+-	bool write = direction == ITER_SOURCE;
++	bool write = op_is_write(bio_op(bio));
+ 	struct bio_integrity_payload *bip;
+ 	struct iov_iter iter;
+ 	void *buf;
+@@ -210,7 +209,7 @@ static int bio_integrity_copy_user(struct bio *bio, struct bio_vec *bvec,
+ 		return -ENOMEM;
  
- 	if (disk->zone_wplugs_wq) {
-@@ -2150,9 +2152,6 @@ static int disk_update_zone_resources(struct gendisk *disk,
- 	ret = queue_limits_commit_update(q, &lim);
+ 	if (write) {
+-		iov_iter_bvec(&iter, direction, bvec, nr_vecs, len);
++		iov_iter_bvec(&iter, ITER_SOURCE, bvec, nr_vecs, len);
+ 		if (!copy_from_iter_full(buf, len, &iter)) {
+ 			ret = -EFAULT;
+ 			goto free_buf;
+@@ -305,7 +304,7 @@ int bio_integrity_map_user(struct bio *bio, struct iov_iter *iter)
+ 	struct page *stack_pages[UIO_FASTIOV], **pages = stack_pages;
+ 	struct bio_vec stack_vec[UIO_FASTIOV], *bvec = stack_vec;
+ 	size_t offset, bytes = iter->count;
+-	unsigned int direction, nr_bvecs;
++	unsigned int nr_bvecs;
+ 	int ret, nr_vecs;
+ 	bool copy;
  
- unfreeze:
--	if (ret)
--		disk_free_zone_resources(disk);
+@@ -314,11 +313,6 @@ int bio_integrity_map_user(struct bio *bio, struct iov_iter *iter)
+ 	if (bytes >> SECTOR_SHIFT > queue_max_hw_sectors(q))
+ 		return -E2BIG;
+ 
+-	if (bio_data_dir(bio) == READ)
+-		direction = ITER_DEST;
+-	else
+-		direction = ITER_SOURCE;
 -
- 	blk_mq_unfreeze_queue(q, memflags);
+ 	nr_vecs = iov_iter_npages(iter, BIO_MAX_VECS + 1);
+ 	if (nr_vecs > BIO_MAX_VECS)
+ 		return -E2BIG;
+@@ -341,8 +335,7 @@ int bio_integrity_map_user(struct bio *bio, struct iov_iter *iter)
+ 		copy = true;
  
- 	return ret;
+ 	if (copy)
+-		ret = bio_integrity_copy_user(bio, bvec, nr_bvecs, bytes,
+-					      direction);
++		ret = bio_integrity_copy_user(bio, bvec, nr_bvecs, bytes);
+ 	else
+ 		ret = bio_integrity_init_user(bio, bvec, nr_bvecs, bytes);
+ 	if (ret)
 -- 
 2.53.0
 
