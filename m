@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-256368-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-256330-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id QNBQDWSsGGpolwgAu9opvQ
-	(envelope-from <stable+bounces-256368-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:58:12 +0200
+	id Vx9dAsisGGpymAgAu9opvQ
+	(envelope-from <stable+bounces-256330-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:59:52 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id C4C425F9F0B
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:58:11 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8222B5FA059
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:59:51 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 2D15B3040961
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 20:51:47 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id BD3EE323D72B
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 20:50:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 94F3B330307;
-	Thu, 28 May 2026 20:51:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 03B7B318B9D;
+	Thu, 28 May 2026 20:50:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jY94ReaZ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="or+RzqDh"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5DC80318B96;
-	Thu, 28 May 2026 20:51:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A28332E92BA;
+	Thu, 28 May 2026 20:49:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780001505; cv=none; b=doS/MD0lTn9D/BIfUclDEW8A6K33KcVXUc6Ex92WEoJ//mZyADMJu9a3BymbcSQCD6hpYUBRwDamHe/+roe/RQETq3UrZNCbKmuT7OHcIsYtb1J/33FCDsB5gJNxo6qnAcY7b8utgzXDWySy5/N0jspMtwJlstXIkoHX/7ZUroA=
+	t=1780001399; cv=none; b=pEkiOr3fmLUNJ2wjFTxwIO0zUXVgKkHcuMYHLt3ffTU44u8bsp/gbvDlNwHc4KWzw2yDEgsDnuFhXezcLFQ93GP50oky5ej18hUcdwlQD4GU5bi+crQ7pGjXRa1s4z+hXH2iZZD0+A9eC/xUsaXJ1yXGNOq/7V8HjE9+6E1k4uA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780001505; c=relaxed/simple;
-	bh=zoV6Kxr7T3sU/8gSBICSfw25Z5MAn9loIQ8ydH+D+Ik=;
+	s=arc-20240116; t=1780001399; c=relaxed/simple;
+	bh=LqclcAgRTk4uMSxqVTpjnclwARmNgK8bBERTnbxi03c=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=BE7OEiufkPTQ8dMZVhpsZEuMquL+yIuOKXHU4jVSxAfX6epVvuUQnnjcT//DLEOLuphtHkLMAp6rtkbcAo8Bb9A//FVe3Oq/qmN8P9LfYc3wi1mkqnc0oDwi5SigjI2emzicl04fWWlrYminTKvplUmclLpZ+c9GtXXcnpYCCXg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jY94ReaZ; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8AE9F1F000E9;
-	Thu, 28 May 2026 20:51:43 +0000 (UTC)
+	 MIME-Version; b=bZMBf75zM9M+cGgjLDE7yF0wpp+cBGHLFRRWmYueSnHnihEYvwTrLJE/1WpBgC3RQguctr3zGbbR1qw+BNG62rkytXB1hI6AisYrVxiPznFZbUqWxAkR9LQCC2EhYPiWnVR9hJ1MFfG3KUurhusqLXrF8rFaHv9HSKOnrCfWUys=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=or+RzqDh; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9C9CB1F000E9;
+	Thu, 28 May 2026 20:49:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780001504;
-	bh=Lzyn6t1kLePDu9FWevcGccVKt8/p7PJCxnrtTsSZcSQ=;
+	s=korg; t=1780001398;
+	bh=5AeMfFxSg/m//21FJyZhwRvrKMx5R3BLj2xlYQK6jaE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=jY94ReaZnT5VzgVWm4jtx9dZf40j/xBvCc/NKz4OLVMPX0/P+11fAkcf/Awx/ei3d
-	 roqcL1SR7EcewHueWh3sRSYP8ZBGOVfUJNvoxDdQTYVp/5c5jVGC5/uTKRkNGjY74a
-	 Z8IS973KrlFwbgKKtWFU4afbvRZEa/FKJLcJ0prw=
+	b=or+RzqDhw3hedYHoYBGslcOZ40UaEd0ON0m0Wr/zxDeDfq4wfVdsKXwrCjPvYKVed
+	 K20R3iPgNxOKMN71uJ1LpEuCrIm71di33RPhpTiWaYz2Mih4X2AK3Rk22w758EJTNf
+	 NKBKTqd0A+bYYHm8hhm+qWT+DqtizwT/cSa+iZzY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Boris Burkov <boris@bur.io>,
-	Filipe Manana <fdmanana@suse.com>,
-	David Sterba <dsterba@suse.com>,
+	Tristan Madani <tristan@talencesecurity.com>,
+	Florian Westphal <fw@strlen.de>,
+	Pablo Neira Ayuso <pablo@netfilter.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 105/186] btrfs: tracepoints: fix sleep while in atomic context in btrfs_sync_file()
-Date: Thu, 28 May 2026 21:49:45 +0200
-Message-ID: <20260528194931.771308885@linuxfoundation.org>
+Subject: [PATCH 6.6 106/186] netfilter: x_tables: unregister the templates first
+Date: Thu, 28 May 2026 21:49:46 +0200
+Message-ID: <20260528194931.799287653@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
 In-Reply-To: <20260528194928.941004471@linuxfoundation.org>
 References: <20260528194928.941004471@linuxfoundation.org>
@@ -69,7 +69,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
@@ -77,7 +77,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-256368-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-256330-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
@@ -86,13 +86,13 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	NEURAL_HAM(-0.00)[-1.000];
 	RCPT_COUNT_SEVEN(0.00)[7];
 	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[suse.com:email,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,qemu.org:url,linuxfoundation.org:mid,linuxfoundation.org:dkim,bur.io:email]
-X-Rspamd-Queue-Id: C4C425F9F0B
+	DBL_BLOCKED_OPENRESOLVER(0.00)[talencesecurity.com:email,netfilter.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,strlen.de:email]
+X-Rspamd-Queue-Id: 8222B5FA059
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
@@ -100,72 +100,162 @@ X-Rspamd-Server: lfdr
 
 ------------------
 
-From: Filipe Manana <fdmanana@suse.com>
+From: Florian Westphal <fw@strlen.de>
 
-[ Upstream commit c73370c677646e86fc4b1780fb07027bdf847375 ]
+[ Upstream commit d338693d778579b676a61346849bebd892427158 ]
 
-The trace event btrfs_sync_file() is called in an atomic context (all trace
-events are) and its call to dput(), which is needed due to the call to
-dget_parent(), can sleep, triggering a kernel splat.
+When the module is going away we need to zap the template
+first.  Else there is a small race window where userspace
+could instantiate a new table after the pernet exit function
+has removed the current table.
 
-This can be reproduced by enabling the trace event and running btrfs/056
-from fstests for example. The splat shown in dmesg is the following:
-
-  [53.919] BUG: sleeping function called from invalid context at fs/dcache.c:970
-  [53.947] in_atomic(): 1, irqs_disabled(): 0, non_block: 0, pid: 32773, name: xfs_io
-  [53.988] preempt_count: 2, expected: 0
-  [53.967] RCU nest depth: 0, expected: 0
-  [53.943] Preemption disabled at:
-  [53.944] [<0000000000000000>] 0x0
-  [54.078] CPU: 0 UID: 0 PID: 32773 Comm: xfs_io Tainted: G        W           7.1.0-rc1-btrfs-next-232+ #1 PREEMPT(full)
-  [54.070] Tainted: [W]=WARN
-  [54.071] Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS rel-1.16.2-0-gea1b7a073390-prebuilt.qemu.org 04/01/2014
-  [54.072] Call Trace:
-  [54.074]  <TASK>
-  [54.076]  dump_stack_lvl+0x56/0x80
-  [54.079]  __might_resched.cold+0xd6/0x10f
-  [54.072]  dput.part.0+0x24/0x110
-  [54.078]  trace_event_raw_event_btrfs_sync_file+0x75/0x140 [btrfs]
-  [54.089]  btrfs_sync_file+0x1ed/0x530 [btrfs]
-  [54.087]  ? __handle_mm_fault+0x8ae/0xed0
-  [54.089]  btrfs_do_write_iter+0x172/0x210 [btrfs]
-  [54.091]  vfs_write+0x21f/0x450
-  [54.094]  __x64_sys_pwrite64+0x8d/0xc0
-  [54.096]  ? do_user_addr_fault+0x20c/0x670
-  [54.099]  do_syscall_64+0x60/0xf20
-  [54.092]  ? clear_bhb_loop+0x60/0xb0
-  [54.094]  entry_SYSCALL_64_after_hwframe+0x76/0x7e
-
-So stop using dget_parent() and dput() and access the parent dentry
-directly as dentry->d_parent. This is also what ext4 is doing in
-its equivalent trace event ext4_sync_file_enter().
-
-Fixes: a85b46db143f ("btrfs: tracepoints: get correct superblock from dentry in event btrfs_sync_file()")
-Reviewed-by: Boris Burkov <boris@bur.io>
-Signed-off-by: Filipe Manana <fdmanana@suse.com>
-Reviewed-by: David Sterba <dsterba@suse.com>
-Signed-off-by: David Sterba <dsterba@suse.com>
+Fixes: fdacd57c79b7 ("netfilter: x_tables: never register tables by default")
+Reported-by: Tristan Madani <tristan@talencesecurity.com>
+Reviewed-by: Tristan Madani <tristan@talencesecurity.com>
+Closes: https://lore.kernel.org/netfilter-devel/20260429175613.1459342-1-tristmd@gmail.com/
+Signed-off-by: Florian Westphal <fw@strlen.de>
+Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/trace/events/btrfs.h | 4 +---
- 1 file changed, 1 insertion(+), 3 deletions(-)
+ net/ipv4/netfilter/arptable_filter.c   | 2 +-
+ net/ipv4/netfilter/iptable_filter.c    | 2 +-
+ net/ipv4/netfilter/iptable_mangle.c    | 2 +-
+ net/ipv4/netfilter/iptable_raw.c       | 2 +-
+ net/ipv4/netfilter/iptable_security.c  | 2 +-
+ net/ipv6/netfilter/ip6table_filter.c   | 2 +-
+ net/ipv6/netfilter/ip6table_mangle.c   | 2 +-
+ net/ipv6/netfilter/ip6table_raw.c      | 2 +-
+ net/ipv6/netfilter/ip6table_security.c | 2 +-
+ 9 files changed, 9 insertions(+), 9 deletions(-)
 
-diff --git a/include/trace/events/btrfs.h b/include/trace/events/btrfs.h
-index 2364c68df76c4..e06dbddc2872f 100644
---- a/include/trace/events/btrfs.h
-+++ b/include/trace/events/btrfs.h
-@@ -791,10 +791,8 @@ TRACE_EVENT(btrfs_sync_file,
- 	TP_fast_assign(
- 		struct dentry *dentry = file_dentry(file);
- 		struct inode *inode = file_inode(file);
--		struct dentry *parent = dget_parent(dentry);
--		struct inode *parent_inode = d_inode(parent);
-+		struct inode *parent_inode = d_inode(dentry->d_parent);
+diff --git a/net/ipv4/netfilter/arptable_filter.c b/net/ipv4/netfilter/arptable_filter.c
+index 78cd5ee24448f..359d00d74095b 100644
+--- a/net/ipv4/netfilter/arptable_filter.c
++++ b/net/ipv4/netfilter/arptable_filter.c
+@@ -82,8 +82,8 @@ static int __init arptable_filter_init(void)
  
--		dput(parent);
- 		TP_fast_assign_fsid(btrfs_sb(inode->i_sb));
- 		__entry->ino		= btrfs_ino(BTRFS_I(inode));
- 		__entry->parent		= btrfs_ino(BTRFS_I(parent_inode));
+ static void __exit arptable_filter_fini(void)
+ {
+-	unregister_pernet_subsys(&arptable_filter_net_ops);
+ 	xt_unregister_template(&packet_filter);
++	unregister_pernet_subsys(&arptable_filter_net_ops);
+ 	kfree(arpfilter_ops);
+ }
+ 
+diff --git a/net/ipv4/netfilter/iptable_filter.c b/net/ipv4/netfilter/iptable_filter.c
+index b9062f4552ace..c03c1a4ea7cab 100644
+--- a/net/ipv4/netfilter/iptable_filter.c
++++ b/net/ipv4/netfilter/iptable_filter.c
+@@ -101,8 +101,8 @@ static int __init iptable_filter_init(void)
+ 
+ static void __exit iptable_filter_fini(void)
+ {
+-	unregister_pernet_subsys(&iptable_filter_net_ops);
+ 	xt_unregister_template(&packet_filter);
++	unregister_pernet_subsys(&iptable_filter_net_ops);
+ 	kfree(filter_ops);
+ }
+ 
+diff --git a/net/ipv4/netfilter/iptable_mangle.c b/net/ipv4/netfilter/iptable_mangle.c
+index 3abb430af9e6f..6a51e61b35562 100644
+--- a/net/ipv4/netfilter/iptable_mangle.c
++++ b/net/ipv4/netfilter/iptable_mangle.c
+@@ -134,8 +134,8 @@ static int __init iptable_mangle_init(void)
+ 
+ static void __exit iptable_mangle_fini(void)
+ {
+-	unregister_pernet_subsys(&iptable_mangle_net_ops);
+ 	xt_unregister_template(&packet_mangler);
++	unregister_pernet_subsys(&iptable_mangle_net_ops);
+ 	kfree(mangle_ops);
+ }
+ 
+diff --git a/net/ipv4/netfilter/iptable_raw.c b/net/ipv4/netfilter/iptable_raw.c
+index ca5e5b21587cd..33330e13ea18d 100644
+--- a/net/ipv4/netfilter/iptable_raw.c
++++ b/net/ipv4/netfilter/iptable_raw.c
+@@ -100,9 +100,9 @@ static int __init iptable_raw_init(void)
+ 
+ static void __exit iptable_raw_fini(void)
+ {
++	xt_unregister_template(&packet_raw);
+ 	unregister_pernet_subsys(&iptable_raw_net_ops);
+ 	kfree(rawtable_ops);
+-	xt_unregister_template(&packet_raw);
+ }
+ 
+ module_init(iptable_raw_init);
+diff --git a/net/ipv4/netfilter/iptable_security.c b/net/ipv4/netfilter/iptable_security.c
+index d885443cb2679..2b89adc1e5751 100644
+--- a/net/ipv4/netfilter/iptable_security.c
++++ b/net/ipv4/netfilter/iptable_security.c
+@@ -89,9 +89,9 @@ static int __init iptable_security_init(void)
+ 
+ static void __exit iptable_security_fini(void)
+ {
++	xt_unregister_template(&security_table);
+ 	unregister_pernet_subsys(&iptable_security_net_ops);
+ 	kfree(sectbl_ops);
+-	xt_unregister_template(&security_table);
+ }
+ 
+ module_init(iptable_security_init);
+diff --git a/net/ipv6/netfilter/ip6table_filter.c b/net/ipv6/netfilter/ip6table_filter.c
+index df785ebda0ca4..16a38d56b2e54 100644
+--- a/net/ipv6/netfilter/ip6table_filter.c
++++ b/net/ipv6/netfilter/ip6table_filter.c
+@@ -100,8 +100,8 @@ static int __init ip6table_filter_init(void)
+ 
+ static void __exit ip6table_filter_fini(void)
+ {
+-	unregister_pernet_subsys(&ip6table_filter_net_ops);
+ 	xt_unregister_template(&packet_filter);
++	unregister_pernet_subsys(&ip6table_filter_net_ops);
+ 	kfree(filter_ops);
+ }
+ 
+diff --git a/net/ipv6/netfilter/ip6table_mangle.c b/net/ipv6/netfilter/ip6table_mangle.c
+index a88b2ce4a3cb8..39f0716667131 100644
+--- a/net/ipv6/netfilter/ip6table_mangle.c
++++ b/net/ipv6/netfilter/ip6table_mangle.c
+@@ -127,8 +127,8 @@ static int __init ip6table_mangle_init(void)
+ 
+ static void __exit ip6table_mangle_fini(void)
+ {
+-	unregister_pernet_subsys(&ip6table_mangle_net_ops);
+ 	xt_unregister_template(&packet_mangler);
++	unregister_pernet_subsys(&ip6table_mangle_net_ops);
+ 	kfree(mangle_ops);
+ }
+ 
+diff --git a/net/ipv6/netfilter/ip6table_raw.c b/net/ipv6/netfilter/ip6table_raw.c
+index 08861d5d1f4db..01def8aa7a2e8 100644
+--- a/net/ipv6/netfilter/ip6table_raw.c
++++ b/net/ipv6/netfilter/ip6table_raw.c
+@@ -98,8 +98,8 @@ static int __init ip6table_raw_init(void)
+ 
+ static void __exit ip6table_raw_fini(void)
+ {
+-	unregister_pernet_subsys(&ip6table_raw_net_ops);
+ 	xt_unregister_template(&packet_raw);
++	unregister_pernet_subsys(&ip6table_raw_net_ops);
+ 	kfree(rawtable_ops);
+ }
+ 
+diff --git a/net/ipv6/netfilter/ip6table_security.c b/net/ipv6/netfilter/ip6table_security.c
+index 4df14a9bae782..66018b169b010 100644
+--- a/net/ipv6/netfilter/ip6table_security.c
++++ b/net/ipv6/netfilter/ip6table_security.c
+@@ -88,8 +88,8 @@ static int __init ip6table_security_init(void)
+ 
+ static void __exit ip6table_security_fini(void)
+ {
+-	unregister_pernet_subsys(&ip6table_security_net_ops);
+ 	xt_unregister_template(&security_table);
++	unregister_pernet_subsys(&ip6table_security_net_ops);
+ 	kfree(sectbl_ops);
+ }
+ 
 -- 
 2.53.0
 
