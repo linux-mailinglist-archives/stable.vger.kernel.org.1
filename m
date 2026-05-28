@@ -1,59 +1,59 @@
-Return-Path: <stable+bounces-255970-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-255415-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id gMfICDWpGGrclwgAu9opvQ
-	(envelope-from <stable+bounces-255970-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:44:37 +0200
+	id iI6lKkqiGGqblggAu9opvQ
+	(envelope-from <stable+bounces-255415-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:15:06 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 94BAE5F96EC
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:44:35 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2AFA65F82A2
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:15:05 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 14673307EDAB
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 20:33:10 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id C0AB7306DAC8
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 20:07:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B673633987F;
-	Thu, 28 May 2026 20:33:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 36243409DE0;
+	Thu, 28 May 2026 20:07:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FKb0nasa"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BhDwpWcL"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6B816223328;
-	Thu, 28 May 2026 20:33:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F377940962D;
+	Thu, 28 May 2026 20:07:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780000389; cv=none; b=HqCpxZsOH1vh8i92cYMqPxtysBARvrC+Xo1V58zPHX6ZeKnB/xHIHknhU10SseZ6h0JN/nJnCosbj5TpxUdEDwUTKC52KXR0m0Po495T3m4zN/9UtC3fpAxyQWVYl/SvfU5sLheiyol7M3srwgr6a8N4st9zacEHqkaeovsNOB8=
+	t=1779998846; cv=none; b=cGJ7/9WuKTRJECnqo8rXrPuTJF31FWHKrMvHnjAFTHJbXCcn53dvmhpL3l0knHcH6MTFEqGj93pG5OpOJBNkgtGg4OM6AeZL+qyHXmkDpsTvjMSDm0AJA4ArQ4MmAGH0ZlB9+dZAmEu4G02Y6d31FX4O16kq3WZ39oQgAuah/4g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780000389; c=relaxed/simple;
-	bh=MV5gxmhrORCO9woLtS1fIa4dWZb5Ku++3sJH6z6II4Y=;
+	s=arc-20240116; t=1779998846; c=relaxed/simple;
+	bh=Ooh8GJ9/VGmWbeiK1mL0fxm8RVDKYWMnzo8q+3FtmbM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=qWL20fMREn1m8ghRflZ8IIh5bKpzE6ERfSC61NBpvR+1GOriZsXMUU03oS4BmuzSo/MBgIBJ8/DZ+gReK4QNDa5u3fH7GurAOgXDvv/gEKOQ9a7oy/kVwklwM9OX9/uMvaWRjSkfhgsGdFZxVk8fAz+4VnWyxupATQJ2qWSSIyM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FKb0nasa; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CB0851F000E9;
-	Thu, 28 May 2026 20:33:07 +0000 (UTC)
+	 MIME-Version; b=FHHhRWDqsL7opBX+v9lmyoZOGqkh7vNgX/IZnC0cfzXro3HxA+RZueeUJecmTM+qPjaKD8kbJZmOCkRe+3gzD/KBwyQTyzjxduH6bKuRkCbcpFh1Qor44701ZI4LAJ+eMgyhF4DUL9ji2m+pG+tj/aBrs1B6UYiJ4uxsCvZVCKg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BhDwpWcL; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5EF251F000E9;
+	Thu, 28 May 2026 20:07:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780000388;
-	bh=/30GHWjkAbVk26sE/xno3bdt5FV4fsXEr7n8Ib2gXB8=;
+	s=korg; t=1779998844;
+	bh=WLwEUubC5DsN9uJtasF6f7lm+MHZWSuHH6nmRWdTX88=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=FKb0nasaVdMgjsselJ4rIu/bgqCl4GojY0pjxQF4jCQMoMlHd71yHAaRTiCoFpcvO
-	 0hFlvbeuNZ6NHCuiaq7oNPq4e50qrRyYCL/U0+eou/XCnjQueu/WaW/cU+b4pYE4PZ
-	 Ogz5GwKnYzW0obYLvJiR3JGTkygXY6wdSZpLok7Y=
+	b=BhDwpWcL/NuoXWrSc7ej2H2jdr/XwOSK11MJH6LVVyc4WQj0NrLkAkL85VkYz0f37
+	 QWeJ6Oo2z3nRm4MF7eKiYFW6IRO6ULt25EGmY9QVLvcLAbU26W6CjBCfjAnPYw5Axz
+	 dcKympyOjCwIfquhcRkpknLOZ33pHq1W9scgywRg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Tommy Kelly <linux@tkel.ly>,
-	Damien Le Moal <dlemoal@kernel.org>,
-	Niklas Cassel <cassel@kernel.org>
-Subject: [PATCH 6.12 027/272] ata: libata-scsi: do not use the deferred QC feature on PMPs with CBS
+	Linus Walleij <linusw@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 7.0 272/461] net: ethernet: cortina: Make RX SKB per-port
 Date: Thu, 28 May 2026 21:46:41 +0200
-Message-ID: <20260528194630.147751578@linuxfoundation.org>
+Message-ID: <20260528194655.043208515@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260528194629.379955525@linuxfoundation.org>
-References: <20260528194629.379955525@linuxfoundation.org>
+In-Reply-To: <20260528194646.819809818@linuxfoundation.org>
+References: <20260528194646.819809818@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -68,7 +68,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
@@ -78,7 +78,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-255970-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-255415-lists,stable=lfdr.de];
 	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
@@ -89,147 +89,98 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	TAGGED_RCPT(0.00)[stable];
 	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,tkel.ly:email,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim]
-X-Rspamd-Queue-Id: 94BAE5F96EC
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sashiko.dev:url,linuxfoundation.org:mid,linuxfoundation.org:dkim,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,msgid.link:url]
+X-Rspamd-Queue-Id: 2AFA65F82A2
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+7.0-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Niklas Cassel <cassel@kernel.org>
+From: Linus Walleij <linusw@kernel.org>
 
-commit f233124fb36cd57ef09f96d517a38ab4b902e15e upstream.
+[ Upstream commit 06937db21ee311ed07eba47954447245041a982d ]
 
-When using Port Multipliers (PMPs) with Command-Based Switching (CBS), you
-can only issue commands to one link at a time. For PMPs with CBS, there is
-already code to handle commands being sent to different links in
-sata_pmp_qc_defer_cmd_switch() using ap->excl_link. sata_sil24 also makes
-use of ap->excl_link.
+The SKB used to assemble packets from fragments in gmac_rx()
+is static local, but the Gemini has two ethernet ports, meaning
+there can be races between the ports on a bad day if a device
+is using both.
 
-A user on the list reported that commit 0ea84089dbf6 ("ata: libata-scsi:
-avoid Non-NCQ command starvation") broke PMPs with CBS. The commit
-introduced code that stores a deferred qc in ap->deferred_qc, to later be
-issued via a workqueue. It turns out that this change is incompatible with
-the existing ap->excl_link handling used by PMPs with CBS.
+Make the RX SKB a per-port variable and carry it over between
+invocations in the port struct instead.
 
-Thus, modify sata_pmp_qc_defer_cmd_switch() and sil24_qc_defer() to return
-ATA_DEFER_LINK_EXCL, and make sure that the deferred QC handling via
-workqueue is not used for this return value.
+Zero the pointer once we call napi_gro_frags(), on error (after
+calling napi_free_frags()) or if the port is stopped.
 
-This way, PMPs with CBS will work once again. Note that the starvation
-referenced in commit 0ea84089dbf6 ("ata: libata-scsi: avoid Non-NCQ
-command starvation") can only happen on libsas ports, and libsas does not
-support Port Multipliers, thus there is no harm of reverting back to the
-previous way of deferring commands for PMPs with CBS.
+Zero it in some place where not strictly necessary just to
+emphasize what is going on.
 
-Non-libsas ports connected to anything but a PMP with CBS (e.g. a normal
-drive or a PMP with FBS) will continue using the deferred workqueue, since
-it does result in lower completion latencies for non-NCQ commands, even
-though the workqueue is not strictly needed to avoid starvation for
-non-libsas ports.
+This was found by Sashiko during normal patch review.
 
-If we want to modify the scope of the workqueue issuing to also handle
-PMPs with CBS, then we should ensure that we can save both NCQ and non-NCQ
-commands in ap->deferred_qc, while also removing the existing PMP CBS
-handling using ap->excl_link, such that we don't duplicate features.
-
-While at it, also add a comment explaining how the ap->excl_link mechanism
-works.
-
-Fixes: 0ea84089dbf6 ("ata: libata-scsi: avoid Non-NCQ command starvation")
-Tested-by: Tommy Kelly <linux@tkel.ly>
-Reported-by: Tommy Kelly <linux@tkel.ly>
-Closes: https://lore.kernel.org/linux-ide/ce09cc21-a8e9-4845-b205-35411e22fba9@tkel.ly/
-Reviewed-by: Damien Le Moal <dlemoal@kernel.org>
-Signed-off-by: Niklas Cassel <cassel@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 4d5ae32f5e1e ("net: ethernet: Add a driver for Gemini gigabit ethernet")
+Link: https://sashiko.dev/#/patchset/20260505-gemini-ethernet-fix-v2-1-997c31d06079%40kernel.org
+Signed-off-by: Linus Walleij <linusw@kernel.org>
+Link: https://patch.msgid.link/20260509-gemini-ethernet-fixes-v1-2-6c5d20ddc35b@kernel.org
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/ata/libata-pmp.c  |   13 ++++++++++++-
- drivers/ata/libata-scsi.c |    8 ++++++++
- drivers/ata/sata_sil24.c  |    6 +++++-
- include/linux/libata.h    |    1 +
- 4 files changed, 26 insertions(+), 2 deletions(-)
+ drivers/net/ethernet/cortina/gemini.c | 7 ++++++-
+ 1 file changed, 6 insertions(+), 1 deletion(-)
 
---- a/drivers/ata/libata-pmp.c
-+++ b/drivers/ata/libata-pmp.c
-@@ -110,13 +110,24 @@ int sata_pmp_qc_defer_cmd_switch(struct
- {
- 	struct ata_link *link = qc->dev->link;
- 	struct ata_port *ap = link->ap;
-+	int ret;
+diff --git a/drivers/net/ethernet/cortina/gemini.c b/drivers/net/ethernet/cortina/gemini.c
+index 4824232f48907..57a25030f883c 100644
+--- a/drivers/net/ethernet/cortina/gemini.c
++++ b/drivers/net/ethernet/cortina/gemini.c
+@@ -122,6 +122,8 @@ struct gemini_ethernet_port {
+ 	struct napi_struct	napi;
+ 	struct hrtimer		rx_coalesce_timer;
+ 	unsigned int		rx_coalesce_nsecs;
++	struct sk_buff		*rx_skb;
++
+ 	unsigned int		freeq_refill;
+ 	struct gmac_txq		txq[TX_QUEUE_NUM];
+ 	unsigned int		txq_order;
+@@ -1442,10 +1444,10 @@ static unsigned int gmac_rx(struct net_device *netdev, unsigned int budget)
+ 	unsigned short m = (1 << port->rxq_order) - 1;
+ 	struct gemini_ethernet *geth = port->geth;
+ 	void __iomem *ptr_reg = port->rxq_rwptr;
++	struct sk_buff *skb = port->rx_skb;
+ 	unsigned int frame_len, frag_len;
+ 	struct gmac_rxdesc *rx = NULL;
+ 	struct gmac_queue_page *gpage;
+-	static struct sk_buff *skb;
+ 	union gmac_rxdesc_0 word0;
+ 	union gmac_rxdesc_1 word1;
+ 	union gmac_rxdesc_3 word3;
+@@ -1499,6 +1501,7 @@ static unsigned int gmac_rx(struct net_device *netdev, unsigned int budget)
+ 			if (skb) {
+ 				napi_free_frags(&port->napi);
+ 				port->stats.rx_dropped++;
++				skb = NULL;
+ 			}
  
- 	if (ap->excl_link == NULL || ap->excl_link == link) {
- 		if (ap->nr_active_links == 0 || ata_link_active(link)) {
- 			qc->flags |= ATA_QCFLAG_CLEAR_EXCL;
--			return ata_std_qc_defer(qc);
-+			ret = ata_std_qc_defer(qc);
-+			if (ret == ATA_DEFER_LINK)
-+				return ATA_DEFER_LINK_EXCL;
-+			return ret;
- 		}
- 
-+		/*
-+		 * Note: ap->excl_link contains the link that is next in line,
-+		 * i.e. implicit round robin. If there is only one link
-+		 * dispatching, ap->excl_link will be left unclaimed, allowing
-+		 * other links to set ap->excl_link, ensuring that the currently
-+		 * active link cannot queue any more.
-+		 */
- 		ap->excl_link = link;
+ 			skb = gmac_skb_if_good_frame(port, word0, frame_len);
+@@ -1549,6 +1552,7 @@ static unsigned int gmac_rx(struct net_device *netdev, unsigned int budget)
+ 		port->stats.rx_dropped++;
  	}
  
---- a/drivers/ata/libata-scsi.c
-+++ b/drivers/ata/libata-scsi.c
-@@ -1799,6 +1799,14 @@ static int ata_scsi_qc_issue(struct ata_
- 	case ATA_DEFER_LINK:
- 		ret = SCSI_MLQUEUE_DEVICE_BUSY;
- 		goto defer_qc;
-+	case ATA_DEFER_LINK_EXCL:
-+		/*
-+		 * Drivers making use of ap->excl_link cannot store the QC in
-+		 * ap->deferred_qc, because the ap->excl_link handling is
-+		 * incompatible with the ap->deferred_qc workqueue handling.
-+		 */
-+		ret = SCSI_MLQUEUE_DEVICE_BUSY;
-+		goto free_qc;
- 	case ATA_DEFER_PORT:
- 		ret = SCSI_MLQUEUE_HOST_BUSY;
- 		goto free_qc;
---- a/drivers/ata/sata_sil24.c
-+++ b/drivers/ata/sata_sil24.c
-@@ -790,6 +790,7 @@ static int sil24_qc_defer(struct ata_que
- 	struct ata_link *link = qc->dev->link;
- 	struct ata_port *ap = link->ap;
- 	u8 prot = qc->tf.protocol;
-+	int ret;
- 
- 	/*
- 	 * There is a bug in the chip:
-@@ -827,7 +828,10 @@ static int sil24_qc_defer(struct ata_que
- 		qc->flags |= ATA_QCFLAG_CLEAR_EXCL;
- 	}
- 
--	return ata_std_qc_defer(qc);
-+	ret = ata_std_qc_defer(qc);
-+	if (ret == ATA_DEFER_LINK)
-+		return ATA_DEFER_LINK_EXCL;
-+	return ret;
++	port->rx_skb = skb;
+ 	writew(r, ptr_reg);
+ 	return budget;
  }
+@@ -1876,6 +1880,7 @@ static int gmac_stop(struct net_device *netdev)
+ 	gmac_disable_tx_rx(netdev);
+ 	gmac_stop_dma(port);
+ 	napi_disable(&port->napi);
++	port->rx_skb = NULL;
  
- static enum ata_completion_errors sil24_qc_prep(struct ata_queued_cmd *qc)
---- a/include/linux/libata.h
-+++ b/include/linux/libata.h
-@@ -348,6 +348,7 @@ enum {
- 	/* return values for ->qc_defer */
- 	ATA_DEFER_LINK		= 1,
- 	ATA_DEFER_PORT		= 2,
-+	ATA_DEFER_LINK_EXCL	= 3,
- 
- 	/* desc_len for ata_eh_info and context */
- 	ATA_EH_DESC_LEN		= 80,
+ 	gmac_enable_irq(netdev, 0);
+ 	gmac_cleanup_rxq(netdev);
+-- 
+2.53.0
+
 
 
 
