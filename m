@@ -1,60 +1,60 @@
-Return-Path: <stable+bounces-255870-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-255510-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id uBIvMzSmGGrClggAu9opvQ
-	(envelope-from <stable+bounces-255870-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:31:48 +0200
+	id MDc4KdOhGGqblggAu9opvQ
+	(envelope-from <stable+bounces-255510-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:13:07 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2B0455F8E29
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:31:48 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id DE9B75F8164
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:13:06 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 359FF304993F
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 20:28:29 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 08C653033339
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 20:11:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AA0372D9787;
-	Thu, 28 May 2026 20:28:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9D74D33F5B4;
+	Thu, 28 May 2026 20:11:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lnZGwLZY"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oWjNglFp"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6C82BDDC5;
-	Thu, 28 May 2026 20:28:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 55579339866;
+	Thu, 28 May 2026 20:11:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780000108; cv=none; b=ma0vhK15YkNLpdRTmAS1i7X5IQamXilfWrjSBjaZq2M3wnsTEcdZOGMzCIhzktwGlaGMn2PiWeodmX1q1Tpis9i/vs8CjDLaSaBlQovx9OT3bAk/QH0CgrhKHFR9SyvwhRNLsNP8SgM4Mh8uRXfYTX91QePE8sF8CeINBl0kCng=
+	t=1779999114; cv=none; b=DS4oAHDklJ7tcpA7l4lGTvEPWaOTWdd5Oqg8ZlsR5GKYTjDTg4TVKkARpK5dTQd+ZCXG5ElnN7g1l8//38sfRs2MXFNalztXjXGVolkTi2DF7uVPaqpJG6enssgzGGNUAiOmGRRoNIaz50QYOHs4gj59EaN7gs3XX1ph82piIYQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780000108; c=relaxed/simple;
-	bh=a1QomsdfB70E/57vKzoMzJZKyMS440Nj09bPNdoSetQ=;
+	s=arc-20240116; t=1779999114; c=relaxed/simple;
+	bh=TLsFDGcWqeNgOwJQuTATVlty+Zr7WlUWG8tk4TfGFp8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=GHohdf374NGNHIUd9Cm5+wIM7/unC9klGkjb2prwumxA70vus3pQnbpEAkyo+v8Hgr6VrZRssyoahYkDv8/7gGd2L1p1sd1+AanNPccoMhfOfPFYDJLSybzerjsAjrz73Rj4kyPz6oeHT3ElSUmdNqZgzrO3U0GbM0V/CkqK10o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lnZGwLZY; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CB1671F000E9;
-	Thu, 28 May 2026 20:28:26 +0000 (UTC)
+	 MIME-Version; b=ajUjGHnbWk95JCRGXk0gppBotJymnRwbOU97TWORowZjsiR1i5OGf70uiBkYKJXHES49GUvugNjWPiMoWMpOejhPGeo+bHMlC8NCxhF/NU1ZurUADQxd/n10aeHNryvAPZM/A0cuxLAxcB2OwgEwYWxeqCEoADTMCyiN72FmsbA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oWjNglFp; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B1D941F000E9;
+	Thu, 28 May 2026 20:11:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780000107;
-	bh=PMIofrwREG5agVpjVX8w658zTVOOHC7qN4Fma/PG+Go=;
+	s=korg; t=1779999113;
+	bh=wGMyl+vkmGEzkuEUTmAys96moOw3X8lfIPqLsKO8gQA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=lnZGwLZYEJasU5nJTeXlKDPt4hcTRqxcmZT9OMjb9e95fhYDM5ZfbIzoujo47GQ07
-	 VtBOR96GjurYdqi11tyC1oHleFUugvePOLNxByrGkxUKIJbnY3argkQjUMw8OVuUaQ
-	 l9cTKkE1TNVfHHCs930CI5KClURoKgbcWCnkXKfo=
+	b=oWjNglFp64CV6OWdRaIpGrd6eC0RETizwztHHUBL7c/G/Sed2qOJdOLO8Z+VrNbPZ
+	 N+hYkqJsUrfNGCLJe4x5iYkRN6YS8DUwWjhqpoxohklqsHrH6G8NPmMZ8RpIzk/M7O
+	 CUnENEynzpODqPfHxh4Q4cD3fAMzLlgR1tE+1N48=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Qu Wenruo <wqu@suse.com>,
-	Boris Burkov <boris@bur.io>,
-	David Sterba <dsterba@suse.com>,
+	Miriam Rachel Korenblit <miriam.rachel.korenblit@intel.com>,
+	Ilan Peer <ilan.peer@intel.com>,
+	Johannes Berg <johannes.berg@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 304/377] btrfs: fix squota accounting during enable generation
+Subject: [PATCH 7.0 413/461] wifi: mac80211: fix MLE defragmentation
 Date: Thu, 28 May 2026 21:49:02 +0200
-Message-ID: <20260528194647.162851007@linuxfoundation.org>
+Message-ID: <20260528194659.446424308@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260528194638.371537336@linuxfoundation.org>
-References: <20260528194638.371537336@linuxfoundation.org>
+In-Reply-To: <20260528194646.819809818@linuxfoundation.org>
+References: <20260528194646.819809818@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,7 +69,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
@@ -77,7 +77,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-255870-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-255510-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
@@ -86,142 +86,172 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
 	NEURAL_HAM(-0.00)[-1.000];
 	RCPT_COUNT_SEVEN(0.00)[7];
 	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,bur.io:email,suse.com:email,linuxfoundation.org:mid,linuxfoundation.org:dkim]
-X-Rspamd-Queue-Id: 2B0455F8E29
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim,intel.com:email,msgid.link:url]
+X-Rspamd-Queue-Id: DE9B75F8164
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+7.0-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Boris Burkov <boris@bur.io>
+From: Johannes Berg <johannes.berg@intel.com>
 
-[ Upstream commit d7c600554816b8ef70adffe078a0e360c055d82b ]
+[ Upstream commit a74e893f30db64cdce0fc7a96d3baa417bcd55f5 ]
 
-The first transaction that enables squotas is special and a bit tricky.
-We have to set BTRFS_FS_QUOTA_ENABLED after the transaction to avoid a
-deadlock, so any delayed refs that run before we set the bit are not
-squota accounted. For data this is fine, we don't get an owner_ref, so
-there is no real harm, it's as if the extent predated squotas. However
-for metadata, the tree block will have gen == enable_gen so when we free
-it later, we will decrement the squota accounting, which can result in
-an underflow. Before it is freed, btrfs check shows errors, as we have
-mismatched usage between the node generations/owners and the squota
-values.
+If either reconf or EPCS multi-link element (MLE) is contained in
+a non-transmitted profile, the defragmentation routine is called
+with a pointer to the defragmented copy, but the original elements.
 
-There are two angles to this fix:
+This is incorrect for two reasons:
+ - if the original defragmentation was needed, it will not find the
+   correct data
+ - if the original frame is at a higher address, the parsing will
+   potentially overrun the heap data (though given the layout of
+   the buffers, only into the new defragmentation buffer, and then
+   it has to stop and fail once that's filled with copied data.
 
-1. For extents that come in delayed_refs that run during the
-   enable_gen transaction, we must actually set enable_gen to the *next*
-   transaction. That is the first transaction that we can really
-   properly account in any way.
-2. For extents that come in between the end of our transaction handle
-   and the time we set the BTRFS_FS_QUOTA_ENABLED bit, we need an
-   additional bit, BTRFS_FS_SQUOTA_ENABLING which only affects recording
-   squota deltas, so we do pick up those extents. Otherwise, we would
-   miss them, even for enable_gen + 1.
+Fix it by tracking the container along with the pointer and in
+doing so also unify the two almost identical defragmentation
+routines.
 
-Fixes: bd7c1ea3a302 ("btrfs: qgroup: check generation when recording simple quota delta")
-Reviewed-by: Qu Wenruo <wqu@suse.com>
-Signed-off-by: Boris Burkov <boris@bur.io>
-Reviewed-by: David Sterba <dsterba@suse.com>
-Signed-off-by: David Sterba <dsterba@suse.com>
+Fixes: 4d70e9c5488d ("wifi: mac80211: defragment reconfiguration MLE when parsing")
+Reviewed-by: Miriam Rachel Korenblit <miriam.rachel.korenblit@intel.com>
+Reviewed-by: Ilan Peer <ilan.peer@intel.com>
+Link: https://patch.msgid.link/20260508091031.8a6c34613178.I4de16ebbce2d27f2f8f98fc49949c7a376c2fe8d@changeid
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/btrfs/fs.h     |  1 +
- fs/btrfs/qgroup.c | 31 +++++++++++++++++++++++++++----
- 2 files changed, 28 insertions(+), 4 deletions(-)
+ net/mac80211/parse.c | 71 +++++++++++++++++++-------------------------
+ 1 file changed, 31 insertions(+), 40 deletions(-)
 
-diff --git a/fs/btrfs/fs.h b/fs/btrfs/fs.h
-index acdb9e52f6fd7..eccc61463947b 100644
---- a/fs/btrfs/fs.h
-+++ b/fs/btrfs/fs.h
-@@ -136,6 +136,7 @@ enum {
- 	BTRFS_FS_LOG_RECOVERING,
- 	BTRFS_FS_OPEN,
- 	BTRFS_FS_QUOTA_ENABLED,
-+	BTRFS_FS_SQUOTA_ENABLING,
- 	BTRFS_FS_UPDATE_UUID_TREE_GEN,
- 	BTRFS_FS_CREATING_FREE_SPACE_TREE,
- 	BTRFS_FS_BTREE_ERR,
-diff --git a/fs/btrfs/qgroup.c b/fs/btrfs/qgroup.c
-index a0d364e009d88..261aa65019207 100644
---- a/fs/btrfs/qgroup.c
-+++ b/fs/btrfs/qgroup.c
-@@ -1111,7 +1111,13 @@ int btrfs_quota_enable(struct btrfs_fs_info *fs_info,
- 	if (simple) {
- 		fs_info->qgroup_flags |= BTRFS_QGROUP_STATUS_FLAG_SIMPLE_MODE;
- 		btrfs_set_fs_incompat(fs_info, SIMPLE_QUOTA);
--		btrfs_set_qgroup_status_enable_gen(leaf, ptr, trans->transid);
-+		/*
-+		 * Set the enable generation to the next transaction, as we cannot
-+		 * ensure that extents written during this transaction will see any
-+		 * state we have set here. So we should treat all extents of the
-+		 * transaction as coming in before squotas was enabled.
-+		 */
-+		btrfs_set_qgroup_status_enable_gen(leaf, ptr, trans->transid + 1);
- 	} else {
- 		fs_info->qgroup_flags |= BTRFS_QGROUP_STATUS_FLAG_INCONSISTENT;
- 	}
-@@ -1214,7 +1220,15 @@ int btrfs_quota_enable(struct btrfs_fs_info *fs_info,
- 		goto out_free_path;
- 	}
+diff --git a/net/mac80211/parse.c b/net/mac80211/parse.c
+index 2b3632c6008af..666cdd5fd0ea5 100644
+--- a/net/mac80211/parse.c
++++ b/net/mac80211/parse.c
+@@ -34,6 +34,13 @@
+ #include "led.h"
+ #include "wep.h"
  
--	fs_info->qgroup_enable_gen = trans->transid;
-+	/*
-+	 * Set fs_info->qgroup_enable_gen and BTRFS_FS_SQUOTA_ENABLING
-+	 * under the transaction handle. We want to ensure that all extents in
-+	 * the next transaction definitely see them.
-+	 */
-+	if (simple) {
-+		fs_info->qgroup_enable_gen = trans->transid + 1;
-+		set_bit(BTRFS_FS_SQUOTA_ENABLING, &fs_info->flags);
-+	}
- 
- 	mutex_unlock(&fs_info->qgroup_ioctl_lock);
- 	/*
-@@ -1228,9 +1242,15 @@ int btrfs_quota_enable(struct btrfs_fs_info *fs_info,
- 	 */
- 	ret = btrfs_commit_transaction(trans);
- 	trans = NULL;
++struct ieee80211_elem_defrag {
++	const struct element *elem;
++	/* container start/len */
++	const u8 *start;
++	size_t len;
++};
 +
- 	mutex_lock(&fs_info->qgroup_ioctl_lock);
--	if (ret)
-+	if (ret) {
-+		if (simple) {
-+			clear_bit(BTRFS_FS_SQUOTA_ENABLING, &fs_info->flags);
-+			fs_info->qgroup_enable_gen = 0;
-+		}
- 		goto out_free_path;
-+	}
+ struct ieee80211_elems_parse {
+ 	/* must be first for kfree to work */
+ 	struct ieee802_11_elems elems;
+@@ -41,11 +48,7 @@ struct ieee80211_elems_parse {
+ 	/* The basic Multi-Link element in the original elements */
+ 	const struct element *ml_basic_elem;
  
- 	/*
- 	 * Set quota enabled flag after committing the transaction, to avoid
-@@ -1240,6 +1260,8 @@ int btrfs_quota_enable(struct btrfs_fs_info *fs_info,
- 	spin_lock(&fs_info->qgroup_lock);
- 	fs_info->quota_root = quota_root;
- 	set_bit(BTRFS_FS_QUOTA_ENABLED, &fs_info->flags);
-+	if (simple)
-+		clear_bit(BTRFS_FS_SQUOTA_ENABLING, &fs_info->flags);
- 	spin_unlock(&fs_info->qgroup_lock);
+-	/* The reconfiguration Multi-Link element in the original elements */
+-	const struct element *ml_reconf_elem;
+-
+-	/* The EPCS Multi-Link element in the original elements */
+-	const struct element *ml_epcs_elem;
++	struct ieee80211_elem_defrag ml_reconf, ml_epcs;
  
- 	/* Skip rescan for simple qgroups. */
-@@ -4930,7 +4952,8 @@ int btrfs_record_squota_delta(struct btrfs_fs_info *fs_info,
- 	u64 num_bytes = delta->num_bytes;
- 	const int sign = (delta->is_inc ? 1 : -1);
+ 	bool multi_link_inner;
+ 	bool skip_vendor;
+@@ -162,10 +165,14 @@ ieee80211_parse_extension_element(u32 *crc,
+ 				}
+ 				break;
+ 			case IEEE80211_ML_CONTROL_TYPE_RECONF:
+-				elems_parse->ml_reconf_elem = elem;
++				elems_parse->ml_reconf.elem = elem;
++				elems_parse->ml_reconf.start = params->start;
++				elems_parse->ml_reconf.len = params->len;
+ 				break;
+ 			case IEEE80211_ML_CONTROL_TYPE_PRIO_ACCESS:
+-				elems_parse->ml_epcs_elem = elem;
++				elems_parse->ml_epcs.elem = elem;
++				elems_parse->ml_epcs.start = params->start;
++				elems_parse->ml_epcs.len = params->len;
+ 				break;
+ 			default:
+ 				break;
+@@ -990,46 +997,27 @@ ieee80211_prep_mle_link_parse(struct ieee80211_elems_parse *elems_parse,
+ 				      sub->start, sub->len);
+ }
  
--	if (btrfs_qgroup_mode(fs_info) != BTRFS_QGROUP_MODE_SIMPLE)
-+	if (btrfs_qgroup_mode(fs_info) != BTRFS_QGROUP_MODE_SIMPLE &&
-+	    !test_bit(BTRFS_FS_SQUOTA_ENABLING, &fs_info->flags))
- 		return 0;
+-static void
+-ieee80211_mle_defrag_reconf(struct ieee80211_elems_parse *elems_parse)
+-{
+-	struct ieee802_11_elems *elems = &elems_parse->elems;
+-	ssize_t ml_len;
+-
+-	ml_len = cfg80211_defragment_element(elems_parse->ml_reconf_elem,
+-					     elems->ie_start,
+-					     elems->total_len,
+-					     elems_parse->scratch_pos,
+-					     elems_parse->scratch +
+-						elems_parse->scratch_len -
+-						elems_parse->scratch_pos,
+-					     WLAN_EID_FRAGMENT);
+-	if (ml_len < 0)
+-		return;
+-	elems->ml_reconf = (void *)elems_parse->scratch_pos;
+-	elems->ml_reconf_len = ml_len;
+-	elems_parse->scratch_pos += ml_len;
+-}
+-
+-static void
+-ieee80211_mle_defrag_epcs(struct ieee80211_elems_parse *elems_parse)
++static const void *
++ieee80211_mle_defrag(struct ieee80211_elems_parse *elems_parse,
++		     struct ieee80211_elem_defrag *defrag,
++		     size_t *out_len)
+ {
+-	struct ieee802_11_elems *elems = &elems_parse->elems;
++	const void *ret;
+ 	ssize_t ml_len;
  
- 	if (!btrfs_is_fstree(root))
+-	ml_len = cfg80211_defragment_element(elems_parse->ml_epcs_elem,
+-					     elems->ie_start,
+-					     elems->total_len,
++	ml_len = cfg80211_defragment_element(defrag->elem,
++					     defrag->start, defrag->len,
+ 					     elems_parse->scratch_pos,
+ 					     elems_parse->scratch +
+ 						elems_parse->scratch_len -
+ 						elems_parse->scratch_pos,
+ 					     WLAN_EID_FRAGMENT);
+ 	if (ml_len < 0)
+-		return;
+-	elems->ml_epcs = (void *)elems_parse->scratch_pos;
+-	elems->ml_epcs_len = ml_len;
++		return NULL;
++	ret = elems_parse->scratch_pos;
++	*out_len = ml_len;
+ 	elems_parse->scratch_pos += ml_len;
++	return ret;
+ }
+ 
+ struct ieee802_11_elems *
+@@ -1109,9 +1097,12 @@ ieee802_11_parse_elems_full(struct ieee80211_elems_parse_params *params)
+ 		_ieee802_11_parse_elems_full(&sub, elems_parse, NULL);
+ 	}
+ 
+-	ieee80211_mle_defrag_reconf(elems_parse);
+-
+-	ieee80211_mle_defrag_epcs(elems_parse);
++	elems->ml_reconf = ieee80211_mle_defrag(elems_parse,
++						&elems_parse->ml_reconf,
++						&elems->ml_reconf_len);
++	elems->ml_epcs = ieee80211_mle_defrag(elems_parse,
++					      &elems_parse->ml_epcs,
++					      &elems->ml_epcs_len);
+ 
+ 	if (elems->tim && !elems->parse_error) {
+ 		const struct ieee80211_tim_ie *tim_ie = elems->tim;
 -- 
 2.53.0
 
