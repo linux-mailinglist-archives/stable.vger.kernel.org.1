@@ -1,59 +1,62 @@
-Return-Path: <stable+bounces-255603-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-255298-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id EEfFARajGGrJlggAu9opvQ
-	(envelope-from <stable+bounces-255603-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:18:30 +0200
+	id GAb+BlmgGGpAlggAu9opvQ
+	(envelope-from <stable+bounces-255298-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:06:49 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id 096B85F8597
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:18:28 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6E3235F7D57
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:06:48 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 57780303ABF2
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 20:16:17 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id EA6433126DCA
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 20:01:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 623472E03EA;
-	Thu, 28 May 2026 20:16:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BF208405C4B;
+	Thu, 28 May 2026 20:01:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xt+slnS8"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DhQLWP0V"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 20C532D1303;
-	Thu, 28 May 2026 20:16:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8E7FA26B973;
+	Thu, 28 May 2026 20:01:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779999376; cv=none; b=THumIxij8298pwv/XrXmCWC4ZNigBTRGh9/uvWzTyKyFfe5p38qh5BD3o+qcRkgnNkpVFl/v8WLVwebipHq9rYxbra4R43b9wdYIflGd9qQlfjQfrciPeYxoo71RXUsY8Lgg3FYt4sNO5vp/wgD7/XZBDMpu3NQMPEhJSIIXe/o=
+	t=1779998516; cv=none; b=InoFjmx1NVeaQI6EA8Xixo2Gwnt4FX49Dx8RjfS8/Qw4bYFAxSKWwwLA4NQ2APsTKBdEr9rtY1SO8IobrSTlNbutwCtxCjYS7RLGi/j7bFNS2aYZbY8fDf8WMoAjBbNSW/FjJz+yvG6tHuzTdHFWuPHCELiHxzt4fxG/zJ0mzNo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779999376; c=relaxed/simple;
-	bh=4OxH9xH5ffpM62y2CaJpO9hGMlb06BZAdYzmkHtYVnA=;
+	s=arc-20240116; t=1779998516; c=relaxed/simple;
+	bh=TkC3ZH8ctwInf+XAqVCvJddP9AAzv6CeOMAPZdzgOmU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=dgyUI5kVZpBA9l0bWzBBjzZ0jK5LUtg3NjvroAxHXp+mcJif7WpPOJqEeco+pqNQcL0Co7ZVav4hfI24eTJ1RVja21xqejX2KVLQmhPZXnETvj2eiFi6m9c//CmjDYS9bEwtZae86QUK6C9+Eu2H8J3TC5Dw85/oOfNZf1bTvls=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xt+slnS8; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9ECFF1F000E9;
-	Thu, 28 May 2026 20:16:14 +0000 (UTC)
+	 MIME-Version; b=EsshyAYrCJLJo9QSiZdQ+LFq9Yyzn+SrFWfKkYAKvjgQ/3rVCGqSO9uQP425DX5GxSVbLi/S8froTO3TAg/CzUsP/dV6DyiVIW7VZiXmHJ+ztKT8uO0Qm95wE1KJsiDX//XiLOs+TKlmMBkuWBorkRwIpnf4vrg3u0gHP61EGsc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DhQLWP0V; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0056F1F000E9;
+	Thu, 28 May 2026 20:01:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779999375;
-	bh=UWCsyZ2KAJr2iN88RoO9Bj8/7MpGVhsjuGiEBcbCSCE=;
+	s=korg; t=1779998515;
+	bh=jCKvEzOEIPx87jhgk30U+t8RkwRaaf0ixToUQhVuXk0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=xt+slnS8ntf1dJZfhfg8wjwTy1BCZTEUcehh2Fp3iS4rKPrmWZOctO6R+hpggSGBe
-	 /1+kcnNjkWdh9adom8KG4D6iTEQSRKOQRAIRZYXsctVeVrAT5MwUtuXDyzW4ed5PQY
-	 h5RbDes1EMWJXz5RyRyOmTjkIIx8Rhi5uP1PfVo4=
+	b=DhQLWP0VL7Q20zn28/FWIr7d0dE2+AuqNZRUwYZVQokUyErvlClI3TtdYAt3JW9iL
+	 WVLgIgXiZ1MR+7rLOudd2TqkA89xpEYQqaDXH/veLkb4Z0RyGT5lP1wrpQSYWAHz0y
+	 LVRG8F+OFVp5gZCOoMOkOKbBLruuDbrGo4m758oI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Justin Iurman <justin.iurman@gmail.com>,
-	Ido Schimmel <idosch@nvidia.com>,
-	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 6.18 045/377] ipv6: ioam: refresh hdr pointer before ioam6_event()
+	stable@kernel.org,
+	Yuan Tan <yuantan098@gmail.com>,
+	Yifan Wu <yifanwucs@gmail.com>,
+	Juefei Pu <tomapufckgml@gmail.com>,
+	Xin Liu <bird@lzu.edu.cn>,
+	Sven Eckelmann <sven@narfation.org>
+Subject: [PATCH 7.0 154/461] batman-adv: tp_meter: avoid use of uninit sender vars
 Date: Thu, 28 May 2026 21:44:43 +0200
-Message-ID: <20260528194639.679276719@linuxfoundation.org>
+Message-ID: <20260528194651.500583540@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260528194638.371537336@linuxfoundation.org>
-References: <20260528194638.371537336@linuxfoundation.org>
+In-Reply-To: <20260528194646.819809818@linuxfoundation.org>
+References: <20260528194646.819809818@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,99 +67,101 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	TO_DN_SOME(0.00)[];
-	TAGGED_FROM(0.00)[bounces-255603-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,nvidia.com,kernel.org];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,kernel.org,gmail.com,lzu.edu.cn,narfation.org];
+	TAGGED_FROM(0.00)[bounces-255298-lists,stable=lfdr.de];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	FROM_HAS_DN(0.00)[];
+	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	NEURAL_HAM(-0.00)[-0.999];
-	TAGGED_RCPT(0.00)[stable];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[6];
+	NEURAL_HAM(-0.00)[-1.000];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[9];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,nvidia.com:email,msgid.link:url]
-X-Rspamd-Queue-Id: 096B85F8597
+	TAGGED_RCPT(0.00)[stable];
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[lzu.edu.cn:email,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,narfation.org:email]
+X-Rspamd-Queue-Id: 6E3235F7D57
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+7.0-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Justin Iurman <justin.iurman@gmail.com>
+From: Sven Eckelmann <sven@narfation.org>
 
-commit e46e6bc97fb1f339730ff1ba74267fbf48e7a422 upstream.
+commit 6c65cf23d4c6170fcf5714c32aa64689718cb142 upstream.
 
-Reported by Sashiko:
+batadv_tp_recv_ack() and batadv_tp_stop() are only valid for tp_vars in the
+BATADV_TP_SENDER role. When called with a BATADV_TP_RECEIVER role, it
+proceeds to read sender-only members that were never initialized, leading
+to undefined behavior.
 
-In ipv6_hop_ioam(), the hdr pointer is initialized to point into the
-skb's linear data buffer. Later, the code calls skb_ensure_writable(),
-which might reallocate the buffer:
+This can be triggered when a node that is currently acting as a receiver in
+an ongoing tp_meter session receives a malicious ACK packet.
 
-	if (skb_ensure_writable(skb, optoff + 2 + hdr->opt_len))
-		goto drop;
+Guard against this by checking tp_vars->role immediately after the
+lookup and bailing out if it is not BATADV_TP_SENDER, before any of
+those members are accessed.
 
-	/* Trace pointer may have changed */
-	trace = (struct ioam6_trace_hdr *)(skb_network_header(skb)
-					   + optoff + sizeof(*hdr));
-
-	ioam6_fill_trace_data(skb, ns, trace, true);
-
-	ioam6_event(IOAM6_EVENT_TRACE, dev_net(skb->dev),
-		    GFP_ATOMIC, (void *)trace, hdr->opt_len - 2);
-
-If the skb is cloned or lacks sufficient linear headroom,
-skb_ensure_writable() will invoke pskb_expand_head(), which reallocates
-the skb's data buffer and frees the old one, invalidating pointers to
-it. While the code recalculates the trace pointer immediately after the
-call to skb_ensure_writable(), it fails to recalculate the hdr pointer.
-
-This patch fixes the above by recalculating the hdr pointer before
-passing hdr->opt_len to ioam6_event(), so that we avoid any UaF.
-
-Fixes: f655c78d6225 ("net: exthdrs: ioam6: send trace event")
-Cc: stable@vger.kernel.org
-Signed-off-by: Justin Iurman <justin.iurman@gmail.com>
-Reviewed-by: Ido Schimmel <idosch@nvidia.com>
-Link: https://patch.msgid.link/20260520124242.32320-1-justin.iurman@gmail.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Cc: stable@kernel.org
+Fixes: 33a3bb4a3345 ("batman-adv: throughput meter implementation")
+Reported-by: Yuan Tan <yuantan098@gmail.com>
+Reported-by: Yifan Wu <yifanwucs@gmail.com>
+Reported-by: Juefei Pu <tomapufckgml@gmail.com>
+Reported-by: Xin Liu <bird@lzu.edu.cn>
+Reviewed-by: Yuan Tan <yuantan098@gmail.com>
+Signed-off-by: Sven Eckelmann <sven@narfation.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/ipv6/exthdrs.c |    6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ net/batman-adv/tp_meter.c |   11 +++++++++--
+ 1 file changed, 9 insertions(+), 2 deletions(-)
 
---- a/net/ipv6/exthdrs.c
-+++ b/net/ipv6/exthdrs.c
-@@ -955,9 +955,9 @@ static bool ipv6_hop_ioam(struct sk_buff
- 		if (skb_ensure_writable(skb, optoff + 2 + hdr->opt_len))
- 			goto drop;
+--- a/net/batman-adv/tp_meter.c
++++ b/net/batman-adv/tp_meter.c
+@@ -663,6 +663,9 @@ static void batadv_tp_recv_ack(struct ba
+ 	if (unlikely(!tp_vars))
+ 		return;
  
--		/* Trace pointer may have changed */
--		trace = (struct ioam6_trace_hdr *)(skb_network_header(skb)
--						   + optoff + sizeof(*hdr));
-+		/* Trace and hdr pointers may have changed */
-+		hdr = (struct ioam6_hdr *)(skb_network_header(skb) + optoff);
-+		trace = (struct ioam6_trace_hdr *)((u8 *)hdr + sizeof(*hdr));
++	if (unlikely(tp_vars->role != BATADV_TP_SENDER))
++		goto out;
++
+ 	if (unlikely(atomic_read(&tp_vars->sending) == 0))
+ 		goto out;
  
- 		ioam6_fill_trace_data(skb, ns, trace, true);
+@@ -1100,12 +1103,16 @@ void batadv_tp_stop(struct batadv_priv *
+ 	if (!tp_vars) {
+ 		batadv_dbg(BATADV_DBG_TP_METER, bat_priv,
+ 			   "Meter: trying to interrupt an already over connection\n");
+-		goto out;
++		goto out_put_orig_node;
+ 	}
+ 
++	if (unlikely(tp_vars->role != BATADV_TP_SENDER))
++		goto out_put_tp_vars;
++
+ 	batadv_tp_sender_shutdown(tp_vars, return_value);
++out_put_tp_vars:
+ 	batadv_tp_vars_put(tp_vars);
+-out:
++out_put_orig_node:
+ 	batadv_orig_node_put(orig_node);
+ }
  
 
 
