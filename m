@@ -1,60 +1,62 @@
-Return-Path: <stable+bounces-255951-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-255698-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id KGBeAHanGGpolwgAu9opvQ
-	(envelope-from <stable+bounces-255951-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:37:10 +0200
+	id IHiROiinGGp+lwgAu9opvQ
+	(envelope-from <stable+bounces-255698-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:35:52 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9DD795F91E8
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:37:09 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4C25E5F90F8
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:35:52 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 4533B30485B3
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 20:32:17 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 9073731D7477
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 20:20:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9A70E32AAD6;
-	Thu, 28 May 2026 20:32:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 68B3B2F9D85;
+	Thu, 28 May 2026 20:20:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="boh/8yLx"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SMBu2LXR"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6B77C31DD97;
-	Thu, 28 May 2026 20:32:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 248FC282F17;
+	Thu, 28 May 2026 20:20:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780000336; cv=none; b=kVQnqXs2pKu695Z6+gPeMRBe40/vnkwk1HssGbKnwTiRjmfqVuSTyN4FZFdADOif81/dxHG4PECM7YItF/SN5+hfKoNAKWpou/Z+l0YcSzwoYofqz6/JV8v8/tuAXnfIZuGZfswronuIJ55a8UMyyj4rUQkWyOp7diOMqIxx4kI=
+	t=1779999637; cv=none; b=kS0IkwYzR3LBFaERCntmMLbePnaXTdxYwLYFszXYxQbCvY5g7EGVRD9kjRtGZKoIJ6IMYUBbpdRg8k/ogCwF42ihjz3IK2oD27yENvNWotSJ/k2b91nefUZtijhQsDc2Z3vzn2LTdZZdZEd42mvp2oMT3Oq+44Js4aZdC483O5s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780000336; c=relaxed/simple;
-	bh=w+4jS/jMibBXLT7ttX7tHGhIn4/GQEmt3fbT66dcuy8=;
+	s=arc-20240116; t=1779999637; c=relaxed/simple;
+	bh=2MYFF9TiBBluirVXLTIENY8QSSFiDPqhYbnpJJBYY58=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=EWRE8314F9u/gMog0b2IyaHOhOL4rx3MvbnkI/BeQgkOKhDRGIngOopwY776K7IZYyJ48As1qQD2Rq5TU7ye52XUhmR401YBL+oibaav7uFe8a1erc0llPZ1Vivtkd4I0bIw6+2bxcXg3tpDWmP043+Hh50CwYAuhB4h+ZO38a0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=boh/8yLx; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C01191F000E9;
-	Thu, 28 May 2026 20:32:14 +0000 (UTC)
+	 MIME-Version; b=VyH0fiNDGUhUyc/GEinr3R9m9VYz06EWtOCO09cuV7RdkEpfKYpz61w49G5DYbSDFbCk1R7aVSqx310w5it0Ty9wKty5WyEzsl9sI2n1VGEJFlvkxR85OscTuljl2UWkt0ryvlvR7S8dfOPmCHKmSZ/Wakiv2DGQ01XLiJY+S6U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SMBu2LXR; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 895041F000E9;
+	Thu, 28 May 2026 20:20:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780000335;
-	bh=MytMPCtuN7JtdyzMKKKxS8w7RyE/6HM3IiCZ8riOIMs=;
+	s=korg; t=1779999636;
+	bh=gQVI41syQ/bkJamk2AvU1Vc2U8kYG0KPxHHrw6eqEhY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=boh/8yLxDMhfG7nd8H8OtmV4c8rtDqYEc8aK679qJSTAT3v0MyN9K+OV0lMZBgJ+8
-	 BazYJ3KXN8uIh2UZxdifg418y38mCnpTDCziWjj42Ol6mzfQs1OyBtbFWAKIUBa37v
-	 ffT/s2KQY0VlRRFGdwcXu6QhEtjSBWRGQsLPLoOA=
+	b=SMBu2LXRTk3iOv0Wpxlt+9Pbfons2E2lKcgiaY2Buo7CtMG/g6QGdFhf+BzPNX6+G
+	 SHDSF/fSf69yQzJJWVoqRwceRjx3JLpntEtVsqzYTiLNY+lgbT9SWXcu5kZSuqRQdf
+	 XoPug7Qgumbu3ePcEnt6l8v9AfmRWsOqt3iiBKCg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Gang Yan <yangang@kylinos.cn>,
-	Paolo Abeni <pabeni@redhat.com>,
-	"Matthieu Baerts (NGI0)" <matttbe@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 001/272] mptcp: sync the msk->sndbuf at accept() time
+	stable@kernel.org,
+	Yuan Tan <yuantan098@gmail.com>,
+	Yifan Wu <yifanwucs@gmail.com>,
+	Juefei Pu <tomapufckgml@gmail.com>,
+	Xin Liu <bird@lzu.edu.cn>,
+	Sven Eckelmann <sven@narfation.org>
+Subject: [PATCH 6.18 137/377] batman-adv: v: stop OGMv2 on disabled interface
 Date: Thu, 28 May 2026 21:46:15 +0200
-Message-ID: <20260528194629.424529211@linuxfoundation.org>
+Message-ID: <20260528194642.341684777@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260528194629.379955525@linuxfoundation.org>
-References: <20260528194629.379955525@linuxfoundation.org>
+In-Reply-To: <20260528194638.371537336@linuxfoundation.org>
+References: <20260528194638.371537336@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,104 +71,176 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	RCVD_TLS_LAST(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,kernel.org,gmail.com,lzu.edu.cn,narfation.org];
+	TAGGED_FROM(0.00)[bounces-255698-lists,stable=lfdr.de];
+	PRECEDENCE_BULK(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FROM_HAS_DN(0.00)[];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-255951-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TO_DN_SOME(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
-	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[7];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[9];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim]
-X-Rspamd-Queue-Id: 9DD795F91E8
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,narfation.org:email,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,lzu.edu.cn:email]
+X-Rspamd-Queue-Id: 4C25E5F90F8
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Gang Yan <yangang@kylinos.cn>
+From: Sven Eckelmann <sven@narfation.org>
 
-commit fcf04b14334641f4b0b8647824480935e9416d52 upstream.
+commit f8ce8b8331a1bc44ad4905886a482214d428b253 upstream.
 
-On passive MPTCP connections, the msk sndbuf is not updated correctly.
+When a batadv_hard_iface is disabled, its mesh_iface pointer is set to
+NULL. However, batadv_v_ogm_send_meshif() may still dispatch OGMs via
+batadv_v_ogm_queue_on_if() for interfaces that have since lost their
+mesh_iface association. This results in a NULL pointer dereference when
+batadv_v_ogm_queue_on_if() unconditionally calls netdev_priv() on the
+now NULL hard_iface->mesh_iface to retrieve the batadv_priv.
 
-The root cause is an order issue in the accept path:
+It is necessary to ensure that the batadv_v_ogm_queue_on_if() checks that
+it is using the same mesh_iface for which batadv_v_ogm_send_meshif() was
+called.
 
-- tcp_check_req() -> subflow_syn_recv_sock() -> mptcp_sk_clone_init()
-  calls __mptcp_propagate_sndbuf() to copy the ssk sndbuf into msk
-
-- Later, tcp_child_process() -> tcp_init_transfer() ->
-  tcp_sndbuf_expand() grows the ssk sndbuf.
-
-So __mptcp_propagate_sndbuf() runs before the ssk sndbuf has been
-expanded and the msk ends up with a much smaller sndbuf than the
-subflow:
-
-  MPTCP: msk->sndbuf:20480, msk->first->sndbuf:2626560
-
-Fix this by moving the __mptcp_propagate_sndbuf() call from
-mptcp_sk_clone_init() -- the ssk sndbuf is not yet finalized there -- to
-__mptcp_propagate_sndbuf() at accept() time, when the ssk sndbuf has
-been fully expanded by tcp_sndbuf_expand().
-
-Fixes: 8005184fd1ca ("mptcp: refactor sndbuf auto-tuning")
-Cc: stable@vger.kernel.org
-Closes: https://github.com/multipath-tcp/mptcp_net-next/issues/602
-Signed-off-by: Gang Yan <yangang@kylinos.cn>
-Acked-by: Paolo Abeni <pabeni@redhat.com>
-Reviewed-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
-Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
-Link: https://patch.msgid.link/20260420-net-mptcp-sync-sndbuf-accept-v1-1-e3523e3aeb44@kernel.org
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
-[ No conflicts, but move __mptcp_propagate_sndbuf() above the for-loop
-  (mptcp_for_each_subflow()) present in this version, which will modify
-  'subflow' used by __mptcp_propagate_sndbuf() in this new patch. ]
-Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: stable@kernel.org
+Fixes: 0da0035942d4 ("batman-adv: OGMv2 - add basic infrastructure")
+Reported-by: Yuan Tan <yuantan098@gmail.com>
+Reported-by: Yifan Wu <yifanwucs@gmail.com>
+Reported-by: Juefei Pu <tomapufckgml@gmail.com>
+Reported-by: Xin Liu <bird@lzu.edu.cn>
+Reviewed-by: Yuan Tan <yuantan098@gmail.com>
+Signed-off-by: Sven Eckelmann <sven@narfation.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/mptcp/protocol.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ net/batman-adv/bat_v_ogm.c |   33 +++++++++++++++++++++------------
+ 1 file changed, 21 insertions(+), 12 deletions(-)
 
-diff --git a/net/mptcp/protocol.c b/net/mptcp/protocol.c
-index 7dbb666c72c30..c1b1fb0fe8bcb 100644
---- a/net/mptcp/protocol.c
-+++ b/net/mptcp/protocol.c
-@@ -3493,7 +3493,6 @@ struct sock *mptcp_sk_clone_init(const struct sock *sk,
- 	 * uses the correct data
- 	 */
- 	mptcp_copy_inaddrs(nsk, ssk);
--	__mptcp_propagate_sndbuf(nsk, ssk);
+--- a/net/batman-adv/bat_v_ogm.c
++++ b/net/batman-adv/bat_v_ogm.c
+@@ -113,14 +113,14 @@ static void batadv_v_ogm_start_timer(str
  
- 	mptcp_rcv_space_init(msk, ssk);
- 	msk->rcvq_space.time = mptcp_stamp();
-@@ -4101,6 +4100,8 @@ static int mptcp_stream_accept(struct socket *sock, struct socket *newsock,
- 		msk = mptcp_sk(newsk);
- 		msk->in_accept_queue = 0;
+ /**
+  * batadv_v_ogm_send_to_if() - send a batman ogm using a given interface
++ * @bat_priv: the bat priv with all the mesh interface information
+  * @skb: the OGM to send
+  * @hard_iface: the interface to use to send the OGM
+  */
+-static void batadv_v_ogm_send_to_if(struct sk_buff *skb,
++static void batadv_v_ogm_send_to_if(struct batadv_priv *bat_priv,
++				    struct sk_buff *skb,
+ 				    struct batadv_hard_iface *hard_iface)
+ {
+-	struct batadv_priv *bat_priv = netdev_priv(hard_iface->mesh_iface);
+-
+ 	if (hard_iface->if_status != BATADV_IF_ACTIVE) {
+ 		kfree_skb(skb);
+ 		return;
+@@ -187,6 +187,7 @@ static void batadv_v_ogm_aggr_list_free(
  
-+		__mptcp_propagate_sndbuf(newsk, mptcp_subflow_tcp_sock(subflow));
-+
- 		/* set ssk->sk_socket of accept()ed flows to mptcp socket.
- 		 * This is needed so NOSPACE flag can be set from tcp stack.
- 		 */
--- 
-2.53.0
-
+ /**
+  * batadv_v_ogm_aggr_send() - flush & send aggregation queue
++ * @bat_priv: the bat priv with all the mesh interface information
+  * @hard_iface: the interface with the aggregation queue to flush
+  *
+  * Aggregates all OGMv2 packets currently in the aggregation queue into a
+@@ -196,7 +197,8 @@ static void batadv_v_ogm_aggr_list_free(
+  *
+  * Caller needs to hold the hard_iface->bat_v.aggr_list.lock.
+  */
+-static void batadv_v_ogm_aggr_send(struct batadv_hard_iface *hard_iface)
++static void batadv_v_ogm_aggr_send(struct batadv_priv *bat_priv,
++				   struct batadv_hard_iface *hard_iface)
+ {
+ 	unsigned int aggr_len = hard_iface->bat_v.aggr_len;
+ 	struct sk_buff *skb_aggr;
+@@ -226,27 +228,32 @@ static void batadv_v_ogm_aggr_send(struc
+ 		consume_skb(skb);
+ 	}
+ 
+-	batadv_v_ogm_send_to_if(skb_aggr, hard_iface);
++	batadv_v_ogm_send_to_if(bat_priv, skb_aggr, hard_iface);
+ }
+ 
+ /**
+  * batadv_v_ogm_queue_on_if() - queue a batman ogm on a given interface
++ * @bat_priv: the bat priv with all the mesh interface information
+  * @skb: the OGM to queue
+  * @hard_iface: the interface to queue the OGM on
+  */
+-static void batadv_v_ogm_queue_on_if(struct sk_buff *skb,
++static void batadv_v_ogm_queue_on_if(struct batadv_priv *bat_priv,
++				     struct sk_buff *skb,
+ 				     struct batadv_hard_iface *hard_iface)
+ {
+-	struct batadv_priv *bat_priv = netdev_priv(hard_iface->mesh_iface);
++	if (hard_iface->mesh_iface != bat_priv->mesh_iface) {
++		kfree_skb(skb);
++		return;
++	}
+ 
+ 	if (!atomic_read(&bat_priv->aggregated_ogms)) {
+-		batadv_v_ogm_send_to_if(skb, hard_iface);
++		batadv_v_ogm_send_to_if(bat_priv, skb, hard_iface);
+ 		return;
+ 	}
+ 
+ 	spin_lock_bh(&hard_iface->bat_v.aggr_list.lock);
+ 	if (!batadv_v_ogm_queue_left(skb, hard_iface))
+-		batadv_v_ogm_aggr_send(hard_iface);
++		batadv_v_ogm_aggr_send(bat_priv, hard_iface);
+ 
+ 	hard_iface->bat_v.aggr_len += batadv_v_ogm_len(skb);
+ 	__skb_queue_tail(&hard_iface->bat_v.aggr_list, skb);
+@@ -343,7 +350,7 @@ static void batadv_v_ogm_send_meshif(str
+ 			break;
+ 		}
+ 
+-		batadv_v_ogm_queue_on_if(skb_tmp, hard_iface);
++		batadv_v_ogm_queue_on_if(bat_priv, skb_tmp, hard_iface);
+ 		batadv_hardif_put(hard_iface);
+ 	}
+ 	rcu_read_unlock();
+@@ -383,12 +390,14 @@ void batadv_v_ogm_aggr_work(struct work_
+ {
+ 	struct batadv_hard_iface_bat_v *batv;
+ 	struct batadv_hard_iface *hard_iface;
++	struct batadv_priv *bat_priv;
+ 
+ 	batv = container_of(work, struct batadv_hard_iface_bat_v, aggr_wq.work);
+ 	hard_iface = container_of(batv, struct batadv_hard_iface, bat_v);
++	bat_priv = netdev_priv(hard_iface->mesh_iface);
+ 
+ 	spin_lock_bh(&hard_iface->bat_v.aggr_list.lock);
+-	batadv_v_ogm_aggr_send(hard_iface);
++	batadv_v_ogm_aggr_send(bat_priv, hard_iface);
+ 	spin_unlock_bh(&hard_iface->bat_v.aggr_list.lock);
+ 
+ 	batadv_v_ogm_start_queue_timer(hard_iface);
+@@ -578,7 +587,7 @@ static void batadv_v_ogm_forward(struct
+ 		   if_outgoing->net_dev->name, ntohl(ogm_forward->throughput),
+ 		   ogm_forward->ttl, if_incoming->net_dev->name);
+ 
+-	batadv_v_ogm_queue_on_if(skb, if_outgoing);
++	batadv_v_ogm_queue_on_if(bat_priv, skb, if_outgoing);
+ 
+ out:
+ 	batadv_orig_ifinfo_put(orig_ifinfo);
 
 
 
