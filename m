@@ -1,61 +1,60 @@
-Return-Path: <stable+bounces-255283-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-255672-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id SMNXCyWgGGpvlggAu9opvQ
-	(envelope-from <stable+bounces-255283-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:05:57 +0200
+	id KBuyKH6lGGoQlwgAu9opvQ
+	(envelope-from <stable+bounces-255672-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:28:46 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 937C35F7CFD
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:05:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id F16235F8C81
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:28:45 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id DEEF73067F05
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 20:01:16 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 809D93161D82
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 20:19:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DB55232ABC0;
-	Thu, 28 May 2026 20:01:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3D9B1282F17;
+	Thu, 28 May 2026 20:19:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OBZBsP7l"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RPwu36Fy"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B356E24677F;
-	Thu, 28 May 2026 20:01:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 034232C11F9;
+	Thu, 28 May 2026 20:19:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779998474; cv=none; b=pnmPl5YngBwN3S2ZkpENyPC0G9pEMMrxzlqmyFizA9ttHVeeThXHPthxkCIsPahYf6mQX7hQYIwYHTtRvXrxpSN4vxaq3tGPpfJ/8sXIoctkSDb8NV4Q0DMLPj7R5ajyvLsdZaAkLNjZYcW6KSA7JqFPVFKxVx/u0GZX4FnXQac=
+	t=1779999570; cv=none; b=DzA5BJvSyE3nfHb9LbJnZ35VolsSab8bBDxW0yvTOTQrp8roa37SQmm4BtDiRypjsQ1JX00Ym6g9wcCf7t8LDFkueddGlgqCAeVAg1GaRrOVI3LCXDIbgQd6RQ0LGJspCqu0TLYsYiDXUz/pxHy3WDqVbTy3qST3YogUDt4xw08=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779998474; c=relaxed/simple;
-	bh=E/HlvaIGAWza6MHXMrRASu+TheEm62LcH1h7RVo2vdw=;
+	s=arc-20240116; t=1779999570; c=relaxed/simple;
+	bh=Iwpq+qY7y8jEv6CO7tL3vSKc8J9cduYjMMZUg80itiY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=FLjybiascjtvUdrfWAZl4nqkesNO50pc9PtAhRIpntWa/YfgKuKRB0Oi8Y3H2YDTXnjUp8VBw9zoYj3xEsri2T+B4N2uTiF4aGU95vsUM4VpLOYeVxAYEIBtyxoMoP8DthOxZFYBol2ZdxMRsJ8Pwn/+8UKX6quM5gVrVYnRNGg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OBZBsP7l; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1DDC41F000E9;
-	Thu, 28 May 2026 20:01:12 +0000 (UTC)
+	 MIME-Version; b=FqSUqfwf0yzmJ3VN6ZGdaMge7m1b3DXHANqwGwJSUF1gg4MjhTyP0Sl8KuB1yh8YiemlRNTkBikOqKlQMr3Y923/Bg2eAdS8LTx/DZtL2ZJMo3gKvcxLSvc0T42XkSyHPoVb8scojVAs94S2l0stCicWVIuvDRH5HRD8gDkRSCI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RPwu36Fy; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5FDA11F000E9;
+	Thu, 28 May 2026 20:19:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779998473;
-	bh=Bx/A7fkCWshjSolDYOA0y8D++pmU1IBnuK7tcsBEMNs=;
+	s=korg; t=1779999568;
+	bh=kyqCEejJQPvkyh1xgvBf6a/l+mT4WSTSrMREE98DQQc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=OBZBsP7lIwzfpIhSFam0UNoChm3PHysOeyGUlWlq+U/ae1xxailrkbVXJXQgUz/q5
-	 oek/fVyP8wr2CN+RQhM9yK75e31Ann2gWIr3RvMxD1YhmwEzwh0OT1vV/gz37vvNoj
-	 dO+NQOvloP1OynPIhl0v7h9o+YeR9xjynafGOYV0=
+	b=RPwu36FyM78kc4nqinJrvk/EcSIb33gGR0LFK/EQdOcPTkOStQfJQa5d4YH1zlRUh
+	 Zp5HCNuASZEryC5jzdehb0JIiVbVPOQlyBUftDm6Beia32ijx9Vl1LVqj1vGS/axNH
+	 eIpEFwWONLEVksqvgJJBb+LJfrZwoXvQj1LFMXnI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dan Carpenter <error27@gmail.com>,
-	Even Xu <even.xu@intel.com>,
-	Mark Pearson <mpearson-lenovo@squebb.ca>,
-	Jiri Kosina <jkosina@suse.com>,
+	Quan Sun <2022090917019@std.uestc.edu.cn>,
+	Maxime Chevallier <maxime.chevallier@bootlin.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 7.0 185/461] HID: intel-thc-hid: Intel-quickspi: Fix some error codes
+Subject: [PATCH 6.18 076/377] net: ethtool: fix NULL pointer dereference in phy_reply_size
 Date: Thu, 28 May 2026 21:45:14 +0200
-Message-ID: <20260528194652.431028075@linuxfoundation.org>
+Message-ID: <20260528194640.572132464@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260528194646.819809818@linuxfoundation.org>
-References: <20260528194646.819809818@linuxfoundation.org>
+In-Reply-To: <20260528194638.371537336@linuxfoundation.org>
+References: <20260528194638.371537336@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -75,75 +74,130 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,intel.com,squebb.ca,suse.com,kernel.org];
-	TAGGED_FROM(0.00)[bounces-255283-lists,stable=lfdr.de];
-	PRECEDENCE_BULK(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-255672-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[8];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
 	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[intel.com:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,squebb.ca:email]
-X-Rspamd-Queue-Id: 937C35F7CFD
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_SEVEN(0.00)[7];
+	MID_RHS_MATCH_FROM(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[uestc.edu.cn:email,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,bootlin.com:email,msgid.link:url]
+X-Rspamd-Queue-Id: F16235F8C81
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-7.0-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dan Carpenter <error27@gmail.com>
+From: Quan Sun <2022090917019@std.uestc.edu.cn>
 
-[ Upstream commit ae4ac077332ea3341a0f4c0973556c6b7ac5b7a1 ]
+[ Upstream commit 4908f1395fb1b832ceec11584af649874a2732ea ]
 
-If we have a partial read that is supposed to be treated as failure but
-in this code we forgot to set the error code.  Return -EINVAL.
+In phy_prepare_data(), several strings such as 'name', 'drvname',
+'upstream_sfp_name', and 'downstream_sfp_name' are allocated using
+kstrdup(). However, these allocations were not checked  for failure.
 
-Fixes: 9d8d51735a3a ("HID: intel-thc-hid: intel-quickspi: Add HIDSPI protocol implementation")
-Signed-off-by: Dan Carpenter <error27@gmail.com>
-Reviewed-by: Even Xu <even.xu@intel.com>
-Reviewed-by: Mark Pearson <mpearson-lenovo@squebb.ca>
-Signed-off-by: Jiri Kosina <jkosina@suse.com>
+If kstrdup() fails for 'name', it returns NULL while the function
+continues. This leads to a kernel NULL pointer dereference and panic
+later in phy_reply_size() when it unconditionally calls strlen() on
+the NULL pointer.
+
+While other strings like 'upstream_sfp_name' might be checked before
+access in certain code paths, failing to handle these allocations
+consistently can lead to incomplete data reporting or hidden bugs.
+
+Fix this by adding proper NULL checks for all kstrdup() calls in
+phy_prepare_data() and implement a centralized error handling path
+using goto labels to ensure all previously allocated resources are
+freed on failure.
+
+Fixes: 9dd2ad5e92b9 ("net: ethtool: phy: Convert the PHY_GET command to generic phy dump")
+Signed-off-by: Quan Sun <2022090917019@std.uestc.edu.cn>
+Reviewed-by: Maxime Chevallier <maxime.chevallier@bootlin.com>
+Link: https://patch.msgid.link/20260507131738.1173835-1-2022090917019@std.uestc.edu.cn
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Stable-dep-of: e3adf69f8eb1 ("net: ethtool: phy: avoid NULL deref when PHY driver is unbound")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/hid/intel-thc-hid/intel-quickspi/quickspi-protocol.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ net/ethtool/phy.c |   32 ++++++++++++++++++++++++++++++--
+ 1 file changed, 30 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/hid/intel-thc-hid/intel-quickspi/quickspi-protocol.c b/drivers/hid/intel-thc-hid/intel-quickspi/quickspi-protocol.c
-index 16f780bc879b1..cb19057f1191b 100644
---- a/drivers/hid/intel-thc-hid/intel-quickspi/quickspi-protocol.c
-+++ b/drivers/hid/intel-thc-hid/intel-quickspi/quickspi-protocol.c
-@@ -94,7 +94,7 @@ static int quickspi_get_device_descriptor(struct quickspi_device *qsdev)
- 		dev_err_once(qsdev->dev, "Read DEVICE_DESCRIPTOR failed, ret = %d\n", ret);
- 		dev_err_once(qsdev->dev, "DEVICE_DESCRIPTOR expected len = %u, actual read = %u\n",
- 			     input_len, read_len);
--		return ret;
-+		return ret ?: -EINVAL;
+--- a/net/ethtool/phy.c
++++ b/net/ethtool/phy.c
+@@ -76,6 +76,7 @@ static int phy_prepare_data(const struct
+ 	struct nlattr **tb = info->attrs;
+ 	struct phy_device_node *pdn;
+ 	struct phy_device *phydev;
++	int ret;
+ 
+ 	/* RTNL is held by the caller */
+ 	phydev = ethnl_req_get_phydev(req_info, tb, ETHTOOL_A_PHY_HEADER,
+@@ -88,8 +89,17 @@ static int phy_prepare_data(const struct
+ 		return -EOPNOTSUPP;
+ 
+ 	rep_data->phyindex = phydev->phyindex;
++
+ 	rep_data->name = kstrdup(dev_name(&phydev->mdio.dev), GFP_KERNEL);
++	if (!rep_data->name)
++		return -ENOMEM;
++
+ 	rep_data->drvname = kstrdup(phydev->drv->name, GFP_KERNEL);
++	if (!rep_data->drvname) {
++		ret = -ENOMEM;
++		goto err_free_name;
++	}
++
+ 	rep_data->upstream_type = pdn->upstream_type;
+ 
+ 	if (pdn->upstream_type == PHY_UPSTREAM_PHY) {
+@@ -97,15 +107,33 @@ static int phy_prepare_data(const struct
+ 		rep_data->upstream_index = upstream->phyindex;
  	}
  
- 	input_rep_type = ((struct input_report_body_header *)read_buf)->input_report_type;
-@@ -318,7 +318,7 @@ int reset_tic(struct quickspi_device *qsdev)
- 		dev_err_once(qsdev->dev, "Read RESET_RESPONSE body failed, ret = %d\n", ret);
- 		dev_err_once(qsdev->dev, "RESET_RESPONSE body expected len = %u, actual = %u\n",
- 			     read_len, actual_read_len);
--		return ret;
-+		return ret ?: -EINVAL;
- 	}
+-	if (pdn->parent_sfp_bus)
++	if (pdn->parent_sfp_bus) {
+ 		rep_data->upstream_sfp_name = kstrdup(sfp_get_name(pdn->parent_sfp_bus),
+ 						      GFP_KERNEL);
++		if (!rep_data->upstream_sfp_name) {
++			ret = -ENOMEM;
++			goto err_free_drvname;
++		}
++	}
  
- 	input_rep_type = FIELD_GET(HIDSPI_IN_REP_BDY_HDR_REP_TYPE, reset_response);
--- 
-2.53.0
-
+-	if (phydev->sfp_bus)
++	if (phydev->sfp_bus) {
+ 		rep_data->downstream_sfp_name = kstrdup(sfp_get_name(phydev->sfp_bus),
+ 							GFP_KERNEL);
++		if (!rep_data->downstream_sfp_name) {
++			ret = -ENOMEM;
++			goto err_free_upstream_sfp;
++		}
++	}
+ 
+ 	return 0;
++
++err_free_upstream_sfp:
++	kfree(rep_data->upstream_sfp_name);
++err_free_drvname:
++	kfree(rep_data->drvname);
++err_free_name:
++	kfree(rep_data->name);
++	return ret;
+ }
+ 
+ static int phy_fill_reply(struct sk_buff *skb,
 
 
 
