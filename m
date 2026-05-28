@@ -1,59 +1,59 @@
-Return-Path: <stable+bounces-255388-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-255972-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id eCXsIDeiGGqblggAu9opvQ
-	(envelope-from <stable+bounces-255388-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:14:47 +0200
+	id WHWdDSCoGGp+lwgAu9opvQ
+	(envelope-from <stable+bounces-255972-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:40:00 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id D90BF5F825D
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:14:46 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id A0A565F9442
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:39:58 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id E2BAE3252F54
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 20:06:10 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id C29F4313F9A3
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 20:33:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 983C02F691F;
-	Thu, 28 May 2026 20:06:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3D50D3346BE;
+	Thu, 28 May 2026 20:33:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FcVsO5LC"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="F7dpG6Ai"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 612B2339866;
-	Thu, 28 May 2026 20:06:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 03051223328;
+	Thu, 28 May 2026 20:33:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779998770; cv=none; b=BY3nv8+PpZOsjaOI1zyWKnhE3CFNE0NfQTrqUA/y5VKBVe8XwqtXmhvx5bJAVD6I2TkvhJKNJmWxc4fFjoVYVFu1F8gKDpXo5d54BMAWqMXGOggSnZzzaDyn/+36yTSEOHwF9LZBHVXrnkFjnkiYmYkKnMsqVjiU8jiiFxjXVk4=
+	t=1780000395; cv=none; b=g6E8cE1zO4TuQ/WUD91JG74J2yEc1UAif+8xGotz//HthNRNbgubmwHTUYOkt0r8MZzEtvQGYdrM7Xlovqk99p/P45W34FBVLJlapeg/FgCelY1TV7wslcJEpBQlRi/w0rqneclpECYu0lOhkoxCZCz0pMnvWQ+08QD5XIIqe/k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779998770; c=relaxed/simple;
-	bh=Amy3hkgbaa6kXT7N27XVz3DKswKbP0C+Ch4jQu+zrEw=;
+	s=arc-20240116; t=1780000395; c=relaxed/simple;
+	bh=VUpgoCm0mrsL7o2t3QzO+wfWpITukjc9g6+SroksGYo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=eMKZhYXoSUoNSsjMZF6SO5Cnx6AMNgqRSxTfT6OCKb4x2TmeXY7zQVgI5ohINkBhL+d3dmDbYxlTTUbUjsdec1gdQCiyLY4SpLEOPwZnzFHQIO93uxs+XwlrxLoCSyesn0goko1mY7f6zwJwpONMz1a0R/fN/T2BMA5pneu9b40=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FcVsO5LC; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BFB301F000E9;
-	Thu, 28 May 2026 20:06:08 +0000 (UTC)
+	 MIME-Version; b=Z+8qBb32VN2QuD8sfVknHMGz0y7bjkIasmf00+mQJEKUHrPQzPi2y1a/ctfNw2Daya+LagWyyTUq0SafvTChz+vqAetl2Sa5ZS3Qr1/JR9ObROxkCdC8Z4wyb5EMQ3GIBEyPg278Bnmv3Jp+mtt7dN8Csgy0k6IWb77qkRfON1Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=F7dpG6Ai; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 614811F000E9;
+	Thu, 28 May 2026 20:33:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779998769;
-	bh=AZ8dswdZvFjPjuBE5upF+oiub8n8b9cCwVgAt5CR0zI=;
+	s=korg; t=1780000393;
+	bh=/QzahyJtnyC5xAeL9QXoiLMU1mjlnegM2FtQmR8BvtU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=FcVsO5LC8jVi82ySEICxUVc4hZpItAbmsYinB+azBDQox5EG/R/kGsU2zNp1z95pd
-	 5RqR4dDy2osuOvmEoSn7P7aOSKsLShwIndsu2A54m7Lbz6eN3jYyaTEsU8LLyJPFjr
-	 yT4eAXmwvI0PuCOgEWGdBgsADwDSBEkMFEuCzm6E=
+	b=F7dpG6Ai82cJzuyg/yabbEHnbo//GEmOq+ciGCi+4d7rlA9CQDcrVwwReyYalmmM6
+	 2jz4N2iS+L9HCiBE32hMJsehdZisfPFmTgcmIUU6xGgLGT8+IpvvkAVa1WHixGxAeJ
+	 f1JuwT5OH8vAQ+2Go9e7orSHafgxDc81/czvQeLs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Linus Walleij <linusw@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
+	Ian Rogers <irogers@google.com>,
+	Namhyung Kim <namhyung@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 7.0 274/461] net: ethernet: cortina: Carry over frag counter
+Subject: [PATCH 6.12 029/272] perf parse-events: Expose/rename config_term_name
 Date: Thu, 28 May 2026 21:46:43 +0200
-Message-ID: <20260528194655.102448941@linuxfoundation.org>
+Message-ID: <20260528194630.204788372@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260528194646.819809818@linuxfoundation.org>
-References: <20260528194646.819809818@linuxfoundation.org>
+In-Reply-To: <20260528194629.379955525@linuxfoundation.org>
+References: <20260528194629.379955525@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -68,7 +68,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
@@ -78,7 +78,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-255388-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-255972-lists,stable=lfdr.de];
 	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
@@ -89,126 +89,126 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	TAGGED_RCPT(0.00)[stable];
 	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim,msgid.link:url,sashiko.dev:url]
-X-Rspamd-Queue-Id: D90BF5F825D
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim]
+X-Rspamd-Queue-Id: A0A565F9442
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-7.0-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Linus Walleij <linusw@kernel.org>
+From: Ian Rogers <irogers@google.com>
 
-[ Upstream commit ebd8ec2b309e3a447851b456ccaf8fb39f3661e7 ]
+[ Upstream commit d2f3ecb0ca2099d13bf8bf69219214c1425dc453 ]
 
-The gmac_rx() NAPI poll function assembles packets in an
-SKB from a ring buffer.
+Expose config_term_name as parse_events__term_type_str so that PMUs not
+in pmu.c may access it.
 
-If the ring buffer gets completely emptied during a poll cycle,
-we exit gmac_rx(), but the packet is not yet completely
-assembled in the SKB, yet the fragment counter frag_nr is
-reset to zero on the next invocation.
-
-Solve this by making the RX fragment counter a part of the
-port struct, and carry it over between invocations.
-
-Reset the fragment counter only right after calling
-napi_gro_frags(), on error (after calling napi_free_frags())
-or if stopping the port.
-
-Reset it in some place where not strictly necessary just to
-emphasize what is going on.
-
-This was found by Sashiko during normal patch review.
-
-Fixes: 4d5ae32f5e1e ("net: ethernet: Add a driver for Gemini gigabit ethernet")
-Link: https://sashiko.dev/#/patchset/20260505-gemini-ethernet-fix-v2-1-997c31d06079%40kernel.org
-Signed-off-by: Linus Walleij <linusw@kernel.org>
-Link: https://patch.msgid.link/20260509-gemini-ethernet-fixes-v1-3-6c5d20ddc35b@kernel.org
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Signed-off-by: Ian Rogers <irogers@google.com>
+Acked-by: Namhyung Kim <namhyung@kernel.org>
+Link: https://lore.kernel.org/r/20241002032016.333748-4-irogers@google.com
+Signed-off-by: Namhyung Kim <namhyung@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/cortina/gemini.c | 9 ++++++++-
- 1 file changed, 8 insertions(+), 1 deletion(-)
+ tools/perf/util/parse-events.c | 20 +++++++++++---------
+ tools/perf/util/parse-events.h |  2 ++
+ 2 files changed, 13 insertions(+), 9 deletions(-)
 
-diff --git a/drivers/net/ethernet/cortina/gemini.c b/drivers/net/ethernet/cortina/gemini.c
-index e8d973b8fb0c3..ccd14a386e3b9 100644
---- a/drivers/net/ethernet/cortina/gemini.c
-+++ b/drivers/net/ethernet/cortina/gemini.c
-@@ -123,6 +123,7 @@ struct gemini_ethernet_port {
- 	struct hrtimer		rx_coalesce_timer;
- 	unsigned int		rx_coalesce_nsecs;
- 	struct sk_buff		*rx_skb;
-+	unsigned int		rx_frag_nr;
+diff --git a/tools/perf/util/parse-events.c b/tools/perf/util/parse-events.c
+index fcc4dab618bee..3d221608b13a5 100644
+--- a/tools/perf/util/parse-events.c
++++ b/tools/perf/util/parse-events.c
+@@ -801,7 +801,7 @@ static int check_type_val(struct parse_events_term *term,
  
- 	unsigned int		freeq_refill;
- 	struct gmac_txq		txq[TX_QUEUE_NUM];
-@@ -1444,6 +1445,7 @@ static unsigned int gmac_rx(struct net_device *netdev, unsigned int budget)
- 	unsigned short m = (1 << port->rxq_order) - 1;
- 	struct gemini_ethernet *geth = port->geth;
- 	void __iomem *ptr_reg = port->rxq_rwptr;
-+	unsigned int frag_nr = port->rx_frag_nr;
- 	struct sk_buff *skb = port->rx_skb;
- 	unsigned int frame_len, frag_len;
- 	struct gmac_rxdesc *rx = NULL;
-@@ -1457,7 +1459,6 @@ static unsigned int gmac_rx(struct net_device *netdev, unsigned int budget)
- 	unsigned short r, w;
- 	union dma_rwptr rw;
- 	dma_addr_t mapping;
--	int frag_nr = 0;
+ static bool config_term_shrinked;
  
- 	spin_lock_irqsave(&geth->irq_lock, flags);
- 	rw.bits32 = readl(ptr_reg);
-@@ -1497,6 +1498,7 @@ static unsigned int gmac_rx(struct net_device *netdev, unsigned int budget)
- 				napi_free_frags(&port->napi);
- 				port->stats.rx_dropped++;
- 				skb = NULL;
-+				frag_nr = 0;
- 			}
- 			continue;
- 		}
-@@ -1507,6 +1509,7 @@ static unsigned int gmac_rx(struct net_device *netdev, unsigned int budget)
- 				napi_free_frags(&port->napi);
- 				port->stats.rx_dropped++;
- 				skb = NULL;
-+				frag_nr = 0;
- 			}
+-static const char *config_term_name(enum parse_events__term_type term_type)
++const char *parse_events__term_type_str(enum parse_events__term_type term_type)
+ {
+ 	/*
+ 	 * Update according to parse-events.l
+@@ -887,7 +887,7 @@ config_term_avail(enum parse_events__term_type term_type, struct parse_events_er
  
- 			skb = gmac_skb_if_good_frame(port, word0, frame_len);
-@@ -1541,6 +1544,7 @@ static unsigned int gmac_rx(struct net_device *netdev, unsigned int budget)
- 		if (word3.bits32 & EOF_BIT) {
- 			napi_gro_frags(&port->napi);
- 			skb = NULL;
-+			frag_nr = 0;
- 			--budget;
- 		}
- 		continue;
-@@ -1549,6 +1553,7 @@ static unsigned int gmac_rx(struct net_device *netdev, unsigned int budget)
- 		if (skb) {
- 			napi_free_frags(&port->napi);
- 			skb = NULL;
-+			frag_nr = 0;
- 		}
- 
- 		if (mapping)
-@@ -1558,6 +1563,7 @@ static unsigned int gmac_rx(struct net_device *netdev, unsigned int budget)
+ 		/* term_type is validated so indexing is safe */
+ 		if (asprintf(&err_str, "'%s' is not usable in 'perf stat'",
+-			     config_term_name(term_type)) >= 0)
++			     parse_events__term_type_str(term_type)) >= 0)
+ 			parse_events_error__handle(err, -1, err_str, NULL);
+ 		return false;
  	}
- 
- 	port->rx_skb = skb;
-+	port->rx_frag_nr = frag_nr;
- 	writew(r, ptr_reg);
- 	return budget;
+@@ -1011,7 +1011,7 @@ do {									   \
+ 	case PARSE_EVENTS__TERM_TYPE_HARDWARE:
+ 	default:
+ 		parse_events_error__handle(err, term->err_term,
+-					strdup(config_term_name(term->type_term)),
++					strdup(parse_events__term_type_str(term->type_term)),
+ 					parse_events_formats_error_string(NULL));
+ 		return -EINVAL;
+ 	}
+@@ -1135,8 +1135,9 @@ static int config_term_tracepoint(struct perf_event_attr *attr,
+ 	default:
+ 		if (err) {
+ 			parse_events_error__handle(err, term->err_term,
+-						   strdup(config_term_name(term->type_term)),
+-				strdup("valid terms: call-graph,stack-size\n"));
++					strdup(parse_events__term_type_str(term->type_term)),
++					strdup("valid terms: call-graph,stack-size\n")
++				);
+ 		}
+ 		return -EINVAL;
+ 	}
+@@ -2581,7 +2582,7 @@ int parse_events_term__num(struct parse_events_term **term,
+ 	struct parse_events_term temp = {
+ 		.type_val  = PARSE_EVENTS__TERM_TYPE_NUM,
+ 		.type_term = type_term,
+-		.config    = config ? : strdup(config_term_name(type_term)),
++		.config    = config ? : strdup(parse_events__term_type_str(type_term)),
+ 		.no_value  = no_value,
+ 		.err_term  = loc_term ? loc_term->first_column : 0,
+ 		.err_val   = loc_val  ? loc_val->first_column  : 0,
+@@ -2615,7 +2616,7 @@ int parse_events_term__term(struct parse_events_term **term,
+ 			    void *loc_term, void *loc_val)
+ {
+ 	return parse_events_term__str(term, term_lhs, NULL,
+-				      strdup(config_term_name(term_rhs)),
++				      strdup(parse_events__term_type_str(term_rhs)),
+ 				      loc_term, loc_val);
  }
-@@ -1886,6 +1892,7 @@ static int gmac_stop(struct net_device *netdev)
- 	gmac_stop_dma(port);
- 	napi_disable(&port->napi);
- 	port->rx_skb = NULL;
-+	port->rx_frag_nr = 0;
  
- 	gmac_enable_irq(netdev, 0);
- 	gmac_cleanup_rxq(netdev);
+@@ -2722,7 +2723,8 @@ int parse_events_terms__to_strbuf(const struct parse_events_terms *terms, struct
+ 				if (ret < 0)
+ 					return ret;
+ 			} else if ((unsigned int)term->type_term < __PARSE_EVENTS__TERM_TYPE_NR) {
+-				ret = strbuf_addf(sb, "%s=", config_term_name(term->type_term));
++				ret = strbuf_addf(sb, "%s=",
++						  parse_events__term_type_str(term->type_term));
+ 				if (ret < 0)
+ 					return ret;
+ 			}
+@@ -2742,7 +2744,7 @@ static void config_terms_list(char *buf, size_t buf_sz)
+ 
+ 	buf[0] = '\0';
+ 	for (i = 0; i < __PARSE_EVENTS__TERM_TYPE_NR; i++) {
+-		const char *name = config_term_name(i);
++		const char *name = parse_events__term_type_str(i);
+ 
+ 		if (!config_term_avail(i, NULL))
+ 			continue;
+diff --git a/tools/perf/util/parse-events.h b/tools/perf/util/parse-events.h
+index 2b52f8d6aa29a..ac1feaaeb8d5d 100644
+--- a/tools/perf/util/parse-events.h
++++ b/tools/perf/util/parse-events.h
+@@ -168,6 +168,8 @@ struct parse_events_state {
+ 	bool			   wild_card_pmus;
+ };
+ 
++const char *parse_events__term_type_str(enum parse_events__term_type term_type);
++
+ bool parse_events__filter_pmu(const struct parse_events_state *parse_state,
+ 			      const struct perf_pmu *pmu);
+ void parse_events__shrink_config_terms(void);
 -- 
 2.53.0
 
