@@ -1,59 +1,60 @@
-Return-Path: <stable+bounces-255678-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-255278-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 2FpyKGSjGGrClggAu9opvQ
-	(envelope-from <stable+bounces-255678-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:19:48 +0200
+	id CLzcCfafGGpvlggAu9opvQ
+	(envelope-from <stable+bounces-255278-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:05:10 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 656B05F864A
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:19:48 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7EA865F7CCF
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:05:09 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id AEA8C3002B2F
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 20:19:47 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id C2F6A306297C
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 20:01:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 40C122D1303;
-	Thu, 28 May 2026 20:19:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E14C53E3147;
+	Thu, 28 May 2026 20:01:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jL2RAFkR"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kVbx1PUS"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CD5A42580D7;
-	Thu, 28 May 2026 20:19:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BAC5926B973;
+	Thu, 28 May 2026 20:00:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779999587; cv=none; b=s9j58fT5RrEeTU/nt6lcm2ZPxGIPf5dAhdcqekSY5BbNAhOKkSr8g8vF5pmfyliiKXNiToX3lj0RHc/tHS/mGKEGqhIl1CTgAn7WJITx6nMWX7VLnyftkXTSlhAt5n3+CP8pe1ICOBwn9GHnn7/1swaNYHdME9RMrLxB15dPc8k=
+	t=1779998460; cv=none; b=mdGtPQAgglqtcXLZxmDd6tHVXQDCmO1KLIoGVwhiIYYtGLt42z6cyxrGFT14B2vEGZFcPP6Xd5zB8n7ifnHyvgmFBWHOHGGrXOpDabe4hfYIS2GZt0u7tmUgAoPVvclpsAEQSmm6zh7t++yzuddt1xrzbfJaKCsnvb+yLUEyi8s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779999587; c=relaxed/simple;
-	bh=61W0ZDQ71nTCSd3rpeRzcLrv1Xo0pvnpENYUyx+nBfI=;
+	s=arc-20240116; t=1779998460; c=relaxed/simple;
+	bh=qSMEBh7K4FvVN7DZX6fWHS666Bm4g/PNb3c3eN8wuOY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=cZgSxG7AIirjScrsFpWPdq9RV6kGX9LY0SmrTL2UoGzRWih4bpOC2QGyivroadFRYpFdBBiQITfV91Da3qCWGU+827z0ZeqmgpPlPrzScb0GeVlu8FkvQb6MVKeYyP/JVT9a4F95iuTcI7iYhJDI+XfRZSuDxeUx66eOYTzUq7k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jL2RAFkR; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 37C531F000E9;
-	Thu, 28 May 2026 20:19:45 +0000 (UTC)
+	 MIME-Version; b=TDsNbWCTN0EVxW/Qe90gZE3iGveXu2PudUv516G3e+4psMxyDjJhjMYqkTlPLfjgDqVxWPmdkBK86kcNGJtmZmJ2Hi2pXdXN6JUcZQB7dfleQF3f5VTNXibwx4PqNIYqpoeLt9kxPf/L6MCj2aVi/BUZ2H62xJZj+6hQ7OYb3Ao=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kVbx1PUS; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1F7C91F000E9;
+	Thu, 28 May 2026 20:00:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779999585;
-	bh=PnKVXu+bnSRPpug/wMwLt5zvkZQzhXIRytqsO1SGVy8=;
+	s=korg; t=1779998459;
+	bh=tfyY893uwoSph5S/cwcZ74rctLC1UDVQRFOgeaqDNpE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=jL2RAFkRfYZQ/vjM9gs2U0t9g6M+9DIw2tlFtOzFT1RxJwO79EF3XMzrG8CsZcRss
-	 Wej/c+rwfUsW6h32yoqOMTWce8AM3pUjbKwksUn9AZs1VR2jXRil5KAfpOT05epZKe
-	 A8m79hfQcRRm619UcIyFzxqsRzPQ2pXAxEUJmMgg=
+	b=kVbx1PUSkvpVPPnzxebyacFOvuwNuCV5VAmezRjFIRtI+2AkbmBlYHpGWn57HV828
+	 xkNRCcy7msKGqpgTNzYvCJZSD1zA07SivR+C/MyJSz1mMgQlCnsO7rHQy9cGnq5iIZ
+	 R9k8uKDzM7Uynf48toJuVMpCrF7L4Dmwnwu/kQoY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Menglong Dong <dongml2@chinatelecom.cn>,
-	"Masami Hiramatsu (Google)" <mhiramat@kernel.org>,
+	Xianwei Zhao <xianwei.zhao@amlogic.com>,
+	Neil Armstrong <neil.armstrong@linaro.org>,
+	Linus Walleij <linusw@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 072/377] tracing: fprobe: use ftrace if CONFIG_DYNAMIC_FTRACE_WITH_ARGS
+Subject: [PATCH 7.0 181/461] pinctrl: meson: amlogic-a4: fix deadlock issue
 Date: Thu, 28 May 2026 21:45:10 +0200
-Message-ID: <20260528194640.449942481@linuxfoundation.org>
+Message-ID: <20260528194652.312389312@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260528194638.371537336@linuxfoundation.org>
-References: <20260528194638.371537336@linuxfoundation.org>
+In-Reply-To: <20260528194646.819809818@linuxfoundation.org>
+References: <20260528194646.819809818@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -68,139 +69,92 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-255278-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-255678-lists,stable=lfdr.de];
-	TO_DN_SOME(0.00)[];
-	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,chinatelecom.cn:email]
-X-Rspamd-Queue-Id: 656B05F864A
+	TO_DN_SOME(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_SEVEN(0.00)[7];
+	MID_RHS_MATCH_FROM(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linaro.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,amlogic.com:email]
+X-Rspamd-Queue-Id: 7EA865F7CCF
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+7.0-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Menglong Dong <menglong8.dong@gmail.com>
+From: Xianwei Zhao <xianwei.zhao@amlogic.com>
 
-[ Upstream commit cd06078a38aaedfebbf8fa0c009da0f99f4473fb ]
+[ Upstream commit e72ce029810390eb987a036fb2c8a5da9a23b685 ]
 
-For now, we will use ftrace for the fprobe if fp->exit_handler not exists
-and CONFIG_DYNAMIC_FTRACE_WITH_REGS is enabled.
+Accessing the pinconf-pins sysfs node may deadlock.
 
-However, CONFIG_DYNAMIC_FTRACE_WITH_REGS is not supported by some arch,
-such as arm. What we need in the fprobe is the function arguments, so we
-can use ftrace for fprobe if CONFIG_DYNAMIC_FTRACE_WITH_ARGS is enabled.
+pinconf_pins_show() holds pctldev->mutex, and the platform driver
+calls pinctrl_find_gpio_range_from_pin(), which tries to acquire
+the same mutex again, leading to a deadlock.
 
-Therefore, use ftrace if CONFIG_DYNAMIC_FTRACE_WITH_REGS or
-CONFIG_DYNAMIC_FTRACE_WITH_ARGS enabled.
+Use pinctrl_find_gpio_range_from_pin_nolock() to fix this issue.
 
-Link: https://lore.kernel.org/all/20251103063434.47388-1-dongml2@chinatelecom.cn/
-
-Signed-off-by: Menglong Dong <dongml2@chinatelecom.cn>
-Signed-off-by: Masami Hiramatsu (Google) <mhiramat@kernel.org>
-Stable-dep-of: 0ac0058a74ac ("tracing/fprobe: Check the same type fprobe on table as the unregistered one")
+Fixes: 6e9be3abb78c ("pinctrl: Add driver support for Amlogic SoCs")
+Signed-off-by: Xianwei Zhao <xianwei.zhao@amlogic.com>
+Reviewed-by: Neil Armstrong <neil.armstrong@linaro.org>
+Signed-off-by: Linus Walleij <linusw@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- kernel/trace/fprobe.c |   32 ++++++++++++++++++++++----------
- 1 file changed, 22 insertions(+), 10 deletions(-)
+ drivers/pinctrl/meson/pinctrl-amlogic-a4.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
---- a/kernel/trace/fprobe.c
-+++ b/kernel/trace/fprobe.c
-@@ -45,6 +45,7 @@
- static struct hlist_head fprobe_table[FPROBE_TABLE_SIZE];
- static struct rhltable fprobe_ip_table;
- static DEFINE_MUTEX(fprobe_mutex);
-+static struct fgraph_ops fprobe_graph_ops;
- 
- static u32 fprobe_node_hashfn(const void *data, u32 len, u32 seed)
+diff --git a/drivers/pinctrl/meson/pinctrl-amlogic-a4.c b/drivers/pinctrl/meson/pinctrl-amlogic-a4.c
+index e2293a872dcb7..35d27626a336b 100644
+--- a/drivers/pinctrl/meson/pinctrl-amlogic-a4.c
++++ b/drivers/pinctrl/meson/pinctrl-amlogic-a4.c
+@@ -292,7 +292,7 @@ static int aml_calc_reg_and_bit(struct pinctrl_gpio_range *range,
+ static int aml_pinconf_get_pull(struct aml_pinctrl *info, unsigned int pin)
  {
-@@ -259,7 +260,7 @@ static inline int __fprobe_kprobe_handle
- 	return ret;
- }
- 
--#ifdef CONFIG_DYNAMIC_FTRACE_WITH_REGS
-+#if defined(CONFIG_DYNAMIC_FTRACE_WITH_ARGS) || defined(CONFIG_DYNAMIC_FTRACE_WITH_REGS)
- /* ftrace_ops callback, this processes fprobes which have only entry_handler. */
- static void fprobe_ftrace_entry(unsigned long ip, unsigned long parent_ip,
- 	struct ftrace_ops *ops, struct ftrace_regs *fregs)
-@@ -300,7 +301,7 @@ NOKPROBE_SYMBOL(fprobe_ftrace_entry);
- 
- static struct ftrace_ops fprobe_ftrace_ops = {
- 	.func	= fprobe_ftrace_entry,
--	.flags	= FTRACE_OPS_FL_SAVE_REGS,
-+	.flags	= FTRACE_OPS_FL_SAVE_ARGS,
- };
- static int fprobe_ftrace_active;
- 
-@@ -341,6 +342,15 @@ static bool fprobe_is_ftrace(struct fpro
+ 	struct pinctrl_gpio_range *range =
+-			 pinctrl_find_gpio_range_from_pin(info->pctl, pin);
++			 pinctrl_find_gpio_range_from_pin_nolock(info->pctl, pin);
+ 	struct aml_gpio_bank *bank = gpio_chip_to_bank(range->gc);
+ 	unsigned int reg, bit, val;
+ 	int ret, conf;
+@@ -326,7 +326,7 @@ static int aml_pinconf_get_drive_strength(struct aml_pinctrl *info,
+ 					  u16 *drive_strength_ua)
  {
- 	return !fp->exit_handler;
- }
-+
-+#ifdef CONFIG_MODULES
-+static void fprobe_set_ips(unsigned long *ips, unsigned int cnt, int remove,
-+			   int reset)
-+{
-+	ftrace_set_filter_ips(&fprobe_graph_ops.ops, ips, cnt, remove, reset);
-+	ftrace_set_filter_ips(&fprobe_ftrace_ops, ips, cnt, remove, reset);
-+}
-+#endif
- #else
- static int fprobe_ftrace_add_ips(unsigned long *addrs, int num)
+ 	struct pinctrl_gpio_range *range =
+-			 pinctrl_find_gpio_range_from_pin(info->pctl, pin);
++			 pinctrl_find_gpio_range_from_pin_nolock(info->pctl, pin);
+ 	struct aml_gpio_bank *bank = gpio_chip_to_bank(range->gc);
+ 	unsigned int reg, bit;
+ 	unsigned int val;
+@@ -365,7 +365,7 @@ static int aml_pinconf_get_gpio_bit(struct aml_pinctrl *info,
+ 				    unsigned int reg_type)
  {
-@@ -355,7 +365,15 @@ static bool fprobe_is_ftrace(struct fpro
- {
- 	return false;
- }
-+
-+#ifdef CONFIG_MODULES
-+static void fprobe_set_ips(unsigned long *ips, unsigned int cnt, int remove,
-+			   int reset)
-+{
-+	ftrace_set_filter_ips(&fprobe_graph_ops.ops, ips, cnt, remove, reset);
-+}
- #endif
-+#endif /* !CONFIG_DYNAMIC_FTRACE_WITH_ARGS && !CONFIG_DYNAMIC_FTRACE_WITH_REGS */
- 
- /* fgraph_ops callback, this processes fprobes which have exit_handler. */
- static int fprobe_fgraph_entry(struct ftrace_graph_ent *trace, struct fgraph_ops *gops,
-@@ -601,14 +619,8 @@ static int fprobe_module_callback(struct
- 	} while (node == ERR_PTR(-EAGAIN));
- 	rhashtable_walk_exit(&iter);
- 
--	if (alist.index > 0) {
--		ftrace_set_filter_ips(&fprobe_graph_ops.ops,
--				      alist.addrs, alist.index, 1, 0);
--#ifdef CONFIG_DYNAMIC_FTRACE_WITH_REGS
--		ftrace_set_filter_ips(&fprobe_ftrace_ops,
--				      alist.addrs, alist.index, 1, 0);
--#endif
--	}
-+	if (alist.index > 0)
-+		fprobe_set_ips(alist.addrs, alist.index, 1, 0);
- 	mutex_unlock(&fprobe_mutex);
- 
- 	kfree(alist.addrs);
+ 	struct pinctrl_gpio_range *range =
+-			 pinctrl_find_gpio_range_from_pin(info->pctl, pin);
++			 pinctrl_find_gpio_range_from_pin_nolock(info->pctl, pin);
+ 	struct aml_gpio_bank *bank = gpio_chip_to_bank(range->gc);
+ 	unsigned int reg, bit, val;
+ 	int ret;
+-- 
+2.53.0
+
 
 
 
