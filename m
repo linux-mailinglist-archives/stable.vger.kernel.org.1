@@ -1,61 +1,60 @@
-Return-Path: <stable+bounces-255627-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-255628-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id WJmcIRqkGGrClggAu9opvQ
-	(envelope-from <stable+bounces-255627-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:22:50 +0200
+	id aO/2KV6jGGrClggAu9opvQ
+	(envelope-from <stable+bounces-255628-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:19:42 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 44EF65F87FB
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:22:50 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id BBCA85F863E
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:19:40 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 7F46A304FB73
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 20:17:23 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id B4077304DACC
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 20:17:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E3BFA2DF6E6;
-	Thu, 28 May 2026 20:17:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A0D832D6E5C;
+	Thu, 28 May 2026 20:17:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VAudxPiO"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XkNENj4j"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A59A62580D7;
-	Thu, 28 May 2026 20:17:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 694BA24A047;
+	Thu, 28 May 2026 20:17:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779999442; cv=none; b=VubTNbulcoxlXOfhac2G6phowh+MR6DyGgOOwb5kLqC8Z+45jMXBrKOfIjJmb05B3nsySmQhbMsIAiZi/M+vBxKIzrZobvfvWv14bBjD43n+GHHC47WmZqPj3pgreBUgKaNSNVkhbu5DX+sDQPDlHkYdJePQasQoUZOo7kT+w6c=
+	t=1779999445; cv=none; b=Agg4el5/rcitG7liKHvA6OyapCBKjN1vvDsKEj7mwWD7svgW+ZDATyJkZCnl041+bqs/nvR2DXTNcOLEp5DBxWG3iRRrs/gbMyacIfM5B4p3v0ihwQ9696QiU+DtO1BTCZ4pJXo4rawbH5+T2ZHYrl//g3ZfDWepoTPGRTlF/20=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779999442; c=relaxed/simple;
-	bh=/kziza14wGb9vC4Mk/f30Dn/2/8ds51ln+j7rGtJ/nE=;
+	s=arc-20240116; t=1779999445; c=relaxed/simple;
+	bh=PWhRXKTnbPmY15m2KRsIo1i/1zueOvg3T39XH/VDmuc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=R5JiVq3/9+ZT+OPZRiKzsaDrVq1LwM5tI1c6Mjwl7GwG1uBrGhy+NOEXMIEZ4xQW4Y6oFqLQECW6KIKb7UDj93QOQwWVoz19z4E2LN3fFD6zF6GtJuBUExva8QqGP7+LKqaFdSHl5UKPmd0CpeafNCmHZ0NkyUFMN3GzrEgeP0A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VAudxPiO; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 172271F000E9;
-	Thu, 28 May 2026 20:17:20 +0000 (UTC)
+	 MIME-Version:Content-Type; b=V63MpV9ym/TvXNQuHkd4yhUVG3BuPDbd3fPYfWyogpDhaTJqOtdKbJsc6j8obcI7tI3y8as05DdV7bTyJ26MJnme0P+APo3bqfJgRe6anqs06lli+tUO2ktAvjTgKWJqaq44S0RQ2KYQVaOT4bQzXv9yWVbVPnDgNw9t99rM8Rk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XkNENj4j; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D095B1F000E9;
+	Thu, 28 May 2026 20:17:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779999441;
-	bh=EjxlT345a55+7RAf5JrkzESBFVGAnHLLM6E0fJbjfA4=;
+	s=korg; t=1779999444;
+	bh=E8T1pkib6KzkgA6zHDxBbCz3Xz7wJDOjcvuqPcpeITU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=VAudxPiOY+6upvu8ezoUgZWUsz304Yx9CM2Mu3ZE64KsBOaCX4uL6A4beOKkkibh6
-	 Xz0mtppaDqVImgreSUXQlr0p8Ba7SbrOm/+Ht5hA5kWVzK7JkyDMsmx9qrX66vuRBd
-	 g1GUyKi3AMcsB2gbrNLhbdL/YtP7J+zAtuj9X0L8=
+	b=XkNENj4jUgB0So74On+QZUtScp+6gjJAfzTRc/dJ3CxFxJOJoc3RaG38F+3AXmNQU
+	 YYRpeY5FrVRavbtg9yFhMIA5O6hFlfw2DP8655M1jfUzIfeCkX4oMLFT+usOgrRNuO
+	 i6BzPbGRBBeR6ifs4A/Om4T/cLdXRj93t3gopYB4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable@kernel.org,
-	Yuan Tan <yuantan098@gmail.com>,
-	Yifan Wu <yifanwucs@gmail.com>,
-	Juefei Pu <tomapufckgml@gmail.com>,
-	Xin Liu <bird@lzu.edu.cn>,
-	Nan Li <tonanli66@gmail.com>,
-	Ren Wei <n05ec@lzu.edu.cn>,
+	Yizhou Zhao <zhaoyz24@mails.tsinghua.edu.cn>,
+	Yuxiang Yang <yangyx22@mails.tsinghua.edu.cn>,
+	Xuewei Feng <fengxw06@126.com>,
+	Qi Li <qli01@tsinghua.edu.cn>,
+	Ke Xu <xuke@tsinghua.edu.cn>,
+	Fernando Fernandez Mancera <fmancera@suse.de>,
 	Pablo Neira Ayuso <pablo@netfilter.org>
-Subject: [PATCH 6.18 067/377] netfilter: ipset: stop hash:* range iteration at end
-Date: Thu, 28 May 2026 21:45:05 +0200
-Message-ID: <20260528194640.302517584@linuxfoundation.org>
+Subject: [PATCH 6.18 068/377] netfilter: nft_inner: Fix IPv6 inner_thoff desync
+Date: Thu, 28 May 2026 21:45:06 +0200
+Message-ID: <20260528194640.331221793@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
 In-Reply-To: <20260528194638.371537336@linuxfoundation.org>
 References: <20260528194638.371537336@linuxfoundation.org>
@@ -68,36 +67,36 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,kernel.org,gmail.com,lzu.edu.cn,netfilter.org];
-	TAGGED_FROM(0.00)[bounces-255627-lists,stable=lfdr.de];
-	PRECEDENCE_BULK(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,mails.tsinghua.edu.cn,126.com,tsinghua.edu.cn,suse.de,netfilter.org];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
 	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-255628-lists,stable=lfdr.de];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	RCVD_TLS_LAST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[11];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
+	FROM_HAS_DN(0.00)[];
 	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[netfilter.org:email,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,lzu.edu.cn:email]
-X-Rspamd-Queue-Id: 44EF65F87FB
+	NEURAL_HAM(-0.00)[-1.000];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	MID_RHS_MATCH_FROM(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_SEVEN(0.00)[10];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,suse.de:email,netfilter.org:email,z.ai:url,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo]
+X-Rspamd-Queue-Id: BBCA85F863E
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
@@ -105,131 +104,51 @@ X-Rspamd-Server: lfdr
 
 ------------------
 
-From: Nan Li <tonanli66@gmail.com>
+From: Yizhou Zhao <zhaoyz24@mails.tsinghua.edu.cn>
 
-commit 0d3a282ab5f165fc207ff49ea5b6ad8f54616bd6 upstream.
+commit b6a91f68ebfed9c38e0e9150f58a9b85da07181c upstream.
 
-The following hash set variants:
+In nft_inner_parse_l2l3(), when processing inner IPv6 packets,
+ipv6_find_hdr() correctly computes the transport header offset
+traversing all extension headers, but the result is immediately
+overwritten with nhoff + sizeof(_ip6h) (40 bytes), which only
+accounts for the IPv6 base header. This creates a desync between
+inner_thoff (wrong — points to extension header start) and l4proto
+(correct — e.g., IPPROTO_TCP), enabling transport header forgery
+and potential firewall bypass. This issue affects stable versions
+from Linux 6.2.
 
-hash:ip,mark
-hash:ip,port
-hash:ip,port,ip
-hash:ip,port,net
+For comparison, the normal (non-inner) IPv6 path correctly
+preserves ipv6_find_hdr()'s result. Removing the incorrect overwrite
+ensures that ipv6_find_hdr()'s calculated transport header offset is
+preserved, thereby fixing the desynchronization.
 
-iterate IPv4 ranges with a 32-bit iterator.
-
-The iterator must stop once the last address in the requested range has
-been processed. Advancing it once more can move the traversal state past
-the end of the request, so a later retry may continue from an unintended
-position.
-
-Handle the iterator increment explicitly at the end of the loop and stop
-once the upper bound has been processed. This keeps the existing retry
-behaviour intact for valid ranges while preventing traversal from
-continuing past the original boundary.
-
-Fixes: 48596a8ddc46 ("netfilter: ipset: Fix adding an IPv4 range containing more than 2^31 addresses")
-Cc: stable@kernel.org
-Reported-by: Yuan Tan <yuantan098@gmail.com>
-Reported-by: Yifan Wu <yifanwucs@gmail.com>
-Reported-by: Juefei Pu <tomapufckgml@gmail.com>
-Reported-by: Xin Liu <bird@lzu.edu.cn>
-Signed-off-by: Nan Li <tonanli66@gmail.com>
-Signed-off-by: Ren Wei <n05ec@lzu.edu.cn>
+Fixes: 3a07327d10a0 ("netfilter: nft_inner: support for inner tunnel header matching")
+Cc: stable@vger.kernel.org
+Reported-by: Yizhou Zhao <zhaoyz24@mails.tsinghua.edu.cn>
+Reported-by: Yuxiang Yang <yangyx22@mails.tsinghua.edu.cn>
+Reported-by: Xuewei Feng <fengxw06@126.com>
+Reported-by: Qi Li <qli01@tsinghua.edu.cn>
+Reported-by: Ke Xu <xuke@tsinghua.edu.cn>
+Assisted-by: GLM:5.1 Z.ai
+Signed-off-by: Yizhou Zhao <zhaoyz24@mails.tsinghua.edu.cn>
+Reviewed-by: Fernando Fernandez Mancera <fmancera@suse.de>
 Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/netfilter/ipset/ip_set_hash_ipmark.c    |    6 +++++-
- net/netfilter/ipset/ip_set_hash_ipport.c    |    5 ++++-
- net/netfilter/ipset/ip_set_hash_ipportip.c  |    5 ++++-
- net/netfilter/ipset/ip_set_hash_ipportnet.c |    5 ++++-
- 4 files changed, 17 insertions(+), 4 deletions(-)
+ net/netfilter/nft_inner.c |    1 -
+ 1 file changed, 1 deletion(-)
 
---- a/net/netfilter/ipset/ip_set_hash_ipmark.c
-+++ b/net/netfilter/ipset/ip_set_hash_ipmark.c
-@@ -150,7 +150,7 @@ hash_ipmark4_uadt(struct ip_set *set, st
+--- a/net/netfilter/nft_inner.c
++++ b/net/netfilter/nft_inner.c
+@@ -163,7 +163,6 @@ static int nft_inner_parse_l2l3(const st
+ 			return -1;
  
- 	if (retried)
- 		ip = ntohl(h->next.ip);
--	for (; ip <= ip_to; ip++, i++) {
-+	for (; ip <= ip_to; i++) {
- 		e.ip = htonl(ip);
- 		if (i > IPSET_MAX_RANGE) {
- 			hash_ipmark4_data_next(&h->next, &e);
-@@ -162,6 +162,10 @@ hash_ipmark4_uadt(struct ip_set *set, st
- 			return ret;
- 
- 		ret = 0;
-+
-+		if (ip == ip_to)
-+			break;
-+		ip++;
- 	}
- 	return ret;
- }
---- a/net/netfilter/ipset/ip_set_hash_ipport.c
-+++ b/net/netfilter/ipset/ip_set_hash_ipport.c
-@@ -186,7 +186,7 @@ hash_ipport4_uadt(struct ip_set *set, st
- 
- 	if (retried)
- 		ip = ntohl(h->next.ip);
--	for (; ip <= ip_to; ip++) {
-+	for (; ip <= ip_to;) {
- 		p = retried && ip == ntohl(h->next.ip) ? ntohs(h->next.port)
- 						       : port;
- 		for (; p <= port_to; p++, i++) {
-@@ -203,6 +203,9 @@ hash_ipport4_uadt(struct ip_set *set, st
- 
- 			ret = 0;
- 		}
-+		if (ip == ip_to)
-+			break;
-+		ip++;
- 	}
- 	return ret;
- }
---- a/net/netfilter/ipset/ip_set_hash_ipportip.c
-+++ b/net/netfilter/ipset/ip_set_hash_ipportip.c
-@@ -182,7 +182,7 @@ hash_ipportip4_uadt(struct ip_set *set,
- 
- 	if (retried)
- 		ip = ntohl(h->next.ip);
--	for (; ip <= ip_to; ip++) {
-+	for (; ip <= ip_to;) {
- 		p = retried && ip == ntohl(h->next.ip) ? ntohs(h->next.port)
- 						       : port;
- 		for (; p <= port_to; p++, i++) {
-@@ -199,6 +199,9 @@ hash_ipportip4_uadt(struct ip_set *set,
- 
- 			ret = 0;
- 		}
-+		if (ip == ip_to)
-+			break;
-+		ip++;
- 	}
- 	return ret;
- }
---- a/net/netfilter/ipset/ip_set_hash_ipportnet.c
-+++ b/net/netfilter/ipset/ip_set_hash_ipportnet.c
-@@ -274,7 +274,7 @@ hash_ipportnet4_uadt(struct ip_set *set,
- 		p = port;
- 		ip2 = ip2_from;
- 	}
--	for (; ip <= ip_to; ip++) {
-+	for (; ip <= ip_to;) {
- 		e.ip = htonl(ip);
- 		for (; p <= port_to; p++) {
- 			e.port = htons(p);
-@@ -298,6 +298,9 @@ hash_ipportnet4_uadt(struct ip_set *set,
- 			ip2 = ip2_from;
- 		}
- 		p = port;
-+		if (ip == ip_to)
-+			break;
-+		ip++;
- 	}
- 	return ret;
- }
+ 		if (fragoff == 0) {
+-			thoff = nhoff + sizeof(_ip6h);
+ 			ctx->flags |= NFT_PAYLOAD_CTX_INNER_TH;
+ 			ctx->inner_thoff = thoff;
+ 			ctx->l4proto = l4proto;
 
 
 
