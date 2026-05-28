@@ -1,59 +1,61 @@
-Return-Path: <stable+bounces-255523-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-255918-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id +GC/MnajGGrJlggAu9opvQ
-	(envelope-from <stable+bounces-255523-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:20:06 +0200
+	id EInQJyWnGGpolwgAu9opvQ
+	(envelope-from <stable+bounces-255918-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:35:49 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 39F2D5F869B
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:20:06 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id A2EF45F90E3
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:35:48 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id C527231970E3
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 20:12:31 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 7BB4B3041EDE
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 20:30:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CC51133F5B4;
-	Thu, 28 May 2026 20:12:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AB51431DD97;
+	Thu, 28 May 2026 20:30:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yzEjjz36"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rroxGYAB"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 98BC432ABC0;
-	Thu, 28 May 2026 20:12:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 65D7025F7B9;
+	Thu, 28 May 2026 20:30:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779999150; cv=none; b=JOi+cvm7llaC5O4qmTpakgh96f3OtqfIU2J36Uk5XrNTNLGsJkefFEwk9rS+Jyv1N+PCqNrIAalQICX/oqVxq6c5E0rpGXWFdCy3LB2ezst1ZpT7i29sHWEi82QrL/UN1KMO++1g/3EkFkR1Ukapv5X9fsXHVYmWt9E9LTeJS8E=
+	t=1780000244; cv=none; b=Dp8S0DY5TO+pU1GsC3EAdv8vS9+PZnUj6UsAJtokfv7YQUJFSwN9tVg7VGpTpfWGI5RNjuydZQK/aAYdzguZ2aQDqQf5Vjt/2mSsRXXJ7CDWDbF+/04+hwaxLYSFjZTFvuhslep4fi0b+u+CYxIil8s2lClqyEToTLlyKalILKE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779999150; c=relaxed/simple;
-	bh=qYWM7s86Hwm0+aNDPm+8IdmpL8oVjpsTGFLlCVPQP8I=;
+	s=arc-20240116; t=1780000244; c=relaxed/simple;
+	bh=ibmaIlaCDbL8FRESqkTWUSJp2Sx39U3U/HH/Zyef+aw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=RUuVo4sG8NG+nJH6CNBDKd2YBhR9lY8IeqMjzt56SLOwIii+rJCC/hxHOb0Zt3zGQxY39+1n/4dw4sE1pQPmQaYxiszWB1B6yFjdw4jYEpQpYyMf/52c8t7kyUe1HuplYje1i0Z8s/SGKnlNB7K/HXjsGEX2SOp+6eHyKPw6bhQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yzEjjz36; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0187E1F000E9;
-	Thu, 28 May 2026 20:12:28 +0000 (UTC)
+	 MIME-Version; b=fp8NV5PBFMjPkHXz16WYnAL9dkqN7n4Tn6TOtMVSvIstxVWL9cJ9IldVIyLvyWReclKKg7+WujBgx1Xk1X8ekSF/uTcZrrniHJQLYyiY+M64aNti9o5puXxHzXmLCf6UYOb3wLpoUxsdgjxFncT4cjY3W7R27QEDEPEbcLkHQe8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rroxGYAB; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C46321F000E9;
+	Thu, 28 May 2026 20:30:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779999149;
-	bh=YrXTuG+1kDhwWli3Te6rUlEGO7gW/sxYxWkqhHcQ82o=;
+	s=korg; t=1780000243;
+	bh=LRiHtIn5oKzx1Gw8YoTuQOko6Q/DTaiB2q0qDmANaBk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=yzEjjz36aWnSm0/tIYwwRM0iixWDLBubUqJDBihrpA/GrMRs17L28bHbPojzyza63
-	 RXL/8eNO3t/wn4+w5r3x9lpg7xsgDBC85aU1pcxRnDHtK7HsplZuVIPhz20VXHDgdR
-	 LIk1SBplhEjyjJvv9V49QhGjrFvMwWzhyKmbBM68=
+	b=rroxGYABFzg0CoUVorrwzJIaeDXewEQ6yDRsDGTO2KT5VWfRaGokRxpqKFmA1/Mz5
+	 ME5SXntIvvlmBhwjd45Ev07o0DjKwcBAWBNRDR0Oc4Y2ZEtrXanpaQekJURDsxiCLC
+	 uXcsREEmRmKEhs9F/9+7EwGrmx98iGtlZ6QsuDLY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Simon Horman <horms@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Michal Wajdeczko <michal.wajdeczko@intel.com>,
+	Mohanram Meenakshisundaram <mohanram.meenakshisundaram@intel.com>,
+	Shuicheng Lin <shuicheng.lin@intel.com>,
+	Rodrigo Vivi <rodrigo.vivi@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 7.0 425/461] net: shaper: annotate the data races
+Subject: [PATCH 6.18 316/377] drm/xe/vf: Fix signature of print functions
 Date: Thu, 28 May 2026 21:49:14 +0200
-Message-ID: <20260528194659.810270587@linuxfoundation.org>
+Message-ID: <20260528194647.542398166@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260528194646.819809818@linuxfoundation.org>
-References: <20260528194646.819809818@linuxfoundation.org>
+In-Reply-To: <20260528194638.371537336@linuxfoundation.org>
+References: <20260528194638.371537336@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -68,145 +70,150 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-255918-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-255523-lists,stable=lfdr.de];
-	TO_DN_SOME(0.00)[];
-	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim,msgid.link:url]
-X-Rspamd-Queue-Id: 39F2D5F869B
+	TO_DN_SOME(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_SEVEN(0.00)[8];
+	MID_RHS_MATCH_FROM(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[intel.com:email,msgid.link:url,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim]
+X-Rspamd-Queue-Id: A2EF45F90E3
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-7.0-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jakub Kicinski <kuba@kernel.org>
+From: Michal Wajdeczko <michal.wajdeczko@intel.com>
 
-[ Upstream commit a3442936dd0523277e20aaf86207c574e755c634 ]
+[ Upstream commit 9bb2f1d7e6e58b8e434ddc2048c661bf87ccdf2a ]
 
-As previously discussed we don't care about making the shaper
-state fully RCU-compliant because the hierarchy itself can't
-be dumped in one go over Netlink. Let's annotate the reads
-and writes to make that clear.
+We have plugged-in existing VF print functions into our GT debugfs
+show helper as-is, but we missed that the helper expects functions
+to return int, while they were defined as void. This can lead to
+errors being reported when CFI is enabled.
 
-The field-by-field assignments will also be useful for the
-next commit which adds explicit "valid" field (which we don't
-want to override with the current full struct assignment).
-
-Reviewed-by: Simon Horman <horms@kernel.org>
-Link: https://patch.msgid.link/20260515221325.1685455-2-kuba@kernel.org
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Stable-dep-of: b8d7519352ba ("net: shaper: rework the VALID marking (again)")
+Fixes: 63d8cb8fe3dd ("drm/xe/vf: Expose SR-IOV VF attributes to GT debugfs")
+Signed-off-by: Michal Wajdeczko <michal.wajdeczko@intel.com>
+Cc: Mohanram Meenakshisundaram <mohanram.meenakshisundaram@intel.com>
+Reviewed-by: Shuicheng Lin <shuicheng.lin@intel.com>
+Link: https://patch.msgid.link/20260514155726.7165-1-michal.wajdeczko@intel.com
+(cherry picked from commit 314e31c9a8a1c421ee4f7f755b9348aefbbca090)
+Signed-off-by: Rodrigo Vivi <rodrigo.vivi@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/shaper/shaper.c | 53 ++++++++++++++++++++++++++++++++-------------
- 1 file changed, 38 insertions(+), 15 deletions(-)
+ drivers/gpu/drm/xe/xe_gt_sriov_vf.c | 24 ++++++++++++++++++------
+ drivers/gpu/drm/xe/xe_gt_sriov_vf.h |  6 +++---
+ 2 files changed, 21 insertions(+), 9 deletions(-)
 
-diff --git a/net/shaper/shaper.c b/net/shaper/shaper.c
-index b1c65110f04d3..520cefdc3d908 100644
---- a/net/shaper/shaper.c
-+++ b/net/shaper/shaper.c
-@@ -138,35 +138,58 @@ static int net_shaper_fill_handle(struct sk_buff *msg,
- 	return -EMSGSIZE;
+diff --git a/drivers/gpu/drm/xe/xe_gt_sriov_vf.c b/drivers/gpu/drm/xe/xe_gt_sriov_vf.c
+index 0461d55134874..ca58ef3f9fd39 100644
+--- a/drivers/gpu/drm/xe/xe_gt_sriov_vf.c
++++ b/drivers/gpu/drm/xe/xe_gt_sriov_vf.c
+@@ -1030,13 +1030,15 @@ void xe_gt_sriov_vf_write32(struct xe_gt *gt, struct xe_reg reg, u32 val)
  }
  
-+static void net_shaper_copy(struct net_shaper *dst,
-+			    const struct net_shaper *src)
-+{
-+	WRITE_ONCE(dst->parent.scope, READ_ONCE(src->parent.scope));
-+	WRITE_ONCE(dst->parent.id, READ_ONCE(src->parent.id));
-+	WRITE_ONCE(dst->handle.scope, READ_ONCE(src->handle.scope));
-+	WRITE_ONCE(dst->handle.id, READ_ONCE(src->handle.id));
-+
-+	WRITE_ONCE(dst->metric, READ_ONCE(src->metric));
-+	WRITE_ONCE(dst->bw_min, READ_ONCE(src->bw_min));
-+	WRITE_ONCE(dst->bw_max, READ_ONCE(src->bw_max));
-+	WRITE_ONCE(dst->burst, READ_ONCE(src->burst));
-+	WRITE_ONCE(dst->priority, READ_ONCE(src->priority));
-+	WRITE_ONCE(dst->weight, READ_ONCE(src->weight));
-+
-+	/* private fields are only used on the write path under the lock */
-+	data_race(dst->leaves = src->leaves);
-+}
-+
- static int
- net_shaper_fill_one(struct sk_buff *msg,
- 		    const struct net_shaper_binding *binding,
- 		    const struct net_shaper *shaper,
- 		    const struct genl_info *info)
+ /**
+- * xe_gt_sriov_vf_print_config - Print VF self config.
++ * xe_gt_sriov_vf_print_config() - Print VF self config.
+  * @gt: the &xe_gt
+  * @p: the &drm_printer
+  *
+  * This function is for VF use only.
++ *
++ * Return: always 0.
+  */
+-void xe_gt_sriov_vf_print_config(struct xe_gt *gt, struct drm_printer *p)
++int xe_gt_sriov_vf_print_config(struct xe_gt *gt, struct drm_printer *p)
  {
-+	struct net_shaper cur;
- 	void *hdr;
+ 	struct xe_gt_sriov_vf_selfconfig *config = &gt->sriov.vf.self_config;
+ 	struct xe_device *xe = gt_to_xe(gt);
+@@ -1060,16 +1062,20 @@ void xe_gt_sriov_vf_print_config(struct xe_gt *gt, struct drm_printer *p)
  
- 	hdr = genlmsg_iput(msg, info);
- 	if (!hdr)
- 		return -EMSGSIZE;
- 
-+	/* Make a copy to avoid data races */
-+	net_shaper_copy(&cur, shaper);
+ 	drm_printf(p, "GuC contexts:\t%u\n", config->num_ctxs);
+ 	drm_printf(p, "GuC doorbells:\t%u\n", config->num_dbs);
 +
- 	if (net_shaper_fill_binding(msg, binding, NET_SHAPER_A_IFINDEX) ||
--	    net_shaper_fill_handle(msg, &shaper->parent,
-+	    net_shaper_fill_handle(msg, &cur.parent,
- 				   NET_SHAPER_A_PARENT) ||
--	    net_shaper_fill_handle(msg, &shaper->handle,
-+	    net_shaper_fill_handle(msg, &cur.handle,
- 				   NET_SHAPER_A_HANDLE) ||
--	    ((shaper->bw_min || shaper->bw_max || shaper->burst) &&
--	     nla_put_u32(msg, NET_SHAPER_A_METRIC, shaper->metric)) ||
--	    (shaper->bw_min &&
--	     nla_put_uint(msg, NET_SHAPER_A_BW_MIN, shaper->bw_min)) ||
--	    (shaper->bw_max &&
--	     nla_put_uint(msg, NET_SHAPER_A_BW_MAX, shaper->bw_max)) ||
--	    (shaper->burst &&
--	     nla_put_uint(msg, NET_SHAPER_A_BURST, shaper->burst)) ||
--	    (shaper->priority &&
--	     nla_put_u32(msg, NET_SHAPER_A_PRIORITY, shaper->priority)) ||
--	    (shaper->weight &&
--	     nla_put_u32(msg, NET_SHAPER_A_WEIGHT, shaper->weight)))
-+	    ((cur.bw_min || cur.bw_max || cur.burst) &&
-+	     nla_put_u32(msg, NET_SHAPER_A_METRIC, cur.metric)) ||
-+	    (cur.bw_min &&
-+	     nla_put_uint(msg, NET_SHAPER_A_BW_MIN, cur.bw_min)) ||
-+	    (cur.bw_max &&
-+	     nla_put_uint(msg, NET_SHAPER_A_BW_MAX, cur.bw_max)) ||
-+	    (cur.burst &&
-+	     nla_put_uint(msg, NET_SHAPER_A_BURST, cur.burst)) ||
-+	    (cur.priority &&
-+	     nla_put_u32(msg, NET_SHAPER_A_PRIORITY, cur.priority)) ||
-+	    (cur.weight &&
-+	     nla_put_u32(msg, NET_SHAPER_A_WEIGHT, cur.weight)))
- 		goto nla_put_failure;
++	return 0;
+ }
  
- 	genlmsg_end(msg, hdr);
-@@ -424,7 +447,7 @@ static void net_shaper_commit(struct net_shaper_binding *binding,
- 		/* Successful update: drop the tentative mark
- 		 * and update the hierarchy container.
- 		 */
--		*cur = shapers[i];
-+		net_shaper_copy(cur, &shapers[i]);
- 		smp_wmb();
- 		__xa_set_mark(&hierarchy->shapers, index, NET_SHAPER_VALID);
- 	}
+ /**
+- * xe_gt_sriov_vf_print_runtime - Print VF's runtime regs received from PF.
++ * xe_gt_sriov_vf_print_runtime() - Print VF's runtime regs received from PF.
+  * @gt: the &xe_gt
+  * @p: the &drm_printer
+  *
+  * This function is for VF use only.
++ *
++ * Return: always 0.
+  */
+-void xe_gt_sriov_vf_print_runtime(struct xe_gt *gt, struct drm_printer *p)
++int xe_gt_sriov_vf_print_runtime(struct xe_gt *gt, struct drm_printer *p)
+ {
+ 	struct vf_runtime_reg *vf_regs = gt->sriov.vf.runtime.regs;
+ 	unsigned int size = gt->sriov.vf.runtime.num_regs;
+@@ -1078,16 +1084,20 @@ void xe_gt_sriov_vf_print_runtime(struct xe_gt *gt, struct drm_printer *p)
+ 
+ 	for (; size--; vf_regs++)
+ 		drm_printf(p, "%#x = %#x\n", vf_regs->offset, vf_regs->value);
++
++	return 0;
+ }
+ 
+ /**
+- * xe_gt_sriov_vf_print_version - Print VF ABI versions.
++ * xe_gt_sriov_vf_print_version() - Print VF ABI versions.
+  * @gt: the &xe_gt
+  * @p: the &drm_printer
+  *
+  * This function is for VF use only.
++ *
++ * Return: always 0.
+  */
+-void xe_gt_sriov_vf_print_version(struct xe_gt *gt, struct drm_printer *p)
++int xe_gt_sriov_vf_print_version(struct xe_gt *gt, struct drm_printer *p)
+ {
+ 	struct xe_device *xe = gt_to_xe(gt);
+ 	struct xe_uc_fw_version *guc_version = &gt->sriov.vf.guc_version;
+@@ -1117,4 +1127,6 @@ void xe_gt_sriov_vf_print_version(struct xe_gt *gt, struct drm_printer *p)
+ 		   GUC_RELAY_VERSION_LATEST_MAJOR, GUC_RELAY_VERSION_LATEST_MINOR);
+ 	drm_printf(p, "\thandshake:\t%u.%u\n",
+ 		   pf_version->major, pf_version->minor);
++
++	return 0;
+ }
+diff --git a/drivers/gpu/drm/xe/xe_gt_sriov_vf.h b/drivers/gpu/drm/xe/xe_gt_sriov_vf.h
+index 0af1dc769fe09..7f6c59b1ef7b6 100644
+--- a/drivers/gpu/drm/xe/xe_gt_sriov_vf.h
++++ b/drivers/gpu/drm/xe/xe_gt_sriov_vf.h
+@@ -35,8 +35,8 @@ s64 xe_gt_sriov_vf_ggtt_shift(struct xe_gt *gt);
+ u32 xe_gt_sriov_vf_read32(struct xe_gt *gt, struct xe_reg reg);
+ void xe_gt_sriov_vf_write32(struct xe_gt *gt, struct xe_reg reg, u32 val);
+ 
+-void xe_gt_sriov_vf_print_config(struct xe_gt *gt, struct drm_printer *p);
+-void xe_gt_sriov_vf_print_runtime(struct xe_gt *gt, struct drm_printer *p);
+-void xe_gt_sriov_vf_print_version(struct xe_gt *gt, struct drm_printer *p);
++int xe_gt_sriov_vf_print_config(struct xe_gt *gt, struct drm_printer *p);
++int xe_gt_sriov_vf_print_runtime(struct xe_gt *gt, struct drm_printer *p);
++int xe_gt_sriov_vf_print_version(struct xe_gt *gt, struct drm_printer *p);
+ 
+ #endif
 -- 
 2.53.0
 
