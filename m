@@ -1,60 +1,59 @@
-Return-Path: <stable+bounces-255545-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-256155-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 2O6aOW2iGGqblggAu9opvQ
-	(envelope-from <stable+bounces-255545-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:15:41 +0200
+	id yFd3O9WrGGpEmAgAu9opvQ
+	(envelope-from <stable+bounces-256155-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:55:49 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id A30AE5F8308
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:15:41 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0FCCE5F9E0D
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:55:48 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 1E08230494D7
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 20:13:34 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id C7261310C923
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 20:42:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4E90A33CE8A;
-	Thu, 28 May 2026 20:13:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3F65733439A;
+	Thu, 28 May 2026 20:41:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MFJNc2NW"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Oqye2c1o"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 32B7732ABC0;
-	Thu, 28 May 2026 20:13:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 22DD11DE4E0;
+	Thu, 28 May 2026 20:41:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779999212; cv=none; b=S6Z5TvkXj9f8ZeGpCiaEjNhCzLhtBWNiuatgWH9FHQi8A441xYWK9JDdMrAvfS9x3wd+RgKcOqw02HjnLCXMShppufLu34jdfImJ6Q5DgFmkkgCigDQMuSME3ZDMlsi1z5Lpb0a3uy7wI4gr6+/7RQr/mVWFor2WXZfMUPukJWI=
+	t=1780000910; cv=none; b=OeygsZ5qssPd1RiLZYZY5Rm1F5OslgwtHIrlyebqbV3/TmFkwMObYB2uuaZcgCm5x0z+qWvjXXoM+83nLHg7fXzLPJIo/PmUaLzjdE0GdgpxnCnhi0FeaVH9XhSfvnY/T6zWyz5MYUl24EKuuByMYsOQtuMxNUplovCipz06plE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779999212; c=relaxed/simple;
-	bh=wh7AIXiDb5622f4gfAgwQamYbt52JfoklRfCMZWVCg0=;
+	s=arc-20240116; t=1780000910; c=relaxed/simple;
+	bh=CO6ziZn3MnhDAHQt+NCQ90qNX97m3+oSOWJ1QGTTRaI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=dtBb18H4gAULMpMhLYI/4UKQyWSF/qpzB8JoaacwQkPGtr1bajO0XDh9HnR7oN/ZFQySo0BXLHezkIO7/hiQwwrlbwIEBMdVb6eQ+Its7jzrDbK1uiETyMLb9ITpDXtTfkmAtaYz72olIjQmOMs9MX2pqhijR4D3VZ6H2j/HJus=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MFJNc2NW; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 90B9E1F000E9;
-	Thu, 28 May 2026 20:13:30 +0000 (UTC)
+	 MIME-Version; b=UWvjModsjj5xwInwwzrG0o9KAcWjVq16pTf5BJqAF53ny78/e+vc/utU4a87nxEvROJEk6gOuhZPDWKa8un2qBMGkWre0CVbAxagC/E+QRFUdriXNlm/4Pg0ocZL5oZgJCI9NZvklgmdjkzOajUZ1iolnZOHRQMkdk5xTJey7i4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Oqye2c1o; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7FF611F000E9;
+	Thu, 28 May 2026 20:41:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779999211;
-	bh=CW4CdnV/9tCSSu5DT1NWE5lHAlcQSkBK8Vu1fsbNiyU=;
+	s=korg; t=1780000909;
+	bh=PTIvU0chbmYM5LEw1domXf9RDcwwt7D5FSZe0UnO08Y=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=MFJNc2NW0YsyANmTDuecTwegAgBmcQB7Xr41Y1/4TOokkbRYWYQubhFG6Yt+EeyNV
-	 WzYkdbLHGSNRLBCXXCr/DqOQkI1XH1gHAbzoaTLphllhmetfj0MW0EMQPUiqSXCTsU
-	 tQgHLgSm/gnUdqRM9HRBNDthxjPQTCJr9OOCggoA=
+	b=Oqye2c1oA2v/OHDkPF46B9eaem4JclCO7OWqf3NJuMtmJZ+FKI1N7MdCkREOUC8xy
+	 3I4UUTiwiFIhLY8x+LVxBH+0cg3/yX2fWrFv73RMseXf9DuYVeEraKNAlhPp3cfx5U
+	 7D52VufsFy+x+rF05vpDSJYaAJYJYYICl+rxcX9Y=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Aditya Garg <gargaditya@linux.microsoft.com>,
-	Haiyang Zhang <haiyangz@microsoft.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Ethan Nelson-Moore <enelsonmoore@gmail.com>,
+	Paolo Abeni <pabeni@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 7.0 449/461] net: mana: validate rx_req_idx to prevent out-of-bounds array access
-Date: Thu, 28 May 2026 21:49:38 +0200
-Message-ID: <20260528194700.533979748@linuxfoundation.org>
+Subject: [PATCH 6.12 205/272] net: ethernet: cs89x0: remove stale CONFIG_MACH_MX31ADS reference
+Date: Thu, 28 May 2026 21:49:39 +0200
+Message-ID: <20260528194634.979444427@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260528194646.819809818@linuxfoundation.org>
-References: <20260528194646.819809818@linuxfoundation.org>
+In-Reply-To: <20260528194629.379955525@linuxfoundation.org>
+References: <20260528194629.379955525@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -67,79 +66,77 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	TAGGED_FROM(0.00)[bounces-256155-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,redhat.com,kernel.org];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	TO_DN_SOME(0.00)[];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-255545-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TO_DN_SOME(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	RCPT_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[7];
-	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,msgid.link:url]
-X-Rspamd-Queue-Id: A30AE5F8308
+	MID_RHS_MATCH_FROM(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim]
+X-Rspamd-Queue-Id: 0FCCE5F9E0D
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-7.0-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Aditya Garg <gargaditya@linux.microsoft.com>
+From: Ethan Nelson-Moore <enelsonmoore@gmail.com>
 
-[ Upstream commit b809d0409991b75a6cff846a5ac27c3062953f84 ]
+[ Upstream commit 36a8d04a8293afcb9304cf0cd3741f67698f2a1a ]
 
-In mana_hwc_rx_event_handler(), rx_req_idx is derived from
-sge->address in DMA-coherent memory. In Confidential VMs
-(SEV-SNP/TDX), this memory is shared unencrypted and HW can modify
-WQE contents at any time. No bounds check exists on rx_req_idx,
-which can lead to an out-of-bounds access into reqs[].
+The legacy ARM board file for MACH_MX31ADS was removed in commit
+c93197b0041d ("ARM: imx: Remove i.MX31 board files"), but a reference
+to it remained in the cs89x0 driver. Drop this unused code.
 
-Add bounds check on rx_req_idx in mana_hwc_rx_event_handler() before
-using it to index the reqs[] array.
-
-Fixes: ca9c54d2d6a5 ("net: mana: Add a driver for Microsoft Azure Network Adapter (MANA)")
-Signed-off-by: Aditya Garg <gargaditya@linux.microsoft.com>
-Reviewed-by: Haiyang Zhang <haiyangz@microsoft.com>
-Link: https://patch.msgid.link/20260520051553.857120-1-gargaditya@linux.microsoft.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Ethan Nelson-Moore <enelsonmoore@gmail.com>
+Fixes: c93197b0041d ("ARM: imx: Remove i.MX31 board files")
+Link: https://patch.msgid.link/20260509023732.42256-1-enelsonmoore@gmail.com
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/microsoft/mana/hw_channel.c | 6 ++++++
- 1 file changed, 6 insertions(+)
+ drivers/net/ethernet/cirrus/cs89x0.c | 2 --
+ 1 file changed, 2 deletions(-)
 
-diff --git a/drivers/net/ethernet/microsoft/mana/hw_channel.c b/drivers/net/ethernet/microsoft/mana/hw_channel.c
-index 12d73470fd6bb..dbaeedb6e7b1a 100644
---- a/drivers/net/ethernet/microsoft/mana/hw_channel.c
-+++ b/drivers/net/ethernet/microsoft/mana/hw_channel.c
-@@ -265,6 +265,12 @@ static void mana_hwc_rx_event_handler(void *ctx, u32 gdma_rxq_id,
- 	rq_base_addr = hwc_rxq->msg_buf->mem_info.dma_handle;
- 	rx_req_idx = (sge->address - rq_base_addr) / hwc->max_req_msg_size;
+diff --git a/drivers/net/ethernet/cirrus/cs89x0.c b/drivers/net/ethernet/cirrus/cs89x0.c
+index 0a21a10a791c5..6b01c44a5f728 100644
+--- a/drivers/net/ethernet/cirrus/cs89x0.c
++++ b/drivers/net/ethernet/cirrus/cs89x0.c
+@@ -1271,7 +1271,6 @@ static const struct net_device_ops net_ops = {
  
-+	if (rx_req_idx >= hwc_rxq->msg_buf->num_reqs) {
-+		dev_err(hwc->dev, "HWC RX: wrong rx_req_idx=%llu, num_reqs=%u\n",
-+			rx_req_idx, hwc_rxq->msg_buf->num_reqs);
-+		return;
-+	}
-+
- 	rx_req = &hwc_rxq->msg_buf->reqs[rx_req_idx];
- 	resp = (struct gdma_resp_hdr *)rx_req->buf_va;
+ static void __init reset_chip(struct net_device *dev)
+ {
+-#if !defined(CONFIG_MACH_MX31ADS)
+ 	struct net_local *lp = netdev_priv(dev);
+ 	unsigned long reset_start_time;
  
+@@ -1298,7 +1297,6 @@ static void __init reset_chip(struct net_device *dev)
+ 	while ((readreg(dev, PP_SelfST) & INIT_DONE) == 0 &&
+ 	       time_before(jiffies, reset_start_time + 2))
+ 		;
+-#endif /* !CONFIG_MACH_MX31ADS */
+ }
+ 
+ /* This is the real probe routine.
 -- 
 2.53.0
 
