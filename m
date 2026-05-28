@@ -1,59 +1,63 @@
-Return-Path: <stable+bounces-255992-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-255356-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 2NaUEV2oGGpolwgAu9opvQ
-	(envelope-from <stable+bounces-255992-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:41:01 +0200
+	id 6EMNA8mgGGqblggAu9opvQ
+	(envelope-from <stable+bounces-255356-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:08:41 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4DA965F94EE
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:41:00 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 81F345F7E80
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:08:40 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 44B073070EAF
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 20:34:14 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id EFFE730C9A2C
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 20:04:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EC80633B6FC;
-	Thu, 28 May 2026 20:34:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E965C410D2D;
+	Thu, 28 May 2026 20:04:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fdw7bLwA"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sa/fmxqQ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BA5E332AAD6;
-	Thu, 28 May 2026 20:34:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9FA4B409605;
+	Thu, 28 May 2026 20:04:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780000452; cv=none; b=YkdjXZnr5Wpu0WZ9Hpjmc+MZUx7dprc6q4KNFpnQ03xb85uF2dVwiLSUZImbCcJ3XOacCQvAxohqDspZPzrbUhZK+Jb8XYSeMEG9M14Gy3C8FEsPZPHQShk9qIAIDHSVPCpOTRlNNgIwgfn3vYmUqVNYVT9kd/7pSGonjg0Y9w8=
+	t=1779998680; cv=none; b=qhtXKlGj4dIYBtMrbMBKUKE27+mPJ7J4X7lvicqf8UCTZ41MFRtEIZ0erPa586rmQeXoRYilgFXSPh+YSNEIbMjzyo1k9eONIs4gX3jcQsmhThA55MvDyJfUk/ciEjnq6aV/LJwiSSxE1+UJ7BJrWOMP+SwXxUmS3YFw0sSJeL4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780000452; c=relaxed/simple;
-	bh=fKGpts3bGJbx7BEYB4oWmI2xfIj0RjsRwzfmWSSJuO0=;
+	s=arc-20240116; t=1779998680; c=relaxed/simple;
+	bh=gdAyA1MIGXA7UoLkv1DARhJD4w7cAio48Cck3x/tIOQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=CBFSeHMeoX42gqsmkCLJ1hpYE0fFglySg8LWLY8P4WbVH0adhI/HxcTx76qbp83MKBuFKTdg68xXsb/bQ/yvdGgIsEM+y2IyxpgLh0brnXDEQKXiEJM37cROUcApEGwioBPcMdd9WK0pDCUH793tf9ZtSDv19sW7A/HOqeVI5Cg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fdw7bLwA; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 241F91F000E9;
-	Thu, 28 May 2026 20:34:10 +0000 (UTC)
+	 MIME-Version; b=UNL/OVZ5cmfgCw4oX2ngaj2m/RRWYx4lqcCV+BTTTPZkFT84+W25hxgOgtXvJuSJvLp4MADC6GupRiBrQgaQX1xWS+pm9GHXrFMAk5V7NwSdevWcu5rpEMoSeYLZWOZGASlEaqgeydnUxazPbQK1aQQgOct3B9FlnL1dDj5lYZs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sa/fmxqQ; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D0A4B1F000E9;
+	Thu, 28 May 2026 20:04:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780000451;
-	bh=jdW7OET1IRwrWAJqWRBZYX5qNY819bjFIw8x2s2kbIU=;
+	s=korg; t=1779998679;
+	bh=GdPPDIHlk45WOBUc6jEgU4nKZPLNzgIH8RQ/Elyv4uE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=fdw7bLwAZZAxG1DbQXMuf0PHTmOXjmAfOQuOqCiQIeDa0JO+A1Xb9MZ3fMoQmXXyl
-	 JWQIWdz5hxz4+S78/qSN18+tywwjWBktkHtj8ZSro3HueXZ/G0seY7O+9MYZWSNZW5
-	 g6zki9C2Ver2JjTrTHsYIVeqXl2z3N3F/9MPw8lI=
+	b=sa/fmxqQRrZLDzI1jPEf1iYxuUaUvDDKLAiijEFNVSBhCat408+bFvJ5LO+cdDGSh
+	 7fHU70ajTfFeVt6sTCQlOlJFdRNsCRNfsCg+8O5OjXDJ160BB0WmSzUJp6ReOCnkQb
+	 qaQ2c21mZMsBPUQOAHHjG1kuU9c7Qozu7SlF1MLE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Vladimir Yakovlev <vovchkir@gmail.com>,
-	Mark Brown <broonie@kernel.org>,
+	David Howells <dhowells@redhat.com>,
+	Paulo Alcantara <pc@manguebit.org>,
+	Matthew Wilcox <willy@infradead.org>,
+	netfs@lists.linux.dev,
+	linux-fsdevel@vger.kernel.org,
+	Christian Brauner <brauner@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 013/272] spi: spi-dw-dma: fix print error log when wait finish transaction
-Date: Thu, 28 May 2026 21:46:27 +0200
-Message-ID: <20260528194629.755526410@linuxfoundation.org>
+Subject: [PATCH 7.0 259/461] netfs: Defer the emission of trace_netfs_folio()
+Date: Thu, 28 May 2026 21:46:28 +0200
+Message-ID: <20260528194654.653091995@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260528194629.379955525@linuxfoundation.org>
-References: <20260528194629.379955525@linuxfoundation.org>
+In-Reply-To: <20260528194646.819809818@linuxfoundation.org>
+References: <20260528194646.819809818@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,70 +70,147 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-255992-lists,stable=lfdr.de];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,kernel.org];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_TLS_LAST(0.00)[];
-	TO_DN_SOME(0.00)[];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
-	RCPT_COUNT_FIVE(0.00)[6];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-255356-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
 	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_SEVEN(0.00)[10];
 	MID_RHS_MATCH_FROM(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim]
-X-Rspamd-Queue-Id: 4DA965F94EE
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sashiko.dev:url,linuxfoundation.org:mid,linuxfoundation.org:dkim,linux.dev:email,infradead.org:email,msgid.link:url,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,manguebit.org:email]
+X-Rspamd-Queue-Id: 81F345F7E80
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+7.0-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Vladimir Yakovlev <vovchkir@gmail.com>
+From: David Howells <dhowells@redhat.com>
 
-[ Upstream commit 3b46d61890632c8f8b117147b6923bff4b42ccb7 ]
+[ Upstream commit daeb443b92817021c1234e8eded219e164b7c35d ]
 
-If an error occurs, the device may not have a current message. In this
-case, the system will crash.
+Change netfs_perform_write() to keep the netfs_folio trace value in a
+variable and emit it later to make it easier to choose the value displayed.
+This is a prerequisite for a subsequent patch.
 
-In this case, it's better to use dev from the struct ctlr (struct spi_controller*).
-
-Signed-off-by: Vladimir Yakovlev <vovchkir@gmail.com>
-Link: https://patch.msgid.link/20260302222017.992228-2-vovchkir@gmail.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
+Closes: https://sashiko.dev/#/patchset/20260414082004.3756080-1-dhowells%40redhat.com
+Signed-off-by: David Howells <dhowells@redhat.com>
+Link: https://patch.msgid.link/20260512123404.719402-13-dhowells@redhat.com
+cc: Paulo Alcantara <pc@manguebit.org>
+cc: Matthew Wilcox <willy@infradead.org>
+cc: netfs@lists.linux.dev
+cc: linux-fsdevel@vger.kernel.org
+Signed-off-by: Christian Brauner <brauner@kernel.org>
+Stable-dep-of: 7b4dcf1b9455 ("netfs: Fix streaming write being overwritten")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/spi/spi-dw-dma.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ fs/netfs/buffered_write.c | 18 ++++++++++--------
+ 1 file changed, 10 insertions(+), 8 deletions(-)
 
-diff --git a/drivers/spi/spi-dw-dma.c b/drivers/spi/spi-dw-dma.c
-index f4c209e5f52ba..4104e1bc2d5bd 100644
---- a/drivers/spi/spi-dw-dma.c
-+++ b/drivers/spi/spi-dw-dma.c
-@@ -271,7 +271,7 @@ static int dw_spi_dma_wait(struct dw_spi *dws, unsigned int len, u32 speed)
- 					 msecs_to_jiffies(ms));
- 
- 	if (ms == 0) {
--		dev_err(&dws->host->cur_msg->spi->dev,
-+		dev_err(&dws->host->dev,
- 			"DMA transaction timed out\n");
- 		return -ETIMEDOUT;
+diff --git a/fs/netfs/buffered_write.c b/fs/netfs/buffered_write.c
+index c887a30c14d91..a695d5168b2fc 100644
+--- a/fs/netfs/buffered_write.c
++++ b/fs/netfs/buffered_write.c
+@@ -150,6 +150,7 @@ ssize_t netfs_perform_write(struct kiocb *iocb, struct iov_iter *iter,
  	}
+ 
+ 	do {
++		enum netfs_folio_trace trace;
+ 		struct netfs_folio *finfo;
+ 		struct netfs_group *group;
+ 		unsigned long long fpos;
+@@ -223,7 +224,7 @@ ssize_t netfs_perform_write(struct kiocb *iocb, struct iov_iter *iter,
+ 			if (unlikely(copied == 0))
+ 				goto copy_failed;
+ 			netfs_set_group(folio, netfs_group);
+-			trace_netfs_folio(folio, netfs_folio_is_uptodate);
++			trace = netfs_folio_is_uptodate;
+ 			goto copied;
+ 		}
+ 
+@@ -239,7 +240,7 @@ ssize_t netfs_perform_write(struct kiocb *iocb, struct iov_iter *iter,
+ 			folio_zero_segment(folio, offset + copied, flen);
+ 			__netfs_set_group(folio, netfs_group);
+ 			folio_mark_uptodate(folio);
+-			trace_netfs_folio(folio, netfs_modify_and_clear);
++			trace = netfs_modify_and_clear;
+ 			goto copied;
+ 		}
+ 
+@@ -257,7 +258,7 @@ ssize_t netfs_perform_write(struct kiocb *iocb, struct iov_iter *iter,
+ 			}
+ 			__netfs_set_group(folio, netfs_group);
+ 			folio_mark_uptodate(folio);
+-			trace_netfs_folio(folio, netfs_whole_folio_modify);
++			trace = netfs_whole_folio_modify;
+ 			goto copied;
+ 		}
+ 
+@@ -284,7 +285,7 @@ ssize_t netfs_perform_write(struct kiocb *iocb, struct iov_iter *iter,
+ 			if (unlikely(copied == 0))
+ 				goto copy_failed;
+ 			netfs_set_group(folio, netfs_group);
+-			trace_netfs_folio(folio, netfs_just_prefetch);
++			trace = netfs_just_prefetch;
+ 			goto copied;
+ 		}
+ 
+@@ -298,7 +299,7 @@ ssize_t netfs_perform_write(struct kiocb *iocb, struct iov_iter *iter,
+ 			if (offset == 0 && copied == flen) {
+ 				__netfs_set_group(folio, netfs_group);
+ 				folio_mark_uptodate(folio);
+-				trace_netfs_folio(folio, netfs_streaming_filled_page);
++				trace = netfs_streaming_filled_page;
+ 				goto copied;
+ 			}
+ 
+@@ -313,7 +314,7 @@ ssize_t netfs_perform_write(struct kiocb *iocb, struct iov_iter *iter,
+ 			finfo->dirty_len = copied;
+ 			folio_attach_private(folio, (void *)((unsigned long)finfo |
+ 							     NETFS_FOLIO_INFO));
+-			trace_netfs_folio(folio, netfs_streaming_write);
++			trace = netfs_streaming_write;
+ 			goto copied;
+ 		}
+ 
+@@ -333,9 +334,9 @@ ssize_t netfs_perform_write(struct kiocb *iocb, struct iov_iter *iter,
+ 					folio_detach_private(folio);
+ 				folio_mark_uptodate(folio);
+ 				kfree(finfo);
+-				trace_netfs_folio(folio, netfs_streaming_cont_filled_page);
++				trace = netfs_streaming_cont_filled_page;
+ 			} else {
+-				trace_netfs_folio(folio, netfs_streaming_write_cont);
++				trace = netfs_streaming_write_cont;
+ 			}
+ 			goto copied;
+ 		}
+@@ -351,6 +352,7 @@ ssize_t netfs_perform_write(struct kiocb *iocb, struct iov_iter *iter,
+ 		continue;
+ 
+ 	copied:
++		trace_netfs_folio(folio, trace);
+ 		flush_dcache_folio(folio);
+ 
+ 		/* Update the inode size if we moved the EOF marker */
 -- 
 2.53.0
 
