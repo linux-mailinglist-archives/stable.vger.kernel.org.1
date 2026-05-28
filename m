@@ -1,58 +1,59 @@
-Return-Path: <stable+bounces-256009-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-255455-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id eM99EuGnGGpolwgAu9opvQ
-	(envelope-from <stable+bounces-256009-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:38:57 +0200
+	id uOtXDhShGGqblggAu9opvQ
+	(envelope-from <stable+bounces-255455-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:09:56 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 26A715F9378
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:38:57 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5604D5F7F1D
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:09:55 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id C6FFC306E931
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 20:35:02 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 65BA3303A26C
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 20:09:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3CFCC3346BE;
-	Thu, 28 May 2026 20:35:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7331C402B8F;
+	Thu, 28 May 2026 20:09:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gaadEX3t"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="eviIgvwu"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 04CF22E92BA;
-	Thu, 28 May 2026 20:34:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 461F4339866;
+	Thu, 28 May 2026 20:09:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780000500; cv=none; b=okfKZE7lZFAXbjina7tld3NDaFjcs6KrnfQwfBFI5mF0sqqCLdkYZV702Kvx0kDjDys8PrlP0mNilTDWz80vjDjVqFffDpGuXwG73cf3awpdl/XbyZd1EAi/y+6B9p+MUt09awQh34mUm1ghvZpOfJoF59Tsk8Z9jCg3B09SQ4o=
+	t=1779998960; cv=none; b=BMSyrlfc54C0EE9IBkR/m6y7/PA/OH1D2Bu4OYjgBtdAvC51Aal1Nj3h7Kw2XfOArG5bEAXE/zTpW1BUd3svvfh+SYmBpLXRXq3eWnJNPc+v6eT1BhM5HBABu8g45RLS1AtgTwfmgKQECc8YAsVUKLPXp2g5ZQL7ElJCS2xEg7A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780000500; c=relaxed/simple;
-	bh=BEoH65E5FzR62SNQ1q4TPZ6x5LBCYY9bHDKaEzEQbec=;
+	s=arc-20240116; t=1779998960; c=relaxed/simple;
+	bh=rxt14rpBNI3oh0K90w/idAjb8oIGGFNbADRdzAc/CU8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=JGJbjHLU4I+HCrWaQI1xroiD2deK/J1ETtSuzyDDRgZ+5vFI/Gu4jrm4HTEVat3+/S+BhhnjJgnISooDIKLkPwpXkeXUWwLNRC967nUWAjv1rcdLaLVarUtFtmclLnelT0VGcb84ug2K/SN20sEHegwXQjKtQoLzT+AXHOcV2G8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gaadEX3t; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 637361F000E9;
-	Thu, 28 May 2026 20:34:58 +0000 (UTC)
+	 MIME-Version; b=o4Eiz4xu+lasIAalzyQrD/w36h+oRxogfrDZY1iK8BU0gytFv/5OnSRq8oZThkeNO6cs/cpTgs7huTFsrj9a1hrtqiBrQ/njmiex470OvMTTOeVVwD3DQlKPgbNsAbRPt0ou7tnoEO5nFehL9ZPANd6gDJWSs3eI3wc2vzLAXKc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=eviIgvwu; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A17B21F000E9;
+	Thu, 28 May 2026 20:09:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780000498;
-	bh=QmkCRR6uK+YrA/yobcQZ3LmX6CLwvDaftVADJ74Ko3c=;
+	s=korg; t=1779998959;
+	bh=7V2aICeyqdwYPi3mrju7GFi+Kpb3yY1UjQlS3nORNTY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=gaadEX3tUEuRyael17QLEIhkUuuKL/nt3VyzRnq2N1reyTS6udIx3135LY3IY2rYt
-	 p5lGhrDH5wQkYRN5U5WdVuq2Xb/gkTMR2f2nXle1WqVCqP/JBM6zjJmH6Eh1NYO6Vq
-	 o6mcAZqICqL8TqgGg/JqE3Qics2Q5S7/qD3aKoUM=
+	b=eviIgvwunurIXilBhzf0za2L0/QQlJ5AjPfWCNPTL3uNBZbSLdILB+92Bxdu61pJf
+	 TqYouCe9W2Ehp2wCn2caa1mdmeUC+XwMBNx0OHka9ktYDknHNVJIDXpS4jzU5tacEs
+	 etGnwVw12rcwWYhvOyf88s9jgI6FbEXiuYleY1PI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Michael Bommarito <michael.bommarito@gmail.com>,
-	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
-Subject: [PATCH 6.12 066/272] Bluetooth: L2CAP: ecred_reconfigure: send packed pdu, not stack pointer
+	Maciej Strozek <mstrozek@opensource.cirrus.com>,
+	Mark Brown <broonie@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 7.0 311/461] ASoC: intel: sof_sdw: Prepare for configuration without a jack
 Date: Thu, 28 May 2026 21:47:20 +0200
-Message-ID: <20260528194631.228056166@linuxfoundation.org>
+Message-ID: <20260528194656.289638004@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260528194629.379955525@linuxfoundation.org>
-References: <20260528194629.379955525@linuxfoundation.org>
+In-Reply-To: <20260528194646.819809818@linuxfoundation.org>
+References: <20260528194646.819809818@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,122 +64,90 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	TO_DN_SOME(0.00)[];
-	TAGGED_FROM(0.00)[bounces-256009-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,intel.com];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-255455-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[stable];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[5];
+	NEURAL_HAM(-0.00)[-1.000];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[intel.com:email,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim]
-X-Rspamd-Queue-Id: 26A715F9378
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,linuxfoundation.org:mid,linuxfoundation.org:dkim,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,cirrus.com:email]
+X-Rspamd-Queue-Id: 5604D5F7F1D
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+7.0-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Michael Bommarito <michael.bommarito@gmail.com>
+From: Maciej Strozek <mstrozek@opensource.cirrus.com>
 
-commit 3374ef8cf99368a40f7efd51a2a375a4c5dc6f0d upstream.
+[ Upstream commit d733fb463834cf97a0c667681e236fea0e833a05 ]
 
-Commit 1c08108f3014 ("Bluetooth: L2CAP: Avoid -Wflex-array-member-not-at-end
-warnings") converted the on-stack request PDU in l2cap_ecred_reconfigure()
-from an explicit packed struct to DEFINE_RAW_FLEX(), but did not adjust the
-size and source-pointer arguments to l2cap_send_cmd():
+In certain setups of cs42l43 UAJ function may be removed from ACPI and
+physically unconnected. Prepare a driver for that configuration by
+setting a system clock in the speaker path too.
 
-  -    struct {
-  -            struct l2cap_ecred_reconf_req req;
-  -            __le16 scid;
-  -    } pdu;
-  +    DEFINE_RAW_FLEX(struct l2cap_ecred_reconf_req, pdu, scid, 1);
-       ...
-       l2cap_send_cmd(conn, chan->ident, L2CAP_ECRED_RECONF_REQ,
-                      sizeof(pdu), &pdu);
-
-After the conversion, DEFINE_RAW_FLEX() expands to declare an anonymous
-union pdu_u plus a local pointer "pdu" pointing at it. Therefore:
-
-  - sizeof(pdu) is now sizeof(struct l2cap_ecred_reconf_req *) = 8 on
-    64-bit (4 on 32-bit), not the 6 bytes of (mtu, mps, scid[1]).
-  - &pdu is the address of the local pointer's stack storage, not the
-    address of the request payload.
-
-l2cap_send_cmd() forwards (data, count) to l2cap_build_cmd(), which calls
-skb_put_data(skb, data, count). The L2CAP_ECRED_RECONFIGURE_REQ packet
-body therefore contains 8 bytes copied from the kernel stack starting at
-&pdu -- the 8 bytes overlap the pdu pointer's value, leaking a kernel
-stack address to the paired Bluetooth peer. The intended (mtu, mps, scid)
-fields are not transmitted at all, so the peer rejects the request as
-malformed and the L2CAP_ECRED_RECONFIGURE feature itself has been broken
-for the local-side initiator since the introducing commit landed.
-
-The sibling site l2cap_ecred_conn_req() in the same commit was converted
-correctly (sizeof(*pdu) + len, pdu); only this site was missed.
-
-Restore the original semantics: pass the full flex-struct size via
-struct_size(pdu, scid, 1) and the pdu pointer (the struct address) as
-the source.
-
-Validated on a stock 7.0-based host kernel via the real call path:
-setsockopt(SOL_BLUETOOTH, BT_RCVMTU, ...) on a BT_CONNECTED
-L2CAP_MODE_EXT_FLOWCTL socket emits an L2CAP_ECRED_RECONFIGURE_REQ
-whose body is 8 bytes (the on-stack pdu local's value) rather than
-the expected 6. Three captures from fresh socket / fresh hciemu peer
-on the same host -- low bytes vary per call, high 0xffff confirms a
-kernel virtual address (KASLR-randomised stack slot, not a fixed
-string):
-
-  RECONF_REQ body (ident=0x02 len=8): 42 fb 54 af 0e ca ff ff
-  RECONF_REQ body (ident=0x02 len=8): 52 3d 2e af 0e ca ff ff
-  RECONF_REQ body (ident=0x02 len=8): b2 fc 5b af 0e ca ff ff
-
-After this patch the body is 6 bytes carrying the expected
-little-endian (mtu, mps, scid).
-
-Cc: stable@vger.kernel.org
-Fixes: 1c08108f3014 ("Bluetooth: L2CAP: Avoid -Wflex-array-member-not-at-end warnings")
-Assisted-by: Claude:claude-opus-4-7
-Signed-off-by: Michael Bommarito <michael.bommarito@gmail.com>
-Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Maciej Strozek <mstrozek@opensource.cirrus.com>
+Link: https://patch.msgid.link/20260403082335.40798-1-mstrozek@opensource.cirrus.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
+Stable-dep-of: 5a30862dec5a ("ASoC: sdw_utils: Check speaker component string allocation")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/bluetooth/l2cap_core.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ sound/soc/sdw_utils/soc_sdw_cs42l43.c | 10 +++++++++-
+ 1 file changed, 9 insertions(+), 1 deletion(-)
 
---- a/net/bluetooth/l2cap_core.c
-+++ b/net/bluetooth/l2cap_core.c
-@@ -7199,7 +7199,7 @@ static void l2cap_ecred_reconfigure(stru
- 	chan->ident = l2cap_get_ident(conn);
+diff --git a/sound/soc/sdw_utils/soc_sdw_cs42l43.c b/sound/soc/sdw_utils/soc_sdw_cs42l43.c
+index 2685ff4f09320..4a451b9d4f137 100644
+--- a/sound/soc/sdw_utils/soc_sdw_cs42l43.c
++++ b/sound/soc/sdw_utils/soc_sdw_cs42l43.c
+@@ -107,6 +107,7 @@ EXPORT_SYMBOL_NS(asoc_sdw_cs42l43_hs_rtd_init, "SND_SOC_SDW_UTILS");
  
- 	l2cap_send_cmd(conn, chan->ident, L2CAP_ECRED_RECONF_REQ,
--		       sizeof(pdu), &pdu);
-+		       struct_size(pdu, scid, 1), pdu);
+ int asoc_sdw_cs42l43_spk_rtd_init(struct snd_soc_pcm_runtime *rtd, struct snd_soc_dai *dai)
+ {
++	struct snd_soc_component *component = snd_soc_rtd_to_codec(rtd, 0)->component;
+ 	struct snd_soc_card *card = rtd->card;
+ 	struct snd_soc_dapm_context *dapm = snd_soc_card_to_dapm(card);
+ 	struct asoc_sdw_mc_private *ctx = snd_soc_card_get_drvdata(card);
+@@ -131,8 +132,15 @@ int asoc_sdw_cs42l43_spk_rtd_init(struct snd_soc_pcm_runtime *rtd, struct snd_so
+ 
+ 	ret = snd_soc_dapm_add_routes(dapm, cs42l43_spk_map,
+ 				      ARRAY_SIZE(cs42l43_spk_map));
+-	if (ret)
++	if (ret) {
+ 		dev_err(card->dev, "cs42l43 speaker map addition failed: %d\n", ret);
++		return ret;
++	}
++
++	ret = snd_soc_component_set_sysclk(component, CS42L43_SYSCLK, CS42L43_SYSCLK_SDW,
++					   0, SND_SOC_CLOCK_IN);
++	if (ret)
++		dev_err(card->dev, "Failed to set sysclk: %d\n", ret);
+ 
+ 	return ret;
  }
- 
- int l2cap_chan_reconfigure(struct l2cap_chan *chan, __u16 mtu)
+-- 
+2.53.0
+
 
 
 
