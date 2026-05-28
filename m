@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-255111-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-255112-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id UGCUM2CdGGpAlggAu9opvQ
-	(envelope-from <stable+bounces-255111-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 21:54:08 +0200
+	id ADZtFmOdGGpAlggAu9opvQ
+	(envelope-from <stable+bounces-255112-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 21:54:11 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6B43F5F763B
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 21:54:08 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id ED8CF5F764D
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 21:54:10 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id B8E1E301CC71
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 19:53:23 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 5299330604A0
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 19:53:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 26BD53E63AA;
-	Thu, 28 May 2026 19:53:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 32F62329367;
+	Thu, 28 May 2026 19:53:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AZSCZ3Nq"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rkAwDUSa"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EEE4C3396F4;
-	Thu, 28 May 2026 19:53:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0763232BF5D;
+	Thu, 28 May 2026 19:53:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779997999; cv=none; b=cTN1tt8vD/4Ghw7oP5HPDcuS3K/LuGpoMHM9cLKspNUuWHqV/BxpJwEJlTOjVOtdOMIW5eLGVgu97xkDPOUH++J6Frv11Z3pw7h79vVzlu8ddgg+e9oM89dh+AqABrz6eGVK5x1bhTpWBKp8FxYctsCW9muVHRtZClyUj6KHroE=
+	t=1779998003; cv=none; b=b7m/DCtawuf5KauZX3aBWmMexnS+oZl1adifCCEmaYLLwUO22gEkJgEUB6o27xotTouOg8tFA0JK2u1ksAFMwmph4Pvqb0s5+J6wRvxgVuqhinyrUkHbnV0gAR8hazqL/eqIkIj0YOSrWc89aySjuLaCogzI+A+P+wz9ZNVR1ts=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779997999; c=relaxed/simple;
-	bh=i9M/lzgZLNFUgkeyFkeyF4cUKjEL67mPnTVZoM683K0=;
+	s=arc-20240116; t=1779998003; c=relaxed/simple;
+	bh=/H8qXWBeENcX4NgnB7RWprirZBNqfT8rcycYnFkRhRg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=jLALrHg7YYNsfEtM98Cf2ZsB4T6/QYPqo+qvdTPqqLSxMJq/16+EtotMPc59dfnRQ2BqN7CP9zZ6W63mGJVePx/QMxCOS7OAwKKqo0/iINs7oRpI+vjVzeBPnIZTnc7lczOOqhotnHA4+3Ebefd9W2Coszyh7x+d3xls1WpxW5Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AZSCZ3Nq; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 593B11F000E9;
-	Thu, 28 May 2026 19:53:18 +0000 (UTC)
+	 MIME-Version; b=lys9b6s99InUspi6wP3abWen3stW2pN3+cj+I0ithBy7HuAEGmPS7pThcotE2s/y+tKGuIcKMgCKiT1Asz/jhjig0V/0AF0GGayAWcp3+/g3GWq/XzVrt2U8FpfZ0Po27I+fuelTONu5ARoAOyXSGTMUwlHbdyRxh8W8nNBZ6/o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rkAwDUSa; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 25F3E1F000E9;
+	Thu, 28 May 2026 19:53:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779997998;
-	bh=7Frxg5/H7nZnnbTB/Cu/N+aPeyXvB6a25vqBoUHR2F0=;
+	s=korg; t=1779998001;
+	bh=6k8WsUTwv0OBff59aJ3weRTzznd4NQ1JwIfvmYm+LjA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=AZSCZ3NqNT3Er6FTE2+tsDvFAjH/md8AcWfAAQ0uRy+nCBfl7z91nKAHt7BBt9ek1
-	 2NLt7ncSMSgVm6LzzOhT2I9OH+3gk0fQN0ne5P/JFM/hIHjJMDwqZXdA1UKgnUIthz
-	 6IdnQZqrT8SIyuVVSm1mYGXGcJaR3f3e8rNufXIQ=
+	b=rkAwDUSaGYBpBTIMEgYCRD/2jFC2+h2h2qUgwafOjNU9PUUSZTpUjc+g/4Lkmtx9t
+	 1z9bNN4wyPNmF4O5/qyS72RdqkeffcozSdTOoeASgwOd1lgMgZqQZlc4VuoEblRH0v
+	 suJM/LsUVH7w9Oqb9h0M6dJAQM3cbIInjYyMiSfU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Michael Bommarito <michael.bommarito@gmail.com>,
+	Shyam Prasad N <sprasad@microsoft.com>,
+	Henrique Carvalho <henrique.carvalho@suse.com>,
 	Steve French <stfrench@microsoft.com>
-Subject: [PATCH 7.0 018/461] smb: client: require net admin for CIFS SWN netlink
-Date: Thu, 28 May 2026 21:42:27 +0200
-Message-ID: <20260528194647.399369848@linuxfoundation.org>
+Subject: [PATCH 7.0 019/461] smb: client: protect tc_count increment in smb2_find_smb_sess_tcon_unlocked()
+Date: Thu, 28 May 2026 21:42:28 +0200
+Message-ID: <20260528194647.431882922@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
 In-Reply-To: <20260528194646.819809818@linuxfoundation.org>
 References: <20260528194646.819809818@linuxfoundation.org>
@@ -63,36 +64,34 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_MISSING_CHARSET(0.50)[];
 	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	TO_DN_SOME(0.00)[];
-	TAGGED_FROM(0.00)[bounces-255111-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,microsoft.com];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-255112-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[stable];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[5];
+	NEURAL_HAM(-0.00)[-1.000];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim]
-X-Rspamd-Queue-Id: 6B43F5F763B
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,suse.com:email]
+X-Rspamd-Queue-Id: ED8CF5F764D
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
@@ -100,59 +99,39 @@ X-Rspamd-Server: lfdr
 
 ------------------
 
-From: Michael Bommarito <michael.bommarito@gmail.com>
+From: Henrique Carvalho <henrique.carvalho@suse.com>
 
-commit d1ebfce2c1d161186a82e77590bf7da2ea1bce91 upstream.
+commit 4d8690dace005a38e6dbde9ecce2da3ad85c7c41 upstream.
 
-CIFS_GENL_CMD_SWN_NOTIFY is the userspace witness-notify command.  The
-intended sender is the cifs.witness helper, but the generic-netlink
-operation currently has no capability flag, so any local process can send
-RESOURCE_CHANGE or CLIENT_MOVE notifications to the in-kernel witness
-handler.
+Commit 96c4af418586 ("cifs: Fix locking usage for tcon fields")
+refactored cifs code to change cifs_tcp_ses_lock for tc_lock around
+tc_count changes.
 
-The same family exposes CIFS_GENL_MCGRP_SWN without multicast-group
-capability flags.  Register messages sent to that group include the witness
-registration id and, for NTLM-authenticated mounts, the username, domain,
-and password attributes copied from the CIFS session.  An unprivileged
-local process should not be able to join that group and receive those
-messages.
+There was missing lock around tc_count increment inside
+smb2_find_smb_sess_tcon_unlocked().
 
-Require CAP_NET_ADMIN for incoming SWN_NOTIFY commands with
-GENL_ADMIN_PERM, and require CAP_NET_ADMIN over the network namespace for
-joining the SWN multicast group with GENL_MCAST_CAP_NET_ADMIN.  The
-cifs.witness service runs with the privileges needed for both operations.
-
-Fixes: fed979a7e082 ("cifs: Set witness notification handler for messages from userspace daemon")
 Cc: stable@vger.kernel.org
-Signed-off-by: Michael Bommarito <michael.bommarito@gmail.com>
-Assisted-by: Claude:claude-opus-4-7
+Fixes: 96c4af418586 ("cifs: Fix locking usage for tcon fields")
+Reviewed-by: Shyam Prasad N <sprasad@microsoft.com>
+Signed-off-by: Henrique Carvalho <henrique.carvalho@suse.com>
 Signed-off-by: Steve French <stfrench@microsoft.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/smb/client/netlink.c |    6 +++++-
- 1 file changed, 5 insertions(+), 1 deletion(-)
+ fs/smb/client/smb2transport.c |    2 ++
+ 1 file changed, 2 insertions(+)
 
---- a/fs/smb/client/netlink.c
-+++ b/fs/smb/client/netlink.c
-@@ -33,13 +33,17 @@ static const struct nla_policy cifs_genl
- static const struct genl_ops cifs_genl_ops[] = {
- 	{
- 		.cmd = CIFS_GENL_CMD_SWN_NOTIFY,
-+		.flags = GENL_ADMIN_PERM,
- 		.validate = GENL_DONT_VALIDATE_STRICT | GENL_DONT_VALIDATE_DUMP,
- 		.doit = cifs_swn_notify,
- 	},
- };
- 
- static const struct genl_multicast_group cifs_genl_mcgrps[] = {
--	[CIFS_GENL_MCGRP_SWN] = { .name = CIFS_GENL_MCGRP_SWN_NAME },
-+	[CIFS_GENL_MCGRP_SWN] = {
-+		.name = CIFS_GENL_MCGRP_SWN_NAME,
-+		.flags = GENL_MCAST_CAP_NET_ADMIN,
-+	},
- };
- 
- struct genl_family cifs_genl_family = {
+--- a/fs/smb/client/smb2transport.c
++++ b/fs/smb/client/smb2transport.c
+@@ -176,7 +176,9 @@ smb2_find_smb_sess_tcon_unlocked(struct
+ 	list_for_each_entry(tcon, &ses->tcon_list, tcon_list) {
+ 		if (tcon->tid != tid)
+ 			continue;
++		spin_lock(&tcon->tc_lock);
+ 		++tcon->tc_count;
++		spin_unlock(&tcon->tc_lock);
+ 		trace_smb3_tcon_ref(tcon->debug_id, tcon->tc_count,
+ 				    netfs_trace_tcon_ref_get_find_sess_tcon);
+ 		return tcon;
 
 
 
