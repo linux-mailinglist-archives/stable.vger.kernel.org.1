@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-255271-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-255272-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id uGAoMtyfGGpvlggAu9opvQ
-	(envelope-from <stable+bounces-255271-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:04:44 +0200
+	id IG5MKt6fGGpvlggAu9opvQ
+	(envelope-from <stable+bounces-255272-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:04:46 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2D2A45F7C6D
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:04:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 341AD5F7C75
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:04:46 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 9AFE63173351
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 20:00:42 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 561B331745CE
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 20:00:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 50893409630;
-	Thu, 28 May 2026 20:00:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 484FC409636;
+	Thu, 28 May 2026 20:00:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wnq+/+HY"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NUeFy+cy"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 246EC3BD649;
-	Thu, 28 May 2026 20:00:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E663E1AA1D2;
+	Thu, 28 May 2026 20:00:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779998441; cv=none; b=qjsQn8W+baqDAZ77pDdlNlFuChPh/Xy/PfNxDpxb5eb2fXp2p2611tqUfShQjf6WlhLXQELf+HrsuW70fOXqc0hHP+z/iRR8xNntLjSn+WilIGGpst5FEpHCq6eolup6o7niSl8i6Y51frjywkm3JqsrdkgRbpZr4ozs66Mppzk=
+	t=1779998444; cv=none; b=XqY9OqbtpeiUI/5fWAD63pBlfvHYsq6+HJWA3P4UDcVJrRSbDugVkDC1QxGlU66xRMQcoXdE1JadS2ACW0Z73G1B8VIUh+jy7RWC/aBDKpYwk7j76WXQmdtBthoHM4aemhSa+kkanx/R+ALqW/aOP85DRJTZWy37LOz+mj2LiLU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779998441; c=relaxed/simple;
-	bh=/SajcqbNve5NDe4Cs9o5MoQSh2HLAJdDD2wxJRoo7lE=;
+	s=arc-20240116; t=1779998444; c=relaxed/simple;
+	bh=sEfST1AVBUhaAy43ezAfOaL3UQ1jGajjdAD9kBCKteM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=hSw/GtmJtCXxZ/ETDBQBY1E0KH8W9GvwD0+RxkwOgbhJExzBtAmbjuk0kG8UQ+Kb8Ey1BggdIG2q7V60eWhjE32lW3kPSpxk/57q0a1Ek3n40kOye2eEtsBtuFinjPE6Onl7CwxDvA7CAJk1Q3Xy9sZ9IK1DeEgaKsxe/vENW1c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wnq+/+HY; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 832F01F000E9;
-	Thu, 28 May 2026 20:00:39 +0000 (UTC)
+	 MIME-Version; b=RImWKNnt9M1AK5uAcbHqmsnWc2byVJHfYyY2CzbWQQDrM0yItkOLHz81Y+8Q85uXj2nm1jhxBvP8eL3+EHKyt7e3V9zIDdEpG5xLPJwKpqXbuzlz+u17ZY2zjx6u/2Qn/9V2+Y34zhyk4Dz6eXnk8Rg9WrbyrU6DGko1LLji31M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NUeFy+cy; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 511D91F000E9;
+	Thu, 28 May 2026 20:00:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779998440;
-	bh=kqV0QQ3rKHmdh0KZwnWELpei+q5sOxcz1eW5obyZsDw=;
+	s=korg; t=1779998442;
+	bh=F/8I7RS9OyfKT1dHCAplJXrStvUM6uSE8ielEEktq/8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=wnq+/+HYqDSoM+HyRNqF09FgJImDJFn9GRaTjtMj+shCuZFVzoOOJHVEGb2qslW+L
-	 oqFojxOgdRc0hPxB5grx9Jaxhx1DYr92j2giSw2ET5YYnzpIGz48oHMJr18lzbqA4Z
-	 QU51hyKw5+KLqS17qonPa4Mz28MRlGKVgWjdRdkk=
+	b=NUeFy+cyJySf5SZSEpSvhKxTvJO0a4RwAvvUSUUhiBk2T3H7ovfapDIscIj4NwRck
+	 9Jhddk8MRimmZ/+7gQ2vYBfHci05KfwRx1w4UKndn9NoOsxbuFtYvizKG8rpfSBZi9
+	 ZINFkEEItw1ydwiLNV73XftQP+hRvhMsjTiAWyro=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Frank Wunderlich <frank-w@public-files.de>,
-	Bartosz Golaszewski <bartosz.golaszewski@oss.qualcomm.com>,
+	Til Kaiser <mail@tk154.de>,
+	Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>,
 	Linus Walleij <linusw@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 7.0 174/461] pinctrl: mediatek: moore: implement gpio_chip::get_direction()
-Date: Thu, 28 May 2026 21:45:03 +0200
-Message-ID: <20260528194652.107376713@linuxfoundation.org>
+Subject: [PATCH 7.0 175/461] pinctrl: qcom: ipq4019: mark gpio as a GPIO pin function
+Date: Thu, 28 May 2026 21:45:04 +0200
+Message-ID: <20260528194652.137153056@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
 In-Reply-To: <20260528194646.819809818@linuxfoundation.org>
 References: <20260528194646.819809818@linuxfoundation.org>
@@ -74,26 +74,25 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,public-files.de,oss.qualcomm.com,kernel.org];
-	TAGGED_FROM(0.00)[bounces-255271-lists,stable=lfdr.de];
-	PRECEDENCE_BULK(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-255272-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
 	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[qualcomm.com:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,public-files.de:email]
-X-Rspamd-Queue-Id: 2D2A45F7C6D
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_SEVEN(0.00)[7];
+	MID_RHS_MATCH_FROM(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[qualcomm.com:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
+X-Rspamd-Queue-Id: 341AD5F7C75
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
@@ -101,63 +100,63 @@ X-Rspamd-Server: lfdr
 
 ------------------
 
-From: Bartosz Golaszewski <bartosz.golaszewski@oss.qualcomm.com>
+From: Til Kaiser <mail@tk154.de>
 
-[ Upstream commit b560d414239232c6ed7205d3795d3f588034d69b ]
+[ Upstream commit b51d33ea8a164bb5f0eec8ad817fa9730ac2b577 ]
 
-If the gpio_chip::get_direction() callback is not implemented by the GPIO
-controller driver, GPIOLIB emits a warning.
+The qcom pinctrl core supports marking functions that represent GPIO mode
+via PINCTRL_GPIO_PINFUNCTION(), so that strict pinmuxing does not reject
+GPIO requests for pins that are muxed to the GPIO function.
 
-Implement get_direction() for the GPIO part of pinctrl-moore.
+ipq4019 still describes its gpio function with QCA_PIN_FUNCTION(gpio),
+so it is not treated as a GPIO pin function. As a result, GPIO consumers
+can still conflict with pinctrl states that select the "gpio" function.
 
-Fixes: 471e998c0e31 ("gpiolib: remove redundant callback check")
-Fixes: e623c4303ed1 ("gpiolib: sanitize the return value of gpio_chip::get_direction()")
-Reported-by: Frank Wunderlich <frank-w@public-files.de>
-Closes: https://lore.kernel.org/all/20260409132724.126258-1-linux@fw-web.de/
-Signed-off-by: Bartosz Golaszewski <bartosz.golaszewski@oss.qualcomm.com>
-Tested-By: Frank Wunderlich <frank-w@public-files.de>
+Add a QCA_GPIO_PIN_FUNCTION() helper and use it for the ipq4019 gpio
+function, matching how the msm-based qcom drivers handle this.
+
+This allows ipq4019 to keep the GPIO-related pin configuration in DTS
+without tripping over strict pinmux ownership checks.
+
+Fixes: cc85cb96e2e4 ("pinctrl: qcom: make the pinmuxing strict")
+Signed-off-by: Til Kaiser <mail@tk154.de>
+Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
 Signed-off-by: Linus Walleij <linusw@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/pinctrl/mediatek/pinctrl-moore.c | 18 ++++++++++++++++++
- 1 file changed, 18 insertions(+)
+ drivers/pinctrl/qcom/pinctrl-ipq4019.c | 2 +-
+ drivers/pinctrl/qcom/pinctrl-msm.h     | 5 +++++
+ 2 files changed, 6 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/pinctrl/mediatek/pinctrl-moore.c b/drivers/pinctrl/mediatek/pinctrl-moore.c
-index 70f608347a5f6..071ba849e5322 100644
---- a/drivers/pinctrl/mediatek/pinctrl-moore.c
-+++ b/drivers/pinctrl/mediatek/pinctrl-moore.c
-@@ -520,6 +520,23 @@ static int mtk_gpio_direction_output(struct gpio_chip *chip, unsigned int gpio,
- 	return pinctrl_gpio_direction_output(chip, gpio);
- }
+diff --git a/drivers/pinctrl/qcom/pinctrl-ipq4019.c b/drivers/pinctrl/qcom/pinctrl-ipq4019.c
+index 6ede3149b6e17..07df812fb7282 100644
+--- a/drivers/pinctrl/qcom/pinctrl-ipq4019.c
++++ b/drivers/pinctrl/qcom/pinctrl-ipq4019.c
+@@ -480,7 +480,7 @@ static const struct pinfunction ipq4019_functions[] = {
+ 	QCA_PIN_FUNCTION(blsp_uart0),
+ 	QCA_PIN_FUNCTION(blsp_uart1),
+ 	QCA_PIN_FUNCTION(chip_rst),
+-	QCA_PIN_FUNCTION(gpio),
++	QCA_GPIO_PIN_FUNCTION(gpio),
+ 	QCA_PIN_FUNCTION(i2s_rx),
+ 	QCA_PIN_FUNCTION(i2s_spdif_in),
+ 	QCA_PIN_FUNCTION(i2s_spdif_out),
+diff --git a/drivers/pinctrl/qcom/pinctrl-msm.h b/drivers/pinctrl/qcom/pinctrl-msm.h
+index 4625fa5320a95..120217012a9f6 100644
+--- a/drivers/pinctrl/qcom/pinctrl-msm.h
++++ b/drivers/pinctrl/qcom/pinctrl-msm.h
+@@ -39,6 +39,11 @@ struct pinctrl_pin_desc;
+ 					fname##_groups,		\
+ 					ARRAY_SIZE(fname##_groups))
  
-+static int mtk_gpio_get_direction(struct gpio_chip *chip, unsigned int offset)
-+{
-+	struct mtk_pinctrl *hw = gpiochip_get_data(chip);
-+	const struct mtk_pin_desc *desc;
-+	int ret, dir;
++#define QCA_GPIO_PIN_FUNCTION(fname)				\
++	[qca_mux_##fname] = PINCTRL_GPIO_PINFUNCTION(#fname,	\
++					fname##_groups,		\
++					ARRAY_SIZE(fname##_groups))
 +
-+	desc = (const struct mtk_pin_desc *)&hw->soc->pins[offset];
-+	if (!desc->name)
-+		return -ENOTSUPP;
-+
-+	ret = mtk_hw_get_value(hw, desc, PINCTRL_PIN_REG_DIR, &dir);
-+	if (ret)
-+		return ret;
-+
-+	return dir ? GPIO_LINE_DIRECTION_OUT : GPIO_LINE_DIRECTION_IN;
-+}
-+
- static int mtk_gpio_to_irq(struct gpio_chip *chip, unsigned int offset)
- {
- 	struct mtk_pinctrl *hw = gpiochip_get_data(chip);
-@@ -566,6 +583,7 @@ static int mtk_build_gpiochip(struct mtk_pinctrl *hw)
- 	chip->parent		= hw->dev;
- 	chip->request		= gpiochip_generic_request;
- 	chip->free		= gpiochip_generic_free;
-+	chip->get_direction	= mtk_gpio_get_direction;
- 	chip->direction_input	= pinctrl_gpio_direction_input;
- 	chip->direction_output	= mtk_gpio_direction_output;
- 	chip->get		= mtk_gpio_get;
+ /**
+  * struct msm_pingroup - Qualcomm pingroup definition
+  * @grp:                  Generic data of the pin group (name and pins)
 -- 
 2.53.0
 
