@@ -1,63 +1,60 @@
-Return-Path: <stable+bounces-255811-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-256243-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id kIsRCkuoGGpolwgAu9opvQ
-	(envelope-from <stable+bounces-255811-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:40:43 +0200
+	id EPBAD1CrGGpolwgAu9opvQ
+	(envelope-from <stable+bounces-256243-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:53:36 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8FBD15F94D7
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:40:42 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id B04A35F9C97
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:53:35 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 16F4F311620E
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 20:25:53 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 8F4BC311F766
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 20:45:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6FC7932AAD6;
-	Thu, 28 May 2026 20:25:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4A7A5329396;
+	Thu, 28 May 2026 20:45:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xhQYhPf7"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="o3cnJJUF"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 433A8325485;
-	Thu, 28 May 2026 20:25:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B894F317142;
+	Thu, 28 May 2026 20:45:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779999946; cv=none; b=ruId1NsDolnpdxFviNmBdyen+x43ijQP49Fv024/J2oAMPkPV+1DhpxkX49gwFVc4kr2XWm7lEtWgvYmsAhT/jYtVa9r5XZB8LvwFny6dqXtzKhoiw3BxS+1Fl/pGaASRRnoIxhGpMvzx2kkx4Ac+vEUKI/g1/evBUHHaSGCxoQ=
+	t=1780001155; cv=none; b=U4XbQuHQycQWLGJLHJkJIZoumsPxD8/D+Rk2odGHbh+Eit/52POLV6KB56PBCypVuVa9uxXaQ8sMX+sRhYOm5rHfs3W/h5jXwPTnzrfWtFOoxpb1AWEEuXUv0pnixOmhO3Dof0lILfqhYo8KUIYVSBnTiUVB04sxgIQQ9bV7b94=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779999946; c=relaxed/simple;
-	bh=keZR4lXsKQh15f5qetncjToT63x0lIfoynGRfo4T+fw=;
+	s=arc-20240116; t=1780001155; c=relaxed/simple;
+	bh=NO7zvjOEQCkJNwo9E+78FrP3WPaI42Msv63Ro+gFPc4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=VyHJg0yLP6M53pGXaNxdK3NUpZBmvDBybTPLPv0S7oKBQUgHqDF/5FL5Oim7At19KWDnGyHnhifV2pqSWq2SBkCARb+dxQ2FeembPY+NeQWC+SVgiSrqeBgM12JBXKS15i+/U1TBMFHb2vHWhKZMqR1gfGFO0e/Jgy6OevDwBMU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xhQYhPf7; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A8BEA1F000E9;
-	Thu, 28 May 2026 20:25:44 +0000 (UTC)
+	 MIME-Version; b=isAKS6OQk3hrnr4r5RY4USdReAj1ixWGxHyHKMAB+r6KCnJp6P/tae9TT2XiKVB7jwK8C2lBvrymyom4JEEcXE2lGIVIb9AOJlAggv3t8lcaozheYkLxnG08b2VKAH/b847+6y9akgbsEl12UnDDtC7DNNpoqx+pVWuCHSH4C98=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=o3cnJJUF; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 207BB1F000E9;
+	Thu, 28 May 2026 20:45:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779999945;
-	bh=JzYYJ1KkqC2Xr6zXZu2TcxZct6YOA40ZCoLyVWNIoCc=;
+	s=korg; t=1780001153;
+	bh=ZL8v3pLsOu9XbrLwZUjGseQGYWKBIk/Csm7h20cUYzA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=xhQYhPf7H1kPBVQkCtC5frPSSttNOwRLAJMRZE8slrGc3McPpY9vzkUET5rKCdNdM
-	 cVPbbqSR2ae8Dik9dRhiiDauz9TZ0B8ObYOmVPrNMw+KcbzDSvblSrpXry54F7Jx5M
-	 m3wy8lBirr8ERQxGAOVOABhFG7Bxpvk7ta9nSB50=
+	b=o3cnJJUFRq4h+03Zr3ZfTvNSoBhVHSc8vcs3b3IfQ4GZEHvV5/4n8HZL6/woe1xZv
+	 lLM4vyPJigE/CPDzG9lssPyzLAdRWzmzU//3REfLpgU8Xe1N5D4zPlsMtK4pMr0AOy
+	 uNsu7OxUlv/7L+lnuGidvJHwXjQYYgUZnzVOat94=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	David Howells <dhowells@redhat.com>,
-	Paulo Alcantara <pc@manguebit.org>,
-	Matthew Wilcox <willy@infradead.org>,
-	netfs@lists.linux.dev,
-	linux-fsdevel@vger.kernel.org,
-	Christian Brauner <brauner@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 248/377] netfs: Fix netfs_read_folio() to wait on writeback
+	Gui-Dong Han <hanguidong02@gmail.com>,
+	Danilo Krummrich <dakr@kernel.org>,
+	Sasha Levin <sashal@kernel.org>,
+	David Sauerwein <dssauerw@amazon.de>
+Subject: [PATCH 6.6 006/186] driver core: generalize driver_override in struct device
 Date: Thu, 28 May 2026 21:48:06 +0200
-Message-ID: <20260528194645.559604065@linuxfoundation.org>
+Message-ID: <20260528194929.120982811@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260528194638.371537336@linuxfoundation.org>
-References: <20260528194638.371537336@linuxfoundation.org>
+In-Reply-To: <20260528194928.941004471@linuxfoundation.org>
+References: <20260528194928.941004471@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -72,72 +69,353 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	RCVD_TLS_LAST(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,kernel.org,amazon.de];
+	TAGGED_FROM(0.00)[bounces-256243-lists,stable=lfdr.de];
+	PRECEDENCE_BULK(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FROM_HAS_DN(0.00)[];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-255811-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TO_DN_SOME(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[10];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[7];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[infradead.org:email,msgid.link:url,sashiko.dev:url,manguebit.org:email,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,linux.dev:email,linuxfoundation.org:mid,linuxfoundation.org:dkim]
-X-Rspamd-Queue-Id: 8FBD15F94D7
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,msgid.link:url,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,amazon.de:email]
+X-Rspamd-Queue-Id: B04A35F9C97
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: David Howells <dhowells@redhat.com>
+From: Danilo Krummrich <dakr@kernel.org>
 
-[ Upstream commit ded0c6f1606061148c202825f7e53d711f9f84cf ]
+[ Upstream commit cb3d1049f4ea77d5ad93f17d8ac1f2ed4da70501 ]
 
-Fix netfs_read_folio() to wait for an ongoing writeback to complete so that
-it can trust the dirty flag and whatever is attached to folio->private
-(folio->private may get cleaned up by the collector before it clears the
-writeback flag).
+Currently, there are 12 busses (including platform and PCI) that
+duplicate the driver_override logic for their individual devices.
 
-Fixes: ee4cdf7ba857 ("netfs: Speed up buffered reading")
-Closes: https://sashiko.dev/#/patchset/20260414082004.3756080-1-dhowells%40redhat.com
-Signed-off-by: David Howells <dhowells@redhat.com>
-Link: https://patch.msgid.link/20260512123404.719402-23-dhowells@redhat.com
-cc: Paulo Alcantara <pc@manguebit.org>
-cc: Matthew Wilcox <willy@infradead.org>
-cc: netfs@lists.linux.dev
-cc: linux-fsdevel@vger.kernel.org
-Signed-off-by: Christian Brauner <brauner@kernel.org>
+All of them seem to be prone to the bug described in [1].
+
+While this could be solved for every bus individually using a separate
+lock, solving this in the driver-core generically results in less (and
+cleaner) changes overall.
+
+Thus, move driver_override to struct device, provide corresponding
+accessors for busses and handle locking with a separate lock internally.
+
+In particular, add device_set_driver_override(),
+device_has_driver_override(), device_match_driver_override() and
+generalize the sysfs store() and show() callbacks via a driver_override
+feature flag in struct bus_type.
+
+Until all busses have migrated, keep driver_set_override() in place.
+
+Note that we can't use the device lock for the reasons described in [2].
+
+Link: https://bugzilla.kernel.org/show_bug.cgi?id=220789 [1]
+Link: https://lore.kernel.org/driver-core/DGRGTIRHA62X.3RY09D9SOK77P@kernel.org/ [2]
+Tested-by: Gui-Dong Han <hanguidong02@gmail.com>
+Co-developed-by: Gui-Dong Han <hanguidong02@gmail.com>
+Signed-off-by: Gui-Dong Han <hanguidong02@gmail.com>
+Reviewed-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Link: https://patch.msgid.link/20260303115720.48783-2-dakr@kernel.org
+[ Use dev->bus instead of sp->bus for consistency; fix commit message to
+  refer to the struct bus_type's driver_override feature flag. - Danilo ]
+Signed-off-by: Danilo Krummrich <dakr@kernel.org>
+Stable-dep-of: 2b38efc05bf7 ("driver core: platform: use generic driver_override infrastructure")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: David Sauerwein <dssauerw@amazon.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/netfs/buffered_read.c | 2 ++
- 1 file changed, 2 insertions(+)
+ drivers/base/bus.c         | 43 ++++++++++++++++++++++++++-
+ drivers/base/core.c        |  2 ++
+ drivers/base/dd.c          | 60 ++++++++++++++++++++++++++++++++++++++
+ include/linux/device.h     | 54 ++++++++++++++++++++++++++++++++++
+ include/linux/device/bus.h |  4 +++
+ 5 files changed, 162 insertions(+), 1 deletion(-)
 
-diff --git a/fs/netfs/buffered_read.c b/fs/netfs/buffered_read.c
-index ebaabec376326..fab3181c7f869 100644
---- a/fs/netfs/buffered_read.c
-+++ b/fs/netfs/buffered_read.c
-@@ -502,6 +502,8 @@ int netfs_read_folio(struct file *file, struct folio *folio)
- 	struct netfs_inode *ctx = netfs_inode(mapping->host);
- 	int ret;
+diff --git a/drivers/base/bus.c b/drivers/base/bus.c
+index b97e13a52c330..ae57df879bca2 100644
+--- a/drivers/base/bus.c
++++ b/drivers/base/bus.c
+@@ -463,6 +463,36 @@ int bus_for_each_drv(const struct bus_type *bus, struct device_driver *start,
+ }
+ EXPORT_SYMBOL_GPL(bus_for_each_drv);
  
-+	folio_wait_writeback(folio);
++static ssize_t driver_override_store(struct device *dev,
++				     struct device_attribute *attr,
++				     const char *buf, size_t count)
++{
++	int ret;
 +
- 	if (folio_test_dirty(folio))
- 		return netfs_read_gaps(file, folio);
++	ret = __device_set_driver_override(dev, buf, count);
++	if (ret)
++		return ret;
++
++	return count;
++}
++
++static ssize_t driver_override_show(struct device *dev,
++				    struct device_attribute *attr, char *buf)
++{
++	guard(spinlock)(&dev->driver_override.lock);
++	return sysfs_emit(buf, "%s\n", dev->driver_override.name);
++}
++static DEVICE_ATTR_RW(driver_override);
++
++static struct attribute *driver_override_dev_attrs[] = {
++	&dev_attr_driver_override.attr,
++	NULL,
++};
++
++static const struct attribute_group driver_override_dev_group = {
++	.attrs = driver_override_dev_attrs,
++};
++
+ /**
+  * bus_add_device - add device to bus
+  * @dev: device being added
+@@ -496,9 +526,15 @@ int bus_add_device(struct device *dev)
+ 	if (error)
+ 		goto out_put;
+ 
++	if (dev->bus->driver_override) {
++		error = device_add_group(dev, &driver_override_dev_group);
++		if (error)
++			goto out_groups;
++	}
++
+ 	error = sysfs_create_link(&sp->devices_kset->kobj, &dev->kobj, dev_name(dev));
+ 	if (error)
+-		goto out_groups;
++		goto out_override;
+ 
+ 	error = sysfs_create_link(&dev->kobj, &sp->subsys.kobj, "subsystem");
+ 	if (error)
+@@ -509,6 +545,9 @@ int bus_add_device(struct device *dev)
+ 
+ out_subsys:
+ 	sysfs_remove_link(&sp->devices_kset->kobj, dev_name(dev));
++out_override:
++	if (dev->bus->driver_override)
++		device_remove_group(dev, &driver_override_dev_group);
+ out_groups:
+ 	device_remove_groups(dev, sp->bus->dev_groups);
+ out_put:
+@@ -567,6 +606,8 @@ void bus_remove_device(struct device *dev)
+ 
+ 	sysfs_remove_link(&dev->kobj, "subsystem");
+ 	sysfs_remove_link(&sp->devices_kset->kobj, dev_name(dev));
++	if (dev->bus->driver_override)
++		device_remove_group(dev, &driver_override_dev_group);
+ 	device_remove_groups(dev, dev->bus->dev_groups);
+ 	if (klist_node_attached(&dev->p->knode_bus))
+ 		klist_del(&dev->p->knode_bus);
+diff --git a/drivers/base/core.c b/drivers/base/core.c
+index 3c172e6d3fe0d..5048849cb97a9 100644
+--- a/drivers/base/core.c
++++ b/drivers/base/core.c
+@@ -2505,6 +2505,7 @@ static void device_release(struct kobject *kobj)
+ 	devres_release_all(dev);
+ 
+ 	kfree(dev->dma_range_map);
++	kfree(dev->driver_override.name);
+ 
+ 	if (dev->release)
+ 		dev->release(dev);
+@@ -3153,6 +3154,7 @@ void device_initialize(struct device *dev)
+ 	kobject_init(&dev->kobj, &device_ktype);
+ 	INIT_LIST_HEAD(&dev->dma_pools);
+ 	mutex_init(&dev->mutex);
++	spin_lock_init(&dev->driver_override.lock);
+ 	lockdep_set_novalidate_class(&dev->mutex);
+ 	spin_lock_init(&dev->devres_lock);
+ 	INIT_LIST_HEAD(&dev->devres_head);
+diff --git a/drivers/base/dd.c b/drivers/base/dd.c
+index d371c3437dc6b..44f9d0a06d5b7 100644
+--- a/drivers/base/dd.c
++++ b/drivers/base/dd.c
+@@ -380,6 +380,66 @@ static void __exit deferred_probe_exit(void)
+ }
+ __exitcall(deferred_probe_exit);
+ 
++int __device_set_driver_override(struct device *dev, const char *s, size_t len)
++{
++	const char *new, *old;
++	char *cp;
++
++	if (!s)
++		return -EINVAL;
++
++	/*
++	 * The stored value will be used in sysfs show callback (sysfs_emit()),
++	 * which has a length limit of PAGE_SIZE and adds a trailing newline.
++	 * Thus we can store one character less to avoid truncation during sysfs
++	 * show.
++	 */
++	if (len >= (PAGE_SIZE - 1))
++		return -EINVAL;
++
++	/*
++	 * Compute the real length of the string in case userspace sends us a
++	 * bunch of \0 characters like python likes to do.
++	 */
++	len = strlen(s);
++
++	if (!len) {
++		/* Empty string passed - clear override */
++		spin_lock(&dev->driver_override.lock);
++		old = dev->driver_override.name;
++		dev->driver_override.name = NULL;
++		spin_unlock(&dev->driver_override.lock);
++		kfree(old);
++
++		return 0;
++	}
++
++	cp = strnchr(s, len, '\n');
++	if (cp)
++		len = cp - s;
++
++	new = kstrndup(s, len, GFP_KERNEL);
++	if (!new)
++		return -ENOMEM;
++
++	spin_lock(&dev->driver_override.lock);
++	old = dev->driver_override.name;
++	if (cp != s) {
++		dev->driver_override.name = new;
++		spin_unlock(&dev->driver_override.lock);
++	} else {
++		/* "\n" passed - clear override */
++		dev->driver_override.name = NULL;
++		spin_unlock(&dev->driver_override.lock);
++
++		kfree(new);
++	}
++	kfree(old);
++
++	return 0;
++}
++EXPORT_SYMBOL_GPL(__device_set_driver_override);
++
+ /**
+  * device_is_bound() - Check if device is bound to a driver
+  * @dev: device to check
+diff --git a/include/linux/device.h b/include/linux/device.h
+index 8fb9bd71fcd0b..2a9017eec15c2 100644
+--- a/include/linux/device.h
++++ b/include/linux/device.h
+@@ -643,6 +643,8 @@ enum struct_device_flags {
+  * 		on.  This shrinks the "Board Support Packages" (BSPs) and
+  * 		minimizes board-specific #ifdefs in drivers.
+  * @driver_data: Private pointer for driver specific info.
++ * @driver_override: Driver name to force a match.  Do not touch directly; use
++ *		     device_set_driver_override() instead.
+  * @links:	Links to suppliers and consumers of this device.
+  * @power:	For device power management.
+  *		See Documentation/driver-api/pm/devices.rst for details.
+@@ -735,6 +737,10 @@ struct device {
+ 					   core doesn't touch it */
+ 	void		*driver_data;	/* Driver data, set and get with
+ 					   dev_set_drvdata/dev_get_drvdata */
++	struct {
++		const char	*name;
++		spinlock_t	lock;
++	} driver_override;
+ 	struct mutex		mutex;	/* mutex to synchronize calls to
+ 					 * its driver.
+ 					 */
+@@ -882,6 +888,54 @@ struct device_link {
+ 
+ #define kobj_to_dev(__kobj)	container_of_const(__kobj, struct device, kobj)
+ 
++int __device_set_driver_override(struct device *dev, const char *s, size_t len);
++
++/**
++ * device_set_driver_override() - Helper to set or clear driver override.
++ * @dev: Device to change
++ * @s: NUL-terminated string, new driver name to force a match, pass empty
++ *     string to clear it ("" or "\n", where the latter is only for sysfs
++ *     interface).
++ *
++ * Helper to set or clear driver override of a device.
++ *
++ * Returns: 0 on success or a negative error code on failure.
++ */
++static inline int device_set_driver_override(struct device *dev, const char *s)
++{
++	return __device_set_driver_override(dev, s, s ? strlen(s) : 0);
++}
++
++/**
++ * device_has_driver_override() - Check if a driver override has been set.
++ * @dev: device to check
++ *
++ * Returns true if a driver override has been set for this device.
++ */
++static inline bool device_has_driver_override(struct device *dev)
++{
++	guard(spinlock)(&dev->driver_override.lock);
++	return !!dev->driver_override.name;
++}
++
++/**
++ * device_match_driver_override() - Match a driver against the device's driver_override.
++ * @dev: device to check
++ * @drv: driver to match against
++ *
++ * Returns > 0 if a driver override is set and matches the given driver, 0 if a
++ * driver override is set but does not match, or < 0 if a driver override is not
++ * set at all.
++ */
++static inline int device_match_driver_override(struct device *dev,
++					       const struct device_driver *drv)
++{
++	guard(spinlock)(&dev->driver_override.lock);
++	if (dev->driver_override.name)
++		return !strcmp(dev->driver_override.name, drv->name);
++	return -1;
++}
++
+ /**
+  * device_iommu_mapped - Returns true when the device DMA is translated
+  *			 by an IOMMU
+diff --git a/include/linux/device/bus.h b/include/linux/device/bus.h
+index ae10c43227543..d43ce072d747e 100644
+--- a/include/linux/device/bus.h
++++ b/include/linux/device/bus.h
+@@ -65,6 +65,9 @@ struct fwnode_handle;
+  * @iommu_ops:  IOMMU specific operations for this bus, used to attach IOMMU
+  *              driver implementations to a bus and allow the driver to do
+  *              bus-specific setup
++ * @driver_override:	Set to true if this bus supports the driver_override
++ *			mechanism, which allows userspace to force a specific
++ *			driver to bind to a device via a sysfs attribute.
+  * @need_parent_lock:	When probing or removing a device on this bus, the
+  *			device core should lock the device's parent.
+  *
+@@ -106,6 +109,7 @@ struct bus_type {
+ 
+ 	const struct iommu_ops *iommu_ops;
+ 
++	bool driver_override;
+ 	bool need_parent_lock;
+ };
  
 -- 
 2.53.0
