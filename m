@@ -1,60 +1,61 @@
-Return-Path: <stable+bounces-255934-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-256344-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id WFBkG02nGGp+lwgAu9opvQ
-	(envelope-from <stable+bounces-255934-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:36:29 +0200
+	id qKWBNVOsGGpolwgAu9opvQ
+	(envelope-from <stable+bounces-256344-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:57:55 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3C6385F916B
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:36:29 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 810005F9EC1
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:57:55 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 92BB23004628
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 20:31:31 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 61D2F30AF218
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 20:50:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1B91A3368B5;
-	Thu, 28 May 2026 20:31:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 81B6D33372A;
+	Thu, 28 May 2026 20:50:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UM8Y/zby"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="egr6bBwl"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F31F325F7B9;
-	Thu, 28 May 2026 20:31:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 514662F260C;
+	Thu, 28 May 2026 20:50:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780000288; cv=none; b=jg9FzHVHedb/dcmg01FPUJYfMOk9QO93WjWSIwfYiH8FfWfScDfdIGIfq94MhJdio0Bp2781XpYoOaOfhlcHPv+Ul919gKG+Z+9FOc5r6BWE69m2vKvI2VBXTbXPxhJ4k7Yq80zGFVQFvhpS8B7qxXQRC5VisCSoS7eACoJ/5/k=
+	t=1780001438; cv=none; b=LwwCvMHBI06olBWEIKfMZHiAslttDjcUXPwpQN+RIX5ovXRTft80p5Ai/J7yZ8F2Ayl8qGLzsrLHb+skSSQoYnMAStZORxmu0FPg4ogcRZbQJW6y2ueoARnhIkdJOxeL8a1yL2hn3626eg9Inav0/7dIIsi8hRjfBiPsIA1p2Ns=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780000288; c=relaxed/simple;
-	bh=oSlqdqfNATOmtBPCQAZC8H3D/gU+n9ZDAANPZN35c2M=;
+	s=arc-20240116; t=1780001438; c=relaxed/simple;
+	bh=Kgndg6P1KU/kijKMv1EAAzJ3qYGAEuFDlWw8kl5tnXs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=T/Hd57Bxe0BtNXcCHOuHbXbOcmJYADQCV2o3yQxMIW8pm0m6I7gDPyKH9NPTb2Nzmk5UY2WPCszATcFaezyBhwjDanOqnEGwPoq0w8ArrbutdbIx/yWNr5wyYlR20mxnQOHQoLTCt+rF/aEEntpQPZdDVYe+tsM6xW3IuUdvNSU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UM8Y/zby; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 531511F000E9;
-	Thu, 28 May 2026 20:31:27 +0000 (UTC)
+	 MIME-Version:Content-Type; b=oVrRVeGsCvJPL0VKEe//JncfafOVdKR8INGhCP3+N7Fn0lzz4w7IxvN25l3GQQgfZTFZj4FMahiMbY6Xby9TnqfAU/RSaqAzwvsvNjEPz7jh9ruSfW6znaWlSB82PJCrY3LlJrZXgoTOv6oRtE7qo8WOxmE5pjO23Mb2BB8Zmjo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=egr6bBwl; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B02DE1F000E9;
+	Thu, 28 May 2026 20:50:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780000287;
-	bh=P8gT0hOtABW4A3AIcbRxWYQ8NyV417d6QDzi6sUdoM8=;
+	s=korg; t=1780001437;
+	bh=P51+eyUDg1TsskTjF4/KkHTnuR1Fb1ClOXJl14vB6wE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=UM8Y/zbyxF0U/e6T+FM3Q4bybK/kpjGqVjXb0OkED53FUXs5we1JkbAAtuzSU7tSY
-	 /N5J5opJlDoz8Uu6yy87Vuy/bEX2tXzgLMHMnu2ao2h1MRj1ineeP93+MfbNHGAWlr
-	 Ly8BhSUNmXfeyR9r0BaD3Os1t65xHBq+mXFfSKW8=
+	b=egr6bBwlLUdPE/RmlIlGZr5ZjCPnxlrmfiu1XYeaHL7DYRJSZjE0fKeHWX6pwpQ2J
+	 t6UA8IzLUbeTOeVLvLDXtSV1nBkLOxd5KxJP9nS5VlGRyGBVYvfizzmEOk+vwwQqox
+	 Jm35FRzywRWm81S5KFWjbJw0n3I4YIaVJrPHvEY8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Geetha sowjanya <gakula@marvell.com>,
-	Ratheesh Kannoth <rkannoth@marvell.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
+	Steven Rostedt <rostedt@goodmis.org>,
+	Jiayuan Chen <jiayuan.chen@linux.dev>,
+	Thomas Gleixner <tglx@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 369/377] octeontx2-af: npc: Fix allmulticast skip logic for LBK and SDP VFs
+Subject: [PATCH 6.6 127/186] irq_work: Fix use-after-free in irq_work_single() on PREEMPT_RT
 Date: Thu, 28 May 2026 21:50:07 +0200
-Message-ID: <20260528194649.111824814@linuxfoundation.org>
+Message-ID: <20260528194932.374290819@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260528194638.371537336@linuxfoundation.org>
-References: <20260528194638.371537336@linuxfoundation.org>
+In-Reply-To: <20260528194928.941004471@linuxfoundation.org>
+References: <20260528194928.941004471@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,76 +65,99 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-255934-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
+	TAGGED_FROM(0.00)[bounces-256344-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	MIME_TRACE(0.00)[0:+];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	FROM_HAS_DN(0.00)[];
 	TO_DN_SOME(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
-	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[7];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
 	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim]
-X-Rspamd-Queue-Id: 3C6385F916B
+	RCPT_COUNT_SEVEN(0.00)[8];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,linux.dev:email,linutronix.de:email,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,goodmis.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim]
+X-Rspamd-Queue-Id: 810005F9EC1
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ratheesh Kannoth <rkannoth@marvell.com>
+From: Jiayuan Chen <jiayuan.chen@linux.dev>
 
-[ Upstream commit 9eddc819f00b5b74bb4ac91396f80bd35f5f3561 ]
+[ Upstream commit 91840be8f710370607f949a627e070896faeddb8 ]
 
-When installing the allmulticast NPC rule, rvu_npc_install_allmulti_entry()
-should skip LBK and SDP VFs (only CGX PF/VF may add the entry).  The
-code combined is_lbk_vf() and is_sdp_vf() with logical AND, which is
-never true for a single pcifunc, so the intended early return never ran.
+On PREEMPT_RT, non-HARD irq_work runs in per-CPU kthreads via
+run_irq_workd(), so irq_work_sync() uses rcuwait() to wait for BUSY==0.
 
-Use logical OR instead.
+After irq_work_single() clears BUSY via atomic_cmpxchg(), it still
+dereferences @work for irq_work_is_hard() and rcuwait_wake_up().
 
-Cc: Geetha sowjanya <gakula@marvell.com>
-Fixes: ae703539f49d2 ("octeontx2-af: Cleanup loopback device checks")
-Signed-off-by: Ratheesh Kannoth <rkannoth@marvell.com>
-Link: https://patch.msgid.link/20260520043036.1523798-1-rkannoth@marvell.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+An irq_work_sync() caller on another CPU that enters after BUSY is cleared
+can observe BUSY==0 immediately, return, and free the work before those
+accesses complete — causing a use-after-free.
+
+Fix this by wrapping run_irq_workd() in guard(rcu)() so that the entire
+irq_work_single() execution is within an RCU read-side critical
+section. Then add synchronize_rcu() in irq_work_sync() after
+rcuwait_wait_event() to ensure the caller waits for the RCU grace period
+before returning, preventing premature frees.
+
+Fixes: 810979682ccc ("irq_work: Allow irq_work_sync() to sleep if irq_work() no IRQ support.")
+Suggested-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
+Suggested-by: Steven Rostedt <rostedt@goodmis.org>
+Signed-off-by: Jiayuan Chen <jiayuan.chen@linux.dev>
+Signed-off-by: Thomas Gleixner <tglx@kernel.org>
+Reviewed-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
+Link: https://patch.msgid.link/20260330073234.303732-1-jiayuan.chen@linux.dev
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/marvell/octeontx2/af/rvu_npc.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ kernel/irq_work.c | 7 +++++++
+ 1 file changed, 7 insertions(+)
 
-diff --git a/drivers/net/ethernet/marvell/octeontx2/af/rvu_npc.c b/drivers/net/ethernet/marvell/octeontx2/af/rvu_npc.c
-index 8658cb2143dfc..e28675fe18907 100644
---- a/drivers/net/ethernet/marvell/octeontx2/af/rvu_npc.c
-+++ b/drivers/net/ethernet/marvell/octeontx2/af/rvu_npc.c
-@@ -837,7 +837,7 @@ void rvu_npc_install_allmulti_entry(struct rvu *rvu, u16 pcifunc, int nixlf,
- 	u16 vf_func;
- 
- 	/* Only CGX PF/VF can add allmulticast entry */
--	if (is_lbk_vf(rvu, pcifunc) && is_sdp_vf(rvu, pcifunc))
-+	if (is_lbk_vf(rvu, pcifunc) || is_sdp_vf(rvu, pcifunc))
+diff --git a/kernel/irq_work.c b/kernel/irq_work.c
+index 2f4fb336dda17..188721af8eb31 100644
+--- a/kernel/irq_work.c
++++ b/kernel/irq_work.c
+@@ -292,6 +292,12 @@ void irq_work_sync(struct irq_work *work)
+ 	    !arch_irq_work_has_interrupt()) {
+ 		rcuwait_wait_event(&work->irqwait, !irq_work_is_busy(work),
+ 				   TASK_UNINTERRUPTIBLE);
++		/*
++		 * Ensure irq_work_single() does not access @work
++		 * after removing IRQ_WORK_BUSY. It is always
++		 * accessed within a RCU-read section.
++		 */
++		synchronize_rcu();
  		return;
+ 	}
  
- 	blkaddr = rvu_get_blkaddr(rvu, BLKTYPE_NPC, 0);
+@@ -302,6 +308,7 @@ EXPORT_SYMBOL_GPL(irq_work_sync);
+ 
+ static void run_irq_workd(unsigned int cpu)
+ {
++	guard(rcu)();
+ 	irq_work_run_list(this_cpu_ptr(&lazy_list));
+ }
+ 
 -- 
 2.53.0
 
