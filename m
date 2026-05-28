@@ -1,58 +1,60 @@
-Return-Path: <stable+bounces-256255-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-255845-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id CIRsOVirGGpolwgAu9opvQ
-	(envelope-from <stable+bounces-256255-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:53:44 +0200
+	id 6GFUILmmGGpolwgAu9opvQ
+	(envelope-from <stable+bounces-255845-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:34:01 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id D313A5F9CC3
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:53:44 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2193C5F8FA4
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:34:00 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 5A96230C573D
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 20:46:33 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 07DBF304B7E0
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 20:27:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 83B57335564;
-	Thu, 28 May 2026 20:46:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A21502F260C;
+	Thu, 28 May 2026 20:27:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="V3VvQlpi"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jntTRttc"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 49A9E23394D;
-	Thu, 28 May 2026 20:46:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 623A62E7379;
+	Thu, 28 May 2026 20:27:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780001188; cv=none; b=HDGGduodPp9hosZMtdstGRhpV8He1JAGEXwMwukI2Z6rLzZzrLXW++J/lKjUBvdX8EejeiStzufxk5jmmHxIBKQbYIZG3OrtZRT9WT3mCN+FbXVAzyCp5Gzswe16HHGOVO+VkD9lRr5V5ZlWF7yr+9r8Jr6K6JKRR2ucMRC6skE=
+	t=1780000041; cv=none; b=KP89ctAHU5lWN/y8oHmuR+RaSzhcZ+yuVVI59pk/lo/19yo/4IYc5N/BCwjCx2PvqMFbJ/nb9pxCJ3mfnvAo49ADIGExmLIF9ZSv+c5yw5X4c9JF3BEMFmV7n0Rn2FU7uAtQaB84bAaXz1bwY9BBp7BoHQ2duiYu+oJjWdkQVWY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780001188; c=relaxed/simple;
-	bh=TB6brmzw8CouT94maFYVaqvYCsX9AaDH+iLIcEmh7t0=;
+	s=arc-20240116; t=1780000041; c=relaxed/simple;
+	bh=xRvzasDBzrdpwDm4RCdSMUYhcy+9YajKrRUtiltEmuw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=MQiqgJu+7ju3nFNc/Ysi8xRPmxaVy5k+L7+hd7oBsZH1w8eiW7e8HvC9Ax2K2fAlZyGi0ZZ6EjqL8CrdnRss6c5dH7DFM1U2RrRYkkIjSAH0OTuV36EVBm/7pwsRX20W7nJ0OeYoaH42sYUsE3CbRt93zb345PzuUE2Kplce/Qc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=V3VvQlpi; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A6A761F00A3D;
-	Thu, 28 May 2026 20:46:26 +0000 (UTC)
+	 MIME-Version; b=PemKgcbRu4x4S1jJpn7ksp7eodtbDgU8ZslRGBhd/iW8jlrkRT0boQUwzcZOn6RFtvyXnrlrsP8ycUSG34CQDT0RrYixu+K6KKM/KvvQQ1h6lGWQ1JdTNBpyiG5PRdKZLUxrmB3744kWnk6oBVORafPiwnOP2DruAs8hxjxWx0o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jntTRttc; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 957A61F000E9;
+	Thu, 28 May 2026 20:27:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780001187;
-	bh=+E8ChDiWZpXaK6VNb/HATFdpSX3/AhwvQFhzQUq8vJw=;
+	s=korg; t=1780000040;
+	bh=Y8dvWdBq3s9ulYBaNx9Siz8sYmYW8m6FtV2Sk2/p0yM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=V3VvQlpieTLvcTwAiq0x4BbWjf/RDUJ4xAKKbpmNbsb+wPIbO2L49vmU0dIHe14pa
-	 yXPL/qstY7CYo6R381bQkjSb8lKZdsjDPUvrExHzOx+uX5Pq4mBQJM8P/BpiA1ByrR
-	 vM2lNkfnEVQ//VjZQsLCF+X2ZCDxdT4eolpneKJs=
+	b=jntTRttccwb+X3XWcVN5PKi9cnb+1NFgT6IovhjdoWrv2so2B/QULRzR8JAbjRL6b
+	 o9e95aqgAWIlSvt1eF8BeVf31+7jKp1XVl18TD0nDZUtMYceJek4YpezXXOBa47s4n
+	 UNnq3N+tYAYVZJMsBbEhFHSN692aJrqBVBL7C9aY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Michael Bommarito <michael.bommarito@gmail.com>,
-	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
-Subject: [PATCH 6.6 039/186] Bluetooth: MGMT: validate Add Extended Advertising Data length
-Date: Thu, 28 May 2026 21:48:39 +0200
-Message-ID: <20260528194930.019320329@linuxfoundation.org>
+	Sashiko <sashiko-bot@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.18 282/377] net: tls: prevent chain-after-chain in plain text SG
+Date: Thu, 28 May 2026 21:48:40 +0200
+Message-ID: <20260528194646.521854042@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260528194928.941004471@linuxfoundation.org>
-References: <20260528194928.941004471@linuxfoundation.org>
+In-Reply-To: <20260528194638.371537336@linuxfoundation.org>
+References: <20260528194638.371537336@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,92 +65,130 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	TO_DN_SOME(0.00)[];
-	TAGGED_FROM(0.00)[bounces-256255-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,intel.com];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	URIBL_MULTI_FAIL(0.00)[tor.lore.kernel.org:server fail,msgid.link:server fail,linuxfoundation.org:server fail];
+	TAGGED_FROM(0.00)[bounces-255845-lists,stable=lfdr.de];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	FROM_HAS_DN(0.00)[];
+	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[stable];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[5];
+	NEURAL_HAM(-0.00)[-1.000];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[intel.com:email,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim]
-X-Rspamd-Queue-Id: D313A5F9CC3
+	TAGGED_RCPT(0.00)[stable];
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,msgid.link:url,linuxfoundation.org:mid,linuxfoundation.org:dkim]
+X-Rspamd-Queue-Id: 2193C5F8FA4
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Michael Bommarito <michael.bommarito@gmail.com>
+From: Jakub Kicinski <kuba@kernel.org>
 
-commit d3f7d17960ed50df3a6709c5158caff989c8c905 upstream.
+[ Upstream commit ff26a0e8377dec07e4a7230db7675bed1b9a6d03 ]
 
-MGMT_OP_ADD_EXT_ADV_DATA is registered as a variable-length command,
-with MGMT_ADD_EXT_ADV_DATA_SIZE as the fixed header size.  The handler
-then uses cp->adv_data_len and cp->scan_rsp_len to validate and copy
-cp->data, but it never checks that those bytes are part of the mgmt
-command payload.
+Sashiko points out that if end = 0 (start != 0) the current
+code will create a chain link to content type right after
+the wrap link:
 
-A short command can therefore make add_ext_adv_data() pass an
-out-of-bounds pointer into tlv_data_is_valid().  If the bytes beyond
-the command buffer are addressable, they can also be copied into the
-advertising instance as scan response data, where the caller can read
-them back via MGMT_OP_GET_ADV_INSTANCE.  The trigger requires
-CAP_NET_ADMIN in the initial user namespace; KASAN reports an 8-byte
-slab-out-of-bounds read.
+  This would create a chain where the wrap link points directly
+  to another chain link. The scatterlist API sg_next iterator
+  does not recursively resolve consecutive chain links.
 
-Reject commands whose length does not match the fixed header plus both
-advertising data lengths before parsing cp->data.
+meaning this is illegal input to crypto.
 
-Fixes: 12410572833a ("Bluetooth: Break add adv into two mgmt commands")
-Cc: stable@vger.kernel.org
-Assisted-by: Claude:claude-opus-4-7
-Signed-off-by: Michael Bommarito <michael.bommarito@gmail.com>
-Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+The wrapping link is unnecessary if end = 0. end is the entry after
+the last one used so end = 0 means there's nothing pushed after
+the wrap:
+
+   end         start            i
+    v            v              v
+  [   ]...[   ][ d ][ d ][ d ][ d ][rsv for wrap]
+
+Skip the wrapping in this case.
+
+TLS 1.3 can use the "wrapping slot" for it's chaining if end = 0.
+This avoids the chain-after-chain.
+
+Move the wrap chaining before marking END and chaining off content
+type, that feels like more logical ordering to me, but should not
+matter from functional perspective.
+
+Reported-by: Sashiko <sashiko-bot@kernel.org>
+Fixes: 9aaaa56845a0 ("bpf: Sockmap/tls, skmsg can have wrapped skmsg that needs extra chaining")
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Link: https://patch.msgid.link/20260511174920.433155-3-kuba@kernel.org
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/bluetooth/mgmt.c |    6 ++++++
- 1 file changed, 6 insertions(+)
+ net/tls/tls_sw.c | 24 ++++++++++++++++++------
+ 1 file changed, 18 insertions(+), 6 deletions(-)
 
---- a/net/bluetooth/mgmt.c
-+++ b/net/bluetooth/mgmt.c
-@@ -9140,9 +9140,15 @@ static int add_ext_adv_data(struct sock
- 	struct adv_info *adv_instance;
- 	int err = 0;
- 	struct mgmt_pending_cmd *cmd;
-+	u16 expected_len;
+diff --git a/net/tls/tls_sw.c b/net/tls/tls_sw.c
+index 1ad5d0e7ae27f..b28eb04075d1b 100644
+--- a/net/tls/tls_sw.c
++++ b/net/tls/tls_sw.c
+@@ -789,21 +789,33 @@ static int tls_push_record(struct sock *sk, int flags,
+ 	i = msg_pl->sg.end;
+ 	sk_msg_iter_var_prev(i);
  
- 	BT_DBG("%s", hdev->name);
- 
-+	expected_len = struct_size(cp, data, cp->adv_data_len + cp->scan_rsp_len);
-+	if (expected_len != data_len)
-+		return mgmt_cmd_status(sk, hdev->id, MGMT_OP_ADD_EXT_ADV_DATA,
-+				       MGMT_STATUS_INVALID_PARAMS);
++	/* msg_pl->sg.data is a ring; data[MAX+1] is reserved for the wrap
++	 * link (frags won't use it). 'i' is now the last filled entry:
++	 *
++	 *         i   end              start
++	 *         v    v                 v            [ rsv ]
++	 *  [ d ][ d ][   ][   ]...[   ][ d ][ d ][ d ][chain]
++	 *    ^   END                                     v
++	 *     `-----------------------------------------'
++	 *
++	 * Note that SGL does not allow chain-after-chain, so for TLS 1.3,
++	 * we must make sure we don't create the wrap entry and then chain
++	 * link to content_type immediately at index 0.
++	 */
++	if (i < msg_pl->sg.start)
++		sg_chain(msg_pl->sg.data, ARRAY_SIZE(msg_pl->sg.data),
++			 msg_pl->sg.data);
 +
- 	hci_dev_lock(hdev);
+ 	rec->content_type = record_type;
+ 	if (prot->version == TLS_1_3_VERSION) {
+ 		/* Add content type to end of message.  No padding added */
+ 		sg_set_buf(&rec->sg_content_type, &rec->content_type, 1);
+ 		sg_mark_end(&rec->sg_content_type);
+-		sg_chain(msg_pl->sg.data, msg_pl->sg.end + 1,
+-			 &rec->sg_content_type);
++		sg_chain(msg_pl->sg.data, i + 2, &rec->sg_content_type);
+ 	} else {
+ 		sg_mark_end(sk_msg_elem(msg_pl, i));
+ 	}
  
- 	adv_instance = hci_find_adv_instance(hdev, cp->instance);
+-	if (msg_pl->sg.end < msg_pl->sg.start)
+-		sg_chain(msg_pl->sg.data, ARRAY_SIZE(msg_pl->sg.data),
+-			 msg_pl->sg.data);
+-
+ 	i = msg_pl->sg.start;
+ 	sg_chain(rec->sg_aead_in, 2, &msg_pl->sg.data[i]);
+ 
+-- 
+2.53.0
+
 
 
 
