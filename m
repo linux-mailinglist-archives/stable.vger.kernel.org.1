@@ -1,58 +1,60 @@
-Return-Path: <stable+bounces-255218-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-255596-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id EIezHoCeGGpblggAu9opvQ
-	(envelope-from <stable+bounces-255218-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 21:58:56 +0200
+	id yJDXH8+jGGrClggAu9opvQ
+	(envelope-from <stable+bounces-255596-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:21:35 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 22D115F793A
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 21:58:56 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id ECAF35F874F
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:21:34 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 0B12D302EAA3
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 19:58:16 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id A7B26302620D
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 20:15:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 42A2B33F5B4;
-	Thu, 28 May 2026 19:58:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BC2622D1303;
+	Thu, 28 May 2026 20:15:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Tq/zkKpC"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1rC9wwi3"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E4E803403E7;
-	Thu, 28 May 2026 19:58:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7FB432459D1;
+	Thu, 28 May 2026 20:15:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779998293; cv=none; b=jzfuJedPXJBjc34CbF4dxn8ZnU0REkykz+8Mx8I9jgVOwU0uMD+FlrvjIBbIA7dCYeczw2YGp2lEyed/R9rwKerw1Rbh0Uid1Av2sMr510uQzyccR5wukCNm7wmJXpw+JDspX7IAGnc2rwDaKJkybDd4g6Pprkj9BFapdgTgIH4=
+	t=1779999356; cv=none; b=KslEJhuVJ7oI6rBn5S6u7OLIm1OeflqSgWZJBFQ+ggYhyjaLunSoLJmpU3RrGkTmQZc3NLDPfGxnjCr23fHxEpr/gCXWfWtHgbeYFhQJPSRv9ALoL1TC7bq/Lh52HrX37PPCtaR66AKBMYcZ1jYsko4xnIIr9SUG85ZPf1iqkBs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779998293; c=relaxed/simple;
-	bh=FFSA8Bs6x7RYytXgjJVGqWtG73BOMNxcic+yGfI+6u8=;
+	s=arc-20240116; t=1779999356; c=relaxed/simple;
+	bh=6StoS9tEkMGdRMIj4TGtU6kINVdgM6Mv5PqHwr5zsmk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=fl3b0XI/FPcSXYpWgYRdBIErRw3qnElsKv+yCkH3q7vmAoZXjTjWpG4N3xICZh0a+H3uvufilPHtg7GbEgeAxHZhNwe7y8wkgu6BKFPGE9M1cNVgHMSOnowqltE9ffCipzPZcPHttdhaHh3qyEv/asCCCSICgDegsOryKF7TVcw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Tq/zkKpC; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4FAEB1F000E9;
-	Thu, 28 May 2026 19:58:11 +0000 (UTC)
+	 MIME-Version; b=qM8udl4oNAeTBJp3bsYXZPus3qwGwESJGcMVV3ed3P4GxlDfdb9RxLahAat7oDB5FFcNRw+QNLLx65NYzGKVeXTdYCqZ+5WwJ3rCDTAH41i1kxNOgCY2IOs6qZZhCio6/D6fY1+iYTviGvCMe3w2zwu+4hsG535+9iHxRgaBK6w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1rC9wwi3; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DE7E21F000E9;
+	Thu, 28 May 2026 20:15:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779998291;
-	bh=V0IQ1onOaFNMQw0pMT7ZdfBj4XID3fMuY4f/FvojmAo=;
+	s=korg; t=1779999355;
+	bh=NuIW7DmizVeOmwJUANzM8/K0H9yh+RAWsja2tnDF4DM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=Tq/zkKpCGSK3HVbAQVmF+ysmjpp+PsKeDpGpHReiIJROZ0sd/w/cZHvIqPy3bqRVG
-	 DR7WmEZPCA+63wO4QfZGcsCGNNMbOJsLxLkdNzsnRPlgAnS6osboahKIduNdi4E+OP
-	 +85WQ0AuYemvuipW6S+xVLan/b3uCICSC9C37IcY=
+	b=1rC9wwi3xKNUPFJgrixmLcHSfT5ybso5dN04cctD3fmMhNJWf0adwV5TQupAlkrGx
+	 3r2cLwzrL2DnGl+HuQmnQGr6lEpjOeUs1qv8HTEemHj/ogRRUescjlSVozIla0tRGu
+	 n8F95K5tOr14o3vumJToboonG5dTHFQb1oADdu3k=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Michael Bommarito <michael.bommarito@gmail.com>,
-	"Martin K. Petersen" <martin.petersen@oracle.com>
-Subject: [PATCH 7.0 115/461] scsi: isci: Fix use-after-free in device removal path
-Date: Thu, 28 May 2026 21:44:04 +0200
-Message-ID: <20260528194650.302311014@linuxfoundation.org>
+	Bruno Goncalves <bgoncalv@redhat.com>,
+	Juri Lelli <juri.lelli@redhat.com>,
+	"Peter Zijlstra (Intel)" <peterz@infradead.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.18 007/377] sched/deadline: Fix missing ENQUEUE_REPLENISH during PI de-boosting
+Date: Thu, 28 May 2026 21:44:05 +0200
+Message-ID: <20260528194638.598682429@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260528194646.819809818@linuxfoundation.org>
-References: <20260528194646.819809818@linuxfoundation.org>
+In-Reply-To: <20260528194638.371537336@linuxfoundation.org>
+References: <20260528194638.371537336@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,98 +65,146 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	MIME_TRACE(0.00)[0:+];
-	TO_DN_SOME(0.00)[];
-	TAGGED_FROM(0.00)[bounces-255218-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,oracle.com];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-255596-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	NEURAL_HAM(-0.00)[-0.999];
-	TAGGED_RCPT(0.00)[stable];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	MID_RHS_MATCH_FROM(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[5];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,oracle.com:email]
-X-Rspamd-Queue-Id: 22D115F793A
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,linuxfoundation.org:mid,linuxfoundation.org:dkim,infradead.org:email,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo]
+X-Rspamd-Queue-Id: ECAF35F874F
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-7.0-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Michael Bommarito <michael.bommarito@gmail.com>
+From: Juri Lelli <juri.lelli@redhat.com>
 
-commit b52a8d52c3125ec9a93106ed816582368de34426 upstream.
+[ Upstream commit d658686a1331db3bb108ca079d76deb3208ed949 ]
 
-The ISCI completion tasklet is initialized in isci_host_alloc()
-(drivers/scsi/isci/init.c:496) and scheduled from both MSI-X and legacy
-interrupt handlers (drivers/scsi/isci/host.c:223,613).
+Running stress-ng --schedpolicy 0 on an RT kernel on a big machine
+might lead to the following WARNINGs (edited).
 
-isci_host_deinit() stops the controller and waits for stop completion,
-but it never kills completion_tasklet before teardown continues. A
-top-of-function tasklet_kill() is not sufficient here: interrupts are
-only disabled when isci_host_stop_complete() runs, so until
-wait_for_stop() returns the IRQ handlers can still requeue the
-tasklet. The tasklet callback also re-enables interrupts after draining
-completions, so killing the tasklet before the source is quiesced leaves
-the same race open.
+ sched: DL de-boosted task PID 22725: REPLENISH flag missing
 
-Once wait_for_stop() returns, no further IRQ-driven scheduling can
-occur. Kill completion_tasklet there so teardown cannot race a queued
-tasklet running on a dead ihost. On remove or unload, the stale callback
-can otherwise dereference ihost and touch ihost->smu_registers after the
-host lifetime ends.
+ WARNING: CPU: 93 PID: 0 at kernel/sched/deadline.c:239 dequeue_task_dl+0x15c/0x1f8
+ ... (running_bw underflow)
+ Call trace:
+  dequeue_task_dl+0x15c/0x1f8 (P)
+  dequeue_task+0x80/0x168
+  deactivate_task+0x24/0x50
+  push_dl_task+0x264/0x2e0
+  dl_task_timer+0x1b0/0x228
+  __hrtimer_run_queues+0x188/0x378
+  hrtimer_interrupt+0xfc/0x260
+  ...
 
-A UML + KASAN analogue reproduced the failure class both with no
-tasklet_kill() and with tasklet_kill() placed before source quiesce, and
-stayed clean once the kill happened after quiescing the scheduling
-source.
+The problem is that when a SCHED_DEADLINE task (lock holder) is
+changed to a lower priority class via sched_setscheduler(), it may
+fail to properly inherit the parameters of potential DEADLINE donors
+if it didn't already inherit them in the past (shorter deadline than
+donor's at that time). This might lead to bandwidth accounting
+corruption, as enqueue_task_dl() won't recognize the lock holder as
+boosted.
 
-This mirrors commit f6ab594672d4 ("scsi: aic94xx: fix use-after-free in
-device removal path"), but ISCI needs the kill after wait_for_stop().
+The scenario occurs when:
+1. A DEADLINE task (donor) blocks on a PI mutex held by another
+   DEADLINE task (holder), but the holder doesn't inherit parameters
+   (e.g., it already has a shorter deadline)
+2. sched_setscheduler() changes the holder from DEADLINE to a lower
+   class while still holding the mutex
+3. The holder should now inherit DEADLINE parameters from the donor
+   and be enqueued with ENQUEUE_REPLENISH, but this doesn't happen
 
-Fixes: 6f231dda6808 ("isci: Intel(R) C600 Series Chipset Storage Control Unit Driver")
-Cc: stable@vger.kernel.org
-Assisted-by: Claude:claude-opus-4-7
-Assisted-by: Codex:gpt-5-4
-Signed-off-by: Michael Bommarito <michael.bommarito@gmail.com>
-Link: https://patch.msgid.link/20260419210420.2134639-1-michael.bommarito@gmail.com
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fix the issue by introducing __setscheduler_dl_pi(), which detects when
+a DEADLINE (proper or boosted) task gets setscheduled to a lower
+priority class. In case, the function makes the task inherit DEADLINE
+parameters of the donoer (pi_se) and sets ENQUEUE_REPLENISH flag to
+ensure proper bandwidth accounting during the next enqueue operation.
+
+Fixes: 2279f540ea7d ("sched/deadline: Fix priority inheritance with multiple scheduling classes")
+Reported-by: Bruno Goncalves <bgoncalv@redhat.com>
+Signed-off-by: Juri Lelli <juri.lelli@redhat.com>
+Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
+Link: https://patch.msgid.link/20260302-upstream-fix-deadline-piboost-b4-v3-1-6ba32184a9e0@redhat.com
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/scsi/isci/host.c |    3 +++
- 1 file changed, 3 insertions(+)
+ kernel/sched/syscalls.c | 30 ++++++++++++++++++++++++++++++
+ 1 file changed, 30 insertions(+)
 
---- a/drivers/scsi/isci/host.c
-+++ b/drivers/scsi/isci/host.c
-@@ -1252,6 +1252,9 @@ void isci_host_deinit(struct isci_host *
+diff --git a/kernel/sched/syscalls.c b/kernel/sched/syscalls.c
+index d2bcedc10152f..77b663a5dfb2b 100644
+--- a/kernel/sched/syscalls.c
++++ b/kernel/sched/syscalls.c
+@@ -322,6 +322,35 @@ static bool check_same_owner(struct task_struct *p)
+ 		uid_eq(cred->euid, pcred->uid));
+ }
  
- 	wait_for_stop(ihost);
- 
-+	/* No further IRQ-driven scheduling can happen past wait_for_stop(). */
-+	tasklet_kill(&ihost->completion_tasklet);
++#ifdef CONFIG_RT_MUTEXES
++static inline void __setscheduler_dl_pi(int newprio, int policy,
++			      struct task_struct *p,
++			      struct sched_change_ctx *scope)
++{
++	/*
++	 * In case a DEADLINE task (either proper or boosted) gets
++	 * setscheduled to a lower priority class, check if it neeeds to
++	 * inherit parameters from a potential pi_task. In that case make
++	 * sure replenishment happens with the next enqueue.
++	 */
 +
- 	/* phy stop is after controller stop to allow port and device to
- 	 * go idle before shutting down the phys, but the expectation is
- 	 * that i/o has been shut off well before we reach this
++	if (dl_prio(newprio) && !dl_policy(policy)) {
++		struct task_struct *pi_task = rt_mutex_get_top_task(p);
++
++		if (pi_task) {
++			p->dl.pi_se = pi_task->dl.pi_se;
++			scope->flags |= ENQUEUE_REPLENISH;
++		}
++	}
++}
++#else /* !CONFIG_RT_MUTEXES */
++static inline void __setscheduler_dl_pi(int newprio, int policy,
++			      struct task_struct *p,
++			      struct sched_change_ctx *scope)
++{
++}
++#endif /* !CONFIG_RT_MUTEXES */
++
+ #ifdef CONFIG_UCLAMP_TASK
+ 
+ static int uclamp_validate(struct task_struct *p,
+@@ -693,6 +722,7 @@ int __sched_setscheduler(struct task_struct *p,
+ 			__setscheduler_params(p, attr);
+ 			p->sched_class = next_class;
+ 			p->prio = newprio;
++			__setscheduler_dl_pi(newprio, policy, p, scope);
+ 		}
+ 		__setscheduler_uclamp(p, attr);
+ 		check_class_changing(rq, p, prev_class);
+-- 
+2.53.0
+
 
 
 
