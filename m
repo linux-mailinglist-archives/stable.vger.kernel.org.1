@@ -1,61 +1,59 @@
-Return-Path: <stable+bounces-256188-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-255910-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id EO/oNfesGGpymAgAu9opvQ
-	(envelope-from <stable+bounces-256188-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 23:00:39 +0200
+	id YAFdMummGGpolwgAu9opvQ
+	(envelope-from <stable+bounces-255910-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:34:49 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id E9EDA5FA0BD
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 23:00:38 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1FF815F9031
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:34:48 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 619C73125D20
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 20:43:25 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 9B9613019D89
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 20:30:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 739682F1FEC;
-	Thu, 28 May 2026 20:43:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 40369248F62;
+	Thu, 28 May 2026 20:30:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vUWx1RlV"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="g7RYYYiH"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 46C801DE4E0;
-	Thu, 28 May 2026 20:43:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1CAC0223328;
+	Thu, 28 May 2026 20:30:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780001002; cv=none; b=Xqufb/uPvnzT1O7I4R+vrg83d7ozB+E60humnMuelYeye/ih/KIh6RRbmq6fd3GaOD0J7HsZgijuL/Q+xYoxST3LXta/3Wyt3F4n8mBWE4V5XiDfzkIyznq3pITq+k5fq4uv8zOTs1vysvp0Sx01NtEhhdmCnnCBJ/mmdwWtgK4=
+	t=1780000222; cv=none; b=jIllb9oXPYlvm96ZLYbuaNRd4X9gL5vAR1mDCnZCOVjvU8mC7CI+471XKVanAPzKvfZqEx/i4k8UX+HnpIfjnvrLWVRmE9UB3AKfGVyPvrtafZpQNX3oYrlsxnLqMM+YfzIcQgi/EWA7pcLSvkEXOemEZyg9/yAdf6N0Z8XNlYM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780001002; c=relaxed/simple;
-	bh=YFBD36gT0+rFy1m5CHIQg4RBD4ajWlpY6inFsD6XnIQ=;
+	s=arc-20240116; t=1780000222; c=relaxed/simple;
+	bh=2YaYhrmNjZsbZRK0GkVy4oFH4ZhYey44bztR4R0ZbAk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=NL390oIs9p9Igdsmq6dUZiVQOdIhTJvSKjwfA/3ke0N/P9X7T9DAQlpKwI3PMy4m8OXoRnxpO9RoL9zw1jZfrAxOyUh4lf9PJ/kuO0tZYma6ICL+zCA8/danLz9jRv4bISN7XHyvJO9KDSHsPvmEDV7FSH+M2hUgz+8Fz/y4eTU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vUWx1RlV; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9BACC1F000E9;
-	Thu, 28 May 2026 20:43:20 +0000 (UTC)
+	 MIME-Version; b=R0GlF8yf0uN3bRbDHRi4PZF+10Hh/swTkniNeJhNqxTsSYqiZlAWrw3zTn3PXHLzRWApR26Kl3Dzvd1cLMTVflpqAw5OeLek8j7vCCEsDgWA8Kn1R5oZxugvmgPdtI5nEB1yVuwOQjHCEktkrjS8pg3FQaVIdNjpyeH++MRPKtE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=g7RYYYiH; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7BE591F000E9;
+	Thu, 28 May 2026 20:30:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780001001;
-	bh=1Dypxq+kSlUI7in4I89ssLtvz5ZFn6VXC1zOIGbDe3c=;
+	s=korg; t=1780000221;
+	bh=dGHvpUvW//ivg9XtiPfrP3oJGhKwt56mxBCqLq2NeLI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=vUWx1RlV4Pdhi/+BBhyo+O6l5pZR+eddVpEUVZ8A/rgjljBCvFBRz/3RjB6U3cr/b
-	 iVBp+bxtOKNAs23/Q+fU3QJYCEo2Wd68zi/vjaFKhoDxh0vdPKFo8MC4JFTnyX+/do
-	 Wn3nUD/DiBdQf8h4wjbkv/aRjeY5+Dn5C8WAIWQQ=
+	b=g7RYYYiHLdlSQuAl7Pd+TPkM752JQG5xNtLqeanP5kqynpe5fuU9sjI3976C1tmVP
+	 G4fIeyzrTShuAxdwXeAEZoDnS2Eyrca10U35mbT56hL9u949W8ztoZYdNNt0ZIX1/r
+	 BHlAQ3og/KIZ//RIGaCD6X7jPVd5Oo5woPWl9ml8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Kang Yang <kang.yang@oss.qualcomm.com>,
-	Rameshkumar Sundaram <rameshkumar.sundaram@oss.qualcomm.com>,
-	Baochen Qiang <baochen.qiang@oss.qualcomm.com>,
-	Jeff Johnson <jeff.johnson@oss.qualcomm.com>,
+	"Nikhil P. Rao" <nikhil.rao@amd.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 208/272] wifi: ath10k: skip WMI and beacon transmission when device is wedged
+Subject: [PATCH 6.18 344/377] pds_core: fix debugfs_lookup dentry leak and error handling
 Date: Thu, 28 May 2026 21:49:42 +0200
-Message-ID: <20260528194635.056902813@linuxfoundation.org>
+Message-ID: <20260528194648.382800103@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260528194629.379955525@linuxfoundation.org>
-References: <20260528194629.379955525@linuxfoundation.org>
+In-Reply-To: <20260528194638.371537336@linuxfoundation.org>
+References: <20260528194638.371537336@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -70,107 +68,79 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-256188-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-255910-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
-	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[8];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[qualcomm.com:email,msgid.link:url,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim]
-X-Rspamd-Queue-Id: E9EDA5FA0BD
+	RCPT_COUNT_FIVE(0.00)[6];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,msgid.link:url,amd.com:email,linuxfoundation.org:mid,linuxfoundation.org:dkim]
+X-Rspamd-Queue-Id: 1FF815F9031
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kang Yang <kang.yang@oss.qualcomm.com>
+From: Nikhil P. Rao <nikhil.rao@amd.com>
 
-[ Upstream commit 54a5b38e4396530e5b2f12b54d3844e860ab6784 ]
+[ Upstream commit dc416e32baaeb620b9809e9e25fc7b30889686e9 ]
 
-In ath10k_wmi_cmd_send(), the current code detects ATH10K_STATE_WEDGED
-and sets ret to -ESHUTDOWN, but still proceeds to transmit pending
-beacons and calls ath10k_wmi_cmd_send_nowait().
+debugfs_lookup() returns a dentry with an elevated reference count that
+must be released with dput(). The current code discards the returned
+dentry without calling dput(), causing a reference leak on every
+firmware reset recovery.
 
-This can lead to incorrect behavior, as WMI commands and beacons are
-still sent after the device has been marked as wedged, and the original
--ESHUTDOWN return value may be overwritten by the result of the send
-path.
+Additionally, when CONFIG_DEBUG_FS is disabled, debugfs_lookup()
+returns ERR_PTR(-ENODEV), not NULL. The current check passes for error
+pointers and would call dput() on an invalid pointer, causing a crash.
 
-The wedged state indicates the hardware is already unreliable, and no
-further interaction with firmware is expected or meaningful in this
-state.
-
-Fix this by skipping beacon transmission and the WMI send path entirely
-once ATH10K_STATE_WEDGED is detected, ensuring consistent return values
-and avoiding unnecessary firmware interaction.
-
-Tested-on: QCA6174 hw3.2 PCI WLAN.RM.4.4.1-00288-QCARMSWPZ-1
-Tested-on: QCA6174 hw3.2 SDIO WLAN.RMH.4.4.1-00189
-
-Fixes: c256a94d1b1b ("wifi: ath10k: shutdown driver when hardware is unreliable")
-Signed-off-by: Kang Yang <kang.yang@oss.qualcomm.com>
-Reviewed-by: Rameshkumar Sundaram <rameshkumar.sundaram@oss.qualcomm.com>
-Reviewed-by: Baochen Qiang <baochen.qiang@oss.qualcomm.com>
-Link: https://patch.msgid.link/20260428061737.37-1-kang.yang@oss.qualcomm.com
-Signed-off-by: Jeff Johnson <jeff.johnson@oss.qualcomm.com>
+Fixes: bc90fbe0c318 ("pds_core: Rework teardown/setup flow to be more common")
+Signed-off-by: Nikhil P. Rao <nikhil.rao@amd.com>
+Link: https://patch.msgid.link/20260515212907.998028-3-nikhil.rao@amd.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/ath/ath10k/wmi.c | 15 +++++++--------
- 1 file changed, 7 insertions(+), 8 deletions(-)
+ drivers/net/ethernet/amd/pds_core/debugfs.c | 7 ++++++-
+ 1 file changed, 6 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/net/wireless/ath/ath10k/wmi.c b/drivers/net/wireless/ath/ath10k/wmi.c
-index 408f062a4306f..c9f41309d18d4 100644
---- a/drivers/net/wireless/ath/ath10k/wmi.c
-+++ b/drivers/net/wireless/ath/ath10k/wmi.c
-@@ -3,7 +3,6 @@
-  * Copyright (c) 2005-2011 Atheros Communications Inc.
-  * Copyright (c) 2011-2017 Qualcomm Atheros, Inc.
-  * Copyright (c) 2018-2019, The Linux Foundation. All rights reserved.
-- * Copyright (c) 2021-2024 Qualcomm Innovation Center, Inc. All rights reserved.
-  * Copyright (c) Qualcomm Technologies, Inc. and/or its subsidiaries.
-  */
+diff --git a/drivers/net/ethernet/amd/pds_core/debugfs.c b/drivers/net/ethernet/amd/pds_core/debugfs.c
+index 04c5e3abd8d70..810a0cd9bcac8 100644
+--- a/drivers/net/ethernet/amd/pds_core/debugfs.c
++++ b/drivers/net/ethernet/amd/pds_core/debugfs.c
+@@ -64,9 +64,14 @@ DEFINE_SHOW_ATTRIBUTE(identity);
  
-@@ -1947,15 +1946,15 @@ int ath10k_wmi_cmd_send(struct ath10k *ar, struct sk_buff *skb, u32 cmd_id)
- 			ret = -ESHUTDOWN;
- 			ath10k_dbg(ar, ATH10K_DBG_WMI,
- 				   "drop wmi command %d, hardware is wedged\n", cmd_id);
--		}
--		/* try to send pending beacons first. they take priority */
--		ath10k_wmi_tx_beacons_nowait(ar);
-+		} else {
-+			/* try to send pending beacons first. they take priority */
-+			ath10k_wmi_tx_beacons_nowait(ar);
+ void pdsc_debugfs_add_ident(struct pdsc *pdsc)
+ {
++	struct dentry *dentry;
++
+ 	/* This file will already exist in the reset flow */
+-	if (debugfs_lookup("identity", pdsc->dentry))
++	dentry = debugfs_lookup("identity", pdsc->dentry);
++	if (!IS_ERR_OR_NULL(dentry)) {
++		dput(dentry);
+ 		return;
++	}
  
--		ret = ath10k_wmi_cmd_send_nowait(ar, skb, cmd_id);
--
--		if (ret && test_bit(ATH10K_FLAG_CRASH_FLUSH, &ar->dev_flags))
--			ret = -ESHUTDOWN;
-+			ret = ath10k_wmi_cmd_send_nowait(ar, skb, cmd_id);
- 
-+			if (ret && test_bit(ATH10K_FLAG_CRASH_FLUSH, &ar->dev_flags))
-+				ret = -ESHUTDOWN;
-+		}
- 		(ret != -EAGAIN);
- 	}), 3 * HZ);
- 
+ 	debugfs_create_file("identity", 0400, pdsc->dentry,
+ 			    pdsc, &identity_fops);
 -- 
 2.53.0
 
