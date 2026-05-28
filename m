@@ -1,60 +1,60 @@
-Return-Path: <stable+bounces-255843-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-255487-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id iG2FEYWmGGrClggAu9opvQ
-	(envelope-from <stable+bounces-255843-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:33:09 +0200
+	id 0GKrHIyhGGqblggAu9opvQ
+	(envelope-from <stable+bounces-255487-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:11:56 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id BA3965F8EE4
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:33:08 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 184E95F8099
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:11:55 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 347183149957
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 20:27:17 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id B295A301F80A
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 20:10:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BE86D2F39B4;
-	Thu, 28 May 2026 20:27:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E9D35348C6E;
+	Thu, 28 May 2026 20:10:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MVUR8yXB"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Z+3FqP+2"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 93FD12E7379;
-	Thu, 28 May 2026 20:27:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C7AF433F5B4;
+	Thu, 28 May 2026 20:10:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780000035; cv=none; b=mp0p25diQO/WIQtSlokAdb53DYrcOQfmWvxZv1iuT8B26b/hgO55wXHW3aXzcEjPQmh0vv/FHf/Bt6FKxf/aGyvUTrIQO83hkFJrZ1GEn1B0gcAyCAVVodSyy8vgLuG8PnKEbui78Xsm+HxGFghB+0nfAWVXMazaWbluTYz8IcI=
+	t=1779999049; cv=none; b=ZXPQuhSEQSAPETu/9S4qpkKcB7+rLCaFVnoQ0lxbgBm+YlMos+HA/dXd2RMW4NSLlG092otkCq97kXsjBTAxO06Ivv9ohIo6whfc5ZclulZBbXJcv/gA9XCjDqFb61bZsYKyvEs1h+X60k9kK0Pm5pnisqZwqywwpSzv/npRvcM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780000035; c=relaxed/simple;
-	bh=JJvOLt47s883xP3jKJS4Pkf9sHPWvgl+QvZpn9ljvmM=;
+	s=arc-20240116; t=1779999049; c=relaxed/simple;
+	bh=m0aek1j3oxfpGS1WfWT3bLg68x9do9ibq72znJK7G4U=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=P38V8hJ2tgJ3RdyceP4GAq2614/ERB+61haLGXR03vAaHbJEmejiaAtJqGSF4y6NmnlSxnUCsdJ/3xm5HNgLgvKI+Cn33IEAWMxjkbSV6pA+Ku1BjNn2nTMcCtNBoFrEr1EEl+qU5mU3tWQxfF3R02nxXmDFybKg5rvenr/mIOE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MVUR8yXB; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F36481F000E9;
-	Thu, 28 May 2026 20:27:13 +0000 (UTC)
+	 MIME-Version:Content-Type; b=KtLssFA2ARcNqXC93w1LhLSj0VUpzeJTfkHUjzIz/JPwnA7cFUfj/0xtTOAndWnU9GE9x7/E8ZBY8l+wRt9nEC4O0wTUDjHtzqhLoLloMF1IWx/BeI8BOVzGgS5FteFcP1BN3EwcmOP9m6YqB2nmJPOzCPh3mqRGvvEvgx2+ofw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Z+3FqP+2; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 293881F000E9;
+	Thu, 28 May 2026 20:10:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780000034;
-	bh=NDUIFfJ2dlj9L7Eq7T72zx/QpquKXMtAeYpHUvpjv3M=;
+	s=korg; t=1779999048;
+	bh=k+j+CFXFavEbbNcPEHRMPzPy82wPPLYDJD1i4SVg/UQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=MVUR8yXBWmMdHX5j7fvPO8uC9zh8d7f33tMAq/yzYxD3Rxq/5cGHv4muUBn1nmwJS
-	 6HPpylvsezkq/d1VWe/fCtVzu1x1hQ6xZrCnI155ywEnK/0sBn29CRVu9pFbn0VTMl
-	 RXDiBbwH0zswPj5fRJ6es1IZedT8Ici2KC9OgICs=
+	b=Z+3FqP+2DNAKsp6daDFmLtJXkWLwWQR3ZiuKesBMqYQsenZsvx72kMYp97CuLdU7j
+	 KccskwPkn6SFYsndwBG5GafzKcJSmD9+Kw86j1Uxr8WO4bue4kxPgXXzQddnFiKi3o
+	 6pmyizjxuiyXd1V0IuMBiIUlry1mD8d2fjA8NvwE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Weiming Shi <bestswngs@gmail.com>,
-	Xiang Mei <xmei5@asu.edu>,
-	Paolo Abeni <pabeni@redhat.com>,
+	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 280/377] net/smc: reject CHID-0 ACCEPT that matches an empty ism_dev slot
+Subject: [PATCH 7.0 389/461] platform/x86: hp_accel: Check ACPI_COMPANION() against NULL
 Date: Thu, 28 May 2026 21:48:38 +0200
-Message-ID: <20260528194646.463967140@linuxfoundation.org>
+Message-ID: <20260528194658.721749870@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260528194638.371537336@linuxfoundation.org>
-References: <20260528194638.371537336@linuxfoundation.org>
+In-Reply-To: <20260528194646.819809818@linuxfoundation.org>
+References: <20260528194646.819809818@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,99 +64,79 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	TAGGED_FROM(0.00)[bounces-255487-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	URIBL_MULTI_FAIL(0.00)[asu.edu:server fail,tor.lore.kernel.org:server fail,msgid.link:server fail,linuxfoundation.org:server fail];
-	TAGGED_FROM(0.00)[bounces-255843-lists,stable=lfdr.de];
-	PRECEDENCE_BULK(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,asu.edu,redhat.com,kernel.org];
-	MIME_TRACE(0.00)[0:+];
-	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	RCPT_COUNT_SEVEN(0.00)[7];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_HAS_DN(0.00)[];
 	TO_DN_SOME(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	MID_RHS_MATCH_FROM(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[asu.edu:email,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,msgid.link:url,linuxfoundation.org:mid,linuxfoundation.org:dkim]
-X-Rspamd-Queue-Id: BA3965F8EE4
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,linuxfoundation.org:mid,linuxfoundation.org:dkim,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,intel.com:email]
+X-Rspamd-Queue-Id: 184E95F8099
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+7.0-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Xiang Mei <xmei5@asu.edu>
+From: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 
-[ Upstream commit 277740023def559a4a2ddc3e8e784ee37a0f16a9 ]
+[ Upstream commit abfbe5ee8ae89f1f5449790423d5dd3e423545bd ]
 
-On the SMC-D client, slot 0 of ini->ism_dev[]/ini->ism_chid[] is
-reserved for an SMC-Dv1 device. smc_find_ism_v2_device_clnt()
-populates V2 entries starting at index 1, so when no V1 device is
-selected slot 0 is left in its kzalloc()'ed state with ism_dev[0] ==
-NULL and ism_chid[0] == 0.
+Every platform driver can be forced to match a device that doesn't match
+its list of device IDs because of device_match_driver_override(), so
+platform drivers that rely on the existence of a device's ACPI companion
+object need to verify its presence.
 
-smc_v2_determine_accepted_chid() then matches the peer's CHID against
-the array starting from index 0 using the CHID alone. A malicious
-peer replying to a SMC-Dv2-only proposal with d1.chid == 0 matches
-the empty slot, ini->ism_selected becomes 0, and the subsequent
-ism_dev[0]->lgr_lock dereference in smc_conn_create() faults at
-offsetof(struct smcd_dev, lgr_lock) == 0x68:
+Accordingly, add a requisite ACPI_COMPANION() check against NULL to the
+platform/x86 hp_accel driver.
 
-  BUG: KASAN: null-ptr-deref in _raw_spin_lock_bh+0x79/0xe0
-  Write of size 4 at addr 0000000000000068 by task exploit/144
-  Call Trace:
-   _raw_spin_lock_bh
-   smc_conn_create (net/smc/smc_core.c:1997)
-   __smc_connect (net/smc/af_smc.c:1447)
-   smc_connect (net/smc/af_smc.c:1720)
-   __sys_connect
-   __x64_sys_connect
-   do_syscall_64
-
-Require ism_dev[i] to be non-NULL before accepting a CHID match.
-
-Fixes: a7c9c5f4af7f ("net/smc: CLC accept / confirm V2")
-Reported-by: Weiming Shi <bestswngs@gmail.com>
-Assisted-by: Claude:claude-opus-4-7
-Signed-off-by: Xiang Mei <xmei5@asu.edu>
-Link: https://patch.msgid.link/20260511062138.2839584-1-xmei5@asu.edu
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Fixes: 8ebcb6c94c71 ("platform/x86: hp_accel: Convert to be a platform driver")
+Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+Reviewed-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Link: https://patch.msgid.link/2425918.ElGaqSPkdT@rafael.j.wysocki
+Reviewed-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/smc/af_smc.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/platform/x86/hp/hp_accel.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/net/smc/af_smc.c b/net/smc/af_smc.c
-index 6421c2e1c84de..5915fcdef743d 100644
---- a/net/smc/af_smc.c
-+++ b/net/smc/af_smc.c
-@@ -1400,7 +1400,8 @@ smc_v2_determine_accepted_chid(struct smc_clc_msg_accept_confirm *aclc,
- 	int i;
+diff --git a/drivers/platform/x86/hp/hp_accel.c b/drivers/platform/x86/hp/hp_accel.c
+index 10d5af18d6398..39b73dc473f1c 100644
+--- a/drivers/platform/x86/hp/hp_accel.c
++++ b/drivers/platform/x86/hp/hp_accel.c
+@@ -300,6 +300,9 @@ static int lis3lv02d_probe(struct platform_device *device)
+ 	int ret;
  
- 	for (i = 0; i < ini->ism_offered_cnt + 1; i++) {
--		if (ini->ism_chid[i] == ntohs(aclc->d1.chid)) {
-+		if (ini->ism_dev[i] &&
-+		    ini->ism_chid[i] == ntohs(aclc->d1.chid)) {
- 			ini->ism_selected = i;
- 			return 0;
- 		}
+ 	lis3_dev.bus_priv = ACPI_COMPANION(&device->dev);
++	if (!lis3_dev.bus_priv)
++		return -ENODEV;
++
+ 	lis3_dev.init = lis3lv02d_acpi_init;
+ 	lis3_dev.read = lis3lv02d_acpi_read;
+ 	lis3_dev.write = lis3lv02d_acpi_write;
 -- 
 2.53.0
 
