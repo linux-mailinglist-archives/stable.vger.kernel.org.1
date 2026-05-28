@@ -1,154 +1,168 @@
-Return-Path: <stable+bounces-254770-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-254771-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id +EpTFH36F2oWXwgAu9opvQ
-	(envelope-from <stable+bounces-254770-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 10:19:09 +0200
+	id IIi6ED36F2oWXwgAu9opvQ
+	(envelope-from <stable+bounces-254771-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 10:18:05 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id A7C1C5EE6F5
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 10:19:08 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 906185EE6BA
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 10:18:04 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id D509F311B3C1
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 08:09:04 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id C56423111099
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 08:11:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 41D50321F5F;
-	Thu, 28 May 2026 08:09:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 405C12EF652;
+	Thu, 28 May 2026 08:11:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="dfeszqvy"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="C5syqY0R"
 X-Original-To: stable@vger.kernel.org
-Received: from out-189.mta1.migadu.com (out-189.mta1.migadu.com [95.215.58.189])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6D6E12EF652
-	for <stable@vger.kernel.org>; Thu, 28 May 2026 08:09:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.215.58.189
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DD0652BF3E2
+	for <stable@vger.kernel.org>; Thu, 28 May 2026 08:11:22 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779955744; cv=none; b=faL8JKcvZZQ5WNAjeiunjCdwBBDbam/8ofsUBjfg3vdmN7c8362pKrgcjNLQtvQHtyB6u1UmSIDC+q5ubc3xwjXu1DaxeVnRbFAgTPPnxS5JQvTRy8aOwi7vnlP/BORgfstIBNgd0zrly+LjaIkUpB06+fcrTVqkqd/qoojnT9A=
+	t=1779955884; cv=none; b=CWRoIEqxgvHGVjjmJDYrVXiieUkJCJAOyC10b2TpMxsqaz9Xgsw3+qmdvG4kbQ+k7T96aiB4vInSszFvhOPLzYDKQ53E/Nj8OL1rJwauBRRXE4W0hzcUFKQiJYwX6jk9zBuvU5uNb7sNSL3X0/jj7vJiK+/Yj+XGmvH8qasZLGg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779955744; c=relaxed/simple;
-	bh=ywpSA7iPLGiFlDaipMlZB1GLArQfRZzjT82xD/eSso0=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=Y5RQg3gMHqLoAwx2PWZKNYlNW2MfnyJAwQZihu9cGYM82OXiNeUFbPPwbFLoq6RyRFtI+FV1gSer7nXfycn0EBS5LF290w0e7J3ARXJ9ZnxWRYyh2sTAY+zQnCHCFwlrmrQjpBPm6Zb74voHTX58vsLLJwdWb0oJGAvJjAvZgyg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=dfeszqvy; arc=none smtp.client-ip=95.215.58.189
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
-Message-ID: <35878e67-d83e-4329-8c20-99caf95bbffc@linux.dev>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1779955730;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=6pB5KWAha1i8/yYBgVT9Debw5k/YWw/CMk+cTddISws=;
-	b=dfeszqvyn8pux3MkD92zb9p2j0uhYBuYVSHxNrxhDPxdwxa4f+MBasKwmBA+S6908g8RLo
-	t5pK0M7xreqWGLldwvGuXPPg8r7lIqpkoFPKyCJm3Kz1gLEP9mN37aRgdx4dVdjGXvgIic
-	1WqGt1bBzRHhr1WxFjVCSsQa2WKgbuk=
-Date: Thu, 28 May 2026 16:08:32 +0800
+	s=arc-20240116; t=1779955884; c=relaxed/simple;
+	bh=pNhhJoUfw7UguyYH4kklOYWlfkhgbmLnTaFlcy6aWiU=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=dhuG7Z4I61qn16SJgtFaLI5ybauUQT+m/5B1VhkfIy66AyVhdLA27DCMenxUPIRMtk8sqjWEfZ+jdxl+6m571zCNE2GWxaM6ibBnQNL5DqjC8TQUNqwElQQ7IaUnBlzVs1k5UmIopehVOXz6tz4euLTWzEvCU7r+kVyABtVPKUU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=C5syqY0R; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D384A1F000E9;
+	Thu, 28 May 2026 08:11:21 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
+	s=korg; t=1779955882;
+	bh=hUTLtCDZjsxWDG3zKtFm8xvEviJKYydHQ8jhj8AFbk0=;
+	h=Subject:To:Cc:From:Date;
+	b=C5syqY0RNy6FMMSPKkCbtNq2PrQbMi2eJNMkIo8OnD8IKJfOtFoSkXyVvYtGsmPQX
+	 9Zebg8o4OW/OMLVrSCqMh7q5goMdo6aclOOpaglZBl4OsILyhp+cDfWyyWPyK8PoU4
+	 LmO8MiyVHruEoVZc6/sFEgHurPPnQtcTwWtvzejQ=
+Subject: FAILED: patch "[PATCH] smb: client: require net admin for CIFS SWN netlink" failed to apply to 6.6-stable tree
+To: michael.bommarito@gmail.com,stfrench@microsoft.com
+Cc: <stable@vger.kernel.org>
+From: <gregkh@linuxfoundation.org>
+Date: Thu, 28 May 2026 10:10:29 +0200
+Message-ID: <2026052829-prewashed-duct-fb51@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Subject: Re: [PATCH] netlink: fix skb refcount leak when dump start fails
-To: Wentao Liang <vulab@iscas.ac.cn>, "David S . Miller"
- <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
- Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>
-Cc: Simon Horman <horms@kernel.org>, Kuniyuki Iwashima <kuniyu@google.com>,
- Kees Cook <kees@kernel.org>, Feng Yang <yangfeng@kylinos.cn>,
- netdev@vger.kernel.org, linux-kernel@vger.kernel.org, stable@vger.kernel.org
-References: <20260528073614.1169858-1-vulab@iscas.ac.cn>
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: Jiayuan Chen <jiayuan.chen@linux.dev>
-In-Reply-To: <20260528073614.1169858-1-vulab@iscas.ac.cn>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
-X-Migadu-Flow: FLOW_OUT
-X-Spamd-Result: default: False [-2.16 / 15.00];
+X-Spamd-Result: default: False [2.34 / 15.00];
+	MID_END_EQ_FROM_USER_PART(4.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linux.dev,none];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
-	R_DKIM_ALLOW(-0.20)[linux.dev:s=key1];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	MID_RHS_NOT_FQDN(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-254770-lists,stable=lfdr.de];
-	FROM_HAS_DN(0.00)[];
-	RCVD_COUNT_THREE(0.00)[3];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[12];
-	DKIM_TRACE(0.00)[linux.dev:+];
-	MISSING_XM_UA(0.00)[];
-	TO_DN_SOME(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[jiayuan.chen@linux.dev,stable@vger.kernel.org];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	TAGGED_FROM(0.00)[bounces-254771-lists,stable=lfdr.de];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FREEMAIL_TO(0.00)[gmail.com,microsoft.com];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FROM_NO_DN(0.00)[];
+	MISSING_XM_UA(0.00)[];
+	NEURAL_HAM(-0.00)[-0.991];
+	TO_DN_NONE(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	RCPT_COUNT_THREE(0.00)[3];
 	TAGGED_RCPT(0.00)[stable];
-	MID_RHS_MATCH_FROM(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,linux.dev:mid,linux.dev:dkim,iscas.ac.cn:email]
-X-Rspamd-Queue-Id: A7C1C5EE6F5
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[gregkh:email,linuxfoundation.org:dkim,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo]
+X-Rspamd-Queue-Id: 906185EE6BA
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
 
-On 5/28/26 3:36 PM, Wentao Liang wrote:
-> __netlink_dump_start() takes an extra reference on the received skb
-> via refcount_inc(&skb->users) before storing it in cb->skb for the
-> dump callback to consume. If the subsequent netlink_dump() call fails
-> (line 2440), the dump was never started so the completion callback
-> that would normally release cb->skb will never be invoked.
->
-> In this case, the function returns the error directly without calling
-> kfree_skb(skb) to release the extra reference taken at entry.
->
-> Add kfree_skb(skb) before returning when netlink_dump() fails, so the
-> skb reference is properly released.
->
-> Fixes: b44d211e166b ("netlink: handle errors from netlink_dump()")
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Wentao Liang <vulab@iscas.ac.cn>
-> ---
->   net/netlink/af_netlink.c | 4 +++-
->   1 file changed, 3 insertions(+), 1 deletion(-)
->
-> diff --git a/net/netlink/af_netlink.c b/net/netlink/af_netlink.c
-> index 2aeb0680807d..d904c1aad35d 100644
-> --- a/net/netlink/af_netlink.c
-> +++ b/net/netlink/af_netlink.c
-> @@ -2441,8 +2441,10 @@ int __netlink_dump_start(struct sock *ssk, struct sk_buff *skb,
->   
->   	sock_put(sk);
->   
-> -	if (ret)
-> +	if (ret) {
-> +		kfree_skb(skb);
->   		return ret;
-> +	}
->   
->   	/* We successfully started a dump, by returning -EINTR we
->   	 * signal not to send ACK even if it was requested.
+The patch below does not apply to the 6.6-stable tree.
+If someone wants it applied there, or to any other stable or longterm
+tree, then please email the backport, including the original git commit
+id to <stable@vger.kernel.org>.
 
-static int netlink_release(struct socket *sock) {
+To reproduce the conflict and resubmit, you may use the following commands:
 
-     .......
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.6.y
+git checkout FETCH_HEAD
+git cherry-pick -x d1ebfce2c1d161186a82e77590bf7da2ea1bce91
+# <resolve conflicts, build, test, etc.>
+git commit -s
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2026052829-prewashed-duct-fb51@gregkh' --subject-prefix 'PATCH 6.6.y' HEAD^..
 
-     /* Terminate any outstanding dump */
-     if (nlk->cb_running) {
-         if (nlk->cb.done)
-             nlk->cb.done(&nlk->cb);
-         module_put(nlk->cb.module);
-         kfree_skb(nlk->cb.skb);  <---- freed here
-         WRITE_ONCE(nlk->cb_running, false);
-     }
+Possible dependencies:
 
-     ......
 
-}
+
+thanks,
+
+greg k-h
+
+------------------ original commit in Linus's tree ------------------
+
+From d1ebfce2c1d161186a82e77590bf7da2ea1bce91 Mon Sep 17 00:00:00 2001
+From: Michael Bommarito <michael.bommarito@gmail.com>
+Date: Sun, 17 May 2026 20:11:50 -0400
+Subject: [PATCH] smb: client: require net admin for CIFS SWN netlink
+
+CIFS_GENL_CMD_SWN_NOTIFY is the userspace witness-notify command.  The
+intended sender is the cifs.witness helper, but the generic-netlink
+operation currently has no capability flag, so any local process can send
+RESOURCE_CHANGE or CLIENT_MOVE notifications to the in-kernel witness
+handler.
+
+The same family exposes CIFS_GENL_MCGRP_SWN without multicast-group
+capability flags.  Register messages sent to that group include the witness
+registration id and, for NTLM-authenticated mounts, the username, domain,
+and password attributes copied from the CIFS session.  An unprivileged
+local process should not be able to join that group and receive those
+messages.
+
+Require CAP_NET_ADMIN for incoming SWN_NOTIFY commands with
+GENL_ADMIN_PERM, and require CAP_NET_ADMIN over the network namespace for
+joining the SWN multicast group with GENL_MCAST_CAP_NET_ADMIN.  The
+cifs.witness service runs with the privileges needed for both operations.
+
+Fixes: fed979a7e082 ("cifs: Set witness notification handler for messages from userspace daemon")
+Cc: stable@vger.kernel.org
+Signed-off-by: Michael Bommarito <michael.bommarito@gmail.com>
+Assisted-by: Claude:claude-opus-4-7
+Signed-off-by: Steve French <stfrench@microsoft.com>
+
+diff --git a/fs/smb/client/netlink.c b/fs/smb/client/netlink.c
+index 147d9409252c..0dd10913c37a 100644
+--- a/fs/smb/client/netlink.c
++++ b/fs/smb/client/netlink.c
+@@ -33,13 +33,17 @@ static const struct nla_policy cifs_genl_policy[CIFS_GENL_ATTR_MAX + 1] = {
+ static const struct genl_ops cifs_genl_ops[] = {
+ 	{
+ 		.cmd = CIFS_GENL_CMD_SWN_NOTIFY,
++		.flags = GENL_ADMIN_PERM,
+ 		.validate = GENL_DONT_VALIDATE_STRICT | GENL_DONT_VALIDATE_DUMP,
+ 		.doit = cifs_swn_notify,
+ 	},
+ };
+ 
+ static const struct genl_multicast_group cifs_genl_mcgrps[] = {
+-	[CIFS_GENL_MCGRP_SWN] = { .name = CIFS_GENL_MCGRP_SWN_NAME },
++	[CIFS_GENL_MCGRP_SWN] = {
++		.name = CIFS_GENL_MCGRP_SWN_NAME,
++		.flags = GENL_MCAST_CAP_NET_ADMIN,
++	},
+ };
+ 
+ struct genl_family cifs_genl_family = {
 
 
