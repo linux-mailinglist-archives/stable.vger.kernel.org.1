@@ -1,58 +1,59 @@
-Return-Path: <stable+bounces-256260-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-256092-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id QPU/NWutGGqnmAgAu9opvQ
-	(envelope-from <stable+bounces-256260-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 23:02:35 +0200
+	id CIqFCxarGGpolwgAu9opvQ
+	(envelope-from <stable+bounces-256092-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:52:38 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id 044025FA203
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 23:02:34 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6A8975F9C1E
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:52:37 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 443EA309B088
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 20:46:47 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id C396230643F4
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 20:38:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 75B302F1FEF;
-	Thu, 28 May 2026 20:46:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D9C492139C9;
+	Thu, 28 May 2026 20:38:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fUncckZ2"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jerlr7ik"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3772223394D;
-	Thu, 28 May 2026 20:46:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AA9551DE4E0;
+	Thu, 28 May 2026 20:38:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780001202; cv=none; b=U+Xg6SIcsJY/VfdDFcN+m3GTLUN1ZUvXhZfqzSYP9Jg+UmZ2TqQk739JonyrfqlbqC8Il9pVZM6JRqKih8SW+A34/O18PeU2W46wx4WZoH09u+30xwDawuKo87X0XFVHhGq5+jDMcejehSaJ5iOtVThrK3u/7ajtovHYeV4WaB4=
+	t=1780000732; cv=none; b=J2SmwrsEdg9WFFW6dNA09UmXJD36P9QMA0blaNY4uH8YdD9MP7J9uBHbr7FWUXz7F4BFMIBaUnW0OmS6JkbiD767JZ4TJq8iFxkSbtwX/c1bjV0fj9VGU1fOGJg5ArC1xthvnxgop2civ8XH79Wn+8IsptwMlKz3hDPS5HZDsn0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780001202; c=relaxed/simple;
-	bh=Y+qpE7GFRiiAFsZHAq0MEfSktZMTwjUg8+PrxwW0XJA=;
+	s=arc-20240116; t=1780000732; c=relaxed/simple;
+	bh=mHzX6n+zWUh2PA2JaSuXYoYpr+ih2F3cCWz0b6wgWKA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=QK9Eu0tI9rm+sRktEsWm9dhsyjgLp+avBnle5d8obZjl2BMqf1UcfBAInVtFNunPmVOPVp/t51pTmvxdW4PBEie29T8xi2bCk1DFwHb2Pxwy5GQGN1G2MA20PyDAokHqin5Wy1M3CWn7kg8pKRLLxL5Yd2Honx7DwDnvFNdE32E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fUncckZ2; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 94E151F000E9;
-	Thu, 28 May 2026 20:46:40 +0000 (UTC)
+	 MIME-Version; b=Qh0fFbxO9rLLKXtsjTni6FHeL056uF1YuGPnwVESmpjTy6s09w1Mm99PY0HksecB2BQl0whGqF2m4P/TasfTN0MuvEyPX8jl3BSxfLZrNupKQ7Sj2DkjCXE0iEJ/Rt7S04HQX32QjflaJenImo9ucNNils5pg49gNhGxXxDkpow=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jerlr7ik; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CAC261F000E9;
+	Thu, 28 May 2026 20:38:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780001201;
-	bh=CmloMVb5rAgJ+EDWOU5/x7CeUXPIFqWFxp4T36watAk=;
+	s=korg; t=1780000731;
+	bh=bwMO4qRPS4o3jgoHogzDOsomrZ/lHcsRTo2BNI4E8ag=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=fUncckZ21dYTTRNkXTTE95pWZieiVdRFdC/pAzHx91IdAliq2pKTH15bU63FQzI+r
-	 7eZe1aOk9NA43WC6L55LN5+0c8jrdTrtlwT2sNVA/iE+rglFuVdWPS0TUvA1NXJUIw
-	 3gTW4niS+OzNhSGCQUdU9l1tsa+lERlbm/1MKXRc=
+	b=jerlr7ikv+mfQEGQTn/jx6JIhtpcopFVvzGt7GFiNlyGBZAPgmZzAG9xuLtQBfidu
+	 lI0bPMvWL1caGOChTb7CwqjZWGEnkLNF5d0GSaK+8ZrYo/JrraLKne3ZbYkpDP326+
+	 dj2+eJYD3P347nP3fXRz8wQ0tzeWR5BvPi6xSNwU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Michael Bommarito <michael.bommarito@gmail.com>,
-	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 6.6 043/186] net: ifb: report ethtool stats over num_tx_queues
+	Viresh Kumar <viresh.kumar@linaro.org>,
+	Sudeep Holla <sudeep.holla@arm.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 149/272] firmware: arm_ffa: Refactor addition of partition information into XArray
 Date: Thu, 28 May 2026 21:48:43 +0200
-Message-ID: <20260528194930.128113985@linuxfoundation.org>
+Message-ID: <20260528194633.543151123@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260528194928.941004471@linuxfoundation.org>
-References: <20260528194928.941004471@linuxfoundation.org>
+In-Reply-To: <20260528194629.379955525@linuxfoundation.org>
+References: <20260528194629.379955525@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,139 +64,140 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	TO_DN_SOME(0.00)[];
-	TAGGED_FROM(0.00)[bounces-256260-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,kernel.org];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-256092-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	NEURAL_HAM(-0.00)[-0.999];
-	TAGGED_RCPT(0.00)[stable];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[5];
+	NEURAL_HAM(-0.00)[-1.000];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,msgid.link:url,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim]
-X-Rspamd-Queue-Id: 044025FA203
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[arm.com:email,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim,linaro.org:email]
+X-Rspamd-Queue-Id: 6A8975F9C1E
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Michael Bommarito <michael.bommarito@gmail.com>
+From: Viresh Kumar <viresh.kumar@linaro.org>
 
-commit 5db89c99566fc4728cc92e941d8e1975711e24b5 upstream.
+[ Upstream commit 3c3d6767466ea316869c9f2bdd976aec8ce44545 ]
 
-ifb_dev_init() allocates dp->tx_private to dev->num_tx_queues
-entries via kzalloc_objs(*txp, dev->num_tx_queues). Both IFB
-per-queue RX and TX stats live in those entries: ifb_xmit() updates
-txp->rx_stats using the skb queue mapping, ifb_ri_tasklet() updates
-txp->tx_stats, and ifb_stats64() aggregates both over
-dev->num_tx_queues.
+Move the common code handling addition of the FF-A partition information
+into the XArray as a new routine. No functional change.
 
-The ethtool stats callbacks instead size and walk the per-queue
-stats with dev->real_num_rx_queues and dev->real_num_tx_queues. With
-an asymmetric device where the RX queue count exceeds the TX queue
-count, for example:
-
-    ip link add name ifb10 numtxqueues 1 numrxqueues 8 type ifb
-    ethtool -S ifb10
-
-ifb_get_ethtool_stats() indexes past the tx_private allocation and
-copies adjacent slab data through ETHTOOL_GSTATS.
-
-Use dev->num_tx_queues consistently for the stats strings, the
-stats count, and the stats data walks. This reports one RX stats
-group and one TX stats group for each backing ifb_q_private entry,
-which is the queue set IFB can actually populate.
-
-Reproduced under UML+KASAN at v7.1-rc2:
-
-  BUG: KASAN: slab-out-of-bounds in ifb_fill_stats_data+0x3c/0xae
-  Read of size 8 at addr 0000000062dbd228 by task ethtool/36
-  ifb_fill_stats_data+0x3c/0xae
-  ifb_get_ethtool_stats+0xc0/0x129
-  __dev_ethtool+0x1ca5/0x363c
-  dev_ethtool+0x123/0x1b3
-  dev_ioctl+0x56c/0x744
-  sock_do_ioctl+0x15f/0x1b2
-  sock_ioctl+0x4d5/0x50a
-  sys_ioctl+0xd8b/0xde9
-
-With the patch applied, the same UML+KASAN repro is silent and
-ethtool -S ifb10 reports only the stats backed by the single
-allocated tx_private entry.
-
-Fixes: a21ee5b2fcb8 ("net: ifb: support ethtools stats")
-Cc: stable@vger.kernel.org
-Signed-off-by: Michael Bommarito <michael.bommarito@gmail.com>
-Link: https://patch.msgid.link/20260514013739.3549624-1-michael.bommarito@gmail.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Viresh Kumar <viresh.kumar@linaro.org>
+Message-Id: <20250217-ffa_updates-v3-6-bd1d9de615e7@arm.com>
+Signed-off-by: Sudeep Holla <sudeep.holla@arm.com>
+Stable-dep-of: 6d3daa9b8d31 ("firmware: arm_ffa: Unregister bus notifier on teardown for FF-A v1.0")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ifb.c |   11 +++++------
- 1 file changed, 5 insertions(+), 6 deletions(-)
+ drivers/firmware/arm_ffa/driver.c | 47 +++++++++++++++----------------
+ 1 file changed, 22 insertions(+), 25 deletions(-)
 
---- a/drivers/net/ifb.c
-+++ b/drivers/net/ifb.c
-@@ -211,12 +211,12 @@ static void ifb_get_strings(struct net_d
+diff --git a/drivers/firmware/arm_ffa/driver.c b/drivers/firmware/arm_ffa/driver.c
+index 39f19acdce904..84c4fe40d5279 100644
+--- a/drivers/firmware/arm_ffa/driver.c
++++ b/drivers/firmware/arm_ffa/driver.c
+@@ -1421,11 +1421,30 @@ static struct notifier_block ffa_bus_nb = {
+ 	.notifier_call = ffa_bus_notifier,
+ };
  
- 	switch (stringset) {
- 	case ETH_SS_STATS:
--		for (i = 0; i < dev->real_num_rx_queues; i++)
-+		for (i = 0; i < dev->num_tx_queues; i++)
- 			for (j = 0; j < IFB_Q_STATS_LEN; j++)
- 				ethtool_sprintf(&p, "rx_queue_%u_%.18s",
- 						i, ifb_q_stats_desc[j].desc);
- 
--		for (i = 0; i < dev->real_num_tx_queues; i++)
-+		for (i = 0; i < dev->num_tx_queues; i++)
- 			for (j = 0; j < IFB_Q_STATS_LEN; j++)
- 				ethtool_sprintf(&p, "tx_queue_%u_%.18s",
- 						i, ifb_q_stats_desc[j].desc);
-@@ -229,8 +229,7 @@ static int ifb_get_sset_count(struct net
++static int ffa_xa_add_partition_info(int vm_id)
++{
++	struct ffa_dev_part_info *info;
++	int ret;
++
++	info = kzalloc(sizeof(*info), GFP_KERNEL);
++	if (!info)
++		return -ENOMEM;
++
++	rwlock_init(&info->rw_lock);
++	ret = xa_insert(&drv_info->partition_info, vm_id, info, GFP_KERNEL);
++	if (ret) {
++		pr_err("%s: failed to save partition ID 0x%x - ret:%d. Abort.\n",
++		       __func__, vm_id, ret);
++		kfree(info);
++	}
++
++	return ret;
++}
++
+ static int ffa_setup_partitions(void)
  {
- 	switch (sset) {
- 	case ETH_SS_STATS:
--		return IFB_Q_STATS_LEN * (dev->real_num_rx_queues +
--					  dev->real_num_tx_queues);
-+		return IFB_Q_STATS_LEN * dev->num_tx_queues * 2;
- 	default:
- 		return -EOPNOTSUPP;
- 	}
-@@ -262,12 +261,12 @@ static void ifb_get_ethtool_stats(struct
- 	struct ifb_q_private *txp;
- 	int i;
+ 	int count, idx, ret;
+ 	struct ffa_device *ffa_dev;
+-	struct ffa_dev_part_info *info;
+ 	struct ffa_partition_info *pbuf, *tpbuf;
  
--	for (i = 0; i < dev->real_num_rx_queues; i++) {
-+	for (i = 0; i < dev->num_tx_queues; i++) {
- 		txp = dp->tx_private + i;
- 		ifb_fill_stats_data(&data, &txp->rx_stats);
+ 	if (drv_info->version == FFA_VERSION_1_0) {
+@@ -1459,20 +1478,10 @@ static int ffa_setup_partitions(void)
+ 		    !(tpbuf->properties & FFA_PARTITION_AARCH64_EXEC))
+ 			ffa_mode_32bit_set(ffa_dev);
+ 
+-		info = kzalloc(sizeof(*info), GFP_KERNEL);
+-		if (!info) {
++		if (ffa_xa_add_partition_info(ffa_dev->vm_id)) {
+ 			ffa_device_unregister(ffa_dev);
+ 			continue;
+ 		}
+-		rwlock_init(&info->rw_lock);
+-		ret = xa_insert(&drv_info->partition_info, tpbuf->id,
+-				info, GFP_KERNEL);
+-		if (ret) {
+-			pr_err("%s: failed to save partition ID 0x%x - ret:%d\n",
+-			       __func__, tpbuf->id, ret);
+-			ffa_device_unregister(ffa_dev);
+-			kfree(info);
+-		}
  	}
  
--	for (i = 0; i < dev->real_num_tx_queues; i++) {
-+	for (i = 0; i < dev->num_tx_queues; i++) {
- 		txp = dp->tx_private + i;
- 		ifb_fill_stats_data(&data, &txp->tx_stats);
+ 	kfree(pbuf);
+@@ -1482,20 +1491,8 @@ static int ffa_setup_partitions(void)
+ 		return 0;
+ 
+ 	/* Allocate for the host */
+-	info = kzalloc(sizeof(*info), GFP_KERNEL);
+-	if (!info) {
+-		/* Already registered devices are freed on bus_exit */
+-		ffa_partitions_cleanup();
+-		return -ENOMEM;
+-	}
+-
+-	rwlock_init(&info->rw_lock);
+-	ret = xa_insert(&drv_info->partition_info, drv_info->vm_id,
+-			info, GFP_KERNEL);
++	ret = ffa_xa_add_partition_info(drv_info->vm_id);
+ 	if (ret) {
+-		pr_err("%s: failed to save Host partition ID 0x%x - ret:%d. Abort.\n",
+-		       __func__, drv_info->vm_id, ret);
+-		kfree(info);
+ 		/* Already registered devices are freed on bus_exit */
+ 		ffa_partitions_cleanup();
  	}
+-- 
+2.53.0
+
 
 
 
