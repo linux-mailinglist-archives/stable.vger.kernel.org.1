@@ -1,60 +1,59 @@
-Return-Path: <stable+bounces-256340-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-255930-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id SJIsF+isGGpymAgAu9opvQ
-	(envelope-from <stable+bounces-256340-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 23:00:24 +0200
+	id oDCXGrWnGGp+lwgAu9opvQ
+	(envelope-from <stable+bounces-255930-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:38:13 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id E83005FA09B
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 23:00:23 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id ECFE95F92B9
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:38:12 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 21F9A321E7F6
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 20:50:28 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id BAE7531270DD
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 20:31:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B5FF7331A7E;
-	Thu, 28 May 2026 20:50:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CA03A31DD97;
+	Thu, 28 May 2026 20:31:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SkIaKJv5"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IIRJmksq"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8E631327C00;
-	Thu, 28 May 2026 20:50:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ADB9125F7B9;
+	Thu, 28 May 2026 20:31:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780001427; cv=none; b=a2MMKD2cDb4pauYP2RPppTem6baBOh2Vx4GzAAKH+/RQzTSE8KSM0TvJvgxl991H6Feqml8E/w/tieW030VyaHR3okEgIDkV/avVJ6g163Jlp2M/JRCXv4EoWx2a2fQM7v8PRXXbtjTmu+ilHPxkAGNG0W+7aFImJd5GzL0KgDM=
+	t=1780000277; cv=none; b=XR1E8GU5BC1/OFcBji8eA8FCW74pFnHQu9wV3GeozvQap2uNxb0hW+rEtxYPtIj583ey3EX+gE16MwbZFkuNKWS+++5B7M2v8PfMxjfNuJHJB+G9ajhYsyqKFcEjRaJRUh5+SQ9Ua2okC47qD6x1gik/IPSDd92ROc77aKr7Jfc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780001427; c=relaxed/simple;
-	bh=jmOldHPDFFCGDdY9ZvVxVNYMnLwVDvugAdHdAwGTMHc=;
+	s=arc-20240116; t=1780000277; c=relaxed/simple;
+	bh=GisjvtLRqURe05m6RsTB5dXhdr6shCMQQh5mJioErlA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=DHH656C8NEP96QqSgpBgn1l8gSw6y6GlSeOtdWZdaI0MhCmfqSRgbVa13NjIcYg7eLrHGj6p6e8iX3yBCfP8sTgnZ3+H1qFEeqyLRlYrnZFPA0LmvB2bl9pPUPRlruY9jC4wynxNe1xbBbzUEg9RAHhvJ3i/1l9G9W6Rb8PFfgw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SkIaKJv5; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7AEC41F000E9;
-	Thu, 28 May 2026 20:50:25 +0000 (UTC)
+	 MIME-Version; b=Z5Ht1JKyS07KHvVBzsFi7urZRxbpzAGv30QJQj9q6s83Lx0u7lETpj6IQN9PbCMk7CZQ8XKg7QJ7QxP+vt9RqGGN9vbmAH9GO8VkDpdBjmpiUBOlTqVqG307mXoxu0pnY0cX8LKRjRvne44ufA/hi770CwZuB6cU6mhjODhf+88=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IIRJmksq; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 182681F000E9;
+	Thu, 28 May 2026 20:31:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780001426;
-	bh=9rLmfIZOMA1Xx1/7xUFbwk9bZIh5WA0+gZzA6uPGgJ8=;
+	s=korg; t=1780000276;
+	bh=bFjfnscq7WnEQMzhXA2TATumIU8rQVsABwjQsHyWQPU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=SkIaKJv59FydD4ggcTd7jZLM9lhrboPNyRjWAddR4tOY6Kzl6xWYpcIE5FhHEKbDR
-	 735W0u6quvsgIGCh/bYzg5Ft9MQiF0qqvhx5NWjkoop7jvrxASh6vFnOQ0iGzDv3Mc
-	 pbeFnHO5ByOV0j4/ZRPYJsU6poH51/R5+TbdVNYs=
+	b=IIRJmksqujwJ2YvkDgaN9seAkPlv8j0CzLE7eCq3jnLlVurGIhFHAIyKDr6o6lxce
+	 o7nbA8kNT2bfPN+Q3RbVqI12DWL9PSnbwrW1xy7IbJEzQGplPW1/qccagpcarmhBX7
+	 4BsSDKUIBWCvXVYBHkxuiEVYbIt9NZ7VH2kkUEEc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ijae Kim <ae878000@gmail.com>,
-	Myeonghun Pak <mhun512@gmail.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Richard Fitzgerald <rf@opensource.cirrus.com>,
+	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 124/186] net: lan966x: avoid unregistering netdev on register failure
+Subject: [PATCH 6.18 366/377] ASoC: cs35l56: Fix flushing of IRQ work in cs35l56_sdw_remove()
 Date: Thu, 28 May 2026 21:50:04 +0200
-Message-ID: <20260528194932.292237574@linuxfoundation.org>
+Message-ID: <20260528194649.023335207@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260528194928.941004471@linuxfoundation.org>
-References: <20260528194928.941004471@linuxfoundation.org>
+In-Reply-To: <20260528194638.371537336@linuxfoundation.org>
+References: <20260528194638.371537336@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,94 +68,76 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,kernel.org];
-	TAGGED_FROM(0.00)[bounces-256340-lists,stable=lfdr.de];
-	PRECEDENCE_BULK(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
+	RCVD_TLS_LAST(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	TAGGED_FROM(0.00)[bounces-255930-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[7];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,msgid.link:url,linuxfoundation.org:mid,linuxfoundation.org:dkim]
-X-Rspamd-Queue-Id: E83005FA09B
+	RCPT_COUNT_FIVE(0.00)[6];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,msgid.link:url,cirrus.com:email,linuxfoundation.org:mid,linuxfoundation.org:dkim]
+X-Rspamd-Queue-Id: ECFE95F92B9
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Myeonghun Pak <mhun512@gmail.com>
+From: Richard Fitzgerald <rf@opensource.cirrus.com>
 
-[ Upstream commit c4f3d6eb1fcf6cd9ce4644f604d5aad1ce594dfc ]
+[ Upstream commit 18e7bd9f2446664053f8c34b72abd4606d22d858 ]
 
-lan966x_probe_port() stores the newly allocated net_device in the
-port before calling register_netdev(). If register_netdev() fails,
-the probe error path calls lan966x_cleanup_ports(), which sees
-port->dev and calls unregister_netdev() for a device that was never
-registered.
+Use flush_work() instead of cancel_work_sync() to terminate pending IRQ
+work in cs35l56_sdw_remove(). And flush_work() again after masking the
+interrupts to flush any queueing that was racing with the masking. This is
+the same sequence as cs35l56_sdw_system_suspend().
 
-Destroy the phylink instance created for this port and clear port->dev
-before returning the registration error. The common cleanup path now skips
-ports without port->dev before reaching the registered netdev cleanup, so
-it only handles ports that reached the registered-netdev lifetime.
+cs35l56_sdw_interrupt() takes the pm_runtime to prevent the bus powering-
+down before the interrupt status can be read and handled. The work releases
+this pm_runtime. So cancelling it, instead of flushing, could leave an
+unbalanced pm_runtime.
 
-This also avoids treating an uninitialized FDMA netdev and the failed port
-as a NULL == NULL match in the common cleanup path.
-
-Fixes: d28d6d2e37d1 ("net: lan966x: add port module support")
-Co-developed-by: Ijae Kim <ae878000@gmail.com>
-Signed-off-by: Ijae Kim <ae878000@gmail.com>
-Signed-off-by: Myeonghun Pak <mhun512@gmail.com>
-Link: https://patch.msgid.link/20260506124331.31945-1-mhun512@gmail.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Richard Fitzgerald <rf@opensource.cirrus.com>
+Fixes: e49611252900 ("ASoC: cs35l56: Add driver for Cirrus Logic CS35L56")
+Link: https://patch.msgid.link/20260521123057.988732-1-rf@opensource.cirrus.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/microchip/lan966x/lan966x_main.c | 8 +++++---
- 1 file changed, 5 insertions(+), 3 deletions(-)
+ sound/soc/codecs/cs35l56-sdw.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/net/ethernet/microchip/lan966x/lan966x_main.c b/drivers/net/ethernet/microchip/lan966x/lan966x_main.c
-index 5466f14e000ce..ce48685a50b20 100644
---- a/drivers/net/ethernet/microchip/lan966x/lan966x_main.c
-+++ b/drivers/net/ethernet/microchip/lan966x/lan966x_main.c
-@@ -750,11 +750,10 @@ static void lan966x_cleanup_ports(struct lan966x *lan966x)
+diff --git a/sound/soc/codecs/cs35l56-sdw.c b/sound/soc/codecs/cs35l56-sdw.c
+index 42d24ac2977fc..a513a15d7e5a7 100644
+--- a/sound/soc/codecs/cs35l56-sdw.c
++++ b/sound/soc/codecs/cs35l56-sdw.c
+@@ -560,10 +560,11 @@ static int cs35l56_sdw_remove(struct sdw_slave *peripheral)
  
- 	for (p = 0; p < lan966x->num_phys_ports; p++) {
- 		port = lan966x->ports[p];
--		if (!port)
-+		if (!port || !port->dev)
- 			continue;
+ 	/* Disable SoundWire interrupts */
+ 	cs35l56->sdw_irq_no_unmask = true;
+-	cancel_work_sync(&cs35l56->sdw_irq_work);
++	flush_work(&cs35l56->sdw_irq_work);
+ 	sdw_write_no_pm(peripheral, CS35L56_SDW_GEN_INT_MASK_1, 0);
+ 	sdw_read_no_pm(peripheral, CS35L56_SDW_GEN_INT_STAT_1);
+ 	sdw_write_no_pm(peripheral, CS35L56_SDW_GEN_INT_STAT_1, 0xFF);
++	flush_work(&cs35l56->sdw_irq_work);
  
--		if (port->dev)
--			unregister_netdev(port->dev);
-+		unregister_netdev(port->dev);
- 
- 		lan966x_xdp_port_deinit(port);
- 		if (lan966x->fdma && lan966x->fdma_ndev == port->dev)
-@@ -875,6 +874,9 @@ static int lan966x_probe_port(struct lan966x *lan966x, u32 p,
- 	err = register_netdev(dev);
- 	if (err) {
- 		dev_err(lan966x->dev, "register_netdev failed\n");
-+		phylink_destroy(phylink);
-+		port->phylink = NULL;
-+		port->dev = NULL;
- 		return err;
- 	}
+ 	cs35l56_remove(cs35l56);
  
 -- 
 2.53.0
