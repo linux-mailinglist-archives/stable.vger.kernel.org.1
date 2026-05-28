@@ -1,60 +1,61 @@
-Return-Path: <stable+bounces-255983-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-255738-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id qMQbGEioGGp+lwgAu9opvQ
-	(envelope-from <stable+bounces-255983-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:40:40 +0200
+	id mIYFBGWkGGoQlwgAu9opvQ
+	(envelope-from <stable+bounces-255738-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:24:05 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id E0AF65F94C9
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:40:39 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id A70EA5F8901
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:24:04 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 032AE3142F14
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 20:33:49 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 9D52330776EA
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 20:22:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3747132AAD6;
-	Thu, 28 May 2026 20:33:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 22601316199;
+	Thu, 28 May 2026 20:22:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gqKhTJbS"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="eL2reOeB"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C126D2C15AC;
-	Thu, 28 May 2026 20:33:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E195E2D9787;
+	Thu, 28 May 2026 20:22:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780000426; cv=none; b=KH/vaT+wuUrkq2yIcISBG2c+6PV1r3Xz+1ERuRgnt3Cu2KokocHDo5Kuh9ck4Zg9ulwPBZRQm+teUjXba/PQf7vWZfbFQbkk4B75xb3EmH0i/rgjHzcEuI3Cu97Z1FecEQ3lehVmUK6PAqJVeLv6OGDH5LwWAKk2k1AQyiJBU1M=
+	t=1779999745; cv=none; b=CkQYmgtdER9auvMdgZgMza6V1mA+SLyZS4AZatzS8nDF7zdhUq4/pC9o9mY8EZ2XyJ8Hr6OtilEDi0KeP9g5fER5u8hgFUGR3ri2TdRZoxiJTo0b+kZp0KEgEhek3vrnoblc0eoZzXtT4eGQ/bKylxLVsPoFeWuvf+6vKkGyH3Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780000426; c=relaxed/simple;
-	bh=NMkrbYibtgW65SWQ7HiTBBJu1wEFls0MOTKUEUQ72Vg=;
+	s=arc-20240116; t=1779999745; c=relaxed/simple;
+	bh=n4dGNjWV5uBWb8xggwXTJFRK0YKzWJbLjKwOJ5l/yk8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=CJfZDzMgRhB/XSgX1qrkt4XT9IbKa7G4/Bic816V1JJOryAkIrDKhepG85LowNgCL0av5usr9klMKBat0PsXRhs1sL6GCqRGr3yc7XLxq2qLQSHLjoLDtMZZQFse+IZM01YX4qzs7zuaKshE6VhbFamAAoSIugDAOpOiLb//0MQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gqKhTJbS; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E9FAE1F000E9;
-	Thu, 28 May 2026 20:33:43 +0000 (UTC)
+	 MIME-Version; b=qXPNW+rfEURSuE6+N36Mf89NxxfdqYbT3/PmwiDVFpOCMS6C7uvJXQWOrbWlsZmoGI0MSpV1tzkNln9xBLzkz1dr9w1A3YplcdbByWDnucZmc7HTrnM/bGp5BV5cMWKudu/fBGSnbMT0VtBO5xoyBDIp3TzLENHSdGTuGjdVw+E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=eL2reOeB; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4C0FD1F000E9;
+	Thu, 28 May 2026 20:22:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780000424;
-	bh=iw87/VMqLreJ240jYspCS2wlwQELAM9i7OmR+ahHobY=;
+	s=korg; t=1779999744;
+	bh=xGF8KR5G49FxeIglurCYnuG0zCosEeJQNRNMrscCggQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=gqKhTJbSuogobgnM3hoaEIJ01qgwQWYBNlDg5ZBfhD7utGxaf8jUYVCHI5At0+3gr
-	 mBZo4xTd+6jsH3Wzd62M0WgJ5AgHUf6w5zLxoiYKIl0MSRcF77joh1ou3MNuWSs1Ml
-	 jMAHClNqlNAq3qILTuMJzNVsGjiofIx1Vsy9XR+4=
+	b=eL2reOeBg5mD8yERDPuG5eXpLaZTjVOC62AUzFs2VpoBIYH0Tb76xiAXrY8Fc/xGs
+	 1CZ8JS2ia+a6z0f5Ie65PcBGSZCbxTyMp8ZyF2wYr0f8vcYQm1IR/+nT6TSDXyHFby
+	 TJB3IL0ZfWrsFNaLWIqoKnv/7fw6vedVdyHxPlCg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sanman Pradhan <psanman@juniper.net>,
-	Guenter Roeck <linux@roeck-us.net>,
-	Fang Wang <32840572@qq.com>,
+	Maulik Shah <maulik.shah@oss.qualcomm.com>,
+	Navya Malempati <navya.malempati@oss.qualcomm.com>,
+	Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>,
+	Linus Walleij <linusw@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 039/272] hwmon: (pmbus/core) Protect regulator operations with mutex
-Date: Thu, 28 May 2026 21:46:53 +0200
-Message-ID: <20260528194630.479011171@linuxfoundation.org>
+Subject: [PATCH 6.18 176/377] pinctrl: qcom: Fix GPIO to PDC wake irq map for qcs615
+Date: Thu, 28 May 2026 21:46:54 +0200
+Message-ID: <20260528194643.518744967@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260528194629.379955525@linuxfoundation.org>
-References: <20260528194629.379955525@linuxfoundation.org>
+In-Reply-To: <20260528194638.371537336@linuxfoundation.org>
+References: <20260528194638.371537336@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,291 +70,74 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,juniper.net,roeck-us.net,qq.com,kernel.org];
-	TAGGED_FROM(0.00)[bounces-255983-lists,stable=lfdr.de];
-	PRECEDENCE_BULK(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-255738-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
 	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,s.data:url,roeck-us.net:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,s.page:url,qq.com:email,juniper.net:email]
-X-Rspamd-Queue-Id: E0AF65F94C9
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_SEVEN(0.00)[8];
+	MID_RHS_MATCH_FROM(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[qualcomm.com:email,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim]
+X-Rspamd-Queue-Id: A70EA5F8901
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Guenter Roeck <linux@roeck-us.net>
+From: Maulik Shah <maulik.shah@oss.qualcomm.com>
 
-[ Upstream commit 754bd2b4a084b90b5e7b630e1f423061a9b9b761 ]
+[ Upstream commit 9d69033ad967b6e09b1e5b30d1a32c6c4876465d ]
 
-The regulator operations pmbus_regulator_get_voltage(),
-pmbus_regulator_set_voltage(), and pmbus_regulator_list_voltage()
-access PMBus registers and shared data but were not protected by
-the update_lock mutex. This could lead to race conditions.
+PDC interrupts 122-125 were meant for ibi_i3c wakeup but qcs615 do not
+support i3c. GPIOs 39,51,88 and 89 are also connected to different PDC
+pin to support non-ibi wakeup. Update the wakeirq map to reflect same.
 
-However, adding mutex protection directly to these functions causes
-a deadlock because pmbus_regulator_notify() (which calls
-regulator_notifier_call_chain()) is often called with the mutex
-already held (e.g., from pmbus_fault_handler()). If a regulator
-callback then calls one of the now-protected voltage functions,
-it will attempt to acquire the same mutex.
-
-Rework pmbus_regulator_notify() to utilize a worker function to
-send notifications outside of the mutex protection. Events are
-stored as atomics in a per-page bitmask and processed by the worker.
-
-Initialize the worker and its associated data during regulator
-registration, and ensure it is cancelled on device removal using
-devm_add_action_or_reset().
-
-While at it, remove the unnecessary include of linux/of.h.
-
-Cc: Sanman Pradhan <psanman@juniper.net>
-Fixes: ddbb4db4ced1b ("hwmon: (pmbus) Add regulator support")
-Reviewed-by: Sanman Pradhan <psanman@juniper.net>
-Signed-off-by: Guenter Roeck <linux@roeck-us.net>
-Signed-off-by: Fang Wang <32840572@qq.com>
+Fixes: b698f36a9d40 ("pinctrl: qcom: add the tlmm driver for QCS615 platform")
+Signed-off-by: Maulik Shah <maulik.shah@oss.qualcomm.com>
+Signed-off-by: Navya Malempati <navya.malempati@oss.qualcomm.com>
+Reviewed-by: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
+Signed-off-by: Linus Walleij <linusw@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/hwmon/pmbus/pmbus_core.c | 117 ++++++++++++++++++++++++-------
- 1 file changed, 91 insertions(+), 26 deletions(-)
+ drivers/pinctrl/qcom/pinctrl-qcs615.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/hwmon/pmbus/pmbus_core.c b/drivers/hwmon/pmbus/pmbus_core.c
-index 41c66ece5177e..e37fd206510a6 100644
---- a/drivers/hwmon/pmbus/pmbus_core.c
-+++ b/drivers/hwmon/pmbus/pmbus_core.c
-@@ -6,6 +6,7 @@
-  * Copyright (c) 2012 Guenter Roeck
-  */
- 
-+#include <linux/atomic.h>
- #include <linux/debugfs.h>
- #include <linux/delay.h>
- #include <linux/kernel.h>
-@@ -20,8 +21,8 @@
- #include <linux/pmbus.h>
- #include <linux/regulator/driver.h>
- #include <linux/regulator/machine.h>
--#include <linux/of.h>
- #include <linux/thermal.h>
-+#include <linux/workqueue.h>
- #include "pmbus.h"
- 
- /*
-@@ -102,6 +103,11 @@ struct pmbus_data {
- 
- 	struct mutex update_lock;
- 
-+#if IS_ENABLED(CONFIG_REGULATOR)
-+	atomic_t regulator_events[PMBUS_PAGES];
-+	struct work_struct regulator_notify_work;
-+#endif
-+
- 	bool has_status_word;		/* device uses STATUS_WORD register */
- 	int (*read_status)(struct i2c_client *client, int page);
- 
-@@ -3181,12 +3187,19 @@ static int pmbus_regulator_get_voltage(struct regulator_dev *rdev)
- 		.class = PSC_VOLTAGE_OUT,
- 		.convert = true,
- 	};
-+	int ret;
- 
-+	mutex_lock(&data->update_lock);
- 	s.data = _pmbus_read_word_data(client, s.page, 0xff, PMBUS_READ_VOUT);
--	if (s.data < 0)
--		return s.data;
-+	if (s.data < 0) {
-+		ret = s.data;
-+		goto unlock;
-+	}
- 
--	return (int)pmbus_reg2data(data, &s) * 1000; /* unit is uV */
-+	ret = (int)pmbus_reg2data(data, &s) * 1000; /* unit is uV */
-+unlock:
-+	mutex_unlock(&data->update_lock);
-+	return ret;
- }
- 
- static int pmbus_regulator_set_voltage(struct regulator_dev *rdev, int min_uv,
-@@ -3203,16 +3216,22 @@ static int pmbus_regulator_set_voltage(struct regulator_dev *rdev, int min_uv,
- 	};
- 	int val = DIV_ROUND_CLOSEST(min_uv, 1000); /* convert to mV */
- 	int low, high;
-+	int ret;
- 
- 	*selector = 0;
- 
-+	mutex_lock(&data->update_lock);
- 	low = pmbus_regulator_get_low_margin(client, s.page);
--	if (low < 0)
--		return low;
-+	if (low < 0) {
-+		ret = low;
-+		goto unlock;
-+	}
- 
- 	high = pmbus_regulator_get_high_margin(client, s.page);
--	if (high < 0)
--		return high;
-+	if (high < 0) {
-+		ret = high;
-+		goto unlock;
-+	}
- 
- 	/* Make sure we are within margins */
- 	if (low > val)
-@@ -3222,7 +3241,10 @@ static int pmbus_regulator_set_voltage(struct regulator_dev *rdev, int min_uv,
- 
- 	val = pmbus_data2reg(data, &s, val);
- 
--	return _pmbus_write_word_data(client, s.page, PMBUS_VOUT_COMMAND, (u16)val);
-+	ret = _pmbus_write_word_data(client, s.page, PMBUS_VOUT_COMMAND, (u16)val);
-+unlock:
-+	mutex_unlock(&data->update_lock);
-+	return ret;
- }
- 
- static int pmbus_regulator_list_voltage(struct regulator_dev *rdev,
-@@ -3230,7 +3252,9 @@ static int pmbus_regulator_list_voltage(struct regulator_dev *rdev,
- {
- 	struct device *dev = rdev_get_dev(rdev);
- 	struct i2c_client *client = to_i2c_client(dev->parent);
-+	struct pmbus_data *data = i2c_get_clientdata(client);
- 	int val, low, high;
-+	int ret;
- 
- 	if (selector >= rdev->desc->n_voltages ||
- 	    selector < rdev->desc->linear_min_sel)
-@@ -3240,18 +3264,29 @@ static int pmbus_regulator_list_voltage(struct regulator_dev *rdev,
- 	val = DIV_ROUND_CLOSEST(rdev->desc->min_uV +
- 				(rdev->desc->uV_step * selector), 1000); /* convert to mV */
- 
-+	mutex_lock(&data->update_lock);
-+
- 	low = pmbus_regulator_get_low_margin(client, rdev_get_id(rdev));
--	if (low < 0)
--		return low;
-+	if (low < 0) {
-+		ret = low;
-+		goto unlock;
-+	}
- 
- 	high = pmbus_regulator_get_high_margin(client, rdev_get_id(rdev));
--	if (high < 0)
--		return high;
-+	if (high < 0) {
-+		ret = high;
-+		goto unlock;
-+	}
- 
--	if (val >= low && val <= high)
--		return val * 1000; /* unit is uV */
-+	if (val >= low && val <= high) {
-+		ret = val * 1000; /* unit is uV */
-+		goto unlock;
-+	}
- 
--	return 0;
-+	ret = 0;
-+unlock:
-+	mutex_unlock(&data->update_lock);
-+	return ret;
- }
- 
- const struct regulator_ops pmbus_regulator_ops = {
-@@ -3266,12 +3301,42 @@ const struct regulator_ops pmbus_regulator_ops = {
- };
- EXPORT_SYMBOL_NS_GPL(pmbus_regulator_ops, PMBUS);
- 
-+static void pmbus_regulator_notify_work_cancel(void *data)
-+{
-+	struct pmbus_data *pdata = data;
-+
-+	cancel_work_sync(&pdata->regulator_notify_work);
-+}
-+
-+static void pmbus_regulator_notify_worker(struct work_struct *work)
-+{
-+	struct pmbus_data *data =
-+		container_of(work, struct pmbus_data, regulator_notify_work);
-+	int i, j;
-+
-+	for (i = 0; i < data->info->pages; i++) {
-+		int event;
-+
-+		event = atomic_xchg(&data->regulator_events[i], 0);
-+		if (!event)
-+			continue;
-+
-+		for (j = 0; j < data->info->num_regulators; j++) {
-+			if (i == rdev_get_id(data->rdevs[j])) {
-+				regulator_notifier_call_chain(data->rdevs[j],
-+							      event, NULL);
-+				break;
-+			}
-+		}
-+	}
-+}
-+
- static int pmbus_regulator_register(struct pmbus_data *data)
- {
- 	struct device *dev = data->dev;
- 	const struct pmbus_driver_info *info = data->info;
- 	const struct pmbus_platform_data *pdata = dev_get_platdata(dev);
--	int i;
-+	int i, ret;
- 
- 	data->rdevs = devm_kzalloc(dev, sizeof(struct regulator_dev *) * info->num_regulators,
- 				   GFP_KERNEL);
-@@ -3295,20 +3360,20 @@ static int pmbus_regulator_register(struct pmbus_data *data)
- 					     info->reg_desc[i].name);
- 	}
- 
-+	INIT_WORK(&data->regulator_notify_work, pmbus_regulator_notify_worker);
-+
-+	ret = devm_add_action_or_reset(dev, pmbus_regulator_notify_work_cancel, data);
-+	if (ret)
-+		return ret;
-+
- 	return 0;
- }
- 
- static int pmbus_regulator_notify(struct pmbus_data *data, int page, int event)
- {
--		int j;
--
--		for (j = 0; j < data->info->num_regulators; j++) {
--			if (page == rdev_get_id(data->rdevs[j])) {
--				regulator_notifier_call_chain(data->rdevs[j], event, NULL);
--				break;
--			}
--		}
--		return 0;
-+	atomic_or(event, &data->regulator_events[page]);
-+	schedule_work(&data->regulator_notify_work);
-+	return 0;
- }
- #else
- static int pmbus_regulator_register(struct pmbus_data *data)
+diff --git a/drivers/pinctrl/qcom/pinctrl-qcs615.c b/drivers/pinctrl/qcom/pinctrl-qcs615.c
+index f1c827ddbfbfa..4d474c312c10b 100644
+--- a/drivers/pinctrl/qcom/pinctrl-qcs615.c
++++ b/drivers/pinctrl/qcom/pinctrl-qcs615.c
+@@ -1043,11 +1043,11 @@ static const struct msm_pingroup qcs615_groups[] = {
+ static const struct msm_gpio_wakeirq_map qcs615_pdc_map[] = {
+ 	{ 1, 45 },    { 3, 31 },    { 7, 55 },    { 9, 110 },   { 11, 34 },
+ 	{ 13, 33 },   { 14, 35 },   { 17, 46 },   { 19, 48 },   { 21, 83 },
+-	{ 22, 36 },   { 26, 38 },   { 35, 37 },   { 39, 125 },  { 41, 47 },
+-	{ 47, 49 },   { 48, 51 },   { 50, 52 },   { 51, 123 },  { 55, 56 },
++	{ 22, 36 },   { 26, 38 },   { 35, 37 },   { 39, 118 },  { 41, 47 },
++	{ 47, 49 },   { 48, 51 },   { 50, 52 },   { 51, 116 },  { 55, 56 },
+ 	{ 56, 57 },   { 57, 58 },   { 60, 60 },   { 71, 54 },   { 80, 73 },
+ 	{ 81, 64 },   { 82, 50 },   { 83, 65 },   { 84, 92 },   { 85, 99 },
+-	{ 86, 67 },   { 87, 84 },   { 88, 124 },  { 89, 122 },  { 90, 69 },
++	{ 86, 67 },   { 87, 84 },   { 88, 117 },  { 89, 115 },  { 90, 69 },
+ 	{ 92, 88 },   { 93, 75 },   { 94, 91 },   { 95, 72 },   { 96, 82 },
+ 	{ 97, 74 },   { 98, 95 },   { 99, 94 },   { 100, 100 }, { 101, 40 },
+ 	{ 102, 93 },  { 103, 77 },  { 104, 78 },  { 105, 96 },  { 107, 97 },
 -- 
 2.53.0
 
