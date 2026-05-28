@@ -1,236 +1,259 @@
-Return-Path: <stable+bounces-255071-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-255072-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id UAa8GiF6GGo8kQgAu9opvQ
-	(envelope-from <stable+bounces-255071-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 19:23:45 +0200
+	id aEWtLMZ7GGrbkQgAu9opvQ
+	(envelope-from <stable+bounces-255072-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 19:30:46 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id C1DEE5F596E
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 19:23:44 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id B8A715F5A51
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 19:30:45 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 81C94306A153
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 17:18:27 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 224AC307A898
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 17:25:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 06C5F39A800;
-	Thu, 28 May 2026 17:18:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 84E063FBB68;
+	Thu, 28 May 2026 17:25:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="IKsDATQg";
-	dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b="WNAiXosX"
+	dkim=pass (1024-bit key) header.d=seu.edu.cn header.i=@seu.edu.cn header.b="nCbEw506"
 X-Original-To: stable@vger.kernel.org
-Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
+Received: from mail-m155101.qiye.163.com (mail-m155101.qiye.163.com [101.71.155.101])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AC3E628727D
-	for <stable@vger.kernel.org>; Thu, 28 May 2026 17:18:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D83F935E1D3;
+	Thu, 28 May 2026 17:24:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=101.71.155.101
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779988706; cv=none; b=FvBu9Gt5LTTBPg7LNoxbtB/OrmOmdXEndILRHAYfCMzoYRsDEs7tjcFZroMLX51axFQy/6TTv45GZElPi2Isf1yORTQqUSQmOiaFY76Ps/tdxpmbO9DRxoCsMkuP0sBbPGWV6Cmyv9gHZBtd1XiKf1NECJRfoDFt0UgxTz1uyxo=
+	t=1779989104; cv=none; b=hWRzES/KQM00+CuIdeQIxweorzcyN9F6hgJXYvWPtUYBAQq9U4ltf7HozSn7en4RF8hXySmSnQvNodES1MjnU63nasuKFo5fI2Jtzb19qvI7yFUrYv+tCluPhcdwAyMfgatzGDBTy+hXw/yN3cznbAIn6rH4UYxE1KZADLcqvJA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779988706; c=relaxed/simple;
-	bh=KYjKvckY/VAl6XCtEiN8jjSXIWwmJfrlKKhhzB3/mOk=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=SguCJ/czdKrl7WvNLRAfQhxXfG7wJucAtTkqQ/DxLzUjy3FtHyCYVAOdgp6aG92hi3VqS19l8WmgOmyk2NZC5Qh0VCQhhe2IXBhaVlmHwVD5j/duS9ekTSS0iue4gUHjXRw8v6zGRzhJyzcUOlHrvJnPQLv/kIt1spPIgpuDk1c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=IKsDATQg; dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b=WNAiXosX; arc=none smtp.client-ip=205.220.168.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
-Received: from pps.filterd (m0279863.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 64SGd4lE3203244
-	for <stable@vger.kernel.org>; Thu, 28 May 2026 17:18:25 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
-	cc:content-transfer-encoding:content-type:date:from:message-id
-	:mime-version:subject:to; s=qcppdkim1; bh=861lfeuRlAbmY/H78CLEEr
-	qRlCIH8BpNiqVeOaDNe7w=; b=IKsDATQgdKfOLF2p64CxsNb6cCr6SLakMEWPKP
-	pTdtcdmevPWwHUyO9/VbXbF3wV03MpVMEa3KZmTlFTgM5yQMgZ248p4QtABfaXcg
-	RNLMM7qNBRSL2Im9f/ds+qON6xLNyZxzK0+FKS6PtFgi/bTqLV6AMGsFhSAtZNaK
-	ugwfdW/9K3iuK8UCLEZbfJDRP1XeUfOJNmD0L+qPDjrTYORSYPz1rUuM4OAf3qH2
-	VZsygK7S4v2DBfnXw2ODHwJltO0YtMCHYwqSkWF3vh57zm3nYCV09WPp0zU/Vfar
-	VJlodIDbycF1wQJLmayDQpObLnNr/nrHVVLZgvVhElS7Em6g==
-Received: from mail-pj1-f72.google.com (mail-pj1-f72.google.com [209.85.216.72])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4ee7ynkw5x-1
-	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
-	for <stable@vger.kernel.org>; Thu, 28 May 2026 17:18:24 +0000 (GMT)
-Received: by mail-pj1-f72.google.com with SMTP id 98e67ed59e1d1-369467ab5bfso11192878a91.0
-        for <stable@vger.kernel.org>; Thu, 28 May 2026 10:18:24 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=oss.qualcomm.com; s=google; t=1779988704; x=1780593504; darn=vger.kernel.org;
-        h=cc:to:message-id:content-transfer-encoding:mime-version:subject
-         :date:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=861lfeuRlAbmY/H78CLEErqRlCIH8BpNiqVeOaDNe7w=;
-        b=WNAiXosXnSVx5XpdnPEOy+hjfrWogNYPPEzfQq0AkPuYweldn0qRWgH99vtULOTZ67
-         TON/oH3e6mDV9OZ8yDAYO14hNYv0fdUpsLk+FIVzpe8jtW7nFwJf36KvU5RHfmw6RwuD
-         qkaLgFAdldmexVOhwgjMJiQ2+I1YJQ89Tps3pu187ko3EWpme7hthhLJcPVRewfi6y/3
-         JnnVbDu9h9u1zlRbMnjOhmt4r3rFjO6VzXULHeX0MyUPbVf/dwXjm92C7DTNmH6LJuWu
-         C10tIZSWTe7IqGDMxM5M6s8y1aNuVPMhaTSWcYSD3NASGxUSxsgMHEP4WSS7kgBtnCIu
-         hfJw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1779988704; x=1780593504;
-        h=cc:to:message-id:content-transfer-encoding:mime-version:subject
-         :date:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=861lfeuRlAbmY/H78CLEErqRlCIH8BpNiqVeOaDNe7w=;
-        b=bRHtzxQfXguQToN7F9vvhGNn4Bvp351J3rN2d0Bwtvrzzmh7XiUvmfl+3tE/SX9Duh
-         Z1mPSkxNJmvJtHeCz38c6P71AC3vB5LMNFgjTN2QATRTfOq2pmRwAKhSSPIdOdizXb8I
-         dFTgl9wzPCdyd6lhi5Ox18nP6j4ifx/QTjhrkqKSBl+th8neKqQb58Y36l8+KkJGVZHq
-         PcnKcJnVTTO6NVd8UGMTpt9AwFfSUfNI6UNjdpJLBobsPEusVXWGgTLpXrFCe4G0Xogn
-         zi6FpkbFJAlWPH/O7q3veLkmqUlnRVaONx2sIHZDwGIIe/+6kj6Ski96HTvWBkKqUXBO
-         5h8g==
-X-Forwarded-Encrypted: i=1; AFNElJ9JmIfE005Cd5LV6u4hzBnJhGgdeABFG/40fgGhcOCPfF8ohM0eKdV+5D40W6HC6wx2S3OpvKs=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyATkxYumCzA0npdhgLaOl3TFjKA67xYivmgjZLDONGD6bzZFS1
-	Je2ywLYv36jdRtPSo96AJd4HHQYkrj/ll4zXi5/HLCDDY2z+dh7GYT+cMHCEl5vIfRwtygpL3TW
-	J2Zsv1kJ6kf9mSJeHBANg5cM088aVbmqR4i8IMklGG8Vz7joRLTDfX+LGcvI=
-X-Gm-Gg: Acq92OGBkvChI4SP2eI5RRVSrQxaYuDF18GGiukH0NlapkoJK3y1vF4qrHybJ/2q16L
-	Ay8Dli6vzvCJQFEBkbzeluHYNKDJr5SnfDq533TigAhsq0+YPK8SeK+xjEUxHU198yXO/qhzU86
-	EeQhrqTwxNlfujcielM9bI2N579/ncPRjeBp6xC3muSyIcxPytOk4cAMMme7dqLRE9OLy9PX1kc
-	MzcVwqFvc/3oxpkNzCfLogocTaJNJdMAC3BSDNn2/+95CmX0XMUfrt+J/ICZmz9PyVnEFc6d2yw
-	xYY/+3LCqvzo1019WP1kPo5fABmpzAZfvK1Er7gtB1u5iDlI7JzbMyMBtPrR1wK9bhSZqjZy96Q
-	oBRqhA25mYFJX9ggpu4RGuO1t9k5SsLVYGmXkBp6Su0Bg7j7o3xwUBRTar5X2k45DiIbR
-X-Received: by 2002:a17:90b:5343:b0:368:a27f:9083 with SMTP id 98e67ed59e1d1-36a67761c51mr25386496a91.7.1779988704067;
-        Thu, 28 May 2026 10:18:24 -0700 (PDT)
-X-Received: by 2002:a17:90b:5343:b0:368:a27f:9083 with SMTP id 98e67ed59e1d1-36a67761c51mr25386462a91.7.1779988703499;
-        Thu, 28 May 2026 10:18:23 -0700 (PDT)
-Received: from hu-vdadhani-hyd.qualcomm.com ([202.46.23.25])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-36b90c03314sm2500410a91.14.2026.05.28.10.18.19
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 28 May 2026 10:18:22 -0700 (PDT)
-From: Viken Dadhaniya <viken.dadhaniya@oss.qualcomm.com>
-Date: Thu, 28 May 2026 22:48:07 +0530
-Subject: [PATCH v2] serial: qcom_geni: Fix RX DMA stall when
- SE_DMA_RX_LEN_IN is zero
+	s=arc-20240116; t=1779989104; c=relaxed/simple;
+	bh=azwSYEsf3r6x24RDR7LSUUr3c/+UT/n9HxTbQOqYIZc=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=YF0ULs0y5NEJy6ngDte2kxLXGWCrQsd2CKWNwESWaDZexZdDOqoewXiTgfqoqt2gYcPEqtWSinoBQEer09vDPZUBxCH+Tamn08nzAf4RNoDRS0cu8nGSOLXtbAQNoaufOWVJS1d0/gQwaw8QQSGaeP7a0QkWikktKKbgY3zOkyw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=seu.edu.cn; spf=pass smtp.mailfrom=seu.edu.cn; dkim=pass (1024-bit key) header.d=seu.edu.cn header.i=@seu.edu.cn header.b=nCbEw506; arc=none smtp.client-ip=101.71.155.101
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=seu.edu.cn
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=seu.edu.cn
+Received: from PC-202605011814.localdomain (unknown [IPV6:2409:8924:2013:1a6b:50af:214a:ea2b:7da2])
+	by smtp.qiye.163.com (Hmail) with ESMTP id 4036887fb;
+	Fri, 29 May 2026 01:19:40 +0800 (GMT+08:00)
+From: Runyu Xiao <runyu.xiao@seu.edu.cn>
+To: lucas.demarchi@intel.com,
+	thomas.hellstrom@linux.intel.com,
+	rodrigo.vivi@intel.com
+Cc: airlied@gmail.com,
+	simona@ffwll.ch,
+	matthew.brost@intel.com,
+	niranjana.vishwanathapura@intel.com,
+	intel-xe@lists.freedesktop.org,
+	dri-devel@lists.freedesktop.org,
+	linux-kernel@vger.kernel.org,
+	runyu.xiao@seu.edu.cn,
+	jianhao.xu@seu.edu.cn,
+	stable@vger.kernel.org
+Subject: [PATCH] drm/xe/guc_submit: use READ_ONCE/WRITE_ONCE for suspend_pending
+Date: Fri, 29 May 2026 01:19:30 +0800
+Message-Id: <20260528171930.623349-1-runyu.xiao@seu.edu.cn>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20260528-serial-rx-0-byte-fix-v2-1-b4195cfe342f@oss.qualcomm.com>
-X-B4-Tracking: v=1; b=H4sIAM94GGoC/4WNQQ6CMBBFr0K6dkipCpWV9zAsYBikBqh2gEAId
- 7fFA7iZ5E3e/38TTM4QizzahKPZsLGDB3WKBLbl8CQwtWehpErlVWkIftmBW0BCtY4EjVmA8FZ
- LjQ1lmoSPvh3591H7KH7MU/UiHENXMFrDo3XrsTsnwfszMSeQQI0X0lmK2TnVd8scf6ayQ9v3s
- T+i2Pf9C1vJtkzRAAAA
-X-Change-ID: 20260528-serial-rx-0-byte-fix-ec9d08cfe78e
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Jiri Slaby <jirislaby@kernel.org>,
-        Bartosz Golaszewski <brgl@kernel.org>
-Cc: linux-arm-msm@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-serial@vger.kernel.org, stable@vger.kernel.org,
-        Bartosz Golaszewski <bartosz.golaszewski@oss.qualcomm.com>,
-        Viken Dadhaniya <viken.dadhaniya@oss.qualcomm.com>
-X-Mailer: b4 0.16-dev
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1779988699; l=2081;
- i=viken.dadhaniya@oss.qualcomm.com; s=20260324; h=from:subject:message-id;
- bh=KYjKvckY/VAl6XCtEiN8jjSXIWwmJfrlKKhhzB3/mOk=;
- b=aTPBsPo1CPjLI0wCQbsFX1lYscFAfml4I823i+RA/CpTzZFoKJFg+kGzqK2JqJGlkDA2VYfix
- Eqa75SLa32SCdSfwiik59LX3RqL/iCTpYVeJoBymFfdHiMRRPq3rvIj
-X-Developer-Key: i=viken.dadhaniya@oss.qualcomm.com; a=ed25519;
- pk=C39f+LOIGhh/02LQpT46TsUSXRvBn9qXC8Xb26KJ44Y=
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNTI4MDE3NCBTYWx0ZWRfX4mh8p5Qut8wW
- Ul7VayIr1EVWlU5uUlODp3uAc/KJljSZCeGoATOIDulOM+DF3hX5qwOsnqC0onx5O6QaIGB914n
- vs6jDu13PAwNhmUpX6ykUgjLLUDPyoWgwWs4oxZ1nCIclz+3NB/58CvZD5wQUiCeYW+WB5yFTy7
- o/L+0QmN06N0kV3emqEHlkx0o7UBaSGjJheFxCSShUzLia5FDbou6Z6qO+mkCOjyXunaCHMBEL8
- bC4nUhLRBGjUXgoM52e6oFtq4PwMajodOLN6Cbs56T082WTk/26P/gD8q/YC5ZFhfrSJVb+phS+
- NMa4++pbOq5f28HFiS2V3SK5ETEEV9jtNo0aW+Fsn/nUHO+cXWE8gkJSNMGIXcetxglS0cloWOP
- CjKOCmqTXTIBLgBWrUSVQpXge+n9MgOtuOIWZIfvVNf1ThdlYG5bF8ZsH5YaKixF4/2obxGHb6A
- ZfxEucCfOaFctRhBseA==
-X-Proofpoint-ORIG-GUID: to-63zo1Ezrl3Y4rVGOHttePMzGa6d2c
-X-Proofpoint-GUID: to-63zo1Ezrl3Y4rVGOHttePMzGa6d2c
-X-Authority-Analysis: v=2.4 cv=EdL4hvmC c=1 sm=1 tr=0 ts=6a1878e0 cx=c_pps
- a=RP+M6JBNLl+fLTcSJhASfg==:117 a=ZePRamnt/+rB5gQjfz0u9A==:17
- a=IkcTkHD0fZMA:10 a=NGcC8JguVDcA:10 a=s4-Qcg_JpJYA:10
- a=VkNPw1HP01LnGYTKEx00:22 a=u7WPNUs3qKkmUXheDGA7:22 a=yOCtJkima9RkubShWh1s:22
- a=bC-a23v3AAAA:8 a=EUspDBNiAAAA:8 a=VwQbUJbxAAAA:8 a=tI4oF7B6g8YmWx8mlzIA:9
- a=QEXdDO2ut3YA:10 a=iS9zxrgQBfv6-_F4QbHw:22 a=FO4_E8m0qiDe52t0p3_H:22
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.125,FMLib:17.12.100.49
- definitions=2026-05-28_05,2026-05-28_03,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- suspectscore=0 priorityscore=1501 phishscore=0 clxscore=1015 bulkscore=0
- spamscore=0 adultscore=0 malwarescore=0 impostorscore=0 lowpriorityscore=0
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.22.0-2605210000 definitions=main-2605280174
-X-Spamd-Result: default: False [-2.16 / 15.00];
+Content-Transfer-Encoding: 8bit
+X-HM-Tid: 0a9e6f99548903a1kunm6e76f1936c74e
+X-HM-MType: 10
+X-HM-Spam-Status: e1kfGhgUHx5ZQUpXWQgPGg8OCBgUHx5ZQUlOS1dZFg8aDwILHllBWSg2Ly
+	tZV1koWUFITzdXWRgWCB1ZQUpXWS1ZQUlXWQ8JGhUIEh9ZQVlDH0wdVhhKHh4eSRlIS0JOS1YeHw
+	5VEwETFhoSFyQUDg9ZV1kYEgtZQVlJT0tCQUNCSU9BSUtKSEFKGk0ZQU5LGh1BSUpPGkEeGkkZQU
+	wfGklZV1kWGg8SFR0UWUFZT0tIVUpLSUhOQ0NVSktLVUtZBg++
+DKIM-Signature: a=rsa-sha256;
+	b=nCbEw506UJYzD67aLWJo3J9KfJ7f5n7W3RuJitYlmy3jzzgRNUkyCgOqG7PBI8hQQqoSd1uJxjf1DsaPOcrjUcMjNQIQP8jQTgzSMtJetk324NNsufjdxZ38sLOit//yEexmNrd+ICitogTYKH8gEvUEx/6aq/DMlz8T4EQeYMo=; c=relaxed/relaxed; s=default; d=seu.edu.cn; v=1;
+	bh=grI5+WkDPw1Kkq8OqNs6nxRmvCl6kGjPTMtYyzg5qYY=;
+	h=date:mime-version:subject:message-id:from;
+X-Spamd-Result: default: False [-0.66 / 15.00];
+	MID_CONTAINS_FROM(1.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[qualcomm.com,reject];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
-	R_DKIM_ALLOW(-0.20)[qualcomm.com:s=qcppdkim1,oss.qualcomm.com:s=google];
+	R_MISSING_CHARSET(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[seu.edu.cn,none];
+	R_DKIM_ALLOW(-0.20)[seu.edu.cn:s=default];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	DKIM_TRACE(0.00)[qualcomm.com:+,oss.qualcomm.com:+];
-	TAGGED_FROM(0.00)[bounces-255071-lists,stable=lfdr.de];
-	FROM_HAS_DN(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	FREEMAIL_CC(0.00)[gmail.com,ffwll.ch,intel.com,lists.freedesktop.org,vger.kernel.org,seu.edu.cn];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
+	RCVD_COUNT_THREE(0.00)[4];
+	TAGGED_FROM(0.00)[bounces-255072-lists,stable=lfdr.de];
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[viken.dadhaniya@oss.qualcomm.com,stable@vger.kernel.org];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[9];
-	MID_RHS_MATCH_FROM(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[runyu.xiao@seu.edu.cn,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	DKIM_TRACE(0.00)[seu.edu.cn:+];
+	TO_DN_NONE(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	RCVD_COUNT_SEVEN(0.00)[7]
-X-Rspamd-Queue-Id: C1DEE5F596E
+	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_TWELVE(0.00)[13];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,seu.edu.cn:email,seu.edu.cn:mid,seu.edu.cn:dkim]
+X-Rspamd-Queue-Id: B8A715F5A51
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-In qcom_geni_serial_handle_rx_dma(), geni_se_rx_dma_unprep() clears
-port->rx_dma_addr before SE_DMA_RX_LEN_IN is read. If the register is zero,
-for example when the RX stale counter fires on an idle line, the handler
-returns without calling geni_se_rx_dma_prep().
+xe_guc_submit.c mixes plain loads and stores of q->guc->suspend_pending
+with READ_ONCE()/WRITE_ONCE() accesses in the suspend fence wait/signal
+paths.
 
-The next RX DMA interrupt then hits the !port->rx_dma_addr guard and
-returns immediately, so the RX DMA buffer is never rearmed and later input
-is lost.
+On a running system this is reachable when one thread queues or waits
+for exec queue suspend while another CPU concurrently processes suspend
+completion or queue teardown. The shared suspend_pending flag can then
+be set in guc_exec_queue_suspend(), sampled in __suspend_fence_signal(),
+__guc_exec_queue_process_msg_suspend(), guc_exec_queue_stop(), and
+handle_sched_done(), and waited on in guc_exec_queue_suspend_wait().
 
-Keep the handler on the rearm path when rx_in is zero. Warn about the
-unexpected zero-length DMA completion, skip received-data handling, and
-always call geni_se_rx_dma_prep().
+That leaves a data race on the suspend_pending completion flag and
+breaks the local ONCE-access contract for the same shared state.
 
-Fixes: 2aaa43c70778 ("tty: serial: qcom-geni-serial: add support for serial engine DMA")
+The issue was found on Linux v6.18.21 by our static analysis tool while
+scanning XE shared status flags that mixed plain and ONCE accesses, and
+then manually reviewed in xe_guc_submit.c.
+
+It was then confirmed with a reproducible no-device QEMU KCSAN selftest
+built into xe.ko that preserved the same access pattern as this code:
+
+  1. a setter thread performs a plain suspend_pending = true;
+  2. a signaler thread does a plain if (suspend_pending) check, then
+     WRITE_ONCE(suspend_pending, false) and wake_up();
+  3. a waiter thread blocks on !READ_ONCE(suspend_pending).
+
+That selftest produced repeated target KCSAN reports between the setter
+and signaler threads.
+
+Convert the remaining file-local suspend_pending sites in
+xe_guc_submit.c to READ_ONCE()/WRITE_ONCE(). This keeps all set, check,
+and clear uses on the same access family and matches the existing
+waiter path, which already uses READ_ONCE().
+
+Build-tested with:
+  make olddefconfig
+  make -j"$(nproc)" drivers/gpu/drm/xe/xe_guc_submit.o
+
+Runtime-tested with:
+  reproducible QEMU no-device KCSAN selftest built into xe.ko
+
+No Intel XE hardware was available for runtime testing of the real
+driver path. This QEMU run is a no-device KCSAN validation harness, not
+a hardware-backed suspend test.
+
+Fixes: 627c961d672d ("drm/xe: Add timeout to preempt fences")
 Cc: stable@vger.kernel.org
-Reviewed-by: Bartosz Golaszewski <bartosz.golaszewski@oss.qualcomm.com>
-Signed-off-by: Viken Dadhaniya <viken.dadhaniya@oss.qualcomm.com>
----
-Changes in v2:
-- Add Cc: stable@vger.kernel.org tag (missed in v1) 
-- Link to v1: https://patch.msgid.link/20260528-serial-rx-0-byte-fix-v1-1-dc4e876c7368@oss.qualcomm.com
----
- drivers/tty/serial/qcom_geni_serial.c | 9 +++------
- 1 file changed, 3 insertions(+), 6 deletions(-)
 
-diff --git a/drivers/tty/serial/qcom_geni_serial.c b/drivers/tty/serial/qcom_geni_serial.c
-index d81b539cff7f..7ead87b4eb65 100644
---- a/drivers/tty/serial/qcom_geni_serial.c
-+++ b/drivers/tty/serial/qcom_geni_serial.c
-@@ -905,12 +905,9 @@ static void qcom_geni_serial_handle_rx_dma(struct uart_port *uport, bool drop)
- 	port->rx_dma_addr = 0;
+Representative repeated KCSAN report from the no-device XE selftest:
+  xe suspend_pending selftest: starting no-device mixed-ONCE validation
+  xe suspend_pending selftest: actor contract = plain set(true), plain
+  check, READ_ONCE waiter, WRITE_ONCE clear + wake_up
+  ==================================================================
+  BUG: KCSAN: data-race in xe_suspend_pending_setter_thread [xe] /
+  xe_suspend_pending_signaler_thread [xe]
+
+  write to 0xffff9a87425e0b20 of 1 bytes by task 99 on cpu 1:
+   xe_suspend_pending_setter_thread+0x1a/0x60 [xe]
+   kthread+0x1c2/0x340
+   ret_from_fork+0x166/0x180
+   ret_from_fork_asm+0x1a/0x30
+
+  read to 0xffff9a87425e0b20 of 1 bytes by task 100 on cpu 0:
+   xe_suspend_pending_signaler_thread+0x48/0x90 [xe]
+   kthread+0x1c2/0x340
+   ret_from_fork+0x166/0x180
+   ret_from_fork_asm+0x1a/0x30
+
+  value changed: 0x00 -> 0x01
+
+  Reported by Kernel Concurrency Sanitizer on:
+  CPU: 0 UID: 0 PID: 100 Comm: xe1153_signaler Not tainted
+  6.18.21-dirty #23 PREEMPT(voluntary)
+  Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS
+  1.15.0-1 04/01/2014
+  ==================================================================
+  xe suspend_pending selftest: completed set_iters=22395630
+  signal_iters=8319270 wait_iters=9847185 wait_timeouts=3048
+  final_pending=0
+
+Signed-off-by: Runyu Xiao <runyu.xiao@seu.edu.cn>
+---
+ drivers/gpu/drm/xe/xe_guc_submit.c | 14 +++++++-------
+ 1 file changed, 7 insertions(+), 7 deletions(-)
+
+diff --git a/drivers/gpu/drm/xe/xe_guc_submit.c b/drivers/gpu/drm/xe/xe_guc_submit.c
+index ecee50d82710..1d036ccaacc9 100644
+--- a/drivers/gpu/drm/xe/xe_guc_submit.c
++++ b/drivers/gpu/drm/xe/xe_guc_submit.c
+@@ -1542,7 +1542,7 @@ static void __guc_exec_queue_process_msg_set_sched_props(struct xe_sched_msg *ms
  
- 	rx_in = readl(uport->membase + SE_DMA_RX_LEN_IN);
--	if (!rx_in) {
--		dev_warn(uport->dev, "serial engine reports 0 RX bytes in!\n");
--		return;
--	}
--
--	if (!drop)
-+	if (!rx_in)
-+		dev_warn_ratelimited(uport->dev, "serial engine reports 0 RX bytes in!\n");
-+	else if (!drop)
- 		handle_rx_uart(uport, rx_in);
+ static void __suspend_fence_signal(struct xe_exec_queue *q)
+ {
+-	if (!q->guc->suspend_pending)
++	if (!READ_ONCE(q->guc->suspend_pending))
+ 		return;
  
- 	ret = geni_se_rx_dma_prep(&port->se, port->rx_buf,
-
----
-base-commit: e7d700e14934e68f86338c5610cf2ae76798b663
-change-id: 20260528-serial-rx-0-byte-fix-ec9d08cfe78e
-
-Best regards,
---  
-Viken Dadhaniya <viken.dadhaniya@oss.qualcomm.com>
-
+ 	WRITE_ONCE(q->guc->suspend_pending, false);
+@@ -1555,7 +1555,7 @@ static void suspend_fence_signal(struct xe_exec_queue *q)
+ 
+ 	xe_gt_assert(guc_to_gt(guc), exec_queue_suspended(q) || exec_queue_killed(q) ||
+ 		     xe_guc_read_stopped(guc));
+-	xe_gt_assert(guc_to_gt(guc), q->guc->suspend_pending);
++	xe_gt_assert(guc_to_gt(guc), READ_ONCE(q->guc->suspend_pending));
+ 
+ 	__suspend_fence_signal(q);
+ }
+@@ -1583,7 +1583,7 @@ static void __guc_exec_queue_process_msg_suspend(struct xe_sched_msg *msg)
+ 			set_exec_queue_suspended(q);
+ 			disable_scheduling(q, false);
+ 		}
+-	} else if (q->guc->suspend_pending) {
++	} else if (READ_ONCE(q->guc->suspend_pending)) {
+ 		set_exec_queue_suspended(q);
+ 		suspend_fence_signal(q);
+ 	}
+@@ -1831,7 +1831,7 @@ static int guc_exec_queue_suspend(struct xe_exec_queue *q)
+ 
+ 	xe_sched_msg_lock(sched);
+ 	if (guc_exec_queue_try_add_msg(q, msg, SUSPEND))
+-		q->guc->suspend_pending = true;
++		WRITE_ONCE(q->guc->suspend_pending, true);
+ 	xe_sched_msg_unlock(sched);
+ 
+ 	return 0;
+@@ -1870,7 +1870,7 @@ static void guc_exec_queue_resume(struct xe_exec_queue *q)
+ 	struct xe_sched_msg *msg = q->guc->static_msgs + STATIC_MSG_RESUME;
+ 	struct xe_guc *guc = exec_queue_to_guc(q);
+ 
+-	xe_gt_assert(guc_to_gt(guc), !q->guc->suspend_pending);
++	xe_gt_assert(guc_to_gt(guc), !READ_ONCE(q->guc->suspend_pending));
+ 
+ 	xe_sched_msg_lock(sched);
+ 	guc_exec_queue_try_add_msg(q, msg, RESUME);
+@@ -1916,7 +1916,7 @@ static void guc_exec_queue_stop(struct xe_guc *guc, struct xe_exec_queue *q)
+ 		else if (exec_queue_destroyed(q))
+ 			__guc_exec_queue_destroy(guc, q);
+ 	}
+-	if (q->guc->suspend_pending) {
++	if (READ_ONCE(q->guc->suspend_pending)) {
+ 		set_exec_queue_suspended(q);
+ 		suspend_fence_signal(q);
+ 	}
+@@ -2178,7 +2178,7 @@ static void handle_sched_done(struct xe_guc *guc, struct xe_exec_queue *q,
+ 		xe_gt_assert(guc_to_gt(guc), runnable_state == 0);
+ 		xe_gt_assert(guc_to_gt(guc), exec_queue_pending_disable(q));
+ 
+-		if (q->guc->suspend_pending) {
++		if (READ_ONCE(q->guc->suspend_pending)) {
+ 			suspend_fence_signal(q);
+ 			clear_exec_queue_pending_disable(q);
+ 		} else {
+-- 
+2.34.1
 
