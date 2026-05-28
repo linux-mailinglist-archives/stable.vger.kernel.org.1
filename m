@@ -1,60 +1,58 @@
-Return-Path: <stable+bounces-255450-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-256014-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id ODaFG6aiGGrKlggAu9opvQ
-	(envelope-from <stable+bounces-255450-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:16:38 +0200
+	id QEH5G6KoGGp+lwgAu9opvQ
+	(envelope-from <stable+bounces-256014-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:42:10 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 043915F83C4
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:16:37 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0E1405F95B3
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:42:10 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 5B00330C9A3A
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 20:09:08 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 16E5530DC14C
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 20:35:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4D5343164B7;
-	Thu, 28 May 2026 20:09:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2FD7133987F;
+	Thu, 28 May 2026 20:35:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qsGo9zsP"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FoU3ICzv"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 237572F691F;
-	Thu, 28 May 2026 20:09:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ECB3733CE8A;
+	Thu, 28 May 2026 20:35:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779998946; cv=none; b=Xxfv1gfR3CkzRKAZmjb+KhHQKZQmswOyOSXSxozT635rpcJg7z6K2NZY2jOoq1GgPB+67zIRs5DcUhV12mWA9MzTBKgMT2m7lZBPStmc1+HHjXhhi5JmRtpx5jHl8/jA/5HgKdHKIc0zFzAaV9xsbghxnVdhCzWMnnVcStmz2wI=
+	t=1780000514; cv=none; b=a/Dayon9kSvIqlrZz9OWn+UWxksD4OreeL5PkC5cjNMOy/E2rVUIfq3r0lw6X4BBMkuW5ZbQViIUCIgvIKCcAt6Z36JgfMm+4TKSFzKRB6vcgEeSA+DRuu1o9OuTzsPJBmZjD3KNfsAkB8tCS60fEXMkgGfxTDG992WPcAq6aA4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779998946; c=relaxed/simple;
-	bh=FCFNN2MCyprmfKfk5x7Y+FCAYxEpz/a1GQ1b5Zl/7p4=;
+	s=arc-20240116; t=1780000514; c=relaxed/simple;
+	bh=fkYBVctBKJ6nzVYaH3EDgf/FnkGBt3FFajr6GIr2qMk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=WydWS0J37kG3p79KpbSa3NdquJy6HgoPMga1SF/8vXxoaNUkoJjgxNDgjdacppRM0xQ8Yx/nNSHGzdUgmuuCMtdANQjGuNRxEAzF7eUVkrf/j9NP1iHVyfv70CSiouY8uAUKnYvVD56NW1McVj8sKW8/oWIevBYYQGZCmNAmVvQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qsGo9zsP; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 78C6D1F000E9;
-	Thu, 28 May 2026 20:09:04 +0000 (UTC)
+	 MIME-Version; b=rxYoJ+yPqcFw39nJsLECpiNHZ48L5bRyJDDF0D+rY4kg/UveXo15X46lgcc7mNT2o4pizzAFgoyh6qN3O+dsMwQQxReofBAyevKoEJ46yuatDJ0vy8vAEEnJd+vVEX1t4F/eyeRcCULC9bBo/2bj++Plq+4aiOtXMbL0ztMPp2s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FoU3ICzv; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 56A921F000E9;
+	Thu, 28 May 2026 20:35:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779998945;
-	bh=WuNrUr00fEOfX3JG97IfO8UbiXVXO14okOMHrypuxCw=;
+	s=korg; t=1780000512;
+	bh=wZ7HCBkvCVZa+5UJhwy998sMNNx/Hu9utyosgVK7GdM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=qsGo9zsPZ4BW25ZrM4kEl1LsGSICmqHXTbt6mrr9V0kXfvZNKdKL9ivIiUzEU2Nll
-	 /+21QDmPY2nxmX+qt5QIezgFjNVZTHDJDdFC/Vtw0jc+JT9iVIMyB6V1BFkj8sQpi5
-	 6BJUoX2cQDp/wk9nDATHH6CmB2gwDY7lNCFzYFv4=
+	b=FoU3ICzvYeR6yyt0qe+QSTkCoCFdxU3iY3E8r+mUAT/0zIjHltYvI7f+xgxYsXT5V
+	 F3YqQZxlnBue1ifyTMA3oGKqAblDccoay+zstn6AQTrjmgKVmy/NcoME8RjlyTqXvE
+	 dEiTc7th8OXNu+tnT6jtoTrQjaMrGAoMs3cTPNKU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Weiming Shi <bestswngs@gmail.com>,
-	Xiang Mei <xmei5@asu.edu>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 7.0 316/461] net/smc: reject CHID-0 ACCEPT that matches an empty ism_dev slot
+	Michael Bommarito <michael.bommarito@gmail.com>,
+	Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 6.12 071/272] net: ifb: report ethtool stats over num_tx_queues
 Date: Thu, 28 May 2026 21:47:25 +0200
-Message-ID: <20260528194656.447201272@linuxfoundation.org>
+Message-ID: <20260528194631.362991835@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260528194646.819809818@linuxfoundation.org>
-References: <20260528194646.819809818@linuxfoundation.org>
+In-Reply-To: <20260528194629.379955525@linuxfoundation.org>
+References: <20260528194629.379955525@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,100 +63,139 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,asu.edu,redhat.com,kernel.org];
-	TAGGED_FROM(0.00)[bounces-255450-lists,stable=lfdr.de];
-	PRECEDENCE_BULK(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[7];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
 	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim,msgid.link:url,asu.edu:email]
-X-Rspamd-Queue-Id: 043915F83C4
+	TAGGED_FROM(0.00)[bounces-256014-lists,stable=lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	NEURAL_HAM(-0.00)[-0.999];
+	TAGGED_RCPT(0.00)[stable];
+	MID_RHS_MATCH_FROM(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[5];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim]
+X-Rspamd-Queue-Id: 0E1405F95B3
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-7.0-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Xiang Mei <xmei5@asu.edu>
+From: Michael Bommarito <michael.bommarito@gmail.com>
 
-[ Upstream commit 277740023def559a4a2ddc3e8e784ee37a0f16a9 ]
+commit 5db89c99566fc4728cc92e941d8e1975711e24b5 upstream.
 
-On the SMC-D client, slot 0 of ini->ism_dev[]/ini->ism_chid[] is
-reserved for an SMC-Dv1 device. smc_find_ism_v2_device_clnt()
-populates V2 entries starting at index 1, so when no V1 device is
-selected slot 0 is left in its kzalloc()'ed state with ism_dev[0] ==
-NULL and ism_chid[0] == 0.
+ifb_dev_init() allocates dp->tx_private to dev->num_tx_queues
+entries via kzalloc_objs(*txp, dev->num_tx_queues). Both IFB
+per-queue RX and TX stats live in those entries: ifb_xmit() updates
+txp->rx_stats using the skb queue mapping, ifb_ri_tasklet() updates
+txp->tx_stats, and ifb_stats64() aggregates both over
+dev->num_tx_queues.
 
-smc_v2_determine_accepted_chid() then matches the peer's CHID against
-the array starting from index 0 using the CHID alone. A malicious
-peer replying to a SMC-Dv2-only proposal with d1.chid == 0 matches
-the empty slot, ini->ism_selected becomes 0, and the subsequent
-ism_dev[0]->lgr_lock dereference in smc_conn_create() faults at
-offsetof(struct smcd_dev, lgr_lock) == 0x68:
+The ethtool stats callbacks instead size and walk the per-queue
+stats with dev->real_num_rx_queues and dev->real_num_tx_queues. With
+an asymmetric device where the RX queue count exceeds the TX queue
+count, for example:
 
-  BUG: KASAN: null-ptr-deref in _raw_spin_lock_bh+0x79/0xe0
-  Write of size 4 at addr 0000000000000068 by task exploit/144
-  Call Trace:
-   _raw_spin_lock_bh
-   smc_conn_create (net/smc/smc_core.c:1997)
-   __smc_connect (net/smc/af_smc.c:1447)
-   smc_connect (net/smc/af_smc.c:1720)
-   __sys_connect
-   __x64_sys_connect
-   do_syscall_64
+    ip link add name ifb10 numtxqueues 1 numrxqueues 8 type ifb
+    ethtool -S ifb10
 
-Require ism_dev[i] to be non-NULL before accepting a CHID match.
+ifb_get_ethtool_stats() indexes past the tx_private allocation and
+copies adjacent slab data through ETHTOOL_GSTATS.
 
-Fixes: a7c9c5f4af7f ("net/smc: CLC accept / confirm V2")
-Reported-by: Weiming Shi <bestswngs@gmail.com>
-Assisted-by: Claude:claude-opus-4-7
-Signed-off-by: Xiang Mei <xmei5@asu.edu>
-Link: https://patch.msgid.link/20260511062138.2839584-1-xmei5@asu.edu
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Use dev->num_tx_queues consistently for the stats strings, the
+stats count, and the stats data walks. This reports one RX stats
+group and one TX stats group for each backing ifb_q_private entry,
+which is the queue set IFB can actually populate.
+
+Reproduced under UML+KASAN at v7.1-rc2:
+
+  BUG: KASAN: slab-out-of-bounds in ifb_fill_stats_data+0x3c/0xae
+  Read of size 8 at addr 0000000062dbd228 by task ethtool/36
+  ifb_fill_stats_data+0x3c/0xae
+  ifb_get_ethtool_stats+0xc0/0x129
+  __dev_ethtool+0x1ca5/0x363c
+  dev_ethtool+0x123/0x1b3
+  dev_ioctl+0x56c/0x744
+  sock_do_ioctl+0x15f/0x1b2
+  sock_ioctl+0x4d5/0x50a
+  sys_ioctl+0xd8b/0xde9
+
+With the patch applied, the same UML+KASAN repro is silent and
+ethtool -S ifb10 reports only the stats backed by the single
+allocated tx_private entry.
+
+Fixes: a21ee5b2fcb8 ("net: ifb: support ethtools stats")
+Cc: stable@vger.kernel.org
+Signed-off-by: Michael Bommarito <michael.bommarito@gmail.com>
+Link: https://patch.msgid.link/20260514013739.3549624-1-michael.bommarito@gmail.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/smc/af_smc.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/net/ifb.c |   11 +++++------
+ 1 file changed, 5 insertions(+), 6 deletions(-)
 
-diff --git a/net/smc/af_smc.c b/net/smc/af_smc.c
-index 1a565095376aa..f744f79112177 100644
---- a/net/smc/af_smc.c
-+++ b/net/smc/af_smc.c
-@@ -1400,7 +1400,8 @@ smc_v2_determine_accepted_chid(struct smc_clc_msg_accept_confirm *aclc,
+--- a/drivers/net/ifb.c
++++ b/drivers/net/ifb.c
+@@ -211,12 +211,12 @@ static void ifb_get_strings(struct net_d
+ 
+ 	switch (stringset) {
+ 	case ETH_SS_STATS:
+-		for (i = 0; i < dev->real_num_rx_queues; i++)
++		for (i = 0; i < dev->num_tx_queues; i++)
+ 			for (j = 0; j < IFB_Q_STATS_LEN; j++)
+ 				ethtool_sprintf(&p, "rx_queue_%u_%.18s",
+ 						i, ifb_q_stats_desc[j].desc);
+ 
+-		for (i = 0; i < dev->real_num_tx_queues; i++)
++		for (i = 0; i < dev->num_tx_queues; i++)
+ 			for (j = 0; j < IFB_Q_STATS_LEN; j++)
+ 				ethtool_sprintf(&p, "tx_queue_%u_%.18s",
+ 						i, ifb_q_stats_desc[j].desc);
+@@ -229,8 +229,7 @@ static int ifb_get_sset_count(struct net
+ {
+ 	switch (sset) {
+ 	case ETH_SS_STATS:
+-		return IFB_Q_STATS_LEN * (dev->real_num_rx_queues +
+-					  dev->real_num_tx_queues);
++		return IFB_Q_STATS_LEN * dev->num_tx_queues * 2;
+ 	default:
+ 		return -EOPNOTSUPP;
+ 	}
+@@ -262,12 +261,12 @@ static void ifb_get_ethtool_stats(struct
+ 	struct ifb_q_private *txp;
  	int i;
  
- 	for (i = 0; i < ini->ism_offered_cnt + 1; i++) {
--		if (ini->ism_chid[i] == ntohs(aclc->d1.chid)) {
-+		if (ini->ism_dev[i] &&
-+		    ini->ism_chid[i] == ntohs(aclc->d1.chid)) {
- 			ini->ism_selected = i;
- 			return 0;
- 		}
--- 
-2.53.0
-
+-	for (i = 0; i < dev->real_num_rx_queues; i++) {
++	for (i = 0; i < dev->num_tx_queues; i++) {
+ 		txp = dp->tx_private + i;
+ 		ifb_fill_stats_data(&data, &txp->rx_stats);
+ 	}
+ 
+-	for (i = 0; i < dev->real_num_tx_queues; i++) {
++	for (i = 0; i < dev->num_tx_queues; i++) {
+ 		txp = dp->tx_private + i;
+ 		ifb_fill_stats_data(&data, &txp->tx_stats);
+ 	}
 
 
 
