@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-255536-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-255537-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 4LOjMbGjGGrJlggAu9opvQ
-	(envelope-from <stable+bounces-255536-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:21:05 +0200
+	id mBRTD2GiGGqblggAu9opvQ
+	(envelope-from <stable+bounces-255537-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:15:29 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4CD545F871C
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:21:05 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4596F5F82D6
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:15:28 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 2F48C31D93A1
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 20:13:08 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 1176D3035C10
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 20:13:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1A52D402B8F;
-	Thu, 28 May 2026 20:13:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F39D5405C4B;
+	Thu, 28 May 2026 20:13:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="l6+HFfKd"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lB3nRkM2"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 040F032ABC0;
-	Thu, 28 May 2026 20:13:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C5B753FE37C;
+	Thu, 28 May 2026 20:13:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779999186; cv=none; b=Go6UCO0y1yi2T04lIKDwzpODCi5vgXH3O7cxyKlvJ/kPaWn07RXKWhToPesDY/zriBOPo9tr8ERgyWhd3Cvr7sq3F9bb61AD+PzHSDoEZrijxIxrL7RGP8LLAdaNMtrxxEt8GUMGvs3B12Fz5aMF280QqMkVyFfaqxdc5ou0qB4=
+	t=1779999189; cv=none; b=MX0sOZGr0GBEZL+KOlFWCx8r9Qbir2bonG6lTWoMT8iegkhB9gUBVxZOmsRQ8btHmyAo0hn2JLZ+Kn5JA3uXYgFLR5SuQVUsAtIJKQ6HWVkJ2PvOSN2AJv2fGCW4NIoXaHjHNnVwMGKDFHeTgCmkHmD1ROtPTj01p98deRMdlSw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779999186; c=relaxed/simple;
-	bh=MsjbIXFLFODKvA4O9o6+ZOLSKHar5XGTbEhVrVT34gI=;
+	s=arc-20240116; t=1779999189; c=relaxed/simple;
+	bh=ek/z4oe3qTP2UhKeXw7kQU9LTFpNxLr5C5YcRLLP1vQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ljJ7F7goy3qCRb05HH9O3k+wQt20bZMLz9wCg9h3GAN4ljdTP/kdWICrRJo33ULiDTh8PB9rXaKZcE+UFdHggApQ/RV+4QmMxMgm/i83csdWkbmgxAqRWoGryBrc5I9l3HXOVEB6JcoavhkNLIV8GDIpoaaGsWTTJRxZ3USEPXU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=l6+HFfKd; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 622E81F000E9;
-	Thu, 28 May 2026 20:13:05 +0000 (UTC)
+	 MIME-Version; b=BQGApxZfrn6RjBsbtQHJrYZwJxIwQ/N5DBjLqnbDlrEcs6/SaUzhM7+mXdczLaIJ6TUBEvOK2zHzSGkCBQpwvCdt0gt5xtTelUArncq7yqVTtOEIVvBbfzOprCM6X6VOg7Nzn5Ha5MI2GZLRb3L49Pf4aoEQAAunx7qz1DrYN6g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lB3nRkM2; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2FF0E1F000E9;
+	Thu, 28 May 2026 20:13:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779999185;
-	bh=MjW0U4O9Mz8mFNhPLcTdO2PDO7xKs52GG0YakzL+sBE=;
+	s=korg; t=1779999188;
+	bh=MIHfder/1DoCIxEwdSrsomd7MLGaFILUakDAuuGOPqE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=l6+HFfKdYkTmIImfuMAPq5EscYWNGYjOAQ+OvFl9mQqGGEI6nyTbcC9GvTv3Vi8vV
-	 cfdmeYpbZsBeKuI1SNIaE8S+ClnQQ/dQitiYpiY9DCXjD0OtzNT7Fj/gA1S6n3VYIY
-	 0SEiNEZjTDYYz5oiju+fuNQ/aHMM5SmhYnHS2zlE=
+	b=lB3nRkM2Fy0OcBZtlZ/QhYN6EpVxOfGeeIVPOqBnXaDZBsfnEfeY8orXFUM5xrS+x
+	 R6CdTrjh35fGJgN9kz0471FtT7oQLSdv5xcLW0LGa8ChnM6Om++SVPk8EqMvdqSfQw
+	 PmhFCh6UWOPJoM7dmSRAIGSULskH4OZMK9z1J9QQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Bartosz Golaszewski <bartosz.golaszewski@oss.qualcomm.com>,
+	Richard Fitzgerald <rf@opensource.cirrus.com>,
+	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 7.0 440/461] gpio: aggregator: lock device when calling device_is_bound()
-Date: Thu, 28 May 2026 21:49:29 +0200
-Message-ID: <20260528194700.266421275@linuxfoundation.org>
+Subject: [PATCH 7.0 441/461] ASoC: cs35l56: Fix flushing of IRQ work in cs35l56_sdw_remove()
+Date: Thu, 28 May 2026 21:49:30 +0200
+Message-ID: <20260528194700.294768107@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
 In-Reply-To: <20260528194646.819809818@linuxfoundation.org>
 References: <20260528194646.819809818@linuxfoundation.org>
@@ -67,7 +68,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
@@ -77,7 +78,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-255536-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-255537-lists,stable=lfdr.de];
 	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
@@ -86,11 +87,11 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	NEURAL_HAM(-0.00)[-1.000];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[5];
+	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim,qualcomm.com:email,msgid.link:url]
-X-Rspamd-Queue-Id: 4CD545F871C
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[cirrus.com:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,msgid.link:url,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo]
+X-Rspamd-Queue-Id: 4596F5F82D6
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
@@ -98,41 +99,46 @@ X-Rspamd-Server: lfdr
 
 ------------------
 
-From: Bartosz Golaszewski <bartosz.golaszewski@oss.qualcomm.com>
+From: Richard Fitzgerald <rf@opensource.cirrus.com>
 
-[ Upstream commit 598a2b3e2e0e6aa2e9f7843c96c45b5ea11e0411 ]
+[ Upstream commit 18e7bd9f2446664053f8c34b72abd4606d22d858 ]
 
-The kerneldoc for device_is_bound() says it must be called with the
-device lock taken. Add missing synchronization to this driver.
+Use flush_work() instead of cancel_work_sync() to terminate pending IRQ
+work in cs35l56_sdw_remove(). And flush_work() again after masking the
+interrupts to flush any queueing that was racing with the masking. This is
+the same sequence as cs35l56_sdw_system_suspend().
 
-Fixes: 3a27f40b4570 ("gpio: aggregator: stop using dev-sync-probe")
-Link: https://patch.msgid.link/20260518-gpio-dev-lock-v1-2-cc4736f3ff0b@oss.qualcomm.com
-Signed-off-by: Bartosz Golaszewski <bartosz.golaszewski@oss.qualcomm.com>
+cs35l56_sdw_interrupt() takes the pm_runtime to prevent the bus powering-
+down before the interrupt status can be read and handled. The work releases
+this pm_runtime. So cancelling it, instead of flushing, could leave an
+unbalanced pm_runtime.
+
+Signed-off-by: Richard Fitzgerald <rf@opensource.cirrus.com>
+Fixes: e49611252900 ("ASoC: cs35l56: Add driver for Cirrus Logic CS35L56")
+Link: https://patch.msgid.link/20260521123057.988732-1-rf@opensource.cirrus.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpio/gpio-aggregator.c | 9 ++++++---
- 1 file changed, 6 insertions(+), 3 deletions(-)
+ sound/soc/codecs/cs35l56-sdw.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/gpio/gpio-aggregator.c b/drivers/gpio/gpio-aggregator.c
-index a9ad809708fb6..bc6699a821ee7 100644
---- a/drivers/gpio/gpio-aggregator.c
-+++ b/drivers/gpio/gpio-aggregator.c
-@@ -968,9 +968,12 @@ static int gpio_aggregator_activate(struct gpio_aggregator *aggr)
- 	}
+diff --git a/sound/soc/codecs/cs35l56-sdw.c b/sound/soc/codecs/cs35l56-sdw.c
+index 30b3192d6ce9b..8d7772894f10a 100644
+--- a/sound/soc/codecs/cs35l56-sdw.c
++++ b/sound/soc/codecs/cs35l56-sdw.c
+@@ -560,10 +560,11 @@ static void cs35l56_sdw_remove(struct sdw_slave *peripheral)
  
- 	wait_for_device_probe();
--	if (!device_is_bound(&pdev->dev)) {
--		ret = -ENXIO;
--		goto err_unregister_pdev;
-+
-+	scoped_guard(device, &pdev->dev) {
-+		if (!device_is_bound(&pdev->dev)) {
-+			ret = -ENXIO;
-+			goto err_unregister_pdev;
-+		}
- 	}
+ 	/* Disable SoundWire interrupts */
+ 	cs35l56->sdw_irq_no_unmask = true;
+-	cancel_work_sync(&cs35l56->sdw_irq_work);
++	flush_work(&cs35l56->sdw_irq_work);
+ 	sdw_write_no_pm(peripheral, CS35L56_SDW_GEN_INT_MASK_1, 0);
+ 	sdw_read_no_pm(peripheral, CS35L56_SDW_GEN_INT_STAT_1);
+ 	sdw_write_no_pm(peripheral, CS35L56_SDW_GEN_INT_STAT_1, 0xFF);
++	flush_work(&cs35l56->sdw_irq_work);
  
- 	aggr->pdev = pdev;
+ 	cs35l56_remove(cs35l56);
+ }
 -- 
 2.53.0
 
