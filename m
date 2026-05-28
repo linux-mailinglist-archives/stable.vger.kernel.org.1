@@ -1,58 +1,59 @@
-Return-Path: <stable+bounces-255264-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-255619-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 6OkTLhSfGGpblggAu9opvQ
-	(envelope-from <stable+bounces-255264-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:01:24 +0200
+	id UN4yK/WjGGrClggAu9opvQ
+	(envelope-from <stable+bounces-255619-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:22:13 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id DCB365F7AB3
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:01:23 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 539285F87AC
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:22:13 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 024C8300721F
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 20:00:23 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 2ABDD303E238
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 20:17:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B7E96409604;
-	Thu, 28 May 2026 20:00:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9EEB02E03EA;
+	Thu, 28 May 2026 20:17:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RiuhxJf9"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qOSPzLZF"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8BBF4409623;
-	Thu, 28 May 2026 20:00:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 688DF257854;
+	Thu, 28 May 2026 20:16:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779998421; cv=none; b=dr+CxB1tKEn8GcdvpU2a2O0xGEkuAYnGIMH60KTWOMYGRd7m7mD2kIPXYVsGtA2NSGolk9Rg3neJl5+xtclBqJUrM7jZfI6OmlJvrg/43nVbWNhkZwUGLwDlqn611tQGKevHaZCJbZ4puqoX+5OCvGJqyoyf4jFeuA3p1dJMafI=
+	t=1779999420; cv=none; b=LsoZa9NKzbwUl6bw8FvlLlW0qsCdhlldUdywOWJwv3jVZe7HUmswGjwa8T0kbhLfDuLv+ROKoWIzQSJDWNIC16u6opwCuibVY2tRdvSYbnYVxF4AKX0jmMivDegsOQiaVcZV5VVDCFxXeEL6GTFJp3K6sq5cGxD0TLAPrGboRoI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779998421; c=relaxed/simple;
-	bh=6srub5BN0/+A9T3slFCL2MHrvqdfyD2BP9QdbSV6U3g=;
+	s=arc-20240116; t=1779999420; c=relaxed/simple;
+	bh=utd2/4i5iPw8mojTFK0hY9oQCK81yVpFzhBo+Kp4/Ao=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=YcxLgB0bcqBAv/UUPcnB/hEIzJo3pc+neOMpa7vHOk4v+RKw8opD3CcxZRAIgAXc5O0C/eBYkSd3cvIEqnUhjt/OEpw1bTKzffLSZYd/00Aw3POvE+BvuH54ofytF4MoeVDGP+N6+7t+ucg1yH0c64hOONMmTIJNiJFVRguaiq4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RiuhxJf9; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E8A7C1F000E9;
-	Thu, 28 May 2026 20:00:19 +0000 (UTC)
+	 MIME-Version; b=h+W5CpjS7VdGitDk6zylnvLH7JFWodtPHvSfVaORLgxVzwkRR0mYv9pmankrz1jej9jhDFzlVfkS07u+Mz9GYpyfMapqBu9sNa1NYir3/zL3FYGskvw8kXvy429LjKEL8SDy9+OAaa2JBvEc5D2BGmnAe6zUackuFr7A4qZ3wc0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qOSPzLZF; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C73CB1F000E9;
+	Thu, 28 May 2026 20:16:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779998420;
-	bh=wyGzmtkaXDB3mVUBkXIZWNxTBvzRL+GMtQXwvmOq7+k=;
+	s=korg; t=1779999419;
+	bh=NtkxnL3pAQQIeHRlQDYTRnBgI860mns1H6Z1wWoaaQw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=RiuhxJf9k+zEb9jsYShFXdJRDXuvfgS0zpZTy0/n2LJ8KKNJbwVVQQL2TtPnrWrDu
-	 N/Rx467LoRLRhs046NMM/Q3AAbjLvFnxaK8w2+nA5VNm3VV3Ev1Onj58vBWmhcKv+Q
-	 hq796U2NNrM0+Aa1plLegWFreqLVJYEaPbquYVDo=
+	b=qOSPzLZFsdAjj2TIh0nUyRrKbGNCnTH8F5ywTJPx+4+MjYSHzsaOYWPQ+02GHLZJK
+	 gO1YHvP+lrMni5I/uca4dBR4a0LjOMtAaB8RlaUm9iBSxipEqDCCpFGo48LvZPZN6O
+	 UiyTL0+t088kJgnxSM+CrpppI6g6ZnvF/hAOqWbY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Abdurrahman Hussain <abdurrahman@nexthop.ai>,
-	Guenter Roeck <linux@roeck-us.net>
-Subject: [PATCH 7.0 168/461] hwmon: (pmbus/adm1266) bounce blackbox records through a protocol-sized buffer
-Date: Thu, 28 May 2026 21:44:57 +0200
-Message-ID: <20260528194651.921781248@linuxfoundation.org>
+	Nicolai Buchwitz <nb@tipi-net.de>,
+	Florian Fainelli <florian.fainelli@broadcom.com>,
+	Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 6.18 060/377] net: bcmgenet: keep RBUF EEE/PM disabled
+Date: Thu, 28 May 2026 21:44:58 +0200
+Message-ID: <20260528194640.107627920@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260528194646.819809818@linuxfoundation.org>
-References: <20260528194646.819809818@linuxfoundation.org>
+In-Reply-To: <20260528194638.371537336@linuxfoundation.org>
+References: <20260528194638.371537336@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -67,7 +68,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
@@ -77,7 +78,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-255264-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-255619-lists,stable=lfdr.de];
 	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
@@ -86,82 +87,75 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	NEURAL_HAM(-0.00)[-1.000];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[5];
+	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[nexthop.ai:email,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,roeck-us.net:email]
-X-Rspamd-Queue-Id: DCB365F7AB3
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,broadcom.com:email,tipi-net.de:email]
+X-Rspamd-Queue-Id: 539285F87AC
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-7.0-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Abdurrahman Hussain <abdurrahman@nexthop.ai>
+From: Nicolai Buchwitz <nb@tipi-net.de>
 
-commit 43cae21424ff8e33894a0f86c6b80b840c049fd7 upstream.
+commit 9a1730245e416d11ad5c0f2c100061d61cc43f60 upstream.
 
-adm1266_pmbus_block_xfer() copies the device-supplied block payload
-into the caller-provided buffer using the device-supplied length:
+Setting RBUF_EEE_EN | RBUF_PM_EN in RBUF_ENERGY_CTRL breaks the RX
+path on GENET hardware once MAC EEE becomes active. RX traffic stops
+flowing while the link stays up and the usual descriptor/RX error
+counters remain quiet. In that state the MAC still accepts frames
+(rbuf_ovflow_cnt keeps climbing) but RBUF no longer forwards them to
+DMA, so rx_packets is no longer incremented at the netdev level. On
+some boards the corruption ends up as a paging fault in
+skb_release_data via bcmgenet_rx_poll on an LPI exit.
 
-	memcpy(data_r, &msgs[1].buf[1], msgs[1].buf[0]);
+Reproduced on Pi 4B (BCM2711 + BCM54213PE) and confirmed by Florian
+Fainelli on an internal Broadcom 4908-family board with the same crash
+signature. RBUF_PM_EN is not publicly documented.
 
-The helper does not know how large data_r is and trusts the device to
-return at most one record's worth of bytes.  adm1266_nvmem_read_blackbox()
-violates that contract: it advances read_buff inside data->dev_mem in
-ADM1266_BLACKBOX_SIZE (64-byte) strides while the helper is willing to
-write up to ADM1266_PMBUS_BLOCK_MAX (255) bytes.  A device that returns
-more than 64 bytes on the trailing record (read_buff offset 1984 in
-the 2048-byte dev_mem allocation) overflows dev_mem by up to 191 bytes
-before the post-call
+This shows up more often now that phy_support_eee() enables EEE by
+default, but it also affects older kernels as soon as TX LPI is
+turned on via ethtool, so it is not specific to recent changes.
 
-	if (ret != ADM1266_BLACKBOX_SIZE)
-		return -EIO;
+Always clear RBUF_EEE_EN | RBUF_PM_EN in bcmgenet_eee_enable_set so
+the bits stay off across resets. UMAC and TBUF setup is left alone so
+TX-side EEE keeps working.
 
-can reject the response.
-
-Contain the fix in the caller without changing the helper signature:
-read each record into a 255-byte local bounce buffer that matches the
-helper's maximum output, validate the returned length, and only then
-copy exactly ADM1266_BLACKBOX_SIZE bytes into the dev_mem slot.
-
-Fixes: 407dc802a9c0 ("hwmon: (pmbus/adm1266) Add Block process call")
+Link: https://github.com/raspberrypi/linux/issues/7304
+Fixes: 6ef398ea60d9 ("net: bcmgenet: add EEE support")
 Cc: stable@vger.kernel.org
-Signed-off-by: Abdurrahman Hussain <abdurrahman@nexthop.ai>
-Link: https://lore.kernel.org/r/20260515-adm1266-fixes-v1-5-1c1ea1349cfe@nexthop.ai
-Signed-off-by: Guenter Roeck <linux@roeck-us.net>
+Signed-off-by: Nicolai Buchwitz <nb@tipi-net.de>
+Reviewed-by: Florian Fainelli <florian.fainelli@broadcom.com>
+Link: https://patch.msgid.link/20260520184320.652053-1-nb@tipi-net.de
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/hwmon/pmbus/adm1266.c |    4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ drivers/net/ethernet/broadcom/genet/bcmgenet.c |    9 ++++-----
+ 1 file changed, 4 insertions(+), 5 deletions(-)
 
---- a/drivers/hwmon/pmbus/adm1266.c
-+++ b/drivers/hwmon/pmbus/adm1266.c
-@@ -348,6 +348,7 @@ static void adm1266_init_debugfs(struct
+--- a/drivers/net/ethernet/broadcom/genet/bcmgenet.c
++++ b/drivers/net/ethernet/broadcom/genet/bcmgenet.c
+@@ -1369,13 +1369,12 @@ void bcmgenet_eee_enable_set(struct net_
+ 		reg &= ~(TBUF_EEE_EN | TBUF_PM_EN);
+ 	bcmgenet_writel(reg, priv->base + off);
  
- static int adm1266_nvmem_read_blackbox(struct adm1266_data *data, u8 *read_buff)
- {
-+	u8 record[ADM1266_PMBUS_BLOCK_MAX];
- 	int record_count;
- 	char index;
- 	u8 buf[I2C_SMBUS_BLOCK_MAX];
-@@ -365,13 +366,14 @@ static int adm1266_nvmem_read_blackbox(s
- 		return -EIO;
+-	/* Do the same for thing for RBUF */
++	/* RBUF EEE/PM can break the RX path on GENET. Keep it disabled. */
+ 	reg = bcmgenet_rbuf_readl(priv, RBUF_ENERGY_CTRL);
+-	if (enable)
+-		reg |= RBUF_EEE_EN | RBUF_PM_EN;
+-	else
++	if (reg & (RBUF_EEE_EN | RBUF_PM_EN)) {
+ 		reg &= ~(RBUF_EEE_EN | RBUF_PM_EN);
+-	bcmgenet_rbuf_writel(priv, reg, RBUF_ENERGY_CTRL);
++		bcmgenet_rbuf_writel(priv, reg, RBUF_ENERGY_CTRL);
++	}
  
- 	for (index = 0; index < record_count; index++) {
--		ret = adm1266_pmbus_block_xfer(data, ADM1266_READ_BLACKBOX, 1, &index, read_buff);
-+		ret = adm1266_pmbus_block_xfer(data, ADM1266_READ_BLACKBOX, 1, &index, record);
- 		if (ret < 0)
- 			return ret;
- 
- 		if (ret != ADM1266_BLACKBOX_SIZE)
- 			return -EIO;
- 
-+		memcpy(read_buff, record, ADM1266_BLACKBOX_SIZE);
- 		read_buff += ADM1266_BLACKBOX_SIZE;
- 	}
- 
+ 	if (!enable && priv->clk_eee_enabled) {
+ 		clk_disable_unprepare(priv->clk_eee);
 
 
 
