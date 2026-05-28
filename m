@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-256057-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-256058-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id uK9nDWCpGGrclwgAu9opvQ
-	(envelope-from <stable+bounces-256057-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:45:20 +0200
+	id aCYaNKSqGGoomAgAu9opvQ
+	(envelope-from <stable+bounces-256058-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:50:44 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id A133B5F9766
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:45:19 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id E25B55F9AD3
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:50:43 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 3C5A53167B21
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 20:37:18 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 8F54430210E7
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 20:37:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1DF163368B5;
-	Thu, 28 May 2026 20:37:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C8E8B197A7D;
+	Thu, 28 May 2026 20:37:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WzwFj4WF"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IsstqGbB"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BF68D1FC0EA;
-	Thu, 28 May 2026 20:37:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 976751FC0EA;
+	Thu, 28 May 2026 20:37:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780000634; cv=none; b=p2TaalUbYDQo3Zu87wkSGKpCoOtcfhcgDq6DykmAZxw1IiB5meZuImRFeGjYFcJfFVps7K03c5L3K956VHWhbSscpPZ6MCrZQ/dDR2FXGWz52WKCGmWugv2ueeHJg0Mn5yjB65fONJxmhXEqrEOxQG5xfCscVgBr64oZjG5Dops=
+	t=1780000637; cv=none; b=enWt9TEFgqBsyLvwuSSp/9k2XA5T2TR05W+gGOQw1HX1cPQLZI0LX1T08k+mayNFlDuwAU/9XTrwwcta9ClN70hXg24VoVOO0GC59qBo+HGbuAKddFvbiA3GVw39dtksVfm8JoWsug3MMdBnccJusyFSfAvVEuULaiX7DW8fFbQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780000634; c=relaxed/simple;
-	bh=n6Ao0t9TfnoVKIa7dxs+AK8Xg+/J3UAOUuuuZjmIed0=;
+	s=arc-20240116; t=1780000637; c=relaxed/simple;
+	bh=CPAMpQr6Mf1tjjGSYoMiR3b5tcqIRS06Wki2iTfq+p0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=lhoOdg3XNnDgdNi00wKxpvFJaK4NgxU13uBS7Ugs69+H9dunOoTjdiUuDBjyyf6QSp8FfwRMWSRS50yBG+YV6ps1pkFauXwoPMif9U8IqQEI0GYwSJlQGZ508QgR/Z/ZjyaC3JZpMtz5tfq5ICLAA4DpOGKWx13xV+it/fQCCQI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WzwFj4WF; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 27EE01F000E9;
-	Thu, 28 May 2026 20:37:12 +0000 (UTC)
+	 MIME-Version; b=kXCqhrcR51OtXMR6JkCco2Dh9++CPwsCrIKltTbgH/Y9LqByJFWZ/5R8uEeJFA52Dri1uZxSxwIhEZUFnk3suXS6lJ+hWsR/M9z2ofs0QXF6nMe/IX6JHBVh75Foof5ITHrv5XjVQ6+A71WVk5Pe9ZC3O8aHwh4r861fZZkkd3I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IsstqGbB; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 007561F000E9;
+	Thu, 28 May 2026 20:37:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780000633;
-	bh=Ksh15PrYDEEMbBHrSkGDM73ReRxUk82DNoIhiblOEJM=;
+	s=korg; t=1780000636;
+	bh=0gFMIAKUdApU564feko7cVXlewaWO/yCsyNxEPxHIHA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=WzwFj4WF9EWsrdMNzYtH3ZAXZY8Jq1wNPQXLPV6CM4gzoU/IKSxiI/MkLXDW4mSK4
-	 kBP6wd+7TV6Hho+uw4TO9AR27FJCkR4jI3uYXQJsR94X+0EvCqMdljgdeJteynZPaG
-	 5rVvB6k87J0FHMwrvQ8x4iLTQDPT4cDVjNvrXoHs=
+	b=IsstqGbBVJLwP3LDVHIMPiUp/IJXao/qT3a3Pxh4zj13rGxV3dmvuvDKqi/PriHnT
+	 i1PlmR+5Q7GiSbGWhLoLWRAHXz/lJtnGnFXU1hWZ9voZ+QU/O4T3Q5+Aj1hRsmfvFs
+	 jv+335eZtRDsAJQLbMPle1PG3G/WrdtywOViU81Q=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+72bd3dd3a5d5f39a0271@syzkaller.appspotmail.com,
-	Deepanshu Kartikey <kartikey406@gmail.com>,
-	Dmitry Osipenko <dmitry.osipenko@collabora.com>
-Subject: [PATCH 6.12 114/272] drm/virtio: use uninterruptible resv lock for plane updates
-Date: Thu, 28 May 2026 21:48:08 +0200
-Message-ID: <20260528194632.574139462@linuxfoundation.org>
+	"Mario Limonciello (AMD)" <superm1@kernel.org>,
+	Alan liu <haoping.liu@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>
+Subject: [PATCH 6.12 115/272] drm/amdgpu/vpe: Force collaborate sync after TRAP
+Date: Thu, 28 May 2026 21:48:09 +0200
+Message-ID: <20260528194632.601345297@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
 In-Reply-To: <20260528194629.379955525@linuxfoundation.org>
 References: <20260528194629.379955525@linuxfoundation.org>
@@ -64,36 +64,34 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	TO_DN_SOME(0.00)[];
-	TAGGED_FROM(0.00)[bounces-256057-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,syzkaller.appspotmail.com,gmail.com,collabora.com];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-256058-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[stable,72bd3dd3a5d5f39a0271];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	TAGGED_RCPT(0.00)[stable];
 	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,appspotmail.com:email,collabora.com:email,syzkaller.appspot.com:url,msgid.link:url,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo]
-X-Rspamd-Queue-Id: A133B5F9766
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,amd.com:email]
+X-Rspamd-Queue-Id: E25B55F9AD3
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
@@ -101,146 +99,48 @@ X-Rspamd-Server: lfdr
 
 ------------------
 
-From: Deepanshu Kartikey <kartikey406@gmail.com>
+From: Alan Liu <haoping.liu@amd.com>
 
-commit 9af1b6e175c82daf4b423da339a722d8e67a735a upstream.
+commit b6074630a461b1322a814988779005cbc43612ea upstream.
 
-virtio_gpu_cursor_plane_update() and virtio_gpu_resource_flush() lock
-the framebuffer BO's dma_resv via virtio_gpu_array_lock_resv() and
-ignore its return value. The function can fail with -EINTR from
-dma_resv_lock_interruptible() (signal during lock wait) or with
--ENOMEM from dma_resv_reserve_fences() (fence slot allocation),
-leaving the resv lock not held. The queue path then walks the object
-array and calls dma_resv_add_fence(), which requires the lock held;
-with lockdep enabled this trips dma_resv_assert_held():
+VPE1 could possibly hang and fail to power off at the end of commands in
+collaboration mode. This workaround adds a COLLAB_SYNC after TRAP to
+force instances synchronized to avoid VPE1 fail to power off.
 
-  WARNING: drivers/dma-buf/dma-resv.c:296 at dma_resv_add_fence+0x71e/0x840
-  Call Trace:
-   virtio_gpu_array_add_fence
-   virtio_gpu_queue_ctrl_sgs
-   virtio_gpu_queue_fenced_ctrl_buffer
-   virtio_gpu_cursor_plane_update
-   drm_atomic_helper_commit_planes
-   drm_atomic_helper_commit_tail
-   commit_tail
-   drm_atomic_helper_commit
-   drm_atomic_commit
-   drm_atomic_helper_update_plane
-   __setplane_atomic
-   drm_mode_cursor_universal
-   drm_mode_cursor_common
-   drm_mode_cursor_ioctl
-   drm_ioctl
-   __x64_sys_ioctl
-
-Beyond the WARN, mutating the dma_resv fence list without the lock
-races with concurrent readers/writers and can corrupt the list.
-
-Both call sites run inside the .atomic_update plane callback, which
-DRM atomic helpers do not allow to fail (by the time it runs, the
-commit has been signed off to userspace and there is no clean
-rollback path). Moving the lock acquisition to .prepare_fb was
-rejected because the broader lock scope deadlocks against other BO
-locking paths in the same atomic commit.
-
-Introduce virtio_gpu_lock_one_resv_uninterruptible() that uses
-dma_resv_lock() instead of dma_resv_lock_interruptible(). This
-eliminates the -EINTR failure mode -- the realistic syzbot trigger
--- without extending the lock hold across the commit. The helper
-locks a single BO and rejects nents > 1 with -EINVAL; both fix
-sites lock exactly one BO.
-
-Use it from virtio_gpu_cursor_plane_update() and
-virtio_gpu_resource_flush(); check the return value to handle the
-remaining -ENOMEM case from dma_resv_reserve_fences() by freeing
-the objs and skipping the plane update for that frame. The
-framebuffer BOs touched here are not shared with other contexts
-and lock contention is expected to be brief, so the loss of
-signal-interruptibility is acceptable.
-
-Other callers of virtio_gpu_array_lock_resv() (the ioctl paths)
-continue to use the interruptible variant.
-
-The bug was reported by syzbot, triggered via fault injection
-(fail_nth) on the DRM_IOCTL_MODE_CURSOR path, which forces the
--ENOMEM branch in dma_resv_reserve_fences().
-
-Reported-by: syzbot+72bd3dd3a5d5f39a0271@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=72bd3dd3a5d5f39a0271
-Fixes: 5cfd31c5b3a3 ("drm/virtio: fix virtio_gpu_cursor_plane_update().")
+Reviewed-by: Mario Limonciello (AMD) <superm1@kernel.org>
+Signed-off-by: Alan liu <haoping.liu@amd.com>
+Closes: https://gitlab.freedesktop.org/drm/amd/-/work_items/5171
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+(cherry picked from commit a8b749c5c5afb7e5daa2bfb95d958fb3c6b8f055)
 Cc: stable@vger.kernel.org
-Signed-off-by: Deepanshu Kartikey <kartikey406@gmail.com>
-Signed-off-by: Dmitry Osipenko <dmitry.osipenko@collabora.com>
-Link: https://patch.msgid.link/20260519082247.34470-1-kartikey406@gmail.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/virtio/virtgpu_drv.h   |    1 +
- drivers/gpu/drm/virtio/virtgpu_gem.c   |   17 +++++++++++++++++
- drivers/gpu/drm/virtio/virtgpu_plane.c |   10 ++++++++--
- 3 files changed, 26 insertions(+), 2 deletions(-)
+ drivers/gpu/drm/amd/amdgpu/amdgpu_vpe.c |    7 ++++++-
+ 1 file changed, 6 insertions(+), 1 deletion(-)
 
---- a/drivers/gpu/drm/virtio/virtgpu_drv.h
-+++ b/drivers/gpu/drm/virtio/virtgpu_drv.h
-@@ -318,6 +318,7 @@ virtio_gpu_array_from_handles(struct drm
- void virtio_gpu_array_add_obj(struct virtio_gpu_object_array *objs,
- 			      struct drm_gem_object *obj);
- int virtio_gpu_array_lock_resv(struct virtio_gpu_object_array *objs);
-+int virtio_gpu_lock_one_resv_uninterruptible(struct virtio_gpu_object_array *objs);
- void virtio_gpu_array_unlock_resv(struct virtio_gpu_object_array *objs);
- void virtio_gpu_array_add_fence(struct virtio_gpu_object_array *objs,
- 				struct dma_fence *fence);
---- a/drivers/gpu/drm/virtio/virtgpu_gem.c
-+++ b/drivers/gpu/drm/virtio/virtgpu_gem.c
-@@ -236,6 +236,23 @@ int virtio_gpu_array_lock_resv(struct vi
- 	return ret;
+--- a/drivers/gpu/drm/amd/amdgpu/amdgpu_vpe.c
++++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_vpe.c
+@@ -556,6 +556,11 @@ static void vpe_ring_emit_fence(struct a
+ 		amdgpu_ring_write(ring, 0);
+ 	}
+ 
++	/* WA: Force sync after TRAP to avoid VPE1 fail to power off */
++	if (ring->adev->vpe.collaborate_mode) {
++		amdgpu_ring_write(ring, VPE_CMD_HEADER(VPE_CMD_OPCODE_COLLAB_SYNC, 0));
++		amdgpu_ring_write(ring, 0xabcd);
++	}
  }
  
-+int virtio_gpu_lock_one_resv_uninterruptible(struct virtio_gpu_object_array *objs)
-+{
-+	int ret;
-+
-+	if (objs->nents != 1)
-+		return -EINVAL;
-+
-+	dma_resv_lock(objs->objs[0]->resv, NULL);
-+
-+	ret = dma_resv_reserve_fences(objs->objs[0]->resv, 1);
-+	if (ret) {
-+		virtio_gpu_array_unlock_resv(objs);
-+		return ret;
-+	}
-+	return 0;
-+}
-+
- void virtio_gpu_array_unlock_resv(struct virtio_gpu_object_array *objs)
- {
- 	if (objs->nents == 1) {
---- a/drivers/gpu/drm/virtio/virtgpu_plane.c
-+++ b/drivers/gpu/drm/virtio/virtgpu_plane.c
-@@ -168,7 +168,10 @@ static void virtio_gpu_resource_flush(st
- 		if (!objs)
- 			return;
- 		virtio_gpu_array_add_obj(objs, vgfb->base.obj[0]);
--		virtio_gpu_array_lock_resv(objs);
-+		if (virtio_gpu_lock_one_resv_uninterruptible(objs)) {
-+			virtio_gpu_array_put_free(objs);
-+			return;
-+		}
- 		virtio_gpu_cmd_resource_flush(vgdev, bo->hw_res_handle, x, y,
- 					      width, height, objs,
- 					      vgplane_st->fence);
-@@ -339,7 +342,10 @@ static void virtio_gpu_cursor_plane_upda
- 		if (!objs)
- 			return;
- 		virtio_gpu_array_add_obj(objs, vgfb->base.obj[0]);
--		virtio_gpu_array_lock_resv(objs);
-+		if (virtio_gpu_lock_one_resv_uninterruptible(objs)) {
-+			virtio_gpu_array_put_free(objs);
-+			return;
-+		}
- 		virtio_gpu_cmd_transfer_to_host_2d
- 			(vgdev, 0,
- 			 plane->state->crtc_w,
+ static void vpe_ring_emit_pipeline_sync(struct amdgpu_ring *ring)
+@@ -904,7 +909,7 @@ static const struct amdgpu_ring_funcs vp
+ 	.emit_frame_size =
+ 		5 + /* vpe_ring_init_cond_exec */
+ 		6 + /* vpe_ring_emit_pipeline_sync */
+-		10 + 10 + 10 + /* vpe_ring_emit_fence */
++		12 + 12 + 12 + /* vpe_ring_emit_fence */
+ 		/* vpe_ring_emit_vm_flush */
+ 		SOC15_FLUSH_GPU_TLB_NUM_WREG * 3 +
+ 		SOC15_FLUSH_GPU_TLB_NUM_REG_WAIT * 6,
 
 
 
