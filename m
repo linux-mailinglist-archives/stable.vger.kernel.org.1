@@ -1,60 +1,59 @@
-Return-Path: <stable+bounces-255207-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-255578-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id OFosFGefGGpvlggAu9opvQ
-	(envelope-from <stable+bounces-255207-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:02:47 +0200
+	id mDp2FpeiGGrClggAu9opvQ
+	(envelope-from <stable+bounces-255578-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:16:23 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id EBFC85F7B30
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:02:46 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1A7B15F83A0
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:16:22 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id D4A5F3137EF8
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 19:57:42 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 2F6FD3045B41
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 20:15:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A4431400E0D;
-	Thu, 28 May 2026 19:57:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 949C53016E1;
+	Thu, 28 May 2026 20:15:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bXiYxjbM"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sROE39wa"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5A85E3290B0;
-	Thu, 28 May 2026 19:57:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5833322A80D;
+	Thu, 28 May 2026 20:15:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779998262; cv=none; b=UmUTpgMNqJr9bUTCyQjaKgXyvI7o7h5LhX4RNtbwMhMqLTaNS1SMdn/UGjIWUUI0V1MUZf12qVCtj3EPCAhcJZuAF4fbpt9u5WlyadgZRE+C/pAHln3/gLJ9viRA0Ze7vhoQ5yqjUp8FkcwjEZfIntBE47b+OoUTqXvXKsQQ6VM=
+	t=1779999306; cv=none; b=EQnvM8/lzahw3AhQ86fB0ea9Q1dTXxwJnjB8KdmPar+oqSrqE9Rl3zY82J/6CgSXNzMllbyB5w8AVUthuXHXi8gymjYYL+4yGHYgyVADKq23coHn9zHgYdYw7lDl5Mg/YjlM6epUnu4CcrE1HRnPjcGxoVhJtPSNCzbHESjSjLE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779998262; c=relaxed/simple;
-	bh=jbzFOr/g1ZOTYukvAShUgZa4ZAh5gSMJlbVNbIcKb3Q=;
+	s=arc-20240116; t=1779999306; c=relaxed/simple;
+	bh=AX3uCKaMLiMo6v9Hquhjajn4qgarKjO1insa6LY6Yjo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=fqA2e8EyeeTpmux61FL5jkhHtZ8fP7B1wj8FS6BdEGLmmiiIMc7+AByWEOJVTSVCGVB2oWkPIAkfdO0wDiBz7YQT7pFZyQ42zJX3OSKAPNiB9nnnOFfYeAQIU+iQFSV2Lo25r4bUiVZSMPaxsn/lIDmNK5pubujwX5sUx1OS254=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bXiYxjbM; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B80121F000E9;
-	Thu, 28 May 2026 19:57:40 +0000 (UTC)
+	 MIME-Version; b=Cgi3O5TmTTjiyD6MS1ooLkXy7MxQMXpWY+GIOu7B0PMtNHQCa3mrKok5qDZOv6/+0uyoHouLyTiqUwZcyBHs9fSW4K+ZPD590143m+60u+9sF2BZwyD1Fx4+IHCBrQvbFi/LHs0EGFiL+7acgKI7Bzg+9iAxHRCFV81CszxwLa4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sROE39wa; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AC8B61F000E9;
+	Thu, 28 May 2026 20:15:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779998261;
-	bh=Yj7IZeGK2xHJew5xzKcQBOklnw4LvwyHm7wvu+R/JM8=;
+	s=korg; t=1779999305;
+	bh=4SeqesLROjVK1wQpM2RtDMAU9mU3Htzo8Pn4gQXKARE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=bXiYxjbMab0p7VU9XtOU5Mj2JjLIgbUTq7xygsasQCVhHfTL5mB1m/64zRj+qlxkz
-	 E5EGSDLfCbJ/5mXrNCE1RQWY3e8Buy0tOq57ExaGrUMbi180IF395ioKYiw5sgK4j1
-	 7XuIMXAG/tDIP+Mv+zDo6dKYLflEClua2OdggQ3w=
+	b=sROE39wavqRi53R7wQVgpuJBSa1Z54wist1vP/Z9RE2isIoG1jUDl8YnyAnwpX5vo
+	 jg2wmDMADpThelHN/VNVuQUkFoVL3StGzp8Gmvg+hvMv4GjD4MLEF+gPw4/mZORLpu
+	 gnsPzbsA+e7F2hj6Tev7Li/KR7flRQrssR9C6di8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Wayne Chang <waynec@nvidia.com>,
-	Wei-Cheng Chen <weichengc@nvidia.com>,
-	Jon Hunter <jonathanh@nvidia.com>,
-	Vinod Koul <vkoul@kernel.org>
-Subject: [PATCH 7.0 110/461] phy: tegra: xusb: Fix per-pad high-speed termination calibration
-Date: Thu, 28 May 2026 21:43:59 +0200
-Message-ID: <20260528194650.152770345@linuxfoundation.org>
+	Guanghui Feng <guanghuifeng@linux.alibaba.com>,
+	Joerg Roedel <joerg.roedel@amd.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.18 002/377] iommu/amd: Fix illegal cap/mmio access in IOMMU debugfs
+Date: Thu, 28 May 2026 21:44:00 +0200
+Message-ID: <20260528194638.449417214@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260528194646.819809818@linuxfoundation.org>
-References: <20260528194646.819809818@linuxfoundation.org>
+In-Reply-To: <20260528194638.371537336@linuxfoundation.org>
+References: <20260528194638.371537336@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,180 +68,175 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-255207-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-255578-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[7];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[nvidia.com:email,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,msgid.link:url,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
-X-Rspamd-Queue-Id: EBFC85F7B30
+	RCPT_COUNT_FIVE(0.00)[6];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[amd.com:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,alibaba.com:email]
+X-Rspamd-Queue-Id: 1A7B15F83A0
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-7.0-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Wayne Chang <waynec@nvidia.com>
+From: Guanghui Feng <guanghuifeng@linux.alibaba.com>
 
-commit da110228b54f2e2143d97ea7151e0dc22e539d67 upstream.
+[ Upstream commit 0e59645683b7b6fa20eceb21a6f420e4f7412943 ]
 
-The existing code reads a single hs_term_range_adj value from bit field
-[10:7] of FUSE_SKU_CALIB_0 and applies it to all USB2 pads uniformly.
-However, on SoCs that support per-pad termination, each pad has its own
-hs_term_range_adj field: pad 0 in FUSE_SKU_CALIB_0[10:7], and pads 1-3
-in FUSE_USB_CALIB_EXT_0 at bit offsets [8:5], [12:9], and [16:13]
-respectively.
+In the current AMD IOMMU debugfs, when multiple processes simultaneously
+access the IOMMU mmio/cap registers using the IOMMU debugfs, illegal
+access issues can occur in the following execution flow:
 
-Fix the calibration by reading per-pad values from the appropriate fuse
-registers. For SoCs that do not support per-pad termination, replicate
-pad 0's value to all pads to maintain existing behavior.
+1. CPU1: Sets a valid access address using iommu_mmio/capability_write,
+and verifies the access address's validity in iommu_mmio/capability_show
 
-Add a has_per_pad_term flag to the SoC data to indicate whether per-pad
-termination values are available in FUSE_USB_CALIB_EXT_0.
+2. CPU2: Sets an invalid address using iommu_mmio/capability_write
 
-Fixes: 1ef535c6ba8e ("phy: tegra: xusb: Add Tegra194 support")
-Cc: stable@vger.kernel.org
-Signed-off-by: Wayne Chang <waynec@nvidia.com>
-Signed-off-by: Wei-Cheng Chen <weichengc@nvidia.com>
-Reviewed-by: Jon Hunter <jonathanh@nvidia.com>
-Tested-by: Jon Hunter <jonathanh@nvidia.com>
-Link: https://patch.msgid.link/20260504033305.2283145-1-weichengc@nvidia.com
-Signed-off-by: Vinod Koul <vkoul@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+3. CPU1: accesses the IOMMU mmio/cap registers based on the invalid
+address, resulting in an illegal access.
+
+This patch modifies the execution process to first verify the address's
+validity and then access it based on the same address, ensuring
+correctness and robustness.
+
+Signed-off-by: Guanghui Feng <guanghuifeng@linux.alibaba.com>
+Signed-off-by: Joerg Roedel <joerg.roedel@amd.com>
+Stable-dep-of: 8dfd3d8d7443 ("iommu/amd: Remove latent out-of-bounds access in IOMMU debugfs")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/phy/tegra/xusb-tegra186.c |   33 ++++++++++++++++++++++++++-------
- drivers/phy/tegra/xusb.h          |    1 +
- 2 files changed, 27 insertions(+), 7 deletions(-)
+ drivers/iommu/amd/debugfs.c | 42 +++++++++++++++++--------------------
+ 1 file changed, 19 insertions(+), 23 deletions(-)
 
---- a/drivers/phy/tegra/xusb-tegra186.c
-+++ b/drivers/phy/tegra/xusb-tegra186.c
-@@ -20,8 +20,8 @@
- /* FUSE USB_CALIB registers */
- #define HS_CURR_LEVEL_PADX_SHIFT(x)	((x) ? (11 + (x - 1) * 6) : 0)
- #define HS_CURR_LEVEL_PAD_MASK		0x3f
--#define HS_TERM_RANGE_ADJ_SHIFT		7
--#define HS_TERM_RANGE_ADJ_MASK		0xf
-+#define HS_TERM_RANGE_ADJ_PADX_SHIFT(x)	((x) ? (5 + (x - 1) * 4) : 7)
-+#define HS_TERM_RANGE_ADJ_PAD_MASK	0xf
- #define HS_SQUELCH_SHIFT		29
- #define HS_SQUELCH_MASK			0x7
- 
-@@ -253,7 +253,7 @@
- struct tegra_xusb_fuse_calibration {
- 	u32 *hs_curr_level;
- 	u32 hs_squelch;
--	u32 hs_term_range_adj;
-+	u32 *hs_term_range_adj;
- 	u32 rpd_ctrl;
- };
- 
-@@ -930,7 +930,7 @@ static int tegra186_utmi_phy_power_on(st
- 
- 	value = padctl_readl(padctl, XUSB_PADCTL_USB2_OTG_PADX_CTL1(index));
- 	value &= ~TERM_RANGE_ADJ(~0);
--	value |= TERM_RANGE_ADJ(priv->calib.hs_term_range_adj);
-+	value |= TERM_RANGE_ADJ(priv->calib.hs_term_range_adj[index]);
- 	value &= ~RPD_CTRL(~0);
- 	value |= RPD_CTRL(priv->calib.rpd_ctrl);
- 	padctl_writel(padctl, value, XUSB_PADCTL_USB2_OTG_PADX_CTL1(index));
-@@ -1464,17 +1464,23 @@ static const char * const tegra186_usb3_
- static int
- tegra186_xusb_read_fuse_calibration(struct tegra186_xusb_padctl *padctl)
+diff --git a/drivers/iommu/amd/debugfs.c b/drivers/iommu/amd/debugfs.c
+index 20b04996441d6..0584ca2f859d9 100644
+--- a/drivers/iommu/amd/debugfs.c
++++ b/drivers/iommu/amd/debugfs.c
+@@ -26,22 +26,19 @@ static ssize_t iommu_mmio_write(struct file *filp, const char __user *ubuf,
  {
-+	const struct tegra_xusb_padctl_soc *soc = padctl->base.soc;
- 	struct device *dev = padctl->base.dev;
- 	unsigned int i, count;
- 	u32 value, *level;
-+	u32 *hs_term_range_adj;
- 	int err;
+ 	struct seq_file *m = filp->private_data;
+ 	struct amd_iommu *iommu = m->private;
+-	int ret;
+-
+-	iommu->dbg_mmio_offset = -1;
++	int ret, dbg_mmio_offset = iommu->dbg_mmio_offset = -1;
  
--	count = padctl->base.soc->ports.usb2.count;
-+	count = soc->ports.usb2.count;
+ 	if (cnt > OFS_IN_SZ)
+ 		return -EINVAL;
  
- 	level = devm_kcalloc(dev, count, sizeof(u32), GFP_KERNEL);
- 	if (!level)
- 		return -ENOMEM;
+-	ret = kstrtou32_from_user(ubuf, cnt, 0, &iommu->dbg_mmio_offset);
++	ret = kstrtou32_from_user(ubuf, cnt, 0, &dbg_mmio_offset);
+ 	if (ret)
+ 		return ret;
  
-+	hs_term_range_adj = devm_kcalloc(dev, count, sizeof(u32), GFP_KERNEL);
-+	if (!hs_term_range_adj)
-+		return -ENOMEM;
-+
- 	err = tegra_fuse_readl(TEGRA_FUSE_SKU_CALIB_0, &value);
- 	if (err)
- 		return dev_err_probe(dev, err,
-@@ -1490,8 +1496,8 @@ tegra186_xusb_read_fuse_calibration(stru
+-	if (iommu->dbg_mmio_offset > iommu->mmio_phys_end - sizeof(u64)) {
+-		iommu->dbg_mmio_offset = -1;
+-		return  -EINVAL;
+-	}
++	if (dbg_mmio_offset > iommu->mmio_phys_end - sizeof(u64))
++		return -EINVAL;
  
- 	padctl->calib.hs_squelch = (value >> HS_SQUELCH_SHIFT) &
- 					HS_SQUELCH_MASK;
--	padctl->calib.hs_term_range_adj = (value >> HS_TERM_RANGE_ADJ_SHIFT) &
--						HS_TERM_RANGE_ADJ_MASK;
-+	hs_term_range_adj[0] = (value >> HS_TERM_RANGE_ADJ_PADX_SHIFT(0)) &
-+				HS_TERM_RANGE_ADJ_PAD_MASK;
- 
- 	err = tegra_fuse_readl(TEGRA_FUSE_USB_CALIB_EXT_0, &value);
- 	if (err) {
-@@ -1503,6 +1509,17 @@ tegra186_xusb_read_fuse_calibration(stru
- 
- 	padctl->calib.rpd_ctrl = (value >> RPD_CTRL_SHIFT) & RPD_CTRL_MASK;
- 
-+	for (i = 1; i < count; i++) {
-+		if (soc->has_per_pad_term)
-+			hs_term_range_adj[i] =
-+				(value >> HS_TERM_RANGE_ADJ_PADX_SHIFT(i)) &
-+				HS_TERM_RANGE_ADJ_PAD_MASK;
-+		else
-+			hs_term_range_adj[i] = hs_term_range_adj[0];
-+	}
-+
-+	padctl->calib.hs_term_range_adj = hs_term_range_adj;
-+
- 	return 0;
++	iommu->dbg_mmio_offset = dbg_mmio_offset;
+ 	return cnt;
  }
  
-@@ -1708,6 +1725,7 @@ const struct tegra_xusb_padctl_soc tegra
- 	.num_supplies = ARRAY_SIZE(tegra194_xusb_padctl_supply_names),
- 	.supports_gen2 = true,
- 	.poll_trk_completed = true,
-+	.has_per_pad_term = true,
- };
- EXPORT_SYMBOL_GPL(tegra194_xusb_padctl_soc);
+@@ -49,14 +46,16 @@ static int iommu_mmio_show(struct seq_file *m, void *unused)
+ {
+ 	struct amd_iommu *iommu = m->private;
+ 	u64 value;
++	int dbg_mmio_offset = iommu->dbg_mmio_offset;
  
-@@ -1732,6 +1750,7 @@ const struct tegra_xusb_padctl_soc tegra
- 	.trk_hw_mode = false,
- 	.trk_update_on_idle = true,
- 	.supports_lp_cfg_en = true,
-+	.has_per_pad_term = true,
- };
- EXPORT_SYMBOL_GPL(tegra234_xusb_padctl_soc);
- #endif
---- a/drivers/phy/tegra/xusb.h
-+++ b/drivers/phy/tegra/xusb.h
-@@ -435,6 +435,7 @@ struct tegra_xusb_padctl_soc {
- 	bool trk_hw_mode;
- 	bool trk_update_on_idle;
- 	bool supports_lp_cfg_en;
-+	bool has_per_pad_term;
- };
+-	if (iommu->dbg_mmio_offset < 0) {
++	if (dbg_mmio_offset < 0 || dbg_mmio_offset >
++			iommu->mmio_phys_end - sizeof(u64)) {
+ 		seq_puts(m, "Please provide mmio register's offset\n");
+ 		return 0;
+ 	}
  
- struct tegra_xusb_padctl {
+-	value = readq(iommu->mmio_base + iommu->dbg_mmio_offset);
+-	seq_printf(m, "Offset:0x%x Value:0x%016llx\n", iommu->dbg_mmio_offset, value);
++	value = readq(iommu->mmio_base + dbg_mmio_offset);
++	seq_printf(m, "Offset:0x%x Value:0x%016llx\n", dbg_mmio_offset, value);
+ 
+ 	return 0;
+ }
+@@ -67,23 +66,20 @@ static ssize_t iommu_capability_write(struct file *filp, const char __user *ubuf
+ {
+ 	struct seq_file *m = filp->private_data;
+ 	struct amd_iommu *iommu = m->private;
+-	int ret;
+-
+-	iommu->dbg_cap_offset = -1;
++	int ret, dbg_cap_offset = iommu->dbg_cap_offset = -1;
+ 
+ 	if (cnt > OFS_IN_SZ)
+ 		return -EINVAL;
+ 
+-	ret = kstrtou32_from_user(ubuf, cnt, 0, &iommu->dbg_cap_offset);
++	ret = kstrtou32_from_user(ubuf, cnt, 0, &dbg_cap_offset);
+ 	if (ret)
+ 		return ret;
+ 
+ 	/* Capability register at offset 0x14 is the last IOMMU capability register. */
+-	if (iommu->dbg_cap_offset > 0x14) {
+-		iommu->dbg_cap_offset = -1;
++	if (dbg_cap_offset > 0x14)
+ 		return -EINVAL;
+-	}
+ 
++	iommu->dbg_cap_offset = dbg_cap_offset;
+ 	return cnt;
+ }
+ 
+@@ -91,21 +87,21 @@ static int iommu_capability_show(struct seq_file *m, void *unused)
+ {
+ 	struct amd_iommu *iommu = m->private;
+ 	u32 value;
+-	int err;
++	int err, dbg_cap_offset = iommu->dbg_cap_offset;
+ 
+-	if (iommu->dbg_cap_offset < 0) {
++	if (dbg_cap_offset < 0 || dbg_cap_offset > 0x14) {
+ 		seq_puts(m, "Please provide capability register's offset in the range [0x00 - 0x14]\n");
+ 		return 0;
+ 	}
+ 
+-	err = pci_read_config_dword(iommu->dev, iommu->cap_ptr + iommu->dbg_cap_offset, &value);
++	err = pci_read_config_dword(iommu->dev, iommu->cap_ptr + dbg_cap_offset, &value);
+ 	if (err) {
+ 		seq_printf(m, "Not able to read capability register at 0x%x\n",
+-			   iommu->dbg_cap_offset);
++			   dbg_cap_offset);
+ 		return 0;
+ 	}
+ 
+-	seq_printf(m, "Offset:0x%x Value:0x%08x\n", iommu->dbg_cap_offset, value);
++	seq_printf(m, "Offset:0x%x Value:0x%08x\n", dbg_cap_offset, value);
+ 
+ 	return 0;
+ }
+-- 
+2.53.0
+
 
 
 
