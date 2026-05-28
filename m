@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-255988-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-255989-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id +MGcCEaoGGpolwgAu9opvQ
-	(envelope-from <stable+bounces-255988-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:40:38 +0200
+	id 6LGlM66nGGpolwgAu9opvQ
+	(envelope-from <stable+bounces-255989-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:38:06 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id AEEBF5F94BB
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:40:37 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 75E915F92AB
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:38:06 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id B591531451D9
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 20:34:00 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id DB9D0302A8AA
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 20:34:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AFF4832AAA0;
-	Thu, 28 May 2026 20:33:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 818E4330D35;
+	Thu, 28 May 2026 20:34:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UN13HBpc"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="X6uwdZno"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7ECC7313550;
-	Thu, 28 May 2026 20:33:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5330C313550;
+	Thu, 28 May 2026 20:34:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780000439; cv=none; b=Q5GeOUPXoegS0HDoRbrzfgU+Gbs0wSjrlQBSDH+M6UzLb+B5mf4+URq5Ad++98TIMGZHnLqANETk4NBk973n4vV5f9tlNNDms+PkFfftt9AyikK9v65sI0Nj964LfBEzTBIoTwBQ2UXoo57jfzv+35DsCG3+EYB0yQsCcGkEy0Q=
+	t=1780000442; cv=none; b=R1MMv5WxYXHnl3U1zHO/aV3h72n0pOVe5gA+u6HfIAct/H0MpmF76HPhL+BPve8GQk/4T3RRIQoksHmkcyrgElcnIJmI1EYY2a0sU1fC5pXp6/2eVru8RRwadV0F3oOIHa1ahuXq3oDaWloQLjyK6/ibKsXdSE0eDDspeFqPbxI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780000439; c=relaxed/simple;
-	bh=iA+GP4V9DRs/3zdh1LFZtTLunvglnnzAMR30BN1TBdo=;
+	s=arc-20240116; t=1780000442; c=relaxed/simple;
+	bh=2UgYJQjfIU7hGbCgwP400YlkyjnJHWNn4JvYccZ1Pwg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=YX/KtfOkN7xSvcFQc/6Bl0BmmQG0xDT9Dxx1jXW4ivMN8M5jw/6Ell6wAKQo4SppqC9JtkHVixruz+hvDTRbhCRjDSjKu6DExuM7n8VtRQLL2ASz4MVfNLRl5EnRO2zjE3467EHu6ywGnccRxaTE7uc9xkpjFYXVJmF5ShAOMHE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UN13HBpc; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DAF221F000E9;
-	Thu, 28 May 2026 20:33:57 +0000 (UTC)
+	 MIME-Version; b=NVBg+8svxXwS6gh7BUXGBO/nLt9e+c53YrtHU5mTYCWEz/k81UC+peC3hZiapa5I/D9vQgQ6j6vQCNElL7MzDCIuf53Xm77Bo8DGx0GetvJmDRwyMHFXLiglnpvP16mPF+PNQeS2ajo75Bq1DPbiTe5h+LQLhnwhiToJUcEaAL0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=X6uwdZno; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B14FC1F000E9;
+	Thu, 28 May 2026 20:34:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780000438;
-	bh=5KYTkC6BAB5qpZ4tMIpJmbio/kIMCC2KYI6Jl6ORYWw=;
+	s=korg; t=1780000441;
+	bh=kmMQb3AqNhjjVUNETrcrR1h9bUW5rWoNZJNO/ZCE0Y0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=UN13HBpcEoZoQgSFTJMPPdigEcYZJ6mdmx1jfxS3ETctj45DoTDJUHVnjiVLDZoIe
-	 5a1S8pj27jll54iSIvhGWVpg4RGtz3zvUYTRflilnjUBNYC5Y43JvSfaZByAEjxQw4
-	 P8CK2k6U2kmNquisUOwrOaibCidLrYtE4cjeGiO0=
+	b=X6uwdZno8dN86qoCNT/BIYW+yHJ72OjBp/VFDIRFqgWQE6ypP7F+LdUqReH9EuG12
+	 BDxkpY85vrbJUmgzYI0YUfOO92tYR4FHaE3tv5PoxXpJPlqwXZMDExxlLFMr1379nI
+	 Z5ZvDtsSji85yLfnN4uxRe3oiwn81fn7WZCAzSz0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jeremy Laratro <research@aradex.io>,
+	Ferry Meng <mengferry@linux.alibaba.com>,
 	Namjae Jeon <linkinjeon@kernel.org>,
 	Steve French <stfrench@microsoft.com>
-Subject: [PATCH 6.12 044/272] ksmbd: fix null pointer dereference in compare_guid_key()
-Date: Thu, 28 May 2026 21:46:58 +0200
-Message-ID: <20260528194630.613913595@linuxfoundation.org>
+Subject: [PATCH 6.12 045/272] ksmbd: fix SID memory leak in set_posix_acl_entries_dacl() on overflow
+Date: Thu, 28 May 2026 21:46:59 +0200
+Message-ID: <20260528194630.642578624@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
 In-Reply-To: <20260528194629.379955525@linuxfoundation.org>
 References: <20260528194629.379955525@linuxfoundation.org>
@@ -68,7 +68,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
@@ -78,7 +78,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-255988-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-255989-lists,stable=lfdr.de];
 	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
@@ -89,9 +89,9 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	TAGGED_RCPT(0.00)[stable];
 	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,aradex.io:email,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim]
-X-Rspamd-Queue-Id: AEEBF5F94BB
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim]
+X-Rspamd-Queue-Id: 75E915F92AB
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
@@ -99,74 +99,77 @@ X-Rspamd-Server: lfdr
 
 ------------------
 
-From: Jeremy Laratro <research@aradex.io>
+From: Ferry Meng <mengferry@linux.alibaba.com>
 
-commit 4b83cbc4c15f09b000cc06f033f64b0824b6dc87 upstream.
+commit af92ee994cc7f7e83a41c2025f32257a2f82a7ef upstream.
 
-session_fd_check() walks the per-inode m_op_list during durable-handle
-session teardown and sets op->conn = NULL for every opinfo whose conn
-matched the closing session's connection. The matching opinfo, however,
-stays linked in its per-ClientGuid lease_table_list entry's lb->lease_list
-because destroy_lease_table() only runs on full TCP-connection teardown,
-not on SESSION_LOGOFF.
+Commit 299f962c0b02 ("ksmbd: use check_add_overflow() to prevent u16
+DACL size overflow") added check_add_overflow() guards that break out
+of the ACE-building loops in set_posix_acl_entries_dacl() when the
+accumulated DACL size would wrap past 65535.
 
-If the same TCP connection then negotiates a fresh session with the
-same ClientGuid (ClientGuid is bound to NEGOTIATE, not the session, and
-is unchanged across LOGOFF + SETUP) and issues a SMB2 CREATE with a
-lease context on a different inode, find_same_lease_key() walks
-lb->lease_list, reaches the stale opinfo, and calls compare_guid_key(),
-which unconditionally dereferences opinfo->conn->ClientGUID. The conn
-pointer is NULL and the kernel panics.
+However, each iteration allocates a struct smb_sid via kmalloc_obj()
+at the top of the loop and relies on the kfree(sid) call at the end
+of the loop body (the 'pass_same_sid' label in the first loop, and
+the explicit kfree at the tail of the second loop) to release it.
+The newly introduced 'break' statements bypass those kfree() calls,
+leaking the sid buffer every time an overflow is detected.
 
-Reproducer requires only a successful SMB2 SESSION_SETUP and a share
-configured with 'durable handles = yes'. KASAN report on mainline
-70390501d194:
+A malicious or malformed file with enough POSIX ACL entries to trip
+the overflow check will leak one or more struct smb_sid allocations
+on every request that touches the file's DACL, providing a trivial
+kernel memory exhaustion vector.
 
-  general protection fault, probably for non-canonical address
-  0xdffffc0000000069: 0000 [#1] SMP KASAN PTI
-  KASAN: null-ptr-deref in range [0x0000000000000348-0x000000000000034f]
-  Workqueue: ksmbd-io handle_ksmbd_work
-  RIP: 0010:bcmp+0x5b/0x230
-  Call Trace:
-   compare_guid_key+0x4b/0xd0
-   find_same_lease_key+0x324/0x690
-   smb2_open+0x6aea/0x8e60
-   handle_ksmbd_work+0x796/0xee0
-   ...
+Free sid before breaking out of the loops to plug the leak.
 
-Faulting address 0x348 is the offset of ClientGUID within struct
-ksmbd_conn, confirming opinfo->conn was NULL.
-
-Read opinfo->conn once and bail out if it has been cleared by a
-concurrent session_fd_check(). A half-detached opinfo cannot be the
-owner of an active lease, so returning 0 is the correct match result.
-
-Fixes: c8efcc786146 ("ksmbd: add support for durable handles v1/v2")
+Fixes: 299f962c0b02 ("ksmbd: use check_add_overflow() to prevent u16 DACL size overflow")
 Cc: stable@vger.kernel.org
-Signed-off-by: Jeremy Laratro <research@aradex.io>
+Signed-off-by: Ferry Meng <mengferry@linux.alibaba.com>
 Acked-by: Namjae Jeon <linkinjeon@kernel.org>
 Signed-off-by: Steve French <stfrench@microsoft.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/smb/server/oplock.c |    6 +++++-
- 1 file changed, 5 insertions(+), 1 deletion(-)
+ fs/smb/server/smbacl.c |   12 +++++++++---
+ 1 file changed, 9 insertions(+), 3 deletions(-)
 
---- a/fs/smb/server/oplock.c
-+++ b/fs/smb/server/oplock.c
-@@ -484,8 +484,12 @@ static inline int compare_guid_key(struc
- 				   const char *guid1, const char *key1)
- {
- 	const char *guid2, *key2;
-+	struct ksmbd_conn *conn;
- 
--	guid2 = opinfo->conn->ClientGUID;
-+	conn = READ_ONCE(opinfo->conn);
-+	if (!conn)
-+		return 0;
-+	guid2 = conn->ClientGUID;
- 	key2 = opinfo->o_lease->lease_key;
- 	if (!memcmp(guid1, guid2, SMB2_CLIENT_GUID_SIZE) &&
- 	    !memcmp(key1, key2, SMB2_LEASE_KEY_SIZE))
+--- a/fs/smb/server/smbacl.c
++++ b/fs/smb/server/smbacl.c
+@@ -643,8 +643,10 @@ static void set_posix_acl_entries_dacl(s
+ 		ntace = (struct smb_ace *)((char *)pndace + *size);
+ 		ace_sz = fill_ace_for_sid(ntace, sid, ACCESS_ALLOWED, flags,
+ 				pace->e_perm, 0777);
+-		if (check_add_overflow(*size, ace_sz, size))
++		if (check_add_overflow(*size, ace_sz, size)) {
++			kfree(sid);
+ 			break;
++		}
+ 		(*num_aces)++;
+ 		if (pace->e_tag == ACL_USER)
+ 			ntace->access_req |=
+@@ -655,8 +657,10 @@ static void set_posix_acl_entries_dacl(s
+ 			ntace = (struct smb_ace *)((char *)pndace + *size);
+ 			ace_sz = fill_ace_for_sid(ntace, sid, ACCESS_ALLOWED,
+ 					0x03, pace->e_perm, 0777);
+-			if (check_add_overflow(*size, ace_sz, size))
++			if (check_add_overflow(*size, ace_sz, size)) {
++				kfree(sid);
+ 				break;
++			}
+ 			(*num_aces)++;
+ 			if (pace->e_tag == ACL_USER)
+ 				ntace->access_req |=
+@@ -698,8 +702,10 @@ posix_default_acl:
+ 		ntace = (struct smb_ace *)((char *)pndace + *size);
+ 		ace_sz = fill_ace_for_sid(ntace, sid, ACCESS_ALLOWED, 0x0b,
+ 				pace->e_perm, 0777);
+-		if (check_add_overflow(*size, ace_sz, size))
++		if (check_add_overflow(*size, ace_sz, size)) {
++			kfree(sid);
+ 			break;
++		}
+ 		(*num_aces)++;
+ 		if (pace->e_tag == ACL_USER)
+ 			ntace->access_req |=
 
 
 
