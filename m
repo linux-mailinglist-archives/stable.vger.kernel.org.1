@@ -1,60 +1,62 @@
-Return-Path: <stable+bounces-255949-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-256165-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id mKQGA+enGGpolwgAu9opvQ
-	(envelope-from <stable+bounces-255949-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:39:03 +0200
+	id WKqbOW2qGGpolwgAu9opvQ
+	(envelope-from <stable+bounces-256165-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:49:49 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 98E555F938D
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:39:02 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id AAFBD5F9A09
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:49:49 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 95356301DC0D
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 20:32:11 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id C940330AE74D
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 20:42:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E3617330D35;
-	Thu, 28 May 2026 20:32:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 35CD233B6FC;
+	Thu, 28 May 2026 20:42:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mpOXhfOB"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Eol1Iub6"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CA27932ED5C;
-	Thu, 28 May 2026 20:32:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EA425317164;
+	Thu, 28 May 2026 20:42:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780000330; cv=none; b=Y1zENWLXkJvSp3VWTkuZZlVi2gMNCG5aQkCfLLuQwA01SyWFO/3wIiU/GwsnmYwUemzTw/jOoWSjJq8m0qPNpL/d52+ZFweAs1dh8mveR2mPrpde0OsT65zhQQcWc3hnTWbxneuHR0AdDnnvuzEppn7cxcNqfwzez+vh1NIxkk8=
+	t=1780000938; cv=none; b=atU8EmvXHsmOBAV7RSkD9IUW6SzOLcE5A+cpScx2BK8MvzJvi0i94oNvI8omfJzWJDECiKVQx2SSNN/LE0XpudtHBn9dBOkT1AffE+u8t8o/uO15OZxsxLAKeCdtpGDThXwtt/F/5B1lNtDYm151IHFMdwbXhG6QVHZmmoli5Mo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780000330; c=relaxed/simple;
-	bh=X+wI6lLdrAJJ04GpNdtaJVgCE6+breN9X84Ljrsbmmw=;
+	s=arc-20240116; t=1780000938; c=relaxed/simple;
+	bh=76ZT5+w3SXUwrGrUhJ2O+J8Q2QEH81PRCPwmEiAYp44=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=gmsxtSqz2GlZZUTxVZq6O9EfMaHcnRTNUBme+g+oLcrqG9Ks9WgCLzA4Eluj72VfdgTgBsZrxXpR3YtC6zVWDiUdlYTA/tRgwxqpcNEfUBjvfLL436ZP1+rc5ujspKsjEd0nhGkwGKb7H5mjVWXJo2j0E9U3Qe6ZDDpUvHJ139I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mpOXhfOB; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3424B1F000E9;
-	Thu, 28 May 2026 20:32:09 +0000 (UTC)
+	 MIME-Version; b=fpDGuthZJw1gtk8vV26fO2j73ucSSY8PO6Y2eHsPq2w96Ywo7RJ3mOsMjsaazW/XaIme2OwXjyUJgdXqxxUvWuZzv5OU+3/s+eHWhJ9289ZN2xK3ub8fgfxuY+wT19xqdKBct9R5rkJ3qTVteJzC+XkpK+E8tQH3kXxv2AMcbJw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Eol1Iub6; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5C2591F000E9;
+	Thu, 28 May 2026 20:42:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780000329;
-	bh=3uRVX6r5zTN8trQuwiAqtW6sX7GDdWQ6ziWhKNJEsMI=;
+	s=korg; t=1780000936;
+	bh=LX9fVVmTmh6ueoYn1XHl2xy3zISBBYq+K3sbJt8HtYI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=mpOXhfOBmhbaqtz4ora6EISyxt/7WXTmsaMIAX/uIEqdp8FddHc2xb+4oENvWvM/I
-	 NyraqZTi5IPQMIDvTeBxV46M+fHULHppX6rj7i4etDFjAzHW7IlMdO2Bg5vwCD8xRz
-	 vyN+w7ecd4GupkywgkSQSnd1TBwEeYKGouRVmjwA=
+	b=Eol1Iub6FMgYB1qTGD9fsgM3SG80+OOpc94n4++fYZedeCm2blDN+3Uvyg6rF0hFd
+	 TKieytAaPhQ28m7J1SLkY6PpG3DOWZ6QtQmdRlGbjNiClSWB/wQrtrDD1mZLsCu7E5
+	 87t9PD3dQ4JEJOePiharUqEbT+Mjv2OcvDA+rDl0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Rosen Penev <rosenp@gmail.com>,
-	Oleksij Rempel <o.rempel@pengutronix.de>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Mahesh Salgaonkar <mahesh@linux.ibm.com>,
+	Shrikanth Hegde <sshegde@linux.ibm.com>,
+	"Ritesh Harjani (IBM)" <ritesh.list@gmail.com>,
+	Sayali Patil <sayalip@linux.ibm.com>,
+	Madhavan Srinivasan <maddy@linux.ibm.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 358/377] net: ag71xx: check error for platform_get_irq
-Date: Thu, 28 May 2026 21:49:56 +0200
-Message-ID: <20260528194648.795884977@linuxfoundation.org>
+Subject: [PATCH 6.12 223/272] powerpc/time: Remove redundant preempt_disable|enable() calls from arch_irq_work_raise()
+Date: Thu, 28 May 2026 21:49:57 +0200
+Message-ID: <20260528194635.438515877@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260528194638.371537336@linuxfoundation.org>
-References: <20260528194638.371537336@linuxfoundation.org>
+In-Reply-To: <20260528194629.379955525@linuxfoundation.org>
+References: <20260528194629.379955525@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,72 +67,132 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,pengutronix.de,kernel.org];
-	TAGGED_FROM(0.00)[bounces-255949-lists,stable=lfdr.de];
-	PRECEDENCE_BULK(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-256165-lists,stable=lfdr.de];
 	FROM_HAS_DN(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,linux.ibm.com,gmail.com,kernel.org];
 	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[9];
 	MID_RHS_MATCH_FROM(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[7];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
 	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim,pengutronix.de:email]
-X-Rspamd-Queue-Id: 98E555F938D
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,msgid.link:url,linuxfoundation.org:mid,linuxfoundation.org:dkim]
+X-Rspamd-Queue-Id: AAFBD5F9A09
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Rosen Penev <rosenp@gmail.com>
+From: Sayali Patil <sayalip@linux.ibm.com>
 
-[ Upstream commit e7c70bf97e90d974cd575e4c90f8f9b07d056da3 ]
+[ Upstream commit 31467b23823ffec1f6fff407f8e3ca9af8b7491a ]
 
-Complete error handling for a failed platform_get_irq() call
+A kernel panic is observed when handling machine check exceptions from
+real mode.
 
-Fixes: d51b6ce441d3 ("net: ethernet: add ag71xx driver")
-Signed-off-by: Rosen Penev <rosenp@gmail.com>
-Reviewed-by: Oleksij Rempel <o.rempel@pengutronix.de>
-Link: https://patch.msgid.link/20260516212616.11758-1-rosenp@gmail.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+  BUG: Unable to handle kernel data access on read at 0xc00000006be21300
+  Oops: Kernel access of bad area, sig: 11 [#1]
+  MSR:  8000000000001003 <SF,ME,RI,LE>  CR: 88222248  XER: 00000005
+  CFAR: c00000000003ffc4 DAR: c00000006be21300 DSISR: 40000000 IRQMASK: 0
+  NIP [c000000000029e40] arch_irq_work_raise+0x10/0x70
+  LR [c00000000003ffc8] machine_check_queue_event+0xa8/0x150
+  Call Trace:
+  [c0000000179d3c70] [c00000000003ff64] machine_check_queue_event+0x44/0x150
+  [c0000000179d3d30] [c0000000000084e0] machine_check_early_common+0x1f0/0x2c0
+
+The crash occurs because arch_irq_work_raise() calls preempt_disable()
+from machine check exception (MCE) handlers running in real mode. In
+this context, accessing the preempt_count can fault, leading to the panic.
+
+The preempt_disable()/preempt_enable() pair in arch_irq_work_raise()
+was originally added by commit 0fe1ac48bef0 ("powerpc/perf_event: Fix
+oops due to perf_event_do_pending call") to avoid races while raising
+irq work from exception context.
+
+Later, commit 471ba0e686cb ("irq_work: Do not raise an IPI when
+queueing work on the local CPU") added preemption protection in
+irq_work_queue() path, while commit 20b876918c06 ("irq_work: Use per
+cpu atomics instead of regular atomics") added equivalent
+protection in irq_work_queue_on() before reaching arch_irq_work_raise():
+
+  irq_work_queue() / irq_work_queue_on()
+    -> preempt_disable()
+      -> __irq_work_queue_local()
+        -> irq_work_raise()
+          -> arch_irq_work_raise()
+
+As a result, callers other than mce_irq_work_raise() already execute
+with preemption disabled, making the additional
+preempt_disable()/preempt_enable() pair in arch_irq_work_raise()
+redundant.
+
+The arch_irq_work_raise() function executes in NMI context when called
+from MCE handler. Hence we will not be preempted or scheduled out since
+we are in NMI context with MSR[EE]=0. Therefore, it is safe to remove
+the preempt_disable()/preempt_enable() calls from here.
+
+Remove it to avoid accessing preempt_count from real mode context.
+
+Fixes: cc15ff327569 ("powerpc/mce: Avoid using irq_work_queue() in realmode")
+Suggested-by: Mahesh Salgaonkar <mahesh@linux.ibm.com>
+Acked-by: Shrikanth Hegde <sshegde@linux.ibm.com>
+Reviewed-by: Ritesh Harjani (IBM) <ritesh.list@gmail.com>
+Signed-off-by: Sayali Patil <sayalip@linux.ibm.com>
+[Maddy: Fixed the commit title]
+Signed-off-by: Madhavan Srinivasan <maddy@linux.ibm.com>
+Link: https://patch.msgid.link/20260513081413.222490-1-sayalip@linux.ibm.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/atheros/ag71xx.c | 3 +++
- 1 file changed, 3 insertions(+)
+ arch/powerpc/kernel/time.c | 6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/net/ethernet/atheros/ag71xx.c b/drivers/net/ethernet/atheros/ag71xx.c
-index cbc730c7cff29..8e6bd99b22d72 100644
---- a/drivers/net/ethernet/atheros/ag71xx.c
-+++ b/drivers/net/ethernet/atheros/ag71xx.c
-@@ -1856,6 +1856,9 @@ static int ag71xx_probe(struct platform_device *pdev)
- 	ag71xx_int_disable(ag, AG71XX_INT_POLL);
+diff --git a/arch/powerpc/kernel/time.c b/arch/powerpc/kernel/time.c
+index 0ff9f038e800d..ce7f91172ec2b 100644
+--- a/arch/powerpc/kernel/time.c
++++ b/arch/powerpc/kernel/time.c
+@@ -458,6 +458,10 @@ DEFINE_PER_CPU(u8, irq_work_pending);
  
- 	ndev->irq = platform_get_irq(pdev, 0);
-+	if (ndev->irq < 0)
-+		return ndev->irq;
-+
- 	err = devm_request_irq(&pdev->dev, ndev->irq, ag71xx_interrupt,
- 			       0x0, dev_name(&pdev->dev), ndev);
- 	if (err) {
+ #endif /* 32 vs 64 bit */
+ 
++/*
++ * Must be called with preemption disabled since it updates
++ * per-CPU irq_work state and programs the local CPU decrementer.
++ */
+ void arch_irq_work_raise(void)
+ {
+ 	/*
+@@ -471,10 +475,8 @@ void arch_irq_work_raise(void)
+ 	 * which could get tangled up if we're messing with the same state
+ 	 * here.
+ 	 */
+-	preempt_disable();
+ 	set_irq_work_pending_flag();
+ 	set_dec(1);
+-	preempt_enable();
+ }
+ 
+ static void set_dec_or_work(u64 val)
 -- 
 2.53.0
 
