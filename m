@@ -1,60 +1,59 @@
-Return-Path: <stable+bounces-255863-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-255503-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id oAf7B3+oGGpolwgAu9opvQ
-	(envelope-from <stable+bounces-255863-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:41:35 +0200
+	id gPx7AuChGGqblggAu9opvQ
+	(envelope-from <stable+bounces-255503-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:13:20 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 82B8A5F955D
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:41:34 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id A11455F8189
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:13:19 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 1ED403291AB5
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 20:28:15 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 10B63305E7DD
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 20:11:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 69E6A33067C;
-	Thu, 28 May 2026 20:28:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9FFCE335566;
+	Thu, 28 May 2026 20:11:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JEmHFHVm"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wqgOANNW"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A669EDDC5;
-	Thu, 28 May 2026 20:28:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6B80932ABC0;
+	Thu, 28 May 2026 20:11:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780000089; cv=none; b=j/QY3MWftaPrRl0kEa0YNk4+ZcS0V2DpPwhIzQiEoCl8mKl2SuV9PqUVqA2SjX9qNPBHtgpUQkP2ib9ncQYwEdvyHwi9RcCS//66McNecYbaeyZFIbgFDWKdCJEzt8id3y0h42M7AFrm+R8bLbob5ckkfJPp2SKblapqTTq7yas=
+	t=1779999094; cv=none; b=UHBYFt9hHl/vjf+IhRF6shJ2GL5W3Z4yggpGTl6xQ7nqHoAnE7imhWWuk+8N/W0g5nPhqAaTFl/fjauamnHbLea0BO5zN1ZByJ9JqOlLCmHmSVaReIgqBGJvGS2JBY4wABhsU1DxcC04+hOuD5QVKfgSkzkGtkeULuVb2+woJ0I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780000089; c=relaxed/simple;
-	bh=Rngyz5C0SH3kAr/0sB9KHp6iqiA3H51h8WL4fTwU81M=;
+	s=arc-20240116; t=1779999094; c=relaxed/simple;
+	bh=GOLeDGq/P0pox/fYvDajz7pFyAVGwh6lcggUcjZmbJU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ixKmtZSoD4srG3aW9UksJc5k6BpiTJw/Ph7oXNWgf7Ix8MTqwA4M7z15eCLVp/+fo5xl6CN/9ZAbdCrUxIpwVVni93JjKeZkmFAgKFU/m1TDw+w2PnVcLLM9zgI97uvT7+mnp2+w51FbPj/Qvs32xcg0CVoyQH8klf5YwIfLj8Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JEmHFHVm; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0F3601F00A3A;
-	Thu, 28 May 2026 20:28:06 +0000 (UTC)
+	 MIME-Version; b=rhskAMhcTOlcXDgMQqCodtErmd7J1OjfLdyPE8hWUyKyYl4HFKK62mtUeaYMEaeMKhcb3DDbaHRnTb8ARgoMiCNTdClLNSpO3wMWdaYItTBogUcRK4DdEhksOFaXXYoyQAyfP41UyvC9+bF7+24FEycNqtt/QXVfmq3FUAYybc4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wqgOANNW; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C98DD1F000E9;
+	Thu, 28 May 2026 20:11:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780000087;
-	bh=N522Vf1PRnGyYZ85A1qPDfTvOVjYvFyqLSFVXY1j+kM=;
+	s=korg; t=1779999093;
+	bh=CqT1mDtDrMS49Dt+h5i98A1d9ULApvv/gO7AAY9/Tic=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=JEmHFHVmOj3ExaIRAX9ig4kFl73QZxUQocilfeTqzhlO7h+L9PrRk8quVMGRVSeUN
-	 VSQmLZFRITHVIRhdsil9RvXRMI4tuP8C03FslKcwtRIbTVESZvEWX/KD8x7q70ZcIP
-	 6q4NxwM6vIrSmiWTSEzD908+MSZk+HtdaoFldb+s=
+	b=wqgOANNWI4IEvYRYHLLSY5HU6DMVeczkk+12KSxHjzx+O+bn3OhcKHHDlND20hAz3
+	 W9NLH13ks6EOco1CApGM3S8O9qQ3MksTNUMfZ6cKuRagOH6rZ1hL6hykzJBTeoJRvL
+	 I3v0SX65bschwt8EEEMTHHsZR0vB073nwvBe2YGA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Qu Wenruo <wqu@suse.com>,
-	Filipe Manana <fdmanana@suse.com>,
-	David Sterba <dsterba@suse.com>,
+	"Nikhil P. Rao" <nikhil.rao@amd.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 298/377] btrfs: use the key format macros when printing keys
+Subject: [PATCH 7.0 407/461] pds_core: fix error handling in pdsc_devcmd_wait
 Date: Thu, 28 May 2026 21:48:56 +0200
-Message-ID: <20260528194646.983579112@linuxfoundation.org>
+Message-ID: <20260528194659.263521644@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260528194638.371537336@linuxfoundation.org>
-References: <20260528194638.371537336@linuxfoundation.org>
+In-Reply-To: <20260528194646.819809818@linuxfoundation.org>
+References: <20260528194646.819809818@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,450 +68,91 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-255863-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-255503-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[7];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,suse.com:email,linuxfoundation.org:mid,linuxfoundation.org:dkim]
-X-Rspamd-Queue-Id: 82B8A5F955D
+	RCPT_COUNT_FIVE(0.00)[6];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[amd.com:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,msgid.link:url]
+X-Rspamd-Queue-Id: A11455F8189
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+7.0-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Filipe Manana <fdmanana@suse.com>
+From: Nikhil P. Rao <nikhil.rao@amd.com>
 
-[ Upstream commit af1e800c0244a04f5eb0993745c23d974f262628 ]
+[ Upstream commit 0e46b6635b03d29807f810c3b415c4755a3f958d ]
 
-Change all locations that print a key to use the new macros to print
-them in order to ensure a consistent style and avoid repetitive code.
+Fix two cases where pdsc_devcmd_wait() returns stale success from
+the completion register instead of an error:
 
-Reviewed-by: Qu Wenruo <wqu@suse.com>
-Signed-off-by: Filipe Manana <fdmanana@suse.com>
-Reviewed-by: David Sterba <dsterba@suse.com>
-Signed-off-by: David Sterba <dsterba@suse.com>
-Stable-dep-of: 1e92637722ae ("btrfs: check for subvolume before deleting squota qgroup")
+1. FW crash: If firmware stops running, the wait loop breaks early with
+   running=false. The condition "if ((!done || timeout) && running)" is
+   false, so error handling is bypassed and stale status is returned.
+   Check !running first and return -ENXIO.
+
+2. Timeout: If a command times out, err is set to -ETIMEDOUT but then
+   overwritten by pdsc_err_to_errno(status) which reads stale status.
+   Return -ETIMEDOUT immediately after cleaning up.
+
+Both errors now propagate to pdsc_devcmd_locked() which queues
+health_work for recovery.
+
+Fixes: 45d76f492938 ("pds_core: set up device and adminq")
+Signed-off-by: Nikhil P. Rao <nikhil.rao@amd.com>
+Link: https://patch.msgid.link/20260515212907.998028-1-nikhil.rao@amd.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/btrfs/backref.c      | 11 +++++------
- fs/btrfs/ctree.c        | 17 +++++++----------
- fs/btrfs/extent-tree.c  | 14 +++++++-------
- fs/btrfs/inode.c        |  4 ++--
- fs/btrfs/print-tree.c   | 14 ++++++--------
- fs/btrfs/qgroup.c       |  6 ++----
- fs/btrfs/relocation.c   |  4 ++--
- fs/btrfs/root-tree.c    |  4 ++--
- fs/btrfs/send.c         | 10 ++++------
- fs/btrfs/tree-checker.c | 21 +++++++++------------
- fs/btrfs/tree-log.c     | 38 ++++++++++++++++++--------------------
- 11 files changed, 64 insertions(+), 79 deletions(-)
+ drivers/net/ethernet/amd/pds_core/dev.c | 11 +++++++++--
+ 1 file changed, 9 insertions(+), 2 deletions(-)
 
-diff --git a/fs/btrfs/backref.c b/fs/btrfs/backref.c
-index 2ab550a1e715a..e050d0938dc45 100644
---- a/fs/btrfs/backref.c
-+++ b/fs/btrfs/backref.c
-@@ -666,10 +666,9 @@ static int resolve_indirect_ref(struct btrfs_backref_walk_ctx *ctx,
- 		ret = btrfs_search_old_slot(root, &search_key, path, ctx->time_seq);
+diff --git a/drivers/net/ethernet/amd/pds_core/dev.c b/drivers/net/ethernet/amd/pds_core/dev.c
+index 2e1d0d01d03af..bded6b33289ce 100644
+--- a/drivers/net/ethernet/amd/pds_core/dev.c
++++ b/drivers/net/ethernet/amd/pds_core/dev.c
+@@ -162,12 +162,19 @@ static int pdsc_devcmd_wait(struct pdsc *pdsc, u8 opcode, int max_seconds)
+ 		dev_dbg(dev, "DEVCMD %d %s after %ld secs\n",
+ 			opcode, pdsc_devcmd_str(opcode), duration / HZ);
  
- 	btrfs_debug(ctx->fs_info,
--		"search slot in root %llu (level %d, ref count %d) returned %d for key (%llu %u %llu)",
--		 ref->root_id, level, ref->count, ret,
--		 ref->key_for_search.objectid, ref->key_for_search.type,
--		 ref->key_for_search.offset);
-+"search slot in root %llu (level %d, ref count %d) returned %d for key " BTRFS_KEY_FMT,
-+		    ref->root_id, level, ref->count, ret,
-+		    BTRFS_KEY_FMT_VALUE(&ref->key_for_search));
- 	if (ret < 0)
- 		goto out;
- 
-@@ -3323,9 +3322,9 @@ static int handle_indirect_tree_backref(struct btrfs_trans_handle *trans,
- 	eb = path->nodes[level];
- 	if (btrfs_node_blockptr(eb, path->slots[level]) != cur->bytenr) {
- 		btrfs_err(fs_info,
--"couldn't find block (%llu) (level %d) in tree (%llu) with key (%llu %u %llu)",
-+"couldn't find block (%llu) (level %d) in tree (%llu) with key " BTRFS_KEY_FMT,
- 			  cur->bytenr, level - 1, btrfs_root_id(root),
--			  tree_key->objectid, tree_key->type, tree_key->offset);
-+			  BTRFS_KEY_FMT_VALUE(tree_key));
- 		btrfs_put_root(root);
- 		ret = -ENOENT;
- 		goto out;
-diff --git a/fs/btrfs/ctree.c b/fs/btrfs/ctree.c
-index 6e053caa6e101..27e2adc2ee717 100644
---- a/fs/btrfs/ctree.c
-+++ b/fs/btrfs/ctree.c
-@@ -2599,12 +2599,11 @@ void btrfs_set_item_key_safe(struct btrfs_trans_handle *trans,
- 		if (unlikely(btrfs_comp_keys(&disk_key, new_key) >= 0)) {
- 			btrfs_print_leaf(eb);
- 			btrfs_crit(fs_info,
--		"slot %u key (%llu %u %llu) new key (%llu %u %llu)",
-+		"slot %u key " BTRFS_KEY_FMT " new key " BTRFS_KEY_FMT,
- 				   slot, btrfs_disk_key_objectid(&disk_key),
- 				   btrfs_disk_key_type(&disk_key),
- 				   btrfs_disk_key_offset(&disk_key),
--				   new_key->objectid, new_key->type,
--				   new_key->offset);
-+				   BTRFS_KEY_FMT_VALUE(new_key));
- 			BUG();
- 		}
- 	}
-@@ -2613,12 +2612,11 @@ void btrfs_set_item_key_safe(struct btrfs_trans_handle *trans,
- 		if (unlikely(btrfs_comp_keys(&disk_key, new_key) <= 0)) {
- 			btrfs_print_leaf(eb);
- 			btrfs_crit(fs_info,
--		"slot %u key (%llu %u %llu) new key (%llu %u %llu)",
-+		"slot %u key " BTRFS_KEY_FMT " new key " BTRFS_KEY_FMT,
- 				   slot, btrfs_disk_key_objectid(&disk_key),
- 				   btrfs_disk_key_type(&disk_key),
- 				   btrfs_disk_key_offset(&disk_key),
--				   new_key->objectid, new_key->type,
--				   new_key->offset);
-+				   BTRFS_KEY_FMT_VALUE(new_key));
- 			BUG();
- 		}
- 	}
-@@ -2677,10 +2675,9 @@ static bool check_sibling_keys(const struct extent_buffer *left,
- 		btrfs_crit(left->fs_info, "right extent buffer:");
- 		btrfs_print_tree(right, false);
- 		btrfs_crit(left->fs_info,
--"bad key order, sibling blocks, left last (%llu %u %llu) right first (%llu %u %llu)",
--			   left_last.objectid, left_last.type,
--			   left_last.offset, right_first.objectid,
--			   right_first.type, right_first.offset);
-+"bad key order, sibling blocks, left last " BTRFS_KEY_FMT " right first " BTRFS_KEY_FMT,
-+			   BTRFS_KEY_FMT_VALUE(&left_last),
-+			   BTRFS_KEY_FMT_VALUE(&right_first));
- 		return true;
- 	}
- 	return false;
-diff --git a/fs/btrfs/extent-tree.c b/fs/btrfs/extent-tree.c
-index 863b45092a190..e40835fe4bde6 100644
---- a/fs/btrfs/extent-tree.c
-+++ b/fs/btrfs/extent-tree.c
-@@ -165,8 +165,8 @@ int btrfs_lookup_extent_info(struct btrfs_trans_handle *trans,
- 		if (unlikely(num_refs == 0)) {
- 			ret = -EUCLEAN;
- 			btrfs_err(fs_info,
--		"unexpected zero reference count for extent item (%llu %u %llu)",
--				  key.objectid, key.type, key.offset);
-+		"unexpected zero reference count for extent item " BTRFS_KEY_FMT,
-+				  BTRFS_KEY_FMT_VALUE(&key));
- 			btrfs_abort_transaction(trans, ret);
- 			return ret;
- 		}
-@@ -597,8 +597,8 @@ static noinline int remove_extent_data_ref(struct btrfs_trans_handle *trans,
- 		num_refs = btrfs_shared_data_ref_count(leaf, ref2);
- 	} else {
- 		btrfs_err(trans->fs_info,
--			  "unrecognized backref key (%llu %u %llu)",
--			  key.objectid, key.type, key.offset);
-+			  "unrecognized backref key " BTRFS_KEY_FMT,
-+			  BTRFS_KEY_FMT_VALUE(&key));
- 		btrfs_abort_transaction(trans, -EUCLEAN);
- 		return -EUCLEAN;
- 	}
-@@ -3324,9 +3324,9 @@ static int __btrfs_free_extent(struct btrfs_trans_handle *trans,
- 			if (iref) {
- 				if (unlikely(path->slots[0] != extent_slot)) {
- 					abort_and_dump(trans, path,
--"invalid iref, extent item key (%llu %u %llu) slot %u doesn't have wanted iref",
--						       key.objectid, key.type,
--						       key.offset, path->slots[0]);
-+"invalid iref, extent item key " BTRFS_KEY_FMT " slot %u doesn't have wanted iref",
-+						       BTRFS_KEY_FMT_VALUE(&key),
-+						       path->slots[0]);
- 					ret = -EUCLEAN;
- 					goto out;
- 				}
-diff --git a/fs/btrfs/inode.c b/fs/btrfs/inode.c
-index 2c361e0691fc5..dcc0e53782c61 100644
---- a/fs/btrfs/inode.c
-+++ b/fs/btrfs/inode.c
-@@ -5668,9 +5668,9 @@ static int btrfs_inode_by_name(struct btrfs_inode *dir, struct dentry *dentry,
- 		     location->type != BTRFS_ROOT_ITEM_KEY)) {
- 		ret = -EUCLEAN;
- 		btrfs_warn(root->fs_info,
--"%s gets something invalid in DIR_ITEM (name %s, directory ino %llu, location(%llu %u %llu))",
-+"%s gets something invalid in DIR_ITEM (name %s, directory ino %llu, location " BTRFS_KEY_FMT ")",
- 			   __func__, fname.disk_name.name, btrfs_ino(dir),
--			   location->objectid, location->type, location->offset);
-+			   BTRFS_KEY_FMT_VALUE(location));
- 	}
- 	if (!ret)
- 		*type = btrfs_dir_ftype(path->nodes[0], di);
-diff --git a/fs/btrfs/print-tree.c b/fs/btrfs/print-tree.c
-index 62b993fae54ff..06edc5cdb00d3 100644
---- a/fs/btrfs/print-tree.c
-+++ b/fs/btrfs/print-tree.c
-@@ -131,7 +131,7 @@ static void print_extent_item(const struct extent_buffer *eb, int slot, int type
- 		struct btrfs_tree_block_info *info;
- 		info = (struct btrfs_tree_block_info *)(ei + 1);
- 		btrfs_tree_block_key(eb, info, &key);
--		pr_info("\t\ttree block key (%llu %u %llu) level %d\n",
-+		pr_info("\t\ttree block key " BTRFS_KEY_FMT " level %d\n",
- 		       btrfs_disk_key_objectid(&key), key.type,
- 		       btrfs_disk_key_offset(&key),
- 		       btrfs_tree_block_level(eb, info));
-@@ -277,9 +277,8 @@ static void print_dir_item(const struct extent_buffer *eb, int i)
- 		struct btrfs_key location;
- 
- 		btrfs_dir_item_key_to_cpu(eb, di, &location);
--		pr_info("\t\tlocation key (%llu %u %llu) type %d\n",
--			location.objectid, location.type, location.offset,
--			btrfs_dir_ftype(eb, di));
-+		pr_info("\t\tlocation key " BTRFS_KEY_FMT " type %d\n",
-+			BTRFS_KEY_FMT_VALUE(&location), btrfs_dir_ftype(eb, di));
- 		pr_info("\t\ttransid %llu data_len %u name_len %u\n",
- 			btrfs_dir_transid(eb, di), data_len, name_len);
- 		di = (struct btrfs_dir_item *)((char *)di + len);
-@@ -598,10 +597,9 @@ void btrfs_print_tree(const struct extent_buffer *c, bool follow)
- 	print_eb_refs_lock(c);
- 	for (i = 0; i < nr; i++) {
- 		btrfs_node_key_to_cpu(c, &key, i);
--		pr_info("\tkey %d (%llu %u %llu) block %llu gen %llu\n",
--		       i, key.objectid, key.type, key.offset,
--		       btrfs_node_blockptr(c, i),
--		       btrfs_node_ptr_generation(c, i));
-+		pr_info("\tkey %d " BTRFS_KEY_FMT " block %llu gen %llu\n",
-+			i, BTRFS_KEY_FMT_VALUE(&key), btrfs_node_blockptr(c, i),
-+			btrfs_node_ptr_generation(c, i));
- 	}
- 	if (!follow)
- 		return;
-diff --git a/fs/btrfs/qgroup.c b/fs/btrfs/qgroup.c
-index 302bb3ecf39a3..1f83af14568ca 100644
---- a/fs/btrfs/qgroup.c
-+++ b/fs/btrfs/qgroup.c
-@@ -3734,10 +3734,8 @@ static int qgroup_rescan_leaf(struct btrfs_trans_handle *trans,
- 					 path, 1, 0);
- 
- 	btrfs_debug(fs_info,
--		"current progress key (%llu %u %llu), search_slot ret %d",
--		fs_info->qgroup_rescan_progress.objectid,
--		fs_info->qgroup_rescan_progress.type,
--		fs_info->qgroup_rescan_progress.offset, ret);
-+		    "current progress key " BTRFS_KEY_FMT ", search_slot ret %d",
-+		    BTRFS_KEY_FMT_VALUE(&fs_info->qgroup_rescan_progress), ret);
- 
- 	if (ret) {
- 		/*
-diff --git a/fs/btrfs/relocation.c b/fs/btrfs/relocation.c
-index 0765e06d00b80..fc76013b1a3e0 100644
---- a/fs/btrfs/relocation.c
-+++ b/fs/btrfs/relocation.c
-@@ -615,8 +615,8 @@ static struct btrfs_root *create_reloc_root(struct btrfs_trans_handle *trans,
- 
- 			btrfs_disk_key_to_cpu(&cpu_key, &root->root_item.drop_progress);
- 			btrfs_err(fs_info,
--	"cannot relocate partially dropped subvolume %llu, drop progress key (%llu %u %llu)",
--				  objectid, cpu_key.objectid, cpu_key.type, cpu_key.offset);
-+	"cannot relocate partially dropped subvolume %llu, drop progress key " BTRFS_KEY_FMT,
-+				  objectid, BTRFS_KEY_FMT_VALUE(&cpu_key));
- 			ret = -EUCLEAN;
- 			goto fail;
- 		}
-diff --git a/fs/btrfs/root-tree.c b/fs/btrfs/root-tree.c
-index d07eab70f759d..6a7e297ab0a7a 100644
---- a/fs/btrfs/root-tree.c
-+++ b/fs/btrfs/root-tree.c
-@@ -147,8 +147,8 @@ int btrfs_update_root(struct btrfs_trans_handle *trans, struct btrfs_root
- 
- 	if (unlikely(ret > 0)) {
- 		btrfs_crit(fs_info,
--			"unable to find root key (%llu %u %llu) in tree %llu",
--			key->objectid, key->type, key->offset, btrfs_root_id(root));
-+			   "unable to find root key " BTRFS_KEY_FMT " in tree %llu",
-+			   BTRFS_KEY_FMT_VALUE(key), btrfs_root_id(root));
- 		ret = -EUCLEAN;
- 		btrfs_abort_transaction(trans, ret);
- 		return ret;
-diff --git a/fs/btrfs/send.c b/fs/btrfs/send.c
-index 9012ce7a742f4..04473387ee8bf 100644
---- a/fs/btrfs/send.c
-+++ b/fs/btrfs/send.c
-@@ -1053,10 +1053,8 @@ static int iterate_inode_ref(struct btrfs_root *root, struct btrfs_path *path,
- 				}
- 				if (unlikely(start < p->buf)) {
- 					btrfs_err(root->fs_info,
--			"send: path ref buffer underflow for key (%llu %u %llu)",
--						  found_key->objectid,
--						  found_key->type,
--						  found_key->offset);
-+			  "send: path ref buffer underflow for key " BTRFS_KEY_FMT,
-+						  BTRFS_KEY_FMT_VALUE(found_key));
- 					ret = -EINVAL;
- 					goto out;
- 				}
-@@ -7276,8 +7274,8 @@ static int search_key_again(const struct send_ctx *sctx,
- 	if (unlikely(ret > 0)) {
- 		btrfs_print_tree(path->nodes[path->lowest_level], false);
- 		btrfs_err(root->fs_info,
--"send: key (%llu %u %llu) not found in %s root %llu, lowest_level %d, slot %d",
--			  key->objectid, key->type, key->offset,
-+"send: key " BTRFS_KEY_FMT" not found in %s root %llu, lowest_level %d, slot %d",
-+			  BTRFS_KEY_FMT_VALUE(key),
- 			  (root == sctx->parent_root ? "parent" : "send"),
- 			  btrfs_root_id(root), path->lowest_level,
- 			  path->slots[path->lowest_level]);
-diff --git a/fs/btrfs/tree-checker.c b/fs/btrfs/tree-checker.c
-index 33a45737c4cf4..db7402836340a 100644
---- a/fs/btrfs/tree-checker.c
-+++ b/fs/btrfs/tree-checker.c
-@@ -1635,10 +1635,9 @@ static int check_extent_item(struct extent_buffer *leaf,
- 
- 		if (unlikely(prev_end > key->objectid)) {
- 			extent_err(leaf, slot,
--	"previous extent [%llu %u %llu] overlaps current extent [%llu %u %llu]",
--				   prev_key->objectid, prev_key->type,
--				   prev_key->offset, key->objectid, key->type,
--				   key->offset);
-+	"previous extent " BTRFS_KEY_FMT " overlaps current extent " BTRFS_KEY_FMT,
-+				   BTRFS_KEY_FMT_VALUE(prev_key),
-+				   BTRFS_KEY_FMT_VALUE(key));
- 			return -EUCLEAN;
- 		}
- 	}
-@@ -2077,10 +2076,9 @@ enum btrfs_tree_block_status __btrfs_check_leaf(struct extent_buffer *leaf)
- 		/* Make sure the keys are in the right order */
- 		if (unlikely(btrfs_comp_cpu_keys(&prev_key, &key) >= 0)) {
- 			generic_err(leaf, slot,
--	"bad key order, prev (%llu %u %llu) current (%llu %u %llu)",
--				prev_key.objectid, prev_key.type,
--				prev_key.offset, key.objectid, key.type,
--				key.offset);
-+	"bad key order, prev " BTRFS_KEY_FMT " current " BTRFS_KEY_FMT,
-+				    BTRFS_KEY_FMT_VALUE(&prev_key),
-+				    BTRFS_KEY_FMT_VALUE(&key));
- 			return BTRFS_TREE_BLOCK_BAD_KEY_ORDER;
- 		}
- 
-@@ -2198,10 +2196,9 @@ enum btrfs_tree_block_status __btrfs_check_node(struct extent_buffer *node)
- 
- 		if (unlikely(btrfs_comp_cpu_keys(&key, &next_key) >= 0)) {
- 			generic_err(node, slot,
--	"bad key order, current (%llu %u %llu) next (%llu %u %llu)",
--				key.objectid, key.type, key.offset,
--				next_key.objectid, next_key.type,
--				next_key.offset);
-+	"bad key order, current " BTRFS_KEY_FMT " next " BTRFS_KEY_FMT,
-+				    BTRFS_KEY_FMT_VALUE(&key),
-+				    BTRFS_KEY_FMT_VALUE(&next_key));
- 			return BTRFS_TREE_BLOCK_BAD_KEY_ORDER;
- 		}
- 	}
-diff --git a/fs/btrfs/tree-log.c b/fs/btrfs/tree-log.c
-index c45c5112c0350..4fd9a417fc5f7 100644
---- a/fs/btrfs/tree-log.c
-+++ b/fs/btrfs/tree-log.c
-@@ -199,9 +199,9 @@ static void do_abort_log_replay(struct walk_control *wc, const char *function,
- 
- 	if (wc->log_leaf) {
- 		btrfs_crit(fs_info,
--	  "log tree (for root %llu) leaf currently being processed (slot %d key %llu %u %llu):",
-+"log tree (for root %llu) leaf currently being processed (slot %d key " BTRFS_KEY_FMT "):",
- 			   btrfs_root_id(wc->root), wc->log_slot,
--			   wc->log_key.objectid, wc->log_key.type, wc->log_key.offset);
-+			   BTRFS_KEY_FMT_VALUE(&wc->log_key));
- 		btrfs_print_leaf(wc->log_leaf);
+-	if ((!done || timeout) && running) {
++	if (!running) {
++		dev_err(dev, "DEVCMD %d %s fw not running\n",
++			opcode, pdsc_devcmd_str(opcode));
++		pdsc_devcmd_clean(pdsc);
++		return -ENXIO;
++	}
++
++	if (!done || timeout) {
+ 		dev_err(dev, "DEVCMD %d %s timeout, done %d timeout %d max_seconds=%d\n",
+ 			opcode, pdsc_devcmd_str(opcode), done, timeout,
+ 			max_seconds);
+-		err = -ETIMEDOUT;
+ 		pdsc_devcmd_clean(pdsc);
++		return -ETIMEDOUT;
  	}
  
-@@ -511,9 +511,9 @@ static int overwrite_item(struct walk_control *wc)
- 	ret = btrfs_search_slot(NULL, root, &wc->log_key, wc->subvol_path, 0, 0);
- 	if (ret < 0) {
- 		btrfs_abort_log_replay(wc, ret,
--		"failed to search subvolume tree for key (%llu %u %llu) root %llu",
--				       wc->log_key.objectid, wc->log_key.type,
--				       wc->log_key.offset, btrfs_root_id(root));
-+		"failed to search subvolume tree for key " BTRFS_KEY_FMT " root %llu",
-+				       BTRFS_KEY_FMT_VALUE(&wc->log_key),
-+				       btrfs_root_id(root));
- 		return ret;
- 	}
- 
-@@ -619,9 +619,8 @@ static int overwrite_item(struct walk_control *wc)
- 			btrfs_extend_item(trans, wc->subvol_path, item_size - found_size);
- 	} else if (ret) {
- 		btrfs_abort_log_replay(wc, ret,
--				       "failed to insert item for key (%llu %u %llu)",
--				       wc->log_key.objectid, wc->log_key.type,
--				       wc->log_key.offset);
-+				       "failed to insert item for key " BTRFS_KEY_FMT,
-+				       BTRFS_KEY_FMT_VALUE(&wc->log_key));
- 		return ret;
- 	}
- 	dst_ptr = btrfs_item_ptr_offset(dst_eb, dst_slot);
-@@ -830,9 +829,9 @@ static noinline int replay_one_extent(struct walk_control *wc)
- 				      &wc->log_key, sizeof(*item));
- 	if (ret) {
- 		btrfs_abort_log_replay(wc, ret,
--		       "failed to insert item with key (%llu %u %llu) root %llu",
--				       wc->log_key.objectid, wc->log_key.type,
--				       wc->log_key.offset, btrfs_root_id(root));
-+		       "failed to insert item with key " BTRFS_KEY_FMT " root %llu",
-+				       BTRFS_KEY_FMT_VALUE(&wc->log_key),
-+				       btrfs_root_id(root));
- 		goto out;
- 	}
- 	dest_offset = btrfs_item_ptr_offset(wc->subvol_path->nodes[0],
-@@ -1349,9 +1348,9 @@ static inline int __add_inode_ref(struct walk_control *wc,
- 	ret = btrfs_search_slot(NULL, root, &search_key, wc->subvol_path, 0, 0);
- 	if (ret < 0) {
- 		btrfs_abort_log_replay(wc, ret,
--	       "failed to search subvolume tree for key (%llu %u %llu) root %llu",
--				       search_key.objectid, search_key.type,
--				       search_key.offset, btrfs_root_id(root));
-+	       "failed to search subvolume tree for key " BTRFS_KEY_FMT " root %llu",
-+				       BTRFS_KEY_FMT_VALUE(&search_key),
-+				       btrfs_root_id(root));
- 		return ret;
- 	} else if (ret == 0) {
- 		/*
-@@ -1484,9 +1483,9 @@ static int unlink_old_inode_refs(struct walk_control *wc, struct btrfs_inode *in
- 	}
- 	if (ret < 0) {
- 		btrfs_abort_log_replay(wc, ret,
--	       "failed to search subvolume tree for key (%llu %u %llu) root %llu",
--				       wc->log_key.objectid, wc->log_key.type,
--				       wc->log_key.offset, btrfs_root_id(root));
-+	       "failed to search subvolume tree for key " BTRFS_KEY_FMT " root %llu",
-+				       BTRFS_KEY_FMT_VALUE(&wc->log_key),
-+				       btrfs_root_id(root));
- 		goto out;
- 	}
- 
-@@ -2701,10 +2700,9 @@ static noinline int replay_dir_deletes(struct walk_control *wc,
- 						wc->subvol_path, 0, 0);
- 			if (ret < 0) {
- 				btrfs_abort_log_replay(wc, ret,
--			       "failed to search root %llu for key (%llu %u %llu)",
-+			       "failed to search root %llu for key " BTRFS_KEY_FMT,
- 						       btrfs_root_id(root),
--						       dir_key.objectid, dir_key.type,
--						       dir_key.offset);
-+						       BTRFS_KEY_FMT_VALUE(&dir_key));
- 				goto out;
- 			}
- 
+ 	status = pdsc_devcmd_status(pdsc);
 -- 
 2.53.0
 
