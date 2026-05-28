@@ -1,60 +1,63 @@
-Return-Path: <stable+bounces-255963-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-255365-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id OMZJIRGoGGp+lwgAu9opvQ
-	(envelope-from <stable+bounces-255963-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:39:45 +0200
+	id oCGbOTahGGqblggAu9opvQ
+	(envelope-from <stable+bounces-255365-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:10:30 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0623E5F9412
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:39:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8253B5F7FAC
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:10:30 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 6F7EC313F75D
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 20:32:51 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 99C3E30F886E
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 20:05:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 69A5033439A;
-	Thu, 28 May 2026 20:32:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C963A40C5B6;
+	Thu, 28 May 2026 20:05:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VWwWcvxc"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AmKcmQkA"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0009B223328;
-	Thu, 28 May 2026 20:32:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9732341B37D;
+	Thu, 28 May 2026 20:05:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780000370; cv=none; b=jRs/ZnQbZ2iVay3iYXPBQl43telmmmXUj4M3TemvcomWdX8171VmrrohZC8wr+aZVsAEleZRFz+0zJJr5BttqKazBuIf7V8PuJNPlwA9fYQYuRbAChw0v1NTFiPqciEYuUPFAdDQn+Fmwd2fAZgo7SyGN6a5iwARmNPyc8iNYss=
+	t=1779998705; cv=none; b=NZL8ky9TmN9FNgXz3cLusjK/4Kb1LZ+RdTunlICAZtbavrg3NmtRbgG8Biran3tpR3ZYGpI8Ng40tA84hYJS1fqWm/Sk5J72BouiPJIWVq/AZhAlNod40cgFTKNIMzcvAPCeADBmTGCoUUAjoxRr0l4bzZb8twIw91v34sKIWpU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780000370; c=relaxed/simple;
-	bh=YzCb2RPdxtlW0xqPGBtvGC53p2CBHBTdGbZ5NysP53A=;
+	s=arc-20240116; t=1779998705; c=relaxed/simple;
+	bh=WCfEPlAWoK9oGl6XvTVxFb3a0qBYDWN23lnBBxK7uXE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=rRlDmGKQjVUMZonk/v2VqLowxN6bLGxs+ODYvy6szlWtN+Gxbp7MWLeNv58eQN7bRXGSLYJe279DGsp5uT+yt0D24Tlylrla9j90L3uOroviYiElmyOVsg9/ZaCIzCuRqrzwlTBEv7FPrwBvO7fzdeM5vD+9eoqu0FHhjGCDm6Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VWwWcvxc; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5EB221F000E9;
-	Thu, 28 May 2026 20:32:48 +0000 (UTC)
+	 MIME-Version; b=hnAw1Ykpyl/pDf6qotus6MEVBBGjmzY1LlIR1f1ISgeIkYzc5RwIu1YrkdEUD8Tyo4tjp3C7V9Q0omCA5LAwMAsH6L2sixnfeH6MHcOQEfZv+R6QVlJNn2yg8PQpDp2UrUfiUbE0HInG5bSPfshAFAvWk8paIN+pacuVOotAoW4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AmKcmQkA; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C05981F00A3A;
+	Thu, 28 May 2026 20:05:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780000368;
-	bh=p7n4Xu1LdMnr07zhAbXbe+S9v9NpqLef0pNiU4/xp+E=;
+	s=korg; t=1779998704;
+	bh=yFHvJvqKVXUFbIbGCSgli6wPNxhhQUdkUH9xIuc6+dk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=VWwWcvxct6TzaWFDaRslbsT4Hbor63STPSqJ7Pbo3tdtoZr4rrQ9WWYvW9b6nVB7M
-	 rS8bbM7af1USmIOf1mCCbIl/CrIBTY+u8EIZerICB+w4uQe8P1BjVXHv9lKFdXMIfn
-	 dbJ+sVAPvKTryug70iM7ZrZuW4t88KJ1n5ib6D48=
+	b=AmKcmQkAEGNBdIBqp7E4LcO5Ag+DhbXfJL/1/omODKkR2s39nG+PwaAalNlb/auGx
+	 g0Aw777Aj5z9dNVR2pem9niiHCRXYrqMJ1+P2JOR+/cYlXIsQ2bZjN0CIPHKUiJZS6
+	 x9tmz19Vk+HJV99VysntZIP2qObGOv+ECJlsYP8o=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	DaeMyung Kang <charsyam@gmail.com>,
-	Namjae Jeon <linkinjeon@kernel.org>,
-	Steve French <stfrench@microsoft.com>,
+	David Howells <dhowells@redhat.com>,
+	Paulo Alcantara <pc@manguebit.org>,
+	Matthew Wilcox <willy@infradead.org>,
+	netfs@lists.linux.dev,
+	linux-fsdevel@vger.kernel.org,
+	Christian Brauner <brauner@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 021/272] ksmbd: close durable scavenger races against m_fp_list lookups
-Date: Thu, 28 May 2026 21:46:35 +0200
-Message-ID: <20260528194629.977524549@linuxfoundation.org>
+Subject: [PATCH 7.0 267/461] netfs: Fix partial invalidation of streaming-write folio
+Date: Thu, 28 May 2026 21:46:36 +0200
+Message-ID: <20260528194654.895369250@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260528194629.379955525@linuxfoundation.org>
-References: <20260528194629.379955525@linuxfoundation.org>
+In-Reply-To: <20260528194646.819809818@linuxfoundation.org>
+References: <20260528194646.819809818@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -74,285 +77,73 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,kernel.org,microsoft.com];
-	TAGGED_FROM(0.00)[bounces-255963-lists,stable=lfdr.de];
-	PRECEDENCE_BULK(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-255365-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
 	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim]
-X-Rspamd-Queue-Id: 0623E5F9412
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_SEVEN(0.00)[10];
+	MID_RHS_MATCH_FROM(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,sashiko.dev:url,infradead.org:email,linux.dev:email,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,manguebit.org:email,msgid.link:url]
+X-Rspamd-Queue-Id: 8253B5F7FAC
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+7.0-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: DaeMyung Kang <charsyam@gmail.com>
+From: David Howells <dhowells@redhat.com>
 
-[ Upstream commit bf736184d063da1a552ffeff0481813599a182cc ]
+[ Upstream commit 6d91acc7fb85d33ea58fca9b964a32a453937f4b ]
 
-ksmbd_durable_scavenger() has two related races against any walker
-that iterates f_ci->m_fp_list, including ksmbd_lookup_fd_inode()
-(used by ksmbd_vfs_rename) and the share-mode checks in
-fs/smb/server/smb_common.c.
+In netfs_invalidate_folio(), if the region of a partial invalidation
+overlaps the front (but not all) of a dirty write cached in a streaming
+write page (dirty, but not uptodate, with the dirty region tracked by a
+netfs_folio struct), the function modifies the dirty region - but
+incorrectly as it moves the region forward by setting the start to the
+start, not the end, of the invalidation region.
 
-(1) fp->node list-head reuse.  Durable-preserved handles can remain
-linked on f_ci->m_fp_list after session teardown so share-mode checks
-still see them while the handle is reconnectable.  The scavenger
-collected expired handles by adding fp->node to a local
-scavenger_list after removing them from the global durable idr.
-Because fp->node is the same list_head used by m_fp_list,
-list_add(&fp->node, &scavenger_list) overwrites the m_fp_list links
-and corrupts both lists.  CONFIG_DEBUG_LIST can report this on the
-share-mode walk path.
+Fix this by setting finfo->dirty_offset to the end of the invalidation
+region (iend).
 
-(2) Refcount race against m_fp_list walkers.  The scavenger qualifies
-an expired durable handle with atomic_read(&fp->refcount) > 1 and
-fp->conn under global_ft.lock, removes fp from global_ft, then drops
-global_ft.lock before unlinking fp from m_fp_list and freeing it.
-During that gap fp is still linked on m_fp_list with f_state ==
-FP_INITED.  ksmbd_lookup_fd_inode() under m_lock read calls
-ksmbd_fp_get() (atomic_inc_not_zero on refcount that is still 1) and
-takes a live reference; the scavenger then unlinks and frees fp
-while the holder owns a reference, leading to UAF on the holder's
-subsequent ksmbd_fd_put() and on any field reads performed by a
-concurrent share-mode walker that iterates m_fp_list without taking
-ksmbd_fp_get() (smb_check_perm_dleases-like paths).
-
-Fix both:
-
-  * Stop reusing fp->node as a scavenger-private list node.  Remove
-    one expired handle from global_ft under global_ft.lock, take an
-    explicit transient reference, drop the lock, unlink fp->node
-    from m_fp_list under f_ci->m_lock, then drop both the durable
-    lifetime and transient references with atomic_sub_and_test(2,
-    &fp->refcount).  If the scavenger is the last putter the close
-    runs there; otherwise an in-flight holder that already raced
-    through the m_fp_list lookup owns the final close via its
-    ksmbd_fd_put() path.  The one-at-a-time disposal can rescan the
-    durable idr when multiple handles expire in the same pass, but
-    durable scavenging is a background expiration path and the final
-    full scan recomputes min_timeout before the next wait.
-
-  * Clear fp->persistent_id inside __ksmbd_remove_durable_fd() right
-    after idr_remove(), so a delayed final close from a holder that
-    snatched fp does not re-issue idr_remove() on a persistent id
-    that idr_alloc_cyclic() in ksmbd_open_durable_fd() may have
-    already handed out to a brand-new durable handle.
-
-  * Bypass the per-conn open_files_count decrement in
-    __put_fd_final() when fp is detached from any session table
-    (fp->conn cleared by session_fd_check() at durable preserve --
-    paired with the volatile_id clear at unpublish, so checking
-    fp->conn alone is sufficient).  The walker that owns the final
-    close runs from an unrelated work->conn whose
-    stats.open_files_count never tracked this durable fp; without
-    this guard the holder would underflow that unrelated counter.
-
-The two races are folded into one patch because patch (1) alone
-cleans up the corrupted list but leaves a deterministic UAF window
-for m_fp_list walkers that the transient-reference and
-persistent_id discipline in (2) close; bisecting onto an
-intermediate state would land on a UAF that pre-patch chaos merely
-made less reproducible.
-
-Validation:
-  * CONFIG_DEBUG_LIST coverage for the list_head reuse path.
-  * KASAN-enabled direct SMB2 durable-handle coverage that exercised
-    ksmbd_durable_scavenger() and non-NULL ksmbd_lookup_fd_inode()
-    returns while durable handles expired under concurrent rename
-    lookups, with no KASAN, UAF, list-corruption, ODEBUG, or WARNING
-    reports.
-  * checkpatch --strict
-  * make -j$(nproc) M=fs/smb/server
-
-Fixes: d484d621d40f ("ksmbd: add durable scavenger timer")
-Signed-off-by: DaeMyung Kang <charsyam@gmail.com>
-Acked-by: Namjae Jeon <linkinjeon@kernel.org>
-Signed-off-by: Steve French <stfrench@microsoft.com>
+Fixes: cce6bfa6ca0e ("netfs: Fix trimming of streaming-write folios in netfs_inval_folio()")
+Closes: https://sashiko.dev/#/patchset/20260414082004.3756080-1-dhowells%40redhat.com
+Signed-off-by: David Howells <dhowells@redhat.com>
+Link: https://patch.msgid.link/20260512123404.719402-21-dhowells@redhat.com
+cc: Paulo Alcantara <pc@manguebit.org>
+cc: Matthew Wilcox <willy@infradead.org>
+cc: netfs@lists.linux.dev
+cc: linux-fsdevel@vger.kernel.org
+Signed-off-by: Christian Brauner <brauner@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/smb/server/vfs_cache.c | 104 ++++++++++++++++++++++++++++----------
- 1 file changed, 77 insertions(+), 27 deletions(-)
+ fs/netfs/misc.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/fs/smb/server/vfs_cache.c b/fs/smb/server/vfs_cache.c
-index d29cc1d01bd2c..a8fed467e9b69 100644
---- a/fs/smb/server/vfs_cache.c
-+++ b/fs/smb/server/vfs_cache.c
-@@ -325,6 +325,14 @@ static void __ksmbd_remove_durable_fd(struct ksmbd_file *fp)
- 		return;
- 
- 	idr_remove(global_ft.idr, fp->persistent_id);
-+	/*
-+	 * Clear persistent_id so a later __ksmbd_close_fd() that runs from a
-+	 * delayed putter (e.g. when a concurrent ksmbd_lookup_fd_inode()
-+	 * walker held the final reference) does not re-issue idr_remove() on
-+	 * an id that idr_alloc_cyclic() may have already handed out to a new
-+	 * durable handle.
-+	 */
-+	fp->persistent_id = KSMBD_NO_FID;
- }
- 
- static void ksmbd_remove_durable_fd(struct ksmbd_file *fp)
-@@ -417,6 +425,20 @@ static struct ksmbd_file *__ksmbd_lookup_fd(struct ksmbd_file_table *ft,
- 
- static void __put_fd_final(struct ksmbd_work *work, struct ksmbd_file *fp)
- {
-+	/*
-+	 * Detached durable fp -- session_fd_check() cleared fp->conn at
-+	 * preserve, so this fp is no longer tracked by any conn's
-+	 * stats.open_files_count.  This happens when
-+	 * ksmbd_scavenger_dispose_dh() hands the final close off to an
-+	 * m_fp_list walker (e.g. ksmbd_lookup_fd_inode()) whose work->conn
-+	 * is unrelated to the conn that originally opened the handle; close
-+	 * via the NULL-ft path so we do not underflow that unrelated
-+	 * counter.
-+	 */
-+	if (!fp->conn) {
-+		__ksmbd_close_fd(NULL, fp);
-+		return;
-+	}
- 	__ksmbd_close_fd(&work->sess->file_table, fp);
- 	atomic_dec(&work->conn->stats.open_files_count);
- }
-@@ -788,24 +810,37 @@ static bool ksmbd_durable_scavenger_alive(void)
- 	return true;
- }
- 
--static void ksmbd_scavenger_dispose_dh(struct list_head *head)
-+static void ksmbd_scavenger_dispose_dh(struct ksmbd_file *fp)
- {
--	while (!list_empty(head)) {
--		struct ksmbd_file *fp;
-+	/*
-+	 * Durable-preserved fp can remain linked on f_ci->m_fp_list for
-+	 * share-mode checks.  Unlink it before final close; fp->node is not
-+	 * available as a scavenger-private list node because re-adding it to
-+	 * another list corrupts m_fp_list.
-+	 */
-+	down_write(&fp->f_ci->m_lock);
-+	list_del_init(&fp->node);
-+	up_write(&fp->f_ci->m_lock);
- 
--		fp = list_first_entry(head, struct ksmbd_file, node);
--		list_del_init(&fp->node);
-+	/*
-+	 * Drop both the durable lifetime reference and the transient reference
-+	 * taken by the scavenger under global_ft.lock.  If a concurrent
-+	 * ksmbd_lookup_fd_inode() (or any other m_fp_list walker) snatched fp
-+	 * before the unlink above, that holder owns the final close via
-+	 * ksmbd_fd_put() -> __ksmbd_close_fd().  Otherwise the scavenger is
-+	 * the last putter and finalises fp here.
-+	 */
-+	if (atomic_sub_and_test(2, &fp->refcount))
- 		__ksmbd_close_fd(NULL, fp);
--	}
- }
- 
- static int ksmbd_durable_scavenger(void *dummy)
- {
- 	struct ksmbd_file *fp = NULL;
-+	struct ksmbd_file *expired_fp;
- 	unsigned int id;
- 	unsigned int min_timeout = 1;
- 	bool found_fp_timeout;
--	LIST_HEAD(scavenger_list);
- 	unsigned long remaining_jiffies;
- 
- 	__module_get(THIS_MODULE);
-@@ -815,8 +850,6 @@ static int ksmbd_durable_scavenger(void *dummy)
- 		if (try_to_freeze())
- 			continue;
- 
--		found_fp_timeout = false;
--
- 		remaining_jiffies = wait_event_timeout(dh_wq,
- 				   ksmbd_durable_scavenger_alive() == false,
- 				   __msecs_to_jiffies(min_timeout));
-@@ -825,23 +858,39 @@ static int ksmbd_durable_scavenger(void *dummy)
- 		else
- 			min_timeout = DURABLE_HANDLE_MAX_TIMEOUT;
- 
--		write_lock(&global_ft.lock);
--		idr_for_each_entry(global_ft.idr, fp, id) {
--			if (!fp->durable_timeout)
--				continue;
--
--			if (atomic_read(&fp->refcount) > 1 ||
--			    fp->conn)
--				continue;
--
--			found_fp_timeout = true;
--			if (fp->durable_scavenger_timeout <=
--			    jiffies_to_msecs(jiffies)) {
--				__ksmbd_remove_durable_fd(fp);
--				list_add(&fp->node, &scavenger_list);
--			} else {
-+		do {
-+			expired_fp = NULL;
-+			found_fp_timeout = false;
-+
-+			write_lock(&global_ft.lock);
-+			idr_for_each_entry(global_ft.idr, fp, id) {
- 				unsigned long durable_timeout;
- 
-+				if (!fp->durable_timeout)
-+					continue;
-+
-+				if (atomic_read(&fp->refcount) > 1 ||
-+				    fp->conn)
-+					continue;
-+
-+				found_fp_timeout = true;
-+				if (fp->durable_scavenger_timeout <=
-+				    jiffies_to_msecs(jiffies)) {
-+					__ksmbd_remove_durable_fd(fp);
-+					/*
-+					 * Take a transient reference so fp
-+					 * cannot be freed by an in-flight
-+					 * ksmbd_lookup_fd_inode() that found
-+					 * it through f_ci->m_fp_list while we
-+					 * drop global_ft.lock and reach the
-+					 * m_fp_list unlink in
-+					 * ksmbd_scavenger_dispose_dh().
-+					 */
-+					atomic_inc(&fp->refcount);
-+					expired_fp = fp;
-+					break;
-+				}
-+
- 				durable_timeout =
- 					fp->durable_scavenger_timeout -
- 						jiffies_to_msecs(jiffies);
-@@ -849,10 +898,11 @@ static int ksmbd_durable_scavenger(void *dummy)
- 				if (min_timeout > durable_timeout)
- 					min_timeout = durable_timeout;
- 			}
--		}
--		write_unlock(&global_ft.lock);
-+			write_unlock(&global_ft.lock);
- 
--		ksmbd_scavenger_dispose_dh(&scavenger_list);
-+			if (expired_fp)
-+				ksmbd_scavenger_dispose_dh(expired_fp);
-+		} while (expired_fp);
- 
- 		if (found_fp_timeout == false)
- 			break;
+diff --git a/fs/netfs/misc.c b/fs/netfs/misc.c
+index 24b20e80e9a8a..5d554512ed23a 100644
+--- a/fs/netfs/misc.c
++++ b/fs/netfs/misc.c
+@@ -262,7 +262,7 @@ void netfs_invalidate_folio(struct folio *folio, size_t offset, size_t length)
+ 				goto erase_completely;
+ 			/* Move the start of the data. */
+ 			finfo->dirty_len = fend - iend;
+-			finfo->dirty_offset = offset;
++			finfo->dirty_offset = iend;
+ 			trace_netfs_folio(folio, netfs_folio_trace_invalidate_front);
+ 			return;
+ 		}
 -- 
 2.53.0
 
