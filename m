@@ -1,60 +1,59 @@
-Return-Path: <stable+bounces-256227-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-255459-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id eNS6IIatGGpolwgAu9opvQ
-	(envelope-from <stable+bounces-256227-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 23:03:02 +0200
+	id KEEvIVmhGGqnlggAu9opvQ
+	(envelope-from <stable+bounces-255459-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:11:05 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id A3EAE5FA246
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 23:03:01 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3A6D85F7FF7
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:11:05 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id C83C6312F04F
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 20:45:23 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id C6914302316F
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 20:09:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BE65E34B682;
-	Thu, 28 May 2026 20:45:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DC04D33F5B4;
+	Thu, 28 May 2026 20:09:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="X/SxY7c8"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="p51lI88N"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 41D88335564;
-	Thu, 28 May 2026 20:45:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B427C3164B7;
+	Thu, 28 May 2026 20:09:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780001113; cv=none; b=Fs0tM3OtSN1SR5rh7tTDGI3Cpd8FC/p38AiOnWvi5Nwybo3pUUI9pRG7/2JMyZx+Q6rA9/s0qF7FEt3W9l5+Z8fgIoRlVTFL+hhGPVnmu0Hh+jALQ0Fo8jDCTKWGZyIB7NQ6R+kmQA9FdctA7lqgY2bd3B2FIGeLZRxHG+Xukxw=
+	t=1779998971; cv=none; b=cKIvMYxR/FcPVU1WP0kEZ+NJWMkKIdlFTBxdFcLPerTx3FIV5qplgkKRP/+p5szs8+WozxjmUSvA/B1mxCqdlv1Gfnvh4C/Tj0f87QO/XnpRNMRB3LL1EnFaNVYKSsIekdGgZZgqv6743hVgi2adh7x80F8uvzCGz/jbKsXXfZg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780001113; c=relaxed/simple;
-	bh=S8R+65uiIK0qtBIm6xR8InZnwP5fmTLh52W/6tqikyM=;
+	s=arc-20240116; t=1779998971; c=relaxed/simple;
+	bh=gNEH8lP9jnj9cVULMpXpoxf1MUAY70Q5ZuFLaE+zUVM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=R0QJWiraeU+Ir7qHdeXjk5qwSZ7l9fzCZnLB/1/arz7ytNnanhk8neSSWtzGp/00V+CuoHtGzkAnt0K3alkOJxylX9LEx5ALI/eBTqnZbvQIhiNqoKiYUabl8AlHkygSNMFX5ca7YEnWjIHvlHq6L4hIMsxhJiMQtZUHTWwQHYk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=X/SxY7c8; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 59C9B1F00A3A;
-	Thu, 28 May 2026 20:45:11 +0000 (UTC)
+	 MIME-Version; b=YusYybSbUf9zM8PRgm03mJSJ1LKO0xgTg+2jFPxdKqyCGL8HVIgpxuK4aY6rtdZZ6KLCeLm7dAVU6ClAF1ysLFq85rOB1gYo8pfmPn+rQorLYV6p6T/3S9obM4mTugy0Duon944Kv8StVggw+w9hMVULSJ6Yoji7uxafDPeWp5w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=p51lI88N; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E01BC1F000E9;
+	Thu, 28 May 2026 20:09:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780001111;
-	bh=Qk1559pbsXYimONJ7Q+ZE+PuHNOgDMoJeXJmslhEEEU=;
+	s=korg; t=1779998970;
+	bh=neOxN2tUnYaKj51SKDSIs1Z0KiUF/22LO3tqOlWKmI8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=X/SxY7c89LIVcRgPiKD4vW4k4osXa1Tp6tLfeHt6SaWV3eEn7h11T12lVeFmcGZ9v
-	 vJbZgcBfe6by/qOc9pDPiLjjvC+tui6s6WSs/o0vwiaEUTmp+9LAvEOnTgRAWlbFk0
-	 HQ3bXx3W5ExYKLmA3Kl1Pt9j6zSFZJQjjtzkfA+Y=
+	b=p51lI88NjZdjby5qCJxK9NpxmNQm38BI6i0cb78S/JuMJRUx9VpSvRBb6ZQyW8ZvT
+	 A6b3BOTlDcoO9mmiBGAxRJU/Y2YPAkKtHWapYjVQvaR8o3mHFpfYLwb0y/iofa1yvE
+	 RK5+HFN56kipgGBepAJ8qG1xs9N8s6dUvk0foNac=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Namjae Jeon <linkinjeon@kernel.org>,
-	Steve French <stfrench@microsoft.com>,
-	Alva Lan <alvalan9@foxmail.com>,
+	Shuicheng Lin <shuicheng.lin@intel.com>,
+	Matt Roper <matthew.d.roper@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 012/186] ksmbd: add durable scavenger timer
+Subject: [PATCH 7.0 363/461] drm/xe: Consolidate workaround entries for Wa_18033852989
 Date: Thu, 28 May 2026 21:48:12 +0200
-Message-ID: <20260528194929.286489127@linuxfoundation.org>
+Message-ID: <20260528194657.943189738@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260528194928.941004471@linuxfoundation.org>
-References: <20260528194928.941004471@linuxfoundation.org>
+In-Reply-To: <20260528194646.819809818@linuxfoundation.org>
+References: <20260528194646.819809818@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,370 +68,90 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,kernel.org,microsoft.com,foxmail.com];
-	TAGGED_FROM(0.00)[bounces-256227-lists,stable=lfdr.de];
-	PRECEDENCE_BULK(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
+	RCVD_TLS_LAST(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	TAGGED_FROM(0.00)[bounces-255459-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[7];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,foxmail.com:email]
-X-Rspamd-Queue-Id: A3EAE5FA246
+	RCPT_COUNT_FIVE(0.00)[6];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,linuxfoundation.org:mid,linuxfoundation.org:dkim,intel.com:email,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo]
+X-Rspamd-Queue-Id: 3A6D85F7FF7
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+7.0-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Namjae Jeon <linkinjeon@kernel.org>
+From: Matt Roper <matthew.d.roper@intel.com>
 
-[ Upstream commit d484d621d40f4a8b8959008802d79bef3609641b ]
+[ Upstream commit fe681e7b44d78fd77d79de21eca58c3b6bdcda0e ]
 
-Launch ksmbd-durable-scavenger kernel thread to scan durable fps that
-have not been reclaimed by a client within the configured time.
+Wa_18033852989 applies to all graphics versions from 20.01 through 20.04
+(inclusive).  Consolidate the RTP entries into a single range-based entry.
 
-Signed-off-by: Namjae Jeon <linkinjeon@kernel.org>
-Signed-off-by: Steve French <stfrench@microsoft.com>
-[ Minor context conflict resolved. ]
-Signed-off-by: Alva Lan <alvalan9@foxmail.com>
+Reviewed-by: Shuicheng Lin <shuicheng.lin@intel.com>
+Link: https://patch.msgid.link/20260220-forupstream-wa_cleanup-v2-19-b12005a05af6@intel.com
+Signed-off-by: Matt Roper <matthew.d.roper@intel.com>
+Stable-dep-of: a4660bd94973 ("drm/xe: Define and use MCR version of COMMON_SLICE_CHICKEN1")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/smb/server/mgmt/user_session.c |   2 +
- fs/smb/server/server.c            |   1 +
- fs/smb/server/server.h            |   1 +
- fs/smb/server/smb2pdu.c           |   2 +-
- fs/smb/server/smb2pdu.h           |   2 +
- fs/smb/server/vfs_cache.c         | 163 +++++++++++++++++++++++++++++-
- fs/smb/server/vfs_cache.h         |   2 +
- 7 files changed, 167 insertions(+), 6 deletions(-)
+ drivers/gpu/drm/xe/xe_wa.c | 12 ++++--------
+ 1 file changed, 4 insertions(+), 8 deletions(-)
 
-diff --git a/fs/smb/server/mgmt/user_session.c b/fs/smb/server/mgmt/user_session.c
-index 6c7fbd589087e..b4a1bd037b9ee 100644
---- a/fs/smb/server/mgmt/user_session.c
-+++ b/fs/smb/server/mgmt/user_session.c
-@@ -164,6 +164,7 @@ void ksmbd_session_destroy(struct ksmbd_session *sess)
+diff --git a/drivers/gpu/drm/xe/xe_wa.c b/drivers/gpu/drm/xe/xe_wa.c
+index c436d0ad51e77..6e3c44bc69daf 100644
+--- a/drivers/gpu/drm/xe/xe_wa.c
++++ b/drivers/gpu/drm/xe/xe_wa.c
+@@ -720,6 +720,10 @@ static const struct xe_rtp_entry_sr lrc_was[] = {
+ 	  XE_RTP_RULES(GRAPHICS_VERSION_RANGE(2001, 2004), ENGINE_CLASS(RENDER)),
+ 	  XE_RTP_ACTIONS(SET(XEHP_PSS_CHICKEN, FLSH_IGNORES_PSD))
+ 	},
++	{ XE_RTP_NAME("18033852989"),
++	  XE_RTP_RULES(GRAPHICS_VERSION_RANGE(2001, 2004), ENGINE_CLASS(RENDER)),
++	  XE_RTP_ACTIONS(SET(COMMON_SLICE_CHICKEN1, DISABLE_BOTTOM_CLIP_RECTANGLE_TEST))
++	},
  
- 	ksmbd_tree_conn_session_logoff(sess);
- 	ksmbd_destroy_file_table(&sess->file_table);
-+	ksmbd_launch_ksmbd_durable_scavenger();
- 	ksmbd_session_rpc_clear_list(sess);
- 	free_channel_list(sess);
- 	kfree(sess->Preauth_HashValue);
-@@ -399,6 +400,7 @@ void destroy_previous_session(struct ksmbd_conn *conn,
- 	ksmbd_destroy_file_table(&prev_sess->file_table);
- 	prev_sess->state = SMB2_SESSION_EXPIRED;
- 	ksmbd_all_conn_set_status(id, KSMBD_SESS_NEED_SETUP);
-+	ksmbd_launch_ksmbd_durable_scavenger();
- out:
- 	up_write(&conn->session_lock);
- 	up_write(&sessions_table_lock);
-diff --git a/fs/smb/server/server.c b/fs/smb/server/server.c
-index 598601a4bf92c..416b14267251d 100644
---- a/fs/smb/server/server.c
-+++ b/fs/smb/server/server.c
-@@ -372,6 +372,7 @@ static void server_ctrl_handle_reset(struct server_ctrl_struct *ctrl)
- {
- 	ksmbd_ipc_soft_reset();
- 	ksmbd_conn_transport_destroy();
-+	ksmbd_stop_durable_scavenger();
- 	server_conf_free();
- 	server_conf_init();
- 	WRITE_ONCE(server_conf.state, SERVER_STATE_STARTING_UP);
-diff --git a/fs/smb/server/server.h b/fs/smb/server/server.h
-index 48bd203abb441..e3a0f6c9c2c35 100644
---- a/fs/smb/server/server.h
-+++ b/fs/smb/server/server.h
-@@ -47,6 +47,7 @@ struct ksmbd_server_config {
+ 	/* DG1 */
  
- 	char			*conf[SERVER_CONF_WORK_GROUP + 1];
- 	bool			bind_interfaces_only;
-+	struct task_struct	*dh_task;
- };
+@@ -776,10 +780,6 @@ static const struct xe_rtp_entry_sr lrc_was[] = {
  
- extern struct ksmbd_server_config server_conf;
-diff --git a/fs/smb/server/smb2pdu.c b/fs/smb/server/smb2pdu.c
-index d68fe617369e0..66163a464c563 100644
---- a/fs/smb/server/smb2pdu.c
-+++ b/fs/smb/server/smb2pdu.c
-@@ -3601,7 +3601,7 @@ int smb2_open(struct ksmbd_work *work)
- 					SMB2_CREATE_GUID_SIZE);
- 			if (dh_info.timeout)
- 				fp->durable_timeout = min(dh_info.timeout,
--						300000);
-+						DURABLE_HANDLE_MAX_TIMEOUT);
- 			else
- 				fp->durable_timeout = 60;
- 		}
-diff --git a/fs/smb/server/smb2pdu.h b/fs/smb/server/smb2pdu.h
-index 2821e6c8298f4..ad02d0a376025 100644
---- a/fs/smb/server/smb2pdu.h
-+++ b/fs/smb/server/smb2pdu.h
-@@ -75,6 +75,8 @@ struct create_durable_req_v2 {
- 	__u8 CreateGuid[16];
- } __packed;
+ 	/* Xe2_LPG */
  
-+#define DURABLE_HANDLE_MAX_TIMEOUT	300000
-+
- struct create_durable_reconn_req {
- 	struct create_context_hdr ccontext;
- 	__u8   Name[8];
-diff --git a/fs/smb/server/vfs_cache.c b/fs/smb/server/vfs_cache.c
-index 729758697c129..913c2a8d2b0ee 100644
---- a/fs/smb/server/vfs_cache.c
-+++ b/fs/smb/server/vfs_cache.c
-@@ -8,6 +8,8 @@
- #include <linux/filelock.h>
- #include <linux/slab.h>
- #include <linux/vmalloc.h>
-+#include <linux/kthread.h>
-+#include <linux/freezer.h>
+-	{ XE_RTP_NAME("18033852989"),
+-	  XE_RTP_RULES(GRAPHICS_VERSION(2004), ENGINE_CLASS(RENDER)),
+-	  XE_RTP_ACTIONS(SET(COMMON_SLICE_CHICKEN1, DISABLE_BOTTOM_CLIP_RECTANGLE_TEST))
+-	},
+ 	{ XE_RTP_NAME("14021567978"),
+ 	  XE_RTP_RULES(GRAPHICS_VERSION_RANGE(2001, XE_RTP_END_VERSION_UNDEFINED),
+ 		       ENGINE_CLASS(RENDER)),
+@@ -827,10 +827,6 @@ static const struct xe_rtp_entry_sr lrc_was[] = {
+ 	  XE_RTP_RULES(GRAPHICS_VERSION_RANGE(2001, 2002), ENGINE_CLASS(RENDER)),
+ 	  XE_RTP_ACTIONS(SET(COMMON_SLICE_CHICKEN4, SBE_PUSH_CONSTANT_BEHIND_FIX_ENABLE))
+ 	},
+-	{ XE_RTP_NAME("18033852989"),
+-	  XE_RTP_RULES(GRAPHICS_VERSION(2001), ENGINE_CLASS(RENDER)),
+-	  XE_RTP_ACTIONS(SET(COMMON_SLICE_CHICKEN1, DISABLE_BOTTOM_CLIP_RECTANGLE_TEST))
+-	},
  
- #include "glob.h"
- #include "vfs_cache.h"
-@@ -17,6 +19,7 @@
- #include "mgmt/tree_connect.h"
- #include "mgmt/user_session.h"
- #include "smb_common.h"
-+#include "server.h"
- 
- #define S_DEL_PENDING			1
- #define S_DEL_ON_CLS			2
-@@ -31,6 +34,10 @@ static struct ksmbd_file_table global_ft;
- static atomic_long_t fd_limit;
- static struct kmem_cache *filp_cache;
- 
-+static bool durable_scavenger_running;
-+static DEFINE_MUTEX(durable_scavenger_lock);
-+static wait_queue_head_t dh_wq;
-+
- void ksmbd_set_fd_limit(unsigned long limit)
- {
- 	limit = min(limit, get_max_files());
-@@ -316,9 +323,16 @@ static void __ksmbd_remove_durable_fd(struct ksmbd_file *fp)
- 	if (!has_file_id(fp->persistent_id))
- 		return;
- 
--	write_lock(&global_ft.lock);
- 	idr_remove(global_ft.idr, fp->persistent_id);
-+}
-+
-+static void ksmbd_remove_durable_fd(struct ksmbd_file *fp)
-+{
-+	write_lock(&global_ft.lock);
-+	__ksmbd_remove_durable_fd(fp);
- 	write_unlock(&global_ft.lock);
-+	if (waitqueue_active(&dh_wq))
-+		wake_up(&dh_wq);
- }
- 
- static void __ksmbd_remove_fd(struct ksmbd_file_table *ft, struct ksmbd_file *fp)
-@@ -341,7 +355,7 @@ static void __ksmbd_close_fd(struct ksmbd_file_table *ft, struct ksmbd_file *fp)
- 	struct ksmbd_lock *smb_lock, *tmp_lock;
- 
- 	fd_limit_close();
--	__ksmbd_remove_durable_fd(fp);
-+	ksmbd_remove_durable_fd(fp);
- 	if (ft)
- 		__ksmbd_remove_fd(ft, fp);
- 
-@@ -754,6 +768,142 @@ static bool tree_conn_fd_check(struct ksmbd_tree_connect *tcon,
- 	return fp->tcon != tcon;
- }
- 
-+static bool ksmbd_durable_scavenger_alive(void)
-+{
-+	mutex_lock(&durable_scavenger_lock);
-+	if (!durable_scavenger_running) {
-+		mutex_unlock(&durable_scavenger_lock);
-+		return false;
-+	}
-+	mutex_unlock(&durable_scavenger_lock);
-+
-+	if (kthread_should_stop())
-+		return false;
-+
-+	if (idr_is_empty(global_ft.idr))
-+		return false;
-+
-+	return true;
-+}
-+
-+static void ksmbd_scavenger_dispose_dh(struct list_head *head)
-+{
-+	while (!list_empty(head)) {
-+		struct ksmbd_file *fp;
-+
-+		fp = list_first_entry(head, struct ksmbd_file, node);
-+		list_del_init(&fp->node);
-+		__ksmbd_close_fd(NULL, fp);
-+	}
-+}
-+
-+static int ksmbd_durable_scavenger(void *dummy)
-+{
-+	struct ksmbd_file *fp = NULL;
-+	unsigned int id;
-+	unsigned int min_timeout = 1;
-+	bool found_fp_timeout;
-+	LIST_HEAD(scavenger_list);
-+	unsigned long remaining_jiffies;
-+
-+	__module_get(THIS_MODULE);
-+
-+	set_freezable();
-+	while (ksmbd_durable_scavenger_alive()) {
-+		if (try_to_freeze())
-+			continue;
-+
-+		found_fp_timeout = false;
-+
-+		remaining_jiffies = wait_event_timeout(dh_wq,
-+				   ksmbd_durable_scavenger_alive() == false,
-+				   __msecs_to_jiffies(min_timeout));
-+		if (remaining_jiffies)
-+			min_timeout = jiffies_to_msecs(remaining_jiffies);
-+		else
-+			min_timeout = DURABLE_HANDLE_MAX_TIMEOUT;
-+
-+		write_lock(&global_ft.lock);
-+		idr_for_each_entry(global_ft.idr, fp, id) {
-+			if (!fp->durable_timeout)
-+				continue;
-+
-+			if (atomic_read(&fp->refcount) > 1 ||
-+			    fp->conn)
-+				continue;
-+
-+			found_fp_timeout = true;
-+			if (fp->durable_scavenger_timeout <=
-+			    jiffies_to_msecs(jiffies)) {
-+				__ksmbd_remove_durable_fd(fp);
-+				list_add(&fp->node, &scavenger_list);
-+			} else {
-+				unsigned long durable_timeout;
-+
-+				durable_timeout =
-+					fp->durable_scavenger_timeout -
-+						jiffies_to_msecs(jiffies);
-+
-+				if (min_timeout > durable_timeout)
-+					min_timeout = durable_timeout;
-+			}
-+		}
-+		write_unlock(&global_ft.lock);
-+
-+		ksmbd_scavenger_dispose_dh(&scavenger_list);
-+
-+		if (found_fp_timeout == false)
-+			break;
-+	}
-+
-+	mutex_lock(&durable_scavenger_lock);
-+	durable_scavenger_running = false;
-+	mutex_unlock(&durable_scavenger_lock);
-+
-+	module_put(THIS_MODULE);
-+
-+	return 0;
-+}
-+
-+void ksmbd_launch_ksmbd_durable_scavenger(void)
-+{
-+	if (!(server_conf.flags & KSMBD_GLOBAL_FLAG_DURABLE_HANDLE))
-+		return;
-+
-+	mutex_lock(&durable_scavenger_lock);
-+	if (durable_scavenger_running == true) {
-+		mutex_unlock(&durable_scavenger_lock);
-+		return;
-+	}
-+
-+	durable_scavenger_running = true;
-+
-+	server_conf.dh_task = kthread_run(ksmbd_durable_scavenger,
-+				     (void *)NULL, "ksmbd-durable-scavenger");
-+	if (IS_ERR(server_conf.dh_task))
-+		pr_err("cannot start conn thread, err : %ld\n",
-+		       PTR_ERR(server_conf.dh_task));
-+	mutex_unlock(&durable_scavenger_lock);
-+}
-+
-+void ksmbd_stop_durable_scavenger(void)
-+{
-+	if (!(server_conf.flags & KSMBD_GLOBAL_FLAG_DURABLE_HANDLE))
-+		return;
-+
-+	mutex_lock(&durable_scavenger_lock);
-+	if (!durable_scavenger_running) {
-+		mutex_unlock(&durable_scavenger_lock);
-+		return;
-+	}
-+
-+	durable_scavenger_running = false;
-+	if (waitqueue_active(&dh_wq))
-+		wake_up(&dh_wq);
-+	mutex_unlock(&durable_scavenger_lock);
-+	kthread_stop(server_conf.dh_task);
-+}
-+
- static bool session_fd_check(struct ksmbd_tree_connect *tcon,
- 			     struct ksmbd_file *fp)
- {
-@@ -823,11 +973,12 @@ void ksmbd_free_global_file_table(void)
- 	unsigned int		id;
- 
- 	idr_for_each_entry(global_ft.idr, fp, id) {
--		__ksmbd_remove_durable_fd(fp);
--		kmem_cache_free(filp_cache, fp);
-+		ksmbd_remove_durable_fd(fp);
-+		__ksmbd_close_fd(NULL, fp);
- 	}
- 
--	ksmbd_destroy_file_table(&global_ft);
-+	idr_destroy(global_ft.idr);
-+	kfree(global_ft.idr);
- }
- 
- int ksmbd_validate_name_reconnect(struct ksmbd_share_config *share,
-@@ -934,6 +1085,8 @@ int ksmbd_init_file_cache(void)
- 	if (!filp_cache)
- 		goto out;
- 
-+	init_waitqueue_head(&dh_wq);
-+
- 	return 0;
- 
- out:
-diff --git a/fs/smb/server/vfs_cache.h b/fs/smb/server/vfs_cache.h
-index f2ab1514e81a7..b0f6d0f94cb8d 100644
---- a/fs/smb/server/vfs_cache.h
-+++ b/fs/smb/server/vfs_cache.h
-@@ -153,6 +153,8 @@ struct ksmbd_file *ksmbd_lookup_fd_cguid(char *cguid);
- struct ksmbd_file *ksmbd_lookup_fd_inode(struct dentry *dentry);
- unsigned int ksmbd_open_durable_fd(struct ksmbd_file *fp);
- struct ksmbd_file *ksmbd_open_fd(struct ksmbd_work *work, struct file *filp);
-+void ksmbd_launch_ksmbd_durable_scavenger(void);
-+void ksmbd_stop_durable_scavenger(void);
- void ksmbd_close_tree_conn_fds(struct ksmbd_work *work);
- void ksmbd_close_session_fds(struct ksmbd_work *work);
- int ksmbd_close_inode_fds(struct ksmbd_work *work, struct inode *inode);
+ 	/* Xe3_LPG */
+ 	{ XE_RTP_NAME("14021490052"),
 -- 
 2.53.0
 
