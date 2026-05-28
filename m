@@ -1,64 +1,60 @@
-Return-Path: <stable+bounces-255355-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-255711-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id GFdSFn6hGGqblggAu9opvQ
-	(envelope-from <stable+bounces-255355-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:11:42 +0200
+	id YD20DVGnGGpolwgAu9opvQ
+	(envelope-from <stable+bounces-255711-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:36:33 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id CF8C35F8082
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:11:41 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 89FF75F917B
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:36:32 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 1E242320673B
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 20:04:48 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id E758731E79AF
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 20:21:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 367ED409623;
-	Thu, 28 May 2026 20:04:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C38FA316199;
+	Thu, 28 May 2026 20:21:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RzyrQzeQ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tqxZRKc8"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D7082338595;
-	Thu, 28 May 2026 20:04:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 991B830C15B;
+	Thu, 28 May 2026 20:21:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779998678; cv=none; b=amqvQY6NEJekUjIMZ1hcIOyEg3ofJwinoeXl1GEYZw+O3huL9MwjnqJ7mL9vQLdAeSHUpiiYaKG10VPOoSylSxLPcW/oX3xLyqY4q4NeE4Oh4hyicPw/HdhcBipOg/Z98/Gkamx6BKoL5fnGWishVcmn8S9+VUkVBvNTabjpyoE=
+	t=1779999673; cv=none; b=WvBqjLQXl1FZGeISvpOp8DdUKqtS6qDY7DOR4PttIhkIgaFtyW1mNgOHoP10E0imWuWTJszuprsEYgqFnd+jhhXtX6Qipdv21kevgDrqk3NeNl7VbmkYW+K5rHZdW+hi0z1D6NO3jz3UfkHd9x48P+6HQ3By6ZLAHnn7zV8j+u8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779998678; c=relaxed/simple;
-	bh=oqhJXf0M5UqSHxTAKJt9EzaOHL12kbnudQHAyN3fi9g=;
+	s=arc-20240116; t=1779999673; c=relaxed/simple;
+	bh=pNyN02h6iIBV+H/WQ6wHeOzQoq2wMj6xbl0i2bYfd4c=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=HkJjhdbDlN1DkpOiSTXWQaBsKcRvzJXbdrMyjKW1TqR/2OVEourPgXyhG3G8AMfhkZ710bC0d1z5vKy3/ZX2TGSTL39cocc6gNT2sho8khqtPskpSQhCPl8pe5YmBzQCjuqBZ+QMyE1TGPhwimbzmup/mHP2GLVrg/G+g3ZvElM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RzyrQzeQ; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1A9241F000E9;
-	Thu, 28 May 2026 20:04:35 +0000 (UTC)
+	 MIME-Version; b=ijZHze8eaxEV3HOPDkXefMNNbW8ZsNqNWJSv+XnFzb0u/OmQlADyrSDrn4TTovorQVowAGKGVcdCiMmPRflu6pQkN2P3gRviYh95+2vx3llfej+3qtfLIhS7SL3VhVZG7ymMhJdBwV3HS5yh80EpjLyFMZrwmd5UdoTknNtOyMw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tqxZRKc8; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AE1E31F000E9;
+	Thu, 28 May 2026 20:21:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779998676;
-	bh=+KPNmKdgi3CMgy1WUtaaN4uK74oj3SOdOqAKaKJQeMo=;
+	s=korg; t=1779999672;
+	bh=Wd8aurS/i6RcXXkOIZPkXfBBQxY5Jc5NrNXSPDvlRSA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=RzyrQzeQaF6OjUHaQfzXSf5CIhb5yeB4B5eP0mkUeQWLjjyCap2mR69Z8a5vh2+4d
-	 /GhIoS/kc5BTpTBVK8bfRXWeC+WYuuqK4IGxMWAMW+uKJfVG5VfYBJ5NuKhQ8OZ7wK
-	 LO2h+r8rx0e0PbcFsbdyY/VrcSkMYwnsbUYOx/wo=
+	b=tqxZRKc8tcXgylcWk58Ha0Z5beZ1uFixVo5Qiu0Fan4YyxNWJp0DM9vuktwlAD8du
+	 pjCfAjw5fkqaN2dNIQLNX2noq97nLVIoRK0pBnmxN2stBvLc2eC19gAVK6OL2poMYA
+	 A0DF+8RqL8+HtijTblo6qxrcxGt8yiWUGJjBzYog=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Marc Dionne <marc.dionne@auristor.com>,
-	David Howells <dhowells@redhat.com>,
-	Paulo Alcantara <pc@manguebit.org>,
-	Matthew Wilcox <willy@infradead.org>,
-	netfs@lists.linux.dev,
-	linux-fsdevel@vger.kernel.org,
-	Christian Brauner <brauner@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 7.0 258/461] netfs: Fix netfs_invalidate_folio() to clear dirty bit if all changes gone
+	stable@kernel.org,
+	Ido Schimmel <idosch@nvidia.com>,
+	syzbot+9fdcc9f05a98a540b816@syzkaller.appspotmail.com,
+	Sven Eckelmann <sven@narfation.org>
+Subject: [PATCH 6.18 149/377] batman-adv: bla: avoid NULL-ptr deref for claim via dropped interface
 Date: Thu, 28 May 2026 21:46:27 +0200
-Message-ID: <20260528194654.623631474@linuxfoundation.org>
+Message-ID: <20260528194642.699065010@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260528194646.819809818@linuxfoundation.org>
-References: <20260528194646.819809818@linuxfoundation.org>
+In-Reply-To: <20260528194638.371537336@linuxfoundation.org>
+References: <20260528194638.371537336@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,163 +65,84 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	TAGGED_FROM(0.00)[bounces-255711-lists,stable=lfdr.de];
+	FROM_HAS_DN(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-255355-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TO_DN_SOME(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[11];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	MID_RHS_MATCH_FROM(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,msgid.link:url,linux.dev:email,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,infradead.org:email,auristor.com:email,manguebit.org:email]
-X-Rspamd-Queue-Id: CF8C35F8082
+	NEURAL_HAM(-0.00)[-1.000];
+	PRECEDENCE_BULK(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[7];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TAGGED_RCPT(0.00)[stable,9fdcc9f05a98a540b816];
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[nvidia.com:email,appspotmail.com:email,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,narfation.org:email,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim]
+X-Rspamd-Queue-Id: 89FF75F917B
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-7.0-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: David Howells <dhowells@redhat.com>
+From: Sven Eckelmann <sven@narfation.org>
 
-[ Upstream commit 156ac2ec2ee77c44c4eb7439d6d165247ba12247 ]
+commit f80d3d98d2ff78d9e2fe5d68b1f45948c4f7bd24 upstream.
 
-If a streaming write is made, this will leave the relevant modified folio
-in a not-uptodate, but dirty state with a netfs_folio struct hung off of
-folio->private indicating the dirty range.  Subsequently truncating the
-file such that the dirty data in the folio is removed, but the first part
-of the folio theoretically remains will cause the netfs_folio struct to be
-discarded... but will leave the dirty flag set.
+Without rtnl_lock held, a hardif might be retrieved as primary interface of
+a meshif, but then (while operating on this interface) getting decoupled
+from the mesh interface. In this case, the meshif still exists but the
+pointer from the primary hardif to the meshif is set to NULL.
 
-If the folio is then read via mmap(), netfs_read_folio() will see that the
-page is dirty and jump to netfs_read_gaps() to fill in the missing bits.
-netfs_read_gaps(), however, expects there to be a netfs_folio struct
-present and can oops because truncate removed it.
+The mesh_iface must be checked first to be non-NULL before continuing to
+send an ARP request using meshif.
 
-Fix this by calling folio_cancel_dirty() in netfs_invalidate_folio() in the
-event that all the dirty data in the folio is erased (as nfs does).
-
-Also add some tracepoints to log modifications to a dirty page.
-
-This can be reproduced with something like:
-
-    dd if=/dev/zero of=/xfstest.test/foo bs=1M count=1
-    umount /xfstest.test
-    mount /xfstest.test
-    xfs_io -c "w 0xbbbf 0xf96c" \
-           -c "truncate 0xbbbf" \
-           -c "mmap -r 0xb000 0x11000" \
-           -c "mr 0xb000 0x11000" \
-           /xfstest.test/foo
-
-with fscaching disabled (otherwise streaming writes are suppressed) and a
-change to netfs_perform_write() to disallow streaming writes if the fd is
-open O_RDWR:
-
-	if (//(file->f_mode & FMODE_READ) || <--- comment this out
-	    netfs_is_cache_enabled(ctx)) {
-
-It should be reproducible even without this change, but if prevents the
-above trivial xfs_io command from reproducing it.
-
-Note that the initial dd is important: the file must start out sufficiently
-large that the zero-point logic doesn't just clear the gaps because it
-knows there's nothing in the file to read yet.  Unmounting and mounting is
-needed to clear the pagecache (there are other ways to do that that may
-also work).
-
-This was initially reproduced with the generic/522 xfstest on some patches
-that remove the FMODE_READ restriction.
-
-Fixes: 9ebff83e6481 ("netfs: Prep to use folio->private for write grouping and streaming write")
-Reported-by: Marc Dionne <marc.dionne@auristor.com>
-Signed-off-by: David Howells <dhowells@redhat.com>
-Link: https://patch.msgid.link/20260512123404.719402-12-dhowells@redhat.com
-cc: Paulo Alcantara <pc@manguebit.org>
-cc: Matthew Wilcox <willy@infradead.org>
-cc: netfs@lists.linux.dev
-cc: linux-fsdevel@vger.kernel.org
-Signed-off-by: Christian Brauner <brauner@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: stable@kernel.org
+Fixes: 23721387c409 ("batman-adv: add basic bridge loop avoidance code")
+Reported-by: Ido Schimmel <idosch@nvidia.com>
+Reported-by: syzbot+9fdcc9f05a98a540b816@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=9fdcc9f05a98a540b816
+Signed-off-by: Sven Eckelmann <sven@narfation.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/netfs/misc.c              | 6 +++++-
- include/trace/events/netfs.h | 4 ++++
- 2 files changed, 9 insertions(+), 1 deletion(-)
+ net/batman-adv/bridge_loop_avoidance.c |    6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
 
-diff --git a/fs/netfs/misc.c b/fs/netfs/misc.c
-index 723571ca1b885..24b20e80e9a8a 100644
---- a/fs/netfs/misc.c
-+++ b/fs/netfs/misc.c
-@@ -263,6 +263,7 @@ void netfs_invalidate_folio(struct folio *folio, size_t offset, size_t length)
- 			/* Move the start of the data. */
- 			finfo->dirty_len = fend - iend;
- 			finfo->dirty_offset = offset;
-+			trace_netfs_folio(folio, netfs_folio_trace_invalidate_front);
- 			return;
- 		}
+--- a/net/batman-adv/bridge_loop_avoidance.c
++++ b/net/batman-adv/bridge_loop_avoidance.c
+@@ -357,12 +357,14 @@ static void batadv_bla_send_claim(struct
+ 	       sizeof(local_claim_dest));
+ 	local_claim_dest.type = claimtype;
  
-@@ -271,12 +272,14 @@ void netfs_invalidate_folio(struct folio *folio, size_t offset, size_t length)
- 		 */
- 		if (iend >= fend) {
- 			finfo->dirty_len = offset - fstart;
-+			trace_netfs_folio(folio, netfs_folio_trace_invalidate_tail);
- 			return;
- 		}
+-	mesh_iface = primary_if->mesh_iface;
++	mesh_iface = READ_ONCE(primary_if->mesh_iface);
++	if (!mesh_iface)
++		goto out;
  
- 		/* A partial write was split.  The caller has already zeroed
- 		 * it, so just absorb the hole.
- 		 */
-+		trace_netfs_folio(folio, netfs_folio_trace_invalidate_middle);
- 	}
- 	return;
- 
-@@ -284,8 +287,9 @@ void netfs_invalidate_folio(struct folio *folio, size_t offset, size_t length)
- 	netfs_put_group(netfs_folio_group(folio));
- 	folio_detach_private(folio);
- 	folio_clear_uptodate(folio);
-+	folio_cancel_dirty(folio);
- 	kfree(finfo);
--	return;
-+	trace_netfs_folio(folio, netfs_folio_trace_invalidate_all);
- }
- EXPORT_SYMBOL(netfs_invalidate_folio);
- 
-diff --git a/include/trace/events/netfs.h b/include/trace/events/netfs.h
-index cbe28211106c5..88d814ba1e697 100644
---- a/include/trace/events/netfs.h
-+++ b/include/trace/events/netfs.h
-@@ -194,6 +194,10 @@
- 	EM(netfs_folio_trace_copy_to_cache,	"mark-copy")	\
- 	EM(netfs_folio_trace_end_copy,		"end-copy")	\
- 	EM(netfs_folio_trace_filled_gaps,	"filled-gaps")	\
-+	EM(netfs_folio_trace_invalidate_all,	"inval-all")	\
-+	EM(netfs_folio_trace_invalidate_front,	"inval-front")	\
-+	EM(netfs_folio_trace_invalidate_middle,	"inval-mid")	\
-+	EM(netfs_folio_trace_invalidate_tail,	"inval-tail")	\
- 	EM(netfs_folio_trace_kill,		"kill")		\
- 	EM(netfs_folio_trace_kill_cc,		"kill-cc")	\
- 	EM(netfs_folio_trace_kill_g,		"kill-g")	\
--- 
-2.53.0
-
+ 	skb = arp_create(ARPOP_REPLY, ETH_P_ARP,
+ 			 /* IP DST: 0.0.0.0 */
+ 			 zeroip,
+-			 primary_if->mesh_iface,
++			 mesh_iface,
+ 			 /* IP SRC: 0.0.0.0 */
+ 			 zeroip,
+ 			 /* Ethernet DST: Broadcast */
 
 
 
