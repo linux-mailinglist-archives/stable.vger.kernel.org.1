@@ -1,59 +1,60 @@
-Return-Path: <stable+bounces-256013-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-255769-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 6BwJJJioGGp+lwgAu9opvQ
-	(envelope-from <stable+bounces-256013-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:42:00 +0200
+	id 4HzhApqkGGoQlwgAu9opvQ
+	(envelope-from <stable+bounces-255769-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:24:58 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 175695F9597
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:41:59 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id CE15D5F89F6
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:24:57 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 819BD30BFEE6
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 20:35:14 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id C16FD3063F0B
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 20:23:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D21733368B5;
-	Thu, 28 May 2026 20:35:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 49F582F39B4;
+	Thu, 28 May 2026 20:23:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="E4a1Ps9a"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="K8tTKdhP"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7EF582F1FEC;
-	Thu, 28 May 2026 20:35:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2FAF12E7377;
+	Thu, 28 May 2026 20:23:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780000511; cv=none; b=u91+c3Q06qi3fpz3cG/fL8El4meNac1wXPFNBJnYlJ7io/Wp8iCwbpqTbEgMunlxHcr5kBXzP0BlMO0AtUBdNrd6Kg9HBTFhpjpdKqNkkGqOnxu8XcJweWWpWn/UpTLOAan6ycoEhTcMHE4ODevcEe/VHIlRiuI4vzhKECX1Ddc=
+	t=1779999830; cv=none; b=Dm2eoDFwixNu4BTEEPiRu5WFTpTy3ETc+iVkIRGpy44OEY75usUQ7CzNLm3KEGd4XIlAczk7DQuegRY7hzsXYIn4vc1WcTJLi70c6d7Mjaois5BF1I4vtRs++Aab6AHadhMYIJEx9UVrIt9kq+3Af1REVgltSQzrffWcKkodYRs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780000511; c=relaxed/simple;
-	bh=RwUidAdUcz0bjACUW9Ac5L8ISmWVvVUMovrZ17R5GDY=;
+	s=arc-20240116; t=1779999830; c=relaxed/simple;
+	bh=sRHshJaA5UK62r7MdnbcGnoecpjJUeYXRKRjFda5Imk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=OmaTub5Mu+h3fQyfn26pq9Oc5weMOmbF1DANczHMxSzaGBH7wx/Oxzyg2Jvnvq/TL6yP8AT9wdJCkyfWrq++qDl4i6sId6T2a/yvcKEAy0nGVTT5b/Lr8KDOL3MT9MQIjLALUSES0e7vdgTUIU9GhaavKHYZPIqREWALTOdhm3k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=E4a1Ps9a; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 890D31F000E9;
-	Thu, 28 May 2026 20:35:09 +0000 (UTC)
+	 MIME-Version; b=kXYNG4GBjurFLIr4ImGjcCSjVWZhRo6PTngj8CGI7dGAZEa/vR3OMrkub0v2BWTUrMpz3aeEtDN5C3EnHQwiFA6k5sfvkRusToD1ENVYOXYAA6cJ/HUpcv4aRmjNKRe3dRgzGf91jWqvVMpWFU0lIGnf+gsltqMn9+vftcChAwI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=K8tTKdhP; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5E2201F000E9;
+	Thu, 28 May 2026 20:23:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780000510;
-	bh=GsgxEBH+Qojx18C5xlWbKN68oLoQEpMPwC4xhM0R0QM=;
+	s=korg; t=1779999829;
+	bh=osruNj5KGW7GNfb4QiMfLXpQ0UUkFWo+Zr7tmj0nLaY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=E4a1Ps9apEqcefPJuLH8dIkrmo8YREDKPVUnyMjghCErI90e9LjrGcI2n+eI9BcX4
-	 rrllyxdfschTedJN32JXhhDDZxhfYXUQmbQTwAPm3ZyOSPi4YIhdQxGjVEymZzzb45
-	 GNqgxGGG8ACt1aCitQvCYR0AlLNlqw841xJQU46k=
+	b=K8tTKdhPMKLKeodNZzv8XXeo/GtPSCaTucegkPCZyWmMfrW6lGYqei8aeSUtyxR6g
+	 69wX4/99JhynldA8OOdRWoPd11vAe+vj8mMnBXUmL8l30XIcxhglqhpQBxQ5InZtkp
+	 yAaOZJUz4ufzxSdxkwyZ5lSyl6+eo36NWR7mO7lA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Nicolai Buchwitz <nb@tipi-net.de>,
-	Florian Fainelli <florian.fainelli@broadcom.com>,
-	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 6.12 070/272] net: bcmgenet: keep RBUF EEE/PM disabled
-Date: Thu, 28 May 2026 21:47:24 +0200
-Message-ID: <20260528194631.336729905@linuxfoundation.org>
+	Damiano Melotti <melotti@google.com>,
+	Kuniyuki Iwashima <kuniyu@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.18 207/377] tcp: Fix imbalanced icsk_accept_queue count.
+Date: Thu, 28 May 2026 21:47:25 +0200
+Message-ID: <20260528194644.397197554@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260528194629.379955525@linuxfoundation.org>
-References: <20260528194629.379955525@linuxfoundation.org>
+In-Reply-To: <20260528194638.371537336@linuxfoundation.org>
+References: <20260528194638.371537336@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -68,94 +69,78 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-255769-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-256013-lists,stable=lfdr.de];
-	TO_DN_SOME(0.00)[];
-	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,tipi-net.de:email,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,broadcom.com:email]
-X-Rspamd-Queue-Id: 175695F9597
+	TO_DN_SOME(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_SEVEN(0.00)[7];
+	MID_RHS_MATCH_FROM(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim,msgid.link:url]
+X-Rspamd-Queue-Id: CE15D5F89F6
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Nicolai Buchwitz <nb@tipi-net.de>
+From: Kuniyuki Iwashima <kuniyu@google.com>
 
-commit 9a1730245e416d11ad5c0f2c100061d61cc43f60 upstream.
+[ Upstream commit 7eca3292cac7c26dad4c236f51ba225c39a0523f ]
 
-Setting RBUF_EEE_EN | RBUF_PM_EN in RBUF_ENERGY_CTRL breaks the RX
-path on GENET hardware once MAC EEE becomes active. RX traffic stops
-flowing while the link stays up and the usual descriptor/RX error
-counters remain quiet. In that state the MAC still accepts frames
-(rbuf_ovflow_cnt keeps climbing) but RBUF no longer forwards them to
-DMA, so rx_packets is no longer incremented at the netdev level. On
-some boards the corruption ends up as a paging fault in
-skb_release_data via bcmgenet_rx_poll on an LPI exit.
+When TCP socket migration happens in reqsk_timer_handler(),
+@sk_listener will be updated with the new listener.
 
-Reproduced on Pi 4B (BCM2711 + BCM54213PE) and confirmed by Florian
-Fainelli on an internal Broadcom 4908-family board with the same crash
-signature. RBUF_PM_EN is not publicly documented.
+When we call __inet_csk_reqsk_queue_drop(), the listener must
+be the one stored in req->rsk_listener.
 
-This shows up more often now that phy_support_eee() enables EEE by
-default, but it also affects older kernels as soon as TX LPI is
-turned on via ethtool, so it is not specific to recent changes.
+The cited commit accidentally replaced oreq->rsk_listener with
+sk_listener, leading to imbalanced icsk_accept_queue count.
 
-Always clear RBUF_EEE_EN | RBUF_PM_EN in bcmgenet_eee_enable_set so
-the bits stay off across resets. UMAC and TBUF setup is left alone so
-TX-side EEE keeps working.
+Let's pass the correct listener to __inet_csk_reqsk_queue_drop().
 
-Link: https://github.com/raspberrypi/linux/issues/7304
-Fixes: 6ef398ea60d9 ("net: bcmgenet: add EEE support")
-Cc: stable@vger.kernel.org
-Signed-off-by: Nicolai Buchwitz <nb@tipi-net.de>
-Reviewed-by: Florian Fainelli <florian.fainelli@broadcom.com>
-Link: https://patch.msgid.link/20260520184320.652053-1-nb@tipi-net.de
+Fixes: e8c526f2bdf1 ("tcp/dccp: Don't use timer_pending() in reqsk_queue_unlink().")
+Reported-by: Damiano Melotti <melotti@google.com>
+Signed-off-by: Kuniyuki Iwashima <kuniyu@google.com>
+Link: https://patch.msgid.link/20260506035954.1563147-3-kuniyu@google.com
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/broadcom/genet/bcmgenet.c |    9 ++++-----
- 1 file changed, 4 insertions(+), 5 deletions(-)
+ net/ipv4/inet_connection_sock.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/net/ethernet/broadcom/genet/bcmgenet.c
-+++ b/drivers/net/ethernet/broadcom/genet/bcmgenet.c
-@@ -1325,13 +1325,12 @@ void bcmgenet_eee_enable_set(struct net_
- 		reg &= ~(TBUF_EEE_EN | TBUF_PM_EN);
- 	bcmgenet_writel(reg, priv->base + off);
+diff --git a/net/ipv4/inet_connection_sock.c b/net/ipv4/inet_connection_sock.c
+index ed773cd488769..c777895a720ee 100644
+--- a/net/ipv4/inet_connection_sock.c
++++ b/net/ipv4/inet_connection_sock.c
+@@ -1149,7 +1149,7 @@ static void reqsk_timer_handler(struct timer_list *t)
+ 	}
  
--	/* Do the same for thing for RBUF */
-+	/* RBUF EEE/PM can break the RX path on GENET. Keep it disabled. */
- 	reg = bcmgenet_rbuf_readl(priv, RBUF_ENERGY_CTRL);
--	if (enable)
--		reg |= RBUF_EEE_EN | RBUF_PM_EN;
--	else
-+	if (reg & (RBUF_EEE_EN | RBUF_PM_EN)) {
- 		reg &= ~(RBUF_EEE_EN | RBUF_PM_EN);
--	bcmgenet_rbuf_writel(priv, reg, RBUF_ENERGY_CTRL);
-+		bcmgenet_rbuf_writel(priv, reg, RBUF_ENERGY_CTRL);
-+	}
+ drop:
+-	__inet_csk_reqsk_queue_drop(sk_listener, oreq, true);
++	__inet_csk_reqsk_queue_drop(oreq->rsk_listener, oreq, true);
+ 	reqsk_put(oreq);
+ }
  
- 	if (!enable && priv->clk_eee_enabled) {
- 		clk_disable_unprepare(priv->clk_eee);
+-- 
+2.53.0
+
 
 
 
