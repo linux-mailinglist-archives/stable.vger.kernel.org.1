@@ -1,58 +1,58 @@
-Return-Path: <stable+bounces-256289-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-256109-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id iI2dGsGrGGpEmAgAu9opvQ
-	(envelope-from <stable+bounces-256289-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:55:29 +0200
+	id UEqCBoOpGGpolwgAu9opvQ
+	(envelope-from <stable+bounces-256109-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:45:55 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 267525F9DE7
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:55:28 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id C68D15F97E7
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:45:54 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 0E60C30D2EF4
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 20:48:11 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 8F19730886EB
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 20:40:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 36E95317142;
-	Thu, 28 May 2026 20:48:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 26B433264DF;
+	Thu, 28 May 2026 20:39:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TfLNWhHa"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qXytd3vc"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 154642459DD;
-	Thu, 28 May 2026 20:48:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E24712EF652;
+	Thu, 28 May 2026 20:39:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780001283; cv=none; b=FI4wEW4EG59ydRqYYt6SKiLADzvST7sIdZZkf2G+jvreQhNJO8iTWPx3RB2c+o6ltFpDyPy6t/57m7VCq6bzPkta7IONZ9enzXpKKDjvhxJRyWybErw4UhgPwMj+6IxYLBkFcCy5KdilFeHGv6OZIhMSRCrE42afPmviDenNGUE=
+	t=1780000781; cv=none; b=EA8+GX1XXG8PM/nqZD4uWtU/A/Q7eEwDKWLTu/ANPgZgsIsotLhLPbnia+HQMQYD6mWJ6hur2wCqbL4FlASTFsPaZwWwrqy8DfuIk7q7EsTYR5ITpHwKoLsWHGuuC1OASeBJ/q5MXPi+0dmrjB+CarTUfDCEL8QAYo6JfUFfUTI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780001283; c=relaxed/simple;
-	bh=JQqi8Jnl+N1W22Lml3lXdAtZ4buh9d/vogIMkb6Erno=;
+	s=arc-20240116; t=1780000781; c=relaxed/simple;
+	bh=Zo+Lxhg/NCEgYHAY49N6pkZ84vVi7N3qZfnAh4nYgvo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=lrYOzk2ANuHhD6MnpaZmixnd3SlRqfCNxY8r7i7iiJJh4Kk1iAn085N8lO6C/6QrFUwzIKbLn7vk6urUBbK/paLmcG3LCOiGxzYDXrW3vrg0gio42cPSzIBOcHlZBfuqMubUxcleirOCS/lDV4TkNMm6HIgGvkuzzRApzy5eI0Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TfLNWhHa; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 738611F000E9;
-	Thu, 28 May 2026 20:48:01 +0000 (UTC)
+	 MIME-Version; b=OIW4OIua3RLDl48MAl1wkChDlbkqHSdnz4chHoE8VGLOwF43nRU5ypOEGjMu/CYsRRwmBhZcrRJF9Zdc4V5oqQJKXh/yBRgqoprHkwsuEZGc7tFtXNQIJgpELwyrY8Tcp6tSRz34g+7XnNDEm3VgyvEItQTx+7CCwI0AtCzheQQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qXytd3vc; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4BE911F000E9;
+	Thu, 28 May 2026 20:39:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780001282;
-	bh=Ax4ZOXIoqDcuGlh1XqfLNnj1vLK0oe1nmx3OF3m5KHs=;
+	s=korg; t=1780000780;
+	bh=6X5Ulakz24WVySs7QuKrMuKvty/VH0VeO3Ql3A84Dhs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=TfLNWhHahkAacNqCjRKZ60pRLZjJyIumXJq2hGS/OayrLFJjmQABzL0aXgAcxfw5P
-	 wAb1Vxn632mGF7Hg3p3gOrLidPTtYcn3zw36W2nRKsukGFaUxYx96yG6nYjgXzZ7HV
-	 W8ZRSXNQ8AMx3ht3MSx3OPEvIvEbUaavjP5akKRE=
+	b=qXytd3vchJ5RMsIRWbcgDRj5L3tWZw5bHfK08HrWnAnvakIIumIgzd2fbRgb+YHjm
+	 zJ3ghKGPp3XV2Vh4GxyDzxqPcxMBe47mkd3iVWzjriNRfME01SlhwjYLvLlPobUi6d
+	 Fl3rg4rzaqai8fa4RW1+P3KXF9aAfN1vbIlsv79Y=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	SeongJae Park <sj@kernel.org>,
-	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 6.6 023/186] mm/damon/sysfs-schemes: call missing mem_cgroup_iter_break()
+	stable@kernel.org,
+	Sven Eckelmann <sven@narfation.org>
+Subject: [PATCH 6.12 129/272] batman-adv: tp_meter: fix tp_vars reference leak in receiver shutdown
 Date: Thu, 28 May 2026 21:48:23 +0200
-Message-ID: <20260528194929.587467774@linuxfoundation.org>
+Message-ID: <20260528194632.992136205@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260528194928.941004471@linuxfoundation.org>
-References: <20260528194928.941004471@linuxfoundation.org>
+In-Reply-To: <20260528194629.379955525@linuxfoundation.org>
+References: <20260528194629.379955525@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -67,7 +67,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
@@ -77,7 +77,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-256289-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-256109-lists,stable=lfdr.de];
 	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
@@ -88,47 +88,102 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	TAGGED_RCPT(0.00)[stable];
 	RCPT_COUNT_FIVE(0.00)[5];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linux-foundation.org:email,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim]
-X-Rspamd-Queue-Id: 267525F9DE7
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,narfation.org:email]
+X-Rspamd-Queue-Id: C68D15F97E7
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: SeongJae Park <sj@kernel.org>
+From: Sven Eckelmann <sven@narfation.org>
 
-commit d4e7b5c4cc353f154d5ab8bb2e1ce7714d77a6e9 upstream.
+commit 77098e4bea37af51d3962efa88a5af2ea5e1ac57 upstream.
 
-damon_sysfs_memcg_path_to_id() breaks mem_cgroup_iter() loop without
-calling mem_cgroup_iter_break().  This leaks the cgroup reference.  Fix
-the issue by calling mem_cgroup_iter_break() before the break.
+The receiver shutdown timer handler, batadv_tp_receiver_shutdown(), is
+responsible for releasing the tp_vars reference it holds. However, the
+existing logic for coordinating this release with batadv_tp_stop_all() was
+flawed.
 
-The issue was discovered [1] by Sashiko.
+timer_shutdown_sync() guarantees the timer will not fire again after it
+returns, but it returns non-zero only when the timer was pending at the
+time of the call. If the timer had already expired (and
+batadv_tp_stop_all() would unsucessfully try to  rearm itself),
+batadv_tp_stop_all() skips its batadv_tp_vars_put(), and
+batadv_tp_receiver_shutdown() fails to put its own reference as well.
 
-Link: https://lore.kernel.org/20260426173625.86521-1-sj@kernel.org
-Link: https://lore.kernel.org/20260423004148.74722-1-sj@kernel.org [1]
-Fixes: 29cbb9a13f05 ("mm/damon/sysfs-schemes: implement scheme filters")
-Signed-off-by: SeongJae Park <sj@kernel.org>
-Cc: <stable@vger.kernel.org> # 6.3.x
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Fix this by introducing a new atomic variable receiving that is set to 1
+when the receiver is initialized and cleared atomically with atomic_xchg()
+by whichever side claims it first. Only the side that observes the
+transition from 1 to 0 is responsible for releasing the tp_vars timer
+reference, eliminating the uncertainty.
+
+Cc: stable@kernel.org
+Fixes: 3d3cf6a7314a ("batman-adv: stop tp_meter sessions during mesh teardown")
+Signed-off-by: Sven Eckelmann <sven@narfation.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- mm/damon/sysfs-schemes.c |    1 +
- 1 file changed, 1 insertion(+)
+ net/batman-adv/tp_meter.c |   13 +++++++++++--
+ net/batman-adv/types.h    |    3 +++
+ 2 files changed, 14 insertions(+), 2 deletions(-)
 
---- a/mm/damon/sysfs-schemes.c
-+++ b/mm/damon/sysfs-schemes.c
-@@ -1539,6 +1539,7 @@ static int damon_sysfs_memcg_path_to_id(
- 		if (damon_sysfs_memcg_path_eq(memcg, path, memcg_path)) {
- 			*id = mem_cgroup_id(memcg);
- 			found = true;
-+			mem_cgroup_iter_break(NULL, memcg);
+--- a/net/batman-adv/tp_meter.c
++++ b/net/batman-adv/tp_meter.c
+@@ -8,6 +8,7 @@
+ #include "main.h"
+ 
+ #include <linux/atomic.h>
++#include <linux/bug.h>
+ #include <linux/build_bug.h>
+ #include <linux/byteorder/generic.h>
+ #include <linux/cache.h>
+@@ -1163,6 +1164,9 @@ static void batadv_tp_receiver_shutdown(
+ 	spin_unlock_bh(&tp_vars->unacked_lock);
+ 
+ 	/* drop reference of timer */
++	if (WARN_ON(atomic_xchg(&tp_vars->receiving, 0) != 1))
++		return;
++
+ 	batadv_tp_vars_put(tp_vars);
+ }
+ 
+@@ -1381,6 +1385,7 @@ batadv_tp_init_recv(struct batadv_priv *
+ 
+ 	ether_addr_copy(tp_vars->other_end, icmp->orig);
+ 	tp_vars->role = BATADV_TP_RECEIVER;
++	atomic_set(&tp_vars->receiving, 1);
+ 	memcpy(tp_vars->session, icmp->session, sizeof(tp_vars->session));
+ 	tp_vars->last_recv = BATADV_TP_FIRST_SEQ;
+ 	tp_vars->bat_priv = bat_priv;
+@@ -1553,8 +1558,12 @@ void batadv_tp_stop_all(struct batadv_pr
+ 			break;
+ 		case BATADV_TP_RECEIVER:
+ 			batadv_tp_list_detach(tp_var);
+-			if (timer_shutdown_sync(&tp_var->timer))
+-				batadv_tp_vars_put(tp_var);
++			timer_shutdown_sync(&tp_var->timer);
++
++			if (atomic_xchg(&tp_var->receiving, 0) != 1)
++				break;
++
++			batadv_tp_vars_put(tp_var);
  			break;
  		}
- 	}
+ 
+--- a/net/batman-adv/types.h
++++ b/net/batman-adv/types.h
+@@ -1461,6 +1461,9 @@ struct batadv_tp_vars {
+ 	/** @sending: sending binary semaphore: 1 if sending, 0 is not */
+ 	atomic_t sending;
+ 
++	/** @receiving: receiving binary semaphore: 1 if receiving, 0 is not */
++	atomic_t receiving;
++
+ 	/** @reason: reason for a stopped session */
+ 	enum batadv_tp_meter_reason reason;
+ 
 
 
 
