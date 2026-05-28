@@ -1,61 +1,61 @@
-Return-Path: <stable+bounces-256078-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-255100-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id uFriKKGpGGpolwgAu9opvQ
-	(envelope-from <stable+bounces-256078-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:46:25 +0200
+	id kGd6OKucGGr+lQgAu9opvQ
+	(envelope-from <stable+bounces-255100-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 21:51:07 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3BFC05F9836
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:46:25 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 39D5E5F7576
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 21:51:07 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id B0522312672E
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 20:38:15 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 4CA62304A6D0
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 19:48:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8680432AAD6;
-	Thu, 28 May 2026 20:38:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 71A8D2BCF45;
+	Thu, 28 May 2026 19:48:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mXdw7S+K"
+	dkim=pass (1024-bit key) header.d=narfation.org header.i=@narfation.org header.b="ZYK66XUT"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from dvalin.narfation.org (dvalin.narfation.org [213.160.73.56])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 50FE5313539;
-	Thu, 28 May 2026 20:38:12 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BF3C815B998
+	for <stable@vger.kernel.org>; Thu, 28 May 2026 19:48:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=213.160.73.56
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780000693; cv=none; b=GnakISxHZFsrob9KJU9LWRPzVPvjboVjADk8FVO8wNH+YkpgF1keWxxysG6fa3L0iuj7+U53dIdKmr0iVYeR3JOllwgEVcIjnZtoXVTyB63e1IUdL6WOnqlyqMph7sOcxUqJPhgFrudJHrHDaj3ymxoXscvjSavl2/ANndd+8QQ=
+	t=1779997721; cv=none; b=r93AJJ/77Uw5C0LMTi4/cUeXhOVuy0nY+7ntbdbQ3ueza6oI0fCMKgqsOXPIcyCbIPL494a5kJWx8H/twvEuMinJ1WHBOU1LPj30n6pakvUP4gsHDDoK4u3EjePzyx8oV9nA8480fPBBZVBkqTfuhr7cd2wr2jnYgy/fTLN5AI0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780000693; c=relaxed/simple;
-	bh=scfcexchi6+j6KCkj/EN6t3Hul4YRGgFRorQZeqP/80=;
+	s=arc-20240116; t=1779997721; c=relaxed/simple;
+	bh=rZb/7khu9hYByppE9ZeoxGCVZHODZTMPQ89M7G7RMvo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=vFWWgmYc82rhO8KrxoKIXQKa7oq4xC8QE02GEshmDTEZV90B0IS8bpH7lkxg70WHDlQBhdxFrXM9lhdI20wIz3XIcInhOZEmYh/4xBQPKL3qKUe9+WQBFWKwNRcjbURQO8iE0UUtDsiRRaH9BP7gywQEhK+QKudja7Irv1kDEhk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mXdw7S+K; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id ADE3C1F000E9;
-	Thu, 28 May 2026 20:38:11 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780000692;
-	bh=5sUWfFnrrkB7e11vG26Bd0qpVdSh9EA8YmFycVJxTpg=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=mXdw7S+KFSYkTt5hLTjXBq3IP/NEIl6U3itvQ/pG+AHAoXMwh02tutkEDzB0cohXL
-	 W1dWMVUKOQqPs8zyrcgucIwp/E0/gD+0BfhRa/tsOL+HACDKs3iYiLYNTWIn9G34WC
-	 gk7YxZDOceGIj8cg4KyPG9jx17uqYsYPDPoUtlrU=
-From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+	 MIME-Version; b=gv8cr92Kq1ENKHTstJzwDh3lhEqtPJbv6Bn0B0yO9xNLmZyH7R91wenJ3Xyxjb0HOefxJUtw4iR8SpYtgYtbI7iKLq7Np29Hgch3LzQX61K3x/lEB+TTKlpnSit/HhKVsodEo3SMIoHZ353T6lhul0wH7NEnT9A6S6dVdUJOqbg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=narfation.org; spf=pass smtp.mailfrom=narfation.org; dkim=pass (1024-bit key) header.d=narfation.org header.i=@narfation.org header.b=ZYK66XUT; arc=none smtp.client-ip=213.160.73.56
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=narfation.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=narfation.org
+Received: by dvalin.narfation.org (Postfix) id D2C0F20074;
+	Thu, 28 May 2026 19:48:37 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=narfation.org;
+	s=20121; t=1779997717;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=mhWhzo8Wb+lG6HflMJhExbWB0/rmWZ/Ebl/Q8qMRnsw=;
+	b=ZYK66XUT4O21aCTQLxLGQ4Hnye9E98avtlKEylUwixhHTFlbmWOxLRP8MmpqvlErSW8Kso
+	cxkc+A31pWJiJ9x1Dw8nQmZz4L51K1ffokGJbnJ3AwuuTIdruqNnMtqdSImu2T0lOGZCk+
+	Wsi4RoJgw2QrJfPynYUMq6bVFJ0pqCw=
+From: Sven Eckelmann <sven@narfation.org>
 To: stable@vger.kernel.org
-Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	patches@lists.linux.dev,
-	Abdurrahman Hussain <abdurrahman@nexthop.ai>,
-	Guenter Roeck <linux@roeck-us.net>
-Subject: [PATCH 6.12 136/272] hwmon: (pmbus/adm1266) bounce blackbox records through a protocol-sized buffer
+Cc: Sven Eckelmann <sven@narfation.org>,
+	stable@kernel.org
+Subject: [PATCH 6.6.y] batman-adv: tvlv: abort OGM send on tvlv append failure
 Date: Thu, 28 May 2026 21:48:30 +0200
-Message-ID: <20260528194633.184620394@linuxfoundation.org>
-X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260528194629.379955525@linuxfoundation.org>
-References: <20260528194629.379955525@linuxfoundation.org>
-User-Agent: quilt/0.69
-X-stable: review
-X-Patchwork-Hint: ignore
+Message-ID: <20260528194830.283509-1-sven@narfation.org>
+X-Mailer: git-send-email 2.47.3
+In-Reply-To: <2026052822-catatonic-outburst-8e06@gregkh>
+References: <2026052822-catatonic-outburst-8e06@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -63,105 +63,222 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-0.66 / 15.00];
+	MID_CONTAINS_FROM(1.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
-	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	DMARC_POLICY_ALLOW(-0.50)[narfation.org,none];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_DKIM_ALLOW(-0.20)[narfation.org:s=20121];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	RCVD_TLS_LAST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-255100-lists,stable=lfdr.de];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-256078-lists,stable=lfdr.de];
-	TO_DN_SOME(0.00)[];
-	FROM_HAS_DN(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	DKIM_TRACE(0.00)[narfation.org:+];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	TO_DN_SOME(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[sven@narfation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	RCPT_COUNT_THREE(0.00)[3];
+	PRECEDENCE_BULK(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[5];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[nexthop.ai:email,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,roeck-us.net:email]
-X-Rspamd-Queue-Id: 3BFC05F9836
+	NEURAL_HAM(-0.00)[-1.000];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,narfation.org:email,narfation.org:mid,narfation.org:dkim]
+X-Rspamd-Queue-Id: 39D5E5F7576
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+commit 501368506563e151b322c8c3f228b796e615b90d upstream.
 
-------------------
+batadv_tvlv_container_ogm_append() could fail in two ways: a memory
+allocation failure when resizing the packet buffer, or the tvlv data
+exceeding U16_MAX bytes. In both cases the function previously returned the
+old (now stale) tvlv_value_len rather than signalling an error, causing the
+OGM/OGM2 send path to transmit a packet whose TVLV length field no longer
+matched the actual buffer contents. And because it also didn't fill in the
+new TVLV data, sending either uninitialized or corrupted data on the wire.
 
-From: Abdurrahman Hussain <abdurrahman@nexthop.ai>
+All errors in batadv_tvlv_container_ogm_append() must be forwarded to the
+caller. And the caller must abort the send of the OGM2. For B.A.T.M.A.N.
+IV, it is currently not allowed to abort the send. The non-TVLV part of the
+OGM must be queued up instead.
 
-commit 43cae21424ff8e33894a0f86c6b80b840c049fd7 upstream.
-
-adm1266_pmbus_block_xfer() copies the device-supplied block payload
-into the caller-provided buffer using the device-supplied length:
-
-	memcpy(data_r, &msgs[1].buf[1], msgs[1].buf[0]);
-
-The helper does not know how large data_r is and trusts the device to
-return at most one record's worth of bytes.  adm1266_nvmem_read_blackbox()
-violates that contract: it advances read_buff inside data->dev_mem in
-ADM1266_BLACKBOX_SIZE (64-byte) strides while the helper is willing to
-write up to ADM1266_PMBUS_BLOCK_MAX (255) bytes.  A device that returns
-more than 64 bytes on the trailing record (read_buff offset 1984 in
-the 2048-byte dev_mem allocation) overflows dev_mem by up to 191 bytes
-before the post-call
-
-	if (ret != ADM1266_BLACKBOX_SIZE)
-		return -EIO;
-
-can reject the response.
-
-Contain the fix in the caller without changing the helper signature:
-read each record into a 255-byte local bounce buffer that matches the
-helper's maximum output, validate the returned length, and only then
-copy exactly ADM1266_BLACKBOX_SIZE bytes into the dev_mem slot.
-
-Fixes: 407dc802a9c0 ("hwmon: (pmbus/adm1266) Add Block process call")
-Cc: stable@vger.kernel.org
-Signed-off-by: Abdurrahman Hussain <abdurrahman@nexthop.ai>
-Link: https://lore.kernel.org/r/20260515-adm1266-fixes-v1-5-1c1ea1349cfe@nexthop.ai
-Signed-off-by: Guenter Roeck <linux@roeck-us.net>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: stable@kernel.org
+Fixes: ef26157747d4 ("batman-adv: tvlv - basic infrastructure")
+[ Context ]
+Signed-off-by: Sven Eckelmann <sven@narfation.org>
 ---
- drivers/hwmon/pmbus/adm1266.c |    4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ net/batman-adv/bat_iv_ogm.c | 16 +++++++++++++---
+ net/batman-adv/bat_v_ogm.c  | 26 ++++++++++++++------------
+ net/batman-adv/tvlv.c       | 17 ++++++++++++-----
+ net/batman-adv/tvlv.h       |  2 +-
+ 4 files changed, 40 insertions(+), 21 deletions(-)
 
---- a/drivers/hwmon/pmbus/adm1266.c
-+++ b/drivers/hwmon/pmbus/adm1266.c
-@@ -348,6 +348,7 @@ static void adm1266_init_debugfs(struct
+diff --git a/net/batman-adv/bat_iv_ogm.c b/net/batman-adv/bat_iv_ogm.c
+index 748188d3b878..42b687c1a768 100644
+--- a/net/batman-adv/bat_iv_ogm.c
++++ b/net/batman-adv/bat_iv_ogm.c
+@@ -781,6 +781,7 @@ static void batadv_iv_ogm_schedule_buff(struct batadv_hard_iface *hard_iface)
+ 	u32 seqno;
+ 	u16 tvlv_len = 0;
+ 	unsigned long send_time;
++	int ret;
  
- static int adm1266_nvmem_read_blackbox(struct adm1266_data *data, u8 *read_buff)
- {
-+	u8 record[ADM1266_PMBUS_BLOCK_MAX];
- 	int record_count;
- 	char index;
- 	u8 buf[I2C_SMBUS_BLOCK_MAX];
-@@ -365,13 +366,14 @@ static int adm1266_nvmem_read_blackbox(s
- 		return -EIO;
+ 	lockdep_assert_held(&hard_iface->bat_iv.ogm_buff_mutex);
  
- 	for (index = 0; index < record_count; index++) {
--		ret = adm1266_pmbus_block_xfer(data, ADM1266_READ_BLACKBOX, 1, &index, read_buff);
-+		ret = adm1266_pmbus_block_xfer(data, ADM1266_READ_BLACKBOX, 1, &index, record);
- 		if (ret < 0)
- 			return ret;
- 
- 		if (ret != ADM1266_BLACKBOX_SIZE)
- 			return -EIO;
- 
-+		memcpy(read_buff, record, ADM1266_BLACKBOX_SIZE);
- 		read_buff += ADM1266_BLACKBOX_SIZE;
+@@ -804,9 +805,18 @@ static void batadv_iv_ogm_schedule_buff(struct batadv_hard_iface *hard_iface)
+ 		 * appended as it may alter the tt tvlv container
+ 		 */
+ 		batadv_tt_local_commit_changes(bat_priv);
+-		tvlv_len = batadv_tvlv_container_ogm_append(bat_priv, ogm_buff,
+-							    ogm_buff_len,
+-							    BATADV_OGM_HLEN);
++		ret = batadv_tvlv_container_ogm_append(bat_priv, ogm_buff,
++						       ogm_buff_len,
++						       BATADV_OGM_HLEN);
++		if (ret < 0) {
++			/* OGMs must be queued even when the buffer allocation for
++			 * TVLVs failed. just fall back to the non-TVLV version
++			 */
++			ret = 0;
++			*ogm_buff_len = BATADV_OGM_HLEN;
++		}
++
++		tvlv_len = ret;
  	}
  
-
+ 	batadv_ogm_packet = (struct batadv_ogm_packet *)(*ogm_buff);
+diff --git a/net/batman-adv/bat_v_ogm.c b/net/batman-adv/bat_v_ogm.c
+index 8f89ffe6020c..559d38781f2d 100644
+--- a/net/batman-adv/bat_v_ogm.c
++++ b/net/batman-adv/bat_v_ogm.c
+@@ -264,9 +264,9 @@ static void batadv_v_ogm_send_softif(struct batadv_priv *bat_priv)
+ 	struct batadv_hard_iface *hard_iface;
+ 	struct batadv_ogm2_packet *ogm_packet;
+ 	struct sk_buff *skb, *skb_tmp;
+-	unsigned char *ogm_buff;
+-	int ogm_buff_len;
+-	u16 tvlv_len = 0;
++	unsigned char **ogm_buff;
++	int *ogm_buff_len;
++	u16 tvlv_len;
+ 	int ret;
+ 
+ 	lockdep_assert_held(&bat_priv->bat_v.ogm_buff_mutex);
+@@ -274,25 +274,27 @@ static void batadv_v_ogm_send_softif(struct batadv_priv *bat_priv)
+ 	if (atomic_read(&bat_priv->mesh_state) == BATADV_MESH_DEACTIVATING)
+ 		goto out;
+ 
+-	ogm_buff = bat_priv->bat_v.ogm_buff;
+-	ogm_buff_len = bat_priv->bat_v.ogm_buff_len;
++	ogm_buff = &bat_priv->bat_v.ogm_buff;
++	ogm_buff_len = &bat_priv->bat_v.ogm_buff_len;
++
+ 	/* tt changes have to be committed before the tvlv data is
+ 	 * appended as it may alter the tt tvlv container
+ 	 */
+ 	batadv_tt_local_commit_changes(bat_priv);
+-	tvlv_len = batadv_tvlv_container_ogm_append(bat_priv, &ogm_buff,
+-						    &ogm_buff_len,
+-						    BATADV_OGM2_HLEN);
++	ret = batadv_tvlv_container_ogm_append(bat_priv, ogm_buff,
++					       ogm_buff_len,
++					       BATADV_OGM2_HLEN);
++	if (ret < 0)
++		goto reschedule;
+ 
+-	bat_priv->bat_v.ogm_buff = ogm_buff;
+-	bat_priv->bat_v.ogm_buff_len = ogm_buff_len;
++	tvlv_len = ret;
+ 
+-	skb = netdev_alloc_skb_ip_align(NULL, ETH_HLEN + ogm_buff_len);
++	skb = netdev_alloc_skb_ip_align(NULL, ETH_HLEN + *ogm_buff_len);
+ 	if (!skb)
+ 		goto reschedule;
+ 
+ 	skb_reserve(skb, ETH_HLEN);
+-	skb_put_data(skb, ogm_buff, ogm_buff_len);
++	skb_put_data(skb, *ogm_buff, *ogm_buff_len);
+ 
+ 	ogm_packet = (struct batadv_ogm2_packet *)skb->data;
+ 	ogm_packet->seqno = htonl(atomic_read(&bat_priv->bat_v.ogm_seqno));
+diff --git a/net/batman-adv/tvlv.c b/net/batman-adv/tvlv.c
+index 2a583215d439..76c6e0599694 100644
+--- a/net/batman-adv/tvlv.c
++++ b/net/batman-adv/tvlv.c
+@@ -8,6 +8,7 @@
+ 
+ #include <linux/byteorder/generic.h>
+ #include <linux/container_of.h>
++#include <linux/errno.h>
+ #include <linux/etherdevice.h>
+ #include <linux/gfp.h>
+ #include <linux/if_ether.h>
+@@ -306,9 +307,10 @@ static bool batadv_tvlv_realloc_packet_buff(unsigned char **packet_buff,
+  * The ogm packet might be enlarged or shrunk depending on the current size
+  * and the size of the to-be-appended tvlv containers.
+  *
+- * Return: size of all appended tvlv containers in bytes.
++ * Return: size of all appended tvlv containers in bytes (max U16_MAX), negative
++ *  if operation failed
+  */
+-u16 batadv_tvlv_container_ogm_append(struct batadv_priv *bat_priv,
++int batadv_tvlv_container_ogm_append(struct batadv_priv *bat_priv,
+ 				     unsigned char **packet_buff,
+ 				     int *packet_buff_len, int packet_min_len)
+ {
+@@ -316,6 +318,7 @@ u16 batadv_tvlv_container_ogm_append(struct batadv_priv *bat_priv,
+ 	struct batadv_tvlv_hdr *tvlv_hdr;
+ 	u16 tvlv_value_len;
+ 	void *tvlv_value;
++	int tvlv_len_ret;
+ 	bool ret;
+ 
+ 	spin_lock_bh(&bat_priv->tvlv.container_list_lock);
+@@ -323,9 +326,12 @@ u16 batadv_tvlv_container_ogm_append(struct batadv_priv *bat_priv,
+ 
+ 	ret = batadv_tvlv_realloc_packet_buff(packet_buff, packet_buff_len,
+ 					      packet_min_len, tvlv_value_len);
+-
+-	if (!ret)
++	if (!ret) {
++		tvlv_len_ret = -ENOMEM;
+ 		goto end;
++	}
++
++	tvlv_len_ret = tvlv_value_len;
+ 
+ 	if (!tvlv_value_len)
+ 		goto end;
+@@ -344,7 +350,8 @@ u16 batadv_tvlv_container_ogm_append(struct batadv_priv *bat_priv,
+ 
+ end:
+ 	spin_unlock_bh(&bat_priv->tvlv.container_list_lock);
+-	return tvlv_value_len;
++
++	return tvlv_len_ret;
+ }
+ 
+ /**
+diff --git a/net/batman-adv/tvlv.h b/net/batman-adv/tvlv.h
+index e5697230d991..f96f6b3f44a0 100644
+--- a/net/batman-adv/tvlv.h
++++ b/net/batman-adv/tvlv.h
+@@ -16,7 +16,7 @@
+ void batadv_tvlv_container_register(struct batadv_priv *bat_priv,
+ 				    u8 type, u8 version,
+ 				    void *tvlv_value, u16 tvlv_value_len);
+-u16 batadv_tvlv_container_ogm_append(struct batadv_priv *bat_priv,
++int batadv_tvlv_container_ogm_append(struct batadv_priv *bat_priv,
+ 				     unsigned char **packet_buff,
+ 				     int *packet_buff_len, int packet_min_len);
+ void batadv_tvlv_ogm_receive(struct batadv_priv *bat_priv,
+-- 
+2.47.3
 
 
