@@ -1,58 +1,63 @@
-Return-Path: <stable+bounces-255671-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-255317-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id YK1CD1SjGGrClggAu9opvQ
-	(envelope-from <stable+bounces-255671-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:19:32 +0200
+	id 0K6lDaefGGpAlggAu9opvQ
+	(envelope-from <stable+bounces-255317-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:03:51 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id C89E75F862C
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:19:31 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id 37DB55F7BCB
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:03:50 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 1AAE83002322
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 20:19:30 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 3312130273B1
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 20:02:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5D895322B88;
-	Thu, 28 May 2026 20:19:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1423F338595;
+	Thu, 28 May 2026 20:02:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gW/NW9kb"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1E9f9zqA"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 324F9316905;
-	Thu, 28 May 2026 20:19:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BE94827A476;
+	Thu, 28 May 2026 20:02:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779999567; cv=none; b=Xl7X967Gaf+sRSkOLbIM4LmrJvpNEKSz6x6yuk/mA9i/NrTwb8ppFvnI9iD4qvYJOV7KS4DZ3UeGR5kC0CTLCDFrSaqU9VlP5/dbi22xOg6O0b+3J67plnWk7lA4l4PKRS9HxakSLHvQGGf1WC3MEapjp4HxNQV6hgd5c2d9lds=
+	t=1779998569; cv=none; b=ox6Vo+TXxfBSRkcSSXZClT7irJR96+1Y1HtTt7AgXuR2/U3QKBUN7Unbc9tacjtD0pTLNOOsdKfkrlIM59y7hc8+6JdIHhi1LpnyBXsH7Y09oYsG9SNKBgZ56NC7H8MvdXI0QfX/+JgLSnFayt4+oAeq0PyIazYHbRBep6LKt1k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779999567; c=relaxed/simple;
-	bh=755JN+CVRjYV1i+whFJUrNkbN4KdA/bEgbqaSGMOegs=;
+	s=arc-20240116; t=1779998569; c=relaxed/simple;
+	bh=OmiVzrgtVQtqualmxAZtgt9SxKmqyoTHGF537VRyfv4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=AqCimeG0isAW9ovQ83vGFOhgRBqr5eVe8RZe5WkLz2fpkL/b7xUSUpcR8iSHh0CgA10yEehSlJ99KCLWbePfE9FVqyBCTO8xW31pqgdbeH4Vy3yDJ/WXODfrHdSNAm+16Hcxf2fWb9xmTHVaKncSc/CBJQFTgLz4UTIoMPqavlA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gW/NW9kb; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 902051F000E9;
-	Thu, 28 May 2026 20:19:25 +0000 (UTC)
+	 MIME-Version; b=VJxy+qWRAs4tErGn6bEDXDGyjgOcA3JKWWuP0rpjOjx1qZiNha7p1a4U2ckJivEeEg8Z7/s+8CBDthOhMGuz7etSKMzbtb0GHe7XLp5SNjGdAXBZLCXF+OZpoqt/+yfd8ZrV0JkV6ooG41dLIfUcHz4//SIrhDUjSuiZcL5poKw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1E9f9zqA; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 274971F000E9;
+	Thu, 28 May 2026 20:02:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779999566;
-	bh=PtKXpmV+uycAOhKr15m9Gv5GRXxtuVyIOv+Emj2uO34=;
+	s=korg; t=1779998568;
+	bh=i0y+/x2p2ZybAuWOCgz5/bUzkgylHfyHXboJh3iTBOY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=gW/NW9kbtqvxBHE2sMOY9a2JWbnSYsamMYDst+bZkn3NNZbWrcgSZNS707qXBI/9g
-	 GF7QF4QKn7ZGoSakI25Ngt1L4MO+SJbUjyZAaQcZfWLv3S+/iydgL2F3h/4ysBF8FH
-	 B5OU8jIVKZhNADuklUcmdU4OGwj4Jhkf8TCVQ8Og=
+	b=1E9f9zqAlVst7/tpXpwdEPl97dpIhWe+I1b2wwQ5IaEjLSsNz6KqgK5zRtLTAwJRf
+	 C9FsLee52tCAJQbF/lf4xU3gBm1f4QqKRzVygc8wpQxyYyQZi+1axeMTsMaPK7reAP
+	 mcyETfrLPGTGW46Qa96eKPyWm2zFJ608iqgF7RHs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Osama Abdelkader <osama.abdelkader@gmail.com>,
-	Anup Patel <anup@brainfault.org>
-Subject: [PATCH 6.18 111/377] riscv: kvm: return SBI_ERR_FAILURE for pmu_event_info() when OOM
+	Martin Karsten <mkarsten@uwaterloo.ca>,
+	Dragos Tatulea <dtatulea@nvidia.com>,
+	Tariq Toukan <tariqt@nvidia.com>,
+	Cosmin Ratiu <cratiu@nvidia.com>,
+	Joe Damato <joe@dama.to>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 7.0 220/461] net: napi: Avoid gro timer misfiring at end of busypoll
 Date: Thu, 28 May 2026 21:45:49 +0200
-Message-ID: <20260528194641.549873168@linuxfoundation.org>
+Message-ID: <20260528194653.498702146@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260528194638.371537336@linuxfoundation.org>
-References: <20260528194638.371537336@linuxfoundation.org>
+In-Reply-To: <20260528194646.819809818@linuxfoundation.org>
+References: <20260528194646.819809818@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,80 +68,131 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	MIME_TRACE(0.00)[0:+];
-	TO_DN_SOME(0.00)[];
-	TAGGED_FROM(0.00)[bounces-255671-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,brainfault.org];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-255317-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	NEURAL_HAM(-0.00)[-0.999];
-	TAGGED_RCPT(0.00)[stable];
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_SEVEN(0.00)[10];
 	MID_RHS_MATCH_FROM(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[5];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[brainfault.org:email,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo]
-X-Rspamd-Queue-Id: C89E75F862C
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,nvidia.com:email,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,msgid.link:url,uwaterloo.ca:email]
+X-Rspamd-Queue-Id: 37DB55F7BCB
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+7.0-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Osama Abdelkader <osama.abdelkader@gmail.com>
+From: Dragos Tatulea <dtatulea@nvidia.com>
 
-commit 0e9d0e7a7c78db7aa1c13796c65cfe0aefa54a5b upstream.
+[ Upstream commit 58e2330bd45572a6e3d46ea94cf7a9641f43591a ]
 
-kvm_riscv_vcpu_pmu_event_info() returned -ENOMEM from the
-SBI extension handler, which caused kvm_riscv_vcpu_sbi_ecall()
-to abort KVM_RUN and surface the error to userspace instead of
-completing the ECALL with a negative SBI error in a0.
-Use SBI_ERR_FAILURE and the normal retdata path, matching other PMU
-handlers and kvm_sbi_ext_pmu_handler comment.
+When in irq deferral mode (defer-hard-irqs > 0), a short enough
+gro-flush timeout can trigger before NAPI_STATE_SCHED is cleared if the
+last poll in busy_poll_stop() takes too long. This can have the effect
+of leaving the queue stuck with interrupts disabled and no timer armed
+which results in a tx timeout if there is no subsequent busypoll cycle.
 
-Fixes: e309fd113b9f ("RISC-V: KVM: Implement get event info function")
-Cc: stable@vger.kernel.org
-Signed-off-by: Osama Abdelkader <osama.abdelkader@gmail.com>
-Reviewed-by: Anup Patel <anup@brainfault.org>
-Link: https://lore.kernel.org/r/20260514173642.41448-2-osama.abdelkader@gmail.com
-Signed-off-by: Anup Patel <anup@brainfault.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+To prevent this, defer the gro-flush timer arm after the last poll.
+
+Fixes: 7fd3253a7de6 ("net: Introduce preferred busy-polling")
+Co-developed-by: Martin Karsten <mkarsten@uwaterloo.ca>
+Signed-off-by: Martin Karsten <mkarsten@uwaterloo.ca>
+Signed-off-by: Dragos Tatulea <dtatulea@nvidia.com>
+Reviewed-by: Tariq Toukan <tariqt@nvidia.com>
+Reviewed-by: Cosmin Ratiu <cratiu@nvidia.com>
+Reviewed-by: Joe Damato <joe@dama.to>
+Link: https://patch.msgid.link/20260506090808.820559-2-dtatulea@nvidia.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/riscv/kvm/vcpu_pmu.c |    6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
+ net/core/dev.c | 21 ++++++++++++---------
+ 1 file changed, 12 insertions(+), 9 deletions(-)
 
---- a/arch/riscv/kvm/vcpu_pmu.c
-+++ b/arch/riscv/kvm/vcpu_pmu.c
-@@ -478,8 +478,10 @@ int kvm_riscv_vcpu_pmu_event_info(struct
+diff --git a/net/core/dev.c b/net/core/dev.c
+index e4fcf09ba2beb..fab5a0bebd924 100644
+--- a/net/core/dev.c
++++ b/net/core/dev.c
+@@ -6855,9 +6855,9 @@ static void skb_defer_free_flush(void)
+ 
+ #if defined(CONFIG_NET_RX_BUSY_POLL)
+ 
+-static void __busy_poll_stop(struct napi_struct *napi, bool skip_schedule)
++static void __busy_poll_stop(struct napi_struct *napi, unsigned long timeout)
+ {
+-	if (!skip_schedule) {
++	if (!timeout) {
+ 		gro_normal_list(&napi->gro);
+ 		__napi_schedule(napi);
+ 		return;
+@@ -6867,6 +6867,8 @@ static void __busy_poll_stop(struct napi_struct *napi, bool skip_schedule)
+ 	gro_flush_normal(&napi->gro, HZ >= 1000);
+ 
+ 	clear_bit(NAPI_STATE_SCHED, &napi->state);
++	hrtimer_start(&napi->timer, ns_to_ktime(timeout),
++		      HRTIMER_MODE_REL_PINNED);
+ }
+ 
+ enum {
+@@ -6878,8 +6880,7 @@ static void busy_poll_stop(struct napi_struct *napi, void *have_poll_lock,
+ 			   unsigned flags, u16 budget)
+ {
+ 	struct bpf_net_context __bpf_net_ctx, *bpf_net_ctx;
+-	bool skip_schedule = false;
+-	unsigned long timeout;
++	unsigned long timeout = 0;
+ 	int rc;
+ 
+ 	/* Busy polling means there is a high chance device driver hard irq
+@@ -6899,10 +6900,12 @@ static void busy_poll_stop(struct napi_struct *napi, void *have_poll_lock,
+ 
+ 	if (flags & NAPI_F_PREFER_BUSY_POLL) {
+ 		napi->defer_hard_irqs_count = napi_get_defer_hard_irqs(napi);
+-		timeout = napi_get_gro_flush_timeout(napi);
+-		if (napi->defer_hard_irqs_count && timeout) {
+-			hrtimer_start(&napi->timer, ns_to_ktime(timeout), HRTIMER_MODE_REL_PINNED);
+-			skip_schedule = true;
++		if (napi->defer_hard_irqs_count) {
++			/* A short enough gro flush timeout and long enough
++			 * poll can result in timer firing too early.
++			 * Timer will be armed later if necessary.
++			 */
++			timeout = napi_get_gro_flush_timeout(napi);
+ 		}
  	}
  
- 	einfo = kzalloc(shmem_size, GFP_KERNEL);
--	if (!einfo)
--		return -ENOMEM;
-+	if (!einfo) {
-+		ret = SBI_ERR_FAILURE;
-+		goto out;
-+	}
- 
- 	ret = kvm_vcpu_read_guest(vcpu, shmem, einfo, shmem_size);
- 	if (ret) {
+@@ -6917,7 +6920,7 @@ static void busy_poll_stop(struct napi_struct *napi, void *have_poll_lock,
+ 	trace_napi_poll(napi, rc, budget);
+ 	netpoll_poll_unlock(have_poll_lock);
+ 	if (rc == budget)
+-		__busy_poll_stop(napi, skip_schedule);
++		__busy_poll_stop(napi, timeout);
+ 	bpf_net_ctx_clear(bpf_net_ctx);
+ 	local_bh_enable();
+ }
+-- 
+2.53.0
+
 
 
 
