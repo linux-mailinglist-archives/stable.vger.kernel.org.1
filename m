@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-256224-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-256235-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id aLJvGw6tGGpymAgAu9opvQ
-	(envelope-from <stable+bounces-256224-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 23:01:02 +0200
+	id yMsqFDGrGGpolwgAu9opvQ
+	(envelope-from <stable+bounces-256235-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:53:05 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6CDAD5FA0FE
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 23:01:00 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id CFA745F9C50
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:53:04 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 25FBA312A238
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 20:45:05 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id EC5CC30D0FE6
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 20:45:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BB73E32692C;
-	Thu, 28 May 2026 20:45:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5BD88318BB5;
+	Thu, 28 May 2026 20:45:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Q90MEbBX"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EVWCtmLM"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8DF482F1FEC;
-	Thu, 28 May 2026 20:45:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3DEA223394D;
+	Thu, 28 May 2026 20:45:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780001104; cv=none; b=hQVRgU5rNbtuEpKhayiXvc3WIm4abwEjYbS5Vj9Ld0BpXolwN0z0FtYQ1vjgELcIj0KywEx7RQQIzlBWzlWCqRPBDliCXipP1XYFDzuW2sf7HRUCItrSMvsC/5ZbZLwv0Y0RNPv9Tw12vW0E7BHlqvgBvAwKcutjajb8UaD78c0=
+	t=1780001135; cv=none; b=Kd0tUAtJ6Qg2V85++8ucPffiizo4FqFRjJRadyl0AggnC9HaqsiomwSHWlx14mTwGX56nkVfLiu+iSaT5Nu+Nyd5eNBbfE7EQ8vi3S+FwMGJnpszDKHHFYXOO7qmPpp0WY5VeOMojG5qenjUSMTmyecrZbU5vLeRlZxZ3nwrmAc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780001104; c=relaxed/simple;
-	bh=BIOQSdNReuWDVJGdNTsN3pWA/zxWLZoq84CdtrwLpuM=;
+	s=arc-20240116; t=1780001135; c=relaxed/simple;
+	bh=GKSntXG+sxmy7K4JwxNArTNNTniH+t4lDiNSChzOj4A=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ZfAFX9L31f3OSGgnxl5lP0odFmFnelEVkU15WTGniGj58pu9Y1G0RssfMH2MF6Off6mg/oCFpsI+jcaMhvjCb0ClXjWM43m8LoucU+wRfNUaUazCT+4Gop8cFoVHbU5QFvOPV+QonGkAi00IiWCMjY9PJB6sUgEVYb8vXfCcQOs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Q90MEbBX; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EB0A31F000E9;
-	Thu, 28 May 2026 20:45:02 +0000 (UTC)
+	 MIME-Version; b=h5BusrcKLhfPdVRhVGGZUW4vR0FLP2tqa5MmkLkea2ztOCfkYvZnst2k+/22s1R3wEoIxz84Dw0pKAXEJTB9yTJAIYLp164YxFzw3YIzN49G2zuU+a6ZNhc/MY+tp17IzTv6IPtXx1bLRebjE62Y+5eUAOgb2XR8tDf5ntMBBtA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EVWCtmLM; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9B3CA1F000E9;
+	Thu, 28 May 2026 20:45:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780001103;
-	bh=cUT9zJA9xzUALYJxPP8JLpNaWDfDdoyP1+Ph9m0lnhA=;
+	s=korg; t=1780001134;
+	bh=/A2SQ0ew1i6SDiSQ5weoi/YQZuzwgf24YLVQTUGEQVg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=Q90MEbBXPkRBXAl2ZrlnEkyIOpDadQWdNCWsa4xvj6lpQDQW1v0bIMMJssr49Sd24
-	 ZwKjjAlslP25zrk9dLT3jWIhVYb7Y2kvZhKJJQMsrlXNBObVY3A2nkBKTN6MyaLEZS
-	 YWcZ59zVAxkd9izpnEzUZ0KWCz9co2vQitalYADY=
+	b=EVWCtmLMo2PkeiYBH4by/Y85wXFVhOH0nTpvPEYfX+CTcI8qU9KtQqmpnKLwDDKUt
+	 JVHHJUtn//FAryI3FRF0ksVG7IJMOume+jAjoS8QTZaJhSa2w2pgVTqz4RqjRqBvQ3
+	 tVxPP+pYMVEXh6GJpfanfUnSUX0ZFvfu90ynA6og=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Gang Yan <yangang@kylinos.cn>,
-	Paolo Abeni <pabeni@redhat.com>,
+	Mat Martineau <martineau@kernel.org>,
 	"Matthieu Baerts (NGI0)" <matttbe@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 001/186] mptcp: sync the msk->sndbuf at accept() time
-Date: Thu, 28 May 2026 21:48:01 +0200
-Message-ID: <20260528194928.985731320@linuxfoundation.org>
+Subject: [PATCH 6.6 002/186] mptcp: pm: ADD_ADDR rtx: allow ID 0
+Date: Thu, 28 May 2026 21:48:02 +0200
+Message-ID: <20260528194929.011514767@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
 In-Reply-To: <20260528194928.941004471@linuxfoundation.org>
 References: <20260528194928.941004471@linuxfoundation.org>
@@ -69,7 +69,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
@@ -77,7 +77,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-256224-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-256235-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
@@ -86,13 +86,13 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
 	NEURAL_HAM(-0.00)[-1.000];
 	RCPT_COUNT_SEVEN(0.00)[7];
 	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[kylinos.cn:email,msgid.link:url,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim]
-X-Rspamd-Queue-Id: 6CDAD5FA0FE
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,msgid.link:url,linuxfoundation.org:mid,linuxfoundation.org:dkim]
+X-Rspamd-Queue-Id: CFA745F9C50
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
@@ -100,70 +100,44 @@ X-Rspamd-Server: lfdr
 
 ------------------
 
-From: Gang Yan <yangang@kylinos.cn>
+From: Matthieu Baerts (NGI0) <matttbe@kernel.org>
 
-commit fcf04b14334641f4b0b8647824480935e9416d52 upstream.
+commit 03f324f3f1f7619a47b9c91282cb12775ab0a2f1 upstream.
 
-On passive MPTCP connections, the msk sndbuf is not updated correctly.
+ADD_ADDR can be sent for the ID 0, which corresponds to the local
+address and port linked to the initial subflow.
 
-The root cause is an order issue in the accept path:
+Indeed, this address could be removed, and re-added later on, e.g. what
+is done in the "delete re-add signal" MPTCP Join selftests. So no reason
+to ignore it.
 
-- tcp_check_req() -> subflow_syn_recv_sock() -> mptcp_sk_clone_init()
-  calls __mptcp_propagate_sndbuf() to copy the ssk sndbuf into msk
-
-- Later, tcp_child_process() -> tcp_init_transfer() ->
-  tcp_sndbuf_expand() grows the ssk sndbuf.
-
-So __mptcp_propagate_sndbuf() runs before the ssk sndbuf has been
-expanded and the msk ends up with a much smaller sndbuf than the
-subflow:
-
-  MPTCP: msk->sndbuf:20480, msk->first->sndbuf:2626560
-
-Fix this by moving the __mptcp_propagate_sndbuf() call from
-mptcp_sk_clone_init() -- the ssk sndbuf is not yet finalized there -- to
-__mptcp_propagate_sndbuf() at accept() time, when the ssk sndbuf has
-been fully expanded by tcp_sndbuf_expand().
-
-Fixes: 8005184fd1ca ("mptcp: refactor sndbuf auto-tuning")
+Fixes: 00cfd77b9063 ("mptcp: retransmit ADD_ADDR when timeout")
 Cc: stable@vger.kernel.org
-Closes: https://github.com/multipath-tcp/mptcp_net-next/issues/602
-Signed-off-by: Gang Yan <yangang@kylinos.cn>
-Acked-by: Paolo Abeni <pabeni@redhat.com>
-Reviewed-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+Reviewed-by: Mat Martineau <martineau@kernel.org>
 Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
-Link: https://patch.msgid.link/20260420-net-mptcp-sync-sndbuf-accept-v1-1-e3523e3aeb44@kernel.org
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
-[ No conflicts, but move __mptcp_propagate_sndbuf() above the for-loop
-  (mptcp_for_each_subflow()) present in this version, which will modify
-  'subflow' used by __mptcp_propagate_sndbuf() in this new patch. ]
+Link: https://patch.msgid.link/20260505-net-mptcp-pm-fixes-7-1-rc3-v1-2-fca8091060a4@kernel.org
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+[ applied to net/mptcp/pm_netlink.c instead of upstream's pm_kernel.c ]
 Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/mptcp/protocol.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ net/mptcp/pm_netlink.c | 3 ---
+ 1 file changed, 3 deletions(-)
 
-diff --git a/net/mptcp/protocol.c b/net/mptcp/protocol.c
-index aed6c04c7de67..ff1632d03a96d 100644
---- a/net/mptcp/protocol.c
-+++ b/net/mptcp/protocol.c
-@@ -3451,7 +3451,6 @@ struct sock *mptcp_sk_clone_init(const struct sock *sk,
- 	 * uses the correct data
- 	 */
- 	mptcp_copy_inaddrs(nsk, ssk);
--	__mptcp_propagate_sndbuf(nsk, ssk);
+diff --git a/net/mptcp/pm_netlink.c b/net/mptcp/pm_netlink.c
+index 4a5802126c8e4..23aef214f30d8 100644
+--- a/net/mptcp/pm_netlink.c
++++ b/net/mptcp/pm_netlink.c
+@@ -305,9 +305,6 @@ static void mptcp_pm_add_timer(struct timer_list *timer)
+ 	if (inet_sk_state_load(sk) == TCP_CLOSE)
+ 		return;
  
- 	mptcp_rcv_space_init(msk, ssk);
- 	msk->rcvq_space.time = mptcp_stamp();
-@@ -4064,6 +4063,8 @@ static int mptcp_stream_accept(struct socket *sock, struct socket *newsock,
- 		msk = mptcp_sk(newsk);
- 		msk->in_accept_queue = 0;
- 
-+		__mptcp_propagate_sndbuf(newsk, mptcp_subflow_tcp_sock(subflow));
-+
- 		/* set ssk->sk_socket of accept()ed flows to mptcp socket.
- 		 * This is needed so NOSPACE flag can be set from tcp stack.
- 		 */
+-	if (!entry->addr.id)
+-		return;
+-
+ 	bh_lock_sock(sk);
+ 	if (sock_owned_by_user(sk)) {
+ 		/* Try again later. */
 -- 
 2.53.0
 
