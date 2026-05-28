@@ -1,162 +1,185 @@
-Return-Path: <stable+bounces-254978-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-254980-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id yPlMFHc/GGqahwgAu9opvQ
-	(envelope-from <stable+bounces-254978-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 15:13:27 +0200
+	id gLm9JkNBGGrIhwgAu9opvQ
+	(envelope-from <stable+bounces-254980-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 15:21:07 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id AF01F5F287F
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 15:13:26 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id AF5595F2A32
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 15:21:06 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id C7D96304E0F7
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 13:08:08 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id A4DAA3053C8B
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 13:19:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5C3A23D4133;
-	Thu, 28 May 2026 13:08:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7E6C93F39FC;
+	Thu, 28 May 2026 13:19:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=debian.org header.i=@debian.org header.b="A0belgQQ"
+	dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b="B2YKoIo+"
 X-Original-To: stable@vger.kernel.org
-Received: from stravinsky.debian.org (stravinsky.debian.org [82.195.75.108])
+Received: from m16.mail.163.com (m16.mail.163.com [117.135.210.2])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ADBC93E3C76
-	for <stable@vger.kernel.org>; Thu, 28 May 2026 13:08:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=82.195.75.108
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 92B303F39D3;
+	Thu, 28 May 2026 13:19:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=117.135.210.2
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779973688; cv=none; b=JIXihNxpzGNCcmqU+c/ZGHEbgKSUD5IRZ5xKvo/4nJ8BAemMxGSHSn1YrWacbeHbhrABZ0e5HLM19rxZj2d0uHD4P7hoWRmRkiQGTSzmCWH0sPDIK/+8v+2kkRsn/2qPjI58AOKLIKLcIIReSEDnSSGcnFq+ze4LXAaFVMjOj/I=
+	t=1779974372; cv=none; b=d1ZqWqAsr76kztzlp5g56u/eeFdGlwSkrxHtCU027cuWSqZjkZ6CbnJSVHKAx2PhkLlQc0fnWiN3MaVKuYhZ9HuVCsz7b7basGhj0zI1PrHODNAQI2rrl8Ictf/ZC3FeDmfyfiZasIlc/WCH0OCeVun4ilObe+8jlksGkZhNrb4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779973688; c=relaxed/simple;
-	bh=U5FzoB7musyFQqaPEjNF1/UUXBLzRb3OJ43kcBzZ+yo=;
-	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
-	 Content-Disposition:In-Reply-To; b=JAvRkIAgFrCbTu5DvcmvkOiYeog3slyn07thpHv53QbhgZBoROefkuw+Xs6OO2cbTwu0ATklDSyDLijPX71NuYhR1SyThmXDLzv6XWTN+Ul1NuRzNEga3LTh8tfSQhMHKGUfKUKblIc3EZwycpqsuaUqyZmbwrwVCfcqDGpIc1o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=debian.org; spf=pass smtp.mailfrom=debian.org; dkim=pass (2048-bit key) header.d=debian.org header.i=@debian.org header.b=A0belgQQ; arc=none smtp.client-ip=82.195.75.108
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=debian.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=debian.org
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=debian.org;
-	s=smtpauto.stravinsky; h=X-Debian-User:In-Reply-To:Content-Type:MIME-Version:
-	Message-ID:Subject:Cc:To:From:Date:Reply-To:Content-Transfer-Encoding:
-	Content-ID:Content-Description:References;
-	bh=4awUi+FK7z/5xriki3bh3p0U6E0KCZYG8Smwp+Ve1Gk=; b=A0belgQQfK0O+sgHy4JjrRi6kX
-	K9Tx/RI/VzzD6BafbSoehBNjkwn9KNYc+IWwh9jLkQzx1YM/6qJC9XFnFv+872ZybqJDWchSSeyO4
-	1XLS4Jq/eJlvY2Tw5NPPg4Fp2zWkuaome8QiiwwzDmVyqYr/h5m/EB02Ze63ItwXaCB8TQo7SxE0d
-	CW6WBZd1rfOclNauWaIrKVwsgEf5dDGjA8Fdv11ny8DisQBeFoZzd9nUg/+C6IuO4jGV+Z9CrOB7y
-	nsAeP11JnyHpKfmHViEhPD51k1Q7cUlHcJ7Lz55+lS6yUmY8IFlwwi4W1BOtRzrMmhBh/BxXiYZ3k
-	0gZs38iQ==;
-Received: from authenticated-user
-	by stravinsky.debian.org with esmtpsa (TLS1.3:ECDHE_SECP256R1__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
-	(Exim 4.96)
-	(envelope-from <benh@debian.org>)
-	id 1wSaSu-0043mU-0v;
-	Thu, 28 May 2026 13:08:00 +0000
-Date: Thu, 28 May 2026 15:07:58 +0200
-From: Ben Hutchings <benh@debian.org>
-To: Sasha Levin <sashal@kernel.org>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: Yoshihiro Shimoda <yoshihiro.shimoda.uh@renesas.com>,
-	Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>,
-	Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>,
-	Vinod Koul <vkoul@kernel.org>, stable@vger.kernel.org
-Subject: [PATCH 5.10] phy: renesas: rcar-gen3-usb2: Fix msleep() in atomic
- context
-Message-ID: <ahg-Lvu0ywzUT9mZ@decadent.org.uk>
+	s=arc-20240116; t=1779974372; c=relaxed/simple;
+	bh=N4rIG6n/PqilyxtxEPYBrE4PIrFlZtS30+eRLKAQxEE=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=TrYZngy19Xv8Qr9nj0Mf9OwdHvUsijZRme4kUQiXWVQRsQSFe2Sf0BP7r9h9aYaNKYW+sRPUZhMzaW//ivRYRn/sW8U0aO+jJRFKf79xh54RzbsahfllnfP97JovvspNVG0F9dFh6IlNDL88VeFH3XOU3m4YMLwnv3iaOHGyH3g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com; spf=pass smtp.mailfrom=163.com; dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b=B2YKoIo+; arc=none smtp.client-ip=117.135.210.2
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=163.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
+	s=s110527; h=From:To:Subject:Date:Message-ID:MIME-Version; bh=Ye
+	z8QRDeKKQnQ8dYgCq8BDZ1EGknlWfbs50O87oXkfg=; b=B2YKoIo+j/oDDrhoaV
+	2iEIh2A5FODVsPudvAmbbPl5leYZmV53/H6P/n8s3E6P7qDRysDsYK9zUO5RjiGT
+	0/jCw0aVhSwIVmz7jL6Etrwr2s55EQBmpRxAEmlidtdAZ0bmJhkS1hJLIHEPEmzz
+	6WX1EIkBBEOoSGiHickeDzhtc=
+Received: from China-163-team (unknown [])
+	by gzga-smtp-mtada-g1-2 (Coremail) with SMTP id _____wD373KaQBhq1y1jAA--.16331S2;
+	Thu, 28 May 2026 21:18:22 +0800 (CST)
+From: Wenshan Lan <jetlan9@163.com>
+To: gregkh@linuxfoundation.org,
+	sashal@kernel.org,
+	stable@vger.kernel.org
+Cc: linux-kernel@vger.kernel.org,
+	Thomas Zimmermann <tzimmermann@suse.de>,
+	Javier Martinez Canillas <javierm@redhat.com>,
+	Wenshan Lan <jetlan9@163.com>
+Subject: [PATCH 6.6.y 1/2] drm/fbdev-helper: Set and clear VGA switcheroo client from fb_info
+Date: Thu, 28 May 2026 21:18:16 +0800
+Message-ID: <20260528131817.59900-1-jetlan9@163.com>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="IMNzU06fJPSmfjL2"
-Content-Disposition: inline
-In-Reply-To: <d5dde03f796af3efcdabcbadb604e8981268ae5c.camel@decadent.org.uk>
-X-Debian-User: benh
-X-Spamd-Result: default: False [-4.26 / 15.00];
-	SIGNED_PGP(-2.00)[];
+Content-Transfer-Encoding: 8bit
+X-CM-TRANSID:_____wD373KaQBhq1y1jAA--.16331S2
+X-Coremail-Antispam: 1Uf129KBjvJXoWxJFy8Ar1xKFy7KFyUJr45trb_yoW5ur4DpF
+	W3GFW5Kr4ktF4UWwnru3Wjva43AwsxCFy8urs7Gw4avw1jyryS9Fn8Ary09FW5Gr1xJr1j
+	yw1YyF18uF1kCaDanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x0pE7PEsUUUUU=
+X-CM-SenderInfo: xmhwztjqz6il2tof0z/xtbCxB-XoGoYQJ85swAA3L
+X-Spamd-Result: default: False [-0.66 / 15.00];
+	MID_CONTAINS_FROM(1.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[debian.org,none];
-	MIME_GOOD(-0.20)[multipart/signed,text/plain];
-	R_DKIM_ALLOW(-0.20)[debian.org:s=smtpauto.stravinsky];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_MISSING_CHARSET(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[163.com,none];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
+	R_DKIM_ALLOW(-0.20)[163.com:s=s110527];
 	MAILLIST(-0.15)[generic];
+	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-254978-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[debian.org:+];
-	MIME_TRACE(0.00)[0:+,1:+,2:~];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	NEURAL_HAM(-0.00)[-1.000];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[benh@debian.org,stable@vger.kernel.org];
-	MISSING_XM_UA(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[7];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
+	TAGGED_FROM(0.00)[bounces-254980-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[vger.kernel.org,suse.de,redhat.com,163.com];
 	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,decadent.org.uk:mid]
-X-Rspamd-Queue-Id: AF01F5F287F
+	RCVD_TLS_LAST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FREEMAIL_FROM(0.00)[163.com];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[jetlan9@163.com,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	DKIM_TRACE(0.00)[163.com:+];
+	NEURAL_HAM(-0.00)[-0.999];
+	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_SEVEN(0.00)[7];
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[suse.de:email,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,patchwork.freedesktop.org:url]
+X-Rspamd-Queue-Id: AF5595F2A32
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
+From: Thomas Zimmermann <tzimmermann@suse.de>
 
---IMNzU06fJPSmfjL2
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+[ Upstream commit 02257549daf7ff839e2be6d4f3cac975e522fd7a ]
 
-The backport of commit 55a387ebb921 "phy: renesas: rcar-gen3-usb2:
-Lock around hardware registers and driver data" to 5.10 was not quite
-right.  The upstream version converted an msleep() call to mdelay() in
-rcar_gen3_init_otg(), which now runs in atomic context, but this
-change was missing from the backport.  Fix that.
+Call vga_switcheroo_client_fb_set() with the PCI device from the
+instance of struct fb_info. All fbdev clients now run these calls.
+For non-PCI devices or drivers without vga-switcheroo, this does
+nothing. For i915 and radeon, it allows these drivers to use a
+common fbdev client.
 
-Fixes: 0f86a559900f ("phy: renesas: rcar-gen3-usb2: Lock around hardware re=
-gisters and driver data")
-Signed-off-by: Ben Hutchings <benh@debian.org>
+The device is the same as the one stored in struct drm_client and
+struct drm_fb_helper, so there is no difference in behavior. Some
+NULL-pointer checks are being removed, where those pointers cannot
+be NULL.
+
+v4:
+- clarify call semantics for drm_fb_helper_unregister_info() (Javier)
+
+Signed-off-by: Thomas Zimmermann <tzimmermann@suse.de>
+Reviewed-by: Javier Martinez Canillas <javierm@redhat.com>
+Link: https://patchwork.freedesktop.org/patch/msgid/20240924071734.98201-3-tzimmermann@suse.de
+[ The variable 'dev' in the function drm_fb_helper_single_fb_probe() is
+unused; remove it in v6.6. ]
+Signed-off-by: Wenshan Lan <jetlan9@163.com>
 ---
- drivers/phy/renesas/phy-rcar-gen3-usb2.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/gpu/drm/drm_fb_helper.c | 18 ++++++++++++------
+ 1 file changed, 12 insertions(+), 6 deletions(-)
 
-diff --git a/drivers/phy/renesas/phy-rcar-gen3-usb2.c b/drivers/phy/renesas=
-/phy-rcar-gen3-usb2.c
-index 5166a115879e..90f2a0e5b2aa 100644
---- a/drivers/phy/renesas/phy-rcar-gen3-usb2.c
-+++ b/drivers/phy/renesas/phy-rcar-gen3-usb2.c
-@@ -386,7 +386,7 @@ static void rcar_gen3_init_otg(struct rcar_gen3_chan *c=
-h)
- 	val =3D readl(usb2_base + USB2_ADPCTRL);
- 	writel(val | USB2_ADPCTRL_IDPULLUP, usb2_base + USB2_ADPCTRL);
-=20
--	msleep(20);
-+	mdelay(20);
-=20
- 	writel(0xffffffff, usb2_base + USB2_OBINTSTA);
- 	writel(USB2_OBINT_BITS, usb2_base + USB2_OBINTEN);
+diff --git a/drivers/gpu/drm/drm_fb_helper.c b/drivers/gpu/drm/drm_fb_helper.c
+index b507c1c008a3..eee7b56d441f 100644
+--- a/drivers/gpu/drm/drm_fb_helper.c
++++ b/drivers/gpu/drm/drm_fb_helper.c
+@@ -567,7 +567,7 @@ EXPORT_SYMBOL(drm_fb_helper_release_info);
+ 
+ /**
+  * drm_fb_helper_unregister_info - unregister fb_info framebuffer device
+- * @fb_helper: driver-allocated fbdev helper, can be NULL
++ * @fb_helper: driver-allocated fbdev helper, must not be NULL
+  *
+  * A wrapper around unregister_framebuffer, to release the fb_info
+  * framebuffer device. This must be called before releasing all resources for
+@@ -575,8 +575,12 @@ EXPORT_SYMBOL(drm_fb_helper_release_info);
+  */
+ void drm_fb_helper_unregister_info(struct drm_fb_helper *fb_helper)
+ {
+-	if (fb_helper && fb_helper->info)
+-		unregister_framebuffer(fb_helper->info);
++	struct fb_info *info = fb_helper->info;
++	struct device *dev = info->device;
++
++	if (dev_is_pci(dev))
++		vga_switcheroo_client_fb_set(to_pci_dev(dev), NULL);
++	unregister_framebuffer(fb_helper->info);
+ }
+ EXPORT_SYMBOL(drm_fb_helper_unregister_info);
+ 
+@@ -1668,8 +1672,8 @@ static int drm_fb_helper_find_sizes(struct drm_fb_helper *fb_helper,
+ static int drm_fb_helper_single_fb_probe(struct drm_fb_helper *fb_helper)
+ {
+ 	struct drm_client_dev *client = &fb_helper->client;
+-	struct drm_device *dev = fb_helper->dev;
+ 	struct drm_fb_helper_surface_size sizes;
++	struct fb_info *info;
+ 	int ret;
+ 
+ 	ret = drm_fb_helper_find_sizes(fb_helper, &sizes);
+@@ -1687,9 +1691,11 @@ static int drm_fb_helper_single_fb_probe(struct drm_fb_helper *fb_helper)
+ 
+ 	strcpy(fb_helper->fb->comm, "[fbcon]");
+ 
++	info = fb_helper->info;
++
+ 	/* Set the fb info for vgaswitcheroo clients. Does nothing otherwise. */
+-	if (dev_is_pci(dev->dev))
+-		vga_switcheroo_client_fb_set(to_pci_dev(dev->dev), fb_helper->info);
++	if (dev_is_pci(info->device))
++		vga_switcheroo_client_fb_set(to_pci_dev(info->device), info);
+ 
+ 	return 0;
+ }
+-- 
+2.43.0
 
---IMNzU06fJPSmfjL2
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQIzBAABCgAdFiEErCspvTSmr92z9o8157/I7JWGEQkFAmoYPioACgkQ57/I7JWG
-EQl1sQ//cgAdvRQgQguS/CyXcs42Og2rmDNmg5Ej2sIQjhHYRZG7Unoh7L2ERL9D
-c6B2fahPVB0DjGCFOA1Z5UGJyACbl/sYAOePXn8u6gdPd5g98hursotDBp/kdIqA
-i8J4j/HttUmI+W/ePUsm8An8Qb8lPsCBnL95O551oHGVgG0Qi/cf3h764Ob7hYi1
-C0I3Tat23j4+CBdNytEkzIwaQBg6i8Ybu7gnWZ8lkdFzjVUZCzLjolu8w/kUMxyH
-uqwF81HSuiUHwetiv+W63GTtUWvpEyAM6wLdKlQNocBnfgofcJpk6zG3H9fzXFEP
-yTzpcnrY2Smam82MBRnQ5S3CJFVJTPwGp/BAPQxnzsnnCCBp8f3kRxYGu7RiY7/N
-tm+djwnNCQkiggvDPoRtGFS4Ofdv/WTAZLP5g/4ORonTmspcYzHppHBkha/MNk0J
-HsF4vFUs2vHLwIOW0bjKETJef/CEySgGoYC7TGeTejGpyVg1OzOxoQTOPmblJDvK
-Nqvagom6BsbaAltdPlfA5hgROx5TNRcJsJlU+VPVe/A+0vbZIQYEJyxufuk+u+/v
-rq2cjIfPy+oHgk6BqDTLXAf9JKtFTVe7yqw1niw6KqQGHOQsQPe5cPW5WjRtJEWA
-JTbG3SL5z6oY0fwYaYjfr5M/8ubs7A3H7KuEWQ9P13rzQWbZY2M=
-=bhQt
------END PGP SIGNATURE-----
-
---IMNzU06fJPSmfjL2--
 
