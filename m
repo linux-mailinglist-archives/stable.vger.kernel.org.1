@@ -1,61 +1,65 @@
-Return-Path: <stable+bounces-255956-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-255704-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id eGukMQSpGGrclwgAu9opvQ
-	(envelope-from <stable+bounces-255956-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:43:48 +0200
+	id oAAQHaejGGrJlggAu9opvQ
+	(envelope-from <stable+bounces-255704-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:20:55 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 314065F9687
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:43:48 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 391DE5F8707
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:20:55 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id C54F9302297C
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 20:32:30 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 843E33011356
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 20:20:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8496A33D4E2;
-	Thu, 28 May 2026 20:32:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 024FD2D9787;
+	Thu, 28 May 2026 20:20:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="N9uqfyF7"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PsRbwN78"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5AA7233B6FC;
-	Thu, 28 May 2026 20:32:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CBC103016E0;
+	Thu, 28 May 2026 20:20:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780000350; cv=none; b=a/vI4UZmDwLFTq/VfC00q+TMZbLQxhYytyAOHD8ou1ChLHrnKGytirfSHr9GdqdTn34WEoTcM2zgAyy4JNzd9C9NZRPCCJNefRP7SUzpTW8OGWlw5qNuM3xVK5wUj8bpjI0gfRDsZmNFzc0dgZgA/uZc2x9Mmcgosuh3gJt5BPc=
+	t=1779999653; cv=none; b=Emeq22HWpKGYNMCwEQ6tyxoDInS9sokEgGnk1OplnX+5ppyEYAPij+3xV1ETJYN08Nop0xI8ajRB8kja9BFH95PrFsVsrjoaJ1xMujH7mU0YE9f/0RE7tXfpS+RU9ZuRjVsH+TfcXWHYGPMWXDxeR7HV3QsR6AdSGyyHmzzqEx4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780000350; c=relaxed/simple;
-	bh=r5gdkHCaCdPKXjQaaJ15XaMsP+srt00TlG8o+NIjjsE=;
+	s=arc-20240116; t=1779999653; c=relaxed/simple;
+	bh=+wqkMF8E7Vj8t0BYjHWHv/kBG0974VSLe4EkwWp75kI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=FKim2JcDs1IagwT8d4VWGdeMxXaXJXJmu841+BtmTicpVuHEvMdhhclG8vRP2oQUVhxcm1PNsV2ERxESV92qr64nfViJ/a1w06tfNk8RKabyrjNbLj8wg7HQtUnNwnLBOE3ect9wUcooY2lp1KmJ3HghFBqesBgpnjirn05AiFw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=N9uqfyF7; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B63FF1F000E9;
-	Thu, 28 May 2026 20:32:28 +0000 (UTC)
+	 MIME-Version; b=EHQ40guMzTrgI887hnWXJoQaKt7NXljAA7F8StH9XsHxbbcRuxz47Yx+d+rmct0RSxrSGf7hZQXeWUUd774iKtrXlPZB2jG8nQ5pmM87g+9H1ifOWf7jOZD7ue5CywC46ZhJrm5d54drHZtzGzBsA04p7j2/anwWMAcCBMprlzk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PsRbwN78; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3BF721F000E9;
+	Thu, 28 May 2026 20:20:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780000349;
-	bh=ubAfmvK40HAXnzA0DecTsiPi/oWu/uFPSgvM4Qm/5io=;
+	s=korg; t=1779999652;
+	bh=xwqzc1EHH90M1O0PQ9r/JaO2bbVb794u9r0mFTXZSGQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=N9uqfyF7GSsuvAQlc8qJAaZ4giA0AAcHGvZvcvAvkcCFo9eljYH9sgs6LmiRjNus/
-	 wXJ/Rx8aTkgyAwoj+bQRek7cexNdcE6TuCuIscuBAxeV2XzxoHOad6OBqDlI64Ies2
-	 Ic6Lq88LdGp2ILRgNnbGxu1tKb/Dkaiq2RbEfB6Q=
+	b=PsRbwN78EF5BAi5RK06Dv0Vk/aNgxiiGpSzRZ/Nj7RQCqYxuvPoGQKsJChORa0rZa
+	 5DolDfkjsaZwifSWePO78FvF5C8/ncWvIr600G7Lrz6ry/SIM0bGc7RxjCUmLu175U
+	 eGnNj3lCfRXOjs1G0n9TV3u1jqwKAO4hDAMrauTI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Matt Roper <matthew.d.roper@intel.com>,
-	Shuicheng Lin <shuicheng.lin@intel.com>,
-	Gustavo Sousa <gustavo.sousa@intel.com>,
-	Matthew Brost <matthew.brost@intel.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 006/272] drm/xe/hdcp: Add NULL check for media_gt in intel_hdcp_gsc_check_status()
+	stable@kernel.org,
+	Yuan Tan <yuantan098@gmail.com>,
+	Yifan Wu <yifanwucs@gmail.com>,
+	Juefei Pu <tomapufckgml@gmail.com>,
+	Xin Liu <bird@lzu.edu.cn>,
+	Ruijie Li <ruijieli51@gmail.com>,
+	Zhanpeng Li <lzhanpeng2025@lzu.edu.cn>,
+	Ren Wei <n05ec@lzu.edu.cn>,
+	Sven Eckelmann <sven@narfation.org>
+Subject: [PATCH 6.18 142/377] batman-adv: clear current gateway during teardown
 Date: Thu, 28 May 2026 21:46:20 +0200
-Message-ID: <20260528194629.559857877@linuxfoundation.org>
+Message-ID: <20260528194642.485655812@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260528194629.379955525@linuxfoundation.org>
-References: <20260528194629.379955525@linuxfoundation.org>
+In-Reply-To: <20260528194638.371537336@linuxfoundation.org>
+References: <20260528194638.371537336@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -68,103 +72,83 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	TAGGED_FROM(0.00)[bounces-255704-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,kernel.org,gmail.com,lzu.edu.cn,narfation.org];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	RCPT_COUNT_TWELVE(0.00)[12];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-255956-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
 	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[8];
-	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[intel.com:email,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,msgid.link:url,linuxfoundation.org:mid,linuxfoundation.org:dkim]
-X-Rspamd-Queue-Id: 314065F9687
+	MID_RHS_MATCH_FROM(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[lzu.edu.cn:email,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,narfation.org:email,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo]
+X-Rspamd-Queue-Id: 391DE5F8707
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Gustavo Sousa <gustavo.sousa@intel.com>
+From: Ruijie Li <ruijieli51@gmail.com>
 
-commit 60a1e131a811b68703da58fd805ab359b704ab03 upstream.
+commit a340a51ed801eab7bb454150c226323b865263cc upstream.
 
-When media GT is disabled via configfs, there is no allocation for
-media_gt, which is kept as NULL.  In such scenario,
-intel_hdcp_gsc_check_status() results in a kernel pagefault error due to
-&gt->uc.gsc being evaluated as an invalid memory address.
+batadv_gw_node_free() removes the gateway list entries during mesh teardown,
+but it does not clear the currently selected gateway. This leaves stale
+gateway state behind across cleanup and can break a later mesh recreation.
 
-Fix that by introducing a NULL check on media_gt and bailing out early
-if so.
+Clear bat_priv->gw.curr_gw before walking the gateway list so the selected
+gateway reference is dropped as part of teardown.
 
-While at it, also drop the NULL check for gsc, since it can't be NULL if
-media_gt is not NULL.
-
-v2:
-  - Get address for gsc only after checking that gt is not NULL.
-    (Shuicheng)
-  - Drop the NULL check for gsc. (Shuicheng)
-v3:
-  - Add "Fixes" and "Cc: <stable...>" tags. (Matt)
-
-Fixes: 4af50beb4e0f ("drm/xe: Use gsc_proxy_init_done to check proxy status")
-Cc: <stable@vger.kernel.org> # v6.10+
-Reviewed-by: Matt Roper <matthew.d.roper@intel.com>
-Reviewed-by: Shuicheng Lin <shuicheng.lin@intel.com>
-Link: https://patch.msgid.link/20260416-check-for-null-media_gt-in-intel_hdcp_gsc_check_status-v2-1-9adb9fd3b621@intel.com
-Signed-off-by: Gustavo Sousa <gustavo.sousa@intel.com>
-(cherry picked from commit bfaf87e84ca3ca3f6e275f9ae56da47a8b55ffd1)
-Signed-off-by: Matthew Brost <matthew.brost@intel.com>
-Signed-off-by: Gustavo Sousa <gustavo.sousa@intel.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 2265c1410864 ("batman-adv: gateway election code refactoring")
+Cc: stable@kernel.org
+Reported-by: Yuan Tan <yuantan098@gmail.com>
+Reported-by: Yifan Wu <yifanwucs@gmail.com>
+Reported-by: Juefei Pu <tomapufckgml@gmail.com>
+Reported-by: Xin Liu <bird@lzu.edu.cn>
+Signed-off-by: Ruijie Li <ruijieli51@gmail.com>
+Signed-off-by: Zhanpeng Li <lzhanpeng2025@lzu.edu.cn>
+Signed-off-by: Ren Wei <n05ec@lzu.edu.cn>
+Signed-off-by: Sven Eckelmann <sven@narfation.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/xe/display/xe_hdcp_gsc.c | 12 ++++++++++--
- 1 file changed, 10 insertions(+), 2 deletions(-)
+ net/batman-adv/gateway_client.c |    4 ++++
+ 1 file changed, 4 insertions(+)
 
-diff --git a/drivers/gpu/drm/xe/display/xe_hdcp_gsc.c b/drivers/gpu/drm/xe/display/xe_hdcp_gsc.c
-index f4332f06b6c80..695d625c83ee6 100644
---- a/drivers/gpu/drm/xe/display/xe_hdcp_gsc.c
-+++ b/drivers/gpu/drm/xe/display/xe_hdcp_gsc.c
-@@ -39,10 +39,18 @@ bool intel_hdcp_gsc_check_status(struct xe_device *xe)
+--- a/net/batman-adv/gateway_client.c
++++ b/net/batman-adv/gateway_client.c
+@@ -478,10 +478,14 @@ void batadv_gw_node_delete(struct batadv
+  */
+ void batadv_gw_node_free(struct batadv_priv *bat_priv)
  {
- 	struct xe_tile *tile = xe_device_get_root_tile(xe);
- 	struct xe_gt *gt = tile->media_gt;
--	struct xe_gsc *gsc = &gt->uc.gsc;
-+	struct xe_gsc *gsc;
- 	bool ret = true;
++	struct batadv_gw_node *curr_gw;
+ 	struct batadv_gw_node *gw_node;
+ 	struct hlist_node *node_tmp;
  
--	if (!gsc || !xe_uc_fw_is_enabled(&gsc->fw)) {
-+	if (!gt) {
-+		drm_dbg_kms(&xe->drm,
-+			    "not checking GSC status for HDCP2.x: media GT not present or disabled\n");
-+		return false;
-+	}
+ 	spin_lock_bh(&bat_priv->gw.list_lock);
++	curr_gw = rcu_replace_pointer(bat_priv->gw.curr_gw, NULL, true);
++	batadv_gw_node_put(curr_gw);
 +
-+	gsc = &gt->uc.gsc;
-+
-+	if (!xe_uc_fw_is_enabled(&gsc->fw)) {
- 		drm_dbg_kms(&xe->drm,
- 			    "GSC Components not ready for HDCP2.x\n");
- 		return false;
--- 
-2.53.0
-
+ 	hlist_for_each_entry_safe(gw_node, node_tmp,
+ 				  &bat_priv->gw.gateway_list, list) {
+ 		hlist_del_init_rcu(&gw_node->list);
 
 
 
