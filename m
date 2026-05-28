@@ -1,61 +1,61 @@
-Return-Path: <stable+bounces-255818-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-256062-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id oAYyLPimGGpolwgAu9opvQ
-	(envelope-from <stable+bounces-255818-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:35:04 +0200
+	id 8MDFM6SpGGrclwgAu9opvQ
+	(envelope-from <stable+bounces-256062-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:46:28 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3F4B75F9047
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:35:04 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 50B8D5F9844
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:46:28 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id A991B304B2A4
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 20:26:15 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 28E4030488DB
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 20:37:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 078111EA65;
-	Thu, 28 May 2026 20:26:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EF0252EF652;
+	Thu, 28 May 2026 20:37:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Kkgj3KP9"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0x2VqT1n"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D0997254B1F;
-	Thu, 28 May 2026 20:26:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C54BD197A7D;
+	Thu, 28 May 2026 20:37:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779999965; cv=none; b=ntsl1bUmO9LtLcBSDP191j5qeiaRtr5OK3Iy6yZ96yReM9gh/K34yYcTW7yN2OWcCBq0Fh+Vz3EOdMAE1J7+Lrj022Cuk9ypnxOzSHeQ8Z04D+sy7LAXnAfN4dv7O7tfvvlGNWriLWlNqm5taVEctP3WaBo37DIEtQp7mmvPLGs=
+	t=1780000648; cv=none; b=GC3gSQ9ks2UZOSFUr4pS3FMS5iwZuqJYy7Js+aIYlz3PCMBYlJOdfXIS40WWxqoWZTs+Dmmj8JKCyJWm8+3Le9gEUPteoJ71tTYla4iNnsLEY8hGbTJi0T77zYkmY8ssTnlI4FuVknSqG8Sj2NevSTUM+pZ9gSmNUJJFxGMVpDY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779999965; c=relaxed/simple;
-	bh=XEnLX9d6WFHor8TYIZa0jMbQC6E3+nxFuqQAPDQOAvA=;
+	s=arc-20240116; t=1780000648; c=relaxed/simple;
+	bh=CKnHlWJ7lnubyQpUyU96jn/dHRt0Po07uCm2y1K3KFA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=O97OyyA6SbA0tILIjM+Wnu75YKv13iqg5c7YV1c8svw4w+qXVyxRbhCXA0g6TKPH+Z5XHJXt3GZAiQ//D9PlTBAnMRUEun53VjPfllsQFqKXq3pfOqIlfWciUJnSHVEPOroyNBw+SwzUG9bVreRMdnZ6ZI+S2qY21P4S6cRaYJQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Kkgj3KP9; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3AA761F00A3A;
-	Thu, 28 May 2026 20:26:04 +0000 (UTC)
+	 MIME-Version; b=uW9GPkXuGIT2nDZvnTZObC3rp7xzwmUsBaWxGcd92Yd2BvjL4uzRiOm6UWiG7MrG0KWHS94izxFk33BcDt4Ekv9iu3pyZlSfUbKzpQq9KdW3KdncPIAT6ozv3SIyGMWOeoy253xq+6KU8GOHvl6duZWU1VdrI4675Pgx+DRP7wM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0x2VqT1n; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2F0771F000E9;
+	Thu, 28 May 2026 20:37:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779999964;
-	bh=6gzj2s8rVEsU0bI+4K77xtQdtqEADWtyvgA4ypsKxLA=;
+	s=korg; t=1780000647;
+	bh=xkOJPPrLObyWvUzx7NIsekP0fV5kxwMiApeSOKirb64=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=Kkgj3KP9xChzpRd3usK72tANPwAs1loqN0vDW+K1VOv3rRI3d2n4S8kl4/NNg39x2
-	 HTH44FP1qNoie5QyUmEgGxM24yVWG35sltrO4g6QLn7kHZWRk4Z8Udv1YMsqJUoXCJ
-	 ZOB8/aaFVPkLSpL0RAR4qNlb3HyjBhGcolfHSMlU=
+	b=0x2VqT1nTDGrWs5ircwIdtMitUD1BuQbRjUKlEzFwCPT/Mo9o1glxtqVeND8+xUfb
+	 Yt+aaBUBBTYuU2b+X8epYhgqr8NAjnzVpIR+bJJdsQcq6u/J5DIr5yfBqc/4gdC1oC
+	 6Z+UXxMD9gKogjB3Op5kr0HlDHpQR89gd13rZjjY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Nicolas Escande <nico.escande@gmail.com>,
-	Baochen Qiang <baochen.qiang@oss.qualcomm.com>,
-	Rameshkumar Sundaram <rameshkumar.sundaram@oss.qualcomm.com>,
-	Jeff Johnson <jeff.johnson@oss.qualcomm.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 254/377] wifi: ath11k: fix error path leaks in some WMI WOW calls
+	Alex Hung <alex.hung@amd.com>,
+	Harry Wentland <harry.wentland@amd.com>,
+	Ivan Lipski <ivan.lipski@amd.com>,
+	Dan Wheeler <daniel.wheeler@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>
+Subject: [PATCH 6.12 118/272] drm/amd/display: Fix integer overflow in bios_get_image()
 Date: Thu, 28 May 2026 21:48:12 +0200
-Message-ID: <20260528194645.729952199@linuxfoundation.org>
+Message-ID: <20260528194632.684723570@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260528194638.371537336@linuxfoundation.org>
-References: <20260528194638.371537336@linuxfoundation.org>
+In-Reply-To: <20260528194629.379955525@linuxfoundation.org>
+References: <20260528194629.379955525@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,115 +66,92 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	TAGGED_FROM(0.00)[bounces-255818-lists,stable=lfdr.de];
-	FROM_HAS_DN(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,oss.qualcomm.com,kernel.org];
 	MIME_TRACE(0.00)[0:+];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-256062-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	NEURAL_HAM(-0.00)[-1.000];
 	RCPT_COUNT_SEVEN(0.00)[8];
 	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-0.999];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	TO_DN_SOME(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,msgid.link:url,linuxfoundation.org:mid,linuxfoundation.org:dkim,qualcomm.com:email]
-X-Rspamd-Queue-Id: 3F4B75F9047
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,amd.com:email]
+X-Rspamd-Queue-Id: 50B8D5F9844
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Nicolas Escande <nico.escande@gmail.com>
+From: Harry Wentland <harry.wentland@amd.com>
 
-[ Upstream commit 55dda532bbc261aef495e403c8900c5e2ab5fa34 ]
+commit cd86529ec61474a38c3837fb7823790a7c3f8cce upstream.
 
-Fix two instances where we used to directly return the result of
-ath11k_wmi_cmd_send(...). Because we did not check the return value, we
-also did not free the skb in the error path.
+[Why&How]
+The bounds check in bios_get_image() computes 'offset + size' using
+unsigned 32-bit arithmetic before comparing against bios_size. If a
+VBIOS image contains a near-UINT32_MAX offset the addition wraps to a
+small value, the comparison passes, and the function returns a wild
+pointer past the VBIOS mapping.
 
-Fixes: 79802b13a492 ("ath11k: implement WoW enable and wakeup commands")
-Signed-off-by: Nicolas Escande <nico.escande@gmail.com>
-Reviewed-by: Baochen Qiang <baochen.qiang@oss.qualcomm.com>
-Reviewed-by: Rameshkumar Sundaram <rameshkumar.sundaram@oss.qualcomm.com>
-Link: https://patch.msgid.link/20260506134240.2284016-2-nico.escande@gmail.com
-Signed-off-by: Jeff Johnson <jeff.johnson@oss.qualcomm.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Additionally, the comparison uses '<' (strict), which incorrectly
+rejects the valid exact-fit case where offset + size == bios_size.
+
+Fix both issues by restructuring the check to avoid the addition
+entirely: first reject if offset alone exceeds bios_size, then check
+size against the remaining space (bios_size - offset). This eliminates
+the overflow and correctly permits exact-fit accesses.
+
+Assisted-by: GitHub Copilot:claude-opus-4.6
+Reviewed-by: Alex Hung <alex.hung@amd.com>
+Signed-off-by: Harry Wentland <harry.wentland@amd.com>
+Signed-off-by: Ivan Lipski <ivan.lipski@amd.com>
+Tested-by: Dan Wheeler <daniel.wheeler@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+(cherry picked from commit d40fb392af659c4a02b560319f226842f6ec1a95)
+Cc: stable@vger.kernel.org
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/wireless/ath/ath11k/wmi.c | 19 ++++++++++++++++---
- 1 file changed, 16 insertions(+), 3 deletions(-)
+ drivers/gpu/drm/amd/display/dc/bios/bios_parser_helper.c |    9 ++++++---
+ 1 file changed, 6 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/net/wireless/ath/ath11k/wmi.c b/drivers/net/wireless/ath/ath11k/wmi.c
-index 110035dae8a61..e1b00dc811e7b 100644
---- a/drivers/net/wireless/ath/ath11k/wmi.c
-+++ b/drivers/net/wireless/ath/ath11k/wmi.c
-@@ -9191,6 +9191,7 @@ int ath11k_wmi_wow_host_wakeup_ind(struct ath11k *ar)
- 	struct wmi_wow_host_wakeup_ind *cmd;
- 	struct sk_buff *skb;
- 	size_t len;
-+	int ret;
- 
- 	len = sizeof(*cmd);
- 	skb = ath11k_wmi_alloc_skb(ar->wmi->wmi_ab, len);
-@@ -9204,14 +9205,20 @@ int ath11k_wmi_wow_host_wakeup_ind(struct ath11k *ar)
- 
- 	ath11k_dbg(ar->ab, ATH11K_DBG_WMI, "tlv wow host wakeup ind\n");
- 
--	return ath11k_wmi_cmd_send(ar->wmi, skb, WMI_WOW_HOSTWAKEUP_FROM_SLEEP_CMDID);
-+	ret = ath11k_wmi_cmd_send(ar->wmi, skb, WMI_WOW_HOSTWAKEUP_FROM_SLEEP_CMDID);
-+	if (ret) {
-+		ath11k_warn(ar->ab, "failed to send WMI_WOW_HOSTWAKEUP_FROM_SLEEP_CMDID\n");
-+		dev_kfree_skb(skb);
-+	}
-+
-+	return ret;
- }
- 
- int ath11k_wmi_wow_enable(struct ath11k *ar)
+--- a/drivers/gpu/drm/amd/display/dc/bios/bios_parser_helper.c
++++ b/drivers/gpu/drm/amd/display/dc/bios/bios_parser_helper.c
+@@ -37,10 +37,13 @@ uint8_t *bios_get_image(struct dc_bios *
+ 	uint32_t offset,
+ 	uint32_t size)
  {
- 	struct wmi_wow_enable_cmd *cmd;
- 	struct sk_buff *skb;
--	int len;
-+	int ret, len;
- 
- 	len = sizeof(*cmd);
- 	skb = ath11k_wmi_alloc_skb(ar->wmi->wmi_ab, len);
-@@ -9226,7 +9233,13 @@ int ath11k_wmi_wow_enable(struct ath11k *ar)
- 	cmd->pause_iface_config = WOW_IFACE_PAUSE_ENABLED;
- 	ath11k_dbg(ar->ab, ATH11K_DBG_WMI, "tlv wow enable\n");
- 
--	return ath11k_wmi_cmd_send(ar->wmi, skb, WMI_WOW_ENABLE_CMDID);
-+	ret = ath11k_wmi_cmd_send(ar->wmi, skb, WMI_WOW_ENABLE_CMDID);
-+	if (ret) {
-+		ath11k_warn(ar->ab, "failed to send WMI_WOW_ENABLE_CMDID\n");
-+		dev_kfree_skb(skb);
-+	}
+-	if (bp->bios && offset + size < bp->bios_size)
+-		return bp->bios + offset;
+-	else
++	if (!bp->bios)
+ 		return NULL;
 +
-+	return ret;
++	if (offset > bp->bios_size || size > bp->bios_size - offset)
++		return NULL;
++
++	return bp->bios + offset;
  }
  
- int ath11k_wmi_scan_prob_req_oui(struct ath11k *ar,
--- 
-2.53.0
-
+ #include "reg_helper.h"
 
 
 
