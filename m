@@ -1,59 +1,59 @@
-Return-Path: <stable+bounces-256259-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-255832-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id oHmTKmyrGGpolwgAu9opvQ
-	(envelope-from <stable+bounces-256259-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:54:04 +0200
+	id uA3hEgylGGoQlwgAu9opvQ
+	(envelope-from <stable+bounces-255832-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:26:52 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 314FB5F9CF3
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:54:04 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4D99F5F8B1E
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:26:51 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id D596F312AD1A
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 20:46:45 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id AC70E300D755
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 20:26:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 96CB8330B32;
-	Thu, 28 May 2026 20:46:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 206AD2F260C;
+	Thu, 28 May 2026 20:26:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ivMP+H2j"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="eX7jTIOW"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 68E3E2F9D85;
-	Thu, 28 May 2026 20:46:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 05BEC1EA65;
+	Thu, 28 May 2026 20:26:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780001199; cv=none; b=SaOPuszDsuji4QNU3UhqjPH5nCPdokCLQ1V6zymWIfr1IXrknqBKOHNpPMCgKRM78zUdiLF/Qs25fOJcytSxWKeOhFAf1dS+n6IZN7p+Fx6vyIDuMHQBVeC8NFVbNx35CZpDEToX+TKtk3C5U/i9Dab1V/8mR/NcY4y9AhGCNcY=
+	t=1780000004; cv=none; b=r3KnPiggoqr8YgHG/Dm1Czmu5z/bHP9Xi1NYbA/SDpo5rIZWrKcZhrH5/fnDASGvGpSXlBX80/9KlA+zYCUoVblLAv7XPuvZLv8C2SXdzVFBPIS50j8/H8vyYGOBy/eRWHAu2QP59SkW2LaosaYwNoXmQvTc6gIBSmWglOu6WeQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780001199; c=relaxed/simple;
-	bh=+m2Pl/o51lv9PhYg2WLz4z2WWH24BmofUOx6n40ibLc=;
+	s=arc-20240116; t=1780000004; c=relaxed/simple;
+	bh=/Z7ElucwoCc2knVfTIzXqVVu/fcHUZI0mSymCEBNDbc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=lHtrNOjTPUiTJoYd7LGt53qGT6zM/3SHfjm0W5RRErZ3lPYDkJ3WvbdUv0r0jpmQATo51ixgz7sYfy3PPvhfctT26krRcNiy1qDvPgiKXykzUC9/ZJTndmHXN40rcwMmOVALzfCdlxSUvsEywhl9TeGfRMoWiXHkTc0d4fORnJ4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ivMP+H2j; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C731C1F00A3A;
-	Thu, 28 May 2026 20:46:37 +0000 (UTC)
+	 MIME-Version; b=Evvy3gDsuj0kScECNdtQfbrRxjMN2xUsEXepe/7FuAii6US/FV9m13ufNBaarvMnU0dRkkjOv7pQ5qVZdlQ4enNWwgo+78IOf0F6gkqYnC2O3LZ+YrbtAHhGN+Q1W7YBh9L1Q4imLlcFZbIIx7xeBzQE2edffCl5azHHwbbOzoo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=eX7jTIOW; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6241E1F000E9;
+	Thu, 28 May 2026 20:26:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780001198;
-	bh=0WOtDTKnhjIqPR+RtdkwH5hi3mnFEckIG+7KBTMyJ8w=;
+	s=korg; t=1780000003;
+	bh=RABn37J1janIqHZ8C/xO75nE/7WzceOc9tabD/3ZI3k=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=ivMP+H2jYmTVFIAMjmADBbf82TIv5KCcl3KGw3JxPfm1nrFNuE25aeySppOubjnCX
-	 6VgqSeNAgAauEZMyV2tKwCD5O5JhUkbBDiVl8DA6acz4HyvzoKhRC1N79mcX/pqX66
-	 zkS+B2ZHnHc2J0P3rO/B3sqdTDUWqEnJGMskptCg=
+	b=eX7jTIOWjzfdnjBq23ZEjjst52zuBuy5P28idXDRFqW8EUcEsa8CpasQ2Iyo8skE8
+	 R89MEpTCZ/GCvLBOukm1bTwQlUjo+quY/zVocR7qDgFaW7FWjYHWMOxYL38u4xXRu8
+	 UhtZSYJ0LMpCKddvhEDbmA5LgYBjC9lPFKT5Oazc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ferry Meng <mengferry@linux.alibaba.com>,
-	Namjae Jeon <linkinjeon@kernel.org>,
-	Steve French <stfrench@microsoft.com>
-Subject: [PATCH 6.6 025/186] ksmbd: fix SID memory leak in set_posix_acl_entries_dacl() on overflow
+	Lukas Bulwahn <lukas.bulwahn@redhat.com>,
+	Jiri Kosina <jkosina@suse.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.18 267/377] HID: quirks: really enable the intended work around for appledisplay
 Date: Thu, 28 May 2026 21:48:25 +0200
-Message-ID: <20260528194929.639215138@linuxfoundation.org>
+Message-ID: <20260528194646.097419749@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260528194928.941004471@linuxfoundation.org>
-References: <20260528194928.941004471@linuxfoundation.org>
+In-Reply-To: <20260528194638.371537336@linuxfoundation.org>
+References: <20260528194638.371537336@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -68,7 +68,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
@@ -78,7 +78,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-256259-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-255832-lists,stable=lfdr.de];
 	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
@@ -89,91 +89,52 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	TAGGED_RCPT(0.00)[stable];
 	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,alibaba.com:email,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim]
-X-Rspamd-Queue-Id: 314FB5F9CF3
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[suse.com:email,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim]
+X-Rspamd-Queue-Id: 4D99F5F8B1E
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ferry Meng <mengferry@linux.alibaba.com>
+From: Lukas Bulwahn <lukas.bulwahn@redhat.com>
 
-commit af92ee994cc7f7e83a41c2025f32257a2f82a7ef upstream.
+[ Upstream commit 5f90dcfa8dc32a488581b78e575cdd7808ba5c78 ]
 
-Commit 299f962c0b02 ("ksmbd: use check_add_overflow() to prevent u16
-DACL size overflow") added check_add_overflow() guards that break out
-of the ACE-building loops in set_posix_acl_entries_dacl() when the
-accumulated DACL size would wrap past 65535.
+Commit c7fabe4ad921 ("HID: quirks: work around VID/PID conflict for
+appledisplay") intends to add a quirk for kernels built with Apple Cinema
+Display support, but it refers to the non-existing config option
+CONFIG_APPLEDISPLAY, whereas the config option for Apple Cinema Display
+support is named CONFIG_USB_APPLEDISPLAY.
 
-However, each iteration allocates a struct smb_sid via kmalloc_obj()
-at the top of the loop and relies on the kfree(sid) call at the end
-of the loop body (the 'pass_same_sid' label in the first loop, and
-the explicit kfree at the tail of the second loop) to release it.
-The newly introduced 'break' statements bypass those kfree() calls,
-leaking the sid buffer every time an overflow is detected.
+Refer to the intended config option CONFIG_USB_APPLEDISPLAY in the ifdef
+directive.
 
-A malicious or malformed file with enough POSIX ACL entries to trip
-the overflow check will leak one or more struct smb_sid allocations
-on every request that touches the file's DACL, providing a trivial
-kernel memory exhaustion vector.
-
-Free sid before breaking out of the loops to plug the leak.
-
-Fixes: 299f962c0b02 ("ksmbd: use check_add_overflow() to prevent u16 DACL size overflow")
-Cc: stable@vger.kernel.org
-Signed-off-by: Ferry Meng <mengferry@linux.alibaba.com>
-Acked-by: Namjae Jeon <linkinjeon@kernel.org>
-Signed-off-by: Steve French <stfrench@microsoft.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: c7fabe4ad921 ("HID: quirks: work around VID/PID conflict for appledisplay")
+Signed-off-by: Lukas Bulwahn <lukas.bulwahn@redhat.com>
+Signed-off-by: Jiri Kosina <jkosina@suse.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/smb/server/smbacl.c | 12 +++++++++---
- 1 file changed, 9 insertions(+), 3 deletions(-)
+ drivers/hid/hid-quirks.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/fs/smb/server/smbacl.c b/fs/smb/server/smbacl.c
-index c1d1f34581d6..9161e9d7ed24 100644
---- a/fs/smb/server/smbacl.c
-+++ b/fs/smb/server/smbacl.c
-@@ -643,8 +643,10 @@ static void set_posix_acl_entries_dacl(struct mnt_idmap *idmap,
- 		ntace = (struct smb_ace *)((char *)pndace + *size);
- 		ace_sz = fill_ace_for_sid(ntace, sid, ACCESS_ALLOWED, flags,
- 				pace->e_perm, 0777);
--		if (check_add_overflow(*size, ace_sz, size))
-+		if (check_add_overflow(*size, ace_sz, size)) {
-+			kfree(sid);
- 			break;
-+		}
- 		(*num_aces)++;
- 		if (pace->e_tag == ACL_USER)
- 			ntace->access_req |=
-@@ -655,8 +657,10 @@ static void set_posix_acl_entries_dacl(struct mnt_idmap *idmap,
- 			ntace = (struct smb_ace *)((char *)pndace + *size);
- 			ace_sz = fill_ace_for_sid(ntace, sid, ACCESS_ALLOWED,
- 					0x03, pace->e_perm, 0777);
--			if (check_add_overflow(*size, ace_sz, size))
-+			if (check_add_overflow(*size, ace_sz, size)) {
-+				kfree(sid);
- 				break;
-+			}
- 			(*num_aces)++;
- 			if (pace->e_tag == ACL_USER)
- 				ntace->access_req |=
-@@ -698,8 +702,10 @@ posix_default_acl:
- 		ntace = (struct smb_ace *)((char *)pndace + *size);
- 		ace_sz = fill_ace_for_sid(ntace, sid, ACCESS_ALLOWED, 0x0b,
- 				pace->e_perm, 0777);
--		if (check_add_overflow(*size, ace_sz, size))
-+		if (check_add_overflow(*size, ace_sz, size)) {
-+			kfree(sid);
- 			break;
-+		}
- 		(*num_aces)++;
- 		if (pace->e_tag == ACL_USER)
- 			ntace->access_req |=
+diff --git a/drivers/hid/hid-quirks.c b/drivers/hid/hid-quirks.c
+index f6be3ffee0232..04d3ec360c1dc 100644
+--- a/drivers/hid/hid-quirks.c
++++ b/drivers/hid/hid-quirks.c
+@@ -234,7 +234,7 @@ static const struct hid_device_id hid_quirks[] = {
+  * used as a driver. See hid_scan_report().
+  */
+ static const struct hid_device_id hid_have_special_driver[] = {
+-#if IS_ENABLED(CONFIG_APPLEDISPLAY)
++#if IS_ENABLED(CONFIG_USB_APPLEDISPLAY)
+ 	{ HID_USB_DEVICE(USB_VENDOR_ID_APPLE, 0x9218) },
+ 	{ HID_USB_DEVICE(USB_VENDOR_ID_APPLE, 0x9219) },
+ 	{ HID_USB_DEVICE(USB_VENDOR_ID_APPLE, 0x921c) },
 -- 
-2.54.0
+2.53.0
 
 
 
