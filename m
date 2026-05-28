@@ -1,59 +1,58 @@
-Return-Path: <stable+bounces-255249-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-255637-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id iKABMMmeGGpblggAu9opvQ
-	(envelope-from <stable+bounces-255249-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:00:09 +0200
+	id cNLoJGujGGrJlggAu9opvQ
+	(envelope-from <stable+bounces-255637-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:19:55 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 66BFE5F7A29
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:00:09 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id B470C5F8666
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:19:54 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 6B44130331A7
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 19:59:39 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 3969E3014277
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 20:17:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0D96D352019;
-	Thu, 28 May 2026 19:59:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B69462F8E83;
+	Thu, 28 May 2026 20:17:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gi/bzWaB"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lC1Iptrz"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C071426B973;
-	Thu, 28 May 2026 19:59:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7BB282D1303;
+	Thu, 28 May 2026 20:17:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779998378; cv=none; b=CziGZhpA+ZxHPlZZswjnEWbaN2bP8/YUXykkbdfDWTiAGFO+SvDn6avkf7TZEwR5ilWifHRplxXH2KOLRgqpYIyaLbenWtwpGXwiy5oPYP5WRSXPJJAeZ7ny7GZkm3KvtXMmvAL9iySPyOM86pUceLurcGsDot6oTio0oa1CgOY=
+	t=1779999470; cv=none; b=N9tQwZ59n3esa/ZdAbxisl4+j0MEvLKLLki0QpUJcRl1APWdJR2DvwZ+D1+bY37jUH//hoeoFSg4SQQMWWe3GTWOw/Ff+DZ3rzYoFL8CeD8rRHqi8aZHyavS8UujNQQIrqE9Ri7X4zjhtwudAgkd5KZsfw8rvS4xovGCUL3WZ34=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779998378; c=relaxed/simple;
-	bh=VfZOwe9HiwWYZ+EbFWwqtS1ZPxrXLcpP94w/JZ2742M=;
+	s=arc-20240116; t=1779999470; c=relaxed/simple;
+	bh=JojF6fKukv1xCJaZd/lv/uxudBmrtBpDY49C7svXvsc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=hy3WHEjLnCr+NT/dUuoH3A2gjzyME6Xq1nYAqWgVv1Vm6zdi5t+WewbGbuGR2VMWY7FKyn8Y9Mgak8hItVqm698c2w1dPDFdIf188/n9o2RbU8nTWOEZ6J3xJb+UROdtZqfGcn63WAwsYYSe4SSjY+C6FfPk30tzlqGQ/n35oOs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gi/bzWaB; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E14FE1F000E9;
-	Thu, 28 May 2026 19:59:36 +0000 (UTC)
+	 MIME-Version; b=MQmumJY4DCGYCnje/NECppfGEIwVnnDn6mHEWiu1i4hginsk+RCW8Z1edvKYRfL8B9sbJSsDqbhDA7ozneg1M4S6QthqJs2VgFt8szaw95hRU4Ybv8RC1SLvtMwwLzWfK9UgsisV4p868xTeRION3smIixhc7HQWKmM64vclJgc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lC1Iptrz; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D7C5F1F000E9;
+	Thu, 28 May 2026 20:17:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779998377;
-	bh=WGrtfXpv700dCxSuYUe0oBTGYlOVB8G7frn6sRnotXY=;
+	s=korg; t=1779999469;
+	bh=Ggjb7VdAfDbzQvg3etn9K4bViPZoVarIqS7USqcK+L4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=gi/bzWaBVS8PYaZlcCfhJS8NzPsPPWHtljCJ+Dtg1Qg0cxmO+yMYTRuYVgC7nVC0q
-	 VhcHtlf7ofOuusG9L1C0BcnVpKTLuvV5YglY7V1dqTBsQ6Ibet7HFBoTWCjq09soHK
-	 SolqX0Lp1oKizUobpvClMOkA/UbxYxeFSGGWb4ps=
+	b=lC1IptrzoSjOYMWZ1EDqMk8X5e9isNbcr50S+FggqDoluPsT7pvKJCaPmjYIltJWi
+	 vRer78JZAQV5D8tpZ+TPkgsrN+yFUUIRZpTzmweKP2Y99m9/gqm6Pyybp45Nc/52tc
+	 i4AR82KZS/giUa2MbsOnzFdAe//VXUL75fdJJrR8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable@kernel.org,
-	Simon Wunderlich <sw@simonwunderlich.de>,
-	Sven Eckelmann <sven@narfation.org>
-Subject: [PATCH 7.0 151/461] batman-adv: bla: fix report_work leak on backbone_gw purge
+	Krishnamoorthi M <krishnamoorthi.m@amd.com>,
+	Mark Brown <broonie@kernel.org>
+Subject: [PATCH 6.18 042/377] spi: amd: Set correct bus number in ACPI probe path
 Date: Thu, 28 May 2026 21:44:40 +0200
-Message-ID: <20260528194651.407943125@linuxfoundation.org>
+Message-ID: <20260528194639.592370972@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260528194646.819809818@linuxfoundation.org>
-References: <20260528194646.819809818@linuxfoundation.org>
+In-Reply-To: <20260528194638.371537336@linuxfoundation.org>
+References: <20260528194638.371537336@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -68,7 +67,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
@@ -78,7 +77,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-255249-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-255637-lists,stable=lfdr.de];
 	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
@@ -87,128 +86,56 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	NEURAL_HAM(-0.00)[-1.000];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
+	RCPT_COUNT_FIVE(0.00)[5];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,narfation.org:email,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo]
-X-Rspamd-Queue-Id: 66BFE5F7A29
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,amd.com:email,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo]
+X-Rspamd-Queue-Id: B470C5F8666
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-7.0-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sven Eckelmann <sven@narfation.org>
+From: Krishnamoorthi M <krishnamoorthi.m@amd.com>
 
-commit 0459430add32ea41f3e2ef9351610e6d33627a6b upstream.
+commit 422bd00b71ab42163aa3b8f8370276fe4c1581e7 upstream.
 
-batadv_bla_purge_backbone_gw() removes stale backbone gateway entries,
-but fails to properly handle their associated report_work:
+On platforms where the HID2 SPI controller (AMDI0063) is enumerated via
+ACPI instead of PCI, amd_spi_probe() unconditionally sets bus_num to 0,
+while the PCI probe path assigns bus_num 2 for HID2 controller.
 
-- If report_work is running, the purge must wait for it to finish before
-  freeing the backbone_gw, otherwise the worker may access freed memory
-  (e.g. bat_priv).
-- If report_work is pending, the purge must cancel it and release the
-  reference held for that pending work item.
+Align the ACPI probe path to use the same bus number so that userspace
+and SPI client drivers see a consistent bus assignment regardless of the
+enumeration method.
 
-The previous implementation called hlist_for_each_entry_safe() inside a
-spin_lock_bh() section, but cancel_work_sync() may sleep and therefore
-cannot be called from within a spinlock-protected region.
-
-Restructure the loop to handle one entry per spinlock critical section:
-acquire the lock, find the next entry to purge, remove it from the hash
-list, then release the lock before calling cancel_work_sync() and
-dropping the hash_entry reference. Repeat until no more entries require
-purging.
-
-Cc: stable@kernel.org
-Fixes: 23721387c409 ("batman-adv: add basic bridge loop avoidance code")
-Reviewed-by: Simon Wunderlich <sw@simonwunderlich.de>
-Signed-off-by: Sven Eckelmann <sven@narfation.org>
+Fixes: b644c2776652 ("spi: spi_amd: Add PCI-based driver for AMD HID2 SPI controller")
+Cc: stable@vger.kernel.org # v6.16+
+Signed-off-by: Krishnamoorthi M <krishnamoorthi.m@amd.com>
+Link: https://patch.msgid.link/20260507180051.4158674-1-krishnamoorthi.m@amd.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/batman-adv/bridge_loop_avoidance.c |   60 ++++++++++++++++++++-------------
- 1 file changed, 38 insertions(+), 22 deletions(-)
+ drivers/spi/spi-amd.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/net/batman-adv/bridge_loop_avoidance.c
-+++ b/net/batman-adv/bridge_loop_avoidance.c
-@@ -1224,6 +1224,7 @@ static void batadv_bla_purge_backbone_gw
- 	struct hlist_head *head;
- 	struct batadv_hashtable *hash;
- 	spinlock_t *list_lock;	/* protects write access to the hash lists */
-+	bool purged;
- 	int i;
+diff --git a/drivers/spi/spi-amd.c b/drivers/spi/spi-amd.c
+index 4d1dce4f4974..71a6e5c475b0 100644
+--- a/drivers/spi/spi-amd.c
++++ b/drivers/spi/spi-amd.c
+@@ -868,7 +868,7 @@ static int amd_spi_probe(struct platform_device *pdev)
+ 	dev_dbg(dev, "io_remap_address: %p\n", amd_spi->io_remap_addr);
  
- 	hash = bat_priv->bla.backbone_hash;
-@@ -1234,30 +1235,45 @@ static void batadv_bla_purge_backbone_gw
- 		head = &hash->table[i];
- 		list_lock = &hash->list_locks[i];
+ 	amd_spi->version = (uintptr_t)device_get_match_data(dev);
+-	host->bus_num = 0;
++	host->bus_num = (amd_spi->version == AMD_HID2_SPI) ? 2 : 0;
  
--		spin_lock_bh(list_lock);
--		hlist_for_each_entry_safe(backbone_gw, node_tmp,
--					  head, hash_entry) {
--			if (now)
--				goto purge_now;
--			if (!batadv_has_timed_out(backbone_gw->lasttime,
--						  BATADV_BLA_BACKBONE_TIMEOUT))
--				continue;
--
--			batadv_dbg(BATADV_DBG_BLA, backbone_gw->bat_priv,
--				   "%s(): backbone gw %pM timed out\n",
--				   __func__, backbone_gw->orig);
-+		do {
-+			purged = false;
-+
-+			spin_lock_bh(list_lock);
-+			hlist_for_each_entry_safe(backbone_gw, node_tmp,
-+						  head, hash_entry) {
-+				if (now)
-+					goto purge_now;
-+				if (!batadv_has_timed_out(backbone_gw->lasttime,
-+							  BATADV_BLA_BACKBONE_TIMEOUT))
-+					continue;
-+
-+				batadv_dbg(BATADV_DBG_BLA, backbone_gw->bat_priv,
-+					   "%s(): backbone gw %pM timed out\n",
-+					   __func__, backbone_gw->orig);
- 
- purge_now:
--			/* don't wait for the pending request anymore */
--			if (atomic_read(&backbone_gw->request_sent))
--				atomic_dec(&bat_priv->bla.num_requests);
--
--			batadv_bla_del_backbone_claims(backbone_gw);
--
--			hlist_del_rcu(&backbone_gw->hash_entry);
--			batadv_backbone_gw_put(backbone_gw);
--		}
--		spin_unlock_bh(list_lock);
-+				purged = true;
-+
-+				/* don't wait for the pending request anymore */
-+				if (atomic_read(&backbone_gw->request_sent))
-+					atomic_dec(&bat_priv->bla.num_requests);
-+
-+				batadv_bla_del_backbone_claims(backbone_gw);
-+
-+				hlist_del_rcu(&backbone_gw->hash_entry);
-+				break;
-+			}
-+			spin_unlock_bh(list_lock);
-+
-+			if (purged) {
-+				/* reference for pending report_work */
-+				if (cancel_work_sync(&backbone_gw->report_work))
-+					batadv_backbone_gw_put(backbone_gw);
-+
-+				/* reference for hash_entry */
-+				batadv_backbone_gw_put(backbone_gw);
-+			}
-+		} while (purged);
- 	}
+ 	return amd_spi_probe_common(dev, host);
  }
- 
+-- 
+2.54.0
+
 
 
 
