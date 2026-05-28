@@ -1,59 +1,63 @@
-Return-Path: <stable+bounces-255379-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-255982-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 0CC3BxaiGGqblggAu9opvQ
-	(envelope-from <stable+bounces-255379-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:14:14 +0200
+	id MFnTKp6nGGpolwgAu9opvQ
+	(envelope-from <stable+bounces-255982-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:37:50 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id AE0E35F81F1
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:14:13 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5E8B65F9281
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:37:50 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 282EE323AE05
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 20:05:45 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id D4365301D5AC
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 20:33:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CDBDB32ABC0;
-	Thu, 28 May 2026 20:05:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 18DA633439A;
+	Thu, 28 May 2026 20:33:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kjlkG9hw"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="S9zR6L2x"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A79A62FD7C3;
-	Thu, 28 May 2026 20:05:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BFDF6313550;
+	Thu, 28 May 2026 20:33:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779998744; cv=none; b=am1DeZ3GVfMEG2jDNMfpS82NzWLUSX/yZ8mIY8VfRB1NWrO4/X+AwQ9/4gTOkFdfTe4t1gQzZ8XlKEUW5bY1yiY+UAYgmgJ23Svk5lrKcK/DD4H3DcTMqAbQAa7VBGRUc6WPSlzJpNsoL0gQ/SAgAuYC2FZlpB2ajrDiZBQot3g=
+	t=1780000422; cv=none; b=nJftX7Nm9vpzx8TKAtCNs1tz4J1hRPlZEa00fxkWbSLI5y7pBx5HBIac4V59DP9G0KpK1vDXev8Xh2OKiJryIss7NJiHVvv0HCgTOvT4jSm1PEXtlcVrdh22xdstmvXHKYHMHlFjGf4cUAcyqfsHbG2408VZViF+MawOKFM17dE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779998744; c=relaxed/simple;
-	bh=ifZuSOP7zH/sW6/8CQE4SvjXCr4piNsymuG64ch2jYU=;
+	s=arc-20240116; t=1780000422; c=relaxed/simple;
+	bh=LmdadW29mgFb2XF3Dnm3Iq41pTkvaqUxO5VgdcQLd60=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=kx1r+2A33qrCncLDSFTHd8htuvCvyd+i3JsrXny35Cfq5/s1CBMRS1PKKS1DfD2AvJRYq9cFhv1YtSAKy/ETOA/XnRxL5jQsT0XVWPOLNYYtwdKj0lYgV889J34Scn6NEkOe1Rp7uMsmOzapjoPmF4EZ9o+/witA1Ob1LynAUx4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kjlkG9hw; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 12AD91F000E9;
-	Thu, 28 May 2026 20:05:42 +0000 (UTC)
+	 MIME-Version:Content-Type; b=bpQN4RIB5y6Wv0im2XEeircNlBKWJ6x7jwQd5eOfiSjz5J+Gxu9C4NSckPRT11WhCn1XtJipvrcw7Mb03azlPYmuBY9pRqCBveze/W56nn4kfnl1dYFxbC0sYlAAaamoXm6kzATOFAUcxp+/EkCzoSvOreIgc0nlx0q/cj4YQEo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=S9zR6L2x; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 31DE21F000E9;
+	Thu, 28 May 2026 20:33:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779998743;
-	bh=clqkuds7mnLNm62HoIw6ql8dmOGYemkoTm1sKvSHKPI=;
+	s=korg; t=1780000421;
+	bh=uiJdDZ9kZK2ol57u5dqaZ9jZCTqLkjSGk13/xCt4aiU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=kjlkG9hwkA9HpTcVUp5LRmtaOrVSP0PoqezRUZ998OwsehpM5wFb1v3TwRdT3Cfx3
-	 jivPQ1Gl64sK3ZTyC9yV3as6KMNJZZ4VuWH6mDlYD08KB+JxClMOV/n4OfwMaeP0yj
-	 pdT+MWcPY+KfFlEi1h6n8rLPv4fV07XC7D7d5RMI=
+	b=S9zR6L2xeccEEytjXtSPSaZphN2RGKO3zzcCv4CDnI/0zbY3NS+2ebOqgquNuxrn+
+	 +M3hVGQtb0TaH78z+oW9uQewd74zj/PN2Nu6+0AsFHbmiI756q/FlX0khgABtl7TI1
+	 qYgWppXqIThstrQvcsx4Gji/nJSCur0Ifa4KaGJs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
+	Linux Kernel Functional Testing <lkft@linaro.org>,
+	Pu Lehui <pulehui@huawei.com>,
+	Alexandre Ghiti <alexghiti@rivosinc.com>,
+	=?UTF-8?q?Bj=C3=B6rn=20T=C3=B6pel?= <bjorn@rivosinc.com>,
+	"Masami Hiramatsu (Google)" <mhiramat@kernel.org>,
+	Gyokhan Kochmarla <gyokhan@amazon.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 7.0 283/461] net: shaper: fix undersized reply skb allocation in GROUP command
+Subject: [PATCH 6.12 038/272] riscv: fgraph: Fix stack layout to match __arch_ftrace_regs argument of ftrace_return_to_handler
 Date: Thu, 28 May 2026 21:46:52 +0200
-Message-ID: <20260528194655.384372580@linuxfoundation.org>
+Message-ID: <20260528194630.451178441@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260528194646.819809818@linuxfoundation.org>
-References: <20260528194646.819809818@linuxfoundation.org>
+In-Reply-To: <20260528194629.379955525@linuxfoundation.org>
+References: <20260528194629.379955525@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,106 +67,158 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
+	TAGGED_FROM(0.00)[bounces-255982-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-255379-lists,stable=lfdr.de];
-	TO_DN_SOME(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	TO_DN_SOME(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
+	RCPT_COUNT_SEVEN(0.00)[10];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,msgid.link:url]
-X-Rspamd-Queue-Id: AE0E35F81F1
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linaro.org:email,amazon.de:email,rivosinc.com:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,huawei.com:email]
+X-Rspamd-Queue-Id: 5E8B65F9281
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-7.0-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jakub Kicinski <kuba@kernel.org>
+From: Pu Lehui <pulehui@huawei.com>
 
-[ Upstream commit 0f9a857e34d0f8c018a3e4435c6f0e92e8d2f38c ]
+commit 67a5ba8f742f247bc83e46dd2313c142b1383276 upstream.
 
-net_shaper_group_send_reply() writes both the NET_SHAPER_A_IFINDEX
-attribute (via net_shaper_fill_binding()) and the nested
-NET_SHAPER_A_HANDLE attribute (via net_shaper_fill_handle()), but
-the reply skb at the call site in net_shaper_nl_group_doit() is
-allocated using net_shaper_handle_size(), which only accounts for
-the nested handle.
+Naresh Kamboju reported a "Bad frame pointer" kernel warning while
+running LTP trace ftrace_stress_test.sh in riscv. We can reproduce the
+same issue with the following command:
 
-The allocation is therefore short by nla_total_size(sizeof(u32))
-(8 bytes) for the IFINDEX attribute.  In practice the slab allocator
-rounds up the small allocation so the bug is latent, but the size
-accounting is wrong and could bite if the reply grew further.
+```
+$ cd /sys/kernel/debug/tracing
+$ echo 'f:myprobe do_nanosleep%return args1=$retval' > dynamic_events
+$ echo 1 > events/fprobes/enable
+$ echo 1 > tracing_on
+$ sleep 1
+```
 
-Introduce net_shaper_group_reply_size() that accounts for the full
-reply payload and use it both at the genlmsg_new() call site and in
-the defensive WARN_ONCE message.
+And we can get the following kernel warning:
 
-Fixes: 5d5d4700e75d ("net-shapers: implement NL group operation")
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Link: https://patch.msgid.link/20260510192904.3987113-7-kuba@kernel.org
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+[  127.692888] ------------[ cut here ]------------
+[  127.693755] Bad frame pointer: expected ff2000000065be50, received ba34c141e9594000
+[  127.693755]   from func do_nanosleep return to ffffffff800ccb16
+[  127.698699] WARNING: CPU: 1 PID: 129 at kernel/trace/fgraph.c:755 ftrace_return_to_handler+0x1b2/0x1be
+[  127.699894] Modules linked in:
+[  127.700908] CPU: 1 UID: 0 PID: 129 Comm: sleep Not tainted 6.14.0-rc3-g0ab191c74642 #32
+[  127.701453] Hardware name: riscv-virtio,qemu (DT)
+[  127.701859] epc : ftrace_return_to_handler+0x1b2/0x1be
+[  127.702032]  ra : ftrace_return_to_handler+0x1b2/0x1be
+[  127.702151] epc : ffffffff8013b5e0 ra : ffffffff8013b5e0 sp : ff2000000065bd10
+[  127.702221]  gp : ffffffff819c12f8 tp : ff60000080853100 t0 : 6e00000000000000
+[  127.702284]  t1 : 0000000000000020 t2 : 6e7566206d6f7266 s0 : ff2000000065bd80
+[  127.702346]  s1 : ff60000081262000 a0 : 000000000000007b a1 : ffffffff81894f20
+[  127.702408]  a2 : 0000000000000010 a3 : fffffffffffffffe a4 : 0000000000000000
+[  127.702470]  a5 : 0000000000000000 a6 : 0000000000000008 a7 : 0000000000000038
+[  127.702530]  s2 : ba34c141e9594000 s3 : 0000000000000000 s4 : ff2000000065bdd0
+[  127.702591]  s5 : 00007fff8adcf400 s6 : 000055556dc1d8c0 s7 : 0000000000000068
+[  127.702651]  s8 : 00007fff8adf5d10 s9 : 000000000000006d s10: 0000000000000001
+[  127.702710]  s11: 00005555737377c8 t3 : ffffffff819d899e t4 : ffffffff819d899e
+[  127.702769]  t5 : ffffffff819d89a0 t6 : ff2000000065bb18
+[  127.702826] status: 0000000200000120 badaddr: 0000000000000000 cause: 0000000000000003
+[  127.703292] [<ffffffff8013b5e0>] ftrace_return_to_handler+0x1b2/0x1be
+[  127.703760] [<ffffffff80017bce>] return_to_handler+0x16/0x26
+[  127.704009] [<ffffffff80017bb8>] return_to_handler+0x0/0x26
+[  127.704057] [<ffffffff800d3352>] common_nsleep+0x42/0x54
+[  127.704117] [<ffffffff800d44a2>] __riscv_sys_clock_nanosleep+0xba/0x10a
+[  127.704176] [<ffffffff80901c56>] do_trap_ecall_u+0x188/0x218
+[  127.704295] [<ffffffff8090cc3e>] handle_exception+0x14a/0x156
+[  127.705436] ---[ end trace 0000000000000000 ]---
+
+The reason is that the stack layout for constructing argument for the
+ftrace_return_to_handler in the return_to_handler does not match the
+__arch_ftrace_regs structure of riscv, leading to unexpected results.
+
+Fixes: a3ed4157b7d8 ("fgraph: Replace fgraph_ret_regs with ftrace_regs")
+Reported-by: Linux Kernel Functional Testing <lkft@linaro.org>
+Closes: https://lore.kernel.org/all/CA+G9fYvp_oAxeDFj88Tk2rfEZ7jtYKAKSwfYS66=57Db9TBdyA@mail.gmail.com
+Signed-off-by: Pu Lehui <pulehui@huawei.com>
+Reviewed-by: Alexandre Ghiti <alexghiti@rivosinc.com>
+Tested-by: Björn Töpel <bjorn@rivosinc.com>
+Reviewed-by: Masami Hiramatsu (Google) <mhiramat@kernel.org>
+Link: https://lore.kernel.org/r/20250317031214.4138436-2-pulehui@huaweicloud.com
+Signed-off-by: Alexandre Ghiti <alexghiti@rivosinc.com>
+Signed-off-by: Gyokhan Kochmarla <gyokhan@amazon.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/shaper/shaper.c | 10 ++++++++--
- 1 file changed, 8 insertions(+), 2 deletions(-)
+ arch/riscv/kernel/mcount.S | 24 +++++++++++-------------
+ 1 file changed, 11 insertions(+), 13 deletions(-)
 
-diff --git a/net/shaper/shaper.c b/net/shaper/shaper.c
-index 12e5e0c18643b..08fde2d9e8aa8 100644
---- a/net/shaper/shaper.c
-+++ b/net/shaper/shaper.c
-@@ -90,6 +90,12 @@ static int net_shaper_handle_size(void)
- 			      nla_total_size(sizeof(u32)));
- }
+diff --git a/arch/riscv/kernel/mcount.S b/arch/riscv/kernel/mcount.S
+index 068168046e0ef..da4a4000e57ea 100644
+--- a/arch/riscv/kernel/mcount.S
++++ b/arch/riscv/kernel/mcount.S
+@@ -12,8 +12,6 @@
+ #include <asm/asm-offsets.h>
+ #include <asm/ftrace.h>
  
-+static int net_shaper_group_reply_size(void)
-+{
-+	return nla_total_size(sizeof(u32)) +	/* NET_SHAPER_A_IFINDEX */
-+	       net_shaper_handle_size();	/* NET_SHAPER_A_HANDLE */
-+}
-+
- static int net_shaper_fill_binding(struct sk_buff *msg,
- 				   const struct net_shaper_binding *binding,
- 				   u32 type)
-@@ -1227,7 +1233,7 @@ static int net_shaper_group_send_reply(struct net_shaper_binding *binding,
- free_msg:
- 	/* Should never happen as msg is pre-allocated with enough space. */
- 	WARN_ONCE(true, "calculated message payload length (%d)",
--		  net_shaper_handle_size());
-+		  net_shaper_group_reply_size());
- 	nlmsg_free(msg);
- 	return -EMSGSIZE;
- }
-@@ -1275,7 +1281,7 @@ int net_shaper_nl_group_doit(struct sk_buff *skb, struct genl_info *info)
- 	/* Prepare the msg reply in advance, to avoid device operation
- 	 * rollback on allocation failure.
+-#define ABI_SIZE_ON_STACK	80
+-
+ 	.text
+ 
+ 	.macro SAVE_ABI_STATE
+@@ -28,12 +26,12 @@
+ 	 * register if a0 was not saved.
  	 */
--	msg = genlmsg_new(net_shaper_handle_size(), GFP_KERNEL);
-+	msg = genlmsg_new(net_shaper_group_reply_size(), GFP_KERNEL);
- 	if (!msg) {
- 		ret = -ENOMEM;
- 		goto free_leaves;
+ 	.macro SAVE_RET_ABI_STATE
+-	addi	sp, sp, -ABI_SIZE_ON_STACK
+-	REG_S	ra, 1*SZREG(sp)
+-	REG_S	s0, 8*SZREG(sp)
+-	REG_S	a0, 10*SZREG(sp)
+-	REG_S	a1, 11*SZREG(sp)
+-	addi	s0, sp, ABI_SIZE_ON_STACK
++	addi	sp, sp, -FREGS_SIZE_ON_STACK
++	REG_S	ra, FREGS_RA(sp)
++	REG_S	s0, FREGS_S0(sp)
++	REG_S	a0, FREGS_A0(sp)
++	REG_S	a1, FREGS_A1(sp)
++	addi	s0, sp, FREGS_SIZE_ON_STACK
+ 	.endm
+ 
+ 	.macro RESTORE_ABI_STATE
+@@ -43,11 +41,11 @@
+ 	.endm
+ 
+ 	.macro RESTORE_RET_ABI_STATE
+-	REG_L	ra, 1*SZREG(sp)
+-	REG_L	s0, 8*SZREG(sp)
+-	REG_L	a0, 10*SZREG(sp)
+-	REG_L	a1, 11*SZREG(sp)
+-	addi	sp, sp, ABI_SIZE_ON_STACK
++	REG_L	ra, FREGS_RA(sp)
++	REG_L	s0, FREGS_S0(sp)
++	REG_L	a0, FREGS_A0(sp)
++	REG_L	a1, FREGS_A1(sp)
++	addi	sp, sp, FREGS_SIZE_ON_STACK
+ 	.endm
+ 
+ SYM_TYPED_FUNC_START(ftrace_stub)
 -- 
 2.53.0
 
