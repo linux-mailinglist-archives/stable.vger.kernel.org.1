@@ -1,62 +1,59 @@
-Return-Path: <stable+bounces-255842-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-256086-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id KNeSNqCmGGp+lwgAu9opvQ
-	(envelope-from <stable+bounces-255842-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:33:36 +0200
+	id UPPyABCrGGoomAgAu9opvQ
+	(envelope-from <stable+bounces-256086-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:52:32 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id ABF125F8F4C
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:33:36 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 222775F9C0E
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:52:31 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 4C245309F386
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 20:27:16 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id D4DA2304F41B
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 20:38:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1631E2FD7C3;
-	Thu, 28 May 2026 20:27:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C9204313550;
+	Thu, 28 May 2026 20:38:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SamWyETF"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yetDjByc"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CC6422E7379;
-	Thu, 28 May 2026 20:27:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A5ACF2F1FEC;
+	Thu, 28 May 2026 20:38:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780000032; cv=none; b=F4IdvqmteHT7Gcg4H7RwWKgbY5hHwZ7+psXR9tVPO4qQxAXOSzwuxARoeKCq5TYcFKolbym9IXPhfbhBgL3bm/XeXWrt4HOD6+T3qKXoKbnSjr9jTs7gfklN6K2didB4wTyqkypo6435Ga2GiIK2GwnyVMzLDEZYtPLDse/4/Es=
+	t=1780000715; cv=none; b=EVJZErWpZWJLQ8CrPsFoXsY49B4bCfO9AlQdJ0SWvkYJKiO/SGMSukMAGkEKN9tfrTeOQYIUNJqzV3QKJQDztFtaraBVp/63MXsPhG44ZQNVea2B7ABiRU9HWh0U+kcUqc7LWHf2h5Jq9aq+UW05/j20KLrS5Qo6IUlzTyDzMaY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780000032; c=relaxed/simple;
-	bh=C5zxWqZyFFjwNmXxyvN5eC0YJzLaYwRWZPmvSmcjYZw=;
+	s=arc-20240116; t=1780000715; c=relaxed/simple;
+	bh=g6w5WzS87WlvmlM4ne2KIgzBa71w7AWwfOW/TotMLzo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=VM44HqjSNznNV1J8KFUQ4QM2aq7UQcGneeNtWm7iARUQ5w+TZid+ss3vjGNQ9yU2ypB15gjOnuCzlkAvETbKIuGnXXzCiiwSxXgRu2CSeFC3+k2XSjbzUESTdWxXa+O/XPPdVxt7p2WDPh/K82tSPCMFc3Ws/SX5F90nHCrAAL0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SamWyETF; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3D6801F000E9;
-	Thu, 28 May 2026 20:27:11 +0000 (UTC)
+	 MIME-Version:Content-Type; b=g0R+C2GrNdkgqPN/lbxDkjQTL5uX2JmpmOBlxWvKfCkMZQ86rvLRWt5+NQqupG8cXydqF72Ggr+qI7gk2pc7HEFJzjuupMG4uQBxZ3She8+aSlBskHzffRtt8nIy9FGDmDE7pUmtIeCsaozIVLPV4qPAMjUhKHf+bKaTPRYI9kQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yetDjByc; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0DA481F000E9;
+	Thu, 28 May 2026 20:38:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780000031;
-	bh=mmrSvZ3YUUVaAd8BuzqOm2+nMxWiD8ZpmwoOZG2Xd38=;
+	s=korg; t=1780000714;
+	bh=t7jL5mPFkCyjdWXGKbCzjSS+uKrbiZHwZoPrkmPrEdQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=SamWyETFKBvKqDw0kLPES/TBO+vzP0jpX1/un6TZ+HT1j7GgH6dmBOuzyPnRBvKbL
-	 8wZ4ePh1FyPKsvG6M4QA1tyGUN6/COQtWmfRir1gF/Soin8juIAWySoC5FvjXy1qIF
-	 3NQTllsMDUrE4zNu2N/Gi/k4HHZZy6iIkwR36HXA=
+	b=yetDjBycLEaqMZOiVFVuDFA1vClvjr+TEpy4H2lHVVPF3uM4hrDdSSB2xt2FNzHAN
+	 Lh9Mc0VZcVujjhwBC63DzzTICCSjs8Q3OmrMI09AYYYEM/P7L0MSzGXe3rsugLA5/Z
+	 GKgrzrnlq1g23IwQvfJC4n35hyqDfeCbY0PAjhac=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mahesh Salgaonkar <mahesh@linux.ibm.com>,
-	Shrikanth Hegde <sshegde@linux.ibm.com>,
-	"Ritesh Harjani (IBM)" <ritesh.list@gmail.com>,
-	Sayali Patil <sayalip@linux.ibm.com>,
-	Madhavan Srinivasan <maddy@linux.ibm.com>,
+	Biju Das <biju.das.jz@bp.renesas.com>,
+	Geert Uytterhoeven <geert+renesas@glider.be>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 279/377] powerpc/time: Remove redundant preempt_disable|enable() calls from arch_irq_work_raise()
-Date: Thu, 28 May 2026 21:48:37 +0200
-Message-ID: <20260528194646.435486143@linuxfoundation.org>
+Subject: [PATCH 6.12 144/272] pinctrl: renesas: rzg2l: Fix incorrect PUPD register offset for high pins during suspend/resume
+Date: Thu, 28 May 2026 21:48:38 +0200
+Message-ID: <20260528194633.403824812@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260528194638.371537336@linuxfoundation.org>
-References: <20260528194638.371537336@linuxfoundation.org>
+In-Reply-To: <20260528194629.379955525@linuxfoundation.org>
+References: <20260528194629.379955525@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,134 +63,80 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-0.16 / 15.00];
+X-Spamd-Result: default: False [-0.66 / 15.00];
 	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,linux.ibm.com,gmail.com,kernel.org];
-	URIBL_MULTI_FAIL(0.00)[msgid.link:server fail,linuxfoundation.org:server fail,sto.lore.kernel.org:server fail];
 	RCVD_TLS_LAST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-256086-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
-	TAGGED_FROM(0.00)[bounces-255842-lists,stable=lfdr.de];
 	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
 	TO_DN_SOME(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[9];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,msgid.link:url,linuxfoundation.org:mid,linuxfoundation.org:dkim]
-X-Rspamd-Queue-Id: ABF125F8F4C
+	TAGGED_RCPT(0.00)[stable,renesas];
+	RCPT_COUNT_FIVE(0.00)[6];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,msgid.link:url,linuxfoundation.org:mid,linuxfoundation.org:dkim,glider.be:email]
+X-Rspamd-Queue-Id: 222775F9C0E
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sayali Patil <sayalip@linux.ibm.com>
+From: Biju Das <biju.das.jz@bp.renesas.com>
 
-[ Upstream commit 31467b23823ffec1f6fff407f8e3ca9af8b7491a ]
+[ Upstream commit 6dba9b7268cc50166bce47608670192fd874e363 ]
 
-A kernel panic is observed when handling machine check exceptions from
-real mode.
+When saving/restoring pull-up/down register state during suspend/resume,
+the second PUPD register access was incorrectly using the same base offset
+as the first, effectively reading/writing the same register twice instead
+of the adjacent one.
 
-  BUG: Unable to handle kernel data access on read at 0xc00000006be21300
-  Oops: Kernel access of bad area, sig: 11 [#1]
-  MSR:  8000000000001003 <SF,ME,RI,LE>  CR: 88222248  XER: 00000005
-  CFAR: c00000000003ffc4 DAR: c00000006be21300 DSISR: 40000000 IRQMASK: 0
-  NIP [c000000000029e40] arch_irq_work_raise+0x10/0x70
-  LR [c00000000003ffc8] machine_check_queue_event+0xa8/0x150
-  Call Trace:
-  [c0000000179d3c70] [c00000000003ff64] machine_check_queue_event+0x44/0x150
-  [c0000000179d3d30] [c0000000000084e0] machine_check_early_common+0x1f0/0x2c0
+Add the correct + 4 byte offset to the second RZG2L_PCTRL_REG_ACCESS32
+call so that pupd[1][port] is properly saved and restored from the next
+32-bit register in the PUPD register pair, covering pins 4–7 of ports
+with 4 or more pins.
 
-The crash occurs because arch_irq_work_raise() calls preempt_disable()
-from machine check exception (MCE) handlers running in real mode. In
-this context, accessing the preempt_count can fault, leading to the panic.
-
-The preempt_disable()/preempt_enable() pair in arch_irq_work_raise()
-was originally added by commit 0fe1ac48bef0 ("powerpc/perf_event: Fix
-oops due to perf_event_do_pending call") to avoid races while raising
-irq work from exception context.
-
-Later, commit 471ba0e686cb ("irq_work: Do not raise an IPI when
-queueing work on the local CPU") added preemption protection in
-irq_work_queue() path, while commit 20b876918c06 ("irq_work: Use per
-cpu atomics instead of regular atomics") added equivalent
-protection in irq_work_queue_on() before reaching arch_irq_work_raise():
-
-  irq_work_queue() / irq_work_queue_on()
-    -> preempt_disable()
-      -> __irq_work_queue_local()
-        -> irq_work_raise()
-          -> arch_irq_work_raise()
-
-As a result, callers other than mce_irq_work_raise() already execute
-with preemption disabled, making the additional
-preempt_disable()/preempt_enable() pair in arch_irq_work_raise()
-redundant.
-
-The arch_irq_work_raise() function executes in NMI context when called
-from MCE handler. Hence we will not be preempted or scheduled out since
-we are in NMI context with MSR[EE]=0. Therefore, it is safe to remove
-the preempt_disable()/preempt_enable() calls from here.
-
-Remove it to avoid accessing preempt_count from real mode context.
-
-Fixes: cc15ff327569 ("powerpc/mce: Avoid using irq_work_queue() in realmode")
-Suggested-by: Mahesh Salgaonkar <mahesh@linux.ibm.com>
-Acked-by: Shrikanth Hegde <sshegde@linux.ibm.com>
-Reviewed-by: Ritesh Harjani (IBM) <ritesh.list@gmail.com>
-Signed-off-by: Sayali Patil <sayalip@linux.ibm.com>
-[Maddy: Fixed the commit title]
-Signed-off-by: Madhavan Srinivasan <maddy@linux.ibm.com>
-Link: https://patch.msgid.link/20260513081413.222490-1-sayalip@linux.ibm.com
+Fixes: b2bd65fbb617 ("pinctrl: renesas: rzg2l: Add suspend/resume support for pull up/down")
+Signed-off-by: Biju Das <biju.das.jz@bp.renesas.com>
+Reviewed-by: Geert Uytterhoeven <geert+renesas@glider.be>
+Link: https://patch.msgid.link/20260328090548.84124-1-biju.das.jz@bp.renesas.com
+Signed-off-by: Geert Uytterhoeven <geert+renesas@glider.be>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/powerpc/kernel/time.c | 6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
+ drivers/pinctrl/renesas/pinctrl-rzg2l.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/arch/powerpc/kernel/time.c b/arch/powerpc/kernel/time.c
-index 4bbeb8644d3da..b4472288e0d43 100644
---- a/arch/powerpc/kernel/time.c
-+++ b/arch/powerpc/kernel/time.c
-@@ -458,6 +458,10 @@ DEFINE_PER_CPU(u8, irq_work_pending);
- 
- #endif /* 32 vs 64 bit */
- 
-+/*
-+ * Must be called with preemption disabled since it updates
-+ * per-CPU irq_work state and programs the local CPU decrementer.
-+ */
- void arch_irq_work_raise(void)
- {
- 	/*
-@@ -471,10 +475,8 @@ void arch_irq_work_raise(void)
- 	 * which could get tangled up if we're messing with the same state
- 	 * here.
- 	 */
--	preempt_disable();
- 	set_irq_work_pending_flag();
- 	set_dec(1);
--	preempt_enable();
- }
- 
- static void set_dec_or_work(u64 val)
+diff --git a/drivers/pinctrl/renesas/pinctrl-rzg2l.c b/drivers/pinctrl/renesas/pinctrl-rzg2l.c
+index bcb0c39369e05..17e27879fd623 100644
+--- a/drivers/pinctrl/renesas/pinctrl-rzg2l.c
++++ b/drivers/pinctrl/renesas/pinctrl-rzg2l.c
+@@ -2849,7 +2849,7 @@ static void rzg2l_pinctrl_pm_setup_regs(struct rzg2l_pinctrl *pctrl, bool suspen
+ 			RZG2L_PCTRL_REG_ACCESS32(suspend, pctrl->base + PUPD(off),
+ 						 cache->pupd[0][port]);
+ 			if (pincnt >= 4) {
+-				RZG2L_PCTRL_REG_ACCESS32(suspend, pctrl->base + PUPD(off),
++				RZG2L_PCTRL_REG_ACCESS32(suspend, pctrl->base + PUPD(off) + 4,
+ 							 cache->pupd[1][port]);
+ 			}
+ 		}
 -- 
 2.53.0
 
