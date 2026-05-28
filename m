@@ -1,60 +1,62 @@
-Return-Path: <stable+bounces-255464-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-256067-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id iHJ8AWGhGGqblggAu9opvQ
-	(envelope-from <stable+bounces-255464-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:11:13 +0200
+	id kLCJMI+pGGrclwgAu9opvQ
+	(envelope-from <stable+bounces-256067-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:46:07 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id D8CE45F8016
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:11:12 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 60BA15F980C
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:46:07 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 3EFA5305C539
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 20:09:46 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 1315430D4A36
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 20:37:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D922B339866;
-	Thu, 28 May 2026 20:09:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 48F3D34A794;
+	Thu, 28 May 2026 20:37:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NBQnfM35"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GtPBkoke"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9F3763164B7;
-	Thu, 28 May 2026 20:09:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1164134887B;
+	Thu, 28 May 2026 20:37:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779998985; cv=none; b=oS80ImV/Utd0twvxZsZ0HqA0whyB2GGxRZKP/ZzLXFDjNT5BONPfcq42Ft0nHYF5El8Il5E5LsEVn8t1LGhkEj2P0HwybuiQeIGEGvHIraCCVmh4boDkYKHUZDd9RLxkX9dR3usMsavL0zFzRDEkWZf4wLiHN3lvebJaya5ouFk=
+	t=1780000663; cv=none; b=TugDdCh3snhTOYa04UZZojzTkyjpatjGpaYthRVylHc455TQmaio9vH57Lghvol3Hmoww+rc0aaYOlTV0MsSuB4FkizK68ZuOnBLONW4M5vgq/TJEYtPwREx1BwTCoI0ChbX6g7uHuHd9zHaLF1f85w+A0CBXE9I+h6tGJwPA4I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779998985; c=relaxed/simple;
-	bh=lRDpVkZNg9eht2mUFYwv+v+MpDLyEuoU6mdtA5E0irY=;
+	s=arc-20240116; t=1780000663; c=relaxed/simple;
+	bh=ywjBL2Q3kBnorYPOaNRj2BJw8duSnhD/VxFGgZqOC14=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=eDKQv8cw9rlen/P4HYMLLbDjOsbAYk97J1IWTmSQzuuqpjxKMhX7xXhm1oedPCjocCLc/AT7Nlrz0EL9C13fVZ56UoUe/YpgQu9ttrXl1Z4aGb+RucbCVlG36O3sNKeQ05l1Ni29dY70hesXQ3rvK7OJmYghvYbiibWSoj0hjWY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NBQnfM35; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 07E521F000E9;
-	Thu, 28 May 2026 20:09:43 +0000 (UTC)
+	 MIME-Version; b=LdYXDaXFwxgRxL7BMcV3PP0gcEMuc76KsFQXAtdGj3Okv0t7+NsZpVIHgQEAdzNV9AgA6GEnMVSUThBh9vT4RTAHeidNF5jdB5s6YTBOVE6+Rcci61twyOG7mjr78yQ1t3lIZpeONki4EKzfq5YWUGgbV1RLmgs5zma3MydWsek=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GtPBkoke; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 261A21F000E9;
+	Thu, 28 May 2026 20:37:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779998984;
-	bh=w/Om4kgkP1S6W/3Wu5w0OkPHuVaXjS1PDwCj3x5MLWQ=;
+	s=korg; t=1780000661;
+	bh=sgcSvI9Z2Yv+8sOXXLzPkLe8xgkb9un+oRP5CuYLC7k=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=NBQnfM35cKyVI8LLBTSwh7t3RZGpSUGuVi5lzIB5Sr4e/FMF2PQ25PHu/VsV918sQ
-	 HLi016JdGBlMSlglk8upkz6Q/UOCGn6ApUypAwIss+zAiqjBnIRxmI2obIAAsvSm1/
-	 bVdNNwtIdb9z+u44Jcr97kq4llupHGM7hgG0CI6g=
+	b=GtPBkokeUIEFjoK/hXLNFIcobmbsFr+ftf8hUOXWkI7E0oV2aew3lXt4CNiZcjaIi
+	 Cwug6GBX3k14Sg3Lz/Z5Grx124KpTppAjqpevwKXNkx9xWiAGotLLtyhfPTEG/XrYQ
+	 hFnhPSl2uyicaQKFUJHzjxYndDw4zUJnvzAfsqPM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Baochen Qiang <baochen.qiang@oss.qualcomm.com>,
-	Rameshkumar Sundaram <rameshkumar.sundaram@oss.qualcomm.com>,
-	Jeff Johnson <jeff.johnson@oss.qualcomm.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 7.0 368/461] wifi: ath12k: fix EHT TX MCS limitation due to wrong 20 MHz-only parsing
+	stable@kernel.org,
+	Yuan Tan <yuantan098@gmail.com>,
+	Yifan Wu <yifanwucs@gmail.com>,
+	Juefei Pu <tomapufckgml@gmail.com>,
+	Xin Liu <bird@lzu.edu.cn>,
+	Sven Eckelmann <sven@narfation.org>
+Subject: [PATCH 6.12 123/272] batman-adv: dat: handle forward allocation error
 Date: Thu, 28 May 2026 21:48:17 +0200
-Message-ID: <20260528194658.094620592@linuxfoundation.org>
+Message-ID: <20260528194632.822848331@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260528194646.819809818@linuxfoundation.org>
-References: <20260528194646.819809818@linuxfoundation.org>
+In-Reply-To: <20260528194629.379955525@linuxfoundation.org>
+References: <20260528194629.379955525@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,119 +71,75 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	RCVD_TLS_LAST(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,kernel.org,gmail.com,lzu.edu.cn,narfation.org];
+	TAGGED_FROM(0.00)[bounces-256067-lists,stable=lfdr.de];
+	PRECEDENCE_BULK(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FROM_HAS_DN(0.00)[];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-255464-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TO_DN_SOME(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
-	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[7];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[9];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,linuxfoundation.org:mid,linuxfoundation.org:dkim,qualcomm.com:email,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo]
-X-Rspamd-Queue-Id: D8CE45F8016
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[lzu.edu.cn:email,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,narfation.org:email]
+X-Rspamd-Queue-Id: 60BA15F980C
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-7.0-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Baochen Qiang <baochen.qiang@oss.qualcomm.com>
+From: Sven Eckelmann <sven@narfation.org>
 
-[ Upstream commit 60fb2cf51e77bb1c0261160b4be44209d68956b1 ]
+commit 2d8826a2d3657cea66fb0370f9e521575a673871 upstream.
 
-When connecting to an AP configured for EHT 20 MHz with a full EHT
-MCS/NSS map (supporting MCS 0-13)
+batadv_dat_forward_data() calls pskb_copy_for_clone() to duplicate an skb
+for each DHT candidate, but does not check the return value before passing
+it to batadv_send_skb_prepare_unicast_4addr(). That function dereferences
+the skb unconditionally, so a failed allocation triggers a NULL pointer
+dereference.
 
-Supported EHT-MCS and NSS Set
-    EHT-MCS Map (BW <= 80MHz): 0x444444
-        .... .... .... .... .... 0100 = Rx Max Nss That Supports EHT-MCS 0-9: 4
-        .... .... .... .... 0100 .... = Tx Max Nss That Supports EHT-MCS 0-9: 4
-        .... .... .... 0100 .... .... = Rx Max Nss That Supports EHT-MCS 10-11: 4
-        .... .... 0100 .... .... .... = Tx Max Nss That Supports EHT-MCS 10-11: 4
-        .... 0100 .... .... .... .... = Rx Max Nss That Supports EHT-MCS 12-13: 4
-        0100 .... .... .... .... .... = Tx Max Nss That Supports EHT-MCS 12-13: 4
+Skip forwarding to the current DHT candidate on allocation failure.
 
-TX throughput is observed to be significantly lower than expected.
-Investigation shows that TX rates are limited to EHT MCS 11, even though
-the AP advertises support for EHT MCS 12/13.
-
-The root cause is an incorrect parsing of the Supported EHT-MCS and NSS
-Set element in ath12k_peer_assoc_h_eht().
-
-IEEE Std 802.11be-2024 Figure 9-1074as describes the format for 20
-MHz-Only Non-AP STAs.
-
-IEEE Std 802.11be-2024 Figure 9-1074at describes the format for all
-other AP and non-AP STAs.
-
-Currently the first format is parsed when the peer advertises no wider
-HE channel width support, without considering whether it is an AP or a
-non-AP STA. This is incorrect: the peer AP's capabilities must be parsed
-using Figure 9-1074at even when it operates on 20 MHz only. Parsing it
-as Figure 9-1074as causes rx_tx_mcs13_max_nss to be interpreted as zero,
-which is then passed to firmware, leading firmware to assume the peer
-does not support MCS 13 and to limit TX rates at MCS 11.
-
-Fix this by parsing the Figure 9-1074as format only when the peer is a
-20 MHz-Only non-AP STA, i.e. when the local interface operates as AP or
-mesh point.
-
-Tested-on: WCN7850 hw2.0 PCI WLAN.HMT.1.1.c5-00302-QCAHMTSWPL_V1.0_V2.0_SILICONZ-1.115823.3
-
-Fixes: 6c95151e2e77 ("wifi: ath12k: Add EHT MCS/NSS rates to Peer Assoc")
-Signed-off-by: Baochen Qiang <baochen.qiang@oss.qualcomm.com>
-Reviewed-by: Rameshkumar Sundaram <rameshkumar.sundaram@oss.qualcomm.com>
-Link: https://patch.msgid.link/20260514-ath12k-fix-20mhz-only-mcs-map-v1-1-a38d4a9b21a2@oss.qualcomm.com
-Signed-off-by: Jeff Johnson <jeff.johnson@oss.qualcomm.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: stable@kernel.org
+Fixes: 785ea1144182 ("batman-adv: Distributed ARP Table - create DHT helper functions")
+Reported-by: Yuan Tan <yuantan098@gmail.com>
+Reported-by: Yifan Wu <yifanwucs@gmail.com>
+Reported-by: Juefei Pu <tomapufckgml@gmail.com>
+Reported-by: Xin Liu <bird@lzu.edu.cn>
+Reviewed-by: Yuan Tan <yuantan098@gmail.com>
+Signed-off-by: Sven Eckelmann <sven@narfation.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/wireless/ath/ath12k/mac.c | 8 ++++++--
- 1 file changed, 6 insertions(+), 2 deletions(-)
+ net/batman-adv/distributed-arp-table.c |    3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/drivers/net/wireless/ath/ath12k/mac.c b/drivers/net/wireless/ath/ath12k/mac.c
-index fa36e984c74b2..6869e9860776d 100644
---- a/drivers/net/wireless/ath/ath12k/mac.c
-+++ b/drivers/net/wireless/ath/ath12k/mac.c
-@@ -3446,7 +3446,9 @@ static void ath12k_peer_assoc_h_eht(struct ath12k *ar,
- 		arg->peer_eht_mcs_count++;
- 		fallthrough;
- 	default:
--		if (!(link_sta->he_cap.he_cap_elem.phy_cap_info[0] &
-+		if ((vif->type == NL80211_IFTYPE_AP ||
-+		     vif->type == NL80211_IFTYPE_MESH_POINT) &&
-+		    !(link_sta->he_cap.he_cap_elem.phy_cap_info[0] &
- 		      IEEE80211_HE_PHY_CAP0_CHANNEL_WIDTH_SET_MASK_ALL)) {
- 			bw_20 = &eht_cap->eht_mcs_nss_supp.only_20mhz;
+--- a/net/batman-adv/distributed-arp-table.c
++++ b/net/batman-adv/distributed-arp-table.c
+@@ -698,6 +698,9 @@ static bool batadv_dat_forward_data(stru
+ 			goto free_orig;
  
-@@ -3475,7 +3477,9 @@ static void ath12k_peer_assoc_h_eht(struct ath12k *ar,
- 	arg->punct_bitmap = ~arvif->punct_bitmap;
- 	arg->eht_disable_mcs15 = link_conf->eht_disable_mcs15;
- 
--	if (!(link_sta->he_cap.he_cap_elem.phy_cap_info[0] &
-+	if ((vif->type == NL80211_IFTYPE_AP ||
-+	     vif->type == NL80211_IFTYPE_MESH_POINT) &&
-+	    !(link_sta->he_cap.he_cap_elem.phy_cap_info[0] &
- 	      IEEE80211_HE_PHY_CAP0_CHANNEL_WIDTH_SET_MASK_ALL)) {
- 		if (bw_20->rx_tx_mcs13_max_nss)
- 			max_nss = max(max_nss, u8_get_bits(bw_20->rx_tx_mcs13_max_nss,
--- 
-2.53.0
-
+ 		tmp_skb = pskb_copy_for_clone(skb, GFP_ATOMIC);
++		if (!tmp_skb)
++			goto free_neigh;
++
+ 		if (!batadv_send_skb_prepare_unicast_4addr(bat_priv, tmp_skb,
+ 							   cand[i].orig_node,
+ 							   packet_subtype)) {
 
 
 
