@@ -1,60 +1,58 @@
-Return-Path: <stable+bounces-255761-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-256007-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id SNaYEdWnGGpolwgAu9opvQ
-	(envelope-from <stable+bounces-255761-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:38:45 +0200
+	id wJfMDd+nGGp+lwgAu9opvQ
+	(envelope-from <stable+bounces-256007-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:38:55 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id A56DA5F932A
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:38:44 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id CF8B45F9361
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:38:54 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 4F4B7311C6F2
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 20:23:31 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id B09E0306DA4C
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 20:34:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B193E317163;
-	Thu, 28 May 2026 20:23:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D93463368B5;
+	Thu, 28 May 2026 20:34:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="njnFP8qe"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Xwq3nNV2"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2935722652D;
-	Thu, 28 May 2026 20:23:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6B8C32E92BA;
+	Thu, 28 May 2026 20:34:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779999810; cv=none; b=JqHQhtAxcfzr9zNNxvckOo656Fu9RNlUz4U0ZpxJlZ0pVBcC1+1aPtTR+TX1/76z/ExMFoEv3ZatpNFBf8xQGl/TgFUBLMJDZiwFijynvTjbEiCU4jx522/1Y7wCCMdMPXQlXQ4i20cPqIIT423VvS2Jj6y3xMWkXnlSO2AZ4hc=
+	t=1780000494; cv=none; b=twNge7xDcX2Jmfeh/iQvRYrMLw1ZJGf8loSRFzPWwO0Izbq8gNRo3Rlw0gizhQ4xMSdBXrTyCM/q20lK4PGTZnlU6qlAsrLxSY5UADnF/lAD/dyE6g4FuaHosc96ZuQ5n8DYSvftV2sXDybQK+GvHHEffxMmJOE3vTB6/ybofSI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779999810; c=relaxed/simple;
-	bh=3VUkdRUkB0OgpgU/wXgVHuEg2iw1rbRggr0mwzks7y8=;
+	s=arc-20240116; t=1780000494; c=relaxed/simple;
+	bh=fTTohYPe+RrovhRSzyFYHV8xk6wiUh3tAarpX/bWOzE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=JIAFpXg8mc+dlDPVdxbjHpyPY+rh/IN5JiA1shzQd3LiTmyeJ0oQfKpxxggOJ8A3LOqXtIFpwmoewSprVgUldLYUsPIelrNjCXx0EWvzPZzsH9mBZcn3N0DTFZlgsUwii7DWhyMOI+t/oiAnuxjrIFm2K8rnAyrhUPcac6b7qS8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=njnFP8qe; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 86C881F000E9;
-	Thu, 28 May 2026 20:23:28 +0000 (UTC)
+	 MIME-Version; b=eXwSqGHIM92jKcrKC51HJldICPKH6arsRaGr0XVEGLTlUBcVbwt9XgttPYg14acOVjP+G0A5dGB5TJoLwGiS5MsT7TOg0adYebkoERiKH1E1xWOJ772kBz3BeCodrEtVilj17A0qjpbSs7xFVRYZg4B7/P5Nq2qztiHyZmlUpj4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Xwq3nNV2; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C820E1F000E9;
+	Thu, 28 May 2026 20:34:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779999809;
-	bh=c+EyqwfaHIbow2i82ZMSQwwU2JwP6taZ2Hz0tdnpTfo=;
+	s=korg; t=1780000493;
+	bh=mpYwQXMVux9sLF9//o+oVaHEibrnpZCF+gsrbICqbMI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=njnFP8qe9bqhrpLtzv6qXwqZRfMVNcyFqx9+u0kwMkLhqcst2UqIK2vUjbKk3Kg+z
-	 rXvFEsNFbpBgdQ18kvP5rlN4ze+0Oko47pEGs324OaJCp0PWi3oUBwIYxN3UFcCc41
-	 z0JQeMXFPb18v6N/aO1W483t9sgZvXLqM7D6lzcY=
+	b=Xwq3nNV2jqriOyPPUG2YgeNOb9bbEqr42wNNOSnsmz/wREVfKLKIM26fmV7Yv36ON
+	 41sV8Qj5NeNM5hBFGJvsbTwB+Hf+28Ze+XuT0eJjwyLczlrDoGBk5vgQ6XC1NVnKrf
+	 23ospw3xe0P7m4LKmaqvTSSzJbNdwKPNrWrHXALI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Tristan Madani <tristan@talencesecurity.com>,
-	Florian Westphal <fw@strlen.de>,
-	Pablo Neira Ayuso <pablo@netfilter.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 200/377] netfilter: x_tables: add and use xtables_unregister_table_exit
-Date: Thu, 28 May 2026 21:47:18 +0200
-Message-ID: <20260528194644.196720448@linuxfoundation.org>
+	Mingyu Wang <25181214217@stu.xidian.edu.cn>,
+	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+Subject: [PATCH 6.12 065/272] Bluetooth: hci_uart: fix UAFs and race conditions in close and init paths
+Date: Thu, 28 May 2026 21:47:19 +0200
+Message-ID: <20260528194631.201356122@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260528194638.371537336@linuxfoundation.org>
-References: <20260528194638.371537336@linuxfoundation.org>
+In-Reply-To: <20260528194629.379955525@linuxfoundation.org>
+References: <20260528194629.379955525@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,366 +67,205 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-255761-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-256007-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[7];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,talencesecurity.com:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,netfilter.org:email]
-X-Rspamd-Queue-Id: A56DA5F932A
+	RCPT_COUNT_FIVE(0.00)[5];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[intel.com:email,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,xidian.edu.cn:email]
+X-Rspamd-Queue-Id: CF8B45F9361
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Florian Westphal <fw@strlen.de>
+From: Mingyu Wang <25181214217@stu.xidian.edu.cn>
 
-[ Upstream commit b4597d5fd7d2f8cebfffd40dffb5e003cc78964c ]
+commit c1bb9336ae6b54a5f6a353c4bd4ed9a4307e429b upstream.
 
-Previous change added xtables_unregister_table_pre_exit to detach the
-table from the packetpath and to unlink it from the active table list.
-In case of rmmod, userspace that is doing set/getsockopt for this table
-will not be able to re-instantiate the table:
- 1. The larval table has been removed already
- 2. existing instantiated table is no longer on the xt pernet table list.
+Vulnerabilities leading to Use-After-Free (UAF) and Null Pointer
+Dereference (NPD) conditions were observed in the lifecycle management
+of hci_uart.
 
-This adds the second stage helper:
+The primary issue arises because the workqueues (init_ready and
+write_work) are only flushed/cancelled if the HCI_UART_PROTO_READY
+flag is set during TTY close. If a hangup occurs before setup completes,
+hci_uart_tty_close() skips the teardown of these workqueues and
+proceeds to free the `hu` struct. When the scheduled work executes
+later, it blindly dereferences the freed `hu` struct.
 
-unlink the table from the dying list, free the hook ops (if any) and do
-the audit notification.  It replaces xt_unregister_table().
+Furthermore, several data races and UAFs were identified in the teardown
+sequence:
+1. Calling hci_uart_flush() from hci_uart_close() without effectively
+   disabling write_work causes a race condition where both can concurrently
+   double-free hu->tx_skb. This happens because protocol timers can
+   concurrently invoke hci_uart_tx_wakeup() and requeue write_work.
+2. Calling hci_free_dev(hdev) before hu->proto->close(hu) causes a UAF
+   when vendor specific protocol close callbacks dereference hu->hdev.
+3. In the initialization error paths, failing to take the proto_lock
+   write lock before clearing PROTO_READY leads to races with active
+   readers. Additionally, hci_uart_tty_receive() accesses hu->hdev
+   outside the read lock, leading to UAFs if the initialization error
+   path frees hdev concurrently.
 
-Fixes: fdacd57c79b7 ("netfilter: x_tables: never register tables by default")
-Reported-by: Tristan Madani <tristan@talencesecurity.com>
-Reviewed-by: Tristan Madani <tristan@talencesecurity.com>
-Closes: https://lore.kernel.org/netfilter-devel/20260429175613.1459342-1-tristmd@gmail.com/
-Signed-off-by: Florian Westphal <fw@strlen.de>
-Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fix these synchronization and lifecycle issues by:
+1. Re-ordering hci_uart_tty_close() to clear HCI_UART_PROTO_READY first,
+   followed immediately by a cancel_work_sync(&hu->write_work). Clearing
+   the flag locks out concurrent protocol timers from successfully invoking
+   hci_uart_tx_wakeup(), effectively rendering the cancellation permanent
+   and preventing the tx_skb double-free.
+2. Note: Clearing PROTO_READY early causes hci_uart_close() to skip
+   hu->proto->flush(). This is perfectly safe in the tty_close path
+   because hu->proto->close() executes shortly after, which intrinsically
+   purges all protocol SKB queues and tears down the state.
+3. Relocating hu->proto->close(hu) strictly prior to hci_free_dev(hdev)
+   across all close and error paths to prevent vendor-level UAFs.
+4. Moving the hdev->stat.byte_rx increment in hci_uart_tty_receive()
+   inside the proto_lock read-side critical section to safely synchronize
+   with device unregistration.
+5. Adding cancel_work_sync(&hu->write_work) to hci_uart_close() to safely
+   flush the workqueue before hci_uart_flush() is invoked via the HCI core.
+6. Utilizing cancel_work_sync() instead of disable_work_sync() across
+   all paths to prevent permanently breaking user-space retry capabilities.
+
+Fixes: 3b799254cf6f ("Bluetooth: hci_uart: Cancel init work before unregistering")
+Cc: stable@vger.kernel.org
+Signed-off-by: Mingyu Wang <25181214217@stu.xidian.edu.cn>
+Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- include/linux/netfilter/x_tables.h |  2 +-
- net/ipv4/netfilter/arp_tables.c    |  9 ++--
- net/ipv4/netfilter/ip_tables.c     |  9 ++--
- net/ipv4/netfilter/iptable_nat.c   |  5 +-
- net/ipv6/netfilter/ip6_tables.c    |  9 ++--
- net/ipv6/netfilter/ip6table_nat.c  |  5 +-
- net/netfilter/x_tables.c           | 81 +++++++++++++++++++++++-------
- 7 files changed, 83 insertions(+), 37 deletions(-)
+ drivers/bluetooth/hci_ldisc.c |   48 +++++++++++++++++++++++++++++++++++-------
+ 1 file changed, 40 insertions(+), 8 deletions(-)
 
-diff --git a/include/linux/netfilter/x_tables.h b/include/linux/netfilter/x_tables.h
-index f7916fd0e8073..3aef60abd362c 100644
---- a/include/linux/netfilter/x_tables.h
-+++ b/include/linux/netfilter/x_tables.h
-@@ -299,8 +299,8 @@ struct xt_table *xt_register_table(struct net *net,
- 				   const struct xt_table *table,
- 				   struct xt_table_info *bootstrap,
- 				   struct xt_table_info *newinfo);
--void *xt_unregister_table(struct xt_table *table);
- void xt_unregister_table_pre_exit(struct net *net, u8 af, const char *name);
-+struct xt_table *xt_unregister_table_exit(struct net *net, u8 af, const char *name);
- 
- struct xt_table_info *xt_replace_table(struct xt_table *table,
- 				       unsigned int num_counters,
-diff --git a/net/ipv4/netfilter/arp_tables.c b/net/ipv4/netfilter/arp_tables.c
-index d19fce8589809..f3dadbc416a3a 100644
---- a/net/ipv4/netfilter/arp_tables.c
-+++ b/net/ipv4/netfilter/arp_tables.c
-@@ -1501,13 +1501,11 @@ static int do_arpt_get_ctl(struct sock *sk, int cmd, void __user *user, int *len
- 
- static void __arpt_unregister_table(struct net *net, struct xt_table *table)
+--- a/drivers/bluetooth/hci_ldisc.c
++++ b/drivers/bluetooth/hci_ldisc.c
+@@ -194,7 +194,15 @@ void hci_uart_init_work(struct work_stru
+ 	err = hci_register_dev(hu->hdev);
+ 	if (err < 0) {
+ 		BT_ERR("Can't register HCI device");
++
++		percpu_down_write(&hu->proto_lock);
+ 		clear_bit(HCI_UART_PROTO_READY, &hu->flags);
++		percpu_up_write(&hu->proto_lock);
++
++		/* Safely cancel work after clearing flags */
++		cancel_work_sync(&hu->write_work);
++
++		/* Close protocol before freeing hdev */
+ 		hu->proto->close(hu);
+ 		hdev = hu->hdev;
+ 		hu->hdev = NULL;
+@@ -263,8 +271,12 @@ static int hci_uart_open(struct hci_dev
+ /* Close device */
+ static int hci_uart_close(struct hci_dev *hdev)
  {
--	struct xt_table_info *private;
--	void *loc_cpu_entry;
-+	struct xt_table_info *private = table->private;
- 	struct module *table_owner = table->me;
-+	void *loc_cpu_entry;
- 	struct arpt_entry *iter;
- 
--	private = xt_unregister_table(table);
--
- 	/* Decrease module usage counts and free resources */
- 	loc_cpu_entry = private->entries;
- 	xt_entry_foreach(iter, loc_cpu_entry, private->size)
-@@ -1515,6 +1513,7 @@ static void __arpt_unregister_table(struct net *net, struct xt_table *table)
- 	if (private->number > private->initial_entries)
- 		module_put(table_owner);
- 	xt_free_table_info(private);
-+	kfree(table);
- }
- 
- int arpt_register_table(struct net *net,
-@@ -1583,7 +1582,7 @@ int arpt_register_table(struct net *net,
- 
- void arpt_unregister_table(struct net *net, const char *name)
- {
--	struct xt_table *table = xt_find_table(net, NFPROTO_ARP, name);
-+	struct xt_table *table = xt_unregister_table_exit(net, NFPROTO_ARP, name);
- 
- 	if (table)
- 		__arpt_unregister_table(net, table);
-diff --git a/net/ipv4/netfilter/ip_tables.c b/net/ipv4/netfilter/ip_tables.c
-index 663868cc5f6d6..f4079f0718dea 100644
---- a/net/ipv4/netfilter/ip_tables.c
-+++ b/net/ipv4/netfilter/ip_tables.c
-@@ -1704,12 +1704,10 @@ do_ipt_get_ctl(struct sock *sk, int cmd, void __user *user, int *len)
- 
- static void __ipt_unregister_table(struct net *net, struct xt_table *table)
- {
--	struct xt_table_info *private;
--	void *loc_cpu_entry;
-+	struct xt_table_info *private = table->private;
- 	struct module *table_owner = table->me;
- 	struct ipt_entry *iter;
--
--	private = xt_unregister_table(table);
-+	void *loc_cpu_entry;
- 
- 	/* Decrease module usage counts and free resources */
- 	loc_cpu_entry = private->entries;
-@@ -1718,6 +1716,7 @@ static void __ipt_unregister_table(struct net *net, struct xt_table *table)
- 	if (private->number > private->initial_entries)
- 		module_put(table_owner);
- 	xt_free_table_info(private);
-+	kfree(table);
- }
- 
- int ipt_register_table(struct net *net, const struct xt_table *table,
-@@ -1791,7 +1790,7 @@ int ipt_register_table(struct net *net, const struct xt_table *table,
- 
- void ipt_unregister_table_exit(struct net *net, const char *name)
- {
--	struct xt_table *table = xt_find_table(net, NFPROTO_IPV4, name);
-+	struct xt_table *table = xt_unregister_table_exit(net, NFPROTO_IPV4, name);
- 
- 	if (table)
- 		__ipt_unregister_table(net, table);
-diff --git a/net/ipv4/netfilter/iptable_nat.c b/net/ipv4/netfilter/iptable_nat.c
-index 8fc4912e790d8..a0df725540251 100644
---- a/net/ipv4/netfilter/iptable_nat.c
-+++ b/net/ipv4/netfilter/iptable_nat.c
-@@ -119,8 +119,11 @@ static int iptable_nat_table_init(struct net *net)
- 	}
- 
- 	ret = ipt_nat_register_lookups(net);
--	if (ret < 0)
-+	if (ret < 0) {
-+		xt_unregister_table_pre_exit(net, NFPROTO_IPV4, "nat");
-+		synchronize_rcu();
- 		ipt_unregister_table_exit(net, "nat");
-+	}
- 
- 	kfree(repl);
- 	return ret;
-diff --git a/net/ipv6/netfilter/ip6_tables.c b/net/ipv6/netfilter/ip6_tables.c
-index 08abf0df04500..dfaea4f6727ed 100644
---- a/net/ipv6/netfilter/ip6_tables.c
-+++ b/net/ipv6/netfilter/ip6_tables.c
-@@ -1713,12 +1713,10 @@ do_ip6t_get_ctl(struct sock *sk, int cmd, void __user *user, int *len)
- 
- static void __ip6t_unregister_table(struct net *net, struct xt_table *table)
- {
--	struct xt_table_info *private;
--	void *loc_cpu_entry;
-+	struct xt_table_info *private = table->private;
- 	struct module *table_owner = table->me;
- 	struct ip6t_entry *iter;
--
--	private = xt_unregister_table(table);
-+	void *loc_cpu_entry;
- 
- 	/* Decrease module usage counts and free resources */
- 	loc_cpu_entry = private->entries;
-@@ -1727,6 +1725,7 @@ static void __ip6t_unregister_table(struct net *net, struct xt_table *table)
- 	if (private->number > private->initial_entries)
- 		module_put(table_owner);
- 	xt_free_table_info(private);
-+	kfree(table);
- }
- 
- int ip6t_register_table(struct net *net, const struct xt_table *table,
-@@ -1797,7 +1796,7 @@ int ip6t_register_table(struct net *net, const struct xt_table *table,
- 
- void ip6t_unregister_table_exit(struct net *net, const char *name)
- {
--	struct xt_table *table = xt_find_table(net, NFPROTO_IPV6, name);
-+	struct xt_table *table = xt_unregister_table_exit(net, NFPROTO_IPV6, name);
- 
- 	if (table)
- 		__ip6t_unregister_table(net, table);
-diff --git a/net/ipv6/netfilter/ip6table_nat.c b/net/ipv6/netfilter/ip6table_nat.c
-index bb8aa3fc42b45..c2394e2c94b56 100644
---- a/net/ipv6/netfilter/ip6table_nat.c
-+++ b/net/ipv6/netfilter/ip6table_nat.c
-@@ -121,8 +121,11 @@ static int ip6table_nat_table_init(struct net *net)
- 	}
- 
- 	ret = ip6t_nat_register_lookups(net);
--	if (ret < 0)
-+	if (ret < 0) {
-+		xt_unregister_table_pre_exit(net, NFPROTO_IPV6, "nat");
-+		synchronize_rcu();
- 		ip6t_unregister_table_exit(net, "nat");
-+	}
- 
- 	kfree(repl);
- 	return ret;
-diff --git a/net/netfilter/x_tables.c b/net/netfilter/x_tables.c
-index 2d93f189a79b9..76fd0999db4a8 100644
---- a/net/netfilter/x_tables.c
-+++ b/net/netfilter/x_tables.c
-@@ -55,6 +55,9 @@ static struct list_head xt_templates[NFPROTO_NUMPROTO];
- 
- struct xt_pernet {
- 	struct list_head tables[NFPROTO_NUMPROTO];
++	struct hci_uart *hu = hci_get_drvdata(hdev);
 +
-+	/* stash area used during netns exit */
-+	struct list_head dead_tables[NFPROTO_NUMPROTO];
- };
+ 	BT_DBG("hdev %p", hdev);
  
- struct compat_delta {
-@@ -1522,23 +1525,6 @@ struct xt_table *xt_register_table(struct net *net,
- }
- EXPORT_SYMBOL_GPL(xt_register_table);
- 
--void *xt_unregister_table(struct xt_table *table)
--{
--	struct xt_table_info *private;
--
--	mutex_lock(&xt[table->af].mutex);
--	private = table->private;
--	list_del(&table->list);
--	mutex_unlock(&xt[table->af].mutex);
--	audit_log_nfcfg(table->name, table->af, private->number,
--			AUDIT_XT_OP_UNREGISTER, GFP_KERNEL);
--	kfree(table->ops);
--	kfree(table);
--
--	return private;
--}
--EXPORT_SYMBOL_GPL(xt_unregister_table);
--
- /**
-  * xt_unregister_table_pre_exit - pre-shutdown unregister of a table
-  * @net: network namespace
-@@ -1548,6 +1534,14 @@ EXPORT_SYMBOL_GPL(xt_unregister_table);
-  * Unregisters the specified netfilter table from the given network namespace
-  * and also unregisters the hooks from netfilter core: no new packets will be
-  * processed.
-+ *
-+ * This must be called prior to xt_unregister_table_exit() from the pernet
-+ * .pre_exit callback.  After this call, the table is no longer visible to
-+ * the get/setsockopt path.  In case of rmmod, module exit path must have
-+ * called xt_unregister_template() prior to unregistering pernet ops to
-+ * prevent re-instantiation of the table.
-+ *
-+ * See also: xt_unregister_table_exit()
-  */
- void xt_unregister_table_pre_exit(struct net *net, u8 af, const char *name)
- {
-@@ -1557,6 +1551,7 @@ void xt_unregister_table_pre_exit(struct net *net, u8 af, const char *name)
- 	mutex_lock(&xt[af].mutex);
- 	list_for_each_entry(t, &xt_net->tables[af], list) {
- 		if (strcmp(t->name, name) == 0) {
-+			list_move(&t->list, &xt_net->dead_tables[af]);
- 			mutex_unlock(&xt[af].mutex);
- 
- 			if (t->ops) /* nat table registers with nat core, t->ops is NULL. */
-@@ -1567,6 +1562,50 @@ void xt_unregister_table_pre_exit(struct net *net, u8 af, const char *name)
- 	mutex_unlock(&xt[af].mutex);
- }
- EXPORT_SYMBOL(xt_unregister_table_pre_exit);
++	cancel_work_sync(&hu->write_work);
 +
-+/**
-+ * xt_unregister_table_exit - remove a table during namespace teardown
-+ * @net: the network namespace from which to unregister the table
-+ * @af: address family (e.g., NFPROTO_IPV4, NFPROTO_IPV6)
-+ * @name: name of the table to unregister
-+ *
-+ * Completes the unregister process for a table. This must be called from
-+ * the pernet ops .exit callback. This is the second stage after
-+ * xt_unregister_table_pre_exit().
-+ *
-+ * pair with xt_unregister_table_pre_exit() during namespace shutdown.
-+ *
-+ * Return: the unregistered table or NULL if the table was never
-+ *         instantiated. The caller needs to kfree() the table after it
-+ *         has removed the family specific matches/targets.
-+ */
-+struct xt_table *xt_unregister_table_exit(struct net *net, u8 af, const char *name)
-+{
-+	struct xt_pernet *xt_net = net_generic(net, xt_pernet_id);
-+	struct xt_table *table;
-+
-+	mutex_lock(&xt[af].mutex);
-+	list_for_each_entry(table, &xt_net->dead_tables[af], list) {
-+		struct nf_hook_ops *ops = NULL;
-+
-+		if (strcmp(table->name, name) != 0)
-+			continue;
-+
-+		list_del(&table->list);
-+
-+		audit_log_nfcfg(table->name, table->af, table->private->number,
-+				AUDIT_XT_OP_UNREGISTER, GFP_KERNEL);
-+		swap(table->ops, ops);
-+		mutex_unlock(&xt[af].mutex);
-+
-+		kfree(ops);
-+		return table;
-+	}
-+	mutex_unlock(&xt[af].mutex);
-+
-+	return NULL;
-+}
-+EXPORT_SYMBOL_GPL(xt_unregister_table_exit);
- #endif
- 
- #ifdef CONFIG_PROC_FS
-@@ -2013,8 +2052,10 @@ static int __net_init xt_net_init(struct net *net)
- 	struct xt_pernet *xt_net = net_generic(net, xt_pernet_id);
- 	int i;
- 
--	for (i = 0; i < NFPROTO_NUMPROTO; i++)
-+	for (i = 0; i < NFPROTO_NUMPROTO; i++) {
- 		INIT_LIST_HEAD(&xt_net->tables[i]);
-+		INIT_LIST_HEAD(&xt_net->dead_tables[i]);
-+	}
+ 	hci_uart_flush(hdev);
+ 	hdev->flush = NULL;
  	return 0;
- }
+@@ -531,6 +543,7 @@ static void hci_uart_tty_close(struct tt
+ {
+ 	struct hci_uart *hu = tty->disc_data;
+ 	struct hci_dev *hdev;
++	bool proto_ready;
  
-@@ -2023,8 +2064,10 @@ static void __net_exit xt_net_exit(struct net *net)
- 	struct xt_pernet *xt_net = net_generic(net, xt_pernet_id);
- 	int i;
+ 	BT_DBG("tty %p", tty);
  
--	for (i = 0; i < NFPROTO_NUMPROTO; i++)
-+	for (i = 0; i < NFPROTO_NUMPROTO; i++) {
- 		WARN_ON_ONCE(!list_empty(&xt_net->tables[i]));
-+		WARN_ON_ONCE(!list_empty(&xt_net->dead_tables[i]));
+@@ -540,24 +553,38 @@ static void hci_uart_tty_close(struct tt
+ 	if (!hu)
+ 		return;
+ 
+-	hdev = hu->hdev;
+-	if (hdev)
+-		hci_uart_close(hdev);
++	/* Wait for init_ready to finish to prevent registration races */
++	cancel_work_sync(&hu->init_ready);
+ 
+-	if (test_bit(HCI_UART_PROTO_READY, &hu->flags)) {
++	proto_ready = test_bit(HCI_UART_PROTO_READY, &hu->flags);
++	if (proto_ready) {
+ 		percpu_down_write(&hu->proto_lock);
+ 		clear_bit(HCI_UART_PROTO_READY, &hu->flags);
+ 		percpu_up_write(&hu->proto_lock);
 +	}
+ 
+-		cancel_work_sync(&hu->init_ready);
+-		cancel_work_sync(&hu->write_work);
++	/*
++	 * Unconditionally cancel write_work AFTER clearing PROTO_READY.
++	 * This ensures that concurrent protocol timers cannot requeue
++	 * write_work via hci_uart_tx_wakeup(), permanently preventing
++	 * double-free races and UAFs.
++	 */
++	cancel_work_sync(&hu->write_work);
++
++	hdev = hu->hdev;
++	if (hdev)
++		hci_uart_close(hdev); /* proto->flush is safely skipped */
+ 
++	if (proto_ready) {
+ 		if (hdev) {
+ 			if (test_bit(HCI_UART_REGISTERED, &hu->flags))
+ 				hci_unregister_dev(hdev);
+-			hci_free_dev(hdev);
+ 		}
++		/* Close protocol before freeing hdev (intrinsically purges queues) */
+ 		hu->proto->close(hu);
++
++		if (hdev)
++			hci_free_dev(hdev);
+ 	}
+ 	clear_bit(HCI_UART_PROTO_SET, &hu->flags);
+ 
+@@ -625,11 +652,12 @@ static void hci_uart_tty_receive(struct
+ 	 * tty caller
+ 	 */
+ 	hu->proto->recv(hu, data, count);
+-	percpu_up_read(&hu->proto_lock);
+ 
+ 	if (hu->hdev)
+ 		hu->hdev->stat.byte_rx += count;
+ 
++	percpu_up_read(&hu->proto_lock);
++
+ 	tty_unthrottle(tty);
  }
  
- static struct pernet_operations xt_net_ops = {
--- 
-2.53.0
-
+@@ -695,6 +723,10 @@ static int hci_uart_register_dev(struct
+ 		percpu_down_write(&hu->proto_lock);
+ 		clear_bit(HCI_UART_PROTO_INIT, &hu->flags);
+ 		percpu_up_write(&hu->proto_lock);
++		/* Cancel work after clearing flags */
++		cancel_work_sync(&hu->write_work);
++
++		/* Close protocol before freeing hdev */
+ 		hu->proto->close(hu);
+ 		hu->hdev = NULL;
+ 		hci_free_dev(hdev);
 
 
 
