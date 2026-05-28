@@ -1,58 +1,63 @@
-Return-Path: <stable+bounces-255732-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-255359-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id AGvvLIqkGGrClggAu9opvQ
-	(envelope-from <stable+bounces-255732-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:24:42 +0200
+	id cNc+Gu6gGGqblggAu9opvQ
+	(envelope-from <stable+bounces-255359-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:09:18 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id CC4A45F89A2
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:24:41 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id D95955F7EB5
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:09:17 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 1CA683027220
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 20:22:11 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 3EDC130D9D60
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 20:05:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 74DA42F8E83;
-	Thu, 28 May 2026 20:22:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F33F040C5B6;
+	Thu, 28 May 2026 20:04:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zyay6Q5t"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nB64QCQM"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 284432E7377;
-	Thu, 28 May 2026 20:22:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B8F36409624;
+	Thu, 28 May 2026 20:04:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779999729; cv=none; b=LBHwUAoCiCT0xs7R3jvMTS3aP6zxQjZagiFjCDdBP518fcHBxDxZhYFxKYjeMSWWCa0a8PqnUFpB9bpqDWbRj5gFQImFoPREL0LkE+QWuqba3rQ8C794LGoX5Q6jvYKfOY58KcKITZMYBtXhCUEhkLi2MiX/BM/RJ4Lgw4QMFuk=
+	t=1779998688; cv=none; b=PGZ6kEt/eI1pWwleCzARVewjolunMLdP4SCze6H3GOUSZAxQpbZ6mC2+lQELX8J/l2Y1AgKfN1KVmBWmpuGnl9UdoxLCVVZXG5f9CHtGEmRlT1QI412FhvEVwPDUD1cLpWINbsQwVorClp1DmnmbmTlfn79+ozxquYaGxKuXTbQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779999729; c=relaxed/simple;
-	bh=XL0AtoR0KuCtdIp16uDpjStivcDwGn+1co3Ivwwm9TE=;
+	s=arc-20240116; t=1779998688; c=relaxed/simple;
+	bh=F94I5ORvUvg52PMnoEKyuRqIIypcXTIHFQudUSoaxQk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=hags6k8OlyLBr2WjEOiIGRjCV1mYh4S6nvqPPRU2DYLKVv4u3HsTR3L36e4LIHT7bI8UxBPFt6DWw2ebicaCLHbRfWIv6zgIrCathWOsWHK1PQZqZNbvBCTXiU4UptFTKZyCMn8escxcS5JCy/G6IAstyBHZISIQb58eE6qMuU8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zyay6Q5t; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 879D41F000E9;
-	Thu, 28 May 2026 20:22:07 +0000 (UTC)
+	 MIME-Version; b=Y4+P57rAEdLg3pU2eLEucpXcTH1EF7b4wnIMv/PYflHtRiHC5M+rXTwYEkKUU/pPz8oXN+RC2wud7g1E6tDlYS4R92mq7CgBqGChXv0x51Zdj6MhLQbR3tkAyQdgb0mmeQbq7WfKjxQ87tGGjpuecQaBwK8i22Zr4f1/4btd3DM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nB64QCQM; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2A5F01F000E9;
+	Thu, 28 May 2026 20:04:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779999728;
-	bh=FPs5ZKMfc/QJyBOMVQYkcccXiPGF5SNqOXJbddRc1FM=;
+	s=korg; t=1779998687;
+	bh=OdwGxS1J3BDP/Ns+Ht1BFAuxseMuoRFiKpFlqjqvxEk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=zyay6Q5tGPXzoHBtSZHCzobEof4wVBPHuOhp8liZdYZrc2gIkmo4gIaQVGdcpf5+v
-	 Ry020cEQVFJ91Q9Ld2bnzeE/1EMxDYysRjutmgAslO9pbYgJr5DC6Hka8TbXX7JAr3
-	 T17gNTUEZHelp0ZB521Vlul2KrI25ZQDoxfNrLjM=
+	b=nB64QCQM6FbmWKFwnIUO2mgD4IEgACL62ZhRc2ON/n9vrGdkG9k9rtnn+hYWdILqR
+	 0PvojhJozopagGj4PkICkg139ZYuIdV4/4cryUJQ67jnK4bEIy7mYppGMuHECoWNJd
+	 cvmgY2BcVdmTz8AvBYaYCE9M6pafJIuidwyyvHaw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable@kernel.org,
-	Sven Eckelmann <sven@narfation.org>
-Subject: [PATCH 6.18 153/377] batman-adv: tp_meter: fix race condition in send error reporting
+	David Howells <dhowells@redhat.com>,
+	Paulo Alcantara <pc@manguebit.org>,
+	Matthew Wilcox <willy@infradead.org>,
+	netfs@lists.linux.dev,
+	linux-fsdevel@vger.kernel.org,
+	Christian Brauner <brauner@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 7.0 262/461] netfs: Fix read-gaps to remove netfs_folio from filled folio
 Date: Thu, 28 May 2026 21:46:31 +0200
-Message-ID: <20260528194642.824267178@linuxfoundation.org>
+Message-ID: <20260528194654.745408276@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260528194638.371537336@linuxfoundation.org>
-References: <20260528194638.371537336@linuxfoundation.org>
+In-Reply-To: <20260528194646.819809818@linuxfoundation.org>
+References: <20260528194646.819809818@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -67,214 +72,125 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-255359-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-255732-lists,stable=lfdr.de];
-	TO_DN_SOME(0.00)[];
-	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[5];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[narfation.org:email,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim]
-X-Rspamd-Queue-Id: CC4A45F89A2
+	TO_DN_SOME(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_SEVEN(0.00)[10];
+	MID_RHS_MATCH_FROM(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,linux.dev:email,infradead.org:email,msgid.link:url,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,manguebit.org:email]
+X-Rspamd-Queue-Id: D95955F7EB5
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+7.0-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sven Eckelmann <sven@narfation.org>
+From: David Howells <dhowells@redhat.com>
 
-commit 71dce47f0758537fff78fddb5fb0d4632d29b29f upstream.
+[ Upstream commit a41168aef634356a9b87ec44349e3c82835700a5 ]
 
-batadv_tp_sender_shutdown() previously used two separate variables to track
-session state: sending (an atomic flag indicating whether the session was
-active) and reason (a plain enum storing the stop reason). This introduced
-a race window between the two writes: after sending was cleared to 0,
-batadv_tp_send() could observe the stopped state and call
-batadv_tp_sender_end() before reason was written, causing the wrong stop
-reason to be reported to the caller.
+Fix netfs_read_gaps() to remove the netfs_folio record from the folio
+record before marking the folio uptodate if it successfully fills the gaps
+around the dirty data in a streaming write folio (dirty, but not uptodate).
 
-Fix this by consolidating both variables into a single atomic send_result,
-which holds 0 while the session is running and the stop reason once it
-ends.
+Found with:
 
-Cc: stable@kernel.org
-Fixes: 33a3bb4a3345 ("batman-adv: throughput meter implementation")
-Signed-off-by: Sven Eckelmann <sven@narfation.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+    fsx -q -N 1000000 -p 10000 -o 128000 -l 600000 \
+        /xfstest.test/junk --replay-ops=junk.fsxops
+
+using the following as junk.fsxops:
+
+    truncate 0x0 0x138b1 0x8b15d *
+    write 0x507ee 0x10df7 0x927c0
+    write 0x19993 0x10e04 0x927c0 *
+    mapwrite 0x66214 0x1a253 0x927c0
+    copy_range 0xb704 0x89b9 0x24429 0x79380
+    write 0x2402b 0x144a2 0x90660 *
+    mapwrite 0x204d5 0x140a0 0x927c0 *
+    copy_range 0x1f72c 0x137d0 0x7a906 0x927c0 *
+    read 0 0x9157c 0x9157c
+
+on cifs with the default cache option.
+
+It shows folio 0x24 misbehaving if the FMODE_READ check is commented out in
+netfs_perform_write():
+
+                if (//(file->f_mode & FMODE_READ) ||
+                    netfs_is_cache_enabled(ctx)) {
+
+and no fscache.  This was initially found with the generic/522 xfstest.
+
+Signed-off-by: David Howells <dhowells@redhat.com>
+Link: https://patch.msgid.link/20260512123404.719402-16-dhowells@redhat.com
+Fixes: ee4cdf7ba857 ("netfs: Speed up buffered reading")
+cc: Paulo Alcantara <pc@manguebit.org>
+cc: Matthew Wilcox <willy@infradead.org>
+cc: netfs@lists.linux.dev
+cc: linux-fsdevel@vger.kernel.org
+Signed-off-by: Christian Brauner <brauner@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/batman-adv/tp_meter.c |   40 +++++++++++++++++++++++++---------------
- net/batman-adv/types.h    |   10 +++++-----
- 2 files changed, 30 insertions(+), 20 deletions(-)
+ fs/netfs/buffered_read.c | 11 ++++++++---
+ 1 file changed, 8 insertions(+), 3 deletions(-)
 
---- a/net/batman-adv/tp_meter.c
-+++ b/net/batman-adv/tp_meter.c
-@@ -413,11 +413,14 @@ static void batadv_tp_sender_cleanup(str
- static void batadv_tp_sender_end(struct batadv_priv *bat_priv,
- 				 struct batadv_tp_vars *tp_vars)
+diff --git a/fs/netfs/buffered_read.c b/fs/netfs/buffered_read.c
+index ebd84a6cc3f09..51f844bfbdff6 100644
+--- a/fs/netfs/buffered_read.c
++++ b/fs/netfs/buffered_read.c
+@@ -395,6 +395,7 @@ static int netfs_read_gaps(struct file *file, struct folio *folio)
  {
-+	enum batadv_tp_meter_reason reason;
- 	u32 session_cookie;
+ 	struct netfs_io_request *rreq;
+ 	struct address_space *mapping = folio->mapping;
++	struct netfs_group *group = netfs_folio_group(folio);
+ 	struct netfs_folio *finfo = netfs_folio_info(folio);
+ 	struct netfs_inode *ctx = netfs_inode(mapping->host);
+ 	struct folio *sink = NULL;
+@@ -461,6 +462,12 @@ static int netfs_read_gaps(struct file *file, struct folio *folio)
  
-+	reason = atomic_read(&tp_vars->send_result);
-+
- 	batadv_dbg(BATADV_DBG_TP_METER, bat_priv,
- 		   "Test towards %pM finished..shutting down (reason=%d)\n",
--		   tp_vars->other_end, tp_vars->reason);
-+		   tp_vars->other_end, reason);
- 
- 	batadv_dbg(BATADV_DBG_TP_METER, bat_priv,
- 		   "Last timing stats: SRTT=%ums RTTVAR=%ums RTO=%ums\n",
-@@ -430,7 +433,7 @@ static void batadv_tp_sender_end(struct
- 	session_cookie = batadv_tp_session_cookie(tp_vars->session,
- 						  tp_vars->icmp_uid);
- 
--	batadv_tp_batctl_notify(tp_vars->reason,
-+	batadv_tp_batctl_notify(reason,
- 				tp_vars->other_end,
- 				bat_priv,
- 				tp_vars->start_time,
-@@ -446,10 +449,18 @@ static void batadv_tp_sender_end(struct
- static void batadv_tp_sender_shutdown(struct batadv_tp_vars *tp_vars,
- 				      enum batadv_tp_meter_reason reason)
- {
--	if (atomic_xchg(&tp_vars->sending, 0) != 1)
--		return;
-+	atomic_cmpxchg(&tp_vars->send_result, 0, reason);
-+}
- 
--	tp_vars->reason = reason;
-+/**
-+ * batadv_tp_sender_stopped() - check if tp session was stopped with reason
-+ * @tp_vars: the private data of the current TP meter session
-+ *
-+ * Return: whether stop reason was found
-+ */
-+static bool batadv_tp_sender_stopped(struct batadv_tp_vars *tp_vars)
-+{
-+	return atomic_read(&tp_vars->send_result) != 0;
- }
- 
- /**
-@@ -479,7 +490,7 @@ static void batadv_tp_reset_sender_timer
- 	/* most of the time this function is invoked while normal packet
- 	 * reception...
- 	 */
--	if (unlikely(atomic_read(&tp_vars->sending) == 0))
-+	if (unlikely(batadv_tp_sender_stopped(tp_vars)))
- 		/* timer ref will be dropped in batadv_tp_sender_cleanup */
- 		return;
- 
-@@ -499,7 +510,7 @@ static void batadv_tp_sender_timeout(str
- 	struct batadv_tp_vars *tp_vars = timer_container_of(tp_vars, t, timer);
- 	struct batadv_priv *bat_priv = tp_vars->bat_priv;
- 
--	if (atomic_read(&tp_vars->sending) == 0)
-+	if (batadv_tp_sender_stopped(tp_vars))
- 		return;
- 
- 	/* if the user waited long enough...shutdown the test */
-@@ -661,7 +672,7 @@ static void batadv_tp_recv_ack(struct ba
- 	if (unlikely(tp_vars->role != BATADV_TP_SENDER))
- 		goto out;
- 
--	if (unlikely(atomic_read(&tp_vars->sending) == 0))
-+	if (unlikely(batadv_tp_sender_stopped(tp_vars)))
- 		goto out;
- 
- 	/* old ACK? silently drop it.. */
-@@ -827,21 +838,21 @@ static int batadv_tp_send(void *arg)
- 
- 	if (unlikely(tp_vars->role != BATADV_TP_SENDER)) {
- 		err = BATADV_TP_REASON_DST_UNREACHABLE;
--		tp_vars->reason = err;
-+		batadv_tp_sender_shutdown(tp_vars, err);
- 		goto out;
+ 	ret = netfs_wait_for_read(rreq);
+ 	if (ret >= 0) {
++		if (group)
++			folio_change_private(folio, group);
++		else
++			folio_detach_private(folio);
++		kfree(finfo);
++		trace_netfs_folio(folio, netfs_folio_trace_filled_gaps);
+ 		flush_dcache_folio(folio);
+ 		folio_mark_uptodate(folio);
  	}
+@@ -496,10 +503,8 @@ int netfs_read_folio(struct file *file, struct folio *folio)
+ 	struct netfs_inode *ctx = netfs_inode(mapping->host);
+ 	int ret;
  
- 	orig_node = batadv_orig_hash_find(bat_priv, tp_vars->other_end);
- 	if (unlikely(!orig_node)) {
- 		err = BATADV_TP_REASON_DST_UNREACHABLE;
--		tp_vars->reason = err;
-+		batadv_tp_sender_shutdown(tp_vars, err);
- 		goto out;
- 	}
+-	if (folio_test_dirty(folio)) {
+-		trace_netfs_folio(folio, netfs_folio_trace_read_gaps);
++	if (folio_test_dirty(folio))
+ 		return netfs_read_gaps(file, folio);
+-	}
  
- 	primary_if = batadv_primary_if_get_selected(bat_priv);
- 	if (unlikely(!primary_if)) {
- 		err = BATADV_TP_REASON_DST_UNREACHABLE;
--		tp_vars->reason = err;
-+		batadv_tp_sender_shutdown(tp_vars, err);
- 		goto out;
- 	}
+ 	_enter("%lx", folio->index);
  
-@@ -860,7 +871,7 @@ static int batadv_tp_send(void *arg)
- 	queue_delayed_work(batadv_event_workqueue, &tp_vars->finish_work,
- 			   msecs_to_jiffies(tp_vars->test_length));
- 
--	while (atomic_read(&tp_vars->sending) != 0) {
-+	while (!batadv_tp_sender_stopped(tp_vars)) {
- 		if (unlikely(!batadv_tp_avail(tp_vars, payload_len))) {
- 			batadv_tp_wait_available(tp_vars, payload_len);
- 			continue;
-@@ -883,8 +894,7 @@ static int batadv_tp_send(void *arg)
- 				   "Meter: %s() cannot send packets (%d)\n",
- 				   __func__, err);
- 			/* ensure nobody else tries to stop the thread now */
--			if (atomic_xchg(&tp_vars->sending, 0) == 1)
--				tp_vars->reason = err;
-+			batadv_tp_sender_shutdown(tp_vars, err);
- 			break;
- 		}
- 
-@@ -1006,7 +1016,7 @@ void batadv_tp_start(struct batadv_priv
- 	ether_addr_copy(tp_vars->other_end, dst);
- 	kref_init(&tp_vars->refcount);
- 	tp_vars->role = BATADV_TP_SENDER;
--	atomic_set(&tp_vars->sending, 1);
-+	atomic_set(&tp_vars->send_result, 0);
- 	memcpy(tp_vars->session, session_id, sizeof(session_id));
- 	tp_vars->icmp_uid = icmp_uid;
- 
---- a/net/batman-adv/types.h
-+++ b/net/batman-adv/types.h
-@@ -1329,15 +1329,15 @@ struct batadv_tp_vars {
- 	/** @role: receiver/sender modi */
- 	enum batadv_tp_meter_role role;
- 
--	/** @sending: sending binary semaphore: 1 if sending, 0 is not */
--	atomic_t sending;
-+	/**
-+	 * @send_result: 0 when sending is ongoing and otherwise
-+	 * enum batadv_tp_meter_reason
-+	 */
-+	atomic_t send_result;
- 
- 	/** @receiving: receiving binary semaphore: 1 if receiving, 0 is not */
- 	atomic_t receiving;
- 
--	/** @reason: reason for a stopped session */
--	enum batadv_tp_meter_reason reason;
--
- 	/** @finish_work: work item for the finishing procedure */
- 	struct delayed_work finish_work;
- 
+-- 
+2.53.0
+
 
 
 
