@@ -1,60 +1,59 @@
-Return-Path: <stable+bounces-255585-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-255232-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id OErgLgykGGrClggAu9opvQ
-	(envelope-from <stable+bounces-255585-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:22:36 +0200
+	id mPi0N82eGGpAlggAu9opvQ
+	(envelope-from <stable+bounces-255232-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:00:13 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 47CA45F87DE
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:22:36 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id E81875F7A30
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:00:12 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 7CC4532293A6
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 20:15:26 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 2697A3040E2F
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 19:58:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C7DE3279903;
-	Thu, 28 May 2026 20:15:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6785834040F;
+	Thu, 28 May 2026 19:58:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pdwzsBzM"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="M7lWCjTn"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A00F72459D1;
-	Thu, 28 May 2026 20:15:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2D729348C45;
+	Thu, 28 May 2026 19:58:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779999325; cv=none; b=SeGsC5Ilmz3zI24LIVQ7bMqOVHAQa5ykFlWyfH080J1XyfNh2g1IM3nbVAYydBvKXwouPhhuvN3Y4cfWuSY/N+TrEIolP01qdtnzvjoEtHbaKwZ2H7iDhoXmhxjmc4f+X2KiiVVthE0FVykLSyrzTxTqd/5V5CUguIxsA3lgnuI=
+	t=1779998331; cv=none; b=YtqTkO93Tk5B07lxLVFpKHkJQtk2Rq+b360HcJP7mWKouYrPw4kXy4088QXepFJu4muMsfd8aezWTvvI3bSw7ZgxJLc8YpEM6Bsg8eFQrUc4MSSKQC3/qO43eKTKJmA7m6F4BQ3J308tIeDyoF74VmYqESIpkhkP7d+SQ7akXf0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779999325; c=relaxed/simple;
-	bh=v9lJMt9WX7zrb6Ru/l4W/IkLlTB3mRRYfRDIRXAxExk=;
+	s=arc-20240116; t=1779998331; c=relaxed/simple;
+	bh=sWjZPeJM5cJ44gqlLpYPERzb0LWdlm5MiA7uf6w1EhY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=gZ1E7DQd1GIVEPwv0kt77tl8deH34bfyPdes/DbhyeAUOOG4rLAhWx2StTMINDg4WRhiPrx36ciiVsD3oUKR+dw44FD14tFdRAkqIVLa8grpiMa4wQGHY+UrJgbSICnKVA9yECa+IZ3b9ezEKUR1rdeuhGACpj8bW+0Sd7HdTTg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pdwzsBzM; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0AB9A1F000E9;
-	Thu, 28 May 2026 20:15:23 +0000 (UTC)
+	 MIME-Version; b=WcP0gldfa+88eXYVX3oJrlPwB0y6izmqjVq1ytATTHsjnzHKFupMP9Mnu/32MMDZdznsJ8B2Rvj6ZlwvJpxS/jKLEGiGbxPkSsrjcQFSeAje42kUEfDFRr8n36YRHwt35ewlwUOLrjWo0yb8ikZ72eLwOKQHM6Whrb7C5GYw+gc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=M7lWCjTn; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8B75C1F000E9;
+	Thu, 28 May 2026 19:58:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779999324;
-	bh=bnZOcSkXCkUF1oZmAbKZO+dp+nvFBheH8V6599YfMm8=;
+	s=korg; t=1779998330;
+	bh=jeK7VOrrEtlejF3BYl8Lk/fQzTPyyItmox5l7zAxUbc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=pdwzsBzMPn3XPu7zqylz8TKgMi41DM6dy+cOzfYNEqDTuBg6urUsIfw3cLfF+6gyk
-	 BqVdKDofgRveQdiEMQ2p01nPu72fvxT/Jcy1aj7buvchLOplZvNFI/X4oOLz2+wCXI
-	 4qXLb0Ie9dgVOBhJg6+ikpvjnK/jgmNgCKObRGFw=
+	b=M7lWCjTn7m45ErKRCz1epqdPf8PUrbLuXMQCf7yfa6j4P+KlwfcAiO1DMeljsp4v+
+	 qNrz2+eyO0VloxQD5RqfhHhV1Glp7zqBhlHhe8Oz+8VBk1PmLXiUS+MEo8Dj5tKFCN
+	 eD5PHhUrkMuqMYj+HrMOYZy+j88Bf8DspzBMPNko=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Rajat Jain <rajatja@google.com>,
-	stable <stable@kernel.org>,
-	"Rafael J. Wysocki (Intel)" <rafael@kernel.org>,
-	Danilo Krummrich <dakr@kernel.org>
-Subject: [PATCH 6.18 026/377] sysfs: dont remove existing directory on update failure
+	"Mario Limonciello (AMD)" <superm1@kernel.org>,
+	Alan liu <haoping.liu@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>
+Subject: [PATCH 7.0 135/461] drm/amdgpu/vpe: Force collaborate sync after TRAP
 Date: Thu, 28 May 2026 21:44:24 +0200
-Message-ID: <20260528194639.142626965@linuxfoundation.org>
+Message-ID: <20260528194650.897848565@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260528194638.371537336@linuxfoundation.org>
-References: <20260528194638.371537336@linuxfoundation.org>
+In-Reply-To: <20260528194646.819809818@linuxfoundation.org>
+References: <20260528194646.819809818@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,75 +68,79 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-255585-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-255232-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[7];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,msgid.link:url]
-X-Rspamd-Queue-Id: 47CA45F87DE
+	RCPT_COUNT_FIVE(0.00)[6];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,amd.com:email,gitlab.freedesktop.org:url]
+X-Rspamd-Queue-Id: E81875F7A30
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+7.0-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+From: Alan Liu <haoping.liu@amd.com>
 
-commit 237557b8a81ab948e8332f7c0058e758f081c0a3 upstream.
+commit b6074630a461b1322a814988779005cbc43612ea upstream.
 
-When sysfs_update_group() is called for a named group and create_files()
-fails (e.g. -ENOMEM), internal_create_group() calls kernfs_remove(kn) on
-the group directory.  In the update path, kn was obtained via
-kernfs_find_and_get() and refers to a directory that already existed
-before this call.  Removing it silently destroys a sysfs group that the
-caller did not create.
+VPE1 could possibly hang and fail to power off at the end of commands in
+collaboration mode. This workaround adds a COLLAB_SYNC after TRAP to
+force instances synchronized to avoid VPE1 fail to power off.
 
-Only remove the directory if we created it ourselves.  On update failure
-the directory remains as it is left empty by remove_files() inside
-create_files(), but can be repopulated by a retry.
-
-Cc: Rajat Jain <rajatja@google.com>
-Fixes: c855cf2759d2 ("sysfs: Fix internal_create_group() for named group updates")
-Cc: stable <stable@kernel.org>
-Assisted-by: gkh_clanker_t1000
-Reviewed-by: Rafael J. Wysocki (Intel) <rafael@kernel.org>
-Reviewed-by: Danilo Krummrich <dakr@kernel.org>
-Link: https://patch.msgid.link/2026052003-uniquely-hastily-c093@gregkh
+Reviewed-by: Mario Limonciello (AMD) <superm1@kernel.org>
+Signed-off-by: Alan liu <haoping.liu@amd.com>
+Closes: https://gitlab.freedesktop.org/drm/amd/-/work_items/5171
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+(cherry picked from commit a8b749c5c5afb7e5daa2bfb95d958fb3c6b8f055)
+Cc: stable@vger.kernel.org
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/sysfs/group.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/gpu/drm/amd/amdgpu/amdgpu_vpe.c |    7 ++++++-
+ 1 file changed, 6 insertions(+), 1 deletion(-)
 
---- a/fs/sysfs/group.c
-+++ b/fs/sysfs/group.c
-@@ -182,7 +182,7 @@ static int internal_create_group(struct
- 	kernfs_get(kn);
- 	error = create_files(kn, kobj, uid, gid, grp, update);
- 	if (error) {
--		if (grp->name)
-+		if (grp->name && !update)
- 			kernfs_remove(kn);
+--- a/drivers/gpu/drm/amd/amdgpu/amdgpu_vpe.c
++++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_vpe.c
+@@ -562,6 +562,11 @@ static void vpe_ring_emit_fence(struct a
+ 		amdgpu_ring_write(ring, 0);
  	}
- 	kernfs_put(kn);
+ 
++	/* WA: Force sync after TRAP to avoid VPE1 fail to power off */
++	if (ring->adev->vpe.collaborate_mode) {
++		amdgpu_ring_write(ring, VPE_CMD_HEADER(VPE_CMD_OPCODE_COLLAB_SYNC, 0));
++		amdgpu_ring_write(ring, 0xabcd);
++	}
+ }
+ 
+ static void vpe_ring_emit_pipeline_sync(struct amdgpu_ring *ring)
+@@ -968,7 +973,7 @@ static const struct amdgpu_ring_funcs vp
+ 	.emit_frame_size =
+ 		5 + /* vpe_ring_init_cond_exec */
+ 		6 + /* vpe_ring_emit_pipeline_sync */
+-		10 + 10 + 10 + /* vpe_ring_emit_fence */
++		12 + 12 + 12 + /* vpe_ring_emit_fence */
+ 		/* vpe_ring_emit_vm_flush */
+ 		SOC15_FLUSH_GPU_TLB_NUM_WREG * 3 +
+ 		SOC15_FLUSH_GPU_TLB_NUM_REG_WAIT * 6,
 
 
 
