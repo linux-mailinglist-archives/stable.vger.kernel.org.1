@@ -1,64 +1,60 @@
-Return-Path: <stable+bounces-255806-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-256224-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 8CI5LD+mGGoQlwgAu9opvQ
-	(envelope-from <stable+bounces-255806-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:31:59 +0200
+	id aLJvGw6tGGpymAgAu9opvQ
+	(envelope-from <stable+bounces-256224-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 23:01:02 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 619265F8E46
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:31:59 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6CDAD5FA0FE
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 23:01:00 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id B15193019832
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 20:25:36 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 25FBA312A238
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 20:45:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9FAB4329C48;
-	Thu, 28 May 2026 20:25:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BB73E32692C;
+	Thu, 28 May 2026 20:45:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xA4W5x2z"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Q90MEbBX"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 625692F260C;
-	Thu, 28 May 2026 20:25:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8DF482F1FEC;
+	Thu, 28 May 2026 20:45:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779999932; cv=none; b=f4ley78uoi0Yk2VF4/Ejw5xVKPgAmpRsrj7+95+xY3MANvTJM78rHFnY8IY07s2mi7sHWhPmetJcnOljPpYC2Uif/rY7a2vTMqylkXC2uzwOnMgobVcyHKjTSobmHSdudHGfYNGj5mBtutARquYwi8jFKPRSbDYt0PweYCL/nbg=
+	t=1780001104; cv=none; b=hQVRgU5rNbtuEpKhayiXvc3WIm4abwEjYbS5Vj9Ld0BpXolwN0z0FtYQ1vjgELcIj0KywEx7RQQIzlBWzlWCqRPBDliCXipP1XYFDzuW2sf7HRUCItrSMvsC/5ZbZLwv0Y0RNPv9Tw12vW0E7BHlqvgBvAwKcutjajb8UaD78c0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779999932; c=relaxed/simple;
-	bh=buFwQvYW73AGUoslnxVRzEyBe+AtUwi/MG+NjcvwkEo=;
+	s=arc-20240116; t=1780001104; c=relaxed/simple;
+	bh=BIOQSdNReuWDVJGdNTsN3pWA/zxWLZoq84CdtrwLpuM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Ru8y34naYhDIGf+p2ZgdHwYg76rub4oG+7AoPgym0ye+gQZRSEHBRKzDlyIk7Dx+BPSETtqhVgWSoV0sMWgiIfVTuBFZfeFWHhM0SOZzh6bW4aP8ym05cCM9MAdY2Dk2diav+7VwZFS3mFwwCXV+NvgswrSs2K03WGJcJIzXU4Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xA4W5x2z; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C4F751F000E9;
-	Thu, 28 May 2026 20:25:30 +0000 (UTC)
+	 MIME-Version; b=ZfAFX9L31f3OSGgnxl5lP0odFmFnelEVkU15WTGniGj58pu9Y1G0RssfMH2MF6Off6mg/oCFpsI+jcaMhvjCb0ClXjWM43m8LoucU+wRfNUaUazCT+4Gop8cFoVHbU5QFvOPV+QonGkAi00IiWCMjY9PJB6sUgEVYb8vXfCcQOs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Q90MEbBX; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EB0A31F000E9;
+	Thu, 28 May 2026 20:45:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779999931;
-	bh=x16ei4IVgwHBtOmaMiVWc88ZapB0GvJ6QLzyTMGoo4Q=;
+	s=korg; t=1780001103;
+	bh=cUT9zJA9xzUALYJxPP8JLpNaWDfDdoyP1+Ph9m0lnhA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=xA4W5x2zXxnQ3m5QWM8wHXV4zuBZz8mmoMyKrqDF6cj9guyMTpR+JagA+XL9hc3Ta
-	 q/1pG6gXWTj4FQYaGuRBvblN/2LT4dS7nZXilPJPQxLDMIJo1MKg4Ww5MhfhGkDSZ8
-	 KqAexSXTfP8u4SmaqOgFz0PrywjaMvWFbYaJ+eLs=
+	b=Q90MEbBXPkRBXAl2ZrlnEkyIOpDadQWdNCWsa4xvj6lpQDQW1v0bIMMJssr49Sd24
+	 ZwKjjAlslP25zrk9dLT3jWIhVYb7Y2kvZhKJJQMsrlXNBObVY3A2nkBKTN6MyaLEZS
+	 YWcZ59zVAxkd9izpnEzUZ0KWCz9co2vQitalYADY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Steve French <sfrench@samba.org>,
-	David Howells <dhowells@redhat.com>,
-	"Paulo Alcantara (Red Hat)" <pc@manguebit.org>,
-	Matthew Wilcox <willy@infradead.org>,
-	netfs@lists.linux.dev,
-	linux-fsdevel@vger.kernel.org,
-	Christian Brauner <brauner@kernel.org>,
+	Gang Yan <yangang@kylinos.cn>,
+	Paolo Abeni <pabeni@redhat.com>,
+	"Matthieu Baerts (NGI0)" <matttbe@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 243/377] netfs: Fix early put of sink folio in netfs_read_gaps()
+Subject: [PATCH 6.6 001/186] mptcp: sync the msk->sndbuf at accept() time
 Date: Thu, 28 May 2026 21:48:01 +0200
-Message-ID: <20260528194645.420567456@linuxfoundation.org>
+Message-ID: <20260528194928.985731320@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260528194638.371537336@linuxfoundation.org>
-References: <20260528194638.371537336@linuxfoundation.org>
+In-Reply-To: <20260528194928.941004471@linuxfoundation.org>
+References: <20260528194928.941004471@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -73,7 +69,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
@@ -81,7 +77,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-255806-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-256224-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
@@ -90,94 +86,84 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
 	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[11];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[infradead.org:email,linux.dev:email,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,samba.org:email,manguebit.org:email,msgid.link:url,linuxfoundation.org:mid,linuxfoundation.org:dkim]
-X-Rspamd-Queue-Id: 619265F8E46
+	DBL_BLOCKED_OPENRESOLVER(0.00)[kylinos.cn:email,msgid.link:url,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim]
+X-Rspamd-Queue-Id: 6CDAD5FA0FE
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: David Howells <dhowells@redhat.com>
+From: Gang Yan <yangang@kylinos.cn>
 
-[ Upstream commit 3e5dd91b87a8b1450217b56a336bee315f40da7d ]
+commit fcf04b14334641f4b0b8647824480935e9416d52 upstream.
 
-Fix netfs_read_gaps() to release the sink page it uses after waiting for
-the request to complete.  The way the sink page is used is that an
-ITER_BVEC-class iterator is created that has the gaps from the target folio
-at either end, but has the sink page tiled over the middle so that a single
-read op can fill in both gaps.
+On passive MPTCP connections, the msk sndbuf is not updated correctly.
 
-The bug was found by KASAN detecting a UAF on the generic/075 xfstest in
-the cifsd kernel thread that handles reception of data from the TCP socket:
+The root cause is an order issue in the accept path:
 
- BUG: KASAN: use-after-free in _copy_to_iter+0x48a/0xa20
- Write of size 885 at addr ffff888107f92000 by task cifsd/1285
- CPU: 2 UID: 0 PID: 1285 Comm: cifsd Not tainted 7.0.0 #6 PREEMPT(lazy)
- Call Trace:
-  dump_stack_lvl+0x5d/0x80
-  print_report+0x17f/0x4f1
-  kasan_report+0x100/0x1e0
-  kasan_check_range+0x10f/0x1e0
-  __asan_memcpy+0x3c/0x60
-  _copy_to_iter+0x48a/0xa20
-  __skb_datagram_iter+0x2c9/0x430
-  skb_copy_datagram_iter+0x6e/0x160
-  tcp_recvmsg_locked+0xce0/0x1130
-  tcp_recvmsg+0xeb/0x300
-  inet_recvmsg+0xcf/0x3a0
-  sock_recvmsg+0xea/0x100
-  cifs_readv_from_socket+0x3a6/0x4d0 [cifs]
-  cifs_read_iter_from_socket+0xdd/0x130 [cifs]
-  cifs_readv_receive+0xaad/0xb10 [cifs]
-  cifs_demultiplex_thread+0x1148/0x1740 [cifs]
-  kthread+0x1cf/0x210
+- tcp_check_req() -> subflow_syn_recv_sock() -> mptcp_sk_clone_init()
+  calls __mptcp_propagate_sndbuf() to copy the ssk sndbuf into msk
 
-Fixes: ee4cdf7ba857 ("netfs: Speed up buffered reading")
-Reported-by: Steve French <sfrench@samba.org>
-Signed-off-by: David Howells <dhowells@redhat.com>
-Link: https://patch.msgid.link/20260512123404.719402-18-dhowells@redhat.com
-Reviewed-by: Paulo Alcantara (Red Hat) <pc@manguebit.org>
-cc: Paulo Alcantara <pc@manguebit.org>
-cc: Matthew Wilcox <willy@infradead.org>
-cc: netfs@lists.linux.dev
-cc: linux-fsdevel@vger.kernel.org
-Signed-off-by: Christian Brauner <brauner@kernel.org>
+- Later, tcp_child_process() -> tcp_init_transfer() ->
+  tcp_sndbuf_expand() grows the ssk sndbuf.
+
+So __mptcp_propagate_sndbuf() runs before the ssk sndbuf has been
+expanded and the msk ends up with a much smaller sndbuf than the
+subflow:
+
+  MPTCP: msk->sndbuf:20480, msk->first->sndbuf:2626560
+
+Fix this by moving the __mptcp_propagate_sndbuf() call from
+mptcp_sk_clone_init() -- the ssk sndbuf is not yet finalized there -- to
+__mptcp_propagate_sndbuf() at accept() time, when the ssk sndbuf has
+been fully expanded by tcp_sndbuf_expand().
+
+Fixes: 8005184fd1ca ("mptcp: refactor sndbuf auto-tuning")
+Cc: stable@vger.kernel.org
+Closes: https://github.com/multipath-tcp/mptcp_net-next/issues/602
+Signed-off-by: Gang Yan <yangang@kylinos.cn>
+Acked-by: Paolo Abeni <pabeni@redhat.com>
+Reviewed-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+Link: https://patch.msgid.link/20260420-net-mptcp-sync-sndbuf-accept-v1-1-e3523e3aeb44@kernel.org
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+[ No conflicts, but move __mptcp_propagate_sndbuf() above the for-loop
+  (mptcp_for_each_subflow()) present in this version, which will modify
+  'subflow' used by __mptcp_propagate_sndbuf() in this new patch. ]
+Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/netfs/buffered_read.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ net/mptcp/protocol.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/fs/netfs/buffered_read.c b/fs/netfs/buffered_read.c
-index 3531c19eea97a..762ff928bc878 100644
---- a/fs/netfs/buffered_read.c
-+++ b/fs/netfs/buffered_read.c
-@@ -456,9 +456,6 @@ static int netfs_read_gaps(struct file *file, struct folio *folio)
+diff --git a/net/mptcp/protocol.c b/net/mptcp/protocol.c
+index aed6c04c7de67..ff1632d03a96d 100644
+--- a/net/mptcp/protocol.c
++++ b/net/mptcp/protocol.c
+@@ -3451,7 +3451,6 @@ struct sock *mptcp_sk_clone_init(const struct sock *sk,
+ 	 * uses the correct data
+ 	 */
+ 	mptcp_copy_inaddrs(nsk, ssk);
+-	__mptcp_propagate_sndbuf(nsk, ssk);
  
- 	netfs_read_to_pagecache(rreq, NULL);
+ 	mptcp_rcv_space_init(msk, ssk);
+ 	msk->rcvq_space.time = mptcp_stamp();
+@@ -4064,6 +4063,8 @@ static int mptcp_stream_accept(struct socket *sock, struct socket *newsock,
+ 		msk = mptcp_sk(newsk);
+ 		msk->in_accept_queue = 0;
  
--	if (sink)
--		folio_put(sink);
--
- 	ret = netfs_wait_for_read(rreq);
- 	if (ret >= 0) {
- 		if (group)
-@@ -470,6 +467,9 @@ static int netfs_read_gaps(struct file *file, struct folio *folio)
- 		flush_dcache_folio(folio);
- 		folio_mark_uptodate(folio);
- 	}
++		__mptcp_propagate_sndbuf(newsk, mptcp_subflow_tcp_sock(subflow));
 +
-+	if (sink)
-+		folio_put(sink);
- 	folio_unlock(folio);
- 	netfs_put_request(rreq, netfs_rreq_trace_put_return);
- 	return ret < 0 ? ret : 0;
+ 		/* set ssk->sk_socket of accept()ed flows to mptcp socket.
+ 		 * This is needed so NOSPACE flag can be set from tcp stack.
+ 		 */
 -- 
 2.53.0
 
