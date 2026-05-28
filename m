@@ -1,300 +1,171 @@
-Return-Path: <stable+bounces-254989-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-254992-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id kFFsNOJGGGr2iQgAu9opvQ
-	(envelope-from <stable+bounces-254989-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 15:45:06 +0200
+	id P/4THVxHGGoUiggAu9opvQ
+	(envelope-from <stable+bounces-254992-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 15:47:08 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 623E25F2EFA
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 15:45:06 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id CEF855F2F53
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 15:47:07 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 1A6C0315855A
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 13:39:08 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id A257C31FA1AC
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 13:40:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7E9653F58CD;
-	Thu, 28 May 2026 13:39:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 623B83F44D4;
+	Thu, 28 May 2026 13:40:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=protonmail.com header.i=@protonmail.com header.b="OyHJjKVw"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uPk7SU0p"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-4316.protonmail.ch (mail-4316.protonmail.ch [185.70.43.16])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 656C33E9F95
-	for <stable@vger.kernel.org>; Thu, 28 May 2026 13:39:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.70.43.16
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 63BCB3F6C2A
+	for <stable@vger.kernel.org>; Thu, 28 May 2026 13:40:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779975547; cv=none; b=ARvX2xHuZBU6TuhXFmxOGa8RO6UwGFRNxnbVY8Mqz1m1PrmihF4cNuEdkRi3UIT2ILB5iLQi/0pMqF/nyRl5ljm45qcCFrAdt45b13HaG6a8IDkOE+Bq4I6rtfe1jNPzDKoBENJAumoBuhAlKD8H9e/sbPQG2kIQ72bmboMS91Q=
+	t=1779975629; cv=none; b=Didu5awFM8ww1h4YhNrjrN7H7euQ+yoVvxJdeMydxDCaDDo2bXSdphtv0d4aYEOwkPloReiVmQ6P+dMs5OwvrE0cmRZrtVQPIkN/+c3rZ7JqUuhxMh/BYOYcnCyKTged2dcHDLk2smiF7BTGN7S9yBRgEE/DS3bznp751bdwzfk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779975547; c=relaxed/simple;
-	bh=8VimZfc6SfHkqE9MtQ2K31Cu7iJ5TmTyB8noWfj13IU=;
-	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=jLzgLAiL6TVjIXzFlmk3WRbyCPhJm0AsepTo8Y+VONz1k4m6GaknsoLLNm9NM6prqmqo6Eoz4YqzOFPsOpmXuslKN9VD75LJko8QpJW/Bj27rm4vI2eqWbqSfUs2j/oOXOobYsvfn3gt4pauvuvMOWrs3d4QiJgKvmcRRVsB/Xc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=protonmail.com; spf=pass smtp.mailfrom=protonmail.com; dkim=pass (2048-bit key) header.d=protonmail.com header.i=@protonmail.com header.b=OyHJjKVw; arc=none smtp.client-ip=185.70.43.16
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=protonmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=protonmail.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=protonmail.com;
-	s=protonmail3; t=1779975538; x=1780234738;
-	bh=0da8f7q6UGW5k5B/4ZyD2KzxrnUR3yNSjbTgkILUujw=;
-	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
-	 Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
-	 Message-ID:BIMI-Selector;
-	b=OyHJjKVwnJVE1eCLjS00fS0W/mgqkvAkwQnap82hZKXmR/ZUcLNXYKBIurZG1FdGB
-	 tCGqq0hTzp4GqG3+1lrUEfOjXkUIs3Ogq3X8qpsCRdCuKpoFlcfeg04ELLHxYxdyxk
-	 /Kp9QBZ41vYXivmmkc/exD+SidaF7x+QD5gkts68P+aYG8h5KunQ1QiwWeYSahC9ds
-	 D3m7ANxzzwnb4UHzjEr9DnRmtSd0erCH24h6WjAf6fghlU1mMvxY1uFUWyOpsYCErk
-	 rmEu7Gi6piqza1ee7/qor1oxL1vSHmHXFvPtaQq4y6Ieo/ZWu4THOVnY37OPh90/4N
-	 DZLNuKGBypi/Q==
-Date: Thu, 28 May 2026 13:38:54 +0000
-To: Takashi Iwai <tiwai@suse.de>
-From: Mike Karcic <mikekarcic@protonmail.com>
-Cc: Sean Rhodes <sean@starlabs.systems>, "stable@vger.kernel.org" <stable@vger.kernel.org>, "regressions@lists.linux.dev" <regressions@lists.linux.dev>, "linux-sound@vger.kernel.org" <linux-sound@vger.kernel.org>, "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
-Subject: Re: [REGRESSION] Speaker pop/chirp on Meteor Lake ALC287 (17aa:231e) -- 6.12.73 to 6.12.85
-Message-ID: <RfzfjlzeaeMgNNWNST_Zzx1v49rYjM63MvAV6O5_fFIoZJ73GcN69FDLJcwhJ3s6fl9TVD2l45YBh2n3hy95LM7rhLhoVt8dU9stMkuVJvE=@protonmail.com>
-In-Reply-To: <87eciwukvy.wl-tiwai@suse.de>
-References: <O6pYAi7yf23du9ivLsL0QqrnTmodj2lDTL7Wviv7I_nhjVtvllO7Y5Ban0TeTqrastb1RWhJtlkqrM3quLMWSriai-YjjGy312MTcEhxyWs=@protonmail.com> <CABtds-3GOyBr1H=c5aFV1uzfkhO3d1NHMPuon_cWDq0V=pFwUA@mail.gmail.com> <wZmYozyav1sNx53nFr4ShKmcdLFVJp5bdUOJgUq1I57MX6kgyq7n8XvH-MWG9Fi4q2x4CQqjEQ3Q8ok5MClut8hNixnhVmVtXkhcOzH1sw8=@protonmail.com> <87eciwukvy.wl-tiwai@suse.de>
-Feedback-ID: 22946815:user:proton
-X-Pm-Message-ID: 3f637aff999f8468b28d51195c7b3faffa96c256
+	s=arc-20240116; t=1779975629; c=relaxed/simple;
+	bh=6qCaXLJs7vgoE+k65taOZC9mqJwrY2Si8pubihISPAk=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=Tcwjk0QQGU/qS8d+vEECe5rkCOGXdjmWtYEW8QGqWhrIZ4LYfYmVSmDYv3ABKytPhQZmoZawfpdx6VQ6Z7fPe1e8QNZM2ADZX1BG543ITngKSboRiKUTq0w2auwwKdJvJv7rOHdfg3Lm2j/gYeGNUz2TMyI/j7kIxMlQdF1FYg8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uPk7SU0p; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6C23A1F000E9;
+	Thu, 28 May 2026 13:40:24 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
+	s=korg; t=1779975624;
+	bh=rDbKMeUj3laF3HoqepS19gaZ/b0w6cKWdfRzixfpFKY=;
+	h=Subject:To:Cc:From:Date;
+	b=uPk7SU0pJz2HbFj/Z68nJgIIG/7A/knLpWPiaOKYi6l8/m6evCbjAqZ/2ru9t1OSP
+	 5IvZlTn4cvQGSl7amFiuuWhvlfRo6w/dD6CirOLoejc+SsXjOIDX2UQMRBD7qVo0jy
+	 kYcFSlZySC8JNGTtoQfqEhSbdv/Aamk0lW8kxhM8=
+Subject: FAILED: patch "[PATCH] hwmon: (pmbus/adm1266) serialize GPIO PMBus accesses with" failed to apply to 6.6-stable tree
+To: abdurrahman@nexthop.ai,bartosz.golaszewski@oss.qualcomm.com,linux@roeck-us.net
+Cc: <stable@vger.kernel.org>
+From: <gregkh@linuxfoundation.org>
+Date: Thu, 28 May 2026 15:39:31 +0200
+Message-ID: <2026052831-abreast-slurp-dabc@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-X-Spamd-Result: default: False [-2.16 / 15.00];
+Content-Type: text/plain; charset=ANSI_X3.4-1968
+Content-Transfer-Encoding: 8bit
+X-Spamd-Result: default: False [2.34 / 15.00];
+	MID_END_EQ_FROM_USER_PART(4.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[protonmail.com,quarantine];
-	R_DKIM_ALLOW(-0.20)[protonmail.com:s=protonmail3];
+	MID_RHS_NOT_FQDN(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[3];
-	TO_DN_EQ_ADDR_SOME(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-254989-lists,stable=lfdr.de];
-	FREEMAIL_FROM(0.00)[protonmail.com];
-	TO_DN_SOME(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	MISSING_XM_UA(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[mikekarcic@protonmail.com,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[protonmail.com:+];
-	MID_RHS_MATCH_FROM(0.00)[];
+	TAGGED_FROM(0.00)[bounces-254992-lists,stable=lfdr.de];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	RCVD_TLS_LAST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	RCPT_COUNT_THREE(0.00)[4];
 	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	FROM_NO_DN(0.00)[];
+	TO_DN_NONE(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	MISSING_XM_UA(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[6]
-X-Rspamd-Queue-Id: 623E25F2EFA
+	MIME_TRACE(0.00)[0:+]
+X-Rspamd-Queue-Id: CEF855F2F53
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-I did test 46c862f5419e on 6.12.90. Chirp still present.
 
-I'm also on a ThinkPad X1 Carbon Gen 12 with ALC287 (17aa:231e),
-same as the original reporter. The fix resolved it for them but
-not for me.
+The patch below does not apply to the 6.6-stable tree.
+If someone wants it applied there, or to any other stable or longterm
+tree, then please email the backport, including the original git commit
+id to <stable@vger.kernel.org>.
 
-Only a full revert of 630fbc6e870e resolves the issue.
+To reproduce the conflict and resubmit, you may use the following commands:
 
-Verification on the running kernel:
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.6.y
+git checkout FETCH_HEAD
+git cherry-pick -x bab8c6fb5af8df7e753d196c1262cb78e92ca872
+# <resolve conflicts, build, test, etc.>
+git commit -s
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2026052831-abreast-slurp-dabc@gregkh' --subject-prefix 'PATCH 6.6.y' HEAD^..
 
-  $ grep -c "dis_coefs" sound/pci/hda/patch_realtek.c
-  2
-
-  $ grep -c "en_coefs" sound/pci/hda/patch_realtek.c
-  0
-
-  $ sed -n '/alc287_alc1318_playback_pcm_hook/,/^}/p' sound/pci/hda/patch_r=
-ealtek.c
-  static void alc287_alc1318_playback_pcm_hook(struct hda_pcm_stream *hinfo=
-,
-                                     struct hda_codec *codec,
-                                     struct snd_pcm_substream *substream,
-                                     int action)
-  {
-          switch (action) {
-          case HDA_GEN_PCM_ACT_OPEN:
-                  alc_write_coefex_idx(codec, 0x5a, 0x00, 0x954f);
-                  break;
-          case HDA_GEN_PCM_ACT_CLOSE:
-                  alc_write_coefex_idx(codec, 0x5a, 0x00, 0x554f);
-                  break;
-          }
-  }
-
-Happy to test further patches.
+Possible dependencies:
 
 
 
-Sent with Proton Mail secure email.
+thanks,
 
-On Thursday, May 28th, 2026 at 2:08 AM, Takashi Iwai <tiwai@suse.de> wrote:
+greg k-h
 
-> On Thu, 28 May 2026 01:18:31 +0200,
-> Mike Karcic wrote:
-> >
-> > I tested both setups on top of Debian's 6.12.90 source tree.
-> >
-> > 1. I applied the 46c862f5419e patch, but the chirp was still there on e=
-very audio transition.
-> > 2. I did a full revert of 630fbc6e870e, and the chirp is completely gon=
-e.
->=20
-> There is a follow-up fix in the upstream, try to apply the commit
-> 46c862f5419e ("ALSA: hda/realtek - fixed speaker no sound update").
->=20
->=20
-> thanks,
->=20
-> Takashi
->=20
->=20
-> >
-> > My hardware is a Lenovo ThinkPad (Meteor Lake), ALC287, subsystem 17aa:=
-231e.
-> >
-> >
-> >
-> > Sent with Proton Mail secure email.
-> >
-> > On Wednesday, May 27th, 2026 at 3:44 PM, Sean Rhodes <sean@starlabs.sys=
-tems> wrote:
-> >
-> > > What about 630fbc6e870e? If so, 46c862f5419e looks relevant.
-> > >
-> > > On Wed, 27 May 2026 at 15:25, Mike Karcic <mikekarcic@protonmail.com>=
- wrote:
-> > > >
-> > > > Speaker pop/chirp regression on a Lenovo ThinkPad with Meteor Lake =
-and
-> > > > Realtek ALC287 (subsystem ID 17aa:231e). The chirp occurs on speake=
-r
-> > > > power state transitions when audio starts or stops. It is not prese=
-nt
-> > > > on kernel 6.12.73 and is present on 6.12.85. A desktop with ALC897
-> > > > (subsystem ID 1f660202) on kernel 6.19.14 is unaffected, so this is
-> > > > codec/fixup-specific.
-> > > >
-> > > > Tested on the same LMDE (Debian 13) installation with multiple kern=
-els
-> > > > selectable from GRUB. All userspace, firmware, and configuration ar=
-e
-> > > > identical between tests. Cold boot between kernel switches is requi=
-red,
-> > > > as warm reboot can carry codec register state forward. The kernel i=
-s
-> > > > not tainted on any tested version.
-> > > >
-> > > > Bisection results (Debian package versions):
-> > > >   6.12.48  -- no chirp
-> > > >   6.12.73  -- no chirp
-> > > >   6.12.85  -- chirp present
-> > > >   6.12.86  -- chirp present
-> > > >   6.12.90  -- chirp present
-> > > >
-> > > > Also broken: 6.19.14-101.fc44.x86_64 (Fedora/Aurora 44)
-> > > >
-> > > > The regression window (6.12.73 to 6.12.85) includes two commits
-> > > > targeting speaker pop on the Star Labs StarFighter (ALC233, SSID
-> > > > 7017:2014) that touch patch_realtek.c:
-> > > >
-> > > >   1cb3c20688fc ("ALSA: hda/realtek: Fix speaker pop on Star Labs St=
-arFighter")
-> > > >   Fixes commit ("ALSA: hda/realtek: Sequence GPIO2 on Star Labs Sta=
-rFighter")
-> > > >
-> > > > These are quirk-gated to SSID 7017:2014 and should not run on
-> > > > 17aa:231e, but they are the most prominent sound changes in the
-> > > > regression window. The actual culprit may be a different commit
-> > > > in the 6.12.74-6.12.85 range. I was unable to narrow further as
-> > > > Debian does not publish intermediate point-release packages.
-> > > >
-> > > > I can build and test vanilla kernels for a proper bisection if
-> > > > guided, and I can test proposed fixes.
-> > > >
-> > > > Hardware:
-> > > >   Lenovo ThinkPad, Meteor Lake
-> > > >   Codec: Realtek ALC287
-> > > >   Subsystem ID: 17aa:231e
-> > > >   PCI: 0000:00:1f.3
-> > > >   Machine driver: skl_hda_dsp_generic
-> > > >   Codec fixup: "ALC287: picked fixup for PCI SSID 17aa:231e"
-> > > >
-> > > > Unaffected hardware (same 6.19.14 kernel, no chirp):
-> > > >   Desktop, Realtek ALC897, Subsystem ID: 1f660202
-> > > >
-> > > > Controlled variables (identical across all tested 6.12 kernels):
-> > > >   SOF firmware: 2.12.0.1 (firmware-sof-signed 2025.01-1)
-> > > >   Topology: intel/sof-ace-tplg/sof-hda-generic-2ch.tplg
-> > > >   Topology ABI: 3:29:1 (Kernel ABI: 3:23:1 on all tested)
-> > > >   ALSA UCM: alsa-ucm-conf 1.2.14-1
-> > > >   PipeWire: 1.4.2, WirePlumber: 0.5.8
-> > > >   power_save: 10, hda_model: (null)
-> > > >   Desktop: KDE Plasma 6 (Wayland)
-> > > >
-> > > > Eliminated causes:
-> > > >   - Topology files in sof-ipc4-tplg/ and sof-ace-tplg/ are
-> > > >     byte-identical (confirmed via binary diff). Path irrelevant.
-> > > >   - SOF firmware version (same 2.12.0.1 on all tested kernels).
-> > > >   - Topology ABI mismatch (3:29:1 vs 3:23:1 present on working
-> > > >     kernel too).
-> > > >   - power_save (10 on all kernels).
-> > > >   - PipeWire/WirePlumber (identical versions on all kernels).
-> > > >   - Desktop environment (KDE on all; a KDE install triggered a
-> > > >     kernel update which was the actual cause of the regression
-> > > >     appearing).
-> > > >
-> > > > dmesg (6.12.48, working):
-> > > >   sof-audio-pci-intel-mtl 0000:00:1f.3: Firmware paths/files for ip=
-c type 1:
-> > > >   sof-audio-pci-intel-mtl 0000:00:1f.3:  Firmware file:     intel/s=
-of-ipc4/mtl/sof-mtl.ri
-> > > >   sof-audio-pci-intel-mtl 0000:00:1f.3:  Firmware lib path: intel/s=
-of-ipc4-lib/mtl
-> > > >   sof-audio-pci-intel-mtl 0000:00:1f.3:  Topology file:     intel/s=
-of-ace-tplg/sof-hda-generic-2ch.tplg
-> > > >   sof-audio-pci-intel-mtl 0000:00:1f.3: Booted firmware version: 2.=
-12.0.1
-> > > >   sof-audio-pci-intel-mtl 0000:00:1f.3: Topology: ABI 3:29:1 Kernel=
- ABI 3:23:1
-> > > >   snd_hda_codec_alc269 ehdaudio0D0: ALC287: picked fixup for PCI SS=
-ID 17aa:231e
-> > > >   snd_hda_codec_alc269 ehdaudio0D0: autoconfig for ALC287: line_out=
-s=3D1 (0x17/0x0/0x0/0x0/0x0) type:speaker
-> > > >
-> > > > dmesg (6.19.14, affected):
-> > > >   sof-audio-pci-intel-mtl 0000:00:1f.3: Digital mics found on Skyla=
-ke+ platform, using SOF driver
-> > > >   sof-audio-pci-intel-mtl 0000:00:1f.3: DSP detected with PCI class=
-/subclass/prog-if 0x040380
-> > > >   sof-audio-pci-intel-mtl 0000:00:1f.3: hda codecs found, mask 5
-> > > >   sof-audio-pci-intel-mtl 0000:00:1f.3: using HDA machine driver sk=
-l_hda_dsp_generic now
-> > > >   sof-audio-pci-intel-mtl 0000:00:1f.3: Firmware paths/files for ip=
-c type 1:
-> > > >   sof-audio-pci-intel-mtl 0000:00:1f.3:  Firmware file:     intel/s=
-of-ipc4/mtl/sof-mtl.ri
-> > > >   sof-audio-pci-intel-mtl 0000:00:1f.3:  Firmware lib path: intel/s=
-of-ipc4-lib/mtl
-> > > >   sof-audio-pci-intel-mtl 0000:00:1f.3:  Topology file:     intel/s=
-of-ipc4-tplg/sof-hda-generic-2ch.tplg
-> > > >   sof-audio-pci-intel-mtl 0000:00:1f.3: Booted firmware version: 2.=
-14.1.1
-> > > >   sof-audio-pci-intel-mtl 0000:00:1f.3: Topology: ABI 3:29:1 Kernel=
- ABI 3:23:1
-> > > >   snd_hda_codec_alc269 ehdaudio0D0: ALC287: picked fixup for PCI SS=
-ID 17aa:231e
-> > > >   snd_hda_codec_alc269 ehdaudio0D0: autoconfig for ALC287: line_out=
-s=3D1 (0x17/0x0/0x0/0x0/0x0) type:speaker
-> > > >
-> > > > Note: The kernel is not tainted on any tested version.
-> > >
-> 
+------------------ original commit in Linus's tree ------------------
+
+From bab8c6fb5af8df7e753d196c1262cb78e92ca872 Mon Sep 17 00:00:00 2001
+From: Abdurrahman Hussain <abdurrahman@nexthop.ai>
+Date: Mon, 18 May 2026 17:52:30 -0700
+Subject: [PATCH] hwmon: (pmbus/adm1266) serialize GPIO PMBus accesses with
+ pmbus_lock
+
+adm1266_gpio_get(), adm1266_gpio_get_multiple(), and
+adm1266_gpio_dbg_show() all issue PMBus reads against the device but
+none of them take pmbus_lock.  The pmbus_core framework holds
+pmbus_lock around its own multi-transaction sequences (notably the
+"set PAGE, then read paged register" pattern used by hwmon
+attributes), so an unlocked GPIO accessor can land between a PAGE
+write and the subsequent paged read in another thread and corrupt
+either side's view of the device state machine.
+
+Take pmbus_lock at the top of each of the three accessors via the
+scope-based guard().  The lock is uncontended in the common case and
+adds only a single mutex round-trip per call.
+
+Fixes: d98dfad35c38 ("hwmon: (pmbus/adm1266) Add support for GPIOs")
+Cc: stable@vger.kernel.org
+Signed-off-by: Abdurrahman Hussain <abdurrahman@nexthop.ai>
+Reviewed-by: Bartosz Golaszewski <bartosz.golaszewski@oss.qualcomm.com>
+Link: https://lore.kernel.org/r/20260518-adm1266-gpio-fixes-v3-6-e425e4f88139@nexthop.ai
+Signed-off-by: Guenter Roeck <linux@roeck-us.net>
+
+diff --git a/drivers/hwmon/pmbus/adm1266.c b/drivers/hwmon/pmbus/adm1266.c
+index 3e8f2619cb9b..0eef58dd69a6 100644
+--- a/drivers/hwmon/pmbus/adm1266.c
++++ b/drivers/hwmon/pmbus/adm1266.c
+@@ -173,6 +173,8 @@ static int adm1266_gpio_get(struct gpio_chip *chip, unsigned int offset)
+ 	else
+ 		pmbus_cmd = ADM1266_PDIO_STATUS;
+ 
++	guard(pmbus_lock)(data->client);
++
+ 	ret = i2c_smbus_read_block_data(data->client, pmbus_cmd, read_buf);
+ 	if (ret < 0)
+ 		return ret;
+@@ -195,6 +197,8 @@ static int adm1266_gpio_get_multiple(struct gpio_chip *chip, unsigned long *mask
+ 	unsigned int gpio_nr;
+ 	int ret;
+ 
++	guard(pmbus_lock)(data->client);
++
+ 	ret = i2c_smbus_read_block_data(data->client, ADM1266_GPIO_STATUS, read_buf);
+ 	if (ret < 0)
+ 		return ret;
+@@ -236,6 +240,8 @@ static void adm1266_gpio_dbg_show(struct seq_file *s, struct gpio_chip *chip)
+ 	int ret;
+ 	int i;
+ 
++	guard(pmbus_lock)(data->client);
++
+ 	for (i = 0; i < ADM1266_GPIO_NR; i++) {
+ 		write_cmd = adm1266_gpio_mapping[i][1];
+ 		ret = adm1266_pmbus_block_xfer(data, ADM1266_GPIO_CONFIG, 1, &write_cmd, read_buf);
+
 
