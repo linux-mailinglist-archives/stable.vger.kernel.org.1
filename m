@@ -1,59 +1,60 @@
-Return-Path: <stable+bounces-255620-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-255266-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 8G6LOPqjGGrClggAu9opvQ
-	(envelope-from <stable+bounces-255620-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:22:18 +0200
+	id AO3lMRmfGGpblggAu9opvQ
+	(envelope-from <stable+bounces-255266-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:01:29 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5D9B45F87BA
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:22:18 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id D33B75F7ABA
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:01:28 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 1EE9B3040D85
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 20:17:06 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 5AAE8303C8EB
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 20:00:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 623382D1303;
-	Thu, 28 May 2026 20:17:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9C27E409623;
+	Thu, 28 May 2026 20:00:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Gq5aLI8C"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ztjmjjzG"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 36AEA24A047;
-	Thu, 28 May 2026 20:17:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 75ADE409630;
+	Thu, 28 May 2026 20:00:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779999423; cv=none; b=uP5PH909tDr1TbZ9f7/OxAjhwbVq1SXXy1msLmX5LjLzrGrKR9i4KvifZJJkaWiMmP8PFwdHwf4scIti7mh2Exa7/GYgXed34Y9jD5S4HslG/M3gNalqFGRQEc51PPx8e6Vnaf5oqVUnNh0a4k8zVp7I/tA77bcH5h8XjHGltDY=
+	t=1779998427; cv=none; b=BITA+wUE5oju9EXe9sOlr8eYHgsjYyY/M8W0keDlqaCS3NTer2ScgmxdCaj8kjhy4CVmW/IgZkfQBllmraKRtpvAK0lnY4JHJOgMezzYMGiwgdAvbco+AyOHhGTwhByCFw+N7OiKA0ITg7/t32t+D4B/5BnuMWRfdx0YKGOITKA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779999423; c=relaxed/simple;
-	bh=Z/UyXgz5SSWC2JYzzvKXMdIdvk3Lk6Q2ZPziCzRMDF4=;
+	s=arc-20240116; t=1779998427; c=relaxed/simple;
+	bh=skGNAlcKBQruuIqs9iUO6WLZwH7/lG6pIHNzfu9G94E=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=U9RpDMGNRaPcQYH6aGXG8DEHV+7jjwZayt7vuUS8spHyl9oQ5rnLraEoOKY8dCPkR3YsHHPbARcOGr/gzevXif7Avo83UEuGUyZja8HaGq24O5ENnE86Oe2/6AOtKlP74/AW22PnHCwU8CuV48utIeax2qIBD/PMuxg2nhcOvsg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Gq5aLI8C; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 94C511F000E9;
-	Thu, 28 May 2026 20:17:01 +0000 (UTC)
+	 MIME-Version; b=GVVppdQBRVmb7H2+k/p2AV5cP5mE78FJ9FhvHQdgs/iRIZieRoGCJapFmUaCRDnCnj2VnSxJkYWgCYHy2OiXOIPey2qrdB1H5lkXt7R2uv/CO6Gc0zzZPwhpmLZMynVIBDhOtIPdPRPjuwIKzeFr4ORatXC0zsVLchnSwB8inwE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ztjmjjzG; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 87F211F000E9;
+	Thu, 28 May 2026 20:00:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779999422;
-	bh=aQp7SWF83+zbHCvRlyWctsIDrRLi54LvGTX5hEdo8Fk=;
+	s=korg; t=1779998426;
+	bh=/faiq15wQST21qdkEZEw4RfH+QNFa6nSoLTcZv8Whn8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=Gq5aLI8Ct/7RNEq/hrQUXlKkWarDz7973TDzCcc5ttqgicQyTyefS9ghzl/OR/F2z
-	 F/TtrEP8W5BvkZyQhDyc0K8zhpuyvthwUri+XCcEV4XlkYZy9vCFlRZQgW8dqFDiNN
-	 laG7/53L2grxe7YxHSLnJJhTNMB2QM6iIzvVYjsE=
+	b=ztjmjjzGiaCi/FRYeJe0LYmZh8p9VllpmcZY9/nVTOhTBTYduT2tC7DcVK36Y7Y4T
+	 HurVZnkMAQ2254cjpDb0sX9Zv3Hh4mitRczzum3ufzOWoTdDhBwupHPfSzHVPtGDSF
+	 4JXY4xrN+rZs0gGAED6bf1KGq2xRaumMWUrwX2QM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Nerijus=20Bend=C5=BEi=C5=ABnas?= <nerijus.bendziunas@gmail.com>,
-	Nicolai Buchwitz <nb@tipi-net.de>,
-	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 6.18 061/377] net: phy: skip EEE advertisement write when autoneg is disabled
+	Abdurrahman Hussain <abdurrahman@nexthop.ai>,
+	Bartosz Golaszewski <bartosz.golaszewski@oss.qualcomm.com>,
+	Linus Walleij <linusw@kernel.org>,
+	Guenter Roeck <linux@roeck-us.net>
+Subject: [PATCH 7.0 170/461] hwmon: (pmbus/adm1266) dont clobber GPIO bits before PDIO read in get_multiple
 Date: Thu, 28 May 2026 21:44:59 +0200
-Message-ID: <20260528194640.135265933@linuxfoundation.org>
+Message-ID: <20260528194651.985322082@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260528194638.371537336@linuxfoundation.org>
-References: <20260528194638.371537336@linuxfoundation.org>
+In-Reply-To: <20260528194646.819809818@linuxfoundation.org>
+References: <20260528194646.819809818@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,102 +64,92 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-0.66 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-255620-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,tipi-net.de,kernel.org];
-	TO_DN_SOME(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	FROM_HAS_DN(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-255266-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[6];
-	NEURAL_HAM(-0.00)[-1.000];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	MID_RHS_MATCH_FROM(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,tipi-net.de:email]
-X-Rspamd-Queue-Id: 5D9B45F87BA
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,roeck-us.net:email,qualcomm.com:email,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,nexthop.ai:email]
+X-Rspamd-Queue-Id: D33B75F7ABA
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+7.0-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Nerijus Bendžiūnas <nerijus.bendziunas@gmail.com>
+From: Abdurrahman Hussain <abdurrahman@nexthop.ai>
 
-commit 960e77ce14a83ef7f226e8e4b4d75765633ba48b upstream.
+commit 3327a12aee9e10ffa903e28b8445dfd1af5307c0 upstream.
 
-genphy_c45_an_config_eee_aneg() writes the EEE advertisement to the
-auto-negotiation device's MMD register space (MDIO_MMD_AN, register
-MDIO_AN_EEE_ADV).  These registers are read by the link partner only
-during auto-negotiation, so writing them while autoneg is disabled
-cannot influence the link.  On some PHYs (e.g. Broadcom BCM54213PE)
-the write nevertheless reaches the chip and disturbs the receive
-datapath.
+adm1266_gpio_get_multiple() zeroes *bits before the GPIO_STATUS loop
+and then a second time before the PDIO_STATUS loop:
 
-Concretely, running
+	*bits = 0;
+	for_each_set_bit(gpio_nr, mask, ADM1266_GPIO_NR) {
+		...
+		set_bit(gpio_nr, bits);
+	}
 
-    ethtool -s eth0 speed 100 duplex full autoneg off
-    ethtool --set-eee eth0 eee off
+	ret = i2c_smbus_read_block_data(data->client, ADM1266_PDIO_STATUS, ...);
+	...
+	*bits = 0;
+	for_each_set_bit_from(gpio_nr, mask, ADM1266_GPIO_NR + ADM1266_PDIO_NR) {
+		...
+		set_bit(gpio_nr, bits);
+	}
 
-leaves eth0 with TX working and RX completely silent on a
-Raspberry Pi 4 / CM4 board (bcmgenet + BCM54213PE in rgmii-rxid).
-Switching back to autoneg recovers the link.
+The second *bits = 0 throws away every GPIO bit the first loop just
+populated, so callers asking for any combination of GPIO and PDIO
+pins always see the GPIO portion of the returned bits as zero.
 
-Prior to commit f26a29a038ee ("net: phy: ensure that genphy_c45_an_config_eee_aneg() sees new value of phydev->eee_cfg.eee_enabled"),
-the disable path was effectively a no-op because the helper read
-the stale eee_cfg.eee_enabled, so the underlying PHY behavior never
-surfaced.
+Drop the redundant second assignment so both halves of the result
+survive.
 
-Bisected on rpi-6.12.y between commits 83943264 (good) and
-effcbc88 (bad) to f26a29a038ee.
-
-Fixes: f26a29a038ee ("net: phy: ensure that genphy_c45_an_config_eee_aneg() sees new value of phydev->eee_cfg.eee_enabled")
+Fixes: d98dfad35c38 ("hwmon: (pmbus/adm1266) Add support for GPIOs")
 Cc: stable@vger.kernel.org
-Signed-off-by: Nerijus Bendžiūnas <nerijus.bendziunas@gmail.com>
-Reviewed-by: Nicolai Buchwitz <nb@tipi-net.de>
-Tested-by: Nicolai Buchwitz <nb@tipi-net.de>
-Link: https://patch.msgid.link/20260516150251.879680-1-nerijus.bendziunas@gmail.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Abdurrahman Hussain <abdurrahman@nexthop.ai>
+Reviewed-by: Bartosz Golaszewski <bartosz.golaszewski@oss.qualcomm.com>
+Reviewed-by: Linus Walleij <linusw@kernel.org>
+Link: https://lore.kernel.org/r/20260518-adm1266-gpio-fixes-v3-2-e425e4f88139@nexthop.ai
+Signed-off-by: Guenter Roeck <linux@roeck-us.net>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/phy/phy-c45.c |    8 ++++++++
- 1 file changed, 8 insertions(+)
+ drivers/hwmon/pmbus/adm1266.c |    1 -
+ 1 file changed, 1 deletion(-)
 
---- a/drivers/net/phy/phy-c45.c
-+++ b/drivers/net/phy/phy-c45.c
-@@ -939,6 +939,14 @@ EXPORT_SYMBOL_GPL(genphy_c45_read_eee_ab
-  */
- int genphy_c45_an_config_eee_aneg(struct phy_device *phydev)
- {
-+	/* Writing MMD AN advertisements while autoneg is disabled has no
-+	 * effect on link-partner negotiation, but on some PHYs (e.g. the
-+	 * Broadcom BCM54213PE) the write itself disturbs the receive
-+	 * datapath. Skip it.
-+	 */
-+	if (phydev->autoneg == AUTONEG_DISABLE)
-+		return 0;
-+
- 	if (!phydev->eee_cfg.eee_enabled) {
- 		__ETHTOOL_DECLARE_LINK_MODE_MASK(adv) = {};
+--- a/drivers/hwmon/pmbus/adm1266.c
++++ b/drivers/hwmon/pmbus/adm1266.c
+@@ -211,7 +211,6 @@ static int adm1266_gpio_get_multiple(str
  
+ 	status = read_buf[0] + (read_buf[1] << 8);
+ 
+-	*bits = 0;
+ 	for_each_set_bit_from(gpio_nr, mask, ADM1266_GPIO_NR + ADM1266_PDIO_NR) {
+ 		if (test_bit(gpio_nr - ADM1266_GPIO_NR, &status))
+ 			set_bit(gpio_nr, bits);
 
 
 
