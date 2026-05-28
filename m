@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-255123-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-255125-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id mHXxLZudGGpAlggAu9opvQ
-	(envelope-from <stable+bounces-255123-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 21:55:07 +0200
+	id CLHNMp+dGGpAlggAu9opvQ
+	(envelope-from <stable+bounces-255125-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 21:55:11 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3B8B45F76E1
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 21:55:07 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id CF37A5F76EF
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 21:55:10 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 704293046EFC
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 19:53:55 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 5A0953026A40
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 19:54:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EF7C131C56D;
-	Thu, 28 May 2026 19:53:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 357FB352019;
+	Thu, 28 May 2026 19:54:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jRC/96fi"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PgVqva+N"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CD5EB318EE1;
-	Thu, 28 May 2026 19:53:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 765FA3E63AA;
+	Thu, 28 May 2026 19:53:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779998033; cv=none; b=XxpjzFuWpFwAcNkRx0s+6/O+8+2quMREVIxB+c3S+CyLD4+aKKE388CsF3Fmbjur4b6fuekCpccC550kwPXJLE9wzXSs7l91cyHd0MzLjkwqdTcC/Zq/BaqgDPLcT6WdTFSiJ53vG0HiyOAcP99R8j41mDWS6fkdzPWgFJCaVec=
+	t=1779998042; cv=none; b=Rk623dAgiKXVmbtGmWp0mfLGdYL737M9ZKNOiEVqx3hftfPdeg4ymjDB2yJu++0ljh3SSaT1GGC0b3cDu7TSkOqPCgt9QjeIJ6TOjjSfxZtzeubmAdYnP5NyClXQmkpWAkrrCzy2j4tHEK7Dvb7Tp53dEKmLBpM5ghXMwKNiYek=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779998033; c=relaxed/simple;
-	bh=/USOrHHsQa9YJsIet1nTxfrQ2mqkjFLnG4rc1MYnCVk=;
+	s=arc-20240116; t=1779998042; c=relaxed/simple;
+	bh=K9K9eQAUGPwxMK1zMV0E2vEwegW4lmy5/5JOfm7w5pU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=g/caYXK3z+mshjHZvX468RtMRu8hB+x2h3kRfGXOSc+lDJfRoSSCx0XgVByxjTMZbZJ5l87yIaIJqBAogNRE2Wo2Z/Wcq4uVXG3IclKvT6dCdMyWKaTFlfRSVr5uOvBGeeZ04Ffj+/mzdqMmOFq2ZtUMGsMTIGfn/i2VZ4lFGtE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jRC/96fi; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F28741F000E9;
-	Thu, 28 May 2026 19:53:51 +0000 (UTC)
+	 MIME-Version; b=g0RIFruEOoEdGjZVxDXuXPCoWSKG+0vI37DOPhkHimY+CcjZYIdD1Dq+24sKr3xCOqoZ8rvh5rWI+kzjk7ZmMwaPHPpi8ji9EmX1zORDL7AJR0QcptI5JicuNF7DzMvjFrw0mWsi7WnZCU/qXd3ros+UUQNnxzN3DKtBaGDYeyA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PgVqva+N; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 910681F000E9;
+	Thu, 28 May 2026 19:53:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779998032;
-	bh=HeMO5/3gbpDofnlxgWMJNpHXqxnYJJbGLdK7dDAPpFM=;
+	s=korg; t=1779998038;
+	bh=vwRWm748aOi2HdUY4NZtwnfvg+DNGZJ3jfUo+t1EiFI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=jRC/96figvzLnJHVJI9GhdqXd3xj1EuJZV/E/KxT/HJBjbuBWStIt+eMWPIXIMjev
-	 tz7UfgnJOofhBIYSSS56Nr08GGfdgsP8kKYkRHU2hzfn3uouqfpo7okLFNxpC6CN6Y
-	 HCZLZz9a64lo+8HcNAglpci0CVtl/1MpyAT5BB8k=
+	b=PgVqva+NGolYc2DIkQZTp/3Df6v4YIlmN7KmPEHeeC3XHDfMLCx0C8n87TXIEGqyg
+	 CU77beauBO0pz0vOVyXIsFNEZoj3f5wOp3kMqE3HdUmgzOkXW2py/VYG5rDRKKT+Xs
+	 JlyRAR8USxkjQ61dM3tXsOU2CoExAiyqF+adADz8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Krishnamoorthi M <krishnamoorthi.m@amd.com>,
-	Mark Brown <broonie@kernel.org>
-Subject: [PATCH 7.0 029/461] spi: amd: Set correct bus number in ACPI probe path
-Date: Thu, 28 May 2026 21:42:38 +0200
-Message-ID: <20260528194647.742771976@linuxfoundation.org>
+	Heechan Kang <gganji11@naver.com>,
+	Jens Axboe <axboe@kernel.dk>
+Subject: [PATCH 7.0 030/461] io_uring/waitid: clear waitid info before copying it to userspace
+Date: Thu, 28 May 2026 21:42:39 +0200
+Message-ID: <20260528194647.768965043@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
 In-Reply-To: <20260528194646.819809818@linuxfoundation.org>
 References: <20260528194646.819809818@linuxfoundation.org>
@@ -65,32 +65,33 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	TAGGED_FROM(0.00)[bounces-255125-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,naver.com,kernel.dk];
 	RCVD_COUNT_THREE(0.00)[4];
-	RCVD_TLS_LAST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-255123-lists,stable=lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
 	TO_DN_SOME(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	RCPT_COUNT_FIVE(0.00)[5];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[5];
+	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,msgid.link:url,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,amd.com:email]
-X-Rspamd-Queue-Id: 3B8B45F76E1
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,msgid.link:url,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,kernel.dk:email]
+X-Rspamd-Queue-Id: CF37A5F76EF
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
@@ -98,39 +99,42 @@ X-Rspamd-Server: lfdr
 
 ------------------
 
-From: Krishnamoorthi M <krishnamoorthi.m@amd.com>
+From: Heechan Kang <gganji11@naver.com>
 
-commit 422bd00b71ab42163aa3b8f8370276fe4c1581e7 upstream.
+commit 93d93f5f8da791e98159795c6ef683f45bd95d13 upstream.
 
-On platforms where the HID2 SPI controller (AMDI0063) is enumerated via
-ACPI instead of PCI, amd_spi_probe() unconditionally sets bus_num to 0,
-while the PCI probe path assigns bus_num 2 for HID2 controller.
+IORING_OP_WAITID stores its result fields in struct io_waitid::info and
+later copies them to userspace siginfo. The prep path initializes the
+request arguments, but it does not initialize info itself.
 
-Align the ACPI probe path to use the same bus number so that userspace
-and SPI client drivers see a consistent bus assignment regardless of the
-enumeration method.
+If the wait operation completes without reporting a child event, the common
+wait code can return without writing wo_info. In that case io_waitid_finish()
+still copies iw->info to userspace, exposing stale bytes from the reused
+io_kiocb command storage.
 
-Fixes: b644c2776652 ("spi: spi_amd: Add PCI-based driver for AMD HID2 SPI controller")
-Cc: stable@vger.kernel.org # v6.16+
-Signed-off-by: Krishnamoorthi M <krishnamoorthi.m@amd.com>
-Link: https://patch.msgid.link/20260507180051.4158674-1-krishnamoorthi.m@amd.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
+Clear the result storage during prep so the io_uring path matches the
+regular waitid syscall, which uses a zero-initialized struct waitid_info.
+
+Fixes: f31ecf671ddc ("io_uring: add IORING_OP_WAITID support")
+Cc: stable@vger.kernel.org # 6.7+
+Signed-off-by: Heechan Kang <gganji11@naver.com>
+Link: https://patch.msgid.link/20260516184709.852814-1-gganji11@naver.com
+Signed-off-by: Jens Axboe <axboe@kernel.dk>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/spi/spi-amd.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ io_uring/waitid.c |    1 +
+ 1 file changed, 1 insertion(+)
 
---- a/drivers/spi/spi-amd.c
-+++ b/drivers/spi/spi-amd.c
-@@ -868,7 +868,7 @@ static int amd_spi_probe(struct platform
- 	dev_dbg(dev, "io_remap_address: %p\n", amd_spi->io_remap_addr);
- 
- 	amd_spi->version = (uintptr_t)device_get_match_data(dev);
--	host->bus_num = 0;
-+	host->bus_num = (amd_spi->version == AMD_HID2_SPI) ? 2 : 0;
- 
- 	return amd_spi_probe_common(dev, host);
+--- a/io_uring/waitid.c
++++ b/io_uring/waitid.c
+@@ -275,6 +275,7 @@ int io_waitid_prep(struct io_kiocb *req,
+ 	iw->options = READ_ONCE(sqe->file_index);
+ 	iw->head = NULL;
+ 	iw->infop = u64_to_user_ptr(READ_ONCE(sqe->addr2));
++	memset(&iw->info, 0, sizeof(iw->info));
+ 	return 0;
  }
+ 
 
 
 
