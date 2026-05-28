@@ -1,59 +1,59 @@
-Return-Path: <stable+bounces-256053-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-255488-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id KMx/NuCoGGpolwgAu9opvQ
-	(envelope-from <stable+bounces-256053-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:43:12 +0200
+	id ANw+NY2hGGqblggAu9opvQ
+	(envelope-from <stable+bounces-255488-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:11:57 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 746865F9652
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:43:12 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 851EA5F80A0
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:11:57 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 6B3D830B9363
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 20:37:10 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id C7C1C3049998
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 20:10:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C547E33987F;
-	Thu, 28 May 2026 20:37:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D0783348C6E;
+	Thu, 28 May 2026 20:10:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XgrUoYEc"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LTxpgGxQ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 976E43446C5;
-	Thu, 28 May 2026 20:37:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8BB1632ABC0;
+	Thu, 28 May 2026 20:10:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780000623; cv=none; b=oa5gpvKidiYBB8wcXDv2bUEkFxI6UMgcDA0mXSzHQy/GCrU7wnsbXf/pwUOwdM7uDiymHjkeAyXcytG9p9F2MyybxFLr7dWQlgzsUxwhHofifsPeLCD8QXNS7TbeN6G6X9ilLHInI2WY++2AnncNAGLNO/lxsTPaKcUo/BoJa+g=
+	t=1779999052; cv=none; b=WzKP+d9/EarP+eCEuoaNH/HCFInGN5xDDgjfgsHfYQAQ2T0m0eLZNGSxjb0S8IgG2ANijmamZpWR+Vk+jclJwXBD1moX4iJ85Prvuw3ZRQzbhUfUptwk8WtrG+aRmeIW0ONsdKkGUzDpRwOMYFTu7GmzSApWFn7mY2XyfVObr/I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780000623; c=relaxed/simple;
-	bh=TY9KqlTbRTXKecteZRRg8EF+qPcHoX7QT1ypa7qTqmI=;
+	s=arc-20240116; t=1779999052; c=relaxed/simple;
+	bh=seAMQmWOVVDiN70W4Ok060ruD6Tv1F3Sqy8z+xCkHQc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=oJmB+BxbpfChU3Cg7/TMHnzBPSaJqdMYlezyl/cg+2bpjYcVUQU8BcjgtaTI361EMiYTH+GAmQDoQlNgKUgMxPRmyKrvT3MT9C1rAfeiEx4vBRmwd8R7+kEvSlxjWvJXfACOLgVGo9jjbUWcG+YoYjZ0a9T/sX4clqNHTcdi5Nk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XgrUoYEc; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EC3841F000E9;
-	Thu, 28 May 2026 20:37:01 +0000 (UTC)
+	 MIME-Version; b=fUL31Uq4pYlSMtoEr1In+M97i47qrHMGPLQnJ7ZjfwsteQRnXTQTLfleoU5kqIAQheQG4OxKeHAoAQTdnm9tVA80es4AaIfg6grzx4LM6/Yo3Hd7QVAJBSMQiUWorawnQOrxvVmZB+qc1F41c6blwtRRX86XJbdD/foz7cWYwCc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LTxpgGxQ; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E971F1F000E9;
+	Thu, 28 May 2026 20:10:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780000622;
-	bh=RM1WxqLXT5Q2cWbAqNX40t5C6x2Y+0CifyiBxO5Rhmw=;
+	s=korg; t=1779999051;
+	bh=78xSl7Y4rggPM9z3Ah9eEw1bis2YfjFpPsBtt9lstuw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=XgrUoYEci1mzgmLSqGbUfslf5upnquRZ4MWG1ZeOIccdC7AO40fK1fBZyjdfiHyhi
-	 rmgtKa2s9ohv0Y7vXyJOTYc79A5oGu8naJROmiOfPL+1AD7/aX/tCYXLskjAVHXY0j
-	 Tpv2JPqK4BNo84+79+C2K/tTIr0fLxamncFc+OrI=
+	b=LTxpgGxQ9Ybl2jWblHdqPzGQcRIM2WCbqbuYlkV61SwOvMUpjvh40oD7WStzQokTL
+	 2wNHA1AM9sl/oDNoqfnmYAFGSeSCfrj5kbR9UnNDA5Ond+IApgp6Pmy8YF9Iw5iLEs
+	 2rWpicYWnmGo9XPwainXo8+gMroyjYYDqquFcKo4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Vignesh R <vigneshr@ti.com>,
-	Johan Hovold <johan@kernel.org>,
-	Mark Brown <broonie@kernel.org>
-Subject: [PATCH 6.12 110/272] spi: ti-qspi: fix use-after-free after DMA setup failure
+	Miriam Rachel Korenblit <miriam.rachel.korenblit@intel.com>,
+	Cole Leavitt <cole@unwrap.rs>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 7.0 355/461] wifi: iwlwifi: mld: fix TSO segmentation explosion when AMSDU is disabled
 Date: Thu, 28 May 2026 21:48:04 +0200
-Message-ID: <20260528194632.457291150@linuxfoundation.org>
+Message-ID: <20260528194657.696138343@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260528194629.379955525@linuxfoundation.org>
-References: <20260528194629.379955525@linuxfoundation.org>
+In-Reply-To: <20260528194646.819809818@linuxfoundation.org>
+References: <20260528194646.819809818@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -68,7 +68,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
@@ -78,7 +78,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-256053-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-255488-lists,stable=lfdr.de];
 	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
@@ -89,52 +89,86 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	TAGGED_RCPT(0.00)[stable];
 	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,msgid.link:url,sashiko.dev:url,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim]
-X-Rspamd-Queue-Id: 746865F9652
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,intel.com:email,msgid.link:url,unwrap.rs:email]
+X-Rspamd-Queue-Id: 851EA5F80A0
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+7.0-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Johan Hovold <johan@kernel.org>
+From: Cole Leavitt <cole@unwrap.rs>
 
-commit ea6ec3343e05f7937a53eb6d7617b3abdb4abc19 upstream.
+[ Upstream commit 92cee08dc4f00e77fd1317e4343c5d458b0abab7 ]
 
-The driver falls back to PIO mode if DMA setup fails during probe.
+When the TLC notification disables AMSDU for a TID, the MLD driver sets
+max_tid_amsdu_len to the sentinel value 1. The TSO segmentation path in
+iwl_mld_tx_tso_segment() checks for zero but not for this sentinel,
+allowing it to reach the num_subframes calculation:
 
-Make sure to clear the DMA channel pointer also if buffer allocation
-fails to avoid passing a pointer to the released channel to the DMA
-engine (or trying to free the channel a second time on late probe errors
-or driver unbind).
+  num_subframes = (max_tid_amsdu_len + pad) / (subf_len + pad)
+                = (1 + 2) / (1534 + 2) = 0
 
-This issue was flagged by Sashiko when reviewing a devres allocation
-conversion patch.
+This zero propagates to iwl_tx_tso_segment() which sets:
 
-Fixes: c687c46e9e45 ("spi: spi-ti-qspi: Use bounce buffer if read buffer is not DMA'ble")
-Link: https://sashiko.dev/#/patchset/20260505072909.618363-1-johan%40kernel.org?part=17
-Cc: stable@vger.kernel.org	# 4.12
-Cc: Vignesh R <vigneshr@ti.com>
-Signed-off-by: Johan Hovold <johan@kernel.org>
-Link: https://patch.msgid.link/20260512074809.915084-1-johan@kernel.org
-Signed-off-by: Mark Brown <broonie@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+  gso_size = num_subframes * mss = 0
+
+Calling skb_gso_segment() with gso_size=0 creates over 32000 tiny
+segments from a single GSO skb. This floods the TX ring with ~1024
+micro-frames (the rest are purged), creating a massive burst of TX
+completion events that can lead to memory corruption and a subsequent
+use-after-free in TCP's retransmit queue (refcount underflow in
+tcp_shifted_skb, NULL deref in tcp_rack_detect_loss).
+
+The MVM driver is immune because it checks mvmsta->amsdu_enabled before
+reaching the num_subframes calculation. The MLD driver has no equivalent
+bitmap check and relies solely on max_tid_amsdu_len, which does not
+catch the sentinel value.
+
+Fix this by detecting the sentinel value (max_tid_amsdu_len == 1) at the
+existing check and falling back to non-AMSDU TSO segmentation. Also add
+a WARN_ON_ONCE guard after the num_subframes division as defense-in-depth
+to catch any future code paths that produce zero through a different
+mechanism.
+
+Suggested-by: Miriam Rachel Korenblit <miriam.rachel.korenblit@intel.com>
+Fixes: d1e879ec600f ("wifi: iwlwifi: add iwlmld sub-driver")
+Signed-off-by: Cole Leavitt <cole@unwrap.rs>
+Link: https://patch.msgid.link/20260405054145.1064152-3-cole@unwrap.rs
+Signed-off-by: Miri Korenblit <miriam.rachel.korenblit@intel.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/spi/spi-ti-qspi.c |    1 +
- 1 file changed, 1 insertion(+)
+ drivers/net/wireless/intel/iwlwifi/mld/tx.c | 5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
---- a/drivers/spi/spi-ti-qspi.c
-+++ b/drivers/spi/spi-ti-qspi.c
-@@ -874,6 +874,7 @@ static int ti_qspi_probe(struct platform
- 		dev_err(qspi->dev,
- 			"dma_alloc_coherent failed, using PIO mode\n");
- 		dma_release_channel(qspi->rx_chan);
-+		qspi->rx_chan = NULL;
- 		goto no_dma;
- 	}
- 	host->dma_rx = qspi->rx_chan;
+diff --git a/drivers/net/wireless/intel/iwlwifi/mld/tx.c b/drivers/net/wireless/intel/iwlwifi/mld/tx.c
+index 0d2d059ac4e3e..0bcb1ae694687 100644
+--- a/drivers/net/wireless/intel/iwlwifi/mld/tx.c
++++ b/drivers/net/wireless/intel/iwlwifi/mld/tx.c
+@@ -834,7 +834,7 @@ static int iwl_mld_tx_tso_segment(struct iwl_mld *mld, struct sk_buff *skb,
+ 		return -EINVAL;
+ 
+ 	max_tid_amsdu_len = sta->cur->max_tid_amsdu_len[tid];
+-	if (!max_tid_amsdu_len)
++	if (!max_tid_amsdu_len || max_tid_amsdu_len == 1)
+ 		return iwl_tx_tso_segment(skb, 1, netdev_flags, mpdus_skbs);
+ 
+ 	/* Sub frame header + SNAP + IP header + TCP header + MSS */
+@@ -846,6 +846,9 @@ static int iwl_mld_tx_tso_segment(struct iwl_mld *mld, struct sk_buff *skb,
+ 	 */
+ 	num_subframes = (max_tid_amsdu_len + pad) / (subf_len + pad);
+ 
++	if (WARN_ON_ONCE(!num_subframes))
++		return iwl_tx_tso_segment(skb, 1, netdev_flags, mpdus_skbs);
++
+ 	if (sta->max_amsdu_subframes &&
+ 	    num_subframes > sta->max_amsdu_subframes)
+ 		num_subframes = sta->max_amsdu_subframes;
+-- 
+2.53.0
+
 
 
 
