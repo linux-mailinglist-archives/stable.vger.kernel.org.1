@@ -1,58 +1,59 @@
-Return-Path: <stable+bounces-255233-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-255587-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 0ErSK52eGGpAlggAu9opvQ
-	(envelope-from <stable+bounces-255233-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 21:59:25 +0200
+	id QPorElWkGGrClggAu9opvQ
+	(envelope-from <stable+bounces-255587-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:23:49 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5D0CA5F798A
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 21:59:25 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id A81455F88DB
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:23:48 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 881ED3019160
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 19:58:54 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id BF787322B254
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 20:15:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2AAF934D4D6;
-	Thu, 28 May 2026 19:58:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6DB68279903;
+	Thu, 28 May 2026 20:15:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kHC4oBgc"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="b1KE2lzL"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0531433F5B4;
-	Thu, 28 May 2026 19:58:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3CD0524A047;
+	Thu, 28 May 2026 20:15:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779998334; cv=none; b=d9Zzrg07vSGkC6gOnN/3gN1llOfXJTiBLO+juPVUH7PHHCnO1UfWsYSma3/7PUSVeywK2D/a9j1KfoNDAfSf2tr1/xc8+MsmCmbj57e0bmOpFJM1+mHB1mxmn8fzaaKXmwBZtCuv1NmqN5KtsZ1yxb6gaYQlB0huRj4rAXXzlBA=
+	t=1779999331; cv=none; b=ambNM5cWZoUWp1SogzJGbwPYOuUzNNuNfGICwwzdPuasKLHR9PQADCiRks694sBgWoPlrB2qa6GCAgyRGKjg0DbUubt+WPj7NkxS5c+2VLazEzVysRcEZFOT0YK62hOyC0LGbvKNgdTgdbj7gM+LXr7QUeImjmLonInjmAkUEEk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779998334; c=relaxed/simple;
-	bh=xxpAi2I56DclFYm7NOweC9ZYfgcSMUpgyyw4O/YUH8s=;
+	s=arc-20240116; t=1779999331; c=relaxed/simple;
+	bh=RkQgiiE/Ua/Ln8WxwufaUu0Mdjgfw42uZvdISIpUpSI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=clwxsa3oY8ehz3bBxMIOy8pPBlC3ZmCDjE2g5ISzj3dojugr5xDBIgNSnJ9/W0nJist8iRZ8NVNITHp+kxWDMRJxA/afzPs2Hsz9pstMON8qo81uHxATeFR00EARIXEyAiwzn+OEBuUenEweor1DkfTi6H7ybHqFIZ/zvyXrmZI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kHC4oBgc; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5BC161F000E9;
-	Thu, 28 May 2026 19:58:52 +0000 (UTC)
+	 MIME-Version; b=X7jw07fkO95uv8ll8QR1OHkYmedUEBvrqvtbe2Ch+960uX8O/05qsEAqguAddfbHYK30kJMnOhtENBhTdcfHDGi39fl9xGo11ogAg+VtYVFfGZ7dHCCqL96VjnCjTkaT/4zUQhESUo89E+eips4uba/audqR5s17sz32hKC8wXQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=b1KE2lzL; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 99BF31F000E9;
+	Thu, 28 May 2026 20:15:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779998332;
-	bh=bV9SIl8yKYtw+T6gMFwAahmv7EVdqsx6CZzMVmq3+fw=;
+	s=korg; t=1779999330;
+	bh=q+kQ40hsDiuxCBQXq830mGJB0a9EroGEMO3h3EL03A4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=kHC4oBgcf47ss4PwIJb4EblPwxB20Br9jkbj/K7EE/8/rdB88q9JKcbZVQ4IkrTPi
-	 YUV6QSuZGgyHtYaLs99DqWz7jqEUCgS93569KrvhilkGOBoci5b1wDc40XGmTF17jS
-	 tUFy2F8PIr8IyysNOOOKtaDjmK65PAp+14QkLHAA=
+	b=b1KE2lzLo53OsF303BDaKBOJEMxOqjC9K/ACcL0+Nj2o4TPMIhKU6Dv63zdBjA6cG
+	 LVKKVLCwKJx01LUCQvk0j5AXsxabu8KYu+88QzWHR4qz6hwDFHo5onfuiex6oFCISS
+	 ipvSy6C1EWXJF7KenpnRAKls0QrbF0G8BALjxWNo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Julien Chauveau <chauveau.julien@gmail.com>,
-	Javier Martinez Canillas <javierm@redhat.com>
-Subject: [PATCH 7.0 136/461] drm/bridge: it66121: acquire reset GPIO in probe
-Date: Thu, 28 May 2026 21:44:25 +0200
-Message-ID: <20260528194650.928020280@linuxfoundation.org>
+	Jeremy Laratro <research@aradex.io>,
+	Namjae Jeon <linkinjeon@kernel.org>,
+	Steve French <stfrench@microsoft.com>
+Subject: [PATCH 6.18 028/377] ksmbd: fix null pointer dereference in compare_guid_key()
+Date: Thu, 28 May 2026 21:44:26 +0200
+Message-ID: <20260528194639.202413550@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260528194646.819809818@linuxfoundation.org>
-References: <20260528194646.819809818@linuxfoundation.org>
+In-Reply-To: <20260528194638.371537336@linuxfoundation.org>
+References: <20260528194638.371537336@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,88 +64,109 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	TO_DN_SOME(0.00)[];
-	TAGGED_FROM(0.00)[bounces-255233-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,redhat.com];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-255587-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	NEURAL_HAM(-0.00)[-0.999];
-	TAGGED_RCPT(0.00)[stable];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[5];
+	NEURAL_HAM(-0.00)[-1.000];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,msgid.link:url]
-X-Rspamd-Queue-Id: 5D0CA5F798A
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
+X-Rspamd-Queue-Id: A81455F88DB
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-7.0-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Julien Chauveau <chauveau.julien@gmail.com>
+From: Jeremy Laratro <research@aradex.io>
 
-commit e02b5262fd288cc235f14e12233ea54e78c04611 upstream.
+commit 4b83cbc4c15f09b000cc06f033f64b0824b6dc87 upstream.
 
-The it66121_ctx structure has a gpio_reset field, and it66121_hw_reset()
-calls gpiod_set_value() on it. However, the GPIO descriptor is never
-acquired via devm_gpiod_get(), leaving gpio_reset as NULL throughout
-the driver lifetime.
+session_fd_check() walks the per-inode m_op_list during durable-handle
+session teardown and sets op->conn = NULL for every opinfo whose conn
+matched the closing session's connection. The matching opinfo, however,
+stays linked in its per-ClientGuid lease_table_list entry's lb->lease_list
+because destroy_lease_table() only runs on full TCP-connection teardown,
+not on SESSION_LOGOFF.
 
-gpiod_set_value() silently returns when passed a NULL descriptor, so
-the hardware reset sequence in it66121_hw_reset() is a no-op. This
-leaves the chip in an undefined state at probe time, which can prevent
-it from responding on the I2C bus.
+If the same TCP connection then negotiates a fresh session with the
+same ClientGuid (ClientGuid is bound to NEGOTIATE, not the session, and
+is unchanged across LOGOFF + SETUP) and issues a SMB2 CREATE with a
+lease context on a different inode, find_same_lease_key() walks
+lb->lease_list, reaches the stale opinfo, and calls compare_guid_key(),
+which unconditionally dereferences opinfo->conn->ClientGUID. The conn
+pointer is NULL and the kernel panics.
 
-The DT binding marks reset-gpios as a required property, so all
-compliant device trees provide this GPIO. Add the missing
-devm_gpiod_get() call after enabling power supplies and before the
-hardware reset, so the chip is properly reset with power applied.
+Reproducer requires only a successful SMB2 SESSION_SETUP and a share
+configured with 'durable handles = yes'. KASAN report on mainline
+70390501d194:
 
-Fixes: 988156dc2fc9 ("drm: bridge: add it66121 driver")
+  general protection fault, probably for non-canonical address
+  0xdffffc0000000069: 0000 [#1] SMP KASAN PTI
+  KASAN: null-ptr-deref in range [0x0000000000000348-0x000000000000034f]
+  Workqueue: ksmbd-io handle_ksmbd_work
+  RIP: 0010:bcmp+0x5b/0x230
+  Call Trace:
+   compare_guid_key+0x4b/0xd0
+   find_same_lease_key+0x324/0x690
+   smb2_open+0x6aea/0x8e60
+   handle_ksmbd_work+0x796/0xee0
+   ...
+
+Faulting address 0x348 is the offset of ClientGUID within struct
+ksmbd_conn, confirming opinfo->conn was NULL.
+
+Read opinfo->conn once and bail out if it has been cleared by a
+concurrent session_fd_check(). A half-detached opinfo cannot be the
+owner of an active lease, so returning 0 is the correct match result.
+
+Fixes: c8efcc786146 ("ksmbd: add support for durable handles v1/v2")
 Cc: stable@vger.kernel.org
-Signed-off-by: Julien Chauveau <chauveau.julien@gmail.com>
-Reviewed-by: Javier Martinez Canillas <javierm@redhat.com>
-Tested-by: Javier Martinez Canillas <javierm@redhat.com>
-Link: https://patch.msgid.link/20260324193011.16583-1-chauveau.julien@gmail.com
-Signed-off-by: Javier Martinez Canillas <javierm@redhat.com>
+Signed-off-by: Jeremy Laratro <research@aradex.io>
+Acked-by: Namjae Jeon <linkinjeon@kernel.org>
+Signed-off-by: Steve French <stfrench@microsoft.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/bridge/ite-it66121.c |    5 +++++
- 1 file changed, 5 insertions(+)
+ fs/smb/server/oplock.c |    6 +++++-
+ 1 file changed, 5 insertions(+), 1 deletion(-)
 
---- a/drivers/gpu/drm/bridge/ite-it66121.c
-+++ b/drivers/gpu/drm/bridge/ite-it66121.c
-@@ -1559,6 +1559,11 @@ static int it66121_probe(struct i2c_clie
- 		return ret;
- 	}
+--- a/fs/smb/server/oplock.c
++++ b/fs/smb/server/oplock.c
+@@ -484,8 +484,12 @@ static inline int compare_guid_key(struc
+ 				   const char *guid1, const char *key1)
+ {
+ 	const char *guid2, *key2;
++	struct ksmbd_conn *conn;
  
-+	ctx->gpio_reset = devm_gpiod_get(dev, "reset", GPIOD_OUT_LOW);
-+	if (IS_ERR(ctx->gpio_reset))
-+		return dev_err_probe(dev, PTR_ERR(ctx->gpio_reset),
-+				     "Failed to get reset GPIO\n");
-+
- 	it66121_hw_reset(ctx);
- 
- 	ctx->regmap = devm_regmap_init_i2c(client, &it66121_regmap_config);
+-	guid2 = opinfo->conn->ClientGUID;
++	conn = READ_ONCE(opinfo->conn);
++	if (!conn)
++		return 0;
++	guid2 = conn->ClientGUID;
+ 	key2 = opinfo->o_lease->lease_key;
+ 	if (!memcmp(guid1, guid2, SMB2_CLIENT_GUID_SIZE) &&
+ 	    !memcmp(key1, key2, SMB2_LEASE_KEY_SIZE))
 
 
 
