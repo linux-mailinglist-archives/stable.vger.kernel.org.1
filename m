@@ -1,61 +1,59 @@
-Return-Path: <stable+bounces-256168-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-255925-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 6MxFI8yqGGoomAgAu9opvQ
-	(envelope-from <stable+bounces-256168-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:51:24 +0200
+	id QGTlDFGnGGp+lwgAu9opvQ
+	(envelope-from <stable+bounces-255925-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:36:33 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3172E5F9B53
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:51:24 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3363F5F917A
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:36:31 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 93DA731AFC04
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 20:42:27 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 0C4553059762
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 20:31:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7453F1DE4E0;
-	Thu, 28 May 2026 20:42:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2C12834040F;
+	Thu, 28 May 2026 20:31:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bx81x9bv"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="eL9qnWAG"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4E6602EF652;
-	Thu, 28 May 2026 20:42:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F316533372A;
+	Thu, 28 May 2026 20:31:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780000946; cv=none; b=gpyuCL6azoB1W0zYtBavQmNUEfk5DOMR0PVUMcHeKrrWHfRcmEgeWRlHLJVxJa2hHw2rsjNEv/VNuwokW3z+3BMR7xtYUU0RnngdOclTa3RtcQvBqibvo0rhbiGjiHJFv0tjTV2iM6y8wRdrTVzquGXW3sBY0lB/uReu45OX9Tw=
+	t=1780000264; cv=none; b=I1QWsOEyJ1ShPtEE7cyT5UabhrVXSxi7xIsLgxg9qrytYm+F3mMSM/D2xYuGGRRk2P3b93S/7vOA7h+N1pJWyin0PEIqkcbDEX6K46NP+9YkP/uAVppaxATaq0BMNcg9Fcp4JVxEGltHtv3B0pVMHhm4OFGOGjCaGOAB1504CfQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780000946; c=relaxed/simple;
-	bh=JYzNOj7Yt4ShN7OnI19N2oXBlcDEW5MySU+GRNHUgZc=;
+	s=arc-20240116; t=1780000264; c=relaxed/simple;
+	bh=80gHyN7Ci2b6h7Qn196QuqFv5P9Km2Haujn4hF6hWmw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=D+gpTyADG19GHSZRsTLSn/OARakcJgeOd00tsLzU4kW65/NcGnKQo35dNxe5/Zoip/uWDHNrP/qwC+di1URTYZPypaG8l6ondDm0lVyOKt8XBalyz5VLGvEk2IzwPbEEsHK7o1aTtbfAIAwnyaYii8xBVuzZ5/VLNYxPSBwDufE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bx81x9bv; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AC8B91F000E9;
-	Thu, 28 May 2026 20:42:24 +0000 (UTC)
+	 MIME-Version; b=I3Z0xYhdSDNGgtA/7hbPvhtjfab/3pBu5WxQirUBwv78xZ4yByv/eUo3YWaqXVU41pDcUjsKrPTxSxVt4Lj2DT6BfcBQ6yunG46WzL5q+doVLOh2NzenTqWQBkmsDMbnaDfb2Tz402e9u2PlxDwOLBdC7X78r7Zg4DpueB0QniY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=eL9qnWAG; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5741E1F000E9;
+	Thu, 28 May 2026 20:31:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780000945;
-	bh=Ihe7MgFjwUtQHFlvo2qMPuhdeGmJ8CTW7ELbSxRpTGo=;
+	s=korg; t=1780000262;
+	bh=ug28VS/aXDKuqB0PFAbAjMo17w5GDWfE5D2JVNrXA2c=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=bx81x9bvbkqq6yzOa64mopOR1lgl8mW0MmVaoxapKfpSq/uMcIvJkUEYQx3X3s8NP
-	 62fWmRUtd95sv9adLlY/67wvLvbJGTwbIgmNTNBYw3qsk3Wg/LWf7f8KglCTM9z22b
-	 UXCBgAiYISGoerraToiwAXGNj8SGNZSj0K40kIhE=
+	b=eL9qnWAGE35+wAFoVZakB1Tqih+p7x8wJP+yFcx10lW46wC4r8ZsiwVSWKjhgrwY9
+	 NTxpLEarYnFsJhdGX4mvbVWuvqMb62KXfVAHGxPzLSWRISzLxbPB2G2+CupB8NTZp+
+	 L5vMpUAEFfXKXBHnCNb18cdariZhgX86IiLFimE4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?=E9=92=B1=E4=B8=80=E9=93=AD?= <yimingqian591@gmail.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sabrina Dubroca <sd@queasysnail.net>,
-	Paolo Abeni <pabeni@redhat.com>,
+	Kent Gibson <warthog618@gmail.com>,
+	Bartosz Golaszewski <bartosz.golaszewski@oss.qualcomm.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 225/272] net: tls: fix off-by-one in sg_chain entry count for wrapped sk_msg ring
+Subject: [PATCH 6.18 361/377] gpio: cdev: check if uAPI v2 config attributes are correctly zeroed
 Date: Thu, 28 May 2026 21:49:59 +0200
-Message-ID: <20260528194635.489267095@linuxfoundation.org>
+Message-ID: <20260528194648.882592445@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260528194629.379955525@linuxfoundation.org>
-References: <20260528194629.379955525@linuxfoundation.org>
+In-Reply-To: <20260528194638.371537336@linuxfoundation.org>
+References: <20260528194638.371537336@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,111 +63,94 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-2.16 / 15.00];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,kernel.org,queasysnail.net,redhat.com];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-256168-lists,stable=lfdr.de];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	RCVD_TLS_LAST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-255925-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,oss.qualcomm.com,kernel.org];
 	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
 	TO_DN_SOME(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	RCPT_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	MID_RHS_MATCH_FROM(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_SEVEN(0.00)[8];
+	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,msgid.link:url,linuxfoundation.org:mid,linuxfoundation.org:dkim]
-X-Rspamd-Queue-Id: 3172E5F9B53
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,qualcomm.com:email,linuxfoundation.org:mid,linuxfoundation.org:dkim]
+X-Rspamd-Queue-Id: 3363F5F917A
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jakub Kicinski <kuba@kernel.org>
+From: Bartosz Golaszewski <bartosz.golaszewski@oss.qualcomm.com>
 
-[ Upstream commit 285943c6e7ca309bbea84b253745154241d9788a ]
+[ Upstream commit 3e6ccd790ed69bedd3d9626d01dd35cf9821c121 ]
 
-When an sk_msg scatterlist ring wraps (sg.end < sg.start),
-tls_push_record() chains the tail portion of the ring to the head
-using sg_chain(). An extra entry in the sg array is reserved for
-this:
+We check the padding of other uAPI v2 structures but not that of line
+config attributes. For used attributes: check if their padding is
+zeroed, for unused: check if the entire structure is zeroed.
 
-  struct sk_msg_sg {
-        [...]
-        /* The extra two elements:
-         * 1) used for chaining the front and sections when the list becomes
-         *    partitioned (e.g. end < start). The crypto APIs require the
-         *    chaining;
-         * 2) to chain tailer SG entries after the message.
-         */
-        struct scatterlist              data[MAX_MSG_FRAGS + 2];
-
-The current code uses MAX_SKB_FRAGS + 1 as the ring size:
-
-    sg_chain(&msg_pl->sg.data[msg_pl->sg.start],
-             MAX_SKB_FRAGS - msg_pl->sg.start + 1,
-             msg_pl->sg.data);
-
-This places the chain pointer at
-
-  sg_chain(data[start], (MAX_SKB_FRAGS - msg_start + 1) .. =
-  &data[start] + (MAX_SKB_FRAGS - msg_start + 1) - 1 =
-  data[start + (MAX_SKB_FRAGS - start + 1) - 1] =
-  data[MAX_SKB_FRAGS]
-
-instead of the true last entry. This is likely due to a "race" of
-the commit under Fixes landing close to
-commit 031097d9e079 ("bpf: sk_msg, zap ingress queue on psock down")
-
-Convert to ARRAY_SIZE and drop the data[start] / - start (as suggested
-by Sabrina).
-
-Reported-by: 钱一铭 <yimingqian591@gmail.com>
-Fixes: 9aaaa56845a0 ("bpf: Sockmap/tls, skmsg can have wrapped skmsg that needs extra chaining")
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Reviewed-by: Sabrina Dubroca <sd@queasysnail.net>
-Link: https://patch.msgid.link/20260511174920.433155-2-kuba@kernel.org
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Fixes: 3c0d9c635ae2 ("gpiolib: cdev: support GPIO_V2_GET_LINE_IOCTL and GPIO_V2_LINE_GET_VALUES_IOCTL")
+Reviewed-by: Kent Gibson <warthog618@gmail.com>
+Link: https://patch.msgid.link/20260521-gpio-cdev-attr-padding-check-v3-1-ec3bcbe2e358@oss.qualcomm.com
+Signed-off-by: Bartosz Golaszewski <bartosz.golaszewski@oss.qualcomm.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/tls/tls_sw.c | 6 ++----
- 1 file changed, 2 insertions(+), 4 deletions(-)
+ drivers/gpio/gpiolib-cdev.c | 13 +++++++++++++
+ 1 file changed, 13 insertions(+)
 
-diff --git a/net/tls/tls_sw.c b/net/tls/tls_sw.c
-index 4550f15d052dc..834cb01f8e0e8 100644
---- a/net/tls/tls_sw.c
-+++ b/net/tls/tls_sw.c
-@@ -800,11 +800,9 @@ static int tls_push_record(struct sock *sk, int flags,
- 		sg_mark_end(sk_msg_elem(msg_pl, i));
- 	}
+diff --git a/drivers/gpio/gpiolib-cdev.c b/drivers/gpio/gpiolib-cdev.c
+index 986312c71678f..89abf7a238d87 100644
+--- a/drivers/gpio/gpiolib-cdev.c
++++ b/drivers/gpio/gpiolib-cdev.c
+@@ -1208,6 +1208,7 @@ static int gpio_v2_line_flags_validate(u64 flags)
+ static int gpio_v2_line_config_validate(struct gpio_v2_line_config *lc,
+ 					unsigned int num_lines)
+ {
++	size_t unused_attrs;
+ 	unsigned int i;
+ 	u64 flags;
+ 	int ret;
+@@ -1215,9 +1216,21 @@ static int gpio_v2_line_config_validate(struct gpio_v2_line_config *lc,
+ 	if (lc->num_attrs > GPIO_V2_LINE_NUM_ATTRS_MAX)
+ 		return -EINVAL;
  
--	if (msg_pl->sg.end < msg_pl->sg.start) {
--		sg_chain(&msg_pl->sg.data[msg_pl->sg.start],
--			 MAX_SKB_FRAGS - msg_pl->sg.start + 1,
-+	if (msg_pl->sg.end < msg_pl->sg.start)
-+		sg_chain(msg_pl->sg.data, ARRAY_SIZE(msg_pl->sg.data),
- 			 msg_pl->sg.data);
--	}
++	unused_attrs = GPIO_V2_LINE_NUM_ATTRS_MAX - lc->num_attrs;
++
+ 	if (!mem_is_zero(lc->padding, sizeof(lc->padding)))
+ 		return -EINVAL;
  
- 	i = msg_pl->sg.start;
- 	sg_chain(rec->sg_aead_in, 2, &msg_pl->sg.data[i]);
++	for (i = 0; i < lc->num_attrs; i++) {
++		if (lc->attrs[i].attr.padding != 0)
++			return -EINVAL;
++	}
++
++	if (unused_attrs) {
++		if (!mem_is_zero(&lc->attrs[lc->num_attrs], unused_attrs * sizeof(*lc->attrs)))
++			return -EINVAL;
++	}
++
+ 	for (i = 0; i < num_lines; i++) {
+ 		flags = gpio_v2_line_config_flags(lc, i);
+ 		ret = gpio_v2_line_flags_validate(flags);
 -- 
 2.53.0
 
