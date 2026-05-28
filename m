@@ -1,59 +1,64 @@
-Return-Path: <stable+bounces-255771-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-256017-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id qNn3Eu2nGGp+lwgAu9opvQ
-	(envelope-from <stable+bounces-255771-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:39:09 +0200
+	id 0BndLqmoGGp+lwgAu9opvQ
+	(envelope-from <stable+bounces-256017-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:42:17 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id CB9945F93A4
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:39:08 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7145F5F95CA
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:42:16 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id E50CD33A9341
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 20:23:57 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 7910F30CA464
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 20:35:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7DC3622652D;
-	Thu, 28 May 2026 20:23:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 71BAE3346BE;
+	Thu, 28 May 2026 20:35:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2bzRjXo+"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="eywREdHl"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 430AE1EA65;
-	Thu, 28 May 2026 20:23:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3C30933372A;
+	Thu, 28 May 2026 20:35:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779999837; cv=none; b=FyzhbeAZdx33YWjryIv8q13as4Mm4U49maKKaPI3wcZZD1OPl8xbdC8ZfOWskC04aRPQRDNxkk1I/bRkJuFUwuyG+rGNX/9PFZhXSZPZK/mR7qYWU+toBsutsvk32hCOL2zXTyMgooCLwp0jNcVGsqRpG8/4tbi6XsZz1FHaJZY=
+	t=1780000522; cv=none; b=BzLdQ5hK+bwW4CVpxzPMBBeLRVe0IgTi+xRTsyMCajzTKiwKOk9Tys+48IJOz1R1bDfX4w7JTp10lhV2JcquwD3KEEfM7zlIMlqPkHkeVi6lvkzySH6r7CZVM1emNqeGjA5MgEHh28Uybjh7jwbQxBH/verK8ddnwYgIHldwngw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779999837; c=relaxed/simple;
-	bh=QhK6moksvlDQ1KRieidy3Z3NAogC7OIG/OgNHuaKhsw=;
+	s=arc-20240116; t=1780000522; c=relaxed/simple;
+	bh=82G2qiU7EXhAijXci3KbEoF9MG3i+l4+tY2QbO2VPdo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=MmOWgFPvf0K76IhVF+c9puoYewPsRkxY4tt8qS0LZmkpKmxSev7QonDfSv8nai2jK5+momZ7RjpOiPVwjv00XqCNXBtGGd/I7pmJp6p/o6qBVYIdrYe+0XBZ9Qe2SppixIUCRO4G0QnomRu5huXNY3NbPITqX6ST9rmCyZl78UM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2bzRjXo+; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A0C061F000E9;
-	Thu, 28 May 2026 20:23:55 +0000 (UTC)
+	 MIME-Version; b=tZ3m6fNKABKO8FAcNxAlsT0sw8ne9oPmecRncPtAUmnNJCfzxoX5iwsHhd9oSJXyQ0nFyBd/kZ0R1nxeOFAyV6F7luO/cIeuRRwM3Mfe80ZhxBOKxwnqGw5dUKj0O6wm4nmBheIg8N1whQZu4lAa6APDaiVj+gTEUTwnsrrxUPk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=eywREdHl; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A306C1F000E9;
+	Thu, 28 May 2026 20:35:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779999836;
-	bh=RXgfGRj//gmR5vPPnqMpbxHEw5czYJMxBDXsJlfRNlY=;
+	s=korg; t=1780000521;
+	bh=nc2DL14bEmuMMBrgsw70VmWnnezVlNo3uJ6NGTnGnYQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=2bzRjXo+phu/gtjZJ8wQS/6pct2bd59MbgyZZ5eVgqJdfsjTjYr0cs27ddv6ujmn1
-	 4gXBszz2rmNAIji6lj2Hpbw7H9wC3jm9zPgs+VrrcyBAz5HS27rob8qHVsceLp0/PR
-	 chs0dy0rXqZuF0xJXBRsaaowYo+F8NDhZ97CjT7o=
+	b=eywREdHlAAFcmI4icDZRS+wLTUBCGgrY6qPtW8w2+Cz4398LMDJQ7BNEOuSGM8p8m
+	 uRuRa4PDv4LuQO8NuhD3vh929o2ZGotZ8XKDtQFwULVbVghxWt9gCATbOBtcw8eIA6
+	 YOMbyAUWrLNuf8IZlRJ4K/kFU2jNQNG++tLG7bKE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mohsin Bashir <hmohsin@meta.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 209/377] net: shaper: Reject reparenting of existing nodes
-Date: Thu, 28 May 2026 21:47:27 +0200
-Message-ID: <20260528194644.454305586@linuxfoundation.org>
+	stable@kernel.org,
+	Yuan Tan <yuantan098@gmail.com>,
+	Yifan Wu <yifanwucs@gmail.com>,
+	Juefei Pu <tomapufckgml@gmail.com>,
+	Xin Liu <bird@lzu.edu.cn>,
+	Haoze Xie <royenheart@gmail.com>,
+	Ren Wei <n05ec@lzu.edu.cn>,
+	Pablo Neira Ayuso <pablo@netfilter.org>
+Subject: [PATCH 6.12 074/272] netfilter: nf_queue: hold bridge skb->dev while queued
+Date: Thu, 28 May 2026 21:47:28 +0200
+Message-ID: <20260528194631.448033518@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260528194638.371537336@linuxfoundation.org>
-References: <20260528194638.371537336@linuxfoundation.org>
+In-Reply-To: <20260528194629.379955525@linuxfoundation.org>
+References: <20260528194629.379955525@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -68,122 +73,123 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,kernel.org,gmail.com,lzu.edu.cn,netfilter.org];
+	TAGGED_FROM(0.00)[bounces-256017-lists,stable=lfdr.de];
 	PRECEDENCE_BULK(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-255771-lists,stable=lfdr.de];
-	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[11];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim,msgid.link:url,meta.com:email]
-X-Rspamd-Queue-Id: CB9945F93A4
+	TAGGED_RCPT(0.00)[stable];
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[lzu.edu.cn:email,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,netfilter.org:email,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,state.in:url]
+X-Rspamd-Queue-Id: 7145F5F95CA
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mohsin Bashir <hmohsin@meta.com>
+From: Haoze Xie <royenheart@gmail.com>
 
-[ Upstream commit a77d5a069d959dc45f5f472d48cba37d8cba0f1c ]
+commit e196115ec330a18de415bdb9f5071aa9f08e53ce upstream.
 
-When an existing node-scope shaper is moved to a different parent
-via the group operation, the framework fails to update the leaves
-count on both the old and new parent shapers. Only newly created
-nodes (handle.id == NET_SHAPER_ID_UNSPEC) trigger the parent
-leaves increment at line 1039.
+br_pass_frame_up() rewrites skb->dev from the ingress port to the bridge
+master before queueing bridge LOCAL_IN packets. NFQUEUE only holds
+references on state.in/out and bridge physdevs, so a queued bridge
+packet can retain a freed bridge master in skb->dev until reinjection.
 
-This causes the parent's leaves counter to diverge from the
-actual number of children in the xarray. When the node is later
-deleted, pre_del_node() allocates an array sized by the stale
-leaves count, but the xarray iteration finds more children than
-expected, hitting the WARN_ON_ONCE guard and returning -EINVAL.
+When the verdict is reinjected later, br_netif_receive_skb() re-enters
+the receive path with skb->dev still pointing at the freed bridge master,
+triggering a use-after-free.
 
-Rather than adding reparenting support with complex leaves count
-bookkeeping, reject group calls that attempt to change an existing
-node's parent. Updates to an existing node's rate or leaves under
-the same parent remain permitted. We expect that for any modification
-of the topology user should always create new groups and let the
-kernel garbage collect the leaf-less nodes.
+Store skb->dev in the queue entry, hold a reference on it for the queue
+lifetime, and use the saved device when dropping queued packets during
+NETDEV_DOWN handling.
 
-Fixes: 5d5d4700e75d ("net-shapers: implement NL group operation")
-Signed-off-by: Mohsin Bashir <hmohsin@meta.com>
-Link: https://patch.msgid.link/20260506233745.111895-1-mohsin.bashr@gmail.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: ac2863445686 ("netfilter: bridge: add nf_afinfo to enable queuing to userspace")
+Cc: stable@kernel.org
+Reported-by: Yuan Tan <yuantan098@gmail.com>
+Reported-by: Yifan Wu <yifanwucs@gmail.com>
+Reported-by: Juefei Pu <tomapufckgml@gmail.com>
+Reported-by: Xin Liu <bird@lzu.edu.cn>
+Signed-off-by: Haoze Xie <royenheart@gmail.com>
+Signed-off-by: Ren Wei <n05ec@lzu.edu.cn>
+Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/shaper/shaper.c | 30 +++++++++++++++++++++++-------
- 1 file changed, 23 insertions(+), 7 deletions(-)
+ include/net/netfilter/nf_queue.h |    1 +
+ net/netfilter/nf_queue.c         |    4 +++-
+ net/netfilter/nfnetlink_queue.c  |    2 ++
+ 3 files changed, 6 insertions(+), 1 deletion(-)
 
-diff --git a/net/shaper/shaper.c b/net/shaper/shaper.c
-index be9999ab62e39..e41a82241230d 100644
---- a/net/shaper/shaper.c
-+++ b/net/shaper/shaper.c
-@@ -964,15 +964,22 @@ static int __net_shaper_group(struct net_shaper_binding *binding,
- 	int i, ret;
+--- a/include/net/netfilter/nf_queue.h
++++ b/include/net/netfilter/nf_queue.h
+@@ -14,6 +14,7 @@ struct nf_queue_entry {
+ 	struct list_head	list;
+ 	struct rhash_head	hash_node;
+ 	struct sk_buff		*skb;
++	struct net_device	*skb_dev;
+ 	unsigned int		id;
+ 	unsigned int		hook_index;	/* index in hook_entries->hook[] */
+ #if IS_ENABLED(CONFIG_BRIDGE_NETFILTER)
+--- a/net/netfilter/nf_queue.c
++++ b/net/netfilter/nf_queue.c
+@@ -60,6 +60,7 @@ static void nf_queue_entry_release_refs(
+ 	struct nf_hook_state *state = &entry->state;
  
- 	if (node->handle.scope == NET_SHAPER_SCOPE_NODE) {
-+		struct net_shaper *cur = NULL;
-+
- 		new_node = node->handle.id == NET_SHAPER_ID_UNSPEC;
+ 	/* Release those devices we held, or Alexey will kill me. */
++	dev_put(entry->skb_dev);
+ 	dev_put(state->in);
+ 	dev_put(state->out);
+ 	if (state->sk)
+@@ -101,6 +102,7 @@ bool nf_queue_entry_get_refs(struct nf_q
+ 	if (state->sk && !refcount_inc_not_zero(&state->sk->sk_refcnt))
+ 		return false;
  
--		if (!new_node && !net_shaper_lookup(binding, &node->handle)) {
--			/* The related attribute is not available when
--			 * reaching here from the delete() op.
--			 */
--			NL_SET_ERR_MSG_FMT(extack, "Node shaper %d:%d does not exists",
--					   node->handle.scope, node->handle.id);
--			return -ENOENT;
-+		if (!new_node) {
-+			cur = net_shaper_lookup(binding, &node->handle);
-+			if (!cur) {
-+				/* The related attribute is not available
-+				 * when reaching here from the delete() op.
-+				 */
-+				NL_SET_ERR_MSG_FMT(extack,
-+						   "Node shaper %d:%d does not exist",
-+						   node->handle.scope,
-+						   node->handle.id);
-+				return -ENOENT;
-+			}
- 		}
++	dev_hold(entry->skb_dev);
+ 	dev_hold(state->in);
+ 	dev_hold(state->out);
  
- 		/* When unspecified, the node parent scope is inherited from
-@@ -986,6 +993,15 @@ static int __net_shaper_group(struct net_shaper_binding *binding,
- 				return ret;
- 		}
+@@ -201,11 +203,11 @@ static int __nf_queue(struct sk_buff *sk
  
-+		if (cur && net_shaper_handle_cmp(&cur->parent,
-+						 &node->parent)) {
-+			NL_SET_ERR_MSG_FMT(extack,
-+					   "Cannot reparent node shaper %d:%d",
-+					   node->handle.scope,
-+					   node->handle.id);
-+			return -EOPNOTSUPP;
-+		}
-+
- 	} else {
- 		net_shaper_default_parent(&node->handle, &node->parent);
- 	}
--- 
-2.53.0
-
+ 	*entry = (struct nf_queue_entry) {
+ 		.skb	= skb,
++		.skb_dev = skb->dev,
+ 		.state	= *state,
+ 		.hook_index = index,
+ 		.size	= sizeof(*entry) + route_key_size,
+ 	};
+-
+ 	__nf_queue_entry_init_physdevs(entry);
+ 
+ 	if (!nf_queue_entry_get_refs(entry)) {
+--- a/net/netfilter/nfnetlink_queue.c
++++ b/net/netfilter/nfnetlink_queue.c
+@@ -1196,6 +1196,8 @@ dev_cmp(struct nf_queue_entry *entry, un
+ 	if (physinif == ifindex || physoutif == ifindex)
+ 		return 1;
+ #endif
++	if (entry->skb_dev && entry->skb_dev->ifindex == ifindex)
++		return 1;
+ 	if (entry->state.in)
+ 		if (entry->state.in->ifindex == ifindex)
+ 			return 1;
 
 
 
