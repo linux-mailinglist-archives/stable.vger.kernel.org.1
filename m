@@ -1,159 +1,134 @@
-Return-Path: <stable+bounces-256431-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-256432-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id uNXENCnBGGp4nAgAu9opvQ
-	(envelope-from <stable+bounces-256431-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 29 May 2026 00:26:49 +0200
+	id qB5UIabDGGp4nAgAu9opvQ
+	(envelope-from <stable+bounces-256432-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 29 May 2026 00:37:26 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 538F45FAEE7
-	for <lists+stable@lfdr.de>; Fri, 29 May 2026 00:26:49 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id EBF6D5FB0C9
+	for <lists+stable@lfdr.de>; Fri, 29 May 2026 00:37:25 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id E3CD1300D929
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:26:35 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id C220030DFD12
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:31:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3910F368D7B;
-	Thu, 28 May 2026 22:26:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 955F0368D6F;
+	Thu, 28 May 2026 22:31:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="g4Vx9SxO"
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="wipSqzZZ"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-dy1-f202.google.com (mail-dy1-f202.google.com [74.125.82.202])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E641D35E1B6;
-	Thu, 28 May 2026 22:26:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 44CD7363C61
+	for <stable@vger.kernel.org>; Thu, 28 May 2026 22:31:56 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.82.202
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780007195; cv=none; b=bTLXcJEdYgd69QUMwpqQihsdCoDHg3jn8nOK5GYxSNau5wSl5ZirTOM5v0femOYiW8c5xK/IxlIpXCC34mXiaK58YTORPjnaXG/jBP21e/cdT3zJ6lJIh2CcDe8PfiMnxLk94nG/B3cUN9FSiFlJlZW1harJm12DXEl2ypgRVlU=
+	t=1780007518; cv=none; b=GJVsb+PCAWuCFmk/aHYb2zXGH1HS+PPhwUSNVT6g3m6WCYOoNE8rJN4VmvEqeXQG+N27dVh9oi0Wu76VAyIn+1FVJ2rj+AK9OXmo4tNQaWxgDnwWpEuBa046ZgtC6k9qZO4g7BbJFILhsk8lfmq48ESb/TUeI3ZAFjK8Wpdf+aM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780007195; c=relaxed/simple;
-	bh=f6a4kzZvcF4CSpD8ZPTHpcWH7pBLrQ7tM9yMXCvBV+c=;
-	h=Date:To:From:Subject:Message-Id; b=Qr0G0C3spBH1VNxSvhpy8KtmAR50crbhudx9du9gE1LJAHYviYLa/xCH1V4W5sXGxFk2geVe1LdevigKa4s07VFnAWNXANjMt9+CCyT1dvdtDTpYEHsZy3JkCWsYQ2cdGu4cdMaLkFQHrjglLjIKmzQhLrCvbhaP2JwUZy0ry5M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=g4Vx9SxO; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 926401F000E9;
-	Thu, 28 May 2026 22:26:33 +0000 (UTC)
+	s=arc-20240116; t=1780007518; c=relaxed/simple;
+	bh=fewyrO7jRSDRezpROiazTrcQjh82K+907ZqYYNd/aeo=;
+	h=Date:Mime-Version:Message-ID:Subject:From:To:Cc:Content-Type; b=gdgAe13oh98TUQAAGU+rxxVgkzfi7YTCcUZgyn27p2+hoTjpn1NJVFep2fKUHmjekfbNrO83nzku+a/S7CmRK76iF15JFwaYz2mzTCOeI54Wjzo99NVMkkmujiq/BMvgphzV7of0dqvZxlW1kjmzviJNHPqMTAW4lDrZodZDOgQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--wnliu.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=wipSqzZZ; arc=none smtp.client-ip=74.125.82.202
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--wnliu.bounces.google.com
+Received: by mail-dy1-f202.google.com with SMTP id 5a478bee46e88-304ba38f45dso2625111eec.1
+        for <stable@vger.kernel.org>; Thu, 28 May 2026 15:31:56 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=linux-foundation.org; s=korg; t=1780007193;
-	bh=RMne29sfpRPQPscGqixHcT1sc+5mjoH8asYJW3GMRQY=;
-	h=Date:To:From:Subject;
-	b=g4Vx9SxOVILJAvlcXuLVjldey0U1SYzmK6uB6CXeL/3tyYtNsxkf9S8ssp6x9ECv8
-	 M9ifN+t2ONSrsk+rYU81TTTNw1JwIBwo3uzpQQJl29alE33ixeeGpvgR1rD42oz6Md
-	 aoxPiDgymrIDhW1D4KwFqdGzEQdzFVM4Oo/rnOvg=
-Date: Thu, 28 May 2026 15:26:33 -0700
-To: mm-commits@vger.kernel.org,xieyisheng1@huawei.com,stable@vger.kernel.org,senozhatsky@chromium.org,minchan@kernel.org,hch@lst.de,axboe@kernel.dk,shenxiaogll@gmail.com,akpm@linux-foundation.org
-From: Andrew Morton <akpm@linux-foundation.org>
-Subject: + zram-fix-use-after-free-in-zram_bvec_write_partial.patch added to mm-hotfixes-unstable branch
-Message-Id: <20260528222633.926401F000E9@smtp.kernel.org>
+        d=google.com; s=20251104; t=1780007515; x=1780612315; darn=vger.kernel.org;
+        h=cc:to:from:subject:message-id:mime-version:date:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=lA9n52XOp29AfkFZf1NgzFL5E2eupZtzE4Xy3Kjuzc8=;
+        b=wipSqzZZfcSL3WPWJ5qWrgqOwxdbkFhxlhqmJ8AAj0tT0oYJZl00RU4SFedw3F/P/O
+         FyD/+OGDFZrVhZpNlfiTz+lGMmS5QJbiDRyZXAaWkiC8R5kAKprWw4oQ9vI2Ole4BUro
+         P8NGPcJw0JLvsxjQR9NxWfJaclegMb1DmkjC1Nc7mwJU3XGRwCJeRO38Sa2o1xrywxnB
+         NWLhJaSVikqhCf8sSUM0RDjmLX/s8Mj0FZE4lbZJ6WjurPRaWRrZd9+aP3KNK8aqNXjg
+         D/oeFFusvnZXx/khrHD/YiDS6wp78OwWyu0ir98r72gT6CGXyJ6gShXuPdv/WVAURQCk
+         t7hA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1780007515; x=1780612315;
+        h=cc:to:from:subject:message-id:mime-version:date:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=lA9n52XOp29AfkFZf1NgzFL5E2eupZtzE4Xy3Kjuzc8=;
+        b=bLljVJw8Kh1H31azNDQcE9OVlBI8tiV9Y9iyJrM8jPnMXstH36gw4oQMTJezazV+zI
+         BV7vCi8DYf5YuDxnFH4iW8xS35irzxF4HiGHqpxWPNu4Ku2ts1ONsgSy1m9APLww2QZp
+         JrWXCm2yxFH6nEr095xE50i0rpqfOGc6vH0NMJdTp8vmYC3JArCqqXNaFPQxpMTHT8az
+         u1lSRUmfZCgoahJrSLXmG9bX/HvNlNImpGXCZIABkOTxp304SnMx4lGJ6TuUPbmWlS4I
+         KPYOzFCg+bxKfXTum8OVT/k04cewjoidttTLL6e/VTmUERS1Lck7RQt+aMq/y+XvubfV
+         dbyA==
+X-Forwarded-Encrypted: i=1; AFNElJ99fALwAGkxYIVnr0dhvyt6rB8mJBs/jfXEQQjTeTYlbfx5DZ4YRI9I8vgHjL0Yi6JNdZ8CP9Y=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzPuKL1jfauNE1LyLQFXm6wFeKhBNxflqxtKPxc8iT72dwxIPQl
+	WPxuuuLdJ8Qi/9LYEYjwMoiwabna1BRtD1dfPvzxx3/66NLtYjMPdoc9gJYIJLXLDdCm2MZYjQ8
+	nRw==
+X-Received: from dyx4.prod.google.com ([2002:a05:693c:8204:b0:304:eb73:cff1])
+ (user=wnliu job=prod-delivery.src-stubby-dispatcher) by 2002:a05:7300:7f9f:b0:2f2:6dde:df50
+ with SMTP id 5a478bee46e88-304eb0d30ffmr188430eec.17.1780007515107; Thu, 28
+ May 2026 15:31:55 -0700 (PDT)
+Date: Thu, 28 May 2026 22:31:46 +0000
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-X-Spamd-Result: default: False [-1.16 / 15.00];
+Mime-Version: 1.0
+X-Mailer: git-send-email 2.54.0.823.g6e5bcc1fc9-goog
+Message-ID: <20260528223147.750229-1-wnliu@google.com>
+Subject: [PATCH v2 0/1] Don't split flush for amd_iommu_domain_flush_all()
+From: Weinan Liu <wnliu@google.com>
+To: iommu@lists.linux.dev, jgg@nvidia.com, joro@8bytes.org, 
+	suravee.suthikulpanit@amd.com
+Cc: will@kernel.org, patches@lists.linux.dev, stable@vger.kernel.org, 
+	robin.murphy@arm.com, vasant.hegde@amd.com, santosh.shukla@amd.com, 
+	chrisl@kernel.org, josef@toxicpanda.com, Weinan Liu <wnliu@google.com>
+Content-Type: text/plain; charset="UTF-8"
+X-Spamd-Result: default: False [-0.66 / 15.00];
+	MID_CONTAINS_FROM(1.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
-	R_DKIM_ALLOW(-0.20)[linux-foundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	MV_CASE(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[google.com,reject];
+	R_DKIM_ALLOW(-0.20)[google.com:s=20251104];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-256431-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-256432-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[akpm@linux-foundation.org,stable@vger.kernel.org];
-	DMARC_NA(0.00)[linux-foundation.org];
-	DKIM_TRACE(0.00)[linux-foundation.org:+];
-	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FREEMAIL_TO(0.00)[vger.kernel.org,huawei.com,chromium.org,kernel.org,lst.de,kernel.dk,gmail.com,linux-foundation.org];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	FROM_HAS_DN(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	TO_DN_NONE(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	MISSING_XM_UA(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[9];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
 	MIME_TRACE(0.00)[0:+];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linux-foundation.org:email,linux-foundation.org:dkim,smtp.kernel.org:mid,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,huawei.com:email,lst.de:email]
-X-Rspamd-Queue-Id: 538F45FAEE7
+	RCVD_COUNT_THREE(0.00)[4];
+	RCPT_COUNT_TWELVE(0.00)[13];
+	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	TO_DN_SOME(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[wnliu@google.com,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[google.com:+];
+	NEURAL_HAM(-0.00)[-1.000];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
+X-Rspamd-Queue-Id: EBF6D5FB0C9
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
+This patch is a respin of Josef Bacik's original work[1] to fix the
+performance issues and soft lockups in the AMD IOMMU driver when running
+within a VM. I am taking over the respin as Josef currently has limited
+time for this
 
-The patch titled
-     Subject: zram: fix use-after-free in zram_bvec_write_partial()
-has been added to the -mm mm-hotfixes-unstable branch.  Its filename is
-     zram-fix-use-after-free-in-zram_bvec_write_partial.patch
+[1]:https://lore.kernel.org/linux-iommu/ad8652c5e9f8aeee05e2103f4987589cdd4a3fd0.1772659768.git.josef@toxicpanda.com
 
-This patch will shortly appear at
-     https://git.kernel.org/pub/scm/linux/kernel/git/akpm/25-new.git/tree/patches/zram-fix-use-after-free-in-zram_bvec_write_partial.patch
+Changes in v2:
+* Update the patch according to comments of v1
 
-This patch will later appear in the mm-hotfixes-unstable branch at
-    git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
+Weinan Liu (1):
+  iommu/amd: Don't split flush for amd_iommu_domain_flush_all()
 
-Before you just go and hit "reply", please:
-   a) Consider who else should be cc'ed
-   b) Prefer to cc a suitable mailing list as well
-   c) Ideally: find the original patch on the mailing list and do a
-      reply-to-all to that, adding suitable additional cc's
+ drivers/iommu/amd/iommu.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-*** Remember to use Documentation/process/submit-checklist.rst when testing your code ***
-
-The -mm tree is included into linux-next via various
-branches at git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
-and is updated there most days
-
-------------------------------------------------------
-From: Cunlong Li <shenxiaogll@gmail.com>
-Subject: zram: fix use-after-free in zram_bvec_write_partial()
-Date: Thu, 28 May 2026 10:48:44 +0800
-
-zram_read_page() picks the sync or async backing device read path based on
-whether the parent bio is NULL.  zram_bvec_write_partial() passes its
-parent bio down, so for ZRAM_WB slots the read is dispatched
-asynchronously and zram_read_page() returns 0 while the bio is still in
-flight.  The caller then runs memcpy_from_bvec(), zram_write_page() and
-__free_page() on the buffer, leaving the async read to write into a freed
-page.
-
-zram_bvec_read_partial() was switched to NULL in commit 4e3c87b9421d
-("zram: fix synchronous reads") for the same reason; the write_partial
-counterpart was missed.
-
-Link: https://lore.kernel.org/20260528-zram-v3-1-cab86eef8764@gmail.com
-Fixes: 8e654f8fbff5 ("zram: read page from backing device")
-Reviewed-by: Christoph Hellwig <hch@lst.de>
-Reviewed-by: Sergey Senozhatsky <senozhatsky@chromium.org>
-Signed-off-by: Cunlong Li <shenxiaogll@gmail.com>
-Cc: Jens Axboe <axboe@kernel.dk>
-Cc: Minchan Kim <minchan@kernel.org>
-Cc: Yisheng Xie <xieyisheng1@huawei.com>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
----
-
- drivers/block/zram/zram_drv.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
-
---- a/drivers/block/zram/zram_drv.c~zram-fix-use-after-free-in-zram_bvec_write_partial
-+++ a/drivers/block/zram/zram_drv.c
-@@ -2337,7 +2337,7 @@ static int zram_bvec_write_partial(struc
- 	if (!page)
- 		return -ENOMEM;
- 
--	ret = zram_read_page(zram, page, index, bio);
-+	ret = zram_read_page(zram, page, index, NULL);
- 	if (!ret) {
- 		memcpy_from_bvec(page_address(page) + offset, bvec);
- 		ret = zram_write_page(zram, page, index);
-_
-
-Patches currently in -mm which might be from shenxiaogll@gmail.com are
-
-zram-fix-use-after-free-in-zram_bvec_write_partial.patch
-zram-drop-unused-bio-parameter-from-write-helpers.patch
+-- 
+2.54.0.823.g6e5bcc1fc9-goog
 
 
