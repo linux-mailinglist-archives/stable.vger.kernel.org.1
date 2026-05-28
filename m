@@ -1,62 +1,61 @@
-Return-Path: <stable+bounces-255431-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-255789-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id MDEhLe6iGGrJlggAu9opvQ
-	(envelope-from <stable+bounces-255431-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:17:50 +0200
+	id 4CkIJQKmGGrClggAu9opvQ
+	(envelope-from <stable+bounces-255789-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:30:58 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 35F0B5F8500
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:17:50 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2D4E15F8DC7
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:30:58 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id CEAE031CFACA
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 20:08:11 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id D345B312A709
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 20:24:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 82FD33290B0;
-	Thu, 28 May 2026 20:08:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E589D3002A0;
+	Thu, 28 May 2026 20:24:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="X8k9+VbX"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JnYpckib"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 07C97339866;
-	Thu, 28 May 2026 20:08:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B0FB32FD7C3;
+	Thu, 28 May 2026 20:24:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779998891; cv=none; b=Ru5F7Mx0V34XEyi6pFRHSmu2GelWAFxixtFf36HCb0x4V7hWNtntiyHv2uxP9RVl00WiDtaMWVmImubwPy1UO8jGXpVEqQvUUlpW/6vqlqYjMCaBtUA1sSlszPZdkC15rBkutah0ffzWIXrBWXkDSjrN3xEbfRiNodQAYuS6eoI=
+	t=1779999887; cv=none; b=VnNxvLgzOpF7o/+Njlt/ynx7VjwKNZtiTlb6hGQSG9mfYiyEanqg1t01Nt4F/PFDoP1UuZhql2fdDsQy1/jXqxC1N6m3dLvrK/7qNGa73NFHwTtvGTAh/i9mNCg4ZTtlLo4bksRkDjdagfnOcBeLVX7I8nsQnyLEQj43bgcuk2U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779998891; c=relaxed/simple;
-	bh=Y8G8UWwSITLWW043P/8/Ak1LQm068brGPS2gsxp9PlI=;
+	s=arc-20240116; t=1779999887; c=relaxed/simple;
+	bh=m/Uk/DJlaoAt7MtKwPDu4IGHpp8MIkF4PgVummuZpas=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Qo//nYW1hS+r65IBwdijF1CITKcKGx2muMswU8B4HRXb/w0nXv0ARClxevlOvr+Omnkhc/bdr2f5Dh44BqXjV8DgcxDwHmxYlCbxi9dPz1C5KrfRqYTD1/0fA1Oi+x5feL+CcUrBd+2KpmB8ukKKJTb0IDZs4V8cczp1RmaMj5U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=X8k9+VbX; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2412B1F000E9;
-	Thu, 28 May 2026 20:08:08 +0000 (UTC)
+	 MIME-Version:Content-Type; b=kLpVEh/wryh7MMhJcN7+7TVKL48TAgxi2904wGMVlpt3RJR06oxncd0oMs3XzC4lJEMqkZvvCL5qPanB256FAYIanytdKVgzaY/btfy9jHg7m2EncSxdkyKssJvWtdx42owvYdMfME+fYn0dNJna3MXDPoSnw+8hJq9GKe9XHrg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JnYpckib; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DFAF91F000E9;
+	Thu, 28 May 2026 20:24:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779998889;
-	bh=ds9/e7tCf4j7I9qALARBMfw5D9p3RtmCazI0wvsykXI=;
+	s=korg; t=1779999886;
+	bh=MOS/FMVOjUyWQUwK5zCrR66sOV412kc9OmbFN6HkJuk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=X8k9+VbXS0gttaRHevfgMh18+nz2gzFTOsY+OTtOlfR3iflQhIt5bEAsrk3bFYpmJ
-	 wMOOjVuFyw3Ri0Xxv/tu2QPbFU8cj3t2sQeba9Etp0SGKElf5X5XEqcpWk84NzxTJq
-	 X4C9y+ZXGNrf++VQaCa20NDW+Uy+RWpWX+jIGocw=
+	b=JnYpckibo7eRTx73nt5lBJo3H94GaOhlTHdhoUxig6XvoI4/sObhLIcmRol7urwWS
+	 17zkPN4nav/uRW8kAW1gogbxH0piZxHHhlnYMqgNrY2Lx1XrCzcxsx6kIOFlRmmXPX
+	 tlUbImd5ZwdSjiBQzl3SvfRiBTAd3e4tXtsYYy7A=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Samiullah Khawaja <skhawaja@google.com>,
-	Kevin Tian <kevin.tian@intel.com>,
-	Jason Gunthorpe <jgg@nvidia.com>,
-	Lu Baolu <baolu.lu@linux.intel.com>,
-	Joerg Roedel <joerg.roedel@amd.com>,
+	Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
+	Steven Rostedt <rostedt@goodmis.org>,
+	Jiayuan Chen <jiayuan.chen@linux.dev>,
+	Thomas Gleixner <tglx@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 7.0 334/461] iommupt: Directly call iommupts unmap_range()
+Subject: [PATCH 6.18 225/377] irq_work: Fix use-after-free in irq_work_single() on PREEMPT_RT
 Date: Thu, 28 May 2026 21:47:43 +0200
-Message-ID: <20260528194657.021597726@linuxfoundation.org>
+Message-ID: <20260528194644.905771180@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260528194646.819809818@linuxfoundation.org>
-References: <20260528194646.819809818@linuxfoundation.org>
+In-Reply-To: <20260528194638.371537336@linuxfoundation.org>
+References: <20260528194638.371537336@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,273 +65,99 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-255431-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
+	TAGGED_FROM(0.00)[bounces-255789-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	MIME_TRACE(0.00)[0:+];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	FROM_HAS_DN(0.00)[];
 	TO_DN_SOME(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[9];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
 	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,intel.com:email,amd.com:email,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,nvidia.com:email]
-X-Rspamd-Queue-Id: 35F0B5F8500
+	RCPT_COUNT_SEVEN(0.00)[8];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,linutronix.de:email,linux.dev:email,goodmis.org:email,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,msgid.link:url]
+X-Rspamd-Queue-Id: 2D4E15F8DC7
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-7.0-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jason Gunthorpe <jgg@nvidia.com>
+From: Jiayuan Chen <jiayuan.chen@linux.dev>
 
-[ Upstream commit 99fb8afa16add85ed016baee9735231bca0c32b4 ]
+[ Upstream commit 91840be8f710370607f949a627e070896faeddb8 ]
 
-The common algorithm in iommupt does not require the iommu_pgsize()
-calculations, it can directly unmap any arbitrary range. Add a new function
-pointer to directly call an iommupt unmap_range op and make
-__iommu_unmap() call it directly.
+On PREEMPT_RT, non-HARD irq_work runs in per-CPU kthreads via
+run_irq_workd(), so irq_work_sync() uses rcuwait() to wait for BUSY==0.
 
-Gives about a 5% gain on single page unmappings.
+After irq_work_single() clears BUSY via atomic_cmpxchg(), it still
+dereferences @work for irq_work_is_hard() and rcuwait_wake_up().
 
-The function pointer is run through pt_iommu_ops instead of
-iommu_domain_ops to discourage using it outside iommupt. All drivers with
-their own page tables should continue to use the simplified
-map/unmap_pages() style interfaces.
+An irq_work_sync() caller on another CPU that enters after BUSY is cleared
+can observe BUSY==0 immediately, return, and free the work before those
+accesses complete — causing a use-after-free.
 
-Reviewed-by: Samiullah Khawaja <skhawaja@google.com>
-Reviewed-by: Kevin Tian <kevin.tian@intel.com>
-Signed-off-by: Jason Gunthorpe <jgg@nvidia.com>
-Reviewed-by: Lu Baolu <baolu.lu@linux.intel.com>
-Signed-off-by: Joerg Roedel <joerg.roedel@amd.com>
-Stable-dep-of: 0735c54804c7 ("iommu: Handle unmap error when iommu_debug is enabled")
+Fix this by wrapping run_irq_workd() in guard(rcu)() so that the entire
+irq_work_single() execution is within an RCU read-side critical
+section. Then add synchronize_rcu() in irq_work_sync() after
+rcuwait_wait_event() to ensure the caller waits for the RCU grace period
+before returning, preventing premature frees.
+
+Fixes: 810979682ccc ("irq_work: Allow irq_work_sync() to sleep if irq_work() no IRQ support.")
+Suggested-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
+Suggested-by: Steven Rostedt <rostedt@goodmis.org>
+Signed-off-by: Jiayuan Chen <jiayuan.chen@linux.dev>
+Signed-off-by: Thomas Gleixner <tglx@kernel.org>
+Reviewed-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
+Link: https://patch.msgid.link/20260330073234.303732-1-jiayuan.chen@linux.dev
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/iommu/generic_pt/iommu_pt.h | 29 ++++------------------
- drivers/iommu/iommu.c               | 27 ++++++++++++++++-----
- include/linux/generic_pt/iommu.h    | 37 ++++++++++++++++++++++++-----
- include/linux/iommu.h               |  1 +
- 4 files changed, 57 insertions(+), 37 deletions(-)
+ kernel/irq_work.c | 7 +++++++
+ 1 file changed, 7 insertions(+)
 
-diff --git a/drivers/iommu/generic_pt/iommu_pt.h b/drivers/iommu/generic_pt/iommu_pt.h
-index 7e7a6e7abdeed..8bc4683a64dc1 100644
---- a/drivers/iommu/generic_pt/iommu_pt.h
-+++ b/drivers/iommu/generic_pt/iommu_pt.h
-@@ -1020,34 +1020,12 @@ static __maybe_unused int __unmap_range(struct pt_range *range, void *arg,
- 	return ret;
- }
- 
--/**
-- * unmap_pages() - Make a range of IOVA empty/not present
-- * @domain: Domain to manipulate
-- * @iova: IO virtual address to start
-- * @pgsize: Length of each page
-- * @pgcount: Length of the range in pgsize units starting from @iova
-- * @iotlb_gather: Gather struct that must be flushed on return
-- *
-- * unmap_pages() will remove a translation created by map_pages(). It cannot
-- * subdivide a mapping created by map_pages(), so it should be called with IOVA
-- * ranges that match those passed to map_pages(). The IOVA range can aggregate
-- * contiguous map_pages() calls so long as no individual range is split.
-- *
-- * Context: The caller must hold a write range lock that includes
-- * the whole range.
-- *
-- * Returns: Number of bytes of VA unmapped. iova + res will be the point
-- * unmapping stopped.
-- */
--size_t DOMAIN_NS(unmap_pages)(struct iommu_domain *domain, unsigned long iova,
--			      size_t pgsize, size_t pgcount,
-+static size_t NS(unmap_range)(struct pt_iommu *iommu_table, dma_addr_t iova,
-+			      dma_addr_t len,
- 			      struct iommu_iotlb_gather *iotlb_gather)
- {
--	struct pt_iommu *iommu_table =
--		container_of(domain, struct pt_iommu, domain);
- 	struct pt_unmap_args unmap = { .free_list = IOMMU_PAGES_LIST_INIT(
- 					       unmap.free_list) };
--	pt_vaddr_t len = pgsize * pgcount;
- 	struct pt_range range;
- 	int ret;
- 
-@@ -1062,7 +1040,6 @@ size_t DOMAIN_NS(unmap_pages)(struct iommu_domain *domain, unsigned long iova,
- 
- 	return unmap.unmapped;
- }
--EXPORT_SYMBOL_NS_GPL(DOMAIN_NS(unmap_pages), "GENERIC_PT_IOMMU");
- 
- static void NS(get_info)(struct pt_iommu *iommu_table,
- 			 struct pt_iommu_info *info)
-@@ -1110,6 +1087,7 @@ static void NS(deinit)(struct pt_iommu *iommu_table)
- }
- 
- static const struct pt_iommu_ops NS(ops) = {
-+	.unmap_range = NS(unmap_range),
- #if IS_ENABLED(CONFIG_IOMMUFD_DRIVER) && defined(pt_entry_is_write_dirty) && \
- 	IS_ENABLED(CONFIG_IOMMUFD_TEST) && defined(pt_entry_make_write_dirty)
- 	.set_dirty = NS(set_dirty),
-@@ -1172,6 +1150,7 @@ static int pt_iommu_init_domain(struct pt_iommu *iommu_table,
- 
- 	domain->type = __IOMMU_DOMAIN_PAGING;
- 	domain->pgsize_bitmap = info.pgsize_bitmap;
-+	domain->is_iommupt = true;
- 
- 	if (pt_feature(common, PT_FEAT_DYNAMIC_TOP))
- 		range = _pt_top_range(common,
-diff --git a/drivers/iommu/iommu.c b/drivers/iommu/iommu.c
-index ef08c2c4ec95b..04b1c0f358b05 100644
---- a/drivers/iommu/iommu.c
-+++ b/drivers/iommu/iommu.c
-@@ -34,6 +34,7 @@
- #include <linux/sched/mm.h>
- #include <linux/msi.h>
- #include <uapi/linux/iommufd.h>
-+#include <linux/generic_pt/iommu.h>
- 
- #include "dma-iommu.h"
- #include "iommu-priv.h"
-@@ -2710,13 +2711,12 @@ int iommu_map(struct iommu_domain *domain, unsigned long iova,
- }
- EXPORT_SYMBOL_GPL(iommu_map);
- 
--static size_t __iommu_unmap(struct iommu_domain *domain,
--			    unsigned long iova, size_t size,
--			    struct iommu_iotlb_gather *iotlb_gather)
-+static size_t
-+__iommu_unmap_domain_pgtbl(struct iommu_domain *domain, unsigned long iova,
-+			   size_t size, struct iommu_iotlb_gather *iotlb_gather)
- {
- 	const struct iommu_domain_ops *ops = domain->ops;
- 	size_t unmapped_page, unmapped = 0;
--	unsigned long orig_iova = iova;
- 	unsigned int min_pagesz;
- 
- 	if (unlikely(!(domain->type & __IOMMU_DOMAIN_PAGING)))
-@@ -2768,8 +2768,23 @@ static size_t __iommu_unmap(struct iommu_domain *domain,
- 		unmapped += unmapped_page;
+diff --git a/kernel/irq_work.c b/kernel/irq_work.c
+index 73f7e1fd4ab4d..bf411656c3160 100644
+--- a/kernel/irq_work.c
++++ b/kernel/irq_work.c
+@@ -292,6 +292,12 @@ void irq_work_sync(struct irq_work *work)
+ 	    !arch_irq_work_has_interrupt()) {
+ 		rcuwait_wait_event(&work->irqwait, !irq_work_is_busy(work),
+ 				   TASK_UNINTERRUPTIBLE);
++		/*
++		 * Ensure irq_work_single() does not access @work
++		 * after removing IRQ_WORK_BUSY. It is always
++		 * accessed within a RCU-read section.
++		 */
++		synchronize_rcu();
+ 		return;
  	}
  
--	trace_unmap(orig_iova, size, unmapped);
--	iommu_debug_unmap_end(domain, orig_iova, size, unmapped);
-+	return unmapped;
-+}
-+
-+static size_t __iommu_unmap(struct iommu_domain *domain, unsigned long iova,
-+			    size_t size,
-+			    struct iommu_iotlb_gather *iotlb_gather)
-+{
-+	struct pt_iommu *pt = iommupt_from_domain(domain);
-+	size_t unmapped;
-+
-+	if (pt)
-+		unmapped = pt->ops->unmap_range(pt, iova, size, iotlb_gather);
-+	else
-+		unmapped = __iommu_unmap_domain_pgtbl(domain, iova, size,
-+						      iotlb_gather);
-+	trace_unmap(iova, size, unmapped);
-+	iommu_debug_unmap_end(domain, iova, size, unmapped);
- 	return unmapped;
+@@ -302,6 +308,7 @@ EXPORT_SYMBOL_GPL(irq_work_sync);
+ 
+ static void run_irq_workd(unsigned int cpu)
+ {
++	guard(rcu)();
+ 	irq_work_run_list(this_cpu_ptr(&lazy_list));
  }
  
-diff --git a/include/linux/generic_pt/iommu.h b/include/linux/generic_pt/iommu.h
-index 9eefbb74efd08..f094f8f44e4e8 100644
---- a/include/linux/generic_pt/iommu.h
-+++ b/include/linux/generic_pt/iommu.h
-@@ -66,6 +66,13 @@ struct pt_iommu {
- 	struct device *iommu_device;
- };
- 
-+static inline struct pt_iommu *iommupt_from_domain(struct iommu_domain *domain)
-+{
-+	if (!IS_ENABLED(CONFIG_IOMMU_PT) || !domain->is_iommupt)
-+		return NULL;
-+	return container_of(domain, struct pt_iommu, domain);
-+}
-+
- /**
-  * struct pt_iommu_info - Details about the IOMMU page table
-  *
-@@ -80,6 +87,29 @@ struct pt_iommu_info {
- };
- 
- struct pt_iommu_ops {
-+	/**
-+	 * @unmap_range: Make a range of IOVA empty/not present
-+	 * @iommu_table: Table to manipulate
-+	 * @iova: IO virtual address to start
-+	 * @len: Length of the range starting from @iova
-+	 * @iotlb_gather: Gather struct that must be flushed on return
-+	 *
-+	 * unmap_range() will remove a translation created by map_range(). It
-+	 * cannot subdivide a mapping created by map_range(), so it should be
-+	 * called with IOVA ranges that match those passed to map_pages. The
-+	 * IOVA range can aggregate contiguous map_range() calls so long as no
-+	 * individual range is split.
-+	 *
-+	 * Context: The caller must hold a write range lock that includes
-+	 * the whole range.
-+	 *
-+	 * Returns: Number of bytes of VA unmapped. iova + res will be the
-+	 * point unmapping stopped.
-+	 */
-+	size_t (*unmap_range)(struct pt_iommu *iommu_table, dma_addr_t iova,
-+			      dma_addr_t len,
-+			      struct iommu_iotlb_gather *iotlb_gather);
-+
- 	/**
- 	 * @set_dirty: Make the iova write dirty
- 	 * @iommu_table: Table to manipulate
-@@ -198,10 +228,6 @@ struct pt_iommu_cfg {
- 				       unsigned long iova, phys_addr_t paddr,  \
- 				       size_t pgsize, size_t pgcount,          \
- 				       int prot, gfp_t gfp, size_t *mapped);   \
--	size_t pt_iommu_##fmt##_unmap_pages(                                   \
--		struct iommu_domain *domain, unsigned long iova,               \
--		size_t pgsize, size_t pgcount,                                 \
--		struct iommu_iotlb_gather *iotlb_gather);                      \
- 	int pt_iommu_##fmt##_read_and_clear_dirty(                             \
- 		struct iommu_domain *domain, unsigned long iova, size_t size,  \
- 		unsigned long flags, struct iommu_dirty_bitmap *dirty);        \
-@@ -223,8 +249,7 @@ struct pt_iommu_cfg {
-  */
- #define IOMMU_PT_DOMAIN_OPS(fmt)                        \
- 	.iova_to_phys = &pt_iommu_##fmt##_iova_to_phys, \
--	.map_pages = &pt_iommu_##fmt##_map_pages,       \
--	.unmap_pages = &pt_iommu_##fmt##_unmap_pages
-+	.map_pages = &pt_iommu_##fmt##_map_pages
- #define IOMMU_PT_DIRTY_OPS(fmt) \
- 	.read_and_clear_dirty = &pt_iommu_##fmt##_read_and_clear_dirty
- 
-diff --git a/include/linux/iommu.h b/include/linux/iommu.h
-index 555597b54083c..563d0f104114b 100644
---- a/include/linux/iommu.h
-+++ b/include/linux/iommu.h
-@@ -223,6 +223,7 @@ enum iommu_domain_cookie_type {
- struct iommu_domain {
- 	unsigned type;
- 	enum iommu_domain_cookie_type cookie_type;
-+	bool is_iommupt;
- 	const struct iommu_domain_ops *ops;
- 	const struct iommu_dirty_ops *dirty_ops;
- 	const struct iommu_ops *owner; /* Whose domain_alloc we came from */
 -- 
 2.53.0
 
