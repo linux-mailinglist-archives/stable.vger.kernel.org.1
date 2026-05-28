@@ -1,60 +1,59 @@
-Return-Path: <stable+bounces-255554-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-256192-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id MDQjN/OjGGrClggAu9opvQ
-	(envelope-from <stable+bounces-255554-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:22:11 +0200
+	id IDfKGqiqGGoomAgAu9opvQ
+	(envelope-from <stable+bounces-256192-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:50:48 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4C1EC5F87A5
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:22:11 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3A02D5F9AF3
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:50:48 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 8314C318186B
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 20:14:00 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id DA1A430BAF0E
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 20:43:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 481D53F870F;
-	Thu, 28 May 2026 20:13:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8075A339866;
+	Thu, 28 May 2026 20:43:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="n71fZqY6"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HAAypgpo"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 22A5633F5BE;
-	Thu, 28 May 2026 20:13:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 635B71DE4E0;
+	Thu, 28 May 2026 20:43:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779999239; cv=none; b=rVnjtRFPPlazEhjFLsylYiBNLqdwig0MwIvj96nPYsUxM/N/KMZqOImJlwWOEn5YNt0YPLEBIVcshcZGZDuEcW3A2Umv8kdzjdWOgzKbw7ZOZYfLlf8nKGZ4APP58p/aoGA4QaHaHaZ05ivbMvEBCKeLQSprsTH2km8gIcD8hAw=
+	t=1780001013; cv=none; b=E4vCu8t5z4YzECWJmu629OuC/QOXE29c8OO2NnpmrEZ97ho0ve1BOH/fgxQ5isUXu2R/V7I40+adljhYiDJInI5St8k1A7IL6EONuy5bZLk4+ia3hEBOPVkedY87UDxw/l9pXxafBy65gl9OAxFfmneWtX5vu4fCcMIX4MWtlqg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779999239; c=relaxed/simple;
-	bh=egoPgRTZ3HnE9OueR6YgmesBmYkAA++SpETfHtL/n94=;
+	s=arc-20240116; t=1780001013; c=relaxed/simple;
+	bh=Yn5oixhCwPkMCneptFp6bsyyp/jRM2puwplT0536Cs0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=KHOu639wyKesKZfMRU1JWUlYrSvX10gXs0myn2r+r3T20flK1z14OK7wFxdEFl2viJG5MJ/VyRLc5c7BdvnuN9KrXvl18ZNH4fS/dZbrcutHWuRQVyBDzDxADpCqiT6MHiLYxYLMfeFfWRskONQEoYv6/q2JI/21vrXqa90kpU0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=n71fZqY6; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 775CA1F000E9;
-	Thu, 28 May 2026 20:13:57 +0000 (UTC)
+	 MIME-Version; b=oKMu/U9xq0HtRstpCwIv2nXHktJ6YwfVMezogN7Fxzy1nSEUrYUp5+bnR4PXNQH7M07a4li2b71mb/unMhzB2czZVyal+NK17KsemTb4elKiWjoEaUX6ELK8N8xFyuY5pATtdNlswYQUXIPUo6L0zVvs69f+bpg3bcuuFsAso88=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HAAypgpo; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C04691F000E9;
+	Thu, 28 May 2026 20:43:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779999238;
-	bh=qtPPyCkyo+2PlptNFJo2HQv3v3krPxpB6TRogkUxAy4=;
+	s=korg; t=1780001012;
+	bh=nhYJtjNL5Zsch4x6KwKTFm2YElSEV8ITpKOTeut1c/I=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=n71fZqY6X0RUVG42Jy65d9uIBoA1kXf5WhrI3XKXxyxHzaLqfU9wsrnLk3R2nMxUI
-	 +5PqtbodM9SV2EzToAFxRcNQvf8SaZT+vze0O3jNodtJ8+GRu7yR35B0I8bsrlBUD7
-	 myFw6KpOt3KBNAsGtJEcVfeyFyUJxnc8cr2/YiHU=
+	b=HAAypgpongsoBlXweYw69hgflFUXHtvWCNLTCxxrPl7lXSBHIUaRUUvTVC9gWHfQ1
+	 i4eJLUW8NC8+EFMdrrQ8xHRc3as+/DZrtjLuvaoSJ88AV+pyOJ73+jJuxeeU+1KJZj
+	 Aj1t1CVIC+pMU93axKcFWKz4JejVIQlw7uLCqZhU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Junyi Liu <moss80199@gmail.com>,
-	Namjae Jeon <linkinjeon@kernel.org>,
-	Steve French <stfrench@microsoft.com>,
+	Lukas Bulwahn <lukas.bulwahn@redhat.com>,
+	Jiri Kosina <jkosina@suse.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 7.0 457/461] ksmbd: fix durable reconnect error path file lifetime
+Subject: [PATCH 6.12 212/272] HID: quirks: really enable the intended work around for appledisplay
 Date: Thu, 28 May 2026 21:49:46 +0200
-Message-ID: <20260528194700.769634233@linuxfoundation.org>
+Message-ID: <20260528194635.158626087@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260528194646.819809818@linuxfoundation.org>
-References: <20260528194646.819809818@linuxfoundation.org>
+In-Reply-To: <20260528194629.379955525@linuxfoundation.org>
+References: <20260528194629.379955525@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,93 +68,71 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,kernel.org,microsoft.com];
-	TAGGED_FROM(0.00)[bounces-255554-lists,stable=lfdr.de];
-	PRECEDENCE_BULK(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
+	RCVD_TLS_LAST(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	TAGGED_FROM(0.00)[bounces-256192-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[7];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
-X-Rspamd-Queue-Id: 4C1EC5F87A5
+	RCPT_COUNT_FIVE(0.00)[6];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,suse.com:email,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo]
+X-Rspamd-Queue-Id: 3A02D5F9AF3
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-7.0-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Junyi Liu <moss80199@gmail.com>
+From: Lukas Bulwahn <lukas.bulwahn@redhat.com>
 
-[ Upstream commit 3515503322f4819277091839eed46b695096aca5 ]
+[ Upstream commit 5f90dcfa8dc32a488581b78e575cdd7808ba5c78 ]
 
-After a durable reconnect succeeds, ksmbd_reopen_durable_fd() republishes
-the same ksmbd_file into the session volatile-id table. If smb2_open()
-then takes a later error path, cleanup first calls ksmbd_fd_put(work, fp)
-and then unconditionally calls ksmbd_put_durable_fd(dh_info.fp).
+Commit c7fabe4ad921 ("HID: quirks: work around VID/PID conflict for
+appledisplay") intends to add a quirk for kernels built with Apple Cinema
+Display support, but it refers to the non-existing config option
+CONFIG_APPLEDISPLAY, whereas the config option for Apple Cinema Display
+support is named CONFIG_USB_APPLEDISPLAY.
 
-In this case fp and dh_info.fp are the same object. The first put drops the
-reconnect lookup reference, but the final durable put can run
-__ksmbd_close_fd(NULL, fp). Because the final close is not session-aware,
-it can free the file object without removing the volatile-id entry that was
-just published into the session table.
+Refer to the intended config option CONFIG_USB_APPLEDISPLAY in the ifdef
+directive.
 
-Use the session-aware put for the final reconnect drop when the reconnect
-had already succeeded and the error path is cleaning up the republished
-file. Earlier reconnect failures, before fp is assigned to dh_info.fp, keep
-using the durable-only put path.
-
-Fixes: 1baff47b81f9 ("ksmbd: fix use-after-free in smb2_open during durable reconnect")
-Signed-off-by: Junyi Liu <moss80199@gmail.com>
-Acked-by: Namjae Jeon <linkinjeon@kernel.org>
-Signed-off-by: Steve French <stfrench@microsoft.com>
+Fixes: c7fabe4ad921 ("HID: quirks: work around VID/PID conflict for appledisplay")
+Signed-off-by: Lukas Bulwahn <lukas.bulwahn@redhat.com>
+Signed-off-by: Jiri Kosina <jkosina@suse.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/smb/server/smb2pdu.c | 15 +++++++++++++--
- 1 file changed, 13 insertions(+), 2 deletions(-)
+ drivers/hid/hid-quirks.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/fs/smb/server/smb2pdu.c b/fs/smb/server/smb2pdu.c
-index c3c7688f0fa80..3a8a739c025fb 100644
---- a/fs/smb/server/smb2pdu.c
-+++ b/fs/smb/server/smb2pdu.c
-@@ -3803,8 +3803,19 @@ int smb2_open(struct ksmbd_work *work)
- 		ksmbd_debug(SMB, "Error response: %x\n", rsp->hdr.Status);
- 	}
- 
--	if (dh_info.reconnected)
--		ksmbd_put_durable_fd(dh_info.fp);
-+	if (dh_info.reconnected) {
-+		/*
-+		 * If reconnect succeeded, fp was republished in the
-+		 * session file table.  On a later error, ksmbd_fd_put()
-+		 * above drops the session reference; drop the durable
-+		 * lookup reference through the same session-aware path so
-+		 * final close removes the volatile id before freeing fp.
-+		 */
-+		if (rc && fp == dh_info.fp)
-+			ksmbd_fd_put(work, dh_info.fp);
-+		else
-+			ksmbd_put_durable_fd(dh_info.fp);
-+	}
- 
- 	kfree(name);
- 	kfree(lc);
+diff --git a/drivers/hid/hid-quirks.c b/drivers/hid/hid-quirks.c
+index d9e33dde89899..9d396d2e534d0 100644
+--- a/drivers/hid/hid-quirks.c
++++ b/drivers/hid/hid-quirks.c
+@@ -234,7 +234,7 @@ static const struct hid_device_id hid_quirks[] = {
+  * used as a driver. See hid_scan_report().
+  */
+ static const struct hid_device_id hid_have_special_driver[] = {
+-#if IS_ENABLED(CONFIG_APPLEDISPLAY)
++#if IS_ENABLED(CONFIG_USB_APPLEDISPLAY)
+ 	{ HID_USB_DEVICE(USB_VENDOR_ID_APPLE, 0x9218) },
+ 	{ HID_USB_DEVICE(USB_VENDOR_ID_APPLE, 0x9219) },
+ 	{ HID_USB_DEVICE(USB_VENDOR_ID_APPLE, 0x921c) },
 -- 
 2.53.0
 
