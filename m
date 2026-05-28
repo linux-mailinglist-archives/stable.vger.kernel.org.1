@@ -1,60 +1,59 @@
-Return-Path: <stable+bounces-255596-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-255230-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id yJDXH8+jGGrClggAu9opvQ
-	(envelope-from <stable+bounces-255596-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:21:35 +0200
+	id mDMOK5ieGGpAlggAu9opvQ
+	(envelope-from <stable+bounces-255230-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 21:59:20 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id ECAF35F874F
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:21:34 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2B6605F797C
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 21:59:20 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id A7B26302620D
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 20:15:58 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 7324A301231D
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 19:58:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BC2622D1303;
-	Thu, 28 May 2026 20:15:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 09CE833CE8A;
+	Thu, 28 May 2026 19:58:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1rC9wwi3"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="z91IWlSw"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7FB432459D1;
-	Thu, 28 May 2026 20:15:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C409434D4D6;
+	Thu, 28 May 2026 19:58:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779999356; cv=none; b=KslEJhuVJ7oI6rBn5S6u7OLIm1OeflqSgWZJBFQ+ggYhyjaLunSoLJmpU3RrGkTmQZc3NLDPfGxnjCr23fHxEpr/gCXWfWtHgbeYFhQJPSRv9ALoL1TC7bq/Lh52HrX37PPCtaR66AKBMYcZ1jYsko4xnIIr9SUG85ZPf1iqkBs=
+	t=1779998325; cv=none; b=PMyhy4T/todCFiMndeDjDHmUgbktgR29htIclEctwY6JagWmJvyLHVO0Xmx6kukbW8ZJsS4F+IElWlXIinomcGFJlHDMsE+92xhs8AKdcpKA5uq/z7ZLze+9+VZXktJKQdBcSyoVm/qOADSlzEBMCerkwIzO4vkGlQ2k1gesmUo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779999356; c=relaxed/simple;
-	bh=6StoS9tEkMGdRMIj4TGtU6kINVdgM6Mv5PqHwr5zsmk=;
+	s=arc-20240116; t=1779998325; c=relaxed/simple;
+	bh=YaXljnKGxDgnjt4ijwjcp/6VdsmnBJClLqW/Gxxn0f4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=qM8udl4oNAeTBJp3bsYXZPus3qwGwESJGcMVV3ed3P4GxlDfdb9RxLahAat7oDB5FFcNRw+QNLLx65NYzGKVeXTdYCqZ+5WwJ3rCDTAH41i1kxNOgCY2IOs6qZZhCio6/D6fY1+iYTviGvCMe3w2zwu+4hsG535+9iHxRgaBK6w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1rC9wwi3; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DE7E21F000E9;
-	Thu, 28 May 2026 20:15:54 +0000 (UTC)
+	 MIME-Version; b=vAbsYRifzBq/4CyPm5K+HWiLhNSQMt3B+v8VgWYXuCundgFhuxR3Wx0xqGh92zcyOEonvCG8CQD7DR0CjVzD+1c6h86xOKN5FITKEJwNds0woVNr5aMCMDiunaIzZJkkdZP6neKZcgx3ZeZiGYu8yVUs5xkOhG8b1qmAT42TMpg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=z91IWlSw; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EDF891F000E9;
+	Thu, 28 May 2026 19:58:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779999355;
-	bh=NuIW7DmizVeOmwJUANzM8/K0H9yh+RAWsja2tnDF4DM=;
+	s=korg; t=1779998324;
+	bh=XWlKuugbd0GZQy+9LPFL+8kGbluPebuKshdKd0YFaM4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=1rC9wwi3xKNUPFJgrixmLcHSfT5ybso5dN04cctD3fmMhNJWf0adwV5TQupAlkrGx
-	 3r2cLwzrL2DnGl+HuQmnQGr6lEpjOeUs1qv8HTEemHj/ogRRUescjlSVozIla0tRGu
-	 n8F95K5tOr14o3vumJToboonG5dTHFQb1oADdu3k=
+	b=z91IWlSwk9hYqL1zsf9fPVj4mcHOGLDnInBupuu/G5o27pEt3RvvifoPJirzjA1N4
+	 bccsusX3QvZKsDtbSfbh6a6HSmoCi07Qzc2OymIGxkN2q9+DkRJA5a6UobRaKW5iXl
+	 JCjyArVciLh0oF75ZlMcIOapG3wpMiD4uNbTp+xM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Bruno Goncalves <bgoncalv@redhat.com>,
-	Juri Lelli <juri.lelli@redhat.com>,
-	"Peter Zijlstra (Intel)" <peterz@infradead.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 007/377] sched/deadline: Fix missing ENQUEUE_REPLENISH during PI de-boosting
+	Nikita Shubin <nikita.shubin@maquefel.me>,
+	Johan Hovold <johan@kernel.org>,
+	Mark Brown <broonie@kernel.org>
+Subject: [PATCH 7.0 116/461] spi: ep93xx: fix error pointer deref after DMA setup failure
 Date: Thu, 28 May 2026 21:44:05 +0200
-Message-ID: <20260528194638.598682429@linuxfoundation.org>
+Message-ID: <20260528194650.331099522@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260528194638.371537336@linuxfoundation.org>
-References: <20260528194638.371537336@linuxfoundation.org>
+In-Reply-To: <20260528194646.819809818@linuxfoundation.org>
+References: <20260528194646.819809818@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,142 +68,80 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-255596-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-255230-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[7];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,linuxfoundation.org:mid,linuxfoundation.org:dkim,infradead.org:email,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo]
-X-Rspamd-Queue-Id: ECAF35F874F
+	RCPT_COUNT_FIVE(0.00)[6];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sashiko.dev:url,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,msgid.link:url,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim]
+X-Rspamd-Queue-Id: 2B6605F797C
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+7.0-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Juri Lelli <juri.lelli@redhat.com>
+From: Johan Hovold <johan@kernel.org>
 
-[ Upstream commit d658686a1331db3bb108ca079d76deb3208ed949 ]
+commit 5e121a81667a83e9a01d62b429e340f5a4a84abc upstream.
 
-Running stress-ng --schedpolicy 0 on an RT kernel on a big machine
-might lead to the following WARNINGs (edited).
+The driver falls back to PIO mode if DMA setup fails during probe.
 
- sched: DL de-boosted task PID 22725: REPLENISH flag missing
+Make sure to the clear the DMA channel pointers on setup failure to
+avoid dereferencing an error pointer on later probe errors or driver
+unbind.
 
- WARNING: CPU: 93 PID: 0 at kernel/sched/deadline.c:239 dequeue_task_dl+0x15c/0x1f8
- ... (running_bw underflow)
- Call trace:
-  dequeue_task_dl+0x15c/0x1f8 (P)
-  dequeue_task+0x80/0x168
-  deactivate_task+0x24/0x50
-  push_dl_task+0x264/0x2e0
-  dl_task_timer+0x1b0/0x228
-  __hrtimer_run_queues+0x188/0x378
-  hrtimer_interrupt+0xfc/0x260
-  ...
+This issue was flagged by Sashiko when reviewing a devres allocation
+conversion patch.
 
-The problem is that when a SCHED_DEADLINE task (lock holder) is
-changed to a lower priority class via sched_setscheduler(), it may
-fail to properly inherit the parameters of potential DEADLINE donors
-if it didn't already inherit them in the past (shorter deadline than
-donor's at that time). This might lead to bandwidth accounting
-corruption, as enqueue_task_dl() won't recognize the lock holder as
-boosted.
-
-The scenario occurs when:
-1. A DEADLINE task (donor) blocks on a PI mutex held by another
-   DEADLINE task (holder), but the holder doesn't inherit parameters
-   (e.g., it already has a shorter deadline)
-2. sched_setscheduler() changes the holder from DEADLINE to a lower
-   class while still holding the mutex
-3. The holder should now inherit DEADLINE parameters from the donor
-   and be enqueued with ENQUEUE_REPLENISH, but this doesn't happen
-
-Fix the issue by introducing __setscheduler_dl_pi(), which detects when
-a DEADLINE (proper or boosted) task gets setscheduled to a lower
-priority class. In case, the function makes the task inherit DEADLINE
-parameters of the donoer (pi_se) and sets ENQUEUE_REPLENISH flag to
-ensure proper bandwidth accounting during the next enqueue operation.
-
-Fixes: 2279f540ea7d ("sched/deadline: Fix priority inheritance with multiple scheduling classes")
-Reported-by: Bruno Goncalves <bgoncalv@redhat.com>
-Signed-off-by: Juri Lelli <juri.lelli@redhat.com>
-Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Link: https://patch.msgid.link/20260302-upstream-fix-deadline-piboost-b4-v3-1-6ba32184a9e0@redhat.com
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: e79e7c2df627 ("spi: ep93xx: add DT support for Cirrus EP93xx")
+Link: https://sashiko.dev/#/patchset/20260429091333.165363-1-johan%40kernel.org?part=10
+Cc: stable@vger.kernel.org	# 6.12
+Cc: Nikita Shubin <nikita.shubin@maquefel.me>
+Signed-off-by: Johan Hovold <johan@kernel.org>
+Acked-by: Nikita Shubin <nikita.shubin@maquefel.me>
+Link: https://patch.msgid.link/20260512074849.915143-1-johan@kernel.org
+Signed-off-by: Mark Brown <broonie@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- kernel/sched/syscalls.c | 30 ++++++++++++++++++++++++++++++
- 1 file changed, 30 insertions(+)
+ drivers/spi/spi-ep93xx.c |    2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/kernel/sched/syscalls.c b/kernel/sched/syscalls.c
-index d2bcedc10152f..77b663a5dfb2b 100644
---- a/kernel/sched/syscalls.c
-+++ b/kernel/sched/syscalls.c
-@@ -322,6 +322,35 @@ static bool check_same_owner(struct task_struct *p)
- 		uid_eq(cred->euid, pcred->uid));
- }
+--- a/drivers/spi/spi-ep93xx.c
++++ b/drivers/spi/spi-ep93xx.c
+@@ -582,12 +582,14 @@ static int ep93xx_spi_setup_dma(struct d
+ 	espi->dma_rx = dma_request_chan(dev, "rx");
+ 	if (IS_ERR(espi->dma_rx)) {
+ 		ret = dev_err_probe(dev, PTR_ERR(espi->dma_rx), "rx DMA setup failed");
++		espi->dma_rx = NULL;
+ 		goto fail_free_page;
+ 	}
  
-+#ifdef CONFIG_RT_MUTEXES
-+static inline void __setscheduler_dl_pi(int newprio, int policy,
-+			      struct task_struct *p,
-+			      struct sched_change_ctx *scope)
-+{
-+	/*
-+	 * In case a DEADLINE task (either proper or boosted) gets
-+	 * setscheduled to a lower priority class, check if it neeeds to
-+	 * inherit parameters from a potential pi_task. In that case make
-+	 * sure replenishment happens with the next enqueue.
-+	 */
-+
-+	if (dl_prio(newprio) && !dl_policy(policy)) {
-+		struct task_struct *pi_task = rt_mutex_get_top_task(p);
-+
-+		if (pi_task) {
-+			p->dl.pi_se = pi_task->dl.pi_se;
-+			scope->flags |= ENQUEUE_REPLENISH;
-+		}
-+	}
-+}
-+#else /* !CONFIG_RT_MUTEXES */
-+static inline void __setscheduler_dl_pi(int newprio, int policy,
-+			      struct task_struct *p,
-+			      struct sched_change_ctx *scope)
-+{
-+}
-+#endif /* !CONFIG_RT_MUTEXES */
-+
- #ifdef CONFIG_UCLAMP_TASK
+ 	espi->dma_tx = dma_request_chan(dev, "tx");
+ 	if (IS_ERR(espi->dma_tx)) {
+ 		ret = dev_err_probe(dev, PTR_ERR(espi->dma_tx), "tx DMA setup failed");
++		espi->dma_tx = NULL;
+ 		goto fail_release_rx;
+ 	}
  
- static int uclamp_validate(struct task_struct *p,
-@@ -693,6 +722,7 @@ int __sched_setscheduler(struct task_struct *p,
- 			__setscheduler_params(p, attr);
- 			p->sched_class = next_class;
- 			p->prio = newprio;
-+			__setscheduler_dl_pi(newprio, policy, p, scope);
- 		}
- 		__setscheduler_uclamp(p, attr);
- 		check_class_changing(rq, p, prev_class);
--- 
-2.53.0
-
 
 
 
