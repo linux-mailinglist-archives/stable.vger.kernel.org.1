@@ -1,59 +1,59 @@
-Return-Path: <stable+bounces-255290-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-255642-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 2LjIHjygGGpAlggAu9opvQ
-	(envelope-from <stable+bounces-255290-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:06:20 +0200
+	id SC8LAAqjGGrClggAu9opvQ
+	(envelope-from <stable+bounces-255642-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:18:18 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id D8C095F7D2A
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:06:19 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id B13945F857A
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:18:17 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id AD2F830EE5D9
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 20:01:35 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 0DE7B3022926
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 20:18:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 71A3524677F;
-	Thu, 28 May 2026 20:01:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0779333372A;
+	Thu, 28 May 2026 20:18:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BbakMQhr"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="p5Km73mi"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4C9A326B973;
-	Thu, 28 May 2026 20:01:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A7B62316199;
+	Thu, 28 May 2026 20:18:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779998494; cv=none; b=harQ95rYDYQ9IO7asy9znDszc7CBm42/B/EOwUP6ZJxB/vrEsRAIgI4fubGTjKHU7fjVdflPQyYfEvNYKouPYLCJQC5vNaljrk5jS5vHcXQhIbLi69hCU2tjN8uU06xheofCvXxd2zqDU8JRbR/VzyavxbbUs2wqE9wJvK5iAsU=
+	t=1779999484; cv=none; b=bAac26ZdvjTq0K2AqDblpEZhGhcpzpKcIxgS5rnjkMhU6ISTvVy3XDAxUQK/Zx2UA/cA73HUiH5YEW+Jd3TErSokwqNRyeP7dJH8ycHPemg5XaEXiz9OURB4JNYRoBjtYEa1pMcmBnqyLDw5icvlEQ0tUPN66aEP3cQgxLkD1WI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779998494; c=relaxed/simple;
-	bh=gvdg7NThHvXcUJt8T/sZ0HDcMWnUeh1Atj/a057K4eM=;
+	s=arc-20240116; t=1779999484; c=relaxed/simple;
+	bh=4AfAUaek+D7NHrHBjePUCTFkd3TuFWAeOohpMQoRhwY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=jaoiVxFRiZLe03NW42yv2ZeZ8cQLvsIEQe9EcblRQa5A2hkgGVpD1h9cEUr4xnq/reYcRV1+XawvZsI7DpOeQe4SxRpZefw0IwARSd/TxI3HWokdiUBwpm00VCaBZqRoAF89bWEy+K2yo8lILx/NFl5UzK93CmalTNrm3XIotmE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BbakMQhr; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AA9061F000E9;
-	Thu, 28 May 2026 20:01:32 +0000 (UTC)
+	 MIME-Version; b=KIU64Rq3e14Rb/Qa+OMKbkcMlmp1hY6udy3ccnA6STd6Om8R/gL7CAyvTVyvczRPbSZHWBVz+a+5goMtuTm6QwqIUns0skCfDddmSxjD+XSqCXycRVeRRQJMuyoZ4JW2p0qIW4vrIKkLI7wV6Hud07E7QJes9E+bYjwKKZZwKHQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=p5Km73mi; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D1D121F000E9;
+	Thu, 28 May 2026 20:18:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779998493;
-	bh=z0Ncv8Pv93EjVrG4FJCWOVWHPjEDEXJvp4QOKtSzJBo=;
+	s=korg; t=1779999483;
+	bh=lTNFCxBQLfF2N6QTx2p+sM2AiTZHtO4k7LOBheAM1aI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=BbakMQhrrHDqOpKiQQDqvjcHmhRVoFWr5kKlPa/tYx2mjZj6EReu1N3+JoskgAGt+
-	 3RiVvaocYEhpYKCIdVYxplYs1KfqUF9xPUtH1FxTqQ+eTrRM6xqXfpfyA8lkYQmN1J
-	 ew3uvgJrZ+9Uh7Ws4ZGDbV0WsfLuB0+wQQMr1ty4=
+	b=p5Km73miowMjX5HQ1tkDvsI4VKX8Fq34vC0ArSVu0YSbPJSXkVkUcdZ6H444Dmost
+	 sfwZXEcLs5Jzu5M2kLBPg2u0o/ApwSuTpkE20UlPpy6H0XgK3iamLPAgtF/NRzpUzZ
+	 H/UxHLsnzycVOHDbga5BP8Ki2yhp1G74h7S7CmQ4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Michael Neuling <mikey@neuling.org>,
-	Paul Walmsley <pjw@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 7.0 192/461] riscv: Fix register corruption from uninitialized cregs on error
-Date: Thu, 28 May 2026 21:45:21 +0200
-Message-ID: <20260528194652.637904738@linuxfoundation.org>
+	Li Xiasong <lixiasong1@huawei.com>,
+	"Matthieu Baerts (NGI0)" <matttbe@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>
+Subject: [PATCH 6.18 084/377] mptcp: pm: fix ADD_ADDR timer infinite retry on option space insufficient
+Date: Thu, 28 May 2026 21:45:22 +0200
+Message-ID: <20260528194640.806668511@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260528194646.819809818@linuxfoundation.org>
-References: <20260528194646.819809818@linuxfoundation.org>
+In-Reply-To: <20260528194638.371537336@linuxfoundation.org>
+References: <20260528194638.371537336@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -68,7 +68,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
@@ -78,7 +78,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-255290-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-255642-lists,stable=lfdr.de];
 	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
@@ -89,75 +89,154 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	TAGGED_RCPT(0.00)[stable];
 	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[neuling.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,msgid.link:url]
-X-Rspamd-Queue-Id: D8C095F7D2A
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,huawei.com:email,msgid.link:url]
+X-Rspamd-Queue-Id: B13945F857A
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-7.0-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Michael Neuling <mikey@neuling.org>
+From: Li Xiasong <lixiasong1@huawei.com>
 
-[ Upstream commit 6ebcbb53fc9bc30843054ed99fd60b8e542628f4 ]
+commit 51e398a3b8961b26a8c0a4ba9a777c5339791707 upstream.
 
-compat_riscv_gpr_set() calls cregs_to_regs() unconditionally, even when
-user_regset_copyin() fails. Since cregs is an uninitialized stack
-variable, a copyin failure causes uninitialized stack data to be written
-into the target task's pt_regs, corrupting its register state and
-potentially leaking kernel stack contents.
+When TCP option space is insufficient (e.g., when sending ADD_ADDR with an
+IPv6 address and port while tcp_timestamps is enabled), the original code
+jumped to out_unlock without clearing the addr_signal flag. This caused
+mptcp_pm_add_timer to keep rescheduling indefinitely, not sending ADD_ADDR,
+preventing subsequent addresses in the endpoint list from being announced.
 
-compat_restore_sigcontext() has the same issue: it calls cregs_to_regs()
-even when __copy_from_user() fails, leading to the same corruption of
-the signal-returning task's register state on error.
+Handle this case by clearing the ADD_ADDR signal and skipping the matching
+ADD_ADDR retransmission entry. The skip path cancels the matching timer
+(with id check) and advances PM state progression, preserving forward
+progress to subsequent PM work.
 
-Only call cregs_to_regs() when the user copy succeeds.
+This cancellation is inherently best-effort. A concurrent add_timer
+callback may already be running and may acquire pm.lock before the
+cancel path updates entry state. In that case, one final ADD_ADDR
+transmit attempt can still be executed.
 
-Fixes: 4608c159594f ("riscv: compat: ptrace: Add compat_arch_ptrace implement")
-Fixes: 7383ee05314b ("riscv: compat: signal: Add rt_frame implementation")
-Signed-off-by: Michael Neuling <mikey@neuling.org>
-Assisted-by: Cursor:claude-4.6-opus-high-thinking
-Link: https://patch.msgid.link/20260501062320.2339562-1-mikey@neuling.org
-Signed-off-by: Paul Walmsley <pjw@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Once the cancel path sets entry->retrans_times to ADD_ADDR_RETRANS_MAX,
+the callback-side retrans_times check suppresses further ADD_ADDR
+retransmissions.
+
+Note that when an ADD_ADDR is being prepared, a pure-ACK is queued. On
+the output side, it means that it is fine to skip non-pure-ACK packets,
+when drop_other_suboptions is set: a pure-ACK will be processed soon
+after.
+
+Fixes: 00cfd77b9063 ("mptcp: retransmit ADD_ADDR when timeout")
+Cc: stable@vger.kernel.org
+Signed-off-by: Li Xiasong <lixiasong1@huawei.com>
+Reviewed-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+Link: https://patch.msgid.link/20260515-net-mptcp-misc-fixes-7-1-rc4-v2-2-701e96419f2f@kernel.org
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/riscv/kernel/compat_signal.c | 2 ++
- arch/riscv/kernel/ptrace.c        | 4 ++--
- 2 files changed, 4 insertions(+), 2 deletions(-)
+ net/mptcp/pm.c |   56 ++++++++++++++++++++++++++++++++++++++++++++++----------
+ 1 file changed, 46 insertions(+), 10 deletions(-)
 
-diff --git a/arch/riscv/kernel/compat_signal.c b/arch/riscv/kernel/compat_signal.c
-index 6ec4e34255a9a..cf3eb33a11e46 100644
---- a/arch/riscv/kernel/compat_signal.c
-+++ b/arch/riscv/kernel/compat_signal.c
-@@ -107,6 +107,8 @@ static long compat_restore_sigcontext(struct pt_regs *regs,
+--- a/net/mptcp/pm.c
++++ b/net/mptcp/pm.c
+@@ -364,7 +364,13 @@ static void mptcp_pm_add_timer(struct ti
  
- 	/* sc_regs is structured the same as the start of pt_regs */
- 	err = __copy_from_user(&cregs, &sc->sc_regs, sizeof(sc->sc_regs));
-+	if (unlikely(err))
-+		return err;
+ 	spin_lock_bh(&msk->pm.lock);
  
- 	cregs_to_regs(&cregs, regs);
+-	if (!mptcp_pm_should_add_signal_addr(msk)) {
++	/* The cancel path (mptcp_pm_del_add_timer()) can race with this
++	 * callback. Once cancel updates retrans_times to MAX, suppress further
++	 * retransmissions here. If this callback acquires pm.lock first, one
++	 * final transmit attempt is still possible.
++	 */
++	if (entry->retrans_times < ADD_ADDR_RETRANS_MAX &&
++	    !mptcp_pm_should_add_signal_addr(msk)) {
+ 		pr_debug("retransmit ADD_ADDR id=%d\n", entry->addr.id);
+ 		mptcp_pm_announce_addr(msk, &entry->addr, false);
+ 		mptcp_pm_add_addr_send_ack(msk);
+@@ -414,8 +420,12 @@ mptcp_pm_del_add_timer(struct mptcp_sock
+ 	/* Note: entry might have been removed by another thread.
+ 	 * We hold rcu_read_lock() to ensure it is not freed under us.
+ 	 */
+-	if (stop_timer)
+-		sk_stop_timer_sync(sk, &entry->add_timer);
++	if (stop_timer) {
++		if (check_id)
++			sk_stop_timer(sk, &entry->add_timer);
++		else
++			sk_stop_timer_sync(sk, &entry->add_timer);
++	}
  
-diff --git a/arch/riscv/kernel/ptrace.c b/arch/riscv/kernel/ptrace.c
-index 93de2e7a30747..793bcee461828 100644
---- a/arch/riscv/kernel/ptrace.c
-+++ b/arch/riscv/kernel/ptrace.c
-@@ -577,8 +577,8 @@ static int compat_riscv_gpr_set(struct task_struct *target,
- 	struct compat_user_regs_struct cregs;
+ 	rcu_read_unlock();
+ 	return entry;
+@@ -880,6 +890,7 @@ bool mptcp_pm_add_addr_signal(struct mpt
+ 			      struct mptcp_addr_info *addr, bool *echo,
+ 			      bool *drop_other_suboptions)
+ {
++	bool skip_add_addr = false;
+ 	int ret = false;
+ 	u8 add_addr;
+ 	u8 family;
+@@ -901,24 +912,49 @@ bool mptcp_pm_add_addr_signal(struct mpt
+ 	}
  
- 	ret = user_regset_copyin(&pos, &count, &kbuf, &ubuf, &cregs, 0, -1);
+ 	*echo = mptcp_pm_should_add_signal_echo(msk);
+-	port = !!(*echo ? msk->pm.remote.port : msk->pm.local.port);
 -
--	cregs_to_regs(&cregs, task_pt_regs(target));
-+	if (!ret)
-+		cregs_to_regs(&cregs, task_pt_regs(target));
+-	family = *echo ? msk->pm.remote.family : msk->pm.local.family;
+-	if (remaining < mptcp_add_addr_len(family, *echo, port))
+-		goto out_unlock;
+-
+ 	if (*echo) {
+ 		*addr = msk->pm.remote;
+ 		add_addr = msk->pm.addr_signal & ~BIT(MPTCP_ADD_ADDR_ECHO);
++		port = !!msk->pm.remote.port;
++		family = msk->pm.remote.family;
+ 	} else {
+ 		*addr = msk->pm.local;
+ 		add_addr = msk->pm.addr_signal & ~BIT(MPTCP_ADD_ADDR_SIGNAL);
++		port = !!msk->pm.local.port;
++		family = msk->pm.local.family;
+ 	}
+-	WRITE_ONCE(msk->pm.addr_signal, add_addr);
++
++	if (remaining < mptcp_add_addr_len(family, *echo, port)) {
++		struct net *net = sock_net((struct sock *)msk);
++
++		if (!*drop_other_suboptions)
++			goto out_unlock;
++
++		if (*echo) {
++			MPTCP_INC_STATS(net, MPTCP_MIB_ECHOADDTXDROP);
++		} else {
++			skip_add_addr = true;
++			MPTCP_INC_STATS(net, MPTCP_MIB_ADDADDRTXDROP);
++		}
++		goto drop_signal_mark;
++	}
++
+ 	ret = true;
  
++drop_signal_mark:
++	WRITE_ONCE(msk->pm.addr_signal, add_addr);
++
+ out_unlock:
+ 	spin_unlock_bh(&msk->pm.lock);
++
++	/* On pure-ACK option-space exhaustion, stop retrying this ADD_ADDR:
++	 * clear the signal bit, cancel the matching retransmission timer, and
++	 * let the PM state machine progress.
++	 */
++	if (skip_add_addr) {
++		mptcp_pm_del_add_timer(msk, addr, true);
++		mptcp_pm_subflow_established(msk);
++	}
  	return ret;
  }
--- 
-2.53.0
-
+ 
 
 
 
