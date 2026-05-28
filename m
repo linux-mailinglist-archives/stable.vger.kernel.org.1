@@ -1,63 +1,60 @@
-Return-Path: <stable+bounces-256142-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-255899-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id UBHKBqOsGGpolwgAu9opvQ
-	(envelope-from <stable+bounces-256142-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:59:15 +0200
+	id 4LbtL0SnGGpolwgAu9opvQ
+	(envelope-from <stable+bounces-255899-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:36:20 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2167A5F9FCD
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:59:13 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8337B5F914E
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:36:20 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 6786A310458C
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 20:41:34 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id AF17630FB765
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 20:29:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 07C32352012;
-	Thu, 28 May 2026 20:41:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5565E1C3318;
+	Thu, 28 May 2026 20:29:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="aG1SiSY0"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="aX1RSxLR"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CE8FE1DE4E0;
-	Thu, 28 May 2026 20:41:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 314892FD7C3;
+	Thu, 28 May 2026 20:29:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780000873; cv=none; b=j37Ud3Llc3rr1rSGP4jew5q3sJkRLcDokOkz3G6RIUyzjHcIgYaXQYl9kxWZhxsCPWTA2PiZIWa9KbVQX37Rrh0rnJFMtSw3moUu2+iW7iq2nNHIkbrK4B5hcN0o5wx+tH0FcbzLLNwjvYxw292KbUUzNiykniPdM161SGzgbKE=
+	t=1780000191; cv=none; b=jRV8kMeVVIR2DXV0XD1TdEKKGauTUQUTIs82SlzYz+CHCzxMCLRW9uwXnPBDZY5RQ0WW2X06O1GDiuxyZ4A0+0PbAm3Wdhm3/eHWMdmGivzfpDhpKmOkwhto53iQutFQ3gyoV6TCzM06yzLLy/Hlhc7D+NWi7shz9m7xYb6uJLk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780000873; c=relaxed/simple;
-	bh=eXP/LnqQkNCnPB+YiDHdd9JCYxpMJWl6Y0AfPN/xlEM=;
+	s=arc-20240116; t=1780000191; c=relaxed/simple;
+	bh=JcoOI2/IeGM6ie588ts4WT9c3FcEhRS0ekgh7wAnS+8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=G8TPrOGUymBHjb0ZblIC5i1eJaiEYwU7seAshaK9wFO5hkNAchWOAtrYU8N6fohdQ5PeIUk5rIqL6xjkIQOHtS4A4fa38hIL3/cd939ZrB8PUndTgHICO6dxXFSrm8Sm2BM2e4NwIXEi1zu+KoyqEgUacR2167//eWtldLMxJbM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=aG1SiSY0; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3F7CB1F000E9;
-	Thu, 28 May 2026 20:41:12 +0000 (UTC)
+	 MIME-Version:Content-Type; b=ZZI0DUXkms7JdlGIlo5Vr57VZCb7zbsSEOyU92Oh71btmT5urnrD3zoLNLNlLq2dHePJM2A2KNB9CUOQv+gyY+P3HKgfwRLJMTKPDIWjt9fZugFKoCsAShIPT6KG6S64g+jD2/OBW8pBgU9yizeQFN2EmudVEMBVQEHHE7wR2Y8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=aX1RSxLR; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8FD391F000E9;
+	Thu, 28 May 2026 20:29:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780000872;
-	bh=y9UPzARbhc+9F/7kqQPQWD5rrX/9aUbr/2H9SbAdXY0=;
+	s=korg; t=1780000190;
+	bh=v67fqkO0P38CIaPlbOweYrt3qI7JY1UVRtFNdkUSrIo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=aG1SiSY09YWdPzMFHtaF/rh4wApjE+wfqNF7DO9EtjKpg0jxEzu8hfTsOy5yKL0Cc
-	 BWGei1vgse3pV9ZCeovOEwGah9h4Wv7lxLSEgdtMMe3HmCIB9Noo1FDDJgizYxgce7
-	 emQNZV7ZdCMnIm6CJ7EGgrNXDSowftamG0sKTUnI=
+	b=aX1RSxLROCdw7laoggN4PQhVFlqg7QVncnmrZNLTOQybU7U8PYtyTstPTTUDS5pOE
+	 sXXvTe8KABoSkbN0SobqLS03X0oosPDic5+jelNiuaC7lUqcfykdXQgOGUa2GfDFN3
+	 RMwkk5t0dtq9/oOvHdMdYiZBVouzgNEaPTd7vlNk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	David Howells <dhowells@redhat.com>,
-	Paulo Alcantara <pc@manguebit.org>,
-	Matthew Wilcox <willy@infradead.org>,
-	netfs@lists.linux.dev,
-	linux-fsdevel@vger.kernel.org,
-	Christian Brauner <brauner@kernel.org>,
+	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 198/272] netfs: Fix partial invalidation of streaming-write folio
+Subject: [PATCH 6.18 334/377] platform/x86: intel-vbtn: Check ACPI_HANDLE() against NULL
 Date: Thu, 28 May 2026 21:49:32 +0200
-Message-ID: <20260528194634.802483022@linuxfoundation.org>
+Message-ID: <20260528194648.083208225@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260528194629.379955525@linuxfoundation.org>
-References: <20260528194629.379955525@linuxfoundation.org>
+In-Reply-To: <20260528194638.371537336@linuxfoundation.org>
+References: <20260528194638.371537336@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -67,83 +64,87 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-256142-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
+	TAGGED_FROM(0.00)[bounces-255899-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	MIME_TRACE(0.00)[0:+];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	FROM_HAS_DN(0.00)[];
 	TO_DN_SOME(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
-	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[10];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
 	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[infradead.org:email,msgid.link:url,manguebit.org:email,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,sashiko.dev:url,linux.dev:email,linuxfoundation.org:mid,linuxfoundation.org:dkim]
-X-Rspamd-Queue-Id: 2167A5F9FCD
+	RCPT_COUNT_SEVEN(0.00)[7];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[intel.com:email,msgid.link:url,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim]
+X-Rspamd-Queue-Id: 8337B5F914E
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: David Howells <dhowells@redhat.com>
+From: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 
-[ Upstream commit 6d91acc7fb85d33ea58fca9b964a32a453937f4b ]
+[ Upstream commit a9f305c5a355efeb240d406d378491d9eec02d07 ]
 
-In netfs_invalidate_folio(), if the region of a partial invalidation
-overlaps the front (but not all) of a dirty write cached in a streaming
-write page (dirty, but not uptodate, with the dirty region tracked by a
-netfs_folio struct), the function modifies the dirty region - but
-incorrectly as it moves the region forward by setting the start to the
-start, not the end, of the invalidation region.
+Every platform driver can be forced to match a device that doesn't match
+its list of device IDs because of device_match_driver_override(), so
+platform drivers that rely on the existence of a device's ACPI companion
+object need to verify its presence.
 
-Fix this by setting finfo->dirty_offset to the end of the invalidation
-region (iend).
+Accordingly, add a requisite ACPI_HANDLE() check against NULL to the
+platform/x86 intel-vbtn driver.
 
-Fixes: cce6bfa6ca0e ("netfs: Fix trimming of streaming-write folios in netfs_inval_folio()")
-Closes: https://sashiko.dev/#/patchset/20260414082004.3756080-1-dhowells%40redhat.com
-Signed-off-by: David Howells <dhowells@redhat.com>
-Link: https://patch.msgid.link/20260512123404.719402-21-dhowells@redhat.com
-cc: Paulo Alcantara <pc@manguebit.org>
-cc: Matthew Wilcox <willy@infradead.org>
-cc: netfs@lists.linux.dev
-cc: linux-fsdevel@vger.kernel.org
-Signed-off-by: Christian Brauner <brauner@kernel.org>
+Fixes: 26173179fae1 ("platform/x86: intel-vbtn: Eval VBDL after registering our notifier")
+Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+Reviewed-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Link: https://patch.msgid.link/3426431.aeNJFYEL58@rafael.j.wysocki
+Reviewed-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/netfs/misc.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/platform/x86/intel/vbtn.c | 6 +++++-
+ 1 file changed, 5 insertions(+), 1 deletion(-)
 
-diff --git a/fs/netfs/misc.c b/fs/netfs/misc.c
-index 488a4b1914300..9672904232ad5 100644
---- a/fs/netfs/misc.c
-+++ b/fs/netfs/misc.c
-@@ -267,7 +267,7 @@ void netfs_invalidate_folio(struct folio *folio, size_t offset, size_t length)
- 				goto erase_completely;
- 			/* Move the start of the data. */
- 			finfo->dirty_len = fend - iend;
--			finfo->dirty_offset = offset;
-+			finfo->dirty_offset = iend;
- 			trace_netfs_folio(folio, netfs_folio_trace_invalidate_front);
- 			return;
- 		}
+diff --git a/drivers/platform/x86/intel/vbtn.c b/drivers/platform/x86/intel/vbtn.c
+index 232cd12e3c9fa..03b5bf461a866 100644
+--- a/drivers/platform/x86/intel/vbtn.c
++++ b/drivers/platform/x86/intel/vbtn.c
+@@ -275,12 +275,16 @@ static bool intel_vbtn_has_switches(acpi_handle handle, bool dual_accel)
+ 
+ static int intel_vbtn_probe(struct platform_device *device)
+ {
+-	acpi_handle handle = ACPI_HANDLE(&device->dev);
+ 	bool dual_accel, has_buttons, has_switches;
+ 	struct intel_vbtn_priv *priv;
++	acpi_handle handle;
+ 	acpi_status status;
+ 	int err;
+ 
++	handle = ACPI_HANDLE(&device->dev);
++	if (!handle)
++		return -ENODEV;
++
+ 	dual_accel = dual_accel_detect();
+ 	has_buttons = acpi_has_method(handle, "VBDL");
+ 	has_switches = intel_vbtn_has_switches(handle, dual_accel);
 -- 
 2.53.0
 
