@@ -1,58 +1,60 @@
-Return-Path: <stable+bounces-256277-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-255507-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id MDE1AJWrGGpolwgAu9opvQ
-	(envelope-from <stable+bounces-256277-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:54:45 +0200
+	id mNJjDtGhGGqblggAu9opvQ
+	(envelope-from <stable+bounces-255507-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:13:05 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id C02D65F9D73
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:54:44 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3E37E5F8156
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:13:04 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 02D66309AE88
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 20:47:32 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 859C7303CC73
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 20:11:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E7D382F1FEF;
-	Thu, 28 May 2026 20:47:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 26C2733CE8A;
+	Thu, 28 May 2026 20:11:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xSy1B4Si"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="c+NXY5wO"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C62B82F9D85;
-	Thu, 28 May 2026 20:47:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EE23533F5BE;
+	Thu, 28 May 2026 20:11:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780001249; cv=none; b=n9+5bldcVg0ybAEjmX2YAzYbY+n9oLinB9qUx3kk8fFFinJtIV9WRPmvj1K26OtzSj11fsxvsVnURvMbTZOOpy9rWSfqdrrVb+MNInywaQwEPPHC/GwkouQZH73IHU6hIFTwajLHcL8y/2NvXOn5cedIJP0jRA+4H67/sZXGMYM=
+	t=1779999105; cv=none; b=OJcH4cwcP7C2pRHAGbc5b571DLjGXXU1X7gx2BtJllaaG+NeRokurTbIyKc3TqJCU93ggHXGiLTtVjtf6h73uieGJWXLVxzFXbeE+QBLKG5C6w12fLg2lQ36c6PhkMFhwSpP5FnISx5KU8YVJmgACkNApwJ45hPYQjq5ICbBQkQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780001249; c=relaxed/simple;
-	bh=LKPSAqwmVyD5OR3Cfn+arMnHKKvfKvduAgITziDVfLE=;
+	s=arc-20240116; t=1779999105; c=relaxed/simple;
+	bh=FfVgbMDtvzfFDI5mCelm2FtRSx9iKEGWl6LDQJTkitA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=CxkXDZYEbKHD2uEXhTuoCVz6a3yJo9tid99uhpXc+aG4qgeJPESpi6cuWvGkxQ0ddVl2ThpxY059DfScpbtVumVd0IG0ceQKWuz8ZU67MxKyY9gWJKZnkHd3bcKqgsLogr5zw93huYR0D5jJNvLDVzzYvXcPSi6/CWzA9RyLcLk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xSy1B4Si; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E3F8A1F000E9;
-	Thu, 28 May 2026 20:47:27 +0000 (UTC)
+	 MIME-Version; b=Nk6ESM8Z8S8Zsr1YJuuj1hmR396TwLcc7Ll6mMioE1BrOzJ3hECbGfnF/C4AKb3vZzEjKWNM4LWOoCc9EvaUvi/8jQIm6fWSS3GNaOfvMFP44pWG1J6G7E36i33Xnuv4PkBrIJN5ZBTiUZR3xJuJFzEC2F5ArW2SnIvpSE7je1I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=c+NXY5wO; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 00B771F000E9;
+	Thu, 28 May 2026 20:11:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780001248;
-	bh=q3Wj/xV8At5ANL2f1/1CMq94cLt9o52e6wB8+sk8tg8=;
+	s=korg; t=1779999104;
+	bh=vxMPRXPBt8TBUQOX+za7g59PME0iKSuaf2zHSHRTVSI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=xSy1B4SibhD0uB6NY86hQEA9Ma/s9ZrLWvz75HjgkNqXRniod7FsmoqzRe0iPYvU6
-	 HeViAF2PCcWq+DPdtsq8yuutiBDNnDJT4qziHUrNWMWrFpX5lHN8fXYX0gwVp7IOca
-	 r3eQbbzZEPbNJU1GSvYnMpfoVGQfzcz+p1rnjkdk=
+	b=c+NXY5wOBADtcFank44MWGeQ0fTFTBzBa7ORt2jUbJeczcgR/CvKY2aru50v7L5kV
+	 Yxju+i2kSsmTORE7NMchbr27h0TSWLExOXpkLnVHYXodMK5O2eQ2NwZU+BC12y/xO2
+	 a7YT32IdNXFcR3+4lyOS4UxOWKjIuB0E7b0/pvZ8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Vladimir Murzin <vladimir.murzin@arm.com>,
-	Catalin Marinas <catalin.marinas@arm.com>
-Subject: [PATCH 6.6 059/186] arm64: probes: Handle probes on hinted conditional branch instructions
+	Utkal Singh <singhutkal015@gmail.com>,
+	Gao Xiang <hsiangkao@linux.alibaba.com>,
+	Chao Yu <chao@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 7.0 410/461] erofs: harden h_shared_count in erofs_init_inode_xattrs()
 Date: Thu, 28 May 2026 21:48:59 +0200
-Message-ID: <20260528194930.566222434@linuxfoundation.org>
+Message-ID: <20260528194659.355427119@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260528194928.941004471@linuxfoundation.org>
-References: <20260528194928.941004471@linuxfoundation.org>
+In-Reply-To: <20260528194646.819809818@linuxfoundation.org>
+References: <20260528194646.819809818@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -67,68 +69,85 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,linux.alibaba.com,kernel.org];
+	TAGGED_FROM(0.00)[bounces-255507-lists,stable=lfdr.de];
 	PRECEDENCE_BULK(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-256277-lists,stable=lfdr.de];
-	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[5];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[arm.com:email,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim]
-X-Rspamd-Queue-Id: C02D65F9D73
+	TAGGED_RCPT(0.00)[stable];
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim,alibaba.com:email]
+X-Rspamd-Queue-Id: 3E37E5F8156
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+7.0-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Vladimir Murzin <vladimir.murzin@arm.com>
+From: Utkal Singh <singhutkal015@gmail.com>
 
-commit 2ccd8ff980b50e842481bae71102fa3883fc4377 upstream.
+[ Upstream commit 6a01f5478d208544c8ba5ddbd674ea660f1b7047 ]
 
-BC.cond instructions introduced by FEAT_HBC cannot be executed
-out-of-line, like other branch instructions. However, they can be
-simulated in the same way as B.cond instructions.
+`u8 h_shared_count` indicates the shared xattr count of an inode. It is
+read from the on-disk xattr ibody header, which should be corrupted if
+the size of the shared xattr array exceeds the space available in
+`xattr_isize`.
 
-Extend the B.cond decoder mask to match BC.cond instructions as well,
-and handle them using the existing B.cond simulation path.
+It does not cause harmful consequence (e.g. crashes), since the image is
+already considered corrupted, it indeed results in the silent processing
+of garbage metadata.
 
-Fixes: 7f86d128e437 ("arm64: add HWCAP for FEAT_HBC (hinted conditional branches)")
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Vladimir Murzin <vladimir.murzin@arm.com>
-Signed-off-by: Catalin Marinas <catalin.marinas@arm.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Let's harden it to report -EFSCORRUPTED earlier.
+
+Signed-off-by: Utkal Singh <singhutkal015@gmail.com>
+Reviewed-by: Gao Xiang <hsiangkao@linux.alibaba.com>
+Reviewed-by: Chao Yu <chao@kernel.org>
+Signed-off-by: Gao Xiang <hsiangkao@linux.alibaba.com>
+Stable-dep-of: 79b09c54c656 ("erofs: fix metabuf leak in inode xattr initialization")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/include/asm/insn.h |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ fs/erofs/xattr.c | 8 ++++++++
+ 1 file changed, 8 insertions(+)
 
---- a/arch/arm64/include/asm/insn.h
-+++ b/arch/arm64/include/asm/insn.h
-@@ -399,7 +399,7 @@ __AARCH64_INSN_FUNCS(cbz,	0x7F000000, 0x
- __AARCH64_INSN_FUNCS(cbnz,	0x7F000000, 0x35000000)
- __AARCH64_INSN_FUNCS(tbz,	0x7F000000, 0x36000000)
- __AARCH64_INSN_FUNCS(tbnz,	0x7F000000, 0x37000000)
--__AARCH64_INSN_FUNCS(bcond,	0xFF000010, 0x54000000)
-+__AARCH64_INSN_FUNCS(bcond,	0xFF000000, 0x54000000)
- __AARCH64_INSN_FUNCS(svc,	0xFFE0001F, 0xD4000001)
- __AARCH64_INSN_FUNCS(hvc,	0xFFE0001F, 0xD4000002)
- __AARCH64_INSN_FUNCS(smc,	0xFFE0001F, 0xD4000003)
+diff --git a/fs/erofs/xattr.c b/fs/erofs/xattr.c
+index c411df5d9dfc7..41e311019a251 100644
+--- a/fs/erofs/xattr.c
++++ b/fs/erofs/xattr.c
+@@ -85,6 +85,14 @@ static int erofs_init_inode_xattrs(struct inode *inode)
+ 	}
+ 	vi->xattr_name_filter = le32_to_cpu(ih->h_name_filter);
+ 	vi->xattr_shared_count = ih->h_shared_count;
++	if ((u32)vi->xattr_shared_count * sizeof(__le32) >
++	    vi->xattr_isize - sizeof(struct erofs_xattr_ibody_header)) {
++		erofs_err(sb, "invalid h_shared_count %u @ nid %llu",
++			  vi->xattr_shared_count, vi->nid);
++		erofs_put_metabuf(&buf);
++		ret = -EFSCORRUPTED;
++		goto out_unlock;
++	}
+ 	vi->xattr_shared_xattrs = kmalloc_objs(uint, vi->xattr_shared_count);
+ 	if (!vi->xattr_shared_xattrs) {
+ 		erofs_put_metabuf(&buf);
+-- 
+2.53.0
+
 
 
 
