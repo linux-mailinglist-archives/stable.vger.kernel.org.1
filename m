@@ -1,60 +1,61 @@
-Return-Path: <stable+bounces-255919-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-256291-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id uNYaOI2nGGpolwgAu9opvQ
-	(envelope-from <stable+bounces-255919-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:37:33 +0200
+	id yDGGAtOrGGpolwgAu9opvQ
+	(envelope-from <stable+bounces-256291-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:55:47 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 89F9E5F9236
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:37:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7DB405F9E04
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:55:46 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id BA1C2311CF47
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 20:30:50 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 52519313B846
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 20:48:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6680E313550;
-	Thu, 28 May 2026 20:30:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DC9B3333730;
+	Thu, 28 May 2026 20:48:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XzGMdJxc"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qTarjUti"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3065025F7B9;
-	Thu, 28 May 2026 20:30:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AF43A2459DD;
+	Thu, 28 May 2026 20:48:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780000247; cv=none; b=tt69/vW4RO6oBITNuFOZ4h6zAIKt9lCH+0VbsjCnSir86uZPz2Agg72xlHFz+YaoWRbDE10vQ9E/TdjMrhSlhtTKUKX7cnntpQSJBZRDxOV/fjAtsDMTY8HhPXtu1VfFW+Y2aYH5scQ1Y2srv/NoElR2nOw3awNLQyemngfqIYY=
+	t=1780001288; cv=none; b=oLU5496oUg4y/4qe1KzG7PY8/d7vd2lmLf1pUmE4JRHUyFg9BzRmT2Hze/v79YLGNU9yUFbFiYAC5gJ0s1lH9jByihZ5HZCWbVyAHVX0ejnv2z0APIMt/Xx0zrnqyxcUTjp/9ooagJGEjksB/zE+61mdNAfVH8NKdPxQUK8ZAm4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780000247; c=relaxed/simple;
-	bh=aa9acddHkhClbM85ADV08mExrMyTYG7MSTpYcsz/6YU=;
+	s=arc-20240116; t=1780001288; c=relaxed/simple;
+	bh=smTPM2gYAWckIC0AdfME/7XGKQAUO6FLBvvxyRDID6c=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=U78oOtz6mhFMfsRmUmEXPOkQQ5t/5PZ8iZ/ySj9834o7h9kHXN9daz7j7a9NuXW4BGpQk7q/P/afZsvvGoVAM98kMPYaJpQzPu8/GJvDvIbQM8AtGs6W30YANEG82OEBcuXZBl3gbHiaPW9VCnW8llzUqLtL7texrQqG3pZZ5bQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XzGMdJxc; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8FDCA1F000E9;
-	Thu, 28 May 2026 20:30:45 +0000 (UTC)
+	 MIME-Version; b=L0yQlEqL/aWCth6btEiXwxuU+DXEI2ZOjpsROvPCoPGzP2OlcDhDDiS5uFXQlrhwo+5KdnmTQ3uv5fyrc9OBXwmiIMFQI9tsGvBjXOAWVtG2VtFbiLfDIr8r4/8I1monsq2pPqtJtC/hV/pOhtp3QGxD9Ht/H/4IUwUi4lvByLQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qTarjUti; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 185321F000E9;
+	Thu, 28 May 2026 20:48:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780000246;
-	bh=MdeNwd+6dxdZg3Il04M8/PJ47vytFdqMujdadJNWmb4=;
+	s=korg; t=1780001287;
+	bh=nDMCSWD0I13XQdSKGzyMStp1EePF8sFxJaFPKq8hBMk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=XzGMdJxc37Fm94L7DD6KuwMbJwo1q2wsdtXu1pCKqqrjsafCafk/Mp3zJgzhvV077
-	 5ixQDPlhdDJYNCtucof5IF3jk6Gism9XRu9d+pq7R4+mxZa7gBcCqZbVO24qOziCaY
-	 PkuClrhbqeYZUHVrBdHtdxK2nAnBPGCxDhdHxnE8=
+	b=qTarjUtiHS0Niy+yQoZmUCGRhyoqHf7HxJe0gCW/gpMW9MN4fWTJtUefSbVPbp8kq
+	 F2ZlhoYMSaj6Y1+uWv3QhNPWoL/+fDUdmTXmvotDnCAW8cgF9g/h7F2Y0+0G4Prizf
+	 ly3ge9jE1/C9W1GW09r9NCzE/8174EPl926KODBU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mohanram Meenakshisundaram <mohanram.meenakshisundaram@intel.com>,
-	Michal Wajdeczko <michal.wajdeczko@intel.com>,
-	Rodrigo Vivi <rodrigo.vivi@intel.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 317/377] drm/xe/pf: Fix CFI failure in debugfs access
+	Alex Hung <alex.hung@amd.com>,
+	Harry Wentland <harry.wentland@amd.com>,
+	Ivan Lipski <ivan.lipski@amd.com>,
+	Dan Wheeler <daniel.wheeler@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>
+Subject: [PATCH 6.6 075/186] drm/amd/display: Validate payload length and link_index in dc_process_dmub_aux_transfer_async
 Date: Thu, 28 May 2026 21:49:15 +0200
-Message-ID: <20260528194647.571929925@linuxfoundation.org>
+Message-ID: <20260528194930.963304854@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260528194638.371537336@linuxfoundation.org>
-References: <20260528194638.371537336@linuxfoundation.org>
+In-Reply-To: <20260528194928.941004471@linuxfoundation.org>
+References: <20260528194928.941004471@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -77,7 +78,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-255919-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-256291-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
@@ -88,89 +89,63 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	FROM_HAS_DN(0.00)[];
 	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
 	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[7];
+	RCPT_COUNT_SEVEN(0.00)[8];
 	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,intel.com:email,linuxfoundation.org:mid,linuxfoundation.org:dkim]
-X-Rspamd-Queue-Id: 89F9E5F9236
+	DBL_BLOCKED_OPENRESOLVER(0.00)[dpaux.data:url,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,amd.com:email,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim]
+X-Rspamd-Queue-Id: 7DB405F9E04
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mohanram Meenakshisundaram <mohanram.meenakshisundaram@intel.com>
+From: Harry Wentland <harry.wentland@amd.com>
 
-[ Upstream commit 96bf49b526e2d03a2b7f6e861925a08f46ed0d28 ]
+commit 6c92f6d9600efa3ef0d9e560a2b52776d9803c29 upstream.
 
-Reading debugfs file (/sys/kernel/debug/dri/0/gt*/pf/adverse_events)
-with CFI (Control Flow Integrity) enabled, the kernel panics at
-xe_gt_debugfs_simple_show+0x82/0xc0.
+[Why&How]
+dc_process_dmub_aux_transfer_async() copies payload->length bytes into a
+16-byte stack buffer (dpaux.data[16]) guarded only by an ASSERT(), which
+is a no-op in release builds. If a caller ever passes length > 16 this
+results in a stack buffer overflow via memcpy.
 
-xe_gt_debugfs_simple_show() declare a function pointer expecting int
-return type, but xe_gt_sriov_pf_monitor_print_events() is void return
-type, leading to CFI failure and kernel panic.
+Additionally, link_index is used to dereference dc->links[] without
+bounds checking against dc->link_count, risking an out-of-bounds access.
 
-[507620.973657] CFI failure at xe_gt_debugfs_simple_show+0x82/0xc0 [xe]
-(target: xe_gt_sriov_pf_monitor_print_events+0x0/0x130 [xe]; expected
-type: 0xd72c7139)
+Replace the ASSERT with a hard runtime check that returns false when
+payload->length exceeds the destination buffer size, and add a bounds
+check for link_index before it is used.
 
-Fix xe_gt_sriov_pf_monitor_print_events() function by updating to return
-an int type.
-
-Fixes: 1c99d3d3edab ("drm/xe/pf: Expose PF monitor details via debugfs")
-Signed-off-by: Mohanram Meenakshisundaram <mohanram.meenakshisundaram@intel.com>
-Reviewed-by: Michal Wajdeczko <michal.wajdeczko@intel.com>
-Signed-off-by: Michal Wajdeczko <michal.wajdeczko@intel.com>
-Link: https://patch.msgid.link/20260514174918.1556357-2-mohanram.meenakshisundaram@intel.com
-(cherry picked from commit ff1d386a8359746d9699ac30336e3b0684c68958)
-Signed-off-by: Rodrigo Vivi <rodrigo.vivi@intel.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Assisted-by: GitHub Copilot:Claude claude-4-opus
+Reviewed-by: Alex Hung <alex.hung@amd.com>
+Signed-off-by: Harry Wentland <harry.wentland@amd.com>
+Signed-off-by: Ivan Lipski <ivan.lipski@amd.com>
+Tested-by: Dan Wheeler <daniel.wheeler@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+(cherry picked from commit ba4caa9fecdf7a38f98c878ad05a8a64148b6881)
+Cc: stable@vger.kernel.org
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/xe/xe_gt_sriov_pf_monitor.c | 6 +++++-
- drivers/gpu/drm/xe/xe_gt_sriov_pf_monitor.h | 2 +-
- 2 files changed, 6 insertions(+), 2 deletions(-)
+ drivers/gpu/drm/amd/display/dc/core/dc.c |    6 +++++-
+ 1 file changed, 5 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/gpu/drm/xe/xe_gt_sriov_pf_monitor.c b/drivers/gpu/drm/xe/xe_gt_sriov_pf_monitor.c
-index 7d532bded02a8..a85ba44353789 100644
---- a/drivers/gpu/drm/xe/xe_gt_sriov_pf_monitor.c
-+++ b/drivers/gpu/drm/xe/xe_gt_sriov_pf_monitor.c
-@@ -114,8 +114,10 @@ int xe_gt_sriov_pf_monitor_process_guc2pf(struct xe_gt *gt, const u32 *msg, u32
-  * VFs with no events are not printed.
-  *
-  * This function can only be called on PF.
-+ *
-+ * Return: always 0
-  */
--void xe_gt_sriov_pf_monitor_print_events(struct xe_gt *gt, struct drm_printer *p)
-+int xe_gt_sriov_pf_monitor_print_events(struct xe_gt *gt, struct drm_printer *p)
- {
- 	unsigned int n, total_vfs = xe_gt_sriov_pf_get_totalvfs(gt);
- 	const struct xe_gt_sriov_monitor *data;
-@@ -144,4 +146,6 @@ void xe_gt_sriov_pf_monitor_print_events(struct xe_gt *gt, struct drm_printer *p
- #undef __format
- #undef __value
- 	}
+--- a/drivers/gpu/drm/amd/display/dc/core/dc.c
++++ b/drivers/gpu/drm/amd/display/dc/core/dc.c
+@@ -4965,7 +4965,11 @@ bool dc_process_dmub_aux_transfer_async(
+ 	uint8_t action;
+ 	union dmub_rb_cmd cmd = {0};
+ 
+-	ASSERT(payload->length <= 16);
++	if (link_index >= dc->link_count || !dc->links[link_index])
++		return false;
 +
-+	return 0;
- }
-diff --git a/drivers/gpu/drm/xe/xe_gt_sriov_pf_monitor.h b/drivers/gpu/drm/xe/xe_gt_sriov_pf_monitor.h
-index 7ca9351a271b7..0b8f088d3a16a 100644
---- a/drivers/gpu/drm/xe/xe_gt_sriov_pf_monitor.h
-+++ b/drivers/gpu/drm/xe/xe_gt_sriov_pf_monitor.h
-@@ -13,7 +13,7 @@ struct drm_printer;
- struct xe_gt;
++	if (payload->length > sizeof(cmd.dp_aux_access.aux_control.dpaux.data))
++		return false;
  
- void xe_gt_sriov_pf_monitor_flr(struct xe_gt *gt, u32 vfid);
--void xe_gt_sriov_pf_monitor_print_events(struct xe_gt *gt, struct drm_printer *p);
-+int xe_gt_sriov_pf_monitor_print_events(struct xe_gt *gt, struct drm_printer *p);
- 
- #ifdef CONFIG_PCI_IOV
- int xe_gt_sriov_pf_monitor_process_guc2pf(struct xe_gt *gt, const u32 *msg, u32 len);
--- 
-2.53.0
-
+ 	cmd.dp_aux_access.header.type = DMUB_CMD__DP_AUX_ACCESS;
+ 	cmd.dp_aux_access.header.payload_bytes = 0;
 
 
 
