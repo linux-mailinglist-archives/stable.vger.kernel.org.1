@@ -1,58 +1,64 @@
-Return-Path: <stable+bounces-255635-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-255247-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id +BfCN2ejGGrClggAu9opvQ
-	(envelope-from <stable+bounces-255635-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:19:51 +0200
+	id WP+7GcOeGGpblggAu9opvQ
+	(envelope-from <stable+bounces-255247-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:00:03 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 25DE45F8658
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:19:51 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 264F75F7A05
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:00:02 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id DD4B8300E91D
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 20:17:47 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 4FC61302B821
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 19:59:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 876852DF6E6;
-	Thu, 28 May 2026 20:17:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2EA6734D4D6;
+	Thu, 28 May 2026 19:59:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CBV4b+NU"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MeB+qCVt"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E86FA2C11F9;
-	Thu, 28 May 2026 20:17:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 067CC2F8EA1;
+	Thu, 28 May 2026 19:59:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779999466; cv=none; b=MdMjr0zKSb23y1D8N6rjRvPf4mozAGUFtTvcyVrVKCJqeovmqCy0X/vueDfgEGskd2xc2hEM6SbG+oBL33SPEPvm+kEmCLtIyjUIGqKFxLMW/EtUxi9BlFkxn5afWxQ7uZWjISs56KNSdF4oDnNVlrFQtdXPhSNuXgHU2fCayZs=
+	t=1779998373; cv=none; b=WC4wwPETfq+rklzDfCyaKYDzt9c9xL0tfsdSgje7kgDMCfyXPCW9X7T/wBu5siHYqKlgUkOgLp9LJLfGjBwjXPOwGbSQuUjWexx/IdbgT/9byucsrVKeFGPuz4KISdVThE3QDnw+Y1dq6Xw8Win17cklc65q1c5XYxEmjRNlfEc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779999466; c=relaxed/simple;
-	bh=bl5dl3ySKTY/8okafL9XCzcDHFVs0xbVacWyVn6AYH8=;
+	s=arc-20240116; t=1779998373; c=relaxed/simple;
+	bh=D4G8zQAeWmOPGuckCvbPxrcNsEGfNvm722HTykIhXdY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=mfqPiFcPvTbCfGnM8Qr60nYUpGDuuST35Art5CHvm/I72wrSyJXoTGxCHQQ71g+0rgE4H9n4M+Eu9Fp3FvfbutorbBo4fS9F8j7KslYI8qGY6ToldG9z9GaxMqPcpFa3rYCq6kccO3bTa9SbkhGCpTMiEvFfUJvlabTgMJRm0RU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CBV4b+NU; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 534731F000E9;
-	Thu, 28 May 2026 20:17:43 +0000 (UTC)
+	 MIME-Version; b=Ii20S+AMJbeoDCD1AFzfRp3eco5IS8WnvOiALvj7yuqGHGnMPOz22SuukO5jAWl2+yZLAyAqnfhp4brKQrzdNTAeAWujOa9+J8oG/56qVt1x5w1XvqNe2NXFvXRxL64vE+mxsGVQS6C0jEg9juMz76IdGgJD2Na2MgMIyeHMAHk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MeB+qCVt; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5B68B1F000E9;
+	Thu, 28 May 2026 19:59:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779999463;
-	bh=Sqmq148e/DIapP/G7x5ZLiGDdXL6FVLcRjiRF5m1G/E=;
+	s=korg; t=1779998371;
+	bh=84sakPUglbjqslujxPWjh26zMijj8XmZZBW/iekqZqw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=CBV4b+NUtDDt4QIKCCTDYaufWo2iXsvf1GLDHRbHvpd/Dqi1vrmHX+vbrtV/vAjwk
-	 H/5B0itRM8QlY08VQhRIAZYRJ+FCkw/PvxSLzv4vO7xmcY6zrKOiF/XFXe2ddVsD8r
-	 UfQ8v29ExkMtFEzJRaapr6QXxzaXpjyy/3LU+o1g=
+	b=MeB+qCVtnxAWFXuaS0DBfHk1OoAiTjhNnvkGjdffG28wO0xTsfzLfrY9isTMB/z/L
+	 m5/n27ZymIm3F/Hk2l0O9Nc0Cid5RGTguHlOsEk6QlXdYGvdS265+NZef/swnoezvm
+	 6i1v0jEPkvs7Zxa5txRRjmFS7ebKnjV3UbwwFdhY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?C=C3=A1ssio=20Gabriel?= <cassiogabrielcontato@gmail.com>,
-	Takashi Iwai <tiwai@suse.de>
-Subject: [PATCH 6.18 040/377] ALSA: scarlett2: Allow flash writes ending at segment boundary
+	stable@kernel.org,
+	Yuan Tan <yuantan098@gmail.com>,
+	Yifan Wu <yifanwucs@gmail.com>,
+	Juefei Pu <tomapufckgml@gmail.com>,
+	Xin Liu <bird@lzu.edu.cn>,
+	Luxiao Xu <rakukuip@gmail.com>,
+	Ren Wei <n05ec@lzu.edu.cn>,
+	Sven Eckelmann <sven@narfation.org>
+Subject: [PATCH 7.0 149/461] batman-adv: fix tp_meter counter underflow during shutdown
 Date: Thu, 28 May 2026 21:44:38 +0200
-Message-ID: <20260528194639.536887169@linuxfoundation.org>
+Message-ID: <20260528194651.342225968@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260528194638.371537336@linuxfoundation.org>
-References: <20260528194638.371537336@linuxfoundation.org>
+In-Reply-To: <20260528194646.819809818@linuxfoundation.org>
+References: <20260528194646.819809818@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,87 +68,94 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-2.16 / 15.00];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-255635-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,kernel.org,gmail.com,lzu.edu.cn,narfation.org];
+	TAGGED_FROM(0.00)[bounces-255247-lists,stable=lfdr.de];
+	PRECEDENCE_BULK(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,suse.de];
-	TO_DN_SOME(0.00)[];
-	MIME_TRACE(0.00)[0:+];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[11];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[5];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,suse.de:email,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim]
-X-Rspamd-Queue-Id: 25DE45F8658
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[narfation.org:email,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,lzu.edu.cn:email]
+X-Rspamd-Queue-Id: 264F75F7A05
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+7.0-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Cássio Gabriel <cassiogabrielcontato@gmail.com>
+From: Luxiao Xu <rakukuip@gmail.com>
 
-commit a69b677e47a80319ce148d61cc29a2b57006e78d upstream.
+commit 94f3b133168d1c49895e7cc6afbcf1cc0b354602 upstream.
 
-scarlett2_hwdep_write() rejects writes when offset + count is greater than
-or equal to the selected flash segment size. That incorrectly treats a
-write ending exactly at the end of the segment as out of space, although
-the last byte written is still within the segment.
+batadv_tp_sender_shutdown() unconditionally decrements the "sending"
+atomic counter. If multiple paths (e.g. timeout, user cancel, and
+normal finish) call this function, the counter can underflow to -1.
 
-Split invalid argument checks from the segment-space check, keep
-zero-length writes as no-ops, and compare count against the remaining
-segment size. This permits exact-end writes and avoids relying on
-offset + count before deciding whether the request is in bounds.
+Since the sender logic treats any non-zero value as "still sending",
+a negative value causes the sender kthread to loop indefinitely.
+This leads to a use-after-free when the interface is removed while
+the zombie thread is still active.
 
-Fixes: 1abfbd3c9527 ("ALSA: scarlett2: Add support for uploading new firmware")
-Cc: stable@vger.kernel.org
-Signed-off-by: Cássio Gabriel <cassiogabrielcontato@gmail.com>
-Link: https://patch.msgid.link/20260519-alsa-scarlett2-flash-write-boundary-v1-1-b550480e92da@gmail.com
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
+Fix this by using atomic_xchg() to ensure the counter only transitions
+from 1 to 0 once.
+
+Fixes: 33a3bb4a3345 ("batman-adv: throughput meter implementation")
+Cc: stable@kernel.org
+Reported-by: Yuan Tan <yuantan098@gmail.com>
+Reported-by: Yifan Wu <yifanwucs@gmail.com>
+Reported-by: Juefei Pu <tomapufckgml@gmail.com>
+Reported-by: Xin Liu <bird@lzu.edu.cn>
+Signed-off-by: Luxiao Xu <rakukuip@gmail.com>
+Signed-off-by: Ren Wei <n05ec@lzu.edu.cn>
+[sven: added missing change in batadv_tp_send]
+Signed-off-by: Sven Eckelmann <sven@narfation.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- sound/usb/mixer_scarlett2.c |    7 +++++--
- 1 file changed, 5 insertions(+), 2 deletions(-)
+ net/batman-adv/tp_meter.c |    4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
---- a/sound/usb/mixer_scarlett2.c
-+++ b/sound/usb/mixer_scarlett2.c
-@@ -9186,12 +9186,15 @@ static long scarlett2_hwdep_write(struct
- 	flash_size = private->flash_segment_blocks[segment_id] *
- 		     SCARLETT2_FLASH_BLOCK_SIZE;
+--- a/net/batman-adv/tp_meter.c
++++ b/net/batman-adv/tp_meter.c
+@@ -451,7 +451,7 @@ static void batadv_tp_sender_end(struct
+ static void batadv_tp_sender_shutdown(struct batadv_tp_vars *tp_vars,
+ 				      enum batadv_tp_meter_reason reason)
+ {
+-	if (!atomic_dec_and_test(&tp_vars->sending))
++	if (atomic_xchg(&tp_vars->sending, 0) != 1)
+ 		return;
  
--	if (count < 0 || *offset < 0 || *offset + count >= flash_size)
--		return -ENOSPC;
-+	if (count < 0 || *offset < 0)
-+		return -EINVAL;
- 
- 	if (!count)
- 		return 0;
- 
-+	if (*offset >= flash_size || count > flash_size - *offset)
-+		return -ENOSPC;
-+
- 	/* Limit the *req size to SCARLETT2_FLASH_RW_MAX */
- 	if (count > max_data_size)
- 		count = max_data_size;
+ 	tp_vars->reason = reason;
+@@ -885,7 +885,7 @@ static int batadv_tp_send(void *arg)
+ 				   "Meter: %s() cannot send packets (%d)\n",
+ 				   __func__, err);
+ 			/* ensure nobody else tries to stop the thread now */
+-			if (atomic_dec_and_test(&tp_vars->sending))
++			if (atomic_xchg(&tp_vars->sending, 0) == 1)
+ 				tp_vars->reason = err;
+ 			break;
+ 		}
 
 
 
