@@ -1,61 +1,58 @@
-Return-Path: <stable+bounces-255237-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-255592-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id QHPgAqieGGpAlggAu9opvQ
-	(envelope-from <stable+bounces-255237-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 21:59:36 +0200
+	id gGqMH5GkGGrClggAu9opvQ
+	(envelope-from <stable+bounces-255592-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:24:49 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 76FFA5F7998
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 21:59:35 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id EDB935F89D0
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:24:48 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id B14AC303318D
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 19:59:05 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id D12063232631
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 20:15:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5674633CE8A;
-	Thu, 28 May 2026 19:59:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 804B12D1303;
+	Thu, 28 May 2026 20:15:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qJWA7hCg"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DrCX805V"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 297072F8EA1;
-	Thu, 28 May 2026 19:59:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 514AF2DF6E6;
+	Thu, 28 May 2026 20:15:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779998345; cv=none; b=JvPAempIX+dWHG/cd8UHyb+TvZVB1BhdyyiJFMo2Y1ZzNPerMlUxVEKcWzfAuTNC+3iFR7WgPr7zIuYmDNIKgH1aUW5eaVFxlGLWkJvSPz5+gcupJzYJ9xghvBgXMN2Sv8pfIj0j+e5q6NxioOhgt4stUFiyeoyt4w0cgccKLxo=
+	t=1779999345; cv=none; b=k0g72ANUwbosR6cmwZRX3Gfz9Ii4ozhnu+BuMTP4qHnZ5jREhdn0qZsWHub9e5dIs5qJsAbY47BtJXW3E14htm/2BKQaa5UIoDvQhDzIgLX0xvkcriJlEMa1ZUItnStka3zL3AnYiPrqksQOm2WBR2Q8lWPM8yicXg/TZ4MRX3c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779998345; c=relaxed/simple;
-	bh=Z2hkIc4+bFlOk8T1zY/GwqlYQhUH9IyYquE3rb18V0g=;
+	s=arc-20240116; t=1779999345; c=relaxed/simple;
+	bh=OqjwqHKoQvFfUAdlhZFUJXAlDIZZQChFiy8fl5VdhGc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=okUPJXC5oWP1Hrmi0RN6rUpaBtlN3Eig4QkseHUPopuCpRDzE/whR8kP4MU6PX7ZO+07X/EzcdIVDLcELh+pssPdJBtUzDW4Ncjj31zFbLQ/MbxMoCS1ED6t3+t6MDBFAzMFzxlb1YGqd6W8j3DXHBeaXfiuV1fm5dRwjWr+Fio=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qJWA7hCg; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 88FFD1F000E9;
-	Thu, 28 May 2026 19:59:03 +0000 (UTC)
+	 MIME-Version; b=Lb+gJOswJFvHGINJh/xcqbsLTGCXi/yKKgSVQGnGSNTutFoYjz9jhNIm6t3ZXa5bFaoy7PjrwyaGlqGDEV186Q6O+G4nmoto6LOrwV/f6HpY66wOWJcLC+vSyk8J2x+XjI5quirZr4/CxuYFtkTnZEdcIxqGwii8/mkHKPwjbSs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DrCX805V; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AEC6C1F000E9;
+	Thu, 28 May 2026 20:15:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779998344;
-	bh=ZpbxA/j1tuq3NQ5s+fFwlRpoxByhS+tXjsqbawcwjC0=;
+	s=korg; t=1779999344;
+	bh=itj55XZjMwcfJP35tuyNmunYUynDnuxeQ0OqNBtLjDU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=qJWA7hCg3tHQNIoYpIJiOebcrwDXBCnv8mZ3TYFMfmYQc3u+OLRz8UKA8F8sxR1K6
-	 QnaQFIq7AeLEpRgDxDyFLhemKFUAefJsZE+LHNQ8aIgYag1fUrOOcPIYX6egBJzjTb
-	 S/2s1AgZkx0rswfLLSd5Il6JwYJc27u6biD4JRw8=
+	b=DrCX805Vc1s++UosTBi5PyCSgVijUOXBqKyK1kVaZhlrATNwDAHUGe1ZsAHo53rCf
+	 JKPCQKx2R9wt4T1e/ue+8sKSyh4PgR9b1GQ7xCEh7tv1tNTUKyde+m8R7MMMc/2wH5
+	 6T9/Lgp2oFuA58TjSPgsd79b96tKhm+Q+Tm4YEHc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alex Hung <alex.hung@amd.com>,
-	Harry Wentland <harry.wentland@amd.com>,
-	Ivan Lipski <ivan.lipski@amd.com>,
-	Dan Wheeler <daniel.wheeler@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>
-Subject: [PATCH 7.0 140/461] drm/amd/display: Validate payload length and link_index in dc_process_dmub_aux_transfer_async
-Date: Thu, 28 May 2026 21:44:29 +0200
-Message-ID: <20260528194651.052392524@linuxfoundation.org>
+	Michael Bommarito <michael.bommarito@gmail.com>,
+	Steve French <stfrench@microsoft.com>
+Subject: [PATCH 6.18 032/377] smb: client: require net admin for CIFS SWN netlink
+Date: Thu, 28 May 2026 21:44:30 +0200
+Message-ID: <20260528194639.311322375@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260528194646.819809818@linuxfoundation.org>
-References: <20260528194646.819809818@linuxfoundation.org>
+In-Reply-To: <20260528194638.371537336@linuxfoundation.org>
+References: <20260528194638.371537336@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,86 +63,96 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-255237-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TO_DN_SOME(0.00)[];
+	TAGGED_FROM(0.00)[bounces-255592-lists,stable=lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,microsoft.com];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[8];
-	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,amd.com:email,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo]
-X-Rspamd-Queue-Id: 76FFA5F7998
+	MID_RHS_MATCH_FROM(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[5];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
+X-Rspamd-Queue-Id: EDB935F89D0
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-7.0-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Harry Wentland <harry.wentland@amd.com>
+From: Michael Bommarito <michael.bommarito@gmail.com>
 
-commit 6c92f6d9600efa3ef0d9e560a2b52776d9803c29 upstream.
+commit d1ebfce2c1d161186a82e77590bf7da2ea1bce91 upstream.
 
-[Why&How]
-dc_process_dmub_aux_transfer_async() copies payload->length bytes into a
-16-byte stack buffer (dpaux.data[16]) guarded only by an ASSERT(), which
-is a no-op in release builds. If a caller ever passes length > 16 this
-results in a stack buffer overflow via memcpy.
+CIFS_GENL_CMD_SWN_NOTIFY is the userspace witness-notify command.  The
+intended sender is the cifs.witness helper, but the generic-netlink
+operation currently has no capability flag, so any local process can send
+RESOURCE_CHANGE or CLIENT_MOVE notifications to the in-kernel witness
+handler.
 
-Additionally, link_index is used to dereference dc->links[] without
-bounds checking against dc->link_count, risking an out-of-bounds access.
+The same family exposes CIFS_GENL_MCGRP_SWN without multicast-group
+capability flags.  Register messages sent to that group include the witness
+registration id and, for NTLM-authenticated mounts, the username, domain,
+and password attributes copied from the CIFS session.  An unprivileged
+local process should not be able to join that group and receive those
+messages.
 
-Replace the ASSERT with a hard runtime check that returns false when
-payload->length exceeds the destination buffer size, and add a bounds
-check for link_index before it is used.
+Require CAP_NET_ADMIN for incoming SWN_NOTIFY commands with
+GENL_ADMIN_PERM, and require CAP_NET_ADMIN over the network namespace for
+joining the SWN multicast group with GENL_MCAST_CAP_NET_ADMIN.  The
+cifs.witness service runs with the privileges needed for both operations.
 
-Assisted-by: GitHub Copilot:Claude claude-4-opus
-Reviewed-by: Alex Hung <alex.hung@amd.com>
-Signed-off-by: Harry Wentland <harry.wentland@amd.com>
-Signed-off-by: Ivan Lipski <ivan.lipski@amd.com>
-Tested-by: Dan Wheeler <daniel.wheeler@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-(cherry picked from commit ba4caa9fecdf7a38f98c878ad05a8a64148b6881)
+Fixes: fed979a7e082 ("cifs: Set witness notification handler for messages from userspace daemon")
 Cc: stable@vger.kernel.org
+Signed-off-by: Michael Bommarito <michael.bommarito@gmail.com>
+Assisted-by: Claude:claude-opus-4-7
+Signed-off-by: Steve French <stfrench@microsoft.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/amd/display/dc/core/dc.c |    6 +++++-
+ fs/smb/client/netlink.c |    6 +++++-
  1 file changed, 5 insertions(+), 1 deletion(-)
 
---- a/drivers/gpu/drm/amd/display/dc/core/dc.c
-+++ b/drivers/gpu/drm/amd/display/dc/core/dc.c
-@@ -5993,7 +5993,11 @@ bool dc_process_dmub_aux_transfer_async(
- 	uint8_t action;
- 	union dmub_rb_cmd cmd = {0};
+--- a/fs/smb/client/netlink.c
++++ b/fs/smb/client/netlink.c
+@@ -33,13 +33,17 @@ static const struct nla_policy cifs_genl
+ static const struct genl_ops cifs_genl_ops[] = {
+ 	{
+ 		.cmd = CIFS_GENL_CMD_SWN_NOTIFY,
++		.flags = GENL_ADMIN_PERM,
+ 		.validate = GENL_DONT_VALIDATE_STRICT | GENL_DONT_VALIDATE_DUMP,
+ 		.doit = cifs_swn_notify,
+ 	},
+ };
  
--	ASSERT(payload->length <= 16);
-+	if (link_index >= dc->link_count || !dc->links[link_index])
-+		return false;
-+
-+	if (payload->length > sizeof(cmd.dp_aux_access.aux_control.dpaux.data))
-+		return false;
+ static const struct genl_multicast_group cifs_genl_mcgrps[] = {
+-	[CIFS_GENL_MCGRP_SWN] = { .name = CIFS_GENL_MCGRP_SWN_NAME },
++	[CIFS_GENL_MCGRP_SWN] = {
++		.name = CIFS_GENL_MCGRP_SWN_NAME,
++		.flags = GENL_MCAST_CAP_NET_ADMIN,
++	},
+ };
  
- 	cmd.dp_aux_access.header.type = DMUB_CMD__DP_AUX_ACCESS;
- 	cmd.dp_aux_access.header.payload_bytes = 0;
+ struct genl_family cifs_genl_family = {
 
 
 
