@@ -1,59 +1,62 @@
-Return-Path: <stable+bounces-255911-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-256189-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id yIWmJHunGGp+lwgAu9opvQ
-	(envelope-from <stable+bounces-255911-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:37:15 +0200
+	id MCLyFamqGGoomAgAu9opvQ
+	(envelope-from <stable+bounces-256189-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:50:49 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1C83C5F91F6
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:37:14 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0AA105F9AFB
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:50:48 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 666DD3110556
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 20:30:27 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 3CF2430BA718
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 20:43:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 54F1E31DD97;
-	Thu, 28 May 2026 20:30:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 73A4C2EF652;
+	Thu, 28 May 2026 20:43:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Q+wuhbqX"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Grrd1lH/"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 27E48248F62;
-	Thu, 28 May 2026 20:30:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 052DB1DE4E0;
+	Thu, 28 May 2026 20:43:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780000225; cv=none; b=OXHZuzBMmAWelz5SQHGvngfudbIlFl3T8oNEEXjfdyhqj7qqLx74sRykAyYJIid7MVFK6vr0XQAw1kZfZGvpWEC+39+jXH4IIAltSzCuq0BGvCKEa8Lg8s4b02X2hVzaO0uXzwFVqifOp4q5z1cuz4Q/kghyxqeW9u9kva/O57M=
+	t=1780001005; cv=none; b=J/LCl+/2BEkWQ2kSxsTuooUpWzCi68kqyqobFY1gvIiIEZ/3PSBWIF0EnaXOMnW1wT230Ckm+P3SfRCIbxOnTdUXf4UUA1WkOBf5shi5lDKPXvxXj3v4Kw1+aciRK5So/MJndlbhmnAQVhYQFmlmUAw+oncHtrcdBb6BK6huoZs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780000225; c=relaxed/simple;
-	bh=SkMlVoXXfYcjqZL8Z+q3CnIkLkxVb/47D/jnw+IP+/g=;
+	s=arc-20240116; t=1780001005; c=relaxed/simple;
+	bh=uuSsWvWVuTq0QLJTZK5JSR3nF6ujsejsKJfW17wTyRg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=G5zaSfJVntnWs8Z99BBvXF4vU6K3aNJ6XB+FglGgqMHfD6G+Zrr/3/mR15hBiGhT7qxe6q+WdmRLryXEx7n/zdT11ZTzHQeK5gOkLA2XBaVKDppjFTTN6LUT4VbL6aZfEhPLJeGdzUsQoWktkY0vTz4aqLHKEX9WgJft47VNjqI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Q+wuhbqX; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4A2251F000E9;
-	Thu, 28 May 2026 20:30:23 +0000 (UTC)
+	 MIME-Version; b=G6Cn6q8GeG3SxNDR1HE7OyYXoJonAx9AhfBDkgmGiBc2fzJI8+44vJREFSKL3UJEwa3RURgEBKvvhQ2OUmWEYzSGzIiF/WmBFKWOK6OkJpatU4kpx7VAFTGqPQ6DQUv1sgNNCdwt8l+Sz1Gzfc2MfYjM06+x2AtM8AN+Hm/hRR8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Grrd1lH/; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 69A8E1F000E9;
+	Thu, 28 May 2026 20:43:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780000223;
-	bh=ohxTxef/I9HYgQMJ7pIWipF02tkonBtLdxsisD1o0So=;
+	s=korg; t=1780001003;
+	bh=b6+J6xP8y/1klnfRTa508fOvnlsrlFELi8FYaudVWgI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=Q+wuhbqXO13HJdIc3AW0kJUCz/irvppd6ndyAGAEtt+6Ib+YRi4LyDBDtWh0kV7Kb
-	 p5uhENdVi6f54z9f9ztVydtav/An3IPGabM1Dn+UEk3m348dyB7SGRVKojAMk0fxjT
-	 nt5PhDSYlVZORulsNyY+bqHIa+o0lRvK4i3ig8p8=
+	b=Grrd1lH/uy6NazXPMz9q/yEgpafjDg38N6tVNPLEGswUnWjksiECzy3dgu5EGjYf9
+	 f8YHRSAJo2NBgfumGZHdV6X45rKs+qcvUtIPqLnmym8lwmEPJhCCIcCB0wKuMV6AQf
+	 J1DbUVNVdrN1lUPz/6qjDg7moAwN//Ql3rDxM4wM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Arseniy Krasnov <avkrasnov@salutedevices.com>,
-	Gao Xiang <hsiangkao@linux.alibaba.com>,
+	Keith Busch <kbusch@kernel.org>,
+	Christoph Hellwig <hch@lst.de>,
+	Anuj Gupta <anuj20.g@samsung.com>,
+	Kanchan Joshi <joshi.k@samsung.com>,
+	Jens Axboe <axboe@kernel.dk>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 345/377] erofs: fix managed cache race for unaligned extents
+Subject: [PATCH 6.12 209/272] blk-integrity: remove seed for user mapped buffers
 Date: Thu, 28 May 2026 21:49:43 +0200
-Message-ID: <20260528194648.411142185@linuxfoundation.org>
+Message-ID: <20260528194635.081869396@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260528194638.371537336@linuxfoundation.org>
-References: <20260528194638.371537336@linuxfoundation.org>
+In-Reply-To: <20260528194629.379955525@linuxfoundation.org>
+References: <20260528194629.379955525@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -68,118 +71,259 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-256189-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-255911-lists,stable=lfdr.de];
-	TO_DN_SOME(0.00)[];
-	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,zbv.page:url,salutedevices.com:email,linuxfoundation.org:mid,linuxfoundation.org:dkim]
-X-Rspamd-Queue-Id: 1C83C5F91F6
+	TO_DN_SOME(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_SEVEN(0.00)[9];
+	MID_RHS_MATCH_FROM(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[lst.de:email,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim,kernel.dk:email]
+X-Rspamd-Queue-Id: 0AA105F9AFB
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Gao Xiang <hsiangkao@linux.alibaba.com>
+From: Keith Busch <kbusch@kernel.org>
 
-[ Upstream commit 649932fc3815eda2f24eb4de4b3a5e94886ee0b9 ]
+[ Upstream commit 133008e84b99e4f5f8cf3d8b768c995732df9406 ]
 
-After unaligned compressed extents were introduced, the following race
-could occur:
+The seed is only used for kernel generation and verification. That
+doesn't happen for user buffers, so passing the seed around doesn't
+accomplish anything.
 
-[Thread 1]                                   [Thread 2]
-(z_erofs_fill_bio_vec)
-<handle a Z_EROFS_PREALLOCATED_FOLIO folio>
-...
-filemap_add_folio (1)
-                                             (z_erofs_bind_cache)
-                                             <the same folio is found..>
-                                             ..
-                                             ..
-folio_attach_private (2)
-                                             filemap_add_folio (3) again
-
-Since (1) is executed but (2) hasn't been executed yet, it's possible
-that another thread finds the same managed folio in z_erofs_bind_cache()
-for a different pcluster and calls filemap_add_folio() again since
-folio->private is still Z_EROFS_PREALLOCATED_FOLIO.
-
-Fix this by explicitly clearing folio->private before making the folio
-visible in the managed cache so that another pcluster can simply wait
-on the locked managed folio as what we did for other shared cases [1].
-
-This only impacts unaligned data compression (`-E48bit` with zstd,
-for example).
-
-[1] Commit 9e2f9d34dd12 ("erofs: handle overlapped pclusters out of
- crafted images properly") was originally introduced to handle crafted
- overlapped extents, but it addresses unaligned extents as well.
-
-Fixes: 7361d1e3763b ("erofs: support unaligned encoded data")
-Reported-by: Arseniy Krasnov <avkrasnov@salutedevices.com>
-Closes: https://lore.kernel.org/r/4a2f3801-fac1-42fe-ae75-da315822e088@salutedevices.com
-Tested-by: Arseniy Krasnov <avkrasnov@salutedevices.com>
-Signed-off-by: Gao Xiang <hsiangkao@linux.alibaba.com>
+Signed-off-by: Keith Busch <kbusch@kernel.org>
+Reviewed-by: Christoph Hellwig <hch@lst.de>
+Reviewed-by: Anuj Gupta <anuj20.g@samsung.com>
+Reviewed-by: Kanchan Joshi <joshi.k@samsung.com>
+Link: https://lore.kernel.org/r/20241016201309.1090320-1-kbusch@meta.com
+Signed-off-by: Jens Axboe <axboe@kernel.dk>
+Stable-dep-of: 637ad3a56a3b ("block: don't overwrite bip_vcnt in bio_integrity_copy_user()")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/erofs/zdata.c | 15 ++++++++-------
- 1 file changed, 8 insertions(+), 7 deletions(-)
+ block/bio-integrity.c         | 13 +++++--------
+ block/blk-integrity.c         |  4 ++--
+ drivers/nvme/host/ioctl.c     | 17 ++++++++---------
+ include/linux/bio-integrity.h |  4 ++--
+ include/linux/blk-integrity.h |  5 ++---
+ 5 files changed, 19 insertions(+), 24 deletions(-)
 
-diff --git a/fs/erofs/zdata.c b/fs/erofs/zdata.c
-index 71f01f0a07435..33932d56d3a46 100644
---- a/fs/erofs/zdata.c
-+++ b/fs/erofs/zdata.c
-@@ -1511,8 +1511,15 @@ static void z_erofs_fill_bio_vec(struct bio_vec *bvec,
- 	DBG_BUGON(z_erofs_is_shortlived_page(bvec->bv_page));
+diff --git a/block/bio-integrity.c b/block/bio-integrity.c
+index 6641ecbf69678..ab58f44058e96 100644
+--- a/block/bio-integrity.c
++++ b/block/bio-integrity.c
+@@ -197,7 +197,7 @@ EXPORT_SYMBOL(bio_integrity_add_page);
  
- 	folio = page_folio(zbv.page);
--	/* For preallocated managed folios, add them to page cache here */
-+	/*
-+	 * Preallocated folios are added to the managed cache here rather than
-+	 * in z_erofs_bind_cache() in order to keep these folios locked in
-+	 * increasing (physical) address order.
-+	 * Clear folio->private before these folios become visible to others in
-+	 * the managed cache to avoid duplicate additions for unaligned extents.
-+	 */
- 	if (folio->private == Z_EROFS_PREALLOCATED_FOLIO) {
-+		folio->private = NULL;
- 		tocache = true;
- 		goto out_tocache;
+ static int bio_integrity_copy_user(struct bio *bio, struct bio_vec *bvec,
+ 				   int nr_vecs, unsigned int len,
+-				   unsigned int direction, u32 seed)
++				   unsigned int direction)
+ {
+ 	bool write = direction == ITER_SOURCE;
+ 	struct bio_integrity_payload *bip;
+@@ -245,7 +245,6 @@ static int bio_integrity_copy_user(struct bio *bio, struct bio_vec *bvec,
  	}
-@@ -1548,14 +1555,8 @@ static void z_erofs_fill_bio_vec(struct bio_vec *bvec,
- 			}
- 			return;
- 		}
--		/*
--		 * Already linked with another pcluster, which only appears in
--		 * crafted images by fuzzers for now.  But handle this anyway.
--		 */
--		tocache = false;	/* use temporary short-lived pages */
- 	} else {
- 		DBG_BUGON(1); /* referenced managed folios can't be truncated */
--		tocache = true;
+ 
+ 	bip->bip_flags |= BIP_COPY_USER;
+-	bip->bip_iter.bi_sector = seed;
+ 	bip->bip_vcnt = nr_vecs;
+ 	return 0;
+ free_bip:
+@@ -256,7 +255,7 @@ static int bio_integrity_copy_user(struct bio *bio, struct bio_vec *bvec,
+ }
+ 
+ static int bio_integrity_init_user(struct bio *bio, struct bio_vec *bvec,
+-				   int nr_vecs, unsigned int len, u32 seed)
++				   int nr_vecs, unsigned int len)
+ {
+ 	struct bio_integrity_payload *bip;
+ 
+@@ -265,7 +264,6 @@ static int bio_integrity_init_user(struct bio *bio, struct bio_vec *bvec,
+ 		return PTR_ERR(bip);
+ 
+ 	memcpy(bip->bip_vec, bvec, nr_vecs * sizeof(*bvec));
+-	bip->bip_iter.bi_sector = seed;
+ 	bip->bip_iter.bi_size = len;
+ 	bip->bip_vcnt = nr_vecs;
+ 	return 0;
+@@ -301,8 +299,7 @@ static unsigned int bvec_from_pages(struct bio_vec *bvec, struct page **pages,
+ 	return nr_bvecs;
+ }
+ 
+-int bio_integrity_map_user(struct bio *bio, void __user *ubuf, ssize_t bytes,
+-			   u32 seed)
++int bio_integrity_map_user(struct bio *bio, void __user *ubuf, ssize_t bytes)
+ {
+ 	struct request_queue *q = bdev_get_queue(bio->bi_bdev);
+ 	unsigned int align = blk_lim_dma_alignment_and_pad(&q->limits);
+@@ -348,9 +345,9 @@ int bio_integrity_map_user(struct bio *bio, void __user *ubuf, ssize_t bytes,
+ 
+ 	if (copy)
+ 		ret = bio_integrity_copy_user(bio, bvec, nr_bvecs, bytes,
+-					      direction, seed);
++					      direction);
+ 	else
+-		ret = bio_integrity_init_user(bio, bvec, nr_bvecs, bytes, seed);
++		ret = bio_integrity_init_user(bio, bvec, nr_bvecs, bytes);
+ 	if (ret)
+ 		goto release_pages;
+ 	if (bvec != stack_vec)
+diff --git a/block/blk-integrity.c b/block/blk-integrity.c
+index 3fe0681399f6e..013469faa5e7c 100644
+--- a/block/blk-integrity.c
++++ b/block/blk-integrity.c
+@@ -113,9 +113,9 @@ int blk_rq_map_integrity_sg(struct request *rq, struct scatterlist *sglist)
+ EXPORT_SYMBOL(blk_rq_map_integrity_sg);
+ 
+ int blk_rq_integrity_map_user(struct request *rq, void __user *ubuf,
+-			      ssize_t bytes, u32 seed)
++			      ssize_t bytes)
+ {
+-	int ret = bio_integrity_map_user(rq->bio, ubuf, bytes, seed);
++	int ret = bio_integrity_map_user(rq->bio, ubuf, bytes);
+ 
+ 	if (ret)
+ 		return ret;
+diff --git a/drivers/nvme/host/ioctl.c b/drivers/nvme/host/ioctl.c
+index 64ae8af01d9a4..930521c633d23 100644
+--- a/drivers/nvme/host/ioctl.c
++++ b/drivers/nvme/host/ioctl.c
+@@ -114,7 +114,7 @@ static struct request *nvme_alloc_user_request(struct request_queue *q,
+ 
+ static int nvme_map_user_request(struct request *req, u64 ubuffer,
+ 		unsigned bufflen, void __user *meta_buffer, unsigned meta_len,
+-		u32 meta_seed, struct io_uring_cmd *ioucmd, unsigned int flags)
++		struct io_uring_cmd *ioucmd, unsigned int flags)
+ {
+ 	struct request_queue *q = req->q;
+ 	struct nvme_ns *ns = q->queuedata;
+@@ -164,8 +164,7 @@ static int nvme_map_user_request(struct request *req, u64 ubuffer,
+ 		bio_set_dev(bio, bdev);
+ 
+ 	if (has_metadata) {
+-		ret = blk_rq_integrity_map_user(req, meta_buffer, meta_len,
+-						meta_seed);
++		ret = blk_rq_integrity_map_user(req, meta_buffer, meta_len);
+ 		if (ret)
+ 			goto out_unmap;
  	}
- 	folio_unlock(folio);
- 	folio_put(folio);
+@@ -182,7 +181,7 @@ static int nvme_map_user_request(struct request *req, u64 ubuffer,
+ 
+ static int nvme_submit_user_cmd(struct request_queue *q,
+ 		struct nvme_command *cmd, u64 ubuffer, unsigned bufflen,
+-		void __user *meta_buffer, unsigned meta_len, u32 meta_seed,
++		void __user *meta_buffer, unsigned meta_len,
+ 		u64 *result, unsigned timeout, unsigned int flags)
+ {
+ 	struct nvme_ns *ns = q->queuedata;
+@@ -199,7 +198,7 @@ static int nvme_submit_user_cmd(struct request_queue *q,
+ 	req->timeout = timeout;
+ 	if (ubuffer && bufflen) {
+ 		ret = nvme_map_user_request(req, ubuffer, bufflen, meta_buffer,
+-				meta_len, meta_seed, NULL, flags);
++				meta_len, NULL, flags);
+ 		if (ret)
+ 			return ret;
+ 	}
+@@ -280,7 +279,7 @@ static int nvme_submit_io(struct nvme_ns *ns, struct nvme_user_io __user *uio)
+ 	c.rw.lbatm = cpu_to_le16(io.appmask);
+ 
+ 	return nvme_submit_user_cmd(ns->queue, &c, io.addr, length, metadata,
+-			meta_len, lower_32_bits(io.slba), NULL, 0, 0);
++			meta_len, NULL, 0, 0);
+ }
+ 
+ static bool nvme_validate_passthru_nsid(struct nvme_ctrl *ctrl,
+@@ -334,7 +333,7 @@ static int nvme_user_cmd(struct nvme_ctrl *ctrl, struct nvme_ns *ns,
+ 
+ 	status = nvme_submit_user_cmd(ns ? ns->queue : ctrl->admin_q, &c,
+ 			cmd.addr, cmd.data_len, nvme_to_user_ptr(cmd.metadata),
+-			cmd.metadata_len, 0, &result, timeout, 0);
++			cmd.metadata_len, &result, timeout, 0);
+ 
+ 	if (status >= 0) {
+ 		if (put_user(result, &ucmd->result))
+@@ -381,7 +380,7 @@ static int nvme_user_cmd64(struct nvme_ctrl *ctrl, struct nvme_ns *ns,
+ 
+ 	status = nvme_submit_user_cmd(ns ? ns->queue : ctrl->admin_q, &c,
+ 			cmd.addr, cmd.data_len, nvme_to_user_ptr(cmd.metadata),
+-			cmd.metadata_len, 0, &cmd.result, timeout, flags);
++			cmd.metadata_len, &cmd.result, timeout, flags);
+ 
+ 	if (status >= 0) {
+ 		if (put_user(cmd.result, &ucmd->result))
+@@ -511,7 +510,7 @@ static int nvme_uring_cmd_io(struct nvme_ctrl *ctrl, struct nvme_ns *ns,
+ 	if (d.addr && d.data_len) {
+ 		ret = nvme_map_user_request(req, d.addr,
+ 			d.data_len, nvme_to_user_ptr(d.metadata),
+-			d.metadata_len, 0, ioucmd, vec);
++			d.metadata_len, ioucmd, vec);
+ 		if (ret)
+ 			return ret;
+ 	}
+diff --git a/include/linux/bio-integrity.h b/include/linux/bio-integrity.h
+index dd831c269e994..dbf0f74c15291 100644
+--- a/include/linux/bio-integrity.h
++++ b/include/linux/bio-integrity.h
+@@ -72,7 +72,7 @@ struct bio_integrity_payload *bio_integrity_alloc(struct bio *bio, gfp_t gfp,
+ 		unsigned int nr);
+ int bio_integrity_add_page(struct bio *bio, struct page *page, unsigned int len,
+ 		unsigned int offset);
+-int bio_integrity_map_user(struct bio *bio, void __user *ubuf, ssize_t len, u32 seed);
++int bio_integrity_map_user(struct bio *bio, void __user *ubuf, ssize_t len);
+ void bio_integrity_unmap_user(struct bio *bio);
+ bool bio_integrity_prep(struct bio *bio);
+ void bio_integrity_advance(struct bio *bio, unsigned int bytes_done);
+@@ -99,7 +99,7 @@ static inline void bioset_integrity_free(struct bio_set *bs)
+ }
+ 
+ static inline int bio_integrity_map_user(struct bio *bio, void __user *ubuf,
+-					 ssize_t len, u32 seed)
++					 ssize_t len)
+ {
+ 	return -EINVAL;
+ }
+diff --git a/include/linux/blk-integrity.h b/include/linux/blk-integrity.h
+index 676f8f860c474..c7eae0bfb013f 100644
+--- a/include/linux/blk-integrity.h
++++ b/include/linux/blk-integrity.h
+@@ -28,7 +28,7 @@ static inline bool queue_limits_stack_integrity_bdev(struct queue_limits *t,
+ int blk_rq_map_integrity_sg(struct request *, struct scatterlist *);
+ int blk_rq_count_integrity_sg(struct request_queue *, struct bio *);
+ int blk_rq_integrity_map_user(struct request *rq, void __user *ubuf,
+-			      ssize_t bytes, u32 seed);
++			      ssize_t bytes);
+ 
+ static inline bool
+ blk_integrity_queue_supports_integrity(struct request_queue *q)
+@@ -104,8 +104,7 @@ static inline int blk_rq_map_integrity_sg(struct request *q,
+ }
+ static inline int blk_rq_integrity_map_user(struct request *rq,
+ 					    void __user *ubuf,
+-					    ssize_t bytes,
+-					    u32 seed)
++					    ssize_t bytes)
+ {
+ 	return -EINVAL;
+ }
 -- 
 2.53.0
 
