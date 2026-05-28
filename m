@@ -1,60 +1,62 @@
-Return-Path: <stable+bounces-255486-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-255842-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id aHHEIHuhGGqnlggAu9opvQ
-	(envelope-from <stable+bounces-255486-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:11:39 +0200
+	id KNeSNqCmGGp+lwgAu9opvQ
+	(envelope-from <stable+bounces-255842-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:33:36 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8994B5F807B
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:11:38 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id ABF125F8F4C
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:33:36 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 999E5302FF67
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 20:10:49 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 4C245309F386
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 20:27:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 32033352019;
-	Thu, 28 May 2026 20:10:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1631E2FD7C3;
+	Thu, 28 May 2026 20:27:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Psvmwr1D"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SamWyETF"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EEFB233A702;
-	Thu, 28 May 2026 20:10:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CC6422E7379;
+	Thu, 28 May 2026 20:27:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779999047; cv=none; b=Xu7aW9nPMXdKmyQVMS2ynx8S6yqyl5HNxriwXN8lTN2O2ffsa+FwClHDbiANIf4DGQM+ytFkiNytB7ZrOldNwK1SNAXE+j+dPenvna3g4+LtYczUqokm+qZU5tQxbsKQdeB20FDPzD6UXwJi78/Xsolwez5Ulm0nUQj18Z/hyIM=
+	t=1780000032; cv=none; b=F4IdvqmteHT7Gcg4H7RwWKgbY5hHwZ7+psXR9tVPO4qQxAXOSzwuxARoeKCq5TYcFKolbym9IXPhfbhBgL3bm/XeXWrt4HOD6+T3qKXoKbnSjr9jTs7gfklN6K2didB4wTyqkypo6435Ga2GiIK2GwnyVMzLDEZYtPLDse/4/Es=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779999047; c=relaxed/simple;
-	bh=F+mgMFJk2L9ah9qI27gFlytFVHb6E+MLqhLKAMIwpvs=;
+	s=arc-20240116; t=1780000032; c=relaxed/simple;
+	bh=C5zxWqZyFFjwNmXxyvN5eC0YJzLaYwRWZPmvSmcjYZw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=nH5Ie3HEEINce8QNEnW6kByYkKQgjWOUkFbKT6HRwLMlMhKv7D4gqZXp0OXNvwl92vqGGXRAjoWx7Pj3lg2ToPP1TntOJfkCvesa4wENJSw531WCngF4ELRwYRdSgcYnHsai4CTtSpSDxy0Wff+yKI5cG0CEcbd00VO383qHrpU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Psvmwr1D; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 595951F000E9;
-	Thu, 28 May 2026 20:10:45 +0000 (UTC)
+	 MIME-Version; b=VM44HqjSNznNV1J8KFUQ4QM2aq7UQcGneeNtWm7iARUQ5w+TZid+ss3vjGNQ9yU2ypB15gjOnuCzlkAvETbKIuGnXXzCiiwSxXgRu2CSeFC3+k2XSjbzUESTdWxXa+O/XPPdVxt7p2WDPh/K82tSPCMFc3Ws/SX5F90nHCrAAL0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SamWyETF; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3D6801F000E9;
+	Thu, 28 May 2026 20:27:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779999045;
-	bh=GW7e2Li8kRb+l8NsuVKFQfOMXpTODQ11MGf2/dLDlDo=;
+	s=korg; t=1780000031;
+	bh=mmrSvZ3YUUVaAd8BuzqOm2+nMxWiD8ZpmwoOZG2Xd38=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=Psvmwr1D2o9ZpbdYEloCbiSMIAVvV2Ji11dkmRnKrAhME0hnZNmYlk2nZYz8I2qIz
-	 hdO8siNTwirzOZfL0GR7jawKxuRCkcZVFBWEY62S7j7oG3pXyrkYWEaDBiMMGVaF7e
-	 f7oUCV5TU49Ngp1I/suha3wu3GiXmtTPOYSI9F24=
+	b=SamWyETFKBvKqDw0kLPES/TBO+vzP0jpX1/un6TZ+HT1j7GgH6dmBOuzyPnRBvKbL
+	 8wZ4ePh1FyPKsvG6M4QA1tyGUN6/COQtWmfRir1gF/Soin8juIAWySoC5FvjXy1qIF
+	 3NQTllsMDUrE4zNu2N/Gi/k4HHZZy6iIkwR36HXA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
-	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
+	Mahesh Salgaonkar <mahesh@linux.ibm.com>,
+	Shrikanth Hegde <sshegde@linux.ibm.com>,
+	"Ritesh Harjani (IBM)" <ritesh.list@gmail.com>,
+	Sayali Patil <sayalip@linux.ibm.com>,
+	Madhavan Srinivasan <maddy@linux.ibm.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 7.0 388/461] platform/x86: adv_swbutton: Check ACPI_HANDLE() against NULL
+Subject: [PATCH 6.18 279/377] powerpc/time: Remove redundant preempt_disable|enable() calls from arch_irq_work_raise()
 Date: Thu, 28 May 2026 21:48:37 +0200
-Message-ID: <20260528194658.692970861@linuxfoundation.org>
+Message-ID: <20260528194646.435486143@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260528194646.819809818@linuxfoundation.org>
-References: <20260528194646.819809818@linuxfoundation.org>
+In-Reply-To: <20260528194638.371537336@linuxfoundation.org>
+References: <20260528194638.371537336@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,85 +66,134 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-2.16 / 15.00];
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-255486-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,linux.ibm.com,gmail.com,kernel.org];
+	URIBL_MULTI_FAIL(0.00)[msgid.link:server fail,linuxfoundation.org:server fail,sto.lore.kernel.org:server fail];
 	RCVD_TLS_LAST(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
+	TAGGED_FROM(0.00)[bounces-255842-lists,stable=lfdr.de];
+	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
 	TO_DN_SOME(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_SEVEN(0.00)[9];
 	MID_RHS_MATCH_FROM(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,linuxfoundation.org:mid,linuxfoundation.org:dkim,intel.com:email,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo]
-X-Rspamd-Queue-Id: 8994B5F807B
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,msgid.link:url,linuxfoundation.org:mid,linuxfoundation.org:dkim]
+X-Rspamd-Queue-Id: ABF125F8F4C
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-7.0-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+From: Sayali Patil <sayalip@linux.ibm.com>
 
-[ Upstream commit e7a9a6ea40e352cd7977f6a8c80bdeadf65ad838 ]
+[ Upstream commit 31467b23823ffec1f6fff407f8e3ca9af8b7491a ]
 
-Every platform driver can be forced to match a device that doesn't match
-its list of device IDs because of device_match_driver_override(), so
-platform drivers that rely on the existence of a device's ACPI companion
-object need to verify its presence.
+A kernel panic is observed when handling machine check exceptions from
+real mode.
 
-Accordingly, add a requisite ACPI_HANDLE() check against NULL to the
-platform/x86 adv_swbutton driver.
+  BUG: Unable to handle kernel data access on read at 0xc00000006be21300
+  Oops: Kernel access of bad area, sig: 11 [#1]
+  MSR:  8000000000001003 <SF,ME,RI,LE>  CR: 88222248  XER: 00000005
+  CFAR: c00000000003ffc4 DAR: c00000006be21300 DSISR: 40000000 IRQMASK: 0
+  NIP [c000000000029e40] arch_irq_work_raise+0x10/0x70
+  LR [c00000000003ffc8] machine_check_queue_event+0xa8/0x150
+  Call Trace:
+  [c0000000179d3c70] [c00000000003ff64] machine_check_queue_event+0x44/0x150
+  [c0000000179d3d30] [c0000000000084e0] machine_check_early_common+0x1f0/0x2c0
 
-Fixes: 3d904005f686 ("platform/x86: add support for Advantech software defined button")
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
-Reviewed-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Link: https://patch.msgid.link/5115425.31r3eYUQgx@rafael.j.wysocki
-Reviewed-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
-Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+The crash occurs because arch_irq_work_raise() calls preempt_disable()
+from machine check exception (MCE) handlers running in real mode. In
+this context, accessing the preempt_count can fault, leading to the panic.
+
+The preempt_disable()/preempt_enable() pair in arch_irq_work_raise()
+was originally added by commit 0fe1ac48bef0 ("powerpc/perf_event: Fix
+oops due to perf_event_do_pending call") to avoid races while raising
+irq work from exception context.
+
+Later, commit 471ba0e686cb ("irq_work: Do not raise an IPI when
+queueing work on the local CPU") added preemption protection in
+irq_work_queue() path, while commit 20b876918c06 ("irq_work: Use per
+cpu atomics instead of regular atomics") added equivalent
+protection in irq_work_queue_on() before reaching arch_irq_work_raise():
+
+  irq_work_queue() / irq_work_queue_on()
+    -> preempt_disable()
+      -> __irq_work_queue_local()
+        -> irq_work_raise()
+          -> arch_irq_work_raise()
+
+As a result, callers other than mce_irq_work_raise() already execute
+with preemption disabled, making the additional
+preempt_disable()/preempt_enable() pair in arch_irq_work_raise()
+redundant.
+
+The arch_irq_work_raise() function executes in NMI context when called
+from MCE handler. Hence we will not be preempted or scheduled out since
+we are in NMI context with MSR[EE]=0. Therefore, it is safe to remove
+the preempt_disable()/preempt_enable() calls from here.
+
+Remove it to avoid accessing preempt_count from real mode context.
+
+Fixes: cc15ff327569 ("powerpc/mce: Avoid using irq_work_queue() in realmode")
+Suggested-by: Mahesh Salgaonkar <mahesh@linux.ibm.com>
+Acked-by: Shrikanth Hegde <sshegde@linux.ibm.com>
+Reviewed-by: Ritesh Harjani (IBM) <ritesh.list@gmail.com>
+Signed-off-by: Sayali Patil <sayalip@linux.ibm.com>
+[Maddy: Fixed the commit title]
+Signed-off-by: Madhavan Srinivasan <maddy@linux.ibm.com>
+Link: https://patch.msgid.link/20260513081413.222490-1-sayalip@linux.ibm.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/platform/x86/adv_swbutton.c | 6 +++++-
- 1 file changed, 5 insertions(+), 1 deletion(-)
+ arch/powerpc/kernel/time.c | 6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/platform/x86/adv_swbutton.c b/drivers/platform/x86/adv_swbutton.c
-index 6fa60f3fc53c0..8f7a26e6de81d 100644
---- a/drivers/platform/x86/adv_swbutton.c
-+++ b/drivers/platform/x86/adv_swbutton.c
-@@ -48,10 +48,14 @@ static int adv_swbutton_probe(struct platform_device *device)
- {
- 	struct adv_swbutton *button;
- 	struct input_dev *input;
--	acpi_handle handle = ACPI_HANDLE(&device->dev);
-+	acpi_handle handle;
- 	acpi_status status;
- 	int error;
+diff --git a/arch/powerpc/kernel/time.c b/arch/powerpc/kernel/time.c
+index 4bbeb8644d3da..b4472288e0d43 100644
+--- a/arch/powerpc/kernel/time.c
++++ b/arch/powerpc/kernel/time.c
+@@ -458,6 +458,10 @@ DEFINE_PER_CPU(u8, irq_work_pending);
  
-+	handle = ACPI_HANDLE(&device->dev);
-+	if (!handle)
-+		return -ENODEV;
-+
- 	button = devm_kzalloc(&device->dev, sizeof(*button), GFP_KERNEL);
- 	if (!button)
- 		return -ENOMEM;
+ #endif /* 32 vs 64 bit */
+ 
++/*
++ * Must be called with preemption disabled since it updates
++ * per-CPU irq_work state and programs the local CPU decrementer.
++ */
+ void arch_irq_work_raise(void)
+ {
+ 	/*
+@@ -471,10 +475,8 @@ void arch_irq_work_raise(void)
+ 	 * which could get tangled up if we're messing with the same state
+ 	 * here.
+ 	 */
+-	preempt_disable();
+ 	set_irq_work_pending_flag();
+ 	set_dec(1);
+-	preempt_enable();
+ }
+ 
+ static void set_dec_or_work(u64 val)
 -- 
 2.53.0
 
