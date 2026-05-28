@@ -1,62 +1,63 @@
-Return-Path: <stable+bounces-256297-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-255888-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id QOjrMd2rGGpolwgAu9opvQ
-	(envelope-from <stable+bounces-256297-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:55:57 +0200
+	id kHmcHcKmGGp+lwgAu9opvQ
+	(envelope-from <stable+bounces-255888-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:34:10 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 748A85F9E30
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:55:57 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id 24C8A5F8FC8
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:34:09 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 1A1E730D9EAB
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 20:48:30 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id B7C1730612B9
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 20:29:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 20B1D346AC5;
-	Thu, 28 May 2026 20:48:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A6F1C2F8E88;
+	Thu, 28 May 2026 20:29:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="eNiRrJq+"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BbTcwVbx"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D2875318B9D;
-	Thu, 28 May 2026 20:48:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7F8901C3318;
+	Thu, 28 May 2026 20:29:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780001305; cv=none; b=dC6BIpBJdhEuR15tFxKtDGUHhL39VHepqKbF3SI5CJiC9uhLun4+cDqFmJlGXyUPElkb+OPd7IFuj41MMjwt8b+7faG/dbGahBW1MAzEC3Gtw6BHBojK2gTTr4XPOQmGqEQXVbYQetQv9pJMCP2vhHIKrnkrAQ8WM5Xky6rxmJA=
+	t=1780000160; cv=none; b=UkmzVJOILwqM4QdQbkQuDl1Ribuv0OycwxWyhB+odRrsaeFDFHFJonA8197OBOPPDUj+EQ5/jW4fSKbjsm6mpxv1N3rGRq8gIbHs0/e5YJQZpMcS9CK0ldxqZV0FPE7DbAS/Wa/+xD1lelU6yLKX/MLuarBa5/LNmctvN8rCxoI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780001305; c=relaxed/simple;
-	bh=dEssjDNbkCeRm/B3EyukvGqDXRmWw5t359IMcPIEzWY=;
+	s=arc-20240116; t=1780000160; c=relaxed/simple;
+	bh=tmB68RTZtPPbE+F5ozsXtx3CxtLTVzVAqJLw41DsGuI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=rFaLcUurLedzNxhYagvcaAdyfVb3GXyC/9I/eG4kJpCpez2fb1kxipTg5BRxv4pVyHOxvPOcHnVZ6rB8TKeD+cUUzSiKPpCvF/w0RG4QLTXi6KwgIwjEG55/P3lRGNR/49Z/oxWuATFgA0pv6MEA9NfniICBVOcEnkke2ZtEt9w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=eNiRrJq+; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CF1CA1F00A3A;
-	Thu, 28 May 2026 20:48:23 +0000 (UTC)
+	 MIME-Version; b=OSu8+C0D9tgqwgBTyI9Aj2KiNqDcg1zDegYDfcB8oBwcE9zlpU7BWCeL3TYInNzKd2Ocpp152NIrCQuYlBVE7Q6jITbIzIdrWmmfLQF3aAXrjmEoEIAEVKnHTEdSC4CwxY0+uOjva2ibUmzB4G5UVeu5pCQPZBmH8g1oIu2b978=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BbTcwVbx; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E375F1F000E9;
+	Thu, 28 May 2026 20:29:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780001304;
-	bh=pEzYoGEbi/6z9rrsm1ER/oaOuu1Pwd/vUYv+WDwvM/M=;
+	s=korg; t=1780000159;
+	bh=d1/DJty51tJxVc7DD6BiRFXbw2jlpI4Pu4kGE2Jp1vI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=eNiRrJq+ZsRzu+exc4MjXab+iIexKMyzkgsgiDPBx0YyeX3uZyWW6TKIlvlvl2VVn
-	 8VGgk3M6D+AvEh4MyupBoVZ2XsHIt97o1oHPYuLRIsgVWfZ4f4GiGkZOn7xBfSIiKH
-	 PsmcODxhpDQ9Q65J28cLm6Lw6eCACDgC7DxqZMNY=
+	b=BbTcwVbxloEW6w+qA2qllbtG2ER9MuOQtgLEJPkkc10l6MVaQaFFVCSZHtm8vdgGs
+	 7YXSOTltgsnScHwAublGaluvGXkLLPLDrHXwnmlWTO1lpecg5ETDCqcShRN0deY2jE
+	 nuERYr7J2FOxRbXbTMwXukHyQBTNl/639v18Fp2Y=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable@kernel.org,
-	Yuan Tan <yuantan098@gmail.com>,
-	Yifan Wu <yifanwucs@gmail.com>,
-	Juefei Pu <tomapufckgml@gmail.com>,
-	Xin Liu <bird@lzu.edu.cn>,
-	Sven Eckelmann <sven@narfation.org>
-Subject: [PATCH 6.6 081/186] batman-adv: frag: disallow unicast fragment in fragment
-Date: Thu, 28 May 2026 21:49:21 +0200
-Message-ID: <20260528194931.123663030@linuxfoundation.org>
+	Kohei Enju <kohei@enjuk.jp>,
+	Aleksandr Loktionov <aleksandr.loktionov@intel.com>,
+	Simon Horman <horms@kernel.org>,
+	Avigail Dahan <avigailx.dahan@intel.com>,
+	Tony Nguyen <anthony.l.nguyen@intel.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.18 324/377] igc: set tx buffer type for SMD frames
+Date: Thu, 28 May 2026 21:49:22 +0200
+Message-ID: <20260528194647.788601828@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260528194928.941004471@linuxfoundation.org>
-References: <20260528194928.941004471@linuxfoundation.org>
+In-Reply-To: <20260528194638.371537336@linuxfoundation.org>
+References: <20260528194638.371537336@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -71,120 +72,79 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,kernel.org,gmail.com,lzu.edu.cn,narfation.org];
-	TAGGED_FROM(0.00)[bounces-256297-lists,stable=lfdr.de];
+	URIBL_MULTI_FAIL(0.00)[linuxfoundation.org:server fail,msgid.link:server fail];
+	TAGGED_FROM(0.00)[bounces-255888-lists,stable=lfdr.de];
 	PRECEDENCE_BULK(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	FROM_HAS_DN(0.00)[];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[9];
+	RCPT_COUNT_SEVEN(0.00)[10];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
 	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,narfation.org:email,lzu.edu.cn:email,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim]
-X-Rspamd-Queue-Id: 748A85F9E30
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,intel.com:email,sashiko.dev:url,linuxfoundation.org:mid,linuxfoundation.org:dkim]
+X-Rspamd-Queue-Id: 24C8A5F8FC8
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sven Eckelmann <sven@narfation.org>
+From: Kohei Enju <kohei@enjuk.jp>
 
-commit bc62216dc8e221e3781afa14430f45208bfa9af9 upstream.
+[ Upstream commit 5acc641e590e008caaed480ed9ffae47cf7ecbdf ]
 
-batadv_frag_skb_buffer() is called by batadv_batman_skb_recv() when a
-BATADV_UNICAST_FRAG packet is received. Once all fragments are collected
-and the packet is reassembled, batadv_recv_frag_packet() calls
-batadv_batman_skb_recv() again to process the defragmented payload.
+Sashiko pointed out that igc_fpe_init_smd_frame() initializes
+igc_tx_buffer fields for an SMD skb, but does not set the buffer type:
+https://sashiko.dev/#/patchset/20260415025226.114115-1-kohei%40enjuk.jp
 
-A malicious sender can craft a BATADV_UNICAST_FRAG packet whose reassembled
-payload is itself a BATADV_UNICAST_FRAG packet (matryoshka-style nesting).
-Each nesting level recurses through batadv_batman_skb_recv() without bound,
-growing the kernel stack until it is exhausted.
+Since igc_tx_buffer entries are reused, a stale XDP or XSK type can
+remain and make TX completion use the wrong cleanup path.
 
-Since refragmentation or fragments in fragments are not actually allowed,
-discard all packets which are still BATADV_UNICAST_FRAG packets after the
-defragmentation process.
+Set the buffer type to IGC_TX_BUFFER_TYPE_SKB.
 
-Cc: stable@kernel.org
-Fixes: 610bfc6bc99b ("batman-adv: Receive fragmented packets and merge")
-Reported-by: Yuan Tan <yuantan098@gmail.com>
-Reported-by: Yifan Wu <yifanwucs@gmail.com>
-Reported-by: Juefei Pu <tomapufckgml@gmail.com>
-Reported-by: Xin Liu <bird@lzu.edu.cn>
-Reviewed-by: Yuan Tan <yuantan098@gmail.com>
-Signed-off-by: Sven Eckelmann <sven@narfation.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 5422570c0010 ("igc: add support for frame preemption verification")
+Signed-off-by: Kohei Enju <kohei@enjuk.jp>
+Reviewed-by: Aleksandr Loktionov <aleksandr.loktionov@intel.com>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Tested-by: Avigail Dahan <avigailx.dahan@intel.com>
+Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
+Link: https://patch.msgid.link/20260515182419.1597859-9-anthony.l.nguyen@intel.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/batman-adv/fragmentation.c |   35 +++++++++++++++++++++++++++++++++++
- 1 file changed, 35 insertions(+)
+ drivers/net/ethernet/intel/igc/igc_tsn.c | 1 +
+ 1 file changed, 1 insertion(+)
 
---- a/net/batman-adv/fragmentation.c
-+++ b/net/batman-adv/fragmentation.c
-@@ -306,6 +306,31 @@ free:
- }
+diff --git a/drivers/net/ethernet/intel/igc/igc_tsn.c b/drivers/net/ethernet/intel/igc/igc_tsn.c
+index 02dd9f0290a34..52de2bcbadbec 100644
+--- a/drivers/net/ethernet/intel/igc/igc_tsn.c
++++ b/drivers/net/ethernet/intel/igc/igc_tsn.c
+@@ -34,6 +34,7 @@ static int igc_fpe_init_smd_frame(struct igc_ring *ring,
+ 		return -ENOMEM;
+ 	}
  
- /**
-+ * batadv_skb_is_frag() - check if newly merged skb is gain a unicast packet
-+ * @skb: newly merged skb
-+ *
-+ * Return: if newly skb is of type BATADV_UNICAST_FRAG
-+ */
-+static bool batadv_skb_is_frag(struct sk_buff *skb)
-+{
-+	struct batadv_ogm_packet *batadv_ogm_packet;
-+
-+	/* packet should hold at least type and version */
-+	if (unlikely(!pskb_may_pull(skb, 2)))
-+		return false;
-+
-+	batadv_ogm_packet = (struct batadv_ogm_packet *)skb->data;
-+
-+	if (batadv_ogm_packet->version != BATADV_COMPAT_VERSION)
-+		return false;
-+
-+	if (batadv_ogm_packet->packet_type != BATADV_UNICAST_FRAG)
-+		return false;
-+
-+	return true;
-+}
-+
-+/**
-  * batadv_frag_skb_buffer() - buffer fragment for later merge
-  * @skb: skb to buffer
-  * @orig_node_src: originator that the skb is received from
-@@ -338,6 +363,16 @@ bool batadv_frag_skb_buffer(struct sk_bu
- 	if (!skb_out)
- 		goto out_err;
- 
-+	/* fragment in fragment is not allowed. otherwise it is possible
-+	 * to exhaust the stack when receiving a matryoshka-style
-+	 * "fragments in a fragment packet"
-+	 */
-+	if (batadv_skb_is_frag(skb_out)) {
-+		kfree_skb(skb_out);
-+		skb_out = NULL;
-+		goto out_err;
-+	}
-+
- out:
- 	ret = true;
- out_err:
++	buffer->type = IGC_TX_BUFFER_TYPE_SKB;
+ 	buffer->skb = skb;
+ 	buffer->protocol = 0;
+ 	buffer->bytecount = skb->len;
+-- 
+2.53.0
+
 
 
 
