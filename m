@@ -1,59 +1,59 @@
-Return-Path: <stable+bounces-256084-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-255880-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 4BS8Eq+pGGpolwgAu9opvQ
-	(envelope-from <stable+bounces-256084-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:46:39 +0200
+	id uPL6BLWmGGpolwgAu9opvQ
+	(envelope-from <stable+bounces-255880-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:33:57 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id BADB25F9854
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:46:36 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id C64ED5F8F8F
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:33:56 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 1933F3129847
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 20:38:31 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 16B7B305B63C
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 20:29:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 74A4B330D35;
-	Thu, 28 May 2026 20:38:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C4F94330650;
+	Thu, 28 May 2026 20:28:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="C/Ml07Me"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="e8Q5XBFz"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 523D12E7F25;
-	Thu, 28 May 2026 20:38:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9A890301472;
+	Thu, 28 May 2026 20:28:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780000710; cv=none; b=IdTAl0b9vgp3OQ4gORESPNQiGmQGGKlVcpO1tklfVetB0d+BQe1T/20DuJWMu2znmEp85W7sViwUVZ7zYXXDmiSW+gUEiiAJsLulh+h9DruE3rwJ4UR/ezX+1LOb73mRUS2udo2UBGE2hVYjbIKnXTpgWwKkO588CBS1BBbhbzM=
+	t=1780000136; cv=none; b=OPSoGCDiPX2rXjaQDJuWV9pkHHpcET2Pnwz7e9+Hn6et5QcO/Cec5dman158pQCUBHCBeHtcwEB3TqpE2zbQXvf0V7VsqdJwyl8P52Pn8rvixI2hhSF5EcDUcZf8EnhHfXwk0lRcWipBUsgf0a0bxhvXljjwPEXwwrRaWXf16Rc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780000710; c=relaxed/simple;
-	bh=T+eEFRse8n1qs9R+xTGBbLd4L7knUEUgploeDt9e+Bs=;
+	s=arc-20240116; t=1780000136; c=relaxed/simple;
+	bh=IqOeDBAuKERLiQ4YLNci/oYeJVUsQ8Ik8tEJ0FrF7fQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=LFf6uPzMy8FL/Xy1ezLZDfluV83hvY7+qN1aiuwtEzVggvMf9xlrUEA9F0YeKwAEDeX8a0Rhze1TNVq6PyxBMQcanX6PAcER/eTqlH21fd0X9ZXMHn26VaIV8uND5ATBaBsP9aDK52bf+qYTvaRSqT18QRhSbrX8vF6xY529V6c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=C/Ml07Me; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 745851F000E9;
-	Thu, 28 May 2026 20:38:28 +0000 (UTC)
+	 MIME-Version; b=hnJ8zCfsQfrLJYc4sWPtVNeEBSHL6fhvHj+XO14VIrPBxkNKoKalwWiJLw0LA0Zi+T1w5GU5XBhkn+w1b74t7gxDjXbZBOCiX+W+v7abNI/wMbyfKVQmVfloedBOO4cEc9UiKIfEAOcZ32E4cxyrR9wmGI1L6aplqT2Ljr6uMHA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=e8Q5XBFz; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C40F41F000E9;
+	Thu, 28 May 2026 20:28:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780000709;
-	bh=x/8WlQb44HIL/rxjh5bV8m/m1fBuTZtNmB7uNXcqTDo=;
+	s=korg; t=1780000135;
+	bh=sU1gpgELlApdovt07wRDP/vav2hJEbZCcdbzzVNtqrE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=C/Ml07MehrWk52wzUL733lH5LL2VCgXy1PYx5z31t/WmuUfIrYqnWBJxGWApbILCK
-	 LUW8QyTGF3Elr8uUIwOlcOAtxdu1iFDJODY6ZeHta9DifmJI5yNXWnYdurGC9bn3T2
-	 Tra1LPmqRg1mmwQTLVnq45V+dRjDbRqPBrABxhII=
+	b=e8Q5XBFz43UXaqUJxhe2etUAgCd3lg8tRPyZ44lNPJnTt0xcK3bRHHMTuukoHUdd5
+	 OD4ytyZIHdhsWnciHSe7ZBXB2gxx3/oOzaaSZXbRNfF7UQ6OjqxF+ErbOX0fQokwtK
+	 WiSjTHNfVfWzowvf+OjNDYN4tJ4ToB240lnhFiZw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Marek Vasut <marek.vasut+renesas@mailbox.org>,
-	Geert Uytterhoeven <geert+renesas@glider.be>,
+	Mikko Perttunen <mperttunen@nvidia.com>,
+	Rob Clark <robin.clark@oss.qualcomm.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 142/272] ARM: dts: renesas: genmai: Drop superfluous cells
+Subject: [PATCH 6.18 278/377] drm/msm: Fix iommu_map_sgtable() return value check and avoid WARN
 Date: Thu, 28 May 2026 21:48:36 +0200
-Message-ID: <20260528194633.348051308@linuxfoundation.org>
+Message-ID: <20260528194646.407037204@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260528194629.379955525@linuxfoundation.org>
-References: <20260528194629.379955525@linuxfoundation.org>
+In-Reply-To: <20260528194638.371537336@linuxfoundation.org>
+References: <20260528194638.371537336@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,74 +64,86 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-256084-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-255880-lists,stable=lfdr.de];
+	URIBL_MULTI_FAIL(0.00)[linuxfoundation.org:server fail,nvidia.com:server fail,patchwork.freedesktop.org:server fail,qualcomm.com:server fail,sto.lore.kernel.org:server fail];
 	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
 	TO_DN_SOME(0.00)[];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
 	RCPT_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[stable,renesas];
+	TAGGED_RCPT(0.00)[stable];
 	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[mailbox.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,msgid.link:url,glider.be:email,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,1.18.168.128:email]
-X-Rspamd-Queue-Id: BADB25F9854
+	DBL_BLOCKED_OPENRESOLVER(0.00)[qualcomm.com:email,nvidia.com:email,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,patchwork.freedesktop.org:url,linuxfoundation.org:mid,linuxfoundation.org:dkim]
+X-Rspamd-Queue-Id: C64ED5F8F8F
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Marek Vasut <marek.vasut+renesas@mailbox.org>
+From: Mikko Perttunen <mperttunen@nvidia.com>
 
-[ Upstream commit 714e1d6bba0e0abe5c87c8e189a35fa690540df4 ]
+[ Upstream commit 55e0f0d1c1a4ee1e46da7da4d443eb3044fb3851 ]
 
-Drop superfluous address-cells and size-cells to fix DTC W=1 warning:
+Commit "iommu: return full error code from iommu_map_sg[_atomic]()"
+changed iommu_map_sgtable() to return an ssize_t and negative values
+in error cases, rather than a size_t and a zero.
 
-    arch/arm/boot/dts/renesas/r7s72100-genmai.dts:28.17-55.4: Warning (avoid_unnecessary_addr_size): /flash@18000000: unnecessary #address-cells/#size-cells without "ranges", "dma-ranges" or child "reg" or "ranges" property
+Store the return value in the appropriate type and in case of error,
+return it rather than WARNing.
 
-Signed-off-by: Marek Vasut <marek.vasut+renesas@mailbox.org>
-Fixes: 30e0a8cf886cb459 ("ARM: dts: renesas: genmai: Add FLASH nodes")
-Reviewed-by: Geert Uytterhoeven <geert+renesas@glider.be>
-Link: https://patch.msgid.link/20260327234244.91707-6-marek.vasut+renesas@mailbox.org
-Signed-off-by: Geert Uytterhoeven <geert+renesas@glider.be>
+Fixes: ad8f36e4b6b1 ("iommu: return full error code from iommu_map_sg[_atomic]()")
+Signed-off-by: Mikko Perttunen <mperttunen@nvidia.com>
+Patchwork: https://patchwork.freedesktop.org/patch/719685/
+Message-ID: <20260421-iommu_map_sgtable-return-v1-3-fb484c07d2a1@nvidia.com>
+Signed-off-by: Rob Clark <robin.clark@oss.qualcomm.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm/boot/dts/renesas/r7s72100-genmai.dts | 3 ---
- 1 file changed, 3 deletions(-)
+ drivers/gpu/drm/msm/msm_iommu.c | 5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
-diff --git a/arch/arm/boot/dts/renesas/r7s72100-genmai.dts b/arch/arm/boot/dts/renesas/r7s72100-genmai.dts
-index 28e703e0f152b..9bfbd25b25a24 100644
---- a/arch/arm/boot/dts/renesas/r7s72100-genmai.dts
-+++ b/arch/arm/boot/dts/renesas/r7s72100-genmai.dts
-@@ -38,9 +38,6 @@ flash@18000000 {
- 		clocks = <&mstp9_clks R7S72100_CLK_SPIBSC0>;
- 		power-domains = <&cpg_clocks>;
+diff --git a/drivers/gpu/drm/msm/msm_iommu.c b/drivers/gpu/drm/msm/msm_iommu.c
+index a188617653e85..82a172f21a3ec 100644
+--- a/drivers/gpu/drm/msm/msm_iommu.c
++++ b/drivers/gpu/drm/msm/msm_iommu.c
+@@ -677,7 +677,7 @@ static int msm_iommu_map(struct msm_mmu *mmu, uint64_t iova,
+ 			 int prot)
+ {
+ 	struct msm_iommu *iommu = to_msm_iommu(mmu);
+-	size_t ret;
++	ssize_t ret;
  
--		#address-cells = <1>;
--		#size-cells = <1>;
--
- 		partitions {
- 			compatible = "fixed-partitions";
- 			#address-cells = <1>;
+ 	WARN_ON(off != 0);
+ 
+@@ -686,7 +686,8 @@ static int msm_iommu_map(struct msm_mmu *mmu, uint64_t iova,
+ 		iova |= GENMASK_ULL(63, 49);
+ 
+ 	ret = iommu_map_sgtable(iommu->domain, iova, sgt, prot);
+-	WARN_ON(!ret);
++	if (ret < 0)
++		return ret;
+ 
+ 	return (ret == len) ? 0 : -EINVAL;
+ }
 -- 
 2.53.0
 
