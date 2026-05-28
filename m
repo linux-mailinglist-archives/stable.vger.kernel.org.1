@@ -1,60 +1,61 @@
-Return-Path: <stable+bounces-255778-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-256023-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 4GVRLN+lGGrClggAu9opvQ
-	(envelope-from <stable+bounces-255778-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:30:23 +0200
+	id WHXeF/+nGGp+lwgAu9opvQ
+	(envelope-from <stable+bounces-256023-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:39:27 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 303B35F8D5E
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:30:23 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2E9BD5F93EE
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:39:27 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 29E27312241A
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 20:24:48 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id BA9B9307C54C
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 20:35:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D656834F259;
-	Thu, 28 May 2026 20:24:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1B9F63368B5;
+	Thu, 28 May 2026 20:35:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YZVpw3bG"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Q33i/Ey9"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B1DDB352033;
-	Thu, 28 May 2026 20:24:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E136B2E92BA;
+	Thu, 28 May 2026 20:35:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779999856; cv=none; b=GfjdlXGwBl1Xt7Bnzf4CH6L5TBfiHRwIVKnq9LrqVuYkePh7SadkQ4F4zSNJ81B4g8bYm8LWTiDixsoGNcTFQsuVKhWc7RAf9AKQPH44IgDLtKjQS2XE/OWV4/qYDLmAfzOMwWxAojdKp7HKN8VFAlKkt+R83JcBE1QeM9DRTYk=
+	t=1780000538; cv=none; b=qUHdYfKxxsyvmcsdHWSLplmVm7xyzfb4vgDIZH/aFFPmLkNxgqW86kHZNpNRhpgJEHna1AEXT03otz7KFcgE9oL7kWzc53ABG/0U4P6LTbf/S18rqZkBN1GIh9CLnPzEvhvptWhzp9Dilh0/8jgeRkpB4LSLdrqUksOWKCNQ1CY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779999856; c=relaxed/simple;
-	bh=E2MaoaFPerAUZMJvUkUS1xu4WIC4GQxamIJiN52I7Yg=;
+	s=arc-20240116; t=1780000538; c=relaxed/simple;
+	bh=iL00tCKP9Pnbi9lMgkZ3oNNOU6KiHqgfZivT8MPf3mE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=pXMlIahHdZbHe4YEtsWdP+OWFWSI41haDhBygWpfiBWNX3RDw6kW/5iQfoO4/4pH+FIbBXa+tfei5Txbii89KXVsFfbzQThIFfiStHMHVPapQqicVmjkrLTy8VInFmv02mgTyvqV1cj+dyC2PMCog4hMx6u0wRYR80huoyLF1tg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YZVpw3bG; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1C8311F000E9;
-	Thu, 28 May 2026 20:24:14 +0000 (UTC)
+	 MIME-Version; b=gC3qm6Cc+rmgK9zoU1MZsa8m0PlaCY1dVIAkWnNiBP9ATx3jiHyvNkbLCr1busgHGH7YIluIyMvznkQyI86VXQdTA9wYVPEnCXXCZJ1rxjl4k2EePPA9uWFel2ZjQoRt4IoFyKdhkqnoGPMdmVaY6T2xJMv4fKuPvr5aHgFuxOY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Q33i/Ey9; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4BA2E1F000E9;
+	Thu, 28 May 2026 20:35:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779999855;
-	bh=QHVwIQjFws1m/6S5LEmgCuUwBKtgkyMa0JmsrpgEKk8=;
+	s=korg; t=1780000537;
+	bh=19qqbegkgKcjYimwAdMcQnXvzl4jbP/M1QF3DGvw7AA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=YZVpw3bGpGx2X7xBCLRcMfcy28YZCZgyYXqGgWYH2z2sVhJ8MbXL32mETqj8Caz0l
-	 KIcDmxclDBsgUBQ7jk2Eld1pVKAOYyXNdOxBbamfP2SsHbStjfhdFHdjXLRZowtXY1
-	 O9IHriGhPdy74wX0pO+AGblPCqQxJKqEC/uEzK7w=
+	b=Q33i/Ey95PV1peH5JyUhn3eNznr/lObGbpEVDuxuX7c0PE1lhuojZ9A9MKVXhDc/1
+	 Wi0tKDyMHbm+r4k9fB+RfIdx0TDUQotvsjim4Z07Vtc/a49+7dF/qu8MDQuwzZ2n6l
+	 h8dl+etkICnTWlbJh3akl7UJDvAH2W6auPhDzRe8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Gabor Juhos <j4g8y7@gmail.com>,
-	Miquel Raynal <miquel.raynal@bootlin.com>,
-	Vinod Koul <vkoul@kernel.org>,
+	Guopeng Zhang <zhangguopeng@kylinos.cn>,
+	Tejun Heo <tj@kernel.org>,
+	Chen Ridong <chenridong@huaweicloud.com>,
+	Waiman Long <longman@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 215/377] phy: marvell: mvebu-a3700-utmi: fix incorrect USB2_PHY_CTRL register access
+Subject: [PATCH 6.12 079/272] cgroup/cpuset: Reset DL migration state on can_attach() failure
 Date: Thu, 28 May 2026 21:47:33 +0200
-Message-ID: <20260528194644.625649866@linuxfoundation.org>
+Message-ID: <20260528194631.587657841@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260528194638.371537336@linuxfoundation.org>
-References: <20260528194638.371537336@linuxfoundation.org>
+In-Reply-To: <20260528194629.379955525@linuxfoundation.org>
+References: <20260528194629.379955525@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,85 +65,106 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-2.16 / 15.00];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
-	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+X-Spamd-Result: default: False [3.84 / 15.00];
+	SEM_URIBL(3.50)[huaweicloud.com:email];
+	R_MISSING_CHARSET(0.50)[];
 	MAILLIST(-0.15)[generic];
+	BAD_REP_POLICIES(0.10)[];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,bootlin.com,kernel.org];
+	DMARC_POLICY_ALLOW(0.00)[linuxfoundation.org,none];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-255778-lists,stable=lfdr.de];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	TAGGED_FROM(0.00)[bounces-256023-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	RCVD_COUNT_THREE(0.00)[4];
+	R_DKIM_ALLOW(0.00)[linuxfoundation.org:s=korg];
+	ARC_ALLOW(0.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	TO_DN_SOME(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
 	PRECEDENCE_BULK(0.00)[];
+	NEURAL_HAM(-0.00)[-0.987];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
 	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_SEVEN(0.00)[7];
+	RCPT_COUNT_SEVEN(0.00)[8];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,bootlin.com:email,msgid.link:url,linuxfoundation.org:mid,linuxfoundation.org:dkim]
-X-Rspamd-Queue-Id: 303B35F8D5E
+	R_SPF_ALLOW(0.00)[+ip4:172.232.135.74:c];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,kylinos.cn:email,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,huaweicloud.com:email]
+X-Rspamd-Queue-Id: 2E9BD5F93EE
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Gabor Juhos <j4g8y7@gmail.com>
+From: Guopeng Zhang <zhangguopeng@kylinos.cn>
 
-[ Upstream commit 91ddf6f722084383fb05be731c0107814b055c0c ]
+[ Upstream commit 4a39eda5fdd867fc39f3c039714dd432cee00268 ]
 
-The mvebu_a3700_utmi_phy_power_off() function tries to modify the
-USB2_PHY_CTRL register by using the IO address of the PHY IP block along
-with the readl/writel IO accessors. However, the register exist in the
-USB miscellaneous register space, and as such it must be accessed via
-regmap like it is done in the mvebu_a3700_utmi_phy_power_on() function.
+cpuset_can_attach() accumulates temporary SCHED_DEADLINE migration
+state in the destination cpuset while walking the taskset.
 
-Change the code to use regmap_update_bits() for modífying the register
-to fix this.
+If a later task_can_attach() or security_task_setscheduler() check
+fails, cgroup_migrate_execute() treats cpuset as the failing subsystem
+and does not call cpuset_cancel_attach() for it. The partially
+accumulated state is then left behind and can be consumed by a later
+attach, corrupting cpuset DL task accounting and pending DL bandwidth
+accounting.
 
-Fixes: cc8b7a0ae866 ("phy: add A3700 UTMI PHY driver")
-Signed-off-by: Gabor Juhos <j4g8y7@gmail.com>
-Reviewed-by: Miquel Raynal <miquel.raynal@bootlin.com>
-Link: https://patch.msgid.link/20260321-a3700-utmi-fix-usb2_phy_ctrl-access-v1-1-6005ff4b5058@gmail.com
-Signed-off-by: Vinod Koul <vkoul@kernel.org>
+Reset the pending DL migration state from the common error exit when
+ret is non-zero. Successful can_attach() keeps the state for
+cpuset_attach() or cpuset_cancel_attach().
+
+Fixes: 2ef269ef1ac0 ("cgroup/cpuset: Free DL BW in case can_attach() fails")
+Cc: stable@vger.kernel.org # v6.10+
+Signed-off-by: Guopeng Zhang <zhangguopeng@kylinos.cn>
+Signed-off-by: Tejun Heo <tj@kernel.org>
+Reviewed-by: Chen Ridong <chenridong@huaweicloud.com>
+Reviewed-by: Waiman Long <longman@redhat.com>
+[ omitted upstream context line `cs->dl_bw_cpu = cpu;` ]
 Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/phy/marvell/phy-mvebu-a3700-utmi.c | 5 ++---
- 1 file changed, 2 insertions(+), 3 deletions(-)
+ kernel/cgroup/cpuset.c |    8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/phy/marvell/phy-mvebu-a3700-utmi.c b/drivers/phy/marvell/phy-mvebu-a3700-utmi.c
-index 04f4fb4bed702..f882bc57649c7 100644
---- a/drivers/phy/marvell/phy-mvebu-a3700-utmi.c
-+++ b/drivers/phy/marvell/phy-mvebu-a3700-utmi.c
-@@ -168,9 +168,8 @@ static int mvebu_a3700_utmi_phy_power_off(struct phy *phy)
- 	u32 reg;
+--- a/kernel/cgroup/cpuset.c
++++ b/kernel/cgroup/cpuset.c
+@@ -2996,16 +2996,13 @@ static int cpuset_can_attach(struct cgro
+ 		int cpu = cpumask_any_and(cpu_active_mask, cs->effective_cpus);
  
- 	/* Disable PHY pull-up and enable USB2 suspend */
--	reg = readl(utmi->regs + USB2_PHY_CTRL(usb32));
--	reg &= ~(RB_USB2PHY_PU | RB_USB2PHY_SUSPM(usb32));
--	writel(reg, utmi->regs + USB2_PHY_CTRL(usb32));
-+	regmap_update_bits(utmi->usb_misc, USB2_PHY_CTRL(usb32),
-+			   RB_USB2PHY_PU | RB_USB2PHY_SUSPM(usb32), 0);
+ 		if (unlikely(cpu >= nr_cpu_ids)) {
+-			reset_migrate_dl_data(cs);
+ 			ret = -EINVAL;
+ 			goto out_unlock;
+ 		}
  
- 	/* Power down OTG module */
- 	if (usb32) {
--- 
-2.53.0
-
+ 		ret = dl_bw_alloc(cpu, cs->sum_migrate_dl_bw);
+-		if (ret) {
+-			reset_migrate_dl_data(cs);
++		if (ret)
+ 			goto out_unlock;
+-		}
+ 	}
+ 
+ out_success:
+@@ -3014,7 +3011,10 @@ out_success:
+ 	 * changes which zero cpus/mems_allowed.
+ 	 */
+ 	cs->attach_in_progress++;
++
+ out_unlock:
++	if (ret)
++		reset_migrate_dl_data(cs);
+ 	mutex_unlock(&cpuset_mutex);
+ 	return ret;
+ }
 
 
 
