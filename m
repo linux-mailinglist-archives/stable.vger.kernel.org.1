@@ -1,59 +1,60 @@
-Return-Path: <stable+bounces-256292-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-256124-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id uPbVEbSrGGpolwgAu9opvQ
-	(envelope-from <stable+bounces-256292-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:55:16 +0200
+	id OAj3LK6pGGpolwgAu9opvQ
+	(envelope-from <stable+bounces-256124-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:46:38 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id AF8BA5F9DBD
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:55:15 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3767A5F9852
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:46:35 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 1D70B31AF6D8
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 20:48:13 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 69A3230D2667
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 20:40:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A6AE633F595;
-	Thu, 28 May 2026 20:48:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E61E52139C9;
+	Thu, 28 May 2026 20:40:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="j3Ia8i3/"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mRs6jknf"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7C546330307;
-	Thu, 28 May 2026 20:48:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C9F2F25F7B9;
+	Thu, 28 May 2026 20:40:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780001291; cv=none; b=mhtTdfxL2/Qbl2xhO/SlReFKiBB8nOAoHLXE3xx8NgWNRkWPWxp+QO4D4U/M+EMIkr9wnN3EL/qRaRZrhwTabJPJUJ6rq5I+401+RySDpY+CBdcbwq8g/bikp3Eig+92umprljIzGdymevFNMqu9kXrbvjEsV5wQ3zsqi2FEF0E=
+	t=1780000823; cv=none; b=TRQMTA9zWRJuZZpuNYqZuoyVDlvHSxPfjTKEa+icdTXHDIf5GGjHJ9R8h81l8aLr8Art1AlYsGtAILB+IoQq+Srcy7Xgr8RZFhXdddtG1ejHK+SBIJKHhUz8SkxKQG68Mdu0t0BE5lm7UcbFwDcvFTWwz0He/vFT5T3sVTZYsfg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780001291; c=relaxed/simple;
-	bh=718orzA1cqvD8wUpVhvTeI72hTEAUGaK97s4G+i021o=;
+	s=arc-20240116; t=1780000823; c=relaxed/simple;
+	bh=oRdy5y1V8tp10vp6+HxPBdexrB+Mr4594gcCNnBEDO4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=E4UmNi/sCpA2IzXSafLdQmrWl2jwLemo1lh+G7kuXu8qBMsJWhFjzY+aMEjaTpxvlJtHcBnRoyYBbLw9h7op3mAB3xECPsQk4d/FKaBaHvXRHnw1aR3NULXEGVNGTX6/FjPR1XFtxRVri0Oi46sAPb/ZA4b2iQJ7Q6MEqa5MsrA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=j3Ia8i3/; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D9AD61F000E9;
-	Thu, 28 May 2026 20:48:09 +0000 (UTC)
+	 MIME-Version; b=Zg/nQYfhd2MqTNLimfkVRVoo3A2y03PnY0e/ZCb9ro3x4KjKBkthG8AYQM1C6r4KgEa30UQPKS+kPgzT6/tEoMzgqjNzG4C2IR1rViaSkw6bfqXMgpjr8vPjHx2jRamcE4/suRfTNlY14FO5xHUibgKbIVQS30hHfZj50RXUT5w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mRs6jknf; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 33A691F000E9;
+	Thu, 28 May 2026 20:40:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780001290;
-	bh=iCtqcWYRY4tB3XVcK9r6eQQF/1hzLZXA+IWQJx2GSYA=;
+	s=korg; t=1780000822;
+	bh=AB9unhkrxcOF51KWsUSFOiZf9I7u3gXTiaeL5gzmm+k=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=j3Ia8i3/pGwUsyGl4CjuBepRzN8/XopBQbmPFYf4h7wKqDRtv+GCEot8zcA1UMEa6
-	 /W8/Oz6CNOXqy1Yuh8eNLkf+XkjGleRrYv1joLT4qncBqyE1Div8c/v4NZTAC3j2Qv
-	 Kbsoo+TX7GNAiNmaPVfaXVGemIJf6E6qvjd8Rex4=
+	b=mRs6jknfz8kOcPi9HIu4oazLpccoxI7vD64mm9ezS3e2Mxh/XvYXfwe8STxIl3UcL
+	 vNT5rpow1+niIFW8O1YVP1TjuaOuCIfTmAyRA1/SyIs/TE1JkjYGb6eUURduZ0ZFEa
+	 XDhruNBqAV7rO9d6m5uWhctG3UDWYiJaQzIs1kUk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable@kernel.org,
-	=?UTF-8?q?Linus=20L=C3=BCssing?= <linus.luessing@c0d3.blue>,
-	Sven Eckelmann <sven@narfation.org>
-Subject: [PATCH 6.6 076/186] batman-adv: mcast: fix use-after-free in orig_node RCU release
+	Dai Ngo <dai.ngo@oracle.com>,
+	Jeff Layton <jlayton@kernel.org>,
+	Chuck Lever <chuck.lever@oracle.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 182/272] NFSD: Fix infinite loop in layout state revocation
 Date: Thu, 28 May 2026 21:49:16 +0200
-Message-ID: <20260528194930.989393438@linuxfoundation.org>
+Message-ID: <20260528194634.389290102@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260528194928.941004471@linuxfoundation.org>
-References: <20260528194928.941004471@linuxfoundation.org>
+In-Reply-To: <20260528194629.379955525@linuxfoundation.org>
+References: <20260528194629.379955525@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,85 +64,83 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-2.16 / 15.00];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-256292-lists,stable=lfdr.de];
-	FROM_HAS_DN(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
 	MIME_TRACE(0.00)[0:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TO_DN_SOME(0.00)[];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	RCPT_COUNT_FIVE(0.00)[6];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-256124-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
 	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	MID_RHS_MATCH_FROM(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,narfation.org:email,c0d3.blue:email,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim]
-X-Rspamd-Queue-Id: AF8BA5F9DBD
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim,oracle.com:email]
+X-Rspamd-Queue-Id: 3767A5F9852
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sven Eckelmann <sven@narfation.org>
+From: Chuck Lever <chuck.lever@oracle.com>
 
-commit 20c2d6a20ca936f5aaa6dd40f73f262ac45c87cc upstream.
+[ Upstream commit 4f8ef58c10bfe5f86a643c7c8331b37e69e3dae1 ]
 
-batadv_mcast_purge_orig() removes entries from RCU-protected hlists but
-does not wait for an RCU grace period before returning. Concurrent RCU
-readers may still accesses references to those entries at the point of
-removal. RCU-protected readers trying to operate on entries like
-orig->mcast_want_all_ipv6_node will then access already freed memory.
+find_one_sb_stid() skips stids whose sc_status is non-zero, but the
+SC_TYPE_LAYOUT case in nfsd4_revoke_states() never sets sc_status
+before calling nfsd4_close_layout(). The retry loop therefore finds
+the same layout stid on every iteration, hanging the revoker
+indefinitely.
 
-Fix this by moving batadv_mcast_purge_orig() to batadv_orig_node_release(),
-just before the call_rcu() invocation. This ensures RCU readers that were
-active at purge time have drained before the orig_node memory is reclaimed.
-
-Cc: stable@kernel.org
-Fixes: ab49886e3da7 ("batman-adv: Add IPv4 link-local/IPv6-ll-all-nodes multicast support")
-Acked-by: Linus Lüssing <linus.luessing@c0d3.blue>
-Signed-off-by: Sven Eckelmann <sven@narfation.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 1e33e1414bec ("nfsd: allow layout state to be admin-revoked.")
+Reported-by: Dai Ngo <dai.ngo@oracle.com>
+Reviewed-by: Jeff Layton <jlayton@kernel.org>
+Tested-by: Dai Ngo <dai.ngo@oracle.com>
+Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/batman-adv/originator.c |    4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ fs/nfsd/nfs4state.c | 7 +++++++
+ 1 file changed, 7 insertions(+)
 
---- a/net/batman-adv/originator.c
-+++ b/net/batman-adv/originator.c
-@@ -823,8 +823,6 @@ static void batadv_orig_node_free_rcu(st
- 
- 	orig_node = container_of(rcu, struct batadv_orig_node, rcu);
- 
--	batadv_mcast_purge_orig(orig_node);
--
- 	batadv_frag_purge_orig(orig_node, NULL);
- 
- 	kfree(orig_node->tt_buff);
-@@ -878,6 +876,8 @@ void batadv_orig_node_release(struct kre
- 	/* Free nc_nodes */
- 	batadv_nc_purge_orig(orig_node->bat_priv, orig_node, NULL);
- 
-+	batadv_mcast_purge_orig(orig_node);
-+
- 	call_rcu(&orig_node->rcu, batadv_orig_node_free_rcu);
- }
- 
+diff --git a/fs/nfsd/nfs4state.c b/fs/nfsd/nfs4state.c
+index 1a15e458b178a..2d91747297820 100644
+--- a/fs/nfsd/nfs4state.c
++++ b/fs/nfsd/nfs4state.c
+@@ -1832,6 +1832,13 @@ void nfsd4_revoke_states(struct nfsd_net *nn, struct super_block *sb)
+ 					break;
+ 				case SC_TYPE_LAYOUT:
+ 					ls = layoutstateid(stid);
++					spin_lock(&clp->cl_lock);
++					if (stid->sc_status == 0) {
++						stid->sc_status |=
++							SC_STATUS_ADMIN_REVOKED;
++						atomic_inc(&clp->cl_admin_revoked);
++					}
++					spin_unlock(&clp->cl_lock);
+ 					nfsd4_close_layout(ls);
+ 					break;
+ 				}
+-- 
+2.53.0
+
 
 
 
