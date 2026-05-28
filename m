@@ -1,38 +1,38 @@
-Return-Path: <stable+bounces-255037-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-255038-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id +KacKExXGGoQjQgAu9opvQ
-	(envelope-from <stable+bounces-255037-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 16:55:08 +0200
+	id QI7eDPhVGGoQjQgAu9opvQ
+	(envelope-from <stable+bounces-255038-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 16:49:28 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 08B145F4006
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 16:55:07 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id C9BE05F3F12
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 16:49:27 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 63B6D31A7F04
+	by sto.lore.kernel.org (Postfix) with ESMTP id D7179300C0E8
 	for <lists+stable@lfdr.de>; Thu, 28 May 2026 14:49:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 533FC224D6;
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B1C1B3F44DA;
 	Thu, 28 May 2026 14:49:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="MJF69j9y";
-	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="0ZNZe+qq"
+	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="txaYw8mi";
+	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="mXqbH0z1"
 X-Original-To: stable@vger.kernel.org
 Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5DB433F4DE3
-	for <stable@vger.kernel.org>; Thu, 28 May 2026 14:49:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5E7243F6615
+	for <stable@vger.kernel.org>; Thu, 28 May 2026 14:49:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779979762; cv=none; b=Gr0jNKdfJOAqjDaHjJeJGNiv8O7fq5VEHnI4yiJ+sX0QilkJqqLkTv+BUhJWzvla1V0Dsf1lrvrWy/AP7W3crYxULwO90hcIrNu118ZSiWUJdVwmFVP3Dcn1ds8zwZv+JKjsU7gE3s8ncs/DInVN+cNFpwCofaUuVwjdRiNVlrM=
+	t=1779979763; cv=none; b=NKsy3QbKk0d7EVEVwUGseWnDcuz+NnUkSKL2bS5r6Dz/hIthFDjxtExjz9ZNk0buIuHsHPlEq8iD5pIZmHH4MoEEXqsX31dZA/5MLUL16ekybrsiycK0sqlr33l2xl/NufepTTqCWSpRMt33ckOecgRgwbsawjHWeeQli1T0zCM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779979762; c=relaxed/simple;
-	bh=DArYKsZQNDPWQTWBJod6vsyRZUGoq+G5/RQ/eJqc3LQ=;
+	s=arc-20240116; t=1779979763; c=relaxed/simple;
+	bh=s9sXfOeRBh1ec8nRnY5sbTHD7QgIY23BYolhdbP1zqM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=rPuG0vMCAwb9NRCfDpHwyff1BmjW6MwbqYaV8Hw3fRd3obqbXTbeLdymrpMuS1/6SrktJ9HIpevH56wp8cbq7DEyCMfxkJkTSeL2P11clnac1k3KtocM0mWoC7WA0EhPFK8aDiK7mJpFU6ZWLBBsvtcS+UB37t3t6Ivd9ftFjDQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=MJF69j9y; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=0ZNZe+qq; arc=none smtp.client-ip=193.142.43.55
+	 MIME-Version; b=eJv35wgMXqDohcYocXoRBoMgzwcEziQv+YK2n1pYO48hhX8z6G8KR2TZbuyVZPzQeBebNqURa8NlZzZsoHLKRIFrI7eS2xdThXsfARQh7MwHtLCr1xq75bc56237QMABGYTf2eHCOJmZM7qptr63kN1GGlGTThvH93FRa88KTac=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=txaYw8mi; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=mXqbH0z1; arc=none smtp.client-ip=193.142.43.55
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
 From: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
@@ -42,30 +42,30 @@ DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
 	 to:to:cc:cc:mime-version:mime-version:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=4grsoMRnWtjGvp3tOWAOnY1G+Ng8urBFhdTmbwS8FXc=;
-	b=MJF69j9y02AB+OZqPDs36s+W3OuZt0KQlGlgJ9VsSrWELS1qLkKnczTe2k3KR4eXdCAZu0
-	bt/0DXC7UVnlrtcwm0RQM9rluasy/S8TJGzj15IY8qG5bmbF17pfggQ255i5GVzWcaIpdN
-	3npPhob0GAcjKgewsGz8WWLR8AJ/vQwTJjdkaNBXTDkfSLpGMzbiwHhRFgYcMx+8n/Nhcy
-	D1O831qLilnFtCoftFp1rgYQp2eVb03j+zX9Q77qAPv/UdQeeuYIO+3XS56UL9YugFlaQ7
-	lVDr+VFLg4BB+8IA4RNZdrHrwwXNAiIz7+zOyOVtIQ5LaEadIDeWGWCZp+jcaA==
+	bh=caibkcskPUjT+ijLjXlMbtzADM2t4K21Ej8aMCI9Zos=;
+	b=txaYw8miQ36/0+mFctasnGtwf6xlH79l8y78DHcsN3A9ymGzYghkmLq34VGNegSNxbiwBC
+	AKa0kG+YjiG8zA2DgUox3ctSaUxVD0K34cZmM5SnAdyZIk5wsN7LccYdCCYM0Oy9Z2VMCq
+	IlC5TeJtXlOooSCwO02EkBhpQ+tFN/2AqDOszAMjery+Au8H41lxuFk5qUON3HL+Iyj1jc
+	nDzLYaHBB2YMoDcaAwxMG30o4I86lCiAjmkbFcnrkR63UBFmsitx+kBRESJeP0hHw6cT1u
+	iyC0z5tiSD8/EiTt/UUuEHzBeGQoWZA/IGt7gi3v2t/z1dmyhM+vG2VakivhCg==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
 	s=2020e; t=1779979712;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=4grsoMRnWtjGvp3tOWAOnY1G+Ng8urBFhdTmbwS8FXc=;
-	b=0ZNZe+qqXVPfVfISYw9SwWnk0Y5U80x3Q9ydpklbdoxyTDPIEA393rnE/pGmwmpqWDuZbt
-	yQbeuYKTzvRvgsBw==
+	bh=caibkcskPUjT+ijLjXlMbtzADM2t4K21Ej8aMCI9Zos=;
+	b=mXqbH0z1fsAgXNmadvQ3gUk3p/GYIQaqUEkHITrf+xHQcYyMiIQkQth8CuQfvVkXsteFTV
+	oJQDxLp0ivIOBeCQ==
 To: stable@vger.kernel.org
 Cc: Ada Couprie Diaz <ada.coupriediaz@arm.com>,
 	"Luis Claudio R. Goncalves" <lgoncalv@redhat.com>,
 	Will Deacon <will@kernel.org>,
 	Mark Rutland <mark.rutland@arm.com>,
 	Sebastian Andrzej Siewior <bigeasy@linutronix.de>
-Subject: [PATCH 11/14] arm64: debug: split hardware watchpoint exception entry
-Date: Thu, 28 May 2026 16:48:21 +0200
-Message-ID: <20260528144825.850351-12-bigeasy@linutronix.de>
+Subject: [PATCH 12/14] arm64: debug: split brk64 exception entry
+Date: Thu, 28 May 2026 16:48:22 +0200
+Message-ID: <20260528144825.850351-13-bigeasy@linutronix.de>
 In-Reply-To: <20260528144825.850351-1-bigeasy@linutronix.de>
 References: <20260528144825.850351-1-bigeasy@linutronix.de>
 Precedence: bulk
@@ -80,36 +80,34 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linutronix.de,none];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linutronix.de:s=2020,linutronix.de:s=2020e];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	URIBL_MULTI_FAIL(0.00)[sea.lore.kernel.org:server fail];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-255037-lists,stable=lfdr.de];
-	TO_DN_SOME(0.00)[];
+	TAGGED_FROM(0.00)[bounces-255038-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
+	TO_DN_SOME(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
 	RCVD_COUNT_THREE(0.00)[3];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	RCPT_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[bigeasy@linutronix.de,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
 	DKIM_TRACE(0.00)[linutronix.de:+];
 	NEURAL_HAM(-0.00)[-1.000];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
 	TAGGED_RCPT(0.00)[stable];
 	MISSING_XM_UA(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,arm.com:email,linutronix.de:email,linutronix.de:mid,linutronix.de:dkim]
-X-Rspamd-Queue-Id: 08B145F4006
+	FROM_HAS_DN(0.00)[]
+X-Rspamd-Queue-Id: C9BE05F3F12
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
 From: Ada Couprie Diaz <ada.coupriediaz@arm.com>
 
-Upstream commit 413f0bba005dacf2484bb8ecce212fab9be79d81
+Upstream commit 31575e11ecf7e44face72d1e624cb147a9283733
 
 Currently all debug exceptions share common entry code and are routed
 to `do_debug_exception()`, which calls dynamically-registered
@@ -117,200 +115,220 @@ handlers for each specific debug exception. This is unfortunate as
 different debug exceptions have different entry handling requirements,
 and it would be better to handle these distinct requirements earlier.
 
-Hardware watchpoints are the only debug exceptions that will write
-FAR_EL1, so we need to preserve it and pass it down.
-However, they cannot be used to maliciously train branch predictors, so
-we can omit calling `arm64_bp_hardening()`, nor do they need to handle
-the Cortex-A76 erratum #1463225, as it only applies to single stepping
-exceptions.
+The BRK64 instruction can only be triggered by a BRK instruction. Thus,
+we know that the PC is a legitimate address and isn't being used to train
+a branch predictor with a bogus address : we don't need to call
+`arm64_apply_bp_hardening()`.
 
-As the hardware watchpoint handler only returns 0 and never triggers
-the call to `arm64_notify_die()`, we can call it directly from
-`entry-common.c`.
-Split the hardware watchpoint exception entry and adjust the behaviour
-to match the lack of needed mitigations.
+We do not need to handle the Cortex-A76 erratum #1463225 either, as it
+only relevant for single stepping at EL1.
+BRK64 does not write FAR_EL1 either, as only hardware watchpoints do so.
+
+Split the BRK64 exception entry, adjust the function signature, and its
+behaviour to match the lack of needed mitigations.
+Further, as the EL0 and EL1 code paths are cleanly separated, we can split
+`do_brk64()` into `do_el0_brk64()` and `do_el1_brk64()`, and call them
+directly from the relevant entry paths.
+Use `die()` directly for the EL1 error path, as in `do_el1_bti()` and
+`do_el1_undef()`.
+We can also remove `NOKRPOBE_SYMBOL` for the EL0 path, as it cannot
+lead to a kprobe recursion.
+
+When taking a BRK64 exception from EL0, the exception handling is safely
+preemptible : the only possible handler is `uprobe_brk_handler()`.
+It only operates on task-local data and properly checks its validity,
+then raises a Thread Information Flag, processed before returning
+to userspace in `do_notify_resume()`, which is already preemptible.
+Thus we can safely unmask interrupts and enable preemption before
+handling the break itself, fixing a PREEMPT_RT issue where the handler
+could call a sleeping function with preemption disabled.
+
+Given that the break hook registration is handled statically in
+`call_break_hook` since
+(arm64: debug: call software break handlers statically)
+and that we now bypass the exception handler registration, this change
+renders `early_brk64` redundant : its functionality is now handled through
+the post-init path.
+
+This also removes the last usage of `el1_dbg()`.
+
+This also removes the last usage of `el0_dbg()` without `CONFIG_COMPAT`.
+Mark it `__maybe_unused`, to prevent a warning when building this patch
+without `CONFIG_COMPAT`, as the following patch removes `el0_dbg()`.
 
 Signed-off-by: Ada Couprie Diaz <ada.coupriediaz@arm.com>
 Tested-by: Luis Claudio R. Goncalves <lgoncalv@redhat.com>
 Reviewed-by: Will Deacon <will@kernel.org>
 Acked-by: Mark Rutland <mark.rutland@arm.com>
-Link: https://lore.kernel.org/r/20250707114109.35672-11-ada.coupriediaz@arm=
+Link: https://lore.kernel.org/r/20250707114109.35672-12-ada.coupriediaz@arm=
 .com
 Signed-off-by: Will Deacon <will@kernel.org>
 Signed-off-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
 ---
- arch/arm64/include/asm/exception.h |  4 ++++
- arch/arm64/kernel/entry-common.c   | 31 ++++++++++++++++++++++++++++++
- arch/arm64/kernel/hw_breakpoint.c  | 17 +++++-----------
- 3 files changed, 40 insertions(+), 12 deletions(-)
+ arch/arm64/include/asm/exception.h |  2 ++
+ arch/arm64/kernel/debug-monitors.c | 48 ++++++++++++++----------------
+ arch/arm64/kernel/entry-common.c   | 24 ++++++++++-----
+ 3 files changed, 40 insertions(+), 34 deletions(-)
 
 diff --git a/arch/arm64/include/asm/exception.h b/arch/arm64/include/asm/ex=
 ception.h
-index 6d40efc28be40..594350e552e11 100644
+index 594350e552e11..7bc79602840fd 100644
 --- a/arch/arm64/include/asm/exception.h
 +++ b/arch/arm64/include/asm/exception.h
-@@ -61,8 +61,12 @@ void do_debug_exception(unsigned long addr_if_watchpoint=
-, unsigned long esr,
- 			struct pt_regs *regs);
- #ifdef CONFIG_HAVE_HW_BREAKPOINT
- void do_breakpoint(unsigned long esr, struct pt_regs *regs);
-+void do_watchpoint(unsigned long addr, unsigned long esr,
-+			struct pt_regs *regs);
- #else
- static inline void do_breakpoint(unsigned long esr, struct pt_regs *regs) =
-{}
-+static inline void do_watchpoint(unsigned long addr, unsigned long esr,
-+			struct pt_regs *regs) {}
+@@ -70,6 +70,8 @@ static inline void do_watchpoint(unsigned long addr, unsi=
+gned long esr,
  #endif /* CONFIG_HAVE_HW_BREAKPOINT */
  void do_el0_softstep(unsigned long esr, struct pt_regs *regs);
  void do_el1_softstep(unsigned long esr, struct pt_regs *regs);
++void do_el0_brk64(unsigned long esr, struct pt_regs *regs);
++void do_el1_brk64(unsigned long esr, struct pt_regs *regs);
+ void do_fpsimd_acc(unsigned long esr, struct pt_regs *regs);
+ void do_sve_acc(unsigned long esr, struct pt_regs *regs);
+ void do_sme_acc(unsigned long esr, struct pt_regs *regs);
+diff --git a/arch/arm64/kernel/debug-monitors.c b/arch/arm64/kernel/debug-m=
+onitors.c
+index 10d2bc51a32f7..45e0dbe17c82f 100644
+--- a/arch/arm64/kernel/debug-monitors.c
++++ b/arch/arm64/kernel/debug-monitors.c
+@@ -207,15 +207,8 @@ void do_el1_softstep(unsigned long esr, struct pt_regs=
+ *regs)
+ }
+ NOKPROBE_SYMBOL(do_el1_softstep);
+=20
+-static int call_break_hook(struct pt_regs *regs, unsigned long esr)
++static int call_el1_break_hook(struct pt_regs *regs, unsigned long esr)
+ {
+-	if (user_mode(regs)) {
+-		if (IS_ENABLED(CONFIG_UPROBES) &&
+-			esr_brk_comment(esr) =3D=3D UPROBES_BRK_IMM)
+-			return uprobe_brk_handler(regs, esr);
+-		return DBG_HOOK_ERROR;
+-	}
+-
+ 	if (esr_brk_comment(esr) =3D=3D BUG_BRK_IMM)
+ 		return bug_brk_handler(regs, esr);
+=20
+@@ -252,24 +245,30 @@ static int call_break_hook(struct pt_regs *regs, unsi=
+gned long esr)
+=20
+ 	return DBG_HOOK_ERROR;
+ }
+-NOKPROBE_SYMBOL(call_break_hook);
++NOKPROBE_SYMBOL(call_el1_break_hook);
+=20
+-static int brk_handler(unsigned long unused, unsigned long esr,
+-		       struct pt_regs *regs)
++/*
++ * We have already unmasked interrupts and enabled preemption
++ * when calling do_el0_brk64() from entry-common.c.
++ */
++void do_el0_brk64(unsigned long esr, struct pt_regs *regs)
+ {
+-	if (call_break_hook(regs, esr) =3D=3D DBG_HOOK_HANDLED)
+-		return 0;
++	if (IS_ENABLED(CONFIG_UPROBES) &&
++		esr_brk_comment(esr) =3D=3D UPROBES_BRK_IMM &&
++		uprobe_brk_handler(regs, esr) =3D=3D DBG_HOOK_HANDLED)
++		return;
+=20
+-	if (user_mode(regs)) {
+-		send_user_sigtrap(TRAP_BRKPT);
+-	} else {
+-		pr_warn("Unexpected kernel BRK exception at EL1\n");
+-		return -EFAULT;
+-	}
+-
+-	return 0;
++	send_user_sigtrap(TRAP_BRKPT);
+ }
+-NOKPROBE_SYMBOL(brk_handler);
++
++void do_el1_brk64(unsigned long esr, struct pt_regs *regs)
++{
++	if (call_el1_break_hook(regs, esr) =3D=3D DBG_HOOK_HANDLED)
++		return;
++
++	die("Oops - BRK", regs, esr);
++}
++NOKPROBE_SYMBOL(do_el1_brk64);
+=20
+ bool try_handle_aarch32_break(struct pt_regs *regs)
+ {
+@@ -311,10 +310,7 @@ bool try_handle_aarch32_break(struct pt_regs *regs)
+ NOKPROBE_SYMBOL(try_handle_aarch32_break);
+=20
+ void __init debug_traps_init(void)
+-{
+-	hook_debug_fault_code(DBG_ESR_EVT_BRK, brk_handler, SIGTRAP,
+-			      TRAP_BRKPT, "BRK handler");
+-}
++{}
+=20
+ /* Re-enable single step for syscall restarting. */
+ void user_rewind_single_step(struct task_struct *task)
 diff --git a/arch/arm64/kernel/entry-common.c b/arch/arm64/kernel/entry-com=
 mon.c
-index c22cc4d0052d5..b90babcf2e2b1 100644
+index b90babcf2e2b1..ba114bfdb32b5 100644
 --- a/arch/arm64/kernel/entry-common.c
 +++ b/arch/arm64/kernel/entry-common.c
-@@ -535,6 +535,18 @@ static void noinstr el1_softstp(struct pt_regs *regs, =
-unsigned long esr)
+@@ -547,13 +547,12 @@ static void noinstr el1_watchpt(struct pt_regs *regs,=
+ unsigned long esr)
  	arm64_exit_el1_dbg(regs);
  }
 =20
-+static void noinstr el1_watchpt(struct pt_regs *regs, unsigned long esr)
-+{
-+	/* Watchpoints are the only debug exception to write FAR_EL1 */
-+	unsigned long far =3D read_sysreg(far_el1);
-+
-+	arm64_enter_el1_dbg(regs);
-+	debug_exception_enter(regs);
-+	do_watchpoint(far, esr, regs);
-+	debug_exception_exit(regs);
-+	arm64_exit_el1_dbg(regs);
-+}
-+
- static void noinstr el1_dbg(struct pt_regs *regs, unsigned long esr)
+-static void noinstr el1_dbg(struct pt_regs *regs, unsigned long esr)
++static void noinstr el1_brk64(struct pt_regs *regs, unsigned long esr)
  {
- 	unsigned long far =3D read_sysreg(far_el1);
-@@ -584,6 +596,8 @@ asmlinkage void noinstr el1h_64_sync_handler(struct pt_=
+-	unsigned long far =3D read_sysreg(far_el1);
+-
+ 	arm64_enter_el1_dbg(regs);
+-	if (!cortex_a76_erratum_1463225_debug_handler(regs))
+-		do_debug_exception(far, esr, regs);
++	debug_exception_enter(regs);
++	do_el1_brk64(esr, regs);
++	debug_exception_exit(regs);
+ 	arm64_exit_el1_dbg(regs);
+ }
+=20
+@@ -599,7 +598,7 @@ asmlinkage void noinstr el1h_64_sync_handler(struct pt_=
 regs *regs)
- 		el1_softstp(regs, esr);
+ 		el1_watchpt(regs, esr);
  		break;
- 	case ESR_ELx_EC_WATCHPT_CUR:
-+		el1_watchpt(regs, esr);
-+		break;
  	case ESR_ELx_EC_BRK64:
- 		el1_dbg(regs, esr);
+-		el1_dbg(regs, esr);
++		el1_brk64(regs, esr);
  		break;
-@@ -800,6 +814,19 @@ static void noinstr el0_softstp(struct pt_regs *regs, =
+ 	case ESR_ELx_EC_FPAC:
+ 		el1_fpac(regs, esr);
+@@ -827,7 +826,16 @@ static void noinstr el0_watchpt(struct pt_regs *regs, =
 unsigned long esr)
  	exit_to_user_mode(regs);
  }
 =20
-+static void noinstr el0_watchpt(struct pt_regs *regs, unsigned long esr)
+-static void noinstr el0_dbg(struct pt_regs *regs, unsigned long esr)
++static void noinstr el0_brk64(struct pt_regs *regs, unsigned long esr)
 +{
-+	/* Watchpoints are the only debug exception to write FAR_EL1 */
-+	unsigned long far =3D read_sysreg(far_el1);
-+
 +	enter_from_user_mode(regs);
-+	debug_exception_enter(regs);
-+	do_watchpoint(far, esr, regs);
-+	debug_exception_exit(regs);
 +	local_daif_restore(DAIF_PROCCTX);
++	do_el0_brk64(esr, regs);
 +	exit_to_user_mode(regs);
 +}
 +
- static void noinstr el0_dbg(struct pt_regs *regs, unsigned long esr)
++static void noinstr __maybe_unused
++el0_dbg(struct pt_regs *regs, unsigned long esr)
  {
  	/* Only watchpoints write FAR_EL1, otherwise its UNKNOWN */
-@@ -882,6 +909,8 @@ asmlinkage void noinstr el0t_64_sync_handler(struct pt_=
+ 	unsigned long far =3D read_sysreg(far_el1);
+@@ -912,7 +920,7 @@ asmlinkage void noinstr el0t_64_sync_handler(struct pt_=
 regs *regs)
- 		el0_softstp(regs, esr);
+ 		el0_watchpt(regs, esr);
  		break;
- 	case ESR_ELx_EC_WATCHPT_LOW:
-+		el0_watchpt(regs, esr);
-+		break;
  	case ESR_ELx_EC_BRK64:
- 		el0_dbg(regs, esr);
+-		el0_dbg(regs, esr);
++		el0_brk64(regs, esr);
  		break;
-@@ -1006,6 +1035,8 @@ asmlinkage void noinstr el0t_32_sync_handler(struct p=
-t_regs *regs)
- 		el0_softstp(regs, esr);
- 		break;
- 	case ESR_ELx_EC_WATCHPT_LOW:
-+		el0_watchpt(regs, esr);
-+		break;
- 	case ESR_ELx_EC_BKPT32:
- 		el0_dbg(regs, esr);
- 		break;
-diff --git a/arch/arm64/kernel/hw_breakpoint.c b/arch/arm64/kernel/hw_break=
-point.c
-index 8a80e13347c88..ab76b36dce820 100644
---- a/arch/arm64/kernel/hw_breakpoint.c
-+++ b/arch/arm64/kernel/hw_breakpoint.c
-@@ -750,8 +750,7 @@ static int watchpoint_report(struct perf_event *wp, uns=
-igned long addr,
- 	return step;
- }
-=20
--static int watchpoint_handler(unsigned long addr, unsigned long esr,
--			      struct pt_regs *regs)
-+void do_watchpoint(unsigned long addr, unsigned long esr, struct pt_regs *=
-regs)
- {
- 	int i, step =3D 0, *kernel_step, access, closest_match =3D 0;
- 	u64 min_dist =3D -1, dist;
-@@ -806,7 +805,7 @@ static int watchpoint_handler(unsigned long addr, unsig=
-ned long esr,
- 	rcu_read_unlock();
-=20
- 	if (!step)
--		return 0;
-+		return;
-=20
- 	/*
- 	 * We always disable EL0 watchpoints because the kernel can
-@@ -819,7 +818,7 @@ static int watchpoint_handler(unsigned long addr, unsig=
-ned long esr,
-=20
- 		/* If we're already stepping a breakpoint, just return. */
- 		if (debug_info->bps_disabled)
--			return 0;
-+			return;
-=20
- 		if (test_thread_flag(TIF_SINGLESTEP))
- 			debug_info->suspended_step =3D 1;
-@@ -830,7 +829,7 @@ static int watchpoint_handler(unsigned long addr, unsig=
-ned long esr,
- 		kernel_step =3D this_cpu_ptr(&stepping_kernel_bp);
-=20
- 		if (*kernel_step !=3D ARM_KERNEL_STEP_NONE)
--			return 0;
-+			return;
-=20
- 		if (kernel_active_single_step()) {
- 			*kernel_step =3D ARM_KERNEL_STEP_SUSPEND;
-@@ -839,10 +838,8 @@ static int watchpoint_handler(unsigned long addr, unsi=
-gned long esr,
- 			kernel_enable_single_step(regs);
- 		}
- 	}
--
--	return 0;
- }
--NOKPROBE_SYMBOL(watchpoint_handler);
-+NOKPROBE_SYMBOL(do_watchpoint);
-=20
- /*
-  * Handle single-step exception.
-@@ -984,10 +981,6 @@ static int __init arch_hw_breakpoint_init(void)
- 	pr_info("found %d breakpoint and %d watchpoint registers.\n",
- 		core_num_brps, core_num_wrps);
-=20
--	/* Register debug fault handlers. */
--	hook_debug_fault_code(DBG_ESR_EVT_HWWP, watchpoint_handler, SIGTRAP,
--			      TRAP_HWBKPT, "hw-watchpoint handler");
--
- 	/*
- 	 * Reset the breakpoint resources. We assume that a halting
- 	 * debugger will leave the world in a nice state for us.
+ 	case ESR_ELx_EC_FPAC:
+ 		el0_fpac(regs, esr);
 --=20
 2.53.0
 
