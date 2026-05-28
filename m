@@ -1,58 +1,59 @@
-Return-Path: <stable+bounces-255742-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-255988-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 2Cd5CWukGGrClggAu9opvQ
-	(envelope-from <stable+bounces-255742-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:24:11 +0200
+	id +MGcCEaoGGpolwgAu9opvQ
+	(envelope-from <stable+bounces-255988-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:40:38 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id E758B5F8941
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:24:10 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id AEEBF5F94BB
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:40:37 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 0C55B305E662
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 20:22:38 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id B591531451D9
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 20:34:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 27292316199;
-	Thu, 28 May 2026 20:22:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AFF4832AAA0;
+	Thu, 28 May 2026 20:33:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZB8Bkvmh"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UN13HBpc"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 10DC12E7379;
-	Thu, 28 May 2026 20:22:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7ECC7313550;
+	Thu, 28 May 2026 20:33:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779999756; cv=none; b=By5QvOeOp7nntxI6jlmxC35gwIwTd9ig5tI4tosVtsFBbz9IpMajbzbN/uSt9E+plOr2TQkAGDKI9qQeeQ2GAkV0vU81PGb7JwujpYSb3eeB+ottJlL0zgim6k5sPpAelhxoTvzS403IGUuZnx+CH9QQOs0VZ/d29jHnKPdau/s=
+	t=1780000439; cv=none; b=Q5GeOUPXoegS0HDoRbrzfgU+Gbs0wSjrlQBSDH+M6UzLb+B5mf4+URq5Ad++98TIMGZHnLqANETk4NBk973n4vV5f9tlNNDms+PkFfftt9AyikK9v65sI0Nj964LfBEzTBIoTwBQ2UXoo57jfzv+35DsCG3+EYB0yQsCcGkEy0Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779999756; c=relaxed/simple;
-	bh=VoWWErAtPnW7valjic0diW1D9r6nhvr8cuiQyfWiPjE=;
+	s=arc-20240116; t=1780000439; c=relaxed/simple;
+	bh=iA+GP4V9DRs/3zdh1LFZtTLunvglnnzAMR30BN1TBdo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=AhsWneHwLpTTi/Krjc+9LHWpJEjTZUS79Wf4mXFBoa35TZLdj9d9REqoEPbiZQ4senPyFdulnK6ArJRcVe0MUUc5/RWrGfOvzVNr653wZTjQlGTMc/xBiyADsO1tdOcJke4Zwgub/duXyYUECul/DlINNRND41EaSIfJjJeMAl4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZB8Bkvmh; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 703FF1F000E9;
-	Thu, 28 May 2026 20:22:35 +0000 (UTC)
+	 MIME-Version; b=YX/KtfOkN7xSvcFQc/6Bl0BmmQG0xDT9Dxx1jXW4ivMN8M5jw/6Ell6wAKQo4SppqC9JtkHVixruz+hvDTRbhCRjDSjKu6DExuM7n8VtRQLL2ASz4MVfNLRl5EnRO2zjE3467EHu6ywGnccRxaTE7uc9xkpjFYXVJmF5ShAOMHE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UN13HBpc; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DAF221F000E9;
+	Thu, 28 May 2026 20:33:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779999756;
-	bh=+ujj80sQ/TCYIdT/slIX9UqqPjI69Pq13Bf6YP+XQ3g=;
+	s=korg; t=1780000438;
+	bh=5KYTkC6BAB5qpZ4tMIpJmbio/kIMCC2KYI6Jl6ORYWw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=ZB8BkvmhJmbSEkmcXeAbJIdFScGX1GfhCx4qb/jJ9aLZyI77prZM3zSpfpyS+57WO
-	 /kQXHXhGtsaIFttZN2Ml9qSidUSz72hgEoqVsq1J9pkx89/ACv+5tui+TUua5bACsQ
-	 TNQuaVMP/rApFKCj1wP4lhnIweJXwg9cZtjPwEPA=
+	b=UN13HBpcEoZoQgSFTJMPPdigEcYZJ6mdmx1jfxS3ETctj45DoTDJUHVnjiVLDZoIe
+	 5a1S8pj27jll54iSIvhGWVpg4RGtz3zvUYTRflilnjUBNYC5Y43JvSfaZByAEjxQw4
+	 P8CK2k6U2kmNquisUOwrOaibCidLrYtE4cjeGiO0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sudeep Holla <sudeep.holla@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 180/377] firmware: arm_ffa: Skip free_pages on RX buffer alloc failure
+	Jeremy Laratro <research@aradex.io>,
+	Namjae Jeon <linkinjeon@kernel.org>,
+	Steve French <stfrench@microsoft.com>
+Subject: [PATCH 6.12 044/272] ksmbd: fix null pointer dereference in compare_guid_key()
 Date: Thu, 28 May 2026 21:46:58 +0200
-Message-ID: <20260528194643.635329699@linuxfoundation.org>
+Message-ID: <20260528194630.613913595@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260528194638.371537336@linuxfoundation.org>
-References: <20260528194638.371537336@linuxfoundation.org>
+In-Reply-To: <20260528194629.379955525@linuxfoundation.org>
+References: <20260528194629.379955525@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -67,7 +68,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
@@ -77,7 +78,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-255742-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-255988-lists,stable=lfdr.de];
 	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
@@ -86,51 +87,86 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	NEURAL_HAM(-0.00)[-1.000];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[5];
+	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim,msgid.link:url]
-X-Rspamd-Queue-Id: E758B5F8941
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,aradex.io:email,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim]
+X-Rspamd-Queue-Id: AEEBF5F94BB
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sudeep Holla <sudeep.holla@kernel.org>
+From: Jeremy Laratro <research@aradex.io>
 
-[ Upstream commit 09527e2c534911619d7e098729711100290bc3e1 ]
+commit 4b83cbc4c15f09b000cc06f033f64b0824b6dc87 upstream.
 
-If the RX buffer allocation fails in ffa_init(), the error path jumps to
-free_pages even though no buffer has been allocated yet. Route that case
-directly to free_drv_info so the cleanup path is only used after at
-least one RX/TX buffer allocation has succeeded.
+session_fd_check() walks the per-inode m_op_list during durable-handle
+session teardown and sets op->conn = NULL for every opinfo whose conn
+matched the closing session's connection. The matching opinfo, however,
+stays linked in its per-ClientGuid lease_table_list entry's lb->lease_list
+because destroy_lease_table() only runs on full TCP-connection teardown,
+not on SESSION_LOGOFF.
 
-Fixes: 3bbfe9871005 ("firmware: arm_ffa: Add initial Arm FFA driver support")
-Link: https://patch.msgid.link/20260428-ffa_fixes-v2-2-8595ae450034@kernel.org
-Signed-off-by: Sudeep Holla <sudeep.holla@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+If the same TCP connection then negotiates a fresh session with the
+same ClientGuid (ClientGuid is bound to NEGOTIATE, not the session, and
+is unchanged across LOGOFF + SETUP) and issues a SMB2 CREATE with a
+lease context on a different inode, find_same_lease_key() walks
+lb->lease_list, reaches the stale opinfo, and calls compare_guid_key(),
+which unconditionally dereferences opinfo->conn->ClientGUID. The conn
+pointer is NULL and the kernel panics.
+
+Reproducer requires only a successful SMB2 SESSION_SETUP and a share
+configured with 'durable handles = yes'. KASAN report on mainline
+70390501d194:
+
+  general protection fault, probably for non-canonical address
+  0xdffffc0000000069: 0000 [#1] SMP KASAN PTI
+  KASAN: null-ptr-deref in range [0x0000000000000348-0x000000000000034f]
+  Workqueue: ksmbd-io handle_ksmbd_work
+  RIP: 0010:bcmp+0x5b/0x230
+  Call Trace:
+   compare_guid_key+0x4b/0xd0
+   find_same_lease_key+0x324/0x690
+   smb2_open+0x6aea/0x8e60
+   handle_ksmbd_work+0x796/0xee0
+   ...
+
+Faulting address 0x348 is the offset of ClientGUID within struct
+ksmbd_conn, confirming opinfo->conn was NULL.
+
+Read opinfo->conn once and bail out if it has been cleared by a
+concurrent session_fd_check(). A half-detached opinfo cannot be the
+owner of an active lease, so returning 0 is the correct match result.
+
+Fixes: c8efcc786146 ("ksmbd: add support for durable handles v1/v2")
+Cc: stable@vger.kernel.org
+Signed-off-by: Jeremy Laratro <research@aradex.io>
+Acked-by: Namjae Jeon <linkinjeon@kernel.org>
+Signed-off-by: Steve French <stfrench@microsoft.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/firmware/arm_ffa/driver.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ fs/smb/server/oplock.c |    6 +++++-
+ 1 file changed, 5 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/firmware/arm_ffa/driver.c b/drivers/firmware/arm_ffa/driver.c
-index d71a2ef335d1c..cf7f913a55b6e 100644
---- a/drivers/firmware/arm_ffa/driver.c
-+++ b/drivers/firmware/arm_ffa/driver.c
-@@ -2063,7 +2063,7 @@ static int __init ffa_init(void)
- 	drv_info->rx_buffer = alloc_pages_exact(rxtx_bufsz, GFP_KERNEL);
- 	if (!drv_info->rx_buffer) {
- 		ret = -ENOMEM;
--		goto free_pages;
-+		goto free_drv_info;
- 	}
+--- a/fs/smb/server/oplock.c
++++ b/fs/smb/server/oplock.c
+@@ -484,8 +484,12 @@ static inline int compare_guid_key(struc
+ 				   const char *guid1, const char *key1)
+ {
+ 	const char *guid2, *key2;
++	struct ksmbd_conn *conn;
  
- 	drv_info->tx_buffer = alloc_pages_exact(rxtx_bufsz, GFP_KERNEL);
--- 
-2.53.0
-
+-	guid2 = opinfo->conn->ClientGUID;
++	conn = READ_ONCE(opinfo->conn);
++	if (!conn)
++		return 0;
++	guid2 = conn->ClientGUID;
+ 	key2 = opinfo->o_lease->lease_key;
+ 	if (!memcmp(guid1, guid2, SMB2_CLIENT_GUID_SIZE) &&
+ 	    !memcmp(key1, key2, SMB2_LEASE_KEY_SIZE))
 
 
 
