@@ -1,60 +1,65 @@
-Return-Path: <stable+bounces-256331-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-255948-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 0FgkF7usGGphmAgAu9opvQ
-	(envelope-from <stable+bounces-256331-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:59:39 +0200
+	id mLsKGuSnGGp+lwgAu9opvQ
+	(envelope-from <stable+bounces-255948-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:39:00 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id C50945FA039
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:59:38 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id D4C665F9386
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:38:59 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 0F67F32440C3
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 20:50:03 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id F2A29313480D
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 20:32:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B46ED328B7B;
-	Thu, 28 May 2026 20:50:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7696A2F39B4;
+	Thu, 28 May 2026 20:32:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nGplLfna"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cMYkD2uj"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2C4E631159C;
-	Thu, 28 May 2026 20:50:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0891432AAD6;
+	Thu, 28 May 2026 20:32:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780001402; cv=none; b=AQmtxP+SUcHyWAYiGaYbT454NYQkfRjQ8MBpfIbOoOowr9VEHo8xOPXKN0tYQOs7fa/qYejMuw48Wyr0BB1Y8803SfQLZr513abAN6wWSnwj4AZqoUDeu68sfFNxhVM8dY1pJXUOkZnJnwr8GMk4lVSvbC+ATecLjxw8N9i0SX8=
+	t=1780000328; cv=none; b=IPey6xD8B9g43R5rAjmBPeAiJQlgEfxdzKLyAzhUfgVPTcK91JsMi2zX25KsqKRymkjcMyUz5W6cJICaN1cTVtUbxhbGNRUUAErEgMAJXggl+YXpNU3d/8v2/gQTK5T5JKez7V/Z4n3FTMcvxRcTEpknTyJKmQwp37t58nq63oQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780001402; c=relaxed/simple;
-	bh=nq0bwi7veYB5Xm4b9U62+S4SDiEH7OQ6lRrOEKACSlo=;
+	s=arc-20240116; t=1780000328; c=relaxed/simple;
+	bh=B410Jkjs+G1CJ4MkutK17ankQVCVVIuZS3B73vjO94E=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Fjbs9rfHvksSHA2a/eG35dHzf72+eSj9bSL36LKhtlYE02N3WTkgkjU0oVTMcJIQhPk9kQHf69PFMsajM6VrRAFfBv9I+qtZfppRxgwmukt23D7+NbVUrtuDHWkEETFdjR63Ug6/Mb0WzBhNbgN7qI/yn0sMtUqW0Rcm4dGmwoo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nGplLfna; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 807A31F000E9;
-	Thu, 28 May 2026 20:50:00 +0000 (UTC)
+	 MIME-Version; b=uQMFIDvW5QwDnFW5+IgYUlxCCemldHoGfrECza92X2god+fhrZ4GSS5dUo9pfmaU/bDWQNTg0OnxsinUxu5G+mI5uQ5WCtM+C/RlPcrfr3gyAc3VVDiKXU1vLvYWEyrw3eDtcwg0qi99xep6LFVM83JZMQT6vF88S4A0+FH6CPk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cMYkD2uj; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6C8131F000E9;
+	Thu, 28 May 2026 20:32:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780001400;
-	bh=OEq2uQ2Vg70ZHpEHXPtN0mbiOLm12k5VV5W96AjisUU=;
+	s=korg; t=1780000326;
+	bh=dO9KO26gGX4qOwp5LM6jHA2GMsQsedKSyEFfJITmdco=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=nGplLfnaIiC5G2DCUuZo6/rL9PqPlN7ciW+5+ZxU3dYzywLjDaSOdK3GaCs6zTp9x
-	 s2zWqy16xVEb7oHVPptAihliKStCbnAliWGXpx1afoCaS6ELXXK1x4K6LnL+gEAcTI
-	 +wbIlXPorcAu/MDuTtpO8BGbcJcTbz/DiwEbmW3U=
+	b=cMYkD2ujzKnKoeDxN60iSVSM79mf8BkREQa3HqEhNEC0AOtL1NmtXKUCAjBu52RnX
+	 Hbrp9LZWgvd4UKSJ+9hrHaU971S1ak0Rmd41EZZfB0yoLJ85EHPaNc1b4yP94zTvsF
+	 FJGF6DthSskb5DSNUWUXvV1fBQjg9Av1l9Mdtz6s=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Tristan Madani <tristan@talencesecurity.com>,
-	Florian Westphal <fw@strlen.de>,
-	Pablo Neira Ayuso <pablo@netfilter.org>,
+	David Howells <dhowells@redhat.com>,
+	Herbert Xu <herbert@gondor.apana.org.au>,
+	Simon Horman <horms@kernel.org>,
+	Chuck Lever <chuck.lever@oracle.com>,
+	linux-afs@lists.infradead.org,
+	Jeffrey Altman <jaltman@auristor.com>,
+	Marc Dionne <marc.dionne@auristor.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 115/186] netfilter: x_tables: add and use xtables_unregister_table_exit
+Subject: [PATCH 6.18 357/377] crypto/krb5, rxrpc: Fix lack of pre-decrypt/pre-verify length checks
 Date: Thu, 28 May 2026 21:49:55 +0200
-Message-ID: <20260528194932.047584529@linuxfoundation.org>
+Message-ID: <20260528194648.767572577@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260528194928.941004471@linuxfoundation.org>
-References: <20260528194928.941004471@linuxfoundation.org>
+In-Reply-To: <20260528194638.371537336@linuxfoundation.org>
+References: <20260528194638.371537336@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,363 +74,243 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-256331-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-255948-lists,stable=lfdr.de];
+	RCPT_COUNT_TWELVE(0.00)[12];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[7];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,strlen.de:email,netfilter.org:email,talencesecurity.com:email,linuxfoundation.org:mid,linuxfoundation.org:dkim]
-X-Rspamd-Queue-Id: C50945FA039
+	TO_DN_SOME(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[infradead.org:email,msgid.link:url,sashiko.dev:url,auristor.com:email,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,oracle.com:email,linuxfoundation.org:mid,linuxfoundation.org:dkim]
+X-Rspamd-Queue-Id: D4C665F9386
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Florian Westphal <fw@strlen.de>
+From: David Howells <dhowells@redhat.com>
 
-[ Upstream commit b4597d5fd7d2f8cebfffd40dffb5e003cc78964c ]
+[ Upstream commit 2b50aceafe6606ea52ed42aadd1b4d44a188aade ]
 
-Previous change added xtables_unregister_table_pre_exit to detach the
-table from the packetpath and to unlink it from the active table list.
-In case of rmmod, userspace that is doing set/getsockopt for this table
-will not be able to re-instantiate the table:
- 1. The larval table has been removed already
- 2. existing instantiated table is no longer on the xt pernet table list.
+Change the krb5 crypto library to provide facilities to precheck the length
+of the message about to be decrypted or verified.
 
-This adds the second stage helper:
+Fix AF_RXRPC to make use of this to validate DATA packets secured with
+RxGK.
 
-unlink the table from the dying list, free the hook ops (if any) and do
-the audit notification.  It replaces xt_unregister_table().
-
-Fixes: fdacd57c79b7 ("netfilter: x_tables: never register tables by default")
-Reported-by: Tristan Madani <tristan@talencesecurity.com>
-Reviewed-by: Tristan Madani <tristan@talencesecurity.com>
-Closes: https://lore.kernel.org/netfilter-devel/20260429175613.1459342-1-tristmd@gmail.com/
-Signed-off-by: Florian Westphal <fw@strlen.de>
-Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
+Fixes: 9d1d2b59341f ("rxrpc: rxgk: Implement the yfs-rxgk security class (GSSAPI)")
+Closes: https://sashiko.dev/#/patchset/20260511160753.607296-1-dhowells%40redhat.com
+Signed-off-by: David Howells <dhowells@redhat.com>
+cc: Herbert Xu <herbert@gondor.apana.org.au>
+cc: Simon Horman <horms@kernel.org>
+cc: Chuck Lever <chuck.lever@oracle.com>
+cc: linux-afs@lists.infradead.org
+Reviewed-by: Jeffrey Altman <jaltman@auristor.com>
+Tested-by: Marc Dionne <marc.dionne@auristor.com>
+Link: https://patch.msgid.link/20260515230516.2718212-2-dhowells@redhat.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/linux/netfilter/x_tables.h |  2 +-
- net/ipv4/netfilter/arp_tables.c    |  9 ++--
- net/ipv4/netfilter/ip_tables.c     |  9 ++--
- net/ipv4/netfilter/iptable_nat.c   |  5 +-
- net/ipv6/netfilter/ip6_tables.c    |  9 ++--
- net/ipv6/netfilter/ip6table_nat.c  |  5 +-
- net/netfilter/x_tables.c           | 81 +++++++++++++++++++++++-------
- 7 files changed, 83 insertions(+), 37 deletions(-)
+ Documentation/crypto/krb5.rst | 17 ++++++++---
+ crypto/krb5/krb5_api.c        | 54 +++++++++++++++++++++++++++++++----
+ include/crypto/krb5.h         |  9 ++++--
+ include/trace/events/rxrpc.h  |  1 +
+ net/rxrpc/rxgk.c              | 15 ++++++++--
+ 5 files changed, 81 insertions(+), 15 deletions(-)
 
-diff --git a/include/linux/netfilter/x_tables.h b/include/linux/netfilter/x_tables.h
-index df2022fe440b0..706f08839050a 100644
---- a/include/linux/netfilter/x_tables.h
-+++ b/include/linux/netfilter/x_tables.h
-@@ -309,8 +309,8 @@ struct xt_table *xt_register_table(struct net *net,
- 				   const struct xt_table *table,
- 				   struct xt_table_info *bootstrap,
- 				   struct xt_table_info *newinfo);
--void *xt_unregister_table(struct xt_table *table);
- void xt_unregister_table_pre_exit(struct net *net, u8 af, const char *name);
-+struct xt_table *xt_unregister_table_exit(struct net *net, u8 af, const char *name);
+diff --git a/Documentation/crypto/krb5.rst b/Documentation/crypto/krb5.rst
+index beffa0133446d..f62e07ac68114 100644
+--- a/Documentation/crypto/krb5.rst
++++ b/Documentation/crypto/krb5.rst
+@@ -158,13 +158,22 @@ returned.
+ When a message has been received, the location and size of the data with the
+ message can be determined by calling::
  
- struct xt_table_info *xt_replace_table(struct xt_table *table,
- 				       unsigned int num_counters,
-diff --git a/net/ipv4/netfilter/arp_tables.c b/net/ipv4/netfilter/arp_tables.c
-index 9b905c6562313..f9dd18244f251 100644
---- a/net/ipv4/netfilter/arp_tables.c
-+++ b/net/ipv4/netfilter/arp_tables.c
-@@ -1501,13 +1501,11 @@ static int do_arpt_get_ctl(struct sock *sk, int cmd, void __user *user, int *len
+-	void crypto_krb5_where_is_the_data(const struct krb5_enctype *krb5,
+-					   enum krb5_crypto_mode mode,
+-					   size_t *_offset, size_t *_len);
++	int crypto_krb5_where_is_the_data(const struct krb5_enctype *krb5,
++					  enum krb5_crypto_mode mode,
++					  size_t *_offset, size_t *_len);
  
- static void __arpt_unregister_table(struct net *net, struct xt_table *table)
- {
--	struct xt_table_info *private;
--	void *loc_cpu_entry;
-+	struct xt_table_info *private = table->private;
- 	struct module *table_owner = table->me;
-+	void *loc_cpu_entry;
- 	struct arpt_entry *iter;
- 
--	private = xt_unregister_table(table);
--
- 	/* Decrease module usage counts and free resources */
- 	loc_cpu_entry = private->entries;
- 	xt_entry_foreach(iter, loc_cpu_entry, private->size)
-@@ -1515,6 +1513,7 @@ static void __arpt_unregister_table(struct net *net, struct xt_table *table)
- 	if (private->number > private->initial_entries)
- 		module_put(table_owner);
- 	xt_free_table_info(private);
-+	kfree(table);
- }
- 
- int arpt_register_table(struct net *net,
-@@ -1583,7 +1582,7 @@ int arpt_register_table(struct net *net,
- 
- void arpt_unregister_table(struct net *net, const char *name)
- {
--	struct xt_table *table = xt_find_table(net, NFPROTO_ARP, name);
-+	struct xt_table *table = xt_unregister_table_exit(net, NFPROTO_ARP, name);
- 
- 	if (table)
- 		__arpt_unregister_table(net, table);
-diff --git a/net/ipv4/netfilter/ip_tables.c b/net/ipv4/netfilter/ip_tables.c
-index 8240b3b0e0260..02730b6ab8203 100644
---- a/net/ipv4/netfilter/ip_tables.c
-+++ b/net/ipv4/netfilter/ip_tables.c
-@@ -1704,12 +1704,10 @@ do_ipt_get_ctl(struct sock *sk, int cmd, void __user *user, int *len)
- 
- static void __ipt_unregister_table(struct net *net, struct xt_table *table)
- {
--	struct xt_table_info *private;
--	void *loc_cpu_entry;
-+	struct xt_table_info *private = table->private;
- 	struct module *table_owner = table->me;
- 	struct ipt_entry *iter;
--
--	private = xt_unregister_table(table);
-+	void *loc_cpu_entry;
- 
- 	/* Decrease module usage counts and free resources */
- 	loc_cpu_entry = private->entries;
-@@ -1718,6 +1716,7 @@ static void __ipt_unregister_table(struct net *net, struct xt_table *table)
- 	if (private->number > private->initial_entries)
- 		module_put(table_owner);
- 	xt_free_table_info(private);
-+	kfree(table);
- }
- 
- int ipt_register_table(struct net *net, const struct xt_table *table,
-@@ -1791,7 +1790,7 @@ int ipt_register_table(struct net *net, const struct xt_table *table,
- 
- void ipt_unregister_table_exit(struct net *net, const char *name)
- {
--	struct xt_table *table = xt_find_table(net, NFPROTO_IPV4, name);
-+	struct xt_table *table = xt_unregister_table_exit(net, NFPROTO_IPV4, name);
- 
- 	if (table)
- 		__ipt_unregister_table(net, table);
-diff --git a/net/ipv4/netfilter/iptable_nat.c b/net/ipv4/netfilter/iptable_nat.c
-index ca6964b957ead..87d934b12bcb6 100644
---- a/net/ipv4/netfilter/iptable_nat.c
-+++ b/net/ipv4/netfilter/iptable_nat.c
-@@ -119,8 +119,11 @@ static int iptable_nat_table_init(struct net *net)
- 	}
- 
- 	ret = ipt_nat_register_lookups(net);
--	if (ret < 0)
-+	if (ret < 0) {
-+		xt_unregister_table_pre_exit(net, NFPROTO_IPV4, "nat");
-+		synchronize_rcu();
- 		ipt_unregister_table_exit(net, "nat");
-+	}
- 
- 	kfree(repl);
- 	return ret;
-diff --git a/net/ipv6/netfilter/ip6_tables.c b/net/ipv6/netfilter/ip6_tables.c
-index c956c2bd73d59..2cbf346940d29 100644
---- a/net/ipv6/netfilter/ip6_tables.c
-+++ b/net/ipv6/netfilter/ip6_tables.c
-@@ -1713,12 +1713,10 @@ do_ip6t_get_ctl(struct sock *sk, int cmd, void __user *user, int *len)
- 
- static void __ip6t_unregister_table(struct net *net, struct xt_table *table)
- {
--	struct xt_table_info *private;
--	void *loc_cpu_entry;
-+	struct xt_table_info *private = table->private;
- 	struct module *table_owner = table->me;
- 	struct ip6t_entry *iter;
--
--	private = xt_unregister_table(table);
-+	void *loc_cpu_entry;
- 
- 	/* Decrease module usage counts and free resources */
- 	loc_cpu_entry = private->entries;
-@@ -1727,6 +1725,7 @@ static void __ip6t_unregister_table(struct net *net, struct xt_table *table)
- 	if (private->number > private->initial_entries)
- 		module_put(table_owner);
- 	xt_free_table_info(private);
-+	kfree(table);
- }
- 
- int ip6t_register_table(struct net *net, const struct xt_table *table,
-@@ -1797,7 +1796,7 @@ int ip6t_register_table(struct net *net, const struct xt_table *table,
- 
- void ip6t_unregister_table_exit(struct net *net, const char *name)
- {
--	struct xt_table *table = xt_find_table(net, NFPROTO_IPV6, name);
-+	struct xt_table *table = xt_unregister_table_exit(net, NFPROTO_IPV6, name);
- 
- 	if (table)
- 		__ip6t_unregister_table(net, table);
-diff --git a/net/ipv6/netfilter/ip6table_nat.c b/net/ipv6/netfilter/ip6table_nat.c
-index bef2d309369bc..cf260d8ebdb70 100644
---- a/net/ipv6/netfilter/ip6table_nat.c
-+++ b/net/ipv6/netfilter/ip6table_nat.c
-@@ -121,8 +121,11 @@ static int ip6table_nat_table_init(struct net *net)
- 	}
- 
- 	ret = ip6t_nat_register_lookups(net);
--	if (ret < 0)
-+	if (ret < 0) {
-+		xt_unregister_table_pre_exit(net, NFPROTO_IPV6, "nat");
-+		synchronize_rcu();
- 		ip6t_unregister_table_exit(net, "nat");
-+	}
- 
- 	kfree(repl);
- 	return ret;
-diff --git a/net/netfilter/x_tables.c b/net/netfilter/x_tables.c
-index 670483735d225..593eb3ebef128 100644
---- a/net/netfilter/x_tables.c
-+++ b/net/netfilter/x_tables.c
-@@ -55,6 +55,9 @@ static struct list_head xt_templates[NFPROTO_NUMPROTO];
- 
- struct xt_pernet {
- 	struct list_head tables[NFPROTO_NUMPROTO];
+ The caller provides the offset and length of the message to the function, which
+ then alters those values to indicate the region containing the data (plus any
+-padding).  It is up to the caller to determine how much padding there is.
++padding).  It is up to the caller to determine how much padding there is.  The
++function returns an error if the length is too small or if the mode is
++unsupported.  An additional function::
 +
-+	/* stash area used during netns exit */
-+	struct list_head dead_tables[NFPROTO_NUMPROTO];
- };
++	int crypto_krb5_check_data_len(const struct krb5_enctype *krb5,
++				       enum krb5_crypto_mode mode,
++				       size_t len, size_t min_content);
++
++is provided to just do a basic check that the decrypted/verified message would
++have a sufficient minimum payload.
  
- struct compat_delta {
-@@ -1521,23 +1524,6 @@ struct xt_table *xt_register_table(struct net *net,
- }
- EXPORT_SYMBOL_GPL(xt_register_table);
- 
--void *xt_unregister_table(struct xt_table *table)
--{
--	struct xt_table_info *private;
--
--	mutex_lock(&xt[table->af].mutex);
--	private = table->private;
--	list_del(&table->list);
--	mutex_unlock(&xt[table->af].mutex);
--	audit_log_nfcfg(table->name, table->af, private->number,
--			AUDIT_XT_OP_UNREGISTER, GFP_KERNEL);
--	kfree(table->ops);
--	kfree(table);
--
--	return private;
--}
--EXPORT_SYMBOL_GPL(xt_unregister_table);
--
- /**
-  * xt_unregister_table_pre_exit - pre-shutdown unregister of a table
-  * @net: network namespace
-@@ -1547,6 +1533,14 @@ EXPORT_SYMBOL_GPL(xt_unregister_table);
-  * Unregisters the specified netfilter table from the given network namespace
-  * and also unregisters the hooks from netfilter core: no new packets will be
-  * processed.
+ Preparation Functions
+ ---------------------
+diff --git a/crypto/krb5/krb5_api.c b/crypto/krb5/krb5_api.c
+index 23026d4206c82..c7ea40f900a77 100644
+--- a/crypto/krb5/krb5_api.c
++++ b/crypto/krb5/krb5_api.c
+@@ -134,27 +134,69 @@ EXPORT_SYMBOL(crypto_krb5_how_much_data);
+  * Find the offset and size of the data in a secure message so that this
+  * information can be used in the metadata buffer which will get added to the
+  * digest by crypto_krb5_verify_mic().
 + *
-+ * This must be called prior to xt_unregister_table_exit() from the pernet
-+ * .pre_exit callback.  After this call, the table is no longer visible to
-+ * the get/setsockopt path.  In case of rmmod, module exit path must have
-+ * called xt_unregister_template() prior to unregistering pernet ops to
-+ * prevent re-instantiation of the table.
-+ *
-+ * See also: xt_unregister_table_exit()
++ * Return: 0 if successful, -EBADMSG if the message is too short or -EINVAL if
++ * the mode is unsupported.
   */
- void xt_unregister_table_pre_exit(struct net *net, u8 af, const char *name)
+-void crypto_krb5_where_is_the_data(const struct krb5_enctype *krb5,
+-				   enum krb5_crypto_mode mode,
+-				   size_t *_offset, size_t *_len)
++int crypto_krb5_where_is_the_data(const struct krb5_enctype *krb5,
++				  enum krb5_crypto_mode mode,
++				  size_t *_offset, size_t *_len)
  {
-@@ -1556,6 +1550,7 @@ void xt_unregister_table_pre_exit(struct net *net, u8 af, const char *name)
- 	mutex_lock(&xt[af].mutex);
- 	list_for_each_entry(t, &xt_net->tables[af], list) {
- 		if (strcmp(t->name, name) == 0) {
-+			list_move(&t->list, &xt_net->dead_tables[af]);
- 			mutex_unlock(&xt[af].mutex);
- 
- 			if (t->ops) /* nat table registers with nat core, t->ops is NULL. */
-@@ -1566,6 +1561,50 @@ void xt_unregister_table_pre_exit(struct net *net, u8 af, const char *name)
- 	mutex_unlock(&xt[af].mutex);
+ 	switch (mode) {
+ 	case KRB5_CHECKSUM_MODE:
++		if (*_len < krb5->cksum_len)
++			return -EBADMSG;
+ 		*_offset += krb5->cksum_len;
+ 		*_len -= krb5->cksum_len;
+-		return;
++		return 0;
+ 	case KRB5_ENCRYPT_MODE:
++		if (*_len < krb5->conf_len + krb5->cksum_len)
++			return -EBADMSG;
+ 		*_offset += krb5->conf_len;
+ 		*_len -= krb5->conf_len + krb5->cksum_len;
+-		return;
++		return 0;
+ 	default:
+ 		WARN_ON_ONCE(1);
+-		return;
++		return -EINVAL;
+ 	}
  }
- EXPORT_SYMBOL(xt_unregister_table_pre_exit);
-+
+ EXPORT_SYMBOL(crypto_krb5_where_is_the_data);
+ 
 +/**
-+ * xt_unregister_table_exit - remove a table during namespace teardown
-+ * @net: the network namespace from which to unregister the table
-+ * @af: address family (e.g., NFPROTO_IPV4, NFPROTO_IPV6)
-+ * @name: name of the table to unregister
++ * crypto_krb5_check_data_len - Check a message is big enough
++ * @krb5: The encoding to use.
++ * @mode: Mode of operation.
++ * @len: The length of the secure blob.
++ * @min_content: Minimum length of the content inside the blob.
 + *
-+ * Completes the unregister process for a table. This must be called from
-+ * the pernet ops .exit callback. This is the second stage after
-+ * xt_unregister_table_pre_exit().
++ * Check that a message is large enough to hold whatever bits the encryption
++ * type wants to glue on (nonce, checksum) plus a minimum amount of content.
 + *
-+ * pair with xt_unregister_table_pre_exit() during namespace shutdown.
-+ *
-+ * Return: the unregistered table or NULL if the table was never
-+ *         instantiated. The caller needs to kfree() the table after it
-+ *         has removed the family specific matches/targets.
++ * Return: 0 if successful, -EBADMSG if the message is too short or -EINVAL if
++ * the mode is unsupported.
 + */
-+struct xt_table *xt_unregister_table_exit(struct net *net, u8 af, const char *name)
++int crypto_krb5_check_data_len(const struct krb5_enctype *krb5,
++			       enum krb5_crypto_mode mode,
++			       size_t len, size_t min_content)
 +{
-+	struct xt_pernet *xt_net = net_generic(net, xt_pernet_id);
-+	struct xt_table *table;
-+
-+	mutex_lock(&xt[af].mutex);
-+	list_for_each_entry(table, &xt_net->dead_tables[af], list) {
-+		struct nf_hook_ops *ops = NULL;
-+
-+		if (strcmp(table->name, name) != 0)
-+			continue;
-+
-+		list_del(&table->list);
-+
-+		audit_log_nfcfg(table->name, table->af, table->private->number,
-+				AUDIT_XT_OP_UNREGISTER, GFP_KERNEL);
-+		swap(table->ops, ops);
-+		mutex_unlock(&xt[af].mutex);
-+
-+		kfree(ops);
-+		return table;
++	switch (mode) {
++	case KRB5_CHECKSUM_MODE:
++		if (len < krb5->cksum_len ||
++		    len - krb5->cksum_len < min_content)
++			return -EBADMSG;
++		return 0;
++	case KRB5_ENCRYPT_MODE:
++		if (len < krb5->conf_len + krb5->cksum_len ||
++		    len - (krb5->conf_len + krb5->cksum_len) < min_content)
++			return -EBADMSG;
++		return 0;
++	default:
++		WARN_ON_ONCE(1);
++		return -EINVAL;
 +	}
-+	mutex_unlock(&xt[af].mutex);
-+
-+	return NULL;
 +}
-+EXPORT_SYMBOL_GPL(xt_unregister_table_exit);
- #endif
++EXPORT_SYMBOL(crypto_krb5_check_data_len);
++
+ /*
+  * Prepare the encryption with derived key data.
+  */
+diff --git a/include/crypto/krb5.h b/include/crypto/krb5.h
+index 71dd38f59be1d..aac3ecf88467c 100644
+--- a/include/crypto/krb5.h
++++ b/include/crypto/krb5.h
+@@ -121,9 +121,12 @@ size_t crypto_krb5_how_much_buffer(const struct krb5_enctype *krb5,
+ size_t crypto_krb5_how_much_data(const struct krb5_enctype *krb5,
+ 				 enum krb5_crypto_mode mode,
+ 				 size_t *_buffer_size, size_t *_offset);
+-void crypto_krb5_where_is_the_data(const struct krb5_enctype *krb5,
+-				   enum krb5_crypto_mode mode,
+-				   size_t *_offset, size_t *_len);
++int crypto_krb5_where_is_the_data(const struct krb5_enctype *krb5,
++				  enum krb5_crypto_mode mode,
++				  size_t *_offset, size_t *_len);
++int crypto_krb5_check_data_len(const struct krb5_enctype *krb5,
++			       enum krb5_crypto_mode mode,
++			       size_t len, size_t min_content);
+ struct crypto_aead *crypto_krb5_prepare_encryption(const struct krb5_enctype *krb5,
+ 						   const struct krb5_buffer *TK,
+ 						   u32 usage, gfp_t gfp);
+diff --git a/include/trace/events/rxrpc.h b/include/trace/events/rxrpc.h
+index 573f2df3a2c99..704a10de66700 100644
+--- a/include/trace/events/rxrpc.h
++++ b/include/trace/events/rxrpc.h
+@@ -71,6 +71,7 @@
+ 	EM(rxkad_abort_resp_unknown_tkt,	"rxkad-resp-unknown-tkt") \
+ 	EM(rxkad_abort_resp_version,		"rxkad-resp-version")	\
+ 	/* RxGK security errors */					\
++	EM(rxgk_abort_1_short_header,		"rxgk1-short-hdr")	\
+ 	EM(rxgk_abort_1_verify_mic_eproto,	"rxgk1-vfy-mic-eproto")	\
+ 	EM(rxgk_abort_2_decrypt_eproto,		"rxgk2-dec-eproto")	\
+ 	EM(rxgk_abort_2_short_data,		"rxgk2-short-data")	\
+diff --git a/net/rxrpc/rxgk.c b/net/rxrpc/rxgk.c
+index c39f5066d8e86..04a761c79548a 100644
+--- a/net/rxrpc/rxgk.c
++++ b/net/rxrpc/rxgk.c
+@@ -480,8 +480,12 @@ static int rxgk_verify_packet_integrity(struct rxrpc_call *call,
  
- #ifdef CONFIG_PROC_FS
-@@ -2012,8 +2051,10 @@ static int __net_init xt_net_init(struct net *net)
- 	struct xt_pernet *xt_net = net_generic(net, xt_pernet_id);
- 	int i;
+ 	_enter("");
  
--	for (i = 0; i < NFPROTO_NUMPROTO; i++)
-+	for (i = 0; i < NFPROTO_NUMPROTO; i++) {
- 		INIT_LIST_HEAD(&xt_net->tables[i]);
-+		INIT_LIST_HEAD(&xt_net->dead_tables[i]);
+-	crypto_krb5_where_is_the_data(gk->krb5, KRB5_CHECKSUM_MODE,
+-				      &data_offset, &data_len);
++	if (crypto_krb5_where_is_the_data(gk->krb5, KRB5_CHECKSUM_MODE,
++					  &data_offset, &data_len) < 0) {
++		ret = rxrpc_abort_eproto(call, skb, RXGK_PACKETSHORT,
++					 rxgk_abort_1_short_header);
++		goto put_gk;
 +	}
- 	return 0;
- }
  
-@@ -2022,8 +2063,10 @@ static void __net_exit xt_net_exit(struct net *net)
- 	struct xt_pernet *xt_net = net_generic(net, xt_pernet_id);
- 	int i;
+ 	hdr = kzalloc(sizeof(*hdr), GFP_NOFS);
+ 	if (!hdr)
+@@ -529,6 +533,13 @@ static int rxgk_verify_packet_encrypted(struct rxrpc_call *call,
  
--	for (i = 0; i < NFPROTO_NUMPROTO; i++)
-+	for (i = 0; i < NFPROTO_NUMPROTO; i++) {
- 		WARN_ON_ONCE(!list_empty(&xt_net->tables[i]));
-+		WARN_ON_ONCE(!list_empty(&xt_net->dead_tables[i]));
+ 	_enter("");
+ 
++	if (crypto_krb5_check_data_len(gk->krb5, KRB5_ENCRYPT_MODE,
++				       len, sizeof(hdr)) < 0) {
++		ret = rxrpc_abort_eproto(call, skb, RXGK_PACKETSHORT,
++					 rxgk_abort_2_short_header);
++		goto error;
 +	}
- }
- 
- static struct pernet_operations xt_net_ops = {
++
+ 	ret = rxgk_decrypt_skb(gk->krb5, gk->rx_enc, skb, &offset, &len, &ac);
+ 	if (ret < 0) {
+ 		if (ret != -ENOMEM)
 -- 
 2.53.0
 
