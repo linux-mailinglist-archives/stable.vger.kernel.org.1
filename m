@@ -1,62 +1,59 @@
-Return-Path: <stable+bounces-255834-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-256040-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 8OmOAKamGGp+lwgAu9opvQ
-	(envelope-from <stable+bounces-255834-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:33:42 +0200
+	id MNfWJiOpGGrclwgAu9opvQ
+	(envelope-from <stable+bounces-256040-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:44:19 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7C8CA5F8F68
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:33:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1E5085F96C8
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:44:18 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 933FA303C7CA
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 20:26:52 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 8FC1A31602D9
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 20:36:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1AEDD31F981;
-	Thu, 28 May 2026 20:26:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CC4DD3438AE;
+	Thu, 28 May 2026 20:36:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vD9glD74"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WYLyZeBN"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8352E2E7379;
-	Thu, 28 May 2026 20:26:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9FC0C34D397;
+	Thu, 28 May 2026 20:36:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780000010; cv=none; b=OlaJNwD1JtKWqxzeg05LrD+I10sS1EERLl0CCuF5I54T9gnhyDgUgtwvylwQamsXYLVUUcFqZ0XNves9v7Lwoka+WJUgBfnw1BZIahY6U+fwa6EFNkf1n1Elzqlar5mJcrg120bFpiOv9KmPPfCSoZt3oY+V+LNxp3UTCmUq6cU=
+	t=1780000586; cv=none; b=CQXJI/seZWIUUcAfu6MdEQLml7ie7SWg+LMVIbsKK5saEHfFycuGmmAeUhO72pTaPHhRjZiD3qG8Mmlf3zangmmn7d4Hg7EeNGPE1eWjUj+C+dJ0Gp2qDvfI2o2KIYcmZi6tuLwsdRgUSOh0bH/kCZ6xRQ1jRK96fbefKaa+u4Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780000010; c=relaxed/simple;
-	bh=tfYX1yW5oercVP6LN5Ha7uA570ftc7w4ogpZuS2Fv5Q=;
+	s=arc-20240116; t=1780000586; c=relaxed/simple;
+	bh=p3v+4JArcN2xLLqLj4Cy22WBN5UnkMkHo4R8VepTe48=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=fweMC5prPye1hWh2LtccmJNwSADLZ/C/dXP7VlOSDkZoPqVOp//p7ZQpGE8NCwkpgrTBzP2aLR47sw4UQuQBaE5j0hC6UHPqOPN8n2o5o9etJq/kF/GGV6R5lC0dpw8rizxEidYpxJDTGTF+8iFcpq0wYefTEcnbjpbUUyyodeQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vD9glD74; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E66601F000E9;
-	Thu, 28 May 2026 20:26:48 +0000 (UTC)
+	 MIME-Version; b=Ay7xHxNJUseF5C+8kliOpVEflHWkEZ979i1QDsiYOpmeUhUZORVr8xRLZffA+nkNAq1K47vbOXwx6zYl5/7zG+hBr6sDaX2arGxyAgGv3a585E8IT56raBrWmfweeAj5rqXvYyXSMEuWR8vRVvuXYBFwmZhNY7ikcXqjYTYHoJ8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WYLyZeBN; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CFF111F00A3A;
+	Thu, 28 May 2026 20:36:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780000009;
-	bh=uYEh1lox7TEr56Gs4CIMtq1/gvUZhRt8PJ5o6pS7C84=;
+	s=korg; t=1780000585;
+	bh=hSyXBhNDRYcJJxzawFXTubFlKdgGEGu4ze/GXfXfpy8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=vD9glD74REN1Zl3YTRvVd9uwcYrGqINmn7hIjDev95GlqF5dzLjH8x7LjTYzkwJgV
-	 PIHPhrYOkfmeUqFf8knRzY3qM2H5q6+PDgnOANqgDb8ge+2FvzryWXPq59Y214sHSA
-	 +h4DWnqrJrOjqps4BI/O0hjMnXybSPWVSg4u1kgU=
+	b=WYLyZeBNu11jxUO3adDsSSNWIR3PxXVCtMMOJqfNALRr8xme+SYts/GgKFGQwOYI9
+	 DrMdCcmBlUohQ2Bjsho6O5TUqzikpzh4AUiYsFwCbRFOoH1O8QrUSsfZjYjI01LkIc
+	 fdbeBDTQZr70kzkAjud6HCSxFjbldsLGnbB54ylY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	David Howells <dhowells@redhat.com>,
-	Paulo Alcantara <pc@manguebit.org>,
-	netfs@lists.linux.dev,
-	linux-fsdevel@vger.kernel.org,
-	Christian Brauner <brauner@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 233/377] netfs: Fix cancellation of a DIO and single read subrequests
-Date: Thu, 28 May 2026 21:47:51 +0200
-Message-ID: <20260528194645.139039189@linuxfoundation.org>
+	Shyam Prasad N <sprasad@microsoft.com>,
+	Zhihao Cheng <chengzhihao1@huawei.com>,
+	Steve French <stfrench@microsoft.com>
+Subject: [PATCH 6.12 098/272] cifs: Fix busy dentry used after unmounting
+Date: Thu, 28 May 2026 21:47:52 +0200
+Message-ID: <20260528194632.124497563@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260528194638.371537336@linuxfoundation.org>
-References: <20260528194638.371537336@linuxfoundation.org>
+In-Reply-To: <20260528194629.379955525@linuxfoundation.org>
+References: <20260528194629.379955525@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -76,370 +73,100 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	URIBL_MULTI_FAIL(0.00)[tor.lore.kernel.org:server fail,linux.dev:server fail,sashiko.dev:server fail,manguebit.org:server fail,linuxfoundation.org:server fail,msgid.link:server fail];
-	TAGGED_FROM(0.00)[bounces-255834-lists,stable=lfdr.de];
-	PRECEDENCE_BULK(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
+	RCVD_TLS_LAST(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	TAGGED_FROM(0.00)[bounces-256040-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[9];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sashiko.dev:url,linux.dev:email,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim,msgid.link:url,manguebit.org:email]
-X-Rspamd-Queue-Id: 7C8CA5F8F68
+	RCPT_COUNT_FIVE(0.00)[6];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,huawei.com:email,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim]
+X-Rspamd-Queue-Id: 1E5085F96C8
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: David Howells <dhowells@redhat.com>
+From: Zhihao Cheng <chengzhihao1@huawei.com>
 
-[ Upstream commit 6f0f7ac1915abc0d202f0eb4b003a6548a5ba60d ]
+commit c68337442f03953237a94577beb468ab2662a851 upstream.
 
-When the preparation of a new subrequest for a read fails, if the
-subrequest has already been added to the stream->subrequests list, it can't
-simply be put and abandoned as the collector may see it.  Also, if it
-hasn't been queued yet, it has two outstanding refs that both need to be
-put.  Both DIO read and single-read dispatch fail at this; further, both
-differ in the order they do things to the way buffered read works.
+Since commit 340cea84f691c ("cifs: open files should not hold ref on
+superblock"), cifs file only holds the dentry ref_cnt, the cifs file
+close work(cfile->deferred) could be executed after unmounting, which
+will trigger a warning in generic_shutdown_super:
+ BUG: Dentry 00000000a14a6845{i=c,n=file}  still in use (1) [unmount of
+ cifs cifs]
 
-Fix cancellation of both DIO-read and single-read subrequests that failed
-preparation by the following steps:
+The detailed processs is:
+   process A           process B           kworker
+ fd = open(PATH)
+  vfs_open
+   file->__f_path = *path // dentry->d_lockref.count = 1
+   cifs_open
+    cifs_new_fileinfo
+     cfile->dentry = dget(dentry) // dentry->d_lockref.count = 2
+ close(fd)
+  __fput
+  cifs_close
+   queue_delayed_work(deferredclose_wq, cfile->deferred)
+  dput(dentry) // dentry->d_lockref.count = 1
+			                 smb2_deferred_work_close
+					  _cifsFileInfo_put
+					   list_del(&cifs_file->flist)
+                    umount
+		     cleanup_mnt
+		      deactivate_super
+		       cifs_kill_sb
+		        cifs_close_all_deferred_files_sb
+			 cifs_close_all_deferred_files
+			  // cannot find cfile, skip _cifsFileInfo_put
+			kill_anon_super
+			 generic_shutdown_super
+			  shrink_dcache_for_umount
+			   umount_check
+			    WARN ! // dentry->d_lockref.count = 1
+					   cifsFileInfo_put_final
+					    dput(cifs_file->dentry)
+		                            // dentry->d_lockref.count = 0
 
- (1) Harmonise all three reads (buffered, dio, single) to queue the subreq
-     before prepping it.
+Fix it by flushing 'deferredclose_wq' before calling kill_anon_super.
 
- (2) Make all three call netfs_queue_read() to do the queuing.
+Fetch a reproducer in https://bugzilla.kernel.org/show_bug.cgi?id=221548.
 
- (3) Set NETFS_RREQ_ALL_QUEUED independently of the queuing as we don't
-     know the length of the subreq at this point.
-
- (4) In all cases, set the error and NETFS_SREQ_FAILED flag on the subreq
-     and then call netfs_read_subreq_terminated() to deal with it.  This
-     will pass responsibility off to the collector for dealing with it.
-
-Fixes: e2d46f2ec332 ("netfs: Change the read result collector to only use one work item")
-Closes: https://sashiko.dev/#/patchset/20260425125426.3855807-1-dhowells%40redhat.com
-Signed-off-by: David Howells <dhowells@redhat.com>
-Link: https://patch.msgid.link/20260512123404.719402-2-dhowells@redhat.com
-cc: Paulo Alcantara <pc@manguebit.org>
-cc: netfs@lists.linux.dev
-cc: linux-fsdevel@vger.kernel.org
-Signed-off-by: Christian Brauner <brauner@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 340cea84f691c ("cifs: open files should not hold ref on superblock")
+Cc: stable@vger.kernel.org
+Reviewed-by: Shyam Prasad N <sprasad@microsoft.com>
+Signed-off-by: Zhihao Cheng <chengzhihao1@huawei.com>
+Signed-off-by: Steve French <stfrench@microsoft.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/netfs/buffered_read.c | 34 +++++++++++++-------------------
- fs/netfs/direct_read.c   | 42 +++++++++++++---------------------------
- fs/netfs/internal.h      |  3 +++
- fs/netfs/read_collect.c  | 11 +++++++++++
- fs/netfs/read_single.c   | 23 ++++++++++------------
- 5 files changed, 50 insertions(+), 63 deletions(-)
+ fs/smb/client/cifsfs.c |    2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/fs/netfs/buffered_read.c b/fs/netfs/buffered_read.c
-index 88361e8c70961..10b13924ed543 100644
---- a/fs/netfs/buffered_read.c
-+++ b/fs/netfs/buffered_read.c
-@@ -156,9 +156,8 @@ static void netfs_read_cache_to_pagecache(struct netfs_io_request *rreq,
- 			netfs_cache_read_terminated, subreq);
- }
+--- a/fs/smb/client/cifsfs.c
++++ b/fs/smb/client/cifsfs.c
+@@ -299,6 +299,8 @@ static void cifs_kill_sb(struct super_bl
  
--static void netfs_queue_read(struct netfs_io_request *rreq,
--			     struct netfs_io_subrequest *subreq,
--			     bool last_subreq)
-+void netfs_queue_read(struct netfs_io_request *rreq,
-+		      struct netfs_io_subrequest *subreq)
- {
- 	struct netfs_io_stream *stream = &rreq->io_streams[0];
+ 		/* Wait for all pending oplock breaks to complete */
+ 		flush_workqueue(cifsoplockd_wq);
++		/* Wait for all opened files to release */
++		flush_workqueue(deferredclose_wq);
  
-@@ -178,11 +177,6 @@ static void netfs_queue_read(struct netfs_io_request *rreq,
- 		}
- 	}
- 
--	if (last_subreq) {
--		smp_wmb(); /* Write lists before ALL_QUEUED. */
--		set_bit(NETFS_RREQ_ALL_QUEUED, &rreq->flags);
--	}
--
- 	spin_unlock(&rreq->lock);
- }
- 
-@@ -233,6 +227,8 @@ static void netfs_read_to_pagecache(struct netfs_io_request *rreq,
- 		subreq->start	= start;
- 		subreq->len	= size;
- 
-+		netfs_queue_read(rreq, subreq);
-+
- 		source = netfs_cache_prepare_read(rreq, subreq, rreq->i_size);
- 		subreq->source = source;
- 		if (source == NETFS_DOWNLOAD_FROM_SERVER) {
-@@ -253,6 +249,7 @@ static void netfs_read_to_pagecache(struct netfs_io_request *rreq,
- 				       rreq->debug_id, subreq->debug_index,
- 				       subreq->len, size,
- 				       subreq->start, ictx->zero_point, rreq->i_size);
-+				netfs_cancel_read(subreq, ret);
- 				break;
- 			}
- 			subreq->len = len;
-@@ -261,12 +258,7 @@ static void netfs_read_to_pagecache(struct netfs_io_request *rreq,
- 			if (rreq->netfs_ops->prepare_read) {
- 				ret = rreq->netfs_ops->prepare_read(subreq);
- 				if (ret < 0) {
--					subreq->error = ret;
--					/* Not queued - release both refs. */
--					netfs_put_subrequest(subreq,
--							     netfs_sreq_trace_put_cancel);
--					netfs_put_subrequest(subreq,
--							     netfs_sreq_trace_put_cancel);
-+					netfs_cancel_read(subreq, ret);
- 					break;
- 				}
- 				trace_netfs_sreq(subreq, netfs_sreq_trace_prepare);
-@@ -289,23 +281,23 @@ static void netfs_read_to_pagecache(struct netfs_io_request *rreq,
- 
- 		pr_err("Unexpected read source %u\n", source);
- 		WARN_ON_ONCE(1);
-+		netfs_cancel_read(subreq, ret);
- 		break;
- 
- 	issue:
- 		slice = netfs_prepare_read_iterator(subreq, ractl);
- 		if (slice < 0) {
- 			ret = slice;
--			subreq->error = ret;
--			trace_netfs_sreq(subreq, netfs_sreq_trace_cancel);
--			/* Not queued - release both refs. */
--			netfs_put_subrequest(subreq, netfs_sreq_trace_put_cancel);
--			netfs_put_subrequest(subreq, netfs_sreq_trace_put_cancel);
-+			netfs_cancel_read(subreq, ret);
- 			break;
- 		}
--		size -= slice;
- 		start += slice;
-+		size -= slice;
-+		if (size <= 0) {
-+			smp_wmb(); /* Write lists before ALL_QUEUED. */
-+			set_bit(NETFS_RREQ_ALL_QUEUED, &rreq->flags);
-+		}
- 
--		netfs_queue_read(rreq, subreq, size <= 0);
- 		netfs_issue_read(rreq, subreq);
- 		cond_resched();
- 	} while (size > 0);
-diff --git a/fs/netfs/direct_read.c b/fs/netfs/direct_read.c
-index f72e6da88cca7..6a8fb0d55e040 100644
---- a/fs/netfs/direct_read.c
-+++ b/fs/netfs/direct_read.c
-@@ -45,12 +45,11 @@ static void netfs_prepare_dio_read_iterator(struct netfs_io_subrequest *subreq)
-  * Perform a read to a buffer from the server, slicing up the region to be read
-  * according to the network rsize.
-  */
--static int netfs_dispatch_unbuffered_reads(struct netfs_io_request *rreq)
-+static void netfs_dispatch_unbuffered_reads(struct netfs_io_request *rreq)
- {
--	struct netfs_io_stream *stream = &rreq->io_streams[0];
- 	unsigned long long start = rreq->start;
- 	ssize_t size = rreq->len;
--	int ret = 0;
-+	int ret;
- 
- 	do {
- 		struct netfs_io_subrequest *subreq;
-@@ -58,7 +57,10 @@ static int netfs_dispatch_unbuffered_reads(struct netfs_io_request *rreq)
- 
- 		subreq = netfs_alloc_subrequest(rreq);
- 		if (!subreq) {
--			ret = -ENOMEM;
-+			/* Stash the error in the request if there's not
-+			 * already an error set.
-+			 */
-+			cmpxchg(&rreq->error, 0, -ENOMEM);
- 			break;
- 		}
- 
-@@ -66,25 +68,13 @@ static int netfs_dispatch_unbuffered_reads(struct netfs_io_request *rreq)
- 		subreq->start	= start;
- 		subreq->len	= size;
- 
--		__set_bit(NETFS_SREQ_IN_PROGRESS, &subreq->flags);
--
--		spin_lock(&rreq->lock);
--		list_add_tail(&subreq->rreq_link, &stream->subrequests);
--		if (list_is_first(&subreq->rreq_link, &stream->subrequests)) {
--			if (!stream->active) {
--				stream->collected_to = subreq->start;
--				/* Store list pointers before active flag */
--				smp_store_release(&stream->active, true);
--			}
--		}
--		trace_netfs_sreq(subreq, netfs_sreq_trace_added);
--		spin_unlock(&rreq->lock);
-+		netfs_queue_read(rreq, subreq);
- 
- 		netfs_stat(&netfs_n_rh_download);
- 		if (rreq->netfs_ops->prepare_read) {
- 			ret = rreq->netfs_ops->prepare_read(subreq);
- 			if (ret < 0) {
--				netfs_put_subrequest(subreq, netfs_sreq_trace_put_cancel);
-+				netfs_cancel_read(subreq, ret);
- 				break;
- 			}
- 		}
-@@ -113,8 +103,6 @@ static int netfs_dispatch_unbuffered_reads(struct netfs_io_request *rreq)
- 		set_bit(NETFS_RREQ_ALL_QUEUED, &rreq->flags);
- 		netfs_wake_collector(rreq);
- 	}
--
--	return ret;
- }
- 
- /*
-@@ -137,21 +125,17 @@ static ssize_t netfs_unbuffered_read(struct netfs_io_request *rreq, bool sync)
- 	// TODO: Use bounce buffer if requested
- 
- 	inode_dio_begin(rreq->inode);
-+	netfs_dispatch_unbuffered_reads(rreq);
- 
--	ret = netfs_dispatch_unbuffered_reads(rreq);
--
--	if (!rreq->submitted) {
--		netfs_put_request(rreq, netfs_rreq_trace_put_no_submit);
--		inode_dio_end(rreq->inode);
--		ret = 0;
--		goto out;
--	}
-+	/* The collector will get run, even if we don't manage to submit any
-+	 * subreqs, so we shouldn't call inode_dio_end() here.
-+	 */
- 
- 	if (sync)
- 		ret = netfs_wait_for_read(rreq);
- 	else
- 		ret = -EIOCBQUEUED;
--out:
-+
- 	_leave(" = %zd", ret);
- 	return ret;
- }
-diff --git a/fs/netfs/internal.h b/fs/netfs/internal.h
-index d436e20d34185..645996ecfc803 100644
---- a/fs/netfs/internal.h
-+++ b/fs/netfs/internal.h
-@@ -23,6 +23,8 @@
- /*
-  * buffered_read.c
-  */
-+void netfs_queue_read(struct netfs_io_request *rreq,
-+		      struct netfs_io_subrequest *subreq);
- void netfs_cache_read_terminated(void *priv, ssize_t transferred_or_error);
- int netfs_prefetch_for_write(struct file *file, struct folio *folio,
- 			     size_t offset, size_t len);
-@@ -108,6 +110,7 @@ static inline void netfs_see_subrequest(struct netfs_io_subrequest *subreq,
-  */
- bool netfs_read_collection(struct netfs_io_request *rreq);
- void netfs_read_collection_worker(struct work_struct *work);
-+void netfs_cancel_read(struct netfs_io_subrequest *subreq, int error);
- void netfs_cache_read_terminated(void *priv, ssize_t transferred_or_error);
- 
- /*
-diff --git a/fs/netfs/read_collect.c b/fs/netfs/read_collect.c
-index e5f6665b3341e..d2d902f466271 100644
---- a/fs/netfs/read_collect.c
-+++ b/fs/netfs/read_collect.c
-@@ -575,6 +575,17 @@ void netfs_read_subreq_terminated(struct netfs_io_subrequest *subreq)
- }
- EXPORT_SYMBOL(netfs_read_subreq_terminated);
- 
-+/*
-+ * Cancel a read subrequest due to preparation failure.
-+ */
-+void netfs_cancel_read(struct netfs_io_subrequest *subreq, int error)
-+{
-+	trace_netfs_sreq(subreq, netfs_sreq_trace_cancel);
-+	subreq->error = error;
-+	__set_bit(NETFS_SREQ_FAILED, &subreq->flags);
-+	netfs_read_subreq_terminated(subreq);
-+}
-+
- /*
-  * Handle termination of a read from the cache.
-  */
-diff --git a/fs/netfs/read_single.c b/fs/netfs/read_single.c
-index 9d48ced80d1fa..cb422de66d0c5 100644
---- a/fs/netfs/read_single.c
-+++ b/fs/netfs/read_single.c
-@@ -89,7 +89,6 @@ static void netfs_single_read_cache(struct netfs_io_request *rreq,
-  */
- static int netfs_single_dispatch_read(struct netfs_io_request *rreq)
- {
--	struct netfs_io_stream *stream = &rreq->io_streams[0];
- 	struct netfs_io_subrequest *subreq;
- 	int ret = 0;
- 
-@@ -102,14 +101,7 @@ static int netfs_single_dispatch_read(struct netfs_io_request *rreq)
- 	subreq->len	= rreq->len;
- 	subreq->io_iter	= rreq->buffer.iter;
- 
--	__set_bit(NETFS_SREQ_IN_PROGRESS, &subreq->flags);
--
--	spin_lock(&rreq->lock);
--	list_add_tail(&subreq->rreq_link, &stream->subrequests);
--	trace_netfs_sreq(subreq, netfs_sreq_trace_added);
--	/* Store list pointers before active flag */
--	smp_store_release(&stream->active, true);
--	spin_unlock(&rreq->lock);
-+	netfs_queue_read(rreq, subreq);
- 
- 	netfs_single_cache_prepare_read(rreq, subreq);
- 	switch (subreq->source) {
-@@ -121,10 +113,14 @@ static int netfs_single_dispatch_read(struct netfs_io_request *rreq)
- 				goto cancel;
- 		}
- 
-+		smp_wmb(); /* Write lists before ALL_QUEUED. */
-+		set_bit(NETFS_RREQ_ALL_QUEUED, &rreq->flags);
- 		rreq->netfs_ops->issue_read(subreq);
- 		rreq->submitted += subreq->len;
- 		break;
- 	case NETFS_READ_FROM_CACHE:
-+		smp_wmb(); /* Write lists before ALL_QUEUED. */
-+		set_bit(NETFS_RREQ_ALL_QUEUED, &rreq->flags);
- 		trace_netfs_sreq(subreq, netfs_sreq_trace_submit);
- 		netfs_single_read_cache(rreq, subreq);
- 		rreq->submitted += subreq->len;
-@@ -134,14 +130,15 @@ static int netfs_single_dispatch_read(struct netfs_io_request *rreq)
- 		pr_warn("Unexpected single-read source %u\n", subreq->source);
- 		WARN_ON_ONCE(true);
- 		ret = -EIO;
--		break;
-+		goto cancel;
- 	}
- 
--	smp_wmb(); /* Write lists before ALL_QUEUED. */
--	set_bit(NETFS_RREQ_ALL_QUEUED, &rreq->flags);
- 	return ret;
- cancel:
--	netfs_put_subrequest(subreq, netfs_sreq_trace_put_cancel);
-+	netfs_cancel_read(subreq, ret);
-+	smp_wmb(); /* Write lists before ALL_QUEUED. */
-+	set_bit(NETFS_RREQ_ALL_QUEUED, &rreq->flags);
-+	netfs_wake_collector(rreq);
- 	return ret;
- }
- 
--- 
-2.53.0
-
+ 		/* finally release root dentry */
+ 		dput(cifs_sb->root);
 
 
 
