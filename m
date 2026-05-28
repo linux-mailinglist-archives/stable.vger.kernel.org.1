@@ -1,61 +1,62 @@
-Return-Path: <stable+bounces-255916-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-256120-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id oBxmAAGnGGpolwgAu9opvQ
-	(envelope-from <stable+bounces-255916-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:35:13 +0200
+	id GM7KF1uqGGoomAgAu9opvQ
+	(envelope-from <stable+bounces-256120-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:49:31 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id BF3B45F9078
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:35:12 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 154F85F99EC
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:49:30 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 9CBB930930DB
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 20:30:44 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id ED661317ADD3
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 20:40:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1C87633C51D;
-	Thu, 28 May 2026 20:30:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2F323339866;
+	Thu, 28 May 2026 20:40:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="e3zTPP8U"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YVASn1me"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CADD33368B5;
-	Thu, 28 May 2026 20:30:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ED1EF31159C;
+	Thu, 28 May 2026 20:40:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780000238; cv=none; b=Bhy18ox5mE1lt6q9F7SHY9fTQpAgvAAFbICJjqFbPLTmGoCq8R4ZN8G2G1gaEuEMqwxa7QyKyn+BIBOl44UOndHUwCMRtg9x6RTkmm6/J3Ohedbnq/0BGMAxjP43CBtoD4rTuoDPvX/x7eTDTCG+S7ocF69xrBrUukSlwT1xmF0=
+	t=1780000813; cv=none; b=Z6hB02/foJvrwnQOfz/pXtmH/hM/PEHXPV6dxDdDGPVWvpxoCdtHKbZ6G+XXc0Sm3CYahdVW411DT9wOwXEs+0X5ZGLUMLsqnQi3Dd66DgjSU/PNbxRigPHvhVEBVMqL/5hqATNzGitElFaXsI7p9McaPXqzt9FIQzfUVHnr5sc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780000238; c=relaxed/simple;
-	bh=E4AzP0BBudRPzr+6lSaufi0JFop0TgDkJMyn2fNtyxA=;
+	s=arc-20240116; t=1780000813; c=relaxed/simple;
+	bh=cuMVo56CDjaf+AUVJ4cjuhXO1k/BjMsSIjOG9v2qrjA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Xi0f+S6U+GpVNVQeg7tlMi1Fy8cSUL6YskWKZftnj7XkDgMlvtCtavAeIbEq2ngdUecnCcDY/FsAkfhxKEYXkfNdlehFFAEBleEVsIWEX58Q9KfWIb3OURXBAFXu9/9HGR8X32bx+F7q9ScrcjsXjH43oYHNcIZ/K+whFfMJH7M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=e3zTPP8U; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 35A791F00A3C;
-	Thu, 28 May 2026 20:30:37 +0000 (UTC)
+	 MIME-Version; b=Zeu1vR1eZQUvrPbb2M1gtj/mRuK+4N97qO+Z39uGXOsxWVrLUUvh2bCYrWahrd7ZJjLBY6nja382Ze3XTk7bVJau9/ElZZoky20JnLk4AL8ysDqFo4twEfPR9ihlH+57T5fqYM2mR7qk4EBAZ/fSw3gWH15fiYNZczxekYjlvGs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YVASn1me; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 113911F000E9;
+	Thu, 28 May 2026 20:40:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780000237;
-	bh=RI5hQ6HI7VYrsnEp+fjFTLod0YOTrKu8O3bTd7Pmo1A=;
+	s=korg; t=1780000811;
+	bh=HVxMVbCh4+OtCYjF4JHC1A3fBXNKHqmYBgCyJDB+mcA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=e3zTPP8USJCP9V4/2QvwGE4OwXP//ZX7FaRbX8S4OaUktd6ur/ijC3uY4XOS+ZHND
-	 eZral1lND4IyDoPLsGyX1B8asUbyztoMrytdKHZmakhGgG4Q4Ih1EntiNy5/sCqu6L
-	 SYWRvKmHcPrJ+g46Mt4igGKpjpPtMqyVbaw1E3Q4=
+	b=YVASn1mejjl6ohHrwSQZ8cxcw5tnCj53WyhkevYx07w+bpITOu9W5vS/QulpGXKRy
+	 lYEUoCkrSbzBvGcDA8HjP8CAI6DRCXrmUYOt6r4HafvcwMQwgGW/lclnu2lkWZZm1b
+	 Jj5qFf4WP9xgB/kefLk6UyMeCqdyLjKVQq4dNOus=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Robin Murphy <robin.murphy@arm.com>,
-	Jianpeng Chang <jianpeng.chang.cn@windriver.com>,
-	Leon Romanovsky <leonro@nvidia.com>,
-	Marek Szyprowski <m.szyprowski@samsung.com>,
+	Aleksandr Loktionov <aleksandr.loktionov@intel.com>,
+	Przemek Kitszel <przemyslaw.kitszel@intel.com>,
+	Marcin Szycik <marcin.szycik@linux.intel.com>,
+	Jacob Keller <jacob.e.keller@intel.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 314/377] dma-mapping: move dma_map_resource() sanity check into debug code
+Subject: [PATCH 6.12 178/272] ice: fix setting RSS VSI hash for E830
 Date: Thu, 28 May 2026 21:49:12 +0200
-Message-ID: <20260528194647.481237873@linuxfoundation.org>
+Message-ID: <20260528194634.287856530@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260528194638.371537336@linuxfoundation.org>
-References: <20260528194638.371537336@linuxfoundation.org>
+In-Reply-To: <20260528194629.379955525@linuxfoundation.org>
+References: <20260528194629.379955525@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -70,7 +71,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
@@ -78,7 +79,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-255916-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-256120-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
@@ -87,98 +88,68 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
 	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[8];
+	RCPT_COUNT_SEVEN(0.00)[9];
 	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[nvidia.com:email,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,samsung.com:email,windriver.com:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,arm.com:email]
-X-Rspamd-Queue-Id: BF3B45F9078
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,intel.com:email,linuxfoundation.org:mid,linuxfoundation.org:dkim]
+X-Rspamd-Queue-Id: 154F85F99EC
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jianpeng Chang <jianpeng.chang.cn@windriver.com>
+From: Marcin Szycik <marcin.szycik@linux.intel.com>
 
-[ Upstream commit af0c3f05866237f7592219bfe05387bc3bfc99b5 ]
+[ Upstream commit b3cda96feb60d91fe88d52b974ff110dcfa91239 ]
 
-dma_map_resource() uses pfn_valid() to ensure the range is not RAM.
-However, pfn_valid() only checks for availability of the memory map for
-a PFN but it does not ensure that the PFN is actually backed by RAM. On
-ARM64 with SPARSEMEM (128MB section granularity), MMIO addresses that
-share a section with RAM will falsely trigger the WARN_ON_ONCE and cause
-dma_map_resource() to return DMA_MAPPING_ERROR.
+ice_set_rss_hfunc() performs a VSI update, in which it sets hashing
+function, leaving other VSI options unchanged. However, ::q_opt_flags is
+mistakenly set to the value of another field, instead of its original
+value, probably due to a typo. What happens next is hardware-dependent:
 
-This causes a WARNING on Raspberry Pi 4 during spi_bcm2835 probe because
-the SPI FIFO register (0xfe204004) falls in the same sparsemem section
-as the end of RAM (0xf8000000-0xfbffffff), both in section 31
-(0xf8000000-0xffffffff).
+On E810, only the first bit is meaningful (see
+ICE_AQ_VSI_Q_OPT_PE_FLTR_EN) and can potentially end up in a different
+state than before VSI update.
 
-Move the sanity check from dma_map_resource() into debug_dma_map_phys()
-and replace the unreliable pfn_valid() with pfn_valid() &&
-!PageReserved(), which correctly identifies actual usable RAM without
-false positives for MMIO regions that happen to have struct pages.
+On E830, some of the remaining bits are not reserved. Setting them
+to some unrelated values can cause the firmware to reject the update
+because of invalid settings, or worse - succeed.
 
-Since dma_map_resource() is dma_map_phys(DMA_ATTR_MMIO), the check
-applies equally to both APIs. Any non-reserved page represents kernel
-memory to a sufficient degree that using DMA_ATTR_MMIO on it is almost
-certainly wrong and risks breaking coherency on non-coherent platforms.
-ZONE_DEVICE pages used for PCI P2P DMA (MEMORY_DEVICE_PCI_P2PDMA) have
-PageReserved set, so they will not trigger a false positive.
+Reproducer:
+  sudo ethtool -X $PF1 equal 8
 
-The check no longer blocks the mapping and uses err_printk() to
-integrate with dma-debug filtering.
+Output in dmesg:
+  Failed to configure RSS hash for VSI 6, error -5
 
-Fixes: f7326196a781 ("dma-mapping: export new dma_*map_phys() interface")
-Reviewed-by: Robin Murphy <robin.murphy@arm.com>
-Signed-off-by: Jianpeng Chang <jianpeng.chang.cn@windriver.com>
-Reviewed-by: Leon Romanovsky <leonro@nvidia.com>
-Signed-off-by: Marek Szyprowski <m.szyprowski@samsung.com>
-Link: https://lore.kernel.org/r/20260513072209.1486986-1-jianpeng.chang.cn@windriver.com
+Fixes: 352e9bf23813 ("ice: enable symmetric-xor RSS for Toeplitz hash function")
+Reviewed-by: Aleksandr Loktionov <aleksandr.loktionov@intel.com>
+Reviewed-by: Przemek Kitszel <przemyslaw.kitszel@intel.com>
+Signed-off-by: Marcin Szycik <marcin.szycik@linux.intel.com>
+Signed-off-by: Jacob Keller <jacob.e.keller@intel.com>
+Link: https://patch.msgid.link/20260506-jk-iwl-net-2026-05-04-v2-5-a5ea4dc837a9@intel.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/dma/debug.c   | 9 ++++++++-
- kernel/dma/mapping.c | 4 ----
- 2 files changed, 8 insertions(+), 5 deletions(-)
+ drivers/net/ethernet/intel/ice/ice_main.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/kernel/dma/debug.c b/kernel/dma/debug.c
-index 21db331185911..fa4aac3339172 100644
---- a/kernel/dma/debug.c
-+++ b/kernel/dma/debug.c
-@@ -1250,7 +1250,14 @@ void debug_dma_map_phys(struct device *dev, phys_addr_t phys, size_t size,
- 	entry->direction = direction;
- 	entry->map_err_type = MAP_ERR_NOT_CHECKED;
+diff --git a/drivers/net/ethernet/intel/ice/ice_main.c b/drivers/net/ethernet/intel/ice/ice_main.c
+index 2a629b9a9e03a..664bedfbd8054 100644
+--- a/drivers/net/ethernet/intel/ice/ice_main.c
++++ b/drivers/net/ethernet/intel/ice/ice_main.c
+@@ -8108,7 +8108,7 @@ int ice_set_rss_hfunc(struct ice_vsi *vsi, u8 hfunc)
+ 	ctx->info.q_opt_rss |=
+ 		FIELD_PREP(ICE_AQ_VSI_Q_OPT_RSS_HASH_M, hfunc);
+ 	ctx->info.q_opt_tc = vsi->info.q_opt_tc;
+-	ctx->info.q_opt_flags = vsi->info.q_opt_rss;
++	ctx->info.q_opt_flags = vsi->info.q_opt_flags;
  
--	if (!(attrs & DMA_ATTR_MMIO)) {
-+	if (attrs & DMA_ATTR_MMIO) {
-+		unsigned long pfn = PHYS_PFN(phys);
-+
-+		if (pfn_valid(pfn) && !PageReserved(pfn_to_page(pfn)))
-+			err_printk(dev, entry,
-+				   "dma_map_resource called for RAM address %pa\n",
-+				   &phys);
-+	} else {
- 		check_for_stack(dev, phys);
- 
- 		if (!PhysHighMem(phys))
-diff --git a/kernel/dma/mapping.c b/kernel/dma/mapping.c
-index fe7472f13b106..35e4556b95566 100644
---- a/kernel/dma/mapping.c
-+++ b/kernel/dma/mapping.c
-@@ -366,10 +366,6 @@ EXPORT_SYMBOL(dma_unmap_sg_attrs);
- dma_addr_t dma_map_resource(struct device *dev, phys_addr_t phys_addr,
- 		size_t size, enum dma_data_direction dir, unsigned long attrs)
- {
--	if (IS_ENABLED(CONFIG_DMA_API_DEBUG) &&
--	    WARN_ON_ONCE(pfn_valid(PHYS_PFN(phys_addr))))
--		return DMA_MAPPING_ERROR;
--
- 	return dma_map_phys(dev, phys_addr, size, dir, attrs | DMA_ATTR_MMIO);
- }
- EXPORT_SYMBOL(dma_map_resource);
+ 	err = ice_update_vsi(hw, vsi->idx, ctx, NULL);
+ 	if (err) {
 -- 
 2.53.0
 
