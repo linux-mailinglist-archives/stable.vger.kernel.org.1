@@ -1,63 +1,61 @@
-Return-Path: <stable+bounces-255645-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-255310-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id AEQqBZ2jGGrJlggAu9opvQ
-	(envelope-from <stable+bounces-255645-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:20:45 +0200
+	id eFsIBpufGGpAlggAu9opvQ
+	(envelope-from <stable+bounces-255310-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:03:39 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id F25CD5F86DB
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:20:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3B75F5F7BB5
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:03:38 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id A0BF93056472
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 20:18:18 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 4DEB1303CC72
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 20:02:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 11E38330B01;
-	Thu, 28 May 2026 20:18:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5E0462F691F;
+	Thu, 28 May 2026 20:02:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MbmgwBWD"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="idivQ0kL"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CCDFF3101B0;
-	Thu, 28 May 2026 20:18:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3356E32ABC0;
+	Thu, 28 May 2026 20:02:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779999492; cv=none; b=KjTXnSRjyppZyV7Stw4OrCE+pdzkC/WnowmmDWd190glZSebteqZwHEvN2Vie4bIDlwnzyxtQf6fm83R7Bjzg97Ql1/AQu20lvSIfFxTNlUzByH9NyMhfcZcRqiKbBLznsFNnLMWLw/o7nLds5pQCYJtWVlDvFqn8KNwfyJXfsk=
+	t=1779998550; cv=none; b=MeDQip9vbODZjHZoPN5TDZ3dGKEnfGJtCjJZBzdfzn+lBqEByhxJJJ7B8kb3Mp3/cS6vRWSzfU60WwgCEghLzGVlgHD6W4RSHv6KpvRp+ou/xurmzrXc6oV0qpkHO3t8cfeujhmu3USyZWMgubL7h3iijrQzQ4JK+m9trd2uuSc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779999492; c=relaxed/simple;
-	bh=7Ij3ZRVx4hM2TdlnSvXSkXh0YigGt3TO1JLogrpZ2Kc=;
+	s=arc-20240116; t=1779998550; c=relaxed/simple;
+	bh=Ozg7KJHLtQLtv+mu7EGahl3ZAoB6CRkNTHt9+ibaNmk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=NXEUesyhjUapUl4/FM/mCYXY824Ka4vAm/0pZLjAixPJLArFEn9r/tTIqHnlINB43ZGh8leA1Inx5eE3ZzC37KHWYIt0vII5lQBaHgax1m6v7dd28rhtUl1OsUGTG8If0Vr991EUWJGkrUUidAeJRdQm6k0j4Z3ahGDXmLdTt5Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MbmgwBWD; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3E2F81F000E9;
-	Thu, 28 May 2026 20:18:11 +0000 (UTC)
+	 MIME-Version; b=NNz1yEOUur3Ch2EdGPWUu0cWRb7X8QDpqOM84ypKiVoXViUWyAr6hYoFJHwjGY+BykIRWeOziYQWtN+fXgP5YwjyL6u0K8x4eCc6AojWvLc85K+b9QCpaU4WMzJ89zFfTuygZMXbNc6j1gWA78217jmK8urUvsciPru1Y5LKBKQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=idivQ0kL; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 918121F000E9;
+	Thu, 28 May 2026 20:02:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779999491;
-	bh=/uADYproSIPv5UuoCTFVBH+sjyQckGvq19mgmMu1t2I=;
+	s=korg; t=1779998549;
+	bh=z16Y0pJH7oIXvOa3VtP9GNrLUQs8xgtdZKipz4NXF6w=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=MbmgwBWD37CwkkU1MwWX4zrY+rqrFD2fLKqqT4hl4QKyYHkOMdtKfUmxsgM02V4Su
-	 kHIl3iefG0J46wTfWqcb+WK8VAgGypwewQddYgdXpq2vSij9pvJsM3vYX5jbT/INLq
-	 TqBZWe2cM6mBdTujjGNfdbVBengwoPggdNRmEEa8=
+	b=idivQ0kLzM3+RA8iyylF6pfyRDZ06VA2trE8B2QngXzwxsMHn1RMoFK7MZiL+zdOR
+	 1w9g90wBnPNIhvMq9LAiCncJr3DyhSq3WsphMPY/Poykf8iTesAvv7juS/wsPHtqBs
+	 Iq6NXHyVR2NZQf23Arj/7wNBilTjwm6XotsE+2pQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jose Ignacio Tornos Martinez <jtornosm@redhat.com>,
-	Jacob Keller <jacob.e.keller@intel.com>,
-	Michal Swiatkowski <michal.swiatkowski@linux.intel.com>,
-	Paul Menzel <pmenzel@molgen.mpg.de>,
-	Rafal Romanowski <rafal.romanowski@intel.com>,
-	Tony Nguyen <anthony.l.nguyen@intel.com>,
-	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 6.18 087/377] ice: fix VF queue configuration with low MTU values
+	Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>,
+	Maulik Shah <maulik.shah@oss.qualcomm.com>,
+	Navya Malempati <navya.malempati@oss.qualcomm.com>,
+	Linus Walleij <linusw@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 7.0 196/461] pinctrl: qcom: Fix wakeirq map by removing disconnected irqs for sm8150
 Date: Thu, 28 May 2026 21:45:25 +0200
-Message-ID: <20260528194640.886647538@linuxfoundation.org>
+Message-ID: <20260528194652.756056707@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260528194638.371537336@linuxfoundation.org>
-References: <20260528194638.371537336@linuxfoundation.org>
+In-Reply-To: <20260528194646.819809818@linuxfoundation.org>
+References: <20260528194646.819809818@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -80,7 +78,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-255645-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-255310-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
@@ -91,71 +89,68 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	FROM_HAS_DN(0.00)[];
 	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
 	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[10];
+	RCPT_COUNT_SEVEN(0.00)[8];
 	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,mpg.de:email,intel.com:email]
-X-Rspamd-Queue-Id: F25CD5F86DB
+	DBL_BLOCKED_OPENRESOLVER(0.00)[qualcomm.com:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo]
+X-Rspamd-Queue-Id: 3B75F5F7BB5
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+7.0-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jose Ignacio Tornos Martinez <jtornosm@redhat.com>
+From: Maulik Shah <maulik.shah@oss.qualcomm.com>
 
-commit 3ba4dd024d26372733d1c02e13e076c6016e3320 upstream.
+[ Upstream commit 52ac35b8a151446481496404af3a8e5e889b3c5a ]
 
-The ice driver's VF queue configuration validation rejects
-databuffer_size values below 1024 bytes, which prevents VFs from
-using MTU values below 871 bytes.
+PDC interrupts 122-125 were meant for ibi_i3c wakeup but sm8150 do not
+support i3c. GPIOs 39,51,88 and 144 are also connected to different PDC
+pin and already reflected in the wake irq map.
 
-The iavf driver calculates databuffer_size based on the MTU using:
-  databuffer_size = ALIGN(MTU + LIBETH_RX_LL_LEN, 128)
+Remove the unsupported wakeup interrupts from the map.
 
-where LIBETH_RX_LL_LEN = 26 (ETH_HLEN + 2*VLAN_HLEN + ETH_FCS_LEN).
-
-For MTU values below 871:
-  MTU 870: 870 + 26 = 896, aligned to 128 = 896 (< 1024, rejected)
-  MTU 871: 871 + 26 = 897, aligned to 128 = 1024 (>= 1024, accepted)
-
-The 1024-byte minimum seems unnecessarily restrictive, because the hardware
-supports databuffer_size as low as 128 bytes (the alignment boundary),
-which should allow MTU values down to the standard minimum of 68 bytes.
-
-I haven't found the reason why the limit was configured in the commit
-9c7dd7566d18 ("ice: add validation in OP_CONFIG_VSI_QUEUES VF message"), so
-with no more information and since it is working, change the minimum
-databuffer_size validation from 1024 to 128 bytes to allow standard low
-MTU values while still preventing invalid configurations.
-
-Fixes: 9c7dd7566d18 ("ice: add validation in OP_CONFIG_VSI_QUEUES VF message")
-cc: stable@vger.kernel.org
-Signed-off-by: Jose Ignacio Tornos Martinez <jtornosm@redhat.com>
-Reviewed-by: Jacob Keller <jacob.e.keller@intel.com>
-Reviewed-by: Michal Swiatkowski <michal.swiatkowski@linux.intel.com>
-Reviewed-by: Paul Menzel <pmenzel@molgen.mpg.de>
-Tested-by: Rafal Romanowski <rafal.romanowski@intel.com>
-Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
-Link: https://patch.msgid.link/20260515182419.1597859-3-anthony.l.nguyen@intel.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 90337380c809 ("pinctrl: qcom: sm8150: Specify PDC map")
+Reviewed-by: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
+Signed-off-by: Maulik Shah <maulik.shah@oss.qualcomm.com>
+Signed-off-by: Navya Malempati <navya.malempati@oss.qualcomm.com>
+Signed-off-by: Linus Walleij <linusw@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/intel/ice/virt/queues.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/pinctrl/qcom/pinctrl-sm8150.c | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
---- a/drivers/net/ethernet/intel/ice/virt/queues.c
-+++ b/drivers/net/ethernet/intel/ice/virt/queues.c
-@@ -840,7 +840,7 @@ int ice_vc_cfg_qs_msg(struct ice_vf *vf,
+diff --git a/drivers/pinctrl/qcom/pinctrl-sm8150.c b/drivers/pinctrl/qcom/pinctrl-sm8150.c
+index ad861cd66958c..e4c561a9c50ae 100644
+--- a/drivers/pinctrl/qcom/pinctrl-sm8150.c
++++ b/drivers/pinctrl/qcom/pinctrl-sm8150.c
+@@ -1496,18 +1496,18 @@ static const struct msm_gpio_wakeirq_map sm8150_pdc_map[] = {
+ 	{ 3, 31 }, { 5, 32 }, { 8, 33 }, { 9, 34 }, { 10, 100 },
+ 	{ 12, 104 }, { 24, 37 }, { 26, 38 }, { 27, 41 }, { 28, 42 },
+ 	{ 30, 39 }, { 36, 43 }, { 37, 44 }, { 38, 30 }, { 39, 118 },
+-	{ 39, 125 }, { 41, 47 }, { 42, 48 }, { 46, 50 }, { 47, 49 },
+-	{ 48, 51 }, { 49, 53 }, { 50, 52 }, { 51, 116 }, { 51, 123 },
++	{ 41, 47 }, { 42, 48 }, { 46, 50 }, { 47, 49 },
++	{ 48, 51 }, { 49, 53 }, { 50, 52 }, { 51, 116 },
+ 	{ 53, 54 }, { 54, 55 }, { 55, 56 }, { 56, 57 }, { 58, 58 },
+ 	{ 60, 60 }, { 61, 61 }, { 68, 62 }, { 70, 63 }, { 76, 71 },
+ 	{ 77, 66 }, { 81, 64 }, { 83, 65 }, { 86, 67 }, { 87, 84 },
+-	{ 88, 117 }, { 88, 124 }, { 90, 69 }, { 91, 70 }, { 93, 75 },
++	{ 88, 117 }, { 90, 69 }, { 91, 70 }, { 93, 75 },
+ 	{ 95, 72 }, { 96, 73 }, { 97, 74 }, { 101, 40 }, { 103, 77 },
+ 	{ 104, 78 }, { 108, 79 }, { 112, 80 }, { 113, 81 }, { 114, 82 },
+ 	{ 117, 85 }, { 118, 101 }, { 119, 87 }, { 120, 88 }, { 121, 89 },
+ 	{ 122, 90 }, { 123, 91 }, { 124, 92 }, { 125, 93 }, { 129, 94 },
+ 	{ 132, 105 }, { 133, 83 }, { 134, 36 }, { 136, 97 }, { 142, 103 },
+-	{ 144, 115 }, { 144, 122 }, { 147, 102 }, { 150, 107 },
++	{ 144, 115 }, { 147, 102 }, { 150, 107 },
+ 	{ 152, 108 }, { 153, 109 }
+ };
  
- 			if (qpi->rxq.databuffer_size != 0 &&
- 			    (qpi->rxq.databuffer_size > ((16 * 1024) - 128) ||
--			     qpi->rxq.databuffer_size < 1024))
-+			     qpi->rxq.databuffer_size < 128))
- 				goto error_param;
- 			ring->rx_buf_len = qpi->rxq.databuffer_size;
- 			if (qpi->rxq.max_pkt_size > max_frame_size ||
+-- 
+2.53.0
+
 
 
 
