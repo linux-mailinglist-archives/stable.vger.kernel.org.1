@@ -1,58 +1,59 @@
-Return-Path: <stable+bounces-256077-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-255853-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id aCDDGGGpGGpolwgAu9opvQ
-	(envelope-from <stable+bounces-256077-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:45:21 +0200
+	id UImqCJumGGpolwgAu9opvQ
+	(envelope-from <stable+bounces-255853-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:33:31 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0B2635F9778
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:45:20 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 92AF45F8F32
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:33:29 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 34A2930D7CB8
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 20:38:11 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 55FA230960E7
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 20:27:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CC42F2EF652;
-	Thu, 28 May 2026 20:38:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E01F132AAD6;
+	Thu, 28 May 2026 20:27:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JAHJEujD"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PSLyXENR"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 82CE52F1FEC;
-	Thu, 28 May 2026 20:38:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B762919A288;
+	Thu, 28 May 2026 20:27:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780000690; cv=none; b=JC4pExYrNS+cf+lJhOVpDy5NVJtkVhA1qnRja/U9xqKsg4Rf0YOHN7Spja8ea/vswgk4b16NaPBFDmhzZEBpYe2jiYe4Lz4V1SHNTMs5ymd222bOT8xNO1uQrWjguWNNCXrO+aWCd6OzgWWXrYm1ZbFAXckJjezqr+x8vQ7q4lw=
+	t=1780000060; cv=none; b=hJ2etNvxwJxs3VN6/BvR6Rt5Mj/DLX5k/B3OU3cBfhAE9W41zWrc4bB7ADuEoeK0lpGfgC1xmteSyijc5LdwywOTDLZm0XCKEGHZQlKa+PXGULWcBP3+G/fFhWKV0ZYWr52Hj7je4Klv9qOlXT2yOxiMJntp74OtBIwyLGF2iZM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780000690; c=relaxed/simple;
-	bh=Kez0czeg0AIJVRyAB3y4HXOVswPugarRZ1AtPIn96E4=;
+	s=arc-20240116; t=1780000060; c=relaxed/simple;
+	bh=3U8Fq3UqnrjUwmf4TQgJO8mbvY5lpBaEYr+mLPy6B54=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=QwTqB32jlaN9ybPAMYdovRYmId+ENrqrBuFznWjHOM96gW+oCGAP9LulLJ1xfobQHtKNhwOw8yVupvBFCIOXfEysJhF3Jodo7KnHgJxraHD3h8JuNL2/0YOujbcLeo4v3iEokqZmAmcU0y0M7bkRxH9X7gU3XRa8eW4yP/0vIHs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JAHJEujD; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DFC851F000E9;
-	Thu, 28 May 2026 20:38:08 +0000 (UTC)
+	 MIME-Version; b=JauvR05Ct+yEGLNN5Kbe5SrE80jYyhASKnk9Mh0A6ILcDhNAOgCh4g87QBeJ+zDbjcK5C8u2DKDFInW5D3Lx9faK9FyyWtGkSBEyGTQLv2uPTljmynzdTcfqVeCyO0VRgc+inFCvII5BIf3IMdx+28/MWTOFgKlHtlHT2zwqzGI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PSLyXENR; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 215FD1F00A3C;
+	Thu, 28 May 2026 20:27:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780000689;
-	bh=z4Gm9r5hP9WRVvme7SjQC1GNV46rQ8b1Xg6/35F7cYE=;
+	s=korg; t=1780000059;
+	bh=dvDD1tJiPwmRYiDarAAOV1nhP6mPBfcKxMQ+v+1zzVo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=JAHJEujDhlY1zew7uzEsjCN0NYSDSRsTlDRD7i9oi67GN7DBRd15/gmIfLX/tJSb7
-	 YvzT1L1QCMzB1HGWnNNtBPcPdlGgqSDjmNqYmh1LXart0yfWD8UfcOFCxIC4o7T2kK
-	 WgYKxhBKawU9ZyCOdW44xtNxFZjVkq0krjRZF3XY=
+	b=PSLyXENRpatRiV/tDOlUi9SH1oDJNVSk7FMueJqPSmEumOBlLVaZH78FnevlBKPw5
+	 IG/7mdgtY6W3lzVJ0YKUHjlmHcpf0a2yYm2chf/xJw7kcu229lo3Wo2+/WGl6vjl8i
+	 5B9v8P4nBR8gGiaZUCyhaWFXFCgXURpnLiBOe0V8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Abdurrahman Hussain <abdurrahman@nexthop.ai>,
-	Guenter Roeck <linux@roeck-us.net>
-Subject: [PATCH 6.12 135/272] hwmon: (pmbus/adm1266) include PEC byte in pmbus_block_xfer read buffer
+	Chenguang Zhao <zhaochenguang@kylinos.cn>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.18 271/377] ethtool: fix ethnl_bitmap32_not_zero() bit interval semantics
 Date: Thu, 28 May 2026 21:48:29 +0200
-Message-ID: <20260528194633.156698617@linuxfoundation.org>
+Message-ID: <20260528194646.212669953@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260528194629.379955525@linuxfoundation.org>
-References: <20260528194629.379955525@linuxfoundation.org>
+In-Reply-To: <20260528194638.371537336@linuxfoundation.org>
+References: <20260528194638.371537336@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,86 +66,93 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	TAGGED_FROM(0.00)[bounces-255853-lists,stable=lfdr.de];
+	URIBL_MULTI_FAIL(0.00)[linuxfoundation.org:server fail,tor.lore.kernel.org:server fail,kylinos.cn:server fail];
 	RCVD_COUNT_THREE(0.00)[4];
-	RCVD_TLS_LAST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-256077-lists,stable=lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
 	TO_DN_SOME(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	RCPT_COUNT_FIVE(0.00)[6];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[5];
+	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,roeck-us.net:email,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,nexthop.ai:email]
-X-Rspamd-Queue-Id: 0B2635F9778
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,kylinos.cn:email]
+X-Rspamd-Queue-Id: 92AF45F8F32
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Abdurrahman Hussain <abdurrahman@nexthop.ai>
+From: Chenguang Zhao <zhaochenguang@kylinos.cn>
 
-commit 487566cb1ccdf3756fdd7bf8d875e612ff3169bb upstream.
+[ Upstream commit 3d042592ebd4c7e44974d556de0b727cb7db4dab ]
 
-adm1266_pmbus_block_xfer() sets up the read transaction with
+ethnl_bitmap32_not_zero() should return true if some bit in [start, end)
+is set:
 
-	.buf = data->read_buf,
-	.len = ADM1266_PMBUS_BLOCK_MAX + 2,
+- Fix inverted memchr_inv() sense: return true when the scan finds a
+  non-zero byte, not when the middle words are all zero.
+- Return false for an empty interval (end <= start).
+- When end is 32-bit aligned, indices in [start, end) do not include any
+  bits from map[end_word]; return false after earlier checks found no
+  non-zero data.
 
-but read_buf in struct adm1266_data is declared as
-
-	u8 read_buf[ADM1266_PMBUS_BLOCK_MAX + 1];
-
-For a max-length block response (length byte = 255 + up to 1 PEC
-byte), the i2c controller is told to write 257 bytes into a 256-byte
-buffer, putting one byte past the end of read_buf.  The same response
-also makes the subsequent PEC compare
-
-	if (crc != msgs[1].buf[msgs[1].buf[0] + 1])
-
-read a byte beyond the array.
-
-Bump the read_buf declaration to ADM1266_PMBUS_BLOCK_MAX + 2 so the
-buffer can hold the length byte, up to 255 payload bytes, and the PEC
-byte the i2c_msg length already accounts for.
-
-Fixes: 407dc802a9c0 ("hwmon: (pmbus/adm1266) Add Block process call")
-Cc: stable@vger.kernel.org
-Signed-off-by: Abdurrahman Hussain <abdurrahman@nexthop.ai>
-Link: https://lore.kernel.org/r/20260515-adm1266-fixes-v1-4-1c1ea1349cfe@nexthop.ai
-Signed-off-by: Guenter Roeck <linux@roeck-us.net>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 10b518d4e6dd ("ethtool: netlink bitset handling")
+Signed-off-by: Chenguang Zhao <zhaochenguang@kylinos.cn>
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/hwmon/pmbus/adm1266.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ net/ethtool/bitset.c | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
---- a/drivers/hwmon/pmbus/adm1266.c
-+++ b/drivers/hwmon/pmbus/adm1266.c
-@@ -61,7 +61,7 @@ struct adm1266_data {
- 	u8 *dev_mem;
- 	struct mutex buf_mutex;
- 	u8 write_buf[ADM1266_PMBUS_BLOCK_MAX + 1] ____cacheline_aligned;
--	u8 read_buf[ADM1266_PMBUS_BLOCK_MAX + 1] ____cacheline_aligned;
-+	u8 read_buf[ADM1266_PMBUS_BLOCK_MAX + 2] ____cacheline_aligned;
- };
+diff --git a/net/ethtool/bitset.c b/net/ethtool/bitset.c
+index f0883357d12e5..4691d6d0f2b75 100644
+--- a/net/ethtool/bitset.c
++++ b/net/ethtool/bitset.c
+@@ -91,7 +91,7 @@ static bool ethnl_bitmap32_not_zero(const u32 *map, unsigned int start,
+ 	u32 mask;
  
- static const struct nvmem_cell_info adm1266_nvmem_cells[] = {
+ 	if (end <= start)
+-		return true;
++		return false;
+ 
+ 	if (start % 32) {
+ 		mask = ethnl_upper_bits(start);
+@@ -104,11 +104,11 @@ static bool ethnl_bitmap32_not_zero(const u32 *map, unsigned int start,
+ 		start_word++;
+ 	}
+ 
+-	if (!memchr_inv(map + start_word, '\0',
+-			(end_word - start_word) * sizeof(u32)))
++	if (memchr_inv(map + start_word, '\0',
++		       (end_word - start_word) * sizeof(u32)))
+ 		return true;
+ 	if (end % 32 == 0)
+-		return true;
++		return false;
+ 	return map[end_word] & ethnl_lower_bits(end);
+ }
+ 
+-- 
+2.53.0
+
 
 
 
