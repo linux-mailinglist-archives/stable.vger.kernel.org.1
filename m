@@ -1,61 +1,58 @@
-Return-Path: <stable+bounces-255409-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-255729-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id EAsUNbaiGGqblggAu9opvQ
-	(envelope-from <stable+bounces-255409-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:16:54 +0200
+	id UKCDO4WkGGoQlwgAu9opvQ
+	(envelope-from <stable+bounces-255729-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:24:37 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 707AF5F8415
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:16:54 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 11FB35F898E
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:24:36 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id D3F4731AF0DA
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 20:07:09 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id C9F80305912F
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 20:22:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4D82A32ABC0;
-	Thu, 28 May 2026 20:07:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id ED2E82E7377;
+	Thu, 28 May 2026 20:22:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Tc+NXgT7"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ryy9GAxb"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 26345318EE1;
-	Thu, 28 May 2026 20:07:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C506F257854;
+	Thu, 28 May 2026 20:21:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779998829; cv=none; b=bQTIxB+iVxjQq9ghb3Yi5u1E49mq76ea8JC+clugQZ7Xr1sBhlJr6+fU/6q8NRpbNp2GbDC5jfLa+v+8QkPo08zroF7p7UjBaOfa7eP0x7hG94hja/rounnyVjw5BWLy4PW66oB7RnaRoR5qp75hQ2MuvLxculHe1geiM96e9D4=
+	t=1779999720; cv=none; b=GHLyxiOlMuDokEkuxjOnGw1JODDaVlctKZSIcUgVOe5XV9Y3WC+05Uhz5lAX+zNLmNtzqT/GpOTG8rPWqmvgBYEvNUGWThjB5Mgo51wQ3A23AxtE7V2Dexlm3XHrNBxL2dajvH7dfryFB4kg6eQlLQJuPU6hfijSfxCVeMOuC2A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779998829; c=relaxed/simple;
-	bh=2Us8Uns27ViR8ewzBdceB4u6svvDPS/F5+xI6VkuWMY=;
+	s=arc-20240116; t=1779999720; c=relaxed/simple;
+	bh=wCYsYBOwt/TDJNC5dcXK0dxC2QbK+/XmxazPxqRBnJg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Ox4y0QIMCGy5lOl2QwNG7vUMU+dx9Ubd++E1Pi3qLLoTA21Ig8Hrat+XfpO1n2dtBZjiavbO1F7k2z4p0bLS9xm8TatLacuInVh2h885Owd39kWVJeeLfEO0h6Xff6EFokwKjmNWvFg3wLU7rB0v2fmp/+CsqaG/uRd7/O/0Oc8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Tc+NXgT7; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 84B8F1F000E9;
-	Thu, 28 May 2026 20:07:07 +0000 (UTC)
+	 MIME-Version; b=Ao1OgMIGKwP68pVCBcLhU+F5TzWfIKAXA8Io/ILmTI2Xnm9OZEJjr/h8pgLCHPu5/V/AU8OIqNo9fUiEU9Ds4c0oULA2zcd6QWxHj6BiO9tAWdm/Qun5rzOtWU/aaaGDKNE4uAPRSa5T0hRN9jjzxM+m4vINct+ELW5ldJPLeZY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ryy9GAxb; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 249591F000E9;
+	Thu, 28 May 2026 20:21:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779998828;
-	bh=ykQDdeHA4fG7N8S/X72mivhTl1yacqOV7wH5SiIoFSw=;
+	s=korg; t=1779999719;
+	bh=4DnWEYNbwKhU6jI2M3bjPnVRZLl9gz+rb1es0AHmeXA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=Tc+NXgT7G1EEWb7lbh52oloDDk5xvdEEM88ZCCfqEIUIoA7sF6IcvyoCttF0QOjQk
-	 frQs2L9zyVa+MIBqHMv8zIpSSDBEb5jZd+RbpZVGpKn6PfxflD2VcHJ+67dSyvFZVt
-	 T7Hh7kz5g6ooKHg4C7QmSXNuyyg8Iy8+NaL3Pq0w=
+	b=ryy9GAxbYblLDXDFIhDLGI9cXZLAfF81Zb795EG4J9jdpaQJ2xj/yfmPRMM+wpPWT
+	 yrmpVrsnx4UEDulMNCFUwUq3oDLXUp2RzO3oyaEKpBsbLMdm1GwVzUUNLJY30HHhKZ
+	 fihp9TZCZaHuD8JCiRNqVsy40YNS3vtoJFGLVPXY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Nicolas Escande <nico.escande@gmail.com>,
-	Baochen Qiang <baochen.qiang@oss.qualcomm.com>,
-	Rameshkumar Sundaram <rameshkumar.sundaram@oss.qualcomm.com>,
-	Jeff Johnson <jeff.johnson@oss.qualcomm.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 7.0 276/461] wifi: ath11k: fix error path leaks in some WMI WOW calls
-Date: Thu, 28 May 2026 21:46:45 +0200
-Message-ID: <20260528194655.166394645@linuxfoundation.org>
+	Abdurrahman Hussain <abdurrahman@nexthop.ai>,
+	Guenter Roeck <linux@roeck-us.net>
+Subject: [PATCH 6.18 168/377] hwmon: (pmbus/adm1266) register the nvmem device after pmbus_do_probe()
+Date: Thu, 28 May 2026 21:46:46 +0200
+Message-ID: <20260528194643.292565151@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260528194646.819809818@linuxfoundation.org>
-References: <20260528194646.819809818@linuxfoundation.org>
+In-Reply-To: <20260528194638.371537336@linuxfoundation.org>
+References: <20260528194638.371537336@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,115 +63,91 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	TAGGED_FROM(0.00)[bounces-255409-lists,stable=lfdr.de];
-	FROM_HAS_DN(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,oss.qualcomm.com,kernel.org];
-	MIME_TRACE(0.00)[0:+];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[8];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-255729-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-0.999];
+	NEURAL_HAM(-0.00)[-1.000];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	TO_DN_SOME(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[5];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,linuxfoundation.org:mid,linuxfoundation.org:dkim,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,qualcomm.com:email]
-X-Rspamd-Queue-Id: 707AF5F8415
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,nexthop.ai:email,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,roeck-us.net:email]
+X-Rspamd-Queue-Id: 11FB35F898E
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-7.0-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Nicolas Escande <nico.escande@gmail.com>
+From: Abdurrahman Hussain <abdurrahman@nexthop.ai>
 
-[ Upstream commit 55dda532bbc261aef495e403c8900c5e2ab5fa34 ]
+commit 6af713af91d5c34ec049eb3cc2c5b3f5eba953b8 upstream.
 
-Fix two instances where we used to directly return the result of
-ath11k_wmi_cmd_send(...). Because we did not check the return value, we
-also did not free the skb in the error path.
+adm1266_probe() calls adm1266_config_nvmem() -- which goes on to
+devm_nvmem_register() and exposes adm1266_nvmem_read() to userspace --
+before pmbus_do_probe() has initialised the per-client PMBus state.
 
-Fixes: 79802b13a492 ("ath11k: implement WoW enable and wakeup commands")
-Signed-off-by: Nicolas Escande <nico.escande@gmail.com>
-Reviewed-by: Baochen Qiang <baochen.qiang@oss.qualcomm.com>
-Reviewed-by: Rameshkumar Sundaram <rameshkumar.sundaram@oss.qualcomm.com>
-Link: https://patch.msgid.link/20260506134240.2284016-2-nico.escande@gmail.com
-Signed-off-by: Jeff Johnson <jeff.johnson@oss.qualcomm.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Same latent hazard as the gpio_chip one fixed in the previous patch:
+once the nvmem device is registered, gpiolib's nvmem char-dev / sysfs
+interface is reachable, and any concurrent read triggers
+adm1266_nvmem_read() -> adm1266_nvmem_read_blackbox(), which issues
+PMBus traffic that races pmbus_do_probe()'s own device accesses with
+no serialisation.
+
+Move adm1266_config_nvmem() down past pmbus_do_probe() so the nvmem
+device isn't reachable from userspace until the PMBus state the
+nvmem accessors depend on is fully initialised.
+
+Fixes: 15609d189302 ("hwmon: (pmbus/adm1266) read blackbox")
+Cc: stable@vger.kernel.org
+Signed-off-by: Abdurrahman Hussain <abdurrahman@nexthop.ai>
+Link: https://lore.kernel.org/r/20260518-adm1266-gpio-fixes-v3-5-e425e4f88139@nexthop.ai
+Signed-off-by: Guenter Roeck <linux@roeck-us.net>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/wireless/ath/ath11k/wmi.c | 19 ++++++++++++++++---
- 1 file changed, 16 insertions(+), 3 deletions(-)
+ drivers/hwmon/pmbus/adm1266.c |    8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/net/wireless/ath/ath11k/wmi.c b/drivers/net/wireless/ath/ath11k/wmi.c
-index 40747fba3b0c0..024c2aad9fb4e 100644
---- a/drivers/net/wireless/ath/ath11k/wmi.c
-+++ b/drivers/net/wireless/ath/ath11k/wmi.c
-@@ -9332,6 +9332,7 @@ int ath11k_wmi_wow_host_wakeup_ind(struct ath11k *ar)
- 	struct wmi_wow_host_wakeup_ind *cmd;
- 	struct sk_buff *skb;
- 	size_t len;
-+	int ret;
+--- a/drivers/hwmon/pmbus/adm1266.c
++++ b/drivers/hwmon/pmbus/adm1266.c
+@@ -470,14 +470,14 @@ static int adm1266_probe(struct i2c_clie
+ 	if (ret < 0)
+ 		return ret;
  
- 	len = sizeof(*cmd);
- 	skb = ath11k_wmi_alloc_skb(ar->wmi->wmi_ab, len);
-@@ -9345,14 +9346,20 @@ int ath11k_wmi_wow_host_wakeup_ind(struct ath11k *ar)
+-	ret = adm1266_config_nvmem(data);
+-	if (ret < 0)
+-		return ret;
+-
+ 	ret = pmbus_do_probe(client, &data->info);
+ 	if (ret)
+ 		return ret;
  
- 	ath11k_dbg(ar->ab, ATH11K_DBG_WMI, "tlv wow host wakeup ind\n");
- 
--	return ath11k_wmi_cmd_send(ar->wmi, skb, WMI_WOW_HOSTWAKEUP_FROM_SLEEP_CMDID);
-+	ret = ath11k_wmi_cmd_send(ar->wmi, skb, WMI_WOW_HOSTWAKEUP_FROM_SLEEP_CMDID);
-+	if (ret) {
-+		ath11k_warn(ar->ab, "failed to send WMI_WOW_HOSTWAKEUP_FROM_SLEEP_CMDID\n");
-+		dev_kfree_skb(skb);
-+	}
++	ret = adm1266_config_nvmem(data);
++	if (ret < 0)
++		return ret;
 +
-+	return ret;
- }
- 
- int ath11k_wmi_wow_enable(struct ath11k *ar)
- {
- 	struct wmi_wow_enable_cmd *cmd;
- 	struct sk_buff *skb;
--	int len;
-+	int ret, len;
- 
- 	len = sizeof(*cmd);
- 	skb = ath11k_wmi_alloc_skb(ar->wmi->wmi_ab, len);
-@@ -9367,7 +9374,13 @@ int ath11k_wmi_wow_enable(struct ath11k *ar)
- 	cmd->pause_iface_config = WOW_IFACE_PAUSE_ENABLED;
- 	ath11k_dbg(ar->ab, ATH11K_DBG_WMI, "tlv wow enable\n");
- 
--	return ath11k_wmi_cmd_send(ar->wmi, skb, WMI_WOW_ENABLE_CMDID);
-+	ret = ath11k_wmi_cmd_send(ar->wmi, skb, WMI_WOW_ENABLE_CMDID);
-+	if (ret) {
-+		ath11k_warn(ar->ab, "failed to send WMI_WOW_ENABLE_CMDID\n");
-+		dev_kfree_skb(skb);
-+	}
-+
-+	return ret;
- }
- 
- int ath11k_wmi_scan_prob_req_oui(struct ath11k *ar,
--- 
-2.53.0
-
+ 	ret = adm1266_config_gpio(data);
+ 	if (ret < 0)
+ 		return ret;
 
 
 
