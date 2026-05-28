@@ -1,59 +1,59 @@
-Return-Path: <stable+bounces-255760-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-255398-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id GBiQA/GkGGoQlwgAu9opvQ
-	(envelope-from <stable+bounces-255760-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:26:25 +0200
+	id 6DxpIcCgGGqblggAu9opvQ
+	(envelope-from <stable+bounces-255398-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:08:32 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 737235F8AD5
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:26:24 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2935B5F7E6B
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:08:32 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 001A0302DF91
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 20:23:29 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 6BF443078549
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 20:06:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AE803329C48;
-	Thu, 28 May 2026 20:23:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7ACCF335566;
+	Thu, 28 May 2026 20:06:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kqKVW/3w"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BoyQO6D0"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5DC4433987F;
-	Thu, 28 May 2026 20:23:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4E55F2FD7C3;
+	Thu, 28 May 2026 20:06:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779999807; cv=none; b=qOxozEf0M4BDSx4T+ND1T7+2sXl52zlsk1Q5FPWPzQlDVDHi4nbIXIZRIzYTpig2Yy4oLZBo+ibc7uFdQo+xcB/IqcSAjs20pqP5vxqu3njQ78JjEeoINGWpwFKoQLBFaqgpxXQQXVq42yy+bhoZjOGlEW/S72/6XLkrUN9qhEI=
+	t=1779998798; cv=none; b=G4iw/r8zlwVQmH+jLJTuBQfu8SRkywoZPW2EyI+sO57BgVrxr5pG7/VsVWS/mEYZ9d8vkr7V/nYNNaR6+0cZi6UIVb+ZbJDSAAmUqTRw/RFgRKV6QuSY2iwu0TthcofUCrTguzpBRMdsfk2Zz84GrhSJiZAwnsBnXVhbk82BFtI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779999807; c=relaxed/simple;
-	bh=bo7g2l2j66GcxUEZ8zzwLcKUXeBQpofsmScK5VWbBjY=;
+	s=arc-20240116; t=1779998798; c=relaxed/simple;
+	bh=iGyIURfyaH9qxXj5O1v//iRch5TzoezyhDuE6aR+J0U=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=GYIl8J5p7Hz5VNXPYpS5NJVuI9ZVrTN3Ao/dJ9TWKAY0RKMSETmjjMaLtlYk2Loel9+ByH+9t4qqasbWPM1K08itSyfwjBc3kDydghNvI3g27sgNb8RqxspqUJE7kwQBg30aHRBWF1W9Cu/e39dSCaZ5WFw9sifEb2JSnTbJWPk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kqKVW/3w; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BA9511F000E9;
-	Thu, 28 May 2026 20:23:25 +0000 (UTC)
+	 MIME-Version; b=Aso1dpcHNNPgcbQzvDCw7q37THrV7uHGJCzd7k6AZSd9goqhyw9r9qTA4gs97K4vyn9b6ojvzTe/IpRuX4ru3nHB+6+IpF6BrLSlR1+MAh2ChZYeQyybNtlgCBUtbVDNcQQTzQ6kMih0lhPIPVhWL4bIxJf0NygdKT5jKnozy6Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BoyQO6D0; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AD80D1F000E9;
+	Thu, 28 May 2026 20:06:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779999806;
-	bh=/AnZoweMKaY55Fi+OO7Gwq10I3Pi8f/xE4DELw4UUso=;
+	s=korg; t=1779998797;
+	bh=ocqTR9qWe9KHnNCacGkBaZgDSs3MicoDHrAq7gzc6+E=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=kqKVW/3wo0jML5iJ8mGJhe+ec97YprJTwUuQr8GQo1iACGxN8PQRJze8us20LY7fS
-	 Jk3WT951kcxffTXjI+5v6H2+pv4fCneJqkPJBsy+W3K5TANuC6Aw3ovpr5j0Cbib5L
-	 I2JM/C34Dn4yao0eD27qO/xGL0O4eHqkhCBTrVyU=
+	b=BoyQO6D0wzW8ItlqAZWa/bB3iPEQBR+SE3hGNzb/SNv9aWh7JOVJmMFEBzyYmSlZ/
+	 fMNgesn4FXVJVlLjxK1Al8vg5Vf9T3Bj/OMFblr+kEDRB8adXmRWxIMjNyioVZ+MdE
+	 xh3j8ksFBQkrHiYmIIYKJz1Nt7oWZ+7NryymY4xo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sebastian Ene <sebastianene@google.com>,
-	Sudeep Holla <sudeep.holla@kernel.org>,
+	Ming Lei <tom.leiming@gmail.com>,
+	Jens Axboe <axboe@kernel.dk>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 191/377] firmware: arm_ffa: Align RxTx buffer size before mapping
-Date: Thu, 28 May 2026 21:47:09 +0200
-Message-ID: <20260528194643.941974149@linuxfoundation.org>
+Subject: [PATCH 7.0 301/461] selftests: ublk: cap nthreads to kernels actual nr_hw_queues
+Date: Thu, 28 May 2026 21:47:10 +0200
+Message-ID: <20260528194655.954945922@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260528194638.371537336@linuxfoundation.org>
-References: <20260528194638.371537336@linuxfoundation.org>
+In-Reply-To: <20260528194646.819809818@linuxfoundation.org>
+References: <20260528194646.819809818@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,85 +64,96 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	RCVD_TLS_LAST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-255760-lists,stable=lfdr.de];
 	TO_DN_SOME(0.00)[];
-	FROM_HAS_DN(0.00)[];
+	TAGGED_FROM(0.00)[bounces-255398-lists,stable=lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,kernel.dk,kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	FROM_HAS_DN(0.00)[];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	NEURAL_HAM(-0.00)[-0.999];
 	TAGGED_RCPT(0.00)[stable];
+	MID_RHS_MATCH_FROM(0.00)[];
 	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,msgid.link:url,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,sashiko.dev:url]
-X-Rspamd-Queue-Id: 737235F8AD5
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,linuxfoundation.org:mid,linuxfoundation.org:dkim,kernel.dk:email,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo]
+X-Rspamd-Queue-Id: 2935B5F7E6B
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+7.0-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sudeep Holla <sudeep.holla@kernel.org>
+From: Ming Lei <tom.leiming@gmail.com>
 
-[ Upstream commit 0399e3f872ca3d78044bb715a73ea645806d2c7b ]
+[ Upstream commit 87d0740b7c4cc847be1b6f307ab6d8547cb1a726 ]
 
-Commit 83210251fd70 ("firmware: arm_ffa: Use the correct buffer size during
-RXTX_MAP") advertises PAGE_ALIGN(rxtx_bufsz) to firmware when mapping the
-buffers but the driver continues to stores the minimum FF-A buffer size
-in drv_info->rxtx_bufsz which is used elsewhere in the driver.
+dev->nthreads is derived from the user-requested queue count before the
+ADD command, but the kernel may reduce nr_hw_queues (capped to
+nr_cpu_ids). When the VM has fewer CPUs than requested queues, the
+daemon creates more handler threads than there are kernel queues.
 
-Align the size before storing it so that the allocation, validation and
-FFA_RXTX_MAP all use the same buffer size.
+In non-batch mode, the extra threads access uninitialized queues
+(q_depth=0), submit zero io_uring SQEs, and block forever in
+io_cqring_wait. In batch mode, the extra threads cause similar hangs
+during device removal.
 
-Fixes: 83210251fd70 ("firmware: arm_ffa: Use the correct buffer size during RXTX_MAP")
-Cc: Sebastian Ene <sebastianene@google.com>
-Link: https://sashiko.dev/#/patchset/20260402113939.930221-1-sebastianene@google.com
-Reviewed-by: Sebastian Ene <sebastianene@google.com>
-Link: https://patch.msgid.link/20260428-ffa_fixes-v2-9-8595ae450034@kernel.org
-Signed-off-by: Sudeep Holla <sudeep.holla@kernel.org>
+In both cases, the stuck threads prevent the daemon from closing the
+char device, holding the last ublk_device reference and causing
+ublk_ctrl_del_dev() to hang in wait_event_interruptible().
+
+Fix by capping dev->nthreads to the kernel-returned nr_hw_queues after
+the ADD command completes. per_io_tasks mode is excluded because threads
+interleave across all queues, so nthreads > nr_hw_queues is valid.
+
+Fixes: abe54c160346 ("selftests: ublk: kublk: decouple ublk_queues from ublk server threads")
+Signed-off-by: Ming Lei <tom.leiming@gmail.com>
+Link: https://patch.msgid.link/20260513101941.1373998-1-tom.leiming@gmail.com
+Signed-off-by: Jens Axboe <axboe@kernel.dk>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/firmware/arm_ffa/driver.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ tools/testing/selftests/ublk/kublk.c | 11 +++++++++++
+ 1 file changed, 11 insertions(+)
 
-diff --git a/drivers/firmware/arm_ffa/driver.c b/drivers/firmware/arm_ffa/driver.c
-index f96bb84af55e3..70f34f58f3832 100644
---- a/drivers/firmware/arm_ffa/driver.c
-+++ b/drivers/firmware/arm_ffa/driver.c
-@@ -2102,6 +2102,7 @@ static int __init ffa_init(void)
- 			rxtx_bufsz = SZ_4K;
+diff --git a/tools/testing/selftests/ublk/kublk.c b/tools/testing/selftests/ublk/kublk.c
+index e1c3b3c55e565..c40aa7952b6eb 100644
+--- a/tools/testing/selftests/ublk/kublk.c
++++ b/tools/testing/selftests/ublk/kublk.c
+@@ -1395,6 +1395,17 @@ static int __cmd_dev_add(const struct dev_ctx *ctx)
+ 		goto fail;
  	}
  
-+	rxtx_bufsz = PAGE_ALIGN(rxtx_bufsz);
- 	drv_info->rxtx_bufsz = rxtx_bufsz;
- 	drv_info->rx_buffer = alloc_pages_exact(rxtx_bufsz, GFP_KERNEL);
- 	if (!drv_info->rx_buffer) {
-@@ -2117,7 +2118,7 @@ static int __init ffa_init(void)
- 
- 	ret = ffa_rxtx_map(virt_to_phys(drv_info->tx_buffer),
- 			   virt_to_phys(drv_info->rx_buffer),
--			   PAGE_ALIGN(rxtx_bufsz) / FFA_PAGE_SIZE);
-+			   rxtx_bufsz / FFA_PAGE_SIZE);
- 	if (ret) {
- 		pr_err("failed to register FFA RxTx buffers\n");
- 		goto free_pages;
++	/*
++	 * The kernel may reduce nr_hw_queues (e.g. capped to nr_cpu_ids).
++	 * Cap nthreads to the actual queue count to avoid creating extra
++	 * handler threads that will hang during device removal.
++	 *
++	 * per_io_tasks mode is excluded: threads interleave across all
++	 * queues so nthreads > nr_hw_queues is valid and intentional.
++	 */
++	if (!ctx->per_io_tasks && dev->nthreads > info->nr_hw_queues)
++		dev->nthreads = info->nr_hw_queues;
++
+ 	ret = ublk_start_daemon(ctx, dev);
+ 	ublk_dbg(UBLK_DBG_DEV, "%s: daemon exit %d\n", __func__, ret);
+ 	if (ret < 0)
 -- 
 2.53.0
 
