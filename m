@@ -1,60 +1,59 @@
-Return-Path: <stable+bounces-255345-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-255702-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id qCKVHUGhGGqnlggAu9opvQ
-	(envelope-from <stable+bounces-255345-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:10:41 +0200
+	id OAjTMi6nGGpolwgAu9opvQ
+	(envelope-from <stable+bounces-255702-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:35:58 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id EC9BF5F7FCA
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:10:40 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2E7AF5F910D
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:35:58 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 814A7315D06D
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 20:04:11 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 92F6831DDD47
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 20:20:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 35E6C2F691F;
-	Thu, 28 May 2026 20:04:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 688A13016E0;
+	Thu, 28 May 2026 20:20:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SsIX3mHW"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jvtJGvHf"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F2A4332ABC0;
-	Thu, 28 May 2026 20:04:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3F749282F17;
+	Thu, 28 May 2026 20:20:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779998650; cv=none; b=W6vY6t524SxfA9NzC4TQLUH2N71Tzcb3MPVPInrThelfL0p20yXykvoYftnRY44smNRjdFIE+wU05nSnfixxkN0tGujWqXKvqB/k4PtatFLY+zZJ0Fgak2IMiYh2p8MVmINaOYJEmPtRx7Z8/Uct8lSIlsVOJtyL/MD8COQKSAE=
+	t=1779999648; cv=none; b=hHAutKrCsQtbak0zhnzTZJRsf/wuQyz1e/BYmFSov3B42gig++cAbThpIo4M05C6zFOIU8+Tu5H5FHP0TO+ZrSrJxt8rXD2YDMd1950PQmbLv/csufRpWBZBsUbxpoSnejHxVUc+lwDPfNUbyPkvoXENs7VSM/YSWeq2j6HUywI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779998650; c=relaxed/simple;
-	bh=aFexBEeo0427hcr/N/mxn155/sFiiNfiUJhtl/iJjls=;
+	s=arc-20240116; t=1779999648; c=relaxed/simple;
+	bh=thMOqZ63rvMsjmUAJbAsQlKy1NFzLQkGn5CEKLgY/Ww=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=oB/vt/PQo7VWySESvBqaQlxlkcaZXh9altf15SQrNS7QIDgQJeKHU4R1dXXEmQAd2PKkmGnasp5zQUaimd7LLVgmB9V/pbVFhwSAzx2Q8CqiRspKjQaM1ipS040yfj3U35oJw/f+/L+4lWxKIRJ6scacTcoSm6C86pcfszt/jZM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SsIX3mHW; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1DBE91F000E9;
-	Thu, 28 May 2026 20:04:07 +0000 (UTC)
+	 MIME-Version:Content-Type; b=cLKc27Emzi0rcP8t8hK4wZl0PLXgyr+nBCgyB6Dnz8fJVkzzQyuBUazCR6Eq8qHYA6ejY6LMhOpQMluJV7w84Zc/YGr1MC+mJrllDYDB4P5aqRce5sFF5gxihNAtFl3H/iyTJWnUr10aEaGR5scLJPfVDdQ6pTvb7a5qqnQv6kQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jvtJGvHf; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9E5491F000E9;
+	Thu, 28 May 2026 20:20:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779998648;
-	bh=9pjw479zl/RQH7DVA26aQ0LgN0w8DboCKkrHm0J16uw=;
+	s=korg; t=1779999647;
+	bh=V2q4ewP0hytKIXtZApw8WKHxvyeqU30ZPRxQQe9/EzM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=SsIX3mHWQ/+qeD+fi7jU7JJ0av7PO4MpfCLBP7Wmh+aASWk7+GYNL7zYfqQKcbBU1
-	 rYF7ovcMplVlaldlVB2dy0ADzBBLBpz98EQSGODw7gGguCnasVDX80Qn2d8vLwRyih
-	 B52+Y+CKAi3LxHuUyK8Xne+pmyNmBt5uZ8E6gOUU=
+	b=jvtJGvHf/sUFvhn4/d99SLqiMtiyF4HlHapxQYc2MPLTZyLHiNDMMiixYpriYYw3t
+	 J41xRXK+DTvpaW+UNLSh5T37LtCe0g2wKr2ZsGD66og1J3gUtqUZZdULPIvSuHRhur
+	 1TuYTmyNlb2NMjErFBUIkrt5t4I8YxPgzYA8ckCk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Aboorva Devarajan <aboorvad@linux.ibm.com>,
-	"Ritesh Harjani (IBM)" <ritesh.list@gmail.com>,
-	Madhavan Srinivasan <maddy@linux.ibm.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 7.0 249/461] powerpc/hv-gpci: fix preempt count leak in sysfs show paths
-Date: Thu, 28 May 2026 21:46:18 +0200
-Message-ID: <20260528194654.357420588@linuxfoundation.org>
+	stable@kernel.org,
+	=?UTF-8?q?Linus=20L=C3=BCssing?= <linus.luessing@c0d3.blue>,
+	Sven Eckelmann <sven@narfation.org>
+Subject: [PATCH 6.18 141/377] batman-adv: mcast: fix use-after-free in orig_node RCU release
+Date: Thu, 28 May 2026 21:46:19 +0200
+Message-ID: <20260528194642.456544358@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260528194646.819809818@linuxfoundation.org>
-References: <20260528194646.819809818@linuxfoundation.org>
+In-Reply-To: <20260528194638.371537336@linuxfoundation.org>
+References: <20260528194638.371537336@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,202 +63,85 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	TAGGED_FROM(0.00)[bounces-255345-lists,stable=lfdr.de];
-	FROM_HAS_DN(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,linux.ibm.com,gmail.com,kernel.org];
+	TAGGED_FROM(0.00)[bounces-255702-lists,stable=lfdr.de];
+	FROM_HAS_DN(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
 	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TO_DN_SOME(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	RCPT_COUNT_FIVE(0.00)[6];
+	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[7];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-0.999];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	NEURAL_HAM(-0.00)[-1.000];
 	TAGGED_RCPT(0.00)[stable];
-	TO_DN_SOME(0.00)[];
+	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim,msgid.link:url]
-X-Rspamd-Queue-Id: EC9BF5F7FCA
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,narfation.org:email,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,c0d3.blue:email]
+X-Rspamd-Queue-Id: 2E7AF5F910D
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-7.0-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Aboorva Devarajan <aboorvad@linux.ibm.com>
+From: Sven Eckelmann <sven@narfation.org>
 
-[ Upstream commit dbc30a57bd8e026995e9fa8e8c31cffd18542c01 ]
+commit 20c2d6a20ca936f5aaa6dd40f73f262ac45c87cc upstream.
 
-Four sysfs show() callbacks in hv-gpci take get_cpu_var(hv_gpci_reqb)
-(which calls preempt_disable()) but only call the matching put_cpu_var()
-on the error path under the 'out:' label. Every successful read leaks
-one preempt_disable():
+batadv_mcast_purge_orig() removes entries from RCU-protected hlists but
+does not wait for an RCU grace period before returning. Concurrent RCU
+readers may still accesses references to those entries at the point of
+removal. RCU-protected readers trying to operate on entries like
+orig->mcast_want_all_ipv6_node will then access already freed memory.
 
-  processor_bus_topology_show()
-  processor_config_show()
-  affinity_domain_via_virtual_processor_show()
-  affinity_domain_via_domain_show()
+Fix this by moving batadv_mcast_purge_orig() to batadv_orig_node_release(),
+just before the call_rcu() invocation. This ensures RCU readers that were
+active at purge time have drained before the orig_node memory is reclaimed.
 
-(affinity_domain_via_partition_show() was already correct.)
-
-On a CONFIG_PREEMPT=y kernel, repeated reads raise preempt_count and
-eventually return to userspace with preemption still disabled. The
-next user-mode page fault then hits faulthandler_disabled() == 1,
-gets forced to SIGSEGV, and the resulting coredump trips
-'BUG: scheduling while atomic' in call_usermodehelper_exec ->
-wait_for_completion_state -> schedule:
-
-  BUG: scheduling while atomic: <task>/<pid>/0x00000004
-  ...
-  __schedule_bug+0x6c/0x90
-  __schedule+0x58c/0x13a0
-  schedule+0x48/0x1a0
-  schedule_timeout+0x104/0x170
-  wait_for_completion_state+0x16c/0x330
-  call_usermodehelper_exec+0x254/0x2d0
-  vfs_coredump+0x1050/0x2590
-  get_signal+0xb9c/0xc80
-  do_notify_resume+0xf8/0x470
-
-Add an out_success label that calls put_cpu_var() before returning
-the byte count, mirroring affinity_domain_via_partition_show().
-
-Fixes: 71f1c39647d8 ("powerpc/hv_gpci: Add sysfs file inside hv_gpci device to show processor bus topology information")
-Fixes: 1a160c2a13c6 ("powerpc/hv_gpci: Add sysfs file inside hv_gpci device to show processor config information")
-Fixes: 71a7ccb478fc ("powerpc/hv_gpci: Add sysfs file inside hv_gpci device to show affinity domain via virtual processor information")
-Fixes: a69a57cac1ec ("powerpc/hv_gpci: Add sysfs file inside hv_gpci device to show affinity domain via domain information")
-Signed-off-by: Aboorva Devarajan <aboorvad@linux.ibm.com>
-Reviewed-by: Ritesh Harjani (IBM) <ritesh.list@gmail.com>
-Signed-off-by: Madhavan Srinivasan <maddy@linux.ibm.com>
-Link: https://patch.msgid.link/20260508041256.3447113-1-aboorvad@linux.ibm.com
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: stable@kernel.org
+Fixes: ab49886e3da7 ("batman-adv: Add IPv4 link-local/IPv6-ll-all-nodes multicast support")
+Acked-by: Linus Lüssing <linus.luessing@c0d3.blue>
+Signed-off-by: Sven Eckelmann <sven@narfation.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/powerpc/perf/hv-gpci.c | 24 ++++++++++++++++--------
- 1 file changed, 16 insertions(+), 8 deletions(-)
+ net/batman-adv/originator.c |    4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/arch/powerpc/perf/hv-gpci.c b/arch/powerpc/perf/hv-gpci.c
-index 5cac2cf3bd1e5..10c82cf8f5b39 100644
---- a/arch/powerpc/perf/hv-gpci.c
-+++ b/arch/powerpc/perf/hv-gpci.c
-@@ -210,7 +210,7 @@ static ssize_t processor_bus_topology_show(struct device *dev, struct device_att
- 			0, 0, buf, &n, arg);
+--- a/net/batman-adv/originator.c
++++ b/net/batman-adv/originator.c
+@@ -835,8 +835,6 @@ static void batadv_orig_node_free_rcu(st
  
- 	if (!ret)
--		return n;
-+		goto out_success;
+ 	orig_node = container_of(rcu, struct batadv_orig_node, rcu);
  
- 	if (ret != H_PARAMETER)
- 		goto out;
-@@ -244,12 +244,14 @@ static ssize_t processor_bus_topology_show(struct device *dev, struct device_att
- 				starting_index, 0, buf, &n, arg);
+-	batadv_mcast_purge_orig(orig_node);
+-
+ 	batadv_frag_purge_orig(orig_node, NULL);
  
- 		if (!ret)
--			return n;
-+			goto out_success;
- 
- 		if (ret != H_PARAMETER)
- 			goto out;
+ 	kfree(orig_node->tt_buff);
+@@ -887,6 +885,8 @@ void batadv_orig_node_release(struct kre
  	}
+ 	spin_unlock_bh(&orig_node->vlan_list_lock);
  
-+out_success:
-+	put_cpu_var(hv_gpci_reqb);
- 	return n;
++	batadv_mcast_purge_orig(orig_node);
++
+ 	call_rcu(&orig_node->rcu, batadv_orig_node_free_rcu);
+ }
  
- out:
-@@ -278,7 +280,7 @@ static ssize_t processor_config_show(struct device *dev, struct device_attribute
- 			0, 0, buf, &n, arg);
- 
- 	if (!ret)
--		return n;
-+		goto out_success;
- 
- 	if (ret != H_PARAMETER)
- 		goto out;
-@@ -312,12 +314,14 @@ static ssize_t processor_config_show(struct device *dev, struct device_attribute
- 				starting_index, 0, buf, &n, arg);
- 
- 		if (!ret)
--			return n;
-+			goto out_success;
- 
- 		if (ret != H_PARAMETER)
- 			goto out;
- 	}
- 
-+out_success:
-+	put_cpu_var(hv_gpci_reqb);
- 	return n;
- 
- out:
-@@ -346,7 +350,7 @@ static ssize_t affinity_domain_via_virtual_processor_show(struct device *dev,
- 			0, 0, buf, &n, arg);
- 
- 	if (!ret)
--		return n;
-+		goto out_success;
- 
- 	if (ret != H_PARAMETER)
- 		goto out;
-@@ -382,12 +386,14 @@ static ssize_t affinity_domain_via_virtual_processor_show(struct device *dev,
- 				starting_index, secondary_index, buf, &n, arg);
- 
- 		if (!ret)
--			return n;
-+			goto out_success;
- 
- 		if (ret != H_PARAMETER)
- 			goto out;
- 	}
- 
-+out_success:
-+	put_cpu_var(hv_gpci_reqb);
- 	return n;
- 
- out:
-@@ -416,7 +422,7 @@ static ssize_t affinity_domain_via_domain_show(struct device *dev, struct device
- 			0, 0, buf, &n, arg);
- 
- 	if (!ret)
--		return n;
-+		goto out_success;
- 
- 	if (ret != H_PARAMETER)
- 		goto out;
-@@ -448,12 +454,14 @@ static ssize_t affinity_domain_via_domain_show(struct device *dev, struct device
- 					starting_index, 0, buf, &n, arg);
- 
- 		if (!ret)
--			return n;
-+			goto out_success;
- 
- 		if (ret != H_PARAMETER)
- 			goto out;
- 	}
- 
-+out_success:
-+	put_cpu_var(hv_gpci_reqb);
- 	return n;
- 
- out:
--- 
-2.53.0
-
 
 
 
