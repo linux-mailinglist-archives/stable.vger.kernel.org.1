@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-255205-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-255206-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id GMpaDjaeGGpblggAu9opvQ
-	(envelope-from <stable+bounces-255205-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 21:57:42 +0200
+	id UORuDGSfGGpvlggAu9opvQ
+	(envelope-from <stable+bounces-255206-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:02:44 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id D16E15F7858
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 21:57:41 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8A7FF5F7B29
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:02:43 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 7F5123015701
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 19:57:38 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id A9D6E304A6F8
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 19:57:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D9DD53403E7;
-	Thu, 28 May 2026 19:57:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BB51633CE8A;
+	Thu, 28 May 2026 19:57:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="r9MO6NM8"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KhFQ97hX"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BD4093290B0;
-	Thu, 28 May 2026 19:57:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8AD5D340409;
+	Thu, 28 May 2026 19:57:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779998256; cv=none; b=P4aPMDK8nEhG/OYjsg8JaNT04QuukNZOY+9QbyI6DYptRH5io4iCMl+Z+6tQd6KE1xO2tkPWLEjNFSJBrXtYuHnl+kSOP2jBPHLHQIpZxwWdSjM5fJ8OpbbU5Sntwbq/4R5rcvnSX3fuewByF+25m6QkDC+dgOssK83uF6Q9JSY=
+	t=1779998259; cv=none; b=BfcsfXtOzxbrmfdjDL+zMNDYid0NKLQP0cA8JTL372LtGozC/BUehggu8Yv6d+dTIC4jtg6rneWamfKVd4QtbwB2XnfqpGn8fzS3aNMTfn5L50uMVVkNH7FizWE4YPCdJ2GW5F9f46lyw2AqZMzAu46zCK6jrI4TRM7prXdCptc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779998256; c=relaxed/simple;
-	bh=+/4B4RhKb/8+BliyzQsjM44OJnYaSH+HsoLV0/ZfLd8=;
+	s=arc-20240116; t=1779998259; c=relaxed/simple;
+	bh=cNdVXuxfp9nRl6VfJbQrm0/moudx9EwHvQ/4VGbFIvc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=LIUbvFgc8SvHEf6Uz7gRZq8C7myfwYO8DfNmgW90e/Hf3xsNhIVEg6C+iSNupGLI+iI6WQxb8XLjol+c+IGTVJX4byCNYC+N0uOQBbuFIVqI76NiMOE+rRVPYGD3pXMYJaCNTQBkl/ifb+2Nv3L4z5TlQvASZw+PGiSd1pM3wsg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=r9MO6NM8; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2801E1F000E9;
-	Thu, 28 May 2026 19:57:34 +0000 (UTC)
+	 MIME-Version:Content-Type; b=QkvO5YA4I3F6CtmvDtaCFhIWsS9zNBFjFgVI94TUYvIxlVnOQXY+wSdEiNVWAAQlJHX/wp+jpXc8eFO7w4EScL5m8eEZwYfXcEI2JjUdox12OK4mTzRBf8QUz3HVmT7m/KrK9ECSfZDmgIA/t2qvrgPLj4b48yj82c9LrwmjEtQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KhFQ97hX; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E99031F000E9;
+	Thu, 28 May 2026 19:57:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779998255;
-	bh=UkXIt+vAKrrjkcEHq8M6ztz0AzHQxAPyVxKg+lzzLic=;
+	s=korg; t=1779998258;
+	bh=x9ASMevNcKdiggUBGS0e7lIBqu8pQ+aQB3Ae/CztQP0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=r9MO6NM8e9zGKTeRpHe5XpnSVmdmPNNygOA+jmnTPhoAM32wI/MhgaADTJam1Rqqh
-	 m0EdLfxHwhV2SPMRzF8d3LlJ2MmypShtxTYUl/91uPs7+u5k3AQeTOF+8PTcjLDgmc
-	 IhAQzRNS5U6c5WzXys6XlQ/Pwo0e5axy+lPax/fw=
+	b=KhFQ97hXdE42jBSo6hICCwziTxg1uiQKPTWkzJ1Hqcjv5m2ALlerwCp0bSKbyCCnm
+	 fYEuAyyeklZjnw9A7UoqC2xUIagz+kkhOT/AMPYmpADYwVa/hOzvTOZBQiH4t2dgC7
+	 0pwOMIu4yAoyys/Ty1NYFvcnSBV9eO1cntX0y9Jk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Johan Hovold <johan@kernel.org>,
-	Mark Brown <broonie@kernel.org>
-Subject: [PATCH 7.0 108/461] spi: qup: fix error pointer deref after DMA setup failure
-Date: Thu, 28 May 2026 21:43:57 +0200
-Message-ID: <20260528194650.092418605@linuxfoundation.org>
+	Kaustabh Chakraborty <kauschluss@disroot.org>,
+	Krzysztof Kozlowski <krzysztof.kozlowski@oss.qualcomm.com>,
+	=?UTF-8?q?=C5=81ukasz=20Lebiedzi=C5=84ski?= <kernel@lvkasz.us>,
+	Vinod Koul <vkoul@kernel.org>
+Subject: [PATCH 7.0 109/461] phy: exynos5-usbdrd: fix USB 2.0 HS PHY tuning values for Exynos7870
+Date: Thu, 28 May 2026 21:43:58 +0200
+Message-ID: <20260528194650.124492377@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
 In-Reply-To: <20260528194646.819809818@linuxfoundation.org>
 References: <20260528194646.819809818@linuxfoundation.org>
@@ -62,35 +64,35 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
+	TAGGED_FROM(0.00)[bounces-255206-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-255205-lists,stable=lfdr.de];
-	TO_DN_SOME(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	TO_DN_SOME(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[5];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,sashiko.dev:url,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo]
-X-Rspamd-Queue-Id: D16E15F7858
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,qualcomm.com:email,msgid.link:url,disroot.org:email]
+X-Rspamd-Queue-Id: 8A7FF5F7B29
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
@@ -98,44 +100,57 @@ X-Rspamd-Server: lfdr
 
 ------------------
 
-From: Johan Hovold <johan@kernel.org>
+From: Łukasz Lebiedziński <kernel@lvkasz.us>
 
-commit a7e8f3efd50a165ba0189f6dc57f7e51a7d149db upstream.
+commit 5a759b120e31aa3ed914d98b51eb1755235250f2 upstream.
 
-The driver falls back to PIO mode if DMA setup fails during probe.
+The existing PHYPARAM0 tuning values for Exynos7870 are incorrect,
+causing the USB 2.0 PHY to fail high-speed negotiation and fall back
+to full-speed (12Mbps) operation.
 
-Make sure to the clear the DMA channel pointers on setup failure to
-avoid dereferencing an error pointer (or attempting to release a channel
-a second time) on later probe errors or driver unbind.
+Fix TXVREFTUNE (transmitter voltage reference) from 14 to 3,
+TXRESTUNE (transmitter impedance) from 3 to 2, and SQRXTUNE
+(squelch threshold) from 6 to 5. Also explicitly set
+TXPREEMPPULSETUNE to 0, which was previously missing from the
+tuning table despite being included in the register mask.
 
-This issue was flagged by Sashiko when reviewing a devres allocation
-conversion patch.
+All values are derived from the vendor kernel for the Samsung
+Galaxy A6 (SM-A600FN), as no public hardware documentation is
+available for the Exynos7870 USB DRD PHY. With these corrections,
+the PHY successfully negotiates high-speed (480Mbps) operation.
 
-Fixes: 612762e82ae6 ("spi: qup: Add DMA capabilities")
-Link: https://sashiko.dev/#/patchset/20260505072909.618363-1-johan%40kernel.org?part=4
-Cc: stable@vger.kernel.org	# 4.1
-Signed-off-by: Johan Hovold <johan@kernel.org>
-Link: https://patch.msgid.link/20260512074334.914735-1-johan@kernel.org
-Signed-off-by: Mark Brown <broonie@kernel.org>
+Fixes: 588d5d20ca8d ("phy: exynos5-usbdrd: add exynos7870 USBDRD support")
+Cc: stable@vger.kernel.org
+Tested-by: Kaustabh Chakraborty <kauschluss@disroot.org>
+Reviewed-by: Krzysztof Kozlowski <krzysztof.kozlowski@oss.qualcomm.com>
+Signed-off-by: Łukasz Lebiedziński <kernel@lvkasz.us>
+Link: https://patch.msgid.link/20260406135627.234835-1-kernel@lvkasz.us
+Signed-off-by: Vinod Koul <vkoul@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/spi/spi-qup.c |    3 +++
- 1 file changed, 3 insertions(+)
+ drivers/phy/samsung/phy-exynos5-usbdrd.c |    7 ++++---
+ 1 file changed, 4 insertions(+), 3 deletions(-)
 
---- a/drivers/spi/spi-qup.c
-+++ b/drivers/spi/spi-qup.c
-@@ -996,8 +996,11 @@ static int spi_qup_init_dma(struct spi_c
- 
- err:
- 	dma_release_channel(host->dma_tx);
-+	host->dma_tx = NULL;
- err_tx:
- 	dma_release_channel(host->dma_rx);
-+	host->dma_rx = NULL;
-+
- 	return ret;
- }
- 
+--- a/drivers/phy/samsung/phy-exynos5-usbdrd.c
++++ b/drivers/phy/samsung/phy-exynos5-usbdrd.c
+@@ -1958,13 +1958,14 @@ const struct exynos5_usbdrd_phy_tuning e
+ 			      PHYPARAM0_TXPREEMPAMPTUNE | PHYPARAM0_TXHSXVTUNE |
+ 			      PHYPARAM0_TXFSLSTUNE | PHYPARAM0_SQRXTUNE |
+ 			      PHYPARAM0_OTGTUNE | PHYPARAM0_COMPDISTUNE),
+-			     (FIELD_PREP_CONST(PHYPARAM0_TXVREFTUNE, 14) |
++			     (FIELD_PREP_CONST(PHYPARAM0_TXVREFTUNE, 3) |
+ 			      FIELD_PREP_CONST(PHYPARAM0_TXRISETUNE, 1) |
+-			      FIELD_PREP_CONST(PHYPARAM0_TXRESTUNE, 3) |
++			      FIELD_PREP_CONST(PHYPARAM0_TXRESTUNE, 2) |
++			      FIELD_PREP_CONST(PHYPARAM0_TXPREEMPPULSETUNE, 0) |
+ 			      FIELD_PREP_CONST(PHYPARAM0_TXPREEMPAMPTUNE, 0) |
+ 			      FIELD_PREP_CONST(PHYPARAM0_TXHSXVTUNE, 0) |
+ 			      FIELD_PREP_CONST(PHYPARAM0_TXFSLSTUNE, 3) |
+-			      FIELD_PREP_CONST(PHYPARAM0_SQRXTUNE, 6) |
++			      FIELD_PREP_CONST(PHYPARAM0_SQRXTUNE, 5) |
+ 			      FIELD_PREP_CONST(PHYPARAM0_OTGTUNE, 2) |
+ 			      FIELD_PREP_CONST(PHYPARAM0_COMPDISTUNE, 3))),
+ 	PHY_TUNING_ENTRY_LAST
 
 
 
