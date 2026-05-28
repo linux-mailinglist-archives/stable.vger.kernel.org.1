@@ -1,60 +1,64 @@
-Return-Path: <stable+bounces-255417-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-255775-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id mDaNNdSiGGrKlggAu9opvQ
-	(envelope-from <stable+bounces-255417-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:17:24 +0200
+	id 6O/7HJmlGGoQlwgAu9opvQ
+	(envelope-from <stable+bounces-255775-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:29:13 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 806DC5F8464
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:17:24 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id EA0E75F8CB7
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:29:12 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id ADEA43294446
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 20:07:33 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id C7E22300F561
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 20:24:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CC36B344DAC;
-	Thu, 28 May 2026 20:07:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D62F535E1AC;
+	Thu, 28 May 2026 20:24:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Gut+cRoq"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1pad1rmO"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8B5832F691F;
-	Thu, 28 May 2026 20:07:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 941C435DA67;
+	Thu, 28 May 2026 20:24:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779998851; cv=none; b=BzJ7vHVCA7UI8iED2JQsbH3KCKCnXGbPe7nFOTC0y8bP20ujPwsi06Bk976HllNh3kdDTDQ2nfcuANWgCY7BXI/TBE7ct9DoBjs7hk7T3m0ucTw7Rn6moMhH5T/iirPPmZ5iG4Wex4NtuL/n4wVEka7uMZeXTBgXu6cwM4adR1A=
+	t=1779999848; cv=none; b=flb3WpfIJf8vdCn97bakAjluzAE4+ZltvPyHR3Mzf8I2PzMe1vuFXXiaZKysPZhH412S72az8NgSLkgTqT1IVnZKqY/EFtJVaJn/BqA/DR8FsXT9PZ9FsFKQ7l+hag6GVVI6nkQ8AKNWP5XKRnirJGNXaYnkVKniBM0qLkjl+zY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779998851; c=relaxed/simple;
-	bh=+hXViPB1ExhMbgcYoQ09sUZmMadu2XiVbEQbfbF/GPU=;
+	s=arc-20240116; t=1779999848; c=relaxed/simple;
+	bh=QnNRnCMCz3PI0t5rqe5x3R/kMwZb22oQpPMPH4uV8Cs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=jkjdV3rP8l1EHmOiczdPvPL7OpZjxVid9fM7xHFnqkFzGU1XGLBAF96Ubpfc3Kxp/iG240YsCaqhzG5jb08caDYLeD0S4rYfyZhRmrvPhwubr85NmBZvZGQdtNIDjBlwEEcNwOUwj9zyNDWkhbWRajQbRDoQSXy7+TKV9tH5TzE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Gut+cRoq; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E979A1F000E9;
-	Thu, 28 May 2026 20:07:29 +0000 (UTC)
+	 MIME-Version; b=QJ7mmcwe1105bdHQtDCnSnccnshDwdMaqLweFnHV1TWL6aaB2Cg8rP9Bh4mQSF9WAIsgE5ws5E0qgyGO3htcdMbmicCh3vN5WTSC1zYkhIFjfaCIkxSSbhELgOo1lZr7YtVQKKATea1uoJ6uaMie7fEAktTNmDnpH2FeHS8PoP0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1pad1rmO; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C025C1F00A3D;
+	Thu, 28 May 2026 20:24:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779998850;
-	bh=nryaaaIxmy5xZWccqneL6+Rqfkanl6K2sjN9hxM6qJk=;
+	s=korg; t=1779999847;
+	bh=f+buzPHP/yFGPxo5y7pttiRm4CAr4PHQWonzd0GLfQU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=Gut+cRoq/g9b3GyJb9K6AKKycR1tk2SbNSqYs9zxxm5tCODp3k/IS5K3jfkk45PGL
-	 KnBj2xXX8xrz8B6CaIBuvUnlVgwKEzBlHi6GkYFftI7uEvxQG449LBC58nQAZKyrz8
-	 KJB4MXxmLeuuibk+qmLTrDephG2QB4UeTnfV4Whk=
+	b=1pad1rmO/t2vM1y6R/tLhp10GORt2E5xCAU7SGfqEbAkzEEHpzXDZBUb3RiVoyyeq
+	 O08X/7d2vdHnUWxoKiGEsX6fKBCQAYZPqzdgOk/McHSRkTuciehm9iv2hqlLMUA4Wn
+	 7rk0CPN9G6276RMJi9SYjnWfZudsO6SVkgIXm5Jc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sabrina Dubroca <sd@queasysnail.net>,
-	David Carlier <devnexen@gmail.com>,
-	Antonio Quartulli <antonio@openvpn.net>,
+	intel-wired-lan@lists.osuosl.org,
+	Bart Van Assche <bvanassche@acm.org>,
+	Aleksandr Loktionov <aleksandr.loktionov@intel.com>,
+	Przemek Kitszel <przemyslaw.kitszel@intel.com>,
+	Arpana Arland <arpanax.arland@intel.com>,
+	Jacob Keller <jacob.e.keller@intel.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 7.0 321/461] ovpn: respect peer refcount in CMD_NEW_PEER error path
+Subject: [PATCH 6.18 212/377] ice: fix locking in ice_dcb_rebuild()
 Date: Thu, 28 May 2026 21:47:30 +0200
-Message-ID: <20260528194656.607506019@linuxfoundation.org>
+Message-ID: <20260528194644.539441066@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260528194646.819809818@linuxfoundation.org>
-References: <20260528194646.819809818@linuxfoundation.org>
+In-Reply-To: <20260528194638.371537336@linuxfoundation.org>
+References: <20260528194638.371537336@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,138 +73,86 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,queasysnail.net,gmail.com,openvpn.net,kernel.org];
-	TAGGED_FROM(0.00)[bounces-255417-lists,stable=lfdr.de];
-	PRECEDENCE_BULK(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-255775-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
 	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[queasysnail.net:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,openvpn.net:email]
-X-Rspamd-Queue-Id: 806DC5F8464
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_SEVEN(0.00)[11];
+	MID_RHS_MATCH_FROM(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,linuxfoundation.org:mid,linuxfoundation.org:dkim,intel.com:email,osuosl.org:email,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,acm.org:email]
+X-Rspamd-Queue-Id: EA0E75F8CB7
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-7.0-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: David Carlier <devnexen@gmail.com>
+From: Bart Van Assche <bvanassche@acm.org>
 
-[ Upstream commit 1fef6614673ff0846d30acdeeaf3cf98bb5f6116 ]
+[ Upstream commit 0ded1f36ba4021cba50513e80be6b6e173710168 ]
 
-ovpn_nl_peer_new_doit()'s error path calls ovpn_peer_release() directly
-rather than ovpn_peer_put(), bypassing the kref. The accompanying
-comment ("peer was not yet hashed, thus it is not used in any context")
-holds for UDP but not for TCP.
+Move the mutex_lock() call up to prevent that DCB settings change after
+the first ice_query_port_ets() call. The second ice_query_port_ets()
+call in ice_dcb_rebuild() is already protected by pf->tc_mutex.
 
-For UDP, the ovpn_socket union uses the .ovpn arm and never points back
-at a peer; UDP encap_recv looks up peers via the not-yet-populated
-hashtables, so the new peer is unreachable until ovpn_peer_add()
-publishes it.
+This also fixes a bug in an error path, as before taking the first
+"goto dcb_error" in the function jumped over mutex_lock() to
+mutex_unlock().
 
-For TCP, ovpn_socket_new() sets ovpn_sock->peer and
-ovpn_tcp_socket_attach() publishes ovpn_sock via rcu_assign_sk_user_data().
->From that moment until ovpn_socket_release() detaches in the error path,
-the TCP fd is fully wired: userspace recvmsg / sendmsg / close / poll
-on the fd, as well as the strparser-driven ovpn_tcp_rcv() path, can
-reach the peer through sk_user_data -> ovpn_sock->peer and bump its
-refcount via ovpn_peer_hold().
+This bug has been detected by the clang thread-safety analyzer.
 
-ovpn_tcp_socket_wait_finish() (called inside ovpn_socket_release())
-drains strparser and the tx work, but does not synchronize with
-userspace syscall callers that already hold a peer reference. If
-ovpn_nl_peer_modify() or ovpn_peer_add() returns an error while such
-a caller is in flight - notably an ovpn_tcp_recvmsg() blocked in
-__skb_recv_datagram() on peer->tcp.user_queue - the direct
-ovpn_peer_release() destroys the peer while the caller still holds
-the reference, and the eventual ovpn_peer_put() from that caller
-operates on freed memory.
-
-Replace the direct destructor call with ovpn_peer_put() so the kref
-correctly defers destruction until the last reference is dropped.
-In the common case where no concurrent user is present, behaviour is
-unchanged: the kref hits zero immediately and ovpn_peer_release_kref()
-runs the same destructor.
-
-With this conversion ovpn_peer_release() has no callers outside peer.c
-- ovpn_peer_release_kref() in the same translation unit is the only
-remaining user - so make it static and drop its declaration from
-peer.h.
-
-Fixes: 11851cbd60ea ("ovpn: implement TCP transport")
-Reviewed-by: Sabrina Dubroca <sd@queasysnail.net>
-Assisted-by: Claude:claude-opus-4-7
-Signed-off-by: David Carlier <devnexen@gmail.com>
-Signed-off-by: Antonio Quartulli <antonio@openvpn.net>
+Cc: intel-wired-lan@lists.osuosl.org
+Fixes: 242b5e068b25 ("ice: Fix DCB rebuild after reset")
+Signed-off-by: Bart Van Assche <bvanassche@acm.org>
+Reviewed-by: Aleksandr Loktionov <aleksandr.loktionov@intel.com>
+Reviewed-by: Przemek Kitszel <przemyslaw.kitszel@intel.com>
+Tested-by: Arpana Arland <arpanax.arland@intel.com>
+Signed-off-by: Jacob Keller <jacob.e.keller@intel.com>
+Link: https://patch.msgid.link/20260506-jk-iwl-net-2026-05-04-v2-6-a5ea4dc837a9@intel.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ovpn/netlink.c | 8 +++++---
- drivers/net/ovpn/peer.c    | 2 +-
- drivers/net/ovpn/peer.h    | 1 -
- 3 files changed, 6 insertions(+), 5 deletions(-)
+ drivers/net/ethernet/intel/ice/ice_dcb_lib.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/net/ovpn/netlink.c b/drivers/net/ovpn/netlink.c
-index c7f3824376302..bdb56ef0c9040 100644
---- a/drivers/net/ovpn/netlink.c
-+++ b/drivers/net/ovpn/netlink.c
-@@ -455,10 +455,12 @@ int ovpn_nl_peer_new_doit(struct sk_buff *skb, struct genl_info *info)
- sock_release:
- 	ovpn_socket_release(peer);
- peer_release:
--	/* release right away because peer was not yet hashed, thus it is not
--	 * used in any context
-+	/* For UDP, the peer is unreachable until added to the hashtables, so
-+	 * dropping the initial reference is enough. For TCP, the peer may be
-+	 * concurrently reachable via sk_user_data->peer until
-+	 * ovpn_socket_release() detaches; rely on the refcount.
- 	 */
--	ovpn_peer_release(peer);
-+	ovpn_peer_put(peer);
+diff --git a/drivers/net/ethernet/intel/ice/ice_dcb_lib.c b/drivers/net/ethernet/intel/ice/ice_dcb_lib.c
+index 9fc8681cc58ea..270f5a00ece3a 100644
+--- a/drivers/net/ethernet/intel/ice/ice_dcb_lib.c
++++ b/drivers/net/ethernet/intel/ice/ice_dcb_lib.c
+@@ -537,14 +537,14 @@ void ice_dcb_rebuild(struct ice_pf *pf)
+ 	struct ice_dcbx_cfg *err_cfg;
+ 	int ret;
  
- 	return ret;
- }
-diff --git a/drivers/net/ovpn/peer.c b/drivers/net/ovpn/peer.c
-index 3716a1d828015..f69694e00dcee 100644
---- a/drivers/net/ovpn/peer.c
-+++ b/drivers/net/ovpn/peer.c
-@@ -348,7 +348,7 @@ static void ovpn_peer_release_rcu(struct rcu_head *head)
-  * ovpn_peer_release - release peer private members
-  * @peer: the peer to release
-  */
--void ovpn_peer_release(struct ovpn_peer *peer)
-+static void ovpn_peer_release(struct ovpn_peer *peer)
- {
- 	ovpn_crypto_state_release(&peer->crypto);
- 	spin_lock_bh(&peer->lock);
-diff --git a/drivers/net/ovpn/peer.h b/drivers/net/ovpn/peer.h
-index a1423f2b09e06..4de5aeae33f7d 100644
---- a/drivers/net/ovpn/peer.h
-+++ b/drivers/net/ovpn/peer.h
-@@ -125,7 +125,6 @@ static inline bool ovpn_peer_hold(struct ovpn_peer *peer)
- 	return kref_get_unless_zero(&peer->refcount);
- }
++	mutex_lock(&pf->tc_mutex);
++
+ 	ret = ice_query_port_ets(pf->hw.port_info, &buf, sizeof(buf), NULL);
+ 	if (ret) {
+ 		dev_err(dev, "Query Port ETS failed\n");
+ 		goto dcb_error;
+ 	}
  
--void ovpn_peer_release(struct ovpn_peer *peer);
- void ovpn_peer_release_kref(struct kref *kref);
+-	mutex_lock(&pf->tc_mutex);
+-
+ 	if (!pf->hw.port_info->qos_cfg.is_sw_lldp)
+ 		ice_cfg_etsrec_defaults(pf->hw.port_info);
  
- /**
 -- 
 2.53.0
 
