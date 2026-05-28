@@ -1,63 +1,58 @@
-Return-Path: <stable+bounces-255477-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-256285-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id uFVuOGShGGqnlggAu9opvQ
-	(envelope-from <stable+bounces-255477-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:11:16 +0200
+	id +AvvG6irGGpolwgAu9opvQ
+	(envelope-from <stable+bounces-256285-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:55:04 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id E9C075F8032
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:11:15 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0224A5F9D8D
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:55:03 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 68537301C6A8
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 20:10:24 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 2CAAB313EC66
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 20:47:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2049933CE8A;
-	Thu, 28 May 2026 20:10:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1ACD2345CAF;
+	Thu, 28 May 2026 20:47:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="o/nXzPVe"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dDdvrf4D"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EBC3A335566;
-	Thu, 28 May 2026 20:10:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D5D95318B96;
+	Thu, 28 May 2026 20:47:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779999021; cv=none; b=uoSL+GGN2pMr20jX83ojvOf8mJAQQdGDwc7vGX7wULzmyApTRh3f5aSm7e+tiO8vpkzr1lQUHr5o4IwQr6Limz8EejQ23L1EijFHnEGO0ufI0/DEUbC2+Qnk1SC1HDPzktv7r/oHo2EAYrwBo7yjqja6d1mmyrEfZM3wUc2vCrs=
+	t=1780001271; cv=none; b=gqP/kZCjeWJFfBD25F44/K+cIDWkTfj8VL+uCOWypzr3KLF6n0cg9f2taFSVMLaGQRX9EgZBc4U1srSEqnoRHextDLhdtRsFZmyCHoXT40N2HNpLvBFh5mjcvskaabfDQshqvUswF+IgeyPUhKDrR7GzIZjBmJj1/lksNagbDA8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779999021; c=relaxed/simple;
-	bh=1iguIVk1R4sH2TCFL4dAx5dc8UGAAU9E0Bk0EjI/vHo=;
+	s=arc-20240116; t=1780001271; c=relaxed/simple;
+	bh=sQ97Ask7iLvWynynd2WttuUQfJpwWCuTMrQ9jY284GI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=fbjvYdmYmb5L+UoWpWh3FCSlfFmM+3c8ey+MWlPPtXYEB54TjwlFYmPLvTtMspT+B8IQQdNRfqVCo6washLti2ZNxLpSAKOG+nAaeCEF+1sdTdccSL2pva5n/+fLXO+IgbTR4IVONrPL2IWrwuJF/nUW4ucxRp7KXIZUWhxCUwg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=o/nXzPVe; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5BCFC1F000E9;
-	Thu, 28 May 2026 20:10:20 +0000 (UTC)
+	 MIME-Version:Content-Type; b=ZGR0QRUTvuYcJfQy5/fJwh3NNf3DjUwD2DmkOp7qCwNQo54CzoTcnhb5QMcH3R14XdBhJNhXIKARIDj2paDu+Ejp0RPeDPfZ+H4xwQlynF77G9DV04LJ2hSpRxGpjrhoidTyHoeLKvcbLvectY/T9pbd/B/Gh1zsPnt90oR5Mp8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dDdvrf4D; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 405AD1F000E9;
+	Thu, 28 May 2026 20:47:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779999020;
-	bh=S08I7WceO1PlrjIk3ObGyQqPs1kRBMWWKPE/U3hJrac=;
+	s=korg; t=1780001270;
+	bh=o+jqwIamDmkluPp2g4ckc+xRMnpd2QFZn3WUn4dvOgs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=o/nXzPVeFDNKTnYb3lVCIHetWLbwrFWyqPEYPGitQihp+F6T/8+LjzmwNh65V5l1L
-	 3f+9tgXOc5C2DIOz37Y0cqTip+UTWokZ9oQl30nuM4C/wONX7YMn7eBlaDa8kKxR54
-	 Edce+HZEytPjWGXZtpgPgEsfie8KYy6k2sUmQQlc=
+	b=dDdvrf4DbW17mRBr6gYWAGJWyGBlYYfQHzjdYocGNeYp4jcBoISvR1GG2DfRrorQl
+	 dxOxZbZel6vNz7WFs5QHBMrK1XQEJqQ35Abnktu4HxSKUHvTsLt6vLzFhAO/qBmVUh
+	 WQ+iaFdyZ5gjNUcjsvVQKSD+MFu8KnzvNNzj8JT8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Kohei Enju <kohei@enjuk.jp>,
-	Aleksandr Loktionov <aleksandr.loktionov@intel.com>,
-	Simon Horman <horms@kernel.org>,
-	Avigail Dahan <avigailx.dahan@intel.com>,
-	Tony Nguyen <anthony.l.nguyen@intel.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 7.0 380/461] igc: set tx buffer type for SMD frames
+	=?UTF-8?q?C=C3=A1ssio=20Gabriel?= <cassiogabrielcontato@gmail.com>,
+	Takashi Iwai <tiwai@suse.de>
+Subject: [PATCH 6.6 029/186] ALSA: ua101: Reject too-short USB descriptors
 Date: Thu, 28 May 2026 21:48:29 +0200
-Message-ID: <20260528194658.454129657@linuxfoundation.org>
+Message-ID: <20260528194929.750125753@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260528194646.819809818@linuxfoundation.org>
-References: <20260528194646.819809818@linuxfoundation.org>
+In-Reply-To: <20260528194928.941004471@linuxfoundation.org>
+References: <20260528194928.941004471@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -67,83 +62,80 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-255477-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TAGGED_FROM(0.00)[bounces-256285-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,suse.de];
 	TO_DN_SOME(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
-	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[10];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	MID_RHS_MATCH_FROM(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,enjuk.jp:email,sashiko.dev:url,msgid.link:url,intel.com:email,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo]
-X-Rspamd-Queue-Id: E9C075F8032
+	RCPT_COUNT_FIVE(0.00)[5];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,suse.de:email,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim]
+X-Rspamd-Queue-Id: 0224A5F9D8D
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-7.0-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kohei Enju <kohei@enjuk.jp>
+From: Cássio Gabriel <cassiogabrielcontato@gmail.com>
 
-[ Upstream commit 5acc641e590e008caaed480ed9ffae47cf7ecbdf ]
+commit b59d5c51bb328a60749b4dd5fe7e649bfb4089b4 upstream.
 
-Sashiko pointed out that igc_fpe_init_smd_frame() initializes
-igc_tx_buffer fields for an SMD skb, but does not set the buffer type:
-https://sashiko.dev/#/patchset/20260415025226.114115-1-kohei%40enjuk.jp
+find_format_descriptor() walks the class-specific interface extras by
+advancing with bLength. It rejects descriptors that extend past the
+remaining buffer, but it does not reject descriptor lengths smaller than
+a USB descriptor header.
 
-Since igc_tx_buffer entries are reused, a stale XDP or XSK type can
-remain and make TX completion use the wrong cleanup path.
+Reject too-short descriptors before using bLength to advance the local
+scan. This keeps the UA-101 parser robust against malformed descriptor
+data and matches the usual USB descriptor walking rules.
 
-Set the buffer type to IGC_TX_BUFFER_TYPE_SKB.
-
-Fixes: 5422570c0010 ("igc: add support for frame preemption verification")
-Signed-off-by: Kohei Enju <kohei@enjuk.jp>
-Reviewed-by: Aleksandr Loktionov <aleksandr.loktionov@intel.com>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Tested-by: Avigail Dahan <avigailx.dahan@intel.com>
-Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
-Link: https://patch.msgid.link/20260515182419.1597859-9-anthony.l.nguyen@intel.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 63978ab3e3e9 ("sound: add Edirol UA-101 support")
+Cc: stable@vger.kernel.org
+Signed-off-by: Cássio Gabriel <cassiogabrielcontato@gmail.com>
+Link: https://patch.msgid.link/20260519-alsa-ua101-desc-len-v1-1-4307d1a5e054@gmail.com
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/intel/igc/igc_tsn.c | 1 +
- 1 file changed, 1 insertion(+)
+ sound/usb/misc/ua101.c |    5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/net/ethernet/intel/igc/igc_tsn.c b/drivers/net/ethernet/intel/igc/igc_tsn.c
-index 02dd9f0290a34..52de2bcbadbec 100644
---- a/drivers/net/ethernet/intel/igc/igc_tsn.c
-+++ b/drivers/net/ethernet/intel/igc/igc_tsn.c
-@@ -34,6 +34,7 @@ static int igc_fpe_init_smd_frame(struct igc_ring *ring,
- 		return -ENOMEM;
- 	}
+--- a/sound/usb/misc/ua101.c
++++ b/sound/usb/misc/ua101.c
+@@ -914,8 +914,9 @@ find_format_descriptor(struct usb_interf
+ 		struct uac_format_type_i_discrete_descriptor *desc;
  
-+	buffer->type = IGC_TX_BUFFER_TYPE_SKB;
- 	buffer->skb = skb;
- 	buffer->protocol = 0;
- 	buffer->bytecount = skb->len;
--- 
-2.53.0
-
+ 		desc = (struct uac_format_type_i_discrete_descriptor *)extra;
+-		if (desc->bLength > extralen) {
+-			dev_err(&interface->dev, "descriptor overflow\n");
++		if (desc->bLength < sizeof(struct usb_descriptor_header) ||
++		    desc->bLength > extralen) {
++			dev_err(&interface->dev, "invalid descriptor length\n");
+ 			return NULL;
+ 		}
+ 		if (desc->bLength == UAC_FORMAT_TYPE_I_DISCRETE_DESC_SIZE(1) &&
 
 
 
