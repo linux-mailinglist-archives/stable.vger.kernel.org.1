@@ -1,69 +1,58 @@
-Return-Path: <stable+bounces-255605-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-255270-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id aEHpMNaiGGrClggAu9opvQ
-	(envelope-from <stable+bounces-255605-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:17:26 +0200
+	id 8AQbHdmfGGpvlggAu9opvQ
+	(envelope-from <stable+bounces-255270-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:04:41 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6666C5F8478
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:17:26 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id EEBC45F7C5E
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:04:40 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 86771300612C
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 20:16:22 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 1B194316E515
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 20:00:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2DF3C2D6E5C;
-	Thu, 28 May 2026 20:16:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 85C97409604;
+	Thu, 28 May 2026 20:00:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="u+ZttZ4F"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RvxLvYUx"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D20562459D1;
-	Thu, 28 May 2026 20:16:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 566031AA1D2;
+	Thu, 28 May 2026 20:00:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779999382; cv=none; b=skKcux98zocStJOuBGBNsjF5gmC2U6Zcp2VfRLsvIx9reYxo3kyW4XJjsWv2OFfN+DjWjEMqeHUXWPMZdDy7479XyU/KiEmkLlVMgyZkBDjQIlCDnm2FbLGr7ylh/qRcJiP8EHdZ/NawHViXXwNQcex6IukSugrdYNqQBElaUto=
+	t=1779998438; cv=none; b=qRgJU1nRbe7/DEiwheVn1ACVXivxAbod15Jcsi5D7WzNj6QU9+2eI8oQ/Vd6dV91DpMG4LYdHQ+hCvuzEtuVzPZcZ8OjaJvgxFoNv8Kj8yP+H3KE8jqKMytZkZkrRuLPTARqZPhm81KGe7FAsX+sq9F6gq7VP6U2SpsUWkcVbnw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779999382; c=relaxed/simple;
-	bh=aEjVv/8YqfOdieemIZLzOZ25hjEiul2TPuz8tqQC5bw=;
+	s=arc-20240116; t=1779998438; c=relaxed/simple;
+	bh=OwKA5iB6VoCHpVK+46zWWT9eqdhyQJY/1UnSJ4BflnM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=SgBbP8QnW083s7/54SaxOFx9Sr2+aZ8reMOQ7nqqjanTKd4KkJpG+nY5cZPpalQALavHvy0ebviYMlgpuTlIPbSbRfaBHJ6hvNagbL+KjSJhvEEe9iJY3YnS5O5RgaIq5DxNZGtaF9Nv1PA9qo9j9k+6ofHaavMuYXXLSRZHDNw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=u+ZttZ4F; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DF6391F000E9;
-	Thu, 28 May 2026 20:16:19 +0000 (UTC)
+	 MIME-Version; b=j51G4KOYRLmaAcVR4UjsoAl8/HaI8eB2vyQktl4r2YGzUKNCMDu4x4aMbKClMlfFIfXcNim1WMa3zteo6VBdDOIAN9dVwDWycnXGNCHTlHJ4kdU1IaOeLwfZfZeJkRkN5ZYdA2nj28Mqh05n8Q+W3rVK3Dkavu8ai03C4rWk+Wk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RvxLvYUx; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B533C1F000E9;
+	Thu, 28 May 2026 20:00:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779999380;
-	bh=1SUVziVjiiDEERWkkWenSVbWcnen8fD1FInbojVVSL0=;
+	s=korg; t=1779998437;
+	bh=nytlFnP19TJ3myw3pmDQDiJjo5xJycbGdbTLAebq2xA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=u+ZttZ4FAijzh+BeIMk/rNgTjZ8ljuYVtVcfBzKGYQXJFNDFzr6rvFZjLMzCd6Fpf
-	 VkUvKQesDZf1mqyuXo2t5nEOiCTHKjpnpkjejKfRQh9YNPgQa4AL11zTbivZFFaAX8
-	 1ggHc65bpA8kZMKUueTjA5xu5i21ddvIeh5gYveI=
+	b=RvxLvYUx6TAIR4sSlm3vpaDvCxrdP2oEU62RuEW1M72nxhpGRkNks+cAyGH9R+F0+
+	 C+MIA7zgnGchaplX1c5Aq0akGl2034WGYN57KT9Q6jHGmprTyAJrS2TJT7Dh5J2arn
+	 Z4HfAWKia4W+WqJl+wFDGX9B8ux43NsTRAWnA3MU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"David Hildenbrand (Arm)" <david@kernel.org>,
-	Hugh Dickins <hughd@google.com>,
-	Bibo Mao <maobibo@loongson.cn>,
-	Lance Yang <lance.yang@linux.dev>,
-	Baolin Wang <baolin.wang@linux.alibaba.com>,
-	Oscar Salvador <osalvador@suse.de>,
-	Lorenzo Stoakes <ljs@kernel.org>,
-	"Liam R. Howlett" <liam@infradead.org>,
-	Michal Hocko <mhocko@suse.com>,
-	Mike Rapoport <rppt@kernel.org>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Vlastimil Babka <vbabka@kernel.org>,
-	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 6.18 047/377] mm: fix __vm_normal_page() to handle missing support for pmd_special()/pud_special()
+	stable@kernel.org,
+	Sven Eckelmann <sven@narfation.org>
+Subject: [PATCH 7.0 156/461] batman-adv: tp_meter: fix tp_vars reference leak in receiver shutdown
 Date: Thu, 28 May 2026 21:44:45 +0200
-Message-ID: <20260528194639.736152039@linuxfoundation.org>
+Message-ID: <20260528194651.560601649@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260528194638.371537336@linuxfoundation.org>
-References: <20260528194638.371537336@linuxfoundation.org>
+In-Reply-To: <20260528194646.819809818@linuxfoundation.org>
+References: <20260528194646.819809818@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -78,7 +67,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
@@ -88,8 +77,8 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-255605-lists,stable=lfdr.de];
-	RCPT_COUNT_TWELVE(0.00)[16];
+	TAGGED_FROM(0.00)[bounces-255270-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
@@ -97,118 +86,104 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	NEURAL_HAM(-0.00)[-1.000];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	TO_DN_SOME(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[5];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo]
-X-Rspamd-Queue-Id: 6666C5F8478
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,narfation.org:email]
+X-Rspamd-Queue-Id: EEBC45F7C5E
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+7.0-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: David Hildenbrand (Arm) <david@kernel.org>
+From: Sven Eckelmann <sven@narfation.org>
 
-commit c0c6ccd9828c3a1950623b546fa57292a77b5c73 upstream.
+commit 77098e4bea37af51d3962efa88a5af2ea5e1ac57 upstream.
 
-On x86 32-bit with THP enabled, zap_huge_pmd() is seen to generate a
-"WARNING: mm/memory.c:735 at __vm_normal_page+0x6a/0x7d", from the
-VM_WARN_ON_ONCE(is_zero_pfn(pfn) || is_huge_zero_pfn(pfn)); followed by
-"BUG: Bad rss-counter state"s, then later "BUG: Bad page state"s when
-reclaim gets to call shrink_huge_zero_folio_scan().
+The receiver shutdown timer handler, batadv_tp_receiver_shutdown(), is
+responsible for releasing the tp_vars reference it holds. However, the
+existing logic for coordinating this release with batadv_tp_stop_all() was
+flawed.
 
-It's as if the _PAGE_SPECIAL bit never got set in the huge_zero pmd: and
-indeed, whereas pte_special() and pte_mkspecial() are subject to a
-dedicated CONFIG_ARCH_HAS_PTE_SPECIAL, pmd_special() and pmd_mkspecial()
-are subject to CONFIG_ARCH_SUPPORTS_PMD_PFNMAP, which is never enabled on
-any 32-bit architecture.
+timer_shutdown_sync() guarantees the timer will not fire again after it
+returns, but it returns non-zero only when the timer was pending at the
+time of the call. If the timer had already expired (and
+batadv_tp_stop_all() would unsucessfully try to  rearm itself),
+batadv_tp_stop_all() skips its batadv_tp_vars_put(), and
+batadv_tp_receiver_shutdown() fails to put its own reference as well.
 
-While the problem was exposed through commit d80a9cb1a64a
-("mm/huge_memory: add and use normal_or_softleaf_folio_pmd()"), it was an
-oversight in commit af38538801c6 ("mm/memory: factor out common code from
-vm_normal_page_*()") and would result in other problems:
-* huge zero folio accounted in smaps, pagemap (PAGE_IS_FILE) and
-  numamaps as file-backed THP
-* folio_walk_start() returning the folio even without FW_ZEROPAGE set.
-  Callers seem to tolerate that, though.
+Fix this by introducing a new atomic variable receiving that is set to 1
+when the receiver is initialized and cleared atomically with atomic_xchg()
+by whichever side claims it first. Only the side that observes the
+transition from 1 to 0 is responsible for releasing the tp_vars timer
+reference, eliminating the uncertainty.
 
-... and triggering the VM_WARN_ON_ONE(), although never reported so far.
-
-To fix it, teach vm_normal_page_pmd()/vm_normal_page_pud() to consider
-whether pmd_special/pud_special is actually implemented.
-
-Link: https://lore.kernel.org/20260430-pmd_special-v1-1-dbcbcfd72c20@kernel.org
-Fixes: af38538801c6 ("mm/memory: factor out common code from vm_normal_page_*()")
-Signed-off-by: David Hildenbrand (Arm) <david@kernel.org>
-Reported-by: Hugh Dickins <hughd@google.com>
-Closes: https://lore.kernel.org/r/74a75b59-2e13-3985-ee99-d5521f39df2a@google.com
-Reported-by: Bibo Mao <maobibo@loongson.cn>
-Closes: https://lore.kernel.org/r/20260430041121.2839350-1-maobibo@loongson.cn
-Debugged-by: Hugh Dickins <hughd@google.com>
-Reviewed-by: Lance Yang <lance.yang@linux.dev>
-Tested-by: Bibo Mao <maobibo@loongson.cn>
-Reviewed-by: Baolin Wang <baolin.wang@linux.alibaba.com>
-Reviewed-by: Oscar Salvador <osalvador@suse.de>
-Reviewed-by: Lorenzo Stoakes <ljs@kernel.org>
-Cc: Liam R. Howlett <liam@infradead.org>
-Cc: Michal Hocko <mhocko@suse.com>
-Cc: Mike Rapoport <rppt@kernel.org>
-Cc: Suren Baghdasaryan <surenb@google.com>
-Cc: Vlastimil Babka <vbabka@kernel.org>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Cc: stable@kernel.org
+Fixes: 3d3cf6a7314a ("batman-adv: stop tp_meter sessions during mesh teardown")
+Signed-off-by: Sven Eckelmann <sven@narfation.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- mm/memory.c |   22 +++++++++++++++++++---
- 1 file changed, 19 insertions(+), 3 deletions(-)
+ net/batman-adv/tp_meter.c |   13 +++++++++++--
+ net/batman-adv/types.h    |    3 +++
+ 2 files changed, 14 insertions(+), 2 deletions(-)
 
---- a/mm/memory.c
-+++ b/mm/memory.c
-@@ -612,6 +612,21 @@ static void print_bad_page_map(struct vm
- 	dump_stack();
- 	add_taint(TAINT_BAD_PAGE, LOCKDEP_NOW_UNRELIABLE);
- }
-+
-+static inline bool pgtable_level_has_pxx_special(enum pgtable_level level)
-+{
-+	switch (level) {
-+	case PGTABLE_LEVEL_PTE:
-+		return IS_ENABLED(CONFIG_ARCH_HAS_PTE_SPECIAL);
-+	case PGTABLE_LEVEL_PMD:
-+		return IS_ENABLED(CONFIG_ARCH_SUPPORTS_PMD_PFNMAP);
-+	case PGTABLE_LEVEL_PUD:
-+		return IS_ENABLED(CONFIG_ARCH_SUPPORTS_PUD_PFNMAP);
-+	default:
-+		return false;
-+	}
-+}
-+
- #define print_bad_pte(vma, addr, pte, page) \
- 	print_bad_page_map(vma, addr, pte_val(pte), page, PGTABLE_LEVEL_PTE)
+--- a/net/batman-adv/tp_meter.c
++++ b/net/batman-adv/tp_meter.c
+@@ -8,6 +8,7 @@
+ #include "main.h"
  
-@@ -684,7 +699,7 @@ static inline struct page *__vm_normal_p
- 		unsigned long addr, unsigned long pfn, bool special,
- 		unsigned long long entry, enum pgtable_level level)
- {
--	if (IS_ENABLED(CONFIG_ARCH_HAS_PTE_SPECIAL)) {
-+	if (pgtable_level_has_pxx_special(level)) {
- 		if (unlikely(special)) {
- #ifdef CONFIG_FIND_NORMAL_PAGE
- 			if (vma->vm_ops && vma->vm_ops->find_normal_page)
-@@ -699,8 +714,9 @@ static inline struct page *__vm_normal_p
- 			return NULL;
+ #include <linux/atomic.h>
++#include <linux/bug.h>
+ #include <linux/build_bug.h>
+ #include <linux/byteorder/generic.h>
+ #include <linux/cache.h>
+@@ -1157,6 +1158,9 @@ static void batadv_tp_receiver_shutdown(
+ 	spin_unlock_bh(&tp_vars->unacked_lock);
+ 
+ 	/* drop reference of timer */
++	if (WARN_ON(atomic_xchg(&tp_vars->receiving, 0) != 1))
++		return;
++
+ 	batadv_tp_vars_put(tp_vars);
+ }
+ 
+@@ -1375,6 +1379,7 @@ batadv_tp_init_recv(struct batadv_priv *
+ 
+ 	ether_addr_copy(tp_vars->other_end, icmp->orig);
+ 	tp_vars->role = BATADV_TP_RECEIVER;
++	atomic_set(&tp_vars->receiving, 1);
+ 	memcpy(tp_vars->session, icmp->session, sizeof(tp_vars->session));
+ 	tp_vars->last_recv = BATADV_TP_FIRST_SEQ;
+ 	tp_vars->bat_priv = bat_priv;
+@@ -1547,8 +1552,12 @@ void batadv_tp_stop_all(struct batadv_pr
+ 			break;
+ 		case BATADV_TP_RECEIVER:
+ 			batadv_tp_list_detach(tp_var);
+-			if (timer_shutdown_sync(&tp_var->timer))
+-				batadv_tp_vars_put(tp_var);
++			timer_shutdown_sync(&tp_var->timer);
++
++			if (atomic_xchg(&tp_var->receiving, 0) != 1)
++				break;
++
++			batadv_tp_vars_put(tp_var);
+ 			break;
  		}
- 		/*
--		 * With CONFIG_ARCH_HAS_PTE_SPECIAL, any special page table
--		 * mappings (incl. shared zero folios) are marked accordingly.
-+		 * With working pte_special()/pmd_special()..., any special page
-+		 * table mappings (incl. shared zero folios) are marked
-+		 * accordingly.
- 		 */
- 	} else {
- 		if (unlikely(vma->vm_flags & (VM_PFNMAP | VM_MIXEDMAP))) {
+ 
+--- a/net/batman-adv/types.h
++++ b/net/batman-adv/types.h
+@@ -1332,6 +1332,9 @@ struct batadv_tp_vars {
+ 	/** @sending: sending binary semaphore: 1 if sending, 0 is not */
+ 	atomic_t sending;
+ 
++	/** @receiving: receiving binary semaphore: 1 if receiving, 0 is not */
++	atomic_t receiving;
++
+ 	/** @reason: reason for a stopped session */
+ 	enum batadv_tp_meter_reason reason;
+ 
 
 
 
