@@ -1,51 +1,51 @@
-Return-Path: <stable+bounces-255095-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-255096-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id eDrPBZyYGGqklQgAu9opvQ
-	(envelope-from <stable+bounces-255095-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 21:33:48 +0200
+	id 4GeaBO2YGGqklQgAu9opvQ
+	(envelope-from <stable+bounces-255096-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 21:35:09 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9E9485F72B0
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 21:33:47 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6E1FD5F7330
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 21:35:07 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id AB8703052943
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 19:33:02 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id B2BBE3018406
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 19:35:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8614D26A08F;
-	Thu, 28 May 2026 19:32:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A339B30E851;
+	Thu, 28 May 2026 19:35:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=narfation.org header.i=@narfation.org header.b="LV2qcUAP"
+	dkim=pass (1024-bit key) header.d=narfation.org header.i=@narfation.org header.b="tuzFKhlJ"
 X-Original-To: stable@vger.kernel.org
 Received: from dvalin.narfation.org (dvalin.narfation.org [213.160.73.56])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ECCE41A3157
-	for <stable@vger.kernel.org>; Thu, 28 May 2026 19:32:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2F2AF1946DA
+	for <stable@vger.kernel.org>; Thu, 28 May 2026 19:35:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=213.160.73.56
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779996773; cv=none; b=r+Xeinq7LwLFiHimJwtbzFhSLmu63osEHxg5k/MtRPxmGY45ovg/fkuwJlP97WdqJFmLgCt7UMjHl9Ica9mhbncWapjTB9VMqIYXpVCwJqe5BTaskF3W7sOKVY9TM4j/iEbrUDcVw0ZuartclVjH48OeX5aCGAjQlFu9SabQ134=
+	t=1779996905; cv=none; b=Ii6ta76UI+4Tu7v7awnEw1tavgL/DeCrW+eP25FKtWPGeIDGpwy/z1tpTvGOHzyJ5lLNO6+DcvDAF8lGAhYLlAz5lFWmIiBXklYjOzBASMcoiXOTv/01LhR6O9Qi+6LlQ7oAL6JXlJJ0c/Iw4RDYDbXsGBY5Se+RilRLi+ewbqc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779996773; c=relaxed/simple;
-	bh=xsomYHbzHe25MhaOUQ+afK1ndiw8II2GsJfhjlN0Quo=;
+	s=arc-20240116; t=1779996905; c=relaxed/simple;
+	bh=6AOkpGftGMG0nKtksHO5YJz9MLtobfF6Pz7QJ8ltGWQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=lkOr7Yei+KhfzCAwNGup7mJfnARWQs4c0qGLGEt9QOyCs87CmUqXzCsA7mVZWb+RUSVnlaQ5UsA6teTUtpbseIJa0h9lfUPMqfhRqpsR4H4zA0Av98u6pOqAfZWi8fAwvg5X1lgLslCe522aQFmQzitQQmrzS8VbnHCy0emRGBU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=narfation.org; spf=pass smtp.mailfrom=narfation.org; dkim=pass (1024-bit key) header.d=narfation.org header.i=@narfation.org header.b=LV2qcUAP; arc=none smtp.client-ip=213.160.73.56
+	 MIME-Version; b=rBBozVoIJ3PZdBJZ6WY/OR4Z8qG7VtNqk467gTZ2W1yZsnvWzoVsrKksaWBSWHSuDKabA3e5R5wj2VJatjWrwxUl8f+i0GGEyJar70CGxQhHRgd6X1+sEt5Be+a1a2bkmdXyv7dv658ZbNXUXd3y3d399+Ii2kTjL7E6H4ssVxA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=narfation.org; spf=pass smtp.mailfrom=narfation.org; dkim=pass (1024-bit key) header.d=narfation.org header.i=@narfation.org header.b=tuzFKhlJ; arc=none smtp.client-ip=213.160.73.56
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=narfation.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=narfation.org
-Received: by dvalin.narfation.org (Postfix) id D386420012;
-	Thu, 28 May 2026 19:32:49 +0000 (UTC)
+Received: by dvalin.narfation.org (Postfix) id A829420044;
+	Thu, 28 May 2026 19:35:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=narfation.org;
-	s=20121; t=1779996769;
+	s=20121; t=1779996901;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=QHHBPKO2DZqnnf5CTvgr20gCXQJpEVM7hjZgspQDYY8=;
-	b=LV2qcUAP9xhl2joIeY5s7Pq6yewkE38CykyIY8hpfwmCLeDwI8B/2EraXgr8pFCn4qEU/h
-	QNuq3pYm151FMugjL+A3v/WKG6j3R+Pq8rHfojxdu+lQ3huu5s7kuXkLkVIpds+t3yqA4L
-	sfOy/gHB4vmp3KYC4Fsm8ypSj40FByw=
+	bh=U1qZvmgBm/VuzSx71cLvx5XdiiqzR/we8sX7TdavOkQ=;
+	b=tuzFKhlJkX2KiApgio/UhUtTkkHiPfgOzUlpxG3ayYqUvTDEG/wjha/plAFC0J0dyOtOrm
+	hxi75CzZxdJ2MSHhnlSS4pBmbfOWPwj8ge6RWHD6qa/LgwjEj3IB4syfF7n9Zh73EslfLE
+	Gq0KcviOb/1nn/EKvRr4G6q3XEdeQkA=
 From: Sven Eckelmann <sven@narfation.org>
 To: stable@vger.kernel.org
 Cc: Sven Eckelmann <sven@narfation.org>,
@@ -54,12 +54,12 @@ Cc: Sven Eckelmann <sven@narfation.org>,
 	Yifan Wu <yifanwucs@gmail.com>,
 	Juefei Pu <tomapufckgml@gmail.com>,
 	Xin Liu <bird@lzu.edu.cn>
-Subject: [PATCH 6.1.y] batman-adv: v: stop OGMv2 on disabled interface
-Date: Thu, 28 May 2026 21:32:39 +0200
-Message-ID: <20260528193239.154294-1-sven@narfation.org>
+Subject: [PATCH 5.15.y] batman-adv: v: stop OGMv2 on disabled interface
+Date: Thu, 28 May 2026 21:34:43 +0200
+Message-ID: <20260528193443.195417-1-sven@narfation.org>
 X-Mailer: git-send-email 2.47.3
-In-Reply-To: <2026052858-slingshot-phosphate-6401@gregkh>
-References: <2026052858-slingshot-phosphate-6401@gregkh>
+In-Reply-To: <2026052859-hardy-exemplify-13bc@gregkh>
+References: <2026052859-hardy-exemplify-13bc@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -73,12 +73,12 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[narfation.org,none];
 	R_DKIM_ALLOW(-0.20)[narfation.org:s=20121];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	FREEMAIL_CC(0.00)[narfation.org,kernel.org,gmail.com,lzu.edu.cn];
-	TAGGED_FROM(0.00)[bounces-255095-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-255096-lists,stable=lfdr.de];
 	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
@@ -91,9 +91,9 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	NEURAL_HAM(-0.00)[-0.999];
 	TAGGED_RCPT(0.00)[stable];
 	RCPT_COUNT_SEVEN(0.00)[7];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
 	FROM_HAS_DN(0.00)[]
-X-Rspamd-Queue-Id: 9E9485F72B0
+X-Rspamd-Queue-Id: 6E1FD5F7330
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
@@ -124,7 +124,7 @@ Signed-off-by: Sven Eckelmann <sven@narfation.org>
  1 file changed, 21 insertions(+), 12 deletions(-)
 
 diff --git a/net/batman-adv/bat_v_ogm.c b/net/batman-adv/bat_v_ogm.c
-index deef817b28f0..24beb06f7c33 100644
+index c357cf72396e..742959156533 100644
 --- a/net/batman-adv/bat_v_ogm.c
 +++ b/net/batman-adv/bat_v_ogm.c
 @@ -116,14 +116,14 @@ static void batadv_v_ogm_start_timer(struct batadv_priv *bat_priv)
