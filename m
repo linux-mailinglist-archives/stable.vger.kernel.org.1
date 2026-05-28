@@ -1,61 +1,59 @@
-Return-Path: <stable+bounces-255541-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-256144-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 4CWwF4miGGrClggAu9opvQ
-	(envelope-from <stable+bounces-255541-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:16:09 +0200
+	id QK73AK2rGGpolwgAu9opvQ
+	(envelope-from <stable+bounces-256144-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:55:09 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5DFC45F8368
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:16:08 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id 386125F9DA2
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:55:08 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 1225E305F923
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 20:13:25 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 37BE130771DF
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 20:41:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4C9A4405C4B;
-	Thu, 28 May 2026 20:13:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AC70E3446C5;
+	Thu, 28 May 2026 20:41:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xPKOoaN/"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xXV8Br3e"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F0232335566;
-	Thu, 28 May 2026 20:13:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 674512139C9;
+	Thu, 28 May 2026 20:41:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779999201; cv=none; b=RBGYA71yQTV/BrSA+YE0Aehqp/YUcN3Mg4Zi7RdrUrECComYJ70Apb7zrRNadDq5e0VX0lFfjvGJFeqfU/f6di27A+ZiicMOTzoVSsIUZC1dZUgq8mz0a9UULAzlqKePLplIgAnIKK99UtgpZcpQxcP9EfcjrtHBZHh18soWPY8=
+	t=1780000879; cv=none; b=DmQs0v9FcxOXmnlUBZ7o7n5OQ1u+GD4oWxwYAura9b1bglifqDvugU3ANtX5RiOLybWk8XsewsubFmzH+7poD+cWAdmkR/ERleO5AxQ1uhsQUqUgxlWayG0CxwGXUHEDcVmrRlqAxFuKsiCX2rky+d52v7GrebdPvLUL+eWoVlw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779999201; c=relaxed/simple;
-	bh=aNnUrolHxSVt+6TgcASWWPtC5pdcZFY/t3sWwj6ptDk=;
+	s=arc-20240116; t=1780000879; c=relaxed/simple;
+	bh=uZ5idMXu3FALdJww1/xkNBwMbNT0UYGpACzsZ1+3NbY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=RgXPyI4N5vl+5KI2owHGxzbzgoE3h4twGzt84AlKM+IpOp9lvaWOaaoFTTTD0jEm6EEXgoJV/yoUVEnMB6hEWO7xgFwj1UYNZqaAaN1WmNS0YhYWRe8pv2rRjvvTwCo3ELvS86EjzxY5Elu30E9sKMj8+GHJ9nc6bop1b5Hhu7o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xPKOoaN/; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 59F911F000E9;
-	Thu, 28 May 2026 20:13:19 +0000 (UTC)
+	 MIME-Version; b=mQ/J5yK7yCFi6DT4JuAsayEjsaAy48CXUAMstSz7rB28UJZq4GlobpfgZAgaC4tP4MUxjw3IxGKBwrfablxJ45HS/Ov4ASjww3KSJIHeMyrPHy7twI+xz2v8g+AlzKcRBcwwsLMdUyZIOHGCQeq8hcVj9BmMBWZKOgxb6UpJugQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xXV8Br3e; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C55AE1F000E9;
+	Thu, 28 May 2026 20:41:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779999199;
-	bh=vhqAHJS4kU6Wr+tZzddLNPpKSx3Kgsor/iljDAqcAn0=;
+	s=korg; t=1780000878;
+	bh=fJRsYEGujtCIYvI6Q32COFbiGIPouPbTNYtq8biKV3M=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=xPKOoaN/KQU0f9x5b9oTG074QWdroby669pN7PahBdQ1JSirzsutWcnBifCnjcpN4
-	 o1nKMLMKKgjTjGEdPddcMtkpUeosFt29q2X79l2wx8PQ9tZnz/SRMLMtNYpyb4/fV8
-	 FovrGh0ZyyZE+4IAaYe0vKcsLOU0U8MYxfhNEH+U=
+	b=xXV8Br3e0FHoFHx4NqpDft3iCErSTqy6Bi2xruUkPySToZoIXWiGYIe9IPhHOrOUX
+	 iTnBLnOuLTEV+er9kOoqqP5f2KPz7tEJIUcZavY3hFL6gJ00ImNuCxTRnufe5lTSAF
+	 RI/ApaAM0E/kzILyrb+00wOR4rK8sSL04IUdEhpw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Carolina Jubran <cjubran@nvidia.com>,
-	Dragos Tatulea <dtatulea@nvidia.com>,
-	Nimrod Oren <noren@nvidia.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	"Matthew Wilcox (Oracle)" <willy@infradead.org>,
+	Christian Brauner <brauner@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 7.0 445/461] selftests: net: Fix checksums in xdp_native
+Subject: [PATCH 6.12 200/272] netfs: Remove unnecessary references to pages
 Date: Thu, 28 May 2026 21:49:34 +0200
-Message-ID: <20260528194700.415235315@linuxfoundation.org>
+Message-ID: <20260528194634.852486239@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260528194646.819809818@linuxfoundation.org>
-References: <20260528194646.819809818@linuxfoundation.org>
+In-Reply-To: <20260528194629.379955525@linuxfoundation.org>
+References: <20260528194629.379955525@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -70,190 +68,138 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-255541-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-256144-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
-	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[8];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim,nvidia.com:email,msgid.link:url]
-X-Rspamd-Queue-Id: 5DFC45F8368
+	RCPT_COUNT_FIVE(0.00)[6];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,infradead.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim]
+X-Rspamd-Queue-Id: 386125F9DA2
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-7.0-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Nimrod Oren <noren@nvidia.com>
+From: Matthew Wilcox (Oracle) <willy@infradead.org>
 
-[ Upstream commit dfc077043351a81887d1e4c9ac244e9243f3cbf2 ]
+[ Upstream commit e995e8b600260cff3cfaf2607a62be8bdc4aa9c7 ]
 
-Data adjustment cases failed with "Data exchange failed" when using IPv4
-because the program did not update the IP and UDP checksums in the IPv4
-branch. The issue was masked when both IPv4 and IPv6 were configured,
-since the test harness prefers IPv6.
+These places should all use folios instead of pages.
 
-While here, generalize csum_fold_helper() to fold twice so it works for
-any 32-bit input.
-
-Fixes: 0b65cfcef9c5 ("selftests: drv-net: Test tail-adjustment support")
-Reviewed-by: Carolina Jubran <cjubran@nvidia.com>
-Reviewed-by: Dragos Tatulea <dtatulea@nvidia.com>
-Signed-off-by: Nimrod Oren <noren@nvidia.com>
-Link: https://patch.msgid.link/20260520153928.3371765-1-noren@nvidia.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Matthew Wilcox (Oracle) <willy@infradead.org>
+Link: https://lore.kernel.org/r/20241005182307.3190401-4-willy@infradead.org
+Signed-off-by: Christian Brauner <brauner@kernel.org>
+Stable-dep-of: ccde2ac757c7 ("netfs: Fix folio->private handling in netfs_perform_write()")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- .../selftests/net/lib/xdp_native.bpf.c        | 55 ++++++++++---------
- 1 file changed, 30 insertions(+), 25 deletions(-)
+ fs/netfs/buffered_read.c  |  8 ++++----
+ fs/netfs/buffered_write.c | 14 +++++++-------
+ 2 files changed, 11 insertions(+), 11 deletions(-)
 
-diff --git a/tools/testing/selftests/net/lib/xdp_native.bpf.c b/tools/testing/selftests/net/lib/xdp_native.bpf.c
-index 64f05229ab243..ded3f896e6224 100644
---- a/tools/testing/selftests/net/lib/xdp_native.bpf.c
-+++ b/tools/testing/selftests/net/lib/xdp_native.bpf.c
-@@ -268,6 +268,17 @@ static int xdp_mode_tx_handler(struct xdp_md *ctx, __u16 port)
- 	return XDP_PASS;
- }
- 
-+static __always_inline __u16 csum_fold_helper(__u32 csum)
-+{
-+	csum = (csum & 0xffff) + (csum >> 16);
-+	return ~((csum & 0xffff) + (csum >> 16));
-+}
-+
-+static __always_inline __u16 csum_fold_udp_helper(__u32 csum)
-+{
-+	return csum_fold_helper(csum) ? : 0xffff;
-+}
-+
- static void *update_pkt(struct xdp_md *ctx, __s16 offset, __u32 *udp_csum)
- {
- 	void *data_end = (void *)(long)ctx->data_end;
-@@ -281,21 +292,22 @@ static void *update_pkt(struct xdp_md *ctx, __s16 offset, __u32 *udp_csum)
- 
- 	if (eth->h_proto == bpf_htons(ETH_P_IP)) {
- 		struct iphdr *iph = data + sizeof(*eth);
--		__u16 total_len;
- 
- 		if (iph + 1 > (struct iphdr *)data_end)
- 			return NULL;
- 
--		iph->tot_len = bpf_htons(bpf_ntohs(iph->tot_len) + offset);
--
- 		udph = (void *)eth + sizeof(*iph) + sizeof(*eth);
- 		if (!udph || udph + 1 > (struct udphdr *)data_end)
- 			return NULL;
- 
--		len_new = bpf_htons(bpf_ntohs(udph->len) + offset);
-+		len = iph->tot_len;
-+		len_new = bpf_htons(bpf_ntohs(len) + offset);
-+		iph->tot_len = len_new;
-+		iph->check = csum_fold_helper(
-+			bpf_csum_diff(&len, sizeof(len), &len_new,
-+				      sizeof(len_new), ~((__u32)iph->check)));
- 	} else if (eth->h_proto  == bpf_htons(ETH_P_IPV6)) {
- 		struct ipv6hdr *ipv6h = data + sizeof(*eth);
--		__u16 payload_len;
- 
- 		if (ipv6h + 1 > (struct ipv6hdr *)data_end)
- 			return NULL;
-@@ -304,33 +316,27 @@ static void *update_pkt(struct xdp_md *ctx, __s16 offset, __u32 *udp_csum)
- 		if (!udph || udph + 1 > (struct udphdr *)data_end)
- 			return NULL;
- 
--		*udp_csum = ~((__u32)udph->check);
--
- 		len = ipv6h->payload_len;
- 		len_new = bpf_htons(bpf_ntohs(len) + offset);
- 		ipv6h->payload_len = len_new;
--
--		*udp_csum = bpf_csum_diff(&len, sizeof(len), &len_new,
--					  sizeof(len_new), *udp_csum);
--
--		len = udph->len;
--		len_new = bpf_htons(bpf_ntohs(udph->len) + offset);
--		*udp_csum = bpf_csum_diff(&len, sizeof(len), &len_new,
--					  sizeof(len_new), *udp_csum);
- 	} else {
- 		return NULL;
+diff --git a/fs/netfs/buffered_read.c b/fs/netfs/buffered_read.c
+index 1c906035fef02..3b418fed46027 100644
+--- a/fs/netfs/buffered_read.c
++++ b/fs/netfs/buffered_read.c
+@@ -631,7 +631,7 @@ static bool netfs_skip_folio_read(struct folio *folio, loff_t pos, size_t len,
+ 	if (unlikely(always_fill)) {
+ 		if (pos - offset + len <= i_size)
+ 			return false; /* Page entirely before EOF */
+-		zero_user_segment(&folio->page, 0, plen);
++		folio_zero_segment(folio, 0, plen);
+ 		folio_mark_uptodate(folio);
+ 		return true;
  	}
+@@ -650,7 +650,7 @@ static bool netfs_skip_folio_read(struct folio *folio, loff_t pos, size_t len,
  
-+	len = udph->len;
-+	len_new = bpf_htons(bpf_ntohs(len) + offset);
-+
-+	*udp_csum = ~((__u32)udph->check);
-+	*udp_csum = bpf_csum_diff(&len, sizeof(len), &len_new,
-+				  sizeof(len_new), *udp_csum);
-+	*udp_csum = bpf_csum_diff(&len, sizeof(len), &len_new,
-+				  sizeof(len_new), *udp_csum);
-+
- 	udph->len = len_new;
- 
- 	return udph;
+ 	return false;
+ zero_out:
+-	zero_user_segments(&folio->page, 0, offset, offset + len, plen);
++	folio_zero_segments(folio, 0, offset, offset + len, plen);
+ 	return true;
  }
  
--static __u16 csum_fold_helper(__u32 csum)
--{
--	return ~((csum & 0xffff) + (csum >> 16)) ? : 0xffff;
--}
--
- static int xdp_adjst_tail_shrnk_data(struct xdp_md *ctx, __u16 offset,
- 				     unsigned long hdr_len)
- {
-@@ -359,7 +365,7 @@ static int xdp_adjst_tail_shrnk_data(struct xdp_md *ctx, __u16 offset,
- 		return -1;
+@@ -717,7 +717,7 @@ int netfs_write_begin(struct netfs_inode *ctx,
+ 	if (folio_test_uptodate(folio))
+ 		goto have_folio;
  
- 	udp_csum = bpf_csum_diff((__be32 *)tmp_buff, offset, 0, 0, udp_csum);
--	udph->check = (__u16)csum_fold_helper(udp_csum);
-+	udph->check = (__u16)csum_fold_udp_helper(udp_csum);
+-	/* If the page is beyond the EOF, we want to clear it - unless it's
++	/* If the folio is beyond the EOF, we want to clear it - unless it's
+ 	 * within the cache granule containing the EOF, in which case we need
+ 	 * to preload the granule.
+ 	 */
+@@ -777,7 +777,7 @@ int netfs_write_begin(struct netfs_inode *ctx,
+ EXPORT_SYMBOL(netfs_write_begin);
  
- 	if (bpf_xdp_adjust_tail(ctx, 0 - offset) < 0)
- 		return -1;
-@@ -403,7 +409,7 @@ static int xdp_adjst_tail_grow_data(struct xdp_md *ctx, __u16 offset)
- 		return -1;
- 
- 	udp_csum = bpf_csum_diff(0, 0, (__be32 *)tmp_buff, offset, udp_csum);
--	udph->check = (__u16)csum_fold_helper(udp_csum);
-+	udph->check = (__u16)csum_fold_udp_helper(udp_csum);
- 
- 	buff_len = bpf_xdp_get_buff_len(ctx);
- 
-@@ -484,8 +490,7 @@ static int xdp_adjst_head_shrnk_data(struct xdp_md *ctx, __u64 hdr_len,
- 		return -1;
- 
- 	udp_csum = bpf_csum_diff((__be32 *)tmp_buff, offset, 0, 0, udp_csum);
--
--	udph->check = (__u16)csum_fold_helper(udp_csum);
-+	udph->check = (__u16)csum_fold_udp_helper(udp_csum);
- 
- 	if (bpf_xdp_load_bytes(ctx, 0, tmp_buff, MAX_ADJST_OFFSET) < 0)
- 		return -1;
-@@ -542,7 +547,7 @@ static int xdp_adjst_head_grow_data(struct xdp_md *ctx, __u64 hdr_len,
- 		return -1;
- 
- 	udp_csum = bpf_csum_diff(0, 0, (__be32 *)data_buff, offset, udp_csum);
--	udph->check = (__u16)csum_fold_helper(udp_csum);
-+	udph->check = (__u16)csum_fold_udp_helper(udp_csum);
- 
- 	if (hdr_len > MAX_ADJST_OFFSET || hdr_len == 0)
- 		return -1;
+ /*
+- * Preload the data into a page we're proposing to write into.
++ * Preload the data into a folio we're proposing to write into.
+  */
+ int netfs_prefetch_for_write(struct file *file, struct folio *folio,
+ 			     size_t offset, size_t len)
+diff --git a/fs/netfs/buffered_write.c b/fs/netfs/buffered_write.c
+index a02bd071cee77..8ba74556bccab 100644
+--- a/fs/netfs/buffered_write.c
++++ b/fs/netfs/buffered_write.c
+@@ -85,13 +85,13 @@ static void netfs_update_i_size(struct netfs_inode *ctx, struct inode *inode,
+  * netfs_perform_write - Copy data into the pagecache.
+  * @iocb: The operation parameters
+  * @iter: The source buffer
+- * @netfs_group: Grouping for dirty pages (eg. ceph snaps).
++ * @netfs_group: Grouping for dirty folios (eg. ceph snaps).
+  *
+- * Copy data into pagecache pages attached to the inode specified by @iocb.
++ * Copy data into pagecache folios attached to the inode specified by @iocb.
+  * The caller must hold appropriate inode locks.
+  *
+- * Dirty pages are tagged with a netfs_folio struct if they're not up to date
+- * to indicate the range modified.  Dirty pages may also be tagged with a
++ * Dirty folios are tagged with a netfs_folio struct if they're not up to date
++ * to indicate the range modified.  Dirty folios may also be tagged with a
+  * netfs-specific grouping such that data from an old group gets flushed before
+  * a new one is started.
+  */
+@@ -226,11 +226,11 @@ ssize_t netfs_perform_write(struct kiocb *iocb, struct iov_iter *iter,
+ 		 * we try to read it.
+ 		 */
+ 		if (fpos >= ctx->zero_point) {
+-			zero_user_segment(&folio->page, 0, offset);
++			folio_zero_segment(folio, 0, offset);
+ 			copied = copy_folio_from_iter_atomic(folio, offset, part, iter);
+ 			if (unlikely(copied == 0))
+ 				goto copy_failed;
+-			zero_user_segment(&folio->page, offset + copied, flen);
++			folio_zero_segment(folio, offset + copied, flen);
+ 			__netfs_set_group(folio, netfs_group);
+ 			folio_mark_uptodate(folio);
+ 			trace = netfs_modify_and_clear;
+@@ -429,7 +429,7 @@ EXPORT_SYMBOL(netfs_perform_write);
+  * netfs_buffered_write_iter_locked - write data to a file
+  * @iocb:	IO state structure (file, offset, etc.)
+  * @from:	iov_iter with data to write
+- * @netfs_group: Grouping for dirty pages (eg. ceph snaps).
++ * @netfs_group: Grouping for dirty folios (eg. ceph snaps).
+  *
+  * This function does all the work needed for actually writing data to a
+  * file. It does all basic checks, removes SUID from the file, updates
 -- 
 2.53.0
 
