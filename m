@@ -1,46 +1,46 @@
-Return-Path: <stable+bounces-255967-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-255968-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id MKjsNf+nGGp+lwgAu9opvQ
-	(envelope-from <stable+bounces-255967-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:39:27 +0200
+	id IEcOKwGoGGp+lwgAu9opvQ
+	(envelope-from <stable+bounces-255968-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:39:29 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id EF7F15F93EC
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:39:26 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id ECE105F93FC
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:39:28 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 27D383036F20
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 20:33:02 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 50E1C3020E14
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 20:33:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3D0E532ED5C;
-	Thu, 28 May 2026 20:33:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0537832AAD6;
+	Thu, 28 May 2026 20:33:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VVifZrL6"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QEY8N882"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 15655223328;
-	Thu, 28 May 2026 20:33:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D83B5223328;
+	Thu, 28 May 2026 20:33:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780000381; cv=none; b=Zc0RN0rA73KZdBiq7PH9v0C5b6+cxilm5JFEq+3LdYe4RUnDECCzBBALh0PPvyrSjzZkrOJj60TsmCGWyWlmLHUeqLPWq9qDg+L2gK5wx/iRL7+WEJDsIua/74gzmQE2rpbI6cRobp/HBQQ0d9Vf/jx+NfNLzICeYYGHn1fFM9M=
+	t=1780000383; cv=none; b=HYDtfhz0RpDmccuVINjVP8JWShw+kvmql4VPKk8SCwGd0iTeS3cP28BQN6eAPxk1NPSpPGrHTQMZnpCf3tAGx5zfBXl76j5UMd3bKWZrCRIzfyBkmVyhnDbJbcfNaEgEs/1A0U/RxwyA3YL9Nn9Vk13UMq3ytbO2jn4TqZ5Gzp0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780000381; c=relaxed/simple;
-	bh=H8pvIMVhpf78HAop2kTpG3eUTaK3K7TiYsRLTQFbIw4=;
+	s=arc-20240116; t=1780000383; c=relaxed/simple;
+	bh=dO69E1tj4Mr1Sskf1sDgaktNJHyCdZ+PDvhqGVi8r1s=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=HMg+za/AuoCKwLrkHWDF74zUm0pdrh6m5pNq4vbv9SesHR7aA3iHMXYmVm0GqBSLbeKYDRvIAGU4VuA/2y7hO73xel+bc3CoQho5TTEoXswnj48p9h3/6bTMkzlbQaUKGxrcKl46Lm5Y7POe6AGyVnN3Z/B0mMI8dg6lMgZ/19g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VVifZrL6; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9E1D81F000E9;
-	Thu, 28 May 2026 20:32:59 +0000 (UTC)
+	 MIME-Version; b=UVG2GjmuryiyhFCRoy7XnPtzHb6vJP9/Vu992aKImbnbGKX57VYGHqIbzyj8+/H4x/990ZipnwfT5/niGYdU86p+pt/1iM+CLEQQ4vpOXVgiuvaaBJTLnhFb2RS+CZFeOftQRKBjbnaBL28A8yA8Ku9WpSoaqr+RXsoVfwYF24s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QEY8N882; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 437EE1F000E9;
+	Thu, 28 May 2026 20:33:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780000380;
-	bh=97bS1vhcgYYWQSFKRjgBQP7nCm6iucmBc8SbFc0UG1s=;
+	s=korg; t=1780000382;
+	bh=1+4bL5STdByjs5B+w4k5pnldVSyT/zlh2eKQxGlCL04=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=VVifZrL690l2hYDYzWhruCcU4iVPq4FZBXTd3anIfoNKB5HXT4vWZxQgR3oRCIrdw
-	 fQggyyGMz5N+Im1D6KXgiNtJCEQHroAkmQd9Vs53wAYwPfB3NQdmVRtxkwT8zKgVMI
-	 4T0i20vE+YVAWLw1SogUVMUOUJCsbvr7jiaDopUE=
+	b=QEY8N882x9VRv9dH5mslaWAacHwKZYBiLR3e8eyWFtvNFakivEexkgHQbNqNbq/NS
+	 luSboQapi1u4Z7OcdiOF/z3WZgW06Ut2zRoE+aybxHTxiIOQnimTaDfo+abZdZHTEG
+	 1QYvxCxRwWv5qK5hv9vw3+545+bueWHJMNFl7/CI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -48,9 +48,9 @@ Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	Tommy Kelly <linux@tkel.ly>,
 	Damien Le Moal <dlemoal@kernel.org>,
 	Niklas Cassel <cassel@kernel.org>
-Subject: [PATCH 6.12 025/272] ata: libata-scsi: improve readability of ata_scsi_qc_issue()
-Date: Thu, 28 May 2026 21:46:39 +0200
-Message-ID: <20260528194630.091049604@linuxfoundation.org>
+Subject: [PATCH 6.12 026/272] ata: libata-scsi: do not use the deferred QC feature for ATA_DEFER_PORT
+Date: Thu, 28 May 2026 21:46:40 +0200
+Message-ID: <20260528194630.119243273@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
 In-Reply-To: <20260528194629.379955525@linuxfoundation.org>
 References: <20260528194629.379955525@linuxfoundation.org>
@@ -68,7 +68,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
@@ -78,7 +78,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-255967-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-255968-lists,stable=lfdr.de];
 	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
@@ -89,9 +89,9 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	TAGGED_RCPT(0.00)[stable];
 	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,tkel.ly:email]
-X-Rspamd-Queue-Id: EF7F15F93EC
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tkel.ly:email,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim]
+X-Rspamd-Queue-Id: ECE105F93FC
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
@@ -101,90 +101,53 @@ X-Rspamd-Server: lfdr
 
 From: Niklas Cassel <cassel@kernel.org>
 
-commit 360190bd965f93794d5f5685a6de22ce6da2b672 upstream.
+commit ce4548807d2e4ae48fd0dbe38865467369877913 upstream.
 
-Improve readability of ata_scsi_qc_issue().
+The deferred QC feature was meant to handle mixed NCQ and non-NCQ commands,
+i.e. for return value ATA_DEFER_LINK.
 
-No functional changes.
+ATA_DEFER_PORT is returned by PATA drivers, but also certain SATA drivers
+like sata_mv and sata_sil24 that uses ap->excl_link to workaround hardware
+bugs in these HBAs. Regardless of the reason, using the deferred QC feature
+for ATA_DEFER_PORT is always wrong, and will break the ap->excl_link usage
+of the SATA drivers that rely on that feature.
 
+Modify ata_scsi_qc_issue() to only use the deferred QC feature when mixing
+NCQ and non-NCQ commands, i.e. ATA_DEFER_LINK.
+
+Fixes: 0ea84089dbf6 ("ata: libata-scsi: avoid Non-NCQ command starvation")
 Tested-by: Tommy Kelly <linux@tkel.ly>
 Reviewed-by: Damien Le Moal <dlemoal@kernel.org>
 Signed-off-by: Niklas Cassel <cassel@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/ata/libata-scsi.c |   43 +++++++++++++++++++++----------------------
- 1 file changed, 21 insertions(+), 22 deletions(-)
+ drivers/ata/libata-scsi.c |    5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
 --- a/drivers/ata/libata-scsi.c
 +++ b/drivers/ata/libata-scsi.c
-@@ -1779,7 +1779,7 @@ static int ata_scsi_qc_issue(struct ata_
- 	int ret;
- 
- 	if (!ap->ops->qc_defer)
--		goto issue;
-+		goto issue_qc;
- 
- 	/*
- 	 * If we already have a deferred qc, then rely on the SCSI layer to
-@@ -1798,38 +1798,37 @@ static int ata_scsi_qc_issue(struct ata_
- 		break;
- 	case ATA_DEFER_LINK:
- 		ret = SCSI_MLQUEUE_DEVICE_BUSY;
--		break;
-+		goto defer_qc;
+@@ -1801,11 +1801,11 @@ static int ata_scsi_qc_issue(struct ata_
+ 		goto defer_qc;
  	case ATA_DEFER_PORT:
  		ret = SCSI_MLQUEUE_HOST_BUSY;
--		break;
-+		goto defer_qc;
+-		goto defer_qc;
++		goto free_qc;
  	default:
  		WARN_ON_ONCE(1);
  		ret = SCSI_MLQUEUE_HOST_BUSY;
--		break;
-+		goto defer_qc;
+-		goto defer_qc;
++		goto free_qc;
  	}
  
--	if (ret) {
--		/*
--		 * We must defer this qc: if this is not an NCQ command, keep
--		 * this qc as a deferred one and report to the SCSI layer that
--		 * we issued it so that it is not requeued. The deferred qc will
--		 * be issued with the port deferred_qc_work once all on-going
--		 * commands complete.
--		 */
--		if (!ata_is_ncq(qc->tf.protocol)) {
--			ap->deferred_qc = qc;
--			return 0;
--		}
-+issue_qc:
-+	ata_qc_issue(qc);
-+	return 0;
- 
--		/* Force a requeue of the command to defer its execution. */
--		ata_qc_free(qc);
--		return ret;
-+defer_qc:
-+	/*
-+	 * We must defer this qc: if this is not an NCQ command, keep
-+	 * this qc as a deferred one and report to the SCSI layer that
-+	 * we issued it so that it is not requeued. The deferred qc will
-+	 * be issued with the port deferred_qc_work once all on-going
-+	 * commands complete.
-+	 */
-+	if (!ata_is_ncq(qc->tf.protocol)) {
-+		ap->deferred_qc = qc;
-+		return 0;
+ issue_qc:
+@@ -1825,6 +1825,7 @@ defer_qc:
+ 		return 0;
  	}
  
--issue:
--	ata_qc_issue(qc);
-+	/* Force a requeue of the command to defer its execution. */
-+	ata_qc_free(qc);
++free_qc:
+ 	/* Force a requeue of the command to defer its execution. */
+ 	ata_qc_free(qc);
  
--	return 0;
-+	return ret;
- }
- 
- /**
 
 
 
