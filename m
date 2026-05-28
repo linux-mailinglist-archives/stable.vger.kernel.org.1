@@ -1,61 +1,61 @@
-Return-Path: <stable+bounces-255714-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-255324-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 0GcROVenGGpolwgAu9opvQ
-	(envelope-from <stable+bounces-255714-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:36:39 +0200
+	id 0Bc+Ed+fGGpvlggAu9opvQ
+	(envelope-from <stable+bounces-255324-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:04:47 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 74F225F9199
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:36:39 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id D055E5F7C7B
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:04:46 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id B739A31ECCF0
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 20:21:23 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id BDA58301983B
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 20:03:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1C24A3101B0;
-	Thu, 28 May 2026 20:21:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BE48C2F691F;
+	Thu, 28 May 2026 20:03:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gzruY+Ix"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="M33mqp3z"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E8668301472;
-	Thu, 28 May 2026 20:21:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 95F1F24677F;
+	Thu, 28 May 2026 20:03:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779999681; cv=none; b=j00RomIEwrEDue5B3t2P5tjk/D/b8S6EVFQvd1ACWtPbQ4PeAG/o0xqQD9+7hAiKwGtX8YQ8TffaZAcpooR2a6GMi+wvtwim+D7s3Idt8s2lN+oSsCuUFh8eXji+WVTeFxgpzQgMwiUCRSUwXFuAvf8UwZr4kkckV0QbzxHTXzU=
+	t=1779998589; cv=none; b=riCu/FNRan/UD/O3puYhBuXIEhvCKpAzxUTcA/1kC2FZBsMYDs00f/egtfQ+jlpKYfrhOSiYTPdzZOAWsPhhFmLp/8IZQksGLkDiKkeRDjNt05onsiTMI7fdGU8s8n33JFEHzdPzUdywJ/0reN9AiGL2ju7OINUBwCzhCmGUj9I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779999681; c=relaxed/simple;
-	bh=m+fWbOtD9JgUr7a7pjxSZv4KcSalQoQhh7cQiJ3Tqkg=;
+	s=arc-20240116; t=1779998589; c=relaxed/simple;
+	bh=p4Z8x1V3w0VYPW3xRIuPaPBtwxqIfOqkoQFYBOYmQ2g=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=gO/qEYYpXgfXZO/4d//VDva96+KojIvAvIS1/Gza4k2jCvGxBVFmm3vLqaSH3utT7mDIUX0zlAsfHjqvNPxwrmuDBqmjDw+7FWAwO28SQsghSuwwTrGI4eE9PcYTPVM717EHVAET9pNX+bMWqfBChRg3QEYiO0dz6RLhEJcjk7s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gzruY+Ix; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0BB881F000E9;
-	Thu, 28 May 2026 20:21:19 +0000 (UTC)
+	 MIME-Version; b=ciXN6OUo/95sYFj4wCqWMvdxUX8+pz/i98wupVC4QPZvb591zGBO0Kxu0e5qM4N7wrJmHcw6yXuege9YeqA/63ka3ajzNQQjoB1eXK+oN9G6a/VNN9uozfj6fV/cvkeZ7JG/e19SpRpcyu4Kmlx5HDaQO8DkTmNRj/e6s+Ve88Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=M33mqp3z; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A6D461F000E9;
+	Thu, 28 May 2026 20:03:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779999680;
-	bh=T4XMCcEBBBOx2NC/RTISFOW1KZDnTC/Y3ozC5vfbPj0=;
+	s=korg; t=1779998588;
+	bh=AdBjpBubMgFSeLqpXZsxsxtUtJewMoGkjBxSXp9w2kM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=gzruY+Ix2faleIb3a/0Q40hXEPqd3e8xjoL4vdho+pBiQw6wYJe/i3zJ1pcFIj39+
-	 zIcWdJjeSkEiN6+cb0fFKYpP/CHrlifNh99ORaNeybOnB/ZWnPRcKGHiQhOAk3TXl9
-	 chpTSL9OmK8ZKIExc/HZUftfTu7JhLBJRqhRcnkY=
+	b=M33mqp3zp/DCDSAOb0/kXoRxn5lO/9Rn8fw/eoDBzWaQHd7LdgKUtzGhj4vEM9qQw
+	 iv2e6Eiy8yOWxCTRLIj5OGlbaiUGOouXEQAnxtUJgqR2RC9RbmPeoEXjBVq2UpxuIx
+	 bUNvyi/c5Jft2+nz6nxyu8rbEit3QTHILenBFS9k=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Nitin Rawat <nitin.rawat@oss.qualcomm.com>,
-	Abel Vesa <abel.vesa@oss.qualcomm.com>,
-	Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>,
-	Manivannan Sadhasivam <mani@kernel.org>,
-	Vinod Koul <vkoul@kernel.org>
-Subject: [PATCH 6.18 117/377] phy: qcom-qmp-ufs: Fix kaanapali PHY PLL lock failure after SM8650 G4 fix
+	Ivan Vecera <ivecera@redhat.com>,
+	Aleksandr Loktionov <aleksandr.loktionov@intel.com>,
+	Jacob Keller <jacob.e.keller@intel.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 7.0 226/461] ice: dpll: fix misplaced header macros
 Date: Thu, 28 May 2026 21:45:55 +0200
-Message-ID: <20260528194641.723658541@linuxfoundation.org>
+Message-ID: <20260528194653.674657906@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260528194638.371537336@linuxfoundation.org>
-References: <20260528194638.371537336@linuxfoundation.org>
+In-Reply-To: <20260528194646.819809818@linuxfoundation.org>
+References: <20260528194646.819809818@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -70,7 +70,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
@@ -78,7 +78,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-255714-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-255324-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
@@ -87,63 +87,89 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
 	NEURAL_HAM(-0.00)[-1.000];
 	RCPT_COUNT_SEVEN(0.00)[8];
 	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,qualcomm.com:email,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim]
-X-Rspamd-Queue-Id: 74F225F9199
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,linuxfoundation.org:mid,linuxfoundation.org:dkim,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,intel.com:email]
+X-Rspamd-Queue-Id: D055E5F7C7B
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+7.0-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Nitin Rawat <nitin.rawat@oss.qualcomm.com>
+From: Ivan Vecera <ivecera@redhat.com>
 
-commit 80305760d7a55b884fb9023c490b75568d1ea0b1 upstream.
+[ Upstream commit 30f1658fc5387384c7a60b9d15c79cb959512c1a ]
 
-Commit 81af9e40e2e4 ("phy: qcom: qmp-ufs: Fix SM8650 PCS table for Gear 4")
-moved QPHY_V6_PCS_UFS_PLL_CNTL register configuration from the shared
-sm8650_ufsphy_g5_pcs table to the SM8650-specific sm8650_ufsphy_pcs base
-table to fix Gear 4 operation on SM8650.
+The CGU register definitions (ICE_CGU_R10, ICE_CGU_R11 and related field
+masks) were placed after the #endif of the _ICE_DPLL_H_ include guard,
+leaving them unprotected. Move them inside the guard.
 
-However, this change inadvertently broke kaanapali and SM8750 SoCs
-which also rely on the shared sm8650_ufsphy_g5_pcs table for Gear 5
-configuration but use their own sm8750_ufsphy_pcs base table. After the
-change, kaanapali PHYs are left without the required PLL_CNTL = 0x33
-setting, causing the PHY PLL to remain at its hardware reset default
-value, preventing PLL lock and resulting in DME_LINKSTARTUP timeouts.
-
-Fix this by adding the missing QPHY_V6_PCS_UFS_PLL_CNTL = 0x33 entry
-to the sm8750_ufsphy_pcs table, mirroring what the original commit
-already did for sm8650_ufsphy_pcs.
-
-Cc: stable@vger.kernel.org # v6.19.12
-Fixes: 81af9e40e2e4 ("phy: qcom: qmp-ufs: Fix SM8650 PCS table for Gear 4")
-Signed-off-by: Nitin Rawat <nitin.rawat@oss.qualcomm.com>
-Reviewed-by: Abel Vesa <abel.vesa@oss.qualcomm.com>
-Reviewed-by: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
-Reviewed-by: Manivannan Sadhasivam <mani@kernel.org>
-Link: https://patch.msgid.link/20260415104851.2763238-1-nitin.rawat@oss.qualcomm.com
-Signed-off-by: Vinod Koul <vkoul@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: ad1df4f2d591 ("ice: dpll: Support E825-C SyncE and dynamic pin discovery")
+Signed-off-by: Ivan Vecera <ivecera@redhat.com>
+Reviewed-by: Aleksandr Loktionov <aleksandr.loktionov@intel.com>
+Signed-off-by: Jacob Keller <jacob.e.keller@intel.com>
+Link: https://patch.msgid.link/20260506-jk-iwl-net-2026-05-04-v2-8-a5ea4dc837a9@intel.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/phy/qualcomm/phy-qcom-qmp-ufs.c |    1 +
- 1 file changed, 1 insertion(+)
+ drivers/net/ethernet/intel/ice/ice_dpll.h | 32 +++++++++++------------
+ 1 file changed, 16 insertions(+), 16 deletions(-)
 
---- a/drivers/phy/qualcomm/phy-qcom-qmp-ufs.c
-+++ b/drivers/phy/qualcomm/phy-qcom-qmp-ufs.c
-@@ -1050,6 +1050,7 @@ static const struct qmp_phy_init_tbl sm8
- 	QMP_PHY_INIT_CFG(QPHY_V6_PCS_UFS_MULTI_LANE_CTRL1, 0x02),
- 	QMP_PHY_INIT_CFG(QPHY_V6_PCS_UFS_TX_MID_TERM_CTRL1, 0x43),
- 	QMP_PHY_INIT_CFG(QPHY_V6_PCS_UFS_PCS_CTRL1, 0x40),
-+	QMP_PHY_INIT_CFG(QPHY_V6_PCS_UFS_PLL_CNTL, 0x33),
- 	QMP_PHY_INIT_CFG(QPHY_V6_PCS_UFS_TX_LARGE_AMP_DRV_LVL, 0x0f),
- 	QMP_PHY_INIT_CFG(QPHY_V6_PCS_UFS_RX_SIGDET_CTRL2, 0x68),
- 	QMP_PHY_INIT_CFG(QPHY_V6_PCS_UFS_TX_POST_EMP_LVL_S4, 0x0e),
+diff --git a/drivers/net/ethernet/intel/ice/ice_dpll.h b/drivers/net/ethernet/intel/ice/ice_dpll.h
+index ae42cdea0ee14..8678575359b92 100644
+--- a/drivers/net/ethernet/intel/ice/ice_dpll.h
++++ b/drivers/net/ethernet/intel/ice/ice_dpll.h
+@@ -8,6 +8,22 @@
+ 
+ #define ICE_DPLL_RCLK_NUM_MAX	4
+ 
++#define ICE_CGU_R10			0x28
++#define ICE_CGU_R10_SYNCE_CLKO_SEL	GENMASK(8, 5)
++#define ICE_CGU_R10_SYNCE_CLKODIV_M1	GENMASK(13, 9)
++#define ICE_CGU_R10_SYNCE_CLKODIV_LOAD	BIT(14)
++#define ICE_CGU_R10_SYNCE_DCK_RST	BIT(15)
++#define ICE_CGU_R10_SYNCE_ETHCLKO_SEL	GENMASK(18, 16)
++#define ICE_CGU_R10_SYNCE_ETHDIV_M1	GENMASK(23, 19)
++#define ICE_CGU_R10_SYNCE_ETHDIV_LOAD	BIT(24)
++#define ICE_CGU_R10_SYNCE_DCK2_RST	BIT(25)
++#define ICE_CGU_R10_SYNCE_S_REF_CLK	GENMASK(31, 27)
++
++#define ICE_CGU_R11			0x2C
++#define ICE_CGU_R11_SYNCE_S_BYP_CLK	GENMASK(6, 1)
++
++#define ICE_CGU_BYPASS_MUX_OFFSET_E825C	3
++
+ /**
+  * enum ice_dpll_pin_sw - enumerate ice software pin indices:
+  * @ICE_DPLL_PIN_SW_1_IDX: index of first SW pin
+@@ -157,19 +173,3 @@ static inline void ice_dpll_deinit(struct ice_pf *pf) { }
+ #endif
+ 
+ #endif
+-
+-#define ICE_CGU_R10				0x28
+-#define ICE_CGU_R10_SYNCE_CLKO_SEL		GENMASK(8, 5)
+-#define ICE_CGU_R10_SYNCE_CLKODIV_M1		GENMASK(13, 9)
+-#define ICE_CGU_R10_SYNCE_CLKODIV_LOAD		BIT(14)
+-#define ICE_CGU_R10_SYNCE_DCK_RST		BIT(15)
+-#define ICE_CGU_R10_SYNCE_ETHCLKO_SEL		GENMASK(18, 16)
+-#define ICE_CGU_R10_SYNCE_ETHDIV_M1		GENMASK(23, 19)
+-#define ICE_CGU_R10_SYNCE_ETHDIV_LOAD		BIT(24)
+-#define ICE_CGU_R10_SYNCE_DCK2_RST		BIT(25)
+-#define ICE_CGU_R10_SYNCE_S_REF_CLK		GENMASK(31, 27)
+-
+-#define ICE_CGU_R11				0x2C
+-#define ICE_CGU_R11_SYNCE_S_BYP_CLK		GENMASK(6, 1)
+-
+-#define ICE_CGU_BYPASS_MUX_OFFSET_E825C		3
+-- 
+2.53.0
+
 
 
 
