@@ -1,70 +1,70 @@
-Return-Path: <stable+bounces-254893-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-254894-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id AK0OJnEsGGqwfAgAu9opvQ
-	(envelope-from <stable+bounces-254893-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 13:52:17 +0200
+	id iLGKMQksGGoHfQgAu9opvQ
+	(envelope-from <stable+bounces-254894-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 13:50:33 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id F200E5F1974
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 13:52:16 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6FD305F18E3
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 13:50:32 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 41AA030892F8
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 11:47:27 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 19843306D0C3
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 11:47:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8DF293B2FF5;
-	Thu, 28 May 2026 11:47:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5F4743E7BD1;
+	Thu, 28 May 2026 11:47:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="C0+2g1Yr"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rzH/r7jb"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 30E492FE591
-	for <stable@vger.kernel.org>; Thu, 28 May 2026 11:47:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AE1FB3D330B
+	for <stable@vger.kernel.org>; Thu, 28 May 2026 11:47:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779968846; cv=none; b=biULgU18dOBIQzLauANMgf1AZkU14aMfNAN6LNsDa696crL9xpfMALPgMnh71t+5ZOY6XDHtJsOvRIestUZfnGcpYbNl91yJYryXRgZYh9yEiSg6z/jFYFw+lFw8DtPLh4rkJFdoy6eG/F2Y9NAJlfHpIOGbCD2r3Hs5n5+5Lx8=
+	t=1779968860; cv=none; b=sDm9D04x6EmBxnphghJJOveZRudVVbH9C2RaA7ym9cWCd4J0jasfUnXUPS346FyZsmC14b/mhotNs9bcKO+AnkZMqA5xLx59ytYZFke2gdqTaG9QqLf1Pgo0oABvsLAAMhyhWJgrdvPAGzLRSaytjKXSDz5lE5GgB0JkwLP4dP0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779968846; c=relaxed/simple;
-	bh=SFb1w6j3prrMBtLcz0p+FBqkq9WzITyj1PkUqo4t7RM=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=bpxI48XWhSoOXRKLHV4yYgVI2ZrLRsA2Hgciy99YB1ieDjOvFTDtOmNVh3LKJO1PTItOG6kKqbR1YO+SB6VsihnVV9nr4X+z9JVSuRrNzwxxJ+FBNuduT1MlyxFByCAtSfqvjIhosqctj7XJd0PKE6nrOIsEe2PbfoAJdAooxTk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=C0+2g1Yr; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2C7091F000E9;
-	Thu, 28 May 2026 11:47:23 +0000 (UTC)
+	s=arc-20240116; t=1779968860; c=relaxed/simple;
+	bh=9tAqu56CMprg+muwuUT1jkjfYAZSGlh9eXgJYMyeQd0=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=rPsCtAJ7NadJ1KyQXZZMSkhbIyrPcfoYtI+Gn3G7LZxxLrorI9VIt/207YKcrWkXzpC1tfOIk071j4WVAeCDC+ZpyQ0+Lvf9aq6o3eBY4G6gA39/BqdxGFmMcvvf3CFfq9qBx27CVeyFJm4HlyJSzp5wXqzS/YzU4BVYvFAzJkU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rzH/r7jb; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0B30C1F000E9;
+	Thu, 28 May 2026 11:47:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779968844;
-	bh=taHepqvuRKZ1IDDx4ZOka0Gd1RH4kCnVe0TRx10NUgY=;
+	s=korg; t=1779968858;
+	bh=D8aOoirjNZVzvbncmpFZHRPbIcDZJKBD4CpE1Shn3f0=;
 	h=Subject:To:Cc:From:Date;
-	b=C0+2g1YrL8fvYNzheuhFlmV0PKsHdBZ4fp4hACNc2egA7QVzpjs6rvLQFWvXb+Cq8
-	 Aie9RsmGvoODHz1Z7O8jqiFYj2hVVLubYft9ub+XQ6J5KX/C70Z5n0PsUSYA8D8VZD
-	 PiGlJVC4kfDZO9DuoNo8PtexU4WHECqhYq7ybG8s=
-Subject: FAILED: patch "[PATCH] s390/cio: Restore GFP_DMA for CHSC allocation" failed to apply to 6.12-stable tree
-To: oberpar@linux.ibm.com,agordeev@linux.ibm.com,hca@linux.ibm.com
+	b=rzH/r7jbmf53TxPAJoNKLDpEYsoQabFv4HRINt++mJ+FEgS/7nNMl5PFQ/vTXj8To
+	 JEFT6GRK4nhcywrsf1oOKHWBJdUFCyl2JNKDvXhXae5IAParONjVZZffbSQASaq/KP
+	 zuK8ZzbgQYoJXRGdpJ/MDLVbPrxXnWK4ttLxohQ4=
+Subject: FAILED: patch "[PATCH] s390/pai: Fix missing PAI counter increments under heavy load" failed to apply to 6.18-stable tree
+To: tmricht@linux.ibm.com,agordeev@linux.ibm.com,sumanthk@linux.ibm.com
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Thu, 28 May 2026 13:46:23 +0200
-Message-ID: <2026052823-removing-pretended-b7d6@gregkh>
+Date: Thu, 28 May 2026 13:46:45 +0200
+Message-ID: <2026052845-oozy-cargo-663a@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=ANSI_X3.4-1968
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [2.34 / 15.00];
 	MID_END_EQ_FROM_USER_PART(4.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	MID_RHS_NOT_FQDN(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-254893-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-254894-lists,stable=lfdr.de];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	RCVD_COUNT_THREE(0.00)[4];
@@ -78,28 +78,28 @@ X-Spamd-Result: default: False [2.34 / 15.00];
 	PRECEDENCE_BULK(0.00)[];
 	RCPT_COUNT_THREE(0.00)[4];
 	TAGGED_RCPT(0.00)[stable];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,gregkh:email,linuxfoundation.org:dkim]
-X-Rspamd-Queue-Id: F200E5F1974
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,gregkh:email]
+X-Rspamd-Queue-Id: 6FD305F18E3
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
 
-The patch below does not apply to the 6.12-stable tree.
+The patch below does not apply to the 6.18-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.12.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.18.y
 git checkout FETCH_HEAD
-git cherry-pick -x ea34567db0a6b3a7ce78ba421592344315c8f90e
+git cherry-pick -x 99269799bf2448aebccee164df56c22a7b85b02c
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2026052823-removing-pretended-b7d6@gregkh' --subject-prefix 'PATCH 6.12.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2026052845-oozy-cargo-663a@gregkh' --subject-prefix 'PATCH 6.18.y' HEAD^..
 
 Possible dependencies:
 
@@ -111,142 +111,137 @@ greg k-h
 
 ------------------ original commit in Linus's tree ------------------
 
-From ea34567db0a6b3a7ce78ba421592344315c8f90e Mon Sep 17 00:00:00 2001
-From: Peter Oberparleiter <oberpar@linux.ibm.com>
-Date: Thu, 7 May 2026 16:27:08 +0200
-Subject: [PATCH] s390/cio: Restore GFP_DMA for CHSC allocation
+From 99269799bf2448aebccee164df56c22a7b85b02c Mon Sep 17 00:00:00 2001
+From: Thomas Richter <tmricht@linux.ibm.com>
+Date: Tue, 5 May 2026 12:34:33 +0200
+Subject: [PATCH] s390/pai: Fix missing PAI counter increments under heavy load
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 
-Re-add GFP_DMA when allocating memory for CHSC control blocks.
-On some supported machines, CHSC cannot access memory outside
-the DMA zone, causing CHSC command failures.
+Machines with a larger number of CPUs and under heavy load sometimes
+loose PAI counter increments during recording using events
+-e CRYPTO_ÂLL or -e NNPA_ALL. Counting is not affected.
+This happens when several PAI crypto counters are incremented during
+the same cryptographic operation.
+
+During schedule out the functions
+
+paiXXX_sched_task() (with XXX either crypt or ext)
++--> pai_have_samples()
+   +--> pai_have_sample()
+	+--> pai_copy()
+	+--> pai_push_sample()
+
+are called to read out PAI counter values.
+In pai_copy() the current values of PAI counters are read from the
+PMU memory mapped page and compared to the values read during last
+schedule out operation, which have been saved in a backup page
+named PAI_SAVE_AREA(event). For each PAI counter a delta is calculated
+and when the delta is positive, that PAI counter was incremented by
+hardware. This positve delta is reported as raw data record attached
+to a sample.
+After all deltas have been calculated, the new PAI counter values
+are saved in the backup page PAI_SAVE_AREA(event). However this is
+done in pai_push_sample(), leaving a small window for missing hardware
+triggered updates. Here is one scenario:
+
+  PAI counter idx:   0   1   2   3   4   5   6   7  ....  N
+                   +---+---+---+---+---+---+---+---+    +---+
+  PAI counter page:|   |   | X |   |   |   |   |   |....| Y |
+                   +---+---+---+---+---+---+---+---+    +---+
+
+In pai_copy() each PAI counter value is read and compared
+to its old value. This is done in a loop. When PAI counter indexed
+N is read, the hardware might increment PAI counter indexed 2 again,
+updating its value from X to X+1.
+Later pai_push_sample() simply mem-copies the complete PAI counter
+page to a backup page and the increment of X+1 is lost, because the
+backup page now contains the new value.
+
+Read each PAI counter and save this value in the backup page when
+there is a positive delta. This omits any time window between read
+and store. This also reduced the work load as only modified PAI
+counters are saved.
 
 Cc: stable@vger.kernel.org
-Fixes: a3a64a4def8d ("s390/cio: remove unneeded DMA zone allocation")
-Signed-off-by: Peter Oberparleiter <oberpar@linux.ibm.com>
-Reviewed-by: Heiko Carstens <hca@linux.ibm.com>
+Fixes: fe861b0c8d06 ("s390/pai: save PAI counter value page in event structure")
+Signed-off-by: Thomas Richter <tmricht@linux.ibm.com>
+Reviewed-by: Sumanth Korikkar <sumanthk@linux.ibm.com>
 Signed-off-by: Alexander Gordeev <agordeev@linux.ibm.com>
 
-diff --git a/drivers/s390/cio/chsc.c b/drivers/s390/cio/chsc.c
-index fbb58edd6274..9689f722c863 100644
---- a/drivers/s390/cio/chsc.c
-+++ b/drivers/s390/cio/chsc.c
-@@ -1142,8 +1142,8 @@ int __init chsc_init(void)
+diff --git a/arch/s390/kernel/perf_pai.c b/arch/s390/kernel/perf_pai.c
+index f13c5c5fbea6..cdb8006220ca 100644
+--- a/arch/s390/kernel/perf_pai.c
++++ b/arch/s390/kernel/perf_pai.c
+@@ -186,6 +186,13 @@ static u64 pai_getctr(unsigned long *page, int nr, unsigned long offset)
+ 	return page[nr];
+ }
+ 
++static void pai_setctr(unsigned long *page, int nr, unsigned long offset, u64 v)
++{
++	if (offset)
++		nr += offset / sizeof(*page);
++	page[nr] = v;
++}
++
+ /* Read the counter values. Return value from location in CMP. For base
+  * event xxx_ALL sum up all events. Returns counter value.
+  */
+@@ -551,6 +558,8 @@ static void paicrypt_del(struct perf_event *event, int flags)
+ /* Create raw data and save it in buffer. Calculate the delta for each
+  * counter between this invocation and the last invocation.
+  * Returns number of bytes copied.
++ * After reading from PAI counter page, save the read value to the old
++ * page to calculate PAI counter deltas.
+  * Saves only entries with positive counter difference of the form
+  * 2 bytes: Number of counter
+  * 8 bytes: Value of counter
+@@ -562,16 +571,22 @@ static size_t pai_copy(struct pai_userdata *userdata, unsigned long *page,
+ 	int i, outidx = 0;
+ 
+ 	for (i = 1; i <= pp->num_avail; i++) {
+-		u64 val = 0, val_old = 0;
++		u64 val = 0, val_old = 0, val_k = 0, val_old_k = 0;
+ 
+ 		if (!exclude_kernel) {
+-			val += pai_getctr(page, i, pp->kernel_offset);
+-			val_old += pai_getctr(page_old, i, pp->kernel_offset);
++			val_k = pai_getctr(page, i, pp->kernel_offset);
++			val_old_k = pai_getctr(page_old, i, pp->kernel_offset);
++			if (val_k != val_old_k)
++				pai_setctr(page_old, i, pp->kernel_offset, val_k);
+ 		}
+ 		if (!exclude_user) {
+-			val += pai_getctr(page, i, 0);
+-			val_old += pai_getctr(page_old, i, 0);
++			val = pai_getctr(page, i, 0);
++			val_old = pai_getctr(page_old, i, 0);
++			if (val != val_old)
++				pai_setctr(page_old, i, 0, val);
+ 		}
++		val += val_k;
++		val_old += val_old_k;
+ 		if (val >= val_old)
+ 			val -= val_old;
+ 		else
+@@ -602,8 +617,6 @@ static size_t pai_copy(struct pai_userdata *userdata, unsigned long *page,
+ static int pai_push_sample(size_t rawsize, struct pai_map *cpump,
+ 			   struct perf_event *event)
  {
- 	int ret;
+-	int idx = PAI_PMU_IDX(event);
+-	struct pai_pmu *pp = &pai_pmu[idx];
+ 	struct perf_sample_data data;
+ 	struct perf_raw_record raw;
+ 	struct pt_regs regs;
+@@ -634,8 +647,6 @@ static int pai_push_sample(size_t rawsize, struct pai_map *cpump,
  
--	sei_page = (void *)get_zeroed_page(GFP_KERNEL);
--	chsc_page = (void *)get_zeroed_page(GFP_KERNEL);
-+	sei_page = (void *)get_zeroed_page(GFP_KERNEL | GFP_DMA);
-+	chsc_page = (void *)get_zeroed_page(GFP_KERNEL | GFP_DMA);
- 	if (!sei_page || !chsc_page) {
- 		ret = -ENOMEM;
- 		goto out_err;
-diff --git a/drivers/s390/cio/chsc_sch.c b/drivers/s390/cio/chsc_sch.c
-index 73413417a2ce..b6cb8bb8bcc4 100644
---- a/drivers/s390/cio/chsc_sch.c
-+++ b/drivers/s390/cio/chsc_sch.c
-@@ -292,7 +292,7 @@ static int chsc_ioctl_start(void __user *user_area)
- 	if (!css_general_characteristics.dynio)
- 		/* It makes no sense to try. */
- 		return -EOPNOTSUPP;
--	chsc_area = (void *)get_zeroed_page(GFP_KERNEL);
-+	chsc_area = (void *)get_zeroed_page(GFP_DMA | GFP_KERNEL);
- 	if (!chsc_area)
- 		return -ENOMEM;
- 	request = kzalloc_obj(*request);
-@@ -340,7 +340,7 @@ static int chsc_ioctl_on_close_set(void __user *user_area)
- 		ret = -ENOMEM;
- 		goto out_unlock;
- 	}
--	on_close_chsc_area = (void *)get_zeroed_page(GFP_KERNEL);
-+	on_close_chsc_area = (void *)get_zeroed_page(GFP_DMA | GFP_KERNEL);
- 	if (!on_close_chsc_area) {
- 		ret = -ENOMEM;
- 		goto out_free_request;
-@@ -392,7 +392,7 @@ static int chsc_ioctl_start_sync(void __user *user_area)
- 	struct chsc_sync_area *chsc_area;
- 	int ret, ccode;
- 
--	chsc_area = (void *)get_zeroed_page(GFP_KERNEL);
-+	chsc_area = (void *)get_zeroed_page(GFP_KERNEL | GFP_DMA);
- 	if (!chsc_area)
- 		return -ENOMEM;
- 	if (copy_from_user(chsc_area, user_area, PAGE_SIZE)) {
-@@ -438,7 +438,7 @@ static int chsc_ioctl_info_channel_path(void __user *user_cd)
- 		u8 data[PAGE_SIZE - 20];
- 	} __attribute__ ((packed)) *scpcd_area;
- 
--	scpcd_area = (void *)get_zeroed_page(GFP_KERNEL);
-+	scpcd_area = (void *)get_zeroed_page(GFP_KERNEL | GFP_DMA);
- 	if (!scpcd_area)
- 		return -ENOMEM;
- 	cd = kzalloc_obj(*cd);
-@@ -500,7 +500,7 @@ static int chsc_ioctl_info_cu(void __user *user_cd)
- 		u8 data[PAGE_SIZE - 20];
- 	} __attribute__ ((packed)) *scucd_area;
- 
--	scucd_area = (void *)get_zeroed_page(GFP_KERNEL);
-+	scucd_area = (void *)get_zeroed_page(GFP_KERNEL | GFP_DMA);
- 	if (!scucd_area)
- 		return -ENOMEM;
- 	cd = kzalloc_obj(*cd);
-@@ -563,7 +563,7 @@ static int chsc_ioctl_info_sch_cu(void __user *user_cud)
- 		u8 data[PAGE_SIZE - 20];
- 	} __attribute__ ((packed)) *sscud_area;
- 
--	sscud_area = (void *)get_zeroed_page(GFP_KERNEL);
-+	sscud_area = (void *)get_zeroed_page(GFP_KERNEL | GFP_DMA);
- 	if (!sscud_area)
- 		return -ENOMEM;
- 	cud = kzalloc_obj(*cud);
-@@ -625,7 +625,7 @@ static int chsc_ioctl_conf_info(void __user *user_ci)
- 		u8 data[PAGE_SIZE - 20];
- 	} __attribute__ ((packed)) *sci_area;
- 
--	sci_area = (void *)get_zeroed_page(GFP_KERNEL);
-+	sci_area = (void *)get_zeroed_page(GFP_KERNEL | GFP_DMA);
- 	if (!sci_area)
- 		return -ENOMEM;
- 	ci = kzalloc_obj(*ci);
-@@ -696,7 +696,7 @@ static int chsc_ioctl_conf_comp_list(void __user *user_ccl)
- 		u32 res;
- 	} __attribute__ ((packed)) *cssids_parm;
- 
--	sccl_area = (void *)get_zeroed_page(GFP_KERNEL);
-+	sccl_area = (void *)get_zeroed_page(GFP_KERNEL | GFP_DMA);
- 	if (!sccl_area)
- 		return -ENOMEM;
- 	ccl = kzalloc_obj(*ccl);
-@@ -756,7 +756,7 @@ static int chsc_ioctl_chpd(void __user *user_chpd)
- 	int ret;
- 
- 	chpd = kzalloc_obj(*chpd);
--	scpd_area = (void *)get_zeroed_page(GFP_KERNEL);
-+	scpd_area = (void *)get_zeroed_page(GFP_KERNEL | GFP_DMA);
- 	if (!scpd_area || !chpd) {
- 		ret = -ENOMEM;
- 		goto out_free;
-@@ -796,7 +796,7 @@ static int chsc_ioctl_dcal(void __user *user_dcal)
- 		u8 data[PAGE_SIZE - 36];
- 	} __attribute__ ((packed)) *sdcal_area;
- 
--	sdcal_area = (void *)get_zeroed_page(GFP_KERNEL);
-+	sdcal_area = (void *)get_zeroed_page(GFP_KERNEL | GFP_DMA);
- 	if (!sdcal_area)
- 		return -ENOMEM;
- 	dcal = kzalloc_obj(*dcal);
-diff --git a/drivers/s390/cio/scm.c b/drivers/s390/cio/scm.c
-index d13ed1011c03..171212a6d2d9 100644
---- a/drivers/s390/cio/scm.c
-+++ b/drivers/s390/cio/scm.c
-@@ -229,7 +229,7 @@ int scm_update_information(void)
- 	size_t num;
- 	int ret;
- 
--	scm_info = (void *)__get_free_page(GFP_KERNEL);
-+	scm_info = (void *)__get_free_page(GFP_KERNEL | GFP_DMA);
- 	if (!scm_info)
- 		return -ENOMEM;
+ 	overflow = perf_event_overflow(event, &data, &regs);
+ 	perf_event_update_userpage(event);
+-	/* Save crypto counter lowcore page after reading event data. */
+-	memcpy((void *)PAI_SAVE_AREA(event), cpump->area, pp->area_size);
+ 	return overflow;
+ }
  
 
 
