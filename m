@@ -1,60 +1,59 @@
-Return-Path: <stable+bounces-255879-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-256083-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id mH9IOxenGGp+lwgAu9opvQ
-	(envelope-from <stable+bounces-255879-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:35:35 +0200
+	id yLCjCw2rGGpolwgAu9opvQ
+	(envelope-from <stable+bounces-256083-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:52:29 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6C07B5F90A4
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:35:35 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4A4025F9BF2
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:52:28 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id BC0AB30C761A
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 20:28:56 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 75464300293A
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 20:38:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C5EC12D9787;
-	Thu, 28 May 2026 20:28:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7DB0F2EF652;
+	Thu, 28 May 2026 20:38:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UY3dxjCu"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XVvbSGPK"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9B184DDC5;
-	Thu, 28 May 2026 20:28:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5130B2F1FEC;
+	Thu, 28 May 2026 20:38:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780000133; cv=none; b=LnKOipJuF3EK35BjIV/UrE2m9/X/+BTVznH7Ej8doaf85W67bK4ZplP5EP/q8YJqeCSx6wHaaZUCqcrO+3vW9gz7+96NhL2dHZJtIexxPALxLX3/0blgKD9Z/j1Gizt6mSCMHGjdSPRwkRCpuQlXzQwXLd80fU18KeAzFLaaN/s=
+	t=1780000707; cv=none; b=Z6mYL6qw4mrH9sUXYKGnVLDUOrQ91dbTSXmXhLoZYAQMBmngmw+M+bBLtrrjBvQBM2zM0iv4lWzX+sojLIiV3NuBJ1AM0A/d+Be/UsBM7ZyEPvN+pAdZRwLKUXT912TiRy1H+62M/3Hr78U5UY8/EtQ3Wtfqgk0JXw4ZN6kcsko=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780000133; c=relaxed/simple;
-	bh=MqxQ6LSGpmvDMfMvUh8jNembAMIhfBV3+X8qj2+wh2Y=;
+	s=arc-20240116; t=1780000707; c=relaxed/simple;
+	bh=FCrN6TbDVppZcQ3e/ap2IlTcHQ1bHHxWhuMKTa0450A=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ro9xhY5qUJN8SbU/Moym4Lr/Xnr6huHoR1y/Q8rttmU6KkaAJJ1Kfof/pTw0Gmu8s1MQqirribEmJ0ZZn3vdbVrN11QU5DDdmLdD49YAa3v8L4ZSUcTbX5yO3yBjgbG6tK2IhS1f68uwVtOzNBbvak6xYaxfnOI10eUyeUZqyds=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UY3dxjCu; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 06DAD1F00A3A;
-	Thu, 28 May 2026 20:28:51 +0000 (UTC)
+	 MIME-Version; b=alihsv9pVEIoxHvGS2O/p7+mAcXfkEKUMS7QcRvQ6WmoROIxbAFwhVWZDEco4c8NdBvxN7HN/UjxzIKR8UYu4Km6R2QQrTjXDas337LCoWvBKtA0dEPBjZNK+ARizqcrIf3sFX97P7OBCA5YGx6D4nok5o/KsnbzhaEtVynPak8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XVvbSGPK; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A575A1F000E9;
+	Thu, 28 May 2026 20:38:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780000132;
-	bh=X23AgQYENaJD5I6xsX1rYMhczbIcMJx+aM148GkW/MY=;
+	s=korg; t=1780000706;
+	bh=sAudlob1gTCwL5Q/55njkYQoLMtLk+T4rFByGLoyAB8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=UY3dxjCud68DtAD9PwJvoG2IcK3gkb7+K6Ev+wQpblMCsW1RQz3v1fLo0HWKO6n7t
-	 IdENuT9HGsU7yF0MtSP9uAnFpdfIHU769cXj4ra17D8/ZXZt8/XOIDuuK5LggX/1Vj
-	 oRMOjKQ2LEbBp7EN02UVs1hJYv/TpVdTrmF/0IbI=
+	b=XVvbSGPKgH8WZqFnz6WEo22ftN/rBd8aW4GcRkJW3JCQHaGnlySy4d+cJz7++C8pL
+	 sdijxOEnZvwsBCG9ufUjtTBQeFBXO7Mcv05Ch/F9rpZEVUfnUuMCEq8rSxWacpTThI
+	 5nV2H7lZj02BStinqPsnN8yFLd3SYtP9bAgmBGgg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>,
-	Rob Clark <rob.clark@oss.qualcomm.com>,
-	Rob Clark <robin.clark@oss.qualcomm.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 277/377] drm/msm/adreno: fix userspace-triggered crash on a2xx-a4xx
+	Abdurrahman Hussain <abdurrahman@nexthop.ai>,
+	Bartosz Golaszewski <bartosz.golaszewski@oss.qualcomm.com>,
+	Guenter Roeck <linux@roeck-us.net>
+Subject: [PATCH 6.12 141/272] hwmon: (pmbus/adm1266) reject short block-read responses in the GPIO accessors
 Date: Thu, 28 May 2026 21:48:35 +0200
-Message-ID: <20260528194646.378652378@linuxfoundation.org>
+Message-ID: <20260528194633.319801834@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260528194638.371537336@linuxfoundation.org>
-References: <20260528194638.371537336@linuxfoundation.org>
+In-Reply-To: <20260528194629.379955525@linuxfoundation.org>
+References: <20260528194629.379955525@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,87 +68,103 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-255879-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-256083-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[7];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,patchwork.freedesktop.org:url,linuxfoundation.org:mid,linuxfoundation.org:dkim,qualcomm.com:email]
-X-Rspamd-Queue-Id: 6C07B5F90A4
+	RCPT_COUNT_FIVE(0.00)[6];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[nexthop.ai:email,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,roeck-us.net:email,qualcomm.com:email,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim]
+X-Rspamd-Queue-Id: 4A4025F9BF2
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
+From: Abdurrahman Hussain <abdurrahman@nexthop.ai>
 
-[ Upstream commit 2b4abf879360ea00a9e2b46d2d15dcdbc0687eed ]
+commit a7232f68c43ca62f545049b7f5fbfc75137b843b upstream.
 
-Before a5xx Adreno driver will not try fetching UBWC params (because
-those generations didn't support UBWC anyway), however it's still
-possible to query UBWC-related params from the userspace, triggering
-possible NULL pointer dereference. Check for UBWC config in
-adreno_get_param() and return sane defaults if there is none.
+adm1266_gpio_get() and adm1266_gpio_get_multiple() both compose the
+pin-status word as
 
-Fixes: a452510aad53 ("drm/msm/adreno: Switch to the common UBWC config struct")
-Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
-Reviewed-by: Rob Clark <rob.clark@oss.qualcomm.com>
-Patchwork: https://patchwork.freedesktop.org/patch/717778/
-Message-ID: <20260411-adreno-fix-ubwc-v3-1-4983156f3f80@oss.qualcomm.com>
-Signed-off-by: Rob Clark <robin.clark@oss.qualcomm.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+	pins_status = read_buf[0] + (read_buf[1] << 8);
+
+right after i2c_smbus_read_block_data(), guarding only against an
+error return.  A well-behaved device returns 2 bytes for
+GPIO_STATUS/PDIO_STATUS, but the helper happily reports a 0- or
+1-byte response too.  If the device returns 0 bytes, both read_buf
+slots are uninitialized stack memory; if it returns 1 byte, read_buf[1]
+is.
+
+The composed value then flows through set_bit() into the caller's
+*bits in adm1266_gpio_get_multiple(), or into the return value of
+adm1266_gpio_get(), and ends up in userspace via gpiolib (sysfs and
+the char-dev ioctls).  That leaks a few bits of kernel stack per
+request on any device whose firmware glitch, bus error, or hostile
+slave produces a short block-read response.
+
+Add the missing length check to both call sites and surface a short
+response as -EIO.
+
+Fixes: d98dfad35c38 ("hwmon: (pmbus/adm1266) Add support for GPIOs")
+Cc: stable@vger.kernel.org
+Signed-off-by: Abdurrahman Hussain <abdurrahman@nexthop.ai>
+Reviewed-by: Bartosz Golaszewski <bartosz.golaszewski@oss.qualcomm.com>
+Link: https://lore.kernel.org/r/20260518-adm1266-gpio-fixes-v3-3-e425e4f88139@nexthop.ai
+Signed-off-by: Guenter Roeck <linux@roeck-us.net>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/msm/adreno/adreno_gpu.c | 6 ++++++
+ drivers/hwmon/pmbus/adm1266.c |    6 ++++++
  1 file changed, 6 insertions(+)
 
-diff --git a/drivers/gpu/drm/msm/adreno/adreno_gpu.c b/drivers/gpu/drm/msm/adreno/adreno_gpu.c
-index 4b5a4edd07028..056a9e18cd4ac 100644
---- a/drivers/gpu/drm/msm/adreno/adreno_gpu.c
-+++ b/drivers/gpu/drm/msm/adreno/adreno_gpu.c
-@@ -419,15 +419,21 @@ int adreno_get_param(struct msm_gpu *gpu, struct msm_context *ctx,
- 		*value = vm->mm_range;
- 		return 0;
- 	case MSM_PARAM_HIGHEST_BANK_BIT:
-+		if (!adreno_gpu->ubwc_config)
-+			return UERR(ENOENT, drm, "no UBWC on this platform");
- 		*value = adreno_gpu->ubwc_config->highest_bank_bit;
- 		return 0;
- 	case MSM_PARAM_RAYTRACING:
- 		*value = adreno_gpu->has_ray_tracing;
- 		return 0;
- 	case MSM_PARAM_UBWC_SWIZZLE:
-+		if (!adreno_gpu->ubwc_config)
-+			return UERR(ENOENT, drm, "no UBWC on this platform");
- 		*value = adreno_gpu->ubwc_config->ubwc_swizzle;
- 		return 0;
- 	case MSM_PARAM_MACROTILE_MODE:
-+		if (!adreno_gpu->ubwc_config)
-+			return UERR(ENOENT, drm, "no UBWC on this platform");
- 		*value = adreno_gpu->ubwc_config->macrotile_mode;
- 		return 0;
- 	case MSM_PARAM_UCHE_TRAP_BASE:
--- 
-2.53.0
-
+--- a/drivers/hwmon/pmbus/adm1266.c
++++ b/drivers/hwmon/pmbus/adm1266.c
+@@ -176,6 +176,8 @@ static int adm1266_gpio_get(struct gpio_
+ 	ret = i2c_smbus_read_block_data(data->client, pmbus_cmd, read_buf);
+ 	if (ret < 0)
+ 		return ret;
++	if (ret < 2)
++		return -EIO;
+ 
+ 	pins_status = read_buf[0] + (read_buf[1] << 8);
+ 	if (offset < ADM1266_GPIO_NR)
+@@ -196,6 +198,8 @@ static int adm1266_gpio_get_multiple(str
+ 	ret = i2c_smbus_read_block_data(data->client, ADM1266_GPIO_STATUS, read_buf);
+ 	if (ret < 0)
+ 		return ret;
++	if (ret < 2)
++		return -EIO;
+ 
+ 	status = read_buf[0] + (read_buf[1] << 8);
+ 
+@@ -208,6 +212,8 @@ static int adm1266_gpio_get_multiple(str
+ 	ret = i2c_smbus_read_block_data(data->client, ADM1266_PDIO_STATUS, read_buf);
+ 	if (ret < 0)
+ 		return ret;
++	if (ret < 2)
++		return -EIO;
+ 
+ 	status = read_buf[0] + (read_buf[1] << 8);
+ 
 
 
 
