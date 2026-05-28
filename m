@@ -1,64 +1,63 @@
-Return-Path: <stable+bounces-256296-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-255886-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 6DINAC2sGGpolwgAu9opvQ
-	(envelope-from <stable+bounces-256296-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:57:17 +0200
+	id 0KwzJ2GmGGrClggAu9opvQ
+	(envelope-from <stable+bounces-255886-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:32:33 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 555695F9E80
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:57:16 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id A23325F8EA2
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:32:32 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 8E23031BF1CE
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 20:48:23 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 20BA9300F60B
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 20:29:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0B1DE328B7B;
-	Thu, 28 May 2026 20:48:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1D5A92F8E88;
+	Thu, 28 May 2026 20:29:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DC8BEpyx"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dzuPW/ih"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D45E42459DD;
-	Thu, 28 May 2026 20:48:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E3C2FDDC5;
+	Thu, 28 May 2026 20:29:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780001302; cv=none; b=Fzzg/5X7R8zY4INS81wklfHt0CzSk3/aHj7mG29pH9oXky52mrCf/Vgv+4HknFKTT0W5LFyQO0Tapta5Mcje7MlWcvLv5VUhEF+m9xqoWS7DQ+tbcLcyBxRr+yGQHqRXX5uYGvPLF0I39d+BXWz0XeznrQTvSIdEzznJIgS8tvk=
+	t=1780000154; cv=none; b=LTayEMXVSKjoOQUxv6OU6KsdJEsbN5PssunEm11kevKGGY8/g5Ua7qQMJzKaFTIqZE9WnbSom2LvsXB1Www2Mw9w7vG/kW4sTd3PxdsCidwU83moLBwA89nJdgzxPS1MuSoOQDFC1qy1Lzj7b3YIOjEr019xs4P1AIYGoJOYWP8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780001302; c=relaxed/simple;
-	bh=7TvOtYqI1XFXP4vnFScPi+5jwz1rlAjcgQ+735orDSQ=;
+	s=arc-20240116; t=1780000154; c=relaxed/simple;
+	bh=qG8WVeAYzI2ztCzLFVkc4Qf+uTs0B+fsNUkmQrB1vAA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=FkMCefteoZhLYuAYZB+w4B+O19Imnx7Q0Rn+h3hw7J3r+7uF8WusWArVwIBIqX8SbKSlxhnP8HmAw3Eiyy/NJWpLStHxKmzRn6W8QU0lIDMQF8SYaFjtrPFytiX3AVfz95NYKrt8q0ufdYMW4elH//dlSVfSNoxPzi67SVBTOqE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DC8BEpyx; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1185F1F00A3A;
-	Thu, 28 May 2026 20:48:20 +0000 (UTC)
+	 MIME-Version; b=amSwc4NjWyaXG8cwTD8DgOBi15zyL3kKNkrdr6dv82771jyV/zlc6CkFVZ4Rj96tVdM5o4RYYDSMdbhx1cDAuGTZtGObkx0l/FWkR9jjJq4Tsq/csqFiLeIQB576GOPkFrUujCKLPEKBrKvBkw1KFQKSb8BA/rp6CkbQtwjQL+o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dzuPW/ih; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 567571F000E9;
+	Thu, 28 May 2026 20:29:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780001301;
-	bh=yyXPibY07uT3E36hh5Mt/LA27sKdHzvTi3rtixBWKHo=;
+	s=korg; t=1780000153;
+	bh=UMuTrMU4M0YlSX0b+MgcOySBnNM3NkN+O8bNrAe6rkw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=DC8BEpyxLV1/oCU42HiyNunJViIGcPYgCU7tdIxMcMofhXZYVxOal/hsv4Dg6i9L3
-	 pL0xPOa4YPzhfkHozFL+ipmaACyvrPnrfFV+U9UHZBnr9mJ/RFCm4INjWo/vvds3vR
-	 rcqL3gRqku7o0mKcfRrQKLih/bVZ9YnbM2Try1bA=
+	b=dzuPW/iha8Jtqj+AAIYCYysFA3+TXCLxA15/isBppJqjN/QuDrcZwXbEDa3CHHTH2
+	 LdPL5piGA2IA0JfRqKoMOyVJargEHTnitMWkaWT9ldhS8PbarglzO2iV+plaACi2oi
+	 lH62L32eCPL6EY1tQYGP5MIWidF99Ol+d3LEGD1w=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable@kernel.org,
-	Yuan Tan <yuantan098@gmail.com>,
-	Yifan Wu <yifanwucs@gmail.com>,
-	Juefei Pu <tomapufckgml@gmail.com>,
-	Xin Liu <bird@lzu.edu.cn>,
-	Luxiao Xu <rakukuip@gmail.com>,
-	Ren Wei <n05ec@lzu.edu.cn>,
-	Sven Eckelmann <sven@narfation.org>
-Subject: [PATCH 6.6 080/186] batman-adv: fix tp_meter counter underflow during shutdown
+	Arkadiusz Kubalewski <Arkadiusz.kubalewski@intel.com>,
+	Grzegorz Nitka <grzegorz.nitka@intel.com>,
+	Aleksandr Loktionov <aleksandr.loktionov@intel.com>,
+	Alexander Nowlin <alexander.nowlin@intel.com>,
+	Tony Nguyen <anthony.l.nguyen@intel.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.18 322/377] ice: ptp: serialize E825 PHY timer start with PTP lock
 Date: Thu, 28 May 2026 21:49:20 +0200
-Message-ID: <20260528194931.096886999@linuxfoundation.org>
+Message-ID: <20260528194647.727418976@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260528194928.941004471@linuxfoundation.org>
-References: <20260528194928.941004471@linuxfoundation.org>
+In-Reply-To: <20260528194638.371537336@linuxfoundation.org>
+References: <20260528194638.371537336@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -73,89 +72,111 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,kernel.org,gmail.com,lzu.edu.cn,narfation.org];
-	TAGGED_FROM(0.00)[bounces-256296-lists,stable=lfdr.de];
-	PRECEDENCE_BULK(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-255886-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[11];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
 	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[narfation.org:email,lzu.edu.cn:email,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim]
-X-Rspamd-Queue-Id: 555695F9E80
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_SEVEN(0.00)[10];
+	MID_RHS_MATCH_FROM(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,msgid.link:url,intel.com:email,linuxfoundation.org:mid,linuxfoundation.org:dkim]
+X-Rspamd-Queue-Id: A23325F8EA2
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Luxiao Xu <rakukuip@gmail.com>
+From: Grzegorz Nitka <grzegorz.nitka@intel.com>
 
-commit 94f3b133168d1c49895e7cc6afbcf1cc0b354602 upstream.
+[ Upstream commit 781ff8f2d575a794a2a4f11605288ae06757f5eb ]
 
-batadv_tp_sender_shutdown() unconditionally decrements the "sending"
-atomic counter. If multiple paths (e.g. timeout, user cancel, and
-normal finish) call this function, the counter can underflow to -1.
+ice_start_phy_timer_eth56g() programs TIMETUS registers and issues
+INIT_INCVAL without holding the global PTP semaphore.
 
-Since the sender logic treats any non-zero value as "still sending",
-a negative value causes the sender kthread to loop indefinitely.
-This leads to a use-after-free when the interface is removed while
-the zombie thread is still active.
+This allows concurrent PTP command paths to interleave with PHY timer
+start, which can make the sequence fail and leave timer initialization
+inconsistent.
 
-Fix this by using atomic_xchg() to ensure the counter only transitions
-from 1 to 0 once.
+Take the PTP lock around TIMETUS registers programming and INIT_INCVAL
+command execution, and make sure the lock is released on all error paths.
 
-Fixes: 33a3bb4a3345 ("batman-adv: throughput meter implementation")
-Cc: stable@kernel.org
-Reported-by: Yuan Tan <yuantan098@gmail.com>
-Reported-by: Yifan Wu <yifanwucs@gmail.com>
-Reported-by: Juefei Pu <tomapufckgml@gmail.com>
-Reported-by: Xin Liu <bird@lzu.edu.cn>
-Signed-off-by: Luxiao Xu <rakukuip@gmail.com>
-Signed-off-by: Ren Wei <n05ec@lzu.edu.cn>
-[sven: added missing change in batadv_tp_send]
-Signed-off-by: Sven Eckelmann <sven@narfation.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Keep the subsequent sync step outside of this critical section, since
+ice_sync_phy_timer_eth56g() takes the same semaphore internally.
+
+Fixes: 7cab44f1c35f ("ice: Introduce ETH56G PHY model for E825C products")
+Reviewed-by: Arkadiusz Kubalewski <Arkadiusz.kubalewski@intel.com>
+Signed-off-by: Grzegorz Nitka <grzegorz.nitka@intel.com>
+Reviewed-by: Aleksandr Loktionov <aleksandr.loktionov@intel.com>
+Tested-by: Alexander Nowlin <alexander.nowlin@intel.com>
+Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
+Link: https://patch.msgid.link/20260515182419.1597859-5-anthony.l.nguyen@intel.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/batman-adv/tp_meter.c |    4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/net/ethernet/intel/ice/ice_ptp_hw.c | 15 +++++++++++++--
+ 1 file changed, 13 insertions(+), 2 deletions(-)
 
---- a/net/batman-adv/tp_meter.c
-+++ b/net/batman-adv/tp_meter.c
-@@ -451,7 +451,7 @@ static void batadv_tp_sender_end(struct
- static void batadv_tp_sender_shutdown(struct batadv_tp_vars *tp_vars,
- 				      enum batadv_tp_meter_reason reason)
- {
--	if (!atomic_dec_and_test(&tp_vars->sending))
-+	if (atomic_xchg(&tp_vars->sending, 0) != 1)
- 		return;
+diff --git a/drivers/net/ethernet/intel/ice/ice_ptp_hw.c b/drivers/net/ethernet/intel/ice/ice_ptp_hw.c
+index 30b7839398165..0f378e68f72f1 100644
+--- a/drivers/net/ethernet/intel/ice/ice_ptp_hw.c
++++ b/drivers/net/ethernet/intel/ice/ice_ptp_hw.c
+@@ -2141,16 +2141,23 @@ int ice_start_phy_timer_eth56g(struct ice_hw *hw, u8 port)
+ 	}
+ 	incval = (u64)hi << 32 | lo;
  
- 	tp_vars->reason = reason;
-@@ -885,7 +885,7 @@ static int batadv_tp_send(void *arg)
- 				   "Meter: %s() cannot send packets (%d)\n",
- 				   __func__, err);
- 			/* ensure nobody else tries to stop the thread now */
--			if (atomic_dec_and_test(&tp_vars->sending))
-+			if (atomic_xchg(&tp_vars->sending, 0) == 1)
- 				tp_vars->reason = err;
- 			break;
- 		}
++	if (!ice_ptp_lock(hw)) {
++		dev_err(ice_hw_to_dev(hw), "Failed to acquire PTP semaphore\n");
++		return -EBUSY;
++	}
++
+ 	err = ice_write_40b_ptp_reg_eth56g(hw, port, PHY_REG_TIMETUS_L, incval);
+ 	if (err)
+-		return err;
++		goto err_ptp_unlock;
+ 
+ 	err = ice_ptp_one_port_cmd(hw, port, ICE_PTP_INIT_INCVAL);
+ 	if (err)
+-		return err;
++		goto err_ptp_unlock;
+ 
+ 	ice_ptp_exec_tmr_cmd(hw);
+ 
++	ice_ptp_unlock(hw);
++
+ 	err = ice_sync_phy_timer_eth56g(hw, port);
+ 	if (err)
+ 		return err;
+@@ -2166,6 +2173,10 @@ int ice_start_phy_timer_eth56g(struct ice_hw *hw, u8 port)
+ 	ice_debug(hw, ICE_DBG_PTP, "Enabled clock on PHY port %u\n", port);
+ 
+ 	return 0;
++
++err_ptp_unlock:
++	ice_ptp_unlock(hw);
++	return err;
+ }
+ 
+ /**
+-- 
+2.53.0
+
 
 
 
