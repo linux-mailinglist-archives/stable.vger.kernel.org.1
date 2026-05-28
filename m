@@ -1,195 +1,186 @@
-Return-Path: <stable+bounces-254774-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-254773-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id YC5lJer+F2rgYggAu9opvQ
-	(envelope-from <stable+bounces-254774-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 10:38:02 +0200
+	id qEXDAzj/F2rgYggAu9opvQ
+	(envelope-from <stable+bounces-254773-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 10:39:20 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 658D45EEB5F
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 10:38:01 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id F30565EEBD6
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 10:39:18 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id A705E30DEB15
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 08:30:49 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id C38E030E3417
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 08:30:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 60AD6380FF3;
-	Thu, 28 May 2026 08:30:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7CCA3379EF2;
+	Thu, 28 May 2026 08:29:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b="bHgBkqpW"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="A8EUTL3r"
 X-Original-To: stable@vger.kernel.org
-Received: from m16.mail.163.com (m16.mail.163.com [220.197.31.3])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0F93837FF5A;
-	Thu, 28 May 2026 08:30:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=220.197.31.3
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0115E37996B;
+	Thu, 28 May 2026 08:29:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779957033; cv=none; b=CqOrS/J55Uw9m8SyXBKquOGyX7FNAVaXCtYZxQX7XGZMKNQdhDbFOrCJvFV1jsiGbOT0kaRg3w4NuW4hmrgUXyUaBhC03pm7x3EKi4S3SMzs6yR3laJ8Llpo6kXvV+cXFxyHsoQD0WwH0leqhscUgEWhv8ZmrXMsg41TvFWXVMs=
+	t=1779956992; cv=none; b=l9YscXBEGPO4C7BsSatopsBtK8V4Us6L1Z3d81e+6OAQ8n6WifNJ8IqTFDo8Uag9XX38w96L9d6+J/nOTBXIj2WjCqboA9eB625GlR9PG+sPFoO1RDXToa/mF0LD2Q4m5SsJOgd2A70PPUBZagc0nuVhW6GAXdtKlRPvQflByfQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779957033; c=relaxed/simple;
-	bh=iOVvP7tzc8ITp05VV3fN7R6yOndkX0tN9xPDQsTKN7o=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=dCWLI70Lpy4YZt9j/IezA6bvr6SwSlohII7OUT5Dn+MyRMhz39jyktEyB5Pi78VJoJJVYO86cCtcLQI33V9EkxZHwUxPD6bp/3ETtqGXWQegof6OK0j0gBCC9FDQXwMIQz9tTzUxkGbTPVOqWLuegx02/WbfRicmEaUfsHRjB1c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com; spf=pass smtp.mailfrom=163.com; dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b=bHgBkqpW; arc=none smtp.client-ip=220.197.31.3
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=163.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
-	s=s110527; h=From:To:Subject:Date:Message-Id:MIME-Version; bh=n0
-	3eoOtM3eHsClG29ijMHpetVoDW9xstf0etlqEH/3I=; b=bHgBkqpWxzkBp7BEs9
-	fVdDHTiMq4OCJFhh4wQoWgS5Z+Xs2qAbwmfADZYtwwu/7l3T4JBVxH3PcE4SXJQK
-	AbU3mTpIHauqMtbOs3pMwdubdKpP0WfJJMTeo91MCJpK6lbbLyUtGj/OnBojhtdG
-	deIOR5YM5130/xGIEFJOYPQtk=
-Received: from 163.com (unknown [])
-	by gzga-smtp-mtada-g0-1 (Coremail) with SMTP id _____wDnv_3a_BdqOMI7AA--.8856S2;
-	Thu, 28 May 2026 16:29:18 +0800 (CST)
-From: w15303746062@163.com
-To: maarten.lankhorst@linux.intel.com,
-	mripard@kernel.org,
-	tzimmermann@suse.de,
-	airlied@gmail.com,
-	simona@ffwll.ch,
-	sumit.semwal@linaro.org,
-	christian.koenig@amd.com
-Cc: jeffy.chen@rock-chips.com,
-	dri-devel@lists.freedesktop.org,
-	linux-kernel@vger.kernel.org,
-	linux-media@vger.kernel.org,
-	linaro-mm-sig@lists.linaro.org,
-	Mingyu Wang <25181214217@stu.xidian.edu.cn>,
-	stable@vger.kernel.org
-Subject: [PATCH] drm/prime: Fix unsupervised rb_tree corruption in drm_prime_remove_buf_handle
-Date: Thu, 28 May 2026 16:29:12 +0800
-Message-Id: <20260528082912.1051262-1-w15303746062@163.com>
-X-Mailer: git-send-email 2.34.1
+	s=arc-20240116; t=1779956992; c=relaxed/simple;
+	bh=okD7iOXseNTi+jh7CHNlono8UQl09YO/P4GhYKk76mc=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=CwLsmQSgk3xfy/WdHBbMBoJN1zltWU4RjtW/Q2BFFnXHzsTRWATqYrnvRHzzNgnDPVa4qiJ6qSzdgINRPl1EbX/iNlBFUNjHgMDnbrWMXTko3ZXm60viM+qmADB7PG91wfYnp5bFlncWKQzDLLJs4jzVM/+xMeLZG0d+34xRtn0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=A8EUTL3r; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4767A1F00A3A;
+	Thu, 28 May 2026 08:29:48 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1779956990;
+	bh=e+d+mPKVJtuyhvoelHxJWZa6tDGCQO++RJc+s3Av7ws=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To;
+	b=A8EUTL3rvw6qP7SzzK9AGJw97EWgDbIh586kp9h8O6HzTwLLDgkjA+9rlVi01hNqZ
+	 8UATqGu9KQbCI7qxlWYo4/9Q1BlghOf8IXR+DNO1SwbT5+PapFdd047vIqY5r/8H4E
+	 So/E30ZseiHz1ULXGZtRffdpMFMS2NVIO5QKDUgW7FYnJmsxlC00x6K1BbKIh+Ukm7
+	 uZWp3HHdDGqCnlfE9AdB8HN0upM/6H0YYbmpOG+nwFDH/gpTxAPuMwiQr76ZI6+Jvq
+	 t1kVqf/socThqG1lWXf2Qhu0YkB3Q31F+N0cj8h8ZT+3mynQT9aul5peJCoSgsU5EF
+	 C0XegRq11a9Lw==
+Message-ID: <560f3365-8a22-477b-ae3d-61e8f4103e83@kernel.org>
+Date: Thu, 28 May 2026 11:29:46 +0300
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 03/17] i3c: renesas: Restore STDBR and EXTBR registers on
+ resume
+To: Frank Li <Frank.li@nxp.com>
+Cc: wsa+renesas@sang-engineering.com, tommaso.merciai.xr@bp.renesas.com,
+ alexandre.belloni@bootlin.com, p.zabel@pengutronix.de,
+ claudiu.beznea@tuxon.dev, linux-i3c@lists.infradead.org,
+ linux-kernel@vger.kernel.org, linux-renesas-soc@vger.kernel.org,
+ Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>, stable@vger.kernel.org
+References: <20260522101815.1722909-1-claudiu.beznea@kernel.org>
+ <20260522101815.1722909-4-claudiu.beznea@kernel.org>
+ <ahCqF-OHFbV9b5ul@lizhi-Precision-Tower-5810>
+Content-Language: en-US
+From: Claudiu Beznea <claudiu.beznea@kernel.org>
+In-Reply-To: <ahCqF-OHFbV9b5ul@lizhi-Precision-Tower-5810>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:_____wDnv_3a_BdqOMI7AA--.8856S2
-X-Coremail-Antispam: 1Uf129KBjvJXoWxuF1xWF48Kw1xXw1xXw18Xwb_yoW5KFyfpF
-	W3tryYkr48JF42gayIy3W7Zas3Aa1fWF4xWa92qr93Z3s0yr1xurWayFyj9rW5Gr97GryY
-	qFyUJw15KFyjkrDanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x07j5EfOUUUUU=
-X-CM-SenderInfo: jzrvjiatxuliiws6il2tof0z/xtbDAB7WumoX-N6FmwAA3z
 X-Spamd-Result: default: False [-0.66 / 15.00];
-	MID_CONTAINS_FROM(1.00)[];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
-	DMARC_POLICY_ALLOW(-0.50)[163.com,none];
-	R_DKIM_ALLOW(-0.20)[163.com:s=s110527];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
+	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20260515];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FREEMAIL_FROM(0.00)[163.com];
-	MIME_TRACE(0.00)[0:+];
-	RCVD_COUNT_THREE(0.00)[4];
-	FREEMAIL_TO(0.00)[linux.intel.com,kernel.org,suse.de,gmail.com,ffwll.ch,linaro.org,amd.com];
+	TAGGED_FROM(0.00)[bounces-254773-lists,stable=lfdr.de];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[14];
 	RCVD_TLS_LAST(0.00)[];
-	DKIM_TRACE(0.00)[163.com:+];
-	TO_DN_SOME(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	DKIM_TRACE(0.00)[kernel.org:+];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	MIME_TRACE(0.00)[0:+];
 	NEURAL_HAM(-0.00)[-1.000];
 	PRECEDENCE_BULK(0.00)[];
-	TAGGED_FROM(0.00)[bounces-254774-lists,stable=lfdr.de];
-	TAGGED_RCPT(0.00)[stable];
-	FROM_NO_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[w15303746062@163.com,stable@vger.kernel.org]
-X-Rspamd-Queue-Id: 658D45EEB5F
+	FROM_NEQ_ENVFROM(0.00)[claudiu.beznea@kernel.org,stable@vger.kernel.org];
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	MID_RHS_MATCH_FROM(0.00)[];
+	TAGGED_RCPT(0.00)[stable,renesas];
+	RCPT_COUNT_SEVEN(0.00)[11];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TO_DN_SOME(0.00)[]
+X-Rspamd-Queue-Id: F30565EEBD6
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-From: Mingyu Wang <25181214217@stu.xidian.edu.cn>
+Hi, Frank,
 
-Syzkaller fuzzer triggered a kernel panic via a WARNING in
-drm_prime_destroy_file_private() due to a non-empty prime rb_tree.
+On 5/22/26 22:10, Frank Li wrote:
+> On Fri, May 22, 2026 at 01:18:01PM +0300, Claudiu Beznea wrote:
+>> From: Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>
+>>
+>> The Renesas RZ/G3S supports a power saving state where power to the most
+>> SoC componentes (including I3C) is lost.
+>>
+>> The STDBR and EXTBR are configured in initialization phase though the
+>> struct i3c_master_controller_ops::bus_init. Set them on resume function
+>> as well to keep the same state of the controller after a suspend with
+>> power loss and a similar initialization sequence as in bus_init.
+>>
+>> Fixes: e7218986319b ("i3c: renesas: Add suspend/resume support")
+>> Cc: stable@vger.kernel.org
+>> Signed-off-by: Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>
+>> ---
+>>   drivers/i3c/master/renesas-i3c.c | 10 ++++++----
+>>   1 file changed, 6 insertions(+), 4 deletions(-)
+>>
+>> diff --git a/drivers/i3c/master/renesas-i3c.c b/drivers/i3c/master/renesas-i3c.c
+>> index 1917549cf6d5..6c23f956ad2a 100644
+>> --- a/drivers/i3c/master/renesas-i3c.c
+>> +++ b/drivers/i3c/master/renesas-i3c.c
+>> @@ -260,6 +260,7 @@ struct renesas_i3c {
+>>   	u32 dyn_addr;
+>>   	u32 i2c_STDBR;
+>>   	u32 i3c_STDBR;
+>> +	u32 extbr;
+> 
+> can you keep consisent with above 2 register, use upcase EXTBR,
 
-The root cause is a complete lack of synchronization in the teardown
-path. While the import path (drm_gem_prime_fd_to_handle) holds the
-&file_priv->prime.lock during lookup and insertion, the deletion path
-(drm_prime_remove_buf_handle) traverses and mutates both the 'handles'
-and 'dmabufs' rb_trees without acquiring any mutex.
+Using upper case for this will mislead the compiler. There is already a macro 
+defined for EXTBR:
 
-When multiple threads concurrently close GEM handles or interleave import
-and close operations, the pointers and balance states of the rb_tree
-nodes get corrupted. As a result, certain members are erased from one
-tree but remain orphaned in the other. Upon process exit, the final
-sanity check triggers the WARNING.
+#define EXTBR                   0x78
 
-[    448.919314][T19739] ------------[ cut here ]------------
-[    448.945387][T19739] WARNING: CPU: 0 PID: 19739 at drivers/gpu/drm/drm_prime.c:223 drm_prime_destroy_file_private+0x43/0x60
-...
-[    449.056535][T19739] Call Trace:
-[    449.056544][T19739]  <TASK>
-[    449.056553][T19739]  drm_file_free.part.0+0x805/0xcf0
-[    449.056652][T19739]  drm_close_helper.isra.0+0x183/0x1f0
-[    449.056677][T19739]  drm_release+0x1ab/0x360
-[    449.056719][T19739]  __fput+0x402/0xb50
-[    449.056783][T19739]  task_work_run+0x16b/0x260
-[    449.056883][T19739]  exit_to_user_mode_loop+0xf9/0x130
-[    449.056931][T19739]  do_syscall_64+0x424/0xfa0
-[    449.056977][T19739]  entry_SYSCALL_64_after_hwframe+0x77/0x7f
-[    449.057268][T19739]  </TASK>
-[    449.057295][T19739] Kernel panic - not syncing: kernel: panic_on_warn set ...
+Defining this member as:
 
-Fix this by acquiring the prime_fpriv->lock mutex around the rb_tree
-lookup and erasure logic. To respect the locking rules and avoid potential
-deadlocks with driver-specific memory cleanups, assign the target node to
-a temporary pointer and defer the dma_buf_put() and kfree() operations
-until after the mutex is safely dropped.
+u32 EXTBR;
 
-Fixes: ea2aa97ca37a ("drm/gem: Fix GEM handle release errors")
-Cc: stable@vger.kernel.org
-Signed-off-by: Mingyu Wang <25181214217@stu.xidian.edu.cn>
----
- drivers/gpu/drm/drm_prime.c | 13 +++++++++++--
- 1 file changed, 11 insertions(+), 2 deletions(-)
+will make the compiler try to replace the EXTBR in "i3c->EXTBR" at preprocessing 
+time:
 
-diff --git a/drivers/gpu/drm/drm_prime.c b/drivers/gpu/drm/drm_prime.c
-index 9b44c78cd77f..26319c638e0f 100644
---- a/drivers/gpu/drm/drm_prime.c
-+++ b/drivers/gpu/drm/drm_prime.c
-@@ -190,6 +190,9 @@ void drm_prime_remove_buf_handle(struct drm_prime_file_private *prime_fpriv,
- 				 uint32_t handle)
- {
- 	struct rb_node *rb;
-+	struct drm_prime_member *found = NULL;
-+
-+	mutex_lock(&prime_fpriv->lock);
- 
- 	rb = prime_fpriv->handles.rb_node;
- 	while (rb) {
-@@ -200,8 +203,7 @@ void drm_prime_remove_buf_handle(struct drm_prime_file_private *prime_fpriv,
- 			rb_erase(&member->handle_rb, &prime_fpriv->handles);
- 			rb_erase(&member->dmabuf_rb, &prime_fpriv->dmabufs);
- 
--			dma_buf_put(member->dma_buf);
--			kfree(member);
-+			found = member;
- 			break;
- 		} else if (member->handle < handle) {
- 			rb = rb->rb_right;
-@@ -209,6 +211,13 @@ void drm_prime_remove_buf_handle(struct drm_prime_file_private *prime_fpriv,
- 			rb = rb->rb_left;
- 		}
- 	}
-+	mutex_unlock(&prime_fpriv->lock);
-+
-+	/* Defer resource release outside the mutex to prevent deadlocks */
-+	if (found) {
-+		dma_buf_put(found->dma_buf);
-+		kfree(found);
-+	}
- }
- 
- void drm_prime_init_file_private(struct drm_prime_file_private *prime_fpriv)
+   CC [M]  drivers/i3c/master/renesas-i3c.o
+../drivers/i3c/master/renesas-i3c.c:65:17: error: expected identifier or ‘(’ 
+before numeric constant
+    65 | #define EXTBR   0x78
+       |                 ^~~~
+../drivers/i3c/master/renesas-i3c.c:263:6: note: in expansion of macro ‘EXTBR’
+   263 |  u32 EXTBR;
+       |      ^~~~~
+../drivers/i3c/master/renesas-i3c.c: In function ‘renesas_i3c_bus_init’:
+../drivers/i3c/master/renesas-i3c.c:65:17: error: expected identifier before 
+numeric constant
+    65 | #define EXTBR   0x78
+       |                 ^~~~
+../drivers/i3c/master/renesas-i3c.c:611:7: note: in expansion of macro ‘EXTBR’
+   611 |  i3c->EXTBR = EXTBR_EBRLO(od_low_ticks) | EXTBR_EBRHO(od_high_ticks) |
+       |       ^~~~~
+../drivers/i3c/master/renesas-i3c.c:65:17: error: expected identifier before 
+numeric constant
+    65 | #define EXTBR   0x78
+       |                 ^~~~
+../drivers/i3c/master/renesas-i3c.c:613:40: note: in expansion of macro ‘EXTBR’
+   613 |  renesas_writel(i3c->regs, EXTBR, i3c->EXTBR);
+       |                                        ^~~~~
+../drivers/i3c/master/renesas-i3c.c: In function ‘renesas_i3c_resume_noirq’:
+../drivers/i3c/master/renesas-i3c.c:65:17: error: expected identifier before 
+numeric constant
+    65 | #define EXTBR   0x78
+       |                 ^~~~
+../drivers/i3c/master/renesas-i3c.c:1451:40: note: in expansion of macro ‘EXTBR’
+  1451 |  renesas_writel(i3c->regs, EXTBR, i3c->EXTBR);
+       |                                        ^~~~~
+
+The register contains both i3c and i2c specific fields. I'm not sure using 
+i2c_i3c_EXTBR is the best way to go forward for this or just keeping it as is.
+
 -- 
-2.34.1
+Thank you,
+Claudiu
 
 
