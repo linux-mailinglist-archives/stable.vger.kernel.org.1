@@ -1,62 +1,74 @@
-Return-Path: <stable+bounces-255298-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-255604-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id GAb+BlmgGGpAlggAu9opvQ
-	(envelope-from <stable+bounces-255298-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:06:49 +0200
+	id 2EuEG8eiGGrClggAu9opvQ
+	(envelope-from <stable+bounces-255604-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:17:11 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6E3235F7D57
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:06:48 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0E6285F843D
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:17:10 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id EA6433126DCA
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 20:01:56 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id EEAFA305E36A
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 20:16:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BF208405C4B;
-	Thu, 28 May 2026 20:01:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 70BF02D6E5C;
+	Thu, 28 May 2026 20:16:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DhQLWP0V"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fbVM8g0D"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8E7FA26B973;
-	Thu, 28 May 2026 20:01:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E1361282F17;
+	Thu, 28 May 2026 20:16:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779998516; cv=none; b=InoFjmx1NVeaQI6EA8Xixo2Gwnt4FX49Dx8RjfS8/Qw4bYFAxSKWwwLA4NQ2APsTKBdEr9rtY1SO8IobrSTlNbutwCtxCjYS7RLGi/j7bFNS2aYZbY8fDf8WMoAjBbNSW/FjJz+yvG6tHuzTdHFWuPHCELiHxzt4fxG/zJ0mzNo=
+	t=1779999379; cv=none; b=ir5Ks5xx8kR5EiLsXMQxVyir4fYJDg8hgd3QIwq81uL3CSSqVWJXpQcx43UZ8haG1Ye91mB6OCXbfbey29SXKol35HP+tCL3JZVha0KvtdGW/gtY8+yMQ3XIC/s2r1kWGMLmHkfJszlwv42PncdYTnRnAvtcruGgqwlXZbFZnZ0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779998516; c=relaxed/simple;
-	bh=TkC3ZH8ctwInf+XAqVCvJddP9AAzv6CeOMAPZdzgOmU=;
+	s=arc-20240116; t=1779999379; c=relaxed/simple;
+	bh=J6J4TkT5J7Tqi/cb3cQcICbojC3/W8woUpsMwU7Hldk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=EsshyAYrCJLJo9QSiZdQ+LFq9Yyzn+SrFWfKkYAKvjgQ/3rVCGqSO9uQP425DX5GxSVbLi/S8froTO3TAg/CzUsP/dV6DyiVIW7VZiXmHJ+ztKT8uO0Qm95wE1KJsiDX//XiLOs+TKlmMBkuWBorkRwIpnf4vrg3u0gHP61EGsc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DhQLWP0V; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0056F1F000E9;
-	Thu, 28 May 2026 20:01:54 +0000 (UTC)
+	 MIME-Version:Content-Type; b=FVIQQUCQ1gaeyGJetz7b4l1ZrBGXNL58hi8xixcYOj1b6YzN3jkqRCARYV1zSnoQQwrGQMTCx/r+qXEEMKGxAmJgRYXCmptAiFZ+9n0Epf9UGVi1X217PSwYuNPMzv9s3fRwMHokh/xBfSWjdCJtNGkUL8UShmDY51ABp1fduos=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fbVM8g0D; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 22E7A1F000E9;
+	Thu, 28 May 2026 20:16:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779998515;
-	bh=jCKvEzOEIPx87jhgk30U+t8RkwRaaf0ixToUQhVuXk0=;
+	s=korg; t=1779999377;
+	bh=Whk+zPbVw/88+zqlBVpQ61zILupwyyOpFodKKs74xdg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=DhQLWP0VL7Q20zn28/FWIr7d0dE2+AuqNZRUwYZVQokUyErvlClI3TtdYAt3JW9iL
-	 WVLgIgXiZ1MR+7rLOudd2TqkA89xpEYQqaDXH/veLkb4Z0RyGT5lP1wrpQSYWAHz0y
-	 LVRG8F+OFVp5gZCOoMOkOKbBLruuDbrGo4m758oI=
+	b=fbVM8g0D5EYcv8+ZkYCN60XYol33Ocojs9qXT/JY7/Pw0WAbLPjVPyLZYxKtaZUaX
+	 z3ktzYaQaiY7Xf2FwDD2a7DGLVaH/zqULW+HEFBXnavo1+tK+rVMWjOaLKCByXblO7
+	 spqUQB7bpob93XM5pn5535QdgQIf7ubAjRsKTbrI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable@kernel.org,
-	Yuan Tan <yuantan098@gmail.com>,
-	Yifan Wu <yifanwucs@gmail.com>,
-	Juefei Pu <tomapufckgml@gmail.com>,
-	Xin Liu <bird@lzu.edu.cn>,
-	Sven Eckelmann <sven@narfation.org>
-Subject: [PATCH 7.0 154/461] batman-adv: tp_meter: avoid use of uninit sender vars
-Date: Thu, 28 May 2026 21:44:43 +0200
-Message-ID: <20260528194651.500583540@linuxfoundation.org>
+	Alistair Popple <apopple@nvidia.com>,
+	=?UTF-8?q?Arsen=20Arsenovi=C4=87?= <aarsenovic@baylibre.com>,
+	Balbir Singh <balbirs@nvidia.com>,
+	David Hildenbrand <david@kernel.org>,
+	Jason Gunthorpe <jgg@ziepe.ca>,
+	John Hubbard <jhubbard@nvidia.com>,
+	Leon Romanovsky <leon@kernel.org>,
+	"Liam R. Howlett" <liam@infradead.org>,
+	Lorenzo Stoakes <ljs@kernel.org>,
+	Peter Xu <peterx@redhat.com>,
+	Matthew Brost <matthew.brost@intel.com>,
+	Michal Hocko <mhocko@suse.com>,
+	Mike Rapoport <rppt@kernel.org>,
+	Shuah Khan <shuah@kernel.org>,
+	Suren Baghdasaryan <surenb@google.com>,
+	=?UTF-8?q?Thomas=20Hellstr=C3=B6m?= <thomas.hellstrom@linux.intel.com>,
+	Vlastimil Babka <vbabka@kernel.org>,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 6.18 046/377] mm/memory: fix spurious warning when unmapping device-private/exclusive pages
+Date: Thu, 28 May 2026 21:44:44 +0200
+Message-ID: <20260528194639.705886528@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260528194646.819809818@linuxfoundation.org>
-References: <20260528194646.819809818@linuxfoundation.org>
+In-Reply-To: <20260528194638.371537336@linuxfoundation.org>
+References: <20260528194638.371537336@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,103 +78,224 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,kernel.org,gmail.com,lzu.edu.cn,narfation.org];
-	TAGGED_FROM(0.00)[bounces-255298-lists,stable=lfdr.de];
-	PRECEDENCE_BULK(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-255604-lists,stable=lfdr.de];
 	FROM_HAS_DN(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
 	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCPT_COUNT_TWELVE(0.00)[21];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[9];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
 	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[lzu.edu.cn:email,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,narfation.org:email]
-X-Rspamd-Queue-Id: 6E3235F7D57
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	TAGGED_RCPT(0.00)[stable];
+	MID_RHS_MATCH_FROM(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo]
+X-Rspamd-Queue-Id: 0E6285F843D
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-7.0-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sven Eckelmann <sven@narfation.org>
+From: Alistair Popple <apopple@nvidia.com>
 
-commit 6c65cf23d4c6170fcf5714c32aa64689718cb142 upstream.
+commit be3f38d05cc5a7c3f13e51994c5dd043ab604d28 upstream.
 
-batadv_tp_recv_ack() and batadv_tp_stop() are only valid for tp_vars in the
-BATADV_TP_SENDER role. When called with a BATADV_TP_RECEIVER role, it
-proceeds to read sender-only members that were never initialized, leading
-to undefined behavior.
+Device private and exclusive entries are only supported for anonymous
+folios.  This condition is tested in __migrate_device_pages() and
+make_device_exclusive() using folio_test_anon().  However the unmap path
+tests this assumption using vma_is_anonymous().
 
-This can be triggered when a node that is currently acting as a receiver in
-an ongoing tp_meter session receives a malicious ACK packet.
+This is wrong because whilst anonymous VMAs can only contain folios where
+folio_test_anon() is true the opposite relation does not hold.  A folio
+for which folio_test_anon() is true does not imply vma_is_anonymous() is
+true.  Such a condition can occur if for example a folio is part of a
+private filebacked mapping.
 
-Guard against this by checking tp_vars->role immediately after the
-lookup and bailing out if it is not BATADV_TP_SENDER, before any of
-those members are accessed.
+In this case vma_is_anonymous() is false as the mapping is filebacked, but
+folio_test_anon() may be true, thus permitting devices to migrate the
+folio to device private memory.  This can lead to the following spurious
+warnings during process teardown:
 
-Cc: stable@kernel.org
-Fixes: 33a3bb4a3345 ("batman-adv: throughput meter implementation")
-Reported-by: Yuan Tan <yuantan098@gmail.com>
-Reported-by: Yifan Wu <yifanwucs@gmail.com>
-Reported-by: Juefei Pu <tomapufckgml@gmail.com>
-Reported-by: Xin Liu <bird@lzu.edu.cn>
-Reviewed-by: Yuan Tan <yuantan098@gmail.com>
-Signed-off-by: Sven Eckelmann <sven@narfation.org>
+[  772.737706] ------------[ cut here ]------------
+[  772.739201] WARNING: mm/memory.c:1754 at unmap_page_range.cold+0x26/0x18a, CPU#17: hmm-tests/2041
+[  772.742050] Modules linked in: test_hmm nvidia_uvm(O) nvidia(O)
+[  772.743959] CPU: 17 UID: 0 PID: 2041 Comm: hmm-tests Tainted: G        W  O        7.0.0+ #387 PREEMPT(full)
+[  772.747104] Tainted: [W]=WARN, [O]=OOT_MODULE
+[  772.748509] Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS rel-1.17.0-0-gb52ca86e094d-prebuilt.qemu.org 04/01/2014
+[  772.752117] RIP: 0010:unmap_page_range.cold+0x26/0x18a
+[  772.753780] Code: 7e fe ff ff 48 89 4c 24 78 4c 89 44 24 38 e8 f2 ff b1 00 48 8b 4c 24 78 4c 8b 44 24 38 48 8b 44 24 18 48 83 78 48 00 74 04 90 <0f> 0b 90 48 89 ca b8 ff ff 37 00 48 c1 ea 03 48 c1 e0 2a 80 3c 02
+[  772.759602] RSP: 0018:ffff888112607550 EFLAGS: 00010286
+[  772.761310] RAX: ffff88811bbf4dc0 RBX: dffffc0000000000 RCX: ffffea03e9bfffd8
+[  772.763583] RDX: 1ffff1102377e9c1 RSI: 0000000000000008 RDI: ffff88811bbf4e08
+[  772.765914] RBP: 0000000000000006 R08: ffff8881059f7448 R09: ffffed10224c0e68
+[  772.768184] R10: ffff888112607347 R11: 0000000000000001 R12: 0000000000000001
+[  772.770461] R13: ffffea03e9bfffc0 R14: ffff888112607908 R15: ffffea03e9bfffc0
+[  772.772782] FS:  00007f327caa2780(0000) GS:ffff888427b7d000(0000) knlGS:0000000000000000
+[  772.775328] CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+[  772.777187] CR2: 00007f327ca89000 CR3: 00000001994d5000 CR4: 00000000000006f0
+[  772.779135] Call Trace:
+[  772.779792]  <TASK>
+[  772.780317]  ? dmirror_interval_invalidate+0x1a3/0x290 [test_hmm]
+[  772.781873]  ? vm_normal_page_pud+0x2b0/0x2b0
+[  772.782992]  ? __rwlock_init+0x150/0x150
+[  772.784006]  ? lock_release+0x216/0x2b0
+[  772.785008]  ? __mmu_notifier_invalidate_range_start+0x505/0x6e0
+[  772.786522]  ? lock_release+0x216/0x2b0
+[  772.787498]  ? unmap_single_vma+0xb6/0x210
+[  772.788573]  unmap_vmas+0x27d/0x520
+[  772.789506]  ? unmap_single_vma+0x210/0x210
+[  772.790607]  ? mas_update_gap.part.0+0x620/0x620
+[  772.791834]  unmap_region+0x19e/0x350
+[  772.792769]  ? remove_vma+0x130/0x130
+[  772.793684]  ? mas_alloc_nodes+0x1f2/0x300
+[  772.794730]  vms_complete_munmap_vmas+0x8c1/0xe20
+[  772.795926]  ? unmap_region+0x350/0x350
+[  772.796917]  do_vmi_align_munmap+0x36a/0x4e0
+[  772.798018]  ? lock_release+0x216/0x2b0
+[  772.799024]  ? vma_shrink+0x620/0x620
+[  772.799983]  do_vmi_munmap+0x150/0x2c0
+[  772.800939]  __vm_munmap+0x161/0x2c0
+[  772.801872]  ? expand_downwards+0xd60/0xd60
+[  772.802948]  ? clockevents_program_event+0x1ef/0x540
+[  772.804217]  ? lock_release+0x216/0x2b0
+[  772.805158]  __x64_sys_munmap+0x59/0x80
+[  772.805776]  do_syscall_64+0xfc/0x670
+[  772.806336]  ? irqentry_exit+0xda/0x580
+[  772.806976]  entry_SYSCALL_64_after_hwframe+0x4b/0x53
+[  772.807772] RIP: 0033:0x7f327cbb2717
+[  772.808323] Code: 73 01 c3 48 8b 0d f9 76 0d 00 f7 d8 64 89 01 48 83 c8 ff c3 66 2e 0f 1f 84 00 00 00 00 00 0f 1f 44 00 00 b8 0b 00 00 00 0f 05 <48> 3d 01 f0 ff ff 73 01 c3 48 8b 0d c9 76 0d 00 f7 d8 64 89 01 48
+[  772.811337] RSP: 002b:00007ffde7f57d38 EFLAGS: 00000202 ORIG_RAX: 000000000000000b
+[  772.812564] RAX: ffffffffffffffda RBX: 00007f327cc9c000 RCX: 00007f327cbb2717
+[  772.813733] RDX: 0000000000000000 RSI: 0000000000400000 RDI: 00007f327c289000
+[  772.814867] RBP: 0000000000421360 R08: 000000000000001a R09: 0000000000000000
+[  772.815991] R10: 0000000000000003 R11: 0000000000000202 R12: 00007ffde7f57d74
+[  772.817121] R13: 00007f327c689010 R14: 0000000000100000 R15: 00007f327c289000
+[  772.818272]  </TASK>
+[  772.818614] irq event stamp: 0
+[  772.819159] hardirqs last  enabled at (0): [<0000000000000000>] 0x0
+[  772.820174] hardirqs last disabled at (0): [<ffffffff82a57ab3>] copy_process+0x19f3/0x6440
+[  772.821511] softirqs last  enabled at (0): [<ffffffff82a57b00>] copy_process+0x1a40/0x6440
+[  772.822869] softirqs last disabled at (0): [<0000000000000000>] 0x0
+[  772.823871] ---[ end trace 0000000000000000 ]---
+
+Fix this by using the same check for folio_test_anon() in
+zap_nonpresent_ptes(). Also add a hmm-test case for this.
+
+Link: https://lore.kernel.org/20260501065116.2057242-1-apopple@nvidia.com
+Fixes: 999dad824c39 ("mm/shmem: persist uffd-wp bit across zapping for file-backed")
+Signed-off-by: Alistair Popple <apopple@nvidia.com>
+Reported-by: Arsen Arsenović <aarsenovic@baylibre.com>
+Reviewed-by: Balbir Singh <balbirs@nvidia.com>
+Cc: David Hildenbrand <david@kernel.org>
+Cc: Jason Gunthorpe <jgg@ziepe.ca>
+Cc: John Hubbard <jhubbard@nvidia.com>
+Cc: Leon Romanovsky <leon@kernel.org>
+Cc: Liam R. Howlett <liam@infradead.org>
+Cc: Lorenzo Stoakes <ljs@kernel.org>
+Cc: Peter Xu <peterx@redhat.com>
+Cc: Matthew Brost <matthew.brost@intel.com>
+Cc: Michal Hocko <mhocko@suse.com>
+Cc: Mike Rapoport <rppt@kernel.org>
+Cc: Shuah Khan <shuah@kernel.org>
+Cc: Suren Baghdasaryan <surenb@google.com>
+Cc: Thomas Hellström <thomas.hellstrom@linux.intel.com>
+Cc: Vlastimil Babka <vbabka@kernel.org>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/batman-adv/tp_meter.c |   11 +++++++++--
- 1 file changed, 9 insertions(+), 2 deletions(-)
+ mm/memory.c                            |    2 -
+ tools/testing/selftests/mm/hmm-tests.c |   50 +++++++++++++++++++++++++++++++++
+ 2 files changed, 51 insertions(+), 1 deletion(-)
 
---- a/net/batman-adv/tp_meter.c
-+++ b/net/batman-adv/tp_meter.c
-@@ -663,6 +663,9 @@ static void batadv_tp_recv_ack(struct ba
- 	if (unlikely(!tp_vars))
- 		return;
- 
-+	if (unlikely(tp_vars->role != BATADV_TP_SENDER))
-+		goto out;
-+
- 	if (unlikely(atomic_read(&tp_vars->sending) == 0))
- 		goto out;
- 
-@@ -1100,12 +1103,16 @@ void batadv_tp_stop(struct batadv_priv *
- 	if (!tp_vars) {
- 		batadv_dbg(BATADV_DBG_TP_METER, bat_priv,
- 			   "Meter: trying to interrupt an already over connection\n");
--		goto out;
-+		goto out_put_orig_node;
- 	}
- 
-+	if (unlikely(tp_vars->role != BATADV_TP_SENDER))
-+		goto out_put_tp_vars;
-+
- 	batadv_tp_sender_shutdown(tp_vars, return_value);
-+out_put_tp_vars:
- 	batadv_tp_vars_put(tp_vars);
--out:
-+out_put_orig_node:
- 	batadv_orig_node_put(orig_node);
+--- a/mm/memory.c
++++ b/mm/memory.c
+@@ -1735,7 +1735,7 @@ static inline int zap_nonpresent_ptes(st
+ 		 * consider uffd-wp bit when zap. For more information,
+ 		 * see zap_install_uffd_wp_if_needed().
+ 		 */
+-		WARN_ON_ONCE(!vma_is_anonymous(vma));
++		WARN_ON_ONCE(!folio_test_anon(folio));
+ 		rss[mm_counter(folio)]--;
+ 		folio_remove_rmap_pte(folio, page, vma);
+ 		folio_put(folio);
+--- a/tools/testing/selftests/mm/hmm-tests.c
++++ b/tools/testing/selftests/mm/hmm-tests.c
+@@ -999,6 +999,56 @@ TEST_F(hmm, migrate)
  }
  
+ /*
++ * Migrate private file memory to device private memory.
++ */
++TEST_F(hmm, migrate_file_private)
++{
++	struct hmm_buffer *buffer;
++	unsigned long npages;
++	unsigned long size;
++	unsigned long i;
++	int *ptr;
++	int ret;
++	int fd;
++
++	npages = ALIGN(HMM_BUFFER_SIZE, self->page_size) >> self->page_shift;
++	ASSERT_NE(npages, 0);
++	size = npages << self->page_shift;
++
++	fd = hmm_create_file(size);
++	ASSERT_GE(fd, 0);
++
++	buffer = malloc(sizeof(*buffer));
++	ASSERT_NE(buffer, NULL);
++
++	buffer->fd = fd;
++	buffer->size = size;
++	buffer->mirror = malloc(size);
++	ASSERT_NE(buffer->mirror, NULL);
++
++	buffer->ptr = mmap(NULL, size,
++			   PROT_READ | PROT_WRITE,
++			   MAP_PRIVATE,
++			   buffer->fd, 0);
++	ASSERT_NE(buffer->ptr, MAP_FAILED);
++
++	/* Initialize buffer in system memory. */
++	for (i = 0, ptr = buffer->ptr; i < size / sizeof(*ptr); ++i)
++		ptr[i] = i;
++
++	/* Migrate memory to device. */
++	ret = hmm_migrate_sys_to_dev(self->fd, buffer, npages);
++	ASSERT_EQ(ret, 0);
++	ASSERT_EQ(buffer->cpages, npages);
++
++	/* Check what the device read. */
++	for (i = 0, ptr = buffer->mirror; i < size / sizeof(*ptr); ++i)
++		ASSERT_EQ(ptr[i], i);
++
++	hmm_buffer_free(buffer);
++}
++
++/*
+  * Migrate anonymous memory to device private memory and fault some of it back
+  * to system memory, then try migrating the resulting mix of system and device
+  * private memory to the device.
 
 
 
