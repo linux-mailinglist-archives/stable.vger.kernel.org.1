@@ -1,62 +1,60 @@
-Return-Path: <stable+bounces-256189-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-256321-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id MCLyFamqGGoomAgAu9opvQ
-	(envelope-from <stable+bounces-256189-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:50:49 +0200
+	id OFXJNXusGGpolwgAu9opvQ
+	(envelope-from <stable+bounces-256321-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:58:35 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0AA105F9AFB
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:50:48 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 57C075F9F53
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:58:35 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 3CF2430BA718
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 20:43:26 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 6823B323262F
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 20:49:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 73A4C2EF652;
-	Thu, 28 May 2026 20:43:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7988D31159C;
+	Thu, 28 May 2026 20:49:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Grrd1lH/"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BlP25Xhj"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 052DB1DE4E0;
-	Thu, 28 May 2026 20:43:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2858C327C00;
+	Thu, 28 May 2026 20:49:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780001005; cv=none; b=J/LCl+/2BEkWQ2kSxsTuooUpWzCi68kqyqobFY1gvIiIEZ/3PSBWIF0EnaXOMnW1wT230Ckm+P3SfRCIbxOnTdUXf4UUA1WkOBf5shi5lDKPXvxXj3v4Kw1+aciRK5So/MJndlbhmnAQVhYQFmlmUAw+oncHtrcdBb6BK6huoZs=
+	t=1780001374; cv=none; b=fl0cRCzi+k3sL0BgyYkomMQ3XSKrDI9rAHxGE0FblNDZId8CWklSwDARp2acsHauRNzNwNEc8Yv5AEeuCdWk0yLdTOk6iq9bclfj/XmVKll0ZJPswrgN7Ypp8jswZJJeiN39RVSJQ/7MoqfKRjZ0vVE4dpV/LIhsV/KzBXjnW9I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780001005; c=relaxed/simple;
-	bh=uuSsWvWVuTq0QLJTZK5JSR3nF6ujsejsKJfW17wTyRg=;
+	s=arc-20240116; t=1780001374; c=relaxed/simple;
+	bh=+hL7JA0PNN6IrONNHy7lSmEqboQEc7J2BWt8x0D6UPI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=G6Cn6q8GeG3SxNDR1HE7OyYXoJonAx9AhfBDkgmGiBc2fzJI8+44vJREFSKL3UJEwa3RURgEBKvvhQ2OUmWEYzSGzIiF/WmBFKWOK6OkJpatU4kpx7VAFTGqPQ6DQUv1sgNNCdwt8l+Sz1Gzfc2MfYjM06+x2AtM8AN+Hm/hRR8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Grrd1lH/; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 69A8E1F000E9;
-	Thu, 28 May 2026 20:43:23 +0000 (UTC)
+	 MIME-Version; b=NkfFkX3uLY2BHT4sATJkwVQjB7rCMoJT0hdaSbpLu6KVu/Xz3nYbmrdGcyAxRojxi2g3QP1FzuZ4hhnD0PBF7VT+ywIMnZaTFovRI6NEzx3rNTEDXrBaeTeNvF26uzkyNLMqXnAXuKnZuO6VbM0++nbLDl8HKbPLV+v+kU4lTMo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BlP25Xhj; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 85D541F000E9;
+	Thu, 28 May 2026 20:49:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780001003;
-	bh=b6+J6xP8y/1klnfRTa508fOvnlsrlFELi8FYaudVWgI=;
+	s=korg; t=1780001373;
+	bh=vOk4Rxf4ZIOdUR1F39cIXCHyyGlRinynMcbbgE3Jrmc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=Grrd1lH/uy6NazXPMz9q/yEgpafjDg38N6tVNPLEGswUnWjksiECzy3dgu5EGjYf9
-	 f8YHRSAJo2NBgfumGZHdV6X45rKs+qcvUtIPqLnmym8lwmEPJhCCIcCB0wKuMV6AQf
-	 J1DbUVNVdrN1lUPz/6qjDg7moAwN//Ql3rDxM4wM=
+	b=BlP25XhjQYnTc3Pdsw732I6DsJ85StcVgMUsBBVjapMo30P/WpCC/B77VQeCbmNuk
+	 rysbK2LtBee+EwvYjmr9+prOcAzZNgGMbF6xGAiPB14+pnUHyTXKufaya5y3geIdif
+	 Y91nSWcDrVhATX7cdL0sfHtTKtdI9kOJGpk/tYOo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Keith Busch <kbusch@kernel.org>,
-	Christoph Hellwig <hch@lst.de>,
-	Anuj Gupta <anuj20.g@samsung.com>,
-	Kanchan Joshi <joshi.k@samsung.com>,
-	Jens Axboe <axboe@kernel.dk>,
+	Linus Walleij <linus.walleij@linaro.org>,
+	Guenter Roeck <linux@roeck-us.net>,
+	Arnd Bergmann <arnd@arndb.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 209/272] blk-integrity: remove seed for user mapped buffers
+Subject: [PATCH 6.6 103/186] ARM: integrator: Fix early initialization
 Date: Thu, 28 May 2026 21:49:43 +0200
-Message-ID: <20260528194635.081869396@linuxfoundation.org>
+Message-ID: <20260528194931.717755635@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260528194629.379955525@linuxfoundation.org>
-References: <20260528194629.379955525@linuxfoundation.org>
+In-Reply-To: <20260528194928.941004471@linuxfoundation.org>
+References: <20260528194928.941004471@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -71,7 +69,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
@@ -79,7 +77,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-256189-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-256321-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
@@ -88,242 +86,108 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[9];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[lst.de:email,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim,kernel.dk:email]
-X-Rspamd-Queue-Id: 0AA105F9AFB
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linaro.org:email,roeck-us.net:email,arndb.de:email,linuxfoundation.org:mid,linuxfoundation.org:dkim]
+X-Rspamd-Queue-Id: 57C075F9F53
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Keith Busch <kbusch@kernel.org>
+From: Guenter Roeck <linux@roeck-us.net>
 
-[ Upstream commit 133008e84b99e4f5f8cf3d8b768c995732df9406 ]
+[ Upstream commit 90d77b30a666049ad24df463f52e5d529c44e8cd ]
 
-The seed is only used for kernel generation and verification. That
-doesn't happen for user buffers, so passing the seed around doesn't
-accomplish anything.
+Starting with commit bdb249fce9ad4 ("ARM: integrator: read counter using
+syscon/regmap"), intcp_init_early calls syscon_regmap_lookup_by_compatible
+which in turn calls of_syscon_register. This function allocates memory.
+Since the memory management code has not been initialized at that time,
+the call always fails. It either returns -ENOMEM or crashes as follows.
 
-Signed-off-by: Keith Busch <kbusch@kernel.org>
-Reviewed-by: Christoph Hellwig <hch@lst.de>
-Reviewed-by: Anuj Gupta <anuj20.g@samsung.com>
-Reviewed-by: Kanchan Joshi <joshi.k@samsung.com>
-Link: https://lore.kernel.org/r/20241016201309.1090320-1-kbusch@meta.com
-Signed-off-by: Jens Axboe <axboe@kernel.dk>
-Stable-dep-of: 637ad3a56a3b ("block: don't overwrite bip_vcnt in bio_integrity_copy_user()")
+Unable to handle kernel NULL pointer dereference at virtual address 0000000c when read
+[0000000c] *pgd=00000000
+Internal error: Oops: 5 [#1] ARM
+Modules linked in:
+CPU: 0 UID: 0 PID: 0 Comm: swapper Not tainted 6.15.0-rc5-00026-g5fcc9bf84ee5 #1 PREEMPT
+Hardware name: ARM Integrator/CP (Device Tree)
+PC is at __kmalloc_cache_noprof+0xec/0x39c
+LR is at __kmalloc_cache_noprof+0x34/0x39c
+...
+Call trace:
+ __kmalloc_cache_noprof from of_syscon_register+0x7c/0x310
+ of_syscon_register from device_node_get_regmap+0xa4/0xb0
+ device_node_get_regmap from intcp_init_early+0xc/0x40
+ intcp_init_early from start_kernel+0x60/0x688
+ start_kernel from 0x0
+
+The crash is seen due to a dereferenced pointer which is not supposed to be
+NULL but is NULL if the memory management subsystem has not been
+initialized. The crash is not seen with all versions of gcc. Some versions
+such as gcc 9.x apparently do not dereference the pointer, presumably if
+tracing is disabled. The problem has been reproduced with gcc 10.x, 11.x,
+and 13.x. Either case, if the crash is not seen, the call to
+syscon_regmap_lookup_by_compatible returns -ENOMEM, and
+sched_clock_register is never called.
+
+Fix the problem by moving the early initialization code into the standard
+machine initialization code.
+
+Fixes: bdb249fce9ad4 ("ARM: integrator: read counter using syscon/regmap")
+Cc: Linus Walleij <linus.walleij@linaro.org>
+Signed-off-by: Guenter Roeck <linux@roeck-us.net>
+Link: https://lore.kernel.org/20250518164118.3859567-1-linux@roeck-us.net
+Signed-off-by: Linus Walleij <linus.walleij@linaro.org>
+Link: https://lore.kernel.org/r/20260505-integrator-fixes-v1-1-56ab9aac59db@kernel.org
+Signed-off-by: Arnd Bergmann <arnd@arndb.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- block/bio-integrity.c         | 13 +++++--------
- block/blk-integrity.c         |  4 ++--
- drivers/nvme/host/ioctl.c     | 17 ++++++++---------
- include/linux/bio-integrity.h |  4 ++--
- include/linux/blk-integrity.h |  5 ++---
- 5 files changed, 19 insertions(+), 24 deletions(-)
+ arch/arm/mach-versatile/integrator_cp.c | 13 ++++---------
+ 1 file changed, 4 insertions(+), 9 deletions(-)
 
-diff --git a/block/bio-integrity.c b/block/bio-integrity.c
-index 6641ecbf69678..ab58f44058e96 100644
---- a/block/bio-integrity.c
-+++ b/block/bio-integrity.c
-@@ -197,7 +197,7 @@ EXPORT_SYMBOL(bio_integrity_add_page);
- 
- static int bio_integrity_copy_user(struct bio *bio, struct bio_vec *bvec,
- 				   int nr_vecs, unsigned int len,
--				   unsigned int direction, u32 seed)
-+				   unsigned int direction)
- {
- 	bool write = direction == ITER_SOURCE;
- 	struct bio_integrity_payload *bip;
-@@ -245,7 +245,6 @@ static int bio_integrity_copy_user(struct bio *bio, struct bio_vec *bvec,
- 	}
- 
- 	bip->bip_flags |= BIP_COPY_USER;
--	bip->bip_iter.bi_sector = seed;
- 	bip->bip_vcnt = nr_vecs;
- 	return 0;
- free_bip:
-@@ -256,7 +255,7 @@ static int bio_integrity_copy_user(struct bio *bio, struct bio_vec *bvec,
+diff --git a/arch/arm/mach-versatile/integrator_cp.c b/arch/arm/mach-versatile/integrator_cp.c
+index 2ed4ded56b3fe..03dfb5f720b7b 100644
+--- a/arch/arm/mach-versatile/integrator_cp.c
++++ b/arch/arm/mach-versatile/integrator_cp.c
+@@ -86,14 +86,6 @@ static u64 notrace intcp_read_sched_clock(void)
+ 	return val;
  }
  
- static int bio_integrity_init_user(struct bio *bio, struct bio_vec *bvec,
--				   int nr_vecs, unsigned int len, u32 seed)
-+				   int nr_vecs, unsigned int len)
+-static void __init intcp_init_early(void)
+-{
+-	cm_map = syscon_regmap_lookup_by_compatible("arm,core-module-integrator");
+-	if (IS_ERR(cm_map))
+-		return;
+-	sched_clock_register(intcp_read_sched_clock, 32, 24000000);
+-}
+-
+ static void __init intcp_init_irq_of(void)
  {
- 	struct bio_integrity_payload *bip;
- 
-@@ -265,7 +264,6 @@ static int bio_integrity_init_user(struct bio *bio, struct bio_vec *bvec,
- 		return PTR_ERR(bip);
- 
- 	memcpy(bip->bip_vec, bvec, nr_vecs * sizeof(*bvec));
--	bip->bip_iter.bi_sector = seed;
- 	bip->bip_iter.bi_size = len;
- 	bip->bip_vcnt = nr_vecs;
- 	return 0;
-@@ -301,8 +299,7 @@ static unsigned int bvec_from_pages(struct bio_vec *bvec, struct page **pages,
- 	return nr_bvecs;
- }
- 
--int bio_integrity_map_user(struct bio *bio, void __user *ubuf, ssize_t bytes,
--			   u32 seed)
-+int bio_integrity_map_user(struct bio *bio, void __user *ubuf, ssize_t bytes)
+ 	cm_init();
+@@ -119,6 +111,10 @@ static void __init intcp_init_of(void)
  {
- 	struct request_queue *q = bdev_get_queue(bio->bi_bdev);
- 	unsigned int align = blk_lim_dma_alignment_and_pad(&q->limits);
-@@ -348,9 +345,9 @@ int bio_integrity_map_user(struct bio *bio, void __user *ubuf, ssize_t bytes,
+ 	struct device_node *cpcon;
  
- 	if (copy)
- 		ret = bio_integrity_copy_user(bio, bvec, nr_bvecs, bytes,
--					      direction, seed);
-+					      direction);
- 	else
--		ret = bio_integrity_init_user(bio, bvec, nr_bvecs, bytes, seed);
-+		ret = bio_integrity_init_user(bio, bvec, nr_bvecs, bytes);
- 	if (ret)
- 		goto release_pages;
- 	if (bvec != stack_vec)
-diff --git a/block/blk-integrity.c b/block/blk-integrity.c
-index 3fe0681399f6e..013469faa5e7c 100644
---- a/block/blk-integrity.c
-+++ b/block/blk-integrity.c
-@@ -113,9 +113,9 @@ int blk_rq_map_integrity_sg(struct request *rq, struct scatterlist *sglist)
- EXPORT_SYMBOL(blk_rq_map_integrity_sg);
- 
- int blk_rq_integrity_map_user(struct request *rq, void __user *ubuf,
--			      ssize_t bytes, u32 seed)
-+			      ssize_t bytes)
- {
--	int ret = bio_integrity_map_user(rq->bio, ubuf, bytes, seed);
-+	int ret = bio_integrity_map_user(rq->bio, ubuf, bytes);
- 
- 	if (ret)
- 		return ret;
-diff --git a/drivers/nvme/host/ioctl.c b/drivers/nvme/host/ioctl.c
-index 64ae8af01d9a4..930521c633d23 100644
---- a/drivers/nvme/host/ioctl.c
-+++ b/drivers/nvme/host/ioctl.c
-@@ -114,7 +114,7 @@ static struct request *nvme_alloc_user_request(struct request_queue *q,
- 
- static int nvme_map_user_request(struct request *req, u64 ubuffer,
- 		unsigned bufflen, void __user *meta_buffer, unsigned meta_len,
--		u32 meta_seed, struct io_uring_cmd *ioucmd, unsigned int flags)
-+		struct io_uring_cmd *ioucmd, unsigned int flags)
- {
- 	struct request_queue *q = req->q;
- 	struct nvme_ns *ns = q->queuedata;
-@@ -164,8 +164,7 @@ static int nvme_map_user_request(struct request *req, u64 ubuffer,
- 		bio_set_dev(bio, bdev);
- 
- 	if (has_metadata) {
--		ret = blk_rq_integrity_map_user(req, meta_buffer, meta_len,
--						meta_seed);
-+		ret = blk_rq_integrity_map_user(req, meta_buffer, meta_len);
- 		if (ret)
- 			goto out_unmap;
- 	}
-@@ -182,7 +181,7 @@ static int nvme_map_user_request(struct request *req, u64 ubuffer,
- 
- static int nvme_submit_user_cmd(struct request_queue *q,
- 		struct nvme_command *cmd, u64 ubuffer, unsigned bufflen,
--		void __user *meta_buffer, unsigned meta_len, u32 meta_seed,
-+		void __user *meta_buffer, unsigned meta_len,
- 		u64 *result, unsigned timeout, unsigned int flags)
- {
- 	struct nvme_ns *ns = q->queuedata;
-@@ -199,7 +198,7 @@ static int nvme_submit_user_cmd(struct request_queue *q,
- 	req->timeout = timeout;
- 	if (ubuffer && bufflen) {
- 		ret = nvme_map_user_request(req, ubuffer, bufflen, meta_buffer,
--				meta_len, meta_seed, NULL, flags);
-+				meta_len, NULL, flags);
- 		if (ret)
- 			return ret;
- 	}
-@@ -280,7 +279,7 @@ static int nvme_submit_io(struct nvme_ns *ns, struct nvme_user_io __user *uio)
- 	c.rw.lbatm = cpu_to_le16(io.appmask);
- 
- 	return nvme_submit_user_cmd(ns->queue, &c, io.addr, length, metadata,
--			meta_len, lower_32_bits(io.slba), NULL, 0, 0);
-+			meta_len, NULL, 0, 0);
- }
- 
- static bool nvme_validate_passthru_nsid(struct nvme_ctrl *ctrl,
-@@ -334,7 +333,7 @@ static int nvme_user_cmd(struct nvme_ctrl *ctrl, struct nvme_ns *ns,
- 
- 	status = nvme_submit_user_cmd(ns ? ns->queue : ctrl->admin_q, &c,
- 			cmd.addr, cmd.data_len, nvme_to_user_ptr(cmd.metadata),
--			cmd.metadata_len, 0, &result, timeout, 0);
-+			cmd.metadata_len, &result, timeout, 0);
- 
- 	if (status >= 0) {
- 		if (put_user(result, &ucmd->result))
-@@ -381,7 +380,7 @@ static int nvme_user_cmd64(struct nvme_ctrl *ctrl, struct nvme_ns *ns,
- 
- 	status = nvme_submit_user_cmd(ns ? ns->queue : ctrl->admin_q, &c,
- 			cmd.addr, cmd.data_len, nvme_to_user_ptr(cmd.metadata),
--			cmd.metadata_len, 0, &cmd.result, timeout, flags);
-+			cmd.metadata_len, &cmd.result, timeout, flags);
- 
- 	if (status >= 0) {
- 		if (put_user(cmd.result, &ucmd->result))
-@@ -511,7 +510,7 @@ static int nvme_uring_cmd_io(struct nvme_ctrl *ctrl, struct nvme_ns *ns,
- 	if (d.addr && d.data_len) {
- 		ret = nvme_map_user_request(req, d.addr,
- 			d.data_len, nvme_to_user_ptr(d.metadata),
--			d.metadata_len, 0, ioucmd, vec);
-+			d.metadata_len, ioucmd, vec);
- 		if (ret)
- 			return ret;
- 	}
-diff --git a/include/linux/bio-integrity.h b/include/linux/bio-integrity.h
-index dd831c269e994..dbf0f74c15291 100644
---- a/include/linux/bio-integrity.h
-+++ b/include/linux/bio-integrity.h
-@@ -72,7 +72,7 @@ struct bio_integrity_payload *bio_integrity_alloc(struct bio *bio, gfp_t gfp,
- 		unsigned int nr);
- int bio_integrity_add_page(struct bio *bio, struct page *page, unsigned int len,
- 		unsigned int offset);
--int bio_integrity_map_user(struct bio *bio, void __user *ubuf, ssize_t len, u32 seed);
-+int bio_integrity_map_user(struct bio *bio, void __user *ubuf, ssize_t len);
- void bio_integrity_unmap_user(struct bio *bio);
- bool bio_integrity_prep(struct bio *bio);
- void bio_integrity_advance(struct bio *bio, unsigned int bytes_done);
-@@ -99,7 +99,7 @@ static inline void bioset_integrity_free(struct bio_set *bs)
- }
- 
- static inline int bio_integrity_map_user(struct bio *bio, void __user *ubuf,
--					 ssize_t len, u32 seed)
-+					 ssize_t len)
- {
- 	return -EINVAL;
- }
-diff --git a/include/linux/blk-integrity.h b/include/linux/blk-integrity.h
-index 676f8f860c474..c7eae0bfb013f 100644
---- a/include/linux/blk-integrity.h
-+++ b/include/linux/blk-integrity.h
-@@ -28,7 +28,7 @@ static inline bool queue_limits_stack_integrity_bdev(struct queue_limits *t,
- int blk_rq_map_integrity_sg(struct request *, struct scatterlist *);
- int blk_rq_count_integrity_sg(struct request_queue *, struct bio *);
- int blk_rq_integrity_map_user(struct request *rq, void __user *ubuf,
--			      ssize_t bytes, u32 seed);
-+			      ssize_t bytes);
- 
- static inline bool
- blk_integrity_queue_supports_integrity(struct request_queue *q)
-@@ -104,8 +104,7 @@ static inline int blk_rq_map_integrity_sg(struct request *q,
- }
- static inline int blk_rq_integrity_map_user(struct request *rq,
- 					    void __user *ubuf,
--					    ssize_t bytes,
--					    u32 seed)
-+					    ssize_t bytes)
- {
- 	return -EINVAL;
- }
++	cm_map = syscon_regmap_lookup_by_compatible("arm,core-module-integrator");
++	if (!IS_ERR(cm_map))
++		sched_clock_register(intcp_read_sched_clock, 32, 24000000);
++
+ 	cpcon = of_find_matching_node(NULL, intcp_syscon_match);
+ 	if (!cpcon)
+ 		return;
+@@ -138,7 +134,6 @@ static const char * intcp_dt_board_compat[] = {
+ DT_MACHINE_START(INTEGRATOR_CP_DT, "ARM Integrator/CP (Device Tree)")
+ 	.reserve	= integrator_reserve,
+ 	.map_io		= intcp_map_io,
+-	.init_early	= intcp_init_early,
+ 	.init_irq	= intcp_init_irq_of,
+ 	.init_machine	= intcp_init_of,
+ 	.dt_compat      = intcp_dt_board_compat,
 -- 
 2.53.0
 
