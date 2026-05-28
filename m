@@ -1,60 +1,61 @@
-Return-Path: <stable+bounces-255731-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-255978-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id IDJ6JIWnGGp+lwgAu9opvQ
-	(envelope-from <stable+bounces-255731-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:37:25 +0200
+	id KHEVJJanGGp+lwgAu9opvQ
+	(envelope-from <stable+bounces-255978-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:37:42 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 39E0A5F921A
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:37:25 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 513805F9261
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:37:42 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id A6F2930EB432
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 20:22:07 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id DB86D303ED2E
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 20:33:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A6C972F8E83;
-	Thu, 28 May 2026 20:22:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2F7AF33987F;
+	Thu, 28 May 2026 20:33:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dC25Q62q"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JT0p3got"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5908A257854;
-	Thu, 28 May 2026 20:22:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ED3112C15AC;
+	Thu, 28 May 2026 20:33:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779999726; cv=none; b=YFyhxstK+4OIjRIn+JDiWSP99Y/FDGhZTap4HSEBvlLnyfZyGm1jL9FCEef1dLhG1AJ9aLcHAjsxB6RWmSlA2P73oNANc3OIkuZpMZEa3cXrqq6xwdUeQ6aPW/8O1Yq5Lvwmsv+IcsCNf5KOPJchMoXKl5AuBpeLhc1qkIZ2QvM=
+	t=1780000412; cv=none; b=R8QxPa7PBKzzjFB/aN/botoYzddSbgNOF1uH88INeUFCSk1Mrxb+3rmL68K1369pmCDaBc0yXwA3ZqLAxzedDSUqSez2e6hBqy94TJUZr2ywhdC2PIfQIIPIvu9BTSoDRK/iTLeOtIydcj42s6BSKujwUYfT0BG6ZUaz1/dbT5w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779999726; c=relaxed/simple;
-	bh=/HrN/Ql9nNuJukmOePSbnpipZvWvExzyKR6FZ7DuO8g=;
+	s=arc-20240116; t=1780000412; c=relaxed/simple;
+	bh=iAB3NO0zk1Jyz/6+g0mEJ4bhn/sZnibdxwME8yYbAXc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=V7GUXq7DmmRjlTN9996QlSBpGMJS+K4kuD/Hv7O/9kQvqJSlEkF1xy+vibmKAt/V8+F1TRMMIKQVk6UKYg5FKOqojLLUt+U2WAPdeJucgfP2X9s3d8Salyo/kHyDfXKF4ltZxnY+dNGf0wStLeCqWQjFljG+/KH7eyywzwLGnD4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dC25Q62q; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B69E71F000E9;
-	Thu, 28 May 2026 20:22:04 +0000 (UTC)
+	 MIME-Version; b=WGs0zIL2Y5alaRBNQpjQxWI9C2Fq7gUqm8P42lo2XuVGD39ZBNLMVg4k2JFg+w1tQ3gov06Eip0MdPKW87IBIEcRGJEVF88hr9+kddH1Obi50DaOMtzql17imHnv81LrJqyF1gCg4x7M9S5jp96Cbp0MsOH6aWA/+x3Ed3jV/fc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JT0p3got; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 10A8E1F00ACF;
+	Thu, 28 May 2026 20:33:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779999725;
-	bh=3aAHhNuUOUfBxJTXI2f0V3pXscXWm8pHzC3/JZjqKP0=;
+	s=korg; t=1780000410;
+	bh=/3AQhB3tqfXYF2URNfd49+zbNGdvFt27JYdLT4IxXwg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=dC25Q62q0ih3UDRO2Q03DVdxh5eRLVSDwVkHBKSCQc5ZGHXF7F/NCZ9s+SLA4HagT
-	 SZtNHv03casIn6ALwwuEteKiXl5K01ZZgm+xGU2GqgOG9IP+h6Ke6WozYJT38kO361
-	 0O4SmXsPuoRZZFoyhEDnuo9hsPAK3DnDWXIjo4i4=
+	b=JT0p3got5FWp/ETGDuySD9KAAxXLWezlKOsV0MJd6ihp9F+hszhPVp4tZHt7T6oHC
+	 XICGrGhZdU3F+X71FKte5UMY7vmfun0DbmJVHEuAdzcATPfafcppJzhH6foqFXsbiA
+	 r3gqJ4uz9uB90lWtuhRSX0yVTyk/K0diDS4g4b3A=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Til Kaiser <mail@tk154.de>,
-	Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>,
-	Linus Walleij <linusw@kernel.org>,
+	Jiri Olsa <jolsa@kernel.org>,
+	Andrii Nakryiko <andrii@kernel.org>,
+	"Steven Rostedt (Google)" <rostedt@goodmis.org>,
+	Gyokhan Kochmarla <gyokhan@amazon.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 170/377] pinctrl: qcom: ipq4019: mark gpio as a GPIO pin function
-Date: Thu, 28 May 2026 21:46:48 +0200
-Message-ID: <20260528194643.353109235@linuxfoundation.org>
+Subject: [PATCH 6.12 035/272] x86/fgraph: Fix return_to_handler regs.rsp value
+Date: Thu, 28 May 2026 21:46:49 +0200
+Message-ID: <20260528194630.368142111@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260528194638.371537336@linuxfoundation.org>
-References: <20260528194638.371537336@linuxfoundation.org>
+In-Reply-To: <20260528194629.379955525@linuxfoundation.org>
+References: <20260528194629.379955525@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,7 +70,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
@@ -77,7 +78,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-255731-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-255978-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
@@ -86,77 +87,79 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
 	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[7];
+	RCPT_COUNT_SEVEN(0.00)[8];
 	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[qualcomm.com:email,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim]
-X-Rspamd-Queue-Id: 39E0A5F921A
+	DBL_BLOCKED_OPENRESOLVER(0.00)[amazon.de:email,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim,goodmis.org:email]
+X-Rspamd-Queue-Id: 513805F9261
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Til Kaiser <mail@tk154.de>
+From: Jiri Olsa <jolsa@kernel.org>
 
-[ Upstream commit b51d33ea8a164bb5f0eec8ad817fa9730ac2b577 ]
+commit 8bc11700e0d23d4fdb7d8d5a73b2e95de427cabc upstream.
 
-The qcom pinctrl core supports marking functions that represent GPIO mode
-via PINCTRL_GPIO_PINFUNCTION(), so that strict pinmuxing does not reject
-GPIO requests for pins that are muxed to the GPIO function.
+The previous change (Fixes commit) messed up the rsp register value,
+which is wrong because it's already adjusted with FRAME_SIZE, we need
+the original rsp value.
 
-ipq4019 still describes its gpio function with QCA_PIN_FUNCTION(gpio),
-so it is not treated as a GPIO pin function. As a result, GPIO consumers
-can still conflict with pinctrl states that select the "gpio" function.
+This change does not affect fprobe current kernel unwind, the !perf_hw_regs
+path perf_callchain_kernel:
 
-Add a QCA_GPIO_PIN_FUNCTION() helper and use it for the ipq4019 gpio
-function, matching how the msm-based qcom drivers handle this.
+        if (perf_hw_regs(regs)) {
+                if (perf_callchain_store(entry, regs->ip))
+                        return;
+                unwind_start(&state, current, regs, NULL);
+        } else {
+                unwind_start(&state, current, NULL, (void *)regs->sp);
+        }
 
-This allows ipq4019 to keep the GPIO-related pin configuration in DTS
-without tripping over strict pinmux ownership checks.
+which uses pt_regs.sp as first_frame boundary (FRAME_SIZE shift makes
+no difference, unwind stil stops at the right frame).
 
-Fixes: cc85cb96e2e4 ("pinctrl: qcom: make the pinmuxing strict")
-Signed-off-by: Til Kaiser <mail@tk154.de>
-Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
-Signed-off-by: Linus Walleij <linusw@kernel.org>
+This change fixes the other path when we want to unwind directly from
+pt_regs sp/fp/ip state, which is coming in following change.
+
+Fixes: 20a0bc10272f ("x86/fgraph,bpf: Fix stack ORC unwind from kprobe_multi return probe")
+Signed-off-by: Jiri Olsa <jolsa@kernel.org>
+Signed-off-by: Andrii Nakryiko <andrii@kernel.org>
+Reviewed-by: Steven Rostedt (Google) <rostedt@goodmis.org>
+Link: https://lore.kernel.org/bpf/20260126211837.472802-2-jolsa@kernel.org
+Signed-off-by: Gyokhan Kochmarla <gyokhan@amazon.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/pinctrl/qcom/pinctrl-ipq4019.c | 2 +-
- drivers/pinctrl/qcom/pinctrl-msm.h     | 5 +++++
- 2 files changed, 6 insertions(+), 1 deletion(-)
+ arch/x86/kernel/ftrace_64.S | 5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/pinctrl/qcom/pinctrl-ipq4019.c b/drivers/pinctrl/qcom/pinctrl-ipq4019.c
-index 6ede3149b6e17..07df812fb7282 100644
---- a/drivers/pinctrl/qcom/pinctrl-ipq4019.c
-+++ b/drivers/pinctrl/qcom/pinctrl-ipq4019.c
-@@ -480,7 +480,7 @@ static const struct pinfunction ipq4019_functions[] = {
- 	QCA_PIN_FUNCTION(blsp_uart0),
- 	QCA_PIN_FUNCTION(blsp_uart1),
- 	QCA_PIN_FUNCTION(chip_rst),
--	QCA_PIN_FUNCTION(gpio),
-+	QCA_GPIO_PIN_FUNCTION(gpio),
- 	QCA_PIN_FUNCTION(i2s_rx),
- 	QCA_PIN_FUNCTION(i2s_spdif_in),
- 	QCA_PIN_FUNCTION(i2s_spdif_out),
-diff --git a/drivers/pinctrl/qcom/pinctrl-msm.h b/drivers/pinctrl/qcom/pinctrl-msm.h
-index 4625fa5320a95..120217012a9f6 100644
---- a/drivers/pinctrl/qcom/pinctrl-msm.h
-+++ b/drivers/pinctrl/qcom/pinctrl-msm.h
-@@ -39,6 +39,11 @@ struct pinctrl_pin_desc;
- 					fname##_groups,		\
- 					ARRAY_SIZE(fname##_groups))
+diff --git a/arch/x86/kernel/ftrace_64.S b/arch/x86/kernel/ftrace_64.S
+index 8a3cff618692c..143fc62bf6f88 100644
+--- a/arch/x86/kernel/ftrace_64.S
++++ b/arch/x86/kernel/ftrace_64.S
+@@ -349,6 +349,9 @@ SYM_CODE_START(return_to_handler)
+ 	UNWIND_HINT_UNDEFINED
+ 	ANNOTATE_NOENDBR
  
-+#define QCA_GPIO_PIN_FUNCTION(fname)				\
-+	[qca_mux_##fname] = PINCTRL_GPIO_PINFUNCTION(#fname,	\
-+					fname##_groups,		\
-+					ARRAY_SIZE(fname##_groups))
++	/* Store original rsp for pt_regs.sp value. */
++	movq %rsp, %rdi
 +
- /**
-  * struct msm_pingroup - Qualcomm pingroup definition
-  * @grp:                  Generic data of the pin group (name and pins)
+ 	/* Restore return_to_handler value that got eaten by previous ret instruction. */
+ 	subq $8, %rsp
+ 	UNWIND_HINT_FUNC
+@@ -359,7 +362,7 @@ SYM_CODE_START(return_to_handler)
+ 	movq %rax, RAX(%rsp)
+ 	movq %rdx, RDX(%rsp)
+ 	movq %rbp, RBP(%rsp)
+-	movq %rsp, RSP(%rsp)
++	movq %rdi, RSP(%rsp)
+ 	movq %rsp, %rdi
+ 
+ 	call ftrace_return_to_handler
 -- 
 2.53.0
 
