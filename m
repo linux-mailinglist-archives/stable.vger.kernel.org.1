@@ -1,213 +1,274 @@
-Return-Path: <stable+bounces-254717-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-254718-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id CM5WCgTZF2pCTAgAu9opvQ
-	(envelope-from <stable+bounces-254717-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 07:56:20 +0200
+	id yNmXOdHbF2phTQgAu9opvQ
+	(envelope-from <stable+bounces-254718-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 08:08:17 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8DF035ED0E0
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 07:56:19 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5DF3A5ED205
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 08:08:16 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id EE4D7301D946
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 05:56:17 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id F2211302F426
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 06:08:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C334F31AA87;
-	Thu, 28 May 2026 05:56:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B462732B10C;
+	Thu, 28 May 2026 06:08:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b="lhfVqYVS"
+	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="q6EIsiRI";
+	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="GE3jylvc";
+	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="q6EIsiRI";
+	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="GE3jylvc"
 X-Original-To: stable@vger.kernel.org
-Received: from m16.mail.163.com (m16.mail.163.com [117.135.210.5])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E18891A680F;
-	Thu, 28 May 2026 05:56:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=117.135.210.5
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 328A2318EE1
+	for <stable@vger.kernel.org>; Thu, 28 May 2026 06:08:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779947776; cv=none; b=dl+1uvjzm9/G6QyhnBPYdWz+I3dzc24v1mOVLmTICNVHOJl75F2IomCO41zHDs/paWJcE8J3uhZxnD39wNoUxtpLEiI4Q8OSbXIqcetr3TBND2oXODVqp080CHLV6PKQQa2cPk7nHSxWZLcqUKK1p16aEeUyJCoAzqBjeeW4/+A=
+	t=1779948486; cv=none; b=Lc1Pvk3C4+QbNa0ixwObTzQ3JKVepkRXaetECQyZncMIaGmDg365UKHhOv9vNC7auqzbmlAwdc9cBDaBi9EPsu8a/TU1J6+0Tpg73KYOvxenJH0Ir28NJHvU9jaVlMYsm41Nqn8fs8oRflPCRFvJ0KueOqMFx9gcwqFRtnkB5cc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779947776; c=relaxed/simple;
-	bh=3Pz2/POEIG27/OLincfenN/OFgbzNrurtHLqmbuPSbk=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version:Content-Type; b=tcGutWqCAMGbLhthEW1OiYvuJD/RBFgLnrAaLWX49dCzUmAEV9hSMQ+e0RgC7wSzkV0cqntuYkNhf1PLZ5CJ4Zjxy+ylGOpDPUe7eF9kFzC36fg9vh496ElfkacPsx+U7xkLFRmJI9jUTH/ocsbvruMGuK0wHrbArjDON9buWe4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com; spf=pass smtp.mailfrom=163.com; dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b=lhfVqYVS; arc=none smtp.client-ip=117.135.210.5
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=163.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
-	s=s110527; h=From:To:Subject:Date:Message-Id:MIME-Version:
-	Content-Type; bh=2znY/CshLD06l5CCn5YAkQ481WGsnDnDH3u8+6xLglw=;
-	b=lhfVqYVS1W9k7/ADAZjvNjvCPFZNIDWjZavbtACp6V5AhKigIowywXfnAw7yhu
-	AR2OxMgpMyHXNwkLjqeIjHBYZVpYDtbw1/DncridyMnabzjAJTlrv7Lxwtdi2Rjg
-	KHr1NdHwvjvsohmA+ko3gnK+ninwEBUxPgoBZowvRzOag=
-Received: from pek-lpg-core5.wrs.com (unknown [])
-	by gzga-smtp-mtada-g0-4 (Coremail) with SMTP id _____wBHgqCX2BdqeNomAA--.4959S2;
-	Thu, 28 May 2026 13:54:32 +0800 (CST)
-From: Robert Garcia <rob_garcia@163.com>
-To: stable@vger.kernel.org,
-	Duoming Zhou <duoming@zju.edu.cn>
-Cc: Johannes Berg <johannes.berg@intel.com>,
-	Arend van Spriel <arend.vanspriel@broadcom.com>,
-	Franky Lin <franky.lin@broadcom.com>,
-	Hante Meuleman <hante.meuleman@broadcom.com>,
-	Chi-hsien Lin <chi-hsien.lin@infineon.com>,
-	Wright Feng <wright.feng@infineon.com>,
-	Chung-hsien Hsu <chung-hsien.hsu@infineon.com>,
-	Kalle Valo <kvalo@codeaurora.org>,
-	"David S . Miller" <davem@davemloft.net>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Piotr Haber <phaber@broadcom.com>,
-	"John W . Linville" <linville@tuxdriver.com>,
-	Pieter-Paul Giesberts <pieterpg@broadcom.com>,
-	Robert Garcia <rob_garcia@163.com>,
-	linux-wireless@vger.kernel.org,
-	brcm80211-dev-list.pdl@broadcom.com,
-	SHA-cyfmac-dev-list@infineon.com,
-	netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH 5.15.y] wifi: brcmfmac: fix use-after-free when rescheduling brcmf_btcoex_info work
-Date: Thu, 28 May 2026 13:54:31 +0800
-Message-Id: <20260528055431.4124445-1-rob_garcia@163.com>
-X-Mailer: git-send-email 2.34.1
+	s=arc-20240116; t=1779948486; c=relaxed/simple;
+	bh=EDYxvZ6pr8pUS+Jy7TWnHj0bHaMGEIyNztk3TcXM1Hk=;
+	h=Date:Message-ID:From:To:Cc:Subject:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=JVlsH4mgdKP/OTmSEVuzhCNabJR0ee1TPC2CvMHTYANqz6FXo85erA1r2wfR0EexmBGAZinEKrIgjOJDw0Y3baOYKY5WYU6Fn02CCNsradOFhxqi377oUMYHm6j8pacX9Q2WejlBkqY2XYLVoBkG5TL0KLWW/0vq0AehEo88iYM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de; spf=pass smtp.mailfrom=suse.de; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=q6EIsiRI; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=GE3jylvc; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=q6EIsiRI; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=GE3jylvc; arc=none smtp.client-ip=195.135.223.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.de
+Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-out2.suse.de (Postfix) with ESMTPS id 5609467129;
+	Thu, 28 May 2026 06:08:02 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1779948482; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=phFDLr8sYCyOLR/3TBquNKZIZoYYJRcuAIL5ETpAHhg=;
+	b=q6EIsiRIO3HookMTzynOUdM4MRMfgVWSuXTQFGxDeg8jFnQ2FK9xt6QKzDuzPwE2GVrlqJ
+	rofnZmWmS604mTjSQBlLjJuRLJW1wTkAoHQAjb9AX06YRa5wvkFrjKse3NC4ddw+AvxnVz
+	mxmie7NEDywe0tgBKVbzyQMd9HtlnCk=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1779948482;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=phFDLr8sYCyOLR/3TBquNKZIZoYYJRcuAIL5ETpAHhg=;
+	b=GE3jylvc6kX4r5qYDmy7FuOv0pC8rPlojqm76WB9u4SEmQAqQZf/pb4sxYJjah/V9nKFxh
+	9EzTRTDckOogbSBQ==
+Authentication-Results: smtp-out2.suse.de;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=q6EIsiRI;
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=GE3jylvc
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1779948482; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=phFDLr8sYCyOLR/3TBquNKZIZoYYJRcuAIL5ETpAHhg=;
+	b=q6EIsiRIO3HookMTzynOUdM4MRMfgVWSuXTQFGxDeg8jFnQ2FK9xt6QKzDuzPwE2GVrlqJ
+	rofnZmWmS604mTjSQBlLjJuRLJW1wTkAoHQAjb9AX06YRa5wvkFrjKse3NC4ddw+AvxnVz
+	mxmie7NEDywe0tgBKVbzyQMd9HtlnCk=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1779948482;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=phFDLr8sYCyOLR/3TBquNKZIZoYYJRcuAIL5ETpAHhg=;
+	b=GE3jylvc6kX4r5qYDmy7FuOv0pC8rPlojqm76WB9u4SEmQAqQZf/pb4sxYJjah/V9nKFxh
+	9EzTRTDckOogbSBQ==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 138AE5AC2F;
+	Thu, 28 May 2026 06:08:02 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+	by imap1.dmz-prg2.suse.org with ESMTPSA
+	id ieBIA8LbF2oxfAAAD6G6ig
+	(envelope-from <tiwai@suse.de>); Thu, 28 May 2026 06:08:02 +0000
+Date: Thu, 28 May 2026 08:08:01 +0200
+Message-ID: <87eciwukvy.wl-tiwai@suse.de>
+From: Takashi Iwai <tiwai@suse.de>
+To: Mike Karcic <mikekarcic@protonmail.com>
+Cc: Sean Rhodes <sean@starlabs.systems>,
+	"stable@vger.kernel.org" <stable@vger.kernel.org>,
+	"regressions@lists.linux.dev" <regressions@lists.linux.dev>,
+	"linux-sound@vger.kernel.org" <linux-sound@vger.kernel.org>,
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+	"tiwai@suse.de" <tiwai@suse.de>
+Subject: Re: [REGRESSION] Speaker pop/chirp on Meteor Lake ALC287 (17aa:231e) -- 6.12.73 to 6.12.85
+In-Reply-To: <wZmYozyav1sNx53nFr4ShKmcdLFVJp5bdUOJgUq1I57MX6kgyq7n8XvH-MWG9Fi4q2x4CQqjEQ3Q8ok5MClut8hNixnhVmVtXkhcOzH1sw8=@protonmail.com>
+References: <O6pYAi7yf23du9ivLsL0QqrnTmodj2lDTL7Wviv7I_nhjVtvllO7Y5Ban0TeTqrastb1RWhJtlkqrM3quLMWSriai-YjjGy312MTcEhxyWs=@protonmail.com>
+	<CABtds-3GOyBr1H=c5aFV1uzfkhO3d1NHMPuon_cWDq0V=pFwUA@mail.gmail.com>
+	<wZmYozyav1sNx53nFr4ShKmcdLFVJp5bdUOJgUq1I57MX6kgyq7n8XvH-MWG9Fi4q2x4CQqjEQ3Q8ok5MClut8hNixnhVmVtXkhcOzH1sw8=@protonmail.com>
+User-Agent: Wanderlust/2.15.9 (Almost Unreal) Emacs/30.2 Mule/6.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:_____wBHgqCX2BdqeNomAA--.4959S2
-X-Coremail-Antispam: 1Uf129KBjvJXoWxJw1ktFWrCr4fKF4DKw43Awb_yoWrJryfpa
-	y3G34ayry0qrWakrWkJr1kZFy5KanrG3Wqyr48AF43uFsIqF1xGFW0yF12gFW7CFW09ay2
-	yF4Fqry3Jrs8tFJanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x0pNii6bUUUUU=
-X-CM-SenderInfo: 5uresw5dufxti6rwjhhfrp/xtbC5Ri8KGoX2JhQigAA3O
+MIME-Version: 1.0 (generated by SEMI-EPG 1.14.7 - "Harue")
+Content-Type: text/plain; charset=US-ASCII
+X-Spam-Flag: NO
+X-Spam-Score: -3.51
+X-Spam-Level: 
 X-Spamd-Result: default: False [-1.16 / 15.00];
-	MID_CONTAINS_FROM(1.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[163.com,none];
-	R_DKIM_ALLOW(-0.20)[163.com:s=s110527];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	MID_CONTAINS_FROM(1.00)[];
+	DMARC_POLICY_ALLOW(-0.50)[suse.de,none];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	R_DKIM_ALLOW(-0.20)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FROM_HAS_DN(0.00)[];
-	RCVD_TLS_LAST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[21];
+	TO_DN_EQ_ADDR_SOME(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	FREEMAIL_FROM(0.00)[163.com];
-	TAGGED_FROM(0.00)[bounces-254717-lists,stable=lfdr.de];
-	DKIM_TRACE(0.00)[163.com:+];
-	TO_DN_SOME(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[rob_garcia@163.com,stable@vger.kernel.org];
-	FREEMAIL_CC(0.00)[intel.com,broadcom.com,infineon.com,codeaurora.org,davemloft.net,kernel.org,tuxdriver.com,163.com,vger.kernel.org];
-	NEURAL_HAM(-0.00)[-1.000];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	TAGGED_RCPT(0.00)[stable];
+	FREEMAIL_TO(0.00)[protonmail.com];
+	TAGGED_FROM(0.00)[bounces-254718-lists,stable=lfdr.de];
+	DKIM_TRACE(0.00)[suse.de:+];
+	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[intel.com:email,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,msgid.link:url]
-X-Rspamd-Queue-Id: 8DF035ED0E0
+	FROM_HAS_DN(0.00)[];
+	TO_DN_SOME(0.00)[];
+	RCVD_COUNT_FIVE(0.00)[6];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[tiwai@suse.de,stable@vger.kernel.org];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	NEURAL_HAM(-0.00)[-1.000];
+	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_SEVEN(0.00)[7];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[]
+X-Rspamd-Queue-Id: 5DF3A5ED205
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-From: Duoming Zhou <duoming@zju.edu.cn>
+On Thu, 28 May 2026 01:18:31 +0200,
+Mike Karcic wrote:
+> 
+> I tested both setups on top of Debian's 6.12.90 source tree. 
+> 
+> 1. I applied the 46c862f5419e patch, but the chirp was still there on every audio transition.
+> 2. I did a full revert of 630fbc6e870e, and the chirp is completely gone.
 
-[ Upstream commit 9cb83d4be0b9b697eae93d321e0da999f9cdfcfc ]
+There is a follow-up fix in the upstream, try to apply the commit
+46c862f5419e ("ALSA: hda/realtek - fixed speaker no sound update").
 
-The brcmf_btcoex_detach() only shuts down the btcoex timer, if the
-flag timer_on is false. However, the brcmf_btcoex_timerfunc(), which
-runs as timer handler, sets timer_on to false. This creates critical
-race conditions:
 
-1.If brcmf_btcoex_detach() is called while brcmf_btcoex_timerfunc()
-is executing, it may observe timer_on as false and skip the call to
-timer_shutdown_sync().
+thanks,
 
-2.The brcmf_btcoex_timerfunc() may then reschedule the brcmf_btcoex_info
-worker after the cancel_work_sync() has been executed, resulting in
-use-after-free bugs.
+Takashi
 
-The use-after-free bugs occur in two distinct scenarios, depending on
-the timing of when the brcmf_btcoex_info struct is freed relative to
-the execution of its worker thread.
 
-Scenario 1: Freed before the worker is scheduled
-
-The brcmf_btcoex_info is deallocated before the worker is scheduled.
-A race condition can occur when schedule_work(&bt_local->work) is
-called after the target memory has been freed. The sequence of events
-is detailed below:
-
-CPU0                           | CPU1
-brcmf_btcoex_detach            | brcmf_btcoex_timerfunc
-                               |   bt_local->timer_on = false;
-  if (cfg->btcoex->timer_on)   |
-    ...                        |
-  cancel_work_sync();          |
-  ...                          |
-  kfree(cfg->btcoex); // FREE  |
-                               |   schedule_work(&bt_local->work); // USE
-
-Scenario 2: Freed after the worker is scheduled
-
-The brcmf_btcoex_info is freed after the worker has been scheduled
-but before or during its execution. In this case, statements within
-the brcmf_btcoex_handler() — such as the container_of macro and
-subsequent dereferences of the brcmf_btcoex_info object will cause
-a use-after-free access. The following timeline illustrates this
-scenario:
-
-CPU0                            | CPU1
-brcmf_btcoex_detach             | brcmf_btcoex_timerfunc
-                                |   bt_local->timer_on = false;
-  if (cfg->btcoex->timer_on)    |
-    ...                         |
-  cancel_work_sync();           |
-  ...                           |   schedule_work(); // Reschedule
-                                |
-  kfree(cfg->btcoex); // FREE   |   brcmf_btcoex_handler() // Worker
-  /*                            |     btci = container_of(....); // USE
-   The kfree() above could      |     ...
-   also occur at any point      |     btci-> // USE
-   during the worker's execution|
-   */                           |
-
-To resolve the race conditions, drop the conditional check and call
-timer_shutdown_sync() directly. It can deactivate the timer reliably,
-regardless of its current state. Once stopped, the timer_on state is
-then set to false.
-
-Fixes: 61730d4dfffc ("brcmfmac: support critical protocol API for DHCP")
-Acked-by: Arend van Spriel <arend.vanspriel@broadcom.com>
-Signed-off-by: Duoming Zhou <duoming@zju.edu.cn>
-Link: https://patch.msgid.link/20250822050839.4413-1-duoming@zju.edu.cn
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
-Signed-off-by: Robert Garcia <rob_garcia@163.com>
----
- drivers/net/wireless/broadcom/brcm80211/brcmfmac/btcoex.c | 6 ++----
- 1 file changed, 2 insertions(+), 4 deletions(-)
-
-diff --git a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/btcoex.c b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/btcoex.c
-index f9f18ff451ea..f46e40900217 100644
---- a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/btcoex.c
-+++ b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/btcoex.c
-@@ -392,10 +392,8 @@ void brcmf_btcoex_detach(struct brcmf_cfg80211_info *cfg)
- 	if (!cfg->btcoex)
- 		return;
- 
--	if (cfg->btcoex->timer_on) {
--		cfg->btcoex->timer_on = false;
--		del_timer_sync(&cfg->btcoex->timer);
--	}
-+	del_timer_sync(&cfg->btcoex->timer);
-+	cfg->btcoex->timer_on = false;
- 
- 	cancel_work_sync(&cfg->btcoex->work);
- 
--- 
-2.34.1
-
+> 
+> My hardware is a Lenovo ThinkPad (Meteor Lake), ALC287, subsystem 17aa:231e.
+> 
+> 
+> 
+> Sent with Proton Mail secure email.
+> 
+> On Wednesday, May 27th, 2026 at 3:44 PM, Sean Rhodes <sean@starlabs.systems> wrote:
+> 
+> > What about 630fbc6e870e? If so, 46c862f5419e looks relevant.
+> > 
+> > On Wed, 27 May 2026 at 15:25, Mike Karcic <mikekarcic@protonmail.com> wrote:
+> > >
+> > > Speaker pop/chirp regression on a Lenovo ThinkPad with Meteor Lake and
+> > > Realtek ALC287 (subsystem ID 17aa:231e). The chirp occurs on speaker
+> > > power state transitions when audio starts or stops. It is not present
+> > > on kernel 6.12.73 and is present on 6.12.85. A desktop with ALC897
+> > > (subsystem ID 1f660202) on kernel 6.19.14 is unaffected, so this is
+> > > codec/fixup-specific.
+> > >
+> > > Tested on the same LMDE (Debian 13) installation with multiple kernels
+> > > selectable from GRUB. All userspace, firmware, and configuration are
+> > > identical between tests. Cold boot between kernel switches is required,
+> > > as warm reboot can carry codec register state forward. The kernel is
+> > > not tainted on any tested version.
+> > >
+> > > Bisection results (Debian package versions):
+> > >   6.12.48  -- no chirp
+> > >   6.12.73  -- no chirp
+> > >   6.12.85  -- chirp present
+> > >   6.12.86  -- chirp present
+> > >   6.12.90  -- chirp present
+> > >
+> > > Also broken: 6.19.14-101.fc44.x86_64 (Fedora/Aurora 44)
+> > >
+> > > The regression window (6.12.73 to 6.12.85) includes two commits
+> > > targeting speaker pop on the Star Labs StarFighter (ALC233, SSID
+> > > 7017:2014) that touch patch_realtek.c:
+> > >
+> > >   1cb3c20688fc ("ALSA: hda/realtek: Fix speaker pop on Star Labs StarFighter")
+> > >   Fixes commit ("ALSA: hda/realtek: Sequence GPIO2 on Star Labs StarFighter")
+> > >
+> > > These are quirk-gated to SSID 7017:2014 and should not run on
+> > > 17aa:231e, but they are the most prominent sound changes in the
+> > > regression window. The actual culprit may be a different commit
+> > > in the 6.12.74-6.12.85 range. I was unable to narrow further as
+> > > Debian does not publish intermediate point-release packages.
+> > >
+> > > I can build and test vanilla kernels for a proper bisection if
+> > > guided, and I can test proposed fixes.
+> > >
+> > > Hardware:
+> > >   Lenovo ThinkPad, Meteor Lake
+> > >   Codec: Realtek ALC287
+> > >   Subsystem ID: 17aa:231e
+> > >   PCI: 0000:00:1f.3
+> > >   Machine driver: skl_hda_dsp_generic
+> > >   Codec fixup: "ALC287: picked fixup for PCI SSID 17aa:231e"
+> > >
+> > > Unaffected hardware (same 6.19.14 kernel, no chirp):
+> > >   Desktop, Realtek ALC897, Subsystem ID: 1f660202
+> > >
+> > > Controlled variables (identical across all tested 6.12 kernels):
+> > >   SOF firmware: 2.12.0.1 (firmware-sof-signed 2025.01-1)
+> > >   Topology: intel/sof-ace-tplg/sof-hda-generic-2ch.tplg
+> > >   Topology ABI: 3:29:1 (Kernel ABI: 3:23:1 on all tested)
+> > >   ALSA UCM: alsa-ucm-conf 1.2.14-1
+> > >   PipeWire: 1.4.2, WirePlumber: 0.5.8
+> > >   power_save: 10, hda_model: (null)
+> > >   Desktop: KDE Plasma 6 (Wayland)
+> > >
+> > > Eliminated causes:
+> > >   - Topology files in sof-ipc4-tplg/ and sof-ace-tplg/ are
+> > >     byte-identical (confirmed via binary diff). Path irrelevant.
+> > >   - SOF firmware version (same 2.12.0.1 on all tested kernels).
+> > >   - Topology ABI mismatch (3:29:1 vs 3:23:1 present on working
+> > >     kernel too).
+> > >   - power_save (10 on all kernels).
+> > >   - PipeWire/WirePlumber (identical versions on all kernels).
+> > >   - Desktop environment (KDE on all; a KDE install triggered a
+> > >     kernel update which was the actual cause of the regression
+> > >     appearing).
+> > >
+> > > dmesg (6.12.48, working):
+> > >   sof-audio-pci-intel-mtl 0000:00:1f.3: Firmware paths/files for ipc type 1:
+> > >   sof-audio-pci-intel-mtl 0000:00:1f.3:  Firmware file:     intel/sof-ipc4/mtl/sof-mtl.ri
+> > >   sof-audio-pci-intel-mtl 0000:00:1f.3:  Firmware lib path: intel/sof-ipc4-lib/mtl
+> > >   sof-audio-pci-intel-mtl 0000:00:1f.3:  Topology file:     intel/sof-ace-tplg/sof-hda-generic-2ch.tplg
+> > >   sof-audio-pci-intel-mtl 0000:00:1f.3: Booted firmware version: 2.12.0.1
+> > >   sof-audio-pci-intel-mtl 0000:00:1f.3: Topology: ABI 3:29:1 Kernel ABI 3:23:1
+> > >   snd_hda_codec_alc269 ehdaudio0D0: ALC287: picked fixup for PCI SSID 17aa:231e
+> > >   snd_hda_codec_alc269 ehdaudio0D0: autoconfig for ALC287: line_outs=1 (0x17/0x0/0x0/0x0/0x0) type:speaker
+> > >
+> > > dmesg (6.19.14, affected):
+> > >   sof-audio-pci-intel-mtl 0000:00:1f.3: Digital mics found on Skylake+ platform, using SOF driver
+> > >   sof-audio-pci-intel-mtl 0000:00:1f.3: DSP detected with PCI class/subclass/prog-if 0x040380
+> > >   sof-audio-pci-intel-mtl 0000:00:1f.3: hda codecs found, mask 5
+> > >   sof-audio-pci-intel-mtl 0000:00:1f.3: using HDA machine driver skl_hda_dsp_generic now
+> > >   sof-audio-pci-intel-mtl 0000:00:1f.3: Firmware paths/files for ipc type 1:
+> > >   sof-audio-pci-intel-mtl 0000:00:1f.3:  Firmware file:     intel/sof-ipc4/mtl/sof-mtl.ri
+> > >   sof-audio-pci-intel-mtl 0000:00:1f.3:  Firmware lib path: intel/sof-ipc4-lib/mtl
+> > >   sof-audio-pci-intel-mtl 0000:00:1f.3:  Topology file:     intel/sof-ipc4-tplg/sof-hda-generic-2ch.tplg
+> > >   sof-audio-pci-intel-mtl 0000:00:1f.3: Booted firmware version: 2.14.1.1
+> > >   sof-audio-pci-intel-mtl 0000:00:1f.3: Topology: ABI 3:29:1 Kernel ABI 3:23:1
+> > >   snd_hda_codec_alc269 ehdaudio0D0: ALC287: picked fixup for PCI SSID 17aa:231e
+> > >   snd_hda_codec_alc269 ehdaudio0D0: autoconfig for ALC287: line_outs=1 (0x17/0x0/0x0/0x0/0x0) type:speaker
+> > >
+> > > Note: The kernel is not tainted on any tested version.
+> >
 
