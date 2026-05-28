@@ -1,61 +1,59 @@
-Return-Path: <stable+bounces-255236-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-255590-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id IGaWENWeGGpAlggAu9opvQ
-	(envelope-from <stable+bounces-255236-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:00:21 +0200
+	id qMldOmekGGrClggAu9opvQ
+	(envelope-from <stable+bounces-255590-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:24:07 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 571665F7A46
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:00:20 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 88B935F8918
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:24:07 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 20DD73045372
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 19:59:05 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 096DB3230A47
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 20:15:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 97853344DAC;
-	Thu, 28 May 2026 19:59:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3AA892E03EA;
+	Thu, 28 May 2026 20:15:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="c/yt8dfF"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EPqB66ix"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6B4E1348C45;
-	Thu, 28 May 2026 19:59:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 038FB2580D7;
+	Thu, 28 May 2026 20:15:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779998342; cv=none; b=b8z0umYG1eL+tPZwqsQLhnvU67/y9nEH1Hd0G21smc4G1An1Go+LsCMa4cO0NM+Ph7wrzXkojMtVhU8dCGnUW0ScgwNXWJTUnqljWkTfwPc61ZMEcgfyOR40IcOsRaeFOGUao48VSU5a7g5ILLYDqQ+ct8JIzTUkP2mPBIvZfBE=
+	t=1779999340; cv=none; b=Mj4l7Ha3m4Br9DdLd34X9DjT8MTzkFhjmpV05Xo0B9TfXyxXYDaKCCcAUVGR6L4BgE3SkKNCLiyei7D3o0ARV/kPqYvCb3+/zp2gmE841bLe/d8TRVI3h1N5+S2OEGaZGP1sIWPhS6vu3wZg4+KdkdIa6bXRpljllRK2CjiybYI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779998342; c=relaxed/simple;
-	bh=TEP6rTHNtEmA+aQwiDxx59EFOXJN6vnzlD3SO4orRes=;
+	s=arc-20240116; t=1779999340; c=relaxed/simple;
+	bh=g/zIEJnWl4A3sUL4oSRxNjBIe9v09UHQJDySjfS4zPo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=s9AbeCjBYEAIf7CB/1kGyBpqg8vpB1KhJse90Y5BijyGbDq7M29M2dTczYDAmd7nXlCF50JjObSPsnZYn2IPDhw1bCPWBCWqsf+ciy7nATSlEk6wVw+sfDywnIGJ15R+LexVGYA7umODyLDcaXuQMGempFqiYWWwgDMre9kGS8c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=c/yt8dfF; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C900E1F000E9;
-	Thu, 28 May 2026 19:59:00 +0000 (UTC)
+	 MIME-Version; b=V+4jz8UNsnPx8eC3Dfy0szDTbq0E5gMxnoJaeA9f8GWg+ZGDqlV3t8t8Eaj+2HUhFgKxFYWsmuLHIFvwcer5x/MvSlhPgtdkyBofChY65LKqPN/ShZSXl9LEOi46FiiMD1bj3YVG1rCet0HDQdVD715QrZWk0Isb9C1/DvfXYyo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EPqB66ix; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1D0551F000E9;
+	Thu, 28 May 2026 20:15:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779998341;
-	bh=kkjgJqV0cNl8KcOsvofAyWDTj/20I316dkJfcwvklqw=;
+	s=korg; t=1779999338;
+	bh=GlMpQhWK+hncDbzZQsbXX5SeCQ0jf8dqg+Q9K53VIus=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=c/yt8dfFPEQ05Zm27qCeXXPd9Fmy2dtqSKMRNrjE6ZUW1Y6jf4Q5rYNq7Reek8QRE
-	 Qr+3/jP34pEmq0XdGX3kWNR/usFyPI2qd/n8GtZlgvJ4zCuzzE/KQKjt63Iqh/UV2d
-	 fu2fI9FfkI0zrSRLOasem1vvkegOzN7uui/rvJE8=
+	b=EPqB66ixobIfKRijER2bY03KkUTLOyZ4NBRjq0qEj2ir6Tkz3e2l+Iwt+piXAa/B4
+	 dawi/G6Tt9vZpaKNOO9hG44Cm6yE/3kCKFxrn5RjIGlbq3PKUHxCesy6f2ne9066Fd
+	 XpT9/AJGhBXQI+IEdpXEzbVPYp1hzEOzqBLnJxVw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alex Hung <alex.hung@amd.com>,
-	Harry Wentland <harry.wentland@amd.com>,
-	Ivan Lipski <ivan.lipski@amd.com>,
-	Dan Wheeler <daniel.wheeler@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>
-Subject: [PATCH 7.0 139/461] drm/amd/display: Validate GPIO pin LUT table size before iterating
+	Junyi Liu <moss80199@gmail.com>,
+	Namjae Jeon <linkinjeon@kernel.org>,
+	Steve French <stfrench@microsoft.com>
+Subject: [PATCH 6.18 030/377] ksmbd: validate SID in parent security descriptor during ACL inheritance
 Date: Thu, 28 May 2026 21:44:28 +0200
-Message-ID: <20260528194651.022449959@linuxfoundation.org>
+Message-ID: <20260528194639.257974528@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260528194646.819809818@linuxfoundation.org>
-References: <20260528194646.819809818@linuxfoundation.org>
+In-Reply-To: <20260528194638.371537336@linuxfoundation.org>
+References: <20260528194638.371537336@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -68,94 +66,165 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	TAGGED_FROM(0.00)[bounces-255590-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,kernel.org,microsoft.com];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	TO_DN_SOME(0.00)[];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-255236-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TO_DN_SOME(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	RCPT_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[8];
-	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,amd.com:email]
-X-Rspamd-Queue-Id: 571665F7A46
+	MID_RHS_MATCH_FROM(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
+X-Rspamd-Queue-Id: 88B935F8918
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-7.0-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Harry Wentland <harry.wentland@amd.com>
+From: Junyi Liu <moss80199@gmail.com>
 
-commit 86d2b20644b11d21fe52c596e6e922b4590a3e3f upstream.
+commit 69f030cf95488ae1186c72ac8c66fd279664ea7f upstream.
 
-[Why&How]
-The GPIO pin table parsers in get_gpio_i2c_info() and
-bios_parser_get_gpio_pin_info() derive an element count from the VBIOS
-table_header.structuresize field, then iterate over gpio_pin[] entries.
-However, GET_IMAGE() only validates that the table header itself fits
-within the BIOS image. If the VBIOS reports a structuresize larger than
-the actual mapped data, the loop reads past the end of the BIOS image,
-causing an out-of-bounds read.
+Introduce smb_validate_ntsd_sid() helper to safely validate Owner SID
+and Group SID inside the NT Security Descriptor (smb_ntsd) retrieved
+from the parent directory.
 
-Fix this by calling bios_get_image() to validate that the full claimed
-structuresize is accessible within the BIOS image before entering the
-loop in both functions.
-
-Assisted-by: GitHub Copilot:claude-opus-4-6
-Reviewed-by: Alex Hung <alex.hung@amd.com>
-Signed-off-by: Harry Wentland <harry.wentland@amd.com>
-Signed-off-by: Ivan Lipski <ivan.lipski@amd.com>
-Tested-by: Dan Wheeler <daniel.wheeler@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-(cherry picked from commit ba5e95b43b773ae1bf1f66ee6b31eb774e65afe3)
 Cc: stable@vger.kernel.org
+Signed-off-by: Junyi Liu <moss80199@gmail.com>
+Signed-off-by: Namjae Jeon <linkinjeon@kernel.org>
+Signed-off-by: Steve French <stfrench@microsoft.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/amd/display/dc/bios/bios_parser2.c |    9 +++++++++
- 1 file changed, 9 insertions(+)
+ fs/smb/server/smbacl.c |   66 +++++++++++++++++++++++++++++++++++++------------
+ 1 file changed, 50 insertions(+), 16 deletions(-)
 
---- a/drivers/gpu/drm/amd/display/dc/bios/bios_parser2.c
-+++ b/drivers/gpu/drm/amd/display/dc/bios/bios_parser2.c
-@@ -492,6 +492,10 @@ static enum bp_result get_gpio_i2c_info(
- 			- sizeof(struct atom_common_table_header))
- 				/ sizeof(struct atom_gpio_pin_assignment);
+--- a/fs/smb/server/smbacl.c
++++ b/fs/smb/server/smbacl.c
+@@ -1096,6 +1096,40 @@ static int smb_append_inherited_ace(stru
+ 	return 0;
+ }
  
-+	if (!bios_get_image(&bp->base, DATA_TABLES(gpio_pin_lut),
-+			    le16_to_cpu(header->table_header.structuresize)))
-+		return BP_RESULT_BADBIOSTABLE;
++static int smb_validate_ntsd_sid(struct smb_ntsd *pntsd, size_t pntsd_size,
++				  unsigned int sid_offset, struct smb_sid **sid,
++				  size_t *sid_size)
++{
++	size_t sid_end;
 +
- 	pin = (struct atom_gpio_pin_assignment *) header->gpio_pin;
++	*sid = NULL;
++	*sid_size = 0;
++
++	if (!sid_offset)
++		return 0;
++
++	if (sid_offset < sizeof(struct smb_ntsd) ||
++	    check_add_overflow(sid_offset, (size_t)CIFS_SID_BASE_SIZE,
++			       &sid_end) ||
++	    sid_end > pntsd_size)
++		return -EINVAL;
++
++	*sid = (struct smb_sid *)((char *)pntsd + sid_offset);
++	if ((*sid)->num_subauth > SID_MAX_SUB_AUTHORITIES)
++		return -EINVAL;
++
++	if (check_add_overflow((size_t)CIFS_SID_BASE_SIZE,
++			       sizeof(__le32) * (size_t)(*sid)->num_subauth,
++			       &sid_end))
++		return -EINVAL;
++
++	if (sid_offset > pntsd_size || sid_end > pntsd_size - sid_offset)
++		return -EINVAL;
++
++	*sid_size = sid_end;
++	return 0;
++}
++
+ int smb_inherit_dacl(struct ksmbd_conn *conn,
+ 		     const struct path *path,
+ 		     unsigned int uid, unsigned int gid)
+@@ -1108,28 +1142,28 @@ int smb_inherit_dacl(struct ksmbd_conn *
+ 	struct dentry *parent = path->dentry->d_parent;
+ 	struct mnt_idmap *idmap = mnt_idmap(path->mnt);
+ 	int inherited_flags = 0, flags = 0, i, nt_size = 0, pdacl_size;
+-	int rc = 0, pntsd_type, pntsd_size, acl_len, aces_size;
++	int rc = 0, pntsd_type, ppntsd_size, acl_len, aces_size;
+ 	unsigned int dacloffset;
+ 	size_t dacl_struct_end;
+ 	u16 num_aces, ace_cnt = 0;
+ 	char *aces_base;
+ 	bool is_dir = S_ISDIR(d_inode(path->dentry)->i_mode);
  
- 	for (table_index = 0; table_index < count; table_index++) {
-@@ -680,6 +684,11 @@ static enum bp_result bios_parser_get_gp
- 	count = (le16_to_cpu(header->table_header.structuresize)
- 			- sizeof(struct atom_common_table_header))
- 				/ sizeof(struct atom_gpio_pin_assignment);
-+
-+	if (!bios_get_image(&bp->base, DATA_TABLES(gpio_pin_lut),
-+			    le16_to_cpu(header->table_header.structuresize)))
-+		return BP_RESULT_BADBIOSTABLE;
-+
- 	for (i = 0; i < count; ++i) {
- 		if (header->gpio_pin[i].gpio_id != gpio_id)
- 			continue;
+-	pntsd_size = ksmbd_vfs_get_sd_xattr(conn, idmap,
++	ppntsd_size = ksmbd_vfs_get_sd_xattr(conn, idmap,
+ 					    parent, &parent_pntsd);
+-	if (pntsd_size <= 0)
++	if (ppntsd_size <= 0)
+ 		return -ENOENT;
+ 
+ 	dacloffset = le32_to_cpu(parent_pntsd->dacloffset);
+ 	if (!dacloffset ||
+ 	    check_add_overflow(dacloffset, sizeof(struct smb_acl), &dacl_struct_end) ||
+-	    dacl_struct_end > (size_t)pntsd_size) {
++	    dacl_struct_end > (size_t)ppntsd_size) {
+ 		rc = -EINVAL;
+ 		goto free_parent_pntsd;
+ 	}
+ 
+ 	parent_pdacl = (struct smb_acl *)((char *)parent_pntsd + dacloffset);
+-	acl_len = pntsd_size - dacloffset;
++	acl_len = ppntsd_size - dacloffset;
+ 	num_aces = le16_to_cpu(parent_pdacl->num_aces);
+ 	pntsd_type = le16_to_cpu(parent_pntsd->type);
+ 	pdacl_size = le16_to_cpu(parent_pdacl->size);
+@@ -1243,19 +1277,19 @@ pass:
+ 		struct smb_ntsd *pntsd;
+ 		struct smb_acl *pdacl;
+ 		struct smb_sid *powner_sid = NULL, *pgroup_sid = NULL;
+-		int powner_sid_size = 0, pgroup_sid_size = 0, pntsd_size;
++		size_t powner_sid_size = 0, pgroup_sid_size = 0, pntsd_size;
+ 		size_t pntsd_alloc_size;
+ 
+-		if (parent_pntsd->osidoffset) {
+-			powner_sid = (struct smb_sid *)((char *)parent_pntsd +
+-					le32_to_cpu(parent_pntsd->osidoffset));
+-			powner_sid_size = 1 + 1 + 6 + (powner_sid->num_subauth * 4);
+-		}
+-		if (parent_pntsd->gsidoffset) {
+-			pgroup_sid = (struct smb_sid *)((char *)parent_pntsd +
+-					le32_to_cpu(parent_pntsd->gsidoffset));
+-			pgroup_sid_size = 1 + 1 + 6 + (pgroup_sid->num_subauth * 4);
+-		}
++		rc = smb_validate_ntsd_sid(parent_pntsd, ppntsd_size,
++					   le32_to_cpu(parent_pntsd->osidoffset),
++					   &powner_sid, &powner_sid_size);
++		if (rc)
++			goto free_aces_base;
++		rc = smb_validate_ntsd_sid(parent_pntsd, ppntsd_size,
++					   le32_to_cpu(parent_pntsd->gsidoffset),
++					   &pgroup_sid, &pgroup_sid_size);
++		if (rc)
++			goto free_aces_base;
+ 
+ 		if (check_add_overflow(sizeof(struct smb_ntsd),
+ 				       (size_t)powner_sid_size,
 
 
 
