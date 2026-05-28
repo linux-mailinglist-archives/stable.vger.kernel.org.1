@@ -1,61 +1,58 @@
-Return-Path: <stable+bounces-255582-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-255228-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id IJlhDUykGGoQlwgAu9opvQ
-	(envelope-from <stable+bounces-255582-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:23:40 +0200
+	id CAylHrSfGGpAlggAu9opvQ
+	(envelope-from <stable+bounces-255228-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:04:04 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id BF1455F88BC
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:23:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id DA3D25F7BFE
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:04:03 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id D9A8C3226E2A
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 20:15:18 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id CAA163054F75
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 19:58:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0BAC42C11F9;
-	Thu, 28 May 2026 20:15:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 89FB0409605;
+	Thu, 28 May 2026 19:58:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VXeyUHvr"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DHeM8HM6"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B16D324A047;
-	Thu, 28 May 2026 20:15:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 52F5033CE8A;
+	Thu, 28 May 2026 19:58:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779999317; cv=none; b=Gxa3tRB1MfdTw1z9t73oiiTtQgvONkcuitC3V+240KHqXDaw+Hz/nWaE7T3rlQOY/sbuV7f34k/rDYeYM7SEXiuG7dTxpC++KseZQ895U1WW0fq+BqbLqGbjAfvbWuCXhARiJSIA668wd7Nlz/c6kRWlYPPqTyiwm7SYQeuA2+8=
+	t=1779998321; cv=none; b=oHq/FD6t0sbYA0MChwCF/zCaxtV654pvMYyRLb0PqiZiVqaJh75FaFWuvc9HHg6IHtzYgfcv0LsYndxcsEZQH8urpVo1zNyXfxk+X4MgP/qOfg3RdKJpC1YSSTHWE3cL8CIcmJhsiyDSeZl7flSCOvEDhqxHbMUmX4S/Yz9BqSo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779999317; c=relaxed/simple;
-	bh=9fBUKsUKP6oAMFQ34XrmI8ddWhLT9WBarDE1scUL84M=;
+	s=arc-20240116; t=1779998321; c=relaxed/simple;
+	bh=M00FM0ZwVBbok6kc27CwOVwnuh7W+oTW/jN3+fSIcmA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=eXrMo9+fUSw9sE+Z5qpR/Zbibs+ZNFbSBtqLzOLwrWVpXt6eV+kjDcM3RBpOTeXDPadv5xyqpazsBNoZyVxWwZYaLCCSTmJvzTmLTazQ7jouPmRKi6Q9lasZRjGCzK25mfDbU066o5brOEjqhcAUCCLjo4vI2qpbUhf1RvanoIE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VXeyUHvr; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D45CD1F000E9;
-	Thu, 28 May 2026 20:15:15 +0000 (UTC)
+	 MIME-Version:Content-Type; b=Vy2B681Lbd/BcQ0da1O0yK3gZfTkfWu+EQT50xKaY3xKky7iwMtRxbBayjyRV53MQexbzxMeEfHc7KycdTtNMx74xRA//SkKtIqi68rjxcarai9UO55FS8PG8gRpJ5A5OOdB55OdWmvyxk0cAYDbSwRIYykwUiS6mBc/iSw9zs4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DHeM8HM6; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 590691F000E9;
+	Thu, 28 May 2026 19:58:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779999316;
-	bh=9ub8qTyuO1ZglknRrhSCxj3Ttf5IApNx+Ef4aOgZTPI=;
+	s=korg; t=1779998318;
+	bh=19S5siDZY4ww8/ZAfkB1h0zZux0bhoPFT66Dou/cuuA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=VXeyUHvrZbXalrgfTQ6ol6kfCcq1k4ryHd5WDqua3iAw9Zv9cDitZuBYZVMBFRSkj
-	 jhM5yp9uJx/ENcwbce0OLtEa4XfTnuJwDzuG8HUjlshx1rmr2LakPn7Zkr9km/gZ66
-	 T3bqSRmuJaUhYYhxNCvnqibfhpx7igxa5W7DCOUk=
+	b=DHeM8HM6Tvztmgqy20yhxvq//Uj2YaUerOy8nngfoHYJ7AVtOVycT17/9drpFe9RN
+	 AByaNH2uUcP1sFPOYKBwQbgQDpSMjTCJSAuIVEDLjVcsSggflAcvYdEoWEJlhIWvYU
+	 lACtNb0vWIrjTVQkwzSkaEQ52c64cUeM+TQyfYTs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Thomas Zimmermann <tzimmermann@suse.de>,
-	Louis Chauvet <louis.chauvet@bootlin.com>,
-	Javier Martinez Canillas <javierm@redhat.com>,
-	Mingyu Wang <25181214217@stu.xidian.edu.cn>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 023/377] drm/vkms: Convert to DRMs vblank timer
+	Iago Toral Quiroga <itoral@igalia.com>,
+	=?UTF-8?q?Ma=C3=ADra=20Canal?= <mcanal@igalia.com>
+Subject: [PATCH 7.0 132/461] drm/v3d: Release indirect CSD GEM reference on CPU job free
 Date: Thu, 28 May 2026 21:44:21 +0200
-Message-ID: <20260528194639.057415498@linuxfoundation.org>
+Message-ID: <20260528194650.811034241@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260528194638.371537336@linuxfoundation.org>
-References: <20260528194638.371537336@linuxfoundation.org>
+In-Reply-To: <20260528194646.819809818@linuxfoundation.org>
+References: <20260528194646.819809818@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,213 +62,77 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_MISSING_CHARSET(0.50)[];
 	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-255582-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TAGGED_FROM(0.00)[bounces-255228-lists,stable=lfdr.de];
+	FROM_HAS_DN(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	TO_DN_SOME(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	RCPT_COUNT_FIVE(0.00)[5];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[8];
-	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[suse.de:email,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim,bootlin.com:email]
-X-Rspamd-Queue-Id: BF1455F88BC
+	MID_RHS_MATCH_FROM(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,msgid.link:url,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
+X-Rspamd-Queue-Id: DA3D25F7BFE
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+7.0-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Thomas Zimmermann <tzimmermann@suse.de>
+From: Maíra Canal <mcanal@igalia.com>
 
-[ Upstream commit 02e2681ffe1addde1fc8c35d05657b16bfa79613 ]
+commit 6eb6e5acafa46854d4363e6c34981289995f3ace upstream.
 
-Replace vkms' vblank timer with the DRM implementation. The DRM
-code is identical in concept, but differs in implementation.
+v3d_get_cpu_indirect_csd_params() takes a reference to the indirect BO via
+drm_gem_object_lookup() and stashes it in cpu_job->indirect_csd.indirect,
+but nothing on the CPU job teardown path ever drops that reference.
 
-Vblank timers are covered in vblank helpers and initializer macros,
-so remove the corresponding hrtimer in struct vkms_output. The
-vblank timer calls vkms' custom timeout code via handle_vblank_timeout
-in struct drm_crtc_helper_funcs.
+Drop the extra reference in v3d_cpu_job_free(). The NULL check covers ioctl
+errors before the lookup ran and CPU job types other than
+V3D_CPU_JOB_TYPE_INDIRECT_CSD, which leave the field zero-initialised.
 
-Signed-off-by: Thomas Zimmermann <tzimmermann@suse.de>
-Tested-by: Louis Chauvet <louis.chauvet@bootlin.com>
-Reviewed-by: Louis Chauvet <louis.chauvet@bootlin.com>
-Reviewed-by: Javier Martinez Canillas <javierm@redhat.com>
-Link: https://lore.kernel.org/r/20250916083816.30275-4-tzimmermann@suse.de
-Signed-off-by: Mingyu Wang <25181214217@stu.xidian.edu.cn>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: stable@vger.kernel.org
+Fixes: 18b8413b25b7 ("drm/v3d: Create a CPU job extension for a indirect CSD job")
+Assisted-by: Claude:claude-opus-4.7
+Reviewed-by: Iago Toral Quiroga <itoral@igalia.com>
+Link: https://patch.msgid.link/20260515-v3d-cpu-job-leaks-v1-2-7f147cbbf935@igalia.com
+Signed-off-by: Maíra Canal <mcanal@igalia.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/vkms/vkms_crtc.c | 83 +++-----------------------------
- drivers/gpu/drm/vkms/vkms_drv.h  |  2 -
- 2 files changed, 7 insertions(+), 78 deletions(-)
+ drivers/gpu/drm/v3d/v3d_submit.c |    3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/drivers/gpu/drm/vkms/vkms_crtc.c b/drivers/gpu/drm/vkms/vkms_crtc.c
-index e60573e0f3e95..bd79f24686dce 100644
---- a/drivers/gpu/drm/vkms/vkms_crtc.c
-+++ b/drivers/gpu/drm/vkms/vkms_crtc.c
-@@ -7,25 +7,18 @@
- #include <drm/drm_managed.h>
- #include <drm/drm_probe_helper.h>
- #include <drm/drm_vblank.h>
-+#include <drm/drm_vblank_helper.h>
+--- a/drivers/gpu/drm/v3d/v3d_submit.c
++++ b/drivers/gpu/drm/v3d/v3d_submit.c
+@@ -132,6 +132,9 @@ v3d_cpu_job_free(struct kref *ref)
+ 	v3d_performance_query_info_free(&job->performance_query,
+ 					job->performance_query.count);
  
- #include "vkms_drv.h"
- 
--static enum hrtimer_restart vkms_vblank_simulate(struct hrtimer *timer)
-+static bool vkms_crtc_handle_vblank_timeout(struct drm_crtc *crtc)
- {
--	struct vkms_output *output = container_of(timer, struct vkms_output,
--						  vblank_hrtimer);
--	struct drm_crtc *crtc = &output->crtc;
-+	struct vkms_output *output = drm_crtc_to_vkms_output(crtc);
- 	struct vkms_crtc_state *state;
--	u64 ret_overrun;
- 	bool ret, fence_cookie;
- 
- 	fence_cookie = dma_fence_begin_signalling();
- 
--	ret_overrun = hrtimer_forward_now(&output->vblank_hrtimer,
--					  output->period_ns);
--	if (ret_overrun != 1)
--		pr_warn("%s: vblank timer overrun\n", __func__);
--
- 	spin_lock(&output->lock);
- 	ret = drm_crtc_handle_vblank(crtc);
- 	if (!ret)
-@@ -57,55 +50,6 @@ static enum hrtimer_restart vkms_vblank_simulate(struct hrtimer *timer)
- 
- 	dma_fence_end_signalling(fence_cookie);
- 
--	return HRTIMER_RESTART;
--}
--
--static int vkms_enable_vblank(struct drm_crtc *crtc)
--{
--	struct drm_vblank_crtc *vblank = drm_crtc_vblank_crtc(crtc);
--	struct vkms_output *out = drm_crtc_to_vkms_output(crtc);
--
--	hrtimer_setup(&out->vblank_hrtimer, &vkms_vblank_simulate, CLOCK_MONOTONIC,
--		      HRTIMER_MODE_REL);
--	out->period_ns = ktime_set(0, vblank->framedur_ns);
--	hrtimer_start(&out->vblank_hrtimer, out->period_ns, HRTIMER_MODE_REL);
--
--	return 0;
--}
--
--static void vkms_disable_vblank(struct drm_crtc *crtc)
--{
--	struct vkms_output *out = drm_crtc_to_vkms_output(crtc);
--
--	hrtimer_cancel(&out->vblank_hrtimer);
--}
--
--static bool vkms_get_vblank_timestamp(struct drm_crtc *crtc,
--				      int *max_error, ktime_t *vblank_time,
--				      bool in_vblank_irq)
--{
--	struct vkms_output *output = drm_crtc_to_vkms_output(crtc);
--	struct drm_vblank_crtc *vblank = drm_crtc_vblank_crtc(crtc);
--
--	if (!READ_ONCE(vblank->enabled)) {
--		*vblank_time = ktime_get();
--		return true;
--	}
--
--	*vblank_time = READ_ONCE(output->vblank_hrtimer.node.expires);
--
--	if (WARN_ON(*vblank_time == vblank->time))
--		return true;
--
--	/*
--	 * To prevent races we roll the hrtimer forward before we do any
--	 * interrupt processing - this is how real hw works (the interrupt is
--	 * only generated after all the vblank registers are updated) and what
--	 * the vblank core expects. Therefore we need to always correct the
--	 * timestampe by one frame.
--	 */
--	*vblank_time -= output->period_ns;
--
- 	return true;
++	if (job->indirect_csd.indirect)
++		drm_gem_object_put(job->indirect_csd.indirect);
++
+ 	v3d_job_free(ref);
  }
  
-@@ -159,9 +103,7 @@ static const struct drm_crtc_funcs vkms_crtc_funcs = {
- 	.reset                  = vkms_atomic_crtc_reset,
- 	.atomic_duplicate_state = vkms_atomic_crtc_duplicate_state,
- 	.atomic_destroy_state   = vkms_atomic_crtc_destroy_state,
--	.enable_vblank		= vkms_enable_vblank,
--	.disable_vblank		= vkms_disable_vblank,
--	.get_vblank_timestamp	= vkms_get_vblank_timestamp,
-+	DRM_CRTC_VBLANK_TIMER_FUNCS,
- 	.get_crc_sources	= vkms_get_crc_sources,
- 	.set_crc_source		= vkms_set_crc_source,
- 	.verify_crc_source	= vkms_verify_crc_source,
-@@ -213,18 +155,6 @@ static int vkms_crtc_atomic_check(struct drm_crtc *crtc,
- 	return 0;
- }
- 
--static void vkms_crtc_atomic_enable(struct drm_crtc *crtc,
--				    struct drm_atomic_state *state)
--{
--	drm_crtc_vblank_on(crtc);
--}
--
--static void vkms_crtc_atomic_disable(struct drm_crtc *crtc,
--				     struct drm_atomic_state *state)
--{
--	drm_crtc_vblank_off(crtc);
--}
--
- static void vkms_crtc_atomic_begin(struct drm_crtc *crtc,
- 				   struct drm_atomic_state *state)
- 	__acquires(&vkms_output->lock)
-@@ -265,8 +195,9 @@ static const struct drm_crtc_helper_funcs vkms_crtc_helper_funcs = {
- 	.atomic_check	= vkms_crtc_atomic_check,
- 	.atomic_begin	= vkms_crtc_atomic_begin,
- 	.atomic_flush	= vkms_crtc_atomic_flush,
--	.atomic_enable	= vkms_crtc_atomic_enable,
--	.atomic_disable	= vkms_crtc_atomic_disable,
-+	.atomic_enable	= drm_crtc_vblank_atomic_enable,
-+	.atomic_disable	= drm_crtc_vblank_atomic_disable,
-+	.handle_vblank_timeout = vkms_crtc_handle_vblank_timeout,
- };
- 
- struct vkms_output *vkms_crtc_init(struct drm_device *dev, struct drm_plane *primary,
-diff --git a/drivers/gpu/drm/vkms/vkms_drv.h b/drivers/gpu/drm/vkms/vkms_drv.h
-index 8013c31efe3b1..fb9711e1c6fbd 100644
---- a/drivers/gpu/drm/vkms/vkms_drv.h
-+++ b/drivers/gpu/drm/vkms/vkms_drv.h
-@@ -215,8 +215,6 @@ struct vkms_output {
- 	struct drm_crtc crtc;
- 	struct drm_writeback_connector wb_connector;
- 	struct drm_encoder wb_encoder;
--	struct hrtimer vblank_hrtimer;
--	ktime_t period_ns;
- 	struct workqueue_struct *composer_workq;
- 	spinlock_t lock;
- 
--- 
-2.53.0
-
 
 
 
