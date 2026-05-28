@@ -1,57 +1,59 @@
-Return-Path: <stable+bounces-255669-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-255315-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id qFQsO0OkGGoQlwgAu9opvQ
-	(envelope-from <stable+bounces-255669-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:23:31 +0200
+	id CGueIMqfGGpvlggAu9opvQ
+	(envelope-from <stable+bounces-255315-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:04:26 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 995415F8886
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:23:31 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C60375F7C3A
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:04:25 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 369FD3088CB7
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 20:19:23 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id D312E304DAE7
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 20:02:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B88592D1303;
-	Thu, 28 May 2026 20:19:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7ED0C335566;
+	Thu, 28 May 2026 20:02:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="K9C2ESXN"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bQPgKGaq"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8EBC2282F17;
-	Thu, 28 May 2026 20:19:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 34C3924677F;
+	Thu, 28 May 2026 20:02:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779999561; cv=none; b=Ps9W3kElKhBcecTC41DKvpo/arzAxEF5u+LMw1Sf1+KnXygaiJsVThlzBjQMr+wH+ypE3NzMZqKVVu9/iffSjfAspbkIq6m65R+1Hqd8spdqBWDiSH/9Qo+t75RkpWEPh0xEQ+vtIuKlEW5xL15zEVeXqY0p/RdTaLqzQwdGCpg=
+	t=1779998564; cv=none; b=Yum8GN5W0rpXST7Ri9EOGKmblWZ0FWmweiscV/tXNsdvnl+/vQmDtM8U9esHZOuv8DHaTmtXnL94ruu+G/2zTxXwIoNh+fKpeqm1bo9Ucz0LZZLOHoqZI0LRCD657z3bLw/8zykrFWUl39eUxtY3KsPNyqTTUCc5FiW5UrHaAwk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779999561; c=relaxed/simple;
-	bh=JHlUR2f8xCUXF50JEVUro16HRKhG+/r4IqL1r1ZO3a4=;
+	s=arc-20240116; t=1779998564; c=relaxed/simple;
+	bh=KPeWlRZtsXSoW5dLTj3j4OZbe8P0WfzLCzlXjXLmEJ0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=riBDVtZyzIRCR5tNm3o4AzyVrEdRy8x6lITgy2GHJWlIBK7mRVeMFzp3U+bTM1KXElkNzL+q5zPx/Ij8KO6yEYwfyB09IF/+3NuH7Me05ctqfdPpEaXfD2eEY/cJzGKXMbI2M46vBDFh/8jGs2Yu2HD3LFupzD3qRQBJ/Jeyyvs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=K9C2ESXN; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EBD181F000E9;
-	Thu, 28 May 2026 20:19:19 +0000 (UTC)
+	 MIME-Version; b=Td/JYtTUohPUvd8SHGN0rhEKLcDFpBnNvFsf4a9Lck4LeGjb99iMJtzaaJ1wTDVyOlwCPxYNqdUy+aBara+KVm1IcVESjrOVtMFzpEZIg2DVDsu2Qi3QJuH/9MMLbdMEmOALa7aDuyRkZhQzX/zg74/1TT6IA985f9jfd1MzHHY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bQPgKGaq; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 940611F000E9;
+	Thu, 28 May 2026 20:02:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779999560;
-	bh=pGeyE1tzf95ttkB4Cd0hC8uo+AkCgbr6Zgz3gs1A0c8=;
+	s=korg; t=1779998563;
+	bh=Ejj9XMcukwWLMDbFgmlz7QTuBY1p0zbioHwYwRHc21w=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=K9C2ESXN8AMcMptMHZnA2mXx7GR/GwWeH14jFZppdnxwzWVZ+dDMMtXrk3aFWxvZG
-	 Mpu2x2fqJkyzGQGeZvJ3KAmshL/pikK6ZOjwxCb0cUbs+knX+1I+pwYizJ65h7FbHn
-	 +tJuVXzIBVTE2rrVjox3J6nbJ21zE203RO2AoDZA=
+	b=bQPgKGaqXVv/G944wrFupQZKCMSMqDSzn7pB6lBSJ/2KjPU/rwAC4pS0pZ8Bjx4P0
+	 QNvDZ9yklXp0s1QxntQdk/cLJss2cIRvCzeqR2uV7p/veah6NWhaYsNdTNXp/lSD12
+	 WiJbn9UIELud5VInlnr3WPqd5hWm/bZKEztjyzHM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Tina Zhang <zhang_wei@open-hieco.net>
-Subject: [PATCH 6.18 109/377] KVM: SVM: Disable AVIC IPI virtualization on Hygon Family 18h (erratum #1235)
+	Martin Kaiser <martin@kaiser.cx>,
+	"Masami Hiramatsu (Google)" <mhiramat@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 7.0 218/461] test_kprobes: clear kprobes between test runs
 Date: Thu, 28 May 2026 21:45:47 +0200
-Message-ID: <20260528194641.494661257@linuxfoundation.org>
+Message-ID: <20260528194653.439555517@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260528194638.371537336@linuxfoundation.org>
-References: <20260528194638.371537336@linuxfoundation.org>
+In-Reply-To: <20260528194646.819809818@linuxfoundation.org>
+References: <20260528194646.819809818@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -71,81 +73,155 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-255669-lists,stable=lfdr.de];
-	PRECEDENCE_BULK(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
+	RCVD_TLS_LAST(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-255315-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
-	RCPT_COUNT_THREE(0.00)[4];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	TO_DN_SOME(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo]
-X-Rspamd-Queue-Id: 995415F8886
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,martin-riscv-1:email,rp.kp:url,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,rp4.kp:url]
+X-Rspamd-Queue-Id: C60375F7C3A
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+7.0-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Tina Zhang <zhang_wei@open-hieco.net>
+From: Martin Kaiser <martin@kaiser.cx>
 
-commit 9a12fa5213cfc391e0eed63902d3be98f0913765 upstream.
+[ Upstream commit ef5581bb30efb939cc2bf093475c6cc85258e5cd ]
 
-Hygon Family 18h CPUs are derived from AMD Family 17h (Zen1) silicon and
-share the same erratum #1235: hardware may read a stale IsRunning=1 bit
-during ICR write emulation and silently fail to generate an
-AVIC_IPI_FAILURE_TARGET_NOT_RUNNING VM-Exit on the sending vCPU.
+Running the kprobes sanity tests twice makes all tests fail and
+eventually crashes the kernel.
 
-The absence of the VM-Exit causes KVM to miss the required wakeup of
-blocking target vCPUs, leading to hung vCPUs and unbounded delays in
-guest execution.
+[root@martin-riscv-1 ~]# echo 1 > /sys/kernel/debug/kunit/kprobes_test/run
+...
+   # Totals: pass:5 fail:0 skip:0 total:5
+   ok 1 kprobes_test
+[root@martin-riscv-1 ~]# echo 1 > /sys/kernel/debug/kunit/kprobes_test/run
+...
+  # test_kprobe: EXPECTATION FAILED at lib/tests/test_kprobes.c:64
+  Expected 0 == register_kprobe(&kp), but
+      register_kprobe(&kp) == -22 (0xffffffffffffffea)
+...
+  Unable to handle kernel paging request ...
 
-Extend the existing AMD Family 17h erratum #1235 workaround to also cover
-Hygon Family 18h.  With IPI virtualization disabled, KVM never sets
-IsRunning=1 in the Physical ID table, so every non-self IPI generates a
-VM-Exit and is correctly emulated.
+The testsuite defines several kprobes and kretprobes as static variables
+that are preserved across test runs.
 
-Fixes: 8de4a1c8164e ("KVM: SVM: Disable (x2)AVIC IPI virtualization if CPU has erratum #1235")
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Tina Zhang <zhang_wei@open-hieco.net>
-Message-ID: <20260522040014.3380201-1-zhang_wei@open-hieco.net>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+After register_kprobe and unregister_kprobe, a kprobe contains some
+leftover data that must be cleared before the kprobe can be registered
+again. The tests are setting symbol_name to define the probe location.
+Address and flags must be cleared.
+
+The existing code clears some of the probes between subsequent tests, but
+not between two test runs. The leftover data from a previous test run
+makes the registrations fail in the next run.
+
+Move the cleanups for all kprobes into kprobes_test_init, this function
+is called before each single test (including the first test of a test
+run).
+
+Link: https://lore.kernel.org/all/20260507134615.1010905-1-martin@kaiser.cx/
+
+Fixes: e44e81c5b90f ("kprobes: convert tests to kunit")
+Signed-off-by: Martin Kaiser <martin@kaiser.cx>
+Signed-off-by: Masami Hiramatsu (Google) <mhiramat@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/x86/kvm/svm/avic.c |   12 +++++++-----
- 1 file changed, 7 insertions(+), 5 deletions(-)
+ lib/tests/test_kprobes.c | 29 ++++++++++++++++++-----------
+ 1 file changed, 18 insertions(+), 11 deletions(-)
 
---- a/arch/x86/kvm/svm/avic.c
-+++ b/arch/x86/kvm/svm/avic.c
-@@ -1252,12 +1252,14 @@ bool __init avic_hardware_setup(void)
- 		svm_x86_ops.allow_apicv_in_x2apic_without_x2apic_virtualization = true;
+diff --git a/lib/tests/test_kprobes.c b/lib/tests/test_kprobes.c
+index b7582010125c3..06e729e4de051 100644
+--- a/lib/tests/test_kprobes.c
++++ b/lib/tests/test_kprobes.c
+@@ -12,6 +12,12 @@
+ 
+ #define div_factor 3
+ 
++#define KP_CLEAR(_kp) \
++do { \
++	(_kp).addr = NULL; \
++	(_kp).flags = 0; \
++} while (0)
++
+ static u32 rand1, preh_val, posth_val;
+ static u32 (*target)(u32 value);
+ static u32 (*recursed_target)(u32 value);
+@@ -125,10 +131,6 @@ static void test_kprobes(struct kunit *test)
+ 
+ 	current_test = test;
+ 
+-	/* addr and flags should be cleard for reusing kprobe. */
+-	kp.addr = NULL;
+-	kp.flags = 0;
+-
+ 	KUNIT_EXPECT_EQ(test, 0, register_kprobes(kps, 2));
+ 	preh_val = 0;
+ 	posth_val = 0;
+@@ -226,9 +228,6 @@ static void test_kretprobes(struct kunit *test)
+ 	struct kretprobe *rps[2] = {&rp, &rp2};
+ 
+ 	current_test = test;
+-	/* addr and flags should be cleard for reusing kprobe. */
+-	rp.kp.addr = NULL;
+-	rp.kp.flags = 0;
+ 	KUNIT_EXPECT_EQ(test, 0, register_kretprobes(rps, 2));
+ 
+ 	krph_val = 0;
+@@ -290,8 +289,6 @@ static void test_stacktrace_on_kretprobe(struct kunit *test)
+ 	unsigned long myretaddr = (unsigned long)__builtin_return_address(0);
+ 
+ 	current_test = test;
+-	rp3.kp.addr = NULL;
+-	rp3.kp.flags = 0;
  
  	/*
--	 * Disable IPI virtualization for AMD Family 17h CPUs (Zen1 and Zen2)
--	 * due to erratum 1235, which results in missed VM-Exits on the sender
--	 * and thus missed wake events for blocking vCPUs due to the CPU
--	 * failing to see a software update to clear IsRunning.
-+	 * Disable IPI virtualization for AMD Family 17h (Zen1 and Zen2) and
-+	 * Hygon Family 18h (derived from AMD Zen1) CPUs due to erratum 1235,
-+	 * which results in missed VM-Exits on the sender and thus missed wake
-+	 * events for blocking vCPUs due to the CPU failing to see a software
-+	 * update to clear IsRunning.
- 	 */
--	enable_ipiv = enable_ipiv && boot_cpu_data.x86 != 0x17;
-+	if (boot_cpu_data.x86 == 0x17 || boot_cpu_data.x86 == 0x18)
-+		enable_ipiv = false;
+ 	 * Run the stacktrace_driver() to record correct return address in
+@@ -352,8 +349,6 @@ static void test_stacktrace_on_nested_kretprobe(struct kunit *test)
+ 	struct kretprobe *rps[2] = {&rp3, &rp4};
  
- 	amd_iommu_register_ga_log_notifier(&avic_ga_log_notifier);
+ 	current_test = test;
+-	rp3.kp.addr = NULL;
+-	rp3.kp.flags = 0;
  
+ 	//KUNIT_ASSERT_NE(test, myretaddr, stacktrace_driver());
+ 
+@@ -367,6 +362,18 @@ static void test_stacktrace_on_nested_kretprobe(struct kunit *test)
+ 
+ static int kprobes_test_init(struct kunit *test)
+ {
++	KP_CLEAR(kp);
++	KP_CLEAR(kp2);
++	KP_CLEAR(kp_missed);
++#ifdef CONFIG_KRETPROBES
++	KP_CLEAR(rp.kp);
++	KP_CLEAR(rp2.kp);
++#ifdef CONFIG_ARCH_CORRECT_STACKTRACE_ON_KRETPROBE
++	KP_CLEAR(rp3.kp);
++	KP_CLEAR(rp4.kp);
++#endif
++#endif
++
+ 	target = kprobe_target;
+ 	target2 = kprobe_target2;
+ 	recursed_target = kprobe_recursed_target;
+-- 
+2.53.0
+
 
 
 
