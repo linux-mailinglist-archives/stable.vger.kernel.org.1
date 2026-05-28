@@ -1,59 +1,59 @@
-Return-Path: <stable+bounces-255549-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-256319-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id WISKL3KiGGqblggAu9opvQ
-	(envelope-from <stable+bounces-255549-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:15:46 +0200
+	id GGbUNCuuGGpolwgAu9opvQ
+	(envelope-from <stable+bounces-256319-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 23:05:47 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 68D975F8320
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:15:46 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0229F5FA34B
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 23:05:46 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 1ECF5303AB74
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 20:13:47 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 08E2A30A3ED0
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 20:49:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 49BC233A702;
-	Thu, 28 May 2026 20:13:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3950C328B7B;
+	Thu, 28 May 2026 20:49:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZZRmwTa1"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="h2TxGKL2"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1748833F5B4;
-	Thu, 28 May 2026 20:13:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1EB7C2F1FEF;
+	Thu, 28 May 2026 20:49:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779999225; cv=none; b=n+L9Lvetqgj5EsJYXnMEXEe7lMw48LKqM1vwJHGq1nThxt4NncUE5yBLXjTWr5u6TPoDDsJh81Kp4u+SjsU0omt3VQttpgOcCOUlyQ2Nyvla4qo0HOjG+6rjN1SiqDl80NpTWADi1jg5iy2Fuxhxncq9jTyIseWzX5Xbab65zwg=
+	t=1780001368; cv=none; b=lYGPuWo8lIXAP13cc1b3ocfzWqpCRw5jugSuaRaFNuqh4WR9HvtadDadWfj0yhD/WQl7GntWoEcxgwD7LcDCAknYDH3F5d0SenOY9E1e//y843MAnfHPCklhl72KHoeiMPsKjrulZ6dDArByv41luR9p4JvhJgzZS4HpUUiuPn0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779999225; c=relaxed/simple;
-	bh=Orzz6b7eS00eBIP9RF32tZIDk5qPP8DWyQcvTgHD57Y=;
+	s=arc-20240116; t=1780001368; c=relaxed/simple;
+	bh=r8rzMALaKOfSNF4nyyYeAXJygQ79lKFqw9Dy5YFovdo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=d2eFWEIuWowa6OLX3OAv6QIbnn1gkDnWUXWaU+O3hP0ZRXKtosokIv2fbTS6aYy2pz8ORtCUXWcH9JwO5YvBAsU3s+9TzwUskjYB/NjP5530/BZ7ZbAEFrbYlZGcrYvjMi3WOdIdhcNcn6ghqmA4h4dWyIdGaB3a5ikO7zYJ/jQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZZRmwTa1; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 75D941F000E9;
-	Thu, 28 May 2026 20:13:43 +0000 (UTC)
+	 MIME-Version; b=iC9QI0pW+kWZu0Us4nSY6V6ipEVI44y1EvoCAT7lWeaKrRQyCY8CpgXjNSbY9ITX3ubCf0r29Wp9vHK4lRAFq9a6AW8u/f37efn7JYcvOwhUpLUMy9Id6xFu8johjiSBpj8ZlzgNR8b8n+Ul//5BS6004aqa9P3He4yoH+9IqGA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=h2TxGKL2; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 43E991F000E9;
+	Thu, 28 May 2026 20:49:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779999224;
-	bh=5+7m1qNI/AHweW2JOs778zlXxeq4knPHX2Y5PWbBXZY=;
+	s=korg; t=1780001367;
+	bh=9Crm+9rvhveSjh5/81BUs0SfLJuxCZ4XLcv6xS6DuOg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=ZZRmwTa1Tchp0tuEdWDWgSMGJwouvKCePPLhbYENhMJ5UuuleCHZvdpdVMuO2ytgN
-	 tK0ct0PffDaqa2km5HDn4u4jfe/3mwnJZfvgrXIfov94ra6pKjPGyuXVQMjrEjL7mE
-	 sycG/GnMKMOW8vmdECYH93JQ8WNHXwp4ZnM+Lt08=
+	b=h2TxGKL29bOuREPtYM+3GV2TJCN76pCa6Dl0Gy3XbGVtGY2FZnEBNujhJb1Eq7ube
+	 /GTx1KT4nzC59aootBWSS5FpFju502GaVewH4Zsr/cYVXrKx3A7s0Ood6sUP2AD5yx
+	 +Le1SajAY8Pau0ATfrCZC/zLROs+dY9h0roOj7VQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Nikhil P. Rao" <nikhil.rao@amd.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	David Gow <david@davidgow.net>,
+	Shuah Khan <skhan@linuxfoundation.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 7.0 452/461] pds_core: ensure null-termination for firmware version strings
+Subject: [PATCH 6.6 101/186] kunit: config: KUNIT_DEBUGFS should depend on DEBUG_FS
 Date: Thu, 28 May 2026 21:49:41 +0200
-Message-ID: <20260528194700.624002162@linuxfoundation.org>
+Message-ID: <20260528194931.661849152@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260528194646.819809818@linuxfoundation.org>
-References: <20260528194646.819809818@linuxfoundation.org>
+In-Reply-To: <20260528194928.941004471@linuxfoundation.org>
+References: <20260528194928.941004471@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -68,7 +68,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
@@ -78,7 +78,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-255549-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-256319-lists,stable=lfdr.de];
 	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
@@ -89,55 +89,44 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	TAGGED_RCPT(0.00)[stable];
 	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[amd.com:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,msgid.link:url]
-X-Rspamd-Queue-Id: 68D975F8320
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim]
+X-Rspamd-Queue-Id: 0229F5FA34B
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-7.0-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Nikhil P. Rao <nikhil.rao@amd.com>
+From: David Gow <david@davidgow.net>
 
-[ Upstream commit 3d4432d34c1992701289cbe12df9fd024f315998 ]
+[ Upstream commit 8f80b5b227ef9ea422080487715c841856339aed ]
 
-The driver passes fw_version directly to devlink_info_version_stored_put()
-without ensuring null-termination. While current firmware null-terminates
-these strings, the driver should not rely on this behavior. Add explicit
-null-termination to prevent potential issues if firmware behavior changes.
+CONFIG_KUNIT_DEBUGFS is totally useless without debugfs, so it should
+depend on CONFIG_DEBUG_FS.
 
-Fixes: 45d76f492938 ("pds_core: set up device and adminq")
-Signed-off-by: Nikhil P. Rao <nikhil.rao@amd.com>
-Link: https://patch.msgid.link/20260520205842.1486718-1-nikhil.rao@amd.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Link: https://lore.kernel.org/r/20260425034155.53913-2-david@davidgow.net
+Fixes: e2219db280e3 ("kunit: add debugfs /sys/kernel/debug/kunit/<suite>/results display")
+Signed-off-by: David Gow <david@davidgow.net>
+Signed-off-by: Shuah Khan <skhan@linuxfoundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/amd/pds_core/devlink.c | 6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
+ lib/kunit/Kconfig | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/net/ethernet/amd/pds_core/devlink.c b/drivers/net/ethernet/amd/pds_core/devlink.c
-index b576be626a294..3f0e56b951bf0 100644
---- a/drivers/net/ethernet/amd/pds_core/devlink.c
-+++ b/drivers/net/ethernet/amd/pds_core/devlink.c
-@@ -122,12 +122,14 @@ int pdsc_dl_info_get(struct devlink *dl, struct devlink_info_req *req,
+diff --git a/lib/kunit/Kconfig b/lib/kunit/Kconfig
+index fab3458c54e4c..f5ba590373907 100644
+--- a/lib/kunit/Kconfig
++++ b/lib/kunit/Kconfig
+@@ -17,6 +17,7 @@ if KUNIT
  
- 	listlen = min(fw_list.num_fw_slots, ARRAY_SIZE(fw_list.fw_names));
- 	for (i = 0; i < listlen; i++) {
-+		char *fw_ver = fw_list.fw_names[i].fw_version;
-+
- 		if (i < ARRAY_SIZE(fw_slotnames))
- 			strscpy(buf, fw_slotnames[i], sizeof(buf));
- 		else
- 			snprintf(buf, sizeof(buf), "fw.slot_%d", i);
--		err = devlink_info_version_stored_put(req, buf,
--						      fw_list.fw_names[i].fw_version);
-+		fw_ver[sizeof(fw_list.fw_names[i].fw_version) - 1] = '\0';
-+		err = devlink_info_version_stored_put(req, buf, fw_ver);
- 		if (err)
- 			return err;
- 	}
+ config KUNIT_DEBUGFS
+ 	bool "KUnit - Enable /sys/kernel/debug/kunit debugfs representation"
++	depends on DEBUG_FS
+ 	default y
+ 	help
+ 	  Enable debugfs representation for kunit.  Currently this consists
 -- 
 2.53.0
 
