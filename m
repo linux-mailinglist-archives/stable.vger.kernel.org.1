@@ -1,61 +1,58 @@
-Return-Path: <stable+bounces-255994-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-255720-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id MFRrOGioGGpolwgAu9opvQ
-	(envelope-from <stable+bounces-255994-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:41:12 +0200
+	id aHTCAcqlGGrClggAu9opvQ
+	(envelope-from <stable+bounces-255720-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:30:02 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5C5CB5F950E
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:41:12 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 575555F8D2C
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:30:01 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id E2E48314B32E
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 20:34:21 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 3508832E2ECC
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 20:21:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 048C7330D35;
-	Thu, 28 May 2026 20:34:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 979C830C15B;
+	Thu, 28 May 2026 20:21:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gvExL9M7"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CjIhGcuk"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A22FE2C15AC;
-	Thu, 28 May 2026 20:34:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 66D582D9787;
+	Thu, 28 May 2026 20:21:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780000458; cv=none; b=JWm08oTTGRYwEtvCPl/FsgjvGlKAop+i4nW7++HqdJb7sG/s5tkxmdJAh38imJT0wYx1rOBrKPpftl2t1JC5wZaHuJQjNLPd5sBhEbAnRHO5j8Cj/o2S5FsW+dStiEpGa2qFGeuNeftzqBovzuZfXUJlS0MEbUbuKgNbJ4XkFhI=
+	t=1779999698; cv=none; b=l7MHK31CKPM0KwnZ3aczGOKjuZkAR4XEwADECTCTszo4Yq3Gh9H8vJeAUUXS1vBCJUeGiUMQRxW0/YqFir7MVl4icuotJk5U/uGs4SvG38rWN1yMoX8Fg33yjansw3ArSj2pGfQXDunEDVG3Kf5PerG9hO0SY7XDRpbmHKciCYs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780000458; c=relaxed/simple;
-	bh=gnvKV8PtreG+j2x3RAgQH7X22zS2hNFsTJeWQDHbVx4=;
+	s=arc-20240116; t=1779999698; c=relaxed/simple;
+	bh=mrS/lUuHoUb8GCusos5LwUEq1AwhPx4qsc7ketHBpcs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=j0noEIr65r1m1OZxSILNz0ysDTI1VTZ8mEBvA8i80J5XwWgwUQepDaLScWUN2YY+AjsMDdzdMsFDL33qK2vo58H8FIfBZSWcY71yW+8E2wqBkb5UoeNszZwyJTJe/jhxsvsNOWqVzoqYcqD3/U0fCH9vQ68brY0p6g6DVb4AiE4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gvExL9M7; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C78211F000E9;
-	Thu, 28 May 2026 20:34:16 +0000 (UTC)
+	 MIME-Version; b=GkouoUokS0BnOHV2EgTD3/BwRFK6sfHfyl9GXphpl+XIZy/ZgS1d0nho6V6QZSTM5NniYVIgHGqa5C19fD7PEZOwbZ/H83qZugJMov8CQcZUf2ubZmcSjQZDT364TpgfSGEX/weEayyyyxU0BG6BvdeilFBWlbuDYb1cJ4k+Uoo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CjIhGcuk; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C4B061F000E9;
+	Thu, 28 May 2026 20:21:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780000457;
-	bh=4bzVyFxH91sf7ya/eRIkC2s0eSu18hOUVVJOGA3TD2s=;
+	s=korg; t=1779999697;
+	bh=+i2iIOnz+bAW/ftLmJW59pCsEgcQKlnF4wlPOudIzL0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=gvExL9M7XladyBzCqX1S+FUeZY+WFU954pM61ULedU6FpLTlN5zYWf9prYx/kgOlh
-	 +mnNHNGN020oVjI5oL3Mhw1UBuezElDeAtEQYsen2ul9Rt9CA9vPxEFxE2/zCk8Soj
-	 w6msyT5+VFUbTObM4EoyiidwmrRQ8te8QH8xMYf4=
+	b=CjIhGcuk3GslRiC+eCznZMoqkwfvO1oEp/eakly1mp3bfvm1mPZm6cWc4mz1ADsrN
+	 a7jZSDaxB+978LTdGa41DbnKea3BVV2VXT7Gf4wgCdV+X+0d2+8uTmeOsIYF+5yAap
+	 u3cFVai5DjMpirRLtqMWB5f1Ieev1kYxMDoqokYc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Chris Mason <clm@meta.com>,
-	"Peter Zijlstra (Intel)" <peterz@infradead.org>,
-	Juri Lelli <juri.lelli@redhat.com>,
-	Lukas Beckmann <lbckmnn@mailbox.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 015/272] sched/deadline: Less agressive dl_server handling
-Date: Thu, 28 May 2026 21:46:29 +0200
-Message-ID: <20260528194629.810918791@linuxfoundation.org>
+	stable@kernel.org,
+	Sven Eckelmann <sven@narfation.org>
+Subject: [PATCH 6.18 152/377] batman-adv: tp_meter: fix tp_vars reference leak in receiver shutdown
+Date: Thu, 28 May 2026 21:46:30 +0200
+Message-ID: <20260528194642.793918555@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260528194629.379955525@linuxfoundation.org>
-References: <20260528194629.379955525@linuxfoundation.org>
+In-Reply-To: <20260528194638.371537336@linuxfoundation.org>
+References: <20260528194638.371537336@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -70,197 +67,123 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-255994-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-255720-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[8];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[infradead.org:email,mailbox.org:email,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,meta.com:email,linuxfoundation.org:mid,linuxfoundation.org:dkim]
-X-Rspamd-Queue-Id: 5C5CB5F950E
+	RCPT_COUNT_FIVE(0.00)[5];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,narfation.org:email,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim]
+X-Rspamd-Queue-Id: 575555F8D2C
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Peter Zijlstra <peterz@infradead.org>
+From: Sven Eckelmann <sven@narfation.org>
 
-commit cccb45d7c4295bbfeba616582d0249f2d21e6df5 upstream.
+commit 77098e4bea37af51d3962efa88a5af2ea5e1ac57 upstream.
 
-Chris reported that commit 5f6bd380c7bd ("sched/rt: Remove default
-bandwidth control") caused a significant dip in his favourite
-benchmark of the day. Simply disabling dl_server cured things.
+The receiver shutdown timer handler, batadv_tp_receiver_shutdown(), is
+responsible for releasing the tp_vars reference it holds. However, the
+existing logic for coordinating this release with batadv_tp_stop_all() was
+flawed.
 
-His workload hammers the 0->1, 1->0 transitions, and the
-dl_server_{start,stop}() overhead kills it -- fairly obviously a bad
-idea in hind sight and all that.
+timer_shutdown_sync() guarantees the timer will not fire again after it
+returns, but it returns non-zero only when the timer was pending at the
+time of the call. If the timer had already expired (and
+batadv_tp_stop_all() would unsucessfully try to  rearm itself),
+batadv_tp_stop_all() skips its batadv_tp_vars_put(), and
+batadv_tp_receiver_shutdown() fails to put its own reference as well.
 
-Change things around to only disable the dl_server when there has not
-been a fair task around for a whole period. Since the default period
-is 1 second, this ensures the benchmark never trips this, overhead
-gone.
+Fix this by introducing a new atomic variable receiving that is set to 1
+when the receiver is initialized and cleared atomically with atomic_xchg()
+by whichever side claims it first. Only the side that observes the
+transition from 1 to 0 is responsible for releasing the tp_vars timer
+reference, eliminating the uncertainty.
 
-Fixes: 557a6bfc662c ("sched/fair: Add trivial fair server")
-Reported-by: Chris Mason <clm@meta.com>
-Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Reviewed-by: Juri Lelli <juri.lelli@redhat.com>
-Acked-by: Juri Lelli <juri.lelli@redhat.com>
-Link: https://lkml.kernel.org/r/20250702121158.465086194@infradead.org
-[ adjust context for renamed/removed variable names ]
-Signed-off-by: Lukas Beckmann <lbckmnn@mailbox.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: stable@kernel.org
+Fixes: 3d3cf6a7314a ("batman-adv: stop tp_meter sessions during mesh teardown")
+Signed-off-by: Sven Eckelmann <sven@narfation.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- include/linux/sched.h   |  1 +
- kernel/sched/deadline.c | 25 ++++++++++++++++++++++---
- kernel/sched/fair.c     |  9 ---------
- 3 files changed, 23 insertions(+), 12 deletions(-)
+ net/batman-adv/tp_meter.c |   13 +++++++++++--
+ net/batman-adv/types.h    |    3 +++
+ 2 files changed, 14 insertions(+), 2 deletions(-)
 
-diff --git a/include/linux/sched.h b/include/linux/sched.h
-index 2e4c437c7c902..299a65a92d2e6 100644
---- a/include/linux/sched.h
-+++ b/include/linux/sched.h
-@@ -674,6 +674,7 @@ struct sched_dl_entity {
- 	unsigned int			dl_defer	  : 1;
- 	unsigned int			dl_defer_armed	  : 1;
- 	unsigned int			dl_defer_running  : 1;
-+	unsigned int			dl_server_idle    : 1;
+--- a/net/batman-adv/tp_meter.c
++++ b/net/batman-adv/tp_meter.c
+@@ -8,6 +8,7 @@
+ #include "main.h"
  
- 	/*
- 	 * Bandwidth enforcement timer. Each -deadline task has its
-diff --git a/kernel/sched/deadline.c b/kernel/sched/deadline.c
-index 1ef891f8e3f2f..9c5fa95b345a5 100644
---- a/kernel/sched/deadline.c
-+++ b/kernel/sched/deadline.c
-@@ -1201,6 +1201,8 @@ static void __push_dl_task(struct rq *rq, struct rq_flags *rf)
- /* a defer timer will not be reset if the runtime consumed was < dl_server_min_res */
- static const u64 dl_server_min_res = 1 * NSEC_PER_MSEC;
+ #include <linux/atomic.h>
++#include <linux/bug.h>
+ #include <linux/build_bug.h>
+ #include <linux/byteorder/generic.h>
+ #include <linux/cache.h>
+@@ -1157,6 +1158,9 @@ static void batadv_tp_receiver_shutdown(
+ 	spin_unlock_bh(&tp_vars->unacked_lock);
  
-+static bool dl_server_stopped(struct sched_dl_entity *dl_se);
+ 	/* drop reference of timer */
++	if (WARN_ON(atomic_xchg(&tp_vars->receiving, 0) != 1))
++		return;
 +
- static enum hrtimer_restart dl_server_timer(struct hrtimer *timer, struct sched_dl_entity *dl_se)
- {
- 	struct rq *rq = rq_of_dl_se(dl_se);
-@@ -1220,6 +1222,7 @@ static enum hrtimer_restart dl_server_timer(struct hrtimer *timer, struct sched_
+ 	batadv_tp_vars_put(tp_vars);
+ }
  
- 		if (!dl_se->server_has_tasks(dl_se)) {
- 			replenish_dl_entity(dl_se);
-+			dl_server_stopped(dl_se);
- 			return HRTIMER_NORESTART;
+@@ -1375,6 +1379,7 @@ batadv_tp_init_recv(struct batadv_priv *
+ 
+ 	ether_addr_copy(tp_vars->other_end, icmp->orig);
+ 	tp_vars->role = BATADV_TP_RECEIVER;
++	atomic_set(&tp_vars->receiving, 1);
+ 	memcpy(tp_vars->session, icmp->session, sizeof(tp_vars->session));
+ 	tp_vars->last_recv = BATADV_TP_FIRST_SEQ;
+ 	tp_vars->bat_priv = bat_priv;
+@@ -1547,8 +1552,12 @@ void batadv_tp_stop_all(struct batadv_pr
+ 			break;
+ 		case BATADV_TP_RECEIVER:
+ 			batadv_tp_list_detach(tp_var);
+-			if (timer_shutdown_sync(&tp_var->timer))
+-				batadv_tp_vars_put(tp_var);
++			timer_shutdown_sync(&tp_var->timer);
++
++			if (atomic_xchg(&tp_var->receiving, 0) != 1)
++				break;
++
++			batadv_tp_vars_put(tp_var);
+ 			break;
  		}
  
-@@ -1626,8 +1629,10 @@ void dl_server_update_idle_time(struct rq *rq, struct task_struct *p)
- void dl_server_update(struct sched_dl_entity *dl_se, s64 delta_exec)
- {
- 	/* 0 runtime = fair server disabled */
--	if (dl_se->dl_runtime)
-+	if (dl_se->dl_runtime) {
-+		dl_se->dl_server_idle = 0;
- 		update_curr_dl_se(dl_se->rq, dl_se, delta_exec);
-+	}
- }
+--- a/net/batman-adv/types.h
++++ b/net/batman-adv/types.h
+@@ -1332,6 +1332,9 @@ struct batadv_tp_vars {
+ 	/** @sending: sending binary semaphore: 1 if sending, 0 is not */
+ 	atomic_t sending;
  
- /*
-@@ -1850,7 +1855,7 @@ void dl_server_start(struct sched_dl_entity *dl_se)
- 		setup_new_dl_entity(dl_se);
- 	}
- 
--	if (!dl_se->dl_runtime)
-+	if (!dl_se->dl_runtime || dl_se->dl_server_active)
- 		return;
- 
- 	dl_se->dl_server_active = 1;
-@@ -1871,6 +1876,20 @@ void dl_server_stop(struct sched_dl_entity *dl_se)
- 	dl_se->dl_server_active = 0;
- }
- 
-+static bool dl_server_stopped(struct sched_dl_entity *dl_se)
-+{
-+	if (!dl_se->dl_server_active)
-+		return false;
++	/** @receiving: receiving binary semaphore: 1 if receiving, 0 is not */
++	atomic_t receiving;
 +
-+	if (dl_se->dl_server_idle) {
-+		dl_server_stop(dl_se);
-+		return true;
-+	}
-+
-+	dl_se->dl_server_idle = 1;
-+	return false;
-+}
-+
- void dl_server_init(struct sched_dl_entity *dl_se, struct rq *rq,
- 		    dl_server_has_tasks_f has_tasks,
- 		    dl_server_pick_f pick_task)
-@@ -2628,7 +2647,7 @@ static struct task_struct *__pick_task_dl(struct rq *rq)
- 	if (dl_server(dl_se)) {
- 		p = dl_se->server_pick_task(dl_se);
- 		if (!p) {
--			if (dl_server_active(dl_se)) {
-+			if (!dl_server_stopped(dl_se)) {
- 				dl_se->dl_yielded = 1;
- 				update_curr_dl_se(rq, dl_se, 0);
- 			}
-diff --git a/kernel/sched/fair.c b/kernel/sched/fair.c
-index a0a47e50b71ca..d26e078d0623f 100644
---- a/kernel/sched/fair.c
-+++ b/kernel/sched/fair.c
-@@ -5972,7 +5972,6 @@ static bool throttle_cfs_rq(struct cfs_rq *cfs_rq)
- 	struct cfs_bandwidth *cfs_b = tg_cfs_bandwidth(cfs_rq->tg);
- 	struct sched_entity *se;
- 	long queued_delta, runnable_delta, idle_task_delta, delayed_delta, dequeue = 1;
--	long rq_h_nr_queued = rq->cfs.h_nr_queued;
+ 	/** @reason: reason for a stopped session */
+ 	enum batadv_tp_meter_reason reason;
  
- 	raw_spin_lock(&cfs_b->lock);
- 	/* This will start the period timer if necessary */
-@@ -6059,10 +6058,6 @@ static bool throttle_cfs_rq(struct cfs_rq *cfs_rq)
- 
- 	/* At this point se is NULL and we are at root level*/
- 	sub_nr_running(rq, queued_delta);
--
--	/* Stop the fair server if throttling resulted in no runnable tasks */
--	if (rq_h_nr_queued && !rq->cfs.h_nr_queued)
--		dl_server_stop(&rq->fair_server);
- done:
- 	/*
- 	 * Note: distribution will already see us throttled via the
-@@ -7162,7 +7157,6 @@ static void set_next_buddy(struct sched_entity *se);
- static int dequeue_entities(struct rq *rq, struct sched_entity *se, int flags)
- {
- 	bool was_sched_idle = sched_idle_rq(rq);
--	int rq_h_nr_queued = rq->cfs.h_nr_queued;
- 	bool task_sleep = flags & DEQUEUE_SLEEP;
- 	bool task_delayed = flags & DEQUEUE_DELAYED;
- 	struct task_struct *p = NULL;
-@@ -7251,9 +7245,6 @@ static int dequeue_entities(struct rq *rq, struct sched_entity *se, int flags)
- 
- 	sub_nr_running(rq, h_nr_queued);
- 
--	if (rq_h_nr_queued && !rq->cfs.h_nr_queued)
--		dl_server_stop(&rq->fair_server);
--
- 	/* balance early to pull high priority tasks */
- 	if (unlikely(!was_sched_idle && sched_idle_rq(rq)))
- 		rq->next_balance = jiffies;
--- 
-2.53.0
-
 
 
 
