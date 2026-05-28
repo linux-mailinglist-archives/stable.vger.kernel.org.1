@@ -1,59 +1,58 @@
-Return-Path: <stable+bounces-255965-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-255758-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id gJJnKyWpGGrclwgAu9opvQ
-	(envelope-from <stable+bounces-255965-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:44:21 +0200
+	id qImTFzSmGGrClggAu9opvQ
+	(envelope-from <stable+bounces-255758-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:31:48 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3DD015F96D6
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:44:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id BA0565F8E22
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:31:47 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 2EB673192E2E
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 20:32:56 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 33CE532190B2
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 20:23:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C91BF3346BE;
-	Thu, 28 May 2026 20:32:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E46D32D9787;
+	Thu, 28 May 2026 20:23:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1+nDPAj/"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xs7Zzz+m"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8721225F7B9;
-	Thu, 28 May 2026 20:32:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BD95D3016E0;
+	Thu, 28 May 2026 20:23:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780000375; cv=none; b=g6oDE3wZxnP5liVOMH34yICJcTdcDY/BYUaOUouHRzKgq97ahdrKTCpdHsbVn6zU4XdFAeoWKSiXLLW0PidjimYWMiYLZyf3bS4rxw30VpsEhUzvpFl6eARqRRM1KUv1qGJP5g6NHHM//U5JAS7l8M5UROAe3cy+4y1eFbermTg=
+	t=1779999801; cv=none; b=YviUUbBpl8iOqmQQBnnWOlrKc6IvNd4dWW6sFZnJV9GID5W8jRvCicUSO9eWAGhBKceiPnPWJNfEt/m9aEbkzd7lU6eLgtQIL7mu6dcKfFopDkn41W9tZ2/Zt1OMvXDRBMgB63a213BFlXlnEvxgp7E4Jz3XhqClCGS7GhRnMDI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780000375; c=relaxed/simple;
-	bh=Pnp4KZBQ367H8T4jrmYZpNAOTwOB09TccUV2MW9lk6A=;
+	s=arc-20240116; t=1779999801; c=relaxed/simple;
+	bh=T8cJBMSe7hq6fAvF+3aYIS2cSDoYVOp66wPT8dyCkdE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=G1H/vBYXKgGhae3S5MJdAcFJ0ZWkj0ZbqBcIkKb7+VRPocM3m8hyqifwn+kXyTg8SO3brxnBF7so7MG2sO/hru9NESAgHyxiW8caGS1bTf04SpiFUep2kXab5sMekN1GMTXNBnHqUZPxTnV/TdIgkVk4fFheraO0jPT/oVrqxN8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1+nDPAj/; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E68241F000E9;
-	Thu, 28 May 2026 20:32:53 +0000 (UTC)
+	 MIME-Version; b=gx0uJoavjUmzmXBmv/4F7ZE4yva7/E6FoefrzzypDtHx38iRa3zmPMoyEGamepYOp9vN09ULvAk9ozx/wa7Xp4igKzl8/Fl0xeSoOvIJJs+AVZj47xsPtDF19YPEzKBbj0kPruZoUjdMvcuHerGaD4jVZlWlFpI+0TGxDuQ/t4s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xs7Zzz+m; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 289AA1F00A3A;
+	Thu, 28 May 2026 20:23:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780000374;
-	bh=CdesftrJsv/x2IMPjbnyzgDlyBm5r6gC0ue+SlU2fDE=;
+	s=korg; t=1779999800;
+	bh=c/ckVYq+PGMUI5InQqVziKQDrSdz0ef9FV1A07rA3s0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=1+nDPAj/Wq3q8Cm5LULtEEJPasMrLvuzovk9KkJ419ouIuY43vGG55kef+rCyi+Kv
-	 CXcMclfBQ8c+MyuKbV5O82j7QGC0LgFrIzk8S8l5kTdgHgoTpI5yGzskbIzpoIEIfJ
-	 Enf+ic/yVqtxXzsPF8pK9dsHncpnKFhbffWbBOZY=
+	b=xs7Zzz+meNkqCF/ww9CvuVU0XYp90UbIg+rtC0CADbuR8+oUChFs7N0euWa7gP+Cq
+	 SgvC59tGHtBHysXlrU37xBXn7hM6bJN/bC//OLsZTyvYBQKEenXxl6srsA8Fn0z6lg
+	 Sutn7tkRJ6bwMB1V8RWYGDz0opLgShzq1Smq3a/k=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alessio Belle <alessio.belle@imgtec.com>,
-	Matt Coster <matt.coster@imgtec.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 023/272] drm/imagination: Synchronize interrupts before suspending the GPU
-Date: Thu, 28 May 2026 21:46:37 +0200
-Message-ID: <20260528194630.036554823@linuxfoundation.org>
+	stable@kernel.org,
+	Sven Eckelmann <sven@narfation.org>
+Subject: [PATCH 6.18 160/377] batman-adv: tt: prevent TVLV entry number overflow
+Date: Thu, 28 May 2026 21:46:38 +0200
+Message-ID: <20260528194643.052189954@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260528194629.379955525@linuxfoundation.org>
-References: <20260528194629.379955525@linuxfoundation.org>
+In-Reply-To: <20260528194638.371537336@linuxfoundation.org>
+References: <20260528194638.371537336@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -78,7 +77,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-255965-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-255758-lists,stable=lfdr.de];
 	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
@@ -87,134 +86,88 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	NEURAL_HAM(-0.00)[-1.000];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
+	RCPT_COUNT_FIVE(0.00)[5];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,msgid.link:url,linuxfoundation.org:mid,linuxfoundation.org:dkim,imgtec.com:email]
-X-Rspamd-Queue-Id: 3DD015F96D6
+	DBL_BLOCKED_OPENRESOLVER(0.00)[narfation.org:email,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim]
+X-Rspamd-Queue-Id: BA0565F8E22
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alessio Belle <alessio.belle@imgtec.com>
+From: Sven Eckelmann <sven@narfation.org>
 
-commit 2d7f05cddf4c268cc36256a2476946041dbdd36d upstream.
+commit 99d9958fa10fb684b2a8e2c48a8d704122721420 upstream.
 
-The runtime PM suspend callback doesn't know whether the IRQ handler is
-in progress on a different CPU core and doesn't wait for it to finish.
+The helpers to prepare the buffers for the local and global TT based
+replies are trying to sum up all TT entries which can be found for each
+VLAN. In theory, this sum can be too big for an u16 and therefore overflow.
+A too small buffer would then be allocated for the TVLV.
 
-Depending on timing, the IRQ handler could be running while the GPU is
-suspended, leading to it being killed when trying to access GPU
-registers. See example signature below.
+The too small buffer will be handled gracefully by
+batadv_tt_tvlv_generate() and is not causing a buffer overflow - just a
+truncated reply. But this overflow shouldn't have happened in the first and
+the too small buffer should never have been allocated when an overflow was
+detected.
 
-In a power off sequence initiated by the runtime PM suspend callback,
-wait for any IRQ handlers in progress on other CPU cores to finish, by
-calling synchronize_irq().
-
-This version of the patch contains only the part of the upstream commit
-that applies to 6.12; the rest was a revert of code added in 6.16.
-The second paragraph above is different because on 6.12 this kind of bug
-doesn't seem to crash the entire kernel, only the IRQ handler, leaving
-the driver unusable in practice.
-
-The crash signature below is also different, both because of the above,
-and because there was no support for TI AM68 SK in 6.12.
-
-Example signature on a TI AM62 SK platform:
-
-  [ 7827.189088] Internal error: synchronous external abort: 0000000096000010 [#1] PREEMPT SMP
-  [ 7827.197311] Modules linked in:
-  [ 7827.222015] CPU: 0 UID: 0 PID: 461 Comm: irq/405-gpu Tainted: G   M               6.12.90 #5
-  [ 7827.230461] Tainted: [M]=MACHINE_CHECK
-  [ 7827.234203] Hardware name: Texas Instruments AM625 SK (DT)
-  [ 7827.239682] pstate: 60000005 (nZCv daif -PAN -UAO -TCO -DIT -SSBS BTYPE=--)
-  [ 7827.246637] pc : pvr_device_irq_thread_handler+0x64/0x180 [powervr]
-  [ 7827.252941] lr : irq_thread_fn+0x2c/0xa8
-  [ 7827.256872] sp : ffff800082d8bd50
-  [ 7827.260179] x29: ffff800082d8bd70 x28: ffff8000800ce374 x27: ffff800081829cc0
-  [ 7827.267328] x26: ffff000004701e80 x25: ffff000005b884ac x24: ffff000005bd5780
-  [ 7827.274472] x23: ffff00000da40bc0 x22: ffff00000da40ba0 x21: ffff800082d8bd58
-  [ 7827.281614] x20: ffff00000da40000 x19: ffff000004701e80 x18: 08000000c6af9003
-  [ 7827.288750] x17: 0000000000000010 x16: 0000000000000068 x15: 0df234008df66400
-  [ 7827.295886] x14: 0000000000000000 x13: 000005c68f6e7191 x12: 000000000000025e
-  [ 7827.303020] x11: 00000000000000c0 x10: 0000000000000ac0 x9 : ffff800082d8bd00
-  [ 7827.310157] x8 : ffff000005bd62a0 x7 : ffff000077261380 x6 : 00000000000005c6
-  [ 7827.317292] x5 : 000000000000425e x4 : 0000000000000000 x3 : 0000000000000000
-  [ 7827.324428] x2 : 00000000000008a8 x1 : ffff800082d608a8 x0 : ffff000005bd5780
-  [ 7827.331568] Call trace:
-  [ 7827.334011]  pvr_device_irq_thread_handler+0x64/0x180 [powervr]
-  [ 7827.339954]  irq_thread_fn+0x2c/0xa8
-  [ 7827.343530]  irq_thread+0x16c/0x2f4
-  [ 7827.347019]  kthread+0x110/0x114
-  [ 7827.350248]  ret_from_fork+0x10/0x20
-  [ 7827.353834] Code: f9446682 f943c281 b9404442 8b020021 (b9400021)
-  [ 7827.359921] ---[ end trace 0000000000000000 ]---
-  [ 7827.364820] genirq: exiting task "irq/405-gpu" (461) is an active IRQ thread (irq 405)
-  [ 8011.230278] powervr fd00000.gpu: Job timeout
-  [ 8011.230350] powervr fd00000.gpu: Job timeout
-  [ 8011.230426] powervr fd00000.gpu: Job timeout
-
-Fixes: cc1aeedb98ad ("drm/imagination: Implement firmware infrastructure and META FW support")
-Fixes: 96822d38ff57 ("drm/imagination: Handle Rogue safety event IRQs")
-Cc: stable@vger.kernel.org
-Signed-off-by: Alessio Belle <alessio.belle@imgtec.com>
-Reviewed-by: Matt Coster <matt.coster@imgtec.com>
-Link: https://patch.msgid.link/20260310-drain-irqs-before-suspend-v1-1-bf4f9ed68e75@imgtec.com
-Signed-off-by: Matt Coster <matt.coster@imgtec.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: stable@kernel.org
+Fixes: 7ea7b4a14275 ("batman-adv: make the TT CRC logic VLAN specific")
+Signed-off-by: Sven Eckelmann <sven@narfation.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/imagination/pvr_power.c | 11 ++++++++---
- 1 file changed, 8 insertions(+), 3 deletions(-)
+ net/batman-adv/translation-table.c |   20 +++++++++++++++++---
+ 1 file changed, 17 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/gpu/drm/imagination/pvr_power.c b/drivers/gpu/drm/imagination/pvr_power.c
-index bf4cf8426f913..077d2651798c8 100644
---- a/drivers/gpu/drm/imagination/pvr_power.c
-+++ b/drivers/gpu/drm/imagination/pvr_power.c
-@@ -84,7 +84,7 @@ pvr_power_request_pwr_off(struct pvr_device *pvr_dev)
- }
+--- a/net/batman-adv/translation-table.c
++++ b/net/batman-adv/translation-table.c
+@@ -804,11 +804,18 @@ batadv_tt_prepare_tvlv_global_data(struc
+ 	u16 total_entries = 0;
+ 	u8 *tt_change_ptr;
+ 	int vlan_entries;
++	u16 sum_entries;
  
- static int
--pvr_power_fw_disable(struct pvr_device *pvr_dev, bool hard_reset)
-+pvr_power_fw_disable(struct pvr_device *pvr_dev, bool hard_reset, bool rpm_suspend)
- {
- 	if (!hard_reset) {
- 		int err;
-@@ -100,6 +100,11 @@ pvr_power_fw_disable(struct pvr_device *pvr_dev, bool hard_reset)
- 			return err;
- 	}
- 
-+	if (rpm_suspend) {
-+		/* Wait for late processing of GPU or firmware IRQs in other cores */
-+		synchronize_irq(pvr_dev->irq);
-+	}
+ 	spin_lock_bh(&orig_node->vlan_list_lock);
+ 	hlist_for_each_entry(vlan, &orig_node->vlan_list, list) {
+ 		vlan_entries = atomic_read(&vlan->tt.num_entries);
+-		total_entries += vlan_entries;
 +
- 	return pvr_fw_stop(pvr_dev);
- }
- 
-@@ -243,7 +248,7 @@ pvr_power_device_suspend(struct device *dev)
- 		return -EIO;
- 
- 	if (pvr_dev->fw_dev.booted) {
--		err = pvr_power_fw_disable(pvr_dev, false);
-+		err = pvr_power_fw_disable(pvr_dev, false, true);
- 		if (err)
- 			goto err_drm_dev_exit;
++		if (check_add_overflow(vlan_entries, total_entries, &sum_entries)) {
++			*tt_len = 0;
++			goto out;
++		}
++
++		total_entries = sum_entries;
+ 		num_vlan++;
  	}
-@@ -425,7 +430,7 @@ pvr_power_reset(struct pvr_device *pvr_dev, bool hard_reset)
- 			queues_disabled = true;
- 		}
  
--		err = pvr_power_fw_disable(pvr_dev, hard_reset);
-+		err = pvr_power_fw_disable(pvr_dev, hard_reset, false);
- 		if (!err) {
- 			if (hard_reset) {
- 				pvr_dev->fw_dev.booted = false;
--- 
-2.53.0
-
+@@ -893,15 +900,22 @@ batadv_tt_prepare_tvlv_local_data(struct
+ 	struct batadv_meshif_vlan *vlan;
+ 	size_t change_offset;
+ 	u16 num_vlan = 0;
+-	u16 vlan_entries = 0;
+ 	u16 total_entries = 0;
+ 	u16 tvlv_len;
+ 	u8 *tt_change_ptr;
++	int vlan_entries;
++	u16 sum_entries;
+ 
+ 	spin_lock_bh(&bat_priv->meshif_vlan_list_lock);
+ 	hlist_for_each_entry(vlan, &bat_priv->meshif_vlan_list, list) {
+ 		vlan_entries = atomic_read(&vlan->tt.num_entries);
+-		total_entries += vlan_entries;
++
++		if (check_add_overflow(vlan_entries, total_entries, &sum_entries)) {
++			tvlv_len = 0;
++			goto out;
++		}
++
++		total_entries = sum_entries;
+ 		num_vlan++;
+ 	}
+ 
 
 
 
