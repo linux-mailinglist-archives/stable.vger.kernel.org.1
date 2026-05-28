@@ -1,59 +1,63 @@
-Return-Path: <stable+bounces-255966-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-255367-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id SNBXHPynGGp+lwgAu9opvQ
-	(envelope-from <stable+bounces-255966-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:39:24 +0200
+	id aPnEOE+hGGqblggAu9opvQ
+	(envelope-from <stable+bounces-255367-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:10:55 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8E8465F93DC
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:39:23 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 80BBE5F7FE0
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:10:55 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 04D7B3035674
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 20:32:59 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 61F7430FFFC6
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 20:05:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 803A6313550;
-	Thu, 28 May 2026 20:32:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6401E40F8DA;
+	Thu, 28 May 2026 20:05:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Cuc0+Uz/"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PkPunZQW"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5D50D223328;
-	Thu, 28 May 2026 20:32:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ED2F040DFC6;
+	Thu, 28 May 2026 20:05:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780000378; cv=none; b=umaEOEsQRSkHeVtkxiIwMOWp6PrIxveXc1BSkoousTzJkAMI0Tj8qN4+1qb2N6EZT1jglPey45mMJDk/FTHC+bZ6YBBPu08lvWYvUL3CBNnoM7VD/zegXLWiYr9TJ3lxeQTQNnwZztOGwXvlcRfeXJ3asQmJo9YaXhAO8bv0VnA=
+	t=1779998711; cv=none; b=B200g+GXa0g7omzi1nFy1dzyox7VKNCTGxkRRocw/vgaICoDQMwkU1e8L91grqau++wtL24Rir9eoh6RU/FsDSRgo42Xd60igT7JIYfIdE25/fLohuJ7OJDP7r9cvRtrSZWPts37iiqZx4v9FsxvlUkdxlBmLFx87UO99xFiZMw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780000378; c=relaxed/simple;
-	bh=gXZLikwZwCw6iJg5Gm7hi5fQmIZUC85AQn4Z8l+aLTA=;
+	s=arc-20240116; t=1779998711; c=relaxed/simple;
+	bh=2D+CXg+n3jI/DTE71YrMXEv871DCuskxojmse+QRYUU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=V0douASZkVrN4MBf2Rr005jf1E3dNVRdjOlDfkHfTe89U8Obj2DCDxeKfhzmlvKoODyrPp9+zBX+jZPj7DzKlbAwKR1ptjcF5vqkR2ujJ8AsZDq4zLOegNHw6U323T+c7aueb1eZF/0Fy4YNqTRZowf0g+MwjaVlTaNyM9z7mNY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Cuc0+Uz/; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BBA5C1F000E9;
-	Thu, 28 May 2026 20:32:56 +0000 (UTC)
+	 MIME-Version; b=tAJVhPNjrYgw1ZmiVzgmLWC1GF47MUKG9aEVYagQJhU0HebP04IhQ1NKtlODWEUeeSUj+56ckaoVLQgn1pBK38O++E9e3mVe1mSi2EfMkdC30irmRUUxngUnCLaybuyA32zUWRkxd/GsLuFZknQ6pqjVO5Xj0+l7UqQMRnlkUHo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PkPunZQW; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 53EF51F000E9;
+	Thu, 28 May 2026 20:05:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780000377;
-	bh=nVw/GAWRPDTpoXqj3ToTPOf1tgLQuw9E99VRKweGWx8=;
+	s=korg; t=1779998709;
+	bh=yWeAELww2xxxdusmKrZdJB5nB9UIs3CCePDUrPLHgu8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=Cuc0+Uz/Wc8qv6YrAC+xwCNsfpQGH03OsedsQt0oc47JWwICxrj1Q0osim+yOLC3P
-	 jyB416DA7bm5BeuFVkpYNiZG8BxjXAHgDYuRVwLm+dlTgTaHRp1SeaxsnKmFhJsVi6
-	 aPj3EqmyXBluIQB7G6Ecgb789BNoR3pDRylkPbc8=
+	b=PkPunZQW1bQPmDszNO59NvI786defRvvLxo/wPU7MKqMIfcoLzdHBSowpJwu4MhKt
+	 eskaSq9ffcMgv2tfXFL9wWCRPoZZ1aznnscPGNXwB3optPWG8bRIBPo31iZubqq0Fr
+	 tCBhnVBt9tjm/AfMBL40z4X4sttWQwUfZkZvLn+A=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
 	David Howells <dhowells@redhat.com>,
-	Asim Viladi Oglu Manizada <manizada@pm.me>,
-	Steve French <stfrench@microsoft.com>
-Subject: [PATCH 6.12 024/272] smb: client: reject userspace cifs.spnego descriptions
+	Paulo Alcantara <pc@manguebit.org>,
+	Matthew Wilcox <willy@infradead.org>,
+	netfs@lists.linux.dev,
+	linux-fsdevel@vger.kernel.org,
+	Christian Brauner <brauner@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 7.0 269/461] netfs: Fix netfs_read_folio() to wait on writeback
 Date: Thu, 28 May 2026 21:46:38 +0200
-Message-ID: <20260528194630.063358162@linuxfoundation.org>
+Message-ID: <20260528194654.955655689@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260528194629.379955525@linuxfoundation.org>
-References: <20260528194629.379955525@linuxfoundation.org>
+In-Reply-To: <20260528194646.819809818@linuxfoundation.org>
+References: <20260528194646.819809818@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -68,98 +72,76 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-255367-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-255966-lists,stable=lfdr.de];
-	TO_DN_SOME(0.00)[];
-	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,pm.me:email]
-X-Rspamd-Queue-Id: 8E8465F93DC
+	TO_DN_SOME(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_SEVEN(0.00)[10];
+	MID_RHS_MATCH_FROM(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,sashiko.dev:url,infradead.org:email,linux.dev:email,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,manguebit.org:email,msgid.link:url]
+X-Rspamd-Queue-Id: 80BBE5F7FE0
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+7.0-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Asim Viladi Oglu Manizada <manizada@pm.me>
+From: David Howells <dhowells@redhat.com>
 
-commit 3da1fdf4efbc490041eb4f836bf596201203f8f2 upstream.
+[ Upstream commit ded0c6f1606061148c202825f7e53d711f9f84cf ]
 
-cifs.spnego key descriptions contain authority-bearing fields such as
-pid, uid, creduid, and upcall_target that cifs.upcall treats as
-kernel-originating inputs. However, userspace can also create keys of
-this type through request_key(2) or add_key(2), allowing those fields to
-be supplied without CIFS origin.
+Fix netfs_read_folio() to wait for an ongoing writeback to complete so that
+it can trust the dirty flag and whatever is attached to folio->private
+(folio->private may get cleaned up by the collector before it clears the
+writeback flag).
 
-Only accept cifs.spnego descriptions while CIFS is using its private
-spnego_cred to request the key.
-
-Fixes: f1d662a7d5e5 ("[CIFS] Add upcall files for cifs to use spnego/kerberos")
-Assisted-by: avom-custom-harness:gpt-5.5-qwen3.6-mod-mix
-Reviewed-by: David Howells <dhowells@redhat.com>
-Signed-off-by: Asim Viladi Oglu Manizada <manizada@pm.me>
-Signed-off-by: Steve French <stfrench@microsoft.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: ee4cdf7ba857 ("netfs: Speed up buffered reading")
+Closes: https://sashiko.dev/#/patchset/20260414082004.3756080-1-dhowells%40redhat.com
+Signed-off-by: David Howells <dhowells@redhat.com>
+Link: https://patch.msgid.link/20260512123404.719402-23-dhowells@redhat.com
+cc: Paulo Alcantara <pc@manguebit.org>
+cc: Matthew Wilcox <willy@infradead.org>
+cc: netfs@lists.linux.dev
+cc: linux-fsdevel@vger.kernel.org
+Signed-off-by: Christian Brauner <brauner@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/smb/client/cifs_spnego.c |   16 ++++++++++++++++
- 1 file changed, 16 insertions(+)
+ fs/netfs/buffered_read.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
---- a/fs/smb/client/cifs_spnego.c
-+++ b/fs/smb/client/cifs_spnego.c
-@@ -8,6 +8,7 @@
-  */
+diff --git a/fs/netfs/buffered_read.c b/fs/netfs/buffered_read.c
+index 83d0b8153e96e..76d0f6a29abab 100644
+--- a/fs/netfs/buffered_read.c
++++ b/fs/netfs/buffered_read.c
+@@ -503,6 +503,8 @@ int netfs_read_folio(struct file *file, struct folio *folio)
+ 	struct netfs_inode *ctx = netfs_inode(mapping->host);
+ 	int ret;
  
- #include <linux/list.h>
-+#include <linux/cred.h>
- #include <linux/slab.h>
- #include <linux/string.h>
- #include <keys/user-type.h>
-@@ -46,12 +47,27 @@ cifs_spnego_key_destroy(struct key *key)
- 	kfree(key->payload.data[0]);
- }
++	folio_wait_writeback(folio);
++
+ 	if (folio_test_dirty(folio))
+ 		return netfs_read_gaps(file, folio);
  
-+static int
-+cifs_spnego_key_vet_description(const char *description)
-+{
-+	/*
-+	 * cifs.spnego descriptions are authority-bearing inputs to cifs.upcall.
-+	 * They are only valid when produced by CIFS while using the private
-+	 * spnego_cred installed below.  Do not let userspace create this type
-+	 * of key through request_key(2)/add_key(2), since the helper treats
-+	 * pid/uid/creduid/upcall_target as kernel-originating fields.
-+	 */
-+	if (current_cred() != spnego_cred)
-+		return -EPERM;
-+	return 0;
-+}
- 
- /*
-  * keytype for CIFS spnego keys
-  */
- struct key_type cifs_spnego_key_type = {
- 	.name		= "cifs.spnego",
-+	.vet_description = cifs_spnego_key_vet_description,
- 	.instantiate	= cifs_spnego_key_instantiate,
- 	.destroy	= cifs_spnego_key_destroy,
- 	.describe	= user_describe,
+-- 
+2.53.0
+
 
 
 
