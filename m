@@ -1,64 +1,60 @@
-Return-Path: <stable+bounces-255625-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-255271-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id EDb+MxKkGGrClggAu9opvQ
-	(envelope-from <stable+bounces-255625-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:22:42 +0200
+	id uGAoMtyfGGpvlggAu9opvQ
+	(envelope-from <stable+bounces-255271-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:04:44 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 50A495F87EC
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:22:42 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2D2A45F7C6D
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:04:44 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 4A252304BCC2
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 20:17:18 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 9AFE63173351
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 20:00:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5AF2B2580D7;
-	Thu, 28 May 2026 20:17:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 50893409630;
+	Thu, 28 May 2026 20:00:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wkVKhhxS"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wnq+/+HY"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 21A56257854;
-	Thu, 28 May 2026 20:17:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 246EC3BD649;
+	Thu, 28 May 2026 20:00:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779999437; cv=none; b=uCvzlEPvLl3zJ5jDE/9Rs6lod/Cvnr1YAYVrZV1UqtFcLFrP2WRxzr59MgB6e6d++1gCjZtghWWj6StH46qqxXzQrBfsnrO3e4Oc4lEYwqLVxoiwdTuKY2Gfm/VmmFA0O4gZ39e3MHfiYoQ3dZkdBdCEZEjwpRF8AQ85ka9N29k=
+	t=1779998441; cv=none; b=qjsQn8W+baqDAZ77pDdlNlFuChPh/Xy/PfNxDpxb5eb2fXp2p2611tqUfShQjf6WlhLXQELf+HrsuW70fOXqc0hHP+z/iRR8xNntLjSn+WilIGGpst5FEpHCq6eolup6o7niSl8i6Y51frjywkm3JqsrdkgRbpZr4ozs66Mppzk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779999437; c=relaxed/simple;
-	bh=nVmv+1NWud19GX+UqlJMgjdOdp6IbQLYmebUPyhFQfU=;
+	s=arc-20240116; t=1779998441; c=relaxed/simple;
+	bh=/SajcqbNve5NDe4Cs9o5MoQSh2HLAJdDD2wxJRoo7lE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=GndtEGu406XnZ/XXvfP3kG+O7vgeCfwYNxkDZZMSkFi8LGOFTrLudsahd6if9I2CVXSI1g25Gns9nUczqhX4eK5z8+Dt1I9a7iBtiqVpB0dDzOQLfpBfCtAOHo6uYskojcYKt9LXnlXAjx98GcLb9jcrwjPlwJf9dChTG2+YRMk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wkVKhhxS; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 863671F000E9;
-	Thu, 28 May 2026 20:17:15 +0000 (UTC)
+	 MIME-Version; b=hSw/GtmJtCXxZ/ETDBQBY1E0KH8W9GvwD0+RxkwOgbhJExzBtAmbjuk0kG8UQ+Kb8Ey1BggdIG2q7V60eWhjE32lW3kPSpxk/57q0a1Ek3n40kOye2eEtsBtuFinjPE6Onl7CwxDvA7CAJk1Q3Xy9sZ9IK1DeEgaKsxe/vENW1c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wnq+/+HY; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 832F01F000E9;
+	Thu, 28 May 2026 20:00:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779999436;
-	bh=qx5QfhBrGA/6y3x0XlRluEg1NEVXewVCPh+riD9DqjY=;
+	s=korg; t=1779998440;
+	bh=kqV0QQ3rKHmdh0KZwnWELpei+q5sOxcz1eW5obyZsDw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=wkVKhhxSMUEJagkauZmC/VGUZMQkfCoKS2iZ7X4XdH22x6/FbgJZSirszp03dzsnn
-	 mEoASh1dMcTJD6vyfBCzxikI+npppg/MSElyj5hdaMsrEBXRiiBwn290V5Qoy4FeoE
-	 RxagcYI7SIHLDgkbqkMrrnXahD5944KpxIzTb/8w=
+	b=wnq+/+HYqDSoM+HyRNqF09FgJImDJFn9GRaTjtMj+shCuZFVzoOOJHVEGb2qslW+L
+	 oqFojxOgdRc0hPxB5grx9Jaxhx1DYr92j2giSw2ET5YYnzpIGz48oHMJr18lzbqA4Z
+	 QU51hyKw5+KLqS17qonPa4Mz28MRlGKVgWjdRdkk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable@kernel.org,
-	Yuan Tan <yuantan098@gmail.com>,
-	Yifan Wu <yifanwucs@gmail.com>,
-	Juefei Pu <tomapufckgml@gmail.com>,
-	Xin Liu <bird@lzu.edu.cn>,
-	Zhengchuan Liang <zcliangcn@gmail.com>,
-	Ren Wei <n05ec@lzu.edu.cn>,
-	Pablo Neira Ayuso <pablo@netfilter.org>
-Subject: [PATCH 6.18 065/377] netfilter: ip6t_hbh: reject oversized option lists
+	Frank Wunderlich <frank-w@public-files.de>,
+	Bartosz Golaszewski <bartosz.golaszewski@oss.qualcomm.com>,
+	Linus Walleij <linusw@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 7.0 174/461] pinctrl: mediatek: moore: implement gpio_chip::get_direction()
 Date: Thu, 28 May 2026 21:45:03 +0200
-Message-ID: <20260528194640.247067025@linuxfoundation.org>
+Message-ID: <20260528194652.107376713@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260528194638.371537336@linuxfoundation.org>
-References: <20260528194638.371537336@linuxfoundation.org>
+In-Reply-To: <20260528194646.819809818@linuxfoundation.org>
+References: <20260528194646.819809818@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -73,84 +69,98 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,kernel.org,gmail.com,lzu.edu.cn,netfilter.org];
-	TAGGED_FROM(0.00)[bounces-255625-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,public-files.de,oss.qualcomm.com,kernel.org];
+	TAGGED_FROM(0.00)[bounces-255271-lists,stable=lfdr.de];
 	PRECEDENCE_BULK(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	FROM_HAS_DN(0.00)[];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[11];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
 	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[netfilter.org:email,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,lzu.edu.cn:email]
-X-Rspamd-Queue-Id: 50A495F87EC
+	DBL_BLOCKED_OPENRESOLVER(0.00)[qualcomm.com:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,public-files.de:email]
+X-Rspamd-Queue-Id: 2D2A45F7C6D
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+7.0-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Zhengchuan Liang <zcliangcn@gmail.com>
+From: Bartosz Golaszewski <bartosz.golaszewski@oss.qualcomm.com>
 
-commit 4322dcde6b4173c2d8e8e6118ed290794263bcc8 upstream.
+[ Upstream commit b560d414239232c6ed7205d3795d3f588034d69b ]
 
-struct ip6t_opts stores at most IP6T_OPTS_OPTSNR option descriptors,
-but hbh_mt6_check() does not reject larger optsnr values supplied from
-userspace.
+If the gpio_chip::get_direction() callback is not implemented by the GPIO
+controller driver, GPIOLIB emits a warning.
 
-Validate optsnr in the rule setup path so only match data that fits the
-fixed-size opts array can be installed. This follows the existing xtables
-pattern of rejecting invalid user-provided counts in checkentry() and
-keeps the packet matching path unchanged.
+Implement get_direction() for the GPIO part of pinctrl-moore.
 
-`struct ip6t_opts` has a fixed `opts[IP6T_OPTS_OPTSNR]` array,
-where `IP6T_OPTS_OPTSNR` is 16, then off-by-one array access is possible:
-
-[  137.924693][ T8692] UBSAN: array-index-out-of-bounds in ../net/ipv6/netfilter/ip6t_hbh.c:110:29
-[  137.926167][ T8692] index 16 is out of range for type '__u16 [16]'
-
-Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
-Cc: stable@kernel.org
-Reported-by: Yuan Tan <yuantan098@gmail.com>
-Reported-by: Yifan Wu <yifanwucs@gmail.com>
-Reported-by: Juefei Pu <tomapufckgml@gmail.com>
-Reported-by: Xin Liu <bird@lzu.edu.cn>
-Signed-off-by: Zhengchuan Liang <zcliangcn@gmail.com>
-Signed-off-by: Ren Wei <n05ec@lzu.edu.cn>
-Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 471e998c0e31 ("gpiolib: remove redundant callback check")
+Fixes: e623c4303ed1 ("gpiolib: sanitize the return value of gpio_chip::get_direction()")
+Reported-by: Frank Wunderlich <frank-w@public-files.de>
+Closes: https://lore.kernel.org/all/20260409132724.126258-1-linux@fw-web.de/
+Signed-off-by: Bartosz Golaszewski <bartosz.golaszewski@oss.qualcomm.com>
+Tested-By: Frank Wunderlich <frank-w@public-files.de>
+Signed-off-by: Linus Walleij <linusw@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/ipv6/netfilter/ip6t_hbh.c |    4 ++++
- 1 file changed, 4 insertions(+)
+ drivers/pinctrl/mediatek/pinctrl-moore.c | 18 ++++++++++++++++++
+ 1 file changed, 18 insertions(+)
 
---- a/net/ipv6/netfilter/ip6t_hbh.c
-+++ b/net/ipv6/netfilter/ip6t_hbh.c
-@@ -168,6 +168,10 @@ static int hbh_mt6_check(const struct xt
- 		pr_debug("unknown flags %X\n", optsinfo->invflags);
- 		return -EINVAL;
- 	}
-+	if (optsinfo->optsnr > IP6T_OPTS_OPTSNR) {
-+		pr_debug("too many supported opts specified\n");
-+		return -EINVAL;
-+	}
+diff --git a/drivers/pinctrl/mediatek/pinctrl-moore.c b/drivers/pinctrl/mediatek/pinctrl-moore.c
+index 70f608347a5f6..071ba849e5322 100644
+--- a/drivers/pinctrl/mediatek/pinctrl-moore.c
++++ b/drivers/pinctrl/mediatek/pinctrl-moore.c
+@@ -520,6 +520,23 @@ static int mtk_gpio_direction_output(struct gpio_chip *chip, unsigned int gpio,
+ 	return pinctrl_gpio_direction_output(chip, gpio);
+ }
  
- 	if (optsinfo->flags & IP6T_OPTS_NSTRICT) {
- 		pr_debug("Not strict - not implemented");
++static int mtk_gpio_get_direction(struct gpio_chip *chip, unsigned int offset)
++{
++	struct mtk_pinctrl *hw = gpiochip_get_data(chip);
++	const struct mtk_pin_desc *desc;
++	int ret, dir;
++
++	desc = (const struct mtk_pin_desc *)&hw->soc->pins[offset];
++	if (!desc->name)
++		return -ENOTSUPP;
++
++	ret = mtk_hw_get_value(hw, desc, PINCTRL_PIN_REG_DIR, &dir);
++	if (ret)
++		return ret;
++
++	return dir ? GPIO_LINE_DIRECTION_OUT : GPIO_LINE_DIRECTION_IN;
++}
++
+ static int mtk_gpio_to_irq(struct gpio_chip *chip, unsigned int offset)
+ {
+ 	struct mtk_pinctrl *hw = gpiochip_get_data(chip);
+@@ -566,6 +583,7 @@ static int mtk_build_gpiochip(struct mtk_pinctrl *hw)
+ 	chip->parent		= hw->dev;
+ 	chip->request		= gpiochip_generic_request;
+ 	chip->free		= gpiochip_generic_free;
++	chip->get_direction	= mtk_gpio_get_direction;
+ 	chip->direction_input	= pinctrl_gpio_direction_input;
+ 	chip->direction_output	= mtk_gpio_direction_output;
+ 	chip->get		= mtk_gpio_get;
+-- 
+2.53.0
+
 
 
 
