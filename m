@@ -1,60 +1,59 @@
-Return-Path: <stable+bounces-256240-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-255478-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id WMpDK0KrGGpolwgAu9opvQ
-	(envelope-from <stable+bounces-256240-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:53:22 +0200
+	id oLA/M/2iGGrJlggAu9opvQ
+	(envelope-from <stable+bounces-255478-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:18:05 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2BDC15F9C66
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:53:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4D6BA5F8555
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:18:05 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id E8B2C311B867
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 20:45:54 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 8E1D730F6677
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 20:10:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7E5CC34389C;
-	Thu, 28 May 2026 20:45:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 34A8F33CE8A;
+	Thu, 28 May 2026 20:10:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fx8XFDLe"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Eh9477ML"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 59144330307;
-	Thu, 28 May 2026 20:45:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1130632ABC0;
+	Thu, 28 May 2026 20:10:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780001146; cv=none; b=EOI3SXajUobr0hA4GCXqqAvRUeSHBuAqDSzZuoeAVuhIYZd3G+/5ZW1tIMi2BY1gcW0zTRw38Fwe2MFCZtAoJG/shCgGUgvmViAfZcL7ntILiQ018SX2eXsimMudbdp0WlVIG61MkY8sZJrDhIj9pDQh14OxY2VUSFvLRbS4Abo=
+	t=1779999025; cv=none; b=jOzRqFAE53actuQzaMAeLNGXF0rjm/8ALW5TYF4G4s9WAt3SRpWPmgA9rfS3K5cdbTnVJQjsUR8fcEs5m4aHgUU/IvjEmmd75mC6TwZFc1Vt7Uph9vHML1Evxc1NEJ+yLHUGAEB7LkK+J8c3Ov9ug7fm9IDRl15oSyRlpkhtrc0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780001146; c=relaxed/simple;
-	bh=KnIEDKKpCPrnN7WsRA0DKARDBOX5Zcab4Onsw1ReBfs=;
+	s=arc-20240116; t=1779999025; c=relaxed/simple;
+	bh=IpZrceCTw9y57qzTJE4LgllGUvctVsUX1B2tN8qWKeM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=OQ1vGA1CuUvY9YeoLsP7uZ4CsEXK+uzVt2hmdkyz+B9kqHCCPftGygbYTv98OtO64BMMcAzjuDnQdgq96x0HbGI2/5Rt0yxhEUmYmfIvG5ckthrc/GyDsXg7FDL8fmdtW3s1sDki6Qnq3PqV3Rr2J5Fzbo76BpsgZMOaU9a3+3c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fx8XFDLe; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B6AE71F000E9;
-	Thu, 28 May 2026 20:45:44 +0000 (UTC)
+	 MIME-Version; b=pUNn8+42q51XgchNhuS/MHAcueUE0mBx/7Ky0nc/OXOqwI+KIfVRmUX+eaczn1DFEGXJSYyxEOGOi6wJyhF10e2s3EhgEa7fFvlOBAtDlji37S5r2p9IfB+N4AVNqoD8IBKXNSC6Tm6kVsLzoVX654Xp2y+1i/yEggJuHXemkKU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Eh9477ML; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 215711F000E9;
+	Thu, 28 May 2026 20:10:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780001145;
-	bh=UZJu1bxF+48nhDfu4rVf+QcAqwRcc4/NxoNTZr/t2NA=;
+	s=korg; t=1779999023;
+	bh=r0+KWc8y1R07xZDSZYC1qSY9H4qP+Y0eNi5X8WA3uVs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=fx8XFDLeyBDlkNgAC6yH+vWzYXERfvbCQBV/Vlxm2NSWt93cqJj/dd5ox1To1fjn7
-	 V0IxUfdxRqc7weUuhjJxbKhnDK7Iz+isPAXfdNTF7IwEtud1V7niFmPelV8Wpmu6Sv
-	 ZNvuU5wJ/ZisU3iifjDSJuUfKHFcXoOVCA9Ul2sU=
+	b=Eh9477MLZFlRriPRIvh6g9abHVNMIrZWhjAgKXYVzy0uyf89Bpt8Li8cenH8UKLwm
+	 ozz+7nCofefsbidW7vf3CjhQJ7THp4EJVrXlXMj1oAx571r9wn/puoQOHR0kGM9GvD
+	 D4ocD7NVKloxPNGSUifLP6zoAyTkocMXPWzgkpt0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mat Martineau <martineau@kernel.org>,
-	"Matthieu Baerts (NGI0)" <matttbe@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Sashiko <sashiko-bot@kernel.org>,
+	Guenter Roeck <linux@roeck-us.net>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 003/186] mptcp: pm: ADD_ADDR rtx: always decrease sk refcount
+Subject: [PATCH 7.0 354/461] hwmon: (lm90) Add lock protection to lm90_alert
 Date: Thu, 28 May 2026 21:48:03 +0200
-Message-ID: <20260528194929.039172963@linuxfoundation.org>
+Message-ID: <20260528194657.662999560@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260528194928.941004471@linuxfoundation.org>
-References: <20260528194928.941004471@linuxfoundation.org>
+In-Reply-To: <20260528194646.819809818@linuxfoundation.org>
+References: <20260528194646.819809818@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -74,86 +73,82 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-256240-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-255478-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[7];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,msgid.link:url,linuxfoundation.org:mid,linuxfoundation.org:dkim]
-X-Rspamd-Queue-Id: 2BDC15F9C66
+	RCPT_COUNT_FIVE(0.00)[6];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,roeck-us.net:email,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo]
+X-Rspamd-Queue-Id: 4D6BA5F8555
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+7.0-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+From: Guenter Roeck <linux@roeck-us.net>
 
-commit 9634cb35af17019baec21ca648516ce376fa10e6 upstream.
+[ Upstream commit 873e919e3101063a7a75989510ccfc125a4391cf ]
 
-When an ADD_ADDR is retransmitted, the sk is held in sk_reset_timer().
-It should then be released in all cases at the end.
+Sashiko reports:
 
-Some (unlikely) checks were returning directly instead of calling
-sock_put() to decrease the refcount. Jump to a new 'exit' label to call
-__sock_put() (which will become sock_put() in the next commit) to fix
-this potential leak.
+lm90_alert() executes in the smbus alert context and calls
+lm90_update_confreg() to disable the hardware alert line, without
+acquiring hwmon_lock.
 
-While at it, drop the '!msk' check which cannot happen because it is
-never reset, and explicitly mark the remaining one as "unlikely".
+Concurrently, sysfs write operations (such as lm90_write_convrate) hold
+the hwmon_lock, temporarily modify data->config, and then restore it.
 
-Fixes: 00cfd77b9063 ("mptcp: retransmit ADD_ADDR when timeout")
-Cc: stable@vger.kernel.org
-Reviewed-by: Mat Martineau <martineau@kernel.org>
-Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
-Link: https://patch.msgid.link/20260505-net-mptcp-pm-fixes-7-1-rc3-v1-4-fca8091060a4@kernel.org
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-[ applied to net/mptcp/pm_netlink.c instead of upstream's pm_kernel.c ]
-Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+If an alert interrupt occurs concurrently with a sysfs write, the sysfs
+path will overwrite the alert handler's modifications to data->config
+and the hardware register.
+
+This unintentionally re-enables the hardware alert line while the alarm is
+still active, causing an interrupt storm.
+
+Add the missing lock to lm90_alert() to solve the problem.
+
+Fixes: 7a1d220ccb0cc ("hwmon: (lm90) Introduce function to update configuration register")
+Reported-by: Sashiko <sashiko-bot@kernel.org>
+Signed-off-by: Guenter Roeck <linux@roeck-us.net>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/mptcp/pm_netlink.c | 8 +++-----
- 1 file changed, 3 insertions(+), 5 deletions(-)
+ drivers/hwmon/lm90.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/net/mptcp/pm_netlink.c b/net/mptcp/pm_netlink.c
-index 23aef214f30d8..d087d5fc3067d 100644
---- a/net/mptcp/pm_netlink.c
-+++ b/net/mptcp/pm_netlink.c
-@@ -299,11 +299,8 @@ static void mptcp_pm_add_timer(struct timer_list *timer)
+diff --git a/drivers/hwmon/lm90.c b/drivers/hwmon/lm90.c
+index c4a9dafff81d6..1eeb608e59039 100644
+--- a/drivers/hwmon/lm90.c
++++ b/drivers/hwmon/lm90.c
+@@ -2946,6 +2946,7 @@ static void lm90_alert(struct i2c_client *client, enum i2c_alert_protocol type,
+ 		 */
+ 		struct lm90_data *data = i2c_get_clientdata(client);
  
- 	pr_debug("msk=%p\n", msk);
- 
--	if (!msk)
--		return;
--
--	if (inet_sk_state_load(sk) == TCP_CLOSE)
--		return;
-+	if (unlikely(inet_sk_state_load(sk) == TCP_CLOSE))
-+		goto exit;
- 
- 	bh_lock_sock(sk);
- 	if (sock_owned_by_user(sk)) {
-@@ -341,6 +338,7 @@ static void mptcp_pm_add_timer(struct timer_list *timer)
- 
- out:
- 	bh_unlock_sock(sk);
-+exit:
- 	__sock_put(sk);
- }
- 
++		hwmon_lock(data->hwmon_dev);
+ 		if (!data->shutdown && (data->flags & LM90_HAVE_BROKEN_ALERT) &&
+ 		    (data->current_alarms & data->alert_alarms)) {
+ 			if (!(data->config & 0x80)) {
+@@ -2955,6 +2956,7 @@ static void lm90_alert(struct i2c_client *client, enum i2c_alert_protocol type,
+ 			schedule_delayed_work(&data->alert_work,
+ 				max_t(int, HZ, msecs_to_jiffies(data->update_interval)));
+ 		}
++		hwmon_unlock(data->hwmon_dev);
+ 	} else {
+ 		dev_dbg(&client->dev, "Everything OK\n");
+ 	}
 -- 
 2.53.0
 
