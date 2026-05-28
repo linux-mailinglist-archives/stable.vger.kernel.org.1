@@ -1,96 +1,117 @@
-Return-Path: <stable+bounces-254966-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-254967-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id kDF5EJUvGGpwfggAu9opvQ
-	(envelope-from <stable+bounces-254966-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 14:05:41 +0200
+	id GCaZD2EwGGpwfggAu9opvQ
+	(envelope-from <stable+bounces-254967-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 14:09:05 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 97D0C5F1D52
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 14:05:39 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 925A55F1E01
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 14:09:03 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 9A62E303455B
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 12:00:07 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id A5171303298F
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 12:03:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 469AC3E7161;
-	Thu, 28 May 2026 12:00:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4452B3E7BAF;
+	Thu, 28 May 2026 12:03:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="hW47772w"
+	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="XKxdT2Zx";
+	dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b="Fglysgf0"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pf1-f181.google.com (mail-pf1-f181.google.com [209.85.210.181])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1DEC23E3DA5
-	for <stable@vger.kernel.org>; Thu, 28 May 2026 12:00:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.181
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AA9283E7BB0
+	for <stable@vger.kernel.org>; Thu, 28 May 2026 12:03:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779969606; cv=none; b=luDk0W3vYrQyiR7WDrtW89MnN47gSYcrzLtUOaARKaM2lX7C6qE7rJ8d0YmOOhvnR85sA3fq/+3TpFIuii4m8HpeSzsBN/ENbBoevjrUskg2ixA7cdzNdUC3Vl8uw7gW2XsTHHP2Wa1R4v11sR8rTwvOrJv3tvUjCe4Hu6SRgHo=
+	t=1779969815; cv=none; b=r3HRw6Kwcuu6JOA00kG8pcFFVgvB8me9OZkocVmA93x7+AuhdW8RjCYzmHalLNqg8yP9GoFBzoTCjv6KpRyBK2IaL42QndWUmgI531crT9+AgP8KHz+7dUKktCbfSXzcW0SEsEursVP4R3nMVrs1MWUHh/OflSQsV1isifgBljk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779969606; c=relaxed/simple;
-	bh=htFmoUdtvWDyUgG8uCJCoUFye9ZJ8o4lYS0AS9twxvo=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=DOaoAiA5LneY9gnjCzQYVzMYeo/tYpyUSPKXkoJsT6j2qMKVLUK+9J7LolCHBtIrX4B/tjaImmAufqKofjSpDB+bKhlTOpxgumNLZh8VEjXFqDkplbdmEZ9KTF3/lnWWT6TGUJT6115RTTs3DU1yMfvBzx+WQIq067iMugm7/h4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=hW47772w; arc=none smtp.client-ip=209.85.210.181
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pf1-f181.google.com with SMTP id d2e1a72fcca58-83538fcdda8so1025848b3a.3
-        for <stable@vger.kernel.org>; Thu, 28 May 2026 05:00:03 -0700 (PDT)
+	s=arc-20240116; t=1779969815; c=relaxed/simple;
+	bh=4BOlVvg3iRSP1swvQ5XO1a679OzNH/v+9k3kUrkeOsc=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=UoJ82n33xsiQ40li6HxnRjcatxDhNQYsX1Fsgzt5A4H6urDlFGdbGoy+4RTKY67w2yDejevQSpk7X1oxuj0TcDpPn1eqQEOYxtJ5RToDnocZIceo3USU7fI8vU+X35CN90ZBZ+pw+dugQr/mGLvBFshMS34xyv+0MpV/i6VSTMY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=XKxdT2Zx; dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b=Fglysgf0; arc=none smtp.client-ip=205.220.168.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
+Received: from pps.filterd (m0279866.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 64S8vebf3546066
+	for <stable@vger.kernel.org>; Thu, 28 May 2026 12:03:33 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
+	cc:content-transfer-encoding:date:from:message-id:mime-version
+	:subject:to; s=qcppdkim1; bh=lRDh1Gsgwo/+sLiCfxMrEEDL44ENfFOMWpC
+	PwzY9U1A=; b=XKxdT2ZxyET/kRwmmco/ZMp5hTn96amBXkrujkbW72W0YNHe1EH
+	nhOIM4bMhT2NGdVjwGz8l1Zj4duffd6plFgnjM0xkxySoiTFfgA6370wKZmL09ek
+	FM3H/vg8mpW2weJGjJkAPHVgB9rL29RyKUgAZCh6JjJne0sR4MyZGpzjVDupZT4q
+	d7wRvPmP11H4rE7YJSJJAXP3G1qPrBlsnZwTh6EPjj8xlvrqRqkW7MeQlj/ESQRj
+	IJnIUqn213P+7sxrpgB4xUX1Hhy01BqKVsbQA0EBQruY3v5XtNr/DSEK3r5wv6VD
+	KNLXROP2k7l93zKFSoHrEs3VAbbV8anImbQ==
+Received: from mail-oo1-f71.google.com (mail-oo1-f71.google.com [209.85.161.71])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4ee7y3tm71-1
+	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
+	for <stable@vger.kernel.org>; Thu, 28 May 2026 12:03:32 +0000 (GMT)
+Received: by mail-oo1-f71.google.com with SMTP id 006d021491bc7-69db09275c8so3116955eaf.3
+        for <stable@vger.kernel.org>; Thu, 28 May 2026 05:03:32 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1779969603; x=1780574403; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=D5vl3C5jPSAv3GytCPh8lvvkDSsugrJeALohk3VsT+s=;
-        b=hW47772wN8AK3PT1uNAy3S4iNleMu5A21P/RFK7zghBX6kUFIG1b/s9SlIbIftLO7F
-         5exn4l1THxUnlfM8FrdRVonHSbcw/mXeEuDzp+0SwDp4p4H8KgLm1SrRpLx5vtdwqjsn
-         2pAPmTLTBlIc0kDOSJxxlgL47wYUFfnPVdigqWdOBnOHSBhN3kYrXI3QzkbpS/1FdhFt
-         bbkhQJ6R8dPyTpcQCIPYkZ1XFtLvu0qIR8caR3+z/14w7awqvbTthTTnBxeLSO+yC6Dk
-         GhVrri2/duLBZYFdViU3XHbA7yIMsaOgdHvfRWif0U1nRZE2gx3BamFeiCv+5OdMi7pu
-         16VQ==
+        d=oss.qualcomm.com; s=google; t=1779969812; x=1780574612; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=lRDh1Gsgwo/+sLiCfxMrEEDL44ENfFOMWpCPwzY9U1A=;
+        b=Fglysgf0uliv5JFWpVHfuWtsooU1raJT9hxfRnQd1MGfDBTE0TGVlafLVZejbv1YAn
+         KyRFoncnY0/nuJDlcZMkYTavWm+VwfEi7WZPkACoCuDqEN+VSglnOVdXYcnRbv8vCj0A
+         QyCBXPX48zWHUtAQMUkGOvHbDfOwTyEKsKRnw07YlWkrCT6o/l1C9RM7MJD+hsmGjZQC
+         nFZyslItCK5ET/rXKBuzwyhI9siAMldFuauddjDwxdTaJFUJ62/Uz37DUIyVQKl5oYQ1
+         oQIKGyimiw+JBaMygW1lFRE6ybzsXz4ybO7ibtBKL515ZAV5fj5gVKdzvu4FLjoZVyuU
+         BtvQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1779969603; x=1780574403;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=D5vl3C5jPSAv3GytCPh8lvvkDSsugrJeALohk3VsT+s=;
-        b=GvnE+0YciHG3/Ojb1k5DYEfEvjtJDANWWlBeT1rAZhsY/2hZz90IDe99X8YImWHB2Z
-         hsv4g+xsBM6niFNDBQL7fZ2rgDDl7Z99gpa9Zi+hkM28j5NmxP4EAWDxnvnio11Aabt+
-         +h9IbcGnyygpUUUtLMyG+s+y0MIDcJ2P026OSVDSQmBtWAuaGGpGUXxgGi1oWIePcKBk
-         ehF1K4oIBCGNDOz+HMMDDImPhP1lSQ7W/5PxyPACBcOtemRa83Xw62UV7bjo2UDjwYpQ
-         j1rCDyToMGItYlw1FEhZ4EnjEzQ06NUNK/xOvIDHPL+uZsxh31S7+5BvOLp6XkFAIOce
-         YWuA==
-X-Forwarded-Encrypted: i=1; AFNElJ9IwDwKgXiTN4Mi3vGv89PzWOe8b7zlfZFg0vbgTNN0IrZBozxQhPOI0aXEWHaCu4Sf9Q/pfBo=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwVLBPtbPGVz0dcNeX0QnNDGaKNngDS87hfkbVavG9Ctv6DIfw4
-	X7Sdhkc+XVCvrH5KUdl4Tp6IyOAyEdYCm1BCSztj9HsKyxEiL8m2+dSu
-X-Gm-Gg: Acq92OEsOKEOQ5k2RXOvz8cJ/NWvTJRDXxczuqGFc7UsFE6+1WQotAjLsT3zzEz7bBt
-	/NTfMi6CbWjHR5V2DaYNmNyIjoG3lFBPKq4uGe0pzrBIn23IIx3RFYhW+wxAHCrRFz5M9zyl8nf
-	atlgt7sR956IZ8ZnRrSZteSIDiO0IM54UebhIe8q3NMlt2TICoMwDLifoy9OHzurmO+o2KN8Wc2
-	NM5yXvy2YHuxaJD7oQHUC7wYCGFhzoX6DhewuGgTfGRMivqb0L+Z82iiLL2BXRnY6UHk0K5Q3wT
-	E1PSeCL57RxXpMmM95uINnd4WIyZiR7OC3Lc04zkxZNqWR72a8FVl4wOy4jvyJ3TfebXnWQhwxQ
-	kmESLn9l+NfxLEpE+s1PoE5eoMTzSaxoccVQlGe+5WlrHo/jhbn+0/CXo8iZ/Gjk3PuF5bF8kI+
-	kmJJCKGBqj6Dcx93mqj/Z5l7IXqfE4
-X-Received: by 2002:a05:6a21:4d8c:b0:3b0:77d6:4b9c with SMTP id adf61e73a8af0-3b3f0fe79d0mr1672819637.6.1779969603200;
-        Thu, 28 May 2026 05:00:03 -0700 (PDT)
-Received: from kali ([2402:e280:3d7c:a2:536a:b505:93f5:9d5d])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-841d6ed19c2sm4678126b3a.25.2026.05.28.04.59.59
+        d=1e100.net; s=20251104; t=1779969812; x=1780574612;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=lRDh1Gsgwo/+sLiCfxMrEEDL44ENfFOMWpCPwzY9U1A=;
+        b=Sk/Kb3Y9GykMseUdwRB01ZjO+xP/l4ZfBsielJtt7uMwR5aiIAG/080sjiOh14BDw+
+         bazeR/393OtEl2u+Ygm44u9dCnh3CJe/ctg3e75Nwl0CapDUs+t7z+VBGM1Dfv2qDeYp
+         Cg2EmlNIzhTyN3BHvdUxxa5Hr43yxSt2xblk27OXmVMLL09Q+kf/J6ob8q37b53UAAz5
+         FO0d7UWQ9cyarZ8rFtwdpu28cOPQaarQNG4/1bycLpxx3j5C74ANn3Wm9SoGDqy6xJXA
+         FGkpxeO5LtzqmV/fMPHo6k/S0nOwLlyjRKwvcRlxC3lbpDzk8qUv/uVLSBELz9zvnKoL
+         PlbQ==
+X-Forwarded-Encrypted: i=1; AFNElJ+DgrB6D+EoRgE8I2ibF5XGvF+m8zlZK4eLupARS3mdMPnf9iF5U3hkpZuQeT0Tpy6chn48thA=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzM5AlfVC76VHHDi7a5zszFGwMyzmSIEUGklXuqeENvGBtGltCm
+	eHIGdnhHwQahmMuK2wkrDFCxAAZ64VZ2kgwjY13iTXfOetjd8+IxwUzJcD28/cvtjooybfq8iZT
+	eAlWwk11zgvE4LJ5CNEOzHiVknVZiKDguPbo3KpbV/4iNcQdjoZ3qkVFoDh4=
+X-Gm-Gg: Acq92OG3sxSQcu9YvmUjzkHZXq3Uq+VNIi+KO8h7Cmzp1wN4bRCbfeuZPsVGpwlQycn
+	ZwgZLEIlRcBu0BbPbcQrstsl4F+CRIGt8EeXH6gGwW2Sx7bNCW7Vvm2MuYb4RpTUUgTAHQhXV+2
+	3rKRveJifMCngOHdIgGFQ5Qph7NdO1q6VixucFFzTRZlfonZQtSnpqwmjTpklXEHyndpoPvpKjm
+	oPFe6wbM6i9H5Rh4uEdzAZ1ZiCp+VUs0nrxDRx65FDtyyKRlT/aQ8Uo0MsQj5xaCNfLno2SaS0Q
+	gnjP84BoFzo+rgxqb5HE57KptpCMdWDHQU5B4quK2Yr3dN6PRQdrch5pfreElXLO+1nDS5oOtm4
+	WAfcXHyPvQAKEx+JGNo7tLhvwh9/4obnoAMXIhnudy2JSJQ==
+X-Received: by 2002:a05:6820:2222:b0:69d:e8de:7578 with SMTP id 006d021491bc7-69de8de7d2bmr3066708eaf.17.1779969812116;
+        Thu, 28 May 2026 05:03:32 -0700 (PDT)
+X-Received: by 2002:a05:6820:2222:b0:69d:e8de:7578 with SMTP id 006d021491bc7-69de8de7d2bmr3066668eaf.17.1779969811575;
+        Thu, 28 May 2026 05:03:31 -0700 (PDT)
+Received: from quoll ([83.144.38.174])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4908dcf850fsm21035695e9.4.2026.05.28.05.03.29
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 28 May 2026 05:00:02 -0700 (PDT)
-From: Pavitra Jha <jhapavitra98@gmail.com>
-To: idryomov@gmail.com
-Cc: amarkuze@redhat.com,
-	slava@dubeyko.com,
-	ceph-devel@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org,
-	Pavitra Jha <jhapavitra98@gmail.com>,
-	Viacheslav Dubeyko <Slava.Dubeyko@ibm.com>
-Subject: [PATCH v3] ceph: fix OOB read in decode_watchers() via missing bounds check
-Date: Thu, 28 May 2026 07:59:16 -0400
-Message-ID: <20260528115916.796696-1-jhapavitra98@gmail.com>
+        Thu, 28 May 2026 05:03:30 -0700 (PDT)
+From: Krzysztof Kozlowski <krzysztof.kozlowski@oss.qualcomm.com>
+To: Chester Lin <chester62515@gmail.com>, Matthias Brugger <mbrugger@suse.com>,
+        Ghennadi Procopciuc <ghennadi.procopciuc@oss.nxp.com>,
+        NXP S32 Linux Team <s32@nxp.com>, Frank Li <Frank.Li@nxp.com>,
+        Sascha Hauer <s.hauer@pengutronix.de>,
+        Pengutronix Kernel Team <kernel@pengutronix.de>,
+        Fabio Estevam <festevam@gmail.com>, Rob Herring <robh@kernel.org>,
+        Krzysztof Kozlowski <krzk+dt@kernel.org>,
+        Conor Dooley <conor+dt@kernel.org>,
+        Daniel Lezcano <daniel.lezcano@kernel.org>,
+        Shawn Guo <shawnguo@kernel.org>, linux-arm-kernel@lists.infradead.org,
+        imx@lists.linux.dev, devicetree@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+Cc: Krzysztof Kozlowski <krzysztof.kozlowski@oss.qualcomm.com>,
+        stable@vger.kernel.org
+Subject: [PATCH] arm64: dts: s32g3: Fix SWT8 watchdog address
+Date: Thu, 28 May 2026 14:03:24 +0200
+Message-ID: <20260528120323.46287-2-krzysztof.kozlowski@oss.qualcomm.com>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <fb2206a9cc8519e54d269b6e5aa772edddfe6fec.camel@ibm.com>
-References: <fb2206a9cc8519e54d269b6e5aa772edddfe6fec.camel@ibm.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -98,146 +119,93 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-0.66 / 15.00];
+X-Proofpoint-ORIG-GUID: Ls0bc9eXHAAS6lYKMHDtjjkZyadxMM9M
+X-Authority-Analysis: v=2.4 cv=JMYLdcKb c=1 sm=1 tr=0 ts=6a182f14 cx=c_pps
+ a=V4L7fE8DliODT/OoDI2WOg==:117 a=gYaODGAG9naNOzoQWaDNdQ==:17
+ a=NGcC8JguVDcA:10 a=s4-Qcg_JpJYA:10 a=VkNPw1HP01LnGYTKEx00:22
+ a=u7WPNUs3qKkmUXheDGA7:22 a=YMgV9FUhrdKAYTUUvYB2:22 a=VwQbUJbxAAAA:8
+ a=EUspDBNiAAAA:8 a=W4yJvGHheH2QdBhsH34A:9 a=WZGXeFmKUf7gPmL3hEjn:22
+X-Proofpoint-GUID: Ls0bc9eXHAAS6lYKMHDtjjkZyadxMM9M
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNTI4MDEyMiBTYWx0ZWRfXysADD+pOoYJ1
+ Lu2z1JTSrpRUQe/p4TLtWqIQcKD9xbmwc4sDVEF2ga2DRQuooZ9nxWDopr4kwSbveIWSSQnjdRN
+ 5+jrQn4we6Au16jh9hRToHcMvi8wmBNqpDxWYSgz6wsKJAWkCGoHtbqJZidexXvAn3vSdaMW3z2
+ 7rPdp5fXXnrY9SHTcew8i7WMoeUc9QhoZDbiV4qhx6XGeA2OjAIcaaQC9MNLQ/uanqBddvHbE7s
+ VdgIUtOpln6ILmL1AXgDjn26PrpBAbfXmL1jd6IiUjAaAudGUg50h9mx9AqMcicFCl5t9O/Gf/A
+ mOWZ8jLBormYgvQyIARowVLr3mdFCrdzdMOLcEnyhh5T1Yw5xpg/nbj6x7RMvoyAb8CsDvXtVpL
+ LJQWQq/yCHMDG7Iwf4wzwKkFkLOFJ/bHE5HHmnag5C4+pWbHn7anrpS7l3HiLyKuraemHpP1jUB
+ u7HpI2JvEBjR0mjJAog==
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.125,FMLib:17.12.100.49
+ definitions=2026-05-28_03,2026-05-28_02,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ clxscore=1015 spamscore=0 malwarescore=0 suspectscore=0 priorityscore=1501
+ adultscore=0 phishscore=0 bulkscore=0 impostorscore=0 lowpriorityscore=0
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.22.0-2605210000 definitions=main-2605280122
+X-Spamd-Result: default: False [0.84 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	MID_CONTAINS_FROM(1.00)[];
+	DMARC_POLICY_ALLOW(-0.50)[qualcomm.com,reject];
 	R_MISSING_CHARSET(0.50)[];
-	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
-	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_DKIM_ALLOW(-0.20)[qualcomm.com:s=qcppdkim1,oss.qualcomm.com:s=google];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	MIME_TRACE(0.00)[0:+];
-	FREEMAIL_CC(0.00)[redhat.com,dubeyko.com,vger.kernel.org,gmail.com,ibm.com];
-	TO_DN_SOME(0.00)[];
+	RCPT_COUNT_TWELVE(0.00)[19];
 	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-254967-lists,stable=lfdr.de];
+	FREEMAIL_TO(0.00)[gmail.com,suse.com,oss.nxp.com,nxp.com,pengutronix.de,kernel.org,lists.infradead.org,lists.linux.dev,vger.kernel.org];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-254966-lists,stable=lfdr.de];
-	FREEMAIL_TO(0.00)[gmail.com];
-	DKIM_TRACE(0.00)[gmail.com:+];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	FREEMAIL_FROM(0.00)[gmail.com];
+	DKIM_TRACE(0.00)[qualcomm.com:+,oss.qualcomm.com:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[jhapavitra98@gmail.com,stable@vger.kernel.org];
+	FROM_NEQ_ENVFROM(0.00)[krzysztof.kozlowski@oss.qualcomm.com,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[5];
-	RCPT_COUNT_SEVEN(0.00)[8];
-	NEURAL_HAM(-0.00)[-0.999];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,oss.qualcomm.com:mid,oss.qualcomm.com:dkim,0.0.0.0:email,qualcomm.com:email,qualcomm.com:dkim];
+	NEURAL_HAM(-0.00)[-1.000];
+	DBL_PROHIBIT(0.00)[2.105.251.32:email];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
-X-Rspamd-Queue-Id: 97D0C5F1D52
+	TAGGED_RCPT(0.00)[stable,dt];
+	RCVD_COUNT_SEVEN(0.00)[7]
+X-Rspamd-Queue-Id: 925A55F1E01
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-ceph_start_decoding() validates that struct_len bytes remain in the
-buffer after the encoding header, but accepts struct_len=0 as valid:
-ceph_decode_need(p, end, 0, bad) always passes. When a malicious or
-compromised OSD sends an obj_list_watch_response_t reply with
-struct_len=0, ceph_start_decoding() returns success with p == end,
-leaving zero bytes guaranteed for subsequent reads.
+Add missing hex annotation to fix the SWT8 watchdog address in 'reg'
+property, as reported by dtc W=1:
 
-The immediately following ceph_decode_32(p) in decode_watchers() has
-no preceding bounds check. With p == end this is a 4-byte read past
-the validated buffer boundary. The garbage value is then passed
-directly to kzalloc_objs() as the watcher count.
+  s32g3.dtsi:863.27-869.5: Warning (simple_bus_reg): /soc@0/watchdog@40500000: simple-bus unit address format error, expected "269fb20"
 
-The sibling function decode_watcher() already uses the safe variants
-(ceph_decode_copy_safe, ceph_decode_64_safe, ceph_decode_skip_32)
-after its own ceph_start_decoding() call. decode_watchers() is the
-only site that uses the bare variant, confirming an oversight.
+Lack of hex '0x' meant address would be interpreted as decimal thus
+completely different value used as this device MMIO.  If device was
+enabled this could lead to corruption of other device address space and
+broken boot.
 
-Fix by replacing ceph_decode_32(p) with ceph_decode_32_safe(p, end,
-*num_watchers, bad), consistent with the established pattern.
-
-KASAN report (kernel 7.0.0-rc7, QEMU/x86_64, KASLR disabled):
-
-  [   72.047085] ceph_oob_poc: buf=ffff8880085936c8 end=ffff8880085936ce
-  [   72.048685] ceph_oob_poc: ceph_start_decoding OK: struct_v=1
-  struct_len=0 p==end: 1
-  [   72.049477] ceph_oob_poc: triggering OOB read past slab boundary...
-  [   72.050699] ==================================================
-  [   72.051427] BUG: KASAN: slab-out-of-bounds in
-  ceph_oob_init+0x128/0xff0 [ceph_oob_poc]
-  [   72.051427] Read of size 4 at addr ffff8880085936ce by task insmod/61
-  [   72.051427] CPU: 0 UID: 0 PID: 61 Comm: insmod Tainted: G O
-  [   72.051427]  7.0.0-rc7-g9c2abf69da83-dirty #14 PREEMPT(lazy)
-  [   72.051427] Call Trace:
-  [   72.051427]  dump_stack_lvl+0x4d/0x70
-  [   72.051427]  print_report+0x170/0x4f3
-  [   72.051427]  kasan_report+0xda/0x110
-  [   72.051427]  kasan_check_range+0x125/0x200
-  [   72.051427]  ceph_oob_init+0x128/0xff0 [ceph_oob_poc]
-  [   72.051427]  do_one_initcall+0x9a/0x310
-  [   72.051427]  do_init_module+0x186/0x410
-  [   72.051427]  load_module+0x2ba7/0x2e50
-  [   72.051427]  init_module_from_file+0x15c/0x180
-  [   72.051427]  idempotent_init_module+0x19f/0x430
-  [   72.051427]  __x64_sys_finit_module+0x78/0xc0
-  [   72.051427]  do_syscall_64+0xe2/0x570
-  [   72.051427]  entry_SYSCALL_64_after_hwframe+0x77/0x7f
-  [   72.051427] The buggy address belongs to the object at ffff8880085936c8
-  [   72.051427]  which belongs to the cache kmalloc-8 of size 8
-  [   72.051427] The buggy address is located 0 bytes to the right of
-  [   72.051427]  allocated 6-byte region [ffff8880085936c8, ffff8880085936ce)
-  [   72.051427] Memory state around the buggy address:
-  [   72.051427] >ffff888008593680: fc fc fc fc fc fc fc fc fc 06 fc fc fc fc fc fc
-  [   72.051427]                                               ^
-  [   72.051427] ==================================================
-  [   72.129720] ceph_oob_poc: num_watchers=3435973836 (OOB garbage)
-
-0xCCCCCCCC (3435973836) is KASAN redzone poison, confirming the read
-landed in the slab redzone immediately past the 6-byte allocation.
-
-Attacker model: a malicious or compromised OSD in a multi-tenant Ceph
-deployment (e.g. cloud) can trigger this against any kernel client
-that calls CEPH_OSD_OP_LIST_WATCHERS, without any further privileges
-beyond OSD session establishment.
-
-Fixes: a4ed38d7a180 ("libceph: support for CEPH_OSD_OP_LIST_WATCHERS")
-Cc: stable@vger.kernel.org
-Reviewed-by: Viacheslav Dubeyko <Slava.Dubeyko@ibm.com>
-Signed-off-by: Pavitra Jha <jhapavitra98@gmail.com>
+Cc: <stable@vger.kernel.org>
+Fixes: 6db84f042745 ("arm64: dts: s32g3: Add the Software Timer Watchdog (SWT) nodes")
+Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@oss.qualcomm.com>
 ---
-v3: Rename error label e_inval -> bad per Slava Dubeyko's review.
-v2: Correct commit message. v1 overstated the impact:
-  - "unbounded alloc": retracted. kzalloc_objs() uses size_mul()
-    internally which returns SIZE_MAX on overflow, causing kmalloc
-    to return NULL. The large garbage value from the OOB read will
-    simply fail allocation with -ENOMEM.
-  - "decode_watcher() writing attacker-controlled data into it":
-    retracted. ceph_start_decoding() calls ceph_decode_need() for
-    its 6-byte header, which catches p==end and returns -ERANGE
-    before any copy occurs. Verified with a follow-up KASAN harness.
-  The fix itself is unchanged.
----
- net/ceph/osd_client.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ arch/arm64/boot/dts/freescale/s32g3.dtsi | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/net/ceph/osd_client.c b/net/ceph/osd_client.c
-index a67093cf4..9058de08e 100644
---- a/net/ceph/osd_client.c
-+++ b/net/ceph/osd_client.c
-@@ -5030,7 +5030,7 @@ static int decode_watchers(void **p, void *end,
- 	if (ret)
- 		return ret;
+diff --git a/arch/arm64/boot/dts/freescale/s32g3.dtsi b/arch/arm64/boot/dts/freescale/s32g3.dtsi
+index e314f3c7d61d..7e28dff53a86 100644
+--- a/arch/arm64/boot/dts/freescale/s32g3.dtsi
++++ b/arch/arm64/boot/dts/freescale/s32g3.dtsi
+@@ -862,7 +862,7 @@ gmac0mdio: mdio {
  
--	ceph_decode_32_safe(p, end, *num_watchers, e_inval);
-+	ceph_decode_32_safe(p, end, *num_watchers, bad);
- 	*watchers = kzalloc_objs(**watchers, *num_watchers, GFP_NOIO);
- 	if (!*watchers)
- 		return -ENOMEM;
-@@ -5045,7 +5045,7 @@ static int decode_watchers(void **p, void *end,
- 
- 	return 0;
- 
--e_inval:
-+bad:
- 	return -EINVAL;
- }
- 
+ 		swt8: watchdog@40500000 {
+ 			compatible = "nxp,s32g3-swt", "nxp,s32g2-swt";
+-			reg = <40500000 0x1000>;
++			reg = <0x40500000 0x1000>;
+ 			clocks = <&clks 0x3a>, <&clks 0x3b>, <&clks 0x3b>;
+ 			clock-names = "counter", "module", "register";
+ 			status = "disabled";
 -- 
 2.53.0
 
