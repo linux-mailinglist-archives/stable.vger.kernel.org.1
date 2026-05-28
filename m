@@ -1,58 +1,58 @@
-Return-Path: <stable+bounces-255250-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-255601-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id iKJhGc2eGGpAlggAu9opvQ
-	(envelope-from <stable+bounces-255250-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:00:13 +0200
+	id 6MQRHnOkGGoQlwgAu9opvQ
+	(envelope-from <stable+bounces-255601-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:24:19 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id EA8365F7A31
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:00:12 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id AEE0F5F8957
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:24:18 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 2E8503036490
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 19:59:44 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id EDB2F323AE50
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 20:16:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B5D603FCB06;
-	Thu, 28 May 2026 19:59:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DC3062C11F9;
+	Thu, 28 May 2026 20:16:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wrjzpasV"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rNZTHXse"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4E5B915B998;
-	Thu, 28 May 2026 19:59:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B2E953002A0;
+	Thu, 28 May 2026 20:16:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779998381; cv=none; b=ePGnZcb3oWQHsu/qepNEhZXtHb5AQIypYyCrJAso8yEkwzc5UGApEb0oUqtkNS4Kk6iK/P7zha5Z+pj5bZBOIiAokEGmGVrUtoCE2l2rUrul8ssBO6yZYMslP5Xndi0/WCj7U83qUnhrsHwMkJXzuqZYEKH52ifAYs5LM21fLUE=
+	t=1779999370; cv=none; b=h9ggPwzLUhnZ8pcS4DRs39YR5NScJwi0WoAaeEYEUib9XH6LmyynicL5bj9+bditXss6+QykgX1HTXUZr08R2+PaQSadrFGWdyAwtz8DspUrAPRBvlY0R3RVRWZ4QWHUiFCqmHQZTM627c6DDZ4F4c9b7aw5ZUw3aGFyrAweTMA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779998381; c=relaxed/simple;
-	bh=IabqXLMnpCIO45pPJTvxlNuiygzVdgQt3MZqYyUYUNU=;
+	s=arc-20240116; t=1779999370; c=relaxed/simple;
+	bh=0OoILvkum6i2z1xi43+d3wtzNaX0/8Fj3cBF5PK/dEU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=VkuZcClrIunBuW3iSmqDdWlHOtdxeKT4yiRl4vf98NIM1UYgxfg0w0hyfUt6YRWpUykLyxAJnu7yukePUHTsEPwX49ahoYfwS6YOEOH2zPRI6VFuzc7ksmxRaPE2dWGwb/cLnSmxrQV9zucIknFRgS+xmh3G4gTeninyTdtYWg4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wrjzpasV; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AE3C51F000E9;
-	Thu, 28 May 2026 19:59:39 +0000 (UTC)
+	 MIME-Version; b=hQpVoPwzyiOFqEePyBhQbkHamTgg7jkrWDlU1KOZ02jtxUmeCwwiz94EV6kWYVHb6wKlh3U+jFX7IGQQ52oIk6bR4mneuoQ1OkK+2e+KbuABAbzQdb7FxVmjFMQUe52ybyvLem65TDMOqm98xOjG8y2Jrxin39x8JnNBH04r6YQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rNZTHXse; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1CE0D1F000E9;
+	Thu, 28 May 2026 20:16:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779998380;
-	bh=46ctOn5DUtoCAIQTaxIlBerIc4JjOvT83L3k3AV+YJ4=;
+	s=korg; t=1779999369;
+	bh=uNr79qMM9B8O7dTILUrFX8jbSpnNgRkELt3nb3wrDYg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=wrjzpasV5hUfbpxVo8oA7CsdBzrPaydWJU20dL40R48owBbUmOO3qcXN+ofGnT25A
-	 nxJtWh609TQPG8V+XheUjrylvPYHqOclAaFl9XCyNEhh3z6HCWoOhufbrGQbP/pxmJ
-	 pEdVXTh07pfn7xmN5IC9DShU3Eg9rGtqcR+8hzhE=
+	b=rNZTHXseFr3R+pxziAZW1ZtYDtv/nfsXYGCgbCD2tfow9TanTQbrk7xR9GdBo+Uqu
+	 CYe2fdWvTMzeX0yKREGEhrRK2tfqDUMXe/UIkPMVyPtdFx1ChpxZVX8MG4JUIeuUOA
+	 e0QahmY1jXtnOOW858X1f4oDlxTaaN6URoAU3Nj8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable@kernel.org,
-	Sven Eckelmann <sven@narfation.org>
-Subject: [PATCH 7.0 152/461] batman-adv: bla: avoid double decrement of bla.num_requests
+	Heechan Kang <gganji11@naver.com>,
+	Jens Axboe <axboe@kernel.dk>
+Subject: [PATCH 6.18 043/377] io_uring/waitid: clear waitid info before copying it to userspace
 Date: Thu, 28 May 2026 21:44:41 +0200
-Message-ID: <20260528194651.437463011@linuxfoundation.org>
+Message-ID: <20260528194639.621236655@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260528194646.819809818@linuxfoundation.org>
-References: <20260528194646.819809818@linuxfoundation.org>
+In-Reply-To: <20260528194638.371537336@linuxfoundation.org>
+References: <20260528194638.371537336@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,257 +65,76 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	TAGGED_FROM(0.00)[bounces-255601-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,naver.com,kernel.dk];
 	RCVD_COUNT_THREE(0.00)[4];
-	RCVD_TLS_LAST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-255250-lists,stable=lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
 	TO_DN_SOME(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	RCPT_COUNT_FIVE(0.00)[5];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[5];
+	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[narfation.org:email,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo]
-X-Rspamd-Queue-Id: EA8365F7A31
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,kernel.dk:email]
+X-Rspamd-Queue-Id: AEE0F5F8957
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-7.0-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sven Eckelmann <sven@narfation.org>
+From: Heechan Kang <gganji11@naver.com>
 
-commit 83ab69bd12b80f6ea169c8bea6977701b53a043d upstream.
+commit 93d93f5f8da791e98159795c6ef683f45bd95d13 upstream.
 
-The bla.num_requests is increased when no request_sent was in progress. And
-it is decremented in various places (announcement was received, backbone is
-purged, periodic work). But the check if the request_sent is actually set
-to a specific state and the atomic_dec/_inc are not safe because they are
-not atomic (TOCTOU) and multiple such code portions can run concurrently.
+IORING_OP_WAITID stores its result fields in struct io_waitid::info and
+later copies them to userspace siginfo. The prep path initializes the
+request arguments, but it does not initialize info itself.
 
-At the same time, it is necessary to modify request_sent (state) and
-bla.num_requests atomically. Otherwise batadv_bla_send_request() might set
-request_sent to 1 and is interrupted.  batadv_handle_announce() can then
-set request_sent back to 0 and decrement num_requests before
-batadv_bla_send_request() incremented it.
+If the wait operation completes without reporting a child event, the common
+wait code can return without writing wo_info. In that case io_waitid_finish()
+still copies iw->info to userspace, exposing stale bytes from the reused
+io_kiocb command storage.
 
-The two operations must therefore be locked. And since state (request_sent)
-and wait_periods are only accessed inside this lock, they can be converted
-to simpler datatypes. And to avoid that the bla.num_requests is touched by
-a parallel running context with a valid backbone_gw reference after
-batadv_bla_purge_backbone_gw() ran, a third state "stopped" is required to
-correctly signal that a backbone_gw is in the state of being cleaned up.
+Clear the result storage during prep so the io_uring path matches the
+regular waitid syscall, which uses a zero-initialized struct waitid_info.
 
-Cc: stable@kernel.org
-Fixes: 23721387c409 ("batman-adv: add basic bridge loop avoidance code")
-Signed-off-by: Sven Eckelmann <sven@narfation.org>
+Fixes: f31ecf671ddc ("io_uring: add IORING_OP_WAITID support")
+Cc: stable@vger.kernel.org # 6.7+
+Signed-off-by: Heechan Kang <gganji11@naver.com>
+Link: https://patch.msgid.link/20260516184709.852814-1-gganji11@naver.com
+Signed-off-by: Jens Axboe <axboe@kernel.dk>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/batman-adv/bridge_loop_avoidance.c |   51 ++++++++++++++++++++++-----------
- net/batman-adv/mesh-interface.c        |    1 
- net/batman-adv/types.h                 |   39 ++++++++++++++++++++-----
- 3 files changed, 67 insertions(+), 24 deletions(-)
+ io_uring/waitid.c |    1 +
+ 1 file changed, 1 insertion(+)
 
---- a/net/batman-adv/bridge_loop_avoidance.c
-+++ b/net/batman-adv/bridge_loop_avoidance.c
-@@ -514,8 +514,8 @@ batadv_bla_get_backbone_gw(struct batadv
- 	entry->crc = BATADV_BLA_CRC_INIT;
- 	entry->bat_priv = bat_priv;
- 	spin_lock_init(&entry->crc_lock);
--	atomic_set(&entry->request_sent, 0);
--	atomic_set(&entry->wait_periods, 0);
-+	entry->state = BATADV_BLA_BACKBONE_GW_SYNCED;
-+	entry->wait_periods = 0;
- 	ether_addr_copy(entry->orig, orig);
- 	INIT_WORK(&entry->report_work, batadv_bla_loopdetect_report);
- 	kref_init(&entry->refcount);
-@@ -544,9 +544,13 @@ batadv_bla_get_backbone_gw(struct batadv
- 		batadv_bla_send_announce(bat_priv, entry);
- 
- 		/* this will be decreased in the worker thread */
--		atomic_inc(&entry->request_sent);
--		atomic_set(&entry->wait_periods, BATADV_BLA_WAIT_PERIODS);
--		atomic_inc(&bat_priv->bla.num_requests);
-+		spin_lock_bh(&bat_priv->bla.num_requests_lock);
-+		if (entry->state == BATADV_BLA_BACKBONE_GW_SYNCED) {
-+			entry->state = BATADV_BLA_BACKBONE_GW_UNSYNCED;
-+			entry->wait_periods = BATADV_BLA_WAIT_PERIODS;
-+			atomic_inc(&bat_priv->bla.num_requests);
-+		}
-+		spin_unlock_bh(&bat_priv->bla.num_requests_lock);
- 	}
- 
- 	return entry;
-@@ -649,10 +653,12 @@ static void batadv_bla_send_request(stru
- 			      backbone_gw->vid, BATADV_CLAIM_TYPE_REQUEST);
- 
- 	/* no local broadcasts should be sent or received, for now. */
--	if (!atomic_read(&backbone_gw->request_sent)) {
-+	spin_lock_bh(&backbone_gw->bat_priv->bla.num_requests_lock);
-+	if (backbone_gw->state == BATADV_BLA_BACKBONE_GW_SYNCED) {
-+		backbone_gw->state = BATADV_BLA_BACKBONE_GW_UNSYNCED;
- 		atomic_inc(&backbone_gw->bat_priv->bla.num_requests);
--		atomic_set(&backbone_gw->request_sent, 1);
- 	}
-+	spin_unlock_bh(&backbone_gw->bat_priv->bla.num_requests_lock);
+--- a/io_uring/waitid.c
++++ b/io_uring/waitid.c
+@@ -258,6 +258,7 @@ int io_waitid_prep(struct io_kiocb *req,
+ 	iw->upid = READ_ONCE(sqe->fd);
+ 	iw->options = READ_ONCE(sqe->file_index);
+ 	iw->infop = u64_to_user_ptr(READ_ONCE(sqe->addr2));
++	memset(&iw->info, 0, sizeof(iw->info));
+ 	return 0;
  }
  
- /**
-@@ -873,10 +879,12 @@ static bool batadv_handle_announce(struc
- 		/* if we have sent a request and the crc was OK,
- 		 * we can allow traffic again.
- 		 */
--		if (atomic_read(&backbone_gw->request_sent)) {
-+		spin_lock_bh(&bat_priv->bla.num_requests_lock);
-+		if (backbone_gw->state == BATADV_BLA_BACKBONE_GW_UNSYNCED) {
-+			backbone_gw->state = BATADV_BLA_BACKBONE_GW_SYNCED;
- 			atomic_dec(&backbone_gw->bat_priv->bla.num_requests);
--			atomic_set(&backbone_gw->request_sent, 0);
- 		}
-+		spin_unlock_bh(&bat_priv->bla.num_requests_lock);
- 	}
- 
- 	batadv_backbone_gw_put(backbone_gw);
-@@ -1255,9 +1263,13 @@ purge_now:
- 				purged = true;
- 
- 				/* don't wait for the pending request anymore */
--				if (atomic_read(&backbone_gw->request_sent))
-+				spin_lock_bh(&bat_priv->bla.num_requests_lock);
-+				if (backbone_gw->state == BATADV_BLA_BACKBONE_GW_UNSYNCED)
- 					atomic_dec(&bat_priv->bla.num_requests);
- 
-+				backbone_gw->state = BATADV_BLA_BACKBONE_GW_STOPPED;
-+				spin_unlock_bh(&bat_priv->bla.num_requests_lock);
-+
- 				batadv_bla_del_backbone_claims(backbone_gw);
- 
- 				hlist_del_rcu(&backbone_gw->hash_entry);
-@@ -1508,7 +1520,7 @@ static void batadv_bla_periodic_work(str
- 				batadv_bla_send_loopdetect(bat_priv,
- 							   backbone_gw);
- 
--			/* request_sent is only set after creation to avoid
-+			/* state is only set to unsynced after creation to avoid
- 			 * problems when we are not yet known as backbone gw
- 			 * in the backbone.
- 			 *
-@@ -1517,14 +1529,21 @@ static void batadv_bla_periodic_work(str
- 			 * some grace time.
- 			 */
- 
--			if (atomic_read(&backbone_gw->request_sent) == 0)
--				continue;
-+			spin_lock_bh(&bat_priv->bla.num_requests_lock);
-+			if (backbone_gw->state != BATADV_BLA_BACKBONE_GW_UNSYNCED)
-+				goto unlock_next;
- 
--			if (!atomic_dec_and_test(&backbone_gw->wait_periods))
--				continue;
-+			if (backbone_gw->wait_periods > 0)
-+				backbone_gw->wait_periods--;
-+
-+			if (backbone_gw->wait_periods > 0)
-+				goto unlock_next;
- 
-+			backbone_gw->state = BATADV_BLA_BACKBONE_GW_SYNCED;
- 			atomic_dec(&backbone_gw->bat_priv->bla.num_requests);
--			atomic_set(&backbone_gw->request_sent, 0);
-+
-+unlock_next:
-+			spin_unlock_bh(&bat_priv->bla.num_requests_lock);
- 		}
- 		rcu_read_unlock();
- 	}
---- a/net/batman-adv/mesh-interface.c
-+++ b/net/batman-adv/mesh-interface.c
-@@ -787,6 +787,7 @@ static int batadv_meshif_init_late(struc
- 	atomic_set(&bat_priv->tt.ogm_append_cnt, 0);
- #ifdef CONFIG_BATMAN_ADV_BLA
- 	atomic_set(&bat_priv->bla.num_requests, 0);
-+	spin_lock_init(&bat_priv->bla.num_requests_lock);
- #endif
- 	atomic_set(&bat_priv->tp_num, 0);
- 
---- a/net/batman-adv/types.h
-+++ b/net/batman-adv/types.h
-@@ -1027,6 +1027,12 @@ struct batadv_priv_bla {
- 	atomic_t num_requests;
- 
- 	/**
-+	 * @num_requests_lock: locks update num_requests +
-+	 * batadv_backbone_gw::state + batadv_backbone_gw::wait_periods update
-+	 */
-+	spinlock_t num_requests_lock;
-+
-+	/**
- 	 * @claim_hash: hash table containing mesh nodes this host has claimed
- 	 */
- 	struct batadv_hashtable *claim_hash;
-@@ -1669,6 +1675,27 @@ struct batadv_priv {
- 
- #ifdef CONFIG_BATMAN_ADV_BLA
- 
-+enum batadv_bla_backbone_gw_state {
-+	/**
-+	 * @BATADV_BLA_BACKBONE_GW_STOPPED: backbone gw is being removed
-+	 * and it must not longer work on requests
-+	 */
-+	BATADV_BLA_BACKBONE_GW_STOPPED,
-+
-+	/**
-+	 * @BATADV_BLA_BACKBONE_GW_UNSYNCED: backbone was detected out
-+	 * of sync and a request was send. No traffic is forwarded until the
-+	 * situation is resolved
-+	 */
-+	BATADV_BLA_BACKBONE_GW_UNSYNCED,
-+
-+	/**
-+	 * @BATADV_BLA_BACKBONE_GW_SYNCED: backbone is consider to be in
-+	 * sync. traffic can be forwarded
-+	 */
-+	BATADV_BLA_BACKBONE_GW_SYNCED,
-+};
-+
- /**
-  * struct batadv_bla_backbone_gw - batman-adv gateway bridged into the LAN
-  */
-@@ -1694,16 +1721,12 @@ struct batadv_bla_backbone_gw {
- 	/**
- 	 * @wait_periods: grace time for bridge forward delays and bla group
- 	 *  forming at bootup phase - no bcast traffic is formwared until it has
--	 *  elapsed
-+	 *  elapsed. Must only be access with num_requests_lock.
- 	 */
--	atomic_t wait_periods;
-+	u8 wait_periods;
- 
--	/**
--	 * @request_sent: if this bool is set to true we are out of sync with
--	 *  this backbone gateway - no bcast traffic is formwared until the
--	 *  situation was resolved
--	 */
--	atomic_t request_sent;
-+	/** @state: sync state. Must only be access with num_requests_lock. */
-+	enum batadv_bla_backbone_gw_state state;
- 
- 	/** @crc: crc16 checksum over all claims */
- 	u16 crc;
 
 
 
