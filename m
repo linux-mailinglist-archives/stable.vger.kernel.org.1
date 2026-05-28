@@ -1,59 +1,58 @@
-Return-Path: <stable+bounces-255677-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-255288-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id aGdzEpClGGrClggAu9opvQ
-	(envelope-from <stable+bounces-255677-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:29:04 +0200
+	id oENzHIqfGGpAlggAu9opvQ
+	(envelope-from <stable+bounces-255288-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:03:22 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id AD7925F8C9F
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:29:03 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 29CB85F7B90
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:03:22 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 5FBC2318ECAE
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 20:19:45 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id B73E8302D09A
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 20:01:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3865A2F8E83;
-	Thu, 28 May 2026 20:19:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D3E6A32ABC0;
+	Thu, 28 May 2026 20:01:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RuxfOmED"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="eFfb5i57"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0B0292D1303;
-	Thu, 28 May 2026 20:19:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B378026B973;
+	Thu, 28 May 2026 20:01:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779999584; cv=none; b=vDyhOSJV16Yv+QGrRglFlH5kYoycl/POTTT8Hpp8ry0t5AJs0Fb9DHjojVB0wDIEr7HMiD7i87YflZQXnMsUz5ECpLsBO+jCoHLKZwm0FaHaV2lAP+nvt3YwcpKlsBFf5aj6cM0K+e9RPjHaz76J2nKFlO3q5bBv5MtYFehOBNk=
+	t=1779998488; cv=none; b=efoDyD2HPwXsIXd195qrbKaH8MPzKh1jg9tU7gi/U4giesxrKPW6dddW08bwdWvqyYNdBE2BeQhYShALGH0OK9W+DbuV1ZOJlNlMVzv/2OqibwOjcYqIgprYejdfPw0G0voCYFam02yiO6xwXy5uHP+0ND6Fh8CsFY2pPzF1V+E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779999584; c=relaxed/simple;
-	bh=rm3H3twsVsyXUx79Fbi/G/4IWoYISWo8iteiczdoaQY=;
+	s=arc-20240116; t=1779998488; c=relaxed/simple;
+	bh=CA+P5aNP8xswv5vE8cFncr+Nv/7JOCPelQ0mSls7HCE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=iF10J5lHpnSgPedkqvcS8cCKU7zNySYAxYCLmtXB3WaREHEoX3+2j0RwA10ks92i3bT/07EbMilMayaFsjo6Bpb3Tvt7I92yftYUfMgYhyx5voZZSfq9feMcKjlEjtF9qbdRiCtzKQCcD+SsIuvWNfDRZRe8StPuju36ZodvMxU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RuxfOmED; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 691881F000E9;
-	Thu, 28 May 2026 20:19:42 +0000 (UTC)
+	 MIME-Version; b=o7Ga7Kr0BlMb6SNXWkOp11DXK52Z5U8C3oVGcLp9rdyynQqC8jhm7wRxYDjRLN5W4o9ojHFEDQ5sElf6AJFTPznxv6rZpUIqhIN8clTDyFnpIthubjwgutSJ7WXPL1kBJcD6S3Z+ZHzWh9sNKxsT1X0UGzMo8lJxvFpbIsNmOMI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=eFfb5i57; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1DED41F000E9;
+	Thu, 28 May 2026 20:01:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779999582;
-	bh=tq4PaDd0fQNMsfsVwI2kgH9Oz+KWwDGbiNgxGEUYmMo=;
+	s=korg; t=1779998487;
+	bh=la+cS0aMz+dc3tJH/wCutKegGlfWOKyAqOw7ByfD/MY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=RuxfOmEDuohwHtBiyQD9BvNMehc6YX/hSuARttYEXViRYwm+ttK/u/tXAcVBHlS2b
-	 NbHwa3ClsaZKyB6QYCtbFAGJ/fVnxN6XCWZ5xIUB98NuI8gI1rRR5mIpD0crWXm1K3
-	 /WQ6Ch6mffw46AP9+5uwutTy+SNKfMHVO9gDrdA4=
+	b=eFfb5i57RoBkX1JSLEwtEOO1zMPOQ0LSbk0FdV4DbLf0QvsvUqmtUQCVfdzYvojZi
+	 uDKXR8udETEHVrVwXt9doVh55g11nO8C1xWR+GIGIU2HYrXGu9+qF2Fz0SjDEhiRiJ
+	 ltjhRicJzYLR5AIwaSpKpRZgRj4qXSsbp4hfrwsc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
-	"Masami Hiramatsu (Google)" <mhiramat@kernel.org>,
-	Steven Rostedt <rostedt@goodmis.org>
-Subject: [PATCH 6.18 081/377] ring-buffer: Fix reporting of missed events in iterator
+	Sudeep Holla <sudeep.holla@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 7.0 190/461] firmware: arm_ffa: Unregister bus notifier on teardown for FF-A v1.0
 Date: Thu, 28 May 2026 21:45:19 +0200
-Message-ID: <20260528194640.718034053@linuxfoundation.org>
+Message-ID: <20260528194652.576930851@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260528194638.371537336@linuxfoundation.org>
-References: <20260528194638.371537336@linuxfoundation.org>
+In-Reply-To: <20260528194646.819809818@linuxfoundation.org>
+References: <20260528194646.819809818@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -68,7 +67,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
@@ -78,7 +77,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-255677-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-255288-lists,stable=lfdr.de];
 	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
@@ -87,85 +86,90 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	NEURAL_HAM(-0.00)[-1.000];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
+	RCPT_COUNT_FIVE(0.00)[5];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,efficios.com:email,goodmis.org:email,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,msgid.link:url]
-X-Rspamd-Queue-Id: AD7925F8C9F
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim,msgid.link:url]
+X-Rspamd-Queue-Id: 29CB85F7B90
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+7.0-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Steven Rostedt <rostedt@goodmis.org>
+From: Sudeep Holla <sudeep.holla@kernel.org>
 
-commit a254b6d13b0edd6272926674d2afc46d46e496b7 upstream.
+[ Upstream commit 6d3daa9b8d313f42d52e75590310f26a29b61b44 ]
 
-When tracing is active while reading the trace file, if the iterator
-reading the buffer detects that the writer has passed the iterator head,
-it will reset and set a "missed events" flag. This flag is passed to the
-output processing to show the user that events were missed:
+For FF-A v1.0 the driver registers a bus notifier to backfill UUID
+matching, but the notifier was never unregistered on cleanup paths.
+Track the registration state and unregister it during teardown and early
+partition-setup failure.
 
-  CPU:4 [LOST EVENTS]
-
-The problem is that the flag is reset after it is checked in
-ring_buffer_iter_dropped(). But the "trace" file iterates over all the CPU
-ring buffers and it will check if they are dropped when figuring out which
-buffer to print next. This prematurely clears the missed_events flag if
-the CPU buffer with the missed events is not the one that is printed next.
-
-On the iteration where the CPU buffer with the missed events is printed,
-the check if it had missed events would return false and the output does
-not show that events were missed.
-
-Do not reset the missed_events flag when checking if there were missed
-events, but instead clear it when moving the iterator head to the next
-event.
-
-Cc: stable@vger.kernel.org
-Cc: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
-Link: https://patch.msgid.link/20260520220801.4fd09d13@fedora
-Fixes: c9b7a4a72ff64 ("ring-buffer/tracing: Have iterator acknowledge dropped events")
-Acked-by: Masami Hiramatsu (Google) <mhiramat@kernel.org>
-Signed-off-by: Steven Rostedt <rostedt@goodmis.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 9dd15934f60d ("firmware: arm_ffa: Move the FF-A v1.0 NULL UUID workaround to bus notifier")
+Link: https://patch.msgid.link/20260428-ffa_fixes-v2-5-8595ae450034@kernel.org
+Signed-off-by: Sudeep Holla <sudeep.holla@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/trace/ring_buffer.c |    8 +++-----
- 1 file changed, 3 insertions(+), 5 deletions(-)
+ drivers/firmware/arm_ffa/driver.c | 15 +++++++++++++++
+ 1 file changed, 15 insertions(+)
 
---- a/kernel/trace/ring_buffer.c
-+++ b/kernel/trace/ring_buffer.c
-@@ -5249,6 +5249,7 @@ static void rb_iter_reset(struct ring_bu
- 	iter->head_page = cpu_buffer->reader_page;
- 	iter->head = cpu_buffer->reader_page->read;
- 	iter->next_event = iter->head;
-+	iter->missed_events = 0;
+diff --git a/drivers/firmware/arm_ffa/driver.c b/drivers/firmware/arm_ffa/driver.c
+index 59d12facb7dd6..07c0de772e7d1 100644
+--- a/drivers/firmware/arm_ffa/driver.c
++++ b/drivers/firmware/arm_ffa/driver.c
+@@ -100,6 +100,7 @@ struct ffa_drv_info {
+ 	bool mem_ops_native;
+ 	bool msg_direct_req2_supp;
+ 	bool bitmap_created;
++	bool bus_notifier_registered;
+ 	bool notif_enabled;
+ 	unsigned int sched_recv_irq;
+ 	unsigned int notif_pend_irq;
+@@ -1629,6 +1630,15 @@ static struct notifier_block ffa_bus_nb = {
+ 	.notifier_call = ffa_bus_notifier,
+ };
  
- 	iter->cache_reader_page = iter->head_page;
- 	iter->cache_read = cpu_buffer->read;
-@@ -5863,10 +5864,7 @@ ring_buffer_peek(struct trace_buffer *bu
-  */
- bool ring_buffer_iter_dropped(struct ring_buffer_iter *iter)
++static void ffa_bus_notifier_unregister(void)
++{
++	if (!drv_info->bus_notifier_registered)
++		return;
++
++	bus_unregister_notifier(&ffa_bus_type, &ffa_bus_nb);
++	drv_info->bus_notifier_registered = false;
++}
++
+ static int ffa_xa_add_partition_info(struct ffa_device *dev)
  {
--	bool ret = iter->missed_events != 0;
--
--	iter->missed_events = 0;
--	return ret;
-+	return iter->missed_events != 0;
- }
- EXPORT_SYMBOL_GPL(ring_buffer_iter_dropped);
+ 	struct ffa_dev_part_info *info;
+@@ -1712,6 +1722,8 @@ static void ffa_partitions_cleanup(void)
+ 	struct list_head *phead;
+ 	unsigned long idx;
  
-@@ -6028,7 +6026,7 @@ void ring_buffer_iter_advance(struct rin
- 	unsigned long flags;
++	ffa_bus_notifier_unregister();
++
+ 	/* Clean up/free all registered devices */
+ 	ffa_devices_unregister();
  
- 	raw_spin_lock_irqsave(&cpu_buffer->reader_lock, flags);
--
-+	iter->missed_events = 0;
- 	rb_advance_iter(iter);
+@@ -1739,11 +1751,14 @@ static int ffa_setup_partitions(void)
+ 		ret = bus_register_notifier(&ffa_bus_type, &ffa_bus_nb);
+ 		if (ret)
+ 			pr_err("Failed to register FF-A bus notifiers\n");
++		else
++			drv_info->bus_notifier_registered = true;
+ 	}
  
- 	raw_spin_unlock_irqrestore(&cpu_buffer->reader_lock, flags);
+ 	count = ffa_partition_probe(&uuid_null, &pbuf);
+ 	if (count <= 0) {
+ 		pr_info("%s: No partitions found, error %d\n", __func__, count);
++		ffa_bus_notifier_unregister();
+ 		return -EINVAL;
+ 	}
+ 
+-- 
+2.53.0
+
 
 
 
