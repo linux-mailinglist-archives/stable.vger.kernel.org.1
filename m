@@ -1,51 +1,51 @@
-Return-Path: <stable+bounces-254982-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-254983-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id qDMkHnRDGGoEiAgAu9opvQ
-	(envelope-from <stable+bounces-254982-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 15:30:28 +0200
+	id 2GboFFlFGGr5iAgAu9opvQ
+	(envelope-from <stable+bounces-254983-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 15:38:33 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 190855F2BB2
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 15:30:27 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id BEDA25F2D99
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 15:38:32 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id B0774300B582
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 13:30:26 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 04EE930D01DE
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 13:31:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 828A53F412B;
-	Thu, 28 May 2026 13:30:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0877A3E8343;
+	Thu, 28 May 2026 13:31:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0dUryWph"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JlVzft0A"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A46A83F44DE
-	for <stable@vger.kernel.org>; Thu, 28 May 2026 13:30:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AEDC93F44D6
+	for <stable@vger.kernel.org>; Thu, 28 May 2026 13:31:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779975023; cv=none; b=hbVnUJ3eetKqIfb775Uw9OGwAOtldU2saS4ElrJohl8tT2/AUzTIAIxnQYEQ6ZR8M/WV/XkI091h3oQ2YtnViWOfGBxjDDp2fRgzxJxr70IxNTbUMYWZqy5aSR7TSV7hbJqyeWxB/8CxcQRWNGiDMrW/eWoug3hAZ/tZWK37S0U=
+	t=1779975107; cv=none; b=Jt2tFY1vvK7MwXsbM+FXlvxxufGLEjnygSppTkZUk/4oIDa0AQ1tCqNqympmAgHAA0EN5baAVQrJHCtBcaCI0uj+ZlK2v980ffz2LBGTbAfgRqtwFMMV+IWktJNPRVK65IAUor9Sp91NvGb20Nk5QbNG30OSnVuE7L0uyH5twr4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779975023; c=relaxed/simple;
-	bh=OSyIVnroV7UcKmZElSHpYOi0FomPQEZO/eHjkTjgA68=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=O+tivtGgeLkembMiE9+Jk0o2vLuuFobRJi+9jfFm3TVf9DhHVGrmsqVq4tgB3hVONEWovsYS/2YJdaCdKbd+JkViGJxb4ymo6UJHBj8iUFr9nFDMLKgkHsTS7Oo4rrAK9gm4Y8TOQADQgwwfob+ETiz1JyUmlS0/VJx+8ICMPR4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0dUryWph; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 70E9A1F000E9;
-	Thu, 28 May 2026 13:30:20 +0000 (UTC)
+	s=arc-20240116; t=1779975107; c=relaxed/simple;
+	bh=wfoO7eZ9bvGIUqsEMXZnoii/7QDGr7KlRBi6OeCIZk8=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=Lo0IBLVNWjpCiK/R+hubfK/Syvgw8UWFg5kw/Kkussy5uzFWmx+1b7vj99gMf67ZHVtoowZt2oz3r6y/8WKon5j7CYsCKsTOFQgUgj79lRRNUYxjJZ34xZw1aPnNMl0+3hNjJGFNLqW4laH5VB55wnPohmyMIyib+pDYtwgLgJY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JlVzft0A; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C0BBE1F000E9;
+	Thu, 28 May 2026 13:31:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779975020;
-	bh=HKhRO7GD7p/6oeNgduJTTv0iEv/YHM+W0x143pbd56I=;
+	s=korg; t=1779975106;
+	bh=rPXetIPEUj5zNvqkntexHHfQXdzVa7PBYk3LtEGFFj4=;
 	h=Subject:To:Cc:From:Date;
-	b=0dUryWphXH1T/3tq/9v79IVFTNdNVWO5jqiHvRGlLe/R1MpRHPt3QqZ4+dSszPgRS
-	 44s2zx6Iae50cHvIWyuxYT0YWyise4+UD5mfgpMP3UtSnQNd05uaP7xLu+r36zBtrq
-	 hCoLfs8D8pJwx0XlEpPcFaMr5svBf+OnMDEKcRdU=
-Subject: FAILED: patch "[PATCH] hwmon: (pmbus/adm1266) serialize NVMEM blackbox read with" failed to apply to 5.10-stable tree
-To: abdurrahman@nexthop.ai,linux@roeck-us.net
+	b=JlVzft0AcE38IQbHpmrBbo+PwKsWjeFSRExIoegCci/DR6qwMIGWQ8q02sHCb8aYN
+	 QKmTqCEFqA/g0V6XGQ1M7e7kXPSowhRgNSw4Yid7XIrJgLZS1g7UjxI5mXihRYbifi
+	 ULopu9Z2PX9Ec1sjqm7F/ymwt9i2gpw8RQ5q8lAA=
+Subject: FAILED: patch "[PATCH] hwmon: (pmbus/adm1266) serialize GPIO PMBus accesses with" failed to apply to 5.10-stable tree
+To: abdurrahman@nexthop.ai,bartosz.golaszewski@oss.qualcomm.com,linux@roeck-us.net
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Thu, 28 May 2026 15:29:27 +0200
-Message-ID: <2026052827-elective-eraser-5e4e@gregkh>
+Date: Thu, 28 May 2026 15:30:52 +0200
+Message-ID: <2026052852-glade-reliably-a52e@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -59,12 +59,12 @@ X-Spamd-Result: default: False [2.34 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	MID_RHS_NOT_FQDN(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-254982-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-254983-lists,stable=lfdr.de];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	RCVD_COUNT_THREE(0.00)[4];
@@ -76,13 +76,13 @@ X-Spamd-Result: default: False [2.34 / 15.00];
 	NEURAL_HAM(-0.00)[-1.000];
 	TO_DN_NONE(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	RCPT_COUNT_THREE(0.00)[3];
+	RCPT_COUNT_THREE(0.00)[4];
 	TAGGED_RCPT(0.00)[stable];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,linuxfoundation.org:dkim,gregkh:email]
-X-Rspamd-Queue-Id: 190855F2BB2
+	DBL_BLOCKED_OPENRESOLVER(0.00)[qualcomm.com:email,roeck-us.net:email,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,nexthop.ai:email,gregkh:email,linuxfoundation.org:dkim]
+X-Rspamd-Queue-Id: BEDA25F2D99
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
@@ -96,10 +96,10 @@ To reproduce the conflict and resubmit, you may use the following commands:
 
 git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.10.y
 git checkout FETCH_HEAD
-git cherry-pick -x 9f1dd8f9491eb840cbea7ffdf4cad031e25f8ae0
+git cherry-pick -x bab8c6fb5af8df7e753d196c1262cb78e92ca872
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2026052827-elective-eraser-5e4e@gregkh' --subject-prefix 'PATCH 5.10.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2026052852-glade-reliably-a52e@gregkh' --subject-prefix 'PATCH 5.10.y' HEAD^..
 
 Possible dependencies:
 
@@ -111,58 +111,62 @@ greg k-h
 
 ------------------ original commit in Linus's tree ------------------
 
-From 9f1dd8f9491eb840cbea7ffdf4cad031e25f8ae0 Mon Sep 17 00:00:00 2001
+From bab8c6fb5af8df7e753d196c1262cb78e92ca872 Mon Sep 17 00:00:00 2001
 From: Abdurrahman Hussain <abdurrahman@nexthop.ai>
-Date: Mon, 18 May 2026 17:52:31 -0700
-Subject: [PATCH] hwmon: (pmbus/adm1266) serialize NVMEM blackbox read with
+Date: Mon, 18 May 2026 17:52:30 -0700
+Subject: [PATCH] hwmon: (pmbus/adm1266) serialize GPIO PMBus accesses with
  pmbus_lock
 
-adm1266_nvmem_read() is the reg_read callback the NVMEM core invokes
-when userspace reads /sys/bus/nvmem/devices/.../nvmem on this chip.
-On the first byte of every read it does a memset of data->dev_mem,
-walks the device blackbox through adm1266_nvmem_read_blackbox()
-(which issues a chain of PMBus block transactions), and then memcpys
-the refreshed buffer out to userspace.  None of that runs under
-pmbus_lock today.
+adm1266_gpio_get(), adm1266_gpio_get_multiple(), and
+adm1266_gpio_dbg_show() all issue PMBus reads against the device but
+none of them take pmbus_lock.  The pmbus_core framework holds
+pmbus_lock around its own multi-transaction sequences (notably the
+"set PAGE, then read paged register" pattern used by hwmon
+attributes), so an unlocked GPIO accessor can land between a PAGE
+write and the subsequent paged read in another thread and corrupt
+either side's view of the device state machine.
 
-Two consequences:
+Take pmbus_lock at the top of each of the three accessors via the
+scope-based guard().  The lock is uncontended in the common case and
+adds only a single mutex round-trip per call.
 
-  - The PMBus traffic the refresh issues is not serialised against
-    pmbus_core's own multi-step PAGE+register sequences.  A paged
-    hwmon attribute read from another thread can land between a
-    PAGE write and the paged read in either direction and corrupt
-    one side's view of the device state machine.
-
-  - The NVMEM core does not serialise concurrent reg_read calls, so
-    two userspace readers racing at offset 0 can interleave the
-    memset of data->dev_mem with another reader's
-    adm1266_nvmem_read_blackbox() refill or memcpy out, returning
-    torn data to userspace.
-
-Take pmbus_lock at the top of adm1266_nvmem_read() via the
-scope-based guard().  Patch 5 of this series moves
-adm1266_config_nvmem() past pmbus_do_probe() so the lock is
-guaranteed to be live before the callback is reachable from
-userspace.
-
-Fixes: 15609d189302 ("hwmon: (pmbus/adm1266) read blackbox")
+Fixes: d98dfad35c38 ("hwmon: (pmbus/adm1266) Add support for GPIOs")
 Cc: stable@vger.kernel.org
 Signed-off-by: Abdurrahman Hussain <abdurrahman@nexthop.ai>
-Link: https://lore.kernel.org/r/20260518-adm1266-gpio-fixes-v3-7-e425e4f88139@nexthop.ai
+Reviewed-by: Bartosz Golaszewski <bartosz.golaszewski@oss.qualcomm.com>
+Link: https://lore.kernel.org/r/20260518-adm1266-gpio-fixes-v3-6-e425e4f88139@nexthop.ai
 Signed-off-by: Guenter Roeck <linux@roeck-us.net>
 
 diff --git a/drivers/hwmon/pmbus/adm1266.c b/drivers/hwmon/pmbus/adm1266.c
-index 0eef58dd69a6..5ddca5701032 100644
+index 3e8f2619cb9b..0eef58dd69a6 100644
 --- a/drivers/hwmon/pmbus/adm1266.c
 +++ b/drivers/hwmon/pmbus/adm1266.c
-@@ -400,6 +400,8 @@ static int adm1266_nvmem_read(void *priv, unsigned int offset, void *val, size_t
- 	if (offset + bytes > data->nvmem_config.size)
- 		return -EINVAL;
+@@ -173,6 +173,8 @@ static int adm1266_gpio_get(struct gpio_chip *chip, unsigned int offset)
+ 	else
+ 		pmbus_cmd = ADM1266_PDIO_STATUS;
  
 +	guard(pmbus_lock)(data->client);
 +
- 	if (offset == 0) {
- 		memset(data->dev_mem, 0, data->nvmem_config.size);
+ 	ret = i2c_smbus_read_block_data(data->client, pmbus_cmd, read_buf);
+ 	if (ret < 0)
+ 		return ret;
+@@ -195,6 +197,8 @@ static int adm1266_gpio_get_multiple(struct gpio_chip *chip, unsigned long *mask
+ 	unsigned int gpio_nr;
+ 	int ret;
  
++	guard(pmbus_lock)(data->client);
++
+ 	ret = i2c_smbus_read_block_data(data->client, ADM1266_GPIO_STATUS, read_buf);
+ 	if (ret < 0)
+ 		return ret;
+@@ -236,6 +240,8 @@ static void adm1266_gpio_dbg_show(struct seq_file *s, struct gpio_chip *chip)
+ 	int ret;
+ 	int i;
+ 
++	guard(pmbus_lock)(data->client);
++
+ 	for (i = 0; i < ADM1266_GPIO_NR; i++) {
+ 		write_cmd = adm1266_gpio_mapping[i][1];
+ 		ret = adm1266_pmbus_block_xfer(data, ADM1266_GPIO_CONFIG, 1, &write_cmd, read_buf);
 
 
