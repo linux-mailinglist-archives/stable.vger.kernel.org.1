@@ -1,59 +1,58 @@
-Return-Path: <stable+bounces-255232-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-255586-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id mPi0N82eGGpAlggAu9opvQ
-	(envelope-from <stable+bounces-255232-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:00:13 +0200
+	id sFn7LFikGGoQlwgAu9opvQ
+	(envelope-from <stable+bounces-255586-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:23:52 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id E81875F7A30
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:00:12 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 47D9D5F88F1
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:23:52 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 2697A3040E2F
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 19:58:54 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id C08BB322AC81
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 20:15:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6785834040F;
-	Thu, 28 May 2026 19:58:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 88EE12580D7;
+	Thu, 28 May 2026 20:15:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="M7lWCjTn"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DLLb6PDl"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2D729348C45;
-	Thu, 28 May 2026 19:58:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6D388260580;
+	Thu, 28 May 2026 20:15:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779998331; cv=none; b=YtqTkO93Tk5B07lxLVFpKHkJQtk2Rq+b360HcJP7mWKouYrPw4kXy4088QXepFJu4muMsfd8aezWTvvI3bSw7ZgxJLc8YpEM6Bsg8eFQrUc4MSSKQC3/qO43eKTKJmA7m6F4BQ3J308tIeDyoF74VmYqESIpkhkP7d+SQ7akXf0=
+	t=1779999328; cv=none; b=kAIfeAo+ijXXjgdGN/FIVkA6u2JT1pvB18H+F6j6q45yoeJgDTOfsRbVD2fpnJXeaaRoVv6LEZU2cjOiiemkdFtW7sK1cCdwbSmBT4cYKcdL4+S32dRql03V8IjCxGAYq7hhcljADtAMud/h7ksjsbmpAdvLmf55NwMspKWC3Hg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779998331; c=relaxed/simple;
-	bh=sWjZPeJM5cJ44gqlLpYPERzb0LWdlm5MiA7uf6w1EhY=;
+	s=arc-20240116; t=1779999328; c=relaxed/simple;
+	bh=BCDqs1RoUYTF2kfBoAv92ElTtmWtZnkTuCZhVj50ezA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=WcP0gldfa+88eXYVX3oJrlPwB0y6izmqjVq1ytATTHsjnzHKFupMP9Mnu/32MMDZdznsJ8B2Rvj6ZlwvJpxS/jKLEGiGbxPkSsrjcQFSeAje42kUEfDFRr8n36YRHwt35ewlwUOLrjWo0yb8ikZ72eLwOKQHM6Whrb7C5GYw+gc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=M7lWCjTn; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8B75C1F000E9;
-	Thu, 28 May 2026 19:58:49 +0000 (UTC)
+	 MIME-Version; b=uT9WCu0o6sYf3XxslMX9KhxL67SpcH+Rf5S+erArWHxWohQddZyBNhGOqfZJOkL431hVPOAnZeFzi5jau9OP+SV8OuRQf5q+wOJ53Wuy6BomYF1+8vT+gphv31MoDybAqMh2mPRFzT9og1moTXYIOn8T4nBQyA3kgYoQYpdtTlc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DLLb6PDl; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CA5441F000E9;
+	Thu, 28 May 2026 20:15:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779998330;
-	bh=jeK7VOrrEtlejF3BYl8Lk/fQzTPyyItmox5l7zAxUbc=;
+	s=korg; t=1779999327;
+	bh=YC3sJvWfNUKkSPkzgB++DceERzvMS6CUSNmJGrtJfwM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=M7lWCjTn7m45ErKRCz1epqdPf8PUrbLuXMQCf7yfa6j4P+KlwfcAiO1DMeljsp4v+
-	 qNrz2+eyO0VloxQD5RqfhHhV1Glp7zqBhlHhe8Oz+8VBk1PmLXiUS+MEo8Dj5tKFCN
-	 eD5PHhUrkMuqMYj+HrMOYZy+j88Bf8DspzBMPNko=
+	b=DLLb6PDlLTpO7AXSyGKLP0LVzTqnGDIy8/1HkzHT9HwwZKbgdkfPrsd1VTaGtLuxY
+	 rkEl9gR1ws+aBP6etZ/gi80EdQJP1qwoIcGTuXl9vlRt3U+np5Z5T9soC1Bhw4Ln3w
+	 ysEsyp/xH9P/h3ou40eo1DcdA25Oh4PAWY7MspY4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Mario Limonciello (AMD)" <superm1@kernel.org>,
-	Alan liu <haoping.liu@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>
-Subject: [PATCH 7.0 135/461] drm/amdgpu/vpe: Force collaborate sync after TRAP
-Date: Thu, 28 May 2026 21:44:24 +0200
-Message-ID: <20260528194650.897848565@linuxfoundation.org>
+	SeongJae Park <sj@kernel.org>,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 6.18 027/377] mm/damon/sysfs-schemes: call missing mem_cgroup_iter_break()
+Date: Thu, 28 May 2026 21:44:25 +0200
+Message-ID: <20260528194639.173506312@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260528194646.819809818@linuxfoundation.org>
-References: <20260528194646.819809818@linuxfoundation.org>
+In-Reply-To: <20260528194638.371537336@linuxfoundation.org>
+References: <20260528194638.371537336@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -68,7 +67,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
@@ -78,7 +77,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-255232-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-255586-lists,stable=lfdr.de];
 	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
@@ -87,60 +86,49 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	NEURAL_HAM(-0.00)[-1.000];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
+	RCPT_COUNT_FIVE(0.00)[5];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,amd.com:email,gitlab.freedesktop.org:url]
-X-Rspamd-Queue-Id: E81875F7A30
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,linux-foundation.org:email,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
+X-Rspamd-Queue-Id: 47D9D5F88F1
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-7.0-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alan Liu <haoping.liu@amd.com>
+From: SeongJae Park <sj@kernel.org>
 
-commit b6074630a461b1322a814988779005cbc43612ea upstream.
+commit d4e7b5c4cc353f154d5ab8bb2e1ce7714d77a6e9 upstream.
 
-VPE1 could possibly hang and fail to power off at the end of commands in
-collaboration mode. This workaround adds a COLLAB_SYNC after TRAP to
-force instances synchronized to avoid VPE1 fail to power off.
+damon_sysfs_memcg_path_to_id() breaks mem_cgroup_iter() loop without
+calling mem_cgroup_iter_break().  This leaks the cgroup reference.  Fix
+the issue by calling mem_cgroup_iter_break() before the break.
 
-Reviewed-by: Mario Limonciello (AMD) <superm1@kernel.org>
-Signed-off-by: Alan liu <haoping.liu@amd.com>
-Closes: https://gitlab.freedesktop.org/drm/amd/-/work_items/5171
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-(cherry picked from commit a8b749c5c5afb7e5daa2bfb95d958fb3c6b8f055)
-Cc: stable@vger.kernel.org
+The issue was discovered [1] by Sashiko.
+
+Link: https://lore.kernel.org/20260426173625.86521-1-sj@kernel.org
+Link: https://lore.kernel.org/20260423004148.74722-1-sj@kernel.org [1]
+Fixes: 29cbb9a13f05 ("mm/damon/sysfs-schemes: implement scheme filters")
+Signed-off-by: SeongJae Park <sj@kernel.org>
+Cc: <stable@vger.kernel.org> # 6.3.x
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/amd/amdgpu/amdgpu_vpe.c |    7 ++++++-
- 1 file changed, 6 insertions(+), 1 deletion(-)
+ mm/damon/sysfs-schemes.c |    1 +
+ 1 file changed, 1 insertion(+)
 
---- a/drivers/gpu/drm/amd/amdgpu/amdgpu_vpe.c
-+++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_vpe.c
-@@ -562,6 +562,11 @@ static void vpe_ring_emit_fence(struct a
- 		amdgpu_ring_write(ring, 0);
+--- a/mm/damon/sysfs-schemes.c
++++ b/mm/damon/sysfs-schemes.c
+@@ -2444,6 +2444,7 @@ static int damon_sysfs_memcg_path_to_id(
+ 		if (damon_sysfs_memcg_path_eq(memcg, path, memcg_path)) {
+ 			*id = mem_cgroup_id(memcg);
+ 			found = true;
++			mem_cgroup_iter_break(NULL, memcg);
+ 			break;
+ 		}
  	}
- 
-+	/* WA: Force sync after TRAP to avoid VPE1 fail to power off */
-+	if (ring->adev->vpe.collaborate_mode) {
-+		amdgpu_ring_write(ring, VPE_CMD_HEADER(VPE_CMD_OPCODE_COLLAB_SYNC, 0));
-+		amdgpu_ring_write(ring, 0xabcd);
-+	}
- }
- 
- static void vpe_ring_emit_pipeline_sync(struct amdgpu_ring *ring)
-@@ -968,7 +973,7 @@ static const struct amdgpu_ring_funcs vp
- 	.emit_frame_size =
- 		5 + /* vpe_ring_init_cond_exec */
- 		6 + /* vpe_ring_emit_pipeline_sync */
--		10 + 10 + 10 + /* vpe_ring_emit_fence */
-+		12 + 12 + 12 + /* vpe_ring_emit_fence */
- 		/* vpe_ring_emit_vm_flush */
- 		SOC15_FLUSH_GPU_TLB_NUM_WREG * 3 +
- 		SOC15_FLUSH_GPU_TLB_NUM_REG_WAIT * 6,
 
 
 
