@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-255190-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-255201-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id aNPSFAafGGpblggAu9opvQ
-	(envelope-from <stable+bounces-255190-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:01:10 +0200
+	id yH4bKq2eGGpblggAu9opvQ
+	(envelope-from <stable+bounces-255201-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 21:59:41 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id BB83C5F7AA5
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:01:08 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id CC0E15F799F
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 21:59:40 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 1D20C3067145
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 19:56:58 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 1271A300462E
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 19:57:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 463D23F6C2C;
-	Thu, 28 May 2026 19:56:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EF63833CE8A;
+	Thu, 28 May 2026 19:57:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fM+C15J7"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Er85x5E/"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DBBD43290B0;
-	Thu, 28 May 2026 19:56:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A2286330B2D;
+	Thu, 28 May 2026 19:57:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779998216; cv=none; b=uu6iLJhdVtI+3cCWqFsZMQ1IH8UVpNDaEspqfGq3lCXltctedW6iJMNdGNYfUHsAehzP+721g0rNCDD7fU0XicHvdThjx3aFo/MvFoATj9RwTUJ3UMul8L/6RZeJRV+p7vazMzJtBLD7EQGOicM7tnTIpNPLA0pj63t5Q4JH7ek=
+	t=1779998245; cv=none; b=NwnMRS9JJLFvGDxqg5GxQDTKPbnHBQo3/BN/rL7R2t+fkv6UfiwDcK4llma9j46/MoqscYg+n2xpE0nCXih8fTjn49Ui4nR1+Ylf19BL4qSZlDlGt+DnUnx9GNT88Z+hfszb/uh3SCI62KFIu5ud27XT1UB5hc2uamn1ltFfjxo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779998216; c=relaxed/simple;
-	bh=Erq+Aq3qyICQp6FYFbZpE+zPJePcN8KBf4nGoeDGC6U=;
+	s=arc-20240116; t=1779998245; c=relaxed/simple;
+	bh=fezpSpFrTtrFWwkL/dzTqFhgO0pO/NoxDT8wXh4yMM4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=iYqvraCyEec5SNLFDCf5AO/CEuGfoXRCBW/1SzAB6LhraG3jd9NR3nzfcxgd4vOCFwgkJAXAq6PBEwQRUbf10hUmngx0a/+LE0yRroIWTliyQxm0LQiXCqVswfMP4zxS8mOWgyVemnQt/gaNxeknJZU/s/6hLysqFugOjPNuTyw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fM+C15J7; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 45C291F00A3E;
-	Thu, 28 May 2026 19:56:53 +0000 (UTC)
+	 MIME-Version; b=djWS6w4VzSxvlaaztn9sJ7T8qF9jLxoFbuXLqIUzfZtrgyxqKaOa1oI1L47ANJJ1DPb9tz2RkcTNlRpAi3wJBnFlsJO9WA2MPfJMdxQ0q+HqN8JQeHpSjL3Ngxev5SKkDVSovsG79ECICTz0U6ennRWU85bkSkfzpYox9G2leyE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Er85x5E/; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0C7371F000E9;
+	Thu, 28 May 2026 19:57:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779998213;
-	bh=1xiTrsnHQSRCcJQXAYDWDEgCb7LSlqlrVfoxxG/g7YA=;
+	s=korg; t=1779998244;
+	bh=b6p/8wUloJbNtQ3EzgobKrlwSn1IKMaR0B5v/JfXW3c=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=fM+C15J7ml3d+Iy73kP9N3nxQQB5vpb3Lgc4Wma03BmMWO45IbE03SQsESTkrgzwA
-	 s/nj8eco57H/B/rxR0P+dONLNM1npSxIQhguV6mi7ei1Rd61KAYKN6P5ZJ4dB4iJs+
-	 XJzrgoURPms7jzV7z6/K0uV9DiiYNhfJ+s6Jc884=
+	b=Er85x5E/a5SiSivlHtbAnBYob3C9WuwZ2MJYfPLpdAbvwaxq/iCVE+CbqEFs4fP8q
+	 /kU+aXdrg/pahgCQJk7JzlbXadlidUdqbIEFP6BwzOFi0YWfcY10kzTvbjVlbtvaut
+	 5NJekimntZMkGMhXHNuUcHltqGEl89wPmQnd5z7c=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Kyle Farnung <kfarnung@gmail.com>,
-	Rameshkumar Sundaram <rameshkumar.sundaram@oss.qualcomm.com>,
-	Baochen Qiang <baochen.qiang@oss.qualcomm.com>,
-	Jeff Johnson <jeff.johnson@oss.qualcomm.com>
-Subject: [PATCH 7.0 077/461] wifi: ath11k: clear shared SRNG pointer state on restart
-Date: Thu, 28 May 2026 21:43:26 +0200
-Message-ID: <20260528194649.147484238@linuxfoundation.org>
+	Johannes Berg <johannes.berg@intel.com>,
+	Miri Korenblit <miriam.rachel.korenblit@intel.com>
+Subject: [PATCH 7.0 078/461] wifi: iwlwifi: mvm: fix driver-set TX rates on old devices
+Date: Thu, 28 May 2026 21:43:27 +0200
+Message-ID: <20260528194649.176988689@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
 In-Reply-To: <20260528194646.819809818@linuxfoundation.org>
 References: <20260528194646.819809818@linuxfoundation.org>
@@ -69,31 +67,30 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,oss.qualcomm.com];
-	TAGGED_FROM(0.00)[bounces-255190-lists,stable=lfdr.de];
-	PRECEDENCE_BULK(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
+	RCVD_TLS_LAST(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	TAGGED_FROM(0.00)[bounces-255201-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[7];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[qualcomm.com:email,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,msgid.link:url,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
-X-Rspamd-Queue-Id: BB83C5F7AA5
+	RCPT_COUNT_FIVE(0.00)[5];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,intel.com:email]
+X-Rspamd-Queue-Id: CC0E15F799F
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
@@ -101,61 +98,136 @@ X-Rspamd-Server: lfdr
 
 ------------------
 
-From: Kyle Farnung <kfarnung@gmail.com>
+From: Johannes Berg <johannes.berg@intel.com>
 
-commit f51e4b3b5574ad8cb5b16b11f8a1452147ece87a upstream.
+commit fb84b5cbcaab3ca0f4e961d92a40ed7f3aac483b upstream.
 
-LMAC rings reuse the shared rdp/wrp pointer buffers without going
-through the normal SRNG hw-init path that zeros non-LMAC ring
-pointers. After restart, ath11k_hal_srng_clear() can therefore hand
-stale hp/tp state from the previous firmware instance back to the new
-one.
+On old devices such as 7265D, rates are still encoded in version 1
+format, which doesn't use the CCK/OFDM rate index (0-3/0-7) but
+rather their PLCP value (e.g. 10 for 1 Mbps CCK rate.)
 
-Clear the shared pointer buffers while keeping the allocations in
-place so restart still avoids reallocating SRNG DMA memory, but starts
-with fresh ring-pointer state.
+While introducing v3 rates, I changed the driver from internally
+handling v1 rates and converting to v2, to internally handling v3
+and converting to v1 or v2 according to the firmware. I accordingly
+changed the code in iwl_mvm_mac80211_idx_to_hwrate() to no longer
+have different values for different APIs. This was correct.
 
-Fixes: 32be3ca4cf78b ("wifi: ath11k: HAL SRNG: don't deinitialize and re-initialize again")
+However, I later reverted this part of the change, because it was
+reported that I had broken beacon rates, causing a FW assert/crash.
+This caused TX_CMD rates to be set incorrectly, potentially causing
+a warning when reported back from the device as having been used.
+
+Fix this (hopefully correctly now) by handling beacon rates in the
+TX_CMD that's embedded in the beacon template command separately.
+Restore iwl_mvm_mac80211_idx_to_hwrate() to return only the rate
+index, not PLCP value, fixing the real TX_CMD.
+
 Cc: stable@vger.kernel.org
-Closes: https://lore.kernel.org/all/CAOPSVF04q6uvVdq8GTRLHBrVMdpt9=o9wVcFMc6f-yhmSBcZqQ@mail.gmail.com/
-Signed-off-by: Kyle Farnung <kfarnung@gmail.com>
-Reviewed-by: Rameshkumar Sundaram <rameshkumar.sundaram@oss.qualcomm.com>
-Reviewed-by: Baochen Qiang <baochen.qiang@oss.qualcomm.com>
-Link: https://patch.msgid.link/20260513-kfarnung-ath11k-srng-clear-pointer-state-v1-1-bc700dd8b333@gmail.com
-Signed-off-by: Jeff Johnson <jeff.johnson@oss.qualcomm.com>
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+Link: https://patch.msgid.link/20260515151351.7407e293dff7.I4ea1a17f8fe99c933d3f3e30d077cf4246125c3e@changeid
+Signed-off-by: Miri Korenblit <miriam.rachel.korenblit@intel.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/wireless/ath/ath11k/hal.c |   14 +++++++++++---
- 1 file changed, 11 insertions(+), 3 deletions(-)
+ drivers/net/wireless/intel/iwlwifi/mvm/mac-ctxt.c |   27 ++++++++++++++--------
+ drivers/net/wireless/intel/iwlwifi/mvm/utils.c    |   14 +++--------
+ 2 files changed, 22 insertions(+), 19 deletions(-)
 
---- a/drivers/net/wireless/ath/ath11k/hal.c
-+++ b/drivers/net/wireless/ath/ath11k/hal.c
-@@ -1387,14 +1387,22 @@ EXPORT_SYMBOL(ath11k_hal_srng_deinit);
+--- a/drivers/net/wireless/intel/iwlwifi/mvm/mac-ctxt.c
++++ b/drivers/net/wireless/intel/iwlwifi/mvm/mac-ctxt.c
+@@ -1,6 +1,6 @@
+ // SPDX-License-Identifier: GPL-2.0 OR BSD-3-Clause
+ /*
+- * Copyright (C) 2012-2014, 2018-2025 Intel Corporation
++ * Copyright (C) 2012-2014, 2018-2026 Intel Corporation
+  * Copyright (C) 2013-2014 Intel Mobile Communications GmbH
+  * Copyright (C) 2015-2017 Intel Deutschland GmbH
+  */
+@@ -927,13 +927,18 @@ u8 iwl_mvm_mac_ctxt_get_lowest_rate(stru
  
- void ath11k_hal_srng_clear(struct ath11k_base *ab)
+ u16 iwl_mvm_mac_ctxt_get_beacon_flags(const struct iwl_fw *fw, u8 rate_idx)
  {
--	/* No need to memset rdp and wrp memory since each individual
--	 * segment would get cleared in ath11k_hal_srng_src_hw_init()
--	 * and ath11k_hal_srng_dst_hw_init().
-+	/*
-+	 * Preserve the shared pointer buffers, but clear the previous
-+	 * firmware instance's hp/tp state before handing them back to FW.
-+	 * LMAC rings reuse this shared memory without going through the
-+	 * normal SRNG hw-init path that zeros non-LMAC ring pointers.
- 	 */
- 	memset(ab->hal.srng_list, 0,
- 	       sizeof(ab->hal.srng_list));
- 	memset(ab->hal.shadow_reg_addr, 0,
- 	       sizeof(ab->hal.shadow_reg_addr));
-+	if (ab->hal.rdp.vaddr)
-+		memset(ab->hal.rdp.vaddr, 0,
-+		       sizeof(*ab->hal.rdp.vaddr) * HAL_SRNG_RING_ID_MAX);
-+	if (ab->hal.wrp.vaddr)
-+		memset(ab->hal.wrp.vaddr, 0,
-+		       sizeof(*ab->hal.wrp.vaddr) * HAL_SRNG_NUM_LMAC_RINGS);
- 	ab->hal.avail_blk_resource = 0;
- 	ab->hal.current_blk_index = 0;
- 	ab->hal.num_shadow_reg_configured = 0;
+-	u16 flags = iwl_mvm_mac80211_idx_to_hwrate(fw, rate_idx);
+ 	bool is_new_rate = iwl_fw_lookup_cmd_ver(fw, BEACON_TEMPLATE_CMD, 0) > 10;
++	u16 flags = 0;
+ 
+ 	if (rate_idx <= IWL_LAST_CCK_RATE)
+ 		flags |= is_new_rate ? IWL_MAC_BEACON_CCK
+ 			  : IWL_MAC_BEACON_CCK_V1;
+ 
++	if (iwl_fw_lookup_cmd_ver(fw, TX_CMD, 0) > 8)
++		flags |= iwl_mvm_mac80211_idx_to_hwrate(fw, rate_idx);
++	else
++		flags |= iwl_fw_rate_idx_to_plcp(rate_idx);
++
+ 	return flags;
+ }
+ 
+@@ -962,6 +967,7 @@ static void iwl_mvm_mac_ctxt_set_tx(stru
+ {
+ 	struct iwl_mvm_vif *mvmvif = iwl_mvm_vif_from_mac80211(vif);
+ 	struct ieee80211_tx_info *info;
++	u32 rate_n_flags = 0;
+ 	u8 rate;
+ 	u32 tx_flags;
+ 
+@@ -981,18 +987,21 @@ static void iwl_mvm_mac_ctxt_set_tx(stru
+ 			 IWL_UCODE_TLV_CAPA_BEACON_ANT_SELECTION)) {
+ 		iwl_mvm_toggle_tx_ant(mvm, &mvm->mgmt_last_antenna_idx);
+ 
+-		tx_params->rate_n_flags =
+-			cpu_to_le32(BIT(mvm->mgmt_last_antenna_idx) <<
+-				    RATE_MCS_ANT_POS);
++		rate_n_flags |= BIT(mvm->mgmt_last_antenna_idx) <<
++					RATE_MCS_ANT_POS;
+ 	}
+ 
+ 	rate = iwl_mvm_mac_ctxt_get_beacon_rate(mvm, info, vif);
+ 
+-	tx_params->rate_n_flags |=
+-		cpu_to_le32(iwl_mvm_mac80211_idx_to_hwrate(mvm->fw, rate));
+-	if (rate == IWL_FIRST_CCK_RATE)
+-		tx_params->rate_n_flags |= cpu_to_le32(RATE_MCS_CCK_MSK_V1);
++	if (rate < IWL_FIRST_OFDM_RATE)
++		rate_n_flags |= RATE_MCS_MOD_TYPE_CCK;
++	else
++		rate_n_flags |= RATE_MCS_MOD_TYPE_LEGACY_OFDM;
++
++	rate_n_flags |= iwl_mvm_mac80211_idx_to_hwrate(mvm->fw, rate);
+ 
++	tx_params->rate_n_flags = iwl_mvm_v3_rate_to_fw(rate_n_flags,
++							mvm->fw_rates_ver);
+ }
+ 
+ int iwl_mvm_mac_ctxt_send_beacon_cmd(struct iwl_mvm *mvm,
+--- a/drivers/net/wireless/intel/iwlwifi/mvm/utils.c
++++ b/drivers/net/wireless/intel/iwlwifi/mvm/utils.c
+@@ -1,6 +1,6 @@
+ // SPDX-License-Identifier: GPL-2.0 OR BSD-3-Clause
+ /*
+- * Copyright (C) 2012-2014, 2018-2025 Intel Corporation
++ * Copyright (C) 2012-2014, 2018-2026 Intel Corporation
+  * Copyright (C) 2013-2014 Intel Mobile Communications GmbH
+  * Copyright (C) 2015-2017 Intel Deutschland GmbH
+  */
+@@ -159,15 +159,9 @@ int iwl_mvm_legacy_rate_to_mac80211_idx(
+ 
+ u8 iwl_mvm_mac80211_idx_to_hwrate(const struct iwl_fw *fw, int rate_idx)
+ {
+-	if (iwl_fw_lookup_cmd_ver(fw, TX_CMD, 0) > 8)
+-		/* In the new rate legacy rates are indexed:
+-		 * 0 - 3 for CCK and 0 - 7 for OFDM.
+-		 */
+-		return (rate_idx >= IWL_FIRST_OFDM_RATE ?
+-			rate_idx - IWL_FIRST_OFDM_RATE :
+-			rate_idx);
+-
+-	return iwl_fw_rate_idx_to_plcp(rate_idx);
++	return rate_idx >= IWL_FIRST_OFDM_RATE ?
++		rate_idx - IWL_FIRST_OFDM_RATE :
++		rate_idx;
+ }
+ 
+ u8 iwl_mvm_mac80211_ac_to_ucode_ac(enum ieee80211_ac_numbers ac)
 
 
 
