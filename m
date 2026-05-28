@@ -1,62 +1,64 @@
-Return-Path: <stable+bounces-255991-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-255355-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id AKLdKlyoGGpolwgAu9opvQ
-	(envelope-from <stable+bounces-255991-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:41:00 +0200
+	id GFdSFn6hGGqblggAu9opvQ
+	(envelope-from <stable+bounces-255355-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:11:42 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 52CFC5F94EF
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:41:00 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id CF8C35F8082
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:11:41 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 3A64D314630A
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 20:34:11 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 1E242320673B
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 20:04:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2BA213368B5;
-	Thu, 28 May 2026 20:34:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 367ED409623;
+	Thu, 28 May 2026 20:04:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FMx4KjBt"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RzyrQzeQ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EB3D8223328;
-	Thu, 28 May 2026 20:34:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D7082338595;
+	Thu, 28 May 2026 20:04:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780000450; cv=none; b=jPNbYkVKh3K2KME+GwJgLDTIy3BRCW44lFIVQ0OVrqtFhNXLFyZfiRNX4pk7tdmD5NqBBsLQmHXcC+tlM83rvjpgbq92aCOaEtTwE0jXY/TsnZl0M8fM4FyKiuQ2ffZ4160XZMzDMBxEdIpIS4tI0P44EbvoH8vkKEr+Mh9mYyg=
+	t=1779998678; cv=none; b=amqvQY6NEJekUjIMZ1hcIOyEg3ofJwinoeXl1GEYZw+O3huL9MwjnqJ7mL9vQLdAeSHUpiiYaKG10VPOoSylSxLPcW/oX3xLyqY4q4NeE4Oh4hyicPw/HdhcBipOg/Z98/Gkamx6BKoL5fnGWishVcmn8S9+VUkVBvNTabjpyoE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780000450; c=relaxed/simple;
-	bh=v2g1ijX880Tam8QnnKsIba6tef/XMSE9txT0kB3QGz4=;
+	s=arc-20240116; t=1779998678; c=relaxed/simple;
+	bh=oqhJXf0M5UqSHxTAKJt9EzaOHL12kbnudQHAyN3fi9g=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=qfj0mZmUWi1uo7/g/ekoUeVvOtyDIhLSplwt02xaCu45Aro5DcCTDq6h3akxQgLqhFuWud3E2LJ1qudlYlH6OJsgrvS92MY1X6Suazgbv9UFY9pF3154CVjUry7MafiiCrnO0RDir0yvZpnT/Exv4lIEjjwNohu2ltzaDUwUjD8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FMx4KjBt; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4F5001F000E9;
-	Thu, 28 May 2026 20:34:08 +0000 (UTC)
+	 MIME-Version; b=HkJjhdbDlN1DkpOiSTXWQaBsKcRvzJXbdrMyjKW1TqR/2OVEourPgXyhG3G8AMfhkZ710bC0d1z5vKy3/ZX2TGSTL39cocc6gNT2sho8khqtPskpSQhCPl8pe5YmBzQCjuqBZ+QMyE1TGPhwimbzmup/mHP2GLVrg/G+g3ZvElM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RzyrQzeQ; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1A9241F000E9;
+	Thu, 28 May 2026 20:04:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780000448;
-	bh=K+q5FKI0jPTXBbaoMIm4OYtkCcIV677K9gmqaoDWi7Y=;
+	s=korg; t=1779998676;
+	bh=+KPNmKdgi3CMgy1WUtaaN4uK74oj3SOdOqAKaKJQeMo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=FMx4KjBtTlFv475O4hgSXiJlWrcWjIFbuMN8YQdHJE1P1bzskqtV0Hx21VJadC5HT
-	 1her+cKQJ4yD8ZTaOOZvICgXg2L5biOvjPRzZfrUE0F3TD4FXlUecbuIse9uh9hAzI
-	 G6+MF0bRuG78c1hTWNw3paL2Mle/xSDEJNFzj9H8=
+	b=RzyrQzeQaF6OjUHaQfzXSf5CIhb5yeB4B5eP0mkUeQWLjjyCap2mR69Z8a5vh2+4d
+	 /GhIoS/kc5BTpTBVK8bfRXWeC+WYuuqK4IGxMWAMW+uKJfVG5VfYBJ5NuKhQ8OZ7wK
+	 LO2h+r8rx0e0PbcFsbdyY/VrcSkMYwnsbUYOx/wo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Weiming Shi <bestswngs@gmail.com>,
-	Xiang Mei <xmei5@asu.edu>,
-	Nikolay Aleksandrov <razor@blackwall.org>,
-	Ido Schimmel <idosch@nvidia.com>,
-	Paolo Abeni <pabeni@redhat.com>,
+	Marc Dionne <marc.dionne@auristor.com>,
+	David Howells <dhowells@redhat.com>,
+	Paulo Alcantara <pc@manguebit.org>,
+	Matthew Wilcox <willy@infradead.org>,
+	netfs@lists.linux.dev,
+	linux-fsdevel@vger.kernel.org,
+	Christian Brauner <brauner@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 012/272] bridge: mrp: reject zero test interval to avoid OOM panic
-Date: Thu, 28 May 2026 21:46:26 +0200
-Message-ID: <20260528194629.727403978@linuxfoundation.org>
+Subject: [PATCH 7.0 258/461] netfs: Fix netfs_invalidate_folio() to clear dirty bit if all changes gone
+Date: Thu, 28 May 2026 21:46:27 +0200
+Message-ID: <20260528194654.623631474@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260528194629.379955525@linuxfoundation.org>
-References: <20260528194629.379955525@linuxfoundation.org>
+In-Reply-To: <20260528194646.819809818@linuxfoundation.org>
+References: <20260528194646.819809818@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -71,96 +73,156 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,asu.edu,blackwall.org,nvidia.com,redhat.com,kernel.org];
-	TAGGED_FROM(0.00)[bounces-255991-lists,stable=lfdr.de];
-	PRECEDENCE_BULK(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-255355-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[9];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
 	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[asu.edu:email,nvidia.com:email,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,msgid.link:url,linuxfoundation.org:mid,linuxfoundation.org:dkim,blackwall.org:email]
-X-Rspamd-Queue-Id: 52CFC5F94EF
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_SEVEN(0.00)[11];
+	MID_RHS_MATCH_FROM(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,msgid.link:url,linux.dev:email,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,infradead.org:email,auristor.com:email,manguebit.org:email]
+X-Rspamd-Queue-Id: CF8C35F8082
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+7.0-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Xiang Mei <xmei5@asu.edu>
+From: David Howells <dhowells@redhat.com>
 
-[ Upstream commit fa6e24963342de4370e3a3c9af41e38277b74cf3 ]
+[ Upstream commit 156ac2ec2ee77c44c4eb7439d6d165247ba12247 ]
 
-br_mrp_start_test() and br_mrp_start_in_test() accept the user-supplied
-interval value from netlink without validation. When interval is 0,
-usecs_to_jiffies(0) yields 0, causing the delayed work
-(br_mrp_test_work_expired / br_mrp_in_test_work_expired) to reschedule
-itself with zero delay. This creates a tight loop on system_percpu_wq
-that allocates and transmits MRP test frames at maximum rate, exhausting
-all system memory and causing a kernel panic via OOM deadlock.
+If a streaming write is made, this will leave the relevant modified folio
+in a not-uptodate, but dirty state with a netfs_folio struct hung off of
+folio->private indicating the dirty range.  Subsequently truncating the
+file such that the dirty data in the folio is removed, but the first part
+of the folio theoretically remains will cause the netfs_folio struct to be
+discarded... but will leave the dirty flag set.
 
-The same zero-interval issue applies to br_mrp_start_in_test_parse()
-for interconnect test frames.
+If the folio is then read via mmap(), netfs_read_folio() will see that the
+page is dirty and jump to netfs_read_gaps() to fill in the missing bits.
+netfs_read_gaps(), however, expects there to be a netfs_folio struct
+present and can oops because truncate removed it.
 
-Use NLA_POLICY_MIN(NLA_U32, 1) in the nla_policy tables for both
-IFLA_BRIDGE_MRP_START_TEST_INTERVAL and
-IFLA_BRIDGE_MRP_START_IN_TEST_INTERVAL, so zero is rejected at the
-netlink attribute parsing layer before the value ever reaches the
-workqueue scheduling code. This is consistent with how other bridge
-subsystems (br_fdb, br_mst) enforce range constraints on netlink
-attributes.
+Fix this by calling folio_cancel_dirty() in netfs_invalidate_folio() in the
+event that all the dirty data in the folio is erased (as nfs does).
 
-Fixes: 20f6a05ef635 ("bridge: mrp: Rework the MRP netlink interface")
-Fixes: 7ab1748e4ce6 ("bridge: mrp: Extend MRP netlink interface for configuring MRP interconnect")
-Reported-by: Weiming Shi <bestswngs@gmail.com>
-Signed-off-by: Xiang Mei <xmei5@asu.edu>
-Acked-by: Nikolay Aleksandrov <razor@blackwall.org>
-Reviewed-by: Ido Schimmel <idosch@nvidia.com>
-Link: https://patch.msgid.link/20260328063000.1845376-1-xmei5@asu.edu
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Also add some tracepoints to log modifications to a dirty page.
+
+This can be reproduced with something like:
+
+    dd if=/dev/zero of=/xfstest.test/foo bs=1M count=1
+    umount /xfstest.test
+    mount /xfstest.test
+    xfs_io -c "w 0xbbbf 0xf96c" \
+           -c "truncate 0xbbbf" \
+           -c "mmap -r 0xb000 0x11000" \
+           -c "mr 0xb000 0x11000" \
+           /xfstest.test/foo
+
+with fscaching disabled (otherwise streaming writes are suppressed) and a
+change to netfs_perform_write() to disallow streaming writes if the fd is
+open O_RDWR:
+
+	if (//(file->f_mode & FMODE_READ) || <--- comment this out
+	    netfs_is_cache_enabled(ctx)) {
+
+It should be reproducible even without this change, but if prevents the
+above trivial xfs_io command from reproducing it.
+
+Note that the initial dd is important: the file must start out sufficiently
+large that the zero-point logic doesn't just clear the gaps because it
+knows there's nothing in the file to read yet.  Unmounting and mounting is
+needed to clear the pagecache (there are other ways to do that that may
+also work).
+
+This was initially reproduced with the generic/522 xfstest on some patches
+that remove the FMODE_READ restriction.
+
+Fixes: 9ebff83e6481 ("netfs: Prep to use folio->private for write grouping and streaming write")
+Reported-by: Marc Dionne <marc.dionne@auristor.com>
+Signed-off-by: David Howells <dhowells@redhat.com>
+Link: https://patch.msgid.link/20260512123404.719402-12-dhowells@redhat.com
+cc: Paulo Alcantara <pc@manguebit.org>
+cc: Matthew Wilcox <willy@infradead.org>
+cc: netfs@lists.linux.dev
+cc: linux-fsdevel@vger.kernel.org
+Signed-off-by: Christian Brauner <brauner@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/bridge/br_mrp_netlink.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ fs/netfs/misc.c              | 6 +++++-
+ include/trace/events/netfs.h | 4 ++++
+ 2 files changed, 9 insertions(+), 1 deletion(-)
 
-diff --git a/net/bridge/br_mrp_netlink.c b/net/bridge/br_mrp_netlink.c
-index ce6f63c77cc0a..86f0e75d6e345 100644
---- a/net/bridge/br_mrp_netlink.c
-+++ b/net/bridge/br_mrp_netlink.c
-@@ -196,7 +196,7 @@ static const struct nla_policy
- br_mrp_start_test_policy[IFLA_BRIDGE_MRP_START_TEST_MAX + 1] = {
- 	[IFLA_BRIDGE_MRP_START_TEST_UNSPEC]	= { .type = NLA_REJECT },
- 	[IFLA_BRIDGE_MRP_START_TEST_RING_ID]	= { .type = NLA_U32 },
--	[IFLA_BRIDGE_MRP_START_TEST_INTERVAL]	= { .type = NLA_U32 },
-+	[IFLA_BRIDGE_MRP_START_TEST_INTERVAL]	= NLA_POLICY_MIN(NLA_U32, 1),
- 	[IFLA_BRIDGE_MRP_START_TEST_MAX_MISS]	= { .type = NLA_U32 },
- 	[IFLA_BRIDGE_MRP_START_TEST_PERIOD]	= { .type = NLA_U32 },
- 	[IFLA_BRIDGE_MRP_START_TEST_MONITOR]	= { .type = NLA_U32 },
-@@ -316,7 +316,7 @@ static const struct nla_policy
- br_mrp_start_in_test_policy[IFLA_BRIDGE_MRP_START_IN_TEST_MAX + 1] = {
- 	[IFLA_BRIDGE_MRP_START_IN_TEST_UNSPEC]	= { .type = NLA_REJECT },
- 	[IFLA_BRIDGE_MRP_START_IN_TEST_IN_ID]	= { .type = NLA_U32 },
--	[IFLA_BRIDGE_MRP_START_IN_TEST_INTERVAL]	= { .type = NLA_U32 },
-+	[IFLA_BRIDGE_MRP_START_IN_TEST_INTERVAL]	= NLA_POLICY_MIN(NLA_U32, 1),
- 	[IFLA_BRIDGE_MRP_START_IN_TEST_MAX_MISS]	= { .type = NLA_U32 },
- 	[IFLA_BRIDGE_MRP_START_IN_TEST_PERIOD]	= { .type = NLA_U32 },
- };
+diff --git a/fs/netfs/misc.c b/fs/netfs/misc.c
+index 723571ca1b885..24b20e80e9a8a 100644
+--- a/fs/netfs/misc.c
++++ b/fs/netfs/misc.c
+@@ -263,6 +263,7 @@ void netfs_invalidate_folio(struct folio *folio, size_t offset, size_t length)
+ 			/* Move the start of the data. */
+ 			finfo->dirty_len = fend - iend;
+ 			finfo->dirty_offset = offset;
++			trace_netfs_folio(folio, netfs_folio_trace_invalidate_front);
+ 			return;
+ 		}
+ 
+@@ -271,12 +272,14 @@ void netfs_invalidate_folio(struct folio *folio, size_t offset, size_t length)
+ 		 */
+ 		if (iend >= fend) {
+ 			finfo->dirty_len = offset - fstart;
++			trace_netfs_folio(folio, netfs_folio_trace_invalidate_tail);
+ 			return;
+ 		}
+ 
+ 		/* A partial write was split.  The caller has already zeroed
+ 		 * it, so just absorb the hole.
+ 		 */
++		trace_netfs_folio(folio, netfs_folio_trace_invalidate_middle);
+ 	}
+ 	return;
+ 
+@@ -284,8 +287,9 @@ void netfs_invalidate_folio(struct folio *folio, size_t offset, size_t length)
+ 	netfs_put_group(netfs_folio_group(folio));
+ 	folio_detach_private(folio);
+ 	folio_clear_uptodate(folio);
++	folio_cancel_dirty(folio);
+ 	kfree(finfo);
+-	return;
++	trace_netfs_folio(folio, netfs_folio_trace_invalidate_all);
+ }
+ EXPORT_SYMBOL(netfs_invalidate_folio);
+ 
+diff --git a/include/trace/events/netfs.h b/include/trace/events/netfs.h
+index cbe28211106c5..88d814ba1e697 100644
+--- a/include/trace/events/netfs.h
++++ b/include/trace/events/netfs.h
+@@ -194,6 +194,10 @@
+ 	EM(netfs_folio_trace_copy_to_cache,	"mark-copy")	\
+ 	EM(netfs_folio_trace_end_copy,		"end-copy")	\
+ 	EM(netfs_folio_trace_filled_gaps,	"filled-gaps")	\
++	EM(netfs_folio_trace_invalidate_all,	"inval-all")	\
++	EM(netfs_folio_trace_invalidate_front,	"inval-front")	\
++	EM(netfs_folio_trace_invalidate_middle,	"inval-mid")	\
++	EM(netfs_folio_trace_invalidate_tail,	"inval-tail")	\
+ 	EM(netfs_folio_trace_kill,		"kill")		\
+ 	EM(netfs_folio_trace_kill_cc,		"kill-cc")	\
+ 	EM(netfs_folio_trace_kill_g,		"kill-g")	\
 -- 
 2.53.0
 
