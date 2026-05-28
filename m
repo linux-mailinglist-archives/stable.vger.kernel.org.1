@@ -1,59 +1,60 @@
-Return-Path: <stable+bounces-255515-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-255921-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 8H7ENeqhGGqvlggAu9opvQ
-	(envelope-from <stable+bounces-255515-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:13:30 +0200
+	id kGS7DpGnGGpolwgAu9opvQ
+	(envelope-from <stable+bounces-255921-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:37:37 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id F20B85F81A4
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:13:29 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id AA5095F9245
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:37:36 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id A5C143048222
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 20:12:12 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 54448311EA74
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 20:30:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 80DBA402B8F;
-	Thu, 28 May 2026 20:12:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3E868318EE1;
+	Thu, 28 May 2026 20:30:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EN+hs9w0"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YWZQtbaW"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 349C4339866;
-	Thu, 28 May 2026 20:12:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 08B42248F62;
+	Thu, 28 May 2026 20:30:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779999129; cv=none; b=eIqdEzHcyHf2GBsTFsL+VhI15Wa0eBDXTaUg7wJtafBWkK3vhcO6/RMw+CvvNAsqqN7XGA6NBGxI/sFP0E01xzOFwYCH+fJvh5S0gDWVjpBQT3aOrer9uPwvbMW9ztRA9UaigiHOSZRiUb5lR6XeaXBbu3jvbMHBAH/Uffp4czg=
+	t=1780000253; cv=none; b=cwD3ZaEh3VxWCMHaPMoKhhvjMnGPUhn2WuqPLY1Vy5PydBMEtQCkMyeyQ67FAr/I/h2YEQBvQHJ3FZ2gKKoykRYlimoe7IHzjKr9+tQo8PhrSQoS78QCjiUhZhO1n3tfUqxLPKN6q2BDPUwQx+IyQIlLB0/O+v1LobM7uKpiKjY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779999129; c=relaxed/simple;
-	bh=Mow8uktnYdVI6sBhg5sybT9x0Sw0oBoyENcxlujXf2s=;
+	s=arc-20240116; t=1780000253; c=relaxed/simple;
+	bh=Nok0KhP9Q4nnMVIF5bd11tTVWvw3TdHx6kETOlHJ7Uw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=mcCiXoxSnjq8/oIYZRrfw3oLaqQJ4YswehTO6hpJ0zPMg9BiXzs/hrIJ9BqBCggToe2IbiF8a4g1DANislI3oB1C9o0Fo7jViFXx2NV8heMWD3jiymPsdn9sm42wY1QpdFeBmz8URW6X/WHR3uDo+LQqr8nAzc5NSCCfCEooP5o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EN+hs9w0; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9288A1F000E9;
-	Thu, 28 May 2026 20:12:06 +0000 (UTC)
+	 MIME-Version; b=E6/N8qjdhGblw++hBZSK9m9DeHy6PCHb2REroyNjP92mIG3513qDaxWooKuzjzFtvcFBaIZ/Pj7zJi5t5rEgmXmHXpS9J/fnUr7mc+dTMJXMf/taQzCNMdtWcTZhrEsbJ3YmkgZTmevfbD+/Jx2UTrdFW947n8Sm/B9HIvKB+UA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YWZQtbaW; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2362D1F000E9;
+	Thu, 28 May 2026 20:30:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779999127;
-	bh=ZKUkKXWF7t53Va3R97MF+ygFiUrD672QlhaOIuxZQO0=;
+	s=korg; t=1780000251;
+	bh=8CWr+keAcl+7UYaSGH3FNsxC0BR76jTROh9NckE0d9A=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=EN+hs9w0VbfShHCCIELqwkvy/bU7bIVzdgUSmQdSJLabFfHn/bKEjEayZQrEiChLM
-	 bhIBpO6RxjQoK53ZFyacwT3LrcwB8D/Zmi5sQ7236fiOZ6Cg5dYwprFYlPmLh6/Oiq
-	 iQsy7+ZYbyRG5S8LxIyHBKHk+WUO00TzvJtn9SQM=
+	b=YWZQtbaWldsf/wOGs6k5gzYd5n0DDPqI5iBVFH8Tyaa/3R97azYCtGraNdCrfCuT+
+	 PeeWhBhFN3qxHG/f8x4my0e8F3kU+j5ovjmNx9VCQNF15LR23oMcBoFA11a60b7E2B
+	 D4WJ7IsrKMRg59afI/9kj/ogVjozXO4OLofM8x70=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	David Carlier <devnexen@gmail.com>,
-	Steven Rostedt <rostedt@goodmis.org>,
+	Salendarsingh Gaud <sgaud@qti.qualcomm.com>,
+	Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>,
+	Rob Clark <robin.clark@oss.qualcomm.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 7.0 418/461] tracing: Avoid NULL return from hist_field_name() on truncation
+Subject: [PATCH 6.18 309/377] drm/msm/snapshot: fix dumping of the unaligned regions
 Date: Thu, 28 May 2026 21:49:07 +0200
-Message-ID: <20260528194659.598268342@linuxfoundation.org>
+Message-ID: <20260528194647.324096097@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260528194646.819809818@linuxfoundation.org>
-References: <20260528194646.819809818@linuxfoundation.org>
+In-Reply-To: <20260528194638.371537336@linuxfoundation.org>
+References: <20260528194638.371537336@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,84 +67,135 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-255515-lists,stable=lfdr.de];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,goodmis.org,kernel.org];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_TLS_LAST(0.00)[];
-	TO_DN_SOME(0.00)[];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
-	RCPT_COUNT_FIVE(0.00)[6];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-255921-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
 	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	MID_RHS_MATCH_FROM(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,msgid.link:url,goodmis.org:email]
-X-Rspamd-Queue-Id: F20B85F81A4
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[patchwork.freedesktop.org:url,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,qualcomm.com:email,linuxfoundation.org:mid,linuxfoundation.org:dkim]
+X-Rspamd-Queue-Id: AA5095F9245
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-7.0-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: David Carlier <devnexen@gmail.com>
+From: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
 
-[ Upstream commit 576ec047d20b368b43c4d5db98c4f2e0f3c101ec ]
+[ Upstream commit 76824d2467feb1828b745d6add2541918d7be3da ]
 
-hist_field_name() returns "" everywhere except the fully-qualified
-VAR_REF/EXPR case, where snprintf() truncation returns NULL early
-and bypasses the bottom NULL->"" guard. Callers don't expect NULL:
-strcat(expr, hist_field_name(field, 0)) at trace_events_hist.c:1758
-and the strcmp() in the sort-key match loop at :4804 both deref it.
+The snapshotting code internally aligns data segment to 16 bytes. This
+works fine for DPU code (where most of the regions are aligned), but
+fails for snapshotting of the DSI data (because DSI data region is
+shifted by 4 bytes). Fix the code by removing length alignment and by
+accurately printing last registers in the region. While reworking the
+code also fix the 16x memory overallocation in
+msm_disp_state_dump_regs().
 
-system and event_name are bounded by MAX_EVENT_NAME_LEN, but the
-field name on a VAR_REF is kstrdup'd from a histogram variable
-name parsed out of the trigger string and has no length cap, so
-a long enough var name in a fully qualified reference can reach
-the truncation path.
-
-Keep the length check but leave field_name as "" on overflow.
-
-Link: https://patch.msgid.link/20260508195747.25492-1-devnexen@gmail.com
-Fixes: 5ec1d1e97de1 ("tracing: Rebuild full_name on each hist_field_name() call")
-Signed-off-by: David Carlier <devnexen@gmail.com>
-Signed-off-by: Steven Rostedt <rostedt@goodmis.org>
+Fixes: 98659487b845 ("drm/msm: add support to take dpu snapshot")
+Reported-by: Salendarsingh Gaud <sgaud@qti.qualcomm.com>
+Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
+Patchwork: https://patchwork.freedesktop.org/patch/725449/
+Message-ID: <20260516-msm-fix-dsi-dump-2-v2-1-9e49fb2d240e@oss.qualcomm.com>
+Signed-off-by: Rob Clark <robin.clark@oss.qualcomm.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/trace/trace_events_hist.c | 6 ++----
- 1 file changed, 2 insertions(+), 4 deletions(-)
+ .../gpu/drm/msm/disp/msm_disp_snapshot_util.c | 24 ++++++++++++++-----
+ 1 file changed, 18 insertions(+), 6 deletions(-)
 
-diff --git a/kernel/trace/trace_events_hist.c b/kernel/trace/trace_events_hist.c
-index f9c8a4f078ea0..f8c0e66cc5871 100644
---- a/kernel/trace/trace_events_hist.c
-+++ b/kernel/trace/trace_events_hist.c
-@@ -1366,10 +1366,8 @@ static const char *hist_field_name(struct hist_field *field,
- 			len = snprintf(full_name, sizeof(full_name), "%s.%s.%s",
- 				       field->system, field->event_name,
- 				       field->name);
--			if (len >= sizeof(full_name))
--				return NULL;
--
--			field_name = full_name;
-+			if (len < sizeof(full_name))
-+				field_name = full_name;
- 		} else
- 			field_name = field->name;
- 	} else if (field->flags & HIST_FIELD_FL_TIMESTAMP)
+diff --git a/drivers/gpu/drm/msm/disp/msm_disp_snapshot_util.c b/drivers/gpu/drm/msm/disp/msm_disp_snapshot_util.c
+index 071bcdea80f71..591507db26468 100644
+--- a/drivers/gpu/drm/msm/disp/msm_disp_snapshot_util.c
++++ b/drivers/gpu/drm/msm/disp/msm_disp_snapshot_util.c
+@@ -9,7 +9,7 @@
+ 
+ #include "msm_disp_snapshot.h"
+ 
+-static void msm_disp_state_dump_regs(u32 **reg, u32 aligned_len, void __iomem *base_addr)
++static void msm_disp_state_dump_regs(u32 **reg, u32 len, void __iomem *base_addr)
+ {
+ 	u32 len_padded;
+ 	u32 num_rows;
+@@ -19,11 +19,11 @@ static void msm_disp_state_dump_regs(u32 **reg, u32 aligned_len, void __iomem *b
+ 	void __iomem *end_addr;
+ 	int i;
+ 
+-	len_padded = aligned_len * REG_DUMP_ALIGN;
+-	num_rows = aligned_len / REG_DUMP_ALIGN;
++	len_padded = round_up(len, REG_DUMP_ALIGN);
++	num_rows = DIV_ROUND_UP(len, REG_DUMP_ALIGN);
+ 
+ 	addr = base_addr;
+-	end_addr = base_addr + aligned_len;
++	end_addr = base_addr + len;
+ 
+ 	*reg = kvzalloc(len_padded, GFP_KERNEL);
+ 	if (!*reg)
+@@ -48,8 +48,8 @@ static void msm_disp_state_dump_regs(u32 **reg, u32 aligned_len, void __iomem *b
+ static void msm_disp_state_print_regs(const u32 *dump_addr, u32 len,
+ 		void __iomem *base_addr, struct drm_printer *p)
+ {
++	void __iomem *addr, *end_addr;
+ 	int i;
+-	void __iomem *addr;
+ 	u32 num_rows;
+ 
+ 	if (!dump_addr) {
+@@ -58,6 +58,7 @@ static void msm_disp_state_print_regs(const u32 *dump_addr, u32 len,
+ 	}
+ 
+ 	addr = base_addr;
++	end_addr = base_addr + len;
+ 	num_rows = len / REG_DUMP_ALIGN;
+ 
+ 	for (i = 0; i < num_rows; i++) {
+@@ -67,6 +68,17 @@ static void msm_disp_state_print_regs(const u32 *dump_addr, u32 len,
+ 				dump_addr[i * 4 + 2], dump_addr[i * 4 + 3]);
+ 		addr += REG_DUMP_ALIGN;
+ 	}
++
++	if (addr != end_addr) {
++		drm_printf(p, "0x%lx : %08x",
++			   (unsigned long)(addr - base_addr),
++			   dump_addr[i * 4]);
++		if (addr + 0x4 < end_addr)
++			drm_printf(p, " %08x", dump_addr[i * 4 + 1]);
++		if (addr + 0x8 < end_addr)
++			drm_printf(p, " %08x", dump_addr[i * 4 + 2]);
++		drm_printf(p, "\n");
++	}
+ }
+ 
+ void msm_disp_state_print(struct msm_disp_state *state, struct drm_printer *p)
+@@ -186,7 +198,7 @@ void msm_disp_snapshot_add_block(struct msm_disp_state *disp_state, u32 len,
+ 	va_end(va);
+ 
+ 	INIT_LIST_HEAD(&new_blk->node);
+-	new_blk->size = ALIGN(len, REG_DUMP_ALIGN);
++	new_blk->size = len;
+ 	new_blk->base_addr = base_addr;
+ 
+ 	msm_disp_state_dump_regs(&new_blk->state, new_blk->size, base_addr);
 -- 
 2.53.0
 
