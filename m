@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-255466-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-255468-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id CDT/AGOhGGqblggAu9opvQ
-	(envelope-from <stable+bounces-255466-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:11:15 +0200
+	id 6F3ZA92iGGrKlggAu9opvQ
+	(envelope-from <stable+bounces-255468-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:17:33 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id BCE8A5F8024
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:11:14 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id ACD6B5F8497
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:17:32 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 348A4305DF85
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 20:09:52 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 8361430E860F
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 20:09:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6E38333F5B4;
-	Thu, 28 May 2026 20:09:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2C446344DAC;
+	Thu, 28 May 2026 20:09:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="auTy0Beg"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="meU3jdpr"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 44C1732ABC0;
-	Thu, 28 May 2026 20:09:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E97213164B7;
+	Thu, 28 May 2026 20:09:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779998991; cv=none; b=hqavumxaId2UXDd5kuN5Kfgr9mrkMzzEAAzZX7efy2u4GfzY1lnaGMNrO11IkG3CqPTSUC40NHMTSQgS+kIM5zFuQnSLx3hhQn3wAhXwRHv8hPINL8oIOWsGwxu/pmPWEJaBJxZOn2/dCZlV2NzoBTB6XxdKbycDOR5VhoUfWRY=
+	t=1779998997; cv=none; b=utfHrDda7AEmF0YRtDqKD489lcEmeeaeGyQXl6jSLzU8nInLNUvpKJe+T2wXK5kFgGDiV2S2vYb/TktLzjg6suROT3ISn80tckQANXN4+v/G69NLb3rT+XmX1sIWDfHmWUX/WDgvUwPb3bL0dzKf6XqkhMmSJxzFwEoMu8RDvLQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779998991; c=relaxed/simple;
-	bh=6EPvoQhRVNjeasYA98TS1UhvnXI5ETL9cSjUraPEDtI=;
+	s=arc-20240116; t=1779998997; c=relaxed/simple;
+	bh=LaKsY1Jl8DjoZKOjBfYIBwW2QGLJ9rXEQJakCmqgnVQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=X6k7JC6XUJKYzjRjmnJG3nwJ9LcKugGFvLy8e+Yote02lXRNU4X/01OuOHFLMZ7EWYR+4jjt6H4NeDfW6xT1yjB8X50i2CuWpFl2jo3a6lNaoRgEgl92icF9yOjrWE8MGQIac9Q9YGmVNFvIwh2QNzEMg4I9FV62w7xYRhxvgGI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=auTy0Beg; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A21281F000E9;
-	Thu, 28 May 2026 20:09:49 +0000 (UTC)
+	 MIME-Version; b=I2g9jgwxDf7GsZX5o6Ny5wPi12iWqfiwTBj1VSbhiSjcuw8+dk+dwvm7lYhzo8x0v8hi5Vn25VFgDL1/FfIj11U2AUcNpaDWPHp0i6dFwoVU/T0WxEnSsfaRk4bbstj+G5LPSXC6h5bV46g09tag6IFExuc/MUwCLIGiE85mi/8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=meU3jdpr; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4B08B1F000E9;
+	Thu, 28 May 2026 20:09:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779998990;
-	bh=zgWVkeTZFAAIQuUVssLTYVZoz8qoDDphcS07vFyOATI=;
+	s=korg; t=1779998995;
+	bh=05B9p2AVnlMuMGMfI8Kn8tOqMRMowhA1IYgXQ67Oakc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=auTy0BegW0N6qcuo3ykBrX2pDVHWEsV0hY0NAzuenpIPD5OhpaxEgs2cmbMXRs7/9
-	 u4HvinDEQAT3ycaSxceRLouRI8fuV51C4x9rIzGXQCLtEtTMy6bfogydjK76+CX0Vc
-	 Q8I5RBqOgFxhs9HkzHj9J9+sCj7gUhV+OPIiTFa8=
+	b=meU3jdpr06sux0P6J+HWspxSuYnWP5RC7VaFMCM7Pd1EFSc0avp/txsB/uwVBqJFj
+	 HGxeNw4BBlokMAEgN8CPOtMwKCL+Red5lEgQKww7cpaDgP/Dpq4TAAOcACZrm2hcig
+	 atvii/wvN2nnPvnloq8X7gRyGw6tYuZorICOD10A=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	kernel test robot <lkp@intel.com>,
 	Louis-Alexis Eyraud <louisalexis.eyraud@collabora.com>,
 	CK Hu <ck.hu@mediatek.com>,
 	Chun-Kuang Hu <chunkuang.hu@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 7.0 370/461] drm/mediatek: mtk_hdmi_v2: Fix non-static global variable
-Date: Thu, 28 May 2026 21:48:19 +0200
-Message-ID: <20260528194658.154024865@linuxfoundation.org>
+Subject: [PATCH 7.0 371/461] drm/mediatek: mtk_cec: Fix non-static global variable
+Date: Thu, 28 May 2026 21:48:20 +0200
+Message-ID: <20260528194658.184906587@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
 In-Reply-To: <20260528194646.819809818@linuxfoundation.org>
 References: <20260528194646.819809818@linuxfoundation.org>
@@ -70,7 +69,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
@@ -78,7 +77,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-255466-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-255468-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
@@ -87,13 +86,13 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
 	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[8];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,intel.com:email,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,collabora.com:email]
-X-Rspamd-Queue-Id: BCE8A5F8024
+	DBL_BLOCKED_OPENRESOLVER(0.00)[collabora.com:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo]
+X-Rspamd-Queue-Id: ACD6B5F8497
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
@@ -103,40 +102,38 @@ X-Rspamd-Server: lfdr
 
 From: Louis-Alexis Eyraud <louisalexis.eyraud@collabora.com>
 
-[ Upstream commit dc245d9a7f1b06f86271d4e524d6e5634c5ce312 ]
+[ Upstream commit 571f00a5fb725984049bd532ee8193cc34ff2994 ]
 
-The struct 'mtk_hdmi_v2_clk_names' is not used outside of the
-mtk_hdmi_v2.c file, so make it static to silence sparse warning:
+The struct 'mtk_cec_driver' is not used outside of the
+mtk_cec.c file, so make it static to silence sparse warning:
 ```
-drivers/gpu/drm/mediatek/mtk_hdmi_v2.c:53:12: sparse: warning: symbol
-'mtk_hdmi_v2_clk_names' was not declared. Should it be static?
+drivers/gpu/drm/mediatek/mtk_cec.c:243:24: sparse: warning: symbol
+'mtk_cec_driver' was not declared. Should it be static?
 ```
 
-Fixes: 8d0f79886273 ("drm/mediatek: Introduce HDMI/DDC v2 for MT8195/MT8188")
-Reported-by: kernel test robot <lkp@intel.com>
-Closes: https://lore.kernel.org/oe-kbuild-all/202604132044.fcYjEcU8-lkp@intel.com/
+Fixes: 1e914a89ab7e ("drm/mediatek: mtk_cec: Switch to register as module_platform_driver")
 Signed-off-by: Louis-Alexis Eyraud <louisalexis.eyraud@collabora.com>
 Reviewed-by: CK Hu <ck.hu@mediatek.com>
-Link: https://patchwork.kernel.org/project/dri-devel/patch/20260429-mediatek-drm-fix-sparse-warnings-v1-2-d95c4d118b83@collabora.com/
+Link: https://patchwork.kernel.org/project/dri-devel/patch/20260429-mediatek-drm-fix-sparse-warnings-v1-3-d95c4d118b83@collabora.com/
 Signed-off-by: Chun-Kuang Hu <chunkuang.hu@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/mediatek/mtk_hdmi_v2.c | 2 +-
+ drivers/gpu/drm/mediatek/mtk_cec.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/gpu/drm/mediatek/mtk_hdmi_v2.c b/drivers/gpu/drm/mediatek/mtk_hdmi_v2.c
-index 279ca896b0a2a..6cdad4415475b 100644
---- a/drivers/gpu/drm/mediatek/mtk_hdmi_v2.c
-+++ b/drivers/gpu/drm/mediatek/mtk_hdmi_v2.c
-@@ -50,7 +50,7 @@ enum mtk_hdmi_v2_clk_id {
- 	MTK_HDMI_V2_CLK_COUNT,
+diff --git a/drivers/gpu/drm/mediatek/mtk_cec.c b/drivers/gpu/drm/mediatek/mtk_cec.c
+index c7be530ca041f..b8ccd6e55bedb 100644
+--- a/drivers/gpu/drm/mediatek/mtk_cec.c
++++ b/drivers/gpu/drm/mediatek/mtk_cec.c
+@@ -240,7 +240,7 @@ static const struct of_device_id mtk_cec_of_ids[] = {
  };
+ MODULE_DEVICE_TABLE(of, mtk_cec_of_ids);
  
--const char *const mtk_hdmi_v2_clk_names[MTK_HDMI_V2_CLK_COUNT] = {
-+static const char *const mtk_hdmi_v2_clk_names[MTK_HDMI_V2_CLK_COUNT] = {
- 	[MTK_HDMI_V2_CLK_HDMI_APB_SEL] = "bus",
- 	[MTK_HDMI_V2_CLK_HDCP_SEL] = "hdcp",
- 	[MTK_HDMI_V2_CLK_HDCP_24M_SEL] = "hdcp24m",
+-struct platform_driver mtk_cec_driver = {
++static struct platform_driver mtk_cec_driver = {
+ 	.probe = mtk_cec_probe,
+ 	.remove = mtk_cec_remove,
+ 	.driver = {
 -- 
 2.53.0
 
