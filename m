@@ -1,64 +1,58 @@
-Return-Path: <stable+bounces-256256-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-256089-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id eA0JCGmrGGpolwgAu9opvQ
-	(envelope-from <stable+bounces-256256-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:54:01 +0200
+	id +KaELLipGGpolwgAu9opvQ
+	(envelope-from <stable+bounces-256089-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:46:48 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id A2CAE5F9CEB
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:54:00 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4EB485F9899
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:46:48 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 7FC0D314A1D0
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 20:46:41 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 7299B30FD69C
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 20:38:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6B187328B7B;
-	Thu, 28 May 2026 20:46:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B07642EF652;
+	Thu, 28 May 2026 20:38:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gYckanZl"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lp7Mik/9"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0BAC7347FC4;
-	Thu, 28 May 2026 20:46:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 10D523346BE;
+	Thu, 28 May 2026 20:38:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780001191; cv=none; b=gf5emgGE6AUBmEvXv0gvqMn3dNE8dAXw8rRb1ApIQay2NIu7KUlRnTOAyLRgbczKfd/7yghG28marcm3KU5692TrbwwsdUOCa/dbHGIQ80UnseG12Qdv/mrNKEDXByaWOjdj0QX1FzBoO3QtKEyjKMj99GBn9jyIwsMEsrrfE1o=
+	t=1780000724; cv=none; b=IfoZv+hitU83hPMbYUNEslUehJtK65rPkthJ7AmhkPHQynM3xxiGbDx7vjkybxCnkBOrMQkdqMxh5m29uOAiPdxt6VanNKeAK0vtJA+aRoaGsIt4iN5U9EcGy/A8PscwuaR3CkHQJ64Yj6U9+Nn5AxX1SLU5E4b1dd5NvPh7ESE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780001191; c=relaxed/simple;
-	bh=RfmqKIZgnHsiXYmp2bAAX2qQOIB+YvN6Wl8kAOudVQw=;
+	s=arc-20240116; t=1780000724; c=relaxed/simple;
+	bh=Nl3pfaTCMCeThiJAAteC1iaStZoN32EHliSnbAGXHjg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=rkMh8cV/9LluUIqZ9mxhbnjq2nGIOiTLVymsZG0DUtKnA4/NBMm+EhPCBTZoKsza7KdO+XngZJ71b5BcYP0yj/kz3QM+A6pNee9CzvHD0UYIH/VeZqd6GcoxeF39GkSDq801nEkXYalKUcS42hwcmIov+FWbyv73hcYBZbkukBY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gYckanZl; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 736551F000E9;
-	Thu, 28 May 2026 20:46:29 +0000 (UTC)
+	 MIME-Version; b=Ca06j0BtGj9aEWIT/dYwFK7q7HF8Z2e5p6vcynrrg0HJWjfdqTio86xNUiBOXw1z9NMWe2vax6RwnOaXJJRGE7IJ/1iNWpK4hHbjfuHgiQQCHWPJ7obTy0GQhkgBt1UBDmLTiYuMufVrrDNTPv9sEY9D1s6WCz/pUMlHLyKAWGU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lp7Mik/9; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6BB851F000E9;
+	Thu, 28 May 2026 20:38:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780001189;
-	bh=jMGQ+TkHNvwHXyEdMKmDgrT3k97PrwVRQFLKr70IDXs=;
+	s=korg; t=1780000723;
+	bh=VG0fuS77BbHVhpeY0L1V/JhoaHjSzchZdVF+dTMpN0I=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=gYckanZlty3mdcU1F2rTN6e4+EwnX9Ltc3isNFvWgIQBLkfmiPmO7Oc/DW5U61IVI
-	 hX3z5tSBmdQzOyaOZoquN5sl1T5b2LuB90O/7/6Tl38RvzpOEgbL1DEHO/6XXColU/
-	 ZC8yB3paRGBDKy8hWvusJJbc5NYe5MNaXGcob1Ew=
+	b=lp7Mik/9csnmn52x41ZKkeKGod+u6hZjeOxQa1ENVMxfQTPBPutNvGKKmavpIGSAh
+	 iQgumGIdnZ58vdK/U+Lfr1o0UsmAdy/ibMF2mRt+qeLVFwVno3DQA1A3CxuJ1UkinN
+	 BhaKg2ZZbDQ4FaqpV5Ag/TjCfLmdJY6sDM/FNHrQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jann Horn <jannh@google.com>,
-	Yuan Tan <yuantan098@gmail.com>,
-	Yifan Wu <yifanwucs@gmail.com>,
-	Juefei Pu <tomapufckgml@gmail.com>,
-	Xin Liu <bird@lzu.edu.cn>,
-	Jiexun Wang <wangjiexun2025@gmail.com>,
-	Ren Wei <n05ec@lzu.edu.cn>,
-	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
-Subject: [PATCH 6.6 040/186] Bluetooth: serialize accept_q access
+	Sudeep Holla <sudeep.holla@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 146/272] firmware: arm_ffa: Check for NULL FF-A ID table while driver registration
 Date: Thu, 28 May 2026 21:48:40 +0200
-Message-ID: <20260528194930.046919160@linuxfoundation.org>
+Message-ID: <20260528194633.459904641@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260528194928.941004471@linuxfoundation.org>
-References: <20260528194928.941004471@linuxfoundation.org>
+In-Reply-To: <20260528194629.379955525@linuxfoundation.org>
+References: <20260528194629.379955525@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -73,251 +67,79 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,google.com,gmail.com,lzu.edu.cn,intel.com];
-	TAGGED_FROM(0.00)[bounces-256256-lists,stable=lfdr.de];
-	PRECEDENCE_BULK(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
+	RCVD_TLS_LAST(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	TAGGED_FROM(0.00)[bounces-256089-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[11];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,intel.com:email,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,lzu.edu.cn:email]
-X-Rspamd-Queue-Id: A2CAE5F9CEB
+	RCPT_COUNT_FIVE(0.00)[5];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim]
+X-Rspamd-Queue-Id: 4EB485F9899
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jiexun Wang <wangjiexun2025@gmail.com>
+From: Sudeep Holla <sudeep.holla@kernel.org>
 
-commit e83f5e24da741fa9405aeeff00b08c5ee7c37b88 upstream.
+[ Upstream commit 0a5e695095c557d2380131b613dea4e8d90371be ]
 
-bt_sock_poll() walks the accept queue without synchronization, while
-child teardown can unlink the same socket and drop its last reference.
-The unsynchronized accept queue walk has existed since the initial
-Bluetooth import.
+The bus match callback assumes that every FF-A driver provides an
+id_table and dereferences it unconditionally. Enforce that contract at
+registration time so a buggy client driver cannot crash the bus during
+match.
 
-Protect accept_q with a dedicated lock for queue updates and polling.
-Also rework bt_accept_dequeue() to take temporary child references under
-the queue lock before dropping it and locking the child socket.
-
-Fixes: 1da177e4c3f41524e886b7f1b8a0c1fc7321cac2 ("Linux-2.6.12-rc2")
-Cc: stable@vger.kernel.org
-Reported-by: Jann Horn <jannh@google.com>
-Reported-by: Yuan Tan <yuantan098@gmail.com>
-Reported-by: Yifan Wu <yifanwucs@gmail.com>
-Reported-by: Juefei Pu <tomapufckgml@gmail.com>
-Reported-by: Xin Liu <bird@lzu.edu.cn>
-Signed-off-by: Jiexun Wang <wangjiexun2025@gmail.com>
-Signed-off-by: Ren Wei <n05ec@lzu.edu.cn>
-Signed-off-by: Jiexun Wang <wangjiexun2025@gmail.com>
-Reviewed-by: Jann Horn <jannh@google.com>
-Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 92743071464f ("firmware: arm_ffa: Ensure drivers provide a probe function")
+Link: https://patch.msgid.link/20260428-ffa_fixes-v2-1-8595ae450034@kernel.org
+Signed-off-by: Sudeep Holla <sudeep.holla@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/net/bluetooth/bluetooth.h |    1 
- net/bluetooth/af_bluetooth.c      |   87 ++++++++++++++++++++++++++++----------
- 2 files changed, 66 insertions(+), 22 deletions(-)
+ drivers/firmware/arm_ffa/bus.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
---- a/include/net/bluetooth/bluetooth.h
-+++ b/include/net/bluetooth/bluetooth.h
-@@ -380,6 +380,7 @@ void baswap(bdaddr_t *dst, const bdaddr_
- struct bt_sock {
- 	struct sock sk;
- 	struct list_head accept_q;
-+	spinlock_t accept_q_lock; /* protects accept_q */
- 	struct sock *parent;
- 	unsigned long flags;
- 	void (*skb_msg_name)(struct sk_buff *, void *, int *);
---- a/net/bluetooth/af_bluetooth.c
-+++ b/net/bluetooth/af_bluetooth.c
-@@ -151,6 +151,7 @@ struct sock *bt_sock_alloc(struct net *n
+diff --git a/drivers/firmware/arm_ffa/bus.c b/drivers/firmware/arm_ffa/bus.c
+index dea3eb741d95d..ef41815c0109e 100644
+--- a/drivers/firmware/arm_ffa/bus.c
++++ b/drivers/firmware/arm_ffa/bus.c
+@@ -26,6 +26,8 @@ static int ffa_device_match(struct device *dev, const struct device_driver *drv)
  
- 	sock_init_data(sock, sk);
- 	INIT_LIST_HEAD(&bt_sk(sk)->accept_q);
-+	spin_lock_init(&bt_sk(sk)->accept_q_lock);
+ 	id_table = to_ffa_driver(drv)->id_table;
+ 	ffa_dev = to_ffa_dev(dev);
++	if (!id_table)
++		return 0;
  
- 	sock_reset_flag(sk, SOCK_ZAPPED);
- 
-@@ -211,6 +212,7 @@ void bt_accept_enqueue(struct sock *pare
+ 	while (!uuid_is_null(&id_table->uuid)) {
+ 		/*
+@@ -123,7 +125,7 @@ int ffa_driver_register(struct ffa_driver *driver, struct module *owner,
  {
- 	const struct cred *old_cred;
- 	struct pid *old_pid;
-+	struct bt_sock *par = bt_sk(parent);
+ 	int ret;
  
- 	BT_DBG("parent %p, sk %p", parent, sk);
+-	if (!driver->probe)
++	if (!driver->probe || !driver->id_table)
+ 		return -EINVAL;
  
-@@ -221,9 +223,13 @@ void bt_accept_enqueue(struct sock *pare
- 	else
- 		lock_sock_nested(sk, SINGLE_DEPTH_NESTING);
- 
--	list_add_tail(&bt_sk(sk)->accept_q, &bt_sk(parent)->accept_q);
- 	bt_sk(sk)->parent = parent;
- 
-+	spin_lock_bh(&par->accept_q_lock);
-+	list_add_tail(&bt_sk(sk)->accept_q, &par->accept_q);
-+	sk_acceptq_added(parent);
-+	spin_unlock_bh(&par->accept_q_lock);
-+
- 	/* Copy credentials from parent since for incoming connections the
- 	 * socket is allocated by the kernel.
- 	 */
-@@ -241,8 +247,6 @@ void bt_accept_enqueue(struct sock *pare
- 		bh_unlock_sock(sk);
- 	else
- 		release_sock(sk);
--
--	sk_acceptq_added(parent);
- }
- EXPORT_SYMBOL(bt_accept_enqueue);
- 
-@@ -251,45 +255,72 @@ EXPORT_SYMBOL(bt_accept_enqueue);
-  */
- void bt_accept_unlink(struct sock *sk)
- {
-+	struct sock *parent = bt_sk(sk)->parent;
-+
- 	BT_DBG("sk %p state %d", sk, sk->sk_state);
- 
-+	spin_lock_bh(&bt_sk(parent)->accept_q_lock);
- 	list_del_init(&bt_sk(sk)->accept_q);
--	sk_acceptq_removed(bt_sk(sk)->parent);
-+	sk_acceptq_removed(parent);
-+	spin_unlock_bh(&bt_sk(parent)->accept_q_lock);
- 	bt_sk(sk)->parent = NULL;
- 	sock_put(sk);
- }
- EXPORT_SYMBOL(bt_accept_unlink);
- 
-+static struct sock *bt_accept_get(struct sock *parent, struct sock *sk)
-+{
-+	struct bt_sock *bt = bt_sk(parent);
-+	struct sock *next = NULL;
-+
-+	/* accept_q is modified from child teardown paths too, so take a
-+	 * temporary reference before dropping the queue lock.
-+	 */
-+	spin_lock_bh(&bt->accept_q_lock);
-+
-+	if (sk) {
-+		if (bt_sk(sk)->parent != parent)
-+			goto out;
-+
-+		if (!list_is_last(&bt_sk(sk)->accept_q, &bt->accept_q)) {
-+			next = &list_next_entry(bt_sk(sk), accept_q)->sk;
-+			sock_hold(next);
-+		}
-+	} else if (!list_empty(&bt->accept_q)) {
-+		next = &list_first_entry(&bt->accept_q,
-+					 struct bt_sock, accept_q)->sk;
-+		sock_hold(next);
-+	}
-+
-+out:
-+	spin_unlock_bh(&bt->accept_q_lock);
-+	return next;
-+}
-+
- struct sock *bt_accept_dequeue(struct sock *parent, struct socket *newsock)
- {
--	struct bt_sock *s, *n;
--	struct sock *sk;
-+	struct sock *sk, *next;
- 
- 	BT_DBG("parent %p", parent);
- 
- restart:
--	list_for_each_entry_safe(s, n, &bt_sk(parent)->accept_q, accept_q) {
--		sk = (struct sock *)s;
--
-+	for (sk = bt_accept_get(parent, NULL); sk; sk = next) {
- 		/* Prevent early freeing of sk due to unlink and sock_kill */
--		sock_hold(sk);
- 		lock_sock(sk);
- 
- 		/* Check sk has not already been unlinked via
- 		 * bt_accept_unlink() due to serialisation caused by sk locking
- 		 */
--		if (!bt_sk(sk)->parent) {
-+		if (bt_sk(sk)->parent != parent) {
- 			BT_DBG("sk %p, already unlinked", sk);
- 			release_sock(sk);
- 			sock_put(sk);
- 
--			/* Restart the loop as sk is no longer in the list
--			 * and also avoid a potential infinite loop because
--			 * list_for_each_entry_safe() is not thread safe.
--			 */
- 			goto restart;
- 		}
- 
-+		next = bt_accept_get(parent, sk);
-+
- 		/* sk is safely in the parent list so reduce reference count */
- 		sock_put(sk);
- 
-@@ -317,6 +348,8 @@ restart:
- 			sock_hold(sk);
- 
- 			release_sock(sk);
-+			if (next)
-+				sock_put(next);
- 			return sk;
- 		}
- 
-@@ -518,18 +551,28 @@ EXPORT_SYMBOL(bt_sock_stream_recvmsg);
- 
- static inline __poll_t bt_accept_poll(struct sock *parent)
- {
--	struct bt_sock *s, *n;
-+	struct bt_sock *bt = bt_sk(parent);
-+	struct bt_sock *s;
- 	struct sock *sk;
-+	__poll_t mask = 0;
-+
-+	spin_lock_bh(&bt->accept_q_lock);
-+	list_for_each_entry(s, &bt->accept_q, accept_q) {
-+		int state;
- 
--	list_for_each_entry_safe(s, n, &bt_sk(parent)->accept_q, accept_q) {
- 		sk = (struct sock *)s;
--		if (sk->sk_state == BT_CONNECTED ||
--		    (test_bit(BT_SK_DEFER_SETUP, &bt_sk(parent)->flags) &&
--		     sk->sk_state == BT_CONNECT2))
--			return EPOLLIN | EPOLLRDNORM;
-+		state = READ_ONCE(sk->sk_state);
-+
-+		if (state == BT_CONNECTED ||
-+		    (test_bit(BT_SK_DEFER_SETUP, &bt->flags) &&
-+		     state == BT_CONNECT2)) {
-+			mask = EPOLLIN | EPOLLRDNORM;
-+			break;
-+		}
- 	}
-+	spin_unlock_bh(&bt->accept_q_lock);
- 
--	return 0;
-+	return mask;
- }
- 
- __poll_t bt_sock_poll(struct file *file, struct socket *sock,
+ 	driver->driver.bus = &ffa_bus_type;
+-- 
+2.53.0
+
 
 
 
