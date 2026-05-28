@@ -1,58 +1,60 @@
-Return-Path: <stable+bounces-256253-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-255486-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id yOtsFoGrGGpEmAgAu9opvQ
-	(envelope-from <stable+bounces-256253-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:54:25 +0200
+	id aHHEIHuhGGqnlggAu9opvQ
+	(envelope-from <stable+bounces-255486-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:11:39 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id D33575F9D48
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:54:24 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8994B5F807B
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:11:38 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 079DC3126710
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 20:46:26 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 999E5302FF67
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 20:10:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CED6D331A7E;
-	Thu, 28 May 2026 20:46:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 32033352019;
+	Thu, 28 May 2026 20:10:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Vu3aAXXr"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Psvmwr1D"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A9CA62F9D85;
-	Thu, 28 May 2026 20:46:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EEFB233A702;
+	Thu, 28 May 2026 20:10:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780001182; cv=none; b=YZSUeo6w3Bb++jEKaQaHevn/XE+JmQ6EZOrcJCoYF2R17JWnOGoeOxhhToxtQpAqQ7+qsHTg+rfOxLhdA3hvSC1qY0joqK6KhnvN/jfPceEOtBo7QebbEaUavozZUH5CCB6dq26Sid8GvVv1Y91pLc6nnS15f5AQLyOJdcJ54mI=
+	t=1779999047; cv=none; b=Xu7aW9nPMXdKmyQVMS2ynx8S6yqyl5HNxriwXN8lTN2O2ffsa+FwClHDbiANIf4DGQM+ytFkiNytB7ZrOldNwK1SNAXE+j+dPenvna3g4+LtYczUqokm+qZU5tQxbsKQdeB20FDPzD6UXwJi78/Xsolwez5Ulm0nUQj18Z/hyIM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780001182; c=relaxed/simple;
-	bh=+zm/DLF3A+mIlXtl2HGtFXy6chGs+RyYL+PrTMfL8C8=;
+	s=arc-20240116; t=1779999047; c=relaxed/simple;
+	bh=F+mgMFJk2L9ah9qI27gFlytFVHb6E+MLqhLKAMIwpvs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=cswi4OFua34wbrjPMdhZwCTMABrBdnDtlcvrFrovFk75ivtufnIRBLA6yOFbgMJ3e0xdhadS22BFDM8QOKAmPHGFokBSKgWcG60wd35hyMIAouCdPVdnaX9XjDh+bpWX0OheD84PXfMr4enBXc67tRdLjYehSx1IKVCZfWw2c5s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Vu3aAXXr; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1498B1F000E9;
-	Thu, 28 May 2026 20:46:20 +0000 (UTC)
+	 MIME-Version:Content-Type; b=nH5Ie3HEEINce8QNEnW6kByYkKQgjWOUkFbKT6HRwLMlMhKv7D4gqZXp0OXNvwl92vqGGXRAjoWx7Pj3lg2ToPP1TntOJfkCvesa4wENJSw531WCngF4ELRwYRdSgcYnHsai4CTtSpSDxy0Wff+yKI5cG0CEcbd00VO383qHrpU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Psvmwr1D; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 595951F000E9;
+	Thu, 28 May 2026 20:10:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780001181;
-	bh=BRHujQYcA99aMrQzyi1Ry9S7VevY6DUNQZdKqvzxh2I=;
+	s=korg; t=1779999045;
+	bh=GW7e2Li8kRb+l8NsuVKFQfOMXpTODQ11MGf2/dLDlDo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=Vu3aAXXrKIlT6rVx1woDFrslbfSjFtGvkX8V0YrcWcXxdaD7vLJqV79d7Lo1MHHvH
-	 8PSZGEBFG7qQMxlGGJhemMfHjNF59N2jTjdhmLJRScv+rD5Wk6OIbcgXn5mFI7hswh
-	 LlDjVwFHjk4Fpyq7wZ1Z3lq8D0HQRqm0FmizNGVo=
+	b=Psvmwr1D2o9ZpbdYEloCbiSMIAVvV2Ji11dkmRnKrAhME0hnZNmYlk2nZYz8I2qIz
+	 hdO8siNTwirzOZfL0GR7jawKxuRCkcZVFBWEY62S7j7oG3pXyrkYWEaDBiMMGVaF7e
+	 f7oUCV5TU49Ngp1I/suha3wu3GiXmtTPOYSI9F24=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jann Horn <jannh@google.com>,
-	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
-Subject: [PATCH 6.6 037/186] Bluetooth: bnep: Fix UAF read of dev->name
+	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 7.0 388/461] platform/x86: adv_swbutton: Check ACPI_HANDLE() against NULL
 Date: Thu, 28 May 2026 21:48:37 +0200
-Message-ID: <20260528194929.965991478@linuxfoundation.org>
+Message-ID: <20260528194658.692970861@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260528194928.941004471@linuxfoundation.org>
-References: <20260528194928.941004471@linuxfoundation.org>
+In-Reply-To: <20260528194646.819809818@linuxfoundation.org>
+References: <20260528194646.819809818@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,77 +64,88 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
+	TAGGED_FROM(0.00)[bounces-255486-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-256253-lists,stable=lfdr.de];
-	TO_DN_SOME(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	TO_DN_SOME(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[5];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,intel.com:email,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim]
-X-Rspamd-Queue-Id: D33575F9D48
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,linuxfoundation.org:mid,linuxfoundation.org:dkim,intel.com:email,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo]
+X-Rspamd-Queue-Id: 8994B5F807B
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+7.0-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jann Horn <jannh@google.com>
+From: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 
-commit 59e932ded949fa6f0340bf7c6d7818f962fa4fd2 upstream.
+[ Upstream commit e7a9a6ea40e352cd7977f6a8c80bdeadf65ad838 ]
 
-bnep_add_connection() needs to keep holding the bnep_session_sem while
-reading dev->name (just like bnep_get_connlist() does); otherwise the
-bnep_session() thread can concurrently free the net_device, which can for
-example be triggered by a concurrent bnep_del_connection().
+Every platform driver can be forced to match a device that doesn't match
+its list of device IDs because of device_match_driver_override(), so
+platform drivers that rely on the existence of a device's ACPI companion
+object need to verify its presence.
 
-(This UAF is fairly uninteresting from a security perspective;
-calling bnep_add_connection() requires passing a capable(CAP_NET_ADMIN)
-check. It also requires completely tearing down a netdev during a fairly
-tight race window.)
+Accordingly, add a requisite ACPI_HANDLE() check against NULL to the
+platform/x86 adv_swbutton driver.
 
-Cc: stable@vger.kernel.org
-Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
-Signed-off-by: Jann Horn <jannh@google.com>
-Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 3d904005f686 ("platform/x86: add support for Advantech software defined button")
+Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+Reviewed-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Link: https://patch.msgid.link/5115425.31r3eYUQgx@rafael.j.wysocki
+Reviewed-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/bluetooth/bnep/core.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/platform/x86/adv_swbutton.c | 6 +++++-
+ 1 file changed, 5 insertions(+), 1 deletion(-)
 
---- a/net/bluetooth/bnep/core.c
-+++ b/net/bluetooth/bnep/core.c
-@@ -638,8 +638,8 @@ int bnep_add_connection(struct bnep_conn
- 		goto failed;
- 	}
+diff --git a/drivers/platform/x86/adv_swbutton.c b/drivers/platform/x86/adv_swbutton.c
+index 6fa60f3fc53c0..8f7a26e6de81d 100644
+--- a/drivers/platform/x86/adv_swbutton.c
++++ b/drivers/platform/x86/adv_swbutton.c
+@@ -48,10 +48,14 @@ static int adv_swbutton_probe(struct platform_device *device)
+ {
+ 	struct adv_swbutton *button;
+ 	struct input_dev *input;
+-	acpi_handle handle = ACPI_HANDLE(&device->dev);
++	acpi_handle handle;
+ 	acpi_status status;
+ 	int error;
  
--	up_write(&bnep_session_sem);
- 	strcpy(req->device, dev->name);
-+	up_write(&bnep_session_sem);
- 	return 0;
- 
- failed:
++	handle = ACPI_HANDLE(&device->dev);
++	if (!handle)
++		return -ENODEV;
++
+ 	button = devm_kzalloc(&device->dev, sizeof(*button), GFP_KERNEL);
+ 	if (!button)
+ 		return -ENOMEM;
+-- 
+2.53.0
+
 
 
 
