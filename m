@@ -1,60 +1,64 @@
-Return-Path: <stable+bounces-255529-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-256262-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id eJv2IjaiGGqblggAu9opvQ
-	(envelope-from <stable+bounces-255529-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:14:46 +0200
+	id 6ONvCm2rGGpolwgAu9opvQ
+	(envelope-from <stable+bounces-256262-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:54:05 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 396E65F8257
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:14:46 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id BAABF5F9CFA
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:54:04 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 82C853076509
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 20:12:50 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 9F5913033AD8
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 20:46:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 87ABE33CE8A;
-	Thu, 28 May 2026 20:12:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EAC7D329396;
+	Thu, 28 May 2026 20:46:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KI8WQI6X"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BRAyPEDj"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 58EA5402B8F;
-	Thu, 28 May 2026 20:12:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B3BFF2459DD;
+	Thu, 28 May 2026 20:46:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779999167; cv=none; b=HRFzZb8t8pShmezJt5oPaGEQzkWKSWKl8CaotEUzI3jDo3VfU6LadXbR632LGvCF3ce6vw+hiSXaXWHBDBDCbH9RAlcz83+02quNBSc+vm9pc1geob8HnQ4xVLkytA1EURmDMEwU2q/LDhSMZxM5N6gX5iZgTdhmX2OMHe/tg44=
+	t=1780001207; cv=none; b=h14fGRoyZJAviujVYR3GEhYUPNqZBTuUej2aeWChpNJ7UCefBkAKNYYN72bQ76P4zyKFojSsXsJTuRjprrwTdhI8LVbf4ncJ0KhbfJKsOytNWrpBV/TmK5QEAL6qNBtx0XJTCWzCHerZjvPwMO0ji6B1lzWLzAJXgqn2bM144+k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779999167; c=relaxed/simple;
-	bh=2lRXF/Rgr4PuX+NsNnH9zJktH2bWVaauuzTEBv0ux3k=;
+	s=arc-20240116; t=1780001207; c=relaxed/simple;
+	bh=0PbYREHYDmshUC/D+nHme0TLSq+keC4ACJ9x9xdnYvU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=VTvCMgOYrXQP0/Cm5bUnG8UmxbkiOmL2dG2FaPBx3NQJxwftwT6pru5uLBQB0UL2WvV0+WmkTwf/Wgy8Wtf/7vhy+N/zYiRBtD6rnoCEkd8WjuckgbygtTNdJl05kaidIroyHxG9p+50ldGJOL75b57coeLi8Zrf/DXXa0TbjDE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KI8WQI6X; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B6E4D1F000E9;
-	Thu, 28 May 2026 20:12:45 +0000 (UTC)
+	 MIME-Version; b=NvZHwhc/432DF5T1pcBwQLanU6x2lnngoXTiC1d9n1/wiANlbNhs5XMIjMzCu1g48/6Dv2H1EIZhgh1J5nB3s/alARIvx2I4JNcj+xFEA39k0+xXTQtNRcDSVbN9R4K+mwhvJxQFg3BeQHrG4vMHdAX6/GqDebYAyAhIEqmH20M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BRAyPEDj; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 249741F000E9;
+	Thu, 28 May 2026 20:46:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779999166;
-	bh=8AXHzSDIRT0ga5i0k8zgUC6RucoIUKt8hD33up1dLmU=;
+	s=korg; t=1780001206;
+	bh=p+hqb8iZWGMtlvkFriD61w/w5mn3ya6LkQ16AMxEBTk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=KI8WQI6XWEyBDVTOgwkW2TXBBOZddq1RmoYeB/AznJvpHZYmR5as41gf8PV3NF73W
-	 sGnuBqoQNrEphzYpznYBVV3XvLQ9xKrXFEDRoMYiauQw9X+9v6Ebrfbf597tzRNIWO
-	 HtQUyOc+92/hubgAX3y0BqjPPKWU8/j3JMGH/Ml8=
+	b=BRAyPEDjJvAnj+YHvoHpPuNmMEVUyOs0YqRWVsG2M2LdldqpkJeQlSbBWstsV26MU
+	 aLyo8kUDHsiz+fUwFJ+qk3jU6WtlQq2wVblNo0f2Su3CUj5ja/BxwRZyeKIDFRzR9v
+	 ppG8wJtBeaoi3w++XvLE3l1RD1j2goRLp6Ub5x0A=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Werner Sembach <wse@tuxedocomputers.com>,
-	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
-	Armin Wolf <W_Armin@gmx.de>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 7.0 395/461] platform/x86: uniwill-laptop: Fix behavior of "force" module param
-Date: Thu, 28 May 2026 21:48:44 +0200
-Message-ID: <20260528194658.902127143@linuxfoundation.org>
+	stable@kernel.org,
+	Yuan Tan <yuantan098@gmail.com>,
+	Yifan Wu <yifanwucs@gmail.com>,
+	Juefei Pu <tomapufckgml@gmail.com>,
+	Xin Liu <bird@lzu.edu.cn>,
+	Haoze Xie <royenheart@gmail.com>,
+	Ren Wei <n05ec@lzu.edu.cn>,
+	Pablo Neira Ayuso <pablo@netfilter.org>
+Subject: [PATCH 6.6 045/186] netfilter: nf_queue: hold bridge skb->dev while queued
+Date: Thu, 28 May 2026 21:48:45 +0200
+Message-ID: <20260528194930.183198855@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260528194646.819809818@linuxfoundation.org>
-References: <20260528194646.819809818@linuxfoundation.org>
+In-Reply-To: <20260528194928.941004471@linuxfoundation.org>
+References: <20260528194928.941004471@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,92 +68,128 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-2.16 / 15.00];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,tuxedocomputers.com,linux.intel.com,gmx.de,kernel.org];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-255529-lists,stable=lfdr.de];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	RCVD_TLS_LAST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	TO_DN_SOME(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,kernel.org,gmail.com,lzu.edu.cn,netfilter.org];
+	TAGGED_FROM(0.00)[bounces-256262-lists,stable=lfdr.de];
 	PRECEDENCE_BULK(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
 	MID_RHS_MATCH_FROM(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_SEVEN(0.00)[7];
+	NEURAL_HAM(-0.00)[-1.000];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[11];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim,msgid.link:url,tuxedocomputers.com:email,gmx.de:email,intel.com:email]
-X-Rspamd-Queue-Id: 396E65F8257
+	TAGGED_RCPT(0.00)[stable];
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,netfilter.org:email,lzu.edu.cn:email,state.in:url,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim]
+X-Rspamd-Queue-Id: BAABF5F9CFA
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-7.0-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Armin Wolf <W_Armin@gmx.de>
+From: Haoze Xie <royenheart@gmail.com>
 
-[ Upstream commit fb4b67c44557cb4cbb15900083d4e1af22320339 ]
+commit e196115ec330a18de415bdb9f5071aa9f08e53ce upstream.
 
-Users might want to force-enable all possible features even on
-machines with a valid device descriptor. Until now the "force"
-module param was ignored on such machines. Fix this to make
-it easier to test for support of new features.
+br_pass_frame_up() rewrites skb->dev from the ingress port to the bridge
+master before queueing bridge LOCAL_IN packets. NFQUEUE only holds
+references on state.in/out and bridge physdevs, so a queued bridge
+packet can retain a freed bridge master in skb->dev until reinjection.
 
-Fixes: d050479693bb ("platform/x86: Add Uniwill laptop driver")
-Reviewed-by: Werner Sembach <wse@tuxedocomputers.com>
-Reviewed-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
-Signed-off-by: Armin Wolf <W_Armin@gmx.de>
-Link: https://patch.msgid.link/20260512232145.329260-4-W_Armin@gmx.de
-Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+When the verdict is reinjected later, br_netif_receive_skb() re-enters
+the receive path with skb->dev still pointing at the freed bridge master,
+triggering a use-after-free.
+
+Store skb->dev in the queue entry, hold a reference on it for the queue
+lifetime, and use the saved device when dropping queued packets during
+NETDEV_DOWN handling.
+
+Fixes: ac2863445686 ("netfilter: bridge: add nf_afinfo to enable queuing to userspace")
+Cc: stable@kernel.org
+Reported-by: Yuan Tan <yuantan098@gmail.com>
+Reported-by: Yifan Wu <yifanwucs@gmail.com>
+Reported-by: Juefei Pu <tomapufckgml@gmail.com>
+Reported-by: Xin Liu <bird@lzu.edu.cn>
+Signed-off-by: Haoze Xie <royenheart@gmail.com>
+Signed-off-by: Ren Wei <n05ec@lzu.edu.cn>
+Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/platform/x86/uniwill/uniwill-acpi.c | 8 ++++++--
- 1 file changed, 6 insertions(+), 2 deletions(-)
+ include/net/netfilter/nf_queue.h |    1 +
+ net/netfilter/nf_queue.c         |    4 +++-
+ net/netfilter/nfnetlink_queue.c  |    2 ++
+ 3 files changed, 6 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/platform/x86/uniwill/uniwill-acpi.c b/drivers/platform/x86/uniwill/uniwill-acpi.c
-index 07951e01b43db..540604c297715 100644
---- a/drivers/platform/x86/uniwill/uniwill-acpi.c
-+++ b/drivers/platform/x86/uniwill/uniwill-acpi.c
-@@ -2189,8 +2189,6 @@ static int __init uniwill_init(void)
- 		if (!force)
- 			return -ENODEV;
+--- a/include/net/netfilter/nf_queue.h
++++ b/include/net/netfilter/nf_queue.h
+@@ -12,6 +12,7 @@
+ struct nf_queue_entry {
+ 	struct list_head	list;
+ 	struct sk_buff		*skb;
++	struct net_device	*skb_dev;
+ 	unsigned int		id;
+ 	unsigned int		hook_index;	/* index in hook_entries->hook[] */
+ #if IS_ENABLED(CONFIG_BRIDGE_NETFILTER)
+--- a/net/netfilter/nf_queue.c
++++ b/net/netfilter/nf_queue.c
+@@ -60,6 +60,7 @@ static void nf_queue_entry_release_refs(
+ 	struct nf_hook_state *state = &entry->state;
  
--		/* Assume that the device supports all features */
--		device_descriptor.features = UINT_MAX;
- 		pr_warn("Loading on a potentially unsupported device\n");
- 	} else {
- 		/*
-@@ -2208,6 +2206,12 @@ static int __init uniwill_init(void)
- 		device_descriptor = *descriptor;
- 	}
+ 	/* Release those devices we held, or Alexey will kill me. */
++	dev_put(entry->skb_dev);
+ 	dev_put(state->in);
+ 	dev_put(state->out);
+ 	if (state->sk)
+@@ -101,6 +102,7 @@ bool nf_queue_entry_get_refs(struct nf_q
+ 	if (state->sk && !refcount_inc_not_zero(&state->sk->sk_refcnt))
+ 		return false;
  
-+	if (force) {
-+		/* Assume that the device supports all features */
-+		device_descriptor.features = UINT_MAX;
-+		pr_warn("Enabling potentially unsupported features\n");
-+	}
-+
- 	ret = platform_driver_register(&uniwill_driver);
- 	if (ret < 0)
- 		return ret;
--- 
-2.53.0
-
++	dev_hold(entry->skb_dev);
+ 	dev_hold(state->in);
+ 	dev_hold(state->out);
+ 
+@@ -201,11 +203,11 @@ static int __nf_queue(struct sk_buff *sk
+ 
+ 	*entry = (struct nf_queue_entry) {
+ 		.skb	= skb,
++		.skb_dev = skb->dev,
+ 		.state	= *state,
+ 		.hook_index = index,
+ 		.size	= sizeof(*entry) + route_key_size,
+ 	};
+-
+ 	__nf_queue_entry_init_physdevs(entry);
+ 
+ 	if (!nf_queue_entry_get_refs(entry)) {
+--- a/net/netfilter/nfnetlink_queue.c
++++ b/net/netfilter/nfnetlink_queue.c
+@@ -972,6 +972,8 @@ dev_cmp(struct nf_queue_entry *entry, un
+ 	if (physinif == ifindex || physoutif == ifindex)
+ 		return 1;
+ #endif
++	if (entry->skb_dev && entry->skb_dev->ifindex == ifindex)
++		return 1;
+ 	if (entry->state.in)
+ 		if (entry->state.in->ifindex == ifindex)
+ 			return 1;
 
 
 
