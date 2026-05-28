@@ -1,58 +1,72 @@
-Return-Path: <stable+bounces-255292-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-255607-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id cEZIC1yfGGpAlggAu9opvQ
-	(envelope-from <stable+bounces-255292-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:02:36 +0200
+	id iGBZMb6kGGoQlwgAu9opvQ
+	(envelope-from <stable+bounces-255607-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:25:34 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4F58F5F7B14
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:02:35 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2B6FF5F8A65
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:25:34 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 65E83303EA3C
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 20:01:42 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 0ECAC324ACC7
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 20:16:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2EB0B32ABC0;
-	Thu, 28 May 2026 20:01:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B9A8F282F17;
+	Thu, 28 May 2026 20:16:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ar85RCB7"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UmTsTt2k"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D032527A476;
-	Thu, 28 May 2026 20:01:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4B18C2580D7;
+	Thu, 28 May 2026 20:16:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779998500; cv=none; b=fcZ7iaPnExtCDH51UVUHSnlC8PUDNm5nZ8jUFh00Q8N1qOKGD5t3kx9nLSOgcl2DvQIb5VcXYwHW7qMSeE8cEBoYrQWf76k+W48dixe5SPCTBmlWGAl+gS7NKngf6jSZ++7+KLNxdhvcJM6VaGvkqdhBEdfO31QCliTcQntqJic=
+	t=1779999387; cv=none; b=c/qCwY0SlKtLyoYKAkviZtyz7Th34GO9UrVlIBkJ9modBKkwKdNUc9gleZGMIbkPh6zIPFIJariaxfLP8tGC4hWu9yNOcNP8IG14lcmqb5Y3v/tvcVaSMI78gKOMV9jCBxAb7Hmszmm4NQeQSNRic1PH4mFvUIo3D/j26bKrhVU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779998500; c=relaxed/simple;
-	bh=NNpgYuXFEyoR/YDwdwGuibBw/yrmSACENZT7iZqI0J0=;
+	s=arc-20240116; t=1779999387; c=relaxed/simple;
+	bh=hq9OecwMA4QQvS2BmPfXHGVHAviqb2W38mvLyQQ8Ex4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=WcKSZGm4r9NIoKssHEQDoqd5EsO9V9gFFMU+iUXo5y+3Q0MooLrXbk7YLtnmiW+y2pHk1I7Vwy7OBrcDIw4Tv6s/sYH+tUmqRhpsaBknxdlJMF+iqecSq10Txa5qfUqrudJGBcwAJad6aU/SrR8zBC9+0LJs3+vBCQ6cddRIF14=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ar85RCB7; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3A8861F000E9;
-	Thu, 28 May 2026 20:01:38 +0000 (UTC)
+	 MIME-Version; b=hbp5KdF4rUlbggl/Kvt+7IeKVoheICjrkIx7of7DbpFXOpXGVYU+6tqnLl2HCZ/Q+p21k3imQXMRpSl3iQ0GMu0TgQ1gZqbW0QgjwaaYjaIj73rkOOm2XRAkILGyaEuKub4PQH4WVX4sQxN246EB5UxKNjRC2cVF1rBq/OeoMvg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UmTsTt2k; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 433CD1F000E9;
+	Thu, 28 May 2026 20:16:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779998498;
-	bh=V1BEhbhhhCJV8VF1XFt2tK0z3MWSoKXOT/x8rvmP050=;
+	s=korg; t=1779999385;
+	bh=ZLJXyv5ilPSBL7Cn4sTe3CDN2RLXGl+/Tk6zZeSyY84=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=ar85RCB7mACWtt45bOxmEcWjtTy9IBCSx8EFMz7NhXsilvua1K8TrF3eiWyYr0/i3
-	 LZyxgKO4kZEXKh1IScwc6SSzDHIitrphIs86JJRrgUMOLxfXEeb1ESBVuR/CPaBdjj
-	 PmmfR0lEwjMK3H46QiMLAvBhe1Gj+U3CRP/7IZYk=
+	b=UmTsTt2k+vvmVqkIX+5RYCgUN9PQ/A8DQJ4l1uGN1XC+dMAl79saIKGzfKNzzVqfx
+	 pdPZQ6OWpbO7OiuVEE5Y3ebEnL7FAQnDUiPt4x6JaBe4A79X9C3VF2kPLEUtbJHHo9
+	 DyidMYtLbfvRfRVhWn0iKiLbWjw44W1BYEvPFcGI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable@kernel.org,
-	Sven Eckelmann <sven@narfation.org>
-Subject: [PATCH 7.0 158/461] batman-adv: tp_meter: avoid role confusion in tp_list
+	"David Hildenbrand (Arm)" <david@kernel.org>,
+	Catalin Marinas <catalin.marinas@arm.com>,
+	Lance Yang <lance.yang@linux.dev>,
+	Brendan Jackman <jackmanb@google.com>,
+	Dev Jain <dev.jain@arm.com>,
+	Johannes Weiner <hannes@cmpxchg.org>,
+	Liam Howlett <liam@infradead.org>,
+	"Lorenzo Stoakes (Oracle)" <ljs@kernel.org>,
+	Mark Brown <broonie@kernel.org>,
+	Michal Hocko <mhocko@suse.com>,
+	Mike Rapoport <rppt@kernel.org>,
+	Ryan Roberts <ryan.roberts@arm.com>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Will Deacon <will@kernel.org>,
+	Zi Yan <ziy@nvidia.com>,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 6.18 049/377] mm/page_alloc: fix initialization of tags of the huge zero folio with init_on_free
 Date: Thu, 28 May 2026 21:44:47 +0200
-Message-ID: <20260528194651.623720990@linuxfoundation.org>
+Message-ID: <20260528194639.794101868@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260528194646.819809818@linuxfoundation.org>
-References: <20260528194646.819809818@linuxfoundation.org>
+In-Reply-To: <20260528194638.371537336@linuxfoundation.org>
+References: <20260528194638.371537336@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -67,7 +81,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
@@ -77,8 +91,8 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-255292-lists,stable=lfdr.de];
-	TO_DN_SOME(0.00)[];
+	TAGGED_FROM(0.00)[bounces-255607-lists,stable=lfdr.de];
+	RCPT_COUNT_TWELVE(0.00)[19];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
@@ -86,203 +100,202 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	NEURAL_HAM(-0.00)[-1.000];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[5];
+	TO_DN_SOME(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,narfation.org:email]
-X-Rspamd-Queue-Id: 4F58F5F7B14
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
+X-Rspamd-Queue-Id: 2B6FF5F8A65
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-7.0-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sven Eckelmann <sven@narfation.org>
+From: David Hildenbrand (Arm) <david@kernel.org>
 
-commit ff24f2ecfd94c07a2b89bac497433e3b23271cac upstream.
+commit 6a288a4ddb4a994490505ab5f41c445f8e6b6467 upstream.
 
-Session lookups in tp_list matched only on destination address (and
-optionally session ID), leaving role validation to the caller. If two
-sessions with the same other_end coexisted (one as sender, one as receiver)
-a lookup could silently return the wrong one, causing the caller's role to
-bail out early, potentially skipping necessary cleanup.
+__GFP_ZEROTAGS semantics are currently a bit weird, but effectively this
+flag is only ever set alongside __GFP_ZERO and __GFP_SKIP_KASAN.
 
-Move the role check into the lookup functions themselves so the correct
-entry is always returned, or none at all. Since batadv_tp_start()
-legitimately needs to detect any active session to a destination regardless
-of role, introduce a dedicated helper for that case rather than bending the
-existing lookup semantics.
+If we run with init_on_free, we will zero out pages during
+__free_pages_prepare(), to skip zeroing on the allocation path.
 
-Cc: stable@kernel.org
-Fixes: 33a3bb4a3345 ("batman-adv: throughput meter implementation")
-Signed-off-by: Sven Eckelmann <sven@narfation.org>
+However, when allocating with __GFP_ZEROTAG set, post_alloc_hook() will
+consequently not only skip clearing page content, but also skip clearing
+tag memory.
+
+Not clearing tags through __GFP_ZEROTAGS is irrelevant for most pages that
+will get mapped to user space through set_pte_at() later: set_pte_at() and
+friends will detect that the tags have not been initialized yet
+(PG_mte_tagged not set), and initialize them.
+
+However, for the huge zero folio, which will be mapped through a PMD
+marked as special, this initialization will not be performed, ending up
+exposing whatever tags were still set for the pages.
+
+The docs (Documentation/arch/arm64/memory-tagging-extension.rst) state
+that allocation tags are set to 0 when a page is first mapped to user
+space.  That no longer holds with the huge zero folio when init_on_free is
+enabled.
+
+Fix it by decoupling __GFP_ZEROTAGS from __GFP_ZERO, passing to
+tag_clear_highpages() whether we want to also clear page content.
+
+Invert the meaning of the tag_clear_highpages() return value to have
+clearer semantics.
+
+Reproduced with the huge zero folio by modifying the check_buffer_fill
+arm64/mte selftest to use a 2 MiB area, after making sure that pages have
+a non-0 tag set when freeing (note that, during boot, we will not actually
+initialize tags, but only set KASAN_TAG_KERNEL in the page flags).
+
+	$ ./check_buffer_fill
+	1..20
+	...
+	not ok 17 Check initial tags with private mapping, sync error mode and mmap memory
+	not ok 18 Check initial tags with private mapping, sync error mode and mmap/mprotect memory
+	...
+
+This code needs more cleanups; we'll tackle that next, like
+decoupling __GFP_ZEROTAGS from __GFP_SKIP_KASAN.
+
+[akpm@linux-foundation.org: s/__GPF_ZERO/__GFP_ZERO/, per David]
+Link: https://lore.kernel.org/20260421-zerotags-v2-1-05cb1035482e@kernel.org
+Fixes: adfb6609c680 ("mm/huge_memory: initialise the tags of the huge zero folio")
+Signed-off-by: David Hildenbrand (Arm) <david@kernel.org>
+Reviewed-by: Catalin Marinas <catalin.marinas@arm.com>
+Tested-by: Lance Yang <lance.yang@linux.dev>
+Cc: Brendan Jackman <jackmanb@google.com>
+Cc: Dev Jain <dev.jain@arm.com>
+Cc: Johannes Weiner <hannes@cmpxchg.org>
+Cc: Liam Howlett <liam@infradead.org>
+Cc: Lorenzo Stoakes (Oracle) <ljs@kernel.org>
+Cc: Mark Brown <broonie@kernel.org>
+Cc: Michal Hocko <mhocko@suse.com>
+Cc: Mike Rapoport <rppt@kernel.org>
+Cc: Ryan Roberts <ryan.roberts@arm.com>
+Cc: Suren Baghdasaryan <surenb@google.com>
+Cc: Will Deacon <will@kernel.org>
+Cc: Zi Yan <ziy@nvidia.com>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/batman-adv/tp_meter.c |   59 ++++++++++++++++++++++++++++------------------
- 1 file changed, 36 insertions(+), 23 deletions(-)
+ arch/arm64/include/asm/page.h |    2 +-
+ arch/arm64/mm/fault.c         |   11 +++++++----
+ include/linux/gfp_types.h     |   10 +++++-----
+ include/linux/highmem.h       |    7 ++++---
+ mm/page_alloc.c               |    8 ++++----
+ 5 files changed, 21 insertions(+), 17 deletions(-)
 
---- a/net/batman-adv/tp_meter.c
-+++ b/net/batman-adv/tp_meter.c
-@@ -255,6 +255,7 @@ static void batadv_tp_batctl_error_notif
-  * batadv_tp_list_find() - find a tp_vars object in the global list
-  * @bat_priv: the bat priv with all the mesh interface information
-  * @dst: the other endpoint MAC address to look for
-+ * @role: role of the session
-  *
-  * Look for a tp_vars object matching dst as end_point and return it after
-  * having increment the refcounter. Return NULL is not found
-@@ -262,7 +263,8 @@ static void batadv_tp_batctl_error_notif
-  * Return: matching tp_vars or NULL when no tp_vars with @dst was found
-  */
- static struct batadv_tp_vars *batadv_tp_list_find(struct batadv_priv *bat_priv,
--						  const u8 *dst)
-+						  const u8 *dst,
-+						  enum batadv_tp_meter_role role)
- {
- 	struct batadv_tp_vars *pos, *tp_vars = NULL;
+--- a/arch/arm64/include/asm/page.h
++++ b/arch/arm64/include/asm/page.h
+@@ -33,7 +33,7 @@ struct folio *vma_alloc_zeroed_movable_f
+ 						unsigned long vaddr);
+ #define vma_alloc_zeroed_movable_folio vma_alloc_zeroed_movable_folio
  
-@@ -271,6 +273,9 @@ static struct batadv_tp_vars *batadv_tp_
- 		if (!batadv_compare_eth(pos->other_end, dst))
- 			continue;
+-bool tag_clear_highpages(struct page *to, int numpages);
++bool tag_clear_highpages(struct page *to, int numpages, bool clear_pages);
+ #define __HAVE_ARCH_TAG_CLEAR_HIGHPAGES
  
-+		if (pos->role != role)
-+			continue;
-+
- 		/* most of the time this function is invoked during the normal
- 		 * process..it makes sens to pay more when the session is
- 		 * finished and to speed the process up during the measurement
-@@ -287,11 +292,32 @@ static struct batadv_tp_vars *batadv_tp_
+ #define clear_user_page(page, vaddr, pg)	clear_page(page)
+--- a/arch/arm64/mm/fault.c
++++ b/arch/arm64/mm/fault.c
+@@ -967,7 +967,7 @@ struct folio *vma_alloc_zeroed_movable_f
+ 	return vma_alloc_folio(flags, 0, vma, vaddr);
  }
  
- /**
-+ * batadv_tp_list_active() - check if session from/to destination is ongoing
-+ * @bat_priv: the bat priv with all the mesh interface information
-+ * @dst: the other endpoint MAC address to look for
-+ *
-+ * Return: if matching session with @dst was found
-+ */
-+static bool batadv_tp_list_active(struct batadv_priv *bat_priv, const u8 *dst)
-+	__must_hold(&bat_priv->tp_list_lock)
-+{
-+	struct batadv_tp_vars *tp_vars;
-+
-+	hlist_for_each_entry_rcu(tp_vars, &bat_priv->tp_list, list) {
-+		if (batadv_compare_eth(tp_vars->other_end, dst))
-+			return true;
-+	}
-+
-+	return false;
-+}
-+
-+/**
-  * batadv_tp_list_find_session() - find tp_vars session object in the global
-  *  list
-  * @bat_priv: the bat priv with all the mesh interface information
-  * @dst: the other endpoint MAC address to look for
-  * @session: session identifier
-+ * @role: role of the session
-  *
-  * Look for a tp_vars object matching dst as end_point, session as tp meter
-  * session and return it after having increment the refcounter. Return NULL
-@@ -301,7 +327,7 @@ static struct batadv_tp_vars *batadv_tp_
-  */
- static struct batadv_tp_vars *
- batadv_tp_list_find_session(struct batadv_priv *bat_priv, const u8 *dst,
--			    const u8 *session)
-+			    const u8 *session, enum batadv_tp_meter_role role)
+-bool tag_clear_highpages(struct page *page, int numpages)
++bool tag_clear_highpages(struct page *page, int numpages, bool clear_pages)
  {
- 	struct batadv_tp_vars *pos, *tp_vars = NULL;
+ 	/*
+ 	 * Check if MTE is supported and fall back to clear_highpage().
+@@ -975,13 +975,16 @@ bool tag_clear_highpages(struct page *pa
+ 	 * post_alloc_hook() will invoke tag_clear_highpages().
+ 	 */
+ 	if (!system_supports_mte())
+-		return false;
++		return clear_pages;
  
-@@ -313,6 +339,9 @@ batadv_tp_list_find_session(struct batad
- 		if (memcmp(pos->session, session, sizeof(pos->session)) != 0)
- 			continue;
- 
-+		if (pos->role != role)
-+			continue;
-+
- 		/* most of the time this function is invoked during the normal
- 		 * process..it makes sense to pay more when the session is
- 		 * finished and to speed the process up during the measurement
-@@ -665,13 +694,10 @@ static void batadv_tp_recv_ack(struct ba
- 
- 	/* find the tp_vars */
- 	tp_vars = batadv_tp_list_find_session(bat_priv, icmp->orig,
--					      icmp->session);
-+					      icmp->session, BATADV_TP_SENDER);
- 	if (unlikely(!tp_vars))
- 		return;
- 
--	if (unlikely(tp_vars->role != BATADV_TP_SENDER))
--		goto out;
--
- 	if (unlikely(batadv_tp_sender_stopped(tp_vars)))
- 		goto out;
- 
-@@ -980,10 +1006,8 @@ void batadv_tp_start(struct batadv_priv
- 		return;
+ 	/* Newly allocated pages, shouldn't have been tagged yet */
+ 	for (int i = 0; i < numpages; i++, page++) {
+ 		WARN_ON_ONCE(!try_page_mte_tagging(page));
+-		mte_zero_clear_page_tags(page_address(page));
++		if (clear_pages)
++			mte_zero_clear_page_tags(page_address(page));
++		else
++			mte_clear_page_tags(page_address(page));
+ 		set_page_mte_tagged(page);
  	}
+-	return true;
++	return false;
+ }
+--- a/include/linux/gfp_types.h
++++ b/include/linux/gfp_types.h
+@@ -277,11 +277,11 @@ enum {
+  *
+  * %__GFP_ZERO returns a zeroed page on success.
+  *
+- * %__GFP_ZEROTAGS zeroes memory tags at allocation time if the memory itself
+- * is being zeroed (either via __GFP_ZERO or via init_on_alloc, provided that
+- * __GFP_SKIP_ZERO is not set). This flag is intended for optimization: setting
+- * memory tags at the same time as zeroing memory has minimal additional
+- * performance impact.
++ * %__GFP_ZEROTAGS zeroes memory tags at allocation time. Setting memory tags at
++ * the same time as zeroing memory (e.g., with __GFP_ZERO) has minimal
++ * additional performance impact. However, __GFP_ZEROTAGS also zeroes the tags
++ * even if memory is not getting zeroed at allocation time (e.g.,
++ * with init_on_free).
+  *
+  * %__GFP_SKIP_KASAN makes KASAN skip unpoisoning on page allocation.
+  * Used for userspace and vmalloc pages; the latter are unpoisoned by
+--- a/include/linux/highmem.h
++++ b/include/linux/highmem.h
+@@ -251,10 +251,11 @@ static inline void clear_highpage_kasan_
  
--	tp_vars = batadv_tp_list_find(bat_priv, dst);
--	if (tp_vars) {
-+	if (batadv_tp_list_active(bat_priv, dst)) {
- 		spin_unlock_bh(&bat_priv->tp_list_lock);
--		batadv_tp_vars_put(tp_vars);
- 		batadv_dbg(BATADV_DBG_TP_METER, bat_priv,
- 			   "Meter: test to or from the same node already ongoing, aborting\n");
- 		batadv_tp_batctl_error_notify(BATADV_TP_REASON_ALREADY_ONGOING,
-@@ -1104,18 +1128,14 @@ void batadv_tp_stop(struct batadv_priv *
- 	if (!orig_node)
- 		return;
+ #ifndef __HAVE_ARCH_TAG_CLEAR_HIGHPAGES
  
--	tp_vars = batadv_tp_list_find(bat_priv, orig_node->orig);
-+	tp_vars = batadv_tp_list_find(bat_priv, orig_node->orig, BATADV_TP_SENDER);
- 	if (!tp_vars) {
- 		batadv_dbg(BATADV_DBG_TP_METER, bat_priv,
- 			   "Meter: trying to interrupt an already over connection\n");
- 		goto out_put_orig_node;
- 	}
+-/* Return false to let people know we did not initialize the pages */
+-static inline bool tag_clear_highpages(struct page *page, int numpages)
++/* Returns true if the caller has to initialize the pages */
++static inline bool tag_clear_highpages(struct page *page, int numpages,
++		bool clear_pages)
+ {
+-	return false;
++	return clear_pages;
+ }
  
--	if (unlikely(tp_vars->role != BATADV_TP_SENDER))
--		goto out_put_tp_vars;
--
- 	batadv_tp_sender_shutdown(tp_vars, return_value);
--out_put_tp_vars:
- 	batadv_tp_vars_put(tp_vars);
- out_put_orig_node:
- 	batadv_orig_node_put(orig_node);
-@@ -1371,7 +1391,7 @@ batadv_tp_init_recv(struct batadv_priv *
- 		goto out_unlock;
+ #endif
+--- a/mm/page_alloc.c
++++ b/mm/page_alloc.c
+@@ -1847,9 +1847,9 @@ static inline bool should_skip_init(gfp_
+ inline void post_alloc_hook(struct page *page, unsigned int order,
+ 				gfp_t gfp_flags)
+ {
++	const bool zero_tags = gfp_flags & __GFP_ZEROTAGS;
+ 	bool init = !want_init_on_free() && want_init_on_alloc(gfp_flags) &&
+ 			!should_skip_init(gfp_flags);
+-	bool zero_tags = init && (gfp_flags & __GFP_ZEROTAGS);
+ 	int i;
  
- 	tp_vars = batadv_tp_list_find_session(bat_priv, icmp->orig,
--					      icmp->session);
-+					      icmp->session, BATADV_TP_RECEIVER);
- 	if (tp_vars)
- 		goto out_unlock;
+ 	set_page_private(page, 0);
+@@ -1871,11 +1871,11 @@ inline void post_alloc_hook(struct page
+ 	 */
  
-@@ -1442,7 +1462,7 @@ static void batadv_tp_recv_msg(struct ba
- 		}
- 	} else {
- 		tp_vars = batadv_tp_list_find_session(bat_priv, icmp->orig,
--						      icmp->session);
-+						      icmp->session, BATADV_TP_RECEIVER);
- 		if (!tp_vars) {
- 			batadv_dbg(BATADV_DBG_TP_METER, bat_priv,
- 				   "Unexpected packet from %pM!\n",
-@@ -1451,13 +1471,6 @@ static void batadv_tp_recv_msg(struct ba
- 		}
- 	}
+ 	/*
+-	 * If memory tags should be zeroed
+-	 * (which happens only when memory should be initialized as well).
++	 * Clearing tags can efficiently clear the memory for us as well, if
++	 * required.
+ 	 */
+ 	if (zero_tags)
+-		init = !tag_clear_highpages(page, 1 << order);
++		init = tag_clear_highpages(page, 1 << order, /* clear_pages= */init);
  
--	if (unlikely(tp_vars->role != BATADV_TP_RECEIVER)) {
--		batadv_dbg(BATADV_DBG_TP_METER, bat_priv,
--			   "Meter: dropping packet: not expected (role=%u)\n",
--			   tp_vars->role);
--		goto out;
--	}
--
- 	tp_vars->last_recv_time = jiffies;
- 
- 	/* if the packet is a duplicate, it may be the case that an ACK has been
+ 	if (!should_skip_kasan_unpoison(gfp_flags) &&
+ 	    kasan_unpoison_pages(page, order, init)) {
 
 
 
