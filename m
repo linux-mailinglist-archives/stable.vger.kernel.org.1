@@ -1,61 +1,59 @@
-Return-Path: <stable+bounces-256166-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-255549-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id MHljIG6qGGpolwgAu9opvQ
-	(envelope-from <stable+bounces-256166-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:49:50 +0200
+	id WISKL3KiGGqblggAu9opvQ
+	(envelope-from <stable+bounces-255549-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:15:46 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 50EC75F9A12
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:49:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 68D975F8320
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:15:46 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id D206330AE76E
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 20:42:21 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 1ECF5303AB74
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 20:13:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 01C68332909;
-	Thu, 28 May 2026 20:42:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 49BC233A702;
+	Thu, 28 May 2026 20:13:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sTjTdeqg"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZZRmwTa1"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B6ABD2EF652;
-	Thu, 28 May 2026 20:42:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1748833F5B4;
+	Thu, 28 May 2026 20:13:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780000940; cv=none; b=GCHA/YcqrnDfEnR9rxs8GylCbCq0kvxXgoEFQMj5tM5tmkM0RlhAwoNCul7aO880DRH6KjNjjdI7/2ST2YO56q4ufiyGukxc2tD0XkWnAm+2p1eNj+0Q5QAj0SvNqPHinFbArwUdk+oC0uJ262VPvDNQXG50VZ4MveFh+WtXwN8=
+	t=1779999225; cv=none; b=n+L9Lvetqgj5EsJYXnMEXEe7lMw48LKqM1vwJHGq1nThxt4NncUE5yBLXjTWr5u6TPoDDsJh81Kp4u+SjsU0omt3VQttpgOcCOUlyQ2Nyvla4qo0HOjG+6rjN1SiqDl80NpTWADi1jg5iy2Fuxhxncq9jTyIseWzX5Xbab65zwg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780000940; c=relaxed/simple;
-	bh=SBP32ncVsiFp5vCltsJ2pDuhpupAPSfHFpzwJ+IOiLU=;
+	s=arc-20240116; t=1779999225; c=relaxed/simple;
+	bh=Orzz6b7eS00eBIP9RF32tZIDk5qPP8DWyQcvTgHD57Y=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=jAcwF/LS9yPkrM6iVkHbd+rVaFfwJUMQB+OLMaYXsnn7RXaJftax71aWYAnJ5TyF9Nll17XRzmFkyw3BR/y0fDZHNCneewK1Xe1+0fvXB3/1bt/DwAueyCFeBShbj5hFvFHyQnGYuer5ecGWiB4OhuBh4Vg/aFFLwtrGLrYaU5g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sTjTdeqg; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 208A41F000E9;
-	Thu, 28 May 2026 20:42:18 +0000 (UTC)
+	 MIME-Version; b=d2eFWEIuWowa6OLX3OAv6QIbnn1gkDnWUXWaU+O3hP0ZRXKtosokIv2fbTS6aYy2pz8ORtCUXWcH9JwO5YvBAsU3s+9TzwUskjYB/NjP5530/BZ7ZbAEFrbYlZGcrYvjMi3WOdIdhcNcn6ghqmA4h4dWyIdGaB3a5ikO7zYJ/jQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZZRmwTa1; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 75D941F000E9;
+	Thu, 28 May 2026 20:13:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780000939;
-	bh=8Cj8yJQaEbSejcwgIRxkSPfVPyAfINYc1sb9DOYZp0o=;
+	s=korg; t=1779999224;
+	bh=5+7m1qNI/AHweW2JOs778zlXxeq4knPHX2Y5PWbBXZY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=sTjTdeqgIUjsfzRN9RUSYjvRH5pvXwCfXHv8SEpxejK4VZ/6VjNzYIYsfl/pKFqi9
-	 hYwNhS0Yp6nS0ykfk86QyCK3PJUiCJHFXAtxRMkuvNUsykVQTlg/iFSGECJzKt56Rm
-	 O9g8rA10YDzWVEPuya0H41Ga33k8ISrJTAEL2fKA=
+	b=ZZRmwTa1Tchp0tuEdWDWgSMGJwouvKCePPLhbYENhMJ5UuuleCHZvdpdVMuO2ytgN
+	 tK0ct0PffDaqa2km5HDn4u4jfe/3mwnJZfvgrXIfov94ra6pKjPGyuXVQMjrEjL7mE
+	 sycG/GnMKMOW8vmdECYH93JQ8WNHXwp4ZnM+Lt08=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Nicolas Escande <nico.escande@gmail.com>,
-	Baochen Qiang <baochen.qiang@oss.qualcomm.com>,
-	Rameshkumar Sundaram <rameshkumar.sundaram@oss.qualcomm.com>,
-	Jeff Johnson <jeff.johnson@oss.qualcomm.com>,
+	"Nikhil P. Rao" <nikhil.rao@amd.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 206/272] wifi: ath11k: fix error path leaks in some WMI WOW calls
-Date: Thu, 28 May 2026 21:49:40 +0200
-Message-ID: <20260528194635.004383702@linuxfoundation.org>
+Subject: [PATCH 7.0 452/461] pds_core: ensure null-termination for firmware version strings
+Date: Thu, 28 May 2026 21:49:41 +0200
+Message-ID: <20260528194700.624002162@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260528194629.379955525@linuxfoundation.org>
-References: <20260528194629.379955525@linuxfoundation.org>
+In-Reply-To: <20260528194646.819809818@linuxfoundation.org>
+References: <20260528194646.819809818@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,112 +64,80 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
+	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	TAGGED_FROM(0.00)[bounces-256166-lists,stable=lfdr.de];
-	FROM_HAS_DN(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,oss.qualcomm.com,kernel.org];
-	MIME_TRACE(0.00)[0:+];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[8];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-255549-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-0.999];
+	NEURAL_HAM(-0.00)[-1.000];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	TO_DN_SOME(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,qualcomm.com:email,linuxfoundation.org:mid,linuxfoundation.org:dkim]
-X-Rspamd-Queue-Id: 50EC75F9A12
+	DBL_BLOCKED_OPENRESOLVER(0.00)[amd.com:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,msgid.link:url]
+X-Rspamd-Queue-Id: 68D975F8320
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+7.0-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Nicolas Escande <nico.escande@gmail.com>
+From: Nikhil P. Rao <nikhil.rao@amd.com>
 
-[ Upstream commit 55dda532bbc261aef495e403c8900c5e2ab5fa34 ]
+[ Upstream commit 3d4432d34c1992701289cbe12df9fd024f315998 ]
 
-Fix two instances where we used to directly return the result of
-ath11k_wmi_cmd_send(...). Because we did not check the return value, we
-also did not free the skb in the error path.
+The driver passes fw_version directly to devlink_info_version_stored_put()
+without ensuring null-termination. While current firmware null-terminates
+these strings, the driver should not rely on this behavior. Add explicit
+null-termination to prevent potential issues if firmware behavior changes.
 
-Fixes: 79802b13a492 ("ath11k: implement WoW enable and wakeup commands")
-Signed-off-by: Nicolas Escande <nico.escande@gmail.com>
-Reviewed-by: Baochen Qiang <baochen.qiang@oss.qualcomm.com>
-Reviewed-by: Rameshkumar Sundaram <rameshkumar.sundaram@oss.qualcomm.com>
-Link: https://patch.msgid.link/20260506134240.2284016-2-nico.escande@gmail.com
-Signed-off-by: Jeff Johnson <jeff.johnson@oss.qualcomm.com>
+Fixes: 45d76f492938 ("pds_core: set up device and adminq")
+Signed-off-by: Nikhil P. Rao <nikhil.rao@amd.com>
+Link: https://patch.msgid.link/20260520205842.1486718-1-nikhil.rao@amd.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/ath/ath11k/wmi.c | 19 ++++++++++++++++---
- 1 file changed, 16 insertions(+), 3 deletions(-)
+ drivers/net/ethernet/amd/pds_core/devlink.c | 6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/net/wireless/ath/ath11k/wmi.c b/drivers/net/wireless/ath/ath11k/wmi.c
-index 3b41bc5b125f4..5f15f7acd5132 100644
---- a/drivers/net/wireless/ath/ath11k/wmi.c
-+++ b/drivers/net/wireless/ath/ath11k/wmi.c
-@@ -9191,6 +9191,7 @@ int ath11k_wmi_wow_host_wakeup_ind(struct ath11k *ar)
- 	struct wmi_wow_host_wakeup_ind *cmd;
- 	struct sk_buff *skb;
- 	size_t len;
-+	int ret;
+diff --git a/drivers/net/ethernet/amd/pds_core/devlink.c b/drivers/net/ethernet/amd/pds_core/devlink.c
+index b576be626a294..3f0e56b951bf0 100644
+--- a/drivers/net/ethernet/amd/pds_core/devlink.c
++++ b/drivers/net/ethernet/amd/pds_core/devlink.c
+@@ -122,12 +122,14 @@ int pdsc_dl_info_get(struct devlink *dl, struct devlink_info_req *req,
  
- 	len = sizeof(*cmd);
- 	skb = ath11k_wmi_alloc_skb(ar->wmi->wmi_ab, len);
-@@ -9204,14 +9205,20 @@ int ath11k_wmi_wow_host_wakeup_ind(struct ath11k *ar)
- 
- 	ath11k_dbg(ar->ab, ATH11K_DBG_WMI, "tlv wow host wakeup ind\n");
- 
--	return ath11k_wmi_cmd_send(ar->wmi, skb, WMI_WOW_HOSTWAKEUP_FROM_SLEEP_CMDID);
-+	ret = ath11k_wmi_cmd_send(ar->wmi, skb, WMI_WOW_HOSTWAKEUP_FROM_SLEEP_CMDID);
-+	if (ret) {
-+		ath11k_warn(ar->ab, "failed to send WMI_WOW_HOSTWAKEUP_FROM_SLEEP_CMDID\n");
-+		dev_kfree_skb(skb);
-+	}
+ 	listlen = min(fw_list.num_fw_slots, ARRAY_SIZE(fw_list.fw_names));
+ 	for (i = 0; i < listlen; i++) {
++		char *fw_ver = fw_list.fw_names[i].fw_version;
 +
-+	return ret;
- }
- 
- int ath11k_wmi_wow_enable(struct ath11k *ar)
- {
- 	struct wmi_wow_enable_cmd *cmd;
- 	struct sk_buff *skb;
--	int len;
-+	int ret, len;
- 
- 	len = sizeof(*cmd);
- 	skb = ath11k_wmi_alloc_skb(ar->wmi->wmi_ab, len);
-@@ -9226,7 +9233,13 @@ int ath11k_wmi_wow_enable(struct ath11k *ar)
- 	cmd->pause_iface_config = WOW_IFACE_PAUSE_ENABLED;
- 	ath11k_dbg(ar->ab, ATH11K_DBG_WMI, "tlv wow enable\n");
- 
--	return ath11k_wmi_cmd_send(ar->wmi, skb, WMI_WOW_ENABLE_CMDID);
-+	ret = ath11k_wmi_cmd_send(ar->wmi, skb, WMI_WOW_ENABLE_CMDID);
-+	if (ret) {
-+		ath11k_warn(ar->ab, "failed to send WMI_WOW_ENABLE_CMDID\n");
-+		dev_kfree_skb(skb);
-+	}
-+
-+	return ret;
- }
- 
- int ath11k_wmi_scan_prob_req_oui(struct ath11k *ar,
+ 		if (i < ARRAY_SIZE(fw_slotnames))
+ 			strscpy(buf, fw_slotnames[i], sizeof(buf));
+ 		else
+ 			snprintf(buf, sizeof(buf), "fw.slot_%d", i);
+-		err = devlink_info_version_stored_put(req, buf,
+-						      fw_list.fw_names[i].fw_version);
++		fw_ver[sizeof(fw_list.fw_names[i].fw_version) - 1] = '\0';
++		err = devlink_info_version_stored_put(req, buf, fw_ver);
+ 		if (err)
+ 			return err;
+ 	}
 -- 
 2.53.0
 
