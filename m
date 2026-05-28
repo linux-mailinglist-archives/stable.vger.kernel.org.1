@@ -1,60 +1,59 @@
-Return-Path: <stable+bounces-255496-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-256266-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id mNlTDSKjGGrJlggAu9opvQ
-	(envelope-from <stable+bounces-255496-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:18:42 +0200
+	id iJA0IUarGGpolwgAu9opvQ
+	(envelope-from <stable+bounces-256266-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:53:26 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id A8A9E5F85C1
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:18:41 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id DD9C75F9C75
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:53:25 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 5BC6830078FF
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 20:11:16 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 86A96300A3B0
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 20:47:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3413B33F5BE;
-	Thu, 28 May 2026 20:11:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9D931329396;
+	Thu, 28 May 2026 20:46:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2GZT2+Mr"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ozH0ULvz"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F03E3335566;
-	Thu, 28 May 2026 20:11:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0A9BD2459DD;
+	Thu, 28 May 2026 20:46:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779999075; cv=none; b=iE/OkkAmCiO7j1NS9l1FheVkCWyeyGqGAlMzFMuXDpsfrTxU6QEo0As9BuZ+LSFdTt5CfEjGcX96uIBDXDVjV6Bs2rUELy/haLMWrEcv95aVdAOajL+W3Xk2ukP9EETek3ohvOcTJcgh3K4hLf3IWdzInkFRZIAKbogakG/dVCg=
+	t=1780001219; cv=none; b=ZSkCijkj7O3CvG8QHbtwhGwx97uC3+j6VvhS6+K09e5PQs+IjDHw0oRKLMiNWticS4cCIzr0Cq3InRaQGVIZm8Q/KrPobkJe8PHHA75gJBcO5YtwX2uVBu0DcCQ4uSQs4tCb3PTHnahV1FGnaRgwuk9oPBDKFmUyX8MD9rA4zjY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779999075; c=relaxed/simple;
-	bh=Jik+Uyg2KulaFjKuL2LZ298i1oCIhOnzRRIGy8A1H4M=;
+	s=arc-20240116; t=1780001219; c=relaxed/simple;
+	bh=IVLVvjgx4fpdLYUeRevWi8egd0iaq2qqWawD3WEm7PA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=K85zfIC2kdwuR/i/fyShKqKVGZAroR84jbRFyDgvL8I61xHT3YD/S13ypPHp2BtdIBpSyEF16L1PejFL8kID5Iy7JBwKbJQbYsibk7t2Do7zTjajyTq8LHqncc0KKbV/OTH8E2g26GO+xW5oEdxFb3usDiDGLEY6KWJuZHXPtEk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2GZT2+Mr; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 52B4E1F000E9;
-	Thu, 28 May 2026 20:11:13 +0000 (UTC)
+	 MIME-Version; b=PYPrlLI/uxEo0ZplqJx0Pl4sfqvguiPvaisjDJtG2pN5LnL7B05Oc/5UCf0ek7sWTygxBaBOK8FE1711eUR1SKxRYFEAlBo8anaMZ4TV1iUgorVt8RyoG4ZJoRK1ovmfb0CIYa5qHLJkNrSb8QvwYOtYIXi4HEZWyuy0GkQBz2w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ozH0ULvz; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 359B01F000E9;
+	Thu, 28 May 2026 20:46:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779999073;
-	bh=gdxTFr/jOn6k8GNTLpTgt1WYiGfX4JXE3xDMWbiw1Z0=;
+	s=korg; t=1780001217;
+	bh=pRaMDx4Xu/2MhSfdcxWThxfZDHhA5vbnEKeh+7woiXM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=2GZT2+MrltcTl8/8YMm86FYXSZEKsOv2stzpZuyF9eyFYBVOfxpDMnIaEFTwP7ycj
-	 1pCSZmSBKSv7UFCLwyrGBbH1IuyO8EnpcAMCGvhIKC67NVG8cVjDJ3f4MtxbJMSbQz
-	 hZiEDIf0Dw7VPCVtRwMPjSgFYKIs65vpFVG4oGA8=
+	b=ozH0ULvzwlBo5DpofeRkah2iPz78C2OdRn/DdvLxR1dAQT8kwsVj9ivoBQRxjZ24N
+	 43viHusJ5QjtHQ0sNtApECUlXbWa/kZ1BS2TWynXOZ1lJh8FFfhV24Jl53IUyQ6Alu
+	 ryokXgbpbhPaUTjxxMALbHkKEmkw6YJp7KVydZt8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Timur=20Krist=C3=B3f?= <timur.kristof@gmail.com>,
-	=?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 7.0 400/461] drm/amdgpu/vce1: Fix VCE 1 firmware size and offsets
+	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
+	"Masami Hiramatsu (Google)" <mhiramat@kernel.org>,
+	Steven Rostedt <rostedt@goodmis.org>
+Subject: [PATCH 6.6 049/186] ring-buffer: Fix reporting of missed events in iterator
 Date: Thu, 28 May 2026 21:48:49 +0200
-Message-ID: <20260528194659.051286688@linuxfoundation.org>
+Message-ID: <20260528194930.295144798@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260528194646.819809818@linuxfoundation.org>
-References: <20260528194646.819809818@linuxfoundation.org>
+In-Reply-To: <20260528194928.941004471@linuxfoundation.org>
+References: <20260528194928.941004471@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,145 +63,109 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-0.66 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,amd.com,kernel.org];
-	TAGGED_FROM(0.00)[bounces-255496-lists,stable=lfdr.de];
-	FROM_HAS_DN(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	TO_DN_SOME(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-256266-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
+	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_SEVEN(0.00)[7];
+	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,amd.com:email,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
-X-Rspamd-Queue-Id: A8A9E5F85C1
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,msgid.link:url,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,efficios.com:email,goodmis.org:email]
+X-Rspamd-Queue-Id: DD9C75F9C75
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-7.0-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Timur Kristóf <timur.kristof@gmail.com>
+From: Steven Rostedt <rostedt@goodmis.org>
 
-[ Upstream commit 3e5a1d5bb2ff061e64c7992f8e5404dfd4c2d0f3 ]
+commit a254b6d13b0edd6272926674d2afc46d46e496b7 upstream.
 
-The VCPU BO contains the actual FW at an offset, but
-it was not calculated into the VCPU BO size.
-Subtract this from the FW size to make sure there is
-no out of bounds access.
+When tracing is active while reading the trace file, if the iterator
+reading the buffer detects that the writer has passed the iterator head,
+it will reset and set a "missed events" flag. This flag is passed to the
+output processing to show the user that events were missed:
 
-Make sure the stack and data offsets are aligned to
-the 32K TLB size.
+  CPU:4 [LOST EVENTS]
 
-Check that the FW microcode actually fits in the
-space that is reserved for it.
+The problem is that the flag is reset after it is checked in
+ring_buffer_iter_dropped(). But the "trace" file iterates over all the CPU
+ring buffers and it will check if they are dropped when figuring out which
+buffer to print next. This prematurely clears the missed_events flag if
+the CPU buffer with the missed events is not the one that is printed next.
 
-Fixes: d4a640d4b9f3 ("drm/amdgpu/vce1: Implement VCE1 IP block (v2)")
-Signed-off-by: Timur Kristóf <timur.kristof@gmail.com>
-Reviewed-by: Christian König <christian.koenig@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-(cherry picked from commit c16fe59f622a080fc457a57b3e8f14c780699449)
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+On the iteration where the CPU buffer with the missed events is printed,
+the check if it had missed events would return false and the output does
+not show that events were missed.
+
+Do not reset the missed_events flag when checking if there were missed
+events, but instead clear it when moving the iterator head to the next
+event.
+
+Cc: stable@vger.kernel.org
+Cc: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
+Link: https://patch.msgid.link/20260520220801.4fd09d13@fedora
+Fixes: c9b7a4a72ff64 ("ring-buffer/tracing: Have iterator acknowledge dropped events")
+Acked-by: Masami Hiramatsu (Google) <mhiramat@kernel.org>
+Signed-off-by: Steven Rostedt <rostedt@goodmis.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/amd/amdgpu/vce_v1_0.c | 19 +++++++++++++++----
- 1 file changed, 15 insertions(+), 4 deletions(-)
+ kernel/trace/ring_buffer.c |    8 +++-----
+ 1 file changed, 3 insertions(+), 5 deletions(-)
 
-diff --git a/drivers/gpu/drm/amd/amdgpu/vce_v1_0.c b/drivers/gpu/drm/amd/amdgpu/vce_v1_0.c
-index 0b69773b71848..d63ff64943d58 100644
---- a/drivers/gpu/drm/amd/amdgpu/vce_v1_0.c
-+++ b/drivers/gpu/drm/amd/amdgpu/vce_v1_0.c
-@@ -42,9 +42,10 @@
- #include "oss/oss_1_0_d.h"
- #include "oss/oss_1_0_sh_mask.h"
+--- a/kernel/trace/ring_buffer.c
++++ b/kernel/trace/ring_buffer.c
+@@ -4392,6 +4392,7 @@ static void rb_iter_reset(struct ring_bu
+ 	iter->head_page = cpu_buffer->reader_page;
+ 	iter->head = cpu_buffer->reader_page->read;
+ 	iter->next_event = iter->head;
++	iter->missed_events = 0;
  
-+#define VCE_V1_0_ALIGNMENT	(32 * 1024)
- #define VCE_V1_0_FW_SIZE	(256 * 1024)
- #define VCE_V1_0_STACK_SIZE	(64 * 1024)
--#define VCE_V1_0_DATA_SIZE	(7808 * (AMDGPU_MAX_VCE_HANDLES + 1))
-+#define VCE_V1_0_DATA_SIZE	(ALIGN(7808 * (AMDGPU_MAX_VCE_HANDLES + 1), VCE_V1_0_ALIGNMENT))
- #define VCE_STATUS_VCPU_REPORT_FW_LOADED_MASK	0x02
- 
- #define VCE_V1_0_GART_PAGE_START \
-@@ -194,17 +195,22 @@ static int vce_v1_0_load_fw_signature(struct amdgpu_device *adev)
+ 	iter->cache_reader_page = iter->head_page;
+ 	iter->cache_read = cpu_buffer->read;
+@@ -5002,10 +5003,7 @@ ring_buffer_peek(struct trace_buffer *bu
+  */
+ bool ring_buffer_iter_dropped(struct ring_buffer_iter *iter)
  {
- 	const struct common_firmware_header *hdr;
- 	struct vce_v1_0_fw_signature *sign;
--	unsigned int ucode_offset;
-+	u32 ucode_offset;
-+	u32 ucode_size;
- 	uint32_t chip_id;
- 	u32 *cpu_addr;
- 	int i;
+-	bool ret = iter->missed_events != 0;
+-
+-	iter->missed_events = 0;
+-	return ret;
++	return iter->missed_events != 0;
+ }
+ EXPORT_SYMBOL_GPL(ring_buffer_iter_dropped);
  
- 	hdr = (const struct common_firmware_header *)adev->vce.fw->data;
- 	ucode_offset = le32_to_cpu(hdr->ucode_array_offset_bytes);
-+	ucode_size = hdr->ucode_size_bytes - sizeof(struct vce_v1_0_fw_signature *);
- 	cpu_addr = adev->vce.cpu_addr;
+@@ -5222,7 +5220,7 @@ void ring_buffer_iter_advance(struct rin
+ 	unsigned long flags;
  
- 	sign = (void *)adev->vce.fw->data + ucode_offset;
+ 	raw_spin_lock_irqsave(&cpu_buffer->reader_lock, flags);
+-
++	iter->missed_events = 0;
+ 	rb_advance_iter(iter);
  
-+	if (ucode_size > VCE_V1_0_FW_SIZE - AMDGPU_VCE_FIRMWARE_OFFSET)
-+		return -EINVAL;
-+
- 	switch (adev->asic_type) {
- 	case CHIP_TAHITI:
- 		chip_id = 0x01000014;
-@@ -236,7 +242,7 @@ static int vce_v1_0_load_fw_signature(struct amdgpu_device *adev)
- 	cpu_addr[4] = cpu_to_le32(le32_to_cpu(sign->length) + 64);
- 
- 	memset_io(&cpu_addr[5], 0, 44);
--	memcpy_toio(&cpu_addr[16], &sign[1], hdr->ucode_size_bytes - sizeof(*sign));
-+	memcpy_toio(&cpu_addr[16], &sign[1], ucode_size);
- 
- 	cpu_addr += (le32_to_cpu(sign->length) + 64) / 4;
- 	memcpy_toio(&cpu_addr[0], &sign->val[i].sigval[0], 16);
-@@ -317,17 +323,22 @@ static int vce_v1_0_mc_resume(struct amdgpu_device *adev)
- 	WREG32(mmVCE_VCPU_SCRATCH7, AMDGPU_MAX_VCE_HANDLES);
- 
- 	offset =  adev->vce.gpu_addr + AMDGPU_VCE_FIRMWARE_OFFSET;
--	size = VCE_V1_0_FW_SIZE;
-+	size = VCE_V1_0_FW_SIZE - AMDGPU_VCE_FIRMWARE_OFFSET;
- 	WREG32(mmVCE_VCPU_CACHE_OFFSET0, offset);
- 	WREG32(mmVCE_VCPU_CACHE_SIZE0, size);
- 
- 	offset += size;
- 	size = VCE_V1_0_STACK_SIZE;
-+	WARN_ON(!IS_ALIGNED(offset, VCE_V1_0_ALIGNMENT));
-+	WARN_ON(!IS_ALIGNED(size, VCE_V1_0_ALIGNMENT));
- 	WREG32(mmVCE_VCPU_CACHE_OFFSET1, offset);
- 	WREG32(mmVCE_VCPU_CACHE_SIZE1, size);
- 
- 	offset += size;
- 	size = VCE_V1_0_DATA_SIZE;
-+	WARN_ON(!IS_ALIGNED(offset, VCE_V1_0_ALIGNMENT));
-+	WARN_ON(!IS_ALIGNED(size, VCE_V1_0_ALIGNMENT));
-+	WARN_ON((offset + size - adev->vce.gpu_addr) > amdgpu_bo_size(adev->vce.vcpu_bo));
- 	WREG32(mmVCE_VCPU_CACHE_OFFSET2, offset);
- 	WREG32(mmVCE_VCPU_CACHE_SIZE2, size);
- 
--- 
-2.53.0
-
+ 	raw_spin_unlock_irqrestore(&cpu_buffer->reader_lock, flags);
 
 
 
