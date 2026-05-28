@@ -1,59 +1,59 @@
-Return-Path: <stable+bounces-256117-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-255518-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id OFB7FZmpGGpolwgAu9opvQ
-	(envelope-from <stable+bounces-256117-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:46:17 +0200
+	id MFONIRGiGGqblggAu9opvQ
+	(envelope-from <stable+bounces-255518-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:14:09 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1749D5F9821
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:46:17 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2DF465F81E8
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:14:09 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 15A3630CD614
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 20:40:17 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 5211F306E48F
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 20:12:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8ECF633F8C3;
-	Thu, 28 May 2026 20:40:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C8879409602;
+	Thu, 28 May 2026 20:12:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="axMHvVIq"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BOFDsaDC"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4B8152EF652;
-	Thu, 28 May 2026 20:40:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 97CE0339866;
+	Thu, 28 May 2026 20:12:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780000804; cv=none; b=Cd/urGUSgUqh+nOuqJofxh8WyKyqk6CSn6aiJVs8OvXTLbfMs6HJ7N3q7BDstHuHADL2UBpXbZRvXgcuW/hmkrQqgHO2USPDQ2oQrSPZ83cWEf0IeBY7Bu/2Ney1nK45r5G5dvIQkrZm0zF2l0dwO/66DjhZMG+HsmknhpDc880=
+	t=1779999136; cv=none; b=A+ypWEtOEg5sZg2tGx/vQz1egfsDDmNj3gqgRb1mgJPGfR25CO5lPla3G214ugpFROYvgOlgsl27gHurHmBs4e9z94pAq/9x2MEh2CH2kT4XtGmVkbg2dAa7SFgmUE4EzS/z4ELcGjC0HSy/F/RUunuWboeVsyD9ut60rC59mJ8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780000804; c=relaxed/simple;
-	bh=OOlKoc+dCBFK3fSoae5+RbsDYlis46HIMjl303NO1ss=;
+	s=arc-20240116; t=1779999136; c=relaxed/simple;
+	bh=ZHdqtb0oq+d2PYkArJ++Q1upEUSFgwNXkOzzC1s0/Yo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=HKLNTQQ88TgfT5I3F0ee3htH8vVRgyQmNdYxEAcYIXWkvjLBZAlgil5Jofa6s3x8NrbpdIt2HTPf7HuGPCxFcXJ8UzmlgW5kzEK5+nqm1N5iRIRtO7hUZxNXhrMF1rLZJv1V+FhbbIw7tyeChsDsJYaPPikKhcQuSaAQuZMUzZE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=axMHvVIq; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A8F021F000E9;
-	Thu, 28 May 2026 20:40:02 +0000 (UTC)
+	 MIME-Version; b=etUVLIw0vU3hXg9XStUnuGDqChFFGXNQDSt9nn3bfjuFX5GZlVKmCh7ELRhj2D1NZ/Q/TmF24v/ugY7kVgO59XQzx3i507NDmbBYwRSBoZvFlA4vzHbGSlVS4cIuHg8L+p36MrRzjrMjM2loPhzvZ8rc8uwwf62wbzrlgE8vUkg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BOFDsaDC; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 021871F000E9;
+	Thu, 28 May 2026 20:12:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780000803;
-	bh=54HNfa/Vmp9312iqr2RKsf03cFbLKJKIAXwEaN8AlSQ=;
+	s=korg; t=1779999135;
+	bh=dlg5Mepgd2r7EKSvDedEk3RNkuKOoFFu6Jg/3+tCVsM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=axMHvVIqQMbUEK0EG5A84ZFXDKIB4h+n9asmaJk+OgykrnpVjKkUovTClRoXuSb0o
-	 6S6X2gWJ6PBLzl3+PpfMP6HDRy/yk5Nh6Nax/0NAr3pM8pWBPwx8MiQXLNoQ9A3Q0R
-	 2YGeqTUV3ipxS8BvHuqLtqYsU+y35D08db0k75WE=
+	b=BOFDsaDCfZI0m6cXZTS50TmSajbM5/Vidagokk+3pIWkTGdnZD4DgargHT4od9Wro
+	 0ldZ4q8DZ3+EX7BP3kjAAwu5IoVRCQK2rRH8kgzUEYvExvESpJPYoym/47aHFakAaw
+	 VYQd9zrid4kTvRehvIcT/pRpHf062Slwvc1PCtmA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jianpeng Chang <jianpeng.chang.cn@windriver.com>,
-	"Masami Hiramatsu (Google)" <mhiramat@kernel.org>,
+	Kiran K <kiran.k@intel.com>,
+	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 175/272] kprobes: skip non-symbol addresses in kprobe_add_ksym_blacklist()
+Subject: [PATCH 7.0 420/461] Bluetooth: btintel_pcie: Fix incorrect MAC access programming
 Date: Thu, 28 May 2026 21:49:09 +0200
-Message-ID: <20260528194634.211273186@linuxfoundation.org>
+Message-ID: <20260528194659.657575257@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260528194629.379955525@linuxfoundation.org>
-References: <20260528194629.379955525@linuxfoundation.org>
+In-Reply-To: <20260528194646.819809818@linuxfoundation.org>
+References: <20260528194646.819809818@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -68,7 +68,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
@@ -78,7 +78,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-256117-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-255518-lists,stable=lfdr.de];
 	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
@@ -89,111 +89,90 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	TAGGED_RCPT(0.00)[stable];
 	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[windriver.com:email,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim]
-X-Rspamd-Queue-Id: 1749D5F9821
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo]
+X-Rspamd-Queue-Id: 2DF465F81E8
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+7.0-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jianpeng Chang <jianpeng.chang.cn@windriver.com>
+From: Kiran K <kiran.k@intel.com>
 
-[ Upstream commit 307abfac04a254c09c5705d816b33354acee97a0 ]
+[ Upstream commit 88365d04fdc821dc4e9eb0cc00fdf6905430d172 ]
 
-When kprobe_add_area_blacklist() iterates through a section like
-.kprobes.text, the start address may not correspond to a named symbol.
-On ARM64 with CONFIG_DYNAMIC_FTRACE_WITH_CALL_OPS=y (introduced by
-commit baaf553d3bc3 ("arm64: Implement
-HAVE_DYNAMIC_FTRACE_WITH_CALL_OPS")), the compiler flag
--fpatchable-function-entry=4,2 inserts 2 NOPs before each function entry
-point for ftrace call_ops. These pre-function NOPs sit at the section base
-address, before the first named function symbol. The compiler emits a $x
-mapping symbol at offset 0x00 to mark the start of code, but
-find_kallsyms_symbol() ignores mapping symbols.
+btintel_pcie_get_mac_access() and btintel_pcie_release_mac_access()
+were programming STOP_MAC_ACCESS_DIS and XTAL_CLK_REQ in addition to
+the MAC_ACCESS_REQ handshake. These bits are not part of the host
+MAC-access handshake on the supported parts; the driver was
+programming them incorrectly. Drop the writes so the register update
+contains only the bits the controller actually consumes.
 
-Without CONFIG_DYNAMIC_FTRACE_WITH_CALL_OPS (e.g. defconfig), no
-pre-function NOPs are inserted, the first function starts at offset
-0x00, and the bug does not trigger.
-
-This only affects modules that have a .kprobes.text section (i.e. those
-using the __kprobes annotation). Modules using NOKPROBE_SYMBOL() instead
-(like kretprobe_example.ko) blacklist exact function addresses via the
-_kprobe_blacklist section and are not affected.
-
-For kprobe_example.ko on ARM64 with -fpatchable-function-entry=4,2,
-the .kprobes.text section layout is:
-
-  offset 0x00: $x + 2 NOPs    (mapping symbol + ftrace preamble)
-  offset 0x08: handler_post   (64 bytes)
-  offset 0x50: handler_pre    (68 bytes)
-
-kprobe_add_area_blacklist() starts iterating from the section base
-address (offset 0x00), which only has the $x mapping symbol.
-kprobe_add_ksym_blacklist() then calls kallsyms_lookup_size_offset()
-for this address, which goes through:
-
-  kallsyms_lookup_size_offset()
-    -> module_address_lookup()
-      -> find_kallsyms_symbol()
-
-find_kallsyms_symbol() scans all module symbols to find the closest
-preceding symbol.
-
-Since no named text symbol exists at offset 0x00,
-find_kallsyms_symbol() picks __UNIQUE_ID_vermagic (a .modinfo symbol
-whose address is in the temporary image) as the "best" match. The
-computed "size" = next_text_symbol - modinfo_symbol spans across
-these two unrelated memory regions, creating a blacklist entry with
-a bogus range of tens of terabytes.
-
-Whether this causes a visible failure depends on address randomization,
-here is what happens on Raspberry Pi 4/5:
-
-  - On RPi5, the bogus size was ~35 TB. start + size stayed within
-    64-bit range, so the blacklist entry covered the entire kernel
-    text. register_kprobe() in the module's own init function failed
-    with -EINVAL.
-
-  - On RPi4, the bogus size was ~75 TB. start + size overflowed
-    64 bits and wrapped to a small address near zero. The range
-    check (addr >= start && addr < end) then failed because end
-    wrapped around, so the bogus entry was accidentally harmless
-    and kprobes worked by luck.
-
-The same bug exists on both machines, but randomization determines whether
-the integer overflow masks it or not.
-
-Fix this by adding notrace to the __kprobes macro. Functions in
-.kprobes.text are kprobe infrastructure handlers that should never be
-traced by ftrace. With notrace, the compiler stops inserting them and the
-non-symbol gap at the section start disappears entirely.
-
-Link: https://lore.kernel.org/all/20260506012706.2785785-1-jianpeng.chang.cn@windriver.com/
-
-Fixes: baaf553d3bc3 ("arm64: Implement HAVE_DYNAMIC_FTRACE_WITH_CALL_OPS")
-Signed-off-by: Jianpeng Chang <jianpeng.chang.cn@windriver.com>
-Signed-off-by: Masami Hiramatsu (Google) <mhiramat@kernel.org>
+Fixes: b9465e6670a2 ("Bluetooth: btintel_pcie: Read hardware exception data")
+Signed-off-by: Kiran K <kiran.k@intel.com>
+Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/asm-generic/kprobes.h | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/bluetooth/btintel_pcie.c | 20 ++++++--------------
+ drivers/bluetooth/btintel_pcie.h |  3 ---
+ 2 files changed, 6 insertions(+), 17 deletions(-)
 
-diff --git a/include/asm-generic/kprobes.h b/include/asm-generic/kprobes.h
-index 060eab094e5a2..5290a2b2e15a0 100644
---- a/include/asm-generic/kprobes.h
-+++ b/include/asm-generic/kprobes.h
-@@ -14,7 +14,7 @@ static unsigned long __used					\
- 	_kbl_addr_##fname = (unsigned long)fname;
- # define NOKPROBE_SYMBOL(fname)	__NOKPROBE_SYMBOL(fname)
- /* Use this to forbid a kprobes attach on very low level functions */
--# define __kprobes	__section(".kprobes.text")
-+# define __kprobes	notrace __section(".kprobes.text")
- # define nokprobe_inline	__always_inline
- #else
- # define NOKPROBE_SYMBOL(fname)
+diff --git a/drivers/bluetooth/btintel_pcie.c b/drivers/bluetooth/btintel_pcie.c
+index 37b744e35bc45..8dbd72895cb23 100644
+--- a/drivers/bluetooth/btintel_pcie.c
++++ b/drivers/bluetooth/btintel_pcie.c
+@@ -568,12 +568,10 @@ static int btintel_pcie_get_mac_access(struct btintel_pcie_data *data)
+ 
+ 	reg = btintel_pcie_rd_reg32(data, BTINTEL_PCIE_CSR_FUNC_CTRL_REG);
+ 
+-	reg |= BTINTEL_PCIE_CSR_FUNC_CTRL_STOP_MAC_ACCESS_DIS;
+-	reg |= BTINTEL_PCIE_CSR_FUNC_CTRL_XTAL_CLK_REQ;
+-	if ((reg & BTINTEL_PCIE_CSR_FUNC_CTRL_MAC_ACCESS_STS) == 0)
++	if (!(reg & BTINTEL_PCIE_CSR_FUNC_CTRL_MAC_ACCESS_REQ)) {
+ 		reg |= BTINTEL_PCIE_CSR_FUNC_CTRL_MAC_ACCESS_REQ;
+-
+-	btintel_pcie_wr_reg32(data, BTINTEL_PCIE_CSR_FUNC_CTRL_REG, reg);
++		btintel_pcie_wr_reg32(data, BTINTEL_PCIE_CSR_FUNC_CTRL_REG, reg);
++	}
+ 
+ 	do {
+ 		reg = btintel_pcie_rd_reg32(data, BTINTEL_PCIE_CSR_FUNC_CTRL_REG);
+@@ -593,16 +591,10 @@ static void btintel_pcie_release_mac_access(struct btintel_pcie_data *data)
+ 
+ 	reg = btintel_pcie_rd_reg32(data, BTINTEL_PCIE_CSR_FUNC_CTRL_REG);
+ 
+-	if (reg & BTINTEL_PCIE_CSR_FUNC_CTRL_MAC_ACCESS_REQ)
++	if (reg & BTINTEL_PCIE_CSR_FUNC_CTRL_MAC_ACCESS_REQ) {
+ 		reg &= ~BTINTEL_PCIE_CSR_FUNC_CTRL_MAC_ACCESS_REQ;
+-
+-	if (reg & BTINTEL_PCIE_CSR_FUNC_CTRL_STOP_MAC_ACCESS_DIS)
+-		reg &= ~BTINTEL_PCIE_CSR_FUNC_CTRL_STOP_MAC_ACCESS_DIS;
+-
+-	if (reg & BTINTEL_PCIE_CSR_FUNC_CTRL_XTAL_CLK_REQ)
+-		reg &= ~BTINTEL_PCIE_CSR_FUNC_CTRL_XTAL_CLK_REQ;
+-
+-	btintel_pcie_wr_reg32(data, BTINTEL_PCIE_CSR_FUNC_CTRL_REG, reg);
++		btintel_pcie_wr_reg32(data, BTINTEL_PCIE_CSR_FUNC_CTRL_REG, reg);
++	}
+ }
+ 
+ static void *btintel_pcie_copy_tlv(void *dest, enum btintel_pcie_tlv_type type,
+diff --git a/drivers/bluetooth/btintel_pcie.h b/drivers/bluetooth/btintel_pcie.h
+index e3d941ffef4aa..34aa092bfbe33 100644
+--- a/drivers/bluetooth/btintel_pcie.h
++++ b/drivers/bluetooth/btintel_pcie.h
+@@ -34,9 +34,6 @@
+ #define BTINTEL_PCIE_CSR_FUNC_CTRL_MAC_ACCESS_STS	(BIT(20))
+ 
+ #define BTINTEL_PCIE_CSR_FUNC_CTRL_MAC_ACCESS_REQ	(BIT(21))
+-/* Stop MAC Access disconnection request */
+-#define BTINTEL_PCIE_CSR_FUNC_CTRL_STOP_MAC_ACCESS_DIS	(BIT(22))
+-#define BTINTEL_PCIE_CSR_FUNC_CTRL_XTAL_CLK_REQ		(BIT(23))
+ 
+ #define BTINTEL_PCIE_CSR_FUNC_CTRL_BUS_MASTER_STS	(BIT(28))
+ #define BTINTEL_PCIE_CSR_FUNC_CTRL_BUS_MASTER_DISCON	(BIT(29))
 -- 
 2.53.0
 
