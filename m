@@ -1,59 +1,61 @@
-Return-Path: <stable+bounces-255910-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-256320-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id YAFdMummGGpolwgAu9opvQ
-	(envelope-from <stable+bounces-255910-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:34:49 +0200
+	id uN1xET+sGGpolwgAu9opvQ
+	(envelope-from <stable+bounces-256320-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:57:35 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1FF815F9031
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:34:48 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id E59F95F9E95
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:57:34 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 9B9613019D89
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 20:30:22 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 34E7430A7C39
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 20:49:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 40369248F62;
-	Thu, 28 May 2026 20:30:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 87BBE318B96;
+	Thu, 28 May 2026 20:49:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="g7RYYYiH"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="i0x6ezm/"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1CAC0223328;
-	Thu, 28 May 2026 20:30:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5D9E92F1FEF;
+	Thu, 28 May 2026 20:49:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780000222; cv=none; b=jIllb9oXPYlvm96ZLYbuaNRd4X9gL5vAR1mDCnZCOVjvU8mC7CI+471XKVanAPzKvfZqEx/i4k8UX+HnpIfjnvrLWVRmE9UB3AKfGVyPvrtafZpQNX3oYrlsxnLqMM+YfzIcQgi/EWA7pcLSvkEXOemEZyg9/yAdf6N0Z8XNlYM=
+	t=1780001371; cv=none; b=VvydaVJJTswBENkeJ+MwA3SRqfPY535hiPfVyaHtzpxZz6B6O+VNqUOres6OuvFxm6c4xN65CurlJWSwjv+mSSiX22+hrrMep3IltydBTMgMUqFDXw+hRR5PZM7Hf+8h2idUTjbjxAoEsHmGrRYeK+b16SHKLEM3QWP5L+qMlwQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780000222; c=relaxed/simple;
-	bh=2YaYhrmNjZsbZRK0GkVy4oFH4ZhYey44bztR4R0ZbAk=;
+	s=arc-20240116; t=1780001371; c=relaxed/simple;
+	bh=zyL+6plpKm6Y84Jrr5FBuMWJ+7dtSQvKJBmAffqK4q0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=R0GlF8yf0uN3bRbDHRi4PZF+10Hh/swTkniNeJhNqxTsSYqiZlAWrw3zTn3PXHLzRWApR26Kl3Dzvd1cLMTVflpqAw5OeLek8j7vCCEsDgWA8Kn1R5oZxugvmgPdtI5nEB1yVuwOQjHCEktkrjS8pg3FQaVIdNjpyeH++MRPKtE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=g7RYYYiH; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7BE591F000E9;
-	Thu, 28 May 2026 20:30:20 +0000 (UTC)
+	 MIME-Version; b=E+ucC3ZikSyjTWCqnJH5fLSXe6Z8dNXGgpJmFoWsW6yTtYJYAlInFtesW2PH4aBA9X+eAqL61xSeqStwh7ODr1bwIXz8oygdrR1j8WT9FGzwfzgfzL03ItUmHQMldo0lLBRLkCer+axrv0pgQA4zXV6C1CEQYtdlYkAcc3NwWlQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=i0x6ezm/; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BBDFE1F000E9;
+	Thu, 28 May 2026 20:49:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780000221;
-	bh=dGHvpUvW//ivg9XtiPfrP3oJGhKwt56mxBCqLq2NeLI=;
+	s=korg; t=1780001370;
+	bh=9DJW9lt7dlCfm4FCw5SdegMFIHbKgeKeWF/dEAe3Fdg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=g7RYYYiHLdlSQuAl7Pd+TPkM752JQG5xNtLqeanP5kqynpe5fuU9sjI3976C1tmVP
-	 G4fIeyzrTShuAxdwXeAEZoDnS2Eyrca10U35mbT56hL9u949W8ztoZYdNNt0ZIX1/r
-	 BHlAQ3og/KIZ//RIGaCD6X7jPVd5Oo5woPWl9ml8=
+	b=i0x6ezm/tpemjPSowHis8Z5gkaptbIIGlNcFE8dVDNW36k83z89s48TiAqPr2hfIe
+	 phXCXiQzEbbqfUrHzKa+7gaSzIclUuoBf2UUeTtkFl9oChWrN/AJmm1fQq/OMrerbt
+	 vmq8AFTooTE1Sv1cdAO0qlo0wLzkRYAXN9di4A7M=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Nikhil P. Rao" <nikhil.rao@amd.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>,
+	Maulik Shah <maulik.shah@oss.qualcomm.com>,
+	Navya Malempati <navya.malempati@oss.qualcomm.com>,
+	Linus Walleij <linusw@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 344/377] pds_core: fix debugfs_lookup dentry leak and error handling
+Subject: [PATCH 6.6 102/186] pinctrl: qcom: Fix wakeirq map by removing disconnected irqs for sm8150
 Date: Thu, 28 May 2026 21:49:42 +0200
-Message-ID: <20260528194648.382800103@linuxfoundation.org>
+Message-ID: <20260528194931.688861457@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260528194638.371537336@linuxfoundation.org>
-References: <20260528194638.371537336@linuxfoundation.org>
+In-Reply-To: <20260528194928.941004471@linuxfoundation.org>
+References: <20260528194928.941004471@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -68,79 +70,84 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-256320-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-255910-lists,stable=lfdr.de];
-	TO_DN_SOME(0.00)[];
-	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,msgid.link:url,amd.com:email,linuxfoundation.org:mid,linuxfoundation.org:dkim]
-X-Rspamd-Queue-Id: 1FF815F9031
+	TO_DN_SOME(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_SEVEN(0.00)[8];
+	MID_RHS_MATCH_FROM(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,qualcomm.com:email,linuxfoundation.org:mid,linuxfoundation.org:dkim]
+X-Rspamd-Queue-Id: E59F95F9E95
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Nikhil P. Rao <nikhil.rao@amd.com>
+From: Maulik Shah <maulik.shah@oss.qualcomm.com>
 
-[ Upstream commit dc416e32baaeb620b9809e9e25fc7b30889686e9 ]
+[ Upstream commit 52ac35b8a151446481496404af3a8e5e889b3c5a ]
 
-debugfs_lookup() returns a dentry with an elevated reference count that
-must be released with dput(). The current code discards the returned
-dentry without calling dput(), causing a reference leak on every
-firmware reset recovery.
+PDC interrupts 122-125 were meant for ibi_i3c wakeup but sm8150 do not
+support i3c. GPIOs 39,51,88 and 144 are also connected to different PDC
+pin and already reflected in the wake irq map.
 
-Additionally, when CONFIG_DEBUG_FS is disabled, debugfs_lookup()
-returns ERR_PTR(-ENODEV), not NULL. The current check passes for error
-pointers and would call dput() on an invalid pointer, causing a crash.
+Remove the unsupported wakeup interrupts from the map.
 
-Fixes: bc90fbe0c318 ("pds_core: Rework teardown/setup flow to be more common")
-Signed-off-by: Nikhil P. Rao <nikhil.rao@amd.com>
-Link: https://patch.msgid.link/20260515212907.998028-3-nikhil.rao@amd.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Fixes: 90337380c809 ("pinctrl: qcom: sm8150: Specify PDC map")
+Reviewed-by: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
+Signed-off-by: Maulik Shah <maulik.shah@oss.qualcomm.com>
+Signed-off-by: Navya Malempati <navya.malempati@oss.qualcomm.com>
+Signed-off-by: Linus Walleij <linusw@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/amd/pds_core/debugfs.c | 7 ++++++-
- 1 file changed, 6 insertions(+), 1 deletion(-)
+ drivers/pinctrl/qcom/pinctrl-sm8150.c | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/net/ethernet/amd/pds_core/debugfs.c b/drivers/net/ethernet/amd/pds_core/debugfs.c
-index 04c5e3abd8d70..810a0cd9bcac8 100644
---- a/drivers/net/ethernet/amd/pds_core/debugfs.c
-+++ b/drivers/net/ethernet/amd/pds_core/debugfs.c
-@@ -64,9 +64,14 @@ DEFINE_SHOW_ATTRIBUTE(identity);
+diff --git a/drivers/pinctrl/qcom/pinctrl-sm8150.c b/drivers/pinctrl/qcom/pinctrl-sm8150.c
+index f8f5bee74f1dc..565aab84835cb 100644
+--- a/drivers/pinctrl/qcom/pinctrl-sm8150.c
++++ b/drivers/pinctrl/qcom/pinctrl-sm8150.c
+@@ -1496,18 +1496,18 @@ static const struct msm_gpio_wakeirq_map sm8150_pdc_map[] = {
+ 	{ 3, 31 }, { 5, 32 }, { 8, 33 }, { 9, 34 }, { 10, 100 },
+ 	{ 12, 104 }, { 24, 37 }, { 26, 38 }, { 27, 41 }, { 28, 42 },
+ 	{ 30, 39 }, { 36, 43 }, { 37, 44 }, { 38, 30 }, { 39, 118 },
+-	{ 39, 125 }, { 41, 47 }, { 42, 48 }, { 46, 50 }, { 47, 49 },
+-	{ 48, 51 }, { 49, 53 }, { 50, 52 }, { 51, 116 }, { 51, 123 },
++	{ 41, 47 }, { 42, 48 }, { 46, 50 }, { 47, 49 },
++	{ 48, 51 }, { 49, 53 }, { 50, 52 }, { 51, 116 },
+ 	{ 53, 54 }, { 54, 55 }, { 55, 56 }, { 56, 57 }, { 58, 58 },
+ 	{ 60, 60 }, { 61, 61 }, { 68, 62 }, { 70, 63 }, { 76, 71 },
+ 	{ 77, 66 }, { 81, 64 }, { 83, 65 }, { 86, 67 }, { 87, 84 },
+-	{ 88, 117 }, { 88, 124 }, { 90, 69 }, { 91, 70 }, { 93, 75 },
++	{ 88, 117 }, { 90, 69 }, { 91, 70 }, { 93, 75 },
+ 	{ 95, 72 }, { 96, 73 }, { 97, 74 }, { 101, 40 }, { 103, 77 },
+ 	{ 104, 78 }, { 108, 79 }, { 112, 80 }, { 113, 81 }, { 114, 82 },
+ 	{ 117, 85 }, { 118, 101 }, { 119, 87 }, { 120, 88 }, { 121, 89 },
+ 	{ 122, 90 }, { 123, 91 }, { 124, 92 }, { 125, 93 }, { 129, 94 },
+ 	{ 132, 105 }, { 133, 83 }, { 134, 36 }, { 136, 97 }, { 142, 103 },
+-	{ 144, 115 }, { 144, 122 }, { 147, 102 }, { 150, 107 },
++	{ 144, 115 }, { 147, 102 }, { 150, 107 },
+ 	{ 152, 108 }, { 153, 109 }
+ };
  
- void pdsc_debugfs_add_ident(struct pdsc *pdsc)
- {
-+	struct dentry *dentry;
-+
- 	/* This file will already exist in the reset flow */
--	if (debugfs_lookup("identity", pdsc->dentry))
-+	dentry = debugfs_lookup("identity", pdsc->dentry);
-+	if (!IS_ERR_OR_NULL(dentry)) {
-+		dput(dentry);
- 		return;
-+	}
- 
- 	debugfs_create_file("identity", 0400, pdsc->dentry,
- 			    pdsc, &identity_fops);
 -- 
 2.53.0
 
