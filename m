@@ -1,58 +1,63 @@
-Return-Path: <stable+bounces-256045-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-255801-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 2CrtAE6pGGpolwgAu9opvQ
-	(envelope-from <stable+bounces-256045-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:45:02 +0200
+	id +HhjFzaoGGpolwgAu9opvQ
+	(envelope-from <stable+bounces-255801-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:40:22 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 119935F972A
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:45:00 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id B25C05F9488
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:40:21 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 7DC81310E774
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 20:37:03 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 002B23601C5B
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 20:25:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 89A6532AAD6;
-	Thu, 28 May 2026 20:36:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id ECB913016E0;
+	Thu, 28 May 2026 20:25:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QHPb/S1a"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PYumIleB"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 637E633987F;
-	Thu, 28 May 2026 20:36:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7DC1C32C923;
+	Thu, 28 May 2026 20:25:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780000600; cv=none; b=A0eTifrHmeFvIjhzjDm851EYoM/VkXxMptDKxCwqrr+05ml6WlGM9Fp5hYqOS6OHcGqExX+OcMnJQfDpA/QsXvE7cH5gIUwhl20bwxc6QovkGhNR4rDUFAuzudGGZL8VsHgIhOrUS9JfZr8u9E20MnpXgg/Qng+GK7oIkCQg8jk=
+	t=1779999922; cv=none; b=PZWwmD1tumlomdXgXzavIDrwiE/snOT94cJyE6hAnm5usUoSePlWdeeOyw7eWJk0IY3kvlCc9I08LrDrGXDaf4w78QrUj1BVBJBbml2LlF7myKnXGRyFNyM+FCEcgF3Xx5KaHrqGklWia0JqdzukI77RxE21L6g8zq/UFhSfL/o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780000600; c=relaxed/simple;
-	bh=o7Fi4P5U2/F+shCyBDj0iNLWTwSEC3+96+Dbjkt9/gE=;
+	s=arc-20240116; t=1779999922; c=relaxed/simple;
+	bh=KVBvcY1yOoS7japlrug3L5iE3xN3lhQgUS1VRMDCFHo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=rA0Kysu9SXOaXFDxr41bgFumiNj9QKJLX2ZNvSVY9/Xlm5IOuZZXwGUN850c6jKH04DOVh/DOeMgPQiTnKb8pYzVVoPCcqNg1H964Q8u9DVgflZ+7Nh1SpIoOA24aFL9YG6wjU0jbF6M/tOwwKKCociFhg3pA1Pw2+9WEgKcc9E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QHPb/S1a; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C120C1F000E9;
-	Thu, 28 May 2026 20:36:38 +0000 (UTC)
+	 MIME-Version; b=hPS4gJrcz2B//3OjljQgNIa2yjX46gHwWCcMCE+cYQfEknSffsd1jiRWCg3dW7Obgw9w/8u6OTXuMbSvgNggR98Te6uhuwUDDUzwOl2kywafZAy1mP11eiRKbwAQFtQewA9uyMxQACbNZXtjcMMOZYtjzNcfrg4F8OUr464WxLg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PYumIleB; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AFC6B1F000E9;
+	Thu, 28 May 2026 20:25:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780000599;
-	bh=l+bXSYR+eerUAGpIOCXMVMKtnHG34h0heWl63HlgiVo=;
+	s=korg; t=1779999920;
+	bh=Ra3/0+GsK/5TyY7VkD5m7uB2pXCK5pqCXxUJh8eZw0Q=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=QHPb/S1aPAhEgJMyxHmpC2NZoC+CR7FrHfsrPiCf0aUTJpibS/3E9KBv4Ff24SWUo
-	 numR8SQQs1oug2cOAfqQ32AjbA70+vsCFZn1TQrmKktgXqNxdCNfYM8liLOTSAXW51
-	 XwcRZaP4BjpjFo2VTyAta3fC4xesHaKFz0PBTlNk=
+	b=PYumIleBg415Yzrd9sxxk0yt9s17l912JpQrvJeb63FPFtT6e3H94jielQeVGPrEH
+	 JPSynag+MwSNL65qcY+spBJ1GcLeiuayFFKf4k1PhRHnryGOVoKYDEYYoFzu9+aVDe
+	 53Gb+473ZUzQIijFzQUeFEleiAx63p5cA6K7IIRc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Osama Abdelkader <osama.abdelkader@gmail.com>,
-	Anup Patel <anup@brainfault.org>
-Subject: [PATCH 6.12 103/272] riscv: kvm: return SBI_ERR_FAILURE for pmu_snapshot_set_shmem() when OOM
+	David Howells <dhowells@redhat.com>,
+	Paulo Alcantara <pc@manguebit.org>,
+	Matthew Wilcox <willy@infradead.org>,
+	netfs@lists.linux.dev,
+	linux-fsdevel@vger.kernel.org,
+	Christian Brauner <brauner@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.18 239/377] netfs: Fix streaming write being overwritten
 Date: Thu, 28 May 2026 21:47:57 +0200
-Message-ID: <20260528194632.264435335@linuxfoundation.org>
+Message-ID: <20260528194645.308443418@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260528194629.379955525@linuxfoundation.org>
-References: <20260528194629.379955525@linuxfoundation.org>
+In-Reply-To: <20260528194638.371537336@linuxfoundation.org>
+References: <20260528194638.371537336@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,80 +68,212 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	MIME_TRACE(0.00)[0:+];
-	TO_DN_SOME(0.00)[];
-	TAGGED_FROM(0.00)[bounces-256045-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,brainfault.org];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-255801-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	NEURAL_HAM(-0.00)[-0.999];
-	TAGGED_RCPT(0.00)[stable];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_SEVEN(0.00)[10];
 	MID_RHS_MATCH_FROM(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[5];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,brainfault.org:email]
-X-Rspamd-Queue-Id: 119935F972A
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linux.dev:email,infradead.org:email,msgid.link:url,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim,manguebit.org:email]
+X-Rspamd-Queue-Id: B25C05F9488
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Osama Abdelkader <osama.abdelkader@gmail.com>
+From: David Howells <dhowells@redhat.com>
 
-commit 0835ee26938e15eccd70f7d33da386b6490f9449 upstream.
+[ Upstream commit 7b4dcf1b9455a6e52ac7478b4057dbe10359576d ]
 
-kvm_riscv_vcpu_pmu_snapshot_set_shmem() returned -ENOMEM from the
-SBI extension handler, which caused kvm_riscv_vcpu_sbi_ecall() to
-abort KVM_RUN and surface the error to userspace instead of
-ompleting the ECALL with a negative SBI error in a0.
-Use SBI_ERR_FAILURE and the normal retdata path, matching other PMU
-handlers and kvm_sbi_ext_pmu_handler comment.
+In order to avoid reading whilst writing, netfslib will allow "streaming
+writes" in which dirty data is stored directly into folios without reading
+them first.  Such folios are marked dirty but may not be marked uptodate.
+If a folio is entirely written by a streaming write, uptodate will be set,
+otherwise it will have a netfs_folio struct attached to ->private recording
+the dirty region.
 
-Fixes: c2f41ddbcdd7 ("RISC-V: KVM: Implement SBI PMU Snapshot feature")
-Cc: stable@vger.kernel.org
-Signed-off-by: Osama Abdelkader <osama.abdelkader@gmail.com>
-Reviewed-by: Anup Patel <anup@brainfault.org>
-Link: https://lore.kernel.org/r/20260514173642.41448-1-osama.abdelkader@gmail.com
-Signed-off-by: Anup Patel <anup@brainfault.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+In the event that a partially written streaming write page is to be
+overwritten entirely by a single write(), netfs_perform_write() will try to
+copy over it, but doesn't discard the netfs_folio if it succeeds; further,
+it doesn't correctly handle a partial copy that overwrites some of the
+dirty data.
+
+Fix this by the following:
+
+ (1) If the folio is successfully overwritten, free the netfs_folio struct
+     before marking the page uptodate.
+
+ (2) If the copy to the folio partially fails, but short of the dirty data,
+     just ignore the copy.
+
+ (3) If the copy partially fails and overwrites some of the dirty data,
+     accept the copy, update the netfs_folio struct to record the new data.
+     If the folio is now filled, free the netfs_folio and set uptodate,
+     otherwise return a partial write.
+
+Found with:
+
+	fsx -q -N 1000000 -p 10000 -o 128000 -l 600000 \
+	  /xfstest.test/junk --replay-ops=junk.fsxops
+
+using the following as junk.fsxops:
+
+	truncate 0x0 0 0x927c0
+	write 0x63fb8 0x53c8 0
+	copy_range 0xb704 0x19b9 0x24429 0x79380
+	write 0x2402b 0x144a2 0x90660 *
+	write 0x204d5 0x140a0 0x927c0 *
+	copy_range 0x1f72c 0x137d0 0x7a906 0x927c0 *
+	read 0x00000 0x20000 0x9157c
+	read 0x20000 0x20000 0x9157c
+	read 0x40000 0x20000 0x9157c
+	read 0x60000 0x20000 0x9157c
+	read 0x7e1a0 0xcfb9 0x9157c
+
+on cifs with the default cache option.
+
+It shows folio 0x24 misbehaving if the FMODE_READ check is commented out in
+netfs_perform_write():
+
+		if (//(file->f_mode & FMODE_READ) ||
+		    netfs_is_cache_enabled(ctx)) {
+
+and no fscache.  This was initially found with the generic/522 xfstest.
+
+Fixes: 8f52de0077ba ("netfs: Reduce number of conditional branches in netfs_perform_write()")
+Signed-off-by: David Howells <dhowells@redhat.com>
+Link: https://patch.msgid.link/20260512123404.719402-14-dhowells@redhat.com
+cc: Paulo Alcantara <pc@manguebit.org>
+cc: Matthew Wilcox <willy@infradead.org>
+cc: netfs@lists.linux.dev
+cc: linux-fsdevel@vger.kernel.org
+Signed-off-by: Christian Brauner <brauner@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/riscv/kvm/vcpu_pmu.c |    6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
+ fs/netfs/buffered_write.c    | 47 ++++++++++++++++++++++++++----------
+ include/trace/events/netfs.h |  3 +++
+ 2 files changed, 37 insertions(+), 13 deletions(-)
 
---- a/arch/riscv/kvm/vcpu_pmu.c
-+++ b/arch/riscv/kvm/vcpu_pmu.c
-@@ -435,8 +435,10 @@ int kvm_riscv_vcpu_pmu_snapshot_set_shme
- 	}
+diff --git a/fs/netfs/buffered_write.c b/fs/netfs/buffered_write.c
+index 1fa13c2629a73..99736895e964f 100644
+--- a/fs/netfs/buffered_write.c
++++ b/fs/netfs/buffered_write.c
+@@ -247,18 +247,38 @@ ssize_t netfs_perform_write(struct kiocb *iocb, struct iov_iter *iter,
+ 		/* See if we can write a whole folio in one go. */
+ 		if (!maybe_trouble && offset == 0 && part >= flen) {
+ 			copied = copy_folio_from_iter_atomic(folio, offset, part, iter);
+-			if (unlikely(copied == 0))
++			if (likely(copied == part)) {
++				if (finfo) {
++					trace = netfs_whole_folio_modify_filled;
++					goto folio_now_filled;
++				}
++				__netfs_set_group(folio, netfs_group);
++				folio_mark_uptodate(folio);
++				trace = netfs_whole_folio_modify;
++				goto copied;
++			}
++			if (copied == 0)
+ 				goto copy_failed;
+-			if (unlikely(copied < part)) {
++			if (!finfo || copied <= finfo->dirty_offset) {
+ 				maybe_trouble = true;
+ 				iov_iter_revert(iter, copied);
+ 				copied = 0;
+ 				folio_unlock(folio);
+ 				goto retry;
+ 			}
+-			__netfs_set_group(folio, netfs_group);
+-			folio_mark_uptodate(folio);
+-			trace = netfs_whole_folio_modify;
++
++			/* We overwrote some existing dirty data, so we have to
++			 * accept the partial write.
++			 */
++			finfo->dirty_len += finfo->dirty_offset;
++			if (finfo->dirty_len == flen) {
++				trace = netfs_whole_folio_modify_filled_efault;
++				goto folio_now_filled;
++			}
++			if (copied > finfo->dirty_len)
++				finfo->dirty_len = copied;
++			finfo->dirty_offset = 0;
++			trace = netfs_whole_folio_modify_efault;
+ 			goto copied;
+ 		}
  
- 	kvpmu->sdata = kzalloc(snapshot_area_size, GFP_ATOMIC);
--	if (!kvpmu->sdata)
--		return -ENOMEM;
-+	if (!kvpmu->sdata) {
-+		sbiret = SBI_ERR_FAILURE;
-+		goto out;
-+	}
+@@ -328,16 +348,10 @@ ssize_t netfs_perform_write(struct kiocb *iocb, struct iov_iter *iter,
+ 				goto copy_failed;
+ 			finfo->dirty_len += copied;
+ 			if (finfo->dirty_offset == 0 && finfo->dirty_len == flen) {
+-				if (finfo->netfs_group)
+-					folio_change_private(folio, finfo->netfs_group);
+-				else
+-					folio_detach_private(folio);
+-				folio_mark_uptodate(folio);
+-				kfree(finfo);
+ 				trace = netfs_streaming_cont_filled_page;
+-			} else {
+-				trace = netfs_streaming_write_cont;
++				goto folio_now_filled;
+ 			}
++			trace = netfs_streaming_write_cont;
+ 			goto copied;
+ 		}
  
- 	if (kvm_vcpu_write_guest(vcpu, saddr, kvpmu->sdata, snapshot_area_size)) {
- 		kfree(kvpmu->sdata);
+@@ -351,6 +365,13 @@ ssize_t netfs_perform_write(struct kiocb *iocb, struct iov_iter *iter,
+ 			goto out;
+ 		continue;
+ 
++	folio_now_filled:
++		if (finfo->netfs_group)
++			folio_change_private(folio, finfo->netfs_group);
++		else
++			folio_detach_private(folio);
++		folio_mark_uptodate(folio);
++		kfree(finfo);
+ 	copied:
+ 		trace_netfs_folio(folio, trace);
+ 		flush_dcache_folio(folio);
+diff --git a/include/trace/events/netfs.h b/include/trace/events/netfs.h
+index 88d814ba1e697..db045135406c9 100644
+--- a/include/trace/events/netfs.h
++++ b/include/trace/events/netfs.h
+@@ -177,6 +177,9 @@
+ 	EM(netfs_folio_is_uptodate,		"mod-uptodate")	\
+ 	EM(netfs_just_prefetch,			"mod-prefetch")	\
+ 	EM(netfs_whole_folio_modify,		"mod-whole-f")	\
++	EM(netfs_whole_folio_modify_efault,	"mod-whole-f!")	\
++	EM(netfs_whole_folio_modify_filled,	"mod-whole-f+")	\
++	EM(netfs_whole_folio_modify_filled_efault, "mod-whole-f+!") \
+ 	EM(netfs_modify_and_clear,		"mod-n-clear")	\
+ 	EM(netfs_streaming_write,		"mod-streamw")	\
+ 	EM(netfs_streaming_write_cont,		"mod-streamw+")	\
+-- 
+2.53.0
+
 
 
 
