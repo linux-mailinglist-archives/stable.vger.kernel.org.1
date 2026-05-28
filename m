@@ -1,58 +1,61 @@
-Return-Path: <stable+bounces-256286-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-255479-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id CHHUAqirGGpEmAgAu9opvQ
-	(envelope-from <stable+bounces-256286-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:55:04 +0200
+	id EFOTCQujGGrJlggAu9opvQ
+	(envelope-from <stable+bounces-255479-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:18:19 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5A0505F9D8C
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:55:03 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id B43075F8582
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:18:18 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 9ED8331A4BB5
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 20:48:07 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 855E3304893E
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 20:10:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D6D76352019;
-	Thu, 28 May 2026 20:47:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E112F352019;
+	Thu, 28 May 2026 20:10:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PElGAqUv"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kkg3CM4F"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A1D59349B1C;
-	Thu, 28 May 2026 20:47:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B8F12335566;
+	Thu, 28 May 2026 20:10:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780001274; cv=none; b=AtXr4vF2jaig9KuSY0a1owxspfFwRhgjRezZw++1MDJYT0e8tq7JxW/LwUE4Dbx1SHydvHGcBEbzqGsd5TuXLFJwXQ++aNt9zO9eyChN1GI+xbdOEL9ngFjyXQ7gzlZzC3PRQdBoe9StZqpQlaRQKLXWjCfkJZgCjJB1xRYOCd8=
+	t=1779999027; cv=none; b=aqkUcIW6QlU00/U/Smaw34/itax6gToeDkeTzhQVx/yBmSnwhx52WKh4MfT2zGySUJROWoLD4te1achrtT8sayD6QNCyglHiubwmhjdN6iz7v/Ks8u/ZyAWcbRjXpAx2jely+T9pl0jbc3I8NPyUFhbZJONTsuGG/I3clZKrKrU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780001274; c=relaxed/simple;
-	bh=T8Gv2KuKPnTG9R74pFU8yGr0BHf59dZc9NAjaZ22YCc=;
+	s=arc-20240116; t=1779999027; c=relaxed/simple;
+	bh=GJaO0TUPivO1uNfre57z1y83zy8Gk6UrdTwSPC0bDEU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=VvjIhYx7eDiRO79Uvom4ShFcQMqdK334Pje+sGcE3is2pXO4lvzARY+NS2CKG/dgjOZEA8kHpELw51OC6qSNhq38MQ2Y/oAjgt8BPD1meCTdxR350OFi6zMDaluCP3GOeD9M9c9iwe/JUYFV3G5qlHY3Qg3Ca5KxqGektMi0Vjo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PElGAqUv; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0CD431F000E9;
-	Thu, 28 May 2026 20:47:52 +0000 (UTC)
+	 MIME-Version:Content-Type; b=h/RRK20VIKHCO5Gb1YL7jQdGLZLQnDRrmTwKllUn940zXD8Ca0tAyfJpQH/0EnmAkoiaq6mRwVS2ImNXlUPsX0tjhPgHnjMPdymQdhTJhl8OAA5qfAtiVrtzj67ccobienUd+2jyVjPUm8LJXBpcVjpovUuGidsTOCq0cni+32s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kkg3CM4F; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DF12B1F000E9;
+	Thu, 28 May 2026 20:10:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780001273;
-	bh=n8r7f0U2k0bd1X6QgRlojJ69iAFCYSukU14SkfYluTA=;
+	s=korg; t=1779999026;
+	bh=wxgjqmSK4EGbqrQrsq/MzboJs0TXDr6TtDg/euMooBM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=PElGAqUvmnmSKPe+gnyHgbTygxfRXGs1TXdut8ZdhfppfG7dsAcKY1UKA6ioR4A8p
-	 1X1kyI3F7mDTR624aWlXhN/eLVVsWvGU0p/E6ratEwWaYlCpA/k4CzvDylrol9H+p3
-	 5Z8B8bfhlrv1skTAiaKMs8hySQsWPDTbenpv2Lcg=
+	b=kkg3CM4FWQTW2aydg+U+uh9lpO+fjvFgPTiZ4Ab/2aD2G+96PlCqXc0PvS1YBU+VQ
+	 TZQBgk6T6NCzyvzeKW3SB2pB9IaWKXIvIeixvKWSPSLsjlObFEvMocECUaVBP0Jzf8
+	 wvw33LoERxwF8dKYz+OyCAAa2xhNVko2QHQ45NfU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jiakai Xu <xujiakai24@mails.ucas.ac.cn>,
-	Takashi Iwai <tiwai@suse.de>
-Subject: [PATCH 6.6 030/186] ALSA: pcm: Dont setup bogus iov_iter for silencing
+	Mitul Golani <mitulkumar.ajitkumar.golani@intel.com>,
+	Ankit Nautiyal <ankit.k.nautiyal@intel.com>,
+	=?UTF-8?q?Ville=20Syrj=C3=A4l=C3=A4?= <ville.syrjala@linux.intel.com>,
+	Tvrtko Ursulin <tursulin@ursulin.net>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 7.0 381/461] drm/i915/dp: Fix readback for target_rr in Adaptive Sync SDP
 Date: Thu, 28 May 2026 21:48:30 +0200
-Message-ID: <20260528194929.776995582@linuxfoundation.org>
+Message-ID: <20260528194658.483273169@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260528194928.941004471@linuxfoundation.org>
-References: <20260528194928.941004471@linuxfoundation.org>
+In-Reply-To: <20260528194646.819809818@linuxfoundation.org>
+References: <20260528194646.819809818@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,79 +65,80 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
+	TAGGED_FROM(0.00)[bounces-255479-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-256286-lists,stable=lfdr.de];
-	TO_DN_SOME(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	TO_DN_SOME(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[5];
+	RCPT_COUNT_SEVEN(0.00)[8];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[suse.de:email,msgid.link:url,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim]
-X-Rspamd-Queue-Id: 5A0505F9D8C
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,intel.com:email,msgid.link:url,ursulin.net:email,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
+X-Rspamd-Queue-Id: B43075F8582
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+7.0-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Takashi Iwai <tiwai@suse.de>
+From: Ankit Nautiyal <ankit.k.nautiyal@intel.com>
 
-commit e4d3386b74fba8e01280484b67ee481ece00201e upstream.
+[ Upstream commit f87abd0c6604fb6cc31cc86fc7ccc6a576924352 ]
 
-At transition to the iov_iter for PCM data transfer, we blindly
-applied the iov_iter setup also for silencing (i.e. data = NULL), and
-it leads to a calculation of bogus iov_iter.  Fortunately this didn't
-cause troubles on most of architectures but it goes wrong on RISC-V
-now, causing a NULL dereference.
+Correct the bit-shift logic to properly readback the 10 bit target_rr from
+DB3 and DB4.
 
-Handle the NULL data case to treat the silencing in interleaved_copy()
-for addressing the bug above.  noninterleaved_copy() has already the
-NULL data handling, so it doesn't need changes.
+v2: Align the style with readback for vtotal. (Ville)
 
-Reported-by: Jiakai Xu <xujiakai24@mails.ucas.ac.cn>
-Closes: https://lore.kernel.org/20260515051516.3103036-1-xujiakai24@mails.ucas.ac.cn
-Fixes: cf393babb37a ("ALSA: pcm: Add copy ops with iov_iter")
-Cc: <stable@vger.kernel.org>
-Link: https://patch.msgid.link/20260517165121.31399-1-tiwai@suse.de
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 12ea89291603 ("drm/i915/dp: Add Read/Write support for Adaptive Sync SDP")
+Cc: Mitul Golani <mitulkumar.ajitkumar.golani@intel.com>
+Cc: Ankit Nautiyal <ankit.k.nautiyal@intel.com>
+Signed-off-by: Ankit Nautiyal <ankit.k.nautiyal@intel.com>
+Reviewed-by: Ville Syrjälä <ville.syrjala@linux.intel.com>
+Link: https://patch.msgid.link/20260511123218.1589830-2-ankit.k.nautiyal@intel.com
+(cherry picked from commit f7abc4af2b19240a145a221461dfe756cc01d74a)
+Signed-off-by: Tvrtko Ursulin <tursulin@ursulin.net>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/core/pcm_lib.c |    3 +++
- 1 file changed, 3 insertions(+)
+ drivers/gpu/drm/i915/display/intel_dp.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/sound/core/pcm_lib.c
-+++ b/sound/core/pcm_lib.c
-@@ -2074,6 +2074,9 @@ static int interleaved_copy(struct snd_p
- 	off = frames_to_bytes(runtime, off);
- 	frames = frames_to_bytes(runtime, frames);
+diff --git a/drivers/gpu/drm/i915/display/intel_dp.c b/drivers/gpu/drm/i915/display/intel_dp.c
+index 2906dc6e630ec..d52205d714eee 100644
+--- a/drivers/gpu/drm/i915/display/intel_dp.c
++++ b/drivers/gpu/drm/i915/display/intel_dp.c
+@@ -5067,7 +5067,7 @@ int intel_dp_as_sdp_unpack(struct drm_dp_as_sdp *as_sdp,
+ 	as_sdp->length = sdp->sdp_header.HB3 & DP_ADAPTIVE_SYNC_SDP_LENGTH;
+ 	as_sdp->mode = sdp->db[0] & DP_ADAPTIVE_SYNC_SDP_OPERATION_MODE;
+ 	as_sdp->vtotal = (sdp->db[2] << 8) | sdp->db[1];
+-	as_sdp->target_rr = (u64)sdp->db[3] | ((u64)sdp->db[4] & 0x3);
++	as_sdp->target_rr = ((sdp->db[4] & 0x3) << 8) | sdp->db[3];
+ 	as_sdp->target_rr_divider = sdp->db[4] & 0x20 ? true : false;
  
-+	if (!data)
-+		return fill_silence(substream, 0, hwoff, NULL, frames);
-+
- 	return do_transfer(substream, 0, hwoff, data + off, frames, transfer,
- 			   in_kernel);
- }
+ 	return 0;
+-- 
+2.53.0
+
 
 
 
