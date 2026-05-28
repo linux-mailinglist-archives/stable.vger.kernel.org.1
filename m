@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-255266-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-255267-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id AO3lMRmfGGpblggAu9opvQ
-	(envelope-from <stable+bounces-255266-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:01:29 +0200
+	id CJYdHByfGGpAlggAu9opvQ
+	(envelope-from <stable+bounces-255267-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:01:32 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id D33B75F7ABA
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:01:28 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id B17BE5F7AC3
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:01:31 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 5AAE8303C8EB
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 20:00:29 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 57CF2303CC6D
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 20:00:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9C27E409623;
-	Thu, 28 May 2026 20:00:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 28995409623;
+	Thu, 28 May 2026 20:00:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ztjmjjzG"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fzJzBRyt"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 75ADE409630;
-	Thu, 28 May 2026 20:00:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E95E91AA1D2;
+	Thu, 28 May 2026 20:00:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779998427; cv=none; b=BITA+wUE5oju9EXe9sOlr8eYHgsjYyY/M8W0keDlqaCS3NTer2ScgmxdCaj8kjhy4CVmW/IgZkfQBllmraKRtpvAK0lnY4JHJOgMezzYMGiwgdAvbco+AyOHhGTwhByCFw+N7OiKA0ITg7/t32t+D4B/5BnuMWRfdx0YKGOITKA=
+	t=1779998430; cv=none; b=WpEREffDUyFSsFcQLigUxeFmlArt3EpBzm8SHwjDxj1AsOxZ4wO7NkRb9pXOL84L2N1hLxo7+m+IlWaiEagasHdc5b5twcJZ8cSAqphOeyZkAwNmk9h90OWUg/sd3h1PzAhTsRyRh8U9U1WvR/FNy/e6z9NH/1y80EEBFhyoU/Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779998427; c=relaxed/simple;
-	bh=skGNAlcKBQruuIqs9iUO6WLZwH7/lG6pIHNzfu9G94E=;
+	s=arc-20240116; t=1779998430; c=relaxed/simple;
+	bh=FtysiS7Au7eJ+/i8aHWsmvM4pFmuQd6jGwKxNktQX8A=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=GVVppdQBRVmb7H2+k/p2AV5cP5mE78FJ9FhvHQdgs/iRIZieRoGCJapFmUaCRDnCnj2VnSxJkYWgCYHy2OiXOIPey2qrdB1H5lkXt7R2uv/CO6Gc0zzZPwhpmLZMynVIBDhOtIPdPRPjuwIKzeFr4ORatXC0zsVLchnSwB8inwE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ztjmjjzG; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 87F211F000E9;
-	Thu, 28 May 2026 20:00:25 +0000 (UTC)
+	 MIME-Version; b=YA0FMGgZf9FADthH51jJAumamZgTf2537TIZhzLDuYsA+mBkWqdnJ2w5F6habQtYeBii4Ff30Nw7mjKBuMWNoz0Z9ema+13oPXc/mwMrp7uyjeQyZCQPaONsHBJO6PKseB1i2zVwbP5sUC0N6LRBx0SDtUgTwUtwsZWQw4sbItg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fzJzBRyt; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 54E0A1F000E9;
+	Thu, 28 May 2026 20:00:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779998426;
-	bh=/faiq15wQST21qdkEZEw4RfH+QNFa6nSoLTcZv8Whn8=;
+	s=korg; t=1779998428;
+	bh=00ivADU3jPdnb81bhAjaTQ/G+D164dMIi5LHpcJJfMo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=ztjmjjzGiaCi/FRYeJe0LYmZh8p9VllpmcZY9/nVTOhTBTYduT2tC7DcVK36Y7Y4T
-	 HurVZnkMAQ2254cjpDb0sX9Zv3Hh4mitRczzum3ufzOWoTdDhBwupHPfSzHVPtGDSF
-	 4JXY4xrN+rZs0gGAED6bf1KGq2xRaumMWUrwX2QM=
+	b=fzJzBRytZdNhGICo1Mu8+4IwViwsOWcFvm41UZsouErfW8aCiyrvFwDsuCyKYFxhI
+	 8lDMva/rd7Bhd+U/M16oup3jMj319L8rCvmnWDjzqqJKczTpEk4HK1enNQs/TJsZ78
+	 kFLawWniAaTdzhvAPSjEU+mrn4htxMXAvTGjUrC4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
 	Abdurrahman Hussain <abdurrahman@nexthop.ai>,
 	Bartosz Golaszewski <bartosz.golaszewski@oss.qualcomm.com>,
-	Linus Walleij <linusw@kernel.org>,
 	Guenter Roeck <linux@roeck-us.net>
-Subject: [PATCH 7.0 170/461] hwmon: (pmbus/adm1266) dont clobber GPIO bits before PDIO read in get_multiple
-Date: Thu, 28 May 2026 21:44:59 +0200
-Message-ID: <20260528194651.985322082@linuxfoundation.org>
+Subject: [PATCH 7.0 171/461] hwmon: (pmbus/adm1266) register the gpio_chip after pmbus_do_probe()
+Date: Thu, 28 May 2026 21:45:00 +0200
+Message-ID: <20260528194652.014194888@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
 In-Reply-To: <20260528194646.819809818@linuxfoundation.org>
 References: <20260528194646.819809818@linuxfoundation.org>
@@ -69,30 +68,30 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-255266-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-255267-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
-	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[7];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_FIVE(0.00)[6];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
 	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,roeck-us.net:email,qualcomm.com:email,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,nexthop.ai:email]
-X-Rspamd-Queue-Id: D33B75F7ABA
+X-Rspamd-Queue-Id: B17BE5F7AC3
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
@@ -102,54 +101,59 @@ X-Rspamd-Server: lfdr
 
 From: Abdurrahman Hussain <abdurrahman@nexthop.ai>
 
-commit 3327a12aee9e10ffa903e28b8445dfd1af5307c0 upstream.
+commit 491403b9b76cf66abd81301c5901aa4a4549f1e8 upstream.
 
-adm1266_gpio_get_multiple() zeroes *bits before the GPIO_STATUS loop
-and then a second time before the PDIO_STATUS loop:
+adm1266_probe() calls adm1266_config_gpio() -- which goes on to
+devm_gpiochip_add_data() and exposes the gpio_chip callbacks to
+gpiolib -- before pmbus_do_probe() has initialised the per-client
+PMBus state (notably the pmbus_lock mutex the core hands out via
+pmbus_get_data()).
 
-	*bits = 0;
-	for_each_set_bit(gpio_nr, mask, ADM1266_GPIO_NR) {
-		...
-		set_bit(gpio_nr, bits);
-	}
+That ordering is already a latent hazard: any GPIO access that lands
+between adm1266_config_gpio() and the end of pmbus_do_probe() (for
+example a sysfs read from a user space agent that opens the gpiochip
+the instant gpiolib advertises it) races pmbus_do_probe()'s own
+device accesses with no serialisation.
 
-	ret = i2c_smbus_read_block_data(data->client, ADM1266_PDIO_STATUS, ...);
-	...
-	*bits = 0;
-	for_each_set_bit_from(gpio_nr, mask, ADM1266_GPIO_NR + ADM1266_PDIO_NR) {
-		...
-		set_bit(gpio_nr, bits);
-	}
-
-The second *bits = 0 throws away every GPIO bit the first loop just
-populated, so callers asking for any combination of GPIO and PDIO
-pins always see the GPIO portion of the returned bits as zero.
-
-Drop the redundant second assignment so both halves of the result
-survive.
+Move adm1266_config_gpio() down past pmbus_do_probe() so the chip
+isn't reachable from userspace until the PMBus state it depends on
+is fully initialised.
 
 Fixes: d98dfad35c38 ("hwmon: (pmbus/adm1266) Add support for GPIOs")
 Cc: stable@vger.kernel.org
 Signed-off-by: Abdurrahman Hussain <abdurrahman@nexthop.ai>
 Reviewed-by: Bartosz Golaszewski <bartosz.golaszewski@oss.qualcomm.com>
-Reviewed-by: Linus Walleij <linusw@kernel.org>
-Link: https://lore.kernel.org/r/20260518-adm1266-gpio-fixes-v3-2-e425e4f88139@nexthop.ai
+Link: https://lore.kernel.org/r/20260518-adm1266-gpio-fixes-v3-4-e425e4f88139@nexthop.ai
 Signed-off-by: Guenter Roeck <linux@roeck-us.net>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/hwmon/pmbus/adm1266.c |    1 -
- 1 file changed, 1 deletion(-)
+ drivers/hwmon/pmbus/adm1266.c |    8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
 --- a/drivers/hwmon/pmbus/adm1266.c
 +++ b/drivers/hwmon/pmbus/adm1266.c
-@@ -211,7 +211,6 @@ static int adm1266_gpio_get_multiple(str
+@@ -466,10 +466,6 @@ static int adm1266_probe(struct i2c_clie
+ 	crc8_populate_msb(pmbus_crc_table, 0x7);
+ 	mutex_init(&data->buf_mutex);
  
- 	status = read_buf[0] + (read_buf[1] << 8);
+-	ret = adm1266_config_gpio(data);
+-	if (ret < 0)
+-		return ret;
+-
+ 	ret = adm1266_set_rtc(data);
+ 	if (ret < 0)
+ 		return ret;
+@@ -482,6 +478,10 @@ static int adm1266_probe(struct i2c_clie
+ 	if (ret)
+ 		return ret;
  
--	*bits = 0;
- 	for_each_set_bit_from(gpio_nr, mask, ADM1266_GPIO_NR + ADM1266_PDIO_NR) {
- 		if (test_bit(gpio_nr - ADM1266_GPIO_NR, &status))
- 			set_bit(gpio_nr, bits);
++	ret = adm1266_config_gpio(data);
++	if (ret < 0)
++		return ret;
++
+ 	adm1266_init_debugfs(data);
+ 
+ 	return 0;
 
 
 
