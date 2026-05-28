@@ -1,62 +1,61 @@
-Return-Path: <stable+bounces-255347-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-255956-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id gNJwBVShGGqnlggAu9opvQ
-	(envelope-from <stable+bounces-255347-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:11:00 +0200
+	id eGukMQSpGGrclwgAu9opvQ
+	(envelope-from <stable+bounces-255956-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:43:48 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8858A5F7FEE
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:10:59 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 314065F9687
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:43:48 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id CF24431ECCCF
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 20:04:15 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id C54F9302297C
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 20:32:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9DD772FD7C3;
-	Thu, 28 May 2026 20:04:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8496A33D4E2;
+	Thu, 28 May 2026 20:32:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rfkNri3W"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="N9uqfyF7"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 48B0D3164B7;
-	Thu, 28 May 2026 20:04:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5AA7233B6FC;
+	Thu, 28 May 2026 20:32:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779998655; cv=none; b=fmt5ehbQ50mJ91UiHw6ELejbBjhchlnpVZH5D8c1fHQMJCqH4GDBPPYm5vnGJ6u86bdfFRHbyp66HbtpLQ+hGJfNeoWjJPy1vDToQ/7lVzGgvjSnL0qO6fFnVnYodr6vIMw+MvGi42J2fybSA4v32/T0nw1Ajbzs0zpXJnMMJhs=
+	t=1780000350; cv=none; b=a/vI4UZmDwLFTq/VfC00q+TMZbLQxhYytyAOHD8ou1ChLHrnKGytirfSHr9GdqdTn34WEoTcM2zgAyy4JNzd9C9NZRPCCJNefRP7SUzpTW8OGWlw5qNuM3xVK5wUj8bpjI0gfRDsZmNFzc0dgZgA/uZc2x9Mmcgosuh3gJt5BPc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779998655; c=relaxed/simple;
-	bh=XJSIDlwq1Qrn2KgududYJqTxTOHPrfOpd8CO7Lls4Lo=;
+	s=arc-20240116; t=1780000350; c=relaxed/simple;
+	bh=r5gdkHCaCdPKXjQaaJ15XaMsP+srt00TlG8o+NIjjsE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=l5J1OVmRAmA1wAjSICgBNDp4CHwiDWlQPZwB5g6wndZUiamtWw0RrfDyI/Sn5xHpgpm149yA4RZz0C9vWbBi0FsRVDtY6lYi5xSe+w1/VsciXsR+gaKFeKuwAMEtopGzMos5i3pMb57CylprQZkS5YWTsQTW79eGfyJbSIENAoA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rfkNri3W; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id ABE771F000E9;
-	Thu, 28 May 2026 20:04:13 +0000 (UTC)
+	 MIME-Version; b=FKim2JcDs1IagwT8d4VWGdeMxXaXJXJmu841+BtmTicpVuHEvMdhhclG8vRP2oQUVhxcm1PNsV2ERxESV92qr64nfViJ/a1w06tfNk8RKabyrjNbLj8wg7HQtUnNwnLBOE3ect9wUcooY2lp1KmJ3HghFBqesBgpnjirn05AiFw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=N9uqfyF7; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B63FF1F000E9;
+	Thu, 28 May 2026 20:32:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779998654;
-	bh=Ptg+ocnKUHL78QZ/Cl+Lkeja9skaf3MXMemV7xbXFDU=;
+	s=korg; t=1780000349;
+	bh=ubAfmvK40HAXnzA0DecTsiPi/oWu/uFPSgvM4Qm/5io=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=rfkNri3WzthB22iZxV7bCitG+gsiHcIpsEsJcPce6w3o19xGPI9LoWtAHU123ycHZ
-	 ghVj9MIkiwfPkHEmp+jEVLQFbCoM1jcaMAbsYoHqjExoLOIsnC00dpC38x5vYB6ShZ
-	 YU9I7ft0LktryouYVXKNZrn3J4s97wrw+IBZDLY4=
+	b=N9uqfyF7GSsuvAQlc8qJAaZ4giA0AAcHGvZvcvAvkcCFo9eljYH9sgs6LmiRjNus/
+	 wXJ/Rx8aTkgyAwoj+bQRek7cexNdcE6TuCuIscuBAxeV2XzxoHOad6OBqDlI64Ies2
+	 Ic6Lq88LdGp2ILRgNnbGxu1tKb/Dkaiq2RbEfB6Q=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	David Howells <dhowells@redhat.com>,
-	Paulo Alcantara <pc@manguebit.org>,
-	netfs@lists.linux.dev,
-	linux-fsdevel@vger.kernel.org,
-	Christian Brauner <brauner@kernel.org>,
+	Matt Roper <matthew.d.roper@intel.com>,
+	Shuicheng Lin <shuicheng.lin@intel.com>,
+	Gustavo Sousa <gustavo.sousa@intel.com>,
+	Matthew Brost <matthew.brost@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 7.0 251/461] netfs: Fix missing locking around retry adding new subreqs
+Subject: [PATCH 6.12 006/272] drm/xe/hdcp: Add NULL check for media_gt in intel_hdcp_gsc_check_status()
 Date: Thu, 28 May 2026 21:46:20 +0200
-Message-ID: <20260528194654.416593338@linuxfoundation.org>
+Message-ID: <20260528194629.559857877@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260528194646.819809818@linuxfoundation.org>
-References: <20260528194646.819809818@linuxfoundation.org>
+In-Reply-To: <20260528194629.379955525@linuxfoundation.org>
+References: <20260528194629.379955525@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -71,7 +70,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
@@ -79,7 +78,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-255347-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-255956-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
@@ -88,95 +87,81 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[9];
+	RCPT_COUNT_SEVEN(0.00)[8];
 	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim,sashiko.dev:url,linux.dev:email,msgid.link:url,manguebit.org:email]
-X-Rspamd-Queue-Id: 8858A5F7FEE
+	DBL_BLOCKED_OPENRESOLVER(0.00)[intel.com:email,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,msgid.link:url,linuxfoundation.org:mid,linuxfoundation.org:dkim]
+X-Rspamd-Queue-Id: 314065F9687
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-7.0-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: David Howells <dhowells@redhat.com>
+From: Gustavo Sousa <gustavo.sousa@intel.com>
 
-[ Upstream commit cce18c263e9623872327ba3c956012f73c1179cc ]
+commit 60a1e131a811b68703da58fd805ab359b704ab03 upstream.
 
-Fix netfs_retry_read_subrequests() and netfs_retry_write_stream() to take
-the appropriate lock when adding extra subrequests into
-stream->subrequests.
+When media GT is disabled via configfs, there is no allocation for
+media_gt, which is kept as NULL.  In such scenario,
+intel_hdcp_gsc_check_status() results in a kernel pagefault error due to
+&gt->uc.gsc being evaluated as an invalid memory address.
 
-Fixes: e2d46f2ec332 ("netfs: Change the read result collector to only use one work item")
-Fixes: 288ace2f57c9 ("netfs: New writeback implementation")
-Closes: https://sashiko.dev/#/patchset/20260425125426.3855807-1-dhowells%40redhat.com
-Signed-off-by: David Howells <dhowells@redhat.com>
-Link: https://patch.msgid.link/20260512123404.719402-3-dhowells@redhat.com
-cc: Paulo Alcantara <pc@manguebit.org>
-cc: netfs@lists.linux.dev
-cc: linux-fsdevel@vger.kernel.org
-Signed-off-by: Christian Brauner <brauner@kernel.org>
+Fix that by introducing a NULL check on media_gt and bailing out early
+if so.
+
+While at it, also drop the NULL check for gsc, since it can't be NULL if
+media_gt is not NULL.
+
+v2:
+  - Get address for gsc only after checking that gt is not NULL.
+    (Shuicheng)
+  - Drop the NULL check for gsc. (Shuicheng)
+v3:
+  - Add "Fixes" and "Cc: <stable...>" tags. (Matt)
+
+Fixes: 4af50beb4e0f ("drm/xe: Use gsc_proxy_init_done to check proxy status")
+Cc: <stable@vger.kernel.org> # v6.10+
+Reviewed-by: Matt Roper <matthew.d.roper@intel.com>
+Reviewed-by: Shuicheng Lin <shuicheng.lin@intel.com>
+Link: https://patch.msgid.link/20260416-check-for-null-media_gt-in-intel_hdcp_gsc_check_status-v2-1-9adb9fd3b621@intel.com
+Signed-off-by: Gustavo Sousa <gustavo.sousa@intel.com>
+(cherry picked from commit bfaf87e84ca3ca3f6e275f9ae56da47a8b55ffd1)
+Signed-off-by: Matthew Brost <matthew.brost@intel.com>
+Signed-off-by: Gustavo Sousa <gustavo.sousa@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/netfs/read_retry.c  | 6 +++++-
- fs/netfs/write_retry.c | 6 +++++-
- 2 files changed, 10 insertions(+), 2 deletions(-)
+ drivers/gpu/drm/xe/display/xe_hdcp_gsc.c | 12 ++++++++++--
+ 1 file changed, 10 insertions(+), 2 deletions(-)
 
-diff --git a/fs/netfs/read_retry.c b/fs/netfs/read_retry.c
-index cca9ac43c0773..5ec548b996d65 100644
---- a/fs/netfs/read_retry.c
-+++ b/fs/netfs/read_retry.c
-@@ -175,7 +175,9 @@ static void netfs_retry_read_subrequests(struct netfs_io_request *rreq)
- 			list_for_each_entry_safe_from(subreq, tmp,
- 						      &stream->subrequests, rreq_link) {
- 				trace_netfs_sreq(subreq, netfs_sreq_trace_superfluous);
-+				spin_lock(&rreq->lock);
- 				list_del(&subreq->rreq_link);
-+				spin_unlock(&rreq->lock);
- 				netfs_put_subrequest(subreq, netfs_sreq_trace_put_done);
- 				if (subreq == to)
- 					break;
-@@ -203,8 +205,10 @@ static void netfs_retry_read_subrequests(struct netfs_io_request *rreq)
- 					     refcount_read(&subreq->ref),
- 					     netfs_sreq_trace_new);
+diff --git a/drivers/gpu/drm/xe/display/xe_hdcp_gsc.c b/drivers/gpu/drm/xe/display/xe_hdcp_gsc.c
+index f4332f06b6c80..695d625c83ee6 100644
+--- a/drivers/gpu/drm/xe/display/xe_hdcp_gsc.c
++++ b/drivers/gpu/drm/xe/display/xe_hdcp_gsc.c
+@@ -39,10 +39,18 @@ bool intel_hdcp_gsc_check_status(struct xe_device *xe)
+ {
+ 	struct xe_tile *tile = xe_device_get_root_tile(xe);
+ 	struct xe_gt *gt = tile->media_gt;
+-	struct xe_gsc *gsc = &gt->uc.gsc;
++	struct xe_gsc *gsc;
+ 	bool ret = true;
  
-+			spin_lock(&rreq->lock);
- 			list_add(&subreq->rreq_link, &to->rreq_link);
--			to = list_next_entry(to, rreq_link);
-+			spin_unlock(&rreq->lock);
-+			to = subreq;
- 			trace_netfs_sreq(subreq, netfs_sreq_trace_retry);
- 
- 			stream->sreq_max_len	= umin(len, rreq->rsize);
-diff --git a/fs/netfs/write_retry.c b/fs/netfs/write_retry.c
-index 29489a23a2209..32735abfa03f0 100644
---- a/fs/netfs/write_retry.c
-+++ b/fs/netfs/write_retry.c
-@@ -130,7 +130,9 @@ static void netfs_retry_write_stream(struct netfs_io_request *wreq,
- 			list_for_each_entry_safe_from(subreq, tmp,
- 						      &stream->subrequests, rreq_link) {
- 				trace_netfs_sreq(subreq, netfs_sreq_trace_discard);
-+				spin_lock(&wreq->lock);
- 				list_del(&subreq->rreq_link);
-+				spin_unlock(&wreq->lock);
- 				netfs_put_subrequest(subreq, netfs_sreq_trace_put_done);
- 				if (subreq == to)
- 					break;
-@@ -153,8 +155,10 @@ static void netfs_retry_write_stream(struct netfs_io_request *wreq,
- 					     netfs_sreq_trace_new);
- 			trace_netfs_sreq(subreq, netfs_sreq_trace_split);
- 
-+			spin_lock(&wreq->lock);
- 			list_add(&subreq->rreq_link, &to->rreq_link);
--			to = list_next_entry(to, rreq_link);
-+			spin_unlock(&wreq->lock);
-+			to = subreq;
- 			trace_netfs_sreq(subreq, netfs_sreq_trace_retry);
- 
- 			stream->sreq_max_len	= len;
+-	if (!gsc || !xe_uc_fw_is_enabled(&gsc->fw)) {
++	if (!gt) {
++		drm_dbg_kms(&xe->drm,
++			    "not checking GSC status for HDCP2.x: media GT not present or disabled\n");
++		return false;
++	}
++
++	gsc = &gt->uc.gsc;
++
++	if (!xe_uc_fw_is_enabled(&gsc->fw)) {
+ 		drm_dbg_kms(&xe->drm,
+ 			    "GSC Components not ready for HDCP2.x\n");
+ 		return false;
 -- 
 2.53.0
 
