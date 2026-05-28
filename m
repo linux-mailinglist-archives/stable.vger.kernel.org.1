@@ -1,63 +1,61 @@
-Return-Path: <stable+bounces-255888-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-256131-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id kHmcHcKmGGp+lwgAu9opvQ
-	(envelope-from <stable+bounces-255888-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:34:10 +0200
+	id yLzcFsSpGGpolwgAu9opvQ
+	(envelope-from <stable+bounces-256131-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:47:00 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 24C8A5F8FC8
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:34:09 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 012D65F98BF
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:46:59 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id B7C1730612B9
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 20:29:23 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 0299530D617D
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 20:40:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A6F1C2F8E88;
-	Thu, 28 May 2026 20:29:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 80D4932F764;
+	Thu, 28 May 2026 20:40:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BbTcwVbx"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NG979PZQ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7F8901C3318;
-	Thu, 28 May 2026 20:29:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 614991DE4E0;
+	Thu, 28 May 2026 20:40:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780000160; cv=none; b=UkmzVJOILwqM4QdQbkQuDl1Ribuv0OycwxWyhB+odRrsaeFDFHFJonA8197OBOPPDUj+EQ5/jW4fSKbjsm6mpxv1N3rGRq8gIbHs0/e5YJQZpMcS9CK0ldxqZV0FPE7DbAS/Wa/+xD1lelU6yLKX/MLuarBa5/LNmctvN8rCxoI=
+	t=1780000843; cv=none; b=XH6P9qzQOdrnNaQm3Iak9lAx6Po1wRkVT3fIaW9TpRDoEqhydPurIy3uA/lsMFYmd8cbjLtH8gtHokFL0sSFLPBMJ+MZfCNikdHAxzi0txDBdoEW7eWynrN+p/hvS4MrPrEjXqEZE99NkztPjDakW5qVa49f60EFMVybFLy6DUo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780000160; c=relaxed/simple;
-	bh=tmB68RTZtPPbE+F5ozsXtx3CxtLTVzVAqJLw41DsGuI=;
+	s=arc-20240116; t=1780000843; c=relaxed/simple;
+	bh=Op846GiqiE6h2wX26EbZDp4eWUtWuydbmJsxQSCJ6t4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=OSu8+C0D9tgqwgBTyI9Aj2KiNqDcg1zDegYDfcB8oBwcE9zlpU7BWCeL3TYInNzKd2Ocpp152NIrCQuYlBVE7Q6jITbIzIdrWmmfLQF3aAXrjmEoEIAEVKnHTEdSC4CwxY0+uOjva2ibUmzB4G5UVeu5pCQPZBmH8g1oIu2b978=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BbTcwVbx; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E375F1F000E9;
-	Thu, 28 May 2026 20:29:18 +0000 (UTC)
+	 MIME-Version; b=DXaNtOBWpw2dJXlqonzGx0cA2Jq+Mr/3o0Bu0qn0iCukw8Q+SuHguB02CzR8M+wo+vnxHPov3Dit2nf5gT3KJVXRLqhsXXpPxuyr9eT3RDRFcK2tErqKk7utfOCrpqYUB2mZPrRPXqho++pUGrDHj6grCfJsVNVroUNPhoolMFg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NG979PZQ; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BFBFB1F000E9;
+	Thu, 28 May 2026 20:40:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780000159;
-	bh=d1/DJty51tJxVc7DD6BiRFXbw2jlpI4Pu4kGE2Jp1vI=;
+	s=korg; t=1780000842;
+	bh=5nnBAIfmIo8de7OS+y1H7Fuu8GNhGkba4Erm4Mp5L2M=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=BbTcwVbxloEW6w+qA2qllbtG2ER9MuOQtgLEJPkkc10l6MVaQaFFVCSZHtm8vdgGs
-	 7YXSOTltgsnScHwAublGaluvGXkLLPLDrHXwnmlWTO1lpecg5ETDCqcShRN0deY2jE
-	 nuERYr7J2FOxRbXbTMwXukHyQBTNl/639v18Fp2Y=
+	b=NG979PZQE69kGidfnVkNJ1rjXs67+nDVnq6UdIf3P67Cy1BbKdyd8a6hDWl3KiZI2
+	 r+YHPb6DhLH/Rfxk6daq7F53iuOqrtJYt9CQUSqXDgIhodCXIH10Yv2Eh8zn1nGq6v
+	 hDXVj2ILQPV7+Y1G4KoPz9VSNFkBWyWJpYtkEY/M=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Kohei Enju <kohei@enjuk.jp>,
-	Aleksandr Loktionov <aleksandr.loktionov@intel.com>,
-	Simon Horman <horms@kernel.org>,
-	Avigail Dahan <avigailx.dahan@intel.com>,
-	Tony Nguyen <anthony.l.nguyen@intel.com>,
+	Damiano Melotti <melotti@google.com>,
+	Kuniyuki Iwashima <kuniyu@google.com>,
+	Eric Dumazet <edumazet@google.com>,
 	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 324/377] igc: set tx buffer type for SMD frames
+Subject: [PATCH 6.12 188/272] tcp: Fix out-of-bounds access for twsk in tcp_ao_established_key().
 Date: Thu, 28 May 2026 21:49:22 +0200
-Message-ID: <20260528194647.788601828@linuxfoundation.org>
+Message-ID: <20260528194634.540350518@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260528194638.371537336@linuxfoundation.org>
-References: <20260528194638.371537336@linuxfoundation.org>
+In-Reply-To: <20260528194629.379955525@linuxfoundation.org>
+References: <20260528194629.379955525@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -77,71 +75,76 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	URIBL_MULTI_FAIL(0.00)[linuxfoundation.org:server fail,msgid.link:server fail];
-	TAGGED_FROM(0.00)[bounces-255888-lists,stable=lfdr.de];
-	PRECEDENCE_BULK(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-256131-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[10];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
 	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,intel.com:email,sashiko.dev:url,linuxfoundation.org:mid,linuxfoundation.org:dkim]
-X-Rspamd-Queue-Id: 24C8A5F8FC8
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_SEVEN(0.00)[8];
+	MID_RHS_MATCH_FROM(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim,msgid.link:url]
+X-Rspamd-Queue-Id: 012D65F98BF
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kohei Enju <kohei@enjuk.jp>
+From: Kuniyuki Iwashima <kuniyu@google.com>
 
-[ Upstream commit 5acc641e590e008caaed480ed9ffae47cf7ecbdf ]
+[ Upstream commit 03cb001ef87b3f8d859cf7f96329acf3d6235d29 ]
 
-Sashiko pointed out that igc_fpe_init_smd_frame() initializes
-igc_tx_buffer fields for an SMD skb, but does not set the buffer type:
-https://sashiko.dev/#/patchset/20260415025226.114115-1-kohei%40enjuk.jp
+lockdep_sock_is_held() was added in tcp_ao_established_key()
+by the cited commit.
 
-Since igc_tx_buffer entries are reused, a stale XDP or XSK type can
-remain and make TX completion use the wrong cleanup path.
+It can be called from tcp_v[46]_timewait_ack() with twsk.
 
-Set the buffer type to IGC_TX_BUFFER_TYPE_SKB.
+Since it does not have sk->sk_lock, the lockdep annotation
+results in out-of-bound access.
 
-Fixes: 5422570c0010 ("igc: add support for frame preemption verification")
-Signed-off-by: Kohei Enju <kohei@enjuk.jp>
-Reviewed-by: Aleksandr Loktionov <aleksandr.loktionov@intel.com>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Tested-by: Avigail Dahan <avigailx.dahan@intel.com>
-Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
-Link: https://patch.msgid.link/20260515182419.1597859-9-anthony.l.nguyen@intel.com
+  $ pahole -C tcp_timewait_sock vmlinux | grep size
+  	/* size: 288, cachelines: 5, members: 8 */
+  $ pahole -C sock vmlinux | grep sk_lock
+  	socket_lock_t              sk_lock;              /*   440   192 */
+
+Let's not use lockdep_sock_is_held() for TCP_TIME_WAIT.
+
+Fixes: 6b2d11e2d8fc ("net/tcp: Add missing lockdep annotations for TCP-AO hlist traversals")
+Reported-by: Damiano Melotti <melotti@google.com>
+Signed-off-by: Kuniyuki Iwashima <kuniyu@google.com>
+Reviewed-by: Eric Dumazet <edumazet@google.com>
+Link: https://patch.msgid.link/20260508120853.4098365-1-kuniyu@google.com
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/intel/igc/igc_tsn.c | 1 +
- 1 file changed, 1 insertion(+)
+ net/ipv4/tcp_ao.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/net/ethernet/intel/igc/igc_tsn.c b/drivers/net/ethernet/intel/igc/igc_tsn.c
-index 02dd9f0290a34..52de2bcbadbec 100644
---- a/drivers/net/ethernet/intel/igc/igc_tsn.c
-+++ b/drivers/net/ethernet/intel/igc/igc_tsn.c
-@@ -34,6 +34,7 @@ static int igc_fpe_init_smd_frame(struct igc_ring *ring,
- 		return -ENOMEM;
- 	}
+diff --git a/net/ipv4/tcp_ao.c b/net/ipv4/tcp_ao.c
+index 72957523c2eca..be38712265c37 100644
+--- a/net/ipv4/tcp_ao.c
++++ b/net/ipv4/tcp_ao.c
+@@ -116,7 +116,8 @@ struct tcp_ao_key *tcp_ao_established_key(const struct sock *sk,
+ {
+ 	struct tcp_ao_key *key;
  
-+	buffer->type = IGC_TX_BUFFER_TYPE_SKB;
- 	buffer->skb = skb;
- 	buffer->protocol = 0;
- 	buffer->bytecount = skb->len;
+-	hlist_for_each_entry_rcu(key, &ao->head, node, lockdep_sock_is_held(sk)) {
++	hlist_for_each_entry_rcu(key, &ao->head, node,
++				 sk_fullsock(sk) && lockdep_sock_is_held(sk)) {
+ 		if ((sndid >= 0 && key->sndid != sndid) ||
+ 		    (rcvid >= 0 && key->rcvid != rcvid))
+ 			continue;
 -- 
 2.53.0
 
