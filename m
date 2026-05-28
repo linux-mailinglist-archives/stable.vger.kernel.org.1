@@ -1,59 +1,59 @@
-Return-Path: <stable+bounces-255569-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-255254-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id mIgPJZKiGGqblggAu9opvQ
-	(envelope-from <stable+bounces-255569-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:16:18 +0200
+	id IFN3LryeGGpAlggAu9opvQ
+	(envelope-from <stable+bounces-255254-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 21:59:56 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id E249E5F8386
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:16:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5DEDC5F79D2
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 21:59:56 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id DD7EC306348C
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 20:14:41 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id A77C7301572D
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 19:59:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5C1683FE37C;
-	Thu, 28 May 2026 20:14:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B711C34040F;
+	Thu, 28 May 2026 19:59:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SNgCXhfD"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cC40tIuH"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 33F0533CE8A;
-	Thu, 28 May 2026 20:14:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7B7B426B973;
+	Thu, 28 May 2026 19:59:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779999281; cv=none; b=ZEAElV/sujKL6PG77/HKPKk4ELRxOvnBp+mGy+YKhWTNQTEPVfWPgVepxVeHDXS/AlIyCybJf7TCTL5Wy8d8QyRGMr0EnMquT8FU4qUKdJ1KijdmLKjKflYzs00JXiXvt8bPeOldnUK2Z1eUQ5R7ilsBpDvE84dJThn6ZVfvkIo=
+	t=1779998392; cv=none; b=eT/sEr348hOa/jChKpX4v7gAU+xMo1sG+8tOxuseN9g47WR3C+ueG1UVoDEQep6HVvNkSvfG919tycQTCi6suk0AUhwFRxzht0fcLK/WcRmywPNnq13Aswl3zPBv+RDgi+2cKJyNv/t7lko8aR5DNT3PeyYvhcw3y3K2+YPRTm4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779999281; c=relaxed/simple;
-	bh=cjnDDRXY9RLjaliqdF4L64WbP7xzVeoEBMCb6YLQwuo=;
+	s=arc-20240116; t=1779998392; c=relaxed/simple;
+	bh=yHgOuMohB+r3T3SgzUDyGmi37S7IIVV+GaMQf4Y0iqc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=VdMzNhfke2ef1bwQREoR2hzkQ9+LYOoppBIOYEJHBLZ8ATIwFqfHJ7tnVlBtxPVA/NJy7m1Rzv6EEWsWByOm/QW+F6npbzMP3if82sM0Hrt07jWjhb0gJbCAuJYRDKxlhak7mULN0ygWdhQCM3Bc1JiD9H9sD9TJcB8NTbjwHCE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SNgCXhfD; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8A5331F000E9;
-	Thu, 28 May 2026 20:14:39 +0000 (UTC)
+	 MIME-Version; b=HAGYWXjKnKfj+NPznIEVTPVUGWLPKb1KqgkOQ4FFPzlBOsBP2C3krjkDz1LuZaQmqxItFpefaSsEnv+OtMz0PNXBhMjN7t503FgBV/MOeGI2lORgVxMLHt0++Cb3ilKcxa8a7Q6MUOPWsSx9uumzDgIpzgKF4nrC6XgaypsAZrY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cC40tIuH; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DA4FE1F000E9;
+	Thu, 28 May 2026 19:59:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779999280;
-	bh=D+mQO/ZeKASSEr9FS8PBz6qJ0AVaTdLcd+IpVJ+aL5Y=;
+	s=korg; t=1779998391;
+	bh=fYU/n5v7D6TKtgBG2uN8JcxBSN3oE3JHnhEzbdDgaF8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=SNgCXhfDKbb36j+GhDh1ljIzLrhwrf1DrGK5U1wzLC/LCkwD67o8zaJgOsR3WrwH/
-	 wnjsBHSQuPY1nxJrgXhWSW9mcxemrinO/wYZRpYYpg6gfmjIauGgBFRdFVvhD9pitJ
-	 ateTdsB2jW3nLOIHeKMApwr1Nmewk+UaipJEPAtI=
+	b=cC40tIuHO78h6Aoqnds1csv8molTnZqngMejD+9vvTvDtYbyvhchTKJO+Fyu6zntg
+	 v69RL98Shk2w4upC90KoWHOY2562JpijdxBakTrS5s8VS33313Sctjwj9jRvOgkba7
+	 TlRy9ooDh3ODURbCrQdRjiZxgIPxMYxxd2FOOgNA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	David Howells <dhowells@redhat.com>,
-	Asim Viladi Oglu Manizada <manizada@pm.me>,
-	Steve French <stfrench@microsoft.com>
-Subject: [PATCH 6.18 011/377] smb: client: reject userspace cifs.spnego descriptions
+	Michael Bommarito <michael.bommarito@gmail.com>,
+	Bernard Metzler <bernard.metzler@linux.dev>,
+	Jason Gunthorpe <jgg@nvidia.com>
+Subject: [PATCH 7.0 120/461] RDMA/siw: Reject MPA FPDU length underflow before signed receive math
 Date: Thu, 28 May 2026 21:44:09 +0200
-Message-ID: <20260528194638.715343147@linuxfoundation.org>
+Message-ID: <20260528194650.452977245@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260528194638.371537336@linuxfoundation.org>
-References: <20260528194638.371537336@linuxfoundation.org>
+In-Reply-To: <20260528194646.819809818@linuxfoundation.org>
+References: <20260528194646.819809818@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,102 +64,139 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	RCVD_TLS_LAST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-255569-lists,stable=lfdr.de];
 	TO_DN_SOME(0.00)[];
-	FROM_HAS_DN(0.00)[];
+	TAGGED_FROM(0.00)[bounces-255254-lists,stable=lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,linux.dev,nvidia.com];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	FROM_HAS_DN(0.00)[];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	NEURAL_HAM(-0.00)[-0.999];
 	TAGGED_RCPT(0.00)[stable];
+	MID_RHS_MATCH_FROM(0.00)[];
 	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,pm.me:email]
-X-Rspamd-Queue-Id: E249E5F8386
+	DBL_BLOCKED_OPENRESOLVER(0.00)[nvidia.com:email,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,msgid.link:url,linux.dev:email]
+X-Rspamd-Queue-Id: 5DEDC5F79D2
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+7.0-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Asim Viladi Oglu Manizada <manizada@pm.me>
+From: Michael Bommarito <michael.bommarito@gmail.com>
 
-commit 3da1fdf4efbc490041eb4f836bf596201203f8f2 upstream.
+commit 0ce1bc9e46ecabe84772bb561e373c0d9876d6f2 upstream.
 
-cifs.spnego key descriptions contain authority-bearing fields such as
-pid, uid, creduid, and upcall_target that cifs.upcall treats as
-kernel-originating inputs. However, userspace can also create keys of
-this type through request_key(2) or add_key(2), allowing those fields to
-be supplied without CIFS origin.
+A malicious connected siw peer can send an iWARP FPDU whose MPA length
+field (c_hdr->mpa_len, 16 bit big-endian, peer-controlled) is smaller
+than the fixed DDP/RDMAP header for the announced opcode. Soft-iWARP
+parses the full header in siw_get_hdr() based on iwarp_pktinfo[opcode]
+.hdr_len, but never compares mpa_len against that header length.
 
-Only accept cifs.spnego descriptions while CIFS is using its private
-spnego_cred to request the key.
+siw_tcp_rx_data() then derives
 
-Fixes: f1d662a7d5e5 ("[CIFS] Add upcall files for cifs to use spnego/kerberos")
-Assisted-by: avom-custom-harness:gpt-5.5-qwen3.6-mod-mix
-Reviewed-by: David Howells <dhowells@redhat.com>
-Signed-off-by: Asim Viladi Oglu Manizada <manizada@pm.me>
-Signed-off-by: Steve French <stfrench@microsoft.com>
+    srx->fpdu_part_rem = be16_to_cpu(mpa_len) - fpdu_part_rcvd
+                         + MPA_HDR_SIZE;
+
+where fpdu_part_rcvd equals iwarp_pktinfo[opcode].hdr_len at this
+point. For a tagged WRITE (hdr_len 16, MPA_HDR_SIZE 2) the smallest
+on-wire mpa_len of 0 yields fpdu_part_rem = -14, and any mpa_len below
+hdr_len - MPA_HDR_SIZE underflows to a negative int.
+
+The signed value then flows into siw_proc_write()/siw_proc_rresp() as
+
+    bytes = min(srx->fpdu_part_rem, srx->skb_new);
+
+is handed to siw_check_mem() as an int len (whose interval check
+addr + len > mem->va + mem->len is satisfied for a valid base when
+len is negative), and reaches siw_rx_data() -> siw_rx_kva() /
+siw_rx_umem() -> skb_copy_bits() as a signed copy length. The header
+copy branch in skb_copy_bits() promotes that to size_t, producing a
+multi-gigabyte read.
+
+KASAN under a KUnit harness that drives the real kernel TCP receive
+path -- a loopback AF_INET socketpair, the malformed FPDU written via
+kernel_sendmsg, sk_data_ready firing in softirq, tcp_read_sock
+dispatching to siw_tcp_rx_data -- reports:
+
+    BUG: KASAN: use-after-free in skb_copy_bits+0x284/0x480
+    Read of size 4294967295 at addr ffff888...
+    Call Trace:
+     skb_copy_bits
+     siw_rx_kva
+     siw_rx_data
+     siw_check_mem
+     siw_proc_write
+     siw_tcp_rx_data
+     __tcp_read_sock
+     siw_qp_llp_data_ready
+     tcp_data_ready
+     tcp_data_queue
+
+Add the missing invariant at the earliest point where the peer header
+is fully assembled. iwarp_pktinfo[*].hdr_len - MPA_HDR_SIZE is exactly
+the value the siw transmitter uses as the minimum mpa_len for each
+opcode (drivers/infiniband/sw/siw/siw_qp.c:33), so this matches the
+protocol contract. Out-of-range FPDUs terminate the connection with
+TERM_ERROR_LAYER_LLP / LLP_ETYPE_MPA / LLP_ECODE_FPDU_START -- which
+is RFC 5044 Section 8 error code 3 ("Marker and ULPDU Length fields
+do not agree on the start of an FPDU"), the correct framing-error
+class for this inconsistency.
+
+Fixes: 8b6a361b8c48 ("rdma/siw: receive path")
+Link: https://patch.msgid.link/r/20260513175325.2042630-2-michael.bommarito@gmail.com
+Cc: stable@vger.kernel.org
+Signed-off-by: Michael Bommarito <michael.bommarito@gmail.com>
+Assisted-by: Claude:claude-opus-4-7
+Acked-by: Bernard Metzler <bernard.metzler@linux.dev>
+Signed-off-by: Jason Gunthorpe <jgg@nvidia.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/smb/client/cifs_spnego.c |   16 ++++++++++++++++
- 1 file changed, 16 insertions(+)
+ drivers/infiniband/sw/siw/siw_qp_rx.c |   15 +++++++++++++++
+ 1 file changed, 15 insertions(+)
 
---- a/fs/smb/client/cifs_spnego.c
-+++ b/fs/smb/client/cifs_spnego.c
-@@ -8,6 +8,7 @@
-  */
+--- a/drivers/infiniband/sw/siw/siw_qp_rx.c
++++ b/drivers/infiniband/sw/siw/siw_qp_rx.c
+@@ -1082,6 +1082,21 @@ static int siw_get_hdr(struct siw_rx_str
+ 	}
  
- #include <linux/list.h>
-+#include <linux/cred.h>
- #include <linux/slab.h>
- #include <linux/string.h>
- #include <keys/user-type.h>
-@@ -40,12 +41,27 @@ cifs_spnego_key_destroy(struct key *key)
- 	kfree(key->payload.data[0]);
- }
- 
-+static int
-+cifs_spnego_key_vet_description(const char *description)
-+{
-+	/*
-+	 * cifs.spnego descriptions are authority-bearing inputs to cifs.upcall.
-+	 * They are only valid when produced by CIFS while using the private
-+	 * spnego_cred installed below.  Do not let userspace create this type
-+	 * of key through request_key(2)/add_key(2), since the helper treats
-+	 * pid/uid/creduid/upcall_target as kernel-originating fields.
+ 	/*
++	 * Peer-controlled mpa_len must not underflow srx->fpdu_part_rem
++	 * in siw_tcp_rx_data(); a negative value flows as a signed copy
++	 * length into siw_check_mem() and skb_copy_bits().
 +	 */
-+	if (current_cred() != spnego_cred)
-+		return -EPERM;
-+	return 0;
-+}
- 
- /*
-  * keytype for CIFS spnego keys
-  */
- struct key_type cifs_spnego_key_type = {
- 	.name		= "cifs.spnego",
-+	.vet_description = cifs_spnego_key_vet_description,
- 	.instantiate	= cifs_spnego_key_instantiate,
- 	.destroy	= cifs_spnego_key_destroy,
- 	.describe	= user_describe,
++	if (unlikely(be16_to_cpu(c_hdr->mpa_len) + MPA_HDR_SIZE <
++		     iwarp_pktinfo[opcode].hdr_len)) {
++		pr_warn_ratelimited("siw: short mpa_len %u for opcode %u (hdr_len %u)\n",
++				    be16_to_cpu(c_hdr->mpa_len), opcode,
++				    iwarp_pktinfo[opcode].hdr_len);
++		siw_init_terminate(rx_qp(srx), TERM_ERROR_LAYER_LLP,
++				   LLP_ETYPE_MPA, LLP_ECODE_FPDU_START, 0);
++		return -EINVAL;
++	}
++
++	/*
+ 	 * DDP/RDMAP header receive completed. Check if the current
+ 	 * DDP segment starts a new RDMAP message or continues a previously
+ 	 * started RDMAP message.
 
 
 
