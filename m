@@ -1,59 +1,60 @@
-Return-Path: <stable+bounces-255403-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-255796-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id IC2WHKeiGGrKlggAu9opvQ
-	(envelope-from <stable+bounces-255403-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:16:39 +0200
+	id cNc5BiWoGGpolwgAu9opvQ
+	(envelope-from <stable+bounces-255796-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:40:05 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id E29A35F83D1
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:16:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9394B5F9457
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:40:04 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id EB3AF312481D
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 20:06:52 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id BA04D3237772
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 20:25:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A5AD8335566;
-	Thu, 28 May 2026 20:06:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B66941C3318;
+	Thu, 28 May 2026 20:25:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="B/HK7Ss3"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qWJwnbnF"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 466FD2F691F;
-	Thu, 28 May 2026 20:06:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5DE3E317163;
+	Thu, 28 May 2026 20:25:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779998812; cv=none; b=HRP2dKhy1OZTK2XA581gRXZ9mPUxIPZp/c7jByHFrvBYaqq+EaZOkUbfCeAStEI5/pSIe7IOEQmgJhYFnsHdfJy3kuV/jwmDOSyD5G7dgGiX8fmgeE9O9szz9WNBW/YY0fXqCXGj8QyVlNeR5L4z6cW//2QQd36bQqN8awV3hJA=
+	t=1779999907; cv=none; b=nlxoAbN1VHa2svrdElIh083oKbmgkfxiQZ4myTGiGSAAbKYxgawFZ0L99oMmhDER0VMlWHb1+QWG3yB/esvHqvrWxFj9eJp7r8kHChaI5lBMv54OEmEIuxK4S3bj8sHIe5s6f2YkuomFtaKq822ZbHLeoa18afKIC7vqSYVIwDU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779998812; c=relaxed/simple;
-	bh=hG7D7F1e0T2C9UX7mGaQ3Z0FBQrP5tyrxbbigK9pYHY=;
+	s=arc-20240116; t=1779999907; c=relaxed/simple;
+	bh=xbEFcRxjvANkkqGJKF55vDB1KI683VgX+k253uFBsko=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=X1UfrICJR0lhLvSS9SpTwhOVuIMGgU1Hil/jmY2r9a9/Ul7ERgt+RAL7MQx9LOw9abWcRrFqt86mqM/i60mXJLVS9fEJX03bgUogIJpG+NkVoKAzt39bbIs44mWBYraNtCJZUzzdmySQDiaWlXR2X47HOGGofihLRoZw1uCCABg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=B/HK7Ss3; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A38701F00A3A;
-	Thu, 28 May 2026 20:06:50 +0000 (UTC)
+	 MIME-Version; b=E9RHwNAcCmJwlviPqGkEyCeycoaf6xZe/zc1o5WrSAmHqFrJfZO3PCE/nglcehcaWFnGCR9MiJ/EOoqPnNd+93OsV242sBcbT0u0D5Ho5TDeNmHUCwmjOSk2x4hXd41jgkeLILNka5HPd2xAKf64pKIVgL1dbKUbW8rX74ChLss=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qWJwnbnF; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BA59C1F00A3E;
+	Thu, 28 May 2026 20:25:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779998811;
-	bh=QQn9QioIiOgAFu4zswWSFnP42Nj5P7W6TD4iRU5N4LM=;
+	s=korg; t=1779999906;
+	bh=ufMsBYODA3dw/WXVH2VDVxgnNIhCk1eKuDLOHfVVu0k=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=B/HK7Ss3dMdh4t6Sj1dGj0BZKTeAtc2OqG7V7KvUlhmc+/I9kBrGHtnFTV9q29xh/
-	 WVqsycXuvh1u/UWlwRuCNGbEd9dfwCbU4KmmKAQhymTwunnUqVlI39h2N7B8cPaKX/
-	 A0E5rpS55y1f790fVNvI7WklZQicNHjS7CSQXW14=
+	b=qWJwnbnF4NysCHQlLI97VIHT1AoyasEETecleciAfuO5/30W3evXxh0AgHHHIxeXe
+	 OecE2cTTj+4JvoNTcYcblLVX9t+Tyh0M9hIc3Y87U+XfISPPQlpVzR86Rbw2QjdpYn
+	 eVUtDsceBUoNvkHiik+fpkjT4ReSBB/CgphcElEI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Akhil P Oommen <akhilpo@oss.qualcomm.com>,
-	Rob Clark <robin.clark@oss.qualcomm.com>,
+	Boris Burkov <boris@bur.io>,
+	Filipe Manana <fdmanana@suse.com>,
+	David Sterba <dsterba@suse.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 7.0 305/461] drm/msm/a6xx: Add soft fuse detection support
-Date: Thu, 28 May 2026 21:47:14 +0200
-Message-ID: <20260528194656.102354197@linuxfoundation.org>
+Subject: [PATCH 6.18 197/377] btrfs: tracepoints: fix sleep while in atomic context in btrfs_sync_file()
+Date: Thu, 28 May 2026 21:47:15 +0200
+Message-ID: <20260528194644.110591197@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260528194646.819809818@linuxfoundation.org>
-References: <20260528194646.819809818@linuxfoundation.org>
+In-Reply-To: <20260528194638.371537336@linuxfoundation.org>
+References: <20260528194638.371537336@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -73,230 +74,98 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-255796-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-255403-lists,stable=lfdr.de];
-	TO_DN_SOME(0.00)[];
-	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TO_DN_SOME(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
 	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim,qualcomm.com:email,patchwork.freedesktop.org:url]
-X-Rspamd-Queue-Id: E29A35F83D1
+	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_SEVEN(0.00)[7];
+	MID_RHS_MATCH_FROM(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,bur.io:email,suse.com:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,qemu.org:url]
+X-Rspamd-Queue-Id: 9394B5F9457
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-7.0-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Akhil P Oommen <akhilpo@oss.qualcomm.com>
+From: Filipe Manana <fdmanana@suse.com>
 
-[ Upstream commit 4ac686bfd1929ef659a99f893ebe8faf7f35c76c ]
+[ Upstream commit c73370c677646e86fc4b1780fb07027bdf847375 ]
 
-Recent chipsets like Glymur supports a new mechanism for SKU detection.
-A new CX_MISC register exposes the combined (or final) speedbin value
-from both HW fuse register and the Soft Fuse register. Implement this new
-SKU detection along with a new quirk to identify the GPUs that has soft
-fuse support.
+The trace event btrfs_sync_file() is called in an atomic context (all trace
+events are) and its call to dput(), which is needed due to the call to
+dget_parent(), can sleep, triggering a kernel splat.
 
-There is a side effect of this patch on A4x and older series. The
-speedbin field in the MSM_PARAM_CHIPID will be 0 instead of 0xffff. This
-should be okay as Mesa correctly handles it. Speedbin was not even a
-thing when those GPUs' support were added.
+This can be reproduced by enabling the trace event and running btrfs/056
+from fstests for example. The splat shown in dmesg is the following:
 
-Signed-off-by: Akhil P Oommen <akhilpo@oss.qualcomm.com>
-Patchwork: https://patchwork.freedesktop.org/patch/714676/
-Message-ID: <20260327-a8xx-gpu-batch2-v2-12-2b53c38d2101@oss.qualcomm.com>
-Signed-off-by: Rob Clark <robin.clark@oss.qualcomm.com>
-Stable-dep-of: e64bca63647d ("drm/msm/adreno: Fix a reference leak in a6xx_gpu_init()")
+  [53.919] BUG: sleeping function called from invalid context at fs/dcache.c:970
+  [53.947] in_atomic(): 1, irqs_disabled(): 0, non_block: 0, pid: 32773, name: xfs_io
+  [53.988] preempt_count: 2, expected: 0
+  [53.967] RCU nest depth: 0, expected: 0
+  [53.943] Preemption disabled at:
+  [53.944] [<0000000000000000>] 0x0
+  [54.078] CPU: 0 UID: 0 PID: 32773 Comm: xfs_io Tainted: G        W           7.1.0-rc1-btrfs-next-232+ #1 PREEMPT(full)
+  [54.070] Tainted: [W]=WARN
+  [54.071] Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS rel-1.16.2-0-gea1b7a073390-prebuilt.qemu.org 04/01/2014
+  [54.072] Call Trace:
+  [54.074]  <TASK>
+  [54.076]  dump_stack_lvl+0x56/0x80
+  [54.079]  __might_resched.cold+0xd6/0x10f
+  [54.072]  dput.part.0+0x24/0x110
+  [54.078]  trace_event_raw_event_btrfs_sync_file+0x75/0x140 [btrfs]
+  [54.089]  btrfs_sync_file+0x1ed/0x530 [btrfs]
+  [54.087]  ? __handle_mm_fault+0x8ae/0xed0
+  [54.089]  btrfs_do_write_iter+0x172/0x210 [btrfs]
+  [54.091]  vfs_write+0x21f/0x450
+  [54.094]  __x64_sys_pwrite64+0x8d/0xc0
+  [54.096]  ? do_user_addr_fault+0x20c/0x670
+  [54.099]  do_syscall_64+0x60/0xf20
+  [54.092]  ? clear_bhb_loop+0x60/0xb0
+  [54.094]  entry_SYSCALL_64_after_hwframe+0x76/0x7e
+
+So stop using dget_parent() and dput() and access the parent dentry
+directly as dentry->d_parent. This is also what ext4 is doing in
+its equivalent trace event ext4_sync_file_enter().
+
+Fixes: a85b46db143f ("btrfs: tracepoints: get correct superblock from dentry in event btrfs_sync_file()")
+Reviewed-by: Boris Burkov <boris@bur.io>
+Signed-off-by: Filipe Manana <fdmanana@suse.com>
+Reviewed-by: David Sterba <dsterba@suse.com>
+Signed-off-by: David Sterba <dsterba@suse.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/msm/adreno/a5xx_gpu.c         |  6 +++
- drivers/gpu/drm/msm/adreno/a6xx_gpu.c         | 41 +++++++++++++++----
- drivers/gpu/drm/msm/adreno/adreno_gpu.c       |  5 ---
- drivers/gpu/drm/msm/adreno/adreno_gpu.h       |  1 +
- drivers/gpu/drm/msm/registers/adreno/a6xx.xml |  4 ++
- 5 files changed, 45 insertions(+), 12 deletions(-)
+ include/trace/events/btrfs.h | 4 +---
+ 1 file changed, 1 insertion(+), 3 deletions(-)
 
-diff --git a/drivers/gpu/drm/msm/adreno/a5xx_gpu.c b/drivers/gpu/drm/msm/adreno/a5xx_gpu.c
-index e44302251de56..79acae11154aa 100644
---- a/drivers/gpu/drm/msm/adreno/a5xx_gpu.c
-+++ b/drivers/gpu/drm/msm/adreno/a5xx_gpu.c
-@@ -1730,6 +1730,7 @@ static struct msm_gpu *a5xx_gpu_init(struct drm_device *dev)
- 	struct adreno_gpu *adreno_gpu;
- 	struct msm_gpu *gpu;
- 	unsigned int nr_rings;
-+	u32 speedbin;
- 	int ret;
+diff --git a/include/trace/events/btrfs.h b/include/trace/events/btrfs.h
+index 0864700f76e0a..fa090a455037a 100644
+--- a/include/trace/events/btrfs.h
++++ b/include/trace/events/btrfs.h
+@@ -771,10 +771,8 @@ TRACE_EVENT(btrfs_sync_file,
+ 	TP_fast_assign(
+ 		struct dentry *dentry = file_dentry(file);
+ 		struct inode *inode = file_inode(file);
+-		struct dentry *parent = dget_parent(dentry);
+-		struct inode *parent_inode = d_inode(parent);
++		struct inode *parent_inode = d_inode(dentry->d_parent);
  
- 	a5xx_gpu = kzalloc_obj(*a5xx_gpu);
-@@ -1756,6 +1757,11 @@ static struct msm_gpu *a5xx_gpu_init(struct drm_device *dev)
- 		return ERR_PTR(ret);
- 	}
- 
-+	/* Set the speedbin value that is passed to userspace */
-+	if (adreno_read_speedbin(&pdev->dev, &speedbin) || !speedbin)
-+		speedbin = 0xffff;
-+	adreno_gpu->speedbin = (uint16_t) (0xffff & speedbin);
-+
- 	msm_mmu_set_fault_handler(to_msm_vm(gpu->vm)->mmu, gpu,
- 				  a5xx_fault_handler);
- 
-diff --git a/drivers/gpu/drm/msm/adreno/a6xx_gpu.c b/drivers/gpu/drm/msm/adreno/a6xx_gpu.c
-index 0e8a48ca816dd..ae61c204898cd 100644
---- a/drivers/gpu/drm/msm/adreno/a6xx_gpu.c
-+++ b/drivers/gpu/drm/msm/adreno/a6xx_gpu.c
-@@ -2546,13 +2546,33 @@ static u32 fuse_to_supp_hw(const struct adreno_info *info, u32 fuse)
- 	return UINT_MAX;
- }
- 
--static int a6xx_set_supported_hw(struct device *dev, const struct adreno_info *info)
-+static int a6xx_read_speedbin(struct device *dev, struct a6xx_gpu *a6xx_gpu,
-+		const struct adreno_info *info, u32 *speedbin)
-+{
-+	int ret;
-+
-+	/* Use speedbin fuse if present. Otherwise, fallback to softfuse */
-+	ret = adreno_read_speedbin(dev, speedbin);
-+	if (ret != -ENOENT)
-+		return ret;
-+
-+	if (info->quirks & ADRENO_QUIRK_SOFTFUSE) {
-+		*speedbin = a6xx_llc_read(a6xx_gpu, REG_A8XX_CX_MISC_SW_FUSE_FREQ_LIMIT_STATUS);
-+		*speedbin = A8XX_CX_MISC_SW_FUSE_FREQ_LIMIT_STATUS_FINALFREQLIMIT(*speedbin);
-+		return 0;
-+	}
-+
-+	return -ENOENT;
-+}
-+
-+static int a6xx_set_supported_hw(struct device *dev, struct a6xx_gpu *a6xx_gpu,
-+		const struct adreno_info *info)
- {
- 	u32 supp_hw;
- 	u32 speedbin;
- 	int ret;
- 
--	ret = adreno_read_speedbin(dev, &speedbin);
-+	ret = a6xx_read_speedbin(dev, a6xx_gpu, info, &speedbin);
- 	/*
- 	 * -ENOENT means that the platform doesn't support speedbin which is
- 	 * fine
-@@ -2586,11 +2606,13 @@ static struct msm_gpu *a6xx_gpu_init(struct drm_device *dev)
- 	struct msm_drm_private *priv = dev->dev_private;
- 	struct platform_device *pdev = priv->gpu_pdev;
- 	struct adreno_platform_config *config = pdev->dev.platform_data;
-+	const struct adreno_info *info = config->info;
- 	struct device_node *node;
- 	struct a6xx_gpu *a6xx_gpu;
- 	struct adreno_gpu *adreno_gpu;
- 	struct msm_gpu *gpu;
- 	extern int enable_preemption;
-+	u32 speedbin;
- 	bool is_a7xx;
- 	int ret, nr_rings = 1;
- 
-@@ -2614,14 +2636,14 @@ static struct msm_gpu *a6xx_gpu_init(struct drm_device *dev)
- 	adreno_gpu->gmu_is_wrapper = of_device_is_compatible(node, "qcom,adreno-gmu-wrapper");
- 
- 	adreno_gpu->base.hw_apriv =
--		!!(config->info->quirks & ADRENO_QUIRK_HAS_HW_APRIV);
-+		!!(info->quirks & ADRENO_QUIRK_HAS_HW_APRIV);
- 
- 	/* gpu->info only gets assigned in adreno_gpu_init(). A8x is included intentionally */
--	is_a7xx = config->info->family >= ADRENO_7XX_GEN1;
-+	is_a7xx = info->family >= ADRENO_7XX_GEN1;
- 
- 	a6xx_llc_slices_init(pdev, a6xx_gpu, is_a7xx);
- 
--	ret = a6xx_set_supported_hw(&pdev->dev, config->info);
-+	ret = a6xx_set_supported_hw(&pdev->dev, a6xx_gpu, info);
- 	if (ret) {
- 		a6xx_llc_slices_destroy(a6xx_gpu);
- 		kfree(a6xx_gpu);
-@@ -2629,15 +2651,20 @@ static struct msm_gpu *a6xx_gpu_init(struct drm_device *dev)
- 	}
- 
- 	if ((enable_preemption == 1) || (enable_preemption == -1 &&
--	    (config->info->quirks & ADRENO_QUIRK_PREEMPTION)))
-+	    (info->quirks & ADRENO_QUIRK_PREEMPTION)))
- 		nr_rings = 4;
- 
--	ret = adreno_gpu_init(dev, pdev, adreno_gpu, config->info->funcs, nr_rings);
-+	ret = adreno_gpu_init(dev, pdev, adreno_gpu, info->funcs, nr_rings);
- 	if (ret) {
- 		a6xx_destroy(&(a6xx_gpu->base.base));
- 		return ERR_PTR(ret);
- 	}
- 
-+	/* Set the speedbin value that is passed to userspace */
-+	if (a6xx_read_speedbin(&pdev->dev, a6xx_gpu, info, &speedbin) || !speedbin)
-+		speedbin = 0xffff;
-+	adreno_gpu->speedbin = (uint16_t) (0xffff & speedbin);
-+
- 	/*
- 	 * For now only clamp to idle freq for devices where this is known not
- 	 * to cause power supply issues:
-diff --git a/drivers/gpu/drm/msm/adreno/adreno_gpu.c b/drivers/gpu/drm/msm/adreno/adreno_gpu.c
-index 8bf19e72e5bcd..277ef0c5c08d1 100644
---- a/drivers/gpu/drm/msm/adreno/adreno_gpu.c
-+++ b/drivers/gpu/drm/msm/adreno/adreno_gpu.c
-@@ -1182,7 +1182,6 @@ int adreno_gpu_init(struct drm_device *drm, struct platform_device *pdev,
- 	struct msm_gpu_config adreno_gpu_config  = { 0 };
- 	struct msm_gpu *gpu = &adreno_gpu->base;
- 	const char *gpu_name;
--	u32 speedbin;
- 	int ret;
- 
- 	adreno_gpu->funcs = funcs;
-@@ -1211,10 +1210,6 @@ int adreno_gpu_init(struct drm_device *drm, struct platform_device *pdev,
- 			devm_pm_opp_set_clkname(dev, "core");
- 	}
- 
--	if (adreno_read_speedbin(dev, &speedbin) || !speedbin)
--		speedbin = 0xffff;
--	adreno_gpu->speedbin = (uint16_t) (0xffff & speedbin);
--
- 	gpu_name = devm_kasprintf(dev, GFP_KERNEL, "%"ADRENO_CHIPID_FMT,
- 			ADRENO_CHIPID_ARGS(config->chip_id));
- 	if (!gpu_name)
-diff --git a/drivers/gpu/drm/msm/adreno/adreno_gpu.h b/drivers/gpu/drm/msm/adreno/adreno_gpu.h
-index 29097e6b42535..044ed4d49aa7a 100644
---- a/drivers/gpu/drm/msm/adreno/adreno_gpu.h
-+++ b/drivers/gpu/drm/msm/adreno/adreno_gpu.h
-@@ -63,6 +63,7 @@ enum adreno_family {
- #define ADRENO_QUIRK_PREEMPTION			BIT(5)
- #define ADRENO_QUIRK_4GB_VA			BIT(6)
- #define ADRENO_QUIRK_IFPC			BIT(7)
-+#define ADRENO_QUIRK_SOFTFUSE			BIT(8)
- 
- /* Helper for formating the chip_id in the way that userspace tools like
-  * crashdec expect.
-diff --git a/drivers/gpu/drm/msm/registers/adreno/a6xx.xml b/drivers/gpu/drm/msm/registers/adreno/a6xx.xml
-index 3941e75107545..2309870f50317 100644
---- a/drivers/gpu/drm/msm/registers/adreno/a6xx.xml
-+++ b/drivers/gpu/drm/msm/registers/adreno/a6xx.xml
-@@ -5016,6 +5016,10 @@ by a particular renderpass/blit.
- 		<bitfield pos="1" name="LPAC" type="boolean"/>
- 		<bitfield pos="2" name="RAYTRACING" type="boolean"/>
- 	</reg32>
-+	<reg32 offset="0x0405" name="CX_MISC_SW_FUSE_FREQ_LIMIT_STATUS" variants="A8XX-">
-+		<bitfield high="8" low="0" name="FINALFREQLIMIT"/>
-+		<bitfield pos="24" name="SOFTSKUDISABLED" type="boolean"/>
-+	</reg32>
- </domain>
- 
- </database>
+-		dput(parent);
+ 		TP_fast_assign_fsid(btrfs_sb(inode->i_sb));
+ 		__entry->ino		= btrfs_ino(BTRFS_I(inode));
+ 		__entry->parent		= btrfs_ino(BTRFS_I(parent_inode));
 -- 
 2.53.0
 
