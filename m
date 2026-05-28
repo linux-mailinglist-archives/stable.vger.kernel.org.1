@@ -1,62 +1,60 @@
-Return-Path: <stable+bounces-255856-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-255496-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id iOZmOeClGGrClggAu9opvQ
-	(envelope-from <stable+bounces-255856-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:30:24 +0200
+	id mNlTDSKjGGrJlggAu9opvQ
+	(envelope-from <stable+bounces-255496-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:18:42 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id EE1B75F8D65
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:30:23 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id A8A9E5F85C1
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:18:41 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id EAE49303F0D4
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 20:27:54 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 5BC6830078FF
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 20:11:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 513FF2F39B4;
-	Thu, 28 May 2026 20:27:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3413B33F5BE;
+	Thu, 28 May 2026 20:11:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="J02MhGe+"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2GZT2+Mr"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 25863DDC5;
-	Thu, 28 May 2026 20:27:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F03E3335566;
+	Thu, 28 May 2026 20:11:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780000069; cv=none; b=Q1wThb0TWb+B9QmlaDzVi/1du8LKysksL1yP2PPiRq4dP9W8Uw27ft/hwnX9Zs25Vc1uWKIdXYmoA4MbXJeYGEpDGQcTpMXubrMLsFArkrF49RfVUFeWjYwTZXk/d4qZpvJHHeiNcioNi7OSUcW1wDtYU8IUssuVbxjJJiY+vvM=
+	t=1779999075; cv=none; b=iE/OkkAmCiO7j1NS9l1FheVkCWyeyGqGAlMzFMuXDpsfrTxU6QEo0As9BuZ+LSFdTt5CfEjGcX96uIBDXDVjV6Bs2rUELy/haLMWrEcv95aVdAOajL+W3Xk2ukP9EETek3ohvOcTJcgh3K4hLf3IWdzInkFRZIAKbogakG/dVCg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780000069; c=relaxed/simple;
-	bh=l4+HmCFfxrssU1lEkizEIPpgSfq0TGaSR3+gTglBhj0=;
+	s=arc-20240116; t=1779999075; c=relaxed/simple;
+	bh=Jik+Uyg2KulaFjKuL2LZ298i1oCIhOnzRRIGy8A1H4M=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=UyR8XKqPY21eda7GLIc+6BxAUi0EX8b/b7IPEnCHSA0MAJ2MLTto7hPzd3f6dCqiR+donMp/JXjfJTNbKW7At2avtv8xmJ9aIJCvn00Vu0bmjnmxahNr4dWoCjg5ZhEqfReAbx22rcCsjl9V8SE0ylzORnLGwpzdxy0769Lbzvw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=J02MhGe+; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8905D1F000E9;
-	Thu, 28 May 2026 20:27:47 +0000 (UTC)
+	 MIME-Version:Content-Type; b=K85zfIC2kdwuR/i/fyShKqKVGZAroR84jbRFyDgvL8I61xHT3YD/S13ypPHp2BtdIBpSyEF16L1PejFL8kID5Iy7JBwKbJQbYsibk7t2Do7zTjajyTq8LHqncc0KKbV/OTH8E2g26GO+xW5oEdxFb3usDiDGLEY6KWJuZHXPtEk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2GZT2+Mr; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 52B4E1F000E9;
+	Thu, 28 May 2026 20:11:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780000068;
-	bh=d/fLsJquHuA5T4kV13t/VEayAQJRRQ1puD17UC82M3g=;
+	s=korg; t=1779999073;
+	bh=gdxTFr/jOn6k8GNTLpTgt1WYiGfX4JXE3xDMWbiw1Z0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=J02MhGe+3I2/C4uWOLErfyt5AaiwlNwS6AyZawYbE5WIqmayQIEhVsWVIUDu+Oohp
-	 UOpyjdkdytDkT+0ySaqwrLODY+2qJz8d+erarMXaJV9yjczY5I9fz44Yc1csb23H4x
-	 azE+nyRtvnNO2aJ0Xlh7csRkTx4iYaCCLMXYSAhw=
+	b=2GZT2+MrltcTl8/8YMm86FYXSZEKsOv2stzpZuyF9eyFYBVOfxpDMnIaEFTwP7ycj
+	 1pCSZmSBKSv7UFCLwyrGBbH1IuyO8EnpcAMCGvhIKC67NVG8cVjDJ3f4MtxbJMSbQz
+	 hZiEDIf0Dw7VPCVtRwMPjSgFYKIs65vpFVG4oGA8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jeroen Massar <jmassar@nvidia.com>,
-	Jianbo Liu <jianbol@nvidia.com>,
-	Cosmin Ratiu <cratiu@nvidia.com>,
-	Tariq Toukan <tariqt@nvidia.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	=?UTF-8?q?Timur=20Krist=C3=B3f?= <timur.kristof@gmail.com>,
+	=?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 291/377] net/mlx5: Do not restore destination-less TC rules
+Subject: [PATCH 7.0 400/461] drm/amdgpu/vce1: Fix VCE 1 firmware size and offsets
 Date: Thu, 28 May 2026 21:48:49 +0200
-Message-ID: <20260528194646.774083261@linuxfoundation.org>
+Message-ID: <20260528194659.051286688@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260528194638.371537336@linuxfoundation.org>
-References: <20260528194638.371537336@linuxfoundation.org>
+In-Reply-To: <20260528194646.819809818@linuxfoundation.org>
+References: <20260528194646.819809818@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,89 +64,142 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-0.66 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-255856-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,amd.com,kernel.org];
+	TAGGED_FROM(0.00)[bounces-255496-lists,stable=lfdr.de];
+	FROM_HAS_DN(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	TO_DN_SOME(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
-	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[9];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,msgid.link:url,nvidia.com:email,linuxfoundation.org:mid,linuxfoundation.org:dkim]
-X-Rspamd-Queue-Id: EE1B75F8D65
+	RCPT_COUNT_SEVEN(0.00)[7];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,amd.com:email,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
+X-Rspamd-Queue-Id: A8A9E5F85C1
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+7.0-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jeroen Massar <jmassar@nvidia.com>
+From: Timur Kristóf <timur.kristof@gmail.com>
 
-[ Upstream commit 8d0a5af8b1ba598e7340761729801624e7a9330e ]
+[ Upstream commit 3e5a1d5bb2ff061e64c7992f8e5404dfd4c2d0f3 ]
 
-After IPsec policy/state TX rules are added, any TC flow rule, which
-forwards packets to uplink, is modified to forward to IPsec TX tables.
-As these tables are destroyed dynamically, whenever there is no
-reference to them, the destinations of this kind of rules must be
-restored to uplink, unless there is no destination for that rule.
+The VCPU BO contains the actual FW at an offset, but
+it was not calculated into the VCPU BO size.
+Subtract this from the FW size to make sure there is
+no out of bounds access.
 
-The flow rules FLOW_ACTION_ACCEPT, DROP, TRAP, GOTO and SAMPLE do not
-have a destination port, and thus out_count = 0.
+Make sure the stack and data offsets are aligned to
+the 32K TLB size.
 
-At cleanup time of the rules in mlx5_esw_ipsec_modify_flow_dests
-we call mlx5_eswitch_restore_ipsec_rule but as the above types
-do not have a destination we get an underflow of out_count, as
-the port is passed, which is esw_attr->out_count - 1.
+Check that the FW microcode actually fits in the
+space that is reserved for it.
 
-This change avoids calling mlx5_eswitch_restore_ipsec_rule when
-there are no output destinations and thus avoids the underflow.
-
-Fixes: d1569537a837 ("net/mlx5e: Modify and restore TC rules for IPSec TX rules")
-Signed-off-by: Jeroen Massar <jmassar@nvidia.com>
-Reviewed-by: Jianbo Liu <jianbol@nvidia.com>
-Reviewed-by: Cosmin Ratiu <cratiu@nvidia.com>
-Signed-off-by: Tariq Toukan <tariqt@nvidia.com>
-Link: https://patch.msgid.link/20260513063302.333761-1-tariqt@nvidia.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Fixes: d4a640d4b9f3 ("drm/amdgpu/vce1: Implement VCE1 IP block (v2)")
+Signed-off-by: Timur Kristóf <timur.kristof@gmail.com>
+Reviewed-by: Christian König <christian.koenig@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+(cherry picked from commit c16fe59f622a080fc457a57b3e8f14c780699449)
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/mellanox/mlx5/core/esw/ipsec_fs.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/gpu/drm/amd/amdgpu/vce_v1_0.c | 19 +++++++++++++++----
+ 1 file changed, 15 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/net/ethernet/mellanox/mlx5/core/esw/ipsec_fs.c b/drivers/net/ethernet/mellanox/mlx5/core/esw/ipsec_fs.c
-index 3cfe743610d3f..ab50d2c734ede 100644
---- a/drivers/net/ethernet/mellanox/mlx5/core/esw/ipsec_fs.c
-+++ b/drivers/net/ethernet/mellanox/mlx5/core/esw/ipsec_fs.c
-@@ -142,7 +142,8 @@ static int mlx5_esw_ipsec_modify_flow_dests(struct mlx5_eswitch *esw,
+diff --git a/drivers/gpu/drm/amd/amdgpu/vce_v1_0.c b/drivers/gpu/drm/amd/amdgpu/vce_v1_0.c
+index 0b69773b71848..d63ff64943d58 100644
+--- a/drivers/gpu/drm/amd/amdgpu/vce_v1_0.c
++++ b/drivers/gpu/drm/amd/amdgpu/vce_v1_0.c
+@@ -42,9 +42,10 @@
+ #include "oss/oss_1_0_d.h"
+ #include "oss/oss_1_0_sh_mask.h"
  
- 	attr = flow->attr;
- 	esw_attr = attr->esw_attr;
--	if (esw_attr->out_count - esw_attr->split_count > 1)
-+	if (!esw_attr->out_count ||
-+	    esw_attr->out_count - esw_attr->split_count > 1)
- 		return 0;
++#define VCE_V1_0_ALIGNMENT	(32 * 1024)
+ #define VCE_V1_0_FW_SIZE	(256 * 1024)
+ #define VCE_V1_0_STACK_SIZE	(64 * 1024)
+-#define VCE_V1_0_DATA_SIZE	(7808 * (AMDGPU_MAX_VCE_HANDLES + 1))
++#define VCE_V1_0_DATA_SIZE	(ALIGN(7808 * (AMDGPU_MAX_VCE_HANDLES + 1), VCE_V1_0_ALIGNMENT))
+ #define VCE_STATUS_VCPU_REPORT_FW_LOADED_MASK	0x02
  
- 	err = mlx5_eswitch_restore_ipsec_rule(esw, flow->rule[0], esw_attr,
+ #define VCE_V1_0_GART_PAGE_START \
+@@ -194,17 +195,22 @@ static int vce_v1_0_load_fw_signature(struct amdgpu_device *adev)
+ {
+ 	const struct common_firmware_header *hdr;
+ 	struct vce_v1_0_fw_signature *sign;
+-	unsigned int ucode_offset;
++	u32 ucode_offset;
++	u32 ucode_size;
+ 	uint32_t chip_id;
+ 	u32 *cpu_addr;
+ 	int i;
+ 
+ 	hdr = (const struct common_firmware_header *)adev->vce.fw->data;
+ 	ucode_offset = le32_to_cpu(hdr->ucode_array_offset_bytes);
++	ucode_size = hdr->ucode_size_bytes - sizeof(struct vce_v1_0_fw_signature *);
+ 	cpu_addr = adev->vce.cpu_addr;
+ 
+ 	sign = (void *)adev->vce.fw->data + ucode_offset;
+ 
++	if (ucode_size > VCE_V1_0_FW_SIZE - AMDGPU_VCE_FIRMWARE_OFFSET)
++		return -EINVAL;
++
+ 	switch (adev->asic_type) {
+ 	case CHIP_TAHITI:
+ 		chip_id = 0x01000014;
+@@ -236,7 +242,7 @@ static int vce_v1_0_load_fw_signature(struct amdgpu_device *adev)
+ 	cpu_addr[4] = cpu_to_le32(le32_to_cpu(sign->length) + 64);
+ 
+ 	memset_io(&cpu_addr[5], 0, 44);
+-	memcpy_toio(&cpu_addr[16], &sign[1], hdr->ucode_size_bytes - sizeof(*sign));
++	memcpy_toio(&cpu_addr[16], &sign[1], ucode_size);
+ 
+ 	cpu_addr += (le32_to_cpu(sign->length) + 64) / 4;
+ 	memcpy_toio(&cpu_addr[0], &sign->val[i].sigval[0], 16);
+@@ -317,17 +323,22 @@ static int vce_v1_0_mc_resume(struct amdgpu_device *adev)
+ 	WREG32(mmVCE_VCPU_SCRATCH7, AMDGPU_MAX_VCE_HANDLES);
+ 
+ 	offset =  adev->vce.gpu_addr + AMDGPU_VCE_FIRMWARE_OFFSET;
+-	size = VCE_V1_0_FW_SIZE;
++	size = VCE_V1_0_FW_SIZE - AMDGPU_VCE_FIRMWARE_OFFSET;
+ 	WREG32(mmVCE_VCPU_CACHE_OFFSET0, offset);
+ 	WREG32(mmVCE_VCPU_CACHE_SIZE0, size);
+ 
+ 	offset += size;
+ 	size = VCE_V1_0_STACK_SIZE;
++	WARN_ON(!IS_ALIGNED(offset, VCE_V1_0_ALIGNMENT));
++	WARN_ON(!IS_ALIGNED(size, VCE_V1_0_ALIGNMENT));
+ 	WREG32(mmVCE_VCPU_CACHE_OFFSET1, offset);
+ 	WREG32(mmVCE_VCPU_CACHE_SIZE1, size);
+ 
+ 	offset += size;
+ 	size = VCE_V1_0_DATA_SIZE;
++	WARN_ON(!IS_ALIGNED(offset, VCE_V1_0_ALIGNMENT));
++	WARN_ON(!IS_ALIGNED(size, VCE_V1_0_ALIGNMENT));
++	WARN_ON((offset + size - adev->vce.gpu_addr) > amdgpu_bo_size(adev->vce.vcpu_bo));
+ 	WREG32(mmVCE_VCPU_CACHE_OFFSET2, offset);
+ 	WREG32(mmVCE_VCPU_CACHE_SIZE2, size);
+ 
 -- 
 2.53.0
 
