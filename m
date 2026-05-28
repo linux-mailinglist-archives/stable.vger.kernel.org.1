@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-255216-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-255179-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id MPk3CHueGGpAlggAu9opvQ
-	(envelope-from <stable+bounces-255216-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 21:58:51 +0200
+	id qKnEB5CeGGpAlggAu9opvQ
+	(envelope-from <stable+bounces-255179-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 21:59:12 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id C9DBA5F7928
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 21:58:50 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1C9EA5F795D
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 21:59:10 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 922C1302771F
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 19:58:10 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 017B2301D848
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 19:56:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CDCCE33CE8A;
-	Thu, 28 May 2026 19:58:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 48D2833120C;
+	Thu, 28 May 2026 19:56:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yQGxPajA"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yARVaoGz"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B22B73290B0;
-	Thu, 28 May 2026 19:58:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1B6E5338936;
+	Thu, 28 May 2026 19:56:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779998287; cv=none; b=Polu42rnmWM9erRAM74U8mhwlbmxuWEw/9Mtbgg5Xce59PtlnfijzBvP7bWBuvS3mUzfaZrMoQUg4S6XjvLRqVcbsXbnQy05VxJMQq7Vnz3aowbaqMCdMVm3TKNJ/52OqYNdN/MMD0fK2h+CoKCTiEt1Dg/O9i//0/Y4UrzeVfY=
+	t=1779998187; cv=none; b=fk3T850h83qolW3aYmsoRAOCmGPp+3wVDc52rM0irGAgguqsEor6QaqpIqq7TWrpxJj/UhR9G1IfeUDsNK4QtBp4AwWWl6x7G5nYMI0CdMjjW8CEjdMILD/2W9311wKcFwsw1GOQCKn1cY2SHReBsB2U6E1TyPOrkKzG1+hxZr0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779998287; c=relaxed/simple;
-	bh=m3aF69UvYk3EJWrs/JxiK6pUks8IADPEIggRgYK4WNc=;
+	s=arc-20240116; t=1779998187; c=relaxed/simple;
+	bh=Rx7auoKn0TrDLs7WRgMNGzdM2wS8QxnVJkpPrN3AWxc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=gLAy5KtNFPg1rM1hKvVoAsmCy0rhWFVll5n+OW5wKj7RZ0LkrwssOr2uYx7sRj9ccPjYKnzwV8bGAPj5CSfMv48g8mzufR4wKWYBKInPGeqjNqTPKFAddvlCMUYe92667+Jqm8WmXsauXj/NFXABG8xPFlQE0o4rJGDtZVxByyg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yQGxPajA; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BE8581F000E9;
-	Thu, 28 May 2026 19:58:05 +0000 (UTC)
+	 MIME-Version; b=LdVqo3Ej0l8Zbz2NB7klNS5tp5Blpn0mDkqo9CikJaSnYNXwueLdzb6XiZuJjbOaxHLgsTSBD/YbU9CINWgp1YYgyY10jVb/ixg9JAnHaqVf7vcYlj0N9fxBdPy+q4kgNB6Amgbv3DrFJ/ZshqSjiFe/VNlwjocFRrmnpasfyEA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yARVaoGz; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 79C091F000E9;
+	Thu, 28 May 2026 19:56:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779998286;
-	bh=Mh0il5TH7wX76IfqeeIjHNyA1wIrRsZTL6QR93eCf9w=;
+	s=korg; t=1779998186;
+	bh=c277MKnbbq9BfgOXBrS7kDRqwa6gsI4NfOyjPcDIElk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=yQGxPajAUOM+ps0XI6ihfPmisoiR9q1J8aEJZZi5YdBIql3oiUj3j9zECb+N5aXLT
-	 TnwFnFUeXokQC+fa9Be4/2VRMV92eriOTbEx6XGqE+zw3KrbKjZjXDFSaAPyd3lEwz
-	 1oyfMkCX8qeBF2uHymwqQId/itxboh4UvazQPA6w=
+	b=yARVaoGzwbzL6mvy2C1zoF4mRq+Ml2pVyZoaGRolcktxuBVbdyR5QGQOraKpIaz5f
+	 iuqfRJQPjoOfcBKYaAF5lLCjnj3r5E5HN2nKvLO8zx7FDeRX+/F8/sdy9TGiG6gRiT
+	 u1tR+WklY4PVymwc+MRfHin1BiKp+iRoEVFG2j3Y=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Paolo Abeni <pabeni@redhat.com>,
-	"Matthieu Baerts (NGI0)" <matttbe@kernel.org>
-Subject: [PATCH 7.0 084/461] mptcp: reset rcv wnd on disconnect
-Date: Thu, 28 May 2026 21:43:33 +0200
-Message-ID: <20260528194649.351966113@linuxfoundation.org>
+	Stephen Smalley <stephen.smalley.work@gmail.com>,
+	Casey Schaufler <casey@schaufler-ca.com>,
+	Paul Moore <paul@paul-moore.com>
+Subject: [PATCH 7.0 085/461] lsm: hold cred_guard_mutex for lsm_set_self_attr()
+Date: Thu, 28 May 2026 21:43:34 +0200
+Message-ID: <20260528194649.382794406@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
 In-Reply-To: <20260528194646.819809818@linuxfoundation.org>
 References: <20260528194646.819809818@linuxfoundation.org>
@@ -63,34 +64,36 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	RCVD_TLS_LAST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-255216-lists,stable=lfdr.de];
 	TO_DN_SOME(0.00)[];
-	FROM_HAS_DN(0.00)[];
+	TAGGED_FROM(0.00)[bounces-255179-lists,stable=lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,schaufler-ca.com,paul-moore.com];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	FROM_HAS_DN(0.00)[];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	NEURAL_HAM(-0.00)[-1.000];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[5];
+	MID_RHS_MATCH_FROM(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,msgid.link:url]
-X-Rspamd-Queue-Id: C9DBA5F7928
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,paul-moore.com:email,schaufler-ca.com:email]
+X-Rspamd-Queue-Id: 1C9EA5F795D
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
@@ -98,44 +101,42 @@ X-Rspamd-Server: lfdr
 
 ------------------
 
-From: Paolo Abeni <pabeni@redhat.com>
+From: Stephen Smalley <stephen.smalley.work@gmail.com>
 
-commit 0981f90e1a05773a4c29c6e720f5ea1e3c8f1876 upstream.
+commit 4a9b16541ad3faf8bccb398532bf3f8b6bbf1188 upstream.
 
-If the MPTCP socket fallback to TCP before the MP handshake completion,
-the IASN remain 0, and the rcv_wnd_sent field is not explicitly
-initialized, just incremented over time with the data transfer.
+Just as proc_pid_attr_write() already does before calling the LSM
+hook. This only matters for SELinux and AppArmor which check
+whether the process is being ptraced and if so, whether to
+allow the transition.
 
-At disconnect time such value is not cleared. If the next connection falls
-back to TCP before the MP handshake completion, the data transfer will
-keep incrementing the receive window end sequence starting from the last
-value used in the previous connection: the announced window will be
-unrelated from the actual receiver buffer size and likely too big.
-
-Address the issue zeroing the field at disconnect time.
-
-Fixes: b29fcfb54cd7 ("mptcp: full disconnect implementation")
 Cc: stable@vger.kernel.org
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
-Reviewed-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
-Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
-Link: https://patch.msgid.link/20260515-net-mptcp-misc-fixes-7-1-rc4-v2-4-701e96419f2f@kernel.org
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Signed-off-by: Stephen Smalley <stephen.smalley.work@gmail.com>
+Acked-by: Casey Schaufler <casey@schaufler-ca.com>
+Signed-off-by: Paul Moore <paul@paul-moore.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/mptcp/protocol.c |    1 +
- 1 file changed, 1 insertion(+)
+ security/lsm_syscalls.c |    9 ++++++++-
+ 1 file changed, 8 insertions(+), 1 deletion(-)
 
---- a/net/mptcp/protocol.c
-+++ b/net/mptcp/protocol.c
-@@ -3470,6 +3470,7 @@ static int mptcp_disconnect(struct sock
+--- a/security/lsm_syscalls.c
++++ b/security/lsm_syscalls.c
+@@ -57,7 +57,14 @@ u64 lsm_name_to_attr(const char *name)
+ SYSCALL_DEFINE4(lsm_set_self_attr, unsigned int, attr, struct lsm_ctx __user *,
+ 		ctx, u32, size, u32, flags)
+ {
+-	return security_setselfattr(attr, ctx, size, flags);
++	int rc;
++
++	rc = mutex_lock_interruptible(&current->signal->cred_guard_mutex);
++	if (rc < 0)
++		return rc;
++	rc = security_setselfattr(attr, ctx, size, flags);
++	mutex_unlock(&current->signal->cred_guard_mutex);
++	return rc;
+ }
  
- 	/* for fallback's sake */
- 	WRITE_ONCE(msk->ack_seq, 0);
-+	atomic64_set(&msk->rcv_wnd_sent, 0);
- 
- 	WRITE_ONCE(sk->sk_shutdown, 0);
- 	sk_error_report(sk);
+ /**
 
 
 
