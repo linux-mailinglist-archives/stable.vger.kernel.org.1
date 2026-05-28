@@ -1,58 +1,59 @@
-Return-Path: <stable+bounces-255724-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-255970-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id mOmADDCkGGoQlwgAu9opvQ
-	(envelope-from <stable+bounces-255724-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:23:12 +0200
+	id gMfICDWpGGrclwgAu9opvQ
+	(envelope-from <stable+bounces-255970-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:44:37 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id CF61C5F882F
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:23:11 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 94BAE5F96EC
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:44:35 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 9D5B9303CF91
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 20:21:53 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 14673307EDAB
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 20:33:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EE011316199;
-	Thu, 28 May 2026 20:21:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B673633987F;
+	Thu, 28 May 2026 20:33:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oe/JFb5J"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FKb0nasa"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C005933F5B4;
-	Thu, 28 May 2026 20:21:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6B816223328;
+	Thu, 28 May 2026 20:33:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779999706; cv=none; b=RZ3VnJubWYzmvKnzlmKtE+rCgmWfuDQG8xWV3JN+PTqeK+U62Pz4KXRCZfhjhS0h3GPTz7rJp0RzG10eCGkKTY70rt9XfUFo52OVKHVuyXWfdMHYNKPEd1NmEBbzy1Ji6RgU6B5porV9OU0KWSt7/Iog4TknN4SIHFRyCZqwsUc=
+	t=1780000389; cv=none; b=HqCpxZsOH1vh8i92cYMqPxtysBARvrC+Xo1V58zPHX6ZeKnB/xHIHknhU10SseZ6h0JN/nJnCosbj5TpxUdEDwUTKC52KXR0m0Po495T3m4zN/9UtC3fpAxyQWVYl/SvfU5sLheiyol7M3srwgr6a8N4st9zacEHqkaeovsNOB8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779999706; c=relaxed/simple;
-	bh=Nn2yLH6+xdAMFataAEn20RRUbKAFvKmGhsDxZgIB/K0=;
+	s=arc-20240116; t=1780000389; c=relaxed/simple;
+	bh=MV5gxmhrORCO9woLtS1fIa4dWZb5Ku++3sJH6z6II4Y=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=gon6HrzpSjmtTaXro0L5PGpxQnw6MIlFQ47THV22Ca9A5tkJgJwFy94CwHrxBG9X+Zg+E5XfbioBgAryvqBoX+bLVkuwEsqvhxkxJyA5jAZBITs1YtO+6CDcsFRsxEKd6dRY11NWk02+hmfEaS1ghJ3Sl60BwY2ESzIDadSiBJ8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oe/JFb5J; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2AC8E1F000E9;
-	Thu, 28 May 2026 20:21:45 +0000 (UTC)
+	 MIME-Version; b=qWL20fMREn1m8ghRflZ8IIh5bKpzE6ERfSC61NBpvR+1GOriZsXMUU03oS4BmuzSo/MBgIBJ8/DZ+gReK4QNDa5u3fH7GurAOgXDvv/gEKOQ9a7oy/kVwklwM9OX9/uMvaWRjSkfhgsGdFZxVk8fAz+4VnWyxupATQJ2qWSSIyM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FKb0nasa; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CB0851F000E9;
+	Thu, 28 May 2026 20:33:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779999705;
-	bh=m6AAwWd54SnA3Y/RlJ0vySS5z0nvswAxhXati2oADY8=;
+	s=korg; t=1780000388;
+	bh=/30GHWjkAbVk26sE/xno3bdt5FV4fsXEr7n8Ib2gXB8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=oe/JFb5J11CrHrdpm31VdkS/bHtW6zt5sR8E+zhA6bySripRsFQ6/KJy5LrGt7aXW
-	 0ezLJ3qgFmM1pgkvqV0h4YTGuuY1PYnQrw8HEJWCvX432IPnZAp/Xns+er3cvTTykX
-	 FeQD1VWnsk0pxPGliTWbh0bFu02AQT7cfbwmdzaM=
+	b=FKb0nasaVdMgjsselJ4rIu/bgqCl4GojY0pjxQF4jCQMoMlHd71yHAaRTiCoFpcvO
+	 0hFlvbeuNZ6NHCuiaq7oNPq4e50qrRyYCL/U0+eou/XCnjQueu/WaW/cU+b4pYE4PZ
+	 Ogz5GwKnYzW0obYLvJiR3JGTkygXY6wdSZpLok7Y=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Abdurrahman Hussain <abdurrahman@nexthop.ai>,
-	Guenter Roeck <linux@roeck-us.net>
-Subject: [PATCH 6.18 163/377] hwmon: (pmbus/adm1266) include PEC byte in pmbus_block_xfer read buffer
+	Tommy Kelly <linux@tkel.ly>,
+	Damien Le Moal <dlemoal@kernel.org>,
+	Niklas Cassel <cassel@kernel.org>
+Subject: [PATCH 6.12 027/272] ata: libata-scsi: do not use the deferred QC feature on PMPs with CBS
 Date: Thu, 28 May 2026 21:46:41 +0200
-Message-ID: <20260528194643.148586991@linuxfoundation.org>
+Message-ID: <20260528194630.147751578@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260528194638.371537336@linuxfoundation.org>
-References: <20260528194638.371537336@linuxfoundation.org>
+In-Reply-To: <20260528194629.379955525@linuxfoundation.org>
+References: <20260528194629.379955525@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -67,7 +68,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
@@ -77,7 +78,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-255724-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-255970-lists,stable=lfdr.de];
 	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
@@ -86,65 +87,149 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	NEURAL_HAM(-0.00)[-1.000];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[5];
+	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[nexthop.ai:email,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,roeck-us.net:email,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo]
-X-Rspamd-Queue-Id: CF61C5F882F
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,tkel.ly:email,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim]
+X-Rspamd-Queue-Id: 94BAE5F96EC
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Abdurrahman Hussain <abdurrahman@nexthop.ai>
+From: Niklas Cassel <cassel@kernel.org>
 
-commit 487566cb1ccdf3756fdd7bf8d875e612ff3169bb upstream.
+commit f233124fb36cd57ef09f96d517a38ab4b902e15e upstream.
 
-adm1266_pmbus_block_xfer() sets up the read transaction with
+When using Port Multipliers (PMPs) with Command-Based Switching (CBS), you
+can only issue commands to one link at a time. For PMPs with CBS, there is
+already code to handle commands being sent to different links in
+sata_pmp_qc_defer_cmd_switch() using ap->excl_link. sata_sil24 also makes
+use of ap->excl_link.
 
-	.buf = data->read_buf,
-	.len = ADM1266_PMBUS_BLOCK_MAX + 2,
+A user on the list reported that commit 0ea84089dbf6 ("ata: libata-scsi:
+avoid Non-NCQ command starvation") broke PMPs with CBS. The commit
+introduced code that stores a deferred qc in ap->deferred_qc, to later be
+issued via a workqueue. It turns out that this change is incompatible with
+the existing ap->excl_link handling used by PMPs with CBS.
 
-but read_buf in struct adm1266_data is declared as
+Thus, modify sata_pmp_qc_defer_cmd_switch() and sil24_qc_defer() to return
+ATA_DEFER_LINK_EXCL, and make sure that the deferred QC handling via
+workqueue is not used for this return value.
 
-	u8 read_buf[ADM1266_PMBUS_BLOCK_MAX + 1];
+This way, PMPs with CBS will work once again. Note that the starvation
+referenced in commit 0ea84089dbf6 ("ata: libata-scsi: avoid Non-NCQ
+command starvation") can only happen on libsas ports, and libsas does not
+support Port Multipliers, thus there is no harm of reverting back to the
+previous way of deferring commands for PMPs with CBS.
 
-For a max-length block response (length byte = 255 + up to 1 PEC
-byte), the i2c controller is told to write 257 bytes into a 256-byte
-buffer, putting one byte past the end of read_buf.  The same response
-also makes the subsequent PEC compare
+Non-libsas ports connected to anything but a PMP with CBS (e.g. a normal
+drive or a PMP with FBS) will continue using the deferred workqueue, since
+it does result in lower completion latencies for non-NCQ commands, even
+though the workqueue is not strictly needed to avoid starvation for
+non-libsas ports.
 
-	if (crc != msgs[1].buf[msgs[1].buf[0] + 1])
+If we want to modify the scope of the workqueue issuing to also handle
+PMPs with CBS, then we should ensure that we can save both NCQ and non-NCQ
+commands in ap->deferred_qc, while also removing the existing PMP CBS
+handling using ap->excl_link, such that we don't duplicate features.
 
-read a byte beyond the array.
+While at it, also add a comment explaining how the ap->excl_link mechanism
+works.
 
-Bump the read_buf declaration to ADM1266_PMBUS_BLOCK_MAX + 2 so the
-buffer can hold the length byte, up to 255 payload bytes, and the PEC
-byte the i2c_msg length already accounts for.
-
-Fixes: 407dc802a9c0 ("hwmon: (pmbus/adm1266) Add Block process call")
-Cc: stable@vger.kernel.org
-Signed-off-by: Abdurrahman Hussain <abdurrahman@nexthop.ai>
-Link: https://lore.kernel.org/r/20260515-adm1266-fixes-v1-4-1c1ea1349cfe@nexthop.ai
-Signed-off-by: Guenter Roeck <linux@roeck-us.net>
+Fixes: 0ea84089dbf6 ("ata: libata-scsi: avoid Non-NCQ command starvation")
+Tested-by: Tommy Kelly <linux@tkel.ly>
+Reported-by: Tommy Kelly <linux@tkel.ly>
+Closes: https://lore.kernel.org/linux-ide/ce09cc21-a8e9-4845-b205-35411e22fba9@tkel.ly/
+Reviewed-by: Damien Le Moal <dlemoal@kernel.org>
+Signed-off-by: Niklas Cassel <cassel@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/hwmon/pmbus/adm1266.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/ata/libata-pmp.c  |   13 ++++++++++++-
+ drivers/ata/libata-scsi.c |    8 ++++++++
+ drivers/ata/sata_sil24.c  |    6 +++++-
+ include/linux/libata.h    |    1 +
+ 4 files changed, 26 insertions(+), 2 deletions(-)
 
---- a/drivers/hwmon/pmbus/adm1266.c
-+++ b/drivers/hwmon/pmbus/adm1266.c
-@@ -61,7 +61,7 @@ struct adm1266_data {
- 	u8 *dev_mem;
- 	struct mutex buf_mutex;
- 	u8 write_buf[ADM1266_PMBUS_BLOCK_MAX + 1] ____cacheline_aligned;
--	u8 read_buf[ADM1266_PMBUS_BLOCK_MAX + 1] ____cacheline_aligned;
-+	u8 read_buf[ADM1266_PMBUS_BLOCK_MAX + 2] ____cacheline_aligned;
- };
+--- a/drivers/ata/libata-pmp.c
++++ b/drivers/ata/libata-pmp.c
+@@ -110,13 +110,24 @@ int sata_pmp_qc_defer_cmd_switch(struct
+ {
+ 	struct ata_link *link = qc->dev->link;
+ 	struct ata_port *ap = link->ap;
++	int ret;
  
- static const struct nvmem_cell_info adm1266_nvmem_cells[] = {
+ 	if (ap->excl_link == NULL || ap->excl_link == link) {
+ 		if (ap->nr_active_links == 0 || ata_link_active(link)) {
+ 			qc->flags |= ATA_QCFLAG_CLEAR_EXCL;
+-			return ata_std_qc_defer(qc);
++			ret = ata_std_qc_defer(qc);
++			if (ret == ATA_DEFER_LINK)
++				return ATA_DEFER_LINK_EXCL;
++			return ret;
+ 		}
+ 
++		/*
++		 * Note: ap->excl_link contains the link that is next in line,
++		 * i.e. implicit round robin. If there is only one link
++		 * dispatching, ap->excl_link will be left unclaimed, allowing
++		 * other links to set ap->excl_link, ensuring that the currently
++		 * active link cannot queue any more.
++		 */
+ 		ap->excl_link = link;
+ 	}
+ 
+--- a/drivers/ata/libata-scsi.c
++++ b/drivers/ata/libata-scsi.c
+@@ -1799,6 +1799,14 @@ static int ata_scsi_qc_issue(struct ata_
+ 	case ATA_DEFER_LINK:
+ 		ret = SCSI_MLQUEUE_DEVICE_BUSY;
+ 		goto defer_qc;
++	case ATA_DEFER_LINK_EXCL:
++		/*
++		 * Drivers making use of ap->excl_link cannot store the QC in
++		 * ap->deferred_qc, because the ap->excl_link handling is
++		 * incompatible with the ap->deferred_qc workqueue handling.
++		 */
++		ret = SCSI_MLQUEUE_DEVICE_BUSY;
++		goto free_qc;
+ 	case ATA_DEFER_PORT:
+ 		ret = SCSI_MLQUEUE_HOST_BUSY;
+ 		goto free_qc;
+--- a/drivers/ata/sata_sil24.c
++++ b/drivers/ata/sata_sil24.c
+@@ -790,6 +790,7 @@ static int sil24_qc_defer(struct ata_que
+ 	struct ata_link *link = qc->dev->link;
+ 	struct ata_port *ap = link->ap;
+ 	u8 prot = qc->tf.protocol;
++	int ret;
+ 
+ 	/*
+ 	 * There is a bug in the chip:
+@@ -827,7 +828,10 @@ static int sil24_qc_defer(struct ata_que
+ 		qc->flags |= ATA_QCFLAG_CLEAR_EXCL;
+ 	}
+ 
+-	return ata_std_qc_defer(qc);
++	ret = ata_std_qc_defer(qc);
++	if (ret == ATA_DEFER_LINK)
++		return ATA_DEFER_LINK_EXCL;
++	return ret;
+ }
+ 
+ static enum ata_completion_errors sil24_qc_prep(struct ata_queued_cmd *qc)
+--- a/include/linux/libata.h
++++ b/include/linux/libata.h
+@@ -348,6 +348,7 @@ enum {
+ 	/* return values for ->qc_defer */
+ 	ATA_DEFER_LINK		= 1,
+ 	ATA_DEFER_PORT		= 2,
++	ATA_DEFER_LINK_EXCL	= 3,
+ 
+ 	/* desc_len for ata_eh_info and context */
+ 	ATA_EH_DESC_LEN		= 80,
 
 
 
