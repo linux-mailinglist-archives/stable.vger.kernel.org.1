@@ -1,65 +1,57 @@
-Return-Path: <stable+bounces-256068-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-256234-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id kOb9MHepGGrclwgAu9opvQ
-	(envelope-from <stable+bounces-256068-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:45:43 +0200
+	id mPJpGjCrGGpolwgAu9opvQ
+	(envelope-from <stable+bounces-256234-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:53:04 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 303145F97CB
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:45:43 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1CE605F9C49
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:53:03 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 1A48731B5879
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 20:37:52 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id B6683310B459
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 20:45:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DD7D925F7B9;
-	Thu, 28 May 2026 20:37:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 96F08318B9D;
+	Thu, 28 May 2026 20:45:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="V5vQrU7r"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wGWpibkg"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 937CF330D35;
-	Thu, 28 May 2026 20:37:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 70F1523394D;
+	Thu, 28 May 2026 20:45:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780000665; cv=none; b=u63wRgH1s6dejrpDJYhJ8CQIbfDhtGHGjpVrbhnm9YDN1+iMxpQkTL8yLLePgA8Ous75mkmshnG4Nf5pZEnKjlRuSdTFYwIWbQjnImJyUXaLoWid0JasZiKwZqZdBH7BEIGpNZQLUiQifR/uBgDdCx9zeemWZfgQFnqU0v9Q7Hs=
+	t=1780001132; cv=none; b=iyfUxRVZRcNBOBhGh0ZYZ2M5md6EccFk8M5O+kFOQTJXONAgBkso5HuOgjXLQxQiJ3AoBa18gZAdV7UoRm8mbHjw4OVIUhehIx0nhjF/98vpDfAIIGaLFS3BVwRZr/CIbh4tXwdATzC9CfczuvqNv8nCqLVD7752OpdI3N1BAwU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780000665; c=relaxed/simple;
-	bh=pQ51wGCkzBmwNTf5kWyWaSUJbCuxKcvW3UWdCtvxpv4=;
+	s=arc-20240116; t=1780001132; c=relaxed/simple;
+	bh=udNkUWk06BdbEJcdrmruoew4HWf3SiIfkWBz6oBnECU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=jCk9oUwdwOdFq1oyWgsGgkxumDDEYgcOi6Sfhy1KFuWeFlENRmsVfMwtJqWu7rCb1Q+TOlxFCs6mZT8q428R6MKmUrEUOmPFYLEenYW39t/lakpXAnEx9PigYARLZl7K5gsjRzwjBk7C1pTUJAk7XQmMfF+D4E3Lkg705MRV4wU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=V5vQrU7r; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DFE311F000E9;
-	Thu, 28 May 2026 20:37:43 +0000 (UTC)
+	 MIME-Version; b=FMbwnbBnBWmHg2V03imArsYoekbdhfZtTNImA0YZP9l32OBlngVXPumZN61hxlVQK5ZavRN+IyBHSsDkiSSvtiugKxKItsEcA0caFvp5SpHUtGt9GkXD9AChxBsbmO3iMqKHsD1OfqVJNgs4OqOt9DLGfgfNzQmD5fAQcchMqN4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wGWpibkg; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CD9B81F000E9;
+	Thu, 28 May 2026 20:45:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780000664;
-	bh=XCMXwa2f3wZmTd9weG8wolFkjzRkLuPneyoge5pui7g=;
+	s=korg; t=1780001131;
+	bh=b5Qkk3N5y520gf526ffn+YEHhvc/71/LgPMw+VbMvW4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=V5vQrU7r2pOAiigZo7y0WGw3zwaR/Vg3Db6E22Jzx39Q8prhud83cuhp8AGhiwxib
-	 iPFICd0Lg5EDS8HgyGhDm1AwNjWxGjiagmdE+G8m8I/5+ffuxg8ra7ukAA7ixnbHmG
-	 YUJ94gFuY0V/qHCIwG1a8ceiqAGLuPlhJa6hBhU8=
+	b=wGWpibkgDMBTWSpOlXNcFcToAqFYAUWI6O94vexzdKmcKsE8VhWXCvVRwUV1ay/YB
+	 yY6/aXKkOKRUX9Hv+HKECiMbrzQMdl35aFgol/O950PuLOSNu4pEjC61LQOOXnZooq
+	 GWJRO+pXGPir47g67JRMgQUOvRpN1HSeRFyZ+oVk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable@kernel.org,
-	Yuan Tan <yuantan098@gmail.com>,
-	Yifan Wu <yifanwucs@gmail.com>,
-	Juefei Pu <tomapufckgml@gmail.com>,
-	Xin Liu <bird@lzu.edu.cn>,
-	Ruide Cao <caoruide123@gmail.com>,
-	Ren Wei <enjou1224z@gmail.com>,
-	Ren Wei <n05ec@lzu.edu.cn>,
-	Sven Eckelmann <sven@narfation.org>
-Subject: [PATCH 6.12 124/272] batman-adv: fix fragment reassembly length accounting
-Date: Thu, 28 May 2026 21:48:18 +0200
-Message-ID: <20260528194632.851240281@linuxfoundation.org>
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 019/186] Revert "s390/cio: Update purge function to unregister the unused subchannels"
+Date: Thu, 28 May 2026 21:48:19 +0200
+Message-ID: <20260528194929.474769081@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260528194629.379955525@linuxfoundation.org>
-References: <20260528194629.379955525@linuxfoundation.org>
+In-Reply-To: <20260528194928.941004471@linuxfoundation.org>
+References: <20260528194928.941004471@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -72,167 +64,109 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-256068-lists,stable=lfdr.de];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,kernel.org,gmail.com,lzu.edu.cn,narfation.org];
+	RCVD_TLS_LAST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-256234-lists,stable=lfdr.de];
+	PRECEDENCE_BULK(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_TLS_LAST(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[12];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	TO_DN_SOME(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[stable];
+	MIME_TRACE(0.00)[0:+];
+	FROM_HAS_DN(0.00)[];
+	RCPT_COUNT_THREE(0.00)[4];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	TAGGED_RCPT(0.00)[stable];
+	TO_DN_SOME(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,lzu.edu.cn:email,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,narfation.org:email]
-X-Rspamd-Queue-Id: 303145F97CB
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim]
+X-Rspamd-Queue-Id: 1CE605F9C49
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ruide Cao <caoruide123@gmail.com>
+This reverts commit c34b09cbd6fc06f0f234182e462a1b010d13a5a6.
 
-commit 9cd3f16c320bfdadd4509358122368deb56a5741 upstream.
-
-batman-adv keeps a running payload length for queued fragments and uses it
-to validate a fragment chain before reassembly.
-
-That accounting currently allows the accumulated fragment length to be
-truncated during updates. As a result, malformed fragment chains can
-bypass the intended validation and drive reassembly with inconsistent
-length state, leading to a local denial of service.
-
-Fix the accounting by storing the accumulated length in a length-typed
-field and rejecting update overflows before the existing validation logic
-runs.
-
-The fix was verified against the original reproducer and against valid
-fragment reassembly paths.
-
-Fixes: 610bfc6bc99b ("batman-adv: Receive fragmented packets and merge")
-Cc: stable@kernel.org
-Reported-by: Yuan Tan <yuantan098@gmail.com>
-Reported-by: Yifan Wu <yifanwucs@gmail.com>
-Reported-by: Juefei Pu <tomapufckgml@gmail.com>
-Reported-by: Xin Liu <bird@lzu.edu.cn>
-Signed-off-by: Ruide Cao <caoruide123@gmail.com>
-Tested-by: Ren Wei <enjou1224z@gmail.com>
-Signed-off-by: Ren Wei <n05ec@lzu.edu.cn>
-Signed-off-by: Sven Eckelmann <sven@narfation.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/batman-adv/fragmentation.c |   23 +++++++++++++++++------
- net/batman-adv/types.h         |    2 +-
- 2 files changed, 18 insertions(+), 7 deletions(-)
+ drivers/s390/cio/device.c | 37 +++++++++++++------------------------
+ 1 file changed, 13 insertions(+), 24 deletions(-)
 
---- a/net/batman-adv/fragmentation.c
-+++ b/net/batman-adv/fragmentation.c
-@@ -17,6 +17,7 @@
- #include <linux/lockdep.h>
- #include <linux/minmax.h>
- #include <linux/netdevice.h>
-+#include <linux/overflow.h>
- #include <linux/skbuff.h>
- #include <linux/slab.h>
- #include <linux/spinlock.h>
-@@ -80,9 +81,9 @@ void batadv_frag_purge_orig(struct batad
-  *
-  * Return: the maximum size of payload that can be fragmented.
-  */
--static int batadv_frag_size_limit(void)
-+static size_t batadv_frag_size_limit(void)
+diff --git a/drivers/s390/cio/device.c b/drivers/s390/cio/device.c
+index 93307ca75c10b..e623359862ea2 100644
+--- a/drivers/s390/cio/device.c
++++ b/drivers/s390/cio/device.c
+@@ -1318,34 +1318,23 @@ void ccw_device_schedule_recovery(void)
+ 	spin_unlock_irqrestore(&recovery_lock, flags);
+ }
+ 
+-static int purge_fn(struct subchannel *sch, void *data)
++static int purge_fn(struct device *dev, void *data)
  {
--	int limit = BATADV_FRAG_MAX_FRAG_SIZE;
-+	size_t limit = BATADV_FRAG_MAX_FRAG_SIZE;
+-	struct ccw_device *cdev;
+-
+-	spin_lock_irq(sch->lock);
+-	if (sch->st != SUBCHANNEL_TYPE_IO || !sch->schib.pmcw.dnv)
+-		goto unlock;
+-
+-	if (!is_blacklisted(sch->schid.ssid, sch->schib.pmcw.dev))
+-		goto unlock;
+-
+-	cdev = sch_get_cdev(sch);
+-	if (cdev) {
+-		if (cdev->private->state != DEV_STATE_OFFLINE)
+-			goto unlock;
++	struct ccw_device *cdev = to_ccwdev(dev);
++	struct ccw_dev_id *id = &cdev->private->dev_id;
++	struct subchannel *sch = to_subchannel(cdev->dev.parent);
  
- 	limit -= sizeof(struct batadv_frag_packet);
- 	limit *= BATADV_FRAG_MAX_FRAGMENTS;
-@@ -143,7 +144,9 @@ static bool batadv_frag_insert_packet(st
- 	struct batadv_frag_packet *frag_packet;
- 	u8 bucket;
- 	u16 seqno, hdr_size = sizeof(struct batadv_frag_packet);
-+	bool overflow = false;
- 	bool ret = false;
-+	size_t data_len;
- 
- 	/* Linearize packet to avoid linearizing 16 packets in a row when doing
- 	 * the later merge. Non-linear merge should be added to remove this
-@@ -153,6 +156,7 @@ static bool batadv_frag_insert_packet(st
- 		goto err;
- 
- 	frag_packet = (struct batadv_frag_packet *)skb->data;
-+	data_len = skb->len - hdr_size;
- 	seqno = ntohs(frag_packet->seqno);
- 	bucket = seqno % BATADV_FRAG_BUFFER_COUNT;
- 
-@@ -171,7 +175,7 @@ static bool batadv_frag_insert_packet(st
- 	spin_lock_bh(&chain->lock);
- 	if (batadv_frag_init_chain(chain, seqno)) {
- 		hlist_add_head(&frag_entry_new->list, &chain->fragment_list);
--		chain->size = skb->len - hdr_size;
-+		chain->size = data_len;
- 		chain->timestamp = jiffies;
- 		chain->total_size = ntohs(frag_packet->total_size);
- 		ret = true;
-@@ -188,7 +192,11 @@ static bool batadv_frag_insert_packet(st
- 		if (frag_entry_curr->no < frag_entry_new->no) {
- 			hlist_add_before(&frag_entry_new->list,
- 					 &frag_entry_curr->list);
--			chain->size += skb->len - hdr_size;
-+
-+			if (check_add_overflow(chain->size, data_len,
-+					       &chain->size))
-+				overflow = true;
-+
- 			chain->timestamp = jiffies;
- 			ret = true;
- 			goto out;
-@@ -201,13 +209,16 @@ static bool batadv_frag_insert_packet(st
- 	/* Reached the end of the list, so insert after 'frag_entry_last'. */
- 	if (likely(frag_entry_last)) {
- 		hlist_add_behind(&frag_entry_new->list, &frag_entry_last->list);
--		chain->size += skb->len - hdr_size;
-+
-+		if (check_add_overflow(chain->size, data_len, &chain->size))
-+			overflow = true;
-+
- 		chain->timestamp = jiffies;
- 		ret = true;
+-		if (atomic_cmpxchg(&cdev->private->onoff, 0, 1) != 0)
+-			goto unlock;
++	spin_lock_irq(cdev->ccwlock);
++	if (is_blacklisted(id->ssid, id->devno) &&
++	    (cdev->private->state == DEV_STATE_OFFLINE) &&
++	    (atomic_cmpxchg(&cdev->private->onoff, 0, 1) == 0)) {
++		CIO_MSG_EVENT(3, "ccw: purging 0.%x.%04x\n", id->ssid,
++			      id->devno);
+ 		ccw_device_sched_todo(cdev, CDEV_TODO_UNREG);
++		css_sched_sch_todo(sch, SCH_TODO_UNREG);
+ 		atomic_set(&cdev->private->onoff, 0);
  	}
+-
+-	css_sched_sch_todo(sch, SCH_TODO_UNREG);
+-	CIO_MSG_EVENT(3, "ccw: purging 0.%x.%04x%s\n", sch->schid.ssid,
+-		      sch->schib.pmcw.dev, cdev ? "" : " (no cdev)");
+-
+-unlock:
+-	spin_unlock_irq(sch->lock);
++	spin_unlock_irq(cdev->ccwlock);
+ 	/* Abort loop in case of pending signal. */
+ 	if (signal_pending(current))
+ 		return -EINTR;
+@@ -1361,7 +1350,7 @@ static int purge_fn(struct subchannel *sch, void *data)
+ int ccw_purge_blacklisted(void)
+ {
+ 	CIO_MSG_EVENT(2, "ccw: purging blacklisted devices\n");
+-	for_each_subchannel_staged(purge_fn, NULL, NULL);
++	bus_for_each_dev(&ccw_bus_type, NULL, NULL, purge_fn);
+ 	return 0;
+ }
  
- out:
--	if (chain->size > batadv_frag_size_limit() ||
-+	if (overflow || chain->size > batadv_frag_size_limit() ||
- 	    chain->total_size != ntohs(frag_packet->total_size) ||
- 	    chain->total_size > batadv_frag_size_limit()) {
- 		/* Clear chain if total size of either the list or the packet
---- a/net/batman-adv/types.h
-+++ b/net/batman-adv/types.h
-@@ -295,7 +295,7 @@ struct batadv_frag_table_entry {
- 	u16 seqno;
- 
- 	/** @size: accumulated size of packets in list */
--	u16 size;
-+	size_t size;
- 
- 	/** @total_size: expected size of the assembled packet */
- 	u16 total_size;
+-- 
+2.53.0
+
 
 
 
