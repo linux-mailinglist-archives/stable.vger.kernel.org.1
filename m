@@ -1,60 +1,62 @@
-Return-Path: <stable+bounces-255785-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-255426-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id iEEzEvSlGGoQlwgAu9opvQ
-	(envelope-from <stable+bounces-255785-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:30:44 +0200
+	id 6B6fBN+iGGrJlggAu9opvQ
+	(envelope-from <stable+bounces-255426-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:17:35 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id E1C525F8DA9
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:30:43 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 81A665F84AC
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:17:34 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id CD00A3127942
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 20:24:51 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id B0B3C31C85B3
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 20:07:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BA7CE33F5BE;
-	Thu, 28 May 2026 20:24:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E1440318EE1;
+	Thu, 28 May 2026 20:07:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MsvP9TX0"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="U5C4f357"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 920FADDC5;
-	Thu, 28 May 2026 20:24:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B481E339866;
+	Thu, 28 May 2026 20:07:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779999876; cv=none; b=brinCDoa6WO7OZf3NyH+kULqBkO42snlOsU7ErjW06y4P6mB2E9RwtgSMvu+u1uX+s5BWp3DC+6zxUDmQaqJYJzLhvrHd+hq1/xYG2rzXEIDSjI5X6F9h7Y29WSlekHmObRI9CRvqkfSWODJ46c6skWnFPkGJ9XeE/rIr2faBPw=
+	t=1779998876; cv=none; b=Jqmmc/8AWWOVebpsw1nCLizlkuBb4OLFo3NBecMAN6GcVPbEvEYZYBUdOu3m+IpR1PbZS0y4cy0DVsZIGmJjeubSCtgZ5k9P0unik2t1BdKLzfGjaTkYrIeJwpZ31E6jd+mV8cmFeUgMGQGRvvDNo/g4n1QwtsBQGVb24LY4P6M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779999876; c=relaxed/simple;
-	bh=6l3upiWf02MWaN63ijG7fhUdyYRrVWhnfv4jN73+FuE=;
+	s=arc-20240116; t=1779998876; c=relaxed/simple;
+	bh=oIXaZEjqmXXBxWwVCT76ET8jE/AtxMqtQgghpwtCouc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=DwvbG1shrjgRe4wmNxMri8+DHyfbZAfh12KGDYH9LTSgCRqyYtxkavLYdBEeHMKR+0ElpJCgzvcKfrbuF0qWf2X6yTBMYjcXXWvX2hj8vRMzTI2y7TwJvacCd8j3ND8EIlZqsWlt0voTerecC/LyZa8jx+J5TX8Kf167DGwfTYw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MsvP9TX0; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B30221F000E9;
-	Thu, 28 May 2026 20:24:34 +0000 (UTC)
+	 MIME-Version; b=C6iH3krGWtsDYxqTzhn65h4AvqzL9A+hqHOSdJjxaCPe/wdDmj5PbYmGTuOOD94qngej/AgunnBJHXsxEAoSuCDdNWqRSBasR7/RQPIJIUN3lRne6T7IYFWB/iQ5VI+AH2gTqBPm+Dp0ji1Iow+lQ0ibFEkBeCg1KKGHDgBK9lo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=U5C4f357; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 256201F000E9;
+	Thu, 28 May 2026 20:07:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779999875;
-	bh=+Hw+xHuxXyczqzT/BwZRmMS7ZX47yOgtPvDtjkZeUqU=;
+	s=korg; t=1779998875;
+	bh=IoCjViE5gnCWw8VyZGrQIFfvUf6R2Ycw6lJVQqju7gw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=MsvP9TX0lhDlvOIJRqeUUwvApE4BUI11CGFTnXxI24/43LKW1G2eLgsrF2FDEzjka
-	 AiXmC3ER5rEpjnPfzcOOTyF3S/v3PRl9qIaf9LjJaJ6hb4yD/6LvY2l/UZXqaHJpf6
-	 yXvarxurVbrZXjEYGc3NFp5wkdnbwkQw/Ygh6Tlg=
+	b=U5C4f357eboez/PgvH8cFl11ZJ9qbDCQaQ6DmWOROzBMr9jIhlyYL3JBG1Z4VjjW+
+	 +8IoCNXMY3O7U9NrWftd8XkWaAgQKAO08LyWJwy2NVnb7Mu0c0XnXP4kxgmNxPk4r3
+	 AXSLqcMfCVTct2BO5TtRGHAxEFKWjmVLcj1mVSkQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Hongling Zeng <zenghongling@kylinos.cn>,
-	Jori Koolstra <jkoolstra@xs4all.nl>,
-	Christian Brauner <brauner@kernel.org>,
+	Jeroen Massar <jmassar@nvidia.com>,
+	Jianbo Liu <jianbol@nvidia.com>,
+	Cosmin Ratiu <cratiu@nvidia.com>,
+	Tariq Toukan <tariqt@nvidia.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 221/377] fs: Fix return in jfs_mkdir and orangefs_mkdir
+Subject: [PATCH 7.0 330/461] net/mlx5: Do not restore destination-less TC rules
 Date: Thu, 28 May 2026 21:47:39 +0200
-Message-ID: <20260528194644.793643580@linuxfoundation.org>
+Message-ID: <20260528194656.900249540@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260528194638.371537336@linuxfoundation.org>
-References: <20260528194638.371537336@linuxfoundation.org>
+In-Reply-To: <20260528194646.819809818@linuxfoundation.org>
+References: <20260528194646.819809818@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,85 +71,84 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,kylinos.cn,xs4all.nl,kernel.org];
-	TAGGED_FROM(0.00)[bounces-255785-lists,stable=lfdr.de];
-	PRECEDENCE_BULK(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-255426-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
 	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[xs4all.nl:email,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,msgid.link:url,linuxfoundation.org:mid,linuxfoundation.org:dkim]
-X-Rspamd-Queue-Id: E1C525F8DA9
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_SEVEN(0.00)[9];
+	MID_RHS_MATCH_FROM(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[nvidia.com:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,msgid.link:url]
+X-Rspamd-Queue-Id: 81A665F84AC
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+7.0-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Hongling Zeng <zenghongling@kylinos.cn>
+From: Jeroen Massar <jmassar@nvidia.com>
 
-[ Upstream commit a7cf1da7ac016490d6a1106f2aa6b602d34e9a12 ]
+[ Upstream commit 8d0a5af8b1ba598e7340761729801624e7a9330e ]
 
-Return NULL instead of passing to ERR_PTR while err is zero
-Fixes these smatch warnings:
-  - fs/jfs/namei.c:311 jfs_mkdir() warn: passing zero to 'ERR_PTR'
-  - fs/orangefs/namei.c:369 orangefs_mkdir() warn: passing zero
-    to 'ERR_PTR'
+After IPsec policy/state TX rules are added, any TC flow rule, which
+forwards packets to uplink, is modified to forward to IPsec TX tables.
+As these tables are destroyed dynamically, whenever there is no
+reference to them, the destinations of this kind of rules must be
+restored to uplink, unless there is no destination for that rule.
 
-Fixes: 88d5baf69082 ("Change inode_operations.mkdir to return struct dentry *")
-Signed-off-by: Hongling Zeng <zenghongling@kylinos.cn>
-Link: https://patch.msgid.link/20260501071058.1243245-1-zenghongling@kylinos.cn
-Reviewed-by: Jori Koolstra <jkoolstra@xs4all.nl>
-Signed-off-by: Christian Brauner <brauner@kernel.org>
+The flow rules FLOW_ACTION_ACCEPT, DROP, TRAP, GOTO and SAMPLE do not
+have a destination port, and thus out_count = 0.
+
+At cleanup time of the rules in mlx5_esw_ipsec_modify_flow_dests
+we call mlx5_eswitch_restore_ipsec_rule but as the above types
+do not have a destination we get an underflow of out_count, as
+the port is passed, which is esw_attr->out_count - 1.
+
+This change avoids calling mlx5_eswitch_restore_ipsec_rule when
+there are no output destinations and thus avoids the underflow.
+
+Fixes: d1569537a837 ("net/mlx5e: Modify and restore TC rules for IPSec TX rules")
+Signed-off-by: Jeroen Massar <jmassar@nvidia.com>
+Reviewed-by: Jianbo Liu <jianbol@nvidia.com>
+Reviewed-by: Cosmin Ratiu <cratiu@nvidia.com>
+Signed-off-by: Tariq Toukan <tariqt@nvidia.com>
+Link: https://patch.msgid.link/20260513063302.333761-1-tariqt@nvidia.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/jfs/namei.c      | 2 +-
- fs/orangefs/namei.c | 2 +-
- 2 files changed, 2 insertions(+), 2 deletions(-)
+ drivers/net/ethernet/mellanox/mlx5/core/esw/ipsec_fs.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/fs/jfs/namei.c b/fs/jfs/namei.c
-index 7879c049632b3..553fca69cf425 100644
---- a/fs/jfs/namei.c
-+++ b/fs/jfs/namei.c
-@@ -308,7 +308,7 @@ static struct dentry *jfs_mkdir(struct mnt_idmap *idmap, struct inode *dip,
-       out1:
+diff --git a/drivers/net/ethernet/mellanox/mlx5/core/esw/ipsec_fs.c b/drivers/net/ethernet/mellanox/mlx5/core/esw/ipsec_fs.c
+index 3cfe743610d3f..ab50d2c734ede 100644
+--- a/drivers/net/ethernet/mellanox/mlx5/core/esw/ipsec_fs.c
++++ b/drivers/net/ethernet/mellanox/mlx5/core/esw/ipsec_fs.c
+@@ -142,7 +142,8 @@ static int mlx5_esw_ipsec_modify_flow_dests(struct mlx5_eswitch *esw,
  
- 	jfs_info("jfs_mkdir: rc:%d", rc);
--	return ERR_PTR(rc);
-+	return rc ? ERR_PTR(rc) : NULL;
- }
+ 	attr = flow->attr;
+ 	esw_attr = attr->esw_attr;
+-	if (esw_attr->out_count - esw_attr->split_count > 1)
++	if (!esw_attr->out_count ||
++	    esw_attr->out_count - esw_attr->split_count > 1)
+ 		return 0;
  
- /*
-diff --git a/fs/orangefs/namei.c b/fs/orangefs/namei.c
-index bec5475de094d..75e65e72c2d64 100644
---- a/fs/orangefs/namei.c
-+++ b/fs/orangefs/namei.c
-@@ -362,7 +362,7 @@ static struct dentry *orangefs_mkdir(struct mnt_idmap *idmap, struct inode *dir,
- 	__orangefs_setattr(dir, &iattr);
- out:
- 	op_release(new_op);
--	return ERR_PTR(ret);
-+	return ret ? ERR_PTR(ret) : NULL;
- }
- 
- static int orangefs_rename(struct mnt_idmap *idmap,
+ 	err = mlx5_eswitch_restore_ipsec_rule(esw, flow->rule[0], esw_attr,
 -- 
 2.53.0
 
