@@ -1,60 +1,61 @@
-Return-Path: <stable+bounces-255492-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-256245-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id QBT9JhyjGGrJlggAu9opvQ
-	(envelope-from <stable+bounces-255492-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:18:36 +0200
+	id wMvrN0irGGpolwgAu9opvQ
+	(envelope-from <stable+bounces-256245-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:53:28 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3F38B5F85A6
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:18:36 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 683A85F9C89
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:53:28 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 06B6130FFFE4
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 20:11:07 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 298963120EF9
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 20:46:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E91DA33F5BE;
-	Thu, 28 May 2026 20:11:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AE635318B9D;
+	Thu, 28 May 2026 20:46:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NGIQOkNW"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="eCxp6P0d"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BF4EA335566;
-	Thu, 28 May 2026 20:11:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8022023394D;
+	Thu, 28 May 2026 20:45:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779999063; cv=none; b=Ke2cSryU1EccXRrpjdT18Ublabyfee36dhHEcLNtD3ef+4l0KLL8S7z4o4cwmzJA3+vTdpODmbdbwMqsezbdqXizAMmdzlaA9PiBDO0xUulWpxjStegtKy+LOLaQs70UJcnMDf5rbA9Xy/ioGGuHeDfSU/ZWPkoVsXMnjno07b4=
+	t=1780001160; cv=none; b=oGV/qJe3xxJNiflZmfG5uxpJGPPEx0uiGlS7xkXf+BFaWmg5I+PC0nThxPpJe/owH2ydK+KMdKNJJwtGZlscFcwrlQN8U5d4nLkJMyRErNvxmTctVpj/ivh70DwCru6ukUToLiS/iXSMr08rN3YX/0d3lrwsINbOfL87Hxlhfp8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779999063; c=relaxed/simple;
-	bh=CC0Pbw0yljHaqHa+PerGKw8wm6zEmuW9F6M2R3kpBTg=;
+	s=arc-20240116; t=1780001160; c=relaxed/simple;
+	bh=447xHg9bm5DCjAjVELZBF2GcwWPg/7hukhqJg+jyAho=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=jAT3orHs1rJGf2InJB4BZkk6S0ZFeK27pLQx7kvnEyh806U6//vqikftZKp47Dgpsu7jRdpOV5z7izVNiIPh84zvtVpdA6COp831oKYikUqa2WGD4IdtgJLyemD3ok4rHXxeo+Q7pWIaynzyGgLRWpA1cJPqfNnldB9D/9fBsaI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NGIQOkNW; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2857F1F000E9;
-	Thu, 28 May 2026 20:11:01 +0000 (UTC)
+	 MIME-Version; b=KBuKQ9S0J9VN8JQJnvo5GlWcHQRjCBxtX32gq5NCwETXTHBbDubCM3uJGJeS77VioxVUqkP52Hu5LNxjs0YmbiMX8Z0sbty9Boy48BEmZRnp4IgbdjBIMyPXO+XnqyRKe3Y7SQ3AnXDUU3a2+q8+Tu0jq24COPKUnp7QNpz3Mp8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=eCxp6P0d; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B1C651F000E9;
+	Thu, 28 May 2026 20:45:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779999062;
-	bh=OQlzjgYq9SeUMU0ZSUvj5wEVc0onYcxxlwBxcI3lHRk=;
+	s=korg; t=1780001159;
+	bh=7OhEVpfkNbBpg85BrY2owl7bkONjA6TH947zZ6rUkH0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=NGIQOkNWdXeamxIhm0BhIl68/RRyLt391U1iKTOmOa+cODkkKwSOaoWkHKSCAgY97
-	 8wgivmLVKtRm4jLUKclDZEupnJVNYOo8TZl9wBuaPXSyjXXSDA0xxHIxaYNUTGx657
-	 Iqaitj6frQeo2t37+UK6eQVFeqZu85NiA5n0aWd4=
+	b=eCxp6P0dkinNyurVpz06EVMDBc49tjiHUFcY9mwb1zV2+MgR1CPrkzvrREZOvF9UQ
+	 Tb6reUvvBmOM3JqmiQGAobclow9DD+a1Z/+2F/BgpJDQuyJTcrrKxFRwkwa3kOQorz
+	 lbbot0vAy8mORL3Lv/r7bFL7mA5n4DA7Tpj3li+g=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Daniele Ceraolo Spurio <daniele.ceraolospurio@intel.com>,
-	Shuicheng Lin <shuicheng.lin@intel.com>,
-	Rodrigo Vivi <rodrigo.vivi@intel.com>,
+	Pengpeng Hou <pengpeng@iscas.ac.cn>,
+	Benjamin Block <bblock@linux.ibm.com>,
+	Vasily Gorbik <gor@linux.ibm.com>,
+	Alexander Gordeev <agordeev@linux.ibm.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 7.0 359/461] drm/xe/gsc: Fix double-free of managed BO in error path
+Subject: [PATCH 6.6 008/186] s390/debug: Reject zero-length input before trimming a newline
 Date: Thu, 28 May 2026 21:48:08 +0200
-Message-ID: <20260528194657.820084345@linuxfoundation.org>
+Message-ID: <20260528194929.175225883@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260528194646.819809818@linuxfoundation.org>
-References: <20260528194646.819809818@linuxfoundation.org>
+In-Reply-To: <20260528194928.941004471@linuxfoundation.org>
+References: <20260528194928.941004471@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,7 +70,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
@@ -77,7 +78,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-255492-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-256245-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
@@ -86,68 +87,61 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
 	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[7];
+	RCPT_COUNT_SEVEN(0.00)[8];
 	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,linuxfoundation.org:mid,linuxfoundation.org:dkim,intel.com:email,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo]
-X-Rspamd-Queue-Id: 3F38B5F85A6
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim,iscas.ac.cn:email]
+X-Rspamd-Queue-Id: 683A85F9C89
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-7.0-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Shuicheng Lin <shuicheng.lin@intel.com>
+From: Pengpeng Hou <pengpeng@iscas.ac.cn>
 
-[ Upstream commit d3ded53fab90996e7d94a39049e11962dd066725 ]
+[ Upstream commit c366a7b5ed7564e41345c380285bd3f6cb98971b ]
 
-The error path in xe_gsc_init_post_hwconfig() explicitly frees a BO
-allocated with xe_managed_bo_create_pin_map() via
-xe_bo_unpin_map_no_vm(). Since the managed BO already has a devm
-cleanup action registered, this causes a double-free when devm
-unwinds during probe failure.
+debug_get_user_string() copies the userspace buffer into a newly
+allocated NUL-terminated buffer and then unconditionally looks at
+buffer[user_len - 1] to strip a trailing newline.
 
-Remove the explicit free and let devm handle it, consistent with
-all other xe_managed_bo_create_pin_map() callers.
+A zero-length write reaches this helper unchanged, so the newline trim
+reads before the start of the allocated buffer.
 
-Fixes: 2e5d47fe7839 ("drm/xe/uc: Use managed bo for HuC and GSC objects")
-Reviewed-by: Daniele Ceraolo Spurio <daniele.ceraolospurio@intel.com>
-Assisted-by: Claude:claude-opus-4.6
-Link: https://patch.msgid.link/20260511154134.223696-1-shuicheng.lin@intel.com
-Signed-off-by: Shuicheng Lin <shuicheng.lin@intel.com>
-(cherry picked from commit 71d61e3e299a17139e47f980a4d6f425b2c59bf7)
-Signed-off-by: Rodrigo Vivi <rodrigo.vivi@intel.com>
+Reject empty writes before accessing the last input byte.
+
+Fixes: 66a464dbc8e0 ("[PATCH] s390: debug feature changes")
+Cc: stable@vger.kernel.org
+Signed-off-by: Pengpeng Hou <pengpeng@iscas.ac.cn>
+Reviewed-by: Benjamin Block <bblock@linux.ibm.com>
+Reviewed-by: Vasily Gorbik <gor@linux.ibm.com>
+Tested-by: Vasily Gorbik <gor@linux.ibm.com>
+Link: https://lore.kernel.org/r/20260417073530.96002-1-pengpeng@iscas.ac.cn
+Signed-off-by: Vasily Gorbik <gor@linux.ibm.com>
+Signed-off-by: Alexander Gordeev <agordeev@linux.ibm.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/xe/xe_gsc.c | 5 +----
- 1 file changed, 1 insertion(+), 4 deletions(-)
+ arch/s390/kernel/debug.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/drivers/gpu/drm/xe/xe_gsc.c b/drivers/gpu/drm/xe/xe_gsc.c
-index 0d13e357fb43c..aab59dc647fbd 100644
---- a/drivers/gpu/drm/xe/xe_gsc.c
-+++ b/drivers/gpu/drm/xe/xe_gsc.c
-@@ -482,8 +482,7 @@ int xe_gsc_init_post_hwconfig(struct xe_gsc *gsc)
- 				 EXEC_QUEUE_FLAG_PERMANENT, 0);
- 	if (IS_ERR(q)) {
- 		xe_gt_err(gt, "Failed to create queue for GSC submission\n");
--		err = PTR_ERR(q);
--		goto out_bo;
-+		return PTR_ERR(q);
- 	}
+diff --git a/arch/s390/kernel/debug.c b/arch/s390/kernel/debug.c
+index cbe209fe0df15..893c35aeb746a 100644
+--- a/arch/s390/kernel/debug.c
++++ b/arch/s390/kernel/debug.c
+@@ -1258,6 +1258,9 @@ static inline char *debug_get_user_string(const char __user *user_buf,
+ {
+ 	char *buffer;
  
- 	wq = alloc_ordered_workqueue("gsc-ordered-wq", 0);
-@@ -506,8 +505,6 @@ int xe_gsc_init_post_hwconfig(struct xe_gsc *gsc)
- 
- out_q:
- 	xe_exec_queue_put(q);
--out_bo:
--	xe_bo_unpin_map_no_vm(bo);
- 	return err;
- }
- 
++	if (!user_len)
++		return ERR_PTR(-EINVAL);
++
+ 	buffer = kmalloc(user_len + 1, GFP_KERNEL);
+ 	if (!buffer)
+ 		return ERR_PTR(-ENOMEM);
 -- 
 2.53.0
 
