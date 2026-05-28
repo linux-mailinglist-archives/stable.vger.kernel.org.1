@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-255167-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-255168-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id +MP5MEaeGGpblggAu9opvQ
-	(envelope-from <stable+bounces-255167-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 21:57:58 +0200
+	id mJF9CG2eGGpblggAu9opvQ
+	(envelope-from <stable+bounces-255168-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 21:58:37 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 27F6F5F788A
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 21:57:58 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 796855F78F1
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 21:58:36 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id C6B91313C16A
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 19:55:53 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 5583B3158DF7
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 19:55:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 927D1340409;
-	Thu, 28 May 2026 19:55:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8EC16352019;
+	Thu, 28 May 2026 19:55:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tNpo5meh"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cQZWIwzq"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6AC48318EE1;
-	Thu, 28 May 2026 19:55:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3FA1740801C;
+	Thu, 28 May 2026 19:55:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779998153; cv=none; b=j2A8b1DtUbYxvRJz2A7uEJA9y4Ummyz3Ch9v6wDACKWx0inx+r8sdCIs0ZKum1wA+K23M0h+JQkaBJ5I6g7v0bLEO4Xa5bmDtr8TpI+yF7Ves6uGXMrqaf9YEm+8r9EYZXw6+qHI/aAWojWsFG5n5Oni+gUd5b0/OUutbIWboTo=
+	t=1779998156; cv=none; b=O0cPCHzckYMRsGeVBwGYyZKdzXwY5qgp5gjGNQuKE9LNs8jZpLazDWQ129Pnn3LKmkgD3O8hrAkDZlQuLq8z2zqLQ62pRIVJxEc0I7sTE0h0GrY6glLcXNkRa8Yx1CKl7WO/cTIaXdmf15yge4wx3SRYh9jxfG6Yx046NV5Ckwo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779998153; c=relaxed/simple;
-	bh=yngv0EpPZqJ2/bi5n3KzmS1j0R41zyuqoikJX7yjfWo=;
+	s=arc-20240116; t=1779998156; c=relaxed/simple;
+	bh=NGKtidqFnXZ4LNAQvLBAtdvXDWDINnZnBXcpn9UXvJo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=qK83z+hbbXZ45/ZT4JWPSpIL8wFHLNvSjdWsYVxZX/T+vPtts3EdctT143gIOFqx5ZUWyP7rjAQIgEFypNuXvO9EKUdM8AjtUWhl2dqqy9uLJmNSjqqVppx+/upYXGW7azQeUaGK/jZ9m/WFuRQBi79yvTAvkIEIs8VMLs3vRq8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tNpo5meh; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C87F01F00A3A;
-	Thu, 28 May 2026 19:55:51 +0000 (UTC)
+	 MIME-Version; b=ALD6uUfCjf6cWbZpIbkYg+2WLypXm17unHHKNBKXech6fEt6MugtlUhHDYM2ig6rOvc3RRlUMrCmDCByJ+T7dpAxI5QE5ZEJIGHHi2N6vQN0APMeTV+GHZ696IAFfUMhw7Zr8+k/KxrZQQRz1akHAY9zH7oWStXEDzAM5K15ONA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cQZWIwzq; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9BB921F000E9;
+	Thu, 28 May 2026 19:55:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779998152;
-	bh=HN0kDXP4395nnuUm4FQ25HnMF6f9PkVXDf05irDQbPM=;
+	s=korg; t=1779998155;
+	bh=LBcvB3d32vjoEgOIroNLZ4vSumLd5BO7/LjS//OpnlU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=tNpo5mehSIxeuNzVypTzyuFPXOdNrlYYgpkEj7hZTz0RnGEoXLHsyg1e9sLZQojgT
-	 87JzMXUMY58H84D+MmEK/Mx6XfhxNmiEQ/keaUvL6KeltLLXu87F1I693qnWj46E3z
-	 WYBgSpaGY9u3zGgvqm3yQ/QDilod7IVVT7Ezhf3g=
+	b=cQZWIwzqrHPIMDdGTY+MhkduwaynPqoVGAyDUPNyFxlwG/opUU5jmVHCPr6akLrEy
+	 CR/dUMzApxdMv6RQr9kjj0EcPeh3oYaExOnUWZysLVhXKg/4gl/eEH7poLQdsjGA93
+	 R+kjLCgDfNZE3MNt5cNZbh+REKZkE/+NzdV120XI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Justin Iurman <justin.iurman@gmail.com>,
-	Ido Schimmel <idosch@nvidia.com>,
-	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 7.0 071/461] ipv6: ioam: add NULL check for idev in ipv6_hop_ioam()
-Date: Thu, 28 May 2026 21:43:20 +0200
-Message-ID: <20260528194648.977764187@linuxfoundation.org>
+	"Matthieu Baerts (NGI0)" <matttbe@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>
+Subject: [PATCH 7.0 072/461] selftests: mptcp: drop nanoseconds width specifier
+Date: Thu, 28 May 2026 21:43:21 +0200
+Message-ID: <20260528194649.004686256@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
 In-Reply-To: <20260528194646.819809818@linuxfoundation.org>
 References: <20260528194646.819809818@linuxfoundation.org>
@@ -64,36 +63,34 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	TO_DN_SOME(0.00)[];
-	TAGGED_FROM(0.00)[bounces-255167-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,nvidia.com,kernel.org];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-255168-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	NEURAL_HAM(-0.00)[-0.999];
-	TAGGED_RCPT(0.00)[stable];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[6];
+	NEURAL_HAM(-0.00)[-1.000];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_FIVE(0.00)[5];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,nvidia.com:email]
-X-Rspamd-Queue-Id: 27F6F5F788A
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,msgid.link:url]
+X-Rspamd-Queue-Id: 796855F78F1
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
@@ -101,72 +98,108 @@ X-Rspamd-Server: lfdr
 
 ------------------
 
-From: Justin Iurman <justin.iurman@gmail.com>
+From: Matthieu Baerts (NGI0) <matttbe@kernel.org>
 
-commit d4ea0dfd75011b78cebf3808f98ac4c4f51a6fb9 upstream.
+commit 01ff78e4b3d98689184c52d97f9575dfbdc3b10f upstream.
 
-Reported by Sashiko:
+Using the format specifier +%s%3N with GNU date is honoured, and only
+prints 3 digits of the nanoseconds portion of the seconds since epoch,
+which corresponds to the milliseconds.
 
-The function ipv6_hop_ioam() accesses
-__in6_dev_get(skb->dev)->cnf.ioam6_enabled without validating the returned
-idev pointer. Because addrconf_ifdown() can concurrently clear dev->ip6_ptr
-via RCU, __in6_dev_get() can return NULL during interface teardown, which
-could cause a NULL pointer dereference when processing an IOAM Hop-by-Hop
-option.
+The uutils implementation of date currently does not honour this, and
+always prints all 9 digits. This is a known issue [1], but can be worked
+around by adapting this test to use nanoseconds instead of microseconds,
+and then divide it by 1e6.
 
-Let's add a check and use SKB_DROP_REASON_IPV6DISABLED accordingly.
+This fix is similar to what has been done on systemd side [2], and it is
+needed to run the selftests on Ubuntu 26.04, containing uutils 0.8.0.
 
-Fixes: 9ee11f0fff20 ("ipv6: ioam: Data plane support for Pre-allocated Trace")
+Note that the Fixes tag is there even if this patch doesn't fix an issue
+in the kernel selftests, but it is useful for those using uutils 0.8.0.
+
+Fixes: 048d19d444be ("mptcp: add basic kselftest for mptcp")
 Cc: stable@vger.kernel.org
-Signed-off-by: Justin Iurman <justin.iurman@gmail.com>
-Reviewed-by: Ido Schimmel <idosch@nvidia.com>
-Link: https://patch.msgid.link/20260517183059.29140-1-justin.iurman@gmail.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Link: https://github.com/uutils/coreutils/issues/11658 [1]
+Link: https://github.com/systemd/systemd/pull/41627 [2]
+Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+Link: https://patch.msgid.link/20260515-net-mptcp-misc-fixes-7-1-rc4-v2-6-701e96419f2f@kernel.org
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/ipv6/exthdrs.c |   15 +++++++++++++--
- 1 file changed, 13 insertions(+), 2 deletions(-)
+ tools/testing/selftests/net/mptcp/mptcp_connect.sh |    6 +++---
+ tools/testing/selftests/net/mptcp/mptcp_lib.sh     |   10 +++++-----
+ 2 files changed, 8 insertions(+), 8 deletions(-)
 
---- a/net/ipv6/exthdrs.c
-+++ b/net/ipv6/exthdrs.c
-@@ -910,16 +910,27 @@ static bool ipv6_hop_ra(struct sk_buff *
+--- a/tools/testing/selftests/net/mptcp/mptcp_connect.sh
++++ b/tools/testing/selftests/net/mptcp/mptcp_connect.sh
+@@ -401,7 +401,7 @@ do_transfer()
+ 	mptcp_lib_wait_local_port_listen "${listener_ns}" "${port}"
  
- static bool ipv6_hop_ioam(struct sk_buff *skb, int optoff)
- {
-+	enum skb_drop_reason drop_reason;
- 	struct ioam6_trace_hdr *trace;
- 	struct ioam6_namespace *ns;
-+	struct inet6_dev *idev;
- 	struct ioam6_hdr *hdr;
+ 	local start
+-	start=$(date +%s%3N)
++	start=$(date +%s%N)
+ 	ip netns exec ${connector_ns} \
+ 		./mptcp_connect -t ${timeout_poll} -p $port -s ${cl_proto} \
+ 			$extra_args $connect_addr < "$cin" > "$cout" &
+@@ -423,7 +423,7 @@ do_transfer()
+ 	fi
  
-+	drop_reason = SKB_DROP_REASON_IP_INHDR;
-+
- 	/* Bad alignment (must be 4n-aligned) */
- 	if (optoff & 3)
- 		goto drop;
+ 	local stop
+-	stop=$(date +%s%3N)
++	stop=$(date +%s%N)
  
-+	/* Does the device still have IPv6 configuration? */
-+	idev = __in6_dev_get(skb->dev);
-+	if (!idev) {
-+		drop_reason = SKB_DROP_REASON_IPV6DISABLED;
-+		goto drop;
-+	}
-+
- 	/* Ignore if IOAM is not enabled on ingress */
--	if (!READ_ONCE(__in6_dev_get(skb->dev)->cnf.ioam6_enabled))
-+	if (!READ_ONCE(idev->cnf.ioam6_enabled))
- 		goto ignore;
+ 	if $capture; then
+ 		sleep 1
+@@ -439,7 +439,7 @@ do_transfer()
+ 	fi
  
- 	/* Truncated Option header */
-@@ -972,7 +983,7 @@ ignore:
- 	return true;
- 
- drop:
--	kfree_skb_reason(skb, SKB_DROP_REASON_IP_INHDR);
-+	kfree_skb_reason(skb, drop_reason);
- 	return false;
+ 	local duration
+-	duration=$((stop-start))
++	duration=$(((stop-start) / 1000000))
+ 	printf "(duration %05sms) " "${duration}"
+ 	if [ ${rets} -ne 0 ] || [ ${retc} -ne 0 ] || [ ${timeout_pid} -ne 0 ]; then
+ 		mptcp_lib_pr_fail "client exit code $retc, server $rets"
+--- a/tools/testing/selftests/net/mptcp/mptcp_lib.sh
++++ b/tools/testing/selftests/net/mptcp/mptcp_lib.sh
+@@ -28,7 +28,7 @@ declare -rx MPTCP_LIB_AF_INET6=10
+ MPTCP_LIB_SUBTESTS=()
+ MPTCP_LIB_SUBTESTS_DUPLICATED=0
+ MPTCP_LIB_SUBTEST_FLAKY=0
+-MPTCP_LIB_SUBTESTS_LAST_TS_MS=
++MPTCP_LIB_SUBTESTS_LAST_TS_NS=
+ MPTCP_LIB_TEST_COUNTER=0
+ MPTCP_LIB_TEST_FORMAT="%02u %-50s"
+ MPTCP_LIB_IP_MPTCP=0
+@@ -236,7 +236,7 @@ mptcp_lib_kversion_ge() {
  }
  
+ mptcp_lib_subtests_last_ts_reset() {
+-	MPTCP_LIB_SUBTESTS_LAST_TS_MS="$(date +%s%3N)"
++	MPTCP_LIB_SUBTESTS_LAST_TS_NS="$(date +%s%N)"
+ }
+ mptcp_lib_subtests_last_ts_reset
+ 
+@@ -255,7 +255,7 @@ __mptcp_lib_result_check_duplicated() {
+ __mptcp_lib_result_add() {
+ 	local result="${1}"
+ 	local time="time="
+-	local ts_prev_ms
++	local ts_prev_ns
+ 	shift
+ 
+ 	local id=$((${#MPTCP_LIB_SUBTESTS[@]} + 1))
+@@ -265,9 +265,9 @@ __mptcp_lib_result_add() {
+ 	# not to add two '#'
+ 	[[ "${*}" != *"#"* ]] && time="# ${time}"
+ 
+-	ts_prev_ms="${MPTCP_LIB_SUBTESTS_LAST_TS_MS}"
++	ts_prev_ns="${MPTCP_LIB_SUBTESTS_LAST_TS_NS}"
+ 	mptcp_lib_subtests_last_ts_reset
+-	time+="$((MPTCP_LIB_SUBTESTS_LAST_TS_MS - ts_prev_ms))ms"
++	time+="$(((MPTCP_LIB_SUBTESTS_LAST_TS_NS - ts_prev_ns) / 1000000))ms"
+ 
+ 	MPTCP_LIB_SUBTESTS+=("${result} ${id} - ${KSFT_TEST}: ${*} ${time}")
+ }
 
 
 
