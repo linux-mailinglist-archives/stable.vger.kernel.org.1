@@ -1,59 +1,59 @@
-Return-Path: <stable+bounces-255425-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-256029-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id cIEWKt2iGGqblggAu9opvQ
-	(envelope-from <stable+bounces-255425-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:17:33 +0200
+	id wzefOeCoGGrclwgAu9opvQ
+	(envelope-from <stable+bounces-256029-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:43:12 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2A0075F849B
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:17:33 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 622AD5F9651
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:43:12 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 56F7731C63FA
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 20:07:55 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id B283F31511F9
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 20:36:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4802132ABC0;
-	Thu, 28 May 2026 20:07:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 286793446C5;
+	Thu, 28 May 2026 20:35:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SSqt33fW"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lDLWn25W"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 03F33318EE1;
-	Thu, 28 May 2026 20:07:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D0723350D7D;
+	Thu, 28 May 2026 20:35:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779998874; cv=none; b=p7FvCAaaY2EV97VwQirxM5z2QnSSV/3UGONke4w23o6uJrPaSm88XKdvEQ4d5rhgegJq8+4b6JtPRgh03S4Q8HdP3X5lPS36T5WHHSflDZtIaXF8FQtmepLwEVk79Fm5pEtfYps/B57TBjCZNH5AwuKh1wEgbdzVZb0KwhKbIJw=
+	t=1780000555; cv=none; b=r+FDgMe76pIPjVUY4iVmEfq/Qv8vT/a9RpCgqCZUvx0sfOJmk/MXl/IJ74OpfZ6Of1ndn3lgScy7kUwAThxgeuLuNLrR4TPd1AHp/d5iHv4yupDvt0/l73QmSbV7uIk8CKomotdRYgVmPHG/lk6nR4FW19pffWFNJHG/XfzpwvU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779998874; c=relaxed/simple;
-	bh=d6/5J2CUNyPjhSk3rj7fM/B3bjUVUzbVgz3C6TkAIG0=;
+	s=arc-20240116; t=1780000555; c=relaxed/simple;
+	bh=hJVJxQQ+pEmOshI36nlwDy+enBY/lMIWWrIIjM0bng0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Zr5xN4Qg/fMyGQ+ti9Z377g5ZfCOWqp6rfwcyOs7Rj8VknkuB5MgFPRdeBARM+uoS2bh5xeqJ12gb7WHrPIL381ggOD03Go9+7ji5rgcGaImkbIrRIkek9y9jh+k9M1mVd81hkaD+bQlKNvHrwlXquUfhstPFYZWXbPqwfXRZbE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SSqt33fW; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 59FAF1F000E9;
-	Thu, 28 May 2026 20:07:52 +0000 (UTC)
+	 MIME-Version; b=kfOTT2DRMOI5E5cRjNSvJcZmAGZy8qzIjgcQCAqztjz3I2Arz+J2TDYGyFhAxuJE7k3zHHoLhLqoRpC0EEhC71Hus+dsE8H5wizmkKygVJeqCtpe4jv00H5+U9ueYVknR59FCNIhOMcExuAqbJx82VaedUFx3FDcGbjL71r+XVU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lDLWn25W; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1442C1F000E9;
+	Thu, 28 May 2026 20:35:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779998872;
-	bh=bU9EkkR3BEdFQYQ9hwL6nawnDDWRhuXY8jioFjYSvTk=;
+	s=korg; t=1780000554;
+	bh=HEB3TKIrm08qOKqYOaga+MXKe33J0ze4hN+sOAJPn68=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=SSqt33fWysh4x2F1dSbqA512Mbs6Wn5PeGQHMSnNTGv+NEdCJWHjhRdFhkE3cb5mX
-	 IffBh7PJXmqCJnTSmvBds346Du649bO9PNUo/7umcGN0buhazNnEKpFYIPxVzLjltu
-	 z7wF6hbBKv+uAFGw3wnDBlaaMlKmHY2aOMWpExz8=
+	b=lDLWn25WAXT67rRprn5goF+Pay4MAi2zNBFyKrWFeptmirBTtrrHKAqPEIasFO0Ln
+	 nhTQWb+ql53dT9NfGauACQbz8Tw0S0aaoTUdyEVqtq/K9wb2YZon7xZtkbtSigJ7yR
+	 3ULlxHFxRLi7kTV7R8gW5ZSySLH2kyDhRWp9r79E=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jakub Kicinski <kuba@kernel.org>,
-	Chuck Lever <chuck.lever@oracle.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 7.0 329/461] tls: Preserve sk_err across recvmsg() when data has been copied
-Date: Thu, 28 May 2026 21:47:38 +0200
-Message-ID: <20260528194656.871230695@linuxfoundation.org>
+	Minh Nguyen <minhnguyen.080505@gmail.com>,
+	Bryan Tan <bryan-bt.tan@broadcom.com>,
+	Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 6.12 085/272] vsock/vmci: fix UAF when peer resets connection during handshake
+Date: Thu, 28 May 2026 21:47:39 +0200
+Message-ID: <20260528194631.758961753@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260528194646.819809818@linuxfoundation.org>
-References: <20260528194646.819809818@linuxfoundation.org>
+In-Reply-To: <20260528194629.379955525@linuxfoundation.org>
+References: <20260528194629.379955525@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,161 +64,102 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	RCVD_TLS_LAST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-255425-lists,stable=lfdr.de];
 	TO_DN_SOME(0.00)[];
-	FROM_HAS_DN(0.00)[];
+	TAGGED_FROM(0.00)[bounces-256029-lists,stable=lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,broadcom.com,kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	FROM_HAS_DN(0.00)[];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	NEURAL_HAM(-0.00)[-0.999];
 	TAGGED_RCPT(0.00)[stable];
+	MID_RHS_MATCH_FROM(0.00)[];
 	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,linuxfoundation.org:mid,linuxfoundation.org:dkim,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,oracle.com:email]
-X-Rspamd-Queue-Id: 2A0075F849B
+	DBL_BLOCKED_OPENRESOLVER(0.00)[broadcom.com:email,msgid.link:url,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim]
+X-Rspamd-Queue-Id: 622AD5F9651
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-7.0-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Chuck Lever <chuck.lever@oracle.com>
+From: Minh Nguyen <minhnguyen.080505@gmail.com>
 
-[ Upstream commit f508262ae9f21fe0e6c0749948b9dc7dd5a62a70 ]
+commit 99e22ddf4edb63dc8382bc028af928056d3450cf upstream.
 
-The sk_err check in tls_rx_rec_wait() consumes the error via
-sock_error(), which clears sk_err atomically. When the caller
-(tls_sw_recvmsg, tls_sw_splice_read, or tls_sw_read_sock) already
-has bytes copied to userspace, it returns those bytes and discards
-the error from this call. sk_err is now zero on the socket, so the
-next read syscall observes only RCV_SHUTDOWN and reports a clean
-EOF instead of the actual error (typically -ECONNRESET).
+vmci_transport_recv_connecting_server() returned err = 0 for a peer
+RST in its default switch arm:
 
-The race is reachable when tls_read_flush_backlog()'s periodic
-sk_flush_backlog() triggers tcp_reset() in the middle of a
-multi-record read.
+	err = pkt->type == VMCI_TRANSPORT_PACKET_TYPE_RST ? 0 : -EINVAL;
 
-Pass a has_copied flag to tls_rx_rec_wait(). When has_copied is
-false, consume sk_err via sock_error() as before. When has_copied
-is true, report the error from READ_ONCE() but leave sk_err set:
-the caller returns the byte count and discards the err from this
-call, and the next read syscall surfaces the preserved sk_err. This
-mirrors the tcp_recvmsg() preserve-and-surface pattern.
+That made vmci_transport_recv_listen() skip vsock_remove_pending(),
+leaving the pending socket on the listener's pending_links with
+sk_state = TCP_CLOSE while destroy: still dropped the explicit
+reference taken before schedule_delayed_work().
 
-The decrypt-abort path is unaffected: tls_err_abort() raises
-sk_err to EBADMSG after tls_rx_rec_wait() returns, and nothing
-on the caller's return path consumes it, so the EBADMSG surfaces
-on the next read.
+One second later vsock_pending_work() observed is_pending=true and
+performed full cleanup: vsock_remove_pending() then the two trailing
+sock_put(sk) calls -- the first reached refcount 0 and __sk_freed
+the socket, and the second wrote into the freed object:
 
-tls_sw_splice_read() passes has_copied=false: it processes
-one record per call, so no bytes have been copied within the
-function when tls_rx_rec_wait() runs. A reset that arrives
-between iterations of splice_direct_to_actor() (the sendfile()
-path) is still consumed by sock_error() in the later call, and the
-outer loop returns the prior iterations' byte count and drops the
-error. tcp_splice_read() exhibits the same pattern at the iteration
-boundary; addressing it belongs at the splice_direct_to_actor()
-layer and is out of scope here.
+  BUG: KASAN: slab-use-after-free in refcount_warn_saturate
+  Write of size 4 at addr ffff88800b1cac80 by task kworker
+  Workqueue: events vsock_pending_work
 
-Fixes: c46b01839f7a ("tls: rx: periodically flush socket backlog")
-Suggested-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
-Link: https://patch.msgid.link/20260513125825.205189-1-cel@kernel.org
+Treat peer RST like any other unexpected packet type (err = -EINVAL).
+All destroy: arms now return err < 0, so vmci_transport_recv_listen()
+removes pending from pending_links synchronously and
+vsock_pending_work() takes the is_pending=false / !rejected branch,
+dropping only its own work reference.  This also closes the
+multi-packet race Sashiko reported on v2: pending is removed from
+the list before any subsequent packet can find it.
+
+The pre-existing sk_acceptq_removed() gap on the err < 0 path of
+vmci_transport_recv_listen() that Sashiko also noted is not
+introduced or changed by this patch.
+
+Tested on lts-6.12.79 with KASAN: 52/100 unpatched -> 0/100 patched.
+
+Fixes: d021c344051a ("VSOCK: Introduce VM Sockets")
+Cc: stable@vger.kernel.org
+Signed-off-by: Minh Nguyen <minhnguyen.080505@gmail.com>
+Acked-by: Bryan Tan <bryan-bt.tan@broadcom.com>
+Link: https://patch.msgid.link/20260519102310.237181-1-minhnguyen.080505@gmail.com
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/tls/tls_sw.c | 20 ++++++++++++++------
- 1 file changed, 14 insertions(+), 6 deletions(-)
+ net/vmw_vsock/vmci_transport.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/net/tls/tls_sw.c b/net/tls/tls_sw.c
-index 97e02ac7f0086..11a70c10770bb 100644
---- a/net/tls/tls_sw.c
-+++ b/net/tls/tls_sw.c
-@@ -1366,9 +1366,14 @@ void tls_sw_splice_eof(struct socket *sock)
- 	mutex_unlock(&tls_ctx->tx_lock);
- }
- 
-+/* When has_copied is true the caller has already moved bytes to
-+ * userspace. Report sk_err but leave it set so the next read
-+ * surfaces it instead of a spurious EOF, otherwise sk_err is
-+ * consumed via sock_error().
-+ */
- static int
- tls_rx_rec_wait(struct sock *sk, struct sk_psock *psock, bool nonblock,
--		bool released)
-+		bool released, bool has_copied)
- {
- 	struct tls_context *tls_ctx = tls_get_ctx(sk);
- 	struct tls_sw_context_rx *ctx = tls_sw_ctx_rx(tls_ctx);
-@@ -1386,8 +1391,11 @@ tls_rx_rec_wait(struct sock *sk, struct sk_psock *psock, bool nonblock,
- 		if (!sk_psock_queue_empty(psock))
- 			return 0;
- 
--		if (sk->sk_err)
-+		if (sk->sk_err) {
-+			if (has_copied)
-+				return -READ_ONCE(sk->sk_err);
- 			return sock_error(sk);
-+		}
- 
- 		if (ret < 0)
- 			return ret;
-@@ -1423,7 +1431,7 @@ tls_rx_rec_wait(struct sock *sk, struct sk_psock *psock, bool nonblock,
+--- a/net/vmw_vsock/vmci_transport.c
++++ b/net/vmw_vsock/vmci_transport.c
+@@ -1156,7 +1156,7 @@ vmci_transport_recv_connecting_server(st
+ 		/* Close and cleanup the connection. */
+ 		vmci_transport_send_reset(pending, pkt);
+ 		skerr = EPROTO;
+-		err = pkt->type == VMCI_TRANSPORT_PACKET_TYPE_RST ? 0 : -EINVAL;
++		err = -EINVAL;
+ 		goto destroy;
  	}
  
- 	if (unlikely(!tls_strp_msg_load(&ctx->strp, released)))
--		return tls_rx_rec_wait(sk, psock, nonblock, false);
-+		return tls_rx_rec_wait(sk, psock, nonblock, false, has_copied);
- 
- 	return 1;
- }
-@@ -2111,7 +2119,7 @@ int tls_sw_recvmsg(struct sock *sk,
- 		int to_decrypt, chunk;
- 
- 		err = tls_rx_rec_wait(sk, psock, flags & MSG_DONTWAIT,
--				      released);
-+				      released, !!(decrypted + copied));
- 		if (err <= 0) {
- 			if (psock) {
- 				chunk = sk_msg_recvmsg(sk, psock, msg, len,
-@@ -2298,7 +2306,7 @@ ssize_t tls_sw_splice_read(struct socket *sock,  loff_t *ppos,
- 		struct tls_decrypt_arg darg;
- 
- 		err = tls_rx_rec_wait(sk, NULL, flags & SPLICE_F_NONBLOCK,
--				      true);
-+				      true, false);
- 		if (err <= 0)
- 			goto splice_read_end;
- 
-@@ -2384,7 +2392,7 @@ int tls_sw_read_sock(struct sock *sk, read_descriptor_t *desc,
- 		} else {
- 			struct tls_decrypt_arg darg;
- 
--			err = tls_rx_rec_wait(sk, NULL, true, released);
-+			err = tls_rx_rec_wait(sk, NULL, true, released, !!copied);
- 			if (err <= 0)
- 				goto read_sock_end;
- 
--- 
-2.53.0
-
 
 
 
