@@ -1,59 +1,60 @@
-Return-Path: <stable+bounces-256382-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-256215-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id QDtgCzatGGpolwgAu9opvQ
-	(envelope-from <stable+bounces-256382-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 23:01:42 +0200
+	id GI4FCSCtGGpymAgAu9opvQ
+	(envelope-from <stable+bounces-256215-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 23:01:20 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 27A525FA168
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 23:01:37 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 199F25FA125
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 23:01:19 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id AE15331502CB
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 20:52:29 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 187753037F0D
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 20:44:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4E4F9348C7C;
-	Thu, 28 May 2026 20:52:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B0B3A2EF652;
+	Thu, 28 May 2026 20:44:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mSIleKfd"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="We8eWslc"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2075F309F1D;
-	Thu, 28 May 2026 20:52:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5DBC82E7379;
+	Thu, 28 May 2026 20:44:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780001544; cv=none; b=CSE4Uqe5Ch9onZgCPERMNgynfM4F56UxvFezrEtzGGQU2LLIdCa/LoS1IHLZYX7hhuW9FH1aaLqCZ/hWe7NZD4/RzVlggg6tQgRwwdvQzYyRv9SdBFVG/2W3Fz0y2ruRKZbX9nesJL6sJpXbsMNJucJZa5aM+Xqu/p141ltlxus=
+	t=1780001079; cv=none; b=cPCE9ReVVUSpbJwIQxpbpdmCQDcKAehTHK96c/+6qF74NhCoCJN9H96uO1yG3d1ee09X0kwnI8msP7FyCnc6j+hVnE27uKU1sb62t2UFPV+nTkosXGQwJU9pQAXtUEkKwcD2jHewRT31SjYqUGsOic8gIN5xGiqVpCSGrNXZeLk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780001544; c=relaxed/simple;
-	bh=EEgEWlBOxgANTc2UP4Dt4qA0aa3jGkucnG4a5IFpe/E=;
+	s=arc-20240116; t=1780001079; c=relaxed/simple;
+	bh=S/XlP6jlJ6R3S/2R5DEmlkEhtYYlYNxLmA71BJU2wOc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=mWPSqNwgexjzMZbMuzUPm+MgemtRd1Rr2icWWwilCnRT671tOk9kd74v9lnmHR3JrZQJ5xpQV+RQ/p1O2pDPotacU1NYOAmODa2e27JLoVciQdgLzg98dTGhF5ohFw5KSWpJBfzyB2IvWd6RqkU2ipBJxTTRcNlI7qYVvRxioKY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mSIleKfd; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7F3DE1F00A3C;
-	Thu, 28 May 2026 20:52:22 +0000 (UTC)
+	 MIME-Version:Content-Type; b=hMkFdSdb3RUzh3z2ZmXxCMV3YudyktCwGk5270qTwf/mG9uXnUA1hf2hwEJWZ9Lz2dCWdM+M8I8jEv4B70rGYHzDv7Rm3KoptBA49CyMRFn1c6iJ2NQfnPCme70qqFOjTndGZKLu7J7sG0caTduxMiULFrtkfOIFt0EIBlncfHY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=We8eWslc; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BD14B1F000E9;
+	Thu, 28 May 2026 20:44:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780001543;
-	bh=+jK8UK2ryXynSCIfyfcBhzGp74VnFU6H3l5+mhaNsiE=;
+	s=korg; t=1780001078;
+	bh=Nxxh4D8vjmSWu3okW0LPhvLFpN8SbceM/Pnp6dT/wSE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=mSIleKfd4tnxc3e2YRZiN3ogdhZGyPyKM7LnEbf0pEVzqstUHUKKh0bn7hm6LioOp
-	 Jfnoc30h+PSGfePB5z5qRRcL+nCksXcakWTj1cHYA0LsqkgPhhiG1YsONx9W7LTs/a
-	 EAlsgzS7wuk2rC4lgzvfEyiKtTtn16k4fXM2+Uyw=
+	b=We8eWslcBg8WHvwu+Kq4SEdikIg8/8Jsk+Xxp8YHdbhSsbPT9gUr/ehexR/74gvMm
+	 ZhRC/6vfhHniBx5SenxzRXKwXpkfw57R/317gzh6rlhnImlRI3O6ywQB4JO+Y7Ljiz
+	 Z912C1tjYZoc6QkVnM2hc9EmhOMTuDapeSImLSWY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Nikhil P. Rao" <nikhil.rao@amd.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Matthieu Buffet <matthieu@buffet.re>,
+	=?UTF-8?q?Micka=C3=ABl=20Sala=C3=BCn?= <mic@digikod.net>,
+	Maximilian Heyne <mheyne@amazon.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 165/186] pds_core: fix error handling in pdsc_devcmd_wait
-Date: Thu, 28 May 2026 21:50:45 +0200
-Message-ID: <20260528194933.418686649@linuxfoundation.org>
+Subject: [PATCH 6.12 272/272] landlock: Fix TCP handling of short AF_UNSPEC addresses
+Date: Thu, 28 May 2026 21:50:46 +0200
+Message-ID: <20260528194636.686963779@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260528194928.941004471@linuxfoundation.org>
-References: <20260528194928.941004471@linuxfoundation.org>
+In-Reply-To: <20260528194629.379955525@linuxfoundation.org>
+References: <20260528194629.379955525@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,96 +64,207 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
+	TAGGED_FROM(0.00)[bounces-256215-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-256382-lists,stable=lfdr.de];
-	TO_DN_SOME(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	TO_DN_SOME(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,amd.com:email,linuxfoundation.org:mid,linuxfoundation.org:dkim]
-X-Rspamd-Queue-Id: 27A525FA168
+	DBL_BLOCKED_OPENRESOLVER(0.00)[amazon.de:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,key.data:url,buffet.re:email]
+X-Rspamd-Queue-Id: 199F25FA125
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Nikhil P. Rao <nikhil.rao@amd.com>
+From: Matthieu Buffet <matthieu@buffet.re>
 
-[ Upstream commit 0e46b6635b03d29807f810c3b415c4755a3f958d ]
+[ Upstream commit e4d82cbce2258f454634307fdabf33aa46b61ab0 ]
 
-Fix two cases where pdsc_devcmd_wait() returns stale success from
-the completion register instead of an error:
+current_check_access_socket() treats AF_UNSPEC addresses as
+AF_INET ones, and only later adds special case handling to
+allow connect(AF_UNSPEC), and on IPv4 sockets
+bind(AF_UNSPEC+INADDR_ANY).
+This would be fine except AF_UNSPEC addresses can be as
+short as a bare AF_UNSPEC sa_family_t field, and nothing
+more. The AF_INET code path incorrectly enforces a length of
+sizeof(struct sockaddr_in) instead.
 
-1. FW crash: If firmware stops running, the wait loop breaks early with
-   running=false. The condition "if ((!done || timeout) && running)" is
-   false, so error handling is bypassed and stale status is returned.
-   Check !running first and return -ENXIO.
+Move AF_UNSPEC edge case handling up inside the switch-case,
+before the address is (potentially incorrectly) treated as
+AF_INET.
 
-2. Timeout: If a command times out, err is set to -ETIMEDOUT but then
-   overwritten by pdsc_err_to_errno(status) which reads stale status.
-   Return -ETIMEDOUT immediately after cleaning up.
-
-Both errors now propagate to pdsc_devcmd_locked() which queues
-health_work for recovery.
-
-Fixes: 45d76f492938 ("pds_core: set up device and adminq")
-Signed-off-by: Nikhil P. Rao <nikhil.rao@amd.com>
-Link: https://patch.msgid.link/20260515212907.998028-1-nikhil.rao@amd.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Fixes: fff69fb03dde ("landlock: Support network rules with TCP bind and connect")
+Signed-off-by: Matthieu Buffet <matthieu@buffet.re>
+Link: https://lore.kernel.org/r/20251027190726.626244-4-matthieu@buffet.re
+Signed-off-by: Mickaël Salaün <mic@digikod.net>
+[ There was a conflict due to missing commit 9f74411a40ce ("landlock:
+  Log TCP bind and connect denials") ]
+Signed-off-by: Maximilian Heyne <mheyne@amazon.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/amd/pds_core/dev.c | 11 +++++++++--
- 1 file changed, 9 insertions(+), 2 deletions(-)
+ security/landlock/net.c | 118 +++++++++++++++++++++++-----------------
+ 1 file changed, 67 insertions(+), 51 deletions(-)
 
-diff --git a/drivers/net/ethernet/amd/pds_core/dev.c b/drivers/net/ethernet/amd/pds_core/dev.c
-index e65a1632df505..0e9398503a04d 100644
---- a/drivers/net/ethernet/amd/pds_core/dev.c
-+++ b/drivers/net/ethernet/amd/pds_core/dev.c
-@@ -162,12 +162,19 @@ static int pdsc_devcmd_wait(struct pdsc *pdsc, u8 opcode, int max_seconds)
- 		dev_dbg(dev, "DEVCMD %d %s after %ld secs\n",
- 			opcode, pdsc_devcmd_str(opcode), duration / HZ);
+diff --git a/security/landlock/net.c b/security/landlock/net.c
+index 104b6c01fe503..53d479893475f 100644
+--- a/security/landlock/net.c
++++ b/security/landlock/net.c
+@@ -72,6 +72,61 @@ static int current_check_access_socket(struct socket *const sock,
  
--	if ((!done || timeout) && running) {
-+	if (!running) {
-+		dev_err(dev, "DEVCMD %d %s fw not running\n",
-+			opcode, pdsc_devcmd_str(opcode));
-+		pdsc_devcmd_clean(pdsc);
-+		return -ENXIO;
-+	}
+ 	switch (address->sa_family) {
+ 	case AF_UNSPEC:
++		if (access_request == LANDLOCK_ACCESS_NET_CONNECT_TCP) {
++			/*
++			 * Connecting to an address with AF_UNSPEC dissolves
++			 * the TCP association, which have the same effect as
++			 * closing the connection while retaining the socket
++			 * object (i.e., the file descriptor).  As for dropping
++			 * privileges, closing connections is always allowed.
++			 *
++			 * For a TCP access control system, this request is
++			 * legitimate. Let the network stack handle potential
++			 * inconsistencies and return -EINVAL if needed.
++			 */
++			return 0;
++		} else if (access_request == LANDLOCK_ACCESS_NET_BIND_TCP) {
++			/*
++			 * Binding to an AF_UNSPEC address is treated
++			 * differently by IPv4 and IPv6 sockets. The socket's
++			 * family may change under our feet due to
++			 * setsockopt(IPV6_ADDRFORM), but that's ok: we either
++			 * reject entirely or require
++			 * %LANDLOCK_ACCESS_NET_BIND_TCP for the given port, so
++			 * it cannot be used to bypass the policy.
++			 *
++			 * IPv4 sockets map AF_UNSPEC to AF_INET for
++			 * retrocompatibility for bind accesses, only if the
++			 * address is INADDR_ANY (cf. __inet_bind). IPv6
++			 * sockets always reject it.
++			 *
++			 * Checking the address is required to not wrongfully
++			 * return -EACCES instead of -EAFNOSUPPORT or -EINVAL.
++			 * We could return 0 and let the network stack handle
++			 * these checks, but it is safer to return a proper
++			 * error and test consistency thanks to kselftest.
++			 */
++			if (sock->sk->__sk_common.skc_family == AF_INET) {
++				const struct sockaddr_in *const sockaddr =
++					(struct sockaddr_in *)address;
 +
-+	if (!done || timeout) {
- 		dev_err(dev, "DEVCMD %d %s timeout, done %d timeout %d max_seconds=%d\n",
- 			opcode, pdsc_devcmd_str(opcode), done, timeout,
- 			max_seconds);
--		err = -ETIMEDOUT;
- 		pdsc_devcmd_clean(pdsc);
-+		return -ETIMEDOUT;
++				if (addrlen < sizeof(struct sockaddr_in))
++					return -EINVAL;
++
++				if (sockaddr->sin_addr.s_addr !=
++				    htonl(INADDR_ANY))
++					return -EAFNOSUPPORT;
++			} else {
++				if (addrlen < SIN6_LEN_RFC2133)
++					return -EINVAL;
++				else
++					return -EAFNOSUPPORT;
++			}
++		} else {
++			WARN_ON_ONCE(1);
++		}
++		/* Only for bind(AF_UNSPEC+INADDR_ANY) on IPv4 socket. */
++		fallthrough;
+ 	case AF_INET:
+ 		if (addrlen < sizeof(struct sockaddr_in))
+ 			return -EINVAL;
+@@ -90,57 +145,18 @@ static int current_check_access_socket(struct socket *const sock,
+ 		return 0;
  	}
  
- 	status = pdsc_devcmd_status(pdsc);
+-	/* Specific AF_UNSPEC handling. */
+-	if (address->sa_family == AF_UNSPEC) {
+-		/*
+-		 * Connecting to an address with AF_UNSPEC dissolves the TCP
+-		 * association, which have the same effect as closing the
+-		 * connection while retaining the socket object (i.e., the file
+-		 * descriptor).  As for dropping privileges, closing
+-		 * connections is always allowed.
+-		 *
+-		 * For a TCP access control system, this request is legitimate.
+-		 * Let the network stack handle potential inconsistencies and
+-		 * return -EINVAL if needed.
+-		 */
+-		if (access_request == LANDLOCK_ACCESS_NET_CONNECT_TCP)
+-			return 0;
+-
+-		/*
+-		 * For compatibility reason, accept AF_UNSPEC for bind
+-		 * accesses (mapped to AF_INET) only if the address is
+-		 * INADDR_ANY (cf. __inet_bind).  Checking the address is
+-		 * required to not wrongfully return -EACCES instead of
+-		 * -EAFNOSUPPORT.
+-		 *
+-		 * We could return 0 and let the network stack handle these
+-		 * checks, but it is safer to return a proper error and test
+-		 * consistency thanks to kselftest.
+-		 */
+-		if (access_request == LANDLOCK_ACCESS_NET_BIND_TCP) {
+-			/* addrlen has already been checked for AF_UNSPEC. */
+-			const struct sockaddr_in *const sockaddr =
+-				(struct sockaddr_in *)address;
+-
+-			if (sock->sk->__sk_common.skc_family != AF_INET)
+-				return -EINVAL;
+-
+-			if (sockaddr->sin_addr.s_addr != htonl(INADDR_ANY))
+-				return -EAFNOSUPPORT;
+-		}
+-	} else {
+-		/*
+-		 * Checks sa_family consistency to not wrongfully return
+-		 * -EACCES instead of -EINVAL.  Valid sa_family changes are
+-		 * only (from AF_INET or AF_INET6) to AF_UNSPEC.
+-		 *
+-		 * We could return 0 and let the network stack handle this
+-		 * check, but it is safer to return a proper error and test
+-		 * consistency thanks to kselftest.
+-		 */
+-		if (address->sa_family != sock->sk->__sk_common.skc_family)
+-			return -EINVAL;
+-	}
++	/*
++	 * Checks sa_family consistency to not wrongfully return
++	 * -EACCES instead of -EINVAL.  Valid sa_family changes are
++	 * only (from AF_INET or AF_INET6) to AF_UNSPEC.
++	 *
++	 * We could return 0 and let the network stack handle this
++	 * check, but it is safer to return a proper error and test
++	 * consistency thanks to kselftest.
++	 */
++	if (address->sa_family != sock->sk->__sk_common.skc_family &&
++	    address->sa_family != AF_UNSPEC)
++		return -EINVAL;
+ 
+ 	id.key.data = (__force uintptr_t)port;
+ 	BUILD_BUG_ON(sizeof(port) > sizeof(id.key.data));
 -- 
 2.53.0
 
