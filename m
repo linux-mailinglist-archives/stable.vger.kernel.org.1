@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-255281-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-255292-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id yGE7In+fGGpvlggAu9opvQ
-	(envelope-from <stable+bounces-255281-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:03:11 +0200
+	id cEZIC1yfGGpAlggAu9opvQ
+	(envelope-from <stable+bounces-255292-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:02:36 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 423D15F7B6B
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:03:11 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4F58F5F7B14
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:02:35 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id BB892301AB9D
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 20:01:10 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 65E83303EA3C
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 20:01:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AC033409636;
-	Thu, 28 May 2026 20:01:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2EB0B32ABC0;
+	Thu, 28 May 2026 20:01:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="r7X1u4r0"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ar85RCB7"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 60B28409602;
-	Thu, 28 May 2026 20:01:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D032527A476;
+	Thu, 28 May 2026 20:01:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779998469; cv=none; b=s+6jPK4rhFA1q26kSio/DK7zQDpwjDhoigdR50iOT+GezG7rk4CMaDhKUpQ+2CbL8cuHokOOtfayApKcUjLau6jdpvMG8JP4VYvMKNa6qINvC7fJlgn7agWv2h7lXp86kn1tboMglZREO1ta7TJdh6E9MGSuTOVilmMHA2fEcSw=
+	t=1779998500; cv=none; b=fcZ7iaPnExtCDH51UVUHSnlC8PUDNm5nZ8jUFh00Q8N1qOKGD5t3kx9nLSOgcl2DvQIb5VcXYwHW7qMSeE8cEBoYrQWf76k+W48dixe5SPCTBmlWGAl+gS7NKngf6jSZ++7+KLNxdhvcJM6VaGvkqdhBEdfO31QCliTcQntqJic=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779998469; c=relaxed/simple;
-	bh=Q4zzm/SmgTHMgkgf1dPC32ca98oA5xkkrn0Qn44kg+8=;
+	s=arc-20240116; t=1779998500; c=relaxed/simple;
+	bh=NNpgYuXFEyoR/YDwdwGuibBw/yrmSACENZT7iZqI0J0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=e7mzQmoJyzRNV0Dnzu6WYpw1DezcNnbv2lMGBa44M6GzvMwYed555bLBOaMIBRezgtJoRfY4oGZYvgBo3Pi6pW0/k9IF6I7NwPCbcFGqkEIBbP2qVtrBtiFJxkA/YXoxYap2Cwi/qOAgmiXg5WxZtMRxlxvy7Ic35JG/v3SF9Ts=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=r7X1u4r0; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8215E1F000E9;
-	Thu, 28 May 2026 20:01:07 +0000 (UTC)
+	 MIME-Version; b=WcKSZGm4r9NIoKssHEQDoqd5EsO9V9gFFMU+iUXo5y+3Q0MooLrXbk7YLtnmiW+y2pHk1I7Vwy7OBrcDIw4Tv6s/sYH+tUmqRhpsaBknxdlJMF+iqecSq10Txa5qfUqrudJGBcwAJad6aU/SrR8zBC9+0LJs3+vBCQ6cddRIF14=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ar85RCB7; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3A8861F000E9;
+	Thu, 28 May 2026 20:01:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779998468;
-	bh=HwdRJ4Am8zh/XXkEK9iVnstJkc5LXFkCzXp5SGZn8vU=;
+	s=korg; t=1779998498;
+	bh=V1BEhbhhhCJV8VF1XFt2tK0z3MWSoKXOT/x8rvmP050=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=r7X1u4r0Ucje9sqGm20eXrevo+EmhPBtptvflaNKDkBsp2YfzjDt7LqlwZ5QxuBtt
-	 ne1vo9XQUt3Yr3r9dXDYSNsUcZ92opsXJZBUozLhaD1wTyR6QTFi8U20ylibiBt3vG
-	 pMdf40k4plVCK5wK5SFj5XRF0KsIfsC0LiJ5smdE=
+	b=ar85RCB7mACWtt45bOxmEcWjtTy9IBCSx8EFMz7NhXsilvua1K8TrF3eiWyYr0/i3
+	 LZyxgKO4kZEXKh1IScwc6SSzDHIitrphIs86JJRrgUMOLxfXEeb1ESBVuR/CPaBdjj
+	 PmmfR0lEwjMK3H46QiMLAvBhe1Gj+U3CRP/7IZYk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
 	stable@kernel.org,
 	Sven Eckelmann <sven@narfation.org>
-Subject: [PATCH 7.0 157/461] batman-adv: tp_meter: fix race condition in send error reporting
-Date: Thu, 28 May 2026 21:44:46 +0200
-Message-ID: <20260528194651.591556983@linuxfoundation.org>
+Subject: [PATCH 7.0 158/461] batman-adv: tp_meter: avoid role confusion in tp_list
+Date: Thu, 28 May 2026 21:44:47 +0200
+Message-ID: <20260528194651.623720990@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
 In-Reply-To: <20260528194646.819809818@linuxfoundation.org>
 References: <20260528194646.819809818@linuxfoundation.org>
@@ -67,7 +67,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
@@ -77,7 +77,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-255281-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-255292-lists,stable=lfdr.de];
 	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
@@ -88,9 +88,9 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	TAGGED_RCPT(0.00)[stable];
 	RCPT_COUNT_FIVE(0.00)[5];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,narfation.org:email]
-X-Rspamd-Queue-Id: 423D15F7B6B
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,narfation.org:email]
+X-Rspamd-Queue-Id: 4F58F5F7B14
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
@@ -100,181 +100,189 @@ X-Rspamd-Server: lfdr
 
 From: Sven Eckelmann <sven@narfation.org>
 
-commit 71dce47f0758537fff78fddb5fb0d4632d29b29f upstream.
+commit ff24f2ecfd94c07a2b89bac497433e3b23271cac upstream.
 
-batadv_tp_sender_shutdown() previously used two separate variables to track
-session state: sending (an atomic flag indicating whether the session was
-active) and reason (a plain enum storing the stop reason). This introduced
-a race window between the two writes: after sending was cleared to 0,
-batadv_tp_send() could observe the stopped state and call
-batadv_tp_sender_end() before reason was written, causing the wrong stop
-reason to be reported to the caller.
+Session lookups in tp_list matched only on destination address (and
+optionally session ID), leaving role validation to the caller. If two
+sessions with the same other_end coexisted (one as sender, one as receiver)
+a lookup could silently return the wrong one, causing the caller's role to
+bail out early, potentially skipping necessary cleanup.
 
-Fix this by consolidating both variables into a single atomic send_result,
-which holds 0 while the session is running and the stop reason once it
-ends.
+Move the role check into the lookup functions themselves so the correct
+entry is always returned, or none at all. Since batadv_tp_start()
+legitimately needs to detect any active session to a destination regardless
+of role, introduce a dedicated helper for that case rather than bending the
+existing lookup semantics.
 
 Cc: stable@kernel.org
 Fixes: 33a3bb4a3345 ("batman-adv: throughput meter implementation")
 Signed-off-by: Sven Eckelmann <sven@narfation.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/batman-adv/tp_meter.c |   40 +++++++++++++++++++++++++---------------
- net/batman-adv/types.h    |   10 +++++-----
- 2 files changed, 30 insertions(+), 20 deletions(-)
+ net/batman-adv/tp_meter.c |   59 ++++++++++++++++++++++++++++------------------
+ 1 file changed, 36 insertions(+), 23 deletions(-)
 
 --- a/net/batman-adv/tp_meter.c
 +++ b/net/batman-adv/tp_meter.c
-@@ -413,11 +413,14 @@ static void batadv_tp_sender_cleanup(str
- static void batadv_tp_sender_end(struct batadv_priv *bat_priv,
- 				 struct batadv_tp_vars *tp_vars)
+@@ -255,6 +255,7 @@ static void batadv_tp_batctl_error_notif
+  * batadv_tp_list_find() - find a tp_vars object in the global list
+  * @bat_priv: the bat priv with all the mesh interface information
+  * @dst: the other endpoint MAC address to look for
++ * @role: role of the session
+  *
+  * Look for a tp_vars object matching dst as end_point and return it after
+  * having increment the refcounter. Return NULL is not found
+@@ -262,7 +263,8 @@ static void batadv_tp_batctl_error_notif
+  * Return: matching tp_vars or NULL when no tp_vars with @dst was found
+  */
+ static struct batadv_tp_vars *batadv_tp_list_find(struct batadv_priv *bat_priv,
+-						  const u8 *dst)
++						  const u8 *dst,
++						  enum batadv_tp_meter_role role)
  {
-+	enum batadv_tp_meter_reason reason;
- 	u32 session_cookie;
+ 	struct batadv_tp_vars *pos, *tp_vars = NULL;
  
-+	reason = atomic_read(&tp_vars->send_result);
+@@ -271,6 +273,9 @@ static struct batadv_tp_vars *batadv_tp_
+ 		if (!batadv_compare_eth(pos->other_end, dst))
+ 			continue;
+ 
++		if (pos->role != role)
++			continue;
 +
- 	batadv_dbg(BATADV_DBG_TP_METER, bat_priv,
- 		   "Test towards %pM finished..shutting down (reason=%d)\n",
--		   tp_vars->other_end, tp_vars->reason);
-+		   tp_vars->other_end, reason);
- 
- 	batadv_dbg(BATADV_DBG_TP_METER, bat_priv,
- 		   "Last timing stats: SRTT=%ums RTTVAR=%ums RTO=%ums\n",
-@@ -430,7 +433,7 @@ static void batadv_tp_sender_end(struct
- 	session_cookie = batadv_tp_session_cookie(tp_vars->session,
- 						  tp_vars->icmp_uid);
- 
--	batadv_tp_batctl_notify(tp_vars->reason,
-+	batadv_tp_batctl_notify(reason,
- 				tp_vars->other_end,
- 				bat_priv,
- 				tp_vars->start_time,
-@@ -446,10 +449,18 @@ static void batadv_tp_sender_end(struct
- static void batadv_tp_sender_shutdown(struct batadv_tp_vars *tp_vars,
- 				      enum batadv_tp_meter_reason reason)
- {
--	if (atomic_xchg(&tp_vars->sending, 0) != 1)
--		return;
-+	atomic_cmpxchg(&tp_vars->send_result, 0, reason);
-+}
- 
--	tp_vars->reason = reason;
-+/**
-+ * batadv_tp_sender_stopped() - check if tp session was stopped with reason
-+ * @tp_vars: the private data of the current TP meter session
-+ *
-+ * Return: whether stop reason was found
-+ */
-+static bool batadv_tp_sender_stopped(struct batadv_tp_vars *tp_vars)
-+{
-+	return atomic_read(&tp_vars->send_result) != 0;
+ 		/* most of the time this function is invoked during the normal
+ 		 * process..it makes sens to pay more when the session is
+ 		 * finished and to speed the process up during the measurement
+@@ -287,11 +292,32 @@ static struct batadv_tp_vars *batadv_tp_
  }
  
  /**
-@@ -479,7 +490,7 @@ static void batadv_tp_reset_sender_timer
- 	/* most of the time this function is invoked while normal packet
- 	 * reception...
- 	 */
--	if (unlikely(atomic_read(&tp_vars->sending) == 0))
-+	if (unlikely(batadv_tp_sender_stopped(tp_vars)))
- 		/* timer ref will be dropped in batadv_tp_sender_cleanup */
- 		return;
++ * batadv_tp_list_active() - check if session from/to destination is ongoing
++ * @bat_priv: the bat priv with all the mesh interface information
++ * @dst: the other endpoint MAC address to look for
++ *
++ * Return: if matching session with @dst was found
++ */
++static bool batadv_tp_list_active(struct batadv_priv *bat_priv, const u8 *dst)
++	__must_hold(&bat_priv->tp_list_lock)
++{
++	struct batadv_tp_vars *tp_vars;
++
++	hlist_for_each_entry_rcu(tp_vars, &bat_priv->tp_list, list) {
++		if (batadv_compare_eth(tp_vars->other_end, dst))
++			return true;
++	}
++
++	return false;
++}
++
++/**
+  * batadv_tp_list_find_session() - find tp_vars session object in the global
+  *  list
+  * @bat_priv: the bat priv with all the mesh interface information
+  * @dst: the other endpoint MAC address to look for
+  * @session: session identifier
++ * @role: role of the session
+  *
+  * Look for a tp_vars object matching dst as end_point, session as tp meter
+  * session and return it after having increment the refcounter. Return NULL
+@@ -301,7 +327,7 @@ static struct batadv_tp_vars *batadv_tp_
+  */
+ static struct batadv_tp_vars *
+ batadv_tp_list_find_session(struct batadv_priv *bat_priv, const u8 *dst,
+-			    const u8 *session)
++			    const u8 *session, enum batadv_tp_meter_role role)
+ {
+ 	struct batadv_tp_vars *pos, *tp_vars = NULL;
  
-@@ -499,7 +510,7 @@ static void batadv_tp_sender_timeout(str
- 	struct batadv_tp_vars *tp_vars = timer_container_of(tp_vars, t, timer);
- 	struct batadv_priv *bat_priv = tp_vars->bat_priv;
- 
--	if (atomic_read(&tp_vars->sending) == 0)
-+	if (batadv_tp_sender_stopped(tp_vars))
- 		return;
- 
- 	/* if the user waited long enough...shutdown the test */
-@@ -661,7 +672,7 @@ static void batadv_tp_recv_ack(struct ba
- 	if (unlikely(tp_vars->role != BATADV_TP_SENDER))
- 		goto out;
- 
--	if (unlikely(atomic_read(&tp_vars->sending) == 0))
-+	if (unlikely(batadv_tp_sender_stopped(tp_vars)))
- 		goto out;
- 
- 	/* old ACK? silently drop it.. */
-@@ -827,21 +838,21 @@ static int batadv_tp_send(void *arg)
- 
- 	if (unlikely(tp_vars->role != BATADV_TP_SENDER)) {
- 		err = BATADV_TP_REASON_DST_UNREACHABLE;
--		tp_vars->reason = err;
-+		batadv_tp_sender_shutdown(tp_vars, err);
- 		goto out;
- 	}
- 
- 	orig_node = batadv_orig_hash_find(bat_priv, tp_vars->other_end);
- 	if (unlikely(!orig_node)) {
- 		err = BATADV_TP_REASON_DST_UNREACHABLE;
--		tp_vars->reason = err;
-+		batadv_tp_sender_shutdown(tp_vars, err);
- 		goto out;
- 	}
- 
- 	primary_if = batadv_primary_if_get_selected(bat_priv);
- 	if (unlikely(!primary_if)) {
- 		err = BATADV_TP_REASON_DST_UNREACHABLE;
--		tp_vars->reason = err;
-+		batadv_tp_sender_shutdown(tp_vars, err);
- 		goto out;
- 	}
- 
-@@ -860,7 +871,7 @@ static int batadv_tp_send(void *arg)
- 	queue_delayed_work(batadv_event_workqueue, &tp_vars->finish_work,
- 			   msecs_to_jiffies(tp_vars->test_length));
- 
--	while (atomic_read(&tp_vars->sending) != 0) {
-+	while (!batadv_tp_sender_stopped(tp_vars)) {
- 		if (unlikely(!batadv_tp_avail(tp_vars, payload_len))) {
- 			batadv_tp_wait_available(tp_vars, payload_len);
+@@ -313,6 +339,9 @@ batadv_tp_list_find_session(struct batad
+ 		if (memcmp(pos->session, session, sizeof(pos->session)) != 0)
  			continue;
-@@ -883,8 +894,7 @@ static int batadv_tp_send(void *arg)
- 				   "Meter: %s() cannot send packets (%d)\n",
- 				   __func__, err);
- 			/* ensure nobody else tries to stop the thread now */
--			if (atomic_xchg(&tp_vars->sending, 0) == 1)
--				tp_vars->reason = err;
-+			batadv_tp_sender_shutdown(tp_vars, err);
- 			break;
- 		}
  
-@@ -1006,7 +1016,7 @@ void batadv_tp_start(struct batadv_priv
- 	ether_addr_copy(tp_vars->other_end, dst);
- 	kref_init(&tp_vars->refcount);
- 	tp_vars->role = BATADV_TP_SENDER;
--	atomic_set(&tp_vars->sending, 1);
-+	atomic_set(&tp_vars->send_result, 0);
- 	memcpy(tp_vars->session, session_id, sizeof(session_id));
- 	tp_vars->icmp_uid = icmp_uid;
++		if (pos->role != role)
++			continue;
++
+ 		/* most of the time this function is invoked during the normal
+ 		 * process..it makes sense to pay more when the session is
+ 		 * finished and to speed the process up during the measurement
+@@ -665,13 +694,10 @@ static void batadv_tp_recv_ack(struct ba
  
---- a/net/batman-adv/types.h
-+++ b/net/batman-adv/types.h
-@@ -1329,15 +1329,15 @@ struct batadv_tp_vars {
- 	/** @role: receiver/sender modi */
- 	enum batadv_tp_meter_role role;
+ 	/* find the tp_vars */
+ 	tp_vars = batadv_tp_list_find_session(bat_priv, icmp->orig,
+-					      icmp->session);
++					      icmp->session, BATADV_TP_SENDER);
+ 	if (unlikely(!tp_vars))
+ 		return;
  
--	/** @sending: sending binary semaphore: 1 if sending, 0 is not */
--	atomic_t sending;
-+	/**
-+	 * @send_result: 0 when sending is ongoing and otherwise
-+	 * enum batadv_tp_meter_reason
-+	 */
-+	atomic_t send_result;
- 
- 	/** @receiving: receiving binary semaphore: 1 if receiving, 0 is not */
- 	atomic_t receiving;
- 
--	/** @reason: reason for a stopped session */
--	enum batadv_tp_meter_reason reason;
+-	if (unlikely(tp_vars->role != BATADV_TP_SENDER))
+-		goto out;
 -
- 	/** @finish_work: work item for the finishing procedure */
- 	struct delayed_work finish_work;
+ 	if (unlikely(batadv_tp_sender_stopped(tp_vars)))
+ 		goto out;
  
+@@ -980,10 +1006,8 @@ void batadv_tp_start(struct batadv_priv
+ 		return;
+ 	}
+ 
+-	tp_vars = batadv_tp_list_find(bat_priv, dst);
+-	if (tp_vars) {
++	if (batadv_tp_list_active(bat_priv, dst)) {
+ 		spin_unlock_bh(&bat_priv->tp_list_lock);
+-		batadv_tp_vars_put(tp_vars);
+ 		batadv_dbg(BATADV_DBG_TP_METER, bat_priv,
+ 			   "Meter: test to or from the same node already ongoing, aborting\n");
+ 		batadv_tp_batctl_error_notify(BATADV_TP_REASON_ALREADY_ONGOING,
+@@ -1104,18 +1128,14 @@ void batadv_tp_stop(struct batadv_priv *
+ 	if (!orig_node)
+ 		return;
+ 
+-	tp_vars = batadv_tp_list_find(bat_priv, orig_node->orig);
++	tp_vars = batadv_tp_list_find(bat_priv, orig_node->orig, BATADV_TP_SENDER);
+ 	if (!tp_vars) {
+ 		batadv_dbg(BATADV_DBG_TP_METER, bat_priv,
+ 			   "Meter: trying to interrupt an already over connection\n");
+ 		goto out_put_orig_node;
+ 	}
+ 
+-	if (unlikely(tp_vars->role != BATADV_TP_SENDER))
+-		goto out_put_tp_vars;
+-
+ 	batadv_tp_sender_shutdown(tp_vars, return_value);
+-out_put_tp_vars:
+ 	batadv_tp_vars_put(tp_vars);
+ out_put_orig_node:
+ 	batadv_orig_node_put(orig_node);
+@@ -1371,7 +1391,7 @@ batadv_tp_init_recv(struct batadv_priv *
+ 		goto out_unlock;
+ 
+ 	tp_vars = batadv_tp_list_find_session(bat_priv, icmp->orig,
+-					      icmp->session);
++					      icmp->session, BATADV_TP_RECEIVER);
+ 	if (tp_vars)
+ 		goto out_unlock;
+ 
+@@ -1442,7 +1462,7 @@ static void batadv_tp_recv_msg(struct ba
+ 		}
+ 	} else {
+ 		tp_vars = batadv_tp_list_find_session(bat_priv, icmp->orig,
+-						      icmp->session);
++						      icmp->session, BATADV_TP_RECEIVER);
+ 		if (!tp_vars) {
+ 			batadv_dbg(BATADV_DBG_TP_METER, bat_priv,
+ 				   "Unexpected packet from %pM!\n",
+@@ -1451,13 +1471,6 @@ static void batadv_tp_recv_msg(struct ba
+ 		}
+ 	}
+ 
+-	if (unlikely(tp_vars->role != BATADV_TP_RECEIVER)) {
+-		batadv_dbg(BATADV_DBG_TP_METER, bat_priv,
+-			   "Meter: dropping packet: not expected (role=%u)\n",
+-			   tp_vars->role);
+-		goto out;
+-	}
+-
+ 	tp_vars->last_recv_time = jiffies;
+ 
+ 	/* if the packet is a duplicate, it may be the case that an ACK has been
 
 
 
