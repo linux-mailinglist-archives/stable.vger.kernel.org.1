@@ -1,172 +1,143 @@
-Return-Path: <stable+bounces-256440-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-256441-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id eFK+HG/MGGrrnQgAu9opvQ
-	(envelope-from <stable+bounces-256440-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 29 May 2026 01:14:55 +0200
+	id CPGIGbzLGGrrnQgAu9opvQ
+	(envelope-from <stable+bounces-256441-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 29 May 2026 01:11:56 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id CCEF85FB467
-	for <lists+stable@lfdr.de>; Fri, 29 May 2026 01:14:54 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id DC7D85FB3BB
+	for <lists+stable@lfdr.de>; Fri, 29 May 2026 01:11:55 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 5F3833170189
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 23:10:50 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id AC8FB300CE98
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 23:11:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AD25833D4E2;
-	Thu, 28 May 2026 23:10:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AC99D367F45;
+	Thu, 28 May 2026 23:11:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="s6uB1knX"
+	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="iE6K5eni"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-yw1-f175.google.com (mail-yw1-f175.google.com [209.85.128.175])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from out-174.mta1.migadu.com (out-174.mta1.migadu.com [95.215.58.174])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2EF7C367F36
-	for <stable@vger.kernel.org>; Thu, 28 May 2026 23:10:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.175
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 14CED33D4E2
+	for <stable@vger.kernel.org>; Thu, 28 May 2026 23:11:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.215.58.174
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780009849; cv=none; b=WioavtIHjszqFgD6bBmJCoG61wdc1TQjzywjtKjE90hJqSVnRPZhryJFQZfc2J8mvgr7TIedFfuTeIsGEp7GJS5zxUoRAxtdJ49NjkPNio59j0+RzhjgTvqf1i1eF/wUgDMgxCSh2PBQ646aXO1V/EWNFoVGy/Ns3EFO9kdFYTc=
+	t=1780009913; cv=none; b=Z99/GYMzcmm8sgEhWQxfoJGPb3AUqiuyN4b8c8vQ3UQzYPA628OjzHcrmxOn+ClsP6jTJnyHHIi9X0XfUfa/vgQTjdoYbfuKT4NZdIeoykLvjaJDk+IsYHKfgpXIXfZ15P0MxEGnxkKFtR40jQffvEbg/zfg38rO0DtuJpTRHCs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780009849; c=relaxed/simple;
-	bh=fhdDODqpR4chdblBJU8fdAmz1DLGOrwpgf0lUaM2PoU=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=fEmhg3HXV6mXvfW/E2LPunP2BmleFRjSBqpX6xHWYhxU7cEbM8UiSiZc34gFZ8BZ3fMZA6jplfQv/9FBGYhwCpE9SiDKDhSfck8DehERzU6VsKSi6LbbN0bFWpoZejxlluXlw6ozrEzzacMrxDjj14KueuTOqIRsTntfh8K2iNY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=s6uB1knX; arc=none smtp.client-ip=209.85.128.175
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-yw1-f175.google.com with SMTP id 00721157ae682-7c0de780bf1so120191057b3.2
-        for <stable@vger.kernel.org>; Thu, 28 May 2026 16:10:47 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1780009847; x=1780614647; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=n9S3g84A5WnXh4iXXrEMsVPJdFWPARrWB1WQLZWJngA=;
-        b=s6uB1knX29QnqkLhm8Fz32YH6HqwHQU0VyFZsjGSvbfJcvjlW/ABX0DlUATj1RmXWk
-         rN0dxmgZJWDMrIe4fwKxgZyopijeDreRWbOdVSIK8bepkLo3RyyS34euy/2VUCKUHOTX
-         6w92nc+FglHq6wPf/RH66bl2tv/4vCxnvIjsqQ4ac2srDRncE0V+VY1UIUwcbacIOWBO
-         U2qUvibWUxaJ8tj1AA+vK6FGt67kIF+Vz88SD9Nxvb15owHsTaLBYg7YYTkkZgghc1sM
-         Czm6+6BUFy5IUJFKpgnK06T8Gthfj49HrU8lUjHsDKZXVg07V2BwWgSuJf5fugr3DWMr
-         mkSA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1780009847; x=1780614647;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=n9S3g84A5WnXh4iXXrEMsVPJdFWPARrWB1WQLZWJngA=;
-        b=W4lDobJj/pYEFOaTctnKCElu0lFsNKHWa4Al4AFJK8jKNVrJL4oxi6EB6HSafpJDsh
-         zDUI2e53Qqx6FXtvnsmGsDCB5EdCmBWg0bf9pFUY/i1dPm8QefDRxGbZu0ICBNfj3Rcs
-         SDH8R0P6T4i8QRQfdy2RF3Mo4Le1CdFfYUqSEIvXiOSzAQzg5ClqVdJiOvNi4k7U9xkJ
-         VCs21lLs5sXyZWHqzyMc6uoZxw0eJrRKUia6CTBaPQwbKwja4bRWVQQ+6EydGq3BCoip
-         I86Rrahw/lnYvUeW4qxTxDVrN/1NPWdzZ32J5SiVCPCcMvW7jPfe6o81sUl910/4zYdf
-         raag==
-X-Forwarded-Encrypted: i=1; AFNElJ8twIx1uk3d75xuFTMZ2r2x3frQa9SlcC79qGr69LmuJe+GHEJEmQvZ6orkVvXCRUiQiCWe1LU=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yykn1gZGzqRVMn6NCtP2kBkPxDlzxUFKyGQIXBASvk7iOWfC9qq
-	r2H2yrx+joxN0y5HG+TRuq2UdreiZQqaMOWq0iesqmjaeY2zVNbWjupK
-X-Gm-Gg: Acq92OFmzJv/1NnTdu2Va73E9cRGv+uDIVSu7ZnF0k78YsK/eyPAYufUioviP1R283O
-	tJQJbJaboJXz48eB7z5vauvsdFRc6/yBOcK3gETh/WXH3JRCXvvhSJT5C3kE7bAOcI4QZ9tvIeR
-	zwSNVBM1rVVLWE4rRg++bKDDX0lIF3kJTp14uiRsiCkLF1QZSLwO6iqooMt5MFoysabt9lHR3kR
-	2V1XiI/yKsZUSqhBrgWwlSD+ngW99wdLholhp3ZV1A4PdmRkgXV6y3/T8yKaNe6FhPV5mz7CuzB
-	d/JvE1mJMlgVbD/iEMxVNWIhc/m/v8O4ARBXohuckyEj7KvsCXfmMC34XsKuR6g75W0yXv5pftE
-	w89b7Ol9VqJDnIPfxuy4tavcTjW+WcLO9RXGkMdLYZ6cT/B+kDVXEaSCcOJd49Lgg47kRqPLUKP
-	csihtXcnXD+JeqagnIbkNuPljzlwil3Ky9QPX8TI/IvZu6OHuAsEbH6cMzpyrPrF/tkpRSXIKXz
-	IqOFuMnc88O1CP0FIoXfO92
-X-Received: by 2002:a05:690e:1904:b0:65c:5b88:84a2 with SMTP id 956f58d0204a3-66052cb1fb4mr144652d50.4.1780009847107;
-        Thu, 28 May 2026 16:10:47 -0700 (PDT)
-Received: from localhost (107-220-129-194.lightspeed.chrlnc.sbcglobal.net. [107.220.129.194])
-        by smtp.gmail.com with ESMTPSA id 956f58d0204a3-6604e6a5b44sm261601d50.10.2026.05.28.16.10.46
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 28 May 2026 16:10:46 -0700 (PDT)
-From: Matt Turner <mattst88@gmail.com>
-To: linux-alpha@vger.kernel.org
-Cc: linux-kernel@vger.kernel.org,
-	Richard Henderson <richard.henderson@linaro.org>,
-	Magnus Lindholm <linmag7@gmail.com>,
-	Matt Turner <mattst88@gmail.com>,
-	stable@vger.kernel.org
-Subject: [PATCH] alpha: Fix SMP shutdown hang due to missing memory barriers
-Date: Thu, 28 May 2026 19:10:43 -0400
-Message-ID: <20260528231043.1842326-1-mattst88@gmail.com>
-X-Mailer: git-send-email 2.53.0
+	s=arc-20240116; t=1780009913; c=relaxed/simple;
+	bh=5adojc1go2KwpqMc05wDsZ4zJsAbD9xwCcHX4ApiQpE=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=F+qrCOT+6eLMu2vqVy9s+Lf1V4JPX/1I9vftsAp7a8LCueu3C28B0/UP4/ziEJ3AXqa/PPkFyYKI3iVC8vU2np1ssBFRYgg+85NFnPero1gTDsTv3/POQ7Jzofy2GPya5bm+Cw154rbel38Emhs78483XiR2VfY9memni+npQ8w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=iE6K5eni; arc=none smtp.client-ip=95.215.58.174
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1780009908;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=MKHPi9+ltAWfK4xQDeY6Lr/5mupcQ2dHPDNSkERP3Kc=;
+	b=iE6K5eniOKNQNutkwjMcx8rMi50fuHOggu4HA7XmDYcTuucmvdd1yweDbzlvIjwfkkSpjI
+	cCKYlPQNA8Kla9XvPpO3VGDKLazPv3xQe690vdvPyWzXqyIbaiTGoPbL7vxaYitMGiKi+4
+	slRCw9Q3aX7u5pRNw1+XfsFToIYhHFE=
+From: Atish Patra <atish.patra@linux.dev>
+Subject: [PATCH 0/2] KVM: Miscallenous SEV/SNP fixes
+Date: Thu, 28 May 2026 16:11:37 -0700
+Message-Id: <20260528-sev_snp_fixes-v1-0-d67a08151779@meta.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-0.66 / 15.00];
-	MID_CONTAINS_FROM(1.00)[];
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIAKrLGGoC/x3LQQqAIBBA0avIrBPUsLKrRITZVLMxcUCC6O5Jy
+ 8fnP8CYCRlG8UDGQkxXrNCNgHD6eKCkrRqMMp2yxkrGsnBMy043slRr3/aDC9o7DfVJGf9Ql2l
+ +3w+rHfcLXwAAAA==
+To: Sean Christopherson <seanjc@google.com>, 
+ Paolo Bonzini <pbonzini@redhat.com>, Borislav Petkov <bp@alien8.de>, 
+ Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, 
+ "H. Peter Anvin" <hpa@zytor.com>, Tom Lendacky <thomas.lendacky@amd.com>, 
+ Marc Orr <marcorr@google.com>, Peter Gonda <pgonda@google.com>, 
+ Brijesh Singh <brijesh.singh@amd.com>, Youngjae Lee <youngjaelee@meta.com>, 
+ Ashish Kalra <ashish.kalra@amd.com>, Michael Roth <michael.roth@amd.com>, 
+ John Allen <john.allen@amd.com>, Herbert Xu <herbert@gondor.apana.org.au>
+Cc: clm@meta.com, kvm@vger.kernel.org, linux-kernel@vger.kernel.org, 
+ linux-crypto@vger.kernel.org, stable@vger.kernel.org, 
+ Atish Patra <atishp@meta.com>
+X-Migadu-Flow: FLOW_OUT
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
-	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
-	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
+	DMARC_POLICY_ALLOW(-0.50)[linux.dev,none];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
+	R_DKIM_ALLOW(-0.20)[linux.dev:s=key1];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-256440-lists,stable=lfdr.de];
-	FREEMAIL_CC(0.00)[vger.kernel.org,linaro.org,gmail.com];
-	FREEMAIL_FROM(0.00)[gmail.com];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	RCVD_TLS_LAST(0.00)[];
 	TO_DN_SOME(0.00)[];
-	RECEIVED_HELO_LOCALHOST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[6];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[mattst88@gmail.com,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[gmail.com:+];
-	RCVD_COUNT_FIVE(0.00)[5];
+	MIME_TRACE(0.00)[0:+];
 	TAGGED_RCPT(0.00)[stable];
+	MISSING_XM_UA(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	RCPT_COUNT_TWELVE(0.00)[21];
+	RCVD_COUNT_THREE(0.00)[3];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[atish.patra@linux.dev,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
-X-Rspamd-Queue-Id: CCEF85FB467
+	PRECEDENCE_BULK(0.00)[];
+	TAGGED_FROM(0.00)[bounces-256441-lists,stable=lfdr.de];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	DKIM_TRACE(0.00)[linux.dev:+]
+X-Rspamd-Queue-Id: DC7D85FB3BB
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-Alpha has a very weak memory model. halt() makes no guarantee that
-pending stores have drained from the store buffer. If set_cpu_present()
-stores are still buffered when a secondary CPU halts, they are lost,
-and the boot CPU spins forever in the cpu_present_mask wait loop.
+This series addresses a few issues found during code audit of the
+KVM SEV/SNP and CCP driver code. The fixes include a incorrect lock state
+and incomplete state handling during intra-host migration for SNP VMs.
 
-Add mb() before halt() on secondary CPUs to flush the store buffer,
-and use smp_mb() in the boot CPU's poll loop instead of the
-compiler-only barrier() to ensure it observes secondary CPUs' stores.
-
-This avoids a deadlock on shutdown on EV7/Marvel platforms.
-
+To: Sean Christopherson <seanjc@google.com>
+To: Paolo Bonzini <pbonzini@redhat.com>
+To: Borislav Petkov <bp@alien8.de>
+To: Dave Hansen <dave.hansen@linux.intel.com>
+To: x86@kernel.org
+To: H. Peter Anvin <hpa@zytor.com>
+To: Tom Lendacky <thomas.lendacky@amd.com>
+To: Marc Orr <marcorr@google.com>
+To: Peter Gonda <pgonda@google.com>
+To: Brijesh Singh <brijesh.singh@amd.com>
+To: Youngjae Lee <youngjaelee@meta.com>
+To: Ashish Kalra <ashish.kalra@amd.com>
+To: Michael Roth <michael.roth@amd.com>
+To: John Allen <john.allen@amd.com>
+To: Herbert Xu <herbert@gondor.apana.org.au>
+Cc: clm@meta.com
+Cc: kvm@vger.kernel.org
+Cc: linux-kernel@vger.kernel.org
+Cc: linux-crypto@vger.kernel.org
 Cc: stable@vger.kernel.org
-Assisted-by: Claude:claude-sonnet-4-6
-Signed-off-by: Matt Turner <mattst88@gmail.com>
----
- arch/alpha/kernel/process.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git ./arch/alpha/kernel/process.c ./arch/alpha/kernel/process.c
-index 06522451f018..d50f9cfd8333 100644
---- ./arch/alpha/kernel/process.c
-+++ ./arch/alpha/kernel/process.c
-@@ -99,6 +99,7 @@ common_shutdown_1(void *generic_ptr)
- 		*pflags = flags;
- 		set_cpu_present(cpuid, false);
- 		set_cpu_possible(cpuid, false);
-+		mb();
- 		halt();
- 	}
- #endif
-@@ -127,7 +128,7 @@ common_shutdown_1(void *generic_ptr)
- 	set_cpu_present(boot_cpuid, false);
- 	set_cpu_possible(boot_cpuid, false);
- 	while (!cpumask_empty(cpu_present_mask))
--		barrier();
-+		smp_mb();
- #endif
- 
- 	/* If booted from SRM, reset some of the original environment. */
+Signed-off-by: Atish Patra <atishp@meta.com>
+---
+Atish Patra (2):
+      KVM: SEV: Do not allow SEV-SNP VMs from intra-host migration
+      crypto: ccp: Fix possible deadlock in SEV init failure path
+
+ arch/x86/kvm/svm/sev.c       | 3 ++-
+ drivers/crypto/ccp/sev-dev.c | 2 +-
+ 2 files changed, 3 insertions(+), 2 deletions(-)
+---
+base-commit: e7ae89a0c97ce2b68b0983cd01eda67cf373517d
+change-id: 20260525-sev_snp_fixes-0b73789c1a91
+
+Best regards,
 -- 
-2.53.0
+Atish Patra <atishp@meta.com>
 
 
