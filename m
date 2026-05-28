@@ -1,58 +1,60 @@
-Return-Path: <stable+bounces-255929-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-256340-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id yM2ZOSWnGGpolwgAu9opvQ
-	(envelope-from <stable+bounces-255929-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:35:49 +0200
+	id SJIsF+isGGpymAgAu9opvQ
+	(envelope-from <stable+bounces-256340-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 23:00:24 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id C8E6D5F90EE
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:35:49 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id E83005FA09B
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 23:00:23 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 64C0830A7C2F
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 20:31:15 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 21F9A321E7F6
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 20:50:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0D13B33372A;
-	Thu, 28 May 2026 20:31:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B5FF7331A7E;
+	Thu, 28 May 2026 20:50:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hKuExH3d"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SkIaKJv5"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E265F32AAD6;
-	Thu, 28 May 2026 20:31:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8E631327C00;
+	Thu, 28 May 2026 20:50:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780000274; cv=none; b=CcwtkOysMF29Uj1BP+OVLhrEk9lJSxsNJcfOJsYfprA01krNXuwfcjNdOS7NfYphf7cbdoYKR26S7NMguGk8ootkNSQbJ4KtnccY8TqtG+k4yiC/ZVgz1PW3vbuLZsX6CGDS05DVpc0KjYDvogg26sK005vBNlvn8uAlUt4yvJ4=
+	t=1780001427; cv=none; b=a2MMKD2cDb4pauYP2RPppTem6baBOh2Vx4GzAAKH+/RQzTSE8KSM0TvJvgxl991H6Feqml8E/w/tieW030VyaHR3okEgIDkV/avVJ6g163Jlp2M/JRCXv4EoWx2a2fQM7v8PRXXbtjTmu+ilHPxkAGNG0W+7aFImJd5GzL0KgDM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780000274; c=relaxed/simple;
-	bh=H8Idb3fEY63Qf+NiRxVH7zT33G7dAF/yRmYB7NTKdsc=;
+	s=arc-20240116; t=1780001427; c=relaxed/simple;
+	bh=jmOldHPDFFCGDdY9ZvVxVNYMnLwVDvugAdHdAwGTMHc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=KqQVinvT7j521omLDoiWUW09cvI04ntSQhxuLRLT3nOcADghITpg4aqM1UcrDZ1GRItjTSxOkPiPFcU+h4miY4quAqzUCx5TYsARF57ic+Vn3QwbSmNt4zFoX/ob2qexzbMKjFRJ/wQnujA/sWuZqMkFPBWbJzHEGqsKKTQtaVY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hKuExH3d; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4DB171F000E9;
-	Thu, 28 May 2026 20:31:13 +0000 (UTC)
+	 MIME-Version; b=DHH656C8NEP96QqSgpBgn1l8gSw6y6GlSeOtdWZdaI0MhCmfqSRgbVa13NjIcYg7eLrHGj6p6e8iX3yBCfP8sTgnZ3+H1qFEeqyLRlYrnZFPA0LmvB2bl9pPUPRlruY9jC4wynxNe1xbBbzUEg9RAHhvJ3i/1l9G9W6Rb8PFfgw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SkIaKJv5; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7AEC41F000E9;
+	Thu, 28 May 2026 20:50:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780000273;
-	bh=5nXVX0kC1MNV1W3XmJksx8i9OD/DigduBnBM6uCcrUk=;
+	s=korg; t=1780001426;
+	bh=9rLmfIZOMA1Xx1/7xUFbwk9bZIh5WA0+gZzA6uPGgJ8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=hKuExH3d9IOv17qIYMG745UFnELwLGbg/IV47xHmwHR5LSKgRS6QBzQEqTAzYI+v3
-	 MWxxstxCSxBgnhQDNynJa1TFtoQDUpMAq98oTfqQnq9yzpHHwz73KVgKF+2Or4dPL3
-	 /vkTYPwHH5AJ1zt1MNifQhlypaqmfCypzeEKpelA=
+	b=SkIaKJv59FydD4ggcTd7jZLM9lhrboPNyRjWAddR4tOY6Kzl6xWYpcIE5FhHEKbDR
+	 735W0u6quvsgIGCh/bYzg5Ft9MQiF0qqvhx5NWjkoop7jvrxASh6vFnOQ0iGzDv3Mc
+	 pbeFnHO5ByOV0j4/ZRPYJsU6poH51/R5+TbdVNYs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Bartosz Golaszewski <bartosz.golaszewski@oss.qualcomm.com>,
+	Ijae Kim <ae878000@gmail.com>,
+	Myeonghun Pak <mhun512@gmail.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 365/377] gpio: aggregator: lock device when calling device_is_bound()
-Date: Thu, 28 May 2026 21:50:03 +0200
-Message-ID: <20260528194648.996612604@linuxfoundation.org>
+Subject: [PATCH 6.6 124/186] net: lan966x: avoid unregistering netdev on register failure
+Date: Thu, 28 May 2026 21:50:04 +0200
+Message-ID: <20260528194932.292237574@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260528194638.371537336@linuxfoundation.org>
-References: <20260528194638.371537336@linuxfoundation.org>
+In-Reply-To: <20260528194928.941004471@linuxfoundation.org>
+References: <20260528194928.941004471@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -67,72 +69,95 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,kernel.org];
+	TAGGED_FROM(0.00)[bounces-256340-lists,stable=lfdr.de];
 	PRECEDENCE_BULK(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-255929-lists,stable=lfdr.de];
-	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[5];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,qualcomm.com:email,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim]
-X-Rspamd-Queue-Id: C8E6D5F90EE
+	TAGGED_RCPT(0.00)[stable];
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,msgid.link:url,linuxfoundation.org:mid,linuxfoundation.org:dkim]
+X-Rspamd-Queue-Id: E83005FA09B
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Bartosz Golaszewski <bartosz.golaszewski@oss.qualcomm.com>
+From: Myeonghun Pak <mhun512@gmail.com>
 
-[ Upstream commit 598a2b3e2e0e6aa2e9f7843c96c45b5ea11e0411 ]
+[ Upstream commit c4f3d6eb1fcf6cd9ce4644f604d5aad1ce594dfc ]
 
-The kerneldoc for device_is_bound() says it must be called with the
-device lock taken. Add missing synchronization to this driver.
+lan966x_probe_port() stores the newly allocated net_device in the
+port before calling register_netdev(). If register_netdev() fails,
+the probe error path calls lan966x_cleanup_ports(), which sees
+port->dev and calls unregister_netdev() for a device that was never
+registered.
 
-Fixes: 3a27f40b4570 ("gpio: aggregator: stop using dev-sync-probe")
-Link: https://patch.msgid.link/20260518-gpio-dev-lock-v1-2-cc4736f3ff0b@oss.qualcomm.com
-Signed-off-by: Bartosz Golaszewski <bartosz.golaszewski@oss.qualcomm.com>
+Destroy the phylink instance created for this port and clear port->dev
+before returning the registration error. The common cleanup path now skips
+ports without port->dev before reaching the registered netdev cleanup, so
+it only handles ports that reached the registered-netdev lifetime.
+
+This also avoids treating an uninitialized FDMA netdev and the failed port
+as a NULL == NULL match in the common cleanup path.
+
+Fixes: d28d6d2e37d1 ("net: lan966x: add port module support")
+Co-developed-by: Ijae Kim <ae878000@gmail.com>
+Signed-off-by: Ijae Kim <ae878000@gmail.com>
+Signed-off-by: Myeonghun Pak <mhun512@gmail.com>
+Link: https://patch.msgid.link/20260506124331.31945-1-mhun512@gmail.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpio/gpio-aggregator.c | 9 ++++++---
- 1 file changed, 6 insertions(+), 3 deletions(-)
+ drivers/net/ethernet/microchip/lan966x/lan966x_main.c | 8 +++++---
+ 1 file changed, 5 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/gpio/gpio-aggregator.c b/drivers/gpio/gpio-aggregator.c
-index 8cbebcb4bb1f9..17db07cf92d05 100644
---- a/drivers/gpio/gpio-aggregator.c
-+++ b/drivers/gpio/gpio-aggregator.c
-@@ -969,9 +969,12 @@ static int gpio_aggregator_activate(struct gpio_aggregator *aggr)
+diff --git a/drivers/net/ethernet/microchip/lan966x/lan966x_main.c b/drivers/net/ethernet/microchip/lan966x/lan966x_main.c
+index 5466f14e000ce..ce48685a50b20 100644
+--- a/drivers/net/ethernet/microchip/lan966x/lan966x_main.c
++++ b/drivers/net/ethernet/microchip/lan966x/lan966x_main.c
+@@ -750,11 +750,10 @@ static void lan966x_cleanup_ports(struct lan966x *lan966x)
+ 
+ 	for (p = 0; p < lan966x->num_phys_ports; p++) {
+ 		port = lan966x->ports[p];
+-		if (!port)
++		if (!port || !port->dev)
+ 			continue;
+ 
+-		if (port->dev)
+-			unregister_netdev(port->dev);
++		unregister_netdev(port->dev);
+ 
+ 		lan966x_xdp_port_deinit(port);
+ 		if (lan966x->fdma && lan966x->fdma_ndev == port->dev)
+@@ -875,6 +874,9 @@ static int lan966x_probe_port(struct lan966x *lan966x, u32 p,
+ 	err = register_netdev(dev);
+ 	if (err) {
+ 		dev_err(lan966x->dev, "register_netdev failed\n");
++		phylink_destroy(phylink);
++		port->phylink = NULL;
++		port->dev = NULL;
+ 		return err;
  	}
  
- 	wait_for_device_probe();
--	if (!device_is_bound(&pdev->dev)) {
--		ret = -ENXIO;
--		goto err_unregister_pdev;
-+
-+	scoped_guard(device, &pdev->dev) {
-+		if (!device_is_bound(&pdev->dev)) {
-+			ret = -ENXIO;
-+			goto err_unregister_pdev;
-+		}
- 	}
- 
- 	aggr->pdev = pdev;
 -- 
 2.53.0
 
