@@ -1,58 +1,58 @@
-Return-Path: <stable+bounces-255262-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-255616-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id ADVkG8GfGGpvlggAu9opvQ
-	(envelope-from <stable+bounces-255262-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:04:17 +0200
+	id eCnIGOmjGGrClggAu9opvQ
+	(envelope-from <stable+bounces-255616-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:22:01 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id ED73F5F7C14
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:04:16 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1B5615F8790
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:22:00 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 00268301AD1F
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 20:00:16 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id EA5FA3035F03
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 20:16:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A34553164B7;
-	Thu, 28 May 2026 20:00:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 844092C11F9;
+	Thu, 28 May 2026 20:16:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WLcyTuev"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lTffeq7/"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6997E3FCB06;
-	Thu, 28 May 2026 20:00:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5061D282F17;
+	Thu, 28 May 2026 20:16:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779998415; cv=none; b=vEU9/514qnZz2wPyWeD7QElVfBt0UTo2O/NqYsm/sizcdmY06aGxYuxM4zJDypKbZoVoqgG75ltLDC7lT4sQvGSFCKvqEgdDaRqfzJsUhQxfcmImW8UT7KMPrS++fWW4OJQ7Vbpj05F1YDnsUbgZdpOJk18zZio6Qyxuf6nGis0=
+	t=1779999412; cv=none; b=TTiH2fCNcac4m/88iK8+uMCA/5tuQQFwtNR0cRfRv9glMlOhIFCdKxWmzsk/zrRCwLW9E4g459MscJ4YA6yk+ArWzeFpazodFef2GikaPczLHkXr0pG3CCJxUqxGU9zSpvwgElr7LXWoxodoAmTa0L1t5Tp6WesNHmruR9ya/ow=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779998415; c=relaxed/simple;
-	bh=pDHNlhd+n0Sj6CuqxFeYR7z0zOCvC/rdovXJJgLI/X4=;
+	s=arc-20240116; t=1779999412; c=relaxed/simple;
+	bh=ZYq7txBharBKSkaxDGjbEkompEyzYVk6DKoopprh2Bs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=L6pSC7WjhEFuaaxE8RLcgo31a8v05749jXGU1ibR+Q1tNF/B/fK4wAngF5FBN3IMbd+X+mQAA7Da5IhajERtxZzyPX6x6964OnnGOWEauU3vds6/YuDQobAK7ABN8mhoJSTxdP5oWxcgZf26u0ISPntMpe7UCAIbOrKGMGKBv6M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WLcyTuev; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C78521F000E9;
-	Thu, 28 May 2026 20:00:13 +0000 (UTC)
+	 MIME-Version; b=pIsFvVqv1ndCQ8ybvwQaVqrkAQWxM67+djMHsUxy5Z1vOyhHsqqPLYzG6HUDcOl+4SRge9qhPpJ0oy31B7uzAZ0PDb/8X6JT0xKQ+KC80HnNjr9nfVxtYnt5yrP28KXOP2nYDpJlSMjsQzc+h407TI820lkaL/oq7EbhBe0ntJM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lTffeq7/; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 66EA91F000E9;
+	Thu, 28 May 2026 20:16:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779998414;
-	bh=mPo90e5alJ5CuFkY6QwDQHLeVnawlU0LIAGFafpkq1Q=;
+	s=korg; t=1779999410;
+	bh=H1+ns9UV0uWWPco8sJI9st8WwS3yrfBqJAMZrrfhxcA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=WLcyTuevvcS5odcnFB3Ina76/Lnkla93UprzhOOWxFnwJBAsGNpBe3yHIt8dFNL04
-	 CcV13xJHfK5mrkuqjeSM1Zka94/iGIBAsyAJeX+MHCetaCppkkVStAyo18AjTN6v6E
-	 zz8uVfIRVcozLUrBTsOK02kZnvXpFqHbktkzAuG0=
+	b=lTffeq7/NFoiVfdURLY4g085SDeQKslhZLrSVIruNqWDdy4GDzGqtKJfr6PX4aSno
+	 dWYKTC3w4yoNg770KGtgkxkfnPVWBMV7H+wWCl+Cmad5YzXJMDycyiah5ja2shTQUg
+	 ybmdvRsbxfajhL9CurEGnOPJvwPJhNrcGU/95uP0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Abdurrahman Hussain <abdurrahman@nexthop.ai>,
-	Guenter Roeck <linux@roeck-us.net>
-Subject: [PATCH 7.0 166/461] hwmon: (pmbus/adm1266) reject implausible blackbox record_count
+	Michael Bommarito <michael.bommarito@gmail.com>,
+	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+Subject: [PATCH 6.18 057/377] Bluetooth: MGMT: validate Add Extended Advertising Data length
 Date: Thu, 28 May 2026 21:44:55 +0200
-Message-ID: <20260528194651.861215793@linuxfoundation.org>
+Message-ID: <20260528194640.020573761@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260528194646.819809818@linuxfoundation.org>
-References: <20260528194646.819809818@linuxfoundation.org>
+In-Reply-To: <20260528194638.371537336@linuxfoundation.org>
+References: <20260528194638.371537336@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,87 +63,92 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	RCVD_TLS_LAST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-255262-lists,stable=lfdr.de];
 	TO_DN_SOME(0.00)[];
-	FROM_HAS_DN(0.00)[];
+	TAGGED_FROM(0.00)[bounces-255616-lists,stable=lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,intel.com];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	FROM_HAS_DN(0.00)[];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	NEURAL_HAM(-0.00)[-1.000];
 	TAGGED_RCPT(0.00)[stable];
+	MID_RHS_MATCH_FROM(0.00)[];
 	RCPT_COUNT_FIVE(0.00)[5];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[nexthop.ai:email,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,roeck-us.net:email,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
-X-Rspamd-Queue-Id: ED73F5F7C14
+	DBL_BLOCKED_OPENRESOLVER(0.00)[intel.com:email,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo]
+X-Rspamd-Queue-Id: 1B5615F8790
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-7.0-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Abdurrahman Hussain <abdurrahman@nexthop.ai>
+From: Michael Bommarito <michael.bommarito@gmail.com>
 
-commit 4afca954622d672ea65ed961bed01cf91caa034e upstream.
+commit d3f7d17960ed50df3a6709c5158caff989c8c905 upstream.
 
-adm1266_nvmem_read_blackbox() loops over a record_count that comes
-straight from byte 3 of the BLACKBOX_INFO response.  The destination
-buffer is data->dev_mem, sized for the nvmem cell's declared 2048
-bytes (ADM1266_BLACKBOX_MAX_RECORDS * ADM1266_BLACKBOX_SIZE = 32 * 64).
-A device that reports a record_count greater than 32 -- whether due
-to firmware bugs, bus corruption, or a non-responsive slave returning
-0xff -- would walk read_buff past the end of the dev_mem allocation
-on the trailing iterations.
+MGMT_OP_ADD_EXT_ADV_DATA is registered as a variable-length command,
+with MGMT_ADD_EXT_ADV_DATA_SIZE as the fixed header size.  The handler
+then uses cp->adv_data_len and cp->scan_rsp_len to validate and copy
+cp->data, but it never checks that those bytes are part of the mgmt
+command payload.
 
-Cap record_count at ADM1266_BLACKBOX_MAX_RECORDS (introduced here)
-before entering the loop and return -EIO on any larger value, so a
-malformed BLACKBOX_INFO response cannot drive the loop out of bounds.
+A short command can therefore make add_ext_adv_data() pass an
+out-of-bounds pointer into tlv_data_is_valid().  If the bytes beyond
+the command buffer are addressable, they can also be copied into the
+advertising instance as scan response data, where the caller can read
+them back via MGMT_OP_GET_ADV_INSTANCE.  The trigger requires
+CAP_NET_ADMIN in the initial user namespace; KASAN reports an 8-byte
+slab-out-of-bounds read.
 
-Fixes: 15609d189302 ("hwmon: (pmbus/adm1266) read blackbox")
+Reject commands whose length does not match the fixed header plus both
+advertising data lengths before parsing cp->data.
+
+Fixes: 12410572833a ("Bluetooth: Break add adv into two mgmt commands")
 Cc: stable@vger.kernel.org
-Signed-off-by: Abdurrahman Hussain <abdurrahman@nexthop.ai>
-Link: https://lore.kernel.org/r/20260515-adm1266-fixes-v1-3-1c1ea1349cfe@nexthop.ai
-Signed-off-by: Guenter Roeck <linux@roeck-us.net>
+Assisted-by: Claude:claude-opus-4-7
+Signed-off-by: Michael Bommarito <michael.bommarito@gmail.com>
+Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/hwmon/pmbus/adm1266.c |    3 +++
- 1 file changed, 3 insertions(+)
+ net/bluetooth/mgmt.c |    6 ++++++
+ 1 file changed, 6 insertions(+)
 
---- a/drivers/hwmon/pmbus/adm1266.c
-+++ b/drivers/hwmon/pmbus/adm1266.c
-@@ -46,6 +46,7 @@
+--- a/net/bluetooth/mgmt.c
++++ b/net/bluetooth/mgmt.c
+@@ -9094,9 +9094,15 @@ static int add_ext_adv_data(struct sock
+ 	struct adv_info *adv_instance;
+ 	int err = 0;
+ 	struct mgmt_pending_cmd *cmd;
++	u16 expected_len;
  
- #define ADM1266_BLACKBOX_OFFSET		0
- #define ADM1266_BLACKBOX_SIZE		64
-+#define ADM1266_BLACKBOX_MAX_RECORDS	32
+ 	BT_DBG("%s", hdev->name);
  
- #define ADM1266_PMBUS_BLOCK_MAX		255
++	expected_len = struct_size(cp, data, cp->adv_data_len + cp->scan_rsp_len);
++	if (expected_len != data_len)
++		return mgmt_cmd_status(sk, hdev->id, MGMT_OP_ADD_EXT_ADV_DATA,
++				       MGMT_STATUS_INVALID_PARAMS);
++
+ 	hci_dev_lock(hdev);
  
-@@ -360,6 +361,8 @@ static int adm1266_nvmem_read_blackbox(s
- 		return -EIO;
- 
- 	record_count = buf[3];
-+	if (record_count > ADM1266_BLACKBOX_MAX_RECORDS)
-+		return -EIO;
- 
- 	for (index = 0; index < record_count; index++) {
- 		ret = adm1266_pmbus_block_xfer(data, ADM1266_READ_BLACKBOX, 1, &index, read_buff);
+ 	adv_instance = hci_find_adv_instance(hdev, cp->instance);
 
 
 
