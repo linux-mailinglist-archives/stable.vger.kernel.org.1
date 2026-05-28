@@ -1,60 +1,58 @@
-Return-Path: <stable+bounces-255528-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-256260-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id SNUvJieiGGqblggAu9opvQ
-	(envelope-from <stable+bounces-255528-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:14:31 +0200
+	id QPU/NWutGGqnmAgAu9opvQ
+	(envelope-from <stable+bounces-256260-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 23:02:35 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 504985F8234
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:14:31 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id 044025FA203
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 23:02:34 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id EB78B3065F3F
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 20:12:46 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 443EA309B088
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 20:46:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B716233F5BE;
-	Thu, 28 May 2026 20:12:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 75B302F1FEF;
+	Thu, 28 May 2026 20:46:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="h4Gi98cB"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fUncckZ2"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8BC01335566;
-	Thu, 28 May 2026 20:12:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3772223394D;
+	Thu, 28 May 2026 20:46:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779999164; cv=none; b=YCZAUNOkcDXxnQU9t636jVohRaCuM5BPkjyOrZsnfgtVBRzVfw0rIueIPl7Q40UhR7knC1HtDXjko1jNajj6e8yMfuj8Mfj+k7JwQNWHhJE3T91lrIH2hh8NQ1ToV91cGi/eDNCQ8Ta5Ae0IizpZBihPr3UpQn6513aeS0s5Z5U=
+	t=1780001202; cv=none; b=U+Xg6SIcsJY/VfdDFcN+m3GTLUN1ZUvXhZfqzSYP9Jg+UmZ2TqQk739JonyrfqlbqC8Il9pVZM6JRqKih8SW+A34/O18PeU2W46wx4WZoH09u+30xwDawuKo87X0XFVHhGq5+jDMcejehSaJ5iOtVThrK3u/7ajtovHYeV4WaB4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779999164; c=relaxed/simple;
-	bh=U4Gq11NUItiwY/6BGMin9GriwvpimzYQPBH+l/cAK1k=;
+	s=arc-20240116; t=1780001202; c=relaxed/simple;
+	bh=Y+qpE7GFRiiAFsZHAq0MEfSktZMTwjUg8+PrxwW0XJA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=D97umJ+OtLLnu3g7qDsSWy61q7N8UZuLq9c1/GH7lpFpKDOqp2tj8TP+u8gmCcu0e0oce2aGY6o31sJPeaCLzuF23ZRDLkG+DWCzz5INIksSZvjycIFGsnk8DOXTHzGvVhR6DynF6loHz0bp5AFs/D7ieqgI/Rekf3JCLJmp2kA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=h4Gi98cB; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EAC681F000E9;
-	Thu, 28 May 2026 20:12:42 +0000 (UTC)
+	 MIME-Version; b=QK9Eu0tI9rm+sRktEsWm9dhsyjgLp+avBnle5d8obZjl2BMqf1UcfBAInVtFNunPmVOPVp/t51pTmvxdW4PBEie29T8xi2bCk1DFwHb2Pxwy5GQGN1G2MA20PyDAokHqin5Wy1M3CWn7kg8pKRLLxL5Yd2Honx7DwDnvFNdE32E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fUncckZ2; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 94E151F000E9;
+	Thu, 28 May 2026 20:46:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779999163;
-	bh=fQLjco+08XO7bLuFdQT4+ahoxCbZe+ZpXw0Naoi1vpg=;
+	s=korg; t=1780001201;
+	bh=CmloMVb5rAgJ+EDWOU5/x7CeUXPIFqWFxp4T36watAk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=h4Gi98cBdgYP2agamhF0LjSvL8biROjfsIENbDD3xUbW15XMscRk45tCwcqiYEyHC
-	 XnQCaPG0OIn/N5wxBvaKSr5FwUSb94Xq+s1uSoMRaWd4fjN3zKKnla2Fl3njZQisFD
-	 WNNoSNj5nPsvmAmoIR5KAKwnpkNEziRMssOayMfE=
+	b=fUncckZ21dYTTRNkXTTE95pWZieiVdRFdC/pAzHx91IdAliq2pKTH15bU63FQzI+r
+	 7eZe1aOk9NA43WC6L55LN5+0c8jrdTrtlwT2sNVA/iE+rglFuVdWPS0TUvA1NXJUIw
+	 3gTW4niS+OzNhSGCQUdU9l1tsa+lERlbm/1MKXRc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Werner Sembach <wse@tuxedocomputers.com>,
-	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
-	Armin Wolf <W_Armin@gmx.de>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 7.0 394/461] platform/x86: uniwill-laptop: Accept charging threshold of 0
+	Michael Bommarito <michael.bommarito@gmail.com>,
+	Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 6.6 043/186] net: ifb: report ethtool stats over num_tx_queues
 Date: Thu, 28 May 2026 21:48:43 +0200
-Message-ID: <20260528194658.871833136@linuxfoundation.org>
+Message-ID: <20260528194930.128113985@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260528194646.819809818@linuxfoundation.org>
-References: <20260528194646.819809818@linuxfoundation.org>
+In-Reply-To: <20260528194928.941004471@linuxfoundation.org>
+References: <20260528194928.941004471@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,89 +62,140 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-2.16 / 15.00];
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,tuxedocomputers.com,linux.intel.com,gmx.de,kernel.org];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-255528-lists,stable=lfdr.de];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	RCVD_TLS_LAST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
 	TO_DN_SOME(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	TAGGED_FROM(0.00)[bounces-256260-lists,stable=lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
-	MID_RHS_MATCH_FROM(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	NEURAL_HAM(-0.00)[-0.999];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_SEVEN(0.00)[7];
+	MID_RHS_MATCH_FROM(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[5];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,msgid.link:url,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,gmx.de:email,tuxedocomputers.com:email]
-X-Rspamd-Queue-Id: 504985F8234
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,msgid.link:url,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim]
+X-Rspamd-Queue-Id: 044025FA203
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-7.0-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Armin Wolf <W_Armin@gmx.de>
+From: Michael Bommarito <michael.bommarito@gmail.com>
 
-[ Upstream commit c16a4823cc60a32b891f7a148bb30c0f51d12cf4 ]
+commit 5db89c99566fc4728cc92e941d8e1975711e24b5 upstream.
 
-The power supply sysfs ABI states that:
+ifb_dev_init() allocates dp->tx_private to dev->num_tx_queues
+entries via kzalloc_objs(*txp, dev->num_tx_queues). Both IFB
+per-queue RX and TX stats live in those entries: ifb_xmit() updates
+txp->rx_stats using the skb queue mapping, ifb_ri_tasklet() updates
+txp->tx_stats, and ifb_stats64() aggregates both over
+dev->num_tx_queues.
 
-	Not all hardware is capable of setting this to an arbitrary
-	percentage. Drivers will round written values to the nearest
-	supported value. Reading back the value will show the actual
-	threshold set by the driver.
+The ethtool stats callbacks instead size and walk the per-queue
+stats with dev->real_num_rx_queues and dev->real_num_tx_queues. With
+an asymmetric device where the RX queue count exceeds the TX queue
+count, for example:
 
-The driver currently violates this ABI by rejecting a charging
-threshold of 0. Fix this by clamping this value to 1.
+    ip link add name ifb10 numtxqueues 1 numrxqueues 8 type ifb
+    ethtool -S ifb10
 
-Fixes: d050479693bb ("platform/x86: Add Uniwill laptop driver")
-Reviewed-by: Werner Sembach <wse@tuxedocomputers.com>
-Reviewed-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
-Signed-off-by: Armin Wolf <W_Armin@gmx.de>
-Link: https://patch.msgid.link/20260512232145.329260-3-W_Armin@gmx.de
-Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+ifb_get_ethtool_stats() indexes past the tx_private allocation and
+copies adjacent slab data through ETHTOOL_GSTATS.
+
+Use dev->num_tx_queues consistently for the stats strings, the
+stats count, and the stats data walks. This reports one RX stats
+group and one TX stats group for each backing ifb_q_private entry,
+which is the queue set IFB can actually populate.
+
+Reproduced under UML+KASAN at v7.1-rc2:
+
+  BUG: KASAN: slab-out-of-bounds in ifb_fill_stats_data+0x3c/0xae
+  Read of size 8 at addr 0000000062dbd228 by task ethtool/36
+  ifb_fill_stats_data+0x3c/0xae
+  ifb_get_ethtool_stats+0xc0/0x129
+  __dev_ethtool+0x1ca5/0x363c
+  dev_ethtool+0x123/0x1b3
+  dev_ioctl+0x56c/0x744
+  sock_do_ioctl+0x15f/0x1b2
+  sock_ioctl+0x4d5/0x50a
+  sys_ioctl+0xd8b/0xde9
+
+With the patch applied, the same UML+KASAN repro is silent and
+ethtool -S ifb10 reports only the stats backed by the single
+allocated tx_private entry.
+
+Fixes: a21ee5b2fcb8 ("net: ifb: support ethtools stats")
+Cc: stable@vger.kernel.org
+Signed-off-by: Michael Bommarito <michael.bommarito@gmail.com>
+Link: https://patch.msgid.link/20260514013739.3549624-1-michael.bommarito@gmail.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/platform/x86/uniwill/uniwill-acpi.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/net/ifb.c |   11 +++++------
+ 1 file changed, 5 insertions(+), 6 deletions(-)
 
-diff --git a/drivers/platform/x86/uniwill/uniwill-acpi.c b/drivers/platform/x86/uniwill/uniwill-acpi.c
-index 4b491fe8bdea4..07951e01b43db 100644
---- a/drivers/platform/x86/uniwill/uniwill-acpi.c
-+++ b/drivers/platform/x86/uniwill/uniwill-acpi.c
-@@ -1265,11 +1265,11 @@ static int uniwill_set_property(struct power_supply *psy, const struct power_sup
+--- a/drivers/net/ifb.c
++++ b/drivers/net/ifb.c
+@@ -211,12 +211,12 @@ static void ifb_get_strings(struct net_d
  
- 	switch (psp) {
- 	case POWER_SUPPLY_PROP_CHARGE_CONTROL_END_THRESHOLD:
--		if (val->intval < 1 || val->intval > 100)
-+		if (val->intval < 0 || val->intval > 100)
- 			return -EINVAL;
+ 	switch (stringset) {
+ 	case ETH_SS_STATS:
+-		for (i = 0; i < dev->real_num_rx_queues; i++)
++		for (i = 0; i < dev->num_tx_queues; i++)
+ 			for (j = 0; j < IFB_Q_STATS_LEN; j++)
+ 				ethtool_sprintf(&p, "rx_queue_%u_%.18s",
+ 						i, ifb_q_stats_desc[j].desc);
  
- 		return regmap_update_bits(data->regmap, EC_ADDR_CHARGE_CTRL, CHARGE_CTRL_MASK,
--					  val->intval);
-+					  max(val->intval, 1));
+-		for (i = 0; i < dev->real_num_tx_queues; i++)
++		for (i = 0; i < dev->num_tx_queues; i++)
+ 			for (j = 0; j < IFB_Q_STATS_LEN; j++)
+ 				ethtool_sprintf(&p, "tx_queue_%u_%.18s",
+ 						i, ifb_q_stats_desc[j].desc);
+@@ -229,8 +229,7 @@ static int ifb_get_sset_count(struct net
+ {
+ 	switch (sset) {
+ 	case ETH_SS_STATS:
+-		return IFB_Q_STATS_LEN * (dev->real_num_rx_queues +
+-					  dev->real_num_tx_queues);
++		return IFB_Q_STATS_LEN * dev->num_tx_queues * 2;
  	default:
- 		return -EINVAL;
+ 		return -EOPNOTSUPP;
  	}
--- 
-2.53.0
-
+@@ -262,12 +261,12 @@ static void ifb_get_ethtool_stats(struct
+ 	struct ifb_q_private *txp;
+ 	int i;
+ 
+-	for (i = 0; i < dev->real_num_rx_queues; i++) {
++	for (i = 0; i < dev->num_tx_queues; i++) {
+ 		txp = dp->tx_private + i;
+ 		ifb_fill_stats_data(&data, &txp->rx_stats);
+ 	}
+ 
+-	for (i = 0; i < dev->real_num_tx_queues; i++) {
++	for (i = 0; i < dev->num_tx_queues; i++) {
+ 		txp = dp->tx_private + i;
+ 		ifb_fill_stats_data(&data, &txp->tx_stats);
+ 	}
 
 
 
