@@ -1,59 +1,59 @@
-Return-Path: <stable+bounces-256290-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-255514-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 2GgkBMarGGpolwgAu9opvQ
-	(envelope-from <stable+bounces-256290-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:55:34 +0200
+	id QMDaLvOhGGqblggAu9opvQ
+	(envelope-from <stable+bounces-255514-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:13:39 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 701265F9DEF
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:55:33 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id 94B485F81C2
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:13:39 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 888313151E4D
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 20:48:11 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id E395B30234DD
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 20:12:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0C0F1331A7E;
-	Thu, 28 May 2026 20:48:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8A2A632ABC0;
+	Thu, 28 May 2026 20:12:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jFYjyTdD"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="x+IH4erl"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DB0C52459DD;
-	Thu, 28 May 2026 20:48:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 664BB352019;
+	Thu, 28 May 2026 20:12:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780001285; cv=none; b=X0UlN3ACgZjykOKZYpduei4kGCOdfyee+XjofH96oBppRCzgC1iw2oaaH9PEiJRVwRrYqhyz8DEq3TyUpH0fxh0ZR1HLAAVjWGj1aK5uMO3zJ4+Z2+nf/byfxnNZapSHqK2B6kHZvVXc81IxEkcimQJxSXgJs+LfpyjZkNZJooY=
+	t=1779999125; cv=none; b=OgXbQTEmhVRqOFwAzeDbIiXIJTDEi/thJNzqqUj0InhcJePzn+rOHDjyku2sJqjErm8yu/0hk3XU7e7R/gPQCiwVRuoJQVlfKWle2wgM5Hj2oT1uZTH05PDWlNMoVlV/dhMrTol3uIXWicvjmxl9IpddXTIHVGxG88R/DH4xaNo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780001285; c=relaxed/simple;
-	bh=uwl8cutzgof3rffvwJipYlMT+wJEq1WJWFTrFz6eF34=;
+	s=arc-20240116; t=1779999125; c=relaxed/simple;
+	bh=3s8GaQdNlhkYAUp5KdGuahhUlm9ynI7bN3DEGIeELtw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=bL/ONw9RWsOLBr+wiF7bjz/bPM8JqarO3bg5SbP+poORhiHWqbV/MA+TpFy1nFqjPkDYnqWL2fC5NYEyFGjGuqEH0NjOGHGwVckUPHHJSFh/3t/ChGN6zU6+sKKApCbBf0DcZ1PCd9zpf+wWX/uyeTC2bQd08dcFQAxXzqDYeiA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jFYjyTdD; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4488F1F000E9;
-	Thu, 28 May 2026 20:48:04 +0000 (UTC)
+	 MIME-Version; b=R8LoAdDgdoCzoFfHqeNbHfRgE9YAeDw5V+HF52t6scTZ93ykUQ6FbxwAXZvW4jbv2UTFpj0OUDj0OM5wdv15HcXUZQCarzOJCiVb/o55IPy1iEJikis79Jn2tCzykWa2aU8ruy5GF0nwPaR6pdElgU2gnLI9wZGPqsB3TwayYCQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=x+IH4erl; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EE9D61F000E9;
+	Thu, 28 May 2026 20:12:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780001284;
-	bh=vOTzVQrZYLzYNPYb8jODORuNHLD4H8SlSHGU4zdBwA0=;
+	s=korg; t=1779999124;
+	bh=Z0piLGsJ5Xst/nLi0o9yMRvz1WLxRSuDj7hUmMJPwdU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=jFYjyTdDpNyNrBDF0cjbRmkLCGnVut4BVdaOyodR2NE7O/d732shQir8H7fya9CR0
-	 K5RpLlFQCkY1r771/rOtd/1MnDYXZWYpRcvW0dSKmCQCB0562qMtDU8dqgaaosksLQ
-	 0uWcZI73ypalHLf426TZxMhs3EWs/ZImST+ZxaBM=
+	b=x+IH4erluLKsoGeux74/qKWsciY03ImPNk9yT3NKvPRz1E1zB5m6T1179jwvUP+ad
+	 a6VfxuEQjkAgFsdSD/2WQGKirdxVAQn1Vl3Vp2o/2l48Z2FdZwxlFe2QbwpOCwxYgs
+	 QpjI8zQt5q0Sm+/fUmW1peK6cjJESW7ZJlbVg6No=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Vignesh R <vigneshr@ti.com>,
-	Johan Hovold <johan@kernel.org>,
-	Mark Brown <broonie@kernel.org>
-Subject: [PATCH 6.6 066/186] spi: ti-qspi: fix use-after-free after DMA setup failure
+	Cunlong Li <shenxiaogll@gmail.com>,
+	Tejun Heo <tj@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 7.0 417/461] cgroup: rstat: relax NMI guard after switch to try_cmpxchg
 Date: Thu, 28 May 2026 21:49:06 +0200
-Message-ID: <20260528194930.735404637@linuxfoundation.org>
+Message-ID: <20260528194659.568445694@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260528194928.941004471@linuxfoundation.org>
-References: <20260528194928.941004471@linuxfoundation.org>
+In-Reply-To: <20260528194646.819809818@linuxfoundation.org>
+References: <20260528194646.819809818@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,75 +66,96 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	TAGGED_FROM(0.00)[bounces-255514-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,kernel.org];
 	RCVD_COUNT_THREE(0.00)[4];
-	RCVD_TLS_LAST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-256290-lists,stable=lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
 	TO_DN_SOME(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	RCPT_COUNT_FIVE(0.00)[6];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
+	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sashiko.dev:url,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,msgid.link:url,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,ti.com:email]
-X-Rspamd-Queue-Id: 701265F9DEF
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim]
+X-Rspamd-Queue-Id: 94B485F81C2
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+7.0-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Johan Hovold <johan@kernel.org>
+From: Cunlong Li <shenxiaogll@gmail.com>
 
-commit ea6ec3343e05f7937a53eb6d7617b3abdb4abc19 upstream.
+[ Upstream commit 22572dbcd3486e6c4dced877125bbf50e4e24edf ]
 
-The driver falls back to PIO mode if DMA setup fails during probe.
+Commit 36df6e3dbd7e ("cgroup: make css_rstat_updated nmi safe") used
+this_cpu_cmpxchg() for the lockless insertion, and therefore required
+both ARCH_HAVE_NMI_SAFE_CMPXCHG and ARCH_HAS_NMI_SAFE_THIS_CPU_OPS in
+the NMI guard: on archs without the latter, this_cpu_cmpxchg() falls
+back to "local_irq_save() + plain cmpxchg", and local_irq_save()
+cannot mask NMIs.
 
-Make sure to clear the DMA channel pointer also if buffer allocation
-fails to avoid passing a pointer to the released channel to the DMA
-engine (or trying to free the channel a second time on late probe errors
-or driver unbind).
+Commit 3309b63a2281 ("cgroup: rstat: use LOCK CMPXCHG in
+css_rstat_updated") later replaced this_cpu_cmpxchg() with plain
+try_cmpxchg() to fix cross-CPU lockless-list corruption, but left the
+NMI guard untouched.  After that switch, css_rstat_updated() no longer
+performs any this_cpu_*() RMW operations and only relies on the arch
+having NMI-safe cmpxchg, so ARCH_HAS_NMI_SAFE_THIS_CPU_OPS is no
+longer required in the guard.
 
-This issue was flagged by Sashiko when reviewing a devres allocation
-conversion patch.
+Relax the guard accordingly so that archs which have HAVE_NMI and
+ARCH_HAVE_NMI_SAFE_CMPXCHG but not ARCH_HAS_NMI_SAFE_THIS_CPU_OPS
+(e.g. sparc, powerpc on PPC64/BOOK3S) can benefit from the existing
+CONFIG_MEMCG_NMI_SAFETY_REQUIRES_ATOMIC path.  Without this, the css
+is never queued in NMI on those archs, and the atomics staged by
+account_{slab,kmem}_nmi_safe() are not drained by flush_nmi_stats().
 
-Fixes: c687c46e9e45 ("spi: spi-ti-qspi: Use bounce buffer if read buffer is not DMA'ble")
-Link: https://sashiko.dev/#/patchset/20260505072909.618363-1-johan%40kernel.org?part=17
-Cc: stable@vger.kernel.org	# 4.12
-Cc: Vignesh R <vigneshr@ti.com>
-Signed-off-by: Johan Hovold <johan@kernel.org>
-Link: https://patch.msgid.link/20260512074809.915084-1-johan@kernel.org
-Signed-off-by: Mark Brown <broonie@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 3309b63a2281 ("cgroup: rstat: use LOCK CMPXCHG in css_rstat_updated")
+Signed-off-by: Cunlong Li <shenxiaogll@gmail.com>
+Signed-off-by: Tejun Heo <tj@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/spi/spi-ti-qspi.c |    1 +
- 1 file changed, 1 insertion(+)
+ kernel/cgroup/rstat.c | 7 +++----
+ 1 file changed, 3 insertions(+), 4 deletions(-)
 
---- a/drivers/spi/spi-ti-qspi.c
-+++ b/drivers/spi/spi-ti-qspi.c
-@@ -874,6 +874,7 @@ static int ti_qspi_probe(struct platform
- 		dev_err(qspi->dev,
- 			"dma_alloc_coherent failed, using PIO mode\n");
- 		dma_release_channel(qspi->rx_chan);
-+		qspi->rx_chan = NULL;
- 		goto no_dma;
- 	}
- 	host->dma_rx = qspi->rx_chan;
+diff --git a/kernel/cgroup/rstat.c b/kernel/cgroup/rstat.c
+index ed60ba119c687..de816a43db9f0 100644
+--- a/kernel/cgroup/rstat.c
++++ b/kernel/cgroup/rstat.c
+@@ -81,11 +81,10 @@ void __css_rstat_updated(struct cgroup_subsys_state *css, int cpu)
+ 	lockdep_assert_preemption_disabled();
+ 
+ 	/*
+-	 * For archs withnot nmi safe cmpxchg or percpu ops support, ignore
+-	 * the requests from nmi context.
++	 * The lockless insertion below relies on NMI-safe cmpxchg;
++	 * bail out in NMI on archs that don't provide it.
+ 	 */
+-	if ((!IS_ENABLED(CONFIG_ARCH_HAVE_NMI_SAFE_CMPXCHG) ||
+-	     !IS_ENABLED(CONFIG_ARCH_HAS_NMI_SAFE_THIS_CPU_OPS)) && in_nmi())
++	if (!IS_ENABLED(CONFIG_ARCH_HAVE_NMI_SAFE_CMPXCHG) && in_nmi())
+ 		return;
+ 
+ 	rstatc = css_rstat_cpu(css, cpu);
+-- 
+2.53.0
+
 
 
 
