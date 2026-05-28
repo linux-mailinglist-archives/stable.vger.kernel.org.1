@@ -1,202 +1,188 @@
-Return-Path: <stable+bounces-256420-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-256421-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id UI7tFWuzGGr9mAgAu9opvQ
-	(envelope-from <stable+bounces-256420-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 23:28:11 +0200
+	id YF/7HAmyGGr9mAgAu9opvQ
+	(envelope-from <stable+bounces-256421-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 23:22:17 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id 692C15FA62A
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 23:28:10 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id DE96E5FA5B7
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 23:22:16 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 5DD3D300720D
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 21:21:36 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 837C8303C665
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 21:22:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B259E352C34;
-	Thu, 28 May 2026 21:21:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 84B5835203C;
+	Thu, 28 May 2026 21:22:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmx.de header.i=rwarsow@gmx.de header.b="WO8hkQ+I"
+	dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b="frzfSGVF"
 X-Original-To: stable@vger.kernel.org
-Received: from mout.gmx.net (mout.gmx.net [212.227.15.19])
+Received: from mail-08.mail-europe.com (mail-08.mail-europe.com [57.129.93.249])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 993DD347C6;
-	Thu, 28 May 2026 21:21:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.227.15.19
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5B034347C6
+	for <stable@vger.kernel.org>; Thu, 28 May 2026 21:22:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=57.129.93.249
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780003294; cv=none; b=fxweIKxZ6DBTF9pS46L72ICTUL7MYN9+T1ydTmGqXDKxGFDbbTQ7Nb/P2VSQx0bWy27okGs9MpEfOZi6OhjYWdTOysv0wDPgj8wE4Jzp7RiDH/xwVqUoDrSpoVxk5OoGyMtbXut+9RVpg8fLEhJWiIsvq10Q8Y0hiGefmP/mfTA=
+	t=1780003333; cv=none; b=tFZXqg1tuovMiNTXaYdp6C4eyOVNccmPkaGmVCwQJjGKrvghP+PWtJT8Q0WYFs8VF/U8Gb7xrt2eikk89/jMGz1hdjQH78kuaUBXCdxz0FxRUFKoFdefAv3vkz54Y4O1k9kkW+m++gkHcWfwuqzfAQrDbe5H2PpKFukFPzRZOX0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780003294; c=relaxed/simple;
-	bh=1PO3YHl+btPykbwTM16jfcwADiOLFguz3RVcskKvjrA=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=RdPAZP/MORmroWSlFLCzQAESaZr+bycHVj0BxEdDWkUkkiWVfxa4cjpP4ST+ChFu5zqv/LsZHa2nb3mtieKNopQc4thIhZa7O7BHGQixexSr3hhcKhWdXVfvOUQ1M5GtsDTUtar51xI/0H+HvGvbGljmZTptNvTzQxCX60hj3OI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.de; spf=pass smtp.mailfrom=gmx.de; dkim=pass (2048-bit key) header.d=gmx.de header.i=rwarsow@gmx.de header.b=WO8hkQ+I; arc=none smtp.client-ip=212.227.15.19
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmx.de
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmx.de;
-	s=s31663417; t=1780003280; x=1780608080; i=rwarsow@gmx.de;
-	bh=1PO3YHl+btPykbwTM16jfcwADiOLFguz3RVcskKvjrA=;
-	h=X-UI-Sender-Class:Message-ID:Date:MIME-Version:Subject:To:Cc:
-	 References:From:In-Reply-To:Content-Type:
-	 Content-Transfer-Encoding:cc:content-transfer-encoding:
-	 content-type:date:from:message-id:mime-version:reply-to:subject:
-	 to;
-	b=WO8hkQ+Ih+b0j0Vjkg1tGw7Fg1lrm4/Z4wbg1X0q8nQihXqBvl0c7auQv82mDlqI
-	 gfQJTNTLOgo39qb6YCjaCixGQZvKtexKmGVfw0ou6nWi7PaRnf0g5z0vkpLsC9o4c
-	 p3xBXWHfyzZYBxMi35wWIMQNaqGIbvcU5NjJ99aZg1RoD/niPSKVSMF3kK+r8YoyK
-	 iSSMnQ+6Dy27hmClBjEfaeSGFczqdGqAehgN9M6IiljiEt1Bdd1oqmTd0Rw5wSreQ
-	 AoeL4Mbimg4XwyrXYcEDFyu/+n6lqfM6jVXhH1dtO71I8zHifeG/yiq04XLnGGJFi
-	 y0Z6eRiqYW03ueSgkw==
-X-UI-Sender-Class: 724b4f7f-cbec-4199-ad4e-598c01a50d3a
-Received: from client.hidden.invalid by mail.gmx.net (mrgmx005
- [212.227.17.190]) with ESMTPSA (Nemesis) id 1Md6Mj-1x2b592p7L-00ptNG; Thu, 28
- May 2026 23:21:20 +0200
-Message-ID: <0a8950bc-ad32-4de9-bdc7-3c0eb8a93dda@gmx.de>
-Date: Thu, 28 May 2026 23:21:18 +0200
+	s=arc-20240116; t=1780003333; c=relaxed/simple;
+	bh=8anQ8x+9w88e/HCIFKHmvRQZ82fYS9BPTNKdMKd1o80=;
+	h=Date:To:From:Cc:Subject:Message-ID:MIME-Version:Content-Type; b=PARUfJxiJ/f7ScgXacHx6qlWB320IPB/dsngUahPjq44aXz0lXGRshotolN1X5tmbxZCMJyN6YQ1CdMe1MRkj7lyoyUgR3BMeXUq4biwfdbkjpaTP3P+roczvR8bMkfbwZpCxTTPI5ZzFIm5tlW53ONHjZoRwK2jFKaARJ6+pRo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me; spf=pass smtp.mailfrom=proton.me; dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b=frzfSGVF; arc=none smtp.client-ip=57.129.93.249
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=proton.me
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=proton.me;
+	s=protonmail; t=1780003314; x=1780262514;
+	bh=Ocdwdp818KRICNMyNvofIyBu1lbIAUpLoNWLdxSoG9A=;
+	h=Date:To:From:Cc:Subject:Message-ID:Feedback-ID:From:To:Cc:Date:
+	 Subject:Reply-To:Feedback-ID:Message-ID:BIMI-Selector;
+	b=frzfSGVFpxmfP2Yl9o3tW3+t+5upmWxviQP7kamMuTKSEUyt0XeHp21lE1v0FdviI
+	 SYzKI66MZTXMb3UvwG7a5HQvY3jbQ69u+Op86GwKP+412kRiqWNwoEIERC+5+X/sGt
+	 xsTmK/7M3ckh5XArqs7BsjBmhz8jiYCFslWnISKJ6dx/pdgColYzB8rfK4aTQHxpwI
+	 YYdm6TrkaZXkswFuVYD4uP3QgWUrHgTaq3dBsybFqLbMtOOGMXL2uS1R7AsNhZLg8Z
+	 /S2Kg4uo8V1dbQ01sk8/IyBFklnslK2N5ahb5et01K6f4PlWZAube1QPpaGyfB5d/R
+	 1TtEeRVRVAvQQ==
+Date: Thu, 28 May 2026 21:21:50 +0000
+To: "mic@digikod.net" <mic@digikod.net>
+From: hexlabsecurity@proton.me
+Cc: "gnoack@google.com" <gnoack@google.com>, "linux-security-module@vger.kernel.org" <linux-security-module@vger.kernel.org>, "stable@vger.kernel.org" <stable@vger.kernel.org>
+Subject: [PATCH] landlock: fix LANDLOCK_SCOPE_SIGNAL bypass via F_SETOWN to invoker's pgid
+Message-ID: <cFjmBkbTY-D5pYl66NixBeqbhWBzS7kBEUHCWbhTQwkiuvKg8xNkSEf9rYqDQiD76er1gK8Q6t1YOJ4nIPuvILuwG42d8_rfMZpQ5VmJru0=@proton.me>
+Feedback-ID: 199661219:user:proton
+X-Pm-Message-ID: 0a30a4b1ef55abd0ca2fc1993287d9fade02e02c
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 7.0 000/461] 7.0.11-rc1 review
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org
-Cc: patches@lists.linux.dev, linux-kernel@vger.kernel.org,
- torvalds@linux-foundation.org, akpm@linux-foundation.org,
- linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
- lkft-triage@lists.linaro.org, pavel@nabladev.com, jonathanh@nvidia.com,
- f.fainelli@gmail.com, sudipm.mukherjee@gmail.com, conor@kernel.org,
- hargar@microsoft.com, broonie@kernel.org, achill@achill.org,
- sr@sladewatkins.com
-References: <20260528194646.819809818@linuxfoundation.org>
-From: Ronald Warsow <rwarsow@gmx.de>
-Content-Language: de-DE, en-US
-In-Reply-To: <20260528194646.819809818@linuxfoundation.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Provags-ID: V03:K1:FQ2MsyYhs7KOPNvtv2qosR36TcwNCqfaCsFoR3PMyQpaxkcKYTL
- z7Zv6Wam/fzLyWeOMg9YDtI3pj5Quz3/G6HQqZkkFIxFxS6T4u1T5IxspF8P566oHZwN87/
- xhZixJvn3xDBgYpJ8KVsRVNsWO6FAdSegLtQ2YvsVR6w36fT99xS2F3c1eFbsKmv74gC7ju
- 0rGWZArW0c8MUqeXiIekw==
-X-Spam-Flag: NO
-UI-OutboundReport: notjunk:1;M01:P0:HE98mq0sTKQ=;VqPHIe6LpzET/Q4vlxj7IWfjGDl
- 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
- e9isDtghIuNyiWTrRhEsRaTg==
-X-Spamd-Result: default: False [-0.66 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[gmx.de,quarantine];
-	R_DKIM_ALLOW(-0.20)[gmx.de:s=s31663417];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
+	DMARC_POLICY_ALLOW(-0.50)[proton.me,quarantine];
+	R_DKIM_ALLOW(-0.20)[proton.me:s=protonmail];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-256420-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FREEMAIL_CC(0.00)[lists.linux.dev,vger.kernel.org,linux-foundation.org,roeck-us.net,kernel.org,kernelci.org,lists.linaro.org,nabladev.com,nvidia.com,gmail.com,microsoft.com,achill.org,sladewatkins.com];
-	RCPT_COUNT_TWELVE(0.00)[19];
-	MIME_TRACE(0.00)[0:+];
-	FROM_HAS_DN(0.00)[];
+	TO_DN_EQ_ADDR_ALL(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FREEMAIL_FROM(0.00)[gmx.de];
+	FROM_NEQ_ENVFROM(0.00)[hexlabsecurity@proton.me,stable@vger.kernel.org];
+	RCVD_TLS_LAST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[3];
+	TAGGED_FROM(0.00)[bounces-256421-lists,stable=lfdr.de];
+	DKIM_TRACE(0.00)[proton.me:+];
+	FROM_NO_DN(0.00)[];
+	MISSING_XM_UA(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[rwarsow@gmx.de,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[gmx.de:+];
+	RCPT_COUNT_THREE(0.00)[4];
 	MID_RHS_MATCH_FROM(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
 	TAGGED_RCPT(0.00)[stable];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
-	TO_DN_SOME(0.00)[]
-X-Rspamd-Queue-Id: 692C15FA62A
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+]
+X-Rspamd-Queue-Id: DE96E5FA5B7
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-Hi
+From 22a0086b44beaaef01883e047dd4a8b8bc3153e9 Mon Sep 17 00:00:00 2001
+From: Bryam Vargas <hexlabsecurity@proton.me>
+Date: Thu, 28 May 2026 01:30:00 -0500
+Subject: [PATCH] landlock: fix LANDLOCK_SCOPE_SIGNAL bypass via F_SETOWN to
+ invoker's pgid
 
-kernel build / boot test on x86_64.
+A Landlock-restricted process can bypass LANDLOCK_SCOPE_SIGNAL on the
+SIGIO delivery path and deliver arbitrary signals (including SIGKILL via
+F_SETSIG) to non-Landlocked targets that share its pgid, by exploiting a
+producer-side cache-vs-live evaluation gap.
 
-No regressions here.
+The SIGIO path in hook_file_send_sigiotask() consults a cached subject
+stored in landlock_file(file)->fown_subject at fcntl(F_SETOWN) time
+(via hook_file_set_fowner()), instead of evaluating the live Landlock
+domain of the invoking task at signal-send time. The capture is gated
+by control_current_fowner(), which returns false (skipping capture)
+when pid_task(fown->pid, fown->pid_type) is in current's thread group.
 
-Thanks
+This is correct for PIDTYPE_TGID / PIDTYPE_PID, where the target is a
+single thread or thread-group leader sharing current's cred. It is
+unsafe for PIDTYPE_PGID and PIDTYPE_SID: when current is at the head
+of its pgid hlist -- the default placement after fork(),
+hlist_add_head_rcu() in kernel/fork.c -- pid_task(pgid, PIDTYPE_PGID)
+resolves to current itself, same_thread_group(current, current) is
+true, the capture is skipped, and fown_subject.domain stays NULL.
 
-Tested-by: Ronald Warsow <rwarsow@gmx.de>
+hook_file_send_sigiotask() then short-circuits at
+"if (!subject->domain) return 0;", allowing the kernel to fan the
+signal out to every member of the group, including tasks outside
+current's Landlock domain that the SCOPE_SIGNAL contract is supposed
+to protect.
+
+The direct kill() path (hook_task_kill) is unaffected: it evaluates
+current's live domain on every call. Only the cached SIGIO path is
+broken.
+
+Repro (ordinary unprivileged user; sandbox active in the child):
+
+  int pfd[2]; pipe(pfd);
+  landlock_create_ruleset(&{.scoped =3D LANDLOCK_SCOPE_SIGNAL},
+                          sizeof(attr), 0);
+  prctl(PR_SET_NO_NEW_PRIVS, 1, 0, 0, 0);
+  landlock_restrict_self(rfd, 0);
+  fcntl(pfd[0], F_SETSIG, SIGKILL);
+  fcntl(pfd[0], F_SETOWN, -getpgrp());           /* PIDTYPE_PGID */
+  fcntl(pfd[0], F_SETFL, O_ASYNC);
+  write(pfd[1], "X", 1);                         /* trigger SIGIO  */
+  /* every pgid member receives SIGKILL, including non-sandboxed
+   * parent / supervisor / sibling workers */
+
+Tighten control_current_fowner() to apply the thread-group exemption
+only when the target identifies a SINGLE task whose Landlock cred is
+necessarily shared with current (PIDTYPE_TGID, PIDTYPE_PID). For
+PIDTYPE_PGID and PIDTYPE_SID, always capture the current Landlock
+subject so the consumer's scope check runs against every member of
+the group at delivery time.
+
+Empirically A/B-verified on a 6.12.90 lab kernel (same .config, only
+the patch hunk differs): pre-fix build exits with "BUG PRESENT --
+SCOPE_SIGNAL BYPASSED", post-fix build exits with "SANDBOX HELD".
+hook_task_kill's direct-kill enforcement and the intra-thread-group
+F_SETOWN cases continue to work post-patch.
+
+Reported-by: Bryam Vargas <hexlabsecurity@proton.me>
+Signed-off-by: Bryam Vargas <hexlabsecurity@proton.me>
+---
+ security/landlock/fs.c | 12 ++++++++++++
+ 1 file changed, 12 insertions(+)
+
+diff --git a/security/landlock/fs.c b/security/landlock/fs.c
+index c1ecfe239032..edaa52572cbd 100644
+--- a/security/landlock/fs.c
++++ b/security/landlock/fs.c
+@@ -1909,6 +1909,18 @@ static bool control_current_fowner(struct fown_struc=
+t *const fown)
+ =09if (!p)
+ =09=09return true;
+
++=09/*
++=09 * For PIDTYPE_PGID and PIDTYPE_SID, signal delivery fans out to
++=09 * every member of the group at SIGIO time. Even when pid_task()
++=09 * resolves to current itself (e.g., current is the pgid hlist
++=09 * head post-fork), non-current members of the group are still
++=09 * valid targets that must be checked by hook_file_send_sigiotask().
++=09 * Always capture the current subject for those types so the
++=09 * consumer scope check runs against the live fown_subject.
++=09 */
++=09if (fown->pid_type =3D=3D PIDTYPE_PGID || fown->pid_type =3D=3D PIDTYPE=
+_SID)
++=09=09return true;
++
+ =09return !same_thread_group(p, current);
+ }
+
+--
+2.43.0
 
