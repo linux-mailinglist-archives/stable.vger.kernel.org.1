@@ -1,59 +1,59 @@
-Return-Path: <stable+bounces-255509-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-256127-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id +PnyBkKjGGrClggAu9opvQ
-	(envelope-from <stable+bounces-255509-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:19:14 +0200
+	id KHooK6+pGGrclwgAu9opvQ
+	(envelope-from <stable+bounces-256127-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:46:39 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6F3145F860C
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:19:13 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id 708675F985C
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:46:39 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 3C6A2314CA26
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 20:11:53 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id B74CF3092B91
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 20:40:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E088A33F5B4;
-	Thu, 28 May 2026 20:11:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 602072F8E83;
+	Thu, 28 May 2026 20:40:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="F7mMU7KW"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zyNz3Acf"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BF7B932ABC0;
-	Thu, 28 May 2026 20:11:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2FE672139C9;
+	Thu, 28 May 2026 20:40:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779999111; cv=none; b=jeScu71YsJBZA0ePNMaNR+bZLKfJxao43WSK//x8DdebmH/c/oU46bAA7NuoaLuscLwM9imN0NJcxpwZahIxET80cgeOlK0S5ohM/cAyUUo+nknXqC6PLgDQfnJONppuZ4EWDod6egs2Y6k44qLOrgogCcPQBGPQr6ZgcwyK9IA=
+	t=1780000832; cv=none; b=a4/mPTJGs1iDQDT0e64+kXslalQXCMqb+ot4sXgNrNywWjASOQXpUf/9ilAxBGN8jSjAaZH8CG4OTB4aP763IAAD+ct05+wPeVtmE6bjh8j+0cEanXB7xe8e3dys6hjLwUc4qpafPYKWD5dvIWqdg3B51gY+pU6uTWCM2twUMcA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779999111; c=relaxed/simple;
-	bh=g/AxR0cI+ghiHJH5skQRidL25W+zcYFtK4btzv/8J2A=;
+	s=arc-20240116; t=1780000832; c=relaxed/simple;
+	bh=gHk+19+54zV5PmMXLfA5/tdRjFkpYnVtst1oif5BKtw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=GGTA3EcQ8BeNt/adNatU6HuM5g8N5asfrpCKVC07ngXMgsxUOc1uhwMzzLKjduwYp4FHLVkt0NFOoawMD/744c3326bNc2ZE5PLEgojvsFuoJjjXz21/EuSwx71TSmqp/+QcpUVfj9wemkXQBTeYYCAL3YKoeTpqBncFCJ0eEEo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=F7mMU7KW; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DF81A1F000E9;
-	Thu, 28 May 2026 20:11:49 +0000 (UTC)
+	 MIME-Version; b=uZ4fDMdXVg6XnVP++lINFS7dP5ZsvIZamtHcKOv4oNvyBSIGflzQjheXJJGCUM0pA+EnT3r5p8QxfHWDn+HSLZ2Vyy9vDbJQ0beAwZVe+iICZ9EzYlaxp0+Vx+XY1PKaW5d2ONfyMvRzpDDC853JJ0CuTjSCcELa5A1WbtbI4sk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zyNz3Acf; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8DC9E1F000E9;
+	Thu, 28 May 2026 20:40:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779999110;
-	bh=zKrfK6w677vCAoQuBRjoQ5u+SyVynJh50piOFQ7VfCA=;
+	s=korg; t=1780000831;
+	bh=KJkP1CfpsA8Xxhe2fO5rU4tbGy+Q8iEnoxyhl88G9kw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=F7mMU7KWZoC0sWrZBdPL4WaAZD99Pq0xkqY0ESy7DDT7/K1IK/NEWlH7OUTDUKyxR
-	 tkPgRJ8oWWq1WNkJnISI9PNE0cOX/VJVpNCuf0g3KP6lsMyEEzYINQT6ZWjMOqntRH
-	 FBqNYqzaRHG3kyUi6FV0BetYEMxUth4cNKj22mwM=
+	b=zyNz3AcfBGv+VE5U4xrih8fA5Wkqotj/HwpzOAM1HNVmH0+1hXZgWCRhURUrlNvgr
+	 QpZOKhdar4s7w5a0AM+IpCv5FYHqW7cNh7i1b7pT/qbGvBYcrXeQx4aMqQKg+ugw3n
+	 SvYDus1AG2qrPZMBSlBjqr1mmPiDjmDxrhXXBEe8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alexandru Hossu <hossu.alexandru@gmail.com>,
-	Johannes Berg <johannes.berg@intel.com>,
+	Breno Leitao <leitao@debian.org>,
+	Pablo Neira Ayuso <pablo@netfilter.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 7.0 412/461] wifi: mac80211: bounds-check link_id in ieee80211_ml_epcs
+Subject: [PATCH 6.12 167/272] netfilter: Make legacy configs user selectable
 Date: Thu, 28 May 2026 21:49:01 +0200
-Message-ID: <20260528194659.415391799@linuxfoundation.org>
+Message-ID: <20260528194634.003918040@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260528194646.819809818@linuxfoundation.org>
-References: <20260528194646.819809818@linuxfoundation.org>
+In-Reply-To: <20260528194629.379955525@linuxfoundation.org>
+References: <20260528194629.379955525@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,90 +64,137 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	TO_DN_SOME(0.00)[];
-	TAGGED_FROM(0.00)[bounces-255509-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,intel.com,kernel.org];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-256127-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	NEURAL_HAM(-0.00)[-0.999];
-	TAGGED_RCPT(0.00)[stable];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	TAGGED_RCPT(0.00)[stable];
 	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,linuxfoundation.org:mid,linuxfoundation.org:dkim,intel.com:email,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
-X-Rspamd-Queue-Id: 6F3145F860C
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,netfilter.org:email]
+X-Rspamd-Queue-Id: 708675F985C
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-7.0-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alexandru Hossu <hossu.alexandru@gmail.com>
+From: Breno Leitao <leitao@debian.org>
 
-[ Upstream commit f718506edd2d9c6a308ded9d13c632bf7b7d5a2c ]
+[ Upstream commit 6c959fd5e17387201dba3619b2e6af213939a0a7 ]
 
-IEEE80211_MLE_STA_EPCS_CONTROL_LINK_ID is 0x000f, so link_id extracted
-from a PRIO_ACCESS ML element PER_STA_PROFILE subelement can be 0..15.
-sdata->link[] has IEEE80211_MLD_MAX_NUM_LINKS (15) entries (indices 0..14),
-making index 15 out-of-bounds.
+This option makes legacy Netfilter Kconfig user selectable, giving users
+the option to configure iptables without enabling any other config.
 
-A connected WiFi 7 AP can trigger this by sending an EPCS Enable Response
-action frame with a PER_STA_PROFILE subelement where link_id = 15.  The
-unsolicited-notification path (dialog_token = 0) is reachable any time
-EPCS is already enabled, without any prior client request.
+Make the following KConfig entries user selectable:
+ * BRIDGE_NF_EBTABLES_LEGACY
+ * IP_NF_ARPTABLES
+ * IP_NF_IPTABLES_LEGACY
+ * IP6_NF_IPTABLES_LEGACY
 
-sdata->link[15] reads into the first word of sdata->activate_links_work
-(a wiphy_work whose embedded list_head is non-NULL after INIT_LIST_HEAD),
-so the NULL check on the result does not catch the invalid access.  The
-garbage pointer is then passed to ieee80211_sta_wmm_params(), which
-dereferences link->sdata and crashes the kernel.
-
-The same class of bug was fixed for ieee80211_ml_reconfiguration() by
-commit 162d331d833d ("wifi: mac80211: bounds-check link_id in
-ieee80211_ml_reconfiguration").
-
-Fixes: de86c5f60839 ("wifi: mac80211: Add support for EPCS configuration")
-Signed-off-by: Alexandru Hossu <hossu.alexandru@gmail.com>
-Link: https://patch.msgid.link/20260515102908.1653088-1-hossu.alexandru@gmail.com
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+Signed-off-by: Breno Leitao <leitao@debian.org>
+Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
+Stable-dep-of: b4597d5fd7d2 ("netfilter: x_tables: add and use xtables_unregister_table_exit")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/mac80211/mlme.c | 3 +++
- 1 file changed, 3 insertions(+)
+ net/bridge/netfilter/Kconfig |  8 +++++++-
+ net/ipv4/netfilter/Kconfig   | 16 ++++++++++++++--
+ net/ipv6/netfilter/Kconfig   |  9 ++++++++-
+ 3 files changed, 29 insertions(+), 4 deletions(-)
 
-diff --git a/net/mac80211/mlme.c b/net/mac80211/mlme.c
-index 991519ea44827..eba890366e9fe 100644
---- a/net/mac80211/mlme.c
-+++ b/net/mac80211/mlme.c
-@@ -11137,6 +11137,9 @@ static void ieee80211_ml_epcs(struct ieee80211_sub_if_data *sdata,
- 		control = get_unaligned_le16(pos);
- 		link_id = control & IEEE80211_MLE_STA_EPCS_CONTROL_LINK_ID;
+diff --git a/net/bridge/netfilter/Kconfig b/net/bridge/netfilter/Kconfig
+index 104c0125e32e8..f16bbbbb94817 100644
+--- a/net/bridge/netfilter/Kconfig
++++ b/net/bridge/netfilter/Kconfig
+@@ -41,7 +41,13 @@ config NF_CONNTRACK_BRIDGE
  
-+		if (link_id >= IEEE80211_MLD_MAX_NUM_LINKS)
-+			continue;
-+
- 		link = sdata_dereference(sdata->link[link_id], sdata);
- 		if (!link)
- 			continue;
+ # old sockopt interface and eval loop
+ config BRIDGE_NF_EBTABLES_LEGACY
+-	tristate
++	tristate "Legacy EBTABLES support"
++	depends on BRIDGE && NETFILTER_XTABLES
++	default n
++	help
++	 Legacy ebtables packet/frame classifier.
++	 This is not needed if you are using ebtables over nftables
++	 (iptables-nft).
+ 
+ menuconfig BRIDGE_NF_EBTABLES
+ 	tristate "Ethernet Bridge tables (ebtables) support"
+diff --git a/net/ipv4/netfilter/Kconfig b/net/ipv4/netfilter/Kconfig
+index 1b991b889506a..ef8009281da5c 100644
+--- a/net/ipv4/netfilter/Kconfig
++++ b/net/ipv4/netfilter/Kconfig
+@@ -12,7 +12,13 @@ config NF_DEFRAG_IPV4
+ 
+ # old sockopt interface and eval loop
+ config IP_NF_IPTABLES_LEGACY
+-	tristate
++	tristate "Legacy IP tables support"
++	default	n
++	select NETFILTER_XTABLES
++	help
++	  iptables is a legacy packet classifier.
++	  This is not needed if you are using iptables over nftables
++	  (iptables-nft).
+ 
+ config NF_SOCKET_IPV4
+ 	tristate "IPv4 socket lookup support"
+@@ -318,7 +324,13 @@ endif # IP_NF_IPTABLES
+ 
+ # ARP tables
+ config IP_NF_ARPTABLES
+-	tristate
++	tristate "Legacy ARPTABLES support"
++	depends on NETFILTER_XTABLES
++	default n
++	help
++	  arptables is a legacy packet classifier.
++	  This is not needed if you are using arptables over nftables
++	  (iptables-nft).
+ 
+ config NFT_COMPAT_ARP
+ 	tristate
+diff --git a/net/ipv6/netfilter/Kconfig b/net/ipv6/netfilter/Kconfig
+index f3c8e2d918e13..e087a8e97ba78 100644
+--- a/net/ipv6/netfilter/Kconfig
++++ b/net/ipv6/netfilter/Kconfig
+@@ -8,7 +8,14 @@ menu "IPv6: Netfilter Configuration"
+ 
+ # old sockopt interface and eval loop
+ config IP6_NF_IPTABLES_LEGACY
+-	tristate
++	tristate "Legacy IP6 tables support"
++	depends on INET && IPV6
++	select NETFILTER_XTABLES
++	default n
++	help
++	  ip6tables is a legacy packet classifier.
++	  This is not needed if you are using iptables over nftables
++	  (iptables-nft).
+ 
+ config NF_SOCKET_IPV6
+ 	tristate "IPv6 socket lookup support"
 -- 
 2.53.0
 
