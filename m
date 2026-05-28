@@ -1,60 +1,60 @@
-Return-Path: <stable+bounces-255898-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-255538-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id cB3xK8ymGGrClggAu9opvQ
-	(envelope-from <stable+bounces-255898-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:34:20 +0200
+	id gELCJWSiGGqblggAu9opvQ
+	(envelope-from <stable+bounces-255538-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:15:32 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 815355F8FF6
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:34:20 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3C3B95F82E5
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:15:32 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 9CAE63076F9B
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 20:29:50 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id B198A30601CA
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 20:13:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 84E641C3318;
-	Thu, 28 May 2026 20:29:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0978340FDA0;
+	Thu, 28 May 2026 20:13:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fzchRxPx"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Fy0wVGzE"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 64F7E2E7379;
-	Thu, 28 May 2026 20:29:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D76FC409624;
+	Thu, 28 May 2026 20:13:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780000188; cv=none; b=J6997X7R3Ci30Xc86ys1fYYWcudQVIrNBgkloB9JH4yHNRNF0AR57bJQxO6To67QtZpdCzT7QUqahH7AHG0VWV25Dm6yIrWK0N0a8nBAV19tT6aPaHwANe5pMZzJkWR3MGKQ1R3adsRZL+D0xSGqv8FU60NxSOcyW3bfnL41//Y=
+	t=1779999192; cv=none; b=diK4a0XgtZk+DYiJo1EyvdmFGWo+jdVbutas8i6FmXi5Mo5bmKGSG7k8vBRPOMcDssd0vCswbKR2vo+K4DFSxDNcA9eK6H4pdVaBTj1BswtlUlJnqvhVF1aV/zaJGsCxltKxQJV9A9XgjBE8k/cE4iBqUxb8KeoExCP5Lw444Jo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780000188; c=relaxed/simple;
-	bh=XBlsluu7Qgr6xD6RA/o3VWdGtz77994/h5WMfXZqTFU=;
+	s=arc-20240116; t=1779999192; c=relaxed/simple;
+	bh=HFpXvFF/LVlN+SOPtYlW1cYktliAofmtUL0kCuTbDOI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=CwiFaAz1Mmg4GwtADUjJQeJOpAnur/Mwv4rMjMDDp0JAx61FqXEGaqCql0ODb3Tzl/qjJDFE+e8f1OS7OVbl98/IYnMnz2uqjFdFI1qkC61mxvWjwtcqUPS3iQmXFtwXuPGAyh4NK5sCc3EzHiqAm38Fh5Vmw81DofotrG6tLzM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fzchRxPx; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C1FEB1F000E9;
-	Thu, 28 May 2026 20:29:46 +0000 (UTC)
+	 MIME-Version; b=O92c/OE0vCcXimVwSghau6AB7iwihLEzI9JAMh94Htoww+23IypqyTQyl/ux3O2vymwUY9gimpNojJEdRyd+f9mSspoRWq0WD7JzGHMwVanTBKkVYPpVcac0su1rC/sQuMaRxSnKEwBFyayPrs4n8A1PXTExVoiNiUI+907hLRg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Fy0wVGzE; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EF88A1F000E9;
+	Thu, 28 May 2026 20:13:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780000187;
-	bh=9PAyPaXYRlTd1skBwP+oZhzETQrE195YOq2MNiKaaBI=;
+	s=korg; t=1779999191;
+	bh=Sc+FJcmu/v2KQ/HQcBPQEb5xA/Z9dK9iHD+HZSjWdCM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=fzchRxPxJrjUK8g2ajRpLoD9fwQo70oqG8HpKwrRftVFIUZPvLTo+nX1jZRk7pTQE
-	 s8A4B7likSnC29/zT5p25rcpCMlDOVpJQXLsprEq3CZii5dSzf+Tx4maih97s+EC0B
-	 wv5HyL+ZqCvcAzJfS0IJ/TaMS/RG0xFAeZc0f20Q=
+	b=Fy0wVGzEOsDS4SE91XPygGtcQw8m+Ca3hxmObr2UMTFuzfmazIkGDBfG0eLrlY3OL
+	 Ko/Zm2IXKgUmY5leMDD0Y7MCabURcQGjO0gutCK9NzVpSXvyxXWkPTqpBCUbn/uLXC
+	 8CaRbF0GLCxJVxas8r0EgvNqCDZyUQRqr7lh80Hw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
-	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
+	Ashutosh Dixit <ashutosh.dixit@intel.com>,
+	Shuicheng Lin <shuicheng.lin@intel.com>,
+	Rodrigo Vivi <rodrigo.vivi@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 333/377] platform/x86: intel-hid: Check ACPI_HANDLE() against NULL
+Subject: [PATCH 7.0 442/461] drm/xe/oa: Fix exec_queue leak on width check in stream open
 Date: Thu, 28 May 2026 21:49:31 +0200
-Message-ID: <20260528194648.056597229@linuxfoundation.org>
+Message-ID: <20260528194700.324594317@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260528194638.371537336@linuxfoundation.org>
-References: <20260528194638.371537336@linuxfoundation.org>
+In-Reply-To: <20260528194646.819809818@linuxfoundation.org>
+References: <20260528194646.819809818@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,87 +64,89 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-2.16 / 15.00];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-255898-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-255538-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TO_DN_SOME(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_SEVEN(0.00)[7];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,intel.com:email,linuxfoundation.org:mid,linuxfoundation.org:dkim]
-X-Rspamd-Queue-Id: 815355F8FF6
+	DBL_BLOCKED_OPENRESOLVER(0.00)[intel.com:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,msgid.link:url]
+X-Rspamd-Queue-Id: 3C3B95F82E5
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+7.0-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+From: Shuicheng Lin <shuicheng.lin@intel.com>
 
-[ Upstream commit 5c69e090ae5dd93d910f70db0796357080707d26 ]
+[ Upstream commit 4d25342543c01310fc4e0cba7cb17c775e2421e2 ]
 
-Every platform driver can be forced to match a device that doesn't match
-its list of device IDs because of device_match_driver_override(), so
-platform drivers that rely on the existence of a device's ACPI companion
-object need to verify its presence.
+In xe_oa_stream_open_ioctl(), when param.exec_q->width > 1 the
+function returns -EOPNOTSUPP directly, skipping the existing
+err_exec_q cleanup path. The exec_queue reference obtained by
+xe_exec_queue_lookup() is leaked.
 
-Accordingly, add a requisite ACPI_HANDLE() check against NULL to the
-platform/x86 intel-hid driver.
+The exec queue holds a reference on the xe_file, which is only
+dropped during queue teardown. The leaked lookup ref is not on
+the file's exec_queue xarray, so file close cannot release it.
+This keeps both the exec queue and the file private state pinned
+indefinitely.
 
-Fixes: ecc83e52b28c ("intel-hid: new hid event driver for hotkeys")
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
-Reviewed-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Link: https://patch.msgid.link/1971512.tdWV9SEqCh@rafael.j.wysocki
-Reviewed-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
-Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+Jump to err_exec_q instead of returning directly so the reference
+is released.
+
+Fixes: f0ed39830e60 ("xe/oa: Fix query mode of operation for OAR/OAC")
+Assisted-by: Claude:claude-opus-4.6
+Reviewed-by: Ashutosh Dixit <ashutosh.dixit@intel.com>
+Link: https://patch.msgid.link/20260514203210.593488-1-shuicheng.lin@intel.com
+Signed-off-by: Shuicheng Lin <shuicheng.lin@intel.com>
+(cherry picked from commit 339fa0be9e4a5d69fa47e91f4a36574224fb478f)
+Signed-off-by: Rodrigo Vivi <rodrigo.vivi@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/platform/x86/intel/hid.c | 6 +++++-
- 1 file changed, 5 insertions(+), 1 deletion(-)
+ drivers/gpu/drm/xe/xe_oa.c | 6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/platform/x86/intel/hid.c b/drivers/platform/x86/intel/hid.c
-index c5e80887d0cb0..f7e358be1af3a 100644
---- a/drivers/platform/x86/intel/hid.c
-+++ b/drivers/platform/x86/intel/hid.c
-@@ -682,12 +682,16 @@ static bool button_array_present(struct platform_device *device)
+diff --git a/drivers/gpu/drm/xe/xe_oa.c b/drivers/gpu/drm/xe/xe_oa.c
+index fa90441d30529..449a431ec1d4e 100644
+--- a/drivers/gpu/drm/xe/xe_oa.c
++++ b/drivers/gpu/drm/xe/xe_oa.c
+@@ -2048,8 +2048,10 @@ int xe_oa_stream_open_ioctl(struct drm_device *dev, u64 data, struct drm_file *f
+ 		if (XE_IOCTL_DBG(oa->xe, !param.exec_q))
+ 			return -ENOENT;
  
- static int intel_hid_probe(struct platform_device *device)
- {
--	acpi_handle handle = ACPI_HANDLE(&device->dev);
- 	unsigned long long mode, dummy;
- 	struct intel_hid_priv *priv;
-+	acpi_handle handle;
- 	acpi_status status;
- 	int err;
+-		if (XE_IOCTL_DBG(oa->xe, param.exec_q->width > 1))
+-			return -EOPNOTSUPP;
++		if (XE_IOCTL_DBG(oa->xe, param.exec_q->width > 1)) {
++			ret = -EOPNOTSUPP;
++			goto err_exec_q;
++		}
+ 	}
  
-+	handle = ACPI_HANDLE(&device->dev);
-+	if (!handle)
-+		return -ENODEV;
-+
- 	intel_hid_init_dsm(handle);
- 
- 	if (!intel_hid_evaluate_method(handle, INTEL_HID_DSM_HDMM_FN, &mode)) {
+ 	/*
 -- 
 2.53.0
 
