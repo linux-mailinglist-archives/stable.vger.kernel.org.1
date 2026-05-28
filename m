@@ -1,60 +1,61 @@
-Return-Path: <stable+bounces-256391-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-256222-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id OCSDB66sGGphmAgAu9opvQ
-	(envelope-from <stable+bounces-256391-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:59:26 +0200
+	id QPpZNButGGpymAgAu9opvQ
+	(envelope-from <stable+bounces-256222-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 23:01:15 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8E4D95FA007
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:59:25 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id E80665FA11B
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 23:01:14 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 6BBBE30C7606
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 20:52:50 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id A78073129B62
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 20:45:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 545F41A9B46;
-	Thu, 28 May 2026 20:52:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2BECC2F1FEC;
+	Thu, 28 May 2026 20:44:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="C7NeBMqO"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DXtR77KE"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 33D9F2F1FEF;
-	Thu, 28 May 2026 20:52:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0103223C8C7;
+	Thu, 28 May 2026 20:44:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780001569; cv=none; b=uXnhN3hdfRXhMY/hGsQ68Kyi8NlLVYYPDm3XG1dKSqMBrp5C28/pzgYUDiK8grGzVmgciirfBROmmGKG1sh1j3qVmrhbyTb/nykK1m5OnBCaqxAFDEv57SDjAR63YdM4O1yjcXWHykuDF/CWd9I+JE+66/0YBHS4HJmyDyZSNE0=
+	t=1780001099; cv=none; b=AcLCwTDLsM3c8q34vTCsxwngioSdiYf6MSy8+1ip8GWsCBsxR8GCweLW8Se5nrpxVqCKMx/K/0CuHyx5Ma/hf1GR7n6cd88tM9vyMoSBEqcRNRd0id0lX/iK71ivPnhLciD94Wtjc7ObNsnB/F4VxSdGa6I1TBzbT8aAI0swUmA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780001569; c=relaxed/simple;
-	bh=CmCuYzUFQY7jV/L9MgEW2eD4k8mulQZdUaSUlxPXlu8=;
+	s=arc-20240116; t=1780001099; c=relaxed/simple;
+	bh=njxvB0QdNzkSNcCUSL6nnTktm2gVIpsIK77SkoaX/Ns=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=NSLeZjR/pPELgYfiFBFxph6tvJavCKP8Frb4Xfw8RxQVUhhLyuFNBC1pmkX2v1S7DnziU2hHO6AWNMyF0KCsntimEmS1EIBpZzZpDasyDyveniGbLSyoCdoX0TFbldLNOiWyl3j9w+mJB3YmxtTscj54DbLj823u9acaTqSK3TE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=C7NeBMqO; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 929511F000E9;
-	Thu, 28 May 2026 20:52:47 +0000 (UTC)
+	 MIME-Version; b=WO3lBgxzoryLyd4UVADl+NOxGoddMGEznJZey1CGVTmENkcz5/6NcOxkHRJs/EfKuQA4LE5ST0nCPYtJf2M0ICUUI7Ryf+h+jGJ0kJOHaVvoA1QgyMEt6m/HbDLd1ZPjKdvJ/Y47HnQrbqT/MHhoCOpYFG3UFaLlcE7gtZ1n/Us=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DXtR77KE; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5FA751F000E9;
+	Thu, 28 May 2026 20:44:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780001568;
-	bh=3PLEm6MYg8I1AZoanLJ27mdoE0ovo//v24HOnWkOv1M=;
+	s=korg; t=1780001097;
+	bh=0m4/YanCTztW98ammmrrwOcZwPDnoxaUw6R3XJX79WQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=C7NeBMqOFybDtaT5XbUeoGpsVW4QVMbju5NaCpqo1EDTxV5Pu5cm6oe4oixTsJBrD
-	 j/pcL4z4dmoxGpKZ93xvppWZgObm36I4qrzO+fKNSBda+tAvkqGYLbTk3jVL2out6a
-	 p8nzKbYDcjMaSpIO1qv7oDyHHLQmSwRAgyYt2GO0=
+	b=DXtR77KEzVfELiKeIrE095Wc49TbtiIPxXxDxrYyRDsmx3bYreUPia0hbQSYtntNU
+	 SXlCUuY0mTC5BHadrkQWY10S3bG0NBmlV9GUBdRpA9TUCMwmgsSTGa0h19VQil2j0m
+	 zOeL/lSS2wBWtGzB2YQc6oyjiee3O5X1UF4GoaOM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Andrew Lunn <andrew@lunn.ch>,
-	Sven Schuchmann <schuchmann@schleissheimer.de>,
-	Paolo Abeni <pabeni@redhat.com>,
+	Petr Machata <petrm@nvidia.com>,
+	Ido Schimmel <idosch@nvidia.com>,
+	Nikolay Aleksandrov <razor@blackwall.org>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 147/186] net: phy: DP83TC811: add reading of abilities
+Subject: [PATCH 6.12 253/272] net: bridge: Flush multicast groups when snooping is disabled
 Date: Thu, 28 May 2026 21:50:27 +0200
-Message-ID: <20260528194932.923449984@linuxfoundation.org>
+Message-ID: <20260528194636.198051872@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260528194928.941004471@linuxfoundation.org>
-References: <20260528194928.941004471@linuxfoundation.org>
+In-Reply-To: <20260528194629.379955525@linuxfoundation.org>
+References: <20260528194629.379955525@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,7 +70,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
@@ -77,7 +78,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-256391-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-256222-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
@@ -86,52 +87,79 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
 	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[7];
+	RCPT_COUNT_SEVEN(0.00)[8];
 	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[lunn.ch:email,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,msgid.link:url,linuxfoundation.org:mid,linuxfoundation.org:dkim,schleissheimer.de:email]
-X-Rspamd-Queue-Id: 8E4D95FA007
+	DBL_BLOCKED_OPENRESOLVER(0.00)[blackwall.org:email,nvidia.com:email,msgid.link:url,linuxfoundation.org:mid,linuxfoundation.org:dkim,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo]
+X-Rspamd-Queue-Id: E80665FA11B
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sven Schuchmann <schuchmann@schleissheimer.de>
+From: Petr Machata <petrm@nvidia.com>
 
-[ Upstream commit c78bdba7b9666020c0832150a4fc4c0aebc7c6ac ]
+[ Upstream commit 68800bbf583f26f71491141e4b3c8582f9cfcbde ]
 
-At this time the driver is not listing any speeds
-it supports. This should be ETHTOOL_LINK_MODE_100baseT1_Full_BIT
-for DP83TC811. Add the missing call for phylib to read the abilities.
+When forwarding multicast packets, the bridge takes MDB into account when
+IGMP / MLD snooping is enabled. Currently, when snooping is disabled, the
+MDB is retained, even though it is not used anymore.
 
-Fixes: b753a9faaf9a ("net: phy: DP83TC811: Introduce support for the DP83TC811 phy")
-Suggested-by: Andrew Lunn <andrew@lunn.ch>
-Signed-off-by: Sven Schuchmann <schuchmann@schleissheimer.de>
-Reviewed-by: Andrew Lunn <andrew@lunn.ch>
-Link: https://patch.msgid.link/20260512071949.6218-1-schuchmann@schleissheimer.de
-[pabeni@redhat.com: dropped revision history]
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+At the same time, during the time that snooping is disabled, the IGMP / MLD
+control packets are obviously ignored, and after the snooping is reenabled,
+the administrator has to assume it is out of sync. In particular, missed
+join and leave messages would lead to traffic being forwarded to wrong
+interfaces.
+
+Keeping the MDB entries around thus serves no purpose, and just takes
+memory. Note also that disabling per-VLAN snooping does actually flush the
+relevant MDB entries.
+
+This patch flushes non-permanent MDB entries as global snooping is
+disabled.
+
+Signed-off-by: Petr Machata <petrm@nvidia.com>
+Reviewed-by: Ido Schimmel <idosch@nvidia.com>
+Acked-by: Nikolay Aleksandrov <razor@blackwall.org>
+Link: https://patch.msgid.link/5e992df1bb93b88e19c0ea5819e23b669e3dde5d.1761228273.git.petrm@nvidia.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Stable-dep-of: 4df78ff02629 ("bridge: mcast: Fix a possible use-after-free when removing a bridge port")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/phy/dp83tc811.c | 1 +
- 1 file changed, 1 insertion(+)
+ net/bridge/br_multicast.c | 9 +++++++++
+ 1 file changed, 9 insertions(+)
 
-diff --git a/drivers/net/phy/dp83tc811.c b/drivers/net/phy/dp83tc811.c
-index 7ea32fb77190c..5425a95352f9f 100644
---- a/drivers/net/phy/dp83tc811.c
-+++ b/drivers/net/phy/dp83tc811.c
-@@ -393,6 +393,7 @@ static struct phy_driver dp83811_driver[] = {
- 		.config_init = dp83811_config_init,
- 		.config_aneg = dp83811_config_aneg,
- 		.soft_reset = dp83811_phy_reset,
-+		.get_features = genphy_c45_pma_read_ext_abilities,
- 		.get_wol = dp83811_get_wol,
- 		.set_wol = dp83811_set_wol,
- 		.config_intr = dp83811_config_intr,
+diff --git a/net/bridge/br_multicast.c b/net/bridge/br_multicast.c
+index 9bd2914006df7..3d91f5a057509 100644
+--- a/net/bridge/br_multicast.c
++++ b/net/bridge/br_multicast.c
+@@ -4642,6 +4642,14 @@ static void br_multicast_start_querier(struct net_bridge_mcast *brmctx,
+ 	rcu_read_unlock();
+ }
+ 
++static void br_multicast_del_grps(struct net_bridge *br)
++{
++	struct net_bridge_port *port;
++
++	list_for_each_entry(port, &br->port_list, list)
++		__br_multicast_disable_port_ctx(&port->multicast_ctx);
++}
++
+ int br_multicast_toggle(struct net_bridge *br, unsigned long val,
+ 			struct netlink_ext_ack *extack)
+ {
+@@ -4662,6 +4670,7 @@ int br_multicast_toggle(struct net_bridge *br, unsigned long val,
+ 	br_opt_toggle(br, BROPT_MULTICAST_ENABLED, !!val);
+ 	if (!br_opt_get(br, BROPT_MULTICAST_ENABLED)) {
+ 		change_snoopers = true;
++		br_multicast_del_grps(br);
+ 		goto unlock;
+ 	}
+ 
 -- 
 2.53.0
 
