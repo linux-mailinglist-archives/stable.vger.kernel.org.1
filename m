@@ -1,58 +1,62 @@
-Return-Path: <stable+bounces-256074-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-255437-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 8J6WIGCpGGpolwgAu9opvQ
-	(envelope-from <stable+bounces-256074-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:45:20 +0200
+	id gHCpGhChGGqblggAu9opvQ
+	(envelope-from <stable+bounces-255437-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:09:52 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id D6BDC5F9767
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:45:19 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id 564225F7F15
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:09:52 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id B97713122086
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 20:38:03 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id D3DDC306485C
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 20:08:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8878B31159C;
-	Thu, 28 May 2026 20:38:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AFF9A339866;
+	Thu, 28 May 2026 20:08:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MTcL1L/f"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ca/fXQM8"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6231125F7B9;
-	Thu, 28 May 2026 20:38:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 776DC2F691F;
+	Thu, 28 May 2026 20:08:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780000682; cv=none; b=Rlinm/S6VmxRxo+GmBHQbiAyRc3d4DPPxBvq3Hj8nsDjMWvj5ROUlUxBXhOETHVYLQ5cc1ak627uQvrDmR25zhXCiRR0xmKmmCikW74RT6SuDjH6kRvyfTd7NknaA2xsjuUVgpUziB8QZv+3vgbXIW7J0YZ/cpzzCF544DO+aHg=
+	t=1779998907; cv=none; b=fv6e179kBJFuSJydxhjDXU6DD55C4DyYFCfvX7panA7Nc+OoRyj+HVCslCrq0dCxRbVyMSWnTDixgTIn3z3U5r1h3lPfS/UrnHQo9Z4XFDa1ODxUPKbooRgSQ1AFnbz39CYsyckGRJBcbMuuXS4iKNZEgIW/VPMmz0yaY1FzZxk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780000682; c=relaxed/simple;
-	bh=WYrITNDR20Oh9NKGpGpszipSm6w1R0ceZ6ENLJsNk8o=;
+	s=arc-20240116; t=1779998907; c=relaxed/simple;
+	bh=ZufeHywBbfyCjkt/8N3vc33bmRvbu8GndFttBRzAVZA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=byqWWPu2CN/zy1iR7N/zruDHPZk32gvuR5fzTNT1GNwwK4WoArt9ujDz/jQ4Wh9V7/ZXAesXSuioYpxeNh4qXYwZJIQjjmB1JOPvW9wRi46wi+s8b03GAr2ui+OnIPGC5Tk0xWhhzcBnGWJFRUBLGXb4dxbPzMI2vi+o6teKwOY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MTcL1L/f; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AAB261F000E9;
-	Thu, 28 May 2026 20:38:00 +0000 (UTC)
+	 MIME-Version; b=sj/VT4FeNCo2cJSNwGgP0sTBi6zsHs29VrrEH6BKpV139fvnPAoqXpXP2YDOql0dr6dNnAbZ5B3oyoR0BE6KxMbB9ENGfS72gInlQ2IGCIIpYkxfeVnn33q+UELwcZegqBQthv/7gGiZ5yOOaD0dfcGJeWhV8JWrFW5t1bzZ3/w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ca/fXQM8; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DBBE31F000E9;
+	Thu, 28 May 2026 20:08:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780000681;
-	bh=WYaloFy+O0V/LRN9a+U5xTPmqc4lAb8x5OEdbZuMQJc=;
+	s=korg; t=1779998906;
+	bh=5BofnAC95mDsd4WN+JFfb42luWelGbawjv8U+NzXQoQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=MTcL1L/fNm/VFxppl55X5DwL1JGnYqWi32d9d1QTZbaizpoPBcbxAjp7ffAzJmbGa
-	 YQtcKUYuT1TSsxIKkUGI614XyzfCkHoobTyyMupdTPT5BxtcyL2ZSCdFlt6dVm+Q4K
-	 g7Vq2aqganToVnlxWLQWxBrwydO7alpQKozgz+Qc=
+	b=ca/fXQM8h4H9MXktlAmbQUWngUJaOiV4ME/00kM5KUsZPhWVt2T99NCNZhgmVjXfQ
+	 k3Kmjji0Zrakxep0o4PwzQgjwrjuyC9ZMAsd+MNkyNRKuFiJtQ1RHqps7Y8VXRrQu3
+	 lSkMuD4SQiCeijkfx49jSL/6aWnnexR3/owDLk68=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	John Walker <johnwalker0@gmail.com>,
-	Johannes Berg <johannes.berg@intel.com>
-Subject: [PATCH 6.12 095/272] wifi: cfg80211: advance loop vars in cfg80211_merge_profile()
+	Jason Gunthorpe <jgg@nvidia.com>,
+	Samiullah Khawaja <skhawaja@google.com>,
+	Josua Mayer <josua@solid-run.com>,
+	Joerg Roedel <joerg.roedel@amd.com>,
+	Sasha Levin <sashal@kernel.org>,
+	Pranjal Shrivastava <praan@google.com>
+Subject: [PATCH 7.0 340/461] iommupt: Fix the end_index calculation in __map_range_leaf()
 Date: Thu, 28 May 2026 21:47:49 +0200
-Message-ID: <20260528194632.037302115@linuxfoundation.org>
+Message-ID: <20260528194657.204442212@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260528194629.379955525@linuxfoundation.org>
-References: <20260528194629.379955525@linuxfoundation.org>
+In-Reply-To: <20260528194646.819809818@linuxfoundation.org>
+References: <20260528194646.819809818@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,87 +69,122 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-256074-lists,stable=lfdr.de];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,intel.com];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_TLS_LAST(0.00)[];
-	TO_DN_SOME(0.00)[];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	RCPT_COUNT_FIVE(0.00)[5];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-255437-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
 	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_SEVEN(0.00)[9];
 	MID_RHS_MATCH_FROM(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,intel.com:email,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,msgid.link:url]
-X-Rspamd-Queue-Id: D6BDC5F9767
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,amd.com:email,nvidia.com:email]
+X-Rspamd-Queue-Id: 564225F7F15
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+7.0-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: John Walker <johnwalker0@gmail.com>
+From: Jason Gunthorpe <jgg@nvidia.com>
 
-commit 7666dbb1bacc4ba522b96740cba7283d243d16e1 upstream.
+[ Upstream commit 58829512ad461af8f35941069c209941e3a97b65 ]
 
-cfg80211_merge_profile() reassembles a Multi-BSSID non-transmitted BSS
-profile that has been split across multiple consecutive MBSSID elements.
-Its while-loop calls
+Sashiko noticed a mismatch of units in this math: num_leaves is
+actually the number of leaf *entries* (so a 16-item contiguous leaf
+is one num_leaves), while index is in items. The mismatch in maths
+causes __map_range_leaf() to exit early instead of efficiently
+filling a larger range of contiguous PTEs.
 
-	cfg80211_get_profile_continuation(ie, ielen, mbssid_elem, sub_elem)
+The early exit is caught by the functions above and then
+__map_range_leaf() is re-invoked, so there is no functional issue.
 
-but never advances mbssid_elem or sub_elem inside the body.  Each
-iteration therefore searches for a continuation that follows the same
-fixed pair; the helper returns the same next_mbssid; and the same
-next_sub bytes are memcpy()'d into merged_ie at a growing offset until
-the buffer fills.
+Correct the misuse of units by adjusting num_leaves with the leaf
+size and avoid the performance cost of looping externally.
 
-Advance both mbssid_elem and sub_elem to the just-consumed continuation
-so the next call to cfg80211_get_profile_continuation() searches for a
-further continuation beyond it (or returns NULL when none exists).
+There are also some mismatched types for num_leaves; simplify
+things to remove the duplicated calculations.
 
-A specially-crafted malicious beacon can take advantage of this bug
-to cause the kernel to spend an excessive amount of time in
-cfg80211_merge_profile (up to as much as 2ms per beacon received),
-which could theoretically be abused in some way.
-
-Cc: stable@vger.kernel.org
-Fixes: fe806e4992c9 ("cfg80211: support profile split between elements")
-Signed-off-by: John Walker <johnwalker0@gmail.com>
-Link: https://patch.msgid.link/20260507230720.64783-1-johnwalker0@gmail.com
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: d6c65b0fd621 ("iommupt: Avoid rewalking during map")
+Signed-off-by: Jason Gunthorpe <jgg@nvidia.com>
+Reviewed-by: Samiullah Khawaja <skhawaja@google.com>
+Reviewd-by: Pranjal Shrivastava <praan@google.com>
+Tested-by: Josua Mayer <josua@solid-run.com>
+Signed-off-by: Joerg Roedel <joerg.roedel@amd.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/wireless/scan.c |    3 +++
- 1 file changed, 3 insertions(+)
+ drivers/iommu/generic_pt/iommu_pt.h | 20 +++++++++++++-------
+ 1 file changed, 13 insertions(+), 7 deletions(-)
 
---- a/net/wireless/scan.c
-+++ b/net/wireless/scan.c
-@@ -2421,6 +2421,9 @@ size_t cfg80211_merge_profile(const u8 *
- 		memcpy(merged_ie + copied_len, next_sub->data,
- 		       next_sub->datalen);
- 		copied_len += next_sub->datalen;
-+
-+		mbssid_elem = next_mbssid;
-+		sub_elem = next_sub;
+diff --git a/drivers/iommu/generic_pt/iommu_pt.h b/drivers/iommu/generic_pt/iommu_pt.h
+index 4be33c45bedc9..55faad4b9dc75 100644
+--- a/drivers/iommu/generic_pt/iommu_pt.h
++++ b/drivers/iommu/generic_pt/iommu_pt.h
+@@ -523,10 +523,12 @@ static int __map_range_leaf(struct pt_range *range, void *arg,
+ 	struct pt_state pts = pt_init(range, level, table);
+ 	struct pt_iommu_map_args *map = arg;
+ 	unsigned int leaf_pgsize_lg2 = map->leaf_pgsize_lg2;
++	unsigned int leaves_avail;
+ 	unsigned int start_index;
+ 	pt_oaddr_t oa = map->oa;
+-	unsigned int num_leaves;
++	pt_vaddr_t num_leaves;
+ 	unsigned int orig_end;
++	unsigned int step_lg2;
+ 	pt_vaddr_t last_va;
+ 	unsigned int step;
+ 	bool need_contig;
+@@ -535,21 +537,25 @@ static int __map_range_leaf(struct pt_range *range, void *arg,
+ 	PT_WARN_ON(map->leaf_level != level);
+ 	PT_WARN_ON(!pt_can_have_leaf(&pts));
+ 
+-	step = log2_to_int_t(unsigned int,
+-			     leaf_pgsize_lg2 - pt_table_item_lg2sz(&pts));
+-	need_contig = leaf_pgsize_lg2 != pt_table_item_lg2sz(&pts);
++	step_lg2 = leaf_pgsize_lg2 - pt_table_item_lg2sz(&pts);
++	step = log2_to_int_t(unsigned int, step_lg2);
++	need_contig = step_lg2 != 0;
+ 
+ 	_pt_iter_first(&pts);
+ 	start_index = pts.index;
+ 	orig_end = pts.end_index;
+-	if (pts.index + map->num_leaves < pts.end_index) {
++	leaves_avail =
++		log2_div_t(unsigned int, pts.end_index - pts.index, step_lg2);
++	if (map->num_leaves <= leaves_avail) {
+ 		/* Need to stop in the middle of the table to change sizes */
+-		pts.end_index = pts.index + map->num_leaves;
++		pts.end_index = pts.index + log2_mul(map->num_leaves, step_lg2);
+ 		num_leaves = 0;
+ 	} else {
+-		num_leaves = map->num_leaves - (pts.end_index - pts.index);
++		num_leaves = map->num_leaves - leaves_avail;
  	}
  
- 	return copied_len;
++	PT_WARN_ON(
++		log2_mod_t(unsigned int, pts.end_index - pts.index, step_lg2));
+ 	do {
+ 		pts.type = pt_load_entry_raw(&pts);
+ 		if (pts.type != PT_ENTRY_EMPTY || need_contig) {
+-- 
+2.53.0
+
 
 
 
