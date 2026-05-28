@@ -1,61 +1,77 @@
-Return-Path: <stable+bounces-255850-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-256238-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id EE6hLZCoGGp+lwgAu9opvQ
-	(envelope-from <stable+bounces-255850-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:41:52 +0200
+	id qGP9Nw2rGGoomAgAu9opvQ
+	(envelope-from <stable+bounces-256238-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:52:29 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2391D5F957A
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:41:51 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8B1AA5F9C00
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:52:29 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 28CDF31BB78F
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 20:27:48 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 1B62C30146B4
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 20:45:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C3FE134B19F;
-	Thu, 28 May 2026 20:27:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7845B33372A;
+	Thu, 28 May 2026 20:45:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=narfation.org header.i=@narfation.org header.b="TmA1Vz0a"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="G5mG0MC/"
 X-Original-To: stable@vger.kernel.org
-Received: from dvalin.narfation.org (dvalin.narfation.org [213.160.73.56])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.14])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5A40D33F595
-	for <stable@vger.kernel.org>; Thu, 28 May 2026 20:27:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=213.160.73.56
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BDE35318BB5;
+	Thu, 28 May 2026 20:45:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.14
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780000053; cv=none; b=j/6qKmMQuNXIQdzz7+6OrS58HX7wmxz0zLF86PhFvJhUkKIZ24f9pNnBEU5JRFArO8RJKLZABtIzSqipf1mw/AkLf0nWnKJUqvYB/nRpim1gwzwPBJ+Fuu1zEN1Wgh7RmKfTeY4oRrQQ+5H6K6r1UCaBL4HzZ/q+ZEXr+OiDG+4=
+	t=1780001141; cv=none; b=e/5G6T+ZY/YL/C+elyTNqWB9T3kjcQpWTaTaVrSh77N0Ux13XKQZxFsA1UjrnBQ24TAexGwDqXx10iEtb3EH0G6JhVHXprSPBnQdEulSDfkDGIBXIEjnnWHWZzRqaKseVo+2HLBsx1YiXCmCZSDGd9oGv5/5zVaHr3vd0WnzNBU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780000053; c=relaxed/simple;
-	bh=xsyrcrafDaJ2fD4q9OJXNECe/lIgFA5FIadjSfbcO14=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=R3iLhAXOIkohe84tzZafB0NHa82VGfqm8YsGVa5AwyA552rMT6S5xh7YaRe/uEig7uoOyXxo5Pq8i3S7q0QKQpJ/m648kdQzM5bPGsHiGcvbUPQQ/b/qhe+HRr2qUbFITQW/2xrYH9QYS6txY5Vf2CJCXC252gDv+7g6w7/Tubc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=narfation.org; spf=pass smtp.mailfrom=narfation.org; dkim=pass (1024-bit key) header.d=narfation.org header.i=@narfation.org header.b=TmA1Vz0a; arc=none smtp.client-ip=213.160.73.56
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=narfation.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=narfation.org
-Received: by dvalin.narfation.org (Postfix) id 7A92F1FDD5;
-	Thu, 28 May 2026 20:27:30 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=narfation.org;
-	s=20121; t=1780000050;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=u9LtvhnIWAymKY+eOp+C3TRgoKeD1sgaXTNJ7XknCaU=;
-	b=TmA1Vz0aWVSE8YdY1a8ar8mnOwTJNRpLD5YABnWugUWrIZ7GwqH2Kq/FZ2KWJ02bWjjMEB
-	zhgTp/KVJNrgSEQ4bRBANCIIVAk5iwIVqAJOU18VCtaS11TcE+L95/pJ3HUIzkt8f1ktCP
-	l72tsm1JJ6LAXcOsVnZB6K7/TqzI1Z8=
-From: Sven Eckelmann <sven@narfation.org>
-To: stable@vger.kernel.org
-Cc: Sven Eckelmann <sven@narfation.org>,
-	stable@kernel.org
-Subject: [PATCH 5.15.y] batman-adv: tp_meter: directly shut down timer on cleanup
-Date: Thu, 28 May 2026 22:27:23 +0200
-Message-ID: <20260528202723.562366-1-sven@narfation.org>
-X-Mailer: git-send-email 2.47.3
-In-Reply-To: <2026052844-iphone-aerobics-9bba@gregkh>
-References: <2026052844-iphone-aerobics-9bba@gregkh>
+	s=arc-20240116; t=1780001141; c=relaxed/simple;
+	bh=AVTRQnr9nQkiaXAXTp3FzwWwl1Ecbt2usWUCFCbMvEA=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=DQBN/KQkcAMu/KpDptvS+xoBJQk3xbOQVV5JbhhC+yBWbXrDfxivCytD9+zq9mIgv/YA7mo6m8LoSCB+D1MWhSO6PHXrhYXw3A1TLZVNbS2o/7prZz6jX6f06+FuUGs7G3b1grUjkUVKTQqnyE6o6x+geRooYZvBd8T4TUp9s70=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=G5mG0MC/; arc=none smtp.client-ip=198.175.65.14
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1780001140; x=1811537140;
+  h=from:to:cc:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=AVTRQnr9nQkiaXAXTp3FzwWwl1Ecbt2usWUCFCbMvEA=;
+  b=G5mG0MC/zEde92vcs8JcMPwD9sThLokj8bwg00+0cuFZxRg6wOmBRA+b
+   2Duz8g3Vk5UzF4gP7DVHbUSxXZyu/M2okqBJTIyyqa5K4iI80xGEyRPZf
+   pKvE8KktnwQrVymEI0HYVwq6fiKJIsoUvh7vU4m6xkITUt3gcFe+HEwyF
+   T8OjR35HORfbSfXZSkstuIYYm0xzHp1B5GyS7lg8DVoc3CLfOx9ZcBavY
+   /98DtNoG36/oymMfGKLoZgbk0cWDznfWV7lo5flsPgM8cpl8cwAYUX12O
+   ZXkl/VkhQxymO4T8eFAm4I9ieSPjC37oG4lUlLv4vuwCBN516IJ7QmtFQ
+   g==;
+X-CSE-ConnectionGUID: BgT2Ul+9Rc2lA/TlAZTEHA==
+X-CSE-MsgGUID: Hy2nTr55QxionA0PZGFCsw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11800"; a="84742026"
+X-IronPort-AV: E=Sophos;i="6.24,174,1774335600"; 
+   d="scan'208";a="84742026"
+Received: from orviesa002.jf.intel.com ([10.64.159.142])
+  by orvoesa106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 28 May 2026 13:45:39 -0700
+X-CSE-ConnectionGUID: HrMjI+bqQG25qItNBkwzCg==
+X-CSE-MsgGUID: cdfgnizHQXiiue+tUgbnsQ==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.24,174,1774335600"; 
+   d="scan'208";a="272984531"
+Received: from spandruv-desk.jf.intel.com ([10.54.55.20])
+  by orviesa002.jf.intel.com with ESMTP; 28 May 2026 13:45:39 -0700
+From: Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>
+To: hansg@kernel.org,
+	ilpo.jarvinen@linux.intel.com
+Cc: platform-driver-x86@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Srinivas Pandruvada <srinivas.pandruvada@intel.com>,
+	Yi Lai <yi1.lai@intel.com>,
+	stable@vger.kernel.org
+Subject: [PATCH] platform/x86: ISST: Restore SST-PP control to all domains
+Date: Thu, 28 May 2026 13:45:21 -0700
+Message-ID: <20260528204521.3531456-1-srinivas.pandruvada@linux.intel.com>
+X-Mailer: git-send-email 2.54.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -64,85 +80,66 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-0.66 / 15.00];
-	MID_CONTAINS_FROM(1.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	MID_CONTAINS_FROM(1.00)[];
+	DMARC_POLICY_ALLOW(-0.50)[intel.com,none];
 	R_MISSING_CHARSET(0.50)[];
-	DMARC_POLICY_ALLOW(-0.50)[narfation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
-	R_DKIM_ALLOW(-0.20)[narfation.org:s=20121];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	R_DKIM_ALLOW(-0.20)[intel.com:s=Intel];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-255850-lists,stable=lfdr.de];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	DKIM_TRACE(0.00)[narfation.org:+];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[sven@narfation.org,stable@vger.kernel.org];
+	TAGGED_FROM(0.00)[bounces-256238-lists,stable=lfdr.de];
+	RCVD_COUNT_FIVE(0.00)[5];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
 	FROM_HAS_DN(0.00)[];
-	RCPT_COUNT_THREE(0.00)[3];
+	FROM_NEQ_ENVFROM(0.00)[srinivas.pandruvada@linux.intel.com,stable@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	NEURAL_HAM(-0.00)[-1.000];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[narfation.org:email,narfation.org:mid,narfation.org:dkim,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
-X-Rspamd-Queue-Id: 2391D5F957A
+	DKIM_TRACE(0.00)[intel.com:+];
+	TAGGED_RCPT(0.00)[stable];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[intel.com:email,intel.com:dkim,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo]
+X-Rspamd-Queue-Id: 8B1AA5F9C00
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-commit d5487249a81ea658717614009c8f46acc5b7101a upstream.
+From: Srinivas Pandruvada <srinivas.pandruvada@intel.com>
 
-batadv_tp_sender_cleanup() was calling timer_delete_sync() followed by
-timer_delete() to guard against the timer handler re-arming itself between
-the two calls. This double-deletion hack relied on the sending status being
-set to 0 to suppress re-arming.
+The SST-PP control offset is only restored to power domain 0 after
+resume. During suspend, control values are read and stored for all
+power domains.
 
-Replace both calls with a single timer_shutdown_sync(). This function both
-waits for any running timer callback to complete (like timer_delete_sync())
-and permanently disarms the timer so it cannot be re-armed afterwards,
-making re-arming prevention unconditional and self-documenting.
+Use pd_info->sst_base instead of power_domain_info->sst_base, which
+only points to power domain 0 base address.
 
-The re-arming property is also required because otherwise:
-
-1. context 0 (batadv_tp_recv_ack()) checks in
-   batadv_tp_reset_sender_timer() if sending is still 1 -> it is
-2. context 1 changes in batadv_tp_sender_shutdown() sending to 0 and in
-   this process forces the kthread to stop timer in
-   batadv_tp_sender_cleanup()
-3. context 0 continues in batadv_tp_reset_sender_timer() and rearms the
-   timer -> but the reference for it is already gone
-
-Cc: stable@kernel.org
-Fixes: 33a3bb4a3345 ("batman-adv: throughput meter implementation")
-[ adapt pre-hunk to old del_timer* names ]
-Signed-off-by: Sven Eckelmann <sven@narfation.org>
+Fixes: dc7901b5a156 ("platform/x86: ISST: Store and restore all domains data")
+Reported-by: Yi Lai <yi1.lai@intel.com>
+Signed-off-by: Srinivas Pandruvada <srinivas.pandruvada@intel.com>
+Cc: stable@vger.kernel.org
 ---
- net/batman-adv/tp_meter.c | 8 +-------
- 1 file changed, 1 insertion(+), 7 deletions(-)
+ drivers/platform/x86/intel/speed_select_if/isst_tpmi_core.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/net/batman-adv/tp_meter.c b/net/batman-adv/tp_meter.c
-index 56b9fe97b3b4..fe365d651115 100644
---- a/net/batman-adv/tp_meter.c
-+++ b/net/batman-adv/tp_meter.c
-@@ -384,13 +384,7 @@ static void batadv_tp_sender_cleanup(struct batadv_priv *bat_priv,
- 	atomic_dec(&tp_vars->bat_priv->tp_num);
+diff --git a/drivers/platform/x86/intel/speed_select_if/isst_tpmi_core.c b/drivers/platform/x86/intel/speed_select_if/isst_tpmi_core.c
+index b804cb753f94..24334ae70d82 100644
+--- a/drivers/platform/x86/intel/speed_select_if/isst_tpmi_core.c
++++ b/drivers/platform/x86/intel/speed_select_if/isst_tpmi_core.c
+@@ -1804,7 +1804,7 @@ void tpmi_sst_dev_resume(struct auxiliary_device *auxdev)
+ 		if (!(pd_info->sst_header.cap_mask & SST_PP_CAP_PP_ENABLE))
+ 			continue;
  
- 	/* kill the timer and remove its reference */
--	del_timer_sync(&tp_vars->timer);
--	/* the worker might have rearmed itself therefore we kill it again. Note
--	 * that if the worker should run again before invoking the following
--	 * del_timer(), it would not re-arm itself once again because the status
--	 * is OFF now
--	 */
--	del_timer(&tp_vars->timer);
-+	timer_shutdown_sync(&tp_vars->timer);
- 	batadv_tp_vars_put(tp_vars);
+-		writeq(pd_info->saved_pp_control, power_domain_info->sst_base +
++		writeq(pd_info->saved_pp_control, pd_info->sst_base +
+ 		       pd_info->sst_header.pp_offset + SST_PP_CONTROL_OFFSET);
+ 	}
  }
- 
 -- 
-2.47.3
+2.54.0
 
 
