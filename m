@@ -1,50 +1,62 @@
-Return-Path: <stable+bounces-254707-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-254709-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id IBJJNMewF2p+NggAu9opvQ
-	(envelope-from <stable+bounces-254707-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 05:04:39 +0200
+	id 8LCqMdmxF2p+NggAu9opvQ
+	(envelope-from <stable+bounces-254709-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 05:09:13 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 757495EC0A0
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 05:04:39 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6D6A25EC12F
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 05:09:13 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 3459B30B056F
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 02:57:35 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 543663058B89
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 03:07:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 51BBD2FB632;
-	Thu, 28 May 2026 02:57:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8AC402EBBB9;
+	Thu, 28 May 2026 03:06:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b="X4rpzlym"
 X-Original-To: stable@vger.kernel.org
-Received: from cstnet.cn (smtp25.cstnet.cn [159.226.251.25])
-	(using TLSv1.2 with cipher DHE-RSA-AES256-SHA (256/256 bits))
+Received: from m16.mail.163.com (m16.mail.163.com [117.135.210.5])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 562582E2DDD;
-	Thu, 28 May 2026 02:57:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=159.226.251.25
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AB840305660;
+	Thu, 28 May 2026 03:06:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=117.135.210.5
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779937054; cv=none; b=YKTy8BOKjZ70gZRF7ghZhHeayby+1KxaSIepr41d/mVomkrLVSyhjgIzgB1GrNvdavJBofhRtx7NbjTA8adKLWIGOt0kPtQXirIhiz7xx+U16SbVcnFmmqW5vjJlae76osdQb9RLy0KunpsY8Bztqiu3OHdLlky5w/iizUXhNHs=
+	t=1779937619; cv=none; b=j9U952iQNZDJAFYa55I/PLBrzkLo6CgTQK30hdJyqk7TLeQ3Ov5ObxRGmHEeNnwMAdAlwhQryY7D8Ak16WuSL1/s2huO6T2T5ws2YMxHnDBRZtcJ9ddRqB3eRS/HsuOYIcf7d4DoiMBfzpqtpG/aqOuBzyiiet49r8x+2gBpato=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779937054; c=relaxed/simple;
-	bh=SzbTmOjv4/rK6iFPkgMdazmxplSFeD7O0gwJa0Xu0xY=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=mb6R7DGRXfBccU01tteZ4jK2DrdI/Uuo9yKg1om7Wwi2/YU/KzHzp+6GWb3d+avJSZ0tJxmMkzkFPBkNJek1eA+tHoopIAA2J+lST4FoWrhpmkliqBhl84eCb1yG1CofeB6OPb9Wd9GZrjm9gB7VeXw3IHWnVmkuyy4QpdZSpF4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn; spf=pass smtp.mailfrom=iscas.ac.cn; arc=none smtp.client-ip=159.226.251.25
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=iscas.ac.cn
-Received: from dfae2b116770.home.arpa (unknown [36.110.52.2])
-	by APP-05 (Coremail) with SMTP id zQCowAC3RQkLrxdqiZWcEQ--.6243S2;
-	Thu, 28 May 2026 10:57:15 +0800 (CST)
-From: Wentao Liang <vulab@iscas.ac.cn>
-To: "Martin K . Petersen" <martin.petersen@oracle.com>
-Cc: Kees Cook <kees@kernel.org>,
-	Wentao Liang <vulab@iscas.ac.cn>,
-	linux-scsi@vger.kernel.org,
-	target-devel@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org
-Subject: [PATCH v2] target: iscsi: cxgbit: fix cnp kref leak in __cxgbit_free_cdev_np()
-Date: Thu, 28 May 2026 02:57:01 +0000
-Message-Id: <20260528025701.1036636-1-vulab@iscas.ac.cn>
+	s=arc-20240116; t=1779937619; c=relaxed/simple;
+	bh=TcIV9BaWJZBJf+siaIArVIvsEA4HBZ3tRlG/JYdRbMI=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=QjzLjVV3SlWEzdvYrQnMd+FOW2+LARBwYKzEYC1ORauIgxl/BX7/+deJqlWrn4qG/9LoVgAbnWo32PvVW08gXfTZntaTnSYbElH34RshUbZtbcFPoE++ua7YAT6ltd9rYWgl8Mlqu77LkKI184sEPp0Di6ZxoEgivg0D+fBYR7Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com; spf=pass smtp.mailfrom=163.com; dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b=X4rpzlym; arc=none smtp.client-ip=117.135.210.5
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=163.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
+	s=s110527; h=From:To:Subject:Date:Message-Id:MIME-Version; bh=pS
+	T2nE1ZdntpdiRrgvI6nKA2ljNSTqu3KfCGCuxvpw4=; b=X4rpzlymQDSDUFmCrE
+	8NCJyYYtx3nPtMy6I+4Mb2nPo2vl2lxZKa0r/x17+aeuE1IKQc1a0NEjDKnDfQqg
+	DSsz4Kckob3Ohs7mwfgksa3CIS5Knq4JpwbGbCN6W2YmJVzpf4ew7yrogEgagtIP
+	TCuBodTKjsvOqhUALYNZVPGek=
+Received: from pek-lpg-core5.wrs.com (unknown [])
+	by gzga-smtp-mtada-g0-2 (Coremail) with SMTP id _____wAHZewSsRdqsskMAA--.1791S2;
+	Thu, 28 May 2026 11:05:55 +0800 (CST)
+From: Robert Garcia <rob_garcia@163.com>
+To: stable@vger.kernel.org,
+	Eric Dumazet <edumazet@google.com>
+Cc: Jakub Kicinski <kuba@kernel.org>,
+	David Ahern <dsahern@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Martin KaFai Lau <kafai@fb.com>,
+	Wei Wang <weiwan@google.com>,
+	"David S . Miller" <davem@davemloft.net>,
+	Robert Garcia <rob_garcia@163.com>,
+	netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH 6.6.y] ipv4: start using dst_dev_rcu()
+Date: Thu, 28 May 2026 11:05:54 +0800
+Message-Id: <20260528030554.3147155-1-rob_garcia@163.com>
 X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
@@ -53,98 +65,152 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:zQCowAC3RQkLrxdqiZWcEQ--.6243S2
-X-Coremail-Antispam: 1UD129KBjvJXoW7tF47Wr1xZr4kZr1UuF4xXrb_yoW8Xw13pF
-	40kFyUJr1DJ3y3Kr4kJw4I9ryfua1ayrW3C348Cws0kws0vryDKFyYyw12qay5urWkur43
-	XF45Ar1UGryqy37anT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-	9KBjDU0xBIdaVrnRJUUUkG14x267AKxVW8JVW5JwAFc2x0x2IEx4CE42xK8VAvwI8IcIk0
-	rVWrJVCq3wAFIxvE14AKwVWUJVWUGwA2ocxC64kIII0Yj41l84x0c7CEw4AK67xGY2AK02
-	1l84ACjcxK6xIIjxv20xvE14v26ryj6F1UM28EF7xvwVC0I7IYx2IY6xkF7I0E14v26r4j
-	6F4UM28EF7xvwVC2z280aVAFwI0_Cr1j6rxdM28EF7xvwVC2z280aVCY1x0267AKxVWxJr
-	0_GcWle2I262IYc4CY6c8Ij28IcVAaY2xG8wAqx4xG64xvF2IEw4CE5I8CrVC2j2WlYx0E
-	2Ix0cI8IcVAFwI0_JrI_JrylYx0Ex4A2jsIE14v26r1j6r4UMcvjeVCFs4IE7xkEbVWUJV
-	W8JwACjcxG0xvY0x0EwIxGrwACjI8F5VA0II8E6IAqYI8I648v4I1lc7CjxVAaw2AFwI0_
-	JF0_Jw1l42xK82IYc2Ij64vIr41l4I8I3I0E4IkC6x0Yz7v_Jr0_Gr1lx2IqxVAqx4xG67
-	AKxVWUJVWUGwC20s026x8GjcxK67AKxVWUGVWUWwC2zVAF1VAY17CE14v26r126r1DMIIY
-	rxkI7VAKI48JMIIF0xvE2Ix0cI8IcVAFwI0_Jr0_JF4lIxAIcVC0I7IYx2IY6xkF7I0E14
-	v26r1j6r4UMIIF0xvE42xK8VAvwI8IcIk0rVWUJVWUCwCI42IY6I8E87Iv67AKxVWUJVW8
-	JwCI42IY6I8E87Iv6xkF7I0E14v26r1j6r4UYxBIdaVFxhVjvjDU0xZFpf9x0JUG0PhUUU
-	UU=
-X-CM-SenderInfo: pyxotu46lvutnvoduhdfq/1tbiBwkBA2oXgFyjjAAAsC
-X-Spamd-Result: default: False [0.04 / 15.00];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+X-CM-TRANSID:_____wAHZewSsRdqsskMAA--.1791S2
+X-Coremail-Antispam: 1Uf129KBjvJXoWxJF4kGrW3Kw47Cw47Xr47Arb_yoWrGr1Upr
+	n8tFZ3trWUXr1UW3ykAF4kZryagw4kGasxuw18A3yag3WDX3ZYyFy8trWaqF4F9FWYyFWY
+	qF1jvF47Aw1UJaDanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x0pRAnY8UUUUU=
+X-CM-SenderInfo: 5uresw5dufxti6rwjhhfrp/xtbDARTRPWoXsRTN7AAA3A
+X-Spamd-Result: default: False [-0.66 / 15.00];
 	MID_CONTAINS_FROM(1.00)[];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	DMARC_POLICY_ALLOW(-0.50)[163.com,none];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_DKIM_ALLOW(-0.20)[163.com:s=s110527];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-254707-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	DMARC_NA(0.00)[iscas.ac.cn];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	FROM_NEQ_ENVFROM(0.00)[vulab@iscas.ac.cn,stable@vger.kernel.org];
-	R_DKIM_NA(0.00)[];
-	NEURAL_HAM(-0.00)[-0.996];
-	PRECEDENCE_BULK(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[7];
+	TAGGED_FROM(0.00)[bounces-254709-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[kernel.org,redhat.com,fb.com,google.com,davemloft.net,163.com,vger.kernel.org];
 	TO_DN_SOME(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FREEMAIL_FROM(0.00)[163.com];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[rob_garcia@163.com,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	DKIM_TRACE(0.00)[163.com:+];
+	NEURAL_HAM(-0.00)[-0.999];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[iscas.ac.cn:mid,iscas.ac.cn:email,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
-X-Rspamd-Queue-Id: 757495EC0A0
+	RCPT_COUNT_SEVEN(0.00)[11];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,msgid.link:url]
+X-Rspamd-Queue-Id: 6D6A25EC12F
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-__cxgbit_free_cdev_np() calls cxgbit_get_cnp() which takes a kref
-reference on the cnp structure. This reference is only released on
-the immediate error path after cxgbit_get_cnp(). On the timeout path
-and the normal completion path that successfully processes the NP,
-the reference is never released via cxgbit_put_cnp(), leaking the
-kref.
+From: Eric Dumazet <edumazet@google.com>
 
-Add cxgbit_put_cnp(cnp) on the timeout and success paths to properly
-release the kref reference.
+[ Upstream commit 6ad8de3cefdb6ffa6708b21c567df0dbf82c43a8 ]
 
-Cc: stable@vger.kernel.org
-Fixes: 9730ffcb8957 ("cxgbit: add files for cxgbit.ko")
-Signed-off-by: Wentao Liang <vulab@iscas.ac.cn>
+Change icmpv4_xrlim_allow(), ip_defrag() to prevent possible UAF.
 
+Change ipmr_prepare_xmit(), ipmr_queue_fwd_xmit(), ip_mr_output(),
+ipv4_neigh_lookup() to use lockdep enabled dst_dev_rcu().
+
+Fixes: 4a6ce2b6f2ec ("net: introduce a new function dst_dev_put()")
+Signed-off-by: Eric Dumazet <edumazet@google.com>
+Reviewed-by: David Ahern <dsahern@kernel.org>
+Link: https://patch.msgid.link/20250828195823.3958522-9-edumazet@google.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+[ Minor modifications made to adapt current code. ]
+Signed-off-by: Robert Garcia <rob_garcia@163.com>
 ---
-Change in v2:
--Fix code error.
----
- drivers/target/iscsi/cxgbit/cxgbit_cm.c | 5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+ net/ipv4/icmp.c        | 4 ++--
+ net/ipv4/ip_fragment.c | 6 ++++--
+ net/ipv4/ipmr.c        | 4 ++--
+ net/ipv4/route.c       | 4 ++--
+ 4 files changed, 10 insertions(+), 8 deletions(-)
 
-diff --git a/drivers/target/iscsi/cxgbit/cxgbit_cm.c b/drivers/target/iscsi/cxgbit/cxgbit_cm.c
-index 146705845fa3..f8cd6457666b 100644
---- a/drivers/target/iscsi/cxgbit/cxgbit_cm.c
-+++ b/drivers/target/iscsi/cxgbit/cxgbit_cm.c
-@@ -544,8 +544,10 @@ __cxgbit_free_cdev_np(struct cxgbit_device *cdev, struct cxgbit_np *cnp)
+diff --git a/net/ipv4/icmp.c b/net/ipv4/icmp.c
+index 3fcf11f83d87..29a2162398e7 100644
+--- a/net/ipv4/icmp.c
++++ b/net/ipv4/icmp.c
+@@ -319,16 +319,16 @@ static bool icmpv4_xrlim_allow(struct net *net, struct rtable *rt,
+ 		return true;
  
- 	ret = cxgbit_wait_for_reply(cdev, &cnp->com.wr_wait,
- 				    0, 10, __func__);
--	if (ret == -ETIMEDOUT)
-+	if (ret == -ETIMEDOUT) {
-+		cxgbit_put_cnp(cnp);
- 		return ret;
-+	}
+ 	/* No rate limit on loopback */
++	rcu_read_lock();
+ 	if (dst->dev && (dst->dev->flags&IFF_LOOPBACK))
+ 		goto out;
  
- 	if (ipv6 && cnp->com.cdev) {
- 		struct sockaddr_in6 *sin6;
-@@ -558,6 +560,7 @@ __cxgbit_free_cdev_np(struct cxgbit_device *cdev, struct cxgbit_np *cnp)
+-	rcu_read_lock();
+ 	peer = inet_getpeer_v4(net->ipv4.peers, fl4->daddr,
+ 			       l3mdev_master_ifindex_rcu(dst->dev));
+ 	rc = inet_peer_xrlim_allow(peer,
+ 				   READ_ONCE(net->ipv4.sysctl_icmp_ratelimit));
+-	rcu_read_unlock();
+ out:
++	rcu_read_unlock();
+ 	if (!rc)
+ 		__ICMP_INC_STATS(net, ICMP_MIB_RATELIMITHOST);
+ 	else
+diff --git a/net/ipv4/ip_fragment.c b/net/ipv4/ip_fragment.c
+index 484edc8513e4..efc50d21d954 100644
+--- a/net/ipv4/ip_fragment.c
++++ b/net/ipv4/ip_fragment.c
+@@ -488,13 +488,15 @@ static int ip_frag_reasm(struct ipq *qp, struct sk_buff *skb,
+ /* Process an incoming IP datagram fragment. */
+ int ip_defrag(struct net *net, struct sk_buff *skb, u32 user)
+ {
+-	struct net_device *dev = skb->dev ? : skb_dst(skb)->dev;
+-	int vif = l3mdev_master_ifindex_rcu(dev);
++	struct net_device *dev;
+ 	struct ipq *qp;
++	int vif;
  
- 	cxgb4_free_stid(cdev->lldi.tids, stid,
- 			cnp->com.local_addr.ss_family);
-+	cxgbit_put_cnp(cnp);
- 	return 0;
- }
+ 	__IP_INC_STATS(net, IPSTATS_MIB_REASMREQDS);
  
+ 	/* Lookup (or create) queue header */
++	dev = skb->dev ? : skb_dst_dev_rcu(skb);
++	vif = l3mdev_master_ifindex_rcu(dev);
+ 	qp = ip_find(net, ip_hdr(skb), user, vif);
+ 	if (qp) {
+ 		int ret;
+diff --git a/net/ipv4/ipmr.c b/net/ipv4/ipmr.c
+index af9412a507cf..948e826900fa 100644
+--- a/net/ipv4/ipmr.c
++++ b/net/ipv4/ipmr.c
+@@ -1905,7 +1905,7 @@ static void ipmr_queue_xmit(struct net *net, struct mr_table *mrt,
+ 		goto out_free;
+ 	}
+ 
+-	encap += LL_RESERVED_SPACE(dev) + rt->dst.header_len;
++	encap += LL_RESERVED_SPACE(dst_dev_rcu(&rt->dst)) + rt->dst.header_len;
+ 
+ 	if (skb_cow(skb, encap)) {
+ 		ip_rt_put(rt);
+@@ -1942,7 +1942,7 @@ static void ipmr_queue_xmit(struct net *net, struct mr_table *mrt,
+ 	 * result in receiving multiple packets.
+ 	 */
+ 	NF_HOOK(NFPROTO_IPV4, NF_INET_FORWARD,
+-		net, NULL, skb, skb->dev, dev,
++		net, NULL, skb, skb->dev, dst_dev_rcu(&rt->dst),
+ 		ipmr_forward_finish);
+ 	return;
+ 
+diff --git a/net/ipv4/route.c b/net/ipv4/route.c
+index f134c59f839e..0ea017bcea47 100644
+--- a/net/ipv4/route.c
++++ b/net/ipv4/route.c
+@@ -416,11 +416,11 @@ static struct neighbour *ipv4_neigh_lookup(const struct dst_entry *dst,
+ 					   const void *daddr)
+ {
+ 	const struct rtable *rt = container_of(dst, struct rtable, dst);
+-	struct net_device *dev = dst->dev;
++	struct net_device *dev;
+ 	struct neighbour *n;
+ 
+ 	rcu_read_lock();
+-
++	dev = dst_dev_rcu(dst);
+ 	if (likely(rt->rt_gw_family == AF_INET)) {
+ 		n = ip_neigh_gw4(dev, rt->rt_gw4);
+ 	} else if (rt->rt_gw_family == AF_INET6) {
 -- 
 2.34.1
 
