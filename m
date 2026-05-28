@@ -1,58 +1,60 @@
-Return-Path: <stable+bounces-256325-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-256119-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id qBhIOKysGGphmAgAu9opvQ
-	(envelope-from <stable+bounces-256325-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:59:24 +0200
+	id yMHZBWWsGGpolwgAu9opvQ
+	(envelope-from <stable+bounces-256119-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:58:13 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6D4DA5F9FF2
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:59:24 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1157A5F9F0C
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:58:11 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 5C9833237229
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 20:49:47 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 2084F30E89F7
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 20:40:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EBC9E31159C;
-	Thu, 28 May 2026 20:49:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1A6FE3264DF;
+	Thu, 28 May 2026 20:40:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Cx0g7WXW"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="07SuO69V"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8E15C328B7B;
-	Thu, 28 May 2026 20:49:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DA80932AAD6;
+	Thu, 28 May 2026 20:40:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780001386; cv=none; b=N1qgdJWc0IwOEYra0KaJOHPRSNSWH7SkFe6QN9Tv0MIWKpuZytPPXHbfyb84m+MnR9OeCj0FKCrQ9agPC0QIJcsjGHmciw16zLU6c4dDFi0TOTodrzq9R76UPYfm7tX2sZ/PQRHtt38ef9lhZqHUlKNAkkWtMZeb4xvfIdnBpo4=
+	t=1780000809; cv=none; b=UCdEuWGeXs4vAVptK3Nr4WDJWazyvkyrCkxkoPkDJJSQKp4JnsLomck+st69NC1fnblQvjY/Ayy89Mh/ht0onaK2TS9CrFpjEqEymgI7MELGDgWwLXV0vi1HaEfu7IwVBKuEfL9IrO8vCR8QX6I5T9QKwl/Zm58OGGDzfJwBKyE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780001386; c=relaxed/simple;
-	bh=MO1zmg+pWNwe/QE7/+1BxVxeBlQof0PEXXkmmr/I754=;
+	s=arc-20240116; t=1780000809; c=relaxed/simple;
+	bh=oDdAkUtY1mh/QCtR9/mY5gUvnXCOK1Bp1k68KSgNePU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=J63+XWWV0WSAIpKs0nA5q5dUhMVYl6eBI5aH4Dqxrv6LT8XujJkH6RoNRghL9sDfYhU44xuK2zEnooj2YSvnhMmIpLve/BA2l6r/UexZWt0z3DO+2eKUJBK3wAvScywDgu6PlT5VXSy+aZ3+4LnBwUVzvpCnOi41HH/Q87Vsvbs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Cx0g7WXW; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A80441F000E9;
-	Thu, 28 May 2026 20:49:43 +0000 (UTC)
+	 MIME-Version; b=dtJ0ZYcpUB+FijjhgTZY53zpGuUAYZ2lgx7AOLaMroC7Snhu8jzUpUzSw1He7KoHbDh/VU5bY+ZEdVvRUuFvbmZNUbfEdvFihTb8kIAr3dZjxEjbBQB1Bb7bz5ky3cZe6sXTOS9gcuSKZHwJUwLSJA/3GX8KyuqOO0waWejGZLk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=07SuO69V; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 43F6A1F00A3C;
+	Thu, 28 May 2026 20:40:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780001384;
-	bh=6Cx+zvP90r3YikC1QVybhsUuCYosB21wpk0AxtZst/0=;
+	s=korg; t=1780000808;
+	bh=x9+WgMN1YiGV2D2w5b0Lhq7/ofrak+2J4gbHghfSQaE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=Cx0g7WXW0GZGBhxtf2WWEZtHd2GRerUrwy587U8hKMJ/PQDk8G0tNzGMYxfPAqEJ3
-	 uUpp6ppvHANjZdsNGNoxH/JDnd/nQo7SlpbvsJ/7uPFZwfrZcbnYHHtVRrwNRaWYOV
-	 YRJA0XOO45kiI+7nGaWg2Qwf/GkqDYAXY2MILmaQ=
+	b=07SuO69Vh9I839Iy9Ow2I+CYeW00UcJJmFfJ+wEVikvZGgaPfyC8rX8sOIGhrSBjf
+	 nJ8TBxzBc8ZHARdQ9n0gNt6qrySVUyXMBItGRBNfq/7duIayHrqWEQG1Hnjwseb07F
+	 owMZAORu296UX30jiRFiKJplnTYzgANsLroVEWOA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Julien Chauveau <chauveau.julien@gmail.com>,
-	Javier Martinez Canillas <javierm@redhat.com>
-Subject: [PATCH 6.6 071/186] drm/bridge: it66121: acquire reset GPIO in probe
+	Damiano Melotti <melotti@google.com>,
+	Kuniyuki Iwashima <kuniyu@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 177/272] tcp: Fix imbalanced icsk_accept_queue count.
 Date: Thu, 28 May 2026 21:49:11 +0200
-Message-ID: <20260528194930.857175503@linuxfoundation.org>
+Message-ID: <20260528194634.262413839@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260528194928.941004471@linuxfoundation.org>
-References: <20260528194928.941004471@linuxfoundation.org>
+In-Reply-To: <20260528194629.379955525@linuxfoundation.org>
+References: <20260528194629.379955525@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,88 +65,82 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	MIME_TRACE(0.00)[0:+];
-	TO_DN_SOME(0.00)[];
-	TAGGED_FROM(0.00)[bounces-256325-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,redhat.com];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-256119-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	NEURAL_HAM(-0.00)[-0.999];
-	TAGGED_RCPT(0.00)[stable];
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	MID_RHS_MATCH_FROM(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[5];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,msgid.link:url,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim]
-X-Rspamd-Queue-Id: 6D4DA5F9FF2
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim]
+X-Rspamd-Queue-Id: 1157A5F9F0C
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Julien Chauveau <chauveau.julien@gmail.com>
+From: Kuniyuki Iwashima <kuniyu@google.com>
 
-commit e02b5262fd288cc235f14e12233ea54e78c04611 upstream.
+[ Upstream commit 7eca3292cac7c26dad4c236f51ba225c39a0523f ]
 
-The it66121_ctx structure has a gpio_reset field, and it66121_hw_reset()
-calls gpiod_set_value() on it. However, the GPIO descriptor is never
-acquired via devm_gpiod_get(), leaving gpio_reset as NULL throughout
-the driver lifetime.
+When TCP socket migration happens in reqsk_timer_handler(),
+@sk_listener will be updated with the new listener.
 
-gpiod_set_value() silently returns when passed a NULL descriptor, so
-the hardware reset sequence in it66121_hw_reset() is a no-op. This
-leaves the chip in an undefined state at probe time, which can prevent
-it from responding on the I2C bus.
+When we call __inet_csk_reqsk_queue_drop(), the listener must
+be the one stored in req->rsk_listener.
 
-The DT binding marks reset-gpios as a required property, so all
-compliant device trees provide this GPIO. Add the missing
-devm_gpiod_get() call after enabling power supplies and before the
-hardware reset, so the chip is properly reset with power applied.
+The cited commit accidentally replaced oreq->rsk_listener with
+sk_listener, leading to imbalanced icsk_accept_queue count.
 
-Fixes: 988156dc2fc9 ("drm: bridge: add it66121 driver")
-Cc: stable@vger.kernel.org
-Signed-off-by: Julien Chauveau <chauveau.julien@gmail.com>
-Reviewed-by: Javier Martinez Canillas <javierm@redhat.com>
-Tested-by: Javier Martinez Canillas <javierm@redhat.com>
-Link: https://patch.msgid.link/20260324193011.16583-1-chauveau.julien@gmail.com
-Signed-off-by: Javier Martinez Canillas <javierm@redhat.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Let's pass the correct listener to __inet_csk_reqsk_queue_drop().
+
+Fixes: e8c526f2bdf1 ("tcp/dccp: Don't use timer_pending() in reqsk_queue_unlink().")
+Reported-by: Damiano Melotti <melotti@google.com>
+Signed-off-by: Kuniyuki Iwashima <kuniyu@google.com>
+Link: https://patch.msgid.link/20260506035954.1563147-3-kuniyu@google.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/bridge/ite-it66121.c |    5 +++++
- 1 file changed, 5 insertions(+)
+ net/ipv4/inet_connection_sock.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/gpu/drm/bridge/ite-it66121.c
-+++ b/drivers/gpu/drm/bridge/ite-it66121.c
-@@ -1566,6 +1566,11 @@ static int it66121_probe(struct i2c_clie
- 		return ret;
+diff --git a/net/ipv4/inet_connection_sock.c b/net/ipv4/inet_connection_sock.c
+index bf4e5f49030b7..dd39cabb39001 100644
+--- a/net/ipv4/inet_connection_sock.c
++++ b/net/ipv4/inet_connection_sock.c
+@@ -1172,7 +1172,7 @@ static void reqsk_timer_handler(struct timer_list *t)
  	}
  
-+	ctx->gpio_reset = devm_gpiod_get(dev, "reset", GPIOD_OUT_LOW);
-+	if (IS_ERR(ctx->gpio_reset))
-+		return dev_err_probe(dev, PTR_ERR(ctx->gpio_reset),
-+				     "Failed to get reset GPIO\n");
-+
- 	it66121_hw_reset(ctx);
+ drop:
+-	__inet_csk_reqsk_queue_drop(sk_listener, oreq, true);
++	__inet_csk_reqsk_queue_drop(oreq->rsk_listener, oreq, true);
+ 	reqsk_put(oreq);
+ }
  
- 	ctx->regmap = devm_regmap_init_i2c(client, &it66121_regmap_config);
+-- 
+2.53.0
+
 
 
 
