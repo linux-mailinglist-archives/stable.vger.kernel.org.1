@@ -1,64 +1,60 @@
-Return-Path: <stable+bounces-255322-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-255703-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id QLFLJ+2gGGqblggAu9opvQ
-	(envelope-from <stable+bounces-255322-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:09:17 +0200
+	id cGe9ATenGGp+lwgAu9opvQ
+	(envelope-from <stable+bounces-255703-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:36:07 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 017885F7EAE
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:09:16 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4F0185F9129
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:36:06 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id E430F313C173
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 20:03:05 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 6BD0031E2E9A
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 20:20:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3E6872FD7C3;
-	Thu, 28 May 2026 20:03:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3F6A4301472;
+	Thu, 28 May 2026 20:20:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tKZ5k6Y2"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wv9Inp1U"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1410927A476;
-	Thu, 28 May 2026 20:03:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1143F282F17;
+	Thu, 28 May 2026 20:20:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779998584; cv=none; b=QBfG8/3sQzdW/bO7l3kxZHs+KGIMleGNGgc19rzmQ3NoJ+Q/hB8lTUJkMG/E64QNtRoA4ven/Ssa981Bjo9txIiFdkfZuPxGlVTdxARoBc0sh0FKClBvkUooeyvrI0bST/4tgw2+VJA/tmRBIm6Ma+R+fwlQZU+hi/+54L7Fhws=
+	t=1779999651; cv=none; b=DsPWnSR7QNeOXKyS7kOnIobI9uOuC6Eym+jqe0GSADuZGyIptNMoiD+ocayW6VtOhPhts87fDmGRIdxrkEv4gLxpcr+7qz1XyByhwwahnfXPhvZtvzHSZYH/y9ixns8ffV3XPRPhYxVhqWF6mrjewVZuVGC/wdcjMLNVocLsheM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779998584; c=relaxed/simple;
-	bh=Je0xWzyFwNSqtcL3LMGMVFyL4B0WhT1l1HAOjwSZLAs=;
+	s=arc-20240116; t=1779999651; c=relaxed/simple;
+	bh=bEKBiQ5NCrUvQ5aOxDoaNVbppZk3b5idv6pnHyLJZKU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=XF6xJl94KWmgcXmd/Gwp6WxJXB+o/ga0390LPl1gHW/zGFwxLixuuhRcKerjtjkJLw1fUizmht1UKByR2fvsfR+1V3Lmzk3LFCPlWrE5BERyNsCwA1iW3qE0HwN/9pnOJF/TSY/EEnceH1+cxf+IJwmwhnWMt/w3lA/gL6P5VI4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tKZ5k6Y2; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1B11E1F000E9;
-	Thu, 28 May 2026 20:03:01 +0000 (UTC)
+	 MIME-Version:Content-Type; b=IPlbkdueVQa+ws4rTQVtvH5pgXHDmAKHwl3tVwC1KlKccT+vlM+cntSJdZZvaGtA8f77GH4kKqbKqsh+tyc6SZELLpEYGBz8356FLUz8eNAR7uNGwylLqMfLs+XASXbGQ7MtYwGKJVC8YE9/YIY9SVFjbsnd6HYwxSlg1TG5Bwc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wv9Inp1U; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6E46B1F000E9;
+	Thu, 28 May 2026 20:20:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779998582;
-	bh=jNK0zmXKsfzSdEP0ApVFYcr4k6QPuWlIRGWJUO4mlzU=;
+	s=korg; t=1779999650;
+	bh=UR3j1OyF3gLhmeDu7L39ht/VST/zfJlqf0odHPCdL/k=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=tKZ5k6Y2qqFa0pdTdIpQB6iMndslqiYVUZZB/aaEX9BaJ/JGodFPs7g7+t/fpA3cN
-	 AzHI3fyRXGgSCa9gBmMHu+xs/F6ggpXNOfnel6wmwhebbC+vfP6Y1DKAsoFURaOYdX
-	 1H61bueIRhkvzGOP/aYxFFg8/t/mHOCAPFDpTOWs=
+	b=wv9Inp1UPhFVg3P5lqpafxY8XLSdHKeC9WzMiJ6DU9bddG9dr0OMPFtxokb24H0jQ
+	 90hCSq1izwUCiQoAYeivytQWDOMAcQ6rJTkGrp30oAJAawKnnvhsefHrjpzRZ77OEz
+	 pmr48poUe8xpBL2oNvtJcpyPeGs5ynkCwJh5UzH4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	intel-wired-lan@lists.osuosl.org,
-	Bart Van Assche <bvanassche@acm.org>,
-	Aleksandr Loktionov <aleksandr.loktionov@intel.com>,
-	Przemek Kitszel <przemyslaw.kitszel@intel.com>,
-	Arpana Arland <arpanax.arland@intel.com>,
-	Jacob Keller <jacob.e.keller@intel.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 7.0 224/461] ice: fix locking in ice_dcb_rebuild()
+	Kaustabh Chakraborty <kauschluss@disroot.org>,
+	Krzysztof Kozlowski <krzysztof.kozlowski@oss.qualcomm.com>,
+	=?UTF-8?q?=C5=81ukasz=20Lebiedzi=C5=84ski?= <kernel@lvkasz.us>,
+	Vinod Koul <vkoul@kernel.org>
+Subject: [PATCH 6.18 115/377] phy: exynos5-usbdrd: fix USB 2.0 HS PHY tuning values for Exynos7870
 Date: Thu, 28 May 2026 21:45:53 +0200
-Message-ID: <20260528194653.616151233@linuxfoundation.org>
+Message-ID: <20260528194641.665769264@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260528194646.819809818@linuxfoundation.org>
-References: <20260528194646.819809818@linuxfoundation.org>
+In-Reply-To: <20260528194638.371537336@linuxfoundation.org>
+References: <20260528194638.371537336@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -68,94 +64,93 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-255322-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
+	TAGGED_FROM(0.00)[bounces-255703-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	MIME_TRACE(0.00)[0:+];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	FROM_HAS_DN(0.00)[];
 	TO_DN_SOME(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[11];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[osuosl.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,acm.org:email,msgid.link:url,intel.com:email]
-X-Rspamd-Queue-Id: 017885F7EAE
+	RCPT_COUNT_SEVEN(0.00)[7];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,msgid.link:url,qualcomm.com:email,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,disroot.org:email]
+X-Rspamd-Queue-Id: 4F0185F9129
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-7.0-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Bart Van Assche <bvanassche@acm.org>
+From: Łukasz Lebiedziński <kernel@lvkasz.us>
 
-[ Upstream commit 0ded1f36ba4021cba50513e80be6b6e173710168 ]
+commit 5a759b120e31aa3ed914d98b51eb1755235250f2 upstream.
 
-Move the mutex_lock() call up to prevent that DCB settings change after
-the first ice_query_port_ets() call. The second ice_query_port_ets()
-call in ice_dcb_rebuild() is already protected by pf->tc_mutex.
+The existing PHYPARAM0 tuning values for Exynos7870 are incorrect,
+causing the USB 2.0 PHY to fail high-speed negotiation and fall back
+to full-speed (12Mbps) operation.
 
-This also fixes a bug in an error path, as before taking the first
-"goto dcb_error" in the function jumped over mutex_lock() to
-mutex_unlock().
+Fix TXVREFTUNE (transmitter voltage reference) from 14 to 3,
+TXRESTUNE (transmitter impedance) from 3 to 2, and SQRXTUNE
+(squelch threshold) from 6 to 5. Also explicitly set
+TXPREEMPPULSETUNE to 0, which was previously missing from the
+tuning table despite being included in the register mask.
 
-This bug has been detected by the clang thread-safety analyzer.
+All values are derived from the vendor kernel for the Samsung
+Galaxy A6 (SM-A600FN), as no public hardware documentation is
+available for the Exynos7870 USB DRD PHY. With these corrections,
+the PHY successfully negotiates high-speed (480Mbps) operation.
 
-Cc: intel-wired-lan@lists.osuosl.org
-Fixes: 242b5e068b25 ("ice: Fix DCB rebuild after reset")
-Signed-off-by: Bart Van Assche <bvanassche@acm.org>
-Reviewed-by: Aleksandr Loktionov <aleksandr.loktionov@intel.com>
-Reviewed-by: Przemek Kitszel <przemyslaw.kitszel@intel.com>
-Tested-by: Arpana Arland <arpanax.arland@intel.com>
-Signed-off-by: Jacob Keller <jacob.e.keller@intel.com>
-Link: https://patch.msgid.link/20260506-jk-iwl-net-2026-05-04-v2-6-a5ea4dc837a9@intel.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 588d5d20ca8d ("phy: exynos5-usbdrd: add exynos7870 USBDRD support")
+Cc: stable@vger.kernel.org
+Tested-by: Kaustabh Chakraborty <kauschluss@disroot.org>
+Reviewed-by: Krzysztof Kozlowski <krzysztof.kozlowski@oss.qualcomm.com>
+Signed-off-by: Łukasz Lebiedziński <kernel@lvkasz.us>
+Link: https://patch.msgid.link/20260406135627.234835-1-kernel@lvkasz.us
+Signed-off-by: Vinod Koul <vkoul@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/intel/ice/ice_dcb_lib.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/phy/samsung/phy-exynos5-usbdrd.c |    7 ++++---
+ 1 file changed, 4 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/net/ethernet/intel/ice/ice_dcb_lib.c b/drivers/net/ethernet/intel/ice/ice_dcb_lib.c
-index 16aa255351523..0bc6dd3756879 100644
---- a/drivers/net/ethernet/intel/ice/ice_dcb_lib.c
-+++ b/drivers/net/ethernet/intel/ice/ice_dcb_lib.c
-@@ -537,14 +537,14 @@ void ice_dcb_rebuild(struct ice_pf *pf)
- 	struct ice_dcbx_cfg *err_cfg;
- 	int ret;
- 
-+	mutex_lock(&pf->tc_mutex);
-+
- 	ret = ice_query_port_ets(pf->hw.port_info, &buf, sizeof(buf), NULL);
- 	if (ret) {
- 		dev_err(dev, "Query Port ETS failed\n");
- 		goto dcb_error;
- 	}
- 
--	mutex_lock(&pf->tc_mutex);
--
- 	if (!pf->hw.port_info->qos_cfg.is_sw_lldp)
- 		ice_cfg_etsrec_defaults(pf->hw.port_info);
- 
--- 
-2.53.0
-
+--- a/drivers/phy/samsung/phy-exynos5-usbdrd.c
++++ b/drivers/phy/samsung/phy-exynos5-usbdrd.c
+@@ -1905,13 +1905,14 @@ const struct exynos5_usbdrd_phy_tuning e
+ 			      PHYPARAM0_TXPREEMPAMPTUNE | PHYPARAM0_TXHSXVTUNE |
+ 			      PHYPARAM0_TXFSLSTUNE | PHYPARAM0_SQRXTUNE |
+ 			      PHYPARAM0_OTGTUNE | PHYPARAM0_COMPDISTUNE),
+-			     (FIELD_PREP_CONST(PHYPARAM0_TXVREFTUNE, 14) |
++			     (FIELD_PREP_CONST(PHYPARAM0_TXVREFTUNE, 3) |
+ 			      FIELD_PREP_CONST(PHYPARAM0_TXRISETUNE, 1) |
+-			      FIELD_PREP_CONST(PHYPARAM0_TXRESTUNE, 3) |
++			      FIELD_PREP_CONST(PHYPARAM0_TXRESTUNE, 2) |
++			      FIELD_PREP_CONST(PHYPARAM0_TXPREEMPPULSETUNE, 0) |
+ 			      FIELD_PREP_CONST(PHYPARAM0_TXPREEMPAMPTUNE, 0) |
+ 			      FIELD_PREP_CONST(PHYPARAM0_TXHSXVTUNE, 0) |
+ 			      FIELD_PREP_CONST(PHYPARAM0_TXFSLSTUNE, 3) |
+-			      FIELD_PREP_CONST(PHYPARAM0_SQRXTUNE, 6) |
++			      FIELD_PREP_CONST(PHYPARAM0_SQRXTUNE, 5) |
+ 			      FIELD_PREP_CONST(PHYPARAM0_OTGTUNE, 2) |
+ 			      FIELD_PREP_CONST(PHYPARAM0_COMPDISTUNE, 3))),
+ 	PHY_TUNING_ENTRY_LAST
 
 
 
