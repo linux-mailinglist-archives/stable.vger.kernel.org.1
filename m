@@ -1,59 +1,59 @@
-Return-Path: <stable+bounces-255893-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-255519-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id OH4PAzOnGGp+lwgAu9opvQ
-	(envelope-from <stable+bounces-255893-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:36:03 +0200
+	id GDKpDG2jGGrJlggAu9opvQ
+	(envelope-from <stable+bounces-255519-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:19:57 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8B5A65F9122
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:36:02 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id B001D5F8674
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:19:56 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 06A1C30F43CB
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 20:29:35 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 09A8E319147A
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 20:12:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 95D6E325485;
-	Thu, 28 May 2026 20:29:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8AA4C33CE8A;
+	Thu, 28 May 2026 20:12:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OnRkciD5"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QWnl/0b0"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6EB9B1EA65;
-	Thu, 28 May 2026 20:29:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6617B33F5BE;
+	Thu, 28 May 2026 20:12:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780000174; cv=none; b=TeGhe6taL54bUF0BN7UZomQzUYyc2FCtLJ6I1/tQb11XfxCseEY4QqTlve2+J0xdrpfOP8sOJcxB79hA3G/cFYKmx0eFH/Frc/uxgvK5/ChW+mJoxiXcmIiWLVqobWt58KSLW1WZKSp1yMSHpqoCOBhpHgOC5u5zbX27DNlq0Ck=
+	t=1779999139; cv=none; b=UsBAQAFZIXO0B7yyl2hUpPi8qVhGo9TfhMkZlDlqFTSLtMlS86JfTuSu2TcysFSFlSL9ExCkQ3E07wMORtNp8uLso8MKaWXgR/dTVU/+omwcQpUtTtlIDle7x3aZxUjzIH8nUi2zxWhEYng4sQDGQC4NW/1NlJwNutCZgnqVKcA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780000174; c=relaxed/simple;
-	bh=0aTDs4zaQmgRa37GmKYlk52GoDQHH18qTDRzuLwV0Ck=;
+	s=arc-20240116; t=1779999139; c=relaxed/simple;
+	bh=su9kyS9IxBjbuqeYc6oOGAgWij7QWSebx9B8JCejxtU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=JfYMm9slg99WHCJeYvc0Fptp2Sp2uxBzc7w+4CHdB4Fq8CwPyQ7/j0TGwBhtTJ2/FedczjCGNJ5l6nLuALAOyLHHzL3Eam0lWwsmgm5DypPPfVBXQcotaANZo4cgvsDMrjBvvJFAxKrKw+s5fTdOh/xR+Xp3qArvnp/Rdz8WRaM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OnRkciD5; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CCF521F000E9;
-	Thu, 28 May 2026 20:29:32 +0000 (UTC)
+	 MIME-Version; b=sGFttQAfXAWgvRQw9b79wXbrRQnzZtetb7CnuOCMT9ayD9vX6RloXUszoAfiwFO8h4SHHZdE6GuQUxhjyxzaSlGyZyydD8ylyoUuamjcBNKUTfCju9mIyWOL7alZhtFU3EM7JFforB26kwd8gqtom5wjt+6FTrZrpO6PPmOSGps=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QWnl/0b0; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C40BA1F000E9;
+	Thu, 28 May 2026 20:12:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780000173;
-	bh=ZEyrSb0r77UR5aNEyd6d7h3q6U5phaZH0sTJLukf0kc=;
+	s=korg; t=1779999138;
+	bh=aPizUL4q0x+opUbvmhat3nyxjvXgwsMt+eXRnF8CTcc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=OnRkciD5ZART6lZOkOB+PweVL+Va1GlnGnDqVYPWWK9gmmDz3ueMjwXRvNkKpiYk9
-	 CRrqkXKLsTuBGpuFhR7nQnvZcftVWJW5/tENWPtpDDUGoIqHXIwoGsvbKvDM9vnZCh
-	 wqmJQewvRpnKRCej7oILimdZ0EUCgGQu+v8tb8KM=
+	b=QWnl/0b0b2nfTnfoqvXQ0Wg8+yOY8OXfdmg5kctfrNdycbuXlm0KgE8qaPxEpE+lf
+	 fRhYNTlXNq17zGJBzsI1mFKPJBeI0kBQkcS6ipZ5sCR+H+HEmTNz/Hj2V4mxYrYk8J
+	 kzoB9GIc1GUUuyurw5WA7LpYueQzU4HU0CjKtFvk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sashiko <sashiko-bot@kernel.org>,
-	Guenter Roeck <linux@roeck-us.net>,
+	Jiajia Liu <liujiajia@kylinos.cn>,
+	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 311/377] hwmon: (lm90) Add lock protection to lm90_alert
-Date: Thu, 28 May 2026 21:49:09 +0200
-Message-ID: <20260528194647.386543426@linuxfoundation.org>
+Subject: [PATCH 7.0 421/461] Bluetooth: btmtk: fix urb->setup_packet leak in error paths
+Date: Thu, 28 May 2026 21:49:10 +0200
+Message-ID: <20260528194659.688421360@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260528194638.371537336@linuxfoundation.org>
-References: <20260528194638.371537336@linuxfoundation.org>
+In-Reply-To: <20260528194646.819809818@linuxfoundation.org>
+References: <20260528194646.819809818@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -68,7 +68,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
@@ -78,7 +78,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-255893-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-255519-lists,stable=lfdr.de];
 	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
@@ -89,66 +89,51 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	TAGGED_RCPT(0.00)[stable];
 	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim]
-X-Rspamd-Queue-Id: 8B5A65F9122
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim,kylinos.cn:email,intel.com:email]
+X-Rspamd-Queue-Id: B001D5F8674
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+7.0-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Guenter Roeck <linux@roeck-us.net>
+From: Jiajia Liu <liujiajia@kylinos.cn>
 
-[ Upstream commit 873e919e3101063a7a75989510ccfc125a4391cf ]
+[ Upstream commit dd1dda6b8d6e1f4376a5b3055a04f0ecbdb4d6bd ]
 
-Sashiko reports:
+The setup_packet of control urb is not freed if usb_submit_urb fails or
+the submitted urb is killed. Add free in these two paths.
 
-lm90_alert() executes in the smbus alert context and calls
-lm90_update_confreg() to disable the hardware alert line, without
-acquiring hwmon_lock.
-
-Concurrently, sysfs write operations (such as lm90_write_convrate) hold
-the hwmon_lock, temporarily modify data->config, and then restore it.
-
-If an alert interrupt occurs concurrently with a sysfs write, the sysfs
-path will overwrite the alert handler's modifications to data->config
-and the hardware register.
-
-This unintentionally re-enables the hardware alert line while the alarm is
-still active, causing an interrupt storm.
-
-Add the missing lock to lm90_alert() to solve the problem.
-
-Fixes: 7a1d220ccb0cc ("hwmon: (lm90) Introduce function to update configuration register")
-Reported-by: Sashiko <sashiko-bot@kernel.org>
-Signed-off-by: Guenter Roeck <linux@roeck-us.net>
+Fixes: a1c49c434e150 ("Bluetooth: btusb: Add protocol support for MediaTek MT7668U USB devices")
+Signed-off-by: Jiajia Liu <liujiajia@kylinos.cn>
+Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/hwmon/lm90.c | 2 ++
+ drivers/bluetooth/btmtk.c | 2 ++
  1 file changed, 2 insertions(+)
 
-diff --git a/drivers/hwmon/lm90.c b/drivers/hwmon/lm90.c
-index 41ee2309fe8a2..a465a8a7ef5af 100644
---- a/drivers/hwmon/lm90.c
-+++ b/drivers/hwmon/lm90.c
-@@ -2963,6 +2963,7 @@ static void lm90_alert(struct i2c_client *client, enum i2c_alert_protocol type,
- 		 */
- 		struct lm90_data *data = i2c_get_clientdata(client);
- 
-+		hwmon_lock(data->hwmon_dev);
- 		if (!data->shutdown && (data->flags & LM90_HAVE_BROKEN_ALERT) &&
- 		    (data->current_alarms & data->alert_alarms)) {
- 			if (!(data->config & 0x80)) {
-@@ -2972,6 +2973,7 @@ static void lm90_alert(struct i2c_client *client, enum i2c_alert_protocol type,
- 			schedule_delayed_work(&data->alert_work,
- 				max_t(int, HZ, msecs_to_jiffies(data->update_interval)));
- 		}
-+		hwmon_unlock(data->hwmon_dev);
- 	} else {
- 		dev_dbg(&client->dev, "Everything OK\n");
+diff --git a/drivers/bluetooth/btmtk.c b/drivers/bluetooth/btmtk.c
+index a4b4dacfd2ad3..04f183fd3d12b 100644
+--- a/drivers/bluetooth/btmtk.c
++++ b/drivers/bluetooth/btmtk.c
+@@ -496,6 +496,7 @@ static void btmtk_usb_wmt_recv(struct urb *urb)
+ 		return;
+ 	} else if (urb->status == -ENOENT) {
+ 		/* Avoid suspend failed when usb_kill_urb */
++		kfree(urb->setup_packet);
+ 		return;
  	}
+ 
+@@ -569,6 +570,7 @@ static int btmtk_usb_submit_wmt_recv_urb(struct hci_dev *hdev)
+ 		if (err != -EPERM && err != -ENODEV)
+ 			bt_dev_err(hdev, "urb %p submission failed (%d)",
+ 				   urb, -err);
++		kfree(dr);
+ 		usb_unanchor_urb(urb);
+ 	}
+ 
 -- 
 2.53.0
 
