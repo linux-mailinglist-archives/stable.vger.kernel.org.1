@@ -1,61 +1,63 @@
-Return-Path: <stable+bounces-255451-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-255770-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 8GbUM6iiGGrClggAu9opvQ
-	(envelope-from <stable+bounces-255451-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:16:40 +0200
+	id IGTpHgqlGGrClggAu9opvQ
+	(envelope-from <stable+bounces-255770-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:26:50 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 714F45F83D8
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:16:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C8D6F5F8B17
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:26:49 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 7A58230CB504
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 20:09:09 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id E0BD1303BDC5
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 20:23:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2605433F5B4;
-	Thu, 28 May 2026 20:09:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3E0FB2F39B4;
+	Thu, 28 May 2026 20:23:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DC9AQj60"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Z5/12ro2"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EA07F1A3157;
-	Thu, 28 May 2026 20:09:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F2FD02E7379;
+	Thu, 28 May 2026 20:23:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779998948; cv=none; b=AOUd497swm9xd8icm3oPUo61gsH+1YCXBFKeuhv1yUSezoW/Zogc2aOT6W3DNQ/wtPB3/MxERXajbRbfw4pm6IbybbjMIWDv0l7ZreiOAcQNYo1LYLA5xl1oD69aO9Td2WBwN4kru912Ugsgu2G3uDYQz6Dlqs7976RcFiQzLbM=
+	t=1779999834; cv=none; b=AneUC0uWGJvfHCEdKK9VqTGChzZeAfp4UY5wFulcadtqiYsaIPUJlxVCKgsfiUq6SsHultm5gVXC+RumxaItRtmmfQ1Z2petET5j45VBp1DLgNcv36R8KGL1/8t8/C5ZaN6Q4vJe7p5AdmMxY7IvqeV0z3E878HxufU+pHsJx5M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779998948; c=relaxed/simple;
-	bh=Sm6VosvvbDuILRHH44mkYTuJ/OEpvgapLs47ko1UCq4=;
+	s=arc-20240116; t=1779999834; c=relaxed/simple;
+	bh=YYEl8zMouIrCcx/WgwPK8VXLG2LO25RzXOTat06lbbQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=uQjuxK7CCap++3j+BYi03H4iGI+USRhh3XTOFeS03OREq021ykrWAB26AGYZv+eN9FHk1dIUjdQQDzKRpDipA0TZvqO/KgQ108GOtKHPGwX8vpTdaLSmy8fKYD9E59Hnuw8YhZBDFAes9uzcpg1s9YFqILRMRuES/4IXNo+uGdM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DC9AQj60; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 52D9F1F000E9;
-	Thu, 28 May 2026 20:09:07 +0000 (UTC)
+	 MIME-Version; b=n9VO/94sM2Ae+rNRKYfazXPmFrjIGpxdGz5SMGpqTB1uKC+pY7EBhvcwHT5OC3dLa2KVnoVf9jMjsbXdPVe+Zvvq89SFJW3sT6B7EFO7J0Yy2kOwdk70HcXlvSQlFWs2PIPeVtLk8qxWT+SYEW89Df9F3FXYww7zys4xiE/NJow=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Z5/12ro2; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2537A1F000E9;
+	Thu, 28 May 2026 20:23:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779998947;
-	bh=hK8aEZuC6ocxAp4QwjiuUZ2Zy5jyqN28dUbVrxZ+F4A=;
+	s=korg; t=1779999832;
+	bh=1jAWuROhiz9WGpmvsQrlUuLASlwwTHCFr9kUioGdfQQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=DC9AQj60FLwTElvg0j6UojSEY/jz8kb7BBSpk0OGwRAVru3XgFcEGZ3yBVkSxtE0Y
-	 UkitBITbLfPb4kOJhI+kI5UMCCrGBYPQxeXkaDeBU9BdT6V3IoF0iBGe8SO50C2dRm
-	 Yg28Aa+SZwJqAipP0ti9qminc1oXfLUwa468/O44=
+	b=Z5/12ro27H8WMgpbcjAUho1OL7Tu9DPL3Ttx4BRdV1aHLeiFNnXvcX+NtsSD5Kr5M
+	 CSuXWleknUIbUnQPEZB/0557Z+tOFlkazuqowHl27culnb40P/fh8j0WstduReST7D
+	 ledRaY7buZxnvDZYYh9ijPkQbD2vdgoUFx7gf1Ec=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?=E9=92=B1=E4=B8=80=E9=93=AD?= <yimingqian591@gmail.com>,
+	Martin Karsten <mkarsten@uwaterloo.ca>,
+	Dragos Tatulea <dtatulea@nvidia.com>,
+	Tariq Toukan <tariqt@nvidia.com>,
+	Cosmin Ratiu <cratiu@nvidia.com>,
+	Joe Damato <joe@dama.to>,
 	Jakub Kicinski <kuba@kernel.org>,
-	Sabrina Dubroca <sd@queasysnail.net>,
-	Paolo Abeni <pabeni@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 7.0 317/461] net: tls: fix off-by-one in sg_chain entry count for wrapped sk_msg ring
+Subject: [PATCH 6.18 208/377] net: napi: Avoid gro timer misfiring at end of busypoll
 Date: Thu, 28 May 2026 21:47:26 +0200
-Message-ID: <20260528194656.476752028@linuxfoundation.org>
+Message-ID: <20260528194644.427140119@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260528194646.819809818@linuxfoundation.org>
-References: <20260528194646.819809818@linuxfoundation.org>
+In-Reply-To: <20260528194638.371537336@linuxfoundation.org>
+References: <20260528194638.371537336@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,111 +67,129 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-2.16 / 15.00];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_MISSING_CHARSET(0.50)[];
 	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,kernel.org,queasysnail.net,redhat.com];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-255451-lists,stable=lfdr.de];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	RCVD_TLS_LAST(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-255770-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
+	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TO_DN_SOME(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
 	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_SEVEN(0.00)[10];
 	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_SEVEN(0.00)[8];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim,msgid.link:url,queasysnail.net:email]
-X-Rspamd-Queue-Id: 714F45F83D8
+	DBL_BLOCKED_OPENRESOLVER(0.00)[nvidia.com:email,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,uwaterloo.ca:email,msgid.link:url,linuxfoundation.org:mid,linuxfoundation.org:dkim,dama.to:email]
+X-Rspamd-Queue-Id: C8D6F5F8B17
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-7.0-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jakub Kicinski <kuba@kernel.org>
+From: Dragos Tatulea <dtatulea@nvidia.com>
 
-[ Upstream commit 285943c6e7ca309bbea84b253745154241d9788a ]
+[ Upstream commit 58e2330bd45572a6e3d46ea94cf7a9641f43591a ]
 
-When an sk_msg scatterlist ring wraps (sg.end < sg.start),
-tls_push_record() chains the tail portion of the ring to the head
-using sg_chain(). An extra entry in the sg array is reserved for
-this:
+When in irq deferral mode (defer-hard-irqs > 0), a short enough
+gro-flush timeout can trigger before NAPI_STATE_SCHED is cleared if the
+last poll in busy_poll_stop() takes too long. This can have the effect
+of leaving the queue stuck with interrupts disabled and no timer armed
+which results in a tx timeout if there is no subsequent busypoll cycle.
 
-  struct sk_msg_sg {
-        [...]
-        /* The extra two elements:
-         * 1) used for chaining the front and sections when the list becomes
-         *    partitioned (e.g. end < start). The crypto APIs require the
-         *    chaining;
-         * 2) to chain tailer SG entries after the message.
-         */
-        struct scatterlist              data[MAX_MSG_FRAGS + 2];
+To prevent this, defer the gro-flush timer arm after the last poll.
 
-The current code uses MAX_SKB_FRAGS + 1 as the ring size:
-
-    sg_chain(&msg_pl->sg.data[msg_pl->sg.start],
-             MAX_SKB_FRAGS - msg_pl->sg.start + 1,
-             msg_pl->sg.data);
-
-This places the chain pointer at
-
-  sg_chain(data[start], (MAX_SKB_FRAGS - msg_start + 1) .. =
-  &data[start] + (MAX_SKB_FRAGS - msg_start + 1) - 1 =
-  data[start + (MAX_SKB_FRAGS - start + 1) - 1] =
-  data[MAX_SKB_FRAGS]
-
-instead of the true last entry. This is likely due to a "race" of
-the commit under Fixes landing close to
-commit 031097d9e079 ("bpf: sk_msg, zap ingress queue on psock down")
-
-Convert to ARRAY_SIZE and drop the data[start] / - start (as suggested
-by Sabrina).
-
-Reported-by: 钱一铭 <yimingqian591@gmail.com>
-Fixes: 9aaaa56845a0 ("bpf: Sockmap/tls, skmsg can have wrapped skmsg that needs extra chaining")
+Fixes: 7fd3253a7de6 ("net: Introduce preferred busy-polling")
+Co-developed-by: Martin Karsten <mkarsten@uwaterloo.ca>
+Signed-off-by: Martin Karsten <mkarsten@uwaterloo.ca>
+Signed-off-by: Dragos Tatulea <dtatulea@nvidia.com>
+Reviewed-by: Tariq Toukan <tariqt@nvidia.com>
+Reviewed-by: Cosmin Ratiu <cratiu@nvidia.com>
+Reviewed-by: Joe Damato <joe@dama.to>
+Link: https://patch.msgid.link/20260506090808.820559-2-dtatulea@nvidia.com
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Reviewed-by: Sabrina Dubroca <sd@queasysnail.net>
-Link: https://patch.msgid.link/20260511174920.433155-2-kuba@kernel.org
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/tls/tls_sw.c | 6 ++----
- 1 file changed, 2 insertions(+), 4 deletions(-)
+ net/core/dev.c | 21 ++++++++++++---------
+ 1 file changed, 12 insertions(+), 9 deletions(-)
 
-diff --git a/net/tls/tls_sw.c b/net/tls/tls_sw.c
-index 23a31646d0387..fe73c6da73392 100644
---- a/net/tls/tls_sw.c
-+++ b/net/tls/tls_sw.c
-@@ -800,11 +800,9 @@ static int tls_push_record(struct sock *sk, int flags,
- 		sg_mark_end(sk_msg_elem(msg_pl, i));
+diff --git a/net/core/dev.c b/net/core/dev.c
+index 29f2f35ae5ebe..681d7de89c505 100644
+--- a/net/core/dev.c
++++ b/net/core/dev.c
+@@ -6777,9 +6777,9 @@ static void skb_defer_free_flush(void)
+ 
+ #if defined(CONFIG_NET_RX_BUSY_POLL)
+ 
+-static void __busy_poll_stop(struct napi_struct *napi, bool skip_schedule)
++static void __busy_poll_stop(struct napi_struct *napi, unsigned long timeout)
+ {
+-	if (!skip_schedule) {
++	if (!timeout) {
+ 		gro_normal_list(&napi->gro);
+ 		__napi_schedule(napi);
+ 		return;
+@@ -6789,6 +6789,8 @@ static void __busy_poll_stop(struct napi_struct *napi, bool skip_schedule)
+ 	gro_flush_normal(&napi->gro, HZ >= 1000);
+ 
+ 	clear_bit(NAPI_STATE_SCHED, &napi->state);
++	hrtimer_start(&napi->timer, ns_to_ktime(timeout),
++		      HRTIMER_MODE_REL_PINNED);
+ }
+ 
+ enum {
+@@ -6800,8 +6802,7 @@ static void busy_poll_stop(struct napi_struct *napi, void *have_poll_lock,
+ 			   unsigned flags, u16 budget)
+ {
+ 	struct bpf_net_context __bpf_net_ctx, *bpf_net_ctx;
+-	bool skip_schedule = false;
+-	unsigned long timeout;
++	unsigned long timeout = 0;
+ 	int rc;
+ 
+ 	/* Busy polling means there is a high chance device driver hard irq
+@@ -6821,10 +6822,12 @@ static void busy_poll_stop(struct napi_struct *napi, void *have_poll_lock,
+ 
+ 	if (flags & NAPI_F_PREFER_BUSY_POLL) {
+ 		napi->defer_hard_irqs_count = napi_get_defer_hard_irqs(napi);
+-		timeout = napi_get_gro_flush_timeout(napi);
+-		if (napi->defer_hard_irqs_count && timeout) {
+-			hrtimer_start(&napi->timer, ns_to_ktime(timeout), HRTIMER_MODE_REL_PINNED);
+-			skip_schedule = true;
++		if (napi->defer_hard_irqs_count) {
++			/* A short enough gro flush timeout and long enough
++			 * poll can result in timer firing too early.
++			 * Timer will be armed later if necessary.
++			 */
++			timeout = napi_get_gro_flush_timeout(napi);
+ 		}
  	}
  
--	if (msg_pl->sg.end < msg_pl->sg.start) {
--		sg_chain(&msg_pl->sg.data[msg_pl->sg.start],
--			 MAX_SKB_FRAGS - msg_pl->sg.start + 1,
-+	if (msg_pl->sg.end < msg_pl->sg.start)
-+		sg_chain(msg_pl->sg.data, ARRAY_SIZE(msg_pl->sg.data),
- 			 msg_pl->sg.data);
--	}
- 
- 	i = msg_pl->sg.start;
- 	sg_chain(rec->sg_aead_in, 2, &msg_pl->sg.data[i]);
+@@ -6839,7 +6842,7 @@ static void busy_poll_stop(struct napi_struct *napi, void *have_poll_lock,
+ 	trace_napi_poll(napi, rc, budget);
+ 	netpoll_poll_unlock(have_poll_lock);
+ 	if (rc == budget)
+-		__busy_poll_stop(napi, skip_schedule);
++		__busy_poll_stop(napi, timeout);
+ 	bpf_net_ctx_clear(bpf_net_ctx);
+ 	local_bh_enable();
+ }
 -- 
 2.53.0
 
