@@ -1,59 +1,59 @@
-Return-Path: <stable+bounces-255234-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-255588-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id EHwjHoWeGGpAlggAu9opvQ
-	(envelope-from <stable+bounces-255234-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 21:59:01 +0200
+	id qLlWC2qkGGoQlwgAu9opvQ
+	(envelope-from <stable+bounces-255588-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:24:10 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 23CB75F7948
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 21:59:01 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id C05B95F8932
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:24:09 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 72A3D3015327
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 19:59:00 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 1C3B6322B973
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 20:15:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5EBCC3E3147;
-	Thu, 28 May 2026 19:58:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 95CA2257855;
+	Thu, 28 May 2026 20:15:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rqTGCWUY"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DHQysBtM"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1DFDB33CE8A;
-	Thu, 28 May 2026 19:58:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5F1E5282F17;
+	Thu, 28 May 2026 20:15:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779998337; cv=none; b=RfkPdzLZEe49o379kaRfTnL8bIkMEvb1fuSvFs6ZL1GL4k2Mtl1uumX3nklF1iwP6zeCp3ntN5pKO6fSZJK0o6qE/eAU61RJF+bMMesuF6fu6MvgQObOfCrjEsG2fdJshcjDSS2fo9vRwQZ/ddl51q6gceuRJAUrhsUJKuezqXY=
+	t=1779999334; cv=none; b=EsFO2HTeEYeQGA+UQLzRITpIDT9R+sZJByf2y5oixe3Wk6WYRh7Xuebe+6Ihu14yX+T/F2xmw+GyoO/R22DYLiD9ZCo1PdEh+8nuVj4yFUMMdAVbMHvxnQRg1mKDz6Jkei71EYptHiHq2OO++GDmwRf7SLLqW2LoIkSUJmzJrlc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779998337; c=relaxed/simple;
-	bh=6sDGZq5Oklsp03KFK3rFzuFbPg4hV0kATjMXZK3n+x0=;
+	s=arc-20240116; t=1779999334; c=relaxed/simple;
+	bh=b8aVmvjCLxtYQUTnOBYGGfQ/zRi+KSL2/Yl1hyld2HQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ZcINM8QSzn38d9ad1hJB3dOr5/Pe++prK3ZmSUBYsjejkwPcmjmegWZp/5dT2zMYBMPOmgnUWk2y+n0o0ulb11jxyUnmdZKFzGKxNEqoQQiDRtrbkOWKZAC07yVdc6jQBsW3LHaaM1VagtcC6mBvmckqFt1KzGV5kJ+JJsUeBWQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rqTGCWUY; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 337D31F000E9;
-	Thu, 28 May 2026 19:58:55 +0000 (UTC)
+	 MIME-Version; b=V/7LXlwBkyb5o/mF+Ta3p6UgqVc75lZRc4DT/YJOH2atCN3WvnNFQCUO9hc4PVnYujsAUK3iSdb7UknPZlkwn0kWbbrc7qf3kLfgfYLXYwis6GZYfQBSL4hU0bqhHSpG3C9W/Gj162ehEile6LKLtXx4p/cJjCnFCvM6RbAJM9I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DHQysBtM; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 751591F000E9;
+	Thu, 28 May 2026 20:15:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779998335;
-	bh=bqlPnfSX1ikOKpHjM+Df/jIvffYHXneCTo6Dhof3fk8=;
+	s=korg; t=1779999333;
+	bh=BjV1DKFYxiCwBDgCaIVmQsHkjSsq2T1N8OSdabgUPbs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=rqTGCWUYhpfCPdaI3KfAbHydHAzsV3f/QLb2q/TB7oD8+FXMPA5j4C2+ViT4zJwcS
-	 B1ge3o9dwErUxVe8ESKyrZTtDk4p7O16fhErkEm34pOifEHaKD6TWrl1xEN6hEtnGt
-	 0ZccR+ApouFlZEHojLgVUMwIFinN3NMYmVIHdzKM=
+	b=DHQysBtMWki/Ja/Dhr9RsNPeaCCi5mndap2pxrLzN6HbFbuXwKYjWsVGi2J0/dceF
+	 clqkSVtE2JtOG+A6W5Ll3jNSZmBWjjQ4/36ZtMw2Hzsn+Br5eC/DKmQG1FVd2k5dQO
+	 kLrfrhtFXfwEEW3NhRbT8dVrSIw31oiKtB8q66kg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Osama Abdelkader <osama.abdelkader@gmail.com>,
-	Luca Ceresoli <luca.ceresoli@bootlin.com>,
-	Ian Ray <ian.ray@gehealthcare.com>
-Subject: [PATCH 7.0 137/461] drm/bridge: megachips: remove bridge when irq request fails
-Date: Thu, 28 May 2026 21:44:26 +0200
-Message-ID: <20260528194650.957846490@linuxfoundation.org>
+	Ferry Meng <mengferry@linux.alibaba.com>,
+	Namjae Jeon <linkinjeon@kernel.org>,
+	Steve French <stfrench@microsoft.com>
+Subject: [PATCH 6.18 029/377] ksmbd: fix SID memory leak in set_posix_acl_entries_dacl() on overflow
+Date: Thu, 28 May 2026 21:44:27 +0200
+Message-ID: <20260528194639.230031378@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260528194646.819809818@linuxfoundation.org>
-References: <20260528194646.819809818@linuxfoundation.org>
+In-Reply-To: <20260528194638.371537336@linuxfoundation.org>
+References: <20260528194638.371537336@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,106 +64,112 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	TO_DN_SOME(0.00)[];
-	TAGGED_FROM(0.00)[bounces-255234-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,bootlin.com,gehealthcare.com];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-255588-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	NEURAL_HAM(-0.00)[-0.999];
-	TAGGED_RCPT(0.00)[stable];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	TAGGED_RCPT(0.00)[stable];
 	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[bootlin.com:email,msgid.link:url,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,gehealthcare.com:email]
-X-Rspamd-Queue-Id: 23CB75F7948
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[alibaba.com:email,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
+X-Rspamd-Queue-Id: C05B95F8932
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-7.0-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Osama Abdelkader <osama.abdelkader@gmail.com>
+From: Ferry Meng <mengferry@linux.alibaba.com>
 
-commit d45d5c819f2cd0b6b5d76a194a537a5f4aeefecb upstream.
+commit af92ee994cc7f7e83a41c2025f32257a2f82a7ef upstream.
 
-If devm_request_threaded_irq() fails after drm_bridge_add(), remove the
-bridge before returning.
+Commit 299f962c0b02 ("ksmbd: use check_add_overflow() to prevent u16
+DACL size overflow") added check_add_overflow() guards that break out
+of the ACE-building loops in set_posix_acl_entries_dacl() when the
+accumulated DACL size would wrap past 65535.
 
-Keep drm_bridge_add() rather than devm_drm_bridge_add(): registration is
-tied to the STDP4028 device while ge_b850v3_register() may complete from
-either I2C probe; devm would not unwind the bridge if the other client's
-probe fails.
+However, each iteration allocates a struct smb_sid via kmalloc_obj()
+at the top of the loop and relies on the kfree(sid) call at the end
+of the loop body (the 'pass_same_sid' label in the first loop, and
+the explicit kfree at the tail of the second loop) to release it.
+The newly introduced 'break' statements bypass those kfree() calls,
+leaking the sid buffer every time an overflow is detected.
 
-Signed-off-by: Osama Abdelkader <osama.abdelkader@gmail.com>
-Fixes: fcfa0ddc18ed ("drm/bridge: Drivers for megachips-stdpxxxx-ge-b850v3-fw (LVDS-DP++)")
+A malicious or malformed file with enough POSIX ACL entries to trip
+the overflow check will leak one or more struct smb_sid allocations
+on every request that touches the file's DACL, providing a trivial
+kernel memory exhaustion vector.
+
+Free sid before breaking out of the loops to plug the leak.
+
+Fixes: 299f962c0b02 ("ksmbd: use check_add_overflow() to prevent u16 DACL size overflow")
 Cc: stable@vger.kernel.org
-Reviewed-by: Luca Ceresoli <luca.ceresoli@bootlin.com>
-Tested-by: Ian Ray <ian.ray@gehealthcare.com>
-Link: https://patch.msgid.link/20260430195700.80317-1-osama.abdelkader@gmail.com
-Signed-off-by: Luca Ceresoli <luca.ceresoli@bootlin.com>
+Signed-off-by: Ferry Meng <mengferry@linux.alibaba.com>
+Acked-by: Namjae Jeon <linkinjeon@kernel.org>
+Signed-off-by: Steve French <stfrench@microsoft.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/bridge/megachips-stdpxxxx-ge-b850v3-fw.c |   16 +++++++++------
- 1 file changed, 10 insertions(+), 6 deletions(-)
+ fs/smb/server/smbacl.c |   12 +++++++++---
+ 1 file changed, 9 insertions(+), 3 deletions(-)
 
---- a/drivers/gpu/drm/bridge/megachips-stdpxxxx-ge-b850v3-fw.c
-+++ b/drivers/gpu/drm/bridge/megachips-stdpxxxx-ge-b850v3-fw.c
-@@ -251,7 +251,6 @@ static void ge_b850v3_lvds_remove(void)
- 		goto out;
- 
- 	drm_bridge_remove(&ge_b850v3_lvds_ptr->bridge);
--
- 	ge_b850v3_lvds_ptr = NULL;
- out:
- 	mutex_unlock(&ge_b850v3_lvds_dev_mutex);
-@@ -261,6 +260,7 @@ static int ge_b850v3_register(void)
- {
- 	struct i2c_client *stdp4028_i2c = ge_b850v3_lvds_ptr->stdp4028_i2c;
- 	struct device *dev = &stdp4028_i2c->dev;
-+	int ret;
- 
- 	/* drm bridge initialization */
- 	ge_b850v3_lvds_ptr->bridge.ops = DRM_BRIDGE_OP_DETECT |
-@@ -277,11 +277,15 @@ static int ge_b850v3_register(void)
- 	if (!stdp4028_i2c->irq)
- 		return 0;
- 
--	return devm_request_threaded_irq(&stdp4028_i2c->dev,
--			stdp4028_i2c->irq, NULL,
--			ge_b850v3_lvds_irq_handler,
--			IRQF_TRIGGER_HIGH | IRQF_ONESHOT,
--			"ge-b850v3-lvds-dp", ge_b850v3_lvds_ptr);
-+	ret = devm_request_threaded_irq(&stdp4028_i2c->dev,
-+					stdp4028_i2c->irq, NULL,
-+					ge_b850v3_lvds_irq_handler,
-+					IRQF_TRIGGER_HIGH | IRQF_ONESHOT,
-+					"ge-b850v3-lvds-dp", ge_b850v3_lvds_ptr);
-+	if (ret)
-+		drm_bridge_remove(&ge_b850v3_lvds_ptr->bridge);
-+
-+	return ret;
- }
- 
- static int stdp4028_ge_b850v3_fw_probe(struct i2c_client *stdp4028_i2c)
+--- a/fs/smb/server/smbacl.c
++++ b/fs/smb/server/smbacl.c
+@@ -643,8 +643,10 @@ static void set_posix_acl_entries_dacl(s
+ 		ntace = (struct smb_ace *)((char *)pndace + *size);
+ 		ace_sz = fill_ace_for_sid(ntace, sid, ACCESS_ALLOWED, flags,
+ 				pace->e_perm, 0777);
+-		if (check_add_overflow(*size, ace_sz, size))
++		if (check_add_overflow(*size, ace_sz, size)) {
++			kfree(sid);
+ 			break;
++		}
+ 		(*num_aces)++;
+ 		if (pace->e_tag == ACL_USER)
+ 			ntace->access_req |=
+@@ -655,8 +657,10 @@ static void set_posix_acl_entries_dacl(s
+ 			ntace = (struct smb_ace *)((char *)pndace + *size);
+ 			ace_sz = fill_ace_for_sid(ntace, sid, ACCESS_ALLOWED,
+ 					0x03, pace->e_perm, 0777);
+-			if (check_add_overflow(*size, ace_sz, size))
++			if (check_add_overflow(*size, ace_sz, size)) {
++				kfree(sid);
+ 				break;
++			}
+ 			(*num_aces)++;
+ 			if (pace->e_tag == ACL_USER)
+ 				ntace->access_req |=
+@@ -698,8 +702,10 @@ posix_default_acl:
+ 		ntace = (struct smb_ace *)((char *)pndace + *size);
+ 		ace_sz = fill_ace_for_sid(ntace, sid, ACCESS_ALLOWED, 0x0b,
+ 				pace->e_perm, 0777);
+-		if (check_add_overflow(*size, ace_sz, size))
++		if (check_add_overflow(*size, ace_sz, size)) {
++			kfree(sid);
+ 			break;
++		}
+ 		(*num_aces)++;
+ 		if (pace->e_tag == ACL_USER)
+ 			ntace->access_req |=
 
 
 
