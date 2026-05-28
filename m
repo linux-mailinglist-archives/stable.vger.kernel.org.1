@@ -1,60 +1,59 @@
-Return-Path: <stable+bounces-256116-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-255508-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id eKKeLV2rGGpolwgAu9opvQ
-	(envelope-from <stable+bounces-256116-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:53:49 +0200
+	id kMvcFzyjGGrJlggAu9opvQ
+	(envelope-from <stable+bounces-255508-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:19:08 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id D7D785F9CCD
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:53:48 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id B97135F85EF
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:19:07 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 1871C30E85E3
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 20:40:16 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 80BA9314A3C4
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 20:11:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C51C3346AD3;
-	Thu, 28 May 2026 20:40:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E958C33F5BE;
+	Thu, 28 May 2026 20:11:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1HVrO3jM"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="N3toR/h5"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 75CD62139C9;
-	Thu, 28 May 2026 20:40:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C295833F5B4;
+	Thu, 28 May 2026 20:11:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780000801; cv=none; b=rHXyD6PoQnEAE97nBfbWX22c3S2jGbqrQ0h9336ObSpcb7zmTaREIk1YHM9DrhgaSTjozlFj/wpwwP54LWmo1Cn68fct6OIrZyHgwCb14BM380S8Ry7d6BwL3nYQFPGRSmgmOt8zo06RYTr/PkzfEZYC9We4xED4divrMxwuoio=
+	t=1779999108; cv=none; b=pqr5wlXXrrzEoX4tiV9Z7wQ03vDoZ+dt0YU0JMy9On9ns8yz9NYuYf3RWQDB8dCyQxf1+Sg78A2m8+sJySY+you0BIhoi6L45uscW4bdqxJckeZjPBx1xvANSY2dEbQreEpIDVU29SV+7QTfFuhpwdQO5CTnIw72Z6bSdaRMwIE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780000801; c=relaxed/simple;
-	bh=QME2yA/AsDVM2vtPtyNPcNmG/BJxjw5uHfOoyw7uioY=;
+	s=arc-20240116; t=1779999108; c=relaxed/simple;
+	bh=ELezFeciqlLRzpJSR/Qm/kpuZ93nC9qvyddUncH7IJg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=bke3Iayz3V0/IuPV43Euy4IjFATZEnC6+BRaYd8XV6rpD3lupUhnkPOqQOJlc0OrUmQw2EQPCkEyizHv16FVOXP+mgyqgLhop5bh269R/Zw2v0QlLpQIV2ceq7wRmrrP/c1EdYPb1xiWG0HaDA81dOCIs0GVyetylE3QF9/wb8c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1HVrO3jM; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D191C1F00A3A;
-	Thu, 28 May 2026 20:39:59 +0000 (UTC)
+	 MIME-Version; b=kYLpZlXlurQH/vG7JstyPAoC//Febig3qOOOjUJlmD0M8FWpUvRFFVJeA0OYGkyzx416e0JDp9UV0H9mUPcxEmE9Ju5lXqCoS0psqDEn+DCKXP9yElAyHVu3Z0WKwxW1bbZXDt9KuSAeIYAenZkYaXr7ODbkHDIObHUZbFrRn+o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=N3toR/h5; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 242CE1F000E9;
+	Thu, 28 May 2026 20:11:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780000800;
-	bh=tFo6e8LinZa7dlvaosiUF5Oi7neDUAMf/jwtBmm/TZI=;
+	s=korg; t=1779999107;
+	bh=MGmwGBg0rxxGIfXFe/tDSiVVjiKWdMCcz5B2ab4HxUk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=1HVrO3jMG61ISN41DUMLbqYay6LTFIfGJUm0IpJpcJ5R3UTysN5f8LjZ+qakP/v4/
-	 C+SP4wNzRwG47u3qKki4jwowDr1mTbPmQAgBQt9I4tisfNSXVD11sHFwmutoUhjDl1
-	 MfCqXcsPImVR+OaheDsY6KtaNHoP2E6WHw+W/d4I=
+	b=N3toR/h5bg/FZF+lXTJBsP95nkESvhD1PY2v1GW59WbEnSZxfpzo3ZciWZKMZ8kTX
+	 wMw5hzecjiRDC2OACQQwQDE1U0al/Sgbng6ralkfSbA4u7rGRQ62luC5UNb68M7JbK
+	 Lc0yixR2rJDp8KYH8JLbD8GUAP6ar1nc4DJwXxuk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Tristan Madani <tristan@talencesecurity.com>,
-	Florian Westphal <fw@strlen.de>,
-	Pablo Neira Ayuso <pablo@netfilter.org>,
+	Jia Zhu <zhujia.zj@bytedance.com>,
+	Gao Xiang <hsiangkao@linux.alibaba.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 166/272] netfilter: x_tables: unregister the templates first
+Subject: [PATCH 7.0 411/461] erofs: fix metabuf leak in inode xattr initialization
 Date: Thu, 28 May 2026 21:49:00 +0200
-Message-ID: <20260528194633.979486930@linuxfoundation.org>
+Message-ID: <20260528194659.385800675@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260528194629.379955525@linuxfoundation.org>
-References: <20260528194629.379955525@linuxfoundation.org>
+In-Reply-To: <20260528194646.819809818@linuxfoundation.org>
+References: <20260528194646.819809818@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,193 +68,95 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-256116-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-255508-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
-	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[7];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[netfilter.org:email,strlen.de:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,talencesecurity.com:email,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo]
-X-Rspamd-Queue-Id: D7D785F9CCD
+	RCPT_COUNT_FIVE(0.00)[6];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[alibaba.com:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,bytedance.com:email,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
+X-Rspamd-Queue-Id: B97135F85EF
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+7.0-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Florian Westphal <fw@strlen.de>
+From: Jia Zhu <zhujia.zj@bytedance.com>
 
-[ Upstream commit d338693d778579b676a61346849bebd892427158 ]
+[ Upstream commit 79b09c54c6563df9846ca3094bcfd72082c3e1d7 ]
 
-When the module is going away we need to zap the template
-first.  Else there is a small race window where userspace
-could instantiate a new table after the pernet exit function
-has removed the current table.
+commit bb88e8da0025 ("erofs: use meta buffers for xattr operations")
+converted xattr operations to use on-stack erofs_buf instances.
+erofs_init_inode_xattrs() uses such a metabuf while reading the inline
+xattr header and shared xattr id array.
 
-Fixes: fdacd57c79b7 ("netfilter: x_tables: never register tables by default")
-Reported-by: Tristan Madani <tristan@talencesecurity.com>
-Reviewed-by: Tristan Madani <tristan@talencesecurity.com>
-Closes: https://lore.kernel.org/netfilter-devel/20260429175613.1459342-1-tristmd@gmail.com/
-Signed-off-by: Florian Westphal <fw@strlen.de>
-Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
+Some error paths after erofs_read_metabuf() leave through out_unlock
+without dropping the metabuf, so the folio reference can leak.
+
+Consolidate the cleanup at out_unlock. erofs_put_metabuf() is a
+no-op if no folio has been acquired, and this keeps all paths after
+taking EROFS_I_BL_XATTR_BIT covered by a single cleanup site.
+
+Fixes: bb88e8da0025 ("erofs: use meta buffers for xattr operations")
+Signed-off-by: Jia Zhu <zhujia.zj@bytedance.com>
+Reviewed-by: Gao Xiang <hsiangkao@linux.alibaba.com>
+Fixes: bb88e8da0025 ("erofs: use meta buffers for xattr operations")
+Signed-off-by: Gao Xiang <hsiangkao@linux.alibaba.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/ipv4/netfilter/arptable_filter.c   | 2 +-
- net/ipv4/netfilter/iptable_filter.c    | 2 +-
- net/ipv4/netfilter/iptable_mangle.c    | 2 +-
- net/ipv4/netfilter/iptable_raw.c       | 2 +-
- net/ipv4/netfilter/iptable_security.c  | 2 +-
- net/ipv6/netfilter/ip6table_filter.c   | 2 +-
- net/ipv6/netfilter/ip6table_mangle.c   | 2 +-
- net/ipv6/netfilter/ip6table_raw.c      | 2 +-
- net/ipv6/netfilter/ip6table_security.c | 2 +-
- 9 files changed, 9 insertions(+), 9 deletions(-)
+ fs/erofs/xattr.c | 4 +---
+ 1 file changed, 1 insertion(+), 3 deletions(-)
 
-diff --git a/net/ipv4/netfilter/arptable_filter.c b/net/ipv4/netfilter/arptable_filter.c
-index 78cd5ee24448f..359d00d74095b 100644
---- a/net/ipv4/netfilter/arptable_filter.c
-+++ b/net/ipv4/netfilter/arptable_filter.c
-@@ -82,8 +82,8 @@ static int __init arptable_filter_init(void)
+diff --git a/fs/erofs/xattr.c b/fs/erofs/xattr.c
+index 41e311019a251..df7ea019526d7 100644
+--- a/fs/erofs/xattr.c
++++ b/fs/erofs/xattr.c
+@@ -89,13 +89,11 @@ static int erofs_init_inode_xattrs(struct inode *inode)
+ 	    vi->xattr_isize - sizeof(struct erofs_xattr_ibody_header)) {
+ 		erofs_err(sb, "invalid h_shared_count %u @ nid %llu",
+ 			  vi->xattr_shared_count, vi->nid);
+-		erofs_put_metabuf(&buf);
+ 		ret = -EFSCORRUPTED;
+ 		goto out_unlock;
+ 	}
+ 	vi->xattr_shared_xattrs = kmalloc_objs(uint, vi->xattr_shared_count);
+ 	if (!vi->xattr_shared_xattrs) {
+-		erofs_put_metabuf(&buf);
+ 		ret = -ENOMEM;
+ 		goto out_unlock;
+ 	}
+@@ -112,12 +110,12 @@ static int erofs_init_inode_xattrs(struct inode *inode)
+ 		}
+ 		vi->xattr_shared_xattrs[i] = le32_to_cpu(*xattr_id);
+ 	}
+-	erofs_put_metabuf(&buf);
  
- static void __exit arptable_filter_fini(void)
- {
--	unregister_pernet_subsys(&arptable_filter_net_ops);
- 	xt_unregister_template(&packet_filter);
-+	unregister_pernet_subsys(&arptable_filter_net_ops);
- 	kfree(arpfilter_ops);
+ 	/* paired with smp_mb() at the beginning of the function. */
+ 	smp_mb();
+ 	set_bit(EROFS_I_EA_INITED_BIT, &vi->flags);
+ out_unlock:
++	erofs_put_metabuf(&buf);
+ 	clear_and_wake_up_bit(EROFS_I_BL_XATTR_BIT, &vi->flags);
+ 	return ret;
  }
- 
-diff --git a/net/ipv4/netfilter/iptable_filter.c b/net/ipv4/netfilter/iptable_filter.c
-index 3ab908b747951..595bfb492b1c1 100644
---- a/net/ipv4/netfilter/iptable_filter.c
-+++ b/net/ipv4/netfilter/iptable_filter.c
-@@ -101,8 +101,8 @@ static int __init iptable_filter_init(void)
- 
- static void __exit iptable_filter_fini(void)
- {
--	unregister_pernet_subsys(&iptable_filter_net_ops);
- 	xt_unregister_template(&packet_filter);
-+	unregister_pernet_subsys(&iptable_filter_net_ops);
- 	kfree(filter_ops);
- }
- 
-diff --git a/net/ipv4/netfilter/iptable_mangle.c b/net/ipv4/netfilter/iptable_mangle.c
-index 385d945d8ebea..db90db7057cc4 100644
---- a/net/ipv4/netfilter/iptable_mangle.c
-+++ b/net/ipv4/netfilter/iptable_mangle.c
-@@ -135,8 +135,8 @@ static int __init iptable_mangle_init(void)
- 
- static void __exit iptable_mangle_fini(void)
- {
--	unregister_pernet_subsys(&iptable_mangle_net_ops);
- 	xt_unregister_template(&packet_mangler);
-+	unregister_pernet_subsys(&iptable_mangle_net_ops);
- 	kfree(mangle_ops);
- }
- 
-diff --git a/net/ipv4/netfilter/iptable_raw.c b/net/ipv4/netfilter/iptable_raw.c
-index 0e7f53964d0af..b46a790917306 100644
---- a/net/ipv4/netfilter/iptable_raw.c
-+++ b/net/ipv4/netfilter/iptable_raw.c
-@@ -100,9 +100,9 @@ static int __init iptable_raw_init(void)
- 
- static void __exit iptable_raw_fini(void)
- {
-+	xt_unregister_template(&packet_raw);
- 	unregister_pernet_subsys(&iptable_raw_net_ops);
- 	kfree(rawtable_ops);
--	xt_unregister_template(&packet_raw);
- }
- 
- module_init(iptable_raw_init);
-diff --git a/net/ipv4/netfilter/iptable_security.c b/net/ipv4/netfilter/iptable_security.c
-index d885443cb2679..2b89adc1e5751 100644
---- a/net/ipv4/netfilter/iptable_security.c
-+++ b/net/ipv4/netfilter/iptable_security.c
-@@ -89,9 +89,9 @@ static int __init iptable_security_init(void)
- 
- static void __exit iptable_security_fini(void)
- {
-+	xt_unregister_template(&security_table);
- 	unregister_pernet_subsys(&iptable_security_net_ops);
- 	kfree(sectbl_ops);
--	xt_unregister_template(&security_table);
- }
- 
- module_init(iptable_security_init);
-diff --git a/net/ipv6/netfilter/ip6table_filter.c b/net/ipv6/netfilter/ip6table_filter.c
-index e8992693e14a0..9dcd4501fe800 100644
---- a/net/ipv6/netfilter/ip6table_filter.c
-+++ b/net/ipv6/netfilter/ip6table_filter.c
-@@ -100,8 +100,8 @@ static int __init ip6table_filter_init(void)
- 
- static void __exit ip6table_filter_fini(void)
- {
--	unregister_pernet_subsys(&ip6table_filter_net_ops);
- 	xt_unregister_template(&packet_filter);
-+	unregister_pernet_subsys(&ip6table_filter_net_ops);
- 	kfree(filter_ops);
- }
- 
-diff --git a/net/ipv6/netfilter/ip6table_mangle.c b/net/ipv6/netfilter/ip6table_mangle.c
-index 8dd4cd0c47bd4..ce2cbce9e3ed3 100644
---- a/net/ipv6/netfilter/ip6table_mangle.c
-+++ b/net/ipv6/netfilter/ip6table_mangle.c
-@@ -128,8 +128,8 @@ static int __init ip6table_mangle_init(void)
- 
- static void __exit ip6table_mangle_fini(void)
- {
--	unregister_pernet_subsys(&ip6table_mangle_net_ops);
- 	xt_unregister_template(&packet_mangler);
-+	unregister_pernet_subsys(&ip6table_mangle_net_ops);
- 	kfree(mangle_ops);
- }
- 
-diff --git a/net/ipv6/netfilter/ip6table_raw.c b/net/ipv6/netfilter/ip6table_raw.c
-index fc9f6754028f2..8af0f8bd036dc 100644
---- a/net/ipv6/netfilter/ip6table_raw.c
-+++ b/net/ipv6/netfilter/ip6table_raw.c
-@@ -98,8 +98,8 @@ static int __init ip6table_raw_init(void)
- 
- static void __exit ip6table_raw_fini(void)
- {
--	unregister_pernet_subsys(&ip6table_raw_net_ops);
- 	xt_unregister_template(&packet_raw);
-+	unregister_pernet_subsys(&ip6table_raw_net_ops);
- 	kfree(rawtable_ops);
- }
- 
-diff --git a/net/ipv6/netfilter/ip6table_security.c b/net/ipv6/netfilter/ip6table_security.c
-index 4df14a9bae782..66018b169b010 100644
---- a/net/ipv6/netfilter/ip6table_security.c
-+++ b/net/ipv6/netfilter/ip6table_security.c
-@@ -88,8 +88,8 @@ static int __init ip6table_security_init(void)
- 
- static void __exit ip6table_security_fini(void)
- {
--	unregister_pernet_subsys(&ip6table_security_net_ops);
- 	xt_unregister_template(&security_table);
-+	unregister_pernet_subsys(&ip6table_security_net_ops);
- 	kfree(sectbl_ops);
- }
- 
 -- 
 2.53.0
 
