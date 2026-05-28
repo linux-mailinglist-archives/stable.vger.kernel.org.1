@@ -1,62 +1,60 @@
-Return-Path: <stable+bounces-256076-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-255469-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id aAw8NlmpGGpolwgAu9opvQ
-	(envelope-from <stable+bounces-256076-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:45:13 +0200
+	id iD4pM+GiGGrKlggAu9opvQ
+	(envelope-from <stable+bounces-255469-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:17:37 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4950B5F9751
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:45:13 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 75FA35F84B3
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:17:37 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id DCF3731D939E
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 20:38:09 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 75D0D30E8EE7
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 20:10:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E2D02313539;
-	Thu, 28 May 2026 20:38:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E2DBE344DAC;
+	Thu, 28 May 2026 20:09:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dCJX2XTu"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fJ0qsaMf"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AEC482C15AC;
-	Thu, 28 May 2026 20:38:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B4AEE335566;
+	Thu, 28 May 2026 20:09:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780000687; cv=none; b=XAvZln6/NiPjdhJdzcJP/P/rDbbaWbpcChpRqD6+AqzPjwMWcyzhmquM51VhuEY7Hw04nkfKq6UbB543ADnsFKfQWQZ2I39IXdj7dPOUs6N7cXeeZqsUsM8fIRarfyTyMU2ovUEk6rDvA2TojdKqNqytQbeFCpsrLOMvlqSyzfI=
+	t=1779998999; cv=none; b=LwfHcvq6q5qGqQdhc3q+0VkkSAIbOGNCsQOT8CEVdxHUZ0xqsGf1zMb1OWsDEwMg4L8M+pFldCTC2ieOFpbAfUcKNkAhU0cFAMFOyyGSm5kyUOLOY3X8v9RNZow+wI0brPO9TFv5FxkALeDCJRAOOITQN13SZ6I+kp47TjDnL9s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780000687; c=relaxed/simple;
-	bh=ZvefC5B5IfcvSnhymPD5pTK9ynepae9+9VvppjNFhhw=;
+	s=arc-20240116; t=1779998999; c=relaxed/simple;
+	bh=4Vsf4UphiufCRLxMPW0hyYGpecQlKWZg2BF/EIp6wlw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=rNcIKSFnsD2o4Mg+7Qc8ll5kF/aARsyDl6DTtEt7Vh8oAjp4b89IA9a2rxppU+hsQuzNDJLd9W1sCcQdzFhd5vier7syR3oWqdk9IojVGEiBjsMsfgSz0c2o5+WpSTxkgUUq+5Zh9o3XYdoR6orDLu0vShoxmHcssipb2KUy6AI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dCJX2XTu; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1EB401F000E9;
-	Thu, 28 May 2026 20:38:05 +0000 (UTC)
+	 MIME-Version; b=RdxPLOAK86spX9SwYGavh473oPWqxHc0yQdydKEcFWcYFkwak6SBE4ePP9fzMyccjOWwp1BipHGyiq5dp7dCMCywLACg8CRcgxoYBjqGkVXqX74VMx0FU7Aaeq2aQyEc5S860bm6UkeV2E3dTpRDv0UVsLM51StBun8B3GtEvSU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fJ0qsaMf; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1EDAF1F000E9;
+	Thu, 28 May 2026 20:09:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780000686;
-	bh=hnF6JHaWLw67HLUNy9B5SpHcVkkxX5Gr6DYIcanTTgc=;
+	s=korg; t=1779998998;
+	bh=N8LuV9eLHFkgv8vJaVzwFNToqf/sdZrItzG/NST2mpk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=dCJX2XTu9UTsJnfE7t3JtK/uykeR9wcr51QTj9zUftj6dlMWFWz+EXlMgStQXG3NC
-	 X8X5+LA8riVl/ydB2ydG8lyv5tHPXbe9/z+fBtvoqRzafcaKaQIukvZWKD8HyZNe9J
-	 UvQ2s0jMyAyNC33i4LB17mmQyCK+S8ooa+B8p5Go=
+	b=fJ0qsaMffan0kZ5wzkf8ykW8cJIXcJ35bKYiEwGnZUX0pIBjoO2Bx1yrFwRVRkkj6
+	 R2CKMz+RX+0Qi8fhoFtnG73bMljej5uR05BYYXnpupgoyzlfeRDhcrQ33Et3+ApGiG
+	 19CF5NgM0qBjrqqVYYJy4mWu17pLng99JcRWUoQg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable@kernel.org,
-	Yuan Tan <yuantan098@gmail.com>,
-	Yifan Wu <yifanwucs@gmail.com>,
-	Juefei Pu <tomapufckgml@gmail.com>,
-	Xin Liu <bird@lzu.edu.cn>,
-	Sven Eckelmann <sven@narfation.org>
-Subject: [PATCH 6.12 126/272] batman-adv: frag: disallow unicast fragment in fragment
-Date: Thu, 28 May 2026 21:48:20 +0200
-Message-ID: <20260528194632.907232249@linuxfoundation.org>
+	Louis-Alexis Eyraud <louisalexis.eyraud@collabora.com>,
+	CK Hu <ck.hu@mediatek.com>,
+	Chun-Kuang Hu <chunkuang.hu@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 7.0 372/461] drm/mediatek: mtk_hdmi_ddc: Fix non-static global variable
+Date: Thu, 28 May 2026 21:48:21 +0200
+Message-ID: <20260528194658.214210384@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260528194629.379955525@linuxfoundation.org>
-References: <20260528194629.379955525@linuxfoundation.org>
+In-Reply-To: <20260528194646.819809818@linuxfoundation.org>
+References: <20260528194646.819809818@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -71,120 +69,74 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,kernel.org,gmail.com,lzu.edu.cn,narfation.org];
-	TAGGED_FROM(0.00)[bounces-256076-lists,stable=lfdr.de];
-	PRECEDENCE_BULK(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-255469-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[9];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
 	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,narfation.org:email,lzu.edu.cn:email,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim]
-X-Rspamd-Queue-Id: 4950B5F9751
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_SEVEN(0.00)[7];
+	MID_RHS_MATCH_FROM(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[collabora.com:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,mediatek.com:email]
+X-Rspamd-Queue-Id: 75FA35F84B3
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+7.0-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sven Eckelmann <sven@narfation.org>
+From: Louis-Alexis Eyraud <louisalexis.eyraud@collabora.com>
 
-commit bc62216dc8e221e3781afa14430f45208bfa9af9 upstream.
+[ Upstream commit 87ed4e845d5a90bba1a56c0a5c580a13982e8648 ]
 
-batadv_frag_skb_buffer() is called by batadv_batman_skb_recv() when a
-BATADV_UNICAST_FRAG packet is received. Once all fragments are collected
-and the packet is reassembled, batadv_recv_frag_packet() calls
-batadv_batman_skb_recv() again to process the defragmented payload.
+The struct 'mtk_hdmi_ddc_driver' is not used outside of the
+mtk_hdmi_ddc.c file, so make it static to silence sparse warning:
+```
+drivers/gpu/drm/mediatek/mtk_hdmi_ddc.c:331:24: sparse: warning: symbol
+  'mtk_hdmi_ddc_driver' was not declared. Should it be static?
+```
 
-A malicious sender can craft a BATADV_UNICAST_FRAG packet whose reassembled
-payload is itself a BATADV_UNICAST_FRAG packet (matryoshka-style nesting).
-Each nesting level recurses through batadv_batman_skb_recv() without bound,
-growing the kernel stack until it is exhausted.
-
-Since refragmentation or fragments in fragments are not actually allowed,
-discard all packets which are still BATADV_UNICAST_FRAG packets after the
-defragmentation process.
-
-Cc: stable@kernel.org
-Fixes: 610bfc6bc99b ("batman-adv: Receive fragmented packets and merge")
-Reported-by: Yuan Tan <yuantan098@gmail.com>
-Reported-by: Yifan Wu <yifanwucs@gmail.com>
-Reported-by: Juefei Pu <tomapufckgml@gmail.com>
-Reported-by: Xin Liu <bird@lzu.edu.cn>
-Reviewed-by: Yuan Tan <yuantan098@gmail.com>
-Signed-off-by: Sven Eckelmann <sven@narfation.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: c241118b6216 ("drm/mediatek: mtk_hdmi_ddc: Switch to register as module_platform_driver")
+Signed-off-by: Louis-Alexis Eyraud <louisalexis.eyraud@collabora.com>
+Reviewed-by: CK Hu <ck.hu@mediatek.com>
+Link: https://patchwork.kernel.org/project/dri-devel/patch/20260429-mediatek-drm-fix-sparse-warnings-v1-4-d95c4d118b83@collabora.com/
+Signed-off-by: Chun-Kuang Hu <chunkuang.hu@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/batman-adv/fragmentation.c |   35 +++++++++++++++++++++++++++++++++++
- 1 file changed, 35 insertions(+)
+ drivers/gpu/drm/mediatek/mtk_hdmi_ddc.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/net/batman-adv/fragmentation.c
-+++ b/net/batman-adv/fragmentation.c
-@@ -305,6 +305,31 @@ free:
- }
+diff --git a/drivers/gpu/drm/mediatek/mtk_hdmi_ddc.c b/drivers/gpu/drm/mediatek/mtk_hdmi_ddc.c
+index 6358e1af69b49..2acbdb025d893 100644
+--- a/drivers/gpu/drm/mediatek/mtk_hdmi_ddc.c
++++ b/drivers/gpu/drm/mediatek/mtk_hdmi_ddc.c
+@@ -328,7 +328,7 @@ static const struct of_device_id mtk_hdmi_ddc_match[] = {
+ };
+ MODULE_DEVICE_TABLE(of, mtk_hdmi_ddc_match);
  
- /**
-+ * batadv_skb_is_frag() - check if newly merged skb is gain a unicast packet
-+ * @skb: newly merged skb
-+ *
-+ * Return: if newly skb is of type BATADV_UNICAST_FRAG
-+ */
-+static bool batadv_skb_is_frag(struct sk_buff *skb)
-+{
-+	struct batadv_ogm_packet *batadv_ogm_packet;
-+
-+	/* packet should hold at least type and version */
-+	if (unlikely(!pskb_may_pull(skb, 2)))
-+		return false;
-+
-+	batadv_ogm_packet = (struct batadv_ogm_packet *)skb->data;
-+
-+	if (batadv_ogm_packet->version != BATADV_COMPAT_VERSION)
-+		return false;
-+
-+	if (batadv_ogm_packet->packet_type != BATADV_UNICAST_FRAG)
-+		return false;
-+
-+	return true;
-+}
-+
-+/**
-  * batadv_frag_skb_buffer() - buffer fragment for later merge
-  * @skb: skb to buffer
-  * @orig_node_src: originator that the skb is received from
-@@ -337,6 +362,16 @@ bool batadv_frag_skb_buffer(struct sk_bu
- 	if (!skb_out)
- 		goto out_err;
- 
-+	/* fragment in fragment is not allowed. otherwise it is possible
-+	 * to exhaust the stack when receiving a matryoshka-style
-+	 * "fragments in a fragment packet"
-+	 */
-+	if (batadv_skb_is_frag(skb_out)) {
-+		kfree_skb(skb_out);
-+		skb_out = NULL;
-+		goto out_err;
-+	}
-+
- out:
- 	ret = true;
- out_err:
+-struct platform_driver mtk_hdmi_ddc_driver = {
++static struct platform_driver mtk_hdmi_ddc_driver = {
+ 	.probe = mtk_hdmi_ddc_probe,
+ 	.remove = mtk_hdmi_ddc_remove,
+ 	.driver = {
+-- 
+2.53.0
+
 
 
 
