@@ -1,63 +1,60 @@
-Return-Path: <stable+bounces-256140-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-255897-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id AGeLIZisGGphmAgAu9opvQ
-	(envelope-from <stable+bounces-256140-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:59:04 +0200
+	id uJ4wKEKnGGpolwgAu9opvQ
+	(envelope-from <stable+bounces-255897-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:36:18 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8B2385F9FA9
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:59:03 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 570725F9147
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:36:18 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 03EFE3101399
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 20:41:26 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 3A75B30F91BB
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 20:29:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 99B2D351C02;
-	Thu, 28 May 2026 20:41:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BA7802D9787;
+	Thu, 28 May 2026 20:29:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DUedzAit"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2Ppv8j4I"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 522263264DF;
-	Thu, 28 May 2026 20:41:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 925161C3318;
+	Thu, 28 May 2026 20:29:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780000868; cv=none; b=R/4ZSm+7CnY2RdRcfsC7MpisqnlevTQBmeBkl1ZaS9b4Gx2s0Me26QmcSYbRxu6QYxdiSTtgfanBlNtCqoZFj2HMhDYUKslxm+kpfyeV8iqGYSpU+9z5Fx3tvdmVUhrjUFx27bhwc4fcAyc5/ylrIa393CWQ7jamAabQBtnHsvA=
+	t=1780000185; cv=none; b=pLoX8Dq2zayPYeq4X/QBjxGzrDjqTGeJNZubCm/KrlSkcyxjgdgRb7gd7rZufAUUrZZgsmLIf7uRu9k0pYt285aUKbpdVK6GlrbdHCbNnbWT7VZhT1dFzhSGFGs2IyUX4avxCXv2EoX0yMudURJBvmpJ3+V9XlaCsTCA88yBVck=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780000868; c=relaxed/simple;
-	bh=dFhziIfUUikztmYV0xUYCWN9K6XiaINtLdK4J9O6Ejg=;
+	s=arc-20240116; t=1780000185; c=relaxed/simple;
+	bh=3/Fg8brL198TKSmjl3xhV2R5l1E6akUO65D1Lt+oKMo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=PKCmwT1rim5g7n5jbAu2KXQ6kcdgrIqsOEsRJ+etKRCLfFl/J2umT3pF5Xb8NtE7QXRWL2O8ZjSRroyOZC2ol1uqHt2o7UjVQAAt/4KDpt4S6nwMM/VmWZp1uF5IDZ8sqWDc6K7iw8gLrLBDZWGCkvGzv3g4wKtBwn3P+QqJ9wA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DUedzAit; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B63191F000E9;
-	Thu, 28 May 2026 20:41:06 +0000 (UTC)
+	 MIME-Version:Content-Type; b=dY9DiPbG6xdI9mIdh4Ie1aSTz6uABMYez9gZjPUMaY5yJap7dhb7JN5WOe0VlRZf42xNE9Wz7NHF9pRoLF0AJTcB3pfObzA0f5AbkEYBWpIWSW9VowxSUmS9Br4uqQYzQ+QIvYaRhpJB3hrzS5DSc0rQZ8n3NcF7h9Qwd3dizcg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2Ppv8j4I; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F1D1C1F000E9;
+	Thu, 28 May 2026 20:29:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780000867;
-	bh=qrvXayF4IaxGodJi6AxeaJh/iM9PmNsZ/Lb3i+drndE=;
+	s=korg; t=1780000184;
+	bh=mmMMrLoUpRH1iC2qlTB7hjNqvTH8fmxZN7vuD778rck=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=DUedzAitd3yDGELC4YFbGGeFW+FomGxmR3RfdQ7RmvZot+ju0QfTyy5SVriiPgCGJ
-	 6d0KR3RZtjNGKD1qCA2/HVNs+Hp1s8wvoL4nJ6L11FGDs1obx6voHVjQ0cmgsqLzfv
-	 5uS4UFEsKKLXrPqIof1npTY6yrLlnVWwk5+m5/C0=
+	b=2Ppv8j4IbW/POZYAT72AVgWhh3THtt8/3pKgmpGubdnMIm5YjoYBIYQ/Q98If0nJV
+	 XkDEXPCX3tD/LMLrNSIHWzzS51Cfb0zvZWtD0sC9CZvmNqsiT/juWccGMBv7e09tGE
+	 PmSIM87UTiCH97pxM1BXAJBkUWf9g/Cd2OXux7EM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	David Howells <dhowells@redhat.com>,
-	Paulo Alcantara <pc@manguebit.org>,
-	Matthew Wilcox <willy@infradead.org>,
-	netfs@lists.linux.dev,
-	linux-fsdevel@vger.kernel.org,
-	Christian Brauner <brauner@kernel.org>,
+	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 196/272] netfs: Fix write streaming disablement if fd open O_RDWR
+Subject: [PATCH 6.18 332/377] platform/x86: hp_accel: Check ACPI_COMPANION() against NULL
 Date: Thu, 28 May 2026 21:49:30 +0200
-Message-ID: <20260528194634.750235803@linuxfoundation.org>
+Message-ID: <20260528194648.025716695@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260528194629.379955525@linuxfoundation.org>
-References: <20260528194629.379955525@linuxfoundation.org>
+In-Reply-To: <20260528194638.371537336@linuxfoundation.org>
+References: <20260528194638.371537336@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -67,114 +64,79 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-256140-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
+	TAGGED_FROM(0.00)[bounces-255897-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	MIME_TRACE(0.00)[0:+];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	FROM_HAS_DN(0.00)[];
 	TO_DN_SOME(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
-	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[10];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
 	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[infradead.org:email,msgid.link:url,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,manguebit.org:email,linux.dev:email,linuxfoundation.org:mid,linuxfoundation.org:dkim]
-X-Rspamd-Queue-Id: 8B2385F9FA9
+	RCPT_COUNT_SEVEN(0.00)[7];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[intel.com:email,msgid.link:url,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim]
+X-Rspamd-Queue-Id: 570725F9147
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: David Howells <dhowells@redhat.com>
+From: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 
-[ Upstream commit 70a7b9193bbbfceaab5974de66834c64ccc875dd ]
+[ Upstream commit abfbe5ee8ae89f1f5449790423d5dd3e423545bd ]
 
-In netfs_perform_write(), "write streaming" (the caching of dirty data in
-dirty but !uptodate folios) is performed to avoid the need to read data
-that is just going to get immediately overwritten.  However, this is/will
-be disabled in three circumstances: if the fd is open O_RDWR, if fscache is
-in use (as we need to round out the blocks for DIO) or if content
-encryption is enabled (again for rounding out purposes).
+Every platform driver can be forced to match a device that doesn't match
+its list of device IDs because of device_match_driver_override(), so
+platform drivers that rely on the existence of a device's ACPI companion
+object need to verify its presence.
 
-The idea behind disabling it if the fd is open O_RDWR is that we'd need to
-flush the write-streaming page before we could read the data, particularly
-through mmap.  But netfs now fills in the gaps if ->read_folio() is called
-on the page, so that is unnecessary.  Further, this doesn't actually work
-if a separate fd is open for reading.
+Accordingly, add a requisite ACPI_COMPANION() check against NULL to the
+platform/x86 hp_accel driver.
 
-Fix this by removing the check for O_RDWR, thereby allowing streaming
-writes even when we might read.
-
-This caused a number of problems with the generic/522 xfstest, but those
-are now fixed.
-
-Fixes: c38f4e96e605 ("netfs: Provide func to copy data to pagecache for buffered write")
-Signed-off-by: David Howells <dhowells@redhat.com>
-Link: https://patch.msgid.link/20260512123404.719402-17-dhowells@redhat.com
-cc: Paulo Alcantara <pc@manguebit.org>
-cc: Matthew Wilcox <willy@infradead.org>
-cc: netfs@lists.linux.dev
-cc: linux-fsdevel@vger.kernel.org
-Signed-off-by: Christian Brauner <brauner@kernel.org>
+Fixes: 8ebcb6c94c71 ("platform/x86: hp_accel: Convert to be a platform driver")
+Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+Reviewed-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Link: https://patch.msgid.link/2425918.ElGaqSPkdT@rafael.j.wysocki
+Reviewed-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/netfs/buffered_write.c | 17 +++++++----------
- 1 file changed, 7 insertions(+), 10 deletions(-)
+ drivers/platform/x86/hp/hp_accel.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/fs/netfs/buffered_write.c b/fs/netfs/buffered_write.c
-index 19a58aea670cb..08da4c2512f52 100644
---- a/fs/netfs/buffered_write.c
-+++ b/fs/netfs/buffered_write.c
-@@ -197,11 +197,11 @@ ssize_t netfs_perform_write(struct kiocb *iocb, struct iov_iter *iter,
- 		}
+diff --git a/drivers/platform/x86/hp/hp_accel.c b/drivers/platform/x86/hp/hp_accel.c
+index 10d5af18d6398..39b73dc473f1c 100644
+--- a/drivers/platform/x86/hp/hp_accel.c
++++ b/drivers/platform/x86/hp/hp_accel.c
+@@ -300,6 +300,9 @@ static int lis3lv02d_probe(struct platform_device *device)
+ 	int ret;
  
- 		/* Decide how we should modify a folio.  We might be attempting
--		 * to do write-streaming, in which case we don't want to a
--		 * local RMW cycle if we can avoid it.  If we're doing local
--		 * caching or content crypto, we award that priority over
--		 * avoiding RMW.  If the file is open readably, then we also
--		 * assume that we may want to read what we wrote.
-+		 * to do write-streaming, as we don't want to a local RMW cycle
-+		 * if we can avoid it.  If we're doing local caching or content
-+		 * crypto, we award that priority over avoiding RMW.  If the
-+		 * file is open readably, then we let ->read_folio() fill in
-+		 * the gaps.
- 		 */
- 		finfo = netfs_folio_info(folio);
- 		group = netfs_folio_group(folio);
-@@ -277,12 +277,9 @@ ssize_t netfs_perform_write(struct kiocb *iocb, struct iov_iter *iter,
- 
- 		/* We don't want to do a streaming write on a file that loses
- 		 * caching service temporarily because the backing store got
--		 * culled and we don't really want to get a streaming write on
--		 * a file that's open for reading as ->read_folio() then has to
--		 * be able to flush it.
-+		 * culled.
- 		 */
--		if ((file->f_mode & FMODE_READ) ||
--		    netfs_is_cache_enabled(ctx)) {
-+		if (netfs_is_cache_enabled(ctx)) {
- 			if (finfo) {
- 				netfs_stat(&netfs_n_wh_wstream_conflict);
- 				goto flush_content;
+ 	lis3_dev.bus_priv = ACPI_COMPANION(&device->dev);
++	if (!lis3_dev.bus_priv)
++		return -ENODEV;
++
+ 	lis3_dev.init = lis3lv02d_acpi_init;
+ 	lis3_dev.read = lis3lv02d_acpi_read;
+ 	lis3_dev.write = lis3lv02d_acpi_write;
 -- 
 2.53.0
 
