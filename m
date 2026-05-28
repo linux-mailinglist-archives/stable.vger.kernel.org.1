@@ -1,59 +1,61 @@
-Return-Path: <stable+bounces-255876-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-255481-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 0OhfHuioGGpolwgAu9opvQ
-	(envelope-from <stable+bounces-255876-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:43:20 +0200
+	id 2DxsFW6hGGqnlggAu9opvQ
+	(envelope-from <stable+bounces-255481-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:11:26 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id CE1395F9668
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:43:19 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5A2EF5F8048
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:11:25 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 9191B3156392
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 20:28:46 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id E6EC9300B286
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 20:10:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 61C383002A0;
-	Thu, 28 May 2026 20:28:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 344DD33CE8A;
+	Thu, 28 May 2026 20:10:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RGCrm00t"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="l1J4Rc8I"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 38440254B1F;
-	Thu, 28 May 2026 20:28:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0EC71344DAC;
+	Thu, 28 May 2026 20:10:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780000125; cv=none; b=qkXBmKsPYh2kXNCQxhn7EoSBKJ/orseBiiWFz7gnnwGp36IMBlKUWipAXbXLb7tuMMRldq79CpHgULiy7d+/k3HHDWmOo9aS40TY7e5+h92yaxXNkWTngBs7xmGJcs5HfdPeg/QtLCHx9WSMK3aW0i377tkjwn91xrNBHsrpRpY=
+	t=1779999033; cv=none; b=qrIxszbOvigijqk50vglLLiyzLUyVdhKACqZTNxAG2c6x7RDvD2g4EFed3MpQQWovcW/2iB7V4Jzbl/kqJqpQYRYn1R9oapIVUCA4R+aq4CoaVP33BAvEjYOul7aSVWNg8zxloP/LBhE230ttw3TJo7dS9SvH0UuC97rbTbIwjo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780000125; c=relaxed/simple;
-	bh=SnVakQ08kA7MEUL/6+0MDf1BU2b1PqRRB87IxJViz38=;
+	s=arc-20240116; t=1779999033; c=relaxed/simple;
+	bh=N/gxprgtxFCuZqvV7v3B4b3FpxZSYr3ywO4OsHtcmkI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=YscQ8zHa4olwpK7Le5EVM/Q5VajqBmGO4V712fF4bHlx2R69HdsTlQ68GvpK1ARzeG+TNVB/xJm3ujXG/U8PimGAaUDkiHAzn35BKVfS1vwYIt+pv9v/lG2w3WoHcs6l8gA7VALI6LJDH5mdqT4xfA9/QJWnD4K5NfePdtoKC/c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RGCrm00t; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 961221F000E9;
-	Thu, 28 May 2026 20:28:43 +0000 (UTC)
+	 MIME-Version:Content-Type; b=kFX0uC598jDaNEFEhsp096J5jlHn2PrJY7+C8I6YFn3E4jhTQDm4LCIctzxn10Y2r5CX3s3RPN0aRiDCROP+3xkSN6YUxJ2k01QItFjsWzs3T/rjxCfxWXiAwUooKtYtaSkKlLxSGqX9ZsxDouAX1MSAI48jJFFKWNM0a9k5UIU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=l1J4Rc8I; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6E0F61F000E9;
+	Thu, 28 May 2026 20:10:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780000124;
-	bh=PFlOWsvl5H62kExhZk2clfFv00ZXccw3Lpcjo7hBc+s=;
+	s=korg; t=1779999032;
+	bh=pSg25hCTduxgMzlzTuwhGkqE80MkfIrKIj/Dd8ByjMM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=RGCrm00tRfm4I9pNzdkIcqUXHqBl3tpg9SGPom0RYyNwlHcHdNsadSh+xn9qbfV9u
-	 VOa8hwseawXJGT4Hz8Vwg8QvDwsZrbfBQBUS+qo4l7X6PnvtQ0gSEfj+6h6lTcLx4B
-	 Ib9d7zlq/Ht1K9wCwgpmHwRWKKUXAAj1p3l/S73c=
+	b=l1J4Rc8Ihkxj9CO+I2lBbwRQs2wZLITdh9hkXeSbPgpwD/0TMynwctyUhOkRDsEom
+	 Xi0XJZKSgljiyur7glgJ8Bcc1IZzn3PzEjDJTWWUNyTJw05faB5N1vSYW3v6X55fhj
+	 P60MGd4JSx2p46yOEUB22+sOdWoHE4w8pkYMKsMM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ming Lei <tom.leiming@gmail.com>,
-	Jens Axboe <axboe@kernel.dk>,
+	=?UTF-8?q?Thomas=20Wei=C3=9Fschuh?= <linux@weissschuh.net>,
+	=?UTF-8?q?Viktor=20J=C3=A4gersk=C3=BCpper?= <viktor_jaegerskuepper@freenet.de>,
+	Nathan Chancellor <nathan@kernel.org>,
+	Nicolas Schier <nsc@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 274/377] selftests: ublk: cap nthreads to kernels actual nr_hw_queues
+Subject: [PATCH 7.0 383/461] kbuild: pacman-pkg: make "rc" releases adhere to pacman versioning scheme
 Date: Thu, 28 May 2026 21:48:32 +0200
-Message-ID: <20260528194646.297363756@linuxfoundation.org>
+Message-ID: <20260528194658.542735620@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260528194638.371537336@linuxfoundation.org>
-References: <20260528194638.371537336@linuxfoundation.org>
+In-Reply-To: <20260528194646.819809818@linuxfoundation.org>
+References: <20260528194646.819809818@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,97 +65,82 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	TO_DN_SOME(0.00)[];
-	TAGGED_FROM(0.00)[bounces-255876-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,kernel.dk,kernel.org];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,weissschuh.net,freenet.de,kernel.org];
 	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-255481-lists,stable=lfdr.de];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	RCVD_TLS_LAST(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	TO_DN_SOME(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	NEURAL_HAM(-0.00)[-0.999];
-	TAGGED_RCPT(0.00)[stable];
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
 	MID_RHS_MATCH_FROM(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[6];
+	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_SEVEN(0.00)[8];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,kernel.dk:email,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim]
-X-Rspamd-Queue-Id: CE1395F9668
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,freenet.de:email,msgid.link:url]
+X-Rspamd-Queue-Id: 5A2EF5F8048
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+7.0-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ming Lei <tom.leiming@gmail.com>
+From: Viktor Jägersküpper <viktor_jaegerskuepper@freenet.de>
 
-[ Upstream commit 87d0740b7c4cc847be1b6f307ab6d8547cb1a726 ]
+[ Upstream commit 202550713128da20d9381d6d2dc0f6b73839f434 ]
 
-dev->nthreads is derived from the user-requested queue count before the
-ADD command, but the kernel may reduce nr_hw_queues (capped to
-nr_cpu_ids). When the VM has fewer CPUs than requested queues, the
-daemon creates more handler threads than there are kernel queues.
+The package versioning scheme does not enable smooth upgrades from "rc"
+releases to the corresponding stable releases (e.g. 7.0.0-rc7 -> 7.0.0)
+because pacman considers that a downgrade due to the underscore in
+pkgver (e.g. 7.0.0_rc7), see e.g. vercmp(8) for an explanation of the
+package version comparison used by pacman. Package versions which are
+derived from said releases (e.g. built from git revisions) are
+similarly affected. Fix this by modifying pkgver in order to remove the
+hyphen from kernel versions containing "-rcN", where N is a
+non-negative integer.
 
-In non-batch mode, the extra threads access uninitialized queues
-(q_depth=0), submit zero io_uring SQEs, and block forever in
-io_cqring_wait. In batch mode, the extra threads cause similar hangs
-during device removal.
-
-In both cases, the stuck threads prevent the daemon from closing the
-char device, holding the last ublk_device reference and causing
-ublk_ctrl_del_dev() to hang in wait_event_interruptible().
-
-Fix by capping dev->nthreads to the kernel-returned nr_hw_queues after
-the ADD command completes. per_io_tasks mode is excluded because threads
-interleave across all queues, so nthreads > nr_hw_queues is valid.
-
-Fixes: abe54c160346 ("selftests: ublk: kublk: decouple ublk_queues from ublk server threads")
-Signed-off-by: Ming Lei <tom.leiming@gmail.com>
-Link: https://patch.msgid.link/20260513101941.1373998-1-tom.leiming@gmail.com
-Signed-off-by: Jens Axboe <axboe@kernel.dk>
+Acked-by: Thomas Weißschuh <linux@weissschuh.net>
+Signed-off-by: Viktor Jägersküpper <viktor_jaegerskuepper@freenet.de>
+Reviewed-by: Nathan Chancellor <nathan@kernel.org>
+Tested-by: Nathan Chancellor <nathan@kernel.org>
+Link: https://patch.msgid.link/20260515215913.92481-1-viktor_jaegerskuepper@freenet.de
+Fixes: c8578539deba ("kbuild: add script and target to generate pacman package")
+Signed-off-by: Nicolas Schier <nsc@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/testing/selftests/ublk/kublk.c | 11 +++++++++++
- 1 file changed, 11 insertions(+)
+ scripts/package/PKGBUILD | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/tools/testing/selftests/ublk/kublk.c b/tools/testing/selftests/ublk/kublk.c
-index cbd23444c8a98..ac47979349a4b 100644
---- a/tools/testing/selftests/ublk/kublk.c
-+++ b/tools/testing/selftests/ublk/kublk.c
-@@ -1220,6 +1220,17 @@ static int __cmd_dev_add(const struct dev_ctx *ctx)
- 		goto fail;
- 	}
+diff --git a/scripts/package/PKGBUILD b/scripts/package/PKGBUILD
+index 452374d63c244..1213c8e04671e 100644
+--- a/scripts/package/PKGBUILD
++++ b/scripts/package/PKGBUILD
+@@ -10,7 +10,7 @@ for pkg in $_extrapackages; do
+ 	pkgname+=("${pkgbase}-${pkg}")
+ done
  
-+	/*
-+	 * The kernel may reduce nr_hw_queues (e.g. capped to nr_cpu_ids).
-+	 * Cap nthreads to the actual queue count to avoid creating extra
-+	 * handler threads that will hang during device removal.
-+	 *
-+	 * per_io_tasks mode is excluded: threads interleave across all
-+	 * queues so nthreads > nr_hw_queues is valid and intentional.
-+	 */
-+	if (!ctx->per_io_tasks && dev->nthreads > info->nr_hw_queues)
-+		dev->nthreads = info->nr_hw_queues;
-+
- 	ret = ublk_start_daemon(ctx, dev);
- 	ublk_dbg(UBLK_DBG_DEV, "%s: daemon exit %d\n", __func__, ret);
- 	if (ret < 0)
+-pkgver="${KERNELRELEASE//-/_}"
++pkgver="$(echo "${KERNELRELEASE}" | sed 's/-\(rc[0-9]\+\)/\1/;s/-/_/g')"
+ # The PKGBUILD is evaluated multiple times.
+ # Running scripts/build-version from here would introduce inconsistencies.
+ pkgrel="${KBUILD_REVISION}"
 -- 
 2.53.0
 
