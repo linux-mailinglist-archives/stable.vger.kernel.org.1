@@ -1,59 +1,58 @@
-Return-Path: <stable+bounces-255312-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-255666-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id sFw5Lb6gGGqblggAu9opvQ
-	(envelope-from <stable+bounces-255312-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:08:30 +0200
+	id uCJQNAClGGoQlwgAu9opvQ
+	(envelope-from <stable+bounces-255666-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:26:40 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3CC2D5F7E64
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:08:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 58FED5F8B0F
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:26:40 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id B11393134E41
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 20:02:37 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id B026A3288CF8
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 20:19:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 699D824677F;
-	Thu, 28 May 2026 20:02:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6CCBA2D1303;
+	Thu, 28 May 2026 20:19:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="e1zS9ZKt"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="S55vp4Ba"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C724340963C;
-	Thu, 28 May 2026 20:02:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2622B2F8E83;
+	Thu, 28 May 2026 20:19:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779998556; cv=none; b=CzzIAXj5L5cEpAaYAMlqsQeG6mruXtCPpu1Zf3dcTeXxTuwdES16lloupgqc05HxqCvL2xIuCwdQCGA2JlT1IV4BlXaEFJaPEV/DDcX5Hpbj3h0IXu/PhJPuVa5vi8b0GSkUfAGGlAMSOWVFB1h/X2AMSc9B3CcsZj2qiDv77Ec=
+	t=1779999553; cv=none; b=CEWZnAlpx5tbUF+9/4wTd9eNFcInA20JDYi/M6+4QVKmcNDIovZqAfY1G5i+Ps5TjWDtI2gvDRTHfGNiE5GYUzE96uGmJfAVGY45Vw9jWqgiEqN0/Es/Mvthcke4thAB3AeaKAFWsmONBdeDMRQUN4mIQPHEtr6Y0uKVi8gwOXg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779998556; c=relaxed/simple;
-	bh=MXmYMv2kBBBf73zdZw3hvB8/G3GAZ86mI6q4PqCyn9A=;
+	s=arc-20240116; t=1779999553; c=relaxed/simple;
+	bh=/NknHXXIMsUk5p6XNBz/q2Y4RZhzVnGtwagdOiHw6CY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Abk0IkJXR9KkyYvq+jeLRmaOo9eB/v1CwjpUnPDo9ygg+cN31RiOSoe6+PorBLI/R4mtyriyhVO32wnyWyy/MYcTkXYuVxJj51LK5AQuG+oiHwLY57U7lh7re8GST00Nau3VajZtRecsSwdChyVdESwkLAe++BryBgYVCw4utIo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=e1zS9ZKt; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2F07C1F000E9;
-	Thu, 28 May 2026 20:02:34 +0000 (UTC)
+	 MIME-Version; b=jHayc/bS25AqbueHoDG3TwWp9/mu0yfC576ATfd0pa9eu0/DZFOj2Z1i+2p2zqlgRuOtWYGpVo5a1cVrvp+31YHmkdfFM5T+46+TL6E3Yy9SV35RxAdhPAY1OVlkEGEN9q2XspkS8sE5dlUI87OcA84EClJYL1TQcHb36NuQLF8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=S55vp4Ba; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 844271F00A3A;
+	Thu, 28 May 2026 20:19:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779998554;
-	bh=qj8vKEHFmnrYNLbUQmrFjXnVs84aF0OPoD5utgLvRcE=;
+	s=korg; t=1779999552;
+	bh=/tz5S4EouP4gHcgp+68w7l9Ex8bUekrD1nDXKDJ8hrE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=e1zS9ZKt3SR2U6jR6biWILzzxXPXJ3qX6VnKLp350SEC6AvfVTtAE6v1oRcdCbAad
-	 NDhV2uSa+U+zIJj/UXA+U26a6FK7QD5oER8siyJ8Yg05392LwnhLR1OOEMi/lGfm3u
-	 N+LHC1Fmnhyp159/8qcejza7HDvtMu+ZnIeRrH3Y=
+	b=S55vp4Bam7lcl4QWODoGOyT8ROrdhv2R60hoZ+WadqNcP5cSAxxFIbIvkBsm6UroA
+	 ZO4F3RPVBp0CZQ+4W0aJv63XQl+sjLBP5regaG+SXZwx3TsTjeiaJ4/Tu8gzTePdzE
+	 0N+le4aj8aT+V/VAKhX0LFNRonrt1ee6CbeNWoaA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Florian Westphal <fw@strlen.de>,
-	Pablo Neira Ayuso <pablo@netfilter.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 7.0 215/461] netfilter: bridge: eb_tables: close module init race
+	Vladimir Murzin <vladimir.murzin@arm.com>,
+	Catalin Marinas <catalin.marinas@arm.com>
+Subject: [PATCH 6.18 106/377] arm64: probes: Handle probes on hinted conditional branch instructions
 Date: Thu, 28 May 2026 21:45:44 +0200
-Message-ID: <20260528194653.349403687@linuxfoundation.org>
+Message-ID: <20260528194641.411152381@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260528194646.819809818@linuxfoundation.org>
-References: <20260528194646.819809818@linuxfoundation.org>
+In-Reply-To: <20260528194638.371537336@linuxfoundation.org>
+References: <20260528194638.371537336@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -78,7 +77,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-255312-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-255666-lists,stable=lfdr.de];
 	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
@@ -87,69 +86,49 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	NEURAL_HAM(-0.00)[-1.000];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
+	RCPT_COUNT_FIVE(0.00)[5];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[netfilter.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,strlen.de:email,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
-X-Rspamd-Queue-Id: 3CC2D5F7E64
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim]
+X-Rspamd-Queue-Id: 58FED5F8B0F
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-7.0-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Florian Westphal <fw@strlen.de>
+From: Vladimir Murzin <vladimir.murzin@arm.com>
 
-[ Upstream commit 27414ff1b287ea9a2a11675149ec28e05539f3cc ]
+commit 2ccd8ff980b50e842481bae71102fa3883fc4377 upstream.
 
-sashiko reports for unrelated patch:
- Does the core ebtables initialization in ebtables.c suffer from a similar race?
- Once nf_register_sockopt() completes, the sockopts are exposed globally.
+BC.cond instructions introduced by FEAT_HBC cannot be executed
+out-of-line, like other branch instructions. However, they can be
+simulated in the same way as B.cond instructions.
 
-sockopt has to be registered last, just like in ip/ip6/arptables.
+Extend the B.cond decoder mask to match BC.cond instructions as well,
+and handle them using the existing B.cond simulation path.
 
-Fixes: 5b53951cfc85 ("netfilter: ebtables: use net_generic infra")
-Signed-off-by: Florian Westphal <fw@strlen.de>
-Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 7f86d128e437 ("arm64: add HWCAP for FEAT_HBC (hinted conditional branches)")
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Vladimir Murzin <vladimir.murzin@arm.com>
+Signed-off-by: Catalin Marinas <catalin.marinas@arm.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/bridge/netfilter/ebtables.c | 11 ++++++-----
- 1 file changed, 6 insertions(+), 5 deletions(-)
+ arch/arm64/include/asm/insn.h |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/net/bridge/netfilter/ebtables.c b/net/bridge/netfilter/ebtables.c
-index 3578ffbc14aee..b9f4daac09af3 100644
---- a/net/bridge/netfilter/ebtables.c
-+++ b/net/bridge/netfilter/ebtables.c
-@@ -2583,19 +2583,20 @@ static int __init ebtables_init(void)
- {
- 	int ret;
- 
--	ret = xt_register_target(&ebt_standard_target);
-+	ret = register_pernet_subsys(&ebt_net_ops);
- 	if (ret < 0)
- 		return ret;
--	ret = nf_register_sockopt(&ebt_sockopts);
-+
-+	ret = xt_register_target(&ebt_standard_target);
- 	if (ret < 0) {
--		xt_unregister_target(&ebt_standard_target);
-+		unregister_pernet_subsys(&ebt_net_ops);
- 		return ret;
- 	}
- 
--	ret = register_pernet_subsys(&ebt_net_ops);
-+	ret = nf_register_sockopt(&ebt_sockopts);
- 	if (ret < 0) {
--		nf_unregister_sockopt(&ebt_sockopts);
- 		xt_unregister_target(&ebt_standard_target);
-+		unregister_pernet_subsys(&ebt_net_ops);
- 		return ret;
- 	}
- 
--- 
-2.53.0
-
+--- a/arch/arm64/include/asm/insn.h
++++ b/arch/arm64/include/asm/insn.h
+@@ -409,7 +409,7 @@ __AARCH64_INSN_FUNCS(cbz,	0x7F000000, 0x
+ __AARCH64_INSN_FUNCS(cbnz,	0x7F000000, 0x35000000)
+ __AARCH64_INSN_FUNCS(tbz,	0x7F000000, 0x36000000)
+ __AARCH64_INSN_FUNCS(tbnz,	0x7F000000, 0x37000000)
+-__AARCH64_INSN_FUNCS(bcond,	0xFF000010, 0x54000000)
++__AARCH64_INSN_FUNCS(bcond,	0xFF000000, 0x54000000)
+ __AARCH64_INSN_FUNCS(svc,	0xFFE0001F, 0xD4000001)
+ __AARCH64_INSN_FUNCS(hvc,	0xFFE0001F, 0xD4000002)
+ __AARCH64_INSN_FUNCS(smc,	0xFFE0001F, 0xD4000003)
 
 
 
