@@ -1,58 +1,60 @@
-Return-Path: <stable+bounces-255701-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-255954-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id WLECOgmkGGrClggAu9opvQ
-	(envelope-from <stable+bounces-255701-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:22:33 +0200
+	id GJNkO+enGGp+lwgAu9opvQ
+	(envelope-from <stable+bounces-255954-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:39:03 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id 40CE05F87D6
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:22:33 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id A584C5F9394
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:39:03 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id E3D38303F0C0
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 20:20:47 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 7A5C93138338
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 20:32:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2260D3101B0;
-	Thu, 28 May 2026 20:20:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 03EFD339866;
+	Thu, 28 May 2026 20:32:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DcaB0dMU"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="O16fMfHz"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B7556282F17;
-	Thu, 28 May 2026 20:20:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C33EC31DD97;
+	Thu, 28 May 2026 20:32:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779999645; cv=none; b=m1y3H87abfViTJXJR+HWGF8gR5qkvrMrlOmV+S/1lD2gmFns7ilKJ+a7Ck+Cka9OHPrIa8PNSnoWkQrCfZnwgAIgZRHGl/ieJZIVTTXtZvlCoI01k1vfKcy8IxTYDs1nqxE2EFe99/jqAJhEFsIarW/dtDkQjwDZpIUIGacgiPg=
+	t=1780000344; cv=none; b=EqTzjH0qUoXmx8PHkdRzqcytJ+myyQu1qH9vD31aqt9MhHpBX84ry/s+h3JyN7vA2PkwPtbYAbmQjWnkC2smlLK9a+vNzuiB+GYodUv7viTREtgl8KqBQZE+Q7H9Ylas5cuLdjyhx1U+xuTl02k1KOXOfJR44BfZnoxTCsoSqSg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779999645; c=relaxed/simple;
-	bh=OCZObX+UvoQMY8QMwvrs4X0YGyGaGweCr6MmfjVM9Is=;
+	s=arc-20240116; t=1780000344; c=relaxed/simple;
+	bh=VzhX4lRKonJbeVIXqZ18HZ5XlvQtpwmXSO+7LIYNa9M=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=OsD2sINNkJ8PPu8HlRmXLKCip6rpa62MdhF9+dmvPOvBp8CPpAeZzuYB8fkK8qj1u8m4OOqaeUNo4npN1KHo6Z49aXhHNd0lM4jnU/TvVit+vVFx5J8tqlpevD2A0Jm5Z/NSlk3Rb/3b6HUgTfV4ctQZxO2jJ883id/4e9M4FnQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DcaB0dMU; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D33B31F000E9;
-	Thu, 28 May 2026 20:20:43 +0000 (UTC)
+	 MIME-Version; b=YXvvyRoCxQMS7Fmciol8MW/sHET9++t2U0eXUeOY+g6ucGlKwIdgBD/mT7zbx6zwnpZEIP767Lons1WygyFf4lnCvrWSb/mKWyrbEI/d2y4AkNzPpeRZv5/g6zUQ5+6fyRfipbGyEaEjXrGAszn3h0cttcMcQ/Cac/6p0tEsxH4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=O16fMfHz; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2D30D1F000E9;
+	Thu, 28 May 2026 20:32:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779999644;
-	bh=s7keWA3bwv3IeVZ9Wny0WVkJGBcMQB6oBPBt11R8X/k=;
+	s=korg; t=1780000343;
+	bh=VTJBsqAAvPv1xPTr1UhegGBplji63RH32MfJt/4AyXY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=DcaB0dMUtvsBUXG8U7k29MEm0krtbqdBIVAHM8QnXjGVSXkk6GdspgrGGggCzDfFh
-	 5P4qNpxcJKa4bltD7K5wiXu7hVItrB4iC2MlsL3NuicFGL7LhZw6xruW6xAt80lIcf
-	 2kjDkUjmmeB4J3aIOHTO3vnxN2ySqciebn1Cjc7E=
+	b=O16fMfHzpawXU4EzH0EdSdo/lO2Qq/88IVqY+NgUeGjqoLURU8b99dRQ592+rGsp7
+	 F3JepkIxyWed76TK8xNoOAYy9qWxJ7dhG1bIUg/av7dYZVaTAKMrcZVud3ys1G8fX+
+	 VMY4WP1Af9livpqxD3oqklgKxzyxfyFApEzX8Lfk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable@kernel.org,
-	Sven Eckelmann <sven@narfation.org>
-Subject: [PATCH 6.18 140/377] batman-adv: iv: recover OGM scheduling after forward packet error
+	Mat Martineau <martineau@kernel.org>,
+	"Matthieu Baerts (NGI0)" <matttbe@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 004/272] mptcp: pm: ADD_ADDR rtx: free sk if last
 Date: Thu, 28 May 2026 21:46:18 +0200
-Message-ID: <20260528194642.425998643@linuxfoundation.org>
+Message-ID: <20260528194629.505473515@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260528194638.371537336@linuxfoundation.org>
-References: <20260528194638.371537336@linuxfoundation.org>
+In-Reply-To: <20260528194629.379955525@linuxfoundation.org>
+References: <20260528194629.379955525@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,257 +64,164 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-2.16 / 15.00];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-255701-lists,stable=lfdr.de];
-	FROM_HAS_DN(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
 	MIME_TRACE(0.00)[0:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TO_DN_SOME(0.00)[];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
-	RCPT_COUNT_FIVE(0.00)[5];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-255954-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
 	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	MID_RHS_MATCH_FROM(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,narfation.org:email,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo]
-X-Rspamd-Queue-Id: 40CE05F87D6
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim]
+X-Rspamd-Queue-Id: A584C5F9394
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sven Eckelmann <sven@narfation.org>
+From: Matthieu Baerts (NGI0) <matttbe@kernel.org>
 
-commit aa3153bd139a6c48667dcd02608d3b2c80bff02c upstream.
+commit b7b9a461569734d33d3259d58d2507adfac107ed upstream.
 
-When batadv_iv_ogm_schedule_buff() fails to allocate and queue a forward
-packet for OGM transmission, the work item that drives periodic OGM
-scheduling is never re-armed. This silently halts transmission of the
-node's own OGMs on the affected interface — only OGMs from other peers
-continue to be aggregated and forwarded.
+When an ADD_ADDR is retransmitted, the sk is held in sk_reset_timer(),
+and released at the end.
 
-Fix this by tracking whether batadv_iv_ogm_queue_add() (and transitively
-batadv_iv_ogm_aggregate_new()) successfully scheduled a forward packet.
-When scheduling fails, batadv_iv_ogm_schedule_buff() falls back to queuing
-a dedicated recovery work item (reschedule_work) that fires after one
-originator interval and calls batadv_iv_ogm_schedule() again.
+If at that moment, it was the last reference being held, the sk would
+not be freed. sock_put() should then be called instead of __sock_put().
 
-Cc: stable@kernel.org
-Fixes: c6c8fea29769 ("net: Add batman-adv meshing protocol")
-Signed-off-by: Sven Eckelmann <sven@narfation.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+But that's not enough: if it is the last reference, sock_put() will call
+sk_free(), which will end up calling sk_stop_timer_sync() on the same
+timer, and waiting indefinitely to finish. So it is needed to mark that
+the timer is done at the end of the timer handler when it has not been
+rescheduled, not to call sk_stop_timer_sync() on "itself".
+
+Fixes: 00cfd77b9063 ("mptcp: retransmit ADD_ADDR when timeout")
+Cc: stable@vger.kernel.org
+Reviewed-by: Mat Martineau <martineau@kernel.org>
+Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+Link: https://patch.msgid.link/20260505-net-mptcp-pm-fixes-7-1-rc3-v1-5-fca8091060a4@kernel.org
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+[ Applied to net/mptcp/pm_netlink.c instead of upstream's pm_kernel.c.
+  Also, there were conflicts, because commit 30549eebc4d8 ("mptcp: make
+  ADD_ADDR retransmission timeout adaptive") is not in this version and
+  changed the context. Also, other conflicts were due to newer patches
+  being backported with resolved conflicts before this one. ]
+Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/batman-adv/bat_iv_ogm.c |   76 +++++++++++++++++++++++++++++++++-----------
- net/batman-adv/types.h      |    3 +
- 2 files changed, 60 insertions(+), 19 deletions(-)
+ net/mptcp/pm_netlink.c | 28 +++++++++++++++++-----------
+ 1 file changed, 17 insertions(+), 11 deletions(-)
 
---- a/net/batman-adv/bat_iv_ogm.c
-+++ b/net/batman-adv/bat_iv_ogm.c
-@@ -224,6 +224,8 @@ static void batadv_iv_ogm_iface_disable(
- 	hard_iface->bat_iv.ogm_buff = NULL;
+diff --git a/net/mptcp/pm_netlink.c b/net/mptcp/pm_netlink.c
+index be531df02c371..4ff6721ad5c7a 100644
+--- a/net/mptcp/pm_netlink.c
++++ b/net/mptcp/pm_netlink.c
+@@ -22,6 +22,7 @@ struct mptcp_pm_add_entry {
+ 	struct list_head	list;
+ 	struct mptcp_addr_info	addr;
+ 	u8			retrans_times;
++	bool			timer_done;
+ 	struct timer_list	add_timer;
+ 	struct mptcp_sock	*sock;
+ 	struct rcu_head		rcu;
+@@ -294,22 +295,22 @@ static void mptcp_pm_add_timer(struct timer_list *timer)
+ 	struct mptcp_pm_add_entry *entry = from_timer(entry, timer, add_timer);
+ 	struct mptcp_sock *msk = entry->sock;
+ 	struct sock *sk = (struct sock *)msk;
+-	unsigned int timeout;
++	unsigned int timeout = 0;
  
- 	mutex_unlock(&hard_iface->bat_iv.ogm_buff_mutex);
-+
-+	cancel_delayed_work_sync(&hard_iface->bat_iv.reschedule_work);
- }
+ 	pr_debug("msk=%p\n", msk);
  
- static void batadv_iv_ogm_iface_update_mac(struct batadv_hard_iface *hard_iface)
-@@ -536,8 +538,10 @@ out:
-  * @if_incoming: interface where the packet was received
-  * @if_outgoing: interface for which the retransmission should be considered
-  * @own_packet: true if it is a self-generated ogm
-+ *
-+ * Return: whether forward packet was scheduled
-  */
--static void batadv_iv_ogm_aggregate_new(const unsigned char *packet_buff,
-+static bool batadv_iv_ogm_aggregate_new(const unsigned char *packet_buff,
- 					int packet_len, unsigned long send_time,
- 					bool direct_link,
- 					struct batadv_hard_iface *if_incoming,
-@@ -561,13 +565,13 @@ static void batadv_iv_ogm_aggregate_new(
++	bh_lock_sock(sk);
+ 	if (unlikely(inet_sk_state_load(sk) == TCP_CLOSE))
+-		goto exit;
++		goto out;
  
- 	skb = netdev_alloc_skb_ip_align(NULL, skb_size);
- 	if (!skb)
--		return;
-+		return false;
- 
- 	forw_packet_aggr = batadv_forw_packet_alloc(if_incoming, if_outgoing,
- 						    queue_left, bat_priv, skb);
- 	if (!forw_packet_aggr) {
- 		kfree_skb(skb);
--		return;
-+		return false;
- 	}
- 
- 	forw_packet_aggr->skb->priority = TC_PRIO_CONTROL;
-@@ -590,6 +594,8 @@ static void batadv_iv_ogm_aggregate_new(
- 			  batadv_iv_send_outstanding_bat_ogm_packet);
- 
- 	batadv_forw_packet_ogmv1_queue(bat_priv, forw_packet_aggr, send_time);
-+
-+	return true;
- }
- 
- /* aggregate a new packet into the existing ogm packet */
-@@ -617,8 +623,10 @@ static void batadv_iv_ogm_aggregate(stru
-  * @if_outgoing: interface for which the retransmission should be considered
-  * @own_packet: true if it is a self-generated ogm
-  * @send_time: timestamp (jiffies) when the packet is to be sent
-+ *
-+ * Return: whether forward packet was scheduled
-  */
--static void batadv_iv_ogm_queue_add(struct batadv_priv *bat_priv,
-+static bool batadv_iv_ogm_queue_add(struct batadv_priv *bat_priv,
- 				    unsigned char *packet_buff,
- 				    int packet_len,
- 				    struct batadv_hard_iface *if_incoming,
-@@ -670,14 +678,16 @@ static void batadv_iv_ogm_queue_add(stru
- 		if (!own_packet && atomic_read(&bat_priv->aggregated_ogms))
- 			send_time += max_aggregation_jiffies;
- 
--		batadv_iv_ogm_aggregate_new(packet_buff, packet_len,
--					    send_time, direct_link,
--					    if_incoming, if_outgoing,
--					    own_packet);
-+		return batadv_iv_ogm_aggregate_new(packet_buff, packet_len,
-+						   send_time, direct_link,
-+						   if_incoming, if_outgoing,
-+						   own_packet);
- 	} else {
- 		batadv_iv_ogm_aggregate(forw_packet_aggr, packet_buff,
- 					packet_len, direct_link);
- 		spin_unlock_bh(&bat_priv->forw_bat_list_lock);
-+
-+		return true;
- 	}
- }
- 
-@@ -790,6 +800,8 @@ static void batadv_iv_ogm_schedule_buff(
- 	u32 seqno;
- 	u16 tvlv_len = 0;
- 	unsigned long send_time;
-+	bool reschedule = false;
-+	bool scheduled;
- 	int ret;
- 
- 	lockdep_assert_held(&hard_iface->bat_iv.ogm_buff_mutex);
-@@ -818,11 +830,8 @@ static void batadv_iv_ogm_schedule_buff(
- 						       ogm_buff_len,
- 						       BATADV_OGM_HLEN);
- 		if (ret < 0) {
--			/* OGMs must be queued even when the buffer allocation for
--			 * TVLVs failed. just fall back to the non-TVLV version
--			 */
--			ret = 0;
--			*ogm_buff_len = BATADV_OGM_HLEN;
-+			reschedule = true;
-+			goto out;
- 		}
- 
- 		tvlv_len = ret;
-@@ -844,8 +853,11 @@ static void batadv_iv_ogm_schedule_buff(
- 		/* OGMs from secondary interfaces are only scheduled on their
- 		 * respective interfaces.
- 		 */
--		batadv_iv_ogm_queue_add(bat_priv, *ogm_buff, *ogm_buff_len,
--					hard_iface, hard_iface, 1, send_time);
-+		scheduled = batadv_iv_ogm_queue_add(bat_priv, *ogm_buff, *ogm_buff_len,
-+						    hard_iface, hard_iface, 1, send_time);
-+		if (!scheduled)
-+			reschedule = true;
-+
+-	bh_lock_sock(sk);
+ 	if (sock_owned_by_user(sk)) {
+ 		/* Try again later. */
+-		sk_reset_timer(sk, timer, jiffies + HZ / 20);
++		timeout = HZ / 20;
  		goto out;
  	}
  
-@@ -857,15 +869,28 @@ static void batadv_iv_ogm_schedule_buff(
- 		if (!kref_get_unless_zero(&tmp_hard_iface->refcount))
- 			continue;
- 
--		batadv_iv_ogm_queue_add(bat_priv, *ogm_buff,
--					*ogm_buff_len, hard_iface,
--					tmp_hard_iface, 1, send_time);
--
-+		scheduled = batadv_iv_ogm_queue_add(bat_priv, *ogm_buff,
-+						    *ogm_buff_len, hard_iface,
-+						    tmp_hard_iface, 1, send_time);
- 		batadv_hardif_put(tmp_hard_iface);
-+
-+		if (!scheduled && tmp_hard_iface == hard_iface)
-+			reschedule = true;
+ 	if (mptcp_pm_should_add_signal_addr(msk)) {
+-		sk_reset_timer(sk, timer, jiffies + HZ);
++		timeout = HZ;
+ 		goto out;
  	}
- 	rcu_read_unlock();
+ 
+@@ -326,9 +327,8 @@ static void mptcp_pm_add_timer(struct timer_list *timer)
+ 		entry->retrans_times++;
+ 	}
+ 
+-	if (entry->retrans_times < ADD_ADDR_RETRANS_MAX)
+-		sk_reset_timer(sk, timer,
+-			       jiffies + timeout);
++	if (entry->retrans_times >= ADD_ADDR_RETRANS_MAX)
++		timeout = 0;
+ 
+ 	spin_unlock_bh(&msk->pm.lock);
+ 
+@@ -336,9 +336,13 @@ static void mptcp_pm_add_timer(struct timer_list *timer)
+ 		mptcp_pm_subflow_established(msk);
  
  out:
-+	if (reschedule) {
-+		/* there was a failure scheduling the own forward packet.
-+		 * as result, the batadv_iv_send_outstanding_bat_ogm_packet()
-+		 * work item is no longer scheduled. it is therefore necessary
-+		 * to reschedule it manually
-+		 */
-+		queue_delayed_work(batadv_event_workqueue,
-+				   &hard_iface->bat_iv.reschedule_work,
-+				   msecs_to_jiffies(atomic_read(&bat_priv->orig_interval)));
-+	}
-+
- 	batadv_hardif_put(primary_if);
++	if (timeout)
++		sk_reset_timer(sk, timer, jiffies + timeout);
++	else
++		/* if sock_put calls sk_free: avoid waiting for this timer */
++		entry->timer_done = true;
+ 	bh_unlock_sock(sk);
+-exit:
+-	__sock_put(sk);
++	sock_put(sk);
  }
  
-@@ -880,6 +905,17 @@ static void batadv_iv_ogm_schedule(struc
- 	mutex_unlock(&hard_iface->bat_iv.ogm_buff_mutex);
+ struct mptcp_pm_add_entry *
+@@ -402,6 +406,7 @@ bool mptcp_pm_alloc_anno_list(struct mptcp_sock *msk,
+ 
+ 	timer_setup(&add_entry->add_timer, mptcp_pm_add_timer, 0);
+ reset_timer:
++	add_entry->timer_done = false;
+ 	timeout = mptcp_get_add_addr_timeout(net);
+ 	if (timeout)
+ 		sk_reset_timer(sk, &add_entry->add_timer, jiffies + timeout);
+@@ -422,7 +427,8 @@ void mptcp_pm_free_anno_list(struct mptcp_sock *msk)
+ 	spin_unlock_bh(&msk->pm.lock);
+ 
+ 	list_for_each_entry_safe(entry, tmp, &free_list, list) {
+-		sk_stop_timer_sync(sk, &entry->add_timer);
++		if (!entry->timer_done)
++			sk_stop_timer_sync(sk, &entry->add_timer);
+ 		kfree_rcu(entry, rcu);
+ 	}
  }
- 
-+static void batadv_iv_ogm_reschedule(struct work_struct *work)
-+{
-+	struct delayed_work *delayed_work = to_delayed_work(work);
-+	struct batadv_hard_iface *hard_iface;
-+
-+	hard_iface = container_of(delayed_work,
-+				  struct batadv_hard_iface,
-+				  bat_iv.reschedule_work);
-+	batadv_iv_ogm_schedule(hard_iface);
-+}
-+
- /**
-  * batadv_iv_orig_ifinfo_sum() - Get bcast_own sum for originator over interface
-  * @orig_node: originator which reproadcasted the OGMs directly
-@@ -2272,6 +2308,8 @@ batadv_iv_ogm_neigh_is_sob(struct batadv
- 
- static void batadv_iv_iface_enabled(struct batadv_hard_iface *hard_iface)
- {
-+	INIT_DELAYED_WORK(&hard_iface->bat_iv.reschedule_work, batadv_iv_ogm_reschedule);
-+
- 	/* begin scheduling originator messages on that interface */
- 	batadv_iv_ogm_schedule(hard_iface);
- }
---- a/net/batman-adv/types.h
-+++ b/net/batman-adv/types.h
-@@ -83,6 +83,9 @@ struct batadv_hard_iface_bat_iv {
- 	/** @ogm_seqno: OGM sequence number - used to identify each OGM */
- 	atomic_t ogm_seqno;
- 
-+	/** @reschedule_work: recover OGM schedule after schedule error */
-+	struct delayed_work reschedule_work;
-+
- 	/** @ogm_buff_mutex: lock protecting ogm_buff and ogm_buff_len */
- 	struct mutex ogm_buff_mutex;
- };
+-- 
+2.53.0
+
 
 
 
