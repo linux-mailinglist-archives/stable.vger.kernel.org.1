@@ -1,62 +1,62 @@
-Return-Path: <stable+bounces-255837-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-255443-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id MPGjEoymGGpolwgAu9opvQ
-	(envelope-from <stable+bounces-255837-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:33:16 +0200
+	id XE3VB3+iGGrClggAu9opvQ
+	(envelope-from <stable+bounces-255443-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:15:59 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id DF5E55F8EFB
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:33:15 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9D4AB5F834B
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:15:58 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 9C0DA309B381
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 20:27:05 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id F25B730A9796
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 20:08:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0A9FA32C923;
-	Thu, 28 May 2026 20:26:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7344033F5BE;
+	Thu, 28 May 2026 20:08:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GehrZ58j"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="c5oMYJcH"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CA62A32A3FF;
-	Thu, 28 May 2026 20:26:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1D2132F691F;
+	Thu, 28 May 2026 20:08:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780000018; cv=none; b=FMQE5pd20JiFMXM35ce53hwChNhCV7Pgxh8wBezSbSP24ywDTzWCmvMKUwxBWqAXZpJuz8ClJTtPwn268F3jz/z0yt8HY8PuB9/15bTx5q0tKJS0V4lRS/2Vy2hNvEdVAz+BxdiqKP14M8zgWuBUy5loVXO1BN0zZk0q/4hjsDU=
+	t=1779998926; cv=none; b=umQiOTjLPkhNBhYLpiRC+OD3n0nnJ9EzslCedrGCZZA2Zqnhv47j0IqllIhvNzv07hBsWWVH0VwPq+K3ntIvPFvgLB4YCGg4TDn56t6rIk6QO+0WIuum+GavAPtEsjf2k/xC+DUKfj3BXNXU8HTz4+dqtR0Fkvz/JSO8MjA6xw0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780000018; c=relaxed/simple;
-	bh=NEUV/d0TJe7/+MdjUXKMTYFQj+t/Q0SWkEzP43GDjTg=;
+	s=arc-20240116; t=1779998926; c=relaxed/simple;
+	bh=uusIErI4HeOfysgnPXad5kAwXvvzR/wWsvUSe4z9RVg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=dYJCT+brPQk4sPov5Gap7Dm9jq9IkvgErlnHta3+JFKox9XpHmttJEF3hPoBjsFAxtA/EXLVmxxph7K4QpiZRhP845IC1TL4hSN5o8clYymUlu/2XMt1TXt2pDMzi5SOhbnWi6p6zVSiL60rP2G/budSVss2CB6UiyS0axwqwCc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GehrZ58j; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3B0381F000E9;
-	Thu, 28 May 2026 20:26:57 +0000 (UTC)
+	 MIME-Version; b=kGgjZStebGwR74etvxZ7YRu0GqYtqS5JV0qVE7Kh2kQjYOyQAWL8Q0jeWPpKpUoU38LmgcyHd3KIK1WYDUw/wx5cGiLdT1u66kpVl/VlK5g2Gq5ZMnMEQAAORM4JG2tz9bF/NYxy9SD84TNPGyPZJV/J5ZfRJf0zQDoYAbLhjfw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=c5oMYJcH; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7E6EE1F000E9;
+	Thu, 28 May 2026 20:08:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780000017;
-	bh=CCB1QA4JI/BThIw+gSgMlC6bv4qWbC6vi46d4VxsqkY=;
+	s=korg; t=1779998925;
+	bh=C+Jhd43r1CVXLwaXTHW5l2GiA6iIAG6S07/sQX6Rpk4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=GehrZ58jn73pnXXTny6Eg6FeWk3197F/sbm1D8MnlLu62CXowz4Mv0iw8XYCsrIs6
-	 ziw2n1GbPtLkb/fx4ibUnS1NlORTmaH6Rue6PFxBslizAAryb/X9Llfn6YgFNw9l2+
-	 I+mvJpipO+jGv3my+u5NFcjzLseXH6Sf5Gv0coqM=
+	b=c5oMYJcHJXTNczou+cIQQf+Mlw6zgTbTw1ue5GvAEPWSZXMoNx++FXgtjaQhNRln9
+	 ioqKdKWhxc2+T15IQ2cy2lwD6begx2SAOc9pDncHhbpPm8BN2t/NfEH9pceI57r0DY
+	 N7Q9GgnxYvNHgQGmd879N3icRDF/zmioFbqQ49zA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	David Howells <dhowells@redhat.com>,
-	Paulo Alcantara <pc@manguebit.org>,
-	netfs@lists.linux.dev,
-	linux-fsdevel@vger.kernel.org,
-	Christian Brauner <brauner@kernel.org>,
+	Maher Azzouzi <maherazz04@gmail.com>,
+	Stefano Garzarella <sgarzare@redhat.com>,
+	"Michael S. Tsirkin" <mst@redhat.com>,
+	Arseniy Krasnov <avkrasnov@salutedevices.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 236/377] netfs: Fix overrun check in netfs_extract_user_iter()
+Subject: [PATCH 7.0 345/461] vsock/virtio: fix zerocopy completion for multi-skb sends
 Date: Thu, 28 May 2026 21:47:54 +0200
-Message-ID: <20260528194645.222309417@linuxfoundation.org>
+Message-ID: <20260528194657.359703301@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260528194638.371537336@linuxfoundation.org>
-References: <20260528194638.371537336@linuxfoundation.org>
+In-Reply-To: <20260528194646.819809818@linuxfoundation.org>
+References: <20260528194646.819809818@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -71,21 +71,21 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	URIBL_MULTI_FAIL(0.00)[msgid.link:server fail,sashiko.dev:server fail,manguebit.org:server fail,sto.lore.kernel.org:server fail,linuxfoundation.org:server fail,linux.dev:server fail];
-	TAGGED_FROM(0.00)[bounces-255837-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,redhat.com,salutedevices.com,kernel.org];
+	TAGGED_FROM(0.00)[bounces-255443-lists,stable=lfdr.de];
 	PRECEDENCE_BULK(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	FROM_HAS_DN(0.00)[];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
@@ -94,87 +94,175 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
 	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,sashiko.dev:url,linux.dev:email,manguebit.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim]
-X-Rspamd-Queue-Id: DF5E55F8EFB
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,msgid.link:url,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,salutedevices.com:email,sashiko.dev:url]
+X-Rspamd-Queue-Id: 9D4AB5F834B
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+7.0-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: David Howells <dhowells@redhat.com>
+From: Stefano Garzarella <sgarzare@redhat.com>
 
-[ Upstream commit 0ef37eef83fad3542ee06db2940433ae1a92b39d ]
+[ Upstream commit ae38d9179190a956e2a87a69ef1dd6f451b51c4d ]
 
-Fix netfs_extract_user_iter() so that if iov_iter_extract_pages() overfills
-pages[], then those pages don't get included in the iterator constructed at
-the end of the function.  If there was an overfill, memory corruption has
-already happened.
+When a large message is fragmented into multiple skbs, the zerocopy
+uarg is only allocated and attached to the last skb in the loop.
+Non-final skbs carry pinned user pages with no completion tracking,
+so the kernel has no way to notify userspace when those pages are safe
+to reuse. If the loop breaks early the uarg is never allocated at all,
+leaking pinned pages with no completion notification.
 
-Fixes: 85dd2c8ff368 ("netfs: Add a function to extract a UBUF or IOVEC into a BVEC iterator")
-Closes: https://sashiko.dev/#/patchset/20260427154639.180684-1-dhowells%40redhat.com
-Signed-off-by: David Howells <dhowells@redhat.com>
-Link: https://patch.msgid.link/20260512123404.719402-11-dhowells@redhat.com
-cc: Paulo Alcantara <pc@manguebit.org>
-cc: netfs@lists.linux.dev
-cc: linux-fsdevel@vger.kernel.org
-Signed-off-by: Christian Brauner <brauner@kernel.org>
+Fix this by following the approach used by TCP: allocate the zerocopy
+uarg (if not provided by the caller) before the send loop and attach
+it to every skb via skb_zcopy_set(), which takes a reference per skb.
+Each skb's completion properly decrements the refcount, and the
+notification only fires after the last skb is freed.
+On failure, if no data was sent, the uarg is cleanly aborted via
+net_zcopy_put_abort().
+
+This issue was initially discovered by sashiko while reviewing commit
+1cb36e252211 ("vsock/virtio: fix MSG_ZEROCOPY pinned-pages accounting")
+but was pre-existing.
+
+Fixes: 581512a6dc93 ("vsock/virtio: MSG_ZEROCOPY flag support")
+Closes: https://sashiko.dev/#/patchset/20260420132051.217589-1-sgarzare%40redhat.com
+Reported-by: Maher Azzouzi <maherazz04@gmail.com>
+Signed-off-by: Stefano Garzarella <sgarzare@redhat.com>
+Acked-by: Michael S. Tsirkin <mst@redhat.com>
+Acked-by: Arseniy Krasnov <avkrasnov@salutedevices.com>
+Link: https://patch.msgid.link/20260514092948.268720-1-sgarzare@redhat.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/netfs/iterator.c | 26 +++++++++++++++++---------
- 1 file changed, 17 insertions(+), 9 deletions(-)
+ net/vmw_vsock/virtio_transport_common.c | 83 ++++++++++---------------
+ 1 file changed, 34 insertions(+), 49 deletions(-)
 
-diff --git a/fs/netfs/iterator.c b/fs/netfs/iterator.c
-index 429e4396e1b00..b375567e0520e 100644
---- a/fs/netfs/iterator.c
-+++ b/fs/netfs/iterator.c
-@@ -72,21 +72,24 @@ ssize_t netfs_extract_user_iter(struct iov_iter *orig, size_t orig_len,
- 			break;
- 		}
+diff --git a/net/vmw_vsock/virtio_transport_common.c b/net/vmw_vsock/virtio_transport_common.c
+index 8bea16dd22407..e8fb2e20db0f3 100644
+--- a/net/vmw_vsock/virtio_transport_common.c
++++ b/net/vmw_vsock/virtio_transport_common.c
+@@ -72,34 +72,6 @@ static bool virtio_transport_can_zcopy(const struct virtio_transport *t_ops,
+ 	return true;
+ }
  
--		if (ret > count) {
--			pr_err("get_pages rc=%zd more than %zu\n", ret, count);
-+		if (WARN(ret > count,
-+			 "%s: extract_pages overrun %zd > %zu bytes\n",
-+			 __func__, ret, count)) {
-+			ret = -EIO;
- 			break;
- 		}
- 
--		count -= ret;
--		ret += offset;
--		cur_npages = DIV_ROUND_UP(ret, PAGE_SIZE);
+-static int virtio_transport_init_zcopy_skb(struct vsock_sock *vsk,
+-					   struct sk_buff *skb,
+-					   struct msghdr *msg,
+-					   size_t pkt_len,
+-					   bool zerocopy)
+-{
+-	struct ubuf_info *uarg;
 -
--		if (npages + cur_npages > max_pages) {
--			pr_err("Out of bvec array capacity (%u vs %u)\n",
--			       npages + cur_npages, max_pages);
-+		cur_npages = DIV_ROUND_UP(offset + ret, PAGE_SIZE);
-+		if (WARN(cur_npages > max_pages - npages,
-+			 "%s: extract_pages overrun %u > %u pages\n",
-+			 __func__, npages + cur_npages, max_pages)) {
-+			ret = -EIO;
- 			break;
- 		}
+-	if (msg->msg_ubuf) {
+-		uarg = msg->msg_ubuf;
+-		net_zcopy_get(uarg);
+-	} else {
+-		struct ubuf_info_msgzc *uarg_zc;
+-
+-		uarg = msg_zerocopy_realloc(sk_vsock(vsk),
+-					    pkt_len, NULL, false);
+-		if (!uarg)
+-			return -1;
+-
+-		uarg_zc = uarg_to_msgzc(uarg);
+-		uarg_zc->zerocopy = zerocopy ? 1 : 0;
+-	}
+-
+-	skb_zcopy_init(skb, uarg);
+-
+-	return 0;
+-}
+-
+ static int virtio_transport_fill_skb(struct sk_buff *skb,
+ 				     struct virtio_vsock_pkt_info *info,
+ 				     size_t len,
+@@ -319,8 +291,10 @@ static int virtio_transport_send_pkt_info(struct vsock_sock *vsk,
+ 	u32 src_cid, src_port, dst_cid, dst_port;
+ 	const struct virtio_transport *t_ops;
+ 	struct virtio_vsock_sock *vvs;
++	struct ubuf_info *uarg = NULL;
+ 	u32 pkt_len = info->pkt_len;
+ 	bool can_zcopy = false;
++	bool have_uref = false;
+ 	u32 rest_len;
+ 	int ret;
  
-+		count -= ret;
-+		ret += offset;
+@@ -362,6 +336,25 @@ static int virtio_transport_send_pkt_info(struct vsock_sock *vsk,
+ 		if (can_zcopy)
+ 			max_skb_len = min_t(u32, VIRTIO_VSOCK_MAX_PKT_BUF_SIZE,
+ 					    (MAX_SKB_FRAGS * PAGE_SIZE));
 +
- 		for (i = 0; i < cur_npages; i++) {
- 			len = ret > PAGE_SIZE ? PAGE_SIZE : ret;
- 			bvec_set_page(bv + npages + i, *pages++, len - offset, offset);
-@@ -97,6 +100,11 @@ ssize_t netfs_extract_user_iter(struct iov_iter *orig, size_t orig_len,
- 		npages += cur_npages;
++		if (info->msg->msg_flags & MSG_ZEROCOPY &&
++		    info->op == VIRTIO_VSOCK_OP_RW) {
++			uarg = info->msg->msg_ubuf;
++
++			if (!uarg) {
++				uarg = msg_zerocopy_realloc(sk_vsock(vsk),
++							    pkt_len, NULL, false);
++				if (!uarg) {
++					virtio_transport_put_credit(vvs, pkt_len);
++					return -ENOMEM;
++				}
++
++				if (!can_zcopy)
++					uarg_to_msgzc(uarg)->zerocopy = 0;
++
++				have_uref = true;
++			}
++		}
  	}
  
-+	/* Note: Don't try to clean up after EIO.  Either we got no pages, so
-+	 * nothing to clean up, or we got a buffer overrun, memory corruption
-+	 * and can't trust the stuff in the buffer (a WARN was emitted).
+ 	rest_len = pkt_len;
+@@ -380,27 +373,7 @@ static int virtio_transport_send_pkt_info(struct vsock_sock *vsk,
+ 			break;
+ 		}
+ 
+-		/* We process buffer part by part, allocating skb on
+-		 * each iteration. If this is last skb for this buffer
+-		 * and MSG_ZEROCOPY mode is in use - we must allocate
+-		 * completion for the current syscall.
+-		 *
+-		 * Pass pkt_len because msg iter is already consumed
+-		 * by virtio_transport_fill_skb(), so iter->count
+-		 * can not be used for RLIMIT_MEMLOCK pinned-pages
+-		 * accounting done by msg_zerocopy_realloc().
+-		 */
+-		if (info->msg && info->msg->msg_flags & MSG_ZEROCOPY &&
+-		    skb_len == rest_len && info->op == VIRTIO_VSOCK_OP_RW) {
+-			if (virtio_transport_init_zcopy_skb(vsk, skb,
+-							    info->msg,
+-							    pkt_len,
+-							    can_zcopy)) {
+-				kfree_skb(skb);
+-				ret = -ENOMEM;
+-				break;
+-			}
+-		}
++		skb_zcopy_set(skb, uarg, NULL);
+ 
+ 		virtio_transport_inc_tx_pkt(vvs, skb);
+ 
+@@ -424,6 +397,18 @@ static int virtio_transport_send_pkt_info(struct vsock_sock *vsk,
+ 
+ 	virtio_transport_put_credit(vvs, rest_len);
+ 
++	/* msg_zerocopy_realloc() initializes the ubuf_info refcnt to 1.
++	 * skb_zcopy_set() increases it for each skb, so we can drop that
++	 * initial reference to keep it balanced.
 +	 */
++	if (have_uref) {
++		if (rest_len == pkt_len)
++			/* No data sent, abort the notification. */
++			net_zcopy_put_abort(uarg, true);
++		else
++			net_zcopy_put(uarg);
++	}
 +
- 	if (ret < 0 && (ret == -ENOMEM || npages == 0)) {
- 		for (i = 0; i < npages; i++)
- 			unpin_user_page(bv[i].bv_page);
+ 	/* Return number of bytes, if any data has been sent. */
+ 	if (rest_len != pkt_len)
+ 		ret = pkt_len - rest_len;
 -- 
 2.53.0
 
