@@ -1,59 +1,59 @@
-Return-Path: <stable+bounces-255542-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-255902-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id eKzrEouiGGrClggAu9opvQ
-	(envelope-from <stable+bounces-255542-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:16:11 +0200
+	id eCNfAFOnGGpolwgAu9opvQ
+	(envelope-from <stable+bounces-255902-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:36:35 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8D6245F8370
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:16:10 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 92D675F9183
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:36:34 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id D7E0D3060C03
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 20:13:25 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 8B52130FD67E
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 20:30:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F0DED335566;
-	Thu, 28 May 2026 20:13:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B87C23002A0;
+	Thu, 28 May 2026 20:29:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BDx/MvKB"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="msiBhR58"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BD29033A702;
-	Thu, 28 May 2026 20:13:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 91BAE260580;
+	Thu, 28 May 2026 20:29:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779999203; cv=none; b=Z5IeApDisQMt5WcPSHgF5NDqXr6ImzbY4FmAJkRIZCMD2njpr2vyo+nhZ58VZ/BZwXFUR2vwG7wNmZHFvDaVCNhqHI6zVHl1HLrnKdhxFWk7gmOHmFwv0kcx1e/ToXQx/HIsW3fF+3pbprJ5liWRBEg6Rq8jZ3HfKRKcUwXKteA=
+	t=1780000199; cv=none; b=Eom8pdtdf5yY83m8OsrFI9lfxati6LstIKyoTNDb4KrbMiOHRpCsWvfzo2enCPre3fF2l2oTapcsJEYMXllgRCU4eXK73APziejo3Glv2I8XnPwTM3dp3c2qRIT/JNFsh4SaTc1+sRRBzLvSjv4hPpDcN2fZWC+4WFIKsF+MUig=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779999203; c=relaxed/simple;
-	bh=eNNzC7C3FyLtN6FuV2kyUV9/Ux7NvT4p8CqATgOxuX8=;
+	s=arc-20240116; t=1780000199; c=relaxed/simple;
+	bh=GtdV/AczT68QLI0xQXkbh1iRDevdPUSEn5ykSwBY36E=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ScY3nLSorgv9HHsiRQNxbvPfIBwfAwjjBF8YCX9neDWCVIZZU11iKK0N01bgSt0TMSb5D02ZNuyC/LMR+Z88qEr9lyY9xm0+/pDiYbdbsFUteGrWBdYI8S0bZhCV6VbCxBd9NZcdVUS/myPWVU9gSighV387u8D3rdu3KllIIZs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BDx/MvKB; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 27D931F000E9;
-	Thu, 28 May 2026 20:13:21 +0000 (UTC)
+	 MIME-Version; b=MPHUZfvBRIQAd+xMjbjFrK6jbg1DPpWP6Kw1BRgtyXTTBglnR1qvU5fqZi30+8yVwXWESEgyuWJjoxjdULVROy9GpQDMN8G8h2fZ8jHjYNc8b/C3MN1rc5n6NUw0PT9lx7jDgaToCavmrvBGAOytGwKM6iw4/FomZ31oajzZuio=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=msiBhR58; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EECA11F000E9;
+	Thu, 28 May 2026 20:29:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779999202;
-	bh=Ml+qXZxxBBjf/fN7mo6dLrvOvhOczPSGKk/gAuqelTM=;
+	s=korg; t=1780000198;
+	bh=InUCaieJlUg7Qoq8aY5P/RL08fAhVESKBHB6S+RP+2U=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=BDx/MvKBEwXXdJnrMMQnXl2zlb2MnbTAip1QbbQYgCEPQmTrvWeb4c5SWpQbQ0fql
-	 wbBzaGzAVUm3IEnixvQdYyWU1u2IPrs1+Id7VUygQujsqPVQperg5Vpu2TrYR+3uTB
-	 dJRsbe24lSAqO5LOuOWs4Q/sGo3m9Kzf33JlXapM=
+	b=msiBhR5834pXKg/BtrdvW7qUOzS13e1aZ9tpMN9JLT7P8SnxHpB7aMrg2LQNNxDxn
+	 jX0wkBySRsl5E0lRHIC5Qfp/m6knVyv3K1qAHOI7ubRgMqsZ4+6+DXRlV8HUqJAEky
+	 QV9cv8KpOkILFQqbTxpOglCu8UFl468mBqNxh6Ig=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Christoph Hellwig <hch@lst.de>,
-	Keith Busch <kbusch@kernel.org>,
+	Guangshuo Li <lgs201920130244@gmail.com>,
+	Leon Romanovsky <leon@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 7.0 446/461] nvme-pci: fix dma_vecs leak on p2p memory
+Subject: [PATCH 6.18 337/377] RDMA/rtrs: Fix use-after-free in path file creation cleanup
 Date: Thu, 28 May 2026 21:49:35 +0200
-Message-ID: <20260528194700.444052318@linuxfoundation.org>
+Message-ID: <20260528194648.175851014@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260528194646.819809818@linuxfoundation.org>
-References: <20260528194646.819809818@linuxfoundation.org>
+In-Reply-To: <20260528194638.371537336@linuxfoundation.org>
+References: <20260528194638.371537336@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,68 +66,88 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	TAGGED_FROM(0.00)[bounces-255902-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,kernel.org];
 	RCVD_COUNT_THREE(0.00)[4];
-	RCVD_TLS_LAST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-255542-lists,stable=lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
 	TO_DN_SOME(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	RCPT_COUNT_FIVE(0.00)[6];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
+	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim,lst.de:email]
-X-Rspamd-Queue-Id: 8D6245F8370
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,msgid.link:url]
+X-Rspamd-Queue-Id: 92D675F9183
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-7.0-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Keith Busch <kbusch@kernel.org>
+From: Guangshuo Li <lgs201920130244@gmail.com>
 
-[ Upstream commit 85686c72966c5ee637893f124ddb31a1cace7bee ]
+[ Upstream commit 5b74373390113fba798a76b483837029ab010fef ]
 
-We don't unmap P2P memory, so we don't need to track it. The dma_vec
-allocation was getting leaked on the completion.
+In the error path of rtrs_srv_create_path_files(), the sysfs root folders
+may already have been created and srv_path->kobj may already have been
+initialized. If a later step fails, the cleanup currently calls
+kobject_put(&srv_path->kobj) before
+rtrs_srv_destroy_once_sysfs_root_folders(srv_path).
 
-Fixes: b8b7570a7ec87 ("nvme-pci: fix dma unmapping when using PRPs and not using the IOVA mapping")
-Reviewed-by: Christoph Hellwig <hch@lst.de>
-Signed-off-by: Keith Busch <kbusch@kernel.org>
+kobject_put() may drop the last reference to srv_path->kobj and invoke the
+release callback, rtrs_srv_release(), which frees srv_path. The following
+call to rtrs_srv_destroy_once_sysfs_root_folders(srv_path) then
+dereferences srv_path internally to access srv_path->srv, resulting in a
+use-after-free.
+
+This failure path is reached before rtrs_srv_create_path_files() returns
+success, so the successful-path lifetime handling is not involved.
+
+Fix this by destroying the sysfs root folders before calling
+kobject_put(&srv_path->kobj), so srv_path is still valid while the helper
+accesses it.
+
+This issue was found by a static analysis tool I am developing.
+
+Fixes: ae4c81644e91 ("RDMA/rtrs-srv: Rename rtrs_srv_sess to rtrs_srv_path")
+Signed-off-by: Guangshuo Li <lgs201920130244@gmail.com>
+Link: https://patch.msgid.link/20260514113834.865530-1-lgs201920130244@gmail.com
+Signed-off-by: Leon Romanovsky <leon@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/nvme/host/pci.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/infiniband/ulp/rtrs/rtrs-srv-sysfs.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/nvme/host/pci.c b/drivers/nvme/host/pci.c
-index 6d522c52dca67..5b998db940bd6 100644
---- a/drivers/nvme/host/pci.c
-+++ b/drivers/nvme/host/pci.c
-@@ -966,7 +966,8 @@ static bool nvme_pci_prp_save_mapping(struct request *req,
- {
- 	struct nvme_iod *iod = blk_mq_rq_to_pdu(req);
+diff --git a/drivers/infiniband/ulp/rtrs/rtrs-srv-sysfs.c b/drivers/infiniband/ulp/rtrs/rtrs-srv-sysfs.c
+index 3f305e694fe8c..1b1c6ea4ee5a4 100644
+--- a/drivers/infiniband/ulp/rtrs/rtrs-srv-sysfs.c
++++ b/drivers/infiniband/ulp/rtrs/rtrs-srv-sysfs.c
+@@ -295,8 +295,8 @@ int rtrs_srv_create_path_files(struct rtrs_srv_path *srv_path)
+ put_kobj:
+ 	kobject_del(&srv_path->kobj);
+ destroy_root:
+-	kobject_put(&srv_path->kobj);
+ 	rtrs_srv_destroy_once_sysfs_root_folders(srv_path);
++	kobject_put(&srv_path->kobj);
  
--	if (dma_use_iova(&iod->dma_state) || !dma_need_unmap(dma_dev))
-+	if (dma_use_iova(&iod->dma_state) || !dma_need_unmap(dma_dev) ||
-+	    (iod->flags & IOD_DATA_P2P))
- 		return true;
- 
- 	if (!iod->nr_dma_vecs) {
+ 	return err;
+ }
 -- 
 2.53.0
 
