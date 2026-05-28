@@ -1,60 +1,58 @@
-Return-Path: <stable+bounces-255456-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-256050-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id ONxFKBahGGqblggAu9opvQ
-	(envelope-from <stable+bounces-255456-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:09:58 +0200
+	id mFDqCVOpGGpolwgAu9opvQ
+	(envelope-from <stable+bounces-256050-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:45:07 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id AF3DB5F7F31
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:09:57 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id BED2E5F9741
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:45:06 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 30CA33023C42
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 20:09:25 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id A78C3311170C
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 20:37:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 69D46409605;
-	Thu, 28 May 2026 20:09:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8186B33B6FC;
+	Thu, 28 May 2026 20:36:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LFota0lJ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zSiPhC/r"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 19A3C32ABC0;
-	Thu, 28 May 2026 20:09:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 50A0C223328;
+	Thu, 28 May 2026 20:36:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779998963; cv=none; b=l3E/RZHqdMz/m6mSHsod4dAq4pOctq4CeaKoqGPvgG/vLx408UEH8yg85Mu98AQoBgtgAu58/fi1ahxr14cHzF5j8pHfDNQfafpHpGjmz+MZfMVllaGe4ul+KxXouzhyUXE39yYaobIrQ7LWAajcUiXQlrVE68xO/fF0n+dloho=
+	t=1780000614; cv=none; b=EPl5Hfy9QdEVBqLb7t7BFZg4crG6DQaNzAPEy0czhmeNSP+ixPaTCCBWu1kwk6Ic7UB9Lw3z5bQ/pPVEWjqIMCmM+dwu4r9paCMZyyMsWUmyrP8mtSCUNeynSjpVn8i+5oUdH8dw7+CQix2pC5fQQ8+S9YiNzhnsEuRx7Tox26Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779998963; c=relaxed/simple;
-	bh=ZUIeXDfovQaTY/1rVsW5E1Lwdbevr1ET+Mc9U4k++z4=;
+	s=arc-20240116; t=1780000614; c=relaxed/simple;
+	bh=QGWIUqUU+kPMqEjV3+IKBf0NkZeIYhQrQUt/i3DNonQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=JHfsF0xNuAxSnDYGDTcwi5TDCXvbDJpIQR44B3uyIYK9uk0zNqqevZU3ymwL6JQeEFGtcVBnjKB65CJd3K7K3rXqJblFNJq5XL/GraSqzydZ8HxaHLDPdP0NOzpCD1fKfJeoF2iPFKFfMFFqoeO4hILcyNLPytYIRkbPMxRWDEA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LFota0lJ; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 75F771F000E9;
-	Thu, 28 May 2026 20:09:21 +0000 (UTC)
+	 MIME-Version; b=V4q3VVy9wcbwKNQa777SxskxN90clvTSseelE263e3ZZcHXOJegZPPph/gGGA3esDAmq9J0XDmANr+0Tsnvfn5kLC3vkBUgpXErze9SApwGpYKFE+VotYL0pMZkGwmuiMhhD+pG3FfKl7QeAxSq+wLlOdsBPkEiZKwA8XDZucF8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zSiPhC/r; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AEB3D1F000E9;
+	Thu, 28 May 2026 20:36:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779998962;
-	bh=3DSPni7VBq6XjQC/eTzOGaZK8+rO9rj/xEurSRFp4Uo=;
+	s=korg; t=1780000613;
+	bh=TgXSUwtRSs9nq44SI+pRGYSYohxsbEh/SP3qI3Qh7O8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=LFota0lJbuZIgzf3vzaB8GimFV/V2e0cbw6s4EHfPswB+Xt03oh+D0FnFhdbEATO7
-	 dbLGtbUVv0tb2i9zPytO0Oqb9ulHu36LCJzsFH/pniVQ2mAz1XjZgoE8XH+/mrFD5n
-	 coZjX28fG+373kqN9wlPYCjCQuPB2a2ba+WbLXhM=
+	b=zSiPhC/rUAU70P7k8kc4XTm9uJAZTpy8nbV9x7/Bbdra9Ch9jJ5FRryp9Ht7bMVhX
+	 hQexFe//CqCO+gDjBIzA6N7eVy8ahGzT0sBr6njyiOsKvQfLoRoHr9aSma3eGZTkkF
+	 IUd3hEDlEeikXSO9wQuf1kkqZx9OdLptHoocR918=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Salendarsingh Gaud <sgaud@qti.qualcomm.com>,
-	Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>,
-	Rob Clark <robin.clark@oss.qualcomm.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 7.0 352/461] drm/msm/snapshot: fix dumping of the unaligned regions
+	Michael Bommarito <michael.bommarito@gmail.com>,
+	"Martin K. Petersen" <martin.petersen@oracle.com>
+Subject: [PATCH 6.12 107/272] scsi: isci: Fix use-after-free in device removal path
 Date: Thu, 28 May 2026 21:48:01 +0200
-Message-ID: <20260528194657.597846371@linuxfoundation.org>
+Message-ID: <20260528194632.372634153@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260528194646.819809818@linuxfoundation.org>
-References: <20260528194646.819809818@linuxfoundation.org>
+In-Reply-To: <20260528194629.379955525@linuxfoundation.org>
+References: <20260528194629.379955525@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,140 +63,98 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-255456-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TO_DN_SOME(0.00)[];
+	TAGGED_FROM(0.00)[bounces-256050-lists,stable=lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,oracle.com];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
-	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[7];
-	MID_RHS_MATCH_FROM(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	NEURAL_HAM(-0.00)[-0.999];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,qualcomm.com:email]
-X-Rspamd-Queue-Id: AF3DB5F7F31
+	MID_RHS_MATCH_FROM(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[5];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,msgid.link:url,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,oracle.com:email]
+X-Rspamd-Queue-Id: BED2E5F9741
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-7.0-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
+From: Michael Bommarito <michael.bommarito@gmail.com>
 
-[ Upstream commit 76824d2467feb1828b745d6add2541918d7be3da ]
+commit b52a8d52c3125ec9a93106ed816582368de34426 upstream.
 
-The snapshotting code internally aligns data segment to 16 bytes. This
-works fine for DPU code (where most of the regions are aligned), but
-fails for snapshotting of the DSI data (because DSI data region is
-shifted by 4 bytes). Fix the code by removing length alignment and by
-accurately printing last registers in the region. While reworking the
-code also fix the 16x memory overallocation in
-msm_disp_state_dump_regs().
+The ISCI completion tasklet is initialized in isci_host_alloc()
+(drivers/scsi/isci/init.c:496) and scheduled from both MSI-X and legacy
+interrupt handlers (drivers/scsi/isci/host.c:223,613).
 
-Fixes: 98659487b845 ("drm/msm: add support to take dpu snapshot")
-Reported-by: Salendarsingh Gaud <sgaud@qti.qualcomm.com>
-Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
-Patchwork: https://patchwork.freedesktop.org/patch/725449/
-Message-ID: <20260516-msm-fix-dsi-dump-2-v2-1-9e49fb2d240e@oss.qualcomm.com>
-Signed-off-by: Rob Clark <robin.clark@oss.qualcomm.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+isci_host_deinit() stops the controller and waits for stop completion,
+but it never kills completion_tasklet before teardown continues. A
+top-of-function tasklet_kill() is not sufficient here: interrupts are
+only disabled when isci_host_stop_complete() runs, so until
+wait_for_stop() returns the IRQ handlers can still requeue the
+tasklet. The tasklet callback also re-enables interrupts after draining
+completions, so killing the tasklet before the source is quiesced leaves
+the same race open.
+
+Once wait_for_stop() returns, no further IRQ-driven scheduling can
+occur. Kill completion_tasklet there so teardown cannot race a queued
+tasklet running on a dead ihost. On remove or unload, the stale callback
+can otherwise dereference ihost and touch ihost->smu_registers after the
+host lifetime ends.
+
+A UML + KASAN analogue reproduced the failure class both with no
+tasklet_kill() and with tasklet_kill() placed before source quiesce, and
+stayed clean once the kill happened after quiescing the scheduling
+source.
+
+This mirrors commit f6ab594672d4 ("scsi: aic94xx: fix use-after-free in
+device removal path"), but ISCI needs the kill after wait_for_stop().
+
+Fixes: 6f231dda6808 ("isci: Intel(R) C600 Series Chipset Storage Control Unit Driver")
+Cc: stable@vger.kernel.org
+Assisted-by: Claude:claude-opus-4-7
+Assisted-by: Codex:gpt-5-4
+Signed-off-by: Michael Bommarito <michael.bommarito@gmail.com>
+Link: https://patch.msgid.link/20260419210420.2134639-1-michael.bommarito@gmail.com
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- .../gpu/drm/msm/disp/msm_disp_snapshot_util.c | 24 ++++++++++++++-----
- 1 file changed, 18 insertions(+), 6 deletions(-)
+ drivers/scsi/isci/host.c |    3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/drivers/gpu/drm/msm/disp/msm_disp_snapshot_util.c b/drivers/gpu/drm/msm/disp/msm_disp_snapshot_util.c
-index 427d3ee2b8337..6e0f8671bfb46 100644
---- a/drivers/gpu/drm/msm/disp/msm_disp_snapshot_util.c
-+++ b/drivers/gpu/drm/msm/disp/msm_disp_snapshot_util.c
-@@ -9,7 +9,7 @@
+--- a/drivers/scsi/isci/host.c
++++ b/drivers/scsi/isci/host.c
+@@ -1252,6 +1252,9 @@ void isci_host_deinit(struct isci_host *
  
- #include "msm_disp_snapshot.h"
+ 	wait_for_stop(ihost);
  
--static void msm_disp_state_dump_regs(u32 **reg, u32 aligned_len, void __iomem *base_addr)
-+static void msm_disp_state_dump_regs(u32 **reg, u32 len, void __iomem *base_addr)
- {
- 	u32 len_padded;
- 	u32 num_rows;
-@@ -19,11 +19,11 @@ static void msm_disp_state_dump_regs(u32 **reg, u32 aligned_len, void __iomem *b
- 	void __iomem *end_addr;
- 	int i;
- 
--	len_padded = aligned_len * REG_DUMP_ALIGN;
--	num_rows = aligned_len / REG_DUMP_ALIGN;
-+	len_padded = round_up(len, REG_DUMP_ALIGN);
-+	num_rows = DIV_ROUND_UP(len, REG_DUMP_ALIGN);
- 
- 	addr = base_addr;
--	end_addr = base_addr + aligned_len;
-+	end_addr = base_addr + len;
- 
- 	*reg = kvzalloc(len_padded, GFP_KERNEL);
- 	if (!*reg)
-@@ -48,8 +48,8 @@ static void msm_disp_state_dump_regs(u32 **reg, u32 aligned_len, void __iomem *b
- static void msm_disp_state_print_regs(const u32 *dump_addr, u32 len,
- 		void __iomem *base_addr, struct drm_printer *p)
- {
-+	void __iomem *addr, *end_addr;
- 	int i;
--	void __iomem *addr;
- 	u32 num_rows;
- 
- 	if (!dump_addr) {
-@@ -58,6 +58,7 @@ static void msm_disp_state_print_regs(const u32 *dump_addr, u32 len,
- 	}
- 
- 	addr = base_addr;
-+	end_addr = base_addr + len;
- 	num_rows = len / REG_DUMP_ALIGN;
- 
- 	for (i = 0; i < num_rows; i++) {
-@@ -67,6 +68,17 @@ static void msm_disp_state_print_regs(const u32 *dump_addr, u32 len,
- 				dump_addr[i * 4 + 2], dump_addr[i * 4 + 3]);
- 		addr += REG_DUMP_ALIGN;
- 	}
++	/* No further IRQ-driven scheduling can happen past wait_for_stop(). */
++	tasklet_kill(&ihost->completion_tasklet);
 +
-+	if (addr != end_addr) {
-+		drm_printf(p, "0x%lx : %08x",
-+			   (unsigned long)(addr - base_addr),
-+			   dump_addr[i * 4]);
-+		if (addr + 0x4 < end_addr)
-+			drm_printf(p, " %08x", dump_addr[i * 4 + 1]);
-+		if (addr + 0x8 < end_addr)
-+			drm_printf(p, " %08x", dump_addr[i * 4 + 2]);
-+		drm_printf(p, "\n");
-+	}
- }
- 
- void msm_disp_state_print(struct msm_disp_state *state, struct drm_printer *p)
-@@ -185,7 +197,7 @@ void msm_disp_snapshot_add_block(struct msm_disp_state *disp_state, u32 len,
- 	va_end(va);
- 
- 	INIT_LIST_HEAD(&new_blk->node);
--	new_blk->size = ALIGN(len, REG_DUMP_ALIGN);
-+	new_blk->size = len;
- 	new_blk->base_addr = base_addr;
- 
- 	msm_disp_state_dump_regs(&new_blk->state, new_blk->size, base_addr);
--- 
-2.53.0
-
+ 	/* phy stop is after controller stop to allow port and device to
+ 	 * go idle before shutting down the phys, but the expectation is
+ 	 * that i/o has been shut off well before we reach this
 
 
 
