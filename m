@@ -1,64 +1,60 @@
-Return-Path: <stable+bounces-256018-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-255417-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id cABCB6uoGGpolwgAu9opvQ
-	(envelope-from <stable+bounces-256018-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:42:19 +0200
+	id mDaNNdSiGGrKlggAu9opvQ
+	(envelope-from <stable+bounces-255417-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:17:24 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id B69AA5F95D0
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:42:18 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 806DC5F8464
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:17:24 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id CB54D30E713F
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 20:35:25 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id ADEA43294446
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 20:07:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 59236313550;
-	Thu, 28 May 2026 20:35:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CC36B344DAC;
+	Thu, 28 May 2026 20:07:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="V9yM6iaj"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Gut+cRoq"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F300033439A;
-	Thu, 28 May 2026 20:35:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8B5832F691F;
+	Thu, 28 May 2026 20:07:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780000525; cv=none; b=jUYc+jd0wwN0fSupESb5077JOqBQB2TUeFZTbLFeIsCT99hL0mRKUa4mOtEN+umGWv8N1Yfhh5jQs+IT+QviruCOniMGemsVgnUCV7ecV7pBIyvqBVjdTQmE3GmsFfIZAFnqdPZlmrca8unmuFCDTVpcLgGR2/yWBLoaBoAMgac=
+	t=1779998851; cv=none; b=BzJ7vHVCA7UI8iED2JQsbH3KCKCnXGbPe7nFOTC0y8bP20ujPwsi06Bk976HllNh3kdDTDQ2nfcuANWgCY7BXI/TBE7ct9DoBjs7hk7T3m0ucTw7Rn6moMhH5T/iirPPmZ5iG4Wex4NtuL/n4wVEka7uMZeXTBgXu6cwM4adR1A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780000525; c=relaxed/simple;
-	bh=J0/tVuFlgoo8L2e5MxgrQYirpb8EUXklI4g3jW0z8HE=;
+	s=arc-20240116; t=1779998851; c=relaxed/simple;
+	bh=+hXViPB1ExhMbgcYoQ09sUZmMadu2XiVbEQbfbF/GPU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=agitos/REv6eWhGeclMAKU43VoUi8cucAhjvP652qfU74vgiqhHeLJbEw/KDBYgDcNPd+BJVjpxXRLzwsdcCsiS//uJXuoSYwP8oKqmsoVvbf2IcRBw76eXyszZwCoPNRfhO7yKIDirnDljmblRiI9mqgTidG9ZQ2g4N7aKdhzQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=V9yM6iaj; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 65D251F000E9;
-	Thu, 28 May 2026 20:35:23 +0000 (UTC)
+	 MIME-Version; b=jkjdV3rP8l1EHmOiczdPvPL7OpZjxVid9fM7xHFnqkFzGU1XGLBAF96Ubpfc3Kxp/iG240YsCaqhzG5jb08caDYLeD0S4rYfyZhRmrvPhwubr85NmBZvZGQdtNIDjBlwEEcNwOUwj9zyNDWkhbWRajQbRDoQSXy7+TKV9tH5TzE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Gut+cRoq; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E979A1F000E9;
+	Thu, 28 May 2026 20:07:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780000523;
-	bh=vkUY86RQuUwB5STxF+xcSrGfXx9MFOWrx34wHj/QM+4=;
+	s=korg; t=1779998850;
+	bh=nryaaaIxmy5xZWccqneL6+Rqfkanl6K2sjN9hxM6qJk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=V9yM6iajwvVh7ZVfpBQlDsji+WjWfBUVOq1YN3LjkvJxZmO99uyBQ6XWlaIhuPpHK
-	 FeZsfQfhlMiZsw9TOK/b113EZhFjTERCmV4EWm2a2sgDYLb/imFg/lLUFze6NNI62U
-	 VrPo+26ExPUemvXTSM5U14Lfjz9zQT5UxWxCPru0=
+	b=Gut+cRoq/g9b3GyJb9K6AKKycR1tk2SbNSqYs9zxxm5tCODp3k/IS5K3jfkk45PGL
+	 KnBj2xXX8xrz8B6CaIBuvUnlVgwKEzBlHi6GkYFftI7uEvxQG449LBC58nQAZKyrz8
+	 KJB4MXxmLeuuibk+qmLTrDephG2QB4UeTnfV4Whk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable@kernel.org,
-	Yuan Tan <yuantan098@gmail.com>,
-	Yifan Wu <yifanwucs@gmail.com>,
-	Juefei Pu <tomapufckgml@gmail.com>,
-	Xin Liu <bird@lzu.edu.cn>,
-	Nan Li <tonanli66@gmail.com>,
-	Ren Wei <n05ec@lzu.edu.cn>,
-	Pablo Neira Ayuso <pablo@netfilter.org>
-Subject: [PATCH 6.12 075/272] netfilter: ipset: stop hash:* range iteration at end
-Date: Thu, 28 May 2026 21:47:29 +0200
-Message-ID: <20260528194631.475336711@linuxfoundation.org>
+	Sabrina Dubroca <sd@queasysnail.net>,
+	David Carlier <devnexen@gmail.com>,
+	Antonio Quartulli <antonio@openvpn.net>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 7.0 321/461] ovpn: respect peer refcount in CMD_NEW_PEER error path
+Date: Thu, 28 May 2026 21:47:30 +0200
+Message-ID: <20260528194656.607506019@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260528194629.379955525@linuxfoundation.org>
-References: <20260528194629.379955525@linuxfoundation.org>
+In-Reply-To: <20260528194646.819809818@linuxfoundation.org>
+References: <20260528194646.819809818@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -73,163 +69,141 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,kernel.org,gmail.com,lzu.edu.cn,netfilter.org];
-	TAGGED_FROM(0.00)[bounces-256018-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,queasysnail.net,gmail.com,openvpn.net,kernel.org];
+	TAGGED_FROM(0.00)[bounces-255417-lists,stable=lfdr.de];
 	PRECEDENCE_BULK(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	FROM_HAS_DN(0.00)[];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[11];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
 	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,lzu.edu.cn:email,netfilter.org:email,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim]
-X-Rspamd-Queue-Id: B69AA5F95D0
+	DBL_BLOCKED_OPENRESOLVER(0.00)[queasysnail.net:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,openvpn.net:email]
+X-Rspamd-Queue-Id: 806DC5F8464
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+7.0-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Nan Li <tonanli66@gmail.com>
+From: David Carlier <devnexen@gmail.com>
 
-commit 0d3a282ab5f165fc207ff49ea5b6ad8f54616bd6 upstream.
+[ Upstream commit 1fef6614673ff0846d30acdeeaf3cf98bb5f6116 ]
 
-The following hash set variants:
+ovpn_nl_peer_new_doit()'s error path calls ovpn_peer_release() directly
+rather than ovpn_peer_put(), bypassing the kref. The accompanying
+comment ("peer was not yet hashed, thus it is not used in any context")
+holds for UDP but not for TCP.
 
-hash:ip,mark
-hash:ip,port
-hash:ip,port,ip
-hash:ip,port,net
+For UDP, the ovpn_socket union uses the .ovpn arm and never points back
+at a peer; UDP encap_recv looks up peers via the not-yet-populated
+hashtables, so the new peer is unreachable until ovpn_peer_add()
+publishes it.
 
-iterate IPv4 ranges with a 32-bit iterator.
+For TCP, ovpn_socket_new() sets ovpn_sock->peer and
+ovpn_tcp_socket_attach() publishes ovpn_sock via rcu_assign_sk_user_data().
+>From that moment until ovpn_socket_release() detaches in the error path,
+the TCP fd is fully wired: userspace recvmsg / sendmsg / close / poll
+on the fd, as well as the strparser-driven ovpn_tcp_rcv() path, can
+reach the peer through sk_user_data -> ovpn_sock->peer and bump its
+refcount via ovpn_peer_hold().
 
-The iterator must stop once the last address in the requested range has
-been processed. Advancing it once more can move the traversal state past
-the end of the request, so a later retry may continue from an unintended
-position.
+ovpn_tcp_socket_wait_finish() (called inside ovpn_socket_release())
+drains strparser and the tx work, but does not synchronize with
+userspace syscall callers that already hold a peer reference. If
+ovpn_nl_peer_modify() or ovpn_peer_add() returns an error while such
+a caller is in flight - notably an ovpn_tcp_recvmsg() blocked in
+__skb_recv_datagram() on peer->tcp.user_queue - the direct
+ovpn_peer_release() destroys the peer while the caller still holds
+the reference, and the eventual ovpn_peer_put() from that caller
+operates on freed memory.
 
-Handle the iterator increment explicitly at the end of the loop and stop
-once the upper bound has been processed. This keeps the existing retry
-behaviour intact for valid ranges while preventing traversal from
-continuing past the original boundary.
+Replace the direct destructor call with ovpn_peer_put() so the kref
+correctly defers destruction until the last reference is dropped.
+In the common case where no concurrent user is present, behaviour is
+unchanged: the kref hits zero immediately and ovpn_peer_release_kref()
+runs the same destructor.
 
-Fixes: 48596a8ddc46 ("netfilter: ipset: Fix adding an IPv4 range containing more than 2^31 addresses")
-Cc: stable@kernel.org
-Reported-by: Yuan Tan <yuantan098@gmail.com>
-Reported-by: Yifan Wu <yifanwucs@gmail.com>
-Reported-by: Juefei Pu <tomapufckgml@gmail.com>
-Reported-by: Xin Liu <bird@lzu.edu.cn>
-Signed-off-by: Nan Li <tonanli66@gmail.com>
-Signed-off-by: Ren Wei <n05ec@lzu.edu.cn>
-Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+With this conversion ovpn_peer_release() has no callers outside peer.c
+- ovpn_peer_release_kref() in the same translation unit is the only
+remaining user - so make it static and drop its declaration from
+peer.h.
+
+Fixes: 11851cbd60ea ("ovpn: implement TCP transport")
+Reviewed-by: Sabrina Dubroca <sd@queasysnail.net>
+Assisted-by: Claude:claude-opus-4-7
+Signed-off-by: David Carlier <devnexen@gmail.com>
+Signed-off-by: Antonio Quartulli <antonio@openvpn.net>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/netfilter/ipset/ip_set_hash_ipmark.c    |    6 +++++-
- net/netfilter/ipset/ip_set_hash_ipport.c    |    5 ++++-
- net/netfilter/ipset/ip_set_hash_ipportip.c  |    5 ++++-
- net/netfilter/ipset/ip_set_hash_ipportnet.c |    5 ++++-
- 4 files changed, 17 insertions(+), 4 deletions(-)
+ drivers/net/ovpn/netlink.c | 8 +++++---
+ drivers/net/ovpn/peer.c    | 2 +-
+ drivers/net/ovpn/peer.h    | 1 -
+ 3 files changed, 6 insertions(+), 5 deletions(-)
 
---- a/net/netfilter/ipset/ip_set_hash_ipmark.c
-+++ b/net/netfilter/ipset/ip_set_hash_ipmark.c
-@@ -150,7 +150,7 @@ hash_ipmark4_uadt(struct ip_set *set, st
+diff --git a/drivers/net/ovpn/netlink.c b/drivers/net/ovpn/netlink.c
+index c7f3824376302..bdb56ef0c9040 100644
+--- a/drivers/net/ovpn/netlink.c
++++ b/drivers/net/ovpn/netlink.c
+@@ -455,10 +455,12 @@ int ovpn_nl_peer_new_doit(struct sk_buff *skb, struct genl_info *info)
+ sock_release:
+ 	ovpn_socket_release(peer);
+ peer_release:
+-	/* release right away because peer was not yet hashed, thus it is not
+-	 * used in any context
++	/* For UDP, the peer is unreachable until added to the hashtables, so
++	 * dropping the initial reference is enough. For TCP, the peer may be
++	 * concurrently reachable via sk_user_data->peer until
++	 * ovpn_socket_release() detaches; rely on the refcount.
+ 	 */
+-	ovpn_peer_release(peer);
++	ovpn_peer_put(peer);
  
- 	if (retried)
- 		ip = ntohl(h->next.ip);
--	for (; ip <= ip_to; ip++, i++) {
-+	for (; ip <= ip_to; i++) {
- 		e.ip = htonl(ip);
- 		if (i > IPSET_MAX_RANGE) {
- 			hash_ipmark4_data_next(&h->next, &e);
-@@ -162,6 +162,10 @@ hash_ipmark4_uadt(struct ip_set *set, st
- 			return ret;
- 
- 		ret = 0;
-+
-+		if (ip == ip_to)
-+			break;
-+		ip++;
- 	}
  	return ret;
  }
---- a/net/netfilter/ipset/ip_set_hash_ipport.c
-+++ b/net/netfilter/ipset/ip_set_hash_ipport.c
-@@ -186,7 +186,7 @@ hash_ipport4_uadt(struct ip_set *set, st
- 
- 	if (retried)
- 		ip = ntohl(h->next.ip);
--	for (; ip <= ip_to; ip++) {
-+	for (; ip <= ip_to;) {
- 		p = retried && ip == ntohl(h->next.ip) ? ntohs(h->next.port)
- 						       : port;
- 		for (; p <= port_to; p++, i++) {
-@@ -203,6 +203,9 @@ hash_ipport4_uadt(struct ip_set *set, st
- 
- 			ret = 0;
- 		}
-+		if (ip == ip_to)
-+			break;
-+		ip++;
- 	}
- 	return ret;
+diff --git a/drivers/net/ovpn/peer.c b/drivers/net/ovpn/peer.c
+index 3716a1d828015..f69694e00dcee 100644
+--- a/drivers/net/ovpn/peer.c
++++ b/drivers/net/ovpn/peer.c
+@@ -348,7 +348,7 @@ static void ovpn_peer_release_rcu(struct rcu_head *head)
+  * ovpn_peer_release - release peer private members
+  * @peer: the peer to release
+  */
+-void ovpn_peer_release(struct ovpn_peer *peer)
++static void ovpn_peer_release(struct ovpn_peer *peer)
+ {
+ 	ovpn_crypto_state_release(&peer->crypto);
+ 	spin_lock_bh(&peer->lock);
+diff --git a/drivers/net/ovpn/peer.h b/drivers/net/ovpn/peer.h
+index a1423f2b09e06..4de5aeae33f7d 100644
+--- a/drivers/net/ovpn/peer.h
++++ b/drivers/net/ovpn/peer.h
+@@ -125,7 +125,6 @@ static inline bool ovpn_peer_hold(struct ovpn_peer *peer)
+ 	return kref_get_unless_zero(&peer->refcount);
  }
---- a/net/netfilter/ipset/ip_set_hash_ipportip.c
-+++ b/net/netfilter/ipset/ip_set_hash_ipportip.c
-@@ -182,7 +182,7 @@ hash_ipportip4_uadt(struct ip_set *set,
  
- 	if (retried)
- 		ip = ntohl(h->next.ip);
--	for (; ip <= ip_to; ip++) {
-+	for (; ip <= ip_to;) {
- 		p = retried && ip == ntohl(h->next.ip) ? ntohs(h->next.port)
- 						       : port;
- 		for (; p <= port_to; p++, i++) {
-@@ -199,6 +199,9 @@ hash_ipportip4_uadt(struct ip_set *set,
+-void ovpn_peer_release(struct ovpn_peer *peer);
+ void ovpn_peer_release_kref(struct kref *kref);
  
- 			ret = 0;
- 		}
-+		if (ip == ip_to)
-+			break;
-+		ip++;
- 	}
- 	return ret;
- }
---- a/net/netfilter/ipset/ip_set_hash_ipportnet.c
-+++ b/net/netfilter/ipset/ip_set_hash_ipportnet.c
-@@ -274,7 +274,7 @@ hash_ipportnet4_uadt(struct ip_set *set,
- 		p = port;
- 		ip2 = ip2_from;
- 	}
--	for (; ip <= ip_to; ip++) {
-+	for (; ip <= ip_to;) {
- 		e.ip = htonl(ip);
- 		for (; p <= port_to; p++) {
- 			e.port = htons(p);
-@@ -298,6 +298,9 @@ hash_ipportnet4_uadt(struct ip_set *set,
- 			ip2 = ip2_from;
- 		}
- 		p = port;
-+		if (ip == ip_to)
-+			break;
-+		ip++;
- 	}
- 	return ret;
- }
+ /**
+-- 
+2.53.0
+
 
 
 
