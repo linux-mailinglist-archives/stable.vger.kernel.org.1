@@ -1,62 +1,62 @@
-Return-Path: <stable+bounces-255698-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-255343-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id IHiROiinGGp+lwgAu9opvQ
-	(envelope-from <stable+bounces-255698-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:35:52 +0200
+	id wPcJFjqhGGqnlggAu9opvQ
+	(envelope-from <stable+bounces-255343-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:10:34 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4C25E5F90F8
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:35:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B43A65F7FBA
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:10:33 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 9073731D7477
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 20:20:38 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id A4F073159A8E
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 20:04:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 68B3B2F9D85;
-	Thu, 28 May 2026 20:20:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8CDF932ABC0;
+	Thu, 28 May 2026 20:04:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SMBu2LXR"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WaI2CmKA"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 248FC282F17;
-	Thu, 28 May 2026 20:20:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 67B672F260C;
+	Thu, 28 May 2026 20:04:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779999637; cv=none; b=kS0IkwYzR3LBFaERCntmMLbePnaXTdxYwLYFszXYxQbCvY5g7EGVRD9kjRtGZKoIJ6IMYUBbpdRg8k/ogCwF42ihjz3IK2oD27yENvNWotSJ/k2b91nefUZtijhQsDc2Z3vzn2LTdZZdZEd42mvp2oMT3Oq+44Js4aZdC483O5s=
+	t=1779998644; cv=none; b=rpypB70AeucxW7xzlEnzAE/0J5pPHmiXx2dSTkKazKes4gC1ZPGa6LjcFS0uE/sqAag9zU3UTnNGjOr274qd2lmFRnUL+XsAOpg3U3k9hNvwkp2DahPV2C7lvAXnQHzGBxbqhH5Hogrwbh6OOyvErluhJWQghmJTy0jf1Rh9XcY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779999637; c=relaxed/simple;
-	bh=2MYFF9TiBBluirVXLTIENY8QSSFiDPqhYbnpJJBYY58=;
+	s=arc-20240116; t=1779998644; c=relaxed/simple;
+	bh=MWNI4FFWIKP9T+VVMv19L5Iol7BS/5I75NsXTd5P7aA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=VyH0fiNDGUhUyc/GEinr3R9m9VYz06EWtOCO09cuV7RdkEpfKYpz61w49G5DYbSDFbCk1R7aVSqx310w5it0Ty9wKty5WyEzsl9sI2n1VGEJFlvkxR85OscTuljl2UWkt0ryvlvR7S8dfOPmCHKmSZ/Wakiv2DGQ01XLiJY+S6U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SMBu2LXR; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 895041F000E9;
-	Thu, 28 May 2026 20:20:35 +0000 (UTC)
+	 MIME-Version; b=FAUpekX8Ujy/X5D2vSpWoJUfxjwaNzR69dRop+DaAH+QAVP+O1qtsFvsgS0ii17jtC1RHsYK2atF6XoyEXxcc7TK3geg0Ps0IUN9IBFN895Bb0BC3lwyPJUQCMuiXErZ/LfqDlmQm9JjZoEMKOHUAQKVdziG812H5TGMs7uForQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WaI2CmKA; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 814D41F000E9;
+	Thu, 28 May 2026 20:04:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779999636;
-	bh=gQVI41syQ/bkJamk2AvU1Vc2U8kYG0KPxHHrw6eqEhY=;
+	s=korg; t=1779998643;
+	bh=1F1fKUPI7uWaVxzM7ujjsR6X7Jm1lDd+/0V/DZEDYU0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=SMBu2LXRTk3iOv0Wpxlt+9Pbfons2E2lKcgiaY2Buo7CtMG/g6QGdFhf+BzPNX6+G
-	 SHDSF/fSf69yQzJJWVoqRwceRjx3JLpntEtVsqzYTiLNY+lgbT9SWXcu5kZSuqRQdf
-	 XoPug7Qgumbu3ePcEnt6l8v9AfmRWsOqt3iiBKCg=
+	b=WaI2CmKAqkTzFpNPta0A4g4u8C2YFMgRDVAof/c09+ah+PV2jjEHEiRrH108Vb5Wf
+	 +ypaTjrArm3f4fAnmRxQU+xgsCXhXpeXGav4TPypSce2zi1KI3OsacCNCxteS0UbLu
+	 Y2rW/NBG4I1m/VhQH4x+IA/tOvWImXyQO0ooPSvI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable@kernel.org,
-	Yuan Tan <yuantan098@gmail.com>,
-	Yifan Wu <yifanwucs@gmail.com>,
-	Juefei Pu <tomapufckgml@gmail.com>,
-	Xin Liu <bird@lzu.edu.cn>,
-	Sven Eckelmann <sven@narfation.org>
-Subject: [PATCH 6.18 137/377] batman-adv: v: stop OGMv2 on disabled interface
-Date: Thu, 28 May 2026 21:46:15 +0200
-Message-ID: <20260528194642.341684777@linuxfoundation.org>
+	Dan Carpenter <dan.carpenter@linaro.org>,
+	Ally Heev <allyheev@gmail.com>,
+	"Christophe Leroy (CS GROUP)" <chleroy@kernel.org>,
+	Krzysztof Kozlowski <krzk@kernel.org>,
+	Madhavan Srinivasan <maddy@linux.ibm.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 7.0 247/461] powerpc: 82xx: fix uninitialized pointers with free attribute
+Date: Thu, 28 May 2026 21:46:16 +0200
+Message-ID: <20260528194654.298114860@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260528194638.371537336@linuxfoundation.org>
-References: <20260528194638.371537336@linuxfoundation.org>
+In-Reply-To: <20260528194646.819809818@linuxfoundation.org>
+References: <20260528194646.819809818@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -77,8 +77,8 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,kernel.org,gmail.com,lzu.edu.cn,narfation.org];
-	TAGGED_FROM(0.00)[bounces-255698-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,linaro.org,gmail.com,kernel.org,linux.ibm.com];
+	TAGGED_FROM(0.00)[bounces-255343-lists,stable=lfdr.de];
 	PRECEDENCE_BULK(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
@@ -94,153 +94,58 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
 	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,narfation.org:email,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,lzu.edu.cn:email]
-X-Rspamd-Queue-Id: 4C25E5F90F8
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim,msgid.link:url,linaro.org:email]
+X-Rspamd-Queue-Id: B43A65F7FBA
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+7.0-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sven Eckelmann <sven@narfation.org>
+From: Ally Heev <allyheev@gmail.com>
 
-commit f8ce8b8331a1bc44ad4905886a482214d428b253 upstream.
+[ Upstream commit acd1e47db03d4b528fd5efb8565dd0de1c79f62a ]
 
-When a batadv_hard_iface is disabled, its mesh_iface pointer is set to
-NULL. However, batadv_v_ogm_send_meshif() may still dispatch OGMs via
-batadv_v_ogm_queue_on_if() for interfaces that have since lost their
-mesh_iface association. This results in a NULL pointer dereference when
-batadv_v_ogm_queue_on_if() unconditionally calls netdev_priv() on the
-now NULL hard_iface->mesh_iface to retrieve the batadv_priv.
+Uninitialized pointers with `__free` attribute can cause undefined
+behavior as the memory allocated to the pointer is freed automatically
+when the pointer goes out of scope.
 
-It is necessary to ensure that the batadv_v_ogm_queue_on_if() checks that
-it is using the same mesh_iface for which batadv_v_ogm_send_meshif() was
-called.
+powerpc/km82xx doesn't have any bugs related to this as of now, but,
+it is better to initialize and assign pointers with `__free` attribute
+in one statement to ensure proper scope-based cleanup
 
-Cc: stable@kernel.org
-Fixes: 0da0035942d4 ("batman-adv: OGMv2 - add basic infrastructure")
-Reported-by: Yuan Tan <yuantan098@gmail.com>
-Reported-by: Yifan Wu <yifanwucs@gmail.com>
-Reported-by: Juefei Pu <tomapufckgml@gmail.com>
-Reported-by: Xin Liu <bird@lzu.edu.cn>
-Reviewed-by: Yuan Tan <yuantan098@gmail.com>
-Signed-off-by: Sven Eckelmann <sven@narfation.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Reported-by: Dan Carpenter <dan.carpenter@linaro.org>
+Closes: https://lore.kernel.org/all/aPiG_F5EBQUjZqsl@stanley.mountain/
+Signed-off-by: Ally Heev <allyheev@gmail.com>
+Fixes: 4aa5cc1e0012 ("powerpc-km82xx.c: replace of_node_put() with __free")
+Reviewed-by: Christophe Leroy (CS GROUP) <chleroy@kernel.org>
+Reviewed-by: Krzysztof Kozlowski <krzk@kernel.org>
+Signed-off-by: Madhavan Srinivasan <maddy@linux.ibm.com>
+Link: https://patch.msgid.link/20251116-aheev-uninitialized-free-attr-km82xx-v2-1-4307e2b5300d@gmail.com
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/batman-adv/bat_v_ogm.c |   33 +++++++++++++++++++++------------
- 1 file changed, 21 insertions(+), 12 deletions(-)
+ arch/powerpc/platforms/82xx/km82xx.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
---- a/net/batman-adv/bat_v_ogm.c
-+++ b/net/batman-adv/bat_v_ogm.c
-@@ -113,14 +113,14 @@ static void batadv_v_ogm_start_timer(str
+diff --git a/arch/powerpc/platforms/82xx/km82xx.c b/arch/powerpc/platforms/82xx/km82xx.c
+index 99f0f0f418767..4ad223525e893 100644
+--- a/arch/powerpc/platforms/82xx/km82xx.c
++++ b/arch/powerpc/platforms/82xx/km82xx.c
+@@ -27,8 +27,8 @@
  
- /**
-  * batadv_v_ogm_send_to_if() - send a batman ogm using a given interface
-+ * @bat_priv: the bat priv with all the mesh interface information
-  * @skb: the OGM to send
-  * @hard_iface: the interface to use to send the OGM
-  */
--static void batadv_v_ogm_send_to_if(struct sk_buff *skb,
-+static void batadv_v_ogm_send_to_if(struct batadv_priv *bat_priv,
-+				    struct sk_buff *skb,
- 				    struct batadv_hard_iface *hard_iface)
+ static void __init km82xx_pic_init(void)
  {
--	struct batadv_priv *bat_priv = netdev_priv(hard_iface->mesh_iface);
--
- 	if (hard_iface->if_status != BATADV_IF_ACTIVE) {
- 		kfree_skb(skb);
- 		return;
-@@ -187,6 +187,7 @@ static void batadv_v_ogm_aggr_list_free(
+-	struct device_node *np __free(device_node);
+-	np = of_find_compatible_node(NULL, NULL, "fsl,pq2-pic");
++	struct device_node *np __free(device_node) = of_find_compatible_node(NULL,
++		NULL, "fsl,pq2-pic");
  
- /**
-  * batadv_v_ogm_aggr_send() - flush & send aggregation queue
-+ * @bat_priv: the bat priv with all the mesh interface information
-  * @hard_iface: the interface with the aggregation queue to flush
-  *
-  * Aggregates all OGMv2 packets currently in the aggregation queue into a
-@@ -196,7 +197,8 @@ static void batadv_v_ogm_aggr_list_free(
-  *
-  * Caller needs to hold the hard_iface->bat_v.aggr_list.lock.
-  */
--static void batadv_v_ogm_aggr_send(struct batadv_hard_iface *hard_iface)
-+static void batadv_v_ogm_aggr_send(struct batadv_priv *bat_priv,
-+				   struct batadv_hard_iface *hard_iface)
- {
- 	unsigned int aggr_len = hard_iface->bat_v.aggr_len;
- 	struct sk_buff *skb_aggr;
-@@ -226,27 +228,32 @@ static void batadv_v_ogm_aggr_send(struc
- 		consume_skb(skb);
- 	}
- 
--	batadv_v_ogm_send_to_if(skb_aggr, hard_iface);
-+	batadv_v_ogm_send_to_if(bat_priv, skb_aggr, hard_iface);
- }
- 
- /**
-  * batadv_v_ogm_queue_on_if() - queue a batman ogm on a given interface
-+ * @bat_priv: the bat priv with all the mesh interface information
-  * @skb: the OGM to queue
-  * @hard_iface: the interface to queue the OGM on
-  */
--static void batadv_v_ogm_queue_on_if(struct sk_buff *skb,
-+static void batadv_v_ogm_queue_on_if(struct batadv_priv *bat_priv,
-+				     struct sk_buff *skb,
- 				     struct batadv_hard_iface *hard_iface)
- {
--	struct batadv_priv *bat_priv = netdev_priv(hard_iface->mesh_iface);
-+	if (hard_iface->mesh_iface != bat_priv->mesh_iface) {
-+		kfree_skb(skb);
-+		return;
-+	}
- 
- 	if (!atomic_read(&bat_priv->aggregated_ogms)) {
--		batadv_v_ogm_send_to_if(skb, hard_iface);
-+		batadv_v_ogm_send_to_if(bat_priv, skb, hard_iface);
- 		return;
- 	}
- 
- 	spin_lock_bh(&hard_iface->bat_v.aggr_list.lock);
- 	if (!batadv_v_ogm_queue_left(skb, hard_iface))
--		batadv_v_ogm_aggr_send(hard_iface);
-+		batadv_v_ogm_aggr_send(bat_priv, hard_iface);
- 
- 	hard_iface->bat_v.aggr_len += batadv_v_ogm_len(skb);
- 	__skb_queue_tail(&hard_iface->bat_v.aggr_list, skb);
-@@ -343,7 +350,7 @@ static void batadv_v_ogm_send_meshif(str
- 			break;
- 		}
- 
--		batadv_v_ogm_queue_on_if(skb_tmp, hard_iface);
-+		batadv_v_ogm_queue_on_if(bat_priv, skb_tmp, hard_iface);
- 		batadv_hardif_put(hard_iface);
- 	}
- 	rcu_read_unlock();
-@@ -383,12 +390,14 @@ void batadv_v_ogm_aggr_work(struct work_
- {
- 	struct batadv_hard_iface_bat_v *batv;
- 	struct batadv_hard_iface *hard_iface;
-+	struct batadv_priv *bat_priv;
- 
- 	batv = container_of(work, struct batadv_hard_iface_bat_v, aggr_wq.work);
- 	hard_iface = container_of(batv, struct batadv_hard_iface, bat_v);
-+	bat_priv = netdev_priv(hard_iface->mesh_iface);
- 
- 	spin_lock_bh(&hard_iface->bat_v.aggr_list.lock);
--	batadv_v_ogm_aggr_send(hard_iface);
-+	batadv_v_ogm_aggr_send(bat_priv, hard_iface);
- 	spin_unlock_bh(&hard_iface->bat_v.aggr_list.lock);
- 
- 	batadv_v_ogm_start_queue_timer(hard_iface);
-@@ -578,7 +587,7 @@ static void batadv_v_ogm_forward(struct
- 		   if_outgoing->net_dev->name, ntohl(ogm_forward->throughput),
- 		   ogm_forward->ttl, if_incoming->net_dev->name);
- 
--	batadv_v_ogm_queue_on_if(skb, if_outgoing);
-+	batadv_v_ogm_queue_on_if(bat_priv, skb, if_outgoing);
- 
- out:
- 	batadv_orig_ifinfo_put(orig_ifinfo);
+ 	if (!np) {
+ 		pr_err("PIC init: can not find cpm-pic node\n");
+-- 
+2.53.0
+
 
 
 
