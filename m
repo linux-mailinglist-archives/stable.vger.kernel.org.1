@@ -1,237 +1,137 @@
-Return-Path: <stable+bounces-254857-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-254858-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id GCjBK7wnGGqZeQgAu9opvQ
-	(envelope-from <stable+bounces-254857-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 13:32:12 +0200
+	id wbNiOUAnGGp3eggAu9opvQ
+	(envelope-from <stable+bounces-254858-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 13:30:08 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0DE2E5F1528
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 13:32:12 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id E4F305F14EB
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 13:30:07 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 0BFA53033FB4
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 11:29:59 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 5AE55301681C
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 11:30:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6814B3E314B;
-	Thu, 28 May 2026 11:29:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 446EB3E316C;
+	Thu, 28 May 2026 11:30:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=debian.org header.i=@debian.org header.b="DGZHyiKS"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="TGPn3K/y"
 X-Original-To: stable@vger.kernel.org
-Received: from stravinsky.debian.org (stravinsky.debian.org [82.195.75.108])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6A49933B6ED
-	for <stable@vger.kernel.org>; Thu, 28 May 2026 11:29:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=82.195.75.108
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0A12433B6ED;
+	Thu, 28 May 2026 11:30:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779967798; cv=none; b=SgAvuvuisdILEeO2JBsD87RyIiI30xTLR0MuzEKk0dMmvLqvx0OsmxpZyT0MsrxwaGtsPxNjdNhic4KercXjBHng3geP+ASp2OEsOw8RYGM09yJ5O+auKWPdBdDe6VMrrDT/MevMZlL8LRA84WTZUEvznGiuieswqC9T6QrXRm8=
+	t=1779967803; cv=none; b=PhosaNMARI3sAyxqgCqFXj6yrZ9ZXfAYYONRM7Q7Wiv83GB+rLLeId53mrpeId1g0XVjC9rpEqkiapHx8FDl4bFuyOUCC44aN1XbPWtXye6M0rHuyaS8K/2HqaDu8oWkzhWra0iKtvwEv2t5JT7RWYt5QbWh4/+4aQkPw/eTxmk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779967798; c=relaxed/simple;
-	bh=d4/S7BBuqO7ARu857zJRHcGEXpCJo+9F77oQs8DM03c=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Gbh8dkekThcVHgUdDJ7+wKe3aD8rED/zzgTbeBakBddTw7hKyuq5jmjA2OuGkvnE5TypiYBuNqPV2XouqfOHDR0OQy4n84n2/LfL8UpbRGFjc+0Ao6BbZ0mQZYAefEOaBCcab2R5KsSPdeO6TFpE8HnXN4bsAoiEClC5iDQDEW0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=debian.org; spf=pass smtp.mailfrom=debian.org; dkim=pass (2048-bit key) header.d=debian.org header.i=@debian.org header.b=DGZHyiKS; arc=none smtp.client-ip=82.195.75.108
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=debian.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=debian.org
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=debian.org;
-	s=smtpauto.stravinsky; h=X-Debian-User:In-Reply-To:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description;
-	bh=kmjleUiy5g9QOKH2PrzgT0WA1c6fzqKHfVU/d9ZsNRw=; b=DGZHyiKSu9xUWPClHP1d6z/8QC
-	cbXWRBw7nwYgFvQCA09bFLzV0n4LalqUOfhHBcO5NN3TaRCzdaaAGTTKnfnMbt0v6EOJte+r2lwir
-	FzsPqE3wYdh7N3XxA3Kqyij+rkaTIJoXn36ywuQ+hdLKJbsI0l8BTZBX90C9wK1u0zapwf3MQjPTu
-	7tvIQBTkT96IawhLLqegdLxwewS7zqX/8y5pTQETfQIEWJG/+QDGHVNILmjIRbGt8mxx+gU/E8a0D
-	k9yGn2eSjBuW0rVdZbaCn31W2UVCPr4i80SVR8HBEjY+AzUCeqCNHOgKpwiwlrh/BZfQubnx9gXdQ
-	JV+mbYOg==;
-Received: from authenticated-user
-	by stravinsky.debian.org with esmtpsa (TLS1.3:ECDHE_SECP256R1__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
-	(Exim 4.96)
-	(envelope-from <benh@debian.org>)
-	id 1wSYvs-00407c-1v;
-	Thu, 28 May 2026 11:29:48 +0000
-Date: Thu, 28 May 2026 13:29:47 +0200
-From: Ben Hutchings <benh@debian.org>
-To: Sasha Levin <sashal@kernel.org>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: Aleksei Oladko <aleksey.oladko@virtuozzo.com>,
-	Ido Schimmel <idosch@nvidia.com>, Paolo Abeni <pabeni@redhat.com>,
-	stable@vger.kernel.org
-Subject: [PATCH 5.10] selftests: forwarding: lib: Add helpers for checksum
- handling
-Message-ID: <ahgnK2FarjRafL_J@decadent.org.uk>
-References: <20260228181736.1605592-142-sashal@kernel.org>
+	s=arc-20240116; t=1779967803; c=relaxed/simple;
+	bh=A1Anli8CV6kkbxeXNyKboxPmva+bQB6lZqK+WPALhb0=;
+	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
+	 In-Reply-To:To:Cc; b=odW+zbmMCGqrEctAIEbTHIZUYn1AlGw3TPyXAeLfjVxu1lU0ZgEu3XkJJcIOgo+8sIn6BugJv69zgAbu7Vx2nLQ8WbYbfbCqia6JqS4ixMUeQYDm6j38uKvv+SWdPVC0uR5mUUhylUYbibezOBf3LbOnGbK7RSd69kDFQxp68N0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=TGPn3K/y; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CC12E1F000E9;
+	Thu, 28 May 2026 11:30:00 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1779967800;
+	bh=hbKD/B8Lb7nPPNoBEvSoUuRTpiXuLg9ZFc0j5swoUIo=;
+	h=Subject:From:Date:References:In-Reply-To:To:Cc;
+	b=TGPn3K/y+iANl6FJS0y108S3RYrkXqjGCECHuWX85x1BaEMbpVgc8b5YhF61PAht4
+	 Rxwt2/d+To5FTyNxJyWX0wSDwj2LMqH2QeFISyxgIWkzPdN5QG71cJF77Gz7oXb52o
+	 abe1GlsBFFMlaKk4A6MpmAASR8lS609q/OBwwntU+8eYUXYHxkGtsv40RC9sxdAICQ
+	 qz4+WVF9yn+hTQUZQedVRXYWVrmQR728D+CEBAHek8jSlXthVbclaGLlXhZ0VRggzy
+	 WrBm6FHIKoRGX7hZoQywBunfVVf4ZvNKUlNRs3uxocqUpXXFMUl2nODS8s/XTzNIpx
+	 TvaQqMI099cmQ==
+Received: from [10.30.226.235] (localhost [IPv6:::1])
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 93CA53811957;
+	Thu, 28 May 2026 11:30:06 +0000 (UTC)
+Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="PY1tJc6DmTlcx05L"
-Content-Disposition: inline
-In-Reply-To: <20260228181736.1605592-142-sashal@kernel.org>
-X-Debian-User: benh
-X-Spamd-Result: default: False [-4.26 / 15.00];
-	SIGNED_PGP(-2.00)[];
+Content-Transfer-Encoding: 8bit
+Subject: Re: [PATCH net v2] net: skbuff: fix missing zerocopy reference in
+ pskb_carve helpers
+From: patchwork-bot+netdevbpf@kernel.org
+Message-Id: 
+ <177996780540.882966.17298529776161153629.git-patchwork-notify@kernel.org>
+Date: Thu, 28 May 2026 11:30:05 +0000
+References: <20260526041240.329462-1-minhnguyen.080505@gmail.com>
+In-Reply-To: <20260526041240.329462-1-minhnguyen.080505@gmail.com>
+To: lazyming <minhnguyen.080505@gmail.com>
+Cc: netdev@vger.kernel.org, davem@davemloft.net, edumazet@google.com,
+ kuba@kernel.org, pabeni@redhat.com, horms@kernel.org,
+ sowmini.varadhan@oracle.com, willemdebruijn.kernel@gmail.com, w@1wt.eu,
+ security@kernel.org, linux-kernel@vger.kernel.org, stable@vger.kernel.org,
+ asml.silence@gmail.com, achender@kernel.org, mst@redhat.com,
+ jasowang@redhat.com, willemb@google.com
+X-Spamd-Result: default: False [-0.66 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[debian.org,none];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
-	R_DKIM_ALLOW(-0.20)[debian.org:s=smtpauto.stravinsky];
-	MIME_GOOD(-0.20)[multipart/signed,text/plain];
+	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20260515];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	MAILLIST(-0.15)[generic];
+	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-254857-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-254858-lists,stable=lfdr.de,netdevbpf];
+	FREEMAIL_CC(0.00)[vger.kernel.org,davemloft.net,google.com,kernel.org,redhat.com,oracle.com,gmail.com,1wt.eu];
 	RCVD_TLS_LAST(0.00)[];
-	FROM_HAS_DN(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[patchwork-bot@kernel.org,stable@vger.kernel.org];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+,1:+,2:~];
-	RCVD_COUNT_THREE(0.00)[4];
-	TO_DN_SOME(0.00)[];
-	DKIM_TRACE(0.00)[debian.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	FREEMAIL_TO(0.00)[gmail.com];
+	RCPT_COUNT_TWELVE(0.00)[18];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[kernel.org:+];
 	MISSING_XM_UA(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[benh@debian.org,stable@vger.kernel.org];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	TO_DN_SOME(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
+	RCVD_COUNT_FIVE(0.00)[5];
+	PRECEDENCE_BULK(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[decadent.org.uk:mid,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,blackwall.org:email,nvidia.com:email]
-X-Rspamd-Queue-Id: 0DE2E5F1528
+	FROM_NO_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo]
+X-Rspamd-Queue-Id: E4F305F14EB
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
+Hello:
 
---PY1tJc6DmTlcx05L
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+This patch was applied to netdev/net.git (main)
+by Paolo Abeni <pabeni@redhat.com>:
 
-=46rom: Petr Machata <petrm@nvidia.com>
+On Tue, 26 May 2026 11:12:39 +0700 you wrote:
+> From: Minh Nguyen <minhnguyen.080505@gmail.com>
+> 
+> pskb_carve_inside_header() and pskb_carve_inside_nonlinear() both copy
+> the old skb_shared_info header into a new buffer via memcpy(), which
+> includes the destructor_arg pointer (uarg) for MSG_ZEROCOPY skbs.
+> Neither function calls net_zcopy_get() for the new shinfo, creating an
+> unaccounted holder: every skb_shared_info with destructor_arg set will
+> call skb_zcopy_clear() once when freed, but the corresponding
+> net_zcopy_get() was never called for the new copy. Repeated calls
+> drive uarg->refcnt to zero prematurely, freeing ubuf_info_msgzc while
+> TX skbs still hold live destructor_arg pointers.
+> 
+> [...]
 
-commit 952e0ee38c7215c45192d8c899acd1830873f28b upstream.
+Here is the summary with links:
+  - [net,v2] net: skbuff: fix missing zerocopy reference in pskb_carve helpers
+    https://git.kernel.org/netdev/net/c/98d0912e9f84
 
-In order to generate IGMPv3 and MLDv2 packets on the fly, we will need
-helpers to calculate the packet checksum.
+You are awesome, thank you!
+-- 
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/patchwork/pwbot.html
 
-The approach presented in this patch revolves around payload templates
-for mausezahn. These are mausezahn-like payload strings (01:23:45:...)
-with possibly one 2-byte sequence replaced with the word PAYLOAD. The
-main function is payload_template_calc_checksum(), which calculates
-RFC 1071 checksum of the message. There are further helpers to then
-convert the checksum to the payload format, and to expand it.
 
-For IPv6, MLDv2 message checksum is computed using a pseudoheader that
-differs from the header used in the payload itself. The fact that the
-two messages are different means that the checksum needs to be
-returned as a separate quantity, instead of being expanded in-place in
-the payload itself. Furthermore, the pseudoheader includes a length of
-the message. Much like the checksum, this needs to be expanded in
-mausezahn format. And likewise for number of addresses for (S,G)
-entries. Thus we have several places where a computed quantity needs
-to be presented in the payload format. Add a helper u16_to_bytes(),
-which will be used in all these cases.
-
-Signed-off-by: Petr Machata <petrm@nvidia.com>
-Acked-by: Nikolay Aleksandrov <razor@blackwall.org>
-Signed-off-by: David S. Miller <davem@davemloft.net>
-Stable-dep-of: 02cb2e6bacbb ("selftests: forwarding: vxlan_bridge_1d: fix t=
-est failure with br_netfilter enabled")
-[bwh: Backported to 5.10: adjust context]
-Signed-off-by: Ben Hutchings <benh@debian.org>
----
- tools/testing/selftests/net/forwarding/lib.sh | 56 +++++++++++++++++++
- 1 file changed, 56 insertions(+)
-
-diff --git a/tools/testing/selftests/net/forwarding/lib.sh b/tools/testing/=
-selftests/net/forwarding/lib.sh
-index dfb41db7fbe4..2825c779ef30 100644
---- a/tools/testing/selftests/net/forwarding/lib.sh
-+++ b/tools/testing/selftests/net/forwarding/lib.sh
-@@ -1298,3 +1298,59 @@ tcpdump_show()
- {
- 	tcpdump -e -n -r $capfile 2>&1
- }
-+
-+u16_to_bytes()
-+{
-+	local u16=3D$1; shift
-+
-+	printf "%04x" $u16 | sed 's/^/000/;s/^.*\(..\)\(..\)$/\1:\2/'
-+}
-+
-+# Given a mausezahn-formatted payload (colon-separated bytes given as %02x=
-),
-+# possibly with a keyword CHECKSUM stashed where a 16-bit checksum should =
-be,
-+# calculate checksum as per RFC 1071, assuming the CHECKSUM field (if any)
-+# stands for 00:00.
-+payload_template_calc_checksum()
-+{
-+	local payload=3D$1; shift
-+
-+	(
-+	    # Set input radix.
-+	    echo "16i"
-+	    # Push zero for the initial checksum.
-+	    echo 0
-+
-+	    # Pad the payload with a terminating 00: in case we get an odd
-+	    # number of bytes.
-+	    echo "${payload%:}:00:" |
-+		sed 's/CHECKSUM/00:00/g' |
-+		tr '[:lower:]' '[:upper:]' |
-+		# Add the word to the checksum.
-+		sed 's/\(..\):\(..\):/\1\2+\n/g' |
-+		# Strip the extra odd byte we pushed if left unconverted.
-+		sed 's/\(..\):$//'
-+
-+	    echo "10000 ~ +"	# Calculate and add carry.
-+	    echo "FFFF r - p"	# Bit-flip and print.
-+	) |
-+	    dc |
-+	    tr '[:upper:]' '[:lower:]'
-+}
-+
-+payload_template_expand_checksum()
-+{
-+	local payload=3D$1; shift
-+	local checksum=3D$1; shift
-+
-+	local ckbytes=3D$(u16_to_bytes $checksum)
-+
-+	echo "$payload" | sed "s/CHECKSUM/$ckbytes/g"
-+}
-+
-+payload_template_nbytes()
-+{
-+	local payload=3D$1; shift
-+
-+	payload_template_expand_checksum "${payload%:}" 0 |
-+		sed 's/:/\n/g' | wc -l
-+}
-
---PY1tJc6DmTlcx05L
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQIzBAABCgAdFiEErCspvTSmr92z9o8157/I7JWGEQkFAmoYJyYACgkQ57/I7JWG
-EQlFPQ//SMZsBynbLU397Y05ss9WGGSotS/HE/aXCvF4PYxdx1RxtufIS4uR8wYJ
-hN9lN12BmUpzPiC/AEA0mi7XCzYl6bMMuJn+fpnHHgAd/ZBd04IETkOBAvIeZmzc
-pC7FCyfl56RxTShDNMmxLComJ0VNomAblxHVhfC8HAZ8+Ivsw0TmGzG7Fetj1YmW
-6OoiShGMMEfvd0vuXaB42bSsEWo0R3bD1Zq8kCrL0AVA6FGwBF/pxgfYxndgUqQd
-2qcvJLLKL5Golm8uJyNgBsoMjoyEKGe7OaZCAxqfUIypRckU2OAG0LE0PjlUEa0K
-wZjh43DVjm+yXlndLXYysAAVtXuJqBDytH2dO65/QOoRoyHla0idVgUFwwoDOZiw
-5KodjaS65q4rxw246BpFf2rkWlY/XGiEEMqclwOxfMg5JsHQAGZC0UxoP23r8lPs
-5DxvA5N1fNfP6JuLKauZdAntoWuvzFK5SvZgHeZpgibMm0d9Raj29hoNMAQ06Cms
-dCSDWI/iLxY1Zh+Sb2uTkt+20lbQoYy+ZkQsMaOffkEJZ7mviWCH+dHRpXLGT2ZN
-RzKaRPyv+ovDkJdYIffYMkhL7JEstYQUni2MoJUFts4DlCV6N+eFj4g+16fxj1+j
-eIFWvPutFIOSYzGkteForpRNHkBpPKgFkppsd7EvVdknIquTejk=
-=t1Zq
------END PGP SIGNATURE-----
-
---PY1tJc6DmTlcx05L--
 
