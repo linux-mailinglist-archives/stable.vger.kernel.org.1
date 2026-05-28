@@ -1,209 +1,185 @@
-Return-Path: <stable+bounces-254700-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-254701-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id APh2HRijF2rSLwgAu9opvQ
-	(envelope-from <stable+bounces-254700-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 04:06:16 +0200
+	id aEmnHzqpF2qhMQgAu9opvQ
+	(envelope-from <stable+bounces-254701-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 04:32:26 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id E2D915EBA8D
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 04:06:15 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 08A8A5EBD08
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 04:32:25 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 5721630594DD
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 02:06:13 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 06CCE30B14BF
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 02:28:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C89082E7F0A;
-	Thu, 28 May 2026 02:06:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 80A3E2F745C;
+	Thu, 28 May 2026 02:28:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="AphQ2ywH"
+	dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b="HPn8DkKz"
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.19])
+Received: from m16.mail.163.com (m16.mail.163.com [220.197.31.3])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 92D4B1C860A;
-	Thu, 28 May 2026 02:06:07 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.19
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5DA232F547F;
+	Thu, 28 May 2026 02:28:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=220.197.31.3
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779933969; cv=none; b=QSoirRjkfRu8dRGlVVcDEDGVZk7GVX1dGT6RHJ2xh6HLPGj0DkS9gw1pnaMccwSjERVk1wMb3HLuEx6RCpcquWrytgV0CL7dEa1drfZtjlAF3F6AYFBM8aKLJskx0ukXYtQKWihmjLjjPy6A3L9zV2cehekKQOBNJTGd4I95PsM=
+	t=1779935292; cv=none; b=XerZIHVEUV0fawLu1A22HcfkHlmY87Llt0s4WeJwtL2mdDNzyDPX1OFM/1t8C1Tc2M9n2HnudUiWlE8KpmojJzI26AofsZRrcl0/uYG4iIB15Qj8nqC74OdOzyK10l95TBRkVjrwqgo4v+wKy5Swj8pcP7mMA0+HMxy/I9a3obg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779933969; c=relaxed/simple;
-	bh=fbHrRWsCsev0XpjRGu7MWKUSpSvEPDO2W7/tolEiVlI=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=SivQud7ewQnHVKKwjENblJYUhgenp9f1T1chPSRmEOBIX3iKc5eOu17xaDV7umpdy//KshMGV2F4xtyI/v3Ly06+R8fyWGOVRK5TYBHJLklPPWSxLfoyPNKI5W2Z+oUTL7pv2s8OdCmX4ppMglsdeqs8XwfJR74eNg9Lt0oOptA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=AphQ2ywH; arc=none smtp.client-ip=198.175.65.19
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1779933968; x=1811469968;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=fbHrRWsCsev0XpjRGu7MWKUSpSvEPDO2W7/tolEiVlI=;
-  b=AphQ2ywHffViWftFWb9ThB8fbywwfUa8KXLxDEDUiy2b0WxjEUbRAkRA
-   hrssin+ZDvjfUTXkhN+2TPxUfSG8fC1pLgK/dJYALYSEGUs/Q3jE0dCJl
-   o3opgkPDB0RZwPSEzYOSDlL8macvu4ei6XWrPh9/Y+c8JRurTmVTxIeb4
-   YxOwngHtlUKMsh4KT3+uzGLSleIK9QHKQnLMNJTyoAi0+lQBWRayQaEL5
-   NSW1VuauhB4QKjUdolZ6+pxGZT255cGF/Pvk8N7bzQ73qkPOUYtMiF4dD
-   0utzg5obIAhjZsY9nn1wXtu1pH5AYkmu31wtBvdjZ5rDBkls13NSk1jq2
-   Q==;
-X-CSE-ConnectionGUID: rvugshktRwaVGjY1JlOt9w==
-X-CSE-MsgGUID: RA2/0aJjTrWdECZ8YpZ1pw==
-X-IronPort-AV: E=McAfee;i="6800,10657,11799"; a="80744162"
-X-IronPort-AV: E=Sophos;i="6.24,172,1774335600"; 
-   d="scan'208";a="80744162"
-Received: from orviesa001.jf.intel.com ([10.64.159.141])
-  by orvoesa111.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 27 May 2026 19:06:08 -0700
-X-CSE-ConnectionGUID: 0XcchuQ2Q0+DOBeLeejZqg==
-X-CSE-MsgGUID: 1ZdgjI7BQ/yZvCad8/YcgQ==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.24,172,1774335600"; 
-   d="scan'208";a="280528462"
-Received: from igk-lkp-server01.igk.intel.com (HELO 892db79562d4) ([10.211.93.152])
-  by orviesa001.jf.intel.com with ESMTP; 27 May 2026 19:06:05 -0700
-Received: from kbuild by 892db79562d4 with local (Exim 4.98.2)
-	(envelope-from <lkp@intel.com>)
-	id 1wSQ8J-000000000F7-0YER;
-	Thu, 28 May 2026 02:06:03 +0000
-Date: Thu, 28 May 2026 04:05:45 +0200
-From: kernel test robot <lkp@intel.com>
-To: Wentao Liang <vulab@iscas.ac.cn>,
-	"Martin K . Petersen" <martin.petersen@oracle.com>
-Cc: oe-kbuild-all@lists.linux.dev, Kees Cook <kees@kernel.org>,
-	Wentao Liang <vulab@iscas.ac.cn>, linux-scsi@vger.kernel.org,
-	target-devel@vger.kernel.org, linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org
-Subject: Re: [PATCH] target: iscsi: cxgbit: fix cnp kref leak in
- __cxgbit_free_cdev_np()
-Message-ID: <202605280336.gXG4Wlij-lkp@intel.com>
-References: <20260527103823.869792-1-vulab@iscas.ac.cn>
+	s=arc-20240116; t=1779935292; c=relaxed/simple;
+	bh=+sI5oBeiA711cTjYazO87vWojX8RwbWyWB48rf5prT4=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=m8LT/nfSLH0aOS/4necsIl+DOIrOWbyqI/Ip6X1wiPwilA8icTlwrL0mrEv6ovXJyF8T50+thqoJYSE5WvP9Bl/+xL4fqzINWz+2t0rkhGQ7deRqrsHv/hZ8YhzBswqiGQroXpV5QhbX0TWHYNbdzVAxQb7b00xk2h/GqGcKtYE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com; spf=pass smtp.mailfrom=163.com; dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b=HPn8DkKz; arc=none smtp.client-ip=220.197.31.3
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=163.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
+	s=s110527; h=From:To:Subject:Date:Message-Id:MIME-Version; bh=tt
+	pY4O/HbToeiRyFQMbvoBRJhNWoVXKYO8MSM4OeT2Y=; b=HPn8DkKzzf2lteZECv
+	lYLgNIsSnJuWrdi8V5qM0sW5eOrMCD0k/isPj0eZF/wclzKHC7X98YGtYGxAwyPq
+	9cXyTwIr4S52b6eo2a1rYm2CzaesQUyybY2Wb5RIiqtxAiEEfwVmCBg6XBGkU0VO
+	YugbOecoQMcgheG/u8zBWgHMs=
+Received: from pek-lpg-core5.wrs.com (unknown [])
+	by gzga-smtp-mtada-g0-4 (Coremail) with SMTP id _____wCXd1P6pxdqPtEHAA--.1305S2;
+	Thu, 28 May 2026 10:27:07 +0800 (CST)
+From: Robert Garcia <rob_garcia@163.com>
+To: stable@vger.kernel.org,
+	Jamal Hadi Salim <jhs@mojatatu.com>
+Cc: Jakub Kicinski <kuba@kernel.org>,
+	Manas <ghandatmanas@gmail.com>,
+	Rakshit Awasthi <rakshitawasthi17@gmail.com>,
+	Eric Dumazet <edumazet@google.com>,
+	Cong Wang <xiyou.wangcong@gmail.com>,
+	Jiri Pirko <jiri@resnulli.us>,
+	"David S . Miller" <davem@davemloft.net>,
+	Jarek Poplawski <jarkao2@gmail.com>,
+	Robert Garcia <rob_garcia@163.com>,
+	netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH 5.15.y] net/sched: sch_red: Replace direct dequeue call with peek and qdisc_dequeue_peeked
+Date: Thu, 28 May 2026 10:27:06 +0800
+Message-Id: <20260528022706.2651270-1-rob_garcia@163.com>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260527103823.869792-1-vulab@iscas.ac.cn>
-X-Spamd-Result: default: False [-1.16 / 15.00];
-	MID_CONTAINS_FROM(1.00)[];
+Content-Transfer-Encoding: 8bit
+X-CM-TRANSID:_____wCXd1P6pxdqPtEHAA--.1305S2
+X-Coremail-Antispam: 1Uf129KBjvJXoWxZrWrJw13Kr15XFW7Cw1rJFb_yoWrAr13pr
+	W3tr4DGFW0qr4UJF4UXF18try5CFsxCFn8X3yxWr1xJFWUuF1Yqr15Jw42qF95GrWUAwn3
+	tr1DXw10qr1q9aUanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x0piY0PDUUUUU=
+X-CM-SenderInfo: 5uresw5dufxti6rwjhhfrp/xtbC5h2J9GoXp-1QOwAA3K
+X-Spamd-Result: default: False [0.84 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[intel.com,none];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
-	R_DKIM_ALLOW(-0.20)[intel.com:s=Intel];
+	MID_CONTAINS_FROM(1.00)[];
+	DMARC_POLICY_ALLOW(-0.50)[163.com,none];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_DKIM_ALLOW(-0.20)[163.com:s=s110527];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FROM_HAS_DN(0.00)[];
+	TAGGED_FROM(0.00)[bounces-254701-lists,stable=lfdr.de];
+	FREEMAIL_FROM(0.00)[163.com];
 	RCVD_TLS_LAST(0.00)[];
-	DKIM_TRACE(0.00)[intel.com:+];
-	TAGGED_FROM(0.00)[bounces-254700-lists,stable=lfdr.de];
-	MIME_TRACE(0.00)[0:+];
+	RCPT_COUNT_TWELVE(0.00)[13];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	MIME_TRACE(0.00)[0:+];
+	RCVD_COUNT_THREE(0.00)[4];
+	DKIM_TRACE(0.00)[163.com:+];
 	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[lkp@intel.com,stable@vger.kernel.org];
-	MISSING_XM_UA(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[6];
-	RCPT_COUNT_SEVEN(0.00)[9];
-	NEURAL_HAM(-0.00)[-1.000];
+	FROM_NEQ_ENVFROM(0.00)[rob_garcia@163.com,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	FREEMAIL_CC(0.00)[kernel.org,gmail.com,google.com,resnulli.us,davemloft.net,163.com,vger.kernel.org];
+	NEURAL_HAM(-0.00)[-0.999];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo]
-X-Rspamd-Queue-Id: E2D915EBA8D
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[mojatatu.com:email,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
+X-Rspamd-Queue-Id: 08A8A5EBD08
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-Hi Wentao,
+From: Jamal Hadi Salim <jhs@mojatatu.com>
 
-kernel test robot noticed the following build warnings:
+[ Upstream commit 458d5615272d3de535748342eb68ca492343048c ]
 
-[auto build test WARNING on mkp-scsi/for-next]
-[also build test WARNING on kees/for-next/pstore kees/for-next/kspp linus/master v7.1-rc5 next-20260527]
-[If your patch is applied to the wrong git tree, kindly drop us a note.
-And when submitting patch, we suggest to use '--base' as documented in
-https://git-scm.com/docs/git-format-patch#_base_tree_information]
+When red qdisc has children (eg qfq qdisc) whose peek() callback is
+qdisc_peek_dequeued(), we could get a kernel panic. When the parent of such
+qdiscs (eg illustrated in patch #3 as tbf) wants to retrieve an skb from
+its child (red in this case), it will do the following:
+ 1a. do a peek() - and when sensing there's an skb the child can offer, then
+     - the child in this case(red) calls its child's (qfq) peek.
+        qfq does the right thing and will return the gso_skb queue packet.
+        Note: if there wasnt a gso_skb entry then qfq will store it there.
+ 1b. invoke a dequeue() on the child (red). And herein lies the problem.
+     - red will call the child's dequeue() which will essentially just
+       try to grab something of qfq's queue.
 
-url:    https://github.com/intel-lab-lkp/linux/commits/Wentao-Liang/target-iscsi-cxgbit-fix-cnp-kref-leak-in-__cxgbit_free_cdev_np/20260527-184050
-base:   https://git.kernel.org/pub/scm/linux/kernel/git/mkp/scsi.git for-next
-patch link:    https://lore.kernel.org/r/20260527103823.869792-1-vulab%40iscas.ac.cn
-patch subject: [PATCH] target: iscsi: cxgbit: fix cnp kref leak in __cxgbit_free_cdev_np()
-config: x86_64-rhel-9.4 (https://download.01.org/0day-ci/archive/20260528/202605280336.gXG4Wlij-lkp@intel.com/config)
-compiler: gcc-14 (Debian 14.2.0-19) 14.2.0
-reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20260528/202605280336.gXG4Wlij-lkp@intel.com/reproduce)
+[   78.667668][  T363] KASAN: null-ptr-deref in range [0x0000000000000048-0x000000000000004f]
+[   78.667927][  T363] CPU: 1 UID: 0 PID: 363 Comm: ping Not tainted 7.1.0-rc1-00033-g46f74a3f7d57-dirty #790 PREEMPT(full)
+[   78.668263][  T363] Hardware name: Bochs Bochs, BIOS Bochs 01/01/2011
+[   78.668486][  T363] RIP: 0010:qfq_dequeue+0x446/0xc90 [sch_qfq]
+[   78.668718][  T363] Code: 54 c0 e8 dd 90 00 f1 48 c7 c7 e0 03 54 c0 48 89 de e8 ce 90 00 f1 48 8d 7b 48 b8 ff ff 37 00 48 89 fa 48 c1 e0 2a 48 c1 ea 03 <80> 3c 02 00 74 05 e8 ef a1 e1 f1 48 8b 7b 48 48 8d 54 24 58 48 8d
+[   78.669312][  T363] RSP: 0018:ffff88810de573e0 EFLAGS: 00010216
+[   78.669533][  T363] RAX: dffffc0000000000 RBX: 0000000000000000 RCX: 0000000000000000
+[   78.669790][  T363] RDX: 0000000000000009 RSI: 0000000000000004 RDI: 0000000000000048
+[   78.670044][  T363] RBP: ffff888110dc4000 R08: ffffffffb1b0885a R09: fffffbfff6ba9078
+[   78.670297][  T363] R10: 0000000000000003 R11: ffff888110e31c80 R12: 0000001880000000
+[   78.670560][  T363] R13: ffff888110dc4150 R14: ffff888110dc42b8 R15: 0000000000000200
+[   78.670814][  T363] FS:  00007f66a8f09c40(0000) GS:ffff888163428000(0000) knlGS:0000000000000000
+[   78.671110][  T363] CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+[   78.671324][  T363] CR2: 000055db4c6a30a8 CR3: 000000010da67000 CR4: 0000000000750ef0
+[   78.671585][  T363] PKRU: 55555554
+[   78.671713][  T363] Call Trace:
+[   78.671843][  T363]  <TASK>
+[   78.671936][  T363]  ? __pfx_qfq_dequeue+0x10/0x10 [sch_qfq]
+[   78.672148][  T363]  ? __pfx__printk+0x10/0x10
+[   78.672322][  T363]  ? srso_alias_return_thunk+0x5/0xfbef5
+[   78.672496][  T363]  ? lockdep_hardirqs_on_prepare+0xa8/0x1a0
+[   78.672706][  T363]  ? srso_alias_return_thunk+0x5/0xfbef5
+[   78.672875][  T363]  ? trace_hardirqs_on+0x19/0x1a0
+[   78.673047][  T363]  red_dequeue+0x65/0x270 [sch_red]
+[   78.673217][  T363]  ? srso_alias_return_thunk+0x5/0xfbef5
+[   78.673385][  T363]  tbf_dequeue.cold+0xb0/0x70c [sch_tbf]
+[   78.673566][  T363]  __qdisc_run+0x169/0x1900
 
-If you fix the issue in a separate patch/commit (i.e. not just a new version of
-the same patch/commit), kindly add following tags
-| Reported-by: kernel test robot <lkp@intel.com>
-| Closes: https://lore.kernel.org/oe-kbuild-all/202605280336.gXG4Wlij-lkp@intel.com/
+The right thing to do in #1b is to grab the skb off gso_skb queue.
+This patchset fixes that issue by changing #1b to use qdisc_dequeue_peeked()
+method instead.
 
-All warnings (new ones prefixed by >>):
+Fixes: 77be155cba4e ("pkt_sched: Add peek emulation for non-work-conserving qdiscs.")
+Reported-by: Manas <ghandatmanas@gmail.com>
+Reported-by: Rakshit Awasthi <rakshitawasthi17@gmail.com>
+Signed-off-by: Jamal Hadi Salim <jhs@mojatatu.com>
+Reviewed-by: Eric Dumazet <edumazet@google.com>
+Link: https://patch.msgid.link/20260430152957.194015-2-jhs@mojatatu.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Robert Garcia <rob_garcia@163.com>
+---
+ net/sched/sch_red.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-   drivers/target/iscsi/cxgbit/cxgbit_cm.c: In function '__cxgbit_free_cdev_np':
->> drivers/target/iscsi/cxgbit/cxgbit_cm.c:547:9: warning: this 'if' clause does not guard... [-Wmisleading-indentation]
-     547 |         if (ret == -ETIMEDOUT)
-         |         ^~
-   drivers/target/iscsi/cxgbit/cxgbit_cm.c:549:17: note: ...this statement, but the latter is misleadingly indented as if it were guarded by the 'if'
-     549 |                 return ret;
-         |                 ^~~~~~
+diff --git a/net/sched/sch_red.c b/net/sched/sch_red.c
+index 1b69b7b90d85..063431a5ae1d 100644
+--- a/net/sched/sch_red.c
++++ b/net/sched/sch_red.c
+@@ -153,7 +153,7 @@ static struct sk_buff *red_dequeue(struct Qdisc *sch)
+ 	struct red_sched_data *q = qdisc_priv(sch);
+ 	struct Qdisc *child = q->qdisc;
+ 
+-	skb = child->dequeue(child);
++	skb = qdisc_dequeue_peeked(child);
+ 	if (skb) {
+ 		qdisc_bstats_update(sch, skb);
+ 		qdisc_qstats_backlog_dec(sch, skb);
+-- 
+2.34.1
 
-
-vim +/if +547 drivers/target/iscsi/cxgbit/cxgbit_cm.c
-
-9730ffcb8957e1 Varun Prakash 2016-04-20  516  
-9730ffcb8957e1 Varun Prakash 2016-04-20  517  static int
-9730ffcb8957e1 Varun Prakash 2016-04-20  518  __cxgbit_free_cdev_np(struct cxgbit_device *cdev, struct cxgbit_np *cnp)
-9730ffcb8957e1 Varun Prakash 2016-04-20  519  {
-9730ffcb8957e1 Varun Prakash 2016-04-20  520  	int stid, ret;
-9730ffcb8957e1 Varun Prakash 2016-04-20  521  	bool ipv6 = false;
-9730ffcb8957e1 Varun Prakash 2016-04-20  522  
-9730ffcb8957e1 Varun Prakash 2016-04-20  523  	stid = cxgbit_np_hash_del(cdev, cnp);
-9730ffcb8957e1 Varun Prakash 2016-04-20  524  	if (stid < 0)
-9730ffcb8957e1 Varun Prakash 2016-04-20  525  		return -EINVAL;
-9730ffcb8957e1 Varun Prakash 2016-04-20  526  	if (!test_bit(CDEV_STATE_UP, &cdev->flags))
-9730ffcb8957e1 Varun Prakash 2016-04-20  527  		return -EINVAL;
-9730ffcb8957e1 Varun Prakash 2016-04-20  528  
-9730ffcb8957e1 Varun Prakash 2016-04-20  529  	if (cnp->np->np_sockaddr.ss_family == AF_INET6)
-9730ffcb8957e1 Varun Prakash 2016-04-20  530  		ipv6 = true;
-9730ffcb8957e1 Varun Prakash 2016-04-20  531  
-9730ffcb8957e1 Varun Prakash 2016-04-20  532  	cxgbit_get_cnp(cnp);
-9730ffcb8957e1 Varun Prakash 2016-04-20  533  	cxgbit_init_wr_wait(&cnp->com.wr_wait);
-9730ffcb8957e1 Varun Prakash 2016-04-20  534  	ret = cxgb4_remove_server(cdev->lldi.ports[0], stid,
-9730ffcb8957e1 Varun Prakash 2016-04-20  535  				  cdev->lldi.rxq_ids[0], ipv6);
-9730ffcb8957e1 Varun Prakash 2016-04-20  536  
-9730ffcb8957e1 Varun Prakash 2016-04-20  537  	if (ret > 0)
-9730ffcb8957e1 Varun Prakash 2016-04-20  538  		ret = net_xmit_errno(ret);
-9730ffcb8957e1 Varun Prakash 2016-04-20  539  
-9730ffcb8957e1 Varun Prakash 2016-04-20  540  	if (ret) {
-9730ffcb8957e1 Varun Prakash 2016-04-20  541  		cxgbit_put_cnp(cnp);
-9730ffcb8957e1 Varun Prakash 2016-04-20  542  		return ret;
-9730ffcb8957e1 Varun Prakash 2016-04-20  543  	}
-9730ffcb8957e1 Varun Prakash 2016-04-20  544  
-9730ffcb8957e1 Varun Prakash 2016-04-20  545  	ret = cxgbit_wait_for_reply(cdev, &cnp->com.wr_wait,
-9730ffcb8957e1 Varun Prakash 2016-04-20  546  				    0, 10, __func__);
-9730ffcb8957e1 Varun Prakash 2016-04-20 @547  	if (ret == -ETIMEDOUT)
-956027c993d5b2 Wentao Liang  2026-05-27  548  		cxgbit_put_cnp(cnp);
-9730ffcb8957e1 Varun Prakash 2016-04-20  549  		return ret;
-9730ffcb8957e1 Varun Prakash 2016-04-20  550  
-9730ffcb8957e1 Varun Prakash 2016-04-20  551  	if (ipv6 && cnp->com.cdev) {
-9730ffcb8957e1 Varun Prakash 2016-04-20  552  		struct sockaddr_in6 *sin6;
-9730ffcb8957e1 Varun Prakash 2016-04-20  553  
-9730ffcb8957e1 Varun Prakash 2016-04-20  554  		sin6 = (struct sockaddr_in6 *)&cnp->com.local_addr;
-9730ffcb8957e1 Varun Prakash 2016-04-20  555  		cxgb4_clip_release(cdev->lldi.ports[0],
-9730ffcb8957e1 Varun Prakash 2016-04-20  556  				   (const u32 *)&sin6->sin6_addr.s6_addr,
-9730ffcb8957e1 Varun Prakash 2016-04-20  557  				   1);
-9730ffcb8957e1 Varun Prakash 2016-04-20  558  	}
-9730ffcb8957e1 Varun Prakash 2016-04-20  559  
-9730ffcb8957e1 Varun Prakash 2016-04-20  560  	cxgb4_free_stid(cdev->lldi.tids, stid,
-9730ffcb8957e1 Varun Prakash 2016-04-20  561  			cnp->com.local_addr.ss_family);
-956027c993d5b2 Wentao Liang  2026-05-27  562  	cxgbit_put_cnp(cnp);
-9730ffcb8957e1 Varun Prakash 2016-04-20  563  	return 0;
-9730ffcb8957e1 Varun Prakash 2016-04-20  564  }
-9730ffcb8957e1 Varun Prakash 2016-04-20  565  
-
---
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
 
