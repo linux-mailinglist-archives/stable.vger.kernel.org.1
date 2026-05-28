@@ -1,59 +1,60 @@
-Return-Path: <stable+bounces-255664-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-255309-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id OHLOImilGGrClggAu9opvQ
-	(envelope-from <stable+bounces-255664-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:28:24 +0200
+	id 8Bg8ELWgGGqblggAu9opvQ
+	(envelope-from <stable+bounces-255309-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:08:21 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id E0DEA5F8C48
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:28:23 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id CFA005F7E4F
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:08:20 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 54DE43288602
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 20:19:08 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id B22C131D9C56
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 20:02:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 068312D1303;
-	Thu, 28 May 2026 20:19:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 94F8D30E82E;
+	Thu, 28 May 2026 20:02:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QqWsbrIB"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="b84M1Z77"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D159F2459D1;
-	Thu, 28 May 2026 20:19:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 606AF26B973;
+	Thu, 28 May 2026 20:02:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779999547; cv=none; b=kz+xid9YOumHDYUxfWvoN2+go6ScX+mmTmoT0b9axedMc6A6QFymiSlG4DAGubFMLT9z7PAYxk/pVqLeULI688QVk6OdRh+WEYuLr84dZTEv3avo1nvjVpAtmBKynj7M67gx6YUh+PSj7PWCEe95yjRSMhev3Ss/kLHA4ELlbMI=
+	t=1779998547; cv=none; b=SDV7CmbSZcnIKTS4rMrFJaVly2WRIRbs147lvPTKdCGV+vNI1OC51eJnWNwHxmzZ68AD+kWokLHK7QxYBBs/heKFQYWIln6WOtJSF/COmLaE5tU62ySo3X/tvYJVTyBSLuqPp311YvQ8dkz4IqiGZtlmYADtAInk+F4NdgzYue0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779999547; c=relaxed/simple;
-	bh=FhD7ippQOT+lXV8jZVcKXsyktF8PYl7MgMmF+SbP/k4=;
+	s=arc-20240116; t=1779998547; c=relaxed/simple;
+	bh=Wp0g1JDFxqzdi6WW2YCqOX+knTFD/6IuXw7cN7rMOXc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ILGrtHokEJj6sXvSMTwm0RpxtXqUdFX/vc/SK0HDjl49/hIB6Rf6czMYAk3w1zz6dzL2ZU/jwZ6lZvZW1ceVGj+xEsxk86g1beOit4UttlUmS99m6SvBaJNEIhnvbqyYwcdV9K0l4lja3JgReb2d0P33pPmznRAD+Nnq0/X3nB0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QqWsbrIB; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F1D3D1F000E9;
-	Thu, 28 May 2026 20:19:05 +0000 (UTC)
+	 MIME-Version; b=GmqanX02/gE9Shlt57GSIoXK2KdN6pZgx52kvGq6F7wZKGMR+Jchdv1DWfU4SA3pms2qng7ynAc05hf3ragqBDIAcLNQVeQRS13CBPx59ELmYml7o+0g01Id4hVhQAOGBF8qBc4Ayw0ppDd8gRZHFqmGAQH/XHDVmXqfCnhTIQM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=b84M1Z77; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C02021F000E9;
+	Thu, 28 May 2026 20:02:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779999546;
-	bh=h7vsd3em1V13xr4P60owm7zxOGjPoDJsBCiAAqwsyHM=;
+	s=korg; t=1779998546;
+	bh=rPEbCiFV1OJQjtnOySyuZvfLc9MC2TPa70xA8hCMUHg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=QqWsbrIBcMpeu5eZSEJm4HDQfzXdekEZbfFMNeF1DyIQIMKCO+Cx/LLiuIs4nRc0V
-	 pq5d2qJwAWo/q9I5th3J8HZq71F/+Y50r5kbP7hjMCydMCbXZOSIS4MFWBZH7DJgZM
-	 WQafMkHmi8QN24oCCBeV213Ik/PzC4Su5txxpibo=
+	b=b84M1Z77/RezvP9Vyw9KYZ79EvzGxZJVKUHWj/N0HCSqSejQyBcb/yLpE4gfZTjYn
+	 CySxOEaEFTSp+onXUvP8DzyZAgZ5oDkuo7fH7DqTH+CNi3y2x1jDBFY3zaky56RQAD
+	 vhuWXFieqbXx7J3xS+HkHn8MVN6L+9+Xt5/XMnu4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Shyam Prasad N <sprasad@microsoft.com>,
-	Zhihao Cheng <chengzhihao1@huawei.com>,
-	Steve French <stfrench@microsoft.com>
-Subject: [PATCH 6.18 104/377] cifs: Fix busy dentry used after unmounting
+	Tristan Madani <tristan@talencesecurity.com>,
+	Florian Westphal <fw@strlen.de>,
+	Pablo Neira Ayuso <pablo@netfilter.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 7.0 213/461] netfilter: ebtables: close dangling table module init race
 Date: Thu, 28 May 2026 21:45:42 +0200
-Message-ID: <20260528194641.356781080@linuxfoundation.org>
+Message-ID: <20260528194653.287027596@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260528194638.371537336@linuxfoundation.org>
-References: <20260528194638.371537336@linuxfoundation.org>
+In-Reply-To: <20260528194646.819809818@linuxfoundation.org>
+References: <20260528194646.819809818@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -73,100 +74,143 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-255309-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-255664-lists,stable=lfdr.de];
-	TO_DN_SOME(0.00)[];
-	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TO_DN_SOME(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
 	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,huawei.com:email]
-X-Rspamd-Queue-Id: E0DEA5F8C48
+	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_SEVEN(0.00)[7];
+	MID_RHS_MATCH_FROM(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[netfilter.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,strlen.de:email,talencesecurity.com:email,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
+X-Rspamd-Queue-Id: CFA005F7E4F
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+7.0-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Zhihao Cheng <chengzhihao1@huawei.com>
+From: Florian Westphal <fw@strlen.de>
 
-commit c68337442f03953237a94577beb468ab2662a851 upstream.
+[ Upstream commit 92c603fa07bc0d6a17345de3ad7954730b8de44b ]
 
-Since commit 340cea84f691c ("cifs: open files should not hold ref on
-superblock"), cifs file only holds the dentry ref_cnt, the cifs file
-close work(cfile->deferred) could be executed after unmounting, which
-will trigger a warning in generic_shutdown_super:
- BUG: Dentry 00000000a14a6845{i=c,n=file}  still in use (1) [unmount of
- cifs cifs]
+sashiko reported for a related patch:
+ In modules like iptable_raw.c, [..], if register_pernet_subsys() fails,
+ the rollback might call kfree(rawtable_ops) before [..]
+ During this window, could a concurrent userspace process find the globally
+ visible template, trigger table_init(), [..]
 
-The detailed processs is:
-   process A           process B           kworker
- fd = open(PATH)
-  vfs_open
-   file->__f_path = *path // dentry->d_lockref.count = 1
-   cifs_open
-    cifs_new_fileinfo
-     cfile->dentry = dget(dentry) // dentry->d_lockref.count = 2
- close(fd)
-  __fput
-  cifs_close
-   queue_delayed_work(deferredclose_wq, cfile->deferred)
-  dput(dentry) // dentry->d_lockref.count = 1
-			                 smb2_deferred_work_close
-					  _cifsFileInfo_put
-					   list_del(&cifs_file->flist)
-                    umount
-		     cleanup_mnt
-		      deactivate_super
-		       cifs_kill_sb
-		        cifs_close_all_deferred_files_sb
-			 cifs_close_all_deferred_files
-			  // cannot find cfile, skip _cifsFileInfo_put
-			kill_anon_super
-			 generic_shutdown_super
-			  shrink_dcache_for_umount
-			   umount_check
-			    WARN ! // dentry->d_lockref.count = 1
-					   cifsFileInfo_put_final
-					    dput(cifs_file->dentry)
-		                            // dentry->d_lockref.count = 0
+The table init functions must always register the template last.
 
-Fix it by flushing 'deferredclose_wq' before calling kill_anon_super.
+Otherwise, set/getsockopt can instantiate a table in a namespace
+while the required pernet ops (contain the destructor) isn't available.
+This change is also required in x_tables, handled in followup change.
 
-Fetch a reproducer in https://bugzilla.kernel.org/show_bug.cgi?id=221548.
-
-Fixes: 340cea84f691c ("cifs: open files should not hold ref on superblock")
-Cc: stable@vger.kernel.org
-Reviewed-by: Shyam Prasad N <sprasad@microsoft.com>
-Signed-off-by: Zhihao Cheng <chengzhihao1@huawei.com>
-Signed-off-by: Steve French <stfrench@microsoft.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 87663c39f898 ("netfilter: ebtables: do not hook tables by default")
+Reviewed-by: Tristan Madani <tristan@talencesecurity.com>
+Signed-off-by: Florian Westphal <fw@strlen.de>
+Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/smb/client/cifsfs.c |    2 ++
- 1 file changed, 2 insertions(+)
+ net/bridge/netfilter/ebtable_broute.c | 12 +++++-------
+ net/bridge/netfilter/ebtable_filter.c | 12 +++++-------
+ net/bridge/netfilter/ebtable_nat.c    | 10 ++++------
+ 3 files changed, 14 insertions(+), 20 deletions(-)
 
---- a/fs/smb/client/cifsfs.c
-+++ b/fs/smb/client/cifsfs.c
-@@ -338,6 +338,8 @@ static void cifs_kill_sb(struct super_bl
+diff --git a/net/bridge/netfilter/ebtable_broute.c b/net/bridge/netfilter/ebtable_broute.c
+index e6f9e343b41f1..f05c79f215ea0 100644
+--- a/net/bridge/netfilter/ebtable_broute.c
++++ b/net/bridge/netfilter/ebtable_broute.c
+@@ -112,18 +112,16 @@ static struct pernet_operations broute_net_ops = {
  
- 		/* Wait for all pending oplock breaks to complete */
- 		flush_workqueue(cifsoplockd_wq);
-+		/* Wait for all opened files to release */
-+		flush_workqueue(deferredclose_wq);
+ static int __init ebtable_broute_init(void)
+ {
+-	int ret = ebt_register_template(&broute_table, broute_table_init);
++	int ret = register_pernet_subsys(&broute_net_ops);
  
- 		/* finally release root dentry */
- 		dput(cifs_sb->root);
+ 	if (ret)
+ 		return ret;
+ 
+-	ret = register_pernet_subsys(&broute_net_ops);
+-	if (ret) {
+-		ebt_unregister_template(&broute_table);
+-		return ret;
+-	}
++	ret = ebt_register_template(&broute_table, broute_table_init);
++	if (ret)
++		unregister_pernet_subsys(&broute_net_ops);
+ 
+-	return 0;
++	return ret;
+ }
+ 
+ static void __exit ebtable_broute_fini(void)
+diff --git a/net/bridge/netfilter/ebtable_filter.c b/net/bridge/netfilter/ebtable_filter.c
+index 02b6501c15a5e..0fc03b07e62ae 100644
+--- a/net/bridge/netfilter/ebtable_filter.c
++++ b/net/bridge/netfilter/ebtable_filter.c
+@@ -93,18 +93,16 @@ static struct pernet_operations frame_filter_net_ops = {
+ 
+ static int __init ebtable_filter_init(void)
+ {
+-	int ret = ebt_register_template(&frame_filter, frame_filter_table_init);
++	int ret = register_pernet_subsys(&frame_filter_net_ops);
+ 
+ 	if (ret)
+ 		return ret;
+ 
+-	ret = register_pernet_subsys(&frame_filter_net_ops);
+-	if (ret) {
+-		ebt_unregister_template(&frame_filter);
+-		return ret;
+-	}
++	ret = ebt_register_template(&frame_filter, frame_filter_table_init);
++	if (ret)
++		unregister_pernet_subsys(&frame_filter_net_ops);
+ 
+-	return 0;
++	return ret;
+ }
+ 
+ static void __exit ebtable_filter_fini(void)
+diff --git a/net/bridge/netfilter/ebtable_nat.c b/net/bridge/netfilter/ebtable_nat.c
+index 9985a82555c41..8a10375d89099 100644
+--- a/net/bridge/netfilter/ebtable_nat.c
++++ b/net/bridge/netfilter/ebtable_nat.c
+@@ -93,16 +93,14 @@ static struct pernet_operations frame_nat_net_ops = {
+ 
+ static int __init ebtable_nat_init(void)
+ {
+-	int ret = ebt_register_template(&frame_nat, frame_nat_table_init);
++	int ret = register_pernet_subsys(&frame_nat_net_ops);
+ 
+ 	if (ret)
+ 		return ret;
+ 
+-	ret = register_pernet_subsys(&frame_nat_net_ops);
+-	if (ret) {
+-		ebt_unregister_template(&frame_nat);
+-		return ret;
+-	}
++	ret = ebt_register_template(&frame_nat, frame_nat_table_init);
++	if (ret)
++		unregister_pernet_subsys(&frame_nat_net_ops);
+ 
+ 	return ret;
+ }
+-- 
+2.53.0
+
 
 
 
