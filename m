@@ -1,58 +1,59 @@
-Return-Path: <stable+bounces-255650-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-255280-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id UBcQED6lGGrClggAu9opvQ
-	(envelope-from <stable+bounces-255650-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:27:42 +0200
+	id AN5jEzyfGGpAlggAu9opvQ
+	(envelope-from <stable+bounces-255280-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:02:04 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id B5BB15F8BC3
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:27:41 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5151C5F7AE9
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:02:03 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 70334327299F
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 20:18:27 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 3CC673036BC1
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 20:01:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0E49D2C11F9;
-	Thu, 28 May 2026 20:18:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7F6BA32ABC0;
+	Thu, 28 May 2026 20:01:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="enFuUeON"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="eIYHMH6l"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BA7B22459D1;
-	Thu, 28 May 2026 20:18:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5EBE326B973;
+	Thu, 28 May 2026 20:01:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779999506; cv=none; b=IviZeK4LS6ns3yyuR4jjajW/cWC/YDF/aVmhDm5MXtCSc7BjM5VFxv0O+PYOMR6HqH84Ovia0TsxEXeic4X57zkk+zxUTdAMMfzx5U37yEFuxOIgH4NGcVIRNsITO1s0352ti8Xd6Q/68h1SQozaR1MWiaUqoAazXhYguPEtOow=
+	t=1779998466; cv=none; b=PbJn+irByw5Fq6tv7w/CwVQF+fK7GPYrIbew0a9XTSpU1cPhOSY7L8ZRqOOUua1wfTE4yCgT7mkCFRWdzn3pawE00WEXQfJTLMoWCbeLqzqpr1ME6XTyuyV9ToNSkj38tKn3EIEMs6nyBikomFUpNFb7Q22N1viLnycqAruVnfA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779999506; c=relaxed/simple;
-	bh=hDtoCM21LupLcLSt4LNkqqC6060B+5mtpzAvkPAPeJY=;
+	s=arc-20240116; t=1779998466; c=relaxed/simple;
+	bh=2sHXQL/32MHWdtHSeajvERxFX4BkQVFpsNdHvb47Fr4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=lZd9W3e2qPoJpB4YoVMhmiwt3R3hnQ9TYF3tENubPRwePFF6FFLAPbWkqq6jFLepU/+Ay/lAdb4Dq6Tq4dDmbLF9ug59ACYnew3vjLKvogkixJvE+EP8B7Kw9AYHwy1e1P4S44XvSX/ap6oWItD9sakqyRsywNZ+P6swQdLbJ7s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=enFuUeON; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 25EFA1F000E9;
-	Thu, 28 May 2026 20:18:24 +0000 (UTC)
+	 MIME-Version; b=hTKYeK895/9FZ7/9JwIQBZHwmUhGQN5LIcQpr8+LqfG6iDdxE4tC9FNcPoOeXduQ4ASVVzfkwuXkxuAvCzwZyEVZdBZPXm80eLhNHGagxKmE5cj0bTKFiUMkzmQuxnXWxZqqC7vg5WqTxEcDuKBSha7v5iGy9k44BCK/1r7WPaM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=eIYHMH6l; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B455F1F000E9;
+	Thu, 28 May 2026 20:01:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779999505;
-	bh=LL5EpOwIjSQjjXSdcWn2fAULG8uEbLcwgO0AM6bSeNo=;
+	s=korg; t=1779998465;
+	bh=ECQ4HOmH/AcEMLT68tG7ugUvGgSaS7xagHvapa0B63E=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=enFuUeONEX8sM4uWGamf9jZn8IZezopyIgH3MSKILW5m3YguJq7bkPbhe6UKRRP53
-	 Ebjcd50NVqHDsb0PH5O7i1UgkQc1SafhAgttSYBWft2SJpDusCNRBYfDLsr0nO/fol
-	 AeAY3NNBh/fOgL0ccwZnTwQzlkR5CydDishQ/NQE=
+	b=eIYHMH6lK21MsfrYJrW9PIAPnvNaOiRtS80vCPnwcnBf6zyAXbnwMlYK0nUBbb2Wv
+	 bAzUPYYWIISnSSmzhj5ZbMGeunM72vS1NELecWT5Q0G15rLnuYKS57o5j9TzSuqRqu
+	 otEQb2K33ZfIzNNpiNDgkxDZwkmoKjo1cSTq5AZc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Masami Hiramatsu (Google)" <mhiramat@kernel.org>,
+	Evangelos Petrongonas <epetron@amazon.de>,
+	"Mike Rapoport (Microsoft)" <rppt@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 074/377] tracing/fprobe: Check the same type fprobe on table as the unregistered one
+Subject: [PATCH 7.0 183/461] kho: skip KHO for crash kernel
 Date: Thu, 28 May 2026 21:45:12 +0200
-Message-ID: <20260528194640.509661389@linuxfoundation.org>
+Message-ID: <20260528194652.373859491@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260528194638.371537336@linuxfoundation.org>
-References: <20260528194638.371537336@linuxfoundation.org>
+In-Reply-To: <20260528194646.819809818@linuxfoundation.org>
+References: <20260528194646.819809818@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -67,7 +68,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
@@ -77,7 +78,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-255650-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-255280-lists,stable=lfdr.de];
 	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
@@ -86,217 +87,73 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	NEURAL_HAM(-0.00)[-1.000];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[5];
+	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim]
-X-Rspamd-Queue-Id: B5BB15F8BC3
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,linuxfoundation.org:mid,linuxfoundation.org:dkim,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,amazon.de:email]
+X-Rspamd-Queue-Id: 5151C5F7AE9
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+7.0-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: "Masami Hiramatsu (Google)" <mhiramat@kernel.org>
+From: Evangelos Petrongonas <epetron@amazon.de>
 
-[ Upstream commit 0ac0058a74ac5765c7ce09ea630f4fdeaf4d80fa ]
+[ Upstream commit a6715d7ec472a476db17787697a4abda62962284 ]
 
-Commit 2c67dc457bc6 ("tracing: fprobe: optimization for entry only case")
-introduced a different ftrace_ops for entry-only fprobes.
+kho_fill_kimage() unconditionally populates the kimage with KHO
+metadata for every kexec image type. When the image is a crash kernel,
+this can be problematic as the crash kernel can run in a small reserved
+region and the KHO scratch areas can sit outside it.
+The crash kernel then faults during kho_memory_init() when it
+tries phys_to_virt() on the KHO FDT address:
 
-However, when unregistering an fprobe, the kernel only checks if another
-fprobe exists at the same address, without checking which type of fprobe
-it is.
-If different fprobes are registered at the same address, the same address
-will be registered in both fgraph_ops and ftrace_ops, but only one of
-them will be deleted when unregistering. (the one removed first will not
-be deleted from the ops).
+  Unable to handle kernel paging request at virtual address xxxxxxxx
+  ...
+    fdt_offset_ptr+...
+    fdt_check_node_offset_+...
+    fdt_first_property_offset+...
+    fdt_get_property_namelen_+...
+    fdt_getprop+...
+    kho_memory_init+...
+    mm_core_init+...
+    start_kernel+...
 
-This results in junk entries remaining in either fgraph_ops or ftrace_ops.
-For example:
- =======
- cd /sys/kernel/tracing
+kho_locate_mem_hole() already skips KHO logic for KEXEC_TYPE_CRASH
+images, but kho_fill_kimage() was missing the same guard. As
+kho_fill_kimage() is the single point that populates image->kho.fdt
+and image->kho.scratch, fixing it here is sufficient for both arm64
+and x86 as the FDT and boot_params path are bailing out when these
+fields are unset.
 
- # 'Add entry and exit events on the same place'
- echo 'f:event1 vfs_read' >> dynamic_events
- echo 'f:event2 vfs_read%return' >> dynamic_events
-
- # 'Enable both of them'
- echo 1 > events/fprobes/enable
- cat enabled_functions
-vfs_read (2)            ->arch_ftrace_ops_list_func+0x0/0x210
-
- # 'Disable and remove exit event'
- echo 0 > events/fprobes/event2/enable
- echo -:event2 >> dynamic_events
-
- # 'Disable and remove all events'
- echo 0 > events/fprobes/enable
- echo > dynamic_events
-
- # 'Add another event'
- echo 'f:event3 vfs_open%return' > dynamic_events
- cat dynamic_events
-f:fprobes/event3 vfs_open%return
-
- echo 1 > events/fprobes/enable
- cat enabled_functions
-vfs_open (1)            tramp: 0xffffffffa0001000 (ftrace_graph_func+0x0/0x60) ->ftrace_graph_func+0x0/0x60    subops: {ent:fprobe_fgraph_entry+0x0/0x620 ret:fprobe_return+0x0/0x150}
-vfs_read (1)            tramp: 0xffffffffa0001000 (ftrace_graph_func+0x0/0x60) ->ftrace_graph_func+0x0/0x60    subops: {ent:fprobe_fgraph_entry+0x0/0x620 ret:fprobe_return+0x0/0x150}
- =======
-
-As you can see, an entry for the vfs_read remains.
-
-To fix this issue, when unregistering, the kernel should also check if
-there is the same type of fprobes still exist at the same address, and
-if not, delete its entry from either fgraph_ops or ftrace_ops.
-
-Link: https://lore.kernel.org/all/177669367993.132053.10553046138528674802.stgit@mhiramat.tok.corp.google.com/
-
-Fixes: 2c67dc457bc6 ("tracing: fprobe: optimization for entry only case")
-Cc: stable@vger.kernel.org
-Signed-off-by: Masami Hiramatsu (Google) <mhiramat@kernel.org>
+Fixes: d7255959b69a ("kho: allow kexec load before KHO finalization")
+Signed-off-by: Evangelos Petrongonas <epetron@amazon.de>
+Reviewed-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
+Link: https://patch.msgid.link/20260410011609.1103-1-epetron@amazon.de
+Signed-off-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- kernel/trace/fprobe.c |   82 +++++++++++++++++++++++++++++++++++++++-----------
- 1 file changed, 65 insertions(+), 17 deletions(-)
+ kernel/liveupdate/kexec_handover.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/kernel/trace/fprobe.c
-+++ b/kernel/trace/fprobe.c
-@@ -92,11 +92,8 @@ static int insert_fprobe_node(struct fpr
- 	return ret;
- }
+diff --git a/kernel/liveupdate/kexec_handover.c b/kernel/liveupdate/kexec_handover.c
+index 479c42e08b74a..d8893f2adce8a 100644
+--- a/kernel/liveupdate/kexec_handover.c
++++ b/kernel/liveupdate/kexec_handover.c
+@@ -1556,7 +1556,7 @@ int kho_fill_kimage(struct kimage *image)
+ 	int err = 0;
+ 	struct kexec_buf scratch;
  
--/* Return true if there are synonims */
--static bool delete_fprobe_node(struct fprobe_hlist_node *node)
-+static void delete_fprobe_node(struct fprobe_hlist_node *node)
- {
--	bool ret;
--
- 	lockdep_assert_held(&fprobe_mutex);
- 
- 	/* Avoid double deleting and non-inserted nodes */
-@@ -105,13 +102,6 @@ static bool delete_fprobe_node(struct fp
- 		rhltable_remove(&fprobe_ip_table, &node->hlist,
- 				fprobe_rht_params);
- 	}
--
--	rcu_read_lock();
--	ret = !!rhltable_lookup(&fprobe_ip_table, &node->addr,
--				fprobe_rht_params);
--	rcu_read_unlock();
--
--	return ret;
- }
- 
- /* Check existence of the fprobe */
-@@ -343,6 +333,32 @@ static bool fprobe_is_ftrace(struct fpro
- 	return !fp->exit_handler;
- }
- 
-+static bool fprobe_exists_on_hash(unsigned long ip, bool ftrace)
-+{
-+	struct rhlist_head *head, *pos;
-+	struct fprobe_hlist_node *node;
-+	struct fprobe *fp;
-+
-+	guard(rcu)();
-+	head = rhltable_lookup(&fprobe_ip_table, &ip,
-+				fprobe_rht_params);
-+	if (!head)
-+		return false;
-+	/* We have to check the same type on the list. */
-+	rhl_for_each_entry_rcu(node, pos, head, hlist) {
-+		if (node->addr != ip)
-+			break;
-+		fp = READ_ONCE(node->fp);
-+		if (likely(fp)) {
-+			if ((!ftrace && fp->exit_handler) ||
-+			    (ftrace && !fp->exit_handler))
-+				return true;
-+		}
-+	}
-+
-+	return false;
-+}
-+
- #ifdef CONFIG_MODULES
- static void fprobe_remove_ips(unsigned long *ips, unsigned int cnt)
- {
-@@ -365,6 +381,29 @@ static bool fprobe_is_ftrace(struct fpro
- 	return false;
- }
- 
-+static bool fprobe_exists_on_hash(unsigned long ip, bool ftrace __maybe_unused)
-+{
-+	struct rhlist_head *head, *pos;
-+	struct fprobe_hlist_node *node;
-+	struct fprobe *fp;
-+
-+	guard(rcu)();
-+	head = rhltable_lookup(&fprobe_ip_table, &ip,
-+				fprobe_rht_params);
-+	if (!head)
-+		return false;
-+	/* We only need to check fp is there. */
-+	rhl_for_each_entry_rcu(node, pos, head, hlist) {
-+		if (node->addr != ip)
-+			break;
-+		fp = READ_ONCE(node->fp);
-+		if (likely(fp))
-+			return true;
-+	}
-+
-+	return false;
-+}
-+
- #ifdef CONFIG_MODULES
- static void fprobe_remove_ips(unsigned long *ips, unsigned int cnt)
- {
-@@ -552,18 +591,25 @@ struct fprobe_addr_list {
- static int fprobe_remove_node_in_module(struct module *mod, struct fprobe_hlist_node *node,
- 					 struct fprobe_addr_list *alist)
- {
-+	lockdep_assert_in_rcu_read_lock();
-+
- 	if (!within_module(node->addr, mod))
+-	if (!kho_enable)
++	if (!kho_enable || image->type == KEXEC_TYPE_CRASH)
  		return 0;
  
--	if (delete_fprobe_node(node))
--		return 0;
-+	delete_fprobe_node(node);
- 	/* If no address list is available, we can't track this address. */
- 	if (!alist->addrs)
- 		return 0;
-+	/*
-+	 * Don't care the type here, because all fprobes on the same
-+	 * address must be removed eventually.
-+	 */
-+	if (!rhltable_lookup(&fprobe_ip_table, &node->addr, fprobe_rht_params)) {
-+		alist->addrs[alist->index++] = node->addr;
-+		if (alist->index == alist->size)
-+			return -ENOSPC;
-+	}
- 
--	alist->addrs[alist->index++] = node->addr;
--	if (alist->index == alist->size)
--		return -ENOSPC;
- 	return 0;
- }
- 
-@@ -934,7 +980,9 @@ static int unregister_fprobe_nolock(stru
- 	/* Remove non-synonim ips from table and hash */
- 	count = 0;
- 	for (i = 0; i < hlist_array->size; i++) {
--		if (!delete_fprobe_node(&hlist_array->array[i]) && addrs)
-+		delete_fprobe_node(&hlist_array->array[i]);
-+		if (addrs && !fprobe_exists_on_hash(hlist_array->array[i].addr,
-+						    fprobe_is_ftrace(fp)))
- 			addrs[count++] = hlist_array->array[i].addr;
- 	}
- 	del_fprobe_hash(fp);
+ 	image->kho.fdt = virt_to_phys(kho_out.fdt);
+-- 
+2.53.0
+
 
 
 
