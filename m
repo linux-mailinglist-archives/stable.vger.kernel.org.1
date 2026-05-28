@@ -1,58 +1,59 @@
-Return-Path: <stable+bounces-255636-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-255249-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id mNbfFR2lGGoQlwgAu9opvQ
-	(envelope-from <stable+bounces-255636-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:27:09 +0200
+	id iKABMMmeGGpblggAu9opvQ
+	(envelope-from <stable+bounces-255249-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:00:09 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id CE6F15F8B3A
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:27:08 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 66BFE5F7A29
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:00:09 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 666EC31C7BF2
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 20:17:48 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 6B44130331A7
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 19:59:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 346AE2E03EA;
-	Thu, 28 May 2026 20:17:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0D96D352019;
+	Thu, 28 May 2026 19:59:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cTnf+NRT"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gi/bzWaB"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F32EF2C11F9;
-	Thu, 28 May 2026 20:17:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C071426B973;
+	Thu, 28 May 2026 19:59:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779999468; cv=none; b=nqruk9m6gSPjnO5TjFW0JT3t637FLODt5wKB78LSyb2lsFVetYi2OnMIDkEia8ngvhRn3he+4ZYF3ihD8dtIjXaON0mCljmRs+B6pLvvdjl/8I93dvkNNKaf0ulPkIYo9IxYRG1sM0+s6QGO71v56QPYx+akF2GcWXcAYnVmo9Y=
+	t=1779998378; cv=none; b=CziGZhpA+ZxHPlZZswjnEWbaN2bP8/YUXykkbdfDWTiAGFO+SvDn6avkf7TZEwR5ilWifHRplxXH2KOLRgqpYIyaLbenWtwpGXwiy5oPYP5WRSXPJJAeZ7ny7GZkm3KvtXMmvAL9iySPyOM86pUceLurcGsDot6oTio0oa1CgOY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779999468; c=relaxed/simple;
-	bh=VQh9KFS0+Kjc8hNV2Rd6lHrvD7sXk9vlrn1izcjdSXk=;
+	s=arc-20240116; t=1779998378; c=relaxed/simple;
+	bh=VfZOwe9HiwWYZ+EbFWwqtS1ZPxrXLcpP94w/JZ2742M=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=L70h+t+moFJisnUtd2M+sSPL1lpQnA5AXU4yqV33FlCTcIWusslvrpo7syDs68xd0abEfOmQiH5ULKkVRey/aHo26Jdw82ImjO2PFHqDAJwmwVaYt9AT+aDCpvHO1xDKDCB3Bo56e6HSXyou904D4sg5u0C6hGLYF70qmI+I2aA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cTnf+NRT; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 171071F00A3A;
-	Thu, 28 May 2026 20:17:45 +0000 (UTC)
+	 MIME-Version; b=hy3WHEjLnCr+NT/dUuoH3A2gjzyME6Xq1nYAqWgVv1Vm6zdi5t+WewbGbuGR2VMWY7FKyn8Y9Mgak8hItVqm698c2w1dPDFdIf188/n9o2RbU8nTWOEZ6J3xJb+UROdtZqfGcn63WAwsYYSe4SSjY+C6FfPk30tzlqGQ/n35oOs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gi/bzWaB; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E14FE1F000E9;
+	Thu, 28 May 2026 19:59:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779999466;
-	bh=+bu1BSt3RStSE6CtEkdLhQhyQitz4eTbLqCi71lMbfU=;
+	s=korg; t=1779998377;
+	bh=WGrtfXpv700dCxSuYUe0oBTGYlOVB8G7frn6sRnotXY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=cTnf+NRTd/4WFwXv98qLI6dblq9Qkrmz5ChbuVtRAEjFXABGxDIPNBmBqrUxfouL3
-	 1vp37EE6RlDzsMP57p96OX4WcEdXO8fHvpv2jzW8DGP83BrAkW2oZK1VE26xQTwXH3
-	 zpDaFxpkg3nGnL82ZScwIVStjB4ukHm5ktDTRZVM=
+	b=gi/bzWaBVS8PYaZlcCfhJS8NzPsPPWHtljCJ+Dtg1Qg0cxmO+yMYTRuYVgC7nVC0q
+	 VhcHtlf7ofOuusG9L1C0BcnVpKTLuvV5YglY7V1dqTBsQ6Ibet7HFBoTWCjq09soHK
+	 SolqX0Lp1oKizUobpvClMOkA/UbxYxeFSGGWb4ps=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Rafael J. Wysocki (Intel)" <rafael@kernel.org>,
-	Ard Biesheuvel <ardb@kernel.org>
-Subject: [PATCH 6.18 041/377] efi: Allocate runtime workqueue before ACPI init
-Date: Thu, 28 May 2026 21:44:39 +0200
-Message-ID: <20260528194639.564845753@linuxfoundation.org>
+	stable@kernel.org,
+	Simon Wunderlich <sw@simonwunderlich.de>,
+	Sven Eckelmann <sven@narfation.org>
+Subject: [PATCH 7.0 151/461] batman-adv: bla: fix report_work leak on backbone_gw purge
+Date: Thu, 28 May 2026 21:44:40 +0200
+Message-ID: <20260528194651.407943125@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260528194638.371537336@linuxfoundation.org>
-References: <20260528194638.371537336@linuxfoundation.org>
+In-Reply-To: <20260528194646.819809818@linuxfoundation.org>
+References: <20260528194646.819809818@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -67,7 +68,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
@@ -77,7 +78,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-255636-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-255249-lists,stable=lfdr.de];
 	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
@@ -86,101 +87,128 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	NEURAL_HAM(-0.00)[-1.000];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[5];
+	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim]
-X-Rspamd-Queue-Id: CE6F15F8B3A
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,narfation.org:email,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo]
+X-Rspamd-Queue-Id: 66BFE5F7A29
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+7.0-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ard Biesheuvel <ardb@kernel.org>
+From: Sven Eckelmann <sven@narfation.org>
 
-commit 13c6da02e767152c9ac4330962247a5e47011035 upstream.
+commit 0459430add32ea41f3e2ef9351610e6d33627a6b upstream.
 
-Since commit
+batadv_bla_purge_backbone_gw() removes stale backbone gateway entries,
+but fails to properly handle their associated report_work:
 
-  5894cf571e14 ("acpi/prmt: Use EFI runtime sandbox to invoke PRM handlers")
+- If report_work is running, the purge must wait for it to finish before
+  freeing the backbone_gw, otherwise the worker may access freed memory
+  (e.g. bat_priv).
+- If report_work is pending, the purge must cancel it and release the
+  reference held for that pending work item.
 
-ACPI PRM calls are delegated to a workqueue which runs in a kernel
-thread, making it easier to detect and mitigate faulting memory accesses
-performed by the firmware.
+The previous implementation called hlist_for_each_entry_safe() inside a
+spin_lock_bh() section, but cancel_work_sync() may sleep and therefore
+cannot be called from within a spinlock-protected region.
 
-Rafael reports that such PRM accesses may occur before efisubsys_init()
-executes, which is where the workqueue is allocated, leading to NULL
-pointer dereferences. Since acpi_init() [which triggers the early PRM
-accesses] executes as a subsys_initcall() as well, and has its own
-dependencies that may be sensitive to initcall ordering, deferring
-acpi_init() is not an option.
+Restructure the loop to handle one entry per spinlock critical section:
+acquire the lock, find the next entry to purge, remove it from the hash
+list, then release the lock before calling cancel_work_sync() and
+dropping the hash_entry reference. Repeat until no more entries require
+purging.
 
-So instead, split off the workqueue allocation into its own postcore
-initcall, as this is the only missing piece to allow EFI runtime calls
-to be made. This ensures that EFI runtime call (including PRM calls) are
-accessible to all code running at subsys_initcall() level.
-
-Cc: <stable@vger.kernel.org>
-Fixes: 5894cf571e14 ("acpi/prmt: Use EFI runtime sandbox to invoke PRM handlers")
-Reviewed-by: Rafael J. Wysocki (Intel) <rafael@kernel.org>
-Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
+Cc: stable@kernel.org
+Fixes: 23721387c409 ("batman-adv: add basic bridge loop avoidance code")
+Reviewed-by: Simon Wunderlich <sw@simonwunderlich.de>
+Signed-off-by: Sven Eckelmann <sven@narfation.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/firmware/efi/efi.c |   28 ++++++++++++++++------------
- 1 file changed, 16 insertions(+), 12 deletions(-)
+ net/batman-adv/bridge_loop_avoidance.c |   60 ++++++++++++++++++++-------------
+ 1 file changed, 38 insertions(+), 22 deletions(-)
 
---- a/drivers/firmware/efi/efi.c
-+++ b/drivers/firmware/efi/efi.c
-@@ -401,21 +401,11 @@ static void __init efi_debugfs_init(void
- static inline void efi_debugfs_init(void) {}
- #endif
+--- a/net/batman-adv/bridge_loop_avoidance.c
++++ b/net/batman-adv/bridge_loop_avoidance.c
+@@ -1224,6 +1224,7 @@ static void batadv_bla_purge_backbone_gw
+ 	struct hlist_head *head;
+ 	struct batadv_hashtable *hash;
+ 	spinlock_t *list_lock;	/* protects write access to the hash lists */
++	bool purged;
+ 	int i;
  
--/*
-- * We register the efi subsystem with the firmware subsystem and the
-- * efivars subsystem with the efi subsystem, if the system was booted with
-- * EFI.
-- */
--static int __init efisubsys_init(void)
-+static int __init efipostcore_init(void)
- {
--	int error;
--
- 	if (!efi_enabled(EFI_RUNTIME_SERVICES))
- 		efi.runtime_supported_mask = 0;
+ 	hash = bat_priv->bla.backbone_hash;
+@@ -1234,30 +1235,45 @@ static void batadv_bla_purge_backbone_gw
+ 		head = &hash->table[i];
+ 		list_lock = &hash->list_locks[i];
  
--	if (!efi_enabled(EFI_BOOT))
--		return 0;
+-		spin_lock_bh(list_lock);
+-		hlist_for_each_entry_safe(backbone_gw, node_tmp,
+-					  head, hash_entry) {
+-			if (now)
+-				goto purge_now;
+-			if (!batadv_has_timed_out(backbone_gw->lasttime,
+-						  BATADV_BLA_BACKBONE_TIMEOUT))
+-				continue;
 -
- 	if (efi.runtime_supported_mask) {
- 		/*
- 		 * Since we process only one efi_runtime_service() at a time, an
-@@ -427,9 +417,23 @@ static int __init efisubsys_init(void)
- 			pr_err("Creating efi_rts_wq failed, EFI runtime services disabled.\n");
- 			clear_bit(EFI_RUNTIME_SERVICES, &efi.flags);
- 			efi.runtime_supported_mask = 0;
--			return 0;
- 		}
+-			batadv_dbg(BATADV_DBG_BLA, backbone_gw->bat_priv,
+-				   "%s(): backbone gw %pM timed out\n",
+-				   __func__, backbone_gw->orig);
++		do {
++			purged = false;
++
++			spin_lock_bh(list_lock);
++			hlist_for_each_entry_safe(backbone_gw, node_tmp,
++						  head, hash_entry) {
++				if (now)
++					goto purge_now;
++				if (!batadv_has_timed_out(backbone_gw->lasttime,
++							  BATADV_BLA_BACKBONE_TIMEOUT))
++					continue;
++
++				batadv_dbg(BATADV_DBG_BLA, backbone_gw->bat_priv,
++					   "%s(): backbone gw %pM timed out\n",
++					   __func__, backbone_gw->orig);
+ 
+ purge_now:
+-			/* don't wait for the pending request anymore */
+-			if (atomic_read(&backbone_gw->request_sent))
+-				atomic_dec(&bat_priv->bla.num_requests);
+-
+-			batadv_bla_del_backbone_claims(backbone_gw);
+-
+-			hlist_del_rcu(&backbone_gw->hash_entry);
+-			batadv_backbone_gw_put(backbone_gw);
+-		}
+-		spin_unlock_bh(list_lock);
++				purged = true;
++
++				/* don't wait for the pending request anymore */
++				if (atomic_read(&backbone_gw->request_sent))
++					atomic_dec(&bat_priv->bla.num_requests);
++
++				batadv_bla_del_backbone_claims(backbone_gw);
++
++				hlist_del_rcu(&backbone_gw->hash_entry);
++				break;
++			}
++			spin_unlock_bh(list_lock);
++
++			if (purged) {
++				/* reference for pending report_work */
++				if (cancel_work_sync(&backbone_gw->report_work))
++					batadv_backbone_gw_put(backbone_gw);
++
++				/* reference for hash_entry */
++				batadv_backbone_gw_put(backbone_gw);
++			}
++		} while (purged);
  	}
-+	return 0;
-+}
-+postcore_initcall(efipostcore_init);
-+
-+/*
-+ * We register the efi subsystem with the firmware subsystem and the
-+ * efivars subsystem with the efi subsystem, if the system was booted with
-+ * EFI.
-+ */
-+static int __init efisubsys_init(void)
-+{
-+	int error;
-+
-+	if (!efi_enabled(EFI_BOOT))
-+		return 0;
+ }
  
- 	if (efi_rt_services_supported(EFI_RT_SUPPORTED_TIME_SERVICES))
- 		platform_device_register_simple("rtc-efi", 0, NULL, 0);
 
 
 
