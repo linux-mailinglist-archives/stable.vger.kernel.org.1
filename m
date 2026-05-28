@@ -1,60 +1,62 @@
-Return-Path: <stable+bounces-255501-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-256273-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id WDyQMNuhGGqvlggAu9opvQ
-	(envelope-from <stable+bounces-255501-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:13:15 +0200
+	id MLbCC4erGGpolwgAu9opvQ
+	(envelope-from <stable+bounces-256273-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:54:31 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id A69C85F8181
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:13:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E6F7F5F9D57
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:54:30 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id C8AEA3045E70
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 20:11:30 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id BFB8F3008D54
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 20:47:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0B3A333CE8A;
-	Thu, 28 May 2026 20:11:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 907F2318B96;
+	Thu, 28 May 2026 20:47:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="J80G/+ZN"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NLjOHZtg"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D606A32ABC0;
-	Thu, 28 May 2026 20:11:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 61EDA2E92BA;
+	Thu, 28 May 2026 20:47:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779999088; cv=none; b=oxnVBJBYh8/IHwEvHt6rEq9kM65zigUZxYvRQGxCU6Mr4sgsLkwClTbgv4IG/dzXDW0UWvP1ImflnicxK/KEp6zY8Y8q1dPMyzZdeABnp8MCSb8ydVAMEawqZE59T9M1gOMnuArgkmU7+j0VQcmCe/sKPyq40qLglglAbvFjdzA=
+	t=1780001238; cv=none; b=rCgXEmtZ7zNRlvJdXyN3AYDa9T/ISNZjrbQO18TGuV3tsx4sM2CP20DjnaQCjD3BJgJxHo6Q2urAOv/oa1LRiDHY95EDCdluPJ82XlhsrtfLdM0LJkRDTorqxCJxmWPfJJnMnmTAHLpylkjW5vjaZW3bV+cDNGN61BEgn8gVG4A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779999088; c=relaxed/simple;
-	bh=ihMUVCt8oHku85OIsY9+sy7Ltxx2i1uDR+ob1bwH2rg=;
+	s=arc-20240116; t=1780001238; c=relaxed/simple;
+	bh=cczKKbOc4ok2TR9xwHoLml1k+fZezhDslBTFDpGIwuo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=KS4hWJFHlhNnwsLjvRMzVkkm79dU5DfA7lpvA4Wc6oeCkacEPA4pC19L8hNTXoDUiPpQhZQiomEWWab2L+M1EzbGRaDn/NRp846uaBp5U5QZRxpRDqbsLHVcN2ykUOL0myhRuc8lzaxs+qoyccZU2z8gDixyHRLqKMGvZxCk7GY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=J80G/+ZN; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 40DB11F000E9;
-	Thu, 28 May 2026 20:11:27 +0000 (UTC)
+	 MIME-Version; b=ZxPSYZqxOls8Ku2rOqjMjD6YgotaYP2DL+iPbaidBxoMvP0uysdu8/H0bnj8HhDiQ+2Fy1X+Oq6oZPZ8+9tjmCa6QypdKdxCwWhQboiYcIQKDXOhiX3m1YT50qHeWVNW9JwAVPqNjbF7UKsglkHunNH2wuzmsOmtyL/C4yKh7D4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NLjOHZtg; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C6BEE1F000E9;
+	Thu, 28 May 2026 20:47:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779999087;
-	bh=Mnhzn6HuikMftxAqmRw1M/HXfzF2JZu7nj/00UDfHgo=;
+	s=korg; t=1780001237;
+	bh=CINj2DJhNCO476Um9G4tN85lDzNq1VQGZLkFY+D9YNg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=J80G/+ZN7TsywsUGA6HfM8l/2nAFqnXj6fH5Xv3HQ/d79bopmskCMP5i3ONcfXsLo
-	 hsr/ZCvcE0GNGqaNN3oXtX5ObJbvMZF21U740oPym9TYJydV3YUJyV8nCIyAYsRohu
-	 YmvPAKrI8KgeUjRvdQqIN3AKZX2csIhFx8v2ZOWA=
+	b=NLjOHZtgR99/dSEE6h5nEjFEAbvikO9aGS2kcUOaKNmALEJ/iTIItVM96+8BBeNRQ
+	 qkdJ3iW5Ij5wYf8ODuUa2pt/fxlAUI9kQyhRWcW9jZ4HXUsd2BVwjAlZIH0IFUp+eT
+	 GUaH9hUoGvCW5pqLsVh5sSAknDypER2orueVQMmQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Nicolai Buchwitz <nb@tipi-net.de>,
-	Andrew Lunn <andrew@lunn.ch>,
+	Marcin Szycik <marcin.szycik@intel.com>,
+	Aleksandr Loktionov <aleksandr.loktionov@intel.com>,
+	Simon Horman <horms@kernel.org>,
+	Tony Nguyen <anthony.l.nguyen@intel.com>,
 	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 7.0 405/461] net: phy: honor eee_disabled_modes in phy_advertise_eee_all()
-Date: Thu, 28 May 2026 21:48:54 +0200
-Message-ID: <20260528194659.205378285@linuxfoundation.org>
+	Rinitha S <sx.rinitha@intel.com>
+Subject: [PATCH 6.6 055/186] ice: fix setting promisc mode while adding VID filter
+Date: Thu, 28 May 2026 21:48:55 +0200
+Message-ID: <20260528194930.458002244@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260528194646.819809818@linuxfoundation.org>
-References: <20260528194646.819809818@linuxfoundation.org>
+In-Reply-To: <20260528194928.941004471@linuxfoundation.org>
+References: <20260528194928.941004471@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -77,7 +79,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-255501-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-256273-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
@@ -88,59 +90,69 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	FROM_HAS_DN(0.00)[];
 	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
 	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[7];
+	RCPT_COUNT_SEVEN(0.00)[9];
 	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,msgid.link:url,tipi-net.de:email,lunn.ch:email]
-X-Rspamd-Queue-Id: A69C85F8181
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,intel.com:email,msgid.link:url,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim]
+X-Rspamd-Queue-Id: E6F7F5F9D57
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-7.0-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Nicolai Buchwitz <nb@tipi-net.de>
+From: Marcin Szycik <marcin.szycik@intel.com>
 
-[ Upstream commit 8baa7506d793f0636e3f6f01b01ef7be19674d06 ]
+commit ebc8de716c9ec2be384abdc2dd866da26c6580d1 upstream.
 
-phy_advertise_eee_all() copies supported_eee into advertising_eee
-unconditionally, overwriting any filtering applied during phy_probe()
-based on DT eee-broken-* properties or driver-populated
-eee_disabled_modes. genphy_c45_ethtool_set_eee() calls this helper
-when user space passes an empty advertisement, undoing the filtering.
+There are at least two paths through which VSI promiscuous mode can be
+independently configured via ice_fltr_set_vsi_promisc():
+- ice_vlan_rx_add_vid() (netdev op)
+- ice_service_task() -> ... -> ice_set_promisc()
 
-Apply the same eee_disabled_modes mask in phy_advertise_eee_all() so
-the filtering survives the copy, matching the pattern in phy_probe()
-and phy_support_eee().
+Both paths may try to program promiscuous mode concurrently. One such
+scenario is:
 
-Fixes: b64691274f5d ("net: phy: add helper phy_advertise_eee_all")
-Signed-off-by: Nicolai Buchwitz <nb@tipi-net.de>
-Reviewed-by: Andrew Lunn <andrew@lunn.ch>
-Link: https://patch.msgid.link/20260518-devel-phy-support-eee-fix-v2-2-05b52626fa68@tipi-net.de
+1. Add ice netdev to bond
+2. Add the bond netdev to bridge
+3. ice netdev enters allmulticast mode (IFF_ALLMULTI)
+4. Service task programs promisc mode filter
+5. Bridge -> bond calls ice_vlan_rx_add_vid()
+
+Crucially, ice_vlan_rx_add_vid() fails if ice_fltr_set_vsi_promisc()
+returns any error, including -EEXIST. This causes VLAN filtering setup
+to fail on the bond interface. ice_set_promisc() already handles -EEXIST
+correctly.
+
+Fix by adding the same -EEXIST check to ice_vlan_rx_add_vid(): if the
+promisc filter is already programmed, continue without returning error.
+
+Fixes: 1273f89578f2 ("ice: Fix broken IFF_ALLMULTI handling")
+Cc: stable@vger.kernel.org
+Signed-off-by: Marcin Szycik <marcin.szycik@intel.com>
+Signed-off-by: Aleksandr Loktionov <aleksandr.loktionov@intel.com>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Tested-by: Rinitha S <sx.rinitha@intel.com> (A Contingent worker at Intel)
+Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
+Link: https://patch.msgid.link/20260515182419.1597859-4-anthony.l.nguyen@intel.com
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/phy/phy_device.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/net/ethernet/intel/ice/ice_main.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/net/phy/phy_device.c b/drivers/net/phy/phy_device.c
-index 893ad97fc60c3..cfb505ed9a3a0 100644
---- a/drivers/net/phy/phy_device.c
-+++ b/drivers/net/phy/phy_device.c
-@@ -2907,7 +2907,8 @@ EXPORT_SYMBOL(phy_advertise_supported);
-  */
- void phy_advertise_eee_all(struct phy_device *phydev)
- {
--	linkmode_copy(phydev->advertising_eee, phydev->supported_eee);
-+	linkmode_andnot(phydev->advertising_eee, phydev->supported_eee,
-+			phydev->eee_disabled_modes);
- }
- EXPORT_SYMBOL_GPL(phy_advertise_eee_all);
+--- a/drivers/net/ethernet/intel/ice/ice_main.c
++++ b/drivers/net/ethernet/intel/ice/ice_main.c
+@@ -3646,7 +3646,7 @@ ice_vlan_rx_add_vid(struct net_device *n
+ 		ret = ice_fltr_set_vsi_promisc(&vsi->back->hw, vsi->idx,
+ 					       ICE_MCAST_VLAN_PROMISC_BITS,
+ 					       vid);
+-		if (ret)
++		if (ret && ret != -EEXIST)
+ 			goto finish;
+ 	}
  
--- 
-2.53.0
-
 
 
 
