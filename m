@@ -1,60 +1,59 @@
-Return-Path: <stable+bounces-256170-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-255927-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id KPzFKW+qGGpolwgAu9opvQ
-	(envelope-from <stable+bounces-256170-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:49:51 +0200
+	id WOhuIyOnGGpolwgAu9opvQ
+	(envelope-from <stable+bounces-255927-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:35:47 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 74B8C5F9A19
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:49:51 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 58B425F90D2
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:35:47 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 37ADD30B11FB
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 20:42:38 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 2B72330A68B1
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 20:31:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 32EC133D4E2;
-	Thu, 28 May 2026 20:42:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F0F673368B5;
+	Thu, 28 May 2026 20:31:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="D34IyB6B"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="r7SF/oJp"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E6E433346BE;
-	Thu, 28 May 2026 20:42:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A615B25F7B9;
+	Thu, 28 May 2026 20:31:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780000952; cv=none; b=jjR5yJ7sYZukI0rrOTjUeYvhVaeF59/dOrROfh1mIFtO3HiBnv5RxvOxHFQMAQL1XOWGKKS21RyOJzKGKLU+IZs15bd0I/Lbwr+//4FBYfr6WSGpLfMaofm4ranjoKpR7fmY/9hJO1D3/G26PeDOKXfLSVOixWDCwLGYZyUwlpo=
+	t=1780000269; cv=none; b=BhKZhTMDZIVhAtQCwQmFny6gom1GA3jaQHZSdsAzhdGUpsCKYgiqg3aLhcG63lRRLwjy1RCkKPAvxkvC7vs97h3999v147yV8YTN6oVxnjAX7j5u9MaJ+YDIYy25kdi19BZjuYirZ6h7DL5t7G4+Wdx2LSCZoeJZLP5IEdYJ+JI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780000952; c=relaxed/simple;
-	bh=XoyyjW7ajjx6UEQzRPovICWlH6N7X1/1blmR3iXBGd4=;
+	s=arc-20240116; t=1780000269; c=relaxed/simple;
+	bh=xlmxaqT0fXwnIO28XZfKbABnirFe+1kuVD+W5S1sam4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=rrDn3hy3GFmDnvXMguKTIecWMl0iu0R1y3IzbqHJGz7HLvMr9lrCCCtsXckLVGbKXDyxDxAtW1jAtDiWgpKWf56PeoZPLTbPD8CZJaJwED/p4YNh1MAXbWI0p5Bngvx6ENWs5imBjM+538IdXnGbGSeB112qertXXqb0bhNsGEE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=D34IyB6B; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5121B1F000E9;
-	Thu, 28 May 2026 20:42:30 +0000 (UTC)
+	 MIME-Version; b=m6GrQf5hk2/MYz8jPGPVlvMN5dbAi3khqsodXnmuN8wL13fD435CshU7nZc4n+ncgqm3lyu1Ih3e9kmGJ1lFLX2zmHAG0ZP5tVRYStbqmu4oGB47YBYyjGqCjLCI2KITJdmf/NCSEkkS4QRMVhrgJnVztvisEgvhYsnY5whV3P4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=r7SF/oJp; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BA0271F000E9;
+	Thu, 28 May 2026 20:31:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780000950;
-	bh=a0TWf8D28nHFMWgRxZ4pywQlpsQmSXH4AIpuj2Kwss0=;
+	s=korg; t=1780000268;
+	bh=Wiyn6DLhzkcLirUqH0rhLr0GVstCXP5BuQ4IjMwkvxw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=D34IyB6BoA4EESWt5lTJ1UaHysAn+b2MQv9E9FnF1wGd333vW6C0wgK7lNdXTczFQ
-	 HKn9K4VYH423ReUMIbdy9BfOWP6JmjCUvD6rPMO4nZV4BdWt6K6JgvLYsRWIJC6HEC
-	 yx9E45ok6BO2muNMAw+r8eh+LlOR/7cdTc2+xbiU=
+	b=r7SF/oJpbKck1jb+0LqNAcWyCUga9t6/3mx/BXaHBXvwv6ZdTmaTpW2iTGpuMQmiK
+	 u3Mi3QACBYF0HQn7INrAk2xXQTlFMyMkXJ6ogknOx1wTOKb0ePONXOmypeuChwA7G5
+	 DHXmXuwPadgwZIzIrsV8L0K3zwl4MU+jwP4ryP0k=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Andrew Lunn <andrew@lunn.ch>,
-	Sven Schuchmann <schuchmann@schleissheimer.de>,
-	Paolo Abeni <pabeni@redhat.com>,
+	Linus Walleij <linusw@kernel.org>,
+	Bartosz Golaszewski <bartosz.golaszewski@oss.qualcomm.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 227/272] net: phy: DP83TC811: add reading of abilities
+Subject: [PATCH 6.18 363/377] gpio: aggregator: stop using dev-sync-probe
 Date: Thu, 28 May 2026 21:50:01 +0200
-Message-ID: <20260528194635.538177995@linuxfoundation.org>
+Message-ID: <20260528194648.938895486@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260528194629.379955525@linuxfoundation.org>
-References: <20260528194629.379955525@linuxfoundation.org>
+In-Reply-To: <20260528194638.371537336@linuxfoundation.org>
+References: <20260528194638.371537336@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -74,64 +73,185 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-256170-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-255927-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
-	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[7];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,lunn.ch:email,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim]
-X-Rspamd-Queue-Id: 74B8C5F9A19
+	RCPT_COUNT_FIVE(0.00)[6];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,qualcomm.com:email,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim]
+X-Rspamd-Queue-Id: 58B425F90D2
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sven Schuchmann <schuchmann@schleissheimer.de>
+From: Bartosz Golaszewski <bartosz.golaszewski@oss.qualcomm.com>
 
-[ Upstream commit c78bdba7b9666020c0832150a4fc4c0aebc7c6ac ]
+[ Upstream commit 3a27f40b457053e6112a63d14590e4a3ff553b44 ]
 
-At this time the driver is not listing any speeds
-it supports. This should be ETHTOOL_LINK_MODE_100baseT1_Full_BIT
-for DP83TC811. Add the missing call for phylib to read the abilities.
+dev-err-probe is an overengineered solution to a simple problem. Use a
+combination of wait_for_probe() and device_is_bound() to synchronously
+wait for the platform device to probe.
 
-Fixes: b753a9faaf9a ("net: phy: DP83TC811: Introduce support for the DP83TC811 phy")
-Suggested-by: Andrew Lunn <andrew@lunn.ch>
-Signed-off-by: Sven Schuchmann <schuchmann@schleissheimer.de>
-Reviewed-by: Andrew Lunn <andrew@lunn.ch>
-Link: https://patch.msgid.link/20260512071949.6218-1-schuchmann@schleissheimer.de
-[pabeni@redhat.com: dropped revision history]
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Reviewed-by: Linus Walleij <linusw@kernel.org>
+Link: https://patch.msgid.link/20260327-gpio-kill-dev-sync-probe-v1-2-efac254f1a1d@oss.qualcomm.com
+Signed-off-by: Bartosz Golaszewski <bartosz.golaszewski@oss.qualcomm.com>
+Stable-dep-of: 61fef83f239e ("gpio: aggregator: remove the software node when deactivating the aggregator")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/phy/dp83tc811.c | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/gpio/Kconfig           |  1 -
+ drivers/gpio/gpio-aggregator.c | 38 +++++++++++++++++++---------------
+ 2 files changed, 21 insertions(+), 18 deletions(-)
 
-diff --git a/drivers/net/phy/dp83tc811.c b/drivers/net/phy/dp83tc811.c
-index 7ea32fb77190c..5425a95352f9f 100644
---- a/drivers/net/phy/dp83tc811.c
-+++ b/drivers/net/phy/dp83tc811.c
-@@ -393,6 +393,7 @@ static struct phy_driver dp83811_driver[] = {
- 		.config_init = dp83811_config_init,
- 		.config_aneg = dp83811_config_aneg,
- 		.soft_reset = dp83811_phy_reset,
-+		.get_features = genphy_c45_pma_read_ext_abilities,
- 		.get_wol = dp83811_get_wol,
- 		.set_wol = dp83811_set_wol,
- 		.config_intr = dp83811_config_intr,
+diff --git a/drivers/gpio/Kconfig b/drivers/gpio/Kconfig
+index 4d644dcecad93..3b7284938babf 100644
+--- a/drivers/gpio/Kconfig
++++ b/drivers/gpio/Kconfig
+@@ -1968,7 +1968,6 @@ menu "Virtual GPIO drivers"
+ config GPIO_AGGREGATOR
+ 	tristate "GPIO Aggregator"
+ 	select CONFIGFS_FS
+-	select DEV_SYNC_PROBE
+ 	help
+ 	  Say yes here to enable the GPIO Aggregator, which provides a way to
+ 	  aggregate existing GPIO lines into a new virtual GPIO chip.
+diff --git a/drivers/gpio/gpio-aggregator.c b/drivers/gpio/gpio-aggregator.c
+index a68665700733d..23987c38a2468 100644
+--- a/drivers/gpio/gpio-aggregator.c
++++ b/drivers/gpio/gpio-aggregator.c
+@@ -32,8 +32,6 @@
+ #include <linux/gpio/forwarder.h>
+ #include <linux/gpio/machine.h>
+ 
+-#include "dev-sync-probe.h"
+-
+ #define AGGREGATOR_MAX_GPIOS 512
+ #define AGGREGATOR_LEGACY_PREFIX "_sysfs"
+ 
+@@ -42,7 +40,7 @@
+  */
+ 
+ struct gpio_aggregator {
+-	struct dev_sync_probe_data probe_data;
++	struct platform_device *pdev;
+ 	struct config_group group;
+ 	struct gpiod_lookup_table *lookups;
+ 	struct mutex lock;
+@@ -135,7 +133,7 @@ static bool gpio_aggregator_is_active(struct gpio_aggregator *aggr)
+ {
+ 	lockdep_assert_held(&aggr->lock);
+ 
+-	return aggr->probe_data.pdev && platform_get_drvdata(aggr->probe_data.pdev);
++	return aggr->pdev && platform_get_drvdata(aggr->pdev);
+ }
+ 
+ /* Only aggregators created via legacy sysfs can be "activating". */
+@@ -143,7 +141,7 @@ static bool gpio_aggregator_is_activating(struct gpio_aggregator *aggr)
+ {
+ 	lockdep_assert_held(&aggr->lock);
+ 
+-	return aggr->probe_data.pdev && !platform_get_drvdata(aggr->probe_data.pdev);
++	return aggr->pdev && !platform_get_drvdata(aggr->pdev);
+ }
+ 
+ static size_t gpio_aggregator_count_lines(struct gpio_aggregator *aggr)
+@@ -909,6 +907,7 @@ static int gpio_aggregator_activate(struct gpio_aggregator *aggr)
+ {
+ 	struct platform_device_info pdevinfo;
+ 	struct gpio_aggregator_line *line;
++	struct platform_device *pdev;
+ 	struct fwnode_handle *swnode;
+ 	unsigned int n = 0;
+ 	int ret = 0;
+@@ -963,12 +962,23 @@ static int gpio_aggregator_activate(struct gpio_aggregator *aggr)
+ 
+ 	gpiod_add_lookup_table(aggr->lookups);
+ 
+-	ret = dev_sync_probe_register(&aggr->probe_data, &pdevinfo);
+-	if (ret)
++	pdev = platform_device_register_full(&pdevinfo);
++	if (IS_ERR(pdev)) {
++		ret = PTR_ERR(pdev);
+ 		goto err_remove_lookup_table;
++	}
+ 
++	wait_for_device_probe();
++	if (!device_is_bound(&pdev->dev)) {
++		ret = -ENXIO;
++		goto err_unregister_pdev;
++	}
++
++	aggr->pdev = pdev;
+ 	return 0;
+ 
++err_unregister_pdev:
++	platform_device_unregister(pdev);
+ err_remove_lookup_table:
+ 	gpiod_remove_lookup_table(aggr->lookups);
+ 	kfree(aggr->lookups->dev_id);
+@@ -982,7 +992,8 @@ static int gpio_aggregator_activate(struct gpio_aggregator *aggr)
+ 
+ static void gpio_aggregator_deactivate(struct gpio_aggregator *aggr)
+ {
+-	dev_sync_probe_unregister(&aggr->probe_data);
++	platform_device_unregister(aggr->pdev);
++	aggr->pdev = NULL;
+ 	gpiod_remove_lookup_table(aggr->lookups);
+ 	kfree(aggr->lookups->dev_id);
+ 	kfree(aggr->lookups);
+@@ -1146,7 +1157,7 @@ gpio_aggregator_device_dev_name_show(struct config_item *item, char *page)
+ 
+ 	guard(mutex)(&aggr->lock);
+ 
+-	pdev = aggr->probe_data.pdev;
++	pdev = aggr->pdev;
+ 	if (pdev)
+ 		return sysfs_emit(page, "%s\n", dev_name(&pdev->dev));
+ 
+@@ -1323,7 +1334,6 @@ gpio_aggregator_make_group(struct config_group *group, const char *name)
+ 		return ERR_PTR(ret);
+ 
+ 	config_group_init_type_name(&aggr->group, name, &gpio_aggregator_device_type);
+-	dev_sync_probe_init(&aggr->probe_data);
+ 
+ 	return &aggr->group;
+ }
+@@ -1473,12 +1483,6 @@ static ssize_t gpio_aggregator_new_device_store(struct device_driver *driver,
+ 	scnprintf(name, sizeof(name), "%s.%d", AGGREGATOR_LEGACY_PREFIX, aggr->id);
+ 	config_group_init_type_name(&aggr->group, name, &gpio_aggregator_device_type);
+ 
+-	/*
+-	 * Since the device created by sysfs might be toggled via configfs
+-	 * 'live' attribute later, this initialization is needed.
+-	 */
+-	dev_sync_probe_init(&aggr->probe_data);
+-
+ 	/* Expose to configfs */
+ 	res = configfs_register_group(&gpio_aggregator_subsys.su_group,
+ 				      &aggr->group);
+@@ -1497,7 +1501,7 @@ static ssize_t gpio_aggregator_new_device_store(struct device_driver *driver,
+ 		goto remove_table;
+ 	}
+ 
+-	aggr->probe_data.pdev = pdev;
++	aggr->pdev = pdev;
+ 	module_put(THIS_MODULE);
+ 	return count;
+ 
 -- 
 2.53.0
 
