@@ -1,59 +1,62 @@
-Return-Path: <stable+bounces-255230-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-255597-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id mDMOK5ieGGpAlggAu9opvQ
-	(envelope-from <stable+bounces-255230-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 21:59:20 +0200
+	id UDUpC5KkGGoQlwgAu9opvQ
+	(envelope-from <stable+bounces-255597-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:24:50 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2B6605F797C
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 21:59:20 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8B44E5F89D2
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:24:49 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 7324A301231D
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 19:58:48 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id BBF1D323721A
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 20:15:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 09CE833CE8A;
-	Thu, 28 May 2026 19:58:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8F7602E92BA;
+	Thu, 28 May 2026 20:15:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="z91IWlSw"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="a8R2Hn06"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C409434D4D6;
-	Thu, 28 May 2026 19:58:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4B57E2459D1;
+	Thu, 28 May 2026 20:15:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779998325; cv=none; b=PMyhy4T/todCFiMndeDjDHmUgbktgR29htIclEctwY6JagWmJvyLHVO0Xmx6kukbW8ZJsS4F+IElWlXIinomcGFJlHDMsE+92xhs8AKdcpKA5uq/z7ZLze+9+VZXktJKQdBcSyoVm/qOADSlzEBMCerkwIzO4vkGlQ2k1gesmUo=
+	t=1779999359; cv=none; b=a8CV5jTjYuDAanCebvQGKS/CQeUrMkls5MfH49Rj+f9qp2OUy2NgoxtHpt7wkbUU1O0cPWYFsQKLKsPoaSag3mL+oSnDze0brO217dtWP3smmSR2jtMWSaSAln7hrYeEVJKtERAtVfEdxWW4K79hlaplYzGqxIDYtcaaEPUetqY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779998325; c=relaxed/simple;
-	bh=YaXljnKGxDgnjt4ijwjcp/6VdsmnBJClLqW/Gxxn0f4=;
+	s=arc-20240116; t=1779999359; c=relaxed/simple;
+	bh=nsIZFczOxQWWJ7uBYdpC6R8l9I4DtHau+RlD1OaHteQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=vAbsYRifzBq/4CyPm5K+HWiLhNSQMt3B+v8VgWYXuCundgFhuxR3Wx0xqGh92zcyOEonvCG8CQD7DR0CjVzD+1c6h86xOKN5FITKEJwNds0woVNr5aMCMDiunaIzZJkkdZP6neKZcgx3ZeZiGYu8yVUs5xkOhG8b1qmAT42TMpg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=z91IWlSw; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EDF891F000E9;
-	Thu, 28 May 2026 19:58:43 +0000 (UTC)
+	 MIME-Version; b=Ubu4bEcZh0IODMkJ3t6IHxNnrsoKQc+qL1yyf+pg6t/SrH4xfkfry8XmF21mMwDupd0fDgajV9gVDYVrz2A/eWw5HlOPDuEDGq4sp8SOlIdU3CKKSq2UCVALLk7QJAnX4o9WrhZif8FDeHZKG3Nj3b5kd69IoaKhdIRupoSuLkY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=a8R2Hn06; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AEE601F000E9;
+	Thu, 28 May 2026 20:15:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779998324;
-	bh=XWlKuugbd0GZQy+9LPFL+8kGbluPebuKshdKd0YFaM4=;
+	s=korg; t=1779999358;
+	bh=1x/kzDFPKlrMOxgVSeBTZtxoiaiySn8CtN7vWgsrKnw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=z91IWlSwk9hYqL1zsf9fPVj4mcHOGLDnInBupuu/G5o27pEt3RvvifoPJirzjA1N4
-	 bccsusX3QvZKsDtbSfbh6a6HSmoCi07Qzc2OymIGxkN2q9+DkRJA5a6UobRaKW5iXl
-	 JCjyArVciLh0oF75ZlMcIOapG3wpMiD4uNbTp+xM=
+	b=a8R2Hn06aGtCwqCh9IyACSH91OXx6VQ/xw0o5KJhryDmeqPQNStifDwTrFFLfXK1F
+	 R/S85qGYRXJULQM9cpKP946AYiEFX+FBWRAIwSVWVacuj8os+ZXe4J2CcDX0VzeE4G
+	 AQpaf9aGvelLx9RHgRrpnvnbi6ZKcF9gAK6LLQY4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Nikita Shubin <nikita.shubin@maquefel.me>,
-	Johan Hovold <johan@kernel.org>,
-	Mark Brown <broonie@kernel.org>
-Subject: [PATCH 7.0 116/461] spi: ep93xx: fix error pointer deref after DMA setup failure
-Date: Thu, 28 May 2026 21:44:05 +0200
-Message-ID: <20260528194650.331099522@linuxfoundation.org>
+	Weiming Shi <bestswngs@gmail.com>,
+	Xiang Mei <xmei5@asu.edu>,
+	Nikolay Aleksandrov <razor@blackwall.org>,
+	Ido Schimmel <idosch@nvidia.com>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.18 008/377] bridge: mrp: reject zero test interval to avoid OOM panic
+Date: Thu, 28 May 2026 21:44:06 +0200
+Message-ID: <20260528194638.626728873@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260528194646.819809818@linuxfoundation.org>
-References: <20260528194646.819809818@linuxfoundation.org>
+In-Reply-To: <20260528194638.371537336@linuxfoundation.org>
+References: <20260528194638.371537336@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -68,80 +71,99 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,asu.edu,blackwall.org,nvidia.com,redhat.com,kernel.org];
+	TAGGED_FROM(0.00)[bounces-255597-lists,stable=lfdr.de];
 	PRECEDENCE_BULK(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-255230-lists,stable=lfdr.de];
-	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[9];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sashiko.dev:url,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,msgid.link:url,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim]
-X-Rspamd-Queue-Id: 2B6605F797C
+	TAGGED_RCPT(0.00)[stable];
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,nvidia.com:email,msgid.link:url,linuxfoundation.org:mid,linuxfoundation.org:dkim,asu.edu:email]
+X-Rspamd-Queue-Id: 8B44E5F89D2
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-7.0-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Johan Hovold <johan@kernel.org>
+From: Xiang Mei <xmei5@asu.edu>
 
-commit 5e121a81667a83e9a01d62b429e340f5a4a84abc upstream.
+[ Upstream commit fa6e24963342de4370e3a3c9af41e38277b74cf3 ]
 
-The driver falls back to PIO mode if DMA setup fails during probe.
+br_mrp_start_test() and br_mrp_start_in_test() accept the user-supplied
+interval value from netlink without validation. When interval is 0,
+usecs_to_jiffies(0) yields 0, causing the delayed work
+(br_mrp_test_work_expired / br_mrp_in_test_work_expired) to reschedule
+itself with zero delay. This creates a tight loop on system_percpu_wq
+that allocates and transmits MRP test frames at maximum rate, exhausting
+all system memory and causing a kernel panic via OOM deadlock.
 
-Make sure to the clear the DMA channel pointers on setup failure to
-avoid dereferencing an error pointer on later probe errors or driver
-unbind.
+The same zero-interval issue applies to br_mrp_start_in_test_parse()
+for interconnect test frames.
 
-This issue was flagged by Sashiko when reviewing a devres allocation
-conversion patch.
+Use NLA_POLICY_MIN(NLA_U32, 1) in the nla_policy tables for both
+IFLA_BRIDGE_MRP_START_TEST_INTERVAL and
+IFLA_BRIDGE_MRP_START_IN_TEST_INTERVAL, so zero is rejected at the
+netlink attribute parsing layer before the value ever reaches the
+workqueue scheduling code. This is consistent with how other bridge
+subsystems (br_fdb, br_mst) enforce range constraints on netlink
+attributes.
 
-Fixes: e79e7c2df627 ("spi: ep93xx: add DT support for Cirrus EP93xx")
-Link: https://sashiko.dev/#/patchset/20260429091333.165363-1-johan%40kernel.org?part=10
-Cc: stable@vger.kernel.org	# 6.12
-Cc: Nikita Shubin <nikita.shubin@maquefel.me>
-Signed-off-by: Johan Hovold <johan@kernel.org>
-Acked-by: Nikita Shubin <nikita.shubin@maquefel.me>
-Link: https://patch.msgid.link/20260512074849.915143-1-johan@kernel.org
-Signed-off-by: Mark Brown <broonie@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 20f6a05ef635 ("bridge: mrp: Rework the MRP netlink interface")
+Fixes: 7ab1748e4ce6 ("bridge: mrp: Extend MRP netlink interface for configuring MRP interconnect")
+Reported-by: Weiming Shi <bestswngs@gmail.com>
+Signed-off-by: Xiang Mei <xmei5@asu.edu>
+Acked-by: Nikolay Aleksandrov <razor@blackwall.org>
+Reviewed-by: Ido Schimmel <idosch@nvidia.com>
+Link: https://patch.msgid.link/20260328063000.1845376-1-xmei5@asu.edu
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/spi/spi-ep93xx.c |    2 ++
- 1 file changed, 2 insertions(+)
+ net/bridge/br_mrp_netlink.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
---- a/drivers/spi/spi-ep93xx.c
-+++ b/drivers/spi/spi-ep93xx.c
-@@ -582,12 +582,14 @@ static int ep93xx_spi_setup_dma(struct d
- 	espi->dma_rx = dma_request_chan(dev, "rx");
- 	if (IS_ERR(espi->dma_rx)) {
- 		ret = dev_err_probe(dev, PTR_ERR(espi->dma_rx), "rx DMA setup failed");
-+		espi->dma_rx = NULL;
- 		goto fail_free_page;
- 	}
- 
- 	espi->dma_tx = dma_request_chan(dev, "tx");
- 	if (IS_ERR(espi->dma_tx)) {
- 		ret = dev_err_probe(dev, PTR_ERR(espi->dma_tx), "tx DMA setup failed");
-+		espi->dma_tx = NULL;
- 		goto fail_release_rx;
- 	}
- 
+diff --git a/net/bridge/br_mrp_netlink.c b/net/bridge/br_mrp_netlink.c
+index ce6f63c77cc0a..86f0e75d6e345 100644
+--- a/net/bridge/br_mrp_netlink.c
++++ b/net/bridge/br_mrp_netlink.c
+@@ -196,7 +196,7 @@ static const struct nla_policy
+ br_mrp_start_test_policy[IFLA_BRIDGE_MRP_START_TEST_MAX + 1] = {
+ 	[IFLA_BRIDGE_MRP_START_TEST_UNSPEC]	= { .type = NLA_REJECT },
+ 	[IFLA_BRIDGE_MRP_START_TEST_RING_ID]	= { .type = NLA_U32 },
+-	[IFLA_BRIDGE_MRP_START_TEST_INTERVAL]	= { .type = NLA_U32 },
++	[IFLA_BRIDGE_MRP_START_TEST_INTERVAL]	= NLA_POLICY_MIN(NLA_U32, 1),
+ 	[IFLA_BRIDGE_MRP_START_TEST_MAX_MISS]	= { .type = NLA_U32 },
+ 	[IFLA_BRIDGE_MRP_START_TEST_PERIOD]	= { .type = NLA_U32 },
+ 	[IFLA_BRIDGE_MRP_START_TEST_MONITOR]	= { .type = NLA_U32 },
+@@ -316,7 +316,7 @@ static const struct nla_policy
+ br_mrp_start_in_test_policy[IFLA_BRIDGE_MRP_START_IN_TEST_MAX + 1] = {
+ 	[IFLA_BRIDGE_MRP_START_IN_TEST_UNSPEC]	= { .type = NLA_REJECT },
+ 	[IFLA_BRIDGE_MRP_START_IN_TEST_IN_ID]	= { .type = NLA_U32 },
+-	[IFLA_BRIDGE_MRP_START_IN_TEST_INTERVAL]	= { .type = NLA_U32 },
++	[IFLA_BRIDGE_MRP_START_IN_TEST_INTERVAL]	= NLA_POLICY_MIN(NLA_U32, 1),
+ 	[IFLA_BRIDGE_MRP_START_IN_TEST_MAX_MISS]	= { .type = NLA_U32 },
+ 	[IFLA_BRIDGE_MRP_START_IN_TEST_PERIOD]	= { .type = NLA_U32 },
+ };
+-- 
+2.53.0
+
 
 
 
