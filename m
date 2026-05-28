@@ -1,62 +1,60 @@
-Return-Path: <stable+bounces-255358-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-255995-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 2LfENxWgGGpAlggAu9opvQ
-	(envelope-from <stable+bounces-255358-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:05:41 +0200
+	id mIHTCNGnGGp+lwgAu9opvQ
+	(envelope-from <stable+bounces-255995-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:38:41 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id BE5F15F7CED
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:05:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E18A25F931C
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:38:40 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 0F2733051E95
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 20:05:03 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id DC9BE3064CD5
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 20:34:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 46E1340C5DF;
-	Thu, 28 May 2026 20:04:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 66B8932AAA0;
+	Thu, 28 May 2026 20:34:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Owb9CUy4"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QfNudNmn"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0021040C5A0;
-	Thu, 28 May 2026 20:04:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 37A35223328;
+	Thu, 28 May 2026 20:34:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779998686; cv=none; b=ZF1McHiXkAg205sD/BpPq4U1aO81HnV9FHRUdVBkUYQf425fG8Tn0SHfi6a0sal7lvBVLAM1f5LauyYRFlGQ056TSEVmBCr8e4Sgli6wGE+bw/QzlqjyxzhMC1XF/dvcOgBPgDvkR84pJObNLVTQxx9rBDST6idX7hN7zSSnKto=
+	t=1780000461; cv=none; b=u9VGVcD0kHC1iglUHyKBiqOnNvi8uhfQQOAcFyYYGxO+6Vdjk44E776bhyXzXlRk6BC2DMpPlBkDhCmjxt0K8HOx0W2RDIM06ouAYA+mxZjb/6WiaWL7IHf/AcusZalznQXnt8C/C6EY3lY2pcTdLStRkpO/qOaq420vhKlLLnk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779998686; c=relaxed/simple;
-	bh=0vfFpsR7DmID0Y/rmgUGpdiS9EULeA7XJkme/aUzFfI=;
+	s=arc-20240116; t=1780000461; c=relaxed/simple;
+	bh=KR2RVqmprACWSu2LDJZQXWTQ1UgNGM6Q1SIWvqgJJhQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=EzLU8OZH9BFVs3vYa4inxbRmBN50BwLnfXkPaxyr7t8mU+ie+rD254KoVGkcyGgF9CLan57UQZQ4Lg8Qd/iMztM65Oi/IcWfEdv2F84rcsICcEm1Og6toX5zlD0h48y7AatwggjmdSlX5PcRM0iFv0C0z6RXe6rqaqHAdi+UgHk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Owb9CUy4; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5DEA71F000E9;
-	Thu, 28 May 2026 20:04:44 +0000 (UTC)
+	 MIME-Version; b=qf9mNARLzEbSY2qKMKUT4isdae1EiFVp/Oh4DUdPrjS7c7tBzH8iXmTrWxpEwQBAI2ZCHrVrVRjj1tG1nyXw0yfbESVC49+mMHtKSITMNY4MtqE6PcBVFQ80zvurKb//rLfrifgGPAgAvZOEZwLOvV0tHbyrdkqpUl8vaQEtTrM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QfNudNmn; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 960901F000E9;
+	Thu, 28 May 2026 20:34:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779998684;
-	bh=UhxZDH5PmQW12HNNFl2BxGDkzymtvBuSQqqB3sRtUc4=;
+	s=korg; t=1780000460;
+	bh=RYibwaKoe2zYhxdAxMIjvy5Dl6P5lCM0rQhsH7roFaw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=Owb9CUy4m+eJFgC23zvhjTw7GNcPYZXgQxUJbeCiSxHTkM9Shu7q7xCPFLkB0ZKOP
-	 qMfvDk0n5HnA+ZP/vP2N4RbPhGUgZ5MKzjJweEDFvEmJWk0LARo34F2b4duNpGCAwx
-	 eGH9BeP7Jqh5NOSp5/H/3thv/EJMBWzcY7mzcf3E=
+	b=QfNudNmn4gnsHm46PgSb7YHu3kgRDZiqZpMNBriYmLJQqmFVqgZRpcVZorvWgV8+1
+	 UMHQlEqmmj85L6hRGIJoFgo/vOucgMJdBRnvkrb+35lrH4ez6ABXdCZc3/b1su8bEo
+	 /AJFmSt2unAAgC0awNgWsYb9ADshI7SajbDd8d18=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	David Howells <dhowells@redhat.com>,
-	Paulo Alcantara <pc@manguebit.org>,
-	netfs@lists.linux.dev,
-	linux-fsdevel@vger.kernel.org,
-	Christian Brauner <brauner@kernel.org>,
+	Huacai Chen <chenhuacai@loongson.cn>,
+	"Peter Zijlstra (Intel)" <peterz@infradead.org>,
+	Lukas Beckmann <lbckmnn@mailbox.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 7.0 261/461] netfs: Fix potential deadlock in write-through mode
+Subject: [PATCH 6.12 016/272] sched/deadline: Fix dl_server_stopped()
 Date: Thu, 28 May 2026 21:46:30 +0200
-Message-ID: <20260528194654.715365977@linuxfoundation.org>
+Message-ID: <20260528194629.837279267@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260528194646.819809818@linuxfoundation.org>
-References: <20260528194646.819809818@linuxfoundation.org>
+In-Reply-To: <20260528194629.379955525@linuxfoundation.org>
+References: <20260528194629.379955525@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -79,7 +77,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-255358-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-255995-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
@@ -90,129 +88,49 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	FROM_HAS_DN(0.00)[];
 	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
 	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[9];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[manguebit.org:email,msgid.link:url,sashiko.dev:url,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,linux.dev:email,linuxfoundation.org:mid,linuxfoundation.org:dkim]
-X-Rspamd-Queue-Id: BE5F15F7CED
+	DBL_BLOCKED_OPENRESOLVER(0.00)[infradead.org:email,mailbox.org:email,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim]
+X-Rspamd-Queue-Id: E18A25F931C
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-7.0-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: David Howells <dhowells@redhat.com>
+From: Huacai Chen <chenhuacai@loongson.cn>
 
-[ Upstream commit b6a4ae1634b3ad2aaa05222e53d36da532852faf ]
+commit 4717432dfd99bbd015b6782adca216c6f9340038 upstream.
 
-Fix netfs_advance_writethrough() to always unlock the supplied folio and to
-mark it dirty if it isn't yet written to the end.  Unfortunately, it can't
-be marked for writeback until the folio is done with as that may cause a
-deadlock against mmapped reads and writes.
+Commit cccb45d7c429 ("sched/deadline: Less agressive dl_server handling")
+introduces dl_server_stopped(). But it is obvious that dl_server_stopped()
+should return true if dl_se->dl_server_active is 0.
 
-Even though it has been marked dirty, premature writeback can't occur as
-the caller is holding both inode->i_rwsem (which will prevent concurrent
-truncation, fallocation, DIO and other writes) and ictx->wb_lock (which
-will cause flushing to wait and writeback to skip or wait).
-
-Note that this may be easier to deal with once the queuing of folios is
-split from the generation of subrequests.
-
-Fixes: 288ace2f57c9 ("netfs: New writeback implementation")
-Closes: https://sashiko.dev/#/patchset/20260427154639.180684-1-dhowells%40redhat.com
-Signed-off-by: David Howells <dhowells@redhat.com>
-Link: https://patch.msgid.link/20260512123404.719402-15-dhowells@redhat.com
-cc: Paulo Alcantara <pc@manguebit.org>
-cc: netfs@lists.linux.dev
-cc: linux-fsdevel@vger.kernel.org
-Signed-off-by: Christian Brauner <brauner@kernel.org>
+Fixes: cccb45d7c429 ("sched/deadline: Less agressive dl_server handling")
+Signed-off-by: Huacai Chen <chenhuacai@loongson.cn>
+Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
+Link: https://lkml.kernel.org/r/20250809130419.1980742-1-chenhuacai@loongson.cn
+Signed-off-by: Lukas Beckmann <lbckmnn@mailbox.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/netfs/write_issue.c | 39 +++++++++++++++++++++++++--------------
- 1 file changed, 25 insertions(+), 14 deletions(-)
+ kernel/sched/deadline.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/fs/netfs/write_issue.c b/fs/netfs/write_issue.c
-index b0e9690bb90ce..03961622996be 100644
---- a/fs/netfs/write_issue.c
-+++ b/fs/netfs/write_issue.c
-@@ -414,12 +414,7 @@ static int netfs_write_folio(struct netfs_io_request *wreq,
- 	if (streamw)
- 		netfs_issue_write(wreq, cache);
- 
--	/* Flip the page to the writeback state and unlock.  If we're called
--	 * from write-through, then the page has already been put into the wb
--	 * state.
--	 */
--	if (wreq->origin == NETFS_WRITEBACK)
--		folio_start_writeback(folio);
-+	folio_start_writeback(folio);
- 	folio_unlock(folio);
- 
- 	if (fgroup == NETFS_FOLIO_COPY_TO_CACHE) {
-@@ -647,29 +642,41 @@ int netfs_advance_writethrough(struct netfs_io_request *wreq, struct writeback_c
- 			       struct folio *folio, size_t copied, bool to_page_end,
- 			       struct folio **writethrough_cache)
+diff --git a/kernel/sched/deadline.c b/kernel/sched/deadline.c
+index 9c5fa95b345a5..6ff9055a69811 100644
+--- a/kernel/sched/deadline.c
++++ b/kernel/sched/deadline.c
+@@ -1879,7 +1879,7 @@ void dl_server_stop(struct sched_dl_entity *dl_se)
+ static bool dl_server_stopped(struct sched_dl_entity *dl_se)
  {
-+	int ret;
-+
- 	_enter("R=%x ic=%zu ws=%u cp=%zu tp=%u",
- 	       wreq->debug_id, wreq->buffer.iter.count, wreq->wsize, copied, to_page_end);
+ 	if (!dl_se->dl_server_active)
+-		return false;
++		return true;
  
--	if (!*writethrough_cache) {
--		if (folio_test_dirty(folio))
--			/* Sigh.  mmap. */
--			folio_clear_dirty_for_io(folio);
-+	/* The folio is locked. */
- 
-+	if (*writethrough_cache != folio) {
-+		if (*writethrough_cache) {
-+			/* Did the folio get moved? */
-+			folio_put(*writethrough_cache);
-+			*writethrough_cache = NULL;
-+		}
- 		/* We can make multiple writes to the folio... */
--		folio_start_writeback(folio);
- 		if (wreq->len == 0)
- 			trace_netfs_folio(folio, netfs_folio_trace_wthru);
- 		else
- 			trace_netfs_folio(folio, netfs_folio_trace_wthru_plus);
- 		*writethrough_cache = folio;
-+		folio_get(folio);
- 	}
- 
- 	wreq->len += copied;
--	if (!to_page_end)
-+
-+	if (!to_page_end) {
-+		folio_mark_dirty(folio);
-+		folio_unlock(folio);
- 		return 0;
-+	}
- 
-+	ret = netfs_write_folio(wreq, wbc, folio);
-+	folio_put(*writethrough_cache);
- 	*writethrough_cache = NULL;
--	return netfs_write_folio(wreq, wbc, folio);
-+	wreq->submitted = wreq->len;
-+	return ret;
- }
- 
- /*
-@@ -683,8 +690,12 @@ ssize_t netfs_end_writethrough(struct netfs_io_request *wreq, struct writeback_c
- 
- 	_enter("R=%x", wreq->debug_id);
- 
--	if (writethrough_cache)
-+	if (writethrough_cache) {
-+		folio_lock(writethrough_cache);
- 		netfs_write_folio(wreq, wbc, writethrough_cache);
-+		folio_put(writethrough_cache);
-+		wreq->submitted = wreq->len;
-+	}
- 
- 	netfs_end_issue_write(wreq);
- 
+ 	if (dl_se->dl_server_idle) {
+ 		dl_server_stop(dl_se);
 -- 
 2.53.0
 
