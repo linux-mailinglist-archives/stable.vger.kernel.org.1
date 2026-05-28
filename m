@@ -1,57 +1,59 @@
-Return-Path: <stable+bounces-255974-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-255728-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id wIJEBSaoGGpolwgAu9opvQ
-	(envelope-from <stable+bounces-255974-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:40:06 +0200
+	id QHGXKoKnGGp+lwgAu9opvQ
+	(envelope-from <stable+bounces-255728-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:37:22 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id BE1CA5F945E
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:40:05 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0AA785F920B
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:37:21 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 02B6B31405FD
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 20:33:21 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id AF483320DC6C
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 20:22:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A884E330D35;
-	Thu, 28 May 2026 20:33:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3816632A3FF;
+	Thu, 28 May 2026 20:21:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mtr9YX6n"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TsRD0ga5"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 90D0E223328;
-	Thu, 28 May 2026 20:33:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E6EFD2E7379;
+	Thu, 28 May 2026 20:21:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780000400; cv=none; b=uTcHQdsUl50DakEkRiGOZJBsf9fC+zQD1NAUO9Wq3pGO41hzCp7rV/it5H8O8rTDoLNTx36FkSR0DIEPWv90RHMB0/Za5+JHNdZIZzLW3ZNygupHe7p3qw0AhwXbW9BhcBZbkgbFXXTKk+hiDmfUSFyhg5Pd7DcABW3ARxKZX2I=
+	t=1779999718; cv=none; b=sgEww3cn9dpqZSSy8eJY2UzT1VykUGnE/0i+FkVyEiT1IkLxuR05TwXUDNQU2YLNEYkxWVBEbQ68zc1QRUAugBKY9jHSh6Z9HOHNUrc5uPLvuCc06GMoFEEUdjWTQ9zIUao0s2HG19h2+GAjKMWSbgZkBZyQGuhnH3/mgKS7GIY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780000400; c=relaxed/simple;
-	bh=iegIqmGth57hvd0Ow+NzJ+ktq40MxzgfaOpCJuUt/CA=;
+	s=arc-20240116; t=1779999718; c=relaxed/simple;
+	bh=LwBrA+MwHJQzCuHTmJaWjUj1DxB8MM/TMygLBC/xka4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=fNLPZs3k2Ncvo/J0sSo0bmNcWHPz+xBs/xsAiXJjeyuX+8bSxYZe3SXAgMXJ8CJZVjZqTOfxV9hcWysjwCVm8iKbNHeV55tFKq9bQgErxccBUrRe9UGIs6FwgQG/TLyh1qIYqqCGOvb0kpQD2PZfIW0g012/UZ3UWvtDTxdMs74=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mtr9YX6n; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EF39C1F000E9;
-	Thu, 28 May 2026 20:33:18 +0000 (UTC)
+	 MIME-Version; b=dQOivqXc0Sw/c596juV/aFxfSD5UOwz3obpkhFfDuMLU5X//aLNFgqE6lLtDJCwYkP+hbdpMT2LREx+K46lzyFOyXhSpd35kPwrBP1ltDwbedCB7hAf/MM6jmukuqZticFAZUIXBE+PB7xxPfw50wlLHsfCnjCbwS3wA7JLHA7A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TsRD0ga5; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 52B3B1F000E9;
+	Thu, 28 May 2026 20:21:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780000399;
-	bh=a5290TukFBOk6SfEhQ9Icdl77kGi3eVvTBGAQDDTeNg=;
+	s=korg; t=1779999716;
+	bh=8uaORNDnH7U/p9QzYNWoiAoBIWFt8r0AVUDtcJyW2ao=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=mtr9YX6nADPXfBPfB+/o6N7gWwokUJ3IdqsevgUkdJRga8/tpGWdtcD3/d5QwPm/w
-	 t2g2lbFGFwKXHzss4YNzEQ3QFgpvnQAhn61LGFJ/9Zs8Ih8oORS7gfuiD5jpiumX8C
-	 /xNg5bIRwW4WlptMFA/AvZC9uyawVih57jS8iNZY=
+	b=TsRD0ga54rPKQPjpwiFi6HWjdVB0bmIBZoeK7/1QBlJsPdI+V4/iWRTEgczqXsmRI
+	 pTZEpUGuqAr/VcKEYTH2wXpc334mfC4SG36FgOfkTB0rT0/cxMucJQ7hjK+6u3JafD
+	 26TIBCqKptmzC2jTjZ83hMJJgBfnSDDMlF7g51ek=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 031/272] Revert "ice: Remove jumbo_remove step from TX path"
+	Abdurrahman Hussain <abdurrahman@nexthop.ai>,
+	Bartosz Golaszewski <bartosz.golaszewski@oss.qualcomm.com>,
+	Guenter Roeck <linux@roeck-us.net>
+Subject: [PATCH 6.18 167/377] hwmon: (pmbus/adm1266) register the gpio_chip after pmbus_do_probe()
 Date: Thu, 28 May 2026 21:46:45 +0200
-Message-ID: <20260528194630.261409610@linuxfoundation.org>
+Message-ID: <20260528194643.264835716@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260528194629.379955525@linuxfoundation.org>
-References: <20260528194629.379955525@linuxfoundation.org>
+In-Reply-To: <20260528194638.371537336@linuxfoundation.org>
+References: <20260528194638.371537336@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,61 +68,92 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-255974-lists,stable=lfdr.de];
-	PRECEDENCE_BULK(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
+	RCVD_TLS_LAST(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-255728-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
-	RCPT_COUNT_THREE(0.00)[4];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	TO_DN_SOME(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim]
-X-Rspamd-Queue-Id: BE1CA5F945E
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[qualcomm.com:email,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,roeck-us.net:email]
+X-Rspamd-Queue-Id: 0AA785F920B
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-This reverts commit 7332d208c9d2067546eb7af5339773c966ac5625.
+From: Abdurrahman Hussain <abdurrahman@nexthop.ai>
 
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+commit 491403b9b76cf66abd81301c5901aa4a4549f1e8 upstream.
+
+adm1266_probe() calls adm1266_config_gpio() -- which goes on to
+devm_gpiochip_add_data() and exposes the gpio_chip callbacks to
+gpiolib -- before pmbus_do_probe() has initialised the per-client
+PMBus state (notably the pmbus_lock mutex the core hands out via
+pmbus_get_data()).
+
+That ordering is already a latent hazard: any GPIO access that lands
+between adm1266_config_gpio() and the end of pmbus_do_probe() (for
+example a sysfs read from a user space agent that opens the gpiochip
+the instant gpiolib advertises it) races pmbus_do_probe()'s own
+device accesses with no serialisation.
+
+Move adm1266_config_gpio() down past pmbus_do_probe() so the chip
+isn't reachable from userspace until the PMBus state it depends on
+is fully initialised.
+
+Fixes: d98dfad35c38 ("hwmon: (pmbus/adm1266) Add support for GPIOs")
+Cc: stable@vger.kernel.org
+Signed-off-by: Abdurrahman Hussain <abdurrahman@nexthop.ai>
+Reviewed-by: Bartosz Golaszewski <bartosz.golaszewski@oss.qualcomm.com>
+Link: https://lore.kernel.org/r/20260518-adm1266-gpio-fixes-v3-4-e425e4f88139@nexthop.ai
+Signed-off-by: Guenter Roeck <linux@roeck-us.net>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/intel/ice/ice_txrx.c | 3 +++
- 1 file changed, 3 insertions(+)
+ drivers/hwmon/pmbus/adm1266.c |    8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/net/ethernet/intel/ice/ice_txrx.c b/drivers/net/ethernet/intel/ice/ice_txrx.c
-index 08d1757f40888..431a6ed498a4e 100644
---- a/drivers/net/ethernet/intel/ice/ice_txrx.c
-+++ b/drivers/net/ethernet/intel/ice/ice_txrx.c
-@@ -2346,6 +2346,9 @@ ice_xmit_frame_ring(struct sk_buff *skb, struct ice_tx_ring *tx_ring)
+--- a/drivers/hwmon/pmbus/adm1266.c
++++ b/drivers/hwmon/pmbus/adm1266.c
+@@ -466,10 +466,6 @@ static int adm1266_probe(struct i2c_clie
+ 	crc8_populate_msb(pmbus_crc_table, 0x7);
+ 	mutex_init(&data->buf_mutex);
  
- 	ice_trace(xmit_frame_ring, tx_ring, skb);
+-	ret = adm1266_config_gpio(data);
+-	if (ret < 0)
+-		return ret;
+-
+ 	ret = adm1266_set_rtc(data);
+ 	if (ret < 0)
+ 		return ret;
+@@ -482,6 +478,10 @@ static int adm1266_probe(struct i2c_clie
+ 	if (ret)
+ 		return ret;
  
-+	if (unlikely(ipv6_hopopt_jumbo_remove(skb)))
-+		goto out_drop;
++	ret = adm1266_config_gpio(data);
++	if (ret < 0)
++		return ret;
 +
- 	count = ice_xmit_desc_count(skb);
- 	if (ice_chk_linearize(skb, count)) {
- 		if (__skb_linearize(skb))
--- 
-2.53.0
-
+ 	adm1266_init_debugfs(data);
+ 
+ 	return 0;
 
 
 
