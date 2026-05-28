@@ -1,62 +1,60 @@
-Return-Path: <stable+bounces-256294-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-255527-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id eBWyOCWsGGpolwgAu9opvQ
-	(envelope-from <stable+bounces-256294-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:57:09 +0200
+	id +J9NJBiiGGqblggAu9opvQ
+	(envelope-from <stable+bounces-255527-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:14:16 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 57ADB5F9E72
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:57:09 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8AEC45F81FF
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:14:15 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id A898431BA558
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 20:48:17 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id DA12F3044377
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 20:12:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 39058310620;
-	Thu, 28 May 2026 20:48:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DAE2B352019;
+	Thu, 28 May 2026 20:12:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Q6YiZMUZ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NQDsoBv6"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 18C1F2459DD;
-	Thu, 28 May 2026 20:48:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C022132ABC0;
+	Thu, 28 May 2026 20:12:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780001297; cv=none; b=tMu9Upay9AWN3Cc2DrA5wrU3Lg5LeMTyXAfWkontTRxrUveFhpdXBgoDGYwafSAI5AoWhsDcySWBQlGmX1Uo9bXJ5iuYahoPhuOQiy6bhB1X92lxIoHl2Wf10dr70CJM4qq56yyDV0qI/3TLc+jghpyfLWFoLq2qukA5BJ3lFjk=
+	t=1779999161; cv=none; b=K3dLqe4jdNcdIsiaP//v+S00yDNxvIuawS4C4B3LJMg5C9qvR9TlWpEhfNYRMTp55og1UOm8PRK7JLq3scBEQEvwkQee1/4DrHHkweofu69ZLfOoexS5sqo/owC6uxjwfnCv84adtf9WvDCnR2lKSWEDLLCkzMp6PPby7kTF6+Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780001297; c=relaxed/simple;
-	bh=FnKf2GqnTNQ8xv4jZdfy3PR+gkvG2xg30a/xrYEnFmc=;
+	s=arc-20240116; t=1779999161; c=relaxed/simple;
+	bh=LwYwzTtuZscKK8tS0rqvlf6te6mryVL8J/+wryjA/0k=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=bFXE0Xt+Gaw6XmW/+iELh8xoED3bI30rVJ6kptlwh7iNw7vKDIJV7TBVQsycsywbagsWdu3PPF7VO2pPAoq9G//itAdjHg4JB9OSGWBOewpSPMZakpLSXXH+e37VR3IDRHsVBOa+cZprlybTEJpIAayY9AFvQpjQYZaR434lNso=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Q6YiZMUZ; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7DAA01F000E9;
-	Thu, 28 May 2026 20:48:15 +0000 (UTC)
+	 MIME-Version; b=OQQPp0zYHLNUalWuGhcIwL6byTVySdId9M2U83aMvphUTCT9yw+bx994hkD8e9PbdDqDOk2axLTitRrRnEH4U1m24lpz/PtUvxUjrtpTgZ0X/yha/x7QCTobz05cjREqqEmhHRXB/cx6gJrgrUgGIje/e524OItwzBmGHM8iQ/4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NQDsoBv6; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2A97D1F000E9;
+	Thu, 28 May 2026 20:12:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780001296;
-	bh=BBLjMAcriiLjRPVDCrtiHoHG8/S4aV7R3hKMkU8QhyU=;
+	s=korg; t=1779999160;
+	bh=H7ENhhrbyZxLlQ7d6g+ByjtfB2HdnYHgJuaW8R3FWec=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=Q6YiZMUZThHOMs87CFPjui0GbJRiK2iMpO/8omQfliLFekoGgcvIsXDHYvxM5oHIh
-	 V5EkFnYLGsiBNaFIyIvjowtFr+qwyd0NBz1N+xsFLRZk9zc/JatzhDQVz2gxkAGhYZ
-	 UXqlHJ98lE8lVxapN7pXHFxasAI9ju2+TWPVNkoI=
+	b=NQDsoBv6JDBtA0ftUm5EcWWgEnS0fi0ueHxEd5c8nSbS+jELgHpbbPLvE3/NnPr/O
+	 hOnPCidNMdUInThtplVnYSwRN6Rxq7uIXqTQ8p1Hl1F7AFsKXLCWpWmv7s71BrCjff
+	 HE3QWEe4Kz9spBU9BHPOXYOa7CPbPfDuf+smq2kI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable@kernel.org,
-	Yuan Tan <yuantan098@gmail.com>,
-	Yifan Wu <yifanwucs@gmail.com>,
-	Juefei Pu <tomapufckgml@gmail.com>,
-	Xin Liu <bird@lzu.edu.cn>,
-	Sven Eckelmann <sven@narfation.org>
-Subject: [PATCH 6.6 078/186] batman-adv: dat: handle forward allocation error
+	Rosen Penev <rosenp@gmail.com>,
+	Oleksij Rempel <o.rempel@pengutronix.de>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 7.0 429/461] net: ag71xx: check error for platform_get_irq
 Date: Thu, 28 May 2026 21:49:18 +0200
-Message-ID: <20260528194931.042284173@linuxfoundation.org>
+Message-ID: <20260528194659.938356712@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260528194928.941004471@linuxfoundation.org>
-References: <20260528194928.941004471@linuxfoundation.org>
+In-Reply-To: <20260528194646.819809818@linuxfoundation.org>
+References: <20260528194646.819809818@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -71,75 +69,71 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,kernel.org,gmail.com,lzu.edu.cn,narfation.org];
-	TAGGED_FROM(0.00)[bounces-256294-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,pengutronix.de,kernel.org];
+	TAGGED_FROM(0.00)[bounces-255527-lists,stable=lfdr.de];
 	PRECEDENCE_BULK(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	FROM_HAS_DN(0.00)[];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[9];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
 	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[narfation.org:email,lzu.edu.cn:email,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim]
-X-Rspamd-Queue-Id: 57ADB5F9E72
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,msgid.link:url,pengutronix.de:email]
+X-Rspamd-Queue-Id: 8AEC45F81FF
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+7.0-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sven Eckelmann <sven@narfation.org>
+From: Rosen Penev <rosenp@gmail.com>
 
-commit 2d8826a2d3657cea66fb0370f9e521575a673871 upstream.
+[ Upstream commit e7c70bf97e90d974cd575e4c90f8f9b07d056da3 ]
 
-batadv_dat_forward_data() calls pskb_copy_for_clone() to duplicate an skb
-for each DHT candidate, but does not check the return value before passing
-it to batadv_send_skb_prepare_unicast_4addr(). That function dereferences
-the skb unconditionally, so a failed allocation triggers a NULL pointer
-dereference.
+Complete error handling for a failed platform_get_irq() call
 
-Skip forwarding to the current DHT candidate on allocation failure.
-
-Cc: stable@kernel.org
-Fixes: 785ea1144182 ("batman-adv: Distributed ARP Table - create DHT helper functions")
-Reported-by: Yuan Tan <yuantan098@gmail.com>
-Reported-by: Yifan Wu <yifanwucs@gmail.com>
-Reported-by: Juefei Pu <tomapufckgml@gmail.com>
-Reported-by: Xin Liu <bird@lzu.edu.cn>
-Reviewed-by: Yuan Tan <yuantan098@gmail.com>
-Signed-off-by: Sven Eckelmann <sven@narfation.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: d51b6ce441d3 ("net: ethernet: add ag71xx driver")
+Signed-off-by: Rosen Penev <rosenp@gmail.com>
+Reviewed-by: Oleksij Rempel <o.rempel@pengutronix.de>
+Link: https://patch.msgid.link/20260516212616.11758-1-rosenp@gmail.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/batman-adv/distributed-arp-table.c |    3 +++
+ drivers/net/ethernet/atheros/ag71xx.c | 3 +++
  1 file changed, 3 insertions(+)
 
---- a/net/batman-adv/distributed-arp-table.c
-+++ b/net/batman-adv/distributed-arp-table.c
-@@ -698,6 +698,9 @@ static bool batadv_dat_forward_data(stru
- 			goto free_orig;
+diff --git a/drivers/net/ethernet/atheros/ag71xx.c b/drivers/net/ethernet/atheros/ag71xx.c
+index a5ab994741790..4e4794c4dfdce 100644
+--- a/drivers/net/ethernet/atheros/ag71xx.c
++++ b/drivers/net/ethernet/atheros/ag71xx.c
+@@ -1856,6 +1856,9 @@ static int ag71xx_probe(struct platform_device *pdev)
+ 	ag71xx_int_disable(ag, AG71XX_INT_POLL);
  
- 		tmp_skb = pskb_copy_for_clone(skb, GFP_ATOMIC);
-+		if (!tmp_skb)
-+			goto free_neigh;
+ 	ndev->irq = platform_get_irq(pdev, 0);
++	if (ndev->irq < 0)
++		return ndev->irq;
 +
- 		if (!batadv_send_skb_prepare_unicast_4addr(bat_priv, tmp_skb,
- 							   cand[i].orig_node,
- 							   packet_subtype)) {
+ 	err = devm_request_irq(&pdev->dev, ndev->irq, ag71xx_interrupt,
+ 			       0x0, dev_name(&pdev->dev), ndev);
+ 	if (err) {
+-- 
+2.53.0
+
 
 
 
