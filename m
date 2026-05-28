@@ -1,58 +1,65 @@
-Return-Path: <stable+bounces-255632-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-255244-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id mN6QGxSlGGoQlwgAu9opvQ
-	(envelope-from <stable+bounces-255632-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:27:00 +0200
+	id CP1XDOWeGGpblggAu9opvQ
+	(envelope-from <stable+bounces-255244-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:00:37 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id C32495F8B2C
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:26:59 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3C9885F7A72
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:00:36 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id D8B2531B662C
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 20:17:37 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 68BBD304736F
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 19:59:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B447A282F17;
-	Thu, 28 May 2026 20:17:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C248D348C45;
+	Thu, 28 May 2026 19:59:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="R3xY+l8j"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zHZV2b4i"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 916C22F9D85;
-	Thu, 28 May 2026 20:17:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A067A15B998;
+	Thu, 28 May 2026 19:59:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779999456; cv=none; b=NeMZjx/BPANb/TbTD9p6ucjycAoPzqnhO2bUi5dzyzsBr9Ky0DR+HoOO9hb24kZ1Z+o+iN5PG6dYn5bci7JL/BMCjeyn2AcNyLYfHGKH7Q/IWVZuDKp070qF15kXUwWQ3bL9hRwL8nLJH2wqffsMM/wQwRzPzlEP+12gu4WA+gA=
+	t=1779998364; cv=none; b=qzNTQK3tKhnoN/gTgz0D6LxTobUSMUP6TEVIRjbBhDohQDNZKo6r0LyBYalk7PId6zSQ3jkIl5a8tmRZbj1s315n6KWkxbpySKzuV0FGvMDwnMYqaoS1M/Px5ukE8SgAcIQwVZedn7BITz7zI+SuOePVHyRX5dJYz9DECJLSFOM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779999456; c=relaxed/simple;
-	bh=ElbZCV+MNZHnQ/i7aVRMIzDN23PfKh8NPF55MYZDRv8=;
+	s=arc-20240116; t=1779998364; c=relaxed/simple;
+	bh=MUfBz8CFjLuKNh4mn2/NoUTs2goeiQHPOKn3vCrMwcU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=VZem7J46OFYHGlKWvm8nJD0SHzJLCrcfujDzW3ZI1CC2iEWWh23Vqj+5PPTdZ0mkq+uUBl3Ei4EJBEPJ9Bz/nvEZhQtGLztsLHoY5A9HLV3IvdDTTvip/AGz12gDwn1V8JEdqy85Uc83QzQqnaMikAmf7Ap2wRSlSRcQnl4eYOI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=R3xY+l8j; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F12311F000E9;
-	Thu, 28 May 2026 20:17:34 +0000 (UTC)
+	 MIME-Version; b=q1QOwwcOZgTtL75KyFavxbq+jvryKDraihtNZhcl9bolRC4rXmaVQMG1pF6OaMoUGucyWTHCtFZqGmhg/+2E7vf5+gezhJGcLwm/K/n5ugxQDFNr4V7lvB1F36HBANgUCoyttKnNP1NoXK5t3iebzA5nhXs86BfS217Jp7q05ak=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zHZV2b4i; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 100931F000E9;
+	Thu, 28 May 2026 19:59:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779999455;
-	bh=M99br3uxldbyeQ7K4e4FPPDVLx9+3r9MWqQ8O86Ka8I=;
+	s=korg; t=1779998363;
+	bh=tQtAG/XjCQpcgsFH/fLK/6i7vEbHktY3zjPO+ZzFbMc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=R3xY+l8jvfWP/6RPdC3Bxz8oOlEhMAB0z3mEL3BPGN/hjR1FxUcHZv6SEEF1mmmbs
-	 H8qTubfpvKkpqZnTglAyHk71gnRZ4ecUA+Dndx/6khuti2F1P5dMud8j3K7e1dKN+x
-	 sK5AhXvVxuwnz27injQki+I9VZ+eoqbuq50awfSo=
+	b=zHZV2b4igjwTKRCnmzhjzCU8vgQf0RzPk/zc6p7JwQsAeI4ri7QLQP5y9JNfjEFCj
+	 9jexAMysKVpybDu6ICHLkUrKl7r88SA6LyppWaSrzMPS3jXIBsJvJoYcUysIp6rJTt
+	 JTvP4cyDSNYPPzR3PlISGIdTwAksf9RqvpetQU4s=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?C=C3=A1ssio=20Gabriel?= <cassiogabrielcontato@gmail.com>,
-	Takashi Iwai <tiwai@suse.de>
-Subject: [PATCH 6.18 037/377] ALSA: ua101: Reject too-short USB descriptors
+	stable@kernel.org,
+	Yuan Tan <yuantan098@gmail.com>,
+	Yifan Wu <yifanwucs@gmail.com>,
+	Juefei Pu <tomapufckgml@gmail.com>,
+	Xin Liu <bird@lzu.edu.cn>,
+	Ruijie Li <ruijieli51@gmail.com>,
+	Zhanpeng Li <lzhanpeng2025@lzu.edu.cn>,
+	Ren Wei <n05ec@lzu.edu.cn>,
+	Sven Eckelmann <sven@narfation.org>
+Subject: [PATCH 7.0 146/461] batman-adv: clear current gateway during teardown
 Date: Thu, 28 May 2026 21:44:35 +0200
-Message-ID: <20260528194639.451023873@linuxfoundation.org>
+Message-ID: <20260528194651.243620548@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260528194638.371537336@linuxfoundation.org>
-References: <20260528194638.371537336@linuxfoundation.org>
+In-Reply-To: <20260528194646.819809818@linuxfoundation.org>
+References: <20260528194646.819809818@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,80 +69,86 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-2.16 / 15.00];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-255632-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-255244-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,kernel.org,gmail.com,lzu.edu.cn,narfation.org];
 	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,suse.de];
-	TO_DN_SOME(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	RCPT_COUNT_TWELVE(0.00)[12];
 	MIME_TRACE(0.00)[0:+];
-	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	TAGGED_RCPT(0.00)[stable];
 	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[5];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[suse.de:email,msgid.link:url,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim]
-X-Rspamd-Queue-Id: C32495F8B2C
+	DBL_BLOCKED_OPENRESOLVER(0.00)[narfation.org:email,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,lzu.edu.cn:email]
+X-Rspamd-Queue-Id: 3C9885F7A72
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+7.0-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Cássio Gabriel <cassiogabrielcontato@gmail.com>
+From: Ruijie Li <ruijieli51@gmail.com>
 
-commit b59d5c51bb328a60749b4dd5fe7e649bfb4089b4 upstream.
+commit a340a51ed801eab7bb454150c226323b865263cc upstream.
 
-find_format_descriptor() walks the class-specific interface extras by
-advancing with bLength. It rejects descriptors that extend past the
-remaining buffer, but it does not reject descriptor lengths smaller than
-a USB descriptor header.
+batadv_gw_node_free() removes the gateway list entries during mesh teardown,
+but it does not clear the currently selected gateway. This leaves stale
+gateway state behind across cleanup and can break a later mesh recreation.
 
-Reject too-short descriptors before using bLength to advance the local
-scan. This keeps the UA-101 parser robust against malformed descriptor
-data and matches the usual USB descriptor walking rules.
+Clear bat_priv->gw.curr_gw before walking the gateway list so the selected
+gateway reference is dropped as part of teardown.
 
-Fixes: 63978ab3e3e9 ("sound: add Edirol UA-101 support")
-Cc: stable@vger.kernel.org
-Signed-off-by: Cássio Gabriel <cassiogabrielcontato@gmail.com>
-Link: https://patch.msgid.link/20260519-alsa-ua101-desc-len-v1-1-4307d1a5e054@gmail.com
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
+Fixes: 2265c1410864 ("batman-adv: gateway election code refactoring")
+Cc: stable@kernel.org
+Reported-by: Yuan Tan <yuantan098@gmail.com>
+Reported-by: Yifan Wu <yifanwucs@gmail.com>
+Reported-by: Juefei Pu <tomapufckgml@gmail.com>
+Reported-by: Xin Liu <bird@lzu.edu.cn>
+Signed-off-by: Ruijie Li <ruijieli51@gmail.com>
+Signed-off-by: Zhanpeng Li <lzhanpeng2025@lzu.edu.cn>
+Signed-off-by: Ren Wei <n05ec@lzu.edu.cn>
+Signed-off-by: Sven Eckelmann <sven@narfation.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- sound/usb/misc/ua101.c |    5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
+ net/batman-adv/gateway_client.c |    4 ++++
+ 1 file changed, 4 insertions(+)
 
---- a/sound/usb/misc/ua101.c
-+++ b/sound/usb/misc/ua101.c
-@@ -894,8 +894,9 @@ find_format_descriptor(struct usb_interf
- 		struct uac_format_type_i_discrete_descriptor *desc;
+--- a/net/batman-adv/gateway_client.c
++++ b/net/batman-adv/gateway_client.c
+@@ -478,10 +478,14 @@ void batadv_gw_node_delete(struct batadv
+  */
+ void batadv_gw_node_free(struct batadv_priv *bat_priv)
+ {
++	struct batadv_gw_node *curr_gw;
+ 	struct batadv_gw_node *gw_node;
+ 	struct hlist_node *node_tmp;
  
- 		desc = (struct uac_format_type_i_discrete_descriptor *)extra;
--		if (desc->bLength > extralen) {
--			dev_err(&interface->dev, "descriptor overflow\n");
-+		if (desc->bLength < sizeof(struct usb_descriptor_header) ||
-+		    desc->bLength > extralen) {
-+			dev_err(&interface->dev, "invalid descriptor length\n");
- 			return NULL;
- 		}
- 		if (desc->bLength == UAC_FORMAT_TYPE_I_DISCRETE_DESC_SIZE(1) &&
+ 	spin_lock_bh(&bat_priv->gw.list_lock);
++	curr_gw = rcu_replace_pointer(bat_priv->gw.curr_gw, NULL, true);
++	batadv_gw_node_put(curr_gw);
++
+ 	hlist_for_each_entry_safe(gw_node, node_tmp,
+ 				  &bat_priv->gw.gateway_list, list) {
+ 		hlist_del_init_rcu(&gw_node->list);
 
 
 
