@@ -1,61 +1,59 @@
-Return-Path: <stable+bounces-255903-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-256146-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 8KZsC1SnGGp+lwgAu9opvQ
-	(envelope-from <stable+bounces-255903-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:36:36 +0200
+	id oIw/NJ+qGGoomAgAu9opvQ
+	(envelope-from <stable+bounces-256146-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:50:39 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id A69955F918B
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:36:35 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5E5385F9ACA
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:50:39 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 482B830FE165
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 20:30:03 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id C6CCC3230B99
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 20:41:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BB117325485;
-	Thu, 28 May 2026 20:30:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 835102139C9;
+	Thu, 28 May 2026 20:41:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JmHVSbvd"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BfjMPETc"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8B4B3260580;
-	Thu, 28 May 2026 20:30:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4362E332909;
+	Thu, 28 May 2026 20:41:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780000202; cv=none; b=ogEn1ulJbGzCwNfsvrsM0iRAfckk81YGmYyVb5liWadHIyQoujW4oUoAJV9JpUZaCafJ8/7muU2NN4mOV0dF0+MoIvRCK+6uTwbSISpFjb/viOFQZjN14N9KwkdfHuLGn7KgpFWRbgm9ajXMRPUXQCKJ20WV5mG9ufa6T7TMG34=
+	t=1780000885; cv=none; b=EmdLkADIvsAGHWT+w7u2EDe7Lkgesf0G7pNoKdjDOXUjpZX23ADasp6eKh6lJqX99KOkExOLfvkEUrAqjHQ4AIzw6VDNxyLZed9vosk60Xx/DJI9RXkqtw/+Zbuh9setO4UdhjoynQ/D5Bwmv7F2nYupd5aTOc2pZyLXA1lUUH4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780000202; c=relaxed/simple;
-	bh=llNowHmG8mqylK6s3utacPQEHVWaoL9oOIs6pJMg6I4=;
+	s=arc-20240116; t=1780000885; c=relaxed/simple;
+	bh=19z8fPuD7uZAMVkBxBXMnsdQasx6GJ+T6MedAw5tQmY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=WRu8cIuGbACiKfSfOBixn/q8PT4Ly+8tUxgbm8gzG4FcKPhfR//RGEoXE2QuE1pr1294Pf9uawzqANNzvQWIomJcJjmWrR2lAO0iyLb+g/xPbQzrGHPYjlhNpvqDoF0tpgB+SNNkAkC3oD6MLzAe1GaZteEwBIYOCiG0oAf8oSI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JmHVSbvd; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E96A31F000E9;
-	Thu, 28 May 2026 20:30:00 +0000 (UTC)
+	 MIME-Version; b=poX+jLrILyWAH7MnfOGwQRBs2xj3oH1xrtg8sy9H67jt0VQrtlwZ6A5jYk0pWc7ODNTj58XfyZvV+D6eEJ8EnQ9NqzB5Z6Uycfpfaq5f/hm//CvVSmeyvLuAwV5SImP56FlQHrKOJEDg6LtypF20r0odBSzhvaD+kh1RcX9ZdKs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BfjMPETc; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6401E1F000E9;
+	Thu, 28 May 2026 20:41:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780000201;
-	bh=pUzyZg1K+5mjTf0XI1S133dy9jx98j5PE+NSuaVDz3I=;
+	s=korg; t=1780000883;
+	bh=wWQB+ZX1OXZHVKwFKGI712/fEoEkVPgWPXl4cvNzw8I=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=JmHVSbvdSGw7ctDRHiITWNEEpMr21aMJXrKTiYC3R0FwXGnvB/fsoc9SMFgx0bYBR
-	 k/dCtZLQZD9CU/UsRSjcAJlDWTiE/lb6l16cEkYlukyS/3LzNOa7qTGrIdUcsfaCEv
-	 XryAPS7jFYq4x/PCfCJDnx8kzjWLt3MVL0Qo0fWM=
+	b=BfjMPETcXlVmkqlAH+VX/e2ZDJ46xeP5lQ/HZgJ9tU0bg2bOmsBPjpUbNO1ZX07sM
+	 LVQ2PE1j2FqLDmPXj18ibtRJkaBV000/OkxgZ4NvFWEnqopff+vuLs/HM34e9rQ9rq
+	 2+gZs5eNOaXfelyxzsg8Bo9+Xi4pwsdpTwChihSk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Petr Machata <petrm@nvidia.com>,
-	Ido Schimmel <idosch@nvidia.com>,
-	Nikolay Aleksandrov <razor@blackwall.org>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Linus Walleij <linusw@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 338/377] net: bridge: Flush multicast groups when snooping is disabled
+Subject: [PATCH 6.12 202/272] net: ethernet: cortina: Make RX SKB per-port
 Date: Thu, 28 May 2026 21:49:36 +0200
-Message-ID: <20260528194648.207082990@linuxfoundation.org>
+Message-ID: <20260528194634.903924905@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260528194638.371537336@linuxfoundation.org>
-References: <20260528194638.371537336@linuxfoundation.org>
+In-Reply-To: <20260528194629.379955525@linuxfoundation.org>
+References: <20260528194629.379955525@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -70,96 +68,116 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-255903-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-256146-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[8];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,msgid.link:url,nvidia.com:email,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo]
-X-Rspamd-Queue-Id: A69955F918B
+	RCPT_COUNT_FIVE(0.00)[6];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,sashiko.dev:url,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim]
+X-Rspamd-Queue-Id: 5E5385F9ACA
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Petr Machata <petrm@nvidia.com>
+From: Linus Walleij <linusw@kernel.org>
 
-[ Upstream commit 68800bbf583f26f71491141e4b3c8582f9cfcbde ]
+[ Upstream commit 06937db21ee311ed07eba47954447245041a982d ]
 
-When forwarding multicast packets, the bridge takes MDB into account when
-IGMP / MLD snooping is enabled. Currently, when snooping is disabled, the
-MDB is retained, even though it is not used anymore.
+The SKB used to assemble packets from fragments in gmac_rx()
+is static local, but the Gemini has two ethernet ports, meaning
+there can be races between the ports on a bad day if a device
+is using both.
 
-At the same time, during the time that snooping is disabled, the IGMP / MLD
-control packets are obviously ignored, and after the snooping is reenabled,
-the administrator has to assume it is out of sync. In particular, missed
-join and leave messages would lead to traffic being forwarded to wrong
-interfaces.
+Make the RX SKB a per-port variable and carry it over between
+invocations in the port struct instead.
 
-Keeping the MDB entries around thus serves no purpose, and just takes
-memory. Note also that disabling per-VLAN snooping does actually flush the
-relevant MDB entries.
+Zero the pointer once we call napi_gro_frags(), on error (after
+calling napi_free_frags()) or if the port is stopped.
 
-This patch flushes non-permanent MDB entries as global snooping is
-disabled.
+Zero it in some place where not strictly necessary just to
+emphasize what is going on.
 
-Signed-off-by: Petr Machata <petrm@nvidia.com>
-Reviewed-by: Ido Schimmel <idosch@nvidia.com>
-Acked-by: Nikolay Aleksandrov <razor@blackwall.org>
-Link: https://patch.msgid.link/5e992df1bb93b88e19c0ea5819e23b669e3dde5d.1761228273.git.petrm@nvidia.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Stable-dep-of: 4df78ff02629 ("bridge: mcast: Fix a possible use-after-free when removing a bridge port")
+This was found by Sashiko during normal patch review.
+
+Fixes: 4d5ae32f5e1e ("net: ethernet: Add a driver for Gemini gigabit ethernet")
+Link: https://sashiko.dev/#/patchset/20260505-gemini-ethernet-fix-v2-1-997c31d06079%40kernel.org
+Signed-off-by: Linus Walleij <linusw@kernel.org>
+Link: https://patch.msgid.link/20260509-gemini-ethernet-fixes-v1-2-6c5d20ddc35b@kernel.org
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/bridge/br_multicast.c | 9 +++++++++
- 1 file changed, 9 insertions(+)
+ drivers/net/ethernet/cortina/gemini.c | 7 ++++++-
+ 1 file changed, 6 insertions(+), 1 deletion(-)
 
-diff --git a/net/bridge/br_multicast.c b/net/bridge/br_multicast.c
-index 5855eb0502085..e9a7e65304017 100644
---- a/net/bridge/br_multicast.c
-+++ b/net/bridge/br_multicast.c
-@@ -4640,6 +4640,14 @@ static void br_multicast_start_querier(struct net_bridge_mcast *brmctx,
- 	rcu_read_unlock();
- }
+diff --git a/drivers/net/ethernet/cortina/gemini.c b/drivers/net/ethernet/cortina/gemini.c
+index 92833eefc04b4..47072fbabcaee 100644
+--- a/drivers/net/ethernet/cortina/gemini.c
++++ b/drivers/net/ethernet/cortina/gemini.c
+@@ -121,6 +121,8 @@ struct gemini_ethernet_port {
+ 	struct napi_struct	napi;
+ 	struct hrtimer		rx_coalesce_timer;
+ 	unsigned int		rx_coalesce_nsecs;
++	struct sk_buff		*rx_skb;
++
+ 	unsigned int		freeq_refill;
+ 	struct gmac_txq		txq[TX_QUEUE_NUM];
+ 	unsigned int		txq_order;
+@@ -1442,10 +1444,10 @@ static unsigned int gmac_rx(struct net_device *netdev, unsigned int budget)
+ 	unsigned short m = (1 << port->rxq_order) - 1;
+ 	struct gemini_ethernet *geth = port->geth;
+ 	void __iomem *ptr_reg = port->rxq_rwptr;
++	struct sk_buff *skb = port->rx_skb;
+ 	unsigned int frame_len, frag_len;
+ 	struct gmac_rxdesc *rx = NULL;
+ 	struct gmac_queue_page *gpage;
+-	static struct sk_buff *skb;
+ 	union gmac_rxdesc_0 word0;
+ 	union gmac_rxdesc_1 word1;
+ 	union gmac_rxdesc_3 word3;
+@@ -1499,6 +1501,7 @@ static unsigned int gmac_rx(struct net_device *netdev, unsigned int budget)
+ 			if (skb) {
+ 				napi_free_frags(&port->napi);
+ 				port->stats.rx_dropped++;
++				skb = NULL;
+ 			}
  
-+static void br_multicast_del_grps(struct net_bridge *br)
-+{
-+	struct net_bridge_port *port;
-+
-+	list_for_each_entry(port, &br->port_list, list)
-+		__br_multicast_disable_port_ctx(&port->multicast_ctx);
-+}
-+
- int br_multicast_toggle(struct net_bridge *br, unsigned long val,
- 			struct netlink_ext_ack *extack)
- {
-@@ -4660,6 +4668,7 @@ int br_multicast_toggle(struct net_bridge *br, unsigned long val,
- 	br_opt_toggle(br, BROPT_MULTICAST_ENABLED, !!val);
- 	if (!br_opt_get(br, BROPT_MULTICAST_ENABLED)) {
- 		change_snoopers = true;
-+		br_multicast_del_grps(br);
- 		goto unlock;
+ 			skb = gmac_skb_if_good_frame(port, word0, frame_len);
+@@ -1549,6 +1552,7 @@ static unsigned int gmac_rx(struct net_device *netdev, unsigned int budget)
+ 		port->stats.rx_dropped++;
  	}
  
++	port->rx_skb = skb;
+ 	writew(r, ptr_reg);
+ 	return budget;
+ }
+@@ -1877,6 +1881,7 @@ static int gmac_stop(struct net_device *netdev)
+ 	gmac_disable_tx_rx(netdev);
+ 	gmac_stop_dma(port);
+ 	napi_disable(&port->napi);
++	port->rx_skb = NULL;
+ 
+ 	gmac_enable_irq(netdev, 0);
+ 	gmac_cleanup_rxq(netdev);
 -- 
 2.53.0
 
