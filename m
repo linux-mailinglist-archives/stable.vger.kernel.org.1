@@ -1,59 +1,58 @@
-Return-Path: <stable+bounces-255989-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-255744-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 6LGlM66nGGpolwgAu9opvQ
-	(envelope-from <stable+bounces-255989-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:38:06 +0200
+	id MvzLLCqmGGpplwgAu9opvQ
+	(envelope-from <stable+bounces-255744-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:31:38 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 75E915F92AB
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:38:06 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 920B75F8DF4
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:31:37 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id DB9D0302A8AA
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 20:34:04 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id B3D9E3335F56
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 20:22:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 818E4330D35;
-	Thu, 28 May 2026 20:34:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BDB323101B0;
+	Thu, 28 May 2026 20:22:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="X6uwdZno"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="g9wToKYv"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5330C313550;
-	Thu, 28 May 2026 20:34:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A3769257854;
+	Thu, 28 May 2026 20:22:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780000442; cv=none; b=R1MMv5WxYXHnl3U1zHO/aV3h72n0pOVe5gA+u6HfIAct/H0MpmF76HPhL+BPve8GQk/4T3RRIQoksHmkcyrgElcnIJmI1EYY2a0sU1fC5pXp6/2eVru8RRwadV0F3oOIHa1ahuXq3oDaWloQLjyK6/ibKsXdSE0eDDspeFqPbxI=
+	t=1779999762; cv=none; b=js9TeadN4LmWP4r5turcszkXGAYu6oouEH6T3eDbJDsRO5HTJ82s0rnyWpXhdWvC8TmRQp/Pkcelyc5hx9EKXQyHuShLMCCzZlWGKx+UAaU5y9HnKyU3c/zVMUcno3JY6yHg/7qYtzgzSJcngeDvskEZ/4SGBMxqLkk9ui//1g0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780000442; c=relaxed/simple;
-	bh=2UgYJQjfIU7hGbCgwP400YlkyjnJHWNn4JvYccZ1Pwg=;
+	s=arc-20240116; t=1779999762; c=relaxed/simple;
+	bh=KP3GIbXO2P2UXsefGzocHk7ihWjVHqDU8qQS9y04hdQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=NVBg+8svxXwS6gh7BUXGBO/nLt9e+c53YrtHU5mTYCWEz/k81UC+peC3hZiapa5I/D9vQgQ6j6vQCNElL7MzDCIuf53Xm77Bo8DGx0GetvJmDRwyMHFXLiglnpvP16mPF+PNQeS2ajo75Bq1DPbiTe5h+LQLhnwhiToJUcEaAL0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=X6uwdZno; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B14FC1F000E9;
-	Thu, 28 May 2026 20:34:00 +0000 (UTC)
+	 MIME-Version; b=uetDI/YSZ20S6IXJfkOmMp+R7z/5WmbPC1dPBqo3BiLAHiqaaajxqVRI3EqKzARnR81VwxKDC6i23tyFMVP7F4c5YZsVa7k6JJToQ1v11M4+FlAN6mFzAWZgEwF6EbqlYOQefyOd3h1ZFGesszyMlLxF1t+gUROYmDwhAQb4XSI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=g9wToKYv; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0DDF71F000E9;
+	Thu, 28 May 2026 20:22:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780000441;
-	bh=kmMQb3AqNhjjVUNETrcrR1h9bUW5rWoNZJNO/ZCE0Y0=;
+	s=korg; t=1779999761;
+	bh=Ppydo9njYeU6EUj0xPN9zGG12OuHOPjIe5y/iqt2HwA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=X6uwdZno8dN86qoCNT/BIYW+yHJ72OjBp/VFDIRFqgWQE6ypP7F+LdUqReH9EuG12
-	 BDxkpY85vrbJUmgzYI0YUfOO92tYR4FHaE3tv5PoxXpJPlqwXZMDExxlLFMr1379nI
-	 Z5ZvDtsSji85yLfnN4uxRe3oiwn81fn7WZCAzSz0=
+	b=g9wToKYvBBppgs8NHig+856n5r1KVt8+HZWJroneZPE8n39V8Rpy+Qv9g0A/GL69J
+	 JTeGc5hJwyTAo0KoOJ6vO0/xBupMah/ewplmrDpj+uvd2HlyE69ShkhFpEErKeTS+5
+	 3HWv93oeBTA+jqiqQ1KXk+5HUi2mgFMklNPTJ8jU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ferry Meng <mengferry@linux.alibaba.com>,
-	Namjae Jeon <linkinjeon@kernel.org>,
-	Steve French <stfrench@microsoft.com>
-Subject: [PATCH 6.12 045/272] ksmbd: fix SID memory leak in set_posix_acl_entries_dacl() on overflow
+	Sudeep Holla <sudeep.holla@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.18 181/377] firmware: arm_ffa: Fix per-vcpu self notifications handling in workqueue
 Date: Thu, 28 May 2026 21:46:59 +0200
-Message-ID: <20260528194630.642578624@linuxfoundation.org>
+Message-ID: <20260528194643.663826130@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260528194629.379955525@linuxfoundation.org>
-References: <20260528194629.379955525@linuxfoundation.org>
+In-Reply-To: <20260528194638.371537336@linuxfoundation.org>
+References: <20260528194638.371537336@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -68,7 +67,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
@@ -78,7 +77,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-255989-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-255744-lists,stable=lfdr.de];
 	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
@@ -87,89 +86,57 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	NEURAL_HAM(-0.00)[-1.000];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
+	RCPT_COUNT_FIVE(0.00)[5];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim]
-X-Rspamd-Queue-Id: 75E915F92AB
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim]
+X-Rspamd-Queue-Id: 920B75F8DF4
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ferry Meng <mengferry@linux.alibaba.com>
+From: Sudeep Holla <sudeep.holla@kernel.org>
 
-commit af92ee994cc7f7e83a41c2025f32257a2f82a7ef upstream.
+[ Upstream commit 9985d5357ed93af0d1933969c247e966957730e1 ]
 
-Commit 299f962c0b02 ("ksmbd: use check_add_overflow() to prevent u16
-DACL size overflow") added check_add_overflow() guards that break out
-of the ACE-building loops in set_posix_acl_entries_dacl() when the
-accumulated DACL size would wrap past 65535.
+Per-vcpu notification handling already runs from a per-cpu work item on
+the target cpu. Routing that path back through smp_call_function_single()
+re-enters the call-function IPI path and executes the notification
+handler with interrupts disabled. That makes the framework path unsafe,
+since it takes a mutex, allocates memory with GFP_KERNEL, and invokes
+client callbacks.
 
-However, each iteration allocates a struct smb_sid via kmalloc_obj()
-at the top of the loop and relies on the kfree(sid) call at the end
-of the loop body (the 'pass_same_sid' label in the first loop, and
-the explicit kfree at the tail of the second loop) to release it.
-The newly introduced 'break' statements bypass those kfree() calls,
-leaking the sid buffer every time an overflow is detected.
+Handle per-vcpu self notifications directly from the existing per-cpu
+work item instead. This keeps the per-vcpu path in task context and
+avoids the extra IPI hop entirely.
 
-A malicious or malformed file with enough POSIX ACL entries to trip
-the overflow check will leak one or more struct smb_sid allocations
-on every request that touches the file's DACL, providing a trivial
-kernel memory exhaustion vector.
-
-Free sid before breaking out of the loops to plug the leak.
-
-Fixes: 299f962c0b02 ("ksmbd: use check_add_overflow() to prevent u16 DACL size overflow")
-Cc: stable@vger.kernel.org
-Signed-off-by: Ferry Meng <mengferry@linux.alibaba.com>
-Acked-by: Namjae Jeon <linkinjeon@kernel.org>
-Signed-off-by: Steve French <stfrench@microsoft.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 3a3e2b83e805 ("firmware: arm_ffa: Avoid queuing work when running on the worker queue")
+Link: https://patch.msgid.link/20260428-ffa_fixes-v2-4-8595ae450034@kernel.org
+Signed-off-by: Sudeep Holla <sudeep.holla@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/smb/server/smbacl.c |   12 +++++++++---
- 1 file changed, 9 insertions(+), 3 deletions(-)
+ drivers/firmware/arm_ffa/driver.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/fs/smb/server/smbacl.c
-+++ b/fs/smb/server/smbacl.c
-@@ -643,8 +643,10 @@ static void set_posix_acl_entries_dacl(s
- 		ntace = (struct smb_ace *)((char *)pndace + *size);
- 		ace_sz = fill_ace_for_sid(ntace, sid, ACCESS_ALLOWED, flags,
- 				pace->e_perm, 0777);
--		if (check_add_overflow(*size, ace_sz, size))
-+		if (check_add_overflow(*size, ace_sz, size)) {
-+			kfree(sid);
- 			break;
-+		}
- 		(*num_aces)++;
- 		if (pace->e_tag == ACL_USER)
- 			ntace->access_req |=
-@@ -655,8 +657,10 @@ static void set_posix_acl_entries_dacl(s
- 			ntace = (struct smb_ace *)((char *)pndace + *size);
- 			ace_sz = fill_ace_for_sid(ntace, sid, ACCESS_ALLOWED,
- 					0x03, pace->e_perm, 0777);
--			if (check_add_overflow(*size, ace_sz, size))
-+			if (check_add_overflow(*size, ace_sz, size)) {
-+				kfree(sid);
- 				break;
-+			}
- 			(*num_aces)++;
- 			if (pace->e_tag == ACL_USER)
- 				ntace->access_req |=
-@@ -698,8 +702,10 @@ posix_default_acl:
- 		ntace = (struct smb_ace *)((char *)pndace + *size);
- 		ace_sz = fill_ace_for_sid(ntace, sid, ACCESS_ALLOWED, 0x0b,
- 				pace->e_perm, 0777);
--		if (check_add_overflow(*size, ace_sz, size))
-+		if (check_add_overflow(*size, ace_sz, size)) {
-+			kfree(sid);
- 			break;
-+		}
- 		(*num_aces)++;
- 		if (pace->e_tag == ACL_USER)
- 			ntace->access_req |=
+diff --git a/drivers/firmware/arm_ffa/driver.c b/drivers/firmware/arm_ffa/driver.c
+index cf7f913a55b6e..30f8e0ff694fb 100644
+--- a/drivers/firmware/arm_ffa/driver.c
++++ b/drivers/firmware/arm_ffa/driver.c
+@@ -1538,7 +1538,7 @@ static void notif_pcpu_irq_work_fn(struct work_struct *work)
+ 	struct ffa_drv_info *info = container_of(work, struct ffa_drv_info,
+ 						 notif_pcpu_work);
+ 
+-	ffa_self_notif_handle(smp_processor_id(), true, info);
++	notif_get_and_handle(info);
+ }
+ 
+ static const struct ffa_info_ops ffa_drv_info_ops = {
+-- 
+2.53.0
+
 
 
 
