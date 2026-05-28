@@ -1,58 +1,58 @@
-Return-Path: <stable+bounces-255614-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-255260-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id kPgCBkGjGGrJlggAu9opvQ
-	(envelope-from <stable+bounces-255614-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:19:13 +0200
+	id kPM5OO+eGGpblggAu9opvQ
+	(envelope-from <stable+bounces-255260-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:00:47 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 384675F85FD
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:19:12 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5D20B5F7A87
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:00:47 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id C74DA3027639
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 20:16:49 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id DBF173045C9E
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 20:00:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C2A602580D7;
-	Thu, 28 May 2026 20:16:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EF56234D4D6;
+	Thu, 28 May 2026 20:00:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FwUlGR29"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bNKLvhKv"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6DE91282F17;
-	Thu, 28 May 2026 20:16:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C9E283016E1;
+	Thu, 28 May 2026 20:00:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779999406; cv=none; b=FDH1EE7LqyE8+O5WLSGOjrymA/uLOXg17jMLMAmaS63N3Da5e58KZh0elOqC8mSrwxB3b5kzXBPHWXbZ3bngJsm3XSNkl/h5aBs2baOYIsezWwezrKfCs4Jb0izX5BUJtQv3NlkKiT+XAcgPuTSolm7FpjI11vyhjm6otkkJfQE=
+	t=1779998409; cv=none; b=XapEAz7d8QfG70WbetqWaEC1DklgyNP9GSiBOJztMkf2YLyZA20KgAerYcuPsWqRdL8D3Pm0HpAF+ovROtDz9tGRks/P55V9K6meLHaVIkLyq+AVJnAWvjKm9OJM0fhWlaSjRJPXXHd16kNbjeioCryA305ayYENEHPQ5c2vRpk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779999406; c=relaxed/simple;
-	bh=AoKzDGJrjaDCxDDtY/T+HYdfMNd6ApuMlf06fagbMj8=;
+	s=arc-20240116; t=1779998409; c=relaxed/simple;
+	bh=udo9/pve3/TtrqxaMMAzzjCMolb4e3CBmO1boH93tDU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=HXFuQEKKDMuDeaP0O2WY3lBObjaEcD+4uMNP5+NiLfrZ8qYxrua5Pu5tkAXryk6EliC/UyW8FhwUwod84jXCSJVSDUcLtfFNDq3enunM2pOtSnacARYcBr6FX2pHiBjqR8zxLBNOTiV0luV9gaSLhxZ8moOuekD4wSNOdOOBH/k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FwUlGR29; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CAD901F000E9;
-	Thu, 28 May 2026 20:16:44 +0000 (UTC)
+	 MIME-Version; b=YiC2D436YRMBg7GEheZOkYehpJTBNeMqhWJZ76T36DnQRPocZqySj0As9QujXCDiezD/6Wn04/w++siJdsXYoA7stAvVJ+V4CtO6BI2Xu80ioV+NO6APdDhFkRXuykiSvDq1VwxN7iZs0lbUc7G3TbwnqWad7APQAMPK6OpERME=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bNKLvhKv; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 342BD1F000E9;
+	Thu, 28 May 2026 20:00:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779999405;
-	bh=xz6PvV7sOA0Yde26ft2KPouwTqJEawXp01E6EzLMfNE=;
+	s=korg; t=1779998408;
+	bh=7BHfdMby+7ZUJqdXCUbOQPJhQkwOHGqVssMRRBuFQY4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=FwUlGR29lv6BtSJvsHk8n3UJohuTghHPhilXAPDIBXKXgfAUT+SKr/4VPmXfsbiCB
-	 jbYft9geQl7sQKsVqt9ableONZVA1X+IgLmiJXExO/FQZkZIoNIVG72p9YP7+aZipy
-	 dSDsf4gwaomb9eurtXPO0P7/2zN7vgdIZFSvfqU0=
+	b=bNKLvhKvw0z8Mhw5wpDoaMRTDO3Fc5BWDzdjnGRl5ZAcrChGGJOApJzf2wTz2a7TF
+	 6MLa0Pv6whao//JWT5sqgVWs15fWzSBrOegZAg3CZqni3ceHI3Xfsla+RiLjdRD9BM
+	 jedx664uqxvX3kq3MmG/OHkZYw1uMbcub+YSzT5k=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mingyu Wang <25181214217@stu.xidian.edu.cn>,
-	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
-Subject: [PATCH 6.18 055/377] Bluetooth: hci_uart: fix UAFs and race conditions in close and init paths
+	stable@kernel.org,
+	Sven Eckelmann <sven@narfation.org>
+Subject: [PATCH 7.0 164/461] batman-adv: tt: prevent TVLV entry number overflow
 Date: Thu, 28 May 2026 21:44:53 +0200
-Message-ID: <20260528194639.961839125@linuxfoundation.org>
+Message-ID: <20260528194651.800387945@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260528194638.371537336@linuxfoundation.org>
-References: <20260528194638.371537336@linuxfoundation.org>
+In-Reply-To: <20260528194646.819809818@linuxfoundation.org>
+References: <20260528194646.819809818@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -67,7 +67,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
@@ -77,7 +77,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-255614-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-255260-lists,stable=lfdr.de];
 	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
@@ -88,184 +88,86 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	TAGGED_RCPT(0.00)[stable];
 	RCPT_COUNT_FIVE(0.00)[5];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,intel.com:email,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo]
-X-Rspamd-Queue-Id: 384675F85FD
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[narfation.org:email,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo]
+X-Rspamd-Queue-Id: 5D20B5F7A87
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+7.0-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mingyu Wang <25181214217@stu.xidian.edu.cn>
+From: Sven Eckelmann <sven@narfation.org>
 
-commit c1bb9336ae6b54a5f6a353c4bd4ed9a4307e429b upstream.
+commit 99d9958fa10fb684b2a8e2c48a8d704122721420 upstream.
 
-Vulnerabilities leading to Use-After-Free (UAF) and Null Pointer
-Dereference (NPD) conditions were observed in the lifecycle management
-of hci_uart.
+The helpers to prepare the buffers for the local and global TT based
+replies are trying to sum up all TT entries which can be found for each
+VLAN. In theory, this sum can be too big for an u16 and therefore overflow.
+A too small buffer would then be allocated for the TVLV.
 
-The primary issue arises because the workqueues (init_ready and
-write_work) are only flushed/cancelled if the HCI_UART_PROTO_READY
-flag is set during TTY close. If a hangup occurs before setup completes,
-hci_uart_tty_close() skips the teardown of these workqueues and
-proceeds to free the `hu` struct. When the scheduled work executes
-later, it blindly dereferences the freed `hu` struct.
+The too small buffer will be handled gracefully by
+batadv_tt_tvlv_generate() and is not causing a buffer overflow - just a
+truncated reply. But this overflow shouldn't have happened in the first and
+the too small buffer should never have been allocated when an overflow was
+detected.
 
-Furthermore, several data races and UAFs were identified in the teardown
-sequence:
-1. Calling hci_uart_flush() from hci_uart_close() without effectively
-   disabling write_work causes a race condition where both can concurrently
-   double-free hu->tx_skb. This happens because protocol timers can
-   concurrently invoke hci_uart_tx_wakeup() and requeue write_work.
-2. Calling hci_free_dev(hdev) before hu->proto->close(hu) causes a UAF
-   when vendor specific protocol close callbacks dereference hu->hdev.
-3. In the initialization error paths, failing to take the proto_lock
-   write lock before clearing PROTO_READY leads to races with active
-   readers. Additionally, hci_uart_tty_receive() accesses hu->hdev
-   outside the read lock, leading to UAFs if the initialization error
-   path frees hdev concurrently.
-
-Fix these synchronization and lifecycle issues by:
-1. Re-ordering hci_uart_tty_close() to clear HCI_UART_PROTO_READY first,
-   followed immediately by a cancel_work_sync(&hu->write_work). Clearing
-   the flag locks out concurrent protocol timers from successfully invoking
-   hci_uart_tx_wakeup(), effectively rendering the cancellation permanent
-   and preventing the tx_skb double-free.
-2. Note: Clearing PROTO_READY early causes hci_uart_close() to skip
-   hu->proto->flush(). This is perfectly safe in the tty_close path
-   because hu->proto->close() executes shortly after, which intrinsically
-   purges all protocol SKB queues and tears down the state.
-3. Relocating hu->proto->close(hu) strictly prior to hci_free_dev(hdev)
-   across all close and error paths to prevent vendor-level UAFs.
-4. Moving the hdev->stat.byte_rx increment in hci_uart_tty_receive()
-   inside the proto_lock read-side critical section to safely synchronize
-   with device unregistration.
-5. Adding cancel_work_sync(&hu->write_work) to hci_uart_close() to safely
-   flush the workqueue before hci_uart_flush() is invoked via the HCI core.
-6. Utilizing cancel_work_sync() instead of disable_work_sync() across
-   all paths to prevent permanently breaking user-space retry capabilities.
-
-Fixes: 3b799254cf6f ("Bluetooth: hci_uart: Cancel init work before unregistering")
-Cc: stable@vger.kernel.org
-Signed-off-by: Mingyu Wang <25181214217@stu.xidian.edu.cn>
-Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+Cc: stable@kernel.org
+Fixes: 7ea7b4a14275 ("batman-adv: make the TT CRC logic VLAN specific")
+Signed-off-by: Sven Eckelmann <sven@narfation.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/bluetooth/hci_ldisc.c |   48 +++++++++++++++++++++++++++++++++++-------
- 1 file changed, 40 insertions(+), 8 deletions(-)
+ net/batman-adv/translation-table.c |   20 +++++++++++++++++---
+ 1 file changed, 17 insertions(+), 3 deletions(-)
 
---- a/drivers/bluetooth/hci_ldisc.c
-+++ b/drivers/bluetooth/hci_ldisc.c
-@@ -194,7 +194,15 @@ void hci_uart_init_work(struct work_stru
- 	err = hci_register_dev(hu->hdev);
- 	if (err < 0) {
- 		BT_ERR("Can't register HCI device");
-+
-+		percpu_down_write(&hu->proto_lock);
- 		clear_bit(HCI_UART_PROTO_READY, &hu->flags);
-+		percpu_up_write(&hu->proto_lock);
-+
-+		/* Safely cancel work after clearing flags */
-+		cancel_work_sync(&hu->write_work);
-+
-+		/* Close protocol before freeing hdev */
- 		hu->proto->close(hu);
- 		hdev = hu->hdev;
- 		hu->hdev = NULL;
-@@ -263,8 +271,12 @@ static int hci_uart_open(struct hci_dev
- /* Close device */
- static int hci_uart_close(struct hci_dev *hdev)
- {
-+	struct hci_uart *hu = hci_get_drvdata(hdev);
-+
- 	BT_DBG("hdev %p", hdev);
+--- a/net/batman-adv/translation-table.c
++++ b/net/batman-adv/translation-table.c
+@@ -804,11 +804,18 @@ batadv_tt_prepare_tvlv_global_data(struc
+ 	u16 total_entries = 0;
+ 	u8 *tt_change_ptr;
+ 	int vlan_entries;
++	u16 sum_entries;
  
-+	cancel_work_sync(&hu->write_work);
+ 	spin_lock_bh(&orig_node->vlan_list_lock);
+ 	hlist_for_each_entry(vlan, &orig_node->vlan_list, list) {
+ 		vlan_entries = atomic_read(&vlan->tt.num_entries);
+-		total_entries += vlan_entries;
 +
- 	hci_uart_flush(hdev);
- 	hdev->flush = NULL;
- 	return 0;
-@@ -531,6 +543,7 @@ static void hci_uart_tty_close(struct tt
- {
- 	struct hci_uart *hu = tty->disc_data;
- 	struct hci_dev *hdev;
-+	bool proto_ready;
- 
- 	BT_DBG("tty %p", tty);
- 
-@@ -540,24 +553,38 @@ static void hci_uart_tty_close(struct tt
- 	if (!hu)
- 		return;
- 
--	hdev = hu->hdev;
--	if (hdev)
--		hci_uart_close(hdev);
-+	/* Wait for init_ready to finish to prevent registration races */
-+	cancel_work_sync(&hu->init_ready);
- 
--	if (test_bit(HCI_UART_PROTO_READY, &hu->flags)) {
-+	proto_ready = test_bit(HCI_UART_PROTO_READY, &hu->flags);
-+	if (proto_ready) {
- 		percpu_down_write(&hu->proto_lock);
- 		clear_bit(HCI_UART_PROTO_READY, &hu->flags);
- 		percpu_up_write(&hu->proto_lock);
-+	}
- 
--		cancel_work_sync(&hu->init_ready);
--		cancel_work_sync(&hu->write_work);
-+	/*
-+	 * Unconditionally cancel write_work AFTER clearing PROTO_READY.
-+	 * This ensures that concurrent protocol timers cannot requeue
-+	 * write_work via hci_uart_tx_wakeup(), permanently preventing
-+	 * double-free races and UAFs.
-+	 */
-+	cancel_work_sync(&hu->write_work);
++		if (check_add_overflow(vlan_entries, total_entries, &sum_entries)) {
++			*tt_len = 0;
++			goto out;
++		}
 +
-+	hdev = hu->hdev;
-+	if (hdev)
-+		hci_uart_close(hdev); /* proto->flush is safely skipped */
- 
-+	if (proto_ready) {
- 		if (hdev) {
- 			if (test_bit(HCI_UART_REGISTERED, &hu->flags))
- 				hci_unregister_dev(hdev);
--			hci_free_dev(hdev);
- 		}
-+		/* Close protocol before freeing hdev (intrinsically purges queues) */
- 		hu->proto->close(hu);
-+
-+		if (hdev)
-+			hci_free_dev(hdev);
++		total_entries = sum_entries;
+ 		num_vlan++;
  	}
- 	clear_bit(HCI_UART_PROTO_SET, &hu->flags);
  
-@@ -625,11 +652,12 @@ static void hci_uart_tty_receive(struct
- 	 * tty caller
- 	 */
- 	hu->proto->recv(hu, data, count);
--	percpu_up_read(&hu->proto_lock);
+@@ -893,15 +900,22 @@ batadv_tt_prepare_tvlv_local_data(struct
+ 	struct batadv_meshif_vlan *vlan;
+ 	size_t change_offset;
+ 	u16 num_vlan = 0;
+-	u16 vlan_entries = 0;
+ 	u16 total_entries = 0;
+ 	u16 tvlv_len;
+ 	u8 *tt_change_ptr;
++	int vlan_entries;
++	u16 sum_entries;
  
- 	if (hu->hdev)
- 		hu->hdev->stat.byte_rx += count;
- 
-+	percpu_up_read(&hu->proto_lock);
+ 	spin_lock_bh(&bat_priv->meshif_vlan_list_lock);
+ 	hlist_for_each_entry(vlan, &bat_priv->meshif_vlan_list, list) {
+ 		vlan_entries = atomic_read(&vlan->tt.num_entries);
+-		total_entries += vlan_entries;
 +
- 	tty_unthrottle(tty);
- }
- 
-@@ -695,6 +723,10 @@ static int hci_uart_register_dev(struct
- 		percpu_down_write(&hu->proto_lock);
- 		clear_bit(HCI_UART_PROTO_INIT, &hu->flags);
- 		percpu_up_write(&hu->proto_lock);
-+		/* Cancel work after clearing flags */
-+		cancel_work_sync(&hu->write_work);
++		if (check_add_overflow(vlan_entries, total_entries, &sum_entries)) {
++			tvlv_len = 0;
++			goto out;
++		}
 +
-+		/* Close protocol before freeing hdev */
- 		hu->proto->close(hu);
- 		hu->hdev = NULL;
- 		hci_free_dev(hdev);
++		total_entries = sum_entries;
+ 		num_vlan++;
+ 	}
+ 
 
 
 
