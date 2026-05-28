@@ -1,62 +1,59 @@
-Return-Path: <stable+bounces-255802-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-255447-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id UOPhJiqmGGoQlwgAu9opvQ
-	(envelope-from <stable+bounces-255802-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:31:38 +0200
+	id mL7RGIuiGGqblggAu9opvQ
+	(envelope-from <stable+bounces-255447-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:16:11 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id B10555F8DF1
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:31:33 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E1E955F8371
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:16:10 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 4114C31337BB
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 20:25:28 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 85C5030B3B16
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 20:08:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 595AD3002A0;
-	Thu, 28 May 2026 20:25:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 96880348C6E;
+	Thu, 28 May 2026 20:08:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SSxr7wSC"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PgqvwuGU"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4E3F433F390;
-	Thu, 28 May 2026 20:25:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 73E1732ABC0;
+	Thu, 28 May 2026 20:08:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779999925; cv=none; b=SvKjYPr6X1Nq4ILOEta+ehKzUTCCgh8O1+pcVmmtXXZpSyAhgOYAfqFKOoweOO73+Z7Ix9zZLae+pEd2UUcdbFukBWIBmtLmgP7pC04ecPXFU51ejRpm0K9jnnibhNFGr5MFtk7BVsSrJ1j+CT6u8bePzkXqzU0iJiIPEBEuLi8=
+	t=1779998937; cv=none; b=ix5AAkNWgJrcDBayx8jJx6CHxtYZuI8uuUkYJ2q2eCG5wtK/IIMMOP1ZiwK8f5p9uGLe/ji4ToX/Wzthr6CsRtWZDTPKx0fj8mwDqwVuLjShdDuNAkJ9spBejJJt4G9JduASd4/iHif1/16HOkwl2ltw7V2BPGcwwrMj8PFovJc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779999925; c=relaxed/simple;
-	bh=nhuPdLDLIFUVxRrkuMKsxiTKovfXwqoL8ZY0xbT2ijY=;
+	s=arc-20240116; t=1779998937; c=relaxed/simple;
+	bh=hzP1Txps5NbEtKZcTHHtSY/n7UHtisNWcxVheOoYSNw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=nU80FnjQtlb8RcyR91tMseIZH3q/t2YWzGW8RNo/C9YsUAZ8LFn16CRD83YzZlgzGEUsqodrCZaLsZZPNiIZEAzOaOy/aSeHRo68Q4qoOZWjEFkphoOeFrlJ3g8WnL1CA87QC9dw1aufeXaxdFslmaFKONCLYdJZFAPrYueag7k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SSxr7wSC; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 760AF1F00A3A;
-	Thu, 28 May 2026 20:25:22 +0000 (UTC)
+	 MIME-Version; b=WMHit12Emlr7kt8JJSY8hq8QSQYWP3yyUpbg0yxtM8wgOBmQsogZXPwhxjj+WF1Ww5G8xpdFQE6q4WS6NtW03V72WDqyxdCl/70/7xWacssXyCVUXi7CePQFy8XxbFNdY7buRM+GhjAdZqxghPqUIjfU2N0yTFunCVKu121rQU8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PgqvwuGU; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C97F31F00A3A;
+	Thu, 28 May 2026 20:08:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779999923;
-	bh=EfjyWdwFYCJGbfOYtHDpz2GBLw25ylVDQfrbL2Tc7F4=;
+	s=korg; t=1779998936;
+	bh=L9EmEoMRhzGOgHmwtkjWcI/nAE+/PwiJneP8KN1pXMg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=SSxr7wSCpgq0zLGg/8oywxkmUy/WdtUc7lHGHp7Xr39FV114rAKB1NE84CMTo6mD8
-	 wkKvBHqdkrUriCw5GlCcABDiR8lnuzHMSCXjogpcqYuXUL8apne1YsuKuFmxbXTOSf
-	 ga/Fogoxx3pXcKzMeHURb4PhZeC341OApdUEsyQY=
+	b=PgqvwuGUUoBy4sWw7rlqih3choY2seEArmxov/lx4mfroo7e0YZjJR+3Y4dK32Tqw
+	 DiPCDv8fML8YVUXB7RnIIhjnsvYx408s3RPeOqlv4H2rvj6G5kyLo27cSdn8odA1aw
+	 9DAwVYM3kFz9iNRWIhf3Ran5tb6oRRzLLNkW6+Vw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	David Howells <dhowells@redhat.com>,
-	Paulo Alcantara <pc@manguebit.org>,
-	netfs@lists.linux.dev,
-	linux-fsdevel@vger.kernel.org,
-	Christian Brauner <brauner@kernel.org>,
+	Felix Gu <ustc.gu@gmail.com>,
+	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 240/377] netfs: Fix potential deadlock in write-through mode
+Subject: [PATCH 7.0 349/461] spi: mtk-snfi: Fix resource leak in mtk_snand_read_page_cache()
 Date: Thu, 28 May 2026 21:47:58 +0200
-Message-ID: <20260528194645.337738904@linuxfoundation.org>
+Message-ID: <20260528194657.491383388@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260528194638.371537336@linuxfoundation.org>
-References: <20260528194638.371537336@linuxfoundation.org>
+In-Reply-To: <20260528194646.819809818@linuxfoundation.org>
+References: <20260528194646.819809818@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -67,152 +64,73 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-255802-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TO_DN_SOME(0.00)[];
+	TAGGED_FROM(0.00)[bounces-255447-lists,stable=lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[9];
-	MID_RHS_MATCH_FROM(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	NEURAL_HAM(-0.00)[-0.999];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,manguebit.org:email,sashiko.dev:url,msgid.link:url,linux.dev:email,linuxfoundation.org:mid,linuxfoundation.org:dkim]
-X-Rspamd-Queue-Id: B10555F8DF1
+	MID_RHS_MATCH_FROM(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[6];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,msgid.link:url,linuxfoundation.org:mid,linuxfoundation.org:dkim]
+X-Rspamd-Queue-Id: E1E955F8371
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+7.0-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: David Howells <dhowells@redhat.com>
+From: Felix Gu <ustc.gu@gmail.com>
 
-[ Upstream commit b6a4ae1634b3ad2aaa05222e53d36da532852faf ]
+[ Upstream commit 496ba79b9496b8b3747cbc764ebd33ee7325e806 ]
 
-Fix netfs_advance_writethrough() to always unlock the supplied folio and to
-mark it dirty if it isn't yet written to the end.  Unfortunately, it can't
-be marked for writeback until the folio is done with as that may cause a
-deadlock against mmapped reads and writes.
+When DMA read times out in mtk_snand_read_page_cache(), the original code
+erroneously jumped to cleanup label which skips DMA unmapping and ECC
+disable, causing a resource leak.
 
-Even though it has been marked dirty, premature writeback can't occur as
-the caller is holding both inode->i_rwsem (which will prevent concurrent
-truncation, fallocation, DIO and other writes) and ictx->wb_lock (which
-will cause flushing to wait and writeback to skip or wait).
-
-Note that this may be easier to deal with once the queuing of folios is
-split from the generation of subrequests.
-
-Fixes: 288ace2f57c9 ("netfs: New writeback implementation")
-Closes: https://sashiko.dev/#/patchset/20260427154639.180684-1-dhowells%40redhat.com
-Signed-off-by: David Howells <dhowells@redhat.com>
-Link: https://patch.msgid.link/20260512123404.719402-15-dhowells@redhat.com
-cc: Paulo Alcantara <pc@manguebit.org>
-cc: netfs@lists.linux.dev
-cc: linux-fsdevel@vger.kernel.org
-Signed-off-by: Christian Brauner <brauner@kernel.org>
+Fixes: 764f1b748164 ("spi: add driver for MTK SPI NAND Flash Interface")
+Signed-off-by: Felix Gu <ustc.gu@gmail.com>
+Link: https://patch.msgid.link/20260510-snfi-v1-1-bc375cf1af8e@gmail.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/netfs/write_issue.c | 39 +++++++++++++++++++++++++--------------
- 1 file changed, 25 insertions(+), 14 deletions(-)
+ drivers/spi/spi-mtk-snfi.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/fs/netfs/write_issue.c b/fs/netfs/write_issue.c
-index 2db688f941251..9bf05099155dc 100644
---- a/fs/netfs/write_issue.c
-+++ b/fs/netfs/write_issue.c
-@@ -413,12 +413,7 @@ static int netfs_write_folio(struct netfs_io_request *wreq,
- 	if (streamw)
- 		netfs_issue_write(wreq, cache);
- 
--	/* Flip the page to the writeback state and unlock.  If we're called
--	 * from write-through, then the page has already been put into the wb
--	 * state.
--	 */
--	if (wreq->origin == NETFS_WRITEBACK)
--		folio_start_writeback(folio);
-+	folio_start_writeback(folio);
- 	folio_unlock(folio);
- 
- 	if (fgroup == NETFS_FOLIO_COPY_TO_CACHE) {
-@@ -646,29 +641,41 @@ int netfs_advance_writethrough(struct netfs_io_request *wreq, struct writeback_c
- 			       struct folio *folio, size_t copied, bool to_page_end,
- 			       struct folio **writethrough_cache)
- {
-+	int ret;
-+
- 	_enter("R=%x ic=%zu ws=%u cp=%zu tp=%u",
- 	       wreq->debug_id, wreq->buffer.iter.count, wreq->wsize, copied, to_page_end);
- 
--	if (!*writethrough_cache) {
--		if (folio_test_dirty(folio))
--			/* Sigh.  mmap. */
--			folio_clear_dirty_for_io(folio);
-+	/* The folio is locked. */
- 
-+	if (*writethrough_cache != folio) {
-+		if (*writethrough_cache) {
-+			/* Did the folio get moved? */
-+			folio_put(*writethrough_cache);
-+			*writethrough_cache = NULL;
-+		}
- 		/* We can make multiple writes to the folio... */
--		folio_start_writeback(folio);
- 		if (wreq->len == 0)
- 			trace_netfs_folio(folio, netfs_folio_trace_wthru);
- 		else
- 			trace_netfs_folio(folio, netfs_folio_trace_wthru_plus);
- 		*writethrough_cache = folio;
-+		folio_get(folio);
+diff --git a/drivers/spi/spi-mtk-snfi.c b/drivers/spi/spi-mtk-snfi.c
+index 73fa84475f0e4..7725748cab2a7 100644
+--- a/drivers/spi/spi-mtk-snfi.c
++++ b/drivers/spi/spi-mtk-snfi.c
+@@ -961,7 +961,7 @@ static int mtk_snand_read_page_cache(struct mtk_snand *snf,
+ 		    &snf->op_done, usecs_to_jiffies(SNFI_POLL_INTERVAL))) {
+ 		dev_err(snf->dev, "DMA timed out for reading from cache.\n");
+ 		ret = -ETIMEDOUT;
+-		goto cleanup;
++		goto cleanup2;
  	}
  
- 	wreq->len += copied;
--	if (!to_page_end)
-+
-+	if (!to_page_end) {
-+		folio_mark_dirty(folio);
-+		folio_unlock(folio);
- 		return 0;
-+	}
- 
-+	ret = netfs_write_folio(wreq, wbc, folio);
-+	folio_put(*writethrough_cache);
- 	*writethrough_cache = NULL;
--	return netfs_write_folio(wreq, wbc, folio);
-+	wreq->submitted = wreq->len;
-+	return ret;
- }
- 
- /*
-@@ -682,8 +689,12 @@ ssize_t netfs_end_writethrough(struct netfs_io_request *wreq, struct writeback_c
- 
- 	_enter("R=%x", wreq->debug_id);
- 
--	if (writethrough_cache)
-+	if (writethrough_cache) {
-+		folio_lock(writethrough_cache);
- 		netfs_write_folio(wreq, wbc, writethrough_cache);
-+		folio_put(writethrough_cache);
-+		wreq->submitted = wreq->len;
-+	}
- 
- 	netfs_end_issue_write(wreq);
- 
+ 	// Wait for BUS_SEC_CNTR returning expected value
 -- 
 2.53.0
 
