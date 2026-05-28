@@ -1,61 +1,58 @@
-Return-Path: <stable+bounces-255558-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-256362-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id IHKgDhGkGGrClggAu9opvQ
-	(envelope-from <stable+bounces-255558-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:22:41 +0200
+	id ANn2DCitGGpolwgAu9opvQ
+	(envelope-from <stable+bounces-256362-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 23:01:28 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id A2BEA5F87E5
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:22:40 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 84DE35FA14C
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 23:01:27 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 15AFD31FE86F
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 20:14:11 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id AC08832788DD
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 20:51:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 935CA405C4B;
-	Thu, 28 May 2026 20:14:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 956C8316905;
+	Thu, 28 May 2026 20:51:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1Gq8Uoji"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sTJAQCiP"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4E8C4352019;
-	Thu, 28 May 2026 20:14:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6A998330B32;
+	Thu, 28 May 2026 20:51:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779999250; cv=none; b=CNvkSiKnpTeqfaz5Zt6pGc6VjS/fHVZWtP6KS3RV9gBM/Lz0NS7KQY/JikDp2f9vwSo4quUpnQhoL/k9jKzoNEDmGmaOoTlXxNG1D3lsCf9j8mL9FNVdV/sxezvyC6ZViHzcC4GiSmK7os4YZbXa2KpjVV5qEZXeHMgdb3jMRVE=
+	t=1780001488; cv=none; b=lpvb6iVaSFzgddPGoeGF2Xltwep8BPl20qH1ot16oWydESs9FA6Luu3zLU7savXYHPoJjRNVKy/Zq9UUJgg9hsmWewTC/omVRWZBweKen0ZH0ti/OcKrTZNWYlgNdp8S0DQomcku+jLrziSloDv3DKvwsNrgxe13TWRxrxQMcdM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779999250; c=relaxed/simple;
-	bh=ORXnBcUUs1rsKdn5NivTJOlUSMSs+M90mwQVnX9BxgE=;
+	s=arc-20240116; t=1780001488; c=relaxed/simple;
+	bh=A9xHpfZ2OC/d1bwxmzUK0O2vPuMZYfsA63yGV8JVPBQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=k437L58HiyQunvNZBaf5UJIL2HxY0bYasI3e+xpFevyi7gnYwFYD+Y7uEjwd1Ly0dldC7dmPN92IgZODGu77n/G1j3rjdX9yfHduGvZSxeo5NRl/AN4mEwn/P0zJNqabLKBGW2WuJadG+XAg09jVpdzNWNUAU8fmJuYTek7G0as=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1Gq8Uoji; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AC6C91F000E9;
-	Thu, 28 May 2026 20:14:08 +0000 (UTC)
+	 MIME-Version; b=eJIJjeoWJDovs0h2QLH/dK8b4vQ9cUzGqZRexNqtHK34VeWKRn7nASx6GcdDbYkboJqcclOZOZkdUjkWr5IvIqN+JYwYGpE6FJh28pTbxRIy+uLoqsFcptSedeRRBu9ocZi0OB0YlUw+mHANge/8Wu7kGag0K/ISAjwrNhL0BXg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sTJAQCiP; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C8B9B1F000E9;
+	Thu, 28 May 2026 20:51:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779999249;
-	bh=k3vdENpsL+uogjQxBdioSPBTnDaCvBqLo2V8/mOYJF8=;
+	s=korg; t=1780001487;
+	bh=S1lht82PSNH54glxW4tlGcsvlJ8TU76zdA7ZS05XlcA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=1Gq8Uojia02neeHV3gswBx5svRODKOpZRXJzEohOUjGDF3qAkNbt0muBmRiXqy40J
-	 dw+40Xo86VLSPsu2VY+MayqQGgdxw1hHHQGRQkl04NmjiuiPUkIGbDNTsuiZBbsR99
-	 LE0M567wfP4HFqr4AX+UUfiNb/DpGXEAUqIgLF/U=
+	b=sTJAQCiP0bFBhuTmtmfPxCwi7qD9qZpSz8+KygtiXEYMOeLUnpk5oBrWIHFmJxCqu
+	 uwinM5JJIoVnL1kx3OQkd8driUjGu/ok6B5VSRdvTXn5KO/FRIp22F+6i0C90YfmaZ
+	 FqBBPo3+QQeV7XJFEVM62GSYwByApVT3z9sgApQk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Armin Wolf <W_Armin@gmx.de>,
-	Shuah Khan <skhan@linuxfoundation.org>,
-	Werner Sembach <wse@tuxedocomputers.com>,
-	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
+	Florian Westphal <fw@strlen.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 7.0 460/461] Documentation: laptops: Update documentation for uniwill laptops
+Subject: [PATCH 6.6 109/186] netfilter: ebtables: allow xtables-nft only builds
 Date: Thu, 28 May 2026 21:49:49 +0200
-Message-ID: <20260528194700.855540272@linuxfoundation.org>
+Message-ID: <20260528194931.882967501@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260528194646.819809818@linuxfoundation.org>
-References: <20260528194646.819809818@linuxfoundation.org>
+In-Reply-To: <20260528194928.941004471@linuxfoundation.org>
+References: <20260528194928.941004471@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,125 +62,118 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-2.16 / 15.00];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmx.de,tuxedocomputers.com,linux.intel.com,kernel.org];
+	RCVD_COUNT_THREE(0.00)[4];
+	RCVD_TLS_LAST(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-255558-lists,stable=lfdr.de];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	RCVD_TLS_LAST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
+	TAGGED_FROM(0.00)[bounces-256362-lists,stable=lfdr.de];
 	TO_DN_SOME(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	PRECEDENCE_BULK(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_SEVEN(0.00)[8];
+	RCPT_COUNT_FIVE(0.00)[5];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tuxedocomputers.com:email,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,intel.com:email,msgid.link:url,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,gmx.de:email]
-X-Rspamd-Queue-Id: A2BEA5F87E5
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,strlen.de:email,linuxfoundation.org:mid,linuxfoundation.org:dkim]
+X-Rspamd-Queue-Id: 84DE35FA14C
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-7.0-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Werner Sembach <wse@tuxedocomputers.com>
+From: Florian Westphal <fw@strlen.de>
 
-[ Upstream commit 9ec6bf62cf98e30c7126a0f51ee7cdf2e8d458b6 ]
+[ Upstream commit 7ad269787b6615ca56bb161063331991fce51abf ]
 
-Adds short description for two new sysfs entries, ctgp_offset and
-usb_c_power_priority, to the documentation of uniwill laptops.
+Same patch as previous one, but for ebtables.
 
-Reviewed-by: Armin Wolf <W_Armin@gmx.de>
-Reviewed-by: Shuah Khan <skhan@linuxfoundation.org>
-Signed-off-by: Werner Sembach <wse@tuxedocomputers.com>
-Link: https://patch.msgid.link/20260324203413.454361-6-wse@tuxedocomputers.com
-Reviewed-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
-Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
-Stable-dep-of: 26cbe119f99c ("platform/x86: uniwill-laptop: Do not enable the charging limit even when forced")
+To build a kernel that only supports ebtables-nft, the builtin tables
+need to be disabled, i.e.:
+
+CONFIG_BRIDGE_EBT_BROUTE=n
+CONFIG_BRIDGE_EBT_T_FILTER=n
+CONFIG_BRIDGE_EBT_T_NAT=n
+
+The ebtables specific extensions can then be used nftables'
+NFT_COMPAT interface.
+
+Signed-off-by: Florian Westphal <fw@strlen.de>
+Stable-dep-of: b4597d5fd7d2 ("netfilter: x_tables: add and use xtables_unregister_table_exit")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- .../ABI/testing/sysfs-driver-uniwill-laptop   | 27 +++++++++++++++++++
- .../admin-guide/laptops/uniwill-laptop.rst    | 12 +++++++++
- 2 files changed, 39 insertions(+)
+ net/bridge/netfilter/Kconfig  | 7 +++++++
+ net/bridge/netfilter/Makefile | 2 +-
+ 2 files changed, 8 insertions(+), 1 deletion(-)
 
-diff --git a/Documentation/ABI/testing/sysfs-driver-uniwill-laptop b/Documentation/ABI/testing/sysfs-driver-uniwill-laptop
-index 2df70792968f3..2397c65c969a6 100644
---- a/Documentation/ABI/testing/sysfs-driver-uniwill-laptop
-+++ b/Documentation/ABI/testing/sysfs-driver-uniwill-laptop
-@@ -51,3 +51,30 @@ Description:
+diff --git a/net/bridge/netfilter/Kconfig b/net/bridge/netfilter/Kconfig
+index 7f304a19ac1bf..104c0125e32e8 100644
+--- a/net/bridge/netfilter/Kconfig
++++ b/net/bridge/netfilter/Kconfig
+@@ -39,6 +39,10 @@ config NF_CONNTRACK_BRIDGE
  
- 		Reading this file returns the current status of the breathing animation
- 		functionality.
-+
-+What:		/sys/bus/platform/devices/INOU0000:XX/ctgp_offset
-+Date:		January 2026
-+KernelVersion:	7.0
-+Contact:	Werner Sembach <wse@tuxedocomputers.com>
-+Description:
-+		Allows userspace applications to set the configurable TGP offset on top of the base
-+		TGP. Base TGP and max TGP and therefore the max cTGP offset are device specific.
-+		Note that setting the maximum cTGP leaves no window open for Dynamic Boost as
-+		Dynamic Boost also can not go over max TGP. Setting the cTGP to maximum is
-+		effectively disabling Dynamic Boost and telling the device to always prioritize the
-+		GPU over the CPU.
-+
-+		Reading this file returns the current configurable TGP offset.
-+
-+What:		/sys/bus/platform/devices/INOU0000:XX/usb_c_power_priority
-+Date:		February 2026
-+KernelVersion:	7.1
-+Contact:	Werner Sembach <wse@tuxedocomputers.com>
-+Description:
-+		Allows userspace applications to choose the USB-C power distribution profile between
-+		one that offers a bigger share of the power to the battery and one that offers more
-+		of it to the CPU. Writing "charging"/"performance" into this file selects the
-+		respective profile.
-+
-+		Reading this file returns the profile names with the currently active one in
-+		brackets.
-diff --git a/Documentation/admin-guide/laptops/uniwill-laptop.rst b/Documentation/admin-guide/laptops/uniwill-laptop.rst
-index aff5f57a6bd47..561334865feb7 100644
---- a/Documentation/admin-guide/laptops/uniwill-laptop.rst
-+++ b/Documentation/admin-guide/laptops/uniwill-laptop.rst
-@@ -50,6 +50,10 @@ between 1 and 100 percent are supported.
- Additionally the driver signals the presence of battery charging issues through the standard
- ``health`` power supply sysfs attribute.
+ 	  To compile it as a module, choose M here.  If unsure, say N.
  
-+It also lets you set whether a USB-C power source should prioritise charging the battery or
-+delivering immediate power to the cpu. See Documentation/ABI/testing/sysfs-driver-uniwill-laptop for
-+details.
++# old sockopt interface and eval loop
++config BRIDGE_NF_EBTABLES_LEGACY
++	tristate
 +
- Lightbar
- --------
+ menuconfig BRIDGE_NF_EBTABLES
+ 	tristate "Ethernet Bridge tables (ebtables) support"
+ 	depends on BRIDGE && NETFILTER && NETFILTER_XTABLES
+@@ -55,6 +59,7 @@ if BRIDGE_NF_EBTABLES
+ #
+ config BRIDGE_EBT_BROUTE
+ 	tristate "ebt: broute table support"
++	select BRIDGE_NF_EBTABLES_LEGACY
+ 	help
+ 	  The ebtables broute table is used to define rules that decide between
+ 	  bridging and routing frames, giving Linux the functionality of a
+@@ -65,6 +70,7 @@ config BRIDGE_EBT_BROUTE
  
-@@ -58,3 +62,11 @@ LED class device. The default name of this LED class device is ``uniwill:multico
+ config BRIDGE_EBT_T_FILTER
+ 	tristate "ebt: filter table support"
++	select BRIDGE_NF_EBTABLES_LEGACY
+ 	help
+ 	  The ebtables filter table is used to define frame filtering rules at
+ 	  local input, forwarding and local output. See the man page for
+@@ -74,6 +80,7 @@ config BRIDGE_EBT_T_FILTER
  
- See Documentation/ABI/testing/sysfs-driver-uniwill-laptop for details on how to control the various
- animation modes of the lightbar.
-+
-+Configurable TGP
-+----------------
-+
-+The ``uniwill-laptop`` driver allows to set the configurable TGP for devices with NVIDIA GPUs that
-+allow it.
-+
-+See Documentation/ABI/testing/sysfs-driver-uniwill-laptop for details.
+ config BRIDGE_EBT_T_NAT
+ 	tristate "ebt: nat table support"
++	select BRIDGE_NF_EBTABLES_LEGACY
+ 	help
+ 	  The ebtables nat table is used to define rules that alter the MAC
+ 	  source address (MAC SNAT) or the MAC destination address (MAC DNAT).
+diff --git a/net/bridge/netfilter/Makefile b/net/bridge/netfilter/Makefile
+index 1c9ce49ab6513..b9a1303da9771 100644
+--- a/net/bridge/netfilter/Makefile
++++ b/net/bridge/netfilter/Makefile
+@@ -9,7 +9,7 @@ obj-$(CONFIG_NFT_BRIDGE_REJECT)  += nft_reject_bridge.o
+ # connection tracking
+ obj-$(CONFIG_NF_CONNTRACK_BRIDGE) += nf_conntrack_bridge.o
+ 
+-obj-$(CONFIG_BRIDGE_NF_EBTABLES) += ebtables.o
++obj-$(CONFIG_BRIDGE_NF_EBTABLES_LEGACY) += ebtables.o
+ 
+ # tables
+ obj-$(CONFIG_BRIDGE_EBT_BROUTE) += ebtable_broute.o
 -- 
 2.53.0
 
