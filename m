@@ -1,61 +1,59 @@
-Return-Path: <stable+bounces-255497-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-256267-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id +O2xJrChGGqvlggAu9opvQ
-	(envelope-from <stable+bounces-255497-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:12:32 +0200
+	id FPrTKXirGGpEmAgAu9opvQ
+	(envelope-from <stable+bounces-256267-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:54:16 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 422915F8104
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:12:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 653985F9D2B
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:54:16 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 3619430594FC
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 20:11:21 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 3048E30CB4C9
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 20:47:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F34B3335566;
-	Thu, 28 May 2026 20:11:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CCFF9318B96;
+	Thu, 28 May 2026 20:47:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xRiWvZtM"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mOUGYdJO"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DC5CA33F5B4;
-	Thu, 28 May 2026 20:11:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9E499310620;
+	Thu, 28 May 2026 20:47:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779999077; cv=none; b=XMoqlNSyqFaB/G9FKGDOcbk3Ah34onGgK7uM4Q4m+ErFNObpaYgHh8NBeu21wSELmCJJVBaO9G4YLydjEUJZiO0oMIrL3cibmYMXyrM00285IilbcBD7Wr/jHNyZTJu/hEgVLsVyFb/wanrVNz8S50CQF3xXKCXquPN93H9jZX8=
+	t=1780001221; cv=none; b=asdUkIxk1m6NUhHsY3YhROJLVkE5quPPGGG8JkEGw6IDqaeUjF4lo9VOsKONBSS1kGFubJOoPLUVd1mk54iGHUIKwwRkBvT/H0EN8NIbOVdmrcI0rn1PM5uWaHHeVuM28oiKEJLkjWGHjL4HWpRF2YyfNa2CYSNp6/DuJcat0Us=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779999077; c=relaxed/simple;
-	bh=UbzBxR1D6xG30ZtVMjhyc9CDzztePRYNJSaX35OUR/s=;
+	s=arc-20240116; t=1780001221; c=relaxed/simple;
+	bh=NWQrwn/k968B6hhYHRburljA47ov4h8D+UL0bC1vyHU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ZlrNCOfDzXwPKVbeSFRX99J4fBf1mosU4LSjoAdMe9KISBcbUsa5aurylRQq642UUEFDyu936jtSwy4qyprpIVMxl/erajNA36bP7e7uD5w8S7O/861YC6Sitq3VHZnEC48Zh4Ut+AFFzjtvNEwn410xYsRPSGTjm+UtOCHPRtA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xRiWvZtM; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1CA9E1F00A3A;
-	Thu, 28 May 2026 20:11:15 +0000 (UTC)
+	 MIME-Version; b=jcCbMMHYwGaTKz74uIBFVZudx/GcVImIJAO5SjmWUNJpOz0Z/7/mX2ENDuqvTzGTOPDMTH7i/OLWU0wCS2ygP6ROaaBz/WlL0KZUfqJLmwJl+fHbarzvu2kCJZ/pv4Z3D6FcReLmM4DxAERvJ/pmlrDLk/GaLf7sDo2znpricjw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mOUGYdJO; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 071B21F000E9;
+	Thu, 28 May 2026 20:46:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779999076;
-	bh=CfCVJZtIDgjUy3FQej9/jGvMZIfpQI7Dih58CQvc1ag=;
+	s=korg; t=1780001220;
+	bh=Dkiew4KWI5YboURr3rvcsi2gUzUHvxh6+RRinXtfZ0M=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=xRiWvZtMZZf6w2X+PvqrIQvjGfAF6B4tsR0IzrVhQZKubJ+n68QM2RxxKYVkWVKqz
-	 y9zCnFmAZY2pu4zsL1BMphfCDIDpMuEE/lCpOTGqYbxRZO3sTi76PT7CZT0elLGUDV
-	 WYqpaMKJU6xQwcKwiANc5PCrCMYicVKW9r1OoJFM=
+	b=mOUGYdJOhXD8Tcytpbd5hzxZZEt6Dh22DZTPn61oy0PtPF+7nC8GDsOu7O9oRs3DN
+	 +E83mug7DWN3wlIFuHPbuA64uFSkQAc7nIn3wzDu1Ku8Cg1VYtjLHZT3QZ1Hb00nDf
+	 cWEs7fL4YfvVXSVN2uuNbw8nWJxylBbsB4He3RWE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Shiraz Saleem <shirazsaleem@microsoft.com>,
-	Konstantin Taranov <kotaranov@microsoft.com>,
-	Long Li <longli@microsoft.com>,
-	Leon Romanovsky <leon@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 7.0 401/461] RDMA/mana_ib: Report max_msg_sz in mana_ib_query_port
+	Minh Nguyen <minhnguyen.080505@gmail.com>,
+	Bryan Tan <bryan-bt.tan@broadcom.com>,
+	Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 6.6 050/186] vsock/vmci: fix UAF when peer resets connection during handshake
 Date: Thu, 28 May 2026 21:48:50 +0200
-Message-ID: <20260528194659.082504416@linuxfoundation.org>
+Message-ID: <20260528194930.322064493@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260528194646.819809818@linuxfoundation.org>
-References: <20260528194646.819809818@linuxfoundation.org>
+In-Reply-To: <20260528194928.941004471@linuxfoundation.org>
+References: <20260528194928.941004471@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,73 +64,102 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-255497-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TO_DN_SOME(0.00)[];
+	TAGGED_FROM(0.00)[bounces-256267-lists,stable=lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,broadcom.com,kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
-	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[8];
-	MID_RHS_MATCH_FROM(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	NEURAL_HAM(-0.00)[-0.999];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,linuxfoundation.org:mid,linuxfoundation.org:dkim,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo]
-X-Rspamd-Queue-Id: 422915F8104
+	MID_RHS_MATCH_FROM(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[6];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,broadcom.com:email,msgid.link:url,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim]
+X-Rspamd-Queue-Id: 653985F9D2B
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-7.0-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Shiraz Saleem <shirazsaleem@microsoft.com>
+From: Minh Nguyen <minhnguyen.080505@gmail.com>
 
-[ Upstream commit c9a40f6531b81baa9619bcc2697ff86896afcce7 ]
+commit 99e22ddf4edb63dc8382bc028af928056d3450cf upstream.
 
-Report max_msg_sz for mana_ib, which is 16MB.
+vmci_transport_recv_connecting_server() returned err = 0 for a peer
+RST in its default switch arm:
 
-Fixes: 4bda1d5332ec ("RDMA/mana_ib: Implement port parameters")
-Signed-off-by: Shiraz Saleem <shirazsaleem@microsoft.com>
-Signed-off-by: Konstantin Taranov <kotaranov@microsoft.com>
-Link: https://patch.msgid.link/20260512094209.264955-1-kotaranov@linux.microsoft.com
-Reviewed-by: Long Li <longli@microsoft.com>
-Signed-off-by: Leon Romanovsky <leon@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+	err = pkt->type == VMCI_TRANSPORT_PACKET_TYPE_RST ? 0 : -EINVAL;
+
+That made vmci_transport_recv_listen() skip vsock_remove_pending(),
+leaving the pending socket on the listener's pending_links with
+sk_state = TCP_CLOSE while destroy: still dropped the explicit
+reference taken before schedule_delayed_work().
+
+One second later vsock_pending_work() observed is_pending=true and
+performed full cleanup: vsock_remove_pending() then the two trailing
+sock_put(sk) calls -- the first reached refcount 0 and __sk_freed
+the socket, and the second wrote into the freed object:
+
+  BUG: KASAN: slab-use-after-free in refcount_warn_saturate
+  Write of size 4 at addr ffff88800b1cac80 by task kworker
+  Workqueue: events vsock_pending_work
+
+Treat peer RST like any other unexpected packet type (err = -EINVAL).
+All destroy: arms now return err < 0, so vmci_transport_recv_listen()
+removes pending from pending_links synchronously and
+vsock_pending_work() takes the is_pending=false / !rejected branch,
+dropping only its own work reference.  This also closes the
+multi-packet race Sashiko reported on v2: pending is removed from
+the list before any subsequent packet can find it.
+
+The pre-existing sk_acceptq_removed() gap on the err < 0 path of
+vmci_transport_recv_listen() that Sashiko also noted is not
+introduced or changed by this patch.
+
+Tested on lts-6.12.79 with KASAN: 52/100 unpatched -> 0/100 patched.
+
+Fixes: d021c344051a ("VSOCK: Introduce VM Sockets")
+Cc: stable@vger.kernel.org
+Signed-off-by: Minh Nguyen <minhnguyen.080505@gmail.com>
+Acked-by: Bryan Tan <bryan-bt.tan@broadcom.com>
+Link: https://patch.msgid.link/20260519102310.237181-1-minhnguyen.080505@gmail.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/infiniband/hw/mana/main.c | 1 +
- 1 file changed, 1 insertion(+)
+ net/vmw_vsock/vmci_transport.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/infiniband/hw/mana/main.c b/drivers/infiniband/hw/mana/main.c
-index 8d99cd00f002c..d913f885b3ef9 100644
---- a/drivers/infiniband/hw/mana/main.c
-+++ b/drivers/infiniband/hw/mana/main.c
-@@ -639,6 +639,7 @@ int mana_ib_query_port(struct ib_device *ibdev, u32 port,
- 	if (mana_ib_is_rnic(dev)) {
- 		props->gid_tbl_len = 16;
- 		props->ip_gids = true;
-+		props->max_msg_sz = SZ_16M;
- 		if (port == 1)
- 			props->port_cap_flags = IB_PORT_CM_SUP;
+--- a/net/vmw_vsock/vmci_transport.c
++++ b/net/vmw_vsock/vmci_transport.c
+@@ -1156,7 +1156,7 @@ vmci_transport_recv_connecting_server(st
+ 		/* Close and cleanup the connection. */
+ 		vmci_transport_send_reset(pending, pkt);
+ 		skerr = EPROTO;
+-		err = pkt->type == VMCI_TRANSPORT_PACKET_TYPE_RST ? 0 : -EINVAL;
++		err = -EINVAL;
+ 		goto destroy;
  	}
--- 
-2.53.0
-
+ 
 
 
 
