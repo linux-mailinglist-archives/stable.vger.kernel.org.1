@@ -1,59 +1,61 @@
-Return-Path: <stable+bounces-255461-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-255820-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id AIYvLNqiGGrClggAu9opvQ
-	(envelope-from <stable+bounces-255461-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:17:30 +0200
+	id MChdBPymGGpolwgAu9opvQ
+	(envelope-from <stable+bounces-255820-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:35:08 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4C1D25F8486
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:17:30 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id A9E8E5F9063
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:35:07 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id C31CD30E14D5
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 20:09:37 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 7BC843092F3D
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 20:26:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6B87133F5BE;
-	Thu, 28 May 2026 20:09:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D3EA4324B2C;
+	Thu, 28 May 2026 20:26:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sls+fXZv"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lxWCjxpW"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 424AA3164B7;
-	Thu, 28 May 2026 20:09:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9B438257854;
+	Thu, 28 May 2026 20:26:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779998977; cv=none; b=W/ehpwOZOceLPigYQCu91NeWCATl8I4t8OfeBJoqhCTl5uIMokqfhhSpUSvpMgZN3GJnSW+x0q9wwTAmKcjyIN1A+60rqRGVOcXHTTBLUklImqt669Xrz+nUWp/JchqHcbiVLcDkbZkKn1DJzHdxPv50V2jCAkFpsKDN4VZqVYE=
+	t=1779999971; cv=none; b=MmeokbiG/6BUtNrHawjR1AGRUezNAspNzhMqEIcaTEG1Bz91Y5FoadK+GbUhHiRZTOnb1KPLVoF4kVbv7T2Ni1Bsg+X2W0XVn2WQ56Mz1Hb/Aj0rBHukxnDTL3oA2eu/L36cU8xsYoRRaYr0zf9PJbrIP3fnxtk3uYeYFi0A8P4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779998977; c=relaxed/simple;
-	bh=Osl9jKsOO6FAb/8vgSED4lX6gzRdwbF/QhykGw33csk=;
+	s=arc-20240116; t=1779999971; c=relaxed/simple;
+	bh=TZ01ouuL2gG32C+783U/Ul8BJII4ucDUJpkI4dbgMqQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=CKOvaN/pKffe+9H3qJN8Ts6T/XFW3tOy/H6bdR1vjFV0QXxOD124FnT4cJp7cehM9Vx9X37cX+hCLzH7YQr8laQM4ICDVWcDmPREHKjn9q66xKIpxy2IEN8Wl4u20QgB/9BdNwTs8Pu8Z5u6Kt/nYxkmIKTsQYg6hFbCweZR2D4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sls+fXZv; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9F8AC1F000E9;
-	Thu, 28 May 2026 20:09:35 +0000 (UTC)
+	 MIME-Version; b=A63dlCGAJIpw7CoCq47MUzy64SYk1y5W8N5pWviw6uqqTqQUO7K3WaQ4pqQN1kC2nlaXaGfIAtaoWNMoP10o9N7pQWAiB9leCWYXioYcXXfo1hHVu/PsNtf/4b2mXb1aJV2cT+JLh0kupFoWalZtcnWR2SFla4TUN/j6NCR2VVc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lxWCjxpW; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CE4571F000E9;
+	Thu, 28 May 2026 20:26:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779998976;
-	bh=A/1c/uNF2mhb8NTxyJ0uOduqpjdR73fMWXXPITr4OvU=;
+	s=korg; t=1779999970;
+	bh=W0kNCSDOyZooCubU9D+khkLJp04XlyyFAyQbLGkX2mA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=sls+fXZvEiQXFdf4vsnG1nsPreIcUSKJrgqmHdlAD0Pp+Bh7UKcwgi/2ZqsBan/qB
-	 R5LYZmAj7fOg9Fj9aMDFdYC81Ji5XfhSNIS02f+urjLZq9YpGtY/5klDW1ua0DokKu
-	 7i4hvId8ZZdy99ICfXPtKQpM/1x0BOsNYtQ1NPRY=
+	b=lxWCjxpWM4MBDrBX43oLbhYvUhK9FFEPup0VnwbKkOddWesI/LD6dHjU6+F2mv7ST
+	 w3x17HKP3gHd9fYEJ/yyptdDX6dmk628+MAMiTEENs070mOHVI0YlgHU0ddmz0A3cg
+	 cJNuGNe/ikx6pQDk6ff0myntfaatiZkB6rYKPWoo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Shuicheng Lin <shuicheng.lin@intel.com>,
-	Matt Roper <matthew.d.roper@intel.com>,
+	Kang Yang <kang.yang@oss.qualcomm.com>,
+	Rameshkumar Sundaram <rameshkumar.sundaram@oss.qualcomm.com>,
+	Baochen Qiang <baochen.qiang@oss.qualcomm.com>,
+	Jeff Johnson <jeff.johnson@oss.qualcomm.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 7.0 365/461] drm/xe/tuning: Apply windower hardware filtering setting on Xe3 and Xe3p
+Subject: [PATCH 6.18 256/377] wifi: ath10k: skip WMI and beacon transmission when device is wedged
 Date: Thu, 28 May 2026 21:48:14 +0200
-Message-ID: <20260528194658.004220616@linuxfoundation.org>
+Message-ID: <20260528194645.785858682@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260528194646.819809818@linuxfoundation.org>
-References: <20260528194646.819809818@linuxfoundation.org>
+In-Reply-To: <20260528194638.371537336@linuxfoundation.org>
+References: <20260528194638.371537336@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -68,85 +70,107 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-255820-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-255461-lists,stable=lfdr.de];
-	TO_DN_SOME(0.00)[];
-	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,linuxfoundation.org:mid,linuxfoundation.org:dkim,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,intel.com:email]
-X-Rspamd-Queue-Id: 4C1D25F8486
+	TO_DN_SOME(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_SEVEN(0.00)[8];
+	MID_RHS_MATCH_FROM(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,msgid.link:url,qualcomm.com:email,linuxfoundation.org:mid,linuxfoundation.org:dkim]
+X-Rspamd-Queue-Id: A9E8E5F9063
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-7.0-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Matt Roper <matthew.d.roper@intel.com>
+From: Kang Yang <kang.yang@oss.qualcomm.com>
 
-[ Upstream commit 8ccf5f6b2295164962bbee5b0770f4366fd9bee2 ]
+[ Upstream commit 54a5b38e4396530e5b2f12b54d3844e860ab6784 ]
 
-A recent bspec tuning guide update asks us to program
-COMMON_SLICE_CHICKEN4[5] on Xe3 and Xe3p platforms.  Add this setting to
-our LRC tuning RTP table so that the setting will become part of each
-context's LRC.
+In ath10k_wmi_cmd_send(), the current code detects ATH10K_STATE_WEDGED
+and sets ret to -ESHUTDOWN, but still proceeds to transmit pending
+beacons and calls ath10k_wmi_cmd_send_nowait().
 
-Bspec: 72161, 55902
-Reviewed-by: Shuicheng Lin <shuicheng.lin@intel.com>
-Link: https://patch.msgid.link/20260224235055.3038710-2-matthew.d.roper@intel.com
-Signed-off-by: Matt Roper <matthew.d.roper@intel.com>
-Stable-dep-of: 6df5678b6a94 ("drm/xe: Define and use MCR version of COMMON_SLICE_CHICKEN4")
+This can lead to incorrect behavior, as WMI commands and beacons are
+still sent after the device has been marked as wedged, and the original
+-ESHUTDOWN return value may be overwritten by the result of the send
+path.
+
+The wedged state indicates the hardware is already unreliable, and no
+further interaction with firmware is expected or meaningful in this
+state.
+
+Fix this by skipping beacon transmission and the WMI send path entirely
+once ATH10K_STATE_WEDGED is detected, ensuring consistent return values
+and avoiding unnecessary firmware interaction.
+
+Tested-on: QCA6174 hw3.2 PCI WLAN.RM.4.4.1-00288-QCARMSWPZ-1
+Tested-on: QCA6174 hw3.2 SDIO WLAN.RMH.4.4.1-00189
+
+Fixes: c256a94d1b1b ("wifi: ath10k: shutdown driver when hardware is unreliable")
+Signed-off-by: Kang Yang <kang.yang@oss.qualcomm.com>
+Reviewed-by: Rameshkumar Sundaram <rameshkumar.sundaram@oss.qualcomm.com>
+Reviewed-by: Baochen Qiang <baochen.qiang@oss.qualcomm.com>
+Link: https://patch.msgid.link/20260428061737.37-1-kang.yang@oss.qualcomm.com
+Signed-off-by: Jeff Johnson <jeff.johnson@oss.qualcomm.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/xe/regs/xe_gt_regs.h | 1 +
- drivers/gpu/drm/xe/xe_tuning.c       | 5 +++++
- 2 files changed, 6 insertions(+)
+ drivers/net/wireless/ath/ath10k/wmi.c | 15 +++++++--------
+ 1 file changed, 7 insertions(+), 8 deletions(-)
 
-diff --git a/drivers/gpu/drm/xe/regs/xe_gt_regs.h b/drivers/gpu/drm/xe/regs/xe_gt_regs.h
-index dd06487c87edc..e9a82029f5066 100644
---- a/drivers/gpu/drm/xe/regs/xe_gt_regs.h
-+++ b/drivers/gpu/drm/xe/regs/xe_gt_regs.h
-@@ -170,6 +170,7 @@
- #define COMMON_SLICE_CHICKEN4			XE_REG(0x7300, XE_REG_OPTION_MASKED)
- #define   SBE_PUSH_CONSTANT_BEHIND_FIX_ENABLE	REG_BIT(12)
- #define   DISABLE_TDC_LOAD_BALANCING_CALC	REG_BIT(6)
-+#define   HW_FILTERING				REG_BIT(5)
+diff --git a/drivers/net/wireless/ath/ath10k/wmi.c b/drivers/net/wireless/ath/ath10k/wmi.c
+index ce22141e5efd9..cd20508399b9a 100644
+--- a/drivers/net/wireless/ath/ath10k/wmi.c
++++ b/drivers/net/wireless/ath/ath10k/wmi.c
+@@ -3,7 +3,6 @@
+  * Copyright (c) 2005-2011 Atheros Communications Inc.
+  * Copyright (c) 2011-2017 Qualcomm Atheros, Inc.
+  * Copyright (c) 2018-2019, The Linux Foundation. All rights reserved.
+- * Copyright (c) 2021-2024 Qualcomm Innovation Center, Inc. All rights reserved.
+  * Copyright (c) Qualcomm Technologies, Inc. and/or its subsidiaries.
+  */
  
- #define COMMON_SLICE_CHICKEN3				XE_REG(0x7304, XE_REG_OPTION_MASKED)
- #define XEHP_COMMON_SLICE_CHICKEN3			XE_REG_MCR(0x7304, XE_REG_OPTION_MASKED)
-diff --git a/drivers/gpu/drm/xe/xe_tuning.c b/drivers/gpu/drm/xe/xe_tuning.c
-index 5766fa7742d31..314cbe70d2f2a 100644
---- a/drivers/gpu/drm/xe/xe_tuning.c
-+++ b/drivers/gpu/drm/xe/xe_tuning.c
-@@ -110,6 +110,11 @@ static const struct xe_rtp_entry_sr engine_tunings[] = {
- };
+@@ -1947,15 +1946,15 @@ int ath10k_wmi_cmd_send(struct ath10k *ar, struct sk_buff *skb, u32 cmd_id)
+ 			ret = -ESHUTDOWN;
+ 			ath10k_dbg(ar, ATH10K_DBG_WMI,
+ 				   "drop wmi command %d, hardware is wedged\n", cmd_id);
+-		}
+-		/* try to send pending beacons first. they take priority */
+-		ath10k_wmi_tx_beacons_nowait(ar);
++		} else {
++			/* try to send pending beacons first. they take priority */
++			ath10k_wmi_tx_beacons_nowait(ar);
  
- static const struct xe_rtp_entry_sr lrc_tunings[] = {
-+	{ XE_RTP_NAME("Tuning: Windower HW Filtering"),
-+	  XE_RTP_RULES(GRAPHICS_VERSION_RANGE(3000, 3599), ENGINE_CLASS(RENDER)),
-+	  XE_RTP_ACTIONS(SET(COMMON_SLICE_CHICKEN4, HW_FILTERING))
-+	},
-+
- 	/* DG2 */
+-		ret = ath10k_wmi_cmd_send_nowait(ar, skb, cmd_id);
+-
+-		if (ret && test_bit(ATH10K_FLAG_CRASH_FLUSH, &ar->dev_flags))
+-			ret = -ESHUTDOWN;
++			ret = ath10k_wmi_cmd_send_nowait(ar, skb, cmd_id);
  
- 	{ XE_RTP_NAME("Tuning: L3 cache"),
++			if (ret && test_bit(ATH10K_FLAG_CRASH_FLUSH, &ar->dev_flags))
++				ret = -ESHUTDOWN;
++		}
+ 		(ret != -EAGAIN);
+ 	}), 3 * HZ);
+ 
 -- 
 2.53.0
 
