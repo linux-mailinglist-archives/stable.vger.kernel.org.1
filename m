@@ -1,62 +1,58 @@
-Return-Path: <stable+bounces-255396-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-255799-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id aPo5IiGiGGqblggAu9opvQ
-	(envelope-from <stable+bounces-255396-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:14:25 +0200
+	id uAbHGpumGGp+lwgAu9opvQ
+	(envelope-from <stable+bounces-255799-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:33:31 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 218B35F821D
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:14:24 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id B878F5F8F34
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:33:30 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 9B91D304AF8D
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 20:06:38 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 59FE73101767
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 20:25:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BD6EB33A702;
-	Thu, 28 May 2026 20:06:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DC52732A3FF;
+	Thu, 28 May 2026 20:25:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jln8NCJk"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="v/7t1/Ka"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C1B4D304BB3;
-	Thu, 28 May 2026 20:06:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B55662E7379;
+	Thu, 28 May 2026 20:25:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779998793; cv=none; b=tl5v+kB5PSIytGQtYTGhf6mZ2GNPE06+gM4WaUDk7VrsyyQcVuvzNsWN5B+AKzkkBX4ATkYLeBVMkV/LuSgLeTmrEN8FkZ05AukrYL15QGfuJrdqqp85LgocSdMiKMbkJulbtM0DQ8O0GZ4cMK+ML93hs/cBWauLfwIpWXACgHU=
+	t=1779999915; cv=none; b=rIGzUBWiKzLlC0OGz+S/fObgDb8RtyCP8vNlrGS0W7y2ZAe4Q5DzH1fgqHtDkxhMoQmzRxSBCnyxpM6RDREtKccse7BQOup6xLXEqzszXNSUVjXQhIjIVCFIaxCng3CGFA7QEogLhl8QFPdb5IcKtXx4Ixaw3GxtI+LMhjB7HdM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779998793; c=relaxed/simple;
-	bh=JHsbB4uvMn0aIBhO65Qx5HSGORLsXvIo3dA/qJSNiDw=;
+	s=arc-20240116; t=1779999915; c=relaxed/simple;
+	bh=PBwggOUXmDq44fDG0Ehl1cmTxJjpdj8VMCSOZWmgdQI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=lN5i5sVXMO1yGWgQFA83S9XACtNz5cs0u1P42gTkiTJhTOLOJGj67UEKwE9bpfpHQa2IsLR8B4naggnjOB08zBMEuo58DhuvfHp//5cKEBSCx8JjI9NYbEG3oc84zGyhtqYDpQOQe/RNhZwY5TL5PC0H4nDTjRRMMxRFAnSwavo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jln8NCJk; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2024B1F000E9;
-	Thu, 28 May 2026 20:06:30 +0000 (UTC)
+	 MIME-Version; b=r4arW3y78WBSjNsd5JKv9vBX1jIe+FdIn5XbiWkt7itlYH9CH+UCMAuevZK0AFqd/WocFBnGma+qNODZXxcvchfpPQdEAXHvUjnD+6NXZHC7w2x6ha8SUz2iL4+HI/O0rRp+gI1dKcWaBabuWzo6Gx5lzSqGyZnHOI0IImvxR0w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=v/7t1/Ka; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1D93F1F000E9;
+	Thu, 28 May 2026 20:25:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779998791;
-	bh=Sv4lu8p9YAYIm7vKHSCaj2vWzrmho2iUDLZRP1eNCSw=;
+	s=korg; t=1779999914;
+	bh=6jLSDX3e3Mw0tHMsRlbjn5vCjnc4FFQrmvkzRK8OkPM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=jln8NCJkSmkI+9xKcmyMx30w80OpRiYCBlcpK5cmIqYf/ghiAH71u1j0qzN0Qxk70
-	 tT6y7cEZ1qyNLDgIQir1+xCNJX4V6nZ2i0XamNxhebuZJIuM88DaynSKvUEedW1bQ6
-	 y0+LXTZfwTaGa8ocg4TDjRaUU1Ob0rwnOnuCvAzE=
+	b=v/7t1/Kak3HI4Pc09pPMTticUILsdqmzYllJlLHxChhtK6ek7j4CZkHxpM+ArSWUE
+	 0pAxq5OdTNn8k28AOcKHJsYpzWQsCJR1CE6akoruMT9jpG4hc+zMpRbfIbOjxJ9aIi
+	 0UA6F7oJjCYdV/MePTeG2Qvwl0OTu6/C7oLtD3D0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Damien Le Moal <dlemoal@kernel.org>,
-	Christoph Hellwig <hch@lst.de>,
-	Bart Van Assche <bvanassche@acm.org>,
-	Johannes Thumshirn <johannes.thumshirn@wdc.com>,
-	Jens Axboe <axboe@kernel.dk>,
+	Sudeep Holla <sudeep.holla@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 7.0 299/461] block: allow submitting all zone writes from a single context
+Subject: [PATCH 6.18 190/377] firmware: arm_ffa: Validate framework notification message layout
 Date: Thu, 28 May 2026 21:47:08 +0200
-Message-ID: <20260528194655.886866034@linuxfoundation.org>
+Message-ID: <20260528194643.914439432@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260528194646.819809818@linuxfoundation.org>
-References: <20260528194646.819809818@linuxfoundation.org>
+In-Reply-To: <20260528194638.371537336@linuxfoundation.org>
+References: <20260528194638.371537336@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,674 +65,103 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	TAGGED_FROM(0.00)[bounces-255799-lists,stable=lfdr.de];
+	URIBL_MULTI_FAIL(0.00)[msgid.link:server fail,sea.lore.kernel.org:server fail,linuxfoundation.org:server fail];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	TO_DN_SOME(0.00)[];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-255396-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TO_DN_SOME(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	RCPT_COUNT_FIVE(0.00)[5];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[9];
-	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim,wdc.com:email,acm.org:email,lst.de:email,kernel.dk:email]
-X-Rspamd-Queue-Id: 218B35F821D
+	MID_RHS_MATCH_FROM(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,msgid.link:url,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
+X-Rspamd-Queue-Id: B878F5F8F34
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-7.0-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Damien Le Moal <dlemoal@kernel.org>
+From: Sudeep Holla <sudeep.holla@kernel.org>
 
-[ Upstream commit 1365b6904fd050bf22ab9f3df375a396de5837a1 ]
+[ Upstream commit 4a1cc9e96b311d2609a6f963a5e35bd4ae730d97 ]
 
-In order to maintain sequential write patterns per zone with zoned block
-devices, zone write plugging issues only a single write BIO per zone at
-any time. This works well but has the side effect that when large
-sequential write streams are issued by the user and these streams cross
-zone boundaries, the device ends up receiving a discontiguous set of
-write commands for different zones. The same also happens when a user
-writes simultaneously at high queue depth multiple zones: the device
-does not see all sequential writes per zone and receives discontiguous
-writes to different zones. While this does not affect the performance of
-solid state zoned block devices, when using an SMR HDD, this pattern
-change from sequential writes to discontiguous writes to different zones
-significantly increases head seek which results in degraded write
-throughput.
+Framework notifications carry an indirect message in the shared RX
+buffer. Validate the reported offset and size before using them, reject
+zero-length payloads, and ensure that any non-header payload starts at
+the UUID field rather than in the middle of the message header.
 
-In order to reduce this seek overhead for rotational media devices,
-introduce a per disk zone write plugs kernel thread to issue all write
-BIOs to zones. This single zone write issuing context is enabled for
-any zoned block device that has a request queue flagged with the new
-QUEUE_ZONED_QD1_WRITES flag.
+Use the validated offset and size values for both kmemdup() and the UUID
+parsing path so malformed firmware data cannot drive an out-of-bounds
+read or an oversized allocation.
 
-The flag QUEUE_ZONED_QD1_WRITES is visible as the sysfs queue attribute
-zoned_qd1_writes for zoned devices. For regular block devices, this
-attribute is not visible. For zoned block devices, a user can override
-the default value set to force the global write maximum queue depth of
-1 for a zoned block device, or clear this attribute to fallback to the
-default behavior of zone write plugging which limits writes to QD=1 per
-sequential zone.
-
-Writing to a zoned block device flagged with QUEUE_ZONED_QD1_WRITES is
-implemented using a list of zone write plugs that have a non-empty BIO
-list. Listed zone write plugs are processed by the disk zone write plugs
-worker kthread in FIFO order, and all BIOs of a zone write plug are all
-processed before switching to the next listed zone write plug. A newly
-submitted BIO for a non-FULL zone write plug that is not yet listed
-causes the addition of the zone write plug at the end of the disk list
-of zone write plugs.
-
-Since the write BIOs queued in a zone write plug BIO list are
-necessarilly sequential, for rotational media, using the single zone
-write plugs kthread to issue all BIOs maintains a sequential write
-pattern and thus reduces seek overhead and improves write throughput.
-This processing essentially result in always writing to HDDs at QD=1,
-which is not an issue for HDDs operating with write caching enabled.
-Performance with write cache disabled is also not degraded thanks to
-the efficient write handling of modern SMR HDDs.
-
-A disk list of zone write plugs is defined using the new struct gendisk
-zone_wplugs_list, and accesses to this list is protected using the
-zone_wplugs_list_lock spinlock.  The per disk kthread
-(zone_wplugs_worker) code is implemented by the function
-disk_zone_wplugs_worker(). A reference on listed zone write plugs is
-always held until all BIOs of the zone write plug are processed by the
-worker kthread. BIO issuing at QD=1 is driven using a completion
-structure (zone_wplugs_worker_bio_done) and calls to blk_io_wait().
-
-With this change, performance when sequentially writing the zones of a
-30 TB SMR SATA HDD connected to an AHCI adapter changes as follows
-(1MiB direct I/Os, results in MB/s unit):
-
-                    +--------------------+
-		    |   Write BW (MB/s)  |
- +------------------+----------+---------+
- | Sequential write | Baseline | Patched |
- |  Queue Depth     | 6.19-rc8 |         |
- +------------------+----------+---------+
- | 1                | 244      | 245     |
- | 2                | 244      | 245     |
- | 4                | 245      | 245     |
- | 8                | 242      | 245     |
- | 16               | 222      | 246     |
- | 32               | 211      | 245     |
- | 64               | 193      | 244     |
- | 128              | 112      | 246     |
- +------------------+----------+---------+
-
-With the current code (baseline), as the sequential write stream crosses
-a zone boundary, higher queue depth creates a gap between the
-last IO to the previous zone and the first IOs to the following zones,
-causing head seeks and degrading performance. Using the disk zone
-write plugs worker thread, this pattern disappears and the maximum
-throughput of the drive is maintained, leading to over 100%
-improvements in throughput for high queue depth write.
-
-Using 16 fio jobs all writing to randomly chosen zones at QD=32 with 1
-MiB direct IOs, write throughput also increases significantly.
-
-                    +--------------------+
-		    |   Write BW (MB/s)  |
- +------------------+----------+---------+
- |   Random write   | Baseline | Patched |
- |  Number of zones | 6.19-rc7 |         |
- +------------------+----------+---------+
- | 1                | 191      | 192     |
- | 2                | 101      | 128     |
- | 4                | 115      | 123     |
- | 8                | 90       | 120     |
- | 16               | 64       | 115     |
- | 32               | 58       | 105     |
- | 64               | 56       | 101     |
- | 128              | 55       | 99      |
- +------------------+----------+---------+
-
-Tests using XFS shows that buffered write speed with 8 jobs writing
-files increases by 12% to 35% depending on the workload.
-
-                    +--------------------+
-		    |   Write BW (MB/s)  |
- +------------------+----------+---------+
- |     Workload     | Baseline | Patched |
- |                  | 6.19-rc7 |         |
- +------------------+----------+---------+
- | 256MiB file size | 212      | 238     |
- +------------------+----------+---------+
- | 4MiB .. 128 MiB  | 213      | 243     |
- | random file size |          |         |
- +------------------+----------+---------+
- | 2MiB .. 8 MiB    | 179      | 242     |
- | random file size |          |         |
- +------------------+----------+---------+
-
-Performance gains are even more significant when using an HBA that
-limits the maximum size of commands to a small value, e.g. HBAs
-controlled with the mpi3mr driver limit commands to a maximum of 1 MiB.
-In such case, the write throughput gains are over 40%.
-
-                    +--------------------+
-		    |   Write BW (MB/s)  |
- +------------------+----------+---------+
- |     Workload     | Baseline | Patched |
- |                  | 6.19-rc7 |         |
- +------------------+----------+---------+
- | 256MiB file size | 175      | 245     |
- +------------------+----------+---------+
- | 4MiB .. 128 MiB  | 174      | 244     |
- | random file size |          |         |
- +------------------+----------+---------+
- | 2MiB .. 8 MiB    | 171      | 243     |
- | random file size |          |         |
- +------------------+----------+---------+
-
-Signed-off-by: Damien Le Moal <dlemoal@kernel.org>
-Reviewed-by: Christoph Hellwig <hch@lst.de>
-Reviewed-by: Bart Van Assche <bvanassche@acm.org>
-Reviewed-by: Johannes Thumshirn <johannes.thumshirn@wdc.com>
-Signed-off-by: Jens Axboe <axboe@kernel.dk>
-Stable-dep-of: 836efd35c472 ("block: fix handling of dead zone write plugs")
+Fixes: 285a5ea0f542 ("firmware: arm_ffa: Add support for handling framework notifications")
+Link: https://patch.msgid.link/20260428-ffa_fixes-v2-8-8595ae450034@kernel.org
+Signed-off-by: Sudeep Holla <sudeep.holla@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- block/blk-mq-debugfs.c |   1 +
- block/blk-sysfs.c      |  35 +++++++-
- block/blk-zoned.c      | 190 ++++++++++++++++++++++++++++++++++++-----
- include/linux/blkdev.h |   8 ++
- 4 files changed, 212 insertions(+), 22 deletions(-)
+ drivers/firmware/arm_ffa/driver.c | 18 ++++++++++++++++--
+ 1 file changed, 16 insertions(+), 2 deletions(-)
 
-diff --git a/block/blk-mq-debugfs.c b/block/blk-mq-debugfs.c
-index 28167c9baa559..047ec887456b6 100644
---- a/block/blk-mq-debugfs.c
-+++ b/block/blk-mq-debugfs.c
-@@ -97,6 +97,7 @@ static const char *const blk_queue_flag_name[] = {
- 	QUEUE_FLAG_NAME(NO_ELV_SWITCH),
- 	QUEUE_FLAG_NAME(QOS_ENABLED),
- 	QUEUE_FLAG_NAME(BIO_ISSUE_TIME),
-+	QUEUE_FLAG_NAME(ZONED_QD1_WRITES),
- };
- #undef QUEUE_FLAG_NAME
+diff --git a/drivers/firmware/arm_ffa/driver.c b/drivers/firmware/arm_ffa/driver.c
+index c6a9bf3497cf7..f96bb84af55e3 100644
+--- a/drivers/firmware/arm_ffa/driver.c
++++ b/drivers/firmware/arm_ffa/driver.c
+@@ -1483,21 +1483,35 @@ static void handle_fwk_notif_callbacks(u32 bitmap)
+ 	int notify_id = 0, target;
+ 	struct ffa_indirect_msg_hdr *msg;
+ 	struct notifier_cb_info *cb_info = NULL;
++	size_t min_offset = offsetof(struct ffa_indirect_msg_hdr, uuid);
  
-diff --git a/block/blk-sysfs.c b/block/blk-sysfs.c
-index 55a1bbfef7d45..ca8033e6d6990 100644
---- a/block/blk-sysfs.c
-+++ b/block/blk-sysfs.c
-@@ -390,6 +390,36 @@ static ssize_t queue_nr_zones_show(struct gendisk *disk, char *page)
- 	return queue_var_show(disk_nr_zones(disk), page);
- }
+ 	/* Only one framework notification defined and supported for now */
+ 	if (!(bitmap & FRAMEWORK_NOTIFY_RX_BUFFER_FULL))
+ 		return;
  
-+static ssize_t queue_zoned_qd1_writes_show(struct gendisk *disk, char *page)
-+{
-+	return queue_var_show(!!blk_queue_zoned_qd1_writes(disk->queue),
-+			      page);
-+}
+ 	scoped_guard(mutex, &drv_info->rx_lock) {
++		u32 offset, size;
 +
-+static ssize_t queue_zoned_qd1_writes_store(struct gendisk *disk,
-+					    const char *page, size_t count)
-+{
-+	struct request_queue *q = disk->queue;
-+	unsigned long qd1_writes;
-+	unsigned int memflags;
-+	ssize_t ret;
+ 		msg = drv_info->rx_buffer;
+-		buf = kmemdup((void *)msg + msg->offset, msg->size, GFP_KERNEL);
++		offset = msg->offset;
++		size = msg->size;
 +
-+	ret = queue_var_store(&qd1_writes, page, count);
-+	if (ret < 0)
-+		return ret;
-+
-+	memflags = blk_mq_freeze_queue(q);
-+	blk_mq_quiesce_queue(q);
-+	if (qd1_writes)
-+		blk_queue_flag_set(QUEUE_FLAG_ZONED_QD1_WRITES, q);
-+	else
-+		blk_queue_flag_clear(QUEUE_FLAG_ZONED_QD1_WRITES, q);
-+	blk_mq_unquiesce_queue(q);
-+	blk_mq_unfreeze_queue(q, memflags);
-+
-+	return count;
-+}
-+
- static ssize_t queue_iostats_passthrough_show(struct gendisk *disk, char *page)
- {
- 	return queue_var_show(!!blk_queue_passthrough_stat(disk->queue), page);
-@@ -617,6 +647,7 @@ QUEUE_LIM_RO_ENTRY(queue_max_zone_append_sectors, "zone_append_max_bytes");
- QUEUE_LIM_RO_ENTRY(queue_zone_write_granularity, "zone_write_granularity");
- 
- QUEUE_LIM_RO_ENTRY(queue_zoned, "zoned");
-+QUEUE_RW_ENTRY(queue_zoned_qd1_writes, "zoned_qd1_writes");
- QUEUE_RO_ENTRY(queue_nr_zones, "nr_zones");
- QUEUE_LIM_RO_ENTRY(queue_max_open_zones, "max_open_zones");
- QUEUE_LIM_RO_ENTRY(queue_max_active_zones, "max_active_zones");
-@@ -754,6 +785,7 @@ static struct attribute *queue_attrs[] = {
- 	&queue_nomerges_entry.attr,
- 	&queue_poll_entry.attr,
- 	&queue_poll_delay_entry.attr,
-+	&queue_zoned_qd1_writes_entry.attr,
- 
- 	NULL,
- };
-@@ -786,7 +818,8 @@ static umode_t queue_attr_visible(struct kobject *kobj, struct attribute *attr,
- 	struct request_queue *q = disk->queue;
- 
- 	if ((attr == &queue_max_open_zones_entry.attr ||
--	     attr == &queue_max_active_zones_entry.attr) &&
-+	     attr == &queue_max_active_zones_entry.attr ||
-+	     attr == &queue_zoned_qd1_writes_entry.attr) &&
- 	    !blk_queue_is_zoned(q))
- 		return 0;
- 
-diff --git a/block/blk-zoned.c b/block/blk-zoned.c
-index 2fa7f7b5f4c80..9b697043871f8 100644
---- a/block/blk-zoned.c
-+++ b/block/blk-zoned.c
-@@ -16,6 +16,8 @@
- #include <linux/spinlock.h>
- #include <linux/refcount.h>
- #include <linux/mempool.h>
-+#include <linux/kthread.h>
-+#include <linux/freezer.h>
- 
- #include <trace/events/block.h>
- 
-@@ -40,6 +42,8 @@ static const char *const zone_cond_name[] = {
- /*
-  * Per-zone write plug.
-  * @node: hlist_node structure for managing the plug using a hash table.
-+ * @entry: list_head structure for listing the plug in the disk list of active
-+ *         zone write plugs.
-  * @bio_list: The list of BIOs that are currently plugged.
-  * @bio_work: Work struct to handle issuing of plugged BIOs
-  * @rcu_head: RCU head to free zone write plugs with an RCU grace period.
-@@ -62,6 +66,7 @@ static const char *const zone_cond_name[] = {
-  */
- struct blk_zone_wplug {
- 	struct hlist_node	node;
-+	struct list_head	entry;
- 	struct bio_list		bio_list;
- 	struct work_struct	bio_work;
- 	struct rcu_head		rcu_head;
-@@ -629,7 +634,19 @@ static void disk_mark_zone_wplug_dead(struct blk_zone_wplug *zwplug)
- 	}
- }
- 
--static void blk_zone_wplug_bio_work(struct work_struct *work);
-+static bool disk_zone_wplug_submit_bio(struct gendisk *disk,
-+				       struct blk_zone_wplug *zwplug);
-+
-+static void blk_zone_wplug_bio_work(struct work_struct *work)
-+{
-+	struct blk_zone_wplug *zwplug =
-+		container_of(work, struct blk_zone_wplug, bio_work);
-+
-+	disk_zone_wplug_submit_bio(zwplug->disk, zwplug);
-+
-+	/* Drop the reference we took in disk_zone_wplug_schedule_work(). */
-+	disk_put_zone_wplug(zwplug);
-+}
- 
- /*
-  * Get a reference on the write plug for the zone containing @sector.
-@@ -667,6 +684,7 @@ static struct blk_zone_wplug *disk_get_and_lock_zone_wplug(struct gendisk *disk,
- 	zwplug->wp_offset = bdev_offset_from_zone_start(disk->part0, sector);
- 	bio_list_init(&zwplug->bio_list);
- 	INIT_WORK(&zwplug->bio_work, blk_zone_wplug_bio_work);
-+	INIT_LIST_HEAD(&zwplug->entry);
- 	zwplug->disk = disk;
- 
- 	spin_lock_irqsave(&zwplug->lock, *flags);
-@@ -702,6 +720,7 @@ static inline void blk_zone_wplug_bio_io_error(struct blk_zone_wplug *zwplug,
-  */
- static void disk_zone_wplug_abort(struct blk_zone_wplug *zwplug)
- {
-+	struct gendisk *disk = zwplug->disk;
- 	struct bio *bio;
- 
- 	lockdep_assert_held(&zwplug->lock);
-@@ -715,6 +734,20 @@ static void disk_zone_wplug_abort(struct blk_zone_wplug *zwplug)
- 		blk_zone_wplug_bio_io_error(zwplug, bio);
- 
- 	zwplug->flags &= ~BLK_ZONE_WPLUG_PLUGGED;
-+
-+	/*
-+	 * If we are using the per disk zone write plugs worker thread, remove
-+	 * the zone write plug from the work list and drop the reference we
-+	 * took when the zone write plug was added to that list.
-+	 */
-+	if (blk_queue_zoned_qd1_writes(disk->queue)) {
-+		spin_lock(&disk->zone_wplugs_list_lock);
-+		if (!list_empty(&zwplug->entry)) {
-+			list_del_init(&zwplug->entry);
-+			disk_put_zone_wplug(zwplug);
-+		}
-+		spin_unlock(&disk->zone_wplugs_list_lock);
-+	}
- }
- 
- /*
-@@ -1149,8 +1182,8 @@ void blk_zone_mgmt_bio_endio(struct bio *bio)
- 	}
- }
- 
--static void disk_zone_wplug_schedule_bio_work(struct gendisk *disk,
--					      struct blk_zone_wplug *zwplug)
-+static void disk_zone_wplug_schedule_work(struct gendisk *disk,
-+					  struct blk_zone_wplug *zwplug)
- {
- 	lockdep_assert_held(&zwplug->lock);
- 
-@@ -1163,6 +1196,7 @@ static void disk_zone_wplug_schedule_bio_work(struct gendisk *disk,
- 	 * and we also drop this reference if the work is already scheduled.
- 	 */
- 	WARN_ON_ONCE(!(zwplug->flags & BLK_ZONE_WPLUG_PLUGGED));
-+	WARN_ON_ONCE(blk_queue_zoned_qd1_writes(disk->queue));
- 	refcount_inc(&zwplug->ref);
- 	if (!queue_work(disk->zone_wplugs_wq, &zwplug->bio_work))
- 		disk_put_zone_wplug(zwplug);
-@@ -1202,6 +1236,22 @@ static inline void disk_zone_wplug_add_bio(struct gendisk *disk,
- 	bio_list_add(&zwplug->bio_list, bio);
- 	trace_disk_zone_wplug_add_bio(zwplug->disk->queue, zwplug->zone_no,
- 				      bio->bi_iter.bi_sector, bio_sectors(bio));
-+
-+	/*
-+	 * If we are using the disk zone write plugs worker instead of the per
-+	 * zone write plug BIO work, add the zone write plug to the work list
-+	 * if it is not already there. Make sure to also get an extra reference
-+	 * on the zone write plug so that it does not go away until it is
-+	 * removed from the work list.
-+	 */
-+	if (blk_queue_zoned_qd1_writes(disk->queue)) {
-+		spin_lock(&disk->zone_wplugs_list_lock);
-+		if (list_empty(&zwplug->entry)) {
-+			list_add_tail(&zwplug->entry, &disk->zone_wplugs_list);
-+			refcount_inc(&zwplug->ref);
-+		}
-+		spin_unlock(&disk->zone_wplugs_list_lock);
-+	}
- }
- 
- /*
-@@ -1433,6 +1483,13 @@ static bool blk_zone_wplug_handle_write(struct bio *bio, unsigned int nr_segs)
- 		goto queue_bio;
- 	}
- 
-+	/*
-+	 * For rotational devices, we will use the gendisk zone write plugs
-+	 * work instead of the per zone write plug BIO work, so queue the BIO.
-+	 */
-+	if (blk_queue_zoned_qd1_writes(disk->queue))
-+		goto queue_bio;
-+
- 	/* If the zone is already plugged, add the BIO to the BIO plug list. */
- 	if (zwplug->flags & BLK_ZONE_WPLUG_PLUGGED)
- 		goto queue_bio;
-@@ -1455,7 +1512,10 @@ static bool blk_zone_wplug_handle_write(struct bio *bio, unsigned int nr_segs)
- 
- 	if (!(zwplug->flags & BLK_ZONE_WPLUG_PLUGGED)) {
- 		zwplug->flags |= BLK_ZONE_WPLUG_PLUGGED;
--		disk_zone_wplug_schedule_bio_work(disk, zwplug);
-+		if (blk_queue_zoned_qd1_writes(disk->queue))
-+			wake_up_process(disk->zone_wplugs_worker);
-+		else
-+			disk_zone_wplug_schedule_work(disk, zwplug);
- 	}
- 
- 	spin_unlock_irqrestore(&zwplug->lock, flags);
-@@ -1596,16 +1656,22 @@ static void disk_zone_wplug_unplug_bio(struct gendisk *disk,
- 
- 	spin_lock_irqsave(&zwplug->lock, flags);
- 
--	/* Schedule submission of the next plugged BIO if we have one. */
--	if (!bio_list_empty(&zwplug->bio_list)) {
--		disk_zone_wplug_schedule_bio_work(disk, zwplug);
--		spin_unlock_irqrestore(&zwplug->lock, flags);
--		return;
--	}
-+	/*
-+	 * For rotational devices, signal the BIO completion to the zone write
-+	 * plug work. Otherwise, schedule submission of the next plugged BIO
-+	 * if we have one.
-+	 */
-+	if (bio_list_empty(&zwplug->bio_list))
-+		zwplug->flags &= ~BLK_ZONE_WPLUG_PLUGGED;
-+
-+	if (blk_queue_zoned_qd1_writes(disk->queue))
-+		complete(&disk->zone_wplugs_worker_bio_done);
-+	else if (!bio_list_empty(&zwplug->bio_list))
-+		disk_zone_wplug_schedule_work(disk, zwplug);
- 
--	zwplug->flags &= ~BLK_ZONE_WPLUG_PLUGGED;
- 	if (!zwplug->wp_offset || disk_zone_wplug_is_full(disk, zwplug))
- 		disk_mark_zone_wplug_dead(zwplug);
-+
- 	spin_unlock_irqrestore(&zwplug->lock, flags);
- }
- 
-@@ -1695,10 +1761,9 @@ void blk_zone_write_plug_finish_request(struct request *req)
- 	disk_put_zone_wplug(zwplug);
- }
- 
--static void blk_zone_wplug_bio_work(struct work_struct *work)
-+static bool disk_zone_wplug_submit_bio(struct gendisk *disk,
-+				       struct blk_zone_wplug *zwplug)
- {
--	struct blk_zone_wplug *zwplug =
--		container_of(work, struct blk_zone_wplug, bio_work);
- 	struct block_device *bdev;
- 	unsigned long flags;
- 	struct bio *bio;
-@@ -1714,7 +1779,7 @@ static void blk_zone_wplug_bio_work(struct work_struct *work)
- 	if (!bio) {
- 		zwplug->flags &= ~BLK_ZONE_WPLUG_PLUGGED;
- 		spin_unlock_irqrestore(&zwplug->lock, flags);
--		goto put_zwplug;
-+		return false;
- 	}
- 
- 	trace_blk_zone_wplug_bio(zwplug->disk->queue, zwplug->zone_no,
-@@ -1728,14 +1793,15 @@ static void blk_zone_wplug_bio_work(struct work_struct *work)
- 		goto again;
- 	}
- 
--	bdev = bio->bi_bdev;
--
- 	/*
- 	 * blk-mq devices will reuse the extra reference on the request queue
- 	 * usage counter we took when the BIO was plugged, but the submission
- 	 * path for BIO-based devices will not do that. So drop this extra
- 	 * reference here.
- 	 */
-+	if (blk_queue_zoned_qd1_writes(disk->queue))
-+		reinit_completion(&disk->zone_wplugs_worker_bio_done);
-+	bdev = bio->bi_bdev;
- 	if (bdev_test_flag(bdev, BD_HAS_SUBMIT_BIO)) {
- 		bdev->bd_disk->fops->submit_bio(bio);
- 		blk_queue_exit(bdev->bd_disk->queue);
-@@ -1743,14 +1809,78 @@ static void blk_zone_wplug_bio_work(struct work_struct *work)
- 		blk_mq_submit_bio(bio);
- 	}
- 
--put_zwplug:
--	/* Drop the reference we took in disk_zone_wplug_schedule_bio_work(). */
--	disk_put_zone_wplug(zwplug);
-+	return true;
-+}
-+
-+static struct blk_zone_wplug *disk_get_zone_wplugs_work(struct gendisk *disk)
-+{
-+	struct blk_zone_wplug *zwplug;
-+
-+	spin_lock_irq(&disk->zone_wplugs_list_lock);
-+	zwplug = list_first_entry_or_null(&disk->zone_wplugs_list,
-+					  struct blk_zone_wplug, entry);
-+	if (zwplug)
-+		list_del_init(&zwplug->entry);
-+	spin_unlock_irq(&disk->zone_wplugs_list_lock);
-+
-+	return zwplug;
-+}
-+
-+static int disk_zone_wplugs_worker(void *data)
-+{
-+	struct gendisk *disk = data;
-+	struct blk_zone_wplug *zwplug;
-+	unsigned int noio_flag;
-+
-+	noio_flag = memalloc_noio_save();
-+	set_user_nice(current, MIN_NICE);
-+	set_freezable();
-+
-+	for (;;) {
-+		set_current_state(TASK_INTERRUPTIBLE | TASK_FREEZABLE);
-+
-+		zwplug = disk_get_zone_wplugs_work(disk);
-+		if (zwplug) {
-+			/*
-+			 * Process all BIOs of this zone write plug and then
-+			 * drop the reference we took when adding the zone write
-+			 * plug to the active list.
-+			 */
-+			set_current_state(TASK_RUNNING);
-+			while (disk_zone_wplug_submit_bio(disk, zwplug))
-+				blk_wait_io(&disk->zone_wplugs_worker_bio_done);
-+			disk_put_zone_wplug(zwplug);
-+			continue;
++		if (!size || (offset != min_offset && offset < sizeof(*msg)) ||
++		    offset > drv_info->rxtx_bufsz ||
++		    size > drv_info->rxtx_bufsz - offset) {
++			pr_err("invalid framework notification message\n");
++			ffa_rx_release();
++			return;
 +		}
 +
-+		/*
-+		 * Only sleep if nothing sets the state to running. Else check
-+		 * for zone write plugs work again as a newly submitted BIO
-+		 * might have added a zone write plug to the work list.
-+		 */
-+		if (get_current_state() == TASK_RUNNING) {
-+			try_to_freeze();
-+		} else {
-+			if (kthread_should_stop()) {
-+				set_current_state(TASK_RUNNING);
-+				break;
-+			}
-+			schedule();
-+		}
-+	}
-+
-+	WARN_ON_ONCE(!list_empty(&disk->zone_wplugs_list));
-+	memalloc_noio_restore(noio_flag);
-+
-+	return 0;
- }
++		buf = kmemdup((void *)msg + offset, size, GFP_KERNEL);
+ 		if (!buf) {
+ 			ffa_rx_release();
+ 			return;
+ 		}
  
- void disk_init_zone_resources(struct gendisk *disk)
- {
- 	spin_lock_init(&disk->zone_wplugs_hash_lock);
-+	spin_lock_init(&disk->zone_wplugs_list_lock);
-+	INIT_LIST_HEAD(&disk->zone_wplugs_list);
-+	init_completion(&disk->zone_wplugs_worker_bio_done);
- }
- 
- /*
-@@ -1766,6 +1896,7 @@ static int disk_alloc_zone_resources(struct gendisk *disk,
- 				     unsigned int pool_size)
- {
- 	unsigned int i;
-+	int ret = -ENOMEM;
- 
- 	atomic_set(&disk->nr_zone_wplugs, 0);
- 	disk->zone_wplugs_hash_bits =
-@@ -1791,8 +1922,21 @@ static int disk_alloc_zone_resources(struct gendisk *disk,
- 	if (!disk->zone_wplugs_wq)
- 		goto destroy_pool;
- 
-+	disk->zone_wplugs_worker =
-+		kthread_create(disk_zone_wplugs_worker, disk,
-+			       "%s_zwplugs_worker", disk->disk_name);
-+	if (IS_ERR(disk->zone_wplugs_worker)) {
-+		ret = PTR_ERR(disk->zone_wplugs_worker);
-+		disk->zone_wplugs_worker = NULL;
-+		goto destroy_wq;
-+	}
-+	wake_up_process(disk->zone_wplugs_worker);
-+
- 	return 0;
- 
-+destroy_wq:
-+	destroy_workqueue(disk->zone_wplugs_wq);
-+	disk->zone_wplugs_wq = NULL;
- destroy_pool:
- 	mempool_destroy(disk->zone_wplugs_pool);
- 	disk->zone_wplugs_pool = NULL;
-@@ -1800,7 +1944,7 @@ static int disk_alloc_zone_resources(struct gendisk *disk,
- 	kfree(disk->zone_wplugs_hash);
- 	disk->zone_wplugs_hash = NULL;
- 	disk->zone_wplugs_hash_bits = 0;
--	return -ENOMEM;
-+	return ret;
- }
- 
- static void disk_destroy_zone_wplugs_hash_table(struct gendisk *disk)
-@@ -1850,6 +1994,10 @@ static void disk_set_zones_cond_array(struct gendisk *disk, u8 *zones_cond)
- 
- void disk_free_zone_resources(struct gendisk *disk)
- {
-+	if (disk->zone_wplugs_worker)
-+		kthread_stop(disk->zone_wplugs_worker);
-+	WARN_ON_ONCE(!list_empty(&disk->zone_wplugs_list));
-+
- 	if (disk->zone_wplugs_wq) {
- 		destroy_workqueue(disk->zone_wplugs_wq);
- 		disk->zone_wplugs_wq = NULL;
-diff --git a/include/linux/blkdev.h b/include/linux/blkdev.h
-index 6890900237707..ac899cd0cd708 100644
---- a/include/linux/blkdev.h
-+++ b/include/linux/blkdev.h
-@@ -13,6 +13,7 @@
- #include <linux/minmax.h>
- #include <linux/timer.h>
- #include <linux/workqueue.h>
-+#include <linux/completion.h>
- #include <linux/wait.h>
- #include <linux/bio.h>
- #include <linux/gfp.h>
-@@ -204,6 +205,10 @@ struct gendisk {
- 	struct mempool		*zone_wplugs_pool;
- 	struct hlist_head	*zone_wplugs_hash;
- 	struct workqueue_struct *zone_wplugs_wq;
-+	spinlock_t		zone_wplugs_list_lock;
-+	struct list_head	zone_wplugs_list;
-+	struct task_struct	*zone_wplugs_worker;
-+	struct completion	zone_wplugs_worker_bio_done;
- #endif /* CONFIG_BLK_DEV_ZONED */
- 
- #if IS_ENABLED(CONFIG_CDROM)
-@@ -668,6 +673,7 @@ enum {
- 	QUEUE_FLAG_NO_ELV_SWITCH,	/* can't switch elevator any more */
- 	QUEUE_FLAG_QOS_ENABLED,		/* qos is enabled */
- 	QUEUE_FLAG_BIO_ISSUE_TIME,	/* record bio->issue_time_ns */
-+	QUEUE_FLAG_ZONED_QD1_WRITES,	/* Limit zoned devices writes to QD=1 */
- 	QUEUE_FLAG_MAX
- };
- 
-@@ -707,6 +713,8 @@ void blk_queue_flag_clear(unsigned int flag, struct request_queue *q);
- 	test_bit(QUEUE_FLAG_DISABLE_WBT_DEF, &(q)->queue_flags)
- #define blk_queue_no_elv_switch(q)	\
- 	test_bit(QUEUE_FLAG_NO_ELV_SWITCH, &(q)->queue_flags)
-+#define blk_queue_zoned_qd1_writes(q)	\
-+	test_bit(QUEUE_FLAG_ZONED_QD1_WRITES, &(q)->queue_flags)
- 
- extern void blk_set_pm_only(struct request_queue *q);
- extern void blk_clear_pm_only(struct request_queue *q);
+ 		target = SENDER_ID(msg->send_recv_id);
+-		if (msg->offset >= sizeof(*msg))
++		if (offset >= sizeof(*msg))
+ 			uuid_copy(&uuid, &msg->uuid);
+ 		else
+ 			uuid_copy(&uuid, &uuid_null);
 -- 
 2.53.0
 
