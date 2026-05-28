@@ -1,59 +1,62 @@
-Return-Path: <stable+bounces-255440-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-255834-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id wDjZCnaiGGqblggAu9opvQ
-	(envelope-from <stable+bounces-255440-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:15:50 +0200
+	id 8OmOAKamGGp+lwgAu9opvQ
+	(envelope-from <stable+bounces-255834-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:33:42 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9D9D55F8329
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:15:49 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7C8CA5F8F68
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:33:41 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 8429830A0B35
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 20:08:40 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 933FA303C7CA
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 20:26:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E61F6335566;
-	Thu, 28 May 2026 20:08:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1AEDD31F981;
+	Thu, 28 May 2026 20:26:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SgjjDZDs"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vD9glD74"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A0B342F260C;
-	Thu, 28 May 2026 20:08:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8352E2E7379;
+	Thu, 28 May 2026 20:26:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779998917; cv=none; b=DGo9w51KxIhRPOHPYb8ma8g2v1mcxOn8NnO8UMTXNq7s92HHj9bxjaDKH60RFUi2C08wBkNG6MKZicDLwZrGWGBiqS8VQPZ/5Yxsn49L4YUhZjw3xWVFMX9CyEN0Lmowc+UBHiLsHuBgtUb15h6lKk/Fhl02eOKvX14bh7pdr5Q=
+	t=1780000010; cv=none; b=OlaJNwD1JtKWqxzeg05LrD+I10sS1EERLl0CCuF5I54T9gnhyDgUgtwvylwQamsXYLVUUcFqZ0XNves9v7Lwoka+WJUgBfnw1BZIahY6U+fwa6EFNkf1n1Elzqlar5mJcrg120bFpiOv9KmPPfCSoZt3oY+V+LNxp3UTCmUq6cU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779998917; c=relaxed/simple;
-	bh=Y7trVZk8GmUGRByGXPAZVLyx/CXeDR9BcI1vmfJAKnI=;
+	s=arc-20240116; t=1780000010; c=relaxed/simple;
+	bh=tfYX1yW5oercVP6LN5Ha7uA570ftc7w4ogpZuS2Fv5Q=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=J5BWVwAgBxqyMWwFLQNPB4kblYS0NLzQjPfmAKKy8ediuu4QlLTMmhe2VPshE6sCdhUK7p9Q0WW/tMkRVNjjU5Iu+/ah9DqAsGUQMRpqIq74yM68iXNHVh/zEImc1hDOPyaKN0BpBCeGg3QXrWcDwF7VAhabjCYcYMJ6djE1FQU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SgjjDZDs; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 06CFC1F000E9;
-	Thu, 28 May 2026 20:08:35 +0000 (UTC)
+	 MIME-Version; b=fweMC5prPye1hWh2LtccmJNwSADLZ/C/dXP7VlOSDkZoPqVOp//p7ZQpGE8NCwkpgrTBzP2aLR47sw4UQuQBaE5j0hC6UHPqOPN8n2o5o9etJq/kF/GGV6R5lC0dpw8rizxEidYpxJDTGTF+8iFcpq0wYefTEcnbjpbUUyyodeQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vD9glD74; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E66601F000E9;
+	Thu, 28 May 2026 20:26:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779998916;
-	bh=4QD93byJk8mCQShRfpSRFsEmcl/lBZv0UNBKIhOasno=;
+	s=korg; t=1780000009;
+	bh=uYEh1lox7TEr56Gs4CIMtq1/gvUZhRt8PJ5o6pS7C84=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=SgjjDZDsK1maIQ4B98/F7K7F74a7dQit7uiVMw45b82fwtxh5tsOcTCCZN2gEBzY9
-	 1FTcuP3P8Q7RIIkHbuYyTSmpdbGODTbnbYJeK33ntRFpTW38Pwy7LH8O2jCcSP6O17
-	 FtKuhCeCbqDOaaxA0RLoqg2I7Yci3bG/SeQ8cKrc=
+	b=vD9glD74REN1Zl3YTRvVd9uwcYrGqINmn7hIjDev95GlqF5dzLjH8x7LjTYzkwJgV
+	 PIHPhrYOkfmeUqFf8knRzY3qM2H5q6+PDgnOANqgDb8ge+2FvzryWXPq59Y214sHSA
+	 +h4DWnqrJrOjqps4BI/O0hjMnXybSPWVSg4u1kgU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Matt DeVillier <matt.devillier@gmail.com>,
-	Takashi Iwai <tiwai@suse.de>,
+	David Howells <dhowells@redhat.com>,
+	Paulo Alcantara <pc@manguebit.org>,
+	netfs@lists.linux.dev,
+	linux-fsdevel@vger.kernel.org,
+	Christian Brauner <brauner@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 7.0 342/461] ALSA: hda/ca0132: Disable auto-detect on manual output select
+Subject: [PATCH 6.18 233/377] netfs: Fix cancellation of a DIO and single read subrequests
 Date: Thu, 28 May 2026 21:47:51 +0200
-Message-ID: <20260528194657.267124626@linuxfoundation.org>
+Message-ID: <20260528194645.139039189@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260528194646.819809818@linuxfoundation.org>
-References: <20260528194646.819809818@linuxfoundation.org>
+In-Reply-To: <20260528194638.371537336@linuxfoundation.org>
+References: <20260528194638.371537336@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,153 +67,376 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_MISSING_CHARSET(0.50)[];
 	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	TO_DN_SOME(0.00)[];
-	TAGGED_FROM(0.00)[bounces-255440-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,suse.de,kernel.org];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	URIBL_MULTI_FAIL(0.00)[tor.lore.kernel.org:server fail,linux.dev:server fail,sashiko.dev:server fail,manguebit.org:server fail,linuxfoundation.org:server fail,msgid.link:server fail];
+	TAGGED_FROM(0.00)[bounces-255834-lists,stable=lfdr.de];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	FROM_HAS_DN(0.00)[];
+	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	NEURAL_HAM(-0.00)[-0.999];
-	TAGGED_RCPT(0.00)[stable];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[6];
+	NEURAL_HAM(-0.00)[-1.000];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[9];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim,suse.de:email]
-X-Rspamd-Queue-Id: 9D9D55F8329
+	TAGGED_RCPT(0.00)[stable];
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sashiko.dev:url,linux.dev:email,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim,msgid.link:url,manguebit.org:email]
+X-Rspamd-Queue-Id: 7C8CA5F8F68
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-7.0-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Matt DeVillier <matt.devillier@gmail.com>
+From: David Howells <dhowells@redhat.com>
 
-[ Upstream commit 6fd9f6e870ea285f05102e8e00e6a7f4495a9a02 ]
+[ Upstream commit 6f0f7ac1915abc0d202f0eb4b003a6548a5ba60d ]
 
-Commit 778031e1658d ("ALSA: hda/ca0132: Set HP/Speaker
-auto-detect default from headphone pin verb") enables HP/Speaker
-auto-detect by default when the headphone pin supports presence detect.
+When the preparation of a new subrequest for a read fails, if the
+subrequest has already been added to the stream->subrequests list, it can't
+simply be put and abandoned as the collector may see it.  Also, if it
+hasn't been queued yet, it has two outstanding refs that both need to be
+put.  Both DIO read and single-read dispatch fail at this; further, both
+differ in the order they do things to the way buffered read works.
 
-With auto-detect enabled, ca0132_select_out() and ca0132_alt_select_out()
-choose the output from jack presence instead of the manual HP/Speaker
-selection. This means selecting speaker output while headphones are
-plugged in updates the control state, but audio still routes to the
-headphones.
+Fix cancellation of both DIO-read and single-read subrequests that failed
+preparation by the following steps:
 
-Treat an explicit manual output selection as a request to leave
-auto-detect mode. Clear the HP/Speaker auto-detect switch before applying
-the manual selection, and notify userspace so the auto-detect control
-state is updated in mixers. Do this for both the normal HP/Speaker
-Playback Switch and the alternate Output Select control used by desktop
-cards.
+ (1) Harmonise all three reads (buffered, dio, single) to queue the subreq
+     before prepping it.
 
-This keeps auto-detect enabled by default for devices with jack presence
-detection, while preserving the expected behavior that a manual output
-choice takes effect immediately.
+ (2) Make all three call netfs_queue_read() to do the queuing.
 
-Fixes: 778031e1658d ("ALSA: hda/ca0132: Set HP/Speaker auto-detect default from headphone pin verb")
-Signed-off-by: Matt DeVillier <matt.devillier@gmail.com>
-Link: https://lore.kernel.org/CAFTm+6AfeXKf=b2frG4xC5yC4jjM9TkD6c8+dOWWFw6BDjDESw@mail.gmail.com
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
+ (3) Set NETFS_RREQ_ALL_QUEUED independently of the queuing as we don't
+     know the length of the subreq at this point.
+
+ (4) In all cases, set the error and NETFS_SREQ_FAILED flag on the subreq
+     and then call netfs_read_subreq_terminated() to deal with it.  This
+     will pass responsibility off to the collector for dealing with it.
+
+Fixes: e2d46f2ec332 ("netfs: Change the read result collector to only use one work item")
+Closes: https://sashiko.dev/#/patchset/20260425125426.3855807-1-dhowells%40redhat.com
+Signed-off-by: David Howells <dhowells@redhat.com>
+Link: https://patch.msgid.link/20260512123404.719402-2-dhowells@redhat.com
+cc: Paulo Alcantara <pc@manguebit.org>
+cc: netfs@lists.linux.dev
+cc: linux-fsdevel@vger.kernel.org
+Signed-off-by: Christian Brauner <brauner@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/hda/codecs/ca0132.c | 44 +++++++++++++++++++++++++++------------
- 1 file changed, 31 insertions(+), 13 deletions(-)
+ fs/netfs/buffered_read.c | 34 +++++++++++++-------------------
+ fs/netfs/direct_read.c   | 42 +++++++++++++---------------------------
+ fs/netfs/internal.h      |  3 +++
+ fs/netfs/read_collect.c  | 11 +++++++++++
+ fs/netfs/read_single.c   | 23 ++++++++++------------
+ 5 files changed, 50 insertions(+), 63 deletions(-)
 
-diff --git a/sound/hda/codecs/ca0132.c b/sound/hda/codecs/ca0132.c
-index a0677d7da8e2d..b4e10957ac6db 100644
---- a/sound/hda/codecs/ca0132.c
-+++ b/sound/hda/codecs/ca0132.c
-@@ -5508,6 +5508,30 @@ static int zxr_headphone_gain_set(struct hda_codec *codec, long val)
- 	return 0;
+diff --git a/fs/netfs/buffered_read.c b/fs/netfs/buffered_read.c
+index 88361e8c70961..10b13924ed543 100644
+--- a/fs/netfs/buffered_read.c
++++ b/fs/netfs/buffered_read.c
+@@ -156,9 +156,8 @@ static void netfs_read_cache_to_pagecache(struct netfs_io_request *rreq,
+ 			netfs_cache_read_terminated, subreq);
  }
  
-+/*
-+ * Manual output selection (HP/Speaker Playback Switch or alt Output Select)
-+ * is meaningful only when HP/Speaker auto-detect is disabled, since the
-+ * select_out path always prefers jack presence when auto-detect is on. When
-+ * the user explicitly chooses an output, turn auto-detect off so the manual
-+ * choice actually takes effect, and notify userspace so the auto-detect
-+ * control reflects the new state.
-+ */
-+static void ca0132_disable_hp_auto_detect(struct hda_codec *codec)
-+{
-+	struct ca0132_spec *spec = codec->spec;
-+	struct snd_kcontrol *kctl;
-+
-+	if (!spec->vnode_lswitch[VNID_HP_ASEL - VNODE_START_NID])
-+		return;
-+
-+	spec->vnode_lswitch[VNID_HP_ASEL - VNODE_START_NID] = 0;
-+	kctl = snd_hda_find_mixer_ctl(codec,
-+				      "HP/Speaker Auto Detect Playback Switch");
-+	if (kctl)
-+		snd_ctl_notify(codec->card, SNDRV_CTL_EVENT_MASK_VALUE,
-+			       &kctl->id);
-+}
-+
- static int ca0132_vnode_switch_set(struct snd_kcontrol *kcontrol,
- 				struct snd_ctl_elem_value *ucontrol)
+-static void netfs_queue_read(struct netfs_io_request *rreq,
+-			     struct netfs_io_subrequest *subreq,
+-			     bool last_subreq)
++void netfs_queue_read(struct netfs_io_request *rreq,
++		      struct netfs_io_subrequest *subreq)
  {
-@@ -5520,14 +5544,11 @@ static int ca0132_vnode_switch_set(struct snd_kcontrol *kcontrol,
- 	int auto_jack;
+ 	struct netfs_io_stream *stream = &rreq->io_streams[0];
  
- 	if (nid == VNID_HP_SEL) {
--		auto_jack =
--			spec->vnode_lswitch[VNID_HP_ASEL - VNODE_START_NID];
--		if (!auto_jack) {
--			if (ca0132_use_alt_functions(spec))
--				ca0132_alt_select_out(codec);
--			else
--				ca0132_select_out(codec);
--		}
-+		ca0132_disable_hp_auto_detect(codec);
-+		if (ca0132_use_alt_functions(spec))
-+			ca0132_alt_select_out(codec);
-+		else
-+			ca0132_select_out(codec);
- 		return 1;
+@@ -178,11 +177,6 @@ static void netfs_queue_read(struct netfs_io_request *rreq,
+ 		}
  	}
  
-@@ -5988,7 +6009,6 @@ static int ca0132_alt_output_select_put(struct snd_kcontrol *kcontrol,
- 	struct ca0132_spec *spec = codec->spec;
- 	int sel = ucontrol->value.enumerated.item[0];
- 	unsigned int items = NUM_OF_OUTPUTS;
--	unsigned int auto_jack;
- 
- 	if (sel >= items)
- 		return 0;
-@@ -5998,10 +6018,8 @@ static int ca0132_alt_output_select_put(struct snd_kcontrol *kcontrol,
- 
- 	spec->out_enum_val = sel;
- 
--	auto_jack = spec->vnode_lswitch[VNID_HP_ASEL - VNODE_START_NID];
+-	if (last_subreq) {
+-		smp_wmb(); /* Write lists before ALL_QUEUED. */
+-		set_bit(NETFS_RREQ_ALL_QUEUED, &rreq->flags);
+-	}
 -
--	if (!auto_jack)
--		ca0132_alt_select_out(codec);
-+	ca0132_disable_hp_auto_detect(codec);
-+	ca0132_alt_select_out(codec);
- 
- 	return 1;
+ 	spin_unlock(&rreq->lock);
  }
+ 
+@@ -233,6 +227,8 @@ static void netfs_read_to_pagecache(struct netfs_io_request *rreq,
+ 		subreq->start	= start;
+ 		subreq->len	= size;
+ 
++		netfs_queue_read(rreq, subreq);
++
+ 		source = netfs_cache_prepare_read(rreq, subreq, rreq->i_size);
+ 		subreq->source = source;
+ 		if (source == NETFS_DOWNLOAD_FROM_SERVER) {
+@@ -253,6 +249,7 @@ static void netfs_read_to_pagecache(struct netfs_io_request *rreq,
+ 				       rreq->debug_id, subreq->debug_index,
+ 				       subreq->len, size,
+ 				       subreq->start, ictx->zero_point, rreq->i_size);
++				netfs_cancel_read(subreq, ret);
+ 				break;
+ 			}
+ 			subreq->len = len;
+@@ -261,12 +258,7 @@ static void netfs_read_to_pagecache(struct netfs_io_request *rreq,
+ 			if (rreq->netfs_ops->prepare_read) {
+ 				ret = rreq->netfs_ops->prepare_read(subreq);
+ 				if (ret < 0) {
+-					subreq->error = ret;
+-					/* Not queued - release both refs. */
+-					netfs_put_subrequest(subreq,
+-							     netfs_sreq_trace_put_cancel);
+-					netfs_put_subrequest(subreq,
+-							     netfs_sreq_trace_put_cancel);
++					netfs_cancel_read(subreq, ret);
+ 					break;
+ 				}
+ 				trace_netfs_sreq(subreq, netfs_sreq_trace_prepare);
+@@ -289,23 +281,23 @@ static void netfs_read_to_pagecache(struct netfs_io_request *rreq,
+ 
+ 		pr_err("Unexpected read source %u\n", source);
+ 		WARN_ON_ONCE(1);
++		netfs_cancel_read(subreq, ret);
+ 		break;
+ 
+ 	issue:
+ 		slice = netfs_prepare_read_iterator(subreq, ractl);
+ 		if (slice < 0) {
+ 			ret = slice;
+-			subreq->error = ret;
+-			trace_netfs_sreq(subreq, netfs_sreq_trace_cancel);
+-			/* Not queued - release both refs. */
+-			netfs_put_subrequest(subreq, netfs_sreq_trace_put_cancel);
+-			netfs_put_subrequest(subreq, netfs_sreq_trace_put_cancel);
++			netfs_cancel_read(subreq, ret);
+ 			break;
+ 		}
+-		size -= slice;
+ 		start += slice;
++		size -= slice;
++		if (size <= 0) {
++			smp_wmb(); /* Write lists before ALL_QUEUED. */
++			set_bit(NETFS_RREQ_ALL_QUEUED, &rreq->flags);
++		}
+ 
+-		netfs_queue_read(rreq, subreq, size <= 0);
+ 		netfs_issue_read(rreq, subreq);
+ 		cond_resched();
+ 	} while (size > 0);
+diff --git a/fs/netfs/direct_read.c b/fs/netfs/direct_read.c
+index f72e6da88cca7..6a8fb0d55e040 100644
+--- a/fs/netfs/direct_read.c
++++ b/fs/netfs/direct_read.c
+@@ -45,12 +45,11 @@ static void netfs_prepare_dio_read_iterator(struct netfs_io_subrequest *subreq)
+  * Perform a read to a buffer from the server, slicing up the region to be read
+  * according to the network rsize.
+  */
+-static int netfs_dispatch_unbuffered_reads(struct netfs_io_request *rreq)
++static void netfs_dispatch_unbuffered_reads(struct netfs_io_request *rreq)
+ {
+-	struct netfs_io_stream *stream = &rreq->io_streams[0];
+ 	unsigned long long start = rreq->start;
+ 	ssize_t size = rreq->len;
+-	int ret = 0;
++	int ret;
+ 
+ 	do {
+ 		struct netfs_io_subrequest *subreq;
+@@ -58,7 +57,10 @@ static int netfs_dispatch_unbuffered_reads(struct netfs_io_request *rreq)
+ 
+ 		subreq = netfs_alloc_subrequest(rreq);
+ 		if (!subreq) {
+-			ret = -ENOMEM;
++			/* Stash the error in the request if there's not
++			 * already an error set.
++			 */
++			cmpxchg(&rreq->error, 0, -ENOMEM);
+ 			break;
+ 		}
+ 
+@@ -66,25 +68,13 @@ static int netfs_dispatch_unbuffered_reads(struct netfs_io_request *rreq)
+ 		subreq->start	= start;
+ 		subreq->len	= size;
+ 
+-		__set_bit(NETFS_SREQ_IN_PROGRESS, &subreq->flags);
+-
+-		spin_lock(&rreq->lock);
+-		list_add_tail(&subreq->rreq_link, &stream->subrequests);
+-		if (list_is_first(&subreq->rreq_link, &stream->subrequests)) {
+-			if (!stream->active) {
+-				stream->collected_to = subreq->start;
+-				/* Store list pointers before active flag */
+-				smp_store_release(&stream->active, true);
+-			}
+-		}
+-		trace_netfs_sreq(subreq, netfs_sreq_trace_added);
+-		spin_unlock(&rreq->lock);
++		netfs_queue_read(rreq, subreq);
+ 
+ 		netfs_stat(&netfs_n_rh_download);
+ 		if (rreq->netfs_ops->prepare_read) {
+ 			ret = rreq->netfs_ops->prepare_read(subreq);
+ 			if (ret < 0) {
+-				netfs_put_subrequest(subreq, netfs_sreq_trace_put_cancel);
++				netfs_cancel_read(subreq, ret);
+ 				break;
+ 			}
+ 		}
+@@ -113,8 +103,6 @@ static int netfs_dispatch_unbuffered_reads(struct netfs_io_request *rreq)
+ 		set_bit(NETFS_RREQ_ALL_QUEUED, &rreq->flags);
+ 		netfs_wake_collector(rreq);
+ 	}
+-
+-	return ret;
+ }
+ 
+ /*
+@@ -137,21 +125,17 @@ static ssize_t netfs_unbuffered_read(struct netfs_io_request *rreq, bool sync)
+ 	// TODO: Use bounce buffer if requested
+ 
+ 	inode_dio_begin(rreq->inode);
++	netfs_dispatch_unbuffered_reads(rreq);
+ 
+-	ret = netfs_dispatch_unbuffered_reads(rreq);
+-
+-	if (!rreq->submitted) {
+-		netfs_put_request(rreq, netfs_rreq_trace_put_no_submit);
+-		inode_dio_end(rreq->inode);
+-		ret = 0;
+-		goto out;
+-	}
++	/* The collector will get run, even if we don't manage to submit any
++	 * subreqs, so we shouldn't call inode_dio_end() here.
++	 */
+ 
+ 	if (sync)
+ 		ret = netfs_wait_for_read(rreq);
+ 	else
+ 		ret = -EIOCBQUEUED;
+-out:
++
+ 	_leave(" = %zd", ret);
+ 	return ret;
+ }
+diff --git a/fs/netfs/internal.h b/fs/netfs/internal.h
+index d436e20d34185..645996ecfc803 100644
+--- a/fs/netfs/internal.h
++++ b/fs/netfs/internal.h
+@@ -23,6 +23,8 @@
+ /*
+  * buffered_read.c
+  */
++void netfs_queue_read(struct netfs_io_request *rreq,
++		      struct netfs_io_subrequest *subreq);
+ void netfs_cache_read_terminated(void *priv, ssize_t transferred_or_error);
+ int netfs_prefetch_for_write(struct file *file, struct folio *folio,
+ 			     size_t offset, size_t len);
+@@ -108,6 +110,7 @@ static inline void netfs_see_subrequest(struct netfs_io_subrequest *subreq,
+  */
+ bool netfs_read_collection(struct netfs_io_request *rreq);
+ void netfs_read_collection_worker(struct work_struct *work);
++void netfs_cancel_read(struct netfs_io_subrequest *subreq, int error);
+ void netfs_cache_read_terminated(void *priv, ssize_t transferred_or_error);
+ 
+ /*
+diff --git a/fs/netfs/read_collect.c b/fs/netfs/read_collect.c
+index e5f6665b3341e..d2d902f466271 100644
+--- a/fs/netfs/read_collect.c
++++ b/fs/netfs/read_collect.c
+@@ -575,6 +575,17 @@ void netfs_read_subreq_terminated(struct netfs_io_subrequest *subreq)
+ }
+ EXPORT_SYMBOL(netfs_read_subreq_terminated);
+ 
++/*
++ * Cancel a read subrequest due to preparation failure.
++ */
++void netfs_cancel_read(struct netfs_io_subrequest *subreq, int error)
++{
++	trace_netfs_sreq(subreq, netfs_sreq_trace_cancel);
++	subreq->error = error;
++	__set_bit(NETFS_SREQ_FAILED, &subreq->flags);
++	netfs_read_subreq_terminated(subreq);
++}
++
+ /*
+  * Handle termination of a read from the cache.
+  */
+diff --git a/fs/netfs/read_single.c b/fs/netfs/read_single.c
+index 9d48ced80d1fa..cb422de66d0c5 100644
+--- a/fs/netfs/read_single.c
++++ b/fs/netfs/read_single.c
+@@ -89,7 +89,6 @@ static void netfs_single_read_cache(struct netfs_io_request *rreq,
+  */
+ static int netfs_single_dispatch_read(struct netfs_io_request *rreq)
+ {
+-	struct netfs_io_stream *stream = &rreq->io_streams[0];
+ 	struct netfs_io_subrequest *subreq;
+ 	int ret = 0;
+ 
+@@ -102,14 +101,7 @@ static int netfs_single_dispatch_read(struct netfs_io_request *rreq)
+ 	subreq->len	= rreq->len;
+ 	subreq->io_iter	= rreq->buffer.iter;
+ 
+-	__set_bit(NETFS_SREQ_IN_PROGRESS, &subreq->flags);
+-
+-	spin_lock(&rreq->lock);
+-	list_add_tail(&subreq->rreq_link, &stream->subrequests);
+-	trace_netfs_sreq(subreq, netfs_sreq_trace_added);
+-	/* Store list pointers before active flag */
+-	smp_store_release(&stream->active, true);
+-	spin_unlock(&rreq->lock);
++	netfs_queue_read(rreq, subreq);
+ 
+ 	netfs_single_cache_prepare_read(rreq, subreq);
+ 	switch (subreq->source) {
+@@ -121,10 +113,14 @@ static int netfs_single_dispatch_read(struct netfs_io_request *rreq)
+ 				goto cancel;
+ 		}
+ 
++		smp_wmb(); /* Write lists before ALL_QUEUED. */
++		set_bit(NETFS_RREQ_ALL_QUEUED, &rreq->flags);
+ 		rreq->netfs_ops->issue_read(subreq);
+ 		rreq->submitted += subreq->len;
+ 		break;
+ 	case NETFS_READ_FROM_CACHE:
++		smp_wmb(); /* Write lists before ALL_QUEUED. */
++		set_bit(NETFS_RREQ_ALL_QUEUED, &rreq->flags);
+ 		trace_netfs_sreq(subreq, netfs_sreq_trace_submit);
+ 		netfs_single_read_cache(rreq, subreq);
+ 		rreq->submitted += subreq->len;
+@@ -134,14 +130,15 @@ static int netfs_single_dispatch_read(struct netfs_io_request *rreq)
+ 		pr_warn("Unexpected single-read source %u\n", subreq->source);
+ 		WARN_ON_ONCE(true);
+ 		ret = -EIO;
+-		break;
++		goto cancel;
+ 	}
+ 
+-	smp_wmb(); /* Write lists before ALL_QUEUED. */
+-	set_bit(NETFS_RREQ_ALL_QUEUED, &rreq->flags);
+ 	return ret;
+ cancel:
+-	netfs_put_subrequest(subreq, netfs_sreq_trace_put_cancel);
++	netfs_cancel_read(subreq, ret);
++	smp_wmb(); /* Write lists before ALL_QUEUED. */
++	set_bit(NETFS_RREQ_ALL_QUEUED, &rreq->flags);
++	netfs_wake_collector(rreq);
+ 	return ret;
+ }
+ 
 -- 
 2.53.0
 
