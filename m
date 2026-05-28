@@ -1,59 +1,62 @@
-Return-Path: <stable+bounces-255827-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-256076-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id uBU/EXCoGGpolwgAu9opvQ
-	(envelope-from <stable+bounces-255827-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:41:20 +0200
+	id aAw8NlmpGGpolwgAu9opvQ
+	(envelope-from <stable+bounces-256076-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:45:13 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id DB3E35F9523
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:41:19 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4950B5F9751
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:45:13 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id D97143117FD6
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 20:26:32 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id DCF3731D939E
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 20:38:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B33272D9787;
-	Thu, 28 May 2026 20:26:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E2D02313539;
+	Thu, 28 May 2026 20:38:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dqAECwTt"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dCJX2XTu"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 113DF1EA65;
-	Thu, 28 May 2026 20:26:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AEC482C15AC;
+	Thu, 28 May 2026 20:38:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779999992; cv=none; b=ZpoMeFgaqhIizs/XgXUHWW0KqtPlWcVapWW8lXqHTsvImxvogwCh6hzAMIOzVV+kNCt1NIR0P661h84v1i3XjbZKVRfjCi3B487QUHyWoKJ57YrHUvKx8sSPOx9UgM4SmHT+CSoykNoQwAoNI01vS4qetj4rvwG90DtHE9d6ZPg=
+	t=1780000687; cv=none; b=XAvZln6/NiPjdhJdzcJP/P/rDbbaWbpcChpRqD6+AqzPjwMWcyzhmquM51VhuEY7Hw04nkfKq6UbB543ADnsFKfQWQZ2I39IXdj7dPOUs6N7cXeeZqsUsM8fIRarfyTyMU2ovUEk6rDvA2TojdKqNqytQbeFCpsrLOMvlqSyzfI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779999992; c=relaxed/simple;
-	bh=TbRVQiH2AiUbR0aqdDk0B+Ir6ltRo3nxUKDHbyGdz0s=;
+	s=arc-20240116; t=1780000687; c=relaxed/simple;
+	bh=ZvefC5B5IfcvSnhymPD5pTK9ynepae9+9VvppjNFhhw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ZEYdu4xeLMVkRUDDG1ZWehKZU8iCIRkLlBJTTPc/49y6XDBybL7vTu7zvQdwoiZpTpAdn99hTFJwW27hK8JLncAFE0KT3v6heAKgLDtHcdk7LB3jAw/WZtLnNOwXTLCp7T0aPO5YcTXGp11krBOvxtzScDp2OwpGFFWWLg2JWAM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dqAECwTt; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6E0B61F000E9;
-	Thu, 28 May 2026 20:26:29 +0000 (UTC)
+	 MIME-Version; b=rNcIKSFnsD2o4Mg+7Qc8ll5kF/aARsyDl6DTtEt7Vh8oAjp4b89IA9a2rxppU+hsQuzNDJLd9W1sCcQdzFhd5vier7syR3oWqdk9IojVGEiBjsMsfgSz0c2o5+WpSTxkgUUq+5Zh9o3XYdoR6orDLu0vShoxmHcssipb2KUy6AI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dCJX2XTu; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1EB401F000E9;
+	Thu, 28 May 2026 20:38:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779999990;
-	bh=t7RHw49AWXEn2GGoTxjG+ibOwK36pPc3pGuIo4A3Loo=;
+	s=korg; t=1780000686;
+	bh=hnF6JHaWLw67HLUNy9B5SpHcVkkxX5Gr6DYIcanTTgc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=dqAECwTtEFOvClDUKMJ403xuKaDf+zpNobehSYnI/hAR5zOieXnSfStkaaOBfgJC7
-	 kZOQ/oT9vzuwMlvwe2NjvdxLO4hjaIkR+jwsIAXvZdnHW754h0pTgdemWkxN3GrcGo
-	 uNfpdO+9X+NDNhDyTbWmqqEvwakCfnA9CcM3pFgI=
+	b=dCJX2XTu9UTsJnfE7t3JtK/uykeR9wcr51QTj9zUftj6dlMWFWz+EXlMgStQXG3NC
+	 X8X5+LA8riVl/ydB2ydG8lyv5tHPXbe9/z+fBtvoqRzafcaKaQIukvZWKD8HyZNe9J
+	 UvQ2s0jMyAyNC33i4LB17mmQyCK+S8ooa+B8p5Go=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 262/377] net: shaper: reject handle IDs exceeding internal bit-width
+	stable@kernel.org,
+	Yuan Tan <yuantan098@gmail.com>,
+	Yifan Wu <yifanwucs@gmail.com>,
+	Juefei Pu <tomapufckgml@gmail.com>,
+	Xin Liu <bird@lzu.edu.cn>,
+	Sven Eckelmann <sven@narfation.org>
+Subject: [PATCH 6.12 126/272] batman-adv: frag: disallow unicast fragment in fragment
 Date: Thu, 28 May 2026 21:48:20 +0200
-Message-ID: <20260528194645.955822130@linuxfoundation.org>
+Message-ID: <20260528194632.907232249@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260528194638.371537336@linuxfoundation.org>
-References: <20260528194638.371537336@linuxfoundation.org>
+In-Reply-To: <20260528194629.379955525@linuxfoundation.org>
+References: <20260528194629.379955525@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -68,153 +71,120 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,kernel.org,gmail.com,lzu.edu.cn,narfation.org];
+	TAGGED_FROM(0.00)[bounces-256076-lists,stable=lfdr.de];
 	PRECEDENCE_BULK(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-255827-lists,stable=lfdr.de];
-	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[9];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,msgid.link:url,linuxfoundation.org:mid,linuxfoundation.org:dkim]
-X-Rspamd-Queue-Id: DB3E35F9523
+	TAGGED_RCPT(0.00)[stable];
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,narfation.org:email,lzu.edu.cn:email,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim]
+X-Rspamd-Queue-Id: 4950B5F9751
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jakub Kicinski <kuba@kernel.org>
+From: Sven Eckelmann <sven@narfation.org>
 
-[ Upstream commit 8d5806c600fddb907ebe378f9c366d4b52ac3a39 ]
+commit bc62216dc8e221e3781afa14430f45208bfa9af9 upstream.
 
-net_shaper_parse_handle() reads the user-supplied handle ID via
-nla_get_u32(), accepting the full u32 range. However, the xarray key
-is built by net_shaper_handle_to_index() using
-FIELD_PREP(NET_SHAPER_ID_MASK, handle->id), where NET_SHAPER_ID_MASK
-is GENMASK(25, 0) - only 26 bits wide. FIELD_PREP silently masks off
-the upper bits at runtime. A user-supplied NODE id like 0x04000123
-becomes id 0x123.
+batadv_frag_skb_buffer() is called by batadv_batman_skb_recv() when a
+BATADV_UNICAST_FRAG packet is received. Once all fragments are collected
+and the packet is reassembled, batadv_recv_frag_packet() calls
+batadv_batman_skb_recv() again to process the defragmented payload.
 
-Additionally, a user-supplied id equal to NET_SHAPER_ID_UNSPEC
-(0x03FFFFFF, which is NET_SHAPER_ID_MASK itself) would collide with
-the sentinel used internally by the group operation to signal
-"allocate a new NODE id".
+A malicious sender can craft a BATADV_UNICAST_FRAG packet whose reassembled
+payload is itself a BATADV_UNICAST_FRAG packet (matryoshka-style nesting).
+Each nesting level recurses through batadv_batman_skb_recv() without bound,
+growing the kernel stack until it is exhausted.
 
-Reject user-supplied IDs >= NET_SHAPER_ID_MASK (i.e., >= 0x03FFFFFF)
-in the policy.
+Since refragmentation or fragments in fragments are not actually allowed,
+discard all packets which are still BATADV_UNICAST_FRAG packets after the
+defragmentation process.
 
-Fixes: 4b623f9f0f59 ("net-shapers: implement NL get operation")
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Link: https://patch.msgid.link/20260510192904.3987113-9-kuba@kernel.org
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: stable@kernel.org
+Fixes: 610bfc6bc99b ("batman-adv: Receive fragmented packets and merge")
+Reported-by: Yuan Tan <yuantan098@gmail.com>
+Reported-by: Yifan Wu <yifanwucs@gmail.com>
+Reported-by: Juefei Pu <tomapufckgml@gmail.com>
+Reported-by: Xin Liu <bird@lzu.edu.cn>
+Reviewed-by: Yuan Tan <yuantan098@gmail.com>
+Signed-off-by: Sven Eckelmann <sven@narfation.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- Documentation/netlink/specs/net_shaper.yaml | 7 +++++++
- net/shaper/shaper.c                         | 4 +++-
- net/shaper/shaper_nl_gen.c                  | 7 ++++++-
- net/shaper/shaper_nl_gen.h                  | 2 ++
- 4 files changed, 18 insertions(+), 2 deletions(-)
+ net/batman-adv/fragmentation.c |   35 +++++++++++++++++++++++++++++++++++
+ 1 file changed, 35 insertions(+)
 
-diff --git a/Documentation/netlink/specs/net_shaper.yaml b/Documentation/netlink/specs/net_shaper.yaml
-index 3f2ad772b64b1..de01f922040a5 100644
---- a/Documentation/netlink/specs/net_shaper.yaml
-+++ b/Documentation/netlink/specs/net_shaper.yaml
-@@ -33,6 +33,11 @@ doc: |
-   @cap-get operation.
+--- a/net/batman-adv/fragmentation.c
++++ b/net/batman-adv/fragmentation.c
+@@ -305,6 +305,31 @@ free:
+ }
  
- definitions:
-+  -
-+    type: const
-+    name: max-handle-id
-+    value: 0x3fffffe
-+    scope: kernel
-   -
-     type: enum
-     name: scope
-@@ -140,6 +145,8 @@ attribute-sets:
-       -
-         name: id
-         type: u32
-+        checks:
-+          max: max-handle-id
-         doc: |
-           Numeric identifier of a shaper. The id semantic depends on
-           the scope. For @queue scope it's the queue id and for @node
-diff --git a/net/shaper/shaper.c b/net/shaper/shaper.c
-index 5338842122a2a..b2d85963243fa 100644
---- a/net/shaper/shaper.c
-+++ b/net/shaper/shaper.c
-@@ -21,6 +21,8 @@
- 
- #define NET_SHAPER_ID_UNSPEC NET_SHAPER_ID_MASK
- 
-+static_assert(NET_SHAPER_ID_UNSPEC == NET_SHAPER_MAX_HANDLE_ID + 1);
+ /**
++ * batadv_skb_is_frag() - check if newly merged skb is gain a unicast packet
++ * @skb: newly merged skb
++ *
++ * Return: if newly skb is of type BATADV_UNICAST_FRAG
++ */
++static bool batadv_skb_is_frag(struct sk_buff *skb)
++{
++	struct batadv_ogm_packet *batadv_ogm_packet;
 +
- struct net_shaper_hierarchy {
- 	struct xarray shapers;
- };
-@@ -360,7 +362,7 @@ static int net_shaper_pre_insert(struct net_shaper_binding *binding,
- 	    handle->id == NET_SHAPER_ID_UNSPEC) {
- 		u32 min, max;
- 
--		handle->id = NET_SHAPER_ID_MASK - 1;
-+		handle->id = NET_SHAPER_MAX_HANDLE_ID;
- 		max = net_shaper_handle_to_index(handle);
- 		handle->id = 0;
- 		min = net_shaper_handle_to_index(handle);
-diff --git a/net/shaper/shaper_nl_gen.c b/net/shaper/shaper_nl_gen.c
-index c52abf13ff0c9..16ab88f5eb7b4 100644
---- a/net/shaper/shaper_nl_gen.c
-+++ b/net/shaper/shaper_nl_gen.c
-@@ -10,10 +10,15 @@
- 
- #include <uapi/linux/net_shaper.h>
- 
-+/* Integer value ranges */
-+static const struct netlink_range_validation net_shaper_a_handle_id_range = {
-+	.max	= NET_SHAPER_MAX_HANDLE_ID,
-+};
++	/* packet should hold at least type and version */
++	if (unlikely(!pskb_may_pull(skb, 2)))
++		return false;
 +
- /* Common nested types */
- const struct nla_policy net_shaper_handle_nl_policy[NET_SHAPER_A_HANDLE_ID + 1] = {
- 	[NET_SHAPER_A_HANDLE_SCOPE] = NLA_POLICY_MAX(NLA_U32, 3),
--	[NET_SHAPER_A_HANDLE_ID] = { .type = NLA_U32, },
-+	[NET_SHAPER_A_HANDLE_ID] = NLA_POLICY_FULL_RANGE(NLA_U32, &net_shaper_a_handle_id_range),
- };
- 
- const struct nla_policy net_shaper_leaf_info_nl_policy[NET_SHAPER_A_WEIGHT + 1] = {
-diff --git a/net/shaper/shaper_nl_gen.h b/net/shaper/shaper_nl_gen.h
-index 1e20eebdedd71..3e5e7342ffbbc 100644
---- a/net/shaper/shaper_nl_gen.h
-+++ b/net/shaper/shaper_nl_gen.h
-@@ -11,6 +11,8 @@
- 
- #include <uapi/linux/net_shaper.h>
- 
-+#define NET_SHAPER_MAX_HANDLE_ID	67108862
++	batadv_ogm_packet = (struct batadv_ogm_packet *)skb->data;
 +
- /* Common nested types */
- extern const struct nla_policy net_shaper_handle_nl_policy[NET_SHAPER_A_HANDLE_ID + 1];
- extern const struct nla_policy net_shaper_leaf_info_nl_policy[NET_SHAPER_A_WEIGHT + 1];
--- 
-2.53.0
-
++	if (batadv_ogm_packet->version != BATADV_COMPAT_VERSION)
++		return false;
++
++	if (batadv_ogm_packet->packet_type != BATADV_UNICAST_FRAG)
++		return false;
++
++	return true;
++}
++
++/**
+  * batadv_frag_skb_buffer() - buffer fragment for later merge
+  * @skb: skb to buffer
+  * @orig_node_src: originator that the skb is received from
+@@ -337,6 +362,16 @@ bool batadv_frag_skb_buffer(struct sk_bu
+ 	if (!skb_out)
+ 		goto out_err;
+ 
++	/* fragment in fragment is not allowed. otherwise it is possible
++	 * to exhaust the stack when receiving a matryoshka-style
++	 * "fragments in a fragment packet"
++	 */
++	if (batadv_skb_is_frag(skb_out)) {
++		kfree_skb(skb_out);
++		skb_out = NULL;
++		goto out_err;
++	}
++
+ out:
+ 	ret = true;
+ out_err:
 
 
 
