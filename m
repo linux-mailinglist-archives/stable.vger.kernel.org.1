@@ -1,137 +1,166 @@
-Return-Path: <stable+bounces-254858-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-254861-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id wbNiOUAnGGp3eggAu9opvQ
-	(envelope-from <stable+bounces-254858-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 13:30:08 +0200
+	id YFO7JyUpGGrneggAu9opvQ
+	(envelope-from <stable+bounces-254861-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 13:38:13 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id E4F305F14EB
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 13:30:07 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 086705F1633
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 13:38:13 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 5AE55301681C
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 11:30:04 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id DDEC830972FF
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 11:34:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 446EB3E316C;
-	Thu, 28 May 2026 11:30:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C614D3D45DC;
+	Thu, 28 May 2026 11:34:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="TGPn3K/y"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CpsHobNF"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0A12433B6ED;
-	Thu, 28 May 2026 11:30:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 77D403E3D97
+	for <stable@vger.kernel.org>; Thu, 28 May 2026 11:34:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779967803; cv=none; b=PhosaNMARI3sAyxqgCqFXj6yrZ9ZXfAYYONRM7Q7Wiv83GB+rLLeId53mrpeId1g0XVjC9rpEqkiapHx8FDl4bFuyOUCC44aN1XbPWtXye6M0rHuyaS8K/2HqaDu8oWkzhWra0iKtvwEv2t5JT7RWYt5QbWh4/+4aQkPw/eTxmk=
+	t=1779968096; cv=none; b=CdiRC9Rqd1k3Uygx5avICypfANu4kCdXyKCxOt/9EFJcGmJxY6e/0wMfql4j8lxZOHKSXlnAs1BggF9KDzyhRer7n+Vfv3BxKVy7aBmpyJnDF89rcphnpiCPM31TB+Dcfxuqxn+9kASVXtBQZ0QC1pzewDVPO45SXZpdlrvzx2o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779967803; c=relaxed/simple;
-	bh=A1Anli8CV6kkbxeXNyKboxPmva+bQB6lZqK+WPALhb0=;
-	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
-	 In-Reply-To:To:Cc; b=odW+zbmMCGqrEctAIEbTHIZUYn1AlGw3TPyXAeLfjVxu1lU0ZgEu3XkJJcIOgo+8sIn6BugJv69zgAbu7Vx2nLQ8WbYbfbCqia6JqS4ixMUeQYDm6j38uKvv+SWdPVC0uR5mUUhylUYbibezOBf3LbOnGbK7RSd69kDFQxp68N0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=TGPn3K/y; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CC12E1F000E9;
-	Thu, 28 May 2026 11:30:00 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1779967800;
-	bh=hbKD/B8Lb7nPPNoBEvSoUuRTpiXuLg9ZFc0j5swoUIo=;
-	h=Subject:From:Date:References:In-Reply-To:To:Cc;
-	b=TGPn3K/y+iANl6FJS0y108S3RYrkXqjGCECHuWX85x1BaEMbpVgc8b5YhF61PAht4
-	 Rxwt2/d+To5FTyNxJyWX0wSDwj2LMqH2QeFISyxgIWkzPdN5QG71cJF77Gz7oXb52o
-	 abe1GlsBFFMlaKk4A6MpmAASR8lS609q/OBwwntU+8eYUXYHxkGtsv40RC9sxdAICQ
-	 qz4+WVF9yn+hTQUZQedVRXYWVrmQR728D+CEBAHek8jSlXthVbclaGLlXhZ0VRggzy
-	 WrBm6FHIKoRGX7hZoQywBunfVVf4ZvNKUlNRs3uxocqUpXXFMUl2nODS8s/XTzNIpx
-	 TvaQqMI099cmQ==
-Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 93CA53811957;
-	Thu, 28 May 2026 11:30:06 +0000 (UTC)
-Content-Type: text/plain; charset="utf-8"
+	s=arc-20240116; t=1779968096; c=relaxed/simple;
+	bh=Vr3F8YWNbvtd9nRXaVAJ28u+dLriThcyKsljzdEw88Q=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=qCMYtXpH5Z/OQ6ajcNYFaMrgDC1a4jHtaUZQBQtb1XE3SHQqre43V8JfbLeT24ra/A4gIN3EcgidkYW8GvgpnxX9t4wcBJ47RI1iODqozlfS+5nnFQeTaJLY7aIuDqdPZyTxlFJA39SnAY128IMRjLx2jfJWKrKYhR7Zgc3W4e4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CpsHobNF; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 85CBF1F000E9;
+	Thu, 28 May 2026 11:34:54 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
+	s=korg; t=1779968095;
+	bh=yEe80CDijVk4HgC4wAkWsuuvJxZdPWNPX6ZmHnyF+88=;
+	h=Subject:To:Cc:From:Date;
+	b=CpsHobNFBmup54TjHDpeyl9EKfembbZ8hDykUG66XmD0PFWBMSMS+L1mxLUNC7VAk
+	 Tp95Vvs2rL85CPNEEsED07MTPqyG4Yjlme3/cS2JGXPO1qZaabBnxwKskKh4EtF2vL
+	 8wate/OVQGXGhSLcHl6n/gCVogN/afO10nid5+D8=
+Subject: FAILED: patch "[PATCH] ice: restore PTP Rx timestamp config after ethtool" failed to apply to 6.6-stable tree
+To: grzegorz.nitka@intel.com,aleksandr.loktionov@intel.com,alexander.nowlin@intel.com,anthony.l.nguyen@intel.com,horms@kernel.org,kuba@kernel.org
+Cc: <stable@vger.kernel.org>
+From: <gregkh@linuxfoundation.org>
+Date: Thu, 28 May 2026 13:32:34 +0200
+Message-ID: <2026052834-revolver-pegboard-94c9@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH net v2] net: skbuff: fix missing zerocopy reference in
- pskb_carve helpers
-From: patchwork-bot+netdevbpf@kernel.org
-Message-Id: 
- <177996780540.882966.17298529776161153629.git-patchwork-notify@kernel.org>
-Date: Thu, 28 May 2026 11:30:05 +0000
-References: <20260526041240.329462-1-minhnguyen.080505@gmail.com>
-In-Reply-To: <20260526041240.329462-1-minhnguyen.080505@gmail.com>
-To: lazyming <minhnguyen.080505@gmail.com>
-Cc: netdev@vger.kernel.org, davem@davemloft.net, edumazet@google.com,
- kuba@kernel.org, pabeni@redhat.com, horms@kernel.org,
- sowmini.varadhan@oracle.com, willemdebruijn.kernel@gmail.com, w@1wt.eu,
- security@kernel.org, linux-kernel@vger.kernel.org, stable@vger.kernel.org,
- asml.silence@gmail.com, achender@kernel.org, mst@redhat.com,
- jasowang@redhat.com, willemb@google.com
-X-Spamd-Result: default: False [-0.66 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [2.34 / 15.00];
+	MID_END_EQ_FROM_USER_PART(4.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20260515];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
+	MID_RHS_NOT_FQDN(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-254858-lists,stable=lfdr.de,netdevbpf];
-	FREEMAIL_CC(0.00)[vger.kernel.org,davemloft.net,google.com,kernel.org,redhat.com,oracle.com,gmail.com,1wt.eu];
+	TAGGED_FROM(0.00)[bounces-254861-lists,stable=lfdr.de];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	RCVD_TLS_LAST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[patchwork-bot@kernel.org,stable@vger.kernel.org];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FREEMAIL_TO(0.00)[gmail.com];
-	RCPT_COUNT_TWELVE(0.00)[18];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[kernel.org:+];
-	MISSING_XM_UA(0.00)[];
-	TO_DN_SOME(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	RCVD_COUNT_FIVE(0.00)[5];
-	PRECEDENCE_BULK(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	MID_RHS_MATCH_FROM(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	FROM_NO_DN(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	TO_DN_NONE(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	MISSING_XM_UA(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	FROM_NO_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo]
-X-Rspamd-Queue-Id: E4F305F14EB
+	MIME_TRACE(0.00)[0:+];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,gregkh:email,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,intel.com:email]
+X-Rspamd-Queue-Id: 086705F1633
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-Hello:
 
-This patch was applied to netdev/net.git (main)
-by Paolo Abeni <pabeni@redhat.com>:
+The patch below does not apply to the 6.6-stable tree.
+If someone wants it applied there, or to any other stable or longterm
+tree, then please email the backport, including the original git commit
+id to <stable@vger.kernel.org>.
 
-On Tue, 26 May 2026 11:12:39 +0700 you wrote:
-> From: Minh Nguyen <minhnguyen.080505@gmail.com>
-> 
-> pskb_carve_inside_header() and pskb_carve_inside_nonlinear() both copy
-> the old skb_shared_info header into a new buffer via memcpy(), which
-> includes the destructor_arg pointer (uarg) for MSG_ZEROCOPY skbs.
-> Neither function calls net_zcopy_get() for the new shinfo, creating an
-> unaccounted holder: every skb_shared_info with destructor_arg set will
-> call skb_zcopy_clear() once when freed, but the corresponding
-> net_zcopy_get() was never called for the new copy. Repeated calls
-> drive uarg->refcnt to zero prematurely, freeing ubuf_info_msgzc while
-> TX skbs still hold live destructor_arg pointers.
-> 
-> [...]
+To reproduce the conflict and resubmit, you may use the following commands:
 
-Here is the summary with links:
-  - [net,v2] net: skbuff: fix missing zerocopy reference in pskb_carve helpers
-    https://git.kernel.org/netdev/net/c/98d0912e9f84
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.6.y
+git checkout FETCH_HEAD
+git cherry-pick -x 975b564d195b13ca6ee1ef5e6a9561734898eb17
+# <resolve conflicts, build, test, etc.>
+git commit -s
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2026052834-revolver-pegboard-94c9@gregkh' --subject-prefix 'PATCH 6.6.y' HEAD^..
 
-You are awesome, thank you!
--- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/patchwork/pwbot.html
+Possible dependencies:
 
+
+
+thanks,
+
+greg k-h
+
+------------------ original commit in Linus's tree ------------------
+
+From 975b564d195b13ca6ee1ef5e6a9561734898eb17 Mon Sep 17 00:00:00 2001
+From: Grzegorz Nitka <grzegorz.nitka@intel.com>
+Date: Fri, 15 May 2026 11:24:13 -0700
+Subject: [PATCH] ice: restore PTP Rx timestamp config after ethtool
+ set-channels
+
+When ethtool -L changes queue counts, ice_vsi_recfg_qs() closes and
+rebuilds the VSI, reallocating Rx rings. The newly allocated rings have
+ptp_rx cleared, so RX hardware timestamps are no longer attached to skb
+until hwtstamp configuration is applied again.
+
+Restore timestamp mode after ice_vsi_open() in the queue reconfiguration
+path, matching reset/rebuild behavior and ensuring newly rebuilt Rx rings
+have PTP RX timestamping re-enabled.
+
+Testing hints:
+- run ptp4l application in client synchronization mode:
+	 ptp4l -i ethX -m -s
+- run PTP traffic
+- change queue number on ethX netdev interface:
+	ethtool -L ethX combined new_queue_size
+- observe ptp4l output
+- expected result: no "received DELAY_REQ without timestamp" messages
+
+Fixes: 77a781155a65 ("ice: enable receive hardware timestamping")
+Cc: stable@vger.kernel.org
+Reviewed-by: Aleksandr Loktionov <aleksandr.loktionov@intel.com>
+Signed-off-by: Grzegorz Nitka <grzegorz.nitka@intel.com>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Tested-by: Alexander Nowlin <alexander.nowlin@intel.com>
+Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
+Link: https://patch.msgid.link/20260515182419.1597859-7-anthony.l.nguyen@intel.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+
+diff --git a/drivers/net/ethernet/intel/ice/ice_main.c b/drivers/net/ethernet/intel/ice/ice_main.c
+index 66642232b282..e2fbe111f849 100644
+--- a/drivers/net/ethernet/intel/ice/ice_main.c
++++ b/drivers/net/ethernet/intel/ice/ice_main.c
+@@ -4104,6 +4104,12 @@ int ice_vsi_recfg_qs(struct ice_vsi *vsi, int new_rx, int new_tx, bool locked)
+ 	}
+ 	ice_pf_dcb_recfg(pf, locked);
+ 	ice_vsi_open(vsi);
++	/* Rx rings are reallocated during VSI rebuild and lose their ptp_rx
++	 * flag. Restore timestamp mode so newly allocated rings are set up
++	 * for hardware Rx timestamping.
++	 */
++	if (test_bit(ICE_FLAG_PTP_SUPPORTED, pf->flags))
++		ice_ptp_restore_timestamp_mode(pf);
+ 	goto done;
+ 
+ rebuild_err:
 
 
