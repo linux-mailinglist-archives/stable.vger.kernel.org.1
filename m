@@ -1,52 +1,52 @@
-Return-Path: <stable+bounces-254710-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-254711-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id iNp2DbC0F2pvOAgAu9opvQ
-	(envelope-from <stable+bounces-254710-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 05:21:20 +0200
+	id aBfHIhu2F2pvOAgAu9opvQ
+	(envelope-from <stable+bounces-254711-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 05:27:23 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id D575F5EC2BD
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 05:21:18 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 05B4A5EC333
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 05:27:22 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 154443021EEA
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 03:21:18 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 025DC30262F7
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 03:23:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2C48B25F984;
-	Thu, 28 May 2026 03:21:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 553192F49FD;
+	Thu, 28 May 2026 03:23:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=139.com header.i=@139.com header.b="5AUWyJ4v"
+	dkim=pass (1024-bit key) header.d=139.com header.i=@139.com header.b="PaaqCB9N"
 X-Original-To: stable@vger.kernel.org
-Received: from n169-111.mail.139.com (n169-111.mail.139.com [120.232.169.111])
+Received: from n169-110.mail.139.com (n169-110.mail.139.com [120.232.169.110])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 674FE2C3259;
-	Thu, 28 May 2026 03:21:09 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=120.232.169.111
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 994661AAE17;
+	Thu, 28 May 2026 03:23:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=120.232.169.110
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779938474; cv=none; b=QeIjQ5IBLblg9gPSXF2mez3PcKksx+V1N7XwFnoyf6YJ3BCTqi6V252EIwrwGAWF8lRKgEXeLouM3esxCxun3XHlFjfNZ82/vyTBwmvOQb91yPx6Ez7w6znK5NRkbZoIEtK6ln0rgsLgeNq1tW+1IF+lZoaol3j+iaKuBoyLPHc=
+	t=1779938624; cv=none; b=Zw/c++MHYIkzIAihN+wXrCbCnuLZA1zA5GzbK/9CZIcDaZtBCSOzNvoza21fCCAmEqwZW5IpSLNCFb1ooaT+kN0S5ofsSPXjNx8FBfWJRAZ/H21irQ4t9rXILSjb3H4Ekv2HY0T1M+K36ucKNmjeVPS3EiuJBdEAvgaY4jLzsw4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779938474; c=relaxed/simple;
-	bh=G6KTNPgFM+UBYpQfSsqgMXQ13RbTqH/uq2aBXAA+bWQ=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=JSWQ0iAq19qRqzFnB/ERDIGJh498auYy+wE3vTke4bvxuKruA4uo8s0trJXP1k/FwTM5WQxNThYvpVs/e0VFv+UVatr8cfjjHgVroMjzWDkvLhXWyz6mkju6PiWcOQywTDCBjgx2KLBsDUEwI2jPvnJ8m/vKhn542rzl1ba0nIM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=139.com; spf=pass smtp.mailfrom=139.com; dkim=pass (1024-bit key) header.d=139.com header.i=@139.com header.b=5AUWyJ4v; arc=none smtp.client-ip=120.232.169.111
+	s=arc-20240116; t=1779938624; c=relaxed/simple;
+	bh=dwG2OU9Ik+Kuq9Tfm/ROlnq0ncqNVDB4KwhEpOJzlJA=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=BRyyCZQ9ZkJ0ueEMGHMkJTbnMJ612jz6fkqJ3BGgq4ena8wXEDGsJE2YZEIB80oVmuFtJrV8TOZwLYfXbOmZF0XCtfRiBp/kdGOjt9jpqNstVz9H/JYalRW4E0D3otPvSUYrkyBmLg1DGi8wKUdH6IdgDJ8EvVp1yzVZGA60AVg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=139.com; spf=pass smtp.mailfrom=139.com; dkim=pass (1024-bit key) header.d=139.com header.i=@139.com header.b=PaaqCB9N; arc=none smtp.client-ip=120.232.169.110
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=139.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=139.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
 	d=139.com; s=dkim; l=0;
 	h=from:subject:message-id:to:cc:mime-version;
 	bh=47DEQpj8HBSa+/TImW+5JCeuQeRkm5NMpJWZG3hSuFU=;
-	b=5AUWyJ4vKc7TVWuH8pyTQ1K6r9s0HG7aCxD9yM4tYIoLdCeMoASqclXugGr3hlkAwDhymm84IDtGs
-	 X6mNVkK30AFWxxDNuqCxQgmIq3BENNzfwSjRJiJhrk/0Yjqe6CfkjWs5nPFtGrC1fa88C5CqypIFDD
-	 2nE0EbCDRq+Fy528=
+	b=PaaqCB9NnRljddtSPISjqfkRuhM5v4SiW3KnA1YW9t/Ar5GJwxsVzo581Emd8tHFpzmTK+4w6HFj5
+	 uUgtH1LN+xcZ6ajKAWP0SQirWJ/NTrK2j3cxD8HYioBu9FhbghYss8dva9FozE1Cmz95SnPuJ2QJzI
+	 oSxdS42I758/54lM=
 X-RM-TagInfo: emlType=0                                       
 X-RM-SPAM:                                                                                        
 X-RM-SPAM-FLAG:00000000
 Received:from China-139-kernel-team (unknown[47.95.114.252])
-	by rmsmtp-lg-appmail-11-12089 (RichMail) with SMTP id 2f396a17b48a8c0-018de;
-	Thu, 28 May 2026 11:21:00 +0800 (CST)
-X-RM-TRANSID:2f396a17b48a8c0-018de
+	by rmsmtp-lg-appmail-09-12087 (RichMail) with SMTP id 2f376a17b53104c-080e9;
+	Thu, 28 May 2026 11:23:33 +0800 (CST)
+X-RM-TRANSID:2f376a17b53104c-080e9
 From: Bin Lan <lanbincn@139.com>
 To: gregkh@linuxfoundation.org,
 	sashal@kernel.org,
@@ -54,9 +54,9 @@ To: gregkh@linuxfoundation.org,
 Cc: linux-kernel@vger.kernel.org,
 	Konstantin Komarov <almaz.alexandrovich@paragon-software.com>,
 	Bin Lan <lanbincn@139.com>
-Subject: [PATCH 6.18.y] fs/ntfs3: handle attr_set_size() errors when truncating files
-Date: Thu, 28 May 2026 11:20:28 +0800
-Message-ID: <20260528032028.58379-1-lanbincn@139.com>
+Subject: [PATCH 6.12.y] fs/ntfs3: handle attr_set_size() errors when truncating files
+Date: Thu, 28 May 2026 11:23:27 +0800
+Message-ID: <20260528032327.58596-1-lanbincn@139.com>
 X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
@@ -70,11 +70,11 @@ X-Spamd-Result: default: False [1.04 / 15.00];
 	MID_CONTAINS_FROM(1.00)[];
 	R_DKIM_REJECT(1.00)[139.com:s=dkim];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-254710-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-254711-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
 	DMARC_NA(0.00)[139.com];
 	RCVD_COUNT_THREE(0.00)[4];
@@ -85,15 +85,15 @@ X-Spamd-Result: default: False [1.04 / 15.00];
 	FREEMAIL_CC(0.00)[vger.kernel.org,paragon-software.com,139.com];
 	DKIM_TRACE(0.00)[139.com:-];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[lanbincn@139.com,stable@vger.kernel.org];
+	PRECEDENCE_BULK(0.00)[];
 	FROM_HAS_DN(0.00)[];
 	RCPT_COUNT_FIVE(0.00)[6];
-	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[lanbincn@139.com,stable@vger.kernel.org];
 	TAGGED_RCPT(0.00)[stable];
-	NEURAL_HAM(-0.00)[-0.473];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo]
-X-Rspamd-Queue-Id: D575F5EC2BD
+	NEURAL_HAM(-0.00)[-0.474];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[paragon-software.com:email,139.com:mid,139.com:email,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
+X-Rspamd-Queue-Id: 05B4A5EC333
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
@@ -112,10 +112,10 @@ Signed-off-by: Bin Lan <lanbincn@139.com>
  1 file changed, 4 insertions(+), 8 deletions(-)
 
 diff --git a/fs/ntfs3/file.c b/fs/ntfs3/file.c
-index cd7aaeef45fe..5042eb321eb8 100644
+index 3f144a049d71..b7d87fd57063 100644
 --- a/fs/ntfs3/file.c
 +++ b/fs/ntfs3/file.c
-@@ -458,8 +458,8 @@ static int ntfs_truncate(struct inode *inode, loff_t new_size)
+@@ -500,8 +500,8 @@ static int ntfs_truncate(struct inode *inode, loff_t new_size)
  {
  	struct super_block *sb = inode->i_sb;
  	struct ntfs_inode *ni = ntfs_i(inode);
@@ -125,7 +125,7 @@ index cd7aaeef45fe..5042eb321eb8 100644
  
  	if (!S_ISREG(inode->i_mode))
  		return 0;
-@@ -475,7 +475,6 @@ static int ntfs_truncate(struct inode *inode, loff_t new_size)
+@@ -517,7 +517,6 @@ static int ntfs_truncate(struct inode *inode, loff_t new_size)
  	}
  
  	new_valid = ntfs_up_block(sb, min_t(u64, ni->i_valid, new_size));
@@ -133,7 +133,7 @@ index cd7aaeef45fe..5042eb321eb8 100644
  	truncate_setsize(inode, new_size);
  
  	ni_lock(ni);
-@@ -489,22 +488,19 @@ static int ntfs_truncate(struct inode *inode, loff_t new_size)
+@@ -531,22 +530,19 @@ static int ntfs_truncate(struct inode *inode, loff_t new_size)
  		ni->i_valid = new_valid;
  
  	ni_unlock(ni);
