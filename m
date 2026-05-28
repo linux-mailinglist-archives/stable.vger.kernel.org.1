@@ -1,59 +1,59 @@
-Return-Path: <stable+bounces-255382-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-255740-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id KI5IM9+hGGqblggAu9opvQ
-	(envelope-from <stable+bounces-255382-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:13:19 +0200
+	id uKf2JiqmGGrClggAu9opvQ
+	(envelope-from <stable+bounces-255740-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:31:38 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 47A4B5F8188
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:13:19 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 835555F8DF2
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:31:34 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id DBC7A3057D58
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 20:05:57 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 4FFCA3220365
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 20:22:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3A126348C76;
-	Thu, 28 May 2026 20:05:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 96A59257854;
+	Thu, 28 May 2026 20:22:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AUfrFUZT"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TKcQ8rI0"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1204A409607;
-	Thu, 28 May 2026 20:05:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7C8382E7379;
+	Thu, 28 May 2026 20:22:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779998753; cv=none; b=Knh7prqfXPOIzYaYhwqZOcnyOUQteVaBg9Wqxdmmi4Bt3nLasY9idsP5nPTh8KSNdhWzxkLE+knSewMuLPFN5nHvVTTThS3Dao38pseLe6IWdjqZYm/m30grHMHAV54CbsfBIaYjzR33k5XBjJBJyqJs/zrcVkMWExwYmZcQpoU=
+	t=1779999751; cv=none; b=eZGelHM35+E92UtMquFYn6tRQ/iQw4CmTYUAeq5yLHxa1MkUfOEaOPo6hgPOGGMSB5yMQkvAC3epTlI4kC8PZqv7FFzcZe/ALnI7DbKTsbhKYtOVc6tobLAU3rvu7qABtFURS1CU7Ys4uscXdW73u4xIGxxMVOj6IEfYaFOLAAI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779998753; c=relaxed/simple;
-	bh=5ae+NkuuOINvoE1XEZU5qiAeMwgHkBPZ/5QPdBeOH0I=;
+	s=arc-20240116; t=1779999751; c=relaxed/simple;
+	bh=BX41s6CSyNGvX31jFsnzWZd4K/mzYqZLPc3rukG+DH0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=AyyMmxjzarWNtJxr3k1c2fdnE2ETRzbvIXa1viGmSmDUtNaCZURjNQ1LZtbywTtEqJstE/wuqpYEPKHrZ7/pojprjA5rlbJ7Q4SOTyHVeQzgv27umUaVYv0tksuS+YiA72Oe1taq8GupGAfJFSveh1k1Wi7STv4dg0QFbhxdbqY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AUfrFUZT; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 70B7A1F000E9;
-	Thu, 28 May 2026 20:05:51 +0000 (UTC)
+	 MIME-Version; b=GhXkaLWODKbh0P9wwfO9ZhFjyrhRK5S86fg5DtMSTdcMH9qotRlVaNA+TIx6MlnpNEHRcvQ9Sihcqg1arZHBYsRWWzpirvMNmbKF7MasZOyJHoVuNr48MPKy7Ry/5ta+M4b1lFwNFkyUNL8tMNXWBLlzKg3XNmd3kiiW7ZRJTLA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TKcQ8rI0; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D8AC21F000E9;
+	Thu, 28 May 2026 20:22:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779998752;
-	bh=SKWDvADI4MRQc5+DaEfCSfOmCwfVOJEkguJ+o8P5iBM=;
+	s=korg; t=1779999750;
+	bh=zCVIHuN/qnYVxiFo9TlnvX9XeRUQCUUB9f4SYEhgPqY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=AUfrFUZTM9dRi7/uQGP0jPnrEiM5OLAlf6/iJyyEGujjn21hoRQO7uVMrDhID4oTD
-	 WxqSSupMrJW2rF1i0+HMd6KOQzlpmrAKvxZ9s8w4Town7VSs8qtAx2RqpxSIPRB0up
-	 tDoIar4jo1f5b9hqAdxwKBzczd+WlfypnHVV29Zc=
+	b=TKcQ8rI0swB2S+wwT/rOWZjXPRntlEn5X3XqEAKzeA5YYBwwhe3qlR5RNtX2zxFIQ
+	 j3qsLFxl7dJ61UpMf46OYVGsvhPWmiUb+lXcAbDgEZm+V9PAvDohdffqO3hRkt2Fd5
+	 bUHk4AvmzWKxV/ePxh5kMIBMqWgbXcOOfP0dgkr8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
+	Takashi Iwai <tiwai@suse.de>,
+	Jiri Kosina <jkosina@suse.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 7.0 286/461] net: shaper: reject QUEUE scope handle with missing id
-Date: Thu, 28 May 2026 21:46:55 +0200
-Message-ID: <20260528194655.479436278@linuxfoundation.org>
+Subject: [PATCH 6.18 178/377] HID: uclogic: Fix regression of input name assignment
+Date: Thu, 28 May 2026 21:46:56 +0200
+Message-ID: <20260528194643.574226396@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260528194646.819809818@linuxfoundation.org>
-References: <20260528194646.819809818@linuxfoundation.org>
+In-Reply-To: <20260528194638.371537336@linuxfoundation.org>
+References: <20260528194638.371537336@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -68,7 +68,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
@@ -78,7 +78,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-255382-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-255740-lists,stable=lfdr.de];
 	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
@@ -89,63 +89,52 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	TAGGED_RCPT(0.00)[stable];
 	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim,msgid.link:url]
-X-Rspamd-Queue-Id: 47A4B5F8188
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[suse.de:email,suse.com:email,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim]
+X-Rspamd-Queue-Id: 835555F8DF2
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-7.0-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jakub Kicinski <kuba@kernel.org>
+From: Takashi Iwai <tiwai@suse.de>
 
-[ Upstream commit ce372e869f9f492f3d5aa9a0ae75ed52c61d2d6f ]
+[ Upstream commit 487359284509a6745e14b8c0518768bc277809b0 ]
 
-net_shaper_parse_handle() does not enforce that the user provides
-the handle ID. For NODE the ID defaults to UNSPEC for all other
-cases it defaults to 0.
+The previous fix for adding the devm_kasprintf() return check in the
+commit bd07f751208b ("HID: uclogic: Add NULL check in
+uclogic_input_configured()") changed the condition of hi->input->name
+assignment, and it resulted in missing the proper input device name
+when no custom suffix is defined.
 
-For NETDEV 0 is the only option. For QUEUE defaulting to 0 makes
-less intuitive sense. Specifically because the behavior should
-(IMHO) be the same for all cases where there may be more than
-one ID (QUEUE and NODE).
+Restore the conditional to the original content to address the
+regression.
 
-We should either document this as intentional or reject.
-I picked the latter with no strong conviction.
-
-Fixes: 4b623f9f0f59 ("net-shapers: implement NL get operation")
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Link: https://patch.msgid.link/20260510192904.3987113-11-kuba@kernel.org
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Fixes: bd07f751208b ("HID: uclogic: Add NULL check in uclogic_input_configured()")
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
+Signed-off-by: Jiri Kosina <jkosina@suse.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/shaper/shaper.c | 9 +++++++--
- 1 file changed, 7 insertions(+), 2 deletions(-)
+ drivers/hid/hid-uclogic-core.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/net/shaper/shaper.c b/net/shaper/shaper.c
-index 4ae3ee6764a0a..b1c65110f04d3 100644
---- a/net/shaper/shaper.c
-+++ b/net/shaper/shaper.c
-@@ -477,10 +477,15 @@ static int net_shaper_parse_handle(const struct nlattr *attr,
- 	 * shaper (any other value).
- 	 */
- 	id_attr = tb[NET_SHAPER_A_HANDLE_ID];
--	if (id_attr)
-+	if (id_attr) {
- 		id = nla_get_u32(id_attr);
--	else if (handle->scope == NET_SHAPER_SCOPE_NODE)
-+	} else if (handle->scope == NET_SHAPER_SCOPE_NODE) {
- 		id = NET_SHAPER_ID_UNSPEC;
-+	} else if (handle->scope == NET_SHAPER_SCOPE_QUEUE) {
-+		NL_SET_ERR_ATTR_MISS(info->extack, attr,
-+				     NET_SHAPER_A_HANDLE_ID);
-+		return -EINVAL;
+diff --git a/drivers/hid/hid-uclogic-core.c b/drivers/hid/hid-uclogic-core.c
+index 34fb03ae8ee2f..c6db3e7c5fd30 100644
+--- a/drivers/hid/hid-uclogic-core.c
++++ b/drivers/hid/hid-uclogic-core.c
+@@ -184,7 +184,9 @@ static int uclogic_input_configured(struct hid_device *hdev,
+ 			suffix = "System Control";
+ 			break;
+ 		}
+-	} else {
 +	}
- 
- 	if (id && handle->scope == NET_SHAPER_SCOPE_NETDEV) {
- 		NL_SET_ERR_MSG_ATTR(info->extack, id_attr,
++
++	if (suffix) {
+ 		hi->input->name = devm_kasprintf(&hdev->dev, GFP_KERNEL,
+ 						 "%s %s", hdev->name, suffix);
+ 		if (!hi->input->name)
 -- 
 2.53.0
 
