@@ -1,60 +1,58 @@
-Return-Path: <stable+bounces-255862-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-256105-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id aAu+DxamGGoQlwgAu9opvQ
-	(envelope-from <stable+bounces-255862-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:31:18 +0200
+	id gAjBC/CpGGpolwgAu9opvQ
+	(envelope-from <stable+bounces-256105-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:47:44 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 459435F8DE3
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:31:17 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id B06805F9909
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:47:43 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 426DE3044A0B
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 20:28:12 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 465DE3174DB0
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 20:40:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1327533D4E2;
-	Thu, 28 May 2026 20:28:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 24CB1351C02;
+	Thu, 28 May 2026 20:39:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bVuekXn/"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1iBSAl8c"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D40FF33372A;
-	Thu, 28 May 2026 20:28:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 01D3C2C15AC;
+	Thu, 28 May 2026 20:39:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780000085; cv=none; b=a9MymUzr0f2MzwpYghSdpXdBr5QFG/ZPidaq8mOuTdC5ekXBtsJT+e6AVE3TWT4sudw7q2FyUvYd1LP7dTBuPFIa27LSO9DkuwgrX7H0nODyh/UGVwNbRkLwmDiX1vBfPsz53axf3dlDOqj5BGqxUXlGLuvKxMyJbXTcnPMBnOQ=
+	t=1780000770; cv=none; b=QUXBhq+bNjOLS+FMwbhCPbdjtg6jq3ZydOrFHusK90WvhXhD3FUsG7BfPO5AsAD0Ie0BhRaihBdLjWz0ACCKYxzIARA8ycwM8yAWkuSc2ELJLGa088ap72JhUBUbxOcUQEskdPCfrLnDwh4gvEwkgGyRIAW27i62qWFNxeB89Jo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780000085; c=relaxed/simple;
-	bh=alyutVkJSOC7Ja05iw9WcwiJTi3m7Xj600gNdZA8l3I=;
+	s=arc-20240116; t=1780000770; c=relaxed/simple;
+	bh=Gbqb7DJVF4zap3nWMYpILFc+Ea6WFHmY+qW3XZD/rnw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=bIUSWbQDgWAosUHCKLW/J4WaSQFugLugkmJXDUOtMCuughBcLLHpplEcCMgHQvJ06sUQZfTVpR/z4O8QpzFbKJryC+z40ZM6IizNIEI5yR5PSQf/vv5tQ9nW0DklBk+B9KTTPerH/x8O6HZ2vtA/7+cWABhVqfm01TujodDdXL4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bVuekXn/; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3CDE91F000E9;
-	Thu, 28 May 2026 20:28:04 +0000 (UTC)
+	 MIME-Version; b=U3xBPBRjOmf0tcWgqhMn3tOO7WtQU8TJhVbcfqY3H3CJuqHldzc/qe3Ap8gKMZbi/XIwavDMlYLfbEk0/Zg7RCiWiBrBnlKTzQDeFKz3bM6hOtOTf7qV4OKmcI76AdoOvLRzmpXJUMcFPsBGabbByRCKHDrZZZOYzxl6uA4bOyQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1iBSAl8c; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 25A661F000E9;
+	Thu, 28 May 2026 20:39:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780000084;
-	bh=FB31kwr92R6JcK3Va6SPxJFNcOum3DEYciOCmmhRsoc=;
+	s=korg; t=1780000769;
+	bh=ZLV7MWzc1jaHO+hQhX9UDcUSaUBvdmQU6w2PcpM2IuE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=bVuekXn/n1hBvzhLgjChvnkRR6XeLm8tZrk8e0EBM7LSijpsZVbG6vMi49enSSqZP
-	 QOf7f3GZLdmVBfr4R6CuKuvTTeNCeyKfNoYvk8lKhbcQHsdPzqJ4wTpP2bA0Mey81p
-	 yzG706K5Pajs2ulWciyqEB1XyL7SawelMNTGQ7nk=
+	b=1iBSAl8c1VnxAfC3hHmbr+ZaAgUKRjwADHCbGWYzPEj1s9APLZ2XPzkxkH3z3u3OK
+	 DA0eP8BQBOgbvvAAWZFlQ0tyPtIzfn5UyLNsKFqN+eGmelnzITsGjdNgNL2Y5M8tv6
+	 DpE7buu/oYy5JB8cZvywTfm6xqY6gbPxbgL5BF9o=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Qu Wenruo <wqu@suse.com>,
-	Filipe Manana <fdmanana@suse.com>,
-	David Sterba <dsterba@suse.com>,
+	Sudeep Holla <sudeep.holla@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 297/377] btrfs: add macros to facilitate printing of keys
+Subject: [PATCH 6.12 161/272] firmware: arm_ffa: Fix sched-recv callback partition lookup
 Date: Thu, 28 May 2026 21:48:55 +0200
-Message-ID: <20260528194646.952366134@linuxfoundation.org>
+Message-ID: <20260528194633.850214691@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260528194638.371537336@linuxfoundation.org>
-References: <20260528194638.371537336@linuxfoundation.org>
+In-Reply-To: <20260528194629.379955525@linuxfoundation.org>
+References: <20260528194629.379955525@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,83 +67,82 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-255862-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-256105-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
-	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[7];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,suse.com:email,linuxfoundation.org:mid,linuxfoundation.org:dkim]
-X-Rspamd-Queue-Id: 459435F8DE3
+	RCPT_COUNT_FIVE(0.00)[5];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim,msgid.link:url]
+X-Rspamd-Queue-Id: B06805F9909
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Filipe Manana <fdmanana@suse.com>
+From: Sudeep Holla <sudeep.holla@kernel.org>
 
-[ Upstream commit 95de4b097e25225d4deb5a33a4bfc27bb441f2d8 ]
+[ Upstream commit a6848a50404eefb6f0b131c21881a2d8d21b31a9 ]
 
-There's a lot of places where we need to print a key, and it's tiresome
-to type the format specifier, typically "(%llu %u %llu)", as well as
-passing 3 arguments to a prink family function (key->objectid, key->type,
-key->offset).
+ffa_sched_recv_cb_update() used list_for_each_entry_safe() to search for
+a matching partition and then tested the iterator against NULL. That is
+not a valid end-of-list check for circular lists and can fall through
+with an invalid pointer. Use a normal iterator and detect the not-found
+case correctly before touching the partition state.
 
-So add a couple macros for this just like we have for csum values in
-btrfs_inode.h (CSUM_FMT and CSUM_FMT_VALUE).
-
-This also ensures that we consistently print a key in the same format,
-always as "(%llu %llu %llu)", which is the most common format we use, but
-we have a few variations such as "[%llu %llu %llu]" for no good reason.
-
-This patch introduces the macros while the next one makes use of it.
-This is to ease backports of future patches, since then we can backport
-this patch which is simple and short and then backport those future
-patches, as the next patch in the series that makes use of these new
-macros is quite large and may have some dependencies.
-
-Reviewed-by: Qu Wenruo <wqu@suse.com>
-Signed-off-by: Filipe Manana <fdmanana@suse.com>
-Reviewed-by: David Sterba <dsterba@suse.com>
-Signed-off-by: David Sterba <dsterba@suse.com>
-Stable-dep-of: 1e92637722ae ("btrfs: check for subvolume before deleting squota qgroup")
+Fixes: be61da938576 ("firmware: arm_ffa: Allow multiple UUIDs per partition to register SRI callback")
+Link: https://patch.msgid.link/20260428-ffa_fixes-v2-11-8595ae450034@kernel.org
+Signed-off-by: Sudeep Holla <sudeep.holla@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/btrfs/fs.h | 3 +++
- 1 file changed, 3 insertions(+)
+ drivers/firmware/arm_ffa/driver.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/fs/btrfs/fs.h b/fs/btrfs/fs.h
-index 37aa8d141a83d..acdb9e52f6fd7 100644
---- a/fs/btrfs/fs.h
-+++ b/fs/btrfs/fs.h
-@@ -73,6 +73,9 @@ struct btrfs_space_info;
- #define BTRFS_SUPER_INFO_SIZE			4096
- static_assert(sizeof(struct btrfs_super_block) == BTRFS_SUPER_INFO_SIZE);
+diff --git a/drivers/firmware/arm_ffa/driver.c b/drivers/firmware/arm_ffa/driver.c
+index f35c3a56326c7..89474fa3c80e5 100644
+--- a/drivers/firmware/arm_ffa/driver.c
++++ b/drivers/firmware/arm_ffa/driver.c
+@@ -1155,7 +1155,7 @@ static int
+ ffa_sched_recv_cb_update(struct ffa_device *dev, ffa_sched_recv_cb callback,
+ 			 void *cb_data, bool is_registration)
+ {
+-	struct ffa_dev_part_info *partition = NULL, *tmp;
++	struct ffa_dev_part_info *partition = NULL;
+ 	struct list_head *phead;
+ 	bool cb_valid;
  
-+#define BTRFS_KEY_FMT			"(%llu %u %llu)"
-+#define BTRFS_KEY_FMT_VALUE(key)	(key)->objectid, (key)->type, (key)->offset
-+
- /*
-  * Number of metadata items necessary for an unlink operation:
-  *
+@@ -1168,11 +1168,11 @@ ffa_sched_recv_cb_update(struct ffa_device *dev, ffa_sched_recv_cb callback,
+ 		return -EINVAL;
+ 	}
+ 
+-	list_for_each_entry_safe(partition, tmp, phead, node)
++	list_for_each_entry(partition, phead, node)
+ 		if (partition->dev == dev)
+ 			break;
+ 
+-	if (!partition) {
++	if (&partition->node == phead) {
+ 		pr_err("%s: No such partition ID 0x%x\n", __func__, dev->vm_id);
+ 		return -EINVAL;
+ 	}
 -- 
 2.53.0
 
