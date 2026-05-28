@@ -1,58 +1,61 @@
-Return-Path: <stable+bounces-255227-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-255581-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id gKaZMHOeGGpAlggAu9opvQ
-	(envelope-from <stable+bounces-255227-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 21:58:43 +0200
+	id QOt4EKSjGGrClggAu9opvQ
+	(envelope-from <stable+bounces-255581-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:20:52 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 73AEB5F7911
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 21:58:43 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id C36965F86F9
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:20:51 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 4ABE73016413
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 19:58:40 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 5DC933021649
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 20:15:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8F8F326B973;
-	Thu, 28 May 2026 19:58:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 04469282F17;
+	Thu, 28 May 2026 20:15:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AXIZ29q7"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TuGSUGyC"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2DC40338936;
-	Thu, 28 May 2026 19:58:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A7D522459D1;
+	Thu, 28 May 2026 20:15:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779998317; cv=none; b=iatYpHqlE2lC6ZvNlo8ZJG+EQ4i1q7T+/0he3U2Nr5XbSDJtpQF8wncO9XD6hSe+dXM+vAqGahKPxyzSNbP5KlZXaXZ1aIZ98SxZLg+z7WBMibe1EYQp17eGUV6YGZ06OCFeFL7KOsrOMY1zANNQL49LAhw6pOPgv7tKUawNtOo=
+	t=1779999314; cv=none; b=IMcqIPNQbePHgwBsWlkUMHBYdhxpRAvf6QiaxRFVX/l3xaT+8Bs2g31fF46hL4XuTqqrhhePZ5cWzTwIqaWePacZkZpfLKi0fF0EvTuTfzMdjYntOsZVFYQUnyzv5mlXUHtNZUk/azxKPZTYDl1kgiK/EAu0wyqBXUbWz5e3cm0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779998317; c=relaxed/simple;
-	bh=kMMya3VAO09hXj085Ii9QvbKmwYUQT/o/mAOSfgDq3s=;
+	s=arc-20240116; t=1779999314; c=relaxed/simple;
+	bh=7E6ZXyLgcsCbNERe9x/FBtQ8JvLIIzg13A3QNK8DyQg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=eJfgXUSVPDH7NugUEAkfzNakhtAl/lRd1bcXHlCXD+skKDuU+JuXLaNMD/7qU86WRls8/tKTdG3QdBBJz1fvFRMPYvxq4DEyixINYhvocEHGHkEYIZgo0/iszdjplfUsG0S63loR+Ea6nqSDjaiCkVmPtaPv5/35woAe+USe5Xk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AXIZ29q7; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8CD131F000E9;
-	Thu, 28 May 2026 19:58:35 +0000 (UTC)
+	 MIME-Version; b=PutVaWpNhrDzmW9M36RT27TTyABKBfEGZ7DemQXh7wG+WdxBv7aPrY131+4bFtr4GI9bySkzD7sfelfevNKSKA5iyMlJq6Q3bQctRcWcMzcqZvAdGvg0Pso2da4scbDxr2HDILeAqnjsprHCDj3MuPd5QVZGVvcfsOoZeNrs2ho=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TuGSUGyC; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 11A851F000E9;
+	Thu, 28 May 2026 20:15:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779998316;
-	bh=bVHYygcMSImefVrntiD/rhhIompvaxXu3h/0N+88trw=;
+	s=korg; t=1779999313;
+	bh=/M2FQoeYf3c3apDghEEdK2zq+WdcWEA3j2b/U4Etf60=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=AXIZ29q7lisHASnjrN9rmgc13tWJm6JbGNjvH3mUi3n2WeHxlE3c+lrNwTcXMcDp8
-	 naNu+wdmFJO4vK9TT8LvBc9JhSus8zv79y8Xzt86cQ9e25mTOjhG9LUXBGHFwAvcux
-	 /6e0n4yApYmlINVrmgXCT3hmYtcgIQY4uy5wVcwc=
+	b=TuGSUGyCbAZ7oOzjeTfdyqAiLHu0EJF5Kyagnrk6WLj+Mgaao7JQduT574rECfXx6
+	 40VpFApc4Fl/J8IhB5w/JkrOClQlwd6Sfidj4/5ZDiEail8hmsUR9UwaWMl9Uj/saw
+	 JNtEehW/Uunp69tSU9WeiEUri2dRwk5S8k1VlgGI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Iago Toral Quiroga <itoral@igalia.com>,
-	=?UTF-8?q?Ma=C3=ADra=20Canal?= <mcanal@igalia.com>
-Subject: [PATCH 7.0 131/461] drm/v3d: Fix use-after-free of CPU job query arrays on error path
+	Thomas Zimmermann <tzimmermann@suse.de>,
+	Javier Martinez Canillas <javierm@redhat.com>,
+	Michael Kelley <mhklinux@outlook.com>,
+	Mingyu Wang <25181214217@stu.xidian.edu.cn>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.18 022/377] drm/vblank: Add CRTC helpers for simple use cases
 Date: Thu, 28 May 2026 21:44:20 +0200
-Message-ID: <20260528194650.781446679@linuxfoundation.org>
+Message-ID: <20260528194639.030307022@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260528194646.819809818@linuxfoundation.org>
-References: <20260528194646.819809818@linuxfoundation.org>
+In-Reply-To: <20260528194638.371537336@linuxfoundation.org>
+References: <20260528194638.371537336@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,156 +65,215 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-2.16 / 15.00];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-255227-lists,stable=lfdr.de];
-	FROM_HAS_DN(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
-	RCPT_COUNT_FIVE(0.00)[5];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,suse.de,redhat.com,outlook.com,stu.xidian.edu.cn,kernel.org];
+	TAGGED_FROM(0.00)[bounces-255581-lists,stable=lfdr.de];
 	PRECEDENCE_BULK(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[stable];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[8];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,msgid.link:url]
-X-Rspamd-Queue-Id: 73AEB5F7911
+	TAGGED_RCPT(0.00)[stable];
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,suse.de:email,outlook.com:email]
+X-Rspamd-Queue-Id: C36965F86F9
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-7.0-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Maíra Canal <mcanal@igalia.com>
+From: Thomas Zimmermann <tzimmermann@suse.de>
 
-commit b0fe80c0b9250b35e2211bf3117e7aca814a21b0 upstream.
+[ Upstream commit d54dbb5963bdbdf8559903fe2b2343e871adcb30 ]
 
-The CPU job ioctl's fail label calls kvfree() on cpu_job's timestamp and
-performance query arrays after v3d_job_cleanup(), which drops the job's
-last reference and frees cpu_job. Reading cpu_job at that point is a
-use-after-free. Also, on the early v3d_job_init() failure path, it is a
-NULL dereference, since v3d_job_deallocate() zeroes the local pointer.
+Implement atomic_flush, atomic_enable and atomic_disable of struct
+drm_crtc_helper_funcs for vblank handling. Driver with no further
+requirements can use these functions instead of adding their own.
+Also simplifies the use of vblank timers.
 
-In the success path, the arrays are released from the scheduler's
-.free_job callback, but on the error path, they are freed manually, as
-the job was never pushed to the scheduler. While the success path deals
-with this correctly, the fail path doesn't.
+The code has been adopted from vkms, which added the funtionality
+in commit 3a0709928b17 ("drm/vkms: Add vblank events simulated by
+hrtimers").
 
-On top of that, the manual kvfree() calls only free the array storage;
-they don't drm_syncobj_put() the per-query syncobjs that
-v3d_timestamp_query_info_free() and v3d_performance_query_info_free()
-release on the success path. So the same fail path that triggers the
-use-after-free also leaks one syncobj reference per query.
+v3:
+- mention vkms (Javier)
+v2:
+- fix docs
 
-Unify the CPU job teardown into the CPU job's kref destructor, mirroring
-v3d_render_job_free(). The scheduler's .free_job slot reverts to the
-generic v3d_sched_job_free() and the fail label drops the manual
-kvfree() calls, leaving a single teardown path that is reached from both
-the scheduler and the ioctl error path. That removes the use-after-free,
-the NULL dereference, and the syncobj leak by construction.
-
-Cc: stable@vger.kernel.org
-Fixes: 9ba0ff3e083f ("drm/v3d: Create a CPU job extension for the timestamp query job")
-Assisted-by: Claude:claude-opus-4.7
-Reviewed-by: Iago Toral Quiroga <itoral@igalia.com>
-Link: https://patch.msgid.link/20260515-v3d-cpu-job-leaks-v1-1-7f147cbbf935@igalia.com
-Signed-off-by: Maíra Canal <mcanal@igalia.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Thomas Zimmermann <tzimmermann@suse.de>
+Reviewed-by: Javier Martinez Canillas <javierm@redhat.com>
+Tested-by: Michael Kelley <mhklinux@outlook.com>
+Link: https://lore.kernel.org/r/20250916083816.30275-3-tzimmermann@suse.de
+Signed-off-by: Mingyu Wang <25181214217@stu.xidian.edu.cn>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/v3d/v3d_sched.c  |   16 +---------------
- drivers/gpu/drm/v3d/v3d_submit.c |   19 ++++++++++++++++---
- 2 files changed, 17 insertions(+), 18 deletions(-)
+ drivers/gpu/drm/drm_vblank_helper.c | 80 +++++++++++++++++++++++++++++
+ include/drm/drm_vblank_helper.h     | 23 +++++++++
+ 2 files changed, 103 insertions(+)
 
---- a/drivers/gpu/drm/v3d/v3d_sched.c
-+++ b/drivers/gpu/drm/v3d/v3d_sched.c
-@@ -105,20 +105,6 @@ v3d_performance_query_info_free(struct v
- }
+diff --git a/drivers/gpu/drm/drm_vblank_helper.c b/drivers/gpu/drm/drm_vblank_helper.c
+index f94d1e706191b..a04a6ba1b0ca0 100644
+--- a/drivers/gpu/drm/drm_vblank_helper.c
++++ b/drivers/gpu/drm/drm_vblank_helper.c
+@@ -1,5 +1,6 @@
+ // SPDX-License-Identifier: MIT
  
- static void
--v3d_cpu_job_free(struct drm_sched_job *sched_job)
--{
--	struct v3d_cpu_job *job = to_cpu_job(sched_job);
--
--	v3d_timestamp_query_info_free(&job->timestamp_query,
--				      job->timestamp_query.count);
--
--	v3d_performance_query_info_free(&job->performance_query,
--					job->performance_query.count);
--
--	v3d_job_cleanup(&job->base);
--}
--
--static void
- v3d_switch_perfmon(struct v3d_dev *v3d, struct v3d_job *job)
- {
- 	struct v3d_perfmon *perfmon = v3d->global_perfmon;
-@@ -861,7 +847,7 @@ static const struct drm_sched_backend_op
++#include <drm/drm_atomic.h>
+ #include <drm/drm_crtc.h>
+ #include <drm/drm_managed.h>
+ #include <drm/drm_modeset_helper_vtables.h>
+@@ -17,6 +18,12 @@
+  * Drivers enable support for vblank timers by setting the vblank callbacks
+  * in struct &drm_crtc_funcs to the helpers provided by this library. The
+  * initializer macro DRM_CRTC_VBLANK_TIMER_FUNCS does this conveniently.
++ * The driver further has to send the VBLANK event from its atomic_flush
++ * callback and control vblank from the CRTC's atomic_enable and atomic_disable
++ * callbacks. The callbacks are located in struct &drm_crtc_helper_funcs.
++ * The vblank helper library provides implementations of these callbacks
++ * for drivers without further requirements. The initializer macro
++ * DRM_CRTC_HELPER_VBLANK_FUNCS sets them coveniently.
+  *
+  * Once the driver enables vblank support with drm_vblank_init(), each
+  * CRTC's vblank timer fires according to the programmed display mode. By
+@@ -25,6 +32,79 @@
+  * struct &drm_crtc_helper_funcs.handle_vblank_timeout.
+  */
  
- static const struct drm_sched_backend_ops v3d_cpu_sched_ops = {
- 	.run_job = v3d_cpu_job_run,
--	.free_job = v3d_cpu_job_free
-+	.free_job = v3d_sched_job_free
- };
- 
- static int
---- a/drivers/gpu/drm/v3d/v3d_submit.c
-+++ b/drivers/gpu/drm/v3d/v3d_submit.c
-@@ -120,6 +120,21 @@ v3d_render_job_free(struct kref *ref)
- 	v3d_job_free(ref);
- }
- 
-+static void
-+v3d_cpu_job_free(struct kref *ref)
++/*
++ * VBLANK helpers
++ */
++
++/**
++ * drm_crtc_vblank_atomic_flush -
++ *	Implements struct &drm_crtc_helper_funcs.atomic_flush
++ * @crtc: The CRTC
++ * @state: The atomic state to apply
++ *
++ * The helper drm_crtc_vblank_atomic_flush() implements atomic_flush of
++ * struct drm_crtc_helper_funcs for CRTCs that only need to send out a
++ * VBLANK event.
++ *
++ * See also struct &drm_crtc_helper_funcs.atomic_flush.
++ */
++void drm_crtc_vblank_atomic_flush(struct drm_crtc *crtc,
++				  struct drm_atomic_state *state)
 +{
-+	struct v3d_cpu_job *job = container_of(ref, struct v3d_cpu_job,
-+					       base.refcount);
++	struct drm_device *dev = crtc->dev;
++	struct drm_crtc_state *crtc_state = drm_atomic_get_new_crtc_state(state, crtc);
++	struct drm_pending_vblank_event *event;
 +
-+	v3d_timestamp_query_info_free(&job->timestamp_query,
-+				      job->timestamp_query.count);
++	spin_lock_irq(&dev->event_lock);
 +
-+	v3d_performance_query_info_free(&job->performance_query,
-+					job->performance_query.count);
++	event = crtc_state->event;
++	crtc_state->event = NULL;
 +
-+	v3d_job_free(ref);
++	if (event) {
++		if (drm_crtc_vblank_get(crtc) == 0)
++			drm_crtc_arm_vblank_event(crtc, event);
++		else
++			drm_crtc_send_vblank_event(crtc, event);
++	}
++
++	spin_unlock_irq(&dev->event_lock);
 +}
++EXPORT_SYMBOL(drm_crtc_vblank_atomic_flush);
 +
- void v3d_job_cleanup(struct v3d_job *job)
- {
- 	if (!job)
-@@ -1296,7 +1311,7 @@ v3d_submit_cpu_ioctl(struct drm_device *
- 	trace_v3d_submit_cpu_ioctl(&v3d->drm, cpu_job->job_type);
++/**
++ * drm_crtc_vblank_atomic_enable - Implements struct &drm_crtc_helper_funcs.atomic_enable
++ * @crtc: The CRTC
++ * @state: The atomic state
++ *
++ * The helper drm_crtc_vblank_atomic_enable() implements atomic_enable
++ * of struct drm_crtc_helper_funcs for CRTCs the only need to enable VBLANKs.
++ *
++ * See also struct &drm_crtc_helper_funcs.atomic_enable.
++ */
++void drm_crtc_vblank_atomic_enable(struct drm_crtc *crtc,
++				   struct drm_atomic_state *state)
++{
++	drm_crtc_vblank_on(crtc);
++}
++EXPORT_SYMBOL(drm_crtc_vblank_atomic_enable);
++
++/**
++ * drm_crtc_vblank_atomic_disable - Implements struct &drm_crtc_helper_funcs.atomic_disable
++ * @crtc: The CRTC
++ * @state: The atomic state
++ *
++ * The helper drm_crtc_vblank_atomic_disable() implements atomic_disable
++ * of struct drm_crtc_helper_funcs for CRTCs the only need to disable VBLANKs.
++ *
++ * See also struct &drm_crtc_funcs.atomic_disable.
++ */
++void drm_crtc_vblank_atomic_disable(struct drm_crtc *crtc,
++				    struct drm_atomic_state *state)
++{
++	drm_crtc_vblank_off(crtc);
++}
++EXPORT_SYMBOL(drm_crtc_vblank_atomic_disable);
++
+ /*
+  * VBLANK timer
+  */
+diff --git a/include/drm/drm_vblank_helper.h b/include/drm/drm_vblank_helper.h
+index 74a971d0cfba0..fcd8a9b358463 100644
+--- a/include/drm/drm_vblank_helper.h
++++ b/include/drm/drm_vblank_helper.h
+@@ -6,8 +6,31 @@
+ #include <linux/hrtimer_types.h>
+ #include <linux/types.h>
  
- 	ret = v3d_job_init(v3d, file_priv, &cpu_job->base,
--			   v3d_job_free, 0, &se, V3D_CPU);
-+			   v3d_cpu_job_free, 0, &se, V3D_CPU);
- 	if (ret) {
- 		v3d_job_deallocate((void *)&cpu_job);
- 		goto fail;
-@@ -1379,8 +1394,6 @@ fail:
- 	v3d_job_cleanup((void *)csd_job);
- 	v3d_job_cleanup(clean_job);
- 	v3d_put_multisync_post_deps(&se);
--	kvfree(cpu_job->timestamp_query.queries);
--	kvfree(cpu_job->performance_query.queries);
++struct drm_atomic_state;
+ struct drm_crtc;
  
- 	return ret;
- }
++/*
++ * VBLANK helpers
++ */
++
++void drm_crtc_vblank_atomic_flush(struct drm_crtc *crtc,
++				  struct drm_atomic_state *state);
++void drm_crtc_vblank_atomic_enable(struct drm_crtc *crtc,
++				   struct drm_atomic_state *state);
++void drm_crtc_vblank_atomic_disable(struct drm_crtc *crtc,
++				    struct drm_atomic_state *crtc_state);
++
++/**
++ * DRM_CRTC_HELPER_VBLANK_FUNCS - Default implementation for VBLANK helpers
++ *
++ * This macro initializes struct &drm_crtc_helper_funcs to default helpers
++ * for VBLANK handling.
++ */
++#define DRM_CRTC_HELPER_VBLANK_FUNCS \
++	.atomic_flush = drm_crtc_vblank_atomic_flush, \
++	.atomic_enable = drm_crtc_vblank_atomic_enable, \
++	.atomic_disable = drm_crtc_vblank_atomic_disable
++
+ /*
+  * VBLANK timer
+  */
+-- 
+2.53.0
+
 
 
 
