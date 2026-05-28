@@ -1,59 +1,60 @@
-Return-Path: <stable+bounces-255412-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-255731-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id uBT1C12iGGqblggAu9opvQ
-	(envelope-from <stable+bounces-255412-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:15:25 +0200
+	id IDJ6JIWnGGp+lwgAu9opvQ
+	(envelope-from <stable+bounces-255731-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:37:25 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 864FA5F82C6
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:15:24 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 39E0A5F921A
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:37:25 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 6EFA731B6001
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 20:07:18 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id A6F2930EB432
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 20:22:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C8E4832ABC0;
-	Thu, 28 May 2026 20:07:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A6C972F8E83;
+	Thu, 28 May 2026 20:22:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BfG1r5f3"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dC25Q62q"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 945C52F260C;
-	Thu, 28 May 2026 20:07:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5908A257854;
+	Thu, 28 May 2026 20:22:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779998837; cv=none; b=UCiswU30aO7eHv5RWD5j7EXp346R7T56K4VOH7qm5dgvIGQbjnnq/lWBfS9tyo24xRs9dpksMJ5zOCDmI1vSw0PmL3Tcot1YQc65f/opLx383YB2MDx4TLd5Y5Pl13IWDsAMjwAfT1+60cFUJpdqiVISmKj7XRZV5opXrlxjiqU=
+	t=1779999726; cv=none; b=YFyhxstK+4OIjRIn+JDiWSP99Y/FDGhZTap4HSEBvlLnyfZyGm1jL9FCEef1dLhG1AJ9aLcHAjsxB6RWmSlA2P73oNANc3OIkuZpMZEa3cXrqq6xwdUeQ6aPW/8O1Yq5Lvwmsv+IcsCNf5KOPJchMoXKl5AuBpeLhc1qkIZ2QvM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779998837; c=relaxed/simple;
-	bh=7aTyQ0enZIiRcN55XQGtEY98ONvf2pvGcwGc5M2nAAg=;
+	s=arc-20240116; t=1779999726; c=relaxed/simple;
+	bh=/HrN/Ql9nNuJukmOePSbnpipZvWvExzyKR6FZ7DuO8g=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=e4/RRHoGkQgi19+EeZrd6vg6syriEjc3eKDcKTj0NT2wWBaVOYL6WU5eguwNdeSYmxb6SL/GSiWDGtD2X3fmRSA+qCR+iuIjsiMLoOmplTjdplAK0gmQKvFxC7xBKEhCWjvnvHKQQVu1qHIR0D+vsayKVULxp6HZ4+RScVrERCg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BfG1r5f3; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F26401F000E9;
-	Thu, 28 May 2026 20:07:15 +0000 (UTC)
+	 MIME-Version; b=V7GUXq7DmmRjlTN9996QlSBpGMJS+K4kuD/Hv7O/9kQvqJSlEkF1xy+vibmKAt/V8+F1TRMMIKQVk6UKYg5FKOqojLLUt+U2WAPdeJucgfP2X9s3d8Salyo/kHyDfXKF4ltZxnY+dNGf0wStLeCqWQjFljG+/KH7eyywzwLGnD4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dC25Q62q; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B69E71F000E9;
+	Thu, 28 May 2026 20:22:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779998836;
-	bh=2ILk5P239ZyiHNVD6pp5VM38cBfP2GEhU/RFiPiM+hw=;
+	s=korg; t=1779999725;
+	bh=3aAHhNuUOUfBxJTXI2f0V3pXscXWm8pHzC3/JZjqKP0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=BfG1r5f3rUyZIXXjZHymD2Zravezak3ws8nUH3RTo4L6mNUJ3lGhS3CRXDz7I1UXc
-	 6F9CqL/tLCVLNrvadIr7tE6cxrVAGGn0Gaszu867BtH1w4r2/TFcSkTneEuNlNAw+z
-	 n7l5t46L2XJTrl+T59UfcCLC9lmi7imiQEkJCbXc=
+	b=dC25Q62q0ih3UDRO2Q03DVdxh5eRLVSDwVkHBKSCQc5ZGHXF7F/NCZ9s+SLA4HagT
+	 SZtNHv03casIn6ALwwuEteKiXl5K01ZZgm+xGU2GqgOG9IP+h6Ke6WozYJT38kO361
+	 0O4SmXsPuoRZZFoyhEDnuo9hsPAK3DnDWXIjo4i4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
+	Til Kaiser <mail@tk154.de>,
+	Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>,
+	Linus Walleij <linusw@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 7.0 279/461] net: shaper: flip the polarity of the valid flag
+Subject: [PATCH 6.18 170/377] pinctrl: qcom: ipq4019: mark gpio as a GPIO pin function
 Date: Thu, 28 May 2026 21:46:48 +0200
-Message-ID: <20260528194655.265311137@linuxfoundation.org>
+Message-ID: <20260528194643.353109235@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260528194646.819809818@linuxfoundation.org>
-References: <20260528194646.819809818@linuxfoundation.org>
+In-Reply-To: <20260528194638.371537336@linuxfoundation.org>
+References: <20260528194638.371537336@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -73,136 +74,89 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-255731-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-255412-lists,stable=lfdr.de];
-	TO_DN_SOME(0.00)[];
-	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TO_DN_SOME(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
 	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim,msgid.link:url]
-X-Rspamd-Queue-Id: 864FA5F82C6
+	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_SEVEN(0.00)[7];
+	MID_RHS_MATCH_FROM(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[qualcomm.com:email,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim]
+X-Rspamd-Queue-Id: 39E0A5F921A
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-7.0-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jakub Kicinski <kuba@kernel.org>
+From: Til Kaiser <mail@tk154.de>
 
-[ Upstream commit 7cee43fcb0c3f71441d2faaa8c2202b6a88b6bef ]
+[ Upstream commit b51d33ea8a164bb5f0eec8ad817fa9730ac2b577 ]
 
-The usual way of inserting entries which are not yet fully ready
-into XArray is to have a VALID flag. The shaper code has a NOT_VALID
-flag. Since XArray code does not let us create entries with marks
-already set - the creation of entries is currently not atomic.
+The qcom pinctrl core supports marking functions that represent GPIO mode
+via PINCTRL_GPIO_PINFUNCTION(), so that strict pinmuxing does not reject
+GPIO requests for pins that are muxed to the GPIO function.
 
-Flip the polarity of the VALID flag. This closes the tiny race
-in net_shaper_pre_insert() of entries being created without
-the NOT_VALID flag.
+ipq4019 still describes its gpio function with QCA_PIN_FUNCTION(gpio),
+so it is not treated as a GPIO pin function. As a result, GPIO consumers
+can still conflict with pinctrl states that select the "gpio" function.
 
-Fixes: 93954b40f6a4 ("net-shapers: implement NL set and delete operations")
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Link: https://patch.msgid.link/20260510192904.3987113-2-kuba@kernel.org
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Add a QCA_GPIO_PIN_FUNCTION() helper and use it for the ipq4019 gpio
+function, matching how the msm-based qcom drivers handle this.
+
+This allows ipq4019 to keep the GPIO-related pin configuration in DTS
+without tripping over strict pinmux ownership checks.
+
+Fixes: cc85cb96e2e4 ("pinctrl: qcom: make the pinmuxing strict")
+Signed-off-by: Til Kaiser <mail@tk154.de>
+Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
+Signed-off-by: Linus Walleij <linusw@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/shaper/shaper.c | 34 +++++++++++++++++-----------------
- 1 file changed, 17 insertions(+), 17 deletions(-)
+ drivers/pinctrl/qcom/pinctrl-ipq4019.c | 2 +-
+ drivers/pinctrl/qcom/pinctrl-msm.h     | 5 +++++
+ 2 files changed, 6 insertions(+), 1 deletion(-)
 
-diff --git a/net/shaper/shaper.c b/net/shaper/shaper.c
-index 1069fa4eb9f60..d2b8f1f951b19 100644
---- a/net/shaper/shaper.c
-+++ b/net/shaper/shaper.c
-@@ -275,11 +275,13 @@ static void net_shaper_default_parent(const struct net_shaper_handle *handle,
- 	parent->id = 0;
- }
+diff --git a/drivers/pinctrl/qcom/pinctrl-ipq4019.c b/drivers/pinctrl/qcom/pinctrl-ipq4019.c
+index 6ede3149b6e17..07df812fb7282 100644
+--- a/drivers/pinctrl/qcom/pinctrl-ipq4019.c
++++ b/drivers/pinctrl/qcom/pinctrl-ipq4019.c
+@@ -480,7 +480,7 @@ static const struct pinfunction ipq4019_functions[] = {
+ 	QCA_PIN_FUNCTION(blsp_uart0),
+ 	QCA_PIN_FUNCTION(blsp_uart1),
+ 	QCA_PIN_FUNCTION(chip_rst),
+-	QCA_PIN_FUNCTION(gpio),
++	QCA_GPIO_PIN_FUNCTION(gpio),
+ 	QCA_PIN_FUNCTION(i2s_rx),
+ 	QCA_PIN_FUNCTION(i2s_spdif_in),
+ 	QCA_PIN_FUNCTION(i2s_spdif_out),
+diff --git a/drivers/pinctrl/qcom/pinctrl-msm.h b/drivers/pinctrl/qcom/pinctrl-msm.h
+index 4625fa5320a95..120217012a9f6 100644
+--- a/drivers/pinctrl/qcom/pinctrl-msm.h
++++ b/drivers/pinctrl/qcom/pinctrl-msm.h
+@@ -39,6 +39,11 @@ struct pinctrl_pin_desc;
+ 					fname##_groups,		\
+ 					ARRAY_SIZE(fname##_groups))
  
--/*
-- * MARK_0 is already in use due to XA_FLAGS_ALLOC, can't reuse such flag as
-- * it's cleared by xa_store().
-+/* MARK_0 is already in use due to XA_FLAGS_ALLOC. The VALID mark is set on
-+ * an entry only after the device-side configuration has completed
-+ * successfully (see net_shaper_commit()). Lookups and dumps must filter on
-+ * this mark to avoid exposing tentative entries inserted by
-+ * net_shaper_pre_insert() while the driver call is still in flight.
-  */
--#define NET_SHAPER_NOT_VALID XA_MARK_1
-+#define NET_SHAPER_VALID	XA_MARK_1
- 
- static struct net_shaper *
- net_shaper_lookup(struct net_shaper_binding *binding,
-@@ -289,8 +291,8 @@ net_shaper_lookup(struct net_shaper_binding *binding,
- 	struct net_shaper_hierarchy *hierarchy;
- 
- 	hierarchy = net_shaper_hierarchy_rcu(binding);
--	if (!hierarchy || xa_get_mark(&hierarchy->shapers, index,
--				      NET_SHAPER_NOT_VALID))
-+	if (!hierarchy || !xa_get_mark(&hierarchy->shapers, index,
-+				       NET_SHAPER_VALID))
- 		return NULL;
- 
- 	return xa_load(&hierarchy->shapers, index);
-@@ -370,13 +372,10 @@ static int net_shaper_pre_insert(struct net_shaper_binding *binding,
- 		goto free_id;
- 	}
- 
--	/* Mark 'tentative' shaper inside the hierarchy container.
--	 * xa_set_mark is a no-op if the previous store fails.
-+	/* Insert as 'tentative' (no VALID mark). The mark will be set by
-+	 * net_shaper_commit() once the driver-side configuration succeeds.
- 	 */
--	xa_lock(&hierarchy->shapers);
--	prev = __xa_store(&hierarchy->shapers, index, cur, GFP_KERNEL);
--	__xa_set_mark(&hierarchy->shapers, index, NET_SHAPER_NOT_VALID);
--	xa_unlock(&hierarchy->shapers);
-+	prev = xa_store(&hierarchy->shapers, index, cur, GFP_KERNEL);
- 	if (xa_err(prev)) {
- 		NL_SET_ERR_MSG(extack, "Can't insert shaper into device store");
- 		kfree_rcu(cur, rcu);
-@@ -413,8 +412,7 @@ static void net_shaper_commit(struct net_shaper_binding *binding,
- 		/* Successful update: drop the tentative mark
- 		 * and update the hierarchy container.
- 		 */
--		__xa_clear_mark(&hierarchy->shapers, index,
--				NET_SHAPER_NOT_VALID);
-+		__xa_set_mark(&hierarchy->shapers, index, NET_SHAPER_VALID);
- 		*cur = shapers[i];
- 	}
- 	xa_unlock(&hierarchy->shapers);
-@@ -431,8 +429,9 @@ static void net_shaper_rollback(struct net_shaper_binding *binding)
- 		return;
- 
- 	xa_lock(&hierarchy->shapers);
--	xa_for_each_marked(&hierarchy->shapers, index, cur,
--			   NET_SHAPER_NOT_VALID) {
-+	xa_for_each(&hierarchy->shapers, index, cur) {
-+		if (xa_get_mark(&hierarchy->shapers, index, NET_SHAPER_VALID))
-+			continue;
- 		__xa_erase(&hierarchy->shapers, index);
- 		kfree(cur);
- 	}
-@@ -836,7 +835,8 @@ int net_shaper_nl_get_dumpit(struct sk_buff *skb,
- 		goto out_unlock;
- 
- 	for (; (shaper = xa_find(&hierarchy->shapers, &ctx->start_index,
--				 U32_MAX, XA_PRESENT)); ctx->start_index++) {
-+				 U32_MAX, NET_SHAPER_VALID));
-+	     ctx->start_index++) {
- 		ret = net_shaper_fill_one(skb, binding, shaper, info);
- 		if (ret)
- 			break;
++#define QCA_GPIO_PIN_FUNCTION(fname)				\
++	[qca_mux_##fname] = PINCTRL_GPIO_PINFUNCTION(#fname,	\
++					fname##_groups,		\
++					ARRAY_SIZE(fname##_groups))
++
+ /**
+  * struct msm_pingroup - Qualcomm pingroup definition
+  * @grp:                  Generic data of the pin group (name and pins)
 -- 
 2.53.0
 
