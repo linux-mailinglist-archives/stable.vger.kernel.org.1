@@ -1,61 +1,60 @@
-Return-Path: <stable+bounces-256174-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-256342-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id MNWIOnaqGGpolwgAu9opvQ
-	(envelope-from <stable+bounces-256174-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:49:58 +0200
+	id eF32AWOuGGpolwgAu9opvQ
+	(envelope-from <stable+bounces-256342-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 23:06:43 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8AD6C5F9A2E
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:49:58 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2C1465FA39D
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 23:06:42 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id AA77D30B16F0
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 20:42:53 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id D17863019A19
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 20:50:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4099A3346BE;
-	Thu, 28 May 2026 20:42:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D19E8330B32;
+	Thu, 28 May 2026 20:50:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="azaDYFPx"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UbhtxvKo"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2072E33372A;
-	Thu, 28 May 2026 20:42:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AFDCE2F260C;
+	Thu, 28 May 2026 20:50:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780000963; cv=none; b=PQCLzVQJY4bVjXcMB5xxaZna2HWjC2zX2UsJKcplS/KO8pUrkZqezMPs2F1OuFNGmcSQOagIS7I+U1mxuFkcxpyDMWRlc1hoW28K9Y2HYHGK9pEoYVyClWx8vfwKUpQsHi0QbJukQ55kMpUhF7n4elcNEAMlW8PX39Ue0OM5wCI=
+	t=1780001432; cv=none; b=iVCrU2UoKkVPFzg8BHgx0yqlAxI6LUW1LJtQYovyyOG+f7yu9/mXd8jq/072ym+UNMmiFtWGt8h6TwQMUROs6X7jeN3oWc36aj0tsIsCxadgJ1jEoGZSB4jaNQOehjFWVdGVVXqZCqJxdqd0gHCkcAqUMjmtxI4iN1xgD3c/6RQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780000963; c=relaxed/simple;
-	bh=bFn4uqRRNXcqNcTSi7xJpWBlsc1eUxRYZbhoo4QStTU=;
+	s=arc-20240116; t=1780001432; c=relaxed/simple;
+	bh=MOZgA7tYl2kKoNIOFbSS5IS39WzYbyAK7Mm+V28ZgIc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=da6W1YidAT5jqzhr3XXIXND48VjyO8VYKKU9BJIDpbxpwe5ofNugslzuZAVPejz5nec8If23EWBUyOIEocd7yks0t3ghBkJcg+MiPlOYETLdvxYguj04kUsuuGL+uQcmaZxI80iWt+ZfdDC+MsEDcL3DwQEbt60UtecoHu3Qdcs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=azaDYFPx; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7E13B1F000E9;
-	Thu, 28 May 2026 20:42:41 +0000 (UTC)
+	 MIME-Version:Content-Type; b=tSTW8tCsmytr937PiIwTLZnuw5Yjb3lWFcjQehcqdxZUdrZrdPW8dTnS82SXf6h6Xwm5uNEBNNQjr7JM7Hw261nmqN9vLxawx923P7zd4YFbVDPxGlGFluPzVTzLs0+7uLTHF6boXvjFCTpZqckhhu6DNtfPs7Hcdm2o+va0N5c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UbhtxvKo; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 19B201F000E9;
+	Thu, 28 May 2026 20:50:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780000962;
-	bh=0uKm+B4uqp0vMpjfrjlN5R/QryMkXbwm0VlzXxWdr4A=;
+	s=korg; t=1780001431;
+	bh=6XCH76SssE3YFUkd9uV0sVb/2qP8fvGnJwtBkQ63kqw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=azaDYFPxzRxZCrU8C70sOpAOiopjTtc8GhJD9RFF0p0SpuxkkfmVndtqRMH/PnkHi
-	 34sgVv2znFDuqAatSKbK1z9LEzOhrEI8oPpwjE3inIInfZ1MWy9Ge7OcTyKOARoSYa
-	 IUEa6pGEmIRtvtwNazcPm+HSWOGYq0Q/ht1wrp7Q=
+	b=UbhtxvKoq/+JEXxbaBRScSFnBYlpBRobYQq8Zr2TF8Bf3inthZwYF3IW5CX0DHp5s
+	 cypUrLPLa4LW7bjPDCbUTT6sYg7zWCFveGe1/9zh/EZKQXkqBj6bBX4GAuB/M0O7Q/
+	 3CNm6Vde2SQQ+mwnCjRatqC6iKhjvsMPRNb+6IwU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dan Carpenter <error27@gmail.com>,
-	Mike Christie <michael.christie@oracle.com>,
-	Bart Van Assche <bvanassche@acm.org>,
-	"Martin K. Petersen" <martin.petersen@oracle.com>,
+	Gabor Juhos <j4g8y7@gmail.com>,
+	Miquel Raynal <miquel.raynal@bootlin.com>,
+	Vinod Koul <vkoul@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 231/272] scsi: sd: Fix return code handling in sd_spinup_disk()
+Subject: [PATCH 6.6 125/186] phy: marvell: mvebu-a3700-utmi: fix incorrect USB2_PHY_CTRL register access
 Date: Thu, 28 May 2026 21:50:05 +0200
-Message-ID: <20260528194635.639412100@linuxfoundation.org>
+Message-ID: <20260528194932.320450241@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260528194629.379955525@linuxfoundation.org>
-References: <20260528194629.379955525@linuxfoundation.org>
+In-Reply-To: <20260528194928.941004471@linuxfoundation.org>
+References: <20260528194928.941004471@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,76 +64,82 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,oracle.com,acm.org,kernel.org];
-	TAGGED_FROM(0.00)[bounces-256174-lists,stable=lfdr.de];
-	PRECEDENCE_BULK(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,bootlin.com,kernel.org];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
 	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-256342-lists,stable=lfdr.de];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	RCVD_TLS_LAST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[8];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
+	FROM_HAS_DN(0.00)[];
 	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[acm.org:email,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,oracle.com:email,msgid.link:url,linuxfoundation.org:mid,linuxfoundation.org:dkim]
-X-Rspamd-Queue-Id: 8AD6C5F9A2E
+	NEURAL_HAM(-0.00)[-1.000];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	MID_RHS_MATCH_FROM(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_SEVEN(0.00)[7];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,bootlin.com:email,linuxfoundation.org:mid,linuxfoundation.org:dkim]
+X-Rspamd-Queue-Id: 2C1465FA39D
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mike Christie <michael.christie@oracle.com>
+From: Gabor Juhos <j4g8y7@gmail.com>
 
-[ Upstream commit 6ea68a8dc7d2711504d944811981a5304af7d7a9 ]
+[ Upstream commit 91ddf6f722084383fb05be731c0107814b055c0c ]
 
-As found by smatch-ci, scsi_execute_cmd() can return negative or positve
-values so we should use a int instead of unsigned int.
+The mvebu_a3700_utmi_phy_power_off() function tries to modify the
+USB2_PHY_CTRL register by using the IO address of the PHY IP block along
+with the readl/writel IO accessors. However, the register exist in the
+USB miscellaneous register space, and as such it must be accessed via
+regmap like it is done in the mvebu_a3700_utmi_phy_power_on() function.
 
-Fixes: b4d0c33a32c3 ("scsi: sd: Fix sshdr use in sd_spinup_disk")
-Reported-by: Dan Carpenter <error27@gmail.com>
-Closes: https://lore.kernel.org/linux-scsi/agFbI7E6JQwd3wGW@stanley.mountain/T/#u
-Signed-off-by: Mike Christie <michael.christie@oracle.com>
-Reviewed-by: Bart Van Assche <bvanassche@acm.org>
-Link: https://patch.msgid.link/20260511175317.114007-1-michael.christie@oracle.com
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+Change the code to use regmap_update_bits() for modífying the register
+to fix this.
+
+Fixes: cc8b7a0ae866 ("phy: add A3700 UTMI PHY driver")
+Signed-off-by: Gabor Juhos <j4g8y7@gmail.com>
+Reviewed-by: Miquel Raynal <miquel.raynal@bootlin.com>
+Link: https://patch.msgid.link/20260321-a3700-utmi-fix-usb2_phy_ctrl-access-v1-1-6005ff4b5058@gmail.com
+Signed-off-by: Vinod Koul <vkoul@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/scsi/sd.c | 3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
+ drivers/phy/marvell/phy-mvebu-a3700-utmi.c | 5 ++---
+ 1 file changed, 2 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/scsi/sd.c b/drivers/scsi/sd.c
-index f37f031971dfd..ab5cf8460aca5 100644
---- a/drivers/scsi/sd.c
-+++ b/drivers/scsi/sd.c
-@@ -2392,8 +2392,7 @@ sd_spinup_disk(struct scsi_disk *sdkp)
- {
- 	static const u8 cmd[10] = { TEST_UNIT_READY };
- 	unsigned long spintime_expire = 0;
--	int spintime, sense_valid = 0;
--	unsigned int the_result;
-+	int the_result, spintime, sense_valid = 0;
- 	struct scsi_sense_hdr sshdr;
- 	struct scsi_failure failure_defs[] = {
- 		/* Do not retry Medium Not Present */
+diff --git a/drivers/phy/marvell/phy-mvebu-a3700-utmi.c b/drivers/phy/marvell/phy-mvebu-a3700-utmi.c
+index 04f4fb4bed702..f882bc57649c7 100644
+--- a/drivers/phy/marvell/phy-mvebu-a3700-utmi.c
++++ b/drivers/phy/marvell/phy-mvebu-a3700-utmi.c
+@@ -168,9 +168,8 @@ static int mvebu_a3700_utmi_phy_power_off(struct phy *phy)
+ 	u32 reg;
+ 
+ 	/* Disable PHY pull-up and enable USB2 suspend */
+-	reg = readl(utmi->regs + USB2_PHY_CTRL(usb32));
+-	reg &= ~(RB_USB2PHY_PU | RB_USB2PHY_SUSPM(usb32));
+-	writel(reg, utmi->regs + USB2_PHY_CTRL(usb32));
++	regmap_update_bits(utmi->usb_misc, USB2_PHY_CTRL(usb32),
++			   RB_USB2PHY_PU | RB_USB2PHY_SUSPM(usb32), 0);
+ 
+ 	/* Power down OTG module */
+ 	if (usb32) {
 -- 
 2.53.0
 
