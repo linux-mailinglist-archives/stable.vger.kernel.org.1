@@ -1,60 +1,63 @@
-Return-Path: <stable+bounces-256281-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-255476-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id gJ1oLoGrGGpEmAgAu9opvQ
-	(envelope-from <stable+bounces-256281-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:54:25 +0200
+	id 2EHlGWOhGGqnlggAu9opvQ
+	(envelope-from <stable+bounces-255476-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:11:15 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2209E5F9D49
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:54:25 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 69B045F8023
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:11:14 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 283343104F43
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 20:47:41 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id D68A4303C8ED
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 20:10:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DAAF3328B7B;
-	Thu, 28 May 2026 20:47:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 76E2F33A702;
+	Thu, 28 May 2026 20:10:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ra+iV+n3"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="j91if/fx"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A9D13317142;
-	Thu, 28 May 2026 20:47:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 33F0932ABC0;
+	Thu, 28 May 2026 20:10:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780001260; cv=none; b=P8/a/EUyfyvr+PElTbtc7XmXF58dTJ/Uy87W8KarQLxe5UHKWaldOUGTpNsLzer9YLrPJ1BkQsTXRtz07axOkFvN14OeIX8dtHPNKijs7djWo2DZZYKdW9gaFWaAr+gjsraVUOrw4tYi01Ai3ll45GgAyfRBgTVJ2WtjWyocMyA=
+	t=1779999019; cv=none; b=HfdaH6RTlx6HcxkMncLL8rBH28iguDn6YZgm/sanahMpsq7dMyJQbvhSH4b9xWO+HOwYby9Jb9ra2dCdJGYdGKlE471b589gj+YfqXIHI9+lM2VW2+d9YcZ08/4GGW/6p7qMkgLtmYaGGXXriSyfLsQ8+PK7rZd2qQOwWzyDhKw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780001260; c=relaxed/simple;
-	bh=Wo/z59+ULUxEfTpbQH8n1TEcUvnmcnNpPlpc/YnYZQk=;
+	s=arc-20240116; t=1779999019; c=relaxed/simple;
+	bh=78ZxGxFIs8MVHNOwUR+V0OnaJd25jDEKVIRGSaivYUs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=buxfVuJAsopvdie5Q04hZZZ+KaAWEfBkaYpKic+OCeXWc9lqCZwXXIbkGVnfqi6vWWAAtAgZiILHORXKDijFvTRC046mxYLJadHWfmMsb+wTf70viFMaX17qmvF5W40evGQo8JIPk98eib3mAZC6D+kIcMyJJ4v5LAaEosAJMNs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ra+iV+n3; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1493E1F000E9;
-	Thu, 28 May 2026 20:47:38 +0000 (UTC)
+	 MIME-Version; b=HjLh9DxjHbQ4VIMe4zsmfxMf75XPQBgE5Wr99bGS2xzLjESnKn18LAuGfC0cGGAfqmHoqH80JbRBLx7BdosvqY9z3Eb9Oj/yK7MWtqe4zr0f5qTW4dU76mSpPM8lBg4BvppPPAu6AxNe51216vF7XlnUZjiYEVIIqT9cAvDjgQE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=j91if/fx; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 94DB71F000E9;
+	Thu, 28 May 2026 20:10:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780001259;
-	bh=zAo8L/nJ6Bno47UklucIwUJH5hqDh/RLf8TCViMdT9c=;
+	s=korg; t=1779999018;
+	bh=YIvZ9I4M9INXjilgvCPlv2MQC8cxB2+Yh1IwkZffQfA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=ra+iV+n3YGteP/ezELlI7c4KmlAHoRrAsmp38w9l8K8QWZBVbJ45+W1tXqqQWg/8/
-	 bVYrGrmF6iYPZ7kWGvjuORRkbQflqci90H8CdodUzJdy1vHOAESGV9T7JrET/I1bYZ
-	 DyviD2bz4MNdjlLSMDIUw6bECWboKdDG8O3+ap6E=
+	b=j91if/fxcG+Hog3791syy5VVLRmZngwfA+416oKuVuvMMt5e8KQZsV6DyBKzPcajP
+	 Tb8zWA3s6M/nQC4KifRkmUUYxOxYLDbONcURm3415Utj4qfyoMeUvDHFYOPNF3IMfL
+	 D9UjYiAxXmgsB+GNPVjm3l72/3KWt6ucaCQu5N8c=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Huiwen He <hehuiwen@kylinos.cn>,
-	ChenXiaoSong <chenxiaosong@kylinos.cn>,
-	Steve French <stfrench@microsoft.com>,
-	Namjae Jeon <linkinjeon@kernel.org>
-Subject: [PATCH 6.6 027/186] smb/server: promote S_DEL_ON_CLS to S_DEL_PENDING when close
-Date: Thu, 28 May 2026 21:48:27 +0200
-Message-ID: <20260528194929.695123995@linuxfoundation.org>
+	Arkadiusz Kubalewski <Arkadiusz.kubalewski@intel.com>,
+	Grzegorz Nitka <grzegorz.nitka@intel.com>,
+	Aleksandr Loktionov <aleksandr.loktionov@intel.com>,
+	Alexander Nowlin <alexander.nowlin@intel.com>,
+	Tony Nguyen <anthony.l.nguyen@intel.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 7.0 379/461] ice: ptp: use primary NAC semaphore on E825
+Date: Thu, 28 May 2026 21:48:28 +0200
+Message-ID: <20260528194658.424038679@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260528194928.941004471@linuxfoundation.org>
-References: <20260528194928.941004471@linuxfoundation.org>
+In-Reply-To: <20260528194646.819809818@linuxfoundation.org>
+References: <20260528194646.819809818@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,7 +72,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
@@ -77,7 +80,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-256281-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-255476-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
@@ -86,91 +89,84 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
 	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[7];
+	RCPT_COUNT_SEVEN(0.00)[10];
 	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[kylinos.cn:email,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,chenxiaosong.com:url]
-X-Rspamd-Queue-Id: 2209E5F9D49
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,linuxfoundation.org:mid,linuxfoundation.org:dkim,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,intel.com:email]
+X-Rspamd-Queue-Id: 69B045F8023
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+7.0-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: ChenXiaoSong <chenxiaosong@kylinos.cn>
+From: Grzegorz Nitka <grzegorz.nitka@intel.com>
 
-commit 4ec9c8e023c79f613fe4d5ad8cc737112efb2e44 upstream.
+[ Upstream commit 7b28523546c7e4adbb8436f2986efcfc8382985e ]
 
-Reproducer:
+For E825 2xNAC configurations, PTP semaphore operations must hit the
+primary NAC register block so both sides coordinate on the same lock.
 
-  1. server: systemctl start ksmbd
-  2. client: mount -t cifs //${server_ip}/export /mnt
-  3. client: C program: openat(AT_FDCWD, "/mnt", O_RDWR | O_TMPFILE, 0600)
+Commit e2193f9f9ec9 ("ice: enable timesync operation on 2xNAC E825
+devices") updated other primary-only PTP register accesses to
+use the primary NAC on non-primary functions, but left ice_ptp_lock()
+and ice_ptp_unlock() operating on the local NAC. As a result, secondary
+NAC PTP paths can take a different semaphore than the primary side.
 
-Do not treat `FILE_DELETE_ON_CLOSE_LE` as delete pending while files
-remain open.
+Select the primary hardware in ice_ptp_lock() and ice_ptp_unlock() when
+the current function is not primary, keeping semaphore operations
+symmetric and consistent with the rest of the 2xNAC PTP register access
+path.
 
-This patch fixes xfstests generic/004.
-
-Cc: stable@vger.kernel.org
-Link: https://chenxiaosong.com/en/smb-xfstests-generic-004.html
-Co-developed-by: Huiwen He <hehuiwen@kylinos.cn>
-Signed-off-by: Huiwen He <hehuiwen@kylinos.cn>
-Signed-off-by: ChenXiaoSong <chenxiaosong@kylinos.cn>
-Tested-by: Steve French <stfrench@microsoft.com>
-Acked-by: Namjae Jeon <linkinjeon@kernel.org>
-Signed-off-by: Steve French <stfrench@microsoft.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: e2193f9f9ec9 ("ice: enable timesync operation on 2xNAC E825 devices")
+Reviewed-by: Arkadiusz Kubalewski <Arkadiusz.kubalewski@intel.com>
+Signed-off-by: Grzegorz Nitka <grzegorz.nitka@intel.com>
+Reviewed-by: Aleksandr Loktionov <aleksandr.loktionov@intel.com>
+Tested-by: Alexander Nowlin <alexander.nowlin@intel.com>
+Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
+Link: https://patch.msgid.link/20260515182419.1597859-6-anthony.l.nguyen@intel.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/smb/server/vfs_cache.c |   16 ++++++++++++----
- 1 file changed, 12 insertions(+), 4 deletions(-)
+ drivers/net/ethernet/intel/ice/ice_ptp_hw.c | 9 +++++++++
+ 1 file changed, 9 insertions(+)
 
---- a/fs/smb/server/vfs_cache.c
-+++ b/fs/smb/server/vfs_cache.c
-@@ -118,7 +118,7 @@ int ksmbd_query_inode_status(struct dent
- 		return ret;
+diff --git a/drivers/net/ethernet/intel/ice/ice_ptp_hw.c b/drivers/net/ethernet/intel/ice/ice_ptp_hw.c
+index 8bb94e785f2a8..2c18e16fe053e 100644
+--- a/drivers/net/ethernet/intel/ice/ice_ptp_hw.c
++++ b/drivers/net/ethernet/intel/ice/ice_ptp_hw.c
+@@ -5264,9 +5264,13 @@ static void ice_ptp_init_phy_e830(struct ice_ptp_hw *ptp)
+  */
+ bool ice_ptp_lock(struct ice_hw *hw)
+ {
++	struct ice_pf *pf = container_of(hw, struct ice_pf, hw);
+ 	u32 hw_lock;
+ 	int i;
  
- 	down_read(&ci->m_lock);
--	if (ci->m_flags & (S_DEL_PENDING | S_DEL_ON_CLS))
-+	if (ci->m_flags & S_DEL_PENDING)
- 		ret = KSMBD_INODE_STATUS_PENDING_DELETE;
- 	else
- 		ret = KSMBD_INODE_STATUS_OK;
-@@ -134,7 +134,7 @@ bool ksmbd_inode_pending_delete(struct k
- 	int ret;
- 
- 	down_read(&ci->m_lock);
--	ret = (ci->m_flags & (S_DEL_PENDING | S_DEL_ON_CLS));
-+	ret = (ci->m_flags & S_DEL_PENDING);
- 	up_read(&ci->m_lock);
- 
- 	return ret;
-@@ -302,12 +302,20 @@ static void __ksmbd_inode_close(struct k
- 		}
- 	}
- 
-+	down_write(&ci->m_lock);
-+	/* Promote S_DEL_ON_CLS to S_DEL_PENDING when close */
-+	if (ci->m_flags & S_DEL_ON_CLS) {
-+		ci->m_flags &= ~S_DEL_ON_CLS;
-+		ci->m_flags |= S_DEL_PENDING;
-+	}
-+	up_write(&ci->m_lock);
++	if (!ice_is_primary(hw))
++		hw = ice_get_primary_hw(pf);
 +
- 	if (atomic_dec_and_test(&ci->m_count)) {
- 		bool do_unlink = false;
+ #define MAX_TRIES 15
  
- 		down_write(&ci->m_lock);
--		if (ci->m_flags & (S_DEL_ON_CLS | S_DEL_PENDING)) {
--			ci->m_flags &= ~(S_DEL_ON_CLS | S_DEL_PENDING);
-+		if (ci->m_flags & S_DEL_PENDING) {
-+			ci->m_flags &= ~S_DEL_PENDING;
- 			do_unlink = true;
- 		}
- 		up_write(&ci->m_lock);
+ 	for (i = 0; i < MAX_TRIES; i++) {
+@@ -5293,6 +5297,11 @@ bool ice_ptp_lock(struct ice_hw *hw)
+  */
+ void ice_ptp_unlock(struct ice_hw *hw)
+ {
++	struct ice_pf *pf = container_of(hw, struct ice_pf, hw);
++
++	if (!ice_is_primary(hw))
++		hw = ice_get_primary_hw(pf);
++
+ 	wr32(hw, PFTSYN_SEM + (PFTSYN_SEM_BYTES * hw->pf_id), 0);
+ }
+ 
+-- 
+2.53.0
+
 
 
 
