@@ -1,59 +1,59 @@
-Return-Path: <stable+bounces-255882-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-256117-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id iA55J1amGGrClggAu9opvQ
-	(envelope-from <stable+bounces-255882-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:32:22 +0200
+	id OFB7FZmpGGpolwgAu9opvQ
+	(envelope-from <stable+bounces-256117-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:46:17 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id CB7B45F8E84
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:32:21 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1749D5F9821
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:46:17 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 3C82F306EF90
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 20:29:06 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 15A3630CD614
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 20:40:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 01A01DDC5;
-	Thu, 28 May 2026 20:29:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8ECF633F8C3;
+	Thu, 28 May 2026 20:40:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TLsF0TV8"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="axMHvVIq"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C10211EA65;
-	Thu, 28 May 2026 20:29:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4B8152EF652;
+	Thu, 28 May 2026 20:40:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780000143; cv=none; b=Ul5nwsJaQPXQ7FGwqYmE6botWIj722uQNl5a82F0iLLjr4DPLNgJJ/45j/63WlDoEIRoTReh2QWGxbHR92pzcnWkogBUgSUeUBoYejGL03LurLZa7tuutp2XPImIXMkvuiWQ3bbut7bYF8QDaervsWAvCUB1S1gUtRD2fcjASPU=
+	t=1780000804; cv=none; b=Cd/urGUSgUqh+nOuqJofxh8WyKyqk6CSn6aiJVs8OvXTLbfMs6HJ7N3q7BDstHuHADL2UBpXbZRvXgcuW/hmkrQqgHO2USPDQ2oQrSPZ83cWEf0IeBY7Bu/2Ney1nK45r5G5dvIQkrZm0zF2l0dwO/66DjhZMG+HsmknhpDc880=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780000143; c=relaxed/simple;
-	bh=d2FA//DT8ZP65MTAQr/Yn6KJ/c1fZIzVfRop2TDYalY=;
+	s=arc-20240116; t=1780000804; c=relaxed/simple;
+	bh=OOlKoc+dCBFK3fSoae5+RbsDYlis46HIMjl303NO1ss=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=GSzpscRQViwUrwHasuL0SzHAgjM0CxT30KnRGavLu+/q1uj3+FV/PqTKjDKiv3HBdqhXJ5Iie2yTRAK15IzKf1O8ZXxJO6NtzEIZQoeh9GEUBOSuCsDEwwVAwqG6HyP8NO1SsDpEuwso6Q72X5FTZsRhuLkO4f2o7J7nb06oD40=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TLsF0TV8; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2AF7D1F000E9;
-	Thu, 28 May 2026 20:29:01 +0000 (UTC)
+	 MIME-Version; b=HKLNTQQ88TgfT5I3F0ee3htH8vVRgyQmNdYxEAcYIXWkvjLBZAlgil5Jofa6s3x8NrbpdIt2HTPf7HuGPCxFcXJ8UzmlgW5kzEK5+nqm1N5iRIRtO7hUZxNXhrMF1rLZJv1V+FhbbIw7tyeChsDsJYaPPikKhcQuSaAQuZMUzZE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=axMHvVIq; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A8F021F000E9;
+	Thu, 28 May 2026 20:40:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780000142;
-	bh=azXTIYjw8qce5ZJ2aImM6QaYsV0UT5lBH81SEOX4YDc=;
+	s=korg; t=1780000803;
+	bh=54HNfa/Vmp9312iqr2RKsf03cFbLKJKIAXwEaN8AlSQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=TLsF0TV8jGTPYdShgA/2+mPzOMK+Dvwz2C4zpgTEBPVvf8tIc1kjRoVdt7xMTdgyw
-	 I9pMAnKcQUD59zbwIMzjU16DZeB/9PCxegEUSrdHQqzYxv8XqSF0lzMPqqSDBOtOQw
-	 KP7kBU7Rk4bjfQL/611KutoVbmAObOx5WNduNZPs=
+	b=axMHvVIqQMbUEK0EG5A84ZFXDKIB4h+n9asmaJk+OgykrnpVjKkUovTClRoXuSb0o
+	 6S6X2gWJ6PBLzl3+PpfMP6HDRy/yk5Nh6Nax/0NAr3pM8pWBPwx8MiQXLNoQ9A3Q0R
+	 2YGeqTUV3ipxS8BvHuqLtqYsU+y35D08db0k75WE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sashiko <sashiko-bot@kernel.org>,
-	Guenter Roeck <linux@roeck-us.net>,
+	Jianpeng Chang <jianpeng.chang.cn@windriver.com>,
+	"Masami Hiramatsu (Google)" <mhiramat@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 310/377] hwmon: (lm90) Stop work before releasing hwmon device
-Date: Thu, 28 May 2026 21:49:08 +0200
-Message-ID: <20260528194647.353411767@linuxfoundation.org>
+Subject: [PATCH 6.12 175/272] kprobes: skip non-symbol addresses in kprobe_add_ksym_blacklist()
+Date: Thu, 28 May 2026 21:49:09 +0200
+Message-ID: <20260528194634.211273186@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260528194638.371537336@linuxfoundation.org>
-References: <20260528194638.371537336@linuxfoundation.org>
+In-Reply-To: <20260528194629.379955525@linuxfoundation.org>
+References: <20260528194629.379955525@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -68,7 +68,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
@@ -78,7 +78,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-255882-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-256117-lists,stable=lfdr.de];
 	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
@@ -89,116 +89,111 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	TAGGED_RCPT(0.00)[stable];
 	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,roeck-us.net:email,linuxfoundation.org:mid,linuxfoundation.org:dkim]
-X-Rspamd-Queue-Id: CB7B45F8E84
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[windriver.com:email,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim]
+X-Rspamd-Queue-Id: 1749D5F9821
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Guenter Roeck <linux@roeck-us.net>
+From: Jianpeng Chang <jianpeng.chang.cn@windriver.com>
 
-[ Upstream commit b09a45601094c7f4ec4db8090b825fa61e169d93 ]
+[ Upstream commit 307abfac04a254c09c5705d816b33354acee97a0 ]
 
-Sashiko reports:
+When kprobe_add_area_blacklist() iterates through a section like
+.kprobes.text, the start address may not correspond to a named symbol.
+On ARM64 with CONFIG_DYNAMIC_FTRACE_WITH_CALL_OPS=y (introduced by
+commit baaf553d3bc3 ("arm64: Implement
+HAVE_DYNAMIC_FTRACE_WITH_CALL_OPS")), the compiler flag
+-fpatchable-function-entry=4,2 inserts 2 NOPs before each function entry
+point for ftrace call_ops. These pre-function NOPs sit at the section base
+address, before the first named function symbol. The compiler emits a $x
+mapping symbol at offset 0x00 to mark the start of code, but
+find_kallsyms_symbol() ignores mapping symbols.
 
-In lm90_probe(), the devm action to cancel the alert_work and report_work
-(lm90_restore_conf) is registered in lm90_init_client() before
-devm_hwmon_device_register_with_info() is called.
+Without CONFIG_DYNAMIC_FTRACE_WITH_CALL_OPS (e.g. defconfig), no
+pre-function NOPs are inserted, the first function starts at offset
+0x00, and the bug does not trigger.
 
-Because devm executes cleanup actions in reverse order during module
-unbind or probe failure, the hwmon device is unregistered and freed first.
+This only affects modules that have a .kprobes.text section (i.e. those
+using the __kprobes annotation). Modules using NOKPROBE_SYMBOL() instead
+(like kretprobe_example.ko) blacklist exact function addresses via the
+_kprobe_blacklist section and are not affected.
 
-If lm90_alert_work() or lm90_report_alarms() runs in the window between
-the hwmon device being freed and the delayed works being cancelled,
-lm90_update_alarms() will dereference the freed data->hwmon_dev here.
+For kprobe_example.ko on ARM64 with -fpatchable-function-entry=4,2,
+the .kprobes.text section layout is:
 
-Fix the problem by canceling the workers separately after registering
-the hwmon device and before registering the interrupt handler. This ensures
-that the workers are canceled after interrupts are disabled and before
-the hwmon device is released. Add "shutdown" flag to indicate that device
-shutdown is in progress to prevent workers from being re-armed.
+  offset 0x00: $x + 2 NOPs    (mapping symbol + ftrace preamble)
+  offset 0x08: handler_post   (64 bytes)
+  offset 0x50: handler_pre    (68 bytes)
 
-Fixes: f6d0775119fb9 ("hwmon: (lm90) Rework alarm/status handling")
-Reported-by: Sashiko <sashiko-bot@kernel.org>
-Signed-off-by: Guenter Roeck <linux@roeck-us.net>
+kprobe_add_area_blacklist() starts iterating from the section base
+address (offset 0x00), which only has the $x mapping symbol.
+kprobe_add_ksym_blacklist() then calls kallsyms_lookup_size_offset()
+for this address, which goes through:
+
+  kallsyms_lookup_size_offset()
+    -> module_address_lookup()
+      -> find_kallsyms_symbol()
+
+find_kallsyms_symbol() scans all module symbols to find the closest
+preceding symbol.
+
+Since no named text symbol exists at offset 0x00,
+find_kallsyms_symbol() picks __UNIQUE_ID_vermagic (a .modinfo symbol
+whose address is in the temporary image) as the "best" match. The
+computed "size" = next_text_symbol - modinfo_symbol spans across
+these two unrelated memory regions, creating a blacklist entry with
+a bogus range of tens of terabytes.
+
+Whether this causes a visible failure depends on address randomization,
+here is what happens on Raspberry Pi 4/5:
+
+  - On RPi5, the bogus size was ~35 TB. start + size stayed within
+    64-bit range, so the blacklist entry covered the entire kernel
+    text. register_kprobe() in the module's own init function failed
+    with -EINVAL.
+
+  - On RPi4, the bogus size was ~75 TB. start + size overflowed
+    64 bits and wrapped to a small address near zero. The range
+    check (addr >= start && addr < end) then failed because end
+    wrapped around, so the bogus entry was accidentally harmless
+    and kprobes worked by luck.
+
+The same bug exists on both machines, but randomization determines whether
+the integer overflow masks it or not.
+
+Fix this by adding notrace to the __kprobes macro. Functions in
+.kprobes.text are kprobe infrastructure handlers that should never be
+traced by ftrace. With notrace, the compiler stops inserting them and the
+non-symbol gap at the section start disappears entirely.
+
+Link: https://lore.kernel.org/all/20260506012706.2785785-1-jianpeng.chang.cn@windriver.com/
+
+Fixes: baaf553d3bc3 ("arm64: Implement HAVE_DYNAMIC_FTRACE_WITH_CALL_OPS")
+Signed-off-by: Jianpeng Chang <jianpeng.chang.cn@windriver.com>
+Signed-off-by: Masami Hiramatsu (Google) <mhiramat@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/hwmon/lm90.c | 24 ++++++++++++++++++++----
- 1 file changed, 20 insertions(+), 4 deletions(-)
+ include/asm-generic/kprobes.h | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/hwmon/lm90.c b/drivers/hwmon/lm90.c
-index c1f528e292f3d..41ee2309fe8a2 100644
---- a/drivers/hwmon/lm90.c
-+++ b/drivers/hwmon/lm90.c
-@@ -738,6 +738,7 @@ struct lm90_data {
- 	struct mutex update_lock;
- 	struct delayed_work alert_work;
- 	struct work_struct report_work;
-+	bool shutdown;		/* true if shutting down */
- 	bool valid;		/* true if register values are valid */
- 	bool alarms_valid;	/* true if status register values are valid */
- 	unsigned long last_updated; /* in jiffies */
-@@ -1156,6 +1157,9 @@ static void lm90_report_alarms(struct work_struct *work)
- 
- static int lm90_update_alarms_locked(struct lm90_data *data, bool force)
- {
-+	if (data->shutdown)
-+		return 0;
-+
- 	if (force || !data->alarms_valid ||
- 	    time_after(jiffies, data->alarms_updated + msecs_to_jiffies(data->update_interval))) {
- 		struct i2c_client *client = data->client;
-@@ -2600,15 +2604,23 @@ static void lm90_restore_conf(void *_data)
- 	struct lm90_data *data = _data;
- 	struct i2c_client *client = data->client;
- 
--	cancel_delayed_work_sync(&data->alert_work);
--	cancel_work_sync(&data->report_work);
--
- 	/* Restore initial configuration */
- 	if (data->flags & LM90_HAVE_CONVRATE)
- 		lm90_write_convrate(data, data->convrate_orig);
- 	lm90_write_reg(client, LM90_REG_CONFIG1, data->config_orig);
- }
- 
-+static void lm90_stop_work(void *_data)
-+{
-+	struct lm90_data *data = _data;
-+
-+	hwmon_lock(data->hwmon_dev);
-+	data->shutdown = true;
-+	hwmon_unlock(data->hwmon_dev);
-+	cancel_delayed_work_sync(&data->alert_work);
-+	cancel_work_sync(&data->report_work);
-+}
-+
- static int lm90_init_client(struct i2c_client *client, struct lm90_data *data)
- {
- 	struct device_node *np = client->dev.of_node;
-@@ -2919,6 +2931,10 @@ static int lm90_probe(struct i2c_client *client)
- 
- 	data->hwmon_dev = hwmon_dev;
- 
-+	err = devm_add_action_or_reset(&client->dev, lm90_stop_work, data);
-+	if (err)
-+		return err;
-+
- 	if (client->irq) {
- 		dev_dbg(dev, "IRQ: %d\n", client->irq);
- 		err = devm_request_threaded_irq(dev, client->irq,
-@@ -2947,7 +2963,7 @@ static void lm90_alert(struct i2c_client *client, enum i2c_alert_protocol type,
- 		 */
- 		struct lm90_data *data = i2c_get_clientdata(client);
- 
--		if ((data->flags & LM90_HAVE_BROKEN_ALERT) &&
-+		if (!data->shutdown && (data->flags & LM90_HAVE_BROKEN_ALERT) &&
- 		    (data->current_alarms & data->alert_alarms)) {
- 			if (!(data->config & 0x80)) {
- 				dev_dbg(&client->dev, "Disabling ALERT#\n");
+diff --git a/include/asm-generic/kprobes.h b/include/asm-generic/kprobes.h
+index 060eab094e5a2..5290a2b2e15a0 100644
+--- a/include/asm-generic/kprobes.h
++++ b/include/asm-generic/kprobes.h
+@@ -14,7 +14,7 @@ static unsigned long __used					\
+ 	_kbl_addr_##fname = (unsigned long)fname;
+ # define NOKPROBE_SYMBOL(fname)	__NOKPROBE_SYMBOL(fname)
+ /* Use this to forbid a kprobes attach on very low level functions */
+-# define __kprobes	__section(".kprobes.text")
++# define __kprobes	notrace __section(".kprobes.text")
+ # define nokprobe_inline	__always_inline
+ #else
+ # define NOKPROBE_SYMBOL(fname)
 -- 
 2.53.0
 
