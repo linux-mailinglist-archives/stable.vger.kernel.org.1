@@ -1,59 +1,59 @@
-Return-Path: <stable+bounces-256370-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-256202-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id KMheC3yuGGrBmAgAu9opvQ
-	(envelope-from <stable+bounces-256370-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 23:07:08 +0200
+	id 8M+ACs2qGGpolwgAu9opvQ
+	(envelope-from <stable+bounces-256202-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:51:25 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2A5F35FA3C3
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 23:07:07 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 833E05F9B54
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:51:24 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 6F8053057E89
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 20:51:53 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 5DAA5313FE83
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 20:44:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 04D76316905;
-	Thu, 28 May 2026 20:51:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6C6EC33372A;
+	Thu, 28 May 2026 20:44:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="essYm59i"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="K2I9k1fp"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BD680304BB3;
-	Thu, 28 May 2026 20:51:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 44C0D339866;
+	Thu, 28 May 2026 20:44:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780001510; cv=none; b=cS0CwbcL+wNLNtp4ZXtvxz3CMmpgQ/lBJAx2CJcLdCm2qXlvCbj65eABnKAHZ/u40H3/4gGpqdElqI3HZe9NvYARLSGVtsPpfc8XfhOt9r4gD3GIGk5DgzgU5WVs4ExA+57j47cofOA7XUO3eB/9qAlOXo6DwqplhqFd0A/qsTU=
+	t=1780001041; cv=none; b=APja5XM1lQ1dLcd/wyeonJz9CFsCj3nC6+TkM6aDyiSAxycRF+jyd74q1gDU7Rg8Ym0Lao75XKVcPtAB2d5C6Hbfbf+6Ydj/MQCD0yVVRXA8s4+amBiYyZXIYFSeszTyKjUiTWGUHjPXPz9PlpA1NXSRQ//EuoFn4foX28GK9QE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780001510; c=relaxed/simple;
-	bh=EFw1Jhrgqx/Jl1WuqFtNE8QfEe9ogsjCpWZlfImz6Z8=;
+	s=arc-20240116; t=1780001041; c=relaxed/simple;
+	bh=41St2Lz2stu0lSD/Lvs7eT6ydDMNNBhmoAaywyWVt20=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=oWhoePuDdDCGxj0WuUfyhLA99W5Lm+Xm4F+7E1HFkYmFEMDn/p6T7QCd6Nhqy4TSRXOIWLaZErQcvf12ldBe9jSjxUU9ppleIoPXeok7mj5ZDEXT08FZBNNulZnZG/+XiVW8ZBwQw0Sh3xjePtt1ePDRtIe9mIIJXAFiwd6dypI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=essYm59i; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 270891F000E9;
-	Thu, 28 May 2026 20:51:48 +0000 (UTC)
+	 MIME-Version; b=e+unIMa9WQFXn93NdRUsjuWpAMDIsdQ93Q1lmK69TBeSvRQwVxbKCV/rZD3zViZ145NH+mVWwn6+12nHmC3EqfI9ryOZIC1Vfj0V3+0RbmOeHkfWrrk3OOU7WhpyZW0xW9voOMfSCMzMFg97Rck/0B2sKgmsRa0oazbheoTZQlo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=K2I9k1fp; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A340B1F000E9;
+	Thu, 28 May 2026 20:43:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780001509;
-	bh=j71Xmk5JDXEc/r+I+PBCdg/dN9KLvZYMEbTdvecHTlY=;
+	s=korg; t=1780001040;
+	bh=6NjDfCmXKdTDduFBX1t8QV5mSi8Kpda42uSq65Y92x0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=essYm59i7VJel9Ud6Xk98TKsxgaQAZd2ql7Vq038GRAxSg1LnUDl8i4AJgAFZ/vCC
-	 4QJTMJbq/tlZckbMdTuUcXo7LNfH3bvQ67uJhxfiFf4/gYgwEBgWm8mjZ8v2lnN4sI
-	 PQ2TLDbHLKtmB+MAG+o3ibsQYwf8mMWwEoQuT5FI=
+	b=K2I9k1fpernJXplB7Ugj+CRq1VMzDcsFiQjNpnOVB1/suxhGy6y+7pmAoZGniXfD8
+	 Wxd7SMaEfOpPuHl9CMIuL41BaJ7T7JklT+Pt4iMM5OEmeQ3W+/xPxw2V9N2J0S/t5V
+	 2cNKbBrgSyXFxZowQiqloLaU22GBgHLbTMFf0sHs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Daniel Golle <daniel@makrotopia.org>,
-	Paolo Abeni <pabeni@redhat.com>,
+	Jiajia Liu <liujiajia@kylinos.cn>,
+	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 154/186] net: dsa: mt7530: fix FDB entries not aging out with short timeout
+Subject: [PATCH 6.12 260/272] Bluetooth: btmtk: fix urb->setup_packet leak in error paths
 Date: Thu, 28 May 2026 21:50:34 +0200
-Message-ID: <20260528194933.112571735@linuxfoundation.org>
+Message-ID: <20260528194636.376852407@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260528194928.941004471@linuxfoundation.org>
-References: <20260528194928.941004471@linuxfoundation.org>
+In-Reply-To: <20260528194629.379955525@linuxfoundation.org>
+References: <20260528194629.379955525@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -68,7 +68,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
@@ -78,7 +78,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-256370-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-256202-lists,stable=lfdr.de];
 	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
@@ -89,104 +89,50 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	TAGGED_RCPT(0.00)[stable];
 	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[makrotopia.org:email,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim,msgid.link:url,bridge_vlan_aware.sh:url,bridge_vlan_unaware.sh:url]
-X-Rspamd-Queue-Id: 2A5F35FA3C3
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,intel.com:email,kylinos.cn:email,linuxfoundation.org:mid,linuxfoundation.org:dkim]
+X-Rspamd-Queue-Id: 833E05F9B54
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Daniel Golle <daniel@makrotopia.org>
+From: Jiajia Liu <liujiajia@kylinos.cn>
 
-[ Upstream commit e824e40d0e841fab66ab7897d6c7b14dc81c66a7 ]
+[ Upstream commit dd1dda6b8d6e1f4376a5b3055a04f0ecbdb4d6bd ]
 
-The DSA forwarding selftests bridge_vlan_aware.sh and
-bridge_vlan_unaware.sh configure the bridge with ageing_time set to
-LOW_AGEING_TIME (1000 centiseconds, i.e. 10 seconds) and then run
-learning_test() in lib.sh, which expects a learned FDB entry to be
-removed after ageing_time + 10 seconds. On MT7530/MT7531 the entry
-persisted past the deadline and the "Found FDB record when should
-not" assertion failed.
+The setup_packet of control urb is not freed if usb_submit_urb fails or
+the submitted urb is killed. Add free in these two paths.
 
-With msecs=10000, the algorithm in mt7530_set_ageing_time() finds
-AGE_CNT=0 and AGE_UNIT=9 as the first exact match (starting the
-search from tmp_age_count=0). The per-entry aging counter is
-initialized to AGE_CNT when a MAC address is learned, so with
-AGE_CNT=0 new entries start with a counter value of 0, which the
-hardware treats as "already aged" and never removes, effectively
-disabling aging.
-
-Fix this by starting the search from tmp_age_count=1 to ensure
-entries always have a non-zero initial aging counter. For a
-10-second ageing time this yields AGE_CNT=1 and AGE_UNIT=4 instead:
-the timer ticks every 5 seconds and entries are removed after 2
-ticks.
-
-Starting the search at AGE_CNT=1 raises the minimum representable
-ageing time from 1 to 2 seconds. Without bounds, a stale ageing_time
-of 1 second would now make the loop fall through without setting
-age_count and age_unit, leaving them uninitialized when written to
-the MT7530_AAC hardware register. Set ds->ageing_time_min and
-ds->ageing_time_max so the DSA core validates the range before the
-callback is invoked, and drop the now-redundant range check from
-mt7530_set_ageing_time().
-
-Fixes: ea6d5c924e39 ("net: dsa: mt7530: support setting ageing time")
-Signed-off-by: Daniel Golle <daniel@makrotopia.org>
-Link: https://patch.msgid.link/7788ded12dc07b1bce329ec35fa70f4b45f3f9b7.1778766629.git.daniel@makrotopia.org
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Fixes: a1c49c434e150 ("Bluetooth: btusb: Add protocol support for MediaTek MT7668U USB devices")
+Signed-off-by: Jiajia Liu <liujiajia@kylinos.cn>
+Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/dsa/mt7530.c | 20 ++++++++++++++------
- 1 file changed, 14 insertions(+), 6 deletions(-)
+ drivers/bluetooth/btmtk.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/drivers/net/dsa/mt7530.c b/drivers/net/dsa/mt7530.c
-index 2d18a03d92742..ada56e432dd7a 100644
---- a/drivers/net/dsa/mt7530.c
-+++ b/drivers/net/dsa/mt7530.c
-@@ -880,12 +880,16 @@ mt7530_set_ageing_time(struct dsa_switch *ds, unsigned int msecs)
- 	unsigned int age_count;
- 	unsigned int age_unit;
+diff --git a/drivers/bluetooth/btmtk.c b/drivers/bluetooth/btmtk.c
+index 98cb8529d8bcd..08a8c3a5d7b7d 100644
+--- a/drivers/bluetooth/btmtk.c
++++ b/drivers/bluetooth/btmtk.c
+@@ -496,6 +496,7 @@ static void btmtk_usb_wmt_recv(struct urb *urb)
+ 		return;
+ 	} else if (urb->status == -ENOENT) {
+ 		/* Avoid suspend failed when usb_kill_urb */
++		kfree(urb->setup_packet);
+ 		return;
+ 	}
  
--	/* Applied timer is (AGE_CNT + 1) * (AGE_UNIT + 1) seconds */
--	if (secs < 1 || secs > (AGE_CNT_MAX + 1) * (AGE_UNIT_MAX + 1))
--		return -ERANGE;
--
--	/* iterate through all possible age_count to find the closest pair */
--	for (tmp_age_count = 0; tmp_age_count <= AGE_CNT_MAX; ++tmp_age_count) {
-+	/* Applied timer is (AGE_CNT + 1) * (AGE_UNIT + 1) seconds.
-+	 * The DSA core has already validated the range using
-+	 * ds->ageing_time_min and ds->ageing_time_max.
-+	 *
-+	 * Iterate through all possible age_count values to find the closest
-+	 * pair. Start from 1 because the per-entry aging counter is
-+	 * initialized to AGE_CNT and a value of 0 means the entry will
-+	 * never be aged out.
-+	 */
-+	for (tmp_age_count = 1; tmp_age_count <= AGE_CNT_MAX; ++tmp_age_count) {
- 		unsigned int tmp_age_unit = secs / (tmp_age_count + 1) - 1;
- 
- 		if (tmp_age_unit <= AGE_UNIT_MAX) {
-@@ -2419,6 +2423,8 @@ mt7530_setup(struct dsa_switch *ds)
- 
- 	ds->assisted_learning_on_cpu_port = true;
- 	ds->mtu_enforcement_ingress = true;
-+	ds->ageing_time_min = 2 * 1000;
-+	ds->ageing_time_max = (AGE_CNT_MAX + 1) * (AGE_UNIT_MAX + 1) * 1000;
- 
- 	if (priv->id == ID_MT7530) {
- 		regulator_set_voltage(priv->core_pwr, 1000000, 1000000);
-@@ -2598,6 +2604,8 @@ mt7531_setup_common(struct dsa_switch *ds)
- 
- 	ds->assisted_learning_on_cpu_port = true;
- 	ds->mtu_enforcement_ingress = true;
-+	ds->ageing_time_min = 2 * 1000;
-+	ds->ageing_time_max = (AGE_CNT_MAX + 1) * (AGE_UNIT_MAX + 1) * 1000;
- 
- 	mt753x_trap_frames(priv);
+@@ -569,6 +570,7 @@ static int btmtk_usb_submit_wmt_recv_urb(struct hci_dev *hdev)
+ 		if (err != -EPERM && err != -ENODEV)
+ 			bt_dev_err(hdev, "urb %p submission failed (%d)",
+ 				   urb, -err);
++		kfree(dr);
+ 		usb_unanchor_urb(urb);
+ 	}
  
 -- 
 2.53.0
