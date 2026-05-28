@@ -1,64 +1,58 @@
-Return-Path: <stable+bounces-255364-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-255755-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id wCSnBSahGGqblggAu9opvQ
-	(envelope-from <stable+bounces-255364-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:10:14 +0200
+	id CAA1MbikGGoQlwgAu9opvQ
+	(envelope-from <stable+bounces-255755-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:25:28 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 80DF35F7F6B
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:10:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 561E05F8A50
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:25:28 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id DC22830F11D2
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 20:05:17 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id CF5F73015D1F
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 20:23:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EA81041C2E8;
-	Thu, 28 May 2026 20:05:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8038B2F39B4;
+	Thu, 28 May 2026 20:23:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="iADPqcT5"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cKeZEwBW"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 98041413D8E;
-	Thu, 28 May 2026 20:05:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 53233257854;
+	Thu, 28 May 2026 20:23:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779998702; cv=none; b=H2Avvlzzm4J+Scxx5QdiGfThwV4CcGdFyU0cWxEM2MFpPNA12dUCcM5edsHsCUY242o0PqmG/Fz6xJD2f9oOBNgsH9RbDW1h9vRM34R1PRmcqz2NB7fNNoa/8Oeu66KviIP/ncUPB/AX42iTZYNlG7EMVfEn16Fq2zWyvkMeXYI=
+	t=1779999793; cv=none; b=SCFBp6XmDRj2GscQdlvp1AeF/PkePDg6/2HoXxGVj8dyaRXG55Tg7ZYwk5K1D9l+CsqfqAm6Aw8ap1JmTdb3+q1KMJFvP2KQ8xWqi8A3IsSGz1ru0abgXM5r5EWrAfjfsvTKNBxqGuaYw0lEttzJJcBMZR3QhruAsQlhMPFQxKI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779998702; c=relaxed/simple;
-	bh=H65xPM3+itimHWW6W/s9dBynZu10LWgKV4mp5j6Mdp8=;
+	s=arc-20240116; t=1779999793; c=relaxed/simple;
+	bh=8yd3A6RP7l9PEFC1ZbSazbSFHxpUDvDQvm2+kz68Hqo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=SpoL/LC6qUTulNpsOQmBIkCZwV9PIgeSsiFLERQg08s72ONiZnU8vqq/M0CLjk9YEc54xXfCd5VqVbsxdN2RWzyF3AWUfQZHVO2MWJUXiRLkTKy/GozB7N/Eqqqy9QE0LbswQmFcTTbSQjWWz6oEInVp83K+4rVVxuWrhJDFvgs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=iADPqcT5; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 07A9B1F000E9;
-	Thu, 28 May 2026 20:05:00 +0000 (UTC)
+	 MIME-Version; b=VaPPVQtWkp19PKKYl2+fz+3rltjfbyCgstiOMxBuzj+be+7K4Ua3JQTUMSPfSnh8jZU72tjk2E81dOwfvUBBi9zMkQ6Ifl9MQx1jMUFazuI8zOPCnw8kkqjY+rSqZRdPSbqCtmWVSZUxhFjmQdQiNu8EVqaULBkrH/U8y3Wlog8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cKeZEwBW; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B28C61F000E9;
+	Thu, 28 May 2026 20:23:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779998701;
-	bh=oOauYayf3SuJzh9wziOySAiZg54G3Ibtp02jYXklF7M=;
+	s=korg; t=1779999792;
+	bh=G27SZo7CmWButnKW/XwK3pjXImN5o2/YQFySFTQ7nU8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=iADPqcT5J28OPsV0dG5lmiOKovnzeZ18VDQf7bQ0mhDPMbOAChKBdRgqh3smRgGsC
-	 k8nB6/hZRD8W8dheewjrHLKychFtMXlFW/e0j+S0QbAH+VYDzz2ajLb4X13lBFYOLW
-	 QIp/EIQk+jr0KnPn6mq+IFNp5OQlfbSnv/QgjsxA=
+	b=cKeZEwBWdofxj18hD96zgReNR6eOsY8c3vzumKQjnrH6UEZbdYGyIYfH+m9a1ndg8
+	 VxE8YsCbR+DiKYrI78QBQP7WftQfu0Tbzt10CBNLtpHDJAgrxdRHm/Hu4fB7iG+3tN
+	 g23Ix/xRbzcUXtrp/1nmW/SE3MkgU7vEurULYNp4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	David Howells <dhowells@redhat.com>,
-	Paulo Alcantara <pc@manguebit.org>,
-	Viacheslav Dubeyko <Slava.Dubeyko@ibm.com>,
-	Matthew Wilcox <willy@infradead.org>,
-	netfs@lists.linux.dev,
-	linux-fsdevel@vger.kernel.org,
-	Christian Brauner <brauner@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 7.0 266/461] netfs: Fix potential UAF in netfs_unlock_abandoned_read_pages()
+	stable@kernel.org,
+	Sven Eckelmann <sven@narfation.org>
+Subject: [PATCH 6.18 157/377] batman-adv: tt: avoid empty VLAN responses
 Date: Thu, 28 May 2026 21:46:35 +0200
-Message-ID: <20260528194654.866476259@linuxfoundation.org>
+Message-ID: <20260528194642.943840348@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260528194646.819809818@linuxfoundation.org>
-References: <20260528194646.819809818@linuxfoundation.org>
+In-Reply-To: <20260528194638.371537336@linuxfoundation.org>
+References: <20260528194638.371537336@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -78,131 +72,110 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-255364-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-255755-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[11];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,msgid.link:url,infradead.org:email,manguebit.org:email,linux.dev:email,sashiko.dev:url,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo]
-X-Rspamd-Queue-Id: 80DF35F7F6B
+	RCPT_COUNT_FIVE(0.00)[5];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,narfation.org:email,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim]
+X-Rspamd-Queue-Id: 561E05F8A50
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-7.0-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: David Howells <dhowells@redhat.com>
+From: Sven Eckelmann <sven@narfation.org>
 
-[ Upstream commit dbe556972100fabb8e5a1b3d2163831ff07b1e8e ]
+commit fa1bd704940b5bcbc32c0b28db9167405c8ee5e0 upstream.
 
-netfs_unlock_abandoned_read_pages(rreq) accesses the index of the folios it
-is wanting to unlock and compares that to rreq->no_unlock_folio so that it
-doesn't unlock a folio being read for netfs_perform_write() or
-netfs_write_begin().
+The commit 16116dac2339 ("batman-adv: prevent TT request storms by not
+sending inconsistent TT TLVLs") added checks to the local (direct) TT
+response code. But the response can also be done indirectly by another node
+using the global TT state. To avoid such inconsistency states reported in
+the original fix, also avoid sending empty VLANs for replies from the
+global TT state.
 
-However, given that netfs_unlock_abandoned_read_pages() is called _after_
-NETFS_RREQ_IN_PROGRESS is cleared, the one folio that it's not allowed to
-dereference is the one specified by ->no_unlock_folio as ownership
-immediately reverts to the caller.
-
-Fix this by storing the folio pointer instead and using that rather than
-the index.  Also fix netfs_unlock_read_folio() where the same applies.
-
-Fixes: ee4cdf7ba857 ("netfs: Speed up buffered reading")
-Closes: https://sashiko.dev/#/patchset/20260414082004.3756080-1-dhowells%40redhat.com
-Signed-off-by: David Howells <dhowells@redhat.com>
-Link: https://patch.msgid.link/20260512123404.719402-20-dhowells@redhat.com
-cc: Paulo Alcantara <pc@manguebit.org>
-cc: Viacheslav Dubeyko <Slava.Dubeyko@ibm.com>
-cc: Matthew Wilcox <willy@infradead.org>
-cc: netfs@lists.linux.dev
-cc: linux-fsdevel@vger.kernel.org
-Signed-off-by: Christian Brauner <brauner@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: stable@kernel.org
+Fixes: 7ea7b4a14275 ("batman-adv: make the TT CRC logic VLAN specific")
+Signed-off-by: Sven Eckelmann <sven@narfation.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/netfs/buffered_read.c | 4 ++--
- fs/netfs/read_collect.c  | 2 +-
- fs/netfs/read_retry.c    | 2 +-
- include/linux/netfs.h    | 2 +-
- 4 files changed, 5 insertions(+), 5 deletions(-)
+ net/batman-adv/translation-table.c |   20 +++++++++++++++++---
+ 1 file changed, 17 insertions(+), 3 deletions(-)
 
-diff --git a/fs/netfs/buffered_read.c b/fs/netfs/buffered_read.c
-index 004d426c02b41..83d0b8153e96e 100644
---- a/fs/netfs/buffered_read.c
-+++ b/fs/netfs/buffered_read.c
-@@ -670,7 +670,7 @@ int netfs_write_begin(struct netfs_inode *ctx,
- 		ret = PTR_ERR(rreq);
- 		goto error;
- 	}
--	rreq->no_unlock_folio	= folio->index;
-+	rreq->no_unlock_folio	= folio;
- 	__set_bit(NETFS_RREQ_NO_UNLOCK_FOLIO, &rreq->flags);
+--- a/net/batman-adv/translation-table.c
++++ b/net/batman-adv/translation-table.c
+@@ -797,24 +797,26 @@ batadv_tt_prepare_tvlv_global_data(struc
+ 				   s32 *tt_len)
+ {
+ 	u16 num_vlan = 0;
+-	u16 num_entries = 0;
+ 	u16 tvlv_len = 0;
+ 	unsigned int change_offset;
+ 	struct batadv_tvlv_tt_vlan_data *tt_vlan;
+ 	struct batadv_orig_node_vlan *vlan;
++	u16 total_entries = 0;
+ 	u8 *tt_change_ptr;
++	int vlan_entries;
  
- 	ret = netfs_begin_cache_read(rreq, ctx);
-@@ -736,7 +736,7 @@ int netfs_prefetch_for_write(struct file *file, struct folio *folio,
- 		goto error;
- 	}
- 
--	rreq->no_unlock_folio = folio->index;
-+	rreq->no_unlock_folio = folio;
- 	__set_bit(NETFS_RREQ_NO_UNLOCK_FOLIO, &rreq->flags);
- 	ret = netfs_begin_cache_read(rreq, ctx);
- 	if (ret == -ENOMEM || ret == -EINTR || ret == -ERESTARTSYS)
-diff --git a/fs/netfs/read_collect.c b/fs/netfs/read_collect.c
-index 3c9b847885c2a..23660a5901246 100644
---- a/fs/netfs/read_collect.c
-+++ b/fs/netfs/read_collect.c
-@@ -83,7 +83,7 @@ static void netfs_unlock_read_folio(struct netfs_io_request *rreq,
+ 	spin_lock_bh(&orig_node->vlan_list_lock);
+ 	hlist_for_each_entry(vlan, &orig_node->vlan_list, list) {
++		vlan_entries = atomic_read(&vlan->tt.num_entries);
++		total_entries += vlan_entries;
+ 		num_vlan++;
+-		num_entries += atomic_read(&vlan->tt.num_entries);
  	}
  
- just_unlock:
--	if (folio->index == rreq->no_unlock_folio &&
-+	if (folio == rreq->no_unlock_folio &&
- 	    test_bit(NETFS_RREQ_NO_UNLOCK_FOLIO, &rreq->flags)) {
- 		_debug("no unlock");
- 	} else {
-diff --git a/fs/netfs/read_retry.c b/fs/netfs/read_retry.c
-index e10eb5a073326..f59a70f3a086b 100644
---- a/fs/netfs/read_retry.c
-+++ b/fs/netfs/read_retry.c
-@@ -292,7 +292,7 @@ void netfs_unlock_abandoned_read_pages(struct netfs_io_request *rreq)
- 			struct folio *folio = folioq_folio(p, slot);
+ 	change_offset = struct_size(*tt_data, vlan_data, num_vlan);
  
- 			if (folio && !folioq_is_marked2(p, slot)) {
--				if (folio->index == rreq->no_unlock_folio &&
-+				if (folio == rreq->no_unlock_folio &&
- 				    test_bit(NETFS_RREQ_NO_UNLOCK_FOLIO,
- 					     &rreq->flags)) {
- 					_debug("no unlock");
-diff --git a/include/linux/netfs.h b/include/linux/netfs.h
-index 4fd1d796ad73b..243c0f7379388 100644
---- a/include/linux/netfs.h
-+++ b/include/linux/netfs.h
-@@ -252,7 +252,7 @@ struct netfs_io_request {
- 	unsigned long long	collected_to;	/* Point we've collected to */
- 	unsigned long long	cleaned_to;	/* Position we've cleaned folios to */
- 	unsigned long long	abandon_to;	/* Position to abandon folios to */
--	pgoff_t			no_unlock_folio; /* Don't unlock this folio after read */
-+	const struct folio	*no_unlock_folio; /* Don't unlock this folio after read */
- 	unsigned int		direct_bv_count; /* Number of elements in direct_bv[] */
- 	unsigned int		debug_id;
- 	unsigned int		rsize;		/* Maximum read size (0 for none) */
--- 
-2.53.0
-
+ 	/* if tt_len is negative, allocate the space needed by the full table */
+ 	if (*tt_len < 0)
+-		*tt_len = batadv_tt_len(num_entries);
++		*tt_len = batadv_tt_len(total_entries);
+ 
+ 	if (change_offset > U16_MAX || *tt_len > U16_MAX - change_offset) {
+ 		*tt_len = 0;
+@@ -835,14 +837,26 @@ batadv_tt_prepare_tvlv_global_data(struc
+ 	(*tt_data)->num_vlan = htons(num_vlan);
+ 
+ 	tt_vlan = (*tt_data)->vlan_data;
++	num_vlan = 0;
+ 	hlist_for_each_entry(vlan, &orig_node->vlan_list, list) {
++		vlan_entries = atomic_read(&vlan->tt.num_entries);
++		if (vlan_entries < 1)
++			continue;
++
+ 		tt_vlan->vid = htons(vlan->vid);
+ 		tt_vlan->crc = htonl(vlan->tt.crc);
+ 		tt_vlan->reserved = 0;
+ 
+ 		tt_vlan++;
++		num_vlan++;
+ 	}
+ 
++	/* recalculate in case number of VLANs reduced */
++	change_offset = struct_size(*tt_data, vlan_data, num_vlan);
++	tvlv_len = *tt_len + change_offset;
++
++	(*tt_data)->num_vlan = htons(num_vlan);
++
+ 	tt_change_ptr = (u8 *)*tt_data + change_offset;
+ 	*tt_change = (struct batadv_tvlv_tt_change *)tt_change_ptr;
+ 
 
 
 
