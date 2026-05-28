@@ -1,62 +1,60 @@
-Return-Path: <stable+bounces-256165-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-256333-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id WKqbOW2qGGpolwgAu9opvQ
-	(envelope-from <stable+bounces-256165-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:49:49 +0200
+	id UAMNGImsGGpolwgAu9opvQ
+	(envelope-from <stable+bounces-256333-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:58:49 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id AAFBD5F9A09
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:49:49 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id D9DC15F9F79
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:58:48 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id C940330AE74D
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 20:42:20 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 0BDB032087AA
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 20:50:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 35CD233B6FC;
-	Thu, 28 May 2026 20:42:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 080F9318B9D;
+	Thu, 28 May 2026 20:50:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Eol1Iub6"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EQaFzXCn"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EA425317164;
-	Thu, 28 May 2026 20:42:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C067431159C;
+	Thu, 28 May 2026 20:50:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780000938; cv=none; b=atU8EmvXHsmOBAV7RSkD9IUW6SzOLcE5A+cpScx2BK8MvzJvi0i94oNvI8omfJzWJDECiKVQx2SSNN/LE0XpudtHBn9dBOkT1AffE+u8t8o/uO15OZxsxLAKeCdtpGDThXwtt/F/5B1lNtDYm151IHFMdwbXhG6QVHZmmoli5Mo=
+	t=1780001407; cv=none; b=j4c34Emeb/zPvnmGMaptvlvqQ5sv6Jc7vUGS5WEodBNFljA5fvuppJv4Lmr2BM0vA1wwqpuDR8xQJzuGOeRN4TtK2B+QqdY7gu28SEsm/yH2a/P5yCSvzUHeUVq8ign0q4d5kw7lQho1NyeErYhXt6TyfdNn26uZS8zvrFtIUSM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780000938; c=relaxed/simple;
-	bh=76ZT5+w3SXUwrGrUhJ2O+J8Q2QEH81PRCPwmEiAYp44=;
+	s=arc-20240116; t=1780001407; c=relaxed/simple;
+	bh=Fc13Nzxdi8RGpGRgbdZphkBhX15UVk+qQNJX2ppdO4g=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=fpDGuthZJw1gtk8vV26fO2j73ucSSY8PO6Y2eHsPq2w96Ywo7RJ3mOsMjsaazW/XaIme2OwXjyUJgdXqxxUvWuZzv5OU+3/s+eHWhJ9289ZN2xK3ub8fgfxuY+wT19xqdKBct9R5rkJ3qTVteJzC+XkpK+E8tQH3kXxv2AMcbJw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Eol1Iub6; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5C2591F000E9;
-	Thu, 28 May 2026 20:42:16 +0000 (UTC)
+	 MIME-Version; b=m+mAVlanVMwRUBkDDo+Y/SkGrKa4a/wcwsLuzn8tfylFKrlB6Y3YiFxkzine2MTjHk3gPPrAqpVCvZkOX/poUPTGE6C01UYUDLIe+ybeGcUftkcw0aLq9pz2G1RLabKaXKuTVzJsNYLBI2bUCgGDQ24PO8BdspQOHp9GTK6gQ38=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EQaFzXCn; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E99021F000E9;
+	Thu, 28 May 2026 20:50:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780000936;
-	bh=LX9fVVmTmh6ueoYn1XHl2xy3zISBBYq+K3sbJt8HtYI=;
+	s=korg; t=1780001406;
+	bh=IsOr9pl6i0nGFW9b6tgpObyUIgj6X4D/sFiUOcRo1q0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=Eol1Iub6FMgYB1qTGD9fsgM3SG80+OOpc94n4++fYZedeCm2blDN+3Uvyg6rF0hFd
-	 TKieytAaPhQ28m7J1SLkY6PpG3DOWZ6QtQmdRlGbjNiClSWB/wQrtrDD1mZLsCu7E5
-	 87t9PD3dQ4JEJOePiharUqEbT+Mjv2OcvDA+rDl0=
+	b=EQaFzXCn4OBVlLu5rb1jl2JXnlVcHCckiym4MKbCmiQQ1umJGrpJkAv52Zvc+vZuE
+	 nOweuWXoRQ4w0306hirk3pSBDuURoJW5UCkOzBzf5AqUJx8TU/rFIjfP0SeUwceIgn
+	 o/QQY/nvr600bft/lAtvgAfMJKjVhlW/p93vW1KI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mahesh Salgaonkar <mahesh@linux.ibm.com>,
-	Shrikanth Hegde <sshegde@linux.ibm.com>,
-	"Ritesh Harjani (IBM)" <ritesh.list@gmail.com>,
-	Sayali Patil <sayalip@linux.ibm.com>,
-	Madhavan Srinivasan <maddy@linux.ibm.com>,
+	Tristan Madani <tristan@talencesecurity.com>,
+	Florian Westphal <fw@strlen.de>,
+	Pablo Neira Ayuso <pablo@netfilter.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 223/272] powerpc/time: Remove redundant preempt_disable|enable() calls from arch_irq_work_raise()
+Subject: [PATCH 6.6 117/186] netfilter: ebtables: close dangling table module init race
 Date: Thu, 28 May 2026 21:49:57 +0200
-Message-ID: <20260528194635.438515877@linuxfoundation.org>
+Message-ID: <20260528194932.099936229@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260528194629.379955525@linuxfoundation.org>
-References: <20260528194629.379955525@linuxfoundation.org>
+In-Reply-To: <20260528194928.941004471@linuxfoundation.org>
+References: <20260528194928.941004471@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -67,132 +65,149 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	TAGGED_FROM(0.00)[bounces-256165-lists,stable=lfdr.de];
-	FROM_HAS_DN(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,linux.ibm.com,gmail.com,kernel.org];
 	MIME_TRACE(0.00)[0:+];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[9];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable];
-	TO_DN_SOME(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-256333-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,msgid.link:url,linuxfoundation.org:mid,linuxfoundation.org:dkim]
-X-Rspamd-Queue-Id: AAFBD5F9A09
+	TO_DN_SOME(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_SEVEN(0.00)[7];
+	MID_RHS_MATCH_FROM(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[talencesecurity.com:email,netfilter.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,strlen.de:email]
+X-Rspamd-Queue-Id: D9DC15F9F79
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sayali Patil <sayalip@linux.ibm.com>
+From: Florian Westphal <fw@strlen.de>
 
-[ Upstream commit 31467b23823ffec1f6fff407f8e3ca9af8b7491a ]
+[ Upstream commit 92c603fa07bc0d6a17345de3ad7954730b8de44b ]
 
-A kernel panic is observed when handling machine check exceptions from
-real mode.
+sashiko reported for a related patch:
+ In modules like iptable_raw.c, [..], if register_pernet_subsys() fails,
+ the rollback might call kfree(rawtable_ops) before [..]
+ During this window, could a concurrent userspace process find the globally
+ visible template, trigger table_init(), [..]
 
-  BUG: Unable to handle kernel data access on read at 0xc00000006be21300
-  Oops: Kernel access of bad area, sig: 11 [#1]
-  MSR:  8000000000001003 <SF,ME,RI,LE>  CR: 88222248  XER: 00000005
-  CFAR: c00000000003ffc4 DAR: c00000006be21300 DSISR: 40000000 IRQMASK: 0
-  NIP [c000000000029e40] arch_irq_work_raise+0x10/0x70
-  LR [c00000000003ffc8] machine_check_queue_event+0xa8/0x150
-  Call Trace:
-  [c0000000179d3c70] [c00000000003ff64] machine_check_queue_event+0x44/0x150
-  [c0000000179d3d30] [c0000000000084e0] machine_check_early_common+0x1f0/0x2c0
+The table init functions must always register the template last.
 
-The crash occurs because arch_irq_work_raise() calls preempt_disable()
-from machine check exception (MCE) handlers running in real mode. In
-this context, accessing the preempt_count can fault, leading to the panic.
+Otherwise, set/getsockopt can instantiate a table in a namespace
+while the required pernet ops (contain the destructor) isn't available.
+This change is also required in x_tables, handled in followup change.
 
-The preempt_disable()/preempt_enable() pair in arch_irq_work_raise()
-was originally added by commit 0fe1ac48bef0 ("powerpc/perf_event: Fix
-oops due to perf_event_do_pending call") to avoid races while raising
-irq work from exception context.
-
-Later, commit 471ba0e686cb ("irq_work: Do not raise an IPI when
-queueing work on the local CPU") added preemption protection in
-irq_work_queue() path, while commit 20b876918c06 ("irq_work: Use per
-cpu atomics instead of regular atomics") added equivalent
-protection in irq_work_queue_on() before reaching arch_irq_work_raise():
-
-  irq_work_queue() / irq_work_queue_on()
-    -> preempt_disable()
-      -> __irq_work_queue_local()
-        -> irq_work_raise()
-          -> arch_irq_work_raise()
-
-As a result, callers other than mce_irq_work_raise() already execute
-with preemption disabled, making the additional
-preempt_disable()/preempt_enable() pair in arch_irq_work_raise()
-redundant.
-
-The arch_irq_work_raise() function executes in NMI context when called
-from MCE handler. Hence we will not be preempted or scheduled out since
-we are in NMI context with MSR[EE]=0. Therefore, it is safe to remove
-the preempt_disable()/preempt_enable() calls from here.
-
-Remove it to avoid accessing preempt_count from real mode context.
-
-Fixes: cc15ff327569 ("powerpc/mce: Avoid using irq_work_queue() in realmode")
-Suggested-by: Mahesh Salgaonkar <mahesh@linux.ibm.com>
-Acked-by: Shrikanth Hegde <sshegde@linux.ibm.com>
-Reviewed-by: Ritesh Harjani (IBM) <ritesh.list@gmail.com>
-Signed-off-by: Sayali Patil <sayalip@linux.ibm.com>
-[Maddy: Fixed the commit title]
-Signed-off-by: Madhavan Srinivasan <maddy@linux.ibm.com>
-Link: https://patch.msgid.link/20260513081413.222490-1-sayalip@linux.ibm.com
+Fixes: 87663c39f898 ("netfilter: ebtables: do not hook tables by default")
+Reviewed-by: Tristan Madani <tristan@talencesecurity.com>
+Signed-off-by: Florian Westphal <fw@strlen.de>
+Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/powerpc/kernel/time.c | 6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
+ net/bridge/netfilter/ebtable_broute.c | 12 +++++-------
+ net/bridge/netfilter/ebtable_filter.c | 12 +++++-------
+ net/bridge/netfilter/ebtable_nat.c    | 10 ++++------
+ 3 files changed, 14 insertions(+), 20 deletions(-)
 
-diff --git a/arch/powerpc/kernel/time.c b/arch/powerpc/kernel/time.c
-index 0ff9f038e800d..ce7f91172ec2b 100644
---- a/arch/powerpc/kernel/time.c
-+++ b/arch/powerpc/kernel/time.c
-@@ -458,6 +458,10 @@ DEFINE_PER_CPU(u8, irq_work_pending);
+diff --git a/net/bridge/netfilter/ebtable_broute.c b/net/bridge/netfilter/ebtable_broute.c
+index 33d8640d21ac1..43c808e525e87 100644
+--- a/net/bridge/netfilter/ebtable_broute.c
++++ b/net/bridge/netfilter/ebtable_broute.c
+@@ -112,18 +112,16 @@ static struct pernet_operations broute_net_ops = {
  
- #endif /* 32 vs 64 bit */
- 
-+/*
-+ * Must be called with preemption disabled since it updates
-+ * per-CPU irq_work state and programs the local CPU decrementer.
-+ */
- void arch_irq_work_raise(void)
+ static int __init ebtable_broute_init(void)
  {
- 	/*
-@@ -471,10 +475,8 @@ void arch_irq_work_raise(void)
- 	 * which could get tangled up if we're messing with the same state
- 	 * here.
- 	 */
--	preempt_disable();
- 	set_irq_work_pending_flag();
- 	set_dec(1);
--	preempt_enable();
+-	int ret = ebt_register_template(&broute_table, broute_table_init);
++	int ret = register_pernet_subsys(&broute_net_ops);
+ 
+ 	if (ret)
+ 		return ret;
+ 
+-	ret = register_pernet_subsys(&broute_net_ops);
+-	if (ret) {
+-		ebt_unregister_template(&broute_table);
+-		return ret;
+-	}
++	ret = ebt_register_template(&broute_table, broute_table_init);
++	if (ret)
++		unregister_pernet_subsys(&broute_net_ops);
+ 
+-	return 0;
++	return ret;
  }
  
- static void set_dec_or_work(u64 val)
+ static void __exit ebtable_broute_fini(void)
+diff --git a/net/bridge/netfilter/ebtable_filter.c b/net/bridge/netfilter/ebtable_filter.c
+index fdb988c24916a..f76d45dfe9b46 100644
+--- a/net/bridge/netfilter/ebtable_filter.c
++++ b/net/bridge/netfilter/ebtable_filter.c
+@@ -93,18 +93,16 @@ static struct pernet_operations frame_filter_net_ops = {
+ 
+ static int __init ebtable_filter_init(void)
+ {
+-	int ret = ebt_register_template(&frame_filter, frame_filter_table_init);
++	int ret = register_pernet_subsys(&frame_filter_net_ops);
+ 
+ 	if (ret)
+ 		return ret;
+ 
+-	ret = register_pernet_subsys(&frame_filter_net_ops);
+-	if (ret) {
+-		ebt_unregister_template(&frame_filter);
+-		return ret;
+-	}
++	ret = ebt_register_template(&frame_filter, frame_filter_table_init);
++	if (ret)
++		unregister_pernet_subsys(&frame_filter_net_ops);
+ 
+-	return 0;
++	return ret;
+ }
+ 
+ static void __exit ebtable_filter_fini(void)
+diff --git a/net/bridge/netfilter/ebtable_nat.c b/net/bridge/netfilter/ebtable_nat.c
+index 8b981b2041b5d..af0732e2f889d 100644
+--- a/net/bridge/netfilter/ebtable_nat.c
++++ b/net/bridge/netfilter/ebtable_nat.c
+@@ -93,16 +93,14 @@ static struct pernet_operations frame_nat_net_ops = {
+ 
+ static int __init ebtable_nat_init(void)
+ {
+-	int ret = ebt_register_template(&frame_nat, frame_nat_table_init);
++	int ret = register_pernet_subsys(&frame_nat_net_ops);
+ 
+ 	if (ret)
+ 		return ret;
+ 
+-	ret = register_pernet_subsys(&frame_nat_net_ops);
+-	if (ret) {
+-		ebt_unregister_template(&frame_nat);
+-		return ret;
+-	}
++	ret = ebt_register_template(&frame_nat, frame_nat_table_init);
++	if (ret)
++		unregister_pernet_subsys(&frame_nat_net_ops);
+ 
+ 	return ret;
+ }
 -- 
 2.53.0
 
