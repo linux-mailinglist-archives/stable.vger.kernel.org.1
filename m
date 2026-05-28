@@ -1,61 +1,60 @@
-Return-Path: <stable+bounces-255932-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-256343-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id qMEeIkmnGGpolwgAu9opvQ
-	(envelope-from <stable+bounces-255932-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:36:25 +0200
+	id sJ9yM5KsGGpolwgAu9opvQ
+	(envelope-from <stable+bounces-256343-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:58:58 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4A1B75F9163
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:36:25 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 72A9E5F9F98
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:58:58 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 5D5F53002B3F
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 20:31:26 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 0970F322B968
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 20:50:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BB28232AAD6;
-	Thu, 28 May 2026 20:31:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A38F0318B9D;
+	Thu, 28 May 2026 20:50:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cAHt1dF0"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="biyWl5Dz"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 79C01223328;
-	Thu, 28 May 2026 20:31:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 80BB02F1FEF;
+	Thu, 28 May 2026 20:50:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780000283; cv=none; b=Cl/mj9fKegfbMSNPY0tbfQjwt6fgq4tdhVd7XoG111/+nqUgpNqyl/EYsmsOHnft0BXkBLEihl994pf7iYS2mx+6U6Ay5j+tTSNPd15m9FhCrBzWld/Cl7IYWLS6NoQXWLLc39/1EcdnlbrDNgleT9Hpj62pLnbF0jnzeXo05eQ=
+	t=1780001435; cv=none; b=bZNWGdDNuQweO03xHRC3iEgt2rXtdjsqjP8elqLSns8r0uyMX1vhuPTnPis8fE2GftAwsewTOnHIQx6i3K6TxTzMPG48TUkTSgLuUP/XrQScxU9heQ7LjaJUZ6HkOMYRkYYsMC+g0eiPZoRmvqYWz8rZPeWY+TJ3cxW/yF+ji1g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780000283; c=relaxed/simple;
-	bh=UNj/rtlyfds3bwHldcgYs4+OL2KIzUw768zA1mBERps=;
+	s=arc-20240116; t=1780001435; c=relaxed/simple;
+	bh=N0Wt1IsF9GX53QdKDfGan3PBUnEPdMVJo1OR64uFTM8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=WIqPaImX0GOIf5ssa+NtxGclsmtev6gNNgqn70cTG/x3JNikxYvW8mEvdY5SdW/OrJFprlfi5gQSTNuYa9POGyM9tu6yHX26sMYZzZ+fkFOPpHNgqoOH2eYn4iVeOM52W8TIy84u20ygk8Jj1QUNS5GftXBO3WLhkBbBl9AmpmM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cAHt1dF0; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B01E71F000E9;
-	Thu, 28 May 2026 20:31:21 +0000 (UTC)
+	 MIME-Version; b=eD16G5Iz4PiYxig3GPcUA/WzD41XSXRg4ZYvqwX3qqY+Iy+7wbX3xC42adLAV0OcR2EoXBOWQ8WYs4yRh+NbZ4zNHB40wCUDFE6wjK7DW4ol+6m9RacRYSph6CNQ6rwoxITs5p7LsRrGccQfFeyll3XYuz+9dzRYs/11mHxbWWg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=biyWl5Dz; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DF8251F000E9;
+	Thu, 28 May 2026 20:50:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780000282;
-	bh=hRy3bKgKqtwuMYD6ppJM7Zqf2eF+ohvPAJGaqzUnFTo=;
+	s=korg; t=1780001434;
+	bh=OTzOtnkfbGLi+R1+8Mb1K1ACg5pogul0ViQABOu4tSY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=cAHt1dF0Nk4C0YGGA0v4ApI0gHr6pE+dLlswC+eWUrP+kHbclIQ4OpgaL4GcNkHQ8
-	 r3JzlTpcV62sB/LVCkBPpeaYZUuLUOFV1N5KtyIL/zJh1LwBtvA5hiJH1mPJKhzwPd
-	 x/hA524cdLD2PnVeSg0F4couKnaAnQdmgRcgEqZU=
+	b=biyWl5DzUE1rsNcf2BYQ9Dzb6IxvxKQBzqr+BLih+k2UCz3dLmu3zDdaXW8x3sPDV
+	 CJHC8NEDPNtBpcbel3BQSFcpXx1g22U8+AiNSMGHpW7R9jfU81t1Rk4xRztAE7qRob
+	 Z0hnt8qLDcOS3wC1cx3xnvKjSZ0unxSRSSoqziqQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Carolina Jubran <cjubran@nvidia.com>,
-	Dragos Tatulea <dtatulea@nvidia.com>,
-	Nimrod Oren <noren@nvidia.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	kernel test robot <lkp@intel.com>,
+	Rosen Penev <rosenp@gmail.com>,
+	Thomas Gleixner <tglx@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 368/377] selftests: net: Fix checksums in xdp_native
+Subject: [PATCH 6.6 126/186] irqchip/ath79-cpu: Remove unused function
 Date: Thu, 28 May 2026 21:50:06 +0200
-Message-ID: <20260528194649.081146121@linuxfoundation.org>
+Message-ID: <20260528194932.346553073@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260528194638.371537336@linuxfoundation.org>
-References: <20260528194638.371537336@linuxfoundation.org>
+In-Reply-To: <20260528194928.941004471@linuxfoundation.org>
+References: <20260528194928.941004471@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -70,190 +69,76 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	RCVD_TLS_LAST(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,intel.com,gmail.com,kernel.org];
+	TAGGED_FROM(0.00)[bounces-256343-lists,stable=lfdr.de];
+	PRECEDENCE_BULK(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FROM_HAS_DN(0.00)[];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-255932-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TO_DN_SOME(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
-	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[8];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[7];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,msgid.link:url,nvidia.com:email,linuxfoundation.org:mid,linuxfoundation.org:dkim]
-X-Rspamd-Queue-Id: 4A1B75F9163
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,intel.com:email,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim]
+X-Rspamd-Queue-Id: 72A9E5F9F98
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Nimrod Oren <noren@nvidia.com>
+From: Rosen Penev <rosenp@gmail.com>
 
-[ Upstream commit dfc077043351a81887d1e4c9ac244e9243f3cbf2 ]
+[ Upstream commit 0fa10fb77069fb67aa51384868ef3702b7791465 ]
 
-Data adjustment cases failed with "Data exchange failed" when using IPv4
-because the program did not update the IP and UDP checksums in the IPv4
-branch. The issue was masked when both IPv4 and IPv6 were configured,
-since the test harness prefers IPv6.
+ath79_cpu_irq_init() was part of the legacy pre-OF code that got removed a
+while back.
 
-While here, generalize csum_fold_helper() to fold twice so it works for
-any 32-bit input.
+Remove it to get rid of a missing prototype warning, reported by the kernel test
+robot.
 
-Fixes: 0b65cfcef9c5 ("selftests: drv-net: Test tail-adjustment support")
-Reviewed-by: Carolina Jubran <cjubran@nvidia.com>
-Reviewed-by: Dragos Tatulea <dtatulea@nvidia.com>
-Signed-off-by: Nimrod Oren <noren@nvidia.com>
-Link: https://patch.msgid.link/20260520153928.3371765-1-noren@nvidia.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+[ tglx: Fix the subject prefix. Sigh ... ]
+
+Fixes: 51fa4f8912c0 ("MIPS: ath79: drop legacy IRQ code")
+Reported-by: kernel test robot <lkp@intel.com>
+Signed-off-by: Rosen Penev <rosenp@gmail.com>
+Signed-off-by: Thomas Gleixner <tglx@kernel.org>
+Link: https://patch.msgid.link/20260506085522.1210143-1-rosenp@gmail.com
+Closes: https://lore.kernel.org/oe-kbuild-all/202412011509.kGQkDr1y-lkp@intel.com/
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- .../selftests/net/lib/xdp_native.bpf.c        | 55 ++++++++++---------
- 1 file changed, 30 insertions(+), 25 deletions(-)
+ drivers/irqchip/irq-ath79-cpu.c | 7 -------
+ 1 file changed, 7 deletions(-)
 
-diff --git a/tools/testing/selftests/net/lib/xdp_native.bpf.c b/tools/testing/selftests/net/lib/xdp_native.bpf.c
-index c368fc045f4b4..d5134f93f7d7f 100644
---- a/tools/testing/selftests/net/lib/xdp_native.bpf.c
-+++ b/tools/testing/selftests/net/lib/xdp_native.bpf.c
-@@ -268,6 +268,17 @@ static int xdp_mode_tx_handler(struct xdp_md *ctx, __u16 port)
- 	return XDP_PASS;
+diff --git a/drivers/irqchip/irq-ath79-cpu.c b/drivers/irqchip/irq-ath79-cpu.c
+index 923e4bba37767..9b7273a7f8ced 100644
+--- a/drivers/irqchip/irq-ath79-cpu.c
++++ b/drivers/irqchip/irq-ath79-cpu.c
+@@ -85,10 +85,3 @@ static int __init ar79_cpu_intc_of_init(
  }
- 
-+static __always_inline __u16 csum_fold_helper(__u32 csum)
-+{
-+	csum = (csum & 0xffff) + (csum >> 16);
-+	return ~((csum & 0xffff) + (csum >> 16));
-+}
-+
-+static __always_inline __u16 csum_fold_udp_helper(__u32 csum)
-+{
-+	return csum_fold_helper(csum) ? : 0xffff;
-+}
-+
- static void *update_pkt(struct xdp_md *ctx, __s16 offset, __u32 *udp_csum)
- {
- 	void *data_end = (void *)(long)ctx->data_end;
-@@ -281,21 +292,22 @@ static void *update_pkt(struct xdp_md *ctx, __s16 offset, __u32 *udp_csum)
- 
- 	if (eth->h_proto == bpf_htons(ETH_P_IP)) {
- 		struct iphdr *iph = data + sizeof(*eth);
--		__u16 total_len;
- 
- 		if (iph + 1 > (struct iphdr *)data_end)
- 			return NULL;
- 
--		iph->tot_len = bpf_htons(bpf_ntohs(iph->tot_len) + offset);
+ IRQCHIP_DECLARE(ar79_cpu_intc, "qca,ar7100-cpu-intc",
+ 		ar79_cpu_intc_of_init);
 -
- 		udph = (void *)eth + sizeof(*iph) + sizeof(*eth);
- 		if (!udph || udph + 1 > (struct udphdr *)data_end)
- 			return NULL;
- 
--		len_new = bpf_htons(bpf_ntohs(udph->len) + offset);
-+		len = iph->tot_len;
-+		len_new = bpf_htons(bpf_ntohs(len) + offset);
-+		iph->tot_len = len_new;
-+		iph->check = csum_fold_helper(
-+			bpf_csum_diff(&len, sizeof(len), &len_new,
-+				      sizeof(len_new), ~((__u32)iph->check)));
- 	} else if (eth->h_proto  == bpf_htons(ETH_P_IPV6)) {
- 		struct ipv6hdr *ipv6h = data + sizeof(*eth);
--		__u16 payload_len;
- 
- 		if (ipv6h + 1 > (struct ipv6hdr *)data_end)
- 			return NULL;
-@@ -304,33 +316,27 @@ static void *update_pkt(struct xdp_md *ctx, __s16 offset, __u32 *udp_csum)
- 		if (!udph || udph + 1 > (struct udphdr *)data_end)
- 			return NULL;
- 
--		*udp_csum = ~((__u32)udph->check);
--
- 		len = ipv6h->payload_len;
- 		len_new = bpf_htons(bpf_ntohs(len) + offset);
- 		ipv6h->payload_len = len_new;
--
--		*udp_csum = bpf_csum_diff(&len, sizeof(len), &len_new,
--					  sizeof(len_new), *udp_csum);
--
--		len = udph->len;
--		len_new = bpf_htons(bpf_ntohs(udph->len) + offset);
--		*udp_csum = bpf_csum_diff(&len, sizeof(len), &len_new,
--					  sizeof(len_new), *udp_csum);
- 	} else {
- 		return NULL;
- 	}
- 
-+	len = udph->len;
-+	len_new = bpf_htons(bpf_ntohs(len) + offset);
-+
-+	*udp_csum = ~((__u32)udph->check);
-+	*udp_csum = bpf_csum_diff(&len, sizeof(len), &len_new,
-+				  sizeof(len_new), *udp_csum);
-+	*udp_csum = bpf_csum_diff(&len, sizeof(len), &len_new,
-+				  sizeof(len_new), *udp_csum);
-+
- 	udph->len = len_new;
- 
- 	return udph;
- }
- 
--static __u16 csum_fold_helper(__u32 csum)
+-void __init ath79_cpu_irq_init(unsigned irq_wb_chan2, unsigned irq_wb_chan3)
 -{
--	return ~((csum & 0xffff) + (csum >> 16)) ? : 0xffff;
+-	irq_wb_chan[2] = irq_wb_chan2;
+-	irq_wb_chan[3] = irq_wb_chan3;
+-	mips_cpu_irq_init();
 -}
--
- static int xdp_adjst_tail_shrnk_data(struct xdp_md *ctx, __u16 offset,
- 				     __u32 hdr_len)
- {
-@@ -359,7 +365,7 @@ static int xdp_adjst_tail_shrnk_data(struct xdp_md *ctx, __u16 offset,
- 		return -1;
- 
- 	udp_csum = bpf_csum_diff((__be32 *)tmp_buff, offset, 0, 0, udp_csum);
--	udph->check = (__u16)csum_fold_helper(udp_csum);
-+	udph->check = (__u16)csum_fold_udp_helper(udp_csum);
- 
- 	if (bpf_xdp_adjust_tail(ctx, 0 - offset) < 0)
- 		return -1;
-@@ -403,7 +409,7 @@ static int xdp_adjst_tail_grow_data(struct xdp_md *ctx, __u16 offset)
- 		return -1;
- 
- 	udp_csum = bpf_csum_diff(0, 0, (__be32 *)tmp_buff, offset, udp_csum);
--	udph->check = (__u16)csum_fold_helper(udp_csum);
-+	udph->check = (__u16)csum_fold_udp_helper(udp_csum);
- 
- 	buff_len = bpf_xdp_get_buff_len(ctx);
- 
-@@ -483,8 +489,7 @@ static int xdp_adjst_head_shrnk_data(struct xdp_md *ctx, __u64 hdr_len,
- 		return -1;
- 
- 	udp_csum = bpf_csum_diff((__be32 *)tmp_buff, offset, 0, 0, udp_csum);
--
--	udph->check = (__u16)csum_fold_helper(udp_csum);
-+	udph->check = (__u16)csum_fold_udp_helper(udp_csum);
- 
- 	if (bpf_xdp_load_bytes(ctx, 0, tmp_buff, MAX_ADJST_OFFSET) < 0)
- 		return -1;
-@@ -541,7 +546,7 @@ static int xdp_adjst_head_grow_data(struct xdp_md *ctx, __u64 hdr_len,
- 		return -1;
- 
- 	udp_csum = bpf_csum_diff(0, 0, (__be32 *)data_buff, offset, udp_csum);
--	udph->check = (__u16)csum_fold_helper(udp_csum);
-+	udph->check = (__u16)csum_fold_udp_helper(udp_csum);
- 
- 	if (hdr_len > MAX_ADJST_OFFSET || hdr_len == 0)
- 		return -1;
 -- 
 2.53.0
 
