@@ -1,59 +1,63 @@
-Return-Path: <stable+bounces-255539-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-256142-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id SEDZNIOiGGrClggAu9opvQ
-	(envelope-from <stable+bounces-255539-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:16:03 +0200
+	id UBHKBqOsGGpolwgAu9opvQ
+	(envelope-from <stable+bounces-256142-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:59:15 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id 43AE95F8359
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:16:02 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2167A5F9FCD
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:59:13 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id AE312303D2E7
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 20:13:23 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 6786A310458C
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 20:41:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CD09D409638;
-	Thu, 28 May 2026 20:13:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 07C32352012;
+	Thu, 28 May 2026 20:41:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="b2/DFmk0"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="aG1SiSY0"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A67C0339866;
-	Thu, 28 May 2026 20:13:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CE8FE1DE4E0;
+	Thu, 28 May 2026 20:41:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779999195; cv=none; b=m3zltzh2gMUrJeoW+zeZ62pIKWIMtiaMj/Ty004hdQ2k+or4n5T5btWG83YdHWhyVp9staE0znA2rKMlNhVJAY67KQppaqD46KhFckzqfiQtLBhGkr9xWxoWsWzrAK3+G1gcJiHr6sZN0ZWggodMTRGGIyWAA7Ng6OLJ5rs4Z/g=
+	t=1780000873; cv=none; b=j37Ud3Llc3rr1rSGP4jew5q3sJkRLcDokOkz3G6RIUyzjHcIgYaXQYl9kxWZhxsCPWTA2PiZIWa9KbVQX37Rrh0rnJFMtSw3moUu2+iW7iq2nNHIkbrK4B5hcN0o5wx+tH0FcbzLLNwjvYxw292KbUUzNiykniPdM161SGzgbKE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779999195; c=relaxed/simple;
-	bh=6l05XjKACCtPeF+tnEC3WEp///8bwF+G3JZVpBzrcYQ=;
+	s=arc-20240116; t=1780000873; c=relaxed/simple;
+	bh=eXP/LnqQkNCnPB+YiDHdd9JCYxpMJWl6Y0AfPN/xlEM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=LUxs+Vtgha5hi3P0cCfjmKYpMnu73qh2YiJjavxJVXJ57jZsBLhrwv7INRadBqEhc8JB1lwhwNzlpAk6Jqlu/seYHHSQxXTuXGI+wp17qSxyi9ika/JRj4uIx/8DLbJE2+xXVJ9e6vRfXqpvHUl1vx/SlHay0XjgcEF4dsQuvHE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=b2/DFmk0; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BF3351F000E9;
-	Thu, 28 May 2026 20:13:13 +0000 (UTC)
+	 MIME-Version; b=G8TPrOGUymBHjb0ZblIC5i1eJaiEYwU7seAshaK9wFO5hkNAchWOAtrYU8N6fohdQ5PeIUk5rIqL6xjkIQOHtS4A4fa38hIL3/cd939ZrB8PUndTgHICO6dxXFSrm8Sm2BM2e4NwIXEi1zu+KoyqEgUacR2167//eWtldLMxJbM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=aG1SiSY0; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3F7CB1F000E9;
+	Thu, 28 May 2026 20:41:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779999194;
-	bh=oEMYZprbj/WtWnmKgbd4SiH+wjemdWYY/HD9uGrlfT8=;
+	s=korg; t=1780000872;
+	bh=y9UPzARbhc+9F/7kqQPQWD5rrX/9aUbr/2H9SbAdXY0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=b2/DFmk0B2yo0Ry8pkOHwnxLnKNoD4iHkxTw92rALo75Xn/7FdHV2iC7SN3bhzZ6u
-	 q5lXxyW9W+VIrZTOr2iV9xLp55tDcqeCX9dC6nUDXu7hwYHopDkdbNoKFVpXI+5W4x
-	 1D7A4s3oZ8krJ/83ou41SiU6ikfc0WEJ7hwCBeZs=
+	b=aG1SiSY09YWdPzMFHtaF/rh4wApjE+wfqNF7DO9EtjKpg0jxEzu8hfTsOy5yKL0Cc
+	 BWGei1vgse3pV9ZCeovOEwGah9h4Wv7lxLSEgdtMMe3HmCIB9Noo1FDDJgizYxgce7
+	 emQNZV7ZdCMnIm6CJ7EGgrNXDSowftamG0sKTUnI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Richard Fitzgerald <rf@opensource.cirrus.com>,
-	Mark Brown <broonie@kernel.org>,
+	David Howells <dhowells@redhat.com>,
+	Paulo Alcantara <pc@manguebit.org>,
+	Matthew Wilcox <willy@infradead.org>,
+	netfs@lists.linux.dev,
+	linux-fsdevel@vger.kernel.org,
+	Christian Brauner <brauner@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 7.0 443/461] ASoC: cs-amp-lib: Fix wrong sizeof() in _cs_amp_set_efi_calibration_data()
+Subject: [PATCH 6.12 198/272] netfs: Fix partial invalidation of streaming-write folio
 Date: Thu, 28 May 2026 21:49:32 +0200
-Message-ID: <20260528194700.354430025@linuxfoundation.org>
+Message-ID: <20260528194634.802483022@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260528194646.819809818@linuxfoundation.org>
-References: <20260528194646.819809818@linuxfoundation.org>
+In-Reply-To: <20260528194629.379955525@linuxfoundation.org>
+References: <20260528194629.379955525@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -68,77 +72,78 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-256142-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-255539-lists,stable=lfdr.de];
-	TO_DN_SOME(0.00)[];
-	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim,cirrus.com:email,msgid.link:url]
-X-Rspamd-Queue-Id: 43AE95F8359
+	TO_DN_SOME(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_SEVEN(0.00)[10];
+	MID_RHS_MATCH_FROM(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[infradead.org:email,msgid.link:url,manguebit.org:email,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,sashiko.dev:url,linux.dev:email,linuxfoundation.org:mid,linuxfoundation.org:dkim]
+X-Rspamd-Queue-Id: 2167A5F9FCD
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-7.0-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Richard Fitzgerald <rf@opensource.cirrus.com>
+From: David Howells <dhowells@redhat.com>
 
-[ Upstream commit 67a52d3ebb5a0ae0c0e23ffa99470d9463179c9f ]
+[ Upstream commit 6d91acc7fb85d33ea58fca9b964a32a453937f4b ]
 
-When calculating data->count replace the incorrect sizeof(data) with use
-of struct_offset().
+In netfs_invalidate_folio(), if the region of a partial invalidation
+overlaps the front (but not all) of a dirty write cached in a streaming
+write page (dirty, but not uptodate, with the dirty region tracked by a
+netfs_folio struct), the function modifies the dirty region - but
+incorrectly as it moves the region forward by setting the start to the
+start, not the end, of the invalidation region.
 
-The faulty sizeof(data) was incorrectly calculating the size of the
-pointer instead of the size of the struct pointed to. As it happens, both
-values are 8 on a 64-bit CPU. In the unlikely event of using this code on
-a 32-bit CPU the number of available bytes would be calculated 4 larger
-than is actually available.
+Fix this by setting finfo->dirty_offset to the end of the invalidation
+region (iend).
 
-Instead of changing to sizeof(*data) it has been replaced by
-struct_offset() because it has better chance of detecting these sorts of
-typos. Also the offset of the data[] array is actually what we want to know
-here anyway.
-
-Signed-off-by: Richard Fitzgerald <rf@opensource.cirrus.com>
-Fixes: 2b62e66626f0 ("ASoC: cs-amp-lib: Add function to write calibration to UEFI")
-Link: https://patch.msgid.link/20260521122511.987322-2-rf@opensource.cirrus.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
+Fixes: cce6bfa6ca0e ("netfs: Fix trimming of streaming-write folios in netfs_inval_folio()")
+Closes: https://sashiko.dev/#/patchset/20260414082004.3756080-1-dhowells%40redhat.com
+Signed-off-by: David Howells <dhowells@redhat.com>
+Link: https://patch.msgid.link/20260512123404.719402-21-dhowells@redhat.com
+cc: Paulo Alcantara <pc@manguebit.org>
+cc: Matthew Wilcox <willy@infradead.org>
+cc: netfs@lists.linux.dev
+cc: linux-fsdevel@vger.kernel.org
+Signed-off-by: Christian Brauner <brauner@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/soc/codecs/cs-amp-lib.c | 2 +-
+ fs/netfs/misc.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/sound/soc/codecs/cs-amp-lib.c b/sound/soc/codecs/cs-amp-lib.c
-index 8b131975143d1..75baeaf64afd0 100644
---- a/sound/soc/codecs/cs-amp-lib.c
-+++ b/sound/soc/codecs/cs-amp-lib.c
-@@ -500,7 +500,7 @@ static int _cs_amp_set_efi_calibration_data(struct device *dev, int amp_index, i
- 	 * must be set.
- 	 */
- 	if (data->count == 0)
--		data->count = (data->size - sizeof(data)) / sizeof(data->data[0]);
-+		data->count = (data->size - struct_offset(data, data)) / sizeof(data->data[0]);
- 
- 	if (amp_index < 0) {
- 		/* Is there already a slot for this target? */
+diff --git a/fs/netfs/misc.c b/fs/netfs/misc.c
+index 488a4b1914300..9672904232ad5 100644
+--- a/fs/netfs/misc.c
++++ b/fs/netfs/misc.c
+@@ -267,7 +267,7 @@ void netfs_invalidate_folio(struct folio *folio, size_t offset, size_t length)
+ 				goto erase_completely;
+ 			/* Move the start of the data. */
+ 			finfo->dirty_len = fend - iend;
+-			finfo->dirty_offset = offset;
++			finfo->dirty_offset = iend;
+ 			trace_netfs_folio(folio, netfs_folio_trace_invalidate_front);
+ 			return;
+ 		}
 -- 
 2.53.0
 
