@@ -1,60 +1,58 @@
-Return-Path: <stable+bounces-255512-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-256283-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id OBuBEtuhGGqvlggAu9opvQ
-	(envelope-from <stable+bounces-255512-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:13:15 +0200
+	id 2MATNY6rGGpolwgAu9opvQ
+	(envelope-from <stable+bounces-256283-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:54:38 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6D6CF5F8179
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:13:14 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4710B5F9D65
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:54:38 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 86DBF303A0AB
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 20:12:00 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id EC77C311F60F
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 20:47:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 27A4B33CE8A;
-	Thu, 28 May 2026 20:12:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A2DD72F1FEF;
+	Thu, 28 May 2026 20:47:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uaLTiv1Q"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DnllariO"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F2F5E33F5B4;
-	Thu, 28 May 2026 20:11:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 72E06317142;
+	Thu, 28 May 2026 20:47:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779999119; cv=none; b=clZIBxvkSTmhG8riWTalOGYkaKWz/bbfR7aejvC5vh33hAq9eFaKFqbQOzD/De9F1eND6ouVOQoKTgfeD6SHSM192a1LLTcj/SFnPmXlqyG52tXFl1eF0DlpVF8V0nlaAfok4nKynpwDdv+OHKTczQYByYSQxGlgwZgYhVDFibY=
+	t=1780001266; cv=none; b=UxW9Dy2RG6PK/4yIwXYFp+gXx5QAp9TYYb21/65uLjkBwsdW3NvO/ULYX0I+SeI33z71gw7frsy7wvb4H2L2Vbvk74Q+Gi9Xf+mS6MJYTetSOsVvGF4tWW8hBcW4j329zqH10JZjIf/cPfT4KKpXtWXk99oI4IEu2rMUnqOQmA8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779999119; c=relaxed/simple;
-	bh=HxTMK8KhZAcENmx1nT4PrR4qE+VC2o9gnYHkBGZr4X0=;
+	s=arc-20240116; t=1780001266; c=relaxed/simple;
+	bh=SoOxCLGURonsjYUpdLgHXFLO/O05Y3KzuIgZkb+6hOM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=djzUgUPwoeyeA5poQODd9cFy1JuKHNbp8wMTgWY1U39QRGTLL2kTNvoEub1VInOICd4So7FoCzE8A9kc8Y5PXOlBiqwGKjv4aJ5j1tc7A+BG3khYiKUDAKp3ak+GKBYfqqhtMqjdq+MNtIAIxEGe8txidQYhRxQ+KV0ZHMfNCnE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uaLTiv1Q; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 557731F000E9;
-	Thu, 28 May 2026 20:11:58 +0000 (UTC)
+	 MIME-Version; b=LMD16Qoajjr3nTEqUQsC0RWFngDvFCUWXIqdejBZMh0tgVfqQx9WISMcvOK3sM3igbwLHbPSB6A0ad+GDBafI+aPHbqDENp8NL2gsoV9k7G9YJgbc1QxbMXQmLXzXkPOEIg3SFS6LR7Tdv17cYho9T4E0RzEle35qYLycdX62pM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DnllariO; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A0F911F000E9;
+	Thu, 28 May 2026 20:47:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779999118;
-	bh=qTiJ1lkwg9n/NN46fA8aEha86jn9NTLfuB3W6TTc67Q=;
+	s=korg; t=1780001265;
+	bh=QF7nOb5WT2MpLMwl+blk0pL6GWd7/Zl9IeQO2AblFYo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=uaLTiv1QA3o+Kb5M6LzOGiv3MS3mIOcnD5dOG7/z9+usyNiUuioK/QZW23T2YvHsS
-	 NHsr09Rl8lJ/KkNGF6XrbOO9CVwrKo98ow6OmbpOzU2/NXBU+MVoCn9zrxImu1211D
-	 lFVNCGIQRIzHuCvdhjSBJF0OOPU4onpEKcCxbqsY=
+	b=DnllariO8RYKSvfsTNicyLTV2xJ7cA2jEgm3qbVeKD3NtQZYXDdbLC/63Rddk7DTT
+	 pMb+yG8hKaL4Za5JopFg0W/YVuZrLfYZdxFgfR2ZD/CHCfyV36ZJZ3/s0S5cCxBYFd
+	 mzLa574QK6sCow3jXEUAHqCpHHiSEv7T6ALxvYPY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Shitalkumar Gandhi <shitalkumar.gandhi@cambiumnetworks.com>,
-	Simon Horman <horms@kernel.org>,
-	Johannes Berg <johannes.berg@intel.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 7.0 415/461] wifi: wilc1000: fix dma_buffer leak on bus acquire failure
+	Michael Bommarito <michael.bommarito@gmail.com>,
+	"Martin K. Petersen" <martin.petersen@oracle.com>
+Subject: [PATCH 6.6 064/186] scsi: isci: Fix use-after-free in device removal path
 Date: Thu, 28 May 2026 21:49:04 +0200
-Message-ID: <20260528194659.507868366@linuxfoundation.org>
+Message-ID: <20260528194930.686867737@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260528194646.819809818@linuxfoundation.org>
-References: <20260528194646.819809818@linuxfoundation.org>
+In-Reply-To: <20260528194928.941004471@linuxfoundation.org>
+References: <20260528194928.941004471@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,87 +63,98 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-255512-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TO_DN_SOME(0.00)[];
+	TAGGED_FROM(0.00)[bounces-256283-lists,stable=lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,oracle.com];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
-	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[7];
-	MID_RHS_MATCH_FROM(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	NEURAL_HAM(-0.00)[-0.999];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,msgid.link:url,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,intel.com:email,cambiumnetworks.com:email]
-X-Rspamd-Queue-Id: 6D6CF5F8179
+	MID_RHS_MATCH_FROM(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[5];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,oracle.com:email,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim]
+X-Rspamd-Queue-Id: 4710B5F9D65
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-7.0-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Shitalkumar Gandhi <shital.gandhi45@gmail.com>
+From: Michael Bommarito <michael.bommarito@gmail.com>
 
-[ Upstream commit dd7b6a8671939708cc4b7a46786d8c11297e8f69 ]
+commit b52a8d52c3125ec9a93106ed816582368de34426 upstream.
 
-wilc_wlan_firmware_download() allocates dma_buffer with kmalloc() at
-the top of the function and uses a 'fail:' label to free it via
-kfree(dma_buffer) on error.
+The ISCI completion tasklet is initialized in isci_host_alloc()
+(drivers/scsi/isci/init.c:496) and scheduled from both MSI-X and legacy
+interrupt handlers (drivers/scsi/isci/host.c:223,613).
 
-All later error paths correctly use 'goto fail' to route through this
-cleanup. However, the early failure path after the first acquire_bus()
-call uses a bare 'return ret;', which leaks dma_buffer whenever the bus
-acquire fails.
+isci_host_deinit() stops the controller and waits for stop completion,
+but it never kills completion_tasklet before teardown continues. A
+top-of-function tasklet_kill() is not sufficient here: interrupts are
+only disabled when isci_host_stop_complete() runs, so until
+wait_for_stop() returns the IRQ handlers can still requeue the
+tasklet. The tasklet callback also re-enables interrupts after draining
+completions, so killing the tasklet before the source is quiesced leaves
+the same race open.
 
-Replace the early return with goto fail so the existing cleanup path
-runs.
+Once wait_for_stop() returns, no further IRQ-driven scheduling can
+occur. Kill completion_tasklet there so teardown cannot race a queued
+tasklet running on a dead ihost. On remove or unload, the stale callback
+can otherwise dereference ihost and touch ihost->smu_registers after the
+host lifetime ends.
 
-Found via a custom Coccinelle semantic patch hunting for kmalloc'd
-locals leaked on early-return error paths in driver firmware-download
-code.
+A UML + KASAN analogue reproduced the failure class both with no
+tasklet_kill() and with tasklet_kill() placed before source quiesce, and
+stayed clean once the kill happened after quiescing the scheduling
+source.
 
-Fixes: 1241c5650ff7 ("wifi: wilc1000: Fill in missing error handling")
-Signed-off-by: Shitalkumar Gandhi <shitalkumar.gandhi@cambiumnetworks.com>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Link: https://patch.msgid.link/20260511042732.998311-1-shitalkumar.gandhi@cambiumnetworks.com
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+This mirrors commit f6ab594672d4 ("scsi: aic94xx: fix use-after-free in
+device removal path"), but ISCI needs the kill after wait_for_stop().
+
+Fixes: 6f231dda6808 ("isci: Intel(R) C600 Series Chipset Storage Control Unit Driver")
+Cc: stable@vger.kernel.org
+Assisted-by: Claude:claude-opus-4-7
+Assisted-by: Codex:gpt-5-4
+Signed-off-by: Michael Bommarito <michael.bommarito@gmail.com>
+Link: https://patch.msgid.link/20260419210420.2134639-1-michael.bommarito@gmail.com
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/wireless/microchip/wilc1000/wlan.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/scsi/isci/host.c |    3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/drivers/net/wireless/microchip/wilc1000/wlan.c b/drivers/net/wireless/microchip/wilc1000/wlan.c
-index 3fa8592eb2503..4b116fe6f9ea9 100644
---- a/drivers/net/wireless/microchip/wilc1000/wlan.c
-+++ b/drivers/net/wireless/microchip/wilc1000/wlan.c
-@@ -1265,7 +1265,7 @@ int wilc_wlan_firmware_download(struct wilc *wilc, const u8 *buffer,
+--- a/drivers/scsi/isci/host.c
++++ b/drivers/scsi/isci/host.c
+@@ -1252,6 +1252,9 @@ void isci_host_deinit(struct isci_host *
  
- 	ret = acquire_bus(wilc, WILC_BUS_ACQUIRE_AND_WAKEUP);
- 	if (ret)
--		return ret;
-+		goto fail;
+ 	wait_for_stop(ihost);
  
- 	wilc->hif_func->hif_read_reg(wilc, WILC_GLB_RESET_0, &reg);
- 	reg &= ~BIT(10);
--- 
-2.53.0
-
++	/* No further IRQ-driven scheduling can happen past wait_for_stop(). */
++	tasklet_kill(&ihost->completion_tasklet);
++
+ 	/* phy stop is after controller stop to allow port and device to
+ 	 * go idle before shutting down the phys, but the expectation is
+ 	 * that i/o has been shut off well before we reach this
 
 
 
