@@ -1,51 +1,51 @@
-Return-Path: <stable+bounces-254799-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-254800-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id sPESHj4SGGrKbggAu9opvQ
-	(envelope-from <stable+bounces-254799-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 12:00:30 +0200
+	id wPFpG5oVGGrKbggAu9opvQ
+	(envelope-from <stable+bounces-254800-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 12:14:50 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 490AD5F01B6
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 12:00:30 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id C70495F060B
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 12:14:49 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id C6AB43067425
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 10:00:18 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 8109531419CA
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 10:00:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 27B3438AC80;
-	Thu, 28 May 2026 10:00:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3A93130F7EB;
+	Thu, 28 May 2026 10:00:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zr6wdo0i"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KeWT9LYn"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A88B7390C8C
-	for <stable@vger.kernel.org>; Thu, 28 May 2026 10:00:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B7E92305678
+	for <stable@vger.kernel.org>; Thu, 28 May 2026 10:00:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779962417; cv=none; b=e1oDjPONzUqbfu1Z/9aIN1KgmyQMUGCA4R15GcyOksxfjSOheb2RF45l6z8MmV7pJzpUiqwzBhCmnSnotx00BX4xe1aVOwtk0hWwv70/tUTrXIRggJvRn4uOPVv4ExDQTsnkthKoFoejhgrY4+HZA1+BwsyA8S2fAvNe3jMyAxI=
+	t=1779962436; cv=none; b=B5zEsUPDWRVicjP75DLRAGb5HG15Te3z2184QsjI4zN7bw8na2pAiLXa+6SxQOzHSUKhiA4gRneS8UNzB1ATQuojvFJt1khPxgD/nrRTnO8+zu6DMZ6c1QdOMB6igb9bS4nTeZ4mDYfW1x6bvR8ShssNTlpEKEflOcn8XwWNJyo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779962417; c=relaxed/simple;
-	bh=zLBVU8YMtBrIcZhv55nNzmiNcrkt9mNKkjBSfrzRa9Y=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=rsZQrikmPz3GeksjAis2CB8iE2LFVoEz5nrY4s51GYuUbYOI6kWwg/FphSRk2bIOa4xs98bhOP0kduhJLH7jq+v7li+XQ73cvI5We1WVsbXFR3hC/9DQRHl+RjSaXMuVJclQueIwAio1hxU4ChRgqjSNX17ljBCRMFNOdpP5HpI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zr6wdo0i; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A83EA1F000E9;
-	Thu, 28 May 2026 10:00:15 +0000 (UTC)
+	s=arc-20240116; t=1779962436; c=relaxed/simple;
+	bh=Q6wf5Xibhdg8bY+2XRpDXJNFamzNAinAhWrs6FN6Jq0=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=IbQZGy+ygwK7Skly8wvRKy8ka7wGJmrKfM9OhtdT7tYMI0Iuf+8y9TOKdNBl4qz/MLIn4BfsGPRpWaURoE1RFWsjC16+yEkCgyYbdJWHPZ8wrcXawkUZihygAUXwiGpWgmvISwVel6duDidNBC6qhQRM5SVFGe13c40dk/7dKmk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KeWT9LYn; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E2FE51F000E9;
+	Thu, 28 May 2026 10:00:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779962416;
-	bh=o7SBQiF6BHrok/c2OW9EGMpmKm/mW4IQ9kTIkzky59M=;
+	s=korg; t=1779962435;
+	bh=Jo8ko4ont4IPCzwhD1+Qd+wm/qjqFadBxA4aKEJz0TQ=;
 	h=Subject:To:Cc:From:Date;
-	b=zr6wdo0iJ5q4PhFt6DamBJZaeEuDWxawvZf2G7Dsc9jmFwnzMPO74jCOF2LOpCZDk
-	 2Q4Haru8uqjcZ13s5Ek3Zw3z0WHDSsKioDlOT/fByarZp9m3rNkNT2lcNJXGBdvBxv
-	 yT96T+No3d085skmAS0pak2O6NXnL9QqOkyb9pSo=
-Subject: FAILED: patch "[PATCH] mptcp: pm: fix ADD_ADDR timer infinite retry on option space" failed to apply to 5.10-stable tree
-To: lixiasong1@huawei.com,matttbe@kernel.org,pabeni@redhat.com
+	b=KeWT9LYnTXPocrsjdv8Q7W7WfiVzSgwcJns+Bp13trHpVHCmmclYxjHnPaOJX1K7S
+	 L3mfdJ1wlKRze17eHP6gGa+w84yU5yclDy6pop/bM+gV1IOif2qwUucHGx1TJDmvK0
+	 zTvtiBWZLTpIfoN0LtD+ymfipDv2QtvO+GVXXLog=
+Subject: FAILED: patch "[PATCH] vsock/virtio: reset connection on receiving queue overflow" failed to apply to 5.15-stable tree
+To: sgarzare@redhat.com,pabeni@redhat.com
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Thu, 28 May 2026 11:59:09 +0200
-Message-ID: <2026052809-chasing-pushing-a8cf@gregkh>
+Date: Thu, 28 May 2026 11:59:41 +0200
+Message-ID: <2026052841-mobility-surgery-8063@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -59,12 +59,12 @@ X-Spamd-Result: default: False [2.34 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	MID_RHS_NOT_FQDN(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-254799-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-254800-lists,stable=lfdr.de];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	RCVD_COUNT_THREE(0.00)[4];
@@ -73,33 +73,33 @@ X-Spamd-Result: default: False [2.34 / 15.00];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	FROM_NO_DN(0.00)[];
 	MISSING_XM_UA(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	NEURAL_HAM(-0.00)[-0.999];
 	TO_DN_NONE(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	RCPT_COUNT_THREE(0.00)[4];
+	RCPT_COUNT_THREE(0.00)[3];
 	TAGGED_RCPT(0.00)[stable];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,gregkh:email,msgid.link:url,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,huawei.com:email]
-X-Rspamd-Queue-Id: 490AD5F01B6
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,gregkh:email,msgid.link:url,linuxfoundation.org:dkim]
+X-Rspamd-Queue-Id: C70495F060B
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
 
-The patch below does not apply to the 5.10-stable tree.
+The patch below does not apply to the 5.15-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.10.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.15.y
 git checkout FETCH_HEAD
-git cherry-pick -x 51e398a3b8961b26a8c0a4ba9a777c5339791707
+git cherry-pick -x a4f0b001782b21663d10df983b4b208195bec66c
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2026052809-chasing-pushing-a8cf@gregkh' --subject-prefix 'PATCH 5.10.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2026052841-mobility-surgery-8063@gregkh' --subject-prefix 'PATCH 5.15.y' HEAD^..
 
 Possible dependencies:
 
@@ -111,143 +111,84 @@ greg k-h
 
 ------------------ original commit in Linus's tree ------------------
 
-From 51e398a3b8961b26a8c0a4ba9a777c5339791707 Mon Sep 17 00:00:00 2001
-From: Li Xiasong <lixiasong1@huawei.com>
-Date: Fri, 15 May 2026 06:27:33 +0200
-Subject: [PATCH] mptcp: pm: fix ADD_ADDR timer infinite retry on option space
- insufficient
+From a4f0b001782b21663d10df983b4b208195bec66c Mon Sep 17 00:00:00 2001
+From: Stefano Garzarella <sgarzare@redhat.com>
+Date: Mon, 18 May 2026 11:06:55 +0200
+Subject: [PATCH] vsock/virtio: reset connection on receiving queue overflow
 
-When TCP option space is insufficient (e.g., when sending ADD_ADDR with an
-IPv6 address and port while tcp_timestamps is enabled), the original code
-jumped to out_unlock without clearing the addr_signal flag. This caused
-mptcp_pm_add_timer to keep rescheduling indefinitely, not sending ADD_ADDR,
-preventing subsequent addresses in the endpoint list from being announced.
+When there is no more space to queue an incoming packet, the packet is
+silently dropped. This causes data loss without any notification to
+either peer, since there is no retransmission.
 
-Handle this case by clearing the ADD_ADDR signal and skipping the matching
-ADD_ADDR retransmission entry. The skip path cancels the matching timer
-(with id check) and advances PM state progression, preserving forward
-progress to subsequent PM work.
+Under normal circumstances, this should never happen. However, it could
+happen if the other peer doesn't respect the credit, or if the skb
+overhead, which we recently began to take into account with commit
+059b7dbd20a6 ("vsock/virtio: fix potential unbounded skb queue"),
+is too high.
 
-This cancellation is inherently best-effort. A concurrent add_timer
-callback may already be running and may acquire pm.lock before the
-cancel path updates entry state. In that case, one final ADD_ADDR
-transmit attempt can still be executed.
+Fix this by resetting the connection and setting the local socket error
+to ENOBUFS when virtio_transport_recv_enqueue() can no longer queue a
+packet, so both peers are explicitly notified of the failure rather than
+silently losing data.
 
-Once the cancel path sets entry->retrans_times to ADD_ADDR_RETRANS_MAX,
-the callback-side retrans_times check suppresses further ADD_ADDR
-retransmissions.
-
-Note that when an ADD_ADDR is being prepared, a pure-ACK is queued. On
-the output side, it means that it is fine to skip non-pure-ACK packets,
-when drop_other_suboptions is set: a pure-ACK will be processed soon
-after.
-
-Fixes: 00cfd77b9063 ("mptcp: retransmit ADD_ADDR when timeout")
+Fixes: ae6fcfbf5f03 ("vsock/virtio: discard packets if credit is not respected")
 Cc: stable@vger.kernel.org
-Signed-off-by: Li Xiasong <lixiasong1@huawei.com>
-Reviewed-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
-Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
-Link: https://patch.msgid.link/20260515-net-mptcp-misc-fixes-7-1-rc4-v2-2-701e96419f2f@kernel.org
+Signed-off-by: Stefano Garzarella <sgarzare@redhat.com>
+Link: https://patch.msgid.link/20260518090656.134588-2-sgarzare@redhat.com
 Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 
-diff --git a/net/mptcp/pm.c b/net/mptcp/pm.c
-index 3c152bf66cd5..3e770c7407e1 100644
---- a/net/mptcp/pm.c
-+++ b/net/mptcp/pm.c
-@@ -364,7 +364,13 @@ static void mptcp_pm_add_timer(struct timer_list *timer)
- 
- 	spin_lock_bh(&msk->pm.lock);
- 
--	if (!mptcp_pm_should_add_signal_addr(msk)) {
-+	/* The cancel path (mptcp_pm_del_add_timer()) can race with this
-+	 * callback. Once cancel updates retrans_times to MAX, suppress further
-+	 * retransmissions here. If this callback acquires pm.lock first, one
-+	 * final transmit attempt is still possible.
-+	 */
-+	if (entry->retrans_times < ADD_ADDR_RETRANS_MAX &&
-+	    !mptcp_pm_should_add_signal_addr(msk)) {
- 		pr_debug("retransmit ADD_ADDR id=%d\n", entry->addr.id);
- 		mptcp_pm_announce_addr(msk, &entry->addr, false);
- 		mptcp_pm_add_addr_send_ack(msk);
-@@ -414,8 +420,12 @@ mptcp_pm_del_add_timer(struct mptcp_sock *msk,
- 	/* Note: entry might have been removed by another thread.
- 	 * We hold rcu_read_lock() to ensure it is not freed under us.
- 	 */
--	if (stop_timer)
--		sk_stop_timer_sync(sk, &entry->add_timer);
-+	if (stop_timer) {
-+		if (check_id)
-+			sk_stop_timer(sk, &entry->add_timer);
-+		else
-+			sk_stop_timer_sync(sk, &entry->add_timer);
-+	}
- 
- 	rcu_read_unlock();
- 	return entry;
-@@ -882,6 +892,7 @@ bool mptcp_pm_add_addr_signal(struct mptcp_sock *msk, const struct sk_buff *skb,
- 			      struct mptcp_addr_info *addr, bool *echo,
- 			      bool *drop_other_suboptions)
- {
-+	bool skip_add_addr = false;
- 	int ret = false;
- 	u8 add_addr;
- 	u8 family;
-@@ -903,24 +914,49 @@ bool mptcp_pm_add_addr_signal(struct mptcp_sock *msk, const struct sk_buff *skb,
- 	}
- 
- 	*echo = mptcp_pm_should_add_signal_echo(msk);
--	port = !!(*echo ? msk->pm.remote.port : msk->pm.local.port);
--
--	family = *echo ? msk->pm.remote.family : msk->pm.local.family;
--	if (remaining < mptcp_add_addr_len(family, *echo, port))
--		goto out_unlock;
--
- 	if (*echo) {
- 		*addr = msk->pm.remote;
- 		add_addr = msk->pm.addr_signal & ~BIT(MPTCP_ADD_ADDR_ECHO);
-+		port = !!msk->pm.remote.port;
-+		family = msk->pm.remote.family;
- 	} else {
- 		*addr = msk->pm.local;
- 		add_addr = msk->pm.addr_signal & ~BIT(MPTCP_ADD_ADDR_SIGNAL);
-+		port = !!msk->pm.local.port;
-+		family = msk->pm.local.family;
- 	}
--	WRITE_ONCE(msk->pm.addr_signal, add_addr);
-+
-+	if (remaining < mptcp_add_addr_len(family, *echo, port)) {
-+		struct net *net = sock_net((struct sock *)msk);
-+
-+		if (!*drop_other_suboptions)
-+			goto out_unlock;
-+
-+		if (*echo) {
-+			MPTCP_INC_STATS(net, MPTCP_MIB_ECHOADDTXDROP);
-+		} else {
-+			skip_add_addr = true;
-+			MPTCP_INC_STATS(net, MPTCP_MIB_ADDADDRTXDROP);
-+		}
-+		goto drop_signal_mark;
-+	}
-+
- 	ret = true;
- 
-+drop_signal_mark:
-+	WRITE_ONCE(msk->pm.addr_signal, add_addr);
-+
- out_unlock:
- 	spin_unlock_bh(&msk->pm.lock);
-+
-+	/* On pure-ACK option-space exhaustion, stop retrying this ADD_ADDR:
-+	 * clear the signal bit, cancel the matching retransmission timer, and
-+	 * let the PM state machine progress.
-+	 */
-+	if (skip_add_addr) {
-+		mptcp_pm_del_add_timer(msk, addr, true);
-+		mptcp_pm_subflow_established(msk);
-+	}
- 	return ret;
+diff --git a/net/vmw_vsock/virtio_transport_common.c b/net/vmw_vsock/virtio_transport_common.c
+index 1e3409d28164..5028ff534888 100644
+--- a/net/vmw_vsock/virtio_transport_common.c
++++ b/net/vmw_vsock/virtio_transport_common.c
+@@ -1335,7 +1335,7 @@ virtio_transport_recv_connecting(struct sock *sk,
+ 	return err;
  }
  
+-static void
++static bool
+ virtio_transport_recv_enqueue(struct vsock_sock *vsk,
+ 			      struct sk_buff *skb)
+ {
+@@ -1350,10 +1350,8 @@ virtio_transport_recv_enqueue(struct vsock_sock *vsk,
+ 	spin_lock_bh(&vvs->rx_lock);
+ 
+ 	can_enqueue = virtio_transport_inc_rx_pkt(vvs, len);
+-	if (!can_enqueue) {
+-		free_pkt = true;
++	if (!can_enqueue)
+ 		goto out;
+-	}
+ 
+ 	if (le32_to_cpu(hdr->flags) & VIRTIO_VSOCK_SEQ_EOM)
+ 		vvs->msg_count++;
+@@ -1393,6 +1391,8 @@ virtio_transport_recv_enqueue(struct vsock_sock *vsk,
+ 	spin_unlock_bh(&vvs->rx_lock);
+ 	if (free_pkt)
+ 		kfree_skb(skb);
++
++	return can_enqueue;
+ }
+ 
+ static int
+@@ -1405,7 +1405,17 @@ virtio_transport_recv_connected(struct sock *sk,
+ 
+ 	switch (le16_to_cpu(hdr->op)) {
+ 	case VIRTIO_VSOCK_OP_RW:
+-		virtio_transport_recv_enqueue(vsk, skb);
++		if (!virtio_transport_recv_enqueue(vsk, skb)) {
++			/* There is no more space to queue the packet, so let's
++			 * close the connection; otherwise, we'll lose data.
++			 */
++			(void)virtio_transport_reset(vsk, skb);
++			virtio_transport_do_close(vsk, true);
++			sk->sk_err = ENOBUFS;
++			sk_error_report(sk);
++			vsock_remove_sock(vsk);
++			break;
++		}
+ 		vsock_data_ready(sk);
+ 		return err;
+ 	case VIRTIO_VSOCK_OP_CREDIT_REQUEST:
 
 
