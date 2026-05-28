@@ -1,58 +1,62 @@
-Return-Path: <stable+bounces-255592-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-255238-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id gGqMH5GkGGrClggAu9opvQ
-	(envelope-from <stable+bounces-255592-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:24:49 +0200
+	id OOs0IJCeGGpAlggAu9opvQ
+	(envelope-from <stable+bounces-255238-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 21:59:12 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id EDB935F89D0
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:24:48 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id 22FF65F795F
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 21:59:12 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id D12063232631
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 20:15:45 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 8056A301587B
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 19:59:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 804B12D1303;
-	Thu, 28 May 2026 20:15:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8642534040F;
+	Thu, 28 May 2026 19:59:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DrCX805V"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="k9uMjk70"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 514AF2DF6E6;
-	Thu, 28 May 2026 20:15:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3D7DB33CE8A;
+	Thu, 28 May 2026 19:59:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779999345; cv=none; b=k0g72ANUwbosR6cmwZRX3Gfz9Ii4ozhnu+BuMTP4qHnZ5jREhdn0qZsWHub9e5dIs5qJsAbY47BtJXW3E14htm/2BKQaa5UIoDvQhDzIgLX0xvkcriJlEMa1ZUItnStka3zL3AnYiPrqksQOm2WBR2Q8lWPM8yicXg/TZ4MRX3c=
+	t=1779998348; cv=none; b=SHxlKQ9UKWGhnWvJCyDTuvnvLs9FfuWUjqqmLorDx/3HJFbWlF2meR1eZK6kmz6aSq+150YklPqARN0hnjJp56M19zwibWGhzg37zWorx2D4sKFoEl0WXBHtRJdhoa47zEkumN9JwjFzFLXLe6yoKxxUrh+kStgSRnzL/mtPqaU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779999345; c=relaxed/simple;
-	bh=OqjwqHKoQvFfUAdlhZFUJXAlDIZZQChFiy8fl5VdhGc=;
+	s=arc-20240116; t=1779998348; c=relaxed/simple;
+	bh=psBaFOgMYsAF1h78RwubaHM75LjLiCyh/EZ/qBwf+H4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Lb+gJOswJFvHGINJh/xcqbsLTGCXi/yKKgSVQGnGSNTutFoYjz9jhNIm6t3ZXa5bFaoy7PjrwyaGlqGDEV186Q6O+G4nmoto6LOrwV/f6HpY66wOWJcLC+vSyk8J2x+XjI5quirZr4/CxuYFtkTnZEdcIxqGwii8/mkHKPwjbSs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DrCX805V; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AEC6C1F000E9;
-	Thu, 28 May 2026 20:15:43 +0000 (UTC)
+	 MIME-Version; b=Kq+TgAjvPAk4iX7limdKJdHNMnAsL7DhwhuOyhZApkqPVBvegjuiVK/lUHxmrz27a2fAwHIFf79DoyYDv9CONvywwoUQA4LLzwQPTQekC98osr8s3U4S3LJmdprmNuTziVO+fTa72PJuMkod2IweMA24hsrkQdmo2tqLcPK+dN8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=k9uMjk70; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 53BD31F000E9;
+	Thu, 28 May 2026 19:59:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779999344;
-	bh=itj55XZjMwcfJP35tuyNmunYUynDnuxeQ0OqNBtLjDU=;
+	s=korg; t=1779998346;
+	bh=XBTokOn/JTLodZ8Z7e4rx5LjnAPwcQPgd4a039fX+UM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=DrCX805Vc1s++UosTBi5PyCSgVijUOXBqKyK1kVaZhlrATNwDAHUGe1ZsAHo53rCf
-	 JKPCQKx2R9wt4T1e/ue+8sKSyh4PgR9b1GQ7xCEh7tv1tNTUKyde+m8R7MMMc/2wH5
-	 6T9/Lgp2oFuA58TjSPgsd79b96tKhm+Q+Tm4YEHc=
+	b=k9uMjk70pU6wu/i9A2Z8qgXzb6LNK316z3JsZoTSq/7OR/5JhGQ/FuXQbC8tiviOb
+	 j+jgJ3VGsEUOj9tSHKMNlzY4mnN9BwIl30lWTFdZUkonSIFjvDSjhM16ynAYDRKijA
+	 yBkmiKEVZRfUuzrQWna8327IwXvFN+b/Vm3oVBRc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Michael Bommarito <michael.bommarito@gmail.com>,
-	Steve French <stfrench@microsoft.com>
-Subject: [PATCH 6.18 032/377] smb: client: require net admin for CIFS SWN netlink
+	stable@kernel.org,
+	Yuan Tan <yuantan098@gmail.com>,
+	Yifan Wu <yifanwucs@gmail.com>,
+	Juefei Pu <tomapufckgml@gmail.com>,
+	Xin Liu <bird@lzu.edu.cn>,
+	Sven Eckelmann <sven@narfation.org>
+Subject: [PATCH 7.0 141/461] batman-adv: v: stop OGMv2 on disabled interface
 Date: Thu, 28 May 2026 21:44:30 +0200
-Message-ID: <20260528194639.311322375@linuxfoundation.org>
+Message-ID: <20260528194651.080601629@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260528194638.371537336@linuxfoundation.org>
-References: <20260528194638.371537336@linuxfoundation.org>
+In-Reply-To: <20260528194646.819809818@linuxfoundation.org>
+References: <20260528194646.819809818@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,96 +67,180 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	TO_DN_SOME(0.00)[];
-	TAGGED_FROM(0.00)[bounces-255592-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,microsoft.com];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,kernel.org,gmail.com,lzu.edu.cn,narfation.org];
+	TAGGED_FROM(0.00)[bounces-255238-lists,stable=lfdr.de];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	FROM_HAS_DN(0.00)[];
+	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[stable];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[5];
+	NEURAL_HAM(-0.00)[-1.000];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[9];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
-X-Rspamd-Queue-Id: EDB935F89D0
+	TAGGED_RCPT(0.00)[stable];
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,narfation.org:email,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,lzu.edu.cn:email,aggr_wq.work:url]
+X-Rspamd-Queue-Id: 22FF65F795F
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+7.0-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Michael Bommarito <michael.bommarito@gmail.com>
+From: Sven Eckelmann <sven@narfation.org>
 
-commit d1ebfce2c1d161186a82e77590bf7da2ea1bce91 upstream.
+commit f8ce8b8331a1bc44ad4905886a482214d428b253 upstream.
 
-CIFS_GENL_CMD_SWN_NOTIFY is the userspace witness-notify command.  The
-intended sender is the cifs.witness helper, but the generic-netlink
-operation currently has no capability flag, so any local process can send
-RESOURCE_CHANGE or CLIENT_MOVE notifications to the in-kernel witness
-handler.
+When a batadv_hard_iface is disabled, its mesh_iface pointer is set to
+NULL. However, batadv_v_ogm_send_meshif() may still dispatch OGMs via
+batadv_v_ogm_queue_on_if() for interfaces that have since lost their
+mesh_iface association. This results in a NULL pointer dereference when
+batadv_v_ogm_queue_on_if() unconditionally calls netdev_priv() on the
+now NULL hard_iface->mesh_iface to retrieve the batadv_priv.
 
-The same family exposes CIFS_GENL_MCGRP_SWN without multicast-group
-capability flags.  Register messages sent to that group include the witness
-registration id and, for NTLM-authenticated mounts, the username, domain,
-and password attributes copied from the CIFS session.  An unprivileged
-local process should not be able to join that group and receive those
-messages.
+It is necessary to ensure that the batadv_v_ogm_queue_on_if() checks that
+it is using the same mesh_iface for which batadv_v_ogm_send_meshif() was
+called.
 
-Require CAP_NET_ADMIN for incoming SWN_NOTIFY commands with
-GENL_ADMIN_PERM, and require CAP_NET_ADMIN over the network namespace for
-joining the SWN multicast group with GENL_MCAST_CAP_NET_ADMIN.  The
-cifs.witness service runs with the privileges needed for both operations.
-
-Fixes: fed979a7e082 ("cifs: Set witness notification handler for messages from userspace daemon")
-Cc: stable@vger.kernel.org
-Signed-off-by: Michael Bommarito <michael.bommarito@gmail.com>
-Assisted-by: Claude:claude-opus-4-7
-Signed-off-by: Steve French <stfrench@microsoft.com>
+Cc: stable@kernel.org
+Fixes: 0da0035942d4 ("batman-adv: OGMv2 - add basic infrastructure")
+Reported-by: Yuan Tan <yuantan098@gmail.com>
+Reported-by: Yifan Wu <yifanwucs@gmail.com>
+Reported-by: Juefei Pu <tomapufckgml@gmail.com>
+Reported-by: Xin Liu <bird@lzu.edu.cn>
+Reviewed-by: Yuan Tan <yuantan098@gmail.com>
+Signed-off-by: Sven Eckelmann <sven@narfation.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/smb/client/netlink.c |    6 +++++-
- 1 file changed, 5 insertions(+), 1 deletion(-)
+ net/batman-adv/bat_v_ogm.c |   33 +++++++++++++++++++++------------
+ 1 file changed, 21 insertions(+), 12 deletions(-)
 
---- a/fs/smb/client/netlink.c
-+++ b/fs/smb/client/netlink.c
-@@ -33,13 +33,17 @@ static const struct nla_policy cifs_genl
- static const struct genl_ops cifs_genl_ops[] = {
- 	{
- 		.cmd = CIFS_GENL_CMD_SWN_NOTIFY,
-+		.flags = GENL_ADMIN_PERM,
- 		.validate = GENL_DONT_VALIDATE_STRICT | GENL_DONT_VALIDATE_DUMP,
- 		.doit = cifs_swn_notify,
- 	},
- };
+--- a/net/batman-adv/bat_v_ogm.c
++++ b/net/batman-adv/bat_v_ogm.c
+@@ -113,14 +113,14 @@ static void batadv_v_ogm_start_timer(str
  
- static const struct genl_multicast_group cifs_genl_mcgrps[] = {
--	[CIFS_GENL_MCGRP_SWN] = { .name = CIFS_GENL_MCGRP_SWN_NAME },
-+	[CIFS_GENL_MCGRP_SWN] = {
-+		.name = CIFS_GENL_MCGRP_SWN_NAME,
-+		.flags = GENL_MCAST_CAP_NET_ADMIN,
-+	},
- };
+ /**
+  * batadv_v_ogm_send_to_if() - send a batman ogm using a given interface
++ * @bat_priv: the bat priv with all the mesh interface information
+  * @skb: the OGM to send
+  * @hard_iface: the interface to use to send the OGM
+  */
+-static void batadv_v_ogm_send_to_if(struct sk_buff *skb,
++static void batadv_v_ogm_send_to_if(struct batadv_priv *bat_priv,
++				    struct sk_buff *skb,
+ 				    struct batadv_hard_iface *hard_iface)
+ {
+-	struct batadv_priv *bat_priv = netdev_priv(hard_iface->mesh_iface);
+-
+ 	if (hard_iface->if_status != BATADV_IF_ACTIVE) {
+ 		kfree_skb(skb);
+ 		return;
+@@ -187,6 +187,7 @@ static void batadv_v_ogm_aggr_list_free(
  
- struct genl_family cifs_genl_family = {
+ /**
+  * batadv_v_ogm_aggr_send() - flush & send aggregation queue
++ * @bat_priv: the bat priv with all the mesh interface information
+  * @hard_iface: the interface with the aggregation queue to flush
+  *
+  * Aggregates all OGMv2 packets currently in the aggregation queue into a
+@@ -196,7 +197,8 @@ static void batadv_v_ogm_aggr_list_free(
+  *
+  * Caller needs to hold the hard_iface->bat_v.aggr_list.lock.
+  */
+-static void batadv_v_ogm_aggr_send(struct batadv_hard_iface *hard_iface)
++static void batadv_v_ogm_aggr_send(struct batadv_priv *bat_priv,
++				   struct batadv_hard_iface *hard_iface)
+ {
+ 	unsigned int aggr_len = hard_iface->bat_v.aggr_len;
+ 	struct sk_buff *skb_aggr;
+@@ -226,27 +228,32 @@ static void batadv_v_ogm_aggr_send(struc
+ 		consume_skb(skb);
+ 	}
+ 
+-	batadv_v_ogm_send_to_if(skb_aggr, hard_iface);
++	batadv_v_ogm_send_to_if(bat_priv, skb_aggr, hard_iface);
+ }
+ 
+ /**
+  * batadv_v_ogm_queue_on_if() - queue a batman ogm on a given interface
++ * @bat_priv: the bat priv with all the mesh interface information
+  * @skb: the OGM to queue
+  * @hard_iface: the interface to queue the OGM on
+  */
+-static void batadv_v_ogm_queue_on_if(struct sk_buff *skb,
++static void batadv_v_ogm_queue_on_if(struct batadv_priv *bat_priv,
++				     struct sk_buff *skb,
+ 				     struct batadv_hard_iface *hard_iface)
+ {
+-	struct batadv_priv *bat_priv = netdev_priv(hard_iface->mesh_iface);
++	if (hard_iface->mesh_iface != bat_priv->mesh_iface) {
++		kfree_skb(skb);
++		return;
++	}
+ 
+ 	if (!atomic_read(&bat_priv->aggregated_ogms)) {
+-		batadv_v_ogm_send_to_if(skb, hard_iface);
++		batadv_v_ogm_send_to_if(bat_priv, skb, hard_iface);
+ 		return;
+ 	}
+ 
+ 	spin_lock_bh(&hard_iface->bat_v.aggr_list.lock);
+ 	if (!batadv_v_ogm_queue_left(skb, hard_iface))
+-		batadv_v_ogm_aggr_send(hard_iface);
++		batadv_v_ogm_aggr_send(bat_priv, hard_iface);
+ 
+ 	hard_iface->bat_v.aggr_len += batadv_v_ogm_len(skb);
+ 	__skb_queue_tail(&hard_iface->bat_v.aggr_list, skb);
+@@ -343,7 +350,7 @@ static void batadv_v_ogm_send_meshif(str
+ 			break;
+ 		}
+ 
+-		batadv_v_ogm_queue_on_if(skb_tmp, hard_iface);
++		batadv_v_ogm_queue_on_if(bat_priv, skb_tmp, hard_iface);
+ 		batadv_hardif_put(hard_iface);
+ 	}
+ 	rcu_read_unlock();
+@@ -383,12 +390,14 @@ void batadv_v_ogm_aggr_work(struct work_
+ {
+ 	struct batadv_hard_iface_bat_v *batv;
+ 	struct batadv_hard_iface *hard_iface;
++	struct batadv_priv *bat_priv;
+ 
+ 	batv = container_of(work, struct batadv_hard_iface_bat_v, aggr_wq.work);
+ 	hard_iface = container_of(batv, struct batadv_hard_iface, bat_v);
++	bat_priv = netdev_priv(hard_iface->mesh_iface);
+ 
+ 	spin_lock_bh(&hard_iface->bat_v.aggr_list.lock);
+-	batadv_v_ogm_aggr_send(hard_iface);
++	batadv_v_ogm_aggr_send(bat_priv, hard_iface);
+ 	spin_unlock_bh(&hard_iface->bat_v.aggr_list.lock);
+ 
+ 	batadv_v_ogm_start_queue_timer(hard_iface);
+@@ -578,7 +587,7 @@ static void batadv_v_ogm_forward(struct
+ 		   if_outgoing->net_dev->name, ntohl(ogm_forward->throughput),
+ 		   ogm_forward->ttl, if_incoming->net_dev->name);
+ 
+-	batadv_v_ogm_queue_on_if(skb, if_outgoing);
++	batadv_v_ogm_queue_on_if(bat_priv, skb, if_outgoing);
+ 
+ out:
+ 	batadv_orig_ifinfo_put(orig_ifinfo);
 
 
 
