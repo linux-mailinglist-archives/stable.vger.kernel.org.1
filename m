@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-255113-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-255124-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id +IYTHVWdGGr+lQgAu9opvQ
-	(envelope-from <stable+bounces-255113-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 21:53:57 +0200
+	id +HTJFJ6dGGpAlggAu9opvQ
+	(envelope-from <stable+bounces-255124-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 21:55:10 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 463D75F762D
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 21:53:57 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id C18275F76E8
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 21:55:09 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 7A1C7301AA55
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 19:53:29 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id C007430475C6
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 19:53:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0DC6331C56D;
-	Thu, 28 May 2026 19:53:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D12E53370EA;
+	Thu, 28 May 2026 19:53:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Ga3nhuGM"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CpuDZ2Eq"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D9AC02F8EA1;
-	Thu, 28 May 2026 19:53:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 65655314A95;
+	Thu, 28 May 2026 19:53:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779998005; cv=none; b=GVQvaHFXyFAD+zQiDhl8pobMJqXCg4HGIvBJEdfp3myUS0bFNTw4oERs8luLut9SAjSJI6b6ECWLOL1AfoDTmwjwL2Np7MToi1ZGGl7uc/8Fbbjq5vPfHndxuDjhX6cooq6CCQKPGWQdFG6OKfVT58BoSyt2hKiuk79jbCHrKH8=
+	t=1779998036; cv=none; b=kJiDeUpWgHqDXc164Wb5AH54Bu88KfMNpNtt1SSEu8unjeht/smTznYy+DKjFdxun4GSVc2TQgp5ZsL9GGtfiO62ym8u4HHjyQbJtcQGainXNU6G80y9Sz2mOHXDA1fvB6Sxo7nKj9GgjWMXKrX8Fqi509pbydKhAJWOM/ByQGE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779998005; c=relaxed/simple;
-	bh=ExOlQasaG7FdVr5oHbebpisVxRUuJ4AMkNJqdAnw1Rg=;
+	s=arc-20240116; t=1779998036; c=relaxed/simple;
+	bh=1ttP5eevQ6qCOZjDZs/dgtS1/v1XSAEKQU1OC4ivXRM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=IeE1qx7WRdhYw3Axg+RON5oexviRpVEPY9ONGM5iJSTkFr9Nfgk/QGdCuQPvmXgU6pY7l+QK4bNco+IO6Xfj3cOsaS5nNndV1cySYWfKt7SwlDWiaDfpbJFSbzlWQVQfFTp/AGpz0+t+12lEtdgjbe9A+EXd3yplleh2SRO7JQQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Ga3nhuGM; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EFB761F000E9;
-	Thu, 28 May 2026 19:53:23 +0000 (UTC)
+	 MIME-Version; b=Sz3n4/7QOV5rhJfVzFvqZKwckDPohqiUXPKqvHCjNfUd6woF7AT8wmYKOyx1xjGWu/USMnJvfY0zcPX/qW83Yif47wuZea8PlQFk6R8wWkfrL4nXykb+UoMhcIb+OsYuBHTfCpjNn8qG2IIWS+aRPS2P7wPpjCdnALYGs3d7T30=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CpuDZ2Eq; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C3ADE1F000E9;
+	Thu, 28 May 2026 19:53:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779998004;
-	bh=+TkWg1W6Ae1ajOm9Krf74RFLBidY4gAPdv4AaYNOHGA=;
+	s=korg; t=1779998035;
+	bh=jXDd32oX42TpFqfUfBsc0lLjwTVmBzdPHfZHZOWxeik=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=Ga3nhuGMMGAZD+L6672N54B2jsbuBOFzs4I5uZA/s9oGPMREgPPkyPKWdPAlEBLHk
-	 L6TdfR6zHIPe70x8rkTny0UTFJvkXxwbqd0HDVOoQTF3sexWA7npFAXHyax9aGvx7I
-	 Ahf+NSfS73u1IVwTPHgjjq7cysVX9DL72bVAi4VM=
+	b=CpuDZ2EqOo5+H26JOUNOlWF6sOgui/+s5aIDQnZSs78vzSDzQQCmullIj/qbOeX6x
+	 Hz1b2WplkrInhMKpvosTJV4xvY2zMyzDLV0b63YpSQwP5ifs7ID8KyqE/LxyCbBprb
+	 ewaY1nMsAWhD3S2WY+GTUqYYnQC2OcTVSgMdDlg0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Eder Zulian <ezulian@redhat.com>,
-	Joerg Roedel <joerg.roedel@amd.com>,
+	DaeMyung Kang <charsyam@gmail.com>,
+	Namjae Jeon <linkinjeon@kernel.org>,
+	Steve French <stfrench@microsoft.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 7.0 002/461] iommu/amd: Remove latent out-of-bounds access in IOMMU debugfs
-Date: Thu, 28 May 2026 21:42:11 +0200
-Message-ID: <20260528194646.897240896@linuxfoundation.org>
+Subject: [PATCH 7.0 003/461] ksmbd: close durable scavenger races against m_fp_list lookups
+Date: Thu, 28 May 2026 21:42:12 +0200
+Message-ID: <20260528194646.929203062@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
 In-Reply-To: <20260528194646.819809818@linuxfoundation.org>
 References: <20260528194646.819809818@linuxfoundation.org>
@@ -68,30 +69,31 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,kernel.org,microsoft.com];
+	TAGGED_FROM(0.00)[bounces-255124-lists,stable=lfdr.de];
 	PRECEDENCE_BULK(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-255113-lists,stable=lfdr.de];
-	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo]
-X-Rspamd-Queue-Id: 463D75F762D
+	TAGGED_RCPT(0.00)[stable];
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim]
+X-Rspamd-Queue-Id: C18275F76E8
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
@@ -99,81 +101,257 @@ X-Rspamd-Server: lfdr
 
 ------------------
 
-From: Eder Zulian <ezulian@redhat.com>
+From: DaeMyung Kang <charsyam@gmail.com>
 
-[ Upstream commit 8dfd3d8d74435344ee8dc9237596959c8b2a6cbe ]
+[ Upstream commit bf736184d063da1a552ffeff0481813599a182cc ]
 
-In iommu_mmio_write() and iommu_capability_write(), the variables
-dbg_mmio_offset and dbg_cap_offset are declared as int. However, they
-are populated using kstrtou32_from_user(). If a user provides a
-sufficiently large value, it can become a negative integer.
+ksmbd_durable_scavenger() has two related races against any walker
+that iterates f_ci->m_fp_list, including ksmbd_lookup_fd_inode()
+(used by ksmbd_vfs_rename) and the share-mode checks in
+fs/smb/server/smb_common.c.
 
-Prior to this patch, the AMD IOMMU debugfs implementation was already
-protected by different mechanisms.
+(1) fp->node list-head reuse.  Durable-preserved handles can remain
+linked on f_ci->m_fp_list after session teardown so share-mode checks
+still see them while the handle is reconnectable.  The scavenger
+collected expired handles by adding fp->node to a local
+scavenger_list after removing them from the global durable idr.
+Because fp->node is the same list_head used by m_fp_list,
+list_add(&fp->node, &scavenger_list) overwrites the m_fp_list links
+and corrupts both lists.  CONFIG_DEBUG_LIST can report this on the
+share-mode walk path.
 
-1. #define OFS_IN_SZ 8 ensures the user string <= 8 bytes, so
-   e.g. 0xffffffff isn't a valid input.
+(2) Refcount race against m_fp_list walkers.  The scavenger qualifies
+an expired durable handle with atomic_read(&fp->refcount) > 1 and
+fp->conn under global_ft.lock, removes fp from global_ft, then drops
+global_ft.lock before unlinking fp from m_fp_list and freeing it.
+During that gap fp is still linked on m_fp_list with f_state ==
+FP_INITED.  ksmbd_lookup_fd_inode() under m_lock read calls
+ksmbd_fp_get() (atomic_inc_not_zero on refcount that is still 1) and
+takes a live reference; the scavenger then unlinks and frees fp
+while the holder owns a reference, leading to UAF on the holder's
+subsequent ksmbd_fd_put() and on any field reads performed by a
+concurrent share-mode walker that iterates m_fp_list without taking
+ksmbd_fp_get() (smb_check_perm_dleases-like paths).
 
-  if (cnt > OFS_IN_SZ)
-     return -EINVAL;
+Fix both:
 
-2. Implicit type promotion in iommu_mmio_write(), dbg_mmio_offset is int
-   and iommu->mmio_phys_end is u64
+  * Stop reusing fp->node as a scavenger-private list node.  Remove
+    one expired handle from global_ft under global_ft.lock, take an
+    explicit transient reference, drop the lock, unlink fp->node
+    from m_fp_list under f_ci->m_lock, then drop both the durable
+    lifetime and transient references with atomic_sub_and_test(2,
+    &fp->refcount).  If the scavenger is the last putter the close
+    runs there; otherwise an in-flight holder that already raced
+    through the m_fp_list lookup owns the final close via its
+    ksmbd_fd_put() path.  The one-at-a-time disposal can rescan the
+    durable idr when multiple handles expire in the same pass, but
+    durable scavenging is a background expiration path and the final
+    full scan recomputes min_timeout before the next wait.
 
-  if (dbg_mmio_offset > iommu->mmio_phys_end - sizeof(u64))
-      return -EINVAL;
+  * Clear fp->persistent_id inside __ksmbd_remove_durable_fd() right
+    after idr_remove(), so a delayed final close from a holder that
+    snatched fp does not re-issue idr_remove() on a persistent id
+    that idr_alloc_cyclic() in ksmbd_open_durable_fd() may have
+    already handed out to a brand-new durable handle.
 
-3. The show handlers would currently catch the negative number and
-   refuse to perform the read.
+  * Bypass the per-conn open_files_count decrement in
+    __put_fd_final() when fp is detached from any session table
+    (fp->conn cleared by session_fd_check() at durable preserve --
+    paired with the volatile_id clear at unpublish, so checking
+    fp->conn alone is sufficient).  The walker that owns the final
+    close runs from an unrelated work->conn whose
+    stats.open_files_count never tracked this durable fp; without
+    this guard the holder would underflow that unrelated counter.
 
-Replace kstrtou32_from_user() with kstrtos32_from_user() to parse the
-input, and check for negative values to explicitly prevent out-of-bounds
-memory accesses directly in iommu_mmio_write() and
-iommu_capability_write().
+The two races are folded into one patch because patch (1) alone
+cleans up the corrupted list but leaves a deterministic UAF window
+for m_fp_list walkers that the transient-reference and
+persistent_id discipline in (2) close; bisecting onto an
+intermediate state would land on a UAF that pre-patch chaos merely
+made less reproducible.
 
-Signed-off-by: Eder Zulian <ezulian@redhat.com>
-Fixes: 7a4ee419e8c1 ("iommu/amd: Add debugfs support to dump IOMMU MMIO registers")
-Cc: stable@vger.kernel.org
-Signed-off-by: Joerg Roedel <joerg.roedel@amd.com>
+Validation:
+  * CONFIG_DEBUG_LIST coverage for the list_head reuse path.
+  * KASAN-enabled direct SMB2 durable-handle coverage that exercised
+    ksmbd_durable_scavenger() and non-NULL ksmbd_lookup_fd_inode()
+    returns while durable handles expired under concurrent rename
+    lookups, with no KASAN, UAF, list-corruption, ODEBUG, or WARNING
+    reports.
+  * checkpatch --strict
+  * make -j$(nproc) M=fs/smb/server
+
+Fixes: d484d621d40f ("ksmbd: add durable scavenger timer")
+Signed-off-by: DaeMyung Kang <charsyam@gmail.com>
+Acked-by: Namjae Jeon <linkinjeon@kernel.org>
+Signed-off-by: Steve French <stfrench@microsoft.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/iommu/amd/debugfs.c | 9 +++++----
- 1 file changed, 5 insertions(+), 4 deletions(-)
+ fs/smb/server/vfs_cache.c | 102 ++++++++++++++++++++++++++++----------
+ 1 file changed, 76 insertions(+), 26 deletions(-)
 
-diff --git a/drivers/iommu/amd/debugfs.c b/drivers/iommu/amd/debugfs.c
-index 0584ca2f859d9..3909a1fb218e9 100644
---- a/drivers/iommu/amd/debugfs.c
-+++ b/drivers/iommu/amd/debugfs.c
-@@ -31,11 +31,12 @@ static ssize_t iommu_mmio_write(struct file *filp, const char __user *ubuf,
- 	if (cnt > OFS_IN_SZ)
- 		return -EINVAL;
+diff --git a/fs/smb/server/vfs_cache.c b/fs/smb/server/vfs_cache.c
+index 3551f01a3fa03..60b7a2d60238a 100644
+--- a/fs/smb/server/vfs_cache.c
++++ b/fs/smb/server/vfs_cache.c
+@@ -418,6 +418,14 @@ static void __ksmbd_remove_durable_fd(struct ksmbd_file *fp)
+ 		return;
  
--	ret = kstrtou32_from_user(ubuf, cnt, 0, &dbg_mmio_offset);
-+	ret = kstrtos32_from_user(ubuf, cnt, 0, &dbg_mmio_offset);
- 	if (ret)
- 		return ret;
+ 	idr_remove(global_ft.idr, fp->persistent_id);
++	/*
++	 * Clear persistent_id so a later __ksmbd_close_fd() that runs from a
++	 * delayed putter (e.g. when a concurrent ksmbd_lookup_fd_inode()
++	 * walker held the final reference) does not re-issue idr_remove() on
++	 * an id that idr_alloc_cyclic() may have already handed out to a new
++	 * durable handle.
++	 */
++	fp->persistent_id = KSMBD_NO_FID;
+ }
  
--	if (dbg_mmio_offset > iommu->mmio_phys_end - sizeof(u64))
-+	if (dbg_mmio_offset < 0 || dbg_mmio_offset >
-+			iommu->mmio_phys_end - sizeof(u64))
- 		return -EINVAL;
+ static void ksmbd_remove_durable_fd(struct ksmbd_file *fp)
+@@ -510,6 +518,20 @@ static struct ksmbd_file *__ksmbd_lookup_fd(struct ksmbd_file_table *ft,
  
- 	iommu->dbg_mmio_offset = dbg_mmio_offset;
-@@ -71,12 +72,12 @@ static ssize_t iommu_capability_write(struct file *filp, const char __user *ubuf
- 	if (cnt > OFS_IN_SZ)
- 		return -EINVAL;
+ static void __put_fd_final(struct ksmbd_work *work, struct ksmbd_file *fp)
+ {
++	/*
++	 * Detached durable fp -- session_fd_check() cleared fp->conn at
++	 * preserve, so this fp is no longer tracked by any conn's
++	 * stats.open_files_count.  This happens when
++	 * ksmbd_scavenger_dispose_dh() hands the final close off to an
++	 * m_fp_list walker (e.g. ksmbd_lookup_fd_inode()) whose work->conn
++	 * is unrelated to the conn that originally opened the handle; close
++	 * via the NULL-ft path so we do not underflow that unrelated
++	 * counter.
++	 */
++	if (!fp->conn) {
++		__ksmbd_close_fd(NULL, fp);
++		return;
++	}
+ 	__ksmbd_close_fd(&work->sess->file_table, fp);
+ 	atomic_dec(&work->conn->stats.open_files_count);
+ }
+@@ -881,24 +903,37 @@ static bool ksmbd_durable_scavenger_alive(void)
+ 	return true;
+ }
  
--	ret = kstrtou32_from_user(ubuf, cnt, 0, &dbg_cap_offset);
-+	ret = kstrtos32_from_user(ubuf, cnt, 0, &dbg_cap_offset);
- 	if (ret)
- 		return ret;
+-static void ksmbd_scavenger_dispose_dh(struct list_head *head)
++static void ksmbd_scavenger_dispose_dh(struct ksmbd_file *fp)
+ {
+-	while (!list_empty(head)) {
+-		struct ksmbd_file *fp;
++	/*
++	 * Durable-preserved fp can remain linked on f_ci->m_fp_list for
++	 * share-mode checks.  Unlink it before final close; fp->node is not
++	 * available as a scavenger-private list node because re-adding it to
++	 * another list corrupts m_fp_list.
++	 */
++	down_write(&fp->f_ci->m_lock);
++	list_del_init(&fp->node);
++	up_write(&fp->f_ci->m_lock);
  
- 	/* Capability register at offset 0x14 is the last IOMMU capability register. */
--	if (dbg_cap_offset > 0x14)
-+	if (dbg_cap_offset < 0 || dbg_cap_offset > 0x14)
- 		return -EINVAL;
+-		fp = list_first_entry(head, struct ksmbd_file, node);
+-		list_del_init(&fp->node);
++	/*
++	 * Drop both the durable lifetime reference and the transient reference
++	 * taken by the scavenger under global_ft.lock.  If a concurrent
++	 * ksmbd_lookup_fd_inode() (or any other m_fp_list walker) snatched fp
++	 * before the unlink above, that holder owns the final close via
++	 * ksmbd_fd_put() -> __ksmbd_close_fd().  Otherwise the scavenger is
++	 * the last putter and finalises fp here.
++	 */
++	if (atomic_sub_and_test(2, &fp->refcount))
+ 		__ksmbd_close_fd(NULL, fp);
+-	}
+ }
  
- 	iommu->dbg_cap_offset = dbg_cap_offset;
+ static int ksmbd_durable_scavenger(void *dummy)
+ {
+ 	struct ksmbd_file *fp = NULL;
++	struct ksmbd_file *expired_fp;
+ 	unsigned int id;
+ 	unsigned int min_timeout = 1;
+ 	bool found_fp_timeout;
+-	LIST_HEAD(scavenger_list);
+ 	unsigned long remaining_jiffies;
+ 
+ 	__module_get(THIS_MODULE);
+@@ -908,8 +943,6 @@ static int ksmbd_durable_scavenger(void *dummy)
+ 		if (try_to_freeze())
+ 			continue;
+ 
+-		found_fp_timeout = false;
+-
+ 		remaining_jiffies = wait_event_timeout(dh_wq,
+ 				   ksmbd_durable_scavenger_alive() == false,
+ 				   __msecs_to_jiffies(min_timeout));
+@@ -918,23 +951,39 @@ static int ksmbd_durable_scavenger(void *dummy)
+ 		else
+ 			min_timeout = DURABLE_HANDLE_MAX_TIMEOUT;
+ 
+-		write_lock(&global_ft.lock);
+-		idr_for_each_entry(global_ft.idr, fp, id) {
+-			if (!fp->durable_timeout)
+-				continue;
++		do {
++			expired_fp = NULL;
++			found_fp_timeout = false;
+ 
+-			if (atomic_read(&fp->refcount) > 1 ||
+-			    fp->conn)
+-				continue;
+-
+-			found_fp_timeout = true;
+-			if (fp->durable_scavenger_timeout <=
+-			    jiffies_to_msecs(jiffies)) {
+-				__ksmbd_remove_durable_fd(fp);
+-				list_add(&fp->node, &scavenger_list);
+-			} else {
++			write_lock(&global_ft.lock);
++			idr_for_each_entry(global_ft.idr, fp, id) {
+ 				unsigned long durable_timeout;
+ 
++				if (!fp->durable_timeout)
++					continue;
++
++				if (atomic_read(&fp->refcount) > 1 ||
++				    fp->conn)
++					continue;
++
++				found_fp_timeout = true;
++				if (fp->durable_scavenger_timeout <=
++				    jiffies_to_msecs(jiffies)) {
++					__ksmbd_remove_durable_fd(fp);
++					/*
++					 * Take a transient reference so fp
++					 * cannot be freed by an in-flight
++					 * ksmbd_lookup_fd_inode() that found
++					 * it through f_ci->m_fp_list while we
++					 * drop global_ft.lock and reach the
++					 * m_fp_list unlink in
++					 * ksmbd_scavenger_dispose_dh().
++					 */
++					atomic_inc(&fp->refcount);
++					expired_fp = fp;
++					break;
++				}
++
+ 				durable_timeout =
+ 					fp->durable_scavenger_timeout -
+ 						jiffies_to_msecs(jiffies);
+@@ -942,10 +991,11 @@ static int ksmbd_durable_scavenger(void *dummy)
+ 				if (min_timeout > durable_timeout)
+ 					min_timeout = durable_timeout;
+ 			}
+-		}
+-		write_unlock(&global_ft.lock);
++			write_unlock(&global_ft.lock);
+ 
+-		ksmbd_scavenger_dispose_dh(&scavenger_list);
++			if (expired_fp)
++				ksmbd_scavenger_dispose_dh(expired_fp);
++		} while (expired_fp);
+ 
+ 		if (found_fp_timeout == false)
+ 			break;
 -- 
 2.53.0
 
