@@ -1,58 +1,59 @@
-Return-Path: <stable+bounces-255622-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-255243-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 0JUpEVSjGGrJlggAu9opvQ
-	(envelope-from <stable+bounces-255622-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:19:32 +0200
+	id cHqjK7ieGGpAlggAu9opvQ
+	(envelope-from <stable+bounces-255243-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 21:59:52 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id 475885F862B
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:19:31 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2A9855F79C4
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 21:59:52 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id E8FF33049D09
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 20:17:11 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id EEBA33014C6D
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 19:59:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DF18C2D6E5C;
-	Thu, 28 May 2026 20:17:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 029653E3147;
+	Thu, 28 May 2026 19:59:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uYn3mzMl"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TzWwoSTd"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B8A06257854;
-	Thu, 28 May 2026 20:17:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D4C5333F5B4;
+	Thu, 28 May 2026 19:59:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779999428; cv=none; b=EPyVpA5I2zjPFoKj/9+Y+AtgghfW/A9iH2gWL7P++TIEUaoGGjPDvEtAHMrCAyC6G5pvHJEAKQDyHbiMPbHhcnc75S0Tx6mVtrKy02RRbDumtcmVtjZV4hZG/MAoBI2LTxOBpOWnmBMpoYkQfbQs0n88IrqzlCUJPry3eqdjpiU=
+	t=1779998361; cv=none; b=a/TEnEsmT+5cc+shOtZEahK9ygWQjSp/i+tGPfiQn19SOEaldE9qJqTrVhq9zExBwSZHqwZIuIuu66zIuw1W2ccijVaoFmHc3wMCVHXXibir7Nnx0BUFqYXgZIjmVKwIMM96LJS+TlJtvJ7PKTqOW36rgXB9acTDrGCP7MYpLnI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779999428; c=relaxed/simple;
-	bh=PfKNpuaIah1q+VK/uu0wDgt1IQuJnNaul5t5fbzcNe0=;
+	s=arc-20240116; t=1779998361; c=relaxed/simple;
+	bh=chl9WOBnWLu/L5wjDkQUC8Fz9j9ExTrDYQCEshEarcA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=dwg2Vxh/MLVNp6Y088irED66kvjbKAv6ncDbmkvFN3uKJHufE4XoRXgZ5PnEcVmwgDGEnFcz80AIWsJo9wb1DWlsIQmfAAyzFKYULO16g6MUcrBkGfbfO8Wa1mT4e/ieqPfXtmYbHOOgGdWwdwuDpbBIRu0q02Hn8a6QZRP4B0U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uYn3mzMl; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 232CD1F000E9;
-	Thu, 28 May 2026 20:17:06 +0000 (UTC)
+	 MIME-Version:Content-Type; b=l+ZZTlBGXz0+oJTneIxVLH20kvffZbjX7NQDPDaoGIA7bHViUJXUyNXqynYQzTNfux/y//GADHR2Pp59Fvp0LyhW0ebjcs9Kk8m48y4S1RRInZ+va1EBuKViqa6y3aFRMto5PSKlU2yxLeActUn3OcGJwLbRi6Y+gPb9n8gUPQc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TzWwoSTd; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3EEE01F000E9;
+	Thu, 28 May 2026 19:59:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779999427;
-	bh=hPvn0rproW0fxP20lkrsgT32XQFcOdzLg2VAt1z+XRQ=;
+	s=korg; t=1779998360;
+	bh=N+72baT9qcZCza0zQFPrbLrdr9Mem0eppc9G99/ZdOw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=uYn3mzMlFlQy7GWA4Hx6mKNMS7IiiHJgoOk54ZKB+6B8Ai2Zbr9/VRhLbuFZCdE6b
-	 Jyv8+Jaoos0FOoZk8d7yKhaWly/772ud+Mp7zIJfVZb2IHYZ0uFppS2T1mNNemGEDK
-	 PUujw/JWwEia5kzksXSVqHCHIroAg1zQSdEtkFJQ=
+	b=TzWwoSTdGZDSeIwxcD+h4LOk+gbmoUAV7GTFbDS4BMFyVKX9bdMO/82Bx9f4v+luh
+	 CKHMkrHt9dqTirB/vzJ/hS3XRXY4AkqV0jYi5MDJ9ap2wlUkVbGQfIrTHx36Ffie4F
+	 hH2kvywMyOgxPQBRwWBiNpchG74vxuts4YNgND3U=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Abdurrahman Hussain <abdurrahman@nexthop.ai>,
-	Guenter Roeck <linux@roeck-us.net>
-Subject: [PATCH 6.18 036/377] hwmon: (pmbus/adm1266) widen blackbox-info buffer to I2C_SMBUS_BLOCK_MAX
+	stable@kernel.org,
+	=?UTF-8?q?Linus=20L=C3=BCssing?= <linus.luessing@c0d3.blue>,
+	Sven Eckelmann <sven@narfation.org>
+Subject: [PATCH 7.0 145/461] batman-adv: mcast: fix use-after-free in orig_node RCU release
 Date: Thu, 28 May 2026 21:44:34 +0200
-Message-ID: <20260528194639.424595721@linuxfoundation.org>
+Message-ID: <20260528194651.212445564@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260528194638.371537336@linuxfoundation.org>
-References: <20260528194638.371537336@linuxfoundation.org>
+In-Reply-To: <20260528194646.819809818@linuxfoundation.org>
+References: <20260528194646.819809818@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,88 +63,85 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-255622-lists,stable=lfdr.de];
-	TO_DN_SOME(0.00)[];
+	TAGGED_FROM(0.00)[bounces-255243-lists,stable=lfdr.de];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	RCVD_COUNT_THREE(0.00)[4];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TO_DN_SOME(0.00)[];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	RCPT_COUNT_FIVE(0.00)[6];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[5];
+	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[nexthop.ai:email,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,roeck-us.net:email,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo]
-X-Rspamd-Queue-Id: 475885F862B
+	DBL_BLOCKED_OPENRESOLVER(0.00)[narfation.org:email,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo]
+X-Rspamd-Queue-Id: 2A9855F79C4
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+7.0-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Abdurrahman Hussain <abdurrahman@nexthop.ai>
+From: Sven Eckelmann <sven@narfation.org>
 
-commit eee213daa1e1b402eb631bcd1b8c5aa340a6b081 upstream.
+commit 20c2d6a20ca936f5aaa6dd40f73f262ac45c87cc upstream.
 
-adm1266_nvmem_read_blackbox() declares a 5-byte stack buffer and
-passes it to i2c_smbus_read_block_data() to retrieve the 4-byte
-BLACKBOX_INFO response.  i2c_smbus_read_block_data() does not honour
-caller buffer sizes -- it memcpy()s data.block[0] bytes from the
-SMBus transaction (where data.block[0] is the length byte returned by
-the slave device, up to I2C_SMBUS_BLOCK_MAX = 32):
+batadv_mcast_purge_orig() removes entries from RCU-protected hlists but
+does not wait for an RCU grace period before returning. Concurrent RCU
+readers may still accesses references to those entries at the point of
+removal. RCU-protected readers trying to operate on entries like
+orig->mcast_want_all_ipv6_node will then access already freed memory.
 
-	memcpy(values, &data.block[1], data.block[0]);
+Fix this by moving batadv_mcast_purge_orig() to batadv_orig_node_release(),
+just before the call_rcu() invocation. This ensures RCU readers that were
+active at purge time have drained before the orig_node memory is reclaimed.
 
-If the device returns any block length above 5, the call overflows
-the caller's 5-byte stack buffer before the post-call
-
-	if (ret != 4)
-		return -EIO;
-
-check has a chance to reject the response.
-
-Widen the local buffer to I2C_SMBUS_BLOCK_MAX so the helper has room
-for any well-formed SMBus block response, matching the convention used
-by the other i2c_smbus_read_block_data() callers in this driver.
-
-Fixes: 15609d189302 ("hwmon: (pmbus/adm1266) read blackbox")
-Cc: stable@vger.kernel.org
-Signed-off-by: Abdurrahman Hussain <abdurrahman@nexthop.ai>
-Link: https://lore.kernel.org/r/20260515-adm1266-fixes-v1-2-1c1ea1349cfe@nexthop.ai
-Signed-off-by: Guenter Roeck <linux@roeck-us.net>
+Cc: stable@kernel.org
+Fixes: ab49886e3da7 ("batman-adv: Add IPv4 link-local/IPv6-ll-all-nodes multicast support")
+Acked-by: Linus Lüssing <linus.luessing@c0d3.blue>
+Signed-off-by: Sven Eckelmann <sven@narfation.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/hwmon/pmbus/adm1266.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ net/batman-adv/originator.c |    4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
---- a/drivers/hwmon/pmbus/adm1266.c
-+++ b/drivers/hwmon/pmbus/adm1266.c
-@@ -349,7 +349,7 @@ static int adm1266_nvmem_read_blackbox(s
- {
- 	int record_count;
- 	char index;
--	u8 buf[5];
-+	u8 buf[I2C_SMBUS_BLOCK_MAX];
- 	int ret;
+--- a/net/batman-adv/originator.c
++++ b/net/batman-adv/originator.c
+@@ -835,8 +835,6 @@ static void batadv_orig_node_free_rcu(st
  
- 	ret = i2c_smbus_read_block_data(data->client, ADM1266_BLACKBOX_INFO, buf);
+ 	orig_node = container_of(rcu, struct batadv_orig_node, rcu);
+ 
+-	batadv_mcast_purge_orig(orig_node);
+-
+ 	batadv_frag_purge_orig(orig_node, NULL);
+ 
+ 	kfree(orig_node->tt_buff);
+@@ -887,6 +885,8 @@ void batadv_orig_node_release(struct kre
+ 	}
+ 	spin_unlock_bh(&orig_node->vlan_list_lock);
+ 
++	batadv_mcast_purge_orig(orig_node);
++
+ 	call_rcu(&orig_node->rcu, batadv_orig_node_free_rcu);
+ }
+ 
 
 
 
