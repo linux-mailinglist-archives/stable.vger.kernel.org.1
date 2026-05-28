@@ -1,59 +1,61 @@
-Return-Path: <stable+bounces-256104-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-256272-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id MPjsF3epGGrclwgAu9opvQ
-	(envelope-from <stable+bounces-256104-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:45:43 +0200
+	id 0GYsOF6rGGpolwgAu9opvQ
+	(envelope-from <stable+bounces-256272-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:53:50 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2FB2F5F97CA
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:45:43 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 706175F9CDA
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:53:50 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 4E6D030C9033
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 20:40:03 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 3559F3051D2E
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 20:47:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 236E434FF76;
-	Thu, 28 May 2026 20:39:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D39092F1FEF;
+	Thu, 28 May 2026 20:47:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="X/0AnEL/"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="umSIWzPG"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F060A33B6FC;
-	Thu, 28 May 2026 20:39:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9CACE23394D;
+	Thu, 28 May 2026 20:47:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780000767; cv=none; b=SeKOorxCywwXQzlSbN5kJpdNfH4kc6bI3vCpnRb4NB/Uv8Qrlc+cyN2TI0WpuoOV/48ejdt3K2oadOSZ0r0XTM6xyqx9aWY7hvSCMUKJDz5y7yhMdGtitKCr86niM6fhK6AcQ9Gq7mKT7s/Kp07NVSxyEMbkeKQs/zLIuNC+YjU=
+	t=1780001235; cv=none; b=UwVFDEETueBTV5u841UbXotSStovyqHNafKUhnz9OK/8onbyCzANhKnJB3MIepWmVU+Gml5zDbGYStcp7t6TqdpbU/dV/dZrgYg8vWSgVU/Y1lZDbzvHIF4uSygRGunzSQIXavR5u9TayH8KRlzvWM11wMErw+SiH9yopl8Ys6M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780000767; c=relaxed/simple;
-	bh=ZpV4AJEFFJ9PjlXEsd77UlAE7wt3JoH7yTlqnn12gNU=;
+	s=arc-20240116; t=1780001235; c=relaxed/simple;
+	bh=KbQrFUuxgatSCrrP+l7Z/DtCFWduW7T/6g8bPxAxaKc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Yr5CFfVKu9KM0LC3L00/6Qnj91kiVnjrNqOz0wTuJGyZO2ICIAbthlBw20BlBOs5wGPoZkNM9DqnG0zEyyNQBytketRIYIV8l1j3tkcqjmv+bAM3UPj7NP7jXqCGUt4Sh6273Mw8h224RySBM6IHInxgchDXNesrU/JbmnhU/oc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=X/0AnEL/; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5A0161F00A3A;
-	Thu, 28 May 2026 20:39:26 +0000 (UTC)
+	 MIME-Version; b=B178wpx6MQt24apg3hP1uKfywJYIRV9gOHmIcCzdc9udKUbPXEdEKEfA35FRBrvYxL+rndWAv7eiFcPXTiT+21kLvbuX6+5st9IqKE/3cFENS0yCaqqSkH9/bWG8BKQ1aK5wtNID6hWZt0xCO5YcTY8c7LneRA8iAOekMmVeaLg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=umSIWzPG; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 069571F000E9;
+	Thu, 28 May 2026 20:47:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780000766;
-	bh=XHZY6Djb9swetTbAdxQNhzMOL6ol16cyuftgCJghoeE=;
+	s=korg; t=1780001234;
+	bh=ly1txdLxHA1jf3lmGuuSuNTWvmEmfePONJbQhpC9O/I=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=X/0AnEL/9QuOLIcsfLJGaFWopEQbAerbWzAL3+zCIHdgDq1wklXj0RZsmbX90CGZV
-	 fy8M4tVomAHQcsm5s8Oz3tZ+mKP2wYLQHyxr0zaQiCEYvcYPU61gDji7B1fDxyqcFz
-	 rsPVc/wzkKdjxgCJy62C+URCg9rOeVL4rT19dxCY=
+	b=umSIWzPGRWw7PTbdvcCOfHi3EuVGpcVkPoZVMvii2EgvG2jRx78+iVFoA/hO80WnW
+	 zNjQOKbYa0k+/EXj3CDar5bImKr5Uqmd3w/xqg17zhzYVHXrCyaFP4NPqjoi0o13IK
+	 uv7XhQ36HkDKIyOpzgCBoEHqOlBFUnJ3a3fEZYsE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sebastian Ene <sebastianene@google.com>,
-	Sudeep Holla <sudeep.holla@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 160/272] firmware: arm_ffa: Align RxTx buffer size before mapping
+	Michael Bommarito <michael.bommarito@gmail.com>,
+	Simon Horman <horms@kernel.org>,
+	Rafal Romanowski <rafal.romanowski@intel.com>,
+	Tony Nguyen <anthony.l.nguyen@intel.com>,
+	Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 6.6 054/186] ixgbevf: fix use-after-free in VEPA multicast source pruning
 Date: Thu, 28 May 2026 21:48:54 +0200
-Message-ID: <20260528194633.825086635@linuxfoundation.org>
+Message-ID: <20260528194930.431252333@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260528194629.379955525@linuxfoundation.org>
-References: <20260528194629.379955525@linuxfoundation.org>
+In-Reply-To: <20260528194928.941004471@linuxfoundation.org>
+References: <20260528194928.941004471@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,88 +66,100 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	RCVD_TLS_LAST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-256104-lists,stable=lfdr.de];
-	TO_DN_SOME(0.00)[];
+	TAGGED_FROM(0.00)[bounces-256272-lists,stable=lfdr.de];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,kernel.org,intel.com];
+	MIME_TRACE(0.00)[0:+];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[8];
 	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	NEURAL_HAM(-0.00)[-0.999];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
+	TO_DN_SOME(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,msgid.link:url,linuxfoundation.org:mid,linuxfoundation.org:dkim,sashiko.dev:url]
-X-Rspamd-Queue-Id: 2FB2F5F97CA
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,intel.com:email,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim]
+X-Rspamd-Queue-Id: 706175F9CDA
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sudeep Holla <sudeep.holla@kernel.org>
+From: Michael Bommarito <michael.bommarito@gmail.com>
 
-[ Upstream commit 0399e3f872ca3d78044bb715a73ea645806d2c7b ]
+commit 5d49b568c188dc77199d8d2b959c91da8cc27cf1 upstream.
 
-Commit 83210251fd70 ("firmware: arm_ffa: Use the correct buffer size during
-RXTX_MAP") advertises PAGE_ALIGN(rxtx_bufsz) to firmware when mapping the
-buffers but the driver continues to stores the minimum FF-A buffer size
-in drv_info->rxtx_bufsz which is used elsewhere in the driver.
+ixgbevf_clean_rx_irq() prunes frames whose source MAC matches the VF's
+own address (VEPA multicast workaround) by freeing the skb and
+continuing to the next descriptor:
 
-Align the size before storing it so that the allocation, validation and
-FFA_RXTX_MAP all use the same buffer size.
+    dev_kfree_skb_irq(skb);
+    continue;
 
-Fixes: 83210251fd70 ("firmware: arm_ffa: Use the correct buffer size during RXTX_MAP")
-Cc: Sebastian Ene <sebastianene@google.com>
-Link: https://sashiko.dev/#/patchset/20260402113939.930221-1-sebastianene@google.com
-Reviewed-by: Sebastian Ene <sebastianene@google.com>
-Link: https://patch.msgid.link/20260428-ffa_fixes-v2-9-8595ae450034@kernel.org
-Signed-off-by: Sudeep Holla <sudeep.holla@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+The skb pointer is declared outside the while loop and persists across
+iterations.  Because the continue skips the "skb = NULL" reset at the
+bottom of the loop, the next iteration enters the "else if (skb)" path
+and calls ixgbevf_add_rx_frag() on the freed skb, dereferencing
+skb_shinfo(skb)->nr_frags - a use-after-free in NAPI softirq context.
+
+The sibling driver iavf already handles this correctly by nulling the
+pointer before continuing.  Apply the same pattern here.
+
+I do not have ixgbevf hardware; the bug was found by static analysis
+(scan_drop_continue_loops.py + semgrep drop_continue_in_loop, multi-tool
+corroboration with the highest score in the scan).  The UAF was confirmed
+under KASAN by loading a test module that reproduces the exact code
+pattern (alloc skb, kfree_skb, then read skb_shinfo(skb)->nr_frags):
+
+  BUG: KASAN: slab-use-after-free in ixgbevf_uaf_test_init+0x100/0x1000
+  Read of size 8 at addr 000000006163ae78 by task insmod/30
+  freed 208-byte region [000000006163adc0, 000000006163ae90)
+
+QEMU emulates igb (82576) but not ixgbe (82599), and the igbvf VF
+driver does not include the VEPA source pruning path, so a full
+end-to-end reproduction with emulated hardware was not possible.
+
+Fixes: bad17234ba70 ("ixgbevf: Change receive model to use double buffered page based receives")
+Cc: stable@vger.kernel.org
+Signed-off-by: Michael Bommarito <michael.bommarito@gmail.com>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Tested-by: Rafal Romanowski <rafal.romanowski@intel.com>
+Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
+Link: https://patch.msgid.link/20260515182419.1597859-8-anthony.l.nguyen@intel.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/firmware/arm_ffa/driver.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/net/ethernet/intel/ixgbevf/ixgbevf_main.c |    1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/firmware/arm_ffa/driver.c b/drivers/firmware/arm_ffa/driver.c
-index 521007bfa35a4..f35c3a56326c7 100644
---- a/drivers/firmware/arm_ffa/driver.c
-+++ b/drivers/firmware/arm_ffa/driver.c
-@@ -1929,6 +1929,7 @@ static int __init ffa_init(void)
- 			rxtx_bufsz = SZ_4K;
- 	}
+--- a/drivers/net/ethernet/intel/ixgbevf/ixgbevf_main.c
++++ b/drivers/net/ethernet/intel/ixgbevf/ixgbevf_main.c
+@@ -1225,6 +1225,7 @@ static int ixgbevf_clean_rx_irq(struct i
+ 		    ether_addr_equal(rx_ring->netdev->dev_addr,
+ 				     eth_hdr(skb)->h_source)) {
+ 			dev_kfree_skb_irq(skb);
++			skb = NULL;
+ 			continue;
+ 		}
  
-+	rxtx_bufsz = PAGE_ALIGN(rxtx_bufsz);
- 	drv_info->rxtx_bufsz = rxtx_bufsz;
- 	drv_info->rx_buffer = alloc_pages_exact(rxtx_bufsz, GFP_KERNEL);
- 	if (!drv_info->rx_buffer) {
-@@ -1944,7 +1945,7 @@ static int __init ffa_init(void)
- 
- 	ret = ffa_rxtx_map(virt_to_phys(drv_info->tx_buffer),
- 			   virt_to_phys(drv_info->rx_buffer),
--			   PAGE_ALIGN(rxtx_bufsz) / FFA_PAGE_SIZE);
-+			   rxtx_bufsz / FFA_PAGE_SIZE);
- 	if (ret) {
- 		pr_err("failed to register FFA RxTx buffers\n");
- 		goto free_pages;
--- 
-2.53.0
-
 
 
 
