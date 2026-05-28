@@ -1,59 +1,59 @@
-Return-Path: <stable+bounces-255587-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-255234-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id QPorElWkGGrClggAu9opvQ
-	(envelope-from <stable+bounces-255587-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:23:49 +0200
+	id EHwjHoWeGGpAlggAu9opvQ
+	(envelope-from <stable+bounces-255234-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 21:59:01 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id A81455F88DB
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:23:48 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 23CB75F7948
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 21:59:01 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id BF787322B254
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 20:15:31 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 72A3D3015327
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 19:59:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6DB68279903;
-	Thu, 28 May 2026 20:15:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5EBCC3E3147;
+	Thu, 28 May 2026 19:58:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="b1KE2lzL"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rqTGCWUY"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3CD0524A047;
-	Thu, 28 May 2026 20:15:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1DFDB33CE8A;
+	Thu, 28 May 2026 19:58:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779999331; cv=none; b=ambNM5cWZoUWp1SogzJGbwPYOuUzNNuNfGICwwzdPuasKLHR9PQADCiRks694sBgWoPlrB2qa6GCAgyRGKjg0DbUubt+WPj7NkxS5c+2VLazEzVysRcEZFOT0YK62hOyC0LGbvKNgdTgdbj7gM+LXr7QUeImjmLonInjmAkUEEk=
+	t=1779998337; cv=none; b=RfkPdzLZEe49o379kaRfTnL8bIkMEvb1fuSvFs6ZL1GL4k2Mtl1uumX3nklF1iwP6zeCp3ntN5pKO6fSZJK0o6qE/eAU61RJF+bMMesuF6fu6MvgQObOfCrjEsG2fdJshcjDSS2fo9vRwQZ/ddl51q6gceuRJAUrhsUJKuezqXY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779999331; c=relaxed/simple;
-	bh=RkQgiiE/Ua/Ln8WxwufaUu0Mdjgfw42uZvdISIpUpSI=;
+	s=arc-20240116; t=1779998337; c=relaxed/simple;
+	bh=6sDGZq5Oklsp03KFK3rFzuFbPg4hV0kATjMXZK3n+x0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=X7jw07fkO95uv8ll8QR1OHkYmedUEBvrqvtbe2Ch+960uX8O/05qsEAqguAddfbHYK30kJMnOhtENBhTdcfHDGi39fl9xGo11ogAg+VtYVFfGZ7dHCCqL96VjnCjTkaT/4zUQhESUo89E+eips4uba/audqR5s17sz32hKC8wXQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=b1KE2lzL; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 99BF31F000E9;
-	Thu, 28 May 2026 20:15:29 +0000 (UTC)
+	 MIME-Version; b=ZcINM8QSzn38d9ad1hJB3dOr5/Pe++prK3ZmSUBYsjejkwPcmjmegWZp/5dT2zMYBMPOmgnUWk2y+n0o0ulb11jxyUnmdZKFzGKxNEqoQQiDRtrbkOWKZAC07yVdc6jQBsW3LHaaM1VagtcC6mBvmckqFt1KzGV5kJ+JJsUeBWQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rqTGCWUY; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 337D31F000E9;
+	Thu, 28 May 2026 19:58:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779999330;
-	bh=q+kQ40hsDiuxCBQXq830mGJB0a9EroGEMO3h3EL03A4=;
+	s=korg; t=1779998335;
+	bh=bqlPnfSX1ikOKpHjM+Df/jIvffYHXneCTo6Dhof3fk8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=b1KE2lzLo53OsF303BDaKBOJEMxOqjC9K/ACcL0+Nj2o4TPMIhKU6Dv63zdBjA6cG
-	 LVKKVLCwKJx01LUCQvk0j5AXsxabu8KYu+88QzWHR4qz6hwDFHo5onfuiex6oFCISS
-	 ipvSy6C1EWXJF7KenpnRAKls0QrbF0G8BALjxWNo=
+	b=rqTGCWUYhpfCPdaI3KfAbHydHAzsV3f/QLb2q/TB7oD8+FXMPA5j4C2+ViT4zJwcS
+	 B1ge3o9dwErUxVe8ESKyrZTtDk4p7O16fhErkEm34pOifEHaKD6TWrl1xEN6hEtnGt
+	 0ZccR+ApouFlZEHojLgVUMwIFinN3NMYmVIHdzKM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jeremy Laratro <research@aradex.io>,
-	Namjae Jeon <linkinjeon@kernel.org>,
-	Steve French <stfrench@microsoft.com>
-Subject: [PATCH 6.18 028/377] ksmbd: fix null pointer dereference in compare_guid_key()
+	Osama Abdelkader <osama.abdelkader@gmail.com>,
+	Luca Ceresoli <luca.ceresoli@bootlin.com>,
+	Ian Ray <ian.ray@gehealthcare.com>
+Subject: [PATCH 7.0 137/461] drm/bridge: megachips: remove bridge when irq request fails
 Date: Thu, 28 May 2026 21:44:26 +0200
-Message-ID: <20260528194639.202413550@linuxfoundation.org>
+Message-ID: <20260528194650.957846490@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260528194638.371537336@linuxfoundation.org>
-References: <20260528194638.371537336@linuxfoundation.org>
+In-Reply-To: <20260528194646.819809818@linuxfoundation.org>
+References: <20260528194646.819809818@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,109 +64,106 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	RCVD_TLS_LAST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-255587-lists,stable=lfdr.de];
 	TO_DN_SOME(0.00)[];
-	FROM_HAS_DN(0.00)[];
+	TAGGED_FROM(0.00)[bounces-255234-lists,stable=lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,bootlin.com,gehealthcare.com];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	FROM_HAS_DN(0.00)[];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	NEURAL_HAM(-0.00)[-0.999];
 	TAGGED_RCPT(0.00)[stable];
+	MID_RHS_MATCH_FROM(0.00)[];
 	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
-X-Rspamd-Queue-Id: A81455F88DB
+	DBL_BLOCKED_OPENRESOLVER(0.00)[bootlin.com:email,msgid.link:url,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,gehealthcare.com:email]
+X-Rspamd-Queue-Id: 23CB75F7948
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+7.0-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jeremy Laratro <research@aradex.io>
+From: Osama Abdelkader <osama.abdelkader@gmail.com>
 
-commit 4b83cbc4c15f09b000cc06f033f64b0824b6dc87 upstream.
+commit d45d5c819f2cd0b6b5d76a194a537a5f4aeefecb upstream.
 
-session_fd_check() walks the per-inode m_op_list during durable-handle
-session teardown and sets op->conn = NULL for every opinfo whose conn
-matched the closing session's connection. The matching opinfo, however,
-stays linked in its per-ClientGuid lease_table_list entry's lb->lease_list
-because destroy_lease_table() only runs on full TCP-connection teardown,
-not on SESSION_LOGOFF.
+If devm_request_threaded_irq() fails after drm_bridge_add(), remove the
+bridge before returning.
 
-If the same TCP connection then negotiates a fresh session with the
-same ClientGuid (ClientGuid is bound to NEGOTIATE, not the session, and
-is unchanged across LOGOFF + SETUP) and issues a SMB2 CREATE with a
-lease context on a different inode, find_same_lease_key() walks
-lb->lease_list, reaches the stale opinfo, and calls compare_guid_key(),
-which unconditionally dereferences opinfo->conn->ClientGUID. The conn
-pointer is NULL and the kernel panics.
+Keep drm_bridge_add() rather than devm_drm_bridge_add(): registration is
+tied to the STDP4028 device while ge_b850v3_register() may complete from
+either I2C probe; devm would not unwind the bridge if the other client's
+probe fails.
 
-Reproducer requires only a successful SMB2 SESSION_SETUP and a share
-configured with 'durable handles = yes'. KASAN report on mainline
-70390501d194:
-
-  general protection fault, probably for non-canonical address
-  0xdffffc0000000069: 0000 [#1] SMP KASAN PTI
-  KASAN: null-ptr-deref in range [0x0000000000000348-0x000000000000034f]
-  Workqueue: ksmbd-io handle_ksmbd_work
-  RIP: 0010:bcmp+0x5b/0x230
-  Call Trace:
-   compare_guid_key+0x4b/0xd0
-   find_same_lease_key+0x324/0x690
-   smb2_open+0x6aea/0x8e60
-   handle_ksmbd_work+0x796/0xee0
-   ...
-
-Faulting address 0x348 is the offset of ClientGUID within struct
-ksmbd_conn, confirming opinfo->conn was NULL.
-
-Read opinfo->conn once and bail out if it has been cleared by a
-concurrent session_fd_check(). A half-detached opinfo cannot be the
-owner of an active lease, so returning 0 is the correct match result.
-
-Fixes: c8efcc786146 ("ksmbd: add support for durable handles v1/v2")
+Signed-off-by: Osama Abdelkader <osama.abdelkader@gmail.com>
+Fixes: fcfa0ddc18ed ("drm/bridge: Drivers for megachips-stdpxxxx-ge-b850v3-fw (LVDS-DP++)")
 Cc: stable@vger.kernel.org
-Signed-off-by: Jeremy Laratro <research@aradex.io>
-Acked-by: Namjae Jeon <linkinjeon@kernel.org>
-Signed-off-by: Steve French <stfrench@microsoft.com>
+Reviewed-by: Luca Ceresoli <luca.ceresoli@bootlin.com>
+Tested-by: Ian Ray <ian.ray@gehealthcare.com>
+Link: https://patch.msgid.link/20260430195700.80317-1-osama.abdelkader@gmail.com
+Signed-off-by: Luca Ceresoli <luca.ceresoli@bootlin.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/smb/server/oplock.c |    6 +++++-
- 1 file changed, 5 insertions(+), 1 deletion(-)
+ drivers/gpu/drm/bridge/megachips-stdpxxxx-ge-b850v3-fw.c |   16 +++++++++------
+ 1 file changed, 10 insertions(+), 6 deletions(-)
 
---- a/fs/smb/server/oplock.c
-+++ b/fs/smb/server/oplock.c
-@@ -484,8 +484,12 @@ static inline int compare_guid_key(struc
- 				   const char *guid1, const char *key1)
- {
- 	const char *guid2, *key2;
-+	struct ksmbd_conn *conn;
+--- a/drivers/gpu/drm/bridge/megachips-stdpxxxx-ge-b850v3-fw.c
++++ b/drivers/gpu/drm/bridge/megachips-stdpxxxx-ge-b850v3-fw.c
+@@ -251,7 +251,6 @@ static void ge_b850v3_lvds_remove(void)
+ 		goto out;
  
--	guid2 = opinfo->conn->ClientGUID;
-+	conn = READ_ONCE(opinfo->conn);
-+	if (!conn)
-+		return 0;
-+	guid2 = conn->ClientGUID;
- 	key2 = opinfo->o_lease->lease_key;
- 	if (!memcmp(guid1, guid2, SMB2_CLIENT_GUID_SIZE) &&
- 	    !memcmp(key1, key2, SMB2_LEASE_KEY_SIZE))
+ 	drm_bridge_remove(&ge_b850v3_lvds_ptr->bridge);
+-
+ 	ge_b850v3_lvds_ptr = NULL;
+ out:
+ 	mutex_unlock(&ge_b850v3_lvds_dev_mutex);
+@@ -261,6 +260,7 @@ static int ge_b850v3_register(void)
+ {
+ 	struct i2c_client *stdp4028_i2c = ge_b850v3_lvds_ptr->stdp4028_i2c;
+ 	struct device *dev = &stdp4028_i2c->dev;
++	int ret;
+ 
+ 	/* drm bridge initialization */
+ 	ge_b850v3_lvds_ptr->bridge.ops = DRM_BRIDGE_OP_DETECT |
+@@ -277,11 +277,15 @@ static int ge_b850v3_register(void)
+ 	if (!stdp4028_i2c->irq)
+ 		return 0;
+ 
+-	return devm_request_threaded_irq(&stdp4028_i2c->dev,
+-			stdp4028_i2c->irq, NULL,
+-			ge_b850v3_lvds_irq_handler,
+-			IRQF_TRIGGER_HIGH | IRQF_ONESHOT,
+-			"ge-b850v3-lvds-dp", ge_b850v3_lvds_ptr);
++	ret = devm_request_threaded_irq(&stdp4028_i2c->dev,
++					stdp4028_i2c->irq, NULL,
++					ge_b850v3_lvds_irq_handler,
++					IRQF_TRIGGER_HIGH | IRQF_ONESHOT,
++					"ge-b850v3-lvds-dp", ge_b850v3_lvds_ptr);
++	if (ret)
++		drm_bridge_remove(&ge_b850v3_lvds_ptr->bridge);
++
++	return ret;
+ }
+ 
+ static int stdp4028_ge_b850v3_fw_probe(struct i2c_client *stdp4028_i2c)
 
 
 
