@@ -1,60 +1,63 @@
-Return-Path: <stable+bounces-255445-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-255839-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id MN+gEx+hGGqblggAu9opvQ
-	(envelope-from <stable+bounces-255445-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:10:07 +0200
+	id AIQSI5imGGrClggAu9opvQ
+	(envelope-from <stable+bounces-255839-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:33:28 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2CC905F7F5D
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:10:07 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4B6B85F8F22
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:33:27 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id CD0BD3031B40
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 20:08:52 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id A9D44309D9C3
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 20:27:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0271132B13B;
-	Thu, 28 May 2026 20:08:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C099E2FD7C3;
+	Thu, 28 May 2026 20:27:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RtuaqJ74"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="B/Jlw1EQ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B11E22F691F;
-	Thu, 28 May 2026 20:08:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7E54619A288;
+	Thu, 28 May 2026 20:27:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779998931; cv=none; b=vGuPw/lv8yPKroivTh9Df+FiXfPNK7x3To+77i1gUQGBdns6WThMAyCFjiJ5iSkiq//k5ut0CRA4IjkNuUmsb+I3FMlsrVOr7ENaNl9aPKOmztAjfyJkfhwwsZmSYzg61eX59WpXudRJEWkZc+D2JTcj+JOxap5gxNs7GgyBy5s=
+	t=1780000024; cv=none; b=q/KuU4NEjOvIOqN+xqZJoPgL79+KUV0k0wvpkmBVsxH3v3x8ZS9auSlgyIRq1qoYag6PVZOO6NqaGsvZqOh3NWoaYpKef/Nj03iL/SwjAsj7TuCCi+wvl6e8lvUNLTUHUZY3MiaY95FlxYiAAxBfhmbupgg3FpDf23aTaPTfHwo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779998931; c=relaxed/simple;
-	bh=xiFbTF2/sJPaXG63p7HSjZ6P4sRoJIj2glnWROiz+QI=;
+	s=arc-20240116; t=1780000024; c=relaxed/simple;
+	bh=R2HkStIhIXSPdz+KTMU2EuhXO+GSKl1jXQ+mjWDFLd8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=gQMxYIcb+rE8D1FoswA2hJs76jdyOmfdNuF6JZp0eTHLEbuO3knyXWz93R4wMiqlzpBLMM5ajDMd5271db3tIghS1nmFtu2fuKrc+V7DIsXAPp0uHEO3u0pZw6clUDsOuTAw8j+NUVWPrnOqwwJ3nCEGxNNBNS4PP/3eIsKROQA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RtuaqJ74; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1D0571F000E9;
-	Thu, 28 May 2026 20:08:49 +0000 (UTC)
+	 MIME-Version; b=kXIE52/aR7biMseUjdKekMuf+U9AS89qfzcz5H9VLoSGYyRgNK7GVVBxbwyt7gsxJtPBacvjk0J5jwwOvq2JsXPPRv6f4vW+8IIrTbVAiJkkI/RgYjlSJYxIrOrtGb/vPuags1iJ9Hoka+UhBOex3gODn0MbJZDdsV+l9YdnVXQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=B/Jlw1EQ; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E3BA31F000E9;
+	Thu, 28 May 2026 20:27:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779998930;
-	bh=xOweU99bMi/urKmQpva2YYP7yfHZexoUDGQK28tAu0M=;
+	s=korg; t=1780000023;
+	bh=cKJoUgBX77tZnyRKWD9LDtByCdjegYGRBqV+veAuXu0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=RtuaqJ74CrRH+6VX0ktswCxZGnpHUSIFETMf9nSITS55ybj0DKiq+XY0y9FZDyhxJ
-	 6OFP2C4z4joIPd3pqjzXh/7DDG8bV/kYn+0VLUQ1/VAY/Wrs2oKpYACwIrEEOzJvKy
-	 u599C2+TJiaGLmikgrDPVDxJafafenwA2x65pSLs=
+	b=B/Jlw1EQHfIfBLyzDUAKpKsS+gE29PLWYYXd1arFQiS3puOTcRFmyh+Z6JUmACARd
+	 F2gp1LFMNoTX2VfHxGpFpyjQfEfnJuKD1jLR1mE1CEisoS4ng+z/X6EIAdIi2s5B3A
+	 7YbyC/60XZvIt5kC6cQi7Zihlh8jXUA3elJEjX5s=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Qu Wenruo <wqu@suse.com>,
-	Boris Burkov <boris@bur.io>,
-	David Sterba <dsterba@suse.com>,
+	David Howells <dhowells@redhat.com>,
+	Paulo Alcantara <pc@manguebit.org>,
+	Matthew Wilcox <willy@infradead.org>,
+	netfs@lists.linux.dev,
+	linux-fsdevel@vger.kernel.org,
+	Christian Brauner <brauner@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 7.0 347/461] btrfs: fix squota accounting during enable generation
+Subject: [PATCH 6.18 238/377] netfs: Defer the emission of trace_netfs_folio()
 Date: Thu, 28 May 2026 21:47:56 +0200
-Message-ID: <20260528194657.422227804@linuxfoundation.org>
+Message-ID: <20260528194645.277593754@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260528194646.819809818@linuxfoundation.org>
-References: <20260528194646.819809818@linuxfoundation.org>
+In-Reply-To: <20260528194638.371537336@linuxfoundation.org>
+References: <20260528194638.371537336@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,159 +72,146 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	RCVD_TLS_LAST(0.00)[];
+	URIBL_MULTI_FAIL(0.00)[msgid.link:server fail,infradead.org:server fail,manguebit.org:server fail,linux.dev:server fail,sto.lore.kernel.org:server fail,sashiko.dev:server fail,linuxfoundation.org:server fail];
+	TAGGED_FROM(0.00)[bounces-255839-lists,stable=lfdr.de];
+	PRECEDENCE_BULK(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FROM_HAS_DN(0.00)[];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-255445-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TO_DN_SOME(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
-	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[7];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[10];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[suse.com:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,bur.io:email]
-X-Rspamd-Queue-Id: 2CC905F7F5D
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,sashiko.dev:url,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,infradead.org:email,linux.dev:email,manguebit.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim]
+X-Rspamd-Queue-Id: 4B6B85F8F22
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-7.0-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Boris Burkov <boris@bur.io>
+From: David Howells <dhowells@redhat.com>
 
-[ Upstream commit d7c600554816b8ef70adffe078a0e360c055d82b ]
+[ Upstream commit daeb443b92817021c1234e8eded219e164b7c35d ]
 
-The first transaction that enables squotas is special and a bit tricky.
-We have to set BTRFS_FS_QUOTA_ENABLED after the transaction to avoid a
-deadlock, so any delayed refs that run before we set the bit are not
-squota accounted. For data this is fine, we don't get an owner_ref, so
-there is no real harm, it's as if the extent predated squotas. However
-for metadata, the tree block will have gen == enable_gen so when we free
-it later, we will decrement the squota accounting, which can result in
-an underflow. Before it is freed, btrfs check shows errors, as we have
-mismatched usage between the node generations/owners and the squota
-values.
+Change netfs_perform_write() to keep the netfs_folio trace value in a
+variable and emit it later to make it easier to choose the value displayed.
+This is a prerequisite for a subsequent patch.
 
-There are two angles to this fix:
-
-1. For extents that come in delayed_refs that run during the
-   enable_gen transaction, we must actually set enable_gen to the *next*
-   transaction. That is the first transaction that we can really
-   properly account in any way.
-2. For extents that come in between the end of our transaction handle
-   and the time we set the BTRFS_FS_QUOTA_ENABLED bit, we need an
-   additional bit, BTRFS_FS_SQUOTA_ENABLING which only affects recording
-   squota deltas, so we do pick up those extents. Otherwise, we would
-   miss them, even for enable_gen + 1.
-
-Fixes: bd7c1ea3a302 ("btrfs: qgroup: check generation when recording simple quota delta")
-Reviewed-by: Qu Wenruo <wqu@suse.com>
-Signed-off-by: Boris Burkov <boris@bur.io>
-Reviewed-by: David Sterba <dsterba@suse.com>
-Signed-off-by: David Sterba <dsterba@suse.com>
+Closes: https://sashiko.dev/#/patchset/20260414082004.3756080-1-dhowells%40redhat.com
+Signed-off-by: David Howells <dhowells@redhat.com>
+Link: https://patch.msgid.link/20260512123404.719402-13-dhowells@redhat.com
+cc: Paulo Alcantara <pc@manguebit.org>
+cc: Matthew Wilcox <willy@infradead.org>
+cc: netfs@lists.linux.dev
+cc: linux-fsdevel@vger.kernel.org
+Signed-off-by: Christian Brauner <brauner@kernel.org>
+Stable-dep-of: 7b4dcf1b9455 ("netfs: Fix streaming write being overwritten")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/btrfs/fs.h     |  1 +
- fs/btrfs/qgroup.c | 31 +++++++++++++++++++++++++++----
- 2 files changed, 28 insertions(+), 4 deletions(-)
+ fs/netfs/buffered_write.c | 18 ++++++++++--------
+ 1 file changed, 10 insertions(+), 8 deletions(-)
 
-diff --git a/fs/btrfs/fs.h b/fs/btrfs/fs.h
-index 3de3b517810ed..d8c41f194729e 100644
---- a/fs/btrfs/fs.h
-+++ b/fs/btrfs/fs.h
-@@ -154,6 +154,7 @@ enum {
- 	BTRFS_FS_LOG_RECOVERING,
- 	BTRFS_FS_OPEN,
- 	BTRFS_FS_QUOTA_ENABLED,
-+	BTRFS_FS_SQUOTA_ENABLING,
- 	BTRFS_FS_UPDATE_UUID_TREE_GEN,
- 	BTRFS_FS_CREATING_FREE_SPACE_TREE,
- 	BTRFS_FS_BTREE_ERR,
-diff --git a/fs/btrfs/qgroup.c b/fs/btrfs/qgroup.c
-index 5204263088921..0823f5f561d75 100644
---- a/fs/btrfs/qgroup.c
-+++ b/fs/btrfs/qgroup.c
-@@ -1107,7 +1107,13 @@ int btrfs_quota_enable(struct btrfs_fs_info *fs_info,
- 	if (simple) {
- 		fs_info->qgroup_flags |= BTRFS_QGROUP_STATUS_FLAG_SIMPLE_MODE;
- 		btrfs_set_fs_incompat(fs_info, SIMPLE_QUOTA);
--		btrfs_set_qgroup_status_enable_gen(leaf, ptr, trans->transid);
-+		/*
-+		 * Set the enable generation to the next transaction, as we cannot
-+		 * ensure that extents written during this transaction will see any
-+		 * state we have set here. So we should treat all extents of the
-+		 * transaction as coming in before squotas was enabled.
-+		 */
-+		btrfs_set_qgroup_status_enable_gen(leaf, ptr, trans->transid + 1);
- 	} else {
- 		fs_info->qgroup_flags |= BTRFS_QGROUP_STATUS_FLAG_INCONSISTENT;
- 	}
-@@ -1210,7 +1216,15 @@ int btrfs_quota_enable(struct btrfs_fs_info *fs_info,
- 		goto out_free_path;
+diff --git a/fs/netfs/buffered_write.c b/fs/netfs/buffered_write.c
+index 09394ac2c180d..1fa13c2629a73 100644
+--- a/fs/netfs/buffered_write.c
++++ b/fs/netfs/buffered_write.c
+@@ -150,6 +150,7 @@ ssize_t netfs_perform_write(struct kiocb *iocb, struct iov_iter *iter,
  	}
  
--	fs_info->qgroup_enable_gen = trans->transid;
-+	/*
-+	 * Set fs_info->qgroup_enable_gen and BTRFS_FS_SQUOTA_ENABLING
-+	 * under the transaction handle. We want to ensure that all extents in
-+	 * the next transaction definitely see them.
-+	 */
-+	if (simple) {
-+		fs_info->qgroup_enable_gen = trans->transid + 1;
-+		set_bit(BTRFS_FS_SQUOTA_ENABLING, &fs_info->flags);
-+	}
+ 	do {
++		enum netfs_folio_trace trace;
+ 		struct netfs_folio *finfo;
+ 		struct netfs_group *group;
+ 		unsigned long long fpos;
+@@ -223,7 +224,7 @@ ssize_t netfs_perform_write(struct kiocb *iocb, struct iov_iter *iter,
+ 			if (unlikely(copied == 0))
+ 				goto copy_failed;
+ 			netfs_set_group(folio, netfs_group);
+-			trace_netfs_folio(folio, netfs_folio_is_uptodate);
++			trace = netfs_folio_is_uptodate;
+ 			goto copied;
+ 		}
  
- 	mutex_unlock(&fs_info->qgroup_ioctl_lock);
- 	/*
-@@ -1224,9 +1238,15 @@ int btrfs_quota_enable(struct btrfs_fs_info *fs_info,
- 	 */
- 	ret = btrfs_commit_transaction(trans);
- 	trans = NULL;
-+
- 	mutex_lock(&fs_info->qgroup_ioctl_lock);
--	if (ret)
-+	if (ret) {
-+		if (simple) {
-+			clear_bit(BTRFS_FS_SQUOTA_ENABLING, &fs_info->flags);
-+			fs_info->qgroup_enable_gen = 0;
-+		}
- 		goto out_free_path;
-+	}
+@@ -239,7 +240,7 @@ ssize_t netfs_perform_write(struct kiocb *iocb, struct iov_iter *iter,
+ 			folio_zero_segment(folio, offset + copied, flen);
+ 			__netfs_set_group(folio, netfs_group);
+ 			folio_mark_uptodate(folio);
+-			trace_netfs_folio(folio, netfs_modify_and_clear);
++			trace = netfs_modify_and_clear;
+ 			goto copied;
+ 		}
  
- 	/*
- 	 * Set quota enabled flag after committing the transaction, to avoid
-@@ -1236,6 +1256,8 @@ int btrfs_quota_enable(struct btrfs_fs_info *fs_info,
- 	spin_lock(&fs_info->qgroup_lock);
- 	fs_info->quota_root = quota_root;
- 	set_bit(BTRFS_FS_QUOTA_ENABLED, &fs_info->flags);
-+	if (simple)
-+		clear_bit(BTRFS_FS_SQUOTA_ENABLING, &fs_info->flags);
- 	spin_unlock(&fs_info->qgroup_lock);
+@@ -257,7 +258,7 @@ ssize_t netfs_perform_write(struct kiocb *iocb, struct iov_iter *iter,
+ 			}
+ 			__netfs_set_group(folio, netfs_group);
+ 			folio_mark_uptodate(folio);
+-			trace_netfs_folio(folio, netfs_whole_folio_modify);
++			trace = netfs_whole_folio_modify;
+ 			goto copied;
+ 		}
  
- 	/* Skip rescan for simple qgroups. */
-@@ -4924,7 +4946,8 @@ int btrfs_record_squota_delta(struct btrfs_fs_info *fs_info,
- 	u64 num_bytes = delta->num_bytes;
- 	const int sign = (delta->is_inc ? 1 : -1);
+@@ -284,7 +285,7 @@ ssize_t netfs_perform_write(struct kiocb *iocb, struct iov_iter *iter,
+ 			if (unlikely(copied == 0))
+ 				goto copy_failed;
+ 			netfs_set_group(folio, netfs_group);
+-			trace_netfs_folio(folio, netfs_just_prefetch);
++			trace = netfs_just_prefetch;
+ 			goto copied;
+ 		}
  
--	if (btrfs_qgroup_mode(fs_info) != BTRFS_QGROUP_MODE_SIMPLE)
-+	if (btrfs_qgroup_mode(fs_info) != BTRFS_QGROUP_MODE_SIMPLE &&
-+	    !test_bit(BTRFS_FS_SQUOTA_ENABLING, &fs_info->flags))
- 		return 0;
+@@ -298,7 +299,7 @@ ssize_t netfs_perform_write(struct kiocb *iocb, struct iov_iter *iter,
+ 			if (offset == 0 && copied == flen) {
+ 				__netfs_set_group(folio, netfs_group);
+ 				folio_mark_uptodate(folio);
+-				trace_netfs_folio(folio, netfs_streaming_filled_page);
++				trace = netfs_streaming_filled_page;
+ 				goto copied;
+ 			}
  
- 	if (!btrfs_is_fstree(root))
+@@ -313,7 +314,7 @@ ssize_t netfs_perform_write(struct kiocb *iocb, struct iov_iter *iter,
+ 			finfo->dirty_len = copied;
+ 			folio_attach_private(folio, (void *)((unsigned long)finfo |
+ 							     NETFS_FOLIO_INFO));
+-			trace_netfs_folio(folio, netfs_streaming_write);
++			trace = netfs_streaming_write;
+ 			goto copied;
+ 		}
+ 
+@@ -333,9 +334,9 @@ ssize_t netfs_perform_write(struct kiocb *iocb, struct iov_iter *iter,
+ 					folio_detach_private(folio);
+ 				folio_mark_uptodate(folio);
+ 				kfree(finfo);
+-				trace_netfs_folio(folio, netfs_streaming_cont_filled_page);
++				trace = netfs_streaming_cont_filled_page;
+ 			} else {
+-				trace_netfs_folio(folio, netfs_streaming_write_cont);
++				trace = netfs_streaming_write_cont;
+ 			}
+ 			goto copied;
+ 		}
+@@ -351,6 +352,7 @@ ssize_t netfs_perform_write(struct kiocb *iocb, struct iov_iter *iter,
+ 		continue;
+ 
+ 	copied:
++		trace_netfs_folio(folio, trace);
+ 		flush_dcache_folio(folio);
+ 
+ 		/* Update the inode size if we moved the EOF marker */
 -- 
 2.53.0
 
