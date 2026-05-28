@@ -1,217 +1,153 @@
-Return-Path: <stable+bounces-254709-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-254708-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 8LCqMdmxF2p+NggAu9opvQ
-	(envelope-from <stable+bounces-254709-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 05:09:13 +0200
+	id SE+2LzqxF2p+NggAu9opvQ
+	(envelope-from <stable+bounces-254708-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 05:06:34 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6D6A25EC12F
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 05:09:13 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id BD1AC5EC0FE
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 05:06:33 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 543663058B89
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 03:07:00 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 10C5F301FC0D
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 03:06:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8AC402EBBB9;
-	Thu, 28 May 2026 03:06:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A26DE305057;
+	Thu, 28 May 2026 03:06:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b="X4rpzlym"
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="QPPZgK09"
 X-Original-To: stable@vger.kernel.org
-Received: from m16.mail.163.com (m16.mail.163.com [117.135.210.5])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pj1-f74.google.com (mail-pj1-f74.google.com [209.85.216.74])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AB840305660;
-	Thu, 28 May 2026 03:06:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=117.135.210.5
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3E7971A9F96
+	for <stable@vger.kernel.org>; Thu, 28 May 2026 03:06:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.74
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779937619; cv=none; b=j9U952iQNZDJAFYa55I/PLBrzkLo6CgTQK30hdJyqk7TLeQ3Ov5ObxRGmHEeNnwMAdAlwhQryY7D8Ak16WuSL1/s2huO6T2T5ws2YMxHnDBRZtcJ9ddRqB3eRS/HsuOYIcf7d4DoiMBfzpqtpG/aqOuBzyiiet49r8x+2gBpato=
+	t=1779937588; cv=none; b=ecZSaZdXWeAPhGUqXD3GSneakFT1dvbTW2yAv5JzsAEHsju/UaIKrIO5UpQHV85LSmoKJI63FXeCR6RTKsRYcD0o1SvyDNTba/NakArVXPHzvDsHHVUQ01DaPJDFFlIXmBC8yDa+nmvo1yMJyEax6MfZXUS8eZ5h4wGl5INhN1g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779937619; c=relaxed/simple;
-	bh=TcIV9BaWJZBJf+siaIArVIvsEA4HBZ3tRlG/JYdRbMI=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=QjzLjVV3SlWEzdvYrQnMd+FOW2+LARBwYKzEYC1ORauIgxl/BX7/+deJqlWrn4qG/9LoVgAbnWo32PvVW08gXfTZntaTnSYbElH34RshUbZtbcFPoE++ua7YAT6ltd9rYWgl8Mlqu77LkKI184sEPp0Di6ZxoEgivg0D+fBYR7Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com; spf=pass smtp.mailfrom=163.com; dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b=X4rpzlym; arc=none smtp.client-ip=117.135.210.5
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=163.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
-	s=s110527; h=From:To:Subject:Date:Message-Id:MIME-Version; bh=pS
-	T2nE1ZdntpdiRrgvI6nKA2ljNSTqu3KfCGCuxvpw4=; b=X4rpzlymQDSDUFmCrE
-	8NCJyYYtx3nPtMy6I+4Mb2nPo2vl2lxZKa0r/x17+aeuE1IKQc1a0NEjDKnDfQqg
-	DSsz4Kckob3Ohs7mwfgksa3CIS5Knq4JpwbGbCN6W2YmJVzpf4ew7yrogEgagtIP
-	TCuBodTKjsvOqhUALYNZVPGek=
-Received: from pek-lpg-core5.wrs.com (unknown [])
-	by gzga-smtp-mtada-g0-2 (Coremail) with SMTP id _____wAHZewSsRdqsskMAA--.1791S2;
-	Thu, 28 May 2026 11:05:55 +0800 (CST)
-From: Robert Garcia <rob_garcia@163.com>
-To: stable@vger.kernel.org,
-	Eric Dumazet <edumazet@google.com>
-Cc: Jakub Kicinski <kuba@kernel.org>,
-	David Ahern <dsahern@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Martin KaFai Lau <kafai@fb.com>,
-	Wei Wang <weiwan@google.com>,
-	"David S . Miller" <davem@davemloft.net>,
-	Robert Garcia <rob_garcia@163.com>,
-	netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH 6.6.y] ipv4: start using dst_dev_rcu()
-Date: Thu, 28 May 2026 11:05:54 +0800
-Message-Id: <20260528030554.3147155-1-rob_garcia@163.com>
-X-Mailer: git-send-email 2.34.1
+	s=arc-20240116; t=1779937588; c=relaxed/simple;
+	bh=FjEGp8HMT0oolbQ26cn1yayF1giLEkRPKwUDUeUuvQ0=;
+	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
+	 To:Cc:Content-Type; b=tVeLAfHh/zQ4P6QuOcGHOKVaLgTsD9rWLVr+72dTtvqF9NDLUlx7SaAgdtprYoZlAshzFN+kTaBEXOrWoxa7BeMHnuKwZzOiTAeJI7PIWglv2ylG+7yLSWVEic0psMehLi2OB9eCIiNIWt9B8HNeLPow6o2AY/37AQr9qnzJ4jE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--jmattson.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=QPPZgK09; arc=none smtp.client-ip=209.85.216.74
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--jmattson.bounces.google.com
+Received: by mail-pj1-f74.google.com with SMTP id 98e67ed59e1d1-36865d109dcso11368495a91.1
+        for <stable@vger.kernel.org>; Wed, 27 May 2026 20:06:27 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1779937586; x=1780542386; darn=vger.kernel.org;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:from:to:cc:subject:date:message-id:reply-to;
+        bh=4J5mJMP9YWZVlhj9armvKuV994c2vU0LljAhFOdkDPE=;
+        b=QPPZgK09Mu5/ZwRwDq9UNDEhwTbLbVhf8t6KHMjBMBSeqx0WbN17pQ7EBaFDyAgCbu
+         vi6PF38RXrApE9aJ+7PlHUxRjQB7EyLdIbIWFnvljT1PWzpntr9BdZW9i96CniTNKqcC
+         qxB5I5Y/lVO0hYLRlhye4lmQM90PBGWwr4i9mof4u6VOlWa2b4THJsRXJfhsIgChHVsa
+         mYhI1sLqTavCRHO36UdiInQBQhe3oHs9/n2JpeRo4y9ULheD34D/SkHTnn9gO/B02nkY
+         mgZuPwiGqHTUcS/9fT60BvpeoSmG7lY2TcO8m5f2fy74L9VqNSB4MUUqbZZJup1P8zpK
+         mUbA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1779937586; x=1780542386;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=4J5mJMP9YWZVlhj9armvKuV994c2vU0LljAhFOdkDPE=;
+        b=VvNrKr2n9Aa3NKz81DwXQl8w0PyxLCVQbZThzIJqDvsc9KaBpguzkk1HqkxNqcF2Z7
+         mHPayl909enqneoTWIU3nRT1azYWNLrh7N618zVKqJaCoHaXjN8OTxN/f+gRNwmP+bGQ
+         MHlsxkLbnTBIpnL0Rtl4jcXpOQROWarM+FUbwmzHfkGpRTyD7d+rJEeWHnXZSQfkyTJV
+         uiYDxReSq8whK0AWq+4waUbxhOFedKEzSKMdEwK4Hn3b0IBrsk1tc1rILyjGmR4JsHAb
+         c1CHyU/VpfAWMRwPkO+gKdI9RJoYayuUzNGZffPG20Yhwh8+WhKjHFB9PNuT+yd0Z/x1
+         S0Tw==
+X-Forwarded-Encrypted: i=1; AFNElJ89sjJ3NUJJOGlbQiFmHZr4wNNUWpNvswHreCd071mcWED2hqASGw8WA9CT5cLOp/IACA5/ebk=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwsoaJDoOvpcH3ajpPPuJ2nsUhoJ75tMo/OFqF11fHV07YLwDhB
+	ez8r1wMmjT0IiUvYrv0N2NGENIZDyrNSPm4HcFcQKTp+PKh1tgv8WfC39W7orrnlDYzxmvuNtHp
+	ESZLBiCLS03pSxA==
+X-Received: from pjbfa6.prod.google.com ([2002:a17:90a:f0c6:b0:366:260e:87a8])
+ (user=jmattson job=prod-delivery.src-stubby-dispatcher) by
+ 2002:a17:90b:5188:b0:369:7421:b36f with SMTP id 98e67ed59e1d1-36a678479d6mr24285194a91.21.1779937586208;
+ Wed, 27 May 2026 20:06:26 -0700 (PDT)
+Date: Wed, 27 May 2026 20:06:04 -0700
+In-Reply-To: <20250421192205.7CC1A7D9@davehans-spike.ostc.intel.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:_____wAHZewSsRdqsskMAA--.1791S2
-X-Coremail-Antispam: 1Uf129KBjvJXoWxJF4kGrW3Kw47Cw47Xr47Arb_yoWrGr1Upr
-	n8tFZ3trWUXr1UW3ykAF4kZryagw4kGasxuw18A3yag3WDX3ZYyFy8trWaqF4F9FWYyFWY
-	qF1jvF47Aw1UJaDanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x0pRAnY8UUUUU=
-X-CM-SenderInfo: 5uresw5dufxti6rwjhhfrp/xtbDARTRPWoXsRTN7AAA3A
+Mime-Version: 1.0
+References: <20250421192205.7CC1A7D9@davehans-spike.ostc.intel.com>
+X-Mailer: git-send-email 2.54.0.794.g4f17f83d09-goog
+Message-ID: <20260528030604.2669758-1-jmattson@google.com>
+Subject: Re: [PATCH] Handle Ice Lake MONITOR erratum
+From: Jim Mattson <jmattson@google.com>
+To: dave.hansen@linux.intel.com
+Cc: andrew.cooper3@citrix.com, len.brown@intel.com, 
+	linux-kernel@vger.kernel.org, peterz@infradead.org, 
+	rafael.j.wysocki@intel.com, srinivas.pandruvada@linux.intel.com, 
+	stable@vger.kernel.org, x86@kernel.org, meenashanmugam@google.com, 
+	eranian@google.com, Jim Mattson <jmattson@google.com>
+Content-Type: text/plain; charset="UTF-8"
 X-Spamd-Result: default: False [-0.66 / 15.00];
 	MID_CONTAINS_FROM(1.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
-	DMARC_POLICY_ALLOW(-0.50)[163.com,none];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
-	R_DKIM_ALLOW(-0.20)[163.com:s=s110527];
+	MV_CASE(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[google.com,reject];
+	R_DKIM_ALLOW(-0.20)[google.com:s=20251104];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-254709-lists,stable=lfdr.de];
-	FREEMAIL_CC(0.00)[kernel.org,redhat.com,fb.com,google.com,davemloft.net,163.com,vger.kernel.org];
-	TO_DN_SOME(0.00)[];
+	TAGGED_FROM(0.00)[bounces-254708-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
 	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FREEMAIL_FROM(0.00)[163.com];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[rob_garcia@163.com,stable@vger.kernel.org];
+	RCPT_COUNT_TWELVE(0.00)[12];
 	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[163.com:+];
-	NEURAL_HAM(-0.00)[-0.999];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	TO_DN_SOME(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[jmattson@google.com,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[google.com:+];
+	NEURAL_HAM(-0.00)[-1.000];
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_SEVEN(0.00)[11];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,msgid.link:url]
-X-Rspamd-Queue-Id: 6D6A25EC12F
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,intel.com:url]
+X-Rspamd-Queue-Id: BD1AC5EC0FE
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-From: Eric Dumazet <edumazet@google.com>
+On Mon, Apr 21, 2025 at 12:22:05PM -0700, Dave Hansen wrote:
+> Andrew Cooper reported some boot issues on Ice Lake servers when
+> running Xen that he tracked down to MWAIT not waking up. Do the safe
+> thing and consider them buggy since there's a published erratum.
+> Note: I've seen no reports of this occurring on Linux.
+> 
+> Add Ice Lake servers to the list of shaky MONITOR implementations with
+> no workaround available. Also, before the if() gets too unwieldy, move
+> it over to a x86_cpu_id array. Additionally, add a comment to the
+> X86_BUG_MONITOR consumption site to make it clear how and why affected
+> CPUs get IPIs to wake them up.
+> 
+> There is no equivalent erratum for the "Xeon D" Ice Lakes so
+> INTEL_ICELAKE_D is not affected.
+> 
+> The erratum is called ICX143 in the "3rd Gen Intel Xeon Scalable
+> Processors, Codename Ice Lake Specification Update". It is Intel
+> document 637780, currently available here:
+> 
+> 	https://cdrdv2.intel.com/v1/dl/getContent/637780
 
-[ Upstream commit 6ad8de3cefdb6ffa6708b21c567df0dbf82c43a8 ]
+The erratum says, "Due to this erratum, the processor may hang."
 
-Change icmpv4_xrlim_allow(), ip_defrag() to prevent possible UAF.
+We are seeing some Ice Lake Xeon E5 machines panic due to hard lockups, and
+then the kdump kernel dies with "Fatal machine check from unknown source."
+Is this behavior consistent with this erratum?
 
-Change ipmr_prepare_xmit(), ipmr_queue_fwd_xmit(), ip_mr_output(),
-ipv4_neigh_lookup() to use lockdep enabled dst_dev_rcu().
+This seems to only happen on Cloud machines, but we always intercept
+MONITOR and MWAIT on Ice Lake hosts, so I'm not sure why virtualization
+would be a factor.
 
-Fixes: 4a6ce2b6f2ec ("net: introduce a new function dst_dev_put()")
-Signed-off-by: Eric Dumazet <edumazet@google.com>
-Reviewed-by: David Ahern <dsahern@kernel.org>
-Link: https://patch.msgid.link/20250828195823.3958522-9-edumazet@google.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-[ Minor modifications made to adapt current code. ]
-Signed-off-by: Robert Garcia <rob_garcia@163.com>
----
- net/ipv4/icmp.c        | 4 ++--
- net/ipv4/ip_fragment.c | 6 ++++--
- net/ipv4/ipmr.c        | 4 ++--
- net/ipv4/route.c       | 4 ++--
- 4 files changed, 10 insertions(+), 8 deletions(-)
+Thanks,
 
-diff --git a/net/ipv4/icmp.c b/net/ipv4/icmp.c
-index 3fcf11f83d87..29a2162398e7 100644
---- a/net/ipv4/icmp.c
-+++ b/net/ipv4/icmp.c
-@@ -319,16 +319,16 @@ static bool icmpv4_xrlim_allow(struct net *net, struct rtable *rt,
- 		return true;
- 
- 	/* No rate limit on loopback */
-+	rcu_read_lock();
- 	if (dst->dev && (dst->dev->flags&IFF_LOOPBACK))
- 		goto out;
- 
--	rcu_read_lock();
- 	peer = inet_getpeer_v4(net->ipv4.peers, fl4->daddr,
- 			       l3mdev_master_ifindex_rcu(dst->dev));
- 	rc = inet_peer_xrlim_allow(peer,
- 				   READ_ONCE(net->ipv4.sysctl_icmp_ratelimit));
--	rcu_read_unlock();
- out:
-+	rcu_read_unlock();
- 	if (!rc)
- 		__ICMP_INC_STATS(net, ICMP_MIB_RATELIMITHOST);
- 	else
-diff --git a/net/ipv4/ip_fragment.c b/net/ipv4/ip_fragment.c
-index 484edc8513e4..efc50d21d954 100644
---- a/net/ipv4/ip_fragment.c
-+++ b/net/ipv4/ip_fragment.c
-@@ -488,13 +488,15 @@ static int ip_frag_reasm(struct ipq *qp, struct sk_buff *skb,
- /* Process an incoming IP datagram fragment. */
- int ip_defrag(struct net *net, struct sk_buff *skb, u32 user)
- {
--	struct net_device *dev = skb->dev ? : skb_dst(skb)->dev;
--	int vif = l3mdev_master_ifindex_rcu(dev);
-+	struct net_device *dev;
- 	struct ipq *qp;
-+	int vif;
- 
- 	__IP_INC_STATS(net, IPSTATS_MIB_REASMREQDS);
- 
- 	/* Lookup (or create) queue header */
-+	dev = skb->dev ? : skb_dst_dev_rcu(skb);
-+	vif = l3mdev_master_ifindex_rcu(dev);
- 	qp = ip_find(net, ip_hdr(skb), user, vif);
- 	if (qp) {
- 		int ret;
-diff --git a/net/ipv4/ipmr.c b/net/ipv4/ipmr.c
-index af9412a507cf..948e826900fa 100644
---- a/net/ipv4/ipmr.c
-+++ b/net/ipv4/ipmr.c
-@@ -1905,7 +1905,7 @@ static void ipmr_queue_xmit(struct net *net, struct mr_table *mrt,
- 		goto out_free;
- 	}
- 
--	encap += LL_RESERVED_SPACE(dev) + rt->dst.header_len;
-+	encap += LL_RESERVED_SPACE(dst_dev_rcu(&rt->dst)) + rt->dst.header_len;
- 
- 	if (skb_cow(skb, encap)) {
- 		ip_rt_put(rt);
-@@ -1942,7 +1942,7 @@ static void ipmr_queue_xmit(struct net *net, struct mr_table *mrt,
- 	 * result in receiving multiple packets.
- 	 */
- 	NF_HOOK(NFPROTO_IPV4, NF_INET_FORWARD,
--		net, NULL, skb, skb->dev, dev,
-+		net, NULL, skb, skb->dev, dst_dev_rcu(&rt->dst),
- 		ipmr_forward_finish);
- 	return;
- 
-diff --git a/net/ipv4/route.c b/net/ipv4/route.c
-index f134c59f839e..0ea017bcea47 100644
---- a/net/ipv4/route.c
-+++ b/net/ipv4/route.c
-@@ -416,11 +416,11 @@ static struct neighbour *ipv4_neigh_lookup(const struct dst_entry *dst,
- 					   const void *daddr)
- {
- 	const struct rtable *rt = container_of(dst, struct rtable, dst);
--	struct net_device *dev = dst->dev;
-+	struct net_device *dev;
- 	struct neighbour *n;
- 
- 	rcu_read_lock();
--
-+	dev = dst_dev_rcu(dst);
- 	if (likely(rt->rt_gw_family == AF_INET)) {
- 		n = ip_neigh_gw4(dev, rt->rt_gw4);
- 	} else if (rt->rt_gw_family == AF_INET6) {
--- 
-2.34.1
-
+--jim
 
