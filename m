@@ -1,62 +1,60 @@
-Return-Path: <stable+bounces-255659-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-255305-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id UKgwGPekGGrClggAu9opvQ
-	(envelope-from <stable+bounces-255659-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:26:31 +0200
+	id ADCiN5GgGGqblggAu9opvQ
+	(envelope-from <stable+bounces-255305-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:07:45 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id EC4E55F8AF1
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:26:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 162FA5F7DF4
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:07:45 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 764CE327D6C8
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 20:18:54 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 7231E31CA946
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 20:02:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 12FF92D9787;
-	Thu, 28 May 2026 20:18:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 923DB40FDAD;
+	Thu, 28 May 2026 20:02:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lv7RPhx5"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mR1EJWaT"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DE44F2459D1;
-	Thu, 28 May 2026 20:18:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 322D5338595;
+	Thu, 28 May 2026 20:02:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779999533; cv=none; b=iPtAO0d057+EDZOLZsIWoiBXFbN5Nku0RtERp4uQqt27LG5OVL+qSsti0Kv8hjoQg4v41SgNb5823ZC68EE9dGcESUqAoWjNxgXegyPLpmELi372JOszslRq1oGg74W7mkwmlTzbZFOSqGGRdAcid68n4OszQ2APKrAgshuANcE=
+	t=1779998536; cv=none; b=tiEGt9Kvt181k89WKNAji04hdAPoXcIHkJAU4c6AR4DGtVxOugvLVho8MV+F603pn0PpBz0f09yMxQdojydhWlrC60XyjFzQeZfgda5gpnShK8wDawaDIXdF40ttXaC9rDyp4h4J9dV6BQSzDVTDwqF9pcr5TJE/AbVfSvsXThg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779999533; c=relaxed/simple;
-	bh=rMCgTLMozYGRWoKxpvc3SiY0SqU2DTdCPk9gJKYg1uA=;
+	s=arc-20240116; t=1779998536; c=relaxed/simple;
+	bh=hoB5VV6mScBMYKu9ci2/8o+deg4mUmMT4ccvqV9tYyc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=soRhNEldDCiKG29aX+YG84zyes1c2/xiOVubn9rr7F+pe1kxxzDa1I27FW6IwpoTcX0A0LOZB8lXIj1v2MyBBK0XzaOG1YLWLidfWhJXXjxu7pAqaLLisbiNEagE6oYRrrSHTLNxLH4DexRqVOjhP16kPgzUGriakZ3SrXbnwVQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lv7RPhx5; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 15F801F000E9;
-	Thu, 28 May 2026 20:18:51 +0000 (UTC)
+	 MIME-Version; b=K7TaoB38ReyuPi2Di4nnCYXMAOWmrh8Jg48DBI3PPuWtWpj/St9Km7fMorB2uPR7/Li8mSV23FA7iFD1frHdQRHw7+dSJ8CJEVf+nsoppGTdBeqR3Q/OFkyCgQVk5Ta0BZID4UP9w1LE9XNkZk0H7SkOFyYMoNZE7tKFnXpbayY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mR1EJWaT; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 90BB51F00A3A;
+	Thu, 28 May 2026 20:02:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779999532;
-	bh=Rmt7jKDFZdyQ+CyMm7Su2X5n8EyaCp4j75jD1rVO5gE=;
+	s=korg; t=1779998535;
+	bh=B/pUQpZLOENAhOeLe2iVq77xNYlQnJWu4LJp41H/UfA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=lv7RPhx55LlA7ToLyQtbiVM0xU+T+6uGbBLgneMT6jenq8vep+jF+FWLc4lcB7l/9
-	 XaRWdvj6cMxMxICMSF+kufXsq54RXzm+PUd3nPDSIhnmYPwgTWcgyxNGy+DMFS5X8E
-	 lerXOkyfPSikESs/IBCYeHgRmhZPYV2rUMwn+qSA=
+	b=mR1EJWaTmXjZlqa/J3j4l/xko7vEoc7kmC2tDuPu1hPRS6QBVsXa4KMTHf3kzv1Iq
+	 IEFlpjRwRXhcRUwWqoC08Oni+zdglnvI+LhPfhVg6EMwg09cZPya+9kWAopR5W8h7G
+	 KwCIqwpTlHg/cDN0GxAGs+VXFPw/FkGnKHru1vL0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Aleksandr Loktionov <aleksandr.loktionov@intel.com>,
-	Grzegorz Nitka <grzegorz.nitka@intel.com>,
-	Simon Horman <horms@kernel.org>,
-	Alexander Nowlin <alexander.nowlin@intel.com>,
-	Tony Nguyen <anthony.l.nguyen@intel.com>,
-	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 6.18 100/377] ice: restore PTP Rx timestamp config after ethtool set-channels
+	Tristan Madani <tristan@talencesecurity.com>,
+	Florian Westphal <fw@strlen.de>,
+	Pablo Neira Ayuso <pablo@netfilter.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 7.0 209/461] netfilter: x_tables: unregister the templates first
 Date: Thu, 28 May 2026 21:45:38 +0200
-Message-ID: <20260528194641.246536541@linuxfoundation.org>
+Message-ID: <20260528194653.165558305@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260528194638.371537336@linuxfoundation.org>
-References: <20260528194638.371537336@linuxfoundation.org>
+In-Reply-To: <20260528194646.819809818@linuxfoundation.org>
+References: <20260528194646.819809818@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -79,7 +77,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-255659-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-255305-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
@@ -90,69 +88,177 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	FROM_HAS_DN(0.00)[];
 	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[9];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,intel.com:email,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim]
-X-Rspamd-Queue-Id: EC4E55F8AF1
+	DBL_BLOCKED_OPENRESOLVER(0.00)[netfilter.org:email,strlen.de:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
+X-Rspamd-Queue-Id: 162FA5F7DF4
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+7.0-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Grzegorz Nitka <grzegorz.nitka@intel.com>
+From: Florian Westphal <fw@strlen.de>
 
-commit 975b564d195b13ca6ee1ef5e6a9561734898eb17 upstream.
+[ Upstream commit d338693d778579b676a61346849bebd892427158 ]
 
-When ethtool -L changes queue counts, ice_vsi_recfg_qs() closes and
-rebuilds the VSI, reallocating Rx rings. The newly allocated rings have
-ptp_rx cleared, so RX hardware timestamps are no longer attached to skb
-until hwtstamp configuration is applied again.
+When the module is going away we need to zap the template
+first.  Else there is a small race window where userspace
+could instantiate a new table after the pernet exit function
+has removed the current table.
 
-Restore timestamp mode after ice_vsi_open() in the queue reconfiguration
-path, matching reset/rebuild behavior and ensuring newly rebuilt Rx rings
-have PTP RX timestamping re-enabled.
-
-Testing hints:
-- run ptp4l application in client synchronization mode:
-	 ptp4l -i ethX -m -s
-- run PTP traffic
-- change queue number on ethX netdev interface:
-	ethtool -L ethX combined new_queue_size
-- observe ptp4l output
-- expected result: no "received DELAY_REQ without timestamp" messages
-
-Fixes: 77a781155a65 ("ice: enable receive hardware timestamping")
-Cc: stable@vger.kernel.org
-Reviewed-by: Aleksandr Loktionov <aleksandr.loktionov@intel.com>
-Signed-off-by: Grzegorz Nitka <grzegorz.nitka@intel.com>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Tested-by: Alexander Nowlin <alexander.nowlin@intel.com>
-Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
-Link: https://patch.msgid.link/20260515182419.1597859-7-anthony.l.nguyen@intel.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: fdacd57c79b7 ("netfilter: x_tables: never register tables by default")
+Reported-by: Tristan Madani <tristan@talencesecurity.com>
+Reviewed-by: Tristan Madani <tristan@talencesecurity.com>
+Closes: https://lore.kernel.org/netfilter-devel/20260429175613.1459342-1-tristmd@gmail.com/
+Signed-off-by: Florian Westphal <fw@strlen.de>
+Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/intel/ice/ice_main.c |    6 ++++++
- 1 file changed, 6 insertions(+)
+ net/ipv4/netfilter/arptable_filter.c   | 2 +-
+ net/ipv4/netfilter/iptable_filter.c    | 2 +-
+ net/ipv4/netfilter/iptable_mangle.c    | 2 +-
+ net/ipv4/netfilter/iptable_raw.c       | 2 +-
+ net/ipv4/netfilter/iptable_security.c  | 2 +-
+ net/ipv6/netfilter/ip6table_filter.c   | 2 +-
+ net/ipv6/netfilter/ip6table_mangle.c   | 2 +-
+ net/ipv6/netfilter/ip6table_raw.c      | 2 +-
+ net/ipv6/netfilter/ip6table_security.c | 2 +-
+ 9 files changed, 9 insertions(+), 9 deletions(-)
 
---- a/drivers/net/ethernet/intel/ice/ice_main.c
-+++ b/drivers/net/ethernet/intel/ice/ice_main.c
-@@ -4186,6 +4186,12 @@ int ice_vsi_recfg_qs(struct ice_vsi *vsi
- 	}
- 	ice_pf_dcb_recfg(pf, locked);
- 	ice_vsi_open(vsi);
-+	/* Rx rings are reallocated during VSI rebuild and lose their ptp_rx
-+	 * flag. Restore timestamp mode so newly allocated rings are set up
-+	 * for hardware Rx timestamping.
-+	 */
-+	if (test_bit(ICE_FLAG_PTP_SUPPORTED, pf->flags))
-+		ice_ptp_restore_timestamp_mode(pf);
- 	goto done;
+diff --git a/net/ipv4/netfilter/arptable_filter.c b/net/ipv4/netfilter/arptable_filter.c
+index 78cd5ee24448f..359d00d74095b 100644
+--- a/net/ipv4/netfilter/arptable_filter.c
++++ b/net/ipv4/netfilter/arptable_filter.c
+@@ -82,8 +82,8 @@ static int __init arptable_filter_init(void)
  
- rebuild_err:
+ static void __exit arptable_filter_fini(void)
+ {
+-	unregister_pernet_subsys(&arptable_filter_net_ops);
+ 	xt_unregister_template(&packet_filter);
++	unregister_pernet_subsys(&arptable_filter_net_ops);
+ 	kfree(arpfilter_ops);
+ }
+ 
+diff --git a/net/ipv4/netfilter/iptable_filter.c b/net/ipv4/netfilter/iptable_filter.c
+index 3ab908b747951..595bfb492b1c1 100644
+--- a/net/ipv4/netfilter/iptable_filter.c
++++ b/net/ipv4/netfilter/iptable_filter.c
+@@ -101,8 +101,8 @@ static int __init iptable_filter_init(void)
+ 
+ static void __exit iptable_filter_fini(void)
+ {
+-	unregister_pernet_subsys(&iptable_filter_net_ops);
+ 	xt_unregister_template(&packet_filter);
++	unregister_pernet_subsys(&iptable_filter_net_ops);
+ 	kfree(filter_ops);
+ }
+ 
+diff --git a/net/ipv4/netfilter/iptable_mangle.c b/net/ipv4/netfilter/iptable_mangle.c
+index 385d945d8ebea..db90db7057cc4 100644
+--- a/net/ipv4/netfilter/iptable_mangle.c
++++ b/net/ipv4/netfilter/iptable_mangle.c
+@@ -135,8 +135,8 @@ static int __init iptable_mangle_init(void)
+ 
+ static void __exit iptable_mangle_fini(void)
+ {
+-	unregister_pernet_subsys(&iptable_mangle_net_ops);
+ 	xt_unregister_template(&packet_mangler);
++	unregister_pernet_subsys(&iptable_mangle_net_ops);
+ 	kfree(mangle_ops);
+ }
+ 
+diff --git a/net/ipv4/netfilter/iptable_raw.c b/net/ipv4/netfilter/iptable_raw.c
+index 0e7f53964d0af..b46a790917306 100644
+--- a/net/ipv4/netfilter/iptable_raw.c
++++ b/net/ipv4/netfilter/iptable_raw.c
+@@ -100,9 +100,9 @@ static int __init iptable_raw_init(void)
+ 
+ static void __exit iptable_raw_fini(void)
+ {
++	xt_unregister_template(&packet_raw);
+ 	unregister_pernet_subsys(&iptable_raw_net_ops);
+ 	kfree(rawtable_ops);
+-	xt_unregister_template(&packet_raw);
+ }
+ 
+ module_init(iptable_raw_init);
+diff --git a/net/ipv4/netfilter/iptable_security.c b/net/ipv4/netfilter/iptable_security.c
+index d885443cb2679..2b89adc1e5751 100644
+--- a/net/ipv4/netfilter/iptable_security.c
++++ b/net/ipv4/netfilter/iptable_security.c
+@@ -89,9 +89,9 @@ static int __init iptable_security_init(void)
+ 
+ static void __exit iptable_security_fini(void)
+ {
++	xt_unregister_template(&security_table);
+ 	unregister_pernet_subsys(&iptable_security_net_ops);
+ 	kfree(sectbl_ops);
+-	xt_unregister_template(&security_table);
+ }
+ 
+ module_init(iptable_security_init);
+diff --git a/net/ipv6/netfilter/ip6table_filter.c b/net/ipv6/netfilter/ip6table_filter.c
+index e8992693e14a0..9dcd4501fe800 100644
+--- a/net/ipv6/netfilter/ip6table_filter.c
++++ b/net/ipv6/netfilter/ip6table_filter.c
+@@ -100,8 +100,8 @@ static int __init ip6table_filter_init(void)
+ 
+ static void __exit ip6table_filter_fini(void)
+ {
+-	unregister_pernet_subsys(&ip6table_filter_net_ops);
+ 	xt_unregister_template(&packet_filter);
++	unregister_pernet_subsys(&ip6table_filter_net_ops);
+ 	kfree(filter_ops);
+ }
+ 
+diff --git a/net/ipv6/netfilter/ip6table_mangle.c b/net/ipv6/netfilter/ip6table_mangle.c
+index 8dd4cd0c47bd4..ce2cbce9e3ed3 100644
+--- a/net/ipv6/netfilter/ip6table_mangle.c
++++ b/net/ipv6/netfilter/ip6table_mangle.c
+@@ -128,8 +128,8 @@ static int __init ip6table_mangle_init(void)
+ 
+ static void __exit ip6table_mangle_fini(void)
+ {
+-	unregister_pernet_subsys(&ip6table_mangle_net_ops);
+ 	xt_unregister_template(&packet_mangler);
++	unregister_pernet_subsys(&ip6table_mangle_net_ops);
+ 	kfree(mangle_ops);
+ }
+ 
+diff --git a/net/ipv6/netfilter/ip6table_raw.c b/net/ipv6/netfilter/ip6table_raw.c
+index fc9f6754028f2..8af0f8bd036dc 100644
+--- a/net/ipv6/netfilter/ip6table_raw.c
++++ b/net/ipv6/netfilter/ip6table_raw.c
+@@ -98,8 +98,8 @@ static int __init ip6table_raw_init(void)
+ 
+ static void __exit ip6table_raw_fini(void)
+ {
+-	unregister_pernet_subsys(&ip6table_raw_net_ops);
+ 	xt_unregister_template(&packet_raw);
++	unregister_pernet_subsys(&ip6table_raw_net_ops);
+ 	kfree(rawtable_ops);
+ }
+ 
+diff --git a/net/ipv6/netfilter/ip6table_security.c b/net/ipv6/netfilter/ip6table_security.c
+index 4df14a9bae782..66018b169b010 100644
+--- a/net/ipv6/netfilter/ip6table_security.c
++++ b/net/ipv6/netfilter/ip6table_security.c
+@@ -88,8 +88,8 @@ static int __init ip6table_security_init(void)
+ 
+ static void __exit ip6table_security_fini(void)
+ {
+-	unregister_pernet_subsys(&ip6table_security_net_ops);
+ 	xt_unregister_template(&security_table);
++	unregister_pernet_subsys(&ip6table_security_net_ops);
+ 	kfree(sectbl_ops);
+ }
+ 
+-- 
+2.53.0
+
 
 
 
