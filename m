@@ -1,60 +1,58 @@
-Return-Path: <stable+bounces-255796-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-256003-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id cNc5BiWoGGpolwgAu9opvQ
-	(envelope-from <stable+bounces-255796-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:40:05 +0200
+	id mA0tGZioGGp+lwgAu9opvQ
+	(envelope-from <stable+bounces-256003-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:42:00 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9394B5F9457
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:40:04 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 631BD5F9592
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:41:59 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id BA04D3237772
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 20:25:08 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id DFB06307B243
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 20:34:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B66941C3318;
-	Thu, 28 May 2026 20:25:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4A3172E92BA;
+	Thu, 28 May 2026 20:34:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qWJwnbnF"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YYtEJCie"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5DE3E317163;
-	Thu, 28 May 2026 20:25:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2D69B33B6FC;
+	Thu, 28 May 2026 20:34:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779999907; cv=none; b=nlxoAbN1VHa2svrdElIh083oKbmgkfxiQZ4myTGiGSAAbKYxgawFZ0L99oMmhDER0VMlWHb1+QWG3yB/esvHqvrWxFj9eJp7r8kHChaI5lBMv54OEmEIuxK4S3bj8sHIe5s6f2YkuomFtaKq822ZbHLeoa18afKIC7vqSYVIwDU=
+	t=1780000483; cv=none; b=M7/0LXnbeh6Lto6piBaYaAGhPumZqFU88TfTAw/RjjDVptGxzMt2mgF3FxIQS4b0vyr8b6LUtwJL893JxHfAkxuH9kxZbXqwI9XDcVRIV1EtZSO2gR90SMztg6sMADsJJ/2qQrN6OBT1o3H2OqXgfs3W7z69/Y1YB5L0awO7ukM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779999907; c=relaxed/simple;
-	bh=xbEFcRxjvANkkqGJKF55vDB1KI683VgX+k253uFBsko=;
+	s=arc-20240116; t=1780000483; c=relaxed/simple;
+	bh=jMNFY4Y+04B2Q10kll0LbI4U3VJYJzwQYOtyw5XADFs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=E9RHwNAcCmJwlviPqGkEyCeycoaf6xZe/zc1o5WrSAmHqFrJfZO3PCE/nglcehcaWFnGCR9MiJ/EOoqPnNd+93OsV242sBcbT0u0D5Ho5TDeNmHUCwmjOSk2x4hXd41jgkeLILNka5HPd2xAKf64pKIVgL1dbKUbW8rX74ChLss=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qWJwnbnF; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BA59C1F00A3E;
-	Thu, 28 May 2026 20:25:05 +0000 (UTC)
+	 MIME-Version; b=vFbf8//ARR5P+7JWMZdcxdtryK7ZjvtNhmjy3pP0iE4B5chmSBRsQyqHc6xliEHS5vAH0BPjDuqbrrS2iheUxuYTSPWfQCmCXIy9MNJdrqcQEcfEfufOwylGhs9DzvowGl0+rnwl6iFbmqzazXF94MDqfkA7CKBUJW6hG6wtVIY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YYtEJCie; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8B1901F000E9;
+	Thu, 28 May 2026 20:34:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779999906;
-	bh=ufMsBYODA3dw/WXVH2VDVxgnNIhCk1eKuDLOHfVVu0k=;
+	s=korg; t=1780000482;
+	bh=X7w5JQuObdZxYiCWumLEo2YD/9OTjQwaXEuajJP34CM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=qWJwnbnF4NysCHQlLI97VIHT1AoyasEETecleciAfuO5/30W3evXxh0AgHHHIxeXe
-	 OecE2cTTj+4JvoNTcYcblLVX9t+Tyh0M9hIc3Y87U+XfISPPQlpVzR86Rbw2QjdpYn
-	 eVUtDsceBUoNvkHiik+fpkjT4ReSBB/CgphcElEI=
+	b=YYtEJCiekYHzw/zooSZXdUnadqawCmvtdZ/TDgs8LRfXtKVPKA36Fa9W8HGrByPBy
+	 YecMCqk7OGnS/Nri0t7MZUKcI2z9+sAJG2RvWeepzucL7yDuvIoCUvhOYxOHRqB0HT
+	 H68P5Ny3UrePtf6GtapyXTyZmlLveIkkGneLp1ig=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Boris Burkov <boris@bur.io>,
-	Filipe Manana <fdmanana@suse.com>,
-	David Sterba <dsterba@suse.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 197/377] btrfs: tracepoints: fix sleep while in atomic context in btrfs_sync_file()
+	Abdun Nihaal <nihaal@cse.iitm.ac.in>,
+	Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 6.12 061/272] net: wwan: iosm: fix potential memory leaks in ipc_imem_init()
 Date: Thu, 28 May 2026 21:47:15 +0200
-Message-ID: <20260528194644.110591197@linuxfoundation.org>
+Message-ID: <20260528194631.086464483@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260528194638.371537336@linuxfoundation.org>
-References: <20260528194638.371537336@linuxfoundation.org>
+In-Reply-To: <20260528194629.379955525@linuxfoundation.org>
+References: <20260528194629.379955525@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,106 +67,66 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-255796-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-256003-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[7];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,bur.io:email,suse.com:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,qemu.org:url]
-X-Rspamd-Queue-Id: 9394B5F9457
+	RCPT_COUNT_FIVE(0.00)[5];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,msgid.link:url,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,iitm.ac.in:email]
+X-Rspamd-Queue-Id: 631BD5F9592
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Filipe Manana <fdmanana@suse.com>
+From: Abdun Nihaal <nihaal@cse.iitm.ac.in>
 
-[ Upstream commit c73370c677646e86fc4b1780fb07027bdf847375 ]
+commit c5d93b2c40355e999715262a824965aac025a427 upstream.
 
-The trace event btrfs_sync_file() is called in an atomic context (all trace
-events are) and its call to dput(), which is needed due to the call to
-dget_parent(), can sleep, triggering a kernel splat.
+The memory allocated in ipc_protocol_init() is not freed on the error
+paths that follow in ipc_imem_init(). Fix that by calling the
+corresponding release function ipc_protocol_deinit() in the error path.
 
-This can be reproduced by enabling the trace event and running btrfs/056
-from fstests for example. The splat shown in dmesg is the following:
-
-  [53.919] BUG: sleeping function called from invalid context at fs/dcache.c:970
-  [53.947] in_atomic(): 1, irqs_disabled(): 0, non_block: 0, pid: 32773, name: xfs_io
-  [53.988] preempt_count: 2, expected: 0
-  [53.967] RCU nest depth: 0, expected: 0
-  [53.943] Preemption disabled at:
-  [53.944] [<0000000000000000>] 0x0
-  [54.078] CPU: 0 UID: 0 PID: 32773 Comm: xfs_io Tainted: G        W           7.1.0-rc1-btrfs-next-232+ #1 PREEMPT(full)
-  [54.070] Tainted: [W]=WARN
-  [54.071] Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS rel-1.16.2-0-gea1b7a073390-prebuilt.qemu.org 04/01/2014
-  [54.072] Call Trace:
-  [54.074]  <TASK>
-  [54.076]  dump_stack_lvl+0x56/0x80
-  [54.079]  __might_resched.cold+0xd6/0x10f
-  [54.072]  dput.part.0+0x24/0x110
-  [54.078]  trace_event_raw_event_btrfs_sync_file+0x75/0x140 [btrfs]
-  [54.089]  btrfs_sync_file+0x1ed/0x530 [btrfs]
-  [54.087]  ? __handle_mm_fault+0x8ae/0xed0
-  [54.089]  btrfs_do_write_iter+0x172/0x210 [btrfs]
-  [54.091]  vfs_write+0x21f/0x450
-  [54.094]  __x64_sys_pwrite64+0x8d/0xc0
-  [54.096]  ? do_user_addr_fault+0x20c/0x670
-  [54.099]  do_syscall_64+0x60/0xf20
-  [54.092]  ? clear_bhb_loop+0x60/0xb0
-  [54.094]  entry_SYSCALL_64_after_hwframe+0x76/0x7e
-
-So stop using dget_parent() and dput() and access the parent dentry
-directly as dentry->d_parent. This is also what ext4 is doing in
-its equivalent trace event ext4_sync_file_enter().
-
-Fixes: a85b46db143f ("btrfs: tracepoints: get correct superblock from dentry in event btrfs_sync_file()")
-Reviewed-by: Boris Burkov <boris@bur.io>
-Signed-off-by: Filipe Manana <fdmanana@suse.com>
-Reviewed-by: David Sterba <dsterba@suse.com>
-Signed-off-by: David Sterba <dsterba@suse.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 3670970dd8c6 ("net: iosm: shared memory IPC interface")
+Cc: stable@vger.kernel.org
+Signed-off-by: Abdun Nihaal <nihaal@cse.iitm.ac.in>
+Link: https://patch.msgid.link/20260519062815.55545-1-nihaal@cse.iitm.ac.in
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- include/trace/events/btrfs.h | 4 +---
- 1 file changed, 1 insertion(+), 3 deletions(-)
+ drivers/net/wwan/iosm/iosm_ipc_imem.c |    2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/include/trace/events/btrfs.h b/include/trace/events/btrfs.h
-index 0864700f76e0a..fa090a455037a 100644
---- a/include/trace/events/btrfs.h
-+++ b/include/trace/events/btrfs.h
-@@ -771,10 +771,8 @@ TRACE_EVENT(btrfs_sync_file,
- 	TP_fast_assign(
- 		struct dentry *dentry = file_dentry(file);
- 		struct inode *inode = file_inode(file);
--		struct dentry *parent = dget_parent(dentry);
--		struct inode *parent_inode = d_inode(parent);
-+		struct inode *parent_inode = d_inode(dentry->d_parent);
- 
--		dput(parent);
- 		TP_fast_assign_fsid(btrfs_sb(inode->i_sb));
- 		__entry->ino		= btrfs_ino(BTRFS_I(inode));
- 		__entry->parent		= btrfs_ino(BTRFS_I(parent_inode));
--- 
-2.53.0
-
+--- a/drivers/net/wwan/iosm/iosm_ipc_imem.c
++++ b/drivers/net/wwan/iosm/iosm_ipc_imem.c
+@@ -1430,6 +1430,8 @@ imem_config_fail:
+ protocol_init_fail:
+ 	cancel_work_sync(&ipc_imem->run_state_worker);
+ 	ipc_task_deinit(ipc_imem->ipc_task);
++	if (ipc_imem->ipc_protocol)
++		ipc_protocol_deinit(ipc_imem->ipc_protocol);
+ ipc_task_init_fail:
+ 	kfree(ipc_imem->ipc_task);
+ ipc_task_fail:
 
 
 
