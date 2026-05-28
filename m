@@ -1,59 +1,60 @@
-Return-Path: <stable+bounces-256258-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-255847-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id oHM0Om2rGGpolwgAu9opvQ
-	(envelope-from <stable+bounces-256258-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:54:05 +0200
+	id WJxAEb2mGGpolwgAu9opvQ
+	(envelope-from <stable+bounces-255847-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:34:05 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9301A5F9D08
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:54:05 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id DEB7D5F8FB2
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:34:04 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id DBD053094F56
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 20:46:44 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id B6AE9304E647
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 20:27:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D12CD2459DD;
-	Thu, 28 May 2026 20:46:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5F0DA254B1F;
+	Thu, 28 May 2026 20:27:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WsHXH6wa"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GfNniC0l"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9A378329396;
-	Thu, 28 May 2026 20:46:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 273ACDDC5;
+	Thu, 28 May 2026 20:27:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780001196; cv=none; b=KAyANv9b67Z6u4fOtZPuZIv9aKu8tGjShLQd06VLTkIiNHa74ws1dzPZK67THz4f1IAY6ZcD5JH1nHPOTT4ZENcG7MxgLza8vZY+XEGRoNZ50YhiMbw+s9b2u0dzFrV9tlw1WiFH6VZI6LAoWjBPC7P+tKXjNbwpxvUt/eJCkVQ=
+	t=1780000047; cv=none; b=jurYED83iLxYNMVugmlcrWbzwgo4+dw6tqd0/s0ILnPJNXc6f+TNSMxeJR7rxctmgqvMTJy1RF3GpUYlTofp68EpTljNMB/4xQCKCd7QpDTZ7b+BRobZJ53qlxwvl2x+RrQZNQ9z+PJtExH7pbxZEqZfSEcEI4R9UEQLHMcWNsU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780001196; c=relaxed/simple;
-	bh=iJDdPfzWWVTKfvyPB7Y82FpbI/txfSOnJiG4jhO/foU=;
+	s=arc-20240116; t=1780000047; c=relaxed/simple;
+	bh=rRqZKv9Q7zzgOondW7B0s6CvmJ6Yo/mMdozEA1hPqII=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=op6/FTrbIPolRoVkils383El3Rs+3OcqIu8EgEvjWasiXIzYz4vX/WA88g7nIVFtBwkbOO0AFb+HE5zMUd7/XW2ZIVG798uQ+xKK4PhDQ21ChzhnPcM5J4moKKuBKwY+dNANIct+hkHXg9nl8St1C3qWJPMY+iC5pSgbtSljDmA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WsHXH6wa; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 02D381F000E9;
-	Thu, 28 May 2026 20:46:34 +0000 (UTC)
+	 MIME-Version; b=R9WrJvv/TUKEBCLBegvHOEzfRC+pm5QkTRxz1JuRJ8W3BcZOyl+FUA1jmnPx2t7wWb4dR6yCHRqBTouwcpMEFcl7Xc6DBXzGb2CE9Jg3f/QLCM05dLiZ+JbF+2LqIvmImq0IzTaRVMiLaX+rZzevrq8zms+mNYAwLdMfCKFikj8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GfNniC0l; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2DBC61F000E9;
+	Thu, 28 May 2026 20:27:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780001195;
-	bh=cHAHQNozU7SypzteL4wSuuJ33bdKtzzGY8+SW6SLgZY=;
+	s=korg; t=1780000045;
+	bh=TABISjAnavl4EgV8bjMrkX+tQGWIzyNJMB43iNc0KBs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=WsHXH6waRYvV0VskYMd2Cp0s2EwKpHQh+pWSFO8ZQOnq9eGF5AzqL9NN0lpygrtYm
-	 U3cVF+tlXLzVVsMgOqROJya9pXxryBZkopR5Th+eBCy2IZxKC4r/PepyeUvM/y5jvN
-	 HuoeQKyjtKzsEDJwLD5Q7yFTTI4za8jW5m0biHxA=
+	b=GfNniC0lFTzKVk+TPfjgxshagQMpvspNuApV1kT+AQI20FcVk4WnFvDE5G9p+IJ2T
+	 rSFytmyjqIhbeqq4D0T6TsZAtS+Q9cUC+E7fj5OhNXHrcjO9NTld8vE+LwcSiySwXC
+	 LZmzl34DmQNmRbK1+zBAsJWzct3jA2KWA+vOE/Co=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Nicolai Buchwitz <nb@tipi-net.de>,
-	Florian Fainelli <florian.fainelli@broadcom.com>,
-	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 6.6 042/186] net: bcmgenet: keep RBUF EEE/PM disabled
+	Sabrina Dubroca <sd@queasysnail.net>,
+	David Carlier <devnexen@gmail.com>,
+	Antonio Quartulli <antonio@openvpn.net>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.18 284/377] ovpn: tcp - use cached peer pointer in ovpn_tcp_close()
 Date: Thu, 28 May 2026 21:48:42 +0200
-Message-ID: <20260528194930.102983554@linuxfoundation.org>
+Message-ID: <20260528194646.578279376@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260528194928.941004471@linuxfoundation.org>
-References: <20260528194928.941004471@linuxfoundation.org>
+In-Reply-To: <20260528194638.371537336@linuxfoundation.org>
+References: <20260528194638.371537336@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -68,94 +69,118 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
+	URIBL_MULTI_FAIL(0.00)[queasysnail.net:server fail,tor.lore.kernel.org:server fail,linuxfoundation.org:server fail,openvpn.net:server fail];
+	TAGGED_FROM(0.00)[bounces-255847-lists,stable=lfdr.de];
 	PRECEDENCE_BULK(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,queasysnail.net,gmail.com,openvpn.net,kernel.org];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-256258-lists,stable=lfdr.de];
-	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	MID_RHS_MATCH_FROM(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
+	TO_DN_SOME(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tipi-net.de:email,msgid.link:url,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,broadcom.com:email,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim]
-X-Rspamd-Queue-Id: 9301A5F9D08
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[openvpn.net:email,queasysnail.net:email,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim]
+X-Rspamd-Queue-Id: DEB7D5F8FB2
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Nicolai Buchwitz <nb@tipi-net.de>
+From: David Carlier <devnexen@gmail.com>
 
-commit 9a1730245e416d11ad5c0f2c100061d61cc43f60 upstream.
+[ Upstream commit 775d8d7ad02aa345e1588424a6a8b9ae49fb9012 ]
 
-Setting RBUF_EEE_EN | RBUF_PM_EN in RBUF_ENERGY_CTRL breaks the RX
-path on GENET hardware once MAC EEE becomes active. RX traffic stops
-flowing while the link stays up and the usual descriptor/RX error
-counters remain quiet. In that state the MAC still accepts frames
-(rbuf_ovflow_cnt keeps climbing) but RBUF no longer forwards them to
-DMA, so rx_packets is no longer incremented at the netdev level. On
-some boards the corruption ends up as a paging fault in
-skb_release_data via bcmgenet_rx_poll on an LPI exit.
+ovpn_tcp_close() loads the ovpn_socket via rcu_dereference_sk_user_data()
+under rcu_read_lock(), takes a reference on sock->peer, caches the peer
+pointer in a local, and drops the read lock. It then passes sock->peer
+(rather than the cached local) to ovpn_peer_del(), re-dereferencing the
+ovpn_socket after the RCU read section has ended.
 
-Reproduced on Pi 4B (BCM2711 + BCM54213PE) and confirmed by Florian
-Fainelli on an internal Broadcom 4908-family board with the same crash
-signature. RBUF_PM_EN is not publicly documented.
+Unlike ovpn_tcp_sendmsg(), which uses the same "load under RCU, use
+after unlock" pattern but is protected by lock_sock() held across the
+function, ovpn_tcp_close() runs without the socket lock: inet_release()
+invokes sk_prot->close() without taking lock_sock first.
 
-This shows up more often now that phy_support_eee() enables EEE by
-default, but it also affects older kernels as soon as TX LPI is
-turned on via ethtool, so it is not specific to recent changes.
+ovpn_socket_release() can therefore complete its kref_put -> detach ->
+synchronize_rcu -> kfree(sock) sequence concurrently, in the window
+after ovpn_tcp_close() drops rcu_read_lock() but before it dereferences
+sock->peer. The synchronize_rcu() in ovpn_socket_release() protects
+readers that use the dereferenced pointer inside the RCU read section,
+not those that escape the pointer to a local and use it afterwards.
 
-Always clear RBUF_EEE_EN | RBUF_PM_EN in bcmgenet_eee_enable_set so
-the bits stay off across resets. UMAC and TBUF setup is left alone so
-TX-side EEE keeps working.
+A reproducer follows the pattern of commit 94560267d6c4 ("ovpn: tcp -
+don't deref NULL sk_socket member after tcp_close()"): trigger a peer
+removal (keepalive expiration or netlink OVPN_CMD_DEL_PEER) at the same
+moment userspace closes the TCP fd. That commit fixed the detach-side
+of the same race window; this one fixes the close-side at a different
+victim.
 
-Link: https://github.com/raspberrypi/linux/issues/7304
-Fixes: 6ef398ea60d9 ("net: bcmgenet: add EEE support")
-Cc: stable@vger.kernel.org
-Signed-off-by: Nicolai Buchwitz <nb@tipi-net.de>
-Reviewed-by: Florian Fainelli <florian.fainelli@broadcom.com>
-Link: https://patch.msgid.link/20260520184320.652053-1-nb@tipi-net.de
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Tighten the entry block to read sock->peer exactly once into the cached
+peer local, and route all subsequent uses (the hold check, the
+ovpn_peer_del() call, and the prot->close() invocation) through that
+local. sock->peer is only ever written once in ovpn_socket_new() under
+lock_sock(), before rcu_assign_sk_user_data() publishes the ovpn_socket,
+and is never reassigned afterwards - but the previous multi-read pattern
+made that invariant implicit rather than explicit. The same multi-read
+shape exists in ovpn_tcp_recvmsg(), ovpn_tcp_sendmsg(),
+ovpn_tcp_data_ready() and ovpn_tcp_write_space(); those will be cleaned
+up via a dedicated helper in a follow-up net-next series.
+
+Fixes: 11851cbd60ea ("ovpn: implement TCP transport")
+Reviewed-by: Sabrina Dubroca <sd@queasysnail.net>
+Assisted-by: Claude:claude-opus-4-7
+Signed-off-by: David Carlier <devnexen@gmail.com>
+Signed-off-by: Antonio Quartulli <antonio@openvpn.net>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/broadcom/genet/bcmgenet.c |    9 ++++-----
- 1 file changed, 4 insertions(+), 5 deletions(-)
+ drivers/net/ovpn/tcp.c | 9 +++++++--
+ 1 file changed, 7 insertions(+), 2 deletions(-)
 
---- a/drivers/net/ethernet/broadcom/genet/bcmgenet.c
-+++ b/drivers/net/ethernet/broadcom/genet/bcmgenet.c
-@@ -1326,13 +1326,12 @@ void bcmgenet_eee_enable_set(struct net_
- 		reg &= ~(TBUF_EEE_EN | TBUF_PM_EN);
- 	bcmgenet_writel(reg, priv->base + off);
+diff --git a/drivers/net/ovpn/tcp.c b/drivers/net/ovpn/tcp.c
+index 5499c1572f3e2..5f345ae7d59d2 100644
+--- a/drivers/net/ovpn/tcp.c
++++ b/drivers/net/ovpn/tcp.c
+@@ -581,14 +581,19 @@ static void ovpn_tcp_close(struct sock *sk, long timeout)
  
--	/* Do the same for thing for RBUF */
-+	/* RBUF EEE/PM can break the RX path on GENET. Keep it disabled. */
- 	reg = bcmgenet_rbuf_readl(priv, RBUF_ENERGY_CTRL);
--	if (enable)
--		reg |= RBUF_EEE_EN | RBUF_PM_EN;
--	else
-+	if (reg & (RBUF_EEE_EN | RBUF_PM_EN)) {
- 		reg &= ~(RBUF_EEE_EN | RBUF_PM_EN);
--	bcmgenet_rbuf_writel(priv, reg, RBUF_ENERGY_CTRL);
-+		bcmgenet_rbuf_writel(priv, reg, RBUF_ENERGY_CTRL);
+ 	rcu_read_lock();
+ 	sock = rcu_dereference_sk_user_data(sk);
+-	if (!sock || !sock->peer || !ovpn_peer_hold(sock->peer)) {
++	if (!sock) {
+ 		rcu_read_unlock();
+ 		return;
+ 	}
++
+ 	peer = sock->peer;
++	if (!peer || !ovpn_peer_hold(peer)) {
++		rcu_read_unlock();
++		return;
 +	}
+ 	rcu_read_unlock();
  
- 	if (!enable && priv->clk_eee_enabled) {
- 		clk_disable_unprepare(priv->clk_eee);
+-	ovpn_peer_del(sock->peer, OVPN_DEL_PEER_REASON_TRANSPORT_DISCONNECT);
++	ovpn_peer_del(peer, OVPN_DEL_PEER_REASON_TRANSPORT_DISCONNECT);
+ 	peer->tcp.sk_cb.prot->close(sk, timeout);
+ 	ovpn_peer_put(peer);
+ }
+-- 
+2.53.0
+
 
 
 
