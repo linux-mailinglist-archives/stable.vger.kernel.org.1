@@ -1,58 +1,64 @@
-Return-Path: <stable+bounces-256308-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-256141-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id gKsaCuarGGpEmAgAu9opvQ
-	(envelope-from <stable+bounces-256308-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:56:06 +0200
+	id UC/jARKqGGpolwgAu9opvQ
+	(envelope-from <stable+bounces-256141-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:48:18 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7D4245F9E39
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:56:05 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id BD2CB5F994A
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:48:17 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 4191B31D15BB
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 20:49:06 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 51CDA309E7CD
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 20:41:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4D4A3349B1C;
-	Thu, 28 May 2026 20:48:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 536F63469E0;
+	Thu, 28 May 2026 20:41:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Z5GmlEA2"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Uch5u3Z5"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1C4BC347FCD;
-	Thu, 28 May 2026 20:48:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1615A2E7F25;
+	Thu, 28 May 2026 20:41:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780001336; cv=none; b=KN6K933v3qy+d5ZKzqons2vy2PhcWRkXGUN5IwXgx1R7O+WuUqmK07Kk2mA+DLUFDcJ4Iahmb331pBHDiN5p2UVhhhFysNn+7tHkz/cdkUQChUVQi+7EaF7hJGTV+nJCyiRWrfFMBj5MakM5D8hnNOCqaM4pwL6q+m7NuRRug7I=
+	t=1780000871; cv=none; b=OxMnC5CBSenFQTwXCiNo8CNMkthhzXH/l6RSFwg/Fk1YjeX/eMsq44Qh2yHTwryCNJIdsSlG3/eydhq0GMZNjiFKw/sE9Mx7eoa0nfxPU63KlV7YT8BRHGd+EJVOC/3Y62/JUbH1Xqbgb5o3+ho1GK2rN0Ff0W6hJmArLzJLVK4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780001336; c=relaxed/simple;
-	bh=CCvWq3dMecmDRBjsp4nixDWPuZx9xSFxw4Ca4brjKCI=;
+	s=arc-20240116; t=1780000871; c=relaxed/simple;
+	bh=4FXsmHgIoevlN42nyRD5C/Fyc5uMenT6fj+TXTLKCro=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=gDqTwoP3U6CTSbYC/+58J8tZwbaiUw1qNtcrntJSExVZfpPoWtbDrb6NbL+9EJ6J8HsR6kYW4ZSngEsk/1N96oUCnIZs2n5ngFt2jAvBEYoYob0VOZbY0lNXrIRfk4h3j9iN3zisrRNfjzxgat8PHifTx7p+SizNOaho9yq/0Bs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Z5GmlEA2; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 79D441F000E9;
-	Thu, 28 May 2026 20:48:54 +0000 (UTC)
+	 MIME-Version; b=iCCZVnZL4MXiUa8fgC5nWYw8JSEDZJG1yzQKGIdwt294PqKWJ0+LpvKAdj3l1y267R+nca3QUUALjU2c2xdQ0m7s1uQYM9cXcc1lZkO7W6VR1vp/1QSZElwM8TG8tqwWtVUTsLQjxQ1woLM3Woexz+0ASCL882uSM9n/TztcvRc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Uch5u3Z5; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7B3781F00A3A;
+	Thu, 28 May 2026 20:41:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780001335;
-	bh=DNADbt9Ak2rjgrddodRIi+E1ywsNnUcCPx5DTTT+Nro=;
+	s=korg; t=1780000870;
+	bh=E0z8vpZBAkikLUK7D8Amg49hNOwYTLBOeTpTNWxiFVQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=Z5GmlEA2Qfru+6BbE9ItFkS0o/tv94VdYTYRoY8iStmGCs/N6+YDwP++SlFwWxcMA
-	 uxsBUgxqCKsk3Tzw9nRqRA5cQudYlPXC9P5Jj5FeOD1E6Gw/cDkHXQu/k8svg1IhMH
-	 I4snrmT1Xr8p/04kRN+JwLZVzSU3dKwXg7bePr6E=
+	b=Uch5u3Z5XVV+GnilQ9r34+EL/S5EX8PMHzTO7V8q4h1mI2d3cnv2BXwMSlV0aKV38
+	 gT8ydjdL7Mhm0qNiYdEUr8vhjHgwHOhldYDtNGEL+kdrxX8KlWOZmMZvb5Szt9PUp6
+	 cCvjogXw9taJc41hAESnFk9kzZVutrQ9hD9/25Q0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Abdurrahman Hussain <abdurrahman@nexthop.ai>,
-	Guenter Roeck <linux@roeck-us.net>
-Subject: [PATCH 6.6 091/186] hwmon: (pmbus/adm1266) bounce blackbox records through a protocol-sized buffer
+	Steve French <sfrench@samba.org>,
+	David Howells <dhowells@redhat.com>,
+	"Paulo Alcantara (Red Hat)" <pc@manguebit.org>,
+	Matthew Wilcox <willy@infradead.org>,
+	netfs@lists.linux.dev,
+	linux-fsdevel@vger.kernel.org,
+	Christian Brauner <brauner@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 197/272] netfs: Fix early put of sink folio in netfs_read_gaps()
 Date: Thu, 28 May 2026 21:49:31 +0200
-Message-ID: <20260528194931.393346774@linuxfoundation.org>
+Message-ID: <20260528194634.776862235@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260528194928.941004471@linuxfoundation.org>
-References: <20260528194928.941004471@linuxfoundation.org>
+In-Reply-To: <20260528194629.379955525@linuxfoundation.org>
+References: <20260528194629.379955525@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -67,101 +73,112 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-256141-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-256308-lists,stable=lfdr.de];
-	TO_DN_SOME(0.00)[];
-	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[5];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,nexthop.ai:email,roeck-us.net:email,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim]
-X-Rspamd-Queue-Id: 7D4245F9E39
+	TO_DN_SOME(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_SEVEN(0.00)[11];
+	MID_RHS_MATCH_FROM(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,linux.dev:email,infradead.org:email,msgid.link:url,manguebit.org:email,samba.org:email]
+X-Rspamd-Queue-Id: BD2CB5F994A
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Abdurrahman Hussain <abdurrahman@nexthop.ai>
+From: David Howells <dhowells@redhat.com>
 
-commit 43cae21424ff8e33894a0f86c6b80b840c049fd7 upstream.
+[ Upstream commit 3e5dd91b87a8b1450217b56a336bee315f40da7d ]
 
-adm1266_pmbus_block_xfer() copies the device-supplied block payload
-into the caller-provided buffer using the device-supplied length:
+Fix netfs_read_gaps() to release the sink page it uses after waiting for
+the request to complete.  The way the sink page is used is that an
+ITER_BVEC-class iterator is created that has the gaps from the target folio
+at either end, but has the sink page tiled over the middle so that a single
+read op can fill in both gaps.
 
-	memcpy(data_r, &msgs[1].buf[1], msgs[1].buf[0]);
+The bug was found by KASAN detecting a UAF on the generic/075 xfstest in
+the cifsd kernel thread that handles reception of data from the TCP socket:
 
-The helper does not know how large data_r is and trusts the device to
-return at most one record's worth of bytes.  adm1266_nvmem_read_blackbox()
-violates that contract: it advances read_buff inside data->dev_mem in
-ADM1266_BLACKBOX_SIZE (64-byte) strides while the helper is willing to
-write up to ADM1266_PMBUS_BLOCK_MAX (255) bytes.  A device that returns
-more than 64 bytes on the trailing record (read_buff offset 1984 in
-the 2048-byte dev_mem allocation) overflows dev_mem by up to 191 bytes
-before the post-call
+ BUG: KASAN: use-after-free in _copy_to_iter+0x48a/0xa20
+ Write of size 885 at addr ffff888107f92000 by task cifsd/1285
+ CPU: 2 UID: 0 PID: 1285 Comm: cifsd Not tainted 7.0.0 #6 PREEMPT(lazy)
+ Call Trace:
+  dump_stack_lvl+0x5d/0x80
+  print_report+0x17f/0x4f1
+  kasan_report+0x100/0x1e0
+  kasan_check_range+0x10f/0x1e0
+  __asan_memcpy+0x3c/0x60
+  _copy_to_iter+0x48a/0xa20
+  __skb_datagram_iter+0x2c9/0x430
+  skb_copy_datagram_iter+0x6e/0x160
+  tcp_recvmsg_locked+0xce0/0x1130
+  tcp_recvmsg+0xeb/0x300
+  inet_recvmsg+0xcf/0x3a0
+  sock_recvmsg+0xea/0x100
+  cifs_readv_from_socket+0x3a6/0x4d0 [cifs]
+  cifs_read_iter_from_socket+0xdd/0x130 [cifs]
+  cifs_readv_receive+0xaad/0xb10 [cifs]
+  cifs_demultiplex_thread+0x1148/0x1740 [cifs]
+  kthread+0x1cf/0x210
 
-	if (ret != ADM1266_BLACKBOX_SIZE)
-		return -EIO;
-
-can reject the response.
-
-Contain the fix in the caller without changing the helper signature:
-read each record into a 255-byte local bounce buffer that matches the
-helper's maximum output, validate the returned length, and only then
-copy exactly ADM1266_BLACKBOX_SIZE bytes into the dev_mem slot.
-
-Fixes: 407dc802a9c0 ("hwmon: (pmbus/adm1266) Add Block process call")
-Cc: stable@vger.kernel.org
-Signed-off-by: Abdurrahman Hussain <abdurrahman@nexthop.ai>
-Link: https://lore.kernel.org/r/20260515-adm1266-fixes-v1-5-1c1ea1349cfe@nexthop.ai
-Signed-off-by: Guenter Roeck <linux@roeck-us.net>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: ee4cdf7ba857 ("netfs: Speed up buffered reading")
+Reported-by: Steve French <sfrench@samba.org>
+Signed-off-by: David Howells <dhowells@redhat.com>
+Link: https://patch.msgid.link/20260512123404.719402-18-dhowells@redhat.com
+Reviewed-by: Paulo Alcantara (Red Hat) <pc@manguebit.org>
+cc: Paulo Alcantara <pc@manguebit.org>
+cc: Matthew Wilcox <willy@infradead.org>
+cc: netfs@lists.linux.dev
+cc: linux-fsdevel@vger.kernel.org
+Signed-off-by: Christian Brauner <brauner@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/hwmon/pmbus/adm1266.c |    4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ fs/netfs/buffered_read.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
---- a/drivers/hwmon/pmbus/adm1266.c
-+++ b/drivers/hwmon/pmbus/adm1266.c
-@@ -348,6 +348,7 @@ static void adm1266_init_debugfs(struct
+diff --git a/fs/netfs/buffered_read.c b/fs/netfs/buffered_read.c
+index 2dd2260352dbf..1c906035fef02 100644
+--- a/fs/netfs/buffered_read.c
++++ b/fs/netfs/buffered_read.c
+@@ -525,14 +525,14 @@ static int netfs_read_gaps(struct file *file, struct folio *folio)
  
- static int adm1266_nvmem_read_blackbox(struct adm1266_data *data, u8 *read_buff)
- {
-+	u8 record[ADM1266_PMBUS_BLOCK_MAX];
- 	int record_count;
- 	char index;
- 	u8 buf[I2C_SMBUS_BLOCK_MAX];
-@@ -365,13 +366,14 @@ static int adm1266_nvmem_read_blackbox(s
- 		return -EIO;
+ 	netfs_read_to_pagecache(rreq);
  
- 	for (index = 0; index < record_count; index++) {
--		ret = adm1266_pmbus_block_xfer(data, ADM1266_READ_BLACKBOX, 1, &index, read_buff);
-+		ret = adm1266_pmbus_block_xfer(data, ADM1266_READ_BLACKBOX, 1, &index, record);
- 		if (ret < 0)
- 			return ret;
- 
- 		if (ret != ADM1266_BLACKBOX_SIZE)
- 			return -EIO;
- 
-+		memcpy(read_buff, record, ADM1266_BLACKBOX_SIZE);
- 		read_buff += ADM1266_BLACKBOX_SIZE;
+-	if (sink)
+-		folio_put(sink);
+-
+ 	ret = netfs_wait_for_read(rreq);
+ 	if (ret == 0) {
+ 		flush_dcache_folio(folio);
+ 		folio_mark_uptodate(folio);
  	}
- 
++
++	if (sink)
++		folio_put(sink);
+ 	folio_unlock(folio);
+ 	netfs_put_request(rreq, false, netfs_rreq_trace_put_return);
+ 	return ret < 0 ? ret : 0;
+-- 
+2.53.0
+
 
 
 
