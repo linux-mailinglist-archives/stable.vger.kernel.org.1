@@ -1,61 +1,60 @@
-Return-Path: <stable+bounces-256348-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-256181-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id AFFGO/+sGGpymAgAu9opvQ
-	(envelope-from <stable+bounces-256348-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 23:00:47 +0200
+	id cAgvA5uqGGpolwgAu9opvQ
+	(envelope-from <stable+bounces-256181-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:50:35 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 688FD5FA0D2
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 23:00:47 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id B3B665F9AA6
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:50:34 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id C572331AFC0A
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 20:50:49 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 2E6A830C889E
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 20:43:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9EEA4329396;
-	Thu, 28 May 2026 20:50:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D452F332909;
+	Thu, 28 May 2026 20:43:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="R4Uci0pP"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OwOYQ30l"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6E47D31159C;
-	Thu, 28 May 2026 20:50:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B1B551DE4E0;
+	Thu, 28 May 2026 20:43:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780001449; cv=none; b=qdHGI6ufe4dN7C84tZPr+7c3MtyhD8Th6YdIssAuu27BWqfpzuMeVHEGH1DzX5YTGJCTtWHHczGa5Lmu3IrDKlO+pvoQNTBOuB+befrjQlcysQtlpG9mgEFYuGFHt0KjSI5bDWPEYhGDmUIkuEjmzfGVqvuV7PPOj4d+AJIEcWE=
+	t=1780000982; cv=none; b=JIzrf3eo5XAm+ydNid/PX0A405GbKmtbe2CVZZhNkN7VQxlFkIuR3Hj0sH9vPVwKJS5AT4qMcJNfjiHbhn9LzdodFtihzqp6LJ3VWGeHa4ynp0VjbdNUsdSkoF8bl315JWrkapmlx/h0V38TGg+aJFVwgncMjCwNTPTz+FlAtnw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780001449; c=relaxed/simple;
-	bh=fqSBLrMGXHqALVEt6JpHIdP9kSkSbVgvr2imWi3c7rE=;
+	s=arc-20240116; t=1780000982; c=relaxed/simple;
+	bh=6ROdIiU8peJVpg/L6V85dhK2sAx0q/lKq1PAR842S0I=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=jOxj2Qy/+6PefKzZm6nUpaxckIpWYBbahFM9lmUXbT7Hddp/WvJKXnjh7xWH64wfnSJ9J8Mksei4KvcKxX+4U3QgiKWbO2XmPuZAO43HoXM0shUdNEvkZm3wBoJj3vrWIq4FFBuDg0UKaawCvpS3pus2Lb1I27+R/TwxKGYHpnw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=R4Uci0pP; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CC2201F000E9;
-	Thu, 28 May 2026 20:50:47 +0000 (UTC)
+	 MIME-Version; b=mbgOxH6OyT6PU1mgtLaSWGv26gEG9DeAmBmm3+ICYvr8+rdozx7um2Ssz7ChV1aV249VlNhGG93+4C60+Ri6dz8Fer+M5VyUYsIjRY2N7ReeSo2LYxgyyhOFGCUfY9XoXUczUl5NezRRn4bOREtvByKLjgJ5B2dtwAKYvpxu/0Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OwOYQ30l; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1B64A1F000E9;
+	Thu, 28 May 2026 20:43:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780001448;
-	bh=Se/eGbLilJ21H7597BGo48OvNOjO1axERCnLz0ZNSq8=;
+	s=korg; t=1780000981;
+	bh=IAWzvrkGZKUabMl0ShZt+KIJ2MzjtA1DG/YkVHlrl6M=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=R4Uci0pP5iISV2OAf8ojupQ1P663D+ZkhnTQafT0V+Uib0bf2czhjvRB49flKueY7
-	 s+griik9l2FVDMpwLqRPAK7iynP9iGGl1BdjOBfrkz6y2N74KDbQMJsEx2HL6oV19C
-	 aKLhknaam/SLe+ADItQh+Izay6rjBnzSMlHMvMu4=
+	b=OwOYQ30lX/DsIlyQUBv+0LIomkxmyS9HamJQIEufe/aA9fgDHacCsrQ0K+Bl0JhFA
+	 rZhZaN53e/6D5SVntXcnG2dA1blaKbNlHEyi5PhPbbuFP/2JwGgxTsMA9YZoUXRR4b
+	 oHWxKKyaoWs7bBZXV7hrHaMig0SlJo+baGwNuO3A=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Andreas Haarmann-Thiemann <eitschman@nebelreich.de>,
-	Linus Walleij <linusw@kernel.org>,
-	Alexander Lobakin <aleksander.lobakin@intel.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Daniele Ceraolo Spurio <daniele.ceraolospurio@intel.com>,
+	Shuicheng Lin <shuicheng.lin@intel.com>,
+	Rodrigo Vivi <rodrigo.vivi@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 131/186] net: ethernet: cortina: Drop half-assembled SKB
+Subject: [PATCH 6.12 237/272] drm/xe/gsc: Fix double-free of managed BO in error path
 Date: Thu, 28 May 2026 21:50:11 +0200
-Message-ID: <20260528194932.486025422@linuxfoundation.org>
+Message-ID: <20260528194635.793906193@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260528194928.941004471@linuxfoundation.org>
-References: <20260528194928.941004471@linuxfoundation.org>
+In-Reply-To: <20260528194629.379955525@linuxfoundation.org>
+References: <20260528194629.379955525@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,84 +64,90 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-2.16 / 15.00];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-256348-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-256181-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TO_DN_SOME(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_SEVEN(0.00)[8];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[nebelreich.de:email,msgid.link:url,intel.com:email,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim]
-X-Rspamd-Queue-Id: 688FD5FA0D2
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,intel.com:email,msgid.link:url,linuxfoundation.org:mid,linuxfoundation.org:dkim]
+X-Rspamd-Queue-Id: B3B665F9AA6
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Andreas Haarmann-Thiemann <eitschman@nebelreich.de>
+From: Shuicheng Lin <shuicheng.lin@intel.com>
 
-[ Upstream commit b266bacba796ff5c4dcd2ae2fc08aacf7ab39153 ]
+[ Upstream commit d3ded53fab90996e7d94a39049e11962dd066725 ]
 
-In gmac_rx() (drivers/net/ethernet/cortina/gemini.c), when
-gmac_get_queue_page() returns NULL for the second page of a multi-page
-fragment, the driver logs an error and continues — but does not free the
-partially assembled skb that was being assembled via napi_build_skb() /
-napi_get_frags().
+The error path in xe_gsc_init_post_hwconfig() explicitly frees a BO
+allocated with xe_managed_bo_create_pin_map() via
+xe_bo_unpin_map_no_vm(). Since the managed BO already has a devm
+cleanup action registered, this causes a double-free when devm
+unwinds during probe failure.
 
-Free the in-progress partially assembled skb via napi_free_frags()
-and increase the number of dropped frames appropriately
-and assign the skb pointer NULL to make sure it is not lingering
-around, matching the pattern already used elsewhere in the driver.
+Remove the explicit free and let devm handle it, consistent with
+all other xe_managed_bo_create_pin_map() callers.
 
-Fixes: 4d5ae32f5e1e ("net: ethernet: Add a driver for Gemini gigabit ethernet")
-Signed-off-by: Andreas Haarmann-Thiemann <eitschman@nebelreich.de>
-Signed-off-by: Linus Walleij <linusw@kernel.org>
-Reviewed-by: Alexander Lobakin <aleksander.lobakin@intel.com>
-Link: https://patch.msgid.link/20260505-gemini-ethernet-fix-v2-1-997c31d06079@kernel.org
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Fixes: 2e5d47fe7839 ("drm/xe/uc: Use managed bo for HuC and GSC objects")
+Reviewed-by: Daniele Ceraolo Spurio <daniele.ceraolospurio@intel.com>
+Assisted-by: Claude:claude-opus-4.6
+Link: https://patch.msgid.link/20260511154134.223696-1-shuicheng.lin@intel.com
+Signed-off-by: Shuicheng Lin <shuicheng.lin@intel.com>
+(cherry picked from commit 71d61e3e299a17139e47f980a4d6f425b2c59bf7)
+Signed-off-by: Rodrigo Vivi <rodrigo.vivi@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/cortina/gemini.c | 5 +++++
- 1 file changed, 5 insertions(+)
+ drivers/gpu/drm/xe/xe_gsc.c | 5 +----
+ 1 file changed, 1 insertion(+), 4 deletions(-)
 
-diff --git a/drivers/net/ethernet/cortina/gemini.c b/drivers/net/ethernet/cortina/gemini.c
-index 02beed666fa63..0071f27d2d6c1 100644
---- a/drivers/net/ethernet/cortina/gemini.c
-+++ b/drivers/net/ethernet/cortina/gemini.c
-@@ -1498,6 +1498,11 @@ static unsigned int gmac_rx(struct net_device *netdev, unsigned int budget)
- 		gpage = gmac_get_queue_page(geth, port, mapping + PAGE_SIZE);
- 		if (!gpage) {
- 			dev_err(geth->dev, "could not find mapping\n");
-+			if (skb) {
-+				napi_free_frags(&port->napi);
-+				port->stats.rx_dropped++;
-+				skb = NULL;
-+			}
- 			continue;
- 		}
- 		page = gpage->page;
+diff --git a/drivers/gpu/drm/xe/xe_gsc.c b/drivers/gpu/drm/xe/xe_gsc.c
+index efc480d34c9dd..6786773f4560b 100644
+--- a/drivers/gpu/drm/xe/xe_gsc.c
++++ b/drivers/gpu/drm/xe/xe_gsc.c
+@@ -485,8 +485,7 @@ int xe_gsc_init_post_hwconfig(struct xe_gsc *gsc)
+ 				 EXEC_QUEUE_FLAG_PERMANENT, 0);
+ 	if (IS_ERR(q)) {
+ 		xe_gt_err(gt, "Failed to create queue for GSC submission\n");
+-		err = PTR_ERR(q);
+-		goto out_bo;
++		return PTR_ERR(q);
+ 	}
+ 
+ 	wq = alloc_ordered_workqueue("gsc-ordered-wq", 0);
+@@ -509,8 +508,6 @@ int xe_gsc_init_post_hwconfig(struct xe_gsc *gsc)
+ 
+ out_q:
+ 	xe_exec_queue_put(q);
+-out_bo:
+-	xe_bo_unpin_map_no_vm(bo);
+ 	return err;
+ }
+ 
 -- 
 2.53.0
 
