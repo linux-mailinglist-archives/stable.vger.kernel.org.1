@@ -1,60 +1,61 @@
-Return-Path: <stable+bounces-255559-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-256158-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id CAy9GuajGGrClggAu9opvQ
-	(envelope-from <stable+bounces-255559-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:21:58 +0200
+	id GPydOb+sGGpolwgAu9opvQ
+	(envelope-from <stable+bounces-256158-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:59:43 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id EA61C5F8789
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:21:57 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id EBF645FA049
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:59:42 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 9B41C31FFE5F
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 20:14:14 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 03B82310D394
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 20:42:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9A77E3FE37C;
-	Thu, 28 May 2026 20:14:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A9D0933987F;
+	Thu, 28 May 2026 20:41:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BKdRsS3X"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DdVqlPj1"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5C97A352019;
-	Thu, 28 May 2026 20:14:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 770BB3016E1;
+	Thu, 28 May 2026 20:41:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779999253; cv=none; b=STbVM5dQXNUyMSG76CKatPjOvpUv50eP1s1QsoRTDN293b7ZvZTzeDFyd4DNYp0dYQ6/jWrU82rnPrWf7eZHB79en0rlimf4YTwLSkd7uLXPLhZZZjVK/wr0Qo2F74eSGc0Ej0BX795+ehRgsCrdxhhAjMzQCO2LR0JrWCS0Olc=
+	t=1780000918; cv=none; b=ZKWtDuZpXzPKqD6KWLWvF4kIOB8v7N5pbna2mCf/GX6LYPYGdKH2hgA69/ZZp3c5eIF/qnSp5nd9+1CxYgaLkRw2G243PAq7bA/1ez5v9WgSnH0IGJKDdNl4zQLN+Z3hmtJJuUHT2qcuzkVB1KTMiCZuUAZVuTex8O1pcLAHxNY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779999253; c=relaxed/simple;
-	bh=6mTwy76fpBh6UuIn4eejvgyVthyX19YcQ5SoSP2crN0=;
+	s=arc-20240116; t=1780000918; c=relaxed/simple;
+	bh=jHej8zqaKc+Uejz+i5jWTcVbJqPTbhnYMYaX7iklHUE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=E7VXWZfoHI1H3QUABLX4qNbfA2bsSrXOQxn7ZcO7bFqdoaRC7R5kUVVxcVdRJ7GFGl+6kZfdGj1SMYTQ5MtM8WjxxDl0sw57EtA9PTyIDtp4CTYzFjfex89AwkYCee3/Kj2SSxRU3obzQXkW9x3NAeGGOm67A6wyzs7AdCqa9zg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BKdRsS3X; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7F73A1F000E9;
-	Thu, 28 May 2026 20:14:11 +0000 (UTC)
+	 MIME-Version; b=Xotduxb2uaAsrSY7kDTeurwhDJYqEO401IF5RGrQ59bAmogn3jWyJ1I/oelx62EFOuG+7nh5UvsIT9Wzx/GJ71FEK44xg+fOrhQWzW0Fauay/sLIi7KzsCahozpcI3Qm0lDVN+W0x1yqHrqpdHuAXRJybLO03wUtZUs89OnqhPw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DdVqlPj1; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D49B71F000E9;
+	Thu, 28 May 2026 20:41:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779999252;
-	bh=vOerbDvCwqOYuMf7f9SZDakQS5pf8daQJPUtG9xHp3Y=;
+	s=korg; t=1780000917;
+	bh=r/JLzEhuhHQC+BwFzp0u/RJsGJS8J0Iz0J4tOEkd87E=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=BKdRsS3XcfMNou6Q8NLrfyDjmNEuA/zrnREX+YUk7nYMzr1u0WujxmyVDyBBNCCX6
-	 HcSbLmIcYofA5gxYnZ1LhOKcl8QMYH1GZo9QGNVCR6C9C1iiyk7i0eK1mk0dgGoFW2
-	 1Shs7Vaomo9S+GXW2320L/QLaPJPFDIrrLBcgEug=
+	b=DdVqlPj1EvOjoHto4RduHDSm4zZ+D0lckBUnL7r4649HUCwxrM308YKBfoOlZ8Quu
+	 K2/xMrOYUKYSc1+xQExF3xswbWVyIBgow8XGnGpnUIOkP5Yi6AABuwZWo/PgqZVfm+
+	 MHnlIoX6Yomf0p5J9wlkG1R/XoMT8wlM8fV0lOfs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Werner Sembach <wse@tuxedocomputers.com>,
-	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
-	Armin Wolf <W_Armin@gmx.de>,
+	Christoph Hellwig <hch@lst.de>,
+	"Martin K. Petersen" <martin.petersen@oracle.com>,
+	Keith Busch <kbusch@kernel.org>,
+	Jens Axboe <axboe@kernel.dk>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 7.0 461/461] platform/x86: uniwill-laptop: Do not enable the charging limit even when forced
+Subject: [PATCH 6.12 216/272] blk-integrity: enable p2p source and destination
 Date: Thu, 28 May 2026 21:49:50 +0200
-Message-ID: <20260528194700.884532996@linuxfoundation.org>
+Message-ID: <20260528194635.260326802@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260528194646.819809818@linuxfoundation.org>
-References: <20260528194646.819809818@linuxfoundation.org>
+In-Reply-To: <20260528194629.379955525@linuxfoundation.org>
+References: <20260528194629.379955525@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,105 +65,123 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-2.16 / 15.00];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,tuxedocomputers.com,linux.intel.com,gmx.de,kernel.org];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-255559-lists,stable=lfdr.de];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	RCVD_TLS_LAST(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-256158-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
+	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TO_DN_SOME(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_SEVEN(0.00)[8];
 	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_SEVEN(0.00)[7];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,linuxfoundation.org:mid,linuxfoundation.org:dkim,intel.com:email,tuxedocomputers.com:email,reddit.com:url,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,gmx.de:email]
-X-Rspamd-Queue-Id: EA61C5F8789
+	DBL_BLOCKED_OPENRESOLVER(0.00)[oracle.com:email,kernel.dk:email,lst.de:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo]
+X-Rspamd-Queue-Id: EBF645FA049
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-7.0-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Armin Wolf <W_Armin@gmx.de>
+From: Keith Busch <kbusch@kernel.org>
 
-[ Upstream commit 26cbe119f99c86dcb4a0136d2bc73c0c716d80e4 ]
+[ Upstream commit 05ceea5d3ec9a1b1d6858ffd4739fdb0ed1b8eaf ]
 
-It seems that on some older models (~2020) the battery charging limit
-can permanently damage the battery. Prevent users from enabling this
-feature thru the "force" module parameter to avoid causing permanent
-hardware damage on such devices.
+Set the extraction flags to allow p2p pages for the metadata buffer if
+the block device allows it. Similar to data payloads, ensure the bio
+does not use merging if we see a p2p page.
 
-Fixes: d050479693bb ("platform/x86: Add Uniwill laptop driver")
-Link: https://www.reddit.com/r/XMG_gg/comments/ld9yyf/battery_limit_hidden_function_discovered_on/
-Reviewed-by: Werner Sembach <wse@tuxedocomputers.com>
-Reviewed-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
-Signed-off-by: Armin Wolf <W_Armin@gmx.de>
-Link: https://patch.msgid.link/20260512232145.329260-5-W_Armin@gmx.de
-Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+Reviewed-by: Christoph Hellwig <hch@lst.de>
+Reviewed-by: Martin K. Petersen <martin.petersen@oracle.com>
+Signed-off-by: Keith Busch <kbusch@kernel.org>
+Signed-off-by: Jens Axboe <axboe@kernel.dk>
+Stable-dep-of: 8582792cf23b ("block: bio-integrity: Fix null-ptr-deref in bio_integrity_map_user()")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- Documentation/admin-guide/laptops/uniwill-laptop.rst | 10 ++++++++++
- drivers/platform/x86/uniwill/uniwill-acpi.c          |  4 ++--
- 2 files changed, 12 insertions(+), 2 deletions(-)
+ block/bio-integrity.c | 21 +++++++++++++++++----
+ 1 file changed, 17 insertions(+), 4 deletions(-)
 
-diff --git a/Documentation/admin-guide/laptops/uniwill-laptop.rst b/Documentation/admin-guide/laptops/uniwill-laptop.rst
-index 561334865feb7..1f3ca84c7d88b 100644
---- a/Documentation/admin-guide/laptops/uniwill-laptop.rst
-+++ b/Documentation/admin-guide/laptops/uniwill-laptop.rst
-@@ -43,6 +43,11 @@ Support for changing the platform performance mode is currently not implemented.
- Battery Charging Control
- ------------------------
+diff --git a/block/bio-integrity.c b/block/bio-integrity.c
+index a7788bbe35979..2a02222f4298c 100644
+--- a/block/bio-integrity.c
++++ b/block/bio-integrity.c
+@@ -268,7 +268,8 @@ static int bio_integrity_init_user(struct bio *bio, struct bio_vec *bvec,
+ }
  
-+.. warning:: Some devices do not properly implement the charging threshold interface. Forcing
-+             the driver to enable access to said interface on such devices might damage the
-+             battery [1]_. Because of this the driver will not enable said feature even when
-+             using the ``force`` module parameter.
+ static unsigned int bvec_from_pages(struct bio_vec *bvec, struct page **pages,
+-				    int nr_vecs, ssize_t bytes, ssize_t offset)
++				    int nr_vecs, ssize_t bytes, ssize_t offset,
++				    bool *is_p2p)
+ {
+ 	unsigned int nr_bvecs = 0;
+ 	int i, j;
+@@ -289,6 +290,9 @@ static unsigned int bvec_from_pages(struct bio_vec *bvec, struct page **pages,
+ 			bytes -= next;
+ 		}
+ 
++		if (is_pci_p2pdma_page(pages[i]))
++			*is_p2p = true;
 +
- The ``uniwill-laptop`` driver supports controlling the battery charge limit. This happens over
- the standard ``charge_control_end_threshold`` power supply sysfs attribute. All values
- between 1 and 100 percent are supported.
-@@ -70,3 +75,8 @@ The ``uniwill-laptop`` driver allows to set the configurable TGP for devices wit
- allow it.
+ 		bvec_set_page(&bvec[nr_bvecs], pages[i], size, offset);
+ 		offset = 0;
+ 		nr_bvecs++;
+@@ -302,10 +306,11 @@ int bio_integrity_map_user(struct bio *bio, struct iov_iter *iter)
+ 	struct request_queue *q = bdev_get_queue(bio->bi_bdev);
+ 	struct page *stack_pages[UIO_FASTIOV], **pages = stack_pages;
+ 	struct bio_vec stack_vec[UIO_FASTIOV], *bvec = stack_vec;
++	iov_iter_extraction_t extraction_flags = 0;
+ 	size_t offset, bytes = iter->count;
++	bool copy, is_p2p = false;
+ 	unsigned int nr_bvecs;
+ 	int ret, nr_vecs;
+-	bool copy;
  
- See Documentation/ABI/testing/sysfs-driver-uniwill-laptop for details.
+ 	if (bio_integrity(bio))
+ 		return -EINVAL;
+@@ -324,15 +329,23 @@ int bio_integrity_map_user(struct bio *bio, struct iov_iter *iter)
+ 
+ 	copy = iov_iter_alignment(iter) &
+ 			blk_lim_dma_alignment_and_pad(&q->limits);
+-	ret = iov_iter_extract_pages(iter, &pages, bytes, nr_vecs, 0, &offset);
 +
-+References
-+==========
++	if (blk_queue_pci_p2pdma(q))
++		extraction_flags |= ITER_ALLOW_P2PDMA;
 +
-+.. [1] https://www.reddit.com/r/XMG_gg/comments/ld9yyf/battery_limit_hidden_function_discovered_on/
-diff --git a/drivers/platform/x86/uniwill/uniwill-acpi.c b/drivers/platform/x86/uniwill/uniwill-acpi.c
-index 540604c297715..bcd25d08f56b0 100644
---- a/drivers/platform/x86/uniwill/uniwill-acpi.c
-+++ b/drivers/platform/x86/uniwill/uniwill-acpi.c
-@@ -2207,8 +2207,8 @@ static int __init uniwill_init(void)
- 	}
++	ret = iov_iter_extract_pages(iter, &pages, bytes, nr_vecs,
++					extraction_flags, &offset);
+ 	if (unlikely(ret < 0))
+ 		goto free_bvec;
  
- 	if (force) {
--		/* Assume that the device supports all features */
--		device_descriptor.features = UINT_MAX;
-+		/* Assume that the device supports all features except the charge limit */
-+		device_descriptor.features = UINT_MAX & ~UNIWILL_FEATURE_BATTERY;
- 		pr_warn("Enabling potentially unsupported features\n");
- 	}
+-	nr_bvecs = bvec_from_pages(bvec, pages, nr_vecs, bytes, offset);
++	nr_bvecs = bvec_from_pages(bvec, pages, nr_vecs, bytes, offset,
++				   &is_p2p);
+ 	if (pages != stack_pages)
+ 		kvfree(pages);
+ 	if (nr_bvecs > queue_max_integrity_segments(q))
+ 		copy = true;
++	if (is_p2p)
++		bio->bi_opf |= REQ_NOMERGE;
  
+ 	if (copy)
+ 		ret = bio_integrity_copy_user(bio, bvec, nr_bvecs, bytes);
 -- 
 2.53.0
 
