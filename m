@@ -1,63 +1,59 @@
-Return-Path: <stable+bounces-255982-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-255380-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id MFnTKp6nGGpolwgAu9opvQ
-	(envelope-from <stable+bounces-255982-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:37:50 +0200
+	id IFgiAbuhGGqblggAu9opvQ
+	(envelope-from <stable+bounces-255380-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:12:43 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5E8B65F9281
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:37:50 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 61FCF5F8118
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:12:42 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id D4365301D5AC
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 20:33:43 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 0D60C323C68C
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 20:05:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 18DA633439A;
-	Thu, 28 May 2026 20:33:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A86C3335566;
+	Thu, 28 May 2026 20:05:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="S9zR6L2x"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YtyBlbUC"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BFDF6313550;
-	Thu, 28 May 2026 20:33:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 73E7E2F260C;
+	Thu, 28 May 2026 20:05:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780000422; cv=none; b=nJftX7Nm9vpzx8TKAtCNs1tz4J1hRPlZEa00fxkWbSLI5y7pBx5HBIac4V59DP9G0KpK1vDXev8Xh2OKiJryIss7NJiHVvv0HCgTOvT4jSm1PEXtlcVrdh22xdstmvXHKYHMHlFjGf4cUAcyqfsHbG2408VZViF+MawOKFM17dE=
+	t=1779998747; cv=none; b=kyWWQWQUoyCMkVxP1HDavSh9GoBYKsbRr8GO8xX8AGHBv+yprEcBxlbsNUTuOLOsZtNWL62moPJeRQf2TWSHzVCDDj5VaBgv8L0LEFXxk1/E/EIJZ8JvNo9AuGA4/BQrMGEIbVr1F2Ydm+gdcShb7ZJgN54drpda8OEguQE7ZP4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780000422; c=relaxed/simple;
-	bh=LmdadW29mgFb2XF3Dnm3Iq41pTkvaqUxO5VgdcQLd60=;
+	s=arc-20240116; t=1779998747; c=relaxed/simple;
+	bh=6oSv66TpEE2Q9aGptwOOT/arO6ko+IpWE2BWuYrzKV8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=bpQN4RIB5y6Wv0im2XEeircNlBKWJ6x7jwQd5eOfiSjz5J+Gxu9C4NSckPRT11WhCn1XtJipvrcw7Mb03azlPYmuBY9pRqCBveze/W56nn4kfnl1dYFxbC0sYlAAaamoXm6kzATOFAUcxp+/EkCzoSvOreIgc0nlx0q/cj4YQEo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=S9zR6L2x; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 31DE21F000E9;
-	Thu, 28 May 2026 20:33:41 +0000 (UTC)
+	 MIME-Version; b=KkamhNa5/+Ndf+//kxSkPE7rldkR+wcD5+KuRyU+GF5pIsS+U1aLADv9tCGxHiaZRuwT1SAHRCRkRBHlgYCNO6voJGh+wznnevDLHUtb9nmXNtQkEegLzWnTR4maZb+QYBWzdLJuYVpYZzEWsN2VpmkvRi5zVuRhJSmapUyQZ00=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YtyBlbUC; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D131F1F000E9;
+	Thu, 28 May 2026 20:05:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780000421;
-	bh=uiJdDZ9kZK2ol57u5dqaZ9jZCTqLkjSGk13/xCt4aiU=;
+	s=korg; t=1779998746;
+	bh=K7v1kv5ZFf/gAKh794I/BmXQWrsw6CuBpGqYCoL2O8k=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=S9zR6L2xeccEEytjXtSPSaZphN2RGKO3zzcCv4CDnI/0zbY3NS+2ebOqgquNuxrn+
-	 +M3hVGQtb0TaH78z+oW9uQewd74zj/PN2Nu6+0AsFHbmiI756q/FlX0khgABtl7TI1
-	 qYgWppXqIThstrQvcsx4Gji/nJSCur0Ifa4KaGJs=
+	b=YtyBlbUC2IDayhvTGOSC5T7l8z0wGr4GH8VP16Lh5yt1xEbTuf/giJQMVrZwogIDG
+	 LpntOyT9SNF+pqjIXoQkOFvyOgY2EXZcl931mMidXxWvkaFXHm4UocJru2QF31qtha
+	 Rqp/59fPV9Dzmqf2Q2MG8K52CcIFm/29NpkoFgtk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Linux Kernel Functional Testing <lkft@linaro.org>,
-	Pu Lehui <pulehui@huawei.com>,
-	Alexandre Ghiti <alexghiti@rivosinc.com>,
-	=?UTF-8?q?Bj=C3=B6rn=20T=C3=B6pel?= <bjorn@rivosinc.com>,
-	"Masami Hiramatsu (Google)" <mhiramat@kernel.org>,
-	Gyokhan Kochmarla <gyokhan@amazon.de>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 038/272] riscv: fgraph: Fix stack layout to match __arch_ftrace_regs argument of ftrace_return_to_handler
-Date: Thu, 28 May 2026 21:46:52 +0200
-Message-ID: <20260528194630.451178441@linuxfoundation.org>
+Subject: [PATCH 7.0 284/461] net: shaper: reject handle IDs exceeding internal bit-width
+Date: Thu, 28 May 2026 21:46:53 +0200
+Message-ID: <20260528194655.415018028@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260528194629.379955525@linuxfoundation.org>
-References: <20260528194629.379955525@linuxfoundation.org>
+In-Reply-To: <20260528194646.819809818@linuxfoundation.org>
+References: <20260528194646.819809818@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -67,158 +63,155 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-2.16 / 15.00];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-255982-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	TO_DN_SOME(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	RCVD_TLS_LAST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-255380-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_SEVEN(0.00)[10];
+	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linaro.org:email,amazon.de:email,rivosinc.com:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,huawei.com:email]
-X-Rspamd-Queue-Id: 5E8B65F9281
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim,msgid.link:url]
+X-Rspamd-Queue-Id: 61FCF5F8118
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+7.0-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Pu Lehui <pulehui@huawei.com>
+From: Jakub Kicinski <kuba@kernel.org>
 
-commit 67a5ba8f742f247bc83e46dd2313c142b1383276 upstream.
+[ Upstream commit 8d5806c600fddb907ebe378f9c366d4b52ac3a39 ]
 
-Naresh Kamboju reported a "Bad frame pointer" kernel warning while
-running LTP trace ftrace_stress_test.sh in riscv. We can reproduce the
-same issue with the following command:
+net_shaper_parse_handle() reads the user-supplied handle ID via
+nla_get_u32(), accepting the full u32 range. However, the xarray key
+is built by net_shaper_handle_to_index() using
+FIELD_PREP(NET_SHAPER_ID_MASK, handle->id), where NET_SHAPER_ID_MASK
+is GENMASK(25, 0) - only 26 bits wide. FIELD_PREP silently masks off
+the upper bits at runtime. A user-supplied NODE id like 0x04000123
+becomes id 0x123.
 
-```
-$ cd /sys/kernel/debug/tracing
-$ echo 'f:myprobe do_nanosleep%return args1=$retval' > dynamic_events
-$ echo 1 > events/fprobes/enable
-$ echo 1 > tracing_on
-$ sleep 1
-```
+Additionally, a user-supplied id equal to NET_SHAPER_ID_UNSPEC
+(0x03FFFFFF, which is NET_SHAPER_ID_MASK itself) would collide with
+the sentinel used internally by the group operation to signal
+"allocate a new NODE id".
 
-And we can get the following kernel warning:
+Reject user-supplied IDs >= NET_SHAPER_ID_MASK (i.e., >= 0x03FFFFFF)
+in the policy.
 
-[  127.692888] ------------[ cut here ]------------
-[  127.693755] Bad frame pointer: expected ff2000000065be50, received ba34c141e9594000
-[  127.693755]   from func do_nanosleep return to ffffffff800ccb16
-[  127.698699] WARNING: CPU: 1 PID: 129 at kernel/trace/fgraph.c:755 ftrace_return_to_handler+0x1b2/0x1be
-[  127.699894] Modules linked in:
-[  127.700908] CPU: 1 UID: 0 PID: 129 Comm: sleep Not tainted 6.14.0-rc3-g0ab191c74642 #32
-[  127.701453] Hardware name: riscv-virtio,qemu (DT)
-[  127.701859] epc : ftrace_return_to_handler+0x1b2/0x1be
-[  127.702032]  ra : ftrace_return_to_handler+0x1b2/0x1be
-[  127.702151] epc : ffffffff8013b5e0 ra : ffffffff8013b5e0 sp : ff2000000065bd10
-[  127.702221]  gp : ffffffff819c12f8 tp : ff60000080853100 t0 : 6e00000000000000
-[  127.702284]  t1 : 0000000000000020 t2 : 6e7566206d6f7266 s0 : ff2000000065bd80
-[  127.702346]  s1 : ff60000081262000 a0 : 000000000000007b a1 : ffffffff81894f20
-[  127.702408]  a2 : 0000000000000010 a3 : fffffffffffffffe a4 : 0000000000000000
-[  127.702470]  a5 : 0000000000000000 a6 : 0000000000000008 a7 : 0000000000000038
-[  127.702530]  s2 : ba34c141e9594000 s3 : 0000000000000000 s4 : ff2000000065bdd0
-[  127.702591]  s5 : 00007fff8adcf400 s6 : 000055556dc1d8c0 s7 : 0000000000000068
-[  127.702651]  s8 : 00007fff8adf5d10 s9 : 000000000000006d s10: 0000000000000001
-[  127.702710]  s11: 00005555737377c8 t3 : ffffffff819d899e t4 : ffffffff819d899e
-[  127.702769]  t5 : ffffffff819d89a0 t6 : ff2000000065bb18
-[  127.702826] status: 0000000200000120 badaddr: 0000000000000000 cause: 0000000000000003
-[  127.703292] [<ffffffff8013b5e0>] ftrace_return_to_handler+0x1b2/0x1be
-[  127.703760] [<ffffffff80017bce>] return_to_handler+0x16/0x26
-[  127.704009] [<ffffffff80017bb8>] return_to_handler+0x0/0x26
-[  127.704057] [<ffffffff800d3352>] common_nsleep+0x42/0x54
-[  127.704117] [<ffffffff800d44a2>] __riscv_sys_clock_nanosleep+0xba/0x10a
-[  127.704176] [<ffffffff80901c56>] do_trap_ecall_u+0x188/0x218
-[  127.704295] [<ffffffff8090cc3e>] handle_exception+0x14a/0x156
-[  127.705436] ---[ end trace 0000000000000000 ]---
-
-The reason is that the stack layout for constructing argument for the
-ftrace_return_to_handler in the return_to_handler does not match the
-__arch_ftrace_regs structure of riscv, leading to unexpected results.
-
-Fixes: a3ed4157b7d8 ("fgraph: Replace fgraph_ret_regs with ftrace_regs")
-Reported-by: Linux Kernel Functional Testing <lkft@linaro.org>
-Closes: https://lore.kernel.org/all/CA+G9fYvp_oAxeDFj88Tk2rfEZ7jtYKAKSwfYS66=57Db9TBdyA@mail.gmail.com
-Signed-off-by: Pu Lehui <pulehui@huawei.com>
-Reviewed-by: Alexandre Ghiti <alexghiti@rivosinc.com>
-Tested-by: Björn Töpel <bjorn@rivosinc.com>
-Reviewed-by: Masami Hiramatsu (Google) <mhiramat@kernel.org>
-Link: https://lore.kernel.org/r/20250317031214.4138436-2-pulehui@huaweicloud.com
-Signed-off-by: Alexandre Ghiti <alexghiti@rivosinc.com>
-Signed-off-by: Gyokhan Kochmarla <gyokhan@amazon.de>
+Fixes: 4b623f9f0f59 ("net-shapers: implement NL get operation")
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Link: https://patch.msgid.link/20260510192904.3987113-9-kuba@kernel.org
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/riscv/kernel/mcount.S | 24 +++++++++++-------------
- 1 file changed, 11 insertions(+), 13 deletions(-)
+ Documentation/netlink/specs/net_shaper.yaml | 7 +++++++
+ net/shaper/shaper.c                         | 4 +++-
+ net/shaper/shaper_nl_gen.c                  | 7 ++++++-
+ net/shaper/shaper_nl_gen.h                  | 2 ++
+ 4 files changed, 18 insertions(+), 2 deletions(-)
 
-diff --git a/arch/riscv/kernel/mcount.S b/arch/riscv/kernel/mcount.S
-index 068168046e0ef..da4a4000e57ea 100644
---- a/arch/riscv/kernel/mcount.S
-+++ b/arch/riscv/kernel/mcount.S
-@@ -12,8 +12,6 @@
- #include <asm/asm-offsets.h>
- #include <asm/ftrace.h>
+diff --git a/Documentation/netlink/specs/net_shaper.yaml b/Documentation/netlink/specs/net_shaper.yaml
+index 3f2ad772b64b1..de01f922040a5 100644
+--- a/Documentation/netlink/specs/net_shaper.yaml
++++ b/Documentation/netlink/specs/net_shaper.yaml
+@@ -33,6 +33,11 @@ doc: |
+   @cap-get operation.
  
--#define ABI_SIZE_ON_STACK	80
--
- 	.text
+ definitions:
++  -
++    type: const
++    name: max-handle-id
++    value: 0x3fffffe
++    scope: kernel
+   -
+     type: enum
+     name: scope
+@@ -140,6 +145,8 @@ attribute-sets:
+       -
+         name: id
+         type: u32
++        checks:
++          max: max-handle-id
+         doc: |
+           Numeric identifier of a shaper. The id semantic depends on
+           the scope. For @queue scope it's the queue id and for @node
+diff --git a/net/shaper/shaper.c b/net/shaper/shaper.c
+index 08fde2d9e8aa8..eb049847fed65 100644
+--- a/net/shaper/shaper.c
++++ b/net/shaper/shaper.c
+@@ -21,6 +21,8 @@
  
- 	.macro SAVE_ABI_STATE
-@@ -28,12 +26,12 @@
- 	 * register if a0 was not saved.
- 	 */
- 	.macro SAVE_RET_ABI_STATE
--	addi	sp, sp, -ABI_SIZE_ON_STACK
--	REG_S	ra, 1*SZREG(sp)
--	REG_S	s0, 8*SZREG(sp)
--	REG_S	a0, 10*SZREG(sp)
--	REG_S	a1, 11*SZREG(sp)
--	addi	s0, sp, ABI_SIZE_ON_STACK
-+	addi	sp, sp, -FREGS_SIZE_ON_STACK
-+	REG_S	ra, FREGS_RA(sp)
-+	REG_S	s0, FREGS_S0(sp)
-+	REG_S	a0, FREGS_A0(sp)
-+	REG_S	a1, FREGS_A1(sp)
-+	addi	s0, sp, FREGS_SIZE_ON_STACK
- 	.endm
+ #define NET_SHAPER_ID_UNSPEC NET_SHAPER_ID_MASK
  
- 	.macro RESTORE_ABI_STATE
-@@ -43,11 +41,11 @@
- 	.endm
++static_assert(NET_SHAPER_ID_UNSPEC == NET_SHAPER_MAX_HANDLE_ID + 1);
++
+ struct net_shaper_hierarchy {
+ 	struct xarray shapers;
+ };
+@@ -360,7 +362,7 @@ static int net_shaper_pre_insert(struct net_shaper_binding *binding,
+ 	    handle->id == NET_SHAPER_ID_UNSPEC) {
+ 		u32 min, max;
  
- 	.macro RESTORE_RET_ABI_STATE
--	REG_L	ra, 1*SZREG(sp)
--	REG_L	s0, 8*SZREG(sp)
--	REG_L	a0, 10*SZREG(sp)
--	REG_L	a1, 11*SZREG(sp)
--	addi	sp, sp, ABI_SIZE_ON_STACK
-+	REG_L	ra, FREGS_RA(sp)
-+	REG_L	s0, FREGS_S0(sp)
-+	REG_L	a0, FREGS_A0(sp)
-+	REG_L	a1, FREGS_A1(sp)
-+	addi	sp, sp, FREGS_SIZE_ON_STACK
- 	.endm
+-		handle->id = NET_SHAPER_ID_MASK - 1;
++		handle->id = NET_SHAPER_MAX_HANDLE_ID;
+ 		max = net_shaper_handle_to_index(handle);
+ 		handle->id = 0;
+ 		min = net_shaper_handle_to_index(handle);
+diff --git a/net/shaper/shaper_nl_gen.c b/net/shaper/shaper_nl_gen.c
+index 9b29be3ef19a8..76eff85ec66df 100644
+--- a/net/shaper/shaper_nl_gen.c
++++ b/net/shaper/shaper_nl_gen.c
+@@ -11,10 +11,15 @@
  
- SYM_TYPED_FUNC_START(ftrace_stub)
+ #include <uapi/linux/net_shaper.h>
+ 
++/* Integer value ranges */
++static const struct netlink_range_validation net_shaper_a_handle_id_range = {
++	.max	= NET_SHAPER_MAX_HANDLE_ID,
++};
++
+ /* Common nested types */
+ const struct nla_policy net_shaper_handle_nl_policy[NET_SHAPER_A_HANDLE_ID + 1] = {
+ 	[NET_SHAPER_A_HANDLE_SCOPE] = NLA_POLICY_MAX(NLA_U32, 3),
+-	[NET_SHAPER_A_HANDLE_ID] = { .type = NLA_U32, },
++	[NET_SHAPER_A_HANDLE_ID] = NLA_POLICY_FULL_RANGE(NLA_U32, &net_shaper_a_handle_id_range),
+ };
+ 
+ const struct nla_policy net_shaper_leaf_info_nl_policy[NET_SHAPER_A_WEIGHT + 1] = {
+diff --git a/net/shaper/shaper_nl_gen.h b/net/shaper/shaper_nl_gen.h
+index 42c46c52c7751..2406652a9014a 100644
+--- a/net/shaper/shaper_nl_gen.h
++++ b/net/shaper/shaper_nl_gen.h
+@@ -12,6 +12,8 @@
+ 
+ #include <uapi/linux/net_shaper.h>
+ 
++#define NET_SHAPER_MAX_HANDLE_ID	67108862
++
+ /* Common nested types */
+ extern const struct nla_policy net_shaper_handle_nl_policy[NET_SHAPER_A_HANDLE_ID + 1];
+ extern const struct nla_policy net_shaper_leaf_info_nl_policy[NET_SHAPER_A_WEIGHT + 1];
 -- 
 2.53.0
 
