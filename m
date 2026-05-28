@@ -1,59 +1,58 @@
-Return-Path: <stable+bounces-255424-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-255782-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id WBoHLJ2gGGpAlggAu9opvQ
-	(envelope-from <stable+bounces-255424-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:07:57 +0200
+	id ICoFFTOlGGoQlwgAu9opvQ
+	(envelope-from <stable+bounces-255782-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:27:31 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id CC87D5F7E24
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:07:56 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id F2E9B5F8B77
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:27:30 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 5F574301CED7
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 20:07:52 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 6908030512CF
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 20:24:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 774A2335566;
-	Thu, 28 May 2026 20:07:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3105D331221;
+	Thu, 28 May 2026 20:24:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="n+YlmLAK"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0y6ShgHH"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 282812F260C;
-	Thu, 28 May 2026 20:07:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E54E0301472;
+	Thu, 28 May 2026 20:24:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779998871; cv=none; b=p1w98rKPIxKZAJdPzrCU1AWudYUmU4Euj93DBKVj0G61z5dimZxnRTBnT+0s+e0eUJ2PaWtcu8zaOLw9YT9k4ABdlJ7A16qcaM9IZaZo0XMDKmahI5ZEMcN+uxvanLLCK+qxKkbhcoBH4PJj4TC4ULtpNrXTDC3/TVXk50W3+3M=
+	t=1779999868; cv=none; b=YeZOhWO8hpO9KnjgI0FMb5MntDytlS4OqvAav6Y0XyG0Mr0OLd9oTwAvyxr9pA6xAqGBFNMeHYGjcA/+Nci6sgvbp1nm82+sB4MCOcvOFNrUkyFmB+QLw2CtjXDm9lIKm7bABd8JFyE7PgNz6Q1EyjLgqKMiOoPfGl26diVTTQA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779998871; c=relaxed/simple;
-	bh=sWu0gP55uNrUSylBn2ohzMgrTYihCUMn02VXcNz03xg=;
+	s=arc-20240116; t=1779999868; c=relaxed/simple;
+	bh=G5AVtHPMJZbWltYybFH+05eQhfPwLF49nOaBPcizVCo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=sf225V+i2vQ7qVidjP81CN0dB9CWSKthbZ7Mun1+H5kMKqvkl84F6JEPZXu/X9p+LRME5n33tpXY9aP5SR7XqGZ1CHQ91HY+crvrgBNU6LZtwu4cGff6KEvpyIvb6zoHHB19+QptvrxtsIOsW7LMUAkGV3zMpxTlBnwNZX+aug4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=n+YlmLAK; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 859791F000E9;
-	Thu, 28 May 2026 20:07:49 +0000 (UTC)
+	 MIME-Version; b=WWUnSxxK1He+6UesmtEr1vCQ3FQHA8j4e+hqXW2ZJwXVZqh7/j7FK52wz3GJakHTfSpHhvWIPGNVocxzOtwn0UqFtE3vSXbpSRvtOxRTyrhQ6SdKtRx/i8oBbux8eGLUNVJL0Mj5+msh2R0ChC4BwBeaNt/x09qD+kfUP9MDDsk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0y6ShgHH; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4F2A11F00A3C;
+	Thu, 28 May 2026 20:24:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779998870;
-	bh=9pyQtCheqhnXREmSETEqMK51BfBv+zQ5ye5wYzQy2sc=;
+	s=korg; t=1779999866;
+	bh=ZnMNWOx+c4sWsbKjVkmWL/G1N961kvFZziK3VcF9c04=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=n+YlmLAKoTbh3oRsDmq7+r7Kj/oZAEGR2ChCYud6Rjoe27r4l7uOKJIL0Xgm62EH/
-	 XpGpWCar5qnp2AK7BMlMUSuC3c94vZO24rEVRZKeH2D8/9pnB44+tcNiJr2O3UI7k2
-	 MIue5grwrjeKAlR6bT5AE/X2vMbrhxdd4c/eIdpE=
+	b=0y6ShgHHuZeXi/iiHxhkqXv+Cnrcb4r/gwDFDj2et7+ZEE6ng1U5Ur+EA4BaNWm2z
+	 RmT6nXCRqDyybh1Ig8Lo5fvKU3cJ2NfD927ai9RB3cUJQpgWB500X0ZFFmV3CtV6PR
+	 Yh8vrXToGIWRXzNCrWIcCq5c3OMqolHgey2bVDWk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ralf Lici <ralf@mandelbit.com>,
-	Antonio Quartulli <antonio@openvpn.net>,
+	"Masami Hiramatsu (Google)" <mhiramat@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 7.0 328/461] ovpn: disable BHs when updating device stats
+Subject: [PATCH 6.18 219/377] fprobe: Fix unregister_fprobe() to wait for RCU grace period
 Date: Thu, 28 May 2026 21:47:37 +0200
-Message-ID: <20260528194656.843054835@linuxfoundation.org>
+Message-ID: <20260528194644.735541777@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260528194646.819809818@linuxfoundation.org>
-References: <20260528194646.819809818@linuxfoundation.org>
+In-Reply-To: <20260528194638.371537336@linuxfoundation.org>
+References: <20260528194638.371537336@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -68,7 +67,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
@@ -78,7 +77,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-255424-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-255782-lists,stable=lfdr.de];
 	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
@@ -87,193 +86,134 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	NEURAL_HAM(-0.00)[-1.000];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
+	RCPT_COUNT_FIVE(0.00)[5];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,openvpn.net:email]
-X-Rspamd-Queue-Id: CC87D5F7E24
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim]
+X-Rspamd-Queue-Id: F2E9B5F8B77
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-7.0-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ralf Lici <ralf@mandelbit.com>
+From: Masami Hiramatsu (Google) <mhiramat@kernel.org>
 
-[ Upstream commit 0c0dddc07d272a8d25922e48041e8e4d2434df7e ]
+[ Upstream commit 657b594b2084b39a4bc6d8493aa2140cb00cea49 ]
 
-ovpn updates dev->dstats from both process and softirq contexts. In
-particular, TCP paths may run from socket callbacks, workqueues or
-strparser work, while UDP receive and ovpn's ndo_start_xmit path may
-update the same per-device dstats from BH context.
+Commit 4346ba1604093 ("fprobe: Rewrite fprobe on function-graph tracer")
+changed fprobe to register struct fprobe to an rcu-hlist, but it forgot
+to wait for RCU GP. Thus there can be use-after-free if the fprobe is
+released right after unregistering. This can be happened on fprobe
+event and sample module code.
 
-Add ovpn device drop-stat helpers that disable BHs around
-dev_dstats_rx_dropped() and dev_dstats_tx_dropped(), and use them for
-drop accounting.
+To fix this issue, add synchronize_rcu() in unregister_fprobe().
 
-The successful RX dev_dstats_rx_add() update is already covered by the
-BH-disabled section around gro_cells_receive(). For the successful TCP
-TX dev_dstats_tx_add() update, replace the existing preempt-disabled
-section with a BH-disabled one.
+Note that BPF is OK because fprobe is used as a part of
+bpf_kprobe_multi_link. This unregisters its fprobe in
+bpf_kprobe_multi_link_release() and it is deallocated via
+bpf_kprobe_multi_link_dealloc(), which is invoked from
+bpf_link_defer_dealloc_rcu_gp() RCU callback.
 
-Fixes: 11851cbd60ea ("ovpn: implement TCP transport")
-Signed-off-by: Ralf Lici <ralf@mandelbit.com>
-Signed-off-by: Antonio Quartulli <antonio@openvpn.net>
+For BPF, this also introduced unregister_fprobe_async() which does
+NOT wait for RCU grace priod.
+
+Link: https://lore.kernel.org/all/177813998919.256460.2809243930741138224.stgit@mhiramat.tok.corp.google.com/
+
+Fixes: 4346ba1604093 ("fprobe: Rewrite fprobe on function-graph tracer")
+Signed-off-by: Masami Hiramatsu (Google) <mhiramat@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ovpn/io.c    | 12 ++++++------
- drivers/net/ovpn/stats.h | 16 ++++++++++++++++
- drivers/net/ovpn/tcp.c   | 10 +++++-----
- drivers/net/ovpn/udp.c   |  2 +-
- 4 files changed, 28 insertions(+), 12 deletions(-)
+ include/linux/fprobe.h   |  5 +++++
+ kernel/trace/bpf_trace.c |  3 ++-
+ kernel/trace/fprobe.c    | 23 +++++++++++++++++++++--
+ 3 files changed, 28 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/net/ovpn/io.c b/drivers/net/ovpn/io.c
-index 955c9a37e1f8d..c03e58e28a860 100644
---- a/drivers/net/ovpn/io.c
-+++ b/drivers/net/ovpn/io.c
-@@ -196,7 +196,7 @@ void ovpn_decrypt_post(void *data, int ret)
- 	skb = NULL;
- drop:
- 	if (unlikely(skb))
--		dev_dstats_rx_dropped(peer->ovpn->dev);
-+		ovpn_dev_dstats_rx_dropped(peer->ovpn->dev);
- 	kfree_skb(skb);
- drop_nocount:
- 	if (likely(peer))
-@@ -220,7 +220,7 @@ void ovpn_recv(struct ovpn_peer *peer, struct sk_buff *skb)
- 		net_info_ratelimited("%s: no available key for peer %u, key-id: %u\n",
- 				     netdev_name(peer->ovpn->dev), peer->id,
- 				     key_id);
--		dev_dstats_rx_dropped(peer->ovpn->dev);
-+		ovpn_dev_dstats_rx_dropped(peer->ovpn->dev);
- 		kfree_skb(skb);
- 		ovpn_peer_put(peer);
- 		return;
-@@ -298,7 +298,7 @@ void ovpn_encrypt_post(void *data, int ret)
- 	rcu_read_unlock();
- err:
- 	if (unlikely(skb))
--		dev_dstats_tx_dropped(peer->ovpn->dev);
-+		ovpn_dev_dstats_tx_dropped(peer->ovpn->dev);
- 	if (likely(peer))
- 		ovpn_peer_put(peer);
- 	if (likely(ks))
-@@ -340,7 +340,7 @@ static void ovpn_send(struct ovpn_priv *ovpn, struct sk_buff *skb,
- 	 */
- 	skb_list_walk_safe(skb, curr, next) {
- 		if (unlikely(!ovpn_encrypt_one(peer, curr))) {
--			dev_dstats_tx_dropped(ovpn->dev);
-+			ovpn_dev_dstats_tx_dropped(ovpn->dev);
- 			kfree_skb(curr);
- 		}
- 	}
-@@ -411,7 +411,7 @@ netdev_tx_t ovpn_net_xmit(struct sk_buff *skb, struct net_device *dev)
- 		if (unlikely(!curr)) {
- 			net_err_ratelimited("%s: skb_share_check failed for payload packet\n",
- 					    netdev_name(dev));
--			dev_dstats_tx_dropped(ovpn->dev);
-+			ovpn_dev_dstats_tx_dropped(ovpn->dev);
- 			continue;
- 		}
+diff --git a/include/linux/fprobe.h b/include/linux/fprobe.h
+index 0a3bcd1718f37..be1b38c981d4d 100644
+--- a/include/linux/fprobe.h
++++ b/include/linux/fprobe.h
+@@ -94,6 +94,7 @@ int register_fprobe(struct fprobe *fp, const char *filter, const char *notfilter
+ int register_fprobe_ips(struct fprobe *fp, unsigned long *addrs, int num);
+ int register_fprobe_syms(struct fprobe *fp, const char **syms, int num);
+ int unregister_fprobe(struct fprobe *fp);
++int unregister_fprobe_async(struct fprobe *fp);
+ bool fprobe_is_registered(struct fprobe *fp);
+ int fprobe_count_ips_from_filter(const char *filter, const char *notfilter);
+ #else
+@@ -113,6 +114,10 @@ static inline int unregister_fprobe(struct fprobe *fp)
+ {
+ 	return -EOPNOTSUPP;
+ }
++static inline int unregister_fprobe_async(struct fprobe *fp)
++{
++	return -EOPNOTSUPP;
++}
+ static inline bool fprobe_is_registered(struct fprobe *fp)
+ {
+ 	return false;
+diff --git a/kernel/trace/bpf_trace.c b/kernel/trace/bpf_trace.c
+index 70f1292b7ddbd..88f470b31375a 100644
+--- a/kernel/trace/bpf_trace.c
++++ b/kernel/trace/bpf_trace.c
+@@ -2371,7 +2371,8 @@ static void bpf_kprobe_multi_link_release(struct bpf_link *link)
+ 	struct bpf_kprobe_multi_link *kmulti_link;
  
-@@ -437,7 +437,7 @@ netdev_tx_t ovpn_net_xmit(struct sk_buff *skb, struct net_device *dev)
- drop:
- 	ovpn_peer_put(peer);
- drop_no_peer:
--	dev_dstats_tx_dropped(ovpn->dev);
-+	ovpn_dev_dstats_tx_dropped(ovpn->dev);
- 	skb_tx_error(skb);
- 	kfree_skb_list(skb);
- 	return NETDEV_TX_OK;
-diff --git a/drivers/net/ovpn/stats.h b/drivers/net/ovpn/stats.h
-index 53433d8b6c331..3a45b97c00568 100644
---- a/drivers/net/ovpn/stats.h
-+++ b/drivers/net/ovpn/stats.h
-@@ -11,6 +11,8 @@
- #ifndef _NET_OVPN_OVPNSTATS_H_
- #define _NET_OVPN_OVPNSTATS_H_
- 
-+#include <linux/netdevice.h>
-+
- /* one stat */
- struct ovpn_peer_stat {
- 	atomic64_t bytes;
-@@ -44,4 +46,18 @@ static inline void ovpn_peer_stats_increment_tx(struct ovpn_peer_stats *stats,
- 	ovpn_peer_stats_increment(&stats->tx, n);
+ 	kmulti_link = container_of(link, struct bpf_kprobe_multi_link, link);
+-	unregister_fprobe(&kmulti_link->fp);
++	/* Don't wait for RCU GP here. */
++	unregister_fprobe_async(&kmulti_link->fp);
+ 	kprobe_multi_put_modules(kmulti_link->mods, kmulti_link->mods_cnt);
  }
  
-+static inline void ovpn_dev_dstats_tx_dropped(struct net_device *dev)
-+{
-+	local_bh_disable();
-+	dev_dstats_tx_dropped(dev);
-+	local_bh_enable();
-+}
-+
-+static inline void ovpn_dev_dstats_rx_dropped(struct net_device *dev)
-+{
-+	local_bh_disable();
-+	dev_dstats_rx_dropped(dev);
-+	local_bh_enable();
-+}
-+
- #endif /* _NET_OVPN_OVPNSTATS_H_ */
-diff --git a/drivers/net/ovpn/tcp.c b/drivers/net/ovpn/tcp.c
-index 5f345ae7d59d2..505c2f214c9f1 100644
---- a/drivers/net/ovpn/tcp.c
-+++ b/drivers/net/ovpn/tcp.c
-@@ -152,7 +152,7 @@ static void ovpn_tcp_rcv(struct strparser *strp, struct sk_buff *skb)
- 	if (WARN_ON(!ovpn_peer_hold(peer)))
- 		goto err_nopeer;
- 	schedule_work(&peer->tcp.defer_del_work);
--	dev_dstats_rx_dropped(peer->ovpn->dev);
-+	ovpn_dev_dstats_rx_dropped(peer->ovpn->dev);
- err_nopeer:
- 	kfree_skb(skb);
+diff --git a/kernel/trace/fprobe.c b/kernel/trace/fprobe.c
+index 6419c8d772731..b9346f4efa6dc 100644
+--- a/kernel/trace/fprobe.c
++++ b/kernel/trace/fprobe.c
+@@ -1000,14 +1000,15 @@ static int unregister_fprobe_nolock(struct fprobe *fp)
  }
-@@ -298,9 +298,9 @@ static void ovpn_tcp_send_sock(struct ovpn_peer *peer, struct sock *sk)
- 	} while (peer->tcp.out_msg.len > 0);
  
- 	if (!peer->tcp.out_msg.len) {
--		preempt_disable();
-+		local_bh_disable();
- 		dev_dstats_tx_add(peer->ovpn->dev, skb->len);
--		preempt_enable();
-+		local_bh_enable();
- 	}
+ /**
+- * unregister_fprobe() - Unregister fprobe.
++ * unregister_fprobe_async() - Unregister fprobe without RCU GP wait
+  * @fp: A fprobe data structure to be unregistered.
+  *
+  * Unregister fprobe (and remove ftrace hooks from the function entries).
++ * This function will NOT wait until the fprobe is no longer used.
+  *
+  * Return 0 if @fp is unregistered successfully, -errno if not.
+  */
+-int unregister_fprobe(struct fprobe *fp)
++int unregister_fprobe_async(struct fprobe *fp)
+ {
+ 	guard(mutex)(&fprobe_mutex);
+ 	if (!fp || !fprobe_registered(fp))
+@@ -1015,6 +1016,24 @@ int unregister_fprobe(struct fprobe *fp)
  
- 	kfree_skb(peer->tcp.out_msg.skb);
-@@ -331,7 +331,7 @@ static void ovpn_tcp_send_sock_skb(struct ovpn_peer *peer, struct sock *sk,
- 		ovpn_tcp_send_sock(peer, sk);
+ 	return unregister_fprobe_nolock(fp);
+ }
++
++/**
++ * unregister_fprobe() - Unregister fprobe with RCU GP wait
++ * @fp: A fprobe data structure to be unregistered.
++ *
++ * Unregister fprobe (and remove ftrace hooks from the function entries).
++ * This function will block until the fprobe is no longer used.
++ *
++ * Return 0 if @fp is unregistered successfully, -errno if not.
++ */
++int unregister_fprobe(struct fprobe *fp)
++{
++	int ret = unregister_fprobe_async(fp);
++
++	if (!ret)
++		synchronize_rcu();
++	return ret;
++}
+ EXPORT_SYMBOL_GPL(unregister_fprobe);
  
- 	if (peer->tcp.out_msg.skb) {
--		dev_dstats_tx_dropped(peer->ovpn->dev);
-+		ovpn_dev_dstats_tx_dropped(peer->ovpn->dev);
- 		kfree_skb(skb);
- 		return;
- 	}
-@@ -353,7 +353,7 @@ void ovpn_tcp_send_skb(struct ovpn_peer *peer, struct sock *sk,
- 	if (sock_owned_by_user(sk)) {
- 		if (skb_queue_len(&peer->tcp.out_queue) >=
- 		    READ_ONCE(net_hotdata.max_backlog)) {
--			dev_dstats_tx_dropped(peer->ovpn->dev);
-+			ovpn_dev_dstats_tx_dropped(peer->ovpn->dev);
- 			kfree_skb(skb);
- 			goto unlock;
- 		}
-diff --git a/drivers/net/ovpn/udp.c b/drivers/net/ovpn/udp.c
-index 272b535ecaad4..367563d84472f 100644
---- a/drivers/net/ovpn/udp.c
-+++ b/drivers/net/ovpn/udp.c
-@@ -126,7 +126,7 @@ static int ovpn_udp_encap_recv(struct sock *sk, struct sk_buff *skb)
- 	return 0;
- 
- drop:
--	dev_dstats_rx_dropped(ovpn->dev);
-+	ovpn_dev_dstats_rx_dropped(ovpn->dev);
- drop_noovpn:
- 	kfree_skb(skb);
- 	return 0;
+ static int __init fprobe_initcall(void)
 -- 
 2.53.0
 
