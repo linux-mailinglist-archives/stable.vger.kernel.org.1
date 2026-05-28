@@ -1,61 +1,58 @@
-Return-Path: <stable+bounces-255479-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-256078-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id EFOTCQujGGrJlggAu9opvQ
-	(envelope-from <stable+bounces-255479-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:18:19 +0200
+	id uFriKKGpGGpolwgAu9opvQ
+	(envelope-from <stable+bounces-256078-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:46:25 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id B43075F8582
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:18:18 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3BFC05F9836
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:46:25 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 855E3304893E
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 20:10:28 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id B0522312672E
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 20:38:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E112F352019;
-	Thu, 28 May 2026 20:10:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8680432AAD6;
+	Thu, 28 May 2026 20:38:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kkg3CM4F"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mXdw7S+K"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B8F12335566;
-	Thu, 28 May 2026 20:10:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 50FE5313539;
+	Thu, 28 May 2026 20:38:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779999027; cv=none; b=aqkUcIW6QlU00/U/Smaw34/itax6gToeDkeTzhQVx/yBmSnwhx52WKh4MfT2zGySUJROWoLD4te1achrtT8sayD6QNCyglHiubwmhjdN6iz7v/Ks8u/ZyAWcbRjXpAx2jely+T9pl0jbc3I8NPyUFhbZJONTsuGG/I3clZKrKrU=
+	t=1780000693; cv=none; b=GnakISxHZFsrob9KJU9LWRPzVPvjboVjADk8FVO8wNH+YkpgF1keWxxysG6fa3L0iuj7+U53dIdKmr0iVYeR3JOllwgEVcIjnZtoXVTyB63e1IUdL6WOnqlyqMph7sOcxUqJPhgFrudJHrHDaj3ymxoXscvjSavl2/ANndd+8QQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779999027; c=relaxed/simple;
-	bh=GJaO0TUPivO1uNfre57z1y83zy8Gk6UrdTwSPC0bDEU=;
+	s=arc-20240116; t=1780000693; c=relaxed/simple;
+	bh=scfcexchi6+j6KCkj/EN6t3Hul4YRGgFRorQZeqP/80=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=h/RRK20VIKHCO5Gb1YL7jQdGLZLQnDRrmTwKllUn940zXD8Ca0tAyfJpQH/0EnmAkoiaq6mRwVS2ImNXlUPsX0tjhPgHnjMPdymQdhTJhl8OAA5qfAtiVrtzj67ccobienUd+2jyVjPUm8LJXBpcVjpovUuGidsTOCq0cni+32s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kkg3CM4F; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DF12B1F000E9;
-	Thu, 28 May 2026 20:10:25 +0000 (UTC)
+	 MIME-Version; b=vFWWgmYc82rhO8KrxoKIXQKa7oq4xC8QE02GEshmDTEZV90B0IS8bpH7lkxg70WHDlQBhdxFrXM9lhdI20wIz3XIcInhOZEmYh/4xBQPKL3qKUe9+WQBFWKwNRcjbURQO8iE0UUtDsiRRaH9BP7gywQEhK+QKudja7Irv1kDEhk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mXdw7S+K; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id ADE3C1F000E9;
+	Thu, 28 May 2026 20:38:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779999026;
-	bh=wxgjqmSK4EGbqrQrsq/MzboJs0TXDr6TtDg/euMooBM=;
+	s=korg; t=1780000692;
+	bh=5sUWfFnrrkB7e11vG26Bd0qpVdSh9EA8YmFycVJxTpg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=kkg3CM4FWQTW2aydg+U+uh9lpO+fjvFgPTiZ4Ab/2aD2G+96PlCqXc0PvS1YBU+VQ
-	 TZQBgk6T6NCzyvzeKW3SB2pB9IaWKXIvIeixvKWSPSLsjlObFEvMocECUaVBP0Jzf8
-	 wvw33LoERxwF8dKYz+OyCAAa2xhNVko2QHQ45NfU=
+	b=mXdw7S+KFSYkTt5hLTjXBq3IP/NEIl6U3itvQ/pG+AHAoXMwh02tutkEDzB0cohXL
+	 W1dWMVUKOQqPs8zyrcgucIwp/E0/gD+0BfhRa/tsOL+HACDKs3iYiLYNTWIn9G34WC
+	 gk7YxZDOceGIj8cg4KyPG9jx17uqYsYPDPoUtlrU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mitul Golani <mitulkumar.ajitkumar.golani@intel.com>,
-	Ankit Nautiyal <ankit.k.nautiyal@intel.com>,
-	=?UTF-8?q?Ville=20Syrj=C3=A4l=C3=A4?= <ville.syrjala@linux.intel.com>,
-	Tvrtko Ursulin <tursulin@ursulin.net>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 7.0 381/461] drm/i915/dp: Fix readback for target_rr in Adaptive Sync SDP
+	Abdurrahman Hussain <abdurrahman@nexthop.ai>,
+	Guenter Roeck <linux@roeck-us.net>
+Subject: [PATCH 6.12 136/272] hwmon: (pmbus/adm1266) bounce blackbox records through a protocol-sized buffer
 Date: Thu, 28 May 2026 21:48:30 +0200
-Message-ID: <20260528194658.483273169@linuxfoundation.org>
+Message-ID: <20260528194633.184620394@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260528194646.819809818@linuxfoundation.org>
-References: <20260528194646.819809818@linuxfoundation.org>
+In-Reply-To: <20260528194629.379955525@linuxfoundation.org>
+References: <20260528194629.379955525@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,80 +62,106 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-2.16 / 15.00];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-255479-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	TO_DN_SOME(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	RCVD_TLS_LAST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-256078-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_SEVEN(0.00)[8];
+	RCPT_COUNT_FIVE(0.00)[5];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,intel.com:email,msgid.link:url,ursulin.net:email,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
-X-Rspamd-Queue-Id: B43075F8582
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[nexthop.ai:email,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,roeck-us.net:email]
+X-Rspamd-Queue-Id: 3BFC05F9836
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-7.0-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ankit Nautiyal <ankit.k.nautiyal@intel.com>
+From: Abdurrahman Hussain <abdurrahman@nexthop.ai>
 
-[ Upstream commit f87abd0c6604fb6cc31cc86fc7ccc6a576924352 ]
+commit 43cae21424ff8e33894a0f86c6b80b840c049fd7 upstream.
 
-Correct the bit-shift logic to properly readback the 10 bit target_rr from
-DB3 and DB4.
+adm1266_pmbus_block_xfer() copies the device-supplied block payload
+into the caller-provided buffer using the device-supplied length:
 
-v2: Align the style with readback for vtotal. (Ville)
+	memcpy(data_r, &msgs[1].buf[1], msgs[1].buf[0]);
 
-Fixes: 12ea89291603 ("drm/i915/dp: Add Read/Write support for Adaptive Sync SDP")
-Cc: Mitul Golani <mitulkumar.ajitkumar.golani@intel.com>
-Cc: Ankit Nautiyal <ankit.k.nautiyal@intel.com>
-Signed-off-by: Ankit Nautiyal <ankit.k.nautiyal@intel.com>
-Reviewed-by: Ville Syrjälä <ville.syrjala@linux.intel.com>
-Link: https://patch.msgid.link/20260511123218.1589830-2-ankit.k.nautiyal@intel.com
-(cherry picked from commit f7abc4af2b19240a145a221461dfe756cc01d74a)
-Signed-off-by: Tvrtko Ursulin <tursulin@ursulin.net>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+The helper does not know how large data_r is and trusts the device to
+return at most one record's worth of bytes.  adm1266_nvmem_read_blackbox()
+violates that contract: it advances read_buff inside data->dev_mem in
+ADM1266_BLACKBOX_SIZE (64-byte) strides while the helper is willing to
+write up to ADM1266_PMBUS_BLOCK_MAX (255) bytes.  A device that returns
+more than 64 bytes on the trailing record (read_buff offset 1984 in
+the 2048-byte dev_mem allocation) overflows dev_mem by up to 191 bytes
+before the post-call
+
+	if (ret != ADM1266_BLACKBOX_SIZE)
+		return -EIO;
+
+can reject the response.
+
+Contain the fix in the caller without changing the helper signature:
+read each record into a 255-byte local bounce buffer that matches the
+helper's maximum output, validate the returned length, and only then
+copy exactly ADM1266_BLACKBOX_SIZE bytes into the dev_mem slot.
+
+Fixes: 407dc802a9c0 ("hwmon: (pmbus/adm1266) Add Block process call")
+Cc: stable@vger.kernel.org
+Signed-off-by: Abdurrahman Hussain <abdurrahman@nexthop.ai>
+Link: https://lore.kernel.org/r/20260515-adm1266-fixes-v1-5-1c1ea1349cfe@nexthop.ai
+Signed-off-by: Guenter Roeck <linux@roeck-us.net>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/i915/display/intel_dp.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/hwmon/pmbus/adm1266.c |    4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/gpu/drm/i915/display/intel_dp.c b/drivers/gpu/drm/i915/display/intel_dp.c
-index 2906dc6e630ec..d52205d714eee 100644
---- a/drivers/gpu/drm/i915/display/intel_dp.c
-+++ b/drivers/gpu/drm/i915/display/intel_dp.c
-@@ -5067,7 +5067,7 @@ int intel_dp_as_sdp_unpack(struct drm_dp_as_sdp *as_sdp,
- 	as_sdp->length = sdp->sdp_header.HB3 & DP_ADAPTIVE_SYNC_SDP_LENGTH;
- 	as_sdp->mode = sdp->db[0] & DP_ADAPTIVE_SYNC_SDP_OPERATION_MODE;
- 	as_sdp->vtotal = (sdp->db[2] << 8) | sdp->db[1];
--	as_sdp->target_rr = (u64)sdp->db[3] | ((u64)sdp->db[4] & 0x3);
-+	as_sdp->target_rr = ((sdp->db[4] & 0x3) << 8) | sdp->db[3];
- 	as_sdp->target_rr_divider = sdp->db[4] & 0x20 ? true : false;
+--- a/drivers/hwmon/pmbus/adm1266.c
++++ b/drivers/hwmon/pmbus/adm1266.c
+@@ -348,6 +348,7 @@ static void adm1266_init_debugfs(struct
  
- 	return 0;
--- 
-2.53.0
-
+ static int adm1266_nvmem_read_blackbox(struct adm1266_data *data, u8 *read_buff)
+ {
++	u8 record[ADM1266_PMBUS_BLOCK_MAX];
+ 	int record_count;
+ 	char index;
+ 	u8 buf[I2C_SMBUS_BLOCK_MAX];
+@@ -365,13 +366,14 @@ static int adm1266_nvmem_read_blackbox(s
+ 		return -EIO;
+ 
+ 	for (index = 0; index < record_count; index++) {
+-		ret = adm1266_pmbus_block_xfer(data, ADM1266_READ_BLACKBOX, 1, &index, read_buff);
++		ret = adm1266_pmbus_block_xfer(data, ADM1266_READ_BLACKBOX, 1, &index, record);
+ 		if (ret < 0)
+ 			return ret;
+ 
+ 		if (ret != ADM1266_BLACKBOX_SIZE)
+ 			return -EIO;
+ 
++		memcpy(read_buff, record, ADM1266_BLACKBOX_SIZE);
+ 		read_buff += ADM1266_BLACKBOX_SIZE;
+ 	}
+ 
 
 
 
