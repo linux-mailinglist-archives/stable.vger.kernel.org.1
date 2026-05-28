@@ -1,61 +1,59 @@
-Return-Path: <stable+bounces-255419-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-256022-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id oBZCG3CiGGqblggAu9opvQ
-	(envelope-from <stable+bounces-255419-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:15:44 +0200
+	id eFSBNP2nGGp+lwgAu9opvQ
+	(envelope-from <stable+bounces-256022-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:39:25 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id DA0895F8313
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:15:43 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id B39055F93E4
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:39:25 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id C00CE31C2720
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 20:07:38 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 2BE6E307BB79
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 20:35:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E1E75339866;
-	Thu, 28 May 2026 20:07:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4300533439A;
+	Thu, 28 May 2026 20:35:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Gr4T028A"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DspYie8S"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 71C902F260C;
-	Thu, 28 May 2026 20:07:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 23933313550;
+	Thu, 28 May 2026 20:35:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779998857; cv=none; b=WaCV8SK5kGcfrutk9RzagQcvGabJzNF+6yA6xTFQfDqknl1erCj2ocUKOpP98tM+M2n3H7an58yOMvrtrhKpbInuvyXtD3Qc0R3ZVC9pEi8n60+pZe4d1KPKEgT/dUGjwNCX0wbFj1CtEwod5FG+bUIsb+NF/GT73DFml//x1M4=
+	t=1780000536; cv=none; b=tqHgYSMYzVUIhogStMRSOCGZewFf0sjd7bsgMKCLgY7p0SbY5J62kb8+nACr8Uyx281QPkZwApKUoHV5DieaddsOzVPEQopHD1lBHK0MJgyWPQABv50VykoYT2gk+V8HqvA1kqfvZbk97pLjBtIbBuvwQ8vYB//+wGROnvYU95k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779998857; c=relaxed/simple;
-	bh=m+BvINh02Uitbk/2ep3ImlAgBTm0v2wPxuWHI4cYPlM=;
+	s=arc-20240116; t=1780000536; c=relaxed/simple;
+	bh=GVE30jh0XZ9SIaNosqfb0SU82KC1ikhIULUvla3D1hE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=nzLuYl9mxZThYAIkT3BaGdKVBPNE+hs6inQICIzYtU0zpmBLF2dRz4zvPQJd2p4V1dbvaG+fErcjciOpU722RN9Yq+pQCDS7fhzwzJGbi1MgmekRCuY9kqWnFN2fgBd6+RjQxdW8piVKLA6NT9wTJW04uDB98ArEtityuuCK2+c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Gr4T028A; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 869371F000E9;
-	Thu, 28 May 2026 20:07:35 +0000 (UTC)
+	 MIME-Version; b=DQn5UfLyOHjZcFOur7env0hwCArEQhxaLvqYOMFwn8H3V7uI3EQkFV8quIp237NYXZ7Cfr8k68UCtgeGE8iJ4hT/GFnzrE9E0kR6KvCkgedJtCdLkVyYX1BPVMOCKyc5WYxedrE7hiKuYYs2vnTuZUSKes1SQIWRN+00we5Wjlw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DspYie8S; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 82AC91F000E9;
+	Thu, 28 May 2026 20:35:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779998856;
-	bh=CWSRE04BBId5477a/gGzPF+6SYFZHFNbF8h+Khd3Teo=;
+	s=korg; t=1780000535;
+	bh=yUKJ8xO7rzFyyRwbxcv2RbGO+IX/OyoYHvmQbcxH2ZI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=Gr4T028A8v2z1uMU4Lg3yTer9r03mf5kNlNsBdaWeqsp4kU8GhpXfZOD6O68E236p
-	 0yqK2lew/Fkk4VwkVB9Ed+nH3J4DbBCiMMYygbXJ6tOHhRgOsNZB0Y4VyMQCzb300J
-	 z+SRrNX8z1lKs3KN90YcgrIdsjlRyyNRUwKcdzw8=
+	b=DspYie8Sz7ZE3SsRJnryaFrtEGHCiaEcH77gfuxtSV6XIwTsEOLuM7PeOXI7VzGTL
+	 qGY52sGNn/Nn3OoRc2WOsH4GzmRpBgCRwy5HrC9QcE8s1pSbYeINswVfmypPKK61zi
+	 jfjfPiK8M3PyZNWzehVE8PAt6cs4Zxw0LrlriVcQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	RAJASI MANDAL <rajasimandalos@gmail.com>,
-	Henrique Carvalho <henrique.carvalho@suse.com>,
-	DaeMyung Kang <charsyam@gmail.com>,
-	Steve French <stfrench@microsoft.com>,
+	Sashiko <sashiko-bot@kernel.org>,
+	Tejun Heo <tj@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 7.0 323/461] cifs: client: stage smb3_reconfigure() updates and restore ctx on failure
+Subject: [PATCH 6.12 078/272] sched_ext: Avoid UAF in scx_root_enable_workfn() init failure path
 Date: Thu, 28 May 2026 21:47:32 +0200
-Message-ID: <20260528194656.671158459@linuxfoundation.org>
+Message-ID: <20260528194631.560372458@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260528194646.819809818@linuxfoundation.org>
-References: <20260528194646.819809818@linuxfoundation.org>
+In-Reply-To: <20260528194629.379955525@linuxfoundation.org>
+References: <20260528194629.379955525@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -70,349 +68,74 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,suse.com,microsoft.com,kernel.org];
-	TAGGED_FROM(0.00)[bounces-255419-lists,stable=lfdr.de];
-	PRECEDENCE_BULK(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
+	RCVD_TLS_LAST(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	TAGGED_FROM(0.00)[bounces-256022-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[8];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim,suse.com:email]
-X-Rspamd-Queue-Id: DA0895F8313
+	RCPT_COUNT_FIVE(0.00)[6];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo]
+X-Rspamd-Queue-Id: B39055F93E4
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-7.0-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: DaeMyung Kang <charsyam@gmail.com>
+From: Tejun Heo <tj@kernel.org>
 
-[ Upstream commit ab26dfeba278b0efbcea012f1698cf524d9b5695 ]
+[ Upstream commit 9a415cc53711f2238e0f0ca8a6bcc796c003b127 ]
 
-smb3_reconfigure() moves strings out of cifs_sb->ctx before the
-multichannel update, so a later failure can leave the live context
-with NULL strings or options that do not match the session.
+In scx_root_enable_workfn(), put_task_struct(p) is called before scx_error()
+dereferences p->comm and p->pid. If the iterator's reference is the last
+drop, the task is freed synchronously and the deref becomes a UAF.
 
-Stage the new ctx separately, commit it only on success, and restore
-the snapshot on failure. Also make smb3_sync_session_ctx_passwords()
-all-or-nothing.
+Move put_task_struct() past scx_error().
 
-Commit session passwords before channel updates so newly added channels
-authenticate with the staged credentials.
-
-Fixes: ef529f655a2c ("cifs: client: allow changing multichannel mount options on remount")
-Reported-by: RAJASI MANDAL <rajasimandalos@gmail.com>
-Closes: https://lore.kernel.org/lkml/CAEY6_V1+dzW3OD5zqXhsWyXwrDTrg5tAMGZ1AJ7_GAuRE+aevA@mail.gmail.com/
-Link: https://lore.kernel.org/lkml/xkr2dlvgibq5j6gkcxd3yhhnj4atgxw2uy4eug2pxm7wy7nbms@iq6cf5taa65v/
-Reviewed-by: Henrique Carvalho <henrique.carvalho@suse.com>
-Signed-off-by: DaeMyung Kang <charsyam@gmail.com>
-Signed-off-by: Steve French <stfrench@microsoft.com>
+Reported-by: Sashiko <sashiko-bot@kernel.org>
+Closes: https://lore.kernel.org/all/20260511214031.AF5E9C2BCB0@smtp.kernel.org/
+Fixes: f0e1a0643a59 ("sched_ext: Implement BPF extensible scheduler class")
+Cc: stable@vger.kernel.org # v6.12+
+Signed-off-by: Tejun Heo <tj@kernel.org>
+[ adapted fix to pre-refactor scx_ops_enable_workfn() with scx_task_iter_relock() instead of upstream scx_root_enable_workfn() ]
 Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/smb/client/fs_context.c | 161 +++++++++++++++++++++++++------------
- 1 file changed, 108 insertions(+), 53 deletions(-)
+ kernel/sched/ext.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/fs/smb/client/fs_context.c b/fs/smb/client/fs_context.c
-index a46764c247107..59598d334bae1 100644
---- a/fs/smb/client/fs_context.c
-+++ b/fs/smb/client/fs_context.c
-@@ -761,7 +761,7 @@ static int smb3_fs_context_parse_param(struct fs_context *fc,
- static int smb3_fs_context_parse_monolithic(struct fs_context *fc,
- 					    void *data);
- static int smb3_get_tree(struct fs_context *fc);
--static void smb3_sync_ses_chan_max(struct cifs_ses *ses, unsigned int max_channels);
-+static void smb3_sync_ses_chan_max(struct cifs_ses *ses, size_t max_channels);
- static int smb3_reconfigure(struct fs_context *fc);
+--- a/kernel/sched/ext.c
++++ b/kernel/sched/ext.c
+@@ -5406,11 +5406,11 @@ static void scx_ops_enable_workfn(struct
  
- static const struct fs_context_operations smb3_fs_context_ops = {
-@@ -1035,25 +1035,34 @@ do {									\
- 
- int smb3_sync_session_ctx_passwords(struct cifs_sb_info *cifs_sb, struct cifs_ses *ses)
- {
-+	char *password = NULL, *password2 = NULL;
-+
- 	if (ses->password &&
- 	    cifs_sb->ctx->password &&
- 	    strcmp(ses->password, cifs_sb->ctx->password)) {
--		kfree_sensitive(cifs_sb->ctx->password);
--		cifs_sb->ctx->password = kstrdup(ses->password, GFP_KERNEL);
--		if (!cifs_sb->ctx->password)
-+		password = kstrdup(ses->password, GFP_KERNEL);
-+		if (!password)
- 			return -ENOMEM;
- 	}
- 	if (ses->password2 &&
- 	    cifs_sb->ctx->password2 &&
- 	    strcmp(ses->password2, cifs_sb->ctx->password2)) {
--		kfree_sensitive(cifs_sb->ctx->password2);
--		cifs_sb->ctx->password2 = kstrdup(ses->password2, GFP_KERNEL);
--		if (!cifs_sb->ctx->password2) {
--			kfree_sensitive(cifs_sb->ctx->password);
--			cifs_sb->ctx->password = NULL;
-+		password2 = kstrdup(ses->password2, GFP_KERNEL);
-+		if (!password2) {
-+			kfree_sensitive(password);
- 			return -ENOMEM;
+ 		ret = scx_ops_init_task(p, task_group(p), false);
+ 		if (ret) {
+-			put_task_struct(p);
+ 			scx_task_iter_relock(&sti);
+ 			scx_task_iter_stop(&sti);
+ 			scx_ops_error("ops.init_task() failed (%d) for %s[%d]",
+ 				      ret, p->comm, p->pid);
++			put_task_struct(p);
+ 			goto err_disable_unlock_all;
  		}
- 	}
-+
-+	if (password) {
-+		kfree_sensitive(cifs_sb->ctx->password);
-+		cifs_sb->ctx->password = password;
-+	}
-+	if (password2) {
-+		kfree_sensitive(cifs_sb->ctx->password2);
-+		cifs_sb->ctx->password2 = password2;
-+	}
-+
- 	return 0;
- }
  
-@@ -1066,7 +1075,7 @@ int smb3_sync_session_ctx_passwords(struct cifs_sb_info *cifs_sb, struct cifs_se
-  * with the session's channel lock. This should be called whenever the maximum
-  * allowed channels for a session changes (e.g., after a remount or reconfigure).
-  */
--static void smb3_sync_ses_chan_max(struct cifs_ses *ses, unsigned int max_channels)
-+static void smb3_sync_ses_chan_max(struct cifs_ses *ses, size_t max_channels)
- {
- 	spin_lock(&ses->chan_lock);
- 	ses->chan_max = max_channels;
-@@ -1076,12 +1085,15 @@ static void smb3_sync_ses_chan_max(struct cifs_ses *ses, unsigned int max_channe
- static int smb3_reconfigure(struct fs_context *fc)
- {
- 	struct smb3_fs_context *ctx = smb3_fc2context(fc);
-+	struct smb3_fs_context *new_ctx = NULL;
-+	struct smb3_fs_context *old_ctx = NULL;
- 	struct dentry *root = fc->root;
- 	struct cifs_sb_info *cifs_sb = CIFS_SB(root->d_sb);
- 	struct cifs_ses *ses = cifs_sb_master_tcon(cifs_sb)->ses;
- 	unsigned int rsize = ctx->rsize, wsize = ctx->wsize;
- 	char *new_password = NULL, *new_password2 = NULL;
- 	bool need_recon = false;
-+	bool need_mchan_update;
- 	int rc;
- 
- 	if (ses->expired_pwd)
-@@ -1091,6 +1103,16 @@ static int smb3_reconfigure(struct fs_context *fc)
- 	if (rc)
- 		return rc;
- 
-+	old_ctx = kzalloc_obj(*old_ctx);
-+	if (!old_ctx)
-+		return -ENOMEM;
-+
-+	rc = smb3_fs_context_dup(old_ctx, cifs_sb->ctx);
-+	if (rc) {
-+		kfree(old_ctx);
-+		return rc;
-+	}
-+
- 	/*
- 	 * We can not change UNC/username/password/domainname/
- 	 * workstation_name/nodename/iocharset
-@@ -1100,16 +1122,22 @@ static int smb3_reconfigure(struct fs_context *fc)
- 	STEAL_STRING(cifs_sb, ctx, UNC);
- 	STEAL_STRING(cifs_sb, ctx, source);
- 	STEAL_STRING(cifs_sb, ctx, username);
-+	STEAL_STRING(cifs_sb, ctx, domainname);
-+	STEAL_STRING(cifs_sb, ctx, nodename);
-+	STEAL_STRING(cifs_sb, ctx, iocharset);
- 
--	if (need_recon == false)
-+	if (!need_recon) {
- 		STEAL_STRING_SENSITIVE(cifs_sb, ctx, password);
--	else  {
-+	} else {
- 		if (ctx->password) {
- 			new_password = kstrdup(ctx->password, GFP_KERNEL);
--			if (!new_password)
--				return -ENOMEM;
--		} else
-+			if (!new_password) {
-+				rc = -ENOMEM;
-+				goto restore_ctx;
-+			}
-+		} else {
- 			STEAL_STRING_SENSITIVE(cifs_sb, ctx, password);
-+		}
- 	}
- 
- 	/*
-@@ -1119,11 +1147,29 @@ static int smb3_reconfigure(struct fs_context *fc)
- 	if (ctx->password2) {
- 		new_password2 = kstrdup(ctx->password2, GFP_KERNEL);
- 		if (!new_password2) {
--			kfree_sensitive(new_password);
--			return -ENOMEM;
-+			rc = -ENOMEM;
-+			goto restore_ctx;
- 		}
--	} else
-+	} else {
- 		STEAL_STRING_SENSITIVE(cifs_sb, ctx, password2);
-+	}
-+
-+	/* if rsize or wsize not passed in on remount, use previous values */
-+	ctx->rsize = rsize ? CIFS_ALIGN_RSIZE(fc, rsize) : cifs_sb->ctx->rsize;
-+	ctx->wsize = wsize ? CIFS_ALIGN_WSIZE(fc, wsize) : cifs_sb->ctx->wsize;
-+
-+	new_ctx = kzalloc_obj(*new_ctx);
-+	if (!new_ctx) {
-+		rc = -ENOMEM;
-+		goto restore_ctx;
-+	}
-+
-+	rc = smb3_fs_context_dup(new_ctx, ctx);
-+	if (rc)
-+		goto restore_ctx;
-+
-+	need_mchan_update = ctx->multichannel != cifs_sb->ctx->multichannel ||
-+			    ctx->max_channels != cifs_sb->ctx->max_channels;
- 
- 	/*
- 	 * we may update the passwords in the ses struct below. Make sure we do
-@@ -1134,54 +1180,55 @@ static int smb3_reconfigure(struct fs_context *fc)
- 	/*
- 	 * smb2_reconnect may swap password and password2 in case session setup
- 	 * failed. First get ctx passwords in sync with ses passwords. It should
--	 * be okay to do this even if this function were to return an error at a
--	 * later stage
-+	 * be done before committing new passwords.
- 	 */
- 	rc = smb3_sync_session_ctx_passwords(cifs_sb, ses);
- 	if (rc) {
- 		mutex_unlock(&ses->session_mutex);
--		kfree_sensitive(new_password);
--		kfree_sensitive(new_password2);
--		return rc;
-+		goto cleanup_new_ctx;
-+	}
-+
-+	/*
-+	 * If multichannel or max_channels has changed, update the session's channels accordingly.
-+	 * This may add or remove channels to match the new configuration.
-+	 */
-+	if (need_mchan_update) {
-+		/* Prevent concurrent scaling operations */
-+		spin_lock(&ses->ses_lock);
-+		if (ses->flags & CIFS_SES_FLAG_SCALE_CHANNELS) {
-+			spin_unlock(&ses->ses_lock);
-+			mutex_unlock(&ses->session_mutex);
-+			rc = -EINVAL;
-+			goto cleanup_new_ctx;
-+		}
-+		ses->flags |= CIFS_SES_FLAG_SCALE_CHANNELS;
-+		spin_unlock(&ses->ses_lock);
- 	}
- 
- 	/*
--	 * now that allocations for passwords are done, commit them
-+	 * Commit session passwords before any channel work so newly added
-+	 * channels authenticate with the new credentials.
- 	 */
- 	if (new_password) {
- 		kfree_sensitive(ses->password);
- 		ses->password = new_password;
-+		new_password = NULL;
- 	}
- 	if (new_password2) {
- 		kfree_sensitive(ses->password2);
- 		ses->password2 = new_password2;
-+		new_password2 = NULL;
- 	}
- 
--	/*
--	 * If multichannel or max_channels has changed, update the session's channels accordingly.
--	 * This may add or remove channels to match the new configuration.
--	 */
--	if ((ctx->multichannel != cifs_sb->ctx->multichannel) ||
--	    (ctx->max_channels != cifs_sb->ctx->max_channels)) {
--
-+	if (need_mchan_update) {
- 		/* Synchronize ses->chan_max with the new mount context */
- 		smb3_sync_ses_chan_max(ses, ctx->max_channels);
--		/* Now update the session's channels to match the new configuration */
--		/* Prevent concurrent scaling operations */
--		spin_lock(&ses->ses_lock);
--		if (ses->flags & CIFS_SES_FLAG_SCALE_CHANNELS) {
--			spin_unlock(&ses->ses_lock);
--			mutex_unlock(&ses->session_mutex);
--			return -EINVAL;
--		}
--		ses->flags |= CIFS_SES_FLAG_SCALE_CHANNELS;
--		spin_unlock(&ses->ses_lock);
- 
- 		mutex_unlock(&ses->session_mutex);
- 
--		rc = smb3_update_ses_channels(ses, ses->server,
--					       false /* from_reconnect */,
--					       false /* disable_mchan */);
-+		smb3_update_ses_channels(ses, ses->server,
-+					 false /* from_reconnect */,
-+					 false /* disable_mchan */);
- 
- 		/* Clear scaling flag after operation */
- 		spin_lock(&ses->ses_lock);
-@@ -1191,22 +1238,30 @@ static int smb3_reconfigure(struct fs_context *fc)
- 		mutex_unlock(&ses->session_mutex);
- 	}
- 
--	STEAL_STRING(cifs_sb, ctx, domainname);
--	STEAL_STRING(cifs_sb, ctx, nodename);
--	STEAL_STRING(cifs_sb, ctx, iocharset);
--
--	/* if rsize or wsize not passed in on remount, use previous values */
--	ctx->rsize = rsize ? CIFS_ALIGN_RSIZE(fc, rsize) : cifs_sb->ctx->rsize;
--	ctx->wsize = wsize ? CIFS_ALIGN_WSIZE(fc, wsize) : cifs_sb->ctx->wsize;
--
- 	smb3_cleanup_fs_context_contents(cifs_sb->ctx);
--	rc = smb3_fs_context_dup(cifs_sb->ctx, ctx);
-+	memcpy(cifs_sb->ctx, new_ctx, sizeof(*new_ctx));
-+	kfree(new_ctx);
-+	new_ctx = NULL;
-+	smb3_cleanup_fs_context(old_ctx);
-+	old_ctx = NULL;
- 	smb3_update_mnt_flags(cifs_sb);
- #ifdef CONFIG_CIFS_DFS_UPCALL
- 	if (!rc)
- 		rc = dfs_cache_remount_fs(cifs_sb);
- #endif
- 
-+	return rc;
-+
-+cleanup_new_ctx:
-+	smb3_cleanup_fs_context_contents(new_ctx);
-+restore_ctx:
-+	kfree(new_ctx);
-+	kfree_sensitive(new_password);
-+	kfree_sensitive(new_password2);
-+	smb3_cleanup_fs_context_contents(cifs_sb->ctx);
-+	memcpy(cifs_sb->ctx, old_ctx, sizeof(*old_ctx));
-+	kfree(old_ctx);
-+
- 	return rc;
- }
- 
--- 
-2.53.0
-
 
 
 
