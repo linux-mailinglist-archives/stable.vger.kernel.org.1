@@ -1,58 +1,59 @@
-Return-Path: <stable+bounces-256109-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-255472-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id UEqCBoOpGGpolwgAu9opvQ
-	(envelope-from <stable+bounces-256109-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:45:55 +0200
+	id uC4gEuiiGGqblggAu9opvQ
+	(envelope-from <stable+bounces-255472-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:17:44 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id C68D15F97E7
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:45:54 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id E1D145F84DC
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:17:43 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 8F19730886EB
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 20:40:08 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 0AAEB30ED46B
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 20:10:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 26B433264DF;
-	Thu, 28 May 2026 20:39:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8C560339866;
+	Thu, 28 May 2026 20:10:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qXytd3vc"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cZ/ZVV31"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E24712EF652;
-	Thu, 28 May 2026 20:39:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 33D5E32ABC0;
+	Thu, 28 May 2026 20:10:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780000781; cv=none; b=EA8+GX1XXG8PM/nqZD4uWtU/A/Q7eEwDKWLTu/ANPgZgsIsotLhLPbnia+HQMQYD6mWJ6hur2wCqbL4FlASTFsPaZwWwrqy8DfuIk7q7EsTYR5ITpHwKoLsWHGuuC1OASeBJ/q5MXPi+0dmrjB+CarTUfDCEL8QAYo6JfUFfUTI=
+	t=1779999008; cv=none; b=Dx1GA5N0UdrWS1CqwmrvV1UkvfG3jiNmf/4hQhbkWdDEhd8i5icGwoOH5fkDNZ/HhafAZGV7yb8Io3sHhfpxSbGeIXLb3xA0aAhB+JuYGDeqrgbx1tciihxQV5dIPau61AVFNW/5yAsMOjNoDPeiHb2FDMFUwwudw6Tr2i95GEY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780000781; c=relaxed/simple;
-	bh=Zo+Lxhg/NCEgYHAY49N6pkZ84vVi7N3qZfnAh4nYgvo=;
+	s=arc-20240116; t=1779999008; c=relaxed/simple;
+	bh=NK7fAfXeqSMfmIAyCwzzl1QruplHKgntWyQ3ysqces8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=OIW4OIua3RLDl48MAl1wkChDlbkqHSdnz4chHoE8VGLOwF43nRU5ypOEGjMu/CYsRRwmBhZcrRJF9Zdc4V5oqQJKXh/yBRgqoprHkwsuEZGc7tFtXNQIJgpELwyrY8Tcp6tSRz34g+7XnNDEm3VgyvEItQTx+7CCwI0AtCzheQQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qXytd3vc; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4BE911F000E9;
-	Thu, 28 May 2026 20:39:40 +0000 (UTC)
+	 MIME-Version; b=hbv1qMp4JY8oK88dYy19jzeihnFYLssz6up5iaaAemXqIhIinP9veY1dXfr+6wGN6v9LcdBlczGWJuyvJJL2azhE716FyzZOlDhswY8N8kgc0QsSd4pT1KEHX0gRM4RC+hQVEDZwG7n/Wf7oTl39Geglzn1Mrtpe3vp+9IcfENc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cZ/ZVV31; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 892A21F000E9;
+	Thu, 28 May 2026 20:10:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780000780;
-	bh=6X5Ulakz24WVySs7QuKrMuKvty/VH0VeO3Ql3A84Dhs=;
+	s=korg; t=1779999007;
+	bh=69Gsur/grp+dHV7/OZDdPx7ASA5EFZ/KsgdiU1gNqkk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=qXytd3vchJ5RMsIRWbcgDRj5L3tWZw5bHfK08HrWnAnvakIIumIgzd2fbRgb+YHjm
-	 zJ3ghKGPp3XV2Vh4GxyDzxqPcxMBe47mkd3iVWzjriNRfME01SlhwjYLvLlPobUi6d
-	 Fl3rg4rzaqai8fa4RW1+P3KXF9aAfN1vbIlsv79Y=
+	b=cZ/ZVV31baazIM2LLjSE1tSLFbifTmgHss0DSrBW2WBwVVfeUWfIezeMR/ea8T60Q
+	 VQ0KiSDFJNt/ymfxruSXt/aKLDQyBbOAr90sJ02toOAicSmPSl4yDZktmXfHklh5WJ
+	 G3NdyUwvhQ7SenX4ZB6vn4dKjgLmXTOsxRHJJbQU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable@kernel.org,
-	Sven Eckelmann <sven@narfation.org>
-Subject: [PATCH 6.12 129/272] batman-adv: tp_meter: fix tp_vars reference leak in receiver shutdown
-Date: Thu, 28 May 2026 21:48:23 +0200
-Message-ID: <20260528194632.992136205@linuxfoundation.org>
+	Qing Ming <a0yami@mailbox.org>,
+	Tejun Heo <tj@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 7.0 375/461] cgroup/rstat: validate cpu before css_rstat_cpu() access
+Date: Thu, 28 May 2026 21:48:24 +0200
+Message-ID: <20260528194658.305439097@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260528194629.379955525@linuxfoundation.org>
-References: <20260528194629.379955525@linuxfoundation.org>
+In-Reply-To: <20260528194646.819809818@linuxfoundation.org>
+References: <20260528194646.819809818@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -67,7 +68,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
@@ -77,7 +78,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-256109-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-255472-lists,stable=lfdr.de];
 	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
@@ -86,104 +87,195 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	NEURAL_HAM(-0.00)[-1.000];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[5];
+	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,narfation.org:email]
-X-Rspamd-Queue-Id: C68D15F97E7
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim,mailbox.org:email]
+X-Rspamd-Queue-Id: E1D145F84DC
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+7.0-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sven Eckelmann <sven@narfation.org>
+From: Qing Ming <a0yami@mailbox.org>
 
-commit 77098e4bea37af51d3962efa88a5af2ea5e1ac57 upstream.
+[ Upstream commit 8817005efbdfdf5d4e4814cb5dc52b53d12917d7 ]
 
-The receiver shutdown timer handler, batadv_tp_receiver_shutdown(), is
-responsible for releasing the tp_vars reference it holds. However, the
-existing logic for coordinating this release with batadv_tp_stop_all() was
-flawed.
+css_rstat_updated() is exposed as a BPF kfunc and accepts a
+caller-provided cpu argument. The function uses cpu for per-cpu rstat
+lookups without checking whether it refers to a valid possible CPU.
 
-timer_shutdown_sync() guarantees the timer will not fire again after it
-returns, but it returns non-zero only when the timer was pending at the
-time of the call. If the timer had already expired (and
-batadv_tp_stop_all() would unsucessfully try to  rearm itself),
-batadv_tp_stop_all() skips its batadv_tp_vars_put(), and
-batadv_tp_receiver_shutdown() fails to put its own reference as well.
+A BPF iter/cgroup program with CAP_BPF and CAP_PERFMON can pass an
+invalid cpu value. On an unfixed UBSCAN_BOUNDS test kernel, cpu ==
+0x7fffffff triggers:
 
-Fix this by introducing a new atomic variable receiving that is set to 1
-when the receiver is initialized and cleared atomically with atomic_xchg()
-by whichever side claims it first. Only the side that observes the
-transition from 1 to 0 is responsible for releasing the tp_vars timer
-reference, eliminating the uncertainty.
+  UBSAN: array-index-out-of-bounds in kernel/cgroup/rstat.c:31:9
+  index 2147483647 is out of range for type 'long unsigned int [64]'
+  Call Trace:
+    css_rstat_updated
+    bpf_iter_run_prog
+    cgroup_iter_seq_show
+    bpf_seq_read
 
-Cc: stable@kernel.org
-Fixes: 3d3cf6a7314a ("batman-adv: stop tp_meter sessions during mesh teardown")
-Signed-off-by: Sven Eckelmann <sven@narfation.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Add cpu validation to the BPF-facing css_rstat_updated() kfunc and
+move the common implementation to __css_rstat_updated() for in-kernel
+callers.
+
+Fixes: a319185be9f5 ("cgroup: bpf: enable bpf programs to integrate with rstat")
+Signed-off-by: Qing Ming <a0yami@mailbox.org>
+Signed-off-by: Tejun Heo <tj@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/batman-adv/tp_meter.c |   13 +++++++++++--
- net/batman-adv/types.h    |    3 +++
- 2 files changed, 14 insertions(+), 2 deletions(-)
+ block/blk-cgroup.c     |  2 +-
+ include/linux/cgroup.h |  1 +
+ kernel/cgroup/rstat.c  | 30 ++++++++++++++++++++----------
+ mm/memcontrol.c        |  6 +++---
+ 4 files changed, 25 insertions(+), 14 deletions(-)
 
---- a/net/batman-adv/tp_meter.c
-+++ b/net/batman-adv/tp_meter.c
-@@ -8,6 +8,7 @@
- #include "main.h"
+diff --git a/block/blk-cgroup.c b/block/blk-cgroup.c
+index 554c87bb4a865..bc63bd220865d 100644
+--- a/block/blk-cgroup.c
++++ b/block/blk-cgroup.c
+@@ -2241,7 +2241,7 @@ void blk_cgroup_bio_start(struct bio *bio)
+ 	}
  
- #include <linux/atomic.h>
-+#include <linux/bug.h>
- #include <linux/build_bug.h>
- #include <linux/byteorder/generic.h>
- #include <linux/cache.h>
-@@ -1163,6 +1164,9 @@ static void batadv_tp_receiver_shutdown(
- 	spin_unlock_bh(&tp_vars->unacked_lock);
- 
- 	/* drop reference of timer */
-+	if (WARN_ON(atomic_xchg(&tp_vars->receiving, 0) != 1))
-+		return;
-+
- 	batadv_tp_vars_put(tp_vars);
+ 	u64_stats_update_end_irqrestore(&bis->sync, flags);
+-	css_rstat_updated(&blkcg->css, cpu);
++	__css_rstat_updated(&blkcg->css, cpu);
+ 	put_cpu();
  }
  
-@@ -1381,6 +1385,7 @@ batadv_tp_init_recv(struct batadv_priv *
+diff --git a/include/linux/cgroup.h b/include/linux/cgroup.h
+index bc892e3b37eea..b61b9b7849df4 100644
+--- a/include/linux/cgroup.h
++++ b/include/linux/cgroup.h
+@@ -715,6 +715,7 @@ static inline void cgroup_path_from_kernfs_id(u64 id, char *buf, size_t buflen)
+ /*
+  * cgroup scalable recursive statistics.
+  */
++void __css_rstat_updated(struct cgroup_subsys_state *css, int cpu);
+ void css_rstat_updated(struct cgroup_subsys_state *css, int cpu);
+ void css_rstat_flush(struct cgroup_subsys_state *css);
  
- 	ether_addr_copy(tp_vars->other_end, icmp->orig);
- 	tp_vars->role = BATADV_TP_RECEIVER;
-+	atomic_set(&tp_vars->receiving, 1);
- 	memcpy(tp_vars->session, icmp->session, sizeof(tp_vars->session));
- 	tp_vars->last_recv = BATADV_TP_FIRST_SEQ;
- 	tp_vars->bat_priv = bat_priv;
-@@ -1553,8 +1558,12 @@ void batadv_tp_stop_all(struct batadv_pr
- 			break;
- 		case BATADV_TP_RECEIVER:
- 			batadv_tp_list_detach(tp_var);
--			if (timer_shutdown_sync(&tp_var->timer))
--				batadv_tp_vars_put(tp_var);
-+			timer_shutdown_sync(&tp_var->timer);
+diff --git a/kernel/cgroup/rstat.c b/kernel/cgroup/rstat.c
+index 150e5871e66f2..ed60ba119c687 100644
+--- a/kernel/cgroup/rstat.c
++++ b/kernel/cgroup/rstat.c
+@@ -1,6 +1,7 @@
+ // SPDX-License-Identifier: GPL-2.0-only
+ #include "cgroup-internal.h"
+ 
++#include <linux/cpumask.h>
+ #include <linux/sched/cputime.h>
+ 
+ #include <linux/bpf.h>
+@@ -53,7 +54,7 @@ static inline struct llist_head *ss_lhead_cpu(struct cgroup_subsys *ss, int cpu)
+ }
+ 
+ /**
+- * css_rstat_updated - keep track of updated rstat_cpu
++ * __css_rstat_updated - keep track of updated rstat_cpu
+  * @css: target cgroup subsystem state
+  * @cpu: cpu on which rstat_cpu was updated
+  *
+@@ -63,20 +64,17 @@ static inline struct llist_head *ss_lhead_cpu(struct cgroup_subsys *ss, int cpu)
+  *
+  * NOTE: if the user needs the guarantee that the updater either add itself in
+  * the lockless list or the concurrent flusher flushes its updated stats, a
+- * memory barrier is needed before the call to css_rstat_updated() i.e. a
++ * memory barrier is needed before the call to __css_rstat_updated() i.e. a
+  * barrier after updating the per-cpu stats and before calling
+- * css_rstat_updated().
++ * __css_rstat_updated().
+  */
+-__bpf_kfunc void css_rstat_updated(struct cgroup_subsys_state *css, int cpu)
++void __css_rstat_updated(struct cgroup_subsys_state *css, int cpu)
+ {
+ 	struct llist_head *lhead;
+ 	struct css_rstat_cpu *rstatc;
+ 	struct llist_node *self;
+ 
+-	/*
+-	 * Since bpf programs can call this function, prevent access to
+-	 * uninitialized rstat pointers.
+-	 */
++	/* Prevent access to uninitialized rstat pointers. */
+ 	if (!css_uses_rstat(css))
+ 		return;
+ 
+@@ -125,6 +123,18 @@ __bpf_kfunc void css_rstat_updated(struct cgroup_subsys_state *css, int cpu)
+ 	llist_add(&rstatc->lnode, lhead);
+ }
+ 
++/*
++ * BPF-facing wrapper for __css_rstat_updated(). Validate the caller-provided
++ * CPU before passing it to the internal rstat updater.
++ */
++__bpf_kfunc void css_rstat_updated(struct cgroup_subsys_state *css, int cpu)
++{
++	if (unlikely(cpu < 0 || cpu >= nr_cpu_ids || !cpu_possible(cpu)))
++		return;
 +
-+			if (atomic_xchg(&tp_var->receiving, 0) != 1)
-+				break;
++	__css_rstat_updated(css, cpu);
++}
 +
-+			batadv_tp_vars_put(tp_var);
- 			break;
- 		}
+ static void __css_process_update_tree(struct cgroup_subsys_state *css, int cpu)
+ {
+ 	/* put @css and all ancestors on the corresponding updated lists */
+@@ -170,7 +180,7 @@ static void css_process_update_tree(struct cgroup_subsys *ss, int cpu)
+ 		 * flusher flush the stats updated by the updater who have
+ 		 * observed that they are already on the list. The
+ 		 * corresponding barrier pair for this one should be before
+-		 * css_rstat_updated() by the user.
++		 * __css_rstat_updated() by the user.
+ 		 *
+ 		 * For now, there aren't any such user, so not adding the
+ 		 * barrier here but if such a use-case arise, please add
+@@ -614,7 +624,7 @@ static void cgroup_base_stat_cputime_account_end(struct cgroup *cgrp,
+ 						 unsigned long flags)
+ {
+ 	u64_stats_update_end_irqrestore(&rstatbc->bsync, flags);
+-	css_rstat_updated(&cgrp->self, smp_processor_id());
++	__css_rstat_updated(&cgrp->self, smp_processor_id());
+ 	put_cpu_ptr(rstatbc);
+ }
  
---- a/net/batman-adv/types.h
-+++ b/net/batman-adv/types.h
-@@ -1461,6 +1461,9 @@ struct batadv_tp_vars {
- 	/** @sending: sending binary semaphore: 1 if sending, 0 is not */
- 	atomic_t sending;
+diff --git a/mm/memcontrol.c b/mm/memcontrol.c
+index 772bac21d1558..96786a4af7533 100644
+--- a/mm/memcontrol.c
++++ b/mm/memcontrol.c
+@@ -574,7 +574,7 @@ static inline void memcg_rstat_updated(struct mem_cgroup *memcg, int val,
+ 	if (!val)
+ 		return;
  
-+	/** @receiving: receiving binary semaphore: 1 if receiving, 0 is not */
-+	atomic_t receiving;
-+
- 	/** @reason: reason for a stopped session */
- 	enum batadv_tp_meter_reason reason;
+-	css_rstat_updated(&memcg->css, cpu);
++	__css_rstat_updated(&memcg->css, cpu);
+ 	statc_pcpu = memcg->vmstats_percpu;
+ 	for (; statc_pcpu; statc_pcpu = statc->parent_pcpu) {
+ 		statc = this_cpu_ptr(statc_pcpu);
+@@ -2583,7 +2583,7 @@ static inline void account_slab_nmi_safe(struct mem_cgroup *memcg,
+ 		struct mem_cgroup_per_node *pn = memcg->nodeinfo[pgdat->node_id];
  
+ 		/* preemption is disabled in_nmi(). */
+-		css_rstat_updated(&memcg->css, smp_processor_id());
++		__css_rstat_updated(&memcg->css, smp_processor_id());
+ 		if (idx == NR_SLAB_RECLAIMABLE_B)
+ 			atomic_add(nr, &pn->slab_reclaimable);
+ 		else
+@@ -2807,7 +2807,7 @@ static inline void account_kmem_nmi_safe(struct mem_cgroup *memcg, int val)
+ 		mod_memcg_state(memcg, MEMCG_KMEM, val);
+ 	} else {
+ 		/* preemption is disabled in_nmi(). */
+-		css_rstat_updated(&memcg->css, smp_processor_id());
++		__css_rstat_updated(&memcg->css, smp_processor_id());
+ 		atomic_add(val, &memcg->kmem_stat);
+ 	}
+ }
+-- 
+2.53.0
+
 
 
 
