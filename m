@@ -1,61 +1,61 @@
-Return-Path: <stable+bounces-255766-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-255804-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id eHtuApikGGoQlwgAu9opvQ
-	(envelope-from <stable+bounces-255766-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:24:56 +0200
+	id aH1QMzqoGGpolwgAu9opvQ
+	(envelope-from <stable+bounces-255804-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:40:26 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id CDC855F89EF
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:24:55 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5F5295F94A5
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:40:26 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 5827430601E6
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 20:23:43 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id C819036616EF
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 20:25:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F3C512E7379;
-	Thu, 28 May 2026 20:23:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5A06833291F;
+	Thu, 28 May 2026 20:25:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=narfation.org header.i=@narfation.org header.b="g2ec8Gsi"
+	dkim=pass (1024-bit key) header.d=narfation.org header.i=@narfation.org header.b="AWEVsAgZ"
 X-Original-To: stable@vger.kernel.org
 Received: from dvalin.narfation.org (dvalin.narfation.org [213.160.73.56])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9B0E53101B0
-	for <stable@vger.kernel.org>; Thu, 28 May 2026 20:23:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EAD9432A3FF
+	for <stable@vger.kernel.org>; Thu, 28 May 2026 20:25:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=213.160.73.56
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779999822; cv=none; b=qK00khoHFIeN6b0g/qUgZK09is8AMu3A+QiBRNKRbKT+n80iKo23Jx2Fs3ywNa9huOqd72WW69TrZMmFDpVz9p/B2FMwQSHJG4rPl5pFqF4VNPP20KqfR7tWXf9I/Tj+ANpUXlT53Q8BZhjtwELfwvIrC1eJQpqwTmL2TPy5TBI=
+	t=1779999927; cv=none; b=siJC8mc58mpTdb0dfbBRIn4uVp2s/mDs5Z7kSaTnjb0cLMoyWAyQoMFuKkTsjNbxso5XeAqxGtO+3HkuAtQETr9TKgtRzdtwxtLlf7V3npgcRudezSp0namQCy9YsEaRK8o6FGB0aGz503CQsNJQKEtp4wZc9fpSU7YAG/WKaOk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779999822; c=relaxed/simple;
-	bh=PjPpx/ADezrs9ZSqZcxiSc/iaIXYfrygE2MNvlVdBSQ=;
+	s=arc-20240116; t=1779999927; c=relaxed/simple;
+	bh=jnw8FXgQesgmw9eQ1uQ6YKgrjPEQTv5zFT3LCJPqfnw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=SjK3cB4BeLEEoCPhJr6VxVnOs34FxWQKD0sYh4odwfHQuq0nTPDU/CW21inyCyEeWHabKXlbsqunVOsdXdPKIsD3MzZG7FnebyDTEMh5zyX++0bToK2oogtwrgUN5nC+JlUJEFzxj4ZsHolCdynaXqPSkZt2x7+UqBDYCAVVYSg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=narfation.org; spf=pass smtp.mailfrom=narfation.org; dkim=pass (1024-bit key) header.d=narfation.org header.i=@narfation.org header.b=g2ec8Gsi; arc=none smtp.client-ip=213.160.73.56
+	 MIME-Version; b=NbgkNXUieQmRsVV9jlFvWKFG+kixA7cdDyRZDJas4CXrV/Gj1PAX9rPkJxK/GxeIlCgpP3SGUobTqqB8Cejn0lD57SN2mkPLYHn1tt0RUygKrLJuCS1snozS9zC+8HmvKyTlSUe4cptuaJ35XgBPtdzqgsl+DsX0VbFJq08Y1zI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=narfation.org; spf=pass smtp.mailfrom=narfation.org; dkim=pass (1024-bit key) header.d=narfation.org header.i=@narfation.org header.b=AWEVsAgZ; arc=none smtp.client-ip=213.160.73.56
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=narfation.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=narfation.org
-Received: by dvalin.narfation.org (Postfix) id ED79220074;
-	Thu, 28 May 2026 20:23:39 +0000 (UTC)
+Received: by dvalin.narfation.org (Postfix) id 2949D20074;
+	Thu, 28 May 2026 20:25:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=narfation.org;
-	s=20121; t=1779999820;
+	s=20121; t=1779999924;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=qhbgXyq7XNLh0gTPq6SUFs02TK9v74UELx5dX57oqR4=;
-	b=g2ec8GsiDfDRqpjLQrYtHQC8S9W/SYanSSCzu0u5cKSIvoRbO2reN5vhFtS0taw2cJqf72
-	uH9881/3H44/CJvuW8XBq2g5ExvC25EzPJYAo55mJjTt7y9VM67gUhGdyZinP/pBOgzSIz
-	APs071PPpOrni88KF0clEL31py+NW+M=
+	bh=c+meiTzybfiU2bsNzB2iWK24rNNKTZO+E4uGugJEUv4=;
+	b=AWEVsAgZyIBXXXXtIbzi8svJ9P3Xo9/7fsjqscRQWZOp9hZojEEzXllIrr8UpURPPabr5w
+	X7L7HA9RSggk9nmSrOuaYrybBjm7yjbBAC/b4TR13IicV3toPq98pccC0F4lfRDpuLnB7/
+	71K/0gwAqd864NDr8x9TNTk3L+UEyRE=
 From: Sven Eckelmann <sven@narfation.org>
 To: stable@vger.kernel.org
 Cc: Sven Eckelmann <sven@narfation.org>,
 	stable@kernel.org
-Subject: [PATCH 6.6.y] batman-adv: tp_meter: directly shut down timer on cleanup
-Date: Thu, 28 May 2026 22:23:16 +0200
-Message-ID: <20260528202316.468806-1-sven@narfation.org>
+Subject: [PATCH 6.1.y] batman-adv: tp_meter: directly shut down timer on cleanup
+Date: Thu, 28 May 2026 22:25:20 +0200
+Message-ID: <20260528202520.521417-1-sven@narfation.org>
 X-Mailer: git-send-email 2.47.3
-In-Reply-To: <2026052842-auction-seducing-6981@gregkh>
-References: <2026052842-auction-seducing-6981@gregkh>
+In-Reply-To: <2026052843-bubble-subside-0f14@gregkh>
+References: <2026052843-bubble-subside-0f14@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -68,12 +68,12 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[narfation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[narfation.org:s=20121];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-255766-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-255804-lists,stable=lfdr.de];
 	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
@@ -87,9 +87,9 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	PRECEDENCE_BULK(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
 	NEURAL_HAM(-0.00)[-1.000];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[narfation.org:email,narfation.org:mid,narfation.org:dkim,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo]
-X-Rspamd-Queue-Id: CDC855F89EF
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[narfation.org:email,narfation.org:mid,narfation.org:dkim,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
+X-Rspamd-Queue-Id: 5F5295F94A5
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
@@ -124,11 +124,11 @@ Signed-off-by: Sven Eckelmann <sven@narfation.org>
  1 file changed, 1 insertion(+), 7 deletions(-)
 
 diff --git a/net/batman-adv/tp_meter.c b/net/batman-adv/tp_meter.c
-index 87797969c220..bdafdec93a18 100644
+index 7f3dd3c393e0..169e11ad0bf1 100644
 --- a/net/batman-adv/tp_meter.c
 +++ b/net/batman-adv/tp_meter.c
-@@ -400,13 +400,7 @@ static void batadv_tp_sender_cleanup(struct batadv_tp_vars *tp_vars)
- 	batadv_tp_list_detach(tp_vars);
+@@ -384,13 +384,7 @@ static void batadv_tp_sender_cleanup(struct batadv_priv *bat_priv,
+ 	atomic_dec(&tp_vars->bat_priv->tp_num);
  
  	/* kill the timer and remove its reference */
 -	del_timer_sync(&tp_vars->timer);
