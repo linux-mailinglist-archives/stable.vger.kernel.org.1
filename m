@@ -1,233 +1,157 @@
-Return-Path: <stable+bounces-255022-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-255023-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id KOxQNlFSGGqwiwgAu9opvQ
-	(envelope-from <stable+bounces-255022-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 16:33:53 +0200
+	id 6H4cLBtSGGqwiwgAu9opvQ
+	(envelope-from <stable+bounces-255023-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 16:32:59 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 81AB75F3BEE
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 16:33:53 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id 78CD95F3BAB
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 16:32:59 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 1CDDE30173AB
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 14:27:06 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 16DE730612B0
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 14:31:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 51D2E3E5599;
-	Thu, 28 May 2026 14:27:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 443A73BD224;
+	Thu, 28 May 2026 14:31:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=openvpn.net header.i=@openvpn.net header.b="eWbst5Nn"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-oo1-f71.google.com (mail-oo1-f71.google.com [209.85.161.71])
+Received: from mail-wm1-f53.google.com (mail-wm1-f53.google.com [209.85.128.53])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 720233BB680
-	for <stable@vger.kernel.org>; Thu, 28 May 2026 14:27:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.161.71
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7C3E726738B
+	for <stable@vger.kernel.org>; Thu, 28 May 2026 14:31:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.53
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779978424; cv=none; b=R8vhYwtTm00IjcFEO9lKUUJ5YypoV20wZpAOs/+pNSGWbv/ZDPQizN1dvi7ND92m7y6qnsOvt0tAqSwU3bKAw4WV3nmLvn5209I9LI+obHCldVCrgaZz4Sbdtn+vcQmlPmYwdFAS0LXkHzozOnwR0/Hms9VO+xdhqYY7EUSkJmM=
+	t=1779978710; cv=none; b=C9yxKKUw5MGGQTaiKOBxST+1Q6J3ZksXGawecwwxnkZLMeg9FDIoFKdUJtrQZvuSJ1Y+kX/AEQornv6lHm9wUtMxPIwkOkvoMdTwE/KtkOVD8iOTducxGDh90fAh6fLiBkj7As5QhBZ+oRVDBADZ8Yh+Ly/OBp113N+HURMofAA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779978424; c=relaxed/simple;
-	bh=8dBQN3u9zxD5Dpe5kimj5AuyF1N0hn16euQa6Q6gauM=;
-	h=MIME-Version:Date:In-Reply-To:Message-ID:Subject:From:To:Cc:
-	 Content-Type; b=Ak1YNNHy6zWV+787dsUgfRc91uC6B3WExZM1XiVCo6NHteibXIoCcLvzI9VQQxQpVxqw7HS3j00BR9nFgAyLsahG+F6MZx2xkijlplF00ztGeRsoOuzYU9Ftadvk/LOsCzMUFd53NT0wcLuosaCDpzmZ6mZPG/lXm5iHg+i8dlQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com; arc=none smtp.client-ip=209.85.161.71
-Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com
-Received: by mail-oo1-f71.google.com with SMTP id 006d021491bc7-69db0927573so5540379eaf.1
-        for <stable@vger.kernel.org>; Thu, 28 May 2026 07:27:02 -0700 (PDT)
+	s=arc-20240116; t=1779978710; c=relaxed/simple;
+	bh=SXlX7u48JnMYKj0Nje6QkmsuNv0J7If4EK/lplL+lZc=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=DsalK+BM9B+/gmV1xmnCzsbAT4a+XbKStibEH9D1xnAg/IUgSilwCKDPwT4F202yx/8DKf0spOta9/p1u0wSA7R5fPymo18w0zaanoDZdIBVplcVBAy/rmRi4ljuc1lLsWZ1jgHMk4EL2zIeMoE6Mz2OBzW43yLEHrFS2z89bQI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=openvpn.net; spf=pass smtp.mailfrom=openvpn.com; dkim=pass (2048-bit key) header.d=openvpn.net header.i=@openvpn.net header.b=eWbst5Nn; arc=none smtp.client-ip=209.85.128.53
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=openvpn.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=openvpn.com
+Received: by mail-wm1-f53.google.com with SMTP id 5b1f17b1804b1-4903997fcb5so72794115e9.2
+        for <stable@vger.kernel.org>; Thu, 28 May 2026 07:31:48 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=openvpn.net; s=google; t=1779978707; x=1780583507; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=bM+WzYj202rkhAKw8isFN4meBqK+WDYoMBYuhC1fFsk=;
+        b=eWbst5Nnb2w9WuVCo8m3AAC9Bn5jGWnrLKg75i+1Xfq+EIV5SMpqw68QD4xIvTzrw3
+         ev9rd8Sv/IF01cnXct6I8NytbTpi2sEkLcPaoCF7R8FFFc7Nd/Ral0XrkF64E4HevZ5a
+         24IJOpiYJ2CQYIq/uTldsnyosyKDB5a1Ny9gKZ/F1X7gYm7nT9uPXXQpIhKPMp5KQ82N
+         BrGTS+ZUtKHK6WWAfIMFRiGljl4dh3auW+7B4b5mK6xYx+OazHflR129QHLJp8KWPM9b
+         nyziR+/HrbCQeLIPzB6eAHfIayBM5XYye5r2ysnVX+eC0uWZA1XHsUFy6eyxBDqGcyhc
+         eMRA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1779978421; x=1780583221;
-        h=cc:to:from:subject:message-id:in-reply-to:date:mime-version
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=DKd8lNtRk4Q8hVCyCTCRPaKBtTJU7lwZa3WnlORRuvU=;
-        b=maf/cUesSYw27FnLQkltvDRvG1X6PScRoHnsUmhUlreYY0Zf47NPnGKpJO1vko3lrx
-         mLlPbXoXYeAlYT+Iz9x15Mj8xDSEt6lg6WKiKmOdVJfjwUwK5hAddjFiBn1rg8fZO4cd
-         CsC9D47fYDdIf60rVS9VdWXxKuH7HUkwoPwAGesOeYghy8b7ZyRQ9+trpA6kakL8tATr
-         m09rhMCXOFDq/zDFGNmPGDcZuviJPyUORJ6EhEY+2x9hqk//prtIBUx4aXEhJ5q9tUda
-         vcg5o3ZSvqCSIwLsLqGdvl2Ycihd024FwfZ/9qE9mVknfS6zLzG1oIpISk851G3xOJn/
-         ZJTQ==
-X-Forwarded-Encrypted: i=1; AFNElJ8IEkEFcIu6yHFuNMtk7pLZxaM+v8x6hOIXEBYniQlA4St3dudf9hLItVJ4eV86YEiDhu3oKoY=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyY2Zclud+Fbs5VkLPe1rX7O5SiL6vi7NW3pr2brcq6AQdRlxUg
-	dNqWYmOLIC0ujLegmCkyDGxNGCsVR3RmGsXXlYIAGPlxL+8a4pVil9mVYPJN88T0EC4grDevBKy
-	MKvtkHcHcGW+v8/c/q1LJscLQtd4/SNLFgvBQav0ZPaPTYUvj0h6AjXDiTVk=
+        d=1e100.net; s=20251104; t=1779978707; x=1780583507;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=bM+WzYj202rkhAKw8isFN4meBqK+WDYoMBYuhC1fFsk=;
+        b=WSIXdZeWLvui3+U8xzOwrOU8O/tRuD/GqDqW4iNBzxQbiFcI+2dDXtFe2bSBy8I10D
+         x+qQLLyItbFBJU+aOMHB3MUgkbNc6WTZqEZ+qzbI/37ZSsh4UbF6xwTnT1/5/jkebQgl
+         j3tKMLZULTBo9O6asZytwO/+yfLZrif4X25BUvprgjoSBzXXa+wr2nESoKwNztmKk/8E
+         TT3NWgISEtOzjiwfuD1wvWXENWX65l3wsuJHBkpHCe8ELqPj/hPR97m178F6glC/b9U5
+         FzuEqO4iM93P1E1u2f7oDbWc6UKyMLDBY/QrZrMHuxsndh4y3E7GC1I9ua5dHvZp449w
+         uZRw==
+X-Forwarded-Encrypted: i=1; AFNElJ+gxs18AP9GyMcwP30qgUU7pmDrnpb4s1xEzIcHvpNHkb5yUM2zdUACxBTqnJn63TFPVaEVWfg=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzEak9TiacKxrdBxkUHL1ZC0aaKm18YFH4NCxC5PwkpKIanwKq+
+	jFwtCLyh1K7cGfm4E94Ai/pOxHEMald5gFyl+v+oIFGM/O+sHa+i7uFcookXNnoVs7RI4VYFEBI
+	jc+HrX11RGZuj39vCkZo3WGJ7nmzGHeOugd1uKdHCpSqRBZ+AuY4=
+X-Gm-Gg: Acq92OE2rODraJpDh8P2faANbeJSJVupslMANmcLvj+bpwqPg3P5KeGmd2eqKry0M6J
+	y4HqFiUsqSezWgZZeBs5FLWL7qbfec8dL25Vtyu9o9m7kttVnvPMILZUmw6rLiW2ys7tFpJJ0vp
+	33VsJ8KhMYZTpKWrH0Y/OdqaK7aXax6zT6vShppiTbpv4eYp2Vl8gJuuzQm2uSaC0KCUAoT56ga
+	r5rVAc58oKg/4nNT4hzZRlrTIv2vuzhSvP7/qYeCh0X/gziOilbRsUmOk+u54+AHVd97MiEyR7M
+	ISKwpWBo9g3GsM2+rbbZghUUUpiZyl7RTpcKD/aRDu2m+kKRrtv5GI21mAoJCTQVlWYEsotRDSV
+	vWjai112P5NUISclhrEnDwOB1t3WTP58SzNxYYrumCKgDv5sEmvCvZJK/jx0MXuxlcQfPQl6O7y
+	YF2nBkNsnepl6A/7ywXin24AVGKBmXXKYenObbQOmLRLvmU62QLLik+lpUvg==
+X-Received: by 2002:a05:600c:c16a:b0:490:6237:5200 with SMTP id 5b1f17b1804b1-49062375334mr331038155e9.10.1779978706926;
+        Thu, 28 May 2026 07:31:46 -0700 (PDT)
+Received: from inifinity.homelan.mandelbit.com ([2001:67c:2fbc:1:4cf9:4344:20b8:5b16])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4908e9b0c57sm25004975e9.7.2026.05.28.07.31.45
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 28 May 2026 07:31:46 -0700 (PDT)
+From: Antonio Quartulli <antonio@openvpn.net>
+To: Pavitra Jha <jhapavitra98@gmail.com>
+Cc: Antonio Quartulli <antonio@openvpn.net>,
+	sd@queasysnail.net,
+	andrew+netdev@lunn.ch,
+	davem@davemloft.net,
+	edumazet@google.com,
+	kuba@kernel.org,
+	pabeni@redhat.com,
+	netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	stable@vger.kernel.org
+Subject: Re: [PATCH v3] ovpn: fix peer refcount leak in TCP error paths
+Date: Thu, 28 May 2026 16:31:40 +0200
+Message-ID: <177997869357.4170470.2497863930631173471.b4-ty@b4>
+X-Mailer: git-send-email 2.53.0
+In-Reply-To: <20260523090244.504790-1-jhapavitra98@gmail.com>
+References: <20260523090244.504790-1-jhapavitra98@gmail.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-Received: by 2002:a05:6820:1c9d:b0:69d:9f6a:9d2f with SMTP id
- 006d021491bc7-69dfa918199mr695672eaf.38.1779978421526; Thu, 28 May 2026
- 07:27:01 -0700 (PDT)
-Date: Thu, 28 May 2026 07:27:01 -0700
-In-Reply-To: <20260528072100.1163109-1-vulab@iscas.ac.cn>
-X-Google-Appengine-App-Id: s~syzkaller
-X-Google-Appengine-App-Id-Alias: syzkaller
-Message-ID: <6a1850b5.586c836d.2e3ab2.0001.GAE@google.com>
-Subject: [syzbot ci] Re: netfilter: ipvs: fix ct refcount leak when template
- is invalid
-From: syzbot ci <syzbot+ci738d8a1aa6d8f478@syzkaller.appspotmail.com>
-To: coreteam@netfilter.org, davem@davemloft.net, edumazet@google.com, 
-	fw@strlen.de, horms@verge.net.au, ja@ssi.bg, kuba@kernel.org, 
-	linux-kernel@vger.kernel.org, lvs-devel@vger.kernel.org, 
-	netdev@vger.kernel.org, netfilter-devel@vger.kernel.org, pabeni@redhat.com, 
-	pablo@netfilter.org, phil@nwl.cc, stable@vger.kernel.org, vulab@iscas.ac.cn
-Cc: syzbot@lists.linux.dev, syzkaller-bugs@googlegroups.com
-Content-Type: text/plain; charset="UTF-8"
-X-Spamd-Result: default: False [-1.36 / 15.00];
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	DMARC_POLICY_ALLOW(-0.50)[openvpn.net,none];
+	MID_RHS_NOT_FQDN(0.50)[];
+	R_DKIM_ALLOW(-0.20)[openvpn.net:s=google];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	MAILLIST(-0.15)[generic];
-	DMARC_POLICY_SOFTFAIL(0.10)[appspotmail.com : SPF not aligned (relaxed), No valid DKIM,none];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,googlesource.com:url,syzbot.org:url,googlegroups.com:email,appspotmail.com:email];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	TAGGED_RCPT(0.00)[stable];
-	MIME_TRACE(0.00)[0:+];
-	MISSING_XM_UA(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	R_DKIM_NA(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[18];
-	FROM_NEQ_ENVFROM(0.00)[syzbot@syzkaller.appspotmail.com,stable@vger.kernel.org];
+	TAGGED_FROM(0.00)[bounces-255023-lists,stable=lfdr.de];
 	FROM_HAS_DN(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	PRECEDENCE_BULK(0.00)[];
-	TAGGED_FROM(0.00)[bounces-255022-lists,stable=lfdr.de,ci738d8a1aa6d8f478];
-	TO_DN_NONE(0.00)[];
+	FREEMAIL_TO(0.00)[gmail.com];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[]
-X-Rspamd-Queue-Id: 81AB75F3BEE
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[openvpn.net:+];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	TO_DN_SOME(0.00)[];
+	RCVD_COUNT_FIVE(0.00)[5];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[antonio@openvpn.net,stable@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	TAGGED_RCPT(0.00)[stable,netdev];
+	RCPT_COUNT_SEVEN(0.00)[11];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo]
+X-Rspamd-Queue-Id: 78CD95F3BAB
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-syzbot ci has tested the following series
 
-[v1] netfilter: ipvs: fix ct refcount leak when template is invalid
-https://lore.kernel.org/all/20260528072100.1163109-1-vulab@iscas.ac.cn
-* [PATCH] netfilter: ipvs: fix ct refcount leak when template is invalid
+On Sat, 23 May 2026 05:02:43 -0400, Pavitra Jha wrote:
+> When either the TCP RX or TX error path calls ovpn_peer_hold() followed
+> by schedule_work(&peer->tcp.defer_del_work), and the work item is already
+> pending from the other path, schedule_work() returns false and the work
+> runs only once. Since ovpn_tcp_peer_del_work() calls ovpn_peer_put()
+> exactly once, the extra reference taken by the losing path is never
+> dropped, leaking the peer object.
+> 
+> [...]
 
-and found the following issue:
-general protection fault in ip_vs_conn_put
+Applied, thanks!
 
-Full report is available here:
-https://ci.syzbot.org/series/fb773743-f223-4965-9f38-e5ea600ee724
+[1/1] ovpn: fix peer refcount leak in TCP error paths
+      commit: f9e5e5f464d7a7c5b71a48e06d616f57e05a66fd
 
-***
-
-general protection fault in ip_vs_conn_put
-
-tree:      nf-next
-URL:       https://kernel.googlesource.com/pub/scm/linux/kernel/git/netfilter/nf-next.git
-base:      aa064a614efcfa4c300609d1f01134e99a12ad10
-arch:      amd64
-compiler:  Debian clang version 21.1.8 (++20251221033036+2078da43e25a-1~exp1~20251221153213.50), Debian LLD 21.1.8
-config:    https://ci.syzbot.org/builds/3e6a154f-d578-4d43-94af-86e851702925/config
-syz repro: https://ci.syzbot.org/findings/518450a1-bd56-47bd-b214-be945f6ba221/syz_repro
-
-IPVS: sed: FWM 3 0x00000003 - no destination available
-Oops: general protection fault, probably for non-canonical address 0xdffffc0000000007: 0000 [#1] SMP KASAN PTI
-KASAN: null-ptr-deref in range [0x0000000000000038-0x000000000000003f]
-CPU: 1 UID: 0 PID: 5812 Comm: syz.1.18 Not tainted syzkaller #0 PREEMPT(full) 
-Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS 1.16.2-debian-1.16.2-1 04/01/2014
-RIP: 0010:ip_vs_conn_put+0x2b/0x240 net/netfilter/ipvs/ip_vs_conn.c:608
-Code: 0f 1e fa 55 41 57 41 56 41 55 41 54 53 48 89 fb 49 bc 00 00 00 00 00 fc ff df e8 40 cb c1 f7 4c 8d 73 3c 4d 89 f5 49 c1 ed 03 <43> 0f b6 44 25 00 84 c0 0f 85 9f 01 00 00 41 8b 2e 89 ee 81 e6 00
-RSP: 0018:ffffc90003d4eba8 EFLAGS: 00010203
-RAX: ffffffff8a03f980 RBX: 0000000000000000 RCX: ffff888169370000
-RDX: 0000000000000000 RSI: ffffffff8c28b740 RDI: 0000000000000000
-RBP: ffffc90003d4ee30 R08: ffff88823c6247d3 R09: 1ffff110478c48fa
-R10: dffffc0000000000 R11: ffffed10478c48fb R12: dffffc0000000000
-R13: 0000000000000007 R14: 000000000000003c R15: 0000000000000000
-FS:  00007faa344d36c0(0000) GS:ffff8882a9276000(0000) knlGS:0000000000000000
-CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-CR2: 00007faa33472780 CR3: 0000000169de6000 CR4: 00000000000006f0
-Call Trace:
- <TASK>
- ip_vs_sched_persist net/netfilter/ipvs/ip_vs_core.c:-1 [inline]
- ip_vs_schedule+0x100f/0x1d90 net/netfilter/ipvs/ip_vs_core.c:688
- udp_conn_schedule+0x391/0x7a0 net/netfilter/ipvs/ip_vs_proto_udp.c:78
- ip_vs_try_to_schedule net/netfilter/ipvs/ip_vs_core.c:1659 [inline]
- ip_vs_in_hook+0xc50/0x1bf0 net/netfilter/ipvs/ip_vs_core.c:2231
- nf_hook_entry_hookfn include/linux/netfilter.h:158 [inline]
- nf_hook_slow+0xc5/0x220 net/netfilter/core.c:619
- nf_hook+0x22a/0x3a0 include/linux/netfilter.h:273
- __ip_local_out+0x558/0x6a0 net/ipv4/ip_output.c:120
- ip_local_out+0x2a/0x190 net/ipv4/ip_output.c:129
- ip_send_skb+0x45/0xc0 net/ipv4/ip_output.c:1510
- udp_send_skb+0x7e4/0xf70 net/ipv4/udp.c:1161
- udp_sendmsg+0x1937/0x21a0 net/ipv4/udp.c:1443
- udpv6_sendmsg+0x996/0x25c0 net/ipv6/udp.c:1523
- sock_sendmsg_nosec net/socket.c:787 [inline]
- __sock_sendmsg net/socket.c:802 [inline]
- ____sys_sendmsg+0x5c7/0x9f0 net/socket.c:2698
- ___sys_sendmsg+0x2a5/0x360 net/socket.c:2752
- __sys_sendmsg net/socket.c:2784 [inline]
- __do_sys_sendmsg net/socket.c:2789 [inline]
- __se_sys_sendmsg net/socket.c:2787 [inline]
- __x64_sys_sendmsg+0x1bd/0x2a0 net/socket.c:2787
- do_syscall_x64 arch/x86/entry/syscall_64.c:63 [inline]
- do_syscall_64+0x15f/0xf80 arch/x86/entry/syscall_64.c:94
- entry_SYSCALL_64_after_hwframe+0x77/0x7f
-RIP: 0033:0x7faa3359ce59
-Code: ff c3 66 2e 0f 1f 84 00 00 00 00 00 0f 1f 44 00 00 48 89 f8 48 89 f7 48 89 d6 48 89 ca 4d 89 c2 4d 89 c8 4c 8b 4c 24 08 0f 05 <48> 3d 01 f0 ff ff 73 01 c3 48 c7 c1 e8 ff ff ff f7 d8 64 89 01 48
-RSP: 002b:00007faa344d3028 EFLAGS: 00000246 ORIG_RAX: 000000000000002e
-RAX: ffffffffffffffda RBX: 00007faa33815fa0 RCX: 00007faa3359ce59
-RDX: 0000000000000000 RSI: 0000200000000400 RDI: 0000000000000004
-RBP: 00007faa33632d6f R08: 0000000000000000 R09: 0000000000000000
-R10: 0000000000000000 R11: 0000000000000246 R12: 0000000000000000
-R13: 00007faa33816038 R14: 00007faa33815fa0 R15: 00007ffe8bd2ebb8
- </TASK>
-Modules linked in:
----[ end trace 0000000000000000 ]---
-RIP: 0010:ip_vs_conn_put+0x2b/0x240 net/netfilter/ipvs/ip_vs_conn.c:608
-Code: 0f 1e fa 55 41 57 41 56 41 55 41 54 53 48 89 fb 49 bc 00 00 00 00 00 fc ff df e8 40 cb c1 f7 4c 8d 73 3c 4d 89 f5 49 c1 ed 03 <43> 0f b6 44 25 00 84 c0 0f 85 9f 01 00 00 41 8b 2e 89 ee 81 e6 00
-RSP: 0018:ffffc90003d4eba8 EFLAGS: 00010203
-RAX: ffffffff8a03f980 RBX: 0000000000000000 RCX: ffff888169370000
-RDX: 0000000000000000 RSI: ffffffff8c28b740 RDI: 0000000000000000
-RBP: ffffc90003d4ee30 R08: ffff88823c6247d3 R09: 1ffff110478c48fa
-R10: dffffc0000000000 R11: ffffed10478c48fb R12: dffffc0000000000
-R13: 0000000000000007 R14: 000000000000003c R15: 0000000000000000
-FS:  00007faa344d36c0(0000) GS:ffff8882a9276000(0000) knlGS:0000000000000000
-CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-CR2: 00007faa335ea540 CR3: 0000000169de6000 CR4: 00000000000006f0
-----------------
-Code disassembly (best guess):
-   0:	0f 1e fa             	nop    %edx
-   3:	55                   	push   %rbp
-   4:	41 57                	push   %r15
-   6:	41 56                	push   %r14
-   8:	41 55                	push   %r13
-   a:	41 54                	push   %r12
-   c:	53                   	push   %rbx
-   d:	48 89 fb             	mov    %rdi,%rbx
-  10:	49 bc 00 00 00 00 00 	movabs $0xdffffc0000000000,%r12
-  17:	fc ff df
-  1a:	e8 40 cb c1 f7       	call   0xf7c1cb5f
-  1f:	4c 8d 73 3c          	lea    0x3c(%rbx),%r14
-  23:	4d 89 f5             	mov    %r14,%r13
-  26:	49 c1 ed 03          	shr    $0x3,%r13
-* 2a:	43 0f b6 44 25 00    	movzbl 0x0(%r13,%r12,1),%eax <-- trapping instruction
-  30:	84 c0                	test   %al,%al
-  32:	0f 85 9f 01 00 00    	jne    0x1d7
-  38:	41 8b 2e             	mov    (%r14),%ebp
-  3b:	89 ee                	mov    %ebp,%esi
-  3d:	81                   	.byte 0x81
-  3e:	e6 00                	out    %al,$0x0
-
-
-***
-
-If these findings have caused you to resend the series or submit a
-separate fix, please add the following tag to your commit message:
-  Tested-by: syzbot@syzkaller.appspotmail.com
-
----
-This report is generated by a bot. It may contain errors.
-syzbot ci engineers can be reached at syzkaller@googlegroups.com.
-
-To test a patch for this bug, please reply with `#syz test`
-(should be on a separate line).
-
-The patch should be attached to the email.
-Note: arguments like custom git repos and branches are not supported.
+Best regards,
+-- 
+Antonio Quartulli <antonio@openvpn.net>
 
