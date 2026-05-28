@@ -1,193 +1,201 @@
-Return-Path: <stable+bounces-255055-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-255056-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id iEeELhFzGGq4kAgAu9opvQ
-	(envelope-from <stable+bounces-255055-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 18:53:37 +0200
+	id yGbeH01vGGp6kAgAu9opvQ
+	(envelope-from <stable+bounces-255056-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 18:37:33 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3E6495F5456
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 18:53:37 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1DF635F514B
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 18:37:33 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 56D5532D6659
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 16:05:29 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 83F5F3375D77
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 16:05:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1D2123F39F1;
-	Thu, 28 May 2026 15:59:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 59D384218A3;
+	Thu, 28 May 2026 16:00:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="BuS37Px+"
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="BgioBIqj"
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.19])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-qt1-f202.google.com (mail-qt1-f202.google.com [209.85.160.202])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4F7213FF89B;
-	Thu, 28 May 2026 15:59:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.19
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 687B630E0E4
+	for <stable@vger.kernel.org>; Thu, 28 May 2026 16:00:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.202
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779983945; cv=none; b=gV77eLnSX/eKmqxtRB9MoQeDRq4Va2u/n4wSFumJteDz0qOChOYrqQ+p6sxpIHZCQ5zAnWaT0PgoauvXAqGJna1fVIsfzaftG3AadYB0yNABm65TeB+6b5ISimfdTDDSdeDbVjiy7jcGDn47ihfw0x2JWyzGuY65e/Exz2h8AfQ=
+	t=1779984010; cv=none; b=UVhyuLs9tIx69tpg1mc5bBrMZaKOeNr74nbiTRdvJiudPwb8b7qksvZL0ENdMEA3gv0C/lmFrHOhrDQyFa4cJeBQ+o4uZMnqXvPNgXkt6ARq4hTrLdkBpAF+GfMRlmuE7PZDfWeo7iTED3XOuxbczHezmGrkrMv7v5xkb3IA6MA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779983945; c=relaxed/simple;
-	bh=XgCXlshtxklSakhCi1RUwGGvMxGLeHuGIfvywM6bf5s=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=JPFor1km2xcPAfqmFgnJl5hBoX6NaxQ01chfHLV46F7jq0vYCE9pMFDoISPk5tJxhL/JtI6KLXaszeP9AddcOCvFxRWW6WmfrcT1g7+pT2a0EtsyrcZqJtOAyEdG8KP7JNzzhpZoofgRhuvXds6bn1R8hta+5ydjiZbKVsstm0Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=BuS37Px+; arc=none smtp.client-ip=192.198.163.19
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1779983941; x=1811519941;
-  h=from:to:cc:subject:date:message-id:mime-version:
-   content-transfer-encoding;
-  bh=XgCXlshtxklSakhCi1RUwGGvMxGLeHuGIfvywM6bf5s=;
-  b=BuS37Px+pPjXuhfRszN4WgZCUdTh1kY0RCJIfM7z+UqECm3MBX3f7Nnr
-   l7vdFOf7EXOHCJQLVW6wvm/eShmeLPY5wHGOhqP6vRdrR+0clYjUi8Wdm
-   c9QiGuQ/RjRl4e4mX8A8HWIK/VDARtOXbB/fZg9iF+Mx8WsM0k8B3/Xkv
-   jiXfoxsTZ7wtQxMs7iCy1L4DwJoXtIlU8qslbFbeLl/n/7OlHGFCCn/V7
-   kFiuhbdTIvpDPxUPlqOQvE86HkQpl/9wD9BupTjrgg1dgkqCxisxaZ3GT
-   EV2eLDMgT6bC27uycEH5d+iNthkgjHnYWAM4/mBbg3D+uHdniuLogPxYJ
-   A==;
-X-CSE-ConnectionGUID: DU2SgLNgRuincEk+ZfQrDg==
-X-CSE-MsgGUID: 0cZFJ3D1R32A2+AGb4KolA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11800"; a="79862914"
-X-IronPort-AV: E=Sophos;i="6.24,173,1774335600"; 
-   d="scan'208";a="79862914"
-Received: from orviesa006.jf.intel.com ([10.64.159.146])
-  by fmvoesa113.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 28 May 2026 08:59:00 -0700
-X-CSE-ConnectionGUID: Of34VBRHSkaRAaxqYRAIGw==
-X-CSE-MsgGUID: DW0qB+j6QpWBdnxdZFU33A==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.24,173,1774335600"; 
-   d="scan'208";a="241548892"
-Received: from silpixa00401971.ir.intel.com ([10.20.226.106])
-  by orviesa006.jf.intel.com with ESMTP; 28 May 2026 08:58:59 -0700
-From: Giovanni Cabiddu <giovanni.cabiddu@intel.com>
-To: herbert@gondor.apana.org.au
-Cc: linux-crypto@vger.kernel.org,
-	qat-linux@intel.com,
-	Giovanni Cabiddu <giovanni.cabiddu@intel.com>,
-	stable@vger.kernel.org,
-	Ahsan Atta <ahsan.atta@intel.com>,
-	Laurent M Coquerel <laurent.m.coquerel@intel.com>
-Subject: [PATCH] crypto: qat - validate RSA CRT component lengths
-Date: Thu, 28 May 2026 16:57:44 +0100
-Message-ID: <20260528155854.40858-1-giovanni.cabiddu@intel.com>
-X-Mailer: git-send-email 2.54.0
+	s=arc-20240116; t=1779984010; c=relaxed/simple;
+	bh=k10mRhLr6t76p4jkzZqe4TGLVfCDjV4dlalSEfzSMXc=;
+	h=Date:Mime-Version:Message-ID:Subject:From:To:Cc:Content-Type; b=UPmoLNkLKJQO8RhsRQiHNeYLkX4QOn5ejlr2PdrWOS0D51LjdYFh5LWcp63NXLJx655TtHVXMddB1SUFRV3TV6ujfsgkRfTFDUe+ADI+4+HUwndaR/JLIumlu2Ud87ktVRz100m1MoCupSvyUR4CLf+eCflfoNtsydBhXue9iL8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--xuehaohu.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=BgioBIqj; arc=none smtp.client-ip=209.85.160.202
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--xuehaohu.bounces.google.com
+Received: by mail-qt1-f202.google.com with SMTP id d75a77b69052e-516ceea1984so139117011cf.1
+        for <stable@vger.kernel.org>; Thu, 28 May 2026 09:00:08 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1779984007; x=1780588807; darn=vger.kernel.org;
+        h=cc:to:from:subject:message-id:mime-version:date:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=MmPFy91yuYd+9nLUOi1wu2JWcf7o4ksos6H5oNntzCU=;
+        b=BgioBIqjikS5YWrDib6V0VNppkXf1Q7CZEs+tgvrtcBff8sU2VM8hWbG0GCpggJcTs
+         6SnoRbyV09kp9pyQ7Pso8s8POhbUKJCPI9i51EgYibG0ANjDyQ1iIpkgWabXVdshsSrF
+         LcuScN4sBZpYnr/aRxbTFiP84JqmmAmI5ogQbbtnj0VMFIZmZL1nRQ6ezBTM0QF36Pno
+         ErL9zO7OnzhNmi8d9QTVWgL8PWjRIt1a8PR6+0unKisPSDrDB4npy9a//SgYofAPL692
+         XxA9dYdD2jDbhSoSmJ+zYeRGYKJCl+kWNnAshbHr5pr+RiW7ozeE+cGCqecGWjIeIXBJ
+         HGiQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1779984007; x=1780588807;
+        h=cc:to:from:subject:message-id:mime-version:date:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=MmPFy91yuYd+9nLUOi1wu2JWcf7o4ksos6H5oNntzCU=;
+        b=GsO3QubvWrwcu1zRPkqcxBaB5o2FUDlN/oESFqf4d/vYiRPBZO768S9P5lsM4ER36o
+         K/IUYAN6HkmhoafVyu3hrqi50mBFhc7ijXF520Gw3U7+E20HQ8y0bAT+XaYJ80QhR+S1
+         DVzk59PFQcv3RhOlZJiZDeHsuCOnOXcNWkAPe44133g51Gyif0FbTza+Mu0aUTNMX4wI
+         uZNNe+cTi1QNcjoPWKgJx7JYS9lX999LY0WlfHZPxJUDGuYzDjhpp4hNoCEo9NSBI/zE
+         palMKvHLaunmJrp+aSGSM42i9aVpi7kubzrCslni/MV+ao9ZoVmddXKioYc9Igobttkp
+         eagg==
+X-Forwarded-Encrypted: i=1; AFNElJ/ngSHU9GuUiK8X8KSZ2sIT30JsyjDxU2eReR0cTjuq5ABwNfLsJk7LYt6i3E8dKPKtKLJTD3w=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yw4LadnfO6ClFdKjEg2pmFliEvbKPW+3fc55i6I0EgoOqJgfD9Y
+	1EKesss+v+e7QXwrOJpmPr1kVi581RdLSwTNu+O1lmCZwVKCuJ1xn9qj3rLZmLFYEziVmz4XJ7x
+	RSzJ1Rlh9ZsXG
+X-Received: from qtxy12.prod.google.com ([2002:a05:622a:120c:b0:516:373e:a942])
+ (user=xuehaohu job=prod-delivery.src-stubby-dispatcher) by
+ 2002:a05:622a:1488:b0:516:d6a4:fd69 with SMTP id d75a77b69052e-516d6a4fe46mr371616761cf.12.1779984005890;
+ Thu, 28 May 2026 09:00:05 -0700 (PDT)
+Date: Thu, 28 May 2026 16:00:04 +0000
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Organization: Intel Research and Development Ireland Ltd - Co. Reg. #308263 - Collinstown Industrial Park, Leixlip, County Kildare - Ireland
-Content-Transfer-Encoding: 8bit
+Mime-Version: 1.0
+X-Mailer: git-send-email 2.54.0.794.g4f17f83d09-goog
+Message-ID: <20260528160004.2452461-1-xuehaohu@google.com>
+Subject: [PATCH v3] dma-buf: Fix silent overflow for phys vec to sgt
+From: David Hu <xuehaohu@google.com>
+To: Sumit Semwal <sumit.semwal@linaro.org>, 
+	"=?UTF-8?q?Christian=20K=C3=B6nig?=" <christian.koenig@amd.com>
+Cc: Nicolin Chen <nicolinc@nvidia.com>, Leon Romanovsky <leon@kernel.org>, 
+	Kevin Tian <kevin.tian@intel.com>, Ankit Agrawal <ankita@nvidia.com>, Jason Gunthorpe <jgg@ziepe.ca>, 
+	Alex Williamson <alex@shazbot.org>, linux-media@vger.kernel.org, 
+	dri-devel@lists.freedesktop.org, linaro-mm-sig@lists.linaro.org, 
+	linux-kernel@vger.kernel.org, jmoroni@google.com, praan@google.com, 
+	David Hu <xuehaohu@google.com>, stable@vger.kernel.org, iommu@lists.linux.dev
+Content-Type: text/plain; charset="UTF-8"
 X-Spamd-Result: default: False [-0.66 / 15.00];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	MID_CONTAINS_FROM(1.00)[];
-	DMARC_POLICY_ALLOW(-0.50)[intel.com,none];
-	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
-	R_DKIM_ALLOW(-0.20)[intel.com:s=Intel];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	MV_CASE(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[google.com,reject];
+	R_DKIM_ALLOW(-0.20)[google.com:s=20251104];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	TAGGED_FROM(0.00)[bounces-255056-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-255055-lists,stable=lfdr.de];
-	RCVD_COUNT_FIVE(0.00)[5];
-	HAS_ORG_HEADER(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	FROM_HAS_DN(0.00)[];
-	TO_DN_SOME(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[giovanni.cabiddu@intel.com,stable@vger.kernel.org];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[7];
-	NEURAL_HAM(-0.00)[-1.000];
-	DKIM_TRACE(0.00)[intel.com:+];
-	TAGGED_RCPT(0.00)[stable];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[intel.com:email,intel.com:mid,intel.com:dkim,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo]
-X-Rspamd-Queue-Id: 3E6495F5456
+	MIME_TRACE(0.00)[0:+];
+	RCVD_COUNT_THREE(0.00)[4];
+	RCPT_COUNT_TWELVE(0.00)[17];
+	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	TO_DN_SOME(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[xuehaohu@google.com,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[google.com:+];
+	NEURAL_HAM(-0.00)[-1.000];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,linux.dev:email]
+X-Rspamd-Queue-Id: 1DF635F514B
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-The generic RSA key parser (rsa_helper.c) bounds each CRT component (p,
-q, dp, dq, qinv) by the modulus size n_sz, but qat_rsa_setkey_crt()
-allocates half-size DMA buffers (key_sz / 2) and right-aligns each
-component with:
+In case MMIO size is bigger than 4G and peer2peer DMA goes
+through host bridge, we trigger a code path that assigns the
+total linked IOVA (which is greater than 4G) to mapped_len.
 
-    memcpy(dst + half_key_sz - len, src, len)
+Previously, `mapped_len` was declared as 32-bit `unsigned int`.
+When accumulating `size_t` lengths, this leads to a silent wrap-around.
+This truncation causes truncated lengths to be passed to functions
+like `fill_sg_entry()`.
 
-When a CRT component is larger than half_key_sz the subtraction
-underflows and memcpy writes past the DMA buffer, causing memory
-corruption.
+Fix this by changing `mapped_len` to `size_t` (64-bit). While
+at it, fix similar potential overflow issues in `calc_sg_nents`
+by using `size_t` for `nents` and checking against `UINT_MAX`
+and using `unsigned int` for the loop iterator in `fill_sg_entry`
+to match.
 
-Add a len > half_key_sz check next to the existing !len check for each
-of the five CRT components so the driver falls back to the non-CRT path
-instead of writing out of bounds.
-
-Fixes: 879f77e9071f ("crypto: qat - Add RSA CRT mode")
+Fixes: 3aa31a8bb11e ("dma-buf: provide phys_vec to scatter-gather mapping routine")
 Cc: stable@vger.kernel.org
-Signed-off-by: Giovanni Cabiddu <giovanni.cabiddu@intel.com>
-Reviewed-by: Ahsan Atta <ahsan.atta@intel.com>
-Reviewed-by: Laurent M Coquerel <laurent.m.coquerel@intel.com>
-Tested-by: Laurent M Coquerel <laurent.m.coquerel@intel.com>
+Cc: iommu@lists.linux.dev
+Reviewed-by: Pranjal Shrivastava <praan@google.com>
+Signed-off-by: David Hu <xuehaohu@google.com>
 ---
- drivers/crypto/intel/qat/qat_common/qat_asym_algs.c | 10 +++++-----
- 1 file changed, 5 insertions(+), 5 deletions(-)
+Changes in v3:
+ - Removed leftover sentence fragment from the commit message.
+ - Kept `nents = 0` initialization (previously stated as removed in the
+   v2 changelog) as it is strictly required for the `+=` accumulation
+   loop in `calc_sg_nents()`.
 
-diff --git a/drivers/crypto/intel/qat/qat_common/qat_asym_algs.c b/drivers/crypto/intel/qat/qat_common/qat_asym_algs.c
-index e09b9edfce42..75c15c8e41db 100644
---- a/drivers/crypto/intel/qat/qat_common/qat_asym_algs.c
-+++ b/drivers/crypto/intel/qat/qat_common/qat_asym_algs.c
-@@ -1085,7 +1085,7 @@ static void qat_rsa_setkey_crt(struct qat_rsa_ctx *ctx, struct rsa_key *rsa_key)
- 	ptr = rsa_key->p;
- 	len = rsa_key->p_sz;
- 	qat_rsa_drop_leading_zeros(&ptr, &len);
--	if (!len)
-+	if (!len || len > half_key_sz)
- 		goto err;
- 	ctx->p = dma_alloc_coherent(dev, half_key_sz, &ctx->dma_p, GFP_KERNEL);
- 	if (!ctx->p)
-@@ -1096,7 +1096,7 @@ static void qat_rsa_setkey_crt(struct qat_rsa_ctx *ctx, struct rsa_key *rsa_key)
- 	ptr = rsa_key->q;
- 	len = rsa_key->q_sz;
- 	qat_rsa_drop_leading_zeros(&ptr, &len);
--	if (!len)
-+	if (!len || len > half_key_sz)
- 		goto free_p;
- 	ctx->q = dma_alloc_coherent(dev, half_key_sz, &ctx->dma_q, GFP_KERNEL);
- 	if (!ctx->q)
-@@ -1107,7 +1107,7 @@ static void qat_rsa_setkey_crt(struct qat_rsa_ctx *ctx, struct rsa_key *rsa_key)
- 	ptr = rsa_key->dp;
- 	len = rsa_key->dp_sz;
- 	qat_rsa_drop_leading_zeros(&ptr, &len);
--	if (!len)
-+	if (!len || len > half_key_sz)
- 		goto free_q;
- 	ctx->dp = dma_alloc_coherent(dev, half_key_sz, &ctx->dma_dp,
- 				     GFP_KERNEL);
-@@ -1119,7 +1119,7 @@ static void qat_rsa_setkey_crt(struct qat_rsa_ctx *ctx, struct rsa_key *rsa_key)
- 	ptr = rsa_key->dq;
- 	len = rsa_key->dq_sz;
- 	qat_rsa_drop_leading_zeros(&ptr, &len);
--	if (!len)
-+	if (!len || len > half_key_sz)
- 		goto free_dp;
- 	ctx->dq = dma_alloc_coherent(dev, half_key_sz, &ctx->dma_dq,
- 				     GFP_KERNEL);
-@@ -1131,7 +1131,7 @@ static void qat_rsa_setkey_crt(struct qat_rsa_ctx *ctx, struct rsa_key *rsa_key)
- 	ptr = rsa_key->qinv;
- 	len = rsa_key->qinv_sz;
- 	qat_rsa_drop_leading_zeros(&ptr, &len);
--	if (!len)
-+	if (!len || len > half_key_sz)
- 		goto free_dq;
- 	ctx->qinv = dma_alloc_coherent(dev, half_key_sz, &ctx->dma_qinv,
- 				       GFP_KERNEL);
+Changes in v2:
+ - Fixed 'IVOA' -> 'IOVA' typo and expanded commit message (Claude Bot).
+ - Added Reverse Xmas tree formatting (Pranjal).
+ - Folded in extra bounds checking for calc_sg_nents() (Pranjal).
+ - Folded in type consistency fix for fill_sg_entry() (Pranjal).
 
-base-commit: a36f3ace3504ad60981e21e3159655bcded4764f
+ drivers/dma-buf/dma-buf-mapping.c | 10 +++++++---
+ 1 file changed, 7 insertions(+), 3 deletions(-)
+
+diff --git a/drivers/dma-buf/dma-buf-mapping.c b/drivers/dma-buf/dma-buf-mapping.c
+index 794acff2546a..5bc769fc42ea 100644
+--- a/drivers/dma-buf/dma-buf-mapping.c
++++ b/drivers/dma-buf/dma-buf-mapping.c
+@@ -10,7 +10,7 @@ static struct scatterlist *fill_sg_entry(struct scatterlist *sgl, size_t length,
+ 					 dma_addr_t addr)
+ {
+ 	unsigned int len, nents;
+-	int i;
++	unsigned int i;
+ 
+ 	nents = DIV_ROUND_UP(length, UINT_MAX);
+ 	for (i = 0; i < nents; i++) {
+@@ -36,7 +36,7 @@ static unsigned int calc_sg_nents(struct dma_iova_state *state,
+ 				  struct phys_vec *phys_vec, size_t nr_ranges,
+ 				  size_t size)
+ {
+-	unsigned int nents = 0;
++	size_t nents = 0;
+ 	size_t i;
+ 
+ 	if (!state || !dma_use_iova(state)) {
+@@ -51,6 +51,9 @@ static unsigned int calc_sg_nents(struct dma_iova_state *state,
+ 		nents = DIV_ROUND_UP(size, UINT_MAX);
+ 	}
+ 
++	if (nents > UINT_MAX)
++		return 0;
++
+ 	return nents;
+ }
+ 
+@@ -95,9 +98,10 @@ struct sg_table *dma_buf_phys_vec_to_sgt(struct dma_buf_attachment *attach,
+ 					 size_t nr_ranges, size_t size,
+ 					 enum dma_data_direction dir)
+ {
+-	unsigned int nents, mapped_len = 0;
+ 	struct dma_buf_dma *dma;
+ 	struct scatterlist *sgl;
++	size_t mapped_len = 0;
++	unsigned int nents;
+ 	dma_addr_t addr;
+ 	size_t i;
+ 	int ret;
 -- 
-2.54.0
+2.54.0.794.g4f17f83d09-goog
 
 
