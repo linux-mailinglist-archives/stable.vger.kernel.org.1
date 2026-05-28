@@ -1,61 +1,61 @@
-Return-Path: <stable+bounces-255820-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-256229-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id MChdBPymGGpolwgAu9opvQ
-	(envelope-from <stable+bounces-255820-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:35:08 +0200
+	id QGyKFIutGGpymAgAu9opvQ
+	(envelope-from <stable+bounces-256229-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 23:03:07 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id A9E8E5F9063
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:35:07 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4FC8D5FA257
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 23:03:06 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 7BC843092F3D
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 20:26:17 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 7380C308823C
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 20:45:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D3EA4324B2C;
-	Thu, 28 May 2026 20:26:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0BB1D33372A;
+	Thu, 28 May 2026 20:45:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lxWCjxpW"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uEKQXbVP"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9B438257854;
-	Thu, 28 May 2026 20:26:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 86634328B7B;
+	Thu, 28 May 2026 20:45:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779999971; cv=none; b=MmeokbiG/6BUtNrHawjR1AGRUezNAspNzhMqEIcaTEG1Bz91Y5FoadK+GbUhHiRZTOnb1KPLVoF4kVbv7T2Ni1Bsg+X2W0XVn2WQ56Mz1Hb/Aj0rBHukxnDTL3oA2eu/L36cU8xsYoRRaYr0zf9PJbrIP3fnxtk3uYeYFi0A8P4=
+	t=1780001118; cv=none; b=qs8b0fGMiu3aoiW5aDy03GymH5kpCrPNM3VRFBJSX0YfD/i1LUrbfd+BVM1RtG1oPoAPj5PSNs/Ptjxu9599D+PEViNBmz29iviiSnkGEN4F/QsoB3Y8EykQWH+y6jzA5gYxlotuMvle5Xsaex5xDa+Gm7B30PcZHJ7RNVJrL+M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779999971; c=relaxed/simple;
-	bh=TZ01ouuL2gG32C+783U/Ul8BJII4ucDUJpkI4dbgMqQ=;
+	s=arc-20240116; t=1780001118; c=relaxed/simple;
+	bh=AtSGbTj1L1t6R93qZtxfRm5FYRc98xmTn01iIDIG6Ss=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=A63dlCGAJIpw7CoCq47MUzy64SYk1y5W8N5pWviw6uqqTqQUO7K3WaQ4pqQN1kC2nlaXaGfIAtaoWNMoP10o9N7pQWAiB9leCWYXioYcXXfo1hHVu/PsNtf/4b2mXb1aJV2cT+JLh0kupFoWalZtcnWR2SFla4TUN/j6NCR2VVc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lxWCjxpW; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CE4571F000E9;
-	Thu, 28 May 2026 20:26:09 +0000 (UTC)
+	 MIME-Version; b=eBxqBCj6D8kueqGMOdCR8FbD50/LUcYxNLJToJvyNuyx8HQRit3AB0M5zLpMNE8kl9bQsq7edWu2g8bVnWUhQLFrKa9JG3JLIwC3rcTJxBJXizCQbiMD7rViv/PYV3PhhlSnID4oaH3bZka1A2imyMy5eUpmqgMnlHMZVM+YYx4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uEKQXbVP; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E50361F000E9;
+	Thu, 28 May 2026 20:45:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779999970;
-	bh=W0kNCSDOyZooCubU9D+khkLJp04XlyyFAyQbLGkX2mA=;
+	s=korg; t=1780001117;
+	bh=+N3Dimkg5O2YqNpcmgBJGxsSZNx4KnfNWGBjCkjdFBQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=lxWCjxpWM4MBDrBX43oLbhYvUhK9FFEPup0VnwbKkOddWesI/LD6dHjU6+F2mv7ST
-	 w3x17HKP3gHd9fYEJ/yyptdDX6dmk628+MAMiTEENs070mOHVI0YlgHU0ddmz0A3cg
-	 cJNuGNe/ikx6pQDk6ff0myntfaatiZkB6rYKPWoo=
+	b=uEKQXbVPLj53jVgemsD71Ej8yxD/pCCeNA8QNZFv91oAEU/JF1MtOItFrSYC+FMqm
+	 7OFX5Grsr95b41eGjvShyaMHkk19xomFzjcjcCe9Twuc0/+hU+P4o9qZHmpOVGbBUU
+	 W0jI0UNd6l4HbE7NuAtR9sRjKbp0pQs44ElcgK+Q=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Kang Yang <kang.yang@oss.qualcomm.com>,
-	Rameshkumar Sundaram <rameshkumar.sundaram@oss.qualcomm.com>,
-	Baochen Qiang <baochen.qiang@oss.qualcomm.com>,
-	Jeff Johnson <jeff.johnson@oss.qualcomm.com>,
+	DaeMyung Kang <charsyam@gmail.com>,
+	Namjae Jeon <linkinjeon@kernel.org>,
+	Steve French <stfrench@microsoft.com>,
+	Alva Lan <alvalan9@foxmail.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 256/377] wifi: ath10k: skip WMI and beacon transmission when device is wedged
+Subject: [PATCH 6.6 014/186] ksmbd: close durable scavenger races against m_fp_list lookups
 Date: Thu, 28 May 2026 21:48:14 +0200
-Message-ID: <20260528194645.785858682@linuxfoundation.org>
+Message-ID: <20260528194929.339752676@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260528194638.371537336@linuxfoundation.org>
-References: <20260528194638.371537336@linuxfoundation.org>
+In-Reply-To: <20260528194928.941004471@linuxfoundation.org>
+References: <20260528194928.941004471@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -70,107 +70,291 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	RCVD_TLS_LAST(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,kernel.org,microsoft.com,foxmail.com];
+	TAGGED_FROM(0.00)[bounces-256229-lists,stable=lfdr.de];
+	PRECEDENCE_BULK(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FROM_HAS_DN(0.00)[];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-255820-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TO_DN_SOME(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[8];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[8];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,msgid.link:url,qualcomm.com:email,linuxfoundation.org:mid,linuxfoundation.org:dkim]
-X-Rspamd-Queue-Id: A9E8E5F9063
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,foxmail.com:email]
+X-Rspamd-Queue-Id: 4FC8D5FA257
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kang Yang <kang.yang@oss.qualcomm.com>
+From: DaeMyung Kang <charsyam@gmail.com>
 
-[ Upstream commit 54a5b38e4396530e5b2f12b54d3844e860ab6784 ]
+[ Upstream commit bf736184d063da1a552ffeff0481813599a182cc ]
 
-In ath10k_wmi_cmd_send(), the current code detects ATH10K_STATE_WEDGED
-and sets ret to -ESHUTDOWN, but still proceeds to transmit pending
-beacons and calls ath10k_wmi_cmd_send_nowait().
+ksmbd_durable_scavenger() has two related races against any walker
+that iterates f_ci->m_fp_list, including ksmbd_lookup_fd_inode()
+(used by ksmbd_vfs_rename) and the share-mode checks in
+fs/smb/server/smb_common.c.
 
-This can lead to incorrect behavior, as WMI commands and beacons are
-still sent after the device has been marked as wedged, and the original
--ESHUTDOWN return value may be overwritten by the result of the send
-path.
+(1) fp->node list-head reuse.  Durable-preserved handles can remain
+linked on f_ci->m_fp_list after session teardown so share-mode checks
+still see them while the handle is reconnectable.  The scavenger
+collected expired handles by adding fp->node to a local
+scavenger_list after removing them from the global durable idr.
+Because fp->node is the same list_head used by m_fp_list,
+list_add(&fp->node, &scavenger_list) overwrites the m_fp_list links
+and corrupts both lists.  CONFIG_DEBUG_LIST can report this on the
+share-mode walk path.
 
-The wedged state indicates the hardware is already unreliable, and no
-further interaction with firmware is expected or meaningful in this
-state.
+(2) Refcount race against m_fp_list walkers.  The scavenger qualifies
+an expired durable handle with atomic_read(&fp->refcount) > 1 and
+fp->conn under global_ft.lock, removes fp from global_ft, then drops
+global_ft.lock before unlinking fp from m_fp_list and freeing it.
+During that gap fp is still linked on m_fp_list with f_state ==
+FP_INITED.  ksmbd_lookup_fd_inode() under m_lock read calls
+ksmbd_fp_get() (atomic_inc_not_zero on refcount that is still 1) and
+takes a live reference; the scavenger then unlinks and frees fp
+while the holder owns a reference, leading to UAF on the holder's
+subsequent ksmbd_fd_put() and on any field reads performed by a
+concurrent share-mode walker that iterates m_fp_list without taking
+ksmbd_fp_get() (smb_check_perm_dleases-like paths).
 
-Fix this by skipping beacon transmission and the WMI send path entirely
-once ATH10K_STATE_WEDGED is detected, ensuring consistent return values
-and avoiding unnecessary firmware interaction.
+Fix both:
 
-Tested-on: QCA6174 hw3.2 PCI WLAN.RM.4.4.1-00288-QCARMSWPZ-1
-Tested-on: QCA6174 hw3.2 SDIO WLAN.RMH.4.4.1-00189
+  * Stop reusing fp->node as a scavenger-private list node.  Remove
+    one expired handle from global_ft under global_ft.lock, take an
+    explicit transient reference, drop the lock, unlink fp->node
+    from m_fp_list under f_ci->m_lock, then drop both the durable
+    lifetime and transient references with atomic_sub_and_test(2,
+    &fp->refcount).  If the scavenger is the last putter the close
+    runs there; otherwise an in-flight holder that already raced
+    through the m_fp_list lookup owns the final close via its
+    ksmbd_fd_put() path.  The one-at-a-time disposal can rescan the
+    durable idr when multiple handles expire in the same pass, but
+    durable scavenging is a background expiration path and the final
+    full scan recomputes min_timeout before the next wait.
 
-Fixes: c256a94d1b1b ("wifi: ath10k: shutdown driver when hardware is unreliable")
-Signed-off-by: Kang Yang <kang.yang@oss.qualcomm.com>
-Reviewed-by: Rameshkumar Sundaram <rameshkumar.sundaram@oss.qualcomm.com>
-Reviewed-by: Baochen Qiang <baochen.qiang@oss.qualcomm.com>
-Link: https://patch.msgid.link/20260428061737.37-1-kang.yang@oss.qualcomm.com
-Signed-off-by: Jeff Johnson <jeff.johnson@oss.qualcomm.com>
+  * Clear fp->persistent_id inside __ksmbd_remove_durable_fd() right
+    after idr_remove(), so a delayed final close from a holder that
+    snatched fp does not re-issue idr_remove() on a persistent id
+    that idr_alloc_cyclic() in ksmbd_open_durable_fd() may have
+    already handed out to a brand-new durable handle.
+
+  * Bypass the per-conn open_files_count decrement in
+    __put_fd_final() when fp is detached from any session table
+    (fp->conn cleared by session_fd_check() at durable preserve --
+    paired with the volatile_id clear at unpublish, so checking
+    fp->conn alone is sufficient).  The walker that owns the final
+    close runs from an unrelated work->conn whose
+    stats.open_files_count never tracked this durable fp; without
+    this guard the holder would underflow that unrelated counter.
+
+The two races are folded into one patch because patch (1) alone
+cleans up the corrupted list but leaves a deterministic UAF window
+for m_fp_list walkers that the transient-reference and
+persistent_id discipline in (2) close; bisecting onto an
+intermediate state would land on a UAF that pre-patch chaos merely
+made less reproducible.
+
+Validation:
+  * CONFIG_DEBUG_LIST coverage for the list_head reuse path.
+  * KASAN-enabled direct SMB2 durable-handle coverage that exercised
+    ksmbd_durable_scavenger() and non-NULL ksmbd_lookup_fd_inode()
+    returns while durable handles expired under concurrent rename
+    lookups, with no KASAN, UAF, list-corruption, ODEBUG, or WARNING
+    reports.
+  * checkpatch --strict
+  * make -j$(nproc) M=fs/smb/server
+
+Fixes: d484d621d40f ("ksmbd: add durable scavenger timer")
+Signed-off-by: DaeMyung Kang <charsyam@gmail.com>
+Acked-by: Namjae Jeon <linkinjeon@kernel.org>
+Signed-off-by: Steve French <stfrench@microsoft.com>
+Signed-off-by: Alva Lan <alvalan9@foxmail.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/ath/ath10k/wmi.c | 15 +++++++--------
- 1 file changed, 7 insertions(+), 8 deletions(-)
+ fs/smb/server/vfs_cache.c | 104 ++++++++++++++++++++++++++++----------
+ 1 file changed, 77 insertions(+), 27 deletions(-)
 
-diff --git a/drivers/net/wireless/ath/ath10k/wmi.c b/drivers/net/wireless/ath/ath10k/wmi.c
-index ce22141e5efd9..cd20508399b9a 100644
---- a/drivers/net/wireless/ath/ath10k/wmi.c
-+++ b/drivers/net/wireless/ath/ath10k/wmi.c
-@@ -3,7 +3,6 @@
-  * Copyright (c) 2005-2011 Atheros Communications Inc.
-  * Copyright (c) 2011-2017 Qualcomm Atheros, Inc.
-  * Copyright (c) 2018-2019, The Linux Foundation. All rights reserved.
-- * Copyright (c) 2021-2024 Qualcomm Innovation Center, Inc. All rights reserved.
-  * Copyright (c) Qualcomm Technologies, Inc. and/or its subsidiaries.
-  */
+diff --git a/fs/smb/server/vfs_cache.c b/fs/smb/server/vfs_cache.c
+index 544387c9a6f4b..8faa5d97f7e1e 100644
+--- a/fs/smb/server/vfs_cache.c
++++ b/fs/smb/server/vfs_cache.c
+@@ -325,6 +325,14 @@ static void __ksmbd_remove_durable_fd(struct ksmbd_file *fp)
+ 		return;
  
-@@ -1947,15 +1946,15 @@ int ath10k_wmi_cmd_send(struct ath10k *ar, struct sk_buff *skb, u32 cmd_id)
- 			ret = -ESHUTDOWN;
- 			ath10k_dbg(ar, ATH10K_DBG_WMI,
- 				   "drop wmi command %d, hardware is wedged\n", cmd_id);
--		}
--		/* try to send pending beacons first. they take priority */
--		ath10k_wmi_tx_beacons_nowait(ar);
-+		} else {
-+			/* try to send pending beacons first. they take priority */
-+			ath10k_wmi_tx_beacons_nowait(ar);
+ 	idr_remove(global_ft.idr, fp->persistent_id);
++	/*
++	 * Clear persistent_id so a later __ksmbd_close_fd() that runs from a
++	 * delayed putter (e.g. when a concurrent ksmbd_lookup_fd_inode()
++	 * walker held the final reference) does not re-issue idr_remove() on
++	 * an id that idr_alloc_cyclic() may have already handed out to a new
++	 * durable handle.
++	 */
++	fp->persistent_id = KSMBD_NO_FID;
+ }
  
--		ret = ath10k_wmi_cmd_send_nowait(ar, skb, cmd_id);
+ static void ksmbd_remove_durable_fd(struct ksmbd_file *fp)
+@@ -417,6 +425,20 @@ static struct ksmbd_file *__ksmbd_lookup_fd(struct ksmbd_file_table *ft,
+ 
+ static void __put_fd_final(struct ksmbd_work *work, struct ksmbd_file *fp)
+ {
++	/*
++	 * Detached durable fp -- session_fd_check() cleared fp->conn at
++	 * preserve, so this fp is no longer tracked by any conn's
++	 * stats.open_files_count.  This happens when
++	 * ksmbd_scavenger_dispose_dh() hands the final close off to an
++	 * m_fp_list walker (e.g. ksmbd_lookup_fd_inode()) whose work->conn
++	 * is unrelated to the conn that originally opened the handle; close
++	 * via the NULL-ft path so we do not underflow that unrelated
++	 * counter.
++	 */
++	if (!fp->conn) {
++		__ksmbd_close_fd(NULL, fp);
++		return;
++	}
+ 	__ksmbd_close_fd(&work->sess->file_table, fp);
+ 	atomic_dec(&work->conn->stats.open_files_count);
+ }
+@@ -792,24 +814,37 @@ static bool ksmbd_durable_scavenger_alive(void)
+ 	return true;
+ }
+ 
+-static void ksmbd_scavenger_dispose_dh(struct list_head *head)
++static void ksmbd_scavenger_dispose_dh(struct ksmbd_file *fp)
+ {
+-	while (!list_empty(head)) {
+-		struct ksmbd_file *fp;
++	/*
++	 * Durable-preserved fp can remain linked on f_ci->m_fp_list for
++	 * share-mode checks.  Unlink it before final close; fp->node is not
++	 * available as a scavenger-private list node because re-adding it to
++	 * another list corrupts m_fp_list.
++	 */
++	down_write(&fp->f_ci->m_lock);
++	list_del_init(&fp->node);
++	up_write(&fp->f_ci->m_lock);
+ 
+-		fp = list_first_entry(head, struct ksmbd_file, node);
+-		list_del_init(&fp->node);
++	/*
++	 * Drop both the durable lifetime reference and the transient reference
++	 * taken by the scavenger under global_ft.lock.  If a concurrent
++	 * ksmbd_lookup_fd_inode() (or any other m_fp_list walker) snatched fp
++	 * before the unlink above, that holder owns the final close via
++	 * ksmbd_fd_put() -> __ksmbd_close_fd().  Otherwise the scavenger is
++	 * the last putter and finalises fp here.
++	 */
++	if (atomic_sub_and_test(2, &fp->refcount))
+ 		__ksmbd_close_fd(NULL, fp);
+-	}
+ }
+ 
+ static int ksmbd_durable_scavenger(void *dummy)
+ {
+ 	struct ksmbd_file *fp = NULL;
++	struct ksmbd_file *expired_fp;
+ 	unsigned int id;
+ 	unsigned int min_timeout = 1;
+ 	bool found_fp_timeout;
+-	LIST_HEAD(scavenger_list);
+ 	unsigned long remaining_jiffies;
+ 
+ 	__module_get(THIS_MODULE);
+@@ -819,8 +854,6 @@ static int ksmbd_durable_scavenger(void *dummy)
+ 		if (try_to_freeze())
+ 			continue;
+ 
+-		found_fp_timeout = false;
 -
--		if (ret && test_bit(ATH10K_FLAG_CRASH_FLUSH, &ar->dev_flags))
--			ret = -ESHUTDOWN;
-+			ret = ath10k_wmi_cmd_send_nowait(ar, skb, cmd_id);
+ 		remaining_jiffies = wait_event_timeout(dh_wq,
+ 				   ksmbd_durable_scavenger_alive() == false,
+ 				   __msecs_to_jiffies(min_timeout));
+@@ -829,23 +862,39 @@ static int ksmbd_durable_scavenger(void *dummy)
+ 		else
+ 			min_timeout = DURABLE_HANDLE_MAX_TIMEOUT;
  
-+			if (ret && test_bit(ATH10K_FLAG_CRASH_FLUSH, &ar->dev_flags))
-+				ret = -ESHUTDOWN;
-+		}
- 		(ret != -EAGAIN);
- 	}), 3 * HZ);
+-		write_lock(&global_ft.lock);
+-		idr_for_each_entry(global_ft.idr, fp, id) {
+-			if (!fp->durable_timeout)
+-				continue;
+-
+-			if (atomic_read(&fp->refcount) > 1 ||
+-			    fp->conn)
+-				continue;
+-
+-			found_fp_timeout = true;
+-			if (fp->durable_scavenger_timeout <=
+-			    jiffies_to_msecs(jiffies)) {
+-				__ksmbd_remove_durable_fd(fp);
+-				list_add(&fp->node, &scavenger_list);
+-			} else {
++		do {
++			expired_fp = NULL;
++			found_fp_timeout = false;
++
++			write_lock(&global_ft.lock);
++			idr_for_each_entry(global_ft.idr, fp, id) {
+ 				unsigned long durable_timeout;
  
++				if (!fp->durable_timeout)
++					continue;
++
++				if (atomic_read(&fp->refcount) > 1 ||
++				    fp->conn)
++					continue;
++
++				found_fp_timeout = true;
++				if (fp->durable_scavenger_timeout <=
++				    jiffies_to_msecs(jiffies)) {
++					__ksmbd_remove_durable_fd(fp);
++					/*
++					 * Take a transient reference so fp
++					 * cannot be freed by an in-flight
++					 * ksmbd_lookup_fd_inode() that found
++					 * it through f_ci->m_fp_list while we
++					 * drop global_ft.lock and reach the
++					 * m_fp_list unlink in
++					 * ksmbd_scavenger_dispose_dh().
++					 */
++					atomic_inc(&fp->refcount);
++					expired_fp = fp;
++					break;
++				}
++
+ 				durable_timeout =
+ 					fp->durable_scavenger_timeout -
+ 						jiffies_to_msecs(jiffies);
+@@ -853,10 +902,11 @@ static int ksmbd_durable_scavenger(void *dummy)
+ 				if (min_timeout > durable_timeout)
+ 					min_timeout = durable_timeout;
+ 			}
+-		}
+-		write_unlock(&global_ft.lock);
++			write_unlock(&global_ft.lock);
+ 
+-		ksmbd_scavenger_dispose_dh(&scavenger_list);
++			if (expired_fp)
++				ksmbd_scavenger_dispose_dh(expired_fp);
++		} while (expired_fp);
+ 
+ 		if (found_fp_timeout == false)
+ 			break;
 -- 
 2.53.0
 
