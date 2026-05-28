@@ -1,58 +1,60 @@
-Return-Path: <stable+bounces-256024-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-255779-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id eHF1D7yoGGp+lwgAu9opvQ
-	(envelope-from <stable+bounces-256024-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:42:36 +0200
+	id QL7JI+GlGGrClggAu9opvQ
+	(envelope-from <stable+bounces-255779-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:30:25 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id F3A555F95F6
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:42:35 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0C28C5F8D69
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:30:24 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 83B9C30E4958
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 20:35:42 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 912133122A0A
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 20:24:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2BF9832AAD6;
-	Thu, 28 May 2026 20:35:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A543033291F;
+	Thu, 28 May 2026 20:24:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1MPGGiqq"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nbsCW6pw"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F1F7933CE8A;
-	Thu, 28 May 2026 20:35:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8AD8133D4E2;
+	Thu, 28 May 2026 20:24:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780000542; cv=none; b=PJ8lWjiqX6I69Bj7sURk1uUMSzAbvltve+xZZDWbB0uaKUh93qgK/SrsalP98o/xdep9JZpkT8AGKBd5mBXXlBawGI61T60uEvwbrX+di4/ZsCHBP7boOyTpsljg0bk14DCZs2KYc3Pl/p414nXCGZh4B3uGeY2oi9ST/miJS9M=
+	t=1779999859; cv=none; b=HNKxvx93B3k0NmHiA06F8dYx/hXc+m+qrtp45+4iwxqFl1yPbhOTBxWsonwRXvk4EVGfioHbhbR1NQ0+Hsah9gzsJil4kk4LHPN0JLFZX5wQ2/kB8IIMbSE8CvTbw3lNbRoVXtGRhI+8/B9IFufMkSW+krHL2Oo9p+wgW91Vg0g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780000542; c=relaxed/simple;
-	bh=firqZoSSNjmXo8cHDSkXVtu3pOV02dmjrVWZkzVoElA=;
+	s=arc-20240116; t=1779999859; c=relaxed/simple;
+	bh=COZkj6x+xFRYXg8c0kd/jUUUR6cQYBt4wD04KcWA5F4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=QWaVIu6GMZ+Vc5IfU+pnvyczecN3KsQ9C6Qkxq9TYxCG1jNUUQw/y7sTk+8QXRWXa+qcmPsCb53TKgRgbJcBbZrNXn+aPpqvDURq8p7CVKFEwe5A1/irbvFDApYeoQfr3sKI4ESYZ/e/fv2W1bNzXPvovEfQNqAiVs0JKxac7+w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1MPGGiqq; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 19DB21F000E9;
-	Thu, 28 May 2026 20:35:39 +0000 (UTC)
+	 MIME-Version; b=Tqo+/amUozkeft1iWD2QRUhTF0Qruy1Dz5KfzfHnDAbAw7V6VKa4UVsDtXZqcUjRfgOplMtju6NaAwTawfSHG8Pgq3fQ8oYUD5Z/eVQOhkJ0q0Oe/Aam22kMVOdbUP5KjHTCJWeuXjOGmvkpk3lQCs1zKqoBmxEaE9LNhKWg8so=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nbsCW6pw; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DC79D1F00A3E;
+	Thu, 28 May 2026 20:24:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780000540;
-	bh=a2s5TFKuJEHwbslcJe1biaeCUXwLgjMv6uCGT6rWcN4=;
+	s=korg; t=1779999858;
+	bh=8K30amJfoY+p1MEn9JRxyPBZgVJMBc+t4PMVr7j9LsQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=1MPGGiqqBfF5Ywr1UAN9oiG+XOFzPBeYMjoMeweQYJGvAUdwqEGA8Yor2R0+08Rek
-	 hPPDbpvBY/+CTyjUbnEXgAPHxiDZdM6urwlIvBjA29bD4Wexkwy8VRKB8RPVBNEdIV
-	 j/xP/EJ00tuFIyMukWIed0wo99on0werL2X0bCGQ=
+	b=nbsCW6pwLgnKTtixMERHRrrqgk+8H0rLeqnLaxmu72fFGFBWvm4xpeHIVPzJJ2156
+	 R/hRmroF86ny4QDuK2eRMeUC1p7yjpP4Kxd/5h9FgZsIrOmgkSj7JHDzS1sLNfAr0z
+	 KrZF/vWaBTGSKt77O3Z1XBpyQ0QJ2a8IEaNOz07c=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Konstantin Komarov <almaz.alexandrovich@paragon-software.com>,
-	Bin Lan <lanbincn@139.com>
-Subject: [PATCH 6.12 080/272] fs/ntfs3: handle attr_set_size() errors when truncating files
+	Dai Ngo <dai.ngo@oracle.com>,
+	Jeff Layton <jlayton@kernel.org>,
+	Chuck Lever <chuck.lever@oracle.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.18 216/377] NFSD: Fix infinite loop in layout state revocation
 Date: Thu, 28 May 2026 21:47:34 +0200
-Message-ID: <20260528194631.617489988@linuxfoundation.org>
+Message-ID: <20260528194644.654520298@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260528194629.379955525@linuxfoundation.org>
-References: <20260528194629.379955525@linuxfoundation.org>
+In-Reply-To: <20260528194638.371537336@linuxfoundation.org>
+References: <20260528194638.371537336@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,101 +67,80 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-256024-lists,stable=lfdr.de];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,paragon-software.com,139.com];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_TLS_LAST(0.00)[];
-	TO_DN_SOME(0.00)[];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	RCPT_COUNT_FIVE(0.00)[5];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-255779-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
 	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	MID_RHS_MATCH_FROM(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[139.com:email,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,paragon-software.com:email,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim]
-X-Rspamd-Queue-Id: F3A555F95F6
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,oracle.com:email,linuxfoundation.org:mid,linuxfoundation.org:dkim]
+X-Rspamd-Queue-Id: 0C28C5F8D69
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Konstantin Komarov <almaz.alexandrovich@paragon-software.com>
+From: Chuck Lever <chuck.lever@oracle.com>
 
-[ Upstream commit 576248a34b927e93b2fd3fff7df735ba73ad7d01 ]
+[ Upstream commit 4f8ef58c10bfe5f86a643c7c8331b37e69e3dae1 ]
 
-If attr_set_size() fails while truncating down, the error is silently
-ignored and the inode may be left in an inconsistent state.
+find_one_sb_stid() skips stids whose sc_status is non-zero, but the
+SC_TYPE_LAYOUT case in nfsd4_revoke_states() never sets sc_status
+before calling nfsd4_close_layout(). The retry loop therefore finds
+the same layout stid on every iteration, hanging the revoker
+indefinitely.
 
-Signed-off-by: Konstantin Komarov <almaz.alexandrovich@paragon-software.com>
-[ Minor context conflict resolved. ]
-Signed-off-by: Bin Lan <lanbincn@139.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 1e33e1414bec ("nfsd: allow layout state to be admin-revoked.")
+Reported-by: Dai Ngo <dai.ngo@oracle.com>
+Reviewed-by: Jeff Layton <jlayton@kernel.org>
+Tested-by: Dai Ngo <dai.ngo@oracle.com>
+Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/ntfs3/file.c |   12 ++++--------
- 1 file changed, 4 insertions(+), 8 deletions(-)
+ fs/nfsd/nfs4state.c | 7 +++++++
+ 1 file changed, 7 insertions(+)
 
---- a/fs/ntfs3/file.c
-+++ b/fs/ntfs3/file.c
-@@ -500,8 +500,8 @@ static int ntfs_truncate(struct inode *i
- {
- 	struct super_block *sb = inode->i_sb;
- 	struct ntfs_inode *ni = ntfs_i(inode);
--	int err, dirty = 0;
- 	u64 new_valid;
-+	int err;
- 
- 	if (!S_ISREG(inode->i_mode))
- 		return 0;
-@@ -517,7 +517,6 @@ static int ntfs_truncate(struct inode *i
- 	}
- 
- 	new_valid = ntfs_up_block(sb, min_t(u64, ni->i_valid, new_size));
--
- 	truncate_setsize(inode, new_size);
- 
- 	ni_lock(ni);
-@@ -531,22 +530,19 @@ static int ntfs_truncate(struct inode *i
- 		ni->i_valid = new_valid;
- 
- 	ni_unlock(ni);
-+	if (unlikely(err))
-+		return err;
- 
- 	ni->std_fa |= FILE_ATTRIBUTE_ARCHIVE;
- 	inode_set_mtime_to_ts(inode, inode_set_ctime_current(inode));
- 	if (!IS_DIRSYNC(inode)) {
--		dirty = 1;
-+		mark_inode_dirty(inode);
- 	} else {
- 		err = ntfs_sync_inode(inode);
- 		if (err)
- 			return err;
- 	}
- 
--	if (dirty)
--		mark_inode_dirty(inode);
--
--	/*ntfs_flush_inodes(inode->i_sb, inode, NULL);*/
--
- 	return 0;
- }
- 
+diff --git a/fs/nfsd/nfs4state.c b/fs/nfsd/nfs4state.c
+index cb8096e94f518..a9e95df2fdb68 100644
+--- a/fs/nfsd/nfs4state.c
++++ b/fs/nfsd/nfs4state.c
+@@ -1848,6 +1848,13 @@ void nfsd4_revoke_states(struct nfsd_net *nn, struct super_block *sb)
+ 					break;
+ 				case SC_TYPE_LAYOUT:
+ 					ls = layoutstateid(stid);
++					spin_lock(&clp->cl_lock);
++					if (stid->sc_status == 0) {
++						stid->sc_status |=
++							SC_STATUS_ADMIN_REVOKED;
++						atomic_inc(&clp->cl_admin_revoked);
++					}
++					spin_unlock(&clp->cl_lock);
+ 					nfsd4_close_layout(ls);
+ 					break;
+ 				}
+-- 
+2.53.0
+
 
 
 
