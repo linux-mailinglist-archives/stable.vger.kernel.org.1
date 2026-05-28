@@ -1,60 +1,60 @@
-Return-Path: <stable+bounces-256049-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-255456-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id aNgzHdeoGGpolwgAu9opvQ
-	(envelope-from <stable+bounces-256049-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:43:03 +0200
+	id ONxFKBahGGqblggAu9opvQ
+	(envelope-from <stable+bounces-255456-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:09:58 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 179935F9642
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:43:02 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id AF3DB5F7F31
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:09:57 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 029F130B78DD
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 20:37:07 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 30CA33023C42
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 20:09:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CFF4130C343;
-	Thu, 28 May 2026 20:36:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 69D46409605;
+	Thu, 28 May 2026 20:09:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Rc6NpSVY"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LFota0lJ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8009F339866;
-	Thu, 28 May 2026 20:36:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 19A3C32ABC0;
+	Thu, 28 May 2026 20:09:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780000611; cv=none; b=SJz8tbZPDPnULSq7sJcwY3PJjj0hSvsSU5F1mDCGA+yNlSM3kMMIBTjHodJMSQy0sXT3YTSceIV4BwB4vdwneyymyw9I+MXNYYm0VIWiYplxH72Tajq2VwX4n/XtKNhYPjtmiZliMB53A/KTQgHCMnxz6ForFl/4O/38VvlFJFA=
+	t=1779998963; cv=none; b=l3E/RZHqdMz/m6mSHsod4dAq4pOctq4CeaKoqGPvgG/vLx408UEH8yg85Mu98AQoBgtgAu58/fi1ahxr14cHzF5j8pHfDNQfafpHpGjmz+MZfMVllaGe4ul+KxXouzhyUXE39yYaobIrQ7LWAajcUiXQlrVE68xO/fF0n+dloho=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780000611; c=relaxed/simple;
-	bh=tOmwcrxl1U5G4/1YTSXMKDFVT4+aYEX6mlTxqpySpcc=;
+	s=arc-20240116; t=1779998963; c=relaxed/simple;
+	bh=ZUIeXDfovQaTY/1rVsW5E1Lwdbevr1ET+Mc9U4k++z4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=GbI8TtxMaSSzjTd/R9H0ol7rSmTj//yvDjb2k+tYWJlPdlJ0UGP68cpNWnw5DjxCJzMyqzkcBOwIjZAkmELJtOnJCxy3KMWdCfMkBQ+frA000GTt8sc3a5Ou/QFBxOmPLCkVvo8Xa+7wXZHaedgNl7TifkiIbz5LgqdgsG2iJJ0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Rc6NpSVY; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DE4311F000E9;
-	Thu, 28 May 2026 20:36:49 +0000 (UTC)
+	 MIME-Version; b=JHfsF0xNuAxSnDYGDTcwi5TDCXvbDJpIQR44B3uyIYK9uk0zNqqevZU3ymwL6JQeEFGtcVBnjKB65CJd3K7K3rXqJblFNJq5XL/GraSqzydZ8HxaHLDPdP0NOzpCD1fKfJeoF2iPFKFfMFFqoeO4hILcyNLPytYIRkbPMxRWDEA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LFota0lJ; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 75F771F000E9;
+	Thu, 28 May 2026 20:09:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780000610;
-	bh=81Ktos5aZzZQ9bo2LP8NR9YzHRW3iRmzkA80XZHJOME=;
+	s=korg; t=1779998962;
+	bh=3DSPni7VBq6XjQC/eTzOGaZK8+rO9rj/xEurSRFp4Uo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=Rc6NpSVY4DxVpY2j5vNFKjoN05HAQlD8RlFWPxvXXm7mYoE1NaQhuquj1r4K51QY+
-	 0cD8Hhaeb4/cQVhmQS9YjNp7QmrDuVFvjSwWTdrANdckYvIx4B0r7NIEdVvZEa7fTd
-	 aGxYM2in7YyK4MqL6vbipS6zFgmJAJfgiyrJtuQQ=
+	b=LFota0lJbuZIgzf3vzaB8GimFV/V2e0cbw6s4EHfPswB+Xt03oh+D0FnFhdbEATO7
+	 dbLGtbUVv0tb2i9zPytO0Oqb9ulHu36LCJzsFH/pniVQ2mAz1XjZgoE8XH+/mrFD5n
+	 coZjX28fG+373kqN9wlPYCjCQuPB2a2ba+WbLXhM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Wayne Chang <waynec@nvidia.com>,
-	Wei-Cheng Chen <weichengc@nvidia.com>,
-	Jon Hunter <jonathanh@nvidia.com>,
-	Vinod Koul <vkoul@kernel.org>
-Subject: [PATCH 6.12 106/272] phy: tegra: xusb: Fix per-pad high-speed termination calibration
-Date: Thu, 28 May 2026 21:48:00 +0200
-Message-ID: <20260528194632.346477893@linuxfoundation.org>
+	Salendarsingh Gaud <sgaud@qti.qualcomm.com>,
+	Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>,
+	Rob Clark <robin.clark@oss.qualcomm.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 7.0 352/461] drm/msm/snapshot: fix dumping of the unaligned regions
+Date: Thu, 28 May 2026 21:48:01 +0200
+Message-ID: <20260528194657.597846371@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260528194629.379955525@linuxfoundation.org>
-References: <20260528194629.379955525@linuxfoundation.org>
+In-Reply-To: <20260528194646.819809818@linuxfoundation.org>
+References: <20260528194646.819809818@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,7 +69,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
@@ -77,7 +77,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-256049-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-255456-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
@@ -86,163 +86,119 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
 	NEURAL_HAM(-0.00)[-1.000];
 	RCPT_COUNT_SEVEN(0.00)[7];
 	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[nvidia.com:email,msgid.link:url,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim]
-X-Rspamd-Queue-Id: 179935F9642
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,qualcomm.com:email]
+X-Rspamd-Queue-Id: AF3DB5F7F31
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+7.0-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Wayne Chang <waynec@nvidia.com>
+From: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
 
-commit da110228b54f2e2143d97ea7151e0dc22e539d67 upstream.
+[ Upstream commit 76824d2467feb1828b745d6add2541918d7be3da ]
 
-The existing code reads a single hs_term_range_adj value from bit field
-[10:7] of FUSE_SKU_CALIB_0 and applies it to all USB2 pads uniformly.
-However, on SoCs that support per-pad termination, each pad has its own
-hs_term_range_adj field: pad 0 in FUSE_SKU_CALIB_0[10:7], and pads 1-3
-in FUSE_USB_CALIB_EXT_0 at bit offsets [8:5], [12:9], and [16:13]
-respectively.
+The snapshotting code internally aligns data segment to 16 bytes. This
+works fine for DPU code (where most of the regions are aligned), but
+fails for snapshotting of the DSI data (because DSI data region is
+shifted by 4 bytes). Fix the code by removing length alignment and by
+accurately printing last registers in the region. While reworking the
+code also fix the 16x memory overallocation in
+msm_disp_state_dump_regs().
 
-Fix the calibration by reading per-pad values from the appropriate fuse
-registers. For SoCs that do not support per-pad termination, replicate
-pad 0's value to all pads to maintain existing behavior.
-
-Add a has_per_pad_term flag to the SoC data to indicate whether per-pad
-termination values are available in FUSE_USB_CALIB_EXT_0.
-
-Fixes: 1ef535c6ba8e ("phy: tegra: xusb: Add Tegra194 support")
-Cc: stable@vger.kernel.org
-Signed-off-by: Wayne Chang <waynec@nvidia.com>
-Signed-off-by: Wei-Cheng Chen <weichengc@nvidia.com>
-Reviewed-by: Jon Hunter <jonathanh@nvidia.com>
-Tested-by: Jon Hunter <jonathanh@nvidia.com>
-Link: https://patch.msgid.link/20260504033305.2283145-1-weichengc@nvidia.com
-Signed-off-by: Vinod Koul <vkoul@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 98659487b845 ("drm/msm: add support to take dpu snapshot")
+Reported-by: Salendarsingh Gaud <sgaud@qti.qualcomm.com>
+Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
+Patchwork: https://patchwork.freedesktop.org/patch/725449/
+Message-ID: <20260516-msm-fix-dsi-dump-2-v2-1-9e49fb2d240e@oss.qualcomm.com>
+Signed-off-by: Rob Clark <robin.clark@oss.qualcomm.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/phy/tegra/xusb-tegra186.c |   33 ++++++++++++++++++++++++++-------
- drivers/phy/tegra/xusb.h          |    1 +
- 2 files changed, 27 insertions(+), 7 deletions(-)
+ .../gpu/drm/msm/disp/msm_disp_snapshot_util.c | 24 ++++++++++++++-----
+ 1 file changed, 18 insertions(+), 6 deletions(-)
 
---- a/drivers/phy/tegra/xusb-tegra186.c
-+++ b/drivers/phy/tegra/xusb-tegra186.c
-@@ -20,8 +20,8 @@
- /* FUSE USB_CALIB registers */
- #define HS_CURR_LEVEL_PADX_SHIFT(x)	((x) ? (11 + (x - 1) * 6) : 0)
- #define HS_CURR_LEVEL_PAD_MASK		0x3f
--#define HS_TERM_RANGE_ADJ_SHIFT		7
--#define HS_TERM_RANGE_ADJ_MASK		0xf
-+#define HS_TERM_RANGE_ADJ_PADX_SHIFT(x)	((x) ? (5 + (x - 1) * 4) : 7)
-+#define HS_TERM_RANGE_ADJ_PAD_MASK	0xf
- #define HS_SQUELCH_SHIFT		29
- #define HS_SQUELCH_MASK			0x7
+diff --git a/drivers/gpu/drm/msm/disp/msm_disp_snapshot_util.c b/drivers/gpu/drm/msm/disp/msm_disp_snapshot_util.c
+index 427d3ee2b8337..6e0f8671bfb46 100644
+--- a/drivers/gpu/drm/msm/disp/msm_disp_snapshot_util.c
++++ b/drivers/gpu/drm/msm/disp/msm_disp_snapshot_util.c
+@@ -9,7 +9,7 @@
  
-@@ -253,7 +253,7 @@
- struct tegra_xusb_fuse_calibration {
- 	u32 *hs_curr_level;
- 	u32 hs_squelch;
--	u32 hs_term_range_adj;
-+	u32 *hs_term_range_adj;
- 	u32 rpd_ctrl;
- };
+ #include "msm_disp_snapshot.h"
  
-@@ -930,7 +930,7 @@ static int tegra186_utmi_phy_power_on(st
- 
- 	value = padctl_readl(padctl, XUSB_PADCTL_USB2_OTG_PADX_CTL1(index));
- 	value &= ~TERM_RANGE_ADJ(~0);
--	value |= TERM_RANGE_ADJ(priv->calib.hs_term_range_adj);
-+	value |= TERM_RANGE_ADJ(priv->calib.hs_term_range_adj[index]);
- 	value &= ~RPD_CTRL(~0);
- 	value |= RPD_CTRL(priv->calib.rpd_ctrl);
- 	padctl_writel(padctl, value, XUSB_PADCTL_USB2_OTG_PADX_CTL1(index));
-@@ -1464,17 +1464,23 @@ static const char * const tegra186_usb3_
- static int
- tegra186_xusb_read_fuse_calibration(struct tegra186_xusb_padctl *padctl)
+-static void msm_disp_state_dump_regs(u32 **reg, u32 aligned_len, void __iomem *base_addr)
++static void msm_disp_state_dump_regs(u32 **reg, u32 len, void __iomem *base_addr)
  {
-+	const struct tegra_xusb_padctl_soc *soc = padctl->base.soc;
- 	struct device *dev = padctl->base.dev;
- 	unsigned int i, count;
- 	u32 value, *level;
-+	u32 *hs_term_range_adj;
- 	int err;
+ 	u32 len_padded;
+ 	u32 num_rows;
+@@ -19,11 +19,11 @@ static void msm_disp_state_dump_regs(u32 **reg, u32 aligned_len, void __iomem *b
+ 	void __iomem *end_addr;
+ 	int i;
  
--	count = padctl->base.soc->ports.usb2.count;
-+	count = soc->ports.usb2.count;
+-	len_padded = aligned_len * REG_DUMP_ALIGN;
+-	num_rows = aligned_len / REG_DUMP_ALIGN;
++	len_padded = round_up(len, REG_DUMP_ALIGN);
++	num_rows = DIV_ROUND_UP(len, REG_DUMP_ALIGN);
  
- 	level = devm_kcalloc(dev, count, sizeof(u32), GFP_KERNEL);
- 	if (!level)
- 		return -ENOMEM;
+ 	addr = base_addr;
+-	end_addr = base_addr + aligned_len;
++	end_addr = base_addr + len;
  
-+	hs_term_range_adj = devm_kcalloc(dev, count, sizeof(u32), GFP_KERNEL);
-+	if (!hs_term_range_adj)
-+		return -ENOMEM;
+ 	*reg = kvzalloc(len_padded, GFP_KERNEL);
+ 	if (!*reg)
+@@ -48,8 +48,8 @@ static void msm_disp_state_dump_regs(u32 **reg, u32 aligned_len, void __iomem *b
+ static void msm_disp_state_print_regs(const u32 *dump_addr, u32 len,
+ 		void __iomem *base_addr, struct drm_printer *p)
+ {
++	void __iomem *addr, *end_addr;
+ 	int i;
+-	void __iomem *addr;
+ 	u32 num_rows;
+ 
+ 	if (!dump_addr) {
+@@ -58,6 +58,7 @@ static void msm_disp_state_print_regs(const u32 *dump_addr, u32 len,
+ 	}
+ 
+ 	addr = base_addr;
++	end_addr = base_addr + len;
+ 	num_rows = len / REG_DUMP_ALIGN;
+ 
+ 	for (i = 0; i < num_rows; i++) {
+@@ -67,6 +68,17 @@ static void msm_disp_state_print_regs(const u32 *dump_addr, u32 len,
+ 				dump_addr[i * 4 + 2], dump_addr[i * 4 + 3]);
+ 		addr += REG_DUMP_ALIGN;
+ 	}
 +
- 	err = tegra_fuse_readl(TEGRA_FUSE_SKU_CALIB_0, &value);
- 	if (err)
- 		return dev_err_probe(dev, err,
-@@ -1490,8 +1496,8 @@ tegra186_xusb_read_fuse_calibration(stru
- 
- 	padctl->calib.hs_squelch = (value >> HS_SQUELCH_SHIFT) &
- 					HS_SQUELCH_MASK;
--	padctl->calib.hs_term_range_adj = (value >> HS_TERM_RANGE_ADJ_SHIFT) &
--						HS_TERM_RANGE_ADJ_MASK;
-+	hs_term_range_adj[0] = (value >> HS_TERM_RANGE_ADJ_PADX_SHIFT(0)) &
-+				HS_TERM_RANGE_ADJ_PAD_MASK;
- 
- 	err = tegra_fuse_readl(TEGRA_FUSE_USB_CALIB_EXT_0, &value);
- 	if (err) {
-@@ -1503,6 +1509,17 @@ tegra186_xusb_read_fuse_calibration(stru
- 
- 	padctl->calib.rpd_ctrl = (value >> RPD_CTRL_SHIFT) & RPD_CTRL_MASK;
- 
-+	for (i = 1; i < count; i++) {
-+		if (soc->has_per_pad_term)
-+			hs_term_range_adj[i] =
-+				(value >> HS_TERM_RANGE_ADJ_PADX_SHIFT(i)) &
-+				HS_TERM_RANGE_ADJ_PAD_MASK;
-+		else
-+			hs_term_range_adj[i] = hs_term_range_adj[0];
++	if (addr != end_addr) {
++		drm_printf(p, "0x%lx : %08x",
++			   (unsigned long)(addr - base_addr),
++			   dump_addr[i * 4]);
++		if (addr + 0x4 < end_addr)
++			drm_printf(p, " %08x", dump_addr[i * 4 + 1]);
++		if (addr + 0x8 < end_addr)
++			drm_printf(p, " %08x", dump_addr[i * 4 + 2]);
++		drm_printf(p, "\n");
 +	}
-+
-+	padctl->calib.hs_term_range_adj = hs_term_range_adj;
-+
- 	return 0;
  }
  
-@@ -1708,6 +1725,7 @@ const struct tegra_xusb_padctl_soc tegra
- 	.num_supplies = ARRAY_SIZE(tegra194_xusb_padctl_supply_names),
- 	.supports_gen2 = true,
- 	.poll_trk_completed = true,
-+	.has_per_pad_term = true,
- };
- EXPORT_SYMBOL_GPL(tegra194_xusb_padctl_soc);
+ void msm_disp_state_print(struct msm_disp_state *state, struct drm_printer *p)
+@@ -185,7 +197,7 @@ void msm_disp_snapshot_add_block(struct msm_disp_state *disp_state, u32 len,
+ 	va_end(va);
  
-@@ -1732,6 +1750,7 @@ const struct tegra_xusb_padctl_soc tegra
- 	.trk_hw_mode = false,
- 	.trk_update_on_idle = true,
- 	.supports_lp_cfg_en = true,
-+	.has_per_pad_term = true,
- };
- EXPORT_SYMBOL_GPL(tegra234_xusb_padctl_soc);
- #endif
---- a/drivers/phy/tegra/xusb.h
-+++ b/drivers/phy/tegra/xusb.h
-@@ -436,6 +436,7 @@ struct tegra_xusb_padctl_soc {
- 	bool trk_hw_mode;
- 	bool trk_update_on_idle;
- 	bool supports_lp_cfg_en;
-+	bool has_per_pad_term;
- };
+ 	INIT_LIST_HEAD(&new_blk->node);
+-	new_blk->size = ALIGN(len, REG_DUMP_ALIGN);
++	new_blk->size = len;
+ 	new_blk->base_addr = base_addr;
  
- struct tegra_xusb_padctl {
+ 	msm_disp_state_dump_regs(&new_blk->state, new_blk->size, base_addr);
+-- 
+2.53.0
+
 
 
 
