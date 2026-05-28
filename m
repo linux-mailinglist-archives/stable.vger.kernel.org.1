@@ -1,62 +1,64 @@
-Return-Path: <stable+bounces-255443-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-255838-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id XE3VB3+iGGrClggAu9opvQ
-	(envelope-from <stable+bounces-255443-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:15:59 +0200
+	id KIG6D5KmGGpolwgAu9opvQ
+	(envelope-from <stable+bounces-255838-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:33:22 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9D4AB5F834B
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:15:58 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id E13145F8F13
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:33:21 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id F25B730A9796
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 20:08:46 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 747F2309C119
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 20:27:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7344033F5BE;
-	Thu, 28 May 2026 20:08:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 10D28330D35;
+	Thu, 28 May 2026 20:27:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="c5oMYJcH"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vglUzocF"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1D2132F691F;
-	Thu, 28 May 2026 20:08:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B46902FD7C3;
+	Thu, 28 May 2026 20:27:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779998926; cv=none; b=umQiOTjLPkhNBhYLpiRC+OD3n0nnJ9EzslCedrGCZZA2Zqnhv47j0IqllIhvNzv07hBsWWVH0VwPq+K3ntIvPFvgLB4YCGg4TDn56t6rIk6QO+0WIuum+GavAPtEsjf2k/xC+DUKfj3BXNXU8HTz4+dqtR0Fkvz/JSO8MjA6xw0=
+	t=1780000021; cv=none; b=AjUcDqsJ2gmyzliQP2p7v0ET2/mZbKZcvQFftRJ44HolC5Je2H7Jzc4ybAmhXmmYjCjvoy2UItQDteHZAIeV5p7YwXGgXxkK4E0LJgNZKNlX14J/4eNxDuM5zrt4nCV2ePmML5MALluMhxxIWIBEsC5L9yr93XLezdBDa96JWyM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779998926; c=relaxed/simple;
-	bh=uusIErI4HeOfysgnPXad5kAwXvvzR/wWsvUSe4z9RVg=;
+	s=arc-20240116; t=1780000021; c=relaxed/simple;
+	bh=t1TnJqGzC/YKvoeGTTW06bKCxmTkODmtOuFOUTDprQU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=kGgjZStebGwR74etvxZ7YRu0GqYtqS5JV0qVE7Kh2kQjYOyQAWL8Q0jeWPpKpUoU38LmgcyHd3KIK1WYDUw/wx5cGiLdT1u66kpVl/VlK5g2Gq5ZMnMEQAAORM4JG2tz9bF/NYxy9SD84TNPGyPZJV/J5ZfRJf0zQDoYAbLhjfw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=c5oMYJcH; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7E6EE1F000E9;
-	Thu, 28 May 2026 20:08:44 +0000 (UTC)
+	 MIME-Version; b=G2neNoblSqVIXJ/kOVV+uZ5roYKZuUyNEyDC1t3M8iyoLrPVbhMgZ7sTgOpP2+yY3zZKYX2Z99VWvKdBoSzkCniq/OJ0KeF0fYXa09UIH0zzj3231ETv0jdHCzDvfqSPoIOxzQZ3ErrvAi2ellaSk/g5CXER7vlA0Ejj0w6IhZ0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vglUzocF; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F25DC1F000E9;
+	Thu, 28 May 2026 20:26:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779998925;
-	bh=C+Jhd43r1CVXLwaXTHW5l2GiA6iIAG6S07/sQX6Rpk4=;
+	s=korg; t=1780000020;
+	bh=8CfPpK1iXiMlYnfGL+BbnWu92LwjMyo6ZLXsxzvataU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=c5oMYJcHJXTNczou+cIQQf+Mlw6zgTbTw1ue5GvAEPWSZXMoNx++FXgtjaQhNRln9
-	 ioqKdKWhxc2+T15IQ2cy2lwD6begx2SAOc9pDncHhbpPm8BN2t/NfEH9pceI57r0DY
-	 N7Q9GgnxYvNHgQGmd879N3icRDF/zmioFbqQ49zA=
+	b=vglUzocF45bs4KI22/Ex/tRkyw2Sux+T9AqCKMPII31Cn7mFmv+6LCjxPbD9nQ8rC
+	 do9jG/wF1iC78cTMuNwoLgTmgcdYOkkD/G/AQ/M/VfSJbsl9v2W4IjTp1XaZWUY6y9
+	 yurTdZ1Y5RUjrQr62vrI6WRuOapkaVP07DgH0oug=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Maher Azzouzi <maherazz04@gmail.com>,
-	Stefano Garzarella <sgarzare@redhat.com>,
-	"Michael S. Tsirkin" <mst@redhat.com>,
-	Arseniy Krasnov <avkrasnov@salutedevices.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Marc Dionne <marc.dionne@auristor.com>,
+	David Howells <dhowells@redhat.com>,
+	Paulo Alcantara <pc@manguebit.org>,
+	Matthew Wilcox <willy@infradead.org>,
+	netfs@lists.linux.dev,
+	linux-fsdevel@vger.kernel.org,
+	Christian Brauner <brauner@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 7.0 345/461] vsock/virtio: fix zerocopy completion for multi-skb sends
-Date: Thu, 28 May 2026 21:47:54 +0200
-Message-ID: <20260528194657.359703301@linuxfoundation.org>
+Subject: [PATCH 6.18 237/377] netfs: Fix netfs_invalidate_folio() to clear dirty bit if all changes gone
+Date: Thu, 28 May 2026 21:47:55 +0200
+Message-ID: <20260528194645.249823951@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260528194646.819809818@linuxfoundation.org>
-References: <20260528194646.819809818@linuxfoundation.org>
+In-Reply-To: <20260528194638.371537336@linuxfoundation.org>
+References: <20260528194638.371537336@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -71,198 +73,157 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,redhat.com,salutedevices.com,kernel.org];
-	TAGGED_FROM(0.00)[bounces-255443-lists,stable=lfdr.de];
+	URIBL_MULTI_FAIL(0.00)[linuxfoundation.org:server fail,infradead.org:server fail,linux.dev:server fail,sto.lore.kernel.org:server fail,auristor.com:server fail,manguebit.org:server fail,msgid.link:server fail];
+	TAGGED_FROM(0.00)[bounces-255838-lists,stable=lfdr.de];
 	PRECEDENCE_BULK(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	FROM_HAS_DN(0.00)[];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[9];
+	RCPT_COUNT_SEVEN(0.00)[11];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
 	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,msgid.link:url,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,salutedevices.com:email,sashiko.dev:url]
-X-Rspamd-Queue-Id: 9D4AB5F834B
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,auristor.com:email,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,infradead.org:email,linux.dev:email,manguebit.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim]
+X-Rspamd-Queue-Id: E13145F8F13
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-7.0-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Stefano Garzarella <sgarzare@redhat.com>
+From: David Howells <dhowells@redhat.com>
 
-[ Upstream commit ae38d9179190a956e2a87a69ef1dd6f451b51c4d ]
+[ Upstream commit 156ac2ec2ee77c44c4eb7439d6d165247ba12247 ]
 
-When a large message is fragmented into multiple skbs, the zerocopy
-uarg is only allocated and attached to the last skb in the loop.
-Non-final skbs carry pinned user pages with no completion tracking,
-so the kernel has no way to notify userspace when those pages are safe
-to reuse. If the loop breaks early the uarg is never allocated at all,
-leaking pinned pages with no completion notification.
+If a streaming write is made, this will leave the relevant modified folio
+in a not-uptodate, but dirty state with a netfs_folio struct hung off of
+folio->private indicating the dirty range.  Subsequently truncating the
+file such that the dirty data in the folio is removed, but the first part
+of the folio theoretically remains will cause the netfs_folio struct to be
+discarded... but will leave the dirty flag set.
 
-Fix this by following the approach used by TCP: allocate the zerocopy
-uarg (if not provided by the caller) before the send loop and attach
-it to every skb via skb_zcopy_set(), which takes a reference per skb.
-Each skb's completion properly decrements the refcount, and the
-notification only fires after the last skb is freed.
-On failure, if no data was sent, the uarg is cleanly aborted via
-net_zcopy_put_abort().
+If the folio is then read via mmap(), netfs_read_folio() will see that the
+page is dirty and jump to netfs_read_gaps() to fill in the missing bits.
+netfs_read_gaps(), however, expects there to be a netfs_folio struct
+present and can oops because truncate removed it.
 
-This issue was initially discovered by sashiko while reviewing commit
-1cb36e252211 ("vsock/virtio: fix MSG_ZEROCOPY pinned-pages accounting")
-but was pre-existing.
+Fix this by calling folio_cancel_dirty() in netfs_invalidate_folio() in the
+event that all the dirty data in the folio is erased (as nfs does).
 
-Fixes: 581512a6dc93 ("vsock/virtio: MSG_ZEROCOPY flag support")
-Closes: https://sashiko.dev/#/patchset/20260420132051.217589-1-sgarzare%40redhat.com
-Reported-by: Maher Azzouzi <maherazz04@gmail.com>
-Signed-off-by: Stefano Garzarella <sgarzare@redhat.com>
-Acked-by: Michael S. Tsirkin <mst@redhat.com>
-Acked-by: Arseniy Krasnov <avkrasnov@salutedevices.com>
-Link: https://patch.msgid.link/20260514092948.268720-1-sgarzare@redhat.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Also add some tracepoints to log modifications to a dirty page.
+
+This can be reproduced with something like:
+
+    dd if=/dev/zero of=/xfstest.test/foo bs=1M count=1
+    umount /xfstest.test
+    mount /xfstest.test
+    xfs_io -c "w 0xbbbf 0xf96c" \
+           -c "truncate 0xbbbf" \
+           -c "mmap -r 0xb000 0x11000" \
+           -c "mr 0xb000 0x11000" \
+           /xfstest.test/foo
+
+with fscaching disabled (otherwise streaming writes are suppressed) and a
+change to netfs_perform_write() to disallow streaming writes if the fd is
+open O_RDWR:
+
+	if (//(file->f_mode & FMODE_READ) || <--- comment this out
+	    netfs_is_cache_enabled(ctx)) {
+
+It should be reproducible even without this change, but if prevents the
+above trivial xfs_io command from reproducing it.
+
+Note that the initial dd is important: the file must start out sufficiently
+large that the zero-point logic doesn't just clear the gaps because it
+knows there's nothing in the file to read yet.  Unmounting and mounting is
+needed to clear the pagecache (there are other ways to do that that may
+also work).
+
+This was initially reproduced with the generic/522 xfstest on some patches
+that remove the FMODE_READ restriction.
+
+Fixes: 9ebff83e6481 ("netfs: Prep to use folio->private for write grouping and streaming write")
+Reported-by: Marc Dionne <marc.dionne@auristor.com>
+Signed-off-by: David Howells <dhowells@redhat.com>
+Link: https://patch.msgid.link/20260512123404.719402-12-dhowells@redhat.com
+cc: Paulo Alcantara <pc@manguebit.org>
+cc: Matthew Wilcox <willy@infradead.org>
+cc: netfs@lists.linux.dev
+cc: linux-fsdevel@vger.kernel.org
+Signed-off-by: Christian Brauner <brauner@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/vmw_vsock/virtio_transport_common.c | 83 ++++++++++---------------
- 1 file changed, 34 insertions(+), 49 deletions(-)
+ fs/netfs/misc.c              | 6 +++++-
+ include/trace/events/netfs.h | 4 ++++
+ 2 files changed, 9 insertions(+), 1 deletion(-)
 
-diff --git a/net/vmw_vsock/virtio_transport_common.c b/net/vmw_vsock/virtio_transport_common.c
-index 8bea16dd22407..e8fb2e20db0f3 100644
---- a/net/vmw_vsock/virtio_transport_common.c
-+++ b/net/vmw_vsock/virtio_transport_common.c
-@@ -72,34 +72,6 @@ static bool virtio_transport_can_zcopy(const struct virtio_transport *t_ops,
- 	return true;
- }
- 
--static int virtio_transport_init_zcopy_skb(struct vsock_sock *vsk,
--					   struct sk_buff *skb,
--					   struct msghdr *msg,
--					   size_t pkt_len,
--					   bool zerocopy)
--{
--	struct ubuf_info *uarg;
--
--	if (msg->msg_ubuf) {
--		uarg = msg->msg_ubuf;
--		net_zcopy_get(uarg);
--	} else {
--		struct ubuf_info_msgzc *uarg_zc;
--
--		uarg = msg_zerocopy_realloc(sk_vsock(vsk),
--					    pkt_len, NULL, false);
--		if (!uarg)
--			return -1;
--
--		uarg_zc = uarg_to_msgzc(uarg);
--		uarg_zc->zerocopy = zerocopy ? 1 : 0;
--	}
--
--	skb_zcopy_init(skb, uarg);
--
--	return 0;
--}
--
- static int virtio_transport_fill_skb(struct sk_buff *skb,
- 				     struct virtio_vsock_pkt_info *info,
- 				     size_t len,
-@@ -319,8 +291,10 @@ static int virtio_transport_send_pkt_info(struct vsock_sock *vsk,
- 	u32 src_cid, src_port, dst_cid, dst_port;
- 	const struct virtio_transport *t_ops;
- 	struct virtio_vsock_sock *vvs;
-+	struct ubuf_info *uarg = NULL;
- 	u32 pkt_len = info->pkt_len;
- 	bool can_zcopy = false;
-+	bool have_uref = false;
- 	u32 rest_len;
- 	int ret;
- 
-@@ -362,6 +336,25 @@ static int virtio_transport_send_pkt_info(struct vsock_sock *vsk,
- 		if (can_zcopy)
- 			max_skb_len = min_t(u32, VIRTIO_VSOCK_MAX_PKT_BUF_SIZE,
- 					    (MAX_SKB_FRAGS * PAGE_SIZE));
-+
-+		if (info->msg->msg_flags & MSG_ZEROCOPY &&
-+		    info->op == VIRTIO_VSOCK_OP_RW) {
-+			uarg = info->msg->msg_ubuf;
-+
-+			if (!uarg) {
-+				uarg = msg_zerocopy_realloc(sk_vsock(vsk),
-+							    pkt_len, NULL, false);
-+				if (!uarg) {
-+					virtio_transport_put_credit(vvs, pkt_len);
-+					return -ENOMEM;
-+				}
-+
-+				if (!can_zcopy)
-+					uarg_to_msgzc(uarg)->zerocopy = 0;
-+
-+				have_uref = true;
-+			}
-+		}
- 	}
- 
- 	rest_len = pkt_len;
-@@ -380,27 +373,7 @@ static int virtio_transport_send_pkt_info(struct vsock_sock *vsk,
- 			break;
+diff --git a/fs/netfs/misc.c b/fs/netfs/misc.c
+index 486166460e177..eb309bef72608 100644
+--- a/fs/netfs/misc.c
++++ b/fs/netfs/misc.c
+@@ -256,6 +256,7 @@ void netfs_invalidate_folio(struct folio *folio, size_t offset, size_t length)
+ 			/* Move the start of the data. */
+ 			finfo->dirty_len = fend - iend;
+ 			finfo->dirty_offset = offset;
++			trace_netfs_folio(folio, netfs_folio_trace_invalidate_front);
+ 			return;
  		}
  
--		/* We process buffer part by part, allocating skb on
--		 * each iteration. If this is last skb for this buffer
--		 * and MSG_ZEROCOPY mode is in use - we must allocate
--		 * completion for the current syscall.
--		 *
--		 * Pass pkt_len because msg iter is already consumed
--		 * by virtio_transport_fill_skb(), so iter->count
--		 * can not be used for RLIMIT_MEMLOCK pinned-pages
--		 * accounting done by msg_zerocopy_realloc().
--		 */
--		if (info->msg && info->msg->msg_flags & MSG_ZEROCOPY &&
--		    skb_len == rest_len && info->op == VIRTIO_VSOCK_OP_RW) {
--			if (virtio_transport_init_zcopy_skb(vsk, skb,
--							    info->msg,
--							    pkt_len,
--							    can_zcopy)) {
--				kfree_skb(skb);
--				ret = -ENOMEM;
--				break;
--			}
--		}
-+		skb_zcopy_set(skb, uarg, NULL);
+@@ -264,12 +265,14 @@ void netfs_invalidate_folio(struct folio *folio, size_t offset, size_t length)
+ 		 */
+ 		if (iend >= fend) {
+ 			finfo->dirty_len = offset - fstart;
++			trace_netfs_folio(folio, netfs_folio_trace_invalidate_tail);
+ 			return;
+ 		}
  
- 		virtio_transport_inc_tx_pkt(vvs, skb);
+ 		/* A partial write was split.  The caller has already zeroed
+ 		 * it, so just absorb the hole.
+ 		 */
++		trace_netfs_folio(folio, netfs_folio_trace_invalidate_middle);
+ 	}
+ 	return;
  
-@@ -424,6 +397,18 @@ static int virtio_transport_send_pkt_info(struct vsock_sock *vsk,
+@@ -277,8 +280,9 @@ void netfs_invalidate_folio(struct folio *folio, size_t offset, size_t length)
+ 	netfs_put_group(netfs_folio_group(folio));
+ 	folio_detach_private(folio);
+ 	folio_clear_uptodate(folio);
++	folio_cancel_dirty(folio);
+ 	kfree(finfo);
+-	return;
++	trace_netfs_folio(folio, netfs_folio_trace_invalidate_all);
+ }
+ EXPORT_SYMBOL(netfs_invalidate_folio);
  
- 	virtio_transport_put_credit(vvs, rest_len);
- 
-+	/* msg_zerocopy_realloc() initializes the ubuf_info refcnt to 1.
-+	 * skb_zcopy_set() increases it for each skb, so we can drop that
-+	 * initial reference to keep it balanced.
-+	 */
-+	if (have_uref) {
-+		if (rest_len == pkt_len)
-+			/* No data sent, abort the notification. */
-+			net_zcopy_put_abort(uarg, true);
-+		else
-+			net_zcopy_put(uarg);
-+	}
-+
- 	/* Return number of bytes, if any data has been sent. */
- 	if (rest_len != pkt_len)
- 		ret = pkt_len - rest_len;
+diff --git a/include/trace/events/netfs.h b/include/trace/events/netfs.h
+index cbe28211106c5..88d814ba1e697 100644
+--- a/include/trace/events/netfs.h
++++ b/include/trace/events/netfs.h
+@@ -194,6 +194,10 @@
+ 	EM(netfs_folio_trace_copy_to_cache,	"mark-copy")	\
+ 	EM(netfs_folio_trace_end_copy,		"end-copy")	\
+ 	EM(netfs_folio_trace_filled_gaps,	"filled-gaps")	\
++	EM(netfs_folio_trace_invalidate_all,	"inval-all")	\
++	EM(netfs_folio_trace_invalidate_front,	"inval-front")	\
++	EM(netfs_folio_trace_invalidate_middle,	"inval-mid")	\
++	EM(netfs_folio_trace_invalidate_tail,	"inval-tail")	\
+ 	EM(netfs_folio_trace_kill,		"kill")		\
+ 	EM(netfs_folio_trace_kill_cc,		"kill-cc")	\
+ 	EM(netfs_folio_trace_kill_g,		"kill-g")	\
 -- 
 2.53.0
 
