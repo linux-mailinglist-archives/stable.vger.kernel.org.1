@@ -1,262 +1,275 @@
-Return-Path: <stable+bounces-255089-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-255090-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id eIVTIhOSGGoMlQgAu9opvQ
-	(envelope-from <stable+bounces-255089-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 21:05:55 +0200
+	id eGYNMuWTGGoMlQgAu9opvQ
+	(envelope-from <stable+bounces-255090-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 21:13:41 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id ED70C5F6DBC
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 21:05:54 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id E52105F6EDC
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 21:13:40 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id AA909301C6E3
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 19:03:27 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id E5E3C3012366
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 19:13:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F2C4B33F595;
-	Thu, 28 May 2026 19:03:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 795A0346AF1;
+	Thu, 28 May 2026 19:13:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="Dok1X5Kv";
-	dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b="TduevX06"
+	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="TYrX0nCe"
 X-Original-To: stable@vger.kernel.org
-Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
+Received: from DUZPR83CU001.outbound.protection.outlook.com (mail-northeuropeazon11012066.outbound.protection.outlook.com [52.101.66.66])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 981F83101B0
-	for <stable@vger.kernel.org>; Thu, 28 May 2026 19:03:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779995006; cv=none; b=LeqcTPCcDpPHzvg3vbaw8/2c7YfwWoZ9S3CG/vzsIPsLpid+RjKc4tYuJ7QTBn6IayuRACnvFi+YyZtpueLcsDJAeT6DtGiqPL9eJoEuEB2PPj6wxihKmFfwxw7snW/mUwdh3yk2QuaS1nqXkkDBrryF7QCJuSMi5Su03web4Pw=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779995006; c=relaxed/simple;
-	bh=paeGq+rWMQnSZAQfy3+y9zJjzTZ7DbWxJrLxFBILOy8=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=inISHI9k3BWDwWBS+irI+FIn/mJpLFBfoQnz5ePmnA5dpSVEwaTJZwdYAYcvea01lArygVO047k1/IRz7SiRkDvX7H7GcT9BSyGd/vYNz3VSDfbMbHREuCtuy2ybRY04PMfIX7Qum29Xq21ZxiU0n4jYfXtV5KvrkMj+cZMh7wI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=Dok1X5Kv; dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b=TduevX06; arc=none smtp.client-ip=205.220.168.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
-Received: from pps.filterd (m0279863.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 64SHPcHe3203245
-	for <stable@vger.kernel.org>; Thu, 28 May 2026 19:03:25 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
-	cc:content-transfer-encoding:content-type:date:from:message-id
-	:mime-version:subject:to; s=qcppdkim1; bh=OipNs2AfaqF81i04o0nadF
-	204cKdQrRojdSAvovdFgs=; b=Dok1X5KveVEc0OVvIpsCQ2K2WsyUFGcxt35aUF
-	lVRc2GexNMoXWqM01FX4JtucxWPTZ+r8F3ohgEtIT8JVjW6v6m6Cw8WDy1RiV2DL
-	0T/oyURi9lCynFz8JDji8nd5qQVrjMh23aPtje9zfGRwbW82YnZ3IgiV+Zj0GTZG
-	zPYI8X37tyGdS+EMaznqOeUatXzps1UbHpxpotqyM0r746DcmAElbO6Qy4GGcz5f
-	z3QQ2LU18Ttoh8BznhH/+rIR7ndux28J9lJ9aXTuS1laQpTnrmLnNo8QON5KhGT7
-	HrNa+eVe09YATDlo9qNJ+o7IepkxwVnZEquouD+h343eZ15w==
-Received: from mail-pj1-f71.google.com (mail-pj1-f71.google.com [209.85.216.71])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4ee7ynmate-1
-	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
-	for <stable@vger.kernel.org>; Thu, 28 May 2026 19:03:24 +0000 (GMT)
-Received: by mail-pj1-f71.google.com with SMTP id 98e67ed59e1d1-36ba98cc003so321905a91.1
-        for <stable@vger.kernel.org>; Thu, 28 May 2026 12:03:24 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=oss.qualcomm.com; s=google; t=1779995004; x=1780599804; darn=vger.kernel.org;
-        h=cc:to:message-id:content-transfer-encoding:mime-version:subject
-         :date:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=OipNs2AfaqF81i04o0nadF204cKdQrRojdSAvovdFgs=;
-        b=TduevX06azHELZhdCSqCNJmPcf+8ux6l+CYy/Vfh6u34/0UpPQsem/fZnnrydVqkvt
-         pR+4Yw1Z1p3dLpq+HHn5FXu1p+SJ4tuhnRWY+F2WY+SUcLw7UXw2hO8EYKUKPeUNg0Av
-         ohwjzNoBrp/AKYUVbaOLBNomhJs/rVn+9ad4IveoM8yPsv3SfpnGY1FDgzxjIeiSNeXa
-         O+2DhOSvHOOjP12JPByekdOjAJVI0c2hZ3JiWAHQZla+xFSud/HUfrI/p0790fB/oxH2
-         1FdBUmOWnEn6ohhPUS+GXKYeqCWZf64HLDHEuRfahaBZPAdaae7SVDYpNXDs+PhFXNFi
-         5MZQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1779995004; x=1780599804;
-        h=cc:to:message-id:content-transfer-encoding:mime-version:subject
-         :date:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=OipNs2AfaqF81i04o0nadF204cKdQrRojdSAvovdFgs=;
-        b=p/0e1gz71UH8hObo93/1RrmjhQesEOZRDwbk11x3anWbgZbAgpDC+pArUQb6ZLKVyZ
-         Ihg5NcCgc7moDhTH5h09gq/KSrISLnPGAVwp2uUHaRmyfcQQpfkHXmIiviFr2Yvbbi8j
-         sJy9f/Zn/+QU5Dr/5aciSDQu4xZC8dotIjZrgDSKFUTgY9wvD5Z+XVL1oSvVXWyva2d9
-         0R2fHhyXAcYDbqBv/xe19/ygsp7Iy2/CQSRqeBY/XoBv7cWc75jjQQz4KuLlabry5Tv6
-         Pe4+iuXzS+QKJkvTf65e4Q/aQotyvg9hqffD1QUqhUX/vFgCXX92yQb4NNIFLriIadt7
-         he9w==
-X-Forwarded-Encrypted: i=1; AFNElJ9AtrpiZRNzgwlOq8Sbd3F/lZEn5DXpYhDVrjUdYnEx43aipzcJQUcyqDA/TQKLDhNu1SbzV9M=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyoSZmVrGHsgnhDrzhHVgLq9siWWQd/IWlgGezP0yEE7igj6kEO
-	ptO1lvxiDJxLpP09iqOPM3nJPt7knaq8pxAiPT0ITkwN3EL7sjUEq3FYk41atvc6vNa7zA13Tce
-	JJlEjngvmby+qcAAVElJEtKDM8xgoAYlitEBElZZk7oFCUE3378anGkV12zo=
-X-Gm-Gg: Acq92OHF1rf5SWBOqYO4OFEoJ7z91tL+JuqItoxx9gDJ4MjOpR/O6D0snEf+ZOdnwYc
-	vlqnvcmgP59rSj9x581qE4iJy9dYZHqQdIZ+x0lb7MMAqsBq7YsSH43ENNzA1D5Sz3+MvCWyvlW
-	qauOdwE6C2fyBUjeGPSSiQogH6JdsDKMmmp+dh+jdN+XwwzgouTHCeXUEhotuZV6KvcBcIuYG3A
-	/5jeTyqEvdYVfutYZSdzdwDhTAv41V1f2So+pXwBHVugWfogukFKEDdNHdYIPf/eG0XChEyvSKQ
-	plVtGF+6y48bPSf7BhJahHSAtWGmWeo9RBKtijKD+Z+weXjkmRY1uPyXZtyvoItG4ZT3WiRvqEP
-	+rOaKQCR5bL91M6fPlscl5Hb7uv+NXHtEutzjxLwh//BYIjba8BQMM9m6MeabMFUCs689
-X-Received: by 2002:a17:90b:5588:b0:369:b9db:b885 with SMTP id 98e67ed59e1d1-36bba8af135mr299553a91.15.1779995004107;
-        Thu, 28 May 2026 12:03:24 -0700 (PDT)
-X-Received: by 2002:a17:90b:5588:b0:369:b9db:b885 with SMTP id 98e67ed59e1d1-36bba8af135mr299509a91.15.1779995003470;
-        Thu, 28 May 2026 12:03:23 -0700 (PDT)
-Received: from hu-vdadhani-hyd.qualcomm.com ([202.46.23.25])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-36b90be1699sm2708341a91.12.2026.05.28.12.03.20
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 28 May 2026 12:03:22 -0700 (PDT)
-From: Viken Dadhaniya <viken.dadhaniya@oss.qualcomm.com>
-Date: Fri, 29 May 2026 00:33:08 +0530
-Subject: [PATCH v1] spi: qcom-geni: Fix cs_change handling on the last
- transfer
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9EF9F34107D;
+	Thu, 28 May 2026 19:13:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.66.66
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1779995616; cv=fail; b=TrPVwUoIYge6NbsT1cS3ivHFK0L+Ix6/IzS9gG6sz7ZU2A18L4NcgJUVJPuJMdYB8VBqiw0N83fKqPQfWs1+TUyshOyVq4lkBr+vG1vzeIZ0ULxf7MuJcK/kBR+eonIklgRHGcEOUnPteYW8COcrxUiL1yu7zmay5XJn5QUCD0w=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1779995616; c=relaxed/simple;
+	bh=x3GbsAnj7sWTcu5T4MKeuGOaZgnUIl4HmQ1BaIgwkmQ=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
+	 Content-Disposition:In-Reply-To:MIME-Version; b=TU5fNVHjfKIGo+z6+C3DmIathmfMiT2mLUTVHzMx2wYi22f2YJDe5v45GDc5t/yiZ/d46BvA+cdzS03/4QgHxvNOpF6MpGDT9hyVqkzy8CZVfnzyDk00H/GYDzL8zmeJoiH2wQt/3ZAiYhUX39EoX35Eb/e0SiUN0iZp6Q0DtN8=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=TYrX0nCe; arc=fail smtp.client-ip=52.101.66.66
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=Y59A1EPqnFV1sBVna/qDsqwGdP+q19oplR3xaxPnrFu2f26UG3vQdMvxv++t70ROmbNCe43cNUCv/lu/4mU2QOcQD+I2Az2PERWX5OvqHhJZMup0ZmQaVhTb/4kll+QjR5pID9+Naq35v4kYE0tHA9HFWTstd38YVfTOw3JkdaSzca/7uHj/fBwAr7wmzvVdTN+NUND/eG8HVSCo0w22zK+9V3MK83nAxVWNowWKKtX606WTGW2x6JPyrq4q0Hr0u/JLRHzdkh/6jH7wNxeoot3eD+qL5dDb+Sjh6dMtzKakQbIWLUWrBd8FB+jCg9j74kLj712DVo1564fphIISZg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=GObU5hniJSHGbGjwsqBZEjC8xNhjOEKHkTGTs7y4tco=;
+ b=VrrdgPCwyx/tJTppGqhP9zN8CK0a+h7/vURJtY4Xo60GgnTPV1Oh+CcxtoJBNBxSyExtQqRkHjUN3gHJdl9smsT/wKOdHMBqfGPJslCHAvhRZfu42LTlLcvC2/hjCU/siCD8h+sIExOugcK2dyRRdws61hStf94DUzJZ/v60KfJWPWUiiggdhDlVB/HT9Fhuvkj12TkWp8OVRoi/tiw3SNQyyXtv/MiJAyZFIlXVQoD3+4PUfPx0gE3SrtjUQrT1nC8/CO2u3pajwg83gTpa9oSbjNtrcm2b/0JdYc3BeuS2r8PkXHKVam7Ra2BEFjjTRGEKQXsmigBea9cXbqfxeg==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
+ header.d=nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=GObU5hniJSHGbGjwsqBZEjC8xNhjOEKHkTGTs7y4tco=;
+ b=TYrX0nCeOoFz74kgSRNyENVjIiTvbHBpXojELHR4DljG+7bDXaAl1ZmsnzHrrgsNq7hLpdFv0WnePizXlg2vXDthfObWoJ7P7SruGFudmJKDFXx5UPoC6NGSK7iengmeV/pXB1DmkOWmI/zQgDeU6kybfp/L9FZnTGSa40IIA4k4imWGVe+LLa9mgF5CUqcU/+8WlQN61QnAGD0CYhut8gDLyM4rPx6gSewJCeVqOOxMI8uVQodg9jjWZv6uueuChb1yfTOznwCYiQ+ttpup1hgJu4iJC/Yr8ER5kbp7xKkGt9PyOYd4+EQUspj2N8el/SWjVL7cxvuHbIt4fXtNww==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nxp.com;
+Received: from PA4PR04MB9366.eurprd04.prod.outlook.com (2603:10a6:102:2a9::8)
+ by PAXPR04MB9007.eurprd04.prod.outlook.com (2603:10a6:102:20f::12) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9870.25; Thu, 28 May
+ 2026 19:13:32 +0000
+Received: from PA4PR04MB9366.eurprd04.prod.outlook.com
+ ([fe80::75e4:8143:ddbc:6588]) by PA4PR04MB9366.eurprd04.prod.outlook.com
+ ([fe80::75e4:8143:ddbc:6588%3]) with mapi id 15.21.0071.011; Thu, 28 May 2026
+ 19:13:32 +0000
+Date: Thu, 28 May 2026 15:13:25 -0400
+From: Frank Li <Frank.li@nxp.com>
+To: Claudiu Beznea <claudiu.beznea@kernel.org>
+Cc: wsa+renesas@sang-engineering.com, tommaso.merciai.xr@bp.renesas.com,
+	alexandre.belloni@bootlin.com, p.zabel@pengutronix.de,
+	claudiu.beznea@tuxon.dev, linux-i3c@lists.infradead.org,
+	linux-kernel@vger.kernel.org, linux-renesas-soc@vger.kernel.org,
+	Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>,
+	stable@vger.kernel.org
+Subject: Re: [PATCH 03/17] i3c: renesas: Restore STDBR and EXTBR registers on
+ resume
+Message-ID: <ahiT1YkbWNz9y4mH@lizhi-Precision-Tower-5810>
+References: <20260522101815.1722909-1-claudiu.beznea@kernel.org>
+ <20260522101815.1722909-4-claudiu.beznea@kernel.org>
+ <ahCqF-OHFbV9b5ul@lizhi-Precision-Tower-5810>
+ <560f3365-8a22-477b-ae3d-61e8f4103e83@kernel.org>
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <560f3365-8a22-477b-ae3d-61e8f4103e83@kernel.org>
+X-ClientProxiedBy: SA0PR11CA0072.namprd11.prod.outlook.com
+ (2603:10b6:806:d2::17) To PA4PR04MB9366.eurprd04.prod.outlook.com
+ (2603:10a6:102:2a9::8)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20260529-fix-spi-fragmentation-bit-logic-v1-1-3b30f1a3dd7d@oss.qualcomm.com>
-X-B4-Tracking: v=1; b=H4sIAGuRGGoC/yWNyw6CMBBFf4XM2klK66P4K8RFKdM6RgtpKzEh/
- DujLs9NzrkrFMpMBa7NCpkWLjwlgfbQgL+7FAl5FAat9FmdtMXAHywzY8guvihVV8XAgSs+p8g
- erVWmOxpzCaEDqcyZRPk99LC0cPtv5T08yNdvGrZtB8oQ+hKHAAAA
-X-Change-ID: 20260528-fix-spi-fragmentation-bit-logic-880394337ff9
-To: Mark Brown <broonie@kernel.org>, Jonathan Marek <jonathan@marek.ca>
-Cc: linux-arm-msm@vger.kernel.org, linux-spi@vger.kernel.org,
-        linux-kernel@vger.kernel.org, stable@vger.kernel.org,
-        Viken Dadhaniya <viken.dadhaniya@oss.qualcomm.com>
-X-Mailer: b4 0.16-dev
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1779995000; l=3603;
- i=viken.dadhaniya@oss.qualcomm.com; s=20260324; h=from:subject:message-id;
- bh=paeGq+rWMQnSZAQfy3+y9zJjzTZ7DbWxJrLxFBILOy8=;
- b=Pef9xiIMQLyIjLswkPJ5B7zJDZbFEO8mFAmRHVdDHXrPubIVJdUJca+jxpkd6UvTjEDu+OUmf
- EHoxlwILRiPDWyGDx+AsBHTSSEgqBYDhWxFS4qMyloPlwKY4XUZDP/2
-X-Developer-Key: i=viken.dadhaniya@oss.qualcomm.com; a=ed25519;
- pk=C39f+LOIGhh/02LQpT46TsUSXRvBn9qXC8Xb26KJ44Y=
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNTI4MDE5MiBTYWx0ZWRfX8bm/zxEUd/Y+
- G4y8exSFix0lhPMVkU7EWU0HYbfialnTsS7h6EvMw5IgrXRkUxatLajYu9AfrnYZaz92j7wBoTX
- f8Vt5TqlflLFHl/AvcMf/vK93OyekRSECtOv2opAFFBpSC6noVaRKjsm+pyTiN3QH9TbEbu2mK/
- iaw+9p/3KskbMGRYBE76PyttLLtEaiBYnbk1wJu0Sij8KftXHBPNW8d6C1Bncop6cGoaI8tqVNs
- BKcPAGXav3qx8Ihs3l1kXCNuIlYl761lo6U4bYYLZjJCDb0TatvOXjIqNSCy0zkmYUB8HvBX1/I
- fs56Q4Pw4hTrqgrxA6I64Gq8Uw1ahN6e3DvPS8a6JJHKaz5ZnCPPqh686onsEW/HL6Bn2I0puzj
- o4sF56eqNh7WWP/4+EY/dZvu85pf1tKjHhneVBuFo2opnqPtZHoyvfsCcTCCC22UV5T5k3F9vHs
- r+wkBF5gKTwAxdNcKrQ==
-X-Proofpoint-ORIG-GUID: uej--B3kBNhLTTbbztH6vS37oYZhqPeH
-X-Proofpoint-GUID: uej--B3kBNhLTTbbztH6vS37oYZhqPeH
-X-Authority-Analysis: v=2.4 cv=EdL4hvmC c=1 sm=1 tr=0 ts=6a18917c cx=c_pps
- a=UNFcQwm+pnOIJct1K4W+Mw==:117 a=ZePRamnt/+rB5gQjfz0u9A==:17
- a=IkcTkHD0fZMA:10 a=NGcC8JguVDcA:10 a=s4-Qcg_JpJYA:10
- a=VkNPw1HP01LnGYTKEx00:22 a=u7WPNUs3qKkmUXheDGA7:22 a=yOCtJkima9RkubShWh1s:22
- a=VwQbUJbxAAAA:8 a=EUspDBNiAAAA:8 a=XIveKea9zlLi6OhspPoA:9 a=QEXdDO2ut3YA:10
- a=uKXjsCUrEbL0IQVhDsJ9:22
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.125,FMLib:17.12.100.49
- definitions=2026-05-28_05,2026-05-28_03,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- suspectscore=0 priorityscore=1501 phishscore=0 clxscore=1015 bulkscore=0
- spamscore=0 adultscore=0 malwarescore=0 impostorscore=0 lowpriorityscore=0
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.22.0-2605210000 definitions=main-2605280192
-X-Spamd-Result: default: False [-2.16 / 15.00];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[qualcomm.com,reject];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
-	R_DKIM_ALLOW(-0.20)[qualcomm.com:s=qcppdkim1,oss.qualcomm.com:s=google];
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: PA4PR04MB9366:EE_|PAXPR04MB9007:EE_
+X-MS-Office365-Filtering-Correlation-Id: fa34eb1d-8e75-4b95-f8dc-08debced3539
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|19092799006|7416014|376014|1800799024|52116014|366016|11063799006|38350700014|6133799003|56012099006|18002099003|22082099003|4143699003;
+X-Microsoft-Antispam-Message-Info:
+	k6Fsh47EpymGXX2trh/u3Tkf9wUTHXlG+6m8hxxYpDnOYQRVR1Dm7WjafXMjxTW/PUig6KJcCVgOeBQbAsWUZFqgn4f/8GLbW4xtrPzrnh6yA2U30KwuSXE40HRbRQEzcRqzSM1USzc9yfEpS34FdNM0TRO+2BnWPB+dPBV/kbm4xfTyzYPuNijm0tdty7Grmav5TsQH3PkX26gEbqimllRxpZbEF0XVn6LV5u3Qvb30djyxr4Z/onboZET3TEAwFPPdyoVHLr2MwdLC7AJSzSPzK1Lg+0f+400HQAGtw6sMYAwDP4MPcQm1szUEcL/kHCI+Bl5gAxoMAnv/jqVjv+u4nsN4/eNoKPJ/Bk2doZ8Ec4XJ5wOsSeVnWA5SGJmEhet8+C2AbTKOLwgi+3F7Wd8BN7WXtoeUtp9YRtwpZCuC0sqEJqNVbYIGR0lAaKmFdFimyqs47E/xyeP+fqaW2OSbqvGvtTQPcBHE/1H4mjCavqUtIX20jL8BX+zTkEwW9+B+cCdHj+UaGstTF6+vUxqyIxZbdoINSsBJ7u/+dIROvnfGgdHE4Y9Ru0tkQ9+pgEQJbS/BqM3OnihvI3KsJUYwQgUck4YcbX+p7y3rfbw7ky2ALVXL6g0OTPANTEIEv5OC8JYTp5H+E8HFV/78jIBnXU8BNQxQbo8e2gDAVOxdryyNtq9Nm7RUskFTBpNYEx4lrQJuSxWulftyiUllSyRUrw6pXUy8IrwcVyxApXzU9vaRufB1lC9/jxEUTxcc
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PA4PR04MB9366.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(19092799006)(7416014)(376014)(1800799024)(52116014)(366016)(11063799006)(38350700014)(6133799003)(56012099006)(18002099003)(22082099003)(4143699003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?VlVCS1JvRmhZWlMwNnJENXVhS041TUh3eVo3dWRqZE8wV1d3OENaTUJWamgx?=
+ =?utf-8?B?WHZzRWpYSERzRHJ6bkdNQlNDYXZtMWZaeldIY2xZc0V4cStuM0ZCMVl3Rlhq?=
+ =?utf-8?B?aDZsNXdhYUloeGdzcVlRdGNWZit0Wjd3YXZnaVJOSGx0YVVGaUxkb2lQZjg5?=
+ =?utf-8?B?Y2E2a0NUbFFrdURiUXhnekwzZ0xzVmg0MkoweUlwQ2k3T0VvUnlaSVlhOTZK?=
+ =?utf-8?B?N24rSFFLSHN2Ylk0TGFFQk5wWE04WWJTL2pGQVBTcFBmMXE3UmFuN21mZTBl?=
+ =?utf-8?B?NFZlejVKdXRtcEw1MEVyNDRtUUR2WW4zSUxiY1dmWmhnQVZZZEJwTkZlbWVX?=
+ =?utf-8?B?U0lFN3hQK096VElpWW5aRXA0QlBnNGJvd1V6Nk5yOUZ6aFJoVGtmU0ZyVnRr?=
+ =?utf-8?B?bTViQ0I2aThkRFNlREEwWnBZdHVmR3I0ZHVDZ1dOTCtxdFV3dGcrU0Y3NTVp?=
+ =?utf-8?B?ZUhINitJVFY5dDN3OENTSmh3ZE5TTURPRUEyeUl6SWgwUnVHZ0ZZMDUzRVc1?=
+ =?utf-8?B?bjRXM1lLbHQ2UVJoS0lnS1JlaHJZdXdmQWNQblgydDlGaDBxbktDUXFJdkZq?=
+ =?utf-8?B?ci84VDQxREk5cnBleHhTVElkQ0UwSit2bFpDelBhNHZuSGR4dmNING9jVjFJ?=
+ =?utf-8?B?VDVzNDM3RktSaWZYNit0c3M4NldHY2FZUnNlbW1aRnNPTFB0ZEp2WUFTQVpM?=
+ =?utf-8?B?SXg0ZTQwRTJwdTZoUGY3VHk1WXZIVHJBSisrUlgrZmh0TXMxTlA2MStESDZ4?=
+ =?utf-8?B?T01JKzRTYTJTQzRiMTViZ014bk00bXFUQjU1V0djNnVrZXhtK2hpWnhGYm5U?=
+ =?utf-8?B?SnZvNk9ZV1htdmNlNkVvb01nU0w1bXRwcVRad2M1ZU01dG1VTG9KYlpVTDJq?=
+ =?utf-8?B?TnlKRnJKNUpITzdSVmNZcnZ5RWNqd1pwU2k3SGJrajYvbDZtNmQ5ZE9YcGsy?=
+ =?utf-8?B?ZlIrSk9NTEZMWmVLRkJiMW1LeWZzL1NBdXpUY1Y5dDVGejNGbGJKRkVoaWho?=
+ =?utf-8?B?N25aVW5HVWJNYTNlZ2xMekJNQkE2alduSlpZdUpLWCtzRmZEcWJkd0tUdkc5?=
+ =?utf-8?B?WDFYNW5vUG93eTVEZVIyNHMvK3BFTitzUWszNEVyQjZnalN2L24vVC9xUitl?=
+ =?utf-8?B?VDk3RmViSEZyTWpmVFdGc0kybVI5Q0FNNFBZOGxQRDBMNkZxZWttS05uYW9w?=
+ =?utf-8?B?eHZiN0c5MUU0a0RFZWVSdnNibis5QkNKdUJGNjZ1WmR2UkxGK1dRUXIzcy9Y?=
+ =?utf-8?B?bUFtanBic05WNEN5L3pVc0pGZjZobWRxUk1TV2dQcERGNlM4c2YwNDQ5elZ0?=
+ =?utf-8?B?RmZ0WGJsVzJ0b1djbWRJbXVjTlZzQ1NoL2R0V2ZjeFF0UFhuZ2tDNkF4NW0y?=
+ =?utf-8?B?d1dkV0hweWhwd0RxSnhZR0w1bm1HOUlEUGlMc09tOWNYaW1YcStUMkxIeHZk?=
+ =?utf-8?B?NTN4Snd1dmthOXpYakdYd3RpSm0yQVFCK09SVTg1eXpnZThCd3RxNGNPZU1P?=
+ =?utf-8?B?aXJ0WTd3TElmMm5qM2FncktNcjNyY3lEajVpdDhjbWV4OEkwYWRiQWk5UFFz?=
+ =?utf-8?B?SUxHY09ENFJhQXBJR0d3dTBxb3pyKzV5WXZuTUNMTHZ0QUkwZ1R5UGMwZUtr?=
+ =?utf-8?B?SWJQdnE0OXVyeElURU54S0Y0aHFyR3J1SjZPMVNJMEdiQTc5QmZDMUl5alZW?=
+ =?utf-8?B?ekUrUkg0YUlmKzJYQklVUExULzdNTXk4MTJSUFBFb0ZvR29rdnF2N3R2MHhx?=
+ =?utf-8?B?dGxIWWw1Wm13QU5ESDNEbTZONHZzRkdxTU1saSs5VGo1SGlIclMwc0pPa25S?=
+ =?utf-8?B?UUhDOEhwVHhGbGFma1Z4cTBRcEhrb1gwSHhuWXhuQy9OeE5SeEE4R0d2N0Zw?=
+ =?utf-8?B?YWRDMmVMR3JvQllsY0l3dVhWY0JtZEdvckN2emxlekdaSGk5VS9Cc0oydURQ?=
+ =?utf-8?B?dGNld281aTNyRkpSNFc4UG9pSkV0M1VEemo2bXozVi9hWFZIY0p4ZHpKMGhM?=
+ =?utf-8?B?R04ySnF1MjJsZm9xQ29CYVNwMVV6MlFFb1o5RU1ZaGhhN2svZjRNMlVUcDNx?=
+ =?utf-8?B?WDFKWG51dVVXaEtkNHpKc0tYV2x1MGJpWUtPbEJOT240eXE2cEhMblRZWWJq?=
+ =?utf-8?B?cjJpRU55cXFZblgvNGlFWnM0QVlJMTFzRUNWWFVzOWlOTFJzekJTdi9FbGdi?=
+ =?utf-8?B?OEdDSVI5Um9IS1R3bThZdVFVUy9MUHZTL3B3RnUzWGxoWmgrN1FyOGxPd2d4?=
+ =?utf-8?B?OXVWNGlQL28rRW1lcXlCa1EwSkpNcFk1Sm9ia1pJd3pGbloyVTd6UjJLbkpO?=
+ =?utf-8?Q?Ex+3/VgqOcOnOAbKuz?=
+X-OriginatorOrg: nxp.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: fa34eb1d-8e75-4b95-f8dc-08debced3539
+X-MS-Exchange-CrossTenant-AuthSource: PA4PR04MB9366.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 28 May 2026 19:13:32.0727
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: VBuDT/nzANppOWPTy5D/aHKAwDcfrA6JLAvS0NRsYWQPFDc1UNzb2LHzvnembMh2z82vuEJJ4pqZmHXQXOGl0g==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: PAXPR04MB9007
+X-Spamd-Result: default: False [1.84 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
+	ARC_REJECT(1.00)[cv is fail on i=2];
+	MID_RHS_NOT_FQDN(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[nxp.com,none];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
+	R_DKIM_ALLOW(-0.20)[nxp.com:s=selector1];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	DKIM_TRACE(0.00)[qualcomm.com:+,oss.qualcomm.com:+];
-	TAGGED_FROM(0.00)[bounces-255089-lists,stable=lfdr.de];
 	FROM_HAS_DN(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-255090-lists,stable=lfdr.de];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[nxp.com:+];
+	MISSING_XM_UA(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TO_DN_SOME(0.00)[];
+	RCVD_COUNT_FIVE(0.00)[5];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[viken.dadhaniya@oss.qualcomm.com,stable@vger.kernel.org];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	FROM_NEQ_ENVFROM(0.00)[Frank.li@nxp.com,stable@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[7];
-	MID_RHS_MATCH_FROM(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
-	RCVD_COUNT_SEVEN(0.00)[7]
-X-Rspamd-Queue-Id: ED70C5F6DBC
+	TAGGED_RCPT(0.00)[stable,renesas];
+	RCPT_COUNT_SEVEN(0.00)[11];
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	TO_DN_SOME(0.00)[]
+X-Rspamd-Queue-Id: E52105F6EDC
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-Commit b99181cdf9fa ("spi-geni-qcom: remove manual CS control") introduced
-automatic CS control via the FRAGMENTATION bit, but missed the case where
-cs_change is set on the last transfer in a message.
+On Thu, May 28, 2026 at 11:29:46AM +0300, Claudiu Beznea wrote:
+> Hi, Frank,
+>
+> On 5/22/26 22:10, Frank Li wrote:
+> > On Fri, May 22, 2026 at 01:18:01PM +0300, Claudiu Beznea wrote:
+> > > From: Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>
+> > >
+> > > The Renesas RZ/G3S supports a power saving state where power to the most
+> > > SoC componentes (including I3C) is lost.
+> > >
+> > > The STDBR and EXTBR are configured in initialization phase though the
+> > > struct i3c_master_controller_ops::bus_init. Set them on resume function
+> > > as well to keep the same state of the controller after a suspend with
+> > > power loss and a similar initialization sequence as in bus_init.
+> > >
+> > > Fixes: e7218986319b ("i3c: renesas: Add suspend/resume support")
+> > > Cc: stable@vger.kernel.org
+> > > Signed-off-by: Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>
+> > > ---
+> > >   drivers/i3c/master/renesas-i3c.c | 10 ++++++----
+> > >   1 file changed, 6 insertions(+), 4 deletions(-)
+> > >
+> > > diff --git a/drivers/i3c/master/renesas-i3c.c b/drivers/i3c/master/renesas-i3c.c
+> > > index 1917549cf6d5..6c23f956ad2a 100644
+> > > --- a/drivers/i3c/master/renesas-i3c.c
+> > > +++ b/drivers/i3c/master/renesas-i3c.c
+> > > @@ -260,6 +260,7 @@ struct renesas_i3c {
+> > >   	u32 dyn_addr;
+> > >   	u32 i2c_STDBR;
+> > >   	u32 i3c_STDBR;
+> > > +	u32 extbr;
+> >
+> > can you keep consisent with above 2 register, use upcase EXTBR,
+>
+> Using upper case for this will mislead the compiler. There is already a
+> macro defined for EXTBR:
 
-For the last transfer, cs_change means that CS should remain asserted after
-the message completes. Since GENI SPI controls CS through FRAGMENTATION,
-set FRAGMENTATION for this case as well as for non-last transfers where
-cs_change is not set.
+That's fine.
 
-Additionally, setup_gsi_xfer() was storing FRAGMENTATION (BIT(2) = 4) in
-peripheral.fragmentation, which is a boolean field consumed by
-gpi_create_spi_tre() via u32_encode_bits(..., TRE_SPI_GO_FRAG). Storing 4
-causes u32_encode_bits to mask it to 0, silently disabling the FRAG bit in
-the GPI TRE regardless of the cs_change logic. Store 1 instead.
+Reviewed-by: Frank Li <Frank.Li@nxp.com>
 
-Without these fixes, TPM TIS SPI transfers deassert CS between
-single-transfer messages that use cs_change to keep CS asserted across the
-header, wait-state, and data phases, breaking TCG SPI flow control:
-
-  tpm_tis_spi: probe of spi11.0 failed with error -110
-
-Update both setup_se_xfer() and setup_gsi_xfer() to handle this condition.
-
-Fixes: b99181cdf9fa ("spi-geni-qcom: remove manual CS control")
-Cc: stable@vger.kernel.org
-Signed-off-by: Viken Dadhaniya <viken.dadhaniya@oss.qualcomm.com>
----
- drivers/spi/spi-geni-qcom.c | 27 +++++++++++++++++++--------
- 1 file changed, 19 insertions(+), 8 deletions(-)
-
-diff --git a/drivers/spi/spi-geni-qcom.c b/drivers/spi/spi-geni-qcom.c
-index a04cdc1e5ad4..0618f6bd7878 100644
---- a/drivers/spi/spi-geni-qcom.c
-+++ b/drivers/spi/spi-geni-qcom.c
-@@ -449,10 +449,15 @@ static int setup_gsi_xfer(struct spi_transfer *xfer, struct spi_geni_master *mas
- 		return ret;
- 	}
- 
--	if (!xfer->cs_change) {
--		if (!list_is_last(&xfer->transfer_list, &spi->cur_msg->transfers))
--			peripheral.fragmentation = FRAGMENTATION;
--	}
-+	/*
-+	 * Set fragmentation to keep CS asserted after this transfer when:
-+	 *  - non-last transfer with cs_change=0: keep CS between chained transfers
-+	 *  - last transfer with cs_change=1: keep CS asserted after the message
-+	 *    (e.g. TPM TIS SPI uses cs_change=1 on single-transfer messages to
-+	 *     keep CS asserted across header, wait-state and data phases)
-+	 */
-+	peripheral.fragmentation = list_is_last(&xfer->transfer_list, &spi->cur_msg->transfers) ?
-+				   xfer->cs_change : !xfer->cs_change;
- 
- 	if (peripheral.cmd & SPI_RX) {
- 		dmaengine_slave_config(mas->rx, &config);
-@@ -858,10 +863,16 @@ static int setup_se_xfer(struct spi_transfer *xfer,
- 		mas->cur_xfer_mode = GENI_SE_DMA;
- 	geni_se_select_mode(se, mas->cur_xfer_mode);
- 
--	if (!xfer->cs_change) {
--		if (!list_is_last(&xfer->transfer_list, &spi->cur_msg->transfers))
--			m_params = FRAGMENTATION;
--	}
-+	/*
-+	 * Set FRAGMENTATION to keep CS asserted after this transfer when:
-+	 *  - non-last transfer with cs_change=0: keep CS between chained transfers
-+	 *  - last transfer with cs_change=1: keep CS asserted after the message
-+	 *    (e.g. TPM TIS SPI uses cs_change=1 on single-transfer messages to
-+	 *     keep CS asserted across header, wait-state and data phases)
-+	 */
-+	if (list_is_last(&xfer->transfer_list, &spi->cur_msg->transfers) ?
-+	    xfer->cs_change : !xfer->cs_change)
-+		m_params = FRAGMENTATION;
- 
- 	/*
- 	 * Lock around right before we start the transfer since our
-
----
-base-commit: e7d700e14934e68f86338c5610cf2ae76798b663
-change-id: 20260528-fix-spi-fragmentation-bit-logic-880394337ff9
-
-Best regards,
---  
-Viken Dadhaniya <viken.dadhaniya@oss.qualcomm.com>
-
+>
+> #define EXTBR                   0x78
+>
+> Defining this member as:
+>
+> u32 EXTBR;
+>
+> will make the compiler try to replace the EXTBR in "i3c->EXTBR" at
+> preprocessing time:
+>
+>   CC [M]  drivers/i3c/master/renesas-i3c.o
+> ../drivers/i3c/master/renesas-i3c.c:65:17: error: expected identifier or ‘(’
+> before numeric constant
+>    65 | #define EXTBR   0x78
+>       |                 ^~~~
+> ../drivers/i3c/master/renesas-i3c.c:263:6: note: in expansion of macro ‘EXTBR’
+>   263 |  u32 EXTBR;
+>       |      ^~~~~
+> ../drivers/i3c/master/renesas-i3c.c: In function ‘renesas_i3c_bus_init’:
+> ../drivers/i3c/master/renesas-i3c.c:65:17: error: expected identifier before
+> numeric constant
+>    65 | #define EXTBR   0x78
+>       |                 ^~~~
+> ../drivers/i3c/master/renesas-i3c.c:611:7: note: in expansion of macro ‘EXTBR’
+>   611 |  i3c->EXTBR = EXTBR_EBRLO(od_low_ticks) | EXTBR_EBRHO(od_high_ticks) |
+>       |       ^~~~~
+> ../drivers/i3c/master/renesas-i3c.c:65:17: error: expected identifier before
+> numeric constant
+>    65 | #define EXTBR   0x78
+>       |                 ^~~~
+> ../drivers/i3c/master/renesas-i3c.c:613:40: note: in expansion of macro ‘EXTBR’
+>   613 |  renesas_writel(i3c->regs, EXTBR, i3c->EXTBR);
+>       |                                        ^~~~~
+> ../drivers/i3c/master/renesas-i3c.c: In function ‘renesas_i3c_resume_noirq’:
+> ../drivers/i3c/master/renesas-i3c.c:65:17: error: expected identifier before
+> numeric constant
+>    65 | #define EXTBR   0x78
+>       |                 ^~~~
+> ../drivers/i3c/master/renesas-i3c.c:1451:40: note: in expansion of macro ‘EXTBR’
+>  1451 |  renesas_writel(i3c->regs, EXTBR, i3c->EXTBR);
+>       |                                        ^~~~~
+>
+> The register contains both i3c and i2c specific fields. I'm not sure using
+> i2c_i3c_EXTBR is the best way to go forward for this or just keeping it as
+> is.
+>
+> --
+> Thank you,
+> Claudiu
+>
 
