@@ -1,59 +1,60 @@
-Return-Path: <stable+bounces-256164-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-256332-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 0EFmHnyqGGoomAgAu9opvQ
-	(envelope-from <stable+bounces-256164-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:50:04 +0200
+	id 0N5bGM2sGGpolwgAu9opvQ
+	(envelope-from <stable+bounces-256332-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:59:57 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id D6BC15F9A3C
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:50:03 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id B2F175FA064
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:59:56 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 67910314D35A
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 20:42:19 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 5A9FF3246DDF
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 20:50:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 593F633D4FB;
-	Thu, 28 May 2026 20:42:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5918D328B7B;
+	Thu, 28 May 2026 20:50:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XrsWbKOB"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JhTsw/DN"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2F53B33A9FC;
-	Thu, 28 May 2026 20:42:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0A0DF2F1FEF;
+	Thu, 28 May 2026 20:50:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780000935; cv=none; b=CHkFsjltc+cWISv9hGI9IZ8eEGn5nAZ/JnO/BgEakfwtnsHN6fKl+3Pd60ahCaoxh4AJRtlsXEARFXKJF8yD8uZdgp0D/cyFwwhLLmjkr+5+y6bwDrfYULkhsdAdsLU7tp5lyW9bHVmuzZVWH9BlV5mdSEvgEdHZOxRZOp2VYyA=
+	t=1780001405; cv=none; b=aShgaoDIL4B5eKRS+9PCLkJeJh57cwhJkV+l1kl0RX34hX4/Yn35vhyMq8sViNimkdJFuKpGKs/WEw8/A4wEKOXY25ky//G6pM2sFx78hby+ILppjbxK77ZthirDz5SFBVNfq/Mgny2LLgF5m/FE0+Zs2hQcbQ3ZS326uGHICqY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780000935; c=relaxed/simple;
-	bh=3vug1REUfHAkQVtTA8EAjhEL6wp7ELSiEupLoj282x4=;
+	s=arc-20240116; t=1780001405; c=relaxed/simple;
+	bh=ZJFZvvEEuZdYZOhLMFk1TgxSLphoTo3s2JAvJlYNs8I=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=jruzOE/AkgDfQ4Zd69L6V9oiUyePdZVL7Dm+hE9unTz+E6dMLIDfShGhBwWIcaQjDUt1Q+Nf0CuSMV0Pn8ZAXL71WyWPO6qD9WHde0wzEeupgZkGd8phBOs+zT3KnPQpYXw6qUV8hDI2Ev7Jclx/Yej8Uh0GAzcBpPi37/LqHKs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XrsWbKOB; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8E87A1F000E9;
-	Thu, 28 May 2026 20:42:13 +0000 (UTC)
+	 MIME-Version; b=gbUcOzTHaS4MWIHWgY7hWHv3Ev3VaUpYxlmT9UaVjOsMbzcyUcSp39aCF8p6RnG3klWdKeUi/AdoTQ5Zfh1SRe/z2iGaWrmpy7Jq3qYxY5erbYOCDwqiuHf3eY4IZAixw4I+J7aulE8N+hNBFdUU0QYkK4EPmUVtYzJckTps52o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JhTsw/DN; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2A8851F000E9;
+	Thu, 28 May 2026 20:50:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780000934;
-	bh=6GRB7uJiVSfDuq63Ou99RReOF+FG5vRwh821P1PZySw=;
+	s=korg; t=1780001403;
+	bh=hKzDkXf2Gys8CShrLpUPBApFKUdNKfEY2IMrVwOHD4I=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=XrsWbKOB7Bws1AsXUnQza6vDhdlVSMk5tQWBZEhubR4+nMtnXgFIq6zMNYFhEM+xI
-	 P02lXwZbM/j+I9gqFmTYweqNYYClRmiLFMewTS96mgOVFaF8LpJH+sVsxVIDdlKTzU
-	 BA68KvQAr0SG24krmlFqwvHtB3aw4pWYxFNM1a3o=
+	b=JhTsw/DNrxJG7qFlKAnQOo5dFJKNw91POXAkd054bZEldSF0Awo9l7iuXlQzl8CDN
+	 JjFld8sTZEH10EIsvuMTNtVayj9LmlPmJfQcqzkk5NRatF5szXfbPQDGGEdBikEHbN
+	 D/qqnjb8xfjvbmiqWEw6BFoxj+JRGiUBRRRJbfDc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mikko Perttunen <mperttunen@nvidia.com>,
-	Rob Clark <robin.clark@oss.qualcomm.com>,
+	Tristan Madani <tristan@talencesecurity.com>,
+	Florian Westphal <fw@strlen.de>,
+	Pablo Neira Ayuso <pablo@netfilter.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 222/272] drm/msm: Fix iommu_map_sgtable() return value check and avoid WARN
+Subject: [PATCH 6.6 116/186] netfilter: ebtables: move to two-stage removal scheme
 Date: Thu, 28 May 2026 21:49:56 +0200
-Message-ID: <20260528194635.412934271@linuxfoundation.org>
+Message-ID: <20260528194932.072638972@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260528194629.379955525@linuxfoundation.org>
-References: <20260528194629.379955525@linuxfoundation.org>
+In-Reply-To: <20260528194928.941004471@linuxfoundation.org>
+References: <20260528194928.941004471@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -68,80 +69,226 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-256332-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-256164-lists,stable=lfdr.de];
-	TO_DN_SOME(0.00)[];
-	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim,nvidia.com:email,qualcomm.com:email,patchwork.freedesktop.org:url]
-X-Rspamd-Queue-Id: D6BC15F9A3C
+	TO_DN_SOME(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_SEVEN(0.00)[7];
+	MID_RHS_MATCH_FROM(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[talencesecurity.com:email,netfilter.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,strlen.de:email]
+X-Rspamd-Queue-Id: B2F175FA064
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mikko Perttunen <mperttunen@nvidia.com>
+From: Florian Westphal <fw@strlen.de>
 
-[ Upstream commit 55e0f0d1c1a4ee1e46da7da4d443eb3044fb3851 ]
+[ Upstream commit b7f0544d86d439cb946515d2ef6a0a75e8626710 ]
 
-Commit "iommu: return full error code from iommu_map_sg[_atomic]()"
-changed iommu_map_sgtable() to return an ssize_t and negative values
-in error cases, rather than a size_t and a zero.
+Like previous patches for x_tables, follow same pattern in ebtables.
+We can't reuse xt helpers: ebt_table struct layout is incompatible.
 
-Store the return value in the appropriate type and in case of error,
-return it rather than WARNing.
+table->ops assignment is now done while still holding the ebt mutex
+to make sure we never expose partially-filled table struct.
 
-Fixes: ad8f36e4b6b1 ("iommu: return full error code from iommu_map_sg[_atomic]()")
-Signed-off-by: Mikko Perttunen <mperttunen@nvidia.com>
-Patchwork: https://patchwork.freedesktop.org/patch/719685/
-Message-ID: <20260421-iommu_map_sgtable-return-v1-3-fb484c07d2a1@nvidia.com>
-Signed-off-by: Rob Clark <robin.clark@oss.qualcomm.com>
+Fixes: 87663c39f898 ("netfilter: ebtables: do not hook tables by default")
+Reviewed-by: Tristan Madani <tristan@talencesecurity.com>
+Signed-off-by: Florian Westphal <fw@strlen.de>
+Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/msm/msm_iommu.c | 5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
+ net/bridge/netfilter/ebtable_broute.c |  2 +-
+ net/bridge/netfilter/ebtable_filter.c |  2 +-
+ net/bridge/netfilter/ebtable_nat.c    |  2 +-
+ net/bridge/netfilter/ebtables.c       | 60 +++++++++++++++++----------
+ 4 files changed, 40 insertions(+), 26 deletions(-)
 
-diff --git a/drivers/gpu/drm/msm/msm_iommu.c b/drivers/gpu/drm/msm/msm_iommu.c
-index 2a94e82316f95..8231488577f4d 100644
---- a/drivers/gpu/drm/msm/msm_iommu.c
-+++ b/drivers/gpu/drm/msm/msm_iommu.c
-@@ -362,14 +362,15 @@ static int msm_iommu_map(struct msm_mmu *mmu, uint64_t iova,
- 		struct sg_table *sgt, size_t len, int prot)
+diff --git a/net/bridge/netfilter/ebtable_broute.c b/net/bridge/netfilter/ebtable_broute.c
+index 8f19253024b0a..33d8640d21ac1 100644
+--- a/net/bridge/netfilter/ebtable_broute.c
++++ b/net/bridge/netfilter/ebtable_broute.c
+@@ -128,8 +128,8 @@ static int __init ebtable_broute_init(void)
+ 
+ static void __exit ebtable_broute_fini(void)
  {
- 	struct msm_iommu *iommu = to_msm_iommu(mmu);
--	size_t ret;
-+	ssize_t ret;
- 
- 	/* The arm-smmu driver expects the addresses to be sign extended */
- 	if (iova & BIT_ULL(48))
- 		iova |= GENMASK_ULL(63, 49);
- 
- 	ret = iommu_map_sgtable(iommu->domain, iova, sgt, prot);
--	WARN_ON(!ret);
-+	if (ret < 0)
-+		return ret;
- 
- 	return (ret == len) ? 0 : -EINVAL;
+-	unregister_pernet_subsys(&broute_net_ops);
+ 	ebt_unregister_template(&broute_table);
++	unregister_pernet_subsys(&broute_net_ops);
  }
+ 
+ module_init(ebtable_broute_init);
+diff --git a/net/bridge/netfilter/ebtable_filter.c b/net/bridge/netfilter/ebtable_filter.c
+index 278f324e67524..fdb988c24916a 100644
+--- a/net/bridge/netfilter/ebtable_filter.c
++++ b/net/bridge/netfilter/ebtable_filter.c
+@@ -109,8 +109,8 @@ static int __init ebtable_filter_init(void)
+ 
+ static void __exit ebtable_filter_fini(void)
+ {
+-	unregister_pernet_subsys(&frame_filter_net_ops);
+ 	ebt_unregister_template(&frame_filter);
++	unregister_pernet_subsys(&frame_filter_net_ops);
+ }
+ 
+ module_init(ebtable_filter_init);
+diff --git a/net/bridge/netfilter/ebtable_nat.c b/net/bridge/netfilter/ebtable_nat.c
+index 9066f7f376d57..8b981b2041b5d 100644
+--- a/net/bridge/netfilter/ebtable_nat.c
++++ b/net/bridge/netfilter/ebtable_nat.c
+@@ -109,8 +109,8 @@ static int __init ebtable_nat_init(void)
+ 
+ static void __exit ebtable_nat_fini(void)
+ {
+-	unregister_pernet_subsys(&frame_nat_net_ops);
+ 	ebt_unregister_template(&frame_nat);
++	unregister_pernet_subsys(&frame_nat_net_ops);
+ }
+ 
+ module_init(ebtable_nat_init);
+diff --git a/net/bridge/netfilter/ebtables.c b/net/bridge/netfilter/ebtables.c
+index f99e348c8f37f..ec286e54229b7 100644
+--- a/net/bridge/netfilter/ebtables.c
++++ b/net/bridge/netfilter/ebtables.c
+@@ -42,6 +42,7 @@
+ 
+ struct ebt_pernet {
+ 	struct list_head tables;
++	struct list_head dead_tables;
+ };
+ 
+ struct ebt_template {
+@@ -1162,11 +1163,6 @@ static int do_replace(struct net *net, sockptr_t arg, unsigned int len)
+ 
+ static void __ebt_unregister_table(struct net *net, struct ebt_table *table)
+ {
+-	mutex_lock(&ebt_mutex);
+-	list_del(&table->list);
+-	mutex_unlock(&ebt_mutex);
+-	audit_log_nfcfg(table->name, AF_BRIDGE, table->private->nentries,
+-			AUDIT_XT_OP_UNREGISTER, GFP_KERNEL);
+ 	EBT_ENTRY_ITERATE(table->private->entries, table->private->entries_size,
+ 			  ebt_cleanup_entry, net, NULL);
+ 	if (table->private->nentries)
+@@ -1267,13 +1263,15 @@ int ebt_register_table(struct net *net, const struct ebt_table *input_table,
+ 	for (i = 0; i < num_ops; i++)
+ 		ops[i].priv = table;
+ 
+-	list_add(&table->list, &ebt_net->tables);
+-	mutex_unlock(&ebt_mutex);
+-
+ 	table->ops = ops;
+ 	ret = nf_register_net_hooks(net, ops, num_ops);
+-	if (ret)
++	if (ret) {
++		synchronize_rcu();
+ 		__ebt_unregister_table(net, table);
++	} else {
++		list_add(&table->list, &ebt_net->tables);
++	}
++	mutex_unlock(&ebt_mutex);
+ 
+ 	audit_log_nfcfg(repl->name, AF_BRIDGE, repl->nentries,
+ 			AUDIT_XT_OP_REGISTER, GFP_KERNEL);
+@@ -1339,7 +1337,7 @@ void ebt_unregister_template(const struct ebt_table *t)
+ }
+ EXPORT_SYMBOL(ebt_unregister_template);
+ 
+-static struct ebt_table *__ebt_find_table(struct net *net, const char *name)
++void ebt_unregister_table_pre_exit(struct net *net, const char *name)
+ {
+ 	struct ebt_pernet *ebt_net = net_generic(net, ebt_pernet_id);
+ 	struct ebt_table *t;
+@@ -1348,30 +1346,36 @@ static struct ebt_table *__ebt_find_table(struct net *net, const char *name)
+ 
+ 	list_for_each_entry(t, &ebt_net->tables, list) {
+ 		if (strcmp(t->name, name) == 0) {
++			list_move(&t->list, &ebt_net->dead_tables);
+ 			mutex_unlock(&ebt_mutex);
+-			return t;
++			nf_unregister_net_hooks(net, t->ops, hweight32(t->valid_hooks));
++			return;
+ 		}
+ 	}
+ 
+ 	mutex_unlock(&ebt_mutex);
+-	return NULL;
+-}
+-
+-void ebt_unregister_table_pre_exit(struct net *net, const char *name)
+-{
+-	struct ebt_table *table = __ebt_find_table(net, name);
+-
+-	if (table)
+-		nf_unregister_net_hooks(net, table->ops, hweight32(table->valid_hooks));
+ }
+ EXPORT_SYMBOL(ebt_unregister_table_pre_exit);
+ 
+ void ebt_unregister_table(struct net *net, const char *name)
+ {
+-	struct ebt_table *table = __ebt_find_table(net, name);
++	struct ebt_pernet *ebt_net = net_generic(net, ebt_pernet_id);
++	struct ebt_table *t;
+ 
+-	if (table)
+-		__ebt_unregister_table(net, table);
++	mutex_lock(&ebt_mutex);
++
++	list_for_each_entry(t, &ebt_net->dead_tables, list) {
++		if (strcmp(t->name, name) == 0) {
++			list_del(&t->list);
++			audit_log_nfcfg(t->name, AF_BRIDGE, t->private->nentries,
++					AUDIT_XT_OP_UNREGISTER, GFP_KERNEL);
++			__ebt_unregister_table(net, t);
++			mutex_unlock(&ebt_mutex);
++			return;
++		}
++	}
++
++	mutex_unlock(&ebt_mutex);
+ }
+ 
+ /* userspace just supplied us with counters */
+@@ -2556,11 +2560,21 @@ static int __net_init ebt_pernet_init(struct net *net)
+ 	struct ebt_pernet *ebt_net = net_generic(net, ebt_pernet_id);
+ 
+ 	INIT_LIST_HEAD(&ebt_net->tables);
++	INIT_LIST_HEAD(&ebt_net->dead_tables);
+ 	return 0;
+ }
+ 
++static void __net_exit ebt_pernet_exit(struct net *net)
++{
++	struct ebt_pernet *ebt_net = net_generic(net, ebt_pernet_id);
++
++	WARN_ON_ONCE(!list_empty(&ebt_net->tables));
++	WARN_ON_ONCE(!list_empty(&ebt_net->dead_tables));
++}
++
+ static struct pernet_operations ebt_net_ops = {
+ 	.init = ebt_pernet_init,
++	.exit = ebt_pernet_exit,
+ 	.id   = &ebt_pernet_id,
+ 	.size = sizeof(struct ebt_pernet),
+ };
 -- 
 2.53.0
 
