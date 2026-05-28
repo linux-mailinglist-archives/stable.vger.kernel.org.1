@@ -1,62 +1,62 @@
-Return-Path: <stable+bounces-256299-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-256132-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id oOAZODysGGpolwgAu9opvQ
-	(envelope-from <stable+bounces-256299-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:57:32 +0200
+	id +PCDOAuqGGpolwgAu9opvQ
+	(envelope-from <stable+bounces-256132-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:48:11 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 459295F9E8E
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:57:31 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 583E45F9943
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:48:11 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 935E231D6E42
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 20:48:34 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id E8A8B31F15F7
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 20:40:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4B382348C64;
-	Thu, 28 May 2026 20:48:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 596A91DE4E0;
+	Thu, 28 May 2026 20:40:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uFBArKdC"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HPZhVcJ0"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 03512329396;
-	Thu, 28 May 2026 20:48:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2D7CB2139C9;
+	Thu, 28 May 2026 20:40:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780001311; cv=none; b=XisVN6lYmnjS+fJX4WExh+S2R+jozYoRWYrnON3fNL98myCK2WVo1VlYHwstjbasd4ayi4vkV7/dIeGMBHhSvckBwk9l7ZMhTfSAEXowKjPbnZWctXmFIDkkBy7QO+U3CFaxCuHFZfbdLeSdc8Xo3QUO3PxDeenCsE8VihmXT3I=
+	t=1780000846; cv=none; b=rau2Tku9MyZkKRUPn6o6T4O1w5H6e2oDA3+712gXJ6JWmBhIYx/QAkg7ZjHDke3J4gUoOyODCq/WdOnMqB+Gh6hgAJDS5BEH0uBBnzPUYfwBx5nX1Nr56ph/PGj0Yu5bNv/jGAA8KyqcPQERKhl1Jt9En9UM0xBaAhU2pfZ18pM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780001311; c=relaxed/simple;
-	bh=hpjdcAP7If0xAYhd3L94KimLjNTo3m4gLOOBG8tYCMs=;
+	s=arc-20240116; t=1780000846; c=relaxed/simple;
+	bh=dMFi9yfCkeQPTcNDMLVHS8oo/Tq5y/AXBdV8Z7IcA68=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=P7VnXh1cIhuuLpZ4JA0iKy2t/34Wv9Z13IOXsl38a8OhtBBF9Pj8z3P7FIu3oCy8i+xwsFd1Y40fGejc+BKDXKmmMuEumc2xTAhb20rP/flx/AvD0b13m0jWC3Jk4Eb9IGXnaG+OVp2MmO3poO13S3Fz/lyWRTQhGgFMta90yas=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uFBArKdC; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5FE231F000E9;
-	Thu, 28 May 2026 20:48:29 +0000 (UTC)
+	 MIME-Version; b=sTaMqnrkcqd1PQ+3EEXUslBJ4aO32Ykjzx9oajSi2cgVuKbcZj3sDdkCLjtB/ogbTwVefBuj9rv48alZwSSMZCFIbbxMSnX/zUAcDruabl95SXcewIWdlGf8wyWldW/3anjW09ewQdn/OWAhKcGSMdekJ/gh6XKkl285xreqxoY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HPZhVcJ0; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 920131F000E9;
+	Thu, 28 May 2026 20:40:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780001309;
-	bh=NZYZRBMhUIHS2Mo3Me4JlwbMxvkLBVjvG9gOMWlfkGU=;
+	s=korg; t=1780000845;
+	bh=hB+HF7biLeQXMxgUsr79vuiKZ1z57fexK3IdZNhhEB4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=uFBArKdC8BzkT0W7I8PQ873XgizFzwhyPa1t3ImZym2AdQl8OO2Yz3nwokK+cGq+j
-	 uUh3J0WbT5WTADLjZ1lEKnBTVtSpPh5Zp6RMA741Wia1qvonFGfSOzG//qCo0GWDsT
-	 e9xgz0y2o5+61/BxattNpTU6vH2byv5LqVois2hE=
+	b=HPZhVcJ0fJU8LUYR06T9y5NGCU4AS/YNAVDXOJ9wCrcrLIUmlgZWnOuRLT1lrOoPp
+	 eOh7T8pakCZpWkrmN0G6roltgrHiqoudHzb9B0k9w6bahhBHh7ddAtC1Dz0usV0/J8
+	 YYKdLwb+RiE5M3+lx6kOAbuEIBPubJOSddH9Rs84=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable@kernel.org,
-	Yuan Tan <yuantan098@gmail.com>,
-	Yifan Wu <yifanwucs@gmail.com>,
-	Juefei Pu <tomapufckgml@gmail.com>,
-	Xin Liu <bird@lzu.edu.cn>,
-	Sven Eckelmann <sven@narfation.org>
-Subject: [PATCH 6.6 083/186] batman-adv: tp_meter: avoid use of uninit sender vars
+	Julian Braha <julianbraha@gmail.com>,
+	Gautam Menghani <gautam@linux.ibm.com>,
+	Amit Machhiwal <amachhiw@linux.ibm.com>,
+	Harsh Prateek Bora <harshpb@linux.ibm.com>,
+	Madhavan Srinivasan <maddy@linux.ibm.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 189/272] powerpc: fix dead default for GUEST_STATE_BUFFER_TEST
 Date: Thu, 28 May 2026 21:49:23 +0200
-Message-ID: <20260528194931.177349258@linuxfoundation.org>
+Message-ID: <20260528194634.565584244@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260528194928.941004471@linuxfoundation.org>
-References: <20260528194928.941004471@linuxfoundation.org>
+In-Reply-To: <20260528194629.379955525@linuxfoundation.org>
+References: <20260528194629.379955525@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -71,21 +71,21 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,kernel.org,gmail.com,lzu.edu.cn,narfation.org];
-	TAGGED_FROM(0.00)[bounces-256299-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,linux.ibm.com,kernel.org];
+	TAGGED_FROM(0.00)[bounces-256132-lists,stable=lfdr.de];
 	PRECEDENCE_BULK(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	FROM_HAS_DN(0.00)[];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
@@ -94,75 +94,64 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
 	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[lzu.edu.cn:email,narfation.org:email,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim]
-X-Rspamd-Queue-Id: 459295F9E8E
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim,msgid.link:url]
+X-Rspamd-Queue-Id: 583E45F9943
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sven Eckelmann <sven@narfation.org>
+From: Julian Braha <julianbraha@gmail.com>
 
-commit 6c65cf23d4c6170fcf5714c32aa64689718cb142 upstream.
+[ Upstream commit aef656a0e6c01796190bb5bd2bdba1c644ed7811 ]
 
-batadv_tp_recv_ack() and batadv_tp_stop() are only valid for tp_vars in the
-BATADV_TP_SENDER role. When called with a BATADV_TP_RECEIVER role, it
-proceeds to read sender-only members that were never initialized, leading
-to undefined behavior.
+The GUEST_STATE_BUFFER_TEST config option should default
+to KUNIT_ALL_TESTS so that if all tests are enabled then
+it is included, but currently the 'default KUNIT_ALL_TESTS'
+statement is shadowed by 'def_tristate n',
+meaning that this second default statement is currently dead code.
 
-This can be triggered when a node that is currently acting as a receiver in
-an ongoing tp_meter session receives a malicious ACK packet.
+It looks to me like the commit
+6ccbbc33f06a ("KVM: PPC: Add helper library for Guest State Buffers")
+intended to set the default to KUNIT_ALL_TESTS, but mistakenly
+missed the def_tristate.
 
-Guard against this by checking tp_vars->role immediately after the
-lookup and bailing out if it is not BATADV_TP_SENDER, before any of
-those members are accessed.
+This dead code was found by kconfirm, a static analysis tool for Kconfig.
 
-Cc: stable@kernel.org
-Fixes: 33a3bb4a3345 ("batman-adv: throughput meter implementation")
-Reported-by: Yuan Tan <yuantan098@gmail.com>
-Reported-by: Yifan Wu <yifanwucs@gmail.com>
-Reported-by: Juefei Pu <tomapufckgml@gmail.com>
-Reported-by: Xin Liu <bird@lzu.edu.cn>
-Reviewed-by: Yuan Tan <yuantan098@gmail.com>
-Signed-off-by: Sven Eckelmann <sven@narfation.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 6ccbbc33f06a ("KVM: PPC: Add helper library for Guest State Buffers")
+Signed-off-by: Julian Braha <julianbraha@gmail.com>
+Tested-by: Gautam Menghani <gautam@linux.ibm.com>
+Reviewed-by: Amit Machhiwal <amachhiw@linux.ibm.com>
+Reviewed-by: Harsh Prateek Bora <harshpb@linux.ibm.com>
+Signed-off-by: Madhavan Srinivasan <maddy@linux.ibm.com>
+Link: https://patch.msgid.link/20260405161545.161006-1-julianbraha@gmail.com
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/batman-adv/tp_meter.c |   11 +++++++++--
- 1 file changed, 9 insertions(+), 2 deletions(-)
+ arch/powerpc/Kconfig.debug | 3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
 
---- a/net/batman-adv/tp_meter.c
-+++ b/net/batman-adv/tp_meter.c
-@@ -663,6 +663,9 @@ static void batadv_tp_recv_ack(struct ba
- 	if (unlikely(!tp_vars))
- 		return;
+diff --git a/arch/powerpc/Kconfig.debug b/arch/powerpc/Kconfig.debug
+index 0bbec4afc0d59..1e2b51280e602 100644
+--- a/arch/powerpc/Kconfig.debug
++++ b/arch/powerpc/Kconfig.debug
+@@ -83,11 +83,10 @@ config MSI_BITMAP_SELFTEST
+ 	depends on DEBUG_KERNEL
  
-+	if (unlikely(tp_vars->role != BATADV_TP_SENDER))
-+		goto out;
-+
- 	if (unlikely(atomic_read(&tp_vars->sending) == 0))
- 		goto out;
- 
-@@ -1100,12 +1103,16 @@ void batadv_tp_stop(struct batadv_priv *
- 	if (!tp_vars) {
- 		batadv_dbg(BATADV_DBG_TP_METER, bat_priv,
- 			   "Meter: trying to interrupt an already over connection\n");
--		goto out;
-+		goto out_put_orig_node;
- 	}
- 
-+	if (unlikely(tp_vars->role != BATADV_TP_SENDER))
-+		goto out_put_tp_vars;
-+
- 	batadv_tp_sender_shutdown(tp_vars, return_value);
-+out_put_tp_vars:
- 	batadv_tp_vars_put(tp_vars);
--out:
-+out_put_orig_node:
- 	batadv_orig_node_put(orig_node);
- }
- 
+ config GUEST_STATE_BUFFER_TEST
+-	def_tristate n
++	def_tristate KUNIT_ALL_TESTS
+ 	prompt "Enable Guest State Buffer unit tests"
+ 	depends on KUNIT
+ 	depends on KVM_BOOK3S_HV_POSSIBLE
+-	default KUNIT_ALL_TESTS
+ 	help
+ 	  The Guest State Buffer is a data format specified in the PAPR.
+ 	  It is by hcalls to communicate the state of L2 guests between
+-- 
+2.53.0
+
 
 
 
