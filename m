@@ -1,62 +1,59 @@
-Return-Path: <stable+bounces-255389-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-255746-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id iNgPOoSiGGrClggAu9opvQ
-	(envelope-from <stable+bounces-255389-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:16:04 +0200
+	id SPm4Iy2mGGrClggAu9opvQ
+	(envelope-from <stable+bounces-255746-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:31:41 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 556435F8360
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:16:04 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1847D5F8E0B
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:31:40 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id A8AB830E9803
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 20:06:13 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 5EAAC3206D52
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 20:22:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4FD2F304BB3;
-	Thu, 28 May 2026 20:06:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 53E152D9787;
+	Thu, 28 May 2026 20:22:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qZ4gI3Jb"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cew2oAOM"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 27C1B2F691F;
-	Thu, 28 May 2026 20:06:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3897722652D;
+	Thu, 28 May 2026 20:22:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779998773; cv=none; b=GiMye1qNB0L2FRweTyHN6Ivr4BVP57SAWRrGOcrfLY1FuIxWnziJmIFO9Vgiu1bhBMp17zZNYIS9lQGSurQvp5wGUhzOepTjILBh+jR82EWi2205Vxypulv7aQUy1WOUXlynsnjX9hgyrvMRcKpPj/jf1xKD9j9VtfNZFkxYmtE=
+	t=1779999768; cv=none; b=gOiJzMhBimUoIyO4/hEHy9x8sxhLejL5FAvv60Vq7oYFzbFWfXOolPVe0FSA3Qq77kgl13UpvBnM4GJGoPuv8LoMVG9IWj/sb9lzLgHLDmLR7lAww1ox600VfoU9u5MjMm24FWiroAwV1wnfE2dLxQmpqxPzGK4jfe/8BSxBZLk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779998773; c=relaxed/simple;
-	bh=Gm2fwoIa8Pj/49YmD9NDaJYDFMhuyMeI7cgTO9rLp3c=;
+	s=arc-20240116; t=1779999768; c=relaxed/simple;
+	bh=8+fYDK7acgK7zExyPRwOisiUhbpEZa5+iVOhIUShRng=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=gNOyGnrFqDr0ot7FUOvlyntiuvo5Hi+ySGj0KL6p3jbn+0YWxTruwzarGICmoymFaCFY7sC4eaNhydHPYWV/zdo7ce6kb9ZpaI+DWBvax/p3kuamDbLrk7m1k8K6Ypy3X3QY86rHhX4xot3tRtvTEYWbOWyZH4Qc/UKd1iCqY1A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qZ4gI3Jb; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8D1241F000E9;
-	Thu, 28 May 2026 20:06:11 +0000 (UTC)
+	 MIME-Version; b=YrkoZB6He6++ud38GzeEyvkDsMhZ9EIlU22qfdlDi4dyr5dOh8kCVock5WuIRuex0Jsq57NHLZyAbGuWqy0wMXZmEyQfaqE4a/HnNsyHPRByInhFsEpL+SeF11lSK1btHGafG+58uEhPpEYc5kuTKgOEF5v2+wj0aPcM8R6YqQ0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cew2oAOM; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 97FAB1F000E9;
+	Thu, 28 May 2026 20:22:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779998772;
-	bh=s9T4RPWb2P7+PdX3BDxFOjWbAOBjwEsPqIULdne6Q5M=;
+	s=korg; t=1779999767;
+	bh=5bl52h8QW+DSG53G64vO2rXF99zKRKH9NGB57Pha188=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=qZ4gI3JbDnEuMCHADj3hwpaDUYfObsRe2CmVar7EZVkbJLIfOPk65NOKLCe6+yxFJ
-	 bHVLsSNAPNf559gXPOiJ428a5oDzt71MosIoNJ5+THn+YGKKj3RNcMlD9Xo6t3Qf/t
-	 K1kFgr3DZWut2fyzlxWMyNhg2tOHBpEHT9iIgowU=
+	b=cew2oAOMyHnGxK2aNx+OfVwSGXaI2rroOyYRzufF648zSv2Lso/pKZk4DW+28gy8h
+	 U74ZBVdFaO0NW/t/+49fWzB1d1Zw7AK8cInEmcSA9TDbwmUze/DmxXTR4bKHQrITXf
+	 tuGddPZ3V0zm9dlWmOg3rGuMzY8vVvJCGq8nortM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Weiming Shi <bestswngs@gmail.com>,
-	Xiang Mei <xmei5@asu.edu>,
-	Dust Li <dust.li@linux.alibaba.com>,
-	Sidraya Jayagond <sidraya@linux.ibm.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Michael Neuling <mikey@neuling.org>,
+	Paul Walmsley <pjw@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 7.0 292/461] net/smc: avoid NULL deref of conn->lnk in smc_msg_event tracepoint
+Subject: [PATCH 6.18 183/377] riscv: errata: Fix bitwise vs logical AND in MIPS errata patching
 Date: Thu, 28 May 2026 21:47:01 +0200
-Message-ID: <20260528194655.670376975@linuxfoundation.org>
+Message-ID: <20260528194643.723700576@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260528194646.819809818@linuxfoundation.org>
-References: <20260528194646.819809818@linuxfoundation.org>
+In-Reply-To: <20260528194638.371537336@linuxfoundation.org>
+References: <20260528194638.371537336@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -76,90 +73,69 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,asu.edu,linux.alibaba.com,linux.ibm.com,kernel.org];
-	TAGGED_FROM(0.00)[bounces-255389-lists,stable=lfdr.de];
-	PRECEDENCE_BULK(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
+	RCVD_TLS_LAST(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	TAGGED_FROM(0.00)[bounces-255746-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[9];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,asu.edu:email,alibaba.com:email]
-X-Rspamd-Queue-Id: 556435F8360
+	RCPT_COUNT_FIVE(0.00)[6];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,neuling.org:email,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim]
+X-Rspamd-Queue-Id: 1847D5F8E0B
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-7.0-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Xiang Mei <xmei5@asu.edu>
+From: Michael Neuling <mikey@neuling.org>
 
-[ Upstream commit 7bf563badd37cb796df5477d2b78bb64148a1268 ]
+[ Upstream commit 4d2b03699460b8fd5df34408a03a84a1a7ff8aa1 ]
 
-The smc_msg_event tracepoint class, shared by smc_tx_sendmsg and
-smc_rx_recvmsg, unconditionally dereferences smc->conn.lnk:
+The condition checking whether a specific errata needs patching uses
+logical AND (&&) instead of bitwise AND (&). Since logical AND only
+checks that both operands are non-zero, this causes all errata patches
+to be applied whenever any single errata is detected, rather than only
+applying the matching one.
 
-	__string(name, smc->conn.lnk->ibname)
+The SiFive errata implementation correctly uses bitwise AND for the same
+check.
 
-conn->lnk is only set for SMC-R; for SMC-D it is NULL. Other code on
-these paths already handles this (e.g. !conn->lnk in
-SMC_STAT_RMB_TX_SIZE_SMALL()). With the tracepoint enabled, the first
-sendmsg()/recvmsg() on an SMC-D socket crashes:
-
-  Oops: general protection fault, probably for non-canonical address
-  KASAN: null-ptr-deref in range [...]
-  RIP: 0010:strlen+0x1e/0xa0
-  Call Trace:
-   trace_event_raw_event_smc_msg_event (net/smc/smc_tracepoint.h:44)
-   smc_rx_recvmsg (net/smc/smc_rx.c:515)
-   smc_recvmsg (net/smc/af_smc.c:2859)
-   __sys_recvfrom (net/socket.c:2315)
-   __x64_sys_recvfrom (net/socket.c:2326)
-   do_syscall_64
-
-The faulting address 0x3e0 is offsetof(struct smc_link, ibname),
-confirming the NULL ->lnk deref. Enabling the tracepoint requires
-root, but the trigger itself is unprivileged: socket(AF_SMC, ...) has
-no capability check, and SMC-D negotiation needs no admin step on
-s390 or on x86 with the loopback ISM device loaded.
-
-Log an empty device name for SMC-D instead of dereferencing NULL.
-
-Fixes: aff3083f10bf ("net/smc: Introduce tracepoints for tx and rx msg")
-Reported-by: Weiming Shi <bestswngs@gmail.com>
-Signed-off-by: Xiang Mei <xmei5@asu.edu>
-Reviewed-by: Dust Li <dust.li@linux.alibaba.com>
-Reviewed-by: Sidraya Jayagond <sidraya@linux.ibm.com>
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Fixes: 0b0ca959d206 ("riscv: errata: Fix the PAUSE Opcode for MIPS P8700")
+Signed-off-by: Michael Neuling <mikey@neuling.org>
+Assisted-by: Cursor:claude-4.6-opus-high-thinking
+Link: https://patch.msgid.link/20260409091143.1348853-2-mikey@neuling.org
+[pjw@kernel.org: fixed checkpatch warning]
+Signed-off-by: Paul Walmsley <pjw@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/smc/smc_tracepoint.h | 2 +-
+ arch/riscv/errata/mips/errata.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/net/smc/smc_tracepoint.h b/net/smc/smc_tracepoint.h
-index a9a6e3c1113aa..53da84f57fd6f 100644
---- a/net/smc/smc_tracepoint.h
-+++ b/net/smc/smc_tracepoint.h
-@@ -51,7 +51,7 @@ DECLARE_EVENT_CLASS(smc_msg_event,
- 				     __field(const void *, smc)
- 				     __field(u64, net_cookie)
- 				     __field(size_t, len)
--				     __string(name, smc->conn.lnk->ibname)
-+				     __string(name, smc->conn.lnk ? smc->conn.lnk->ibname : "")
- 		    ),
+diff --git a/arch/riscv/errata/mips/errata.c b/arch/riscv/errata/mips/errata.c
+index e984a8152208c..2c3dc2259e93e 100644
+--- a/arch/riscv/errata/mips/errata.c
++++ b/arch/riscv/errata/mips/errata.c
+@@ -57,7 +57,7 @@ void mips_errata_patch_func(struct alt_entry *begin, struct alt_entry *end,
+ 		}
  
- 		    TP_fast_assign(
+ 		tmp = (1U << alt->patch_id);
+-		if (cpu_req_errata && tmp) {
++		if (cpu_req_errata & tmp) {
+ 			mutex_lock(&text_mutex);
+ 			patch_text_nosync(ALT_OLD_PTR(alt), ALT_ALT_PTR(alt),
+ 					  alt->alt_len);
 -- 
 2.53.0
 
