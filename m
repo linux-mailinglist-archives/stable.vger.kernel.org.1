@@ -1,63 +1,60 @@
-Return-Path: <stable+bounces-255810-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-256242-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id YEKFLZilGGoQlwgAu9opvQ
-	(envelope-from <stable+bounces-255810-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:29:12 +0200
+	id EPjaA0arGGpolwgAu9opvQ
+	(envelope-from <stable+bounces-256242-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:53:26 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 76B795F8CB5
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:29:11 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id A64325F9C74
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:53:25 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 451F1308E13C
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 20:25:50 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 544E3311EA5E
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 20:45:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 14220324B2C;
-	Thu, 28 May 2026 20:25:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 59E4633F595;
+	Thu, 28 May 2026 20:45:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="p/vQcZHk"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZFxIEnyU"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7C29E2F260C;
-	Thu, 28 May 2026 20:25:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E8698318B9D;
+	Thu, 28 May 2026 20:45:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779999943; cv=none; b=jG7rIOlumi2XfZFpJC3O3uL0KxK9bcUS69ID2eK67VVQOIp0l3jMatUWRveNmRi+UETao/TAebgxygy5Iky+e690luiwflg7r5GYJE8mwDWO1vrkZQZDUJJFa1tgLPaG3MgT792WHZcq8otFjTWByMDNeGrnlkBO77sFEzKbrZ4=
+	t=1780001152; cv=none; b=OyhtFOGs5mwnXMbaBqSQI8wiWFjY/6b0jcMQIfWA3dtCdaVrjo2OCvO6rDo3Cjto1xWZAPihR3bkXp4sXEI+ujmaqcwtWmviaB27lgfNRfWgK5umrmOb0PVqJfk4mvKO3Mv9X46EYpNgTHenOm9EnUo7ukUiAksK/Q/pi12fpzM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779999943; c=relaxed/simple;
-	bh=8O5bLxu4XBMY/DoOQeb7Jyr1ocgpdjDfrhoEbzNfb+U=;
+	s=arc-20240116; t=1780001152; c=relaxed/simple;
+	bh=DQzYTUqKSp5KC6tXxY/5UMEA8ubGgp3QdI0rzAiof0o=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ACE9WGii59Tp6Ylpn80Biqm/aIOXrxW+U9g/oKoSwf5AVkp9kzLwKTCp0Xh9a4Xq5qHvfCyTGVtdOpadl3lvD7J0THkcO6JbmxNjW6B+ZHRdywBI3beDEHN+VKhWAOmH0erYLXe+5unYMh/sLJpqjLg5ZQzTIO5WNm6r/5Qb5A8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=p/vQcZHk; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E1DF91F000E9;
-	Thu, 28 May 2026 20:25:41 +0000 (UTC)
+	 MIME-Version; b=O/3tyFodSJ5eDaxmbud3XehsY86m7aPZNnrsmqJzHV53UmOHx35yYAqCqD4cySfCx+WMBA9EDK6tDvzNN/tVgWPBLGBbefQvj7RzEvKh7q6q4MnBnLGPKj5wslqN9ELk1my1oA85lW2vpsue1zSfXuxlgo9HK861bmLHakI78LY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZFxIEnyU; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 523921F000E9;
+	Thu, 28 May 2026 20:45:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779999942;
-	bh=4gfbtixVIMP2zm3Prsila0r9o1vxm4cbrP0wsVBwQfw=;
+	s=korg; t=1780001150;
+	bh=3dglbacoThz2ufQzfu3Tr7osOxpOgjx7ZjQMl4V9bJ4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=p/vQcZHkO3eQsODlZCkL/uBVQTW5p0AK3BryxpBiXK70rGI+BnMGH3Sl97t43+O+c
-	 9omAvVp5VAbQyElL3Jqx08A1bpkiINk2GpTmUDnquUirjq903ZEAgWlKH8EQEe42Cb
-	 7tLjfSIXOvbjzoWnznz8wc8lhS0awldlWiYhghag=
+	b=ZFxIEnyUflZPga/n4gWe8u6riL51+WejTnhrTPH4wxslDY+d7ncS7KBKxE7w20uXq
+	 hfhotcPBieSvCvMnsw3L999U0HV0k6lhI8ZU0XSOTIQbvug3DonhMJ/UDWer6E/ezr
+	 0iM30A2K1WZdf8N9MulUt4C4ZNqzmkxlieJcJsAA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	David Howells <dhowells@redhat.com>,
-	Paulo Alcantara <pc@manguebit.org>,
-	Matthew Wilcox <willy@infradead.org>,
-	netfs@lists.linux.dev,
-	linux-fsdevel@vger.kernel.org,
-	Christian Brauner <brauner@kernel.org>,
+	Fabian Godehardt <fg@emlix.com>,
+	Mark Brown <broonie@kernel.org>,
+	Wenshan Lan <jetlan9@163.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 247/377] netfs: Fix folio->private handling in netfs_perform_write()
+Subject: [PATCH 6.6 005/186] spi: spidev: fix lock inversion between spi_lock and buf_lock
 Date: Thu, 28 May 2026 21:48:05 +0200
-Message-ID: <20260528194645.530153043@linuxfoundation.org>
+Message-ID: <20260528194929.093640436@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260528194638.371537336@linuxfoundation.org>
-References: <20260528194638.371537336@linuxfoundation.org>
+In-Reply-To: <20260528194928.941004471@linuxfoundation.org>
+References: <20260528194928.941004471@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -72,336 +69,250 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	RCVD_TLS_LAST(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,emlix.com,kernel.org,163.com];
+	TAGGED_FROM(0.00)[bounces-256242-lists,stable=lfdr.de];
+	PRECEDENCE_BULK(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FROM_HAS_DN(0.00)[];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-255810-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TO_DN_SOME(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
-	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[10];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[7];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,msgid.link:url,linux.dev:email,infradead.org:email,manguebit.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,sashiko.dev:url]
-X-Rspamd-Queue-Id: 76B795F8CB5
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,msgid.link:url,linuxfoundation.org:mid,linuxfoundation.org:dkim]
+X-Rspamd-Queue-Id: A64325F9C74
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: David Howells <dhowells@redhat.com>
+From: Fabian Godehardt <fg@emlix.com>
 
-[ Upstream commit ccde2ac757c713535b224233a296de40efe5212d ]
+[ Upstream commit 40534d19ed2afb880ecf202dab26a8e7a5808d16 ]
 
-Under some circumstances, netfs_perform_write() doesn't correctly
-manipulate folio->private between NULL, NETFS_FOLIO_COPY_TO_CACHE, pointing
-to a group and pointing to a netfs_folio struct, leading to potential
-multiple attachments of private data with associated folio ref leaks and
-also leaks of netfs_folio structs or netfs_group refs.
+The spidev driver previously used two mutexes, spi_lock and buf_lock,
+but acquired them in different orders depending on the code path:
 
-Fix this by consolidating the place at which a folio is marked uptodate in
-one place and having that look at what's attached to folio->private and
-decide how to clean it up and then set the new group.  Also, the content
-shouldn't be flushed if group is NULL, even if a group is specified in the
-netfs_group parameter, as that would be the case for a new folio.  A
-filesystem should always specify netfs_group or never specify netfs_group.
+  write()/read(): buf_lock -> spi_lock
+  ioctl():       spi_lock -> buf_lock
 
-The Sashiko auto-review tool noted that it was theoretically possible that
-the fpos >= ctx->zero_point section might leak if it modified a streaming
-write folio.  This is unlikely, but with a network filesystem, third party
-changes can happen.  It also pointed out that __netfs_set_group() would
-leak if called multiple times on the same folio from the "whole folio
-modify section".
+This AB-BA locking pattern triggers lockdep warnings and can
+cause real deadlocks:
 
-Fixes: 8f52de0077ba ("netfs: Reduce number of conditional branches in netfs_perform_write()")
-Closes: https://sashiko.dev/#/patchset/20260414082004.3756080-1-dhowells%40redhat.com
-Signed-off-by: David Howells <dhowells@redhat.com>
-Link: https://patch.msgid.link/20260512123404.719402-22-dhowells@redhat.com
-cc: Paulo Alcantara <pc@manguebit.org>
-cc: Matthew Wilcox <willy@infradead.org>
-cc: netfs@lists.linux.dev
-cc: linux-fsdevel@vger.kernel.org
-Signed-off-by: Christian Brauner <brauner@kernel.org>
+  WARNING: possible circular locking dependency detected
+  spidev_ioctl() -> mutex_lock(&spidev->buf_lock)
+  spidev_sync_write() -> mutex_lock(&spidev->spi_lock)
+  *** DEADLOCK ***
+
+The issue is reproducible with a simple userspace program that
+performs write() and SPI_IOC_WR_MAX_SPEED_HZ ioctl() calls from
+separate threads on the same spidev file descriptor.
+
+Fix this by simplifying the locking model and removing the lock
+inversion entirely. spidev_sync() no longer performs any locking,
+and all callers serialize access using spi_lock.
+
+buf_lock is removed since its functionality is fully covered by
+spi_lock, eliminating the possibility of lock ordering issues.
+
+This removes the lock inversion and prevents deadlocks without
+changing userspace ABI or behaviour.
+
+Signed-off-by: Fabian Godehardt <fg@emlix.com>
+Link: https://patch.msgid.link/20260211072616.489522-1-fg@emlix.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
+[ Minor context conflict resolved. ]
+Signed-off-by: Wenshan Lan <jetlan9@163.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/netfs/buffered_write.c    | 134 +++++++++++++++++++++--------------
- include/trace/events/netfs.h |   1 +
- 2 files changed, 82 insertions(+), 53 deletions(-)
+ drivers/spi/spidev.c | 63 ++++++++++++++++----------------------------
+ 1 file changed, 22 insertions(+), 41 deletions(-)
 
-diff --git a/fs/netfs/buffered_write.c b/fs/netfs/buffered_write.c
-index 60215a7723574..dd0ce7b769ce0 100644
---- a/fs/netfs/buffered_write.c
-+++ b/fs/netfs/buffered_write.c
-@@ -13,24 +13,6 @@
- #include <linux/pagevec.h>
- #include "internal.h"
+diff --git a/drivers/spi/spidev.c b/drivers/spi/spidev.c
+index 16bb4fc3a4ba9..2024532dfc447 100644
+--- a/drivers/spi/spidev.c
++++ b/drivers/spi/spidev.c
+@@ -74,7 +74,6 @@ struct spidev_data {
+ 	struct list_head	device_entry;
  
--static void __netfs_set_group(struct folio *folio, struct netfs_group *netfs_group)
+ 	/* TX/RX buffers are NULL unless this device is open (users > 0) */
+-	struct mutex		buf_lock;
+ 	unsigned		users;
+ 	u8			*tx_buffer;
+ 	u8			*rx_buffer;
+@@ -102,24 +101,6 @@ spidev_sync_unlocked(struct spi_device *spi, struct spi_message *message)
+ 	return status;
+ }
+ 
+-static ssize_t
+-spidev_sync(struct spidev_data *spidev, struct spi_message *message)
 -{
--	if (netfs_group)
--		folio_attach_private(folio, netfs_get_group(netfs_group));
+-	ssize_t status;
+-	struct spi_device *spi;
+-
+-	mutex_lock(&spidev->spi_lock);
+-	spi = spidev->spi;
+-
+-	if (spi == NULL)
+-		status = -ESHUTDOWN;
+-	else
+-		status = spidev_sync_unlocked(spi, message);
+-
+-	mutex_unlock(&spidev->spi_lock);
+-	return status;
 -}
 -
--static void netfs_set_group(struct folio *folio, struct netfs_group *netfs_group)
--{
--	void *priv = folio_get_private(folio);
--
--	if (unlikely(priv != netfs_group)) {
--		if (netfs_group && (!priv || priv == NETFS_FOLIO_COPY_TO_CACHE))
--			folio_attach_private(folio, netfs_get_group(netfs_group));
--		else if (!netfs_group && priv == NETFS_FOLIO_COPY_TO_CACHE)
--			folio_detach_private(folio);
--	}
--}
--
- /*
-  * Grab a folio for writing and lock it.  Attempt to allocate as large a folio
-  * as possible to hold as much of the remaining length as possible in one go.
-@@ -158,6 +140,7 @@ ssize_t netfs_perform_write(struct kiocb *iocb, struct iov_iter *iter,
- 		size_t offset;	/* Offset into pagecache folio */
- 		size_t part;	/* Bytes to write to folio */
- 		size_t copied;	/* Bytes copied from user */
-+		void *priv;
+ static inline ssize_t
+ spidev_sync_write(struct spidev_data *spidev, size_t len)
+ {
+@@ -132,7 +113,8 @@ spidev_sync_write(struct spidev_data *spidev, size_t len)
  
- 		offset = pos & (max_chunk - 1);
- 		part = min(max_chunk - offset, iov_iter_count(iter));
-@@ -203,6 +186,25 @@ ssize_t netfs_perform_write(struct kiocb *iocb, struct iov_iter *iter,
- 			goto error_folio_unlock;
- 		}
- 
-+		finfo = netfs_folio_info(folio);
-+		group = netfs_folio_group(folio);
+ 	spi_message_init(&m);
+ 	spi_message_add_tail(&t, &m);
+-	return spidev_sync(spidev, &m);
 +
-+		/* If the requested group differs from the group set on the
-+		 * page, then we need to flush out the folio if it has a group
-+		 * set (ie. is non-NULL).  Note that COPY_TO_CACHE is a special
-+		 * case, being a netfs annotation rather than an actual group.
-+		 *
-+		 * The filesystem isn't permitted to mix writes with groups and
-+		 * writes without groups as the NULL group is used to indicate
-+		 * that no group is set.
-+		 */
-+		if (unlikely(group != netfs_group) &&
-+		    group != NETFS_FOLIO_COPY_TO_CACHE &&
-+		    group) {
-+			WARN_ON_ONCE(!netfs_group);
-+			goto flush_content;
-+		}
++	return spidev_sync_unlocked(spidev->spi, &m);
+ }
+ 
+ static inline ssize_t
+@@ -147,7 +129,8 @@ spidev_sync_read(struct spidev_data *spidev, size_t len)
+ 
+ 	spi_message_init(&m);
+ 	spi_message_add_tail(&t, &m);
+-	return spidev_sync(spidev, &m);
 +
- 		/* Decide how we should modify a folio.  We might be attempting
- 		 * to do write-streaming, as we don't want to a local RMW cycle
- 		 * if we can avoid it.  If we're doing local caching or content
-@@ -210,22 +212,14 @@ ssize_t netfs_perform_write(struct kiocb *iocb, struct iov_iter *iter,
- 		 * file is open readably, then we let ->read_folio() fill in
- 		 * the gaps.
- 		 */
--		finfo = netfs_folio_info(folio);
--		group = netfs_folio_group(folio);
--
--		if (unlikely(group != netfs_group) &&
--		    group != NETFS_FOLIO_COPY_TO_CACHE)
--			goto flush_content;
--
- 		if (folio_test_uptodate(folio)) {
- 			if (mapping_writably_mapped(mapping))
- 				flush_dcache_folio(folio);
- 			copied = copy_folio_from_iter_atomic(folio, offset, part, iter);
- 			if (unlikely(copied == 0))
- 				goto copy_failed;
--			netfs_set_group(folio, netfs_group);
- 			trace = netfs_folio_is_uptodate;
--			goto copied;
-+			goto copied_uptodate;
- 		}
++	return spidev_sync_unlocked(spidev->spi, &m);
+ }
  
- 		/* If the page is above the zero-point then we assume that the
-@@ -238,24 +232,22 @@ ssize_t netfs_perform_write(struct kiocb *iocb, struct iov_iter *iter,
- 			if (unlikely(copied == 0))
- 				goto copy_failed;
- 			folio_zero_segment(folio, offset + copied, flen);
--			__netfs_set_group(folio, netfs_group);
--			folio_mark_uptodate(folio);
--			trace = netfs_modify_and_clear;
--			goto copied;
-+			if (finfo)
-+				trace = netfs_modify_and_clear_rm_finfo;
-+			else
-+				trace = netfs_modify_and_clear;
-+			goto mark_uptodate;
- 		}
+ /*-------------------------------------------------------------------------*/
+@@ -157,7 +140,7 @@ static ssize_t
+ spidev_read(struct file *filp, char __user *buf, size_t count, loff_t *f_pos)
+ {
+ 	struct spidev_data	*spidev;
+-	ssize_t			status;
++	ssize_t			status = -ESHUTDOWN;
  
- 		/* See if we can write a whole folio in one go. */
- 		if (!maybe_trouble && offset == 0 && part >= flen) {
- 			copied = copy_folio_from_iter_atomic(folio, offset, part, iter);
- 			if (likely(copied == part)) {
--				if (finfo) {
-+				if (finfo)
- 					trace = netfs_whole_folio_modify_filled;
--					goto folio_now_filled;
--				}
--				__netfs_set_group(folio, netfs_group);
--				folio_mark_uptodate(folio);
--				trace = netfs_whole_folio_modify;
--				goto copied;
-+				else
-+					trace = netfs_whole_folio_modify;
-+				goto mark_uptodate;
- 			}
- 			if (copied == 0)
- 				goto copy_failed;
-@@ -273,7 +265,7 @@ ssize_t netfs_perform_write(struct kiocb *iocb, struct iov_iter *iter,
- 			finfo->dirty_len += finfo->dirty_offset;
- 			if (finfo->dirty_len == flen) {
- 				trace = netfs_whole_folio_modify_filled_efault;
--				goto folio_now_filled;
-+				goto mark_uptodate;
- 			}
- 			if (copied > finfo->dirty_len)
- 				finfo->dirty_len = copied;
-@@ -301,11 +293,11 @@ ssize_t netfs_perform_write(struct kiocb *iocb, struct iov_iter *iter,
- 			copied = copy_folio_from_iter_atomic(folio, offset, part, iter);
- 			if (unlikely(copied == 0))
- 				goto copy_failed;
--			netfs_set_group(folio, netfs_group);
- 			trace = netfs_just_prefetch;
--			goto copied;
-+			goto copied_uptodate;
- 		}
+ 	/* chipselect only toggles at start or end of operation */
+ 	if (count > bufsiz)
+@@ -165,7 +148,11 @@ spidev_read(struct file *filp, char __user *buf, size_t count, loff_t *f_pos)
  
-+		/* Do a streaming write on a folio that has nothing in it yet. */
- 		if (!finfo) {
- 			ret = -EIO;
- 			if (WARN_ON(folio_get_private(folio)))
-@@ -314,10 +306,8 @@ ssize_t netfs_perform_write(struct kiocb *iocb, struct iov_iter *iter,
- 			if (unlikely(copied == 0))
- 				goto copy_failed;
- 			if (offset == 0 && copied == flen) {
--				__netfs_set_group(folio, netfs_group);
--				folio_mark_uptodate(folio);
- 				trace = netfs_streaming_filled_page;
--				goto copied;
-+				goto mark_uptodate;
- 			}
+ 	spidev = filp->private_data;
  
- 			finfo = kzalloc(sizeof(*finfo), GFP_KERNEL);
-@@ -346,7 +336,7 @@ ssize_t netfs_perform_write(struct kiocb *iocb, struct iov_iter *iter,
- 			finfo->dirty_len += copied;
- 			if (finfo->dirty_offset == 0 && finfo->dirty_len == flen) {
- 				trace = netfs_streaming_cont_filled_page;
--				goto folio_now_filled;
-+				goto mark_uptodate;
- 			}
- 			trace = netfs_streaming_write_cont;
- 			goto copied;
-@@ -362,13 +352,36 @@ ssize_t netfs_perform_write(struct kiocb *iocb, struct iov_iter *iter,
- 			goto out;
- 		continue;
- 
--	folio_now_filled:
--		if (finfo->netfs_group)
--			folio_change_private(folio, finfo->netfs_group);
--		else
--			folio_detach_private(folio);
-+		/* Mark a folio as being up to data when we've filled it
-+		 * completely.  If the folio has a group attached, then it must
-+		 * be the same group, otherwise we should have flushed it out
-+		 * above.  We have to get rid of the netfs_folio struct if
-+		 * there was one.
-+		 */
-+	mark_uptodate:
- 		folio_mark_uptodate(folio);
--		kfree(finfo);
+-	mutex_lock(&spidev->buf_lock);
++	mutex_lock(&spidev->spi_lock);
 +
-+	copied_uptodate:
-+		priv = folio_get_private(folio);
-+		if (likely(priv == netfs_group)) {
-+			/* Already set correctly; no change required. */
-+		} else if (priv == NETFS_FOLIO_COPY_TO_CACHE) {
-+			if (!netfs_group)
-+				folio_detach_private(folio);
-+			else
-+				folio_change_private(folio, netfs_get_group(netfs_group));
-+		} else if (!priv) {
-+			folio_attach_private(folio, netfs_get_group(netfs_group));
-+		} else {
-+			WARN_ON_ONCE(!finfo);
-+			if (netfs_group)
-+				/* finfo->netfs_group has a ref */
-+				folio_change_private(folio, netfs_group);
-+			else
-+				folio_detach_private(folio);
-+			kfree(finfo);
-+		}
++	if (spidev->spi == NULL)
++		goto err_spi_removed;
 +
- 	copied:
- 		trace_netfs_folio(folio, trace);
- 		flush_dcache_folio(folio);
-@@ -531,6 +544,7 @@ vm_fault_t netfs_page_mkwrite(struct vm_fault *vmf, struct netfs_group *netfs_gr
- 	struct inode *inode = file_inode(file);
- 	struct netfs_inode *ictx = netfs_inode(inode);
- 	vm_fault_t ret = VM_FAULT_NOPAGE;
-+	void *priv;
- 	int err;
+ 	status = spidev_sync_read(spidev, count);
+ 	if (status > 0) {
+ 		unsigned long	missing;
+@@ -176,7 +163,9 @@ spidev_read(struct file *filp, char __user *buf, size_t count, loff_t *f_pos)
+ 		else
+ 			status = status - missing;
+ 	}
+-	mutex_unlock(&spidev->buf_lock);
++
++err_spi_removed:
++	mutex_unlock(&spidev->spi_lock);
  
- 	_enter("%lx", folio->index);
-@@ -551,7 +565,9 @@ vm_fault_t netfs_page_mkwrite(struct vm_fault *vmf, struct netfs_group *netfs_gr
+ 	return status;
+ }
+@@ -187,7 +176,7 @@ spidev_write(struct file *filp, const char __user *buf,
+ 		size_t count, loff_t *f_pos)
+ {
+ 	struct spidev_data	*spidev;
+-	ssize_t			status;
++	ssize_t			status = -ESHUTDOWN;
+ 	unsigned long		missing;
+ 
+ 	/* chipselect only toggles at start or end of operation */
+@@ -196,13 +185,19 @@ spidev_write(struct file *filp, const char __user *buf,
+ 
+ 	spidev = filp->private_data;
+ 
+-	mutex_lock(&spidev->buf_lock);
++	mutex_lock(&spidev->spi_lock);
++
++	if (spidev->spi == NULL)
++		goto err_spi_removed;
++
+ 	missing = copy_from_user(spidev->tx_buffer, buf, count);
+ 	if (missing == 0)
+ 		status = spidev_sync_write(spidev, count);
+ 	else
+ 		status = -EFAULT;
+-	mutex_unlock(&spidev->buf_lock);
++
++err_spi_removed:
++	mutex_unlock(&spidev->spi_lock);
+ 
+ 	return status;
+ }
+@@ -376,14 +371,6 @@ spidev_ioctl(struct file *filp, unsigned int cmd, unsigned long arg)
+ 		return -ESHUTDOWN;
  	}
  
- 	group = netfs_folio_group(folio);
--	if (group != netfs_group && group != NETFS_FOLIO_COPY_TO_CACHE) {
-+	if (group &&
-+	    group != netfs_group &&
-+	    group != NETFS_FOLIO_COPY_TO_CACHE) {
- 		folio_unlock(folio);
- 		err = filemap_fdatawrite_range(mapping,
- 					       folio_pos(folio),
-@@ -573,7 +589,19 @@ vm_fault_t netfs_page_mkwrite(struct vm_fault *vmf, struct netfs_group *netfs_gr
- 		trace_netfs_folio(folio, netfs_folio_trace_mkwrite_plus);
- 	else
- 		trace_netfs_folio(folio, netfs_folio_trace_mkwrite);
--	netfs_set_group(folio, netfs_group);
-+
-+	priv = folio_get_private(folio);
-+	if (priv != netfs_group) {
-+		if (!netfs_group && priv == NETFS_FOLIO_COPY_TO_CACHE)
-+			folio_detach_private(folio);
-+		else if (netfs_group && priv == NETFS_FOLIO_COPY_TO_CACHE)
-+			folio_change_private(folio, netfs_get_group(netfs_group));
-+		else if (netfs_group && !priv)
-+			folio_attach_private(folio, netfs_get_group(netfs_group));
-+		else
-+			WARN_ON_ONCE(1);
-+	}
-+
- 	file_update_time(file);
- 	set_bit(NETFS_ICTX_MODIFIED_ATTR, &ictx->flags);
- 	if (ictx->ops->post_modify)
-diff --git a/include/trace/events/netfs.h b/include/trace/events/netfs.h
-index db045135406c9..3fe3980902c24 100644
---- a/include/trace/events/netfs.h
-+++ b/include/trace/events/netfs.h
-@@ -181,6 +181,7 @@
- 	EM(netfs_whole_folio_modify_filled,	"mod-whole-f+")	\
- 	EM(netfs_whole_folio_modify_filled_efault, "mod-whole-f+!") \
- 	EM(netfs_modify_and_clear,		"mod-n-clear")	\
-+	EM(netfs_modify_and_clear_rm_finfo,	"mod-n-clear+")	\
- 	EM(netfs_streaming_write,		"mod-streamw")	\
- 	EM(netfs_streaming_write_cont,		"mod-streamw+")	\
- 	EM(netfs_flush_content,			"flush")	\
+-	/* use the buffer lock here for triple duty:
+-	 *  - prevent I/O (from us) so calling spi_setup() is safe;
+-	 *  - prevent concurrent SPI_IOC_WR_* from morphing
+-	 *    data fields while SPI_IOC_RD_* reads them;
+-	 *  - SPI_IOC_MESSAGE needs the buffer locked "normally".
+-	 */
+-	mutex_lock(&spidev->buf_lock);
+-
+ 	switch (cmd) {
+ 	/* read requests */
+ 	case SPI_IOC_RD_MODE:
+@@ -516,7 +503,6 @@ spidev_ioctl(struct file *filp, unsigned int cmd, unsigned long arg)
+ 		break;
+ 	}
+ 
+-	mutex_unlock(&spidev->buf_lock);
+ 	spi_dev_put(spi);
+ 	mutex_unlock(&spidev->spi_lock);
+ 	return retval;
+@@ -547,9 +533,6 @@ spidev_compat_ioc_message(struct file *filp, unsigned int cmd,
+ 		return -ESHUTDOWN;
+ 	}
+ 
+-	/* SPI_IOC_MESSAGE needs the buffer locked "normally" */
+-	mutex_lock(&spidev->buf_lock);
+-
+ 	/* Check message and copy into scratch area */
+ 	ioc = spidev_get_ioc_message(cmd, u_ioc, &n_ioc);
+ 	if (IS_ERR(ioc)) {
+@@ -570,7 +553,6 @@ spidev_compat_ioc_message(struct file *filp, unsigned int cmd,
+ 	kfree(ioc);
+ 
+ done:
+-	mutex_unlock(&spidev->buf_lock);
+ 	spi_dev_put(spi);
+ 	mutex_unlock(&spidev->spi_lock);
+ 	return retval;
+@@ -795,7 +777,6 @@ static int spidev_probe(struct spi_device *spi)
+ 	/* Initialize the driver data */
+ 	spidev->spi = spi;
+ 	mutex_init(&spidev->spi_lock);
+-	mutex_init(&spidev->buf_lock);
+ 
+ 	INIT_LIST_HEAD(&spidev->device_entry);
+ 
 -- 
 2.53.0
 
