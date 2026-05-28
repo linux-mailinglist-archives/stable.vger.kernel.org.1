@@ -1,60 +1,60 @@
-Return-Path: <stable+bounces-255517-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-255848-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id qFYiDGyjGGrJlggAu9opvQ
-	(envelope-from <stable+bounces-255517-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:19:56 +0200
+	id eGhhHbOmGGp+lwgAu9opvQ
+	(envelope-from <stable+bounces-255848-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:33:55 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id A6C6E5F8667
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:19:55 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0BC665F8F87
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:33:54 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 4D891318EC91
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 20:12:18 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 3E0B6314AE17
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 20:27:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1552033CE8A;
-	Thu, 28 May 2026 20:12:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CF1402D9787;
+	Thu, 28 May 2026 20:27:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rAMIUeZD"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NzksZPqI"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C39E93FE37C;
-	Thu, 28 May 2026 20:12:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 919292E7379;
+	Thu, 28 May 2026 20:27:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779999133; cv=none; b=D+MVpDqiQPKB7Qq7rxTt6VhbcqQ6b+L832uo0SHjCm74pIlp/6XmTkkA2o8toZtjo9a4oQpwn5JT+CiTjlDDnPCjLwI2Q2un3dyc87TNan7LOktVD7Lfbqx19SOv4ItL6XRi2DKNoEyMyTmJBATNbMkfrXd5Cq3Jr2YD+9NIDho=
+	t=1780000049; cv=none; b=N0eCKGQpeR95AE/fH3M71gDeajXPLpzdQYhbaihDf6W8ok5RLQ2pNBKc+qAX7d5f+gehACk+RfiaIxBassUj+Du7Gl0YF4krwTMZzmsasDJvol8b/+vdk5ake7A5/cg2YzZjMH5d+LymRnJEedn0uSpGwWfo6Cs55DVxwNtQZHo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779999133; c=relaxed/simple;
-	bh=LNGbRu92PaWbBbpQoISL9RHVc0navfRY+2xYV10ysmM=;
+	s=arc-20240116; t=1780000049; c=relaxed/simple;
+	bh=noBcnNfQ2QAcFuspZIDB7HuTo8cXzYxu6c9iAVc2adU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=fq+GlAi2y7Kz75XczWqfj+/D11JcK3nWLUq5oBrMWBmhG6qmFD7KRypblIxhZb/KToy5Kv0bo7cq9wzRjJcyfXVz6mCgzu+dRbKB9rfbLpC2VwQtBCFOavZprevDJABLvjHsgt8KpduCPunNXKOTDAxET9gRQpI5y48YRUw1VeU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rAMIUeZD; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2E7D71F00A3C;
-	Thu, 28 May 2026 20:12:12 +0000 (UTC)
+	 MIME-Version; b=nTNqbjq2Vekn7v8S/RCIXOdSB4jeghlUxAneQxy12NW5Moiyb6P+1/Fm7SOHslJkzrnDL1m2sI5wtOyyDnTNUsMFw6FwTj+1L8/hb6ujsol9zMEfL7vXRw8ekXHvPF9gAZ7ci0tk2biQOqYRUO+N23qbtGagRM9uMM/Dgj0P3K8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NzksZPqI; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EFB0A1F000E9;
+	Thu, 28 May 2026 20:27:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779999132;
-	bh=ID6RWiHmcih5qCVt1zJS83LuaKyr0uu7zAbVSddzYWk=;
+	s=korg; t=1780000048;
+	bh=HjypbyNYFe9g7sHU0nG9pJ8sg99wOCh+qnnlhhEtj64=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=rAMIUeZDhWCroJ8A9fw+HC+dY5M8l6orJSO74jdL7LzrkIsoWi7M1x/hmQ194e26h
-	 rQKAHkB/vMqJcAgKfJ9w2EENqaUo/FOU4REjcwW1RiuBtY1XwVllt2QqUfO/JfynkV
-	 5jjXC/rIeflG8KZLp3+5gp97B3a4vLukA5M3cF3M=
+	b=NzksZPqI/D67iVJRydNTbfjgWl8k9ilezdhWuAaiNzGeL3XbNH88Df8n/02atZdrU
+	 +gMHk8OrbG/mP/6ooim5l+YT+/DgJ8RN4irPff9e4DvxlLgDTG6/GNBOdXlHqXUgpI
+	 oc0DAOoQ6rXcrIzjQt0VD0IisoFFBmXL25g+gWko=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Werner Sembach <wse@tuxedocomputers.com>,
-	Armin Wolf <W_Armin@gmx.de>,
-	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
+	Sabrina Dubroca <sd@queasysnail.net>,
+	David Carlier <devnexen@gmail.com>,
+	Antonio Quartulli <antonio@openvpn.net>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 7.0 393/461] platform/x86: uniwill-laptop: Properly initialize charging threshold
-Date: Thu, 28 May 2026 21:48:42 +0200
-Message-ID: <20260528194658.840532297@linuxfoundation.org>
+Subject: [PATCH 6.18 285/377] ovpn: respect peer refcount in CMD_NEW_PEER error path
+Date: Thu, 28 May 2026 21:48:43 +0200
+Message-ID: <20260528194646.605024537@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260528194646.819809818@linuxfoundation.org>
-References: <20260528194646.819809818@linuxfoundation.org>
+In-Reply-To: <20260528194638.371537336@linuxfoundation.org>
+References: <20260528194638.371537336@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,129 +64,144 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-2.16 / 15.00];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,tuxedocomputers.com,gmx.de,linux.intel.com,kernel.org];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-255517-lists,stable=lfdr.de];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	RCVD_TLS_LAST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	TO_DN_SOME(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	URIBL_MULTI_FAIL(0.00)[linuxfoundation.org:server fail,queasysnail.net:server fail,openvpn.net:server fail,tor.lore.kernel.org:server fail];
+	TAGGED_FROM(0.00)[bounces-255848-lists,stable=lfdr.de];
 	PRECEDENCE_BULK(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,queasysnail.net,gmail.com,openvpn.net,kernel.org];
+	MIME_TRACE(0.00)[0:+];
+	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	MID_RHS_MATCH_FROM(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
 	RCPT_COUNT_SEVEN(0.00)[7];
+	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	TAGGED_RCPT(0.00)[stable];
+	TO_DN_SOME(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim,gmx.de:email,msgid.link:url,intel.com:email,tuxedocomputers.com:email]
-X-Rspamd-Queue-Id: A6C6E5F8667
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[openvpn.net:email,queasysnail.net:email,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim]
+X-Rspamd-Queue-Id: 0BC665F8F87
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-7.0-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Armin Wolf <W_Armin@gmx.de>
+From: David Carlier <devnexen@gmail.com>
 
-[ Upstream commit c12cc42dadd85dea210d5699d4f21def827382eb ]
+[ Upstream commit 1fef6614673ff0846d30acdeeaf3cf98bb5f6116 ]
 
-The EC might initialize the charge threshold with 0 to signal that
-said threshold is uninitialized. Detect this and replace said value
-with 100 to signal the EC that we want to take control of battery
-charging. Also set the threshold to 100 if the EC-provided value
-is invalid.
+ovpn_nl_peer_new_doit()'s error path calls ovpn_peer_release() directly
+rather than ovpn_peer_put(), bypassing the kref. The accompanying
+comment ("peer was not yet hashed, thus it is not used in any context")
+holds for UDP but not for TCP.
 
-Fixes: d050479693bb ("platform/x86: Add Uniwill laptop driver")
-Reviewed-by: Werner Sembach <wse@tuxedocomputers.com>
-Signed-off-by: Armin Wolf <W_Armin@gmx.de>
-Link: https://patch.msgid.link/20260512232145.329260-2-W_Armin@gmx.de
-Reviewed-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
-Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+For UDP, the ovpn_socket union uses the .ovpn arm and never points back
+at a peer; UDP encap_recv looks up peers via the not-yet-populated
+hashtables, so the new peer is unreachable until ovpn_peer_add()
+publishes it.
+
+For TCP, ovpn_socket_new() sets ovpn_sock->peer and
+ovpn_tcp_socket_attach() publishes ovpn_sock via rcu_assign_sk_user_data().
+>From that moment until ovpn_socket_release() detaches in the error path,
+the TCP fd is fully wired: userspace recvmsg / sendmsg / close / poll
+on the fd, as well as the strparser-driven ovpn_tcp_rcv() path, can
+reach the peer through sk_user_data -> ovpn_sock->peer and bump its
+refcount via ovpn_peer_hold().
+
+ovpn_tcp_socket_wait_finish() (called inside ovpn_socket_release())
+drains strparser and the tx work, but does not synchronize with
+userspace syscall callers that already hold a peer reference. If
+ovpn_nl_peer_modify() or ovpn_peer_add() returns an error while such
+a caller is in flight - notably an ovpn_tcp_recvmsg() blocked in
+__skb_recv_datagram() on peer->tcp.user_queue - the direct
+ovpn_peer_release() destroys the peer while the caller still holds
+the reference, and the eventual ovpn_peer_put() from that caller
+operates on freed memory.
+
+Replace the direct destructor call with ovpn_peer_put() so the kref
+correctly defers destruction until the last reference is dropped.
+In the common case where no concurrent user is present, behaviour is
+unchanged: the kref hits zero immediately and ovpn_peer_release_kref()
+runs the same destructor.
+
+With this conversion ovpn_peer_release() has no callers outside peer.c
+- ovpn_peer_release_kref() in the same translation unit is the only
+remaining user - so make it static and drop its declaration from
+peer.h.
+
+Fixes: 11851cbd60ea ("ovpn: implement TCP transport")
+Reviewed-by: Sabrina Dubroca <sd@queasysnail.net>
+Assisted-by: Claude:claude-opus-4-7
+Signed-off-by: David Carlier <devnexen@gmail.com>
+Signed-off-by: Antonio Quartulli <antonio@openvpn.net>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/platform/x86/uniwill/uniwill-acpi.c | 35 ++++++++++++++++++++-
- 1 file changed, 34 insertions(+), 1 deletion(-)
+ drivers/net/ovpn/netlink.c | 8 +++++---
+ drivers/net/ovpn/peer.c    | 2 +-
+ drivers/net/ovpn/peer.h    | 1 -
+ 3 files changed, 6 insertions(+), 5 deletions(-)
 
-diff --git a/drivers/platform/x86/uniwill/uniwill-acpi.c b/drivers/platform/x86/uniwill/uniwill-acpi.c
-index 6341dca20b76a..4b491fe8bdea4 100644
---- a/drivers/platform/x86/uniwill/uniwill-acpi.c
-+++ b/drivers/platform/x86/uniwill/uniwill-acpi.c
-@@ -1193,6 +1193,16 @@ static int uniwill_led_init(struct uniwill_data *data)
- 							 &init_data);
+diff --git a/drivers/net/ovpn/netlink.c b/drivers/net/ovpn/netlink.c
+index c7f3824376302..bdb56ef0c9040 100644
+--- a/drivers/net/ovpn/netlink.c
++++ b/drivers/net/ovpn/netlink.c
+@@ -455,10 +455,12 @@ int ovpn_nl_peer_new_doit(struct sk_buff *skb, struct genl_info *info)
+ sock_release:
+ 	ovpn_socket_release(peer);
+ peer_release:
+-	/* release right away because peer was not yet hashed, thus it is not
+-	 * used in any context
++	/* For UDP, the peer is unreachable until added to the hashtables, so
++	 * dropping the initial reference is enough. For TCP, the peer may be
++	 * concurrently reachable via sk_user_data->peer until
++	 * ovpn_socket_release() detaches; rely on the refcount.
+ 	 */
+-	ovpn_peer_release(peer);
++	ovpn_peer_put(peer);
+ 
+ 	return ret;
+ }
+diff --git a/drivers/net/ovpn/peer.c b/drivers/net/ovpn/peer.c
+index 4bfcab0c8652e..a3d856724b84a 100644
+--- a/drivers/net/ovpn/peer.c
++++ b/drivers/net/ovpn/peer.c
+@@ -348,7 +348,7 @@ static void ovpn_peer_release_rcu(struct rcu_head *head)
+  * ovpn_peer_release - release peer private members
+  * @peer: the peer to release
+  */
+-void ovpn_peer_release(struct ovpn_peer *peer)
++static void ovpn_peer_release(struct ovpn_peer *peer)
+ {
+ 	ovpn_crypto_state_release(&peer->crypto);
+ 	spin_lock_bh(&peer->lock);
+diff --git a/drivers/net/ovpn/peer.h b/drivers/net/ovpn/peer.h
+index a1423f2b09e06..4de5aeae33f7d 100644
+--- a/drivers/net/ovpn/peer.h
++++ b/drivers/net/ovpn/peer.h
+@@ -125,7 +125,6 @@ static inline bool ovpn_peer_hold(struct ovpn_peer *peer)
+ 	return kref_get_unless_zero(&peer->refcount);
  }
  
-+static unsigned int uniwill_sanitize_battery_threshold(unsigned int value)
-+{
-+	/* 0 means "charging threshold not active" */
-+	if (!value)
-+		return 100;
-+
-+	/* Guard against invalid values */
-+	return min(value, 100);
-+}
-+
- static int uniwill_get_property(struct power_supply *psy, const struct power_supply_ext *ext,
- 				void *drvdata, enum power_supply_property psp,
- 				union power_supply_propval *val)
-@@ -1239,7 +1249,8 @@ static int uniwill_get_property(struct power_supply *psy, const struct power_sup
- 		if (ret < 0)
- 			return ret;
+-void ovpn_peer_release(struct ovpn_peer *peer);
+ void ovpn_peer_release_kref(struct kref *kref);
  
--		val->intval = clamp_val(FIELD_GET(CHARGE_CTRL_MASK, regval), 0, 100);
-+		regval = FIELD_GET(CHARGE_CTRL_MASK, regval);
-+		val->intval = uniwill_sanitize_battery_threshold(regval);
- 		return 0;
- 	default:
- 		return -EINVAL;
-@@ -1334,11 +1345,33 @@ static int uniwill_remove_battery(struct power_supply *battery, struct acpi_batt
- 
- static int uniwill_battery_init(struct uniwill_data *data)
- {
-+	unsigned int value, threshold, sanitized;
- 	int ret;
- 
- 	if (!uniwill_device_supports(data, UNIWILL_FEATURE_BATTERY))
- 		return 0;
- 
-+	ret = regmap_read(data->regmap, EC_ADDR_CHARGE_CTRL, &value);
-+	if (ret < 0)
-+		return ret;
-+
-+	/*
-+	 * The charge control threshold might be initialized with 0 by
-+	 * the EC to signal that said threshold is uninitialized. We thus
-+	 * need to replace this placeholder value with a valid one (100)
-+	 * to signal that we want to take control of battery charging.
-+	 * For the sake of completeness we also apply this to other
-+	 * invalid threshold values.
-+	 */
-+	threshold = FIELD_GET(CHARGE_CTRL_MASK, value);
-+	sanitized = uniwill_sanitize_battery_threshold(threshold);
-+	if (threshold != sanitized) {
-+		FIELD_MODIFY(CHARGE_CTRL_MASK, &value, sanitized);
-+		ret = regmap_write(data->regmap, EC_ADDR_CHARGE_CTRL, value);
-+		if (ret < 0)
-+			return ret;
-+	}
-+
- 	ret = devm_mutex_init(data->dev, &data->battery_lock);
- 	if (ret < 0)
- 		return ret;
+ /**
 -- 
 2.53.0
 
