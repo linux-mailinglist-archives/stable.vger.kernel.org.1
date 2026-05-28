@@ -1,58 +1,62 @@
-Return-Path: <stable+bounces-255688-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-255371-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id CCOvNKilGGoQlwgAu9opvQ
-	(envelope-from <stable+bounces-255688-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:29:28 +0200
+	id WKRWG22hGGqnlggAu9opvQ
+	(envelope-from <stable+bounces-255371-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:11:25 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5AA6E5F8CE4
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:29:28 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id DF02B5F8047
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:11:24 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 8AF4132A7166
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 20:20:13 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id E8168310A3AE
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 20:05:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2843C2D9787;
-	Thu, 28 May 2026 20:20:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 67C0940C5DA;
+	Thu, 28 May 2026 20:05:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="s/AyuHos"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1WBelwCf"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 073DE2D1303;
-	Thu, 28 May 2026 20:20:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3596E335566;
+	Thu, 28 May 2026 20:05:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779999612; cv=none; b=qAcRVMU5m4HUfm3u2tjKtapAfCWLJuEOlNv4H8pUgV6Rv3eSzCr3iz7hL2nneajxU6DBsqtazAYflwUc1d9u8CjW4q7+7ShgqU9ZGLnIxKmsLmVcMUs9053sVtTjIWc0vNmFicQzqFkNgIjm/UVFv6MALXmpPCOsFAxezU0O1gs=
+	t=1779998722; cv=none; b=CwaF5BmMKnMTd9mGZl6FbcpNm8uyW+hS0qd5vAgADa+ezV+C3i6hi5d9gfOWGi4tO60Eu2VgjL2Fh940x/zoG0Y674WLON1oEilYnH0zj4Cw205qFoWAf6ztyPFN1mkIvxmTwoIr+gpqAYcYtxTkq6mgoV6fgiuHUigHEEGYZT0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779999612; c=relaxed/simple;
-	bh=ZMhG8O/Ao+f0gW+nD7f1TmZyYt1WCTq6TFm8jCSJXsU=;
+	s=arc-20240116; t=1779998722; c=relaxed/simple;
+	bh=RRRbNCBh17WPvN14ij2XFU7+rMIeJ+nW96KOMvwpc7s=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=eJzZEMPrO4Q5Hzqoav/g5NQwVGTB3O7QSHWE0Pa0n8i2vBTucoDjEUP7Nt/R3SKpJznc2yl5v9N8YqfIWkvEqgKpL9mkK5Gpnod24n/OUZUhTH2vyBFdeNXy3LlNIQb+7OYu4DPTB6Nnn4r+aYj2Q/FqIdlR6dqqGO0glZ1v8wg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=s/AyuHos; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 66AA21F000E9;
-	Thu, 28 May 2026 20:20:10 +0000 (UTC)
+	 MIME-Version; b=a5Wxhlie+EcdHco5xeDEtxu2NhXSauYxaGd+3uhv9RLDafNzYfVrALsB/9Kdkvm7SgGwaAZzQjOuomMg8jxGgRJcweYgwRVjPWfdPSt4Rcue+xg+ccf5VwDJx5uKaQKIFAyZTx03QnZB/6be9beipaBXt8ww2W/9RCkqadyG3ys=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1WBelwCf; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 965B61F000E9;
+	Thu, 28 May 2026 20:05:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779999610;
-	bh=Lz96mrW2DkfkHL9NtDr/F7DoBS2ObBKypMbcgRxsCmg=;
+	s=korg; t=1779998721;
+	bh=jdP5jvuq/+C2M9q+zDt199tY6zLY0uu+7mGo4ZVczwE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=s/AyuHos9Kr9Gqp6KoNkxQRCsIoxPiHyQzUZvi06Z+32LMLDCfkPqrT54RsZLfVaT
-	 MeEb0A/DJKjNYn8q72fRTTsn2voIAfIw4UO/zWIYCTi5crlG8qO+LpHj6M1qi0p88n
-	 GO383rEl8Pzq2vppdUiY2rAsqqYoQG4n+RgV6AT8=
+	b=1WBelwCfuAHsSVRoVd/SsmHsREUUABPRpubl2FrlETpS5KBAIhwWc60u0bPYRnkcr
+	 lQUpwIFig0YHFaxKMGX1AlzHwsNhAylfe+XKANYzdC7IlST+9+sku/X4Y8RUfpSQfL
+	 3tdnuaobDN3+7gH/IY5SlqGdHg6kmD4cu/JlRCYg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Iago Toral Quiroga <itoral@igalia.com>,
-	=?UTF-8?q?Ma=C3=ADra=20Canal?= <mcanal@igalia.com>
-Subject: [PATCH 6.18 129/377] drm/v3d: Release indirect CSD GEM reference on CPU job free
+	Pankaj Raghav <p.raghav@samsung.com>,
+	Jeff Layton <jlayton@kernel.org>,
+	Christoph Hellwig <hch@lst.de>,
+	Carlos Maiolino <cmaiolino@redhat.com>,
+	Christian Brauner <brauner@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 7.0 238/461] fs: fix forced iversion increment on lazytime timestamp updates
 Date: Thu, 28 May 2026 21:46:07 +0200
-Message-ID: <20260528194642.097083972@linuxfoundation.org>
+Message-ID: <20260528194654.033648121@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260528194638.371537336@linuxfoundation.org>
-References: <20260528194638.371537336@linuxfoundation.org>
+In-Reply-To: <20260528194646.819809818@linuxfoundation.org>
+References: <20260528194646.819809818@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,77 +66,99 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-2.16 / 15.00];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-255688-lists,stable=lfdr.de];
-	FROM_HAS_DN(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
 	MIME_TRACE(0.00)[0:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TO_DN_SOME(0.00)[];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	RCPT_COUNT_FIVE(0.00)[5];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-255371-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
 	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_SEVEN(0.00)[9];
 	MID_RHS_MATCH_FROM(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[igalia.com:email,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,msgid.link:url,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim]
-X-Rspamd-Queue-Id: 5AA6E5F8CE4
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,lst.de:email,msgid.link:url,samsung.com:email,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo]
+X-Rspamd-Queue-Id: DF02B5F8047
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+7.0-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Maíra Canal <mcanal@igalia.com>
+From: Pankaj Raghav <p.raghav@samsung.com>
 
-commit 6eb6e5acafa46854d4363e6c34981289995f3ace upstream.
+[ Upstream commit 834e98acb748025c04fed3cac9c8954454f4b520 ]
 
-v3d_get_cpu_indirect_csd_params() takes a reference to the indirect BO via
-drm_gem_object_lookup() and stashes it in cpu_job->indirect_csd.indirect,
-but nothing on the CPU job teardown path ever drops that reference.
+When updating timestamps with lazytime enabled, if only I_DIRTY_TIME is
+set (pure lazytime update), inode_maybe_inc_iversion() should not be
+forced to increment i_version. The force parameter should only be true
+when actual data or metadata changes require an iversion bump.
 
-Drop the extra reference in v3d_cpu_job_free(). The NULL check covers ioctl
-errors before the lookup ran and CPU job types other than
-V3D_CPU_JOB_TYPE_INDIRECT_CSD, which leave the field zero-initialised.
+The current code uses "!!dirty" which evaluates to true whenever dirty
+has any bits set, including the I_DIRTY_TIME bit alone. This forces an
+iversion increment on every lazytime timestamp update, which then sets
+I_DIRTY_SYNC, triggering expensive log flushes on subsequent fdatasync
+calls. Andres reported this issue when he noticed a perf regression[1].
 
-Cc: stable@vger.kernel.org
-Fixes: 18b8413b25b7 ("drm/v3d: Create a CPU job extension for a indirect CSD job")
-Assisted-by: Claude:claude-opus-4.7
-Reviewed-by: Iago Toral Quiroga <itoral@igalia.com>
-Link: https://patch.msgid.link/20260515-v3d-cpu-job-leaks-v1-2-7f147cbbf935@igalia.com
-Signed-off-by: Maíra Canal <mcanal@igalia.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fix this by using "dirty != I_DIRTY_TIME" as the force parameter. This
+passes false for pure lazytime updates (allowing the I_VERSION_QUERIED
+optimization to work), while still forcing the increment when dirty
+contains other flags indicating real changes that require iversion
+updates.
+
+[1] https://lore.kernel.org/linux-xfs/7ys6erh3nnyeerv2nybyfvp7dmaknuxrlxv74wx56ocdothkc6@ekfiadtkfn2r/
+
+Fixes: 85c871a02b03 ("fs: add support for non-blocking timestamp updates")
+Signed-off-by: Pankaj Raghav <p.raghav@samsung.com>
+Link: https://patch.msgid.link/20260511111918.1793689-1-p.raghav@samsung.com
+Reviewed-by: Jeff Layton <jlayton@kernel.org>
+Reviewed-by: Christoph Hellwig <hch@lst.de>
+Reviewed-by: Carlos Maiolino <cmaiolino@redhat.com>
+Signed-off-by: Christian Brauner <brauner@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/v3d/v3d_submit.c |    3 +++
- 1 file changed, 3 insertions(+)
+ fs/inode.c | 8 +++++++-
+ 1 file changed, 7 insertions(+), 1 deletion(-)
 
---- a/drivers/gpu/drm/v3d/v3d_submit.c
-+++ b/drivers/gpu/drm/v3d/v3d_submit.c
-@@ -131,6 +131,9 @@ v3d_cpu_job_free(struct kref *ref)
- 	v3d_performance_query_info_free(&job->performance_query,
- 					job->performance_query.count);
- 
-+	if (job->indirect_csd.indirect)
-+		drm_gem_object_put(job->indirect_csd.indirect);
-+
- 	v3d_job_free(ref);
- }
- 
+diff --git a/fs/inode.c b/fs/inode.c
+index cc12b68e021b2..e10439d8d7d98 100644
+--- a/fs/inode.c
++++ b/fs/inode.c
+@@ -2130,7 +2130,13 @@ static int inode_update_cmtime(struct inode *inode, unsigned int flags)
+ 			    inode_iversion_need_inc(inode))
+ 				return -EAGAIN;
+ 		} else {
+-			if (inode_maybe_inc_iversion(inode, !!dirty))
++			/*
++			 * Don't force iversion increment for pure lazytime
++			 * updates (I_DIRTY_TIME only), let I_VERSION_QUERIED
++			 * dictate whether the increment is needed.
++			 */
++			if (inode_maybe_inc_iversion(inode,
++						     dirty != I_DIRTY_TIME))
+ 				dirty |= I_DIRTY_SYNC;
+ 		}
+ 	}
+-- 
+2.53.0
+
 
 
 
