@@ -1,168 +1,197 @@
-Return-Path: <stable+bounces-255011-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-255012-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id CGuxCBhMGGr4iggAu9opvQ
-	(envelope-from <stable+bounces-255011-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 16:07:20 +0200
+	id SMWqCxpNGGomiwgAu9opvQ
+	(envelope-from <stable+bounces-255012-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 16:11:38 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 910E05F3604
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 16:07:18 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id A4AD65F3734
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 16:11:37 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 89C673148627
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 13:58:17 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id EC8FE30D9D61
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 14:04:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 744E5286891;
-	Thu, 28 May 2026 13:58:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 956A52D8793;
+	Thu, 28 May 2026 14:04:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="XbHPh2+E"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="f59jEO0C"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F1D7A285CB4;
-	Thu, 28 May 2026 13:58:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3823C262D0B
+	for <stable@vger.kernel.org>; Thu, 28 May 2026 14:04:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779976696; cv=none; b=IFvTytCjcsV5UjoHewm2/xwJ3f+EfPyiVk2wuppe6FylDc5WZEBVXHD/x40bY0fdI6vVKxRXdg/By/89d97dl5aF0r2b34SOBs/l7klWABSi7RPFDBC+1WjAbS+RseBQlCQkG5+8+SKkKT+Vg2CpblWBgqQeTz425jUNhOfIlY8=
+	t=1779977050; cv=none; b=ZKvkl28Q0iM2x/HlLBTPDIeZO6Zxk70mSxuXWFM+DllCHiNUsUoyW7cA/7dcWjYoOiIJhUh8q3eJBXQmdRhgcXxOG/JMKPufm3DefPmtgBsfyrA5gNhBqT5q4kt7aWmAtfQKXiqrBg8zvdAOTvbEYf8JwkHBws576NlVJNgokUM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779976696; c=relaxed/simple;
-	bh=k0e4japtXqt/7wTvfA6CpC/gU9E40uoXkaunCPNcO2o=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=PeJBCmg4yrnHj+12VgTQOIOBrtsS4iodn5DX+GkvztfYcuq1TxdFmunjwHcCJyDSVvJ+1dfHKCfq2s5UxbPsXnvAilO87AVoa8vW0n4qh5zVAGRPV2oAZa183gyeHQD2SeVhoOGU1I2W1fndNjoTGEYhMme+CZYoFAC8SxFoCfg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=XbHPh2+E; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0E2921F000E9;
-	Thu, 28 May 2026 13:58:13 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1779976694;
-	bh=lHC/FW7tnteRVtutAnHZv6iVlMg+BbUjWq+ubu9W2Uw=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=XbHPh2+E2OGIwRPj70BzxHGm0COOLjIGDv6+Q7v6tJJmQmvTIukdU5NRlDbCXCD1v
-	 lVhqjIjA1ZEhcK4+CwAedkOnP2eoC1CeCEy7OHeEMqYdp7CrjWQ4uw7bWKueifWQRV
-	 e9XMaLZqeKNO69qdwDyx9fxIaVN3WS+QfJs0zzzU24KAg4ZJMH+RPJKy6oE5jsyGtT
-	 99E6Y2ATljuyyu3KxxuRphhaKShcr0uK68n3yWFnBk6a6eq/KkxjeeeQIThcCCbFP/
-	 OuCVS2u+UiYng9DBFGMEslQNY3N7pB2i9K+0TjugBfXuY9fY6Uu6O8JYzO6pI2f6mZ
-	 XGSIDL2ZyNasQ==
-Date: Thu, 28 May 2026 15:58:12 +0200
-From: Thierry Reding <thierry.reding@kernel.org>
-To: Guangshuo Li <lgs201920130244@gmail.com>
-Cc: Thierry Reding <thierry.reding@gmail.com>, 
-	Mikko Perttunen <mperttunen@nvidia.com>, David Airlie <airlied@gmail.com>, 
-	Simona Vetter <simona@ffwll.ch>, Mark Zhang <markz@nvidia.com>, Sean Paul <seanpaul@chromium.org>, 
-	dri-devel@lists.freedesktop.org, linux-tegra@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	stable@vger.kernel.org
-Subject: Re: [PATCH v3] gpu: host1x: Fix device reference leak in
- host1x_device_parse_dt() error path
-Message-ID: <ahhJ6Uo5qHfn0CBg@orome>
-References: <20260413141526.2961841-1-lgs201920130244@gmail.com>
+	s=arc-20240116; t=1779977050; c=relaxed/simple;
+	bh=F3aRlIljeWXugDLoXaeI2ArqfRL2ZQ+Ap/2nnQI6osI=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=VhyHscHVMJ6FZz4HY7ah9K8dmr18prmsdNje1hjHQmahN29Sf1NFW4IkaiQtUKwg4S8jMpJ+YW0OCkoJrXPqL/s1fooaV1Ra7J/+5V5HcKnPpd7RpcTnimd5kZxH1WQogtrnViRjn1yG9gXUiXO+ogZjNPo5SuTdvytgPeZwNLo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=f59jEO0C; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4E4E51F000E9;
+	Thu, 28 May 2026 14:04:08 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
+	s=korg; t=1779977048;
+	bh=X7LEE0uWGofw5zn6K2PzjcIwCiL4bpN6XlPl2TgOSfs=;
+	h=Subject:To:Cc:From:Date;
+	b=f59jEO0CDRfilKXi34GYuA9CjsmtEXDaWZ/YuuEzKsRsYEXoddmAznWEgWEYhKGHL
+	 Sz/ijMqJ9/F349ncPqaNn3lwOpd+l+RUkjfEBSkwuzyholZJqtwmS5Co9ZKrNjIJEH
+	 w6n/f8QKZLg7y/PCy1Qj6SYjZGGyc3DKjukvzZeE=
+Subject: FAILED: patch "[PATCH] drm/i915/psr: Apply Intel DPCD workaround when SDP on prior" failed to apply to 7.0-stable tree
+To: jouni.hogander@intel.com,stable@vger.kernel.org,suraj.kandpal@intel.com,tursulin@ursulin.net
+Cc: <stable@vger.kernel.org>
+From: <gregkh@linuxfoundation.org>
+Date: Thu, 28 May 2026 16:03:15 +0200
+Message-ID: <2026052815-gown-browse-cf36@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="kcchf3ioudov7kum"
-Content-Disposition: inline
-In-Reply-To: <20260413141526.2961841-1-lgs201920130244@gmail.com>
-X-Spamd-Result: default: False [-2.26 / 15.00];
-	SIGNED_PGP(-2.00)[];
-	SUSPICIOUS_RECIPS(1.50)[];
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-Spamd-Result: default: False [2.34 / 15.00];
+	MID_END_EQ_FROM_USER_PART(4.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	MID_RHS_NOT_FQDN(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
-	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20260515];
-	MIME_GOOD(-0.20)[multipart/signed,text/plain];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
+	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-255011-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-255012-lists,stable=lfdr.de];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	RCVD_COUNT_THREE(0.00)[4];
-	FREEMAIL_TO(0.00)[gmail.com];
-	FREEMAIL_CC(0.00)[gmail.com,nvidia.com,ffwll.ch,chromium.org,lists.freedesktop.org,vger.kernel.org];
-	MIME_TRACE(0.00)[0:+,1:+,2:~];
+	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FROM_NO_DN(0.00)[];
 	MISSING_XM_UA(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
+	TO_DN_NONE(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[thierry.reding@kernel.org,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[kernel.org:+];
-	RCPT_COUNT_SEVEN(0.00)[11];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	TO_DN_SOME(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo]
-X-Rspamd-Queue-Id: 910E05F3604
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[5];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[intel.com:email,msgid.link:url,gregkh:email,ursulin.net:email,linuxfoundation.org:dkim,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo]
+X-Rspamd-Queue-Id: A4AD65F3734
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
 
---kcchf3ioudov7kum
-Content-Type: text/plain; protected-headers=v1; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
-Subject: Re: [PATCH v3] gpu: host1x: Fix device reference leak in
- host1x_device_parse_dt() error path
+The patch below does not apply to the 7.0-stable tree.
+If someone wants it applied there, or to any other stable or longterm
+tree, then please email the backport, including the original git commit
+id to <stable@vger.kernel.org>.
+
+To reproduce the conflict and resubmit, you may use the following commands:
+
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-7.0.y
+git checkout FETCH_HEAD
+git cherry-pick -x 4703049f768fc1c1caac754134118bee1a3af189
+# <resolve conflicts, build, test, etc.>
+git commit -s
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2026052815-gown-browse-cf36@gregkh' --subject-prefix 'PATCH 7.0.y' HEAD^..
+
+Possible dependencies:
+
+
+
+thanks,
+
+greg k-h
+
+------------------ original commit in Linus's tree ------------------
+
+From 4703049f768fc1c1caac754134118bee1a3af189 Mon Sep 17 00:00:00 2001
+From: =?UTF-8?q?Jouni=20H=C3=B6gander?= <jouni.hogander@intel.com>
+Date: Fri, 15 May 2026 12:57:55 +0300
+Subject: [PATCH] drm/i915/psr: Apply Intel DPCD workaround when SDP on prior
+ line used
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 
-On Mon, Apr 13, 2026 at 10:15:26PM +0800, Guangshuo Li wrote:
-> After device_initialize(), the embedded struct device in struct
-> host1x_device should be released through the device core with
-> put_device().
->=20
-> In host1x_device_add(), if host1x_device_parse_dt() fails, the current
-> error path frees the object directly with kfree(device). That bypasses
-> the normal device lifetime handling and leaks the reference held on the
-> embedded struct device.
->=20
-> The issue was identified by a static analysis tool I developed and
-> confirmed by manual review.
->=20
-> Fix this by using put_device() in the host1x_device_parse_dt() failure
-> path.
->=20
-> Fixes: f4c5cf88fbd50 ("gpu: host1x: Provide a proper struct bus_type")
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Guangshuo Li <lgs201920130244@gmail.com>
-> ---
-> v3:
->   - note that the issue was identified by my static analysis tool
->   - and confirmed by manual review
->=20
-> v2:
->   - add Cc: stable@vger.kernel.org
->=20
->  drivers/gpu/host1x/bus.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
+There is Intel specific workaround DPCD address containing workaround for
+case where SDP is on prior line. Apply this workaround according to values
+in the offset.
 
-Applied, thanks.
+Fixes: 61e887329e33 ("drm/i915/xelpd: Handle PSR2 SDP indication in the prior scanline")
+Cc: <stable@vger.kernel.org> # v5.15+
+Signed-off-by: Jouni Högander <jouni.hogander@intel.com>
+Reviewed-by: Suraj Kandpal <suraj.kandpal@intel.com>
+Link: https://patch.msgid.link/20260515095756.2799483-4-jouni.hogander@intel.com
+(cherry picked from commit c3fe899fbeac86ea4a5ca9dd845b2cbc0da46249)
+Signed-off-by: Tvrtko Ursulin <tursulin@ursulin.net>
 
-Thierry
+diff --git a/drivers/gpu/drm/i915/display/intel_psr.c b/drivers/gpu/drm/i915/display/intel_psr.c
+index 82eac4048382..29904a037575 100644
+--- a/drivers/gpu/drm/i915/display/intel_psr.c
++++ b/drivers/gpu/drm/i915/display/intel_psr.c
+@@ -1365,9 +1365,35 @@ static bool psr2_granularity_check(struct intel_crtc_state *crtc_state,
+ 	return true;
+ }
+ 
+-static bool _compute_psr2_sdp_prior_scanline_indication(struct intel_dp *intel_dp,
+-							struct intel_crtc_state *crtc_state)
++static bool apply_scanline_indication_wa(struct intel_crtc_state *crtc_state,
++					 struct intel_connector *connector)
+ {
++	struct intel_dp *intel_dp = intel_attached_dp(connector);
++	u8 early_scanline_support = connector->dp.psr_caps.intel_wa_dpcd &
++		INTEL_DPCD_INTEL_WA_REGISTER_CAPS_PSR2_EARLYSCANLINE_SDP_SUPPORT_MASK;
++
++	if (intel_dp->edp_dpcd[0] >= DP_EDP_15)
++		return true;
++
++	switch (early_scanline_support)	{
++	case INTEL_DPCD_INTEL_WA_REGISTER_CAPS_FALL_BACK_TO_PSR1:
++		crtc_state->req_psr2_sdp_prior_scanline = false;
++		return false;
++	case INTEL_DPCD_INTEL_WA_REGISTER_CAPS_PSR2_WITH_EARLY_SCANLINE:
++		return true;
++	case INTEL_DPCD_INTEL_WA_REGISTER_CAPS_PSR2_WITHOUT_EARLY_SCANLINE:
++		crtc_state->req_psr2_sdp_prior_scanline = false;
++		return true;
++	default:
++		MISSING_CASE(early_scanline_support);
++		return false;
++	}
++}
++
++static bool _compute_psr2_sdp_prior_scanline_indication(struct intel_crtc_state *crtc_state,
++							struct intel_connector *connector)
++{
++	struct intel_dp *intel_dp = intel_attached_dp(connector);
+ 	struct intel_display *display = to_intel_display(intel_dp);
+ 	const struct drm_display_mode *adjusted_mode = &crtc_state->uapi.adjusted_mode;
+ 	u32 hblank_total, hblank_ns, req_ns;
+@@ -1386,7 +1412,8 @@ static bool _compute_psr2_sdp_prior_scanline_indication(struct intel_dp *intel_d
+ 		return false;
+ 
+ 	crtc_state->req_psr2_sdp_prior_scanline = true;
+-	return true;
++
++	return apply_scanline_indication_wa(crtc_state, connector);
+ }
+ 
+ static int intel_psr_entry_setup_frames(struct intel_dp *intel_dp,
+@@ -1667,7 +1694,7 @@ static bool intel_sel_update_config_valid(struct intel_crtc_state *crtc_state,
+ 								      conn_state))
+ 		goto unsupported;
+ 
+-	if (!_compute_psr2_sdp_prior_scanline_indication(intel_dp, crtc_state)) {
++	if (!_compute_psr2_sdp_prior_scanline_indication(crtc_state, connector)) {
+ 		drm_dbg_kms(display->drm,
+ 			    "Selective update not enabled, SDP indication do not fit in hblank\n");
+ 		goto unsupported;
 
---kcchf3ioudov7kum
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQIzBAABCgAdFiEEiOrDCAFJzPfAjcif3SOs138+s6EFAmoYSfQACgkQ3SOs138+
-s6G23Q//VVEOmgeC4pq1oP4zmKOzGSMNrQQw6ocVaJnDBex8C/JZv3p0LENKt0Ci
-N4mBgQ3uHYceV4B47TWfeiyKe5Hk2Q6Cm+YBVi1/AJ8bg7lMkxJpI08pdv6jMYgc
-cl2fKIpRFZi+MccCZw6QtIH2O9+yg4LpLYFZ5BU9ma4dEzhyqpYYWf+I4h+WirEI
-b4fWCD60kERAfpF7i3Itqsq+iQdehu28h97gczDZRIiI0o6xeJYZll+woDtyq6QE
-eT6vKAoRpLsdaDjyg4qPyyJ+o7KkFQnonfmqrOS1DhWLhTTrHpQfTeJbBhlCB3aD
-kDBThYlQAU4Zjo+dQYez2iho1xPF5jyYzipFEdNWAqfBEBAFAtZECP/+v+0oDBLZ
-8G9Mt5Pzz7sqQFNHszf2quySJl9Qrqvr6BcjqIr30GTGgTVTyniODwFzDmpTLnvc
-hQwNWvuYuqFI+jQ+CC7jl0amPIZsW9Yi+w2HJ0NtchK2p0yVXQ2lIWF7xeRuf5JE
-Gxil6d1/PN5LqSPXCQ9S1Fnk8xODUzrX1IACsqVTKyonfy130rDZBzSaYsnA31rE
-wqENcv5e1qRo7Z9bZ5REYQfsibhU0HtMP2DJ8cgpJgPQHqIpB//bdTCqrtbTIWwx
-O1FPLIvHT5WI2GuN+MkqIiiSTU5UHa3dbJuOyh9oy/E/BaP2PuA=
-=16zP
------END PGP SIGNATURE-----
-
---kcchf3ioudov7kum--
 
