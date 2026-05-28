@@ -1,63 +1,60 @@
-Return-Path: <stable+bounces-255434-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-255792-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id AO8UOPyiGGrClggAu9opvQ
-	(envelope-from <stable+bounces-255434-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:18:04 +0200
+	id UL7lFUGlGGoQlwgAu9opvQ
+	(envelope-from <stable+bounces-255792-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:27:45 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 43EF15F8548
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:18:04 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id 270805F8BD7
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:27:45 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id A257731D158F
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 20:08:19 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id D34913019002
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 20:24:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 63B0F2F260C;
-	Thu, 28 May 2026 20:08:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5DCFF22652D;
+	Thu, 28 May 2026 20:24:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wz3t9qBa"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="c2+J1t9K"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1E9AC335566;
-	Thu, 28 May 2026 20:08:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4436DDDC5;
+	Thu, 28 May 2026 20:24:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779998899; cv=none; b=ZmsJ2MWacCNplkFtUX6MFFll4l1UezBm/koXnkFKiiDblAIj+s2MQBQh6Tnql1bB/B8KrP5gGb4Lukzf0tgEfQDWIpzslC0bTxWSZX8betB5De+CzgvXDY7//S3ZGZ2bJlqKSn5Vqu3AJkX8poFsuyRUBFq0GmNf/uIykmnkFd0=
+	t=1779999896; cv=none; b=odily2j4UcNLJWfzEiihI5e8Zy4BmxUOYdBBlXRgUUEldL695yKKUy8k4mzX0eL81ccLjYCVeTc0i+VunlK3JxWGooVkWXn8HJkb7v4vb812qVPgJBtKDtF38OYu9+5WPensfacWtt7OsOYMxp0vkBAMh02okKFm3w/aiLHAd8I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779998899; c=relaxed/simple;
-	bh=zORb2eRZ/wQ9Y1uI4scitJzz7htXNEqLvbztjqY0RG8=;
+	s=arc-20240116; t=1779999896; c=relaxed/simple;
+	bh=TOBMXyRAPIFSl21H2Wyg3czF1ZeupQNYYB2X09BMGUk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=GTeu/pjQXar9Fc/pzC1F+fIlWGkl4h2nVgARqcx+OYIVU1ZslyLHo9J7anV+bT2CJhhAFevviDbP02hUBDRBppQIP2kj531UW1+2F5btU0XLMQNQ97eOw1B2PkqKmKikhEwXE7iNQNgayCerywwpOFcC6dcCgX18KBu5jge23JQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wz3t9qBa; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 829DC1F00A3A;
-	Thu, 28 May 2026 20:08:17 +0000 (UTC)
+	 MIME-Version; b=IAFkFQ8OBxaeIXIS5TQC2FLCF9oY7+jf8/Jw4NeR0N8IKo05Na/9ZPynlIOF0omZ1Mvp1Tvo5M8CQ3zRo/aJlA3vD8DfHvR1mS2G3wh3SsiJUnwTmL8moi3WdPQL/XIImNPKxwOE0iH+J3LgW/XZsKO3Oz+9WRrnFkTJyQH5jzQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=c2+J1t9K; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 537031F000E9;
+	Thu, 28 May 2026 20:24:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779998898;
-	bh=qQoFmL1g90MRWFdq5mikM3Rr03tcPeHaAzrJVUDORmA=;
+	s=korg; t=1779999894;
+	bh=YYSrRMRelwnjQ8g0HmB0ds3oNI2411q0ugbF7k80/jU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=wz3t9qBaEnzT1J+8PTFMW18JLrSzshVWzKz+lw5EuFGHI/KzBSOKRjOr6ONSdboa6
-	 AiYT5S604Cq8sVwcPFPgbT1GDZREu2Ony1DBURBq1l/7QTB9o0qyfZS9pQO4rQd3wr
-	 Ve1vjgLwuniz5O3HXGyv33UyUFKcIHWM3X3WGTnk=
+	b=c2+J1t9KA9QNO5bkKXENit5EUcS8lrzKoHuZDXIzJMETE9KeVoxyrz6VZywvW0cUI
+	 6nItEWPXtgaxZScUCaQ2mMIWdKrIN9HlkyDNMu+yo32/wzFysHg6bZcXA55TT+276z
+	 AqZw0sVeoSPtdmjyaBtkdBqiILF2eOe4LoI1apeM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jason Gunthorpe <jgg@nvidia.com>,
-	Pranjal Shrivastava <praan@google.com>,
-	Samiullah Khawaja <skhawaja@google.com>,
-	Mostafa Saleh <smostafa@google.com>,
-	Josua Mayer <josua@solid-run.com>,
-	Joerg Roedel <joerg.roedel@amd.com>,
+	Alexey Dobriyan <adobriyan@gmail.com>,
+	Johannes Thumshirn <johannes.thumshirn@wdc.com>,
+	Damien Le Moal <dlemoal@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 7.0 337/461] iommu: Fix up map/unmap debugging for iommupt domains
+Subject: [PATCH 6.18 228/377] zonefs: handle integer overflow in zonefs_fname_to_fno
 Date: Thu, 28 May 2026 21:47:46 +0200
-Message-ID: <20260528194657.113342915@linuxfoundation.org>
+Message-ID: <20260528194644.993409492@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260528194646.819809818@linuxfoundation.org>
-References: <20260528194646.819809818@linuxfoundation.org>
+In-Reply-To: <20260528194638.371537336@linuxfoundation.org>
+References: <20260528194638.371537336@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -72,170 +69,81 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	RCVD_TLS_LAST(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,wdc.com,kernel.org];
+	TAGGED_FROM(0.00)[bounces-255792-lists,stable=lfdr.de];
+	PRECEDENCE_BULK(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FROM_HAS_DN(0.00)[];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-255434-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TO_DN_SOME(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[10];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[7];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim,amd.com:email,solid-run.com:email,nvidia.com:email]
-X-Rspamd-Queue-Id: 43EF15F8548
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[wdc.com:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo]
+X-Rspamd-Queue-Id: 270805F8BD7
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-7.0-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jason Gunthorpe <jgg@nvidia.com>
+From: Johannes Thumshirn <johannes.thumshirn@wdc.com>
 
-[ Upstream commit b948a87228482235afbaf5f4d8037860b5c470fd ]
+[ Upstream commit 3a8389d42bdf4213730f4067f8bfa78bae6564ef ]
 
-Sashiko noticed a few issues in this path, and a few more were
-found on review. Tidy them up further. These are intertwined
-because the debug code depends on some of the WARN_ONs to function
-right:
+In zonefs the file name in one of the two directories corresponds to the
+zone number.
 
-Lift into iommu_map_nosync():
-- The might_sleep_if()
-- 0 pgsize_bitmap WARN_ON
-- Promote the illegal domain->type to a WARN_ON
-- WARN_ON for illegal gfp flags
+Here Alexey reported a possible integer overflow in zonefs_fname_to_fno(),
+where the parsing of the zone number from the file name can overflow the
+'long' data type.
 
-Then remove the return 0 since it is now safe to call
-iommu_debug_map().
+Add a check for integer overflows and if the fno 'long' did overflow
+return -ENOENT.
 
-Lift into __iommu_unmap():
-- 0 pgsize_bitmap WARN_ON
-- Promote the illegal domain->type to a WARN_ON
-- iommu_debug_unmap_begin()
-
-This now pairs with the unconditional iommu_debug_map() on the
-mapping side. Thus iommu debugging now works for iommupt along
-with some of the other debugging features.
-
-Fixes: 99fb8afa16ad ("iommupt: Directly call iommupt's unmap_range()")
-Fixes: d6c65b0fd621 ("iommupt: Avoid rewalking during map")
-Signed-off-by: Jason Gunthorpe <jgg@nvidia.com>
-Reviewed-by: Pranjal Shrivastava <praan@google.com>
-Reviewed-by: Samiullah Khawaja <skhawaja@google.com>
-Reviewed-by: Mostafa Saleh <smostafa@google.com>
-Tested-by: Josua Mayer <josua@solid-run.com>
-Signed-off-by: Joerg Roedel <joerg.roedel@amd.com>
-Stable-dep-of: 0735c54804c7 ("iommu: Handle unmap error when iommu_debug is enabled")
+Reported-by: Alexey Dobriyan <adobriyan@gmail.com>
+Fixes: d207794ababe ("zonefs: Dynamically create file inodes when needed")
+Signed-off-by: Johannes Thumshirn <johannes.thumshirn@wdc.com>
+Signed-off-by: Damien Le Moal <dlemoal@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/iommu/iommu.c | 43 ++++++++++++++++++++++---------------------
- 1 file changed, 22 insertions(+), 21 deletions(-)
+ fs/zonefs/super.c | 6 +++++-
+ 1 file changed, 5 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/iommu/iommu.c b/drivers/iommu/iommu.c
-index 84ae594824a55..0c2a4beb6ac32 100644
---- a/drivers/iommu/iommu.c
-+++ b/drivers/iommu/iommu.c
-@@ -2623,19 +2623,9 @@ static int __iommu_map_domain_pgtbl(struct iommu_domain *domain,
- 	size_t orig_size = size;
- 	int ret = 0;
+diff --git a/fs/zonefs/super.c b/fs/zonefs/super.c
+index 70be0b3dda496..7e345a6aa5510 100644
+--- a/fs/zonefs/super.c
++++ b/fs/zonefs/super.c
+@@ -610,10 +610,14 @@ static long zonefs_fname_to_fno(const struct qstr *fname)
+ 		return c - '0';
  
--	might_sleep_if(gfpflags_allow_blocking(gfp));
--
--	if (unlikely(!(domain->type & __IOMMU_DOMAIN_PAGING)))
--		return -EINVAL;
--
--	if (WARN_ON(!ops->map_pages || domain->pgsize_bitmap == 0UL))
-+	if (WARN_ON(!ops->map_pages))
- 		return -ENODEV;
- 
--	/* Discourage passing strange GFP flags */
--	if (WARN_ON_ONCE(gfp & (__GFP_COMP | __GFP_DMA | __GFP_DMA32 |
--				__GFP_HIGHMEM)))
--		return -EINVAL;
--
- 	/* find out the minimum page size supported */
- 	min_pagesz = 1 << __ffs(domain->pgsize_bitmap);
- 
-@@ -2697,6 +2687,15 @@ int iommu_map_nosync(struct iommu_domain *domain, unsigned long iova,
- 	struct pt_iommu *pt = iommupt_from_domain(domain);
- 	int ret;
- 
-+	might_sleep_if(gfpflags_allow_blocking(gfp));
+ 	for (i = 0, rname = name + len - 1; i < len; i++, rname--) {
++		long digit;
 +
-+	/* Discourage passing strange GFP flags or illegal domains */
-+	if (WARN_ON_ONCE(!(domain->type & __IOMMU_DOMAIN_PAGING) ||
-+			 !domain->pgsize_bitmap ||
-+			 (gfp & (__GFP_COMP | __GFP_DMA | __GFP_DMA32 |
-+				 __GFP_HIGHMEM))))
-+		return -EINVAL;
-+
- 	if (pt) {
- 		size_t mapped = 0;
- 
-@@ -2706,11 +2705,12 @@ int iommu_map_nosync(struct iommu_domain *domain, unsigned long iova,
- 			iommu_unmap(domain, iova, mapped);
- 			return ret;
- 		}
--		return 0;
-+	} else {
-+		ret = __iommu_map_domain_pgtbl(domain, iova, paddr, size, prot,
-+					       gfp);
-+		if (ret)
-+			return ret;
+ 		c = *rname;
+ 		if (!isdigit(c))
+ 			return -ENOENT;
+-		fno += (c - '0') * shift;
++		digit = (c - '0') * shift;
++		if (check_add_overflow(fno, digit, &fno))
++			return -ENOENT;
+ 		shift *= 10;
  	}
--	ret = __iommu_map_domain_pgtbl(domain, iova, paddr, size, prot, gfp);
--	if (ret)
--		return ret;
  
- 	trace_map(iova, paddr, size);
- 	iommu_debug_map(domain, paddr, size);
-@@ -2742,10 +2742,7 @@ __iommu_unmap_domain_pgtbl(struct iommu_domain *domain, unsigned long iova,
- 	size_t unmapped_page, unmapped = 0;
- 	unsigned int min_pagesz;
- 
--	if (unlikely(!(domain->type & __IOMMU_DOMAIN_PAGING)))
--		return 0;
--
--	if (WARN_ON(!ops->unmap_pages || domain->pgsize_bitmap == 0UL))
-+	if (WARN_ON(!ops->unmap_pages))
- 		return 0;
- 
- 	/* find out the minimum page size supported */
-@@ -2764,8 +2761,6 @@ __iommu_unmap_domain_pgtbl(struct iommu_domain *domain, unsigned long iova,
- 
- 	pr_debug("unmap this: iova 0x%lx size 0x%zx\n", iova, size);
- 
--	iommu_debug_unmap_begin(domain, iova, size);
--
- 	/*
- 	 * Keep iterating until we either unmap 'size' bytes (or more)
- 	 * or we hit an area that isn't mapped.
-@@ -2801,6 +2796,12 @@ static size_t __iommu_unmap(struct iommu_domain *domain, unsigned long iova,
- 	struct pt_iommu *pt = iommupt_from_domain(domain);
- 	size_t unmapped;
- 
-+	if (WARN_ON_ONCE(!(domain->type & __IOMMU_DOMAIN_PAGING) ||
-+			 !domain->pgsize_bitmap))
-+		return 0;
-+
-+	iommu_debug_unmap_begin(domain, iova, size);
-+
- 	if (pt)
- 		unmapped = pt->ops->unmap_range(pt, iova, size, iotlb_gather);
- 	else
 -- 
 2.53.0
 
