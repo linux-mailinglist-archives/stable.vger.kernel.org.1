@@ -1,59 +1,63 @@
-Return-Path: <stable+bounces-255447-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-255803-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id mL7RGIuiGGqblggAu9opvQ
-	(envelope-from <stable+bounces-255447-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:16:11 +0200
+	id iHLrLWilGGrClggAu9opvQ
+	(envelope-from <stable+bounces-255803-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:28:24 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id E1E955F8371
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:16:10 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5F6E35F8C49
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:28:24 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 85C5030B3B16
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 20:08:58 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id CE37330862FD
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 20:25:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 96880348C6E;
-	Thu, 28 May 2026 20:08:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2C2D83016E0;
+	Thu, 28 May 2026 20:25:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PgqvwuGU"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0UbLTt+s"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 73E1732ABC0;
-	Thu, 28 May 2026 20:08:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DA19019A288;
+	Thu, 28 May 2026 20:25:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779998937; cv=none; b=ix5AAkNWgJrcDBayx8jJx6CHxtYZuI8uuUkYJ2q2eCG5wtK/IIMMOP1ZiwK8f5p9uGLe/ji4ToX/Wzthr6CsRtWZDTPKx0fj8mwDqwVuLjShdDuNAkJ9spBejJJt4G9JduASd4/iHif1/16HOkwl2ltw7V2BPGcwwrMj8PFovJc=
+	t=1779999927; cv=none; b=bn71b//N0rLd5mx+LJxC2msuLatl9tO2LgWKy8XShfSK19lAahmy59fkIM+is4VVFjGEHma/gFbr+Ldo1+LyK9eUSUwUCYBe0hX2Qh/e3qPgYUCBNbQWqQlOcsuwV8qL8/Als80D3I8o/FWQZcUiIdTXwZqWGlkz3JHu4dPZ3Dc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779998937; c=relaxed/simple;
-	bh=hzP1Txps5NbEtKZcTHHtSY/n7UHtisNWcxVheOoYSNw=;
+	s=arc-20240116; t=1779999927; c=relaxed/simple;
+	bh=VvzhUzs9CBahCvfThonfTW5mh2MxGktGIv+aZaXOUW4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=WMHit12Emlr7kt8JJSY8hq8QSQYWP3yyUpbg0yxtM8wgOBmQsogZXPwhxjj+WF1Ww5G8xpdFQE6q4WS6NtW03V72WDqyxdCl/70/7xWacssXyCVUXi7CePQFy8XxbFNdY7buRM+GhjAdZqxghPqUIjfU2N0yTFunCVKu121rQU8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PgqvwuGU; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C97F31F00A3A;
-	Thu, 28 May 2026 20:08:55 +0000 (UTC)
+	 MIME-Version; b=Gj6/8u7b5Kqclbuaqk7DBjOh4/Fm8lbV2r49iYa0od0r1fDEvhR4Kh54kX8folo+737205+PKbD2LMv36vScizWfXhI9x+vkWEYWWMWM/14dGUAHZwP0292Nxqnb8bTlJEIu6A1WVCp3yG8tzSRBYU5boMkLPhVr8FsZEBWyjUA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0UbLTt+s; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 423201F000E9;
+	Thu, 28 May 2026 20:25:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779998936;
-	bh=L9EmEoMRhzGOgHmwtkjWcI/nAE+/PwiJneP8KN1pXMg=;
+	s=korg; t=1779999925;
+	bh=OJlYAQfonkh7X4p8SsDWEdTrGuDZKpyrJwPQArxwiTQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=PgqvwuGUUoBy4sWw7rlqih3choY2seEArmxov/lx4mfroo7e0YZjJR+3Y4dK32Tqw
-	 DiPCDv8fML8YVUXB7RnIIhjnsvYx408s3RPeOqlv4H2rvj6G5kyLo27cSdn8odA1aw
-	 9DAwVYM3kFz9iNRWIhf3Ran5tb6oRRzLLNkW6+Vw=
+	b=0UbLTt+sReO05qnoszaGBU2dvE9XlLJJW0o+cye3h2fp4HaAotNvysrAfMeDkW34R
+	 UNSEOCbdRgdymTUzoJS6Q0zOX9NnlA7ZPpSSM+eXLbkGG2HGbyUvkDVuCilHNlda13
+	 LnbXEqEx20w7lHzPIgKqqV1YJyW2/nVMTNaQAOfM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Felix Gu <ustc.gu@gmail.com>,
-	Mark Brown <broonie@kernel.org>,
+	David Howells <dhowells@redhat.com>,
+	Paulo Alcantara <pc@manguebit.org>,
+	Matthew Wilcox <willy@infradead.org>,
+	netfs@lists.linux.dev,
+	linux-fsdevel@vger.kernel.org,
+	Christian Brauner <brauner@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 7.0 349/461] spi: mtk-snfi: Fix resource leak in mtk_snand_read_page_cache()
-Date: Thu, 28 May 2026 21:47:58 +0200
-Message-ID: <20260528194657.491383388@linuxfoundation.org>
+Subject: [PATCH 6.18 241/377] netfs: Fix read-gaps to remove netfs_folio from filled folio
+Date: Thu, 28 May 2026 21:47:59 +0200
+Message-ID: <20260528194645.364013894@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260528194646.819809818@linuxfoundation.org>
-References: <20260528194646.819809818@linuxfoundation.org>
+In-Reply-To: <20260528194638.371537336@linuxfoundation.org>
+References: <20260528194638.371537336@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,73 +68,126 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	MIME_TRACE(0.00)[0:+];
-	TO_DN_SOME(0.00)[];
-	TAGGED_FROM(0.00)[bounces-255447-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,kernel.org];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-255803-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	NEURAL_HAM(-0.00)[-0.999];
-	TAGGED_RCPT(0.00)[stable];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_SEVEN(0.00)[10];
 	MID_RHS_MATCH_FROM(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[6];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,msgid.link:url,linuxfoundation.org:mid,linuxfoundation.org:dkim]
-X-Rspamd-Queue-Id: E1E955F8371
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,manguebit.org:email,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,linux.dev:email,infradead.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim]
+X-Rspamd-Queue-Id: 5F6E35F8C49
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-7.0-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Felix Gu <ustc.gu@gmail.com>
+From: David Howells <dhowells@redhat.com>
 
-[ Upstream commit 496ba79b9496b8b3747cbc764ebd33ee7325e806 ]
+[ Upstream commit a41168aef634356a9b87ec44349e3c82835700a5 ]
 
-When DMA read times out in mtk_snand_read_page_cache(), the original code
-erroneously jumped to cleanup label which skips DMA unmapping and ECC
-disable, causing a resource leak.
+Fix netfs_read_gaps() to remove the netfs_folio record from the folio
+record before marking the folio uptodate if it successfully fills the gaps
+around the dirty data in a streaming write folio (dirty, but not uptodate).
 
-Fixes: 764f1b748164 ("spi: add driver for MTK SPI NAND Flash Interface")
-Signed-off-by: Felix Gu <ustc.gu@gmail.com>
-Link: https://patch.msgid.link/20260510-snfi-v1-1-bc375cf1af8e@gmail.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
+Found with:
+
+    fsx -q -N 1000000 -p 10000 -o 128000 -l 600000 \
+        /xfstest.test/junk --replay-ops=junk.fsxops
+
+using the following as junk.fsxops:
+
+    truncate 0x0 0x138b1 0x8b15d *
+    write 0x507ee 0x10df7 0x927c0
+    write 0x19993 0x10e04 0x927c0 *
+    mapwrite 0x66214 0x1a253 0x927c0
+    copy_range 0xb704 0x89b9 0x24429 0x79380
+    write 0x2402b 0x144a2 0x90660 *
+    mapwrite 0x204d5 0x140a0 0x927c0 *
+    copy_range 0x1f72c 0x137d0 0x7a906 0x927c0 *
+    read 0 0x9157c 0x9157c
+
+on cifs with the default cache option.
+
+It shows folio 0x24 misbehaving if the FMODE_READ check is commented out in
+netfs_perform_write():
+
+                if (//(file->f_mode & FMODE_READ) ||
+                    netfs_is_cache_enabled(ctx)) {
+
+and no fscache.  This was initially found with the generic/522 xfstest.
+
+Signed-off-by: David Howells <dhowells@redhat.com>
+Link: https://patch.msgid.link/20260512123404.719402-16-dhowells@redhat.com
+Fixes: ee4cdf7ba857 ("netfs: Speed up buffered reading")
+cc: Paulo Alcantara <pc@manguebit.org>
+cc: Matthew Wilcox <willy@infradead.org>
+cc: netfs@lists.linux.dev
+cc: linux-fsdevel@vger.kernel.org
+Signed-off-by: Christian Brauner <brauner@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/spi/spi-mtk-snfi.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ fs/netfs/buffered_read.c | 11 ++++++++---
+ 1 file changed, 8 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/spi/spi-mtk-snfi.c b/drivers/spi/spi-mtk-snfi.c
-index 73fa84475f0e4..7725748cab2a7 100644
---- a/drivers/spi/spi-mtk-snfi.c
-+++ b/drivers/spi/spi-mtk-snfi.c
-@@ -961,7 +961,7 @@ static int mtk_snand_read_page_cache(struct mtk_snand *snf,
- 		    &snf->op_done, usecs_to_jiffies(SNFI_POLL_INTERVAL))) {
- 		dev_err(snf->dev, "DMA timed out for reading from cache.\n");
- 		ret = -ETIMEDOUT;
--		goto cleanup;
-+		goto cleanup2;
- 	}
+diff --git a/fs/netfs/buffered_read.c b/fs/netfs/buffered_read.c
+index e6157122da3a4..3531c19eea97a 100644
+--- a/fs/netfs/buffered_read.c
++++ b/fs/netfs/buffered_read.c
+@@ -394,6 +394,7 @@ static int netfs_read_gaps(struct file *file, struct folio *folio)
+ {
+ 	struct netfs_io_request *rreq;
+ 	struct address_space *mapping = folio->mapping;
++	struct netfs_group *group = netfs_folio_group(folio);
+ 	struct netfs_folio *finfo = netfs_folio_info(folio);
+ 	struct netfs_inode *ctx = netfs_inode(mapping->host);
+ 	struct folio *sink = NULL;
+@@ -460,6 +461,12 @@ static int netfs_read_gaps(struct file *file, struct folio *folio)
  
- 	// Wait for BUS_SEC_CNTR returning expected value
+ 	ret = netfs_wait_for_read(rreq);
+ 	if (ret >= 0) {
++		if (group)
++			folio_change_private(folio, group);
++		else
++			folio_detach_private(folio);
++		kfree(finfo);
++		trace_netfs_folio(folio, netfs_folio_trace_filled_gaps);
+ 		flush_dcache_folio(folio);
+ 		folio_mark_uptodate(folio);
+ 	}
+@@ -495,10 +502,8 @@ int netfs_read_folio(struct file *file, struct folio *folio)
+ 	struct netfs_inode *ctx = netfs_inode(mapping->host);
+ 	int ret;
+ 
+-	if (folio_test_dirty(folio)) {
+-		trace_netfs_folio(folio, netfs_folio_trace_read_gaps);
++	if (folio_test_dirty(folio))
+ 		return netfs_read_gaps(file, folio);
+-	}
+ 
+ 	_enter("%lx", folio->index);
+ 
 -- 
 2.53.0
 
