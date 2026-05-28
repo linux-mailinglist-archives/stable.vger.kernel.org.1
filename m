@@ -1,58 +1,67 @@
-Return-Path: <stable+bounces-255293-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-255608-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id AHkRIJGfGGpvlggAu9opvQ
-	(envelope-from <stable+bounces-255293-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:03:29 +0200
+	id 8AlqKNiiGGqblggAu9opvQ
+	(envelope-from <stable+bounces-255608-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:17:28 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3E9415F7B98
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:03:29 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id 825B65F847F
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:17:28 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id C2CB630316D6
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 20:01:44 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 3397C301475C
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 20:16:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1765C32ABC0;
-	Thu, 28 May 2026 20:01:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CDB9E2C11F9;
+	Thu, 28 May 2026 20:16:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tjMkF/6w"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="b5TIZ35T"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E36DC27A476;
-	Thu, 28 May 2026 20:01:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A4596279903;
+	Thu, 28 May 2026 20:16:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779998502; cv=none; b=Cq5X509AXkBhd+j9xVOpqrNErWSwzqAUb+j8+gx3vFmM+ccGQhgg+MzXFU7Z3klHnb6+Qa/5juR8JT8PE+hIOPXW/AoXmMR/KbVnq7+UzO5WexTddLpUBj0SUiYP0z0FTps9PwvH0eQ/NH9hpO8Fm154vU4zakxnWxSAnZ7Ojv4=
+	t=1779999389; cv=none; b=gH1DFyUf3cVjqBhTA2Hi4d4nlLil9olUFETsyvkr10ai/ljEG33QvqPj6lM8KuqTi1gMMi42hiUc9tbCVKtxy3dsTGNdoZjkdgI7R+QNQy1YgzAKJt1ibCcQpSm5A0wpb1hm8H2fHoy/ajSdODIodAaBUEmxx2O+Zdazh1f8ybo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779998502; c=relaxed/simple;
-	bh=Q/6uThxD7rDEQSCSMZWWgrDKYiliHW1JV0gKxZRK4Ao=;
+	s=arc-20240116; t=1779999389; c=relaxed/simple;
+	bh=CSg09EeiJu/k2zzvI+Poxi5jDtjggROWt30hiz6vh7A=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=OjCQW07fKPpQMHaxtj0M8gfjzOwl+SOEFefxSeI1XNc3SOvrzpi5l/5dDxX9Sdtk43kig5l7cy7L7Gh+gg9FaSPEfd9P/50Paw03qF6ns0k9woQqlU1zwZhXfdzVedqQ6C7uzSgZaLNJiD8B7ayF6twFDZN0AatOCb1LAlg9KoQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tjMkF/6w; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0725D1F000E9;
-	Thu, 28 May 2026 20:01:40 +0000 (UTC)
+	 MIME-Version; b=aTx72lu05aK0PwUonJeqoQcHYYiyZQEgJHyXh7xX1R8+jTtKowwkf7kR+c+gXstctvcIU7ynYU5JJvawgepw43rXCdTdv26+V5K9c604ghrCwSLlueJn/xTW5ga5n9v1IQuoPurM7BEJFtIGSa/KnFefgO3pwxMkEFvWTcMhKbM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=b5TIZ35T; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 068131F000E9;
+	Thu, 28 May 2026 20:16:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779998501;
-	bh=u5F8hx1NKmXMZtbKNZH+j0AwI1RKUqgfO252IZggtrU=;
+	s=korg; t=1779999388;
+	bh=aSDX+O3kkra7rniKlTxki90D6/JnsdGxckJ8pOEzgCM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=tjMkF/6wgE88WyUlk9Om8GSgiK9hT7jPkh8kAdIVnZtWjbrRUcHlzM05iKhsHr89N
-	 1zsWUzXJccg8FEPJhTIuMQpILA3XOfIhaUw/HuQa0eyz+C9v+7jiVoh6XxecZ3JZcj
-	 TR30/xE2H5doeRo3g+35NNfvaXrhFI7b8xFbfLuE=
+	b=b5TIZ35TIPZaEh/EFX1DcqE/0GzHayRfqzevd4gocXutKLCppvMX11zNaOV5J5R0N
+	 oqzMnui37Kbt15CXoCGuQj6GsDmnwyk31bzmXAIZPlSaPmkH0oeorUKI0Y16+XffGO
+	 qCMbtcjpgyNCw+U+gGW6g46r5HMh4p+VZsREddnM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable@kernel.org,
-	Sven Eckelmann <sven@narfation.org>
-Subject: [PATCH 7.0 159/461] batman-adv: tt: fix TOCTOU race for reported vlans
+	Luiz Capitulino <luizcap@redhat.com>,
+	"Mike Rapoport (Microsoft)" <rppt@kernel.org>,
+	SeongJae Park <sj@kernel.org>,
+	David Hildenbrand <david@kernel.org>,
+	"Liam R. Howlett" <liam@infradead.org>,
+	Lorenzo Stoakes <ljs@kernel.org>,
+	Michal Hocko <mhocko@suse.com>,
+	Shuah Khan <shuah@kernel.org>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Vlastimil Babka <vbabka@kernel.org>,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 6.18 050/377] selftests/mm: run_vmtests.sh: fix destructive tests invocation
 Date: Thu, 28 May 2026 21:44:48 +0200
-Message-ID: <20260528194651.651506228@linuxfoundation.org>
+Message-ID: <20260528194639.823398542@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260528194646.819809818@linuxfoundation.org>
-References: <20260528194646.819809818@linuxfoundation.org>
+In-Reply-To: <20260528194638.371537336@linuxfoundation.org>
+References: <20260528194638.371537336@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -67,7 +76,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
@@ -77,8 +86,8 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-255293-lists,stable=lfdr.de];
-	TO_DN_SOME(0.00)[];
+	TAGGED_FROM(0.00)[bounces-255608-lists,stable=lfdr.de];
+	RCPT_COUNT_TWELVE(0.00)[14];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
@@ -86,84 +95,56 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	NEURAL_HAM(-0.00)[-1.000];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[5];
+	TO_DN_SOME(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,narfation.org:email]
-X-Rspamd-Queue-Id: 3E9415F7B98
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,infradead.org:email,suse.com:email,linux-foundation.org:email]
+X-Rspamd-Queue-Id: 825B65F847F
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-7.0-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sven Eckelmann <sven@narfation.org>
+From: Luiz Capitulino <luizcap@redhat.com>
 
-commit 94d27005016be15ffc638b2ecbc4d58805ad7b48 upstream.
+commit 3432cbb291aabf85f8af4b9d1ec37179168ff999 upstream.
 
-The local TT based TVLV is generated by first checking the number of VLANs
-which have at least one TT entry. A new buffer with the correct size for
-the VLANs is then allocated. Only then, the list of VLANs s used to fill
-the VLAN entries in the buffer. During this time, the meshif_vlan_list_lock
-is held. But the actual number of TT entries of each VLAN can still
-increase during this time - just not the number of VLANs in the list.
+Destructive tests should be invoked with -d command-line option, but this
+won't work today since 'd' is missing in getopts command-line.  This
+commit fixes it.
 
-But the prefilter used in the buffer size calculation might still cause an
-increase of the number of VLANs which need to be stored. Simply because a
-VLAN might now suddenly have at least one entry when it had none in the
-pre-alloc check - and then needs to occupy space which was not allocated.
-
-It is better to overestimate the buffer size at the beginning and then fill
-the buffer only with the VLANs which are not empty.
-
-Cc: stable@kernel.org
-Fixes: 16116dac2339 ("batman-adv: prevent TT request storms by not sending inconsistent TT TLVLs")
-Signed-off-by: Sven Eckelmann <sven@narfation.org>
+Link: https://lore.kernel.org/214fd9e4-5398-4c26-859e-c982c2e277c3@redhat.com
+Fixes: f16ff3b692ad ("selftests/mm: run_vmtests.sh: add missing tests")
+Signed-off-by: Luiz Capitulino <luizcap@redhat.com>
+Reviewed-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
+Reviewed-by: SeongJae Park <sj@kernel.org>
+Cc: David Hildenbrand <david@kernel.org>
+Cc: Liam R. Howlett <liam@infradead.org>
+Cc: Lorenzo Stoakes <ljs@kernel.org>
+Cc: Michal Hocko <mhocko@suse.com>
+Cc: Shuah Khan <shuah@kernel.org>
+Cc: Suren Baghdasaryan <surenb@google.com>
+Cc: Vlastimil Babka <vbabka@kernel.org>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/batman-adv/translation-table.c |   13 +++++++++----
- 1 file changed, 9 insertions(+), 4 deletions(-)
+ tools/testing/selftests/mm/run_vmtests.sh |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/net/batman-adv/translation-table.c
-+++ b/net/batman-adv/translation-table.c
-@@ -887,11 +887,8 @@ batadv_tt_prepare_tvlv_local_data(struct
- 	spin_lock_bh(&bat_priv->meshif_vlan_list_lock);
- 	hlist_for_each_entry(vlan, &bat_priv->meshif_vlan_list, list) {
- 		vlan_entries = atomic_read(&vlan->tt.num_entries);
--		if (vlan_entries < 1)
--			continue;
--
--		num_vlan++;
- 		total_entries += vlan_entries;
-+		num_vlan++;
- 	}
+--- a/tools/testing/selftests/mm/run_vmtests.sh
++++ b/tools/testing/selftests/mm/run_vmtests.sh
+@@ -97,7 +97,7 @@ RUN_ALL=false
+ RUN_DESTRUCTIVE=false
+ TAP_PREFIX="# "
  
- 	change_offset = struct_size(*tt_data, vlan_data, num_vlan);
-@@ -914,6 +911,7 @@ batadv_tt_prepare_tvlv_local_data(struct
- 	(*tt_data)->num_vlan = htons(num_vlan);
- 
- 	tt_vlan = (*tt_data)->vlan_data;
-+	num_vlan = 0;
- 	hlist_for_each_entry(vlan, &bat_priv->meshif_vlan_list, list) {
- 		vlan_entries = atomic_read(&vlan->tt.num_entries);
- 		if (vlan_entries < 1)
-@@ -924,8 +922,15 @@ batadv_tt_prepare_tvlv_local_data(struct
- 		tt_vlan->reserved = 0;
- 
- 		tt_vlan++;
-+		num_vlan++;
- 	}
- 
-+	/* recalculate in case number of VLANs reduced */
-+	change_offset = struct_size(*tt_data, vlan_data, num_vlan);
-+	tvlv_len = *tt_len + change_offset;
-+
-+	(*tt_data)->num_vlan = htons(num_vlan);
-+
- 	tt_change_ptr = (u8 *)*tt_data + change_offset;
- 	*tt_change = (struct batadv_tvlv_tt_change *)tt_change_ptr;
- 
+-while getopts "aht:n" OPT; do
++while getopts "aht:nd" OPT; do
+ 	case ${OPT} in
+ 		"a") RUN_ALL=true ;;
+ 		"h") usage ;;
 
 
 
