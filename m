@@ -1,60 +1,61 @@
-Return-Path: <stable+bounces-255460-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-256063-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id aAi8BcWiGGrKlggAu9opvQ
-	(envelope-from <stable+bounces-255460-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:17:09 +0200
+	id GCXoL56pGGrclwgAu9opvQ
+	(envelope-from <stable+bounces-256063-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:46:22 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id BF0405F8433
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:17:08 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 665205F982F
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:46:22 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 7A44C30DFBA4
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 20:09:36 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 6FFAD305990D
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 20:37:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8F5E6335566;
-	Thu, 28 May 2026 20:09:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1524F2F1FEC;
+	Thu, 28 May 2026 20:37:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="c38uKtyy"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dz/3QDbj"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6ABC232B13B;
-	Thu, 28 May 2026 20:09:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DEE77223328;
+	Thu, 28 May 2026 20:37:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779998974; cv=none; b=PcbnB31jCh+o3AX67/KVLVJQ/O3NORuYem6l3v/IK3dbqLCM/I2rRdovafpZYQCbf3I3u6jlZZjpCzbpAWIOKkd3OiD/ReOU8BrsKfdQis4/REc52FRQdEeBD6Mo/AbsZwAc8uppHNMtURCqeENFO1WFicm9G4Q8rg5MK/Igy4I=
+	t=1780000651; cv=none; b=dH6gKZnCA1C+RYXPH4MHGJhIHTBpQmH4mXlPQPyouI3cFXjcqK1S+H/xghWPNRY2UygOxYK32KGYKhqoePkMl3fdaXwMGs6ek4ePpUypml2DtOcYGTzIMnYUDMhWCiJWQIpWuGOIyNdDwkjMB2/INHm+eoqXo+V9QcelcNVAudg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779998974; c=relaxed/simple;
-	bh=v7LQEY8s7T2+xC/a63RFkw7WMTSASLqDIEcIEhOrJ1k=;
+	s=arc-20240116; t=1780000651; c=relaxed/simple;
+	bh=uNnL0ZQBmjFR/JOymMT/63pBlpuU6BZARfwJ3eby6XU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=pSBZZtz2x+oUMakzarBiLA3U2JkEPshHxcJXJH7k329iAltrdnM+JK/KciXPaj9TKQFRhTnCqZXYI8ja00s6K13hydxP/LQU3SbnrnNg6DO3CPdvLv9kN7V/hw2FGe3aEal2XbljvOJnQ5yz22LA3uO+5BLMsG37jsI2euhv6IE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=c38uKtyy; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C55101F000E9;
-	Thu, 28 May 2026 20:09:32 +0000 (UTC)
+	 MIME-Version; b=BI1SJYItJ2/3VZz5LyBgpnK9E3qZ8aF4BGbgeCCEqI1lpWMif29enFbmiV40eWifz0RAdT5y+IYQZ+OUGKhr5RMsLAK7ZDAdHRFF5foXf+jK1SxUcNsXwZfo0NZaWH2RdmSNtyQpZQxjW5JP8f03W2JPRKqO11juRH1Es3xQUjE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dz/3QDbj; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0185D1F000E9;
+	Thu, 28 May 2026 20:37:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779998973;
-	bh=5OjBI2BbedxGxnf7eYJPd/x5BtHx+G/81g2M+MBJmDE=;
+	s=korg; t=1780000650;
+	bh=4zM2j8yKLaM2AdvGnZmREON6Cjmepjy4VM9vScZdQjs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=c38uKtyy25P5ITp8FeLPcualEaXEQo6D59/GBHNIFy9GzDwMjYht4kTGIczWzgSN/
-	 nbV4Q8eoRXOcT3VF1Wmt+ynSOQh9UbbPeB8+IKPxFu31IVcA7Q97DeO9u55E5o2Nyr
-	 BPmT6h8mpD77t4/ZNuhx3IIxK/pUaWDugCRwH5Yo=
+	b=dz/3QDbj2SohXIzHrJMl+aJ9PcfeaSyIAHnj5i2BWyi5Wvg2zynd/B/vprh0YsEYL
+	 jZlWrp6Ta5ahsUCF7Zazro3A60WH6NY6hOBIgU/kLzAFhRADiweC+aoSuBFkT6kQqg
+	 F1+nIR0Pkq6mMTeiK4EWvCXER5U7C2/VkktrhpzQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Matt Roper <matthew.d.roper@intel.com>,
-	Gustavo Sousa <gustavo.sousa@intel.com>,
-	Rodrigo Vivi <rodrigo.vivi@intel.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 7.0 364/461] drm/xe: Define and use MCR version of COMMON_SLICE_CHICKEN1
+	Alex Hung <alex.hung@amd.com>,
+	Harry Wentland <harry.wentland@amd.com>,
+	Ivan Lipski <ivan.lipski@amd.com>,
+	Dan Wheeler <daniel.wheeler@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>
+Subject: [PATCH 6.12 119/272] drm/amd/display: Validate GPIO pin LUT table size before iterating
 Date: Thu, 28 May 2026 21:48:13 +0200
-Message-ID: <20260528194657.974965498@linuxfoundation.org>
+Message-ID: <20260528194632.713445589@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260528194646.819809818@linuxfoundation.org>
-References: <20260528194646.819809818@linuxfoundation.org>
+In-Reply-To: <20260528194629.379955525@linuxfoundation.org>
+References: <20260528194629.379955525@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,7 +70,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
@@ -77,7 +78,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-255460-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-256063-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
@@ -86,72 +87,75 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[7];
+	RCPT_COUNT_SEVEN(0.00)[8];
 	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim,msgid.link:url,intel.com:email]
-X-Rspamd-Queue-Id: BF0405F8433
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,amd.com:email]
+X-Rspamd-Queue-Id: 665205F982F
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-7.0-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Gustavo Sousa <gustavo.sousa@intel.com>
+From: Harry Wentland <harry.wentland@amd.com>
 
-[ Upstream commit a4660bd949733fd6ea621fdb50fabac2608155e9 ]
+commit 86d2b20644b11d21fe52c596e6e922b4590a3e3f upstream.
 
-The register COMMON_SLICE_CHICKEN1 is a MCR register on Xe2.
-Let's make sure to define a MCR version of it and use it for the
-relevant IP versions.
+[Why&How]
+The GPIO pin table parsers in get_gpio_i2c_info() and
+bios_parser_get_gpio_pin_info() derive an element count from the VBIOS
+table_header.structuresize field, then iterate over gpio_pin[] entries.
+However, GET_IMAGE() only validates that the table header itself fits
+within the BIOS image. If the VBIOS reports a structuresize larger than
+the actual mapped data, the loop reads past the end of the BIOS image,
+causing an out-of-bounds read.
 
-Use XEHP_ as prefix for the register name, since it is MCR as of Xe_HP.
+Fix this by calling bios_get_image() to validate that the full claimed
+structuresize is accessible within the BIOS image before entering the
+loop in both functions.
 
-Fixes: a5d221924e13 ("drm/xe/xe2_hpg: Add set of workarounds")
-Fixes: 9f18b55b6d3f ("drm/xe/xe2: Add workaround 18033852989")
-Bspec: 66534, 71185
-Reviewed-by: Matt Roper <matthew.d.roper@intel.com>
-Link: https://patch.msgid.link/20260514-rtp-mcr-check-v3-2-30dd47855fee@intel.com
-Signed-off-by: Gustavo Sousa <gustavo.sousa@intel.com>
-(cherry picked from commit a672725fdbfc3ea430130039d677c7dc98d59df8)
-Signed-off-by: Rodrigo Vivi <rodrigo.vivi@intel.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Assisted-by: GitHub Copilot:claude-opus-4-6
+Reviewed-by: Alex Hung <alex.hung@amd.com>
+Signed-off-by: Harry Wentland <harry.wentland@amd.com>
+Signed-off-by: Ivan Lipski <ivan.lipski@amd.com>
+Tested-by: Dan Wheeler <daniel.wheeler@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+(cherry picked from commit ba5e95b43b773ae1bf1f66ee6b31eb774e65afe3)
+Cc: stable@vger.kernel.org
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/xe/regs/xe_gt_regs.h | 1 +
- drivers/gpu/drm/xe/xe_wa.c           | 2 +-
- 2 files changed, 2 insertions(+), 1 deletion(-)
+ drivers/gpu/drm/amd/display/dc/bios/bios_parser2.c |    9 +++++++++
+ 1 file changed, 9 insertions(+)
 
-diff --git a/drivers/gpu/drm/xe/regs/xe_gt_regs.h b/drivers/gpu/drm/xe/regs/xe_gt_regs.h
-index 9d66f168ab8a7..dd06487c87edc 100644
---- a/drivers/gpu/drm/xe/regs/xe_gt_regs.h
-+++ b/drivers/gpu/drm/xe/regs/xe_gt_regs.h
-@@ -145,6 +145,7 @@
- #define   MSAA_OPTIMIZATION_REDUC_DISABLE	REG_BIT(11)
+--- a/drivers/gpu/drm/amd/display/dc/bios/bios_parser2.c
++++ b/drivers/gpu/drm/amd/display/dc/bios/bios_parser2.c
+@@ -492,6 +492,10 @@ static enum bp_result get_gpio_i2c_info(
+ 			- sizeof(struct atom_common_table_header))
+ 				/ sizeof(struct atom_gpio_pin_assignment);
  
- #define COMMON_SLICE_CHICKEN1			XE_REG(0x7010, XE_REG_OPTION_MASKED)
-+#define XEHP_COMMON_SLICE_CHICKEN1		XE_REG_MCR(0x7010, XE_REG_OPTION_MASKED)
- #define   DISABLE_BOTTOM_CLIP_RECTANGLE_TEST	REG_BIT(14)
++	if (!bios_get_image(&bp->base, DATA_TABLES(gpio_pin_lut),
++			    le16_to_cpu(header->table_header.structuresize)))
++		return BP_RESULT_BADBIOSTABLE;
++
+ 	pin = (struct atom_gpio_pin_assignment *) header->gpio_pin;
  
- #define HIZ_CHICKEN					XE_REG(0x7018, XE_REG_OPTION_MASKED)
-diff --git a/drivers/gpu/drm/xe/xe_wa.c b/drivers/gpu/drm/xe/xe_wa.c
-index 6e3c44bc69daf..4ecf96fb40846 100644
---- a/drivers/gpu/drm/xe/xe_wa.c
-+++ b/drivers/gpu/drm/xe/xe_wa.c
-@@ -722,7 +722,7 @@ static const struct xe_rtp_entry_sr lrc_was[] = {
- 	},
- 	{ XE_RTP_NAME("18033852989"),
- 	  XE_RTP_RULES(GRAPHICS_VERSION_RANGE(2001, 2004), ENGINE_CLASS(RENDER)),
--	  XE_RTP_ACTIONS(SET(COMMON_SLICE_CHICKEN1, DISABLE_BOTTOM_CLIP_RECTANGLE_TEST))
-+	  XE_RTP_ACTIONS(SET(XEHP_COMMON_SLICE_CHICKEN1, DISABLE_BOTTOM_CLIP_RECTANGLE_TEST))
- 	},
- 
- 	/* DG1 */
--- 
-2.53.0
-
+ 	for (table_index = 0; table_index < count; table_index++) {
+@@ -680,6 +684,11 @@ static enum bp_result bios_parser_get_gp
+ 	count = (le16_to_cpu(header->table_header.structuresize)
+ 			- sizeof(struct atom_common_table_header))
+ 				/ sizeof(struct atom_gpio_pin_assignment);
++
++	if (!bios_get_image(&bp->base, DATA_TABLES(gpio_pin_lut),
++			    le16_to_cpu(header->table_header.structuresize)))
++		return BP_RESULT_BADBIOSTABLE;
++
+ 	for (i = 0; i < count; ++i) {
+ 		if (header->gpio_pin[i].gpio_id != gpio_id)
+ 			continue;
 
 
 
