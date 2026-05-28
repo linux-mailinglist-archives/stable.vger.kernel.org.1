@@ -1,150 +1,177 @@
-Return-Path: <stable+bounces-254834-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-254835-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id OJgEEuoVGGoBdAgAu9opvQ
-	(envelope-from <stable+bounces-254834-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 12:16:10 +0200
+	id UILRGhwaGGoBdQgAu9opvQ
+	(envelope-from <stable+bounces-254835-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 12:34:04 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3CBCF5F0696
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 12:16:08 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 71CEF5F0A24
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 12:34:02 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id AB693305FED1
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 10:16:03 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id D40E9300B8D7
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 10:29:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A390A3B6C1D;
-	Thu, 28 May 2026 10:15:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BEBF03B7B66;
+	Thu, 28 May 2026 10:29:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=seu.edu.cn header.i=@seu.edu.cn header.b="hf2UkpOi"
+	dkim=pass (4096-bit key) header.d=ssi.bg header.i=@ssi.bg header.b="ZnkrZz5+"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-m82104.xmail.ntesmail.com (mail-m82104.xmail.ntesmail.com [156.224.82.104])
+Received: from mx.ssi.bg (mx.ssi.bg [193.238.174.39])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2ACFA3B6352;
-	Thu, 28 May 2026 10:15:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.224.82.104
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A565A30C359;
+	Thu, 28 May 2026 10:29:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.238.174.39
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779963358; cv=none; b=MwQmSruxHVVbNaGJTUfj4dg90+kSJe9slS/4qug/mFoa2UjYgtQ0BX4sSt/KEm7eFWGlqDCeV9Pd2UUApX2ebxc0kPeAVYmDPpGG3DfaXCWl5RqwiIp5rExBgzVfoFOS6hWx8HVuk35ogx+UUAkkseBmg0nmGQ4ul+eO0MPUriY=
+	t=1779964173; cv=none; b=bukKeBEYd4xD0RpMyXBLiAWfWq1QZPWvzm6gUEirf/s1f0pd9xgG+iZlWPIeQeUiRhZySSNUFrMVa3x1w6PPjod2E7gMTpmIKOKca7GbjJCxQm9lhhJ61joGmFGj+MTdZUqw5du8/W+Dkyy/piIorxfFvFL+DUR+i72kRghf5ZA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779963358; c=relaxed/simple;
-	bh=62qjLgq1oKM6QYwtvkJtRjfY+z8djIogWp3aL/Gpas0=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=riwzBjsjOS8aWqJIAmZGhOjHF1AJHmwUp/cg+JG0gYu7C2IUo5Cb4fLsw28zBs9uTpAKpm1F7+oNAxyxFwFb0tE1CNLzDr6e85/cbtLfRvwSaSOfkFyAFMWoVoy5bX/B7gpBWGt9CNwfSILHMD7Joj50f4uHI69fsXEggcX0wA4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=seu.edu.cn; spf=pass smtp.mailfrom=seu.edu.cn; dkim=pass (1024-bit key) header.d=seu.edu.cn header.i=@seu.edu.cn header.b=hf2UkpOi; arc=none smtp.client-ip=156.224.82.104
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=seu.edu.cn
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=seu.edu.cn
-Received: from DESKTOP-SUEFNF9.taila7e912.ts.net (unknown [221.228.238.82])
-	by smtp.qiye.163.com (Hmail) with ESMTP id 402d03124;
-	Thu, 28 May 2026 18:15:42 +0800 (GMT+08:00)
-From: Dawei Feng <dawei.feng@seu.edu.cn>
-To: error27@gmail.com
-Cc: gregkh@linuxfoundation.org,
-	omer.e.idrissi@gmail.com,
-	hansg@kernel.org,
-	hi@josie.lol,
-	straube.linux@gmail.com,
-	xela@viard.dev,
-	ethantidmore06@gmail.com,
-	liangjie@lixiang.com,
-	linux-staging@lists.linux.dev,
-	linux-kernel@vger.kernel.org,
-	jianhao.xu@seu.edu.cn,
-	stable@vger.kernel.org,
-	zilin@seu.edu.cn
-Subject: Re: [PATCH] staging: rtl8723bs: fix mismatched free of HalData in rtw_sdio_if1_init()
-Date: Thu, 28 May 2026 18:15:42 +0800
-Message-Id: <20260528101542.2395619-1-dawei.feng@seu.edu.cn>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <ahfvCpI6YOA9Gpyh@stanley.mountain>
-References: <ahfvCpI6YOA9Gpyh@stanley.mountain>
+	s=arc-20240116; t=1779964173; c=relaxed/simple;
+	bh=JTt807Qy7bn1+1XqPQYWbpkGmyn4635Qbiems4WwloQ=;
+	h=Date:From:To:cc:Subject:In-Reply-To:Message-ID:References:
+	 MIME-Version:Content-Type; b=cumhlUGfTUpcoyIZ6d8Ci9CI6vZsgFy+63+JxRAW5QVpYgQeenOjPVdr6TsVlgpmVVwHaYv4E8nv1EVpn6xXkjunzS0wOna//x4ozqj0q/a6IC6GPNN740nDqWngweM3y/QSs50YL/kDANDWoepEgoPQMVpL5h111FdZipcRIgU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=ssi.bg; spf=pass smtp.mailfrom=ssi.bg; dkim=pass (4096-bit key) header.d=ssi.bg header.i=@ssi.bg header.b=ZnkrZz5+; arc=none smtp.client-ip=193.238.174.39
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=ssi.bg
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ssi.bg
+Received: from mx.ssi.bg (localhost [127.0.0.1])
+	by mx.ssi.bg (Potsfix) with ESMTP id 46BE421108;
+	Thu, 28 May 2026 13:29:27 +0300 (EEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ssi.bg; h=cc:cc
+	:content-type:content-type:date:from:from:in-reply-to:message-id
+	:mime-version:references:reply-to:subject:subject:to:to; s=ssi;
+	 bh=+MAlYPIe9hB3K5acB14N7+FZdX7wf1HTiLIubdRiq8Q=; b=ZnkrZz5+xFt4
+	0RhHbpxE39ZfvrGiV4BNylloI129EiKRNo6Bak7G8J34v876kBvhzzabOZ4KUp15
+	K5s8PID1yxg5eVNQS+EG5jzUXlQ0eYk9+9cnt0C0NM9re5xPeDrUuKXqx/zNkx46
+	CCXwf/l9sEo1j0bnxyUxhWIDgi79RZGhe3Cs4S1pa8A15bEAL+SFRqUmm4BON3V8
+	0H0e9sqvKPzYJhej3C7ToCXGvbULo/6+ynrHXFQo9IJBt/odGmBArCV2LDjbzUdr
+	KbJydSv1YO0k2S38bTC++tUa4pCk/7Nf6LPOXFDvfQ7v726djfoWICzrw7oF9QHJ
+	vrBfe9o2xUpItcBvyqvKwIGYIE0a4LROTCQWaJCyu3BcxSoPmcvpbeCZFYofm444
+	jWbZRnWa26t/ThwJNG0hbmgMChgn1Q9M8aDlraJr9X6eU68eymDDLlg4Q/7Avz1K
+	IQortVsc7QLw8BojrX0LIZ6/w8apEqUgXaPeWTqZ2bvkUrTsSkNhbKKMLNxbqpwy
+	+4ONjy9nux/wOIf3pTWsKniy+12ku4AsUCO3vYG64ELlH2AK/GgWxhIIvFF4QxCk
+	SxzloCr3O9ds7cwM2Opj4W/AEovVtFaWpm27N3bSTz4Fw1CT/lK9aO0mxpAy0jvV
+	+/xefDvi09VTs3ZrbcMd2Tj8VpAhyDk=
+Received: from box.ssi.bg (box.ssi.bg [193.238.174.46])
+	by mx.ssi.bg (Potsfix) with ESMTPS;
+	Thu, 28 May 2026 13:29:27 +0300 (EEST)
+Received: from ja.ssi.bg (unknown [213.16.62.126])
+	by box.ssi.bg (Potsfix) with ESMTPSA id 897BD609E9;
+	Thu, 28 May 2026 13:29:26 +0300 (EEST)
+Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
+	by ja.ssi.bg (8.18.2/8.18.1) with ESMTP id 64SATPsG030077;
+	Thu, 28 May 2026 13:29:25 +0300
+Date: Thu, 28 May 2026 13:29:25 +0300 (EEST)
+From: Julian Anastasov <ja@ssi.bg>
+To: Wentao Liang <vulab@iscas.ac.cn>
+cc: Simon Horman <horms@verge.net.au>, Pablo Neira Ayuso <pablo@netfilter.org>,
+        Florian Westphal <fw@strlen.de>,
+        "David S . Miller" <davem@davemloft.net>,
+        Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>,
+        Paolo Abeni <pabeni@redhat.com>, Phil Sutter <phil@nwl.cc>,
+        netdev@vger.kernel.org, lvs-devel@vger.kernel.org,
+        netfilter-devel@vger.kernel.org, coreteam@netfilter.org,
+        linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Subject: Re: [PATCH] netfilter: ipvs: fix ct refcount leak when template is
+ invalid
+In-Reply-To: <20260528072100.1163109-1-vulab@iscas.ac.cn>
+Message-ID: <155bcc31-033b-18ec-8ff1-bb0d32e4b44a@ssi.bg>
+References: <20260528072100.1163109-1-vulab@iscas.ac.cn>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-HM-Tid: 0a9e6e152e5d03a2kunm1d63080577846
-X-HM-MType: 10
-X-HM-Spam-Status: e1kfGhgUHx5ZQUpXWQgPGg8OCBgUHx5ZQUlOS1dZFg8aDwILHllBWSg2Ly
-	tZV1koWUFITzdXWRgWCB1ZQUpXWS1ZQUlXWQ8JGhUIEh9ZQVlDQk0eVksfSkodSUNISxhIQ1YeHw
-	5VEwETFhoSFyQUDg9ZV1kYEgtZQVlJSUpVSUlDVUlIQ1VDSVlXWRYaDxIVHRRZQVlPS0hVSktJSE
-	5DQ1VKS0tVS1kG
-DKIM-Signature: a=rsa-sha256;
-	b=hf2UkpOi3frLhM5+YMBnuRHRvJnZtPyomka90RTF9EUef+4rGlKuBKkFKGmwNgs80lcLAOnCpX/wYcBSEkAOvNHzlndKrwefHORJBs2e9MMYhBNFgm9S0rBVUUdWUOZlkPggUCYdiiNijuFqp/sZlIRWVutTpk/dw1fYULrkyMU=; c=relaxed/relaxed; s=default; d=seu.edu.cn; v=1;
-	bh=cm1IXCghAruZxMXm5ndJwzdSK/e/RcJeQCV3orZya5o=;
-	h=date:mime-version:subject:message-id:from;
-X-Spamd-Result: default: False [0.84 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+Content-Type: text/plain; charset=US-ASCII
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	MID_CONTAINS_FROM(1.00)[];
-	DMARC_POLICY_ALLOW(-0.50)[seu.edu.cn,none];
-	R_MISSING_CHARSET(0.50)[];
-	R_DKIM_ALLOW(-0.20)[seu.edu.cn:s=default];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
+	DMARC_POLICY_ALLOW(-0.50)[ssi.bg,reject];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
+	R_DKIM_ALLOW(-0.20)[ssi.bg:s=ssi];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,gmail.com,kernel.org,josie.lol,viard.dev,lixiang.com,lists.linux.dev,vger.kernel.org,seu.edu.cn];
-	RCVD_TLS_LAST(0.00)[];
+	DKIM_TRACE(0.00)[ssi.bg:+];
+	RCPT_COUNT_TWELVE(0.00)[15];
 	MIME_TRACE(0.00)[0:+];
-	FREEMAIL_TO(0.00)[gmail.com];
-	TAGGED_FROM(0.00)[bounces-254834-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-254835-lists,stable=lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[14];
+	MISSING_XM_UA(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[iscas.ac.cn:email,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,ssi.bg:email,ssi.bg:mid,ssi.bg:dkim];
+	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[dawei.feng@seu.edu.cn,stable@vger.kernel.org];
+	FROM_NEQ_ENVFROM(0.00)[ja@ssi.bg,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[seu.edu.cn:+];
-	TO_DN_NONE(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	NEURAL_HAM(-0.00)[-1.000];
 	TAGGED_RCPT(0.00)[stable];
-	NEURAL_HAM(-0.00)[-0.994];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[seu.edu.cn:email,seu.edu.cn:mid,seu.edu.cn:dkim,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo]
-X-Rspamd-Queue-Id: 3CBCF5F0696
+	MID_RHS_MATCH_FROM(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	RCVD_COUNT_SEVEN(0.00)[7]
+X-Rspamd-Queue-Id: 71CEF5F0A24
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-On Thu, May 28, 2026 at 15:30:18 Dan Carpenter wrote:
-> > Manual inspection
-> > confirms that the issue is still present in current mainline.
-> > 
-> > An x86_64 allyesconfig build showed no new warnings. As we do not have
-> > suitable RTL8723BS SDIO hardware to test with, no runtime testing was
-> > able to be performed.
->
-> to HERE should be put
->
-> > 
-> > Fixes: 554c0a3abf21 ("staging: Add rtl8723bs sdio wifi driver")
-> > Signed-off-by: Zilin Guan <zilin@seu.edu.cn>
-> > Signed-off-by: Dawei Feng <dawei.feng@seu.edu.cn>
-> > ---
->   ^^^
-> Here under the --- cut off line.  We don't need this kind of meta
-> commentary about testing in the permanent git log.  Otherwise
-> the patch is correct.
 
-Hi Dan,
+	Hello,
 
-Thank you for the review and for pointing this out. 
+On Thu, 28 May 2026, Wentao Liang wrote:
 
-The reason the manual inspection and testing commentary was placed above
-the `---` line is that we were strictly following the example template
-provided in Documentation/process/researcher-guidelines.rst. 
+> ip_vs_sched_persist() calls ip_vs_ct_in_get() to look up an existing
+> connection template, which returns ct with a reference held. If the
+> template exists but fails the ip_vs_check_template() validation, the
+> function can leak the reference in two ways:
 
-In the researcher-guidelines[1], the example explicitly places the build
-and hardware testing disclaimer before the Signed-off-by tags, which is
-why we included it directly in the commit message.
+	You missed the __ip_vs_conn_put(ct) in ip_vs_check_template()
+when 0 is returned :) So, there is no leak.
 
-Please let me know if you would like a v2 to adjust the position of the
-mentioned commit log details.
+> 
+> 1. If no destination is found (scheduler returns NULL), the function
+>    returns NULL at the !dest check without calling ip_vs_conn_put(ct).
+> 
+> 2. If a destination is found and a new template is created via
+>    ip_vs_conn_new(), the old ct pointer is overwritten without its
+>    reference being released.
+> 
+> Fix this by adding ip_vs_conn_put(ct) before the early return when no
+> destination is found, and before overwriting ct with the new template.
+> 
+> Cc: stable@vger.kernel.org
+> Fixes: 5b57a98c1f0d ("IPVS: compact ip_vs_sched_persist()")
+> Signed-off-by: Wentao Liang <vulab@iscas.ac.cn>
+> ---
+>  net/netfilter/ipvs/ip_vs_core.c | 2 ++
+>  1 file changed, 2 insertions(+)
+> 
+> diff --git a/net/netfilter/ipvs/ip_vs_core.c b/net/netfilter/ipvs/ip_vs_core.c
+> index d40b404c1bf6..bdc3f296876a 100644
+> --- a/net/netfilter/ipvs/ip_vs_core.c
+> +++ b/net/netfilter/ipvs/ip_vs_core.c
+> @@ -536,6 +536,7 @@ ip_vs_sched_persist(struct ip_vs_service *svc,
+>  			IP_VS_DBG(1, "p-schedule: no dest found.\n");
+>  			kfree(param.pe_data);
+>  			*ignored = 0;
+> +			ip_vs_conn_put(ct);
+>  			return NULL;
+>  		}
+>  
+> @@ -551,6 +552,7 @@ ip_vs_sched_persist(struct ip_vs_service *svc,
+>  		if (ct == NULL) {
+>  			kfree(param.pe_data);
+>  			*ignored = -1;
+> +			ip_vs_conn_put(ct);
+>  			return NULL;
+>  		}
+>  
+> -- 
+> 2.34.1
 
-[1] https://docs.kernel.org/process/researcher-guidelines.html
+Regards
 
-Best regards,
-Dawei
+--
+Julian Anastasov <ja@ssi.bg>
+
 
