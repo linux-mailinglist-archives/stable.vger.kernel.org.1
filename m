@@ -1,283 +1,168 @@
-Return-Path: <stable+bounces-256439-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-256436-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id GBKnKVLLGGrrnQgAu9opvQ
-	(envelope-from <stable+bounces-256439-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 29 May 2026 01:10:10 +0200
+	id iOM7ITrKGGrcnQgAu9opvQ
+	(envelope-from <stable+bounces-256436-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 29 May 2026 01:05:30 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id EF6C55FB379
-	for <lists+stable@lfdr.de>; Fri, 29 May 2026 01:10:09 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 05AAE5FB2D0
+	for <lists+stable@lfdr.de>; Fri, 29 May 2026 01:05:29 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id F18BD31114A6
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 23:08:00 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 0076C301CFE1
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 23:05:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A62B3368D76;
-	Thu, 28 May 2026 23:08:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0BD9133BBD0;
+	Thu, 28 May 2026 23:05:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="NFBv6Nmd"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="pbeXmoEK"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-yx1-f53.google.com (mail-yx1-f53.google.com [74.125.224.53])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1E763367F36;
-	Thu, 28 May 2026 23:07:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A57DA1AF4E9
+	for <stable@vger.kernel.org>; Thu, 28 May 2026 23:05:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.224.53
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780009680; cv=none; b=GvZ/C1PWMP9EdZCNM8iZ79YdUjRiyuM3DSzsWHDpEsw6NuuKBUsyeMAvEy24TEEo/YxAH8M3vdACpRv1t0Dh85kvi4KZR1UJm/E16a5nlSWSr2uZU4N6+WXS20ao7Y0K/N1OmdV6nZgPTFTSnBdHTM8M3q0YPEmMj0m3f2RECWA=
+	t=1780009527; cv=none; b=O1x12sd+BAHiRr7cvq0oMN1L5VF52AAQPyZ/d+uTC6g0KMNfNH1vFMekrLIZT8iQO0WFkZFPvY8ogb27zdZii7DFdl3ve4kyZnTsu3RL+4HKEoKbQ6LVpfr60QTpjAKtXHqytev0kpdLKB+zTbfjiRJ8O+QZOhZcXxZVglXxSr8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780009680; c=relaxed/simple;
-	bh=/PiKYJWz9gvmc4Ax3o+7W5qhwU6FgIEJncOBBReKn3U=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=odhvQQMbcyhm2in1q5pnMl3MfctmoLFioLD1FwJt5dHQjnX3NvR2/p+fVBgMBp3oFCcC5SKWdj0MIRMyHBUeQjtoHMSqXlXH6DonRcdEh20kP7iZBqHsWVo4h/cXVXMT5c/76bZKQWOEexbk0rPNstzXf1cKiu7jsUDYxUz1Dzk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=NFBv6Nmd; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 60B721F000E9;
-	Thu, 28 May 2026 23:07:56 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1780009678;
-	bh=m8wKs5HNoGHP0jSxnKSD1ZlK+t0QNPM64QnFvO48QdY=;
-	h=From:Date:Subject:To:Cc;
-	b=NFBv6NmdOiXWzG22Avv21qAqoaRn04aTbZYWsUqbo/Q4rrUflkw+tUFADPcuzTJpD
-	 2iOUKp01XZxrl3g7P8bg6IeUTF0weSZhkCGbTajcLiwgDPUpQJNJB2SJSDc7p1QX9z
-	 NH/TZ15ZJHeCzBLiki4Wfn5anzg3fUw1aAXGqo3kdDAMQh9mXefq7v7EHtWlE9M8AB
-	 vOGTcBLshh/NVX8er5R7MzE8ZLf6ujYguLqZ+udyzWoyu4Y7COtldTjTX+Vzyq/l5d
-	 beuJHcSGHfiCps0Q1WZs11b/uKVoP/vhsoFL7fEgS4Gv/xmE6UtKoGwccaHZ5N7Q2r
-	 xp1Mw47ELhapA==
-From: Mark Brown <broonie@kernel.org>
-Date: Fri, 29 May 2026 00:01:44 +0100
-Subject: [PATCH v2] KVM: arm64: Preserve all guest ZCR_EL2.LEN values
+	s=arc-20240116; t=1780009527; c=relaxed/simple;
+	bh=FThXBuMZQp8l6oss+V4cuLh46PxufVFHFzAn6yH6F2E=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=KKUGTs+j1GJqLqNvztJF/Vhpv7FYTto4ic9Sv+O6uidgeQoqzSm8Q/o4Qr/iXCHM5tR90NTVZpFwMikMkuOnjyRBUlGX2NAtCpMHPKvRouw23hbS1itTkyeCQI09bTBlVRGwtUteY9m8/B2knwJ9rJQfoKKOo4BjPMhYSlC1VRU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=pbeXmoEK; arc=none smtp.client-ip=74.125.224.53
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-yx1-f53.google.com with SMTP id 956f58d0204a3-6563f83ae9fso12968213d50.1
+        for <stable@vger.kernel.org>; Thu, 28 May 2026 16:05:26 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1780009526; x=1780614326; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=xOlQJ1NgwFkmwieEj91ogwoRE1brqm+EKk5o69Mvzzo=;
+        b=pbeXmoEKv79Q50ybJrNgAORsI4Xhraer+zpdBxTmsAK2U66CfkBP4NNaRpbWa+lUt6
+         LafpqQw2sM9ub46cPoROykBaXvhyoNBDsmlNBw49wjanZks64Umjo4ZqdsOx4uIwmTYL
+         JCEEAAHhmGUBSo63/McfrUjJML6FdpAh0kEmL+Yx7BcYz85OpC+7TYJdwp0mA9rCLmAb
+         2Dqb/nZktSYfqC7dx51/gEikxX8jnp8L7mgOiJZTj0dRQUR8TfO3ElYm3c8m0EdgRx/+
+         f2OeT41g5NCy3jf3vIzAdMR4Q1E7OaAuxJVzt1pSGHw5oOrhZK8xbZ4I711FSX/4lhSO
+         67Wg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1780009526; x=1780614326;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=xOlQJ1NgwFkmwieEj91ogwoRE1brqm+EKk5o69Mvzzo=;
+        b=ev0DItyBgYZUDPr3tAa9ACW9oJ8VFM/h8QABmYNzSGiBvIITjKIohnoGeo8Rr0wuhn
+         /TabXSqAT4b0bcuZAyJQVseMIweVAAju+ZKlYW9VLzXUe48ZSiGq6ieP1Hc/v5tMfnWG
+         BppiZlJm3sxaC7PfYHD6VL/2N+lvTqsSiNk14MPLsJv4BjYuEwMeG/dcH6OdZ2LZxUiB
+         WGHx4bG0Xvpim+FRqdlE/WCj21+RqgAvXgvmz5bsCmQ2kYewtmFIivt/LAKi8QMtgyLK
+         blmQ8V7bRO60SfaDj5K0jrkjEFWTSLZoaFw/+cMoBFD/SwLMuApZmZ3lpFgoy+/+pAGF
+         mrcA==
+X-Forwarded-Encrypted: i=1; AFNElJ8Ke+mAmqqvCO9DtbEnCuaTlbVXi0p/TimZXZo4X+Wd+W+aliTdIcF7TFinyom223kLv2sehp0=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyF5AV9Kk0lEjeIKnRTozVp7fytFov6oG16QCFP7ynaxKry5Yr5
+	MjIOxUjW6isVX9aS7lmefjQ0eEqR3Ce2z4yj6+CZQDOJ3p4k9uf2lZhq
+X-Gm-Gg: Acq92OH+oEqQZpImw6qX42eWDQ2k7OiN0+P49J4qBUehvKQ40QX8CKjjAX9R0i6DQhf
+	fw3GuPu46OseSndvByu/xkOeMwNzl+fjs/HqO2Ez2UXV3hsREcFNQcaxxj5vufmyV3YBYIsWXOC
+	YmiwRb37vyeG83Fs3JUGJ69pPV57Y60GMxSwjEpgYt+SNFoiYqSFwouMoyeQLlgAz+us8i+D/NZ
+	vGV7oZUnUHVBEEtSDFp5xDJ22hKnhHrqY4nHzbpzhO/QFhI7dX+k2QhNoKFpR2afCXPoVjoeqYt
+	GE/x1XeVsthZQMRtaj1szXzdpvGJdp8TgZXTbdFqTUHxwAH9I4pdBR3c0bLjNj2M2Yn2FHmOre1
+	yiLcn8S1YGW9Dddlb59HS0ksk2oQgM7qNpKMAHt6695OBRnkZHqZAXMSu0bKcXCQZgqmgBlinlB
+	pMB6kHYz8mZwr4ur2HkxO+3Q0KZICsU6/1Wcc6ICqrF9TJaSPfOZXIEKEqS6FxG6rr3Z7ULdmRk
+	WEQAvabAKQyUQ==
+X-Received: by 2002:a05:690e:1908:b0:65d:f5e7:72bc with SMTP id 956f58d0204a3-66052e33bc1mr114761d50.22.1780009525620;
+        Thu, 28 May 2026 16:05:25 -0700 (PDT)
+Received: from localhost (107-220-129-194.lightspeed.chrlnc.sbcglobal.net. [107.220.129.194])
+        by smtp.gmail.com with ESMTPSA id 956f58d0204a3-6605362df73sm1535d50.3.2026.05.28.16.05.24
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 28 May 2026 16:05:24 -0700 (PDT)
+From: Matt Turner <mattst88@gmail.com>
+To: linux-alpha@vger.kernel.org
+Cc: linux-kernel@vger.kernel.org,
+	Richard Henderson <richard.henderson@linaro.org>,
+	Magnus Lindholm <linmag7@gmail.com>,
+	Thomas Gleixner <tglx@kernel.org>,
+	Matt Turner <mattst88@gmail.com>,
+	stable@vger.kernel.org
+Subject: [PATCH 1/2] alpha: marvel: Fix irq_set_status_flags to use correct IRQ number
+Date: Thu, 28 May 2026 19:05:15 -0400
+Message-ID: <20260528230516.1839694-1-mattst88@gmail.com>
+X-Mailer: git-send-email 2.53.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20260529-kvm-arm64-fix-zcr-len-nv-v2-1-86cad51992bd@kernel.org>
-X-B4-Tracking: v=1; b=H4sIAFfJGGoC/3WNyw6CMBBFf4V07Zi24WFd8R+GRakDVKCYKTYq4
- d8t6NblSc69Z2EeyaJn52RhhMF6O7kI8pAw02nXIthrZCa5zHkmFPRhBE1jnkJjn/A2BAM6cAE
- UKixqjVxIzeL8ThiN/fpSfdk/6huaefvbjM76eaLX3g5i834ZKf9nggABaGSWouLFyTRlj+RwO
- E7Usmpd1w8OIs500wAAAA==
-X-Change-ID: 20260519-kvm-arm64-fix-zcr-len-nv-9e9e7bae012a
-To: Marc Zyngier <maz@kernel.org>, Oliver Upton <oupton@kernel.org>, 
- Joey Gouly <joey.gouly@arm.com>, Steffen Eiden <seiden@linux.ibm.com>, 
- Suzuki K Poulose <suzuki.poulose@arm.com>, 
- Catalin Marinas <catalin.marinas@arm.com>, Will Deacon <will@kernel.org>
-Cc: Mark Rutland <mark.rutland@arm.com>, 
- linux-arm-kernel@lists.infradead.org, kvmarm@lists.linux.dev, 
- linux-kernel@vger.kernel.org, Mark Brown <broonie@kernel.org>, 
- stable@vger.kernel.org
-X-Mailer: b4 0.16-dev
-X-Developer-Signature: v=1; a=openpgp-sha256; l=7113; i=broonie@kernel.org;
- h=from:subject:message-id; bh=/PiKYJWz9gvmc4Ax3o+7W5qhwU6FgIEJncOBBReKn3U=;
- b=owEBbQGS/pANAwAKASTWi3JdVIfQAcsmYgBqGMrL6RTPvvntCgQnm5ff91NvugCqQe8i393fp
- x/5ncnA0yOJATMEAAEKAB0WIQSt5miqZ1cYtZ/in+ok1otyXVSH0AUCahjKywAKCRAk1otyXVSH
- 0NgMB/kBTUgZGRmtJouc2XSSAfGbkO9NNO+WZcXaVZIT+wpXcGtupf8q3oX2y+uQiOsainGcvM0
- tbfluFjC56h/pb90Wjfx97nnmicXYwY779uvs+NvbyYAiYfcweFU3eSvehWW4SFNYPBAXPLictr
- LiNPmDlkv2rD49lsv0sSQRmxM1JiwhCaLUezLTsWYrONLHfpoDaCkebYFYTD4SqIGfUZ8ku/B2L
- TdUZs2YBLVUAAo9hJYXkwTCiQ19h+RSLlkasEPHCWFH1tVpTULIhW1obmlCo/30MP9br6MXRDf/
- H93bnKaPaWafv8ZnEvaC9Sacx8HNXr7fvCeP6YpL/QInC1LA
-X-Developer-Key: i=broonie@kernel.org; a=openpgp;
- fpr=3F2568AAC26998F9E813A1C5C3F436CA30F5D8EB
-X-Spamd-Result: default: False [-2.16 / 15.00];
+Content-Transfer-Encoding: 8bit
+X-Spamd-Result: default: False [-0.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
-	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20260515];
+	MID_CONTAINS_FROM(1.00)[];
+	R_MISSING_CHARSET(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114];
+	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-256439-lists,stable=lfdr.de];
-	FROM_HAS_DN(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
 	MIME_TRACE(0.00)[0:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[13];
-	DKIM_TRACE(0.00)[kernel.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	FREEMAIL_CC(0.00)[vger.kernel.org,linaro.org,gmail.com,kernel.org];
 	TO_DN_SOME(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-256436-lists,stable=lfdr.de];
+	RECEIVED_HELO_LOCALHOST(0.00)[];
+	DKIM_TRACE(0.00)[gmail.com:+];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	FREEMAIL_FROM(0.00)[gmail.com];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[broonie@kernel.org,stable@vger.kernel.org];
+	FROM_NEQ_ENVFROM(0.00)[mattst88@gmail.com,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCVD_COUNT_FIVE(0.00)[5];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[stable];
-	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,msgid.link:url]
-X-Rspamd-Queue-Id: EF6C55FB379
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo]
+X-Rspamd-Queue-Id: 05AAE5FB2D0
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-Since commit b3d29a823099 ("KVM: arm64: nv: Handle ZCR_EL2 traps") when
-guests write to ZCR_EL2 we have clamped the value of ZCR_EL2.LEN to be
-at most that configuring the maximum guest VL when accessed directly as
-ZCR_EL2. This is not clearly the behaviour the architecture documents
-for ZCR_EL2.LEN, while things are a little ambiguous currently there is
-a fairly direct reading that suggests values will be read as written.
-Further, the documented procedure for enumerating vector lengths means
-that it is expected that values larger than the largest supported vector
-length will be written in practice.
+Pass base + i to irq_set_status_flags() to match the IRQ number
+used in irq_set_chip_and_handler(). Previously, IRQ_LEVEL was set
+on the wrong (low-numbered) IRQ descriptors rather than the IO7
+IRQs at base + i.
 
-The reasoning for the current behaviour is not specifically articulated, my
-best guess is that it is intended to ensure that the guest can not see an
-effective VL greater than the maximum that has been configured, though
-this will be ineffective when a VHE guest uses the ZCR_EL1 accessor.
-The VL can instead be constrained by configuring ZCR_EL2 when loading
-L2 guest state:
-
- - When the L2 guest is running in EL1 or EL0 state configure
-   ZCR_EL2.LEN to the minimum of the guest ZCR_EL2.LEN and
-   vcpu_sve_max_vq(vcpu)-1.
- - When the L2 guest is running at EL2 configure the maximum VL for
-   the guest in ZCR_EL2.LEN like we do for L1 guests and load the
-   guest ZCR_EL2 into ZCR_EL1.
-
-This will ensure that the effective VL seen by the guest is always
-constrained by all of the maximum VL configured by the VMM and the
-ZCR_ELx values in effect.
-
-With the above implemented we can simplify the emulation for trapped
-writes to ZCR_EL2 to store LEN configured by the guest directly,
-matching the handling for ZCR_EL1. We still need to sanitise the values
-written to ensure no unsupported fields are written, do this by adding
-the register to our generic sanitisation infrastructure. This register
-is a bit unusual in that as an unnamed field at bits 8:4 which is
-RAZ/WI, for the purposes of sanitisation treat these bits as though they
-were RES0.
-
-Fixes: b3d29a823099 ("KVM: arm64: nv: Handle ZCR_EL2 traps")
-Signed-off-by: Mark Brown <broonie@kernel.org>
 Cc: stable@vger.kernel.org
+Fixes: 08876fe8519c ("alpha: marvel: Convert irq_chip functions")
+Signed-off-by: Matt Turner <mattst88@gmail.com>
 ---
-Changes in v2:
-- Use generic santisation infrastructure.
-- Remove redundant !is_hyp_ctxt() check.
-- Also fix ZCR_EL2 configuration in __hyp_sve_restore_guest().
-- Commit message clarifications.
-- Link to v1: https://patch.msgid.link/20260522-kvm-arm64-fix-zcr-len-nv-v1-1-ec254e9078cf@kernel.org
----
- arch/arm64/include/asm/kvm_host.h       |  2 +-
- arch/arm64/kvm/hyp/include/hyp/switch.h | 16 ++++++++++------
- arch/arm64/kvm/nested.c                 |  5 +++++
- arch/arm64/kvm/sys_regs.c               |  6 +-----
- 4 files changed, 17 insertions(+), 12 deletions(-)
+ arch/alpha/kernel/sys_marvel.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/arch/arm64/include/asm/kvm_host.h b/arch/arm64/include/asm/kvm_host.h
-index 65eead8362e0..a49042bfa801 100644
---- a/arch/arm64/include/asm/kvm_host.h
-+++ b/arch/arm64/include/asm/kvm_host.h
-@@ -511,7 +511,6 @@ enum vcpu_sysreg {
- 	ACTLR_EL2,	/* Auxiliary Control Register (EL2) */
- 	CPTR_EL2,	/* Architectural Feature Trap Register (EL2) */
- 	HACR_EL2,	/* Hypervisor Auxiliary Control Register */
--	ZCR_EL2,	/* SVE Control Register (EL2) */
- 	TTBR0_EL2,	/* Translation Table Base Register 0 (EL2) */
- 	TTBR1_EL2,	/* Translation Table Base Register 1 (EL2) */
- 	TCR_EL2,	/* Translation Control Register (EL2) */
-@@ -543,6 +542,7 @@ enum vcpu_sysreg {
- 	SCTLR2_EL2,	/* System Control Register 2 (EL2) */
- 	MDCR_EL2,	/* Monitor Debug Configuration Register (EL2) */
- 	CNTHCTL_EL2,	/* Counter-timer Hypervisor Control register */
-+	ZCR_EL2,	/* SVE Control Register (EL2) */
- 
- 	/* Any VNCR-capable reg goes after this point */
- 	MARKER(__VNCR_START__),
-diff --git a/arch/arm64/kvm/hyp/include/hyp/switch.h b/arch/arm64/kvm/hyp/include/hyp/switch.h
-index bf0eb5e43427..320cd45d49c5 100644
---- a/arch/arm64/kvm/hyp/include/hyp/switch.h
-+++ b/arch/arm64/kvm/hyp/include/hyp/switch.h
-@@ -462,11 +462,13 @@ static inline bool kvm_hyp_handle_mops(struct kvm_vcpu *vcpu, u64 *exit_code)
- 
- static inline void __hyp_sve_restore_guest(struct kvm_vcpu *vcpu)
- {
-+	u64 zcr_el2 = vcpu_sve_max_vq(vcpu) - 1;
-+
- 	/*
- 	 * The vCPU's saved SVE state layout always matches the max VL of the
- 	 * vCPU. Start off with the max VL so we can load the SVE state.
- 	 */
--	sve_cond_update_zcr_vq(vcpu_sve_max_vq(vcpu) - 1, SYS_ZCR_EL2);
-+	sve_cond_update_zcr_vq(zcr_el2, SYS_ZCR_EL2);
- 	__sve_restore_state(vcpu_sve_pffr(vcpu),
- 			    &vcpu->arch.ctxt.fp_regs.fpsr,
- 			    true);
-@@ -476,8 +478,10 @@ static inline void __hyp_sve_restore_guest(struct kvm_vcpu *vcpu)
- 	 * nested guest, as the guest hypervisor could select a smaller VL. Slap
- 	 * that into hardware before wrapping up.
- 	 */
--	if (is_nested_ctxt(vcpu))
--		sve_cond_update_zcr_vq(__vcpu_sys_reg(vcpu, ZCR_EL2), SYS_ZCR_EL2);
-+	if (is_nested_ctxt(vcpu)) {
-+		zcr_el2 = min(zcr_el2, __vcpu_sys_reg(vcpu, ZCR_EL2));
-+		sve_cond_update_zcr_vq(zcr_el2, SYS_ZCR_EL2);
-+	}
- 
- 	write_sysreg_el1(__vcpu_sys_reg(vcpu, vcpu_sve_zcr_elx(vcpu)), SYS_ZCR);
- }
-@@ -501,11 +505,11 @@ static inline void fpsimd_lazy_switch_to_guest(struct kvm_vcpu *vcpu)
- 		return;
- 
- 	if (vcpu_has_sve(vcpu)) {
-+		zcr_el2 = vcpu_sve_max_vq(vcpu) - 1;
-+
- 		/* A guest hypervisor may restrict the effective max VL. */
- 		if (is_nested_ctxt(vcpu))
--			zcr_el2 = __vcpu_sys_reg(vcpu, ZCR_EL2);
--		else
--			zcr_el2 = vcpu_sve_max_vq(vcpu) - 1;
-+			zcr_el2 = min(zcr_el2, __vcpu_sys_reg(vcpu, ZCR_EL2));
- 
- 		write_sysreg_el2(zcr_el2, SYS_ZCR);
- 
-diff --git a/arch/arm64/kvm/nested.c b/arch/arm64/kvm/nested.c
-index 883b6c1008fb..38f672e94087 100644
---- a/arch/arm64/kvm/nested.c
-+++ b/arch/arm64/kvm/nested.c
-@@ -1834,6 +1834,11 @@ int kvm_init_nv_sysregs(struct kvm_vcpu *vcpu)
- 	resx.res1 = VNCR_EL2_RES1;
- 	set_sysreg_masks(kvm, VNCR_EL2, resx);
- 
-+	/* ZCR_EL2 - bits 8:4 are RAZ/WI so treat them as RES0 */
-+	resx.res0 = ZCR_ELx_RES0 | GENMASK_ULL(8, 4);
-+	resx.res1 = ZCR_ELx_RES1;
-+	set_sysreg_masks(kvm, ZCR_EL2, resx);
-+
- out:
- 	for (enum vcpu_sysreg sr = __SANITISED_REG_START__; sr < NR_SYS_REGS; sr++)
- 		__vcpu_rmw_sys_reg(vcpu, sr, |=, 0);
-diff --git a/arch/arm64/kvm/sys_regs.c b/arch/arm64/kvm/sys_regs.c
-index 148fc3400ea8..77e1b5d223c6 100644
---- a/arch/arm64/kvm/sys_regs.c
-+++ b/arch/arm64/kvm/sys_regs.c
-@@ -2862,8 +2862,6 @@ static bool access_zcr_el2(struct kvm_vcpu *vcpu,
- 			   struct sys_reg_params *p,
- 			   const struct sys_reg_desc *r)
- {
--	unsigned int vq;
--
- 	if (guest_hyp_sve_traps_enabled(vcpu)) {
- 		kvm_inject_nested_sve_trap(vcpu);
- 		return false;
-@@ -2874,9 +2872,7 @@ static bool access_zcr_el2(struct kvm_vcpu *vcpu,
- 		return true;
+diff --git ./arch/alpha/kernel/sys_marvel.c ./arch/alpha/kernel/sys_marvel.c
+index 1f99b03effc2..bebeea3c286d 100644
+--- ./arch/alpha/kernel/sys_marvel.c
++++ ./arch/alpha/kernel/sys_marvel.c
+@@ -275,7 +275,7 @@ init_io7_irqs(struct io7 *io7,
+ 	/* Set up the lsi irqs.  */
+ 	for (i = 0; i < 128; ++i) {
+ 		irq_set_chip_and_handler(base + i, lsi_ops, handle_level_irq);
+-		irq_set_status_flags(i, IRQ_LEVEL);
++		irq_set_status_flags(base + i, IRQ_LEVEL);
  	}
  
--	vq = SYS_FIELD_GET(ZCR_ELx, LEN, p->regval) + 1;
--	vq = min(vq, vcpu_sve_max_vq(vcpu));
--	__vcpu_assign_sys_reg(vcpu, ZCR_EL2, vq - 1);
-+	__vcpu_assign_sys_reg(vcpu, ZCR_EL2, p->regval);
- 	return true;
- }
+ 	/* Disable the implemented irqs in hardware.  */
+@@ -289,7 +289,7 @@ init_io7_irqs(struct io7 *io7,
+ 	/* Set up the msi irqs.  */
+ 	for (i = 128; i < (128 + 512); ++i) {
+ 		irq_set_chip_and_handler(base + i, msi_ops, handle_level_irq);
+-		irq_set_status_flags(i, IRQ_LEVEL);
++		irq_set_status_flags(base + i, IRQ_LEVEL);
+ 	}
  
-
----
-base-commit: 5200f5f493f79f14bbdc349e402a40dfb32f23c8
-change-id: 20260519-kvm-arm64-fix-zcr-len-nv-9e9e7bae012a
-
-Best regards,
---  
-Mark Brown <broonie@kernel.org>
+ 	for (i = 0; i < 16; ++i)
+-- 
+2.53.0
 
 
