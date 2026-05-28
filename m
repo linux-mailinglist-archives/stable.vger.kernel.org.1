@@ -1,61 +1,62 @@
-Return-Path: <stable+bounces-255996-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-255350-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id qJn1InOoGGp+lwgAu9opvQ
-	(envelope-from <stable+bounces-255996-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:41:23 +0200
+	id YJ6+GryhGGqblggAu9opvQ
+	(envelope-from <stable+bounces-255350-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:12:44 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 15F535F9538
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:41:22 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id D731D5F811F
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:12:43 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 735D130831B1
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 20:34:27 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 17253305809C
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 20:04:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A0AE6330D35;
-	Thu, 28 May 2026 20:34:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 09183335566;
+	Thu, 28 May 2026 20:04:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CRYQ6ilA"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JHqCzPSg"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8023D32AAA0;
-	Thu, 28 May 2026 20:34:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D9EC62F691F;
+	Thu, 28 May 2026 20:04:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780000464; cv=none; b=DJXsqugiUY4KvserjuPJ354zGTxRXCdfE400KFvmBc3s5H2Tvj8CloMOupMn+QK9R+Di7WMrAdDE9TrDx+YNtLRHAnpBe2iQots28wVQj7YttNHfQTiq5nxMd27l8AoGfAc4DkBdETH75X4hzYrsgLpyMMe8vFR022q5LPVzwuw=
+	t=1779998663; cv=none; b=qV9Wf80kmwrBRdWJBb0E8+4c5ypAUP/75X8XIQp2DZVTm9qTCytYFORQKcZtPNQnfTxgNMruGpF0EaEG8aA8MX997gRPZzDgWLUe8ljaXRwjSB3+BcOXCe7MqGXZSRZ/f3feGA53Db3s8Er808nq7qXA2wTrcJUaUx73WV2uQ3Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780000464; c=relaxed/simple;
-	bh=QDTdyavbmeurIK5jed/hT5qhweOaaWPTjH0Q4qqLuFc=;
+	s=arc-20240116; t=1779998663; c=relaxed/simple;
+	bh=115g4O8klZXCeFwlSybz05fGSfKCBkyjTMXSjWzCbwo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=j8Z5pCydG3AdmFJ+6dYTYk2Wewnu6wzuRp0V+JEkF9jwvmnpIhNgiPbjUM/oHXvBPFRUCLNNnuUOqvr0MG6CrZApV+vaoVn2YNrww7eDKPbDOR1JMDkYkmKGVxhf2hyXik3Q7UMPwgxM3/9te1cqdoDMpWsKP+Sibe30CXqZ/yk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CRYQ6ilA; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 685341F000E9;
-	Thu, 28 May 2026 20:34:22 +0000 (UTC)
+	 MIME-Version; b=YKiOqIcf8jIVsx+t7UW9hlEwwNE2yvW5GHx9b2JWXjWxjgkcSiaVNBtzv/B07tnLlq73HuYPsTC9OUVH20YxA5RmOqg6SKmo1n6C0QmFJzkflxdwkUaPBz8C0quY1k2rshXzmbAD4irPALXvBkr8PX9N6NwC88pGjwzSrd0ZQXM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JHqCzPSg; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 12B8A1F000E9;
+	Thu, 28 May 2026 20:04:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780000462;
-	bh=fWEyIFPQSTsnmE4B2FYqI5+OOFYQViQQ0xZAngAgUE0=;
+	s=korg; t=1779998662;
+	bh=6mccBHRUsC0aEDaQ+0AKbxndjcnBWbXbqXw+kuExSAg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=CRYQ6ilAtlflH3XrQMKtDqx8jGMQ+wHqkaWiY5H0oN0UVDApAqWn7HFxtnVIH/re0
-	 nIw/QA5t1As+1DcTsNAmOA3Uuvk2Unr5uh/0WjqfyoTBhY/kGKeEGrR9JzL+rSuQcW
-	 CS7pq9PkGApthPnkJ7tM0Bg2KxNHaQqZra+fAeoM=
+	b=JHqCzPSg0al5qQWfsmqgmri2QEZRzMakLcK3wE1TQXbT38SuXxbepooxs+52iS5aA
+	 hXUNOgPgpfEbwMqWjhikq/MIMVe3Bjuwlw19Ut1149zX00i8lZqSqBKJan+T2DXE2W
+	 7umEs/3WsqPLRHd8Fm+epWSrU1/aIplXAT8uvlZM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Pengpeng Hou <pengpeng@iscas.ac.cn>,
-	Benjamin Block <bblock@linux.ibm.com>,
-	Vasily Gorbik <gor@linux.ibm.com>,
-	Alexander Gordeev <agordeev@linux.ibm.com>,
+	David Howells <dhowells@redhat.com>,
+	Paulo Alcantara <pc@manguebit.org>,
+	netfs@lists.linux.dev,
+	linux-fsdevel@vger.kernel.org,
+	Christian Brauner <brauner@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 007/272] s390/debug: Reject zero-length input before trimming a newline
-Date: Thu, 28 May 2026 21:46:21 +0200
-Message-ID: <20260528194629.586826251@linuxfoundation.org>
+Subject: [PATCH 7.0 253/461] netfs: Fix netfs_read_to_pagecache() to pause on subreq failure
+Date: Thu, 28 May 2026 21:46:22 +0200
+Message-ID: <20260528194654.473633694@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260528194629.379955525@linuxfoundation.org>
-References: <20260528194629.379955525@linuxfoundation.org>
+In-Reply-To: <20260528194646.819809818@linuxfoundation.org>
+References: <20260528194646.819809818@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -70,7 +71,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
@@ -78,7 +79,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-255996-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-255350-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
@@ -87,61 +88,56 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[8];
+	RCPT_COUNT_SEVEN(0.00)[9];
 	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim,iscas.ac.cn:email]
-X-Rspamd-Queue-Id: 15F535F9538
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim,manguebit.org:email,msgid.link:url,sashiko.dev:url,linux.dev:email]
+X-Rspamd-Queue-Id: D731D5F811F
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+7.0-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Pengpeng Hou <pengpeng@iscas.ac.cn>
+From: David Howells <dhowells@redhat.com>
 
-[ Upstream commit c366a7b5ed7564e41345c380285bd3f6cb98971b ]
+[ Upstream commit 8a8c0cfdf4658fc5b295b7fc87be56e0d76741f4 ]
 
-debug_get_user_string() copies the userspace buffer into a newly
-allocated NUL-terminated buffer and then unconditionally looks at
-buffer[user_len - 1] to strip a trailing newline.
+Fix netfs_read_to_pagecache() so that it pauses the generation of new
+subrequests if an already-issued subrequest fails.
 
-A zero-length write reaches this helper unchanged, so the newline trim
-reads before the start of the allocated buffer.
-
-Reject empty writes before accessing the last input byte.
-
-Fixes: 66a464dbc8e0 ("[PATCH] s390: debug feature changes")
-Cc: stable@vger.kernel.org
-Signed-off-by: Pengpeng Hou <pengpeng@iscas.ac.cn>
-Reviewed-by: Benjamin Block <bblock@linux.ibm.com>
-Reviewed-by: Vasily Gorbik <gor@linux.ibm.com>
-Tested-by: Vasily Gorbik <gor@linux.ibm.com>
-Link: https://lore.kernel.org/r/20260417073530.96002-1-pengpeng@iscas.ac.cn
-Signed-off-by: Vasily Gorbik <gor@linux.ibm.com>
-Signed-off-by: Alexander Gordeev <agordeev@linux.ibm.com>
+Fixes: ee4cdf7ba857 ("netfs: Speed up buffered reading")
+Closes: https://sashiko.dev/#/patchset/20260425125426.3855807-1-dhowells%40redhat.com
+Signed-off-by: David Howells <dhowells@redhat.com>
+Link: https://patch.msgid.link/20260512123404.719402-5-dhowells@redhat.com
+cc: Paulo Alcantara <pc@manguebit.org>
+cc: netfs@lists.linux.dev
+cc: linux-fsdevel@vger.kernel.org
+Signed-off-by: Christian Brauner <brauner@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/s390/kernel/debug.c | 3 +++
- 1 file changed, 3 insertions(+)
+ fs/netfs/buffered_read.c | 5 +++++
+ 1 file changed, 5 insertions(+)
 
-diff --git a/arch/s390/kernel/debug.c b/arch/s390/kernel/debug.c
-index e4b324dcfe0d3..16bb554a07fef 100644
---- a/arch/s390/kernel/debug.c
-+++ b/arch/s390/kernel/debug.c
-@@ -1256,6 +1256,9 @@ static inline char *debug_get_user_string(const char __user *user_buf,
- {
- 	char *buffer;
+diff --git a/fs/netfs/buffered_read.c b/fs/netfs/buffered_read.c
+index 15d73026ff643..fee0aebf5a3d6 100644
+--- a/fs/netfs/buffered_read.c
++++ b/fs/netfs/buffered_read.c
+@@ -300,6 +300,11 @@ static void netfs_read_to_pagecache(struct netfs_io_request *rreq,
+ 		}
  
-+	if (!user_len)
-+		return ERR_PTR(-EINVAL);
+ 		netfs_issue_read(rreq, subreq);
 +
- 	buffer = kmalloc(user_len + 1, GFP_KERNEL);
- 	if (!buffer)
- 		return ERR_PTR(-ENOMEM);
++		if (test_bit(NETFS_RREQ_PAUSE, &rreq->flags))
++			netfs_wait_for_paused_read(rreq);
++		if (test_bit(NETFS_RREQ_FAILED, &rreq->flags))
++			break;
+ 		cond_resched();
+ 	} while (size > 0);
+ 
 -- 
 2.53.0
 
