@@ -1,61 +1,61 @@
-Return-Path: <stable+bounces-255101-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-255128-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 4KVeL76cGGr+lQgAu9opvQ
-	(envelope-from <stable+bounces-255101-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 21:51:26 +0200
+	id 6FJ9JG+dGGpAlggAu9opvQ
+	(envelope-from <stable+bounces-255128-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 21:54:23 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 67E505F758B
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 21:51:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 54A975F7675
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 21:54:23 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 3913230087E2
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 19:51:25 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 3841A3008C37
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 19:54:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6BA2E31159C;
-	Thu, 28 May 2026 19:51:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 77BDE40961D;
+	Thu, 28 May 2026 19:54:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=narfation.org header.i=@narfation.org header.b="YGDX7zs+"
+	dkim=pass (1024-bit key) header.d=narfation.org header.i=@narfation.org header.b="g5r8/nTy"
 X-Original-To: stable@vger.kernel.org
 Received: from dvalin.narfation.org (dvalin.narfation.org [213.160.73.56])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DEEC22C0F8C
-	for <stable@vger.kernel.org>; Thu, 28 May 2026 19:51:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AE30033CE8A
+	for <stable@vger.kernel.org>; Thu, 28 May 2026 19:54:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=213.160.73.56
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779997882; cv=none; b=KnEm8SW/PKw0Y3H6Ob+tqMhCET8WReM1FB6cBaEnkdQDpoA1Iew3mRPKGtQt22cuq5Eq4ogT1UyjNbL1jUGfs8SNmd+tKGd+vMDqB6FA7vrZngHarzXmxOnfGC7nrdPtfphAq4/ECn3Q5sFT0clyGekrN1Ohe0FKLrOUVMDEKsg=
+	t=1779998048; cv=none; b=nCuOSPaqPYGTDicosfnThFZRX/Xl0Mtwvl4rzjxLiIOxOoZaObxnLG3eGDGLZEvFyNL3s6S4O6avdHnv+lWawCRpf8gUijV6x2sdoMfR+FXywQHlwqzv5CsR9JcG4HlJuBuIT4rXJUW2gLAbGggFrVow+viIoUqlb4AbZhL/urU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779997882; c=relaxed/simple;
-	bh=tfzG/SapoK3jJCWt5OyjO4GizmeHDfKS1PitsL1QRdk=;
+	s=arc-20240116; t=1779998048; c=relaxed/simple;
+	bh=inuZo390/RmlB+Xpywh9rW1iamgpX3VTEB1RZBSnKBI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Cuz1/3De5C1ZX2CeT01BmdHplV2SIc65C3L7WhLtosZdRaGApkZ6kRnJBb2C0tlfa/kckM2UY7SOgRQOkhf/IjhhgTVJB8rTHOf9I0dcwHADoByWoAgxNnpzPC8FkC8m82I8sd+Ej57VBDr1nZAIw8tzKRDFx0NA6pxIywetdhg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=narfation.org; spf=pass smtp.mailfrom=narfation.org; dkim=pass (1024-bit key) header.d=narfation.org header.i=@narfation.org header.b=YGDX7zs+; arc=none smtp.client-ip=213.160.73.56
+	 MIME-Version; b=tGDG8g8pYfurZQlIMDTifWU7p0PjQvBFf/yIL3Gl0ugNwm8794Jj0FEBci7fFg47HiU5IzfEViQjC8GwMS41nUIfgl4/tMaFgIk5N28biHSDJqjhKfuDlEpeFoWvip3zNew3LvZ+nprL7bxWk/3gnLkqUNQp5KNJ5hZGn4fi/50=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=narfation.org; spf=pass smtp.mailfrom=narfation.org; dkim=pass (1024-bit key) header.d=narfation.org header.i=@narfation.org header.b=g5r8/nTy; arc=none smtp.client-ip=213.160.73.56
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=narfation.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=narfation.org
-Received: by dvalin.narfation.org (Postfix) id DE38220044;
-	Thu, 28 May 2026 19:51:18 +0000 (UTC)
+Received: by dvalin.narfation.org (Postfix) id B1A5E1FE5D;
+	Thu, 28 May 2026 19:54:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=narfation.org;
-	s=20121; t=1779997878;
+	s=20121; t=1779998043;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=hZ9nzkZVN5gDU97M/gRRUoh9Fx+CAV+SnKu9C1eFNGA=;
-	b=YGDX7zs+yZo8+dr0UNB2B6xxhAnTbe7aMJowOq/N1iPPFlIYy0NMikA7J/WvF0+HO7EOfl
-	ubP/4sbqXgFvHJlRDmGxD6Sh5dE1UB0bWzaVUuNG/dq88A6QVmRU4NZ+5pomv66x725LLE
-	eWLFeroAMmLoMbblbo7gdYN7YdE7Ngs=
+	bh=uuN994Wm2AsN9tcRgy1B/JOxdF5M1LI2oGrsyPlNxto=;
+	b=g5r8/nTyBG0jjh2BfJcQKVC3V2roVpu4wCp0BpPbqVIh2+4Qvm0x19+7tiM6kFXQv0Lnmb
+	bmMhHy6UqMLUwY1GDg0NBTc4WO7Z4pFquwGgt21j+6jh5uxD02GX+5E4bfvIGg+yadM/pr
+	5M3J83qieRDRwrctqWt3cGyWJ7Im3Sk=
 From: Sven Eckelmann <sven@narfation.org>
 To: stable@vger.kernel.org
 Cc: Sven Eckelmann <sven@narfation.org>,
 	stable@kernel.org
-Subject: [PATCH 6.1.y] batman-adv: tvlv: abort OGM send on tvlv append failure
-Date: Thu, 28 May 2026 21:51:13 +0200
-Message-ID: <20260528195113.336137-1-sven@narfation.org>
+Subject: [PATCH 5.15.y] batman-adv: tvlv: abort OGM send on tvlv append failure
+Date: Thu, 28 May 2026 21:53:56 +0200
+Message-ID: <20260528195356.377792-1-sven@narfation.org>
 X-Mailer: git-send-email 2.47.3
-In-Reply-To: <2026052823-stowaway-fanfare-f0f7@gregkh>
-References: <2026052823-stowaway-fanfare-f0f7@gregkh>
+In-Reply-To: <2026052824-comfort-lake-0243@gregkh>
+References: <2026052824-comfort-lake-0243@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -73,7 +73,7 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-255101-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-255128-lists,stable=lfdr.de];
 	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
@@ -89,7 +89,7 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	NEURAL_HAM(-0.00)[-1.000];
 	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
 	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,narfation.org:email,narfation.org:mid,narfation.org:dkim]
-X-Rspamd-Queue-Id: 67E505F758B
+X-Rspamd-Queue-Id: 54A975F7675
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
@@ -120,7 +120,7 @@ Signed-off-by: Sven Eckelmann <sven@narfation.org>
  4 files changed, 40 insertions(+), 21 deletions(-)
 
 diff --git a/net/batman-adv/bat_iv_ogm.c b/net/batman-adv/bat_iv_ogm.c
-index 0618f8efe88e..dcc5b4c1da35 100644
+index 587a9053b4d4..973987419537 100644
 --- a/net/batman-adv/bat_iv_ogm.c
 +++ b/net/batman-adv/bat_iv_ogm.c
 @@ -789,6 +789,7 @@ static void batadv_iv_ogm_schedule_buff(struct batadv_hard_iface *hard_iface)
@@ -154,7 +154,7 @@ index 0618f8efe88e..dcc5b4c1da35 100644
  
  	batadv_ogm_packet = (struct batadv_ogm_packet *)(*ogm_buff);
 diff --git a/net/batman-adv/bat_v_ogm.c b/net/batman-adv/bat_v_ogm.c
-index deef817b28f0..428ad9f0f47f 100644
+index c357cf72396e..45473cbd630f 100644
 --- a/net/batman-adv/bat_v_ogm.c
 +++ b/net/batman-adv/bat_v_ogm.c
 @@ -265,9 +265,9 @@ static void batadv_v_ogm_send_softif(struct batadv_priv *bat_priv)
@@ -208,13 +208,13 @@ index deef817b28f0..428ad9f0f47f 100644
  	ogm_packet = (struct batadv_ogm2_packet *)skb->data;
  	ogm_packet->seqno = htonl(atomic_read(&bat_priv->bat_v.ogm_seqno));
 diff --git a/net/batman-adv/tvlv.c b/net/batman-adv/tvlv.c
-index 7ec2e2343884..83e20b0be747 100644
+index 992773376e51..481213743970 100644
 --- a/net/batman-adv/tvlv.c
 +++ b/net/batman-adv/tvlv.c
-@@ -8,6 +8,7 @@
+@@ -7,6 +7,7 @@
+ #include "main.h"
  
  #include <linux/byteorder/generic.h>
- #include <linux/container_of.h>
 +#include <linux/errno.h>
  #include <linux/etherdevice.h>
  #include <linux/gfp.h>
@@ -266,7 +266,7 @@ index 7ec2e2343884..83e20b0be747 100644
  
  /**
 diff --git a/net/batman-adv/tvlv.h b/net/batman-adv/tvlv.h
-index 4cf8af00fc11..485b2a607099 100644
+index 54f2a35653d0..ffbc93f78688 100644
 --- a/net/batman-adv/tvlv.h
 +++ b/net/batman-adv/tvlv.h
 @@ -15,7 +15,7 @@
