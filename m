@@ -1,59 +1,59 @@
-Return-Path: <stable+bounces-255484-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-256084-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id QKFPCwOjGGrJlggAu9opvQ
-	(envelope-from <stable+bounces-255484-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:18:11 +0200
+	id 4BS8Eq+pGGpolwgAu9opvQ
+	(envelope-from <stable+bounces-256084-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:46:39 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id A3BF65F8565
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:18:10 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id BADB25F9854
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:46:36 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 7221530F9B6C
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 20:10:43 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 1933F3129847
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 20:38:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9A91A352019;
-	Thu, 28 May 2026 20:10:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 74A4B330D35;
+	Thu, 28 May 2026 20:38:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wmnT3i6+"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="C/Ml07Me"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 643B832ABC0;
-	Thu, 28 May 2026 20:10:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 523D12E7F25;
+	Thu, 28 May 2026 20:38:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779999041; cv=none; b=H6LkR4LQkhGom8Xd5zUKP/6+JcDWjGvdtcqJNnsxpUj35FDIsATXXqsMnevJbvrzlbCLC2x59ed7BORAt1MJXVoPeW0Jy1JdB/v6zLGvBKKYlUiaKK3JbJ9v7c5r57s3eG6M41We7YzRdJAIZ59uXEW1W9Wz0RbeJjqh4CkX0PA=
+	t=1780000710; cv=none; b=IdTAl0b9vgp3OQ4gORESPNQiGmQGGKlVcpO1tklfVetB0d+BQe1T/20DuJWMu2znmEp85W7sViwUVZ7zYXXDmiSW+gUEiiAJsLulh+h9DruE3rwJ4UR/ezX+1LOb73mRUS2udo2UBGE2hVYjbIKnXTpgWwKkO588CBS1BBbhbzM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779999041; c=relaxed/simple;
-	bh=yJ6l60dlPvvR6HIy5/atqF5nLYJcy5ekaiXvXbQmlqc=;
+	s=arc-20240116; t=1780000710; c=relaxed/simple;
+	bh=T+eEFRse8n1qs9R+xTGBbLd4L7knUEUgploeDt9e+Bs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=sAuYXAcIh+JuBcVwOPAYNMDR62mIb805E/xU7GRxv8ZAMYLRdu2qTnqEKxbV/+Y0nz3uTY25uGIXuW1kauoTCZN/UfEUSOM++YEbWq4pTy2P3FnpeVonFlAhWGDWPpOEaBesbel/q7pm2RcBA5pu6/z0M+Cy3D7Pmh7Rr129w/U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wmnT3i6+; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C30E51F000E9;
-	Thu, 28 May 2026 20:10:39 +0000 (UTC)
+	 MIME-Version; b=LFf6uPzMy8FL/Xy1ezLZDfluV83hvY7+qN1aiuwtEzVggvMf9xlrUEA9F0YeKwAEDeX8a0Rhze1TNVq6PyxBMQcanX6PAcER/eTqlH21fd0X9ZXMHn26VaIV8uND5ATBaBsP9aDK52bf+qYTvaRSqT18QRhSbrX8vF6xY529V6c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=C/Ml07Me; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 745851F000E9;
+	Thu, 28 May 2026 20:38:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779999040;
-	bh=ww9fczWBXHshipt+SxjrtwbL3pKSHph29fBvj0M8fo4=;
+	s=korg; t=1780000709;
+	bh=x/8WlQb44HIL/rxjh5bV8m/m1fBuTZtNmB7uNXcqTDo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=wmnT3i6+iH769vASQ0H/b9/PkYPSZaHaJQXomdoVavCTu/rjjyYNKVL53XAYOcMEG
-	 C/z2KTjMnOzDGfRkB0PYT7/+8Vf50T8cg9dgB2VtsfTRWNdDY6Ce58d82xipwMe2yd
-	 zW/a/b8eC6KISY+W9KqmkM3lL5/E9uF9CikptDc4=
+	b=C/Ml07MehrWk52wzUL733lH5LL2VCgXy1PYx5z31t/WmuUfIrYqnWBJxGWApbILCK
+	 LUW8QyTGF3Elr8uUIwOlcOAtxdu1iFDJODY6ZeHta9DifmJI5yNXWnYdurGC9bn3T2
+	 Tra1LPmqRg1mmwQTLVnq45V+dRjDbRqPBrABxhII=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Erni Sri Satya Vennela <ernis@linux.microsoft.com>,
-	Paolo Abeni <pabeni@redhat.com>,
+	Marek Vasut <marek.vasut+renesas@mailbox.org>,
+	Geert Uytterhoeven <geert+renesas@glider.be>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 7.0 386/461] net: mana: Fix TOCTOU double-fetch of hwc_msg_id from DMA buffer
-Date: Thu, 28 May 2026 21:48:35 +0200
-Message-ID: <20260528194658.632771095@linuxfoundation.org>
+Subject: [PATCH 6.12 142/272] ARM: dts: renesas: genmai: Drop superfluous cells
+Date: Thu, 28 May 2026 21:48:36 +0200
+Message-ID: <20260528194633.348051308@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260528194646.819809818@linuxfoundation.org>
-References: <20260528194646.819809818@linuxfoundation.org>
+In-Reply-To: <20260528194629.379955525@linuxfoundation.org>
+References: <20260528194629.379955525@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,128 +64,74 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	TAGGED_FROM(0.00)[bounces-256084-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
-	RCVD_TLS_LAST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-255484-lists,stable=lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
 	TO_DN_SOME(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	RCPT_COUNT_FIVE(0.00)[6];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
+	TAGGED_RCPT(0.00)[stable,renesas];
+	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,msgid.link:url,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo]
-X-Rspamd-Queue-Id: A3BF65F8565
+	DBL_BLOCKED_OPENRESOLVER(0.00)[mailbox.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,msgid.link:url,glider.be:email,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,1.18.168.128:email]
+X-Rspamd-Queue-Id: BADB25F9854
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-7.0-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Erni Sri Satya Vennela <ernis@linux.microsoft.com>
+From: Marek Vasut <marek.vasut+renesas@mailbox.org>
 
-[ Upstream commit 35f0f0a2536a4d604b4dbad92c85c4a8fdebb870 ]
+[ Upstream commit 714e1d6bba0e0abe5c87c8e189a35fa690540df4 ]
 
-In mana_hwc_rx_event_handler(), resp->response.hwc_msg_id is read from
-DMA-coherent memory and bounds-checked, then mana_hwc_handle_resp()
-re-reads the same field from the same DMA buffer for test_bit() and
-pointer arithmetic.
+Drop superfluous address-cells and size-cells to fix DTC W=1 warning:
 
-DMA-coherent memory is mapped uncacheable on x86 and is shared,
-unencrypted, in Confidential VMs (SEV-SNP/TDX), so each load goes
-directly to host-visible memory. A H/W can modify the value
-between the check and the use, bypassing the bounds validation.
+    arch/arm/boot/dts/renesas/r7s72100-genmai.dts:28.17-55.4: Warning (avoid_unnecessary_addr_size): /flash@18000000: unnecessary #address-cells/#size-cells without "ranges", "dma-ranges" or child "reg" or "ranges" property
 
-Fix this by reading hwc_msg_id exactly once using READ_ONCE() into a
-stack-local variable in mana_hwc_rx_event_handler(), and passing the
-validated value as a parameter to mana_hwc_handle_resp().
-
-Fixes: ca9c54d2d6a5 ("net: mana: Add a driver for Microsoft Azure Network Adapter (MANA)")
-Signed-off-by: Erni Sri Satya Vennela <ernis@linux.microsoft.com>
-Link: https://patch.msgid.link/20260514194156.466823-1-ernis@linux.microsoft.com
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Signed-off-by: Marek Vasut <marek.vasut+renesas@mailbox.org>
+Fixes: 30e0a8cf886cb459 ("ARM: dts: renesas: genmai: Add FLASH nodes")
+Reviewed-by: Geert Uytterhoeven <geert+renesas@glider.be>
+Link: https://patch.msgid.link/20260327234244.91707-6-marek.vasut+renesas@mailbox.org
+Signed-off-by: Geert Uytterhoeven <geert+renesas@glider.be>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- .../net/ethernet/microsoft/mana/hw_channel.c  | 23 +++++++++++--------
- 1 file changed, 13 insertions(+), 10 deletions(-)
+ arch/arm/boot/dts/renesas/r7s72100-genmai.dts | 3 ---
+ 1 file changed, 3 deletions(-)
 
-diff --git a/drivers/net/ethernet/microsoft/mana/hw_channel.c b/drivers/net/ethernet/microsoft/mana/hw_channel.c
-index 48a9acea4ab6c..12d73470fd6bb 100644
---- a/drivers/net/ethernet/microsoft/mana/hw_channel.c
-+++ b/drivers/net/ethernet/microsoft/mana/hw_channel.c
-@@ -77,21 +77,19 @@ static int mana_hwc_post_rx_wqe(const struct hwc_wq *hwc_rxq,
- }
+diff --git a/arch/arm/boot/dts/renesas/r7s72100-genmai.dts b/arch/arm/boot/dts/renesas/r7s72100-genmai.dts
+index 28e703e0f152b..9bfbd25b25a24 100644
+--- a/arch/arm/boot/dts/renesas/r7s72100-genmai.dts
++++ b/arch/arm/boot/dts/renesas/r7s72100-genmai.dts
+@@ -38,9 +38,6 @@ flash@18000000 {
+ 		clocks = <&mstp9_clks R7S72100_CLK_SPIBSC0>;
+ 		power-domains = <&cpg_clocks>;
  
- static void mana_hwc_handle_resp(struct hw_channel_context *hwc, u32 resp_len,
--				 struct hwc_work_request *rx_req)
-+				 struct hwc_work_request *rx_req, u16 msg_id)
- {
- 	const struct gdma_resp_hdr *resp_msg = rx_req->buf_va;
- 	struct hwc_caller_ctx *ctx;
- 	int err;
- 
--	if (!test_bit(resp_msg->response.hwc_msg_id,
--		      hwc->inflight_msg_res.map)) {
--		dev_err(hwc->dev, "hwc_rx: invalid msg_id = %u\n",
--			resp_msg->response.hwc_msg_id);
-+	if (!test_bit(msg_id, hwc->inflight_msg_res.map)) {
-+		dev_err(hwc->dev, "hwc_rx: invalid msg_id = %u\n", msg_id);
- 		mana_hwc_post_rx_wqe(hwc->rxq, rx_req);
- 		return;
- 	}
- 
--	ctx = hwc->caller_ctx + resp_msg->response.hwc_msg_id;
-+	ctx = hwc->caller_ctx + msg_id;
- 	err = mana_hwc_verify_resp_msg(ctx, resp_msg, resp_len);
- 	if (err)
- 		goto out;
-@@ -251,6 +249,7 @@ static void mana_hwc_rx_event_handler(void *ctx, u32 gdma_rxq_id,
- 	struct gdma_sge *sge;
- 	u64 rq_base_addr;
- 	u64 rx_req_idx;
-+	u16 msg_id;
- 	u8 *wqe;
- 
- 	if (WARN_ON_ONCE(hwc_rxq->gdma_wq->id != gdma_rxq_id))
-@@ -269,13 +268,17 @@ static void mana_hwc_rx_event_handler(void *ctx, u32 gdma_rxq_id,
- 	rx_req = &hwc_rxq->msg_buf->reqs[rx_req_idx];
- 	resp = (struct gdma_resp_hdr *)rx_req->buf_va;
- 
--	if (resp->response.hwc_msg_id >= hwc->num_inflight_msg) {
--		dev_err(hwc->dev, "HWC RX: wrong msg_id=%u\n",
--			resp->response.hwc_msg_id);
-+	/* Read msg_id once from DMA buffer to prevent TOCTOU:
-+	 * DMA memory is shared/unencrypted in CVMs - host can
-+	 * modify it between reads.
-+	 */
-+	msg_id = READ_ONCE(resp->response.hwc_msg_id);
-+	if (msg_id >= hwc->num_inflight_msg) {
-+		dev_err(hwc->dev, "HWC RX: wrong msg_id=%u\n", msg_id);
- 		return;
- 	}
- 
--	mana_hwc_handle_resp(hwc, rx_oob->tx_oob_data_size, rx_req);
-+	mana_hwc_handle_resp(hwc, rx_oob->tx_oob_data_size, rx_req, msg_id);
- 
- 	/* Can no longer use 'resp', because the buffer is posted to the HW
- 	 * in mana_hwc_handle_resp() above.
+-		#address-cells = <1>;
+-		#size-cells = <1>;
+-
+ 		partitions {
+ 			compatible = "fixed-partitions";
+ 			#address-cells = <1>;
 -- 
 2.53.0
 
