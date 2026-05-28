@@ -1,181 +1,151 @@
-Return-Path: <stable+bounces-254706-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-254707-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id SByGLnWuF2qiNAgAu9opvQ
-	(envelope-from <stable+bounces-254706-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 04:54:45 +0200
+	id IBJJNMewF2p+NggAu9opvQ
+	(envelope-from <stable+bounces-254707-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 05:04:39 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2DD275EBFF7
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 04:54:44 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 757495EC0A0
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 05:04:39 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id A7CE6312483F
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 02:48:58 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 3459B30B056F
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 02:57:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6CE0A21D3F5;
-	Thu, 28 May 2026 02:48:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="T5U7ChHy"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 51BBD2FB632;
+	Thu, 28 May 2026 02:57:34 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pg1-f170.google.com (mail-pg1-f170.google.com [209.85.215.170])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from cstnet.cn (smtp25.cstnet.cn [159.226.251.25])
+	(using TLSv1.2 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E67AE2DF153
-	for <stable@vger.kernel.org>; Thu, 28 May 2026 02:48:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.170
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 562582E2DDD;
+	Thu, 28 May 2026 02:57:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=159.226.251.25
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779936538; cv=none; b=ZkCNw9/FiNCihn24NNtkFvHV+JEesPHDRTjzXHZl9j6wpEw/R6aLTLz56FMCxA/Mf8noG8UjFatF3a8nS4rfCQ6KhZeG3CK5f8v+vRjqnVGnJbLW/aXiGKDr3F5lYO1X6jmr8LkHYAvPV2hnpoELED80jHmsyNSXlxBNrkuVWB8=
+	t=1779937054; cv=none; b=YKTy8BOKjZ70gZRF7ghZhHeayby+1KxaSIepr41d/mVomkrLVSyhjgIzgB1GrNvdavJBofhRtx7NbjTA8adKLWIGOt0kPtQXirIhiz7xx+U16SbVcnFmmqW5vjJlae76osdQb9RLy0KunpsY8Bztqiu3OHdLlky5w/iizUXhNHs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779936538; c=relaxed/simple;
-	bh=4ILmcE2UVRvUA5w/bCMsuoZ6029LYusklIg66JvviMc=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=DUY0+IISAPQ6eonJ53k3y8h10smJKv6QkkPlQ7qdJcdUV/oxu7CIbZ6n6HHBKWG5zGC2fTJZYWuvTry83OUiQg5eH/88bacaHvLnfDvcR79DYNuTngnviORBGLgEPXPlhjrsuvlzFu4fz9Cbv36J5QTfyGcKaA4S48E6tBZmpAE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=T5U7ChHy; arc=none smtp.client-ip=209.85.215.170
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pg1-f170.google.com with SMTP id 41be03b00d2f7-c8025f1c227so9409159a12.2
-        for <stable@vger.kernel.org>; Wed, 27 May 2026 19:48:56 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1779936536; x=1780541336; darn=vger.kernel.org;
-        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
-         :mime-version:subject:date:from:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=UdZHIVC8VqdiF0LxnTx3Ka4A/RjNztw5bpRG2RMXPPI=;
-        b=T5U7ChHyEZhxolxb0MDGheEdL2EnsmL94QT1nbR4/jfJv3CfiyzggSxIVzszeOVtdw
-         IL9/fhUf1pHx2ZfARCbIRcw1fYW/smBXRp/1hqvNZ/2YbrDSjjXi2r1O+OYfsX3iE+lj
-         Q7FdHlLkao4e6kEHZ9kKBrQzHXZMtu2BH3jJAWFgv+OzeSBY/PP1UZTJYNRJq1gMtxhk
-         pNFk7Ytfe0lZMoI1RdZ+HUWf1PBFDDDwCdcjrsS1xGNo6XFbH82ZiGH7kpm/ri1wPUmY
-         25TWRxYM3Csw+e/YrVkc2UYMmH7NTNiKCkpHbQbrDUHfsmwIohUb1lomLhje3CgO4pP3
-         hIgA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1779936536; x=1780541336;
-        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
-         :mime-version:subject:date:from:x-gm-gg:x-gm-message-state:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=UdZHIVC8VqdiF0LxnTx3Ka4A/RjNztw5bpRG2RMXPPI=;
-        b=D3P3VxVHoT2tRYIKlbLDrf3TNjt/SJgrWk/NgLfs6tzFUP1gdW0n0Q0LC+EMXx14yh
-         z1xIJpjs0cwd95Y78BnCHj5O3nL5iF1j7PkxKeTBc+OmQusbGV4VFDFaUkRIw7QKG6WQ
-         zIuv8hexI8KQAlaDvq5ZQ1FQsrhx3NKLRYTd9DXr7DqFIGkdeTxotW/Yc/+ldTkT3nvq
-         HU5qdeIxE+TC6n/7CbVT8SWtJPB+SjbnYn7N8y+pKNaMWi5yI136omZ/Zc8KBsDSeLkN
-         n1vti2USsZkFrjpSfub/VgQISQmJmM7Ga9Td2wnxEawwobbccoDqyahM1t9mgQttrQaY
-         Orag==
-X-Forwarded-Encrypted: i=1; AFNElJ+9bi4H/rcSbP3Y5EwkTWaU0Eso8gGs7aUerqwYAeSWNKQ+5ejkbh1EErLe5iJpK7tDZ4MvwhE=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwCSkWfAK1CpA25OY+nrNlchZMyMWP6VbDZGBXSduubD7ws+xXa
-	6pwwdI7RdrJUftYOQ2Aw20w8MNcVAAYjJ25btiPJm497QA/Y3M1FiQUr
-X-Gm-Gg: Acq92OHk2wpiw0if/bH/qWZL+aBxeoQ1N4SWhpLMpE6DIBLS6nz9w7g3dPeGLLkGUZM
-	w6btfK6S2yfoMpBcVcrWBSWAaPD+ei1RvpzKSk9GvtRhpPLS/k7Nykol5xY4VMOrHTss+M/eRuB
-	pqodS+itGYcL+Dr7J+OX9iwoo1fXu8gEMrH2epyiXU/Yl1Vy/hk+HV2F75yBUjpyX0v4a9q1S7T
-	P6J35i1SRPufs6cr9zJ3daUDdC66yu+MLim5QjvkCEpN0u5tTnXG9fsms/jyvGPdPkPxKD6KlgJ
-	+FS7cos7bL/oHtZo6mSHYwXZHLEZt4bBF3xNFnqZqq+eXDMHowvtLW//yu+iv9HAQ5mAIe5QuGo
-	qYJ+yLoDCNOTxdYHE750FEDX/Ok6ZY6RDP4kUYncrFTNZmjEaDbQo8LRsITI8kiKYtGPDb40dbq
-	Cs85h+glQTen/mGMeuUfR+s6cnKBpxFadHQA==
-X-Received: by 2002:a05:6a00:238b:b0:835:5aa3:2dab with SMTP id d2e1a72fcca58-8415f1236aemr26567785b3a.6.1779936536313;
-        Wed, 27 May 2026 19:48:56 -0700 (PDT)
-Received: from [127.0.0.1] ([116.80.91.208])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-841f3cbcddbsm366877b3a.4.2026.05.27.19.48.53
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 27 May 2026 19:48:56 -0700 (PDT)
-From: Cunlong Li <shenxiaogll@gmail.com>
-Date: Thu, 28 May 2026 10:48:44 +0800
-Subject: [PATCH v3 1/2] zram: fix use-after-free in
- zram_bvec_write_partial()
+	s=arc-20240116; t=1779937054; c=relaxed/simple;
+	bh=SzbTmOjv4/rK6iFPkgMdazmxplSFeD7O0gwJa0Xu0xY=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=mb6R7DGRXfBccU01tteZ4jK2DrdI/Uuo9yKg1om7Wwi2/YU/KzHzp+6GWb3d+avJSZ0tJxmMkzkFPBkNJek1eA+tHoopIAA2J+lST4FoWrhpmkliqBhl84eCb1yG1CofeB6OPb9Wd9GZrjm9gB7VeXw3IHWnVmkuyy4QpdZSpF4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn; spf=pass smtp.mailfrom=iscas.ac.cn; arc=none smtp.client-ip=159.226.251.25
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=iscas.ac.cn
+Received: from dfae2b116770.home.arpa (unknown [36.110.52.2])
+	by APP-05 (Coremail) with SMTP id zQCowAC3RQkLrxdqiZWcEQ--.6243S2;
+	Thu, 28 May 2026 10:57:15 +0800 (CST)
+From: Wentao Liang <vulab@iscas.ac.cn>
+To: "Martin K . Petersen" <martin.petersen@oracle.com>
+Cc: Kees Cook <kees@kernel.org>,
+	Wentao Liang <vulab@iscas.ac.cn>,
+	linux-scsi@vger.kernel.org,
+	target-devel@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	stable@vger.kernel.org
+Subject: [PATCH v2] target: iscsi: cxgbit: fix cnp kref leak in __cxgbit_free_cdev_np()
+Date: Thu, 28 May 2026 02:57:01 +0000
+Message-Id: <20260528025701.1036636-1-vulab@iscas.ac.cn>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20260528-zram-v3-1-cab86eef8764@gmail.com>
-References: <20260528-zram-v3-0-cab86eef8764@gmail.com>
-In-Reply-To: <20260528-zram-v3-0-cab86eef8764@gmail.com>
-To: Minchan Kim <minchan@kernel.org>, 
- Sergey Senozhatsky <senozhatsky@chromium.org>, Jens Axboe <axboe@kernel.dk>, 
- Andrew Morton <akpm@linux-foundation.org>, 
- Yisheng Xie <xieyisheng1@huawei.com>
-Cc: Christoph Hellwig <hch@lst.de>, linux-block@vger.kernel.org, 
- linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
- Cunlong Li <shenxiaogll@gmail.com>, stable@vger.kernel.org
-X-Mailer: b4 0.14.3
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1779936530; l=1542;
- i=shenxiaogll@gmail.com; s=20260517; h=from:subject:message-id;
- bh=4ILmcE2UVRvUA5w/bCMsuoZ6029LYusklIg66JvviMc=;
- b=KynYLGaGfZewjfo8RGU3mhyIy/vlwWxgy9oFeOCxoXHK2kYgK2sfLrwnBPEM449prqRHxV4Ff
- gobRxeZpMNpCc9MhH6mBms/BlpM1EFCtEHdF4CNUFQvLFVvO0SNxIr4
-X-Developer-Key: i=shenxiaogll@gmail.com; a=ed25519;
- pk=SKFifnqPdsvsjuhUiq+Y9vtCdhyZ/LrRcfYn8eRq6AE=
-X-Spamd-Result: default: False [-2.16 / 15.00];
+Content-Transfer-Encoding: 8bit
+X-CM-TRANSID:zQCowAC3RQkLrxdqiZWcEQ--.6243S2
+X-Coremail-Antispam: 1UD129KBjvJXoW7tF47Wr1xZr4kZr1UuF4xXrb_yoW8Xw13pF
+	40kFyUJr1DJ3y3Kr4kJw4I9ryfua1ayrW3C348Cws0kws0vryDKFyYyw12qay5urWkur43
+	XF45Ar1UGryqy37anT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+	9KBjDU0xBIdaVrnRJUUUkG14x267AKxVW8JVW5JwAFc2x0x2IEx4CE42xK8VAvwI8IcIk0
+	rVWrJVCq3wAFIxvE14AKwVWUJVWUGwA2ocxC64kIII0Yj41l84x0c7CEw4AK67xGY2AK02
+	1l84ACjcxK6xIIjxv20xvE14v26ryj6F1UM28EF7xvwVC0I7IYx2IY6xkF7I0E14v26r4j
+	6F4UM28EF7xvwVC2z280aVAFwI0_Cr1j6rxdM28EF7xvwVC2z280aVCY1x0267AKxVWxJr
+	0_GcWle2I262IYc4CY6c8Ij28IcVAaY2xG8wAqx4xG64xvF2IEw4CE5I8CrVC2j2WlYx0E
+	2Ix0cI8IcVAFwI0_JrI_JrylYx0Ex4A2jsIE14v26r1j6r4UMcvjeVCFs4IE7xkEbVWUJV
+	W8JwACjcxG0xvY0x0EwIxGrwACjI8F5VA0II8E6IAqYI8I648v4I1lc7CjxVAaw2AFwI0_
+	JF0_Jw1l42xK82IYc2Ij64vIr41l4I8I3I0E4IkC6x0Yz7v_Jr0_Gr1lx2IqxVAqx4xG67
+	AKxVWUJVWUGwC20s026x8GjcxK67AKxVWUGVWUWwC2zVAF1VAY17CE14v26r126r1DMIIY
+	rxkI7VAKI48JMIIF0xvE2Ix0cI8IcVAFwI0_Jr0_JF4lIxAIcVC0I7IYx2IY6xkF7I0E14
+	v26r1j6r4UMIIF0xvE42xK8VAvwI8IcIk0rVWUJVWUCwCI42IY6I8E87Iv67AKxVWUJVW8
+	JwCI42IY6I8E87Iv6xkF7I0E14v26r1j6r4UYxBIdaVFxhVjvjDU0xZFpf9x0JUG0PhUUU
+	UU=
+X-CM-SenderInfo: pyxotu46lvutnvoduhdfq/1tbiBwkBA2oXgFyjjAAAsC
+X-Spamd-Result: default: False [0.04 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
-	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10];
+	MID_CONTAINS_FROM(1.00)[];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-254706-lists,stable=lfdr.de];
-	FREEMAIL_CC(0.00)[lst.de,vger.kernel.org,kvack.org,gmail.com];
+	TAGGED_FROM(0.00)[bounces-254707-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	RECEIVED_HELO_LOCALHOST(0.00)[];
+	DMARC_NA(0.00)[iscas.ac.cn];
+	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[gmail.com:+];
-	TO_DN_SOME(0.00)[];
+	FROM_HAS_DN(0.00)[];
 	MIME_TRACE(0.00)[0:+];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	FREEMAIL_FROM(0.00)[gmail.com];
-	RCVD_COUNT_FIVE(0.00)[5];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	FROM_NEQ_ENVFROM(0.00)[vulab@iscas.ac.cn,stable@vger.kernel.org];
+	R_DKIM_NA(0.00)[];
+	NEURAL_HAM(-0.00)[-0.996];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[shenxiaogll@gmail.com,stable@vger.kernel.org];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[11];
-	MID_RHS_MATCH_FROM(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[7];
+	TO_DN_SOME(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,chromium.org:email,lst.de:email]
-X-Rspamd-Queue-Id: 2DD275EBFF7
+	DBL_BLOCKED_OPENRESOLVER(0.00)[iscas.ac.cn:mid,iscas.ac.cn:email,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
+X-Rspamd-Queue-Id: 757495EC0A0
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-zram_read_page() picks the sync or async backing device read path
-based on whether the parent bio is NULL.  zram_bvec_write_partial()
-passes its parent bio down, so for ZRAM_WB slots the read is
-dispatched asynchronously and zram_read_page() returns 0 while the
-bio is still in flight.  The caller then runs memcpy_from_bvec(),
-zram_write_page() and __free_page() on the buffer, leaving the
-async read to write into a freed page.
+__cxgbit_free_cdev_np() calls cxgbit_get_cnp() which takes a kref
+reference on the cnp structure. This reference is only released on
+the immediate error path after cxgbit_get_cnp(). On the timeout path
+and the normal completion path that successfully processes the NP,
+the reference is never released via cxgbit_put_cnp(), leaking the
+kref.
 
-zram_bvec_read_partial() was switched to NULL in commit 4e3c87b9421d
-("zram: fix synchronous reads") for the same reason; the
-write_partial counterpart was missed.
+Add cxgbit_put_cnp(cnp) on the timeout and success paths to properly
+release the kref reference.
 
-Fixes: 8e654f8fbff5 ("zram: read page from backing device")
-Cc: Christoph Hellwig <hch@lst.de>
 Cc: stable@vger.kernel.org
-Reviewed-by: Christoph Hellwig <hch@lst.de>
-Reviewed-by: Sergey Senozhatsky <senozhatsky@chromium.org>
-Signed-off-by: Cunlong Li <shenxiaogll@gmail.com>
+Fixes: 9730ffcb8957 ("cxgbit: add files for cxgbit.ko")
+Signed-off-by: Wentao Liang <vulab@iscas.ac.cn>
+
 ---
- drivers/block/zram/zram_drv.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+Change in v2:
+-Fix code error.
+---
+ drivers/target/iscsi/cxgbit/cxgbit_cm.c | 5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/block/zram/zram_drv.c b/drivers/block/zram/zram_drv.c
-index aebc710f0d6a..b23a8bbb687c 100644
---- a/drivers/block/zram/zram_drv.c
-+++ b/drivers/block/zram/zram_drv.c
-@@ -2333,7 +2333,7 @@ static int zram_bvec_write_partial(struct zram *zram, struct bio_vec *bvec,
- 	if (!page)
- 		return -ENOMEM;
+diff --git a/drivers/target/iscsi/cxgbit/cxgbit_cm.c b/drivers/target/iscsi/cxgbit/cxgbit_cm.c
+index 146705845fa3..f8cd6457666b 100644
+--- a/drivers/target/iscsi/cxgbit/cxgbit_cm.c
++++ b/drivers/target/iscsi/cxgbit/cxgbit_cm.c
+@@ -544,8 +544,10 @@ __cxgbit_free_cdev_np(struct cxgbit_device *cdev, struct cxgbit_np *cnp)
  
--	ret = zram_read_page(zram, page, index, bio);
-+	ret = zram_read_page(zram, page, index, NULL);
- 	if (!ret) {
- 		memcpy_from_bvec(page_address(page) + offset, bvec);
- 		ret = zram_write_page(zram, page, index);
-
+ 	ret = cxgbit_wait_for_reply(cdev, &cnp->com.wr_wait,
+ 				    0, 10, __func__);
+-	if (ret == -ETIMEDOUT)
++	if (ret == -ETIMEDOUT) {
++		cxgbit_put_cnp(cnp);
+ 		return ret;
++	}
+ 
+ 	if (ipv6 && cnp->com.cdev) {
+ 		struct sockaddr_in6 *sin6;
+@@ -558,6 +560,7 @@ __cxgbit_free_cdev_np(struct cxgbit_device *cdev, struct cxgbit_np *cnp)
+ 
+ 	cxgb4_free_stid(cdev->lldi.tids, stid,
+ 			cnp->com.local_addr.ss_family);
++	cxgbit_put_cnp(cnp);
+ 	return 0;
+ }
+ 
 -- 
-2.30.2
+2.34.1
 
 
