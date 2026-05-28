@@ -1,64 +1,60 @@
-Return-Path: <stable+bounces-256141-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-255898-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id UC/jARKqGGpolwgAu9opvQ
-	(envelope-from <stable+bounces-256141-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:48:18 +0200
+	id cB3xK8ymGGrClggAu9opvQ
+	(envelope-from <stable+bounces-255898-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:34:20 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id BD2CB5F994A
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:48:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 815355F8FF6
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:34:20 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 51CDA309E7CD
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 20:41:30 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 9CAE63076F9B
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 20:29:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 536F63469E0;
-	Thu, 28 May 2026 20:41:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 84E641C3318;
+	Thu, 28 May 2026 20:29:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Uch5u3Z5"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fzchRxPx"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1615A2E7F25;
-	Thu, 28 May 2026 20:41:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 64F7E2E7379;
+	Thu, 28 May 2026 20:29:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780000871; cv=none; b=OxMnC5CBSenFQTwXCiNo8CNMkthhzXH/l6RSFwg/Fk1YjeX/eMsq44Qh2yHTwryCNJIdsSlG3/eydhq0GMZNjiFKw/sE9Mx7eoa0nfxPU63KlV7YT8BRHGd+EJVOC/3Y62/JUbH1Xqbgb5o3+ho1GK2rN0Ff0W6hJmArLzJLVK4=
+	t=1780000188; cv=none; b=J6997X7R3Ci30Xc86ys1fYYWcudQVIrNBgkloB9JH4yHNRNF0AR57bJQxO6To67QtZpdCzT7QUqahH7AHG0VWV25Dm6yIrWK0N0a8nBAV19tT6aPaHwANe5pMZzJkWR3MGKQ1R3adsRZL+D0xSGqv8FU60NxSOcyW3bfnL41//Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780000871; c=relaxed/simple;
-	bh=4FXsmHgIoevlN42nyRD5C/Fyc5uMenT6fj+TXTLKCro=;
+	s=arc-20240116; t=1780000188; c=relaxed/simple;
+	bh=XBlsluu7Qgr6xD6RA/o3VWdGtz77994/h5WMfXZqTFU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=iCCZVnZL4MXiUa8fgC5nWYw8JSEDZJG1yzQKGIdwt294PqKWJ0+LpvKAdj3l1y267R+nca3QUUALjU2c2xdQ0m7s1uQYM9cXcc1lZkO7W6VR1vp/1QSZElwM8TG8tqwWtVUTsLQjxQ1woLM3Woexz+0ASCL882uSM9n/TztcvRc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Uch5u3Z5; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7B3781F00A3A;
-	Thu, 28 May 2026 20:41:09 +0000 (UTC)
+	 MIME-Version:Content-Type; b=CwiFaAz1Mmg4GwtADUjJQeJOpAnur/Mwv4rMjMDDp0JAx61FqXEGaqCql0ODb3Tzl/qjJDFE+e8f1OS7OVbl98/IYnMnz2uqjFdFI1qkC61mxvWjwtcqUPS3iQmXFtwXuPGAyh4NK5sCc3EzHiqAm38Fh5Vmw81DofotrG6tLzM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fzchRxPx; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C1FEB1F000E9;
+	Thu, 28 May 2026 20:29:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780000870;
-	bh=E0z8vpZBAkikLUK7D8Amg49hNOwYTLBOeTpTNWxiFVQ=;
+	s=korg; t=1780000187;
+	bh=9PAyPaXYRlTd1skBwP+oZhzETQrE195YOq2MNiKaaBI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=Uch5u3Z5XVV+GnilQ9r34+EL/S5EX8PMHzTO7V8q4h1mI2d3cnv2BXwMSlV0aKV38
-	 gT8ydjdL7Mhm0qNiYdEUr8vhjHgwHOhldYDtNGEL+kdrxX8KlWOZmMZvb5Szt9PUp6
-	 cCvjogXw9taJc41hAESnFk9kzZVutrQ9hD9/25Q0=
+	b=fzchRxPxJrjUK8g2ajRpLoD9fwQo70oqG8HpKwrRftVFIUZPvLTo+nX1jZRk7pTQE
+	 s8A4B7likSnC29/zT5p25rcpCMlDOVpJQXLsprEq3CZii5dSzf+Tx4maih97s+EC0B
+	 wv5HyL+ZqCvcAzJfS0IJ/TaMS/RG0xFAeZc0f20Q=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Steve French <sfrench@samba.org>,
-	David Howells <dhowells@redhat.com>,
-	"Paulo Alcantara (Red Hat)" <pc@manguebit.org>,
-	Matthew Wilcox <willy@infradead.org>,
-	netfs@lists.linux.dev,
-	linux-fsdevel@vger.kernel.org,
-	Christian Brauner <brauner@kernel.org>,
+	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 197/272] netfs: Fix early put of sink folio in netfs_read_gaps()
+Subject: [PATCH 6.18 333/377] platform/x86: intel-hid: Check ACPI_HANDLE() against NULL
 Date: Thu, 28 May 2026 21:49:31 +0200
-Message-ID: <20260528194634.776862235@linuxfoundation.org>
+Message-ID: <20260528194648.056597229@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260528194629.379955525@linuxfoundation.org>
-References: <20260528194629.379955525@linuxfoundation.org>
+In-Reply-To: <20260528194638.371537336@linuxfoundation.org>
+References: <20260528194638.371537336@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -68,114 +64,87 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_MISSING_CHARSET(0.50)[];
 	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-256141-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
+	TAGGED_FROM(0.00)[bounces-255898-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	MIME_TRACE(0.00)[0:+];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	FROM_HAS_DN(0.00)[];
 	TO_DN_SOME(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
 	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
-	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[11];
 	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,linux.dev:email,infradead.org:email,msgid.link:url,manguebit.org:email,samba.org:email]
-X-Rspamd-Queue-Id: BD2CB5F994A
+	RCPT_COUNT_SEVEN(0.00)[7];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,intel.com:email,linuxfoundation.org:mid,linuxfoundation.org:dkim]
+X-Rspamd-Queue-Id: 815355F8FF6
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: David Howells <dhowells@redhat.com>
+From: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 
-[ Upstream commit 3e5dd91b87a8b1450217b56a336bee315f40da7d ]
+[ Upstream commit 5c69e090ae5dd93d910f70db0796357080707d26 ]
 
-Fix netfs_read_gaps() to release the sink page it uses after waiting for
-the request to complete.  The way the sink page is used is that an
-ITER_BVEC-class iterator is created that has the gaps from the target folio
-at either end, but has the sink page tiled over the middle so that a single
-read op can fill in both gaps.
+Every platform driver can be forced to match a device that doesn't match
+its list of device IDs because of device_match_driver_override(), so
+platform drivers that rely on the existence of a device's ACPI companion
+object need to verify its presence.
 
-The bug was found by KASAN detecting a UAF on the generic/075 xfstest in
-the cifsd kernel thread that handles reception of data from the TCP socket:
+Accordingly, add a requisite ACPI_HANDLE() check against NULL to the
+platform/x86 intel-hid driver.
 
- BUG: KASAN: use-after-free in _copy_to_iter+0x48a/0xa20
- Write of size 885 at addr ffff888107f92000 by task cifsd/1285
- CPU: 2 UID: 0 PID: 1285 Comm: cifsd Not tainted 7.0.0 #6 PREEMPT(lazy)
- Call Trace:
-  dump_stack_lvl+0x5d/0x80
-  print_report+0x17f/0x4f1
-  kasan_report+0x100/0x1e0
-  kasan_check_range+0x10f/0x1e0
-  __asan_memcpy+0x3c/0x60
-  _copy_to_iter+0x48a/0xa20
-  __skb_datagram_iter+0x2c9/0x430
-  skb_copy_datagram_iter+0x6e/0x160
-  tcp_recvmsg_locked+0xce0/0x1130
-  tcp_recvmsg+0xeb/0x300
-  inet_recvmsg+0xcf/0x3a0
-  sock_recvmsg+0xea/0x100
-  cifs_readv_from_socket+0x3a6/0x4d0 [cifs]
-  cifs_read_iter_from_socket+0xdd/0x130 [cifs]
-  cifs_readv_receive+0xaad/0xb10 [cifs]
-  cifs_demultiplex_thread+0x1148/0x1740 [cifs]
-  kthread+0x1cf/0x210
-
-Fixes: ee4cdf7ba857 ("netfs: Speed up buffered reading")
-Reported-by: Steve French <sfrench@samba.org>
-Signed-off-by: David Howells <dhowells@redhat.com>
-Link: https://patch.msgid.link/20260512123404.719402-18-dhowells@redhat.com
-Reviewed-by: Paulo Alcantara (Red Hat) <pc@manguebit.org>
-cc: Paulo Alcantara <pc@manguebit.org>
-cc: Matthew Wilcox <willy@infradead.org>
-cc: netfs@lists.linux.dev
-cc: linux-fsdevel@vger.kernel.org
-Signed-off-by: Christian Brauner <brauner@kernel.org>
+Fixes: ecc83e52b28c ("intel-hid: new hid event driver for hotkeys")
+Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+Reviewed-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Link: https://patch.msgid.link/1971512.tdWV9SEqCh@rafael.j.wysocki
+Reviewed-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/netfs/buffered_read.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ drivers/platform/x86/intel/hid.c | 6 +++++-
+ 1 file changed, 5 insertions(+), 1 deletion(-)
 
-diff --git a/fs/netfs/buffered_read.c b/fs/netfs/buffered_read.c
-index 2dd2260352dbf..1c906035fef02 100644
---- a/fs/netfs/buffered_read.c
-+++ b/fs/netfs/buffered_read.c
-@@ -525,14 +525,14 @@ static int netfs_read_gaps(struct file *file, struct folio *folio)
+diff --git a/drivers/platform/x86/intel/hid.c b/drivers/platform/x86/intel/hid.c
+index c5e80887d0cb0..f7e358be1af3a 100644
+--- a/drivers/platform/x86/intel/hid.c
++++ b/drivers/platform/x86/intel/hid.c
+@@ -682,12 +682,16 @@ static bool button_array_present(struct platform_device *device)
  
- 	netfs_read_to_pagecache(rreq);
+ static int intel_hid_probe(struct platform_device *device)
+ {
+-	acpi_handle handle = ACPI_HANDLE(&device->dev);
+ 	unsigned long long mode, dummy;
+ 	struct intel_hid_priv *priv;
++	acpi_handle handle;
+ 	acpi_status status;
+ 	int err;
  
--	if (sink)
--		folio_put(sink);
--
- 	ret = netfs_wait_for_read(rreq);
- 	if (ret == 0) {
- 		flush_dcache_folio(folio);
- 		folio_mark_uptodate(folio);
- 	}
++	handle = ACPI_HANDLE(&device->dev);
++	if (!handle)
++		return -ENODEV;
 +
-+	if (sink)
-+		folio_put(sink);
- 	folio_unlock(folio);
- 	netfs_put_request(rreq, false, netfs_rreq_trace_put_return);
- 	return ret < 0 ? ret : 0;
+ 	intel_hid_init_dsm(handle);
+ 
+ 	if (!intel_hid_evaluate_method(handle, INTEL_HID_DSM_HDMM_FN, &mode)) {
 -- 
 2.53.0
 
