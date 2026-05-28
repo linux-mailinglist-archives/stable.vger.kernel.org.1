@@ -1,58 +1,64 @@
-Return-Path: <stable+bounces-256050-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-255806-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id mFDqCVOpGGpolwgAu9opvQ
-	(envelope-from <stable+bounces-256050-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:45:07 +0200
+	id 8CI5LD+mGGoQlwgAu9opvQ
+	(envelope-from <stable+bounces-255806-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:31:59 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id BED2E5F9741
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:45:06 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 619265F8E46
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:31:59 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id A78C3311170C
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 20:37:07 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id B15193019832
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 20:25:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8186B33B6FC;
-	Thu, 28 May 2026 20:36:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9FAB4329C48;
+	Thu, 28 May 2026 20:25:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zSiPhC/r"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xA4W5x2z"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 50A0C223328;
-	Thu, 28 May 2026 20:36:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 625692F260C;
+	Thu, 28 May 2026 20:25:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780000614; cv=none; b=EPl5Hfy9QdEVBqLb7t7BFZg4crG6DQaNzAPEy0czhmeNSP+ixPaTCCBWu1kwk6Ic7UB9Lw3z5bQ/pPVEWjqIMCmM+dwu4r9paCMZyyMsWUmyrP8mtSCUNeynSjpVn8i+5oUdH8dw7+CQix2pC5fQQ8+S9YiNzhnsEuRx7Tox26Q=
+	t=1779999932; cv=none; b=f4ley78uoi0Yk2VF4/Ejw5xVKPgAmpRsrj7+95+xY3MANvTJM78rHFnY8IY07s2mi7sHWhPmetJcnOljPpYC2Uif/rY7a2vTMqylkXC2uzwOnMgobVcyHKjTSobmHSdudHGfYNGj5mBtutARquYwi8jFKPRSbDYt0PweYCL/nbg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780000614; c=relaxed/simple;
-	bh=QGWIUqUU+kPMqEjV3+IKBf0NkZeIYhQrQUt/i3DNonQ=;
+	s=arc-20240116; t=1779999932; c=relaxed/simple;
+	bh=buFwQvYW73AGUoslnxVRzEyBe+AtUwi/MG+NjcvwkEo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=V4q3VVy9wcbwKNQa777SxskxN90clvTSseelE263e3ZZcHXOJegZPPph/gGGA3esDAmq9J0XDmANr+0Tsnvfn5kLC3vkBUgpXErze9SApwGpYKFE+VotYL0pMZkGwmuiMhhD+pG3FfKl7QeAxSq+wLlOdsBPkEiZKwA8XDZucF8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zSiPhC/r; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AEB3D1F000E9;
-	Thu, 28 May 2026 20:36:52 +0000 (UTC)
+	 MIME-Version; b=Ru8y34naYhDIGf+p2ZgdHwYg76rub4oG+7AoPgym0ye+gQZRSEHBRKzDlyIk7Dx+BPSETtqhVgWSoV0sMWgiIfVTuBFZfeFWHhM0SOZzh6bW4aP8ym05cCM9MAdY2Dk2diav+7VwZFS3mFwwCXV+NvgswrSs2K03WGJcJIzXU4Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xA4W5x2z; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C4F751F000E9;
+	Thu, 28 May 2026 20:25:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780000613;
-	bh=TgXSUwtRSs9nq44SI+pRGYSYohxsbEh/SP3qI3Qh7O8=;
+	s=korg; t=1779999931;
+	bh=x16ei4IVgwHBtOmaMiVWc88ZapB0GvJ6QLzyTMGoo4Q=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=zSiPhC/rUAU70P7k8kc4XTm9uJAZTpy8nbV9x7/Bbdra9Ch9jJ5FRryp9Ht7bMVhX
-	 hQexFe//CqCO+gDjBIzA6N7eVy8ahGzT0sBr6njyiOsKvQfLoRoHr9aSma3eGZTkkF
-	 IUd3hEDlEeikXSO9wQuf1kkqZx9OdLptHoocR918=
+	b=xA4W5x2zXxnQ3m5QWM8wHXV4zuBZz8mmoMyKrqDF6cj9guyMTpR+JagA+XL9hc3Ta
+	 q/1pG6gXWTj4FQYaGuRBvblN/2LT4dS7nZXilPJPQxLDMIJo1MKg4Ww5MhfhGkDSZ8
+	 KqAexSXTfP8u4SmaqOgFz0PrywjaMvWFbYaJ+eLs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Michael Bommarito <michael.bommarito@gmail.com>,
-	"Martin K. Petersen" <martin.petersen@oracle.com>
-Subject: [PATCH 6.12 107/272] scsi: isci: Fix use-after-free in device removal path
+	Steve French <sfrench@samba.org>,
+	David Howells <dhowells@redhat.com>,
+	"Paulo Alcantara (Red Hat)" <pc@manguebit.org>,
+	Matthew Wilcox <willy@infradead.org>,
+	netfs@lists.linux.dev,
+	linux-fsdevel@vger.kernel.org,
+	Christian Brauner <brauner@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.18 243/377] netfs: Fix early put of sink folio in netfs_read_gaps()
 Date: Thu, 28 May 2026 21:48:01 +0200
-Message-ID: <20260528194632.372634153@linuxfoundation.org>
+Message-ID: <20260528194645.420567456@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260528194629.379955525@linuxfoundation.org>
-References: <20260528194629.379955525@linuxfoundation.org>
+In-Reply-To: <20260528194638.371537336@linuxfoundation.org>
+References: <20260528194638.371537336@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,98 +69,118 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_MISSING_CHARSET(0.50)[];
 	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	MIME_TRACE(0.00)[0:+];
-	TO_DN_SOME(0.00)[];
-	TAGGED_FROM(0.00)[bounces-256050-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,oracle.com];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-255806-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	NEURAL_HAM(-0.00)[-0.999];
-	TAGGED_RCPT(0.00)[stable];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_SEVEN(0.00)[11];
 	MID_RHS_MATCH_FROM(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[5];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,msgid.link:url,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,oracle.com:email]
-X-Rspamd-Queue-Id: BED2E5F9741
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[infradead.org:email,linux.dev:email,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,samba.org:email,manguebit.org:email,msgid.link:url,linuxfoundation.org:mid,linuxfoundation.org:dkim]
+X-Rspamd-Queue-Id: 619265F8E46
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Michael Bommarito <michael.bommarito@gmail.com>
+From: David Howells <dhowells@redhat.com>
 
-commit b52a8d52c3125ec9a93106ed816582368de34426 upstream.
+[ Upstream commit 3e5dd91b87a8b1450217b56a336bee315f40da7d ]
 
-The ISCI completion tasklet is initialized in isci_host_alloc()
-(drivers/scsi/isci/init.c:496) and scheduled from both MSI-X and legacy
-interrupt handlers (drivers/scsi/isci/host.c:223,613).
+Fix netfs_read_gaps() to release the sink page it uses after waiting for
+the request to complete.  The way the sink page is used is that an
+ITER_BVEC-class iterator is created that has the gaps from the target folio
+at either end, but has the sink page tiled over the middle so that a single
+read op can fill in both gaps.
 
-isci_host_deinit() stops the controller and waits for stop completion,
-but it never kills completion_tasklet before teardown continues. A
-top-of-function tasklet_kill() is not sufficient here: interrupts are
-only disabled when isci_host_stop_complete() runs, so until
-wait_for_stop() returns the IRQ handlers can still requeue the
-tasklet. The tasklet callback also re-enables interrupts after draining
-completions, so killing the tasklet before the source is quiesced leaves
-the same race open.
+The bug was found by KASAN detecting a UAF on the generic/075 xfstest in
+the cifsd kernel thread that handles reception of data from the TCP socket:
 
-Once wait_for_stop() returns, no further IRQ-driven scheduling can
-occur. Kill completion_tasklet there so teardown cannot race a queued
-tasklet running on a dead ihost. On remove or unload, the stale callback
-can otherwise dereference ihost and touch ihost->smu_registers after the
-host lifetime ends.
+ BUG: KASAN: use-after-free in _copy_to_iter+0x48a/0xa20
+ Write of size 885 at addr ffff888107f92000 by task cifsd/1285
+ CPU: 2 UID: 0 PID: 1285 Comm: cifsd Not tainted 7.0.0 #6 PREEMPT(lazy)
+ Call Trace:
+  dump_stack_lvl+0x5d/0x80
+  print_report+0x17f/0x4f1
+  kasan_report+0x100/0x1e0
+  kasan_check_range+0x10f/0x1e0
+  __asan_memcpy+0x3c/0x60
+  _copy_to_iter+0x48a/0xa20
+  __skb_datagram_iter+0x2c9/0x430
+  skb_copy_datagram_iter+0x6e/0x160
+  tcp_recvmsg_locked+0xce0/0x1130
+  tcp_recvmsg+0xeb/0x300
+  inet_recvmsg+0xcf/0x3a0
+  sock_recvmsg+0xea/0x100
+  cifs_readv_from_socket+0x3a6/0x4d0 [cifs]
+  cifs_read_iter_from_socket+0xdd/0x130 [cifs]
+  cifs_readv_receive+0xaad/0xb10 [cifs]
+  cifs_demultiplex_thread+0x1148/0x1740 [cifs]
+  kthread+0x1cf/0x210
 
-A UML + KASAN analogue reproduced the failure class both with no
-tasklet_kill() and with tasklet_kill() placed before source quiesce, and
-stayed clean once the kill happened after quiescing the scheduling
-source.
-
-This mirrors commit f6ab594672d4 ("scsi: aic94xx: fix use-after-free in
-device removal path"), but ISCI needs the kill after wait_for_stop().
-
-Fixes: 6f231dda6808 ("isci: Intel(R) C600 Series Chipset Storage Control Unit Driver")
-Cc: stable@vger.kernel.org
-Assisted-by: Claude:claude-opus-4-7
-Assisted-by: Codex:gpt-5-4
-Signed-off-by: Michael Bommarito <michael.bommarito@gmail.com>
-Link: https://patch.msgid.link/20260419210420.2134639-1-michael.bommarito@gmail.com
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: ee4cdf7ba857 ("netfs: Speed up buffered reading")
+Reported-by: Steve French <sfrench@samba.org>
+Signed-off-by: David Howells <dhowells@redhat.com>
+Link: https://patch.msgid.link/20260512123404.719402-18-dhowells@redhat.com
+Reviewed-by: Paulo Alcantara (Red Hat) <pc@manguebit.org>
+cc: Paulo Alcantara <pc@manguebit.org>
+cc: Matthew Wilcox <willy@infradead.org>
+cc: netfs@lists.linux.dev
+cc: linux-fsdevel@vger.kernel.org
+Signed-off-by: Christian Brauner <brauner@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/scsi/isci/host.c |    3 +++
- 1 file changed, 3 insertions(+)
+ fs/netfs/buffered_read.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
---- a/drivers/scsi/isci/host.c
-+++ b/drivers/scsi/isci/host.c
-@@ -1252,6 +1252,9 @@ void isci_host_deinit(struct isci_host *
+diff --git a/fs/netfs/buffered_read.c b/fs/netfs/buffered_read.c
+index 3531c19eea97a..762ff928bc878 100644
+--- a/fs/netfs/buffered_read.c
++++ b/fs/netfs/buffered_read.c
+@@ -456,9 +456,6 @@ static int netfs_read_gaps(struct file *file, struct folio *folio)
  
- 	wait_for_stop(ihost);
+ 	netfs_read_to_pagecache(rreq, NULL);
  
-+	/* No further IRQ-driven scheduling can happen past wait_for_stop(). */
-+	tasklet_kill(&ihost->completion_tasklet);
+-	if (sink)
+-		folio_put(sink);
+-
+ 	ret = netfs_wait_for_read(rreq);
+ 	if (ret >= 0) {
+ 		if (group)
+@@ -470,6 +467,9 @@ static int netfs_read_gaps(struct file *file, struct folio *folio)
+ 		flush_dcache_folio(folio);
+ 		folio_mark_uptodate(folio);
+ 	}
 +
- 	/* phy stop is after controller stop to allow port and device to
- 	 * go idle before shutting down the phys, but the expectation is
- 	 * that i/o has been shut off well before we reach this
++	if (sink)
++		folio_put(sink);
+ 	folio_unlock(folio);
+ 	netfs_put_request(rreq, netfs_rreq_trace_put_return);
+ 	return ret < 0 ? ret : 0;
+-- 
+2.53.0
+
 
 
 
