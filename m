@@ -1,59 +1,62 @@
-Return-Path: <stable+bounces-255829-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-256098-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id wKzGA1imGGoQlwgAu9opvQ
-	(envelope-from <stable+bounces-255829-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:32:24 +0200
+	id iLASCgypGGpolwgAu9opvQ
+	(envelope-from <stable+bounces-256098-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:43:56 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id C5EA85F8E8D
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:32:23 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id CE2C35F9692
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:43:55 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 51475302AD31
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 20:26:40 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id A4007302C834
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 20:39:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0691B2D9787;
-	Thu, 28 May 2026 20:26:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 67E4A31159C;
+	Thu, 28 May 2026 20:39:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2Gt2sMSj"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MUyD8cSV"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9CD6A2E7379;
-	Thu, 28 May 2026 20:26:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3CCA72E7F25;
+	Thu, 28 May 2026 20:39:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779999996; cv=none; b=BKG60l+W0kwZZwx0Px+RfaOpJMWa3/dVcGRBavLaoo88VJOdrAxkxZMVwD+ID+SEVIrjvvGdg7oB1P4PnzEwjz8DXXG09O4JA2yYMkHvFcgsPs2sExId48jaJHDg1cTl8x07BIFSJkMT/UXb9/Q7SEfoX+bCLcBXZfgQuLi2jvY=
+	t=1780000749; cv=none; b=J1Lgf4Xf1kZ/nn4dkLRO2ExREgGjzjvHf54DYngJyiV+8YZKxSb4iZraV5YT1beX4mJ7JSAOK55ksVJeBAhu2jBvn4lxVR9kuF1StKVDoU4CDpzAJf3mQdLtDEfAzBsqaCcDcdZryHy+xl/y/sSUNrraBYhQoQCMP+6Bvjr8o0A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779999996; c=relaxed/simple;
-	bh=FrJCsQptvNbmFKNMiWixRVf4cx/9JEE4SioHKNAt+Lc=;
+	s=arc-20240116; t=1780000749; c=relaxed/simple;
+	bh=yNA7SebAY+f78m43jb8HV7jecazc5e/mZFkK0jPjsYc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=O9Pb+O+TTCjShBJPRkr3Hyi4CT+Eb5mYykzhqUJPK9iINLglHRujJ92+bpISAyWb/8CNTCxNJzqDxIanMByH4Aa6vlrtLcqPsj4Ys/pIK40Nd/6YbVXclO9PUj0rfNya4fYslTEOnwc09RgX8a/NnoO137pI66AgWT/XuHqGW2E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2Gt2sMSj; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 06D4C1F000E9;
-	Thu, 28 May 2026 20:26:34 +0000 (UTC)
+	 MIME-Version; b=fItkNt7VILfxQjD9XTPkks4TtzkX1vqM2MU8D6mIauBRc1HAI0q/28OMzlmInnTVxMwKURbxH+PlP7ry6QBdI5ANvsgRfz7DHTvR4CVga0K+xtHe0SYuebLDYvI1OKwNgW7u4cO95pcvZZYt6eX/nn6hfimdGHW84fHYLDIySh8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MUyD8cSV; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A0AF71F000E9;
+	Thu, 28 May 2026 20:39:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779999995;
-	bh=F1kTXidGY0MMXIA7mOsCrbdTiCPTXwtNjFrszB0Tkaw=;
+	s=korg; t=1780000748;
+	bh=WuUGkvch+V9UHm/CmRIlON0HMrDYHkl8YIwq04kfHGQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=2Gt2sMSj4UxhUZcgxlHvT+SnLu1bMoZbIflShIoXTNTzThEQkzEZtwFNqtxmiuztj
-	 A2i52UBY+cJeJcu3qIXmI4EVyyEhEGHXkT/W81mrs7sQjQt0Eq1xmWVh22wJ2X+SNZ
-	 ffJRdU31nL5RZ74GakjgKijIGYv8gSJHDDNupTpA=
+	b=MUyD8cSVhJIipF76o2SPUhih7Wh4QIgiBKnj02ZufiGHk02eXAGhwgbVkMNZ4sPiN
+	 Yb1Om1IG5QqeInMMOtnEKIh9/fvpyaiThOaN+yQOsuTB5nNi2+7THiHcr29GeBAl5m
+	 4XCeUs82T9uCrCAX1yy2Hlfhc5i86/uo0gqsHLv8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 264/377] net: shaper: reject QUEUE scope handle with missing id
+	stable@kernel.org,
+	Yuan Tan <yuantan098@gmail.com>,
+	Yifan Wu <yifanwucs@gmail.com>,
+	Juefei Pu <tomapufckgml@gmail.com>,
+	Xin Liu <bird@lzu.edu.cn>,
+	Sven Eckelmann <sven@narfation.org>
+Subject: [PATCH 6.12 128/272] batman-adv: tp_meter: avoid use of uninit sender vars
 Date: Thu, 28 May 2026 21:48:22 +0200
-Message-ID: <20260528194646.011099342@linuxfoundation.org>
+Message-ID: <20260528194632.963687265@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260528194638.371537336@linuxfoundation.org>
-References: <20260528194638.371537336@linuxfoundation.org>
+In-Reply-To: <20260528194629.379955525@linuxfoundation.org>
+References: <20260528194629.379955525@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -73,82 +76,93 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,kernel.org,gmail.com,lzu.edu.cn,narfation.org];
+	TAGGED_FROM(0.00)[bounces-256098-lists,stable=lfdr.de];
 	PRECEDENCE_BULK(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-255829-lists,stable=lfdr.de];
-	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[9];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,linuxfoundation.org:mid,linuxfoundation.org:dkim,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo]
-X-Rspamd-Queue-Id: C5EA85F8E8D
+	TAGGED_RCPT(0.00)[stable];
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[narfation.org:email,lzu.edu.cn:email,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim]
+X-Rspamd-Queue-Id: CE2C35F9692
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jakub Kicinski <kuba@kernel.org>
+From: Sven Eckelmann <sven@narfation.org>
 
-[ Upstream commit ce372e869f9f492f3d5aa9a0ae75ed52c61d2d6f ]
+commit 6c65cf23d4c6170fcf5714c32aa64689718cb142 upstream.
 
-net_shaper_parse_handle() does not enforce that the user provides
-the handle ID. For NODE the ID defaults to UNSPEC for all other
-cases it defaults to 0.
+batadv_tp_recv_ack() and batadv_tp_stop() are only valid for tp_vars in the
+BATADV_TP_SENDER role. When called with a BATADV_TP_RECEIVER role, it
+proceeds to read sender-only members that were never initialized, leading
+to undefined behavior.
 
-For NETDEV 0 is the only option. For QUEUE defaulting to 0 makes
-less intuitive sense. Specifically because the behavior should
-(IMHO) be the same for all cases where there may be more than
-one ID (QUEUE and NODE).
+This can be triggered when a node that is currently acting as a receiver in
+an ongoing tp_meter session receives a malicious ACK packet.
 
-We should either document this as intentional or reject.
-I picked the latter with no strong conviction.
+Guard against this by checking tp_vars->role immediately after the
+lookup and bailing out if it is not BATADV_TP_SENDER, before any of
+those members are accessed.
 
-Fixes: 4b623f9f0f59 ("net-shapers: implement NL get operation")
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Link: https://patch.msgid.link/20260510192904.3987113-11-kuba@kernel.org
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: stable@kernel.org
+Fixes: 33a3bb4a3345 ("batman-adv: throughput meter implementation")
+Reported-by: Yuan Tan <yuantan098@gmail.com>
+Reported-by: Yifan Wu <yifanwucs@gmail.com>
+Reported-by: Juefei Pu <tomapufckgml@gmail.com>
+Reported-by: Xin Liu <bird@lzu.edu.cn>
+Reviewed-by: Yuan Tan <yuantan098@gmail.com>
+Signed-off-by: Sven Eckelmann <sven@narfation.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/shaper/shaper.c | 9 +++++++--
- 1 file changed, 7 insertions(+), 2 deletions(-)
+ net/batman-adv/tp_meter.c |   11 +++++++++--
+ 1 file changed, 9 insertions(+), 2 deletions(-)
 
-diff --git a/net/shaper/shaper.c b/net/shaper/shaper.c
-index d65008b819dc9..23d535f157294 100644
---- a/net/shaper/shaper.c
-+++ b/net/shaper/shaper.c
-@@ -477,10 +477,15 @@ static int net_shaper_parse_handle(const struct nlattr *attr,
- 	 * shaper (any other value).
- 	 */
- 	id_attr = tb[NET_SHAPER_A_HANDLE_ID];
--	if (id_attr)
-+	if (id_attr) {
- 		id = nla_get_u32(id_attr);
--	else if (handle->scope == NET_SHAPER_SCOPE_NODE)
-+	} else if (handle->scope == NET_SHAPER_SCOPE_NODE) {
- 		id = NET_SHAPER_ID_UNSPEC;
-+	} else if (handle->scope == NET_SHAPER_SCOPE_QUEUE) {
-+		NL_SET_ERR_ATTR_MISS(info->extack, attr,
-+				     NET_SHAPER_A_HANDLE_ID);
-+		return -EINVAL;
-+	}
+--- a/net/batman-adv/tp_meter.c
++++ b/net/batman-adv/tp_meter.c
+@@ -663,6 +663,9 @@ static void batadv_tp_recv_ack(struct ba
+ 	if (unlikely(!tp_vars))
+ 		return;
  
- 	if (id && handle->scope == NET_SHAPER_SCOPE_NETDEV) {
- 		NL_SET_ERR_MSG_ATTR(info->extack, id_attr,
--- 
-2.53.0
-
++	if (unlikely(tp_vars->role != BATADV_TP_SENDER))
++		goto out;
++
+ 	if (unlikely(atomic_read(&tp_vars->sending) == 0))
+ 		goto out;
+ 
+@@ -1100,12 +1103,16 @@ void batadv_tp_stop(struct batadv_priv *
+ 	if (!tp_vars) {
+ 		batadv_dbg(BATADV_DBG_TP_METER, bat_priv,
+ 			   "Meter: trying to interrupt an already over connection\n");
+-		goto out;
++		goto out_put_orig_node;
+ 	}
+ 
++	if (unlikely(tp_vars->role != BATADV_TP_SENDER))
++		goto out_put_tp_vars;
++
+ 	batadv_tp_sender_shutdown(tp_vars, return_value);
++out_put_tp_vars:
+ 	batadv_tp_vars_put(tp_vars);
+-out:
++out_put_orig_node:
+ 	batadv_orig_node_put(orig_node);
+ }
+ 
 
 
 
