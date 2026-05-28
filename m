@@ -1,59 +1,60 @@
-Return-Path: <stable+bounces-255854-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-255532-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id sLaFCZumGGrClggAu9opvQ
-	(envelope-from <stable+bounces-255854-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:33:31 +0200
+	id uAlZDZKjGGrJlggAu9opvQ
+	(envelope-from <stable+bounces-255532-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:20:34 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 921BB5F8F31
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:33:30 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id A58A05F86CD
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:20:33 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 5A1BD309714A
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 20:27:53 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 165C13166F23
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 20:12:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D55E6318B96;
-	Thu, 28 May 2026 20:27:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E0BB133CE8A;
+	Thu, 28 May 2026 20:12:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QWWjQvBM"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HIyUqaQw"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8A51631F981;
-	Thu, 28 May 2026 20:27:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BCD98335566;
+	Thu, 28 May 2026 20:12:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780000063; cv=none; b=uni9AG3GH+ZyiHzSljiaHFW8Yzc3NtALd3l5oLXa3hbleHwSpa1tYIbfLtr4JGCQLrvyVHQuUdYG8Ov9bCFRoCoXLbILOYw8+wcRGnfSYfSXO8Mijn6EO7dg1+Le4RmGbPrl/+SA1MTuZwmOTB0piI27Xo9SnWt0KM+uqx79oHY=
+	t=1779999175; cv=none; b=lFJIEMPi94NSWk71CznttNNWaLOGFikyqCHpApGxYshfP8PyfA+S32rwjJxwwviKq/Kg21IrsPoqmWwRQ9xBgRwhgL7+7vb9J0lPcsv4Yx3oTXI3svXkAVtKRfnBnmEi//tjLNl22BCIbkVDqnhan7Jkxus3xoVv6kW5HEDZqfg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780000063; c=relaxed/simple;
-	bh=RGuHEe49NqqU0rWsKEFYrEdlR4H3LFevwEMoy3pOrZ0=;
+	s=arc-20240116; t=1779999175; c=relaxed/simple;
+	bh=JjFbkMBQ663BbMZ0WJeWw6FAnLDSudBAbHqE4LXhvfI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Gb4kJUSQPZRRJz/3B2WLt5ET5E3WbuSJs0PD1Ht6haggp1g/ekRa3+O5mrBcTQVowWGY2Hd09pE0R5Idy4AEg8YYVj1Mh8aJcKO4w9QYWP0PHUEt+dBoSe6L92QFfunyW45566Dx1KaF7vYUQhh6gYrnCUwM9es6VQqcVzY3ius=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QWWjQvBM; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E75901F000E9;
-	Thu, 28 May 2026 20:27:41 +0000 (UTC)
+	 MIME-Version:Content-Type; b=QvXERDjLrZreba/IAPooMmAeyoRh44PxF6WXFtcpl/f/ijlWlbtWUN6dzCbLNQ7XshP/tkp+CgwSMu3neKyI4TkicaBAsLfSCgUiEL+IKbN+9Ph9hIF4fX0LaBva+ULZ8r4b+s8tmaYY3zYMfKMqUIlLvDGA19y9uS0shJU/ex4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HIyUqaQw; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 267351F000E9;
+	Thu, 28 May 2026 20:12:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780000062;
-	bh=B6k9FFSNlPad4OkCfP8kiMedvjf4HFCkxP6dmTik8co=;
+	s=korg; t=1779999174;
+	bh=DQg5v20c7Z77dsjFLPZp6AHuCysRNAjRWOKUNGUYqSA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=QWWjQvBM+vNvru/m+V8+f7Ce5XvXoIjR1lSV++GXSVpIpV8m03As+RpES7DQyge76
-	 4bewYl59VQ2VgOFggY7eGkwVe0lRmpw1J8ee6hzghDUsP9DsfYl8YNMGPCkifQ8Fcr
-	 5/Ui2hVdf/Qdo0pzm6xLLnb8dWGN7qyCjVvZ6Bno=
+	b=HIyUqaQwE3QrTjA0bJCsHiAqHWw9bedq+UMjLgvaHRlEiHSCmHxqZPzTmAiFrmWdd
+	 vXfNF9qeVNRwWHKmNtvpurGnMCKlLZmpeOZmi0D2CCkcp9PoFKtosHP2i7NLWaggJj
+	 dcg8BxYeK/HKiX9CekGMl9GGT7TL5vF+p7su0D2A=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ralf Lici <ralf@mandelbit.com>,
-	Antonio Quartulli <antonio@openvpn.net>,
+	=?UTF-8?q?Timur=20Krist=C3=B3f?= <timur.kristof@gmail.com>,
+	=?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 289/377] ovpn: disable BHs when updating device stats
+Subject: [PATCH 7.0 398/461] drm/amdgpu: Align amdgpu_gtt_mgr entries to TLB size on Tahiti (v2)
 Date: Thu, 28 May 2026 21:48:47 +0200
-Message-ID: <20260528194646.717529699@linuxfoundation.org>
+Message-ID: <20260528194658.991932281@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260528194638.371537336@linuxfoundation.org>
-References: <20260528194638.371537336@linuxfoundation.org>
+In-Reply-To: <20260528194646.819809818@linuxfoundation.org>
+References: <20260528194646.819809818@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,218 +64,92 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-0.66 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-255854-lists,stable=lfdr.de];
-	URIBL_MULTI_FAIL(0.00)[mandelbit.com:server fail,openvpn.net:server fail,linuxfoundation.org:server fail,tor.lore.kernel.org:server fail];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,amd.com,kernel.org];
+	TAGGED_FROM(0.00)[bounces-255532-lists,stable=lfdr.de];
+	FROM_HAS_DN(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
-	TO_DN_SOME(0.00)[];
 	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	RCPT_COUNT_FIVE(0.00)[6];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	TO_DN_SOME(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[stable];
 	MID_RHS_MATCH_FROM(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[openvpn.net:email,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim]
-X-Rspamd-Queue-Id: 921BB5F8F31
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim,amd.com:email]
+X-Rspamd-Queue-Id: A58A05F86CD
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+7.0-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ralf Lici <ralf@mandelbit.com>
+From: Timur Kristóf <timur.kristof@gmail.com>
 
-[ Upstream commit 0c0dddc07d272a8d25922e48041e8e4d2434df7e ]
+[ Upstream commit 4d798ea0712fddbd35b439cef32b8ac735eb76f9 ]
 
-ovpn updates dev->dstats from both process and softirq contexts. In
-particular, TCP paths may run from socket callbacks, workqueues or
-strparser work, while UDP receive and ovpn's ndo_start_xmit path may
-update the same per-device dstats from BH context.
+The TLB is organized in groups of 8 entries, each one is 4K.
+On Tahiti, the HW requires these GART entries to be 32K-aligned.
 
-Add ovpn device drop-stat helpers that disable BHs around
-dev_dstats_rx_dropped() and dev_dstats_tx_dropped(), and use them for
-drop accounting.
+This fixes a VCE 1 firmware validation failure that can happen
+after suspend/resume since we use amdgpu_gtt_mgr for VCE 1.
 
-The successful RX dev_dstats_rx_add() update is already covered by the
-BH-disabled section around gro_cells_receive(). For the successful TCP
-TX dev_dstats_tx_add() update, replace the existing preempt-disabled
-section with a BH-disabled one.
+v2:
+- Change variable declaration order
+- Add comment about "V bit HW bug"
 
-Fixes: 11851cbd60ea ("ovpn: implement TCP transport")
-Signed-off-by: Ralf Lici <ralf@mandelbit.com>
-Signed-off-by: Antonio Quartulli <antonio@openvpn.net>
+Fixes: 698fa62f56aa ("drm/amdgpu: Add helper to alloc GART entries")
+Signed-off-by: Timur Kristóf <timur.kristof@gmail.com>
+Reviewed-by: Christian König <christian.koenig@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+(cherry picked from commit 530411b465ef0b2c0cc18c2e3d7e38422b1117d1)
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ovpn/io.c    | 12 ++++++------
- drivers/net/ovpn/stats.h | 16 ++++++++++++++++
- drivers/net/ovpn/tcp.c   | 10 +++++-----
- drivers/net/ovpn/udp.c   |  2 +-
- 4 files changed, 28 insertions(+), 12 deletions(-)
+ drivers/gpu/drm/amd/amdgpu/amdgpu_gtt_mgr.c | 9 ++++++++-
+ 1 file changed, 8 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/net/ovpn/io.c b/drivers/net/ovpn/io.c
-index 955c9a37e1f8d..c03e58e28a860 100644
---- a/drivers/net/ovpn/io.c
-+++ b/drivers/net/ovpn/io.c
-@@ -196,7 +196,7 @@ void ovpn_decrypt_post(void *data, int ret)
- 	skb = NULL;
- drop:
- 	if (unlikely(skb))
--		dev_dstats_rx_dropped(peer->ovpn->dev);
-+		ovpn_dev_dstats_rx_dropped(peer->ovpn->dev);
- 	kfree_skb(skb);
- drop_nocount:
- 	if (likely(peer))
-@@ -220,7 +220,7 @@ void ovpn_recv(struct ovpn_peer *peer, struct sk_buff *skb)
- 		net_info_ratelimited("%s: no available key for peer %u, key-id: %u\n",
- 				     netdev_name(peer->ovpn->dev), peer->id,
- 				     key_id);
--		dev_dstats_rx_dropped(peer->ovpn->dev);
-+		ovpn_dev_dstats_rx_dropped(peer->ovpn->dev);
- 		kfree_skb(skb);
- 		ovpn_peer_put(peer);
- 		return;
-@@ -298,7 +298,7 @@ void ovpn_encrypt_post(void *data, int ret)
- 	rcu_read_unlock();
- err:
- 	if (unlikely(skb))
--		dev_dstats_tx_dropped(peer->ovpn->dev);
-+		ovpn_dev_dstats_tx_dropped(peer->ovpn->dev);
- 	if (likely(peer))
- 		ovpn_peer_put(peer);
- 	if (likely(ks))
-@@ -340,7 +340,7 @@ static void ovpn_send(struct ovpn_priv *ovpn, struct sk_buff *skb,
- 	 */
- 	skb_list_walk_safe(skb, curr, next) {
- 		if (unlikely(!ovpn_encrypt_one(peer, curr))) {
--			dev_dstats_tx_dropped(ovpn->dev);
-+			ovpn_dev_dstats_tx_dropped(ovpn->dev);
- 			kfree_skb(curr);
- 		}
- 	}
-@@ -411,7 +411,7 @@ netdev_tx_t ovpn_net_xmit(struct sk_buff *skb, struct net_device *dev)
- 		if (unlikely(!curr)) {
- 			net_err_ratelimited("%s: skb_share_check failed for payload packet\n",
- 					    netdev_name(dev));
--			dev_dstats_tx_dropped(ovpn->dev);
-+			ovpn_dev_dstats_tx_dropped(ovpn->dev);
- 			continue;
- 		}
+diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_gtt_mgr.c b/drivers/gpu/drm/amd/amdgpu/amdgpu_gtt_mgr.c
+index ac276bb53c7c2..9dd6cfd6c0fe0 100644
+--- a/drivers/gpu/drm/amd/amdgpu/amdgpu_gtt_mgr.c
++++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_gtt_mgr.c
+@@ -199,11 +199,18 @@ int amdgpu_gtt_mgr_alloc_entries(struct amdgpu_gtt_mgr *mgr,
+ 				 enum drm_mm_insert_mode mode)
+ {
+ 	struct amdgpu_device *adev = container_of(mgr, typeof(*adev), mman.gtt_mgr);
++	u32 alignment = 0;
+ 	int r;
  
-@@ -437,7 +437,7 @@ netdev_tx_t ovpn_net_xmit(struct sk_buff *skb, struct net_device *dev)
- drop:
- 	ovpn_peer_put(peer);
- drop_no_peer:
--	dev_dstats_tx_dropped(ovpn->dev);
-+	ovpn_dev_dstats_tx_dropped(ovpn->dev);
- 	skb_tx_error(skb);
- 	kfree_skb_list(skb);
- 	return NETDEV_TX_OK;
-diff --git a/drivers/net/ovpn/stats.h b/drivers/net/ovpn/stats.h
-index 53433d8b6c331..3a45b97c00568 100644
---- a/drivers/net/ovpn/stats.h
-+++ b/drivers/net/ovpn/stats.h
-@@ -11,6 +11,8 @@
- #ifndef _NET_OVPN_OVPNSTATS_H_
- #define _NET_OVPN_OVPNSTATS_H_
- 
-+#include <linux/netdevice.h>
++	/* Align to TLB L2 cache entry size to work around "V bit HW bug" */
++	if (adev->asic_type == CHIP_TAHITI) {
++		alignment = 32 * 1024 / AMDGPU_GPU_PAGE_SIZE;
++		num_pages = ALIGN(num_pages, alignment);
++	}
 +
- /* one stat */
- struct ovpn_peer_stat {
- 	atomic64_t bytes;
-@@ -44,4 +46,18 @@ static inline void ovpn_peer_stats_increment_tx(struct ovpn_peer_stats *stats,
- 	ovpn_peer_stats_increment(&stats->tx, n);
- }
- 
-+static inline void ovpn_dev_dstats_tx_dropped(struct net_device *dev)
-+{
-+	local_bh_disable();
-+	dev_dstats_tx_dropped(dev);
-+	local_bh_enable();
-+}
-+
-+static inline void ovpn_dev_dstats_rx_dropped(struct net_device *dev)
-+{
-+	local_bh_disable();
-+	dev_dstats_rx_dropped(dev);
-+	local_bh_enable();
-+}
-+
- #endif /* _NET_OVPN_OVPNSTATS_H_ */
-diff --git a/drivers/net/ovpn/tcp.c b/drivers/net/ovpn/tcp.c
-index 5f345ae7d59d2..505c2f214c9f1 100644
---- a/drivers/net/ovpn/tcp.c
-+++ b/drivers/net/ovpn/tcp.c
-@@ -152,7 +152,7 @@ static void ovpn_tcp_rcv(struct strparser *strp, struct sk_buff *skb)
- 	if (WARN_ON(!ovpn_peer_hold(peer)))
- 		goto err_nopeer;
- 	schedule_work(&peer->tcp.defer_del_work);
--	dev_dstats_rx_dropped(peer->ovpn->dev);
-+	ovpn_dev_dstats_rx_dropped(peer->ovpn->dev);
- err_nopeer:
- 	kfree_skb(skb);
- }
-@@ -298,9 +298,9 @@ static void ovpn_tcp_send_sock(struct ovpn_peer *peer, struct sock *sk)
- 	} while (peer->tcp.out_msg.len > 0);
- 
- 	if (!peer->tcp.out_msg.len) {
--		preempt_disable();
-+		local_bh_disable();
- 		dev_dstats_tx_add(peer->ovpn->dev, skb->len);
--		preempt_enable();
-+		local_bh_enable();
- 	}
- 
- 	kfree_skb(peer->tcp.out_msg.skb);
-@@ -331,7 +331,7 @@ static void ovpn_tcp_send_sock_skb(struct ovpn_peer *peer, struct sock *sk,
- 		ovpn_tcp_send_sock(peer, sk);
- 
- 	if (peer->tcp.out_msg.skb) {
--		dev_dstats_tx_dropped(peer->ovpn->dev);
-+		ovpn_dev_dstats_tx_dropped(peer->ovpn->dev);
- 		kfree_skb(skb);
- 		return;
- 	}
-@@ -353,7 +353,7 @@ void ovpn_tcp_send_skb(struct ovpn_peer *peer, struct sock *sk,
- 	if (sock_owned_by_user(sk)) {
- 		if (skb_queue_len(&peer->tcp.out_queue) >=
- 		    READ_ONCE(net_hotdata.max_backlog)) {
--			dev_dstats_tx_dropped(peer->ovpn->dev);
-+			ovpn_dev_dstats_tx_dropped(peer->ovpn->dev);
- 			kfree_skb(skb);
- 			goto unlock;
- 		}
-diff --git a/drivers/net/ovpn/udp.c b/drivers/net/ovpn/udp.c
-index 272b535ecaad4..367563d84472f 100644
---- a/drivers/net/ovpn/udp.c
-+++ b/drivers/net/ovpn/udp.c
-@@ -126,7 +126,7 @@ static int ovpn_udp_encap_recv(struct sock *sk, struct sk_buff *skb)
- 	return 0;
- 
- drop:
--	dev_dstats_rx_dropped(ovpn->dev);
-+	ovpn_dev_dstats_rx_dropped(ovpn->dev);
- drop_noovpn:
- 	kfree_skb(skb);
- 	return 0;
+ 	spin_lock(&mgr->lock);
+ 	r = drm_mm_insert_node_in_range(&mgr->mm, mm_node, num_pages,
+-					0, GART_ENTRY_WITHOUT_BO_COLOR, 0,
++					alignment, GART_ENTRY_WITHOUT_BO_COLOR, 0,
+ 					adev->gmc.gart_size >> PAGE_SHIFT,
+ 					mode);
+ 	spin_unlock(&mgr->lock);
 -- 
 2.53.0
 
