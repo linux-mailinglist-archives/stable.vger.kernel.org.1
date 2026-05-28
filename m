@@ -1,67 +1,60 @@
-Return-Path: <stable+bounces-256002-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-255795-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id qEjiHUKpGGpolwgAu9opvQ
-	(envelope-from <stable+bounces-256002-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:44:50 +0200
+	id gJoSMiOoGGp+lwgAu9opvQ
+	(envelope-from <stable+bounces-255795-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:40:03 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id E043E5F9715
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:44:49 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 373505F9450
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:40:03 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 816FA3093F32
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 20:34:41 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id B81A931A691F
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 20:25:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 88A952C15AC;
-	Thu, 28 May 2026 20:34:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AF6101EA65;
+	Thu, 28 May 2026 20:25:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FJSdPtho"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XLuZI+aR"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5E7082E92BA;
-	Thu, 28 May 2026 20:34:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8D8BBDDC5;
+	Thu, 28 May 2026 20:25:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780000480; cv=none; b=rGpYHb2tzuuDCqJ9a7/H7G+vncCTuk1Weaf6EFob/Ka8qtEi9K0w/dF0f//zBWds0onAbuDPTJXlVOTXYnITpcF45YkeTEBXvLo7QwPjjiR4zTeuSJuGt5KCgqIRZiboSCh8zBNoZhBAgch83jebiufxj83jpAr3lYj9hCoSebY=
+	t=1779999904; cv=none; b=MbPf3VrNMRLqnuAUZ77To+Z53KUAfcbrhKBONzuAz0X8YW0f/4flBR9GGVQMyfAe+FkUEKk2ir5ooyfBYwdH+rqc1zZqc8HBtSOHOzn+NcubtySYQTKP6O0CK+VqO1tHgscKuDA+R7YL2BToQMYj/Wf0o7lOML0UsFhK8X9tb5g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780000480; c=relaxed/simple;
-	bh=h86aWZTm/nq5vxl6sN70vgdkWZ4UzRTZfv0mBIdZJaU=;
+	s=arc-20240116; t=1779999904; c=relaxed/simple;
+	bh=9qEwe7LoafPNCbjuJDrLPUMDk/2iWbdSAKD6gTlJlI4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=k0IrZ3NcuImS+7F3DxiSPC1i8HkLAhQ4VxypIiD5jB9pyEuhMLwdcCuNK/kPE1etmnXSIYpgPVbwP4Lbe9zh8CtaVeaRbcWLJEfQbC6Y/bu0cw5Yd2oo5BniasLvmR7BX0dOOtEVQbP1dJ5Zr6dOgCRteq61PLtMGS1/pbvGoZU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FJSdPtho; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B62281F000E9;
-	Thu, 28 May 2026 20:34:38 +0000 (UTC)
+	 MIME-Version; b=eH5SPp+X9HbhNz+YsHIvBYsA8vZscJzKUa2a5rMNv02EDhRk0oaSlYly3N8Isttc97iyZ9V3c7UDXF9Q2C4Edi+JWXjFnu0vd2f9PCD9kBbEdEydmovpo17bLkNGwcyhWCxYHiEFO2EY/ydr0lRsCwEVhhYUfEzvrwt+wSNtA/E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XLuZI+aR; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EBC071F000E9;
+	Thu, 28 May 2026 20:25:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780000479;
-	bh=RxtpDCpNFN0+Lhsachb4c+wMg2k2vU/y36Q+EPqs3ck=;
+	s=korg; t=1779999903;
+	bh=8RsKRY9SEiFTs4pVVCVy23hNLzPnZNXsEDDrSc4yCl0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=FJSdPthodi+WlVXgFtPNVLNmp+yyY57V50InNp0Q+6HkiP64R77Oh8Zdp+6lCD8r/
-	 gouH+DPv0rzUkD4RgQGwcvPQi3JOSNtVh11vMSBxlR8vj7Q57dbT57TLmKv61qNp1c
-	 xwVJhbvcIAvMMADvCwNGlcEJjduVlUy6NamCTois=
+	b=XLuZI+aRz5h7g8x9HM3ugovsu8IOzHVrJm2OYeVwXFfP5JmviLIp3YruJlUvtcBP/
+	 ZAl1hCA1ftK8W+pbO2ROorDOgLMjdwyllZSbcOAlxYOTBwFyv+dy/6MLxE5/vlI5Rs
+	 QHxCoDDRuoJVBZn0VxLsSvviITe/gGB3ZI8fVvWg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Luiz Capitulino <luizcap@redhat.com>,
-	"Mike Rapoport (Microsoft)" <rppt@kernel.org>,
-	SeongJae Park <sj@kernel.org>,
-	David Hildenbrand <david@kernel.org>,
-	"Liam R. Howlett" <liam@infradead.org>,
-	Lorenzo Stoakes <ljs@kernel.org>,
-	Michal Hocko <mhocko@suse.com>,
-	Shuah Khan <shuah@kernel.org>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Vlastimil Babka <vbabka@kernel.org>,
-	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 6.12 060/272] selftests/mm: run_vmtests.sh: fix destructive tests invocation
+	Shuhao Fu <sfual@cse.ust.hk>,
+	Simon Trimmer <simont@opensource.cirrus.com>,
+	Takashi Iwai <tiwai@suse.de>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.18 196/377] ALSA: hda: cs35l41: Put ACPI device on missing physical node
 Date: Thu, 28 May 2026 21:47:14 +0200
-Message-ID: <20260528194631.059408249@linuxfoundation.org>
+Message-ID: <20260528194644.082968619@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260528194629.379955525@linuxfoundation.org>
-References: <20260528194629.379955525@linuxfoundation.org>
+In-Reply-To: <20260528194638.371537336@linuxfoundation.org>
+References: <20260528194638.371537336@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -76,75 +69,80 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-255795-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-256002-lists,stable=lfdr.de];
-	RCPT_COUNT_TWELVE(0.00)[14];
-	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable];
-	TO_DN_SOME(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,infradead.org:email,suse.com:email,linux-foundation.org:email]
-X-Rspamd-Queue-Id: E043E5F9715
+	TO_DN_SOME(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_SEVEN(0.00)[7];
+	MID_RHS_MATCH_FROM(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,suse.de:email,msgid.link:url,cirrus.com:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,ust.hk:email]
+X-Rspamd-Queue-Id: 373505F9450
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Luiz Capitulino <luizcap@redhat.com>
+From: Shuhao Fu <sfual@cse.ust.hk>
 
-commit 3432cbb291aabf85f8af4b9d1ec37179168ff999 upstream.
+[ Upstream commit fca7401fe37f7abc6e54147ea560f37279231137 ]
 
-Destructive tests should be invoked with -d command-line option, but this
-won't work today since 'd' is missing in getopts command-line.  This
-commit fixes it.
+acpi_dev_get_first_match_dev() returns a refcounted ACPI device and
+callers must balance it with acpi_dev_put().
 
-Link: https://lore.kernel.org/214fd9e4-5398-4c26-859e-c982c2e277c3@redhat.com
-Fixes: f16ff3b692ad ("selftests/mm: run_vmtests.sh: add missing tests")
-Signed-off-by: Luiz Capitulino <luizcap@redhat.com>
-Reviewed-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
-Reviewed-by: SeongJae Park <sj@kernel.org>
-Cc: David Hildenbrand <david@kernel.org>
-Cc: Liam R. Howlett <liam@infradead.org>
-Cc: Lorenzo Stoakes <ljs@kernel.org>
-Cc: Michal Hocko <mhocko@suse.com>
-Cc: Shuah Khan <shuah@kernel.org>
-Cc: Suren Baghdasaryan <surenb@google.com>
-Cc: Vlastimil Babka <vbabka@kernel.org>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+cs35l41_hda_read_acpi() stores the returned ACPI device in
+cs35l41->dacpi. That reference is normally released by the later
+probe cleanup or the remove path, but the NULL-check on
+physdev exits before either of those paths can run.
+
+Drop the lookup reference before returning -ENODEV.
+
+Fixes: c34b04cc6178 ("ALSA: hda: cs35l41: Fix NULL pointer dereference in cs35l41_hda_read_acpi()")
+Signed-off-by: Shuhao Fu <sfual@cse.ust.hk>
+Tested-by: Simon Trimmer <simont@opensource.cirrus.com>
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
+Link: https://patch.msgid.link/20260428081238.GA1659932@chcpu16
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/testing/selftests/mm/run_vmtests.sh |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ sound/hda/codecs/side-codecs/cs35l41_hda.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
---- a/tools/testing/selftests/mm/run_vmtests.sh
-+++ b/tools/testing/selftests/mm/run_vmtests.sh
-@@ -85,7 +85,7 @@ RUN_ALL=false
- RUN_DESTRUCTIVE=false
- TAP_PREFIX="# "
+diff --git a/sound/hda/codecs/side-codecs/cs35l41_hda.c b/sound/hda/codecs/side-codecs/cs35l41_hda.c
+index 21e00055c0c44..47263c5a021cb 100644
+--- a/sound/hda/codecs/side-codecs/cs35l41_hda.c
++++ b/sound/hda/codecs/side-codecs/cs35l41_hda.c
+@@ -1901,8 +1901,10 @@ static int cs35l41_hda_read_acpi(struct cs35l41_hda *cs35l41, const char *hid, i
  
--while getopts "aht:n" OPT; do
-+while getopts "aht:nd" OPT; do
- 	case ${OPT} in
- 		"a") RUN_ALL=true ;;
- 		"h") usage ;;
+ 	cs35l41->dacpi = adev;
+ 	physdev = get_device(acpi_get_first_physical_node(adev));
+-	if (!physdev)
++	if (!physdev) {
++		acpi_dev_put(adev);
+ 		return -ENODEV;
++	}
+ 
+ 	sub = acpi_get_subsystem_id(ACPI_HANDLE(physdev));
+ 	if (IS_ERR(sub))
+-- 
+2.53.0
+
 
 
 
