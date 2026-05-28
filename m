@@ -1,59 +1,59 @@
-Return-Path: <stable+bounces-255472-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-256248-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id uC4gEuiiGGqblggAu9opvQ
-	(envelope-from <stable+bounces-255472-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:17:44 +0200
+	id CGLlCrKtGGpolwgAu9opvQ
+	(envelope-from <stable+bounces-256248-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 23:03:46 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id E1D145F84DC
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:17:43 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 32BA35FA2A1
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 23:03:45 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 0AAEB30ED46B
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 20:10:09 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 897E5308FCCB
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 20:46:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8C560339866;
-	Thu, 28 May 2026 20:10:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 20A19330307;
+	Thu, 28 May 2026 20:46:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cZ/ZVV31"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YT6KBO2M"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 33D5E32ABC0;
-	Thu, 28 May 2026 20:10:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D4626328B7B;
+	Thu, 28 May 2026 20:46:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779999008; cv=none; b=Dx1GA5N0UdrWS1CqwmrvV1UkvfG3jiNmf/4hQhbkWdDEhd8i5icGwoOH5fkDNZ/HhafAZGV7yb8Io3sHhfpxSbGeIXLb3xA0aAhB+JuYGDeqrgbx1tciihxQV5dIPau61AVFNW/5yAsMOjNoDPeiHb2FDMFUwwudw6Tr2i95GEY=
+	t=1780001168; cv=none; b=it66qjZPRkin50dFGW0ZqlfY2U6plHC0wzj5hXG9PMSgljv0z90Tfmf8O5suoRKFyQ3UaVcYfavbihT+21DMP1CE1ZKrklZxitsGuosMNkf9IcKThVa9LXBmfWLAs0ScfKuRrgNi7joH+X8+DE2fyxjzCP+w9+5jdVLTlDCSyEM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779999008; c=relaxed/simple;
-	bh=NK7fAfXeqSMfmIAyCwzzl1QruplHKgntWyQ3ysqces8=;
+	s=arc-20240116; t=1780001168; c=relaxed/simple;
+	bh=UACN2cfkX9FVcr4WJUqq9mgUIyfCDgK5SDII1YizK/c=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=hbv1qMp4JY8oK88dYy19jzeihnFYLssz6up5iaaAemXqIhIinP9veY1dXfr+6wGN6v9LcdBlczGWJuyvJJL2azhE716FyzZOlDhswY8N8kgc0QsSd4pT1KEHX0gRM4RC+hQVEDZwG7n/Wf7oTl39Geglzn1Mrtpe3vp+9IcfENc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cZ/ZVV31; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 892A21F000E9;
-	Thu, 28 May 2026 20:10:06 +0000 (UTC)
+	 MIME-Version; b=PkikPIMHOUbBT/UR7i4+5NHYcCoEFxvyRbhXSaMQiXU3In49Q43b87qm+5cJI3tBMGexLUMhkG4Xr4L3ZpuUDuLdbdWAv32WEycuw6LyruTKKcVdQOy/yjx52zhdv9OcgJCCoB6H9iNZPokb51EjO5KsYHyueXuBloLEDA0Gs+M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YT6KBO2M; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3DD561F00A3A;
+	Thu, 28 May 2026 20:46:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779999007;
-	bh=69Gsur/grp+dHV7/OZDdPx7ASA5EFZ/KsgdiU1gNqkk=;
+	s=korg; t=1780001167;
+	bh=dFjd3+yoAu57c530fhg6swz1Pci6POk59sQT71HWyko=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=cZ/ZVV31baazIM2LLjSE1tSLFbifTmgHss0DSrBW2WBwVVfeUWfIezeMR/ea8T60Q
-	 VQ0KiSDFJNt/ymfxruSXt/aKLDQyBbOAr90sJ02toOAicSmPSl4yDZktmXfHklh5WJ
-	 G3NdyUwvhQ7SenX4ZB6vn4dKjgLmXTOsxRHJJbQU=
+	b=YT6KBO2MQ+JA51MY58r7u9udbz2xJMlq4hAOttR8bN6vDaqiM5TtL1f+CqDxUpCMN
+	 kNV06V/zJrlQC1qY7rXEdryuPjzZR1TkrH06KtffWS0x+K5ZPdV2w1gYCQvJ8ONN4R
+	 2MAy8X96tiCFiEjiy8V6djGirFqBIFZXBzSuL2Oc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Qing Ming <a0yami@mailbox.org>,
-	Tejun Heo <tj@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 7.0 375/461] cgroup/rstat: validate cpu before css_rstat_cpu() access
+	Jeremy Laratro <research@aradex.io>,
+	Namjae Jeon <linkinjeon@kernel.org>,
+	Steve French <stfrench@microsoft.com>
+Subject: [PATCH 6.6 024/186] ksmbd: fix null pointer dereference in compare_guid_key()
 Date: Thu, 28 May 2026 21:48:24 +0200
-Message-ID: <20260528194658.305439097@linuxfoundation.org>
+Message-ID: <20260528194929.614056211@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260528194646.819809818@linuxfoundation.org>
-References: <20260528194646.819809818@linuxfoundation.org>
+In-Reply-To: <20260528194928.941004471@linuxfoundation.org>
+References: <20260528194928.941004471@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -68,7 +68,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
@@ -78,7 +78,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-255472-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-256248-lists,stable=lfdr.de];
 	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
@@ -89,193 +89,84 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	TAGGED_RCPT(0.00)[stable];
 	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim,mailbox.org:email]
-X-Rspamd-Queue-Id: E1D145F84DC
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,aradex.io:email,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo]
+X-Rspamd-Queue-Id: 32BA35FA2A1
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-7.0-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Qing Ming <a0yami@mailbox.org>
+From: Jeremy Laratro <research@aradex.io>
 
-[ Upstream commit 8817005efbdfdf5d4e4814cb5dc52b53d12917d7 ]
+commit 4b83cbc4c15f09b000cc06f033f64b0824b6dc87 upstream.
 
-css_rstat_updated() is exposed as a BPF kfunc and accepts a
-caller-provided cpu argument. The function uses cpu for per-cpu rstat
-lookups without checking whether it refers to a valid possible CPU.
+session_fd_check() walks the per-inode m_op_list during durable-handle
+session teardown and sets op->conn = NULL for every opinfo whose conn
+matched the closing session's connection. The matching opinfo, however,
+stays linked in its per-ClientGuid lease_table_list entry's lb->lease_list
+because destroy_lease_table() only runs on full TCP-connection teardown,
+not on SESSION_LOGOFF.
 
-A BPF iter/cgroup program with CAP_BPF and CAP_PERFMON can pass an
-invalid cpu value. On an unfixed UBSCAN_BOUNDS test kernel, cpu ==
-0x7fffffff triggers:
+If the same TCP connection then negotiates a fresh session with the
+same ClientGuid (ClientGuid is bound to NEGOTIATE, not the session, and
+is unchanged across LOGOFF + SETUP) and issues a SMB2 CREATE with a
+lease context on a different inode, find_same_lease_key() walks
+lb->lease_list, reaches the stale opinfo, and calls compare_guid_key(),
+which unconditionally dereferences opinfo->conn->ClientGUID. The conn
+pointer is NULL and the kernel panics.
 
-  UBSAN: array-index-out-of-bounds in kernel/cgroup/rstat.c:31:9
-  index 2147483647 is out of range for type 'long unsigned int [64]'
+Reproducer requires only a successful SMB2 SESSION_SETUP and a share
+configured with 'durable handles = yes'. KASAN report on mainline
+70390501d194:
+
+  general protection fault, probably for non-canonical address
+  0xdffffc0000000069: 0000 [#1] SMP KASAN PTI
+  KASAN: null-ptr-deref in range [0x0000000000000348-0x000000000000034f]
+  Workqueue: ksmbd-io handle_ksmbd_work
+  RIP: 0010:bcmp+0x5b/0x230
   Call Trace:
-    css_rstat_updated
-    bpf_iter_run_prog
-    cgroup_iter_seq_show
-    bpf_seq_read
+   compare_guid_key+0x4b/0xd0
+   find_same_lease_key+0x324/0x690
+   smb2_open+0x6aea/0x8e60
+   handle_ksmbd_work+0x796/0xee0
+   ...
 
-Add cpu validation to the BPF-facing css_rstat_updated() kfunc and
-move the common implementation to __css_rstat_updated() for in-kernel
-callers.
+Faulting address 0x348 is the offset of ClientGUID within struct
+ksmbd_conn, confirming opinfo->conn was NULL.
 
-Fixes: a319185be9f5 ("cgroup: bpf: enable bpf programs to integrate with rstat")
-Signed-off-by: Qing Ming <a0yami@mailbox.org>
-Signed-off-by: Tejun Heo <tj@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Read opinfo->conn once and bail out if it has been cleared by a
+concurrent session_fd_check(). A half-detached opinfo cannot be the
+owner of an active lease, so returning 0 is the correct match result.
+
+Fixes: c8efcc786146 ("ksmbd: add support for durable handles v1/v2")
+Cc: stable@vger.kernel.org
+Signed-off-by: Jeremy Laratro <research@aradex.io>
+Acked-by: Namjae Jeon <linkinjeon@kernel.org>
+Signed-off-by: Steve French <stfrench@microsoft.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- block/blk-cgroup.c     |  2 +-
- include/linux/cgroup.h |  1 +
- kernel/cgroup/rstat.c  | 30 ++++++++++++++++++++----------
- mm/memcontrol.c        |  6 +++---
- 4 files changed, 25 insertions(+), 14 deletions(-)
+ fs/smb/server/oplock.c |    6 +++++-
+ 1 file changed, 5 insertions(+), 1 deletion(-)
 
-diff --git a/block/blk-cgroup.c b/block/blk-cgroup.c
-index 554c87bb4a865..bc63bd220865d 100644
---- a/block/blk-cgroup.c
-+++ b/block/blk-cgroup.c
-@@ -2241,7 +2241,7 @@ void blk_cgroup_bio_start(struct bio *bio)
- 	}
- 
- 	u64_stats_update_end_irqrestore(&bis->sync, flags);
--	css_rstat_updated(&blkcg->css, cpu);
-+	__css_rstat_updated(&blkcg->css, cpu);
- 	put_cpu();
- }
- 
-diff --git a/include/linux/cgroup.h b/include/linux/cgroup.h
-index bc892e3b37eea..b61b9b7849df4 100644
---- a/include/linux/cgroup.h
-+++ b/include/linux/cgroup.h
-@@ -715,6 +715,7 @@ static inline void cgroup_path_from_kernfs_id(u64 id, char *buf, size_t buflen)
- /*
-  * cgroup scalable recursive statistics.
-  */
-+void __css_rstat_updated(struct cgroup_subsys_state *css, int cpu);
- void css_rstat_updated(struct cgroup_subsys_state *css, int cpu);
- void css_rstat_flush(struct cgroup_subsys_state *css);
- 
-diff --git a/kernel/cgroup/rstat.c b/kernel/cgroup/rstat.c
-index 150e5871e66f2..ed60ba119c687 100644
---- a/kernel/cgroup/rstat.c
-+++ b/kernel/cgroup/rstat.c
-@@ -1,6 +1,7 @@
- // SPDX-License-Identifier: GPL-2.0-only
- #include "cgroup-internal.h"
- 
-+#include <linux/cpumask.h>
- #include <linux/sched/cputime.h>
- 
- #include <linux/bpf.h>
-@@ -53,7 +54,7 @@ static inline struct llist_head *ss_lhead_cpu(struct cgroup_subsys *ss, int cpu)
- }
- 
- /**
-- * css_rstat_updated - keep track of updated rstat_cpu
-+ * __css_rstat_updated - keep track of updated rstat_cpu
-  * @css: target cgroup subsystem state
-  * @cpu: cpu on which rstat_cpu was updated
-  *
-@@ -63,20 +64,17 @@ static inline struct llist_head *ss_lhead_cpu(struct cgroup_subsys *ss, int cpu)
-  *
-  * NOTE: if the user needs the guarantee that the updater either add itself in
-  * the lockless list or the concurrent flusher flushes its updated stats, a
-- * memory barrier is needed before the call to css_rstat_updated() i.e. a
-+ * memory barrier is needed before the call to __css_rstat_updated() i.e. a
-  * barrier after updating the per-cpu stats and before calling
-- * css_rstat_updated().
-+ * __css_rstat_updated().
-  */
--__bpf_kfunc void css_rstat_updated(struct cgroup_subsys_state *css, int cpu)
-+void __css_rstat_updated(struct cgroup_subsys_state *css, int cpu)
+--- a/fs/smb/server/oplock.c
++++ b/fs/smb/server/oplock.c
+@@ -484,8 +484,12 @@ static inline int compare_guid_key(struc
+ 				   const char *guid1, const char *key1)
  {
- 	struct llist_head *lhead;
- 	struct css_rstat_cpu *rstatc;
- 	struct llist_node *self;
+ 	const char *guid2, *key2;
++	struct ksmbd_conn *conn;
  
--	/*
--	 * Since bpf programs can call this function, prevent access to
--	 * uninitialized rstat pointers.
--	 */
-+	/* Prevent access to uninitialized rstat pointers. */
- 	if (!css_uses_rstat(css))
- 		return;
- 
-@@ -125,6 +123,18 @@ __bpf_kfunc void css_rstat_updated(struct cgroup_subsys_state *css, int cpu)
- 	llist_add(&rstatc->lnode, lhead);
- }
- 
-+/*
-+ * BPF-facing wrapper for __css_rstat_updated(). Validate the caller-provided
-+ * CPU before passing it to the internal rstat updater.
-+ */
-+__bpf_kfunc void css_rstat_updated(struct cgroup_subsys_state *css, int cpu)
-+{
-+	if (unlikely(cpu < 0 || cpu >= nr_cpu_ids || !cpu_possible(cpu)))
-+		return;
-+
-+	__css_rstat_updated(css, cpu);
-+}
-+
- static void __css_process_update_tree(struct cgroup_subsys_state *css, int cpu)
- {
- 	/* put @css and all ancestors on the corresponding updated lists */
-@@ -170,7 +180,7 @@ static void css_process_update_tree(struct cgroup_subsys *ss, int cpu)
- 		 * flusher flush the stats updated by the updater who have
- 		 * observed that they are already on the list. The
- 		 * corresponding barrier pair for this one should be before
--		 * css_rstat_updated() by the user.
-+		 * __css_rstat_updated() by the user.
- 		 *
- 		 * For now, there aren't any such user, so not adding the
- 		 * barrier here but if such a use-case arise, please add
-@@ -614,7 +624,7 @@ static void cgroup_base_stat_cputime_account_end(struct cgroup *cgrp,
- 						 unsigned long flags)
- {
- 	u64_stats_update_end_irqrestore(&rstatbc->bsync, flags);
--	css_rstat_updated(&cgrp->self, smp_processor_id());
-+	__css_rstat_updated(&cgrp->self, smp_processor_id());
- 	put_cpu_ptr(rstatbc);
- }
- 
-diff --git a/mm/memcontrol.c b/mm/memcontrol.c
-index 772bac21d1558..96786a4af7533 100644
---- a/mm/memcontrol.c
-+++ b/mm/memcontrol.c
-@@ -574,7 +574,7 @@ static inline void memcg_rstat_updated(struct mem_cgroup *memcg, int val,
- 	if (!val)
- 		return;
- 
--	css_rstat_updated(&memcg->css, cpu);
-+	__css_rstat_updated(&memcg->css, cpu);
- 	statc_pcpu = memcg->vmstats_percpu;
- 	for (; statc_pcpu; statc_pcpu = statc->parent_pcpu) {
- 		statc = this_cpu_ptr(statc_pcpu);
-@@ -2583,7 +2583,7 @@ static inline void account_slab_nmi_safe(struct mem_cgroup *memcg,
- 		struct mem_cgroup_per_node *pn = memcg->nodeinfo[pgdat->node_id];
- 
- 		/* preemption is disabled in_nmi(). */
--		css_rstat_updated(&memcg->css, smp_processor_id());
-+		__css_rstat_updated(&memcg->css, smp_processor_id());
- 		if (idx == NR_SLAB_RECLAIMABLE_B)
- 			atomic_add(nr, &pn->slab_reclaimable);
- 		else
-@@ -2807,7 +2807,7 @@ static inline void account_kmem_nmi_safe(struct mem_cgroup *memcg, int val)
- 		mod_memcg_state(memcg, MEMCG_KMEM, val);
- 	} else {
- 		/* preemption is disabled in_nmi(). */
--		css_rstat_updated(&memcg->css, smp_processor_id());
-+		__css_rstat_updated(&memcg->css, smp_processor_id());
- 		atomic_add(val, &memcg->kmem_stat);
- 	}
- }
--- 
-2.53.0
-
+-	guid2 = opinfo->conn->ClientGUID;
++	conn = READ_ONCE(opinfo->conn);
++	if (!conn)
++		return 0;
++	guid2 = conn->ClientGUID;
+ 	key2 = opinfo->o_lease->lease_key;
+ 	if (!memcmp(guid1, guid2, SMB2_CLIENT_GUID_SIZE) &&
+ 	    !memcmp(key1, key2, SMB2_LEASE_KEY_SIZE))
 
 
 
