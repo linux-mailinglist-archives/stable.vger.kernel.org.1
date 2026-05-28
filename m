@@ -1,105 +1,106 @@
-Return-Path: <stable+bounces-254740-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-254741-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id cAS8OH70F2q5WAgAu9opvQ
-	(envelope-from <stable+bounces-254740-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 09:53:34 +0200
+	id kFWzLzD0F2q5WAgAu9opvQ
+	(envelope-from <stable+bounces-254741-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 09:52:16 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8F1835EE06D
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 09:53:34 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3DC0A5EDFF6
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 09:52:15 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 14307318FE07
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 07:47:36 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 27DB43185324
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 07:47:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B778E346A14;
-	Thu, 28 May 2026 07:47:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9FE1A346A14;
+	Thu, 28 May 2026 07:47:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CRa80P5l"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yUtEiQAI"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 58B5430C343
-	for <stable@vger.kernel.org>; Thu, 28 May 2026 07:47:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2EEAB34FF40
+	for <stable@vger.kernel.org>; Thu, 28 May 2026 07:47:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779954455; cv=none; b=Ba5gzKPDN27ULCiEPQDnUgqKa9M+TvZ9zMyDSP1EoK6Up2oqQNUD4Otqir1jNW8nDqWDzuqJWve+ryyUoVPbSbEKhSS6D74w65f3+mIYKq5gOURZnZliDwXLH2A8Xi5WeL0+diNC4Q6YfPoyK8KAUSbK7bSDUS1+5iic7hO9MAQ=
+	t=1779954467; cv=none; b=OzGA2I4nUC53ve3MdXw5zIfvjbkrwzkio8apGpepVWRKEG0nyayxu3inayhQftonEoVQNvhvBhM+glh7Yjl0G/mFSXcx3oE4koUrdrysQ1KLBSthXn2Dp9XFMsT4XHRgkyzIiS1FQ33P5w9lVvbuLMaTIJjaPALUc+ACDYQrCcc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779954455; c=relaxed/simple;
-	bh=4LH71/C9r3A94LHRxrDnBPrTib7xWjhb36LFhSH4jak=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=TNYAXZkWjxq4hVQEqH8xPjBKO2A0rv2bqqegdAx+7ArWbJKwAa0L47JtuF5zMNeOnWODNJ8zAXr9jfLWFOhqf8ppUrxF6QtfJUGwfhpEdq/c/CTu8jJt3W5sj+Sen4VlIaLxcZ2I3GOsVhO/SCG2Lfs0UaAYJbCStF6PlrmpEWE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CRa80P5l; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 796501F000E9;
-	Thu, 28 May 2026 07:47:33 +0000 (UTC)
+	s=arc-20240116; t=1779954467; c=relaxed/simple;
+	bh=U4FRoNudG1eCxjrzAe2uEaefYQPSlCYYUXyuve+deAA=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=NoC/58oodWi/GCoLINmp37jhXXY5ojSqQDTfD1A67EyT16AUekLDUEYaGV7XjKalX2vFBcbgRI835Zgqhwau7RU3fOdR/VchwJ7lr4h0llxXe7AMhdMxwXEKCza3BOR6OK3UzFA1kx1H+WAxJYHA2kt7UhqI1ebUJ5cavkY9j1w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yUtEiQAI; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 17DD71F00A3A;
+	Thu, 28 May 2026 07:47:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779954454;
-	bh=yJqvQPMBE/HhkCUCeOEdINY0XO0BIqdxcdkrduUtp5o=;
+	s=korg; t=1779954465;
+	bh=Nuc+Opc3vLvuMIZaa33McyOYLj4gqQ6t5bEHZstK+xE=;
 	h=Subject:To:Cc:From:Date;
-	b=CRa80P5lFZ/cqDljbezrhwoo1MvyB3kN/mjQcKonfWTYBBlKfdkkcrTzEblCiMbx5
-	 iY5aQzhPGSCW0ljbnbHdLscP5+8nAGnpV0Y9PpojGIes7upfSRoLgVwaj+SwYhDEMM
-	 dq4NA3RBiOV7xL4daTtUsQSd6dHj9J4g1GuxhnU0=
-Subject: FAILED: patch "[PATCH] platform/x86/intel/vsec: Fix enable_cnt imbalance on PCIe" failed to apply to 6.1-stable tree
-To: lukas@wunner.de,ilpo.jarvinen@linux.intel.com
+	b=yUtEiQAINZlRJmoBXXIpg3kDpyD7mXFwvn5kW3NnnhF2Kbgw9L+cMPYQEPtb0qjuN
+	 UrUFmRVXtHGD63326qLJSo1TBcP+UwqMUaCnK8A1pjackhHsUowVOoSzIPW8EIlBui
+	 2RsfsjWvxIXwvEIrsx/k49/6lKp7r8Gv+29+XWtk=
+Subject: FAILED: patch "[PATCH] smb: client: require net admin for CIFS SWN netlink" failed to apply to 5.15-stable tree
+To: michael.bommarito@gmail.com,stfrench@microsoft.com
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Thu, 28 May 2026 09:46:31 +0200
-Message-ID: <2026052831-compacter-avenue-4d0c@gregkh>
+Date: Thu, 28 May 2026 09:46:52 +0200
+Message-ID: <2026052852-envelope-curly-7d36@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
+Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [2.34 / 15.00];
 	MID_END_EQ_FROM_USER_PART(4.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	MID_RHS_NOT_FQDN(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-254740-lists,stable=lfdr.de];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-254741-lists,stable=lfdr.de];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FREEMAIL_TO(0.00)[gmail.com,microsoft.com];
+	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	FROM_NO_DN(0.00)[];
 	MISSING_XM_UA(0.00)[];
-	NEURAL_HAM(-0.00)[-0.999];
+	NEURAL_HAM(-0.00)[-0.991];
 	TO_DN_NONE(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	RCPT_COUNT_THREE(0.00)[3];
 	TAGGED_RCPT(0.00)[stable];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[gregkh:email,msgid.link:url,intel.com:email,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,linuxfoundation.org:dkim]
-X-Rspamd-Queue-Id: 8F1835EE06D
+	DBL_BLOCKED_OPENRESOLVER(0.00)[gregkh:email,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,linuxfoundation.org:dkim]
+X-Rspamd-Queue-Id: 3DC0A5EDFF6
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
 
-The patch below does not apply to the 6.1-stable tree.
+The patch below does not apply to the 5.15-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.1.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.15.y
 git checkout FETCH_HEAD
-git cherry-pick -x 348ccc754d8939e21ca5956ff45720b81d6e407f
+git cherry-pick -x d1ebfce2c1d161186a82e77590bf7da2ea1bce91
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2026052831-compacter-avenue-4d0c@gregkh' --subject-prefix 'PATCH 6.1.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2026052852-envelope-curly-7d36@gregkh' --subject-prefix 'PATCH 5.15.y' HEAD^..
 
 Possible dependencies:
 
@@ -111,130 +112,57 @@ greg k-h
 
 ------------------ original commit in Linus's tree ------------------
 
-From 348ccc754d8939e21ca5956ff45720b81d6e407f Mon Sep 17 00:00:00 2001
-From: Lukas Wunner <lukas@wunner.de>
-Date: Thu, 14 May 2026 07:40:42 +0200
-Subject: [PATCH] platform/x86/intel/vsec: Fix enable_cnt imbalance on PCIe
- error recovery
-MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+From d1ebfce2c1d161186a82e77590bf7da2ea1bce91 Mon Sep 17 00:00:00 2001
+From: Michael Bommarito <michael.bommarito@gmail.com>
+Date: Sun, 17 May 2026 20:11:50 -0400
+Subject: [PATCH] smb: client: require net admin for CIFS SWN netlink
 
-After a PCIe Uncorrectable Error has been reported by a device with
-Intel Vendor Specific Extended Capabilities and has been recovered
-through a Secondary Bus Reset, its driver calls intel_vsec_pci_probe()
-to rescan and reinitialize VSECs.
+CIFS_GENL_CMD_SWN_NOTIFY is the userspace witness-notify command.  The
+intended sender is the cifs.witness helper, but the generic-netlink
+operation currently has no capability flag, so any local process can send
+RESOURCE_CHANGE or CLIENT_MOVE notifications to the in-kernel witness
+handler.
 
-intel_vsec_pci_probe() invokes pcim_enable_device() and thereby adds
-another devm action which calls pcim_disable_device() on driver unbind.
+The same family exposes CIFS_GENL_MCGRP_SWN without multicast-group
+capability flags.  Register messages sent to that group include the witness
+registration id and, for NTLM-authenticated mounts, the username, domain,
+and password attributes copied from the CIFS session.  An unprivileged
+local process should not be able to join that group and receive those
+messages.
 
-So once the driver unbinds, pcim_disable_device() will be called as many
-times as an Uncorrectable Error occurred, plus one.  This will lead to
-an enable_cnt imbalance on driver unbind.
+Require CAP_NET_ADMIN for incoming SWN_NOTIFY commands with
+GENL_ADMIN_PERM, and require CAP_NET_ADMIN over the network namespace for
+joining the SWN multicast group with GENL_MCAST_CAP_NET_ADMIN.  The
+cifs.witness service runs with the privileges needed for both operations.
 
-Additionally, since commit dc957ab6aa05 ("platform/x86/intel/vsec: Add
-private data for per-device data"), a devm_kzalloc() allocation is
-leaked on every Uncorrectable Error.
+Fixes: fed979a7e082 ("cifs: Set witness notification handler for messages from userspace daemon")
+Cc: stable@vger.kernel.org
+Signed-off-by: Michael Bommarito <michael.bommarito@gmail.com>
+Assisted-by: Claude:claude-opus-4-7
+Signed-off-by: Steve French <stfrench@microsoft.com>
 
-Avoid by splitting the VSEC rescan out of intel_vsec_pci_probe() into a
-separate helper and calling that on PCIe error recovery.
-
-Fixes: 936874b77dd0 ("platform/x86/intel/vsec: Add PCI error recovery support to Intel PMT")
-Signed-off-by: Lukas Wunner <lukas@wunner.de>
-Cc: stable@vger.kernel.org  # v6.0+
-Link: https://patch.msgid.link/bd594d09fa866dc51dddc9a447c3b23f9b1402cc.1778736835.git.lukas@wunner.de
-Reviewed-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
-Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
-
-diff --git a/drivers/platform/x86/intel/vsec.c b/drivers/platform/x86/intel/vsec.c
-index 7d5dbc1c1d05..18e4a892bf0f 100644
---- a/drivers/platform/x86/intel/vsec.c
-+++ b/drivers/platform/x86/intel/vsec.c
-@@ -649,29 +649,13 @@ static void intel_vsec_skip_missing_dependencies(struct pci_dev *pdev)
- 	}
- }
+diff --git a/fs/smb/client/netlink.c b/fs/smb/client/netlink.c
+index 147d9409252c..0dd10913c37a 100644
+--- a/fs/smb/client/netlink.c
++++ b/fs/smb/client/netlink.c
+@@ -33,13 +33,17 @@ static const struct nla_policy cifs_genl_policy[CIFS_GENL_ATTR_MAX + 1] = {
+ static const struct genl_ops cifs_genl_ops[] = {
+ 	{
+ 		.cmd = CIFS_GENL_CMD_SWN_NOTIFY,
++		.flags = GENL_ADMIN_PERM,
+ 		.validate = GENL_DONT_VALIDATE_STRICT | GENL_DONT_VALIDATE_DUMP,
+ 		.doit = cifs_swn_notify,
+ 	},
+ };
  
--static int intel_vsec_pci_probe(struct pci_dev *pdev, const struct pci_device_id *id)
-+static int intel_vsec_pci_init(struct pci_dev *pdev)
- {
--	const struct intel_vsec_platform_info *info;
--	struct vsec_priv *priv;
--	int num_caps, ret;
-+	struct vsec_priv *priv = pci_get_drvdata(pdev);
-+	const struct intel_vsec_platform_info *info = priv->info;
- 	int run_once = 0;
- 	bool found_any = false;
--
--	ret = pcim_enable_device(pdev);
--	if (ret)
--		return ret;
--
--	pci_save_state(pdev);
--	info = (const struct intel_vsec_platform_info *)id->driver_data;
--	if (!info)
--		return -EINVAL;
--
--	priv = devm_kzalloc(&pdev->dev, sizeof(*priv), GFP_KERNEL);
--	if (!priv)
--		return -ENOMEM;
--
--	priv->info = info;
--	pci_set_drvdata(pdev, priv);
-+	int num_caps;
+ static const struct genl_multicast_group cifs_genl_mcgrps[] = {
+-	[CIFS_GENL_MCGRP_SWN] = { .name = CIFS_GENL_MCGRP_SWN_NAME },
++	[CIFS_GENL_MCGRP_SWN] = {
++		.name = CIFS_GENL_MCGRP_SWN_NAME,
++		.flags = GENL_MCAST_CAP_NET_ADMIN,
++	},
+ };
  
- 	num_caps = hweight_long(info->caps);
- 	while (num_caps--) {
-@@ -692,6 +676,31 @@ static int intel_vsec_pci_probe(struct pci_dev *pdev, const struct pci_device_id
- 	return 0;
- }
- 
-+static int intel_vsec_pci_probe(struct pci_dev *pdev, const struct pci_device_id *id)
-+{
-+	const struct intel_vsec_platform_info *info;
-+	struct vsec_priv *priv;
-+	int ret;
-+
-+	ret = pcim_enable_device(pdev);
-+	if (ret)
-+		return ret;
-+
-+	pci_save_state(pdev);
-+	info = (const struct intel_vsec_platform_info *)id->driver_data;
-+	if (!info)
-+		return -EINVAL;
-+
-+	priv = devm_kzalloc(&pdev->dev, sizeof(*priv), GFP_KERNEL);
-+	if (!priv)
-+		return -ENOMEM;
-+
-+	priv->info = info;
-+	pci_set_drvdata(pdev, priv);
-+
-+	return intel_vsec_pci_init(pdev);
-+}
-+
- int intel_vsec_set_mapping(struct oobmsm_plat_info *plat_info,
- 			   struct intel_vsec_device *vsec_dev)
- {
-@@ -832,7 +841,6 @@ static pci_ers_result_t intel_vsec_pci_slot_reset(struct pci_dev *pdev)
- {
- 	struct intel_vsec_device *intel_vsec_dev;
- 	pci_ers_result_t status = PCI_ERS_RESULT_DISCONNECT;
--	const struct pci_device_id *pci_dev_id;
- 	unsigned long index;
- 
- 	dev_info(&pdev->dev, "Resetting PCI slot\n");
-@@ -853,10 +861,8 @@ static pci_ers_result_t intel_vsec_pci_slot_reset(struct pci_dev *pdev)
- 		devm_release_action(&pdev->dev, intel_vsec_remove_aux,
- 				    &intel_vsec_dev->auxdev);
- 	}
--	pci_disable_device(pdev);
- 	pci_restore_state(pdev);
--	pci_dev_id = pci_match_id(intel_vsec_pci_ids, pdev);
--	intel_vsec_pci_probe(pdev, pci_dev_id);
-+	intel_vsec_pci_init(pdev);
- 
- out:
- 	return status;
+ struct genl_family cifs_genl_family = {
 
 
