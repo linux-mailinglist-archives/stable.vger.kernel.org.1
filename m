@@ -1,59 +1,60 @@
-Return-Path: <stable+bounces-256371-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-256203-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id OJXeDXOsGGphmAgAu9opvQ
-	(envelope-from <stable+bounces-256371-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:58:27 +0200
+	id UK/2HfmqGGoomAgAu9opvQ
+	(envelope-from <stable+bounces-256203-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:52:09 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id A61515F9F2D
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:58:26 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id D3EB25F9BCD
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:52:08 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 6EA88304B889
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 20:51:54 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id DD555314C3C4
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 20:44:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0CD7E316905;
-	Thu, 28 May 2026 20:51:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7A0F12E7379;
+	Thu, 28 May 2026 20:44:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="l5NzTydA"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QEYToiCs"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 89FC22F1FEF;
-	Thu, 28 May 2026 20:51:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 603892EF652;
+	Thu, 28 May 2026 20:44:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780001513; cv=none; b=IvvsU0pncyCQAx2EAqk85EN5aYqPkyYZsKRF9MEoUsGbN0F1TpzTLckF50MjfmTxCYysY9wEwXkYDGvKRfS36VvyLFHGkR92sZkAgrn7YhAn/Nw4ZndW9l6KDJDA8Ja8jBxCtMjA2EMRcvvhCB3RRiNVPWkdTELE2QvLj9DSe5E=
+	t=1780001044; cv=none; b=E3J8i9dYEbMV+vtJ5LnEDwx3ltVynueEhgabyjlBDkVxrgggzaHetpGwbCa3qE1sp0e9j+nNINDOBVXFAnCJJlLNxG+3PzXkCa4gRZu69Pr0loPvpEjeZizdlOhVSttaRqtnKXpw13tlefUnHk0BIGVhGWMgzlpt1E7gpYFtk2A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780001513; c=relaxed/simple;
-	bh=HgRN3aYwQZPiqNau82kWSNLNg0APPmXfoyzIps7PQfM=;
+	s=arc-20240116; t=1780001044; c=relaxed/simple;
+	bh=5uXEWKu9sFNeRr9vwncTb8NsPyTcsq28jBp8RxtGIO4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=ne8JsW35tFV78ftd9JnUL5uBtbYOnjwDjwDq39e6V5V+kGLdV7UgQ+KnFjLxyaVP58NOSQw+ZEWkZaBhpTspOiQ+FocjbpVyNgzkuly+Vur0b8pJVS6et/eZUINB+E1DK0O3ldX7PZjOI1K6uw2mc3XUg74UCORsKakpb9Z96ww=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=l5NzTydA; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E6D7C1F000E9;
-	Thu, 28 May 2026 20:51:51 +0000 (UTC)
+	 MIME-Version; b=C+2kmNpdGNpLdmDru0ZBtdsIQTxT5wlET+Qj8DCgLd3Ndnp16Lwhwckg6R/CvJkNAxBpyPrdFFt+noI71HsOhURL+wvTv7eNJC2SjAh59bj0JnGlje9HH0eQiCXlRqJ3kBH0r6MRSGnOKjz+zjY9Lnn6ytg+AWcw0nkpd+u0NmU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QEYToiCs; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 757D41F000E9;
+	Thu, 28 May 2026 20:44:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780001512;
-	bh=1r3ql2PjYWrQrPVU+IOHQ9h9gFOO7+Ocblmk7Tja+44=;
+	s=korg; t=1780001043;
+	bh=MlSvcxrrBjBAcK/Fs1uSWjklokbOw0X5QXEBt26u1Tw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=l5NzTydAMNMuLGw4TCVrMNqVD+e0OFcjgsWOnpv3xB4CGz2/ElcHMOdhBz+Q0P1f2
-	 kNSenCRL7U0X+yYBJEvTLxxPW6XjhCENBisUAtE8V5tnkcPXBmxaeInOe/kaNCoBHf
-	 t/dAizyryeJWzRWFlSksYEsl0L+qqZZC0DGLvGlE=
+	b=QEYToiCsYmhbk4LvxvXBDKRWrHiV/RgNh0GQDfE2Dv05CD0y/BQSCTpQ7KragzFOF
+	 ur2ihtXXWnqDoH3mvdjCD6GJvWwPy3AF/F1y83mFYR/vkoGB+x22mtGcAZfSDZOFwG
+	 uDqEV6VEO3p8LpzwaRRoO2NEEkQ3B5W7KP2gxyCg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Ar=C4=B1n=C3=A7=20=C3=9CNAL?= <arinc.unal@arinc9.com>,
-	"David S. Miller" <davem@davemloft.net>,
+	Rosen Penev <rosenp@gmail.com>,
+	Oleksij Rempel <o.rempel@pengutronix.de>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 155/186] net: dsa: mt7530: rename mt753x_bpdu_port_fw enum to mt753x_to_cpu_fw
+Subject: [PATCH 6.12 261/272] net: ag71xx: check error for platform_get_irq
 Date: Thu, 28 May 2026 21:50:35 +0200
-Message-ID: <20260528194933.139420192@linuxfoundation.org>
+Message-ID: <20260528194636.401364254@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260528194928.941004471@linuxfoundation.org>
-References: <20260528194928.941004471@linuxfoundation.org>
+In-Reply-To: <20260528194629.379955525@linuxfoundation.org>
+References: <20260528194629.379955525@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,216 +64,73 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-2.16 / 15.00];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-256371-lists,stable=lfdr.de];
-	FROM_HAS_DN(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	RCPT_COUNT_FIVE(0.00)[6];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,pengutronix.de,kernel.org];
+	TAGGED_FROM(0.00)[bounces-256203-lists,stable=lfdr.de];
 	PRECEDENCE_BULK(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[stable];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim]
-X-Rspamd-Queue-Id: A61515F9F2D
+	TAGGED_RCPT(0.00)[stable];
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,msgid.link:url,linuxfoundation.org:mid,linuxfoundation.org:dkim,pengutronix.de:email]
+X-Rspamd-Queue-Id: D3EB25F9BCD
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Arınç ÜNAL <arinc.unal@arinc9.com>
+From: Rosen Penev <rosenp@gmail.com>
 
-[ Upstream commit 7603a0c7d2210a253265394b50567c64fbb977e4 ]
+[ Upstream commit e7c70bf97e90d974cd575e4c90f8f9b07d056da3 ]
 
-The mt753x_bpdu_port_fw enum is globally used for manipulating the process
-of deciding the forwardable ports, specifically concerning the CPU port(s).
-Therefore, rename it and the values in it to mt753x_to_cpu_fw.
+Complete error handling for a failed platform_get_irq() call
 
-Change FOLLOW_MFC to SYSTEM_DEFAULT to be on par with the switch documents.
-
-Signed-off-by: Arınç ÜNAL <arinc.unal@arinc9.com>
-Signed-off-by: David S. Miller <davem@davemloft.net>
-Stable-dep-of: 3ac85bcfd404 ("net: dsa: mt7530: preserve VLAN tags on trapped link-local frames")
+Fixes: d51b6ce441d3 ("net: ethernet: add ag71xx driver")
+Signed-off-by: Rosen Penev <rosenp@gmail.com>
+Reviewed-by: Oleksij Rempel <o.rempel@pengutronix.de>
+Link: https://patch.msgid.link/20260516212616.11758-1-rosenp@gmail.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/dsa/mt7530.c | 44 ++++++++++-------------
- drivers/net/dsa/mt7530.h | 76 ++++++++++++++++++++--------------------
- 2 files changed, 56 insertions(+), 64 deletions(-)
+ drivers/net/ethernet/atheros/ag71xx.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/drivers/net/dsa/mt7530.c b/drivers/net/dsa/mt7530.c
-index ada56e432dd7a..ed783943c73c7 100644
---- a/drivers/net/dsa/mt7530.c
-+++ b/drivers/net/dsa/mt7530.c
-@@ -1178,42 +1178,34 @@ mt753x_trap_frames(struct mt7530_priv *priv)
- 	 * VLAN-untagged.
- 	 */
- 	mt7530_rmw(priv, MT753X_BPC,
--		   MT753X_PAE_BPDU_FR | MT753X_PAE_EG_TAG_MASK |
--			   MT753X_PAE_PORT_FW_MASK | MT753X_BPDU_EG_TAG_MASK |
--			   MT753X_BPDU_PORT_FW_MASK,
--		   MT753X_PAE_BPDU_FR |
--			   MT753X_PAE_EG_TAG(MT7530_VLAN_EG_UNTAGGED) |
--			   MT753X_PAE_PORT_FW(MT753X_BPDU_CPU_ONLY) |
--			   MT753X_BPDU_EG_TAG(MT7530_VLAN_EG_UNTAGGED) |
--			   MT753X_BPDU_CPU_ONLY);
-+		   PAE_BPDU_FR | PAE_EG_TAG_MASK | PAE_PORT_FW_MASK |
-+			   BPDU_EG_TAG_MASK | BPDU_PORT_FW_MASK,
-+		   PAE_BPDU_FR | PAE_EG_TAG(MT7530_VLAN_EG_UNTAGGED) |
-+			   PAE_PORT_FW(TO_CPU_FW_CPU_ONLY) |
-+			   BPDU_EG_TAG(MT7530_VLAN_EG_UNTAGGED) |
-+			   TO_CPU_FW_CPU_ONLY);
+diff --git a/drivers/net/ethernet/atheros/ag71xx.c b/drivers/net/ethernet/atheros/ag71xx.c
+index bccc7e7b2a848..f5570061abe7f 100644
+--- a/drivers/net/ethernet/atheros/ag71xx.c
++++ b/drivers/net/ethernet/atheros/ag71xx.c
+@@ -1861,6 +1861,9 @@ static int ag71xx_probe(struct platform_device *pdev)
+ 	ag71xx_int_disable(ag, AG71XX_INT_POLL);
  
- 	/* Trap frames with :01 and :02 MAC DAs to the CPU port(s) and egress
- 	 * them VLAN-untagged.
- 	 */
- 	mt7530_rmw(priv, MT753X_RGAC1,
--		   MT753X_R02_BPDU_FR | MT753X_R02_EG_TAG_MASK |
--			   MT753X_R02_PORT_FW_MASK | MT753X_R01_BPDU_FR |
--			   MT753X_R01_EG_TAG_MASK | MT753X_R01_PORT_FW_MASK,
--		   MT753X_R02_BPDU_FR |
--			   MT753X_R02_EG_TAG(MT7530_VLAN_EG_UNTAGGED) |
--			   MT753X_R02_PORT_FW(MT753X_BPDU_CPU_ONLY) |
--			   MT753X_R01_BPDU_FR |
--			   MT753X_R01_EG_TAG(MT7530_VLAN_EG_UNTAGGED) |
--			   MT753X_BPDU_CPU_ONLY);
-+		   R02_BPDU_FR | R02_EG_TAG_MASK | R02_PORT_FW_MASK |
-+			   R01_BPDU_FR | R01_EG_TAG_MASK | R01_PORT_FW_MASK,
-+		   R02_BPDU_FR | R02_EG_TAG(MT7530_VLAN_EG_UNTAGGED) |
-+			   R02_PORT_FW(TO_CPU_FW_CPU_ONLY) | R01_BPDU_FR |
-+			   R01_EG_TAG(MT7530_VLAN_EG_UNTAGGED) |
-+			   TO_CPU_FW_CPU_ONLY);
- 
- 	/* Trap frames with :03 and :0E MAC DAs to the CPU port(s) and egress
- 	 * them VLAN-untagged.
- 	 */
- 	mt7530_rmw(priv, MT753X_RGAC2,
--		   MT753X_R0E_BPDU_FR | MT753X_R0E_EG_TAG_MASK |
--			   MT753X_R0E_PORT_FW_MASK | MT753X_R03_BPDU_FR |
--			   MT753X_R03_EG_TAG_MASK | MT753X_R03_PORT_FW_MASK,
--		   MT753X_R0E_BPDU_FR |
--			   MT753X_R0E_EG_TAG(MT7530_VLAN_EG_UNTAGGED) |
--			   MT753X_R0E_PORT_FW(MT753X_BPDU_CPU_ONLY) |
--			   MT753X_R03_BPDU_FR |
--			   MT753X_R03_EG_TAG(MT7530_VLAN_EG_UNTAGGED) |
--			   MT753X_BPDU_CPU_ONLY);
-+		   R0E_BPDU_FR | R0E_EG_TAG_MASK | R0E_PORT_FW_MASK |
-+			   R03_BPDU_FR | R03_EG_TAG_MASK | R03_PORT_FW_MASK,
-+		   R0E_BPDU_FR | R0E_EG_TAG(MT7530_VLAN_EG_UNTAGGED) |
-+			   R0E_PORT_FW(TO_CPU_FW_CPU_ONLY) | R03_BPDU_FR |
-+			   R03_EG_TAG(MT7530_VLAN_EG_UNTAGGED) |
-+			   TO_CPU_FW_CPU_ONLY);
- }
- 
- static int
-diff --git a/drivers/net/dsa/mt7530.h b/drivers/net/dsa/mt7530.h
-index 0ad52d3cbfebb..393a7cb03a432 100644
---- a/drivers/net/dsa/mt7530.h
-+++ b/drivers/net/dsa/mt7530.h
-@@ -67,47 +67,47 @@ enum mt753x_id {
- #define MT753X_MIRROR_MASK(id)		((((id) == ID_MT7531) || ((id) == ID_MT7988)) ?	\
- 					 MT7531_MIRROR_MASK : MIRROR_MASK)
- 
--/* Registers for BPDU and PAE frame control*/
-+/* Register for BPDU and PAE frame control */
- #define MT753X_BPC			0x24
--#define  MT753X_PAE_BPDU_FR		BIT(25)
--#define  MT753X_PAE_EG_TAG_MASK		GENMASK(24, 22)
--#define  MT753X_PAE_EG_TAG(x)		FIELD_PREP(MT753X_PAE_EG_TAG_MASK, x)
--#define  MT753X_PAE_PORT_FW_MASK	GENMASK(18, 16)
--#define  MT753X_PAE_PORT_FW(x)		FIELD_PREP(MT753X_PAE_PORT_FW_MASK, x)
--#define  MT753X_BPDU_EG_TAG_MASK	GENMASK(8, 6)
--#define  MT753X_BPDU_EG_TAG(x)		FIELD_PREP(MT753X_BPDU_EG_TAG_MASK, x)
--#define  MT753X_BPDU_PORT_FW_MASK	GENMASK(2, 0)
--
--/* Register for :01 and :02 MAC DA frame control */
-+#define  PAE_BPDU_FR			BIT(25)
-+#define  PAE_EG_TAG_MASK		GENMASK(24, 22)
-+#define  PAE_EG_TAG(x)			FIELD_PREP(PAE_EG_TAG_MASK, x)
-+#define  PAE_PORT_FW_MASK		GENMASK(18, 16)
-+#define  PAE_PORT_FW(x)			FIELD_PREP(PAE_PORT_FW_MASK, x)
-+#define  BPDU_EG_TAG_MASK		GENMASK(8, 6)
-+#define  BPDU_EG_TAG(x)			FIELD_PREP(BPDU_EG_TAG_MASK, x)
-+#define  BPDU_PORT_FW_MASK		GENMASK(2, 0)
+ 	ndev->irq = platform_get_irq(pdev, 0);
++	if (ndev->irq < 0)
++		return ndev->irq;
 +
-+/* Register for 01-80-C2-00-00-[01,02] MAC DA frame control */
- #define MT753X_RGAC1			0x28
--#define  MT753X_R02_BPDU_FR		BIT(25)
--#define  MT753X_R02_EG_TAG_MASK		GENMASK(24, 22)
--#define  MT753X_R02_EG_TAG(x)		FIELD_PREP(MT753X_R02_EG_TAG_MASK, x)
--#define  MT753X_R02_PORT_FW_MASK	GENMASK(18, 16)
--#define  MT753X_R02_PORT_FW(x)		FIELD_PREP(MT753X_R02_PORT_FW_MASK, x)
--#define  MT753X_R01_BPDU_FR		BIT(9)
--#define  MT753X_R01_EG_TAG_MASK		GENMASK(8, 6)
--#define  MT753X_R01_EG_TAG(x)		FIELD_PREP(MT753X_R01_EG_TAG_MASK, x)
--#define  MT753X_R01_PORT_FW_MASK	GENMASK(2, 0)
--
--/* Register for :03 and :0E MAC DA frame control */
-+#define  R02_BPDU_FR			BIT(25)
-+#define  R02_EG_TAG_MASK		GENMASK(24, 22)
-+#define  R02_EG_TAG(x)			FIELD_PREP(R02_EG_TAG_MASK, x)
-+#define  R02_PORT_FW_MASK		GENMASK(18, 16)
-+#define  R02_PORT_FW(x)			FIELD_PREP(R02_PORT_FW_MASK, x)
-+#define  R01_BPDU_FR			BIT(9)
-+#define  R01_EG_TAG_MASK		GENMASK(8, 6)
-+#define  R01_EG_TAG(x)			FIELD_PREP(R01_EG_TAG_MASK, x)
-+#define  R01_PORT_FW_MASK		GENMASK(2, 0)
-+
-+/* Register for 01-80-C2-00-00-[03,0E] MAC DA frame control */
- #define MT753X_RGAC2			0x2c
--#define  MT753X_R0E_BPDU_FR		BIT(25)
--#define  MT753X_R0E_EG_TAG_MASK		GENMASK(24, 22)
--#define  MT753X_R0E_EG_TAG(x)		FIELD_PREP(MT753X_R0E_EG_TAG_MASK, x)
--#define  MT753X_R0E_PORT_FW_MASK	GENMASK(18, 16)
--#define  MT753X_R0E_PORT_FW(x)		FIELD_PREP(MT753X_R0E_PORT_FW_MASK, x)
--#define  MT753X_R03_BPDU_FR		BIT(9)
--#define  MT753X_R03_EG_TAG_MASK		GENMASK(8, 6)
--#define  MT753X_R03_EG_TAG(x)		FIELD_PREP(MT753X_R03_EG_TAG_MASK, x)
--#define  MT753X_R03_PORT_FW_MASK	GENMASK(2, 0)
--
--enum mt753x_bpdu_port_fw {
--	MT753X_BPDU_FOLLOW_MFC,
--	MT753X_BPDU_CPU_EXCLUDE = 4,
--	MT753X_BPDU_CPU_INCLUDE = 5,
--	MT753X_BPDU_CPU_ONLY = 6,
--	MT753X_BPDU_DROP = 7,
-+#define  R0E_BPDU_FR			BIT(25)
-+#define  R0E_EG_TAG_MASK		GENMASK(24, 22)
-+#define  R0E_EG_TAG(x)			FIELD_PREP(R0E_EG_TAG_MASK, x)
-+#define  R0E_PORT_FW_MASK		GENMASK(18, 16)
-+#define  R0E_PORT_FW(x)			FIELD_PREP(R0E_PORT_FW_MASK, x)
-+#define  R03_BPDU_FR			BIT(9)
-+#define  R03_EG_TAG_MASK		GENMASK(8, 6)
-+#define  R03_EG_TAG(x)			FIELD_PREP(R03_EG_TAG_MASK, x)
-+#define  R03_PORT_FW_MASK		GENMASK(2, 0)
-+
-+enum mt753x_to_cpu_fw {
-+	TO_CPU_FW_SYSTEM_DEFAULT,
-+	TO_CPU_FW_CPU_EXCLUDE = 4,
-+	TO_CPU_FW_CPU_INCLUDE = 5,
-+	TO_CPU_FW_CPU_ONLY = 6,
-+	TO_CPU_FW_DROP = 7,
- };
- 
- /* Registers for address table access */
+ 	err = devm_request_irq(&pdev->dev, ndev->irq, ag71xx_interrupt,
+ 			       0x0, dev_name(&pdev->dev), ndev);
+ 	if (err) {
 -- 
 2.53.0
 
