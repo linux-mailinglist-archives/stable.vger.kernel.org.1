@@ -1,63 +1,59 @@
-Return-Path: <stable+bounces-255809-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-256053-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id INC5I0aoGGp+lwgAu9opvQ
-	(envelope-from <stable+bounces-255809-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:40:38 +0200
+	id KMx/NuCoGGpolwgAu9opvQ
+	(envelope-from <stable+bounces-256053-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:43:12 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 096595F94BC
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:40:38 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id 746865F9652
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:43:12 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 6C3D5325449A
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 20:25:46 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 6B3D830B9363
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 20:37:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DDD8C33067C;
-	Thu, 28 May 2026 20:25:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C547E33987F;
+	Thu, 28 May 2026 20:37:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EkbghmeK"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XgrUoYEc"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B3A0F2F39B4;
-	Thu, 28 May 2026 20:25:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 976E43446C5;
+	Thu, 28 May 2026 20:37:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779999940; cv=none; b=lJ78Y56vKXEW9N9uVtG4TKpBOPtMav7TCr4k7JQ8HljzJco5JTyKiUkFz4GrTjoiPq07Wv6QmzyNeKE2tpDBmgFVCmeDqSfvGT1hrn3p48zjywNa8SICfYLaZGDRdaokmEeHKpbi2Tfdtg6cQQaM1QyhAvVLVd8osFY77LiepDc=
+	t=1780000623; cv=none; b=oa5gpvKidiYBB8wcXDv2bUEkFxI6UMgcDA0mXSzHQy/GCrU7wnsbXf/pwUOwdM7uDiymHjkeAyXcytG9p9F2MyybxFLr7dWQlgzsUxwhHofifsPeLCD8QXNS7TbeN6G6X9ilLHInI2WY++2AnncNAGLNO/lxsTPaKcUo/BoJa+g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779999940; c=relaxed/simple;
-	bh=FwNwf9OFGNwRRjgbGkS/s2GUeb95gxrZyBnsDUlKM3U=;
+	s=arc-20240116; t=1780000623; c=relaxed/simple;
+	bh=TY9KqlTbRTXKecteZRRg8EF+qPcHoX7QT1ypa7qTqmI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ZPld4viVMZ5LFKKE26zNfY4SIG/WMqU3NOJHQMsQSMa3HhJ4NUSKqs48Ef+lsKJYr7TIytyCHMDw/1pNxm0hVWIgw2m3c/cqktYQiV3Zw27PSPI7w/MHm9LjnKs4WmFfGJxtfjL8bAdmrVNNjqIol5xrQ6wmZAgukZObzwm4rkc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EkbghmeK; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 24DB41F000E9;
-	Thu, 28 May 2026 20:25:38 +0000 (UTC)
+	 MIME-Version; b=oJmB+BxbpfChU3Cg7/TMHnzBPSaJqdMYlezyl/cg+2bpjYcVUQU8BcjgtaTI361EMiYTH+GAmQDoQlNgKUgMxPRmyKrvT3MT9C1rAfeiEx4vBRmwd8R7+kEvSlxjWvJXfACOLgVGo9jjbUWcG+YoYjZ0a9T/sX4clqNHTcdi5Nk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XgrUoYEc; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EC3841F000E9;
+	Thu, 28 May 2026 20:37:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779999939;
-	bh=OvJHiFPPYowwlPzzegDXYlE/tcX9q05ZWkr5jpWBlnM=;
+	s=korg; t=1780000622;
+	bh=RM1WxqLXT5Q2cWbAqNX40t5C6x2Y+0CifyiBxO5Rhmw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=EkbghmeK66Xl6m2ETszlQF/QEkhtSYRlVlpnNWMjrrEChkyZurTWQDF3GQjqxcnj7
-	 J/JpE56/InyHBN+IM/qi1qjf0wG2pd5S1laZ9p76VGI73NHQbAp9a/Ig1Zh6SjTjk6
-	 30Ruk1FVfignpxtifv3oVe91f5+zp96AETZy+PcY=
+	b=XgrUoYEci1mzgmLSqGbUfslf5upnquRZ4MWG1ZeOIccdC7AO40fK1fBZyjdfiHyhi
+	 rmgtKa2s9ohv0Y7vXyJOTYc79A5oGu8naJROmiOfPL+1AD7/aX/tCYXLskjAVHXY0j
+	 Tpv2JPqK4BNo84+79+C2K/tTIr0fLxamncFc+OrI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	David Howells <dhowells@redhat.com>,
-	Paulo Alcantara <pc@manguebit.org>,
-	Matthew Wilcox <willy@infradead.org>,
-	netfs@lists.linux.dev,
-	linux-fsdevel@vger.kernel.org,
-	Christian Brauner <brauner@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 246/377] netfs: Fix partial invalidation of streaming-write folio
+	Vignesh R <vigneshr@ti.com>,
+	Johan Hovold <johan@kernel.org>,
+	Mark Brown <broonie@kernel.org>
+Subject: [PATCH 6.12 110/272] spi: ti-qspi: fix use-after-free after DMA setup failure
 Date: Thu, 28 May 2026 21:48:04 +0200
-Message-ID: <20260528194645.502567271@linuxfoundation.org>
+Message-ID: <20260528194632.457291150@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260528194638.371537336@linuxfoundation.org>
-References: <20260528194638.371537336@linuxfoundation.org>
+In-Reply-To: <20260528194629.379955525@linuxfoundation.org>
+References: <20260528194629.379955525@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -72,81 +68,73 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-255809-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-256053-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[10];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linux.dev:email,sashiko.dev:url,infradead.org:email,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,manguebit.org:email,msgid.link:url,linuxfoundation.org:mid,linuxfoundation.org:dkim]
-X-Rspamd-Queue-Id: 096595F94BC
+	RCPT_COUNT_FIVE(0.00)[6];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,msgid.link:url,sashiko.dev:url,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim]
+X-Rspamd-Queue-Id: 746865F9652
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: David Howells <dhowells@redhat.com>
+From: Johan Hovold <johan@kernel.org>
 
-[ Upstream commit 6d91acc7fb85d33ea58fca9b964a32a453937f4b ]
+commit ea6ec3343e05f7937a53eb6d7617b3abdb4abc19 upstream.
 
-In netfs_invalidate_folio(), if the region of a partial invalidation
-overlaps the front (but not all) of a dirty write cached in a streaming
-write page (dirty, but not uptodate, with the dirty region tracked by a
-netfs_folio struct), the function modifies the dirty region - but
-incorrectly as it moves the region forward by setting the start to the
-start, not the end, of the invalidation region.
+The driver falls back to PIO mode if DMA setup fails during probe.
 
-Fix this by setting finfo->dirty_offset to the end of the invalidation
-region (iend).
+Make sure to clear the DMA channel pointer also if buffer allocation
+fails to avoid passing a pointer to the released channel to the DMA
+engine (or trying to free the channel a second time on late probe errors
+or driver unbind).
 
-Fixes: cce6bfa6ca0e ("netfs: Fix trimming of streaming-write folios in netfs_inval_folio()")
-Closes: https://sashiko.dev/#/patchset/20260414082004.3756080-1-dhowells%40redhat.com
-Signed-off-by: David Howells <dhowells@redhat.com>
-Link: https://patch.msgid.link/20260512123404.719402-21-dhowells@redhat.com
-cc: Paulo Alcantara <pc@manguebit.org>
-cc: Matthew Wilcox <willy@infradead.org>
-cc: netfs@lists.linux.dev
-cc: linux-fsdevel@vger.kernel.org
-Signed-off-by: Christian Brauner <brauner@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+This issue was flagged by Sashiko when reviewing a devres allocation
+conversion patch.
+
+Fixes: c687c46e9e45 ("spi: spi-ti-qspi: Use bounce buffer if read buffer is not DMA'ble")
+Link: https://sashiko.dev/#/patchset/20260505072909.618363-1-johan%40kernel.org?part=17
+Cc: stable@vger.kernel.org	# 4.12
+Cc: Vignesh R <vigneshr@ti.com>
+Signed-off-by: Johan Hovold <johan@kernel.org>
+Link: https://patch.msgid.link/20260512074809.915084-1-johan@kernel.org
+Signed-off-by: Mark Brown <broonie@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/netfs/misc.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/spi/spi-ti-qspi.c |    1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/fs/netfs/misc.c b/fs/netfs/misc.c
-index eb309bef72608..1109ac3791281 100644
---- a/fs/netfs/misc.c
-+++ b/fs/netfs/misc.c
-@@ -255,7 +255,7 @@ void netfs_invalidate_folio(struct folio *folio, size_t offset, size_t length)
- 				goto erase_completely;
- 			/* Move the start of the data. */
- 			finfo->dirty_len = fend - iend;
--			finfo->dirty_offset = offset;
-+			finfo->dirty_offset = iend;
- 			trace_netfs_folio(folio, netfs_folio_trace_invalidate_front);
- 			return;
- 		}
--- 
-2.53.0
-
+--- a/drivers/spi/spi-ti-qspi.c
++++ b/drivers/spi/spi-ti-qspi.c
+@@ -874,6 +874,7 @@ static int ti_qspi_probe(struct platform
+ 		dev_err(qspi->dev,
+ 			"dma_alloc_coherent failed, using PIO mode\n");
+ 		dma_release_channel(qspi->rx_chan);
++		qspi->rx_chan = NULL;
+ 		goto no_dma;
+ 	}
+ 	host->dma_rx = qspi->rx_chan;
 
 
 
