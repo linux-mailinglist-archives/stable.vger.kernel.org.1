@@ -1,59 +1,59 @@
-Return-Path: <stable+bounces-256019-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-255391-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id oNBlEPmnGGpolwgAu9opvQ
-	(envelope-from <stable+bounces-256019-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:39:21 +0200
+	id 2LcSK5WgGGpAlggAu9opvQ
+	(envelope-from <stable+bounces-255391-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:07:49 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id EDDDE5F93C7
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:39:20 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 60F8E5F7E0E
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:07:48 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 123BB307B4CB
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 20:35:30 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id F1DDE3043E93
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 20:06:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F2DC032AAD6;
-	Thu, 28 May 2026 20:35:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E536F32ABC0;
+	Thu, 28 May 2026 20:06:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uSmSHora"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kE6lKUw8"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C3BB93368B5;
-	Thu, 28 May 2026 20:35:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BC91C2FD7C3;
+	Thu, 28 May 2026 20:06:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780000527; cv=none; b=sJWKxBlQ06hcM/OjjEvOFQ46+KgkFjooquURs26Q/FM5bn+sbzCz4zz6FrEq71t0Mmn2a1GMH8eMOU53xJ5VdEps7Txs5O7yzK9Ok2h1cD1/5cv/yjL0RMADBPbPHR3qFDpLa/ikV3TdN5ciVqqYbN7rjo1fv4KcdRntE7Rc+bk=
+	t=1779998778; cv=none; b=jqNCqZk9A0RBxH0Vj8M3MBlseG9eKWBpsO4ORzxlJ+8c06Z0pRws1PobAsjuTOeltO+WS7PfMzY1zo2VDxF+6+8dDqrSj2WmDrgK+kl9qdOmI08DDyJcShAJtRwAOx6PpYQUc2x5pjT74Hj8GTnwHh7386CTvYjCPQ8puyLAEo0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780000527; c=relaxed/simple;
-	bh=FAg3RgOvKm8isZRhgI8Ac5xFCO9OaUI036uLentQC6Y=;
+	s=arc-20240116; t=1779998778; c=relaxed/simple;
+	bh=Yl/diFDeOqC9hERiPHE85n5lZphmcp0V1RqWfbhcchA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=DAcnfMhnS+qRwWp/yOr0DFyPL9WGjWdbwEbaVdAEYqxg2ur1cQPs9tLpSAHvFuQGlzvAX9EJds01tOAILj23s4lO70iPuuzeef9anGQPXP723LGZmru3s5cY+BcWC2NkgLNLrS2WeXQrQLaAb85jJ9jLI5bs5KoWJaqtXFLez90=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uSmSHora; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2D2381F000E9;
-	Thu, 28 May 2026 20:35:26 +0000 (UTC)
+	 MIME-Version; b=mBPOK4jspSrstjF7UyYGp0tudJu4tEKvb7d/hSlvX51yu74BFBpzCA1h6YSJEm/vHqAKA9wmRDcAYjYRxqnmO5GkQJWrVQNNobobR1HOL3+tv0wHjC36gdbrYcK8O12ukqvpCMimmh1jLob1lbglgKAiQtMhKWNFvwjmveoP+5g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kE6lKUw8; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 242BE1F000E9;
+	Thu, 28 May 2026 20:06:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780000526;
-	bh=WRnt2BtcMIqPSNj62HfSgjePJneXPLqM3g27suBZBq0=;
+	s=korg; t=1779998777;
+	bh=JrgeJwQvfwWwTJbNPyR+DeddSJ5NH9RzL7oeLVX2iWA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=uSmSHorawXnUNTXNRXcx9+whTFrOmrXbr0yocov1B+QV3cWmx83JTs93mYaIche5n
-	 QM/XstzJCzkEKic4X5TMSQQL2KRfDMzFPSU/ZYVgy9aN4rHnZ1WbHv8OKLdCy49Tzf
-	 7a5A2lCdyfa505QIuWIjlcQoXX1e+FiPKtMavtzc=
+	b=kE6lKUw8ZW5vSyg6gypW6sskw8KG9HMHfdlLge2ypASahIkVSrc9X41I8zn/ytwJo
+	 3Xl0P1T/H33PEvtGmD4bwJrk5tk1QHDkfFnnRkXDnx9rhZsmSzYae2YBwXLB4X7tt2
+	 F0b5HyTjVUUPPMcGHzpJG7UE34jFCizPGaFgOPB8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jeremy Erazo <mendozayt13@gmail.com>,
-	David Howells <dhowells@redhat.com>,
-	Steve French <stfrench@microsoft.com>
-Subject: [PATCH 6.12 049/272] smb: client: use data_len for SMB2 READ encrypted folioq copy
+	Neil Armstrong <neil.armstrong@linaro.org>,
+	Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 7.0 294/461] drm/msm/dpu: fix UV scanlines calculation for YUV UBWC formats
 Date: Thu, 28 May 2026 21:47:03 +0200
-Message-ID: <20260528194630.755607386@linuxfoundation.org>
+Message-ID: <20260528194655.727931432@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260528194629.379955525@linuxfoundation.org>
-References: <20260528194629.379955525@linuxfoundation.org>
+In-Reply-To: <20260528194646.819809818@linuxfoundation.org>
+References: <20260528194646.819809818@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,114 +66,105 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-256019-lists,stable=lfdr.de];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,redhat.com,microsoft.com];
 	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
-	RCPT_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-255391-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[stable];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo]
-X-Rspamd-Queue-Id: EDDDE5F93C7
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[qualcomm.com:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,linaro.org:email]
+X-Rspamd-Queue-Id: 60F8E5F7E0E
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+7.0-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jeremy Erazo <mendozayt13@gmail.com>
+From: Neil Armstrong <neil.armstrong@linaro.org>
 
-commit d4d76c9ee1997cc8c977a63f6c43551c253c1066 upstream.
+[ Upstream commit 933430f1709b089a0bf0b23ef0f047014ef899e7 ]
 
-In handle_read_data() the encrypted/folioq branch
-(buf_len <= data_offset, reached via receive_encrypted_read for
-transform PDUs > CIFSMaxBufSize + MAX_HEADER_SIZE) copies the READ
-payload using buffer_len rather than data_len:
+The UV scanlines is calculated with (height + 1) / 2 unlike
+the Y scanlines, add back the correct scanlines calculation
+for UBWC YUV formats.
 
-	rdata->result = cifs_copy_folioq_to_iter(buffer, buffer_len,
-						 cur_off,
-						 &rdata->subreq.io_iter);
-	...
-	rdata->got_bytes = buffer_len;
-
-buffer_len comes from the SMB3 transform header OriginalMessageSize
-field (OriginalMessageSize - read_rsp_size); it represents the size
-of the decrypted message after the SMB2 header.  data_len comes from
-the SMB2 READ response DataLength field; it represents the actual
-READ payload size and may be smaller than buffer_len when the
-decrypted message contains padding or other trailing bytes after the
-READ payload.  The existing check `data_len > buffer_len - pad_len`
-only enforces an upper bound, so a server that emits
-OriginalMessageSize larger than read_rsp_size + pad_len + data_len
-passes the check and the kernel copies buffer_len bytes per response,
-ignoring the server-asserted DataLength.
-
-Two observable failures with a crafted server (DataLength=4,
-buffer_len=20000):
-
-  - the kernel returns 20000 bytes per sub-request to userspace and
-    sets got_bytes = buffer_len, even though the response claimed
-    only 4 bytes of payload;
-
-  - on a partial netfs sub-request whose iterator is sized to
-    data_len, the over-large copy_folio_to_iter() short-reads,
-    cifs_copy_folioq_to_iter() returns -EIO via the n != len path,
-    and the entire netfs read collapses to -EIO even though the
-    leading sub-requests succeeded.
-
-Use data_len for the copy length and for got_bytes so the kernel
-honours the server-asserted READ payload size.  For well-formed
-servers (where buffer_len == pad_len + data_len) the change is
-behaviour-equivalent.
-
-Cc: stable@vger.kernel.org
-Signed-off-by: Jeremy Erazo <mendozayt13@gmail.com>
-Acked-by: David Howells <dhowells@redhat.com>
-Signed-off-by: Steve French <stfrench@microsoft.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 2f3ff6ab8f5c ("drm/msm/dpu: use standard functions in _dpu_format_populate_plane_sizes_ubwc()")
+Fixes: ada4a19ed21c ("drm/msm/dpu: rewrite _dpu_format_populate_plane_sizes_ubwc()")
+Signed-off-by: Neil Armstrong <neil.armstrong@linaro.org>
+Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
+Patchwork: https://patchwork.freedesktop.org/patch/718309/
+Link: https://lore.kernel.org/r/20260414-topic-sm8x50-msm-dpu1-formats-qc10c-v1-1-0b62325b9030@linaro.org
+Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/smb/client/smb2ops.c |    4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/gpu/drm/msm/disp/dpu1/dpu_formats.c | 12 +++++++-----
+ 1 file changed, 7 insertions(+), 5 deletions(-)
 
---- a/fs/smb/client/smb2ops.c
-+++ b/fs/smb/client/smb2ops.c
-@@ -4781,7 +4781,7 @@ handle_read_data(struct TCP_Server_Info
+diff --git a/drivers/gpu/drm/msm/disp/dpu1/dpu_formats.c b/drivers/gpu/drm/msm/disp/dpu1/dpu_formats.c
+index 6e8883dbfad43..590922c4f69bf 100644
+--- a/drivers/gpu/drm/msm/disp/dpu1/dpu_formats.c
++++ b/drivers/gpu/drm/msm/disp/dpu1/dpu_formats.c
+@@ -61,7 +61,7 @@ static int _dpu_format_populate_plane_sizes_ubwc(
+ 	bool meta = MSM_FORMAT_IS_UBWC(fmt);
+ 
+ 	if (MSM_FORMAT_IS_YUV(fmt)) {
+-		unsigned int stride, sclines;
++		unsigned int stride, y_sclines, uv_sclines;
+ 		unsigned int y_tile_width, y_tile_height;
+ 		unsigned int y_meta_stride, y_meta_scanlines;
+ 		unsigned int uv_meta_stride, uv_meta_scanlines;
+@@ -77,23 +77,25 @@ static int _dpu_format_populate_plane_sizes_ubwc(
+ 				y_tile_width = 32;
+ 			}
+ 
+-			sclines = round_up(fb->height, 16);
++			y_sclines = round_up(fb->height, 16);
++			uv_sclines = round_up((fb->height+1)>>1, 16);
+ 			y_tile_height = 4;
+ 		} else {
+ 			stride = round_up(fb->width, 128);
+ 			y_tile_width = 32;
+ 
+-			sclines = round_up(fb->height, 32);
++			y_sclines = round_up(fb->height, 32);
++			uv_sclines = round_up((fb->height+1)>>1, 32);
+ 			y_tile_height = 8;
  		}
  
- 		/* Copy the data to the output I/O iterator. */
--		rdata->result = cifs_copy_folioq_to_iter(buffer, buffer_len,
-+		rdata->result = cifs_copy_folioq_to_iter(buffer, data_len,
- 							 cur_off, &rdata->subreq.io_iter);
- 		if (rdata->result != 0) {
- 			if (is_offloaded)
-@@ -4790,7 +4790,7 @@ handle_read_data(struct TCP_Server_Info
- 				dequeue_mid(mid, rdata->result);
+ 		layout->plane_pitch[0] = stride;
+ 		layout->plane_size[0] = round_up(layout->plane_pitch[0] *
+-			sclines, DPU_UBWC_PLANE_SIZE_ALIGNMENT);
++			y_sclines, DPU_UBWC_PLANE_SIZE_ALIGNMENT);
+ 
+ 		layout->plane_pitch[1] = stride;
+ 		layout->plane_size[1] = round_up(layout->plane_pitch[1] *
+-			sclines, DPU_UBWC_PLANE_SIZE_ALIGNMENT);
++			uv_sclines, DPU_UBWC_PLANE_SIZE_ALIGNMENT);
+ 
+ 		if (!meta)
  			return 0;
- 		}
--		rdata->got_bytes = buffer_len;
-+		rdata->got_bytes = data_len;
- 
- 	} else if (buf_len >= data_offset + data_len) {
- 		/* read response payload is in buf */
+-- 
+2.53.0
+
 
 
 
