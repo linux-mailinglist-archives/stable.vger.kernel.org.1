@@ -1,59 +1,59 @@
-Return-Path: <stable+bounces-256146-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-255543-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id oIw/NJ+qGGoomAgAu9opvQ
-	(envelope-from <stable+bounces-256146-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:50:39 +0200
+	id AN/iJJKiGGrClggAu9opvQ
+	(envelope-from <stable+bounces-255543-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:16:18 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5E5385F9ACA
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:50:39 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6DA415F8385
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:16:13 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id C6CCC3230B99
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 20:41:44 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 087593048F0B
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 20:13:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 835102139C9;
-	Thu, 28 May 2026 20:41:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C4DFA33F5B4;
+	Thu, 28 May 2026 20:13:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BfjMPETc"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fmwwlcd5"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4362E332909;
-	Thu, 28 May 2026 20:41:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 903E832ABC0;
+	Thu, 28 May 2026 20:13:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780000885; cv=none; b=EmdLkADIvsAGHWT+w7u2EDe7Lkgesf0G7pNoKdjDOXUjpZX23ADasp6eKh6lJqX99KOkExOLfvkEUrAqjHQ4AIzw6VDNxyLZed9vosk60Xx/DJI9RXkqtw/+Zbuh9setO4UdhjoynQ/D5Bwmv7F2nYupd5aTOc2pZyLXA1lUUH4=
+	t=1779999206; cv=none; b=EFBuxMVRard93L0JZBrcZmmFmo0eR43aeE7b7SfeDKtXOksuGjjGXLqXOD0AQRwtKjd2pVpsNRG9atzBuuhRucLn3SYxHQ2l1PYrGCfdSMxIUxw9dIXIRTAxoIBeXP9UwmrW7VZa3kUy4OIOb41nCO/CAEuQXvKaltpWRmxOl7U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780000885; c=relaxed/simple;
-	bh=19z8fPuD7uZAMVkBxBXMnsdQasx6GJ+T6MedAw5tQmY=;
+	s=arc-20240116; t=1779999206; c=relaxed/simple;
+	bh=eHdlIqDj4pAemVMaLxX5kCBB1m5ThRXJK11PJuRzNT0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=poX+jLrILyWAH7MnfOGwQRBs2xj3oH1xrtg8sy9H67jt0VQrtlwZ6A5jYk0pWc7ODNTj58XfyZvV+D6eEJ8EnQ9NqzB5Z6Uycfpfaq5f/hm//CvVSmeyvLuAwV5SImP56FlQHrKOJEDg6LtypF20r0odBSzhvaD+kh1RcX9ZdKs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BfjMPETc; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6401E1F000E9;
-	Thu, 28 May 2026 20:41:23 +0000 (UTC)
+	 MIME-Version; b=YpTeNzLP9Ep0WuMgG8KrWocTfcZkKB5xaSpHR6MoWUTbjanmrhND7fnLR6l427m12THD/ZcSHUwsUGtCriYrj9wAg9lrJ5LCqaFLrPSsugUZOtPH5E72MTgw+yeRqWZF/tS8SBj/ok+2H33lYF0zoQPtT70dvUy3OHuRlJFlsIw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fmwwlcd5; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EE6301F000E9;
+	Thu, 28 May 2026 20:13:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780000883;
-	bh=wWQB+ZX1OXZHVKwFKGI712/fEoEkVPgWPXl4cvNzw8I=;
+	s=korg; t=1779999205;
+	bh=8q26XA0fye5jf4ML5p7lDGvz3TZWDMDbFdypYjbIYlk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=BfjMPETcXlVmkqlAH+VX/e2ZDJ46xeP5lQ/HZgJ9tU0bg2bOmsBPjpUbNO1ZX07sM
-	 LVQ2PE1j2FqLDmPXj18ibtRJkaBV000/OkxgZ4NvFWEnqopff+vuLs/HM34e9rQ9rq
-	 2+gZs5eNOaXfelyxzsg8Bo9+Xi4pwsdpTwChihSk=
+	b=fmwwlcd5EGX/+w+0Zs1PtRVTUUCegSk7RP6dlsdoytMCpVT70c7Sd5ql8RyprfJ+t
+	 JIpIki8Bh1+pIsKCwJOSglD4AZSYx31sForAmmovfes1ZshLp5E3DVFcPdCc8pzI3f
+	 F2BSHPEsJTXmVomXiW//707cY1L01IYBLNcq14Q0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Linus Walleij <linusw@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
+	Christoph Hellwig <hch@lst.de>,
+	Keith Busch <kbusch@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 202/272] net: ethernet: cortina: Make RX SKB per-port
+Subject: [PATCH 7.0 447/461] nvme-pci: fix dma mapping leak on data setup error
 Date: Thu, 28 May 2026 21:49:36 +0200
-Message-ID: <20260528194634.903924905@linuxfoundation.org>
+Message-ID: <20260528194700.474408065@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260528194629.379955525@linuxfoundation.org>
-References: <20260528194629.379955525@linuxfoundation.org>
+In-Reply-To: <20260528194646.819809818@linuxfoundation.org>
+References: <20260528194646.819809818@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -68,7 +68,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
@@ -78,7 +78,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-256146-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-255543-lists,stable=lfdr.de];
 	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
@@ -89,95 +89,111 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	TAGGED_RCPT(0.00)[stable];
 	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,sashiko.dev:url,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim]
-X-Rspamd-Queue-Id: 5E5385F9ACA
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim,lst.de:email]
+X-Rspamd-Queue-Id: 6DA415F8385
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+7.0-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Linus Walleij <linusw@kernel.org>
+From: Keith Busch <kbusch@kernel.org>
 
-[ Upstream commit 06937db21ee311ed07eba47954447245041a982d ]
+[ Upstream commit 1bf86336e4b6cf40873fda47a7fe191446864937 ]
 
-The SKB used to assemble packets from fragments in gmac_rx()
-is static local, but the Gemini has two ethernet ports, meaning
-there can be races between the ports on a bad day if a device
-is using both.
+We're leaking the initial DMA mapping during iteration if we fail to
+allocate the tracking descriptor for both PRP and SGL. Unmap the
+iterator directly; we can't use the existing unmap helper because it
+depends on the tracking descriptor being successfully allocated, so a
+new one for an in-use iterator is provided.
 
-Make the RX SKB a per-port variable and carry it over between
-invocations in the port struct instead.
+The mappings were also leaking when the driver detects an invalid
+bio_vec when mapping PRPs, so fix that too.
 
-Zero the pointer once we call napi_gro_frags(), on error (after
-calling napi_free_frags()) or if the port is stopped.
-
-Zero it in some place where not strictly necessary just to
-emphasize what is going on.
-
-This was found by Sashiko during normal patch review.
-
-Fixes: 4d5ae32f5e1e ("net: ethernet: Add a driver for Gemini gigabit ethernet")
-Link: https://sashiko.dev/#/patchset/20260505-gemini-ethernet-fix-v2-1-997c31d06079%40kernel.org
-Signed-off-by: Linus Walleij <linusw@kernel.org>
-Link: https://patch.msgid.link/20260509-gemini-ethernet-fixes-v1-2-6c5d20ddc35b@kernel.org
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Fixes: b8b7570a7ec87 ("nvme-pci: fix dma unmapping when using PRPs and not using the IOVA mapping")
+Fixes: 7ce3c1dd78fca ("nvme-pci: convert the data mapping to blk_rq_dma_map")
+Reviewed-by: Christoph Hellwig <hch@lst.de>
+Signed-off-by: Keith Busch <kbusch@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/cortina/gemini.c | 7 ++++++-
- 1 file changed, 6 insertions(+), 1 deletion(-)
+ drivers/nvme/host/pci.c | 31 ++++++++++++++++++++++++++++---
+ 1 file changed, 28 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/net/ethernet/cortina/gemini.c b/drivers/net/ethernet/cortina/gemini.c
-index 92833eefc04b4..47072fbabcaee 100644
---- a/drivers/net/ethernet/cortina/gemini.c
-+++ b/drivers/net/ethernet/cortina/gemini.c
-@@ -121,6 +121,8 @@ struct gemini_ethernet_port {
- 	struct napi_struct	napi;
- 	struct hrtimer		rx_coalesce_timer;
- 	unsigned int		rx_coalesce_nsecs;
-+	struct sk_buff		*rx_skb;
-+
- 	unsigned int		freeq_refill;
- 	struct gmac_txq		txq[TX_QUEUE_NUM];
- 	unsigned int		txq_order;
-@@ -1442,10 +1444,10 @@ static unsigned int gmac_rx(struct net_device *netdev, unsigned int budget)
- 	unsigned short m = (1 << port->rxq_order) - 1;
- 	struct gemini_ethernet *geth = port->geth;
- 	void __iomem *ptr_reg = port->rxq_rwptr;
-+	struct sk_buff *skb = port->rx_skb;
- 	unsigned int frame_len, frag_len;
- 	struct gmac_rxdesc *rx = NULL;
- 	struct gmac_queue_page *gpage;
--	static struct sk_buff *skb;
- 	union gmac_rxdesc_0 word0;
- 	union gmac_rxdesc_1 word1;
- 	union gmac_rxdesc_3 word3;
-@@ -1499,6 +1501,7 @@ static unsigned int gmac_rx(struct net_device *netdev, unsigned int budget)
- 			if (skb) {
- 				napi_free_frags(&port->napi);
- 				port->stats.rx_dropped++;
-+				skb = NULL;
- 			}
- 
- 			skb = gmac_skb_if_good_frame(port, word0, frame_len);
-@@ -1549,6 +1552,7 @@ static unsigned int gmac_rx(struct net_device *netdev, unsigned int budget)
- 		port->stats.rx_dropped++;
- 	}
- 
-+	port->rx_skb = skb;
- 	writew(r, ptr_reg);
- 	return budget;
+diff --git a/drivers/nvme/host/pci.c b/drivers/nvme/host/pci.c
+index 5b998db940bd6..a0e9767bc21e6 100644
+--- a/drivers/nvme/host/pci.c
++++ b/drivers/nvme/host/pci.c
+@@ -997,6 +997,23 @@ static bool nvme_pci_prp_iter_next(struct request *req, struct device *dma_dev,
+ 	return nvme_pci_prp_save_mapping(req, dma_dev, iter);
  }
-@@ -1877,6 +1881,7 @@ static int gmac_stop(struct net_device *netdev)
- 	gmac_disable_tx_rx(netdev);
- 	gmac_stop_dma(port);
- 	napi_disable(&port->napi);
-+	port->rx_skb = NULL;
  
- 	gmac_enable_irq(netdev, 0);
- 	gmac_cleanup_rxq(netdev);
++static void nvme_unmap_iter(struct request *req, struct blk_dma_iter *iter,
++			    struct dma_iova_state *state)
++{
++	struct nvme_queue *nvmeq = req->mq_hctx->driver_data;
++	struct device *dev = nvmeq->dev->dev;
++
++	if (!blk_rq_dma_unmap(req, dev, state, iter->len, iter->p2pdma.map)) {
++		unsigned int attrs = 0;
++
++		if (iter->p2pdma.map == PCI_P2PDMA_MAP_THRU_HOST_BRIDGE)
++			attrs |= DMA_ATTR_MMIO;
++
++		dma_unmap_phys(dev, iter->addr, iter->len, rq_dma_dir(req),
++			       attrs);
++	}
++}
++
+ static blk_status_t nvme_pci_setup_data_prp(struct request *req,
+ 		struct blk_dma_iter *iter)
+ {
+@@ -1007,8 +1024,10 @@ static blk_status_t nvme_pci_setup_data_prp(struct request *req,
+ 	unsigned int prp_len, i;
+ 	__le64 *prp_list;
+ 
+-	if (!nvme_pci_prp_save_mapping(req, nvmeq->dev->dev, iter))
++	if (!nvme_pci_prp_save_mapping(req, nvmeq->dev->dev, iter)) {
++		nvme_unmap_iter(req, iter, &iod->dma_state);
+ 		return iter->status;
++	}
+ 
+ 	/*
+ 	 * PRP1 always points to the start of the DMA transfers.
+@@ -1113,6 +1132,7 @@ static blk_status_t nvme_pci_setup_data_prp(struct request *req,
+ 	dev_err_once(nvmeq->dev->dev,
+ 		"Incorrectly formed request for payload:%d nents:%d\n",
+ 		blk_rq_payload_bytes(req), blk_rq_nr_phys_segments(req));
++	nvme_unmap_data(req);
+ 	return BLK_STS_IOERR;
+ }
+ 
+@@ -1156,8 +1176,11 @@ static blk_status_t nvme_pci_setup_data_sgl(struct request *req,
+ 
+ 	sg_list = dma_pool_alloc(nvme_dma_pool(nvmeq, iod), GFP_ATOMIC,
+ 			&sgl_dma);
+-	if (!sg_list)
++	if (!sg_list) {
++		nvme_unmap_iter(req, iter, &iod->dma_state);
+ 		return BLK_STS_RESOURCE;
++	}
++
+ 	iod->descriptors[iod->nr_descriptors++] = sg_list;
+ 
+ 	do {
+@@ -1314,8 +1337,10 @@ static blk_status_t nvme_pci_setup_meta_iter(struct request *req)
+ 
+ 	sg_list = dma_pool_alloc(nvmeq->descriptor_pools.small, GFP_ATOMIC,
+ 			&sgl_dma);
+-	if (!sg_list)
++	if (!sg_list) {
++		nvme_unmap_iter(req, &iter, &iod->meta_dma_state);
+ 		return BLK_STS_RESOURCE;
++	}
+ 
+ 	iod->meta_descriptor = sg_list;
+ 	iod->meta_dma = sgl_dma;
 -- 
 2.53.0
 
