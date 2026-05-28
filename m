@@ -1,60 +1,59 @@
-Return-Path: <stable+bounces-255527-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-256126-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id +J9NJBiiGGqblggAu9opvQ
-	(envelope-from <stable+bounces-255527-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:14:16 +0200
+	id 6BS3I2OqGGpolwgAu9opvQ
+	(envelope-from <stable+bounces-256126-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:49:39 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8AEC45F81FF
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:14:15 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 08C4C5F99F4
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:49:39 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id DA12F3044377
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 20:12:42 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 9560C314233C
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 20:40:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DAE2B352019;
-	Thu, 28 May 2026 20:12:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 844DF32F764;
+	Thu, 28 May 2026 20:40:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NQDsoBv6"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="o623QgaO"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C022132ABC0;
-	Thu, 28 May 2026 20:12:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 63CA72139C9;
+	Thu, 28 May 2026 20:40:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779999161; cv=none; b=K3dLqe4jdNcdIsiaP//v+S00yDNxvIuawS4C4B3LJMg5C9qvR9TlWpEhfNYRMTp55og1UOm8PRK7JLq3scBEQEvwkQee1/4DrHHkweofu69ZLfOoexS5sqo/owC6uxjwfnCv84adtf9WvDCnR2lKSWEDLLCkzMp6PPby7kTF6+Y=
+	t=1780000829; cv=none; b=fTAkUc1RZvP7zQC5RrTDCS+XKrbUXE2hvYh/Z2k/yw4H5AzvjIS8PI6OPCZ7+Kixe0DPavvMQ24CrlGqhgdpSQmxCuZ7w934pISzydVCYZHiMpwvvTzx0Fv5aRSY9D7Oc8rzIiqcwxYSanJvd1X6oV1vbIEVfrxkdBK44RVEMWA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779999161; c=relaxed/simple;
-	bh=LwYwzTtuZscKK8tS0rqvlf6te6mryVL8J/+wryjA/0k=;
+	s=arc-20240116; t=1780000829; c=relaxed/simple;
+	bh=SvM4YBBbp9s1OyU+eFahcqXiB25WAhm2loY00+bURtk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=OQQPp0zYHLNUalWuGhcIwL6byTVySdId9M2U83aMvphUTCT9yw+bx994hkD8e9PbdDqDOk2axLTitRrRnEH4U1m24lpz/PtUvxUjrtpTgZ0X/yha/x7QCTobz05cjREqqEmhHRXB/cx6gJrgrUgGIje/e524OItwzBmGHM8iQ/4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NQDsoBv6; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2A97D1F000E9;
-	Thu, 28 May 2026 20:12:40 +0000 (UTC)
+	 MIME-Version; b=Fy8Uiy3PBzP8Qq8yIIJPGJ/pI7cEalE1HXl5h0Bu8SzpJNhFuOzVO18bqGyCCRwPdN1igF0AgV5Ta4x89PhVyJoofXAl91uR8fGi8K0tDPKUvcSsoWDzYkUQBTGzu5bMbju5Zz/IqN/8fbLLUXu7ZL1Tp0btRuPdGf+K5JSzQbY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=o623QgaO; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C1A8A1F000E9;
+	Thu, 28 May 2026 20:40:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779999160;
-	bh=H7ENhhrbyZxLlQ7d6g+ByjtfB2HdnYHgJuaW8R3FWec=;
+	s=korg; t=1780000828;
+	bh=DEP58uZW6mN+HNciF2K8yVACdlPWciCFLgQWWdLQWN8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=NQDsoBv6JDBtA0ftUm5EcWWgEnS0fi0ueHxEd5c8nSbS+jELgHpbbPLvE3/NnPr/O
-	 hOnPCidNMdUInThtplVnYSwRN6Rxq7uIXqTQ8p1Hl1F7AFsKXLCWpWmv7s71BrCjff
-	 HE3QWEe4Kz9spBU9BHPOXYOa7CPbPfDuf+smq2kI=
+	b=o623QgaOmYJ1kkYVwsVQOEz/vpd/FwQ6wePfb748bLh6z86BHDTmfgodvj0YARrEq
+	 SGGmkk0uFOUWH52F88lZtnMFfpfBzHQvptVEQfAFClYEpTDSIbAiDS5l6gcuA2/EfI
+	 Gn2Ol8MxkRwgfKVPUc3dI7jUxBCSsEnyXAJFpHzQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Rosen Penev <rosenp@gmail.com>,
-	Oleksij Rempel <o.rempel@pengutronix.de>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Ming Lei <tom.leiming@gmail.com>,
+	Jens Axboe <axboe@kernel.dk>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 7.0 429/461] net: ag71xx: check error for platform_get_irq
+Subject: [PATCH 6.12 184/272] ublk: reject max_sectors smaller than PAGE_SECTORS in parameter validation
 Date: Thu, 28 May 2026 21:49:18 +0200
-Message-ID: <20260528194659.938356712@linuxfoundation.org>
+Message-ID: <20260528194634.439857289@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260528194646.819809818@linuxfoundation.org>
-References: <20260528194646.819809818@linuxfoundation.org>
+In-Reply-To: <20260528194629.379955525@linuxfoundation.org>
+References: <20260528194629.379955525@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,72 +64,86 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,pengutronix.de,kernel.org];
-	TAGGED_FROM(0.00)[bounces-255527-lists,stable=lfdr.de];
-	PRECEDENCE_BULK(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[7];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
 	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,msgid.link:url,pengutronix.de:email]
-X-Rspamd-Queue-Id: 8AEC45F81FF
+	TAGGED_FROM(0.00)[bounces-256126-lists,stable=lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,kernel.dk,kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	NEURAL_HAM(-0.00)[-0.999];
+	TAGGED_RCPT(0.00)[stable];
+	MID_RHS_MATCH_FROM(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[6];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,kernel.dk:email,linuxfoundation.org:mid,linuxfoundation.org:dkim]
+X-Rspamd-Queue-Id: 08C4C5F99F4
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-7.0-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Rosen Penev <rosenp@gmail.com>
+From: Ming Lei <tom.leiming@gmail.com>
 
-[ Upstream commit e7c70bf97e90d974cd575e4c90f8f9b07d056da3 ]
+[ Upstream commit 1860c2f85922917d8a46f16a6f4bd2298ffa0fb5 ]
 
-Complete error handling for a failed platform_get_irq() call
+blk_validate_limits() requires max_hw_sectors >= PAGE_SECTORS and fires
+a WARN_ON_ONCE if this invariant is violated. ublk_validate_params()
+only checked the upper bound of max_sectors against max_io_buf_bytes,
+allowing userspace to pass small values (including zero) that trigger
+the warning when blk_mq_alloc_disk() is called from
+ublk_ctrl_start_dev().
 
-Fixes: d51b6ce441d3 ("net: ethernet: add ag71xx driver")
-Signed-off-by: Rosen Penev <rosenp@gmail.com>
-Reviewed-by: Oleksij Rempel <o.rempel@pengutronix.de>
-Link: https://patch.msgid.link/20260516212616.11758-1-rosenp@gmail.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Before 494ea040bcb5, ublk used blk_queue_max_hw_sectors() which silently
+clamped small values up to PAGE_SECTORS. The conversion to passing
+queue_limits directly to blk_mq_alloc_disk() lost that clamping and now
+hits blk_validate_limits()'s WARN_ON_ONCE instead.
+
+Validate that max_sectors is at least PAGE_SECTORS in
+ublk_validate_params() so invalid values are rejected early with
+-EINVAL instead of reaching the block layer.
+
+Fixes: 494ea040bcb5 ("ublk: pass queue_limits to blk_mq_alloc_disk")
+Signed-off-by: Ming Lei <tom.leiming@gmail.com>
+Link: https://patch.msgid.link/20260510144843.769031-1-tom.leiming@gmail.com
+Signed-off-by: Jens Axboe <axboe@kernel.dk>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/atheros/ag71xx.c | 3 +++
+ drivers/block/ublk_drv.c | 3 +++
  1 file changed, 3 insertions(+)
 
-diff --git a/drivers/net/ethernet/atheros/ag71xx.c b/drivers/net/ethernet/atheros/ag71xx.c
-index a5ab994741790..4e4794c4dfdce 100644
---- a/drivers/net/ethernet/atheros/ag71xx.c
-+++ b/drivers/net/ethernet/atheros/ag71xx.c
-@@ -1856,6 +1856,9 @@ static int ag71xx_probe(struct platform_device *pdev)
- 	ag71xx_int_disable(ag, AG71XX_INT_POLL);
+diff --git a/drivers/block/ublk_drv.c b/drivers/block/ublk_drv.c
+index c6a59f02944fc..6854b847bccef 100644
+--- a/drivers/block/ublk_drv.c
++++ b/drivers/block/ublk_drv.c
+@@ -540,6 +540,9 @@ static int ublk_validate_params(const struct ublk_device *ub)
+ 		if (p->max_sectors > (ub->dev_info.max_io_buf_bytes >> 9))
+ 			return -EINVAL;
  
- 	ndev->irq = platform_get_irq(pdev, 0);
-+	if (ndev->irq < 0)
-+		return ndev->irq;
++		if (p->max_sectors < PAGE_SECTORS)
++			return -EINVAL;
 +
- 	err = devm_request_irq(&pdev->dev, ndev->irq, ag71xx_interrupt,
- 			       0x0, dev_name(&pdev->dev), ndev);
- 	if (err) {
+ 		if (ublk_dev_is_zoned(ub) && !p->chunk_sectors)
+ 			return -EINVAL;
+ 	} else
 -- 
 2.53.0
 
