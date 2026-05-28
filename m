@@ -1,166 +1,237 @@
-Return-Path: <stable+bounces-254861-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-254859-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id YFO7JyUpGGrneggAu9opvQ
-	(envelope-from <stable+bounces-254861-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 13:38:13 +0200
+	id kMsLJQkpGGrneggAu9opvQ
+	(envelope-from <stable+bounces-254859-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 13:37:45 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 086705F1633
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 13:38:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 167045F1613
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 13:37:45 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id DDEC830972FF
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 11:34:57 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 3E0E53038A7B
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 11:33:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C614D3D45DC;
-	Thu, 28 May 2026 11:34:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 15136389E1F;
+	Thu, 28 May 2026 11:33:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CpsHobNF"
+	dkim=pass (2048-bit key) header.d=debian.org header.i=@debian.org header.b="UwZ15KgD"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from stravinsky.debian.org (stravinsky.debian.org [82.195.75.108])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 77D403E3D97
-	for <stable@vger.kernel.org>; Thu, 28 May 2026 11:34:55 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4232519D093
+	for <stable@vger.kernel.org>; Thu, 28 May 2026 11:33:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=82.195.75.108
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779968096; cv=none; b=CdiRC9Rqd1k3Uygx5avICypfANu4kCdXyKCxOt/9EFJcGmJxY6e/0wMfql4j8lxZOHKSXlnAs1BggF9KDzyhRer7n+Vfv3BxKVy7aBmpyJnDF89rcphnpiCPM31TB+Dcfxuqxn+9kASVXtBQZ0QC1pzewDVPO45SXZpdlrvzx2o=
+	t=1779968008; cv=none; b=EL/CeG1CdbXmWNZAITOQBQz5d62D9ykL3WakjG7RncYv9qLRQ52uZDDtY25myzZx/bKXJQ0Q6PT9RcGqePlulJ8XYdqC7XfJqH3psnoKQwy3azZQ2myP1/4NuMKlVQWHZ0MAcNgVbj9oHfvjaYUmgSasb89bYHJEu53z7xjC8x0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779968096; c=relaxed/simple;
-	bh=Vr3F8YWNbvtd9nRXaVAJ28u+dLriThcyKsljzdEw88Q=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=qCMYtXpH5Z/OQ6ajcNYFaMrgDC1a4jHtaUZQBQtb1XE3SHQqre43V8JfbLeT24ra/A4gIN3EcgidkYW8GvgpnxX9t4wcBJ47RI1iODqozlfS+5nnFQeTaJLY7aIuDqdPZyTxlFJA39SnAY128IMRjLx2jfJWKrKYhR7Zgc3W4e4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CpsHobNF; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 85CBF1F000E9;
-	Thu, 28 May 2026 11:34:54 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779968095;
-	bh=yEe80CDijVk4HgC4wAkWsuuvJxZdPWNPX6ZmHnyF+88=;
-	h=Subject:To:Cc:From:Date;
-	b=CpsHobNFBmup54TjHDpeyl9EKfembbZ8hDykUG66XmD0PFWBMSMS+L1mxLUNC7VAk
-	 Tp95Vvs2rL85CPNEEsED07MTPqyG4Yjlme3/cS2JGXPO1qZaabBnxwKskKh4EtF2vL
-	 8wate/OVQGXGhSLcHl6n/gCVogN/afO10nid5+D8=
-Subject: FAILED: patch "[PATCH] ice: restore PTP Rx timestamp config after ethtool" failed to apply to 6.6-stable tree
-To: grzegorz.nitka@intel.com,aleksandr.loktionov@intel.com,alexander.nowlin@intel.com,anthony.l.nguyen@intel.com,horms@kernel.org,kuba@kernel.org
-Cc: <stable@vger.kernel.org>
-From: <gregkh@linuxfoundation.org>
-Date: Thu, 28 May 2026 13:32:34 +0200
-Message-ID: <2026052834-revolver-pegboard-94c9@gregkh>
+	s=arc-20240116; t=1779968008; c=relaxed/simple;
+	bh=hI3h7BS2acOHnkxwL+8YYp6p9bPxSTNauOz6ZP5ti7E=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=cCmNyVTOcNvgnqhWDRiI5DUy1XdCFeLaRqSG6fbzCzMyfoaMQ5li+AAtzyZrHDW+W+PUTzHj2ImHGzF/nAUwsvfPdGwPHY/zPhKu+9ArXq5Inbf7aiw3kBmQEOBawvacGU127J5ZZ8GGkb2SHgqHNYOx3c2n4QyM2sxa2z6fOeA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=debian.org; spf=pass smtp.mailfrom=debian.org; dkim=pass (2048-bit key) header.d=debian.org header.i=@debian.org header.b=UwZ15KgD; arc=none smtp.client-ip=82.195.75.108
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=debian.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=debian.org
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=debian.org;
+	s=smtpauto.stravinsky; h=X-Debian-User:In-Reply-To:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description;
+	bh=oD3gMH16VPtaCsGD/mjmikL+r5Tt3zPpkAamACesS9g=; b=UwZ15KgDuAg6tw0cL3r6ga0a2N
+	Ep9oQfN+ASrHWVOitnwNO1bfF1/QGyAORSsN2YwmIuYUANK9s4oFn/oEc+zbU13+YO39rK/wUBhNn
+	J7R87d1zgA2fENzrFqrLWQ7928dRcvhC/TVRY2Igd2COktlrvHw6BA6LI5nk2INAciTTlZ7GZLCyg
+	en70wZusw04i/1Ri4G91XNFFzzcgfggzWipnXK0myinm1//f5pJJxahaQ27rXlogKKjg8QITWGqc/
+	yD3Pr5snWB7OPoNk+/ybwQKUKl9Zf1glEG0mf4mC+x7NnrAcaX0SCe9G/+6R5ujut1pwbLCKFQVM2
+	DKdS5A6g==;
+Received: from authenticated-user
+	by stravinsky.debian.org with esmtpsa (TLS1.3:ECDHE_SECP256R1__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
+	(Exim 4.96)
+	(envelope-from <benh@debian.org>)
+	id 1wSYzB-0040Ci-1Q;
+	Thu, 28 May 2026 11:33:13 +0000
+Date: Thu, 28 May 2026 13:33:11 +0200
+From: Ben Hutchings <benh@debian.org>
+To: Sasha Levin <sashal@kernel.org>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: Petr Machata <petrm@nvidia.com>,
+	Nikolay Aleksandrov <razor@blackwall.org>,
+	"David S. Miller" <davem@davemloft.net>, stable@vger.kernel.org
+Subject: [PATCH 5.15] selftests: forwarding: lib: Add helpers for checksum
+ handling
+Message-ID: <ahgn9yc4SFsqMAWq@decadent.org.uk>
+References: <20260228181736.1605592-142-sashal@kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=ANSI_X3.4-1968
-Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [2.34 / 15.00];
-	MID_END_EQ_FROM_USER_PART(4.00)[];
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="jtqXDgqclN/C9Njm"
+Content-Disposition: inline
+In-Reply-To: <20260228181736.1605592-142-sashal@kernel.org>
+X-Debian-User: benh
+X-Spamd-Result: default: False [-4.26 / 15.00];
+	SIGNED_PGP(-2.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	MID_RHS_NOT_FQDN(0.50)[];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	DMARC_POLICY_ALLOW(-0.50)[debian.org,none];
 	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_DKIM_ALLOW(-0.20)[debian.org:s=smtpauto.stravinsky];
+	MIME_GOOD(-0.20)[multipart/signed,text/plain];
 	MAILLIST(-0.15)[generic];
-	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-254861-lists,stable=lfdr.de];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	TAGGED_FROM(0.00)[bounces-254859-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
+	FROM_HAS_DN(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+,1:+,2:~];
 	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	TO_DN_SOME(0.00)[];
+	DKIM_TRACE(0.00)[debian.org:+];
 	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	FROM_NO_DN(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	TO_DN_NONE(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
 	MISSING_XM_UA(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[7];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[benh@debian.org,stable@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	MIME_TRACE(0.00)[0:+];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,gregkh:email,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,intel.com:email]
-X-Rspamd-Queue-Id: 086705F1633
+	RCPT_COUNT_FIVE(0.00)[6];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[davemloft.net:email,decadent.org.uk:mid,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,blackwall.org:email]
+X-Rspamd-Queue-Id: 167045F1613
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
 
-The patch below does not apply to the 6.6-stable tree.
-If someone wants it applied there, or to any other stable or longterm
-tree, then please email the backport, including the original git commit
-id to <stable@vger.kernel.org>.
+--jtqXDgqclN/C9Njm
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-To reproduce the conflict and resubmit, you may use the following commands:
+=46rom: Petr Machata <petrm@nvidia.com>
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.6.y
-git checkout FETCH_HEAD
-git cherry-pick -x 975b564d195b13ca6ee1ef5e6a9561734898eb17
-# <resolve conflicts, build, test, etc.>
-git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2026052834-revolver-pegboard-94c9@gregkh' --subject-prefix 'PATCH 6.6.y' HEAD^..
+commit 952e0ee38c7215c45192d8c899acd1830873f28b upstream.
 
-Possible dependencies:
+In order to generate IGMPv3 and MLDv2 packets on the fly, we will need
+helpers to calculate the packet checksum.
 
+The approach presented in this patch revolves around payload templates
+for mausezahn. These are mausezahn-like payload strings (01:23:45:...)
+with possibly one 2-byte sequence replaced with the word PAYLOAD. The
+main function is payload_template_calc_checksum(), which calculates
+RFC 1071 checksum of the message. There are further helpers to then
+convert the checksum to the payload format, and to expand it.
 
+For IPv6, MLDv2 message checksum is computed using a pseudoheader that
+differs from the header used in the payload itself. The fact that the
+two messages are different means that the checksum needs to be
+returned as a separate quantity, instead of being expanded in-place in
+the payload itself. Furthermore, the pseudoheader includes a length of
+the message. Much like the checksum, this needs to be expanded in
+mausezahn format. And likewise for number of addresses for (S,G)
+entries. Thus we have several places where a computed quantity needs
+to be presented in the payload format. Add a helper u16_to_bytes(),
+which will be used in all these cases.
 
-thanks,
+Signed-off-by: Petr Machata <petrm@nvidia.com>
+Acked-by: Nikolay Aleksandrov <razor@blackwall.org>
+Signed-off-by: David S. Miller <davem@davemloft.net>
+Stable-dep-of: 02cb2e6bacbb ("selftests: forwarding: vxlan_bridge_1d: fix t=
+est failure with br_netfilter enabled")
+[bwh: Backported to 5.15: adjust context]
+Signed-off-by: Ben Hutchings <benh@debian.org>
+---
+ tools/testing/selftests/net/forwarding/lib.sh | 56 +++++++++++++++++++
+ 1 file changed, 56 insertions(+)
 
-greg k-h
+diff --git a/tools/testing/selftests/net/forwarding/lib.sh b/tools/testing/=
+selftests/net/forwarding/lib.sh
+index 83e8f9466d62..c570d8f65a0c 100644
+--- a/tools/testing/selftests/net/forwarding/lib.sh
++++ b/tools/testing/selftests/net/forwarding/lib.sh
+@@ -1491,3 +1491,59 @@ brmcast_check_sg_state()
+ 		check_err_fail $should_fail $? "Entry $src has blocked flag"
+ 	done
+ }
++
++u16_to_bytes()
++{
++	local u16=3D$1; shift
++
++	printf "%04x" $u16 | sed 's/^/000/;s/^.*\(..\)\(..\)$/\1:\2/'
++}
++
++# Given a mausezahn-formatted payload (colon-separated bytes given as %02x=
+),
++# possibly with a keyword CHECKSUM stashed where a 16-bit checksum should =
+be,
++# calculate checksum as per RFC 1071, assuming the CHECKSUM field (if any)
++# stands for 00:00.
++payload_template_calc_checksum()
++{
++	local payload=3D$1; shift
++
++	(
++	    # Set input radix.
++	    echo "16i"
++	    # Push zero for the initial checksum.
++	    echo 0
++
++	    # Pad the payload with a terminating 00: in case we get an odd
++	    # number of bytes.
++	    echo "${payload%:}:00:" |
++		sed 's/CHECKSUM/00:00/g' |
++		tr '[:lower:]' '[:upper:]' |
++		# Add the word to the checksum.
++		sed 's/\(..\):\(..\):/\1\2+\n/g' |
++		# Strip the extra odd byte we pushed if left unconverted.
++		sed 's/\(..\):$//'
++
++	    echo "10000 ~ +"	# Calculate and add carry.
++	    echo "FFFF r - p"	# Bit-flip and print.
++	) |
++	    dc |
++	    tr '[:upper:]' '[:lower:]'
++}
++
++payload_template_expand_checksum()
++{
++	local payload=3D$1; shift
++	local checksum=3D$1; shift
++
++	local ckbytes=3D$(u16_to_bytes $checksum)
++
++	echo "$payload" | sed "s/CHECKSUM/$ckbytes/g"
++}
++
++payload_template_nbytes()
++{
++	local payload=3D$1; shift
++
++	payload_template_expand_checksum "${payload%:}" 0 |
++		sed 's/:/\n/g' | wc -l
++}
 
------------------- original commit in Linus's tree ------------------
+--jtqXDgqclN/C9Njm
+Content-Type: application/pgp-signature; name="signature.asc"
 
-From 975b564d195b13ca6ee1ef5e6a9561734898eb17 Mon Sep 17 00:00:00 2001
-From: Grzegorz Nitka <grzegorz.nitka@intel.com>
-Date: Fri, 15 May 2026 11:24:13 -0700
-Subject: [PATCH] ice: restore PTP Rx timestamp config after ethtool
- set-channels
+-----BEGIN PGP SIGNATURE-----
 
-When ethtool -L changes queue counts, ice_vsi_recfg_qs() closes and
-rebuilds the VSI, reallocating Rx rings. The newly allocated rings have
-ptp_rx cleared, so RX hardware timestamps are no longer attached to skb
-until hwtstamp configuration is applied again.
+iQIzBAABCgAdFiEErCspvTSmr92z9o8157/I7JWGEQkFAmoYJ/cACgkQ57/I7JWG
+EQkfiw/+Mafy6Y8Ohu44eKo5EBh8ILsltSjLzIUoJuyDKpvBsSssFeBwB41TN2dV
+k/xbFxgr4laNn4MfcXRQdFUZWcxh/HC24xWOXqYXu8nFNF1WgeI5QFaGc1AQvaZG
+oyPOsnLfsULpn3hpxs4rpOD1mieO38KVw+nBbhYjOIAjjBet7gaB+kGczs+bVh0a
+csO5hfHWRhb4mB901mtjZ0cEItzjyvISVvVdOAin82xB2hKohBhJylWUhW3cGO5M
+4LMx6LEw7x9/hT8DmSeO+V2pQDCvgCYezomGWKnv8VY6ukcXAhEAN0DNqYFmU3Al
+L5FHrqeOOTHtmy70nz8EwSQIjVSj4b9m1QtYCaTL3cN+b1iLBAslo6n9ISBQ9rPY
+Vz+IKUL6P/68mLnH2J4ysnqhQ556eEUbOQ0OYuqNwTTCSm8RK0+2aqkp/lrTYaN/
+JzD+KX+O/uvwgqEgZPd4pCQdyw05ZRvPiZO5VCheVxvZgeO7KTNfOu1UaTQ7gkZQ
+UO5+VB5imncrpUIbpvLJ0yS3z4vELPVuwK3hdyGeDSyVJ3/VLlpdyoPBZTOXs2jS
+2buZ5KROSdsMHYSh62Ts+ymytUEO9K4FnmPPsGHHkNwXq0jBihXLjr4BkvlJ6/+Y
+IJE55FKMFCS5tTwyCN/GX4ioW21CXvQ2aAUMFIo4G5PgyNCOhAo=
+=0eJ+
+-----END PGP SIGNATURE-----
 
-Restore timestamp mode after ice_vsi_open() in the queue reconfiguration
-path, matching reset/rebuild behavior and ensuring newly rebuilt Rx rings
-have PTP RX timestamping re-enabled.
-
-Testing hints:
-- run ptp4l application in client synchronization mode:
-	 ptp4l -i ethX -m -s
-- run PTP traffic
-- change queue number on ethX netdev interface:
-	ethtool -L ethX combined new_queue_size
-- observe ptp4l output
-- expected result: no "received DELAY_REQ without timestamp" messages
-
-Fixes: 77a781155a65 ("ice: enable receive hardware timestamping")
-Cc: stable@vger.kernel.org
-Reviewed-by: Aleksandr Loktionov <aleksandr.loktionov@intel.com>
-Signed-off-by: Grzegorz Nitka <grzegorz.nitka@intel.com>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Tested-by: Alexander Nowlin <alexander.nowlin@intel.com>
-Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
-Link: https://patch.msgid.link/20260515182419.1597859-7-anthony.l.nguyen@intel.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-
-diff --git a/drivers/net/ethernet/intel/ice/ice_main.c b/drivers/net/ethernet/intel/ice/ice_main.c
-index 66642232b282..e2fbe111f849 100644
---- a/drivers/net/ethernet/intel/ice/ice_main.c
-+++ b/drivers/net/ethernet/intel/ice/ice_main.c
-@@ -4104,6 +4104,12 @@ int ice_vsi_recfg_qs(struct ice_vsi *vsi, int new_rx, int new_tx, bool locked)
- 	}
- 	ice_pf_dcb_recfg(pf, locked);
- 	ice_vsi_open(vsi);
-+	/* Rx rings are reallocated during VSI rebuild and lose their ptp_rx
-+	 * flag. Restore timestamp mode so newly allocated rings are set up
-+	 * for hardware Rx timestamping.
-+	 */
-+	if (test_bit(ICE_FLAG_PTP_SUPPORTED, pf->flags))
-+		ice_ptp_restore_timestamp_mode(pf);
- 	goto done;
- 
- rebuild_err:
-
+--jtqXDgqclN/C9Njm--
 
