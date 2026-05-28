@@ -1,62 +1,59 @@
-Return-Path: <stable+bounces-256161-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-255946-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id UMXDF1iqGGoomAgAu9opvQ
-	(envelope-from <stable+bounces-256161-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:49:28 +0200
+	id CMtHF9+nGGp+lwgAu9opvQ
+	(envelope-from <stable+bounces-255946-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:38:55 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0D6B35F99E5
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:49:27 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2177D5F9363
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:38:55 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 0459730EE910
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 20:42:12 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id B2494301AB9F
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 20:32:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0B77833B6FC;
-	Thu, 28 May 2026 20:42:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A92FE2F39B4;
+	Thu, 28 May 2026 20:32:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wMe+rKJs"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hjGBxKWa"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D2B263346BE;
-	Thu, 28 May 2026 20:42:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7354B32AAD6;
+	Thu, 28 May 2026 20:32:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780000926; cv=none; b=b7jZyc7+he+FKImSUYNmDsYlGbLJIpzDWFijCQgv38R58MyuXSKTPrVAakw/ZrfwEAt8BkvKQTxPFS3pZ515MJUZXyASBgjrxN4X5ZS00J5rab6yVWpeE0V7SC3H+NNTnB2vrGEP5jr4ggtMVZWiJaV6u+ifUfLpwBOhb0jhcgc=
+	t=1780000322; cv=none; b=fg1t/WdnFLhbim7l4536rw0vz56ZRXkQy0DrAJTjP88c2nCafVr5yzkR6UzFg6rKGpxHnXfeBUtY07y54rihr6edKYuihqB963Z2CwS7j+bH/s5wVwA9E0b8W645zCqUeoFVfYhfr0kyjyBu9KIMoige0Us1SGRXvdqwbd2Uh58=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780000926; c=relaxed/simple;
-	bh=ByUuLRwmMKhewJzrDD1+hfWWIiKhYVs2Eb/AyCRKBwM=;
+	s=arc-20240116; t=1780000322; c=relaxed/simple;
+	bh=b9k4RtMF42x0KgCz+9faE6JTOsgxPULwxAy0Or5R5TE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=h9YxVmePkvTRUYQiSuqCcZ6sB4Jm05uaC3qRMq50XcmvIlfnbC8NgWSX8eGJVwG+Ut87mysDpxrpjpOQPHi3E/9C2OH5HlfrNHFybxnc4WTBFgfDNjkAb5LK+pt0F9cQ17YLtJUifRw6en9vn1VYiXLC1aM4/wtg5T+M0KD2BAw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wMe+rKJs; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 397D51F000E9;
-	Thu, 28 May 2026 20:42:05 +0000 (UTC)
+	 MIME-Version; b=Lcbo2L3TDTAnNLwgs5WJmd90OrPy+CEXy36zcBJ5WuJmHp4JDkP/YIeVHpdE9YGGCx5VJk6/SFFVJzZxFlHxxQ7Q/eI2Gzbd9LZTCHBrtkNqvrThl3mQe+gMUNeIQtRYr6MPdrpc7TxAbTMvuY3geRM5jD6zNG4t7Hc56uX0Y6I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hjGBxKWa; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D241A1F000E9;
+	Thu, 28 May 2026 20:32:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780000925;
-	bh=Xh7/dXbGSg/dFIUeTCw3MgEUWUm4EOiaaAFhXxGsRJE=;
+	s=korg; t=1780000321;
+	bh=Vqu+0/CM7x1U+uuBtN1KPrjifIenMobzeVXAGHUPruc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=wMe+rKJsPb0JEqn8HeURkwA7pegcnti7wuOPUTiWQE50lB/Z6dkFH72WZXFiB8nWV
-	 vK0FRjtksgRLya2Sf0KpQNVSvFsIhK0vZRJ/ttnmlxGqwNkODYluWrHTg8iPkUdUOi
-	 hMq3eVU1EYusayLsQjsIk3tYJyo3jlzSBKOxPs84=
+	b=hjGBxKWa33j+mMf67pz56QB3++tUE7PVvRIS8k9nVbuOn0cbf/A3DRfoi8BoRRDql
+	 TDc6CVtnXd0WVz/WZS100Xc5SSy1mf5Ul0iHPRAMlrpTiXCUcj7zbwE/aDg9wOKuDt
+	 okdrRmoqP9o5aH/+fYXiSimaOnhjZ083byAucXrY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Weiming Shi <bestswngs@gmail.com>,
-	Xiang Mei <xmei5@asu.edu>,
-	Dust Li <dust.li@linux.alibaba.com>,
-	Sidraya Jayagond <sidraya@linux.ibm.com>,
+	Simon Horman <horms@kernel.org>,
 	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 219/272] net/smc: avoid NULL deref of conn->lnk in smc_msg_event tracepoint
+Subject: [PATCH 6.18 355/377] net: shaper: annotate the data races
 Date: Thu, 28 May 2026 21:49:53 +0200
-Message-ID: <20260528194635.336825848@linuxfoundation.org>
+Message-ID: <20260528194648.707214900@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260528194629.379955525@linuxfoundation.org>
-References: <20260528194629.379955525@linuxfoundation.org>
+In-Reply-To: <20260528194638.371537336@linuxfoundation.org>
+References: <20260528194638.371537336@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -71,95 +68,145 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,asu.edu,linux.alibaba.com,linux.ibm.com,kernel.org];
-	TAGGED_FROM(0.00)[bounces-256161-lists,stable=lfdr.de];
-	PRECEDENCE_BULK(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
+	RCVD_TLS_LAST(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	TAGGED_FROM(0.00)[bounces-255946-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[9];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[alibaba.com:email,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim]
-X-Rspamd-Queue-Id: 0D6B35F99E5
+	RCPT_COUNT_FIVE(0.00)[6];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim]
+X-Rspamd-Queue-Id: 2177D5F9363
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Xiang Mei <xmei5@asu.edu>
+From: Jakub Kicinski <kuba@kernel.org>
 
-[ Upstream commit 7bf563badd37cb796df5477d2b78bb64148a1268 ]
+[ Upstream commit a3442936dd0523277e20aaf86207c574e755c634 ]
 
-The smc_msg_event tracepoint class, shared by smc_tx_sendmsg and
-smc_rx_recvmsg, unconditionally dereferences smc->conn.lnk:
+As previously discussed we don't care about making the shaper
+state fully RCU-compliant because the hierarchy itself can't
+be dumped in one go over Netlink. Let's annotate the reads
+and writes to make that clear.
 
-	__string(name, smc->conn.lnk->ibname)
+The field-by-field assignments will also be useful for the
+next commit which adds explicit "valid" field (which we don't
+want to override with the current full struct assignment).
 
-conn->lnk is only set for SMC-R; for SMC-D it is NULL. Other code on
-these paths already handles this (e.g. !conn->lnk in
-SMC_STAT_RMB_TX_SIZE_SMALL()). With the tracepoint enabled, the first
-sendmsg()/recvmsg() on an SMC-D socket crashes:
-
-  Oops: general protection fault, probably for non-canonical address
-  KASAN: null-ptr-deref in range [...]
-  RIP: 0010:strlen+0x1e/0xa0
-  Call Trace:
-   trace_event_raw_event_smc_msg_event (net/smc/smc_tracepoint.h:44)
-   smc_rx_recvmsg (net/smc/smc_rx.c:515)
-   smc_recvmsg (net/smc/af_smc.c:2859)
-   __sys_recvfrom (net/socket.c:2315)
-   __x64_sys_recvfrom (net/socket.c:2326)
-   do_syscall_64
-
-The faulting address 0x3e0 is offsetof(struct smc_link, ibname),
-confirming the NULL ->lnk deref. Enabling the tracepoint requires
-root, but the trigger itself is unprivileged: socket(AF_SMC, ...) has
-no capability check, and SMC-D negotiation needs no admin step on
-s390 or on x86 with the loopback ISM device loaded.
-
-Log an empty device name for SMC-D instead of dereferencing NULL.
-
-Fixes: aff3083f10bf ("net/smc: Introduce tracepoints for tx and rx msg")
-Reported-by: Weiming Shi <bestswngs@gmail.com>
-Signed-off-by: Xiang Mei <xmei5@asu.edu>
-Reviewed-by: Dust Li <dust.li@linux.alibaba.com>
-Reviewed-by: Sidraya Jayagond <sidraya@linux.ibm.com>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Link: https://patch.msgid.link/20260515221325.1685455-2-kuba@kernel.org
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Stable-dep-of: b8d7519352ba ("net: shaper: rework the VALID marking (again)")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/smc/smc_tracepoint.h | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ net/shaper/shaper.c | 53 ++++++++++++++++++++++++++++++++-------------
+ 1 file changed, 38 insertions(+), 15 deletions(-)
 
-diff --git a/net/smc/smc_tracepoint.h b/net/smc/smc_tracepoint.h
-index a9a6e3c1113aa..53da84f57fd6f 100644
---- a/net/smc/smc_tracepoint.h
-+++ b/net/smc/smc_tracepoint.h
-@@ -51,7 +51,7 @@ DECLARE_EVENT_CLASS(smc_msg_event,
- 				     __field(const void *, smc)
- 				     __field(u64, net_cookie)
- 				     __field(size_t, len)
--				     __string(name, smc->conn.lnk->ibname)
-+				     __string(name, smc->conn.lnk ? smc->conn.lnk->ibname : "")
- 		    ),
+diff --git a/net/shaper/shaper.c b/net/shaper/shaper.c
+index 23d535f157294..a01de4392eb66 100644
+--- a/net/shaper/shaper.c
++++ b/net/shaper/shaper.c
+@@ -138,35 +138,58 @@ static int net_shaper_fill_handle(struct sk_buff *msg,
+ 	return -EMSGSIZE;
+ }
  
- 		    TP_fast_assign(
++static void net_shaper_copy(struct net_shaper *dst,
++			    const struct net_shaper *src)
++{
++	WRITE_ONCE(dst->parent.scope, READ_ONCE(src->parent.scope));
++	WRITE_ONCE(dst->parent.id, READ_ONCE(src->parent.id));
++	WRITE_ONCE(dst->handle.scope, READ_ONCE(src->handle.scope));
++	WRITE_ONCE(dst->handle.id, READ_ONCE(src->handle.id));
++
++	WRITE_ONCE(dst->metric, READ_ONCE(src->metric));
++	WRITE_ONCE(dst->bw_min, READ_ONCE(src->bw_min));
++	WRITE_ONCE(dst->bw_max, READ_ONCE(src->bw_max));
++	WRITE_ONCE(dst->burst, READ_ONCE(src->burst));
++	WRITE_ONCE(dst->priority, READ_ONCE(src->priority));
++	WRITE_ONCE(dst->weight, READ_ONCE(src->weight));
++
++	/* private fields are only used on the write path under the lock */
++	data_race(dst->leaves = src->leaves);
++}
++
+ static int
+ net_shaper_fill_one(struct sk_buff *msg,
+ 		    const struct net_shaper_binding *binding,
+ 		    const struct net_shaper *shaper,
+ 		    const struct genl_info *info)
+ {
++	struct net_shaper cur;
+ 	void *hdr;
+ 
+ 	hdr = genlmsg_iput(msg, info);
+ 	if (!hdr)
+ 		return -EMSGSIZE;
+ 
++	/* Make a copy to avoid data races */
++	net_shaper_copy(&cur, shaper);
++
+ 	if (net_shaper_fill_binding(msg, binding, NET_SHAPER_A_IFINDEX) ||
+-	    net_shaper_fill_handle(msg, &shaper->parent,
++	    net_shaper_fill_handle(msg, &cur.parent,
+ 				   NET_SHAPER_A_PARENT) ||
+-	    net_shaper_fill_handle(msg, &shaper->handle,
++	    net_shaper_fill_handle(msg, &cur.handle,
+ 				   NET_SHAPER_A_HANDLE) ||
+-	    ((shaper->bw_min || shaper->bw_max || shaper->burst) &&
+-	     nla_put_u32(msg, NET_SHAPER_A_METRIC, shaper->metric)) ||
+-	    (shaper->bw_min &&
+-	     nla_put_uint(msg, NET_SHAPER_A_BW_MIN, shaper->bw_min)) ||
+-	    (shaper->bw_max &&
+-	     nla_put_uint(msg, NET_SHAPER_A_BW_MAX, shaper->bw_max)) ||
+-	    (shaper->burst &&
+-	     nla_put_uint(msg, NET_SHAPER_A_BURST, shaper->burst)) ||
+-	    (shaper->priority &&
+-	     nla_put_u32(msg, NET_SHAPER_A_PRIORITY, shaper->priority)) ||
+-	    (shaper->weight &&
+-	     nla_put_u32(msg, NET_SHAPER_A_WEIGHT, shaper->weight)))
++	    ((cur.bw_min || cur.bw_max || cur.burst) &&
++	     nla_put_u32(msg, NET_SHAPER_A_METRIC, cur.metric)) ||
++	    (cur.bw_min &&
++	     nla_put_uint(msg, NET_SHAPER_A_BW_MIN, cur.bw_min)) ||
++	    (cur.bw_max &&
++	     nla_put_uint(msg, NET_SHAPER_A_BW_MAX, cur.bw_max)) ||
++	    (cur.burst &&
++	     nla_put_uint(msg, NET_SHAPER_A_BURST, cur.burst)) ||
++	    (cur.priority &&
++	     nla_put_u32(msg, NET_SHAPER_A_PRIORITY, cur.priority)) ||
++	    (cur.weight &&
++	     nla_put_u32(msg, NET_SHAPER_A_WEIGHT, cur.weight)))
+ 		goto nla_put_failure;
+ 
+ 	genlmsg_end(msg, hdr);
+@@ -424,7 +447,7 @@ static void net_shaper_commit(struct net_shaper_binding *binding,
+ 		/* Successful update: drop the tentative mark
+ 		 * and update the hierarchy container.
+ 		 */
+-		*cur = shapers[i];
++		net_shaper_copy(cur, &shapers[i]);
+ 		smp_wmb();
+ 		__xa_set_mark(&hierarchy->shapers, index, NET_SHAPER_VALID);
+ 	}
 -- 
 2.53.0
 
