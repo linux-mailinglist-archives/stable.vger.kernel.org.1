@@ -1,63 +1,60 @@
-Return-Path: <stable+bounces-255887-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-256130-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id OLikLiCnGGp+lwgAu9opvQ
-	(envelope-from <stable+bounces-255887-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:35:44 +0200
+	id QPKqBAqqGGpolwgAu9opvQ
+	(envelope-from <stable+bounces-256130-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:48:10 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 79CD05F90C1
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:35:44 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 648DF5F993C
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:48:09 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 6358230E9F51
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 20:29:18 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id C0466319AE37
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 20:40:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E869A2F39B4;
-	Thu, 28 May 2026 20:29:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BDE582F8E83;
+	Thu, 28 May 2026 20:40:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SXXLMNGl"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qS4/7OKb"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B76AD2FD7C3;
-	Thu, 28 May 2026 20:29:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9541733CE8A;
+	Thu, 28 May 2026 20:40:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780000157; cv=none; b=PqAMAhP1+3DqI8hPdiD5kQ3d8CJxunsv8PsBFKGL5TKGIZfmCqxiHhjxzfpIyIH+skLMGnzumYtYbxb+OWhVt5uSUgkyVoHIzODOLDDcRBUDjzpwvTq2TKVXWumIagGfnA5+cks2ZT1vCxw+e/tN32UwrFg7mCokUF4I5mVXUsA=
+	t=1780000840; cv=none; b=FVLF2zt9zPb93Sd6pzn8hAkL4ytAsymkkt+VPQrH6+qjuck9TVc30uTLh0aR7ZVbyPbFH2ITeD6WmLbH/y5GLvjZznKjfzOQq93DEWqO42b0Waa2zRvWxy2IfxcMy7yASpmaIkeFAHpXsrveej9tpcdcGrwYuhsqHpPVtPz+ARs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780000157; c=relaxed/simple;
-	bh=HX6HQLhaceHM1mRqUbRAGOLKacEoJfyXzbXD5OGBI5Y=;
+	s=arc-20240116; t=1780000840; c=relaxed/simple;
+	bh=hXW9V/fKyAG+QintxEPhk/qFj3gmWs0IDmVjROEkIhg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=HfxZ8X64rUytR3G/rusBIF+j2e+/L5XinewCElwKavFI0EnYv4g7UBi1gGDQ0hs3OwZ9pbE6ca1IyZJXW8n54iLDMrtHyGkY+vJ6Tv3L4YAu1N/4Nl6Pvq9try9vwgbbXZ3KoW4USIODemtXHOccLqXbo8xfXkG612iwrZjDL6o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SXXLMNGl; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 27F7E1F000E9;
-	Thu, 28 May 2026 20:29:15 +0000 (UTC)
+	 MIME-Version; b=RsSdcwcuXvhogwa4J4HL1Wq6s/e3h2nWj6rsYH4C6txPf9wLT7H+NIeBI9J3XIlexW6GiGOh05Z87QXLrNYxKYmXlwz5AUclWZ972Tt5YMlh9iOtQXNN/626Sh0f52vHj9mBJAc4ap2sYUHf7DidahswSdGd/v28ciamNq862y8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qS4/7OKb; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F35461F000E9;
+	Thu, 28 May 2026 20:40:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780000156;
-	bh=zHYvlcuMX1m/fbmdJLge+P0R9ZFkm3mH6O/nGfNJSMQ=;
+	s=korg; t=1780000839;
+	bh=HC8faTZ/AgyclX5OwNKBQA8Dl7zkM93c1ps07PLMaBc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=SXXLMNGls0hyJ4CKtInHWoHV3r+bMxR4jvp8Cmnw3O9adWFoVbzYMasDK+fgrGYUT
-	 iFBvnt3zRH+n8dl+kNFhMTZLhNRsvbI7MleAI6AjpRoimbgLWKyPuc15ccjXEDda/U
-	 dqBLG7jMgUhnk4S7+dPfMjPsds5KkdL1RRGrF2po=
+	b=qS4/7OKb3i1yXdOwo5dikpftxzuKcFjI8wEOzGDEVGbOJ0YO7EffpD3qmxHkqQQ/T
+	 pvKqQ/wthFQXX9BvC+Pc0eT7JDTjovNxYPuRmypihjUMyeNcG5K+Tw8WOhS5Izc+Lz
+	 S3HYPqjiFSh9MGnYmZNGabqVmLDMQsqqzmjQBv10=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Arkadiusz Kubalewski <Arkadiusz.kubalewski@intel.com>,
-	Grzegorz Nitka <grzegorz.nitka@intel.com>,
-	Aleksandr Loktionov <aleksandr.loktionov@intel.com>,
-	Alexander Nowlin <alexander.nowlin@intel.com>,
-	Tony Nguyen <anthony.l.nguyen@intel.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Alexey Dobriyan <adobriyan@gmail.com>,
+	Johannes Thumshirn <johannes.thumshirn@wdc.com>,
+	Damien Le Moal <dlemoal@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 323/377] ice: ptp: use primary NAC semaphore on E825
+Subject: [PATCH 6.12 187/272] zonefs: handle integer overflow in zonefs_fname_to_fno
 Date: Thu, 28 May 2026 21:49:21 +0200
-Message-ID: <20260528194647.757498081@linuxfoundation.org>
+Message-ID: <20260528194634.514745166@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260528194638.371537336@linuxfoundation.org>
-References: <20260528194638.371537336@linuxfoundation.org>
+In-Reply-To: <20260528194629.379955525@linuxfoundation.org>
+References: <20260528194629.379955525@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -72,97 +69,80 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	RCVD_TLS_LAST(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,wdc.com,kernel.org];
+	TAGGED_FROM(0.00)[bounces-256130-lists,stable=lfdr.de];
+	PRECEDENCE_BULK(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FROM_HAS_DN(0.00)[];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-255887-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TO_DN_SOME(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[10];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[7];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,msgid.link:url,intel.com:email,linuxfoundation.org:mid,linuxfoundation.org:dkim]
-X-Rspamd-Queue-Id: 79CD05F90C1
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim,wdc.com:email]
+X-Rspamd-Queue-Id: 648DF5F993C
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Grzegorz Nitka <grzegorz.nitka@intel.com>
+From: Johannes Thumshirn <johannes.thumshirn@wdc.com>
 
-[ Upstream commit 7b28523546c7e4adbb8436f2986efcfc8382985e ]
+[ Upstream commit 3a8389d42bdf4213730f4067f8bfa78bae6564ef ]
 
-For E825 2xNAC configurations, PTP semaphore operations must hit the
-primary NAC register block so both sides coordinate on the same lock.
+In zonefs the file name in one of the two directories corresponds to the
+zone number.
 
-Commit e2193f9f9ec9 ("ice: enable timesync operation on 2xNAC E825
-devices") updated other primary-only PTP register accesses to
-use the primary NAC on non-primary functions, but left ice_ptp_lock()
-and ice_ptp_unlock() operating on the local NAC. As a result, secondary
-NAC PTP paths can take a different semaphore than the primary side.
+Here Alexey reported a possible integer overflow in zonefs_fname_to_fno(),
+where the parsing of the zone number from the file name can overflow the
+'long' data type.
 
-Select the primary hardware in ice_ptp_lock() and ice_ptp_unlock() when
-the current function is not primary, keeping semaphore operations
-symmetric and consistent with the rest of the 2xNAC PTP register access
-path.
+Add a check for integer overflows and if the fno 'long' did overflow
+return -ENOENT.
 
-Fixes: e2193f9f9ec9 ("ice: enable timesync operation on 2xNAC E825 devices")
-Reviewed-by: Arkadiusz Kubalewski <Arkadiusz.kubalewski@intel.com>
-Signed-off-by: Grzegorz Nitka <grzegorz.nitka@intel.com>
-Reviewed-by: Aleksandr Loktionov <aleksandr.loktionov@intel.com>
-Tested-by: Alexander Nowlin <alexander.nowlin@intel.com>
-Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
-Link: https://patch.msgid.link/20260515182419.1597859-6-anthony.l.nguyen@intel.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Reported-by: Alexey Dobriyan <adobriyan@gmail.com>
+Fixes: d207794ababe ("zonefs: Dynamically create file inodes when needed")
+Signed-off-by: Johannes Thumshirn <johannes.thumshirn@wdc.com>
+Signed-off-by: Damien Le Moal <dlemoal@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/intel/ice/ice_ptp_hw.c | 9 +++++++++
- 1 file changed, 9 insertions(+)
+ fs/zonefs/super.c | 6 +++++-
+ 1 file changed, 5 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/net/ethernet/intel/ice/ice_ptp_hw.c b/drivers/net/ethernet/intel/ice/ice_ptp_hw.c
-index 0f378e68f72f1..99bf38cf352a2 100644
---- a/drivers/net/ethernet/intel/ice/ice_ptp_hw.c
-+++ b/drivers/net/ethernet/intel/ice/ice_ptp_hw.c
-@@ -5264,9 +5264,13 @@ static void ice_ptp_init_phy_e830(struct ice_ptp_hw *ptp)
-  */
- bool ice_ptp_lock(struct ice_hw *hw)
- {
-+	struct ice_pf *pf = container_of(hw, struct ice_pf, hw);
- 	u32 hw_lock;
- 	int i;
+diff --git a/fs/zonefs/super.c b/fs/zonefs/super.c
+index faf1eb87895d0..72408d8f9345c 100644
+--- a/fs/zonefs/super.c
++++ b/fs/zonefs/super.c
+@@ -610,10 +610,14 @@ static long zonefs_fname_to_fno(const struct qstr *fname)
+ 		return c - '0';
  
-+	if (!ice_is_primary(hw))
-+		hw = ice_get_primary_hw(pf);
+ 	for (i = 0, rname = name + len - 1; i < len; i++, rname--) {
++		long digit;
 +
- #define MAX_TRIES 15
- 
- 	for (i = 0; i < MAX_TRIES; i++) {
-@@ -5293,6 +5297,11 @@ bool ice_ptp_lock(struct ice_hw *hw)
-  */
- void ice_ptp_unlock(struct ice_hw *hw)
- {
-+	struct ice_pf *pf = container_of(hw, struct ice_pf, hw);
-+
-+	if (!ice_is_primary(hw))
-+		hw = ice_get_primary_hw(pf);
-+
- 	wr32(hw, PFTSYN_SEM + (PFTSYN_SEM_BYTES * hw->pf_id), 0);
- }
+ 		c = *rname;
+ 		if (!isdigit(c))
+ 			return -ENOENT;
+-		fno += (c - '0') * shift;
++		digit = (c - '0') * shift;
++		if (check_add_overflow(fno, digit, &fno))
++			return -ENOENT;
+ 		shift *= 10;
+ 	}
  
 -- 
 2.53.0
