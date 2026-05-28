@@ -1,260 +1,212 @@
-Return-Path: <stable+bounces-255066-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-255067-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id mAxrJ4N2GGo8kQgAu9opvQ
-	(envelope-from <stable+bounces-255066-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 19:08:19 +0200
+	id cCZRO9F2GGo8kQgAu9opvQ
+	(envelope-from <stable+bounces-255067-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 19:09:37 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 603FC5F56AB
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 19:08:18 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id 01AFF5F56DA
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 19:09:36 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 33FED3166021
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 16:46:40 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id D4D3D308081D
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 16:57:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DEA203F787B;
-	Thu, 28 May 2026 16:46:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B09B03F86FA;
+	Thu, 28 May 2026 16:57:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=protonmail.com header.i=@protonmail.com header.b="RBnCRQud"
+	dkim=pass (1024-bit key) header.d=seu.edu.cn header.i=@seu.edu.cn header.b="WW05eevj"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-24416.protonmail.ch (mail-24416.protonmail.ch [109.224.244.16])
+Received: from mail-m49198.qiye.163.com (mail-m49198.qiye.163.com [45.254.49.198])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 77B603F888F
-	for <stable@vger.kernel.org>; Thu, 28 May 2026 16:46:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=109.224.244.16
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F20392F7F13;
+	Thu, 28 May 2026 16:57:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=45.254.49.198
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779986794; cv=none; b=ms8t9KIihfQrKBp1lmo8EpSaDUjmMDHv7l+HDCFQKAojZL17ewGfICBU5ba3qqMFNMpIuFQ162u8NSVfD/qckbgwgX9TZ51kjgaDf0O9oXgTiPMQKLoWoE07s89decyTo39R3MvyXCI1QNvqcvuiJeDkpyMBGSBrB+DQ92Ffdig=
+	t=1779987449; cv=none; b=VP8eBqzCxOApxn4g1ZMf//gMtJqyii0hVHLK8L+WdYNeK992TO/w3AJZRaParLKahJMwHLklkGBaQ867Yv7+xeVjLsa82yEIf7IYapo0rrXwa0Tu/IGIqxIwxzs4h2gTPgyNmiCFECzWdHZYG/upL7k6gxKvW1zKQT7QoJlX/Mg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779986794; c=relaxed/simple;
-	bh=zK3X7wA08oXzEAzQeQddwtdlz9RVepIGMUvH3ngJHxs=;
-	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=S4tkfrc389JOMuyOlqu2hGhMYQ4/m96YA/zE5xtgO36Ki3XhlkO4k6cXvkvVywwUegX5Tb4yF4SE3lqTlB9xUJspalRZ6JALsYVshPR+2akqMexYsg9m8+ITPmfEjyqppmrNKvsplUw/quLBzjoVXoYWQtRvzeo9ecAFAlIO9dA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=protonmail.com; spf=pass smtp.mailfrom=protonmail.com; dkim=pass (2048-bit key) header.d=protonmail.com header.i=@protonmail.com header.b=RBnCRQud; arc=none smtp.client-ip=109.224.244.16
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=protonmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=protonmail.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=protonmail.com;
-	s=protonmail3; t=1779986782; x=1780245982;
-	bh=dGKkbNDql+vqJ68vmugDD47PP1fWqvAci8ua5n4B4Lo=;
-	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
-	 Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
-	 Message-ID:BIMI-Selector;
-	b=RBnCRQud4/5XsmyACYM5q295J6ZLjWQfk9tmH+NTd8oIr9J4gfhOAkYvzOR7x9xEO
-	 yjHbBjczNtscc3yiE/Wdewo9Q6gCwZfNUH2HTZ86yIdvdnQI0uaLWPhyNY6QCg/x44
-	 VTdTdmbVDe1IV2WdjzxBafvNOnqoer0rdRuFlAolYvr8CLpesKpLEiXICvRX1psF8t
-	 BGKojoLXaB9UstWUvu6D6ot+WKeIHECF+5wckl3Q4UGCG7w5doL1RUYT3w0F9oIWNe
-	 gLhwb6DPD2mJwzurcJcNiDRsvB/2mfF1qGBwcfDF7h5ASraAdbPH6+NOe/M6Dx/D9E
-	 vNHcaeudSxm2Q==
-Date: Thu, 28 May 2026 16:46:15 +0000
-To: Hongling Zeng <zenghongling@kylinos.cn>
-From: =?utf-8?Q?Dominik_Karol_Pi=C4=85tkowski?= <dominik.karol.piatkowski@protonmail.com>
-Cc: dpenkler@gmail.com, gregkh@linuxfoundation.org, kees@kernel.org, dan.carpenter@linaro.org, lukeyang.dev@gmail.com, linux-kernel@vger.kernel.org, zhongling0719@126.com, stable@vger.kernel.org
-Subject: Re: [PATCH v2] gpib: fmh_gpib: Fix resource leaks in fmh_gpib_attach_impl
-Message-ID: <LpJShJPaUZ8iZoWRA7Sy9TPz_7ZPHNvoU0lHOBrVEXvQGqlz493ShbF6ZKQ2zcRqPHVuxOkjzR0KCdS6OngnflPYa0gsqaRTpRWFbxuqQ4A=@protonmail.com>
-In-Reply-To: <20260528015028.12802-1-zenghongling@kylinos.cn>
-References: <20260528015028.12802-1-zenghongling@kylinos.cn>
-Feedback-ID: 117888567:user:proton
-X-Pm-Message-ID: 1936884bd5ff52f6fcd5388be70fe5051bf14b84
+	s=arc-20240116; t=1779987449; c=relaxed/simple;
+	bh=S/PC2fJU+K080gGaQwOrehjOQN9GZtQdYiopStlVwH8=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=meZPiPXWTVOLhCwfJx93TXfC+FwL6FpQclFGhTeDHt2POynqP6H/f9ga3E2ipzR9ZqNXxuXpQ4/zraizE0cQPyOxSW0oXg53VfyEHvZhQodMIChKTaSH0XLRYNIYCi1PaOdsK/E2t9L+A3+k332VJ+GS59RoQGd93UEaf9iFAXs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=seu.edu.cn; spf=pass smtp.mailfrom=seu.edu.cn; dkim=pass (1024-bit key) header.d=seu.edu.cn header.i=@seu.edu.cn header.b=WW05eevj; arc=none smtp.client-ip=45.254.49.198
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=seu.edu.cn
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=seu.edu.cn
+Received: from PC-202605011814.localdomain (unknown [IPV6:2409:8924:2013:1a6b:50af:214a:ea2b:7da2])
+	by smtp.qiye.163.com (Hmail) with ESMTP id 403594fc0;
+	Fri, 29 May 2026 00:52:10 +0800 (GMT+08:00)
+From: Runyu Xiao <runyu.xiao@seu.edu.cn>
+To: suzuki.poulose@arm.com,
+	alexander.shishkin@linux.intel.com
+Cc: mike.leach@linaro.org,
+	james.clark@linaro.org,
+	mathieu.poirier@linaro.org,
+	gregkh@linuxfoundation.org,
+	coresight@lists.linaro.org,
+	linux-arm-kernel@lists.infradead.org,
+	linux-kernel@vger.kernel.org,
+	runyu.xiao@seu.edu.cn,
+	jianhao.xu@seu.edu.cn,
+	stable@vger.kernel.org
+Subject: [PATCH] coresight: etb10: restore atomic_t for shared reading state
+Date: Fri, 29 May 2026 00:52:01 +0800
+Message-Id: <20260528165201.319452-1-runyu.xiao@seu.edu.cn>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
+X-HM-Tid: 0a9e6f8028ff03a1kunm2f79b8526ba12
+X-HM-MType: 10
+X-HM-Spam-Status: e1kfGhgUHx5ZQUpXWQgPGg8OCBgUHx5ZQUlOS1dZFg8aDwILHllBWSg2Ly
+	tZV1koWUFITzdXWRgWCB1ZQUpXWS1ZQUlXWQ8JGhUIEh9ZQVkZHhpJVh9NTE1PHU0YTUsZS1YeHw
+	5VEwETFhoSFyQUDg9ZV1kYEgtZQVlJT0tCQUNCSU9BSUtKSEFKGk0ZQU5LGh1BSUpPGkEeGkkZQU
+	wfGklZV1kWGg8SFR0UWUFZT0tIVUpLSUhOQ0NVSktLVUtZBg++
+DKIM-Signature: a=rsa-sha256;
+	b=WW05eevjZQMJAhFhF9ztJLnsUyl5H1/yh18GhU7JzlaRniiQ6KXLE2Nia81lzO7qdhzh6Bp7UeX/357JhOfycisZiGkixs6pFrvWCf9KyQAYYx+dMr96SZC7ai2hLVzH1jQhj9MrGDrsnA6yK77grpufcnBldI5wBiEWXQfKPwo=; c=relaxed/relaxed; s=default; d=seu.edu.cn; v=1;
+	bh=VqpF95Me50rWFEF/pPooatQSHRrhpris1NlOAFjPDf8=;
+	h=date:mime-version:subject:message-id:from;
 X-Spamd-Result: default: False [-0.66 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+	MID_CONTAINS_FROM(1.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[protonmail.com,quarantine];
-	R_DKIM_ALLOW(-0.20)[protonmail.com:s=protonmail3];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	R_MISSING_CHARSET(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[seu.edu.cn,none];
+	R_DKIM_ALLOW(-0.20)[seu.edu.cn:s=default];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FREEMAIL_CC(0.00)[gmail.com,linuxfoundation.org,kernel.org,linaro.org,vger.kernel.org,126.com];
-	TAGGED_FROM(0.00)[bounces-255066-lists,stable=lfdr.de];
-	FROM_HAS_DN(0.00)[];
-	RCVD_COUNT_THREE(0.00)[3];
-	RCVD_TLS_LAST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[protonmail.com:+];
-	MISSING_XM_UA(0.00)[];
-	TO_DN_SOME(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[dominik.karol.piatkowski@protonmail.com,stable@vger.kernel.org];
+	RCVD_COUNT_THREE(0.00)[4];
+	TAGGED_FROM(0.00)[bounces-255067-lists,stable=lfdr.de];
+	MIME_TRACE(0.00)[0:+];
+	RCVD_TLS_LAST(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	MID_RHS_MATCH_FROM(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[runyu.xiao@seu.edu.cn,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[seu.edu.cn:+];
+	TO_DN_NONE(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_SEVEN(0.00)[9];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	FREEMAIL_FROM(0.00)[protonmail.com]
-X-Rspamd-Queue-Id: 603FC5F56AB
+	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_TWELVE(0.00)[12];
+	FROM_HAS_DN(0.00)[]
+X-Rspamd-Queue-Id: 01AFF5F56DA
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-Hi Hongling Zeng,
+The etb10 miscdevice uses drvdata->reading as a shared exclusivity gate
+for userspace buffer access. etb_open() claims that gate with
+local_cmpxchg(), and etb_release() clears it with local_set().
 
-On Thursday, May 28th, 2026 at 03:50, Hongling Zeng <zenghongling@kylinos.c=
-n> wrote:
+That gate is shared per-device state rather than CPU-local state. A
+running system can reach it whenever /dev/<etb> is opened, closed, and
+reopened by different tasks while the device remains registered, so the
+same drvdata->reading variable may be claimed on one CPU and later
+cleared on another.
 
-> The fmh_gpib_attach_impl() function has multiple resource leaks in its
-> error handling paths. When any initialization step fails, the function
-> returns early without properly releasing previously acquired resources.
->=20
-> Fix by adding proper error handling labels and cleanup code that releases
-> resources in the reverse order they were acquired.
->=20
-> Fixes: 8e4841a0888c7 ("staging: gpib: Add Frank Mori Hess FPGA PCI GPIB d=
-river")
-> Signed-off-by: Hongling Zeng <zenghongling@kylinos.cn>
-> Cc: stable@vger.kernel.org
-> Suggested-by: Dominik Karol Pi=C4=85tkowski <dominik.karol.piatkowski@pro=
-tonmail.com>
->=20
-> ---
-> Changes in v2:
->  - Fixed unnecessary retval assignments in early error returns
->  - Removed extra newline
->  - Kept e_priv->irq assignment after request_irq() succeeds,as suggested =
-by Dominik Karol
-> ---
->  drivers/gpib/fmh_gpib/fmh_gpib.c | 37 +++++++++++++++++++++++++-------
->  1 file changed, 29 insertions(+), 8 deletions(-)
->=20
-> diff --git a/drivers/gpib/fmh_gpib/fmh_gpib.c b/drivers/gpib/fmh_gpib/fmh=
-_gpib.c
-> index fcafdc02ea2e..404379cd1565 100644
-> --- a/drivers/gpib/fmh_gpib/fmh_gpib.c
-> +++ b/drivers/gpib/fmh_gpib/fmh_gpib.c
-> @@ -1418,7 +1418,8 @@ static int fmh_gpib_attach_impl(struct gpib_board *=
-board, const struct gpib_boar
->  =09=09=09=09     resource_size(e_priv->gpib_iomem_res));
->  =09if (!nec_priv->mmiobase) {
->  =09=09dev_err(board->dev, "Could not map I/O memory\n");
-> -=09=09return -ENOMEM;
-> +=09=09retval =3D -ENOMEM;
-> +=09=09goto err_release_gpib_region;
->  =09}
->  =09dev_dbg(board->dev, "iobase %pr remapped to %p\n",
->  =09=09e_priv->gpib_iomem_res, nec_priv->mmiobase);
-> @@ -1426,34 +1427,39 @@ static int fmh_gpib_attach_impl(struct gpib_board=
- *board, const struct gpib_boar
->  =09res =3D platform_get_resource_byname(pdev, IORESOURCE_MEM, "dma_fifos=
-");
->  =09if (!res) {
->  =09=09dev_err(board->dev, "Unable to locate mmio resource for gpib dma p=
-ort\n");
-> -=09=09return -ENODEV;
-> +=09=09retval =3D -ENODEV;
-> +=09=09goto err_iounmap_gpib;
->  =09}
->  =09if (request_mem_region(res->start,
->  =09=09=09       resource_size(res),
->  =09=09=09       pdev->name) =3D=3D NULL) {
->  =09=09dev_err(board->dev, "cannot claim registers\n");
-> -=09=09return -ENXIO;
-> +=09=09retval =3D -ENXIO;
-> +=09=09goto err_iounmap_gpib;
->  =09}
->  =09e_priv->dma_port_res =3D res;
->  =09e_priv->fifo_base =3D ioremap(e_priv->dma_port_res->start,
->  =09=09=09=09    resource_size(e_priv->dma_port_res));
->  =09if (!e_priv->fifo_base) {
->  =09=09dev_err(board->dev, "Could not map I/O memory for fifos\n");
-> -=09=09return -ENOMEM;
-> +=09=09retval =3D -ENOMEM;
-> +=09=09goto err_release_dma_region;
->  =09}
->  =09dev_dbg(board->dev, "dma fifos 0x%lx remapped to %p, length=3D%ld\n",
->  =09=09(unsigned long)e_priv->dma_port_res->start, e_priv->fifo_base,
->  =09=09(unsigned long)resource_size(e_priv->dma_port_res));
->=20
->  =09irq =3D platform_get_irq(pdev, 0);
-> -=09if (irq < 0)
-> -=09=09return -EBUSY;
-> +=09if (irq < 0) {
-> +=09=09retval =3D -EBUSY;
-> +=09=09goto err_iounmap_fifo;
-> +=09}
->  =09retval =3D request_irq(irq, fmh_gpib_interrupt, IRQF_SHARED, pdev->na=
-me, board);
->  =09if (retval) {
->  =09=09dev_err(board->dev,
->  =09=09=09"cannot register interrupt handler err=3D%d\n",
->  =09=09=09retval);
-> -=09=09return retval;
-> +=09=09goto err_iounmap_fifo;
->  =09}
->  =09e_priv->irq =3D irq;
->=20
-> @@ -1461,7 +1467,8 @@ static int fmh_gpib_attach_impl(struct gpib_board *=
-board, const struct gpib_boar
->  =09=09e_priv->dma_channel =3D dma_request_slave_channel(board->dev, "rxt=
-x");
->  =09=09if (!e_priv->dma_channel) {
->  =09=09=09dev_err(board->dev, "failed to acquire dma channel \"rxtx\".\n"=
-);
-> -=09=09=09return -EIO;
-> +=09=09=09retval =3D -EIO;
-> +=09=09=09goto err_free_irq;
->  =09=09}
->  =09}
->  =09/*
-> @@ -1473,6 +1480,20 @@ static int fmh_gpib_attach_impl(struct gpib_board =
-*board, const struct gpib_boar
->  =09=09fifo_max_burst_length_mask;
->=20
->  =09return fmh_gpib_init(e_priv, board, handshake_mode);
-> +
-> +err_free_irq:
-> +=09free_irq(e_priv->irq, board);
-> +err_iounmap_fifo:
-> +=09iounmap(e_priv->fifo_base);
-> +err_release_dma_region:
-> +=09release_mem_region(e_priv->dma_port_res->start,
-> +=09=09=09=09resource_size(e_priv->dma_port_res));
-> +err_iounmap_gpib:
-> +=09iounmap(nec_priv->mmiobase);
-> +err_release_gpib_region:
-> +=09release_mem_region(e_priv->gpib_iomem_res->start,
-> +=09=09=09=09resource_size(e_priv->gpib_iomem_res));
-> +=09return retval;
+This code used to use atomic_t for the same gate, but commit
+27b10da8fff2 ("coresight: etb10: moving to local atomic operations")
+changed it to local_t even though the access pattern remained cross-task
+and cross-CPU. Restore atomic_t together with atomic_cmpxchg() and
+atomic_set() so the exclusivity gate again uses a primitive intended
+for shared state.
 
-I see a problem with this patch.
+The issue was found on Linux v6.18.21 by our static analysis tool while
+scanning surviving local_t-on-shared-state sites, and then manually
+reviewed against the live etb10 file-op path.
 
-fmh_gpib_attach_impl is called from fmh_gpib_attach_holdoff_(all|end), and =
-these
-are passed as attach through fmh_gpib_(unaccel_)interface. The only place w=
-here
-I see attach is called, is in common/iblib.c, in ibonline function. If atta=
-ch
-fails (that is, returns with -errno), detach is called (fmh_gpib_detach for
-this case), where a proper cleanup is performed.
+It was runtime-validated with a reproducible QEMU no-device KCSAN PoC
+that kept the same report-local contract:
 
-If we release the resources in attach and not clear corresponding e_priv fi=
-elds,
-we will fail badly in detach, as we do double free/unmap and use after free=
-.
-Clearing e_priv fields will result in having two competing cleanup routines=
-,
-and I don't like that idea - let's have one proper cleanup in one place. Th=
-e
-only way to keep this approach would be to rewrite the core gpib logic for
-attach/detach, and I don't know if it's worth the effort - probably not.
+  1. use one shared struct etb_drvdata carrier and its
+     drvdata->reading gate;
+  2. call etb_open() and etb_release() sequentially on that gate to
+     confirm the original claim/clear path;
+  3. bind the open side to CPU0 and the release side to CPU1 for the
+     same gate to show cross-CPU ownership;
+  4. run bound workers that repeatedly race etb_open() and
+     etb_release() on the same gate until KCSAN reports a target hit.
 
-Thanks,
-Dominik Karol
+The harness recorded:
 
->  }
->=20
->  int fmh_gpib_attach_holdoff_all(struct gpib_board *board, const struct g=
-pib_board_config *config)
-> --
-> 2.25.1
->=20
-> 
+  L1 passed open=1 release=1
+  reading_after_open=1 reading_after_release=0
+  L2 passed open_cpu=0 release_cpu=1
+  cross_cpu_release=1 reading_after=0 open_ret=0
+
+Representative KCSAN excerpt from the no-device validation run:
+
+  BUG: KCSAN: data-race in etb_open.constprop.0.isra.0 [vuln_msv]
+
+  write to 0xffffffffc0003810 of 4 bytes by task 216 on cpu 1:
+   etb_open.constprop.0.isra.0+0x38/0x80 [vuln_msv]
+   l3_worker_thread_fn+0x4f/0xf0 [vuln_msv]
+   kthread+0x17e/0x1c0
+   ret_from_fork+0x22/0x30
+
+  read to 0xffffffffc0003810 of 4 bytes by task 215 on cpu 0:
+   etb_open.constprop.0.isra.0+0x18/0x80 [vuln_msv]
+   l3_worker_thread_fn+0x4f/0xf0 [vuln_msv]
+   kthread+0x17e/0x1c0
+   ret_from_fork+0x22/0x30
+
+  value changed: 0x00000000 -> 0x00000001
+
+  Reported by Kernel Concurrency Sanitizer on:
+  CPU: 0 PID: 215 Comm: etb10_l3_a Tainted: G           O       6.1.66 #2
+
+This no-device harness is not a real ETB10 hardware end-to-end run, but
+it preserves the same shared drvdata->reading gate and the same
+etb_open()/etb_release() claim/clear contract. No real ETB10 hardware
+was available for runtime testing.
+
+Build-tested with:
+  make olddefconfig
+  make -j"$(nproc)" drivers/hwtracing/coresight/coresight-etb10.o
+
+Fixes: 27b10da8fff2 ("coresight: etb10: moving to local atomic operations")
+Cc: stable@vger.kernel.org
+Signed-off-by: Runyu Xiao <runyu.xiao@seu.edu.cn>
+---
+ drivers/hwtracing/coresight/coresight-etb10.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
+
+diff --git a/drivers/hwtracing/coresight/coresight-etb10.c b/drivers/hwtracing/coresight/coresight-etb10.c
+index 35db1b6093d1..98269ea6f7ae 100644
+--- a/drivers/hwtracing/coresight/coresight-etb10.c
++++ b/drivers/hwtracing/coresight/coresight-etb10.c
+@@ -85,7 +85,7 @@ struct etb_drvdata {
+ 	struct coresight_device	*csdev;
+ 	struct miscdevice	miscdev;
+ 	raw_spinlock_t		spinlock;
+-	local_t			reading;
++	atomic_t		reading;
+ 	pid_t			pid;
+ 	u8			*buf;
+ 	u32			buffer_depth;
+@@ -603,7 +603,7 @@ static int etb_open(struct inode *inode, struct file *file)
+ 	struct etb_drvdata *drvdata = container_of(file->private_data,
+ 						   struct etb_drvdata, miscdev);
+ 
+-	if (local_cmpxchg(&drvdata->reading, 0, 1))
++	if (atomic_cmpxchg(&drvdata->reading, 0, 1))
+ 		return -EBUSY;
+ 
+ 	dev_dbg(&drvdata->csdev->dev, "%s: successfully opened\n", __func__);
+@@ -641,7 +641,7 @@ static int etb_release(struct inode *inode, struct file *file)
+ {
+ 	struct etb_drvdata *drvdata = container_of(file->private_data,
+ 						   struct etb_drvdata, miscdev);
+-	local_set(&drvdata->reading, 0);
++	atomic_set(&drvdata->reading, 0);
+ 
+ 	dev_dbg(&drvdata->csdev->dev, "%s: released\n", __func__);
+ 	return 0;
+-- 
+2.34.1
 
