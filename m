@@ -1,61 +1,60 @@
-Return-Path: <stable+bounces-255738-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-255984-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id mIYFBGWkGGoQlwgAu9opvQ
-	(envelope-from <stable+bounces-255738-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:24:05 +0200
+	id aE87HKGnGGp+lwgAu9opvQ
+	(envelope-from <stable+bounces-255984-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:37:53 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id A70EA5F8901
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:24:04 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 27EDD5F9289
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:37:53 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 9D52330776EA
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 20:22:28 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id BFE3130243B3
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 20:33:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 22601316199;
-	Thu, 28 May 2026 20:22:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7B3F3313550;
+	Thu, 28 May 2026 20:33:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="eL2reOeB"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zf30GRUh"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E195E2D9787;
-	Thu, 28 May 2026 20:22:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5ECAB339866;
+	Thu, 28 May 2026 20:33:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779999745; cv=none; b=CkQYmgtdER9auvMdgZgMza6V1mA+SLyZS4AZatzS8nDF7zdhUq4/pC9o9mY8EZ2XyJ8Hr6OtilEDi0KeP9g5fER5u8hgFUGR3ri2TdRZoxiJTo0b+kZp0KEgEhek3vrnoblc0eoZzXtT4eGQ/bKylxLVsPoFeWuvf+6vKkGyH3Y=
+	t=1780000428; cv=none; b=Boq/2Se0DxeJCoLJE6rMsJh2uLjyG/vMkLH7emLEruK2LqLFNoqJtMc/R/0oTW67ZdvtxB6mUYOPwpa0jZxsufPTvIDw4Awzt5tuZERD9XcgZoXE52feNWe2ll5yoBZKB1owUgF+vAHC5gpNPmyuHAI1ZJhB7vbPkqF+0ushJ6I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779999745; c=relaxed/simple;
-	bh=n4dGNjWV5uBWb8xggwXTJFRK0YKzWJbLjKwOJ5l/yk8=;
+	s=arc-20240116; t=1780000428; c=relaxed/simple;
+	bh=8K4pFX2p34R4wCJO3R1mUxPm1vK0fhDfqIp8qFjEJeg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=qXPNW+rfEURSuE6+N36Mf89NxxfdqYbT3/PmwiDVFpOCMS6C7uvJXQWOrbWlsZmoGI0MSpV1tzkNln9xBLzkz1dr9w1A3YplcdbByWDnucZmc7HTrnM/bGp5BV5cMWKudu/fBGSnbMT0VtBO5xoyBDIp3TzLENHSdGTuGjdVw+E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=eL2reOeB; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4C0FD1F000E9;
-	Thu, 28 May 2026 20:22:24 +0000 (UTC)
+	 MIME-Version; b=hsm3LbVy7AqYSgWX1qlcvLF9e2CY1Sn+Sux/inidLPWFVJQ97wWKVWSFvmLm9sZ8IJLXZrg9VvFiLoJjjNqQ4wLPHpvk7pzHLqWxX6guFvfpXxVJmwwCcfjp+1HQncJV8EF+eCkhrkIAJC9/ff0mDJ2NYdMKyKpmA5mBi7AG6Gk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zf30GRUh; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B2A2C1F000E9;
+	Thu, 28 May 2026 20:33:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779999744;
-	bh=xGF8KR5G49FxeIglurCYnuG0zCosEeJQNRNMrscCggQ=;
+	s=korg; t=1780000427;
+	bh=CZLsRlvEgNjbwp1Lz0UwK5WtWAwpnT8ityF/PWcQU7U=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=eL2reOeBg5mD8yERDPuG5eXpLaZTjVOC62AUzFs2VpoBIYH0Tb76xiAXrY8Fc/xGs
-	 1CZ8JS2ia+a6z0f5Ie65PcBGSZCbxTyMp8ZyF2wYr0f8vcYQm1IR/+nT6TSDXyHFby
-	 TJB3IL0ZfWrsFNaLWIqoKnv/7fw6vedVdyHxPlCg=
+	b=zf30GRUh3MoTH2/StikCNR4WtqZhQZ1Ix3YajHtCQQplWEiV8wRurg8XWwFlox9B/
+	 ToB59v8q7rUqjQ2uyT/xwSf/A6ELYtylVB053QhmkwdKjsQzzWQGRCnNUvZ2uTDXxh
+	 L40V0sTUhVHuzF2ioDeFAJ6Oycayovy+THuURc0w=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Maulik Shah <maulik.shah@oss.qualcomm.com>,
-	Navya Malempati <navya.malempati@oss.qualcomm.com>,
-	Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>,
-	Linus Walleij <linusw@kernel.org>,
+	Lukas Bulwahn <lukas.bulwahn@redhat.com>,
+	Will Deacon <will@kernel.org>,
+	Gyokhan Kochmarla <gyokhan@amazon.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 176/377] pinctrl: qcom: Fix GPIO to PDC wake irq map for qcs615
+Subject: [PATCH 6.12 040/272] arm64: Kconfig: Remove selecting replaced HAVE_FUNCTION_GRAPH_RETVAL
 Date: Thu, 28 May 2026 21:46:54 +0200
-Message-ID: <20260528194643.518744967@linuxfoundation.org>
+Message-ID: <20260528194630.504986961@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260528194638.371537336@linuxfoundation.org>
-References: <20260528194638.371537336@linuxfoundation.org>
+In-Reply-To: <20260528194629.379955525@linuxfoundation.org>
+References: <20260528194629.379955525@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -78,7 +77,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-255738-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-255984-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
@@ -89,55 +88,54 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	FROM_HAS_DN(0.00)[];
 	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
 	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[8];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[qualcomm.com:email,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim]
-X-Rspamd-Queue-Id: A70EA5F8901
+	DBL_BLOCKED_OPENRESOLVER(0.00)[amazon.de:email,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim]
+X-Rspamd-Queue-Id: 27EDD5F9289
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Maulik Shah <maulik.shah@oss.qualcomm.com>
+From: Lukas Bulwahn <lukas.bulwahn@redhat.com>
 
-[ Upstream commit 9d69033ad967b6e09b1e5b30d1a32c6c4876465d ]
+commit f458b2165d7ac0f2401fff48f19c8f864e7e1e38 upstream.
 
-PDC interrupts 122-125 were meant for ibi_i3c wakeup but qcs615 do not
-support i3c. GPIOs 39,51,88 and 89 are also connected to different PDC
-pin to support non-ibi wakeup. Update the wakeirq map to reflect same.
+Commit a3ed4157b7d8 ("fgraph: Replace fgraph_ret_regs with ftrace_regs")
+replaces the config HAVE_FUNCTION_GRAPH_RETVAL with the config
+HAVE_FUNCTION_GRAPH_FREGS, and it replaces all the select commands in the
+various architecture Kconfig files. In the arm64 architecture, the commit
+adds the 'select HAVE_FUNCTION_GRAPH_FREGS', but misses to remove the
+'select HAVE_FUNCTION_GRAPH_RETVAL', i.e., the select on the replaced
+config.
 
-Fixes: b698f36a9d40 ("pinctrl: qcom: add the tlmm driver for QCS615 platform")
-Signed-off-by: Maulik Shah <maulik.shah@oss.qualcomm.com>
-Signed-off-by: Navya Malempati <navya.malempati@oss.qualcomm.com>
-Reviewed-by: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
-Signed-off-by: Linus Walleij <linusw@kernel.org>
+Remove selecting the replaced config. No functional change, just cleanup.
+
+Fixes: a3ed4157b7d8 ("fgraph: Replace fgraph_ret_regs with ftrace_regs")
+Signed-off-by: Lukas Bulwahn <lukas.bulwahn@redhat.com>
+Link: https://lore.kernel.org/r/20250117125522.99071-1-lukas.bulwahn@redhat.com
+Signed-off-by: Will Deacon <will@kernel.org>
+Signed-off-by: Gyokhan Kochmarla <gyokhan@amazon.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/pinctrl/qcom/pinctrl-qcs615.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ arch/arm64/Kconfig | 1 -
+ 1 file changed, 1 deletion(-)
 
-diff --git a/drivers/pinctrl/qcom/pinctrl-qcs615.c b/drivers/pinctrl/qcom/pinctrl-qcs615.c
-index f1c827ddbfbfa..4d474c312c10b 100644
---- a/drivers/pinctrl/qcom/pinctrl-qcs615.c
-+++ b/drivers/pinctrl/qcom/pinctrl-qcs615.c
-@@ -1043,11 +1043,11 @@ static const struct msm_pingroup qcs615_groups[] = {
- static const struct msm_gpio_wakeirq_map qcs615_pdc_map[] = {
- 	{ 1, 45 },    { 3, 31 },    { 7, 55 },    { 9, 110 },   { 11, 34 },
- 	{ 13, 33 },   { 14, 35 },   { 17, 46 },   { 19, 48 },   { 21, 83 },
--	{ 22, 36 },   { 26, 38 },   { 35, 37 },   { 39, 125 },  { 41, 47 },
--	{ 47, 49 },   { 48, 51 },   { 50, 52 },   { 51, 123 },  { 55, 56 },
-+	{ 22, 36 },   { 26, 38 },   { 35, 37 },   { 39, 118 },  { 41, 47 },
-+	{ 47, 49 },   { 48, 51 },   { 50, 52 },   { 51, 116 },  { 55, 56 },
- 	{ 56, 57 },   { 57, 58 },   { 60, 60 },   { 71, 54 },   { 80, 73 },
- 	{ 81, 64 },   { 82, 50 },   { 83, 65 },   { 84, 92 },   { 85, 99 },
--	{ 86, 67 },   { 87, 84 },   { 88, 124 },  { 89, 122 },  { 90, 69 },
-+	{ 86, 67 },   { 87, 84 },   { 88, 117 },  { 89, 115 },  { 90, 69 },
- 	{ 92, 88 },   { 93, 75 },   { 94, 91 },   { 95, 72 },   { 96, 82 },
- 	{ 97, 74 },   { 98, 95 },   { 99, 94 },   { 100, 100 }, { 101, 40 },
- 	{ 102, 93 },  { 103, 77 },  { 104, 78 },  { 105, 96 },  { 107, 97 },
+diff --git a/arch/arm64/Kconfig b/arch/arm64/Kconfig
+index f487c5e21e2f1..d4ebdc16cdb4f 100644
+--- a/arch/arm64/Kconfig
++++ b/arch/arm64/Kconfig
+@@ -219,7 +219,6 @@ config ARM64
+ 	select HAVE_FUNCTION_ERROR_INJECTION
+ 	select HAVE_FUNCTION_GRAPH_FREGS
+ 	select HAVE_FUNCTION_GRAPH_TRACER
+-	select HAVE_FUNCTION_GRAPH_RETVAL
+ 	select HAVE_GCC_PLUGINS
+ 	select HAVE_HARDLOCKUP_DETECTOR_PERF if PERF_EVENTS && \
+ 		HW_PERF_EVENTS && HAVE_PERF_EVENTS_NMI
 -- 
 2.53.0
 
