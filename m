@@ -1,63 +1,60 @@
-Return-Path: <stable+bounces-255803-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-255448-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id iHLrLWilGGrClggAu9opvQ
-	(envelope-from <stable+bounces-255803-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:28:24 +0200
+	id YAN8ETKhGGqnlggAu9opvQ
+	(envelope-from <stable+bounces-255448-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:10:26 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5F6E35F8C49
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:28:24 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id DF9FA5F7F9E
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:10:25 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id CE37330862FD
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 20:25:30 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 91DBE306951B
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 20:09:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2C2D83016E0;
-	Thu, 28 May 2026 20:25:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A9A59409602;
+	Thu, 28 May 2026 20:09:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0UbLTt+s"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HZzjLkII"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DA19019A288;
-	Thu, 28 May 2026 20:25:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7B1B4352019;
+	Thu, 28 May 2026 20:08:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779999927; cv=none; b=bn71b//N0rLd5mx+LJxC2msuLatl9tO2LgWKy8XShfSK19lAahmy59fkIM+is4VVFjGEHma/gFbr+Ldo1+LyK9eUSUwUCYBe0hX2Qh/e3qPgYUCBNbQWqQlOcsuwV8qL8/Als80D3I8o/FWQZcUiIdTXwZqWGlkz3JHu4dPZ3Dc=
+	t=1779998940; cv=none; b=kT5Gd2XSA/XgT0VudKNv1Fw8HuiNaLnXj8R9irPcOlxpeET4nT0ITv6Pw9f232XzIBcu7KwuqNYHgu8vvZ/dH8NZfOoVpSUWvqKp54m5eoU+AJt+5F+0fSYKGl3Qlx2AwEizLopwCYspNVx8202v9Et+u4YKDiOPPmTxquoULFE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779999927; c=relaxed/simple;
-	bh=VvzhUzs9CBahCvfThonfTW5mh2MxGktGIv+aZaXOUW4=;
+	s=arc-20240116; t=1779998940; c=relaxed/simple;
+	bh=pqPvhJMfC2C4YcZWW33eaUVrluMNg1NkPfXY8qf0CcY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Gj6/8u7b5Kqclbuaqk7DBjOh4/Fm8lbV2r49iYa0od0r1fDEvhR4Kh54kX8folo+737205+PKbD2LMv36vScizWfXhI9x+vkWEYWWMWM/14dGUAHZwP0292Nxqnb8bTlJEIu6A1WVCp3yG8tzSRBYU5boMkLPhVr8FsZEBWyjUA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0UbLTt+s; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 423201F000E9;
-	Thu, 28 May 2026 20:25:25 +0000 (UTC)
+	 MIME-Version; b=hA27YLYfgOZL5ZlMAADhvbG11Uf7Eoxi8jkC/YH4bTE6UFV0WQLHpLbV49n7aeE/Rzg90E+OD1/LW7lUYZztFjNfRX/mA0/3S0e9KglHYLCRPHMY7kEf5wPsRZX1LlB1sROwdbnN8vsbGuLtWmdjdxOkuLRLoM3UFSzG/hmi92w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HZzjLkII; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DFA2D1F000E9;
+	Thu, 28 May 2026 20:08:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779999925;
-	bh=OJlYAQfonkh7X4p8SsDWEdTrGuDZKpyrJwPQArxwiTQ=;
+	s=korg; t=1779998939;
+	bh=fu+29yf0gZjJgqRLBE7YoNCLkU/JlEpS8bU4bHPDLHc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=0UbLTt+sReO05qnoszaGBU2dvE9XlLJJW0o+cye3h2fp4HaAotNvysrAfMeDkW34R
-	 UNSEOCbdRgdymTUzoJS6Q0zOX9NnlA7ZPpSSM+eXLbkGG2HGbyUvkDVuCilHNlda13
-	 LnbXEqEx20w7lHzPIgKqqV1YJyW2/nVMTNaQAOfM=
+	b=HZzjLkIIGcD7ChjJ7lwJc989hlOCF8LhbPYh0jvwlWyTPII/p45latmu4sPIyxf7a
+	 45ohpwS8NiHaeT8tINGdu5k9lv1YmGMFUwVWtfTe6/zDUKWtHXxyQKmI2ri4iEQ0o4
+	 6WJ7nzaMHbxsWoG31PvFGRUh/tmoSo2R2FQ8IrSY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	David Howells <dhowells@redhat.com>,
-	Paulo Alcantara <pc@manguebit.org>,
-	Matthew Wilcox <willy@infradead.org>,
-	netfs@lists.linux.dev,
-	linux-fsdevel@vger.kernel.org,
-	Christian Brauner <brauner@kernel.org>,
+	Florian Westphal <fw@strlen.de>,
+	Fernando Fernandez Mancera <fmancera@suse.de>,
+	Pablo Neira Ayuso <pablo@netfilter.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 241/377] netfs: Fix read-gaps to remove netfs_folio from filled folio
+Subject: [PATCH 7.0 350/461] netfilter: nft_inner: release local_lock before re-enabling softirqs
 Date: Thu, 28 May 2026 21:47:59 +0200
-Message-ID: <20260528194645.364013894@linuxfoundation.org>
+Message-ID: <20260528194657.524269275@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260528194638.371537336@linuxfoundation.org>
-References: <20260528194638.371537336@linuxfoundation.org>
+In-Reply-To: <20260528194646.819809818@linuxfoundation.org>
+References: <20260528194646.819809818@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -80,7 +77,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-255803-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-255448-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
@@ -91,103 +88,49 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	FROM_HAS_DN(0.00)[];
 	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
 	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[10];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,manguebit.org:email,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,linux.dev:email,infradead.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim]
-X-Rspamd-Queue-Id: 5F6E35F8C49
+	DBL_BLOCKED_OPENRESOLVER(0.00)[netfilter.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,suse.de:email,strlen.de:email]
+X-Rspamd-Queue-Id: DF9FA5F7F9E
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+7.0-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: David Howells <dhowells@redhat.com>
+From: Florian Westphal <fw@strlen.de>
 
-[ Upstream commit a41168aef634356a9b87ec44349e3c82835700a5 ]
+[ Upstream commit a6cb3ff979855f7f0ee9450a947fe8f96c2ba37a ]
 
-Fix netfs_read_gaps() to remove the netfs_folio record from the folio
-record before marking the folio uptodate if it successfully fills the gaps
-around the dirty data in a streaming write folio (dirty, but not uptodate).
+Quoting sashiko:
+ In the error path, local_bh_enable() is called before
+ local_unlock_nested_bh().
 
-Found with:
-
-    fsx -q -N 1000000 -p 10000 -o 128000 -l 600000 \
-        /xfstest.test/junk --replay-ops=junk.fsxops
-
-using the following as junk.fsxops:
-
-    truncate 0x0 0x138b1 0x8b15d *
-    write 0x507ee 0x10df7 0x927c0
-    write 0x19993 0x10e04 0x927c0 *
-    mapwrite 0x66214 0x1a253 0x927c0
-    copy_range 0xb704 0x89b9 0x24429 0x79380
-    write 0x2402b 0x144a2 0x90660 *
-    mapwrite 0x204d5 0x140a0 0x927c0 *
-    copy_range 0x1f72c 0x137d0 0x7a906 0x927c0 *
-    read 0 0x9157c 0x9157c
-
-on cifs with the default cache option.
-
-It shows folio 0x24 misbehaving if the FMODE_READ check is commented out in
-netfs_perform_write():
-
-                if (//(file->f_mode & FMODE_READ) ||
-                    netfs_is_cache_enabled(ctx)) {
-
-and no fscache.  This was initially found with the generic/522 xfstest.
-
-Signed-off-by: David Howells <dhowells@redhat.com>
-Link: https://patch.msgid.link/20260512123404.719402-16-dhowells@redhat.com
-Fixes: ee4cdf7ba857 ("netfs: Speed up buffered reading")
-cc: Paulo Alcantara <pc@manguebit.org>
-cc: Matthew Wilcox <willy@infradead.org>
-cc: netfs@lists.linux.dev
-cc: linux-fsdevel@vger.kernel.org
-Signed-off-by: Christian Brauner <brauner@kernel.org>
+Fixes: ba36fada9ab4 ("netfilter: nft_inner: Use nested-BH locking for nft_pcpu_tun_ctx")
+Signed-off-by: Florian Westphal <fw@strlen.de>
+Reviewed-by: Fernando Fernandez Mancera <fmancera@suse.de>
+Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/netfs/buffered_read.c | 11 ++++++++---
- 1 file changed, 8 insertions(+), 3 deletions(-)
+ net/netfilter/nft_inner.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/fs/netfs/buffered_read.c b/fs/netfs/buffered_read.c
-index e6157122da3a4..3531c19eea97a 100644
---- a/fs/netfs/buffered_read.c
-+++ b/fs/netfs/buffered_read.c
-@@ -394,6 +394,7 @@ static int netfs_read_gaps(struct file *file, struct folio *folio)
- {
- 	struct netfs_io_request *rreq;
- 	struct address_space *mapping = folio->mapping;
-+	struct netfs_group *group = netfs_folio_group(folio);
- 	struct netfs_folio *finfo = netfs_folio_info(folio);
- 	struct netfs_inode *ctx = netfs_inode(mapping->host);
- 	struct folio *sink = NULL;
-@@ -460,6 +461,12 @@ static int netfs_read_gaps(struct file *file, struct folio *folio)
- 
- 	ret = netfs_wait_for_read(rreq);
- 	if (ret >= 0) {
-+		if (group)
-+			folio_change_private(folio, group);
-+		else
-+			folio_detach_private(folio);
-+		kfree(finfo);
-+		trace_netfs_folio(folio, netfs_folio_trace_filled_gaps);
- 		flush_dcache_folio(folio);
- 		folio_mark_uptodate(folio);
+diff --git a/net/netfilter/nft_inner.c b/net/netfilter/nft_inner.c
+index 1b3e7a976f560..ad08a43535b55 100644
+--- a/net/netfilter/nft_inner.c
++++ b/net/netfilter/nft_inner.c
+@@ -246,8 +246,8 @@ static bool nft_inner_restore_tun_ctx(const struct nft_pktinfo *pkt,
+ 	local_lock_nested_bh(&nft_pcpu_tun_ctx.bh_lock);
+ 	this_cpu_tun_ctx = this_cpu_ptr(&nft_pcpu_tun_ctx.ctx);
+ 	if (this_cpu_tun_ctx->cookie != (unsigned long)pkt->skb) {
+-		local_bh_enable();
+ 		local_unlock_nested_bh(&nft_pcpu_tun_ctx.bh_lock);
++		local_bh_enable();
+ 		return false;
  	}
-@@ -495,10 +502,8 @@ int netfs_read_folio(struct file *file, struct folio *folio)
- 	struct netfs_inode *ctx = netfs_inode(mapping->host);
- 	int ret;
- 
--	if (folio_test_dirty(folio)) {
--		trace_netfs_folio(folio, netfs_folio_trace_read_gaps);
-+	if (folio_test_dirty(folio))
- 		return netfs_read_gaps(file, folio);
--	}
- 
- 	_enter("%lx", folio->index);
- 
+ 	*tun_ctx = *this_cpu_tun_ctx;
 -- 
 2.53.0
 
