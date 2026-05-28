@@ -1,58 +1,59 @@
-Return-Path: <stable+bounces-256003-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-255404-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id mA0tGZioGGp+lwgAu9opvQ
-	(envelope-from <stable+bounces-256003-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:42:00 +0200
+	id eKKHHCuiGGqblggAu9opvQ
+	(envelope-from <stable+bounces-255404-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:14:35 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 631BD5F9592
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:41:59 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id DC4D65F823B
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:14:34 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id DFB06307B243
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 20:34:43 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 0881F3027728
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 20:06:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4A3172E92BA;
-	Thu, 28 May 2026 20:34:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3B592335566;
+	Thu, 28 May 2026 20:06:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YYtEJCie"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cB1BCHvx"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2D69B33B6FC;
-	Thu, 28 May 2026 20:34:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 154CC304BB3;
+	Thu, 28 May 2026 20:06:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780000483; cv=none; b=M7/0LXnbeh6Lto6piBaYaAGhPumZqFU88TfTAw/RjjDVptGxzMt2mgF3FxIQS4b0vyr8b6LUtwJL893JxHfAkxuH9kxZbXqwI9XDcVRIV1EtZSO2gR90SMztg6sMADsJJ/2qQrN6OBT1o3H2OqXgfs3W7z69/Y1YB5L0awO7ukM=
+	t=1779998815; cv=none; b=M6iZ6e8xfEIvyPvA3M0c0mAUJr7GxwZ8EzyqeQE8Np5RvY1SGg4sJ2ebE7czIGW7PJ4g174D0uZlgou/a3tqKOJyd1mYYFQBiS42FofOh3zpP5VDVJF2fOCpxEog41AmjUXk99Aa5/kgOXHq4JOCGDJS+yPTefMDkSsfZ49vPOw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780000483; c=relaxed/simple;
-	bh=jMNFY4Y+04B2Q10kll0LbI4U3VJYJzwQYOtyw5XADFs=;
+	s=arc-20240116; t=1779998815; c=relaxed/simple;
+	bh=3eVBVN5TCxLu4O5MmMB1QXny8+mKj5jMhzsZ/gOze0U=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=vFbf8//ARR5P+7JWMZdcxdtryK7ZjvtNhmjy3pP0iE4B5chmSBRsQyqHc6xliEHS5vAH0BPjDuqbrrS2iheUxuYTSPWfQCmCXIy9MNJdrqcQEcfEfufOwylGhs9DzvowGl0+rnwl6iFbmqzazXF94MDqfkA7CKBUJW6hG6wtVIY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YYtEJCie; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8B1901F000E9;
-	Thu, 28 May 2026 20:34:41 +0000 (UTC)
+	 MIME-Version; b=GKLjBfD3uKgXLltKlb1JFafJXuhkQW3gqk41tSCzmvQrXkYpn2Bqf2feMh9BYyVfTSxUk+BqTxaxHqKhygGMAThH5Zsz6xRvngDAW246/uARXN+wDQFu0jx3t7sUfh3YHk6YASmRuOpfq/PWsCka8Jmzjt+PqAATmkbS/FTSA4Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cB1BCHvx; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 746B91F000E9;
+	Thu, 28 May 2026 20:06:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780000482;
-	bh=X7w5JQuObdZxYiCWumLEo2YD/9OTjQwaXEuajJP34CM=;
+	s=korg; t=1779998814;
+	bh=ZffXEbx7USnP9a2pCG5yvbb3/xvqXEXePhEPl8kJBS4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=YYtEJCiekYHzw/zooSZXdUnadqawCmvtdZ/TDgs8LRfXtKVPKA36Fa9W8HGrByPBy
-	 YecMCqk7OGnS/Nri0t7MZUKcI2z9+sAJG2RvWeepzucL7yDuvIoCUvhOYxOHRqB0HT
-	 H68P5Ny3UrePtf6GtapyXTyZmlLveIkkGneLp1ig=
+	b=cB1BCHvxXaXCpnjdkd3sZWWcrGb1SL2EdzzQslrSztCXMfjABoCCcm1gOn2QJUd9m
+	 v9cFDe06nCQICncqsmxIcgX4cKY/QU8vlRMRdXV3hD+39D7SyhDV6z310omFO2aDuD
+	 M3TYV8neEUPVbW5dGWgCcfi2B927+oMIl8WPxncI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Abdun Nihaal <nihaal@cse.iitm.ac.in>,
-	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 6.12 061/272] net: wwan: iosm: fix potential memory leaks in ipc_imem_init()
+	Felix Gu <ustc.gu@gmail.com>,
+	Rob Clark <robin.clark@oss.qualcomm.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 7.0 306/461] drm/msm/adreno: Fix a reference leak in a6xx_gpu_init()
 Date: Thu, 28 May 2026 21:47:15 +0200
-Message-ID: <20260528194631.086464483@linuxfoundation.org>
+Message-ID: <20260528194656.133330902@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260528194629.379955525@linuxfoundation.org>
-References: <20260528194629.379955525@linuxfoundation.org>
+In-Reply-To: <20260528194646.819809818@linuxfoundation.org>
+References: <20260528194646.819809818@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,70 +64,97 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	RCVD_TLS_LAST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-256003-lists,stable=lfdr.de];
 	TO_DN_SOME(0.00)[];
-	FROM_HAS_DN(0.00)[];
+	TAGGED_FROM(0.00)[bounces-255404-lists,stable=lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,oss.qualcomm.com,kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	FROM_HAS_DN(0.00)[];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	NEURAL_HAM(-0.00)[-0.999];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[5];
+	MID_RHS_MATCH_FROM(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,msgid.link:url,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,iitm.ac.in:email]
-X-Rspamd-Queue-Id: 631BD5F9592
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim,qualcomm.com:email]
+X-Rspamd-Queue-Id: DC4D65F823B
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+7.0-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Abdun Nihaal <nihaal@cse.iitm.ac.in>
+From: Felix Gu <ustc.gu@gmail.com>
 
-commit c5d93b2c40355e999715262a824965aac025a427 upstream.
+[ Upstream commit e64bca63647db1d5518198d6c5ca2dbcc66b182b ]
 
-The memory allocated in ipc_protocol_init() is not freed on the error
-paths that follow in ipc_imem_init(). Fix that by calling the
-corresponding release function ipc_protocol_deinit() in the error path.
+In a6xx_gpu_init(), node is obtained via of_parse_phandle().
+While there was a manual of_node_put() at the end of the
+common path, several early error returns would bypass this call,
+resulting in a reference leak.
+Fix this by using the __free(device_node) cleanup handler to
+release the reference when the variable goes out of scope.
 
-Fixes: 3670970dd8c6 ("net: iosm: shared memory IPC interface")
-Cc: stable@vger.kernel.org
-Signed-off-by: Abdun Nihaal <nihaal@cse.iitm.ac.in>
-Link: https://patch.msgid.link/20260519062815.55545-1-nihaal@cse.iitm.ac.in
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 5a903a44a984 ("drm/msm/a6xx: Introduce GMU wrapper support")
+Signed-off-by: Felix Gu <ustc.gu@gmail.com>
+Patchwork: https://patchwork.freedesktop.org/patch/700661/
+Message-ID: <20260124-a6xx_gpu-v1-1-fa0c8b2dcfb1@gmail.com>
+Signed-off-by: Rob Clark <robin.clark@oss.qualcomm.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wwan/iosm/iosm_ipc_imem.c |    2 ++
- 1 file changed, 2 insertions(+)
+ drivers/gpu/drm/msm/adreno/a6xx_gpu.c | 5 ++---
+ 1 file changed, 2 insertions(+), 3 deletions(-)
 
---- a/drivers/net/wwan/iosm/iosm_ipc_imem.c
-+++ b/drivers/net/wwan/iosm/iosm_ipc_imem.c
-@@ -1430,6 +1430,8 @@ imem_config_fail:
- protocol_init_fail:
- 	cancel_work_sync(&ipc_imem->run_state_worker);
- 	ipc_task_deinit(ipc_imem->ipc_task);
-+	if (ipc_imem->ipc_protocol)
-+		ipc_protocol_deinit(ipc_imem->ipc_protocol);
- ipc_task_init_fail:
- 	kfree(ipc_imem->ipc_task);
- ipc_task_fail:
+diff --git a/drivers/gpu/drm/msm/adreno/a6xx_gpu.c b/drivers/gpu/drm/msm/adreno/a6xx_gpu.c
+index ae61c204898cd..02a776ac9ab43 100644
+--- a/drivers/gpu/drm/msm/adreno/a6xx_gpu.c
++++ b/drivers/gpu/drm/msm/adreno/a6xx_gpu.c
+@@ -2607,7 +2607,6 @@ static struct msm_gpu *a6xx_gpu_init(struct drm_device *dev)
+ 	struct platform_device *pdev = priv->gpu_pdev;
+ 	struct adreno_platform_config *config = pdev->dev.platform_data;
+ 	const struct adreno_info *info = config->info;
+-	struct device_node *node;
+ 	struct a6xx_gpu *a6xx_gpu;
+ 	struct adreno_gpu *adreno_gpu;
+ 	struct msm_gpu *gpu;
+@@ -2629,7 +2628,8 @@ static struct msm_gpu *a6xx_gpu_init(struct drm_device *dev)
+ 	adreno_gpu->registers = NULL;
+ 
+ 	/* Check if there is a GMU phandle and set it up */
+-	node = of_parse_phandle(pdev->dev.of_node, "qcom,gmu", 0);
++	struct device_node *node __free(device_node) =
++		of_parse_phandle(pdev->dev.of_node, "qcom,gmu", 0);
+ 	/* FIXME: How do we gracefully handle this? */
+ 	BUG_ON(!node);
+ 
+@@ -2676,7 +2676,6 @@ static struct msm_gpu *a6xx_gpu_init(struct drm_device *dev)
+ 		ret = a6xx_gmu_wrapper_init(a6xx_gpu, node);
+ 	else
+ 		ret = a6xx_gmu_init(a6xx_gpu, node);
+-	of_node_put(node);
+ 	if (ret) {
+ 		a6xx_destroy(&(a6xx_gpu->base.base));
+ 		return ERR_PTR(ret);
+-- 
+2.53.0
+
 
 
 
