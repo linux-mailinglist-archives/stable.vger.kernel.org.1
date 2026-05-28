@@ -1,60 +1,58 @@
-Return-Path: <stable+bounces-256080-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-256288-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id UCeVKqOpGGpolwgAu9opvQ
-	(envelope-from <stable+bounces-256080-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:46:27 +0200
+	id yN9VL6yrGGpolwgAu9opvQ
+	(envelope-from <stable+bounces-256288-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:55:08 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2FFE75F983D
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:46:27 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 484A75F9DA3
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:55:08 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 4D46E3005EB0
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 20:38:19 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id C38F631A6B46
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 20:48:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1643631159C;
-	Thu, 28 May 2026 20:38:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7773333F8B2;
+	Thu, 28 May 2026 20:48:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="puUdG13W"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="u79ICRqt"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DD3102C15AC;
-	Thu, 28 May 2026 20:38:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 46F4D310620;
+	Thu, 28 May 2026 20:47:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780000698; cv=none; b=fPOd2WOLBQ++bhHh7+jWQQJbZHZutN6YU0jj66ejKhES8QJ4CC2nwFk6VH6+Q3VJ135d059TRvAUa/3a5Jr65V6p87zWdt7dOrVpQxqk5AR4RRIfZY2wyYkBroZY56Jnqa+eBY7wliO5KlVJuXlmtYgeGRz3Ef7NLNC0BfFVpoA=
+	t=1780001280; cv=none; b=pGzIagiFBXc9EkRasgGrqPSAor38iZlaGawqYVqnccsIjcpO5MOclpMRPWkKM9tyBTk+nYoksL4sXhRJN3rUjvHcM7sZoC+w1FYlGJueWcN/kyaJdlwdr2jiDwVA/UrZuSlwBTs60wLEF8bMvhJN9vRl8SNtE1hyAwcLqQA8YKY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780000698; c=relaxed/simple;
-	bh=cXKcLlpEtG/oK9JXAzCGwIvaOSkUM/SvQCEE7t+r++c=;
+	s=arc-20240116; t=1780001280; c=relaxed/simple;
+	bh=vsfNHanUhZ9MSaug28mR1OkmA5Ouf1xdubk+s/Pz1S0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=S9TsvA9S1N9r7xl/PVA182sSR4XPH8HcsB0pAAAZaMGVDY0Y2s0sQ/pOJG4gnUEwNDuBR2zV47IisxR0s20lcL1EIPEpm9Zd3dnWYI73aaEihypW8E3/BiohoDlKmB1f+icaem5S5ZayhMKt5vxpvNsRQeF/qMcCJeqfuw1tKWo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=puUdG13W; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 465011F00A3A;
-	Thu, 28 May 2026 20:38:17 +0000 (UTC)
+	 MIME-Version; b=rTpWg2R2R2Hq0Y5zBVHHuRclvAHQvj9QcUgCv9oPZlBS+g/RbiwTNkfiyuRfMt10mqdUFb29fK9y39+thDe8D220edukqMyVpGqIqBhuSc+eCytcB+ZSaGci22LlC/oKfRCxJJio1LiQNbhaAcIRnxFqLFmk1aO3z0CL3ZwFVdw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=u79ICRqt; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A38D31F000E9;
+	Thu, 28 May 2026 20:47:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780000697;
-	bh=ruqkUQgS34uDpxVB+eeMWVApUhOHBlosk8/L+MOb3r8=;
+	s=korg; t=1780001279;
+	bh=IGlKY1u8FqLhjWW4Mjqc3atULyoR1s6nUQR6cJrUAwM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=puUdG13W8eMxgOvfwk6ZSPa3K5DmEec9QAMIinfdXasgZ48nCpnktguxzhW3b5Spk
-	 Bh6RPL+MuYt0KEwbeAfDqXvUND/H1mIha+AaGaAc296c7u+CNYjIqDx4Kctam/M6WG
-	 kuKNmu31WeauZj3tHGjI73O1YPfeAR/UfZvSxanY=
+	b=u79ICRqtHHOeol32bIhvz9sPPQ/e0lNxro95x+CYLjQXmb4F1IgoW9EqFYVjydtX2
+	 H8Np8U8c9N/N4Pf4bireLDOltAP4jYMmVihs62z7iQS29Gw9UTTYKCxjs0vRTAIzGe
+	 2a86z2gZawTgJuD+DvMjNvS3qdDpr+PSjSncaPGU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Abdurrahman Hussain <abdurrahman@nexthop.ai>,
-	Bartosz Golaszewski <bartosz.golaszewski@oss.qualcomm.com>,
-	Linus Walleij <linusw@kernel.org>,
-	Guenter Roeck <linux@roeck-us.net>
-Subject: [PATCH 6.12 138/272] hwmon: (pmbus/adm1266) dont clobber GPIO bits before PDIO read in get_multiple
+	"Rafael J. Wysocki (Intel)" <rafael@kernel.org>,
+	Ard Biesheuvel <ardb@kernel.org>
+Subject: [PATCH 6.6 032/186] efi: Allocate runtime workqueue before ACPI init
 Date: Thu, 28 May 2026 21:48:32 +0200
-Message-ID: <20260528194633.240035334@linuxfoundation.org>
+Message-ID: <20260528194929.830248445@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260528194629.379955525@linuxfoundation.org>
-References: <20260528194629.379955525@linuxfoundation.org>
+In-Reply-To: <20260528194928.941004471@linuxfoundation.org>
+References: <20260528194928.941004471@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,87 +67,120 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-256080-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-256288-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[7];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[nexthop.ai:email,qualcomm.com:email,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,roeck-us.net:email]
-X-Rspamd-Queue-Id: 2FFE75F983D
+	RCPT_COUNT_FIVE(0.00)[5];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim]
+X-Rspamd-Queue-Id: 484A75F9DA3
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Abdurrahman Hussain <abdurrahman@nexthop.ai>
+From: Ard Biesheuvel <ardb@kernel.org>
 
-commit 3327a12aee9e10ffa903e28b8445dfd1af5307c0 upstream.
+commit 13c6da02e767152c9ac4330962247a5e47011035 upstream.
 
-adm1266_gpio_get_multiple() zeroes *bits before the GPIO_STATUS loop
-and then a second time before the PDIO_STATUS loop:
+Since commit
 
-	*bits = 0;
-	for_each_set_bit(gpio_nr, mask, ADM1266_GPIO_NR) {
-		...
-		set_bit(gpio_nr, bits);
-	}
+  5894cf571e14 ("acpi/prmt: Use EFI runtime sandbox to invoke PRM handlers")
 
-	ret = i2c_smbus_read_block_data(data->client, ADM1266_PDIO_STATUS, ...);
-	...
-	*bits = 0;
-	for_each_set_bit_from(gpio_nr, mask, ADM1266_GPIO_NR + ADM1266_PDIO_NR) {
-		...
-		set_bit(gpio_nr, bits);
-	}
+ACPI PRM calls are delegated to a workqueue which runs in a kernel
+thread, making it easier to detect and mitigate faulting memory accesses
+performed by the firmware.
 
-The second *bits = 0 throws away every GPIO bit the first loop just
-populated, so callers asking for any combination of GPIO and PDIO
-pins always see the GPIO portion of the returned bits as zero.
+Rafael reports that such PRM accesses may occur before efisubsys_init()
+executes, which is where the workqueue is allocated, leading to NULL
+pointer dereferences. Since acpi_init() [which triggers the early PRM
+accesses] executes as a subsys_initcall() as well, and has its own
+dependencies that may be sensitive to initcall ordering, deferring
+acpi_init() is not an option.
 
-Drop the redundant second assignment so both halves of the result
-survive.
+So instead, split off the workqueue allocation into its own postcore
+initcall, as this is the only missing piece to allow EFI runtime calls
+to be made. This ensures that EFI runtime call (including PRM calls) are
+accessible to all code running at subsys_initcall() level.
 
-Fixes: d98dfad35c38 ("hwmon: (pmbus/adm1266) Add support for GPIOs")
-Cc: stable@vger.kernel.org
-Signed-off-by: Abdurrahman Hussain <abdurrahman@nexthop.ai>
-Reviewed-by: Bartosz Golaszewski <bartosz.golaszewski@oss.qualcomm.com>
-Reviewed-by: Linus Walleij <linusw@kernel.org>
-Link: https://lore.kernel.org/r/20260518-adm1266-gpio-fixes-v3-2-e425e4f88139@nexthop.ai
-Signed-off-by: Guenter Roeck <linux@roeck-us.net>
+Cc: <stable@vger.kernel.org>
+Fixes: 5894cf571e14 ("acpi/prmt: Use EFI runtime sandbox to invoke PRM handlers")
+Reviewed-by: Rafael J. Wysocki (Intel) <rafael@kernel.org>
+Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/hwmon/pmbus/adm1266.c |    1 -
- 1 file changed, 1 deletion(-)
+ drivers/firmware/efi/efi.c |   28 ++++++++++++++++------------
+ 1 file changed, 16 insertions(+), 12 deletions(-)
 
---- a/drivers/hwmon/pmbus/adm1266.c
-+++ b/drivers/hwmon/pmbus/adm1266.c
-@@ -211,7 +211,6 @@ static int adm1266_gpio_get_multiple(str
+--- a/drivers/firmware/efi/efi.c
++++ b/drivers/firmware/efi/efi.c
+@@ -371,21 +371,11 @@ static void __init efi_debugfs_init(void
+ static inline void efi_debugfs_init(void) {}
+ #endif
  
- 	status = read_buf[0] + (read_buf[1] << 8);
+-/*
+- * We register the efi subsystem with the firmware subsystem and the
+- * efivars subsystem with the efi subsystem, if the system was booted with
+- * EFI.
+- */
+-static int __init efisubsys_init(void)
++static int __init efipostcore_init(void)
+ {
+-	int error;
+-
+ 	if (!efi_enabled(EFI_RUNTIME_SERVICES))
+ 		efi.runtime_supported_mask = 0;
  
--	*bits = 0;
- 	for_each_set_bit_from(gpio_nr, mask, ADM1266_GPIO_NR + ADM1266_PDIO_NR) {
- 		if (test_bit(gpio_nr - ADM1266_GPIO_NR, &status))
- 			set_bit(gpio_nr, bits);
+-	if (!efi_enabled(EFI_BOOT))
+-		return 0;
+-
+ 	if (efi.runtime_supported_mask) {
+ 		/*
+ 		 * Since we process only one efi_runtime_service() at a time, an
+@@ -397,9 +387,23 @@ static int __init efisubsys_init(void)
+ 			pr_err("Creating efi_rts_wq failed, EFI runtime services disabled.\n");
+ 			clear_bit(EFI_RUNTIME_SERVICES, &efi.flags);
+ 			efi.runtime_supported_mask = 0;
+-			return 0;
+ 		}
+ 	}
++	return 0;
++}
++postcore_initcall(efipostcore_init);
++
++/*
++ * We register the efi subsystem with the firmware subsystem and the
++ * efivars subsystem with the efi subsystem, if the system was booted with
++ * EFI.
++ */
++static int __init efisubsys_init(void)
++{
++	int error;
++
++	if (!efi_enabled(EFI_BOOT))
++		return 0;
+ 
+ 	if (efi_rt_services_supported(EFI_RT_SUPPORTED_TIME_SERVICES))
+ 		platform_device_register_simple("rtc-efi", 0, NULL, 0);
 
 
 
