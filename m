@@ -1,58 +1,58 @@
-Return-Path: <stable+bounces-256250-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-256082-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id WIdTBESrGGpolwgAu9opvQ
-	(envelope-from <stable+bounces-256250-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:53:24 +0200
+	id MLW3OrepGGrclwgAu9opvQ
+	(envelope-from <stable+bounces-256082-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:46:47 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id A76795F9C6D
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:53:23 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8563B5F9890
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:46:46 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 165DC30BFE20
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 20:46:21 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id DD5433186668
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 20:38:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 715A133372A;
-	Thu, 28 May 2026 20:46:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AA39F31159C;
+	Thu, 28 May 2026 20:38:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XCjKG/tY"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LwT6RvUo"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4FA2E2F1FEF;
-	Thu, 28 May 2026 20:46:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7DB15313550;
+	Thu, 28 May 2026 20:38:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780001174; cv=none; b=mCYfeOcf6srvHxKcje8L2QJj4Gh+y9Aa/VKwCCScoHhGR8HZB+QM7dRIj/+loO75tiP1L84zZklBKxwTEw27CEW07OWpbzJ/NqvzBPiUVDIbNiWIr4HAnu1JL7Pi9p2wzhFzamgLMbVdaGwPLoCjNe6Rg3qTtTGHzOE3QniUpus=
+	t=1780000704; cv=none; b=slqwfJOjAcszMMgcINsFf7N7pzL1blfLTu4lMHe0jL8aakMUg9TICAwiyXvwYeX05bsgRQmyCVzwfA8n28inj672iHMv1R0PE792IabMrqfq8Qze4uAeZ8Xiar3klF0TbnUz97yrIKlVAP1zuczdGCKNtf/8gXn5Mv9JlNCXD3Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780001174; c=relaxed/simple;
-	bh=jsWDyvYQm0gfSxQMPj4WAv/y5V/dDDdS6aC86J0C8J4=;
+	s=arc-20240116; t=1780000704; c=relaxed/simple;
+	bh=RyLWzJp6ziu3UON/aX5JIXoCpUYBJTSAmLng0mbNAPc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=H0bxbFLxYsCph3KyJvp2T9+KTifv8UWjNm2fxeOcLITr7hkugY+kYOcKHTwMpDCEgB2jJ3DpjCfZa2FdjF4j03P7VOJN2b4DBKblJO1yJ34TVdfAbZlNjyYIg7EmpUtE31FF/5QdUdMJQIiSyalCVNgahKud0V8602snrcHo09g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XCjKG/tY; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AD8F51F000E9;
-	Thu, 28 May 2026 20:46:12 +0000 (UTC)
+	 MIME-Version; b=cWDPnW+LA04S2ZTlVIfboKwAKF4LmLMUdJQLWyk8lf7AHX2Q55dJKERSjjuwkk6gmzcvEiNHDWvWpW6xfb521EsuI79NHUGbYv8DsbQqt443crPv2ZEtU2ZcOOFV/I8vMvkvu/cZMSRIA1QLPKzFa5ILTrQgMGGxkNE+Y8ce1WM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LwT6RvUo; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DC02F1F000E9;
+	Thu, 28 May 2026 20:38:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780001173;
-	bh=Mm/G9ZnCTn39QWJLHbRk3aUBUK+aRDNP8CCP0R5hx90=;
+	s=korg; t=1780000703;
+	bh=F2latnMWjBtp8g+MYNwmE2mOyvsDbcKCBIy7sVLcc14=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=XCjKG/tY6TaeJDZfybOGE5I1d4mM7M8vmXenwLw0GKI409VW7ybMDpN+qv4vua1cO
-	 5c4wuoUMwxKmeGlMk5EIJH5FSayn03PEeQLzmbieVP4p7X9colqFGD7REoC9K+WKSS
-	 7GbJLW+L7s6XXXTGbyPkb/vMzaNW1nmITozXC+JY=
+	b=LwT6RvUoOHOwNmvFQJ0I7Y/vYpen3nqCZXgoZg9Hc/aBCQEWs3UCAcbYsspIWv9jd
+	 VIXfBAmUhcd/aeYzHZsA6zUNMD50rE2fyTUZYuqJixHalr92idlKkaQJZmsyolCaBY
+	 OJvtd1CxRpWgmBLbvODy8Yah0QsJEtMOtvQvwXP4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Abdun Nihaal <nihaal@cse.iitm.ac.in>,
-	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 6.6 034/186] net: wwan: iosm: fix potential memory leaks in ipc_imem_init()
+	Abdurrahman Hussain <abdurrahman@nexthop.ai>,
+	Guenter Roeck <linux@roeck-us.net>
+Subject: [PATCH 6.12 140/272] hwmon: (pmbus/adm1266) register the nvmem device after pmbus_do_probe()
 Date: Thu, 28 May 2026 21:48:34 +0200
-Message-ID: <20260528194929.883427695@linuxfoundation.org>
+Message-ID: <20260528194633.292673174@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260528194928.941004471@linuxfoundation.org>
-References: <20260528194928.941004471@linuxfoundation.org>
+In-Reply-To: <20260528194629.379955525@linuxfoundation.org>
+References: <20260528194629.379955525@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -67,7 +67,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
@@ -77,7 +77,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-256250-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-256082-lists,stable=lfdr.de];
 	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
@@ -88,45 +88,66 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	TAGGED_RCPT(0.00)[stable];
 	RCPT_COUNT_FIVE(0.00)[5];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,iitm.ac.in:email,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim]
-X-Rspamd-Queue-Id: A76795F9C6D
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[roeck-us.net:email,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,nexthop.ai:email,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim]
+X-Rspamd-Queue-Id: 8563B5F9890
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Abdun Nihaal <nihaal@cse.iitm.ac.in>
+From: Abdurrahman Hussain <abdurrahman@nexthop.ai>
 
-commit c5d93b2c40355e999715262a824965aac025a427 upstream.
+commit 6af713af91d5c34ec049eb3cc2c5b3f5eba953b8 upstream.
 
-The memory allocated in ipc_protocol_init() is not freed on the error
-paths that follow in ipc_imem_init(). Fix that by calling the
-corresponding release function ipc_protocol_deinit() in the error path.
+adm1266_probe() calls adm1266_config_nvmem() -- which goes on to
+devm_nvmem_register() and exposes adm1266_nvmem_read() to userspace --
+before pmbus_do_probe() has initialised the per-client PMBus state.
 
-Fixes: 3670970dd8c6 ("net: iosm: shared memory IPC interface")
+Same latent hazard as the gpio_chip one fixed in the previous patch:
+once the nvmem device is registered, gpiolib's nvmem char-dev / sysfs
+interface is reachable, and any concurrent read triggers
+adm1266_nvmem_read() -> adm1266_nvmem_read_blackbox(), which issues
+PMBus traffic that races pmbus_do_probe()'s own device accesses with
+no serialisation.
+
+Move adm1266_config_nvmem() down past pmbus_do_probe() so the nvmem
+device isn't reachable from userspace until the PMBus state the
+nvmem accessors depend on is fully initialised.
+
+Fixes: 15609d189302 ("hwmon: (pmbus/adm1266) read blackbox")
 Cc: stable@vger.kernel.org
-Signed-off-by: Abdun Nihaal <nihaal@cse.iitm.ac.in>
-Link: https://patch.msgid.link/20260519062815.55545-1-nihaal@cse.iitm.ac.in
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Abdurrahman Hussain <abdurrahman@nexthop.ai>
+Link: https://lore.kernel.org/r/20260518-adm1266-gpio-fixes-v3-5-e425e4f88139@nexthop.ai
+Signed-off-by: Guenter Roeck <linux@roeck-us.net>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/wwan/iosm/iosm_ipc_imem.c |    2 ++
- 1 file changed, 2 insertions(+)
+ drivers/hwmon/pmbus/adm1266.c |    8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
---- a/drivers/net/wwan/iosm/iosm_ipc_imem.c
-+++ b/drivers/net/wwan/iosm/iosm_ipc_imem.c
-@@ -1430,6 +1430,8 @@ imem_config_fail:
- protocol_init_fail:
- 	cancel_work_sync(&ipc_imem->run_state_worker);
- 	ipc_task_deinit(ipc_imem->ipc_task);
-+	if (ipc_imem->ipc_protocol)
-+		ipc_protocol_deinit(ipc_imem->ipc_protocol);
- ipc_task_init_fail:
- 	kfree(ipc_imem->ipc_task);
- ipc_task_fail:
+--- a/drivers/hwmon/pmbus/adm1266.c
++++ b/drivers/hwmon/pmbus/adm1266.c
+@@ -470,14 +470,14 @@ static int adm1266_probe(struct i2c_clie
+ 	if (ret < 0)
+ 		return ret;
+ 
+-	ret = adm1266_config_nvmem(data);
+-	if (ret < 0)
+-		return ret;
+-
+ 	ret = pmbus_do_probe(client, &data->info);
+ 	if (ret)
+ 		return ret;
+ 
++	ret = adm1266_config_nvmem(data);
++	if (ret < 0)
++		return ret;
++
+ 	ret = adm1266_config_gpio(data);
+ 	if (ret < 0)
+ 		return ret;
 
 
 
