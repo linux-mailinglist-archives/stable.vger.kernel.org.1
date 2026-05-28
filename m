@@ -1,60 +1,60 @@
-Return-Path: <stable+bounces-255538-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-256309-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id gELCJWSiGGqblggAu9opvQ
-	(envelope-from <stable+bounces-255538-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:15:32 +0200
+	id uN3bKfutGGpolwgAu9opvQ
+	(envelope-from <stable+bounces-256309-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 23:04:59 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3C3B95F82E5
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:15:32 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id A937E5FA30B
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 23:04:58 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id B198A30601CA
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 20:13:22 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 09B98309CA5A
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 20:49:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0978340FDA0;
-	Thu, 28 May 2026 20:13:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 11CFD329396;
+	Thu, 28 May 2026 20:48:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Fy0wVGzE"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="H92pCJbU"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D76FC409624;
-	Thu, 28 May 2026 20:13:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DB3232F549F;
+	Thu, 28 May 2026 20:48:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779999192; cv=none; b=diK4a0XgtZk+DYiJo1EyvdmFGWo+jdVbutas8i6FmXi5Mo5bmKGSG7k8vBRPOMcDssd0vCswbKR2vo+K4DFSxDNcA9eK6H4pdVaBTj1BswtlUlJnqvhVF1aV/zaJGsCxltKxQJV9A9XgjBE8k/cE4iBqUxb8KeoExCP5Lw444Jo=
+	t=1780001338; cv=none; b=M1bcTGtLeT7HrbdT/OhO9bu037/rK9/f0moH+P0/8G0tojM26h1v+xiAj72PWovibWImL2M/XHlJFCepRoIDnMrLmB6R+cZPQpfqFGVq4o9Vwpztm04S6SgEA/GBVRNOZ7n/8aHy4minYDPwjjjsaOMPjACTPnq0hQWR9Rcmiag=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779999192; c=relaxed/simple;
-	bh=HFpXvFF/LVlN+SOPtYlW1cYktliAofmtUL0kCuTbDOI=;
+	s=arc-20240116; t=1780001338; c=relaxed/simple;
+	bh=JAdSMpNmNsguLwr/JXjobsGoBHyT/eqEttzMMcziknY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=O92c/OE0vCcXimVwSghau6AB7iwihLEzI9JAMh94Htoww+23IypqyTQyl/ux3O2vymwUY9gimpNojJEdRyd+f9mSspoRWq0WD7JzGHMwVanTBKkVYPpVcac0su1rC/sQuMaRxSnKEwBFyayPrs4n8A1PXTExVoiNiUI+907hLRg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Fy0wVGzE; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EF88A1F000E9;
-	Thu, 28 May 2026 20:13:10 +0000 (UTC)
+	 MIME-Version; b=U6+sZtG+I7K7mrvQkVKlJY0+nn272cDVdWK42CAvGSehNpn0xC9JP/mr8VR4agoPYcpbeoDVkb7bVUmyKraO2WFSqACQyjMSycYs0FpdH3trHFe8QNWtBqb5/8EIt6tNjvTUrTI9pjNAbP/ux9dYznhHW6Pm/cFWntcwUl9Ll1k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=H92pCJbU; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 456A91F000E9;
+	Thu, 28 May 2026 20:48:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779999191;
-	bh=Sc+FJcmu/v2KQ/HQcBPQEb5xA/Z9dK9iHD+HZSjWdCM=;
+	s=korg; t=1780001337;
+	bh=ZBfbsJAHCSBkwhVs7NMe3gqRggJQFnPyE/oXMKzEdGE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=Fy0wVGzEOsDS4SE91XPygGtcQw8m+Ca3hxmObr2UMTFuzfmazIkGDBfG0eLrlY3OL
-	 Ko/Zm2IXKgUmY5leMDD0Y7MCabURcQGjO0gutCK9NzVpSXvyxXWkPTqpBCUbn/uLXC
-	 8CaRbF0GLCxJVxas8r0EgvNqCDZyUQRqr7lh80Hw=
+	b=H92pCJbU1f2mHSN0rieeC9nXwqtha3AHVl/OkKKEytku1s2zrVMjN66FRlatCz6T+
+	 3bdM1v7kIx1nfUwd02VegTJgl8qkW4+mJz3M8pwJWZY/eD1yF6yg2SK14eFzYivzzL
+	 kAndMbUzIxlFtU6BBcS9zGDaMdB4W7mpkkQTE1xI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ashutosh Dixit <ashutosh.dixit@intel.com>,
-	Shuicheng Lin <shuicheng.lin@intel.com>,
-	Rodrigo Vivi <rodrigo.vivi@intel.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 7.0 442/461] drm/xe/oa: Fix exec_queue leak on width check in stream open
-Date: Thu, 28 May 2026 21:49:31 +0200
-Message-ID: <20260528194700.324594317@linuxfoundation.org>
+	Abdurrahman Hussain <abdurrahman@nexthop.ai>,
+	Bartosz Golaszewski <bartosz.golaszewski@oss.qualcomm.com>,
+	Linus Walleij <linusw@kernel.org>,
+	Guenter Roeck <linux@roeck-us.net>
+Subject: [PATCH 6.6 092/186] hwmon: (pmbus/adm1266) cap PDIO scan in get_multiple at ADM1266_PDIO_NR
+Date: Thu, 28 May 2026 21:49:32 +0200
+Message-ID: <20260528194931.420828063@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260528194646.819809818@linuxfoundation.org>
-References: <20260528194646.819809818@linuxfoundation.org>
+In-Reply-To: <20260528194928.941004471@linuxfoundation.org>
+References: <20260528194928.941004471@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,7 +69,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
@@ -77,7 +77,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-255538-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-256309-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
@@ -86,70 +86,70 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
 	NEURAL_HAM(-0.00)[-1.000];
 	RCPT_COUNT_SEVEN(0.00)[7];
 	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[intel.com:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,msgid.link:url]
-X-Rspamd-Queue-Id: 3C3B95F82E5
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,roeck-us.net:email,qualcomm.com:email,nexthop.ai:email,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim]
+X-Rspamd-Queue-Id: A937E5FA30B
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-7.0-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Shuicheng Lin <shuicheng.lin@intel.com>
+From: Abdurrahman Hussain <abdurrahman@nexthop.ai>
 
-[ Upstream commit 4d25342543c01310fc4e0cba7cb17c775e2421e2 ]
+commit d7834d92251baade796812876e95555e2066fa9f upstream.
 
-In xe_oa_stream_open_ioctl(), when param.exec_q->width > 1 the
-function returns -EOPNOTSUPP directly, skipping the existing
-err_exec_q cleanup path. The exec_queue reference obtained by
-xe_exec_queue_lookup() is leaked.
+adm1266_gpio_get_multiple() iterates the PDIO portion of the
+caller-supplied mask using
 
-The exec queue holds a reference on the xe_file, which is only
-dropped during queue teardown. The leaked lookup ref is not on
-the file's exec_queue xarray, so file close cannot release it.
-This keeps both the exec queue and the file private state pinned
-indefinitely.
+	for_each_set_bit_from(gpio_nr, mask,
+			      ADM1266_GPIO_NR + ADM1266_PDIO_STATUS) {
+		...
+	}
 
-Jump to err_exec_q instead of returning directly so the reference
-is released.
+where ADM1266_PDIO_STATUS is the PMBus command code (0xE9, i.e. 233),
+not the number of PDIO pins.  The intended upper bound is
+ADM1266_GPIO_NR + ADM1266_PDIO_NR = 25.
 
-Fixes: f0ed39830e60 ("xe/oa: Fix query mode of operation for OAR/OAC")
-Assisted-by: Claude:claude-opus-4.6
-Reviewed-by: Ashutosh Dixit <ashutosh.dixit@intel.com>
-Link: https://patch.msgid.link/20260514203210.593488-1-shuicheng.lin@intel.com
-Signed-off-by: Shuicheng Lin <shuicheng.lin@intel.com>
-(cherry picked from commit 339fa0be9e4a5d69fa47e91f4a36574224fb478f)
-Signed-off-by: Rodrigo Vivi <rodrigo.vivi@intel.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+gpiolib hands in a mask sized for gc.ngpio (= 25 bits on this chip),
+so the iteration walks find_next_bit() up to 242, reading up to 217
+extra bits (a handful of unsigned-long words: four on 64-bit, seven
+on 32-bit) of whatever lives past the end of the mask in the
+caller's stack.  Any incidental set bit in that range then drives a
+set_bit(gpio_nr, bits) call that writes past the end of the
+caller-supplied bits array too -- both out-of-bounds.
+
+Substitute ADM1266_PDIO_NR for the constant so the scan stops at the
+last real PDIO bit.
+
+Fixes: d98dfad35c38 ("hwmon: (pmbus/adm1266) Add support for GPIOs")
+Cc: stable@vger.kernel.org
+Signed-off-by: Abdurrahman Hussain <abdurrahman@nexthop.ai>
+Reviewed-by: Bartosz Golaszewski <bartosz.golaszewski@oss.qualcomm.com>
+Reviewed-by: Linus Walleij <linusw@kernel.org>
+Link: https://lore.kernel.org/r/20260518-adm1266-gpio-fixes-v3-1-e425e4f88139@nexthop.ai
+Signed-off-by: Guenter Roeck <linux@roeck-us.net>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/xe/xe_oa.c | 6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
+ drivers/hwmon/pmbus/adm1266.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/gpu/drm/xe/xe_oa.c b/drivers/gpu/drm/xe/xe_oa.c
-index fa90441d30529..449a431ec1d4e 100644
---- a/drivers/gpu/drm/xe/xe_oa.c
-+++ b/drivers/gpu/drm/xe/xe_oa.c
-@@ -2048,8 +2048,10 @@ int xe_oa_stream_open_ioctl(struct drm_device *dev, u64 data, struct drm_file *f
- 		if (XE_IOCTL_DBG(oa->xe, !param.exec_q))
- 			return -ENOENT;
+--- a/drivers/hwmon/pmbus/adm1266.c
++++ b/drivers/hwmon/pmbus/adm1266.c
+@@ -212,7 +212,7 @@ static int adm1266_gpio_get_multiple(str
+ 	status = read_buf[0] + (read_buf[1] << 8);
  
--		if (XE_IOCTL_DBG(oa->xe, param.exec_q->width > 1))
--			return -EOPNOTSUPP;
-+		if (XE_IOCTL_DBG(oa->xe, param.exec_q->width > 1)) {
-+			ret = -EOPNOTSUPP;
-+			goto err_exec_q;
-+		}
+ 	*bits = 0;
+-	for_each_set_bit_from(gpio_nr, mask, ADM1266_GPIO_NR + ADM1266_PDIO_STATUS) {
++	for_each_set_bit_from(gpio_nr, mask, ADM1266_GPIO_NR + ADM1266_PDIO_NR) {
+ 		if (test_bit(gpio_nr - ADM1266_GPIO_NR, &status))
+ 			set_bit(gpio_nr, bits);
  	}
- 
- 	/*
--- 
-2.53.0
-
 
 
 
