@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-255199-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-255200-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id QMDrNkqfGGpvlggAu9opvQ
-	(envelope-from <stable+bounces-255199-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:02:18 +0200
+	id 6N43EC6eGGpAlggAu9opvQ
+	(envelope-from <stable+bounces-255200-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 21:57:34 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1725F5F7AFF
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:02:17 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 026A05F7847
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 21:57:33 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 9B4D0304350C
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 19:57:21 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 504B3301A998
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 19:57:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3436833CE8A;
-	Thu, 28 May 2026 19:57:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0861533CE8A;
+	Thu, 28 May 2026 19:57:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wbCg1vHh"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="v2Xke2dd"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 15E5A330B2D;
-	Thu, 28 May 2026 19:57:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D6FA5340409;
+	Thu, 28 May 2026 19:57:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779998240; cv=none; b=LiLtE+NYQMBUuJW2oIjcGyDc9hRovJYYW+4F5RnBCuAA9mOStIo9GxjPNdC3nDMXFQs/QgByhDehnPlSo/6WLPRLQUV/ZYcnjmRCJkLuN95FyMQVJnhxbCNaxn4RtMzNZq1hh0sMHsmfb0ztHgyD4jusBZQ0dMUB9HDD2Px/ilc=
+	t=1779998242; cv=none; b=rhczD8kc2pru7GWXzF+hv8T8kzkiFhLYRdUzbRgwpC2ojDnDJAYDFDiPfdCO0F9m3jfd3qUqNicAfJlfyWgJxUfvbEZj6356xiudG/o4+wb4JnbPm9zcWWn5j6k6+hypfP2CtoGWQrR/bjsadcTW2O4EArgm/B6YvsYymfg/vgk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779998240; c=relaxed/simple;
-	bh=LM9WQoIyzGLa3kwM58wZKmkxLhPhlCVx0x5+VGXerX4=;
+	s=arc-20240116; t=1779998242; c=relaxed/simple;
+	bh=h1vf1R+0AcPRW/7tCiv7kvU2VkZ4fQqrRl5ck+QPoLE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=U71ckdA8oDVK4w7ps4S8xK6KBrSmAhFTMSuHQmP0KVL8iXMfepodCgrlMfjTg1PxXl8+DQ2QC/YQQVxUfJvfMkHL518RG0Zz5AlTgMnspbGY9VyFTv5jah0aw065fUlfc1aCkrjC+7MojFmnOdDgb4I5sOKsU4TB2guOLkvkqlg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wbCg1vHh; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 746741F000E9;
-	Thu, 28 May 2026 19:57:18 +0000 (UTC)
+	 MIME-Version; b=miFUx2NQT16Bg0cPTrA3JROk3t9a3EqdjLqYMv1efiVRv1I0D3fQ1+kswlLFLukyXnqOsAqDvpvz8imJfOjdJ75rdZF/kKRDUNeRwcv6HuZQ+ywWsOHjdozt3RCIe2Wr+8cRMiua9Qiw8sj7dk5V5sbVCCOiMitv38LEUdlv11g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=v2Xke2dd; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 41B7A1F000E9;
+	Thu, 28 May 2026 19:57:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779998239;
-	bh=20sU3iMlYD1uF0sg7TwtwRwZoho5f6JCRjqwkYq2chU=;
+	s=korg; t=1779998241;
+	bh=eQvVcajrZv8GNcZDgpfOiM1DPBjkLfa47N1qwgqEPEQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=wbCg1vHhALOerb3YUNltIZGEdF9/PprE+xw1i5pTsXcEBVZKrjWXPHCPha1jWauPh
-	 ZuILkpcYutTb1ib39WR6KRVkm7UHIsaO+7+BfsW8ELWX91pQL0npGjZVpSSkoDADo/
-	 XTjHbGQNvrHBH2eq2RsdsJn3FvOlFFaAOq5FOs10=
+	b=v2Xke2ddrTRkGcWqslg8wvA+KsAQnHSXLXZh6P4zeJGqSBD62moyLDHZfBuo5KjkI
+	 LTyRWdJu5jIT7CcbzWUywLt+255w7EMrfe0iCVWsWShkJTr3UDHxDeRbML74zyqv4c
+	 cjpEONvYbWHGMgztT47fkzatNZt1pXpuhbgXdE8U=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
 	Osama Abdelkader <osama.abdelkader@gmail.com>,
 	Anup Patel <anup@brainfault.org>
-Subject: [PATCH 7.0 103/461] riscv: kvm: return SBI_ERR_FAILURE for pmu_snapshot_set_shmem() when OOM
-Date: Thu, 28 May 2026 21:43:52 +0200
-Message-ID: <20260528194649.938004062@linuxfoundation.org>
+Subject: [PATCH 7.0 104/461] riscv: kvm: return SBI_ERR_FAILURE for pmu_event_info() when OOM
+Date: Thu, 28 May 2026 21:43:53 +0200
+Message-ID: <20260528194649.968718374@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
 In-Reply-To: <20260528194646.819809818@linuxfoundation.org>
 References: <20260528194646.819809818@linuxfoundation.org>
@@ -68,19 +68,19 @@ X-Spamd-Result: default: False [-0.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	MIME_TRACE(0.00)[0:+];
 	TO_DN_SOME(0.00)[];
-	TAGGED_FROM(0.00)[bounces-255199-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-255200-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
 	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,brainfault.org];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
@@ -91,8 +91,8 @@ X-Spamd-Result: default: False [-0.16 / 15.00];
 	MID_RHS_MATCH_FROM(0.00)[];
 	RCPT_COUNT_FIVE(0.00)[5];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[brainfault.org:email,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
-X-Rspamd-Queue-Id: 1725F5F7AFF
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,brainfault.org:email]
+X-Rspamd-Queue-Id: 026A05F7847
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
@@ -102,20 +102,20 @@ X-Rspamd-Server: lfdr
 
 From: Osama Abdelkader <osama.abdelkader@gmail.com>
 
-commit 0835ee26938e15eccd70f7d33da386b6490f9449 upstream.
+commit 0e9d0e7a7c78db7aa1c13796c65cfe0aefa54a5b upstream.
 
-kvm_riscv_vcpu_pmu_snapshot_set_shmem() returned -ENOMEM from the
-SBI extension handler, which caused kvm_riscv_vcpu_sbi_ecall() to
-abort KVM_RUN and surface the error to userspace instead of
-ompleting the ECALL with a negative SBI error in a0.
+kvm_riscv_vcpu_pmu_event_info() returned -ENOMEM from the
+SBI extension handler, which caused kvm_riscv_vcpu_sbi_ecall()
+to abort KVM_RUN and surface the error to userspace instead of
+completing the ECALL with a negative SBI error in a0.
 Use SBI_ERR_FAILURE and the normal retdata path, matching other PMU
 handlers and kvm_sbi_ext_pmu_handler comment.
 
-Fixes: c2f41ddbcdd7 ("RISC-V: KVM: Implement SBI PMU Snapshot feature")
+Fixes: e309fd113b9f ("RISC-V: KVM: Implement get event info function")
 Cc: stable@vger.kernel.org
 Signed-off-by: Osama Abdelkader <osama.abdelkader@gmail.com>
 Reviewed-by: Anup Patel <anup@brainfault.org>
-Link: https://lore.kernel.org/r/20260514173642.41448-1-osama.abdelkader@gmail.com
+Link: https://lore.kernel.org/r/20260514173642.41448-2-osama.abdelkader@gmail.com
 Signed-off-by: Anup Patel <anup@brainfault.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
@@ -124,19 +124,19 @@ Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 
 --- a/arch/riscv/kvm/vcpu_pmu.c
 +++ b/arch/riscv/kvm/vcpu_pmu.c
-@@ -435,8 +435,10 @@ int kvm_riscv_vcpu_pmu_snapshot_set_shme
+@@ -482,8 +482,10 @@ int kvm_riscv_vcpu_pmu_event_info(struct
  	}
  
- 	kvpmu->sdata = kzalloc(snapshot_area_size, GFP_ATOMIC);
--	if (!kvpmu->sdata)
+ 	einfo = kzalloc(shmem_size, GFP_KERNEL);
+-	if (!einfo)
 -		return -ENOMEM;
-+	if (!kvpmu->sdata) {
-+		sbiret = SBI_ERR_FAILURE;
++	if (!einfo) {
++		ret = SBI_ERR_FAILURE;
 +		goto out;
 +	}
  
- 	/* No need to check writable slot explicitly as kvm_vcpu_write_guest does it internally */
- 	if (kvm_vcpu_write_guest(vcpu, saddr, kvpmu->sdata, snapshot_area_size)) {
+ 	ret = kvm_vcpu_read_guest(vcpu, shmem, einfo, shmem_size);
+ 	if (ret) {
 
 
 
