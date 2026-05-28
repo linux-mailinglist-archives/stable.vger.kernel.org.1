@@ -1,59 +1,57 @@
-Return-Path: <stable+bounces-255399-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-255974-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id GKbzNB+iGGqblggAu9opvQ
-	(envelope-from <stable+bounces-255399-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:14:23 +0200
+	id wIJEBSaoGGpolwgAu9opvQ
+	(envelope-from <stable+bounces-255974-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:40:06 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 572BC5F8216
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:14:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id BE1CA5F945E
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:40:05 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 75177304C37D
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 20:06:41 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 02B6B31405FD
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 20:33:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3D598318EE1;
-	Thu, 28 May 2026 20:06:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A884E330D35;
+	Thu, 28 May 2026 20:33:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gWThGVYk"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mtr9YX6n"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 212E22F260C;
-	Thu, 28 May 2026 20:06:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 90D0E223328;
+	Thu, 28 May 2026 20:33:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779998801; cv=none; b=EJRs3Z2Sv3QA5z+deRWWtK8tnu4s8MLuWUur1PFizgRRRSmpObwDgcm8ritppze7K6/mOiPEGzvmb4LuaqbKd5bCjIek6CzPE9d0Z6f10SwXtUyai/R55P+Kv+RW4jlsGF1gtdZpJIBuEI80N6TpOdMP+HW1/TkW5FTU1jAhrj8=
+	t=1780000400; cv=none; b=uTcHQdsUl50DakEkRiGOZJBsf9fC+zQD1NAUO9Wq3pGO41hzCp7rV/it5H8O8rTDoLNTx36FkSR0DIEPWv90RHMB0/Za5+JHNdZIZzLW3ZNygupHe7p3qw0AhwXbW9BhcBZbkgbFXXTKk+hiDmfUSFyhg5Pd7DcABW3ARxKZX2I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779998801; c=relaxed/simple;
-	bh=XwlLY8g5xZMv1VhaeuPgs2e/zznzzdd1ilOyDs3svnQ=;
+	s=arc-20240116; t=1780000400; c=relaxed/simple;
+	bh=iegIqmGth57hvd0Ow+NzJ+ktq40MxzgfaOpCJuUt/CA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=uISZhNDqYXlJ5EC00pF+RQRpPsiYmerx4jc7wJQ/z1i4YvmlC6EJomnNABf0w+vwiTUqqJt1IZEM6Z+SZjadUW1rIh2cgYoe6kLr2UcrfB52Xvl2I9E7rZZ88/M+YXNQ2RBMC/dDAz3mzbX+BpnW8S2F9e6XDjUOFa+ns8L6AqI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gWThGVYk; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7F0B01F000E9;
-	Thu, 28 May 2026 20:06:39 +0000 (UTC)
+	 MIME-Version; b=fNLPZs3k2Ncvo/J0sSo0bmNcWHPz+xBs/xsAiXJjeyuX+8bSxYZe3SXAgMXJ8CJZVjZqTOfxV9hcWysjwCVm8iKbNHeV55tFKq9bQgErxccBUrRe9UGIs6FwgQG/TLyh1qIYqqCGOvb0kpQD2PZfIW0g012/UZ3UWvtDTxdMs74=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mtr9YX6n; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EF39C1F000E9;
+	Thu, 28 May 2026 20:33:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779998800;
-	bh=scGJSXPNljCOpwv71QOzrVSaQ1oJMby+M++txFyXSMs=;
+	s=korg; t=1780000399;
+	bh=a5290TukFBOk6SfEhQ9Icdl77kGi3eVvTBGAQDDTeNg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=gWThGVYkU0x4USlBBZ8KLnhRuwLLZxYEMq3vUJPcBeMm4ym3H/hdd98LXWPp0bs1w
-	 Fv+IvZC8SNTYKQUJeEpoNOKpqWojFJLuHi1CJuStVpOFqBSyHLc6IQFfCgiB9VABjZ
-	 Y5sVdEwwdx3R7ww5pW6KgEEHKfCJZvCDdu6UhIeY=
+	b=mtr9YX6nADPXfBPfB+/o6N7gWwokUJ3IdqsevgUkdJRga8/tpGWdtcD3/d5QwPm/w
+	 t2g2lbFGFwKXHzss4YNzEQ3QFgpvnQAhn61LGFJ/9Zs8Ih8oORS7gfuiD5jpiumX8C
+	 /xNg5bIRwW4WlptMFA/AvZC9uyawVih57jS8iNZY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ethan Nelson-Moore <enelsonmoore@gmail.com>,
-	Paolo Abeni <pabeni@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 7.0 275/461] net: ethernet: cs89x0: remove stale CONFIG_MACH_MX31ADS reference
-Date: Thu, 28 May 2026 21:46:44 +0200
-Message-ID: <20260528194655.133001780@linuxfoundation.org>
+Subject: [PATCH 6.12 031/272] Revert "ice: Remove jumbo_remove step from TX path"
+Date: Thu, 28 May 2026 21:46:45 +0200
+Message-ID: <20260528194630.261409610@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260528194646.819809818@linuxfoundation.org>
-References: <20260528194646.819809818@linuxfoundation.org>
+In-Reply-To: <20260528194629.379955525@linuxfoundation.org>
+References: <20260528194629.379955525@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,77 +64,60 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_MISSING_CHARSET(0.50)[];
 	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-255399-lists,stable=lfdr.de];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,redhat.com,kernel.org];
+	RCVD_TLS_LAST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-255974-lists,stable=lfdr.de];
+	PRECEDENCE_BULK(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_TLS_LAST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	RCPT_COUNT_FIVE(0.00)[6];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[stable];
+	MIME_TRACE(0.00)[0:+];
+	FROM_HAS_DN(0.00)[];
+	RCPT_COUNT_THREE(0.00)[4];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	TAGGED_RCPT(0.00)[stable];
+	TO_DN_SOME(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim,msgid.link:url]
-X-Rspamd-Queue-Id: 572BC5F8216
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim]
+X-Rspamd-Queue-Id: BE1CA5F945E
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-7.0-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ethan Nelson-Moore <enelsonmoore@gmail.com>
+This reverts commit 7332d208c9d2067546eb7af5339773c966ac5625.
 
-[ Upstream commit 36a8d04a8293afcb9304cf0cd3741f67698f2a1a ]
-
-The legacy ARM board file for MACH_MX31ADS was removed in commit
-c93197b0041d ("ARM: imx: Remove i.MX31 board files"), but a reference
-to it remained in the cs89x0 driver. Drop this unused code.
-
-Signed-off-by: Ethan Nelson-Moore <enelsonmoore@gmail.com>
-Fixes: c93197b0041d ("ARM: imx: Remove i.MX31 board files")
-Link: https://patch.msgid.link/20260509023732.42256-1-enelsonmoore@gmail.com
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/cirrus/cs89x0.c | 2 --
- 1 file changed, 2 deletions(-)
+ drivers/net/ethernet/intel/ice/ice_txrx.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/drivers/net/ethernet/cirrus/cs89x0.c b/drivers/net/ethernet/cirrus/cs89x0.c
-index fa5857923db4c..b4bfd6c174e78 100644
---- a/drivers/net/ethernet/cirrus/cs89x0.c
-+++ b/drivers/net/ethernet/cirrus/cs89x0.c
-@@ -1271,7 +1271,6 @@ static const struct net_device_ops net_ops = {
+diff --git a/drivers/net/ethernet/intel/ice/ice_txrx.c b/drivers/net/ethernet/intel/ice/ice_txrx.c
+index 08d1757f40888..431a6ed498a4e 100644
+--- a/drivers/net/ethernet/intel/ice/ice_txrx.c
++++ b/drivers/net/ethernet/intel/ice/ice_txrx.c
+@@ -2346,6 +2346,9 @@ ice_xmit_frame_ring(struct sk_buff *skb, struct ice_tx_ring *tx_ring)
  
- static void __init reset_chip(struct net_device *dev)
- {
--#if !defined(CONFIG_MACH_MX31ADS)
- 	struct net_local *lp = netdev_priv(dev);
- 	unsigned long reset_start_time;
+ 	ice_trace(xmit_frame_ring, tx_ring, skb);
  
-@@ -1298,7 +1297,6 @@ static void __init reset_chip(struct net_device *dev)
- 	while ((readreg(dev, PP_SelfST) & INIT_DONE) == 0 &&
- 	       time_before(jiffies, reset_start_time + 2))
- 		;
--#endif /* !CONFIG_MACH_MX31ADS */
- }
- 
- /* This is the real probe routine.
++	if (unlikely(ipv6_hopopt_jumbo_remove(skb)))
++		goto out_drop;
++
+ 	count = ice_xmit_desc_count(skb);
+ 	if (ice_chk_linearize(skb, count)) {
+ 		if (__skb_linearize(skb))
 -- 
 2.53.0
 
