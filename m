@@ -1,58 +1,59 @@
-Return-Path: <stable+bounces-256075-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-255787-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 0MchCmCpGGpolwgAu9opvQ
-	(envelope-from <stable+bounces-256075-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:45:20 +0200
+	id WMAFBfulGGrClggAu9opvQ
+	(envelope-from <stable+bounces-255787-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:30:51 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 897235F9764
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:45:19 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 90EB45F8DB9
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:30:50 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 73DBC31D8711
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 20:38:06 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id C4E953128BFD
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 20:24:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 545D52F1FEC;
-	Thu, 28 May 2026 20:38:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D9FA5325485;
+	Thu, 28 May 2026 20:24:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CeSCKA/w"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2uYXLW9k"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2AF812EF652;
-	Thu, 28 May 2026 20:38:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 539C435202A;
+	Thu, 28 May 2026 20:24:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780000685; cv=none; b=ak8+FtgLpmppg2zPX85pFVlrQAIT2bvzcyNwFxrEKtGef0reLtaa/mEqK3ofOKH8Yuewynta3xD3Q39z+eBv4IPGp466kGwfNzTDTVFOhk7IJvIPILyr5+l2VXC+zbJHivBRuOCtwt6tJwUkaT9xSmSkc9cftw+pq3BoC6QcqUY=
+	t=1779999882; cv=none; b=MgYeAonoOoAkDiwKk3vWgYKPwBqs5ks2tXvwlqkL/3DJEbvIHeazzIe7AQTpYHNjV8x9YrpvTCM8nUBXsweEUK2LTziENlgGRVOxGbLvll7NENvQaVoHhe/3XQHTDZPo9LKCvnTd/EcYvGt9+ClQKjATskj/aGImPKCtt//c1I8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780000685; c=relaxed/simple;
-	bh=52Lj6JkyO/rCgPTiKEODNJQwQ5qt8BRASOElHH5hdpU=;
+	s=arc-20240116; t=1779999882; c=relaxed/simple;
+	bh=gaZwI6YhgHK3XtA5kPyrrlRSyYb2PyMjVeRrZpff+SA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=PV0+B8HuC+j7fyUVEeW6zcrJwF7Ujqj3rnV9QtD7XYS/AyA0Vhl/GDnVXwbqUhTC4bwK46KbqYMYIW1L3AwWp+Ymo9ppCrHSZmxNA77NEM4R+441bEVOu/Tao1aqSls03lLQU1mH08obavXCBqieVo4oLBFp79wmoPrI3bTqlRg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CeSCKA/w; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 50A8C1F000E9;
-	Thu, 28 May 2026 20:38:03 +0000 (UTC)
+	 MIME-Version; b=KSU2HHtM95aFV5RK0SNj58pAsoePJu3xGpjQtdJYkHiEgDyrCs4r54FuFYdG78lIP0Ohk5fwrEdVl3bHUUHuWE+fBzAFGbYvfqHj4myF7p2+7zL9aLCvE9QUxAh9+y0OwIplLkkj6EJ1z5DxsrTHgsLaxhnxSDQNJRyRvA1ZKos=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2uYXLW9k; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 54A271F000E9;
+	Thu, 28 May 2026 20:24:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780000683;
-	bh=WS7aJhwSE4UpQf9jHUq8EEWYow4F91095sgveOViKT0=;
+	s=korg; t=1779999880;
+	bh=4OJ75DmXJDUlLhIuIXip3xKOGGU+qlbKB8H/i3IiIb0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=CeSCKA/w8eldM/rW/bv2va+GCZ4UFPAaWLmEC9JWQg/WUiqmIXBAA3p0qajl1blMn
-	 MCx24Hv3OxWcqDnHl12dZRc/hWA8L10yGOlFAeYbGm9obF16vf/kHtu2u5RZJZ7qCn
-	 xZNupvujxkZLC2xnX2QuTHjseBWK/27x6niJDPrU=
+	b=2uYXLW9kpaJ/dX38xBSfM615uTkbCxpM+LHr3i1C0qBJb4rMu/L12SaWtOMOUvNos
+	 qcirSwUzKkSjS4Zc45EOmlSBZG2J9xz9b8FzkCK9TKFqgsja2BfXbHQYdqzF3ZTaUQ
+	 5CLoytbmnwd2u5ow6jmFi7pSPDFV//2B+g82gdkY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Stefano Garzarella <sgarzare@redhat.com>,
-	Paolo Abeni <pabeni@redhat.com>
-Subject: [PATCH 6.12 086/272] vsock/virtio: reset connection on receiving queue overflow
-Date: Thu, 28 May 2026 21:47:40 +0200
-Message-ID: <20260528194631.787440376@linuxfoundation.org>
+	Ming Lei <tom.leiming@gmail.com>,
+	Jens Axboe <axboe@kernel.dk>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.18 223/377] ublk: reject max_sectors smaller than PAGE_SECTORS in parameter validation
+Date: Thu, 28 May 2026 21:47:41 +0200
+Message-ID: <20260528194644.848695206@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260528194629.379955525@linuxfoundation.org>
-References: <20260528194629.379955525@linuxfoundation.org>
+In-Reply-To: <20260528194638.371537336@linuxfoundation.org>
+References: <20260528194638.371537336@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,121 +64,89 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	RCVD_TLS_LAST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-256075-lists,stable=lfdr.de];
 	TO_DN_SOME(0.00)[];
-	FROM_HAS_DN(0.00)[];
+	TAGGED_FROM(0.00)[bounces-255787-lists,stable=lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,kernel.dk,kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	FROM_HAS_DN(0.00)[];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	NEURAL_HAM(-0.00)[-0.999];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[5];
+	MID_RHS_MATCH_FROM(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,msgid.link:url,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim]
-X-Rspamd-Queue-Id: 897235F9764
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,msgid.link:url,kernel.dk:email,linuxfoundation.org:mid,linuxfoundation.org:dkim]
+X-Rspamd-Queue-Id: 90EB45F8DB9
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Stefano Garzarella <sgarzare@redhat.com>
+From: Ming Lei <tom.leiming@gmail.com>
 
-commit a4f0b001782b21663d10df983b4b208195bec66c upstream.
+[ Upstream commit 1860c2f85922917d8a46f16a6f4bd2298ffa0fb5 ]
 
-When there is no more space to queue an incoming packet, the packet is
-silently dropped. This causes data loss without any notification to
-either peer, since there is no retransmission.
+blk_validate_limits() requires max_hw_sectors >= PAGE_SECTORS and fires
+a WARN_ON_ONCE if this invariant is violated. ublk_validate_params()
+only checked the upper bound of max_sectors against max_io_buf_bytes,
+allowing userspace to pass small values (including zero) that trigger
+the warning when blk_mq_alloc_disk() is called from
+ublk_ctrl_start_dev().
 
-Under normal circumstances, this should never happen. However, it could
-happen if the other peer doesn't respect the credit, or if the skb
-overhead, which we recently began to take into account with commit
-059b7dbd20a6 ("vsock/virtio: fix potential unbounded skb queue"),
-is too high.
+Before 494ea040bcb5, ublk used blk_queue_max_hw_sectors() which silently
+clamped small values up to PAGE_SECTORS. The conversion to passing
+queue_limits directly to blk_mq_alloc_disk() lost that clamping and now
+hits blk_validate_limits()'s WARN_ON_ONCE instead.
 
-Fix this by resetting the connection and setting the local socket error
-to ENOBUFS when virtio_transport_recv_enqueue() can no longer queue a
-packet, so both peers are explicitly notified of the failure rather than
-silently losing data.
+Validate that max_sectors is at least PAGE_SECTORS in
+ublk_validate_params() so invalid values are rejected early with
+-EINVAL instead of reaching the block layer.
 
-Fixes: ae6fcfbf5f03 ("vsock/virtio: discard packets if credit is not respected")
-Cc: stable@vger.kernel.org
-Signed-off-by: Stefano Garzarella <sgarzare@redhat.com>
-Link: https://patch.msgid.link/20260518090656.134588-2-sgarzare@redhat.com
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 494ea040bcb5 ("ublk: pass queue_limits to blk_mq_alloc_disk")
+Signed-off-by: Ming Lei <tom.leiming@gmail.com>
+Link: https://patch.msgid.link/20260510144843.769031-1-tom.leiming@gmail.com
+Signed-off-by: Jens Axboe <axboe@kernel.dk>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/vmw_vsock/virtio_transport_common.c |   20 +++++++++++++++-----
- 1 file changed, 15 insertions(+), 5 deletions(-)
+ drivers/block/ublk_drv.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
---- a/net/vmw_vsock/virtio_transport_common.c
-+++ b/net/vmw_vsock/virtio_transport_common.c
-@@ -1348,7 +1348,7 @@ destroy:
- 	return err;
- }
+diff --git a/drivers/block/ublk_drv.c b/drivers/block/ublk_drv.c
+index 2729b1556e810..c339222513b03 100644
+--- a/drivers/block/ublk_drv.c
++++ b/drivers/block/ublk_drv.c
+@@ -601,6 +601,9 @@ static int ublk_validate_params(const struct ublk_device *ub)
+ 		if (p->max_sectors > (ub->dev_info.max_io_buf_bytes >> 9))
+ 			return -EINVAL;
  
--static void
-+static bool
- virtio_transport_recv_enqueue(struct vsock_sock *vsk,
- 			      struct sk_buff *skb)
- {
-@@ -1363,10 +1363,8 @@ virtio_transport_recv_enqueue(struct vso
- 	spin_lock_bh(&vvs->rx_lock);
- 
- 	can_enqueue = virtio_transport_inc_rx_pkt(vvs, len);
--	if (!can_enqueue) {
--		free_pkt = true;
-+	if (!can_enqueue)
- 		goto out;
--	}
- 
- 	if (le32_to_cpu(hdr->flags) & VIRTIO_VSOCK_SEQ_EOM)
- 		vvs->msg_count++;
-@@ -1406,6 +1404,8 @@ out:
- 	spin_unlock_bh(&vvs->rx_lock);
- 	if (free_pkt)
- 		kfree_skb(skb);
++		if (p->max_sectors < PAGE_SECTORS)
++			return -EINVAL;
 +
-+	return can_enqueue;
- }
- 
- static int
-@@ -1418,7 +1418,17 @@ virtio_transport_recv_connected(struct s
- 
- 	switch (le16_to_cpu(hdr->op)) {
- 	case VIRTIO_VSOCK_OP_RW:
--		virtio_transport_recv_enqueue(vsk, skb);
-+		if (!virtio_transport_recv_enqueue(vsk, skb)) {
-+			/* There is no more space to queue the packet, so let's
-+			 * close the connection; otherwise, we'll lose data.
-+			 */
-+			(void)virtio_transport_reset(vsk, skb);
-+			virtio_transport_do_close(vsk, true);
-+			sk->sk_err = ENOBUFS;
-+			sk_error_report(sk);
-+			vsock_remove_sock(vsk);
-+			break;
-+		}
- 		vsock_data_ready(sk);
- 		return err;
- 	case VIRTIO_VSOCK_OP_CREDIT_REQUEST:
+ 		if (ublk_dev_is_zoned(ub) && !p->chunk_sectors)
+ 			return -EINVAL;
+ 	} else
+-- 
+2.53.0
+
 
 
 
