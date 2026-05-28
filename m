@@ -1,59 +1,59 @@
-Return-Path: <stable+bounces-255784-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-255425-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id aFk0DzalGGrClggAu9opvQ
-	(envelope-from <stable+bounces-255784-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:27:34 +0200
+	id cIEWKt2iGGqblggAu9opvQ
+	(envelope-from <stable+bounces-255425-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:17:33 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1AFFB5F8B88
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:27:34 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2A0075F849B
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:17:33 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 84D013083C6C
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 20:24:51 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 56F7731C63FA
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 20:07:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0553C329C48;
-	Thu, 28 May 2026 20:24:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4802132ABC0;
+	Thu, 28 May 2026 20:07:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="iKBzUb2F"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SSqt33fW"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CF9A233F5BE;
-	Thu, 28 May 2026 20:24:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 03F33318EE1;
+	Thu, 28 May 2026 20:07:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779999873; cv=none; b=nlc+PZe7xK6dBduZt8W/erh6VbLnLx2J9JFp3/+888TbYamFzU2Yrz4jKrcHj5+uZtcH4n3WC5ewzHVhucV4xDQwWMg+om72D/ndszaKrBJ0cJLpe7fW21owIJfrjQhltfKung2n0QiTeqAxCLe7g5VrcJevGbpxWFyXSgLUi1A=
+	t=1779998874; cv=none; b=p7FvCAaaY2EV97VwQirxM5z2QnSSV/3UGONke4w23o6uJrPaSm88XKdvEQ4d5rhgegJq8+4b6JtPRgh03S4Q8HdP3X5lPS36T5WHHSflDZtIaXF8FQtmepLwEVk79Fm5pEtfYps/B57TBjCZNH5AwuKh1wEgbdzVZb0KwhKbIJw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779999873; c=relaxed/simple;
-	bh=zKfmAQMqZbX19PpShB27uX0FnzWfpLufeDbckc/a1vw=;
+	s=arc-20240116; t=1779998874; c=relaxed/simple;
+	bh=d6/5J2CUNyPjhSk3rj7fM/B3bjUVUzbVgz3C6TkAIG0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=R51WShiuvw8N1CpGsyabXYUUMOrM7kzxwo1gsy04Eik3U8MjL6Sa9PxlE/XqzNNF+yrYfBYQ/IT3oKknsEx/XgIIU3bXeA40tcdOl9p1SciH44+QrAOaj8NvbwW6BUUx6EaCsekxjyr1yfOrXyr0m1ncZbpTTBFEuonJWAV2oFg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=iKBzUb2F; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E23AD1F000E9;
-	Thu, 28 May 2026 20:24:31 +0000 (UTC)
+	 MIME-Version; b=Zr5xN4Qg/fMyGQ+ti9Z377g5ZfCOWqp6rfwcyOs7Rj8VknkuB5MgFPRdeBARM+uoS2bh5xeqJ12gb7WHrPIL381ggOD03Go9+7ji5rgcGaImkbIrRIkek9y9jh+k9M1mVd81hkaD+bQlKNvHrwlXquUfhstPFYZWXbPqwfXRZbE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SSqt33fW; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 59FAF1F000E9;
+	Thu, 28 May 2026 20:07:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779999872;
-	bh=O43rqhar/ADmg1TYHh90jdRXrlzkvavKeUZV/1/GI00=;
+	s=korg; t=1779998872;
+	bh=bU9EkkR3BEdFQYQ9hwL6nawnDDWRhuXY8jioFjYSvTk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=iKBzUb2F0aASf9j261Mnjm1nwAIwGNoWDMbetCArHXXBnbVTKMme84vd6a2xnEVKY
-	 MoUrFyMmbnr7s8YT3W+Sd6Ko5OUyCtQgFDkHsW8xyNvTnBXVC9r2WTSNLi9W/vqihX
-	 nkASXDp41HL3anSdgoDvQHs0IfulaMUR3STJTID4=
+	b=SSqt33fWysh4x2F1dSbqA512Mbs6Wn5PeGQHMSnNTGv+NEdCJWHjhRdFhkE3cb5mX
+	 IffBh7PJXmqCJnTSmvBds346Du649bO9PNUo/7umcGN0buhazNnEKpFYIPxVzLjltu
+	 z7wF6hbBKv+uAFGw3wnDBlaaMlKmHY2aOMWpExz8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Junyoung Jang <graypanda.inzag@gmail.com>,
-	Christian Brauner <brauner@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Chuck Lever <chuck.lever@oracle.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 220/377] fs/statmount: fix slab out-of-bounds write in statmount_mnt_idmap
+Subject: [PATCH 7.0 329/461] tls: Preserve sk_err across recvmsg() when data has been copied
 Date: Thu, 28 May 2026 21:47:38 +0200
-Message-ID: <20260528194644.764001402@linuxfoundation.org>
+Message-ID: <20260528194656.871230695@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260528194638.371537336@linuxfoundation.org>
-References: <20260528194638.371537336@linuxfoundation.org>
+In-Reply-To: <20260528194646.819809818@linuxfoundation.org>
+References: <20260528194646.819809818@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,84 +64,158 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	TO_DN_SOME(0.00)[];
-	TAGGED_FROM(0.00)[bounces-255784-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,kernel.org];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-255425-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	NEURAL_HAM(-0.00)[-0.999];
-	TAGGED_RCPT(0.00)[stable];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	TAGGED_RCPT(0.00)[stable];
 	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim]
-X-Rspamd-Queue-Id: 1AFFB5F8B88
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,linuxfoundation.org:mid,linuxfoundation.org:dkim,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,oracle.com:email]
+X-Rspamd-Queue-Id: 2A0075F849B
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+7.0-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Junyoung Jang <graypanda.inzag@gmail.com>
+From: Chuck Lever <chuck.lever@oracle.com>
 
-[ Upstream commit a3bf0f28d4ba16e1f35f8c983bb04426b87e2a78 ]
+[ Upstream commit f508262ae9f21fe0e6c0749948b9dc7dd5a62a70 ]
 
-statmount_mnt_idmap() writes one mapping with seq_printf() and then
-manually advances seq->count to include the NUL separator.
+The sk_err check in tls_rx_rec_wait() consumes the error via
+sock_error(), which clears sk_err atomically. When the caller
+(tls_sw_recvmsg, tls_sw_splice_read, or tls_sw_read_sock) already
+has bytes copied to userspace, it returns those bytes and discards
+the error from this call. sk_err is now zero on the socket, so the
+next read syscall observes only RCV_SHUTDOWN and reports a clean
+EOF instead of the actual error (typically -ECONNRESET).
 
-If seq_printf() overflows, seq_set_overflow() sets seq->count to
-seq->size. The manual seq->count++ changes this to seq->size + 1.
-seq_has_overflowed() then no longer detects the overflow. The corrupted
-count returns to statmount_string(), which later executes:
+The race is reachable when tls_read_flush_backlog()'s periodic
+sk_flush_backlog() triggers tcp_reset() in the middle of a
+multi-record read.
 
-    seq->buf[seq->count++] = '\0';
+Pass a has_copied flag to tls_rx_rec_wait(). When has_copied is
+false, consume sk_err via sock_error() as before. When has_copied
+is true, report the error from READ_ONCE() but leave sk_err set:
+the caller returns the byte count and discards the err from this
+call, and the next read syscall surfaces the preserved sk_err. This
+mirrors the tcp_recvmsg() preserve-and-surface pattern.
 
-This causes a 1-byte NULL out-of-bounds write on the dynamically
-allocated seq buffer.
+The decrypt-abort path is unaffected: tls_err_abort() raises
+sk_err to EBADMSG after tls_rx_rec_wait() returns, and nothing
+on the caller's return path consumes it, so the EBADMSG surfaces
+on the next read.
 
-Fix this by checking for overflow immediately after seq_printf().
+tls_sw_splice_read() passes has_copied=false: it processes
+one record per call, so no bytes have been copied within the
+function when tls_rx_rec_wait() runs. A reset that arrives
+between iterations of splice_direct_to_actor() (the sendfile()
+path) is still consumed by sock_error() in the later call, and the
+outer loop returns the prior iterations' byte count and drops the
+error. tcp_splice_read() exhibits the same pattern at the iteration
+boundary; addressing it belongs at the splice_direct_to_actor()
+layer and is out of scope here.
 
-Fixes: 37c4a9590e1e ("statmount: allow to retrieve idmappings")
-Signed-off-by: Junyoung Jang <graypanda.inzag@gmail.com>
-Link: https://patch.msgid.link/20260504112649.1862936-1-graypanda.inzag@gmail.com
-Signed-off-by: Christian Brauner <brauner@kernel.org>
+Fixes: c46b01839f7a ("tls: rx: periodically flush socket backlog")
+Suggested-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
+Link: https://patch.msgid.link/20260513125825.205189-1-cel@kernel.org
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/mnt_idmapping.c | 2 ++
- 1 file changed, 2 insertions(+)
+ net/tls/tls_sw.c | 20 ++++++++++++++------
+ 1 file changed, 14 insertions(+), 6 deletions(-)
 
-diff --git a/fs/mnt_idmapping.c b/fs/mnt_idmapping.c
-index a37991fdb194d..3640230a4d43b 100644
---- a/fs/mnt_idmapping.c
-+++ b/fs/mnt_idmapping.c
-@@ -375,6 +375,8 @@ int statmount_mnt_idmap(struct mnt_idmap *idmap, struct seq_file *seq, bool uid_
- 			continue;
+diff --git a/net/tls/tls_sw.c b/net/tls/tls_sw.c
+index 97e02ac7f0086..11a70c10770bb 100644
+--- a/net/tls/tls_sw.c
++++ b/net/tls/tls_sw.c
+@@ -1366,9 +1366,14 @@ void tls_sw_splice_eof(struct socket *sock)
+ 	mutex_unlock(&tls_ctx->tx_lock);
+ }
  
- 		seq_printf(seq, "%u %u %u", extent->first, lower, extent->count);
-+		if (seq_has_overflowed(seq))
-+			return -EAGAIN;
++/* When has_copied is true the caller has already moved bytes to
++ * userspace. Report sk_err but leave it set so the next read
++ * surfaces it instead of a spurious EOF, otherwise sk_err is
++ * consumed via sock_error().
++ */
+ static int
+ tls_rx_rec_wait(struct sock *sk, struct sk_psock *psock, bool nonblock,
+-		bool released)
++		bool released, bool has_copied)
+ {
+ 	struct tls_context *tls_ctx = tls_get_ctx(sk);
+ 	struct tls_sw_context_rx *ctx = tls_sw_ctx_rx(tls_ctx);
+@@ -1386,8 +1391,11 @@ tls_rx_rec_wait(struct sock *sk, struct sk_psock *psock, bool nonblock,
+ 		if (!sk_psock_queue_empty(psock))
+ 			return 0;
  
- 		seq->count++; /* mappings are separated by \0 */
- 		if (seq_has_overflowed(seq))
+-		if (sk->sk_err)
++		if (sk->sk_err) {
++			if (has_copied)
++				return -READ_ONCE(sk->sk_err);
+ 			return sock_error(sk);
++		}
+ 
+ 		if (ret < 0)
+ 			return ret;
+@@ -1423,7 +1431,7 @@ tls_rx_rec_wait(struct sock *sk, struct sk_psock *psock, bool nonblock,
+ 	}
+ 
+ 	if (unlikely(!tls_strp_msg_load(&ctx->strp, released)))
+-		return tls_rx_rec_wait(sk, psock, nonblock, false);
++		return tls_rx_rec_wait(sk, psock, nonblock, false, has_copied);
+ 
+ 	return 1;
+ }
+@@ -2111,7 +2119,7 @@ int tls_sw_recvmsg(struct sock *sk,
+ 		int to_decrypt, chunk;
+ 
+ 		err = tls_rx_rec_wait(sk, psock, flags & MSG_DONTWAIT,
+-				      released);
++				      released, !!(decrypted + copied));
+ 		if (err <= 0) {
+ 			if (psock) {
+ 				chunk = sk_msg_recvmsg(sk, psock, msg, len,
+@@ -2298,7 +2306,7 @@ ssize_t tls_sw_splice_read(struct socket *sock,  loff_t *ppos,
+ 		struct tls_decrypt_arg darg;
+ 
+ 		err = tls_rx_rec_wait(sk, NULL, flags & SPLICE_F_NONBLOCK,
+-				      true);
++				      true, false);
+ 		if (err <= 0)
+ 			goto splice_read_end;
+ 
+@@ -2384,7 +2392,7 @@ int tls_sw_read_sock(struct sock *sk, read_descriptor_t *desc,
+ 		} else {
+ 			struct tls_decrypt_arg darg;
+ 
+-			err = tls_rx_rec_wait(sk, NULL, true, released);
++			err = tls_rx_rec_wait(sk, NULL, true, released, !!copied);
+ 			if (err <= 0)
+ 				goto read_sock_end;
+ 
 -- 
 2.53.0
 
