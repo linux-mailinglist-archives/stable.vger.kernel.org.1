@@ -1,58 +1,61 @@
-Return-Path: <stable+bounces-255754-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-255962-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id mA+SFn2kGGrClggAu9opvQ
-	(envelope-from <stable+bounces-255754-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:24:29 +0200
+	id cFeKAxupGGrclwgAu9opvQ
+	(envelope-from <stable+bounces-255962-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:44:11 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 46BBE5F8974
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:24:29 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 892F95F96B6
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:44:10 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 9DA66303DEB3
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 20:23:12 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id B93293185262
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 20:32:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5A66A31F981;
-	Thu, 28 May 2026 20:23:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6B5E52F1FEC;
+	Thu, 28 May 2026 20:32:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WOwlFX+6"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="opbH9FH6"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ACE7B2E7379;
-	Thu, 28 May 2026 20:23:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 325F233987F;
+	Thu, 28 May 2026 20:32:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779999791; cv=none; b=rEzFaDSMMnYwa4DkTIVkoIrSicnvF+q1CT8bBAgDNParfBUlDjGtdB8OutDg82Z0noBuP2oknVH8+fCfrSMsNecNnqtTsF4bxBHUVyeU+1999MTWL4OmBjG7eTyypLege9Puo7wAKbUakMt/XxAdmDrB8rUepxTp+Na+yL7uQWg=
+	t=1780000367; cv=none; b=EiqPuc+cHjx5ouQEM/YhaGaXh0bcCC4ATKwwmV4v2Mq7wDo7GkQG7UId5DcojFLLzr6b9WVw0gfAUKSAYY89HxfyhGjECG7XrfzPy2HQwyfPBjHR6uH8xCb8KsmwaozXPNLmpwYE8YJihTzAcnnnnyvpvSlgJxr86hBcxaKtqCw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779999791; c=relaxed/simple;
-	bh=yGLuZyZ4OCBAF6Bc3qIhtK4ioV9NkqJRIy5H4HRIvbE=;
+	s=arc-20240116; t=1780000367; c=relaxed/simple;
+	bh=XNJx3QDv4p6lxkTWVQjTF4/ZgD+CV4joTfenuaEX1cE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=jhvUgyk+MmtKowVv6lButLHrw+yL2N6GYAExFfMfZcRDt96AOKXG+nxuJ7UqGpg0fMFT1hEOkNoB7LeNwR0YvHrNl/eC8sI6Om8gtRBv6/Qh+e74JGzMbS9o4P32BjTCdpPwHN5bxd4sLH4+VGBdz03gbrsQNM61GzS9a0aC0QA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WOwlFX+6; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E59A81F000E9;
-	Thu, 28 May 2026 20:23:08 +0000 (UTC)
+	 MIME-Version; b=ur+1e8InU68vzPnJ3d8io+0Mqe+HEilN92q6XUHavjAKWxwY09wMjq1yYPABi0+IwIWaIKKzDECVU+Wz+6aWDoCD+hDG4RVFQKUX0XYH097ADzjHmgc7YwPrvF1xtE6lI1+OKmhl2uuZl0W0CEJ4zKcA2LGmQGubXFo/ZKU1DeM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=opbH9FH6; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 90E841F000E9;
+	Thu, 28 May 2026 20:32:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779999789;
-	bh=u8wAuRY2CBNLYD5s4qvBWm0pYqI7NFfqVjCNMvsTqtI=;
+	s=korg; t=1780000366;
+	bh=81Ke31HSxU+PM0tgtwkDaDt3qCKgilkmiOUY1OY7bo4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=WOwlFX+6rUHSRZLRFUoSctZ8iz1pNdbxOllO2Y+JlVHJuX+7o6XvA4O1GheUYHEIN
-	 qHDXJd/w1+cjsNl1bHZ2SkW+TB7ipxgc6pEe93rXVhGxYsLLmcFb0FTAaXFQBXvM2u
-	 cGjTMUCoFRNYrNoXgS2vIt/v8DNqw98VN0iW3r6k=
+	b=opbH9FH6vMtk9wyiK1T2to31S78UpTFaurau1YIsMQFYnUt/LnBqf3EI4Sl0vTiv3
+	 SFDDA6yU1F59vIQSLsJO2s7y87zOgF8Bz094F985tWvmxLFHdtsj9VHVXX2E3Wh5j6
+	 tRphYCtfc9HCM44CTz69BMt8h7dakrHanKGSqohg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable@kernel.org,
-	Sven Eckelmann <sven@narfation.org>
-Subject: [PATCH 6.18 156/377] batman-adv: tt: reject oversized local TVLV buffers
+	"Peter Zijlstra (Intel)" <peterz@infradead.org>,
+	Venkat Rao Bagalkote <venkat88@linux.ibm.com>,
+	Shrikanth Hegde <sshegde@linux.ibm.com>,
+	Marek Szyprowski <m.szyprowski@samsung.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 020/272] sched/deadline: Stop dl_server before CPU goes offline
 Date: Thu, 28 May 2026 21:46:34 +0200
-Message-ID: <20260528194642.914574545@linuxfoundation.org>
+Message-ID: <20260528194629.949050676@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260528194638.371537336@linuxfoundation.org>
-References: <20260528194638.371537336@linuxfoundation.org>
+In-Reply-To: <20260528194629.379955525@linuxfoundation.org>
+References: <20260528194629.379955525@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -67,88 +70,116 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-255962-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-255754-lists,stable=lfdr.de];
-	TO_DN_SOME(0.00)[];
-	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[5];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[narfation.org:email,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim]
-X-Rspamd-Queue-Id: 46BBE5F8974
+	TO_DN_SOME(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_SEVEN(0.00)[8];
+	MID_RHS_MATCH_FROM(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[infradead.org:email,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim]
+X-Rspamd-Queue-Id: 892F95F96B6
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sven Eckelmann <sven@narfation.org>
+From: Peter Zijlstra (Intel) <peterz@infradead.org>
 
-commit 1e9fab756f8395096d5bba7be0c373c4c8f5d165 upstream.
+[ Upstream commit ee6e44dfe6e50b4a5df853d933a96bdff5309e6e ]
 
-The commit 3a359bf5c61d ("batman-adv: reject oversized global TT response
-buffers") added a check to ensure that a global return buffer size can be
-stored in an u16. The same buffer handling also exists for the local data
-buffer but was not touched.
+IBM CI tool reported kernel warning[1] when running a CPU removal
+operation through drmgr[2]. i.e "drmgr -c cpu -r -q 1"
 
-A similar check should be also be in place for the local TVLV buffer. It
-doesn't have the similar attack surface because it is only generated from
-locally discovered MAC addresses but the dynamic nature could still cause
-temporarily to large buffers.
+WARNING: CPU: 0 PID: 0 at kernel/sched/cpudeadline.c:219 cpudl_set+0x58/0x170
+NIP [c0000000002b6ed8] cpudl_set+0x58/0x170
+LR [c0000000002b7cb8] dl_server_timer+0x168/0x2a0
+Call Trace:
+[c000000002c2f8c0] init_stack+0x78c0/0x8000 (unreliable)
+[c0000000002b7cb8] dl_server_timer+0x168/0x2a0
+[c00000000034df84] __hrtimer_run_queues+0x1a4/0x390
+[c00000000034f624] hrtimer_interrupt+0x124/0x300
+[c00000000002a230] timer_interrupt+0x140/0x320
 
-Cc: stable@kernel.org
-Fixes: 7ea7b4a14275 ("batman-adv: make the TT CRC logic VLAN specific")
-Signed-off-by: Sven Eckelmann <sven@narfation.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Git bisects to: commit 4ae8d9aa9f9d ("sched/deadline: Fix dl_server getting stuck")
+
+This happens since:
+- dl_server hrtimer gets enqueued close to cpu offline, when
+  kthread_park enqueues a fair task.
+- CPU goes offline and drmgr removes it from cpu_present_mask.
+- hrtimer fires and warning is hit.
+
+Fix it by stopping the dl_server before CPU is marked dead.
+
+[1]: https://lore.kernel.org/all/8218e149-7718-4432-9312-f97297c352b9@linux.ibm.com/
+[2]: https://github.com/ibm-power-utilities/powerpc-utils/tree/next/src/drmgr
+
+[sshegde: wrote the changelog and tested it]
+Fixes: 4ae8d9aa9f9d ("sched/deadline: Fix dl_server getting stuck")
+Closes: https://lore.kernel.org/all/8218e149-7718-4432-9312-f97297c352b9@linux.ibm.com
+Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
+Reported-by: Venkat Rao Bagalkote <venkat88@linux.ibm.com>
+Signed-off-by: Shrikanth Hegde <sshegde@linux.ibm.com>
+Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
+Tested-by: Marek Szyprowski <m.szyprowski@samsung.com>
+Tested-by: Shrikanth Hegde <sshegde@linux.ibm.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/batman-adv/translation-table.c |    8 +++++---
- 1 file changed, 5 insertions(+), 3 deletions(-)
+ kernel/sched/core.c     | 2 ++
+ kernel/sched/deadline.c | 3 +++
+ 2 files changed, 5 insertions(+)
 
---- a/net/batman-adv/translation-table.c
-+++ b/net/batman-adv/translation-table.c
-@@ -877,12 +877,12 @@ batadv_tt_prepare_tvlv_local_data(struct
- {
- 	struct batadv_tvlv_tt_vlan_data *tt_vlan;
- 	struct batadv_meshif_vlan *vlan;
-+	size_t change_offset;
- 	u16 num_vlan = 0;
- 	u16 vlan_entries = 0;
- 	u16 total_entries = 0;
- 	u16 tvlv_len;
- 	u8 *tt_change_ptr;
--	int change_offset;
+diff --git a/kernel/sched/core.c b/kernel/sched/core.c
+index 9b238c9c71c67..1b1ddd24cb227 100644
+--- a/kernel/sched/core.c
++++ b/kernel/sched/core.c
+@@ -8319,10 +8319,12 @@ int sched_cpu_dying(unsigned int cpu)
+ 	sched_tick_stop(cpu);
  
- 	spin_lock_bh(&bat_priv->meshif_vlan_list_lock);
- 	hlist_for_each_entry(vlan, &bat_priv->meshif_vlan_list, list) {
-@@ -897,8 +897,10 @@ batadv_tt_prepare_tvlv_local_data(struct
- 	if (*tt_len < 0)
- 		*tt_len = batadv_tt_len(total_entries);
+ 	rq_lock_irqsave(rq, &rf);
++	update_rq_clock(rq);
+ 	if (rq->nr_running != 1 || rq_has_pinned_tasks(rq)) {
+ 		WARN(true, "Dying CPU not properly vacated!");
+ 		dump_rq_tasks(rq, KERN_WARNING);
+ 	}
++	dl_server_stop(&rq->fair_server);
+ 	rq_unlock_irqrestore(rq, &rf);
  
--	tvlv_len = *tt_len;
--	tvlv_len += change_offset;
-+	if (check_add_overflow(*tt_len, change_offset, &tvlv_len)) {
-+		tvlv_len = 0;
-+		goto out;
-+	}
+ 	calc_load_migrate(rq);
+diff --git a/kernel/sched/deadline.c b/kernel/sched/deadline.c
+index a6c699e43111d..cb8eff0ebd228 100644
+--- a/kernel/sched/deadline.c
++++ b/kernel/sched/deadline.c
+@@ -1848,6 +1848,9 @@ void dl_server_start(struct sched_dl_entity *dl_se)
+ 	if (!dl_se->dl_runtime || dl_se->dl_server_active)
+ 		return;
  
- 	*tt_data = kmalloc(tvlv_len, GFP_ATOMIC);
- 	if (!*tt_data) {
++	if (WARN_ON_ONCE(!cpu_online(cpu_of(rq))))
++		return;
++
+ 	dl_se->dl_server_active = 1;
+ 	enqueue_dl_entity(dl_se, ENQUEUE_WAKEUP);
+ 	if (!dl_task(dl_se->rq->curr) || dl_entity_preempt(dl_se, &rq->curr->dl))
+-- 
+2.53.0
+
 
 
 
