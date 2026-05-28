@@ -1,58 +1,61 @@
-Return-Path: <stable+bounces-255334-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-255651-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 2GA1Mu6fGGpvlggAu9opvQ
-	(envelope-from <stable+bounces-255334-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:05:02 +0200
+	id uFIkOvCkGGrClggAu9opvQ
+	(envelope-from <stable+bounces-255651-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:26:24 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 73E315F7CBF
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:05:02 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 494115F8AD4
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:26:23 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id C4E923036F86
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 20:03:39 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 10FC23273808
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 20:18:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2D2893164B7;
-	Thu, 28 May 2026 20:03:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C2E6B2D1303;
+	Thu, 28 May 2026 20:18:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vZcldiUo"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="g71CGSdL"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F2AF52F260C;
-	Thu, 28 May 2026 20:03:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8F77E2F9D85;
+	Thu, 28 May 2026 20:18:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779998619; cv=none; b=govxzvdqdkGqlsnGxzohPX3P6tiwj9txhodJs+BjHwTk7YQIc1vJU/bcChPYDnHzCcQXBr5qlN2uWTs9wHYCSFCC2Gq/pE1joVgfueY6NDafPmi8i586pnfwhZr2skA2fRVI3wXdwtdPznieepyxUznS0ZEJ6vmElU5kHCTantk=
+	t=1779999509; cv=none; b=KH8SrxjkrlsELc3e+T4PFnNotyYVzsaydR/DmQurDszNLNqem0uuReXAd+8XumC2m6qOPuSvXHO6OTr6wkYg7qfU8mVRaxdyI8ETLVLoPsxEomX9tOuwvu3JONnZk2w/oGRKegbRStmYcwtcyBf2O1EQzp/5jqMluOSL/GbMXG8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779998619; c=relaxed/simple;
-	bh=y+cc/Iwkc0cqY2HQh+dw2l0mzpEZVjsPlS56ln5fgOc=;
+	s=arc-20240116; t=1779999509; c=relaxed/simple;
+	bh=Nw8nIELmusYWx+cZosncjCXMEVDU4a+PpfcpDCGxlJQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=fSfpdCHyb6waVvss7sSsnHPBRbPmZF6XTgu1N1W4yiAe0l4vndgiLjH3DgpQltoJr1gSvvLM71Kp7EUqdZYAmxcXMQy1cWDQY7rzCyYh0BiXIYm47U9sGZPJmO+QL9Sa+u4wUTuT9z0xPM4dIeDpVKJHpd2SM+zrJDhCiyXgr+4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vZcldiUo; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5DE971F000E9;
-	Thu, 28 May 2026 20:03:37 +0000 (UTC)
+	 MIME-Version; b=j5dFt6tfE/7OnltnngpMzPKQfr8CAwGDBMPSIRWtPqofSnGt4Fkqc1het42TgKHRDt0PJED41gpSk/MBNsqtNuZG2dwfs9RvTJARWTIfnsjaONK02p6wBSy1S/+k+RaSiWdDCqL1wI1cotFH31LldiJmCjtV8hDnL134chOaGRM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=g71CGSdL; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id ED6E91F000E9;
+	Thu, 28 May 2026 20:18:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779998617;
-	bh=PaBjsc7gHdENxeR68XjOxPOBqIELnKtO+a5v6WJ4dFk=;
+	s=korg; t=1779999508;
+	bh=ILrZVhQcNvUnfMUKlUg3Ypiqh8ZQrefW/1jjw7DQzPU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=vZcldiUoRh1a/lcL4mYo4Y/gEUHYTDrur9oTL00C3EuzaxZSJ9NmcQB2u57wC6GvF
-	 P/mMDfVEOYJf7LFas3YNyHpLb6bjojUVzoj95klRVwPHjNSC+PbelgSS+3rEc7Es7g
-	 C8vpJhd6ZiwEg3O61pjbHDGJ7FpU+Ou1fdHGkAwc=
+	b=g71CGSdLtz8V36M3WY/7O+tQL1PZWkdBRxY1ns+uf3I7egrt+2uS3vDYcVtcgKzwE
+	 jTEGIenLYl3huTDuUGDP9GFBRchiCEX7I/hSmNh+SH7Q6Fbd6pGw+BbeuqwLJaRYO2
+	 Ut6/Y2ogMDBT8bAeCdOvX9DRgnU8TkZ27XgVbRHc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sudeep Holla <sudeep.holla@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 7.0 201/461] firmware: arm_ffa: Snapshot notifier callbacks under lock
+	Michael Bommarito <michael.bommarito@gmail.com>,
+	Simon Horman <horms@kernel.org>,
+	Rafal Romanowski <rafal.romanowski@intel.com>,
+	Tony Nguyen <anthony.l.nguyen@intel.com>,
+	Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 6.18 092/377] ixgbevf: fix use-after-free in VEPA multicast source pruning
 Date: Thu, 28 May 2026 21:45:30 +0200
-Message-ID: <20260528194652.907498247@linuxfoundation.org>
+Message-ID: <20260528194641.024951583@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260528194646.819809818@linuxfoundation.org>
-References: <20260528194646.819809818@linuxfoundation.org>
+In-Reply-To: <20260528194638.371537336@linuxfoundation.org>
+References: <20260528194638.371537336@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,138 +66,100 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	RCVD_TLS_LAST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-255334-lists,stable=lfdr.de];
-	TO_DN_SOME(0.00)[];
+	TAGGED_FROM(0.00)[bounces-255651-lists,stable=lfdr.de];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,kernel.org,intel.com];
+	MIME_TRACE(0.00)[0:+];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[8];
 	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	NEURAL_HAM(-0.00)[-0.999];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[5];
+	TO_DN_SOME(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,msgid.link:url]
-X-Rspamd-Queue-Id: 73E315F7CBF
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,intel.com:email,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim]
+X-Rspamd-Queue-Id: 494115F8AD4
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-7.0-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sudeep Holla <sudeep.holla@kernel.org>
+From: Michael Bommarito <michael.bommarito@gmail.com>
 
-[ Upstream commit 38290b180a4d5746baed796d49f88d56d2f336cd ]
+commit 5d49b568c188dc77199d8d2b959c91da8cc27cf1 upstream.
 
-Both notification handlers currently look up a notifier callback under
-notify_lock, drop the lock, and then dereference the returned
-notifier entry. A concurrent unregister can delete and free that
-entry in the gap, leaving the handler to dereference stale memory.
+ixgbevf_clean_rx_irq() prunes frames whose source MAC matches the VF's
+own address (VEPA multicast workaround) by freeing the skb and
+continuing to the next descriptor:
 
-Copy the callback pointer and callback data while notify_lock is
-still held and invoke the callback only after the lock is dropped.
-This keeps the existing callback execution model while removing the
-use-after-free window in both the framework and non-framework
-notification paths.
+    dev_kfree_skb_irq(skb);
+    continue;
 
-Fixes: 285a5ea0f542 ("firmware: arm_ffa: Add support for handling framework notifications")
-Link: https://patch.msgid.link/20260428-ffa_fixes-v2-10-8595ae450034@kernel.org
-Signed-off-by: Sudeep Holla <sudeep.holla@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+The skb pointer is declared outside the while loop and persists across
+iterations.  Because the continue skips the "skb = NULL" reset at the
+bottom of the loop, the next iteration enters the "else if (skb)" path
+and calls ixgbevf_add_rx_frag() on the freed skb, dereferencing
+skb_shinfo(skb)->nr_frags - a use-after-free in NAPI softirq context.
+
+The sibling driver iavf already handles this correctly by nulling the
+pointer before continuing.  Apply the same pattern here.
+
+I do not have ixgbevf hardware; the bug was found by static analysis
+(scan_drop_continue_loops.py + semgrep drop_continue_in_loop, multi-tool
+corroboration with the highest score in the scan).  The UAF was confirmed
+under KASAN by loading a test module that reproduces the exact code
+pattern (alloc skb, kfree_skb, then read skb_shinfo(skb)->nr_frags):
+
+  BUG: KASAN: slab-use-after-free in ixgbevf_uaf_test_init+0x100/0x1000
+  Read of size 8 at addr 000000006163ae78 by task insmod/30
+  freed 208-byte region [000000006163adc0, 000000006163ae90)
+
+QEMU emulates igb (82576) but not ixgbe (82599), and the igbvf VF
+driver does not include the VEPA source pruning path, so a full
+end-to-end reproduction with emulated hardware was not possible.
+
+Fixes: bad17234ba70 ("ixgbevf: Change receive model to use double buffered page based receives")
+Cc: stable@vger.kernel.org
+Signed-off-by: Michael Bommarito <michael.bommarito@gmail.com>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Tested-by: Rafal Romanowski <rafal.romanowski@intel.com>
+Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
+Link: https://patch.msgid.link/20260515182419.1597859-8-anthony.l.nguyen@intel.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/firmware/arm_ffa/driver.c | 35 ++++++++++++++++++++-----------
- 1 file changed, 23 insertions(+), 12 deletions(-)
+ drivers/net/ethernet/intel/ixgbevf/ixgbevf_main.c |    1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/firmware/arm_ffa/driver.c b/drivers/firmware/arm_ffa/driver.c
-index 001e6f40881df..aa6b9d52a673f 100644
---- a/drivers/firmware/arm_ffa/driver.c
-+++ b/drivers/firmware/arm_ffa/driver.c
-@@ -1463,20 +1463,25 @@ static int ffa_notify_send(struct ffa_device *dev, int notify_id,
- 
- static void handle_notif_callbacks(u64 bitmap, enum notify_type type)
- {
-+	ffa_notifier_cb cb;
-+	void *cb_data;
- 	int notify_id;
--	struct notifier_cb_info *cb_info = NULL;
- 
- 	for (notify_id = 0; notify_id <= FFA_MAX_NOTIFICATIONS && bitmap;
- 	     notify_id++, bitmap >>= 1) {
- 		if (!(bitmap & 1))
+--- a/drivers/net/ethernet/intel/ixgbevf/ixgbevf_main.c
++++ b/drivers/net/ethernet/intel/ixgbevf/ixgbevf_main.c
+@@ -1221,6 +1221,7 @@ static int ixgbevf_clean_rx_irq(struct i
+ 		    ether_addr_equal(rx_ring->netdev->dev_addr,
+ 				     eth_hdr(skb)->h_source)) {
+ 			dev_kfree_skb_irq(skb);
++			skb = NULL;
  			continue;
+ 		}
  
--		read_lock(&drv_info->notify_lock);
--		cb_info = notifier_hnode_get_by_type(notify_id, type);
--		read_unlock(&drv_info->notify_lock);
-+		scoped_guard(read_lock, &drv_info->notify_lock) {
-+			struct notifier_cb_info *cb_info;
-+
-+			cb_info = notifier_hnode_get_by_type(notify_id, type);
-+			cb = cb_info ? cb_info->cb : NULL;
-+			cb_data = cb_info ? cb_info->cb_data : NULL;
-+		}
- 
--		if (cb_info && cb_info->cb)
--			cb_info->cb(notify_id, cb_info->cb_data);
-+		if (cb)
-+			cb(notify_id, cb_data);
- 	}
- }
- 
-@@ -1484,9 +1489,10 @@ static void handle_fwk_notif_callbacks(u32 bitmap)
- {
- 	void *buf;
- 	uuid_t uuid;
-+	void *fwk_cb_data;
- 	int notify_id = 0, target;
-+	ffa_fwk_notifier_cb fwk_cb;
- 	struct ffa_indirect_msg_hdr *msg;
--	struct notifier_cb_info *cb_info = NULL;
- 	size_t min_offset = offsetof(struct ffa_indirect_msg_hdr, uuid);
- 
- 	/* Only one framework notification defined and supported for now */
-@@ -1522,12 +1528,17 @@ static void handle_fwk_notif_callbacks(u32 bitmap)
- 		ffa_rx_release();
- 	}
- 
--	read_lock(&drv_info->notify_lock);
--	cb_info = notifier_hnode_get_by_vmid_uuid(notify_id, target, &uuid);
--	read_unlock(&drv_info->notify_lock);
-+	scoped_guard(read_lock, &drv_info->notify_lock) {
-+		struct notifier_cb_info *cb_info;
-+
-+		cb_info = notifier_hnode_get_by_vmid_uuid(notify_id, target,
-+							  &uuid);
-+		fwk_cb = cb_info ? cb_info->fwk_cb : NULL;
-+		fwk_cb_data = cb_info ? cb_info->cb_data : NULL;
-+	}
- 
--	if (cb_info && cb_info->fwk_cb)
--		cb_info->fwk_cb(notify_id, cb_info->cb_data, buf);
-+	if (fwk_cb)
-+		fwk_cb(notify_id, fwk_cb_data, buf);
- 	kfree(buf);
- }
- 
--- 
-2.53.0
-
 
 
 
