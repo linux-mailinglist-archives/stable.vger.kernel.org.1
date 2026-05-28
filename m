@@ -1,59 +1,59 @@
-Return-Path: <stable+bounces-256027-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-255424-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id yKubCVGpGGpolwgAu9opvQ
-	(envelope-from <stable+bounces-256027-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:45:05 +0200
+	id WBoHLJ2gGGpAlggAu9opvQ
+	(envelope-from <stable+bounces-255424-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:07:57 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 22D405F9732
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:45:03 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id CC87D5F7E24
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:07:56 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 6CE9C3054649
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 20:35:53 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 5F574301CED7
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 20:07:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4106032AAD6;
-	Thu, 28 May 2026 20:35:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 774A2335566;
+	Thu, 28 May 2026 20:07:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HNIXjpGa"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="n+YlmLAK"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 110E92F1FEC;
-	Thu, 28 May 2026 20:35:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 282812F260C;
+	Thu, 28 May 2026 20:07:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780000550; cv=none; b=qyadsVDnoZSrRvjPeVB/NtjHRT+IcZo7ZiDtLZdwq6cXG1rYoBCIcjgPAg6NNntNH5IuWiVtx3WtGJ9+EaHukXXN1OVDnOc7MpcifzgwnW29s3C4SeG1zw7PXqEEfc2A5SG+gVTbmB9CEBqPaGZEqOwyXCJwwuphMjHJj91QxyI=
+	t=1779998871; cv=none; b=p1w98rKPIxKZAJdPzrCU1AWudYUmU4Euj93DBKVj0G61z5dimZxnRTBnT+0s+e0eUJ2PaWtcu8zaOLw9YT9k4ABdlJ7A16qcaM9IZaZo0XMDKmahI5ZEMcN+uxvanLLCK+qxKkbhcoBH4PJj4TC4ULtpNrXTDC3/TVXk50W3+3M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780000550; c=relaxed/simple;
-	bh=rttEHrBuV92TtpQKgZd6YHO+nuoLcgFALavlp74ouyg=;
+	s=arc-20240116; t=1779998871; c=relaxed/simple;
+	bh=sWu0gP55uNrUSylBn2ohzMgrTYihCUMn02VXcNz03xg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=cAOZuk9txFUdrI/kkCWWpubSdMJfpiKdTnFSATkycDI4kER/cMwKf2g4r6LjeQyGsw29lL3pkgR0qerLWWKJyGngi40YnbXqESPhk67g5hQfoPXEjHveljMvyHSk3/o1x92+uC9VpSdeey82KgqPOZFScLis/yprosC9Yq8zP6I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HNIXjpGa; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6FD761F000E9;
-	Thu, 28 May 2026 20:35:48 +0000 (UTC)
+	 MIME-Version; b=sf225V+i2vQ7qVidjP81CN0dB9CWSKthbZ7Mun1+H5kMKqvkl84F6JEPZXu/X9p+LRME5n33tpXY9aP5SR7XqGZ1CHQ91HY+crvrgBNU6LZtwu4cGff6KEvpyIvb6zoHHB19+QptvrxtsIOsW7LMUAkGV3zMpxTlBnwNZX+aug4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=n+YlmLAK; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 859791F000E9;
+	Thu, 28 May 2026 20:07:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780000549;
-	bh=XqtnsAbL1sF5Q0pWSj6aMKUZljp8OHlf/fjPl73zL1k=;
+	s=korg; t=1779998870;
+	bh=9pyQtCheqhnXREmSETEqMK51BfBv+zQ5ye5wYzQy2sc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=HNIXjpGatUk84KhSmM375dgBeKpphSzgyBpyfUirr/DoDuQHv32Cw3DMKpYXNx59F
-	 672Yknyf2FxGmvRwR21gzGJjwqLVub8246k1n55GSAEyqifFKTpoTVRKQNIGWTKVfG
-	 p87aZY/uqRAofEzLHKlchIHm57kyigbDPVbM9SR8=
+	b=n+YlmLAKoTbh3oRsDmq7+r7Kj/oZAEGR2ChCYud6Rjoe27r4l7uOKJIL0Xgm62EH/
+	 XpGpWCar5qnp2AK7BMlMUSuC3c94vZO24rEVRZKeH2D8/9pnB44+tcNiJr2O3UI7k2
+	 MIue5grwrjeKAlR6bT5AE/X2vMbrhxdd4c/eIdpE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
-	"Masami Hiramatsu (Google)" <mhiramat@kernel.org>,
-	Steven Rostedt <rostedt@goodmis.org>
-Subject: [PATCH 6.12 083/272] ring-buffer: Fix reporting of missed events in iterator
+	Ralf Lici <ralf@mandelbit.com>,
+	Antonio Quartulli <antonio@openvpn.net>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 7.0 328/461] ovpn: disable BHs when updating device stats
 Date: Thu, 28 May 2026 21:47:37 +0200
-Message-ID: <20260528194631.702583912@linuxfoundation.org>
+Message-ID: <20260528194656.843054835@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260528194629.379955525@linuxfoundation.org>
-References: <20260528194629.379955525@linuxfoundation.org>
+In-Reply-To: <20260528194646.819809818@linuxfoundation.org>
+References: <20260528194646.819809818@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -68,7 +68,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
@@ -78,7 +78,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-256027-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-255424-lists,stable=lfdr.de];
 	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
@@ -89,83 +89,194 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	TAGGED_RCPT(0.00)[stable];
 	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,efficios.com:email,goodmis.org:email,msgid.link:url,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo]
-X-Rspamd-Queue-Id: 22D405F9732
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,openvpn.net:email]
+X-Rspamd-Queue-Id: CC87D5F7E24
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+7.0-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Steven Rostedt <rostedt@goodmis.org>
+From: Ralf Lici <ralf@mandelbit.com>
 
-commit a254b6d13b0edd6272926674d2afc46d46e496b7 upstream.
+[ Upstream commit 0c0dddc07d272a8d25922e48041e8e4d2434df7e ]
 
-When tracing is active while reading the trace file, if the iterator
-reading the buffer detects that the writer has passed the iterator head,
-it will reset and set a "missed events" flag. This flag is passed to the
-output processing to show the user that events were missed:
+ovpn updates dev->dstats from both process and softirq contexts. In
+particular, TCP paths may run from socket callbacks, workqueues or
+strparser work, while UDP receive and ovpn's ndo_start_xmit path may
+update the same per-device dstats from BH context.
 
-  CPU:4 [LOST EVENTS]
+Add ovpn device drop-stat helpers that disable BHs around
+dev_dstats_rx_dropped() and dev_dstats_tx_dropped(), and use them for
+drop accounting.
 
-The problem is that the flag is reset after it is checked in
-ring_buffer_iter_dropped(). But the "trace" file iterates over all the CPU
-ring buffers and it will check if they are dropped when figuring out which
-buffer to print next. This prematurely clears the missed_events flag if
-the CPU buffer with the missed events is not the one that is printed next.
+The successful RX dev_dstats_rx_add() update is already covered by the
+BH-disabled section around gro_cells_receive(). For the successful TCP
+TX dev_dstats_tx_add() update, replace the existing preempt-disabled
+section with a BH-disabled one.
 
-On the iteration where the CPU buffer with the missed events is printed,
-the check if it had missed events would return false and the output does
-not show that events were missed.
-
-Do not reset the missed_events flag when checking if there were missed
-events, but instead clear it when moving the iterator head to the next
-event.
-
-Cc: stable@vger.kernel.org
-Cc: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
-Link: https://patch.msgid.link/20260520220801.4fd09d13@fedora
-Fixes: c9b7a4a72ff64 ("ring-buffer/tracing: Have iterator acknowledge dropped events")
-Acked-by: Masami Hiramatsu (Google) <mhiramat@kernel.org>
-Signed-off-by: Steven Rostedt <rostedt@goodmis.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 11851cbd60ea ("ovpn: implement TCP transport")
+Signed-off-by: Ralf Lici <ralf@mandelbit.com>
+Signed-off-by: Antonio Quartulli <antonio@openvpn.net>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/trace/ring_buffer.c |    8 +++-----
- 1 file changed, 3 insertions(+), 5 deletions(-)
+ drivers/net/ovpn/io.c    | 12 ++++++------
+ drivers/net/ovpn/stats.h | 16 ++++++++++++++++
+ drivers/net/ovpn/tcp.c   | 10 +++++-----
+ drivers/net/ovpn/udp.c   |  2 +-
+ 4 files changed, 28 insertions(+), 12 deletions(-)
 
---- a/kernel/trace/ring_buffer.c
-+++ b/kernel/trace/ring_buffer.c
-@@ -5120,6 +5120,7 @@ static void rb_iter_reset(struct ring_bu
- 	iter->head_page = cpu_buffer->reader_page;
- 	iter->head = cpu_buffer->reader_page->read;
- 	iter->next_event = iter->head;
-+	iter->missed_events = 0;
+diff --git a/drivers/net/ovpn/io.c b/drivers/net/ovpn/io.c
+index 955c9a37e1f8d..c03e58e28a860 100644
+--- a/drivers/net/ovpn/io.c
++++ b/drivers/net/ovpn/io.c
+@@ -196,7 +196,7 @@ void ovpn_decrypt_post(void *data, int ret)
+ 	skb = NULL;
+ drop:
+ 	if (unlikely(skb))
+-		dev_dstats_rx_dropped(peer->ovpn->dev);
++		ovpn_dev_dstats_rx_dropped(peer->ovpn->dev);
+ 	kfree_skb(skb);
+ drop_nocount:
+ 	if (likely(peer))
+@@ -220,7 +220,7 @@ void ovpn_recv(struct ovpn_peer *peer, struct sk_buff *skb)
+ 		net_info_ratelimited("%s: no available key for peer %u, key-id: %u\n",
+ 				     netdev_name(peer->ovpn->dev), peer->id,
+ 				     key_id);
+-		dev_dstats_rx_dropped(peer->ovpn->dev);
++		ovpn_dev_dstats_rx_dropped(peer->ovpn->dev);
+ 		kfree_skb(skb);
+ 		ovpn_peer_put(peer);
+ 		return;
+@@ -298,7 +298,7 @@ void ovpn_encrypt_post(void *data, int ret)
+ 	rcu_read_unlock();
+ err:
+ 	if (unlikely(skb))
+-		dev_dstats_tx_dropped(peer->ovpn->dev);
++		ovpn_dev_dstats_tx_dropped(peer->ovpn->dev);
+ 	if (likely(peer))
+ 		ovpn_peer_put(peer);
+ 	if (likely(ks))
+@@ -340,7 +340,7 @@ static void ovpn_send(struct ovpn_priv *ovpn, struct sk_buff *skb,
+ 	 */
+ 	skb_list_walk_safe(skb, curr, next) {
+ 		if (unlikely(!ovpn_encrypt_one(peer, curr))) {
+-			dev_dstats_tx_dropped(ovpn->dev);
++			ovpn_dev_dstats_tx_dropped(ovpn->dev);
+ 			kfree_skb(curr);
+ 		}
+ 	}
+@@ -411,7 +411,7 @@ netdev_tx_t ovpn_net_xmit(struct sk_buff *skb, struct net_device *dev)
+ 		if (unlikely(!curr)) {
+ 			net_err_ratelimited("%s: skb_share_check failed for payload packet\n",
+ 					    netdev_name(dev));
+-			dev_dstats_tx_dropped(ovpn->dev);
++			ovpn_dev_dstats_tx_dropped(ovpn->dev);
+ 			continue;
+ 		}
  
- 	iter->cache_reader_page = iter->head_page;
- 	iter->cache_read = cpu_buffer->read;
-@@ -5735,10 +5736,7 @@ ring_buffer_peek(struct trace_buffer *bu
-  */
- bool ring_buffer_iter_dropped(struct ring_buffer_iter *iter)
- {
--	bool ret = iter->missed_events != 0;
--
--	iter->missed_events = 0;
--	return ret;
-+	return iter->missed_events != 0;
+@@ -437,7 +437,7 @@ netdev_tx_t ovpn_net_xmit(struct sk_buff *skb, struct net_device *dev)
+ drop:
+ 	ovpn_peer_put(peer);
+ drop_no_peer:
+-	dev_dstats_tx_dropped(ovpn->dev);
++	ovpn_dev_dstats_tx_dropped(ovpn->dev);
+ 	skb_tx_error(skb);
+ 	kfree_skb_list(skb);
+ 	return NETDEV_TX_OK;
+diff --git a/drivers/net/ovpn/stats.h b/drivers/net/ovpn/stats.h
+index 53433d8b6c331..3a45b97c00568 100644
+--- a/drivers/net/ovpn/stats.h
++++ b/drivers/net/ovpn/stats.h
+@@ -11,6 +11,8 @@
+ #ifndef _NET_OVPN_OVPNSTATS_H_
+ #define _NET_OVPN_OVPNSTATS_H_
+ 
++#include <linux/netdevice.h>
++
+ /* one stat */
+ struct ovpn_peer_stat {
+ 	atomic64_t bytes;
+@@ -44,4 +46,18 @@ static inline void ovpn_peer_stats_increment_tx(struct ovpn_peer_stats *stats,
+ 	ovpn_peer_stats_increment(&stats->tx, n);
  }
- EXPORT_SYMBOL_GPL(ring_buffer_iter_dropped);
  
-@@ -5900,7 +5898,7 @@ void ring_buffer_iter_advance(struct rin
- 	unsigned long flags;
++static inline void ovpn_dev_dstats_tx_dropped(struct net_device *dev)
++{
++	local_bh_disable();
++	dev_dstats_tx_dropped(dev);
++	local_bh_enable();
++}
++
++static inline void ovpn_dev_dstats_rx_dropped(struct net_device *dev)
++{
++	local_bh_disable();
++	dev_dstats_rx_dropped(dev);
++	local_bh_enable();
++}
++
+ #endif /* _NET_OVPN_OVPNSTATS_H_ */
+diff --git a/drivers/net/ovpn/tcp.c b/drivers/net/ovpn/tcp.c
+index 5f345ae7d59d2..505c2f214c9f1 100644
+--- a/drivers/net/ovpn/tcp.c
++++ b/drivers/net/ovpn/tcp.c
+@@ -152,7 +152,7 @@ static void ovpn_tcp_rcv(struct strparser *strp, struct sk_buff *skb)
+ 	if (WARN_ON(!ovpn_peer_hold(peer)))
+ 		goto err_nopeer;
+ 	schedule_work(&peer->tcp.defer_del_work);
+-	dev_dstats_rx_dropped(peer->ovpn->dev);
++	ovpn_dev_dstats_rx_dropped(peer->ovpn->dev);
+ err_nopeer:
+ 	kfree_skb(skb);
+ }
+@@ -298,9 +298,9 @@ static void ovpn_tcp_send_sock(struct ovpn_peer *peer, struct sock *sk)
+ 	} while (peer->tcp.out_msg.len > 0);
  
- 	raw_spin_lock_irqsave(&cpu_buffer->reader_lock, flags);
--
-+	iter->missed_events = 0;
- 	rb_advance_iter(iter);
+ 	if (!peer->tcp.out_msg.len) {
+-		preempt_disable();
++		local_bh_disable();
+ 		dev_dstats_tx_add(peer->ovpn->dev, skb->len);
+-		preempt_enable();
++		local_bh_enable();
+ 	}
  
- 	raw_spin_unlock_irqrestore(&cpu_buffer->reader_lock, flags);
+ 	kfree_skb(peer->tcp.out_msg.skb);
+@@ -331,7 +331,7 @@ static void ovpn_tcp_send_sock_skb(struct ovpn_peer *peer, struct sock *sk,
+ 		ovpn_tcp_send_sock(peer, sk);
+ 
+ 	if (peer->tcp.out_msg.skb) {
+-		dev_dstats_tx_dropped(peer->ovpn->dev);
++		ovpn_dev_dstats_tx_dropped(peer->ovpn->dev);
+ 		kfree_skb(skb);
+ 		return;
+ 	}
+@@ -353,7 +353,7 @@ void ovpn_tcp_send_skb(struct ovpn_peer *peer, struct sock *sk,
+ 	if (sock_owned_by_user(sk)) {
+ 		if (skb_queue_len(&peer->tcp.out_queue) >=
+ 		    READ_ONCE(net_hotdata.max_backlog)) {
+-			dev_dstats_tx_dropped(peer->ovpn->dev);
++			ovpn_dev_dstats_tx_dropped(peer->ovpn->dev);
+ 			kfree_skb(skb);
+ 			goto unlock;
+ 		}
+diff --git a/drivers/net/ovpn/udp.c b/drivers/net/ovpn/udp.c
+index 272b535ecaad4..367563d84472f 100644
+--- a/drivers/net/ovpn/udp.c
++++ b/drivers/net/ovpn/udp.c
+@@ -126,7 +126,7 @@ static int ovpn_udp_encap_recv(struct sock *sk, struct sk_buff *skb)
+ 	return 0;
+ 
+ drop:
+-	dev_dstats_rx_dropped(ovpn->dev);
++	ovpn_dev_dstats_rx_dropped(ovpn->dev);
+ drop_noovpn:
+ 	kfree_skb(skb);
+ 	return 0;
+-- 
+2.53.0
+
 
 
 
