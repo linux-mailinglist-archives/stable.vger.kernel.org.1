@@ -1,59 +1,61 @@
-Return-Path: <stable+bounces-256058-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-255493-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id aCYaNKSqGGoomAgAu9opvQ
-	(envelope-from <stable+bounces-256058-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:50:44 +0200
+	id IJNOOh2jGGrJlggAu9opvQ
+	(envelope-from <stable+bounces-255493-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:18:37 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id E25B55F9AD3
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:50:43 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id A22F35F85B3
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:18:37 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 8F54430210E7
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 20:37:19 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id C84A63100DE3
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 20:11:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C8E8B197A7D;
-	Thu, 28 May 2026 20:37:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E340F3E3147;
+	Thu, 28 May 2026 20:11:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IsstqGbB"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mKkSDtJY"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 976751FC0EA;
-	Thu, 28 May 2026 20:37:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 962EA33A702;
+	Thu, 28 May 2026 20:11:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780000637; cv=none; b=enWt9TEFgqBsyLvwuSSp/9k2XA5T2TR05W+gGOQw1HX1cPQLZI0LX1T08k+mayNFlDuwAU/9XTrwwcta9ClN70hXg24VoVOO0GC59qBo+HGbuAKddFvbiA3GVw39dtksVfm8JoWsug3MMdBnccJusyFSfAvVEuULaiX7DW8fFbQ=
+	t=1779999066; cv=none; b=aEY9LsKQaOW7usZPdWrNYnuXYvaw+NTv0wb0OP0NR6MXiT5X0UiFBEXVeAUgAHB1bazBNrtPKJTgYkSOyTL4UVP8Hno1dzHvWbqPiJ1r/r3FVlUn9woqpYtUbeepcmWFePpRCldvElTJAHwPhgidHm5LqQmEbGKNm1lyNusb9XU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780000637; c=relaxed/simple;
-	bh=CPAMpQr6Mf1tjjGSYoMiR3b5tcqIRS06Wki2iTfq+p0=;
+	s=arc-20240116; t=1779999066; c=relaxed/simple;
+	bh=aH+kJbDz3hLb0XICd8cFhWIPATI6IKPux8P3YURShXs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=kXCqhrcR51OtXMR6JkCco2Dh9++CPwsCrIKltTbgH/Y9LqByJFWZ/5R8uEeJFA52Dri1uZxSxwIhEZUFnk3suXS6lJ+hWsR/M9z2ofs0QXF6nMe/IX6JHBVh75Foof5ITHrv5XjVQ6+A71WVk5Pe9ZC3O8aHwh4r861fZZkkd3I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IsstqGbB; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 007561F000E9;
-	Thu, 28 May 2026 20:37:15 +0000 (UTC)
+	 MIME-Version; b=h2opvP13lX9kzkKY0HKX1bhK39PU3w5x20nKX2L8SxsEzcCVNnn6fGEf9Pcw+IDkpYpv2BBWqfly7IhMlAywT+myihxrpvz4asL+9vdtLSkOZBqHdgaoFi4VIMVWMamkUi2Lbh+KVoMQsGGvBb429Hqv5CjEMfBDk6ffymi1ZD4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mKkSDtJY; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EA4D21F000E9;
+	Thu, 28 May 2026 20:11:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780000636;
-	bh=0gFMIAKUdApU564feko7cVXlewaWO/yCsyNxEPxHIHA=;
+	s=korg; t=1779999065;
+	bh=oRi+xa2J00+5XhJrSV0Ri9YJjLMILbdaqQCl4cp73xc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=IsstqGbBVJLwP3LDVHIMPiUp/IJXao/qT3a3Pxh4zj13rGxV3dmvuvDKqi/PriHnT
-	 i1PlmR+5Q7GiSbGWhLoLWRAHXz/lJtnGnFXU1hWZ9voZ+QU/O4T3Q5+Aj1hRsmfvFs
-	 jv+335eZtRDsAJQLbMPle1PG3G/WrdtywOViU81Q=
+	b=mKkSDtJYQThWyxAufP8gHDPGc8Bgh32Y0bxsLOU9YwsGEX1tAWwlbtNOxEosGhATL
+	 FMAGD39hkfuid2ajecht8qciah4mlokUzaW1rBdhmwKxTDrM7LHqQR0MwGORYrG0aA
+	 2CJe1zxmyky79knjYTgVMeX8O2IIeBmRvl8oGC5o=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Mario Limonciello (AMD)" <superm1@kernel.org>,
-	Alan liu <haoping.liu@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>
-Subject: [PATCH 6.12 115/272] drm/amdgpu/vpe: Force collaborate sync after TRAP
+	Michal Wajdeczko <michal.wajdeczko@intel.com>,
+	Mohanram Meenakshisundaram <mohanram.meenakshisundaram@intel.com>,
+	Shuicheng Lin <shuicheng.lin@intel.com>,
+	Rodrigo Vivi <rodrigo.vivi@intel.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 7.0 360/461] drm/xe/vf: Fix signature of print functions
 Date: Thu, 28 May 2026 21:48:09 +0200
-Message-ID: <20260528194632.601345297@linuxfoundation.org>
+Message-ID: <20260528194657.848478669@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260528194629.379955525@linuxfoundation.org>
-References: <20260528194629.379955525@linuxfoundation.org>
+In-Reply-To: <20260528194646.819809818@linuxfoundation.org>
+References: <20260528194646.819809818@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -68,79 +70,156 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-255493-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-256058-lists,stable=lfdr.de];
-	TO_DN_SOME(0.00)[];
-	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,amd.com:email]
-X-Rspamd-Queue-Id: E25B55F9AD3
+	TO_DN_SOME(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_SEVEN(0.00)[8];
+	MID_RHS_MATCH_FROM(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,linuxfoundation.org:mid,linuxfoundation.org:dkim,intel.com:email,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo]
+X-Rspamd-Queue-Id: A22F35F85B3
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+7.0-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alan Liu <haoping.liu@amd.com>
+From: Michal Wajdeczko <michal.wajdeczko@intel.com>
 
-commit b6074630a461b1322a814988779005cbc43612ea upstream.
+[ Upstream commit 9bb2f1d7e6e58b8e434ddc2048c661bf87ccdf2a ]
 
-VPE1 could possibly hang and fail to power off at the end of commands in
-collaboration mode. This workaround adds a COLLAB_SYNC after TRAP to
-force instances synchronized to avoid VPE1 fail to power off.
+We have plugged-in existing VF print functions into our GT debugfs
+show helper as-is, but we missed that the helper expects functions
+to return int, while they were defined as void. This can lead to
+errors being reported when CFI is enabled.
 
-Reviewed-by: Mario Limonciello (AMD) <superm1@kernel.org>
-Signed-off-by: Alan liu <haoping.liu@amd.com>
-Closes: https://gitlab.freedesktop.org/drm/amd/-/work_items/5171
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-(cherry picked from commit a8b749c5c5afb7e5daa2bfb95d958fb3c6b8f055)
-Cc: stable@vger.kernel.org
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 63d8cb8fe3dd ("drm/xe/vf: Expose SR-IOV VF attributes to GT debugfs")
+Signed-off-by: Michal Wajdeczko <michal.wajdeczko@intel.com>
+Cc: Mohanram Meenakshisundaram <mohanram.meenakshisundaram@intel.com>
+Reviewed-by: Shuicheng Lin <shuicheng.lin@intel.com>
+Link: https://patch.msgid.link/20260514155726.7165-1-michal.wajdeczko@intel.com
+(cherry picked from commit 314e31c9a8a1c421ee4f7f755b9348aefbbca090)
+Signed-off-by: Rodrigo Vivi <rodrigo.vivi@intel.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/amdgpu/amdgpu_vpe.c |    7 ++++++-
- 1 file changed, 6 insertions(+), 1 deletion(-)
+ drivers/gpu/drm/xe/xe_gt_sriov_vf.c | 24 ++++++++++++++++++------
+ drivers/gpu/drm/xe/xe_gt_sriov_vf.h |  6 +++---
+ 2 files changed, 21 insertions(+), 9 deletions(-)
 
---- a/drivers/gpu/drm/amd/amdgpu/amdgpu_vpe.c
-+++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_vpe.c
-@@ -556,6 +556,11 @@ static void vpe_ring_emit_fence(struct a
- 		amdgpu_ring_write(ring, 0);
- 	}
- 
-+	/* WA: Force sync after TRAP to avoid VPE1 fail to power off */
-+	if (ring->adev->vpe.collaborate_mode) {
-+		amdgpu_ring_write(ring, VPE_CMD_HEADER(VPE_CMD_OPCODE_COLLAB_SYNC, 0));
-+		amdgpu_ring_write(ring, 0xabcd);
-+	}
+diff --git a/drivers/gpu/drm/xe/xe_gt_sriov_vf.c b/drivers/gpu/drm/xe/xe_gt_sriov_vf.c
+index 30e8c2cf5f09a..82703a25e96d9 100644
+--- a/drivers/gpu/drm/xe/xe_gt_sriov_vf.c
++++ b/drivers/gpu/drm/xe/xe_gt_sriov_vf.c
+@@ -1129,13 +1129,15 @@ void xe_gt_sriov_vf_write32(struct xe_gt *gt, struct xe_reg reg, u32 val)
  }
  
- static void vpe_ring_emit_pipeline_sync(struct amdgpu_ring *ring)
-@@ -904,7 +909,7 @@ static const struct amdgpu_ring_funcs vp
- 	.emit_frame_size =
- 		5 + /* vpe_ring_init_cond_exec */
- 		6 + /* vpe_ring_emit_pipeline_sync */
--		10 + 10 + 10 + /* vpe_ring_emit_fence */
-+		12 + 12 + 12 + /* vpe_ring_emit_fence */
- 		/* vpe_ring_emit_vm_flush */
- 		SOC15_FLUSH_GPU_TLB_NUM_WREG * 3 +
- 		SOC15_FLUSH_GPU_TLB_NUM_REG_WAIT * 6,
+ /**
+- * xe_gt_sriov_vf_print_config - Print VF self config.
++ * xe_gt_sriov_vf_print_config() - Print VF self config.
+  * @gt: the &xe_gt
+  * @p: the &drm_printer
+  *
+  * This function is for VF use only.
++ *
++ * Return: always 0.
+  */
+-void xe_gt_sriov_vf_print_config(struct xe_gt *gt, struct drm_printer *p)
++int xe_gt_sriov_vf_print_config(struct xe_gt *gt, struct drm_printer *p)
+ {
+ 	struct xe_gt_sriov_vf_selfconfig *config = &gt->sriov.vf.self_config;
+ 	struct xe_device *xe = gt_to_xe(gt);
+@@ -1162,16 +1164,20 @@ void xe_gt_sriov_vf_print_config(struct xe_gt *gt, struct drm_printer *p)
+ 
+ 	drm_printf(p, "GuC contexts:\t%u\n", config->num_ctxs);
+ 	drm_printf(p, "GuC doorbells:\t%u\n", config->num_dbs);
++
++	return 0;
+ }
+ 
+ /**
+- * xe_gt_sriov_vf_print_runtime - Print VF's runtime regs received from PF.
++ * xe_gt_sriov_vf_print_runtime() - Print VF's runtime regs received from PF.
+  * @gt: the &xe_gt
+  * @p: the &drm_printer
+  *
+  * This function is for VF use only.
++ *
++ * Return: always 0.
+  */
+-void xe_gt_sriov_vf_print_runtime(struct xe_gt *gt, struct drm_printer *p)
++int xe_gt_sriov_vf_print_runtime(struct xe_gt *gt, struct drm_printer *p)
+ {
+ 	struct vf_runtime_reg *vf_regs = gt->sriov.vf.runtime.regs;
+ 	unsigned int size = gt->sriov.vf.runtime.num_regs;
+@@ -1180,16 +1186,20 @@ void xe_gt_sriov_vf_print_runtime(struct xe_gt *gt, struct drm_printer *p)
+ 
+ 	for (; size--; vf_regs++)
+ 		drm_printf(p, "%#x = %#x\n", vf_regs->offset, vf_regs->value);
++
++	return 0;
+ }
+ 
+ /**
+- * xe_gt_sriov_vf_print_version - Print VF ABI versions.
++ * xe_gt_sriov_vf_print_version() - Print VF ABI versions.
+  * @gt: the &xe_gt
+  * @p: the &drm_printer
+  *
+  * This function is for VF use only.
++ *
++ * Return: always 0.
+  */
+-void xe_gt_sriov_vf_print_version(struct xe_gt *gt, struct drm_printer *p)
++int xe_gt_sriov_vf_print_version(struct xe_gt *gt, struct drm_printer *p)
+ {
+ 	struct xe_device *xe = gt_to_xe(gt);
+ 	struct xe_uc_fw_version *guc_version = &gt->sriov.vf.guc_version;
+@@ -1219,6 +1229,8 @@ void xe_gt_sriov_vf_print_version(struct xe_gt *gt, struct drm_printer *p)
+ 		   GUC_RELAY_VERSION_LATEST_MAJOR, GUC_RELAY_VERSION_LATEST_MINOR);
+ 	drm_printf(p, "\thandshake:\t%u.%u\n",
+ 		   pf_version->major, pf_version->minor);
++
++	return 0;
+ }
+ 
+ static bool vf_post_migration_shutdown(struct xe_gt *gt)
+diff --git a/drivers/gpu/drm/xe/xe_gt_sriov_vf.h b/drivers/gpu/drm/xe/xe_gt_sriov_vf.h
+index 7d97189c2d3d9..4f1c7aa422e7b 100644
+--- a/drivers/gpu/drm/xe/xe_gt_sriov_vf.h
++++ b/drivers/gpu/drm/xe/xe_gt_sriov_vf.h
+@@ -35,9 +35,9 @@ bool xe_gt_sriov_vf_sched_groups_enabled(struct xe_gt *gt);
+ u32 xe_gt_sriov_vf_read32(struct xe_gt *gt, struct xe_reg reg);
+ void xe_gt_sriov_vf_write32(struct xe_gt *gt, struct xe_reg reg, u32 val);
+ 
+-void xe_gt_sriov_vf_print_config(struct xe_gt *gt, struct drm_printer *p);
+-void xe_gt_sriov_vf_print_runtime(struct xe_gt *gt, struct drm_printer *p);
+-void xe_gt_sriov_vf_print_version(struct xe_gt *gt, struct drm_printer *p);
++int xe_gt_sriov_vf_print_config(struct xe_gt *gt, struct drm_printer *p);
++int xe_gt_sriov_vf_print_runtime(struct xe_gt *gt, struct drm_printer *p);
++int xe_gt_sriov_vf_print_version(struct xe_gt *gt, struct drm_printer *p);
+ 
+ void xe_gt_sriov_vf_wait_valid_ggtt(struct xe_gt *gt);
+ 
+-- 
+2.53.0
+
 
 
 
