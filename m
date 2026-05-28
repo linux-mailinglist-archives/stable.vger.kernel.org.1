@@ -1,60 +1,59 @@
-Return-Path: <stable+bounces-256363-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-255943-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id INvxCEKsGGpolwgAu9opvQ
-	(envelope-from <stable+bounces-256363-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:57:38 +0200
+	id WGQNItOnGGpolwgAu9opvQ
+	(envelope-from <stable+bounces-255943-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:38:43 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 93F985F9E9C
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:57:37 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 21A695F9323
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:38:42 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 07333300FFA8
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 20:51:32 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id A628D313159B
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 20:31:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6808F33F8B2;
-	Thu, 28 May 2026 20:51:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4F40B313550;
+	Thu, 28 May 2026 20:31:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IzRUB3e2"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xOVyZ9So"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3AB6D2F1FEF;
-	Thu, 28 May 2026 20:51:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 20B2725F7B9;
+	Thu, 28 May 2026 20:31:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780001491; cv=none; b=lO0+rr3RrFWLu+nyLyjBVieKbkTIuFViWj3+QLjrU7yJYtmR75uu3xu+PutDlbRnmMpU78RR4Qhu7BAOq78/6FhBH9LoG9o7Fbhx6xuQDWjsjHJsbPeL7JVZ884GVFP2Aac19YQ7qCkLRaQQGJY1LTZLMgYqGYbanR7vrhl/4po=
+	t=1780000314; cv=none; b=PsE6h0xNZMVnhvDQrYsmg9ewrqLH5H7UNcrj0iDEtFHv0I8V/dSRkDCfo8vd3rJiNDYQTk8FDgk2pzOeQalOOJygPvHFoqJNntZH9T8aQgbO6+KVEGH495DsSixcaYVcr64JOleDkvKu+5kqGhTJ6YLVyXFRkMIQWj+jCm6RJGU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780001491; c=relaxed/simple;
-	bh=vSDkuEkT2ODEUrPKb9ZbOHFsp+WemlTbYJ0jzVl7FrY=;
+	s=arc-20240116; t=1780000314; c=relaxed/simple;
+	bh=0u0Bg0FI3pJmrgl8yTeXbh7uuESOPQRNUPDjU9OP8CE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=OV9imAu2uwfTR+lS5CvCVPcHsYIBZcvQCMW2vKF12nWhPs+bkROGrEkLMd0ZBzVfwby/AiBVKdVrYYenEu4mtX+xfrILxWuSkFucbyjgFLd+b4nZWCgbLBLdfAAZP8CxdiLE9zvbqH4IR0pARUkA06n655s/5NpZGbNluP0XHZE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IzRUB3e2; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 988EF1F000E9;
-	Thu, 28 May 2026 20:51:29 +0000 (UTC)
+	 MIME-Version; b=GO+rwac8vvqVw9ojs3XicV0hlbDUWhgCPZV0mjb2NZ1RZBFzXsR0saiYOri0RSbcg5E4TT5NApkrrk58BuNU+VFImgApraZOU+wkPgkv54FQsL7+EiC46hXXQknC4q60Qam4XJz67DaV4A5SLBej5EgfwmLqUJQFfkyA5S41iWo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xOVyZ9So; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7F3FA1F000E9;
+	Thu, 28 May 2026 20:31:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780001490;
-	bh=K87B1GrV/GcZ2EP8gpAKZK/0KusLpJwbcJxw1/o9xzw=;
+	s=korg; t=1780000313;
+	bh=X01PbOSdr+UvXDb+clDaH/3JwPGSme31YaV3i71/luo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=IzRUB3e2aWeJzMduXR/ZxCzW7g+y9thJPiNIr/VlMf1YHEQwLm3gAbvp1tc7RTUqh
-	 9+6OYJMoWHIcpGERY4CFzrkIvfObhHxb87TO2sx8QA8ROy6+wlmESAzXw86PrXcUgb
-	 0rX41/RgESS0nqcvhMtLxpD/4bgcCTgvs8jxVKY8=
+	b=xOVyZ9SotW6PHSD1sy9sp8H2rgi4Pe6gHbqEYmUvstX5wgEbuiV5ya9Umkj3a9P4C
+	 2na8HLn55AH6UtD9vwT+jG+kft6JChS3T96rywADEeaFAIUzhugf5e9tQEkGR4JCAy
+	 rfWNgDTOC4QYyHGV7tvcab2YLVZHf83oEUxtdpRg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	kernel test robot <lkp@intel.com>,
-	Randy Dunlap <rdunlap@infradead.org>,
-	Florian Westphal <fw@strlen.de>,
+	Kiran K <kiran.k@intel.com>,
+	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 110/186] netfilter: xtables: fix up kconfig dependencies
+Subject: [PATCH 6.18 352/377] Bluetooth: btintel_pcie: Fix incorrect MAC access programming
 Date: Thu, 28 May 2026 21:49:50 +0200
-Message-ID: <20260528194931.910324123@linuxfoundation.org>
+Message-ID: <20260528194648.618562632@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260528194928.941004471@linuxfoundation.org>
-References: <20260528194928.941004471@linuxfoundation.org>
+In-Reply-To: <20260528194638.371537336@linuxfoundation.org>
+References: <20260528194638.371537336@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -74,82 +73,106 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-256363-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-255943-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[7];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[infradead.org:email,strlen.de:email,intel.com:email,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim]
-X-Rspamd-Queue-Id: 93F985F9E9C
+	RCPT_COUNT_FIVE(0.00)[6];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[intel.com:email,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim]
+X-Rspamd-Queue-Id: 21A695F9323
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Florian Westphal <fw@strlen.de>
+From: Kiran K <kiran.k@intel.com>
 
-[ Upstream commit 749d4ef0868c5d8a98e07073791b2198178c93b4 ]
+[ Upstream commit 88365d04fdc821dc4e9eb0cc00fdf6905430d172 ]
 
-Randy Dunlap reports arptables build failure:
-arp_tables.c:(.text+0x20): undefined reference to `xt_find_table'
+btintel_pcie_get_mac_access() and btintel_pcie_release_mac_access()
+were programming STOP_MAC_ACCESS_DIS and XTAL_CLK_REQ in addition to
+the MAC_ACCESS_REQ handshake. These bits are not part of the host
+MAC-access handshake on the supported parts; the driver was
+programming them incorrectly. Drop the writes so the register update
+contains only the bits the controller actually consumes.
 
-... because recent change removed a 'select' on the xtables core.
-Add a "depends" clause on arptables to resolve this.
-
-Kernel test robot reports another build breakage:
-iptable_nat.c:(.text+0x8): undefined reference to `ipt_unregister_table_exit'
-
-... because of a typo, the nat table selected ip6tables.
-
-Reported-by: kernel test robot <lkp@intel.com>
-Reported-by: Randy Dunlap <rdunlap@infradead.org>
-Closes: https://lore.kernel.org/netfilter-devel/d0dfbaef-046a-4c42-9daa-53636664bf6d@infradead.org/
-Fixes: a9525c7f6219 ("netfilter: xtables: allow xtables-nft only builds")
-Fixes: 4654467dc7e1 ("netfilter: arptables: allow xtables-nft only builds")
-Acked-by: Randy Dunlap <rdunlap@infradead.org>
-Tested-by: Randy Dunlap <rdunlap@infradead.org> # build-tested
-Signed-off-by: Florian Westphal <fw@strlen.de>
-Stable-dep-of: b4597d5fd7d2 ("netfilter: x_tables: add and use xtables_unregister_table_exit")
+Fixes: b9465e6670a2 ("Bluetooth: btintel_pcie: Read hardware exception data")
+Signed-off-by: Kiran K <kiran.k@intel.com>
+Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/ipv4/netfilter/Kconfig | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/bluetooth/btintel_pcie.c | 20 ++++++--------------
+ drivers/bluetooth/btintel_pcie.h |  3 ---
+ 2 files changed, 6 insertions(+), 17 deletions(-)
 
-diff --git a/net/ipv4/netfilter/Kconfig b/net/ipv4/netfilter/Kconfig
-index 7835230872818..8f6e950163a79 100644
---- a/net/ipv4/netfilter/Kconfig
-+++ b/net/ipv4/netfilter/Kconfig
-@@ -217,7 +217,7 @@ config IP_NF_NAT
- 	default m if NETFILTER_ADVANCED=n
- 	select NF_NAT
- 	select NETFILTER_XT_NAT
--	select IP6_NF_IPTABLES_LEGACY
-+	select IP_NF_IPTABLES_LEGACY
- 	help
- 	  This enables the `nat' table in iptables. This allows masquerading,
- 	  port forwarding and other forms of full Network Address Port
-@@ -329,6 +329,7 @@ config NFT_COMPAT_ARP
- config IP_NF_ARPFILTER
- 	tristate "arptables-legacy packet filtering support"
- 	select IP_NF_ARPTABLES
-+	depends on NETFILTER_XTABLES
- 	help
- 	  ARP packet filtering defines a table `filter', which has a series of
- 	  rules for simple ARP packet filtering at local input and
+diff --git a/drivers/bluetooth/btintel_pcie.c b/drivers/bluetooth/btintel_pcie.c
+index c68a8de3025b0..d0aa1666d6ac6 100644
+--- a/drivers/bluetooth/btintel_pcie.c
++++ b/drivers/bluetooth/btintel_pcie.c
+@@ -567,12 +567,10 @@ static int btintel_pcie_get_mac_access(struct btintel_pcie_data *data)
+ 
+ 	reg = btintel_pcie_rd_reg32(data, BTINTEL_PCIE_CSR_FUNC_CTRL_REG);
+ 
+-	reg |= BTINTEL_PCIE_CSR_FUNC_CTRL_STOP_MAC_ACCESS_DIS;
+-	reg |= BTINTEL_PCIE_CSR_FUNC_CTRL_XTAL_CLK_REQ;
+-	if ((reg & BTINTEL_PCIE_CSR_FUNC_CTRL_MAC_ACCESS_STS) == 0)
++	if (!(reg & BTINTEL_PCIE_CSR_FUNC_CTRL_MAC_ACCESS_REQ)) {
+ 		reg |= BTINTEL_PCIE_CSR_FUNC_CTRL_MAC_ACCESS_REQ;
+-
+-	btintel_pcie_wr_reg32(data, BTINTEL_PCIE_CSR_FUNC_CTRL_REG, reg);
++		btintel_pcie_wr_reg32(data, BTINTEL_PCIE_CSR_FUNC_CTRL_REG, reg);
++	}
+ 
+ 	do {
+ 		reg = btintel_pcie_rd_reg32(data, BTINTEL_PCIE_CSR_FUNC_CTRL_REG);
+@@ -592,16 +590,10 @@ static void btintel_pcie_release_mac_access(struct btintel_pcie_data *data)
+ 
+ 	reg = btintel_pcie_rd_reg32(data, BTINTEL_PCIE_CSR_FUNC_CTRL_REG);
+ 
+-	if (reg & BTINTEL_PCIE_CSR_FUNC_CTRL_MAC_ACCESS_REQ)
++	if (reg & BTINTEL_PCIE_CSR_FUNC_CTRL_MAC_ACCESS_REQ) {
+ 		reg &= ~BTINTEL_PCIE_CSR_FUNC_CTRL_MAC_ACCESS_REQ;
+-
+-	if (reg & BTINTEL_PCIE_CSR_FUNC_CTRL_STOP_MAC_ACCESS_DIS)
+-		reg &= ~BTINTEL_PCIE_CSR_FUNC_CTRL_STOP_MAC_ACCESS_DIS;
+-
+-	if (reg & BTINTEL_PCIE_CSR_FUNC_CTRL_XTAL_CLK_REQ)
+-		reg &= ~BTINTEL_PCIE_CSR_FUNC_CTRL_XTAL_CLK_REQ;
+-
+-	btintel_pcie_wr_reg32(data, BTINTEL_PCIE_CSR_FUNC_CTRL_REG, reg);
++		btintel_pcie_wr_reg32(data, BTINTEL_PCIE_CSR_FUNC_CTRL_REG, reg);
++	}
+ }
+ 
+ static void *btintel_pcie_copy_tlv(void *dest, enum btintel_pcie_tlv_type type,
+diff --git a/drivers/bluetooth/btintel_pcie.h b/drivers/bluetooth/btintel_pcie.h
+index 48e1ae1793e5c..481de85456e2b 100644
+--- a/drivers/bluetooth/btintel_pcie.h
++++ b/drivers/bluetooth/btintel_pcie.h
+@@ -34,9 +34,6 @@
+ #define BTINTEL_PCIE_CSR_FUNC_CTRL_MAC_ACCESS_STS	(BIT(20))
+ 
+ #define BTINTEL_PCIE_CSR_FUNC_CTRL_MAC_ACCESS_REQ	(BIT(21))
+-/* Stop MAC Access disconnection request */
+-#define BTINTEL_PCIE_CSR_FUNC_CTRL_STOP_MAC_ACCESS_DIS	(BIT(22))
+-#define BTINTEL_PCIE_CSR_FUNC_CTRL_XTAL_CLK_REQ		(BIT(23))
+ 
+ #define BTINTEL_PCIE_CSR_FUNC_CTRL_BUS_MASTER_STS	(BIT(28))
+ #define BTINTEL_PCIE_CSR_FUNC_CTRL_BUS_MASTER_DISCON	(BIT(29))
 -- 
 2.53.0
 
