@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-255621-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-255623-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id aBsbB/+jGGrClggAu9opvQ
-	(envelope-from <stable+bounces-255621-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:22:23 +0200
+	id SKvEOOqiGGrClggAu9opvQ
+	(envelope-from <stable+bounces-255623-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:17:46 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8AB885F87C1
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:22:22 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id A04C55F84E3
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:17:46 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id CBCAD30434EA
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 20:17:06 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 54592304859D
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 20:17:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 29B45257854;
-	Thu, 28 May 2026 20:17:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B8DA02E03EA;
+	Thu, 28 May 2026 20:17:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="I9QWnCoM"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AZIq/rh+"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EA5372580D7;
-	Thu, 28 May 2026 20:17:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8475724A047;
+	Thu, 28 May 2026 20:17:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779999426; cv=none; b=maT9jwVu58aM3wamkxsPItc85Ap5tNWnloHAY/GSmcouBEcsO+aWjEHqwS90M5C2D5IZQTkm2Ui+jwJiw8Z0uFQHtaTiUHbu2z2OFp3Ubkt8s+ZsQtkvxGL7FlyMywKsJnOHmhx9BKZCwA/wnEUhPSkFDXwcdI9H0cXL4GeAz74=
+	t=1779999431; cv=none; b=Ch5lfVE8brgyOvKGtTLqMpyxgi5IFK3nrR1bizzO9XDrsXCvLJBTOUm45RB4LDY/dqqnEVHBm1H74nrIb+ZgxeyW3K/I1RYWsuzh9lvqSmbc2yO4ua7Co5XBdOroAcVb2Q9P9P1Vw9pqvcimmkKs+7ydOFwP7RYBuRmEglnW7i8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779999426; c=relaxed/simple;
-	bh=qdoQ8ADjy0T062E3NK1+DR1sVwtZ2uVaWLdOHlI/pzI=;
+	s=arc-20240116; t=1779999431; c=relaxed/simple;
+	bh=Er2ysA9DhZcooId0IAyJBbQKqPXa0DAJ5nXdZGLdCxM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=E3bWgcD1DZPqc4QvjXQ/qP8Qsr68Ocg1HKi0q+jvVoRuPDa+jDXMpsk3u/WPe/zECFuvlKgvFG8NSdl8xSMbML2JtH6VW84u3ktEIoYY5d7TL6IvlECMaXtoT95tcR/W65Egf9uoE23BHKrC5pPoWFsxtoGc1x9p6XhYCSospDk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=I9QWnCoM; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 558831F000E9;
-	Thu, 28 May 2026 20:17:04 +0000 (UTC)
+	 MIME-Version; b=mi7x5pWHflr3TrToFsdkqOwCg3xwwkLcW12XYn9rT/3QF4StuY6kJ5kTCcaTzoh0x8B5QDASXgUB+kPruodvj2T4L9NJEXaWDZL01Dcg3FmKhGu133AryGmRo8evrzMirbJ5/YDaRTSPxiTVg2BEkD8davOZ4JZqu2zXnqT36Gw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AZIq/rh+; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E2B171F000E9;
+	Thu, 28 May 2026 20:17:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779999424;
-	bh=OdzgbvpG+BCWCDzIo1qokojNeqHzsyWUOTCK/gr5tOQ=;
+	s=korg; t=1779999430;
+	bh=cB15w25rdSlKbSX5/SOVABrr93t+C4xOJ/LAp6PzIdY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=I9QWnCoMAriHsOKGus10bY9xvwpgBvGyyAmllMRVFZWoUn7j6gDS9ycf6K3Onm3RX
-	 JOHWqt5SrCs+rNNT6mGCUleRBD6Vbx4hJQbG8QQ7mhFEgrZbs70AZ/PUDAXo6oj1h5
-	 r8BM4zvpsTdHqbW1VZMj8zx3JpLFO0k6JqkUtiH0=
+	b=AZIq/rh+DaMIrXpxmDJfs9ettF5V1PXi+c4ssp8D+yrNz8f59vrXWprgZNeeypPhB
+	 c1Abap5UZC++Jh+ud/gat1VRTw/oHjehqagJDIht2U4knr+bwZ8xAXZ2aNAwlqVqSu
+	 DIbGaLZtu5trnihV72Y6qD8MFqUbNJTq1wfM3ti4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Cosmin Ratiu <cratiu@nvidia.com>,
-	Tariq Toukan <tariqt@nvidia.com>,
-	Matt Fleming <mfleming@cloudflare.com>,
+	Michael Bommarito <michael.bommarito@gmail.com>,
 	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 6.18 062/377] net/mlx5e: Fix use-after-free in mlx5e_tx_reporter_timeout_recover
-Date: Thu, 28 May 2026 21:45:00 +0200
-Message-ID: <20260528194640.163812232@linuxfoundation.org>
+Subject: [PATCH 6.18 063/377] net: ifb: report ethtool stats over num_tx_queues
+Date: Thu, 28 May 2026 21:45:01 +0200
+Message-ID: <20260528194640.190596574@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
 In-Reply-To: <20260528194638.371537336@linuxfoundation.org>
 References: <20260528194638.371537336@linuxfoundation.org>
@@ -65,34 +63,36 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-255621-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TO_DN_SOME(0.00)[];
+	TAGGED_FROM(0.00)[bounces-255623-lists,stable=lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[7];
-	MID_RHS_MATCH_FROM(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	NEURAL_HAM(-0.00)[-0.999];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[nvidia.com:email,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,msgid.link:url]
-X-Rspamd-Queue-Id: 8AB885F87C1
+	MID_RHS_MATCH_FROM(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[5];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo]
+X-Rspamd-Queue-Id: A04C55F84E3
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
@@ -100,74 +100,102 @@ X-Rspamd-Server: lfdr
 
 ------------------
 
-From: Matt Fleming <mfleming@cloudflare.com>
+From: Michael Bommarito <michael.bommarito@gmail.com>
 
-commit 7d260c5d2d89eb2c8c528d54b576b3aae3e20231 upstream.
+commit 5db89c99566fc4728cc92e941d8e1975711e24b5 upstream.
 
-mlx5e_tx_reporter_timeout_recover() accesses sq->netdev after
-mlx5e_safe_reopen_channels() has torn down and freed the channel (and
-its embedded SQs). Replace the three sq->netdev references with
-priv->netdev which is safe because priv outlives channel teardown.
+ifb_dev_init() allocates dp->tx_private to dev->num_tx_queues
+entries via kzalloc_objs(*txp, dev->num_tx_queues). Both IFB
+per-queue RX and TX stats live in those entries: ifb_xmit() updates
+txp->rx_stats using the skb queue mapping, ifb_ri_tasklet() updates
+txp->tx_stats, and ifb_stats64() aggregates both over
+dev->num_tx_queues.
 
-The netdev_err() call already used priv->netdev for this reason; make
-the trylock/unlock and health_channel_eq_recover calls consistent.
+The ethtool stats callbacks instead size and walk the per-queue
+stats with dev->real_num_rx_queues and dev->real_num_tx_queues. With
+an asymmetric device where the RX queue count exceeds the TX queue
+count, for example:
 
-This fixes the following KASAN splat:
+    ip link add name ifb10 numtxqueues 1 numrxqueues 8 type ifb
+    ethtool -S ifb10
 
-  BUG: KASAN: use-after-free in mlx5e_tx_reporter_timeout_recover+0x1dd/0x360 [mlx5_core]
-  Read of size 8 at addr ffff889860ed0b28 by task kworker/u113:2/5277
+ifb_get_ethtool_stats() indexes past the tx_private allocation and
+copies adjacent slab data through ETHTOOL_GSTATS.
 
-  Call Trace:
-   mlx5e_tx_reporter_timeout_recover+0x1dd/0x360 [mlx5_core]
-   devlink_health_reporter_recover+0xa2/0x150
-   devlink_health_report+0x254/0x7c0
-   mlx5e_reporter_tx_timeout+0x297/0x380 [mlx5_core]
-   mlx5e_tx_timeout_work+0x109/0x170 [mlx5_core]
-   process_one_work+0x677/0xf20
-   worker_thread+0x51f/0xd90
-   kthread+0x3a5/0x810
-   ret_from_fork+0x208/0x400
-   ret_from_fork_asm+0x1a/0x30
+Use dev->num_tx_queues consistently for the stats strings, the
+stats count, and the stats data walks. This reports one RX stats
+group and one TX stats group for each backing ifb_q_private entry,
+which is the queue set IFB can actually populate.
 
-Fixes: 83ac0304a2d7 ("net/mlx5e: Fix deadlocks between devlink and netdev instance locks")
+Reproduced under UML+KASAN at v7.1-rc2:
+
+  BUG: KASAN: slab-out-of-bounds in ifb_fill_stats_data+0x3c/0xae
+  Read of size 8 at addr 0000000062dbd228 by task ethtool/36
+  ifb_fill_stats_data+0x3c/0xae
+  ifb_get_ethtool_stats+0xc0/0x129
+  __dev_ethtool+0x1ca5/0x363c
+  dev_ethtool+0x123/0x1b3
+  dev_ioctl+0x56c/0x744
+  sock_do_ioctl+0x15f/0x1b2
+  sock_ioctl+0x4d5/0x50a
+  sys_ioctl+0xd8b/0xde9
+
+With the patch applied, the same UML+KASAN repro is silent and
+ethtool -S ifb10 reports only the stats backed by the single
+allocated tx_private entry.
+
+Fixes: a21ee5b2fcb8 ("net: ifb: support ethtools stats")
 Cc: stable@vger.kernel.org
-Reviewed-by: Cosmin Ratiu <cratiu@nvidia.com>
-Reviewed-by: Tariq Toukan <tariqt@nvidia.com>
-Signed-off-by: Matt Fleming <mfleming@cloudflare.com>
-Link: https://patch.msgid.link/20260513112226.140512-1-matt@readmodwrite.com
+Signed-off-by: Michael Bommarito <michael.bommarito@gmail.com>
+Link: https://patch.msgid.link/20260514013739.3549624-1-michael.bommarito@gmail.com
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/mellanox/mlx5/core/en/reporter_tx.c |    6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ drivers/net/ifb.c |   11 +++++------
+ 1 file changed, 5 insertions(+), 6 deletions(-)
 
---- a/drivers/net/ethernet/mellanox/mlx5/core/en/reporter_tx.c
-+++ b/drivers/net/ethernet/mellanox/mlx5/core/en/reporter_tx.c
-@@ -159,13 +159,13 @@ static int mlx5e_tx_reporter_timeout_rec
- 	 * channels are being closed for other reason and this work is not
- 	 * relevant anymore.
- 	 */
--	while (!netdev_trylock(sq->netdev)) {
-+	while (!netdev_trylock(priv->netdev)) {
- 		if (!test_bit(MLX5E_STATE_CHANNELS_ACTIVE, &priv->state))
- 			return 0;
- 		msleep(20);
+--- a/drivers/net/ifb.c
++++ b/drivers/net/ifb.c
+@@ -211,12 +211,12 @@ static void ifb_get_strings(struct net_d
+ 
+ 	switch (stringset) {
+ 	case ETH_SS_STATS:
+-		for (i = 0; i < dev->real_num_rx_queues; i++)
++		for (i = 0; i < dev->num_tx_queues; i++)
+ 			for (j = 0; j < IFB_Q_STATS_LEN; j++)
+ 				ethtool_sprintf(&p, "rx_queue_%u_%.18s",
+ 						i, ifb_q_stats_desc[j].desc);
+ 
+-		for (i = 0; i < dev->real_num_tx_queues; i++)
++		for (i = 0; i < dev->num_tx_queues; i++)
+ 			for (j = 0; j < IFB_Q_STATS_LEN; j++)
+ 				ethtool_sprintf(&p, "tx_queue_%u_%.18s",
+ 						i, ifb_q_stats_desc[j].desc);
+@@ -229,8 +229,7 @@ static int ifb_get_sset_count(struct net
+ {
+ 	switch (sset) {
+ 	case ETH_SS_STATS:
+-		return IFB_Q_STATS_LEN * (dev->real_num_rx_queues +
+-					  dev->real_num_tx_queues);
++		return IFB_Q_STATS_LEN * dev->num_tx_queues * 2;
+ 	default:
+ 		return -EOPNOTSUPP;
+ 	}
+@@ -262,12 +261,12 @@ static void ifb_get_ethtool_stats(struct
+ 	struct ifb_q_private *txp;
+ 	int i;
+ 
+-	for (i = 0; i < dev->real_num_rx_queues; i++) {
++	for (i = 0; i < dev->num_tx_queues; i++) {
+ 		txp = dp->tx_private + i;
+ 		ifb_fill_stats_data(&data, &txp->rx_stats);
  	}
  
--	err = mlx5e_health_channel_eq_recover(sq->netdev, eq, sq->cq.ch_stats);
-+	err = mlx5e_health_channel_eq_recover(priv->netdev, eq, sq->cq.ch_stats);
- 	if (!err) {
- 		to_ctx->status = 0; /* this sq recovered */
- 		goto out;
-@@ -185,7 +185,7 @@ static int mlx5e_tx_reporter_timeout_rec
- 		   "mlx5e_safe_reopen_channels failed recovering from a tx_timeout, err(%d).\n",
- 		   err);
- out:
--	netdev_unlock(sq->netdev);
-+	netdev_unlock(priv->netdev);
- 	return err;
- }
- 
+-	for (i = 0; i < dev->real_num_tx_queues; i++) {
++	for (i = 0; i < dev->num_tx_queues; i++) {
+ 		txp = dp->tx_private + i;
+ 		ifb_fill_stats_data(&data, &txp->tx_stats);
+ 	}
 
 
 
