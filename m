@@ -1,59 +1,61 @@
-Return-Path: <stable+bounces-256311-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-255541-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id SAZoA/2tGGpolwgAu9opvQ
-	(envelope-from <stable+bounces-256311-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 23:05:01 +0200
+	id 4CWwF4miGGrClggAu9opvQ
+	(envelope-from <stable+bounces-255541-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:16:09 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4E0D55FA318
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 23:05:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5DFC45F8368
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:16:08 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id AB904309D12B
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 20:49:11 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 1225E305F923
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 20:13:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CF104331A7E;
-	Thu, 28 May 2026 20:49:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4C9A4405C4B;
+	Thu, 28 May 2026 20:13:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vJ191wLO"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xPKOoaN/"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A2F42317142;
-	Thu, 28 May 2026 20:49:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F0232335566;
+	Thu, 28 May 2026 20:13:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780001344; cv=none; b=M4J5dhIO8pYZJMKvzW0yQF1+pZuh31WoCAh8lLjlOucC8ZzjbbHosgdLauktbKLSU+23EK0nfvQXnxdodDlDVFd9cy+mxnRUlkWK1WNg/TugMt2K3pn9V87c6zL3GCH1k/olCj9de+zeosobpsx1TDBWGMQc6Pmah3sQKVj5nQU=
+	t=1779999201; cv=none; b=RBGYA71yQTV/BrSA+YE0Aehqp/YUcN3Mg4Zi7RdrUrECComYJ70Apb7zrRNadDq5e0VX0lFfjvGJFeqfU/f6di27A+ZiicMOTzoVSsIUZC1dZUgq8mz0a9UULAzlqKePLplIgAnIKK99UtgpZcpQxcP9EfcjrtHBZHh18soWPY8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780001344; c=relaxed/simple;
-	bh=zXrw5FkQFrwoNchugioL+RRguPSQ3CPe4ApWRrWiLlw=;
+	s=arc-20240116; t=1779999201; c=relaxed/simple;
+	bh=aNnUrolHxSVt+6TgcASWWPtC5pdcZFY/t3sWwj6ptDk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=A1nSRjm5k2eSMOmJ9w6CCL4FWzTaVSa8Gy28gga7PEwaoP88HaVb4M8hgcD6TEHuOTfg+H79YhwFg5kkubYx+FHi+FuvouVBN2+H2i9OOEv95QBbCukcg3OiJ6Jo+ISi0filaqeULSiG8lb9t6ooXnTXk8gNXt3IdqO98hNs/fo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vJ191wLO; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D90561F000E9;
-	Thu, 28 May 2026 20:49:02 +0000 (UTC)
+	 MIME-Version; b=RgXPyI4N5vl+5KI2owHGxzbzgoE3h4twGzt84AlKM+IpOp9lvaWOaaoFTTTD0jEm6EEXgoJV/yoUVEnMB6hEWO7xgFwj1UYNZqaAaN1WmNS0YhYWRe8pv2rRjvvTwCo3ELvS86EjzxY5Elu30E9sKMj8+GHJ9nc6bop1b5Hhu7o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xPKOoaN/; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 59F911F000E9;
+	Thu, 28 May 2026 20:13:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780001343;
-	bh=+ynrWIaXaSeKpYjsI4Kbk76srkaK71afYX3fw3zR3go=;
+	s=korg; t=1779999199;
+	bh=vhqAHJS4kU6Wr+tZzddLNPpKSx3Kgsor/iljDAqcAn0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=vJ191wLODe9UHm7DRujkeWEvPdhmY3e71RJMIrXQGHKcxwZYjC5Mx2rmLvD3AYfM6
-	 BsICxxGbC++s4UKX0dHZxsGc7gbhUXmRCKZaBa/dvgk2ecn3rXx9ZA7x4euXsEFqa1
-	 qNiJ3pDWuDbfSZGiziZQSgQAbolvL9ljBmZl4+s0=
+	b=xPKOoaN/KQU0f9x5b9oTG074QWdroby669pN7PahBdQ1JSirzsutWcnBifCnjcpN4
+	 o1nKMLMKKgjTjGEdPddcMtkpUeosFt29q2X79l2wx8PQ9tZnz/SRMLMtNYpyb4/fV8
+	 FovrGh0ZyyZE+4IAaYe0vKcsLOU0U8MYxfhNEH+U=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Abdurrahman Hussain <abdurrahman@nexthop.ai>,
-	Bartosz Golaszewski <bartosz.golaszewski@oss.qualcomm.com>,
-	Guenter Roeck <linux@roeck-us.net>
-Subject: [PATCH 6.6 094/186] hwmon: (pmbus/adm1266) register the gpio_chip after pmbus_do_probe()
+	Carolina Jubran <cjubran@nvidia.com>,
+	Dragos Tatulea <dtatulea@nvidia.com>,
+	Nimrod Oren <noren@nvidia.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 7.0 445/461] selftests: net: Fix checksums in xdp_native
 Date: Thu, 28 May 2026 21:49:34 +0200
-Message-ID: <20260528194931.473554951@linuxfoundation.org>
+Message-ID: <20260528194700.415235315@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260528194928.941004471@linuxfoundation.org>
-References: <20260528194928.941004471@linuxfoundation.org>
+In-Reply-To: <20260528194646.819809818@linuxfoundation.org>
+References: <20260528194646.819809818@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -73,87 +75,188 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-255541-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-256311-lists,stable=lfdr.de];
-	TO_DN_SOME(0.00)[];
-	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TO_DN_SOME(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
 	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,roeck-us.net:email,qualcomm.com:email,nexthop.ai:email,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim]
-X-Rspamd-Queue-Id: 4E0D55FA318
+	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_SEVEN(0.00)[8];
+	MID_RHS_MATCH_FROM(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim,nvidia.com:email,msgid.link:url]
+X-Rspamd-Queue-Id: 5DFC45F8368
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+7.0-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Abdurrahman Hussain <abdurrahman@nexthop.ai>
+From: Nimrod Oren <noren@nvidia.com>
 
-commit 491403b9b76cf66abd81301c5901aa4a4549f1e8 upstream.
+[ Upstream commit dfc077043351a81887d1e4c9ac244e9243f3cbf2 ]
 
-adm1266_probe() calls adm1266_config_gpio() -- which goes on to
-devm_gpiochip_add_data() and exposes the gpio_chip callbacks to
-gpiolib -- before pmbus_do_probe() has initialised the per-client
-PMBus state (notably the pmbus_lock mutex the core hands out via
-pmbus_get_data()).
+Data adjustment cases failed with "Data exchange failed" when using IPv4
+because the program did not update the IP and UDP checksums in the IPv4
+branch. The issue was masked when both IPv4 and IPv6 were configured,
+since the test harness prefers IPv6.
 
-That ordering is already a latent hazard: any GPIO access that lands
-between adm1266_config_gpio() and the end of pmbus_do_probe() (for
-example a sysfs read from a user space agent that opens the gpiochip
-the instant gpiolib advertises it) races pmbus_do_probe()'s own
-device accesses with no serialisation.
+While here, generalize csum_fold_helper() to fold twice so it works for
+any 32-bit input.
 
-Move adm1266_config_gpio() down past pmbus_do_probe() so the chip
-isn't reachable from userspace until the PMBus state it depends on
-is fully initialised.
-
-Fixes: d98dfad35c38 ("hwmon: (pmbus/adm1266) Add support for GPIOs")
-Cc: stable@vger.kernel.org
-Signed-off-by: Abdurrahman Hussain <abdurrahman@nexthop.ai>
-Reviewed-by: Bartosz Golaszewski <bartosz.golaszewski@oss.qualcomm.com>
-Link: https://lore.kernel.org/r/20260518-adm1266-gpio-fixes-v3-4-e425e4f88139@nexthop.ai
-Signed-off-by: Guenter Roeck <linux@roeck-us.net>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 0b65cfcef9c5 ("selftests: drv-net: Test tail-adjustment support")
+Reviewed-by: Carolina Jubran <cjubran@nvidia.com>
+Reviewed-by: Dragos Tatulea <dtatulea@nvidia.com>
+Signed-off-by: Nimrod Oren <noren@nvidia.com>
+Link: https://patch.msgid.link/20260520153928.3371765-1-noren@nvidia.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/hwmon/pmbus/adm1266.c |    8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ .../selftests/net/lib/xdp_native.bpf.c        | 55 ++++++++++---------
+ 1 file changed, 30 insertions(+), 25 deletions(-)
 
---- a/drivers/hwmon/pmbus/adm1266.c
-+++ b/drivers/hwmon/pmbus/adm1266.c
-@@ -466,10 +466,6 @@ static int adm1266_probe(struct i2c_clie
- 	crc8_populate_msb(pmbus_crc_table, 0x7);
- 	mutex_init(&data->buf_mutex);
+diff --git a/tools/testing/selftests/net/lib/xdp_native.bpf.c b/tools/testing/selftests/net/lib/xdp_native.bpf.c
+index 64f05229ab243..ded3f896e6224 100644
+--- a/tools/testing/selftests/net/lib/xdp_native.bpf.c
++++ b/tools/testing/selftests/net/lib/xdp_native.bpf.c
+@@ -268,6 +268,17 @@ static int xdp_mode_tx_handler(struct xdp_md *ctx, __u16 port)
+ 	return XDP_PASS;
+ }
  
--	ret = adm1266_config_gpio(data);
--	if (ret < 0)
--		return ret;
--
- 	ret = adm1266_set_rtc(data);
- 	if (ret < 0)
- 		return ret;
-@@ -482,6 +478,10 @@ static int adm1266_probe(struct i2c_clie
- 	if (ret)
- 		return ret;
- 
-+	ret = adm1266_config_gpio(data);
-+	if (ret < 0)
-+		return ret;
++static __always_inline __u16 csum_fold_helper(__u32 csum)
++{
++	csum = (csum & 0xffff) + (csum >> 16);
++	return ~((csum & 0xffff) + (csum >> 16));
++}
 +
- 	adm1266_init_debugfs(data);
++static __always_inline __u16 csum_fold_udp_helper(__u32 csum)
++{
++	return csum_fold_helper(csum) ? : 0xffff;
++}
++
+ static void *update_pkt(struct xdp_md *ctx, __s16 offset, __u32 *udp_csum)
+ {
+ 	void *data_end = (void *)(long)ctx->data_end;
+@@ -281,21 +292,22 @@ static void *update_pkt(struct xdp_md *ctx, __s16 offset, __u32 *udp_csum)
  
- 	return 0;
+ 	if (eth->h_proto == bpf_htons(ETH_P_IP)) {
+ 		struct iphdr *iph = data + sizeof(*eth);
+-		__u16 total_len;
+ 
+ 		if (iph + 1 > (struct iphdr *)data_end)
+ 			return NULL;
+ 
+-		iph->tot_len = bpf_htons(bpf_ntohs(iph->tot_len) + offset);
+-
+ 		udph = (void *)eth + sizeof(*iph) + sizeof(*eth);
+ 		if (!udph || udph + 1 > (struct udphdr *)data_end)
+ 			return NULL;
+ 
+-		len_new = bpf_htons(bpf_ntohs(udph->len) + offset);
++		len = iph->tot_len;
++		len_new = bpf_htons(bpf_ntohs(len) + offset);
++		iph->tot_len = len_new;
++		iph->check = csum_fold_helper(
++			bpf_csum_diff(&len, sizeof(len), &len_new,
++				      sizeof(len_new), ~((__u32)iph->check)));
+ 	} else if (eth->h_proto  == bpf_htons(ETH_P_IPV6)) {
+ 		struct ipv6hdr *ipv6h = data + sizeof(*eth);
+-		__u16 payload_len;
+ 
+ 		if (ipv6h + 1 > (struct ipv6hdr *)data_end)
+ 			return NULL;
+@@ -304,33 +316,27 @@ static void *update_pkt(struct xdp_md *ctx, __s16 offset, __u32 *udp_csum)
+ 		if (!udph || udph + 1 > (struct udphdr *)data_end)
+ 			return NULL;
+ 
+-		*udp_csum = ~((__u32)udph->check);
+-
+ 		len = ipv6h->payload_len;
+ 		len_new = bpf_htons(bpf_ntohs(len) + offset);
+ 		ipv6h->payload_len = len_new;
+-
+-		*udp_csum = bpf_csum_diff(&len, sizeof(len), &len_new,
+-					  sizeof(len_new), *udp_csum);
+-
+-		len = udph->len;
+-		len_new = bpf_htons(bpf_ntohs(udph->len) + offset);
+-		*udp_csum = bpf_csum_diff(&len, sizeof(len), &len_new,
+-					  sizeof(len_new), *udp_csum);
+ 	} else {
+ 		return NULL;
+ 	}
+ 
++	len = udph->len;
++	len_new = bpf_htons(bpf_ntohs(len) + offset);
++
++	*udp_csum = ~((__u32)udph->check);
++	*udp_csum = bpf_csum_diff(&len, sizeof(len), &len_new,
++				  sizeof(len_new), *udp_csum);
++	*udp_csum = bpf_csum_diff(&len, sizeof(len), &len_new,
++				  sizeof(len_new), *udp_csum);
++
+ 	udph->len = len_new;
+ 
+ 	return udph;
+ }
+ 
+-static __u16 csum_fold_helper(__u32 csum)
+-{
+-	return ~((csum & 0xffff) + (csum >> 16)) ? : 0xffff;
+-}
+-
+ static int xdp_adjst_tail_shrnk_data(struct xdp_md *ctx, __u16 offset,
+ 				     unsigned long hdr_len)
+ {
+@@ -359,7 +365,7 @@ static int xdp_adjst_tail_shrnk_data(struct xdp_md *ctx, __u16 offset,
+ 		return -1;
+ 
+ 	udp_csum = bpf_csum_diff((__be32 *)tmp_buff, offset, 0, 0, udp_csum);
+-	udph->check = (__u16)csum_fold_helper(udp_csum);
++	udph->check = (__u16)csum_fold_udp_helper(udp_csum);
+ 
+ 	if (bpf_xdp_adjust_tail(ctx, 0 - offset) < 0)
+ 		return -1;
+@@ -403,7 +409,7 @@ static int xdp_adjst_tail_grow_data(struct xdp_md *ctx, __u16 offset)
+ 		return -1;
+ 
+ 	udp_csum = bpf_csum_diff(0, 0, (__be32 *)tmp_buff, offset, udp_csum);
+-	udph->check = (__u16)csum_fold_helper(udp_csum);
++	udph->check = (__u16)csum_fold_udp_helper(udp_csum);
+ 
+ 	buff_len = bpf_xdp_get_buff_len(ctx);
+ 
+@@ -484,8 +490,7 @@ static int xdp_adjst_head_shrnk_data(struct xdp_md *ctx, __u64 hdr_len,
+ 		return -1;
+ 
+ 	udp_csum = bpf_csum_diff((__be32 *)tmp_buff, offset, 0, 0, udp_csum);
+-
+-	udph->check = (__u16)csum_fold_helper(udp_csum);
++	udph->check = (__u16)csum_fold_udp_helper(udp_csum);
+ 
+ 	if (bpf_xdp_load_bytes(ctx, 0, tmp_buff, MAX_ADJST_OFFSET) < 0)
+ 		return -1;
+@@ -542,7 +547,7 @@ static int xdp_adjst_head_grow_data(struct xdp_md *ctx, __u64 hdr_len,
+ 		return -1;
+ 
+ 	udp_csum = bpf_csum_diff(0, 0, (__be32 *)data_buff, offset, udp_csum);
+-	udph->check = (__u16)csum_fold_helper(udp_csum);
++	udph->check = (__u16)csum_fold_udp_helper(udp_csum);
+ 
+ 	if (hdr_len > MAX_ADJST_OFFSET || hdr_len == 0)
+ 		return -1;
+-- 
+2.53.0
+
 
 
 
