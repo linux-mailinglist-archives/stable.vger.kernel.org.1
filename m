@@ -1,60 +1,58 @@
-Return-Path: <stable+bounces-255383-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-255987-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id cLHmBnqiGGqblggAu9opvQ
-	(envelope-from <stable+bounces-255383-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:15:54 +0200
+	id SPX0J0moGGp+lwgAu9opvQ
+	(envelope-from <stable+bounces-255987-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:40:41 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 698845F833D
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:15:53 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 49B2C5F94D0
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:40:41 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id C227B324ACD5
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 20:05:58 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id D8E523053FC9
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 20:33:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 05CB9304BB3;
-	Thu, 28 May 2026 20:05:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CAEC1330D35;
+	Thu, 28 May 2026 20:33:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wIwATVcc"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CgnTmu2i"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D7E5C339866;
-	Thu, 28 May 2026 20:05:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AFBFB2C15AC;
+	Thu, 28 May 2026 20:33:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779998755; cv=none; b=m1mnrkWzloJa01VQtqGlfPvUQieuefUCXBkBhhRvk9FW5071sCoyO8/pcjc3BkYo0GIWjkbFoOZKXLwAc3nqAbtrN9EtfsJx+1OmLhPwQOrFDMFsN3aQYgULhvxyZo3SR690lggma6R1geDloHcP4+EGEGHGNOLilaCD6PDHHMQ=
+	t=1780000436; cv=none; b=d90wM+ZJvhnLOpzSYt3rIDYJoYNEICAkJhUkeztT6e4mNkHozCQwBSA1bTI+sUPXh0vx960A2rq3aQInaRQuyvqOOntRDU2nPPPdqTMpwyOWZo1zzRGOKLE8ytHo6YByYtc3K0gjmushzKmmTgwOKICCCN+nPLD4hnO7Sqe+acs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779998755; c=relaxed/simple;
-	bh=lcI3xrupcZ3HBoCZdt+RNktnad4A+FY+ONrurCrSxag=;
+	s=arc-20240116; t=1780000436; c=relaxed/simple;
+	bh=GxRniUo5F7l6fR5iEF4kTpofml50JwwAdlBNbXyBKfI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=VXwaKwsMmf4NgKJuLYYQP3A3BM5ygrM6l+ZwvZXxi7Z9vpUEnEka0ZtrOWmhi8Bt904FAfLNIgFTbsKbg0N0JGxCk1Qeko3OHuj5MS1ibPlEEBnC+r9RllTLia2AbUOUys6wcExzl6xv+MxFLbPM137Fd6Iq5DrfCCfEByR+Ks0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wIwATVcc; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3FD2D1F000E9;
-	Thu, 28 May 2026 20:05:54 +0000 (UTC)
+	 MIME-Version; b=YmuArj1G9CQozimx1y549KmIZmhwmSfF93Acvp1kDfvOg6Qs/89wL1VPPEp+1y3uJU6GjpUhOUuQfYmXZk30Sz7yhHn9mh5sPPfF0IPpv3bEdvOMVYADwSH2jauXmCoudAuVNRasrQIA1gZ7Dpdn7fQs37Y27D+CodanjqPvvTw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CgnTmu2i; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1A78A1F000E9;
+	Thu, 28 May 2026 20:33:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779998754;
-	bh=MahcfbPtcAETO6R6ZFBlejMB3ILzcwxigDFe88XWnoM=;
+	s=korg; t=1780000435;
+	bh=h73JLyVf8FF2UPSRcq7kP8Ww3WUdVPtSOsuAALRgtCA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=wIwATVcc5HOeNk68KwXhQUjm6GlMBCXv4MdgZilqMQaz/X88hblUhtCyR6/w//I1c
-	 UxbjCUaK2KQRxivZ+LczOXqT89k/5iotqRI7zaq4QgN/lAiuldMIWhCHNJxtTmQeQN
-	 uJLEyANy9u1zBpTiFOguiImUgJc/4IvM3EWvHa9w=
+	b=CgnTmu2iWvu4yQEo/Swte2aK0k/vBHvScp/YFKMkongoMvpMl0PtxqZHatI9jcwLM
+	 WvC0/iB102nPA+sLalz2vNyz/pn2II1VP6sDx/vkWnRR8HRY5uHn6wFC0X4pW7kycn
+	 8N7JFOpuPDQW769PFdv7vEWZOtne7/gapRI5HELs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	David Carlier <devnexen@gmail.com>,
-	Christoph Hellwig <hch@lst.de>,
-	Jens Axboe <axboe@kernel.dk>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 7.0 287/461] block: dont overwrite bip_vcnt in bio_integrity_copy_user()
-Date: Thu, 28 May 2026 21:46:56 +0200
-Message-ID: <20260528194655.509567624@linuxfoundation.org>
+	SeongJae Park <sj@kernel.org>,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 6.12 043/272] mm/damon/sysfs-schemes: call missing mem_cgroup_iter_break()
+Date: Thu, 28 May 2026 21:46:57 +0200
+Message-ID: <20260528194630.586460802@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260528194646.819809818@linuxfoundation.org>
-References: <20260528194646.819809818@linuxfoundation.org>
+In-Reply-To: <20260528194629.379955525@linuxfoundation.org>
+References: <20260528194629.379955525@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,76 +67,68 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,lst.de,kernel.dk,kernel.org];
-	TAGGED_FROM(0.00)[bounces-255383-lists,stable=lfdr.de];
-	PRECEDENCE_BULK(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
+	RCVD_TLS_LAST(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	TAGGED_FROM(0.00)[bounces-255987-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[7];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,lst.de:email,msgid.link:url,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,kernel.dk:email]
-X-Rspamd-Queue-Id: 698845F833D
+	RCPT_COUNT_FIVE(0.00)[5];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linux-foundation.org:email,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim]
+X-Rspamd-Queue-Id: 49B2C5F94D0
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-7.0-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: David Carlier <devnexen@gmail.com>
+From: SeongJae Park <sj@kernel.org>
 
-[ Upstream commit 637ad3a56a3b889527d1dacea6fea2a8bd648140 ]
+commit d4e7b5c4cc353f154d5ab8bb2e1ce7714d77a6e9 upstream.
 
-bio_integrity_add_page() already sets bip_vcnt to 1 for the bounce
-segment. Overwriting it with nr_vecs breaks bip_vcnt <= bip_max_vcnt
-on WRITE (bip_max_vcnt is 1), so the gap-merge checks in block/blk.h
-read past the bip_vec[] flex array. On READ the read is in bounds
-but lands on a saved user bvec instead of the bounce.
+damon_sysfs_memcg_path_to_id() breaks mem_cgroup_iter() loop without
+calling mem_cgroup_iter_break().  This leaks the cgroup reference.  Fix
+the issue by calling mem_cgroup_iter_break() before the break.
 
-The line was added for split propagation, but bio_integrity_clone()
-doesn't copy bip_vcnt and BIP_CLONE_FLAGS excludes BIP_COPY_USER.
+The issue was discovered [1] by Sashiko.
 
-Fixes: 3991657ae707 ("block: set bip_vcnt correctly")
-Signed-off-by: David Carlier <devnexen@gmail.com>
-Reviewed-by: Christoph Hellwig <hch@lst.de>
-Link: https://patch.msgid.link/20260511215151.346228-1-devnexen@gmail.com
-Signed-off-by: Jens Axboe <axboe@kernel.dk>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Link: https://lore.kernel.org/20260426173625.86521-1-sj@kernel.org
+Link: https://lore.kernel.org/20260423004148.74722-1-sj@kernel.org [1]
+Fixes: 29cbb9a13f05 ("mm/damon/sysfs-schemes: implement scheme filters")
+Signed-off-by: SeongJae Park <sj@kernel.org>
+Cc: <stable@vger.kernel.org> # 6.3.x
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- block/bio-integrity.c | 1 -
- 1 file changed, 1 deletion(-)
+ mm/damon/sysfs-schemes.c |    1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/block/bio-integrity.c b/block/bio-integrity.c
-index a319362217037..5a316d8bc5efa 100644
---- a/block/bio-integrity.c
-+++ b/block/bio-integrity.c
-@@ -244,7 +244,6 @@ static int bio_integrity_copy_user(struct bio *bio, struct bio_vec *bvec,
+--- a/mm/damon/sysfs-schemes.c
++++ b/mm/damon/sysfs-schemes.c
+@@ -1913,6 +1913,7 @@ static int damon_sysfs_memcg_path_to_id(
+ 		if (damon_sysfs_memcg_path_eq(memcg, path, memcg_path)) {
+ 			*id = mem_cgroup_id(memcg);
+ 			found = true;
++			mem_cgroup_iter_break(NULL, memcg);
+ 			break;
+ 		}
  	}
- 
- 	bip->bip_flags |= BIP_COPY_USER;
--	bip->bip_vcnt = nr_vecs;
- 	return 0;
- free_bip:
- 	bio_integrity_free(bio);
--- 
-2.53.0
-
 
 
 
