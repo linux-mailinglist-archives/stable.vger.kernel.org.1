@@ -1,61 +1,59 @@
-Return-Path: <stable+bounces-255481-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-256081-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 2DxsFW6hGGqnlggAu9opvQ
-	(envelope-from <stable+bounces-255481-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:11:26 +0200
+	id yOrhBrOpGGrclwgAu9opvQ
+	(envelope-from <stable+bounces-256081-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:46:43 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5A2EF5F8048
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:11:25 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9C9C55F987D
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:46:42 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id E6EC9300B286
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 20:10:33 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id D4C1E31E8EBF
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 20:38:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 344DD33CE8A;
-	Thu, 28 May 2026 20:10:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D933F2F1FEC;
+	Thu, 28 May 2026 20:38:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="l1J4Rc8I"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IyutsqID"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0EC71344DAC;
-	Thu, 28 May 2026 20:10:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ADFDC25F7B9;
+	Thu, 28 May 2026 20:38:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779999033; cv=none; b=qrIxszbOvigijqk50vglLLiyzLUyVdhKACqZTNxAG2c6x7RDvD2g4EFed3MpQQWovcW/2iB7V4Jzbl/kqJqpQYRYn1R9oapIVUCA4R+aq4CoaVP33BAvEjYOul7aSVWNg8zxloP/LBhE230ttw3TJo7dS9SvH0UuC97rbTbIwjo=
+	t=1780000701; cv=none; b=SjIPur6RHvAYP6a4D4S49wUe10pB12/zyPQuM73c14sqnQVoCgebyAvLh1OWbmZmFCKMf4KQkKeNQfcOnY7cBjrSSSWt+tGrjNpxZ2qT6fISnYkZS+eTJ2nOuttXuaT8+7xQWb+21biTvGBs/7ruIWCN4/O0gcXrsqnzvu9AqSA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779999033; c=relaxed/simple;
-	bh=N/gxprgtxFCuZqvV7v3B4b3FpxZSYr3ywO4OsHtcmkI=;
+	s=arc-20240116; t=1780000701; c=relaxed/simple;
+	bh=WzpN9yOiBKqr6Otoom2npJUsjuMWlndvAu+DHAbcVvc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=kFX0uC598jDaNEFEhsp096J5jlHn2PrJY7+C8I6YFn3E4jhTQDm4LCIctzxn10Y2r5CX3s3RPN0aRiDCROP+3xkSN6YUxJ2k01QItFjsWzs3T/rjxCfxWXiAwUooKtYtaSkKlLxSGqX9ZsxDouAX1MSAI48jJFFKWNM0a9k5UIU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=l1J4Rc8I; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6E0F61F000E9;
-	Thu, 28 May 2026 20:10:31 +0000 (UTC)
+	 MIME-Version; b=G6NZbLW8yhN4GOKp8Va9+1eaXoYKZ/FHyz45tnCRHGKiIh8CGpCBHdhSeQCTqlsflnfrtrCFDNcod/Cnz18adQG9wkCfTTy9zAUD1H4HncNcY3wAHn9WEUkACKN5mhbBENCiBjhgvDMTONptyMX7vLYNtm/2gM0rTrgWrV2Vc5A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IyutsqID; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1871A1F000E9;
+	Thu, 28 May 2026 20:38:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779999032;
-	bh=pSg25hCTduxgMzlzTuwhGkqE80MkfIrKIj/Dd8ByjMM=;
+	s=korg; t=1780000700;
+	bh=WgxgM0zcSDsNci5kFhFyaYs7Ls34tmvCc1WQlU6X210=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=l1J4Rc8Ihkxj9CO+I2lBbwRQs2wZLITdh9hkXeSbPgpwD/0TMynwctyUhOkRDsEom
-	 Xi0XJZKSgljiyur7glgJ8Bcc1IZzn3PzEjDJTWWUNyTJw05faB5N1vSYW3v6X55fhj
-	 P60MGd4JSx2p46yOEUB22+sOdWoHE4w8pkYMKsMM=
+	b=IyutsqIDtvJQPNCtF9kdujItn2ljC6u1lTO/QFhNrfz1X3+Obv0CqOandf+MfZOxH
+	 Ou+Cxsv0aDjZQuqj8TgS4w1mlnZXOATIBT9fBl1yD21GDJvwTIskwih0nkT7eAhynm
+	 Hac3Pe9S1Vj8dr8h6IpskGoxvIn614qRv9ENzp+Y=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Thomas=20Wei=C3=9Fschuh?= <linux@weissschuh.net>,
-	=?UTF-8?q?Viktor=20J=C3=A4gersk=C3=BCpper?= <viktor_jaegerskuepper@freenet.de>,
-	Nathan Chancellor <nathan@kernel.org>,
-	Nicolas Schier <nsc@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 7.0 383/461] kbuild: pacman-pkg: make "rc" releases adhere to pacman versioning scheme
-Date: Thu, 28 May 2026 21:48:32 +0200
-Message-ID: <20260528194658.542735620@linuxfoundation.org>
+	Abdurrahman Hussain <abdurrahman@nexthop.ai>,
+	Bartosz Golaszewski <bartosz.golaszewski@oss.qualcomm.com>,
+	Guenter Roeck <linux@roeck-us.net>
+Subject: [PATCH 6.12 139/272] hwmon: (pmbus/adm1266) register the gpio_chip after pmbus_do_probe()
+Date: Thu, 28 May 2026 21:48:33 +0200
+Message-ID: <20260528194633.266717568@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260528194646.819809818@linuxfoundation.org>
-References: <20260528194646.819809818@linuxfoundation.org>
+In-Reply-To: <20260528194629.379955525@linuxfoundation.org>
+References: <20260528194629.379955525@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,85 +63,97 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-2.16 / 15.00];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,weissschuh.net,freenet.de,kernel.org];
+	RCVD_COUNT_THREE(0.00)[4];
+	RCVD_TLS_LAST(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-255481-lists,stable=lfdr.de];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	RCVD_TLS_LAST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
+	TAGGED_FROM(0.00)[bounces-256081-lists,stable=lfdr.de];
 	TO_DN_SOME(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	PRECEDENCE_BULK(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_SEVEN(0.00)[8];
+	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,freenet.de:email,msgid.link:url]
-X-Rspamd-Queue-Id: 5A2EF5F8048
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[nexthop.ai:email,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,roeck-us.net:email,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,qualcomm.com:email]
+X-Rspamd-Queue-Id: 9C9C55F987D
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-7.0-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Viktor Jägersküpper <viktor_jaegerskuepper@freenet.de>
+From: Abdurrahman Hussain <abdurrahman@nexthop.ai>
 
-[ Upstream commit 202550713128da20d9381d6d2dc0f6b73839f434 ]
+commit 491403b9b76cf66abd81301c5901aa4a4549f1e8 upstream.
 
-The package versioning scheme does not enable smooth upgrades from "rc"
-releases to the corresponding stable releases (e.g. 7.0.0-rc7 -> 7.0.0)
-because pacman considers that a downgrade due to the underscore in
-pkgver (e.g. 7.0.0_rc7), see e.g. vercmp(8) for an explanation of the
-package version comparison used by pacman. Package versions which are
-derived from said releases (e.g. built from git revisions) are
-similarly affected. Fix this by modifying pkgver in order to remove the
-hyphen from kernel versions containing "-rcN", where N is a
-non-negative integer.
+adm1266_probe() calls adm1266_config_gpio() -- which goes on to
+devm_gpiochip_add_data() and exposes the gpio_chip callbacks to
+gpiolib -- before pmbus_do_probe() has initialised the per-client
+PMBus state (notably the pmbus_lock mutex the core hands out via
+pmbus_get_data()).
 
-Acked-by: Thomas Weißschuh <linux@weissschuh.net>
-Signed-off-by: Viktor Jägersküpper <viktor_jaegerskuepper@freenet.de>
-Reviewed-by: Nathan Chancellor <nathan@kernel.org>
-Tested-by: Nathan Chancellor <nathan@kernel.org>
-Link: https://patch.msgid.link/20260515215913.92481-1-viktor_jaegerskuepper@freenet.de
-Fixes: c8578539deba ("kbuild: add script and target to generate pacman package")
-Signed-off-by: Nicolas Schier <nsc@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+That ordering is already a latent hazard: any GPIO access that lands
+between adm1266_config_gpio() and the end of pmbus_do_probe() (for
+example a sysfs read from a user space agent that opens the gpiochip
+the instant gpiolib advertises it) races pmbus_do_probe()'s own
+device accesses with no serialisation.
+
+Move adm1266_config_gpio() down past pmbus_do_probe() so the chip
+isn't reachable from userspace until the PMBus state it depends on
+is fully initialised.
+
+Fixes: d98dfad35c38 ("hwmon: (pmbus/adm1266) Add support for GPIOs")
+Cc: stable@vger.kernel.org
+Signed-off-by: Abdurrahman Hussain <abdurrahman@nexthop.ai>
+Reviewed-by: Bartosz Golaszewski <bartosz.golaszewski@oss.qualcomm.com>
+Link: https://lore.kernel.org/r/20260518-adm1266-gpio-fixes-v3-4-e425e4f88139@nexthop.ai
+Signed-off-by: Guenter Roeck <linux@roeck-us.net>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- scripts/package/PKGBUILD | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/hwmon/pmbus/adm1266.c |    8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
-diff --git a/scripts/package/PKGBUILD b/scripts/package/PKGBUILD
-index 452374d63c244..1213c8e04671e 100644
---- a/scripts/package/PKGBUILD
-+++ b/scripts/package/PKGBUILD
-@@ -10,7 +10,7 @@ for pkg in $_extrapackages; do
- 	pkgname+=("${pkgbase}-${pkg}")
- done
+--- a/drivers/hwmon/pmbus/adm1266.c
++++ b/drivers/hwmon/pmbus/adm1266.c
+@@ -466,10 +466,6 @@ static int adm1266_probe(struct i2c_clie
+ 	crc8_populate_msb(pmbus_crc_table, 0x7);
+ 	mutex_init(&data->buf_mutex);
  
--pkgver="${KERNELRELEASE//-/_}"
-+pkgver="$(echo "${KERNELRELEASE}" | sed 's/-\(rc[0-9]\+\)/\1/;s/-/_/g')"
- # The PKGBUILD is evaluated multiple times.
- # Running scripts/build-version from here would introduce inconsistencies.
- pkgrel="${KBUILD_REVISION}"
--- 
-2.53.0
-
+-	ret = adm1266_config_gpio(data);
+-	if (ret < 0)
+-		return ret;
+-
+ 	ret = adm1266_set_rtc(data);
+ 	if (ret < 0)
+ 		return ret;
+@@ -482,6 +478,10 @@ static int adm1266_probe(struct i2c_clie
+ 	if (ret)
+ 		return ret;
+ 
++	ret = adm1266_config_gpio(data);
++	if (ret < 0)
++		return ret;
++
+ 	adm1266_init_debugfs(data);
+ 
+ 	return 0;
 
 
 
