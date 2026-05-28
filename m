@@ -1,58 +1,63 @@
-Return-Path: <stable+bounces-255744-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-255386-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id MvzLLCqmGGpplwgAu9opvQ
-	(envelope-from <stable+bounces-255744-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:31:38 +0200
+	id cAZfAjOiGGqblggAu9opvQ
+	(envelope-from <stable+bounces-255386-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:14:43 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 920B75F8DF4
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:31:37 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 631165F8250
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:14:42 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id B3D9E3335F56
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 20:22:43 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 9375F31A6543
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 20:06:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BDB323101B0;
-	Thu, 28 May 2026 20:22:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 10960304BB3;
+	Thu, 28 May 2026 20:06:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="g9wToKYv"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1oQjh2Jk"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A3769257854;
-	Thu, 28 May 2026 20:22:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C49392F691F;
+	Thu, 28 May 2026 20:06:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779999762; cv=none; b=js9TeadN4LmWP4r5turcszkXGAYu6oouEH6T3eDbJDsRO5HTJ82s0rnyWpXhdWvC8TmRQp/Pkcelyc5hx9EKXQyHuShLMCCzZlWGKx+UAaU5y9HnKyU3c/zVMUcno3JY6yHg/7qYtzgzSJcngeDvskEZ/4SGBMxqLkk9ui//1g0=
+	t=1779998764; cv=none; b=cATLRUJnkjphxG0nAtSFfA9TiopL+CJNCe3cXmFh561J0fqPLLXeezg+HJa4+T6sdZsDcLv7enLGdNjEyuaDIlzfAOCnDBbKJJCTWx6WVNKOJYCtzIxzvs5FlrWlah7zmOLqTcru8hM3Msidtfz8eqmdxIk/oaHvW2EVTtGv93A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779999762; c=relaxed/simple;
-	bh=KP3GIbXO2P2UXsefGzocHk7ihWjVHqDU8qQS9y04hdQ=;
+	s=arc-20240116; t=1779998764; c=relaxed/simple;
+	bh=mVM4wAy3r4FMrGSp6svikNaAdbhvKJnXSqv1mtnWbjg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=uetDI/YSZ20S6IXJfkOmMp+R7z/5WmbPC1dPBqo3BiLAHiqaaajxqVRI3EqKzARnR81VwxKDC6i23tyFMVP7F4c5YZsVa7k6JJToQ1v11M4+FlAN6mFzAWZgEwF6EbqlYOQefyOd3h1ZFGesszyMlLxF1t+gUROYmDwhAQb4XSI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=g9wToKYv; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0DDF71F000E9;
-	Thu, 28 May 2026 20:22:40 +0000 (UTC)
+	 MIME-Version; b=s/krjUymoQwFTWvz4JcaAk94lzG3LsyKYoYnCYvGxkiNJXpuoU0X9ys0V89Yay5c8Ah5+ZemP7ZZks6nytoANK1OcQGXejFDSZtaLxdJuCvM9lW+NVZ/OSrWqkLr5E0Be1mI1v/y6dpwaa/yKCvCtPii1ncnLjynXsrcuDLTBE0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1oQjh2Jk; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 379DD1F000E9;
+	Thu, 28 May 2026 20:06:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779999761;
-	bh=Ppydo9njYeU6EUj0xPN9zGG12OuHOPjIe5y/iqt2HwA=;
+	s=korg; t=1779998763;
+	bh=DLGuUI3DU1JPVXojoPV6xNlhFldkebAoAUhMJjWlb+I=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=g9wToKYvBBppgs8NHig+856n5r1KVt8+HZWJroneZPE8n39V8Rpy+Qv9g0A/GL69J
-	 JTeGc5hJwyTAo0KoOJ6vO0/xBupMah/ewplmrDpj+uvd2HlyE69ShkhFpEErKeTS+5
-	 3HWv93oeBTA+jqiqQ1KXk+5HUi2mgFMklNPTJ8jU=
+	b=1oQjh2Jk4w1IlEf/Ne1ZgwD0RrAi8A+IUsfUkRAk7fc4aE4tyDfVYx8VlimWBPnyM
+	 M5edb9hFkTbXLNuzHH1KGWI3OcckGQlFfnCNj0CyXTFZyKPs7JAysuWR9JP9IuEG2d
+	 NcGvtSBD+x/CDjM04LYyVAVTpjLK2VmeRJ1RV6Rs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sudeep Holla <sudeep.holla@kernel.org>,
+	Chao Shi <cshi008@fiu.edu>,
+	Weidong Zhu <weizhu@fiu.edu>,
+	Dave Tian <daveti@purdue.edu>,
+	Sungwoo Kim <iam@sung-woo.kim>,
+	Shinichiro Kawasaki <shinichiro.kawasaki@wdc.com>,
+	Jens Axboe <axboe@kernel.dk>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 181/377] firmware: arm_ffa: Fix per-vcpu self notifications handling in workqueue
+Subject: [PATCH 7.0 290/461] block: bio-integrity: Fix null-ptr-deref in bio_integrity_map_user()
 Date: Thu, 28 May 2026 21:46:59 +0200
-Message-ID: <20260528194643.663826130@linuxfoundation.org>
+Message-ID: <20260528194655.610024047@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260528194638.371537336@linuxfoundation.org>
-References: <20260528194638.371537336@linuxfoundation.org>
+In-Reply-To: <20260528194646.819809818@linuxfoundation.org>
+References: <20260528194646.819809818@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,77 +68,107 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-1.66 / 15.00];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+X-Spamd-Result: default: False [3.84 / 15.00];
+	SEM_URIBL(3.50)[purdue.edu:email];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
-	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
+	BAD_REP_POLICIES(0.10)[];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	RCVD_TLS_LAST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
+	DMARC_POLICY_ALLOW(0.00)[linuxfoundation.org,none];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-255744-lists,stable=lfdr.de];
-	TO_DN_SOME(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[5];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TAGGED_FROM(0.00)[bounces-255386-lists,stable=lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	RCVD_COUNT_THREE(0.00)[4];
+	R_DKIM_ALLOW(0.00)[linuxfoundation.org:s=korg];
+	ARC_ALLOW(0.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	TO_DN_SOME(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	NEURAL_HAM(-0.00)[-0.982];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
 	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim]
-X-Rspamd-Queue-Id: 920B75F8DF4
+	MID_RHS_MATCH_FROM(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_SEVEN(0.00)[10];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	R_SPF_ALLOW(0.00)[+ip6:2600:3c0a:e001:db::/64:c];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[wdc.com:email,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim,qemu.org:url,msgid.link:url,kernel.dk:email,purdue.edu:email,fiu.edu:email]
+X-Rspamd-Queue-Id: 631165F8250
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+7.0-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sudeep Holla <sudeep.holla@kernel.org>
+From: Sungwoo Kim <iam@sung-woo.kim>
 
-[ Upstream commit 9985d5357ed93af0d1933969c247e966957730e1 ]
+[ Upstream commit 8582792cf23b3d94674d4d838f7cde9a28d0fcaf ]
 
-Per-vcpu notification handling already runs from a per-cpu work item on
-the target cpu. Routing that path back through smp_call_function_single()
-re-enters the call-function IPI path and executes the notification
-handler with interrupts disabled. That makes the framework path unsafe,
-since it takes a mutex, allocates memory with GFP_KERNEL, and invokes
-client callbacks.
+pin_user_pages_fast() can partially succeed and return the number of
+pages that were actually pinned. However, the bio_integrity_map_user()
+does not handle this partial pinning. This leads to a general protection
+fault since bvec_from_pages() dereferences an unpinned page address,
+which is 0.
 
-Handle per-vcpu self notifications directly from the existing per-cpu
-work item instead. This keeps the per-vcpu path in task context and
-avoids the extra IPI hop entirely.
+To fix this, add a check to verify that all requested memory is pinned.
+If partial pinning occurs, unpin the memory and return -EFAULT.
 
-Fixes: 3a3e2b83e805 ("firmware: arm_ffa: Avoid queuing work when running on the worker queue")
-Link: https://patch.msgid.link/20260428-ffa_fixes-v2-4-8595ae450034@kernel.org
-Signed-off-by: Sudeep Holla <sudeep.holla@kernel.org>
+Kernel Oops:
+
+Oops: general protection fault, probably for non-canonical address 0xdffffc0000000001: 0000 [#1] SMP KASAN NOPTI
+KASAN: null-ptr-deref in range [0x0000000000000008-0x000000000000000f]
+CPU: 0 UID: 0 PID: 1061 Comm: nvme-passthroug Not tainted 7.0.0-11783-g90957f9314e8-dirty #16 PREEMPT(lazy)
+Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS rel-1.17.0-0-gb52ca86e094d-prebuilt.qemu.org 04/01/2014
+RIP: 0010:bio_integrity_map_user.cold+0x1b0/0x9d6
+
+Fixes: 492c5d455969 ("block: bio-integrity: directly map user buffers")
+Acked-by: Chao Shi <cshi008@fiu.edu>
+Acked-by: Weidong Zhu <weizhu@fiu.edu>
+Acked-by: Dave Tian <daveti@purdue.edu>
+Signed-off-by: Sungwoo Kim <iam@sung-woo.kim>
+Tested-by: Shin'ichiro Kawasaki <shinichiro.kawasaki@wdc.com>
+Link: https://github.com/linux-blktests/blktests/pull/244
+Link: https://patch.msgid.link/20260512050929.541397-2-iam@sung-woo.kim
+Signed-off-by: Jens Axboe <axboe@kernel.dk>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/firmware/arm_ffa/driver.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ block/bio-integrity.c | 18 ++++++++++++++++++
+ 1 file changed, 18 insertions(+)
 
-diff --git a/drivers/firmware/arm_ffa/driver.c b/drivers/firmware/arm_ffa/driver.c
-index cf7f913a55b6e..30f8e0ff694fb 100644
---- a/drivers/firmware/arm_ffa/driver.c
-+++ b/drivers/firmware/arm_ffa/driver.c
-@@ -1538,7 +1538,7 @@ static void notif_pcpu_irq_work_fn(struct work_struct *work)
- 	struct ffa_drv_info *info = container_of(work, struct ffa_drv_info,
- 						 notif_pcpu_work);
+diff --git a/block/bio-integrity.c b/block/bio-integrity.c
+index 5a316d8bc5efa..d6c9a09a8dc6e 100644
+--- a/block/bio-integrity.c
++++ b/block/bio-integrity.c
+@@ -338,6 +338,24 @@ int bio_integrity_map_user(struct bio *bio, struct iov_iter *iter)
+ 	if (unlikely(ret < 0))
+ 		goto free_bvec;
  
--	ffa_self_notif_handle(smp_processor_id(), true, info);
-+	notif_get_and_handle(info);
- }
- 
- static const struct ffa_info_ops ffa_drv_info_ops = {
++	/*
++	 * Handle partial pinning. This can happen when pin_user_pages_fast()
++	 * returns fewer pages than requested.
++	 */
++	if (user_backed_iter(iter) && unlikely(ret != bytes)) {
++		if (ret > 0) {
++			int npinned = DIV_ROUND_UP(offset + ret, PAGE_SIZE);
++			int i;
++
++			for (i = 0; i < npinned; i++)
++				unpin_user_page(pages[i]);
++		}
++		if (pages != stack_pages)
++			kvfree(pages);
++		ret = -EFAULT;
++		goto free_bvec;
++	}
++
+ 	nr_bvecs = bvec_from_pages(bvec, pages, nr_vecs, bytes, offset,
+ 				   &is_p2p);
+ 	if (pages != stack_pages)
 -- 
 2.53.0
 
