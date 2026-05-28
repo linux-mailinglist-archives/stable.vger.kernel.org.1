@@ -1,59 +1,59 @@
-Return-Path: <stable+bounces-256100-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-255498-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id UOP/IVCpGGrclwgAu9opvQ
-	(envelope-from <stable+bounces-256100-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:45:04 +0200
+	id wNJNJNKhGGqblggAu9opvQ
+	(envelope-from <stable+bounces-255498-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:13:06 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 30F8C5F9733
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:45:04 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 373FA5F815D
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:13:06 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id EB3AF307F718
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 20:39:44 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 647983042E54
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 20:11:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F40FB332909;
-	Thu, 28 May 2026 20:39:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B217940B6DE;
+	Thu, 28 May 2026 20:11:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="j9i2t11N"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MOm9s6qo"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BBCA9357D12;
-	Thu, 28 May 2026 20:39:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 81C4D409E1C;
+	Thu, 28 May 2026 20:11:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780000756; cv=none; b=l/miNBSCFFTXNbNLA4UdsiGf00dXqu45fKSviEsueppD0JRFxc6IHWvlHDiA6Kw4sbLa2AM6T6PDR3Sh/6WU43FSRLx4XP0ff8ynZLdDOyNECk1sW/65VkeoTSzdh3+igndqiyrWObbfS3QuZU1GTMkMS9CYD8j+Abw1WdBlk8g=
+	t=1779999080; cv=none; b=YjToXP2tMIGGfJXt56xgmvGjBzQiyoI89wls6LOB3V1cRhxO0I73Z0ygEy4gi9T6nzz2toqaCJnhSGOtQBbxkuheSuNeD8kOXplBaupkQ1Mbb0rj0YN8T57wplTpJ91PVJpTKXtWgt7s5IJ5fUHdLr36aMIramwuLip19vHlyOs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780000756; c=relaxed/simple;
-	bh=yNUCc+ULsggQYCfB3rcll58WkQW0G5QndWj/p4CpG6E=;
+	s=arc-20240116; t=1779999080; c=relaxed/simple;
+	bh=ECcR260TRkCSh8z5GTD/wyCCyXWJf5WbqruD1M3SeVQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ki+Kb75MSEuzYYn8Ui358LFo4jz0uRXjYX5pjSNpVmtyFzj056mYcoK+SmsIN/Cs2qNuAQxlogE21LH3CxJqDsGXx9gjSqK81Ertw8rVrADOfYqJDEy1Q7ASzy3NjtUfWXqRkf38pjEtKQqasf/psMG85N458K28W26ESfdoi/Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=j9i2t11N; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 15D181F000E9;
-	Thu, 28 May 2026 20:39:14 +0000 (UTC)
+	 MIME-Version; b=W7r3T9U23sgw6hzI4GAnkWi7U4vJcWaI3iYCHiG39iCOhrOdbEAEU6G6IXIBHvNvNa5N8bNnXm7E2eud2McWqszrGhItnSufSqtPHSyGJdshjo8WlhTDs+JZYFjpojs9Jn7KATqLfFHax//hiRylcK8T8s64HMlfoNWrJOU72mk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MOm9s6qo; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DFA271F000E9;
+	Thu, 28 May 2026 20:11:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780000755;
-	bh=bHPJu0foAs/T6XJ8/Pmz0TFp0uH2b8kj8Lma/uqLmbo=;
+	s=korg; t=1779999079;
+	bh=7POsICAMdrFX01HbYUMz3Gfm4GgmNORGxhUPBMzFlMg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=j9i2t11NlydpqX7HB5RvdCp4kBeVVSIGvXTqLs3L+WQefn2m+DspTr14X9y6SGcAd
-	 k7gMuYJ7Q4BhRiTJhYx6xXt5PBxVe574qFk8ZKhV+nLMEHsi1J8M9JuoncyZDpnLT+
-	 JuV+RjwAu4KsjS8G1yzsTbCNij0YJ7kzIL6Sv6bo=
+	b=MOm9s6qo3zkIH7CaDt9MMBA/+v8K3xepnAIoYgUs97T0dcle4z10JLAKJeNUiyTJy
+	 54OUQq1bzNY8B9bhewlO+C0EKlZ850E/n1KOD+aFe6+4bmi/YELGuA034JWkyCGqiQ
+	 oOfXbsX9A5z+M0bBWIwecJgbw81VnP391EPfA0gg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	David Gow <david@davidgow.net>,
-	Shuah Khan <skhan@linuxfoundation.org>,
+	Guangshuo Li <lgs201920130244@gmail.com>,
+	Leon Romanovsky <leon@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 156/272] kunit: config: KUNIT_DEBUGFS should depend on DEBUG_FS
-Date: Thu, 28 May 2026 21:48:50 +0200
-Message-ID: <20260528194633.723637628@linuxfoundation.org>
+Subject: [PATCH 7.0 402/461] RDMA/rtrs: Fix use-after-free in path file creation cleanup
+Date: Thu, 28 May 2026 21:48:51 +0200
+Message-ID: <20260528194659.111826022@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260528194629.379955525@linuxfoundation.org>
-References: <20260528194629.379955525@linuxfoundation.org>
+In-Reply-To: <20260528194646.819809818@linuxfoundation.org>
+References: <20260528194646.819809818@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,67 +66,88 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	TAGGED_FROM(0.00)[bounces-255498-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,kernel.org];
 	RCVD_COUNT_THREE(0.00)[4];
-	RCVD_TLS_LAST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-256100-lists,stable=lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
 	TO_DN_SOME(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	RCPT_COUNT_FIVE(0.00)[6];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
+	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,davidgow.net:email,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo]
-X-Rspamd-Queue-Id: 30F8C5F9733
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,msgid.link:url]
+X-Rspamd-Queue-Id: 373FA5F815D
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+7.0-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: David Gow <david@davidgow.net>
+From: Guangshuo Li <lgs201920130244@gmail.com>
 
-[ Upstream commit 8f80b5b227ef9ea422080487715c841856339aed ]
+[ Upstream commit 5b74373390113fba798a76b483837029ab010fef ]
 
-CONFIG_KUNIT_DEBUGFS is totally useless without debugfs, so it should
-depend on CONFIG_DEBUG_FS.
+In the error path of rtrs_srv_create_path_files(), the sysfs root folders
+may already have been created and srv_path->kobj may already have been
+initialized. If a later step fails, the cleanup currently calls
+kobject_put(&srv_path->kobj) before
+rtrs_srv_destroy_once_sysfs_root_folders(srv_path).
 
-Link: https://lore.kernel.org/r/20260425034155.53913-2-david@davidgow.net
-Fixes: e2219db280e3 ("kunit: add debugfs /sys/kernel/debug/kunit/<suite>/results display")
-Signed-off-by: David Gow <david@davidgow.net>
-Signed-off-by: Shuah Khan <skhan@linuxfoundation.org>
+kobject_put() may drop the last reference to srv_path->kobj and invoke the
+release callback, rtrs_srv_release(), which frees srv_path. The following
+call to rtrs_srv_destroy_once_sysfs_root_folders(srv_path) then
+dereferences srv_path internally to access srv_path->srv, resulting in a
+use-after-free.
+
+This failure path is reached before rtrs_srv_create_path_files() returns
+success, so the successful-path lifetime handling is not involved.
+
+Fix this by destroying the sysfs root folders before calling
+kobject_put(&srv_path->kobj), so srv_path is still valid while the helper
+accesses it.
+
+This issue was found by a static analysis tool I am developing.
+
+Fixes: ae4c81644e91 ("RDMA/rtrs-srv: Rename rtrs_srv_sess to rtrs_srv_path")
+Signed-off-by: Guangshuo Li <lgs201920130244@gmail.com>
+Link: https://patch.msgid.link/20260514113834.865530-1-lgs201920130244@gmail.com
+Signed-off-by: Leon Romanovsky <leon@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- lib/kunit/Kconfig | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/infiniband/ulp/rtrs/rtrs-srv-sysfs.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/lib/kunit/Kconfig b/lib/kunit/Kconfig
-index 8a30ad48f3c07..e22cbee60ab25 100644
---- a/lib/kunit/Kconfig
-+++ b/lib/kunit/Kconfig
-@@ -17,6 +17,7 @@ if KUNIT
+diff --git a/drivers/infiniband/ulp/rtrs/rtrs-srv-sysfs.c b/drivers/infiniband/ulp/rtrs/rtrs-srv-sysfs.c
+index 51727c7d710c3..9dd9141c86a54 100644
+--- a/drivers/infiniband/ulp/rtrs/rtrs-srv-sysfs.c
++++ b/drivers/infiniband/ulp/rtrs/rtrs-srv-sysfs.c
+@@ -295,8 +295,8 @@ int rtrs_srv_create_path_files(struct rtrs_srv_path *srv_path)
+ put_kobj:
+ 	kobject_del(&srv_path->kobj);
+ destroy_root:
+-	kobject_put(&srv_path->kobj);
+ 	rtrs_srv_destroy_once_sysfs_root_folders(srv_path);
++	kobject_put(&srv_path->kobj);
  
- config KUNIT_DEBUGFS
- 	bool "KUnit - Enable /sys/kernel/debug/kunit debugfs representation"
-+	depends on DEBUG_FS
- 	default y
- 	help
- 	  Enable debugfs representation for kunit.  Currently this consists
+ 	return err;
+ }
 -- 
 2.53.0
 
