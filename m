@@ -1,60 +1,59 @@
-Return-Path: <stable+bounces-255711-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-255992-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id YD20DVGnGGpolwgAu9opvQ
-	(envelope-from <stable+bounces-255711-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:36:33 +0200
+	id 2NaUEV2oGGpolwgAu9opvQ
+	(envelope-from <stable+bounces-255992-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:41:01 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 89FF75F917B
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:36:32 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4DA965F94EE
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:41:00 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id E758731E79AF
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 20:21:13 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 44B073070EAF
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 20:34:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C38FA316199;
-	Thu, 28 May 2026 20:21:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EC80633B6FC;
+	Thu, 28 May 2026 20:34:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tqxZRKc8"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fdw7bLwA"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 991B830C15B;
-	Thu, 28 May 2026 20:21:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BA5E332AAD6;
+	Thu, 28 May 2026 20:34:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779999673; cv=none; b=WvBqjLQXl1FZGeISvpOp8DdUKqtS6qDY7DOR4PttIhkIgaFtyW1mNgOHoP10E0imWuWTJszuprsEYgqFnd+jhhXtX6Qipdv21kevgDrqk3NeNl7VbmkYW+K5rHZdW+hi0z1D6NO3jz3UfkHd9x48P+6HQ3By6ZLAHnn7zV8j+u8=
+	t=1780000452; cv=none; b=YkdjXZnr5Wpu0WZ9Hpjmc+MZUx7dprc6q4KNFpnQ03xb85uF2dVwiLSUZImbCcJ3XOacCQvAxohqDspZPzrbUhZK+Jb8XYSeMEG9M14Gy3C8FEsPZPHQShk9qIAIDHSVPCpOTRlNNgIwgfn3vYmUqVNYVT9kd/7pSGonjg0Y9w8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779999673; c=relaxed/simple;
-	bh=pNyN02h6iIBV+H/WQ6wHeOzQoq2wMj6xbl0i2bYfd4c=;
+	s=arc-20240116; t=1780000452; c=relaxed/simple;
+	bh=fKGpts3bGJbx7BEYB4oWmI2xfIj0RjsRwzfmWSSJuO0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ijZHze8eaxEV3HOPDkXefMNNbW8ZsNqNWJSv+XnFzb0u/OmQlADyrSDrn4TTovorQVowAGKGVcdCiMmPRflu6pQkN2P3gRviYh95+2vx3llfej+3qtfLIhS7SL3VhVZG7ymMhJdBwV3HS5yh80EpjLyFMZrwmd5UdoTknNtOyMw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tqxZRKc8; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AE1E31F000E9;
-	Thu, 28 May 2026 20:21:11 +0000 (UTC)
+	 MIME-Version; b=CBFSeHMeoX42gqsmkCLJ1hpYE0fFglySg8LWLY8P4WbVH0adhI/HxcTx76qbp83MKBuFKTdg68xXsb/bQ/yvdGgIsEM+y2IyxpgLh0brnXDEQKXiEJM37cROUcApEGwioBPcMdd9WK0pDCUH793tf9ZtSDv19sW7A/HOqeVI5Cg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fdw7bLwA; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 241F91F000E9;
+	Thu, 28 May 2026 20:34:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779999672;
-	bh=Wd8aurS/i6RcXXkOIZPkXfBBQxY5Jc5NrNXSPDvlRSA=;
+	s=korg; t=1780000451;
+	bh=jdW7OET1IRwrWAJqWRBZYX5qNY819bjFIw8x2s2kbIU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=tqxZRKc8tcXgylcWk58Ha0Z5beZ1uFixVo5Qiu0Fan4YyxNWJp0DM9vuktwlAD8du
-	 pjCfAjw5fkqaN2dNIQLNX2noq97nLVIoRK0pBnmxN2stBvLc2eC19gAVK6OL2poMYA
-	 A0DF+8RqL8+HtijTblo6qxrcxGt8yiWUGJjBzYog=
+	b=fdw7bLwAZZAxG1DbQXMuf0PHTmOXjmAfOQuOqCiQIeDa0JO+A1Xb9MZ3fMoQmXXyl
+	 JWQIWdz5hxz4+S78/qSN18+tywwjWBktkHtj8ZSro3HueXZ/G0seY7O+9MYZWSNZW5
+	 g6zki9C2Ver2JjTrTHsYIVeqXl2z3N3F/9MPw8lI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable@kernel.org,
-	Ido Schimmel <idosch@nvidia.com>,
-	syzbot+9fdcc9f05a98a540b816@syzkaller.appspotmail.com,
-	Sven Eckelmann <sven@narfation.org>
-Subject: [PATCH 6.18 149/377] batman-adv: bla: avoid NULL-ptr deref for claim via dropped interface
+	Vladimir Yakovlev <vovchkir@gmail.com>,
+	Mark Brown <broonie@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 013/272] spi: spi-dw-dma: fix print error log when wait finish transaction
 Date: Thu, 28 May 2026 21:46:27 +0200
-Message-ID: <20260528194642.699065010@linuxfoundation.org>
+Message-ID: <20260528194629.755526410@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260528194638.371537336@linuxfoundation.org>
-References: <20260528194638.371537336@linuxfoundation.org>
+In-Reply-To: <20260528194629.379955525@linuxfoundation.org>
+References: <20260528194629.379955525@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,84 +64,75 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	TAGGED_FROM(0.00)[bounces-255992-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,kernel.org];
 	RCVD_COUNT_THREE(0.00)[4];
-	TAGGED_FROM(0.00)[bounces-255711-lists,stable=lfdr.de];
-	FROM_HAS_DN(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	TO_DN_SOME(0.00)[];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	RCPT_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[7];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	TAGGED_RCPT(0.00)[stable];
+	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable,9fdcc9f05a98a540b816];
-	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[nvidia.com:email,appspotmail.com:email,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,narfation.org:email,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim]
-X-Rspamd-Queue-Id: 89FF75F917B
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim]
+X-Rspamd-Queue-Id: 4DA965F94EE
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sven Eckelmann <sven@narfation.org>
+From: Vladimir Yakovlev <vovchkir@gmail.com>
 
-commit f80d3d98d2ff78d9e2fe5d68b1f45948c4f7bd24 upstream.
+[ Upstream commit 3b46d61890632c8f8b117147b6923bff4b42ccb7 ]
 
-Without rtnl_lock held, a hardif might be retrieved as primary interface of
-a meshif, but then (while operating on this interface) getting decoupled
-from the mesh interface. In this case, the meshif still exists but the
-pointer from the primary hardif to the meshif is set to NULL.
+If an error occurs, the device may not have a current message. In this
+case, the system will crash.
 
-The mesh_iface must be checked first to be non-NULL before continuing to
-send an ARP request using meshif.
+In this case, it's better to use dev from the struct ctlr (struct spi_controller*).
 
-Cc: stable@kernel.org
-Fixes: 23721387c409 ("batman-adv: add basic bridge loop avoidance code")
-Reported-by: Ido Schimmel <idosch@nvidia.com>
-Reported-by: syzbot+9fdcc9f05a98a540b816@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=9fdcc9f05a98a540b816
-Signed-off-by: Sven Eckelmann <sven@narfation.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Vladimir Yakovlev <vovchkir@gmail.com>
+Link: https://patch.msgid.link/20260302222017.992228-2-vovchkir@gmail.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/batman-adv/bridge_loop_avoidance.c |    6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
+ drivers/spi/spi-dw-dma.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/net/batman-adv/bridge_loop_avoidance.c
-+++ b/net/batman-adv/bridge_loop_avoidance.c
-@@ -357,12 +357,14 @@ static void batadv_bla_send_claim(struct
- 	       sizeof(local_claim_dest));
- 	local_claim_dest.type = claimtype;
+diff --git a/drivers/spi/spi-dw-dma.c b/drivers/spi/spi-dw-dma.c
+index f4c209e5f52ba..4104e1bc2d5bd 100644
+--- a/drivers/spi/spi-dw-dma.c
++++ b/drivers/spi/spi-dw-dma.c
+@@ -271,7 +271,7 @@ static int dw_spi_dma_wait(struct dw_spi *dws, unsigned int len, u32 speed)
+ 					 msecs_to_jiffies(ms));
  
--	mesh_iface = primary_if->mesh_iface;
-+	mesh_iface = READ_ONCE(primary_if->mesh_iface);
-+	if (!mesh_iface)
-+		goto out;
- 
- 	skb = arp_create(ARPOP_REPLY, ETH_P_ARP,
- 			 /* IP DST: 0.0.0.0 */
- 			 zeroip,
--			 primary_if->mesh_iface,
-+			 mesh_iface,
- 			 /* IP SRC: 0.0.0.0 */
- 			 zeroip,
- 			 /* Ethernet DST: Broadcast */
+ 	if (ms == 0) {
+-		dev_err(&dws->host->cur_msg->spi->dev,
++		dev_err(&dws->host->dev,
+ 			"DMA transaction timed out\n");
+ 		return -ETIMEDOUT;
+ 	}
+-- 
+2.53.0
+
 
 
 
