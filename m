@@ -1,195 +1,162 @@
-Return-Path: <stable+bounces-254977-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-254978-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id ODp9ONI+GGo1hggAu9opvQ
-	(envelope-from <stable+bounces-254977-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 15:10:42 +0200
+	id yPlMFHc/GGqahwgAu9opvQ
+	(envelope-from <stable+bounces-254978-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 15:13:27 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3CE2C5F2803
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 15:10:41 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id AF01F5F287F
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 15:13:26 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id EA357313CEAE
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 13:05:49 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id C7D96304E0F7
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 13:08:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8210C3E0758;
-	Thu, 28 May 2026 13:05:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5C3A23D4133;
+	Thu, 28 May 2026 13:08:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="Oje7mhDd"
+	dkim=pass (2048-bit key) header.d=debian.org header.i=@debian.org header.b="A0belgQQ"
 X-Original-To: stable@vger.kernel.org
-Received: from PH0PR06CU001.outbound.protection.outlook.com (mail-westus3azon11011025.outbound.protection.outlook.com [40.107.208.25])
+Received: from stravinsky.debian.org (stravinsky.debian.org [82.195.75.108])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EAD5C3E63AA
-	for <stable@vger.kernel.org>; Thu, 28 May 2026 13:05:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.208.25
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779973549; cv=fail; b=ixHSlYDDrL6ZCfpCnSt5VtKorcr9GY6/fs2bQB75dWW9hXXaLT9meqmwlBfsbovG/cBPJ3YK2Ghh6YhaJaDYCRdR6GeXDO0OrIDnfnXlCp7WHoxo+6AvBC8LzsiFO4uCOxV+xseA7OLLo06YhMvKufr00Mc/P+rfPRof02sBmWI=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779973549; c=relaxed/simple;
-	bh=MVJ4wJ3wmVX65m4RvPABYTrdGiKbfu+xADWVzRnDBNg=;
-	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
-	 Content-Type:MIME-Version; b=iESluBLqHgX5LbiBdEjuArvbRP/eLod7jAQ6MaqRBcdrAja+FrPwbtlUAt1jR47/EnBv/U63fQP9W0Svuk6kspIij/ZQ/8qJ2DGzVNP+cEnFlWmwFGvpFblTGNC0gIWOH0x7vRve+7CPSofF1QHjdExdXkL6xN7ORaKSPy4lKCE=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=Oje7mhDd; arc=fail smtp.client-ip=40.107.208.25
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=FbxItPjkFDoI0Pua82hKwsUh1/ORVMKL8YCBs3TTHi98PQ3Y0YaqTS8WXle9ZKO/Kt30t4DZhHA+26RH93dLPMcBQv0hxujzeProdeHuTqcRQxNBZzuow61dFl+7Tj1Tia5bIn+oPFe2ea33gBPad4BBbCd5YTPIXqCVk82qWfknkoAdF3iYN0WWLxzU/lXjv8qfbnYx9l/2ss/O8rVUmVgai9RaTFZ6XYNH/RgHyLyZxEC8gzikzYisGmLjb0RgxYG5Qps5jZ2YBJz6pwIpr/xTt5vxsM0FbDCyg5VHMG9ybmDzjjhVg/IhnN9cFOz1JI4zSFoqWl0DApOFVvdMGQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=MVJ4wJ3wmVX65m4RvPABYTrdGiKbfu+xADWVzRnDBNg=;
- b=tq3chEO8Nnm7Rjde6eYcuB8iQ8J8sWDyzrj0MfqMqSquVGCdMEMq3ZDJaED8ZC3mOFSzFq5I3JAo8F7+vaM0UupZWRnpCcSuOA/jUYdvcze7C/4HQhkYcoOuAudjIQhHQFc7MkIcQEzfIW03RrYwlb8m8sJTHfwoEjlT15b/ugcEX4KDseV03pE0eBsIVNhWKs/ppp2zlusiqx69ocM07QBGnkUDhcobMt6+6R0eU/UYDY/99q8GXyUR9p1oNu9Swq8pLSSMe+WGIPLXC9L2DnMO0IQG6adkbBmC+mPstYGIF8J/sBpMFb2eSVTKqz6pBjYrjnp/kpIKLqLFWEJpqA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
- header.d=amd.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=MVJ4wJ3wmVX65m4RvPABYTrdGiKbfu+xADWVzRnDBNg=;
- b=Oje7mhDd9wZdAiRyOewmAgXZ+gWE4wH6ZFraB0x7+xoNfvIowB660yjsu/CcqGt+vKlFJLpcveMObLT2hUwLrZGPn2JXepzENbA1HcLVfpAbCEOGkOmJghvUTCYoMMP7RQ2P2SFkptr+u/HNG7JRZ0NuZvOXRTKn7JHjR+lRFhE=
-Received: from SA1PR12MB8599.namprd12.prod.outlook.com (2603:10b6:806:254::7)
- by IA0PR12MB7553.namprd12.prod.outlook.com (2603:10b6:208:43f::18) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.71.14; Thu, 28 May
- 2026 13:05:44 +0000
-Received: from SA1PR12MB8599.namprd12.prod.outlook.com
- ([fe80::4c39:c452:1296:e09b]) by SA1PR12MB8599.namprd12.prod.outlook.com
- ([fe80::4c39:c452:1296:e09b%5]) with mapi id 15.21.0071.011; Thu, 28 May 2026
- 13:05:43 +0000
-From: "Li, Yunxiang (Teddy)" <Yunxiang.Li@amd.com>
-To: "Koenig, Christian" <Christian.Koenig@amd.com>, "Deucher, Alexander"
-	<Alexander.Deucher@amd.com>
-CC: "Zhou1, Tao" <Tao.Zhou1@amd.com>, Guchun Chen <guchun.chen@amd.com>,
-	"amd-gfx@lists.freedesktop.org" <amd-gfx@lists.freedesktop.org>,
-	"stable@vger.kernel.org" <stable@vger.kernel.org>
-Subject: RE: [PATCH] drm/amdgpu/gfx9: guard fault IRQ puts in hw_fini
-Thread-Topic: [PATCH] drm/amdgpu/gfx9: guard fault IRQ puts in hw_fini
-Thread-Index: AQHc7hp4Ya8lrpGw30ONnwLgLQlywLYjCqKAgABdCVA=
-Date: Thu, 28 May 2026 13:05:43 +0000
-Message-ID:
- <SA1PR12MB8599A335F391E5E0E074EB02ED092@SA1PR12MB8599.namprd12.prod.outlook.com>
-References: <20260527204940.1741202-1-Yunxiang.Li@amd.com>
- <9164ec6a-ef61-484d-9d52-92094fa28f7c@amd.com>
-In-Reply-To: <9164ec6a-ef61-484d-9d52-92094fa28f7c@amd.com>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach:
-X-MS-TNEF-Correlator:
-msip_labels:
- MSIP_Label_2d0b1989-8fc8-4a69-bcac-d46889461ba5_Enabled=True;MSIP_Label_2d0b1989-8fc8-4a69-bcac-d46889461ba5_SiteId=3dd8961f-e488-4e60-8e11-a82d994e183d;MSIP_Label_2d0b1989-8fc8-4a69-bcac-d46889461ba5_SetDate=2026-05-28T13:00:50.0000000Z;MSIP_Label_2d0b1989-8fc8-4a69-bcac-d46889461ba5_Name=AMD
- Public
- v26;MSIP_Label_2d0b1989-8fc8-4a69-bcac-d46889461ba5_ContentBits=3;MSIP_Label_2d0b1989-8fc8-4a69-bcac-d46889461ba5_Method=Privileged
-authentication-results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=amd.com;
-x-ms-publictraffictype: Email
-x-ms-traffictypediagnostic: SA1PR12MB8599:EE_|IA0PR12MB7553:EE_
-x-ms-office365-filtering-correlation-id: b696f7cf-cfff-4d7b-8059-08debcb9d378
-x-ms-exchange-senderadcheck: 1
-x-ms-exchange-antispam-relay: 0
-x-microsoft-antispam:
- BCL:0;ARA:13230040|366016|376014|1800799024|22082099003|18002099003|4143699003|56012099006|11063799006|38070700021;
-x-microsoft-antispam-message-info:
- vIZfrhuTuRPllCJv4Xrz+/ih+/DW0MYu6bFHaWthSkyuxi/rPv+Y8VeVJrdpUC0IVyo2Oq2iuYGFo9VB+/uMUtmmoVI46lj93U/4UuV75sd1WqC2dH5HM1pLAqAKahWpjSEGeanh1sANlYZwcJTeHJ1oLyBh/pzb21TbGIZen7eUz6sIpbGuY0PH3At6dJBExH3UniCBGWL/0+3gVmsLvCG6tI4eGdAeeMpOz3vp2vYl8bk438JMyA+86gxjfcf18HqZVqf0+YyqHMIUNaWN66eKI/EJFnLs1b9QIj1NzHl1lS6uJfCap2QBqF2XDh6JXtvk32OOuP5V4d9iwdedyKdw/f5c+bdXMleYRZrX5/7zeATVV7RYAN6itY0rFHR++gBaX+Q7M8EEY1qWrcSBCNzNKLXqV8SACJeCvh0Nbcam4a0TMJ7LBVTMDy2qjrHnvF+hbxuNOsqmQX0IhkNJmiVF9I/+Ekp/UiDM/6i68cZFSk+pLVSfFUw+QKtpyP6OU45ImGeZ6v2RFAHy5HXAGyCH8S2jHwNM1C6/7F/GSsetF4iWzXmAu0rYfh93NLvER47M1YzWJQVsneFelESAguuYWG82Ul37AcERpFwoV93EbPsAsyK0bo76P9BV5N12MXdvelfvynje9CPGg87RJXhC7Q95kACda/1Y3Kblv4lF3L1/mLk+ePrMOjcGZ4JchoZFWbTgOh6fm6/tFPCr+Q==
-x-forefront-antispam-report:
- CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:SA1PR12MB8599.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(376014)(1800799024)(22082099003)(18002099003)(4143699003)(56012099006)(11063799006)(38070700021);DIR:OUT;SFP:1101;
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0:
- =?utf-8?B?MTVDc3MyL2hxelhpTUFuL2dGUlBMNG9jSXdXQjl2L3BUZUFqUHNLSFJyQWcz?=
- =?utf-8?B?MUFlaERnTXVPbGp0TG55RDRMSW85UGZWVnVic0pVRkhlVnVHQ0ZSZ3E1RUZP?=
- =?utf-8?B?T0JUUzZkUld5VzlHOXB6bTc3cmZSTnZraHJiZU1yU2FpLzN0RzVtSFQ1WVBv?=
- =?utf-8?B?MWJ4cXlKeGxEODlxa0EzbWtnTUhjZHhMTmFUc1BHdU1BRWQvemJwSkpqcm1t?=
- =?utf-8?B?UmxnbTlpYnkzc1kzbmovR2xuVTJzNHJiYmhvSWhidnJHYXptcEZ3a1dDT0VH?=
- =?utf-8?B?WFUzM0ViY05aTnBXZEg5Zm9MMkxWUlgvZE5wbmVQTWp5UDVKak04OUVqdXc0?=
- =?utf-8?B?eW82U1M4V3IrVFI0MTJWQjJxU1d6ZjBTelVrbUllOXJUSVlnUXRCSzVFQytj?=
- =?utf-8?B?RjFxMytCN3hlcEFaWTYyamorUk45ZDJJdkswcGRJVjlhOWpqUzQzZTFIMThB?=
- =?utf-8?B?cEFjZHpuWVdTNExZWjBiNUx5cDZZVSs4VDlmbUtEdWtpQzIyYzBZWER0Ni83?=
- =?utf-8?B?VkNBdkhodXpzWGZmL2taTDkxQlhCaTU2WWxvQ3B2NURTbGV5SW9RZHE5UkdK?=
- =?utf-8?B?N0hHc2drSHYzYkhFdmRsTmI1bHlDV2ZudnhKSlpnUmdaSUxEZzhhN1N5aEtj?=
- =?utf-8?B?TmhQbHFnZ0g4bzJoVE5VbWVjVmNjYjNLSVpwUVJ6UEhiaVpjSDlnRTRpWGdr?=
- =?utf-8?B?VjhuNWF6b1NLT3FVNXIvZnRPT2hHUG92aFZUTUhMQWw1VHRGZWtwQmUwYXlk?=
- =?utf-8?B?Rmh2c25xVVVWTG13UXhtMDNWUDVZcUsvNWNYS0VPVSs0RGpqTEVNNk9zbUR3?=
- =?utf-8?B?eHJPb1FrZ2VWbDdyNzBlTUppTEFHM3JWdW81VE0vUG1RNzBKM0FmSmxXRmU5?=
- =?utf-8?B?WnR0c0NxTGh5MnhXYVk5b2tCWXdxUSsrZzh4anFUdEhFWTltTnZMWFRIajlV?=
- =?utf-8?B?S01qQ1pBY3FOajZuMDZCeVhldmpBYW1vOWpVQXBINGNqdkduQmcrVDZPa0M5?=
- =?utf-8?B?K0hVN2xERUxFVk95MmlaWVY3S2dKd3R4T1p3U0dnU2c5Wk5yMkRFZTZDMXcr?=
- =?utf-8?B?ditpbjhsempKbmNjdmFhKzhZM1kwNnFxZWdVSGpzNTFXMDVvZ0Q3SzhZVTYr?=
- =?utf-8?B?VUFxK1d5TS9KTldXTHRsVzVFRnlaY0RGT1dSRVBjWVVONTN0UzhUUnVRTktT?=
- =?utf-8?B?U3FVck05RE1lNWxPdTFlVHBoR3dBVmxrbmVKVGJ2WmM3U1hRYWR0Yy90NDFa?=
- =?utf-8?B?R1FvTk9oWFEzQXJ3NnAra0x3L2FHSHlEM2Z4WGxqYXBQa2xmZlptVi9JQitE?=
- =?utf-8?B?ZmMwWUErN05FQ1RCVlNjYnBTT0kycE9zczFYdWVDVS9tSkxIQXR4L09ibkly?=
- =?utf-8?B?c2ErblZVWGtsakdBUnU5eHBYMjhHSUdUZ0orN09HTXBkWDl4eDRiWHJabENx?=
- =?utf-8?B?VEo5S1NBOGVTUkhUZURnbE5XbG4yeVZUNGlyc0g4YTA3SFEwdHkvUlF3a1E3?=
- =?utf-8?B?S0p6QldtSXR4ZkxUZGFPRFpDZlRsb1ZhdUFVYk9rZ05abmdLT0ZEbXZYbndG?=
- =?utf-8?B?SGM2VnNWQzlrVm5DRnk5OFlQT2xDNnBKeWRaRll4QmJGdzJocnc2QWZlaFBL?=
- =?utf-8?B?eFpNRTI1ZEhqOE5NK1V3TFU1K01rdHQvc1lLMzJDdGVRVVJCVHh3MDR4RDkz?=
- =?utf-8?B?MEk0REhZdEJUN2gxQm5tNnltc2IyTkFjUE5GZnVUV2ZjU1dKVE1LYmFNQ3dl?=
- =?utf-8?B?SWRqTE5wZzdXYVV4YjQwZHBGbVZQWWRIR2dIS3U0THNsWk5PVWU1ak5DU0dh?=
- =?utf-8?B?R3dyMkZQeE5MWWJQRUh5UUpXd0svSTBvVmx5YkQ4akhuRHVPN0x2UjR5R2Nj?=
- =?utf-8?B?ejQyUG05RFU2NnNab1p1empPbnRKdU9DUVBEZkd0WWRVSVQrWWVyNm1BWk9u?=
- =?utf-8?B?cGN2VnlWUFJkTnljT0Q1RFlsemRSeDJhQXcraVNkbHBMQlozOWV6NjBjV0Yx?=
- =?utf-8?B?ZDRCVUYyWGZ0WkFXbVdNd2UxOWRaT3o4eDhON3dXVDVnRmdhbWVJSElXSEp3?=
- =?utf-8?B?WkhPdG9sSmdDRUR3Z0U1UFBCd2EzNE5XNTFWVnNhVkhqTnBYMTlQa2hhZU4x?=
- =?utf-8?B?QWZ0NnZhTXBXUmFCdkNaZzhKa2ZVdncrZWNMcTRWRDl3YUxDRkwyZFYvZE50?=
- =?utf-8?B?NEo2Nit6STcyRUM3Ym9XaFVKTFVoNVJRLzNPbGlqMGlUWDRSUVZhVXkwSlp0?=
- =?utf-8?B?ak1NODRRNDcxOFowQTMwL0UwdFJRWkFiZzhYRnF6U3RuTnZ6OXNEQUgyVUlO?=
- =?utf-8?Q?kY5x3aLR86sO5PrUex?=
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ADBC93E3C76
+	for <stable@vger.kernel.org>; Thu, 28 May 2026 13:08:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=82.195.75.108
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1779973688; cv=none; b=JIXihNxpzGNCcmqU+c/ZGHEbgKSUD5IRZ5xKvo/4nJ8BAemMxGSHSn1YrWacbeHbhrABZ0e5HLM19rxZj2d0uHD4P7hoWRmRkiQGTSzmCWH0sPDIK/+8v+2kkRsn/2qPjI58AOKLIKLcIIReSEDnSSGcnFq+ze4LXAaFVMjOj/I=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1779973688; c=relaxed/simple;
+	bh=U5FzoB7musyFQqaPEjNF1/UUXBLzRb3OJ43kcBzZ+yo=;
+	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
+	 Content-Disposition:In-Reply-To; b=JAvRkIAgFrCbTu5DvcmvkOiYeog3slyn07thpHv53QbhgZBoROefkuw+Xs6OO2cbTwu0ATklDSyDLijPX71NuYhR1SyThmXDLzv6XWTN+Ul1NuRzNEga3LTh8tfSQhMHKGUfKUKblIc3EZwycpqsuaUqyZmbwrwVCfcqDGpIc1o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=debian.org; spf=pass smtp.mailfrom=debian.org; dkim=pass (2048-bit key) header.d=debian.org header.i=@debian.org header.b=A0belgQQ; arc=none smtp.client-ip=82.195.75.108
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=debian.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=debian.org
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=debian.org;
+	s=smtpauto.stravinsky; h=X-Debian-User:In-Reply-To:Content-Type:MIME-Version:
+	Message-ID:Subject:Cc:To:From:Date:Reply-To:Content-Transfer-Encoding:
+	Content-ID:Content-Description:References;
+	bh=4awUi+FK7z/5xriki3bh3p0U6E0KCZYG8Smwp+Ve1Gk=; b=A0belgQQfK0O+sgHy4JjrRi6kX
+	K9Tx/RI/VzzD6BafbSoehBNjkwn9KNYc+IWwh9jLkQzx1YM/6qJC9XFnFv+872ZybqJDWchSSeyO4
+	1XLS4Jq/eJlvY2Tw5NPPg4Fp2zWkuaome8QiiwwzDmVyqYr/h5m/EB02Ze63ItwXaCB8TQo7SxE0d
+	CW6WBZd1rfOclNauWaIrKVwsgEf5dDGjA8Fdv11ny8DisQBeFoZzd9nUg/+C6IuO4jGV+Z9CrOB7y
+	nsAeP11JnyHpKfmHViEhPD51k1Q7cUlHcJ7Lz55+lS6yUmY8IFlwwi4W1BOtRzrMmhBh/BxXiYZ3k
+	0gZs38iQ==;
+Received: from authenticated-user
+	by stravinsky.debian.org with esmtpsa (TLS1.3:ECDHE_SECP256R1__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
+	(Exim 4.96)
+	(envelope-from <benh@debian.org>)
+	id 1wSaSu-0043mU-0v;
+	Thu, 28 May 2026 13:08:00 +0000
+Date: Thu, 28 May 2026 15:07:58 +0200
+From: Ben Hutchings <benh@debian.org>
+To: Sasha Levin <sashal@kernel.org>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: Yoshihiro Shimoda <yoshihiro.shimoda.uh@renesas.com>,
+	Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>,
+	Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>,
+	Vinod Koul <vkoul@kernel.org>, stable@vger.kernel.org
+Subject: [PATCH 5.10] phy: renesas: rcar-gen3-usb2: Fix msleep() in atomic
+ context
+Message-ID: <ahg-Lvu0ywzUT9mZ@decadent.org.uk>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: SA1PR12MB8599.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: b696f7cf-cfff-4d7b-8059-08debcb9d378
-X-MS-Exchange-CrossTenant-originalarrivaltime: 28 May 2026 13:05:43.6006
- (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 3dd8961f-e488-4e60-8e11-a82d994e183d
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: mIMHpn3Jq88JztAa0Wl7GrmviBlhSSSWDdz5lLmnprOeezIsqMu861Uqah5vQje2NlYsQ6JpKiPhNik7eCICpw==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: IA0PR12MB7553
-X-Spamd-Result: default: False [0.94 / 15.00];
-	MIME_BASE64_TEXT_BOGUS(1.00)[];
-	ARC_REJECT(1.00)[cv is fail on i=2];
-	DMARC_POLICY_ALLOW(-0.50)[amd.com,quarantine];
-	R_DKIM_ALLOW(-0.20)[amd.com:s=selector1];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="IMNzU06fJPSmfjL2"
+Content-Disposition: inline
+In-Reply-To: <d5dde03f796af3efcdabcbadb604e8981268ae5c.camel@decadent.org.uk>
+X-Debian-User: benh
+X-Spamd-Result: default: False [-4.26 / 15.00];
+	SIGNED_PGP(-2.00)[];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	DMARC_POLICY_ALLOW(-0.50)[debian.org,none];
+	MIME_GOOD(-0.20)[multipart/signed,text/plain];
+	R_DKIM_ALLOW(-0.20)[debian.org:s=smtpauto.stravinsky];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
-	MIME_BASE64_TEXT(0.10)[];
-	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-254977-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-254978-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	TO_DN_EQ_ADDR_SOME(0.00)[];
-	TO_DN_SOME(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[5];
+	DKIM_TRACE(0.00)[debian.org:+];
+	MIME_TRACE(0.00)[0:+,1:+,2:~];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	NEURAL_HAM(-0.00)[-1.000];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[Yunxiang.Li@amd.com,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[amd.com:+];
-	NEURAL_HAM(-0.00)[-0.999];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	TAGGED_RCPT(0.00)[stable];
+	FROM_NEQ_ENVFROM(0.00)[benh@debian.org,stable@vger.kernel.org];
 	MISSING_XM_UA(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[6]
-X-Rspamd-Queue-Id: 3CE2C5F2803
+	RCPT_COUNT_SEVEN(0.00)[7];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,decadent.org.uk:mid]
+X-Rspamd-Queue-Id: AF01F5F287F
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-UHVibGljDQoNCj4gRnJvbTogS29lbmlnLCBDaHJpc3RpYW4gPENocmlzdGlhbi5Lb2VuaWdAYW1k
-LmNvbT4NCj4NCj4gVGhhdCdzIGEgY2xlYXIgTkFLLg0KPg0KPiBUaGlzIGp1c3Qgd29ya3MgYXJv
-dW5kIHRoZSBwcm9ibGVtIGluIGFuIGluY29ycmVjdCB3YXkuIFRoZSByZWFsIHF1ZXN0aW9uIGlz
-DQo+IHdoeSB3ZSBoYXZlIHRoZSBnZXQgaW4gbGF0ZV9pbml0KCk/DQoNClRoaXMgd2FzIG15IGZp
-cnN0IHJlYWN0aW9uIHRvbywgYnV0IHRoZSBmaXggSSBjYW1lIHVwIHdpdGggaXMgcXVpdGUgYSBi
-aXQgbW9yZSBpbnZvbHZlZCwgSSd2ZSBzZW50IGl0IGluIGEgZm9sbG93dXAgaW4gaHR0cHM6Ly9w
-YXRjaHdvcmsuZnJlZWRlc2t0b3Aub3JnL3Nlcmllcy8xNjc0MjMvLiBUaGlzIHdvdWxkIGJlIGEg
-cXVpY2sgZml4IHRoYXQncyBtdWNoIGVhc2llciB0byBiYWNrcG9ydC4NCg0KVGVkZHkNCg==
+
+--IMNzU06fJPSmfjL2
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
+
+The backport of commit 55a387ebb921 "phy: renesas: rcar-gen3-usb2:
+Lock around hardware registers and driver data" to 5.10 was not quite
+right.  The upstream version converted an msleep() call to mdelay() in
+rcar_gen3_init_otg(), which now runs in atomic context, but this
+change was missing from the backport.  Fix that.
+
+Fixes: 0f86a559900f ("phy: renesas: rcar-gen3-usb2: Lock around hardware re=
+gisters and driver data")
+Signed-off-by: Ben Hutchings <benh@debian.org>
+---
+ drivers/phy/renesas/phy-rcar-gen3-usb2.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/drivers/phy/renesas/phy-rcar-gen3-usb2.c b/drivers/phy/renesas=
+/phy-rcar-gen3-usb2.c
+index 5166a115879e..90f2a0e5b2aa 100644
+--- a/drivers/phy/renesas/phy-rcar-gen3-usb2.c
++++ b/drivers/phy/renesas/phy-rcar-gen3-usb2.c
+@@ -386,7 +386,7 @@ static void rcar_gen3_init_otg(struct rcar_gen3_chan *c=
+h)
+ 	val =3D readl(usb2_base + USB2_ADPCTRL);
+ 	writel(val | USB2_ADPCTRL_IDPULLUP, usb2_base + USB2_ADPCTRL);
+=20
+-	msleep(20);
++	mdelay(20);
+=20
+ 	writel(0xffffffff, usb2_base + USB2_OBINTSTA);
+ 	writel(USB2_OBINT_BITS, usb2_base + USB2_OBINTEN);
+
+--IMNzU06fJPSmfjL2
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQIzBAABCgAdFiEErCspvTSmr92z9o8157/I7JWGEQkFAmoYPioACgkQ57/I7JWG
+EQl1sQ//cgAdvRQgQguS/CyXcs42Og2rmDNmg5Ej2sIQjhHYRZG7Unoh7L2ERL9D
+c6B2fahPVB0DjGCFOA1Z5UGJyACbl/sYAOePXn8u6gdPd5g98hursotDBp/kdIqA
+i8J4j/HttUmI+W/ePUsm8An8Qb8lPsCBnL95O551oHGVgG0Qi/cf3h764Ob7hYi1
+C0I3Tat23j4+CBdNytEkzIwaQBg6i8Ybu7gnWZ8lkdFzjVUZCzLjolu8w/kUMxyH
+uqwF81HSuiUHwetiv+W63GTtUWvpEyAM6wLdKlQNocBnfgofcJpk6zG3H9fzXFEP
+yTzpcnrY2Smam82MBRnQ5S3CJFVJTPwGp/BAPQxnzsnnCCBp8f3kRxYGu7RiY7/N
+tm+djwnNCQkiggvDPoRtGFS4Ofdv/WTAZLP5g/4ORonTmspcYzHppHBkha/MNk0J
+HsF4vFUs2vHLwIOW0bjKETJef/CEySgGoYC7TGeTejGpyVg1OzOxoQTOPmblJDvK
+Nqvagom6BsbaAltdPlfA5hgROx5TNRcJsJlU+VPVe/A+0vbZIQYEJyxufuk+u+/v
+rq2cjIfPy+oHgk6BqDTLXAf9JKtFTVe7yqw1niw6KqQGHOQsQPe5cPW5WjRtJEWA
+JTbG3SL5z6oY0fwYaYjfr5M/8ubs7A3H7KuEWQ9P13rzQWbZY2M=
+=bhQt
+-----END PGP SIGNATURE-----
+
+--IMNzU06fJPSmfjL2--
 
