@@ -1,131 +1,262 @@
-Return-Path: <stable+bounces-255088-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-255089-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id lJzmL6mKGGrlkwgAu9opvQ
-	(envelope-from <stable+bounces-255088-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 20:34:17 +0200
+	id eIVTIhOSGGoMlQgAu9opvQ
+	(envelope-from <stable+bounces-255089-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 21:05:55 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id C525E5F65C9
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 20:34:16 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id ED70C5F6DBC
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 21:05:54 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id AA457301EB3F
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 18:34:12 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id AA909301C6E3
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 19:03:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 593B432B13E;
-	Thu, 28 May 2026 18:34:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F2C4B33F595;
+	Thu, 28 May 2026 19:03:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="JBolM2Jh"
+	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="Dok1X5Kv";
+	dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b="TduevX06"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4581232B126;
-	Thu, 28 May 2026 18:34:07 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 981F83101B0
+	for <stable@vger.kernel.org>; Thu, 28 May 2026 19:03:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779993248; cv=none; b=UApfe+bHUkea938ZZ34gz+j3izRPoOmv6ykr5+SbgkX1XalDwezItvAlgaAuzvTcMMXwj4rAq3O3FyeB1UPDQfPprpfH3QBL6p69LI7u6mmZC67Q2/80ZgHWCSX9wgEOHJvcbXsYVVfhek6Wm+shZySidwYZbawxaUltGapyrGE=
+	t=1779995006; cv=none; b=LeqcTPCcDpPHzvg3vbaw8/2c7YfwWoZ9S3CG/vzsIPsLpid+RjKc4tYuJ7QTBn6IayuRACnvFi+YyZtpueLcsDJAeT6DtGiqPL9eJoEuEB2PPj6wxihKmFfwxw7snW/mUwdh3yk2QuaS1nqXkkDBrryF7QCJuSMi5Su03web4Pw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779993248; c=relaxed/simple;
-	bh=zOMYPUQVHW4t4sGkcjtMhdQdnMt80//KjZAO1KFNhJg=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=q8+4vRweX/ba5OrDCUBkdVyNIARMxC+27SY4KfXNRvDa7lsrJwZioQhGjInQguUc+8QLh3WD+uf03TIY8ranOzELhWU6dl7BUw65lW45ETYzpU6rdj6h0MN9Wc6g6Y0PYZh0j7OKKvXYJmrXWP/v7h6zOLOfTNydAlVDmBhuubU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=JBolM2Jh; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 864271F00A3D;
-	Thu, 28 May 2026 18:34:06 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1779993246;
-	bh=1qy10XGAAa5iZJHi6FU1ig07Wgyq9EcxUSf7QXsyTeU=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References;
-	b=JBolM2JhtK0IJ1MgtlMs1uZWH+IC7y7NgSF9Q0d9iajbJoz/o8KSI9vlEzt4Nv2O1
-	 I/2x5ZT+7xjojQuVyfNVjhr7Lb5AzIehzMS6GNuh/3fVeuF5TzPwEbJ3e/3cXADppR
-	 hj6vh7rh4X5SzR586b01xm/p00w5oHFVG+pjZxW6GrzRPCyIfN27XNSePEVIXaX1d7
-	 7ysfYFwT+p5IDZ+dAkfk8K1K+DQAmsza5FQqoxu0mH0wUhE6h68iN/S26kv7bQbKik
-	 htfSlBq0abxo4oHVO2h9Cff2xLr9uPc3gdaYIgQsMYBUA+Cu3LRW3ak7ftWK2R3xrc
-	 tslK38INBMTBQ==
-Date: Thu, 28 May 2026 11:34:05 -0700
-From: Jakub Kicinski <kuba@kernel.org>
-To: Tristan Madani <tristmd@gmail.com>
-Cc: Paolo Abeni <pabeni@redhat.com>, "David S. Miller"
- <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, Simon Horman
- <horms@kernel.org>, netdev@vger.kernel.org, stable@vger.kernel.org,
- linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] net: shaper: use kfree_rcu() in net_shaper_flush()
-Message-ID: <20260528113405.34a87c54@kernel.org>
-In-Reply-To: <20260528160845.2636043-1-tristan@talencesecurity.com>
-References: <20260528160845.2636043-1-tristan@talencesecurity.com>
+	s=arc-20240116; t=1779995006; c=relaxed/simple;
+	bh=paeGq+rWMQnSZAQfy3+y9zJjzTZ7DbWxJrLxFBILOy8=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=inISHI9k3BWDwWBS+irI+FIn/mJpLFBfoQnz5ePmnA5dpSVEwaTJZwdYAYcvea01lArygVO047k1/IRz7SiRkDvX7H7GcT9BSyGd/vYNz3VSDfbMbHREuCtuy2ybRY04PMfIX7Qum29Xq21ZxiU0n4jYfXtV5KvrkMj+cZMh7wI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=Dok1X5Kv; dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b=TduevX06; arc=none smtp.client-ip=205.220.168.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
+Received: from pps.filterd (m0279863.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 64SHPcHe3203245
+	for <stable@vger.kernel.org>; Thu, 28 May 2026 19:03:25 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
+	cc:content-transfer-encoding:content-type:date:from:message-id
+	:mime-version:subject:to; s=qcppdkim1; bh=OipNs2AfaqF81i04o0nadF
+	204cKdQrRojdSAvovdFgs=; b=Dok1X5KveVEc0OVvIpsCQ2K2WsyUFGcxt35aUF
+	lVRc2GexNMoXWqM01FX4JtucxWPTZ+r8F3ohgEtIT8JVjW6v6m6Cw8WDy1RiV2DL
+	0T/oyURi9lCynFz8JDji8nd5qQVrjMh23aPtje9zfGRwbW82YnZ3IgiV+Zj0GTZG
+	zPYI8X37tyGdS+EMaznqOeUatXzps1UbHpxpotqyM0r746DcmAElbO6Qy4GGcz5f
+	z3QQ2LU18Ttoh8BznhH/+rIR7ndux28J9lJ9aXTuS1laQpTnrmLnNo8QON5KhGT7
+	HrNa+eVe09YATDlo9qNJ+o7IepkxwVnZEquouD+h343eZ15w==
+Received: from mail-pj1-f71.google.com (mail-pj1-f71.google.com [209.85.216.71])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4ee7ynmate-1
+	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
+	for <stable@vger.kernel.org>; Thu, 28 May 2026 19:03:24 +0000 (GMT)
+Received: by mail-pj1-f71.google.com with SMTP id 98e67ed59e1d1-36ba98cc003so321905a91.1
+        for <stable@vger.kernel.org>; Thu, 28 May 2026 12:03:24 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=oss.qualcomm.com; s=google; t=1779995004; x=1780599804; darn=vger.kernel.org;
+        h=cc:to:message-id:content-transfer-encoding:mime-version:subject
+         :date:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=OipNs2AfaqF81i04o0nadF204cKdQrRojdSAvovdFgs=;
+        b=TduevX06azHELZhdCSqCNJmPcf+8ux6l+CYy/Vfh6u34/0UpPQsem/fZnnrydVqkvt
+         pR+4Yw1Z1p3dLpq+HHn5FXu1p+SJ4tuhnRWY+F2WY+SUcLw7UXw2hO8EYKUKPeUNg0Av
+         ohwjzNoBrp/AKYUVbaOLBNomhJs/rVn+9ad4IveoM8yPsv3SfpnGY1FDgzxjIeiSNeXa
+         O+2DhOSvHOOjP12JPByekdOjAJVI0c2hZ3JiWAHQZla+xFSud/HUfrI/p0790fB/oxH2
+         1FdBUmOWnEn6ohhPUS+GXKYeqCWZf64HLDHEuRfahaBZPAdaae7SVDYpNXDs+PhFXNFi
+         5MZQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1779995004; x=1780599804;
+        h=cc:to:message-id:content-transfer-encoding:mime-version:subject
+         :date:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=OipNs2AfaqF81i04o0nadF204cKdQrRojdSAvovdFgs=;
+        b=p/0e1gz71UH8hObo93/1RrmjhQesEOZRDwbk11x3anWbgZbAgpDC+pArUQb6ZLKVyZ
+         Ihg5NcCgc7moDhTH5h09gq/KSrISLnPGAVwp2uUHaRmyfcQQpfkHXmIiviFr2Yvbbi8j
+         sJy9f/Zn/+QU5Dr/5aciSDQu4xZC8dotIjZrgDSKFUTgY9wvD5Z+XVL1oSvVXWyva2d9
+         0R2fHhyXAcYDbqBv/xe19/ygsp7Iy2/CQSRqeBY/XoBv7cWc75jjQQz4KuLlabry5Tv6
+         Pe4+iuXzS+QKJkvTf65e4Q/aQotyvg9hqffD1QUqhUX/vFgCXX92yQb4NNIFLriIadt7
+         he9w==
+X-Forwarded-Encrypted: i=1; AFNElJ9AtrpiZRNzgwlOq8Sbd3F/lZEn5DXpYhDVrjUdYnEx43aipzcJQUcyqDA/TQKLDhNu1SbzV9M=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyoSZmVrGHsgnhDrzhHVgLq9siWWQd/IWlgGezP0yEE7igj6kEO
+	ptO1lvxiDJxLpP09iqOPM3nJPt7knaq8pxAiPT0ITkwN3EL7sjUEq3FYk41atvc6vNa7zA13Tce
+	JJlEjngvmby+qcAAVElJEtKDM8xgoAYlitEBElZZk7oFCUE3378anGkV12zo=
+X-Gm-Gg: Acq92OHF1rf5SWBOqYO4OFEoJ7z91tL+JuqItoxx9gDJ4MjOpR/O6D0snEf+ZOdnwYc
+	vlqnvcmgP59rSj9x581qE4iJy9dYZHqQdIZ+x0lb7MMAqsBq7YsSH43ENNzA1D5Sz3+MvCWyvlW
+	qauOdwE6C2fyBUjeGPSSiQogH6JdsDKMmmp+dh+jdN+XwwzgouTHCeXUEhotuZV6KvcBcIuYG3A
+	/5jeTyqEvdYVfutYZSdzdwDhTAv41V1f2So+pXwBHVugWfogukFKEDdNHdYIPf/eG0XChEyvSKQ
+	plVtGF+6y48bPSf7BhJahHSAtWGmWeo9RBKtijKD+Z+weXjkmRY1uPyXZtyvoItG4ZT3WiRvqEP
+	+rOaKQCR5bL91M6fPlscl5Hb7uv+NXHtEutzjxLwh//BYIjba8BQMM9m6MeabMFUCs689
+X-Received: by 2002:a17:90b:5588:b0:369:b9db:b885 with SMTP id 98e67ed59e1d1-36bba8af135mr299553a91.15.1779995004107;
+        Thu, 28 May 2026 12:03:24 -0700 (PDT)
+X-Received: by 2002:a17:90b:5588:b0:369:b9db:b885 with SMTP id 98e67ed59e1d1-36bba8af135mr299509a91.15.1779995003470;
+        Thu, 28 May 2026 12:03:23 -0700 (PDT)
+Received: from hu-vdadhani-hyd.qualcomm.com ([202.46.23.25])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-36b90be1699sm2708341a91.12.2026.05.28.12.03.20
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 28 May 2026 12:03:22 -0700 (PDT)
+From: Viken Dadhaniya <viken.dadhaniya@oss.qualcomm.com>
+Date: Fri, 29 May 2026 00:33:08 +0530
+Subject: [PATCH v1] spi: qcom-geni: Fix cs_change handling on the last
+ transfer
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
+Message-Id: <20260529-fix-spi-fragmentation-bit-logic-v1-1-3b30f1a3dd7d@oss.qualcomm.com>
+X-B4-Tracking: v=1; b=H4sIAGuRGGoC/yWNyw6CMBBFf4XM2klK66P4K8RFKdM6RgtpKzEh/
+ DujLs9NzrkrFMpMBa7NCpkWLjwlgfbQgL+7FAl5FAat9FmdtMXAHywzY8guvihVV8XAgSs+p8g
+ erVWmOxpzCaEDqcyZRPk99LC0cPtv5T08yNdvGrZtB8oQ+hKHAAAA
+X-Change-ID: 20260528-fix-spi-fragmentation-bit-logic-880394337ff9
+To: Mark Brown <broonie@kernel.org>, Jonathan Marek <jonathan@marek.ca>
+Cc: linux-arm-msm@vger.kernel.org, linux-spi@vger.kernel.org,
+        linux-kernel@vger.kernel.org, stable@vger.kernel.org,
+        Viken Dadhaniya <viken.dadhaniya@oss.qualcomm.com>
+X-Mailer: b4 0.16-dev
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1779995000; l=3603;
+ i=viken.dadhaniya@oss.qualcomm.com; s=20260324; h=from:subject:message-id;
+ bh=paeGq+rWMQnSZAQfy3+y9zJjzTZ7DbWxJrLxFBILOy8=;
+ b=Pef9xiIMQLyIjLswkPJ5B7zJDZbFEO8mFAmRHVdDHXrPubIVJdUJca+jxpkd6UvTjEDu+OUmf
+ EHoxlwILRiPDWyGDx+AsBHTSSEgqBYDhWxFS4qMyloPlwKY4XUZDP/2
+X-Developer-Key: i=viken.dadhaniya@oss.qualcomm.com; a=ed25519;
+ pk=C39f+LOIGhh/02LQpT46TsUSXRvBn9qXC8Xb26KJ44Y=
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNTI4MDE5MiBTYWx0ZWRfX8bm/zxEUd/Y+
+ G4y8exSFix0lhPMVkU7EWU0HYbfialnTsS7h6EvMw5IgrXRkUxatLajYu9AfrnYZaz92j7wBoTX
+ f8Vt5TqlflLFHl/AvcMf/vK93OyekRSECtOv2opAFFBpSC6noVaRKjsm+pyTiN3QH9TbEbu2mK/
+ iaw+9p/3KskbMGRYBE76PyttLLtEaiBYnbk1wJu0Sij8KftXHBPNW8d6C1Bncop6cGoaI8tqVNs
+ BKcPAGXav3qx8Ihs3l1kXCNuIlYl761lo6U4bYYLZjJCDb0TatvOXjIqNSCy0zkmYUB8HvBX1/I
+ fs56Q4Pw4hTrqgrxA6I64Gq8Uw1ahN6e3DvPS8a6JJHKaz5ZnCPPqh686onsEW/HL6Bn2I0puzj
+ o4sF56eqNh7WWP/4+EY/dZvu85pf1tKjHhneVBuFo2opnqPtZHoyvfsCcTCCC22UV5T5k3F9vHs
+ r+wkBF5gKTwAxdNcKrQ==
+X-Proofpoint-ORIG-GUID: uej--B3kBNhLTTbbztH6vS37oYZhqPeH
+X-Proofpoint-GUID: uej--B3kBNhLTTbbztH6vS37oYZhqPeH
+X-Authority-Analysis: v=2.4 cv=EdL4hvmC c=1 sm=1 tr=0 ts=6a18917c cx=c_pps
+ a=UNFcQwm+pnOIJct1K4W+Mw==:117 a=ZePRamnt/+rB5gQjfz0u9A==:17
+ a=IkcTkHD0fZMA:10 a=NGcC8JguVDcA:10 a=s4-Qcg_JpJYA:10
+ a=VkNPw1HP01LnGYTKEx00:22 a=u7WPNUs3qKkmUXheDGA7:22 a=yOCtJkima9RkubShWh1s:22
+ a=VwQbUJbxAAAA:8 a=EUspDBNiAAAA:8 a=XIveKea9zlLi6OhspPoA:9 a=QEXdDO2ut3YA:10
+ a=uKXjsCUrEbL0IQVhDsJ9:22
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.125,FMLib:17.12.100.49
+ definitions=2026-05-28_05,2026-05-28_03,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ suspectscore=0 priorityscore=1501 phishscore=0 clxscore=1015 bulkscore=0
+ spamscore=0 adultscore=0 malwarescore=0 impostorscore=0 lowpriorityscore=0
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.22.0-2605210000 definitions=main-2605280192
 X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
-	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20260515];
+	DMARC_POLICY_ALLOW(-0.50)[qualcomm.com,reject];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	R_DKIM_ALLOW(-0.20)[qualcomm.com:s=qcppdkim1,oss.qualcomm.com:s=google];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FREEMAIL_TO(0.00)[gmail.com];
-	DKIM_TRACE(0.00)[kernel.org:+];
-	TAGGED_FROM(0.00)[bounces-255088-lists,stable=lfdr.de];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_TLS_LAST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	MISSING_XM_UA(0.00)[];
+	DKIM_TRACE(0.00)[qualcomm.com:+,oss.qualcomm.com:+];
+	TAGGED_FROM(0.00)[bounces-255089-lists,stable=lfdr.de];
 	FROM_HAS_DN(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	NEURAL_HAM(-0.00)[-1.000];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[kuba@kernel.org,stable@vger.kernel.org];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	FROM_NEQ_ENVFROM(0.00)[viken.dadhaniya@oss.qualcomm.com,stable@vger.kernel.org];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_SEVEN(0.00)[8];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TO_DN_SOME(0.00)[]
-X-Rspamd-Queue-Id: C525E5F65C9
+	RCVD_COUNT_SEVEN(0.00)[7]
+X-Rspamd-Queue-Id: ED70C5F6DBC
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-On Thu, 28 May 2026 16:08:45 +0000 Tristan Madani wrote:
-> net_shaper_flush() frees shaper objects with plain kfree() after
-> xa_erase(), but net_shaper_nl_get_doit() and net_shaper_nl_get_dumpit()
-> read shaper objects under rcu_read_lock() via xa_load().  This creates a
-> use-after-free window where an RCU reader may still hold a pointer to a
-> shaper object that has been freed.
-> 
-> The race is:
-> 
->   CPU 0 (reader)                    CPU 1 (flush/unregister)
->   rcu_read_lock()
->   shaper = xa_load(...)             xa_lock()
->   // shaper points to valid obj     __xa_erase(...)
->                                     kfree(shaper)  <- frees immediately
->   net_shaper_fill_one(shaper)       xa_unlock()
->   // use-after-free
->   rcu_read_unlock()
-> 
-> Other code paths in the same file already use kfree_rcu() correctly
-> (net_shaper_pre_insert error path, net_shaper_notify_down,
-> net_shaper_cap_pair_update, and net_shaper_rollback as of commit
-> b8d7519352ba).  The struct net_shaper already contains an rcu_head field.
-> 
-> Fix by replacing kfree() with kfree_rcu() in net_shaper_flush() to
-> defer freeing until after the RCU grace period.
-> 
-> Found by source code audit.
+Commit b99181cdf9fa ("spi-geni-qcom: remove manual CS control") introduced
+automatic CS control via the FRAGMENTATION bit, but missed the case where
+cs_change is set on the last transfer in a message.
 
-No, the device is fully invisible at this point.
+For the last transfer, cs_change means that CS should remain asserted after
+the message completes. Since GENI SPI controls CS through FRAGMENTATION,
+set FRAGMENTATION for this case as well as for non-last transfers where
+cs_change is not set.
 
-Please don't send fixes unless you can actually trigger the crash.
--- 
-pw-bot: reject
-pv-bot: slop
+Additionally, setup_gsi_xfer() was storing FRAGMENTATION (BIT(2) = 4) in
+peripheral.fragmentation, which is a boolean field consumed by
+gpi_create_spi_tre() via u32_encode_bits(..., TRE_SPI_GO_FRAG). Storing 4
+causes u32_encode_bits to mask it to 0, silently disabling the FRAG bit in
+the GPI TRE regardless of the cs_change logic. Store 1 instead.
+
+Without these fixes, TPM TIS SPI transfers deassert CS between
+single-transfer messages that use cs_change to keep CS asserted across the
+header, wait-state, and data phases, breaking TCG SPI flow control:
+
+  tpm_tis_spi: probe of spi11.0 failed with error -110
+
+Update both setup_se_xfer() and setup_gsi_xfer() to handle this condition.
+
+Fixes: b99181cdf9fa ("spi-geni-qcom: remove manual CS control")
+Cc: stable@vger.kernel.org
+Signed-off-by: Viken Dadhaniya <viken.dadhaniya@oss.qualcomm.com>
+---
+ drivers/spi/spi-geni-qcom.c | 27 +++++++++++++++++++--------
+ 1 file changed, 19 insertions(+), 8 deletions(-)
+
+diff --git a/drivers/spi/spi-geni-qcom.c b/drivers/spi/spi-geni-qcom.c
+index a04cdc1e5ad4..0618f6bd7878 100644
+--- a/drivers/spi/spi-geni-qcom.c
++++ b/drivers/spi/spi-geni-qcom.c
+@@ -449,10 +449,15 @@ static int setup_gsi_xfer(struct spi_transfer *xfer, struct spi_geni_master *mas
+ 		return ret;
+ 	}
+ 
+-	if (!xfer->cs_change) {
+-		if (!list_is_last(&xfer->transfer_list, &spi->cur_msg->transfers))
+-			peripheral.fragmentation = FRAGMENTATION;
+-	}
++	/*
++	 * Set fragmentation to keep CS asserted after this transfer when:
++	 *  - non-last transfer with cs_change=0: keep CS between chained transfers
++	 *  - last transfer with cs_change=1: keep CS asserted after the message
++	 *    (e.g. TPM TIS SPI uses cs_change=1 on single-transfer messages to
++	 *     keep CS asserted across header, wait-state and data phases)
++	 */
++	peripheral.fragmentation = list_is_last(&xfer->transfer_list, &spi->cur_msg->transfers) ?
++				   xfer->cs_change : !xfer->cs_change;
+ 
+ 	if (peripheral.cmd & SPI_RX) {
+ 		dmaengine_slave_config(mas->rx, &config);
+@@ -858,10 +863,16 @@ static int setup_se_xfer(struct spi_transfer *xfer,
+ 		mas->cur_xfer_mode = GENI_SE_DMA;
+ 	geni_se_select_mode(se, mas->cur_xfer_mode);
+ 
+-	if (!xfer->cs_change) {
+-		if (!list_is_last(&xfer->transfer_list, &spi->cur_msg->transfers))
+-			m_params = FRAGMENTATION;
+-	}
++	/*
++	 * Set FRAGMENTATION to keep CS asserted after this transfer when:
++	 *  - non-last transfer with cs_change=0: keep CS between chained transfers
++	 *  - last transfer with cs_change=1: keep CS asserted after the message
++	 *    (e.g. TPM TIS SPI uses cs_change=1 on single-transfer messages to
++	 *     keep CS asserted across header, wait-state and data phases)
++	 */
++	if (list_is_last(&xfer->transfer_list, &spi->cur_msg->transfers) ?
++	    xfer->cs_change : !xfer->cs_change)
++		m_params = FRAGMENTATION;
+ 
+ 	/*
+ 	 * Lock around right before we start the transfer since our
+
+---
+base-commit: e7d700e14934e68f86338c5610cf2ae76798b663
+change-id: 20260528-fix-spi-fragmentation-bit-logic-880394337ff9
+
+Best regards,
+--  
+Viken Dadhaniya <viken.dadhaniya@oss.qualcomm.com>
+
 
