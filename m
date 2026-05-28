@@ -1,60 +1,62 @@
-Return-Path: <stable+bounces-256125-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-256294-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id QIauMAiqGGpolwgAu9opvQ
-	(envelope-from <stable+bounces-256125-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:48:08 +0200
+	id eBWyOCWsGGpolwgAu9opvQ
+	(envelope-from <stable+bounces-256294-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:57:09 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 42DE45F9935
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:48:08 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 57ADB5F9E72
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:57:09 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id E865A303E6F5
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 20:40:29 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id A898431BA558
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 20:48:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F0C1B31159C;
-	Thu, 28 May 2026 20:40:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 39058310620;
+	Thu, 28 May 2026 20:48:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="apRiaTed"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Q6YiZMUZ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D2AAA298CB2;
-	Thu, 28 May 2026 20:40:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 18C1F2459DD;
+	Thu, 28 May 2026 20:48:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780000826; cv=none; b=PK4jGyFo1c1ojLq6DokaIAMME2zoBVn57hALQ6XA5SF6sa0Dqw+/zC++ytpFRPa+cr0tHMtqyI5J/EsUk8jflsxT4c1T2Lq79uv5FQfRgWnXDirS1BEFqmuWcTJfEwnvTuU2gpcJPG9W/zfjZeBEjKNz5oNVMra58uUDAzodUxs=
+	t=1780001297; cv=none; b=tMu9Upay9AWN3Cc2DrA5wrU3Lg5LeMTyXAfWkontTRxrUveFhpdXBgoDGYwafSAI5AoWhsDcySWBQlGmX1Uo9bXJ5iuYahoPhuOQiy6bhB1X92lxIoHl2Wf10dr70CJM4qq56yyDV0qI/3TLc+jghpyfLWFoLq2qukA5BJ3lFjk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780000826; c=relaxed/simple;
-	bh=CvxQNvTPTC9jpO6/a/HJr+qL0QJFtVDiM7yqBpcGPTs=;
+	s=arc-20240116; t=1780001297; c=relaxed/simple;
+	bh=FnKf2GqnTNQ8xv4jZdfy3PR+gkvG2xg30a/xrYEnFmc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=D0FJnZ2vgjRgdM/oH535BCV9tDM6wg74T7AJztuyukModIwuFMQvOLdx4ttagem5TlkZp/wpioa58CEg7d8Hh4KrnmKNZO1CKe+Lik1DuJelT/ZzZnXlmidN3GBn3K3LZt/kxwEqrWcxB0LpirVxabiQvjpq8oqdb9m+N+f6Fu0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=apRiaTed; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 02EC01F000E9;
-	Thu, 28 May 2026 20:40:24 +0000 (UTC)
+	 MIME-Version; b=bFXE0Xt+Gaw6XmW/+iELh8xoED3bI30rVJ6kptlwh7iNw7vKDIJV7TBVQsycsywbagsWdu3PPF7VO2pPAoq9G//itAdjHg4JB9OSGWBOewpSPMZakpLSXXH+e37VR3IDRHsVBOa+cZprlybTEJpIAayY9AFvQpjQYZaR434lNso=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Q6YiZMUZ; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7DAA01F000E9;
+	Thu, 28 May 2026 20:48:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780000825;
-	bh=3FyGHeSOOm4z9ht8MLtgfRapW9eaz9sHm7/34jQUNoY=;
+	s=korg; t=1780001296;
+	bh=BBLjMAcriiLjRPVDCrtiHoHG8/S4aV7R3hKMkU8QhyU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=apRiaTedkP8dgnU/+GiOODCTL8RSycp+FnZf9d20bbRHaWtTXWVuH/9SScTgp8tcu
-	 2dX6wOGSPKIKlcwmq6GzLJzIA0M3vQaZn7MYrGZik1MXc/fGxnI3M8Fg/vY2wPgvnY
-	 gJ9R18Fgth7UkjovLz1gnegNN48Mix1GGGJ7g5d0=
+	b=Q6YiZMUZThHOMs87CFPjui0GbJRiK2iMpO/8omQfliLFekoGgcvIsXDHYvxM5oHIh
+	 V5EkFnYLGsiBNaFIyIvjowtFr+qwyd0NBz1N+xsFLRZk9zc/JatzhDQVz2gxkAGhYZ
+	 UXqlHJ98lE8lVxapN7pXHFxasAI9ju2+TWPVNkoI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	kernel test robot <lkp@intel.com>,
-	Rosen Penev <rosenp@gmail.com>,
-	Thomas Gleixner <tglx@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 183/272] irqchip/ath79-cpu: Remove unused function
-Date: Thu, 28 May 2026 21:49:17 +0200
-Message-ID: <20260528194634.415003499@linuxfoundation.org>
+	stable@kernel.org,
+	Yuan Tan <yuantan098@gmail.com>,
+	Yifan Wu <yifanwucs@gmail.com>,
+	Juefei Pu <tomapufckgml@gmail.com>,
+	Xin Liu <bird@lzu.edu.cn>,
+	Sven Eckelmann <sven@narfation.org>
+Subject: [PATCH 6.6 078/186] batman-adv: dat: handle forward allocation error
+Date: Thu, 28 May 2026 21:49:18 +0200
+Message-ID: <20260528194931.042284173@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260528194629.379955525@linuxfoundation.org>
-References: <20260528194629.379955525@linuxfoundation.org>
+In-Reply-To: <20260528194928.941004471@linuxfoundation.org>
+References: <20260528194928.941004471@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,79 +71,75 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,intel.com,gmail.com,kernel.org];
-	TAGGED_FROM(0.00)[bounces-256125-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,kernel.org,gmail.com,lzu.edu.cn,narfation.org];
+	TAGGED_FROM(0.00)[bounces-256294-lists,stable=lfdr.de];
 	PRECEDENCE_BULK(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	FROM_HAS_DN(0.00)[];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[7];
+	RCPT_COUNT_SEVEN(0.00)[9];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
 	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[intel.com:email,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim,msgid.link:url]
-X-Rspamd-Queue-Id: 42DE45F9935
+	DBL_BLOCKED_OPENRESOLVER(0.00)[narfation.org:email,lzu.edu.cn:email,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim]
+X-Rspamd-Queue-Id: 57ADB5F9E72
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Rosen Penev <rosenp@gmail.com>
+From: Sven Eckelmann <sven@narfation.org>
 
-[ Upstream commit 0fa10fb77069fb67aa51384868ef3702b7791465 ]
+commit 2d8826a2d3657cea66fb0370f9e521575a673871 upstream.
 
-ath79_cpu_irq_init() was part of the legacy pre-OF code that got removed a
-while back.
+batadv_dat_forward_data() calls pskb_copy_for_clone() to duplicate an skb
+for each DHT candidate, but does not check the return value before passing
+it to batadv_send_skb_prepare_unicast_4addr(). That function dereferences
+the skb unconditionally, so a failed allocation triggers a NULL pointer
+dereference.
 
-Remove it to get rid of a missing prototype warning, reported by the kernel test
-robot.
+Skip forwarding to the current DHT candidate on allocation failure.
 
-[ tglx: Fix the subject prefix. Sigh ... ]
-
-Fixes: 51fa4f8912c0 ("MIPS: ath79: drop legacy IRQ code")
-Reported-by: kernel test robot <lkp@intel.com>
-Signed-off-by: Rosen Penev <rosenp@gmail.com>
-Signed-off-by: Thomas Gleixner <tglx@kernel.org>
-Link: https://patch.msgid.link/20260506085522.1210143-1-rosenp@gmail.com
-Closes: https://lore.kernel.org/oe-kbuild-all/202412011509.kGQkDr1y-lkp@intel.com/
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: stable@kernel.org
+Fixes: 785ea1144182 ("batman-adv: Distributed ARP Table - create DHT helper functions")
+Reported-by: Yuan Tan <yuantan098@gmail.com>
+Reported-by: Yifan Wu <yifanwucs@gmail.com>
+Reported-by: Juefei Pu <tomapufckgml@gmail.com>
+Reported-by: Xin Liu <bird@lzu.edu.cn>
+Reviewed-by: Yuan Tan <yuantan098@gmail.com>
+Signed-off-by: Sven Eckelmann <sven@narfation.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/irqchip/irq-ath79-cpu.c | 7 -------
- 1 file changed, 7 deletions(-)
+ net/batman-adv/distributed-arp-table.c |    3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/drivers/irqchip/irq-ath79-cpu.c b/drivers/irqchip/irq-ath79-cpu.c
-index 923e4bba37767..9b7273a7f8ced 100644
---- a/drivers/irqchip/irq-ath79-cpu.c
-+++ b/drivers/irqchip/irq-ath79-cpu.c
-@@ -85,10 +85,3 @@ static int __init ar79_cpu_intc_of_init(
- }
- IRQCHIP_DECLARE(ar79_cpu_intc, "qca,ar7100-cpu-intc",
- 		ar79_cpu_intc_of_init);
--
--void __init ath79_cpu_irq_init(unsigned irq_wb_chan2, unsigned irq_wb_chan3)
--{
--	irq_wb_chan[2] = irq_wb_chan2;
--	irq_wb_chan[3] = irq_wb_chan3;
--	mips_cpu_irq_init();
--}
--- 
-2.53.0
-
+--- a/net/batman-adv/distributed-arp-table.c
++++ b/net/batman-adv/distributed-arp-table.c
+@@ -698,6 +698,9 @@ static bool batadv_dat_forward_data(stru
+ 			goto free_orig;
+ 
+ 		tmp_skb = pskb_copy_for_clone(skb, GFP_ATOMIC);
++		if (!tmp_skb)
++			goto free_neigh;
++
+ 		if (!batadv_send_skb_prepare_unicast_4addr(bat_priv, tmp_skb,
+ 							   cand[i].orig_node,
+ 							   packet_subtype)) {
 
 
 
