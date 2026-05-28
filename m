@@ -1,61 +1,65 @@
-Return-Path: <stable+bounces-255920-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-255525-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id IP32IiynGGpolwgAu9opvQ
-	(envelope-from <stable+bounces-255920-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:35:56 +0200
+	id EHOkKHqjGGrClggAu9opvQ
+	(envelope-from <stable+bounces-255525-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:20:10 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id B93E35F90FF
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:35:55 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 01C615F86A2
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:20:09 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id CC9E0305489F
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 20:30:51 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id D20BF319B50D
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 20:12:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 97BB632AAD6;
-	Thu, 28 May 2026 20:30:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D66D3352019;
+	Thu, 28 May 2026 20:12:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="iNKxerBR"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CeF7i2ef"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 64A7E248F62;
-	Thu, 28 May 2026 20:30:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7368D32ABC0;
+	Thu, 28 May 2026 20:12:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780000250; cv=none; b=hV0+/+J6W7TmeHodcYcCgPyMZJCv7Hr5h5be62OtHaAx/dlYJe1Nw4R6PwsbpsS6URp2BTFIg/owR9NxK6bM6tnzq29InOOskp2Rj8q2m2dwmSzdBqIr5zYQO42X2JyE0gBlKjjZijhhXoUu8BPQtDgi7cZGM71+bg3kCPEOEVg=
+	t=1779999156; cv=none; b=IrfyzSf89OcOx1VXyoQMrIcxJsRw07PBcxZuJ4s0/3UrSq2e5dQU5kmB87mKK+AeTYPwzmRtqpOCRxg8a6f+VkUsJpXA172IIFnfL5Orrabhwx3UXes+WuCHFP2bv8kPXjBvgPbExNB8PF1Yz4qRPvwH0oLnLpag7NSAiS7DxNo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780000250; c=relaxed/simple;
-	bh=JJ52T0OOMhWQz0LpPbZT+5LrulB83rDemtk6x9ppy58=;
+	s=arc-20240116; t=1779999156; c=relaxed/simple;
+	bh=oY1ukiBzBz50Gnsu2nWA8WjOhsqtWzmOhK0DGANMxW8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=nPluWJuWTrMJVPIBdncY2Xu2YQc7PbMxvGqrDh8zQUB/KZ4duptWgQzImJQCeMGA5G9PfzFSVtXzx2Dim8Ep0X0EOD4wFBsPPrwIabh9KjeEzVQyi0nUwVqKBikGJIALD+U7M2TNXCJ3pAlZ8uncLP2D9UC/CjLQkRMPLyMT6+A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=iNKxerBR; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 590941F000E9;
-	Thu, 28 May 2026 20:30:48 +0000 (UTC)
+	 MIME-Version; b=BixouBm0i3pfIBCTHy37uYATwlKJDSRQFlvAfpA3+5ntds/E1BxpjvwrXIYFOEA6umAxIDPcvbHf8L6LVEIsb60DpBEKiiL7d5NHQklElJpaEtTiRUt42Y5ltpk5O0+X0z5J9JbbZ2hB9BVexdKt5mHlMkHkf4pAojT8fKoT1/4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CeF7i2ef; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 969EE1F000E9;
+	Thu, 28 May 2026 20:12:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780000248;
-	bh=oGUQ4fjgFRNbaqu0AskLLeiWt0NkO1DPcAWCBSccu2s=;
+	s=korg; t=1779999155;
+	bh=qGO04eTvSNHWltD8SL6l+7/RnoIAB5SbJAcdleYINEs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=iNKxerBRZi/d9taJfoNJDd1H3RHPNgchgdzAoVeehpRGB/Bd4pWNIWiS+pKMbFXQT
-	 ZXuqVBM+mjqDmSRpNcnIwxLCR/izWbdKkOA3WxdeawMAW/LJZ2BxTXa1g+snVstyMo
-	 a0mk7MmecXxoPiAUTMbZSOB9UrdBL7HzzT9b0kh0=
+	b=CeF7i2efr12T1VZ2vxTr1gfLPJdPewiN5gq6zjbGLppdcwnyaE1Y9ApDqmr8Q6EEz
+	 DHM+PaxxDXE7Bo9c0xMdOfGlEv9QDUpZ7J2XDr7JA9JgyKdUlvQ0Lr31tRgwrerJNg
+	 LtX1OiUGuRAFewh/MaUPCv5HOV+7dobtb6PGErJY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Baochen Qiang <baochen.qiang@oss.qualcomm.com>,
-	Matthew Leach <matthew.leach@collabora.com>,
-	P Praneesh <praneesh.p@oss.qualcomm.com>,
-	Jeff Johnson <jeff.johnson@oss.qualcomm.com>,
+	David Howells <dhowells@redhat.com>,
+	Herbert Xu <herbert@gondor.apana.org.au>,
+	Simon Horman <horms@kernel.org>,
+	Chuck Lever <chuck.lever@oracle.com>,
+	linux-afs@lists.infradead.org,
+	Jeffrey Altman <jaltman@auristor.com>,
+	Marc Dionne <marc.dionne@auristor.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 318/377] wifi: ath11k: fix peer resolution on rx path when peer_id=0
+Subject: [PATCH 7.0 427/461] crypto/krb5, rxrpc: Fix lack of pre-decrypt/pre-verify length checks
 Date: Thu, 28 May 2026 21:49:16 +0200
-Message-ID: <20260528194647.602618116@linuxfoundation.org>
+Message-ID: <20260528194659.875050964@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260528194638.371537336@linuxfoundation.org>
-References: <20260528194638.371537336@linuxfoundation.org>
+In-Reply-To: <20260528194646.819809818@linuxfoundation.org>
+References: <20260528194646.819809818@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -70,102 +74,243 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-255920-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-255525-lists,stable=lfdr.de];
+	RCPT_COUNT_TWELVE(0.00)[12];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
-	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[8];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[collabora.com:email,qualcomm.com:email,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,msgid.link:url,linuxfoundation.org:mid,linuxfoundation.org:dkim]
-X-Rspamd-Queue-Id: B93E35F90FF
+	TO_DN_SOME(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim,sashiko.dev:url,infradead.org:email,msgid.link:url,auristor.com:email,apana.org.au:email,oracle.com:email]
+X-Rspamd-Queue-Id: 01C615F86A2
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+7.0-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Matthew Leach <matthew.leach@collabora.com>
+From: David Howells <dhowells@redhat.com>
 
-[ Upstream commit 2a2451a34afdf563b3102d36a4b6cf335cf813e2 ]
+[ Upstream commit 2b50aceafe6606ea52ed42aadd1b4d44a188aade ]
 
-It has been observed that on certain chipsets a peer can be assigned
-peer_id=0. For reception of non-aggregated MPDUs this is fine as
-ath11k_dp_rx_h_find_peer() has a fallback case where it locates the peer
-based upon the source MAC address. On an aggregated link, the mpdu_start
-header is only populated by hardware on the first sub-MSDU. This causes
-the peer resolution to be skipped for the subsequent MSDUs and the
-encryption type of these frames to be set to an incorrect value,
-resulting in these MSDUs being dropped by ieee80211.
+Change the krb5 crypto library to provide facilities to precheck the length
+of the message about to be decrypted or verified.
 
-ath11k_pci 0000:03:00.0: data rx skb 000000002f4b704d len 1534 peer xx:xx:xx:xx:xx:xx 0 ucast sn 3063 he160 rate_idx 9 vht_nss 2 freq 5240 band 1 flag 0x40d1a fcs-err 0 mic-err 0 amsdu-more 0 peer_id 0 first_msdu 1 last_msdu 0
-ath11k_pci 0000:03:00.0: data rx skb 0000000038acd580 len 1534 peer (null) 0 ucast sn 3063 he160 rate_idx 9 vht_nss 2 freq 5240 band 1 flag 0x40d00 fcs-err 0 mic-err 0 amsdu-more 0 peer_id 0 first_msdu 0 last_msdu 1
+Fix AF_RXRPC to make use of this to validate DATA packets secured with
+RxGK.
 
-Remove the null peer_id checks in ath11k_dp_rx_h_find_peer() and
-ath11k_hal_rx_parse_mon_status_tlv(), allowing peers with an assigned ID
-of 0 to be resolved.
-
-Tested-on: QCA2066 hw2.1 PCI WLAN.HSP.1.1-03926.13-QCAHSPSWPL_V2_SILICONZ_CE-2.52297.9
-
-Fixes: 2167fa606c0f ("ath11k: Add support for RX decapsulation offload")
-Reviewed-by: Baochen Qiang <baochen.qiang@oss.qualcomm.com>
-Signed-off-by: Matthew Leach <matthew.leach@collabora.com>
-Reviewed-by: P Praneesh <praneesh.p@oss.qualcomm.com>
-Link: https://patch.msgid.link/20260424-ath11k-null-peerid-workaround-v4-1-252b224d3cf6@collabora.com
-Signed-off-by: Jeff Johnson <jeff.johnson@oss.qualcomm.com>
+Fixes: 9d1d2b59341f ("rxrpc: rxgk: Implement the yfs-rxgk security class (GSSAPI)")
+Closes: https://sashiko.dev/#/patchset/20260511160753.607296-1-dhowells%40redhat.com
+Signed-off-by: David Howells <dhowells@redhat.com>
+cc: Herbert Xu <herbert@gondor.apana.org.au>
+cc: Simon Horman <horms@kernel.org>
+cc: Chuck Lever <chuck.lever@oracle.com>
+cc: linux-afs@lists.infradead.org
+Reviewed-by: Jeffrey Altman <jaltman@auristor.com>
+Tested-by: Marc Dionne <marc.dionne@auristor.com>
+Link: https://patch.msgid.link/20260515230516.2718212-2-dhowells@redhat.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/ath/ath11k/dp_rx.c  | 3 +--
- drivers/net/wireless/ath/ath11k/hal_rx.c | 5 +----
- 2 files changed, 2 insertions(+), 6 deletions(-)
+ Documentation/crypto/krb5.rst | 17 ++++++++---
+ crypto/krb5/krb5_api.c        | 54 +++++++++++++++++++++++++++++++----
+ include/crypto/krb5.h         |  9 ++++--
+ include/trace/events/rxrpc.h  |  1 +
+ net/rxrpc/rxgk.c              | 15 ++++++++--
+ 5 files changed, 81 insertions(+), 15 deletions(-)
 
-diff --git a/drivers/net/wireless/ath/ath11k/dp_rx.c b/drivers/net/wireless/ath/ath11k/dp_rx.c
-index 44eea682c297b..5666f66474455 100644
---- a/drivers/net/wireless/ath/ath11k/dp_rx.c
-+++ b/drivers/net/wireless/ath/ath11k/dp_rx.c
-@@ -2214,8 +2214,7 @@ ath11k_dp_rx_h_find_peer(struct ath11k_base *ab, struct sk_buff *msdu)
+diff --git a/Documentation/crypto/krb5.rst b/Documentation/crypto/krb5.rst
+index beffa0133446d..f62e07ac68114 100644
+--- a/Documentation/crypto/krb5.rst
++++ b/Documentation/crypto/krb5.rst
+@@ -158,13 +158,22 @@ returned.
+ When a message has been received, the location and size of the data with the
+ message can be determined by calling::
  
- 	lockdep_assert_held(&ab->base_lock);
+-	void crypto_krb5_where_is_the_data(const struct krb5_enctype *krb5,
+-					   enum krb5_crypto_mode mode,
+-					   size_t *_offset, size_t *_len);
++	int crypto_krb5_where_is_the_data(const struct krb5_enctype *krb5,
++					  enum krb5_crypto_mode mode,
++					  size_t *_offset, size_t *_len);
  
--	if (rxcb->peer_id)
--		peer = ath11k_peer_find_by_id(ab, rxcb->peer_id);
-+	peer = ath11k_peer_find_by_id(ab, rxcb->peer_id);
+ The caller provides the offset and length of the message to the function, which
+ then alters those values to indicate the region containing the data (plus any
+-padding).  It is up to the caller to determine how much padding there is.
++padding).  It is up to the caller to determine how much padding there is.  The
++function returns an error if the length is too small or if the mode is
++unsupported.  An additional function::
++
++	int crypto_krb5_check_data_len(const struct krb5_enctype *krb5,
++				       enum krb5_crypto_mode mode,
++				       size_t len, size_t min_content);
++
++is provided to just do a basic check that the decrypted/verified message would
++have a sufficient minimum payload.
  
- 	if (peer)
- 		return peer;
-diff --git a/drivers/net/wireless/ath/ath11k/hal_rx.c b/drivers/net/wireless/ath/ath11k/hal_rx.c
-index 753bd93f02123..51e0840bc0d1e 100644
---- a/drivers/net/wireless/ath/ath11k/hal_rx.c
-+++ b/drivers/net/wireless/ath/ath11k/hal_rx.c
-@@ -1467,11 +1467,8 @@ ath11k_hal_rx_parse_mon_status_tlv(struct ath11k_base *ab,
- 	case HAL_RX_MPDU_START: {
- 		struct hal_rx_mpdu_info *mpdu_info =
- 				(struct hal_rx_mpdu_info *)tlv_data;
--		u16 peer_id;
- 
--		peer_id = ath11k_hal_rx_mpduinfo_get_peerid(ab, mpdu_info);
--		if (peer_id)
--			ppdu_info->peer_id = peer_id;
-+		ppdu_info->peer_id = ath11k_hal_rx_mpduinfo_get_peerid(ab, mpdu_info);
- 		break;
+ Preparation Functions
+ ---------------------
+diff --git a/crypto/krb5/krb5_api.c b/crypto/krb5/krb5_api.c
+index 23026d4206c82..c7ea40f900a77 100644
+--- a/crypto/krb5/krb5_api.c
++++ b/crypto/krb5/krb5_api.c
+@@ -134,27 +134,69 @@ EXPORT_SYMBOL(crypto_krb5_how_much_data);
+  * Find the offset and size of the data in a secure message so that this
+  * information can be used in the metadata buffer which will get added to the
+  * digest by crypto_krb5_verify_mic().
++ *
++ * Return: 0 if successful, -EBADMSG if the message is too short or -EINVAL if
++ * the mode is unsupported.
+  */
+-void crypto_krb5_where_is_the_data(const struct krb5_enctype *krb5,
+-				   enum krb5_crypto_mode mode,
+-				   size_t *_offset, size_t *_len)
++int crypto_krb5_where_is_the_data(const struct krb5_enctype *krb5,
++				  enum krb5_crypto_mode mode,
++				  size_t *_offset, size_t *_len)
+ {
+ 	switch (mode) {
+ 	case KRB5_CHECKSUM_MODE:
++		if (*_len < krb5->cksum_len)
++			return -EBADMSG;
+ 		*_offset += krb5->cksum_len;
+ 		*_len -= krb5->cksum_len;
+-		return;
++		return 0;
+ 	case KRB5_ENCRYPT_MODE:
++		if (*_len < krb5->conf_len + krb5->cksum_len)
++			return -EBADMSG;
+ 		*_offset += krb5->conf_len;
+ 		*_len -= krb5->conf_len + krb5->cksum_len;
+-		return;
++		return 0;
+ 	default:
+ 		WARN_ON_ONCE(1);
+-		return;
++		return -EINVAL;
  	}
- 	case HAL_RXPCU_PPDU_END_INFO: {
+ }
+ EXPORT_SYMBOL(crypto_krb5_where_is_the_data);
+ 
++/**
++ * crypto_krb5_check_data_len - Check a message is big enough
++ * @krb5: The encoding to use.
++ * @mode: Mode of operation.
++ * @len: The length of the secure blob.
++ * @min_content: Minimum length of the content inside the blob.
++ *
++ * Check that a message is large enough to hold whatever bits the encryption
++ * type wants to glue on (nonce, checksum) plus a minimum amount of content.
++ *
++ * Return: 0 if successful, -EBADMSG if the message is too short or -EINVAL if
++ * the mode is unsupported.
++ */
++int crypto_krb5_check_data_len(const struct krb5_enctype *krb5,
++			       enum krb5_crypto_mode mode,
++			       size_t len, size_t min_content)
++{
++	switch (mode) {
++	case KRB5_CHECKSUM_MODE:
++		if (len < krb5->cksum_len ||
++		    len - krb5->cksum_len < min_content)
++			return -EBADMSG;
++		return 0;
++	case KRB5_ENCRYPT_MODE:
++		if (len < krb5->conf_len + krb5->cksum_len ||
++		    len - (krb5->conf_len + krb5->cksum_len) < min_content)
++			return -EBADMSG;
++		return 0;
++	default:
++		WARN_ON_ONCE(1);
++		return -EINVAL;
++	}
++}
++EXPORT_SYMBOL(crypto_krb5_check_data_len);
++
+ /*
+  * Prepare the encryption with derived key data.
+  */
+diff --git a/include/crypto/krb5.h b/include/crypto/krb5.h
+index 71dd38f59be1d..aac3ecf88467c 100644
+--- a/include/crypto/krb5.h
++++ b/include/crypto/krb5.h
+@@ -121,9 +121,12 @@ size_t crypto_krb5_how_much_buffer(const struct krb5_enctype *krb5,
+ size_t crypto_krb5_how_much_data(const struct krb5_enctype *krb5,
+ 				 enum krb5_crypto_mode mode,
+ 				 size_t *_buffer_size, size_t *_offset);
+-void crypto_krb5_where_is_the_data(const struct krb5_enctype *krb5,
+-				   enum krb5_crypto_mode mode,
+-				   size_t *_offset, size_t *_len);
++int crypto_krb5_where_is_the_data(const struct krb5_enctype *krb5,
++				  enum krb5_crypto_mode mode,
++				  size_t *_offset, size_t *_len);
++int crypto_krb5_check_data_len(const struct krb5_enctype *krb5,
++			       enum krb5_crypto_mode mode,
++			       size_t len, size_t min_content);
+ struct crypto_aead *crypto_krb5_prepare_encryption(const struct krb5_enctype *krb5,
+ 						   const struct krb5_buffer *TK,
+ 						   u32 usage, gfp_t gfp);
+diff --git a/include/trace/events/rxrpc.h b/include/trace/events/rxrpc.h
+index 573f2df3a2c99..704a10de66700 100644
+--- a/include/trace/events/rxrpc.h
++++ b/include/trace/events/rxrpc.h
+@@ -71,6 +71,7 @@
+ 	EM(rxkad_abort_resp_unknown_tkt,	"rxkad-resp-unknown-tkt") \
+ 	EM(rxkad_abort_resp_version,		"rxkad-resp-version")	\
+ 	/* RxGK security errors */					\
++	EM(rxgk_abort_1_short_header,		"rxgk1-short-hdr")	\
+ 	EM(rxgk_abort_1_verify_mic_eproto,	"rxgk1-vfy-mic-eproto")	\
+ 	EM(rxgk_abort_2_decrypt_eproto,		"rxgk2-dec-eproto")	\
+ 	EM(rxgk_abort_2_short_data,		"rxgk2-short-data")	\
+diff --git a/net/rxrpc/rxgk.c b/net/rxrpc/rxgk.c
+index 0d5e654da918f..26e723052a37e 100644
+--- a/net/rxrpc/rxgk.c
++++ b/net/rxrpc/rxgk.c
+@@ -480,8 +480,12 @@ static int rxgk_verify_packet_integrity(struct rxrpc_call *call,
+ 
+ 	_enter("");
+ 
+-	crypto_krb5_where_is_the_data(gk->krb5, KRB5_CHECKSUM_MODE,
+-				      &data_offset, &data_len);
++	if (crypto_krb5_where_is_the_data(gk->krb5, KRB5_CHECKSUM_MODE,
++					  &data_offset, &data_len) < 0) {
++		ret = rxrpc_abort_eproto(call, skb, RXGK_PACKETSHORT,
++					 rxgk_abort_1_short_header);
++		goto put_gk;
++	}
+ 
+ 	hdr = kzalloc_obj(*hdr, GFP_NOFS);
+ 	if (!hdr)
+@@ -529,6 +533,13 @@ static int rxgk_verify_packet_encrypted(struct rxrpc_call *call,
+ 
+ 	_enter("");
+ 
++	if (crypto_krb5_check_data_len(gk->krb5, KRB5_ENCRYPT_MODE,
++				       len, sizeof(hdr)) < 0) {
++		ret = rxrpc_abort_eproto(call, skb, RXGK_PACKETSHORT,
++					 rxgk_abort_2_short_header);
++		goto error;
++	}
++
+ 	ret = rxgk_decrypt_skb(gk->krb5, gk->rx_enc, skb, &offset, &len, &ac);
+ 	if (ret < 0) {
+ 		if (ret != -ENOMEM)
 -- 
 2.53.0
 
