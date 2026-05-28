@@ -1,60 +1,60 @@
-Return-Path: <stable+bounces-255868-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-256116-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 2NOcLzGmGGpolwgAu9opvQ
-	(envelope-from <stable+bounces-255868-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:31:45 +0200
+	id eKKeLV2rGGpolwgAu9opvQ
+	(envelope-from <stable+bounces-256116-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:53:49 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id C8EC75F8E19
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:31:44 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id D7D785F9CCD
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:53:48 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id BD1073069CE1
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 20:28:23 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 1871C30E85E3
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 20:40:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 11C623002A0;
-	Thu, 28 May 2026 20:28:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C51C3346AD3;
+	Thu, 28 May 2026 20:40:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OEF4cuTW"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1HVrO3jM"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D11A71EA65;
-	Thu, 28 May 2026 20:28:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 75CD62139C9;
+	Thu, 28 May 2026 20:40:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780000102; cv=none; b=tSh62SjVMFUTA6QMX0HFmEBU+UiY/8TWWdQdB9gfut/wbii9ibRy0cNuR03oAYYXMBBKei5EDFC/pxaYe04TGbef2eGqH4D/VvSyrzpwWysk+Jh3ayV8g4p0t7Jj9D5I08fMBEGGlSFsm+3HIdjuTZjoaKuxEmZL2Hx0ajz8kUM=
+	t=1780000801; cv=none; b=rHXyD6PoQnEAE97nBfbWX22c3S2jGbqrQ0h9336ObSpcb7zmTaREIk1YHM9DrhgaSTjozlFj/wpwwP54LWmo1Cn68fct6OIrZyHgwCb14BM380S8Ry7d6BwL3nYQFPGRSmgmOt8zo06RYTr/PkzfEZYC9We4xED4divrMxwuoio=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780000102; c=relaxed/simple;
-	bh=l5yct5Bpc4KYA1qiQG5rfkmW2+enr9pffCn6ug3WrLM=;
+	s=arc-20240116; t=1780000801; c=relaxed/simple;
+	bh=QME2yA/AsDVM2vtPtyNPcNmG/BJxjw5uHfOoyw7uioY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=FLmxn/wKSVH1C7+roMFCC5Jcb5lXZE8Rc/tHOCMoR6yjL+65is2/BM4BYFZA31K4A4xINrz2IXb3Kl3f+Stb3/gJ1/kHWb9EfrYl+ES70qK7Mo2qX6peNRrdx6tyIVR8BMooXS0JLXExLYoVZ+/K//K6ciNzQDmzDKz3Vc1SQ2c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OEF4cuTW; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3BA001F000E9;
-	Thu, 28 May 2026 20:28:21 +0000 (UTC)
+	 MIME-Version; b=bke3Iayz3V0/IuPV43Euy4IjFATZEnC6+BRaYd8XV6rpD3lupUhnkPOqQOJlc0OrUmQw2EQPCkEyizHv16FVOXP+mgyqgLhop5bh269R/Zw2v0QlLpQIV2ceq7wRmrrP/c1EdYPb1xiWG0HaDA81dOCIs0GVyetylE3QF9/wb8c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1HVrO3jM; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D191C1F00A3A;
+	Thu, 28 May 2026 20:39:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780000101;
-	bh=OUXwBz/8qTeNqaS2i+oTokRSfwBR5mEF4owsIvVPXCs=;
+	s=korg; t=1780000800;
+	bh=tFo6e8LinZa7dlvaosiUF5Oi7neDUAMf/jwtBmm/TZI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=OEF4cuTWbf6sj7HjF5a0xSsuk2QDhLdNrStTlravuMixFHL7cZx4PKOl+Q+t1oWra
-	 KF58/wLIePOQ6qEaQh9hjCdgIlVJDY1ZPic7JB1rQF8BPeUyU2yT5LjTFRUHh/S5qo
-	 GyPB8kXoIEBbn34nqIAtJPz8kSx8pb27Jl9yo/7s=
+	b=1HVrO3jMG61ISN41DUMLbqYay6LTFIfGJUm0IpJpcJ5R3UTysN5f8LjZ+qakP/v4/
+	 C+SP4wNzRwG47u3qKki4jwowDr1mTbPmQAgBQt9I4tisfNSXVD11sHFwmutoUhjDl1
+	 MfCqXcsPImVR+OaheDsY6KtaNHoP2E6WHw+W/d4I=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Qu Wenruo <wqu@suse.com>,
-	Boris Burkov <boris@bur.io>,
-	David Sterba <dsterba@suse.com>,
+	Tristan Madani <tristan@talencesecurity.com>,
+	Florian Westphal <fw@strlen.de>,
+	Pablo Neira Ayuso <pablo@netfilter.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 302/377] btrfs: relax squota parent qgroup deletion rule
+Subject: [PATCH 6.12 166/272] netfilter: x_tables: unregister the templates first
 Date: Thu, 28 May 2026 21:49:00 +0200
-Message-ID: <20260528194647.103671133@linuxfoundation.org>
+Message-ID: <20260528194633.979486930@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260528194638.371537336@linuxfoundation.org>
-References: <20260528194638.371537336@linuxfoundation.org>
+In-Reply-To: <20260528194629.379955525@linuxfoundation.org>
+References: <20260528194629.379955525@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,7 +69,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
@@ -77,7 +77,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-255868-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-256116-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
@@ -86,111 +86,176 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
 	NEURAL_HAM(-0.00)[-1.000];
 	RCPT_COUNT_SEVEN(0.00)[7];
 	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,bur.io:email,suse.com:email,linuxfoundation.org:mid,linuxfoundation.org:dkim]
-X-Rspamd-Queue-Id: C8EC75F8E19
+	DBL_BLOCKED_OPENRESOLVER(0.00)[netfilter.org:email,strlen.de:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,talencesecurity.com:email,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo]
+X-Rspamd-Queue-Id: D7D785F9CCD
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Boris Burkov <boris@bur.io>
+From: Florian Westphal <fw@strlen.de>
 
-[ Upstream commit adb0af40fe89fd42f1ef277bf60d9cfa7c2ae472 ]
+[ Upstream commit d338693d778579b676a61346849bebd892427158 ]
 
-Currently, with squotas, we do not allow removing a parent qgroup with
-no members if it still has usage accounted to it. This makes it really
-difficult to recover from accounting bugs, as we have no good way of
-getting back to 0 usage.
+When the module is going away we need to zap the template
+first.  Else there is a small race window where userspace
+could instantiate a new table after the pernet exit function
+has removed the current table.
 
-Instead, allow deletion (it's safe at 0 members..) while still warning
-about the inconsistency by adding a squota parent check.
-
-Reviewed-by: Qu Wenruo <wqu@suse.com>
-Signed-off-by: Boris Burkov <boris@bur.io>
-Signed-off-by: David Sterba <dsterba@suse.com>
-Stable-dep-of: 1e92637722ae ("btrfs: check for subvolume before deleting squota qgroup")
+Fixes: fdacd57c79b7 ("netfilter: x_tables: never register tables by default")
+Reported-by: Tristan Madani <tristan@talencesecurity.com>
+Reviewed-by: Tristan Madani <tristan@talencesecurity.com>
+Closes: https://lore.kernel.org/netfilter-devel/20260429175613.1459342-1-tristmd@gmail.com/
+Signed-off-by: Florian Westphal <fw@strlen.de>
+Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/btrfs/qgroup.c | 50 +++++++++++++++++++++++++++++++++--------------
- 1 file changed, 35 insertions(+), 15 deletions(-)
+ net/ipv4/netfilter/arptable_filter.c   | 2 +-
+ net/ipv4/netfilter/iptable_filter.c    | 2 +-
+ net/ipv4/netfilter/iptable_mangle.c    | 2 +-
+ net/ipv4/netfilter/iptable_raw.c       | 2 +-
+ net/ipv4/netfilter/iptable_security.c  | 2 +-
+ net/ipv6/netfilter/ip6table_filter.c   | 2 +-
+ net/ipv6/netfilter/ip6table_mangle.c   | 2 +-
+ net/ipv6/netfilter/ip6table_raw.c      | 2 +-
+ net/ipv6/netfilter/ip6table_security.c | 2 +-
+ 9 files changed, 9 insertions(+), 9 deletions(-)
 
-diff --git a/fs/btrfs/qgroup.c b/fs/btrfs/qgroup.c
-index db1df67bccf38..c7bc2065bcd68 100644
---- a/fs/btrfs/qgroup.c
-+++ b/fs/btrfs/qgroup.c
-@@ -1723,6 +1723,36 @@ int btrfs_create_qgroup(struct btrfs_trans_handle *trans, u64 qgroupid)
- 	return ret;
+diff --git a/net/ipv4/netfilter/arptable_filter.c b/net/ipv4/netfilter/arptable_filter.c
+index 78cd5ee24448f..359d00d74095b 100644
+--- a/net/ipv4/netfilter/arptable_filter.c
++++ b/net/ipv4/netfilter/arptable_filter.c
+@@ -82,8 +82,8 @@ static int __init arptable_filter_init(void)
+ 
+ static void __exit arptable_filter_fini(void)
+ {
+-	unregister_pernet_subsys(&arptable_filter_net_ops);
+ 	xt_unregister_template(&packet_filter);
++	unregister_pernet_subsys(&arptable_filter_net_ops);
+ 	kfree(arpfilter_ops);
  }
  
-+static bool can_delete_parent_qgroup(struct btrfs_qgroup *qgroup)
-+
-+{
-+	ASSERT(btrfs_qgroup_level(qgroup->qgroupid));
-+	return list_empty(&qgroup->members);
-+}
-+
-+/*
-+ * Return true if we can delete the squota qgroup and false otherwise.
-+ *
-+ * Rules for whether we can delete:
-+ *
-+ * A subvolume qgroup can be removed iff the subvolume is fully deleted, which
-+ * is iff there is 0 usage in the qgroup.
-+ *
-+ * A higher level qgroup can be removed iff it has no members.
-+ * Note: We audit its usage to warn on inconsitencies without blocking deletion.
-+ */
-+static bool can_delete_squota_qgroup(struct btrfs_fs_info *fs_info, struct btrfs_qgroup *qgroup)
-+{
-+	ASSERT(btrfs_qgroup_mode(fs_info) == BTRFS_QGROUP_MODE_SIMPLE);
-+
-+	if (btrfs_qgroup_level(qgroup->qgroupid) > 0) {
-+		squota_check_parent_usage(fs_info, qgroup);
-+		return can_delete_parent_qgroup(qgroup);
-+	}
-+
-+	return !(qgroup->rfer || qgroup->excl || qgroup->rfer_cmpr || qgroup->excl_cmpr);
-+}
-+
- /*
-  * Return 0 if we can not delete the qgroup (not empty or has children etc).
-  * Return >0 if we can delete the qgroup.
-@@ -1733,23 +1763,13 @@ static int can_delete_qgroup(struct btrfs_fs_info *fs_info, struct btrfs_qgroup
- 	struct btrfs_key key;
- 	BTRFS_PATH_AUTO_FREE(path);
+diff --git a/net/ipv4/netfilter/iptable_filter.c b/net/ipv4/netfilter/iptable_filter.c
+index 3ab908b747951..595bfb492b1c1 100644
+--- a/net/ipv4/netfilter/iptable_filter.c
++++ b/net/ipv4/netfilter/iptable_filter.c
+@@ -101,8 +101,8 @@ static int __init iptable_filter_init(void)
  
--	/*
--	 * Squota would never be inconsistent, but there can still be case
--	 * where a dropped subvolume still has qgroup numbers, and squota
--	 * relies on such qgroup for future accounting.
--	 *
--	 * So for squota, do not allow dropping any non-zero qgroup.
--	 */
--	if (btrfs_qgroup_mode(fs_info) == BTRFS_QGROUP_MODE_SIMPLE &&
--	    (qgroup->rfer || qgroup->excl || qgroup->excl_cmpr || qgroup->rfer_cmpr))
--		return 0;
-+	/* Since squotas cannot be inconsistent, they have special rules for deletion. */
-+	if (btrfs_qgroup_mode(fs_info) == BTRFS_QGROUP_MODE_SIMPLE)
-+		return can_delete_squota_qgroup(fs_info, qgroup);
+ static void __exit iptable_filter_fini(void)
+ {
+-	unregister_pernet_subsys(&iptable_filter_net_ops);
+ 	xt_unregister_template(&packet_filter);
++	unregister_pernet_subsys(&iptable_filter_net_ops);
+ 	kfree(filter_ops);
+ }
  
- 	/* For higher level qgroup, we can only delete it if it has no child. */
--	if (btrfs_qgroup_level(qgroup->qgroupid)) {
--		if (!list_empty(&qgroup->members))
--			return 0;
--		return 1;
--	}
-+	if (btrfs_qgroup_level(qgroup->qgroupid))
-+		return can_delete_parent_qgroup(qgroup);
+diff --git a/net/ipv4/netfilter/iptable_mangle.c b/net/ipv4/netfilter/iptable_mangle.c
+index 385d945d8ebea..db90db7057cc4 100644
+--- a/net/ipv4/netfilter/iptable_mangle.c
++++ b/net/ipv4/netfilter/iptable_mangle.c
+@@ -135,8 +135,8 @@ static int __init iptable_mangle_init(void)
  
- 	/*
- 	 * For level-0 qgroups, we can only delete it if it has no subvolume
+ static void __exit iptable_mangle_fini(void)
+ {
+-	unregister_pernet_subsys(&iptable_mangle_net_ops);
+ 	xt_unregister_template(&packet_mangler);
++	unregister_pernet_subsys(&iptable_mangle_net_ops);
+ 	kfree(mangle_ops);
+ }
+ 
+diff --git a/net/ipv4/netfilter/iptable_raw.c b/net/ipv4/netfilter/iptable_raw.c
+index 0e7f53964d0af..b46a790917306 100644
+--- a/net/ipv4/netfilter/iptable_raw.c
++++ b/net/ipv4/netfilter/iptable_raw.c
+@@ -100,9 +100,9 @@ static int __init iptable_raw_init(void)
+ 
+ static void __exit iptable_raw_fini(void)
+ {
++	xt_unregister_template(&packet_raw);
+ 	unregister_pernet_subsys(&iptable_raw_net_ops);
+ 	kfree(rawtable_ops);
+-	xt_unregister_template(&packet_raw);
+ }
+ 
+ module_init(iptable_raw_init);
+diff --git a/net/ipv4/netfilter/iptable_security.c b/net/ipv4/netfilter/iptable_security.c
+index d885443cb2679..2b89adc1e5751 100644
+--- a/net/ipv4/netfilter/iptable_security.c
++++ b/net/ipv4/netfilter/iptable_security.c
+@@ -89,9 +89,9 @@ static int __init iptable_security_init(void)
+ 
+ static void __exit iptable_security_fini(void)
+ {
++	xt_unregister_template(&security_table);
+ 	unregister_pernet_subsys(&iptable_security_net_ops);
+ 	kfree(sectbl_ops);
+-	xt_unregister_template(&security_table);
+ }
+ 
+ module_init(iptable_security_init);
+diff --git a/net/ipv6/netfilter/ip6table_filter.c b/net/ipv6/netfilter/ip6table_filter.c
+index e8992693e14a0..9dcd4501fe800 100644
+--- a/net/ipv6/netfilter/ip6table_filter.c
++++ b/net/ipv6/netfilter/ip6table_filter.c
+@@ -100,8 +100,8 @@ static int __init ip6table_filter_init(void)
+ 
+ static void __exit ip6table_filter_fini(void)
+ {
+-	unregister_pernet_subsys(&ip6table_filter_net_ops);
+ 	xt_unregister_template(&packet_filter);
++	unregister_pernet_subsys(&ip6table_filter_net_ops);
+ 	kfree(filter_ops);
+ }
+ 
+diff --git a/net/ipv6/netfilter/ip6table_mangle.c b/net/ipv6/netfilter/ip6table_mangle.c
+index 8dd4cd0c47bd4..ce2cbce9e3ed3 100644
+--- a/net/ipv6/netfilter/ip6table_mangle.c
++++ b/net/ipv6/netfilter/ip6table_mangle.c
+@@ -128,8 +128,8 @@ static int __init ip6table_mangle_init(void)
+ 
+ static void __exit ip6table_mangle_fini(void)
+ {
+-	unregister_pernet_subsys(&ip6table_mangle_net_ops);
+ 	xt_unregister_template(&packet_mangler);
++	unregister_pernet_subsys(&ip6table_mangle_net_ops);
+ 	kfree(mangle_ops);
+ }
+ 
+diff --git a/net/ipv6/netfilter/ip6table_raw.c b/net/ipv6/netfilter/ip6table_raw.c
+index fc9f6754028f2..8af0f8bd036dc 100644
+--- a/net/ipv6/netfilter/ip6table_raw.c
++++ b/net/ipv6/netfilter/ip6table_raw.c
+@@ -98,8 +98,8 @@ static int __init ip6table_raw_init(void)
+ 
+ static void __exit ip6table_raw_fini(void)
+ {
+-	unregister_pernet_subsys(&ip6table_raw_net_ops);
+ 	xt_unregister_template(&packet_raw);
++	unregister_pernet_subsys(&ip6table_raw_net_ops);
+ 	kfree(rawtable_ops);
+ }
+ 
+diff --git a/net/ipv6/netfilter/ip6table_security.c b/net/ipv6/netfilter/ip6table_security.c
+index 4df14a9bae782..66018b169b010 100644
+--- a/net/ipv6/netfilter/ip6table_security.c
++++ b/net/ipv6/netfilter/ip6table_security.c
+@@ -88,8 +88,8 @@ static int __init ip6table_security_init(void)
+ 
+ static void __exit ip6table_security_fini(void)
+ {
+-	unregister_pernet_subsys(&ip6table_security_net_ops);
+ 	xt_unregister_template(&security_table);
++	unregister_pernet_subsys(&ip6table_security_net_ops);
+ 	kfree(sectbl_ops);
+ }
+ 
 -- 
 2.53.0
 
