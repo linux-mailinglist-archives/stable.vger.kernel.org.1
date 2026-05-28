@@ -1,58 +1,59 @@
-Return-Path: <stable+bounces-256302-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-255891-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id gMuvE8+rGGpEmAgAu9opvQ
-	(envelope-from <stable+bounces-256302-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:55:43 +0200
+	id wFVlIC2nGGpolwgAu9opvQ
+	(envelope-from <stable+bounces-255891-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:35:57 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id B5C355F9DFD
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:55:42 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id EF93F5F9106
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:35:56 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 3AFC831E50A2
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 20:48:43 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 78F6130F2107
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 20:29:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E87D92459DD;
-	Thu, 28 May 2026 20:48:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1F5692F39B4;
+	Thu, 28 May 2026 20:29:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LwevivPS"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LWivg6hF"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 95B152E92BA;
-	Thu, 28 May 2026 20:48:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D5A8BDDC5;
+	Thu, 28 May 2026 20:29:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780001319; cv=none; b=sSpV8YiXiLZdyt/ofY+QMgoitHlf1f89XvXrh27kCBGYT1B5kbwR5SW57aFdyLJDJ6dUSxs+ynHu50DB5F++iubmPJL1L93ghP2kk0LGaFMjrAy+q/rZMyihk6ukpODgvWlbjzXua31BCmjphiIXMehqwvvBvErdVKEWauLWFa8=
+	t=1780000168; cv=none; b=ij0DJCrOvu+vz50LimVW+eUYrCUTGdAjjt1UL9K1BwGlJK1LSmgvq3B2acFzgiUNRXXuhWWC2VNFFhHxwAghHgYzAuW7DuOV6obwJlSjJYBhZl1eUQjVcmz33+02wSGlnM7bRYkoDDwxD6QFxXWjiflH6rLzIyD1h6OVuToeJxs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780001319; c=relaxed/simple;
-	bh=Y0RvxKmEw7hl8w4Rxqarcbq0TGfyE1MsqQnCEKy7a8g=;
+	s=arc-20240116; t=1780000168; c=relaxed/simple;
+	bh=SfxG+650dtm3QH/9f+OMVIrt+VdeDJqLPII1reGa0MI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Gh/cG+JhERPH7vFCn9qcNMT8ghyGTPAZ2w+CFbxq7PphGzBWjNi2SgZDlnzd0FkBk0DiYcmA2c/MLzWtkFVPpHjAkth8XAb4TFj6QFLu4r3rd34sVGygqTeAJZFGChlUdbEo9zZ6RVdCldbrsFU89AvBXkMV4ZV67CHUs8W14BI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LwevivPS; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BB2C11F000E9;
-	Thu, 28 May 2026 20:48:37 +0000 (UTC)
+	 MIME-Version; b=tPx7+8IPWbRwf2ucJYjaOEoFZXaJtsIxOQre0ZfkIcCioHShoJgU5tu/hdwHLONg4/GZbCs8WZmtsT6SwNg1vWSsRfZSlIoJdizLf4Cf9SYLei+nC814cTNV83YAARq2cLMy2CqPicQDXIWNx0SgIWsFAKsRvOVv/UqLD05rLhQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LWivg6hF; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4040C1F000E9;
+	Thu, 28 May 2026 20:29:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780001318;
-	bh=xvS2rbhcjuNI4bHyo0fcFMv6brLxVV1iMQEupT+OFXc=;
+	s=korg; t=1780000167;
+	bh=KrufPJpCoqxfPQsd+3CDbJEiNRF2XrJ3V7ZUAfoUuBo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=LwevivPSWNl9xACV9sBlB5arN2q52CGjV+e7fwdYZFVazoNe7cOQ35tJG52FwzpzO
-	 UegqL3ws5UhC+H8wei0QVSq7Yl8VwEQDpp67Hg0mcGJw7SoJaRMzKw+X+vG0kYka5A
-	 Ep3q0ovvd5vy3Iu822kUIsHk1BJJJCDvKLn1LvP4=
+	b=LWivg6hFnglVA04Av2LC973vC9YVyMzywi/xEqiBw8ITP0+ccHID/0uFnHUBDsOr1
+	 H97x2+nucTtDRCr3o30ASBFpqUGrvFDrBKF9okeFrq7aRPZhe0cmZ2V9L+1FEvHrWT
+	 47OdUezTKec+mqz1OpMu4/iLNA/1j5sZQsh/ttcI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable@kernel.org,
-	Sven Eckelmann <sven@narfation.org>
-Subject: [PATCH 6.6 085/186] batman-adv: tp_meter: fix race condition in send error reporting
+	Daniel Golle <daniel@makrotopia.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.18 327/377] net: dsa: mt7530: fix FDB entries not aging out with short timeout
 Date: Thu, 28 May 2026 21:49:25 +0200
-Message-ID: <20260528194931.229867181@linuxfoundation.org>
+Message-ID: <20260528194647.875561003@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260528194928.941004471@linuxfoundation.org>
-References: <20260528194928.941004471@linuxfoundation.org>
+In-Reply-To: <20260528194638.371537336@linuxfoundation.org>
+References: <20260528194638.371537336@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -67,7 +68,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
@@ -77,7 +78,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-256302-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-255891-lists,stable=lfdr.de];
 	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
@@ -86,195 +87,110 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	NEURAL_HAM(-0.00)[-1.000];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[5];
+	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,narfation.org:email,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim]
-X-Rspamd-Queue-Id: B5C355F9DFD
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,bridge_vlan_aware.sh:url,makrotopia.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,bridge_vlan_unaware.sh:url]
+X-Rspamd-Queue-Id: EF93F5F9106
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sven Eckelmann <sven@narfation.org>
+From: Daniel Golle <daniel@makrotopia.org>
 
-commit 71dce47f0758537fff78fddb5fb0d4632d29b29f upstream.
+[ Upstream commit e824e40d0e841fab66ab7897d6c7b14dc81c66a7 ]
 
-batadv_tp_sender_shutdown() previously used two separate variables to track
-session state: sending (an atomic flag indicating whether the session was
-active) and reason (a plain enum storing the stop reason). This introduced
-a race window between the two writes: after sending was cleared to 0,
-batadv_tp_send() could observe the stopped state and call
-batadv_tp_sender_end() before reason was written, causing the wrong stop
-reason to be reported to the caller.
+The DSA forwarding selftests bridge_vlan_aware.sh and
+bridge_vlan_unaware.sh configure the bridge with ageing_time set to
+LOW_AGEING_TIME (1000 centiseconds, i.e. 10 seconds) and then run
+learning_test() in lib.sh, which expects a learned FDB entry to be
+removed after ageing_time + 10 seconds. On MT7530/MT7531 the entry
+persisted past the deadline and the "Found FDB record when should
+not" assertion failed.
 
-Fix this by consolidating both variables into a single atomic send_result,
-which holds 0 while the session is running and the stop reason once it
-ends.
+With msecs=10000, the algorithm in mt7530_set_ageing_time() finds
+AGE_CNT=0 and AGE_UNIT=9 as the first exact match (starting the
+search from tmp_age_count=0). The per-entry aging counter is
+initialized to AGE_CNT when a MAC address is learned, so with
+AGE_CNT=0 new entries start with a counter value of 0, which the
+hardware treats as "already aged" and never removes, effectively
+disabling aging.
 
-Cc: stable@kernel.org
-Fixes: 33a3bb4a3345 ("batman-adv: throughput meter implementation")
-Signed-off-by: Sven Eckelmann <sven@narfation.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fix this by starting the search from tmp_age_count=1 to ensure
+entries always have a non-zero initial aging counter. For a
+10-second ageing time this yields AGE_CNT=1 and AGE_UNIT=4 instead:
+the timer ticks every 5 seconds and entries are removed after 2
+ticks.
+
+Starting the search at AGE_CNT=1 raises the minimum representable
+ageing time from 1 to 2 seconds. Without bounds, a stale ageing_time
+of 1 second would now make the loop fall through without setting
+age_count and age_unit, leaving them uninitialized when written to
+the MT7530_AAC hardware register. Set ds->ageing_time_min and
+ds->ageing_time_max so the DSA core validates the range before the
+callback is invoked, and drop the now-redundant range check from
+mt7530_set_ageing_time().
+
+Fixes: ea6d5c924e39 ("net: dsa: mt7530: support setting ageing time")
+Signed-off-by: Daniel Golle <daniel@makrotopia.org>
+Link: https://patch.msgid.link/7788ded12dc07b1bce329ec35fa70f4b45f3f9b7.1778766629.git.daniel@makrotopia.org
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/batman-adv/tp_meter.c |   40 +++++++++++++++++++++++++---------------
- net/batman-adv/types.h    |   10 +++++-----
- 2 files changed, 30 insertions(+), 20 deletions(-)
+ drivers/net/dsa/mt7530.c | 20 ++++++++++++++------
+ 1 file changed, 14 insertions(+), 6 deletions(-)
 
---- a/net/batman-adv/tp_meter.c
-+++ b/net/batman-adv/tp_meter.c
-@@ -419,11 +419,14 @@ static void batadv_tp_sender_cleanup(str
- static void batadv_tp_sender_end(struct batadv_priv *bat_priv,
- 				 struct batadv_tp_vars *tp_vars)
- {
-+	enum batadv_tp_meter_reason reason;
- 	u32 session_cookie;
+diff --git a/drivers/net/dsa/mt7530.c b/drivers/net/dsa/mt7530.c
+index 548b85befbf45..d6ce335f6688b 100644
+--- a/drivers/net/dsa/mt7530.c
++++ b/drivers/net/dsa/mt7530.c
+@@ -973,12 +973,16 @@ mt7530_set_ageing_time(struct dsa_switch *ds, unsigned int msecs)
+ 	unsigned int age_count;
+ 	unsigned int age_unit;
  
-+	reason = atomic_read(&tp_vars->send_result);
-+
- 	batadv_dbg(BATADV_DBG_TP_METER, bat_priv,
- 		   "Test towards %pM finished..shutting down (reason=%d)\n",
--		   tp_vars->other_end, tp_vars->reason);
-+		   tp_vars->other_end, reason);
- 
- 	batadv_dbg(BATADV_DBG_TP_METER, bat_priv,
- 		   "Last timing stats: SRTT=%ums RTTVAR=%ums RTO=%ums\n",
-@@ -436,7 +439,7 @@ static void batadv_tp_sender_end(struct
- 	session_cookie = batadv_tp_session_cookie(tp_vars->session,
- 						  tp_vars->icmp_uid);
- 
--	batadv_tp_batctl_notify(tp_vars->reason,
-+	batadv_tp_batctl_notify(reason,
- 				tp_vars->other_end,
- 				bat_priv,
- 				tp_vars->start_time,
-@@ -452,10 +455,18 @@ static void batadv_tp_sender_end(struct
- static void batadv_tp_sender_shutdown(struct batadv_tp_vars *tp_vars,
- 				      enum batadv_tp_meter_reason reason)
- {
--	if (atomic_xchg(&tp_vars->sending, 0) != 1)
--		return;
-+	atomic_cmpxchg(&tp_vars->send_result, 0, reason);
-+}
- 
--	tp_vars->reason = reason;
-+/**
-+ * batadv_tp_sender_stopped() - check if tp session was stopped with reason
-+ * @tp_vars: the private data of the current TP meter session
-+ *
-+ * Return: whether stop reason was found
-+ */
-+static bool batadv_tp_sender_stopped(struct batadv_tp_vars *tp_vars)
-+{
-+	return atomic_read(&tp_vars->send_result) != 0;
- }
- 
- /**
-@@ -485,7 +496,7 @@ static void batadv_tp_reset_sender_timer
- 	/* most of the time this function is invoked while normal packet
- 	 * reception...
- 	 */
--	if (unlikely(atomic_read(&tp_vars->sending) == 0))
-+	if (unlikely(batadv_tp_sender_stopped(tp_vars)))
- 		/* timer ref will be dropped in batadv_tp_sender_cleanup */
- 		return;
- 
-@@ -505,7 +516,7 @@ static void batadv_tp_sender_timeout(str
- 	struct batadv_tp_vars *tp_vars = from_timer(tp_vars, t, timer);
- 	struct batadv_priv *bat_priv = tp_vars->bat_priv;
- 
--	if (atomic_read(&tp_vars->sending) == 0)
-+	if (batadv_tp_sender_stopped(tp_vars))
- 		return;
- 
- 	/* if the user waited long enough...shutdown the test */
-@@ -667,7 +678,7 @@ static void batadv_tp_recv_ack(struct ba
- 	if (unlikely(tp_vars->role != BATADV_TP_SENDER))
- 		goto out;
- 
--	if (unlikely(atomic_read(&tp_vars->sending) == 0))
-+	if (unlikely(batadv_tp_sender_stopped(tp_vars)))
- 		goto out;
- 
- 	/* old ACK? silently drop it.. */
-@@ -833,21 +844,21 @@ static int batadv_tp_send(void *arg)
- 
- 	if (unlikely(tp_vars->role != BATADV_TP_SENDER)) {
- 		err = BATADV_TP_REASON_DST_UNREACHABLE;
--		tp_vars->reason = err;
-+		batadv_tp_sender_shutdown(tp_vars, err);
- 		goto out;
- 	}
- 
- 	orig_node = batadv_orig_hash_find(bat_priv, tp_vars->other_end);
- 	if (unlikely(!orig_node)) {
- 		err = BATADV_TP_REASON_DST_UNREACHABLE;
--		tp_vars->reason = err;
-+		batadv_tp_sender_shutdown(tp_vars, err);
- 		goto out;
- 	}
- 
- 	primary_if = batadv_primary_if_get_selected(bat_priv);
- 	if (unlikely(!primary_if)) {
- 		err = BATADV_TP_REASON_DST_UNREACHABLE;
--		tp_vars->reason = err;
-+		batadv_tp_sender_shutdown(tp_vars, err);
- 		goto out;
- 	}
- 
-@@ -866,7 +877,7 @@ static int batadv_tp_send(void *arg)
- 	queue_delayed_work(batadv_event_workqueue, &tp_vars->finish_work,
- 			   msecs_to_jiffies(tp_vars->test_length));
- 
--	while (atomic_read(&tp_vars->sending) != 0) {
-+	while (!batadv_tp_sender_stopped(tp_vars)) {
- 		if (unlikely(!batadv_tp_avail(tp_vars, payload_len))) {
- 			batadv_tp_wait_available(tp_vars, payload_len);
- 			continue;
-@@ -889,8 +900,7 @@ static int batadv_tp_send(void *arg)
- 				   "Meter: %s() cannot send packets (%d)\n",
- 				   __func__, err);
- 			/* ensure nobody else tries to stop the thread now */
--			if (atomic_xchg(&tp_vars->sending, 0) == 1)
--				tp_vars->reason = err;
-+			batadv_tp_sender_shutdown(tp_vars, err);
- 			break;
- 		}
- 
-@@ -1012,7 +1022,7 @@ void batadv_tp_start(struct batadv_priv
- 	ether_addr_copy(tp_vars->other_end, dst);
- 	kref_init(&tp_vars->refcount);
- 	tp_vars->role = BATADV_TP_SENDER;
--	atomic_set(&tp_vars->sending, 1);
-+	atomic_set(&tp_vars->send_result, 0);
- 	memcpy(tp_vars->session, session_id, sizeof(session_id));
- 	tp_vars->icmp_uid = icmp_uid;
- 
---- a/net/batman-adv/types.h
-+++ b/net/batman-adv/types.h
-@@ -1388,15 +1388,15 @@ struct batadv_tp_vars {
- 	/** @role: receiver/sender modi */
- 	enum batadv_tp_meter_role role;
- 
--	/** @sending: sending binary semaphore: 1 if sending, 0 is not */
--	atomic_t sending;
-+	/**
-+	 * @send_result: 0 when sending is ongoing and otherwise
-+	 * enum batadv_tp_meter_reason
-+	 */
-+	atomic_t send_result;
- 
- 	/** @receiving: receiving binary semaphore: 1 if receiving, 0 is not */
- 	atomic_t receiving;
- 
--	/** @reason: reason for a stopped session */
--	enum batadv_tp_meter_reason reason;
+-	/* Applied timer is (AGE_CNT + 1) * (AGE_UNIT + 1) seconds */
+-	if (secs < 1 || secs > (AGE_CNT_MAX + 1) * (AGE_UNIT_MAX + 1))
+-		return -ERANGE;
 -
- 	/** @finish_work: work item for the finishing procedure */
- 	struct delayed_work finish_work;
+-	/* iterate through all possible age_count to find the closest pair */
+-	for (tmp_age_count = 0; tmp_age_count <= AGE_CNT_MAX; ++tmp_age_count) {
++	/* Applied timer is (AGE_CNT + 1) * (AGE_UNIT + 1) seconds.
++	 * The DSA core has already validated the range using
++	 * ds->ageing_time_min and ds->ageing_time_max.
++	 *
++	 * Iterate through all possible age_count values to find the closest
++	 * pair. Start from 1 because the per-entry aging counter is
++	 * initialized to AGE_CNT and a value of 0 means the entry will
++	 * never be aged out.
++	 */
++	for (tmp_age_count = 1; tmp_age_count <= AGE_CNT_MAX; ++tmp_age_count) {
+ 		unsigned int tmp_age_unit = secs / (tmp_age_count + 1) - 1;
  
+ 		if (tmp_age_unit <= AGE_UNIT_MAX) {
+@@ -2378,6 +2382,8 @@ mt7530_setup(struct dsa_switch *ds)
+ 
+ 	ds->assisted_learning_on_cpu_port = true;
+ 	ds->mtu_enforcement_ingress = true;
++	ds->ageing_time_min = 2 * 1000;
++	ds->ageing_time_max = (AGE_CNT_MAX + 1) * (AGE_UNIT_MAX + 1) * 1000;
+ 
+ 	if (priv->id == ID_MT7530) {
+ 		regulator_set_voltage(priv->core_pwr, 1000000, 1000000);
+@@ -2567,6 +2573,8 @@ mt7531_setup_common(struct dsa_switch *ds)
+ 
+ 	ds->assisted_learning_on_cpu_port = true;
+ 	ds->mtu_enforcement_ingress = true;
++	ds->ageing_time_min = 2 * 1000;
++	ds->ageing_time_max = (AGE_CNT_MAX + 1) * (AGE_UNIT_MAX + 1) * 1000;
+ 
+ 	mt753x_trap_frames(priv);
+ 
+-- 
+2.53.0
+
 
 
 
