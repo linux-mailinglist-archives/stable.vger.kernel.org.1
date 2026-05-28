@@ -1,61 +1,61 @@
-Return-Path: <stable+bounces-256023-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-255420-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id WHXeF/+nGGp+lwgAu9opvQ
-	(envelope-from <stable+bounces-256023-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:39:27 +0200
+	id YN6VJpGgGGqblggAu9opvQ
+	(envelope-from <stable+bounces-255420-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:07:45 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2E9BD5F93EE
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:39:27 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9C7465F7DF3
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:07:44 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id BA9B9307C54C
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 20:35:41 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 9B77A30091D3
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 20:07:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1B9F63368B5;
-	Thu, 28 May 2026 20:35:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3CAF02F260C;
+	Thu, 28 May 2026 20:07:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Q33i/Ey9"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="I2IprF17"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E136B2E92BA;
-	Thu, 28 May 2026 20:35:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E9EDC318EE1;
+	Thu, 28 May 2026 20:07:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780000538; cv=none; b=qUHdYfKxxsyvmcsdHWSLplmVm7xyzfb4vgDIZH/aFFPmLkNxgqW86kHZNpNRhpgJEHna1AEXT03otz7KFcgE9oL7kWzc53ABG/0U4P6LTbf/S18rqZkBN1GIh9CLnPzEvhvptWhzp9Dilh0/8jgeRkpB4LSLdrqUksOWKCNQ1CY=
+	t=1779998860; cv=none; b=cO/xWv/yAa13zg9tRrXAP8wb0EaL2mD8eciGpDSZe0FAYVmtw4JLgHed/I2k+6AjWl55qLlOIbPH1HijRw5GQW/9KX6glZvgNgHmnfCoR8Q2GNrmD70KjG5D2Vyae8MQ/rsGM9I3HRCZv9UkBcDJbFw6xp8TD9kP1/xWCj0cnVE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780000538; c=relaxed/simple;
-	bh=iL00tCKP9Pnbi9lMgkZ3oNNOU6KiHqgfZivT8MPf3mE=;
+	s=arc-20240116; t=1779998860; c=relaxed/simple;
+	bh=geAgwPSAGfsQvdW7t4dkH7BBU4bHbVoE2hU+QyuAue4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=gC3qm6Cc+rmgK9zoU1MZsa8m0PlaCY1dVIAkWnNiBP9ATx3jiHyvNkbLCr1busgHGH7YIluIyMvznkQyI86VXQdTA9wYVPEnCXXCZJ1rxjl4k2EePPA9uWFel2ZjQoRt4IoFyKdhkqnoGPMdmVaY6T2xJMv4fKuPvr5aHgFuxOY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Q33i/Ey9; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4BA2E1F000E9;
-	Thu, 28 May 2026 20:35:37 +0000 (UTC)
+	 MIME-Version; b=AowbGV+WmnaD7zDRnVoPpGQQwo46bLYXXTYODC3B8vr8FDW8IYv3mQ9KtjilC/KNeFxamNoNB1nChKmhJZUEvuVQwLgjxChV3Na0yJdbx4hO1EDQMR8H1q5N4jskh66l0KJX99aXzxx4HwvN3KnackAyI7fxZBhSEMMRgF11aU0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=I2IprF17; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 532201F000E9;
+	Thu, 28 May 2026 20:07:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780000537;
-	bh=19qqbegkgKcjYimwAdMcQnXvzl4jbP/M1QF3DGvw7AA=;
+	s=korg; t=1779998858;
+	bh=thmQhlPFld3j+H80sC6JayiEGdRYuHc9QKMIltxMTO4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=Q33i/Ey95PV1peH5JyUhn3eNznr/lObGbpEVDuxuX7c0PE1lhuojZ9A9MKVXhDc/1
-	 Wi0tKDyMHbm+r4k9fB+RfIdx0TDUQotvsjim4Z07Vtc/a49+7dF/qu8MDQuwzZ2n6l
-	 h8dl+etkICnTWlbJh3akl7UJDvAH2W6auPhDzRe8=
+	b=I2IprF17V3TDNBXvVLL2jBi5ADzp+iHkmK4YOmKQsnk8j715FOJN0qtO7MYvnZgWV
+	 tmXTdKIJVSkb41WSclw83E7xy1jA8WBTRi9pV7iil4DBrdGpaxV1esfNskku/o5Ne9
+	 cG1Jl7Hr2JjcG1niosWxtqKzNrZVLG3H5mGaKJ74=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Guopeng Zhang <zhangguopeng@kylinos.cn>,
-	Tejun Heo <tj@kernel.org>,
-	Chen Ridong <chenridong@huaweicloud.com>,
-	Waiman Long <longman@redhat.com>,
+	David Carlier <devnexen@gmail.com>,
+	Vladimir Oltean <olteanv@gmail.com>,
+	Joshua Peisach <jpeisach@ubuntu.com>,
+	Vinod Koul <vkoul@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 079/272] cgroup/cpuset: Reset DL migration state on can_attach() failure
+Subject: [PATCH 7.0 324/461] phy: apple: atc: Fix typec switch/mux leak on unbind
 Date: Thu, 28 May 2026 21:47:33 +0200
-Message-ID: <20260528194631.587657841@linuxfoundation.org>
+Message-ID: <20260528194656.700537056@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260528194629.379955525@linuxfoundation.org>
-References: <20260528194629.379955525@linuxfoundation.org>
+In-Reply-To: <20260528194646.819809818@linuxfoundation.org>
+References: <20260528194646.819809818@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -67,104 +67,184 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [3.84 / 15.00];
-	SEM_URIBL(3.50)[huaweicloud.com:email];
+	SEM_URIBL(3.50)[ubuntu.com:email];
 	R_MISSING_CHARSET(0.50)[];
 	MAILLIST(-0.15)[generic];
 	BAD_REP_POLICIES(0.10)[];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,ubuntu.com,kernel.org];
 	DMARC_POLICY_ALLOW(0.00)[linuxfoundation.org,none];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_FROM(0.00)[bounces-256023-lists,stable=lfdr.de];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-255420-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	R_DKIM_ALLOW(0.00)[linuxfoundation.org:s=korg];
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
 	ARC_ALLOW(0.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	NEURAL_HAM(-0.00)[-0.987];
+	NEURAL_HAM(-0.00)[-0.883];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	TO_DN_SOME(0.00)[];
 	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
 	RCPT_COUNT_SEVEN(0.00)[8];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	R_SPF_ALLOW(0.00)[+ip4:172.232.135.74:c];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,kylinos.cn:email,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,huaweicloud.com:email]
-X-Rspamd-Queue-Id: 2E9BD5F93EE
+	R_SPF_ALLOW(0.00)[+ip4:104.64.211.4:c];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[ubuntu.com:email,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,msgid.link:url,linuxfoundation.org:mid,linuxfoundation.org:dkim]
+X-Rspamd-Queue-Id: 9C7465F7DF3
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+7.0-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Guopeng Zhang <zhangguopeng@kylinos.cn>
+From: David Carlier <devnexen@gmail.com>
 
-[ Upstream commit 4a39eda5fdd867fc39f3c039714dd432cee00268 ]
+[ Upstream commit 1854082fe0ddb81bc93d1f8e8a00554217fd09d1 ]
 
-cpuset_can_attach() accumulates temporary SCHED_DEADLINE migration
-state in the destination cpuset while walking the taskset.
+atcphy_probe_switch() and atcphy_probe_mux() discard the pointers
+returned by typec_switch_register() and typec_mux_register(). The
+platform driver has no .remove callback, so when the driver unbinds
+(e.g. via sysfs unbind) neither typec_switch_unregister() nor
+typec_mux_unregister() is called. The framework reference taken in
+typec_switch_register() (device_initialize() + device_add() in
+drivers/usb/typec/mux.c) is therefore never dropped and the
+typec_switch_dev / typec_mux_dev objects stay live forever, with
+their sysfs entries under the typec_mux class also left behind. A
+subsequent rebind cannot recreate them with the same fwnode-derived
+name.
 
-If a later task_can_attach() or security_task_setscheduler() check
-fails, cgroup_migrate_execute() treats cpuset as the failing subsystem
-and does not call cpuset_cancel_attach() for it. The partially
-accumulated state is then left behind and can be consumed by a later
-attach, corrupting cpuset DL task accounting and pending DL bandwidth
-accounting.
+Save the registered handles and unregister them through
+devm_add_action_or_reset() so framework registration is torn down
+in step with the driver's other devm-managed state. While here,
+drop struct apple_atcphy::sw and ::mux: they were declared with the
+consumer-side types (typec_switch *, typec_mux *) instead of the
+provider-side types and were never assigned.
 
-Reset the pending DL migration state from the common error exit when
-ret is non-zero. Successful can_attach() keeps the state for
-cpuset_attach() or cpuset_cancel_attach().
+Scope of the fix
+================
+This patch fixes the registration leak only. It does not close the
+use-after-free window that arises when a consumer that obtained a
+reference via fwnode_typec_switch_get() / fwnode_typec_mux_get()
+outlives the provider unbind: such consumers keep the underlying
+typec_switch_dev / typec_mux_dev alive past device_unregister(),
+and a later typec_switch_set() / typec_mux_set() still invokes the
+registered atcphy_sw_set() / atcphy_mux_set(), which dereferences
+the freed apple_atcphy through typec_{switch,mux}_get_drvdata().
 
-Fixes: 2ef269ef1ac0 ("cgroup/cpuset: Free DL BW in case can_attach() fails")
-Cc: stable@vger.kernel.org # v6.10+
-Signed-off-by: Guopeng Zhang <zhangguopeng@kylinos.cn>
-Signed-off-by: Tejun Heo <tj@kernel.org>
-Reviewed-by: Chen Ridong <chenridong@huaweicloud.com>
-Reviewed-by: Waiman Long <longman@redhat.com>
-[ omitted upstream context line `cs->dl_bw_cpu = cpu;` ]
+On Apple Silicon the relevant consumers are the typec port and the
+cd321x controller registered by drivers/usb/typec/tipd/core.c.
+Cable plug / orientation events and alt-mode transitions trigger
+the .set callbacks via:
+
+  tps6598x_interrupt()                 drivers/usb/typec/tipd/core.c
+    tps6598x_handle_plug_event()
+      tps6598x_connect()/_disconnect()
+        typec_set_orientation()        drivers/usb/typec/class.c
+          typec_switch_set(port->sw)   drivers/usb/typec/mux.c
+            atcphy_sw_set()            drivers/phy/apple/atc.c
+
+  cd321x_update_work()                 drivers/usb/typec/tipd/core.c
+    cd321x_typec_update_mode()
+      typec_mux_set(cd321x->mux)       drivers/usb/typec/mux.c
+        atcphy_mux_set()               drivers/phy/apple/atc.c
+
+Closing that window requires framework support for invalidating
+consumer-held references on provider unbind. The same
+consumer-survives-provider pattern has been discussed for the PHY
+framework [1] and is out of scope here.
+
+[1] https://lore.kernel.org/linux-phy/aZejMSJ9qqRWb2pX@google.com/
+
+Fixes: 8e98ca1e74db ("phy: apple: Add Apple Type-C PHY")
+Signed-off-by: David Carlier <devnexen@gmail.com>
+Reviewed-by: Vladimir Oltean <olteanv@gmail.com>
+Tested-by: Joshua Peisach <jpeisach@ubuntu.com>
+Link: https://lkml.kernel.org/r/6ec1ed08328340db42655287afd5fa4067316b11.camel@perches.com
+Link: https://patch.msgid.link/20260508201958.30060-1-devnexen@gmail.com
+Signed-off-by: Vinod Koul <vkoul@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- kernel/cgroup/cpuset.c |    8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ drivers/phy/apple/atc.c | 27 ++++++++++++++++++++++-----
+ 1 file changed, 22 insertions(+), 5 deletions(-)
 
---- a/kernel/cgroup/cpuset.c
-+++ b/kernel/cgroup/cpuset.c
-@@ -2996,16 +2996,13 @@ static int cpuset_can_attach(struct cgro
- 		int cpu = cpumask_any_and(cpu_active_mask, cs->effective_cpus);
+diff --git a/drivers/phy/apple/atc.c b/drivers/phy/apple/atc.c
+index 64d0c3dba1cbb..4f0585818fa7a 100644
+--- a/drivers/phy/apple/atc.c
++++ b/drivers/phy/apple/atc.c
+@@ -628,9 +628,6 @@ struct apple_atcphy {
  
- 		if (unlikely(cpu >= nr_cpu_ids)) {
--			reset_migrate_dl_data(cs);
- 			ret = -EINVAL;
- 			goto out_unlock;
- 		}
+ 	struct reset_controller_dev rcdev;
  
- 		ret = dl_bw_alloc(cpu, cs->sum_migrate_dl_bw);
--		if (ret) {
--			reset_migrate_dl_data(cs);
-+		if (ret)
- 			goto out_unlock;
--		}
- 	}
+-	struct typec_switch *sw;
+-	struct typec_mux *mux;
+-
+ 	struct mutex lock;
+ };
  
- out_success:
-@@ -3014,7 +3011,10 @@ out_success:
- 	 * changes which zero cpus/mems_allowed.
- 	 */
- 	cs->attach_in_progress++;
-+
- out_unlock:
-+	if (ret)
-+		reset_migrate_dl_data(cs);
- 	mutex_unlock(&cpuset_mutex);
- 	return ret;
+@@ -2066,15 +2063,25 @@ static int atcphy_sw_set(struct typec_switch_dev *sw, enum typec_orientation ori
+ 	return 0;
  }
+ 
++static void atcphy_typec_switch_unregister(void *data)
++{
++	typec_switch_unregister(data);
++}
++
+ static int atcphy_probe_switch(struct apple_atcphy *atcphy)
+ {
++	struct typec_switch_dev *sw;
+ 	struct typec_switch_desc sw_desc = {
+ 		.drvdata = atcphy,
+ 		.fwnode = atcphy->dev->fwnode,
+ 		.set = atcphy_sw_set,
+ 	};
+ 
+-	return PTR_ERR_OR_ZERO(typec_switch_register(atcphy->dev, &sw_desc));
++	sw = typec_switch_register(atcphy->dev, &sw_desc);
++	if (IS_ERR(sw))
++		return PTR_ERR(sw);
++
++	return devm_add_action_or_reset(atcphy->dev, atcphy_typec_switch_unregister, sw);
+ }
+ 
+ static int atcphy_mux_set(struct typec_mux_dev *mux, struct typec_mux_state *state)
+@@ -2146,15 +2153,25 @@ static int atcphy_mux_set(struct typec_mux_dev *mux, struct typec_mux_state *sta
+ 	return atcphy_configure(atcphy, target_mode);
+ }
+ 
++static void atcphy_typec_mux_unregister(void *data)
++{
++	typec_mux_unregister(data);
++}
++
+ static int atcphy_probe_mux(struct apple_atcphy *atcphy)
+ {
++	struct typec_mux_dev *mux;
+ 	struct typec_mux_desc mux_desc = {
+ 		.drvdata = atcphy,
+ 		.fwnode = atcphy->dev->fwnode,
+ 		.set = atcphy_mux_set,
+ 	};
+ 
+-	return PTR_ERR_OR_ZERO(typec_mux_register(atcphy->dev, &mux_desc));
++	mux = typec_mux_register(atcphy->dev, &mux_desc);
++	if (IS_ERR(mux))
++		return PTR_ERR(mux);
++
++	return devm_add_action_or_reset(atcphy->dev, atcphy_typec_mux_unregister, mux);
+ }
+ 
+ static int atcphy_load_tunables(struct apple_atcphy *atcphy)
+-- 
+2.53.0
+
 
 
 
