@@ -1,60 +1,62 @@
-Return-Path: <stable+bounces-256244-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-255813-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id eP5zAVCtGGpymAgAu9opvQ
-	(envelope-from <stable+bounces-256244-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 23:02:08 +0200
+	id UIkyHNqmGGp+lwgAu9opvQ
+	(envelope-from <stable+bounces-255813-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:34:34 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id 159AE5FA1B8
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 23:02:07 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id EF0F25F9019
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:34:33 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id D92383031A30
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 20:45:59 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 55F13317211B
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 20:25:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E5EA833F5B4;
-	Thu, 28 May 2026 20:45:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 37C29325485;
+	Thu, 28 May 2026 20:25:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Y7gwuJ1W"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Xxkltqw+"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8868F318B9D;
-	Thu, 28 May 2026 20:45:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CBD6D2D9787;
+	Thu, 28 May 2026 20:25:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780001157; cv=none; b=q8Xz7IG/wA1Lfd0QqZ5g5HYKdZzVhO927yKf4XzTCR9jjEC3SC5xgM263nqXAcdI8+xG8fwAz3i4zCO/93t1vQqu4LOADK+0daZdKKJwpV2vhE1RoP8SKSmPNON68MhHu7esrxSM1jROGtuoG+f8C3LN2xJv96OyM/OovBlYyoA=
+	t=1779999952; cv=none; b=a52cO3UHOTdM6pYqU09yLXMMvkRugXJIf1RtXwXyUHdUklqNA4kCpci/KRhzekveqZucawo36ZXkfyfkYYKGb2zdEbE78z5FmOnZDTgHVn6Oa9CohmD/q2cg1zx1FUjxdMDWpQoHky2NK+wgqvUi6gYze3CVpzItSJtmrdyIbuo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780001157; c=relaxed/simple;
-	bh=9l2n35Jk5YvqxcdnXqzajwp7r0ztlr2hxLaN4MlETDk=;
+	s=arc-20240116; t=1779999952; c=relaxed/simple;
+	bh=XzWzasvIYYijoHV5ephMxXdo7ygWi7jcH+mlOHO6+oA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=popVI2W4/eJ9S1MHBhThtSjiDvOcazzOhCjV040rpR4B7pYTu3FJMfyuaYql63X5spRzbRLuF7uNe7o0Hc8NkpdhO2T/VLOK20ojV9Uc+VGD53SjaH7+gO8ae4BPmnWGQH/5Hh+u4MrVhgH5HwJvG6JLEC5aCYfSWRkkZpFz8Vc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Y7gwuJ1W; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E59BF1F000E9;
-	Thu, 28 May 2026 20:45:55 +0000 (UTC)
+	 MIME-Version; b=qAJX01yyBmL9zFa20Z61PPTuK0BowXYHVzdBJ2kYOGwEKGtkmkUwUKuL/nDEEC3WjZkBU5Rvc5JOkY9nQtSE3oeO4TYUE5Xtq5bObPZDn2fdMQwI2UjEdRDnew2dryI+yQOwgx7SLLBNjSL3TS/VV4sG5XnYdhnxS3/KzfxbmSQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Xxkltqw+; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 397341F000E9;
+	Thu, 28 May 2026 20:25:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780001156;
-	bh=uwz1yMNh9Yv644GBxjXGkVUksnEe+zsvwk+t4LD/AXA=;
+	s=korg; t=1779999950;
+	bh=wUozUQ4l5E6B/QabXv/09OHOijH4N4hybBpp36SmrmM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=Y7gwuJ1WkchV3rMBymProq/7z6Hax3EsrPZtAWUX/xuyVcIWcXuqFraGCPHcWoYoD
-	 kL+FLK5e8r+kLhhW8FEbUP+Z1DI2+rD3G7W82BuxWmvIL4isI/9Hx9rN1LY2VRr3bu
-	 tUWOp6GUV5QEJuWbOCoPQ6JkUzD0G5kWYgWo0fyw=
+	b=Xxkltqw+izbEgGJ+3erglFMMjyY9KHXOdkvNP4/RDtfH3r9Is9OkidMYgkKqjP1La
+	 bwjyjea+JNiUzK7/cvYeMxmIRr9ZaGzHPlkJPapvLsRFqcy1r9DGxaL2kRTF3XuYf4
+	 F0mrmbUw5YRptZ0SUbkEch+xJZIT2YpdNh0dnnfU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Gui-Dong Han <hanguidong02@gmail.com>,
-	Danilo Krummrich <dakr@kernel.org>,
-	Sasha Levin <sashal@kernel.org>,
-	David Sauerwein <dssauerw@amazon.de>
-Subject: [PATCH 6.6 007/186] driver core: platform: use generic driver_override infrastructure
+	David Howells <dhowells@redhat.com>,
+	Marc Dionne <marc.dionne@auristor.com>,
+	linux-afs@lists.infradead.org,
+	linux-fsdevel@vger.kernel.org,
+	Christian Brauner <brauner@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.18 249/377] netfs, afs: Fix write skipping in dir/link writepages
 Date: Thu, 28 May 2026 21:48:07 +0200
-Message-ID: <20260528194929.148644569@linuxfoundation.org>
+Message-ID: <20260528194645.588721456@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260528194928.941004471@linuxfoundation.org>
-References: <20260528194928.941004471@linuxfoundation.org>
+In-Reply-To: <20260528194638.371537336@linuxfoundation.org>
+References: <20260528194638.371537336@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,232 +71,119 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,kernel.org,amazon.de];
-	TAGGED_FROM(0.00)[bounces-256244-lists,stable=lfdr.de];
-	PRECEDENCE_BULK(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-255813-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
 	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,amazon.de:email,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim]
-X-Rspamd-Queue-Id: 159AE5FA1B8
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_SEVEN(0.00)[9];
+	MID_RHS_MATCH_FROM(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,msgid.link:url,infradead.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,auristor.com:email]
+X-Rspamd-Queue-Id: EF0F25F9019
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Danilo Krummrich <dakr@kernel.org>
+From: David Howells <dhowells@redhat.com>
 
-[ Upstream commit 2b38efc05bf7a8568ec74bfffea0f5cfa62bc01d ]
+[ Upstream commit 9871938f99cc6cb266a77265491660e2375271f5 ]
 
-When a driver is probed through __driver_attach(), the bus' match()
-callback is called without the device lock held, thus accessing the
-driver_override field without a lock, which can cause a UAF.
+Fix netfs_write_single() and afs_single_writepages() to better handle a
+write that would be skipped due to lock contention and WB_SYNC_NONE by
+returning 1 from netfs_write_single() if it skipped and making
+afs_single_writepages() skip also.  If a skip occurs, the inode must be
+re-marked as the VFS may have cleared the mark.
 
-Fix this by using the driver-core driver_override infrastructure taking
-care of proper locking internally.
+This is really only theoretical for directories in netfs_write_single() as
+the only path to that is through afs_single_writepages() that takes the
+->validate_lock around it, thereby serialising it.
 
-Note that calling match() from __driver_attach() without the device lock
-held is intentional. [1]
-
-Link: https://lore.kernel.org/driver-core/DGRGTIRHA62X.3RY09D9SOK77P@kernel.org/ [1]
-Reported-by: Gui-Dong Han <hanguidong02@gmail.com>
-Closes: https://bugzilla.kernel.org/show_bug.cgi?id=220789
-Fixes: 3d713e0e382e ("driver core: platform: add device binding path 'driver_override'")
-Reviewed-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Link: https://patch.msgid.link/20260303115720.48783-5-dakr@kernel.org
-Signed-off-by: Danilo Krummrich <dakr@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
-Signed-off-by: David Sauerwein <dssauerw@amazon.de>
+Fixes: 6dd80936618c ("afs: Use netfslib for directories")
+Signed-off-by: David Howells <dhowells@redhat.com>
+Link: https://patch.msgid.link/20260512123404.719402-24-dhowells@redhat.com
+cc: Marc Dionne <marc.dionne@auristor.com>
+cc: linux-afs@lists.infradead.org
+cc: linux-fsdevel@vger.kernel.org
+Signed-off-by: Christian Brauner <brauner@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/base/platform.c         | 37 +++++----------------------------
- drivers/bus/simple-pm-bus.c     |  4 ++--
- drivers/clk/imx/clk-scu.c       |  3 +--
- drivers/slimbus/qcom-ngd-ctrl.c |  6 ++----
- include/linux/platform_device.h |  5 -----
- sound/soc/samsung/i2s.c         |  6 +++---
- 6 files changed, 13 insertions(+), 48 deletions(-)
+ fs/afs/dir.c           | 11 ++++++++++-
+ fs/netfs/write_issue.c |  7 ++++++-
+ 2 files changed, 16 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/base/platform.c b/drivers/base/platform.c
-index 76bfcba250039..1cc9a876b3cde 100644
---- a/drivers/base/platform.c
-+++ b/drivers/base/platform.c
-@@ -561,7 +561,6 @@ static void platform_device_release(struct device *dev)
- 	kfree(pa->pdev.dev.platform_data);
- 	kfree(pa->pdev.mfd_cell);
- 	kfree(pa->pdev.resource);
--	kfree(pa->pdev.driver_override);
- 	kfree(pa);
- }
- 
-@@ -1265,38 +1264,9 @@ static ssize_t numa_node_show(struct device *dev,
- }
- static DEVICE_ATTR_RO(numa_node);
- 
--static ssize_t driver_override_show(struct device *dev,
--				    struct device_attribute *attr, char *buf)
--{
--	struct platform_device *pdev = to_platform_device(dev);
--	ssize_t len;
--
--	device_lock(dev);
--	len = sysfs_emit(buf, "%s\n", pdev->driver_override);
--	device_unlock(dev);
--
--	return len;
--}
--
--static ssize_t driver_override_store(struct device *dev,
--				     struct device_attribute *attr,
--				     const char *buf, size_t count)
--{
--	struct platform_device *pdev = to_platform_device(dev);
--	int ret;
--
--	ret = driver_set_override(dev, &pdev->driver_override, buf, count);
--	if (ret)
--		return ret;
--
--	return count;
--}
--static DEVICE_ATTR_RW(driver_override);
--
- static struct attribute *platform_dev_attrs[] = {
- 	&dev_attr_modalias.attr,
- 	&dev_attr_numa_node.attr,
--	&dev_attr_driver_override.attr,
- 	NULL,
- };
- 
-@@ -1336,10 +1306,12 @@ static int platform_match(struct device *dev, struct device_driver *drv)
- {
- 	struct platform_device *pdev = to_platform_device(dev);
- 	struct platform_driver *pdrv = to_platform_driver(drv);
-+	int ret;
- 
- 	/* When driver_override is set, only bind to the matching driver */
--	if (pdev->driver_override)
--		return !strcmp(pdev->driver_override, drv->name);
-+	ret = device_match_driver_override(dev, drv);
-+	if (ret >= 0)
-+		return ret;
- 
- 	/* Attempt an OF style match first */
- 	if (of_driver_match_device(dev, drv))
-@@ -1482,6 +1454,7 @@ static const struct dev_pm_ops platform_dev_pm_ops = {
- struct bus_type platform_bus_type = {
- 	.name		= "platform",
- 	.dev_groups	= platform_dev_groups,
-+	.driver_override = true,
- 	.match		= platform_match,
- 	.uevent		= platform_uevent,
- 	.probe		= platform_probe,
-diff --git a/drivers/bus/simple-pm-bus.c b/drivers/bus/simple-pm-bus.c
-index aafcc481de91d..cb71774400d42 100644
---- a/drivers/bus/simple-pm-bus.c
-+++ b/drivers/bus/simple-pm-bus.c
-@@ -36,7 +36,7 @@ static int simple_pm_bus_probe(struct platform_device *pdev)
- 	 * that's not listed in simple_pm_bus_of_match. We don't want to do any
- 	 * of the simple-pm-bus tasks for these devices, so return early.
+diff --git a/fs/afs/dir.c b/fs/afs/dir.c
+index 89d36e3e5c799..fa84610e0b0d9 100644
+--- a/fs/afs/dir.c
++++ b/fs/afs/dir.c
+@@ -2207,7 +2207,14 @@ int afs_single_writepages(struct address_space *mapping,
+ 	/* Need to lock to prevent the folio queue and folios from being thrown
+ 	 * away.
  	 */
--	if (pdev->driver_override)
-+	if (device_has_driver_override(&pdev->dev))
- 		return 0;
+-	down_read(&dvnode->validate_lock);
++	if (!down_read_trylock(&dvnode->validate_lock)) {
++		if (wbc->sync_mode == WB_SYNC_NONE) {
++			/* The VFS will have undirtied the inode. */
++			netfs_single_mark_inode_dirty(&dvnode->netfs.inode);
++			return 0;
++		}
++		down_read(&dvnode->validate_lock);
++	}
  
- 	match = of_match_device(dev->driver->of_match_table, dev);
-@@ -78,7 +78,7 @@ static int simple_pm_bus_remove(struct platform_device *pdev)
- {
- 	const void *data = of_device_get_match_data(&pdev->dev);
- 
--	if (pdev->driver_override || data)
-+	if (device_has_driver_override(&pdev->dev) || data)
- 		return 0;
- 
- 	dev_dbg(&pdev->dev, "%s\n", __func__);
-diff --git a/drivers/clk/imx/clk-scu.c b/drivers/clk/imx/clk-scu.c
-index 564f549ec204f..3a68576cdae76 100644
---- a/drivers/clk/imx/clk-scu.c
-+++ b/drivers/clk/imx/clk-scu.c
-@@ -700,8 +700,7 @@ struct clk_hw *imx_clk_scu_alloc_dev(const char *name,
- 		return ERR_PTR(ret);
+ 	if (is_dir ?
+ 	    test_bit(AFS_VNODE_DIR_VALID, &dvnode->flags) :
+@@ -2215,6 +2222,8 @@ int afs_single_writepages(struct address_space *mapping,
+ 		iov_iter_folio_queue(&iter, ITER_SOURCE, dvnode->directory, 0, 0,
+ 				     i_size_read(&dvnode->netfs.inode));
+ 		ret = netfs_writeback_single(mapping, wbc, &iter);
++		if (ret == 1)
++			ret = 0; /* Skipped write due to lock conflict. */
  	}
  
--	ret = driver_set_override(&pdev->dev, &pdev->driver_override,
--				  "imx-scu-clk", strlen("imx-scu-clk"));
-+	ret = device_set_driver_override(&pdev->dev, "imx-scu-clk");
- 	if (ret) {
- 		platform_device_put(pdev);
- 		return ERR_PTR(ret);
-diff --git a/drivers/slimbus/qcom-ngd-ctrl.c b/drivers/slimbus/qcom-ngd-ctrl.c
-index fe3a96577f31f..d0d289c49c8d1 100644
---- a/drivers/slimbus/qcom-ngd-ctrl.c
-+++ b/drivers/slimbus/qcom-ngd-ctrl.c
-@@ -1537,10 +1537,8 @@ static int of_qcom_slim_ngd_register(struct device *parent,
- 		ngd->id = id;
- 		ngd->pdev->dev.parent = parent;
+ 	up_read(&dvnode->validate_lock);
+diff --git a/fs/netfs/write_issue.c b/fs/netfs/write_issue.c
+index 9bf05099155dc..03d170b9022b7 100644
+--- a/fs/netfs/write_issue.c
++++ b/fs/netfs/write_issue.c
+@@ -829,6 +829,9 @@ static int netfs_write_folio_single(struct netfs_io_request *wreq,
+  *
+  * Write a monolithic, non-pagecache object back to the server and/or
+  * the cache.
++ *
++ * Return: 0 if successful; 1 if skipped due to lock conflict and WB_SYNC_NONE;
++ * or a negative error code.
+  */
+ int netfs_writeback_single(struct address_space *mapping,
+ 			   struct writeback_control *wbc,
+@@ -845,8 +848,10 @@ int netfs_writeback_single(struct address_space *mapping,
  
--		ret = driver_set_override(&ngd->pdev->dev,
--					  &ngd->pdev->driver_override,
--					  QCOM_SLIM_NGD_DRV_NAME,
--					  strlen(QCOM_SLIM_NGD_DRV_NAME));
-+		ret = device_set_driver_override(&ngd->pdev->dev,
-+						 QCOM_SLIM_NGD_DRV_NAME);
- 		if (ret) {
- 			platform_device_put(ngd->pdev);
- 			kfree(ngd);
-diff --git a/include/linux/platform_device.h b/include/linux/platform_device.h
-index 7a41c72c19591..8828b0d275d79 100644
---- a/include/linux/platform_device.h
-+++ b/include/linux/platform_device.h
-@@ -31,11 +31,6 @@ struct platform_device {
- 	struct resource	*resource;
- 
- 	const struct platform_device_id	*id_entry;
--	/*
--	 * Driver name to force a match.  Do not set directly, because core
--	 * frees it.  Use driver_set_override() to set or clear it.
--	 */
--	const char *driver_override;
- 
- 	/* MFD cell pointer */
- 	struct mfd_cell *mfd_cell;
-diff --git a/sound/soc/samsung/i2s.c b/sound/soc/samsung/i2s.c
-index 3af48c9b5ab7b..925782e676730 100644
---- a/sound/soc/samsung/i2s.c
-+++ b/sound/soc/samsung/i2s.c
-@@ -1364,10 +1364,10 @@ static int i2s_create_secondary_device(struct samsung_i2s_priv *priv)
- 	if (!pdev_sec)
- 		return -ENOMEM;
- 
--	pdev_sec->driver_override = kstrdup("samsung-i2s", GFP_KERNEL);
--	if (!pdev_sec->driver_override) {
-+	ret = device_set_driver_override(&pdev_sec->dev, "samsung-i2s");
-+	if (ret) {
- 		platform_device_put(pdev_sec);
--		return -ENOMEM;
-+		return ret;
- 	}
- 
- 	ret = platform_device_add(pdev_sec);
+ 	if (!mutex_trylock(&ictx->wb_lock)) {
+ 		if (wbc->sync_mode == WB_SYNC_NONE) {
++			/* The VFS will have undirtied the inode. */
++			netfs_single_mark_inode_dirty(&ictx->inode);
+ 			netfs_stat(&netfs_n_wb_lock_skip);
+-			return 0;
++			return 1;
+ 		}
+ 		netfs_stat(&netfs_n_wb_lock_wait);
+ 		mutex_lock(&ictx->wb_lock);
 -- 
 2.53.0
 
