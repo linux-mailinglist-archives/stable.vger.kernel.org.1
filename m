@@ -1,51 +1,51 @@
-Return-Path: <stable+bounces-254785-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-254786-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id CLdvAwMVGGprcwgAu9opvQ
-	(envelope-from <stable+bounces-254785-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 12:12:19 +0200
+	id cIXZOg0VGGrKbggAu9opvQ
+	(envelope-from <stable+bounces-254786-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 12:12:29 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id 088CD5F0494
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 12:12:17 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id E23C25F04C2
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 12:12:28 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id C02D23031FB2
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 09:59:09 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 1AF093040340
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 09:59:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5285A3B6364;
-	Thu, 28 May 2026 09:59:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 73F6838A73B;
+	Thu, 28 May 2026 09:59:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wemUSjaW"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QzOcEsWS"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E8C493B4E80
-	for <stable@vger.kernel.org>; Thu, 28 May 2026 09:59:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 912383B47D7
+	for <stable@vger.kernel.org>; Thu, 28 May 2026 09:59:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779962345; cv=none; b=H/T6PWsZxbCuTdJ0eZGMqzvflA76rXg7Y6xOaSNjBoUDiIZ1EJPacGA0nW1LOyO0MFMAS36qAT0mPFbOarOpdLS2ItZttHjjD4vSYlh80Zw1I/n1xCBmc9uQhyMXaFkaBR8OlJCTzfEQOUGIZFXnZWkv7WBXLWoISPibaoblH4Q=
+	t=1779962352; cv=none; b=cNY5196NPmi8HWxMPFu03TZpmIr3S8aa9VP7O2cQb6wFTsv+moJOJ0gDXJ7IIGey2Q6xg65hEK2FrdqvXkNzLf3sswJ3STURtNbryFBYqc0Q1/kOvFPgrsTe84CS3xhg17K7ygK257hnVGBmNV2k6pu8Pn/RQjbRGvSNNTCPDoA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779962345; c=relaxed/simple;
-	bh=oGYGNN4URjQBbhNASp5LdoqUafX09UXj9Arss3XGNcs=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=kFGUbZ7t380IvR+nL/O8lM1a1UvGeqEXQR/f4Nu0iBpq7LhRfBk2cIwq+KnITv2VhmIMeqnU02FHUZpwwsSGa51LwwF43MuRDdeddeuAevp4NV79r6UKv1sNrGSH8xxEJktHQB5b7xmFkTLlIQUM7scBj8XrTNQV7T891kgC+dI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wemUSjaW; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 397CB1F00A3A;
-	Thu, 28 May 2026 09:58:59 +0000 (UTC)
+	s=arc-20240116; t=1779962352; c=relaxed/simple;
+	bh=7ClWJOYo58nG0p+PSUgWNvLYvw2Kw4ZM0enQqhNPlMU=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=Nw8jW/0ylbGsORie8nmOkmUlwMUbm+ll408kGodn6O4JBG6GOuiQHKnvXktUZjLO/E3tifylOeuHzor14+Dj3/tG+eeCOyetZhmnZ1+QUh+cT4zPUv2FTOpWd2ai61AWef4QtG0eqNfy505Lt5qPe6LvTRXq4RRw5MFvsLClZ3I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QzOcEsWS; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8F2041F000E9;
+	Thu, 28 May 2026 09:59:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779962339;
-	bh=GY02YxoJwNl4xAaNCl/dlJ91wG33gukPF3KkPlOeUIs=;
+	s=korg; t=1779962346;
+	bh=wnQf/FhZ8EuSHFhp0Yt95ZPb34A2eYK3IO9kDRpPbFU=;
 	h=Subject:To:Cc:From:Date;
-	b=wemUSjaWS6JKyRJ0aIziiM7SfSpM0Kko2q1irDOhh/iaz8SVTeGAEnyq8f4TOIdZ6
-	 rg9wABTdR4RUJpFlZiYLPKnkjDUr6m10d8MlaBj7XjbInfbR2IV70m49OVbovwotQs
-	 R/HXnNBifVMoVgS0UGsjGuQ07rlo4/mv5+UGJCfs=
-Subject: FAILED: patch "[PATCH] wifi: mac80211: capture fast-RX rate before mesh reuses" failed to apply to 6.6-stable tree
-To: enderaoelyther@gmail.com,johannes.berg@intel.com
+	b=QzOcEsWSpkGDVU2AjgCFmvsy9TKSf4qW4xUZrmgGh3IX4CTDbI/VYxmCtvjBD7PiP
+	 l+f8J406DQfUeGFWFxshFQYR2IKSKWgQfClE87SUMjduK+MAqY/V5S4GiGWxhOx+LX
+	 If/WX9Ll4TuhbLIHdb4P/08F1Rar1r2xjDAi6qWA=
+Subject: FAILED: patch "[PATCH] ipv6: ioam: add NULL check for idev in ipv6_hop_ioam()" failed to apply to 6.6-stable tree
+To: justin.iurman@gmail.com,idosch@nvidia.com,kuba@kernel.org
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Thu, 28 May 2026 11:57:56 +0200
-Message-ID: <2026052856-census-broker-d251@gregkh>
+Date: Thu, 28 May 2026 11:58:12 +0200
+Message-ID: <2026052812-uncoated-spry-43e1@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -54,36 +54,37 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [2.34 / 15.00];
+X-Spamd-Result: default: False [3.84 / 15.00];
 	MID_END_EQ_FROM_USER_PART(4.00)[];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	MID_RHS_NOT_FQDN(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-254785-lists,stable=lfdr.de];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FREEMAIL_TO(0.00)[gmail.com,intel.com];
 	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FROM_NO_DN(0.00)[];
+	TAGGED_FROM(0.00)[bounces-254786-lists,stable=lfdr.de];
+	FREEMAIL_TO(0.00)[gmail.com,nvidia.com,kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MISSING_XM_UA(0.00)[];
-	NEURAL_HAM(-0.00)[-0.996];
+	RCPT_COUNT_THREE(0.00)[4];
+	NEURAL_HAM(-0.00)[-0.994];
 	TO_DN_NONE(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	RCPT_COUNT_THREE(0.00)[3];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,msgid.link:url,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,intel.com:email,gregkh:email]
-X-Rspamd-Queue-Id: 088CD5F0494
+	FROM_NO_DN(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,gregkh:email,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,linuxfoundation.org:dkim,nvidia.com:email]
+X-Rspamd-Queue-Id: E23C25F04C2
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
@@ -97,10 +98,10 @@ To reproduce the conflict and resubmit, you may use the following commands:
 
 git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.6.y
 git checkout FETCH_HEAD
-git cherry-pick -x d71c841be5d9e586ee7f36c0dc8ed4db0d9a1349
+git cherry-pick -x d4ea0dfd75011b78cebf3808f98ac4c4f51a6fb9
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2026052856-census-broker-d251@gregkh' --subject-prefix 'PATCH 6.6.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2026052812-uncoated-spry-43e1@gregkh' --subject-prefix 'PATCH 6.6.y' HEAD^..
 
 Possible dependencies:
 
@@ -112,64 +113,70 @@ greg k-h
 
 ------------------ original commit in Linus's tree ------------------
 
-From d71c841be5d9e586ee7f36c0dc8ed4db0d9a1349 Mon Sep 17 00:00:00 2001
-From: Zhao Li <enderaoelyther@gmail.com>
-Date: Sat, 9 May 2026 12:34:28 +0800
-Subject: [PATCH] wifi: mac80211: capture fast-RX rate before mesh reuses
- skb->cb
+From d4ea0dfd75011b78cebf3808f98ac4c4f51a6fb9 Mon Sep 17 00:00:00 2001
+From: Justin Iurman <justin.iurman@gmail.com>
+Date: Sun, 17 May 2026 20:30:59 +0200
+Subject: [PATCH] ipv6: ioam: add NULL check for idev in ipv6_hop_ioam()
 
-ieee80211_invoke_fast_rx() reads RX status through
-IEEE80211_SKB_RXCB(skb), which aliases the same skb->cb storage
-that ieee80211_rx_mesh_data() reuses as IEEE80211_TX_INFO.  In the
-unicast forward path, mesh_data does:
+Reported by Sashiko:
 
-	info = IEEE80211_SKB_CB(fwd_skb);
-	memset(info, 0, sizeof(*info));
+The function ipv6_hop_ioam() accesses
+__in6_dev_get(skb->dev)->cnf.ioam6_enabled without validating the returned
+idev pointer. Because addrconf_ifdown() can concurrently clear dev->ip6_ptr
+via RCU, __in6_dev_get() can return NULL during interface teardown, which
+could cause a NULL pointer dereference when processing an IOAM Hop-by-Hop
+option.
 
-on the same skb the caller still names via rx->skb, then either
-queues the skb for TX (success) or kfree_skb()'s it (no-route)
-before returning RX_QUEUED.  The caller's RX_QUEUED arm then
-calls sta_stats_encode_rate(status) on memory that is either
-zeroed (success path) or freed (no-route path).  The latter is
-KASAN slab-use-after-free in ieee80211_prepare_and_rx_handle.
+Let's add a check and use SKB_DROP_REASON_IPV6DISABLED accordingly.
 
-Fix by encoding the rate from status before invoking
-ieee80211_rx_mesh_data(), so the RX_QUEUED arm consumes a value
-captured while status was still backed by valid memory.
-
-Fixes: 3468e1e0c639 ("wifi: mac80211: add mesh fast-rx support")
+Fixes: 9ee11f0fff20 ("ipv6: ioam: Data plane support for Pre-allocated Trace")
 Cc: stable@vger.kernel.org
-Signed-off-by: Zhao Li <enderaoelyther@gmail.com>
-Link: https://patch.msgid.link/20260509043427.60322-2-enderaoelyther@gmail.com
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+Signed-off-by: Justin Iurman <justin.iurman@gmail.com>
+Reviewed-by: Ido Schimmel <idosch@nvidia.com>
+Link: https://patch.msgid.link/20260517183059.29140-1-justin.iurman@gmail.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 
-diff --git a/net/mac80211/rx.c b/net/mac80211/rx.c
-index d18e962126ce..3fb40449c6c5 100644
---- a/net/mac80211/rx.c
-+++ b/net/mac80211/rx.c
-@@ -4984,6 +4984,7 @@ static bool ieee80211_invoke_fast_rx(struct ieee80211_rx_data *rx,
- 		u8 sa[ETH_ALEN];
- 	} addrs __aligned(2);
- 	struct ieee80211_sta_rx_stats *stats;
-+	u32 encoded_rate;
+diff --git a/net/ipv6/exthdrs.c b/net/ipv6/exthdrs.c
+index 03cbce842c1a..47c5502a34a2 100644
+--- a/net/ipv6/exthdrs.c
++++ b/net/ipv6/exthdrs.c
+@@ -910,16 +910,27 @@ static bool ipv6_hop_ra(struct sk_buff *skb, int optoff)
  
- 	/* for parallel-rx, we need to have DUP_VALIDATED, otherwise we write
- 	 * to a common data structure; drivers can implement that per queue
-@@ -5091,11 +5092,14 @@ static bool ieee80211_invoke_fast_rx(struct ieee80211_rx_data *rx,
- 	/* push the addresses in front */
- 	memcpy(skb_push(skb, sizeof(addrs)), &addrs, sizeof(addrs));
+ static bool ipv6_hop_ioam(struct sk_buff *skb, int optoff)
+ {
++	enum skb_drop_reason drop_reason;
+ 	struct ioam6_trace_hdr *trace;
+ 	struct ioam6_namespace *ns;
++	struct inet6_dev *idev;
+ 	struct ioam6_hdr *hdr;
  
-+	/* capture before mesh forward may memset or free skb->cb */
-+	encoded_rate = sta_stats_encode_rate(status);
++	drop_reason = SKB_DROP_REASON_IP_INHDR;
 +
- 	res = ieee80211_rx_mesh_data(rx->sdata, rx->sta, rx->skb);
- 	switch (res) {
- 	case RX_QUEUED:
- 		stats->last_rx = jiffies;
--		stats->last_rate = sta_stats_encode_rate(status);
-+		stats->last_rate = encoded_rate;
- 		return true;
- 	case RX_CONTINUE:
- 		break;
+ 	/* Bad alignment (must be 4n-aligned) */
+ 	if (optoff & 3)
+ 		goto drop;
+ 
++	/* Does the device still have IPv6 configuration? */
++	idev = __in6_dev_get(skb->dev);
++	if (!idev) {
++		drop_reason = SKB_DROP_REASON_IPV6DISABLED;
++		goto drop;
++	}
++
+ 	/* Ignore if IOAM is not enabled on ingress */
+-	if (!READ_ONCE(__in6_dev_get(skb->dev)->cnf.ioam6_enabled))
++	if (!READ_ONCE(idev->cnf.ioam6_enabled))
+ 		goto ignore;
+ 
+ 	/* Truncated Option header */
+@@ -972,7 +983,7 @@ static bool ipv6_hop_ioam(struct sk_buff *skb, int optoff)
+ 	return true;
+ 
+ drop:
+-	kfree_skb_reason(skb, SKB_DROP_REASON_IP_INHDR);
++	kfree_skb_reason(skb, drop_reason);
+ 	return false;
+ }
+ 
 
 
