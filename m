@@ -1,61 +1,58 @@
-Return-Path: <stable+bounces-255421-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-256025-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 8KeMF5agGGpAlggAu9opvQ
-	(envelope-from <stable+bounces-255421-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:07:50 +0200
+	id UFibObyoGGp+lwgAu9opvQ
+	(envelope-from <stable+bounces-256025-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:42:36 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 638935F7E0F
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:07:48 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id A06205F95FF
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:42:36 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 8A21C300939A
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 20:07:45 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id AE4A330E5AB1
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 20:35:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0B9803290B0;
-	Thu, 28 May 2026 20:07:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B615D259CBD;
+	Thu, 28 May 2026 20:35:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="n2rkee+j"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uUL8kPNL"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B802A2F691F;
-	Thu, 28 May 2026 20:07:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 868362E92BA;
+	Thu, 28 May 2026 20:35:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779998862; cv=none; b=BOQs6+mMDHOlTOe7g7hXhTZNYnkrVf4RZil3PIyWfRBSEQdlIhZBi5ebtMBjC8E1O6jTZ4b3WqTtm8lrzZMJUjw0w0jbqemBjO51D94/Aq7hGttWi4jiQl8zv/Vsb+8rZhGD+5KB0Py6iv32+zQk0GXsYJuDsu02el9DFQc7D30=
+	t=1780000544; cv=none; b=CRm9liRwCWRb0MOTHReqDIJWOKJeS4jaBvxSI7rHKumf1VYvdRFCzf9HtPxTv7CAksEE0lqxIAgn+ykGevNb/yywYGDKeVzwjCH3WXGU1uvDfSayBqlGjunkxISkKeGMq75HaySHisRZx67XX3UziNuNXV8oRnhaanmoqyXvkGc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779998862; c=relaxed/simple;
-	bh=BKYEJ0vt7qnz5kKrncXtGU6WsDG1WYWi1QLPBcJh8d0=;
+	s=arc-20240116; t=1780000544; c=relaxed/simple;
+	bh=BZDq0la7P+/DitEo0jY4i49RECpmsYl3QYKLn+9yMoQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=AlFIfvbW4QJfBySUVDjwc/vZp5ko/h4qYGYC7Dw30EWO/I0LDcwYjBPBQr/7YQcnv890QSleBg7DW3eyPW4JUEtRlL2Qb+rfffgfw2L2RdpzHwgEi3tWQMOf9Gj3vMWAIZVQz77tCqflHZR6d/X3+n8z9sEKuau22LTmJFHaI5Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=n2rkee+j; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2107D1F000E9;
-	Thu, 28 May 2026 20:07:40 +0000 (UTC)
+	 MIME-Version; b=tWa4R5iC1Ao/RU+RsywG5/fX6snJBRjOCt4LBTli/mMoLYxJtoOuklgY/V8Jt3saUHJ0643UaeHbkvmQR5Yiphii8OMW4ukJ9yyvIs+Z6nM763UnYeO26h53blObxAzCQbe0GOzu8QKu8HlSM+jClNVIap457xYTtLmYEGC8JgQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uUL8kPNL; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DAC431F000E9;
+	Thu, 28 May 2026 20:35:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779998861;
-	bh=CSF2k3PlWiv1MXIjhX3tWUXika4t0QrTACjNeIX5/5A=;
+	s=korg; t=1780000543;
+	bh=wgPrp/De50UFQ5DqX3ZRiQf03q99SKfyo74JmINJY4w=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=n2rkee+jxkvaKmrENfKEpO0HOLN52IDr9T9NJq80HyZLAFSNzf0+VRGba4sIxBvD9
-	 8sg8wCold96M9sFe9WtLT+LbS0oYTC78yu19YwRKThhbzoE1UXN7yp7P3+H/24vkKY
-	 QPlIY4BYKY/o0JrgirJFajzy+WeuG/J5We52b2aY=
+	b=uUL8kPNL9l8cWCIZpH6BOZ/ikqb+eEWqfNuJp4Yt+L+kgIx6iu1S/b/S/ZpJyJDKm
+	 Kxa/5SSTcPWs1QsMY57ZfeMRMaVTRR0tKGh8/9dAT+Eo38R0PKkoe1LMjtzTgnceui
+	 sRKLPP0gK9TgTfX9VdaE5utRhhfs2yHLu4lBqPGs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ingo Saitz <ingo@hannover.ccc.de>,
-	Ivan Bulatovic <combuster@archlinux.us>,
-	Christopher Cradock <christopher@cradock.myzen.co.uk>,
-	Kees Cook <kees@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 7.0 325/461] gcc-plugins: Always define CONST_CAST_GIMPLE and CONST_CAST_TREE
-Date: Thu, 28 May 2026 21:47:34 +0200
-Message-ID: <20260528194656.731731038@linuxfoundation.org>
+	Michael Bommarito <michael.bommarito@gmail.com>,
+	Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 6.12 081/272] l2tp: use list_del_rcu in l2tp_session_unhash
+Date: Thu, 28 May 2026 21:47:35 +0200
+Message-ID: <20260528194631.647570280@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260528194646.819809818@linuxfoundation.org>
-References: <20260528194646.819809818@linuxfoundation.org>
+In-Reply-To: <20260528194629.379955525@linuxfoundation.org>
+References: <20260528194629.379955525@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,81 +63,99 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-255421-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TO_DN_SOME(0.00)[];
+	TAGGED_FROM(0.00)[bounces-256025-lists,stable=lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
-	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[8];
-	MID_RHS_MATCH_FROM(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	NEURAL_HAM(-0.00)[-0.999];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,ccc.de:email,archlinux.us:email]
-X-Rspamd-Queue-Id: 638935F7E0F
+	MID_RHS_MATCH_FROM(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[5];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim]
+X-Rspamd-Queue-Id: A06205F95FF
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-7.0-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kees Cook <kees@kernel.org>
+From: Michael Bommarito <michael.bommarito@gmail.com>
 
-[ Upstream commit 905c559e51497b8bfdbb68df8be56d2f70f0de8e ]
+commit 979c017803c40829b03acd9e5236e354b7622360 upstream.
 
-For gcc-16, the CONST_CAST macro family was removed. Add back what
-we were using in gcc-common.h, as they are simple wrappers.
+An unprivileged local user can pin a host CPU indefinitely in
+l2tp_session_get_by_ifname() by issuing L2TP_CMD_SESSION_GET on
+L2TP_ATTR_IFNAME concurrently with L2TP_CMD_SESSION_CREATE and
+L2TP_CMD_SESSION_DELETE on the same tunnel. All three commands take
+GENL_UNS_ADMIN_PERM, so CAP_NET_ADMIN in the netns user namespace
+suffices; on any host that has l2tp_core loaded the trigger is
+reachable from a standard `unshare -Urn` sandbox.
 
-See GCC commits:
-  c3d96ff9e916c02584aa081f03ab999292efbb50
-  458c7926d48959abcb2c1adaa22458e27459a551
+l2tp_session_unhash() removes a session from tunnel->session_list
+with list_del_init(), but that list is walked by
+l2tp_session_get_by_ifname() with list_for_each_entry_rcu() under
+rcu_read_lock_bh(). list_del_init() leaves the deleted entry's
+next/prev self-pointing; a reader that has loaded the entry and
+then advances pos->list.next reads &session->list, container_of()s
+back to the same session, and list_for_each_entry_rcu() never
+reaches the list head. The CPU stays in strcmp() inside the
+walker, with BH and preemption disabled, so RCU grace periods on
+the host stall behind it and the wedged thread cannot be killed
+(SIGKILL is delivered on syscall return).
 
-Suggested-by: Ingo Saitz <ingo@hannover.ccc.de>
-Link: https://lore.kernel.org/lkml/ab6OKoay0OWkywjK@spatz.zoo
-Fixes: 6b90bd4ba40b ("GCC plugin infrastructure")
-Tested-by: Ivan Bulatovic <combuster@archlinux.us>
-Tested-by: Christopher Cradock <christopher@cradock.myzen.co.uk>
-Signed-off-by: Kees Cook <kees@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Use list_del_rcu() to match the existing list_add_rcu() in
+l2tp_session_register(); the deleted session remains visible to
+in-flight walkers with consistent next/prev pointers until
+kfree_rcu() in l2tp_session_free() releases it. tunnel->session_list
+has exactly one list_del_init() call site; the list_del_init
+(&session->clist) at l2tp_core.c:533 operates on the per-collision
+list, which is not walked under RCU. list_empty(&session->list) is
+not used anywhere in net/l2tp/ after the unhash point, so dropping
+the post-delete self-init is safe; the fix has no userspace-visible
+behavior change.
+
+Fixes: 89b768ec2dfef ("l2tp: use rcu list add/del when updating lists")
+Cc: stable@vger.kernel.org # 6.11+
+Signed-off-by: Michael Bommarito <michael.bommarito@gmail.com>
+Link: https://patch.msgid.link/20260518183447.64078-1-michael.bommarito@gmail.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- scripts/gcc-plugins/gcc-common.h | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ net/l2tp/l2tp_core.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/scripts/gcc-plugins/gcc-common.h b/scripts/gcc-plugins/gcc-common.h
-index 8f1b3500f8e2d..abb1964c44d4e 100644
---- a/scripts/gcc-plugins/gcc-common.h
-+++ b/scripts/gcc-plugins/gcc-common.h
-@@ -309,7 +309,9 @@ typedef const gimple *const_gimple_ptr;
- #define gimple gimple_ptr
- #define const_gimple const_gimple_ptr
- #undef CONST_CAST_GIMPLE
--#define CONST_CAST_GIMPLE(X) CONST_CAST(gimple, (X))
-+#define CONST_CAST_GIMPLE(X) const_cast<gimple>((X))
-+#undef CONST_CAST_TREE
-+#define CONST_CAST_TREE(X) const_cast<tree>((X))
+--- a/net/l2tp/l2tp_core.c
++++ b/net/l2tp/l2tp_core.c
+@@ -1360,7 +1360,7 @@ static void l2tp_session_unhash(struct l
+ 		spin_lock_bh(&pn->l2tp_session_idr_lock);
  
- /* gimple related */
- static inline gimple gimple_build_assign_with_ops(enum tree_code subcode, tree lhs, tree op1, tree op2 MEM_STAT_DECL)
--- 
-2.53.0
-
+ 		/* Remove from the per-tunnel list */
+-		list_del_init(&session->list);
++		list_del_rcu(&session->list);
+ 
+ 		/* Remove from per-net IDR */
+ 		if (tunnel->version == L2TP_HDR_VER_3) {
 
 
 
