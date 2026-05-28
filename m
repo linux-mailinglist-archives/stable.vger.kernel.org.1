@@ -1,58 +1,59 @@
-Return-Path: <stable+bounces-256312-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-255882-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id AIHUIhquGGpolwgAu9opvQ
-	(envelope-from <stable+bounces-256312-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 23:05:30 +0200
+	id iA55J1amGGrClggAu9opvQ
+	(envelope-from <stable+bounces-255882-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:32:22 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8CC335FA33D
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 23:05:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id CB7B45F8E84
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:32:21 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id EA223309E724
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 20:49:12 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 3C82F306EF90
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 20:29:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 65481317142;
-	Thu, 28 May 2026 20:49:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 01A01DDC5;
+	Thu, 28 May 2026 20:29:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="f6F270U4"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TLsF0TV8"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 434102F549F;
-	Thu, 28 May 2026 20:49:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C10211EA65;
+	Thu, 28 May 2026 20:29:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780001347; cv=none; b=lsKGZGTiCJf+lFkS78wtFZ6C4IC3GgRabvI40tLoYg/O/kWXeHJbZjiteQZ5JneEEp/pMBUWUL5sixAeHVblIcjI3ekVk672Bq9CWnoNl9cZehy8eLqH0iE1iECSIiGj7V5knIQ7vLABNUhkJ50W4Idf9t9NIGRqmMzYlzNwfd0=
+	t=1780000143; cv=none; b=Ul5nwsJaQPXQ7FGwqYmE6botWIj722uQNl5a82F0iLLjr4DPLNgJJ/45j/63WlDoEIRoTReh2QWGxbHR92pzcnWkogBUgSUeUBoYejGL03LurLZa7tuutp2XPImIXMkvuiWQ3bbut7bYF8QDaervsWAvCUB1S1gUtRD2fcjASPU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780001347; c=relaxed/simple;
-	bh=QOHG5oYegDifLdw4U11jmubiXazp1BEHXOo4J1kZJUg=;
+	s=arc-20240116; t=1780000143; c=relaxed/simple;
+	bh=d2FA//DT8ZP65MTAQr/Yn6KJ/c1fZIzVfRop2TDYalY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=GhMCMiyV1T+8WtQORC3ZR+1upKLWUcpbgR4i9hLnNihdH2A6gtYfLTPyhKDoqUx+2kCWZSeJ/ks/NsZpZOp2yh6m4Zx2VLmkRNfvzmkqpumAR7iTNGdNtIIinaggjvFBON4Tf9vQtAt9RwqMnAEjmeVVErm6zVw4Cad4mWZzRw8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=f6F270U4; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A13161F00A3A;
-	Thu, 28 May 2026 20:49:05 +0000 (UTC)
+	 MIME-Version; b=GSzpscRQViwUrwHasuL0SzHAgjM0CxT30KnRGavLu+/q1uj3+FV/PqTKjDKiv3HBdqhXJ5Iie2yTRAK15IzKf1O8ZXxJO6NtzEIZQoeh9GEUBOSuCsDEwwVAwqG6HyP8NO1SsDpEuwso6Q72X5FTZsRhuLkO4f2o7J7nb06oD40=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TLsF0TV8; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2AF7D1F000E9;
+	Thu, 28 May 2026 20:29:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780001346;
-	bh=xkCf01CKnhw1dNxS9C43kCx3bmazgtRH6rK1SUo8UlQ=;
+	s=korg; t=1780000142;
+	bh=azXTIYjw8qce5ZJ2aImM6QaYsV0UT5lBH81SEOX4YDc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=f6F270U4eNMWgmB90Q6QvicOVplHY2V2baW8QDhJANJmhyfttKn8W0RhHH/nsMi8u
-	 LJXFY2r1MALGXs6WwG7xCEZjHhXLXedaDm05ahK2aUylJ1yFmBxo6BFwMJvQI0eBwj
-	 GkrtUtR1FyuNBiUQ1zCzTeo0kuzvM8LfIHTMV+IQ=
+	b=TLsF0TV8jGTPYdShgA/2+mPzOMK+Dvwz2C4zpgTEBPVvf8tIc1kjRoVdt7xMTdgyw
+	 I9pMAnKcQUD59zbwIMzjU16DZeB/9PCxegEUSrdHQqzYxv8XqSF0lzMPqqSDBOtOQw
+	 KP7kBU7Rk4bjfQL/611KutoVbmAObOx5WNduNZPs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Guo Ren <guoren@kernel.org>,
-	Huacai Chen <chenhuacai@loongson.cn>
-Subject: [PATCH 6.6 068/186] LoongArch: Remove unused code to avoid build warning
+	Sashiko <sashiko-bot@kernel.org>,
+	Guenter Roeck <linux@roeck-us.net>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.18 310/377] hwmon: (lm90) Stop work before releasing hwmon device
 Date: Thu, 28 May 2026 21:49:08 +0200
-Message-ID: <20260528194930.783146045@linuxfoundation.org>
+Message-ID: <20260528194647.353411767@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260528194928.941004471@linuxfoundation.org>
-References: <20260528194928.941004471@linuxfoundation.org>
+In-Reply-To: <20260528194638.371537336@linuxfoundation.org>
+References: <20260528194638.371537336@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -77,7 +78,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-256312-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-255882-lists,stable=lfdr.de];
 	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
@@ -86,53 +87,121 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	NEURAL_HAM(-0.00)[-1.000];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[5];
+	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[loongson.cn:email,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim]
-X-Rspamd-Queue-Id: 8CC335FA33D
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,roeck-us.net:email,linuxfoundation.org:mid,linuxfoundation.org:dkim]
+X-Rspamd-Queue-Id: CB7B45F8E84
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Huacai Chen <chenhuacai@loongson.cn>
+From: Guenter Roeck <linux@roeck-us.net>
 
-commit 0ccc9d47cf020994097ff51827cebd04aa2b0bf4 upstream.
+[ Upstream commit b09a45601094c7f4ec4db8090b825fa61e169d93 ]
 
-After commit feee6b2989165631b1 ("mm/memory_hotplug: shrink zones when
-offlining memory"), __remove_pages() doesn't need the "zone" parameter
-so the "page" variable is also unused. Remove the unused code to avoid
-such build warning:
+Sashiko reports:
 
-arch/loongarch/mm/init.c: In function 'arch_remove_memory':
-arch/loongarch/mm/init.c:134:22: warning: variable 'page' set but not used [-Wunused-but-set-variable=]
-  134 |         struct page *page = pfn_to_page(start_pfn);
+In lm90_probe(), the devm action to cancel the alert_work and report_work
+(lm90_restore_conf) is registered in lm90_init_client() before
+devm_hwmon_device_register_with_info() is called.
 
-Cc: <stable@vger.kernel.org>
-Reviewed-by: Guo Ren <guoren@kernel.org>
-Signed-off-by: Huacai Chen <chenhuacai@loongson.cn>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Because devm executes cleanup actions in reverse order during module
+unbind or probe failure, the hwmon device is unregistered and freed first.
+
+If lm90_alert_work() or lm90_report_alarms() runs in the window between
+the hwmon device being freed and the delayed works being cancelled,
+lm90_update_alarms() will dereference the freed data->hwmon_dev here.
+
+Fix the problem by canceling the workers separately after registering
+the hwmon device and before registering the interrupt handler. This ensures
+that the workers are canceled after interrupts are disabled and before
+the hwmon device is released. Add "shutdown" flag to indicate that device
+shutdown is in progress to prevent workers from being re-armed.
+
+Fixes: f6d0775119fb9 ("hwmon: (lm90) Rework alarm/status handling")
+Reported-by: Sashiko <sashiko-bot@kernel.org>
+Signed-off-by: Guenter Roeck <linux@roeck-us.net>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/loongarch/mm/init.c |    4 ----
- 1 file changed, 4 deletions(-)
+ drivers/hwmon/lm90.c | 24 ++++++++++++++++++++----
+ 1 file changed, 20 insertions(+), 4 deletions(-)
 
---- a/arch/loongarch/mm/init.c
-+++ b/arch/loongarch/mm/init.c
-@@ -106,11 +106,7 @@ void arch_remove_memory(u64 start, u64 s
- {
- 	unsigned long start_pfn = start >> PAGE_SHIFT;
- 	unsigned long nr_pages = size >> PAGE_SHIFT;
--	struct page *page = pfn_to_page(start_pfn);
+diff --git a/drivers/hwmon/lm90.c b/drivers/hwmon/lm90.c
+index c1f528e292f3d..41ee2309fe8a2 100644
+--- a/drivers/hwmon/lm90.c
++++ b/drivers/hwmon/lm90.c
+@@ -738,6 +738,7 @@ struct lm90_data {
+ 	struct mutex update_lock;
+ 	struct delayed_work alert_work;
+ 	struct work_struct report_work;
++	bool shutdown;		/* true if shutting down */
+ 	bool valid;		/* true if register values are valid */
+ 	bool alarms_valid;	/* true if status register values are valid */
+ 	unsigned long last_updated; /* in jiffies */
+@@ -1156,6 +1157,9 @@ static void lm90_report_alarms(struct work_struct *work)
  
--	/* With altmap the first mapped page is offset from @start */
--	if (altmap)
--		page += vmem_altmap_offset(altmap);
- 	__remove_pages(start_pfn, nr_pages, altmap);
+ static int lm90_update_alarms_locked(struct lm90_data *data, bool force)
+ {
++	if (data->shutdown)
++		return 0;
++
+ 	if (force || !data->alarms_valid ||
+ 	    time_after(jiffies, data->alarms_updated + msecs_to_jiffies(data->update_interval))) {
+ 		struct i2c_client *client = data->client;
+@@ -2600,15 +2604,23 @@ static void lm90_restore_conf(void *_data)
+ 	struct lm90_data *data = _data;
+ 	struct i2c_client *client = data->client;
+ 
+-	cancel_delayed_work_sync(&data->alert_work);
+-	cancel_work_sync(&data->report_work);
+-
+ 	/* Restore initial configuration */
+ 	if (data->flags & LM90_HAVE_CONVRATE)
+ 		lm90_write_convrate(data, data->convrate_orig);
+ 	lm90_write_reg(client, LM90_REG_CONFIG1, data->config_orig);
  }
  
++static void lm90_stop_work(void *_data)
++{
++	struct lm90_data *data = _data;
++
++	hwmon_lock(data->hwmon_dev);
++	data->shutdown = true;
++	hwmon_unlock(data->hwmon_dev);
++	cancel_delayed_work_sync(&data->alert_work);
++	cancel_work_sync(&data->report_work);
++}
++
+ static int lm90_init_client(struct i2c_client *client, struct lm90_data *data)
+ {
+ 	struct device_node *np = client->dev.of_node;
+@@ -2919,6 +2931,10 @@ static int lm90_probe(struct i2c_client *client)
+ 
+ 	data->hwmon_dev = hwmon_dev;
+ 
++	err = devm_add_action_or_reset(&client->dev, lm90_stop_work, data);
++	if (err)
++		return err;
++
+ 	if (client->irq) {
+ 		dev_dbg(dev, "IRQ: %d\n", client->irq);
+ 		err = devm_request_threaded_irq(dev, client->irq,
+@@ -2947,7 +2963,7 @@ static void lm90_alert(struct i2c_client *client, enum i2c_alert_protocol type,
+ 		 */
+ 		struct lm90_data *data = i2c_get_clientdata(client);
+ 
+-		if ((data->flags & LM90_HAVE_BROKEN_ALERT) &&
++		if (!data->shutdown && (data->flags & LM90_HAVE_BROKEN_ALERT) &&
+ 		    (data->current_alarms & data->alert_alarms)) {
+ 			if (!(data->config & 0x80)) {
+ 				dev_dbg(&client->dev, "Disabling ALERT#\n");
+-- 
+2.53.0
+
 
 
 
