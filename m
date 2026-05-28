@@ -1,62 +1,61 @@
-Return-Path: <stable+bounces-256346-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-255936-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 0Na6OVesGGphmAgAu9opvQ
-	(envelope-from <stable+bounces-256346-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:57:59 +0200
+	id 2GeqBn6nGGpolwgAu9opvQ
+	(envelope-from <stable+bounces-255936-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:37:18 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id A9A395F9ED5
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:57:59 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2FF7A5F91FD
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:37:17 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 8CC33308E8CB
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 20:50:45 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 08E963062148
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 20:31:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 143AF329396;
-	Thu, 28 May 2026 20:50:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B4E8A33372A;
+	Thu, 28 May 2026 20:31:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OV/AvmJy"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="r2SE64VL"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D7EC62F260C;
-	Thu, 28 May 2026 20:50:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 97AB425F7B9;
+	Thu, 28 May 2026 20:31:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780001443; cv=none; b=u0gncGZdSdRGsnyFpN5xpxRAZU8VHL88c74aQFLvjsiHPVSZmNNCNBhM1Y+SiS8xwKhVlwKXn5e4fCjz6gkVLELo8hi+pBc0QRCN+YQoU+3H10FUrjLwZbf2+hhvnkekZjC3b3kjpPW8E+F13j0dDvFOeqPsmQWh/kwqdNbpBkI=
+	t=1780000294; cv=none; b=GmuzCa+ZFs8ZjT2c/rYOhZE5GrR1tOqxhhh0ZiPV+ty742g7KtdzuWeIINohotoNoAbXev0nWEvX74bEJDWnoiBLtjXIEDigxbLoN04nvJTZsLcKgXpRU1afwGqM1qxrhN4MWaw+MU1z27p0Htx8tNQ6FjSXt3Np7RA3AW4PDnY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780001443; c=relaxed/simple;
-	bh=c2s9C7fFIjCLrT1J9io7XPAmudybiBjiGrOTDAp0Sik=;
+	s=arc-20240116; t=1780000294; c=relaxed/simple;
+	bh=7FGRltKymDszJgbwb8leSzAFWdXeA/IeLWGWJXOqrr8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=T0ng3BeFJgpr0jgbu3KeEioxP5nzsLf/9aBdQ9AQJml7YeMGwGCsaWlFsr6avdNJPFWZUGC9e4iwTYYjPOsUrQNM1eq5rIYdIlOvkCtJF+J9LyVw5E9gjfB/uuia5vs2+TNKQC4eiU9LtjhceGAynPK6DXyQzep5OxCTLfHT6WY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OV/AvmJy; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 487261F000E9;
-	Thu, 28 May 2026 20:50:42 +0000 (UTC)
+	 MIME-Version; b=CCJLclKuSHfowfP5SEMiT8IqLZItToi+kX6HwV8mBDPE7W0HODXxo00fO9NG7ipwvGa/CcqEjeQVQBWpshfmuOpqor+KXZmVRKe4PJRVPSuFEULvbKPIruOk+iWeahB3gu29QzJDxnpjRX9YvfOfEy5hwT+Ap8HAD8Q2YjYyOxI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=r2SE64VL; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EA7D11F000E9;
+	Thu, 28 May 2026 20:31:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780001442;
-	bh=hwhll6+e4HxK3uDHzkT0jqhU4qh1r65Y+yzYwruPhOQ=;
+	s=korg; t=1780000293;
+	bh=Capd6fK6zvGRNGrHX7SOUJN56MGZ+9F0qwn/JKZLYbw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=OV/AvmJyULLCNjP814wKFytLRGg7lpU3+bdQ7W0kr0XPxO0VvpKKviiMpHykZYXXF
-	 vSz9Px7xDyu1KeFdwsIHZYc5hojiI/lt4beaCnXzgjBced80e0BSlGPVxv0jtnv0xQ
-	 FBEh9aKBXaOoCMK/cTl2QJsAEO6qidJDIPlY0eaQ=
+	b=r2SE64VLMidTnJxBd26GuLb+jlAM2dmW4REfDOToN7xsv1JcwjPlJfIvUcTgfPAok
+	 KE6oAk4g2OvwKDTBKF1gMooD7UMDYehtSO+Do//72xsuEdR0Mo5x6dNNXuYb/5AquF
+	 xCbWaW2J8kunwgVUyGejMa6/Aw4orTsIsjSyrKB8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	David Howells <dhowells@redhat.com>,
-	Paulo Alcantara <pc@manguebit.org>,
-	netfs@lists.linux.dev,
-	linux-fsdevel@vger.kernel.org,
-	Christian Brauner <brauner@kernel.org>,
+	Xiang Mei <xmei5@asu.edu>,
+	Weiming Shi <bestswngs@gmail.com>,
+	Willem de Bruijn <willemb@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 129/186] netfs: Fix overrun check in netfs_extract_user_iter()
+Subject: [PATCH 6.18 371/377] tap: fix stack info leak in tap_ioctl() SIOCGIFHWADDR
 Date: Thu, 28 May 2026 21:50:09 +0200
-Message-ID: <20260528194932.428454342@linuxfoundation.org>
+Message-ID: <20260528194649.171916536@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260528194928.941004471@linuxfoundation.org>
-References: <20260528194928.941004471@linuxfoundation.org>
+In-Reply-To: <20260528194638.371537336@linuxfoundation.org>
+References: <20260528194638.371537336@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -71,109 +70,81 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	RCVD_TLS_LAST(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,asu.edu,gmail.com,google.com,kernel.org];
+	TAGGED_FROM(0.00)[bounces-255936-lists,stable=lfdr.de];
+	PRECEDENCE_BULK(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FROM_HAS_DN(0.00)[];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-256346-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TO_DN_SOME(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
-	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[9];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[8];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,sashiko.dev:url,linux.dev:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,manguebit.org:email]
-X-Rspamd-Queue-Id: A9A395F9ED5
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,msgid.link:url,asu.edu:email,linuxfoundation.org:mid,linuxfoundation.org:dkim]
+X-Rspamd-Queue-Id: 2FF7A5F91FD
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: David Howells <dhowells@redhat.com>
+From: Weiming Shi <bestswngs@gmail.com>
 
-[ Upstream commit 0ef37eef83fad3542ee06db2940433ae1a92b39d ]
+[ Upstream commit bddc09212c24934643bd44fc794748d2bbb3b6cd ]
 
-Fix netfs_extract_user_iter() so that if iov_iter_extract_pages() overfills
-pages[], then those pages don't get included in the iterator constructed at
-the end of the function.  If there was an overfill, memory corruption has
-already happened.
+In the SIOCGIFHWADDR path, tap_ioctl() copies 16 bytes of an
+uninitialised on-stack struct sockaddr_storage to userspace via
+ifr_hwaddr, but netif_get_mac_address() only writes sa_family and
+dev->addr_len (6 for Ethernet) bytes, leaving sa_data[6..13] uninitialised.
 
-Fixes: 85dd2c8ff368 ("netfs: Add a function to extract a UBUF or IOVEC into a BVEC iterator")
-Closes: https://sashiko.dev/#/patchset/20260427154639.180684-1-dhowells%40redhat.com
-Signed-off-by: David Howells <dhowells@redhat.com>
-Link: https://patch.msgid.link/20260512123404.719402-11-dhowells@redhat.com
-cc: Paulo Alcantara <pc@manguebit.org>
-cc: netfs@lists.linux.dev
-cc: linux-fsdevel@vger.kernel.org
-Signed-off-by: Christian Brauner <brauner@kernel.org>
+Those 8 trailing bytes leak kernel stack contents; SIOCGIFHWADDR on a
+macvtap chardev returns kernel .text and direct-map pointers, defeating
+KASLR.
+
+Initialise ss at declaration.
+
+Fixes: 3b23a32a6321 ("net: fix dev_ifsioc_locked() race condition")
+Reported-by: Xiang Mei <xmei5@asu.edu>
+Signed-off-by: Weiming Shi <bestswngs@gmail.com>
+Reviewed-by: Willem de Bruijn <willemb@google.com>
+Link: https://patch.msgid.link/20260520075736.3415676-3-bestswngs@gmail.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/netfs/iterator.c | 26 +++++++++++++++++---------
- 1 file changed, 17 insertions(+), 9 deletions(-)
+ drivers/net/tap.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/fs/netfs/iterator.c b/fs/netfs/iterator.c
-index 781ea403498e3..9a047ca863fe5 100644
---- a/fs/netfs/iterator.c
-+++ b/fs/netfs/iterator.c
-@@ -72,21 +72,24 @@ ssize_t netfs_extract_user_iter(struct iov_iter *orig, size_t orig_len,
- 			break;
- 		}
+diff --git a/drivers/net/tap.c b/drivers/net/tap.c
+index 1197f245e8737..6fd3b14273b37 100644
+--- a/drivers/net/tap.c
++++ b/drivers/net/tap.c
+@@ -919,11 +919,11 @@ static long tap_ioctl(struct file *file, unsigned int cmd,
+ 	struct tap_queue *q = file->private_data;
+ 	struct tap_dev *tap;
+ 	void __user *argp = (void __user *)arg;
++	struct sockaddr_storage ss = {};
+ 	struct ifreq __user *ifr = argp;
+ 	unsigned int __user *up = argp;
+ 	unsigned short u;
+ 	int __user *sp = argp;
+-	struct sockaddr_storage ss;
+ 	int s;
+ 	int ret;
  
--		if (ret > count) {
--			pr_err("get_pages rc=%zd more than %zu\n", ret, count);
-+		if (WARN(ret > count,
-+			 "%s: extract_pages overrun %zd > %zu bytes\n",
-+			 __func__, ret, count)) {
-+			ret = -EIO;
- 			break;
- 		}
- 
--		count -= ret;
--		ret += offset;
--		cur_npages = DIV_ROUND_UP(ret, PAGE_SIZE);
--
--		if (npages + cur_npages > max_pages) {
--			pr_err("Out of bvec array capacity (%u vs %u)\n",
--			       npages + cur_npages, max_pages);
-+		cur_npages = DIV_ROUND_UP(offset + ret, PAGE_SIZE);
-+		if (WARN(cur_npages > max_pages - npages,
-+			 "%s: extract_pages overrun %u > %u pages\n",
-+			 __func__, npages + cur_npages, max_pages)) {
-+			ret = -EIO;
- 			break;
- 		}
- 
-+		count -= ret;
-+		ret += offset;
-+
- 		for (i = 0; i < cur_npages; i++) {
- 			len = ret > PAGE_SIZE ? PAGE_SIZE : ret;
- 			bvec_set_page(bv + npages + i, *pages++, len - offset, offset);
-@@ -97,6 +100,11 @@ ssize_t netfs_extract_user_iter(struct iov_iter *orig, size_t orig_len,
- 		npages += cur_npages;
- 	}
- 
-+	/* Note: Don't try to clean up after EIO.  Either we got no pages, so
-+	 * nothing to clean up, or we got a buffer overrun, memory corruption
-+	 * and can't trust the stuff in the buffer (a WARN was emitted).
-+	 */
-+
- 	if (ret < 0 && (ret == -ENOMEM || npages == 0)) {
- 		for (i = 0; i < npages; i++)
- 			unpin_user_page(bv[i].bv_page);
 -- 
 2.53.0
 
