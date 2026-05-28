@@ -1,58 +1,59 @@
-Return-Path: <stable+bounces-256288-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-255876-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id yN9VL6yrGGpolwgAu9opvQ
-	(envelope-from <stable+bounces-256288-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:55:08 +0200
+	id 0OhfHuioGGpolwgAu9opvQ
+	(envelope-from <stable+bounces-255876-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:43:20 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 484A75F9DA3
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:55:08 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id CE1395F9668
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:43:19 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id C38F631A6B46
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 20:48:09 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 9191B3156392
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 20:28:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7773333F8B2;
-	Thu, 28 May 2026 20:48:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 61C383002A0;
+	Thu, 28 May 2026 20:28:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="u79ICRqt"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RGCrm00t"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 46F4D310620;
-	Thu, 28 May 2026 20:47:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 38440254B1F;
+	Thu, 28 May 2026 20:28:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780001280; cv=none; b=pGzIagiFBXc9EkRasgGrqPSAor38iZlaGawqYVqnccsIjcpO5MOclpMRPWkKM9tyBTk+nYoksL4sXhRJN3rUjvHcM7sZoC+w1FYlGJueWcN/kyaJdlwdr2jiDwVA/UrZuSlwBTs60wLEF8bMvhJN9vRl8SNtE1hyAwcLqQA8YKY=
+	t=1780000125; cv=none; b=qkXBmKsPYh2kXNCQxhn7EoSBKJ/orseBiiWFz7gnnwGp36IMBlKUWipAXbXLb7tuMMRldq79CpHgULiy7d+/k3HHDWmOo9aS40TY7e5+h92yaxXNkWTngBs7xmGJcs5HfdPeg/QtLCHx9WSMK3aW0i377tkjwn91xrNBHsrpRpY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780001280; c=relaxed/simple;
-	bh=vsfNHanUhZ9MSaug28mR1OkmA5Ouf1xdubk+s/Pz1S0=;
+	s=arc-20240116; t=1780000125; c=relaxed/simple;
+	bh=SnVakQ08kA7MEUL/6+0MDf1BU2b1PqRRB87IxJViz38=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=rTpWg2R2R2Hq0Y5zBVHHuRclvAHQvj9QcUgCv9oPZlBS+g/RbiwTNkfiyuRfMt10mqdUFb29fK9y39+thDe8D220edukqMyVpGqIqBhuSc+eCytcB+ZSaGci22LlC/oKfRCxJJio1LiQNbhaAcIRnxFqLFmk1aO3z0CL3ZwFVdw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=u79ICRqt; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A38D31F000E9;
-	Thu, 28 May 2026 20:47:58 +0000 (UTC)
+	 MIME-Version; b=YscQ8zHa4olwpK7Le5EVM/Q5VajqBmGO4V712fF4bHlx2R69HdsTlQ68GvpK1ARzeG+TNVB/xJm3ujXG/U8PimGAaUDkiHAzn35BKVfS1vwYIt+pv9v/lG2w3WoHcs6l8gA7VALI6LJDH5mdqT4xfA9/QJWnD4K5NfePdtoKC/c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RGCrm00t; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 961221F000E9;
+	Thu, 28 May 2026 20:28:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780001279;
-	bh=IGlKY1u8FqLhjWW4Mjqc3atULyoR1s6nUQR6cJrUAwM=;
+	s=korg; t=1780000124;
+	bh=PFlOWsvl5H62kExhZk2clfFv00ZXccw3Lpcjo7hBc+s=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=u79ICRqtHHOeol32bIhvz9sPPQ/e0lNxro95x+CYLjQXmb4F1IgoW9EqFYVjydtX2
-	 H8Np8U8c9N/N4Pf4bireLDOltAP4jYMmVihs62z7iQS29Gw9UTTYKCxjs0vRTAIzGe
-	 2a86z2gZawTgJuD+DvMjNvS3qdDpr+PSjSncaPGU=
+	b=RGCrm00tRfm4I9pNzdkIcqUXHqBl3tpg9SGPom0RYyNwlHcHdNsadSh+xn9qbfV9u
+	 VOa8hwseawXJGT4Hz8Vwg8QvDwsZrbfBQBUS+qo4l7X6PnvtQ0gSEfj+6h6lTcLx4B
+	 Ib9d7zlq/Ht1K9wCwgpmHwRWKKUXAAj1p3l/S73c=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Rafael J. Wysocki (Intel)" <rafael@kernel.org>,
-	Ard Biesheuvel <ardb@kernel.org>
-Subject: [PATCH 6.6 032/186] efi: Allocate runtime workqueue before ACPI init
+	Ming Lei <tom.leiming@gmail.com>,
+	Jens Axboe <axboe@kernel.dk>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.18 274/377] selftests: ublk: cap nthreads to kernels actual nr_hw_queues
 Date: Thu, 28 May 2026 21:48:32 +0200
-Message-ID: <20260528194929.830248445@linuxfoundation.org>
+Message-ID: <20260528194646.297363756@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260528194928.941004471@linuxfoundation.org>
-References: <20260528194928.941004471@linuxfoundation.org>
+In-Reply-To: <20260528194638.371537336@linuxfoundation.org>
+References: <20260528194638.371537336@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,124 +64,99 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	RCVD_TLS_LAST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-256288-lists,stable=lfdr.de];
 	TO_DN_SOME(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[5];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TAGGED_FROM(0.00)[bounces-255876-lists,stable=lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,kernel.dk,kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
 	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim]
-X-Rspamd-Queue-Id: 484A75F9DA3
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	NEURAL_HAM(-0.00)[-0.999];
+	TAGGED_RCPT(0.00)[stable];
+	MID_RHS_MATCH_FROM(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[6];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,kernel.dk:email,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim]
+X-Rspamd-Queue-Id: CE1395F9668
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ard Biesheuvel <ardb@kernel.org>
+From: Ming Lei <tom.leiming@gmail.com>
 
-commit 13c6da02e767152c9ac4330962247a5e47011035 upstream.
+[ Upstream commit 87d0740b7c4cc847be1b6f307ab6d8547cb1a726 ]
 
-Since commit
+dev->nthreads is derived from the user-requested queue count before the
+ADD command, but the kernel may reduce nr_hw_queues (capped to
+nr_cpu_ids). When the VM has fewer CPUs than requested queues, the
+daemon creates more handler threads than there are kernel queues.
 
-  5894cf571e14 ("acpi/prmt: Use EFI runtime sandbox to invoke PRM handlers")
+In non-batch mode, the extra threads access uninitialized queues
+(q_depth=0), submit zero io_uring SQEs, and block forever in
+io_cqring_wait. In batch mode, the extra threads cause similar hangs
+during device removal.
 
-ACPI PRM calls are delegated to a workqueue which runs in a kernel
-thread, making it easier to detect and mitigate faulting memory accesses
-performed by the firmware.
+In both cases, the stuck threads prevent the daemon from closing the
+char device, holding the last ublk_device reference and causing
+ublk_ctrl_del_dev() to hang in wait_event_interruptible().
 
-Rafael reports that such PRM accesses may occur before efisubsys_init()
-executes, which is where the workqueue is allocated, leading to NULL
-pointer dereferences. Since acpi_init() [which triggers the early PRM
-accesses] executes as a subsys_initcall() as well, and has its own
-dependencies that may be sensitive to initcall ordering, deferring
-acpi_init() is not an option.
+Fix by capping dev->nthreads to the kernel-returned nr_hw_queues after
+the ADD command completes. per_io_tasks mode is excluded because threads
+interleave across all queues, so nthreads > nr_hw_queues is valid.
 
-So instead, split off the workqueue allocation into its own postcore
-initcall, as this is the only missing piece to allow EFI runtime calls
-to be made. This ensures that EFI runtime call (including PRM calls) are
-accessible to all code running at subsys_initcall() level.
-
-Cc: <stable@vger.kernel.org>
-Fixes: 5894cf571e14 ("acpi/prmt: Use EFI runtime sandbox to invoke PRM handlers")
-Reviewed-by: Rafael J. Wysocki (Intel) <rafael@kernel.org>
-Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: abe54c160346 ("selftests: ublk: kublk: decouple ublk_queues from ublk server threads")
+Signed-off-by: Ming Lei <tom.leiming@gmail.com>
+Link: https://patch.msgid.link/20260513101941.1373998-1-tom.leiming@gmail.com
+Signed-off-by: Jens Axboe <axboe@kernel.dk>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/firmware/efi/efi.c |   28 ++++++++++++++++------------
- 1 file changed, 16 insertions(+), 12 deletions(-)
+ tools/testing/selftests/ublk/kublk.c | 11 +++++++++++
+ 1 file changed, 11 insertions(+)
 
---- a/drivers/firmware/efi/efi.c
-+++ b/drivers/firmware/efi/efi.c
-@@ -371,21 +371,11 @@ static void __init efi_debugfs_init(void
- static inline void efi_debugfs_init(void) {}
- #endif
- 
--/*
-- * We register the efi subsystem with the firmware subsystem and the
-- * efivars subsystem with the efi subsystem, if the system was booted with
-- * EFI.
-- */
--static int __init efisubsys_init(void)
-+static int __init efipostcore_init(void)
- {
--	int error;
--
- 	if (!efi_enabled(EFI_RUNTIME_SERVICES))
- 		efi.runtime_supported_mask = 0;
- 
--	if (!efi_enabled(EFI_BOOT))
--		return 0;
--
- 	if (efi.runtime_supported_mask) {
- 		/*
- 		 * Since we process only one efi_runtime_service() at a time, an
-@@ -397,9 +387,23 @@ static int __init efisubsys_init(void)
- 			pr_err("Creating efi_rts_wq failed, EFI runtime services disabled.\n");
- 			clear_bit(EFI_RUNTIME_SERVICES, &efi.flags);
- 			efi.runtime_supported_mask = 0;
--			return 0;
- 		}
+diff --git a/tools/testing/selftests/ublk/kublk.c b/tools/testing/selftests/ublk/kublk.c
+index cbd23444c8a98..ac47979349a4b 100644
+--- a/tools/testing/selftests/ublk/kublk.c
++++ b/tools/testing/selftests/ublk/kublk.c
+@@ -1220,6 +1220,17 @@ static int __cmd_dev_add(const struct dev_ctx *ctx)
+ 		goto fail;
  	}
-+	return 0;
-+}
-+postcore_initcall(efipostcore_init);
-+
-+/*
-+ * We register the efi subsystem with the firmware subsystem and the
-+ * efivars subsystem with the efi subsystem, if the system was booted with
-+ * EFI.
-+ */
-+static int __init efisubsys_init(void)
-+{
-+	int error;
-+
-+	if (!efi_enabled(EFI_BOOT))
-+		return 0;
  
- 	if (efi_rt_services_supported(EFI_RT_SUPPORTED_TIME_SERVICES))
- 		platform_device_register_simple("rtc-efi", 0, NULL, 0);
++	/*
++	 * The kernel may reduce nr_hw_queues (e.g. capped to nr_cpu_ids).
++	 * Cap nthreads to the actual queue count to avoid creating extra
++	 * handler threads that will hang during device removal.
++	 *
++	 * per_io_tasks mode is excluded: threads interleave across all
++	 * queues so nthreads > nr_hw_queues is valid and intentional.
++	 */
++	if (!ctx->per_io_tasks && dev->nthreads > info->nr_hw_queues)
++		dev->nthreads = info->nr_hw_queues;
++
+ 	ret = ublk_start_daemon(ctx, dev);
+ 	ublk_dbg(UBLK_DBG_DEV, "%s: daemon exit %d\n", __func__, ret);
+ 	if (ret < 0)
+-- 
+2.53.0
+
 
 
 
