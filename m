@@ -1,61 +1,60 @@
-Return-Path: <stable+bounces-256272-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-255501-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 0GYsOF6rGGpolwgAu9opvQ
-	(envelope-from <stable+bounces-256272-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:53:50 +0200
+	id WDyQMNuhGGqvlggAu9opvQ
+	(envelope-from <stable+bounces-255501-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:13:15 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 706175F9CDA
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:53:50 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id A69C85F8181
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:13:15 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 3559F3051D2E
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 20:47:16 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id C8AEA3045E70
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 20:11:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D39092F1FEF;
-	Thu, 28 May 2026 20:47:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0B3A333CE8A;
+	Thu, 28 May 2026 20:11:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="umSIWzPG"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="J80G/+ZN"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9CACE23394D;
-	Thu, 28 May 2026 20:47:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D606A32ABC0;
+	Thu, 28 May 2026 20:11:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780001235; cv=none; b=UwVFDEETueBTV5u841UbXotSStovyqHNafKUhnz9OK/8onbyCzANhKnJB3MIepWmVU+Gml5zDbGYStcp7t6TqdpbU/dV/dZrgYg8vWSgVU/Y1lZDbzvHIF4uSygRGunzSQIXavR5u9TayH8KRlzvWM11wMErw+SiH9yopl8Ys6M=
+	t=1779999088; cv=none; b=oxnVBJBYh8/IHwEvHt6rEq9kM65zigUZxYvRQGxCU6Mr4sgsLkwClTbgv4IG/dzXDW0UWvP1ImflnicxK/KEp6zY8Y8q1dPMyzZdeABnp8MCSb8ydVAMEawqZE59T9M1gOMnuArgkmU7+j0VQcmCe/sKPyq40qLglglAbvFjdzA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780001235; c=relaxed/simple;
-	bh=KbQrFUuxgatSCrrP+l7Z/DtCFWduW7T/6g8bPxAxaKc=;
+	s=arc-20240116; t=1779999088; c=relaxed/simple;
+	bh=ihMUVCt8oHku85OIsY9+sy7Ltxx2i1uDR+ob1bwH2rg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=B178wpx6MQt24apg3hP1uKfywJYIRV9gOHmIcCzdc9udKUbPXEdEKEfA35FRBrvYxL+rndWAv7eiFcPXTiT+21kLvbuX6+5st9IqKE/3cFENS0yCaqqSkH9/bWG8BKQ1aK5wtNID6hWZt0xCO5YcTY8c7LneRA8iAOekMmVeaLg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=umSIWzPG; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 069571F000E9;
-	Thu, 28 May 2026 20:47:13 +0000 (UTC)
+	 MIME-Version; b=KS4hWJFHlhNnwsLjvRMzVkkm79dU5DfA7lpvA4Wc6oeCkacEPA4pC19L8hNTXoDUiPpQhZQiomEWWab2L+M1EzbGRaDn/NRp846uaBp5U5QZRxpRDqbsLHVcN2ykUOL0myhRuc8lzaxs+qoyccZU2z8gDixyHRLqKMGvZxCk7GY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=J80G/+ZN; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 40DB11F000E9;
+	Thu, 28 May 2026 20:11:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780001234;
-	bh=ly1txdLxHA1jf3lmGuuSuNTWvmEmfePONJbQhpC9O/I=;
+	s=korg; t=1779999087;
+	bh=Mnhzn6HuikMftxAqmRw1M/HXfzF2JZu7nj/00UDfHgo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=umSIWzPGRWw7PTbdvcCOfHi3EuVGpcVkPoZVMvii2EgvG2jRx78+iVFoA/hO80WnW
-	 zNjQOKbYa0k+/EXj3CDar5bImKr5Uqmd3w/xqg17zhzYVHXrCyaFP4NPqjoi0o13IK
-	 uv7XhQ36HkDKIyOpzgCBoEHqOlBFUnJ3a3fEZYsE=
+	b=J80G/+ZN7TsywsUGA6HfM8l/2nAFqnXj6fH5Xv3HQ/d79bopmskCMP5i3ONcfXsLo
+	 hsr/ZCvcE0GNGqaNN3oXtX5ObJbvMZF21U740oPym9TYJydV3YUJyV8nCIyAYsRohu
+	 YmvPAKrI8KgeUjRvdQqIN3AKZX2csIhFx8v2ZOWA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Michael Bommarito <michael.bommarito@gmail.com>,
-	Simon Horman <horms@kernel.org>,
-	Rafal Romanowski <rafal.romanowski@intel.com>,
-	Tony Nguyen <anthony.l.nguyen@intel.com>,
-	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 6.6 054/186] ixgbevf: fix use-after-free in VEPA multicast source pruning
+	Nicolai Buchwitz <nb@tipi-net.de>,
+	Andrew Lunn <andrew@lunn.ch>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 7.0 405/461] net: phy: honor eee_disabled_modes in phy_advertise_eee_all()
 Date: Thu, 28 May 2026 21:48:54 +0200
-Message-ID: <20260528194930.431252333@linuxfoundation.org>
+Message-ID: <20260528194659.205378285@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260528194928.941004471@linuxfoundation.org>
-References: <20260528194928.941004471@linuxfoundation.org>
+In-Reply-To: <20260528194646.819809818@linuxfoundation.org>
+References: <20260528194646.819809818@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,100 +65,82 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	TAGGED_FROM(0.00)[bounces-256272-lists,stable=lfdr.de];
-	FROM_HAS_DN(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,kernel.org,intel.com];
 	MIME_TRACE(0.00)[0:+];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[8];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-0.999];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable];
-	TO_DN_SOME(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-255501-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,intel.com:email,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim]
-X-Rspamd-Queue-Id: 706175F9CDA
+	TO_DN_SOME(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_SEVEN(0.00)[7];
+	MID_RHS_MATCH_FROM(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,msgid.link:url,tipi-net.de:email,lunn.ch:email]
+X-Rspamd-Queue-Id: A69C85F8181
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+7.0-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Michael Bommarito <michael.bommarito@gmail.com>
+From: Nicolai Buchwitz <nb@tipi-net.de>
 
-commit 5d49b568c188dc77199d8d2b959c91da8cc27cf1 upstream.
+[ Upstream commit 8baa7506d793f0636e3f6f01b01ef7be19674d06 ]
 
-ixgbevf_clean_rx_irq() prunes frames whose source MAC matches the VF's
-own address (VEPA multicast workaround) by freeing the skb and
-continuing to the next descriptor:
+phy_advertise_eee_all() copies supported_eee into advertising_eee
+unconditionally, overwriting any filtering applied during phy_probe()
+based on DT eee-broken-* properties or driver-populated
+eee_disabled_modes. genphy_c45_ethtool_set_eee() calls this helper
+when user space passes an empty advertisement, undoing the filtering.
 
-    dev_kfree_skb_irq(skb);
-    continue;
+Apply the same eee_disabled_modes mask in phy_advertise_eee_all() so
+the filtering survives the copy, matching the pattern in phy_probe()
+and phy_support_eee().
 
-The skb pointer is declared outside the while loop and persists across
-iterations.  Because the continue skips the "skb = NULL" reset at the
-bottom of the loop, the next iteration enters the "else if (skb)" path
-and calls ixgbevf_add_rx_frag() on the freed skb, dereferencing
-skb_shinfo(skb)->nr_frags - a use-after-free in NAPI softirq context.
-
-The sibling driver iavf already handles this correctly by nulling the
-pointer before continuing.  Apply the same pattern here.
-
-I do not have ixgbevf hardware; the bug was found by static analysis
-(scan_drop_continue_loops.py + semgrep drop_continue_in_loop, multi-tool
-corroboration with the highest score in the scan).  The UAF was confirmed
-under KASAN by loading a test module that reproduces the exact code
-pattern (alloc skb, kfree_skb, then read skb_shinfo(skb)->nr_frags):
-
-  BUG: KASAN: slab-use-after-free in ixgbevf_uaf_test_init+0x100/0x1000
-  Read of size 8 at addr 000000006163ae78 by task insmod/30
-  freed 208-byte region [000000006163adc0, 000000006163ae90)
-
-QEMU emulates igb (82576) but not ixgbe (82599), and the igbvf VF
-driver does not include the VEPA source pruning path, so a full
-end-to-end reproduction with emulated hardware was not possible.
-
-Fixes: bad17234ba70 ("ixgbevf: Change receive model to use double buffered page based receives")
-Cc: stable@vger.kernel.org
-Signed-off-by: Michael Bommarito <michael.bommarito@gmail.com>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Tested-by: Rafal Romanowski <rafal.romanowski@intel.com>
-Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
-Link: https://patch.msgid.link/20260515182419.1597859-8-anthony.l.nguyen@intel.com
+Fixes: b64691274f5d ("net: phy: add helper phy_advertise_eee_all")
+Signed-off-by: Nicolai Buchwitz <nb@tipi-net.de>
+Reviewed-by: Andrew Lunn <andrew@lunn.ch>
+Link: https://patch.msgid.link/20260518-devel-phy-support-eee-fix-v2-2-05b52626fa68@tipi-net.de
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/intel/ixgbevf/ixgbevf_main.c |    1 +
- 1 file changed, 1 insertion(+)
+ drivers/net/phy/phy_device.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
---- a/drivers/net/ethernet/intel/ixgbevf/ixgbevf_main.c
-+++ b/drivers/net/ethernet/intel/ixgbevf/ixgbevf_main.c
-@@ -1225,6 +1225,7 @@ static int ixgbevf_clean_rx_irq(struct i
- 		    ether_addr_equal(rx_ring->netdev->dev_addr,
- 				     eth_hdr(skb)->h_source)) {
- 			dev_kfree_skb_irq(skb);
-+			skb = NULL;
- 			continue;
- 		}
+diff --git a/drivers/net/phy/phy_device.c b/drivers/net/phy/phy_device.c
+index 893ad97fc60c3..cfb505ed9a3a0 100644
+--- a/drivers/net/phy/phy_device.c
++++ b/drivers/net/phy/phy_device.c
+@@ -2907,7 +2907,8 @@ EXPORT_SYMBOL(phy_advertise_supported);
+  */
+ void phy_advertise_eee_all(struct phy_device *phydev)
+ {
+-	linkmode_copy(phydev->advertising_eee, phydev->supported_eee);
++	linkmode_andnot(phydev->advertising_eee, phydev->supported_eee,
++			phydev->eee_disabled_modes);
+ }
+ EXPORT_SYMBOL_GPL(phy_advertise_eee_all);
  
+-- 
+2.53.0
+
 
 
 
