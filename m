@@ -1,61 +1,60 @@
-Return-Path: <stable+bounces-255310-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-255646-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id eFsIBpufGGpAlggAu9opvQ
-	(envelope-from <stable+bounces-255310-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:03:39 +0200
+	id INfeLqCjGGrJlggAu9opvQ
+	(envelope-from <stable+bounces-255646-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:20:48 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3B75F5F7BB5
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:03:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0E9F15F86F1
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:20:47 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 4DEB1303CC72
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 20:02:32 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 53F053057083
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 20:18:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5E0462F691F;
-	Thu, 28 May 2026 20:02:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8FF41282F17;
+	Thu, 28 May 2026 20:18:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="idivQ0kL"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vVMjbUCn"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3356E32ABC0;
-	Thu, 28 May 2026 20:02:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D2B2F3016E0;
+	Thu, 28 May 2026 20:18:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779998550; cv=none; b=MeDQip9vbODZjHZoPN5TDZ3dGKEnfGJtCjJZBzdfzn+lBqEByhxJJJ7B8kb3Mp3/cS6vRWSzfU60WwgCEghLzGVlgHD6W4RSHv6KpvRp+ou/xurmzrXc6oV0qpkHO3t8cfeujhmu3USyZWMgubL7h3iijrQzQ4JK+m9trd2uuSc=
+	t=1779999496; cv=none; b=Pb2jponT2oDJ8p08ZHkextiAP6MYv/lthA0DFJM5KPgOVy1HSdC13YFML7WLL02Snkj43gbAvnnF4RLUtjNJ4jAlLuLVTdyOEPz3CsZNNtBHVNlz+HAfkZHXpdsLwIogwjWA4c2tmr0iV9I0Jcl9qX/LdDyX9C0OUWViyXwT/eo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779998550; c=relaxed/simple;
-	bh=Ozg7KJHLtQLtv+mu7EGahl3ZAoB6CRkNTHt9+ibaNmk=;
+	s=arc-20240116; t=1779999496; c=relaxed/simple;
+	bh=c+IjFtWZhyGNAVdNQXeN6bkMz2RvrnTZn7t7CCEdBiQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=NNz1yEOUur3Ch2EdGPWUu0cWRb7X8QDpqOM84ypKiVoXViUWyAr6hYoFJHwjGY+BykIRWeOziYQWtN+fXgP5YwjyL6u0K8x4eCc6AojWvLc85K+b9QCpaU4WMzJ89zFfTuygZMXbNc6j1gWA78217jmK8urUvsciPru1Y5LKBKQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=idivQ0kL; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 918121F000E9;
-	Thu, 28 May 2026 20:02:28 +0000 (UTC)
+	 MIME-Version; b=ODXWvzYrEF4C9n23WpJgxeMMDbBvgjH8auI72+ABI3iKoi893rIlds7aPS3h0hjqg8FZeFZJx55aYKJqKv1j42ZpKWZIBQYl8V1F7XlEDYhLZx08+JS+RpCyWrnxQG0jo1+JOFFR5f397lwNyeAHkrRDM7a46/N4j0Yctl1t2FU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vVMjbUCn; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F37091F000E9;
+	Thu, 28 May 2026 20:18:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779998549;
-	bh=z16Y0pJH7oIXvOa3VtP9GNrLUQs8xgtdZKipz4NXF6w=;
+	s=korg; t=1779999494;
+	bh=7Z0re0WzfsHyntmPfnMr60GFeF/LRfBa8yo1NjeBUmM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=idivQ0kLzM3+RA8iyylF6pfyRDZ06VA2trE8B2QngXzwxsMHn1RMoFK7MZiL+zdOR
-	 1w9g90wBnPNIhvMq9LAiCncJr3DyhSq3WsphMPY/Poykf8iTesAvv7juS/wsPHtqBs
-	 Iq6NXHyVR2NZQf23Arj/7wNBilTjwm6XotsE+2pQ=
+	b=vVMjbUCn5M8cqMysxJFCAUyevOJEpNHFfRm8W/XPO72LbzXFnWmhEEK0l+PSs9cl2
+	 ZRKabEAAyxE4Jxdn/cT9GxQ96xoLp8W6OFEZBAiUC5VNaImQjiOHD2uvNFMMolEtoz
+	 JVOIAujP5SVe9eTU/Z8iMAxh1V4yZ8XMnZ3aM/+w=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>,
-	Maulik Shah <maulik.shah@oss.qualcomm.com>,
-	Navya Malempati <navya.malempati@oss.qualcomm.com>,
-	Linus Walleij <linusw@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 7.0 196/461] pinctrl: qcom: Fix wakeirq map by removing disconnected irqs for sm8150
-Date: Thu, 28 May 2026 21:45:25 +0200
-Message-ID: <20260528194652.756056707@linuxfoundation.org>
+	Kyle Farnung <kfarnung@gmail.com>,
+	Rameshkumar Sundaram <rameshkumar.sundaram@oss.qualcomm.com>,
+	Baochen Qiang <baochen.qiang@oss.qualcomm.com>,
+	Jeff Johnson <jeff.johnson@oss.qualcomm.com>
+Subject: [PATCH 6.18 088/377] wifi: ath11k: clear shared SRNG pointer state on restart
+Date: Thu, 28 May 2026 21:45:26 +0200
+Message-ID: <20260528194640.914702294@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260528194646.819809818@linuxfoundation.org>
-References: <20260528194646.819809818@linuxfoundation.org>
+In-Reply-To: <20260528194638.371537336@linuxfoundation.org>
+References: <20260528194638.371537336@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -75,82 +74,88 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	RCVD_TLS_LAST(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,oss.qualcomm.com];
+	TAGGED_FROM(0.00)[bounces-255646-lists,stable=lfdr.de];
+	PRECEDENCE_BULK(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FROM_HAS_DN(0.00)[];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-255310-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TO_DN_SOME(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
 	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
-	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[8];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[7];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[qualcomm.com:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo]
-X-Rspamd-Queue-Id: 3B75F5F7BB5
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,qualcomm.com:email]
+X-Rspamd-Queue-Id: 0E9F15F86F1
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-7.0-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Maulik Shah <maulik.shah@oss.qualcomm.com>
+From: Kyle Farnung <kfarnung@gmail.com>
 
-[ Upstream commit 52ac35b8a151446481496404af3a8e5e889b3c5a ]
+commit f51e4b3b5574ad8cb5b16b11f8a1452147ece87a upstream.
 
-PDC interrupts 122-125 were meant for ibi_i3c wakeup but sm8150 do not
-support i3c. GPIOs 39,51,88 and 144 are also connected to different PDC
-pin and already reflected in the wake irq map.
+LMAC rings reuse the shared rdp/wrp pointer buffers without going
+through the normal SRNG hw-init path that zeros non-LMAC ring
+pointers. After restart, ath11k_hal_srng_clear() can therefore hand
+stale hp/tp state from the previous firmware instance back to the new
+one.
 
-Remove the unsupported wakeup interrupts from the map.
+Clear the shared pointer buffers while keeping the allocations in
+place so restart still avoids reallocating SRNG DMA memory, but starts
+with fresh ring-pointer state.
 
-Fixes: 90337380c809 ("pinctrl: qcom: sm8150: Specify PDC map")
-Reviewed-by: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
-Signed-off-by: Maulik Shah <maulik.shah@oss.qualcomm.com>
-Signed-off-by: Navya Malempati <navya.malempati@oss.qualcomm.com>
-Signed-off-by: Linus Walleij <linusw@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 32be3ca4cf78b ("wifi: ath11k: HAL SRNG: don't deinitialize and re-initialize again")
+Cc: stable@vger.kernel.org
+Closes: https://lore.kernel.org/all/CAOPSVF04q6uvVdq8GTRLHBrVMdpt9=o9wVcFMc6f-yhmSBcZqQ@mail.gmail.com/
+Signed-off-by: Kyle Farnung <kfarnung@gmail.com>
+Reviewed-by: Rameshkumar Sundaram <rameshkumar.sundaram@oss.qualcomm.com>
+Reviewed-by: Baochen Qiang <baochen.qiang@oss.qualcomm.com>
+Link: https://patch.msgid.link/20260513-kfarnung-ath11k-srng-clear-pointer-state-v1-1-bc700dd8b333@gmail.com
+Signed-off-by: Jeff Johnson <jeff.johnson@oss.qualcomm.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/pinctrl/qcom/pinctrl-sm8150.c | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ drivers/net/wireless/ath/ath11k/hal.c |   14 +++++++++++---
+ 1 file changed, 11 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/pinctrl/qcom/pinctrl-sm8150.c b/drivers/pinctrl/qcom/pinctrl-sm8150.c
-index ad861cd66958c..e4c561a9c50ae 100644
---- a/drivers/pinctrl/qcom/pinctrl-sm8150.c
-+++ b/drivers/pinctrl/qcom/pinctrl-sm8150.c
-@@ -1496,18 +1496,18 @@ static const struct msm_gpio_wakeirq_map sm8150_pdc_map[] = {
- 	{ 3, 31 }, { 5, 32 }, { 8, 33 }, { 9, 34 }, { 10, 100 },
- 	{ 12, 104 }, { 24, 37 }, { 26, 38 }, { 27, 41 }, { 28, 42 },
- 	{ 30, 39 }, { 36, 43 }, { 37, 44 }, { 38, 30 }, { 39, 118 },
--	{ 39, 125 }, { 41, 47 }, { 42, 48 }, { 46, 50 }, { 47, 49 },
--	{ 48, 51 }, { 49, 53 }, { 50, 52 }, { 51, 116 }, { 51, 123 },
-+	{ 41, 47 }, { 42, 48 }, { 46, 50 }, { 47, 49 },
-+	{ 48, 51 }, { 49, 53 }, { 50, 52 }, { 51, 116 },
- 	{ 53, 54 }, { 54, 55 }, { 55, 56 }, { 56, 57 }, { 58, 58 },
- 	{ 60, 60 }, { 61, 61 }, { 68, 62 }, { 70, 63 }, { 76, 71 },
- 	{ 77, 66 }, { 81, 64 }, { 83, 65 }, { 86, 67 }, { 87, 84 },
--	{ 88, 117 }, { 88, 124 }, { 90, 69 }, { 91, 70 }, { 93, 75 },
-+	{ 88, 117 }, { 90, 69 }, { 91, 70 }, { 93, 75 },
- 	{ 95, 72 }, { 96, 73 }, { 97, 74 }, { 101, 40 }, { 103, 77 },
- 	{ 104, 78 }, { 108, 79 }, { 112, 80 }, { 113, 81 }, { 114, 82 },
- 	{ 117, 85 }, { 118, 101 }, { 119, 87 }, { 120, 88 }, { 121, 89 },
- 	{ 122, 90 }, { 123, 91 }, { 124, 92 }, { 125, 93 }, { 129, 94 },
- 	{ 132, 105 }, { 133, 83 }, { 134, 36 }, { 136, 97 }, { 142, 103 },
--	{ 144, 115 }, { 144, 122 }, { 147, 102 }, { 150, 107 },
-+	{ 144, 115 }, { 147, 102 }, { 150, 107 },
- 	{ 152, 108 }, { 153, 109 }
- };
+--- a/drivers/net/wireless/ath/ath11k/hal.c
++++ b/drivers/net/wireless/ath/ath11k/hal.c
+@@ -1388,14 +1388,22 @@ EXPORT_SYMBOL(ath11k_hal_srng_deinit);
  
--- 
-2.53.0
-
+ void ath11k_hal_srng_clear(struct ath11k_base *ab)
+ {
+-	/* No need to memset rdp and wrp memory since each individual
+-	 * segment would get cleared in ath11k_hal_srng_src_hw_init()
+-	 * and ath11k_hal_srng_dst_hw_init().
++	/*
++	 * Preserve the shared pointer buffers, but clear the previous
++	 * firmware instance's hp/tp state before handing them back to FW.
++	 * LMAC rings reuse this shared memory without going through the
++	 * normal SRNG hw-init path that zeros non-LMAC ring pointers.
+ 	 */
+ 	memset(ab->hal.srng_list, 0,
+ 	       sizeof(ab->hal.srng_list));
+ 	memset(ab->hal.shadow_reg_addr, 0,
+ 	       sizeof(ab->hal.shadow_reg_addr));
++	if (ab->hal.rdp.vaddr)
++		memset(ab->hal.rdp.vaddr, 0,
++		       sizeof(*ab->hal.rdp.vaddr) * HAL_SRNG_RING_ID_MAX);
++	if (ab->hal.wrp.vaddr)
++		memset(ab->hal.wrp.vaddr, 0,
++		       sizeof(*ab->hal.wrp.vaddr) * HAL_SRNG_NUM_LMAC_RINGS);
+ 	ab->hal.avail_blk_resource = 0;
+ 	ab->hal.current_blk_index = 0;
+ 	ab->hal.num_shadow_reg_configured = 0;
 
 
 
