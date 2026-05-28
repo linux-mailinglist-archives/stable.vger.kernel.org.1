@@ -1,59 +1,60 @@
-Return-Path: <stable+bounces-255690-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-255373-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id MMsxLYejGGrClggAu9opvQ
-	(envelope-from <stable+bounces-255690-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:20:23 +0200
+	id 6HFqDnqhGGqnlggAu9opvQ
+	(envelope-from <stable+bounces-255373-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:11:38 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 69B085F86B0
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:20:23 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id B017D5F8074
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:11:37 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id CDEE1301BEF8
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 20:20:19 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 6057D30AE490
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 20:05:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BB4892F8E83;
-	Thu, 28 May 2026 20:20:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EA8FD304BB3;
+	Thu, 28 May 2026 20:05:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hmw2ShCu"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="J680fNIe"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8F8703016E0;
-	Thu, 28 May 2026 20:20:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C58A42FD7C3;
+	Thu, 28 May 2026 20:05:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779999617; cv=none; b=JpmlXp4Jd9kPOJKs+yx6gyBkiH85i0lTbMH2VHP0A/fvYofp9l0DBQZ0fsHtAZr0Qnhiy5MozgAkQYDlfV3anN9DZNVGStmaD6g3aiPAyCc82p4cyWzm9JDpXjvZ1sRoVFxrSv460/d9f+lvRrOfmVjBJkRo25m7I1ZCWZqj2HQ=
+	t=1779998727; cv=none; b=DvrIap0POo7hWluUZX5qA2wGlcc7r39Dp92cnTFf5YauviS5Ldsqjea4jjlcas+flODzC6h94VOfrk+sF2Q+dCjajQdJgTVcxEmDDlEwR4CjK9D3Hg57LLQUTp5RLRGb7zXBMdNQrzcAFVanHJJXW88b1+6e/C84zirGS9Jot1Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779999617; c=relaxed/simple;
-	bh=bu3QeVXrlo4b++EKVC4xjb/OQzYvrRINRvlFwVHWfzc=;
+	s=arc-20240116; t=1779998727; c=relaxed/simple;
+	bh=nr8dByGz4j0qFeOIejXRYoMzyY7vwBNreavPyN2rfIM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ZkMAmh01KzV+mmSUxhVLkO+VpUP12VB3Gr5rJZqrGWvolmeiKj8W/O03wJay/P/kKuyQWz+po+OEVznJTrMF3mmElJNNvK4GYfWH7R0VbnguAvGC6xsXLJV0uiXupqQ0wy9AapCVCg4p7jomjttFRHQQl1gnfvhVbf8Q4TF7HaM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hmw2ShCu; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EE31F1F000E9;
-	Thu, 28 May 2026 20:20:15 +0000 (UTC)
+	 MIME-Version; b=ZRmqjs4uRL/kqkQI9eW48w6ldlA6G3d1kwBHVGo2c/USvsIrEK7Vvtp/REsatL6bKVbI8a0209rTDyQBzbYgegdk3sCsQR+vDevWP/nGKPS8D0AhjHeCG6lejLr+n6yCb7M5ZV+8Vu0PEMEjeUHGba1JYU5YAQ+CX488ZdEV3UQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=J680fNIe; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2EEAD1F000E9;
+	Thu, 28 May 2026 20:05:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779999616;
-	bh=Qqly/oLQEVLf5jk4IPGxnt88cEL8Xa9gmxeiOBv12Yg=;
+	s=korg; t=1779998726;
+	bh=mAK2I5OP0i5w6W86kzqYW1qZh7GRgFNo4s28vhel3Kw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=hmw2ShCuZsImXdWl09248bVGymjoVNmB/LcFs+uMinQXSr5dN1hZuX835RO6/ZhSo
-	 l+u6mMWXvzFzIg2cVps/hADkFNog5+fG5iJXWzRGoStoUbQKRZkvecaMa0N6rcGNO8
-	 IcU7XnUl23Xgpc8wE7zDgQgpIQEUps88l8D0cPyg=
+	b=J680fNIe9lL3RdPZhG1DR3PeDGFI4v6eM6i0l8F2jOySCzKey7vOO4zrbBiRr29s5
+	 QXLv/b+9Asi/78i1u6pnQKG+iAZWroExdrpi+9kNjLK+xP13f+eSUke3/GHdRmRI9p
+	 3aoo/oVtfhb6BbzN02eDhnaLSZ0b65+uP+O2laM0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Mario Limonciello (AMD)" <superm1@kernel.org>,
-	Alan liu <haoping.liu@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>
-Subject: [PATCH 6.18 131/377] drm/amdgpu/vpe: Force collaborate sync after TRAP
+	Zhihao Cheng <chengzhihao1@huawei.com>,
+	Yang Erkun <yangerkun@huawei.com>,
+	Christian Brauner <brauner@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 7.0 240/461] nsfs: fix wrong error code returned for pidns ioctls
 Date: Thu, 28 May 2026 21:46:09 +0200
-Message-ID: <20260528194642.154687109@linuxfoundation.org>
+Message-ID: <20260528194654.091751112@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260528194638.371537336@linuxfoundation.org>
-References: <20260528194638.371537336@linuxfoundation.org>
+In-Reply-To: <20260528194646.819809818@linuxfoundation.org>
+References: <20260528194646.819809818@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -68,79 +69,75 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-255373-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-255690-lists,stable=lfdr.de];
-	TO_DN_SOME(0.00)[];
-	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,amd.com:email,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,gitlab.freedesktop.org:url]
-X-Rspamd-Queue-Id: 69B085F86B0
+	TO_DN_SOME(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_SEVEN(0.00)[7];
+	MID_RHS_MATCH_FROM(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,linuxfoundation.org:mid,linuxfoundation.org:dkim,huawei.com:email,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo]
+X-Rspamd-Queue-Id: B017D5F8074
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+7.0-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alan Liu <haoping.liu@amd.com>
+From: Zhihao Cheng <chengzhihao1@huawei.com>
 
-commit b6074630a461b1322a814988779005cbc43612ea upstream.
+[ Upstream commit 725ecd80688bf3c57ca9205431f2c06174ff0756 ]
 
-VPE1 could possibly hang and fail to power off at the end of commands in
-collaboration mode. This workaround adds a COLLAB_SYNC after TRAP to
-force instances synchronized to avoid VPE1 fail to power off.
+When executing NS_GET_PID_FROM_PIDNS (or similar pidns ioctls), if the
+target task cannot be found in the corresponding pid_ns, the error code
+should be ESRCH instead of ENOTTY.
 
-Reviewed-by: Mario Limonciello (AMD) <superm1@kernel.org>
-Signed-off-by: Alan liu <haoping.liu@amd.com>
-Closes: https://gitlab.freedesktop.org/drm/amd/-/work_items/5171
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-(cherry picked from commit a8b749c5c5afb7e5daa2bfb95d958fb3c6b8f055)
-Cc: stable@vger.kernel.org
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+This bug was introduced when the extensible ioctl handling was added.
+Without proper return, ret would be overwritten by the default case in
+the extensible ioctl switch statement.
+
+Fixes: a1d220d9dafa8 ("nsfs: iterate through mount namespaces")
+Signed-off-by: Zhihao Cheng <chengzhihao1@huawei.com>
+Link: https://patch.msgid.link/20260507112301.1042757-1-chengzhihao1@huawei.com
+Reviewed-by: Yang Erkun <yangerkun@huawei.com>
+Signed-off-by: Christian Brauner <brauner@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/amdgpu/amdgpu_vpe.c |    7 ++++++-
- 1 file changed, 6 insertions(+), 1 deletion(-)
+ fs/nsfs.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/gpu/drm/amd/amdgpu/amdgpu_vpe.c
-+++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_vpe.c
-@@ -562,6 +562,11 @@ static void vpe_ring_emit_fence(struct a
- 		amdgpu_ring_write(ring, 0);
- 	}
+diff --git a/fs/nsfs.c b/fs/nsfs.c
+index c215878d55e87..fb0dcc1196699 100644
+--- a/fs/nsfs.c
++++ b/fs/nsfs.c
+@@ -266,7 +266,7 @@ static long ns_ioctl(struct file *filp, unsigned int ioctl,
+ 		else
+ 			tsk = find_task_by_pid_ns(arg, pid_ns);
+ 		if (!tsk)
+-			break;
++			return ret;
  
-+	/* WA: Force sync after TRAP to avoid VPE1 fail to power off */
-+	if (ring->adev->vpe.collaborate_mode) {
-+		amdgpu_ring_write(ring, VPE_CMD_HEADER(VPE_CMD_OPCODE_COLLAB_SYNC, 0));
-+		amdgpu_ring_write(ring, 0xabcd);
-+	}
- }
- 
- static void vpe_ring_emit_pipeline_sync(struct amdgpu_ring *ring)
-@@ -968,7 +973,7 @@ static const struct amdgpu_ring_funcs vp
- 	.emit_frame_size =
- 		5 + /* vpe_ring_init_cond_exec */
- 		6 + /* vpe_ring_emit_pipeline_sync */
--		10 + 10 + 10 + /* vpe_ring_emit_fence */
-+		12 + 12 + 12 + /* vpe_ring_emit_fence */
- 		/* vpe_ring_emit_vm_flush */
- 		SOC15_FLUSH_GPU_TLB_NUM_WREG * 3 +
- 		SOC15_FLUSH_GPU_TLB_NUM_REG_WAIT * 6,
+ 		switch (ioctl) {
+ 		case NS_GET_PID_FROM_PIDNS:
+-- 
+2.53.0
+
 
 
 
