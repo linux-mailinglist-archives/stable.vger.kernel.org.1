@@ -1,59 +1,62 @@
-Return-Path: <stable+bounces-255858-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-255499-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 6KDbJ5ymGGp+lwgAu9opvQ
-	(envelope-from <stable+bounces-255858-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:33:32 +0200
+	id CIYgFRCjGGrJlggAu9opvQ
+	(envelope-from <stable+bounces-255499-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:18:24 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 45FB95F8F45
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:33:32 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id A971F5F8589
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:18:23 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 920F8309A9F1
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 20:27:56 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 305893137240
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 20:11:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0FC23254B1F;
-	Thu, 28 May 2026 20:27:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9796833F5B4;
+	Thu, 28 May 2026 20:11:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QI57o2eO"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yvS8uSuz"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E8ED12E7379;
-	Thu, 28 May 2026 20:27:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 49FC332ABC0;
+	Thu, 28 May 2026 20:11:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780000074; cv=none; b=DcEd1FyBSIgysld4LqHtt1LpdxDFFkumGOQ215kkWuBFtSFHCgwb3iFJBHztfeQkryQV4Od+W4AlOUv6LBTHqL6hq4NkiMTVHE7MlFxlhfGuXbsoDVVeX1VPT+UCLBiM/sCsnJbMp1qs+ZFN5xoce9xk/OZFAydZaeMcQPCzhow=
+	t=1779999083; cv=none; b=c5fiPMLZg24Jw+8X4m3Ly3SLvKvviddz8P2CjdmhGrDe452vAPqMHVvCDLb7jYhL+ZSNyPt2ozFtvPj1TV4cvpcH3FZ5xq+VYwqY6HPRV0JFt6OHBsx4AKaB+cTuF2O+Oz5noEDgtY82EyApL1CMssUnw9KJ5mXW1YHqWYQszpk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780000074; c=relaxed/simple;
-	bh=nTA6CN6BIeucD596JuQ5RiXYkwLtEaZpXYo17IC83AM=;
+	s=arc-20240116; t=1779999083; c=relaxed/simple;
+	bh=FaZ4Vs96FFsP/UdOP9LahdLsfme3ue1mnrzpDpmg44A=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=L6i1tSWYcHc9xAKrM53Qt7H5O9TAGaEcQ+QfvJPbql1NDHVPIzxa+lma/9fq7b53UnaJsMsx636C4DrsWFoVIlMq87BLyi6r6j46EIks/iLrnlkvfz8sK3CDALBLN4FPuVKi1rD3dMxHGB75iyNN/bo6rZrhnxLZZXUHfHo9OwE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QI57o2eO; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 18C141F000E9;
-	Thu, 28 May 2026 20:27:52 +0000 (UTC)
+	 MIME-Version; b=nkgwg2Wmum8MIDC2+xBSNWfTr2pR20Vr8Yc8nY4QqEpbMva1q6zv1OXaF0kkIxXfpIPxTiQ8yYZMAnuqb97DV635S2xNf/yFcn3btH5hhh9j14GbHwL1qGaahvhrKHJpclqMtQyDhkcfThvLpIoac7KKH0wYWbi+hTD3wUbG1zE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yvS8uSuz; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AD6A41F00A3A;
+	Thu, 28 May 2026 20:11:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780000073;
-	bh=r4IudickBmuSnZTe2/HASr4F1KiJAdYs3sfX2qENMeQ=;
+	s=korg; t=1779999082;
+	bh=yG3sNT6Q1MY+dhNbLrTSjEHnSRVTNioV2PpMLlxvVhk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=QI57o2eOotHhBVPSH5APk5zZeewp8V2ifd8aEl8NMUQtjU0VvAfN11xHb6OKUE7zr
-	 xG09ke9KC0kCD6zGdEElwNlmDJqKDv3kjjPjR8vPfnGMVRSWU1vI9WxF71w0kmSbYY
-	 8jj/bKnx7ugYZw9LB7Em375wdP14vcUjxSM/cdsk=
+	b=yvS8uSuzrIgMAAwm59WizTJiO8lRyT4Yt32ZjsSdO3SKB06eDB2PMhC/HYXNl7bBo
+	 9puO07spSvfbn0dOKnOgkTbvWZtOTpIUttKmyvWNQCkglmN9G6cX/+W6UyZXY0MqvI
+	 yfwjzY+9l7dLcpCzZUs26nPbxBuzOuF3SuCPnP4c=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Alexander A. Klimov" <grandmaster@al2klimov.de>,
-	Mark Brown <broonie@kernel.org>,
+	syzbot+ae231e0552fa77b26ea1@syzkaller.appspotmail.com,
+	Thomas Gleixner <tglx@kernel.org>,
+	Nikolay Aleksandrov <nikolay@nvidia.com>,
+	Ido Schimmel <idosch@nvidia.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 293/377] ASoC: codecs: fs210x: fix possible buffer overflow
-Date: Thu, 28 May 2026 21:48:51 +0200
-Message-ID: <20260528194646.830598830@linuxfoundation.org>
+Subject: [PATCH 7.0 403/461] bridge: mcast: Fix a possible use-after-free when removing a bridge port
+Date: Thu, 28 May 2026 21:48:52 +0200
+Message-ID: <20260528194659.140954099@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260528194638.371537336@linuxfoundation.org>
-References: <20260528194638.371537336@linuxfoundation.org>
+In-Reply-To: <20260528194646.819809818@linuxfoundation.org>
+References: <20260528194646.819809818@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,78 +67,167 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_MISSING_CHARSET(0.50)[];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-255858-lists,stable=lfdr.de];
-	URIBL_MULTI_FAIL(0.00)[linuxfoundation.org:server fail,tor.lore.kernel.org:server fail,msgid.link:server fail,al2klimov.de:server fail];
 	RCVD_COUNT_THREE(0.00)[4];
+	TAGGED_FROM(0.00)[bounces-255499-lists,stable=lfdr.de];
+	FROM_HAS_DN(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
-	TO_DN_SOME(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	RCPT_COUNT_FIVE(0.00)[6];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[stable];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	PRECEDENCE_BULK(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[9];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[al2klimov.de:email,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,msgid.link:url,linuxfoundation.org:mid,linuxfoundation.org:dkim]
-X-Rspamd-Queue-Id: 45FB95F8F45
+	TAGGED_RCPT(0.00)[stable,ae231e0552fa77b26ea1];
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[nvidia.com:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,msgid.link:url,appspotmail.com:email,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
+X-Rspamd-Queue-Id: A971F5F8589
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+7.0-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alexander A. Klimov <grandmaster@al2klimov.de>
+From: Ido Schimmel <idosch@nvidia.com>
 
-[ Upstream commit 0d435a7ebcd4e97e47673c1ab6fb27f973a053ec ]
+[ Upstream commit 4df78ff02629c7729168f0696a7a2123c389818d ]
 
-In fs210x_effect_scene_info(), a string was copied like this:
+When per-VLAN multicast snooping is enabled, the bridge iterates over
+all the bridge ports, disables the per-port multicast context on each
+port and enables the per-{port, VLAN} multicast contexts instead. The
+reverse happens when per-VLAN multicast snooping is disabled.
 
-    strscpy(DST, SRC, strlen(SRC) + 1);
+When global multicast snooping is enabled, the bridge iterates over all
+the bridge ports and enables the per-port multicast context on each
+port. The reverse happens when multicast snooping is disabled.
 
-A buffer overflow would happen if strlen(SRC) >= sizeof(DST).
-Actually, strscpy() must be used this way:
+The above scheme can result in a situation where both types of contexts
+(per-port and per-{port, VLAN}) are enabled on a single bridge port:
 
-    strscpy(DST, SRC, sizeof(DST));
-    strscpy(DST, SRC); // defaults to sizeof(DST)
+ # ip link add name br1 up type bridge mcast_snooping 1 mcast_querier 1 vlan_filtering 1
+ # ip link add name dummy1 up master br1 type dummy
+ # ip link set dev br1 type bridge mcast_vlan_snooping 1
+ # ip link set dev br1 type bridge mcast_snooping 0
+ # ip link set dev br1 type bridge mcast_snooping 1
 
-Fixes: 756117701779 ("ASoC: codecs: Add FourSemi FS2104/5S audio amplifier driver")
-Signed-off-by: Alexander A. Klimov <grandmaster@al2klimov.de>
-Link: https://patch.msgid.link/20260513190852.196723-2-grandmaster@al2klimov.de
-Signed-off-by: Mark Brown <broonie@kernel.org>
+This is not intended and it is a problem since the commit cited below.
+Prior to this commit, when removing a bridge port,
+br_multicast_disable_port() would disable the per-port multicast context
+and the per-{port, VLAN} multicast contexts would get disabled when
+flushing VLANs.
+
+After this commit, br_multicast_disable_port() only disables the
+per-port multicast context if per-VLAN multicast snooping is disabled.
+If both types of contexts were enabled on the port when it was removed,
+the per-port multicast context would remain enabled when freeing the
+bridge port, leading to a use-after-free [1].
+
+Fix by preventing the bridge from enabling / disabling the per-port
+multicast contexts when toggling global multicast snooping if per-VLAN
+multicast snooping is enabled.
+
+[1]
+ODEBUG: free active (active state 0) object: ffff88810f8bda78 object type: timer_list hint: br_ip6_multicast_port_query_expired (net/bridge/br_multicast.c:1927)
+WARNING: lib/debugobjects.c:629 at debug_print_object+0x1b1/0x3e0, CPU#5: swapper/5/0
+[...]
+Call Trace:
+<IRQ>
+__debug_check_no_obj_freed (lib/debugobjects.c:1116)
+kfree (mm/slub.c:2620 mm/slub.c:6250 mm/slub.c:6565)
+kobject_cleanup (lib/kobject.c:689)
+rcu_do_batch (kernel/rcu/tree.c:2617)
+rcu_core (kernel/rcu/tree.c:2869)
+handle_softirqs (kernel/softirq.c:622)
+__irq_exit_rcu (kernel/softirq.c:656 kernel/softirq.c:496 kernel/softirq.c:735)
+irq_exit_rcu (kernel/softirq.c:752)
+sysvec_apic_timer_interrupt (arch/x86/kernel/apic/apic.c:1061 (discriminator 47) arch/x86/kernel/apic/apic.c:1061 (discriminator 47))
+</IRQ>
+
+Fixes: 4b30ae9adb04 ("net: bridge: mcast: re-implement br_multicast_{enable, disable}_port functions")
+Reported-by: syzbot+ae231e0552fa77b26ea1@syzkaller.appspotmail.com
+Closes: https://lore.kernel.org/netdev/87qznowlfs.ffs@tglx/
+Reported-by: Thomas Gleixner <tglx@kernel.org>
+Acked-by: Nikolay Aleksandrov <nikolay@nvidia.com>
+Signed-off-by: Ido Schimmel <idosch@nvidia.com>
+Link: https://patch.msgid.link/20260517121122.188333-2-idosch@nvidia.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/soc/codecs/fs210x.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ net/bridge/br_multicast.c | 22 +++++++++++++++++-----
+ 1 file changed, 17 insertions(+), 5 deletions(-)
 
-diff --git a/sound/soc/codecs/fs210x.c b/sound/soc/codecs/fs210x.c
-index e2f85714972d5..e2207c53c50d5 100644
---- a/sound/soc/codecs/fs210x.c
-+++ b/sound/soc/codecs/fs210x.c
-@@ -968,7 +968,7 @@ static int fs210x_effect_scene_info(struct snd_kcontrol *kcontrol,
- 	if (scene->name)
- 		name = scene->name;
- 
--	strscpy(uinfo->value.enumerated.name, name, strlen(name) + 1);
-+	strscpy(uinfo->value.enumerated.name, name);
- 
- 	return 0;
+diff --git a/net/bridge/br_multicast.c b/net/bridge/br_multicast.c
+index 881d866d687a0..2eef4f3345cd7 100644
+--- a/net/bridge/br_multicast.c
++++ b/net/bridge/br_multicast.c
+@@ -4640,10 +4640,24 @@ static void br_multicast_start_querier(struct net_bridge_mcast *brmctx,
+ 	rcu_read_unlock();
  }
+ 
+-static void br_multicast_del_grps(struct net_bridge *br)
++static void br_multicast_enable_all_ports(struct net_bridge *br)
+ {
+ 	struct net_bridge_port *port;
+ 
++	if (br_opt_get(br, BROPT_MCAST_VLAN_SNOOPING_ENABLED))
++		return;
++
++	list_for_each_entry(port, &br->port_list, list)
++		__br_multicast_enable_port_ctx(&port->multicast_ctx);
++}
++
++static void br_multicast_disable_all_ports(struct net_bridge *br)
++{
++	struct net_bridge_port *port;
++
++	if (br_opt_get(br, BROPT_MCAST_VLAN_SNOOPING_ENABLED))
++		return;
++
+ 	list_for_each_entry(port, &br->port_list, list)
+ 		__br_multicast_disable_port_ctx(&port->multicast_ctx);
+ }
+@@ -4651,7 +4665,6 @@ static void br_multicast_del_grps(struct net_bridge *br)
+ int br_multicast_toggle(struct net_bridge *br, unsigned long val,
+ 			struct netlink_ext_ack *extack)
+ {
+-	struct net_bridge_port *port;
+ 	bool change_snoopers = false;
+ 	int err = 0;
+ 
+@@ -4668,7 +4681,7 @@ int br_multicast_toggle(struct net_bridge *br, unsigned long val,
+ 	br_opt_toggle(br, BROPT_MULTICAST_ENABLED, !!val);
+ 	if (!br_opt_get(br, BROPT_MULTICAST_ENABLED)) {
+ 		change_snoopers = true;
+-		br_multicast_del_grps(br);
++		br_multicast_disable_all_ports(br);
+ 		goto unlock;
+ 	}
+ 
+@@ -4676,8 +4689,7 @@ int br_multicast_toggle(struct net_bridge *br, unsigned long val,
+ 		goto unlock;
+ 
+ 	br_multicast_open(br);
+-	list_for_each_entry(port, &br->port_list, list)
+-		__br_multicast_enable_port_ctx(&port->multicast_ctx);
++	br_multicast_enable_all_ports(br);
+ 
+ 	change_snoopers = true;
+ 
 -- 
 2.53.0
 
