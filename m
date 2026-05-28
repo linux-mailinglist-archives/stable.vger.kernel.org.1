@@ -1,197 +1,233 @@
-Return-Path: <stable+bounces-254844-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-254845-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 2ManMRAkGGrkeAgAu9opvQ
-	(envelope-from <stable+bounces-254844-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 13:16:32 +0200
+	id 4O66LxcjGGrkeAgAu9opvQ
+	(envelope-from <stable+bounces-254845-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 13:12:23 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 337945F125B
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 13:16:32 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5A0655F1186
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 13:12:23 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 513373034560
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 11:11:46 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id AA1DC3015896
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 11:12:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 149D13C76BD;
-	Thu, 28 May 2026 11:11:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9FB443E00BE;
+	Thu, 28 May 2026 11:12:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=debian.org header.i=@debian.org header.b="ZsFexYRo"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="aZqdbQHA"
 X-Original-To: stable@vger.kernel.org
-Received: from stravinsky.debian.org (stravinsky.debian.org [82.195.75.108])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f172.google.com (mail-pl1-f172.google.com [209.85.214.172])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5E8183E0240
-	for <stable@vger.kernel.org>; Thu, 28 May 2026 11:11:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=82.195.75.108
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 196FC3D16F7
+	for <stable@vger.kernel.org>; Thu, 28 May 2026 11:12:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779966705; cv=none; b=YfhZFIf/PH0YNOuDofINiLSedb52/XaRgPxx1n6WowhQFXMlyGxp0mg1aD0rXiPpx4ayyWu4Gvom1YnAoGI8I5jCVrFsotMeKSzhn/qd1pvhtCH2Vv6xGy15q+OAjEVYxfmPNXg/aDs4k+LZrgkKvHMj4rX65KL3MFdrwhQdUWg=
+	t=1779966739; cv=none; b=sTRItEgSwlK9ytIcSJV66PXfFkuJJwdxGLnWbDiM/V6MUpEkbRkRQW1Y03W7j4eDxYfvArbA9Mm/KNCBTR6oah8O3ZR25WqYJPD1ts3DxFWBCnvuNnC/Gl9aBazDa+liV4Tb84YtHkWAtavR+GTS+V/KEc+UCjKa3KOoEQFrH2A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779966705; c=relaxed/simple;
-	bh=vwvLdWdHl7dnzBbUGBczZfVb6yW+bdf9tnbs/O4KVb8=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=GofaMZVxgGj8ALghutcgi0TWZW/3QdRONzerde2C3V52b2+c6KGl5Pez8xLQ7yWl2MQ6COHAwnvxEps+++Zb/+OgD+KkQMSaG8KqX8oZyT1BnztI2JDHschCkdpwUX2/FE9gzRqW49SD3UOz/cEqL3yZFcZodem13DlXX0E1Zmg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=debian.org; spf=pass smtp.mailfrom=debian.org; dkim=pass (2048-bit key) header.d=debian.org header.i=@debian.org header.b=ZsFexYRo; arc=none smtp.client-ip=82.195.75.108
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=debian.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=debian.org
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=debian.org;
-	s=smtpauto.stravinsky; h=X-Debian-User:In-Reply-To:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description;
-	bh=K1qC8cD3lU7xCgYde/EmMwNJQrhbibIlQm+dbEB48DE=; b=ZsFexYRog4JMRiG3/oXMygy9oC
-	o8zsuK2Rqz1S08ZYmMJc5JHyIJoiL8Eo8NiIV9auDTI/boa+BaWZdh9bc4ugz1EOF+wbtF0jWpzXE
-	p5hRJtO6jeaHRUxOzoBxXBO3YSUWEkxFjNXSU4uJ2r13j5Ze5d/E7d3TEg17wQTUcHgh2iAYMXU9t
-	sp+5GVucm4xu03oo/a6tVJScrs81pxJtpVh7fQVrWRub47e0oat0E1Ig2oBqjP26dmEAZgFL8apW3
-	blIXspRBHtisEqKTtuGTC6nnMpjbP7D5IMrm27q7o7Mn8tT6+H1SjI84svmmaU5WbJMkLZkc+c0j0
-	YchWTx+g==;
-Received: from authenticated-user
-	by stravinsky.debian.org with esmtpsa (TLS1.3:ECDHE_SECP256R1__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
-	(Exim 4.96)
-	(envelope-from <benh@debian.org>)
-	id 1wSYeI-003zO4-28;
-	Thu, 28 May 2026 11:11:39 +0000
-Date: Thu, 28 May 2026 13:11:37 +0200
-From: Ben Hutchings <benh@debian.org>
-To: Sasha Levin <sashal@kernel.org>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: Jiasheng Jiang <jiashengjiangcool@gmail.com>,
-	Zhu Yanjun <yanjun.Zhu@linux.dev>,
-	Leon Romanovsky <leon@kernel.org>, stable@vger.kernel.org
-Subject: [PATCH 5.10 2/2] RDMA/rxe: Fix double free in rxe_srq_from_init
-Message-ID: <ahgi6UOiIZRpCbgZ@decadent.org.uk>
-References: <f7f34b5cf1ddd5a880e0ceba52670bb73f2d21e2.camel@decadent.org.uk>
+	s=arc-20240116; t=1779966739; c=relaxed/simple;
+	bh=b4yzUYDgsNnna6cksjHB3xOq3uPizKotCCHRLJR2qVo=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=DzGo9gG7yUlM7FwEUOzIa84cVuI8TQy2mzU/Pdt4HgmpNNMb1LIA+rrvgN98+E2qeiTN2sxh1R8/LliZJ1E7CYIPWF6KlWmk5nUblU9yO0c7LsBoS6VwAfg1qIZ2TsbYX2JfCRWfSit5qHgXsNaXxU+6qENZ01zPDzBaA2QLxXM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=aZqdbQHA; arc=none smtp.client-ip=209.85.214.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-pl1-f172.google.com with SMTP id d9443c01a7336-2b9ec9443c2so70558715ad.1
+        for <stable@vger.kernel.org>; Thu, 28 May 2026 04:12:17 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1779966737; x=1780571537; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=Aqc9nveU7NUU23u0mW5oSotuBU5xhBDBx8BbOpvmxL4=;
+        b=aZqdbQHA78YL6Yapz/v4sSCIHsooUknz4CwhbqAjxVc2UZpYUGy8BSxy003crU7Ia/
+         JkkAbrtngt2ZH2bQxcZ7DImFrESJtO8U0ow4IKkWGzFsa5TRsbWbJikLuMSqqIS3xsrN
+         H0+GiN9RBm4+tTdvuAYNYtU+MaV57Gsq2APK7Anu1wJFLMdCVFftGE8rnqeaisfTCyC2
+         abFy/uuMw8CH0uzgJfNMbyw+FWAoapHRKrVQiNAjkiSI63pQBgmRKZ7MnN5fhj5vTJhI
+         pa6KZnPsk+vdvSX++yxnSufyifMOhTHeYc5ucX29P7rGGu2VKPEJw2EWWPP30zX7ywBB
+         8oaQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1779966737; x=1780571537;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=Aqc9nveU7NUU23u0mW5oSotuBU5xhBDBx8BbOpvmxL4=;
+        b=ow0TZBd5535vFrMdY5xiIim4SA+N69HUn1VF1n8Z/nGz85E4n1j+ZU/I61CP78Xkvu
+         0AzRFUOyrbsbHuEoAoE+iWQY9PTICuhA+Dj7Im2caadGAQI06jNG5ExB+/ev+45m22If
+         4YOuWpMk8FVVCvu1KHwjlTro2HaRTG+dDixWHOCkUXc+1KlXP6ENV08M9pBb7xEVqmNc
+         pDpuLBrnNuecPzcjfcQhNTI/8vV1t6ba/0GMiS+ok1whvQo/fDM2L43AtJ1gadxGfOPi
+         GNbOlYA8MQGiazpqdP982ejbCrci1JOww9kdVXV6xDXbKC/7UlGCMM1XWt5l8UsECUEQ
+         1SDw==
+X-Forwarded-Encrypted: i=1; AFNElJ9D/82dKqSb7bbvIZIS5iao/f7lE9pIbTZLw+dA46ifBFk47uZZHuIQ98FZ4cy0fBhq1Sv0kiA=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzCgMl+96bdGoNAQAAuQRj0zb4Q9YyfJwAP4hB8TC5WeY8ZNhfU
+	YBwECi2Y5Fsk3FbAiAT0cWtuTwiIA7ejmguX2jD8dtrvdbFnzWGTEYv9
+X-Gm-Gg: Acq92OE+FvoUI472I8Hzcn79Q3bbvpcP5gjf8iDgHvq0OK/V4bWWzrnMCJklVPmMpmJ
+	U5qmCPzIcL6vwucMhDHXx8zl41tHqp+eCxiS8NrH0dsWTrQg2bMKU+akVCwO4vhnjEfrxHwsWmD
+	BAFWSsf9cI+/V6s7DAIep0INv89kLwgbXOxwnQibI/nAJUHzsedIFKuT5+wjUAY7KGAqXjNxon8
+	hTGPUOtkinQdfJ9B+PiJ7gAwsKPcmAC55mlgA/D890wPbUKpUQSXuiWJUwYmHzfBv93tm2/MPIf
+	DB3uIQgUGqixq4lQ2NIPQDBmw8E11HD7AP34LU+3drv+mwHti8HDCIWmbtxZFSXVQx3oZlBBZKl
+	LOtscrLKHRW7d2XBYX2bVeWBeeQGkPeTDG5yb7yHQbDwIj/WDxU1KVcK+paWuUwuoh/pOIDu08r
+	fkdZ4E6Nvq2AzOJ2laPCuJKtrwTZWNMgB4QTBb8+R4zT1UeOOtdJWBKAY=
+X-Received: by 2002:a17:903:2acd:b0:2bd:6327:b507 with SMTP id d9443c01a7336-2bf10cc81a1mr10828205ad.18.1779966737321;
+        Thu, 28 May 2026 04:12:17 -0700 (PDT)
+Received: from teatimelab.tailcd024.ts.net ([192.129.190.145])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2beb5924211sm162946435ad.84.2026.05.28.04.12.09
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 28 May 2026 04:12:16 -0700 (PDT)
+From: Qi Tang <tpluszz77@gmail.com>
+To: davem@davemloft.net,
+	kuba@kernel.org,
+	pabeni@redhat.com,
+	edumazet@google.com
+Cc: netdev@vger.kernel.org,
+	dsahern@kernel.org,
+	idosch@nvidia.com,
+	horms@kernel.org,
+	lyutoon@gmail.com,
+	stable@vger.kernel.org,
+	Qi Tang <tpluszz77@gmail.com>
+Subject: [PATCH net] ipv4: validate ip_forward_options() option fields against skb tail
+Date: Thu, 28 May 2026 19:12:04 +0800
+Message-ID: <20260528111204.482401-1-tpluszz77@gmail.com>
+X-Mailer: git-send-email 2.47.3
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="HIuXv6g5v0+WaXxt"
-Content-Disposition: inline
-In-Reply-To: <f7f34b5cf1ddd5a880e0ceba52670bb73f2d21e2.camel@decadent.org.uk>
-X-Debian-User: benh
-X-Spamd-Result: default: False [-4.26 / 15.00];
-	SIGNED_PGP(-2.00)[];
+Content-Transfer-Encoding: 8bit
+X-Spamd-Result: default: False [-0.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[debian.org,none];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
-	R_DKIM_ALLOW(-0.20)[debian.org:s=smtpauto.stravinsky];
-	MIME_GOOD(-0.20)[multipart/signed,text/plain];
+	MID_CONTAINS_FROM(1.00)[];
+	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
+	R_MISSING_CHARSET(0.50)[];
+	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	MAILLIST(-0.15)[generic];
+	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-254844-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[vger.kernel.org,kernel.org,nvidia.com,gmail.com];
+	TAGGED_FROM(0.00)[bounces-254845-lists,stable=lfdr.de];
+	RCVD_COUNT_FIVE(0.00)[5];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FREEMAIL_CC(0.00)[gmail.com,linux.dev,kernel.org,vger.kernel.org];
-	RCVD_COUNT_THREE(0.00)[4];
-	TO_DN_SOME(0.00)[];
-	MIME_TRACE(0.00)[0:+,1:+,2:~];
+	MIME_TRACE(0.00)[0:+];
 	FROM_HAS_DN(0.00)[];
-	MISSING_XM_UA(0.00)[];
+	TO_DN_SOME(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[tpluszz77@gmail.com,stable@vger.kernel.org];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[benh@debian.org,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[debian.org:+];
+	RCPT_COUNT_SEVEN(0.00)[11];
+	NEURAL_HAM(-0.00)[-1.000];
+	DKIM_TRACE(0.00)[gmail.com:+];
 	TAGGED_RCPT(0.00)[stable];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	FREEMAIL_FROM(0.00)[gmail.com];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[6];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,linux.dev:email,decadent.org.uk:mid,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
-X-Rspamd-Queue-Id: 337945F125B
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo]
+X-Rspamd-Queue-Id: 5A0655F1186
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
+ip_forward_options() re-reads the RR/SRR/TS option length byte
+optptr[1] and pointer byte optptr[2] from the skb on the forwarding
+path and uses them as indexes for 4-byte writes via
+ip_rt_get_source() (and a memcmp walk in the SRR branch).
 
---HIuXv6g5v0+WaXxt
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+__ip_options_compile() validates those bytes at parse time but stores
+only the option's offset into IPCB(skb)->opt.{rr,srr,ts}.  An nftables
+FORWARD-chain payload mutation between parse and consume can rewrite
+the bytes, driving the indexed writes out of bounds and overlapping
+skb_shared_info.  With optptr[2] mutated the write can land in
+skb_shared_info.frag_list; the next time the skb is dropped
+kfree_skb_list_reason() walks the forged list and frees an
+attacker-controlled pointer, an arbitrary-free primitive (R15 below
+is the corrupted frag_list):
 
-=46rom: Jiasheng Jiang <jiashengjiangcool@gmail.com>
+  BUG: unable to handle page fault for address: ffffed10195fd757
+  Oops: 0000 [#1] SMP KASAN NOPTI
+  RIP: 0010:kfree_skb_list_reason+0x167/0x5f0
+  RAX: 1ffff110195fd757 RBX: dffffc0000000000
+  R15: ffff8880cafebabe
+  CR2: ffffed10195fd757
+  Call Trace:
+   skb_release_data+0x565/0x820
+   sk_skb_reason_drop+0xc1/0x350
+   ip_rcv_core+0x7a8/0xcd0
+   ip_rcv+0x97/0x270
+   __netif_receive_skb_one_core+0x161/0x1b0
+   process_backlog+0x1c4/0x5b0
+   net_rx_action+0x934/0xfa0
 
-commit 0beefd0e15d962f497aad750b2d5e9c3570b66d1 upstream.
+Bound optptr[2] within optptr[1] before the RR and TS writes, and
+clamp the SRR walk to the bytes actually present in the skb.  Match
+the existing error handling in this function: skip the malformed
+option in place rather than returning, so the single ip_send_check()
+at the end still recomputes the checksum for any option that was
+updated earlier.
 
-In rxe_srq_from_init(), the queue pointer 'q' is assigned to
-'srq->rq.queue' before copying the SRQ number to user space.
-If copy_to_user() fails, the function calls rxe_queue_cleanup()
-to free the queue, but leaves the now-invalid pointer in
-'srq->rq.queue'.
-
-The caller of rxe_srq_from_init() (rxe_create_srq) eventually
-calls rxe_srq_cleanup() upon receiving the error, which triggers
-a second rxe_queue_cleanup() on the same memory, leading to a
-double free.
-
-The call trace looks like this:
-   kmem_cache_free+0x.../0x...
-   rxe_queue_cleanup+0x1a/0x30 [rdma_rxe]
-   rxe_srq_cleanup+0x42/0x60 [rdma_rxe]
-   rxe_elem_release+0x31/0x70 [rdma_rxe]
-   rxe_create_srq+0x12b/0x1a0 [rdma_rxe]
-   ib_create_srq_user+0x9a/0x150 [ib_core]
-
-Fix this by moving 'srq->rq.queue =3D q' after copy_to_user.
-
-Fixes: aae0484e15f0 ("IB/rxe: avoid srq memory leak")
-Signed-off-by: Jiasheng Jiang <jiashengjiangcool@gmail.com>
-Link: https://patch.msgid.link/20260112015412.29458-1-jiashengjiangcool@gma=
-il.com
-Reviewed-by: Zhu Yanjun <yanjun.Zhu@linux.dev>
-Signed-off-by: Leon Romanovsky <leon@kernel.org>
-[bwh: Backported to 5.10: There was no assignment to init->attr.max_wr
- here; don't add it]
-Signed-off-by: Ben Hutchings <benh@debian.org>
+Cc: stable@vger.kernel.org
+Reported-by: Qi Tang <tpluszz77@gmail.com>
+Reported-by: Tong Liu <lyutoon@gmail.com>
+Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
+Signed-off-by: Qi Tang <tpluszz77@gmail.com>
 ---
- drivers/infiniband/sw/rxe/rxe_srq.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ net/ipv4/ip_options.c | 27 +++++++++++++++++++--------
+ 1 file changed, 19 insertions(+), 8 deletions(-)
 
-diff --git a/drivers/infiniband/sw/rxe/rxe_srq.c b/drivers/infiniband/sw/rx=
-e/rxe_srq.c
-index 41b0d1e11baf..4e523d91e7dc 100644
---- a/drivers/infiniband/sw/rxe/rxe_srq.c
-+++ b/drivers/infiniband/sw/rxe/rxe_srq.c
-@@ -98,8 +98,6 @@ int rxe_srq_from_init(struct rxe_dev *rxe, struct rxe_srq=
- *srq,
- 		return -ENOMEM;
+diff --git a/net/ipv4/ip_options.c b/net/ipv4/ip_options.c
+index be8815ce3ac24..36a4e3cc39dd1 100644
+--- a/net/ipv4/ip_options.c
++++ b/net/ipv4/ip_options.c
+@@ -544,18 +544,26 @@ void ip_forward_options(struct sk_buff *skb)
+ 
+ 	if (opt->rr_needaddr) {
+ 		optptr = (unsigned char *)raw + opt->rr;
+-		ip_rt_get_source(&optptr[optptr[2]-5], skb, rt);
+-		opt->is_changed = 1;
++		if (optptr + optptr[1] <= skb_tail_pointer(skb) &&
++		    optptr[2] >= 5 && optptr[2] <= optptr[1] + 1) {
++			ip_rt_get_source(&optptr[optptr[2] - 5], skb, rt);
++			opt->is_changed = 1;
++		}
  	}
-=20
--	srq->rq.queue =3D q;
--
- 	err =3D do_mmap_info(rxe, uresp ? &uresp->mi : NULL, udata, q->buf,
- 			   q->buf_size, &q->ip);
- 	if (err) {
-@@ -116,6 +114,8 @@ int rxe_srq_from_init(struct rxe_dev *rxe, struct rxe_s=
-rq *srq,
+ 	if (opt->srr_is_hit) {
+ 		int srrptr, srrspace;
+ 
+ 		optptr = raw + opt->srr;
+ 
+-		for ( srrptr = optptr[2], srrspace = optptr[1];
+-		     srrptr <= srrspace;
+-		     srrptr += 4
+-		     ) {
++		/* optptr[1] (option length) may have been rewritten after the
++		 * parse-time check; if it now runs past the skb the option is
++		 * malformed, so skip the source-route rewrite below.
++		 */
++		srrspace = optptr[1];
++		if (optptr + srrspace > skb_tail_pointer(skb))
++			srrspace = 0;
++
++		for (srrptr = optptr[2]; srrptr <= srrspace; srrptr += 4) {
+ 			if (srrptr + 3 > srrspace)
+ 				break;
+ 			if (memcmp(&opt->nexthop, &optptr[srrptr-1], 4) == 0)
+@@ -572,8 +580,11 @@ void ip_forward_options(struct sk_buff *skb)
+ 		}
+ 		if (opt->ts_needaddr) {
+ 			optptr = raw + opt->ts;
+-			ip_rt_get_source(&optptr[optptr[2]-9], skb, rt);
+-			opt->is_changed = 1;
++			if (optptr + optptr[1] <= skb_tail_pointer(skb) &&
++			    optptr[2] >= 9 && optptr[2] <= optptr[1] + 5) {
++				ip_rt_get_source(&optptr[optptr[2] - 9], skb, rt);
++				opt->is_changed = 1;
++			}
  		}
  	}
-=20
-+	srq->rq.queue =3D q;
-+
- 	return 0;
- }
-=20
+ 	if (opt->is_changed) {
+-- 
+2.47.3
 
---HIuXv6g5v0+WaXxt
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQIzBAABCgAdFiEErCspvTSmr92z9o8157/I7JWGEQkFAmoYIukACgkQ57/I7JWG
-EQlLrhAA0tuwUIKgvLCoynK26EJEFcHT2Jl5GhzzAaq2LLYO5govQo5oPvqN8XO8
-ktVzrDOXY5+/nr1gmN/HwjuJvec7yfzQCxKVddFLHSo7V2nmInjBfFwpyfCntx9c
-9V4tBIhOlp1MPCsf02p38MosGH2Uc8LbdjCsRck3TWyf0AJ7YDH6NkwGurPonBnR
-8vPdrQy7wsVy3YL7fwIHnd8auOT15LqlZlgGjWPsLaVVWtsxbj4oDtEPdyJisNZb
-1S4CYZ/1cBpz8PkgrEsiQMYg1rzWGexzcoidrPftLYNZEcPhvEL9Gn/Ds3eqvcIk
-frLVLcpQNadTdcB/GB/M935hcb2TOD7x1wNWiUw1KathjpFKS9SAdsL9IU5Y33Bn
-vJA4eSMYxP89QFKjm/28T79CybCmQU+Avr9bVrzPKhsJjO3XMxRpmLA1/A/Fqsk0
-O7KkcjoUBOilLP+/YPklivYWKrk6ODOWsOFqAB3LJHzYQHjc/48kc6C1nEbBToly
-MRZcR/GdrbA0EAYnr+4//xNzMEi7kf6dQeVmC6xyGQ5shM1GcO9IxLhzEJdMNPpF
-n6zyQRAcKrsAWFmPQOdOX9hB1WmH/DGX/A0XpsFX3R50l1l8IkJKo35qmR1kzPwG
-zLQdeY7eXHoOmdJGVau4yif1+HCCq9KNiVPLYaJlHR4vFCX6ttg=
-=V+Ag
------END PGP SIGNATURE-----
-
---HIuXv6g5v0+WaXxt--
 
