@@ -1,58 +1,63 @@
-Return-Path: <stable+bounces-256304-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-256136-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id KNtXHUqsGGpolwgAu9opvQ
-	(envelope-from <stable+bounces-256304-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:57:46 +0200
+	id MCQuBYaqGGpolwgAu9opvQ
+	(envelope-from <stable+bounces-256136-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:50:14 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id EE7F95F9EB1
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:57:45 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 677F85F9A53
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:50:13 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 4D50031E9D0B
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 20:48:45 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id B35F43112B16
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 20:41:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 237D8310620;
-	Thu, 28 May 2026 20:48:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9469234389C;
+	Thu, 28 May 2026 20:40:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pfOc5Omz"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mRCjDyFC"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 021C22F1FEF;
-	Thu, 28 May 2026 20:48:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4D9E333987F;
+	Thu, 28 May 2026 20:40:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780001324; cv=none; b=DZJ3t3OPkaqdzGq+bygTxvwdVZnlR4R7EONAXw+8KzVKuQtfm9OM6b41jAVg5XXlpKwl2V1uKJpyOlFQ9EdJ5yf/ddAjb7G7s0uTPULJEUhpyPitT/C9TkuAxdQQNI3RppAupIVqJviBuSzcGgqvuL9wHMvg8SH38P23iEMPWdw=
+	t=1780000857; cv=none; b=fYw5D24KkaoCwV8FuJvrvclkqVK6b7zipRFt/baaP+N+pZh6wbHppKUvv6lGHaTarAIFm7JPGNxCjz34UkRSc7VOAOm4N441XRjRT1Hdpb7QqEXVlkw+Y0/v9yz4c2n61cuqSbb/k/LNJ1CY70r3bkUrYJGzcC0AvzpDx/Gqf0E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780001324; c=relaxed/simple;
-	bh=+D+UTq1valeBKZXZdnpn7ZBHjqDEeF4dJ3iszDCpFoU=;
+	s=arc-20240116; t=1780000857; c=relaxed/simple;
+	bh=7jpHKHp5KvdWih3wrMuGQGDXxa7VAvkgvK6XI+5pk6c=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=FkMf5Nb+dSi7VFMetzdrOJ/w0AJPDQwFHprMnFRoRQtS0hTO88k5UIvcl2uM7WCb2XMDPHo8mMpQN5/9SVAQd5c4Pss88tglTDkMbfZ9gzb/pOeERin26dn8wcq+vdr0YeAf/Cj0CzYkl5/vMhBf1s7GnNKTa163mc3caG5ge2M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pfOc5Omz; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 573F11F000E9;
-	Thu, 28 May 2026 20:48:43 +0000 (UTC)
+	 MIME-Version; b=ohJj9V+0LUn77b9IsiL5QYnziR7kQecmTiNSxHVOCBRCHSYWCe8/cGXK4ufYUlkeksVdWcI8adocoDAYwgMyuKtH85qfZXNkj3YA8PN/y4s4ONkwDwO9t5jR2AzLLUA9sleYsJoe8atmX4KLFaKmdYsq9aMe5xFL7ryUgnH9PnY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mRCjDyFC; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A93E51F000E9;
+	Thu, 28 May 2026 20:40:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780001323;
-	bh=0cF9C6DC0RKqtO86ePNF/uouXuKBHrzurbbhcxTj/Pc=;
+	s=korg; t=1780000856;
+	bh=lqaEGmVaI36/uw8KBuNd97QazVD6UTFQcjC50dElQWU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=pfOc5Omzq2ajwKK1TK/NhzplmyuJ88/OQU82D4x2QccGWThGsNCB4AP7YQuJVaJ/V
-	 KQONkFTAws6n7xsYCBt6ExdZIRN4CARPEmDiCicGc4umFIf9wxMBpCWzbfAOT93qrt
-	 ck9MMDcTXb5J6RbYNgmg3u7w6wWLv2vHlh9yFNt0=
+	b=mRCjDyFCSE5xk0gUlY3mp0nIkUEH7XJAvCOJ8qFbATIXGn/YOkRdzpeAtgRTK5A4A
+	 9tshe1aNd3BfnN4pj3FWFiMRnB1n5UY7YgaqDKQrbvgzT6FVduqPwKB6VyqBpwlB7d
+	 vIrtTTBR4g6rDXSJkO2fvEJ8bgozj4c76dVh2P+w=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable@kernel.org,
-	Sven Eckelmann <sven@narfation.org>
-Subject: [PATCH 6.6 087/186] batman-adv: tt: fix negative tt_buff_len
+	David Howells <dhowells@redhat.com>,
+	Paulo Alcantara <pc@manguebit.org>,
+	Matthew Wilcox <willy@infradead.org>,
+	netfs@lists.linux.dev,
+	linux-fsdevel@vger.kernel.org,
+	Christian Brauner <brauner@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 193/272] netfs: Defer the emission of trace_netfs_folio()
 Date: Thu, 28 May 2026 21:49:27 +0200
-Message-ID: <20260528194931.285582508@linuxfoundation.org>
+Message-ID: <20260528194634.672091157@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260528194928.941004471@linuxfoundation.org>
-References: <20260528194928.941004471@linuxfoundation.org>
+In-Reply-To: <20260528194629.379955525@linuxfoundation.org>
+References: <20260528194629.379955525@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -67,73 +72,148 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-256136-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-256304-lists,stable=lfdr.de];
-	TO_DN_SOME(0.00)[];
-	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[5];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[narfation.org:email,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim]
-X-Rspamd-Queue-Id: EE7F95F9EB1
+	TO_DN_SOME(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_SEVEN(0.00)[10];
+	MID_RHS_MATCH_FROM(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,manguebit.org:email,msgid.link:url,linux.dev:email,sashiko.dev:url,infradead.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim]
+X-Rspamd-Queue-Id: 677F85F9A53
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sven Eckelmann <sven@narfation.org>
+From: David Howells <dhowells@redhat.com>
 
-commit b64963a2ceeb7529310b6cf253a1e540784422f4 upstream.
+[ Upstream commit daeb443b92817021c1234e8eded219e164b7c35d ]
 
-batadv_orig_node::tt_buff_len was declared as s16, but the field is never
-intended to hold a negative value. When a value greater than 32767 is
-assigned, it wraps to a negative signed integer.
+Change netfs_perform_write() to keep the netfs_folio trace value in a
+variable and emit it later to make it easier to choose the value displayed.
+This is a prerequisite for a subsequent patch.
 
-In batadv_send_other_tt_response(), tt_buff_len is temporarily widened to
-s32. The incorrectly negative s16 value propagates into the s32, causing
-batadv_tt_prepare_tvlv_global_data() to allocate a full sized buffer but
-populates only a small portion of it with the collected changeset. All
-remaining bits are kept uninitialized.
-
-Using an u16 avoids this type confusion and ensures that no (negative) sign
-extension is performed in batadv_send_other_tt_response().
-
-Cc: stable@kernel.org
-Fixes: a73105b8d4c7 ("batman-adv: improved client announcement mechanism")
-Signed-off-by: Sven Eckelmann <sven@narfation.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Closes: https://sashiko.dev/#/patchset/20260414082004.3756080-1-dhowells%40redhat.com
+Signed-off-by: David Howells <dhowells@redhat.com>
+Link: https://patch.msgid.link/20260512123404.719402-13-dhowells@redhat.com
+cc: Paulo Alcantara <pc@manguebit.org>
+cc: Matthew Wilcox <willy@infradead.org>
+cc: netfs@lists.linux.dev
+cc: linux-fsdevel@vger.kernel.org
+Signed-off-by: Christian Brauner <brauner@kernel.org>
+Stable-dep-of: 7b4dcf1b9455 ("netfs: Fix streaming write being overwritten")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/batman-adv/types.h |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ fs/netfs/buffered_write.c | 18 ++++++++++--------
+ 1 file changed, 10 insertions(+), 8 deletions(-)
 
---- a/net/batman-adv/types.h
-+++ b/net/batman-adv/types.h
-@@ -446,7 +446,7 @@ struct batadv_orig_node {
- 	 * @tt_buff_len: length of the last tt changeset this node received
- 	 *  from the orig node
- 	 */
--	s16 tt_buff_len;
-+	u16 tt_buff_len;
+diff --git a/fs/netfs/buffered_write.c b/fs/netfs/buffered_write.c
+index be77a137cc871..48c66d26e7b7e 100644
+--- a/fs/netfs/buffered_write.c
++++ b/fs/netfs/buffered_write.c
+@@ -143,6 +143,7 @@ ssize_t netfs_perform_write(struct kiocb *iocb, struct iov_iter *iter,
+ 	}
  
- 	/** @tt_buff_lock: lock that protects tt_buff and tt_buff_len */
- 	spinlock_t tt_buff_lock;
+ 	do {
++		enum netfs_folio_trace trace;
+ 		struct netfs_folio *finfo;
+ 		struct netfs_group *group;
+ 		unsigned long long fpos;
+@@ -216,7 +217,7 @@ ssize_t netfs_perform_write(struct kiocb *iocb, struct iov_iter *iter,
+ 			if (unlikely(copied == 0))
+ 				goto copy_failed;
+ 			netfs_set_group(folio, netfs_group);
+-			trace_netfs_folio(folio, netfs_folio_is_uptodate);
++			trace = netfs_folio_is_uptodate;
+ 			goto copied;
+ 		}
+ 
+@@ -232,7 +233,7 @@ ssize_t netfs_perform_write(struct kiocb *iocb, struct iov_iter *iter,
+ 			zero_user_segment(&folio->page, offset + copied, flen);
+ 			__netfs_set_group(folio, netfs_group);
+ 			folio_mark_uptodate(folio);
+-			trace_netfs_folio(folio, netfs_modify_and_clear);
++			trace = netfs_modify_and_clear;
+ 			goto copied;
+ 		}
+ 
+@@ -250,7 +251,7 @@ ssize_t netfs_perform_write(struct kiocb *iocb, struct iov_iter *iter,
+ 			}
+ 			__netfs_set_group(folio, netfs_group);
+ 			folio_mark_uptodate(folio);
+-			trace_netfs_folio(folio, netfs_whole_folio_modify);
++			trace = netfs_whole_folio_modify;
+ 			goto copied;
+ 		}
+ 
+@@ -277,7 +278,7 @@ ssize_t netfs_perform_write(struct kiocb *iocb, struct iov_iter *iter,
+ 			if (unlikely(copied == 0))
+ 				goto copy_failed;
+ 			netfs_set_group(folio, netfs_group);
+-			trace_netfs_folio(folio, netfs_just_prefetch);
++			trace = netfs_just_prefetch;
+ 			goto copied;
+ 		}
+ 
+@@ -291,7 +292,7 @@ ssize_t netfs_perform_write(struct kiocb *iocb, struct iov_iter *iter,
+ 			if (offset == 0 && copied == flen) {
+ 				__netfs_set_group(folio, netfs_group);
+ 				folio_mark_uptodate(folio);
+-				trace_netfs_folio(folio, netfs_streaming_filled_page);
++				trace = netfs_streaming_filled_page;
+ 				goto copied;
+ 			}
+ 
+@@ -306,7 +307,7 @@ ssize_t netfs_perform_write(struct kiocb *iocb, struct iov_iter *iter,
+ 			finfo->dirty_len = copied;
+ 			folio_attach_private(folio, (void *)((unsigned long)finfo |
+ 							     NETFS_FOLIO_INFO));
+-			trace_netfs_folio(folio, netfs_streaming_write);
++			trace = netfs_streaming_write;
+ 			goto copied;
+ 		}
+ 
+@@ -326,9 +327,9 @@ ssize_t netfs_perform_write(struct kiocb *iocb, struct iov_iter *iter,
+ 					folio_detach_private(folio);
+ 				folio_mark_uptodate(folio);
+ 				kfree(finfo);
+-				trace_netfs_folio(folio, netfs_streaming_cont_filled_page);
++				trace = netfs_streaming_cont_filled_page;
+ 			} else {
+-				trace_netfs_folio(folio, netfs_streaming_write_cont);
++				trace = netfs_streaming_write_cont;
+ 			}
+ 			goto copied;
+ 		}
+@@ -344,6 +345,7 @@ ssize_t netfs_perform_write(struct kiocb *iocb, struct iov_iter *iter,
+ 		continue;
+ 
+ 	copied:
++		trace_netfs_folio(folio, trace);
+ 		flush_dcache_folio(folio);
+ 
+ 		/* Update the inode size if we moved the EOF marker */
+-- 
+2.53.0
+
 
 
 
