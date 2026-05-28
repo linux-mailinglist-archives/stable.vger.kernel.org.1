@@ -1,59 +1,59 @@
-Return-Path: <stable+bounces-255543-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-256314-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id AN/iJJKiGGrClggAu9opvQ
-	(envelope-from <stable+bounces-255543-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:16:18 +0200
+	id SEy0JfOtGGpolwgAu9opvQ
+	(envelope-from <stable+bounces-256314-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 23:04:51 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6DA415F8385
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:16:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B3D005FA2F4
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 23:04:50 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 087593048F0B
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 20:13:29 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id CF769309F28B
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 20:49:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C4DFA33F5B4;
-	Thu, 28 May 2026 20:13:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 111492F1FEF;
+	Thu, 28 May 2026 20:49:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fmwwlcd5"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YRgal6NW"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 903E832ABC0;
-	Thu, 28 May 2026 20:13:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D1E172F549F;
+	Thu, 28 May 2026 20:49:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779999206; cv=none; b=EFBuxMVRard93L0JZBrcZmmFmo0eR43aeE7b7SfeDKtXOksuGjjGXLqXOD0AQRwtKjd2pVpsNRG9atzBuuhRucLn3SYxHQ2l1PYrGCfdSMxIUxw9dIXIRTAxoIBeXP9UwmrW7VZa3kUy4OIOb41nCO/CAEuQXvKaltpWRmxOl7U=
+	t=1780001352; cv=none; b=MKxTP3yd5sEp6PI0PZzfODOIwAzA3IGCgLH8SWMZ/elrmcjXcpakjwZUmTYFxDFGFsNoYTxuyMrQ3vOBZBI/AX5VzWCTthceXs9CU1HXO4UNJIxpyyTPKqVYIm4mnRXMXgrKmYB0ITq350DgI1Wa73Hrm8I/Iu96YgNImeqOGkY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779999206; c=relaxed/simple;
-	bh=eHdlIqDj4pAemVMaLxX5kCBB1m5ThRXJK11PJuRzNT0=;
+	s=arc-20240116; t=1780001352; c=relaxed/simple;
+	bh=eqR3tJM7YKcnf3Eoq9NcrqyCz2kztnPn7wn9pd8xp1E=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=YpTeNzLP9Ep0WuMgG8KrWocTfcZkKB5xaSpHR6MoWUTbjanmrhND7fnLR6l427m12THD/ZcSHUwsUGtCriYrj9wAg9lrJ5LCqaFLrPSsugUZOtPH5E72MTgw+yeRqWZF/tS8SBj/ok+2H33lYF0zoQPtT70dvUy3OHuRlJFlsIw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fmwwlcd5; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EE6301F000E9;
-	Thu, 28 May 2026 20:13:24 +0000 (UTC)
+	 MIME-Version; b=FvZCHcR+sQfJ3CaHXN/sr95PWNVwvEPJH+Dp3u8IDsyRw9BjTx0Wv4nTm9ZoSJxk20G1h8LsfOH6frO//NZ41xqllHM2oZKDULymfIfUjWAadbltd5futc67y64oFtmovqwCmCfbXLzVH9tV65VqZ0K+5wRVeneq3AvAbaAK7Vg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YRgal6NW; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3BB801F000E9;
+	Thu, 28 May 2026 20:49:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779999205;
-	bh=8q26XA0fye5jf4ML5p7lDGvz3TZWDMDbFdypYjbIYlk=;
+	s=korg; t=1780001351;
+	bh=FxHRxiQ6XugTT/kkIQuSiEyyvOhSjW70075xXUvBVC0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=fmwwlcd5EGX/+w+0Zs1PtRVTUUCegSk7RP6dlsdoytMCpVT70c7Sd5ql8RyprfJ+t
-	 JIpIki8Bh1+pIsKCwJOSglD4AZSYx31sForAmmovfes1ZshLp5E3DVFcPdCc8pzI3f
-	 F2BSHPEsJTXmVomXiW//707cY1L01IYBLNcq14Q0=
+	b=YRgal6NWmS+3iDOKTxqlEZ1dGIcHTLWZ1SkNvaQsSGTW64SWrks/SPGMwTeDo/URr
+	 23ZOrM3XzjqBs0Ff7sPevoDJHDAffGwjxQ40Lr074dJTSeA0imIKt+kZgIU0HE8xNU
+	 whhlHT5LeK9sZVlkKMAEIwksPEw6x5KNdA8TO85I=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Christoph Hellwig <hch@lst.de>,
-	Keith Busch <kbusch@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 7.0 447/461] nvme-pci: fix dma mapping leak on data setup error
+	Abdurrahman Hussain <abdurrahman@nexthop.ai>,
+	Bartosz Golaszewski <bartosz.golaszewski@oss.qualcomm.com>,
+	Guenter Roeck <linux@roeck-us.net>
+Subject: [PATCH 6.6 096/186] hwmon: (pmbus/adm1266) reject short block-read responses in the GPIO accessors
 Date: Thu, 28 May 2026 21:49:36 +0200
-Message-ID: <20260528194700.474408065@linuxfoundation.org>
+Message-ID: <20260528194931.526951477@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260528194646.819809818@linuxfoundation.org>
-References: <20260528194646.819809818@linuxfoundation.org>
+In-Reply-To: <20260528194928.941004471@linuxfoundation.org>
+References: <20260528194928.941004471@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -78,7 +78,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-255543-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-256314-lists,stable=lfdr.de];
 	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
@@ -90,113 +90,81 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim,lst.de:email]
-X-Rspamd-Queue-Id: 6DA415F8385
+	DBL_BLOCKED_OPENRESOLVER(0.00)[nexthop.ai:email,qualcomm.com:email,roeck-us.net:email,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim]
+X-Rspamd-Queue-Id: B3D005FA2F4
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-7.0-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Keith Busch <kbusch@kernel.org>
+From: Abdurrahman Hussain <abdurrahman@nexthop.ai>
 
-[ Upstream commit 1bf86336e4b6cf40873fda47a7fe191446864937 ]
+commit a7232f68c43ca62f545049b7f5fbfc75137b843b upstream.
 
-We're leaking the initial DMA mapping during iteration if we fail to
-allocate the tracking descriptor for both PRP and SGL. Unmap the
-iterator directly; we can't use the existing unmap helper because it
-depends on the tracking descriptor being successfully allocated, so a
-new one for an in-use iterator is provided.
+adm1266_gpio_get() and adm1266_gpio_get_multiple() both compose the
+pin-status word as
 
-The mappings were also leaking when the driver detects an invalid
-bio_vec when mapping PRPs, so fix that too.
+	pins_status = read_buf[0] + (read_buf[1] << 8);
 
-Fixes: b8b7570a7ec87 ("nvme-pci: fix dma unmapping when using PRPs and not using the IOVA mapping")
-Fixes: 7ce3c1dd78fca ("nvme-pci: convert the data mapping to blk_rq_dma_map")
-Reviewed-by: Christoph Hellwig <hch@lst.de>
-Signed-off-by: Keith Busch <kbusch@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+right after i2c_smbus_read_block_data(), guarding only against an
+error return.  A well-behaved device returns 2 bytes for
+GPIO_STATUS/PDIO_STATUS, but the helper happily reports a 0- or
+1-byte response too.  If the device returns 0 bytes, both read_buf
+slots are uninitialized stack memory; if it returns 1 byte, read_buf[1]
+is.
+
+The composed value then flows through set_bit() into the caller's
+*bits in adm1266_gpio_get_multiple(), or into the return value of
+adm1266_gpio_get(), and ends up in userspace via gpiolib (sysfs and
+the char-dev ioctls).  That leaks a few bits of kernel stack per
+request on any device whose firmware glitch, bus error, or hostile
+slave produces a short block-read response.
+
+Add the missing length check to both call sites and surface a short
+response as -EIO.
+
+Fixes: d98dfad35c38 ("hwmon: (pmbus/adm1266) Add support for GPIOs")
+Cc: stable@vger.kernel.org
+Signed-off-by: Abdurrahman Hussain <abdurrahman@nexthop.ai>
+Reviewed-by: Bartosz Golaszewski <bartosz.golaszewski@oss.qualcomm.com>
+Link: https://lore.kernel.org/r/20260518-adm1266-gpio-fixes-v3-3-e425e4f88139@nexthop.ai
+Signed-off-by: Guenter Roeck <linux@roeck-us.net>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/nvme/host/pci.c | 31 ++++++++++++++++++++++++++++---
- 1 file changed, 28 insertions(+), 3 deletions(-)
+ drivers/hwmon/pmbus/adm1266.c |    6 ++++++
+ 1 file changed, 6 insertions(+)
 
-diff --git a/drivers/nvme/host/pci.c b/drivers/nvme/host/pci.c
-index 5b998db940bd6..a0e9767bc21e6 100644
---- a/drivers/nvme/host/pci.c
-+++ b/drivers/nvme/host/pci.c
-@@ -997,6 +997,23 @@ static bool nvme_pci_prp_iter_next(struct request *req, struct device *dma_dev,
- 	return nvme_pci_prp_save_mapping(req, dma_dev, iter);
- }
+--- a/drivers/hwmon/pmbus/adm1266.c
++++ b/drivers/hwmon/pmbus/adm1266.c
+@@ -176,6 +176,8 @@ static int adm1266_gpio_get(struct gpio_
+ 	ret = i2c_smbus_read_block_data(data->client, pmbus_cmd, read_buf);
+ 	if (ret < 0)
+ 		return ret;
++	if (ret < 2)
++		return -EIO;
  
-+static void nvme_unmap_iter(struct request *req, struct blk_dma_iter *iter,
-+			    struct dma_iova_state *state)
-+{
-+	struct nvme_queue *nvmeq = req->mq_hctx->driver_data;
-+	struct device *dev = nvmeq->dev->dev;
-+
-+	if (!blk_rq_dma_unmap(req, dev, state, iter->len, iter->p2pdma.map)) {
-+		unsigned int attrs = 0;
-+
-+		if (iter->p2pdma.map == PCI_P2PDMA_MAP_THRU_HOST_BRIDGE)
-+			attrs |= DMA_ATTR_MMIO;
-+
-+		dma_unmap_phys(dev, iter->addr, iter->len, rq_dma_dir(req),
-+			       attrs);
-+	}
-+}
-+
- static blk_status_t nvme_pci_setup_data_prp(struct request *req,
- 		struct blk_dma_iter *iter)
- {
-@@ -1007,8 +1024,10 @@ static blk_status_t nvme_pci_setup_data_prp(struct request *req,
- 	unsigned int prp_len, i;
- 	__le64 *prp_list;
+ 	pins_status = read_buf[0] + (read_buf[1] << 8);
+ 	if (offset < ADM1266_GPIO_NR)
+@@ -196,6 +198,8 @@ static int adm1266_gpio_get_multiple(str
+ 	ret = i2c_smbus_read_block_data(data->client, ADM1266_GPIO_STATUS, read_buf);
+ 	if (ret < 0)
+ 		return ret;
++	if (ret < 2)
++		return -EIO;
  
--	if (!nvme_pci_prp_save_mapping(req, nvmeq->dev->dev, iter))
-+	if (!nvme_pci_prp_save_mapping(req, nvmeq->dev->dev, iter)) {
-+		nvme_unmap_iter(req, iter, &iod->dma_state);
- 		return iter->status;
-+	}
+ 	status = read_buf[0] + (read_buf[1] << 8);
  
- 	/*
- 	 * PRP1 always points to the start of the DMA transfers.
-@@ -1113,6 +1132,7 @@ static blk_status_t nvme_pci_setup_data_prp(struct request *req,
- 	dev_err_once(nvmeq->dev->dev,
- 		"Incorrectly formed request for payload:%d nents:%d\n",
- 		blk_rq_payload_bytes(req), blk_rq_nr_phys_segments(req));
-+	nvme_unmap_data(req);
- 	return BLK_STS_IOERR;
- }
+@@ -208,6 +212,8 @@ static int adm1266_gpio_get_multiple(str
+ 	ret = i2c_smbus_read_block_data(data->client, ADM1266_PDIO_STATUS, read_buf);
+ 	if (ret < 0)
+ 		return ret;
++	if (ret < 2)
++		return -EIO;
  
-@@ -1156,8 +1176,11 @@ static blk_status_t nvme_pci_setup_data_sgl(struct request *req,
+ 	status = read_buf[0] + (read_buf[1] << 8);
  
- 	sg_list = dma_pool_alloc(nvme_dma_pool(nvmeq, iod), GFP_ATOMIC,
- 			&sgl_dma);
--	if (!sg_list)
-+	if (!sg_list) {
-+		nvme_unmap_iter(req, iter, &iod->dma_state);
- 		return BLK_STS_RESOURCE;
-+	}
-+
- 	iod->descriptors[iod->nr_descriptors++] = sg_list;
- 
- 	do {
-@@ -1314,8 +1337,10 @@ static blk_status_t nvme_pci_setup_meta_iter(struct request *req)
- 
- 	sg_list = dma_pool_alloc(nvmeq->descriptor_pools.small, GFP_ATOMIC,
- 			&sgl_dma);
--	if (!sg_list)
-+	if (!sg_list) {
-+		nvme_unmap_iter(req, &iter, &iod->meta_dma_state);
- 		return BLK_STS_RESOURCE;
-+	}
- 
- 	iod->meta_descriptor = sg_list;
- 	iod->meta_dma = sgl_dma;
--- 
-2.53.0
-
 
 
 
