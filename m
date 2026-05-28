@@ -1,60 +1,59 @@
-Return-Path: <stable+bounces-256190-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-255552-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id kJKaLiKsGGpolwgAu9opvQ
-	(envelope-from <stable+bounces-256190-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:57:06 +0200
+	id 4GmMKW+jGGrClggAu9opvQ
+	(envelope-from <stable+bounces-255552-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:19:59 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id C2ACD5F9E6B
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:57:05 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3ED815F8682
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:19:59 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 23A5A3126C65
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 20:43:31 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 5211D300CFFB
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 20:13:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E87112EF652;
-	Thu, 28 May 2026 20:43:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EEB1E339866;
+	Thu, 28 May 2026 20:13:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rc669/O7"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BZzNjh0W"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C5394298CB2;
-	Thu, 28 May 2026 20:43:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CCB8C402B8F;
+	Thu, 28 May 2026 20:13:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780001007; cv=none; b=YaotMnuIbVkubAbOWi4RfoHZoVh5I8PtPNAkTmegTBRR5NF84a1QmRQoXOB5Kr61e+cUv4HtKKSar+9q2mA1xB7LPuBJneF1FpShunwi7eMGMXdqv/QT01VWNVp0X639QBpcmzSg6BqInOemdCc7qoLcF1dsq/ZEU5vzjOMIpkU=
+	t=1779999233; cv=none; b=HSzqhX6frD2h2pGvLuvBynVR8KbSH7dfZi4z5xzlrBKAOOW+Vbd/G8dcNwLnwsJ2n+oBGp8zfwsae0G9s4b9GS93S1du49p24my19WHEUSl4ukuJLVgbAztND7dvQyafquQs7NHXMt+kiCXb6KnUgqej75zSTqlXK94x9Xb+nnU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780001007; c=relaxed/simple;
-	bh=k0Oz9UNKgXa7Gcvxi7it74ljnunundWD+lNSqYV0ySk=;
+	s=arc-20240116; t=1779999233; c=relaxed/simple;
+	bh=jYIUvwx7QWAgxzX6mGKuMZDbQMGImy91rJaKDluFf7g=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=W5kp2iXWlIs+APcFc+dN41jMCgmybAbwX0e3r40jQ5nrDbjpIy82+ErEoJCKU0gGyI+sVlyBuFV1wbaTt9KBhzxzZaoBdSi4tDjnTzzCY+VFkmAuKWsMEUDjIi3qcR3ACaSdOci2d6vzoxq1TVDWEjh7dMZAuDE4pUl1kBjjVh4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rc669/O7; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2EF2D1F000E9;
-	Thu, 28 May 2026 20:43:26 +0000 (UTC)
+	 MIME-Version; b=tRcuJ373gEc7lwuN/vtHJ1qu82WApTMsDO81DftzSVhdIA6lpvSt6rkeuZtwjjQRf9nATcaNsXHSYcdDADkbwUUA6K+ryN16O1isQL6b48AH0RMaLZyX++RBo9R3TNS47qqiLJsROI49fBCzM/HLkrcY2cQRym7rLzSp/m7wAIU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BZzNjh0W; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D9D571F000E9;
+	Thu, 28 May 2026 20:13:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780001006;
-	bh=zV478T4eHMeH2oGTfHP5erBh4I00kQp1FA7aqJwGr10=;
+	s=korg; t=1779999232;
+	bh=8EizOH48mP3bi3mwhITLbwOF+n4ve5OaKe5J5V3XEKY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=rc669/O7Q9km3U2t1BcDEYiB2jOBMUckiMKcN0urhEpuH0XX0ytpy6jj0ToR7b+Fp
-	 Ek8R9yKwcReNtbrWcKC+72KmqhlYci0u7K1OAlZCsvH1TOX+Qr8roo/JxZzWq8HAi+
-	 CNyeaNJFmeCjF3Y9fKwnxdGSlzXpuY2MfeRavIwc=
+	b=BZzNjh0WYmBcdhIeyagOcN1r5r0nS3K/anN/H/r0fwPvAlnj4W1lxgTdGbpNbQ3OH
+	 YftQruZzu7G8Dg11WHNIZBXIijjBXuOAVA2ESHU6wlWaffrlyjavq4R7b79iDN0aU1
+	 4tWDcFF+WLzztdc9s6P6WDHncf047S1oted0GuoI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	David Carlier <devnexen@gmail.com>,
-	Christoph Hellwig <hch@lst.de>,
+	"Alexander A. Klimov" <grandmaster@al2klimov.de>,
 	Jens Axboe <axboe@kernel.dk>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 210/272] block: dont overwrite bip_vcnt in bio_integrity_copy_user()
+Subject: [PATCH 7.0 455/461] io_uring/nop: pass all errors to userspace
 Date: Thu, 28 May 2026 21:49:44 +0200
-Message-ID: <20260528194635.109112037@linuxfoundation.org>
+Message-ID: <20260528194700.709940258@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260528194629.379955525@linuxfoundation.org>
-References: <20260528194629.379955525@linuxfoundation.org>
+In-Reply-To: <20260528194646.819809818@linuxfoundation.org>
+References: <20260528194646.819809818@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,73 +68,71 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,lst.de,kernel.dk,kernel.org];
-	TAGGED_FROM(0.00)[bounces-256190-lists,stable=lfdr.de];
-	PRECEDENCE_BULK(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
+	RCVD_TLS_LAST(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	TAGGED_FROM(0.00)[bounces-255552-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[7];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[kernel.dk:email,msgid.link:url,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,lst.de:email,linuxfoundation.org:mid,linuxfoundation.org:dkim]
-X-Rspamd-Queue-Id: C2ACD5F9E6B
+	RCPT_COUNT_FIVE(0.00)[6];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,msgid.link:url,kernel.dk:email,al2klimov.de:email]
+X-Rspamd-Queue-Id: 3ED815F8682
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+7.0-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: David Carlier <devnexen@gmail.com>
+From: Alexander A. Klimov <grandmaster@al2klimov.de>
 
-[ Upstream commit 637ad3a56a3b889527d1dacea6fea2a8bd648140 ]
+[ Upstream commit e97ff8b62d4690c69297f0f6de874f0564cc01a4 ]
 
-bio_integrity_add_page() already sets bip_vcnt to 1 for the bounce
-segment. Overwriting it with nr_vecs breaks bip_vcnt <= bip_max_vcnt
-on WRITE (bip_max_vcnt is 1), so the gap-merge checks in block/blk.h
-read past the bip_vec[] flex array. On READ the read is in bounds
-but lands on a saved user bvec instead of the bounce.
+This fixes an inconsistency where io_nop() called req_set_fail()
+based on ret, but passed just nop->result to userspace.
+Originally, ret is a even copy of nop->result, but is set to an error
+when such happens subsequently. Now that's also passed to userspace.
 
-The line was added for split propagation, but bio_integrity_clone()
-doesn't copy bip_vcnt and BIP_CLONE_FLAGS excludes BIP_COPY_USER.
-
-Fixes: 3991657ae707 ("block: set bip_vcnt correctly")
-Signed-off-by: David Carlier <devnexen@gmail.com>
-Reviewed-by: Christoph Hellwig <hch@lst.de>
-Link: https://patch.msgid.link/20260511215151.346228-1-devnexen@gmail.com
+Fixes: a85f31052bce ("io_uring/nop: add support for testing registered files and buffers")
+Signed-off-by: Alexander A. Klimov <grandmaster@al2klimov.de>
+Link: https://patch.msgid.link/20260520180045.538533-1-grandmaster@al2klimov.de
 Signed-off-by: Jens Axboe <axboe@kernel.dk>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- block/bio-integrity.c | 1 -
- 1 file changed, 1 deletion(-)
+ io_uring/nop.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/block/bio-integrity.c b/block/bio-integrity.c
-index ab58f44058e96..9c490fa07a795 100644
---- a/block/bio-integrity.c
-+++ b/block/bio-integrity.c
-@@ -245,7 +245,6 @@ static int bio_integrity_copy_user(struct bio *bio, struct bio_vec *bvec,
- 	}
- 
- 	bip->bip_flags |= BIP_COPY_USER;
--	bip->bip_vcnt = nr_vecs;
- 	return 0;
- free_bip:
- 	bio_integrity_free(bio);
+diff --git a/io_uring/nop.c b/io_uring/nop.c
+index 3caf07878f8ac..f5c9969e7f64a 100644
+--- a/io_uring/nop.c
++++ b/io_uring/nop.c
+@@ -79,9 +79,9 @@ int io_nop(struct io_kiocb *req, unsigned int issue_flags)
+ 	if (ret < 0)
+ 		req_set_fail(req);
+ 	if (nop->flags & IORING_NOP_CQE32)
+-		io_req_set_res32(req, nop->result, 0, nop->extra1, nop->extra2);
++		io_req_set_res32(req, ret, 0, nop->extra1, nop->extra2);
+ 	else
+-		io_req_set_res(req, nop->result, 0);
++		io_req_set_res(req, ret, 0);
+ 	if (nop->flags & IORING_NOP_TW) {
+ 		req->io_task_work.func = io_req_task_complete;
+ 		io_req_task_work_add(req);
 -- 
 2.53.0
 
