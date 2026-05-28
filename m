@@ -1,60 +1,62 @@
-Return-Path: <stable+bounces-255794-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-255402-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id +DXEIYmmGGpolwgAu9opvQ
-	(envelope-from <stable+bounces-255794-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:33:13 +0200
+	id SB+IOFGiGGqblggAu9opvQ
+	(envelope-from <stable+bounces-255402-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:15:13 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id DD89F5F8EF3
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:33:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 471385F82A9
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:15:13 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 1DEDB3235FCD
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 20:25:03 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id EE9BD31273E9
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 20:06:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 235B622652D;
-	Thu, 28 May 2026 20:25:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9ED91318EE1;
+	Thu, 28 May 2026 20:06:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lvMrRpeK"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wWLQCojx"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F2FA61EA65;
-	Thu, 28 May 2026 20:25:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 78362304BB3;
+	Thu, 28 May 2026 20:06:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779999901; cv=none; b=godkYe7ef/PYJPnKQtOD207uOK9bHqtCcliDDzXpEROxiSE1ny4qyeYqrdXhCtlDID2tgZklNqHct72t3xkfqdqppWNchmIf6p92bx9AzU+Q2H2u7ItPoXDkR7sF3vYrcT3D2WgzWpWIBjmuzoKgKpSjmQ/CVJ7t/Pje6Sdau4k=
+	t=1779998809; cv=none; b=TcEATk1sK+rnwYnxICajJW1Knot2/JHSc3xpG6UGwbfZf0fNZGgsgqULtFG2xdFNjl/R2dYGgVif9JMKIQb1lTn79yB7FpWfYwEogbz2XELJVoq0FzZeTvYxiUxdsP9CQvIHf2Ovko5++lDdl2HDUWQ0hCxrZthpka07aVpj5Mg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779999901; c=relaxed/simple;
-	bh=1v7gNnnibdPWWFkc5jag4dDk6qjbcDu1/NsCSCX9ukc=;
+	s=arc-20240116; t=1779998809; c=relaxed/simple;
+	bh=gci3qXWfMs1+w4Y9smnPvbkKyqekafd1WyYWHPThfyc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=oo9eJCDaqqELpVMfFP+IiMT1R6eCWx16DLtweoAbOVvYHQORgF1p8fI/QSjIK1iMK1pPjsIPLeHEciznfGcomTVQyxoCU6pcyZ4lcnTygvDgIC35AY5oVToq79vklAU4dRYYav3kul5HaRoPW7On2BLQJtsjgSNlSBdKTFEouqM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lvMrRpeK; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F3D201F000E9;
-	Thu, 28 May 2026 20:24:59 +0000 (UTC)
+	 MIME-Version; b=uoP7SMkCcDYlgEqTLwFR2j3uDUiRwg4zCyAr+IHbQIELQfSs3BKftxgx0QLQTuBqjDUCXEK9n218liBpEUEfQbAsojCVHdRtDrI9C7tRQjX/mxKjCWaztt37mxzYT0oUE9kA02126MCn4jhudsKw780oamqi5b9PQiNxDm0olD4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wWLQCojx; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DE60E1F000E9;
+	Thu, 28 May 2026 20:06:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779999900;
-	bh=RPwSSTvnO5l1/zOkNLw+K7w/5++2RUGHICRau4u+d6M=;
+	s=korg; t=1779998808;
+	bh=R7gXULahR6PWrK1h3elYDumNVPPblUsp702TsV1wM4I=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=lvMrRpeKjxCLW5ZgpEr5t5yfrcaZlqI14ymvzLlE418oIobBjIBIKHXSGj+k0FwzG
-	 KvpatDs01V9P7s7raJRY0GyB8b1BjMueL4dqNxHiUigB48NGdYt5dckDsXql5rVkp+
-	 PdnQalCm8qE+J/OHU3eYlTHxQOPQZv1ibsfbeBGg=
+	b=wWLQCojxhPxCU80u7QYXiI5wWTyIEYKHKoqLI36ZdycDdvR/BYOYpPoUUqZGBDLbA
+	 K9DXKPsXzxVWHXc+B6Rb0LOR+H+Juel20loTGqUmjX+jUI8S3NaG4ThiLZqEnLVdgK
+	 eWioBEXV9BSr8yq6qF/Z1CGg3wg0lxBsCfs2muFs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Shuhao Fu <sfual@cse.ust.hk>,
-	Simon Trimmer <simont@opensource.cirrus.com>,
-	Takashi Iwai <tiwai@suse.de>,
+	Alexander Koskovich <akoskovich@pm.me>,
+	Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>,
+	Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>,
+	Akhil P Oommen <akhilpo@oss.qualcomm.com>,
+	Rob Clark <robin.clark@oss.qualcomm.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 195/377] ALSA: hda: cs35l56: Put ACPI device after setting companion
+Subject: [PATCH 7.0 304/461] drm/msm: Fix GMEM_BASE for A650
 Date: Thu, 28 May 2026 21:47:13 +0200
-Message-ID: <20260528194644.054855686@linuxfoundation.org>
+Message-ID: <20260528194656.066646093@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260528194638.371537336@linuxfoundation.org>
-References: <20260528194638.371537336@linuxfoundation.org>
+In-Reply-To: <20260528194646.819809818@linuxfoundation.org>
+References: <20260528194646.819809818@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -74,69 +76,71 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	URIBL_MULTI_FAIL(0.00)[linuxfoundation.org:server fail,ust.hk:server fail,cirrus.com:server fail,sea.lore.kernel.org:server fail,suse.de:server fail,msgid.link:server fail];
-	TAGGED_FROM(0.00)[bounces-255794-lists,stable=lfdr.de];
-	PRECEDENCE_BULK(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-255402-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
 	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[suse.de:email,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,ust.hk:email,cirrus.com:email,msgid.link:url]
-X-Rspamd-Queue-Id: DD89F5F8EF3
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_SEVEN(0.00)[9];
+	MID_RHS_MATCH_FROM(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,patchwork.freedesktop.org:url,pm.me:email,qualcomm.com:email]
+X-Rspamd-Queue-Id: 471385F82A9
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+7.0-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Shuhao Fu <sfual@cse.ust.hk>
+From: Alexander Koskovich <akoskovich@pm.me>
 
-[ Upstream commit aa2fbece1b07954ef26488c800d126a36a8ab93e ]
+[ Upstream commit 46e351e84853dda726072bb3d38ba7bd63e7532b ]
 
-acpi_dev_get_first_match_dev() returns a refcounted ACPI device and
-callers are expected to balance it with acpi_dev_put().
+Commit dc220915ddb2 ("drm/msm: Fix GMEM_BASE for gen8") changed the
+GMEM_BASE check from adreno_is_a650_family() & adreno_is_a740_family()
+to family >= ADRENO_6XX_GEN4.
 
-When no companion is already attached, cs35l56_hda_read_acpi() looks
-up an ACPI device and sets it with ACPI_COMPANION_SET(), but leaves
-the lookup reference held.
+This inadvertently excluded A650 (ADRENO_6XX_GEN3), causing it to report
+an incorrect GMEM_BASE which results in severe rendering corruption.
 
-ACPI_COMPANION_SET() does not take ownership of that reference, so
-drop it with acpi_dev_put() after attaching the companion.
+Update check to also include ADRENO_6XX_GEN3 to fix A650.
 
-Fixes: 73cfbfa9caea ("ALSA: hda/cs35l56: Add driver for Cirrus Logic CS35L56 amplifier")
-Signed-off-by: Shuhao Fu <sfual@cse.ust.hk>
-Tested-by: Simon Trimmer <simont@opensource.cirrus.com>
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
-Link: https://patch.msgid.link/20260428080139.GA1649104@chcpu16
+Fixes: dc220915ddb2 ("drm/msm: Fix GMEM_BASE for gen8")
+Signed-off-by: Alexander Koskovich <akoskovich@pm.me>
+Reviewed-by: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
+Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
+Reviewed-by: Akhil P Oommen <akhilpo@oss.qualcomm.com>
+Patchwork: https://patchwork.freedesktop.org/patch/711880/
+Message-ID: <20260314-fix-gmem-base-a650-v1-1-3308f60cf74c@pm.me>
+Signed-off-by: Rob Clark <robin.clark@oss.qualcomm.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/hda/codecs/side-codecs/cs35l56_hda.c | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/gpu/drm/msm/adreno/adreno_gpu.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/sound/hda/codecs/side-codecs/cs35l56_hda.c b/sound/hda/codecs/side-codecs/cs35l56_hda.c
-index 79c15e21d4bcb..1d25fe01066ee 100644
---- a/sound/hda/codecs/side-codecs/cs35l56_hda.c
-+++ b/sound/hda/codecs/side-codecs/cs35l56_hda.c
-@@ -949,6 +949,7 @@ static int cs35l56_hda_read_acpi(struct cs35l56_hda *cs35l56, int hid, int id)
- 			return -ENODEV;
- 		}
- 		ACPI_COMPANION_SET(cs35l56->base.dev, adev);
-+		acpi_dev_put(adev);
- 	}
- 
- 	/* Initialize things that could be overwritten by a fixup */
+diff --git a/drivers/gpu/drm/msm/adreno/adreno_gpu.c b/drivers/gpu/drm/msm/adreno/adreno_gpu.c
+index 785e99fb5bd5d..8bf19e72e5bcd 100644
+--- a/drivers/gpu/drm/msm/adreno/adreno_gpu.c
++++ b/drivers/gpu/drm/msm/adreno/adreno_gpu.c
+@@ -376,7 +376,7 @@ int adreno_get_param(struct msm_gpu *gpu, struct msm_context *ctx,
+ 		*value = adreno_gpu->info->gmem;
+ 		return 0;
+ 	case MSM_PARAM_GMEM_BASE:
+-		if (adreno_gpu->info->family >= ADRENO_6XX_GEN4)
++		if (adreno_gpu->info->family >= ADRENO_6XX_GEN3)
+ 			*value = 0;
+ 		else
+ 			*value = 0x100000;
 -- 
 2.53.0
 
