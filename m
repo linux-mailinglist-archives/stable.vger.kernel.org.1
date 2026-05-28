@@ -1,58 +1,58 @@
-Return-Path: <stable+bounces-255609-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-255294-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id oHyDN8WkGGoQlwgAu9opvQ
-	(envelope-from <stable+bounces-255609-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:25:41 +0200
+	id 4GPsLpSfGGpvlggAu9opvQ
+	(envelope-from <stable+bounces-255294-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:03:32 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 344205F8A6D
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:25:41 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 41B9B5F7BA6
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:03:31 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id B2A41324C971
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 20:16:32 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id D32163035AA7
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 20:01:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8CD132DF6E6;
-	Thu, 28 May 2026 20:16:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 98CAC32ABC0;
+	Thu, 28 May 2026 20:01:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1TBu4uo6"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oOEvnlL2"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6F2482580D7;
-	Thu, 28 May 2026 20:16:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6A63D27A476;
+	Thu, 28 May 2026 20:01:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779999392; cv=none; b=Eyy93o6alnAn+zUmKi4RGPeJolbvarSxOHh0UQdIUqZuT/oXSFcIgQ+DW0i5vIfNsh27r47W8jvhIp4CNiRWtAwy4e+HTBXxy9Ywdv66mX4XI3kSn0TIEebmqiiGQbO/P7c1vnaM1dvC4SBkxRZesnCXCN9zzbDoaEW7Y8fLCRk=
+	t=1779998505; cv=none; b=tK9VI6NMJ5VOtNSBm2S1/tOGZz+3wP79ugBRWa+WyUlELlZBLCy6Dhsa+sJdTh1TjeHmjovR0DCyaKYIpROT654QCJkT2FBH/jZA+YlMo3oMRNGVr7Ws+oLLPtIAtoiN8wqzzSLbOvIxMCptRBJisNW8hfoOSKSfuKHtjCTDB9Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779999392; c=relaxed/simple;
-	bh=xLyHM478zoics7hb2EhZEOGW2QHiFUt3OTlNZOzrbYU=;
+	s=arc-20240116; t=1779998505; c=relaxed/simple;
+	bh=aXUS2bmaw5yGyC/EIPX1q1bGHKMiLhyDErRRPgsvr8I=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=fl0KrxY6i/txFTgBjk8BpwNmEwV3vtA0TsT0eekx4km1jmSSaE3eytz7Wo6+4i7ZY+BWUYbpea9EuoJ/aB2gd78/D8A7zqTU8SbXKuWnd42w7HT6PIN33XfOs3nK18sDwP0KIQJ0GW5ro5CXfw2RgucQzF0QhFnVH5HAfPInIkY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1TBu4uo6; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CDAD51F000E9;
-	Thu, 28 May 2026 20:16:30 +0000 (UTC)
+	 MIME-Version; b=NNndssMwYroooVCqu08L0nW6B2WXE25CmMnPiRGA+7JA9RhBN56GzEt9YDQ+whhMAqFx9+NXRGodraCkw+dUSldOlDuzwXmEuKFKKDhs4/IsXie2gMLXzU5NvgaMEuU7mLPWdWqfq0kM1ljTQKxOS3/DJ9rxJ4bURm0UlNpEpGY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oOEvnlL2; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C71861F000E9;
+	Thu, 28 May 2026 20:01:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779999391;
-	bh=yFy4yReBx/tbjQtvNB7kvfYe7d7mCMd7Z4lhjs0NbNI=;
+	s=korg; t=1779998504;
+	bh=rrkVydFshfKH//iqI7uR9h/4udoXseSK/12ujXd+4m4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=1TBu4uo6iwl7oWTCw9gd4O09R5E+uuL7fFQqxPKe2lwDvX6ip8F+lQI7QVQLXj+vH
-	 FBP1Zup1cg92u7VX2vSLsJ6iDke2G4YqCZYh2oT0zylWLvfEAvD346qxyy1gdkdfcf
-	 zcfuVKAXoShkkgkxxzcvLFWHFGX7bd3cz9rLxhJI=
+	b=oOEvnlL2fSs4OYuMc+8PynTKJclJYNKGL4zHZ0q1b4tUsdpl//OZU4kfFcwByD8xq
+	 fJtHfYomq0zc4fe6GoH7kb9GFwyJnmJHmi0US2n81oHJ4+0dfk0042nGoek6wk+YHt
+	 0l7D6UBEkbJqzSuVnCGZ92+QQ4ssvTw5y+z+5y0E=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Abdun Nihaal <nihaal@cse.iitm.ac.in>,
-	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 6.18 051/377] net: wwan: iosm: fix potential memory leaks in ipc_imem_init()
+	stable@kernel.org,
+	Sven Eckelmann <sven@narfation.org>
+Subject: [PATCH 7.0 160/461] batman-adv: tt: reject oversized local TVLV buffers
 Date: Thu, 28 May 2026 21:44:49 +0200
-Message-ID: <20260528194639.851396307@linuxfoundation.org>
+Message-ID: <20260528194651.682441378@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260528194638.371537336@linuxfoundation.org>
-References: <20260528194638.371537336@linuxfoundation.org>
+In-Reply-To: <20260528194646.819809818@linuxfoundation.org>
+References: <20260528194646.819809818@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -67,7 +67,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
@@ -77,7 +77,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-255609-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-255294-lists,stable=lfdr.de];
 	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
@@ -88,45 +88,67 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	TAGGED_RCPT(0.00)[stable];
 	RCPT_COUNT_FIVE(0.00)[5];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,iitm.ac.in:email]
-X-Rspamd-Queue-Id: 344205F8A6D
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,narfation.org:email,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo]
+X-Rspamd-Queue-Id: 41B9B5F7BA6
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+7.0-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Abdun Nihaal <nihaal@cse.iitm.ac.in>
+From: Sven Eckelmann <sven@narfation.org>
 
-commit c5d93b2c40355e999715262a824965aac025a427 upstream.
+commit 1e9fab756f8395096d5bba7be0c373c4c8f5d165 upstream.
 
-The memory allocated in ipc_protocol_init() is not freed on the error
-paths that follow in ipc_imem_init(). Fix that by calling the
-corresponding release function ipc_protocol_deinit() in the error path.
+The commit 3a359bf5c61d ("batman-adv: reject oversized global TT response
+buffers") added a check to ensure that a global return buffer size can be
+stored in an u16. The same buffer handling also exists for the local data
+buffer but was not touched.
 
-Fixes: 3670970dd8c6 ("net: iosm: shared memory IPC interface")
-Cc: stable@vger.kernel.org
-Signed-off-by: Abdun Nihaal <nihaal@cse.iitm.ac.in>
-Link: https://patch.msgid.link/20260519062815.55545-1-nihaal@cse.iitm.ac.in
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+A similar check should be also be in place for the local TVLV buffer. It
+doesn't have the similar attack surface because it is only generated from
+locally discovered MAC addresses but the dynamic nature could still cause
+temporarily to large buffers.
+
+Cc: stable@kernel.org
+Fixes: 7ea7b4a14275 ("batman-adv: make the TT CRC logic VLAN specific")
+Signed-off-by: Sven Eckelmann <sven@narfation.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/wwan/iosm/iosm_ipc_imem.c |    2 ++
- 1 file changed, 2 insertions(+)
+ net/batman-adv/translation-table.c |    8 +++++---
+ 1 file changed, 5 insertions(+), 3 deletions(-)
 
---- a/drivers/net/wwan/iosm/iosm_ipc_imem.c
-+++ b/drivers/net/wwan/iosm/iosm_ipc_imem.c
-@@ -1426,6 +1426,8 @@ imem_config_fail:
- protocol_init_fail:
- 	cancel_work_sync(&ipc_imem->run_state_worker);
- 	ipc_task_deinit(ipc_imem->ipc_task);
-+	if (ipc_imem->ipc_protocol)
-+		ipc_protocol_deinit(ipc_imem->ipc_protocol);
- ipc_task_init_fail:
- 	kfree(ipc_imem->ipc_task);
- ipc_task_fail:
+--- a/net/batman-adv/translation-table.c
++++ b/net/batman-adv/translation-table.c
+@@ -877,12 +877,12 @@ batadv_tt_prepare_tvlv_local_data(struct
+ {
+ 	struct batadv_tvlv_tt_vlan_data *tt_vlan;
+ 	struct batadv_meshif_vlan *vlan;
++	size_t change_offset;
+ 	u16 num_vlan = 0;
+ 	u16 vlan_entries = 0;
+ 	u16 total_entries = 0;
+ 	u16 tvlv_len;
+ 	u8 *tt_change_ptr;
+-	int change_offset;
+ 
+ 	spin_lock_bh(&bat_priv->meshif_vlan_list_lock);
+ 	hlist_for_each_entry(vlan, &bat_priv->meshif_vlan_list, list) {
+@@ -897,8 +897,10 @@ batadv_tt_prepare_tvlv_local_data(struct
+ 	if (*tt_len < 0)
+ 		*tt_len = batadv_tt_len(total_entries);
+ 
+-	tvlv_len = *tt_len;
+-	tvlv_len += change_offset;
++	if (check_add_overflow(*tt_len, change_offset, &tvlv_len)) {
++		tvlv_len = 0;
++		goto out;
++	}
+ 
+ 	*tt_data = kmalloc(tvlv_len, GFP_ATOMIC);
+ 	if (!*tt_data) {
 
 
 
