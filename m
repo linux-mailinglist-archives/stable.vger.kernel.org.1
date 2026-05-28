@@ -1,61 +1,60 @@
-Return-Path: <stable+bounces-256257-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-255506-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id mB2IOtGtGGpolwgAu9opvQ
-	(envelope-from <stable+bounces-256257-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 23:04:17 +0200
+	id AHw4DzijGGrClggAu9opvQ
+	(envelope-from <stable+bounces-255506-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:19:04 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 025D25FA2CE
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 23:04:16 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id C66D35F85E8
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:19:03 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id B76D83145A4C
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 20:46:43 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id ABDFB314326B
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 20:11:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1ADBA33372A;
-	Thu, 28 May 2026 20:46:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5772532ABC0;
+	Thu, 28 May 2026 20:11:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AtVs7cvh"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NGUncy9b"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C88A5329396;
-	Thu, 28 May 2026 20:46:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0D728335566;
+	Thu, 28 May 2026 20:11:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780001193; cv=none; b=VoLq62wTmQDJj61oCtIKf5QfausY0VvOKORPNt7rJBgDgTxqBmZ8n0EJ5jZd11n8ca1XSCgnRuAvpyvGw71l9qKZ46ulVINJrXEZGHFhDHseKTIh2e1Nj+6wemc+yV07lHfhHjNB/VHYlMu0AMr7NhNvi5NOdYDpu1U/9aQzL0Y=
+	t=1779999103; cv=none; b=N8tC5embb/LDDxE4tbCapJLjafeGA4nC4fn3c7FbQsof5KbLxjazJYO+weAJkk4PaaJpLk9hsu5sI+8SGHWQQwgmdYXyAj2D0i8L8VCknbUfXDIauc4DoAAx4ZUaApFHgc6cGLu77GjCtbcg12iCaf0V8kerBAZuqHVOYwCgXBA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780001193; c=relaxed/simple;
-	bh=/AlIAhMxXqsrvQ3mYoKMQQQwbo0qQEaCJ/esoY1gAAc=;
+	s=arc-20240116; t=1779999103; c=relaxed/simple;
+	bh=V92dPWHQuZxMsqoriJDdu6cbNW+2wP89rgjJZahK/FE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=t1ba48QUI8GYway6ZJWfydCAbFAyPZbEtbTKrMtx15I1i/i8kb6lfdDEZB1DIcl/298SrbjZy294/F9x8gYo09IEVibE39hJtHCR4/DCzUQt0ZzQzmVH8U8PuK8KGENB9YuwojEZ/CMXawRwvz+IRulVbAoB8Jgm2m2apZer8tw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AtVs7cvh; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3360F1F000E9;
-	Thu, 28 May 2026 20:46:32 +0000 (UTC)
+	 MIME-Version:Content-Type; b=Dy7tpqUQxLU2DZTE1SI6s3ACBUvTqmDB6I9hYe8LAfprvl9yvU9waZoBnQFAx6bz9URwBBLKxstSSYy1LO4MIN8gNCi2dcfwmy1Hw0VzMeV84dF4uB1YHJqUX9ytelQFXIMYmVRIXFkyPnwA2Mm1HZK2ElThSRfLZVmDMsOA84I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NGUncy9b; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 315371F000E9;
+	Thu, 28 May 2026 20:11:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780001192;
-	bh=kek98eADatEDdjwuKC25hmL8NOZJACn4s8lsOQlC790=;
+	s=korg; t=1779999101;
+	bh=KZoLrTvFrkaqlSrPaG76O9XnPRzjUEanUksKK3agcJo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=AtVs7cvh8D4j03YowuYO6bYVW0UKFZqk202YaLqYiY3mFd5coKV9+nSQ6N93lJJuu
-	 jaocYrlO/0KEheYOMvy7oisJ5xQ0UFyhjVOTzVNxq4IMkC5410jwVg9Iv5QMQ+cEor
-	 X1m4kLPj5p5v8nd+nRkR0c7e9txkFFzKLfzl7Kj0=
+	b=NGUncy9bR6y7XVjH31lgde4Cy7mJDzicj6S8v2mNBnzFotAw6IzOnMlGNRigi3uvX
+	 gCLCc+YsryGOAWdRkR02iA5vnDOiglrRtX4iIWUQKlCbqwnzIIqGUXGNhlTnTGVBEV
+	 yiU+iT1OxS4WzkTkg0Zt3YLP4mElXGn51z66GYok=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Zijing Yin <yzjaurora@gmail.com>,
-	=?UTF-8?q?R=C3=A9mi=20Denis-Courmont?= <remi@remlab.net>,
-	syzbot+9f4a135646b66c509935@syzkaller.appspotmail.com,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 6.6 041/186] phonet/pep: disable BH around forwarded sk_receive_skb()
+	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 7.0 392/461] platform/x86: intel-vbtn: Check ACPI_HANDLE() against NULL
 Date: Thu, 28 May 2026 21:48:41 +0200
-Message-ID: <20260528194930.074396887@linuxfoundation.org>
+Message-ID: <20260528194658.811405408@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260528194928.941004471@linuxfoundation.org>
-References: <20260528194928.941004471@linuxfoundation.org>
+In-Reply-To: <20260528194646.819809818@linuxfoundation.org>
+References: <20260528194646.819809818@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -67,139 +66,88 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-0.66 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,remlab.net,syzkaller.appspotmail.com,google.com,kernel.org];
-	TAGGED_FROM(0.00)[bounces-256257-lists,stable=lfdr.de];
-	FROM_HAS_DN(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
+	TAGGED_FROM(0.00)[bounces-255506-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
+	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_HAS_DN(0.00)[];
 	TO_DN_SOME(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	MID_RHS_MATCH_FROM(0.00)[];
-	TAGGED_RCPT(0.00)[stable,9f4a135646b66c509935];
-	RCPT_COUNT_SEVEN(0.00)[8];
+	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,appspotmail.com:email,syzkaller.appspot.com:url,msgid.link:url,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,remlab.net:email]
-X-Rspamd-Queue-Id: 025D25FA2CE
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,linuxfoundation.org:mid,linuxfoundation.org:dkim,intel.com:email,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
+X-Rspamd-Queue-Id: C66D35F85E8
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+7.0-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Zijing Yin <yzjaurora@gmail.com>
+From: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 
-commit dbc81608e3a653dea6cf403f20cae35468b8ab9c upstream.
+[ Upstream commit a9f305c5a355efeb240d406d378491d9eec02d07 ]
 
-The networking receive path is usually run from softirq context, but
-protocols that take the socket lock may have packets stored in the
-backlog and processed later from process context. In that case
-release_sock() -> __release_sock() drops the slock with spin_unlock_bh()
-and then calls sk->sk_backlog_rcv() with bottom halves enabled.
+Every platform driver can be forced to match a device that doesn't match
+its list of device IDs because of device_match_driver_override(), so
+platform drivers that rely on the existence of a device's ACPI companion
+object need to verify its presence.
 
-Typical sk_backlog_rcv handlers process the socket whose backlog is
-being drained, so the BH state at entry is irrelevant for the slocks
-they touch. pep_do_rcv() is different: when the inbound skb targets an
-existing PEP pipe, it forwards the skb to a different *child* socket
-via sk_receive_skb(). That helper takes the child slock with
-bh_lock_sock_nested(), which is just spin_lock_nested() and assumes BH
-is already off. The same child slock therefore ends up acquired with
-BH on (process path) and with BH off (softirq path):
+Accordingly, add a requisite ACPI_HANDLE() check against NULL to the
+platform/x86 intel-vbtn driver.
 
-  process context                   softirq context
-  ---------------                   ---------------
-  release_sock(listener)            __netif_receive_skb()
-   __release_sock()                  phonet_rcv()
-    spin_unlock_bh()                  __sk_receive_skb(listener)
-    [BH now ENABLED]                  [BH already disabled]
-    sk_backlog_rcv:                   sk_backlog_rcv:
-     pep_do_rcv()                      pep_do_rcv()
-      sk_receive_skb(child)             sk_receive_skb(child)
-       bh_lock_sock_nested(child)        bh_lock_sock_nested(child)
-       => SOFTIRQ-ON-W                   => IN-SOFTIRQ-W
-
-Lockdep flags this as inconsistent lock state, and it can become a real
-self-deadlock if a softirq on the same CPU tries to receive to the same
-child socket while its slock is held in the BH-enabled path:
-
-  WARNING: inconsistent lock state
-  inconsistent {SOFTIRQ-ON-W} -> {IN-SOFTIRQ-W} usage.
-   (slock-AF_PHONET/1){+.?.}-{3:3}, at: __sk_receive_skb+0x1cf/0x900
-    __sk_receive_skb              net/core/sock.c:563
-    sk_receive_skb                include/net/sock.h:2022 [inline]
-    pep_do_rcv                    net/phonet/pep.c:675
-    sk_backlog_rcv                include/net/sock.h:1190
-    __release_sock                net/core/sock.c:3216
-    release_sock                  net/core/sock.c:3815
-    pep_sock_accept               net/phonet/pep.c:879
-
-Wrap the forwarded sk_receive_skb() in local_bh_disable() /
-local_bh_enable() so the child slock is always acquired with BH off.
-local_bh_disable() nests safely on the softirq path.
-
-Discovered via in-house syzkaller fuzzing; the same root cause also
-on the linux-6.1.y syzbot dashboard as extid 44f0626dd6284f02663c.
-Reproduced under KASAN + LOCKDEP + PROVE_LOCKING, reproducer:
-https://pastebin.com/A3t8xzCR
-
-Fixes: 9641458d3ec4 ("Phonet: Pipe End Point for Phonet Pipes protocol")
-Link: https://syzkaller.appspot.com/bug?extid=44f0626dd6284f02663c
-Cc: stable@vger.kernel.org
-Signed-off-by: Zijing Yin <yzjaurora@gmail.com>
-Acked-by: Rémi Denis-Courmont <remi@remlab.net>
-Reported-by: syzbot+9f4a135646b66c509935@syzkaller.appspotmail.com
-Reviewed-by: Eric Dumazet <edumazet@google.com>
-Link: https://patch.msgid.link/20260519172635.86304-1-yzjaurora@gmail.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 26173179fae1 ("platform/x86: intel-vbtn: Eval VBDL after registering our notifier")
+Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+Reviewed-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Link: https://patch.msgid.link/3426431.aeNJFYEL58@rafael.j.wysocki
+Reviewed-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/phonet/pep.c |   19 +++++++++++++++++--
- 1 file changed, 17 insertions(+), 2 deletions(-)
+ drivers/platform/x86/intel/vbtn.c | 6 +++++-
+ 1 file changed, 5 insertions(+), 1 deletion(-)
 
---- a/net/phonet/pep.c
-+++ b/net/phonet/pep.c
-@@ -671,8 +671,23 @@ static int pep_do_rcv(struct sock *sk, s
+diff --git a/drivers/platform/x86/intel/vbtn.c b/drivers/platform/x86/intel/vbtn.c
+index 9ca87e7075822..874023c38fd15 100644
+--- a/drivers/platform/x86/intel/vbtn.c
++++ b/drivers/platform/x86/intel/vbtn.c
+@@ -275,12 +275,16 @@ static bool intel_vbtn_has_switches(acpi_handle handle, bool dual_accel)
  
- 	/* Look for an existing pipe handle */
- 	sknode = pep_find_pipe(&pn->hlist, &dst, pipe_handle);
--	if (sknode)
--		return sk_receive_skb(sknode, skb, 1);
-+	if (sknode) {
-+		int rc;
+ static int intel_vbtn_probe(struct platform_device *device)
+ {
+-	acpi_handle handle = ACPI_HANDLE(&device->dev);
+ 	bool dual_accel, has_buttons, has_switches;
+ 	struct intel_vbtn_priv *priv;
++	acpi_handle handle;
+ 	acpi_status status;
+ 	int err;
+ 
++	handle = ACPI_HANDLE(&device->dev);
++	if (!handle)
++		return -ENODEV;
 +
-+		/* pep_do_rcv() runs from two contexts: from softirq via
-+		 * phonet_rcv() -> __sk_receive_skb() with BH disabled,
-+		 * and from process context via
-+		 * release_sock() -> __release_sock(), which drops
-+		 * the listener slock with spin_unlock_bh() before draining
-+		 * the backlog.  The child pipe slock is taken below via
-+		 * bh_lock_sock_nested(), which does not itself disable BH, so
-+		 * disable BH here to keep both acquire contexts consistent.
-+		 */
-+		local_bh_disable();
-+		rc = sk_receive_skb(sknode, skb, 1);
-+		local_bh_enable();
-+		return rc;
-+	}
- 
- 	switch (hdr->message_id) {
- 	case PNS_PEP_CONNECT_REQ:
+ 	dual_accel = dual_accel_detect();
+ 	has_buttons = acpi_has_method(handle, "VBDL");
+ 	has_switches = intel_vbtn_has_switches(handle, dual_accel);
+-- 
+2.53.0
+
 
 
 
