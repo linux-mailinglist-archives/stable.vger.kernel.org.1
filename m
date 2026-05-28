@@ -1,58 +1,58 @@
-Return-Path: <stable+bounces-255675-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-255286-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id cPWwG4ClGGrClggAu9opvQ
-	(envelope-from <stable+bounces-255675-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:28:48 +0200
+	id AGE5Gi6gGGpAlggAu9opvQ
+	(envelope-from <stable+bounces-255286-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:06:06 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0C7095F8C90
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:28:47 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0677A5F7D1C
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:06:05 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id E52443298CE7
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 20:19:38 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 0A1EB30E61DC
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 20:01:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 966D6282F17;
-	Thu, 28 May 2026 20:19:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3E8E833F5B4;
+	Thu, 28 May 2026 20:01:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KH0fvuO5"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ogwcphOU"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6A8E72580D7;
-	Thu, 28 May 2026 20:19:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 252611AA1D2;
+	Thu, 28 May 2026 20:01:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779999578; cv=none; b=usDhaph0emQnFs/gxXTNu0s55N/9EZ0qtCyEIb32H5GUSWoeH0dhs9svG8M+4B83SBT+ppAuhpr7ilCRk+0bicz/3wsJzl3SlDGzqC1ldP9ML47X9m2ndlJO+luBYdi1RgFrQVGXmUQq4jixe49d6AHc9d5eYQgmAVmz8n1gQdE=
+	t=1779998483; cv=none; b=EeATY47wYrkcZvZRTqUFBrleFY/h51eCSbClB7Q+LqRzNTtG7jaCbe1UzGhYcxgb3iCHyATD/y4q+eG59s1AdodDX9MZo+ye+tqyJTF0RYuvXqgKm+nwI/h7byUirAXzTrh0vFYasPYheFdL3zuLSyrxdpkR/cjbqu5WgF+dvMY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779999578; c=relaxed/simple;
-	bh=anpGqwcMUnhNQykqt2TXrCNeFrsJs1AZ2de5OQsufQQ=;
+	s=arc-20240116; t=1779998483; c=relaxed/simple;
+	bh=OKsbjFeUeacH7ZKH8iRwhTNfEGaeVjBEZhOXo9aPYNs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=sledwNYHrgYmGKV8YgvqXkyf6sBgXQj7HYqEx0d/PddVjkSusZ9dIEBQLnde+CXatT4SHbX6vrRmxqm20DE1dWT1E3NkyIhTgFjedQwlLM9pFFQ6D6jiyuZK/ziQzRN60xOj5bL0hFOGzU0+7XqOoiod36NHhZ5lZApihPljv9c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KH0fvuO5; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C977C1F000E9;
-	Thu, 28 May 2026 20:19:36 +0000 (UTC)
+	 MIME-Version; b=CoOlB2WAsTbq+MdF4y6nHGxt/JtqKIIIop8tkA4f42X8RcH7Y0ebbh3gUEgwro5jNp+Kv5zOKJ71CtaqCUnUoSPyEpvgq1Y7jri4nZO2jG1DpdfnmyoJUd321rcbz+s1ZOkB7I+nEEMC9kdc7J3ogid9rmPQFMGX2rI0HuZHyNw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ogwcphOU; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 84B021F000E9;
+	Thu, 28 May 2026 20:01:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779999577;
-	bh=SHv+BHoeXbACYOsJoEx2HZwlIweDl3Ab3DdEPEWzYZQ=;
+	s=korg; t=1779998482;
+	bh=cQ4Ka2ruw+QYn5IJ9AfmNZTv2alxCQob4VvMMjHT/Kc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=KH0fvuO5thyBZ0JRL0kIoiAcLmOpZC1PswNhSSBra0sBjxwFRhgRNeyxKMCwq234B
-	 3G4S2H++dV9xSCPcseNe37Hxr2JBgEAhN3eSA1++4JlHdgHXeBXC9PxcNUm0pZytDT
-	 qIKF5gpmfRoyZN08Fvc+1gfo28zFEvD0xDmA2dU0=
+	b=ogwcphOUk0Ce/LjTqvOKjRbBNjVFF8ontVPGEsM/XcFfQhSNf8h/EXE8u29TLR9Tp
+	 wGV9QsugU4nXRfxQShuCRzLNzTv4UCsWuWGQ2xu5shHw6TTMUISbMbaSrOyx6K7tDB
+	 LCED+M/AQR/BfPAQ+aPzY9zV16YDZdfLdhfXBOy8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Michael Bommarito <michael.bommarito@gmail.com>,
-	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 6.18 079/377] l2tp: use list_del_rcu in l2tp_session_unhash
+	Sudeep Holla <sudeep.holla@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 7.0 188/461] firmware: arm_ffa: Skip free_pages on RX buffer alloc failure
 Date: Thu, 28 May 2026 21:45:17 +0200
-Message-ID: <20260528194640.660122217@linuxfoundation.org>
+Message-ID: <20260528194652.518407555@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260528194638.371537336@linuxfoundation.org>
-References: <20260528194638.371537336@linuxfoundation.org>
+In-Reply-To: <20260528194646.819809818@linuxfoundation.org>
+References: <20260528194646.819809818@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,99 +63,74 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_MISSING_CHARSET(0.50)[];
 	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	TO_DN_SOME(0.00)[];
-	TAGGED_FROM(0.00)[bounces-255675-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,kernel.org];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-255286-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	NEURAL_HAM(-0.00)[-0.999];
-	TAGGED_RCPT(0.00)[stable];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	TAGGED_RCPT(0.00)[stable];
 	RCPT_COUNT_FIVE(0.00)[5];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,msgid.link:url]
-X-Rspamd-Queue-Id: 0C7095F8C90
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,msgid.link:url]
+X-Rspamd-Queue-Id: 0677A5F7D1C
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+7.0-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Michael Bommarito <michael.bommarito@gmail.com>
+From: Sudeep Holla <sudeep.holla@kernel.org>
 
-commit 979c017803c40829b03acd9e5236e354b7622360 upstream.
+[ Upstream commit 09527e2c534911619d7e098729711100290bc3e1 ]
 
-An unprivileged local user can pin a host CPU indefinitely in
-l2tp_session_get_by_ifname() by issuing L2TP_CMD_SESSION_GET on
-L2TP_ATTR_IFNAME concurrently with L2TP_CMD_SESSION_CREATE and
-L2TP_CMD_SESSION_DELETE on the same tunnel. All three commands take
-GENL_UNS_ADMIN_PERM, so CAP_NET_ADMIN in the netns user namespace
-suffices; on any host that has l2tp_core loaded the trigger is
-reachable from a standard `unshare -Urn` sandbox.
+If the RX buffer allocation fails in ffa_init(), the error path jumps to
+free_pages even though no buffer has been allocated yet. Route that case
+directly to free_drv_info so the cleanup path is only used after at
+least one RX/TX buffer allocation has succeeded.
 
-l2tp_session_unhash() removes a session from tunnel->session_list
-with list_del_init(), but that list is walked by
-l2tp_session_get_by_ifname() with list_for_each_entry_rcu() under
-rcu_read_lock_bh(). list_del_init() leaves the deleted entry's
-next/prev self-pointing; a reader that has loaded the entry and
-then advances pos->list.next reads &session->list, container_of()s
-back to the same session, and list_for_each_entry_rcu() never
-reaches the list head. The CPU stays in strcmp() inside the
-walker, with BH and preemption disabled, so RCU grace periods on
-the host stall behind it and the wedged thread cannot be killed
-(SIGKILL is delivered on syscall return).
-
-Use list_del_rcu() to match the existing list_add_rcu() in
-l2tp_session_register(); the deleted session remains visible to
-in-flight walkers with consistent next/prev pointers until
-kfree_rcu() in l2tp_session_free() releases it. tunnel->session_list
-has exactly one list_del_init() call site; the list_del_init
-(&session->clist) at l2tp_core.c:533 operates on the per-collision
-list, which is not walked under RCU. list_empty(&session->list) is
-not used anywhere in net/l2tp/ after the unhash point, so dropping
-the post-delete self-init is safe; the fix has no userspace-visible
-behavior change.
-
-Fixes: 89b768ec2dfef ("l2tp: use rcu list add/del when updating lists")
-Cc: stable@vger.kernel.org # 6.11+
-Signed-off-by: Michael Bommarito <michael.bommarito@gmail.com>
-Link: https://patch.msgid.link/20260518183447.64078-1-michael.bommarito@gmail.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 3bbfe9871005 ("firmware: arm_ffa: Add initial Arm FFA driver support")
+Link: https://patch.msgid.link/20260428-ffa_fixes-v2-2-8595ae450034@kernel.org
+Signed-off-by: Sudeep Holla <sudeep.holla@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/l2tp/l2tp_core.c |    2 +-
+ drivers/firmware/arm_ffa/driver.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/net/l2tp/l2tp_core.c
-+++ b/net/l2tp/l2tp_core.c
-@@ -1360,7 +1360,7 @@ static void l2tp_session_unhash(struct l
- 		spin_lock_bh(&pn->l2tp_session_idr_lock);
+diff --git a/drivers/firmware/arm_ffa/driver.c b/drivers/firmware/arm_ffa/driver.c
+index eb27828482837..e6a051b20cb72 100644
+--- a/drivers/firmware/arm_ffa/driver.c
++++ b/drivers/firmware/arm_ffa/driver.c
+@@ -2067,7 +2067,7 @@ static int __init ffa_init(void)
+ 	drv_info->rx_buffer = alloc_pages_exact(rxtx_bufsz, GFP_KERNEL);
+ 	if (!drv_info->rx_buffer) {
+ 		ret = -ENOMEM;
+-		goto free_pages;
++		goto free_drv_info;
+ 	}
  
- 		/* Remove from the per-tunnel list */
--		list_del_init(&session->list);
-+		list_del_rcu(&session->list);
- 
- 		/* Remove from per-net IDR */
- 		if (tunnel->version == L2TP_HDR_VER_3) {
+ 	drv_info->tx_buffer = alloc_pages_exact(rxtx_bufsz, GFP_KERNEL);
+-- 
+2.53.0
+
 
 
 
