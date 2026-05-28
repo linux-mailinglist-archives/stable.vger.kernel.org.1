@@ -1,59 +1,60 @@
-Return-Path: <stable+bounces-256208-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-256376-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 8DW8J8iqGGpolwgAu9opvQ
-	(envelope-from <stable+bounces-256208-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:51:20 +0200
+	id mPgaJ4OsGGpolwgAu9opvQ
+	(envelope-from <stable+bounces-256376-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:58:43 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 31E865F9B45
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:51:20 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5381D5F9F6A
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:58:43 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 73F7B3006F39
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 20:44:19 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id E4344308CC3B
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 20:52:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D8F062E7379;
-	Thu, 28 May 2026 20:44:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 796EA27603A;
+	Thu, 28 May 2026 20:52:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rbPyXsgf"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1GeVkwv6"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BD72B14ABE;
-	Thu, 28 May 2026 20:44:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 58ED917A30A;
+	Thu, 28 May 2026 20:52:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780001058; cv=none; b=VCSleAuPrQrQ9fAa361NqJYyzgLibv0M/fOxdOzhFZjojgAaAp9cYKpPEIdMZwQumwJIjaWVxWFjRklSTsFDVfTtguQwlXpqSVA0cUXfs4yPOhtthbop2RiMs1KcSuUthl9ERXplRYvifWfIlzfwEISnaTxGlEJWvZbqfamVmgY=
+	t=1780001527; cv=none; b=NKlIEJE11WT9Fe/09XTp1VGSliFESvbR+WHi574XvivwsTIklL2h3q7B8og4BDGWvPyk9+R5upklOYJl9Lntm2VKj3JE67yfcJ3W7EAmOGxscVB9fnMXNPNA/N0FsIjsX3OOjcY3wAv4AHvQFyM7eymAcrgDCgqJ62dhpUqHka4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780001058; c=relaxed/simple;
-	bh=VTU8H3khuyaTJv/8WZJDb9qlOG+K0uxokZemHavlXVQ=;
+	s=arc-20240116; t=1780001527; c=relaxed/simple;
+	bh=O3TPn3v8zK9DdB4cTcT1vNd2kvGTvQhQPiNY1QRaAK4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=piKWvMryTC+YzH0nilHq2sC3VESLMQ9Ag6X+CH0cd3SZKhuuC++vQdfwTlEJYekkLNwGHdtloSFTn7UGaqf1B/nvgq3s/CssbkW7gyialuKy8IgxxYWu/pNQ7pGya1gEx7GS3XM4g1qzO5EC1UsbGok3AdcfrYnfVvwo6ST5mb4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rbPyXsgf; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BC0D21F000E9;
-	Thu, 28 May 2026 20:44:16 +0000 (UTC)
+	 MIME-Version:Content-Type; b=iDGgg+oqaoL5Ovv7YrsGNJwbLNg6cO4hxEcPrm8BWqv85kOExqBphxFCmP4dYjpL64d7wXKNmpiGY4HnGLAmD+CvPtzsPleGw/VW30O8DEm9PB+5GYguqBtWi12QhRru2UPgHcclkiZKR7W9UPtMWCHX0by9SdrhwWT9+DRfdxo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1GeVkwv6; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B78F31F000E9;
+	Thu, 28 May 2026 20:52:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780001057;
-	bh=zKSIBpa70RL0kjrVgukpBk7soKnfwIqtYpvXM2g+b40=;
+	s=korg; t=1780001526;
+	bh=FupH4q/Yno59iz82IQ1OiLQ18BmAQ/D0cjqdeP9AOJI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=rbPyXsgfGhJFJeQ3OQGX5uU5mxtfAQ4U5r9EDp0UfrnQ0RRj1a2rc2KvNnamUeuFn
-	 D2KbQhdmwONSBBmDeNUoTeYWQvRP7TIeZ04Pbfmw6YdSmBGibIRuNcRfEg7rN41mRy
-	 hiiks/VvbyIvJoPB+MG/uwjK8m7OLbsyo3d2nL6w=
+	b=1GeVkwv6GJ8bKahlQB2O7dVwkrD2Ovak73FyH3VfH3XvrhB+cfu9U2ISIE9y29gYu
+	 vrNJhOinoNGJ9wcv9EyshnV5FM+OSVRleVVgCcVGCYe5T+U2kGOtp6FyWxfHHi+rDt
+	 JopBxUUi6pcZtzwc0GKEH8EYQJWCiRb0mmAwVBkw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Richard Fitzgerald <rf@opensource.cirrus.com>,
-	Mark Brown <broonie@kernel.org>,
+	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 265/272] ASoC: cs35l56: Fix flushing of IRQ work in cs35l56_sdw_remove()
-Date: Thu, 28 May 2026 21:50:39 +0200
-Message-ID: <20260528194636.504591840@linuxfoundation.org>
+Subject: [PATCH 6.6 160/186] platform/x86: intel-hid: Check ACPI_HANDLE() against NULL
+Date: Thu, 28 May 2026 21:50:40 +0200
+Message-ID: <20260528194933.281420307@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260528194629.379955525@linuxfoundation.org>
-References: <20260528194629.379955525@linuxfoundation.org>
+In-Reply-To: <20260528194928.941004471@linuxfoundation.org>
+References: <20260528194928.941004471@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,82 +64,87 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_MISSING_CHARSET(0.50)[];
 	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
+	TAGGED_FROM(0.00)[bounces-256376-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-256208-lists,stable=lfdr.de];
-	TO_DN_SOME(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	TO_DN_SOME(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim,cirrus.com:email]
-X-Rspamd-Queue-Id: 31E865F9B45
+	MID_RHS_MATCH_FROM(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_SEVEN(0.00)[7];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,intel.com:email,msgid.link:url,linuxfoundation.org:mid,linuxfoundation.org:dkim]
+X-Rspamd-Queue-Id: 5381D5F9F6A
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Richard Fitzgerald <rf@opensource.cirrus.com>
+From: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 
-[ Upstream commit 18e7bd9f2446664053f8c34b72abd4606d22d858 ]
+[ Upstream commit 5c69e090ae5dd93d910f70db0796357080707d26 ]
 
-Use flush_work() instead of cancel_work_sync() to terminate pending IRQ
-work in cs35l56_sdw_remove(). And flush_work() again after masking the
-interrupts to flush any queueing that was racing with the masking. This is
-the same sequence as cs35l56_sdw_system_suspend().
+Every platform driver can be forced to match a device that doesn't match
+its list of device IDs because of device_match_driver_override(), so
+platform drivers that rely on the existence of a device's ACPI companion
+object need to verify its presence.
 
-cs35l56_sdw_interrupt() takes the pm_runtime to prevent the bus powering-
-down before the interrupt status can be read and handled. The work releases
-this pm_runtime. So cancelling it, instead of flushing, could leave an
-unbalanced pm_runtime.
+Accordingly, add a requisite ACPI_HANDLE() check against NULL to the
+platform/x86 intel-hid driver.
 
-Signed-off-by: Richard Fitzgerald <rf@opensource.cirrus.com>
-Fixes: e49611252900 ("ASoC: cs35l56: Add driver for Cirrus Logic CS35L56")
-Link: https://patch.msgid.link/20260521123057.988732-1-rf@opensource.cirrus.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
+Fixes: ecc83e52b28c ("intel-hid: new hid event driver for hotkeys")
+Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+Reviewed-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Link: https://patch.msgid.link/1971512.tdWV9SEqCh@rafael.j.wysocki
+Reviewed-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/soc/codecs/cs35l56-sdw.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/platform/x86/intel/hid.c | 6 +++++-
+ 1 file changed, 5 insertions(+), 1 deletion(-)
 
-diff --git a/sound/soc/codecs/cs35l56-sdw.c b/sound/soc/codecs/cs35l56-sdw.c
-index 7c9a17fe2195c..b9cc447b6e5c7 100644
---- a/sound/soc/codecs/cs35l56-sdw.c
-+++ b/sound/soc/codecs/cs35l56-sdw.c
-@@ -544,10 +544,11 @@ static int cs35l56_sdw_remove(struct sdw_slave *peripheral)
+diff --git a/drivers/platform/x86/intel/hid.c b/drivers/platform/x86/intel/hid.c
+index 79390e9e888a7..346fbad34e24a 100644
+--- a/drivers/platform/x86/intel/hid.c
++++ b/drivers/platform/x86/intel/hid.c
+@@ -657,12 +657,16 @@ static bool button_array_present(struct platform_device *device)
  
- 	/* Disable SoundWire interrupts */
- 	cs35l56->sdw_irq_no_unmask = true;
--	cancel_work_sync(&cs35l56->sdw_irq_work);
-+	flush_work(&cs35l56->sdw_irq_work);
- 	sdw_write_no_pm(peripheral, CS35L56_SDW_GEN_INT_MASK_1, 0);
- 	sdw_read_no_pm(peripheral, CS35L56_SDW_GEN_INT_STAT_1);
- 	sdw_write_no_pm(peripheral, CS35L56_SDW_GEN_INT_STAT_1, 0xFF);
-+	flush_work(&cs35l56->sdw_irq_work);
+ static int intel_hid_probe(struct platform_device *device)
+ {
+-	acpi_handle handle = ACPI_HANDLE(&device->dev);
+ 	unsigned long long mode, dummy;
+ 	struct intel_hid_priv *priv;
++	acpi_handle handle;
+ 	acpi_status status;
+ 	int err;
  
- 	cs35l56_remove(cs35l56);
++	handle = ACPI_HANDLE(&device->dev);
++	if (!handle)
++		return -ENODEV;
++
+ 	intel_hid_init_dsm(handle);
  
+ 	if (!intel_hid_evaluate_method(handle, INTEL_HID_DSM_HDMM_FN, &mode)) {
 -- 
 2.53.0
 
