@@ -1,74 +1,74 @@
-Return-Path: <stable+bounces-254896-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-254898-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id yO5oIRUtGGqyfQgAu9opvQ
-	(envelope-from <stable+bounces-254896-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 13:55:01 +0200
+	id EGfuHC8sGGqwfAgAu9opvQ
+	(envelope-from <stable+bounces-254898-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 13:51:11 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 02CFA5F1A39
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 13:55:00 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id 80E305F1910
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 13:51:10 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 1EB8A3144D29
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 11:48:43 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id BB453301F8B9
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 11:49:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1C3B53B960B;
-	Thu, 28 May 2026 11:48:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9E34B3D47A0;
+	Thu, 28 May 2026 11:49:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Nn3NJBQk"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AjLeoGgz"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C777531E848
-	for <stable@vger.kernel.org>; Thu, 28 May 2026 11:48:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4264931E848
+	for <stable@vger.kernel.org>; Thu, 28 May 2026 11:49:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779968921; cv=none; b=hTkgN4Ory5tDxQkENzX56aUxf5diPlJfgKRQVl1x/lJwIzQWKqTAQWB0n/wUXWY2tsN138tH7T9yvbHZS52CY9+pJ9v85YgayY6MyIfnBABI+by7vby64IielyIPzqdQjzbvKvJU+bvoHd31rO078/0p6AwKdRz8D8cG/VxuKv4=
+	t=1779968963; cv=none; b=hpEz4R8WxUEzu5GhxkD0dk6SwBYqqTtj1vBdnKPzOC7fg6iLY4Vdi6S6FNzSPIJh1oLVgyeTo867t4rKuRT8fVbOjcAzzM1ANzx6bptzMuivN635dfejQ8ftRouuxLG1A6O3yvCB2mdJnr3LMQyLtKujy4Ia+katlWx1G/n/ajM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779968921; c=relaxed/simple;
-	bh=GEm2FGsnFXxNNzF8Wda9m/VyBwnVIFOBQKRfRipJPfs=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=qZYl/D8kjoIVnUF3GJERdL/akhPEsnC55kQKDYmMRaBD4rW3b9QtSNhMVY+tadbWrcS90JeTLnn49PQKti5P8lRiKPy33hN7noagZG19QcK9J7JbKnG/HVrF8H5PSwutJGYeuJn9bL6wP3b25GVoNWK7EtwKnO/9fnJ3zbyQNis=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Nn3NJBQk; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0FDB41F00A3A;
-	Thu, 28 May 2026 11:48:39 +0000 (UTC)
+	s=arc-20240116; t=1779968963; c=relaxed/simple;
+	bh=Mg7wzyOrB7r8su/G6xHHNPMPLTwvgZnYrTZDiaSMMUc=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=j1UFk/ZSFfGEovu13aVYX3oCBnbc9e18ZkwK+tyngB2IVxDKRBzY/Ep9iLhzA9x50rf/HnHC+wS8OEahqO8upEBavCpwSKDNTwvwPIx5G2kLVrdHps1sd0bgESV0Jh2xgVkoZzqqK1/S8k+TZn9ExzUGM2fcm5yBWikUHEzmC+Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AjLeoGgz; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2A6261F000E9;
+	Thu, 28 May 2026 11:49:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779968920;
-	bh=A+gzSyRMGPz6WAKlcxEfHJPu9H4lBU8P/judyPC3Lw0=;
+	s=korg; t=1779968961;
+	bh=bThXDCAyvMJOV2gtHxyObFxzvkufKKfiazqMJEFUqpA=;
 	h=Subject:To:Cc:From:Date;
-	b=Nn3NJBQkoUwyxkkINwDLcRH5/+m2tI77tHvW41Lb6YKIhXkLdqd0AFm0IWahyyXEN
-	 m98ulKGmjhZ/hhI/9V/U9fblDpXwnNtgrhzJ8BuOzs8mPlvVVVTuxv33K/FSCWU5OC
-	 +T/f09iLIxc7KpOfrITRTrMx8NdWBQx0FG2ut3Ks=
-Subject: FAILED: patch "[PATCH] cpufreq: intel_pstate: Use correct scaling factor on Raptor" failed to apply to 6.18-stable tree
-To: rafael.j.wysocki@intel.com,henrytseng@qnap.com,stable@vger.kernel.org
+	b=AjLeoGgzpJ2BSIU5PQiXrzkz1GPZz2JNq94kuNgLjiYHOyuUSOzaqO7PoSc8qbOuN
+	 Q8e9ccA2LoFsaj6BUBzlauVgjZ5Rjrd0AyS0DJKgJ46dFINQUgkAPW4Oa4HLeuKn2u
+	 /Zu5nMSbHNPpe97avFvRq3THnsBfxNoyHT2SF+R4=
+Subject: FAILED: patch "[PATCH] drm/i915/psr: Apply Intel DPCD workaround when SDP on prior" failed to apply to 6.6-stable tree
+To: jouni.hogander@intel.com,stable@vger.kernel.org,suraj.kandpal@intel.com,tursulin@ursulin.net
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Thu, 28 May 2026 13:47:46 +0200
-Message-ID: <2026052846-jasmine-recess-d8cc@gregkh>
+Date: Thu, 28 May 2026 13:48:27 +0200
+Message-ID: <2026052827-tweezers-colonize-3631@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=ANSI_X3.4-1968
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [2.34 / 15.00];
 	MID_END_EQ_FROM_USER_PART(4.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	MID_RHS_NOT_FQDN(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-254896-lists,stable=lfdr.de];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-254898-lists,stable=lfdr.de];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	RCVD_COUNT_THREE(0.00)[4];
-	RCVD_TLS_LAST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	FROM_NO_DN(0.00)[];
@@ -76,30 +76,30 @@ X-Spamd-Result: default: False [2.34 / 15.00];
 	NEURAL_HAM(-0.00)[-1.000];
 	TO_DN_NONE(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	RCPT_COUNT_THREE(0.00)[4];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,msgid.link:url,intel.com:email,gregkh:email,linuxfoundation.org:dkim,qnap.com:email]
-X-Rspamd-Queue-Id: 02CFA5F1A39
+	RCPT_COUNT_FIVE(0.00)[5];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,gregkh:email,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,msgid.link:url,intel.com:email]
+X-Rspamd-Queue-Id: 80E305F1910
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
 
-The patch below does not apply to the 6.18-stable tree.
+The patch below does not apply to the 6.6-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.18.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.6.y
 git checkout FETCH_HEAD
-git cherry-pick -x 0e7c710478b3089cdfe8669347f77b163e836c4f
+git cherry-pick -x 4703049f768fc1c1caac754134118bee1a3af189
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2026052846-jasmine-recess-d8cc@gregkh' --subject-prefix 'PATCH 6.18.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2026052827-tweezers-colonize-3631@gregkh' --subject-prefix 'PATCH 6.6.y' HEAD^..
 
 Possible dependencies:
 
@@ -111,45 +111,87 @@ greg k-h
 
 ------------------ original commit in Linus's tree ------------------
 
-From 0e7c710478b3089cdfe8669347f77b163e836c4f Mon Sep 17 00:00:00 2001
-From: "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>
-Date: Tue, 12 May 2026 21:20:30 +0200
-Subject: [PATCH] cpufreq: intel_pstate: Use correct scaling factor on Raptor
- Lake-E
+From 4703049f768fc1c1caac754134118bee1a3af189 Mon Sep 17 00:00:00 2001
+From: =?UTF-8?q?Jouni=20H=C3=B6gander?= <jouni.hogander@intel.com>
+Date: Fri, 15 May 2026 12:57:55 +0300
+Subject: [PATCH] drm/i915/psr: Apply Intel DPCD workaround when SDP on prior
+ line used
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 
-Raptor Lake-E has the same processor ID as Raptor Lake-S, so there is
-an entry in intel_hybrid_scaling_factor[] for it.  It does not contain
-E-cores though and hybrid_get_cpu_type() returns 0 for its P-cores, so
-they get the default "core" scaling factor.  However, the original
-Raptor Lake scaling factor for P-cores still needs to be used for
-mapping the HWP performance levels of the P-cores in Raptor Lake-E to
-frequency, as though they were part of a real hybrid system.
+There is Intel specific workaround DPCD address containing workaround for
+case where SDP is on prior line. Apply this workaround according to values
+in the offset.
 
-To address this, update hwp_get_cpu_scaling() to return
-hybrid_scaling_factor, which is the P-core scaling factor
-retrieved from intel_hybrid_scaling_factor[], for all CPUs
-that are not enumerated as E-cores.
+Fixes: 61e887329e33 ("drm/i915/xelpd: Handle PSR2 SDP indication in the prior scanline")
+Cc: <stable@vger.kernel.org> # v5.15+
+Signed-off-by: Jouni Högander <jouni.hogander@intel.com>
+Reviewed-by: Suraj Kandpal <suraj.kandpal@intel.com>
+Link: https://patch.msgid.link/20260515095756.2799483-4-jouni.hogander@intel.com
+(cherry picked from commit c3fe899fbeac86ea4a5ca9dd845b2cbc0da46249)
+Signed-off-by: Tvrtko Ursulin <tursulin@ursulin.net>
 
-Fixes: 9b18d536b124 ("cpufreq: intel_pstate: Use CPPC to get scaling factors")
-Link: https://lore.kernel.org/all/20260511235328.2018458-1-srinivas.pandruvada@linux.intel.com/
-Reported-by: Henry Tseng <henrytseng@qnap.com>
-Closes: https://lore.kernel.org/linux-pm/20260508063032.3248602-1-henrytseng@qnap.com/
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
-Cc: All applicable <stable@vger.kernel.org>
-Link: https://patch.msgid.link/4523296.ejJDZkT8p0@rafael.j.wysocki
-
-diff --git a/drivers/cpufreq/intel_pstate.c b/drivers/cpufreq/intel_pstate.c
-index 1292da53e5fc..978e2b604ac8 100644
---- a/drivers/cpufreq/intel_pstate.c
-+++ b/drivers/cpufreq/intel_pstate.c
-@@ -2279,7 +2279,7 @@ static int hwp_get_cpu_scaling(int cpu)
- 		 * Return the hybrid scaling factor for P-cores and use the
- 		 * default core scaling for E-cores.
- 		 */
--		if (hybrid_get_cpu_type(cpu) == INTEL_CPU_TYPE_CORE)
-+		if (hybrid_get_cpu_type(cpu) != INTEL_CPU_TYPE_ATOM)
- 			return hybrid_scaling_factor;
+diff --git a/drivers/gpu/drm/i915/display/intel_psr.c b/drivers/gpu/drm/i915/display/intel_psr.c
+index 82eac4048382..29904a037575 100644
+--- a/drivers/gpu/drm/i915/display/intel_psr.c
++++ b/drivers/gpu/drm/i915/display/intel_psr.c
+@@ -1365,9 +1365,35 @@ static bool psr2_granularity_check(struct intel_crtc_state *crtc_state,
+ 	return true;
+ }
  
- 		return core_get_scaling();
+-static bool _compute_psr2_sdp_prior_scanline_indication(struct intel_dp *intel_dp,
+-							struct intel_crtc_state *crtc_state)
++static bool apply_scanline_indication_wa(struct intel_crtc_state *crtc_state,
++					 struct intel_connector *connector)
+ {
++	struct intel_dp *intel_dp = intel_attached_dp(connector);
++	u8 early_scanline_support = connector->dp.psr_caps.intel_wa_dpcd &
++		INTEL_DPCD_INTEL_WA_REGISTER_CAPS_PSR2_EARLYSCANLINE_SDP_SUPPORT_MASK;
++
++	if (intel_dp->edp_dpcd[0] >= DP_EDP_15)
++		return true;
++
++	switch (early_scanline_support)	{
++	case INTEL_DPCD_INTEL_WA_REGISTER_CAPS_FALL_BACK_TO_PSR1:
++		crtc_state->req_psr2_sdp_prior_scanline = false;
++		return false;
++	case INTEL_DPCD_INTEL_WA_REGISTER_CAPS_PSR2_WITH_EARLY_SCANLINE:
++		return true;
++	case INTEL_DPCD_INTEL_WA_REGISTER_CAPS_PSR2_WITHOUT_EARLY_SCANLINE:
++		crtc_state->req_psr2_sdp_prior_scanline = false;
++		return true;
++	default:
++		MISSING_CASE(early_scanline_support);
++		return false;
++	}
++}
++
++static bool _compute_psr2_sdp_prior_scanline_indication(struct intel_crtc_state *crtc_state,
++							struct intel_connector *connector)
++{
++	struct intel_dp *intel_dp = intel_attached_dp(connector);
+ 	struct intel_display *display = to_intel_display(intel_dp);
+ 	const struct drm_display_mode *adjusted_mode = &crtc_state->uapi.adjusted_mode;
+ 	u32 hblank_total, hblank_ns, req_ns;
+@@ -1386,7 +1412,8 @@ static bool _compute_psr2_sdp_prior_scanline_indication(struct intel_dp *intel_d
+ 		return false;
+ 
+ 	crtc_state->req_psr2_sdp_prior_scanline = true;
+-	return true;
++
++	return apply_scanline_indication_wa(crtc_state, connector);
+ }
+ 
+ static int intel_psr_entry_setup_frames(struct intel_dp *intel_dp,
+@@ -1667,7 +1694,7 @@ static bool intel_sel_update_config_valid(struct intel_crtc_state *crtc_state,
+ 								      conn_state))
+ 		goto unsupported;
+ 
+-	if (!_compute_psr2_sdp_prior_scanline_indication(intel_dp, crtc_state)) {
++	if (!_compute_psr2_sdp_prior_scanline_indication(crtc_state, connector)) {
+ 		drm_dbg_kms(display->drm,
+ 			    "Selective update not enabled, SDP indication do not fit in hblank\n");
+ 		goto unsupported;
 
 
