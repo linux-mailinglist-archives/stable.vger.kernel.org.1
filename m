@@ -1,58 +1,58 @@
-Return-Path: <stable+bounces-255772-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-255998-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id qNoWNDulGGrClggAu9opvQ
-	(envelope-from <stable+bounces-255772-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:27:39 +0200
+	id QI76MYWoGGp+lwgAu9opvQ
+	(envelope-from <stable+bounces-255998-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:41:41 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 887C05F8BB3
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:27:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 64E535F956B
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:41:41 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id B26E83057621
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 20:24:04 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 37FA13090849
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 20:34:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 94ECD301472;
-	Thu, 28 May 2026 20:24:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C38CD3368B5;
+	Thu, 28 May 2026 20:34:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0AvFeayh"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DGQ7asPy"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3DD0C3016E0;
-	Thu, 28 May 2026 20:23:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9D2A8313550;
+	Thu, 28 May 2026 20:34:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779999840; cv=none; b=mLzKEs4Y2TPRWMDdijLarp4h74IBSdlt0W7Q9IlIcke64Mvpf+nmckSeLBR07w66mkuaXdBotZd36jlagWAAO+R7IgY0X+tu2uUNHmDmlKeIjgke8FhJRIpIi5m9emFxp33Q10ehXFd3fJwKxbN9RELi5CSS6qcUeBUk/FXcoq0=
+	t=1780000469; cv=none; b=sOwxEZ6c21f95WIoKpGQFexzv8uQMWS3ZpAi59EFGR4EM+bqXwFXQrzJk+5rizH0Ra5YHmuPN2z1KH0Yqf1Sp1aRd6HLujGKPo4tnnvMW9c+f/HLW7SZfQWvFl5MYd961QIidcmGPDRSLTWQ1WXKHyhAb4/WGh0Wcz5GlBf+myA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779999840; c=relaxed/simple;
-	bh=2hXBW5STcXHUunO0r741fZyh6shjX2z3WJ/4pIpJFaw=;
+	s=arc-20240116; t=1780000469; c=relaxed/simple;
+	bh=D1JtSh+K1ktRa7P8fnyjIoLtZxhvff/XKXY4ob//lCY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Y09u7tBE1ojZbz+qL/A8v6zHs/H9e/dztc/U0zbSaQjMqwMLMMpPlU+zXlZwasQ5HX0NwL21fqhhsL/7uzkcJkmA/PX4Vw0LIC7lKGtomNsGFg75kkUd+H1ry8vbDhUZi0Hi90pVzD9vzIACEspDOloqWttf8MdGkhIOilhqi9Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0AvFeayh; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6E7E61F000E9;
-	Thu, 28 May 2026 20:23:58 +0000 (UTC)
+	 MIME-Version; b=ZvwvdPOpi7InKuvgR9akvBsXON0ImghBECnc+sxuANk2rPk0KHmcKECdHdQG9vNmFmgVIn6oxjw5Gk4Xm5iJkHds0ruJhUjCeGcwoqhPQG79ED3jKqAKwmk/OGOZ8frqD4o02alOMuYgMh/AQ17kiG2ZEKQtj1r6lWJTlk0fJoI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DGQ7asPy; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 082661F000E9;
+	Thu, 28 May 2026 20:34:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779999839;
-	bh=zQSt6538QHj4mWBAFtSkz78E+gbexqiy1uLP7Ozonug=;
+	s=korg; t=1780000468;
+	bh=QZ4i1P3YFUa+C6RVAEqB9ECtQCFkx4V2uWyZjdqYpuc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=0AvFeayhhXtrhyw4giDrWaOq4PZh7spMlskkCesnvI6uxkLUa4alaWNLhOc9v60bk
-	 Lcka+5rji1pYfXzFd2JsudSxbpt5I95QUijdDXqRir5IjZe0zN/zji7b4WGkhExu+G
-	 a4BCbWoxlDRC2mHD4UrZ6sucBMukbkyEOw3b0yTc=
+	b=DGQ7asPyxw458+7wWBl+q+zNnwNkqk9F8Ly3YSf+6lW0/on88scz9WK0jwEXaadvn
+	 146XTp1a0ysA0hQMozyqSanA5H0RYtWGfOF98g9rW2JLHZQeLFgo0wkhAjyilgz1m+
+	 Pl6pq1XQK+aaltAuJmM0EooFaEA5QbfePw0i4o6I=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sudeep Holla <sudeep.holla@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 192/377] firmware: arm_ffa: Snapshot notifier callbacks under lock
+	Heechan Kang <gganji11@naver.com>,
+	Jens Axboe <axboe@kernel.dk>
+Subject: [PATCH 6.12 056/272] io_uring/waitid: clear waitid info before copying it to userspace
 Date: Thu, 28 May 2026 21:47:10 +0200
-Message-ID: <20260528194643.971697064@linuxfoundation.org>
+Message-ID: <20260528194630.950082681@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260528194638.371537336@linuxfoundation.org>
-References: <20260528194638.371537336@linuxfoundation.org>
+In-Reply-To: <20260528194629.379955525@linuxfoundation.org>
+References: <20260528194629.379955525@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,136 +65,76 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	TAGGED_FROM(0.00)[bounces-255998-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,naver.com,kernel.dk];
 	RCVD_COUNT_THREE(0.00)[4];
-	RCVD_TLS_LAST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-255772-lists,stable=lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
 	TO_DN_SOME(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	RCPT_COUNT_FIVE(0.00)[5];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[5];
+	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,msgid.link:url,linuxfoundation.org:mid,linuxfoundation.org:dkim]
-X-Rspamd-Queue-Id: 887C05F8BB3
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,naver.com:email,kernel.dk:email,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim]
+X-Rspamd-Queue-Id: 64E535F956B
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sudeep Holla <sudeep.holla@kernel.org>
+From: Heechan Kang <gganji11@naver.com>
 
-[ Upstream commit 38290b180a4d5746baed796d49f88d56d2f336cd ]
+commit 93d93f5f8da791e98159795c6ef683f45bd95d13 upstream.
 
-Both notification handlers currently look up a notifier callback under
-notify_lock, drop the lock, and then dereference the returned
-notifier entry. A concurrent unregister can delete and free that
-entry in the gap, leaving the handler to dereference stale memory.
+IORING_OP_WAITID stores its result fields in struct io_waitid::info and
+later copies them to userspace siginfo. The prep path initializes the
+request arguments, but it does not initialize info itself.
 
-Copy the callback pointer and callback data while notify_lock is
-still held and invoke the callback only after the lock is dropped.
-This keeps the existing callback execution model while removing the
-use-after-free window in both the framework and non-framework
-notification paths.
+If the wait operation completes without reporting a child event, the common
+wait code can return without writing wo_info. In that case io_waitid_finish()
+still copies iw->info to userspace, exposing stale bytes from the reused
+io_kiocb command storage.
 
-Fixes: 285a5ea0f542 ("firmware: arm_ffa: Add support for handling framework notifications")
-Link: https://patch.msgid.link/20260428-ffa_fixes-v2-10-8595ae450034@kernel.org
-Signed-off-by: Sudeep Holla <sudeep.holla@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Clear the result storage during prep so the io_uring path matches the
+regular waitid syscall, which uses a zero-initialized struct waitid_info.
+
+Fixes: f31ecf671ddc ("io_uring: add IORING_OP_WAITID support")
+Cc: stable@vger.kernel.org # 6.7+
+Signed-off-by: Heechan Kang <gganji11@naver.com>
+Link: https://patch.msgid.link/20260516184709.852814-1-gganji11@naver.com
+Signed-off-by: Jens Axboe <axboe@kernel.dk>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/firmware/arm_ffa/driver.c | 35 ++++++++++++++++++++-----------
- 1 file changed, 23 insertions(+), 12 deletions(-)
+ io_uring/waitid.c |    1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/firmware/arm_ffa/driver.c b/drivers/firmware/arm_ffa/driver.c
-index 70f34f58f3832..f518c87031022 100644
---- a/drivers/firmware/arm_ffa/driver.c
-+++ b/drivers/firmware/arm_ffa/driver.c
-@@ -1459,20 +1459,25 @@ static int ffa_notify_send(struct ffa_device *dev, int notify_id,
- 
- static void handle_notif_callbacks(u64 bitmap, enum notify_type type)
- {
-+	ffa_notifier_cb cb;
-+	void *cb_data;
- 	int notify_id;
--	struct notifier_cb_info *cb_info = NULL;
- 
- 	for (notify_id = 0; notify_id <= FFA_MAX_NOTIFICATIONS && bitmap;
- 	     notify_id++, bitmap >>= 1) {
- 		if (!(bitmap & 1))
- 			continue;
- 
--		read_lock(&drv_info->notify_lock);
--		cb_info = notifier_hnode_get_by_type(notify_id, type);
--		read_unlock(&drv_info->notify_lock);
-+		scoped_guard(read_lock, &drv_info->notify_lock) {
-+			struct notifier_cb_info *cb_info;
-+
-+			cb_info = notifier_hnode_get_by_type(notify_id, type);
-+			cb = cb_info ? cb_info->cb : NULL;
-+			cb_data = cb_info ? cb_info->cb_data : NULL;
-+		}
- 
--		if (cb_info && cb_info->cb)
--			cb_info->cb(notify_id, cb_info->cb_data);
-+		if (cb)
-+			cb(notify_id, cb_data);
- 	}
+--- a/io_uring/waitid.c
++++ b/io_uring/waitid.c
+@@ -294,6 +294,7 @@ int io_waitid_prep(struct io_kiocb *req,
+ 	iw->upid = READ_ONCE(sqe->fd);
+ 	iw->options = READ_ONCE(sqe->file_index);
+ 	iw->infop = u64_to_user_ptr(READ_ONCE(sqe->addr2));
++	memset(&iw->info, 0, sizeof(iw->info));
+ 	return 0;
  }
  
-@@ -1480,9 +1485,10 @@ static void handle_fwk_notif_callbacks(u32 bitmap)
- {
- 	void *buf;
- 	uuid_t uuid;
-+	void *fwk_cb_data;
- 	int notify_id = 0, target;
-+	ffa_fwk_notifier_cb fwk_cb;
- 	struct ffa_indirect_msg_hdr *msg;
--	struct notifier_cb_info *cb_info = NULL;
- 	size_t min_offset = offsetof(struct ffa_indirect_msg_hdr, uuid);
- 
- 	/* Only one framework notification defined and supported for now */
-@@ -1518,12 +1524,17 @@ static void handle_fwk_notif_callbacks(u32 bitmap)
- 		ffa_rx_release();
- 	}
- 
--	read_lock(&drv_info->notify_lock);
--	cb_info = notifier_hnode_get_by_vmid_uuid(notify_id, target, &uuid);
--	read_unlock(&drv_info->notify_lock);
-+	scoped_guard(read_lock, &drv_info->notify_lock) {
-+		struct notifier_cb_info *cb_info;
-+
-+		cb_info = notifier_hnode_get_by_vmid_uuid(notify_id, target,
-+							  &uuid);
-+		fwk_cb = cb_info ? cb_info->fwk_cb : NULL;
-+		fwk_cb_data = cb_info ? cb_info->cb_data : NULL;
-+	}
- 
--	if (cb_info && cb_info->fwk_cb)
--		cb_info->fwk_cb(notify_id, cb_info->cb_data, buf);
-+	if (fwk_cb)
-+		fwk_cb(notify_id, fwk_cb_data, buf);
- 	kfree(buf);
- }
- 
--- 
-2.53.0
-
 
 
 
