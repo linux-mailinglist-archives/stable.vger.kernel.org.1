@@ -1,105 +1,106 @@
-Return-Path: <stable+bounces-254901-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-254902-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id kFy1K9QsGGqwfAgAu9opvQ
-	(envelope-from <stable+bounces-254901-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 13:53:56 +0200
+	id WPCuJtgsGGqwfAgAu9opvQ
+	(envelope-from <stable+bounces-254902-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 13:54:00 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5A3FF5F19DA
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 13:53:56 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2F0A65F19F7
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 13:54:00 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id ABEB830561E7
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 11:49:53 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 897F1305BE85
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 11:50:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8B57A3D47A0;
-	Thu, 28 May 2026 11:49:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3DF643DF000;
+	Thu, 28 May 2026 11:50:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hSNC8FpJ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MvbUULkX"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3035B2FE591
-	for <stable@vger.kernel.org>; Thu, 28 May 2026 11:49:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C52143D47A0
+	for <stable@vger.kernel.org>; Thu, 28 May 2026 11:50:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779968990; cv=none; b=IrGoi4oWp8aGTgEnKuaNQBRK9rfoX8lWtVBnjKFZaqV33Ajchd29CYLcOhsqKG08XH9svXe1wTo/uEbd6eijlve1APkFrARR8SCw9TjnHmPJTINU8ZDN1B938vPpw0Mj2TpROIbipAau25JuRT9K4wk11jgNuCKptINCMPLZVzU=
+	t=1779969020; cv=none; b=nVFXcknuCLZ1i2v7wCrtoBK0BMVVGRV2xtph0GxqbjeufGx5BKkOgm9mxE7q2aCVpWi8OSiGDVFsa4f418TD9NFS/vE5El9Pyrjho1c1hD2td5+GXzUFn3Q/wqKWOE9gKWlvXhBceVVRUY8Ef79x9HvpGPv5enwxbRf5EQ8tOF8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779968990; c=relaxed/simple;
-	bh=lptO2rMW7VcxMxy9wdbNHdhZjTff9nJ2WUQ8dcouA0c=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=OQIr00SquZyio2Kmf5/NgCvsT8i+7mSMyZPdqCGWloECGojQvVoHzM5Lie8gKlfzNO8Mngn5RhyQoLO6V4TPKesWg1Obo9R7L30n1ciAaSFfeWdBsgcJLurZHmhpCeeSXinJDVSjBV0yROqo5TM+/wIZWoUswQTegMYbgi1zn1w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hSNC8FpJ; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4E9D11F00A3A;
-	Thu, 28 May 2026 11:49:48 +0000 (UTC)
+	s=arc-20240116; t=1779969020; c=relaxed/simple;
+	bh=Cjolo4nzbE9ioNCgMWZOsCR1iTqBYSFUQeGpXTH/dgc=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=CZYDtGLTBsD1pBF5+bM9DsbNmpU11/Q9SCi37+isPvD0myJ+VCqhp9e4pyAHb6v5S8x8bgz1W5wy6PQ1QvRCxrBZ3oJQ7dlRoOkMD9urIbTUVs1SV1fEo1i+eILrCnr4xdGhjgmzOueVNW1UDI5d+RsSvh3hDmXQwmzygU2nBbY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MvbUULkX; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1FA4E1F00A3A;
+	Thu, 28 May 2026 11:50:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779968988;
-	bh=PrXqXSKVFnDYshthOKGeVVcdr6Po3TiJrbKHvlIzu9Y=;
+	s=korg; t=1779969018;
+	bh=LqAifiSJ3c3WaFLu+jKVFecJOZL8sZBoG2O4gyLFchM=;
 	h=Subject:To:Cc:From:Date;
-	b=hSNC8FpJ+vh/CBt3IMNA2c7nkMVwpp72Jgxbf5+qNpjesYqs44IZAeEVCLwK4KIlM
-	 DXkziel9r6YEYyeS5PQYhGoxs4tmZg3yYyNmduojxstDsrPo2ALMWT/TrHYp0TXEDp
-	 9DHngSO6I4yMz9KBaVIBYokrgEoQY8eNxGtWvFrg=
-Subject: FAILED: patch "[PATCH] drm/v3d: Fix use-after-free of CPU job query arrays on error" failed to apply to 6.12-stable tree
-To: mcanal@igalia.com,itoral@igalia.com
+	b=MvbUULkX9cF9cTdP6D4QyIpA3BDAgrEbcunC9NlxNc/ahjGfksV6A+VjdOqm4ySxp
+	 fjgVJge7bbbH3VrRYzsBRljqqmSoIGXuzm/JX3COilZ8ejFDc3KhngI/BtwDEcYtn8
+	 bnnMpdlraQmW0vlCJ6KebRohWmyuQlCoUS8jdo7w=
+Subject: FAILED: patch "[PATCH] drm/virtio: use uninterruptible resv lock for plane updates" failed to apply to 5.10-stable tree
+To: kartikey406@gmail.com,dmitry.osipenko@collabora.com
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Thu, 28 May 2026 13:48:55 +0200
-Message-ID: <2026052855-portable-pardon-850e@gregkh>
+Date: Thu, 28 May 2026 13:49:24 +0200
+Message-ID: <2026052824-deletion-pony-8578@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
+Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [2.34 / 15.00];
 	MID_END_EQ_FROM_USER_PART(4.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	MID_RHS_NOT_FQDN(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-254901-lists,stable=lfdr.de];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-254902-lists,stable=lfdr.de];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FREEMAIL_TO(0.00)[gmail.com,collabora.com];
+	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	FROM_NO_DN(0.00)[];
 	MISSING_XM_UA(0.00)[];
-	NEURAL_HAM(-0.00)[-0.999];
+	NEURAL_HAM(-0.00)[-0.997];
 	TO_DN_NONE(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	RCPT_COUNT_THREE(0.00)[3];
 	TAGGED_RCPT(0.00)[stable];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[igalia.com:email,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,msgid.link:url,linuxfoundation.org:dkim,gregkh:email]
-X-Rspamd-Queue-Id: 5A3FF5F19DA
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,syzkaller.appspot.com:url,gregkh:email,linuxfoundation.org:dkim,collabora.com:email]
+X-Rspamd-Queue-Id: 2F0A65F19F7
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
 
-The patch below does not apply to the 6.12-stable tree.
+The patch below does not apply to the 5.10-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.12.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.10.y
 git checkout FETCH_HEAD
-git cherry-pick -x b0fe80c0b9250b35e2211bf3117e7aca814a21b0
+git cherry-pick -x 9af1b6e175c82daf4b423da339a722d8e67a735a
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2026052855-portable-pardon-850e@gregkh' --subject-prefix 'PATCH 6.12.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2026052824-deletion-pony-8578@gregkh' --subject-prefix 'PATCH 5.10.y' HEAD^..
 
 Possible dependencies:
 
@@ -111,123 +112,146 @@ greg k-h
 
 ------------------ original commit in Linus's tree ------------------
 
-From b0fe80c0b9250b35e2211bf3117e7aca814a21b0 Mon Sep 17 00:00:00 2001
-From: =?UTF-8?q?Ma=C3=ADra=20Canal?= <mcanal@igalia.com>
-Date: Fri, 15 May 2026 12:07:14 -0300
-Subject: [PATCH] drm/v3d: Fix use-after-free of CPU job query arrays on error
- path
-MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+From 9af1b6e175c82daf4b423da339a722d8e67a735a Mon Sep 17 00:00:00 2001
+From: Deepanshu Kartikey <kartikey406@gmail.com>
+Date: Tue, 19 May 2026 13:52:47 +0530
+Subject: [PATCH] drm/virtio: use uninterruptible resv lock for plane updates
 
-The CPU job ioctl's fail label calls kvfree() on cpu_job's timestamp and
-performance query arrays after v3d_job_cleanup(), which drops the job's
-last reference and frees cpu_job. Reading cpu_job at that point is a
-use-after-free. Also, on the early v3d_job_init() failure path, it is a
-NULL dereference, since v3d_job_deallocate() zeroes the local pointer.
+virtio_gpu_cursor_plane_update() and virtio_gpu_resource_flush() lock
+the framebuffer BO's dma_resv via virtio_gpu_array_lock_resv() and
+ignore its return value. The function can fail with -EINTR from
+dma_resv_lock_interruptible() (signal during lock wait) or with
+-ENOMEM from dma_resv_reserve_fences() (fence slot allocation),
+leaving the resv lock not held. The queue path then walks the object
+array and calls dma_resv_add_fence(), which requires the lock held;
+with lockdep enabled this trips dma_resv_assert_held():
 
-In the success path, the arrays are released from the scheduler's
-.free_job callback, but on the error path, they are freed manually, as
-the job was never pushed to the scheduler. While the success path deals
-with this correctly, the fail path doesn't.
+  WARNING: drivers/dma-buf/dma-resv.c:296 at dma_resv_add_fence+0x71e/0x840
+  Call Trace:
+   virtio_gpu_array_add_fence
+   virtio_gpu_queue_ctrl_sgs
+   virtio_gpu_queue_fenced_ctrl_buffer
+   virtio_gpu_cursor_plane_update
+   drm_atomic_helper_commit_planes
+   drm_atomic_helper_commit_tail
+   commit_tail
+   drm_atomic_helper_commit
+   drm_atomic_commit
+   drm_atomic_helper_update_plane
+   __setplane_atomic
+   drm_mode_cursor_universal
+   drm_mode_cursor_common
+   drm_mode_cursor_ioctl
+   drm_ioctl
+   __x64_sys_ioctl
 
-On top of that, the manual kvfree() calls only free the array storage;
-they don't drm_syncobj_put() the per-query syncobjs that
-v3d_timestamp_query_info_free() and v3d_performance_query_info_free()
-release on the success path. So the same fail path that triggers the
-use-after-free also leaks one syncobj reference per query.
+Beyond the WARN, mutating the dma_resv fence list without the lock
+races with concurrent readers/writers and can corrupt the list.
 
-Unify the CPU job teardown into the CPU job's kref destructor, mirroring
-v3d_render_job_free(). The scheduler's .free_job slot reverts to the
-generic v3d_sched_job_free() and the fail label drops the manual
-kvfree() calls, leaving a single teardown path that is reached from both
-the scheduler and the ioctl error path. That removes the use-after-free,
-the NULL dereference, and the syncobj leak by construction.
+Both call sites run inside the .atomic_update plane callback, which
+DRM atomic helpers do not allow to fail (by the time it runs, the
+commit has been signed off to userspace and there is no clean
+rollback path). Moving the lock acquisition to .prepare_fb was
+rejected because the broader lock scope deadlocks against other BO
+locking paths in the same atomic commit.
 
+Introduce virtio_gpu_lock_one_resv_uninterruptible() that uses
+dma_resv_lock() instead of dma_resv_lock_interruptible(). This
+eliminates the -EINTR failure mode -- the realistic syzbot trigger
+-- without extending the lock hold across the commit. The helper
+locks a single BO and rejects nents > 1 with -EINVAL; both fix
+sites lock exactly one BO.
+
+Use it from virtio_gpu_cursor_plane_update() and
+virtio_gpu_resource_flush(); check the return value to handle the
+remaining -ENOMEM case from dma_resv_reserve_fences() by freeing
+the objs and skipping the plane update for that frame. The
+framebuffer BOs touched here are not shared with other contexts
+and lock contention is expected to be brief, so the loss of
+signal-interruptibility is acceptable.
+
+Other callers of virtio_gpu_array_lock_resv() (the ioctl paths)
+continue to use the interruptible variant.
+
+The bug was reported by syzbot, triggered via fault injection
+(fail_nth) on the DRM_IOCTL_MODE_CURSOR path, which forces the
+-ENOMEM branch in dma_resv_reserve_fences().
+
+Reported-by: syzbot+72bd3dd3a5d5f39a0271@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=72bd3dd3a5d5f39a0271
+Fixes: 5cfd31c5b3a3 ("drm/virtio: fix virtio_gpu_cursor_plane_update().")
 Cc: stable@vger.kernel.org
-Fixes: 9ba0ff3e083f ("drm/v3d: Create a CPU job extension for the timestamp query job")
-Assisted-by: Claude:claude-opus-4.7
-Reviewed-by: Iago Toral Quiroga <itoral@igalia.com>
-Link: https://patch.msgid.link/20260515-v3d-cpu-job-leaks-v1-1-7f147cbbf935@igalia.com
-Signed-off-by: Maíra Canal <mcanal@igalia.com>
+Signed-off-by: Deepanshu Kartikey <kartikey406@gmail.com>
+Signed-off-by: Dmitry Osipenko <dmitry.osipenko@collabora.com>
+Link: https://patch.msgid.link/20260519082247.34470-1-kartikey406@gmail.com
 
-diff --git a/drivers/gpu/drm/v3d/v3d_sched.c b/drivers/gpu/drm/v3d/v3d_sched.c
-index 1855ef5b3b5f..94bf628dc91c 100644
---- a/drivers/gpu/drm/v3d/v3d_sched.c
-+++ b/drivers/gpu/drm/v3d/v3d_sched.c
-@@ -125,20 +125,6 @@ v3d_performance_query_info_free(struct v3d_performance_query_info *query_info,
- 	}
- }
- 
--static void
--v3d_cpu_job_free(struct drm_sched_job *sched_job)
--{
--	struct v3d_cpu_job *job = to_cpu_job(sched_job);
--
--	v3d_timestamp_query_info_free(&job->timestamp_query,
--				      job->timestamp_query.count);
--
--	v3d_performance_query_info_free(&job->performance_query,
--					job->performance_query.count);
--
--	v3d_job_cleanup(&job->base);
--}
--
- static void
- v3d_switch_perfmon(struct v3d_dev *v3d, struct v3d_job *job)
- {
-@@ -830,7 +816,7 @@ static const struct drm_sched_backend_ops v3d_cache_clean_sched_ops = {
- 
- static const struct drm_sched_backend_ops v3d_cpu_sched_ops = {
- 	.run_job = v3d_cpu_job_run,
--	.free_job = v3d_cpu_job_free
-+	.free_job = v3d_sched_job_free
- };
- 
- static int
-diff --git a/drivers/gpu/drm/v3d/v3d_submit.c b/drivers/gpu/drm/v3d/v3d_submit.c
-index ee4512db294b..e3a6e7cc7bd5 100644
---- a/drivers/gpu/drm/v3d/v3d_submit.c
-+++ b/drivers/gpu/drm/v3d/v3d_submit.c
-@@ -123,6 +123,21 @@ v3d_render_job_free(struct kref *ref)
- 	v3d_job_free(ref);
- }
- 
-+static void
-+v3d_cpu_job_free(struct kref *ref)
-+{
-+	struct v3d_cpu_job *job = container_of(ref, struct v3d_cpu_job,
-+					       base.refcount);
-+
-+	v3d_timestamp_query_info_free(&job->timestamp_query,
-+				      job->timestamp_query.count);
-+
-+	v3d_performance_query_info_free(&job->performance_query,
-+					job->performance_query.count);
-+
-+	v3d_job_free(ref);
-+}
-+
- void v3d_job_cleanup(struct v3d_job *job)
- {
- 	if (!job)
-@@ -1302,7 +1317,7 @@ v3d_submit_cpu_ioctl(struct drm_device *dev, void *data,
- 	trace_v3d_submit_cpu_ioctl(&v3d->drm, cpu_job->job_type);
- 
- 	ret = v3d_job_init(v3d, file_priv, &cpu_job->base,
--			   v3d_job_free, 0, &se, V3D_CPU);
-+			   v3d_cpu_job_free, 0, &se, V3D_CPU);
- 	if (ret) {
- 		v3d_job_deallocate((void *)&cpu_job);
- 		goto fail;
-@@ -1385,8 +1400,6 @@ v3d_submit_cpu_ioctl(struct drm_device *dev, void *data,
- 	v3d_job_cleanup((void *)csd_job);
- 	v3d_job_cleanup(clean_job);
- 	v3d_put_multisync_post_deps(&se);
--	kvfree(cpu_job->timestamp_query.queries);
--	kvfree(cpu_job->performance_query.queries);
- 
+diff --git a/drivers/gpu/drm/virtio/virtgpu_drv.h b/drivers/gpu/drm/virtio/virtgpu_drv.h
+index f17660a71a3e..2f3531950aa4 100644
+--- a/drivers/gpu/drm/virtio/virtgpu_drv.h
++++ b/drivers/gpu/drm/virtio/virtgpu_drv.h
+@@ -317,6 +317,7 @@ virtio_gpu_array_from_handles(struct drm_file *drm_file, u32 *handles, u32 nents
+ void virtio_gpu_array_add_obj(struct virtio_gpu_object_array *objs,
+ 			      struct drm_gem_object *obj);
+ int virtio_gpu_array_lock_resv(struct virtio_gpu_object_array *objs);
++int virtio_gpu_lock_one_resv_uninterruptible(struct virtio_gpu_object_array *objs);
+ void virtio_gpu_array_unlock_resv(struct virtio_gpu_object_array *objs);
+ void virtio_gpu_array_add_fence(struct virtio_gpu_object_array *objs,
+ 				struct dma_fence *fence);
+diff --git a/drivers/gpu/drm/virtio/virtgpu_gem.c b/drivers/gpu/drm/virtio/virtgpu_gem.c
+index f22dc5c21cd4..435d37d36034 100644
+--- a/drivers/gpu/drm/virtio/virtgpu_gem.c
++++ b/drivers/gpu/drm/virtio/virtgpu_gem.c
+@@ -238,6 +238,23 @@ int virtio_gpu_array_lock_resv(struct virtio_gpu_object_array *objs)
  	return ret;
  }
+ 
++int virtio_gpu_lock_one_resv_uninterruptible(struct virtio_gpu_object_array *objs)
++{
++	int ret;
++
++	if (objs->nents != 1)
++		return -EINVAL;
++
++	dma_resv_lock(objs->objs[0]->resv, NULL);
++
++	ret = dma_resv_reserve_fences(objs->objs[0]->resv, 1);
++	if (ret) {
++		virtio_gpu_array_unlock_resv(objs);
++		return ret;
++	}
++	return 0;
++}
++
+ void virtio_gpu_array_unlock_resv(struct virtio_gpu_object_array *objs)
+ {
+ 	if (objs->nents == 1) {
+diff --git a/drivers/gpu/drm/virtio/virtgpu_plane.c b/drivers/gpu/drm/virtio/virtgpu_plane.c
+index a126d1b25f46..652352424744 100644
+--- a/drivers/gpu/drm/virtio/virtgpu_plane.c
++++ b/drivers/gpu/drm/virtio/virtgpu_plane.c
+@@ -215,7 +215,10 @@ static void virtio_gpu_resource_flush(struct drm_plane *plane,
+ 		if (!objs)
+ 			return;
+ 		virtio_gpu_array_add_obj(objs, vgfb->base.obj[0]);
+-		virtio_gpu_array_lock_resv(objs);
++		if (virtio_gpu_lock_one_resv_uninterruptible(objs)) {
++			virtio_gpu_array_put_free(objs);
++			return;
++		}
+ 		virtio_gpu_cmd_resource_flush(vgdev, bo->hw_res_handle, x, y,
+ 					      width, height, objs,
+ 					      vgplane_st->fence);
+@@ -459,7 +462,10 @@ static void virtio_gpu_cursor_plane_update(struct drm_plane *plane,
+ 		if (!objs)
+ 			return;
+ 		virtio_gpu_array_add_obj(objs, vgfb->base.obj[0]);
+-		virtio_gpu_array_lock_resv(objs);
++		if (virtio_gpu_lock_one_resv_uninterruptible(objs)) {
++			virtio_gpu_array_put_free(objs);
++			return;
++		}
+ 		virtio_gpu_cmd_transfer_to_host_2d
+ 			(vgdev, 0,
+ 			 plane->state->crtc_w,
 
 
