@@ -1,58 +1,69 @@
-Return-Path: <stable+bounces-255259-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-255605-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id cJnWM8ieGGpblggAu9opvQ
-	(envelope-from <stable+bounces-255259-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:00:08 +0200
+	id aEHpMNaiGGrClggAu9opvQ
+	(envelope-from <stable+bounces-255605-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:17:26 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7B1B65F7A21
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:00:08 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6666C5F8478
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:17:26 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id CEFBF3016D29
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 20:00:07 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 86771300612C
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 20:16:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2A2AC348C45;
-	Thu, 28 May 2026 20:00:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2DF3C2D6E5C;
+	Thu, 28 May 2026 20:16:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JPnEdkxK"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="u+ZttZ4F"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 04946331A7E;
-	Thu, 28 May 2026 20:00:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D20562459D1;
+	Thu, 28 May 2026 20:16:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779998407; cv=none; b=Ph6aZdTWcTXpXGPlcfysXhqWAfGEShWiZXa6Pt095GRyWr96nNPS8k2nnj1RSEkC2BvY+7HcKtpzPUU1XIkwfHyZWte+dMrcPMWEPBB4kN7fpwVJynd4CJvD1uOuyW97kO9DxpJsdwXt+BNV9o8aP2OWmZ3qLXNsJm2GkoY3sto=
+	t=1779999382; cv=none; b=skKcux98zocStJOuBGBNsjF5gmC2U6Zcp2VfRLsvIx9reYxo3kyW4XJjsWv2OFfN+DjWjEMqeHUXWPMZdDy7479XyU/KiEmkLlVMgyZkBDjQIlCDnm2FbLGr7ylh/qRcJiP8EHdZ/NawHViXXwNQcex6IukSugrdYNqQBElaUto=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779998407; c=relaxed/simple;
-	bh=DUSpm689IA7GYSXjvNNgx4ME4mDf+e5rek/FemllFBY=;
+	s=arc-20240116; t=1779999382; c=relaxed/simple;
+	bh=aEjVv/8YqfOdieemIZLzOZ25hjEiul2TPuz8tqQC5bw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=V32XzF5RSseXyaP0NQ8aiqMLQb1mt/F2vPdyUn+zkUQOwxzGy9/VKb0z2PW9e0NZtpGkCaVf+vCe2bdskoG2buv3Qt2ytFC0JT3h/EcX6AH7f3YosqA67W71aGrfW3g0ceOKOte+aAm4FH1HCpNN7+ymIc869iNqA3m4aOtH2d8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JPnEdkxK; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8CC711F000E9;
-	Thu, 28 May 2026 20:00:05 +0000 (UTC)
+	 MIME-Version; b=SgBbP8QnW083s7/54SaxOFx9Sr2+aZ8reMOQ7nqqjanTKd4KkJpG+nY5cZPpalQALavHvy0ebviYMlgpuTlIPbSbRfaBHJ6hvNagbL+KjSJhvEEe9iJY3YnS5O5RgaIq5DxNZGtaF9Nv1PA9qo9j9k+6ofHaavMuYXXLSRZHDNw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=u+ZttZ4F; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DF6391F000E9;
+	Thu, 28 May 2026 20:16:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779998405;
-	bh=K9X3TCW1LUygXZ6U44kNXWtOhKIGCNK2RGgfiSivLvE=;
+	s=korg; t=1779999380;
+	bh=1SUVziVjiiDEERWkkWenSVbWcnen8fD1FInbojVVSL0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=JPnEdkxKdYjn1Ca1oCZDIDFHN0fhmVltww96ZjZmCXdH/efxHenAQebBJ1ZHaAsRh
-	 g9aIlcDZdFMn3LHvbINJnKr1JZhvlXEwAR2hTXk/R3mngazlEMk0eaJPB9FRQCpOQ9
-	 HyAJ/Z9ErFk4MZc48K/22QMQH3agXJvLd0mcw35I=
+	b=u+ZttZ4FAijzh+BeIMk/rNgTjZ8ljuYVtVcfBzKGYQXJFNDFzr6rvFZjLMzCd6Fpf
+	 VkUvKQesDZf1mqyuXo2t5nEOiCTHKjpnpkjejKfRQh9YNPgQa4AL11zTbivZFFaAX8
+	 1ggHc65bpA8kZMKUueTjA5xu5i21ddvIeh5gYveI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable@kernel.org,
-	Sven Eckelmann <sven@narfation.org>
-Subject: [PATCH 7.0 155/461] batman-adv: tp_meter: directly shut down timer on cleanup
-Date: Thu, 28 May 2026 21:44:44 +0200
-Message-ID: <20260528194651.530574785@linuxfoundation.org>
+	"David Hildenbrand (Arm)" <david@kernel.org>,
+	Hugh Dickins <hughd@google.com>,
+	Bibo Mao <maobibo@loongson.cn>,
+	Lance Yang <lance.yang@linux.dev>,
+	Baolin Wang <baolin.wang@linux.alibaba.com>,
+	Oscar Salvador <osalvador@suse.de>,
+	Lorenzo Stoakes <ljs@kernel.org>,
+	"Liam R. Howlett" <liam@infradead.org>,
+	Michal Hocko <mhocko@suse.com>,
+	Mike Rapoport <rppt@kernel.org>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Vlastimil Babka <vbabka@kernel.org>,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 6.18 047/377] mm: fix __vm_normal_page() to handle missing support for pmd_special()/pud_special()
+Date: Thu, 28 May 2026 21:44:45 +0200
+Message-ID: <20260528194639.736152039@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260528194646.819809818@linuxfoundation.org>
-References: <20260528194646.819809818@linuxfoundation.org>
+In-Reply-To: <20260528194638.371537336@linuxfoundation.org>
+References: <20260528194638.371537336@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -77,8 +88,8 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-255259-lists,stable=lfdr.de];
-	TO_DN_SOME(0.00)[];
+	TAGGED_FROM(0.00)[bounces-255605-lists,stable=lfdr.de];
+	RCPT_COUNT_TWELVE(0.00)[16];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
@@ -86,67 +97,118 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	NEURAL_HAM(-0.00)[-1.000];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[5];
+	TO_DN_SOME(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[narfation.org:email,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo]
-X-Rspamd-Queue-Id: 7B1B65F7A21
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo]
+X-Rspamd-Queue-Id: 6666C5F8478
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-7.0-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sven Eckelmann <sven@narfation.org>
+From: David Hildenbrand (Arm) <david@kernel.org>
 
-commit d5487249a81ea658717614009c8f46acc5b7101a upstream.
+commit c0c6ccd9828c3a1950623b546fa57292a77b5c73 upstream.
 
-batadv_tp_sender_cleanup() was calling timer_delete_sync() followed by
-timer_delete() to guard against the timer handler re-arming itself between
-the two calls. This double-deletion hack relied on the sending status being
-set to 0 to suppress re-arming.
+On x86 32-bit with THP enabled, zap_huge_pmd() is seen to generate a
+"WARNING: mm/memory.c:735 at __vm_normal_page+0x6a/0x7d", from the
+VM_WARN_ON_ONCE(is_zero_pfn(pfn) || is_huge_zero_pfn(pfn)); followed by
+"BUG: Bad rss-counter state"s, then later "BUG: Bad page state"s when
+reclaim gets to call shrink_huge_zero_folio_scan().
 
-Replace both calls with a single timer_shutdown_sync(). This function both
-waits for any running timer callback to complete (like timer_delete_sync())
-and permanently disarms the timer so it cannot be re-armed afterwards,
-making re-arming prevention unconditional and self-documenting.
+It's as if the _PAGE_SPECIAL bit never got set in the huge_zero pmd: and
+indeed, whereas pte_special() and pte_mkspecial() are subject to a
+dedicated CONFIG_ARCH_HAS_PTE_SPECIAL, pmd_special() and pmd_mkspecial()
+are subject to CONFIG_ARCH_SUPPORTS_PMD_PFNMAP, which is never enabled on
+any 32-bit architecture.
 
-The re-arming property is also required because otherwise:
+While the problem was exposed through commit d80a9cb1a64a
+("mm/huge_memory: add and use normal_or_softleaf_folio_pmd()"), it was an
+oversight in commit af38538801c6 ("mm/memory: factor out common code from
+vm_normal_page_*()") and would result in other problems:
+* huge zero folio accounted in smaps, pagemap (PAGE_IS_FILE) and
+  numamaps as file-backed THP
+* folio_walk_start() returning the folio even without FW_ZEROPAGE set.
+  Callers seem to tolerate that, though.
 
-1. context 0 (batadv_tp_recv_ack()) checks in
-   batadv_tp_reset_sender_timer() if sending is still 1 -> it is
-2. context 1 changes in batadv_tp_sender_shutdown() sending to 0 and in
-   this process forces the kthread to stop timer in
-   batadv_tp_sender_cleanup()
-3. context 0 continues in batadv_tp_reset_sender_timer() and rearms the
-   timer -> but the reference for it is already gone
+... and triggering the VM_WARN_ON_ONE(), although never reported so far.
 
-Cc: stable@kernel.org
-Fixes: 33a3bb4a3345 ("batman-adv: throughput meter implementation")
-Signed-off-by: Sven Eckelmann <sven@narfation.org>
+To fix it, teach vm_normal_page_pmd()/vm_normal_page_pud() to consider
+whether pmd_special/pud_special is actually implemented.
+
+Link: https://lore.kernel.org/20260430-pmd_special-v1-1-dbcbcfd72c20@kernel.org
+Fixes: af38538801c6 ("mm/memory: factor out common code from vm_normal_page_*()")
+Signed-off-by: David Hildenbrand (Arm) <david@kernel.org>
+Reported-by: Hugh Dickins <hughd@google.com>
+Closes: https://lore.kernel.org/r/74a75b59-2e13-3985-ee99-d5521f39df2a@google.com
+Reported-by: Bibo Mao <maobibo@loongson.cn>
+Closes: https://lore.kernel.org/r/20260430041121.2839350-1-maobibo@loongson.cn
+Debugged-by: Hugh Dickins <hughd@google.com>
+Reviewed-by: Lance Yang <lance.yang@linux.dev>
+Tested-by: Bibo Mao <maobibo@loongson.cn>
+Reviewed-by: Baolin Wang <baolin.wang@linux.alibaba.com>
+Reviewed-by: Oscar Salvador <osalvador@suse.de>
+Reviewed-by: Lorenzo Stoakes <ljs@kernel.org>
+Cc: Liam R. Howlett <liam@infradead.org>
+Cc: Michal Hocko <mhocko@suse.com>
+Cc: Mike Rapoport <rppt@kernel.org>
+Cc: Suren Baghdasaryan <surenb@google.com>
+Cc: Vlastimil Babka <vbabka@kernel.org>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/batman-adv/tp_meter.c |    8 +-------
- 1 file changed, 1 insertion(+), 7 deletions(-)
+ mm/memory.c |   22 +++++++++++++++++++---
+ 1 file changed, 19 insertions(+), 3 deletions(-)
 
---- a/net/batman-adv/tp_meter.c
-+++ b/net/batman-adv/tp_meter.c
-@@ -400,13 +400,7 @@ static void batadv_tp_sender_cleanup(str
- 	batadv_tp_list_detach(tp_vars);
- 
- 	/* kill the timer and remove its reference */
--	timer_delete_sync(&tp_vars->timer);
--	/* the worker might have rearmed itself therefore we kill it again. Note
--	 * that if the worker should run again before invoking the following
--	 * timer_delete(), it would not re-arm itself once again because the status
--	 * is OFF now
--	 */
--	timer_delete(&tp_vars->timer);
-+	timer_shutdown_sync(&tp_vars->timer);
- 	batadv_tp_vars_put(tp_vars);
+--- a/mm/memory.c
++++ b/mm/memory.c
+@@ -612,6 +612,21 @@ static void print_bad_page_map(struct vm
+ 	dump_stack();
+ 	add_taint(TAINT_BAD_PAGE, LOCKDEP_NOW_UNRELIABLE);
  }
++
++static inline bool pgtable_level_has_pxx_special(enum pgtable_level level)
++{
++	switch (level) {
++	case PGTABLE_LEVEL_PTE:
++		return IS_ENABLED(CONFIG_ARCH_HAS_PTE_SPECIAL);
++	case PGTABLE_LEVEL_PMD:
++		return IS_ENABLED(CONFIG_ARCH_SUPPORTS_PMD_PFNMAP);
++	case PGTABLE_LEVEL_PUD:
++		return IS_ENABLED(CONFIG_ARCH_SUPPORTS_PUD_PFNMAP);
++	default:
++		return false;
++	}
++}
++
+ #define print_bad_pte(vma, addr, pte, page) \
+ 	print_bad_page_map(vma, addr, pte_val(pte), page, PGTABLE_LEVEL_PTE)
  
+@@ -684,7 +699,7 @@ static inline struct page *__vm_normal_p
+ 		unsigned long addr, unsigned long pfn, bool special,
+ 		unsigned long long entry, enum pgtable_level level)
+ {
+-	if (IS_ENABLED(CONFIG_ARCH_HAS_PTE_SPECIAL)) {
++	if (pgtable_level_has_pxx_special(level)) {
+ 		if (unlikely(special)) {
+ #ifdef CONFIG_FIND_NORMAL_PAGE
+ 			if (vma->vm_ops && vma->vm_ops->find_normal_page)
+@@ -699,8 +714,9 @@ static inline struct page *__vm_normal_p
+ 			return NULL;
+ 		}
+ 		/*
+-		 * With CONFIG_ARCH_HAS_PTE_SPECIAL, any special page table
+-		 * mappings (incl. shared zero folios) are marked accordingly.
++		 * With working pte_special()/pmd_special()..., any special page
++		 * table mappings (incl. shared zero folios) are marked
++		 * accordingly.
+ 		 */
+ 	} else {
+ 		if (unlikely(vma->vm_flags & (VM_PFNMAP | VM_MIXEDMAP))) {
 
 
 
