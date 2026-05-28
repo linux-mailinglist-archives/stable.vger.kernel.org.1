@@ -1,60 +1,58 @@
-Return-Path: <stable+bounces-255831-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-256110-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 2IpTF6OmGGpolwgAu9opvQ
-	(envelope-from <stable+bounces-255831-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:33:39 +0200
+	id 4NlzMVCqGGpolwgAu9opvQ
+	(envelope-from <stable+bounces-256110-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:49:20 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id D3D1D5F8F53
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:33:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 61B9A5F99BF
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:49:20 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 8688E3141AF8
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 20:26:45 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 8661D300D606
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 20:40:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A9996254B1F;
-	Thu, 28 May 2026 20:26:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1492E25F7B9;
+	Thu, 28 May 2026 20:39:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cAG4H3BL"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="r8VS4uVl"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 76A572E7379;
-	Thu, 28 May 2026 20:26:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AFC272F1FEC;
+	Thu, 28 May 2026 20:39:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780000002; cv=none; b=KrmpruXL93fCtw1D7tXdxD7A015R4yk3MnQvRTJ7gbVBkQIGMPpaNDf9TwRd8VYjnmLYml0OF38roeuz9nJ401mwxVkB7sPt0ZIt0UNq3D2IAUOfclx/mEECzKO1wILVN4T+ZW7ZN14g231wCOU1vuMc4IFeIzZvt8U2BRAnl7E=
+	t=1780000784; cv=none; b=eDjrgA0xc43qzxau5SUz7nMuU/ci/qMv7k/9HTl5g/T3b9vBaG/gqyxEF6sYtGn59HROlkL1NG/m730v7Lo2vrU1BJr1cNeLdICT8m+IgktqBYwzHfqJ5euuQxWAGhnNQ+skz1uxK4d1FsoO95HOvVoXC227cAQArgzFxOP7nAY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780000002; c=relaxed/simple;
-	bh=1rb52goNTsns9U0eXUl6PcnIwzeAw1BsOR95tjse2wI=;
+	s=arc-20240116; t=1780000784; c=relaxed/simple;
+	bh=E+TeR23uC27NwtAt9WplsYULFCCm9T58me/3pB2vpqs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=UKHj1Hla0Upyn+DR5jFaAJZ/XdjZqc2NxynS6qF0eonqrpZ9dtimfjYQrY7/PP5vFj1pKY0emXJC69sMFmP/xZjykn568fldMhEWJw/MS7VBLSLpi7MKqNYyRMWWiTKPU71heyYDn3bMgfwYbp/ZhUkPfPxFr4I8z8OpEJwfV/8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cAG4H3BL; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9225D1F000E9;
-	Thu, 28 May 2026 20:26:40 +0000 (UTC)
+	 MIME-Version; b=Qui22a/BOvZdNy+XNync5B+/YvGLx+kmPv3InXasTYAW7hJ2mJ8Z+2ReXEhaLoyaxtpd3Y7qF7g5orafqJtB3gQ0Ps2IpmJK3dgzYuXdUyL2y7rU5PssGU8BL/XEi+SYVWNxoYxPp502g7WWYvoFcOdYO7nJXpa9V0DdHJaiM+4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=r8VS4uVl; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 18FF91F000E9;
+	Thu, 28 May 2026 20:39:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780000001;
-	bh=Jz+ViVwfkq3ypUQkAsq4WENF1dVNXPmX8sQeOuQ/eIo=;
+	s=korg; t=1780000783;
+	bh=x1BdV9Y5yP2bNLlyQI76IMTaF/tIbcQiQ3XSr54jwFk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=cAG4H3BLgWuHGu/zP+di6wtaLQnGcrpX9c+vNWAZjEFhkDSdSm6hn9yZoY0BeVTkp
-	 mz86rXtc7mAjhHNOeEAOayrxR+QX5TaUs41IVZlAgJGZ4UMX/gkSt+EExSxOfRRzym
-	 ggj67LLYySM3ODygorUllmCx56r8Iwj+HklzJwp4=
+	b=r8VS4uVl523ixIpRORbyiWLlsdjQn1zCB0JiCzC9fUFyrpRf7bvvXJVUWuvT6G5cQ
+	 ZXT8OiEU6XKPjYk8tUsEXmW87ZK/1QSkEMiGJs2ecOEJaqctDw6hPcAAWGIfgVSj5N
+	 ayjcGNwgGoSIlfWo0Lwb30eLLCoZZu4PCzew0iJo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Casey Chen <cachen@purestorage.com>,
-	Christoph Hellwig <hch@lst.de>,
-	Jens Axboe <axboe@kernel.dk>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 266/377] block: recompute nr_integrity_segments in blk_insert_cloned_request
+	stable@kernel.org,
+	Sven Eckelmann <sven@narfation.org>
+Subject: [PATCH 6.12 130/272] batman-adv: tp_meter: fix race condition in send error reporting
 Date: Thu, 28 May 2026 21:48:24 +0200
-Message-ID: <20260528194646.069836352@linuxfoundation.org>
+Message-ID: <20260528194633.020453354@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260528194638.371537336@linuxfoundation.org>
-References: <20260528194638.371537336@linuxfoundation.org>
+In-Reply-To: <20260528194629.379955525@linuxfoundation.org>
+References: <20260528194629.379955525@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -74,110 +72,209 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	URIBL_MULTI_FAIL(0.00)[linuxfoundation.org:server fail,purestorage.com:server fail,tor.lore.kernel.org:server fail,msgid.link:server fail,kernel.dk:server fail,lst.de:server fail];
-	TAGGED_FROM(0.00)[bounces-255831-lists,stable=lfdr.de];
-	PRECEDENCE_BULK(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
+	RCVD_TLS_LAST(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	TAGGED_FROM(0.00)[bounces-256110-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[7];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[lst.de:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,msgid.link:url,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,purestorage.com:email]
-X-Rspamd-Queue-Id: D3D1D5F8F53
+	RCPT_COUNT_FIVE(0.00)[5];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,narfation.org:email]
+X-Rspamd-Queue-Id: 61B9A5F99BF
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Casey Chen <cachen@purestorage.com>
+From: Sven Eckelmann <sven@narfation.org>
 
-[ Upstream commit 2c6e6a18a37b905cb584eb0dda3ae482162a81ca ]
+commit 71dce47f0758537fff78fddb5fb0d4632d29b29f upstream.
 
-blk_insert_cloned_request() already recomputes nr_phys_segments
-against the bottom queue, because "the queue settings related to
-segment counting may differ from the original queue." The exact same
-reasoning applies to integrity segments: a stacked driver's underlying
-queue can have tighter virt_boundary_mask, seg_boundary_mask, or
-max_segment_size than the top queue, in which case
-blk_rq_count_integrity_sg() against the bottom queue produces a
-different count than the cached rq->nr_integrity_segments inherited
-from the source request by blk_rq_prep_clone().
+batadv_tp_sender_shutdown() previously used two separate variables to track
+session state: sending (an atomic flag indicating whether the session was
+active) and reason (a plain enum storing the stop reason). This introduced
+a race window between the two writes: after sending was cleared to 0,
+batadv_tp_send() could observe the stopped state and call
+batadv_tp_sender_end() before reason was written, causing the wrong stop
+reason to be reported to the caller.
 
-When the cached count is lower than the bottom queue's actual count,
-blk_rq_map_integrity_sg() trips
+Fix this by consolidating both variables into a single atomic send_result,
+which holds 0 while the session is running and the stop reason once it
+ends.
 
-	BUG_ON(segments > rq->nr_integrity_segments);
-
-on dispatch. The same families of stacked setups that motivated the
-existing nr_phys_segments recompute -- dm-multipath fanning out to
-nvme-rdma in particular -- can produce this.
-
-Mirror the nr_phys_segments handling: when the request carries
-integrity, recompute nr_integrity_segments against the bottom queue
-and reject the request if it exceeds the bottom queue's
-max_integrity_segments. blk_rq_count_integrity_sg() and
-queue_max_integrity_segments() are both already available via
-<linux/blk-integrity.h>, which blk-mq.c includes.
-
-This closes a latent gap in the stacking contract and brings the
-integrity-segment accounting in line with the existing
-phys-segment accounting.
-
-Fixes: 76c313f658d2 ("blk-integrity: improved sg segment mapping")
-Signed-off-by: Casey Chen <cachen@purestorage.com>
-Reviewed-by: Christoph Hellwig <hch@lst.de>
-Link: https://patch.msgid.link/20260511212230.27511-1-cachen@purestorage.com
-Signed-off-by: Jens Axboe <axboe@kernel.dk>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: stable@kernel.org
+Fixes: 33a3bb4a3345 ("batman-adv: throughput meter implementation")
+Signed-off-by: Sven Eckelmann <sven@narfation.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- block/blk-mq.c | 19 +++++++++++++++++++
- 1 file changed, 19 insertions(+)
+ net/batman-adv/tp_meter.c |   40 +++++++++++++++++++++++++---------------
+ net/batman-adv/types.h    |   10 +++++-----
+ 2 files changed, 30 insertions(+), 20 deletions(-)
 
-diff --git a/block/blk-mq.c b/block/blk-mq.c
-index 4ebb92014eae1..ab05c5c9e6ae2 100644
---- a/block/blk-mq.c
-+++ b/block/blk-mq.c
-@@ -3285,6 +3285,25 @@ blk_status_t blk_insert_cloned_request(struct request *rq)
- 		return BLK_STS_IOERR;
+--- a/net/batman-adv/tp_meter.c
++++ b/net/batman-adv/tp_meter.c
+@@ -419,11 +419,14 @@ static void batadv_tp_sender_cleanup(str
+ static void batadv_tp_sender_end(struct batadv_priv *bat_priv,
+ 				 struct batadv_tp_vars *tp_vars)
+ {
++	enum batadv_tp_meter_reason reason;
+ 	u32 session_cookie;
+ 
++	reason = atomic_read(&tp_vars->send_result);
++
+ 	batadv_dbg(BATADV_DBG_TP_METER, bat_priv,
+ 		   "Test towards %pM finished..shutting down (reason=%d)\n",
+-		   tp_vars->other_end, tp_vars->reason);
++		   tp_vars->other_end, reason);
+ 
+ 	batadv_dbg(BATADV_DBG_TP_METER, bat_priv,
+ 		   "Last timing stats: SRTT=%ums RTTVAR=%ums RTO=%ums\n",
+@@ -436,7 +439,7 @@ static void batadv_tp_sender_end(struct
+ 	session_cookie = batadv_tp_session_cookie(tp_vars->session,
+ 						  tp_vars->icmp_uid);
+ 
+-	batadv_tp_batctl_notify(tp_vars->reason,
++	batadv_tp_batctl_notify(reason,
+ 				tp_vars->other_end,
+ 				bat_priv,
+ 				tp_vars->start_time,
+@@ -452,10 +455,18 @@ static void batadv_tp_sender_end(struct
+ static void batadv_tp_sender_shutdown(struct batadv_tp_vars *tp_vars,
+ 				      enum batadv_tp_meter_reason reason)
+ {
+-	if (atomic_xchg(&tp_vars->sending, 0) != 1)
+-		return;
++	atomic_cmpxchg(&tp_vars->send_result, 0, reason);
++}
+ 
+-	tp_vars->reason = reason;
++/**
++ * batadv_tp_sender_stopped() - check if tp session was stopped with reason
++ * @tp_vars: the private data of the current TP meter session
++ *
++ * Return: whether stop reason was found
++ */
++static bool batadv_tp_sender_stopped(struct batadv_tp_vars *tp_vars)
++{
++	return atomic_read(&tp_vars->send_result) != 0;
+ }
+ 
+ /**
+@@ -485,7 +496,7 @@ static void batadv_tp_reset_sender_timer
+ 	/* most of the time this function is invoked while normal packet
+ 	 * reception...
+ 	 */
+-	if (unlikely(atomic_read(&tp_vars->sending) == 0))
++	if (unlikely(batadv_tp_sender_stopped(tp_vars)))
+ 		/* timer ref will be dropped in batadv_tp_sender_cleanup */
+ 		return;
+ 
+@@ -505,7 +516,7 @@ static void batadv_tp_sender_timeout(str
+ 	struct batadv_tp_vars *tp_vars = from_timer(tp_vars, t, timer);
+ 	struct batadv_priv *bat_priv = tp_vars->bat_priv;
+ 
+-	if (atomic_read(&tp_vars->sending) == 0)
++	if (batadv_tp_sender_stopped(tp_vars))
+ 		return;
+ 
+ 	/* if the user waited long enough...shutdown the test */
+@@ -667,7 +678,7 @@ static void batadv_tp_recv_ack(struct ba
+ 	if (unlikely(tp_vars->role != BATADV_TP_SENDER))
+ 		goto out;
+ 
+-	if (unlikely(atomic_read(&tp_vars->sending) == 0))
++	if (unlikely(batadv_tp_sender_stopped(tp_vars)))
+ 		goto out;
+ 
+ 	/* old ACK? silently drop it.. */
+@@ -833,21 +844,21 @@ static int batadv_tp_send(void *arg)
+ 
+ 	if (unlikely(tp_vars->role != BATADV_TP_SENDER)) {
+ 		err = BATADV_TP_REASON_DST_UNREACHABLE;
+-		tp_vars->reason = err;
++		batadv_tp_sender_shutdown(tp_vars, err);
+ 		goto out;
  	}
  
-+	/*
-+	 * Integrity segment counting depends on the same queue limits
-+	 * (virt_boundary_mask, seg_boundary_mask, max_segment_size) that
-+	 * vary across stacked queues, so recompute against the bottom
-+	 * queue just like nr_phys_segments above.
-+	 */
-+	if (blk_integrity_rq(rq) && rq->bio) {
-+		unsigned short max_int_segs = queue_max_integrity_segments(q);
-+
-+		rq->nr_integrity_segments =
-+			blk_rq_count_integrity_sg(rq->q, rq->bio);
-+		if (rq->nr_integrity_segments > max_int_segs) {
-+			printk(KERN_ERR "%s: over max integrity segments limit. (%u > %u)\n",
-+				__func__, rq->nr_integrity_segments,
-+				max_int_segs);
-+			return BLK_STS_IOERR;
-+		}
-+	}
-+
- 	if (q->disk && should_fail_request(q->disk->part0, blk_rq_bytes(rq)))
- 		return BLK_STS_IOERR;
+ 	orig_node = batadv_orig_hash_find(bat_priv, tp_vars->other_end);
+ 	if (unlikely(!orig_node)) {
+ 		err = BATADV_TP_REASON_DST_UNREACHABLE;
+-		tp_vars->reason = err;
++		batadv_tp_sender_shutdown(tp_vars, err);
+ 		goto out;
+ 	}
  
--- 
-2.53.0
-
+ 	primary_if = batadv_primary_if_get_selected(bat_priv);
+ 	if (unlikely(!primary_if)) {
+ 		err = BATADV_TP_REASON_DST_UNREACHABLE;
+-		tp_vars->reason = err;
++		batadv_tp_sender_shutdown(tp_vars, err);
+ 		goto out;
+ 	}
+ 
+@@ -866,7 +877,7 @@ static int batadv_tp_send(void *arg)
+ 	queue_delayed_work(batadv_event_workqueue, &tp_vars->finish_work,
+ 			   msecs_to_jiffies(tp_vars->test_length));
+ 
+-	while (atomic_read(&tp_vars->sending) != 0) {
++	while (!batadv_tp_sender_stopped(tp_vars)) {
+ 		if (unlikely(!batadv_tp_avail(tp_vars, payload_len))) {
+ 			batadv_tp_wait_available(tp_vars, payload_len);
+ 			continue;
+@@ -889,8 +900,7 @@ static int batadv_tp_send(void *arg)
+ 				   "Meter: %s() cannot send packets (%d)\n",
+ 				   __func__, err);
+ 			/* ensure nobody else tries to stop the thread now */
+-			if (atomic_xchg(&tp_vars->sending, 0) == 1)
+-				tp_vars->reason = err;
++			batadv_tp_sender_shutdown(tp_vars, err);
+ 			break;
+ 		}
+ 
+@@ -1012,7 +1022,7 @@ void batadv_tp_start(struct batadv_priv
+ 	ether_addr_copy(tp_vars->other_end, dst);
+ 	kref_init(&tp_vars->refcount);
+ 	tp_vars->role = BATADV_TP_SENDER;
+-	atomic_set(&tp_vars->sending, 1);
++	atomic_set(&tp_vars->send_result, 0);
+ 	memcpy(tp_vars->session, session_id, sizeof(session_id));
+ 	tp_vars->icmp_uid = icmp_uid;
+ 
+--- a/net/batman-adv/types.h
++++ b/net/batman-adv/types.h
+@@ -1458,15 +1458,15 @@ struct batadv_tp_vars {
+ 	/** @role: receiver/sender modi */
+ 	enum batadv_tp_meter_role role;
+ 
+-	/** @sending: sending binary semaphore: 1 if sending, 0 is not */
+-	atomic_t sending;
++	/**
++	 * @send_result: 0 when sending is ongoing and otherwise
++	 * enum batadv_tp_meter_reason
++	 */
++	atomic_t send_result;
+ 
+ 	/** @receiving: receiving binary semaphore: 1 if receiving, 0 is not */
+ 	atomic_t receiving;
+ 
+-	/** @reason: reason for a stopped session */
+-	enum batadv_tp_meter_reason reason;
+-
+ 	/** @finish_work: work item for the finishing procedure */
+ 	struct delayed_work finish_work;
+ 
 
 
 
