@@ -1,66 +1,59 @@
-Return-Path: <stable+bounces-256249-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-255482-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id oFaiJTWrGGpolwgAu9opvQ
-	(envelope-from <stable+bounces-256249-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:53:09 +0200
+	id yBVlK3ChGGqnlggAu9opvQ
+	(envelope-from <stable+bounces-255482-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:11:28 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3DC2C5F9C5E
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:53:09 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id BB1455F8057
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:11:27 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 29B8730BC7BF
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 20:46:17 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 4D540302608E
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 20:10:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CCD58348C63;
-	Thu, 28 May 2026 20:46:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 148C433F5B4;
+	Thu, 28 May 2026 20:10:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vAXdoymg"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nOl9mAbB"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 85BF533D4E2;
-	Thu, 28 May 2026 20:46:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CBBE232ABC0;
+	Thu, 28 May 2026 20:10:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780001171; cv=none; b=AVyPKWmMqY6t7jnA0Myh/OEs09Pg6BSS0Zq3nmGzBP5fr+iWyr9FH1DjUfK9NroZFrXam8OzcXkwue1SAf09Z/rA3YsBdksNUFA+7sr+j3AeI1DTVt4OpXiZv479tIHJvK8MVYtNcBAEPULhGHSQIpu4p2uiKzzgqdzROAlXYks=
+	t=1779999035; cv=none; b=KGLRfWT+sq6PovRH26zysrLjBsfaDyDf1DIalE9mpTpZ1ZHbBzxFjhLTcsthF9/FqwNfgbXUkVZIXBbCB+OFZ1ICI9+E/uAmYTYV+v/2niXmLkOD10sDOG3Q2bT+gPSSZJiQ80JsLqg/iSpgE02lxTUJr2pYsOJOPtk+2rgDs0Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780001171; c=relaxed/simple;
-	bh=cb/bmqyFLagoINb/ndmrjSUEfYk4iRLRkRhvEcQDnqE=;
+	s=arc-20240116; t=1779999035; c=relaxed/simple;
+	bh=wj7j2x3nX0rSVHwqT5NyqwoiCu0J2TcQ78o8N5qVJ2Y=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=CYC4H9WOob8M5M7TWttoXhJ/u1aIq+tINq/2Wu1FZf490QKjJdhv4GSa+O68SQB709fjRnd1/e3vVawgN0dXE2OnDgJwxXic50wRHGFzHUZ6vmU+E8XnBDvxfpz0iDYbk9Bx2Dqx9XsOkWgRxfvhvCSzinuAEOXYpBLoFbQaTko=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vAXdoymg; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DF1551F000E9;
-	Thu, 28 May 2026 20:46:09 +0000 (UTC)
+	 MIME-Version; b=O7lL/LtDEhE7VcCfPv9NrJZNc7UA+8wg+3oESfZZ9JnfSZp7+mlhGo3bfrzVrcaxH2LPkGI3yBC6evkl9gNtyNtt4xsJoCDnlf+oEkssWF5WnVBlIp9QCJYliHwl9jjOz23SkXyiSkQM2hRCXjlE9uwLTEnXFTUv2IXl/aIB0RI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nOl9mAbB; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 372731F000E9;
+	Thu, 28 May 2026 20:10:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780001170;
-	bh=l7VTmskCsNaMvP3w6MXNwlZnlsKfKAg1IIZFvYgrf8Y=;
+	s=korg; t=1779999034;
+	bh=jDmzKgJ7VuzIc4C7HCzSQxHKUbCo54oI7yJ+A9zsFMo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=vAXdoymgX83Z7nb+UZHdbOgJkKQWrIESrbu67Br/CBDcSSfdimucOK1UYxbPiHNRW
-	 RJ2ExVaQ/ZMi/kH6IFRTnlAuAiaW8+Y6GU5h4BARDqKcRZXIR5AA8OQmV1nkLHcCNt
-	 val3mmrk9niAX+H/ra6ekXiN9gO7qQEKy3rMaRmQ=
+	b=nOl9mAbB2AUx9t5pbZa2RgiMU95iQB7fUkAH+3kRpfDr3uyxKaaxAMTw54Reux8Q+
+	 NYglI9q+RwXkJIku+ZRfKaKe67rCD4QtQANk246kC9wF9sYlCZ0l1niv3zxUkyE3cm
+	 dYhu6BP+INRxpKHPOQLFbEsh5bwfpBer/jF/uvJI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Muchun Song <songmuchun@bytedance.com>,
-	Miaohe Lin <linmiaohe@huawei.com>,
-	Oscar Salvador <osalvador@suse.de>,
-	"David Hildenbrand (Arm)" <david@kernel.org>,
-	Danilo Krummrich <dakr@kernel.org>,
-	"Huang, Ying" <huang.ying.caritas@gmail.com>,
-	Naoya Horiguchi <nao.horiguchi@gmail.com>,
-	"Rafael J. Wysocki" <rafael@kernel.org>,
-	Vishal Verma <vishal.l.verma@intel.com>,
-	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 6.6 033/186] drivers/base/memory: fix memory block reference leak in poison accounting
+	Daniel Golle <daniel@makrotopia.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 7.0 384/461] net: dsa: mt7530: fix FDB entries not aging out with short timeout
 Date: Thu, 28 May 2026 21:48:33 +0200
-Message-ID: <20260528194929.856974609@linuxfoundation.org>
+Message-ID: <20260528194658.573303894@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260528194928.941004471@linuxfoundation.org>
-References: <20260528194928.941004471@linuxfoundation.org>
+In-Reply-To: <20260528194646.819809818@linuxfoundation.org>
+References: <20260528194646.819809818@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -71,100 +64,133 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	RCPT_COUNT_TWELVE(0.00)[13];
-	TAGGED_FROM(0.00)[bounces-256249-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,bytedance.com,huawei.com,suse.de,kernel.org,gmail.com,intel.com,linux-foundation.org];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[stable];
-	MID_RHS_MATCH_FROM(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-255482-lists,stable=lfdr.de];
 	TO_DN_SOME(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[bytedance.com:email,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,suse.de:email,linux-foundation.org:email,intel.com:email,huawei.com:email,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim]
-X-Rspamd-Queue-Id: 3DC2C5F9C5E
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,msgid.link:url,makrotopia.org:email,bridge_vlan_unaware.sh:url,bridge_vlan_aware.sh:url]
+X-Rspamd-Queue-Id: BB1455F8057
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+7.0-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Muchun Song <songmuchun@bytedance.com>
+From: Daniel Golle <daniel@makrotopia.org>
 
-commit 03a2cc1756a0570f887d624cd6c535ea0cbd4951 upstream.
+[ Upstream commit e824e40d0e841fab66ab7897d6c7b14dc81c66a7 ]
 
-memblk_nr_poison_inc() and memblk_nr_poison_sub() look up a memory block
-via find_memory_block_by_id(), which acquires a reference to the memory
-block device.
+The DSA forwarding selftests bridge_vlan_aware.sh and
+bridge_vlan_unaware.sh configure the bridge with ageing_time set to
+LOW_AGEING_TIME (1000 centiseconds, i.e. 10 seconds) and then run
+learning_test() in lib.sh, which expects a learned FDB entry to be
+removed after ageing_time + 10 seconds. On MT7530/MT7531 the entry
+persisted past the deadline and the "Found FDB record when should
+not" assertion failed.
 
-Both helpers use the returned memory block without dropping that
-reference, leaking the device reference on each successful lookup.  Drop
-the reference after updating nr_hwpoison.
+With msecs=10000, the algorithm in mt7530_set_ageing_time() finds
+AGE_CNT=0 and AGE_UNIT=9 as the first exact match (starting the
+search from tmp_age_count=0). The per-entry aging counter is
+initialized to AGE_CNT when a MAC address is learned, so with
+AGE_CNT=0 new entries start with a counter value of 0, which the
+hardware treats as "already aged" and never removes, effectively
+disabling aging.
 
-Link: https://lore.kernel.org/20260428085219.1316047-3-songmuchun@bytedance.com
-Fixes: 5033091de814 ("mm/hwpoison: introduce per-memory_block hwpoison counter")
-Signed-off-by: Muchun Song <songmuchun@bytedance.com>
-Reviewed-by: Miaohe Lin <linmiaohe@huawei.com>
-Acked-by: Oscar Salvador <osalvador@suse.de>
-Acked-by: David Hildenbrand (Arm) <david@kernel.org>
-Cc: Danilo Krummrich <dakr@kernel.org>
-Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: "Huang, Ying" <huang.ying.caritas@gmail.com>
-Cc: Naoya Horiguchi <nao.horiguchi@gmail.com>
-Cc: "Rafael J. Wysocki" <rafael@kernel.org>
-Cc: Vishal Verma <vishal.l.verma@intel.com>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fix this by starting the search from tmp_age_count=1 to ensure
+entries always have a non-zero initial aging counter. For a
+10-second ageing time this yields AGE_CNT=1 and AGE_UNIT=4 instead:
+the timer ticks every 5 seconds and entries are removed after 2
+ticks.
+
+Starting the search at AGE_CNT=1 raises the minimum representable
+ageing time from 1 to 2 seconds. Without bounds, a stale ageing_time
+of 1 second would now make the loop fall through without setting
+age_count and age_unit, leaving them uninitialized when written to
+the MT7530_AAC hardware register. Set ds->ageing_time_min and
+ds->ageing_time_max so the DSA core validates the range before the
+callback is invoked, and drop the now-redundant range check from
+mt7530_set_ageing_time().
+
+Fixes: ea6d5c924e39 ("net: dsa: mt7530: support setting ageing time")
+Signed-off-by: Daniel Golle <daniel@makrotopia.org>
+Link: https://patch.msgid.link/7788ded12dc07b1bce329ec35fa70f4b45f3f9b7.1778766629.git.daniel@makrotopia.org
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/base/memory.c |    8 ++++++--
- 1 file changed, 6 insertions(+), 2 deletions(-)
+ drivers/net/dsa/mt7530.c | 20 ++++++++++++++------
+ 1 file changed, 14 insertions(+), 6 deletions(-)
 
---- a/drivers/base/memory.c
-+++ b/drivers/base/memory.c
-@@ -1211,8 +1211,10 @@ void memblk_nr_poison_inc(unsigned long
- 	const unsigned long block_id = pfn_to_block_id(pfn);
- 	struct memory_block *mem = find_memory_block_by_id(block_id);
+diff --git a/drivers/net/dsa/mt7530.c b/drivers/net/dsa/mt7530.c
+index b9423389c2ef0..f90f9ea515d81 100644
+--- a/drivers/net/dsa/mt7530.c
++++ b/drivers/net/dsa/mt7530.c
+@@ -973,12 +973,16 @@ mt7530_set_ageing_time(struct dsa_switch *ds, unsigned int msecs)
+ 	unsigned int age_count;
+ 	unsigned int age_unit;
  
--	if (mem)
-+	if (mem) {
- 		atomic_long_inc(&mem->nr_hwpoison);
-+		put_device(&mem->dev);
-+	}
- }
+-	/* Applied timer is (AGE_CNT + 1) * (AGE_UNIT + 1) seconds */
+-	if (secs < 1 || secs > (AGE_CNT_MAX + 1) * (AGE_UNIT_MAX + 1))
+-		return -ERANGE;
+-
+-	/* iterate through all possible age_count to find the closest pair */
+-	for (tmp_age_count = 0; tmp_age_count <= AGE_CNT_MAX; ++tmp_age_count) {
++	/* Applied timer is (AGE_CNT + 1) * (AGE_UNIT + 1) seconds.
++	 * The DSA core has already validated the range using
++	 * ds->ageing_time_min and ds->ageing_time_max.
++	 *
++	 * Iterate through all possible age_count values to find the closest
++	 * pair. Start from 1 because the per-entry aging counter is
++	 * initialized to AGE_CNT and a value of 0 means the entry will
++	 * never be aged out.
++	 */
++	for (tmp_age_count = 1; tmp_age_count <= AGE_CNT_MAX; ++tmp_age_count) {
+ 		unsigned int tmp_age_unit = secs / (tmp_age_count + 1) - 1;
  
- void memblk_nr_poison_sub(unsigned long pfn, long i)
-@@ -1220,8 +1222,10 @@ void memblk_nr_poison_sub(unsigned long
- 	const unsigned long block_id = pfn_to_block_id(pfn);
- 	struct memory_block *mem = find_memory_block_by_id(block_id);
+ 		if (tmp_age_unit <= AGE_UNIT_MAX) {
+@@ -2378,6 +2382,8 @@ mt7530_setup(struct dsa_switch *ds)
  
--	if (mem)
-+	if (mem) {
- 		atomic_long_sub(i, &mem->nr_hwpoison);
-+		put_device(&mem->dev);
-+	}
- }
+ 	ds->assisted_learning_on_cpu_port = true;
+ 	ds->mtu_enforcement_ingress = true;
++	ds->ageing_time_min = 2 * 1000;
++	ds->ageing_time_max = (AGE_CNT_MAX + 1) * (AGE_UNIT_MAX + 1) * 1000;
  
- static unsigned long memblk_nr_poison(struct memory_block *mem)
+ 	if (priv->id == ID_MT7530) {
+ 		regulator_set_voltage(priv->core_pwr, 1000000, 1000000);
+@@ -2567,6 +2573,8 @@ mt7531_setup_common(struct dsa_switch *ds)
+ 
+ 	ds->assisted_learning_on_cpu_port = true;
+ 	ds->mtu_enforcement_ingress = true;
++	ds->ageing_time_min = 2 * 1000;
++	ds->ageing_time_max = (AGE_CNT_MAX + 1) * (AGE_UNIT_MAX + 1) * 1000;
+ 
+ 	mt753x_trap_frames(priv);
+ 
+-- 
+2.53.0
+
 
 
 
