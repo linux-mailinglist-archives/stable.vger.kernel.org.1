@@ -1,63 +1,59 @@
-Return-Path: <stable+bounces-255366-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-255965-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id aKZODFSgGGpAlggAu9opvQ
-	(envelope-from <stable+bounces-255366-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:06:44 +0200
+	id gJJnKyWpGGrclwgAu9opvQ
+	(envelope-from <stable+bounces-255965-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:44:21 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0D4735F7D47
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:06:43 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3DD015F96D6
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:44:21 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 56C57304553A
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 20:05:27 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 2EB673192E2E
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 20:32:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id ED20E40963D;
-	Thu, 28 May 2026 20:05:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C91BF3346BE;
+	Thu, 28 May 2026 20:32:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="D4g0QMjV"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1+nDPAj/"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5D30840963C;
-	Thu, 28 May 2026 20:05:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8721225F7B9;
+	Thu, 28 May 2026 20:32:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779998708; cv=none; b=hVkwq0hoWIGcqrNc7R/eTaCU0vwwqEuHxocVK/9t8nOERN/zfR5lMWOicsKjKLgpi/G2yy7cRutOodq8WtQwOr4rY67lv0nCj34N/Go/eCkcGzOehfOFkglLm71mgZ3VJhsdbAfjRItT99HG3raIdmAU/JcYiML1NAwwMJrWZRQ=
+	t=1780000375; cv=none; b=g6oDE3wZxnP5liVOMH34yICJcTdcDY/BYUaOUouHRzKgq97ahdrKTCpdHsbVn6zU4XdFAeoWKSiXLLW0PidjimYWMiYLZyf3bS4rxw30VpsEhUzvpFl6eARqRRM1KUv1qGJP5g6NHHM//U5JAS7l8M5UROAe3cy+4y1eFbermTg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779998708; c=relaxed/simple;
-	bh=Mgz6nKslV/D0A28ABX+Lu4+IOrHLoMq1F2+Xp/6ic6Y=;
+	s=arc-20240116; t=1780000375; c=relaxed/simple;
+	bh=Pnp4KZBQ367H8T4jrmYZpNAOTwOB09TccUV2MW9lk6A=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=RyM9vgjK2kPHae0ONelAYc43NJkDyS44CPMmuu/etD+NHoE9Rrv6foFJYEu+DmvJrMbp0FJFBBAH1dDl+2sGtVlii2JXlQ0Io2ehyeCkZrWzUz1Rs7i2Few2ohfhHaFoDBCKQc7Mz8E51VAzedHHM7S6A9Mz1L7ZhN/C8hBqxas=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=D4g0QMjV; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 89F381F00A3A;
-	Thu, 28 May 2026 20:05:06 +0000 (UTC)
+	 MIME-Version; b=G1H/vBYXKgGhae3S5MJdAcFJ0ZWkj0ZbqBcIkKb7+VRPocM3m8hyqifwn+kXyTg8SO3brxnBF7so7MG2sO/hru9NESAgHyxiW8caGS1bTf04SpiFUep2kXab5sMekN1GMTXNBnHqUZPxTnV/TdIgkVk4fFheraO0jPT/oVrqxN8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1+nDPAj/; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E68241F000E9;
+	Thu, 28 May 2026 20:32:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779998707;
-	bh=jyB5zFaHg728AJAAFZMO0WWVpKc5r6VTJ/awald3sL8=;
+	s=korg; t=1780000374;
+	bh=CdesftrJsv/x2IMPjbnyzgDlyBm5r6gC0ue+SlU2fDE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=D4g0QMjVRZ/qaqayIH0Du1HOAtJD1wjaZw0Caz6tRNUQDOhQXZfM1GA5vxonOzsfq
-	 aS+2ecC99VqaqVmSlNdvz8XrlALp0cnqU9k9Ia0luGz2/zweAq7kNS5wdqtYzc4T6+
-	 iGj6koq+1op5PypzPWJIWQS7h0jDbyaY6Wp0hC/M=
+	b=1+nDPAj/Wq3q8Cm5LULtEEJPasMrLvuzovk9KkJ419ouIuY43vGG55kef+rCyi+Kv
+	 CXcMclfBQ8c+MyuKbV5O82j7QGC0LgFrIzk8S8l5kTdgHgoTpI5yGzskbIzpoIEIfJ
+	 Enf+ic/yVqtxXzsPF8pK9dsHncpnKFhbffWbBOZY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	David Howells <dhowells@redhat.com>,
-	Paulo Alcantara <pc@manguebit.org>,
-	Matthew Wilcox <willy@infradead.org>,
-	netfs@lists.linux.dev,
-	linux-fsdevel@vger.kernel.org,
-	Christian Brauner <brauner@kernel.org>,
+	Alessio Belle <alessio.belle@imgtec.com>,
+	Matt Coster <matt.coster@imgtec.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 7.0 268/461] netfs: Fix folio->private handling in netfs_perform_write()
+Subject: [PATCH 6.12 023/272] drm/imagination: Synchronize interrupts before suspending the GPU
 Date: Thu, 28 May 2026 21:46:37 +0200
-Message-ID: <20260528194654.924901009@linuxfoundation.org>
+Message-ID: <20260528194630.036554823@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260528194646.819809818@linuxfoundation.org>
-References: <20260528194646.819809818@linuxfoundation.org>
+In-Reply-To: <20260528194629.379955525@linuxfoundation.org>
+References: <20260528194629.379955525@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -72,336 +68,150 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-255366-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-255965-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
-	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[10];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,infradead.org:email,sashiko.dev:url,msgid.link:url,manguebit.org:email,linux.dev:email,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo]
-X-Rspamd-Queue-Id: 0D4735F7D47
+	RCPT_COUNT_FIVE(0.00)[6];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,msgid.link:url,linuxfoundation.org:mid,linuxfoundation.org:dkim,imgtec.com:email]
+X-Rspamd-Queue-Id: 3DD015F96D6
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-7.0-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: David Howells <dhowells@redhat.com>
+From: Alessio Belle <alessio.belle@imgtec.com>
 
-[ Upstream commit ccde2ac757c713535b224233a296de40efe5212d ]
+commit 2d7f05cddf4c268cc36256a2476946041dbdd36d upstream.
 
-Under some circumstances, netfs_perform_write() doesn't correctly
-manipulate folio->private between NULL, NETFS_FOLIO_COPY_TO_CACHE, pointing
-to a group and pointing to a netfs_folio struct, leading to potential
-multiple attachments of private data with associated folio ref leaks and
-also leaks of netfs_folio structs or netfs_group refs.
+The runtime PM suspend callback doesn't know whether the IRQ handler is
+in progress on a different CPU core and doesn't wait for it to finish.
 
-Fix this by consolidating the place at which a folio is marked uptodate in
-one place and having that look at what's attached to folio->private and
-decide how to clean it up and then set the new group.  Also, the content
-shouldn't be flushed if group is NULL, even if a group is specified in the
-netfs_group parameter, as that would be the case for a new folio.  A
-filesystem should always specify netfs_group or never specify netfs_group.
+Depending on timing, the IRQ handler could be running while the GPU is
+suspended, leading to it being killed when trying to access GPU
+registers. See example signature below.
 
-The Sashiko auto-review tool noted that it was theoretically possible that
-the fpos >= ctx->zero_point section might leak if it modified a streaming
-write folio.  This is unlikely, but with a network filesystem, third party
-changes can happen.  It also pointed out that __netfs_set_group() would
-leak if called multiple times on the same folio from the "whole folio
-modify section".
+In a power off sequence initiated by the runtime PM suspend callback,
+wait for any IRQ handlers in progress on other CPU cores to finish, by
+calling synchronize_irq().
 
-Fixes: 8f52de0077ba ("netfs: Reduce number of conditional branches in netfs_perform_write()")
-Closes: https://sashiko.dev/#/patchset/20260414082004.3756080-1-dhowells%40redhat.com
-Signed-off-by: David Howells <dhowells@redhat.com>
-Link: https://patch.msgid.link/20260512123404.719402-22-dhowells@redhat.com
-cc: Paulo Alcantara <pc@manguebit.org>
-cc: Matthew Wilcox <willy@infradead.org>
-cc: netfs@lists.linux.dev
-cc: linux-fsdevel@vger.kernel.org
-Signed-off-by: Christian Brauner <brauner@kernel.org>
+This version of the patch contains only the part of the upstream commit
+that applies to 6.12; the rest was a revert of code added in 6.16.
+The second paragraph above is different because on 6.12 this kind of bug
+doesn't seem to crash the entire kernel, only the IRQ handler, leaving
+the driver unusable in practice.
+
+The crash signature below is also different, both because of the above,
+and because there was no support for TI AM68 SK in 6.12.
+
+Example signature on a TI AM62 SK platform:
+
+  [ 7827.189088] Internal error: synchronous external abort: 0000000096000010 [#1] PREEMPT SMP
+  [ 7827.197311] Modules linked in:
+  [ 7827.222015] CPU: 0 UID: 0 PID: 461 Comm: irq/405-gpu Tainted: G   M               6.12.90 #5
+  [ 7827.230461] Tainted: [M]=MACHINE_CHECK
+  [ 7827.234203] Hardware name: Texas Instruments AM625 SK (DT)
+  [ 7827.239682] pstate: 60000005 (nZCv daif -PAN -UAO -TCO -DIT -SSBS BTYPE=--)
+  [ 7827.246637] pc : pvr_device_irq_thread_handler+0x64/0x180 [powervr]
+  [ 7827.252941] lr : irq_thread_fn+0x2c/0xa8
+  [ 7827.256872] sp : ffff800082d8bd50
+  [ 7827.260179] x29: ffff800082d8bd70 x28: ffff8000800ce374 x27: ffff800081829cc0
+  [ 7827.267328] x26: ffff000004701e80 x25: ffff000005b884ac x24: ffff000005bd5780
+  [ 7827.274472] x23: ffff00000da40bc0 x22: ffff00000da40ba0 x21: ffff800082d8bd58
+  [ 7827.281614] x20: ffff00000da40000 x19: ffff000004701e80 x18: 08000000c6af9003
+  [ 7827.288750] x17: 0000000000000010 x16: 0000000000000068 x15: 0df234008df66400
+  [ 7827.295886] x14: 0000000000000000 x13: 000005c68f6e7191 x12: 000000000000025e
+  [ 7827.303020] x11: 00000000000000c0 x10: 0000000000000ac0 x9 : ffff800082d8bd00
+  [ 7827.310157] x8 : ffff000005bd62a0 x7 : ffff000077261380 x6 : 00000000000005c6
+  [ 7827.317292] x5 : 000000000000425e x4 : 0000000000000000 x3 : 0000000000000000
+  [ 7827.324428] x2 : 00000000000008a8 x1 : ffff800082d608a8 x0 : ffff000005bd5780
+  [ 7827.331568] Call trace:
+  [ 7827.334011]  pvr_device_irq_thread_handler+0x64/0x180 [powervr]
+  [ 7827.339954]  irq_thread_fn+0x2c/0xa8
+  [ 7827.343530]  irq_thread+0x16c/0x2f4
+  [ 7827.347019]  kthread+0x110/0x114
+  [ 7827.350248]  ret_from_fork+0x10/0x20
+  [ 7827.353834] Code: f9446682 f943c281 b9404442 8b020021 (b9400021)
+  [ 7827.359921] ---[ end trace 0000000000000000 ]---
+  [ 7827.364820] genirq: exiting task "irq/405-gpu" (461) is an active IRQ thread (irq 405)
+  [ 8011.230278] powervr fd00000.gpu: Job timeout
+  [ 8011.230350] powervr fd00000.gpu: Job timeout
+  [ 8011.230426] powervr fd00000.gpu: Job timeout
+
+Fixes: cc1aeedb98ad ("drm/imagination: Implement firmware infrastructure and META FW support")
+Fixes: 96822d38ff57 ("drm/imagination: Handle Rogue safety event IRQs")
+Cc: stable@vger.kernel.org
+Signed-off-by: Alessio Belle <alessio.belle@imgtec.com>
+Reviewed-by: Matt Coster <matt.coster@imgtec.com>
+Link: https://patch.msgid.link/20260310-drain-irqs-before-suspend-v1-1-bf4f9ed68e75@imgtec.com
+Signed-off-by: Matt Coster <matt.coster@imgtec.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/netfs/buffered_write.c    | 134 +++++++++++++++++++++--------------
- include/trace/events/netfs.h |   1 +
- 2 files changed, 82 insertions(+), 53 deletions(-)
+ drivers/gpu/drm/imagination/pvr_power.c | 11 ++++++++---
+ 1 file changed, 8 insertions(+), 3 deletions(-)
 
-diff --git a/fs/netfs/buffered_write.c b/fs/netfs/buffered_write.c
-index b606c3bd84bcd..dee10570383bb 100644
---- a/fs/netfs/buffered_write.c
-+++ b/fs/netfs/buffered_write.c
-@@ -13,24 +13,6 @@
- #include <linux/pagevec.h>
- #include "internal.h"
+diff --git a/drivers/gpu/drm/imagination/pvr_power.c b/drivers/gpu/drm/imagination/pvr_power.c
+index bf4cf8426f913..077d2651798c8 100644
+--- a/drivers/gpu/drm/imagination/pvr_power.c
++++ b/drivers/gpu/drm/imagination/pvr_power.c
+@@ -84,7 +84,7 @@ pvr_power_request_pwr_off(struct pvr_device *pvr_dev)
+ }
  
--static void __netfs_set_group(struct folio *folio, struct netfs_group *netfs_group)
--{
--	if (netfs_group)
--		folio_attach_private(folio, netfs_get_group(netfs_group));
--}
--
--static void netfs_set_group(struct folio *folio, struct netfs_group *netfs_group)
--{
--	void *priv = folio_get_private(folio);
--
--	if (unlikely(priv != netfs_group)) {
--		if (netfs_group && (!priv || priv == NETFS_FOLIO_COPY_TO_CACHE))
--			folio_attach_private(folio, netfs_get_group(netfs_group));
--		else if (!netfs_group && priv == NETFS_FOLIO_COPY_TO_CACHE)
--			folio_detach_private(folio);
--	}
--}
--
- /*
-  * Grab a folio for writing and lock it.  Attempt to allocate as large a folio
-  * as possible to hold as much of the remaining length as possible in one go.
-@@ -158,6 +140,7 @@ ssize_t netfs_perform_write(struct kiocb *iocb, struct iov_iter *iter,
- 		size_t offset;	/* Offset into pagecache folio */
- 		size_t part;	/* Bytes to write to folio */
- 		size_t copied;	/* Bytes copied from user */
-+		void *priv;
- 
- 		offset = pos & (max_chunk - 1);
- 		part = min(max_chunk - offset, iov_iter_count(iter));
-@@ -203,6 +186,25 @@ ssize_t netfs_perform_write(struct kiocb *iocb, struct iov_iter *iter,
- 			goto error_folio_unlock;
- 		}
- 
-+		finfo = netfs_folio_info(folio);
-+		group = netfs_folio_group(folio);
-+
-+		/* If the requested group differs from the group set on the
-+		 * page, then we need to flush out the folio if it has a group
-+		 * set (ie. is non-NULL).  Note that COPY_TO_CACHE is a special
-+		 * case, being a netfs annotation rather than an actual group.
-+		 *
-+		 * The filesystem isn't permitted to mix writes with groups and
-+		 * writes without groups as the NULL group is used to indicate
-+		 * that no group is set.
-+		 */
-+		if (unlikely(group != netfs_group) &&
-+		    group != NETFS_FOLIO_COPY_TO_CACHE &&
-+		    group) {
-+			WARN_ON_ONCE(!netfs_group);
-+			goto flush_content;
-+		}
-+
- 		/* Decide how we should modify a folio.  We might be attempting
- 		 * to do write-streaming, as we don't want to a local RMW cycle
- 		 * if we can avoid it.  If we're doing local caching or content
-@@ -210,22 +212,14 @@ ssize_t netfs_perform_write(struct kiocb *iocb, struct iov_iter *iter,
- 		 * file is open readably, then we let ->read_folio() fill in
- 		 * the gaps.
- 		 */
--		finfo = netfs_folio_info(folio);
--		group = netfs_folio_group(folio);
--
--		if (unlikely(group != netfs_group) &&
--		    group != NETFS_FOLIO_COPY_TO_CACHE)
--			goto flush_content;
--
- 		if (folio_test_uptodate(folio)) {
- 			if (mapping_writably_mapped(mapping))
- 				flush_dcache_folio(folio);
- 			copied = copy_folio_from_iter_atomic(folio, offset, part, iter);
- 			if (unlikely(copied == 0))
- 				goto copy_failed;
--			netfs_set_group(folio, netfs_group);
- 			trace = netfs_folio_is_uptodate;
--			goto copied;
-+			goto copied_uptodate;
- 		}
- 
- 		/* If the page is above the zero-point then we assume that the
-@@ -238,24 +232,22 @@ ssize_t netfs_perform_write(struct kiocb *iocb, struct iov_iter *iter,
- 			if (unlikely(copied == 0))
- 				goto copy_failed;
- 			folio_zero_segment(folio, offset + copied, flen);
--			__netfs_set_group(folio, netfs_group);
--			folio_mark_uptodate(folio);
--			trace = netfs_modify_and_clear;
--			goto copied;
-+			if (finfo)
-+				trace = netfs_modify_and_clear_rm_finfo;
-+			else
-+				trace = netfs_modify_and_clear;
-+			goto mark_uptodate;
- 		}
- 
- 		/* See if we can write a whole folio in one go. */
- 		if (!maybe_trouble && offset == 0 && part >= flen) {
- 			copied = copy_folio_from_iter_atomic(folio, offset, part, iter);
- 			if (likely(copied == part)) {
--				if (finfo) {
-+				if (finfo)
- 					trace = netfs_whole_folio_modify_filled;
--					goto folio_now_filled;
--				}
--				__netfs_set_group(folio, netfs_group);
--				folio_mark_uptodate(folio);
--				trace = netfs_whole_folio_modify;
--				goto copied;
-+				else
-+					trace = netfs_whole_folio_modify;
-+				goto mark_uptodate;
- 			}
- 			if (copied == 0)
- 				goto copy_failed;
-@@ -273,7 +265,7 @@ ssize_t netfs_perform_write(struct kiocb *iocb, struct iov_iter *iter,
- 			finfo->dirty_len += finfo->dirty_offset;
- 			if (finfo->dirty_len == flen) {
- 				trace = netfs_whole_folio_modify_filled_efault;
--				goto folio_now_filled;
-+				goto mark_uptodate;
- 			}
- 			if (copied > finfo->dirty_len)
- 				finfo->dirty_len = copied;
-@@ -301,11 +293,11 @@ ssize_t netfs_perform_write(struct kiocb *iocb, struct iov_iter *iter,
- 			copied = copy_folio_from_iter_atomic(folio, offset, part, iter);
- 			if (unlikely(copied == 0))
- 				goto copy_failed;
--			netfs_set_group(folio, netfs_group);
- 			trace = netfs_just_prefetch;
--			goto copied;
-+			goto copied_uptodate;
- 		}
- 
-+		/* Do a streaming write on a folio that has nothing in it yet. */
- 		if (!finfo) {
- 			ret = -EIO;
- 			if (WARN_ON(folio_get_private(folio)))
-@@ -314,10 +306,8 @@ ssize_t netfs_perform_write(struct kiocb *iocb, struct iov_iter *iter,
- 			if (unlikely(copied == 0))
- 				goto copy_failed;
- 			if (offset == 0 && copied == flen) {
--				__netfs_set_group(folio, netfs_group);
--				folio_mark_uptodate(folio);
- 				trace = netfs_streaming_filled_page;
--				goto copied;
-+				goto mark_uptodate;
- 			}
- 
- 			finfo = kzalloc_obj(*finfo);
-@@ -346,7 +336,7 @@ ssize_t netfs_perform_write(struct kiocb *iocb, struct iov_iter *iter,
- 			finfo->dirty_len += copied;
- 			if (finfo->dirty_offset == 0 && finfo->dirty_len == flen) {
- 				trace = netfs_streaming_cont_filled_page;
--				goto folio_now_filled;
-+				goto mark_uptodate;
- 			}
- 			trace = netfs_streaming_write_cont;
- 			goto copied;
-@@ -362,13 +352,36 @@ ssize_t netfs_perform_write(struct kiocb *iocb, struct iov_iter *iter,
- 			goto out;
- 		continue;
- 
--	folio_now_filled:
--		if (finfo->netfs_group)
--			folio_change_private(folio, finfo->netfs_group);
--		else
--			folio_detach_private(folio);
-+		/* Mark a folio as being up to data when we've filled it
-+		 * completely.  If the folio has a group attached, then it must
-+		 * be the same group, otherwise we should have flushed it out
-+		 * above.  We have to get rid of the netfs_folio struct if
-+		 * there was one.
-+		 */
-+	mark_uptodate:
- 		folio_mark_uptodate(folio);
--		kfree(finfo);
-+
-+	copied_uptodate:
-+		priv = folio_get_private(folio);
-+		if (likely(priv == netfs_group)) {
-+			/* Already set correctly; no change required. */
-+		} else if (priv == NETFS_FOLIO_COPY_TO_CACHE) {
-+			if (!netfs_group)
-+				folio_detach_private(folio);
-+			else
-+				folio_change_private(folio, netfs_get_group(netfs_group));
-+		} else if (!priv) {
-+			folio_attach_private(folio, netfs_get_group(netfs_group));
-+		} else {
-+			WARN_ON_ONCE(!finfo);
-+			if (netfs_group)
-+				/* finfo->netfs_group has a ref */
-+				folio_change_private(folio, netfs_group);
-+			else
-+				folio_detach_private(folio);
-+			kfree(finfo);
-+		}
-+
- 	copied:
- 		trace_netfs_folio(folio, trace);
- 		flush_dcache_folio(folio);
-@@ -531,6 +544,7 @@ vm_fault_t netfs_page_mkwrite(struct vm_fault *vmf, struct netfs_group *netfs_gr
- 	struct inode *inode = file_inode(file);
- 	struct netfs_inode *ictx = netfs_inode(inode);
- 	vm_fault_t ret = VM_FAULT_NOPAGE;
-+	void *priv;
- 	int err;
- 
- 	_enter("%lx", folio->index);
-@@ -551,7 +565,9 @@ vm_fault_t netfs_page_mkwrite(struct vm_fault *vmf, struct netfs_group *netfs_gr
+ static int
+-pvr_power_fw_disable(struct pvr_device *pvr_dev, bool hard_reset)
++pvr_power_fw_disable(struct pvr_device *pvr_dev, bool hard_reset, bool rpm_suspend)
+ {
+ 	if (!hard_reset) {
+ 		int err;
+@@ -100,6 +100,11 @@ pvr_power_fw_disable(struct pvr_device *pvr_dev, bool hard_reset)
+ 			return err;
  	}
  
- 	group = netfs_folio_group(folio);
--	if (group != netfs_group && group != NETFS_FOLIO_COPY_TO_CACHE) {
-+	if (group &&
-+	    group != netfs_group &&
-+	    group != NETFS_FOLIO_COPY_TO_CACHE) {
- 		folio_unlock(folio);
- 		err = filemap_fdatawrite_range(mapping,
- 					       folio_pos(folio),
-@@ -573,7 +589,19 @@ vm_fault_t netfs_page_mkwrite(struct vm_fault *vmf, struct netfs_group *netfs_gr
- 		trace_netfs_folio(folio, netfs_folio_trace_mkwrite_plus);
- 	else
- 		trace_netfs_folio(folio, netfs_folio_trace_mkwrite);
--	netfs_set_group(folio, netfs_group);
-+
-+	priv = folio_get_private(folio);
-+	if (priv != netfs_group) {
-+		if (!netfs_group && priv == NETFS_FOLIO_COPY_TO_CACHE)
-+			folio_detach_private(folio);
-+		else if (netfs_group && priv == NETFS_FOLIO_COPY_TO_CACHE)
-+			folio_change_private(folio, netfs_get_group(netfs_group));
-+		else if (netfs_group && !priv)
-+			folio_attach_private(folio, netfs_get_group(netfs_group));
-+		else
-+			WARN_ON_ONCE(1);
++	if (rpm_suspend) {
++		/* Wait for late processing of GPU or firmware IRQs in other cores */
++		synchronize_irq(pvr_dev->irq);
 +	}
 +
- 	file_update_time(file);
- 	set_bit(NETFS_ICTX_MODIFIED_ATTR, &ictx->flags);
- 	if (ictx->ops->post_modify)
-diff --git a/include/trace/events/netfs.h b/include/trace/events/netfs.h
-index db045135406c9..3fe3980902c24 100644
---- a/include/trace/events/netfs.h
-+++ b/include/trace/events/netfs.h
-@@ -181,6 +181,7 @@
- 	EM(netfs_whole_folio_modify_filled,	"mod-whole-f+")	\
- 	EM(netfs_whole_folio_modify_filled_efault, "mod-whole-f+!") \
- 	EM(netfs_modify_and_clear,		"mod-n-clear")	\
-+	EM(netfs_modify_and_clear_rm_finfo,	"mod-n-clear+")	\
- 	EM(netfs_streaming_write,		"mod-streamw")	\
- 	EM(netfs_streaming_write_cont,		"mod-streamw+")	\
- 	EM(netfs_flush_content,			"flush")	\
+ 	return pvr_fw_stop(pvr_dev);
+ }
+ 
+@@ -243,7 +248,7 @@ pvr_power_device_suspend(struct device *dev)
+ 		return -EIO;
+ 
+ 	if (pvr_dev->fw_dev.booted) {
+-		err = pvr_power_fw_disable(pvr_dev, false);
++		err = pvr_power_fw_disable(pvr_dev, false, true);
+ 		if (err)
+ 			goto err_drm_dev_exit;
+ 	}
+@@ -425,7 +430,7 @@ pvr_power_reset(struct pvr_device *pvr_dev, bool hard_reset)
+ 			queues_disabled = true;
+ 		}
+ 
+-		err = pvr_power_fw_disable(pvr_dev, hard_reset);
++		err = pvr_power_fw_disable(pvr_dev, hard_reset, false);
+ 		if (!err) {
+ 			if (hard_reset) {
+ 				pvr_dev->fw_dev.booted = false;
 -- 
 2.53.0
 
