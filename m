@@ -1,59 +1,60 @@
-Return-Path: <stable+bounces-255662-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-255307-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 8BHyH2alGGoQlwgAu9opvQ
-	(envelope-from <stable+bounces-255662-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:28:22 +0200
+	id AGQqEq+gGGqblggAu9opvQ
+	(envelope-from <stable+bounces-255307-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:08:15 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 295815F8C41
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:28:21 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id E1E9C5F7E48
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:08:14 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id A7E0F3142443
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 20:19:02 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id D17CB31D8714
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 20:02:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 418BB2F8E83;
-	Thu, 28 May 2026 20:19:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5491F409630;
+	Thu, 28 May 2026 20:02:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wtwiWfCy"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0zbIc31l"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F0AFD2459D1;
-	Thu, 28 May 2026 20:19:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C4DCD26B973;
+	Thu, 28 May 2026 20:02:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779999542; cv=none; b=PzUdqmLEPt/ypbWRRQtpkToV2gvYhwOs27BwUOAaz1TAoHFynTcoycylUjdu4Djn1rDfq6+ssDsXxh5sobjpxab0lzkIAf6+RrLVIUrTTFTxoQEKkm4ZO6tbAPoYDktAH/2hSPu755320e9fd4QZiNTJBBWD+KoK+ocXYl+yDYs=
+	t=1779998542; cv=none; b=c21Kl5/FCsp4p+sgvc0f0eLzyT1woQsWKpazNTOVSGlUbUk4je8R5mlg5wWSJu+LOXiqWRqx3inLQOpQEYDvT6v/uQ4Bgs9pLgnEP/iuzKAGNK3zrayyG5EeVFQiZCoaeNVmgKXP28lhPojElCIgbqLUx7Z+xR+j3U59s9PN2z0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779999542; c=relaxed/simple;
-	bh=7HfdiHPEIm6mzknyDDC29duJUcrH4MHwKjvtcduyTRU=;
+	s=arc-20240116; t=1779998542; c=relaxed/simple;
+	bh=7ZnpZBi/QOj8M+DFJ3pia2tGm9nPAWnJCkaQTyZsSNI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=os9l7qlcJqhKWPifmrQ796gkGN+aFo/WMfeaew8DCDmJBNdFZXZdk8mRxGd4qe60BIi8k/obwdCpmlPDfq9ptVMM+vDNX3P63SwqVGi6Ya2YeUY1mkVvtWT/U5QB/c2DgkJaoBtvuGyNJUQFxeMzMsXlWHjh+cuEU1POW9rtpEA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wtwiWfCy; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 851491F000E9;
-	Thu, 28 May 2026 20:19:00 +0000 (UTC)
+	 MIME-Version; b=ohmAUjJ08f/spq6ha3mcIHKwa6+qFrqQExNzGJOZ/bJuwE1IAMGvwJDoTVQyf8u7KjyVfvpvYgQ/eNKKGhfX6kA1X54ntwQANPqrcCXgqHB8p2b3ytDw3SvNkKPYB4DfgtLkT+nSeE5oZ4ihZS2YDHBSYHdu372IKgFACcX8SRQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0zbIc31l; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2FB371F00A3A;
+	Thu, 28 May 2026 20:02:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779999540;
-	bh=94RBcr7y6UtuiMFse3kcTU1DgDQzYSeXj389R2LEWbg=;
+	s=korg; t=1779998540;
+	bh=myn1+ppNgGDmrKCftqT81ppXBQV9nOn87hBmXs0GltQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=wtwiWfCy0fbBB1H+GoCZJAdgCyuoQm5uM0Y7azjESixAQiRAsL9lRBXHZ/Hkce+b+
-	 stK2AE1UuV8u3VGy4jV5YR9h+nbtW/Ct76A2rf1rqpIwPccuXgEh4Efx4VHc/vlvKy
-	 zQMJlSTfR9aN5J73x3/ud7FLwF8+z8IBr5PlKITg=
+	b=0zbIc31leZxsnrEIwXPGO4F1cNKBXr/3XpS0VrPMk0Heh5S/pbsQBPBrQfEPqONYY
+	 5u2QGqqdsrdYVm6LP868z9/V7SdnQCKokoVBSnLGNAQ5Jn/yx5jRFKKYnsxDFEUwcJ
+	 OBjSMJPZOPkZ7Llui2QQuVJvN1qfNPHCAi4yP+jA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jann Horn <jannh@google.com>,
-	Kuniyuki Iwashima <kuniyu@google.com>,
-	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 6.18 102/377] af_unix: Fix UAF read of tail->len in unix_stream_data_wait()
+	Tristan Madani <tristan@talencesecurity.com>,
+	Florian Westphal <fw@strlen.de>,
+	Pablo Neira Ayuso <pablo@netfilter.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 7.0 211/461] netfilter: x_tables: add and use xtables_unregister_table_exit
 Date: Thu, 28 May 2026 21:45:40 +0200
-Message-ID: <20260528194641.302120077@linuxfoundation.org>
+Message-ID: <20260528194653.226653297@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260528194638.371537336@linuxfoundation.org>
-References: <20260528194638.371537336@linuxfoundation.org>
+In-Reply-To: <20260528194646.819809818@linuxfoundation.org>
+References: <20260528194646.819809818@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -68,195 +69,366 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-255307-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-255662-lists,stable=lfdr.de];
-	TO_DN_SOME(0.00)[];
-	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim]
-X-Rspamd-Queue-Id: 295815F8C41
+	TO_DN_SOME(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_SEVEN(0.00)[7];
+	MID_RHS_MATCH_FROM(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[netfilter.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,strlen.de:email,talencesecurity.com:email,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
+X-Rspamd-Queue-Id: E1E9C5F7E48
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+7.0-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jann Horn <jannh@google.com>
+From: Florian Westphal <fw@strlen.de>
 
-commit be309f8eae8b474a4a617eaae01324da996fc719 upstream.
+[ Upstream commit b4597d5fd7d2f8cebfffd40dffb5e003cc78964c ]
 
-unix_stream_data_wait() does skb_peek_tail(&sk->sk_receive_queue) without
-holding any lock that prevents SKBs on that queue from being dequeued and
-freed.
-This has been the case since commit 79f632c71bea ("unix/stream: fix
-peeking with an offset larger than data in queue").
-The first consequence of this is that the pointer comparison
-`tail != last` can be false even if `last` semantically refers to an
-already-freed SKB while `tail` is a new SKB allocated at the same address;
-which can cause unix_stream_data_wait() to wrongly keep blocking after new
-data has arrived, but only in a weird scenario where a peeking recv() and
-a normal recv() on the same socket are racing, which is probably not a
-real problem.
+Previous change added xtables_unregister_table_pre_exit to detach the
+table from the packetpath and to unlink it from the active table list.
+In case of rmmod, userspace that is doing set/getsockopt for this table
+will not be able to re-instantiate the table:
+ 1. The larval table has been removed already
+ 2. existing instantiated table is no longer on the xt pernet table list.
 
-But since commit 2b514574f7e8 ("net: af_unix: implement splice for stream
-af_unix sockets"), `tail` is actually dereferenced, which can cause UAF in
-the following race scenario (where test_setup() runs single-threaded,
-and afterwards, test_thread1() and test_thread2() run concurrently in
-two threads:
-```
-static int socks[2];
-void test_setup(void) {
-  socketpair(AF_UNIX, SOCK_STREAM, 0, socks);
-  send(socks[1], "A", 1, 0);
-  int peekoff = 1;
-  setsockopt(socks[0], SOL_SOCKET, SO_PEEK_OFF, &peekoff, sizeof(peekoff));
-}
-void test_thread1(void) {
-  char dummy;
-  recv(socks[0], &dummy, 1, MSG_PEEK);
-}
-void test_thread2(void) {
-  char dummy;
-  recv(socks[0], &dummy, 1, 0);
-  shutdown(socks[1], SHUT_WR);
-}
-```
+This adds the second stage helper:
 
-when racing like this:
-```
-thread1                       thread2
-unix_stream_read_generic
-  mutex_lock(&u->iolock)
-  skb_peek(&sk->sk_receive_queue)
-  skb_peek_next(skb, &sk->sk_receive_queue)
-  mutex_unlock(&u->iolock)
-                              unix_stream_read_generic
-                                unix_state_lock(sk)
-                                skb_peek(&sk->sk_receive_queue)
-                                unix_state_unlock(sk)
-  unix_stream_data_wait
-    unix_state_lock(sk)
-    tail = skb_peek_tail(&sk->sk_receive_queue)
-                                spin_lock(&sk->sk_receive_queue.lock)
-                                __skb_unlink(skb, &sk->sk_receive_queue)
-                                spin_unlock(&sk->sk_receive_queue.lock)
-                                consume_skb(skb) [frees the SKB]
-    `tail != last`: false
-    `tail`: true
-    `tail->len != last_len` ***UAF***
-```
+unlink the table from the dying list, free the hook ops (if any) and do
+the audit notification.  It replaces xt_unregister_table().
 
-Fix the UAF by removing the read of tail->len; checking tail->len would
-only make sense if SKBs in the receive queue of a UNIX socket could grow,
-which can no longer happen.
-
-Kuniyuki explained:
-
-> When commit 869e7c62486e ("net: af_unix: implement stream sendpage
-> support") added sendpage() support, data could be appended to the last
-> skb in the receiver's queue.
->
-> That's why we needed to check if the length of the last skb was changed
-> while waiting for new data in unix_stream_data_wait().
->
-> However, commit a0dbf5f818f9 ("af_unix: Support MSG_SPLICE_PAGES") and
-> commit 57d44a354a43 ("unix: Convert unix_stream_sendpage() to use
-> MSG_SPLICE_PAGES") refactored sendmsg(), and now data is always added
-> to a new skb.
-
-That means this fix is not suitable for kernels before 6.5.
-
-Fixes: 2b514574f7e8 ("net: af_unix: implement splice for stream af_unix sockets")
-Cc: stable@vger.kernel.org # 6.5.x
-Signed-off-by: Jann Horn <jannh@google.com>
-Reviewed-by: Kuniyuki Iwashima <kuniyu@google.com>
-Link: https://patch.msgid.link/20260518-b4-unix-recv-wait-hotfix-v2-1-83e29ce8ad31@google.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: fdacd57c79b7 ("netfilter: x_tables: never register tables by default")
+Reported-by: Tristan Madani <tristan@talencesecurity.com>
+Reviewed-by: Tristan Madani <tristan@talencesecurity.com>
+Closes: https://lore.kernel.org/netfilter-devel/20260429175613.1459342-1-tristmd@gmail.com/
+Signed-off-by: Florian Westphal <fw@strlen.de>
+Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/unix/af_unix.c |   11 ++---------
- 1 file changed, 2 insertions(+), 9 deletions(-)
+ include/linux/netfilter/x_tables.h |  2 +-
+ net/ipv4/netfilter/arp_tables.c    |  9 ++--
+ net/ipv4/netfilter/ip_tables.c     |  9 ++--
+ net/ipv4/netfilter/iptable_nat.c   |  5 +-
+ net/ipv6/netfilter/ip6_tables.c    |  9 ++--
+ net/ipv6/netfilter/ip6table_nat.c  |  5 +-
+ net/netfilter/x_tables.c           | 81 +++++++++++++++++++++++-------
+ 7 files changed, 83 insertions(+), 37 deletions(-)
 
---- a/net/unix/af_unix.c
-+++ b/net/unix/af_unix.c
-@@ -2716,8 +2716,7 @@ static int unix_read_skb(struct sock *sk
-  *	Sleep until more data has arrived. But check for races..
-  */
- static long unix_stream_data_wait(struct sock *sk, long timeo,
--				  struct sk_buff *last, unsigned int last_len,
--				  bool freezable)
-+				  struct sk_buff *last, bool freezable)
+diff --git a/include/linux/netfilter/x_tables.h b/include/linux/netfilter/x_tables.h
+index 196b6d03d08a6..6fd365f7b35b0 100644
+--- a/include/linux/netfilter/x_tables.h
++++ b/include/linux/netfilter/x_tables.h
+@@ -300,8 +300,8 @@ struct xt_table *xt_register_table(struct net *net,
+ 				   const struct nf_hook_ops *template_ops,
+ 				   struct xt_table_info *bootstrap,
+ 				   struct xt_table_info *newinfo);
+-void *xt_unregister_table(struct xt_table *table);
+ void xt_unregister_table_pre_exit(struct net *net, u8 af, const char *name);
++struct xt_table *xt_unregister_table_exit(struct net *net, u8 af, const char *name);
+ 
+ struct xt_table_info *xt_replace_table(struct xt_table *table,
+ 				       unsigned int num_counters,
+diff --git a/net/ipv4/netfilter/arp_tables.c b/net/ipv4/netfilter/arp_tables.c
+index bd348b7bad2c5..ad2259678c785 100644
+--- a/net/ipv4/netfilter/arp_tables.c
++++ b/net/ipv4/netfilter/arp_tables.c
+@@ -1501,13 +1501,11 @@ static int do_arpt_get_ctl(struct sock *sk, int cmd, void __user *user, int *len
+ 
+ static void __arpt_unregister_table(struct net *net, struct xt_table *table)
  {
- 	unsigned int state = TASK_INTERRUPTIBLE | freezable * TASK_FREEZABLE;
- 	struct sk_buff *tail;
-@@ -2730,7 +2729,6 @@ static long unix_stream_data_wait(struct
+-	struct xt_table_info *private;
+-	void *loc_cpu_entry;
++	struct xt_table_info *private = table->private;
+ 	struct module *table_owner = table->me;
++	void *loc_cpu_entry;
+ 	struct arpt_entry *iter;
  
- 		tail = skb_peek_tail(&sk->sk_receive_queue);
- 		if (tail != last ||
--		    (tail && tail->len != last_len) ||
- 		    sk->sk_err ||
- 		    (sk->sk_shutdown & RCV_SHUTDOWN) ||
- 		    signal_pending(current) ||
-@@ -2923,7 +2921,6 @@ static int unix_stream_read_generic(stru
- 	int flags = state->flags;
- 	bool check_creds = false;
- 	struct scm_cookie scm;
--	unsigned int last_len;
- 	struct unix_sock *u;
- 	int copied = 0;
- 	int err = 0;
-@@ -2969,7 +2966,6 @@ redo:
- 			goto unlock;
- 		}
- 		last = skb = skb_peek(&sk->sk_receive_queue);
--		last_len = last ? last->len : 0;
+-	private = xt_unregister_table(table);
+-
+ 	/* Decrease module usage counts and free resources */
+ 	loc_cpu_entry = private->entries;
+ 	xt_entry_foreach(iter, loc_cpu_entry, private->size)
+@@ -1515,6 +1513,7 @@ static void __arpt_unregister_table(struct net *net, struct xt_table *table)
+ 	if (private->number > private->initial_entries)
+ 		module_put(table_owner);
+ 	xt_free_table_info(private);
++	kfree(table);
+ }
  
- again:
- #if IS_ENABLED(CONFIG_AF_UNIX_OOB)
-@@ -3003,8 +2999,7 @@ again:
+ int arpt_register_table(struct net *net,
+@@ -1556,7 +1555,7 @@ int arpt_register_table(struct net *net,
  
- 			mutex_unlock(&u->iolock);
+ void arpt_unregister_table(struct net *net, const char *name)
+ {
+-	struct xt_table *table = xt_find_table(net, NFPROTO_ARP, name);
++	struct xt_table *table = xt_unregister_table_exit(net, NFPROTO_ARP, name);
  
--			timeo = unix_stream_data_wait(sk, timeo, last,
--						      last_len, freezable);
-+			timeo = unix_stream_data_wait(sk, timeo, last, freezable);
+ 	if (table)
+ 		__arpt_unregister_table(net, table);
+diff --git a/net/ipv4/netfilter/ip_tables.c b/net/ipv4/netfilter/ip_tables.c
+index 864489928fb5a..5cbdb0815857f 100644
+--- a/net/ipv4/netfilter/ip_tables.c
++++ b/net/ipv4/netfilter/ip_tables.c
+@@ -1704,12 +1704,10 @@ do_ipt_get_ctl(struct sock *sk, int cmd, void __user *user, int *len)
  
- 			if (signal_pending(current)) {
- 				err = sock_intr_errno(timeo);
-@@ -3021,7 +3016,6 @@ unlock:
- 		while (skip >= unix_skb_len(skb)) {
- 			skip -= unix_skb_len(skb);
- 			last = skb;
--			last_len = skb->len;
- 			skb = skb_peek_next(skb, &sk->sk_receive_queue);
- 			if (!skb)
- 				goto again;
-@@ -3096,7 +3090,6 @@ unlock:
+ static void __ipt_unregister_table(struct net *net, struct xt_table *table)
+ {
+-	struct xt_table_info *private;
+-	void *loc_cpu_entry;
++	struct xt_table_info *private = table->private;
+ 	struct module *table_owner = table->me;
+ 	struct ipt_entry *iter;
+-
+-	private = xt_unregister_table(table);
++	void *loc_cpu_entry;
  
- 			skip = 0;
- 			last = skb;
--			last_len = skb->len;
- 			unix_state_lock(sk);
- 			skb = skb_peek_next(skb, &sk->sk_receive_queue);
- 			if (skb)
+ 	/* Decrease module usage counts and free resources */
+ 	loc_cpu_entry = private->entries;
+@@ -1718,6 +1716,7 @@ static void __ipt_unregister_table(struct net *net, struct xt_table *table)
+ 	if (private->number > private->initial_entries)
+ 		module_put(table_owner);
+ 	xt_free_table_info(private);
++	kfree(table);
+ }
+ 
+ int ipt_register_table(struct net *net, const struct xt_table *table,
+@@ -1758,7 +1757,7 @@ int ipt_register_table(struct net *net, const struct xt_table *table,
+ 
+ void ipt_unregister_table_exit(struct net *net, const char *name)
+ {
+-	struct xt_table *table = xt_find_table(net, NFPROTO_IPV4, name);
++	struct xt_table *table = xt_unregister_table_exit(net, NFPROTO_IPV4, name);
+ 
+ 	if (table)
+ 		__ipt_unregister_table(net, table);
+diff --git a/net/ipv4/netfilter/iptable_nat.c b/net/ipv4/netfilter/iptable_nat.c
+index 8fc4912e790d8..a0df725540251 100644
+--- a/net/ipv4/netfilter/iptable_nat.c
++++ b/net/ipv4/netfilter/iptable_nat.c
+@@ -119,8 +119,11 @@ static int iptable_nat_table_init(struct net *net)
+ 	}
+ 
+ 	ret = ipt_nat_register_lookups(net);
+-	if (ret < 0)
++	if (ret < 0) {
++		xt_unregister_table_pre_exit(net, NFPROTO_IPV4, "nat");
++		synchronize_rcu();
+ 		ipt_unregister_table_exit(net, "nat");
++	}
+ 
+ 	kfree(repl);
+ 	return ret;
+diff --git a/net/ipv6/netfilter/ip6_tables.c b/net/ipv6/netfilter/ip6_tables.c
+index edf50bc7787e5..9d9c3763f2f5e 100644
+--- a/net/ipv6/netfilter/ip6_tables.c
++++ b/net/ipv6/netfilter/ip6_tables.c
+@@ -1713,12 +1713,10 @@ do_ip6t_get_ctl(struct sock *sk, int cmd, void __user *user, int *len)
+ 
+ static void __ip6t_unregister_table(struct net *net, struct xt_table *table)
+ {
+-	struct xt_table_info *private;
+-	void *loc_cpu_entry;
++	struct xt_table_info *private = table->private;
+ 	struct module *table_owner = table->me;
+ 	struct ip6t_entry *iter;
+-
+-	private = xt_unregister_table(table);
++	void *loc_cpu_entry;
+ 
+ 	/* Decrease module usage counts and free resources */
+ 	loc_cpu_entry = private->entries;
+@@ -1727,6 +1725,7 @@ static void __ip6t_unregister_table(struct net *net, struct xt_table *table)
+ 	if (private->number > private->initial_entries)
+ 		module_put(table_owner);
+ 	xt_free_table_info(private);
++	kfree(table);
+ }
+ 
+ int ip6t_register_table(struct net *net, const struct xt_table *table,
+@@ -1767,7 +1766,7 @@ int ip6t_register_table(struct net *net, const struct xt_table *table,
+ 
+ void ip6t_unregister_table_exit(struct net *net, const char *name)
+ {
+-	struct xt_table *table = xt_find_table(net, NFPROTO_IPV6, name);
++	struct xt_table *table = xt_unregister_table_exit(net, NFPROTO_IPV6, name);
+ 
+ 	if (table)
+ 		__ip6t_unregister_table(net, table);
+diff --git a/net/ipv6/netfilter/ip6table_nat.c b/net/ipv6/netfilter/ip6table_nat.c
+index bb8aa3fc42b45..c2394e2c94b56 100644
+--- a/net/ipv6/netfilter/ip6table_nat.c
++++ b/net/ipv6/netfilter/ip6table_nat.c
+@@ -121,8 +121,11 @@ static int ip6table_nat_table_init(struct net *net)
+ 	}
+ 
+ 	ret = ip6t_nat_register_lookups(net);
+-	if (ret < 0)
++	if (ret < 0) {
++		xt_unregister_table_pre_exit(net, NFPROTO_IPV6, "nat");
++		synchronize_rcu();
+ 		ip6t_unregister_table_exit(net, "nat");
++	}
+ 
+ 	kfree(repl);
+ 	return ret;
+diff --git a/net/netfilter/x_tables.c b/net/netfilter/x_tables.c
+index 92fb3a64f70d9..8050cc06a9a30 100644
+--- a/net/netfilter/x_tables.c
++++ b/net/netfilter/x_tables.c
+@@ -55,6 +55,9 @@ static struct list_head xt_templates[NFPROTO_NUMPROTO];
+ 
+ struct xt_pernet {
+ 	struct list_head tables[NFPROTO_NUMPROTO];
++
++	/* stash area used during netns exit */
++	struct list_head dead_tables[NFPROTO_NUMPROTO];
+ };
+ 
+ struct compat_delta {
+@@ -1567,23 +1570,6 @@ struct xt_table *xt_register_table(struct net *net,
+ }
+ EXPORT_SYMBOL_GPL(xt_register_table);
+ 
+-void *xt_unregister_table(struct xt_table *table)
+-{
+-	struct xt_table_info *private;
+-
+-	mutex_lock(&xt[table->af].mutex);
+-	private = table->private;
+-	list_del(&table->list);
+-	mutex_unlock(&xt[table->af].mutex);
+-	audit_log_nfcfg(table->name, table->af, private->number,
+-			AUDIT_XT_OP_UNREGISTER, GFP_KERNEL);
+-	kfree(table->ops);
+-	kfree(table);
+-
+-	return private;
+-}
+-EXPORT_SYMBOL_GPL(xt_unregister_table);
+-
+ /**
+  * xt_unregister_table_pre_exit - pre-shutdown unregister of a table
+  * @net: network namespace
+@@ -1593,6 +1579,14 @@ EXPORT_SYMBOL_GPL(xt_unregister_table);
+  * Unregisters the specified netfilter table from the given network namespace
+  * and also unregisters the hooks from netfilter core: no new packets will be
+  * processed.
++ *
++ * This must be called prior to xt_unregister_table_exit() from the pernet
++ * .pre_exit callback.  After this call, the table is no longer visible to
++ * the get/setsockopt path.  In case of rmmod, module exit path must have
++ * called xt_unregister_template() prior to unregistering pernet ops to
++ * prevent re-instantiation of the table.
++ *
++ * See also: xt_unregister_table_exit()
+  */
+ void xt_unregister_table_pre_exit(struct net *net, u8 af, const char *name)
+ {
+@@ -1602,6 +1596,7 @@ void xt_unregister_table_pre_exit(struct net *net, u8 af, const char *name)
+ 	mutex_lock(&xt[af].mutex);
+ 	list_for_each_entry(t, &xt_net->tables[af], list) {
+ 		if (strcmp(t->name, name) == 0) {
++			list_move(&t->list, &xt_net->dead_tables[af]);
+ 			mutex_unlock(&xt[af].mutex);
+ 
+ 			if (t->ops) /* nat table registers with nat core, t->ops is NULL. */
+@@ -1612,6 +1607,50 @@ void xt_unregister_table_pre_exit(struct net *net, u8 af, const char *name)
+ 	mutex_unlock(&xt[af].mutex);
+ }
+ EXPORT_SYMBOL(xt_unregister_table_pre_exit);
++
++/**
++ * xt_unregister_table_exit - remove a table during namespace teardown
++ * @net: the network namespace from which to unregister the table
++ * @af: address family (e.g., NFPROTO_IPV4, NFPROTO_IPV6)
++ * @name: name of the table to unregister
++ *
++ * Completes the unregister process for a table. This must be called from
++ * the pernet ops .exit callback. This is the second stage after
++ * xt_unregister_table_pre_exit().
++ *
++ * pair with xt_unregister_table_pre_exit() during namespace shutdown.
++ *
++ * Return: the unregistered table or NULL if the table was never
++ *         instantiated. The caller needs to kfree() the table after it
++ *         has removed the family specific matches/targets.
++ */
++struct xt_table *xt_unregister_table_exit(struct net *net, u8 af, const char *name)
++{
++	struct xt_pernet *xt_net = net_generic(net, xt_pernet_id);
++	struct xt_table *table;
++
++	mutex_lock(&xt[af].mutex);
++	list_for_each_entry(table, &xt_net->dead_tables[af], list) {
++		struct nf_hook_ops *ops = NULL;
++
++		if (strcmp(table->name, name) != 0)
++			continue;
++
++		list_del(&table->list);
++
++		audit_log_nfcfg(table->name, table->af, table->private->number,
++				AUDIT_XT_OP_UNREGISTER, GFP_KERNEL);
++		swap(table->ops, ops);
++		mutex_unlock(&xt[af].mutex);
++
++		kfree(ops);
++		return table;
++	}
++	mutex_unlock(&xt[af].mutex);
++
++	return NULL;
++}
++EXPORT_SYMBOL_GPL(xt_unregister_table_exit);
+ #endif
+ 
+ #ifdef CONFIG_PROC_FS
+@@ -2058,8 +2097,10 @@ static int __net_init xt_net_init(struct net *net)
+ 	struct xt_pernet *xt_net = net_generic(net, xt_pernet_id);
+ 	int i;
+ 
+-	for (i = 0; i < NFPROTO_NUMPROTO; i++)
++	for (i = 0; i < NFPROTO_NUMPROTO; i++) {
+ 		INIT_LIST_HEAD(&xt_net->tables[i]);
++		INIT_LIST_HEAD(&xt_net->dead_tables[i]);
++	}
+ 	return 0;
+ }
+ 
+@@ -2068,8 +2109,10 @@ static void __net_exit xt_net_exit(struct net *net)
+ 	struct xt_pernet *xt_net = net_generic(net, xt_pernet_id);
+ 	int i;
+ 
+-	for (i = 0; i < NFPROTO_NUMPROTO; i++)
++	for (i = 0; i < NFPROTO_NUMPROTO; i++) {
+ 		WARN_ON_ONCE(!list_empty(&xt_net->tables[i]));
++		WARN_ON_ONCE(!list_empty(&xt_net->dead_tables[i]));
++	}
+ }
+ 
+ static struct pernet_operations xt_net_ops = {
+-- 
+2.53.0
+
 
 
 
