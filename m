@@ -1,60 +1,62 @@
-Return-Path: <stable+bounces-256130-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-256297-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id QPKqBAqqGGpolwgAu9opvQ
-	(envelope-from <stable+bounces-256130-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:48:10 +0200
+	id QOjrMd2rGGpolwgAu9opvQ
+	(envelope-from <stable+bounces-256297-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:55:57 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 648DF5F993C
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:48:09 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 748A85F9E30
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:55:57 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id C0466319AE37
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 20:40:47 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 1A1E730D9EAB
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 20:48:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BDE582F8E83;
-	Thu, 28 May 2026 20:40:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 20B1D346AC5;
+	Thu, 28 May 2026 20:48:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qS4/7OKb"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="eNiRrJq+"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9541733CE8A;
-	Thu, 28 May 2026 20:40:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D2875318B9D;
+	Thu, 28 May 2026 20:48:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780000840; cv=none; b=FVLF2zt9zPb93Sd6pzn8hAkL4ytAsymkkt+VPQrH6+qjuck9TVc30uTLh0aR7ZVbyPbFH2ITeD6WmLbH/y5GLvjZznKjfzOQq93DEWqO42b0Waa2zRvWxy2IfxcMy7yASpmaIkeFAHpXsrveej9tpcdcGrwYuhsqHpPVtPz+ARs=
+	t=1780001305; cv=none; b=dC6BIpBJdhEuR15tFxKtDGUHhL39VHepqKbF3SI5CJiC9uhLun4+cDqFmJlGXyUPElkb+OPd7IFuj41MMjwt8b+7faG/dbGahBW1MAzEC3Gtw6BHBojK2gTTr4XPOQmGqEQXVbYQetQv9pJMCP2vhHIKrnkrAQ8WM5Xky6rxmJA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780000840; c=relaxed/simple;
-	bh=hXW9V/fKyAG+QintxEPhk/qFj3gmWs0IDmVjROEkIhg=;
+	s=arc-20240116; t=1780001305; c=relaxed/simple;
+	bh=dEssjDNbkCeRm/B3EyukvGqDXRmWw5t359IMcPIEzWY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=RsSdcwcuXvhogwa4J4HL1Wq6s/e3h2nWj6rsYH4C6txPf9wLT7H+NIeBI9J3XIlexW6GiGOh05Z87QXLrNYxKYmXlwz5AUclWZ972Tt5YMlh9iOtQXNN/626Sh0f52vHj9mBJAc4ap2sYUHf7DidahswSdGd/v28ciamNq862y8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qS4/7OKb; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F35461F000E9;
-	Thu, 28 May 2026 20:40:38 +0000 (UTC)
+	 MIME-Version; b=rFaLcUurLedzNxhYagvcaAdyfVb3GXyC/9I/eG4kJpCpez2fb1kxipTg5BRxv4pVyHOxvPOcHnVZ6rB8TKeD+cUUzSiKPpCvF/w0RG4QLTXi6KwgIwjEG55/P3lRGNR/49Z/oxWuATFgA0pv6MEA9NfniICBVOcEnkke2ZtEt9w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=eNiRrJq+; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CF1CA1F00A3A;
+	Thu, 28 May 2026 20:48:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780000839;
-	bh=HC8faTZ/AgyclX5OwNKBQA8Dl7zkM93c1ps07PLMaBc=;
+	s=korg; t=1780001304;
+	bh=pEzYoGEbi/6z9rrsm1ER/oaOuu1Pwd/vUYv+WDwvM/M=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=qS4/7OKb3i1yXdOwo5dikpftxzuKcFjI8wEOzGDEVGbOJ0YO7EffpD3qmxHkqQQ/T
-	 pvKqQ/wthFQXX9BvC+Pc0eT7JDTjovNxYPuRmypihjUMyeNcG5K+Tw8WOhS5Izc+Lz
-	 S3HYPqjiFSh9MGnYmZNGabqVmLDMQsqqzmjQBv10=
+	b=eNiRrJq+ZsRzu+exc4MjXab+iIexKMyzkgsgiDPBx0YyeX3uZyWW6TKIlvlvl2VVn
+	 8VGgk3M6D+AvEh4MyupBoVZ2XsHIt97o1oHPYuLRIsgVWfZ4f4GiGkZOn7xBfSIiKH
+	 PsmcODxhpDQ9Q65J28cLm6Lw6eCACDgC7DxqZMNY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alexey Dobriyan <adobriyan@gmail.com>,
-	Johannes Thumshirn <johannes.thumshirn@wdc.com>,
-	Damien Le Moal <dlemoal@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 187/272] zonefs: handle integer overflow in zonefs_fname_to_fno
+	stable@kernel.org,
+	Yuan Tan <yuantan098@gmail.com>,
+	Yifan Wu <yifanwucs@gmail.com>,
+	Juefei Pu <tomapufckgml@gmail.com>,
+	Xin Liu <bird@lzu.edu.cn>,
+	Sven Eckelmann <sven@narfation.org>
+Subject: [PATCH 6.6 081/186] batman-adv: frag: disallow unicast fragment in fragment
 Date: Thu, 28 May 2026 21:49:21 +0200
-Message-ID: <20260528194634.514745166@linuxfoundation.org>
+Message-ID: <20260528194931.123663030@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260528194629.379955525@linuxfoundation.org>
-References: <20260528194629.379955525@linuxfoundation.org>
+In-Reply-To: <20260528194928.941004471@linuxfoundation.org>
+References: <20260528194928.941004471@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,84 +71,120 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,wdc.com,kernel.org];
-	TAGGED_FROM(0.00)[bounces-256130-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,kernel.org,gmail.com,lzu.edu.cn,narfation.org];
+	TAGGED_FROM(0.00)[bounces-256297-lists,stable=lfdr.de];
 	PRECEDENCE_BULK(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	FROM_HAS_DN(0.00)[];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[7];
+	RCPT_COUNT_SEVEN(0.00)[9];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
 	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim,wdc.com:email]
-X-Rspamd-Queue-Id: 648DF5F993C
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,narfation.org:email,lzu.edu.cn:email,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim]
+X-Rspamd-Queue-Id: 748A85F9E30
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Johannes Thumshirn <johannes.thumshirn@wdc.com>
+From: Sven Eckelmann <sven@narfation.org>
 
-[ Upstream commit 3a8389d42bdf4213730f4067f8bfa78bae6564ef ]
+commit bc62216dc8e221e3781afa14430f45208bfa9af9 upstream.
 
-In zonefs the file name in one of the two directories corresponds to the
-zone number.
+batadv_frag_skb_buffer() is called by batadv_batman_skb_recv() when a
+BATADV_UNICAST_FRAG packet is received. Once all fragments are collected
+and the packet is reassembled, batadv_recv_frag_packet() calls
+batadv_batman_skb_recv() again to process the defragmented payload.
 
-Here Alexey reported a possible integer overflow in zonefs_fname_to_fno(),
-where the parsing of the zone number from the file name can overflow the
-'long' data type.
+A malicious sender can craft a BATADV_UNICAST_FRAG packet whose reassembled
+payload is itself a BATADV_UNICAST_FRAG packet (matryoshka-style nesting).
+Each nesting level recurses through batadv_batman_skb_recv() without bound,
+growing the kernel stack until it is exhausted.
 
-Add a check for integer overflows and if the fno 'long' did overflow
-return -ENOENT.
+Since refragmentation or fragments in fragments are not actually allowed,
+discard all packets which are still BATADV_UNICAST_FRAG packets after the
+defragmentation process.
 
-Reported-by: Alexey Dobriyan <adobriyan@gmail.com>
-Fixes: d207794ababe ("zonefs: Dynamically create file inodes when needed")
-Signed-off-by: Johannes Thumshirn <johannes.thumshirn@wdc.com>
-Signed-off-by: Damien Le Moal <dlemoal@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: stable@kernel.org
+Fixes: 610bfc6bc99b ("batman-adv: Receive fragmented packets and merge")
+Reported-by: Yuan Tan <yuantan098@gmail.com>
+Reported-by: Yifan Wu <yifanwucs@gmail.com>
+Reported-by: Juefei Pu <tomapufckgml@gmail.com>
+Reported-by: Xin Liu <bird@lzu.edu.cn>
+Reviewed-by: Yuan Tan <yuantan098@gmail.com>
+Signed-off-by: Sven Eckelmann <sven@narfation.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/zonefs/super.c | 6 +++++-
- 1 file changed, 5 insertions(+), 1 deletion(-)
+ net/batman-adv/fragmentation.c |   35 +++++++++++++++++++++++++++++++++++
+ 1 file changed, 35 insertions(+)
 
-diff --git a/fs/zonefs/super.c b/fs/zonefs/super.c
-index faf1eb87895d0..72408d8f9345c 100644
---- a/fs/zonefs/super.c
-+++ b/fs/zonefs/super.c
-@@ -610,10 +610,14 @@ static long zonefs_fname_to_fno(const struct qstr *fname)
- 		return c - '0';
+--- a/net/batman-adv/fragmentation.c
++++ b/net/batman-adv/fragmentation.c
+@@ -306,6 +306,31 @@ free:
+ }
  
- 	for (i = 0, rname = name + len - 1; i < len; i++, rname--) {
-+		long digit;
+ /**
++ * batadv_skb_is_frag() - check if newly merged skb is gain a unicast packet
++ * @skb: newly merged skb
++ *
++ * Return: if newly skb is of type BATADV_UNICAST_FRAG
++ */
++static bool batadv_skb_is_frag(struct sk_buff *skb)
++{
++	struct batadv_ogm_packet *batadv_ogm_packet;
 +
- 		c = *rname;
- 		if (!isdigit(c))
- 			return -ENOENT;
--		fno += (c - '0') * shift;
-+		digit = (c - '0') * shift;
-+		if (check_add_overflow(fno, digit, &fno))
-+			return -ENOENT;
- 		shift *= 10;
- 	}
++	/* packet should hold at least type and version */
++	if (unlikely(!pskb_may_pull(skb, 2)))
++		return false;
++
++	batadv_ogm_packet = (struct batadv_ogm_packet *)skb->data;
++
++	if (batadv_ogm_packet->version != BATADV_COMPAT_VERSION)
++		return false;
++
++	if (batadv_ogm_packet->packet_type != BATADV_UNICAST_FRAG)
++		return false;
++
++	return true;
++}
++
++/**
+  * batadv_frag_skb_buffer() - buffer fragment for later merge
+  * @skb: skb to buffer
+  * @orig_node_src: originator that the skb is received from
+@@ -338,6 +363,16 @@ bool batadv_frag_skb_buffer(struct sk_bu
+ 	if (!skb_out)
+ 		goto out_err;
  
--- 
-2.53.0
-
++	/* fragment in fragment is not allowed. otherwise it is possible
++	 * to exhaust the stack when receiving a matryoshka-style
++	 * "fragments in a fragment packet"
++	 */
++	if (batadv_skb_is_frag(skb_out)) {
++		kfree_skb(skb_out);
++		skb_out = NULL;
++		goto out_err;
++	}
++
+ out:
+ 	ret = true;
+ out_err:
 
 
 
