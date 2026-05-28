@@ -1,51 +1,51 @@
-Return-Path: <stable+bounces-254851-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-254853-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id OBCAD3clGGqZeQgAu9opvQ
-	(envelope-from <stable+bounces-254851-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 13:22:31 +0200
+	id IFpnLcEmGGqZeQgAu9opvQ
+	(envelope-from <stable+bounces-254853-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 13:28:01 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id 588145F135C
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 13:22:30 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2EF1D5F1472
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 13:28:00 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 8743B3006801
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 11:22:27 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id D173E30158AB
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 11:24:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id ACBB53E0C47;
-	Thu, 28 May 2026 11:22:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4C3263E0C4A;
+	Thu, 28 May 2026 11:24:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qKacScXq"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="G/v5qHle"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 60ACF3358BE
-	for <stable@vger.kernel.org>; Thu, 28 May 2026 11:22:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EEBC47262B
+	for <stable@vger.kernel.org>; Thu, 28 May 2026 11:24:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779967345; cv=none; b=cIxftN0mZaohS515CdpZ7rUyVUEiew5puC3WecLVRMekd9J0juFg+oOftpZUI7iA1a/Falvy+09RU72aer6aUnH46+Xm80Sd5hd8Q71i+lHjtxtXvCcYCyMkhd8CA1hhFl0vQBrMvArPkA596x731og/JOX1Y24RIyZmkqzo4VE=
+	t=1779967450; cv=none; b=DBVzqWGUTus4SsFMeaCn8/Cggf4aRM1WEhwpEmVX11M6foddoEheywiqxfr2ZgRIVnEWiLKj2SnsI9PoFOtWbKOetjrI1ZwbWbsNsKkzlLh+rYqPQRN6it5uBJBVzHufOAbR7Lfig+d/ZA1SHN5p8VTKcoeCsILLxvFzdRqUvAo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779967345; c=relaxed/simple;
-	bh=VH//m1Bk7DSjWckv0U5Vf68UE/VoqGh9VURufqOLR00=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=DnzSxbfkvtUlZMGT+pFAuYZ2WDEggMidxJIWo1IrtIZ3H7td5OWmBlq2SbYuq1K2RWIIHb12ZE/bhprCO+B8Nk/gMvqWLnKQyU9cs7vIFa+Myn1G6261rJ7X17A3ehNH/sSXT60FUpTwlmNmJOG0Mktyn+2YEtsED6GtBe5qnz0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qKacScXq; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3FAEF1F000E9;
-	Thu, 28 May 2026 11:22:23 +0000 (UTC)
+	s=arc-20240116; t=1779967450; c=relaxed/simple;
+	bh=lT5UDMmvhZwBA70+uPGjLgwRl2nCFOlhkWR6ORTVGak=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=fgKYtcScLaQTKtysiFJXwRHPt83y5J4GRwqIKcAWIyAbYp1fWx5mJlQXY7SUmraDRj7e7KDGaCWuZew5PZ4mHvpt4zIVspE9Jgln3hlSv/hsrNYe0fWU0PH7OT2C8doImW9+nbff+x6rlCUOBkfIOgr9tnvoXB5NIsEG5v1dcWg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=G/v5qHle; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 30C141F000E9;
+	Thu, 28 May 2026 11:24:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779967343;
-	bh=J4Q+XR4lE18ayPNkLbA1wFzKZWH8+uS499yPEEljLQg=;
+	s=korg; t=1779967448;
+	bh=BEwDmnNa5I7LYtcUi5qrbb3y7WrDDASf3orlL0gxr70=;
 	h=Subject:To:Cc:From:Date;
-	b=qKacScXqHhepUBplpQWLWH/z+jlodZP3iFb7XjAPSJ7O6B0/+sGRX6I+eqKIHBDLL
-	 sNi7aYjudBPhvxsIa09alapL2CJONeiL7dBV3QNcC+fk/cQbNztPxKZGkdX6lKDhVC
-	 eWzYxsi3yVX3ASLA8CCGQk1vyVJtGPnhjxXg6sHs=
-Subject: FAILED: patch "[PATCH] mptcp: update window_clamp on subflows when SO_RCVBUF is set" failed to apply to 6.6-stable tree
-To: yangang@kylinos.cn,matttbe@kernel.org,pabeni@redhat.com
+	b=G/v5qHlenvp17d4/aHr9fRH15o92ThjHOPTyjITxFoQ9nN56atOrbnP/whuQh0zxF
+	 LT9Mt676x732Anp1OaC+zXy7lZonBSLEpG6WjW2wcWHgE6IcE/G1Ep1qXm+K7pOoEL
+	 l2bJJ3/iaI91j8TuKYxnEWPYjvUvTJk2rCLBR47Q=
+Subject: FAILED: patch "[PATCH] rbd: eliminate a race in lock_dwork draining on unmap" failed to apply to 6.6-stable tree
+To: idryomov@gmail.com,Slava.Dubeyko@ibm.com
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Thu, 28 May 2026 13:21:20 +0200
-Message-ID: <2026052820-labored-unhinge-12d3@gregkh>
+Date: Thu, 28 May 2026 13:23:15 +0200
+Message-ID: <2026052815-attest-unclog-2f05@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -59,30 +59,31 @@ X-Spamd-Result: default: False [2.34 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	MID_RHS_NOT_FQDN(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-254851-lists,stable=lfdr.de];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-254853-lists,stable=lfdr.de];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FREEMAIL_TO(0.00)[gmail.com,ibm.com];
+	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	FROM_NO_DN(0.00)[];
 	MISSING_XM_UA(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	NEURAL_HAM(-0.00)[-0.993];
 	TO_DN_NONE(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	RCPT_COUNT_THREE(0.00)[4];
+	RCPT_COUNT_THREE(0.00)[3];
 	TAGGED_RCPT(0.00)[stable];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[kylinos.cn:email,linuxfoundation.org:dkim,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,msgid.link:url]
-X-Rspamd-Queue-Id: 588145F135C
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,gregkh:email]
+X-Rspamd-Queue-Id: 2EF1D5F1472
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
@@ -96,10 +97,10 @@ To reproduce the conflict and resubmit, you may use the following commands:
 
 git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.6.y
 git checkout FETCH_HEAD
-git cherry-pick -x 3a543ae0e2092d5c2085d5f21f7a7dbafdffea3c
+git cherry-pick -x 9fc75b71fdd38465c76c6f6a884cdd4ae3c72d90
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2026052820-labored-unhinge-12d3@gregkh' --subject-prefix 'PATCH 6.6.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2026052815-attest-unclog-2f05@gregkh' --subject-prefix 'PATCH 6.6.y' HEAD^..
 
 Possible dependencies:
 
@@ -111,68 +112,100 @@ greg k-h
 
 ------------------ original commit in Linus's tree ------------------
 
-From 3a543ae0e2092d5c2085d5f21f7a7dbafdffea3c Mon Sep 17 00:00:00 2001
-From: Gang Yan <yangang@kylinos.cn>
-Date: Fri, 15 May 2026 06:27:36 +0200
-Subject: [PATCH] mptcp: update window_clamp on subflows when SO_RCVBUF is set
+From 9fc75b71fdd38465c76c6f6a884cdd4ae3c72d90 Mon Sep 17 00:00:00 2001
+From: Ilya Dryomov <idryomov@gmail.com>
+Date: Tue, 19 May 2026 23:07:26 +0200
+Subject: [PATCH] rbd: eliminate a race in lock_dwork draining on unmap
 
-Add __mptcp_subflow_set_rcvbuf() helper to write the subflow sk_rcvbuf,
-but also to call the recently added tcp_set_rcvbuf() helper to update
-window_clamp. This is needed because the window clap is updated when
-scaling_ratio changes, in tcp_measure_rcv_mss(). Until scaling_ratio
-changes, the subflow is stuck with the old window clamp which may be
-based on a small initial buffer.
+Given how rbd_lock_add_request() and rbd_img_exclusive_lock() are
+written, lock_dwork may be (re)queued more than it's actually needed:
+for example in case a new I/O request comes in while we are in the
+middle of rbd_acquire_lock() on behalf of another I/O request.  This is
+expected and with rbd_release_lock() preemptively canceling lock_dwork
+is benign under normal operation.
 
-Use this new helper in both mptcp_sol_socket_sync_intval() (setsockopt
-path) and sync_socket_options() (new subflow creation path).
+A more problematic example is maybe_kick_acquire():
 
-Note that this patch depends on commit b025461303d8 ("tcp: update
-window_clamp when SO_RCVBUF is set"): it fixes the issue on TCP side,
-but the same fix is needed on MPTCP side as well.
+    if (have_requests || delayed_work_pending(&rbd_dev->lock_dwork)) {
+            dout("%s rbd_dev %p kicking lock_dwork\n", __func__, rbd_dev);
+            mod_delayed_work(rbd_dev->task_wq, &rbd_dev->lock_dwork, 0);
+    }
 
-Fixes: a2cbb1603943 ("tcp: Update window clamping condition")
+It's not unrealistic for lock_dwork to get canceled right after
+delayed_work_pending() returns true and for mod_delayed_work() to
+requeue it right there anyway.  This is a classic TOCTOU race.
+
+When it comes to unmapping the image, there is an implicit assumption
+of no self-initiated exclusive lock activity past the point of return
+from rbd_dev_image_unlock() which unlocks the lock if it happens to be
+held.  This unlock is assumed to be final and lock_dwork (as well as
+all other exclusive lock tasks, really) isn't expected to get queued
+again.  However, lock_dwork is canceled only in cancel_tasks_sync()
+(i.e. later in the unmap sequence) and on top of that the cancellation
+can get in effect nullified by maybe_kick_acquire().  This may result
+in rbd_acquire_lock() executing after rbd_dev_device_release() and
+rbd_dev_image_release() run and free and/or reset a bunch of things.
+One of the possible failure modes then is a violated
+
+    rbd_assert(rbd_image_format_valid(rbd_dev->image_format));
+
+in rbd_dev_header_info() which is called via rbd_dev_refresh() from
+rbd_post_acquire_action().
+
+Redo exclusive lock task draining to provide saner semantics and try
+to meet the assumptions around rbd_dev_image_unlock().
+
 Cc: stable@vger.kernel.org
-Closes: https://github.com/multipath-tcp/mptcp_net-next/issues/619
-Signed-off-by: Gang Yan <yangang@kylinos.cn>
-Reviewed-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
-Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
-Link: https://patch.msgid.link/20260515-net-mptcp-misc-fixes-7-1-rc4-v2-5-701e96419f2f@kernel.org
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Signed-off-by: Ilya Dryomov <idryomov@gmail.com>
+Reviewed-by: Viacheslav Dubeyko <Slava.Dubeyko@ibm.com>
 
-diff --git a/net/mptcp/sockopt.c b/net/mptcp/sockopt.c
-index 1cf608e7357b..87b5796d0135 100644
---- a/net/mptcp/sockopt.c
-+++ b/net/mptcp/sockopt.c
-@@ -67,6 +67,12 @@ static int mptcp_get_int_option(struct mptcp_sock *msk, sockptr_t optval,
- 	return 0;
+diff --git a/drivers/block/rbd.c b/drivers/block/rbd.c
+index 4065336ebd1f..6c1e7347e6a7 100644
+--- a/drivers/block/rbd.c
++++ b/drivers/block/rbd.c
+@@ -4565,24 +4565,12 @@ static int rbd_register_watch(struct rbd_device *rbd_dev)
+ 	return ret;
  }
  
-+static void __mptcp_subflow_set_rcvbuf(struct sock *ssk, int val)
-+{
-+	WRITE_ONCE(ssk->sk_rcvbuf, val);
-+	tcp_set_rcvbuf(ssk, val);
-+}
-+
- static void mptcp_sol_socket_sync_intval(struct mptcp_sock *msk, int optname, int val)
+-static void cancel_tasks_sync(struct rbd_device *rbd_dev)
+-{
+-	dout("%s rbd_dev %p\n", __func__, rbd_dev);
+-
+-	cancel_work_sync(&rbd_dev->acquired_lock_work);
+-	cancel_work_sync(&rbd_dev->released_lock_work);
+-	cancel_delayed_work_sync(&rbd_dev->lock_dwork);
+-	cancel_work_sync(&rbd_dev->unlock_work);
+-}
+-
+ /*
+  * header_rwsem must not be held to avoid a deadlock with
+  * rbd_dev_refresh() when flushing notifies.
+  */
+ static void rbd_unregister_watch(struct rbd_device *rbd_dev)
  {
- 	struct mptcp_subflow_context *subflow;
-@@ -100,7 +106,7 @@ static void mptcp_sol_socket_sync_intval(struct mptcp_sock *msk, int optname, in
- 		case SO_RCVBUF:
- 		case SO_RCVBUFFORCE:
- 			ssk->sk_userlocks |= SOCK_RCVBUF_LOCK;
--			WRITE_ONCE(ssk->sk_rcvbuf, sk->sk_rcvbuf);
-+			__mptcp_subflow_set_rcvbuf(ssk, sk->sk_rcvbuf);
- 			break;
- 		case SO_MARK:
- 			if (READ_ONCE(ssk->sk_mark) != sk->sk_mark) {
-@@ -1560,7 +1566,7 @@ static void sync_socket_options(struct mptcp_sock *msk, struct sock *ssk)
- 			mptcp_subflow_ctx(ssk)->cached_sndbuf = sk->sk_sndbuf;
- 		}
- 		if (sk->sk_userlocks & SOCK_RCVBUF_LOCK)
--			WRITE_ONCE(ssk->sk_rcvbuf, sk->sk_rcvbuf);
-+			__mptcp_subflow_set_rcvbuf(ssk, sk->sk_rcvbuf);
- 	}
+-	cancel_tasks_sync(rbd_dev);
+-
+ 	mutex_lock(&rbd_dev->watch_mutex);
+ 	if (rbd_dev->watch_state == RBD_WATCH_STATE_REGISTERED)
+ 		__rbd_unregister_watch(rbd_dev);
+@@ -6548,10 +6536,18 @@ static int rbd_add_parse_args(const char *buf,
  
- 	if (sock_flag(sk, SOCK_LINGER)) {
+ static void rbd_dev_image_unlock(struct rbd_device *rbd_dev)
+ {
++	dout("%s rbd_dev %p\n", __func__, rbd_dev);
++
++	disable_delayed_work_sync(&rbd_dev->lock_dwork);
++	disable_work_sync(&rbd_dev->unlock_work);
++
+ 	down_write(&rbd_dev->lock_rwsem);
+ 	if (__rbd_is_lock_owner(rbd_dev))
+ 		__rbd_release_lock(rbd_dev);
+ 	up_write(&rbd_dev->lock_rwsem);
++
++	flush_work(&rbd_dev->acquired_lock_work);
++	flush_work(&rbd_dev->released_lock_work);
+ }
+ 
+ /*
 
 
