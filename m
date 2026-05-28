@@ -1,51 +1,51 @@
-Return-Path: <stable+bounces-254949-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-254951-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id mM+hI8EtGGqyfQgAu9opvQ
-	(envelope-from <stable+bounces-254949-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 13:57:53 +0200
+	id YCeYNfwtGGqyfQgAu9opvQ
+	(envelope-from <stable+bounces-254951-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 13:58:52 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6FE3D5F1B1A
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 13:57:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9F5835F1B5C
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 13:58:51 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 3AD8A303A0A3
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 11:57:24 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 2AAD9306129F
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 11:57:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C28B53E7BD5;
-	Thu, 28 May 2026 11:57:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 042393E5EC7;
+	Thu, 28 May 2026 11:57:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Lp+REgKQ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1DMNBXfZ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E80493E5584
-	for <stable@vger.kernel.org>; Thu, 28 May 2026 11:57:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A7C043E63AF
+	for <stable@vger.kernel.org>; Thu, 28 May 2026 11:57:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779969433; cv=none; b=LpHthA0nvtn63CCiIOWvMZlSAAhVDz6khyEaP1t6iI2nbBr3lE25+z8d6IPgjHBkYohEr694vtaPm5q81AL4yfQHCOYPvgiJS8P1ItH80BJs8NQs0APSe9pgztKMV1/tXznOLjF0/mID/PNhKEgH0sSITOXfARjhpCEj+ZYx2OY=
+	t=1779969440; cv=none; b=jUWxZM46IiHyKMtbQeQ0Qf//MCI6EVSaKUmtK7CkIbQtt0s89kL0oLvLHsijyiQkx1NemKU5OfOI+2AQq6t82ck3eTtPo6gF5kJV0zTort1Z+5+Xgv+nLz6VbsKz9cd4pn/mhp3JxiROj/YPnmjmZynHif9bmF6U/p8N7JKAwHM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779969433; c=relaxed/simple;
-	bh=MAq1oObBgEIAGrp1Yn+wufjtJjmK0gaZjk7uY0YCK1Q=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=Kh70oYlhnd/IWcVeSFXclQ8BVSoV1KHdLvyDvFpGjiW7m4XkdDw7gpGdgHooZaTk3DwbEAasEbDacd2CPCENXT/uaH6mC/phpxMNUqRjm+P2hJR9dzWYeETjKMkqN1JHWaL8/6Q4ACY9A1IdUvyjrnxJqWbj/B809konmqfU89w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Lp+REgKQ; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 52D671F00A3C;
-	Thu, 28 May 2026 11:57:09 +0000 (UTC)
+	s=arc-20240116; t=1779969440; c=relaxed/simple;
+	bh=glarzOXD1zT5Iud5F6/f9Hj11nsTTmZiT9s6hLtXJr4=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=MLs5E78a2eSV3v9jR69Ep/VYfc6U49zlS0Yj1XdT8PEWVCJWud/JPdLE0tHDakW2lVYYC0bGsh8dkJ8dHDHxaqSn5aTpcT12QIWLAkJs1gpK4XQj43Ljp6QwwtVYBWquJSH5IbtJ1vUMhfjqh6LrkDZMxSZmcGDqhZgFlu9wM60=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1DMNBXfZ; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 016AC1F00A3A;
+	Thu, 28 May 2026 11:57:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779969429;
-	bh=+uBStECaTDRofJcHVK4PGGJIbeHPQmmOmlgcNUJpoQM=;
+	s=korg; t=1779969439;
+	bh=ORpWI1GAIaZ6LY7DbDa5tqYvZfUcTeUAFvgzznU054s=;
 	h=Subject:To:Cc:From:Date;
-	b=Lp+REgKQEoD11E3n+1TXMX4vgLQ74D9NdWabb+XKPU8A/hmsgun6h0bg/nlqdQRXE
-	 Bao+doUHVzrHy1NrrgIyeBEX+jV5BLMbjFQpND5ew+YbfAFIOaorMNwDF7qK2Af9LW
-	 tAgkZSFTjz74WsWvPGxG86Jiel70P1rL7bKjcCGk=
-Subject: FAILED: patch "[PATCH] batman-adv: tt: fix TOCTOU race for reported vlans" failed to apply to 5.10-stable tree
+	b=1DMNBXfZs7COnfnHForyTp5TOR0DWfI07jJzLmMCGHPPlSsXEuRQDOhmrSQjbgA2W
+	 0lrwOBP3LGdJau9ClI61d3xj+GW1QnfYrSYgJlzmUPtw3KGngZUIPVAOfCcW0Nht3L
+	 6hPp2mVimNfnG0ORPCPyZXoaHcUuIc65gx8ANxgw=
+Subject: FAILED: patch "[PATCH] batman-adv: tt: reject oversized local TVLV buffers" failed to apply to 6.12-stable tree
 To: sven@narfation.org
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Thu, 28 May 2026 13:56:10 +0200
-Message-ID: <2026052810-cruelly-uncertain-6f22@gregkh>
+Date: Thu, 28 May 2026 13:56:26 +0200
+Message-ID: <2026052826-badly-emote-1554@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -65,7 +65,7 @@ X-Spamd-Result: default: False [2.34 / 15.00];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-254949-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-254951-lists,stable=lfdr.de];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
@@ -81,25 +81,25 @@ X-Spamd-Result: default: False [2.34 / 15.00];
 	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,gregkh:email,narfation.org:email,linuxfoundation.org:dkim]
-X-Rspamd-Queue-Id: 6FE3D5F1B1A
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,narfation.org:email,gregkh:email]
+X-Rspamd-Queue-Id: 9F5835F1B5C
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
 
-The patch below does not apply to the 5.10-stable tree.
+The patch below does not apply to the 6.12-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.10.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.12.y
 git checkout FETCH_HEAD
-git cherry-pick -x 94d27005016be15ffc638b2ecbc4d58805ad7b48
+git cherry-pick -x 1e9fab756f8395096d5bba7be0c373c4c8f5d165
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2026052810-cruelly-uncertain-6f22@gregkh' --subject-prefix 'PATCH 5.10.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2026052826-badly-emote-1554@gregkh' --subject-prefix 'PATCH 6.12.y' HEAD^..
 
 Possible dependencies:
 
@@ -111,70 +111,55 @@ greg k-h
 
 ------------------ original commit in Linus's tree ------------------
 
-From 94d27005016be15ffc638b2ecbc4d58805ad7b48 Mon Sep 17 00:00:00 2001
+From 1e9fab756f8395096d5bba7be0c373c4c8f5d165 Mon Sep 17 00:00:00 2001
 From: Sven Eckelmann <sven@narfation.org>
-Date: Sat, 2 May 2026 19:47:11 +0200
-Subject: [PATCH] batman-adv: tt: fix TOCTOU race for reported vlans
+Date: Sat, 2 May 2026 19:08:37 +0200
+Subject: [PATCH] batman-adv: tt: reject oversized local TVLV buffers
 
-The local TT based TVLV is generated by first checking the number of VLANs
-which have at least one TT entry. A new buffer with the correct size for
-the VLANs is then allocated. Only then, the list of VLANs s used to fill
-the VLAN entries in the buffer. During this time, the meshif_vlan_list_lock
-is held. But the actual number of TT entries of each VLAN can still
-increase during this time - just not the number of VLANs in the list.
+The commit 3a359bf5c61d ("batman-adv: reject oversized global TT response
+buffers") added a check to ensure that a global return buffer size can be
+stored in an u16. The same buffer handling also exists for the local data
+buffer but was not touched.
 
-But the prefilter used in the buffer size calculation might still cause an
-increase of the number of VLANs which need to be stored. Simply because a
-VLAN might now suddenly have at least one entry when it had none in the
-pre-alloc check - and then needs to occupy space which was not allocated.
-
-It is better to overestimate the buffer size at the beginning and then fill
-the buffer only with the VLANs which are not empty.
+A similar check should be also be in place for the local TVLV buffer. It
+doesn't have the similar attack surface because it is only generated from
+locally discovered MAC addresses but the dynamic nature could still cause
+temporarily to large buffers.
 
 Cc: stable@kernel.org
-Fixes: 16116dac2339 ("batman-adv: prevent TT request storms by not sending inconsistent TT TLVLs")
+Fixes: 7ea7b4a14275 ("batman-adv: make the TT CRC logic VLAN specific")
 Signed-off-by: Sven Eckelmann <sven@narfation.org>
 
 diff --git a/net/batman-adv/translation-table.c b/net/batman-adv/translation-table.c
-index 06548dae1039..f009cbf8a276 100644
+index 05cddcf994f6..06548dae1039 100644
 --- a/net/batman-adv/translation-table.c
 +++ b/net/batman-adv/translation-table.c
-@@ -887,11 +887,8 @@ batadv_tt_prepare_tvlv_local_data(struct batadv_priv *bat_priv,
+@@ -877,12 +877,12 @@ batadv_tt_prepare_tvlv_local_data(struct batadv_priv *bat_priv,
+ {
+ 	struct batadv_tvlv_tt_vlan_data *tt_vlan;
+ 	struct batadv_meshif_vlan *vlan;
++	size_t change_offset;
+ 	u16 num_vlan = 0;
+ 	u16 vlan_entries = 0;
+ 	u16 total_entries = 0;
+ 	u16 tvlv_len;
+ 	u8 *tt_change_ptr;
+-	int change_offset;
+ 
  	spin_lock_bh(&bat_priv->meshif_vlan_list_lock);
  	hlist_for_each_entry(vlan, &bat_priv->meshif_vlan_list, list) {
- 		vlan_entries = atomic_read(&vlan->tt.num_entries);
--		if (vlan_entries < 1)
--			continue;
--
--		num_vlan++;
- 		total_entries += vlan_entries;
-+		num_vlan++;
- 	}
+@@ -900,8 +900,10 @@ batadv_tt_prepare_tvlv_local_data(struct batadv_priv *bat_priv,
+ 	if (*tt_len < 0)
+ 		*tt_len = batadv_tt_len(total_entries);
  
- 	change_offset = struct_size(*tt_data, vlan_data, num_vlan);
-@@ -916,6 +913,7 @@ batadv_tt_prepare_tvlv_local_data(struct batadv_priv *bat_priv,
- 	(*tt_data)->num_vlan = htons(num_vlan);
+-	tvlv_len = *tt_len;
+-	tvlv_len += change_offset;
++	if (check_add_overflow(*tt_len, change_offset, &tvlv_len)) {
++		tvlv_len = 0;
++		goto out;
++	}
  
- 	tt_vlan = (*tt_data)->vlan_data;
-+	num_vlan = 0;
- 	hlist_for_each_entry(vlan, &bat_priv->meshif_vlan_list, list) {
- 		vlan_entries = atomic_read(&vlan->tt.num_entries);
- 		if (vlan_entries < 1)
-@@ -926,8 +924,15 @@ batadv_tt_prepare_tvlv_local_data(struct batadv_priv *bat_priv,
- 		tt_vlan->reserved = 0;
- 
- 		tt_vlan++;
-+		num_vlan++;
- 	}
- 
-+	/* recalculate in case number of VLANs reduced */
-+	change_offset = struct_size(*tt_data, vlan_data, num_vlan);
-+	tvlv_len = *tt_len + change_offset;
-+
-+	(*tt_data)->num_vlan = htons(num_vlan);
-+
- 	tt_change_ptr = (u8 *)*tt_data + change_offset;
- 	*tt_change = (struct batadv_tvlv_tt_change *)tt_change_ptr;
- 
+ 	*tt_data = kmalloc(tvlv_len, GFP_ATOMIC);
+ 	if (!*tt_data) {
 
 
