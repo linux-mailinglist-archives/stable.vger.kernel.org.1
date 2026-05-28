@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-255122-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-255123-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id wJwmLGGdGGpAlggAu9opvQ
-	(envelope-from <stable+bounces-255122-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 21:54:09 +0200
+	id mHXxLZudGGpAlggAu9opvQ
+	(envelope-from <stable+bounces-255123-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 21:55:07 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3E08D5F7642
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 21:54:09 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3B8B45F76E1
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 21:55:07 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id B9F4930151F3
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 19:53:52 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 704293046EFC
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 19:53:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 70C183290B0;
-	Thu, 28 May 2026 19:53:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EF7C131C56D;
+	Thu, 28 May 2026 19:53:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uc7gWUP4"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jRC/96fi"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 100183254A8;
-	Thu, 28 May 2026 19:53:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CD5EB318EE1;
+	Thu, 28 May 2026 19:53:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779998031; cv=none; b=POZ7pGR+ZGBMBZQf3WWSHVFKOh5rt7iXhG0N2Ug8tE6Y8AU5jJA2F792L59urYzbqqeONPMgTIzQuzOno12gpoCSpkw8OJUIITykEVnl6+0+STn0Gh/Zsb4Xi4SeITKrxD1iP9FqJ+apcKYNcGKkUxkF9xMi0CS9O0qYeCFcZTs=
+	t=1779998033; cv=none; b=XxpjzFuWpFwAcNkRx0s+6/O+8+2quMREVIxB+c3S+CyLD4+aKKE388CsF3Fmbjur4b6fuekCpccC550kwPXJLE9wzXSs7l91cyHd0MzLjkwqdTcC/Zq/BaqgDPLcT6WdTFSiJ53vG0HiyOAcP99R8j41mDWS6fkdzPWgFJCaVec=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779998031; c=relaxed/simple;
-	bh=0fep2+l7P2mA/Vu9LcI8a2YV1IL1RHbV5NHLcuMxHAo=;
+	s=arc-20240116; t=1779998033; c=relaxed/simple;
+	bh=/USOrHHsQa9YJsIet1nTxfrQ2mqkjFLnG4rc1MYnCVk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=JBSMuFBKsWZyrI1Vcge/s3FmxcvpCgp3eebO3IaX2Jtnd/iNmS2h2TpmyJ7Y2i2OPZNBkv7lzkQ4XI9v8oXO3HhdjTmgzNlh5gUC/ouq8VL8bdsfWLduTCFvt4Hued/goLH1iM+YwRu7fpi5H6U1iZB7fdXu7013nbjZNhuQPJk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uc7gWUP4; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2F4761F000E9;
-	Thu, 28 May 2026 19:53:49 +0000 (UTC)
+	 MIME-Version; b=g/caYXK3z+mshjHZvX468RtMRu8hB+x2h3kRfGXOSc+lDJfRoSSCx0XgVByxjTMZbZJ5l87yIaIJqBAogNRE2Wo2Z/Wcq4uVXG3IclKvT6dCdMyWKaTFlfRSVr5uOvBGeeZ04Ffj+/mzdqMmOFq2ZtUMGsMTIGfn/i2VZ4lFGtE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jRC/96fi; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F28741F000E9;
+	Thu, 28 May 2026 19:53:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779998029;
-	bh=O122pj1O22hgBrJ6QMA5fm0Ngnu1hdn+qJU1EAlNvMk=;
+	s=korg; t=1779998032;
+	bh=HeMO5/3gbpDofnlxgWMJNpHXqxnYJJbGLdK7dDAPpFM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=uc7gWUP4qDrp9kc7GJju4GjBEdFsSezhzGjSRo8LVJaAKC7au+XWUAOkRUlQujhXe
-	 dLOW3iM9zTIxJ45ennRBtb8cKA4Ktv5zDir1fXp+ereU/uSvksTS5/Z/oN22GkO/KM
-	 h6I4wbAC5y4srtIWc46Gi9bAjqqBB7yi2ZFuiT8c=
+	b=jRC/96figvzLnJHVJI9GhdqXd3xj1EuJZV/E/KxT/HJBjbuBWStIt+eMWPIXIMjev
+	 tz7UfgnJOofhBIYSSS56Nr08GGfdgsP8kKYkRHU2hzfn3uouqfpo7okLFNxpC6CN6Y
+	 HCZLZz9a64lo+8HcNAglpci0CVtl/1MpyAT5BB8k=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Rafael J. Wysocki (Intel)" <rafael@kernel.org>,
-	Ard Biesheuvel <ardb@kernel.org>
-Subject: [PATCH 7.0 028/461] efi: Allocate runtime workqueue before ACPI init
-Date: Thu, 28 May 2026 21:42:37 +0200
-Message-ID: <20260528194647.713171354@linuxfoundation.org>
+	Krishnamoorthi M <krishnamoorthi.m@amd.com>,
+	Mark Brown <broonie@kernel.org>
+Subject: [PATCH 7.0 029/461] spi: amd: Set correct bus number in ACPI probe path
+Date: Thu, 28 May 2026 21:42:38 +0200
+Message-ID: <20260528194647.742771976@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
 In-Reply-To: <20260528194646.819809818@linuxfoundation.org>
 References: <20260528194646.819809818@linuxfoundation.org>
@@ -67,7 +67,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
@@ -77,7 +77,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-255122-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-255123-lists,stable=lfdr.de];
 	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
@@ -88,9 +88,9 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	TAGGED_RCPT(0.00)[stable];
 	RCPT_COUNT_FIVE(0.00)[5];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim]
-X-Rspamd-Queue-Id: 3E08D5F7642
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,msgid.link:url,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,amd.com:email]
+X-Rspamd-Queue-Id: 3B8B45F76E1
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
@@ -98,89 +98,39 @@ X-Rspamd-Server: lfdr
 
 ------------------
 
-From: Ard Biesheuvel <ardb@kernel.org>
+From: Krishnamoorthi M <krishnamoorthi.m@amd.com>
 
-commit 13c6da02e767152c9ac4330962247a5e47011035 upstream.
+commit 422bd00b71ab42163aa3b8f8370276fe4c1581e7 upstream.
 
-Since commit
+On platforms where the HID2 SPI controller (AMDI0063) is enumerated via
+ACPI instead of PCI, amd_spi_probe() unconditionally sets bus_num to 0,
+while the PCI probe path assigns bus_num 2 for HID2 controller.
 
-  5894cf571e14 ("acpi/prmt: Use EFI runtime sandbox to invoke PRM handlers")
+Align the ACPI probe path to use the same bus number so that userspace
+and SPI client drivers see a consistent bus assignment regardless of the
+enumeration method.
 
-ACPI PRM calls are delegated to a workqueue which runs in a kernel
-thread, making it easier to detect and mitigate faulting memory accesses
-performed by the firmware.
-
-Rafael reports that such PRM accesses may occur before efisubsys_init()
-executes, which is where the workqueue is allocated, leading to NULL
-pointer dereferences. Since acpi_init() [which triggers the early PRM
-accesses] executes as a subsys_initcall() as well, and has its own
-dependencies that may be sensitive to initcall ordering, deferring
-acpi_init() is not an option.
-
-So instead, split off the workqueue allocation into its own postcore
-initcall, as this is the only missing piece to allow EFI runtime calls
-to be made. This ensures that EFI runtime call (including PRM calls) are
-accessible to all code running at subsys_initcall() level.
-
-Cc: <stable@vger.kernel.org>
-Fixes: 5894cf571e14 ("acpi/prmt: Use EFI runtime sandbox to invoke PRM handlers")
-Reviewed-by: Rafael J. Wysocki (Intel) <rafael@kernel.org>
-Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
+Fixes: b644c2776652 ("spi: spi_amd: Add PCI-based driver for AMD HID2 SPI controller")
+Cc: stable@vger.kernel.org # v6.16+
+Signed-off-by: Krishnamoorthi M <krishnamoorthi.m@amd.com>
+Link: https://patch.msgid.link/20260507180051.4158674-1-krishnamoorthi.m@amd.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/firmware/efi/efi.c |   28 ++++++++++++++++------------
- 1 file changed, 16 insertions(+), 12 deletions(-)
+ drivers/spi/spi-amd.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/firmware/efi/efi.c
-+++ b/drivers/firmware/efi/efi.c
-@@ -402,21 +402,11 @@ static void __init efi_debugfs_init(void
- static inline void efi_debugfs_init(void) {}
- #endif
+--- a/drivers/spi/spi-amd.c
++++ b/drivers/spi/spi-amd.c
+@@ -868,7 +868,7 @@ static int amd_spi_probe(struct platform
+ 	dev_dbg(dev, "io_remap_address: %p\n", amd_spi->io_remap_addr);
  
--/*
-- * We register the efi subsystem with the firmware subsystem and the
-- * efivars subsystem with the efi subsystem, if the system was booted with
-- * EFI.
-- */
--static int __init efisubsys_init(void)
-+static int __init efipostcore_init(void)
- {
--	int error;
--
- 	if (!efi_enabled(EFI_RUNTIME_SERVICES))
- 		efi.runtime_supported_mask = 0;
+ 	amd_spi->version = (uintptr_t)device_get_match_data(dev);
+-	host->bus_num = 0;
++	host->bus_num = (amd_spi->version == AMD_HID2_SPI) ? 2 : 0;
  
--	if (!efi_enabled(EFI_BOOT))
--		return 0;
--
- 	if (efi.runtime_supported_mask) {
- 		/*
- 		 * Since we process only one efi_runtime_service() at a time, an
-@@ -428,9 +418,23 @@ static int __init efisubsys_init(void)
- 			pr_err("Creating efi_rts_wq failed, EFI runtime services disabled.\n");
- 			clear_bit(EFI_RUNTIME_SERVICES, &efi.flags);
- 			efi.runtime_supported_mask = 0;
--			return 0;
- 		}
- 	}
-+	return 0;
-+}
-+postcore_initcall(efipostcore_init);
-+
-+/*
-+ * We register the efi subsystem with the firmware subsystem and the
-+ * efivars subsystem with the efi subsystem, if the system was booted with
-+ * EFI.
-+ */
-+static int __init efisubsys_init(void)
-+{
-+	int error;
-+
-+	if (!efi_enabled(EFI_BOOT))
-+		return 0;
- 
- 	if (efi_rt_services_supported(EFI_RT_SUPPORTED_TIME_SERVICES))
- 		platform_device_register_simple("rtc-efi", 0, NULL, 0);
+ 	return amd_spi_probe_common(dev, host);
+ }
 
 
 
