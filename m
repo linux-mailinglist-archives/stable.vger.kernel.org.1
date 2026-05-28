@@ -1,59 +1,60 @@
-Return-Path: <stable+bounces-256061-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-256227-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id ONq+BmapGGpolwgAu9opvQ
-	(envelope-from <stable+bounces-256061-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:45:26 +0200
+	id eNS6IIatGGpolwgAu9opvQ
+	(envelope-from <stable+bounces-256227-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 23:03:02 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id B1E535F978F
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:45:25 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id A3EAE5FA246
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 23:03:01 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 2A57E311BB05
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 20:37:28 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id C83C6312F04F
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 20:45:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 732AB30C343;
-	Thu, 28 May 2026 20:37:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BE65E34B682;
+	Thu, 28 May 2026 20:45:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zFXlf1jY"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="X/SxY7c8"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 454261FC0EA;
-	Thu, 28 May 2026 20:37:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 41D88335564;
+	Thu, 28 May 2026 20:45:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780000646; cv=none; b=Mu08nSqeK5775NCPobUjxG7xkzV/jxmXbUrno1Wf//9Du5sx/QEUko2evOUsnb5kHWsrcImh0zQ3mTEu9OW/aLyPaXk0txPVNRlhIDkWe04iTiDd2fzrkmFcL3lGQLWEaThC7goscFkINo+6NsX4mD1mG3my7gO3CdPcK5JH4VI=
+	t=1780001113; cv=none; b=Fs0tM3OtSN1SR5rh7tTDGI3Cpd8FC/p38AiOnWvi5Nwybo3pUUI9pRG7/2JMyZx+Q6rA9/s0qF7FEt3W9l5+Z8fgIoRlVTFL+hhGPVnmu0Hh+jALQ0Fo8jDCTKWGZyIB7NQ6R+kmQA9FdctA7lqgY2bd3B2FIGeLZRxHG+Xukxw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780000646; c=relaxed/simple;
-	bh=Oe5bmwPqPdW+9H3QHfxyltPiJ91Ys+493MFBCjzcWn4=;
+	s=arc-20240116; t=1780001113; c=relaxed/simple;
+	bh=S8R+65uiIK0qtBIm6xR8InZnwP5fmTLh52W/6tqikyM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=kEvQyKJnOtrMlefahe2MciS+ifuRU7kQToVhqRMGbxuMDeNL8DtXMjmhPmed7Kp3UQ/6ME2FzcvZN6PvbqRn6N+3hnmLIX1h66FHYzbOFS7ZNVkLvjXdCn16+crN08FEKTM2/ibxqdBnySbaf1Snu/ViAJYOBmhfTKBwA5bpG5M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zFXlf1jY; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6342E1F000E9;
-	Thu, 28 May 2026 20:37:24 +0000 (UTC)
+	 MIME-Version; b=R0QJWiraeU+Ir7qHdeXjk5qwSZ7l9fzCZnLB/1/arz7ytNnanhk8neSSWtzGp/00V+CuoHtGzkAnt0K3alkOJxylX9LEx5ALI/eBTqnZbvQIhiNqoKiYUabl8AlHkygSNMFX5ca7YEnWjIHvlHq6L4hIMsxhJiMQtZUHTWwQHYk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=X/SxY7c8; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 59C9B1F00A3A;
+	Thu, 28 May 2026 20:45:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780000644;
-	bh=vAWfyeSAutK1YfKvxv7Im9IqzOzYYWXWk7DGaZZlBGI=;
+	s=korg; t=1780001111;
+	bh=Qk1559pbsXYimONJ7Q+ZE+PuHNOgDMoJeXJmslhEEEU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=zFXlf1jYt+bJMcsaaGnWFfFcTR7t6A+4jGuObZo9dycnFjIKZo/pgK57S7TIeQe0V
-	 MhPzxvze0zV9Dq/NlmzcoFVwPJo/k78IDmOUui5i/cefdP+stk0xlhtz1Z59WAuXDx
-	 4P16ztJd8GzcCd/upyeScGyeQdGAhC/hXyEjYINA=
+	b=X/SxY7c89LIVcRgPiKD4vW4k4osXa1Tp6tLfeHt6SaWV3eEn7h11T12lVeFmcGZ9v
+	 vJbZgcBfe6by/qOc9pDPiLjjvC+tui6s6WSs/o0vwiaEUTmp+9LAvEOnTgRAWlbFk0
+	 HQ3bXx3W5ExYKLmA3Kl1Pt9j6zSFZJQjjtzkfA+Y=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Osama Abdelkader <osama.abdelkader@gmail.com>,
-	Luca Ceresoli <luca.ceresoli@bootlin.com>,
-	Ian Ray <ian.ray@gehealthcare.com>
-Subject: [PATCH 6.12 117/272] drm/bridge: megachips: remove bridge when irq request fails
-Date: Thu, 28 May 2026 21:48:11 +0200
-Message-ID: <20260528194632.656932395@linuxfoundation.org>
+	Namjae Jeon <linkinjeon@kernel.org>,
+	Steve French <stfrench@microsoft.com>,
+	Alva Lan <alvalan9@foxmail.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 012/186] ksmbd: add durable scavenger timer
+Date: Thu, 28 May 2026 21:48:12 +0200
+Message-ID: <20260528194929.286489127@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260528194629.379955525@linuxfoundation.org>
-References: <20260528194629.379955525@linuxfoundation.org>
+In-Reply-To: <20260528194928.941004471@linuxfoundation.org>
+References: <20260528194928.941004471@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,106 +65,377 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	TO_DN_SOME(0.00)[];
-	TAGGED_FROM(0.00)[bounces-256061-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,bootlin.com,gehealthcare.com];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,kernel.org,microsoft.com,foxmail.com];
+	TAGGED_FROM(0.00)[bounces-256227-lists,stable=lfdr.de];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	FROM_HAS_DN(0.00)[];
+	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	NEURAL_HAM(-0.00)[-0.999];
-	TAGGED_RCPT(0.00)[stable];
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[6];
+	NEURAL_HAM(-0.00)[-1.000];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[bootlin.com:email,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,msgid.link:url,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo]
-X-Rspamd-Queue-Id: B1E535F978F
+	TAGGED_RCPT(0.00)[stable];
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,foxmail.com:email]
+X-Rspamd-Queue-Id: A3EAE5FA246
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Osama Abdelkader <osama.abdelkader@gmail.com>
+From: Namjae Jeon <linkinjeon@kernel.org>
 
-commit d45d5c819f2cd0b6b5d76a194a537a5f4aeefecb upstream.
+[ Upstream commit d484d621d40f4a8b8959008802d79bef3609641b ]
 
-If devm_request_threaded_irq() fails after drm_bridge_add(), remove the
-bridge before returning.
+Launch ksmbd-durable-scavenger kernel thread to scan durable fps that
+have not been reclaimed by a client within the configured time.
 
-Keep drm_bridge_add() rather than devm_drm_bridge_add(): registration is
-tied to the STDP4028 device while ge_b850v3_register() may complete from
-either I2C probe; devm would not unwind the bridge if the other client's
-probe fails.
-
-Signed-off-by: Osama Abdelkader <osama.abdelkader@gmail.com>
-Fixes: fcfa0ddc18ed ("drm/bridge: Drivers for megachips-stdpxxxx-ge-b850v3-fw (LVDS-DP++)")
-Cc: stable@vger.kernel.org
-Reviewed-by: Luca Ceresoli <luca.ceresoli@bootlin.com>
-Tested-by: Ian Ray <ian.ray@gehealthcare.com>
-Link: https://patch.msgid.link/20260430195700.80317-1-osama.abdelkader@gmail.com
-Signed-off-by: Luca Ceresoli <luca.ceresoli@bootlin.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Namjae Jeon <linkinjeon@kernel.org>
+Signed-off-by: Steve French <stfrench@microsoft.com>
+[ Minor context conflict resolved. ]
+Signed-off-by: Alva Lan <alvalan9@foxmail.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/bridge/megachips-stdpxxxx-ge-b850v3-fw.c |   16 +++++++++------
- 1 file changed, 10 insertions(+), 6 deletions(-)
+ fs/smb/server/mgmt/user_session.c |   2 +
+ fs/smb/server/server.c            |   1 +
+ fs/smb/server/server.h            |   1 +
+ fs/smb/server/smb2pdu.c           |   2 +-
+ fs/smb/server/smb2pdu.h           |   2 +
+ fs/smb/server/vfs_cache.c         | 163 +++++++++++++++++++++++++++++-
+ fs/smb/server/vfs_cache.h         |   2 +
+ 7 files changed, 167 insertions(+), 6 deletions(-)
 
---- a/drivers/gpu/drm/bridge/megachips-stdpxxxx-ge-b850v3-fw.c
-+++ b/drivers/gpu/drm/bridge/megachips-stdpxxxx-ge-b850v3-fw.c
-@@ -258,7 +258,6 @@ static void ge_b850v3_lvds_remove(void)
- 		goto out;
+diff --git a/fs/smb/server/mgmt/user_session.c b/fs/smb/server/mgmt/user_session.c
+index 6c7fbd589087e..b4a1bd037b9ee 100644
+--- a/fs/smb/server/mgmt/user_session.c
++++ b/fs/smb/server/mgmt/user_session.c
+@@ -164,6 +164,7 @@ void ksmbd_session_destroy(struct ksmbd_session *sess)
  
- 	drm_bridge_remove(&ge_b850v3_lvds_ptr->bridge);
--
- 	ge_b850v3_lvds_ptr = NULL;
+ 	ksmbd_tree_conn_session_logoff(sess);
+ 	ksmbd_destroy_file_table(&sess->file_table);
++	ksmbd_launch_ksmbd_durable_scavenger();
+ 	ksmbd_session_rpc_clear_list(sess);
+ 	free_channel_list(sess);
+ 	kfree(sess->Preauth_HashValue);
+@@ -399,6 +400,7 @@ void destroy_previous_session(struct ksmbd_conn *conn,
+ 	ksmbd_destroy_file_table(&prev_sess->file_table);
+ 	prev_sess->state = SMB2_SESSION_EXPIRED;
+ 	ksmbd_all_conn_set_status(id, KSMBD_SESS_NEED_SETUP);
++	ksmbd_launch_ksmbd_durable_scavenger();
  out:
- 	mutex_unlock(&ge_b850v3_lvds_dev_mutex);
-@@ -268,6 +267,7 @@ static int ge_b850v3_register(void)
+ 	up_write(&conn->session_lock);
+ 	up_write(&sessions_table_lock);
+diff --git a/fs/smb/server/server.c b/fs/smb/server/server.c
+index 598601a4bf92c..416b14267251d 100644
+--- a/fs/smb/server/server.c
++++ b/fs/smb/server/server.c
+@@ -372,6 +372,7 @@ static void server_ctrl_handle_reset(struct server_ctrl_struct *ctrl)
  {
- 	struct i2c_client *stdp4028_i2c = ge_b850v3_lvds_ptr->stdp4028_i2c;
- 	struct device *dev = &stdp4028_i2c->dev;
-+	int ret;
+ 	ksmbd_ipc_soft_reset();
+ 	ksmbd_conn_transport_destroy();
++	ksmbd_stop_durable_scavenger();
+ 	server_conf_free();
+ 	server_conf_init();
+ 	WRITE_ONCE(server_conf.state, SERVER_STATE_STARTING_UP);
+diff --git a/fs/smb/server/server.h b/fs/smb/server/server.h
+index 48bd203abb441..e3a0f6c9c2c35 100644
+--- a/fs/smb/server/server.h
++++ b/fs/smb/server/server.h
+@@ -47,6 +47,7 @@ struct ksmbd_server_config {
  
- 	/* drm bridge initialization */
- 	ge_b850v3_lvds_ptr->bridge.funcs = &ge_b850v3_lvds_funcs;
-@@ -285,11 +285,15 @@ static int ge_b850v3_register(void)
- 	if (!stdp4028_i2c->irq)
- 		return 0;
+ 	char			*conf[SERVER_CONF_WORK_GROUP + 1];
+ 	bool			bind_interfaces_only;
++	struct task_struct	*dh_task;
+ };
  
--	return devm_request_threaded_irq(&stdp4028_i2c->dev,
--			stdp4028_i2c->irq, NULL,
--			ge_b850v3_lvds_irq_handler,
--			IRQF_TRIGGER_HIGH | IRQF_ONESHOT,
--			"ge-b850v3-lvds-dp", ge_b850v3_lvds_ptr);
-+	ret = devm_request_threaded_irq(&stdp4028_i2c->dev,
-+					stdp4028_i2c->irq, NULL,
-+					ge_b850v3_lvds_irq_handler,
-+					IRQF_TRIGGER_HIGH | IRQF_ONESHOT,
-+					"ge-b850v3-lvds-dp", ge_b850v3_lvds_ptr);
-+	if (ret)
-+		drm_bridge_remove(&ge_b850v3_lvds_ptr->bridge);
+ extern struct ksmbd_server_config server_conf;
+diff --git a/fs/smb/server/smb2pdu.c b/fs/smb/server/smb2pdu.c
+index d68fe617369e0..66163a464c563 100644
+--- a/fs/smb/server/smb2pdu.c
++++ b/fs/smb/server/smb2pdu.c
+@@ -3601,7 +3601,7 @@ int smb2_open(struct ksmbd_work *work)
+ 					SMB2_CREATE_GUID_SIZE);
+ 			if (dh_info.timeout)
+ 				fp->durable_timeout = min(dh_info.timeout,
+-						300000);
++						DURABLE_HANDLE_MAX_TIMEOUT);
+ 			else
+ 				fp->durable_timeout = 60;
+ 		}
+diff --git a/fs/smb/server/smb2pdu.h b/fs/smb/server/smb2pdu.h
+index 2821e6c8298f4..ad02d0a376025 100644
+--- a/fs/smb/server/smb2pdu.h
++++ b/fs/smb/server/smb2pdu.h
+@@ -75,6 +75,8 @@ struct create_durable_req_v2 {
+ 	__u8 CreateGuid[16];
+ } __packed;
+ 
++#define DURABLE_HANDLE_MAX_TIMEOUT	300000
 +
-+	return ret;
+ struct create_durable_reconn_req {
+ 	struct create_context_hdr ccontext;
+ 	__u8   Name[8];
+diff --git a/fs/smb/server/vfs_cache.c b/fs/smb/server/vfs_cache.c
+index 729758697c129..913c2a8d2b0ee 100644
+--- a/fs/smb/server/vfs_cache.c
++++ b/fs/smb/server/vfs_cache.c
+@@ -8,6 +8,8 @@
+ #include <linux/filelock.h>
+ #include <linux/slab.h>
+ #include <linux/vmalloc.h>
++#include <linux/kthread.h>
++#include <linux/freezer.h>
+ 
+ #include "glob.h"
+ #include "vfs_cache.h"
+@@ -17,6 +19,7 @@
+ #include "mgmt/tree_connect.h"
+ #include "mgmt/user_session.h"
+ #include "smb_common.h"
++#include "server.h"
+ 
+ #define S_DEL_PENDING			1
+ #define S_DEL_ON_CLS			2
+@@ -31,6 +34,10 @@ static struct ksmbd_file_table global_ft;
+ static atomic_long_t fd_limit;
+ static struct kmem_cache *filp_cache;
+ 
++static bool durable_scavenger_running;
++static DEFINE_MUTEX(durable_scavenger_lock);
++static wait_queue_head_t dh_wq;
++
+ void ksmbd_set_fd_limit(unsigned long limit)
+ {
+ 	limit = min(limit, get_max_files());
+@@ -316,9 +323,16 @@ static void __ksmbd_remove_durable_fd(struct ksmbd_file *fp)
+ 	if (!has_file_id(fp->persistent_id))
+ 		return;
+ 
+-	write_lock(&global_ft.lock);
+ 	idr_remove(global_ft.idr, fp->persistent_id);
++}
++
++static void ksmbd_remove_durable_fd(struct ksmbd_file *fp)
++{
++	write_lock(&global_ft.lock);
++	__ksmbd_remove_durable_fd(fp);
+ 	write_unlock(&global_ft.lock);
++	if (waitqueue_active(&dh_wq))
++		wake_up(&dh_wq);
  }
  
- static int stdp4028_ge_b850v3_fw_probe(struct i2c_client *stdp4028_i2c)
+ static void __ksmbd_remove_fd(struct ksmbd_file_table *ft, struct ksmbd_file *fp)
+@@ -341,7 +355,7 @@ static void __ksmbd_close_fd(struct ksmbd_file_table *ft, struct ksmbd_file *fp)
+ 	struct ksmbd_lock *smb_lock, *tmp_lock;
+ 
+ 	fd_limit_close();
+-	__ksmbd_remove_durable_fd(fp);
++	ksmbd_remove_durable_fd(fp);
+ 	if (ft)
+ 		__ksmbd_remove_fd(ft, fp);
+ 
+@@ -754,6 +768,142 @@ static bool tree_conn_fd_check(struct ksmbd_tree_connect *tcon,
+ 	return fp->tcon != tcon;
+ }
+ 
++static bool ksmbd_durable_scavenger_alive(void)
++{
++	mutex_lock(&durable_scavenger_lock);
++	if (!durable_scavenger_running) {
++		mutex_unlock(&durable_scavenger_lock);
++		return false;
++	}
++	mutex_unlock(&durable_scavenger_lock);
++
++	if (kthread_should_stop())
++		return false;
++
++	if (idr_is_empty(global_ft.idr))
++		return false;
++
++	return true;
++}
++
++static void ksmbd_scavenger_dispose_dh(struct list_head *head)
++{
++	while (!list_empty(head)) {
++		struct ksmbd_file *fp;
++
++		fp = list_first_entry(head, struct ksmbd_file, node);
++		list_del_init(&fp->node);
++		__ksmbd_close_fd(NULL, fp);
++	}
++}
++
++static int ksmbd_durable_scavenger(void *dummy)
++{
++	struct ksmbd_file *fp = NULL;
++	unsigned int id;
++	unsigned int min_timeout = 1;
++	bool found_fp_timeout;
++	LIST_HEAD(scavenger_list);
++	unsigned long remaining_jiffies;
++
++	__module_get(THIS_MODULE);
++
++	set_freezable();
++	while (ksmbd_durable_scavenger_alive()) {
++		if (try_to_freeze())
++			continue;
++
++		found_fp_timeout = false;
++
++		remaining_jiffies = wait_event_timeout(dh_wq,
++				   ksmbd_durable_scavenger_alive() == false,
++				   __msecs_to_jiffies(min_timeout));
++		if (remaining_jiffies)
++			min_timeout = jiffies_to_msecs(remaining_jiffies);
++		else
++			min_timeout = DURABLE_HANDLE_MAX_TIMEOUT;
++
++		write_lock(&global_ft.lock);
++		idr_for_each_entry(global_ft.idr, fp, id) {
++			if (!fp->durable_timeout)
++				continue;
++
++			if (atomic_read(&fp->refcount) > 1 ||
++			    fp->conn)
++				continue;
++
++			found_fp_timeout = true;
++			if (fp->durable_scavenger_timeout <=
++			    jiffies_to_msecs(jiffies)) {
++				__ksmbd_remove_durable_fd(fp);
++				list_add(&fp->node, &scavenger_list);
++			} else {
++				unsigned long durable_timeout;
++
++				durable_timeout =
++					fp->durable_scavenger_timeout -
++						jiffies_to_msecs(jiffies);
++
++				if (min_timeout > durable_timeout)
++					min_timeout = durable_timeout;
++			}
++		}
++		write_unlock(&global_ft.lock);
++
++		ksmbd_scavenger_dispose_dh(&scavenger_list);
++
++		if (found_fp_timeout == false)
++			break;
++	}
++
++	mutex_lock(&durable_scavenger_lock);
++	durable_scavenger_running = false;
++	mutex_unlock(&durable_scavenger_lock);
++
++	module_put(THIS_MODULE);
++
++	return 0;
++}
++
++void ksmbd_launch_ksmbd_durable_scavenger(void)
++{
++	if (!(server_conf.flags & KSMBD_GLOBAL_FLAG_DURABLE_HANDLE))
++		return;
++
++	mutex_lock(&durable_scavenger_lock);
++	if (durable_scavenger_running == true) {
++		mutex_unlock(&durable_scavenger_lock);
++		return;
++	}
++
++	durable_scavenger_running = true;
++
++	server_conf.dh_task = kthread_run(ksmbd_durable_scavenger,
++				     (void *)NULL, "ksmbd-durable-scavenger");
++	if (IS_ERR(server_conf.dh_task))
++		pr_err("cannot start conn thread, err : %ld\n",
++		       PTR_ERR(server_conf.dh_task));
++	mutex_unlock(&durable_scavenger_lock);
++}
++
++void ksmbd_stop_durable_scavenger(void)
++{
++	if (!(server_conf.flags & KSMBD_GLOBAL_FLAG_DURABLE_HANDLE))
++		return;
++
++	mutex_lock(&durable_scavenger_lock);
++	if (!durable_scavenger_running) {
++		mutex_unlock(&durable_scavenger_lock);
++		return;
++	}
++
++	durable_scavenger_running = false;
++	if (waitqueue_active(&dh_wq))
++		wake_up(&dh_wq);
++	mutex_unlock(&durable_scavenger_lock);
++	kthread_stop(server_conf.dh_task);
++}
++
+ static bool session_fd_check(struct ksmbd_tree_connect *tcon,
+ 			     struct ksmbd_file *fp)
+ {
+@@ -823,11 +973,12 @@ void ksmbd_free_global_file_table(void)
+ 	unsigned int		id;
+ 
+ 	idr_for_each_entry(global_ft.idr, fp, id) {
+-		__ksmbd_remove_durable_fd(fp);
+-		kmem_cache_free(filp_cache, fp);
++		ksmbd_remove_durable_fd(fp);
++		__ksmbd_close_fd(NULL, fp);
+ 	}
+ 
+-	ksmbd_destroy_file_table(&global_ft);
++	idr_destroy(global_ft.idr);
++	kfree(global_ft.idr);
+ }
+ 
+ int ksmbd_validate_name_reconnect(struct ksmbd_share_config *share,
+@@ -934,6 +1085,8 @@ int ksmbd_init_file_cache(void)
+ 	if (!filp_cache)
+ 		goto out;
+ 
++	init_waitqueue_head(&dh_wq);
++
+ 	return 0;
+ 
+ out:
+diff --git a/fs/smb/server/vfs_cache.h b/fs/smb/server/vfs_cache.h
+index f2ab1514e81a7..b0f6d0f94cb8d 100644
+--- a/fs/smb/server/vfs_cache.h
++++ b/fs/smb/server/vfs_cache.h
+@@ -153,6 +153,8 @@ struct ksmbd_file *ksmbd_lookup_fd_cguid(char *cguid);
+ struct ksmbd_file *ksmbd_lookup_fd_inode(struct dentry *dentry);
+ unsigned int ksmbd_open_durable_fd(struct ksmbd_file *fp);
+ struct ksmbd_file *ksmbd_open_fd(struct ksmbd_work *work, struct file *filp);
++void ksmbd_launch_ksmbd_durable_scavenger(void);
++void ksmbd_stop_durable_scavenger(void);
+ void ksmbd_close_tree_conn_fds(struct ksmbd_work *work);
+ void ksmbd_close_session_fds(struct ksmbd_work *work);
+ int ksmbd_close_inode_fds(struct ksmbd_work *work, struct inode *inode);
+-- 
+2.53.0
+
 
 
 
