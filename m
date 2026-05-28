@@ -1,61 +1,60 @@
-Return-Path: <stable+bounces-255408-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-255763-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id sPncCluiGGqblggAu9opvQ
-	(envelope-from <stable+bounces-255408-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:15:23 +0200
+	id KG65KNmnGGpolwgAu9opvQ
+	(envelope-from <stable+bounces-255763-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:38:49 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 808E85F82B9
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:15:22 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3F5B15F9341
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:38:49 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 35E4A327ABF6
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 20:07:07 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 4BDCE311C454
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 20:23:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D1DA6335566;
-	Thu, 28 May 2026 20:07:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EEE522E7379;
+	Thu, 28 May 2026 20:23:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="h8XgxRjU"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="aZqFPZYx"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B33132F260C;
-	Thu, 28 May 2026 20:07:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BC2B42E7377;
+	Thu, 28 May 2026 20:23:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779998826; cv=none; b=lQqlbiuAEO1a4R3KNdgH6rzhQd0AjwX/v509RTpw9SNLAhhdShNNYOoGxZ+KaQzfTxDbMNzF6os3YBcpRHuIbdqOFhNDBSpHPw0pUixHnZ0Y7sB3K/409+ZNpTtGNaQsLa4XMx3q29sS2sBXYGSENR2PRpTDS5UFN0B0YCBt5/4=
+	t=1779999815; cv=none; b=dgLjNnzvpz+TuAaxJRW9eMeE9+qd0yzM8IRhWgebr/xo1+/CAyHCadcntHG7teplP3pv0B3lo9lKcM+C132qMoEjAxQ1+oVY7oe6Se72jTve4u8rheYGnncFQ9MweLYgZzRe5/ssbvBrWUBQuCMZS5uu/xVWALs2wuLlot1jvxU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779998826; c=relaxed/simple;
-	bh=S68+FKaDiOdUCOx2dB+N8T3c+V3D020WnGtlSja2R2o=;
+	s=arc-20240116; t=1779999815; c=relaxed/simple;
+	bh=R/iEIi8WFe3ZEff56GAlnybFO8BS4H+PmgdgSKkJms0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=nFdc1Bc+OdMAjy0wXHguQ2au3VNwdbHz0nvdtFf+qr3iB2bFuGTJLmrx00ApQr+FLfDPTWUGt/323i+8mxzG+hh92Li5LpkPgyh10WISSV/p1QOTw5NT0fVYGtpkFwRRraw47SzUqLh9Xlt1jC6AXcJ+KdHnrFNJmBl9mSR6zcM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=h8XgxRjU; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B1BC61F000E9;
-	Thu, 28 May 2026 20:07:04 +0000 (UTC)
+	 MIME-Version; b=hOYZQPDGtFa+4xkD+Otc2v8B/kQ/OTuNlWHHBkmSdAhBkpKa58zljyNfXrwOl3M7QAiTBb+UTul8XUdg7iQYH1dFktAHqujD2E/JDWt7S3CH2ZM8LFLX7ew5NMMmAPlf1KvEBXuicrklA+K4lO7tXOxIIuwx0i+FG59Loc+84ac=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=aZqFPZYx; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 26C9C1F000E9;
+	Thu, 28 May 2026 20:23:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779998825;
-	bh=Bb3wS6BZyGL+7f/viP4JN4X5cILEHJIenWmHrrMrX74=;
+	s=korg; t=1779999814;
+	bh=WGKIBPQSvNy6h1W8P2FdfgTNat3UsERcc3ezyQ0lm6c=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=h8XgxRjUseKK/LDPK4sM3QG86RmGub15i2WdwZcHgdXbt48DeZuQ629IjaLoJ6CKi
-	 LtF4IIs10jDd6KNGnjSKdFA3pjEsNgpiRtQ4x/zlBJL2KfHqNPqYVRsyq+RAmSSfqq
-	 ObJkqFaqkrmddgvJPD2a7ARX8K2G612jaeiMjHKA=
+	b=aZqFPZYx6KVtVJfcX+Kc9DRmRdyBA2pATr9uw3dlUpYFCV4PB+2BqwQChXCMX7FR7
+	 kDYv8qOWtY/CGPxCRKN4HjwMSIU5kZgJl8Q4VbEMDHysAkHgrTl6VF4rcgSZRfBRXm
+	 vpGY+Ur35NQ/o98dl+pnkzm9GDMNYp+zZt+jCCMU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Chen Ni <nichen@iscas.ac.cn>,
-	Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>,
-	Akhil P Oommen <akhilpo@oss.qualcomm.com>,
-	Rob Clark <robin.clark@oss.qualcomm.com>,
+	Tristan Madani <tristan@talencesecurity.com>,
+	Florian Westphal <fw@strlen.de>,
+	Pablo Neira Ayuso <pablo@netfilter.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 7.0 310/461] drm/msm/a6xx: Check kzalloc return in a8xx_hfi_send_perf_table
-Date: Thu, 28 May 2026 21:47:19 +0200
-Message-ID: <20260528194656.260430379@linuxfoundation.org>
+Subject: [PATCH 6.18 202/377] netfilter: ebtables: close dangling table module init race
+Date: Thu, 28 May 2026 21:47:20 +0200
+Message-ID: <20260528194644.251356518@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260528194646.819809818@linuxfoundation.org>
-References: <20260528194646.819809818@linuxfoundation.org>
+In-Reply-To: <20260528194638.371537336@linuxfoundation.org>
+References: <20260528194638.371537336@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -70,7 +69,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
@@ -78,7 +77,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-255408-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-255763-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
@@ -87,52 +86,128 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[8];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,patchwork.freedesktop.org:url,qualcomm.com:email,iscas.ac.cn:email]
-X-Rspamd-Queue-Id: 808E85F82B9
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,talencesecurity.com:email,netfilter.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim]
+X-Rspamd-Queue-Id: 3F5B15F9341
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-7.0-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Chen Ni <nichen@iscas.ac.cn>
+From: Florian Westphal <fw@strlen.de>
 
-[ Upstream commit b5c7a7f452b885bfbe102bd3a057a5f496802f8b ]
+[ Upstream commit 92c603fa07bc0d6a17345de3ad7954730b8de44b ]
 
-Check the return value of kzalloc() to prevent a NULL pointer
-dereference on allocation failure.
+sashiko reported for a related patch:
+ In modules like iptable_raw.c, [..], if register_pernet_subsys() fails,
+ the rollback might call kfree(rawtable_ops) before [..]
+ During this window, could a concurrent userspace process find the globally
+ visible template, trigger table_init(), [..]
 
-Fixes: 06cfbca0e1c6 ("drm/msm/a6xx: Share dependency vote table with GMU")
-Signed-off-by: Chen Ni <nichen@iscas.ac.cn>
-Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
-Reviewed-by: Akhil P Oommen <akhilpo@oss.qualcomm.com>
-Patchwork: https://patchwork.freedesktop.org/patch/721342/
-Message-ID: <20260428073558.1234238-1-nichen@iscas.ac.cn>
-Signed-off-by: Rob Clark <robin.clark@oss.qualcomm.com>
+The table init functions must always register the template last.
+
+Otherwise, set/getsockopt can instantiate a table in a namespace
+while the required pernet ops (contain the destructor) isn't available.
+This change is also required in x_tables, handled in followup change.
+
+Fixes: 87663c39f898 ("netfilter: ebtables: do not hook tables by default")
+Reviewed-by: Tristan Madani <tristan@talencesecurity.com>
+Signed-off-by: Florian Westphal <fw@strlen.de>
+Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/msm/adreno/a6xx_hfi.c | 2 ++
- 1 file changed, 2 insertions(+)
+ net/bridge/netfilter/ebtable_broute.c | 12 +++++-------
+ net/bridge/netfilter/ebtable_filter.c | 12 +++++-------
+ net/bridge/netfilter/ebtable_nat.c    | 10 ++++------
+ 3 files changed, 14 insertions(+), 20 deletions(-)
 
-diff --git a/drivers/gpu/drm/msm/adreno/a6xx_hfi.c b/drivers/gpu/drm/msm/adreno/a6xx_hfi.c
-index 4f5dbf46132ba..b40148b754207 100644
---- a/drivers/gpu/drm/msm/adreno/a6xx_hfi.c
-+++ b/drivers/gpu/drm/msm/adreno/a6xx_hfi.c
-@@ -289,6 +289,8 @@ static int a8xx_hfi_send_perf_table(struct a6xx_gmu *gmu)
- 		(gmu->nr_gpu_freqs * num_gx_votes * sizeof(gmu->gx_arc_votes[0])) +
- 		(gmu->nr_gmu_freqs * num_cx_votes * sizeof(gmu->cx_arc_votes[0]));
- 	tbl = kzalloc(size, GFP_KERNEL);
-+	if (!tbl)
-+		return -ENOMEM;
- 	tbl->type = HFI_TABLE_GPU_PERF;
+diff --git a/net/bridge/netfilter/ebtable_broute.c b/net/bridge/netfilter/ebtable_broute.c
+index e6f9e343b41f1..f05c79f215ea0 100644
+--- a/net/bridge/netfilter/ebtable_broute.c
++++ b/net/bridge/netfilter/ebtable_broute.c
+@@ -112,18 +112,16 @@ static struct pernet_operations broute_net_ops = {
  
- 	/* First fill GX votes */
+ static int __init ebtable_broute_init(void)
+ {
+-	int ret = ebt_register_template(&broute_table, broute_table_init);
++	int ret = register_pernet_subsys(&broute_net_ops);
+ 
+ 	if (ret)
+ 		return ret;
+ 
+-	ret = register_pernet_subsys(&broute_net_ops);
+-	if (ret) {
+-		ebt_unregister_template(&broute_table);
+-		return ret;
+-	}
++	ret = ebt_register_template(&broute_table, broute_table_init);
++	if (ret)
++		unregister_pernet_subsys(&broute_net_ops);
+ 
+-	return 0;
++	return ret;
+ }
+ 
+ static void __exit ebtable_broute_fini(void)
+diff --git a/net/bridge/netfilter/ebtable_filter.c b/net/bridge/netfilter/ebtable_filter.c
+index 02b6501c15a5e..0fc03b07e62ae 100644
+--- a/net/bridge/netfilter/ebtable_filter.c
++++ b/net/bridge/netfilter/ebtable_filter.c
+@@ -93,18 +93,16 @@ static struct pernet_operations frame_filter_net_ops = {
+ 
+ static int __init ebtable_filter_init(void)
+ {
+-	int ret = ebt_register_template(&frame_filter, frame_filter_table_init);
++	int ret = register_pernet_subsys(&frame_filter_net_ops);
+ 
+ 	if (ret)
+ 		return ret;
+ 
+-	ret = register_pernet_subsys(&frame_filter_net_ops);
+-	if (ret) {
+-		ebt_unregister_template(&frame_filter);
+-		return ret;
+-	}
++	ret = ebt_register_template(&frame_filter, frame_filter_table_init);
++	if (ret)
++		unregister_pernet_subsys(&frame_filter_net_ops);
+ 
+-	return 0;
++	return ret;
+ }
+ 
+ static void __exit ebtable_filter_fini(void)
+diff --git a/net/bridge/netfilter/ebtable_nat.c b/net/bridge/netfilter/ebtable_nat.c
+index 9985a82555c41..8a10375d89099 100644
+--- a/net/bridge/netfilter/ebtable_nat.c
++++ b/net/bridge/netfilter/ebtable_nat.c
+@@ -93,16 +93,14 @@ static struct pernet_operations frame_nat_net_ops = {
+ 
+ static int __init ebtable_nat_init(void)
+ {
+-	int ret = ebt_register_template(&frame_nat, frame_nat_table_init);
++	int ret = register_pernet_subsys(&frame_nat_net_ops);
+ 
+ 	if (ret)
+ 		return ret;
+ 
+-	ret = register_pernet_subsys(&frame_nat_net_ops);
+-	if (ret) {
+-		ebt_unregister_template(&frame_nat);
+-		return ret;
+-	}
++	ret = ebt_register_template(&frame_nat, frame_nat_table_init);
++	if (ret)
++		unregister_pernet_subsys(&frame_nat_net_ops);
+ 
+ 	return ret;
+ }
 -- 
 2.53.0
 
