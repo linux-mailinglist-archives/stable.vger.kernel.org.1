@@ -1,62 +1,58 @@
-Return-Path: <stable+bounces-255432-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-256069-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id UOoOB/WiGGrJlggAu9opvQ
-	(envelope-from <stable+bounces-255432-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:17:57 +0200
+	id AKgHD9uqGGpolwgAu9opvQ
+	(envelope-from <stable+bounces-256069-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:51:39 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 699385F852E
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:17:56 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6EF3C5F9B6C
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:51:38 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id C602B31D05F0
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 20:08:14 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 469E33056995
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 20:37:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4FA4A32ABC0;
-	Thu, 28 May 2026 20:08:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 883222EF652;
+	Thu, 28 May 2026 20:37:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2hQHRwrS"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JYy3+Vej"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7FF642F691F;
-	Thu, 28 May 2026 20:08:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4DC6D332909;
+	Thu, 28 May 2026 20:37:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779998894; cv=none; b=kaGQGOXI0P0DRvAehYI+pkvQXAh4pOQrSNYQgHUcAPzMUndi3MJqB0MN17SIUgIkRr+SYY6guPEjTrYByxK5cGQTK6bCOXDszq+AcbyzPKD5s0wCWf8AAYu2eLBap1qoT1zzc/q8JFSjLcRdscjI0znGYitJKEtCuBjBF0pVpIM=
+	t=1780000668; cv=none; b=VvHxUw9Pm/0vWjcRMw2V5+0xu66UatclvalduEBtYzdEtTFDlX0r6PRKIqJ9TtzIC7itO7efhRfqWlZa0bV4+a4tSLkwGdx0QB4//sKrsYSZaKdiWuxpk8p9wBPD0mDuOA67HnY8a6Lx4j9A9Pvhcd+Ea/p2gCXhHG0mFP/X4ps=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779998894; c=relaxed/simple;
-	bh=3YmVdVsVVSaePVvN0DgsJRPnemm3mFiPw8ST3EPLye4=;
+	s=arc-20240116; t=1780000668; c=relaxed/simple;
+	bh=pBM7C3O9ZyeK2cDdLd40JY/QlnnfVc5UirCa8/1i2uo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=REobmGQO1VhiLdRdCEdzLelIMdwhmy6wmvIzWbcMSK43yP66UdwxLUUjZq3DWwn9FFZETgT2yjY2Tzm6M+V9i4n8Vn5X5sP8glnCmmVnf/FgwoiICqdVTxZH0+AXKDS12J7AC4QNQ610xHTweVElCBPdnaTsrpSKC9UTNu257Qc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2hQHRwrS; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E4BD31F000E9;
-	Thu, 28 May 2026 20:08:11 +0000 (UTC)
+	 MIME-Version; b=nKoelC0KNgLd0ptnZFQuA5upUwB3x6E2Ck/U6tWZcc/vsIR6I9WLsJXX+bYE034KKkqmYT9dq441SF2abWseom680E5XsOFvz8vRw7Y4UktcivrvmPepwCfcj4sz/GDk6Y8EpoE5uko7+YeourNk/yYiHxjckfHmq91yRkmKiik=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JYy3+Vej; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A9B4E1F000E9;
+	Thu, 28 May 2026 20:37:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779998892;
-	bh=IRbLRtarKlp1gPc2Aj1Gp0yivIex6Xs2QWZQWikw1mk=;
+	s=korg; t=1780000667;
+	bh=kOsXlw1F0pdMw4hgLRHnClsfcNS+i87VMipWFVyWEyA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=2hQHRwrSPfh2ex6ggTLsLFTLVAVeaPW+SwOYaVEI3Zzc4JMG0urGGUqaxP/n2pwvO
-	 hd7o4eTaoPABpHjD3X7d1tgjfkJiCtX8+OeQnQDXC16q/A6Jf/FLWC4EbDqWhB94s9
-	 Bqw6c2yBszPpHVpCCTB6HlfzjEcVWv6miuBQIdP4=
+	b=JYy3+Vejea55wK6BOk141wfyXvsMHo6yaoc83g5DP3EY98QpATeJ487QIkk/wolIe
+	 4Sg3mpM6J3hJd/XnPnlB7rs3TCiQdnNnW7+rYDkCgFJuYO3RP+umY+AHtjnnpiZDM6
+	 oo29Z+TiVWRI0EUvyd8mcd3xoxo2SAF6QHqEldCA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Samiullah Khawaja <skhawaja@google.com>,
-	Kevin Tian <kevin.tian@intel.com>,
-	Jason Gunthorpe <jgg@nvidia.com>,
-	Lu Baolu <baolu.lu@linux.intel.com>,
-	Joerg Roedel <joerg.roedel@amd.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 7.0 335/461] iommupt: Avoid rewalking during map
+	Ilya Dryomov <idryomov@gmail.com>,
+	Viacheslav Dubeyko <Slava.Dubeyko@ibm.com>
+Subject: [PATCH 6.12 090/272] rbd: eliminate a race in lock_dwork draining on unmap
 Date: Thu, 28 May 2026 21:47:44 +0200
-Message-ID: <20260528194657.052301352@linuxfoundation.org>
+Message-ID: <20260528194631.900058331@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260528194646.819809818@linuxfoundation.org>
-References: <20260528194646.819809818@linuxfoundation.org>
+In-Reply-To: <20260528194629.379955525@linuxfoundation.org>
+References: <20260528194629.379955525@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,527 +65,136 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	TAGGED_FROM(0.00)[bounces-256069-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,ibm.com];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	TO_DN_SOME(0.00)[];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-255432-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TO_DN_SOME(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	RCPT_COUNT_FIVE(0.00)[5];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[9];
-	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,intel.com:email,amd.com:email,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,nvidia.com:email]
-X-Rspamd-Queue-Id: 699385F852E
+	MID_RHS_MATCH_FROM(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim]
+X-Rspamd-Queue-Id: 6EF3C5F9B6C
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-7.0-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jason Gunthorpe <jgg@nvidia.com>
+From: Ilya Dryomov <idryomov@gmail.com>
 
-[ Upstream commit d6c65b0fd6218bd21ed0be7a8d3218e8f6dc91de ]
+commit 9fc75b71fdd38465c76c6f6a884cdd4ae3c72d90 upstream.
 
-Currently the core code provides a simplified interface to drivers where
-it fragments a requested multi-page map into single page size steps after
-doing all the calculations to figure out what page size is
-appropriate. Each step rewalks the page tables from the start.
+Given how rbd_lock_add_request() and rbd_img_exclusive_lock() are
+written, lock_dwork may be (re)queued more than it's actually needed:
+for example in case a new I/O request comes in while we are in the
+middle of rbd_acquire_lock() on behalf of another I/O request.  This is
+expected and with rbd_release_lock() preemptively canceling lock_dwork
+is benign under normal operation.
 
-Since iommupt has a single implementation of the mapping algorithm it can
-internally compute each step as it goes while retaining its current
-position in the walk.
+A more problematic example is maybe_kick_acquire():
 
-Add a new function pt_pgsz_count() which computes the same page size
-fragement of a large mapping operations.
+    if (have_requests || delayed_work_pending(&rbd_dev->lock_dwork)) {
+            dout("%s rbd_dev %p kicking lock_dwork\n", __func__, rbd_dev);
+            mod_delayed_work(rbd_dev->task_wq, &rbd_dev->lock_dwork, 0);
+    }
 
-Compute the next fragment when all the leaf entries of the current
-fragement have been written, then continue walking from the current
-point.
+It's not unrealistic for lock_dwork to get canceled right after
+delayed_work_pending() returns true and for mod_delayed_work() to
+requeue it right there anyway.  This is a classic TOCTOU race.
 
-The function pointer is run through pt_iommu_ops instead of
-iommu_domain_ops to discourage using it outside iommupt. All drivers with
-their own page tables should continue to use the simplified map_pages()
-style interfaces.
+When it comes to unmapping the image, there is an implicit assumption
+of no self-initiated exclusive lock activity past the point of return
+from rbd_dev_image_unlock() which unlocks the lock if it happens to be
+held.  This unlock is assumed to be final and lock_dwork (as well as
+all other exclusive lock tasks, really) isn't expected to get queued
+again.  However, lock_dwork is canceled only in cancel_tasks_sync()
+(i.e. later in the unmap sequence) and on top of that the cancellation
+can get in effect nullified by maybe_kick_acquire().  This may result
+in rbd_acquire_lock() executing after rbd_dev_device_release() and
+rbd_dev_image_release() run and free and/or reset a bunch of things.
+One of the possible failure modes then is a violated
 
-Reviewed-by: Samiullah Khawaja <skhawaja@google.com>
-Reviewed-by: Kevin Tian <kevin.tian@intel.com>
-Signed-off-by: Jason Gunthorpe <jgg@nvidia.com>
-Reviewed-by: Lu Baolu <baolu.lu@linux.intel.com>
-Signed-off-by: Joerg Roedel <joerg.roedel@amd.com>
-Stable-dep-of: 0735c54804c7 ("iommu: Handle unmap error when iommu_debug is enabled")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+    rbd_assert(rbd_image_format_valid(rbd_dev->image_format));
+
+in rbd_dev_header_info() which is called via rbd_dev_refresh() from
+rbd_post_acquire_action().
+
+Redo exclusive lock task draining to provide saner semantics and try
+to meet the assumptions around rbd_dev_image_unlock().
+
+Cc: stable@vger.kernel.org
+Signed-off-by: Ilya Dryomov <idryomov@gmail.com>
+Reviewed-by: Viacheslav Dubeyko <Slava.Dubeyko@ibm.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/iommu/generic_pt/iommu_pt.h         | 133 ++++++++++++--------
- drivers/iommu/generic_pt/kunit_generic_pt.h |  12 ++
- drivers/iommu/generic_pt/pt_iter.h          |  22 ++++
- drivers/iommu/iommu.c                       |  39 ++++--
- include/linux/generic_pt/iommu.h            |  34 ++++-
- 5 files changed, 175 insertions(+), 65 deletions(-)
+ drivers/block/rbd.c |   20 ++++++++------------
+ 1 file changed, 8 insertions(+), 12 deletions(-)
 
-diff --git a/drivers/iommu/generic_pt/iommu_pt.h b/drivers/iommu/generic_pt/iommu_pt.h
-index 8bc4683a64dc1..c0241b24a6098 100644
---- a/drivers/iommu/generic_pt/iommu_pt.h
-+++ b/drivers/iommu/generic_pt/iommu_pt.h
-@@ -466,6 +466,7 @@ struct pt_iommu_map_args {
- 	pt_oaddr_t oa;
- 	unsigned int leaf_pgsize_lg2;
- 	unsigned int leaf_level;
-+	pt_vaddr_t num_leaves;
- };
- 
- /*
-@@ -518,11 +519,15 @@ static int clear_contig(const struct pt_state *start_pts,
- static int __map_range_leaf(struct pt_range *range, void *arg,
- 			    unsigned int level, struct pt_table_p *table)
- {
-+	struct pt_iommu *iommu_table = iommu_from_common(range->common);
- 	struct pt_state pts = pt_init(range, level, table);
- 	struct pt_iommu_map_args *map = arg;
- 	unsigned int leaf_pgsize_lg2 = map->leaf_pgsize_lg2;
- 	unsigned int start_index;
- 	pt_oaddr_t oa = map->oa;
-+	unsigned int num_leaves;
-+	unsigned int orig_end;
-+	pt_vaddr_t last_va;
- 	unsigned int step;
- 	bool need_contig;
- 	int ret = 0;
-@@ -536,6 +541,15 @@ static int __map_range_leaf(struct pt_range *range, void *arg,
- 
- 	_pt_iter_first(&pts);
- 	start_index = pts.index;
-+	orig_end = pts.end_index;
-+	if (pts.index + map->num_leaves < pts.end_index) {
-+		/* Need to stop in the middle of the table to change sizes */
-+		pts.end_index = pts.index + map->num_leaves;
-+		num_leaves = 0;
-+	} else {
-+		num_leaves = map->num_leaves - (pts.end_index - pts.index);
-+	}
-+
- 	do {
- 		pts.type = pt_load_entry_raw(&pts);
- 		if (pts.type != PT_ENTRY_EMPTY || need_contig) {
-@@ -561,7 +575,40 @@ static int __map_range_leaf(struct pt_range *range, void *arg,
- 	flush_writes_range(&pts, start_index, pts.index);
- 
- 	map->oa = oa;
--	return ret;
-+	map->num_leaves = num_leaves;
-+	if (ret || num_leaves)
-+		return ret;
-+
-+	/* range->va is not valid if we reached the end of the table */
-+	pts.index -= step;
-+	pt_index_to_va(&pts);
-+	pts.index += step;
-+	last_va = range->va + log2_to_int(leaf_pgsize_lg2);
-+
-+	if (last_va - 1 == range->last_va) {
-+		PT_WARN_ON(pts.index != orig_end);
-+		return 0;
-+	}
-+
-+	/*
-+	 * Reached a point where the page size changed, compute the new
-+	 * parameters.
-+	 */
-+	map->leaf_pgsize_lg2 = pt_compute_best_pgsize(
-+		iommu_table->domain.pgsize_bitmap, last_va, range->last_va, oa);
-+	map->leaf_level =
-+		pt_pgsz_lg2_to_level(range->common, map->leaf_pgsize_lg2);
-+	map->num_leaves = pt_pgsz_count(iommu_table->domain.pgsize_bitmap,
-+					last_va, range->last_va, oa,
-+					map->leaf_pgsize_lg2);
-+
-+	/* Didn't finish this table level, caller will repeat it */
-+	if (pts.index != orig_end) {
-+		if (pts.index != start_index)
-+			pt_index_to_va(&pts);
-+		return -EAGAIN;
-+	}
-+	return 0;
- }
- 
- static int __map_range(struct pt_range *range, void *arg, unsigned int level,
-@@ -584,14 +631,9 @@ static int __map_range(struct pt_range *range, void *arg, unsigned int level,
- 			if (pts.type != PT_ENTRY_EMPTY)
- 				return -EADDRINUSE;
- 			ret = pt_iommu_new_table(&pts, &map->attrs);
--			if (ret) {
--				/*
--				 * Racing with another thread installing a table
--				 */
--				if (ret == -EAGAIN)
--					continue;
-+			/* EAGAIN on a race will loop again */
-+			if (ret)
- 				return ret;
--			}
- 		} else {
- 			pts.table_lower = pt_table_ptr(&pts);
- 			/*
-@@ -615,10 +657,12 @@ static int __map_range(struct pt_range *range, void *arg, unsigned int level,
- 		 * The already present table can possibly be shared with another
- 		 * concurrent map.
- 		 */
--		if (map->leaf_level == level - 1)
--			ret = pt_descend(&pts, arg, __map_range_leaf);
--		else
--			ret = pt_descend(&pts, arg, __map_range);
-+		do {
-+			if (map->leaf_level == level - 1)
-+				ret = pt_descend(&pts, arg, __map_range_leaf);
-+			else
-+				ret = pt_descend(&pts, arg, __map_range);
-+		} while (ret == -EAGAIN);
- 		if (ret)
- 			return ret;
- 
-@@ -626,6 +670,14 @@ static int __map_range(struct pt_range *range, void *arg, unsigned int level,
- 		pt_index_to_va(&pts);
- 		if (pts.index >= pts.end_index)
- 			break;
-+
-+		/*
-+		 * This level is currently running __map_range_leaf() which is
-+		 * not correct if the target level has been updated to this
-+		 * level. Have the caller invoke __map_range_leaf.
-+		 */
-+		if (map->leaf_level == level)
-+			return -EAGAIN;
- 	} while (true);
- 	return 0;
- }
-@@ -797,12 +849,13 @@ static int check_map_range(struct pt_iommu *iommu_table, struct pt_range *range,
- static int do_map(struct pt_range *range, struct pt_common *common,
- 		  bool single_page, struct pt_iommu_map_args *map)
- {
-+	int ret;
-+
- 	/*
- 	 * The __map_single_page() fast path does not support DMA_INCOHERENT
- 	 * flushing to keep its .text small.
- 	 */
- 	if (single_page && !pt_feature(common, PT_FEAT_DMA_INCOHERENT)) {
--		int ret;
- 
- 		ret = pt_walk_range(range, __map_single_page, map);
- 		if (ret != -EAGAIN)
-@@ -810,50 +863,25 @@ static int do_map(struct pt_range *range, struct pt_common *common,
- 		/* EAGAIN falls through to the full path */
- 	}
- 
--	if (map->leaf_level == range->top_level)
--		return pt_walk_range(range, __map_range_leaf, map);
--	return pt_walk_range(range, __map_range, map);
-+	do {
-+		if (map->leaf_level == range->top_level)
-+			ret = pt_walk_range(range, __map_range_leaf, map);
-+		else
-+			ret = pt_walk_range(range, __map_range, map);
-+	} while (ret == -EAGAIN);
-+	return ret;
- }
- 
--/**
-- * map_pages() - Install translation for an IOVA range
-- * @domain: Domain to manipulate
-- * @iova: IO virtual address to start
-- * @paddr: Physical/Output address to start
-- * @pgsize: Length of each page
-- * @pgcount: Length of the range in pgsize units starting from @iova
-- * @prot: A bitmap of IOMMU_READ/WRITE/CACHE/NOEXEC/MMIO
-- * @gfp: GFP flags for any memory allocations
-- * @mapped: Total bytes successfully mapped
-- *
-- * The range starting at IOVA will have paddr installed into it. The caller
-- * must specify a valid pgsize and pgcount to segment the range into compatible
-- * blocks.
-- *
-- * On error the caller will probably want to invoke unmap on the range from iova
-- * up to the amount indicated by @mapped to return the table back to an
-- * unchanged state.
-- *
-- * Context: The caller must hold a write range lock that includes the whole
-- * range.
-- *
-- * Returns: -ERRNO on failure, 0 on success. The number of bytes of VA that were
-- * mapped are added to @mapped, @mapped is not zerod first.
-- */
--int DOMAIN_NS(map_pages)(struct iommu_domain *domain, unsigned long iova,
--			 phys_addr_t paddr, size_t pgsize, size_t pgcount,
--			 int prot, gfp_t gfp, size_t *mapped)
-+static int NS(map_range)(struct pt_iommu *iommu_table, dma_addr_t iova,
-+			 phys_addr_t paddr, dma_addr_t len, unsigned int prot,
-+			 gfp_t gfp, size_t *mapped)
- {
--	struct pt_iommu *iommu_table =
--		container_of(domain, struct pt_iommu, domain);
- 	pt_vaddr_t pgsize_bitmap = iommu_table->domain.pgsize_bitmap;
- 	struct pt_common *common = common_from_iommu(iommu_table);
- 	struct iommu_iotlb_gather iotlb_gather;
--	pt_vaddr_t len = pgsize * pgcount;
- 	struct pt_iommu_map_args map = {
- 		.iotlb_gather = &iotlb_gather,
- 		.oa = paddr,
--		.leaf_pgsize_lg2 = vaffs(pgsize),
- 	};
- 	bool single_page = false;
- 	struct pt_range range;
-@@ -881,13 +909,13 @@ int DOMAIN_NS(map_pages)(struct iommu_domain *domain, unsigned long iova,
- 		return ret;
- 
- 	/* Calculate target page size and level for the leaves */
--	if (pt_has_system_page_size(common) && pgsize == PAGE_SIZE &&
--	    pgcount == 1) {
-+	if (pt_has_system_page_size(common) && len == PAGE_SIZE) {
- 		PT_WARN_ON(!(pgsize_bitmap & PAGE_SIZE));
- 		if (log2_mod(iova | paddr, PAGE_SHIFT))
- 			return -ENXIO;
- 		map.leaf_pgsize_lg2 = PAGE_SHIFT;
- 		map.leaf_level = 0;
-+		map.num_leaves = 1;
- 		single_page = true;
- 	} else {
- 		map.leaf_pgsize_lg2 = pt_compute_best_pgsize(
-@@ -896,6 +924,9 @@ int DOMAIN_NS(map_pages)(struct iommu_domain *domain, unsigned long iova,
- 			return -ENXIO;
- 		map.leaf_level =
- 			pt_pgsz_lg2_to_level(common, map.leaf_pgsize_lg2);
-+		map.num_leaves = pt_pgsz_count(pgsize_bitmap, range.va,
-+					       range.last_va, paddr,
-+					       map.leaf_pgsize_lg2);
- 	}
- 
- 	ret = check_map_range(iommu_table, &range, &map);
-@@ -918,7 +949,6 @@ int DOMAIN_NS(map_pages)(struct iommu_domain *domain, unsigned long iova,
- 	*mapped += map.oa - paddr;
+--- a/drivers/block/rbd.c
++++ b/drivers/block/rbd.c
+@@ -4565,24 +4565,12 @@ out:
  	return ret;
  }
--EXPORT_SYMBOL_NS_GPL(DOMAIN_NS(map_pages), "GENERIC_PT_IOMMU");
  
- struct pt_unmap_args {
- 	struct iommu_pages_list free_list;
-@@ -1087,6 +1117,7 @@ static void NS(deinit)(struct pt_iommu *iommu_table)
- }
- 
- static const struct pt_iommu_ops NS(ops) = {
-+	.map_range = NS(map_range),
- 	.unmap_range = NS(unmap_range),
- #if IS_ENABLED(CONFIG_IOMMUFD_DRIVER) && defined(pt_entry_is_write_dirty) && \
- 	IS_ENABLED(CONFIG_IOMMUFD_TEST) && defined(pt_entry_make_write_dirty)
-diff --git a/drivers/iommu/generic_pt/kunit_generic_pt.h b/drivers/iommu/generic_pt/kunit_generic_pt.h
-index 68278bf15cfe0..374e475f591e1 100644
---- a/drivers/iommu/generic_pt/kunit_generic_pt.h
-+++ b/drivers/iommu/generic_pt/kunit_generic_pt.h
-@@ -312,6 +312,17 @@ static void test_best_pgsize(struct kunit *test)
- 	}
- }
- 
-+static void test_pgsz_count(struct kunit *test)
-+{
-+	KUNIT_EXPECT_EQ(test,
-+			pt_pgsz_count(SZ_4K, 0, SZ_1G - 1, 0, ilog2(SZ_4K)),
-+			SZ_1G / SZ_4K);
-+	KUNIT_EXPECT_EQ(test,
-+			pt_pgsz_count(SZ_2M | SZ_4K, SZ_4K, SZ_1G - 1, SZ_4K,
-+				      ilog2(SZ_4K)),
-+			(SZ_2M - SZ_4K) / SZ_4K);
-+}
-+
- /*
-  * Check that pt_install_table() and pt_table_pa() match
-  */
-@@ -770,6 +781,7 @@ static struct kunit_case generic_pt_test_cases[] = {
- 	KUNIT_CASE_FMT(test_init),
- 	KUNIT_CASE_FMT(test_bitops),
- 	KUNIT_CASE_FMT(test_best_pgsize),
-+	KUNIT_CASE_FMT(test_pgsz_count),
- 	KUNIT_CASE_FMT(test_table_ptr),
- 	KUNIT_CASE_FMT(test_max_va),
- 	KUNIT_CASE_FMT(test_table_radix),
-diff --git a/drivers/iommu/generic_pt/pt_iter.h b/drivers/iommu/generic_pt/pt_iter.h
-index c0d8617cce292..3e45dbde6b832 100644
---- a/drivers/iommu/generic_pt/pt_iter.h
-+++ b/drivers/iommu/generic_pt/pt_iter.h
-@@ -569,6 +569,28 @@ static inline unsigned int pt_compute_best_pgsize(pt_vaddr_t pgsz_bitmap,
- 	return pgsz_lg2;
- }
- 
-+/*
-+ * Return the number of pgsize_lg2 leaf entries that can be mapped for
-+ * va to oa. This accounts for any requirement to reduce or increase the page
-+ * size across the VA range.
-+ */
-+static inline pt_vaddr_t pt_pgsz_count(pt_vaddr_t pgsz_bitmap, pt_vaddr_t va,
-+				       pt_vaddr_t last_va, pt_oaddr_t oa,
-+				       unsigned int pgsize_lg2)
-+{
-+	pt_vaddr_t len = last_va - va + 1;
-+	pt_vaddr_t next_pgsizes = log2_set_mod(pgsz_bitmap, 0, pgsize_lg2 + 1);
-+
-+	if (next_pgsizes) {
-+		unsigned int next_pgsize_lg2 = vaffs(next_pgsizes);
-+
-+		if (log2_mod(va ^ oa, next_pgsize_lg2) == 0)
-+			len = min(len, log2_set_mod_max(va, next_pgsize_lg2) -
-+					       va + 1);
-+	}
-+	return log2_div(len, pgsize_lg2);
-+}
-+
- #define _PT_MAKE_CALL_LEVEL(fn)                                          \
- 	static __always_inline int fn(struct pt_range *range, void *arg, \
- 				      unsigned int level,                \
-diff --git a/drivers/iommu/iommu.c b/drivers/iommu/iommu.c
-index 04b1c0f358b05..973be8e2ab4c8 100644
---- a/drivers/iommu/iommu.c
-+++ b/drivers/iommu/iommu.c
-@@ -2613,14 +2613,14 @@ static size_t iommu_pgsize(struct iommu_domain *domain, unsigned long iova,
- 	return pgsize;
- }
- 
--int iommu_map_nosync(struct iommu_domain *domain, unsigned long iova,
--		phys_addr_t paddr, size_t size, int prot, gfp_t gfp)
-+static int __iommu_map_domain_pgtbl(struct iommu_domain *domain,
-+				    unsigned long iova, phys_addr_t paddr,
-+				    size_t size, int prot, gfp_t gfp)
- {
- 	const struct iommu_domain_ops *ops = domain->ops;
- 	unsigned long orig_iova = iova;
- 	unsigned int min_pagesz;
- 	size_t orig_size = size;
--	phys_addr_t orig_paddr = paddr;
- 	int ret = 0;
- 
- 	might_sleep_if(gfpflags_allow_blocking(gfp));
-@@ -2677,12 +2677,9 @@ int iommu_map_nosync(struct iommu_domain *domain, unsigned long iova,
- 	/* unroll mapping in case something went wrong */
- 	if (ret) {
- 		iommu_unmap(domain, orig_iova, orig_size - size);
--	} else {
--		trace_map(orig_iova, orig_paddr, orig_size);
--		iommu_debug_map(domain, orig_paddr, orig_size);
-+		return ret;
- 	}
+-static void cancel_tasks_sync(struct rbd_device *rbd_dev)
+-{
+-	dout("%s rbd_dev %p\n", __func__, rbd_dev);
 -
--	return ret;
-+	return 0;
- }
- 
- int iommu_sync_map(struct iommu_domain *domain, unsigned long iova, size_t size)
-@@ -2694,6 +2691,32 @@ int iommu_sync_map(struct iommu_domain *domain, unsigned long iova, size_t size)
- 	return ops->iotlb_sync_map(domain, iova, size);
- }
- 
-+int iommu_map_nosync(struct iommu_domain *domain, unsigned long iova,
-+		phys_addr_t paddr, size_t size, int prot, gfp_t gfp)
-+{
-+	struct pt_iommu *pt = iommupt_from_domain(domain);
-+	int ret;
-+
-+	if (pt) {
-+		size_t mapped = 0;
-+
-+		ret = pt->ops->map_range(pt, iova, paddr, size, prot, gfp,
-+					 &mapped);
-+		if (ret) {
-+			iommu_unmap(domain, iova, mapped);
-+			return ret;
-+		}
-+		return 0;
-+	}
-+	ret = __iommu_map_domain_pgtbl(domain, iova, paddr, size, prot, gfp);
-+	if (!ret)
-+		return ret;
-+
-+	trace_map(iova, paddr, size);
-+	iommu_debug_map(domain, paddr, size);
-+	return 0;
-+}
-+
- int iommu_map(struct iommu_domain *domain, unsigned long iova,
- 	      phys_addr_t paddr, size_t size, int prot, gfp_t gfp)
- {
-diff --git a/include/linux/generic_pt/iommu.h b/include/linux/generic_pt/iommu.h
-index f094f8f44e4e8..43cc98c9c55f7 100644
---- a/include/linux/generic_pt/iommu.h
-+++ b/include/linux/generic_pt/iommu.h
-@@ -87,6 +87,33 @@ struct pt_iommu_info {
- };
- 
- struct pt_iommu_ops {
-+	/**
-+	 * @map_range: Install translation for an IOVA range
-+	 * @iommu_table: Table to manipulate
-+	 * @iova: IO virtual address to start
-+	 * @paddr: Physical/Output address to start
-+	 * @len: Length of the range starting from @iova
-+	 * @prot: A bitmap of IOMMU_READ/WRITE/CACHE/NOEXEC/MMIO
-+	 * @gfp: GFP flags for any memory allocations
-+	 *
-+	 * The range starting at IOVA will have paddr installed into it. The
-+	 * rage is automatically segmented into optimally sized table entries,
-+	 * and can have any valid alignment.
-+	 *
-+	 * On error the caller will probably want to invoke unmap on the range
-+	 * from iova up to the amount indicated by @mapped to return the table
-+	 * back to an unchanged state.
-+	 *
-+	 * Context: The caller must hold a write range lock that includes
-+	 * the whole range.
-+	 *
-+	 * Returns: -ERRNO on failure, 0 on success. The number of bytes of VA
-+	 * that were mapped are added to @mapped, @mapped is not zerod first.
-+	 */
-+	int (*map_range)(struct pt_iommu *iommu_table, dma_addr_t iova,
-+			 phys_addr_t paddr, dma_addr_t len, unsigned int prot,
-+			 gfp_t gfp, size_t *mapped);
-+
- 	/**
- 	 * @unmap_range: Make a range of IOVA empty/not present
- 	 * @iommu_table: Table to manipulate
-@@ -224,10 +251,6 @@ struct pt_iommu_cfg {
- #define IOMMU_PROTOTYPES(fmt)                                                  \
- 	phys_addr_t pt_iommu_##fmt##_iova_to_phys(struct iommu_domain *domain, \
- 						  dma_addr_t iova);            \
--	int pt_iommu_##fmt##_map_pages(struct iommu_domain *domain,            \
--				       unsigned long iova, phys_addr_t paddr,  \
--				       size_t pgsize, size_t pgcount,          \
--				       int prot, gfp_t gfp, size_t *mapped);   \
- 	int pt_iommu_##fmt##_read_and_clear_dirty(                             \
- 		struct iommu_domain *domain, unsigned long iova, size_t size,  \
- 		unsigned long flags, struct iommu_dirty_bitmap *dirty);        \
-@@ -248,8 +271,7 @@ struct pt_iommu_cfg {
-  * iommu_pt
+-	cancel_work_sync(&rbd_dev->acquired_lock_work);
+-	cancel_work_sync(&rbd_dev->released_lock_work);
+-	cancel_delayed_work_sync(&rbd_dev->lock_dwork);
+-	cancel_work_sync(&rbd_dev->unlock_work);
+-}
+-
+ /*
+  * header_rwsem must not be held to avoid a deadlock with
+  * rbd_dev_refresh() when flushing notifies.
   */
- #define IOMMU_PT_DOMAIN_OPS(fmt)                        \
--	.iova_to_phys = &pt_iommu_##fmt##_iova_to_phys, \
--	.map_pages = &pt_iommu_##fmt##_map_pages
-+	.iova_to_phys = &pt_iommu_##fmt##_iova_to_phys
- #define IOMMU_PT_DIRTY_OPS(fmt) \
- 	.read_and_clear_dirty = &pt_iommu_##fmt##_read_and_clear_dirty
+ static void rbd_unregister_watch(struct rbd_device *rbd_dev)
+ {
+-	cancel_tasks_sync(rbd_dev);
+-
+ 	mutex_lock(&rbd_dev->watch_mutex);
+ 	if (rbd_dev->watch_state == RBD_WATCH_STATE_REGISTERED)
+ 		__rbd_unregister_watch(rbd_dev);
+@@ -6549,10 +6537,18 @@ out_err:
  
--- 
-2.53.0
-
+ static void rbd_dev_image_unlock(struct rbd_device *rbd_dev)
+ {
++	dout("%s rbd_dev %p\n", __func__, rbd_dev);
++
++	disable_delayed_work_sync(&rbd_dev->lock_dwork);
++	disable_work_sync(&rbd_dev->unlock_work);
++
+ 	down_write(&rbd_dev->lock_rwsem);
+ 	if (__rbd_is_lock_owner(rbd_dev))
+ 		__rbd_release_lock(rbd_dev);
+ 	up_write(&rbd_dev->lock_rwsem);
++
++	flush_work(&rbd_dev->acquired_lock_work);
++	flush_work(&rbd_dev->released_lock_work);
+ }
+ 
+ /*
 
 
 
