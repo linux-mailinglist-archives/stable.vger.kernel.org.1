@@ -1,60 +1,60 @@
-Return-Path: <stable+bounces-256203-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-256372-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id UK/2HfmqGGoomAgAu9opvQ
-	(envelope-from <stable+bounces-256203-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:52:09 +0200
+	id 4DVDBnqsGGphmAgAu9opvQ
+	(envelope-from <stable+bounces-256372-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:58:34 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id D3EB25F9BCD
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:52:08 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8BFFF5F9F44
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:58:33 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id DD555314C3C4
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 20:44:04 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 7B251304E255
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 20:51:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7A0F12E7379;
-	Thu, 28 May 2026 20:44:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 96728330307;
+	Thu, 28 May 2026 20:51:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QEYToiCs"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mXiM+Kqy"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 603892EF652;
-	Thu, 28 May 2026 20:44:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 57994304BB3;
+	Thu, 28 May 2026 20:51:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780001044; cv=none; b=E3J8i9dYEbMV+vtJ5LnEDwx3ltVynueEhgabyjlBDkVxrgggzaHetpGwbCa3qE1sp0e9j+nNINDOBVXFAnCJJlLNxG+3PzXkCa4gRZu69Pr0loPvpEjeZizdlOhVSttaRqtnKXpw13tlefUnHk0BIGVhGWMgzlpt1E7gpYFtk2A=
+	t=1780001516; cv=none; b=pQmsr0psPHqNF9l3j+boHirNx+IuZHGfcieJSBrrkGsDFpYzUM/pHRCzDsTdThtsdHQ4T+O1FttxbcqZp0lT1OG3o3gkne+u8+67gUsmUHhwB7qtCIMzps1D2Xbn6RHGJt1ghOcR8kENfKKrB0N/Gne5NvQGzxJGXiQa0yF5kKo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780001044; c=relaxed/simple;
-	bh=5uXEWKu9sFNeRr9vwncTb8NsPyTcsq28jBp8RxtGIO4=;
+	s=arc-20240116; t=1780001516; c=relaxed/simple;
+	bh=BPut+zJe0IRlxOBZl6O8tAekQX6hQxst1zPDCaoWRqE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=C+2kmNpdGNpLdmDru0ZBtdsIQTxT5wlET+Qj8DCgLd3Ndnp16Lwhwckg6R/CvJkNAxBpyPrdFFt+noI71HsOhURL+wvTv7eNJC2SjAh59bj0JnGlje9HH0eQiCXlRqJ3kBH0r6MRSGnOKjz+zjY9Lnn6ytg+AWcw0nkpd+u0NmU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QEYToiCs; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 757D41F000E9;
-	Thu, 28 May 2026 20:44:02 +0000 (UTC)
+	 MIME-Version; b=dxEEGGoayTRlxc7QhSm7ycIJatytv9pFqkPYlt5uBxiFYbNts/9fN7JQwqjmja7vKSn2656LJrwkhY0EtznlRv0tKcQbLnXufDLxG0xzEiYR0GXSC3dQm+/wDSKnADTHZ73V1J6S6Ux3Jb6pEksTh1RwSVMy/EQkTJjLP5fkxMg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mXiM+Kqy; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B661F1F000E9;
+	Thu, 28 May 2026 20:51:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780001043;
-	bh=MlSvcxrrBjBAcK/Fs1uSWjklokbOw0X5QXEBt26u1Tw=;
+	s=korg; t=1780001515;
+	bh=baWXi7sKQk7kTydhrRkUoQPXn9lK6PZ0bPsFp/7aKYo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=QEYToiCsYmhbk4LvxvXBDKRWrHiV/RgNh0GQDfE2Dv05CD0y/BQSCTpQ7KragzFOF
-	 ur2ihtXXWnqDoH3mvdjCD6GJvWwPy3AF/F1y83mFYR/vkoGB+x22mtGcAZfSDZOFwG
-	 uDqEV6VEO3p8LpzwaRRoO2NEEkQ3B5W7KP2gxyCg=
+	b=mXiM+Kqy40tg2Cv+FhE/Pkmu2S+zDJTkXleEltFD6fWYwgBDNTfGTVIpINBhxUd5u
+	 XdUjhZt74JrNTB0wZxKZbwwihCUPzdc7GhWWQGwUwvPPVkN/mR10LicM7xvQEsiM6L
+	 +EokyvodFP1vEb5w4daZQHlyDJVVOXJ5fIV67Jkw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Rosen Penev <rosenp@gmail.com>,
-	Oleksij Rempel <o.rempel@pengutronix.de>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Daniel Golle <daniel@makrotopia.org>,
+	"Chester A. Unal" <chester.a.unal@arinc9.com>,
+	Paolo Abeni <pabeni@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 261/272] net: ag71xx: check error for platform_get_irq
-Date: Thu, 28 May 2026 21:50:35 +0200
-Message-ID: <20260528194636.401364254@linuxfoundation.org>
+Subject: [PATCH 6.6 156/186] net: dsa: mt7530: preserve VLAN tags on trapped link-local frames
+Date: Thu, 28 May 2026 21:50:36 +0200
+Message-ID: <20260528194933.168604072@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260528194629.379955525@linuxfoundation.org>
-References: <20260528194629.379955525@linuxfoundation.org>
+In-Reply-To: <20260528194928.941004471@linuxfoundation.org>
+References: <20260528194928.941004471@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,68 +69,126 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,pengutronix.de,kernel.org];
-	TAGGED_FROM(0.00)[bounces-256203-lists,stable=lfdr.de];
-	PRECEDENCE_BULK(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-256372-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
 	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,msgid.link:url,linuxfoundation.org:mid,linuxfoundation.org:dkim,pengutronix.de:email]
-X-Rspamd-Queue-Id: D3EB25F9BCD
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_SEVEN(0.00)[7];
+	MID_RHS_MATCH_FROM(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,makrotopia.org:email,msgid.link:url,linuxfoundation.org:mid,linuxfoundation.org:dkim]
+X-Rspamd-Queue-Id: 8BFFF5F9F44
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Rosen Penev <rosenp@gmail.com>
+From: Daniel Golle <daniel@makrotopia.org>
 
-[ Upstream commit e7c70bf97e90d974cd575e4c90f8f9b07d056da3 ]
+[ Upstream commit 3ac85bcfd404b588298c95c6fba8aad4ad334f57 ]
 
-Complete error handling for a failed platform_get_irq() call
+The BPC, RGAC1 and RGAC2 registers control the handling of link-local
+frames with reserved MAC DAs (01:80:C2:00:00:0x). These frames are
+correctly trapped to the CPU port, but the egress VLAN tag attribute was
+set to MT7530_VLAN_EG_UNTAGGED which causes the switch to strip any
+VLAN tags from trapped frames before they reach the CPU.
 
-Fixes: d51b6ce441d3 ("net: ethernet: add ag71xx driver")
-Signed-off-by: Rosen Penev <rosenp@gmail.com>
-Reviewed-by: Oleksij Rempel <o.rempel@pengutronix.de>
-Link: https://patch.msgid.link/20260516212616.11758-1-rosenp@gmail.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+This causes VLAN-tagged link-local frames (STP BPDUs, LLDP, PTP Peer
+Delay Requests) to arrive at the CPU without their VLAN tag, so they
+are delivered to the base network interface instead of the VLAN
+sub-interface. The DSA local_termination selftest confirms this: all
+link-local protocol tests on VLAN upper interfaces fail.
+
+Set the EG_TAG attribute to MT7530_VLAN_EG_DISABLED (system default)
+so that the switch does not modify VLAN tags in trapped frames. This
+way VLAN-tagged frames retain their original tag and are delivered to
+the correct VLAN sub-interface, matching the behavior of non-trapped
+frames which pass through without VLAN tag modification.
+
+Fixes: 69ddba9d170b ("net: dsa: mt7530: fix handling of all link-local frames")
+Signed-off-by: Daniel Golle <daniel@makrotopia.org>
+Acked-by: Chester A. Unal <chester.a.unal@arinc9.com>
+Link: https://patch.msgid.link/891e0cd34db2a5fe20ceb73283a81fb5f71427ca.1778766629.git.daniel@makrotopia.org
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/atheros/ag71xx.c | 3 +++
- 1 file changed, 3 insertions(+)
+ drivers/net/dsa/mt7530.c | 27 +++++++++++++++------------
+ 1 file changed, 15 insertions(+), 12 deletions(-)
 
-diff --git a/drivers/net/ethernet/atheros/ag71xx.c b/drivers/net/ethernet/atheros/ag71xx.c
-index bccc7e7b2a848..f5570061abe7f 100644
---- a/drivers/net/ethernet/atheros/ag71xx.c
-+++ b/drivers/net/ethernet/atheros/ag71xx.c
-@@ -1861,6 +1861,9 @@ static int ag71xx_probe(struct platform_device *pdev)
- 	ag71xx_int_disable(ag, AG71XX_INT_POLL);
+diff --git a/drivers/net/dsa/mt7530.c b/drivers/net/dsa/mt7530.c
+index ed783943c73c7..8d889bc5f3d1b 100644
+--- a/drivers/net/dsa/mt7530.c
++++ b/drivers/net/dsa/mt7530.c
+@@ -1174,37 +1174,40 @@ static void mt7530_setup_port5(struct dsa_switch *ds, phy_interface_t interface)
+ static void
+ mt753x_trap_frames(struct mt7530_priv *priv)
+ {
+-	/* Trap 802.1X PAE frames and BPDUs to the CPU port(s) and egress them
+-	 * VLAN-untagged.
++	/* Trap 802.1X PAE frames and BPDUs to the CPU port(s) and egress
++	 * them with the EG_TAG attribute set to disabled (system default)
++	 * so that any VLAN tags in the frame are not modified by the
++	 * switch egress VLAN tag processing. This preserves VLAN tags
++	 * for reception on VLAN sub-interfaces.
+ 	 */
+ 	mt7530_rmw(priv, MT753X_BPC,
+ 		   PAE_BPDU_FR | PAE_EG_TAG_MASK | PAE_PORT_FW_MASK |
+ 			   BPDU_EG_TAG_MASK | BPDU_PORT_FW_MASK,
+-		   PAE_BPDU_FR | PAE_EG_TAG(MT7530_VLAN_EG_UNTAGGED) |
++		   PAE_BPDU_FR | PAE_EG_TAG(MT7530_VLAN_EG_DISABLED) |
+ 			   PAE_PORT_FW(TO_CPU_FW_CPU_ONLY) |
+-			   BPDU_EG_TAG(MT7530_VLAN_EG_UNTAGGED) |
++			   BPDU_EG_TAG(MT7530_VLAN_EG_DISABLED) |
+ 			   TO_CPU_FW_CPU_ONLY);
  
- 	ndev->irq = platform_get_irq(pdev, 0);
-+	if (ndev->irq < 0)
-+		return ndev->irq;
-+
- 	err = devm_request_irq(&pdev->dev, ndev->irq, ag71xx_interrupt,
- 			       0x0, dev_name(&pdev->dev), ndev);
- 	if (err) {
+-	/* Trap frames with :01 and :02 MAC DAs to the CPU port(s) and egress
+-	 * them VLAN-untagged.
++	/* Trap frames with :01 and :02 MAC DAs to the CPU port(s) and
++	 * egress them with EG_TAG disabled.
+ 	 */
+ 	mt7530_rmw(priv, MT753X_RGAC1,
+ 		   R02_BPDU_FR | R02_EG_TAG_MASK | R02_PORT_FW_MASK |
+ 			   R01_BPDU_FR | R01_EG_TAG_MASK | R01_PORT_FW_MASK,
+-		   R02_BPDU_FR | R02_EG_TAG(MT7530_VLAN_EG_UNTAGGED) |
++		   R02_BPDU_FR | R02_EG_TAG(MT7530_VLAN_EG_DISABLED) |
+ 			   R02_PORT_FW(TO_CPU_FW_CPU_ONLY) | R01_BPDU_FR |
+-			   R01_EG_TAG(MT7530_VLAN_EG_UNTAGGED) |
++			   R01_EG_TAG(MT7530_VLAN_EG_DISABLED) |
+ 			   TO_CPU_FW_CPU_ONLY);
+ 
+-	/* Trap frames with :03 and :0E MAC DAs to the CPU port(s) and egress
+-	 * them VLAN-untagged.
++	/* Trap frames with :03 and :0E MAC DAs to the CPU port(s) and
++	 * egress them with EG_TAG disabled.
+ 	 */
+ 	mt7530_rmw(priv, MT753X_RGAC2,
+ 		   R0E_BPDU_FR | R0E_EG_TAG_MASK | R0E_PORT_FW_MASK |
+ 			   R03_BPDU_FR | R03_EG_TAG_MASK | R03_PORT_FW_MASK,
+-		   R0E_BPDU_FR | R0E_EG_TAG(MT7530_VLAN_EG_UNTAGGED) |
++		   R0E_BPDU_FR | R0E_EG_TAG(MT7530_VLAN_EG_DISABLED) |
+ 			   R0E_PORT_FW(TO_CPU_FW_CPU_ONLY) | R03_BPDU_FR |
+-			   R03_EG_TAG(MT7530_VLAN_EG_UNTAGGED) |
++			   R03_EG_TAG(MT7530_VLAN_EG_DISABLED) |
+ 			   TO_CPU_FW_CPU_ONLY);
+ }
+ 
 -- 
 2.53.0
 
