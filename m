@@ -1,60 +1,60 @@
-Return-Path: <stable+bounces-255954-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-255345-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id GJNkO+enGGp+lwgAu9opvQ
-	(envelope-from <stable+bounces-255954-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:39:03 +0200
+	id qCKVHUGhGGqnlggAu9opvQ
+	(envelope-from <stable+bounces-255345-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:10:41 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id A584C5F9394
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:39:03 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id EC9BF5F7FCA
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:10:40 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 7A5C93138338
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 20:32:25 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 814A7315D06D
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 20:04:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 03EFD339866;
-	Thu, 28 May 2026 20:32:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 35E6C2F691F;
+	Thu, 28 May 2026 20:04:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="O16fMfHz"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SsIX3mHW"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C33EC31DD97;
-	Thu, 28 May 2026 20:32:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F2A4332ABC0;
+	Thu, 28 May 2026 20:04:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780000344; cv=none; b=EqTzjH0qUoXmx8PHkdRzqcytJ+myyQu1qH9vD31aqt9MhHpBX84ry/s+h3JyN7vA2PkwPtbYAbmQjWnkC2smlLK9a+vNzuiB+GYodUv7viTREtgl8KqBQZE+Q7H9Ylas5cuLdjyhx1U+xuTl02k1KOXOfJR44BfZnoxTCsoSqSg=
+	t=1779998650; cv=none; b=W6vY6t524SxfA9NzC4TQLUH2N71Tzcb3MPVPInrThelfL0p20yXykvoYftnRY44smNRjdFIE+wU05nSnfixxkN0tGujWqXKvqB/k4PtatFLY+zZJ0Fgak2IMiYh2p8MVmINaOYJEmPtRx7Z8/Uct8lSIlsVOJtyL/MD8COQKSAE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780000344; c=relaxed/simple;
-	bh=VzhX4lRKonJbeVIXqZ18HZ5XlvQtpwmXSO+7LIYNa9M=;
+	s=arc-20240116; t=1779998650; c=relaxed/simple;
+	bh=aFexBEeo0427hcr/N/mxn155/sFiiNfiUJhtl/iJjls=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=YXvvyRoCxQMS7Fmciol8MW/sHET9++t2U0eXUeOY+g6ucGlKwIdgBD/mT7zbx6zwnpZEIP767Lons1WygyFf4lnCvrWSb/mKWyrbEI/d2y4AkNzPpeRZv5/g6zUQ5+6fyRfipbGyEaEjXrGAszn3h0cttcMcQ/Cac/6p0tEsxH4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=O16fMfHz; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2D30D1F000E9;
-	Thu, 28 May 2026 20:32:23 +0000 (UTC)
+	 MIME-Version; b=oB/vt/PQo7VWySESvBqaQlxlkcaZXh9altf15SQrNS7QIDgQJeKHU4R1dXXEmQAd2PKkmGnasp5zQUaimd7LLVgmB9V/pbVFhwSAzx2Q8CqiRspKjQaM1ipS040yfj3U35oJw/f+/L+4lWxKIRJ6scacTcoSm6C86pcfszt/jZM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SsIX3mHW; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1DBE91F000E9;
+	Thu, 28 May 2026 20:04:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780000343;
-	bh=VTJBsqAAvPv1xPTr1UhegGBplji63RH32MfJt/4AyXY=;
+	s=korg; t=1779998648;
+	bh=9pjw479zl/RQH7DVA26aQ0LgN0w8DboCKkrHm0J16uw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=O16fMfHzpawXU4EzH0EdSdo/lO2Qq/88IVqY+NgUeGjqoLURU8b99dRQ592+rGsp7
-	 F3JepkIxyWed76TK8xNoOAYy9qWxJ7dhG1bIUg/av7dYZVaTAKMrcZVud3ys1G8fX+
-	 VMY4WP1Af9livpqxD3oqklgKxzyxfyFApEzX8Lfk=
+	b=SsIX3mHWQ/+qeD+fi7jU7JJ0av7PO4MpfCLBP7Wmh+aASWk7+GYNL7zYfqQKcbBU1
+	 rYF7ovcMplVlaldlVB2dy0ADzBBLBpz98EQSGODw7gGguCnasVDX80Qn2d8vLwRyih
+	 B52+Y+CKAi3LxHuUyK8Xne+pmyNmBt5uZ8E6gOUU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mat Martineau <martineau@kernel.org>,
-	"Matthieu Baerts (NGI0)" <matttbe@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Aboorva Devarajan <aboorvad@linux.ibm.com>,
+	"Ritesh Harjani (IBM)" <ritesh.list@gmail.com>,
+	Madhavan Srinivasan <maddy@linux.ibm.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 004/272] mptcp: pm: ADD_ADDR rtx: free sk if last
+Subject: [PATCH 7.0 249/461] powerpc/hv-gpci: fix preempt count leak in sysfs show paths
 Date: Thu, 28 May 2026 21:46:18 +0200
-Message-ID: <20260528194629.505473515@linuxfoundation.org>
+Message-ID: <20260528194654.357420588@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260528194629.379955525@linuxfoundation.org>
-References: <20260528194629.379955525@linuxfoundation.org>
+In-Reply-To: <20260528194646.819809818@linuxfoundation.org>
+References: <20260528194646.819809818@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,160 +65,198 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-255954-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
-	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TO_DN_SOME(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	TAGGED_FROM(0.00)[bounces-255345-lists,stable=lfdr.de];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	NEURAL_HAM(-0.00)[-1.000];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,linux.ibm.com,gmail.com,kernel.org];
+	MIME_TRACE(0.00)[0:+];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
 	RCPT_COUNT_SEVEN(0.00)[7];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-0.999];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim]
-X-Rspamd-Queue-Id: A584C5F9394
+	TO_DN_SOME(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim,msgid.link:url]
+X-Rspamd-Queue-Id: EC9BF5F7FCA
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+7.0-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+From: Aboorva Devarajan <aboorvad@linux.ibm.com>
 
-commit b7b9a461569734d33d3259d58d2507adfac107ed upstream.
+[ Upstream commit dbc30a57bd8e026995e9fa8e8c31cffd18542c01 ]
 
-When an ADD_ADDR is retransmitted, the sk is held in sk_reset_timer(),
-and released at the end.
+Four sysfs show() callbacks in hv-gpci take get_cpu_var(hv_gpci_reqb)
+(which calls preempt_disable()) but only call the matching put_cpu_var()
+on the error path under the 'out:' label. Every successful read leaks
+one preempt_disable():
 
-If at that moment, it was the last reference being held, the sk would
-not be freed. sock_put() should then be called instead of __sock_put().
+  processor_bus_topology_show()
+  processor_config_show()
+  affinity_domain_via_virtual_processor_show()
+  affinity_domain_via_domain_show()
 
-But that's not enough: if it is the last reference, sock_put() will call
-sk_free(), which will end up calling sk_stop_timer_sync() on the same
-timer, and waiting indefinitely to finish. So it is needed to mark that
-the timer is done at the end of the timer handler when it has not been
-rescheduled, not to call sk_stop_timer_sync() on "itself".
+(affinity_domain_via_partition_show() was already correct.)
 
-Fixes: 00cfd77b9063 ("mptcp: retransmit ADD_ADDR when timeout")
-Cc: stable@vger.kernel.org
-Reviewed-by: Mat Martineau <martineau@kernel.org>
-Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
-Link: https://patch.msgid.link/20260505-net-mptcp-pm-fixes-7-1-rc3-v1-5-fca8091060a4@kernel.org
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-[ Applied to net/mptcp/pm_netlink.c instead of upstream's pm_kernel.c.
-  Also, there were conflicts, because commit 30549eebc4d8 ("mptcp: make
-  ADD_ADDR retransmission timeout adaptive") is not in this version and
-  changed the context. Also, other conflicts were due to newer patches
-  being backported with resolved conflicts before this one. ]
-Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+On a CONFIG_PREEMPT=y kernel, repeated reads raise preempt_count and
+eventually return to userspace with preemption still disabled. The
+next user-mode page fault then hits faulthandler_disabled() == 1,
+gets forced to SIGSEGV, and the resulting coredump trips
+'BUG: scheduling while atomic' in call_usermodehelper_exec ->
+wait_for_completion_state -> schedule:
+
+  BUG: scheduling while atomic: <task>/<pid>/0x00000004
+  ...
+  __schedule_bug+0x6c/0x90
+  __schedule+0x58c/0x13a0
+  schedule+0x48/0x1a0
+  schedule_timeout+0x104/0x170
+  wait_for_completion_state+0x16c/0x330
+  call_usermodehelper_exec+0x254/0x2d0
+  vfs_coredump+0x1050/0x2590
+  get_signal+0xb9c/0xc80
+  do_notify_resume+0xf8/0x470
+
+Add an out_success label that calls put_cpu_var() before returning
+the byte count, mirroring affinity_domain_via_partition_show().
+
+Fixes: 71f1c39647d8 ("powerpc/hv_gpci: Add sysfs file inside hv_gpci device to show processor bus topology information")
+Fixes: 1a160c2a13c6 ("powerpc/hv_gpci: Add sysfs file inside hv_gpci device to show processor config information")
+Fixes: 71a7ccb478fc ("powerpc/hv_gpci: Add sysfs file inside hv_gpci device to show affinity domain via virtual processor information")
+Fixes: a69a57cac1ec ("powerpc/hv_gpci: Add sysfs file inside hv_gpci device to show affinity domain via domain information")
+Signed-off-by: Aboorva Devarajan <aboorvad@linux.ibm.com>
+Reviewed-by: Ritesh Harjani (IBM) <ritesh.list@gmail.com>
+Signed-off-by: Madhavan Srinivasan <maddy@linux.ibm.com>
+Link: https://patch.msgid.link/20260508041256.3447113-1-aboorvad@linux.ibm.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/mptcp/pm_netlink.c | 28 +++++++++++++++++-----------
- 1 file changed, 17 insertions(+), 11 deletions(-)
+ arch/powerpc/perf/hv-gpci.c | 24 ++++++++++++++++--------
+ 1 file changed, 16 insertions(+), 8 deletions(-)
 
-diff --git a/net/mptcp/pm_netlink.c b/net/mptcp/pm_netlink.c
-index be531df02c371..4ff6721ad5c7a 100644
---- a/net/mptcp/pm_netlink.c
-+++ b/net/mptcp/pm_netlink.c
-@@ -22,6 +22,7 @@ struct mptcp_pm_add_entry {
- 	struct list_head	list;
- 	struct mptcp_addr_info	addr;
- 	u8			retrans_times;
-+	bool			timer_done;
- 	struct timer_list	add_timer;
- 	struct mptcp_sock	*sock;
- 	struct rcu_head		rcu;
-@@ -294,22 +295,22 @@ static void mptcp_pm_add_timer(struct timer_list *timer)
- 	struct mptcp_pm_add_entry *entry = from_timer(entry, timer, add_timer);
- 	struct mptcp_sock *msk = entry->sock;
- 	struct sock *sk = (struct sock *)msk;
--	unsigned int timeout;
-+	unsigned int timeout = 0;
+diff --git a/arch/powerpc/perf/hv-gpci.c b/arch/powerpc/perf/hv-gpci.c
+index 5cac2cf3bd1e5..10c82cf8f5b39 100644
+--- a/arch/powerpc/perf/hv-gpci.c
++++ b/arch/powerpc/perf/hv-gpci.c
+@@ -210,7 +210,7 @@ static ssize_t processor_bus_topology_show(struct device *dev, struct device_att
+ 			0, 0, buf, &n, arg);
  
- 	pr_debug("msk=%p\n", msk);
+ 	if (!ret)
+-		return n;
++		goto out_success;
  
-+	bh_lock_sock(sk);
- 	if (unlikely(inet_sk_state_load(sk) == TCP_CLOSE))
--		goto exit;
-+		goto out;
- 
--	bh_lock_sock(sk);
- 	if (sock_owned_by_user(sk)) {
- 		/* Try again later. */
--		sk_reset_timer(sk, timer, jiffies + HZ / 20);
-+		timeout = HZ / 20;
+ 	if (ret != H_PARAMETER)
  		goto out;
+@@ -244,12 +244,14 @@ static ssize_t processor_bus_topology_show(struct device *dev, struct device_att
+ 				starting_index, 0, buf, &n, arg);
+ 
+ 		if (!ret)
+-			return n;
++			goto out_success;
+ 
+ 		if (ret != H_PARAMETER)
+ 			goto out;
  	}
  
- 	if (mptcp_pm_should_add_signal_addr(msk)) {
--		sk_reset_timer(sk, timer, jiffies + HZ);
-+		timeout = HZ;
- 		goto out;
- 	}
- 
-@@ -326,9 +327,8 @@ static void mptcp_pm_add_timer(struct timer_list *timer)
- 		entry->retrans_times++;
- 	}
- 
--	if (entry->retrans_times < ADD_ADDR_RETRANS_MAX)
--		sk_reset_timer(sk, timer,
--			       jiffies + timeout);
-+	if (entry->retrans_times >= ADD_ADDR_RETRANS_MAX)
-+		timeout = 0;
- 
- 	spin_unlock_bh(&msk->pm.lock);
- 
-@@ -336,9 +336,13 @@ static void mptcp_pm_add_timer(struct timer_list *timer)
- 		mptcp_pm_subflow_established(msk);
++out_success:
++	put_cpu_var(hv_gpci_reqb);
+ 	return n;
  
  out:
-+	if (timeout)
-+		sk_reset_timer(sk, timer, jiffies + timeout);
-+	else
-+		/* if sock_put calls sk_free: avoid waiting for this timer */
-+		entry->timer_done = true;
- 	bh_unlock_sock(sk);
--exit:
--	__sock_put(sk);
-+	sock_put(sk);
- }
+@@ -278,7 +280,7 @@ static ssize_t processor_config_show(struct device *dev, struct device_attribute
+ 			0, 0, buf, &n, arg);
  
- struct mptcp_pm_add_entry *
-@@ -402,6 +406,7 @@ bool mptcp_pm_alloc_anno_list(struct mptcp_sock *msk,
+ 	if (!ret)
+-		return n;
++		goto out_success;
  
- 	timer_setup(&add_entry->add_timer, mptcp_pm_add_timer, 0);
- reset_timer:
-+	add_entry->timer_done = false;
- 	timeout = mptcp_get_add_addr_timeout(net);
- 	if (timeout)
- 		sk_reset_timer(sk, &add_entry->add_timer, jiffies + timeout);
-@@ -422,7 +427,8 @@ void mptcp_pm_free_anno_list(struct mptcp_sock *msk)
- 	spin_unlock_bh(&msk->pm.lock);
+ 	if (ret != H_PARAMETER)
+ 		goto out;
+@@ -312,12 +314,14 @@ static ssize_t processor_config_show(struct device *dev, struct device_attribute
+ 				starting_index, 0, buf, &n, arg);
  
- 	list_for_each_entry_safe(entry, tmp, &free_list, list) {
--		sk_stop_timer_sync(sk, &entry->add_timer);
-+		if (!entry->timer_done)
-+			sk_stop_timer_sync(sk, &entry->add_timer);
- 		kfree_rcu(entry, rcu);
+ 		if (!ret)
+-			return n;
++			goto out_success;
+ 
+ 		if (ret != H_PARAMETER)
+ 			goto out;
  	}
- }
+ 
++out_success:
++	put_cpu_var(hv_gpci_reqb);
+ 	return n;
+ 
+ out:
+@@ -346,7 +350,7 @@ static ssize_t affinity_domain_via_virtual_processor_show(struct device *dev,
+ 			0, 0, buf, &n, arg);
+ 
+ 	if (!ret)
+-		return n;
++		goto out_success;
+ 
+ 	if (ret != H_PARAMETER)
+ 		goto out;
+@@ -382,12 +386,14 @@ static ssize_t affinity_domain_via_virtual_processor_show(struct device *dev,
+ 				starting_index, secondary_index, buf, &n, arg);
+ 
+ 		if (!ret)
+-			return n;
++			goto out_success;
+ 
+ 		if (ret != H_PARAMETER)
+ 			goto out;
+ 	}
+ 
++out_success:
++	put_cpu_var(hv_gpci_reqb);
+ 	return n;
+ 
+ out:
+@@ -416,7 +422,7 @@ static ssize_t affinity_domain_via_domain_show(struct device *dev, struct device
+ 			0, 0, buf, &n, arg);
+ 
+ 	if (!ret)
+-		return n;
++		goto out_success;
+ 
+ 	if (ret != H_PARAMETER)
+ 		goto out;
+@@ -448,12 +454,14 @@ static ssize_t affinity_domain_via_domain_show(struct device *dev, struct device
+ 					starting_index, 0, buf, &n, arg);
+ 
+ 		if (!ret)
+-			return n;
++			goto out_success;
+ 
+ 		if (ret != H_PARAMETER)
+ 			goto out;
+ 	}
+ 
++out_success:
++	put_cpu_var(hv_gpci_reqb);
+ 	return n;
+ 
+ out:
 -- 
 2.53.0
 
