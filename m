@@ -1,63 +1,62 @@
-Return-Path: <stable+bounces-255352-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-255708-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 2C9kL8ShGGqblggAu9opvQ
-	(envelope-from <stable+bounces-255352-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:12:52 +0200
+	id kCyrLkenGGpolwgAu9opvQ
+	(envelope-from <stable+bounces-255708-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:36:23 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 579265F8135
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:12:52 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2D83F5F9155
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:36:23 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 2B27D31F55F3
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 20:04:32 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 6895031F408A
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 20:21:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A16AA32ABC0;
-	Thu, 28 May 2026 20:04:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 28D2E2F8E83;
+	Thu, 28 May 2026 20:21:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="scTZwLWc"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VLGUhAeF"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6120C304BB3;
-	Thu, 28 May 2026 20:04:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ED081301472;
+	Thu, 28 May 2026 20:21:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779998669; cv=none; b=D9RRpP2pIXq4dv1xLr7Zhk1F7jbnoc4AsTlDJF7i0Ti/bBQQ1nKpjVaXrUhickCMYf1QBHndbUMrVbgt6brUjDkEqosiy0iU/YljdTiO91Zyhy+b9mUlrs1bEbE25b8ex7eWuH6dYKlVw/N+SLDYagaRoKYNKAniE8YU22ZSXBo=
+	t=1779999664; cv=none; b=bSX9368RkRMo2fHp34V/plRpeqcNHD76z66mwCvHbKbT9JHWLfWwe3bPaaczW43MozwyBMsEH7nnCqJB3lKlGLALHyquwiolhemzkyHOX5iF4Zc+CTY30EyWYKyD/UUZ+0iMXqWWg99x+IpfqkBBh5wrV88o7aY4IlIa7D89k+0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779998669; c=relaxed/simple;
-	bh=YbYQk6cgvoDgaBhkLqNnWTqNI2LVrGnhnYwWnYY+9xk=;
+	s=arc-20240116; t=1779999664; c=relaxed/simple;
+	bh=yEN1WA+aM0f/xwfe5CTO32ChepFOK9aL6nFXgOBNPHc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=QItcjWJUgJvqbTnt+p0liDv6Z7YmHGPVIxQL0AOEDY7ff+Udf2u7PItrv/W1I9RS16iUQvCEOjlmBPIkCswVECBYGay2QIZS2ywXmMifFy7CL8L06q1KYRyskwrU0ORPbb0kdLHE60QUk6rTVur+ie3AJQUPiIdHN7tIAlb3yYA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=scTZwLWc; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C4DEF1F00A3A;
-	Thu, 28 May 2026 20:04:27 +0000 (UTC)
+	 MIME-Version; b=K2ttWMDqfW8vMm4EtJ42grQplDDLZoUJ9u5cBIqHGUDurwcONvqov28BKtDRxlhkrFVaZJl/9H5StNs6HBO4inPctxg7VUFbonU9QdUnW52ELp8IvF9g4fzQPOi4CsmvqtkzZS/Jdgz1VNF4DacvSKMsvsOL5ud14iGWQXhmE0Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VLGUhAeF; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5C0201F000E9;
+	Thu, 28 May 2026 20:21:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779998668;
-	bh=vrg15zAevW1TNutE2LGYGvYapyn8ut1z+cSvBQM3lUU=;
+	s=korg; t=1779999663;
+	bh=Ji+FnuHANCFbDBXW7ZUdvQeYl2HbvyHzeG8JDL1uDHw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=scTZwLWc8HRkPkS2QBbSXjUyPITXL5GXQDRmp+4McRRgcLpndqF1Wn43Vx0SvhTVJ
-	 nSqzUQ4TuWd73X8LeKUpmxNUamw83uIfWEMUplyAaIP/lEwimBE1nLkO0dUzNV+oy9
-	 ppXXKWUwDn9SFIxjJsDJ0vwGyNPOsMZiGwcPMbqA=
+	b=VLGUhAeFDFnP+CXY9YChQOWhSGVGCFZQZGInWjvmJopWcKxRGs2irZj0JG2l0ZtpR
+	 KLanaaZT8+SEm6HhXUYpGQrFGfI0i8sO3u0wXRwl15X0iiQGwNLcNoesusZeJuhMxA
+	 DmRe2gl9Bh/INw5Na+VESfHTO6TOD1UJLcS7rVZo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	David Howells <dhowells@redhat.com>,
-	Paulo Alcantara <pc@manguebit.org>,
-	Matthew Wilcox <willy@infradead.org>,
-	netfs@lists.linux.dev,
-	linux-fsdevel@vger.kernel.org,
-	Christian Brauner <brauner@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 7.0 255/461] netfs: Fix zeropoint update where i_size > remote_i_size
+	stable@kernel.org,
+	Yuan Tan <yuantan098@gmail.com>,
+	Yifan Wu <yifanwucs@gmail.com>,
+	Juefei Pu <tomapufckgml@gmail.com>,
+	Xin Liu <bird@lzu.edu.cn>,
+	Sven Eckelmann <sven@narfation.org>
+Subject: [PATCH 6.18 146/377] batman-adv: frag: disallow unicast fragment in fragment
 Date: Thu, 28 May 2026 21:46:24 +0200
-Message-ID: <20260528194654.533605498@linuxfoundation.org>
+Message-ID: <20260528194642.599831508@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260528194646.819809818@linuxfoundation.org>
-References: <20260528194646.819809818@linuxfoundation.org>
+In-Reply-To: <20260528194638.371537336@linuxfoundation.org>
+References: <20260528194638.371537336@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -72,112 +71,120 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	RCVD_TLS_LAST(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,kernel.org,gmail.com,lzu.edu.cn,narfation.org];
+	TAGGED_FROM(0.00)[bounces-255708-lists,stable=lfdr.de];
+	PRECEDENCE_BULK(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FROM_HAS_DN(0.00)[];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-255352-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TO_DN_SOME(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[10];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[9];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim,manguebit.org:email,msgid.link:url,infradead.org:email,linux.dev:email]
-X-Rspamd-Queue-Id: 579265F8135
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,lzu.edu.cn:email,narfation.org:email,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim]
+X-Rspamd-Queue-Id: 2D83F5F9155
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-7.0-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: David Howells <dhowells@redhat.com>
+From: Sven Eckelmann <sven@narfation.org>
 
-[ Upstream commit 4543a4d737944134a1394afe797622546fbcc98a ]
+commit bc62216dc8e221e3781afa14430f45208bfa9af9 upstream.
 
-Fix the update of the zero point[*] by netfs_release_folio() when there is
-uncommitted data in the pagecache beyond the folio being released but the
-on-server EOF is in this folio (ie. i_size > remote_i_size).  The update
-needs to limit zero_point to remote_i_size, not i_size as i_size is a local
-phenomenon reflecting updates made locally to the pagecache, not stuff
-written to the server.  remote_i_size tracks the server's i_size.
+batadv_frag_skb_buffer() is called by batadv_batman_skb_recv() when a
+BATADV_UNICAST_FRAG packet is received. Once all fragments are collected
+and the packet is reassembled, batadv_recv_frag_packet() calls
+batadv_batman_skb_recv() again to process the defragmented payload.
 
-[*] The zero point is the file position from which we can assume that the
-    server will just return zeros, so we can avoid generating reads.
+A malicious sender can craft a BATADV_UNICAST_FRAG packet whose reassembled
+payload is itself a BATADV_UNICAST_FRAG packet (matryoshka-style nesting).
+Each nesting level recurses through batadv_batman_skb_recv() without bound,
+growing the kernel stack until it is exhausted.
 
-Note that netfs_invalidate_folio() probably doesn't need fixing as
-zero_point should be updated by setattr after truncation or fallocate.
+Since refragmentation or fragments in fragments are not actually allowed,
+discard all packets which are still BATADV_UNICAST_FRAG packets after the
+defragmentation process.
 
-Found with:
-
-    fsx -q -N 1000000 -p 10000 -o 128000 -l 600000 \
-        /xfstest.test/junk --replay-ops=junk.fsxops
-
-using the following as junk.fsxops:
-
-    truncate 0x0 0x1bbae 0x82864
-    write 0x3ef2e 0xf9c8 0x1bbae
-    write 0x67e05 0xcb5a 0x4e8f6
-    mapread 0x57781 0x85b6 0x7495f
-    copy_range 0x5d3d 0x10329 0x54fac 0x7495f
-    write 0x64710 0x1c2b 0x7495f
-    mapread 0x64000 0x1000 0x7495f
-
-on cifs with the default cache option.
-
-It shows read-gaps on folio 0x64 failing with a short read (ie. it hits
-EOF) if the FMODE_READ check is commented out in netfs_perform_write():
-
-                if (//(file->f_mode & FMODE_READ) ||
-                    netfs_is_cache_enabled(ctx)) {
-
-and no fscache.  This was initially found with the generic/522 xfstest.
-
-Fixes: cce6bfa6ca0e ("netfs: Fix trimming of streaming-write folios in netfs_inval_folio()")
-Signed-off-by: David Howells <dhowells@redhat.com>
-Link: https://patch.msgid.link/20260512123404.719402-7-dhowells@redhat.com
-cc: Paulo Alcantara <pc@manguebit.org>
-cc: Matthew Wilcox <willy@infradead.org>
-cc: netfs@lists.linux.dev
-cc: linux-fsdevel@vger.kernel.org
-Signed-off-by: Christian Brauner <brauner@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: stable@kernel.org
+Fixes: 610bfc6bc99b ("batman-adv: Receive fragmented packets and merge")
+Reported-by: Yuan Tan <yuantan098@gmail.com>
+Reported-by: Yifan Wu <yifanwucs@gmail.com>
+Reported-by: Juefei Pu <tomapufckgml@gmail.com>
+Reported-by: Xin Liu <bird@lzu.edu.cn>
+Reviewed-by: Yuan Tan <yuantan098@gmail.com>
+Signed-off-by: Sven Eckelmann <sven@narfation.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/netfs/misc.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ net/batman-adv/fragmentation.c |   35 +++++++++++++++++++++++++++++++++++
+ 1 file changed, 35 insertions(+)
 
-diff --git a/fs/netfs/misc.c b/fs/netfs/misc.c
-index bad661ff2bec8..723571ca1b885 100644
---- a/fs/netfs/misc.c
-+++ b/fs/netfs/misc.c
-@@ -307,10 +307,10 @@ bool netfs_release_folio(struct folio *folio, gfp_t gfp)
- 		return false;
+--- a/net/batman-adv/fragmentation.c
++++ b/net/batman-adv/fragmentation.c
+@@ -305,6 +305,31 @@ free:
+ }
  
- 	netfs_read_sizes(inode, &i_size, &remote_i_size, &zero_point);
--	end = umin(folio_next_pos(folio), i_size);
-+	end = folio_next_pos(folio);
- 	if (end > zero_point) {
- 		spin_lock(&inode->i_lock);
--		end = umin(folio_next_pos(folio), inode->i_size);
-+		end = umin(end, ctx->_remote_i_size);
- 		if (end > ctx->_zero_point)
- 			netfs_write_zero_point(inode, end);
- 		spin_unlock(&inode->i_lock);
--- 
-2.53.0
-
+ /**
++ * batadv_skb_is_frag() - check if newly merged skb is gain a unicast packet
++ * @skb: newly merged skb
++ *
++ * Return: if newly skb is of type BATADV_UNICAST_FRAG
++ */
++static bool batadv_skb_is_frag(struct sk_buff *skb)
++{
++	struct batadv_ogm_packet *batadv_ogm_packet;
++
++	/* packet should hold at least type and version */
++	if (unlikely(!pskb_may_pull(skb, 2)))
++		return false;
++
++	batadv_ogm_packet = (struct batadv_ogm_packet *)skb->data;
++
++	if (batadv_ogm_packet->version != BATADV_COMPAT_VERSION)
++		return false;
++
++	if (batadv_ogm_packet->packet_type != BATADV_UNICAST_FRAG)
++		return false;
++
++	return true;
++}
++
++/**
+  * batadv_frag_skb_buffer() - buffer fragment for later merge
+  * @skb: skb to buffer
+  * @orig_node_src: originator that the skb is received from
+@@ -337,6 +362,16 @@ bool batadv_frag_skb_buffer(struct sk_bu
+ 	if (!skb_out)
+ 		goto out_err;
+ 
++	/* fragment in fragment is not allowed. otherwise it is possible
++	 * to exhaust the stack when receiving a matryoshka-style
++	 * "fragments in a fragment packet"
++	 */
++	if (batadv_skb_is_frag(skb_out)) {
++		kfree_skb(skb_out);
++		skb_out = NULL;
++		goto out_err;
++	}
++
+ out:
+ 	ret = true;
+ out_err:
 
 
 
