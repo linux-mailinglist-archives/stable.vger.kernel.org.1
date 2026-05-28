@@ -1,60 +1,59 @@
-Return-Path: <stable+bounces-255265-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-255620-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id YOmQKsqfGGpAlggAu9opvQ
-	(envelope-from <stable+bounces-255265-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:04:26 +0200
+	id 8G6LOPqjGGrClggAu9opvQ
+	(envelope-from <stable+bounces-255620-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:22:18 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 28E1B5F7C3B
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:04:26 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5D9B45F87BA
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:22:18 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id A21B93057D67
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 20:00:25 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 1EE9B3040D85
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 20:17:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 83F4B1AA1D2;
-	Thu, 28 May 2026 20:00:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 623382D1303;
+	Thu, 28 May 2026 20:17:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="p46G3u8n"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Gq5aLI8C"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5A2B43BD649;
-	Thu, 28 May 2026 20:00:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 36AEA24A047;
+	Thu, 28 May 2026 20:17:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779998424; cv=none; b=GIZoFML5MQnJ6R7h5XNgjAKWC+TFHPlfb1h2iWMMT6ROvTnDOffc6DfKHn9AHQD9ve9rswwu/Y1HG5XX/77dN5OcX/8M0ynW/6Va/J8tHXv1PvJIPSjyOwoDw9tk2YrHSuZO2I00uwpRIj1bgRpbmKnIj7wK/xhKrD77QiVVNl0=
+	t=1779999423; cv=none; b=uP5PH909tDr1TbZ9f7/OxAjhwbVq1SXXy1msLmX5LjLzrGrKR9i4KvifZJJkaWiMmP8PFwdHwf4scIti7mh2Exa7/GYgXed34Y9jD5S4HslG/M3gNalqFGRQEc51PPx8e6Vnaf5oqVUnNh0a4k8zVp7I/tA77bcH5h8XjHGltDY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779998424; c=relaxed/simple;
-	bh=fnVSxrbNsgKF23BKl3tAVCbdstPEpZRxTSPI2cr0tac=;
+	s=arc-20240116; t=1779999423; c=relaxed/simple;
+	bh=Z/UyXgz5SSWC2JYzzvKXMdIdvk3Lk6Q2ZPziCzRMDF4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=MMuTWlb5JCsvavRwOhimo0Sch0DsazQ2dEc9znfeXtwnHdRpXlHCla4qbZu9gJ4OUlVzf0//ZO0OVg45KpfiSB4lIB9F66zdejPaBUXHXM6ATI4zPzT6W1prDCGSoDuKa6Udf+ZM0IWJlOEl2AcKz1QhBZPhVW7qbFETrWFCYPM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=p46G3u8n; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B87801F000E9;
-	Thu, 28 May 2026 20:00:22 +0000 (UTC)
+	 MIME-Version:Content-Type; b=U9RpDMGNRaPcQYH6aGXG8DEHV+7jjwZayt7vuUS8spHyl9oQ5rnLraEoOKY8dCPkR3YsHHPbARcOGr/gzevXif7Avo83UEuGUyZja8HaGq24O5ENnE86Oe2/6AOtKlP74/AW22PnHCwU8CuV48utIeax2qIBD/PMuxg2nhcOvsg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Gq5aLI8C; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 94C511F000E9;
+	Thu, 28 May 2026 20:17:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779998423;
-	bh=2WNDV+xc8cV8tvrOhbyJ2Tfh/vyGEMRLzWSsLSD0Vko=;
+	s=korg; t=1779999422;
+	bh=aQp7SWF83+zbHCvRlyWctsIDrRLi54LvGTX5hEdo8Fk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=p46G3u8nGMn2dSW46EkojSinKODddayzGAM3KltNXEnusYPdYgPAS0vTgJ2kZGequ
-	 HbYdvvKoOgVCn8UnMNl8Je9HzT0ONIbwn+TJWFbnMNaWL20Pb8E3y5R+6HzVvmRjkv
-	 56iJToMSorzp32A1wVX4Cx+12G3OmVdHfxjaDlRs=
+	b=Gq5aLI8Ct/7RNEq/hrQUXlKkWarDz7973TDzCcc5ttqgicQyTyefS9ghzl/OR/F2z
+	 F/TtrEP8W5BvkZyQhDyc0K8zhpuyvthwUri+XCcEV4XlkYZy9vCFlRZQgW8dqFDiNN
+	 laG7/53L2grxe7YxHSLnJJhTNMB2QM6iIzvVYjsE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Abdurrahman Hussain <abdurrahman@nexthop.ai>,
-	Bartosz Golaszewski <bartosz.golaszewski@oss.qualcomm.com>,
-	Linus Walleij <linusw@kernel.org>,
-	Guenter Roeck <linux@roeck-us.net>
-Subject: [PATCH 7.0 169/461] hwmon: (pmbus/adm1266) cap PDIO scan in get_multiple at ADM1266_PDIO_NR
-Date: Thu, 28 May 2026 21:44:58 +0200
-Message-ID: <20260528194651.952994227@linuxfoundation.org>
+	=?UTF-8?q?Nerijus=20Bend=C5=BEi=C5=ABnas?= <nerijus.bendziunas@gmail.com>,
+	Nicolai Buchwitz <nb@tipi-net.de>,
+	Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 6.18 061/377] net: phy: skip EEE advertisement write when autoneg is disabled
+Date: Thu, 28 May 2026 21:44:59 +0200
+Message-ID: <20260528194640.135265933@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260528194646.819809818@linuxfoundation.org>
-References: <20260528194646.819809818@linuxfoundation.org>
+In-Reply-To: <20260528194638.371537336@linuxfoundation.org>
+References: <20260528194638.371537336@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,92 +63,102 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-0.66 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-255265-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
+	TAGGED_FROM(0.00)[bounces-255620-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,tipi-net.de,kernel.org];
 	TO_DN_SOME(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[6];
+	NEURAL_HAM(-0.00)[-1.000];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[7];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	MID_RHS_MATCH_FROM(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,roeck-us.net:email,qualcomm.com:email,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,nexthop.ai:email]
-X-Rspamd-Queue-Id: 28E1B5F7C3B
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,tipi-net.de:email]
+X-Rspamd-Queue-Id: 5D9B45F87BA
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-7.0-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Abdurrahman Hussain <abdurrahman@nexthop.ai>
+From: Nerijus Bendžiūnas <nerijus.bendziunas@gmail.com>
 
-commit d7834d92251baade796812876e95555e2066fa9f upstream.
+commit 960e77ce14a83ef7f226e8e4b4d75765633ba48b upstream.
 
-adm1266_gpio_get_multiple() iterates the PDIO portion of the
-caller-supplied mask using
+genphy_c45_an_config_eee_aneg() writes the EEE advertisement to the
+auto-negotiation device's MMD register space (MDIO_MMD_AN, register
+MDIO_AN_EEE_ADV).  These registers are read by the link partner only
+during auto-negotiation, so writing them while autoneg is disabled
+cannot influence the link.  On some PHYs (e.g. Broadcom BCM54213PE)
+the write nevertheless reaches the chip and disturbs the receive
+datapath.
 
-	for_each_set_bit_from(gpio_nr, mask,
-			      ADM1266_GPIO_NR + ADM1266_PDIO_STATUS) {
-		...
-	}
+Concretely, running
 
-where ADM1266_PDIO_STATUS is the PMBus command code (0xE9, i.e. 233),
-not the number of PDIO pins.  The intended upper bound is
-ADM1266_GPIO_NR + ADM1266_PDIO_NR = 25.
+    ethtool -s eth0 speed 100 duplex full autoneg off
+    ethtool --set-eee eth0 eee off
 
-gpiolib hands in a mask sized for gc.ngpio (= 25 bits on this chip),
-so the iteration walks find_next_bit() up to 242, reading up to 217
-extra bits (a handful of unsigned-long words: four on 64-bit, seven
-on 32-bit) of whatever lives past the end of the mask in the
-caller's stack.  Any incidental set bit in that range then drives a
-set_bit(gpio_nr, bits) call that writes past the end of the
-caller-supplied bits array too -- both out-of-bounds.
+leaves eth0 with TX working and RX completely silent on a
+Raspberry Pi 4 / CM4 board (bcmgenet + BCM54213PE in rgmii-rxid).
+Switching back to autoneg recovers the link.
 
-Substitute ADM1266_PDIO_NR for the constant so the scan stops at the
-last real PDIO bit.
+Prior to commit f26a29a038ee ("net: phy: ensure that genphy_c45_an_config_eee_aneg() sees new value of phydev->eee_cfg.eee_enabled"),
+the disable path was effectively a no-op because the helper read
+the stale eee_cfg.eee_enabled, so the underlying PHY behavior never
+surfaced.
 
-Fixes: d98dfad35c38 ("hwmon: (pmbus/adm1266) Add support for GPIOs")
+Bisected on rpi-6.12.y between commits 83943264 (good) and
+effcbc88 (bad) to f26a29a038ee.
+
+Fixes: f26a29a038ee ("net: phy: ensure that genphy_c45_an_config_eee_aneg() sees new value of phydev->eee_cfg.eee_enabled")
 Cc: stable@vger.kernel.org
-Signed-off-by: Abdurrahman Hussain <abdurrahman@nexthop.ai>
-Reviewed-by: Bartosz Golaszewski <bartosz.golaszewski@oss.qualcomm.com>
-Reviewed-by: Linus Walleij <linusw@kernel.org>
-Link: https://lore.kernel.org/r/20260518-adm1266-gpio-fixes-v3-1-e425e4f88139@nexthop.ai
-Signed-off-by: Guenter Roeck <linux@roeck-us.net>
+Signed-off-by: Nerijus Bendžiūnas <nerijus.bendziunas@gmail.com>
+Reviewed-by: Nicolai Buchwitz <nb@tipi-net.de>
+Tested-by: Nicolai Buchwitz <nb@tipi-net.de>
+Link: https://patch.msgid.link/20260516150251.879680-1-nerijus.bendziunas@gmail.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/hwmon/pmbus/adm1266.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/net/phy/phy-c45.c |    8 ++++++++
+ 1 file changed, 8 insertions(+)
 
---- a/drivers/hwmon/pmbus/adm1266.c
-+++ b/drivers/hwmon/pmbus/adm1266.c
-@@ -212,7 +212,7 @@ static int adm1266_gpio_get_multiple(str
- 	status = read_buf[0] + (read_buf[1] << 8);
+--- a/drivers/net/phy/phy-c45.c
++++ b/drivers/net/phy/phy-c45.c
+@@ -939,6 +939,14 @@ EXPORT_SYMBOL_GPL(genphy_c45_read_eee_ab
+  */
+ int genphy_c45_an_config_eee_aneg(struct phy_device *phydev)
+ {
++	/* Writing MMD AN advertisements while autoneg is disabled has no
++	 * effect on link-partner negotiation, but on some PHYs (e.g. the
++	 * Broadcom BCM54213PE) the write itself disturbs the receive
++	 * datapath. Skip it.
++	 */
++	if (phydev->autoneg == AUTONEG_DISABLE)
++		return 0;
++
+ 	if (!phydev->eee_cfg.eee_enabled) {
+ 		__ETHTOOL_DECLARE_LINK_MODE_MASK(adv) = {};
  
- 	*bits = 0;
--	for_each_set_bit_from(gpio_nr, mask, ADM1266_GPIO_NR + ADM1266_PDIO_STATUS) {
-+	for_each_set_bit_from(gpio_nr, mask, ADM1266_GPIO_NR + ADM1266_PDIO_NR) {
- 		if (test_bit(gpio_nr - ADM1266_GPIO_NR, &status))
- 			set_bit(gpio_nr, bits);
- 	}
 
 
 
