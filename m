@@ -1,61 +1,59 @@
-Return-Path: <stable+bounces-255520-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-255915-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id +HVPEGqjGGrClggAu9opvQ
-	(envelope-from <stable+bounces-255520-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:19:54 +0200
+	id +K16Kv+mGGpolwgAu9opvQ
+	(envelope-from <stable+bounces-255915-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:35:11 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9FEE15F865F
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:19:53 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 54D165F906B
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:35:11 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id B29D93193B24
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 20:12:22 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 930BB3092863
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 20:30:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6005A352019;
-	Thu, 28 May 2026 20:12:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3752333372A;
+	Thu, 28 May 2026 20:30:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vsgMnOKc"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GpxHtFCt"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3533633CE8A;
-	Thu, 28 May 2026 20:12:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0C9F13438AE;
+	Thu, 28 May 2026 20:30:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779999142; cv=none; b=O/H/ZPAND9XSvUFNnqC+3U7taCGzbxo80d1VkkPFcbpBES5nFC6imdQR5BpqMiECLOYjvtzDBTO3nelDk7al0fMjIjMpFkpOJQlvo5KXy5KQCtmOzZuHfTk46/EywQpDrXnlIQFb7yH2djvwU2VUVo6tEK6Gi9LkNtU7JJhKcxU=
+	t=1780000236; cv=none; b=ZXCR9nX7m4N1Y6A97wKZCwsGanBi4ctelWcDj9DlcQmeP6vIXXAgrbR5VQ+3O1rKX/F9hH9xEgzC256F5bmaQ3R6Y3nhGNsW+qy1SOP2VBroUoZWTjkBb9+th7OSlxpjsRIg+E4sKhRa6xols2qHcjVyMGZoheEtQidM8M/uByE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779999142; c=relaxed/simple;
-	bh=IK2iQtbnzdWm4Dq+Hsk3YciSN6Qlt2MYE58u9xg5Mmc=;
+	s=arc-20240116; t=1780000236; c=relaxed/simple;
+	bh=XKmhKgA0T55tkwkfXPiLB4Wr3D1y45Ws19Ra22ZzRcs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=jOj+vkjunaYKCfcH7pALFUL4q4lVwxW4dS2pKXzC2EnM/CXdWoDVXAoCnX1YxkrBJ+hZSQsua/1QN5ffO3NFWvRgZKQgpzHxPygZ/eQ+R6Fb+h0OHbX10p6pOZStkdmBAtTKikobaY6zrdwiltSM26UIWJBX8R+wfnEvZwKL3Ls=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vsgMnOKc; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 91DCE1F000E9;
-	Thu, 28 May 2026 20:12:20 +0000 (UTC)
+	 MIME-Version; b=P+HZo7Is7CkkZXN4I+hyxY/kVLkAdi6vWePyDyFZ7aDy/5bQHXDmmvbW3N50NoGa5TCNea59qBqDEnmowwhvrZZ3zjRrQ5dd7+LRVlclKtrbmvdLF4VfJYA1fS1zT2w8kU15+EegVjvt0iJvPzBinKNJgkCHArDQCHguJXwUI5o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GpxHtFCt; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6AD421F00A3A;
+	Thu, 28 May 2026 20:30:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779999141;
-	bh=3OZSCG1EXtf6+qZJs7Sxb5NecFhGtOcSK0Th0usTASo=;
+	s=korg; t=1780000234;
+	bh=ds9vYao8UuiO9cC116yQURws9I+d3pEk6ZvZkthcvSA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=vsgMnOKcbee78+ei4rFzM51n/YLESZ920tw4rs/C6a/U9w7J67G1y6lXQf34dnFhT
-	 W4ir5wVGwYXKnNIMKjdp3PizZmRkPwDaILpY3VXsHwpf04K4Oqre6DVkfnCmIc3knk
-	 9mryzMcB0M9T9C2Os+H/hWeyYFJdxkGfmlE4w7BU=
+	b=GpxHtFCtrKz5vrabOZi8J2SBveVCUSxqnFm+7Y/c5PG7/eCw16H4o9jeWrnAdKogV
+	 DLyO3lfhne+9m3JZrSCrsrezG+EhyEWPW6U3JI5cmZQTdBO2NKIYDXy/pwICm2sSrH
+	 aPgTF3mi6CW1jTfZvP0mNqNbPqHy0HoJLSru5D9k=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alice Mikityanska <alice@isovalent.com>,
-	Willem de Bruijn <willemb@google.com>,
-	Gal Pressman <gal@nvidia.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Johannes Berg <johannes.berg@intel.com>,
+	Miri Korenblit <miriam.rachel.korenblit@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 7.0 422/461] udp: gso: Fix handling checksum in __udp_gso_segment
+Subject: [PATCH 6.18 313/377] wifi: iwlwifi: mld: dont dereference a pointer before NULL checking it
 Date: Thu, 28 May 2026 21:49:11 +0200
-Message-ID: <20260528194659.717906814@linuxfoundation.org>
+Message-ID: <20260528194647.447715592@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260528194646.819809818@linuxfoundation.org>
-References: <20260528194646.819809818@linuxfoundation.org>
+In-Reply-To: <20260528194638.371537336@linuxfoundation.org>
+References: <20260528194638.371537336@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -70,107 +68,99 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-255520-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-255915-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[8];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim,msgid.link:url,nvidia.com:email,isovalent.com:email]
-X-Rspamd-Queue-Id: 9FEE15F865F
+	RCPT_COUNT_FIVE(0.00)[6];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,intel.com:email,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim]
+X-Rspamd-Queue-Id: 54D165F906B
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-7.0-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alice Mikityanska <alice@isovalent.com>
+From: Miri Korenblit <miriam.rachel.korenblit@intel.com>
 
-[ Upstream commit 5f17ae0f595aeb560155ce98edbe44d3eacc7e40 ]
+[ Upstream commit d733ed481fd20a8e7bfe5119c4e77761ba3f87ee ]
 
-The cited commit started using msslen for uh->len, but still uses newlen
-to adjust uh->check. Although the checksum is ignored in most cases due
-to the hardware offload, __udp_gso_segment attempts to maintain the
-correct one. Fix uh->check and adjust it by the right value.
+In iwl_mld_remove_link, the link->fw_id is saved at the beginning of the
+function so we have it after we freed the link.
 
-Additionally, after the fix, newlen becomes assigned and unused before
-the loop. The code can be simplified a bit if mss adjustment is dropped,
-so that newlen becomes equal to msslen before the loop, and msslen can
-be also dropped, saving a few lines of code.
+But the link pointer can be NULL, and is not checked when the fw_id is
+stored.
 
-This brings us back to one variable, drops an unneeded arithmetic for
-mss, and fixes the UDP checksum.
+Fix it by simply freeing the link at the end of the function.
 
-Fixes: b10b446ce7ad ("udp: gso: Use single MSS length in UDP header for GSO_PARTIAL")
-Signed-off-by: Alice Mikityanska <alice@isovalent.com>
-Reviewed-by: Willem de Bruijn <willemb@google.com>
-Signed-off-by: Gal Pressman <gal@nvidia.com>
-Link: https://patch.msgid.link/20260518062250.3019914-2-gal@nvidia.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+fFixes: 0e66a39f4f0e ("wifi: iwlwifi: fix potential use after free in iwl_mld_remove_link()")
+Reviewed-by: Johannes Berg <johannes.berg@intel.com>
+Link: https://patch.msgid.link/20260515151351.371f40fc6711.I6a82cfe9655564e9c5731af91c36493b26b1208e@changeid
+Signed-off-by: Miri Korenblit <miriam.rachel.korenblit@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/ipv4/udp_offload.c | 13 ++-----------
- 1 file changed, 2 insertions(+), 11 deletions(-)
+ drivers/net/wireless/intel/iwlwifi/mld/link.c | 13 ++++++-------
+ 1 file changed, 6 insertions(+), 7 deletions(-)
 
-diff --git a/net/ipv4/udp_offload.c b/net/ipv4/udp_offload.c
-index 6b1654c1ad4ac..e831234326c41 100644
---- a/net/ipv4/udp_offload.c
-+++ b/net/ipv4/udp_offload.c
-@@ -483,11 +483,11 @@ struct sk_buff *__udp_gso_segment(struct sk_buff *gso_skb,
- 	struct sock *sk = gso_skb->sk;
- 	unsigned int sum_truesize = 0;
- 	struct sk_buff *segs, *seg;
--	__be16 newlen, msslen;
- 	struct udphdr *uh;
- 	unsigned int mss;
- 	bool copy_dtor;
- 	__sum16 check;
-+	__be16 newlen;
- 	int ret = 0;
+diff --git a/drivers/net/wireless/intel/iwlwifi/mld/link.c b/drivers/net/wireless/intel/iwlwifi/mld/link.c
+index f6f52d297a72c..e67ba3a24d025 100644
+--- a/drivers/net/wireless/intel/iwlwifi/mld/link.c
++++ b/drivers/net/wireless/intel/iwlwifi/mld/link.c
+@@ -1,6 +1,6 @@
+ // SPDX-License-Identifier: GPL-2.0 OR BSD-3-Clause
+ /*
+- * Copyright (C) 2024-2025 Intel Corporation
++ * Copyright (C) 2024-2026 Intel Corporation
+  */
  
- 	mss = skb_shinfo(gso_skb)->gso_size;
-@@ -556,15 +556,6 @@ struct sk_buff *__udp_gso_segment(struct sk_buff *gso_skb,
- 		return segs;
- 	}
+ #include "constants.h"
+@@ -501,7 +501,6 @@ void iwl_mld_remove_link(struct iwl_mld *mld,
+ 	struct iwl_mld_vif *mld_vif = iwl_mld_vif_from_mac80211(bss_conf->vif);
+ 	struct iwl_mld_link *link = iwl_mld_link_from_mac80211(bss_conf);
+ 	bool is_deflink = link == &mld_vif->deflink;
+-	u8 fw_id = link->fw_id;
  
--	msslen = htons(sizeof(*uh) + mss);
+ 	if (WARN_ON(!link || link->active))
+ 		return;
+@@ -509,15 +508,15 @@ void iwl_mld_remove_link(struct iwl_mld *mld,
+ 	iwl_mld_rm_link_from_fw(mld, bss_conf);
+ 	/* Continue cleanup on failure */
+ 
+-	if (!is_deflink)
+-		kfree_rcu(link, rcu_head);
 -
--	/* GSO partial and frag_list segmentation only requires splitting
--	 * the frame into an MSS multiple and possibly a remainder, both
--	 * cases return a GSO skb. So update the mss now.
--	 */
--	if (skb_is_gso(segs))
--		mss *= skb_shinfo(segs)->gso_segs;
--
- 	seg = segs;
- 	uh = udp_hdr(seg);
+ 	RCU_INIT_POINTER(mld_vif->link[bss_conf->link_id], NULL);
  
-@@ -587,7 +578,7 @@ struct sk_buff *__udp_gso_segment(struct sk_buff *gso_skb,
- 		if (!seg->next)
- 			break;
+-	if (WARN_ON(fw_id >= mld->fw->ucode_capa.num_links))
++	if (WARN_ON(link->fw_id >= mld->fw->ucode_capa.num_links))
+ 		return;
  
--		uh->len = msslen;
-+		uh->len = newlen;
- 		uh->check = check;
+-	RCU_INIT_POINTER(mld->fw_id_to_bss_conf[fw_id], NULL);
++	RCU_INIT_POINTER(mld->fw_id_to_bss_conf[link->fw_id], NULL);
++
++	if (!is_deflink)
++		kfree_rcu(link, rcu_head);
+ }
  
- 		if (seg->ip_summed == CHECKSUM_PARTIAL)
+ void iwl_mld_handle_missed_beacon_notif(struct iwl_mld *mld,
 -- 
 2.53.0
 
