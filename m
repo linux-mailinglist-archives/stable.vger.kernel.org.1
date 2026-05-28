@@ -1,64 +1,59 @@
-Return-Path: <stable+bounces-256261-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-256093-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 4A0ANdqtGGpolwgAu9opvQ
-	(envelope-from <stable+bounces-256261-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 23:04:26 +0200
+	id aPNsMgSpGGpolwgAu9opvQ
+	(envelope-from <stable+bounces-256093-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:43:48 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id DF4FF5FA2D5
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 23:04:25 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7A9055F9689
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:43:48 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 8E58A3091FDD
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 20:46:48 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 76043301E55A
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 20:38:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2F802318B96;
-	Thu, 28 May 2026 20:46:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7E6E031159C;
+	Thu, 28 May 2026 20:38:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qfOnP6PS"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AOxA2N+U"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EFFD2318B9D;
-	Thu, 28 May 2026 20:46:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 422092BF3E2;
+	Thu, 28 May 2026 20:38:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780001205; cv=none; b=KIVPkNrgAmCYF99KThCDClpMmDEIm8a/2iHDxvArvjhFX+joOmhcC4kriYKu6sBSQ0QO9ebRzqn/adBTzXTFGtIiVvgodgIkKWVzJAd28xwY1R/X2nILNJSRJ0yn13vWuEaY+nI+Wlzxc9cixB/gbG1QT7CHqeMfNPqY6EMxiTA=
+	t=1780000735; cv=none; b=edYluabKhj3K0FW/0ASQ2OfODCuAXR12dE4epSASSMuGVHOeGRVe8v4dvSLNat+BqQKymJ1zveFQrGBh660o9NFFTG+jAeeuDr2XgNPsIudGEkRVIKBD+mt71rVZePppos4UgzkITSxvZmXGRjkyZ1f/RayO4P/htok8zRcf/aQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780001205; c=relaxed/simple;
-	bh=aXKzdbU8IdvmNb0WBJDItqh0LQIAy8Kf11mGgKY3Kr8=;
+	s=arc-20240116; t=1780000735; c=relaxed/simple;
+	bh=vn6PzvzkdEmv3bvQDXT6zUc26yXCTPddpXEVQodFUA8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=PyM9IeI1SR39BQipmmXd5quC23eTd/WcIJZ0TEBnGfP4hr8PWdzANMi5E+lDDcBmMNtSQPsSsqYec5oyT9msXPLeRc/lmcc1hg0gXgrPSiknriyODL1KWrQ1Y6DBZHc8J7sb2IQnwAyQfrcGO6YvkegYMnTLuEF8TSiyLjtY+Fc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qfOnP6PS; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 619B31F000E9;
-	Thu, 28 May 2026 20:46:43 +0000 (UTC)
+	 MIME-Version; b=bwJYhy71tbwDcRqvgDoqCOYF7bvfipNESILK3lwYuRwXgW04bni/Oyyeh7/0ZidKJJx+6e2wXWnCJwTCCllr8Vc1Ub4EjIez5n0kD2ftFMmfFTzZMlJApHNkBmTTLyQsW8/Or5ys4hl/Kv4ush4LyhlBz5LPCZxlYKx/+OQ31aA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AOxA2N+U; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9FD711F000E9;
+	Thu, 28 May 2026 20:38:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780001203;
-	bh=Km9APm/ynSMiqNeUVZGg/q0HcAvnqVjTw8EFy9lX3CI=;
+	s=korg; t=1780000734;
+	bh=3KQjGmZZcGNrGU8kcItdPXGxo2/aOb2AJiiFqCtdZCE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=qfOnP6PSyiU8askfjUpRxSCiaN2114iSQsMnFbJhxOE5TOsjPn15en1c3xCFPgYI7
-	 R2Jb3IcyUPHP7Ls5ID0oMNeXX3dOM/qJ6gNRTTFNoFn3kUwWDDNgDEJgvPAAgVOtDk
-	 tJQSp2WRYG7Hm9TIGO0KpBAS891BCAmsFXtyB1I4=
+	b=AOxA2N+UDmdYfPLoTU5h8nLHicb613v36FrUpS25mGRIxfUAHQE5qJVxVNokrMqFc
+	 TeZHSP4A+gokK5BfPuRaUOgHBYkG7WrrJ6zRTgRFjCibaxKuwNgrFnaVO/6DCtkpjD
+	 9F/R38hQ0YpBihLe5OKK6mG3LRSh4/Z0S6ZHDk2w=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable@kernel.org,
-	Yuan Tan <yuantan098@gmail.com>,
-	Yifan Wu <yifanwucs@gmail.com>,
-	Juefei Pu <tomapufckgml@gmail.com>,
-	Xin Liu <bird@lzu.edu.cn>,
-	Zhengchuan Liang <zcliangcn@gmail.com>,
-	Ren Wei <n05ec@lzu.edu.cn>,
-	Pablo Neira Ayuso <pablo@netfilter.org>
-Subject: [PATCH 6.6 044/186] netfilter: ip6t_hbh: reject oversized option lists
+	Viresh Kumar <viresh.kumar@linaro.org>,
+	Sudeep Holla <sudeep.holla@arm.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 150/272] firmware: arm_ffa: Unregister the FF-A devices when cleaning up the partitions
 Date: Thu, 28 May 2026 21:48:44 +0200
-Message-ID: <20260528194930.154938696@linuxfoundation.org>
+Message-ID: <20260528194633.569115040@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260528194928.941004471@linuxfoundation.org>
-References: <20260528194928.941004471@linuxfoundation.org>
+In-Reply-To: <20260528194629.379955525@linuxfoundation.org>
+References: <20260528194629.379955525@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -73,84 +68,132 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,kernel.org,gmail.com,lzu.edu.cn,netfilter.org];
-	TAGGED_FROM(0.00)[bounces-256261-lists,stable=lfdr.de];
-	PRECEDENCE_BULK(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
+	RCVD_TLS_LAST(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	TAGGED_FROM(0.00)[bounces-256093-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[11];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[netfilter.org:email,lzu.edu.cn:email,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim]
-X-Rspamd-Queue-Id: DF4FF5FA2D5
+	RCPT_COUNT_FIVE(0.00)[6];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linaro.org:email,arm.com:email,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim]
+X-Rspamd-Queue-Id: 7A9055F9689
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Zhengchuan Liang <zcliangcn@gmail.com>
+From: Sudeep Holla <sudeep.holla@arm.com>
 
-commit 4322dcde6b4173c2d8e8e6118ed290794263bcc8 upstream.
+[ Upstream commit 46dcd68aaccac0812c12ec3f4e59c8963e2760ad ]
 
-struct ip6t_opts stores at most IP6T_OPTS_OPTSNR option descriptors,
-but hbh_mt6_check() does not reject larger optsnr values supplied from
-userspace.
+Both the FF-A core and the bus were in a single module before the
+commit 18c250bd7ed0 ("firmware: arm_ffa: Split bus and driver into distinct modules").
 
-Validate optsnr in the rule setup path so only match data that fits the
-fixed-size opts array can be installed. This follows the existing xtables
-pattern of rejecting invalid user-provided counts in checkentry() and
-keeps the packet matching path unchanged.
+The arm_ffa_bus_exit() takes care of unregistering all the FF-A devices.
+Now that there are 2 distinct modules, if the core driver is unloaded and
+reloaded, it will end up adding duplicate FF-A devices as the previously
+registered devices weren't unregistered when we cleaned up the modules.
 
-`struct ip6t_opts` has a fixed `opts[IP6T_OPTS_OPTSNR]` array,
-where `IP6T_OPTS_OPTSNR` is 16, then off-by-one array access is possible:
+Fix the same by unregistering all the FF-A devices on the FF-A bus during
+the cleaning up of the partitions and hence the cleanup of the module.
 
-[  137.924693][ T8692] UBSAN: array-index-out-of-bounds in ../net/ipv6/netfilter/ip6t_hbh.c:110:29
-[  137.926167][ T8692] index 16 is out of range for type '__u16 [16]'
-
-Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
-Cc: stable@kernel.org
-Reported-by: Yuan Tan <yuantan098@gmail.com>
-Reported-by: Yifan Wu <yifanwucs@gmail.com>
-Reported-by: Juefei Pu <tomapufckgml@gmail.com>
-Reported-by: Xin Liu <bird@lzu.edu.cn>
-Signed-off-by: Zhengchuan Liang <zcliangcn@gmail.com>
-Signed-off-by: Ren Wei <n05ec@lzu.edu.cn>
-Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 18c250bd7ed0 ("firmware: arm_ffa: Split bus and driver into distinct modules")
+Tested-by: Viresh Kumar <viresh.kumar@linaro.org>
+Message-Id: <20250217-ffa_updates-v3-8-bd1d9de615e7@arm.com>
+Signed-off-by: Sudeep Holla <sudeep.holla@arm.com>
+Stable-dep-of: 6d3daa9b8d31 ("firmware: arm_ffa: Unregister bus notifier on teardown for FF-A v1.0")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/ipv6/netfilter/ip6t_hbh.c |    4 ++++
- 1 file changed, 4 insertions(+)
+ drivers/firmware/arm_ffa/bus.c    | 3 ++-
+ drivers/firmware/arm_ffa/driver.c | 7 ++++---
+ include/linux/arm_ffa.h           | 3 +++
+ 3 files changed, 9 insertions(+), 4 deletions(-)
 
---- a/net/ipv6/netfilter/ip6t_hbh.c
-+++ b/net/ipv6/netfilter/ip6t_hbh.c
-@@ -168,6 +168,10 @@ static int hbh_mt6_check(const struct xt
- 		pr_debug("unknown flags %X\n", optsinfo->invflags);
- 		return -EINVAL;
- 	}
-+	if (optsinfo->optsnr > IP6T_OPTS_OPTSNR) {
-+		pr_debug("too many supported opts specified\n");
-+		return -EINVAL;
-+	}
+diff --git a/drivers/firmware/arm_ffa/bus.c b/drivers/firmware/arm_ffa/bus.c
+index ef41815c0109e..50bbc18599f74 100644
+--- a/drivers/firmware/arm_ffa/bus.c
++++ b/drivers/firmware/arm_ffa/bus.c
+@@ -162,11 +162,12 @@ static int __ffa_devices_unregister(struct device *dev, void *data)
+ 	return 0;
+ }
  
- 	if (optsinfo->flags & IP6T_OPTS_NSTRICT) {
- 		pr_debug("Not strict - not implemented");
+-static void ffa_devices_unregister(void)
++void ffa_devices_unregister(void)
+ {
+ 	bus_for_each_dev(&ffa_bus_type, NULL, NULL,
+ 			 __ffa_devices_unregister);
+ }
++EXPORT_SYMBOL_GPL(ffa_devices_unregister);
+ 
+ bool ffa_device_is_valid(struct ffa_device *ffa_dev)
+ {
+diff --git a/drivers/firmware/arm_ffa/driver.c b/drivers/firmware/arm_ffa/driver.c
+index 84c4fe40d5279..63030a3849a87 100644
+--- a/drivers/firmware/arm_ffa/driver.c
++++ b/drivers/firmware/arm_ffa/driver.c
+@@ -1492,10 +1492,8 @@ static int ffa_setup_partitions(void)
+ 
+ 	/* Allocate for the host */
+ 	ret = ffa_xa_add_partition_info(drv_info->vm_id);
+-	if (ret) {
+-		/* Already registered devices are freed on bus_exit */
++	if (ret)
+ 		ffa_partitions_cleanup();
+-	}
+ 
+ 	return ret;
+ }
+@@ -1505,6 +1503,9 @@ static void ffa_partitions_cleanup(void)
+ 	struct ffa_dev_part_info *info;
+ 	unsigned long idx;
+ 
++	/* Clean up/free all registered devices */
++	ffa_devices_unregister();
++
+ 	xa_for_each(&drv_info->partition_info, idx, info) {
+ 		xa_erase(&drv_info->partition_info, idx);
+ 		kfree(info);
+diff --git a/include/linux/arm_ffa.h b/include/linux/arm_ffa.h
+index 74169dd0f6594..53f2837ce7df4 100644
+--- a/include/linux/arm_ffa.h
++++ b/include/linux/arm_ffa.h
+@@ -176,6 +176,7 @@ void ffa_device_unregister(struct ffa_device *ffa_dev);
+ int ffa_driver_register(struct ffa_driver *driver, struct module *owner,
+ 			const char *mod_name);
+ void ffa_driver_unregister(struct ffa_driver *driver);
++void ffa_devices_unregister(void);
+ bool ffa_device_is_valid(struct ffa_device *ffa_dev);
+ 
+ #else
+@@ -188,6 +189,8 @@ ffa_device_register(const struct ffa_partition_info *part_info,
+ 
+ static inline void ffa_device_unregister(struct ffa_device *dev) {}
+ 
++static inline void ffa_devices_unregister(void) {}
++
+ static inline int
+ ffa_driver_register(struct ffa_driver *driver, struct module *owner,
+ 		    const char *mod_name)
+-- 
+2.53.0
+
 
 
 
