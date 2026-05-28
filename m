@@ -1,366 +1,212 @@
-Return-Path: <stable+bounces-255039-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-255040-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id ABTGFl5XGGoQjQgAu9opvQ
-	(envelope-from <stable+bounces-255039-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 16:55:26 +0200
+	id SFgTAbVYGGoQjQgAu9opvQ
+	(envelope-from <stable+bounces-255040-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 17:01:09 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id CCE965F400D
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 16:55:25 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8D6775F411F
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 17:01:03 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id DCA7731AF0C8
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 14:49:24 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 0FA30301BA7B
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 14:54:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 77A033F39CA;
-	Thu, 28 May 2026 14:49:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 26F8948C402;
+	Thu, 28 May 2026 14:54:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="SR3s+xYC";
-	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="ruVq44XS"
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="DKXluEVU"
 X-Original-To: stable@vger.kernel.org
-Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ed1-f52.google.com (mail-ed1-f52.google.com [209.85.208.52])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5E8233F6C28
-	for <stable@vger.kernel.org>; Thu, 28 May 2026 14:49:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779979764; cv=none; b=MEpRneF4awW7iw586pDCjTQWGpP7tSLiug+L6klSIZBmWLadUAqLH7WAR5tBGV7CnvgmiyylnGpZstBwfP2H+cppYqbsE29ZJ1OE23lHGf0EWwFQ6wr9gs2j6YquSO60jsaEZ40R1tHrizSOE6EeiYccatux1qk8Pwv8sdPW4EI=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779979764; c=relaxed/simple;
-	bh=QaqlX6vpk7GiPAFsijNTbiZyWQ5sZ8xKwJl82xZeTAE=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=MQgwTQWRuWjw7DIcsqdxAJ10lINxHuUcZF9e+q7O3jG3I5lQ7kShGrD6Q/q6YC4zThUXoi05Wq/9FH93klHUcAK8y7VuSkeUyV+Ex91ONkPY+QPP/YxBPhz56CuKdvvc2vU8IO8Cm4UhZHIXECoXWGFUzBp+NR39H7bYSmdRtEM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=SR3s+xYC; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=ruVq44XS; arc=none smtp.client-ip=193.142.43.55
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
-From: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1779979714;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=ZBRehW9WNwh/FtpkMnjr4bSBLJMZw6YZALl5DGzfwpA=;
-	b=SR3s+xYCP0JDkd4rIwt6asjMG3tTbbK7yut22H8cvMvoNDSv7tvq05gtQ/s+40ZAyS5wlE
-	UXJDvNMQ4vJOhF/0js3j1qSfAm1EpzMSLSmf4X0v7rtnRu504/w1hvNDJXMQ3goqZA4ghW
-	X+kGVq5CSkIMdXHiyy6Ok8AwYlqLC8Emg+vX0VQuEaRTjK5P5HGLcW9zaZpKriGnuIZVmP
-	dwlao9OLkgCozKD9le3F5OQ/AqOgYVzXqVsAfT237dc1I8wf+LvSJCtW15hNPS3cQ9v4yL
-	9dOvCkY5tfZDr63ATffOBGf7xWtqFLuwfS4gEGwEtxTEbVnq02RSZHMarzxGuw==
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1779979714;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=ZBRehW9WNwh/FtpkMnjr4bSBLJMZw6YZALl5DGzfwpA=;
-	b=ruVq44XS83x6ppV8tGJ4LQoY+wdLVZyIlzqpz5WpiCohw2lToCpqd7nuyc+hV0wA1dPTlS
-	bfFaRkdZRpGUSYCw==
-To: stable@vger.kernel.org
-Cc: Ada Couprie Diaz <ada.coupriediaz@arm.com>,
-	"Luis Claudio R. Goncalves" <lgoncalv@redhat.com>,
-	Will Deacon <will@kernel.org>,
-	Mark Rutland <mark.rutland@arm.com>,
-	Sebastian Andrzej Siewior <bigeasy@linutronix.de>
-Subject: [PATCH 14/14] arm64: debug: remove debug exception registration infrastructure
-Date: Thu, 28 May 2026 16:48:24 +0200
-Message-ID: <20260528144825.850351-15-bigeasy@linutronix.de>
-In-Reply-To: <20260528144825.850351-1-bigeasy@linutronix.de>
-References: <20260528144825.850351-1-bigeasy@linutronix.de>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2AEBB3F86F1
+	for <stable@vger.kernel.org>; Thu, 28 May 2026 14:54:13 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.208.52
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1779980054; cv=pass; b=GUPrYDtLShjKdjABnYDV3hGpJqVOx2I7rXTsPoNkXbzeStnwSikCUu4A9n8DbWtTAdPMSghJ1fO5Im1VujJyu4OUAF+G0YHh9X0rFkbTHuStOHyOkqPLEZPl07Djxoyl7AGVAzlUg+4G/k0+5SeisOENOnljHHpNprMbMFo9/3c=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1779980054; c=relaxed/simple;
+	bh=BnmP4dPy4FDVByFtz0lAGPhCBqLsWkN0Jv1LQoJfels=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=o/3+v2JMin8SG5rAbzVItyfYfa0JuUOSEgjKM+3V/SkuJ2rwkrXHxPn2/ImcPB/Osq1tQ2CfBvkZbILdu4myhPtEC+Pd2rv4d4BcrWYY7OtijdmUL4luMgKp+wjbRJZsLzCJXaN1PfbelkLOR4Sr6zYTtzebTlEvM4/u+ampJZg=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=DKXluEVU; arc=pass smtp.client-ip=209.85.208.52
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+Received: by mail-ed1-f52.google.com with SMTP id 4fb4d7f45d1cf-689be822f34so7137433a12.0
+        for <stable@vger.kernel.org>; Thu, 28 May 2026 07:54:13 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1779980048; cv=none;
+        d=google.com; s=arc-20240605;
+        b=IEhA9KCvwxbPBZwciwwAWG9Z63W5jGT0Bc6sB+RLE135q6ametVbgGQina8vfAscc+
+         pR+CbYSSCNqiqQ5V4UCADP1yG6eqxD1enkQVxkV9lZK9qOGKFgGSLqMiCfsDa9pDJR/+
+         jEzAlnS0i94OFwcJCXp8J9rmKn/EOAPe160ej2Cz4AM+XgNgYbuoPh/rr/nYr1wZYl8j
+         I7gnt6GuWBYAricoQCM7GUvDXgd4RhVUawCNtwwC2l/HIVN9j0iZinfx1wEN75dzNy6O
+         JCF4K9VxX6+zdHMwlnU3bme3/M6ShkI79/8fYXRdPKeTQ7rp9WHGW8v+IUGS8otUtYev
+         /jlA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=9OXz/l5MhiOrtGyFdSgSY2UmTjKKZnnagh0u7LsCdfw=;
+        fh=1Ho7w/CB0dF13B8fQId2fY1FUlOe69QBFSXolcCIIz4=;
+        b=YvN/guvTxNZdTFwkFi4Tassmh7iOiLtIyzNUTpcnbn6DxDj3sN2hRO7KDSeS9Aynmv
+         FhJp4BuNLzk5ENeDLQwjJHcgVJNyknRSF1K7p8Ej+dLoQb432jzyp+tzOM3stEwB5uuf
+         9kVV/aIdmbM1TOXB0mdFRK/nr4AJU9JjcKSCB835g+ScOZl1h4DwRphaeDQ3Jpr/AwHl
+         6deBZIDLehCD0dQB19SP51R/ntRVrc0RIJrI39tY4QH8OWIymzVmMjMeSsj4pNrJ3lWs
+         aw8fASQQSuHdI9AiTPMtYeP1sUyA0t8qBWfv5s9VVFH5SVMsxzzSMu1KV4IuE0Tvx3sR
+         A6YA==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1779980048; x=1780584848; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=9OXz/l5MhiOrtGyFdSgSY2UmTjKKZnnagh0u7LsCdfw=;
+        b=DKXluEVU2BkFOC8xGrZ55LgCv54YARMWCPmGaXEHvx6/VqPxH15uNPr+ePOcntXtiO
+         /OwXIyqM517513rCSgRFYhdHTnuWopY14uqJLHePM2AOVLRLHsOSKHF4XYmEcGIWnVmP
+         I0fe7iDXJRInKlhTHAG3iYUO/xTl5UWZwlWaKQzm0MvnDdR/ojpVhm8GHL4aIARG3Oho
+         FnKuqlMdlRQZHqeuz98Dj6Pzv838ZDvFMiciO83e2XhwIIe92bgPEbV1G+upfY8VrNdc
+         ngeonglUM1S1f8FpsGztnJo7Di8NLFODVvDc/wYQPz7gMuzQg6FRZJZwkjgtX75yE699
+         RAjg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1779980048; x=1780584848;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=9OXz/l5MhiOrtGyFdSgSY2UmTjKKZnnagh0u7LsCdfw=;
+        b=EsN0NDt9VcCU2iTUIzKWCwLEBixjakOA0DvfdkyzOiJeFG7x0DoZDNqE1e7LojP4QN
+         nh0yD1QmNox9twlaYgE3ujaQGXxo/WRVYcN2UL/LmyX8XzzGQDj6ycWJKVSj5jCNi7CC
+         xMO09h12NL9aUO4TlWCQ4Lr1jn/4nuynv4fnuXDHcvXa2kN0iGFiccwxHpD2eV7NqYn3
+         qBnroN5Gsp8Qf4XG68xHoWP40AoJKt+5y54SbNFj6acGb6TLktVR1WOwQJAzJ/QjYlHj
+         S+nVns9ko+Ah5ITJHaxSrYe5tOFNwUGu8F/gkcEtg0NUa6FNAYS62r8g2wA926gdF39H
+         sifg==
+X-Forwarded-Encrypted: i=1; AFNElJ/R5IMSyMclN8jPYxd2TzLaUaYlecXI4P54dABQBeTBaytWY/ME+dyXHLJ3TRg+y/9ZPibpibk=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyBrX05GppcvKxFJhta+bAzVdxWZPndzPzoRJ0zd7j6tE0LUUs0
+	K8WU0WoD7soaG3WsDD5mjltrbg5/5SfZdYtFh+Tx5Hz6gXGfgeGvE+ahCNvMRV++N991GQiLy8w
+	FvDaINHebJ8kktyL2wBJyCFC7noLVo9rD5TFN9n/vJT5+vRO9i1Sb
+X-Gm-Gg: Acq92OFvHau3c2lKbxSoDHf7r+T6CbqmuwxaeXN/jFDQ3BcjXf/+0QGt7uMzfYtLcHW
+	yNk16myIdQM2j0ZvgOd5bSCcTFspRD7bNr/eC1UHtk+tIY7gfD1xzZ7auZUO3eCw0VUd7ZRv4tz
+	JKPPWocYppHx76nTDZk3eJJ/IexYLdMqz5xrhK5wBS1NhG5VyG6Y0V/3qYdctN5LtVJPeJL4MPc
+	eK8kJ/42kQSI629Ua317fpuiZv7dGFwcV0c7sjRpICPcLTHVlh3TsquW4VdqpOY6Xp2JseKqwPl
+	L8t93bEDY9hmlBSjLfm21mtrKmg1+9FJbpGaLWFm0ch4sTvb
+X-Received: by 2002:a17:907:75d9:b0:bbe:37ee:8a2b with SMTP id
+ a640c23a62f3a-bdd279ce23fmr1206290366b.33.1779980047494; Thu, 28 May 2026
+ 07:54:07 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+References: <20260523181446.69525-1-devnexen@gmail.com> <ae16f5c2-c6d9-4274-9a27-f87bfe931b1f@amd.com>
+In-Reply-To: <ae16f5c2-c6d9-4274-9a27-f87bfe931b1f@amd.com>
+From: Sumit Semwal <sumit.semwal@linaro.org>
+Date: Thu, 28 May 2026 20:23:52 +0530
+X-Gm-Features: AVHnY4LutoQ-7Ka86XumSZSoxXa9nFy3SHyGiarPBSsSmWM-nR_geKS3HNuAjkA
+Message-ID: <CAO_48GFOZESPnm5iLa0D+4itq7hjc9EyRUjMY4QwN5EsLn97SQ@mail.gmail.com>
+Subject: Re: [PATCH] dma-buf: fix UAF in dma_buf_fd() tracepoint
+To: =?UTF-8?Q?Christian_K=C3=B6nig?= <christian.koenig@amd.com>
+Cc: David Carlier <devnexen@gmail.com>, gaoxiang17@xiaomi.com, linux-media@vger.kernel.org, 
+	dri-devel@lists.freedesktop.org, linaro-mm-sig@lists.linaro.org, 
+	linux-kernel@vger.kernel.org, 
+	syzbot+7f4987d0afb97dd090cb@syzkaller.appspotmail.com, stable@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 X-Spamd-Result: default: False [-0.66 / 15.00];
-	MID_CONTAINS_FROM(1.00)[];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
-	DMARC_POLICY_ALLOW(-0.50)[linutronix.de,none];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
-	R_DKIM_ALLOW(-0.20)[linutronix.de:s=2020,linutronix.de:s=2020e];
+	SUSPICIOUS_RECIPS(1.50)[];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=2];
+	DMARC_POLICY_ALLOW(-0.50)[linaro.org,none];
+	R_DKIM_ALLOW(-0.20)[linaro.org:s=google];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	URIBL_MULTI_FAIL(0.00)[linutronix.de:server fail,arm.com:server fail,sea.lore.kernel.org:server fail];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-255039-lists,stable=lfdr.de];
-	TO_DN_SOME(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[3];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[6];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[bigeasy@linutronix.de,stable@vger.kernel.org];
+	TAGGED_FROM(0.00)[bounces-255040-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	RSPAMD_URIBL_FAIL(0.00)[linaro.org:query timed out,appspotmail.com:query timed out];
+	FREEMAIL_CC(0.00)[gmail.com,xiaomi.com,vger.kernel.org,lists.freedesktop.org,lists.linaro.org,syzkaller.appspotmail.com];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[linutronix.de:+];
+	RSPAMD_EMAILBL_FAIL(0.00)[devnexen.gmail.com:query timed out,christian.koenig.amd.com:query timed out,stable.vger.kernel.org:query timed out];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	TAGGED_RCPT(0.00)[stable];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[sumit.semwal@linaro.org,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[linaro.org:+];
+	RCPT_COUNT_SEVEN(0.00)[9];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	TAGGED_RCPT(0.00)[stable,7f4987d0afb97dd090cb];
+	TO_DN_SOME(0.00)[];
 	MISSING_XM_UA(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,linutronix.de:email,linutronix.de:mid,linutronix.de:dkim]
-X-Rspamd-Queue-Id: CCE965F400D
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,amd.com:email,mail.gmail.com:mid,linaro.org:dkim,syzkaller.appspot.com:url,appspotmail.com:email]
+X-Rspamd-Queue-Id: 8D6775F411F
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-From: Ada Couprie Diaz <ada.coupriediaz@arm.com>
+Hi David,
 
-Upstream commit a8b8cce9d96d65dfe3d89abf02033151f8b7d670
+On Tue, 26 May 2026 at 00:25, Christian K=C3=B6nig <christian.koenig@amd.co=
+m> wrote:
+>
+> On 5/23/26 20:14, David Carlier wrote:
+> > Once FD_ADD() returns, the fd is live in the file descriptor table
+> > and a thread sharing that table can close() it before DMA_BUF_TRACE()
+> > runs. The close drops the last reference, __fput() frees the dma_buf,
+> > and the tracepoint then dereferences dmabuf to take dmabuf->name_lock
+> > -- slab-use-after-free.
+> >
+> > Split FD_ADD() back into get_unused_fd_flags() + fd_install() and
+> > emit the tracepoint between them. While the fdtable slot is reserved
+> > with a NULL file pointer, a racing close() returns -EBADF without
+> > entering __fput(), so the dma_buf stays alive across the trace. Same
+> > approach as commit 2d76319c4cbb ("dma-buf: fix UAF in dma_buf_put()
+> > tracepoint").
+> >
+> > This undoes the FD_ADD() conversion done in commit 34dfce523c90
+> > ("dma: convert dma_buf_fd() to FD_ADD()"); FD_ADD() has no place to
+> > hook the tracepoint safely.
+> >
+> > Reported-by: syzbot+7f4987d0afb97dd090cb@syzkaller.appspotmail.com
+> > Closes: https://syzkaller.appspot.com/bug?extid=3D7f4987d0afb97dd090cb
+> > Fixes: 281a22631423 ("dma-buf: add some tracepoints to debug.")
+> > Cc: stable@vger.kernel.org # 7.0.x
+> > Signed-off-by: David Carlier <devnexen@gmail.com>
+>
+> Reviewed-by: Christian K=C3=B6nig <christian.koenig@amd.com>
 
-Now that debug exceptions are handled individually and without the need
-for dynamic registration, remove the unused registration infrastructure.
+Thanks very much for the patch; applied to drm-misc-fixes.
+>
+> > ---
+> >  drivers/dma-buf/dma-buf.c | 6 +++++-
+> >  1 file changed, 5 insertions(+), 1 deletion(-)
+> >
+> > diff --git a/drivers/dma-buf/dma-buf.c b/drivers/dma-buf/dma-buf.c
+> > index 71f37544a5c6..d504c636dc29 100644
+> > --- a/drivers/dma-buf/dma-buf.c
+> > +++ b/drivers/dma-buf/dma-buf.c
+> > @@ -792,9 +792,13 @@ int dma_buf_fd(struct dma_buf *dmabuf, int flags)
+> >         if (!dmabuf || !dmabuf->file)
+> >                 return -EINVAL;
+> >
+> > -       fd =3D FD_ADD(flags, dmabuf->file);
+> > +       fd =3D get_unused_fd_flags(flags);
+> > +       if (fd < 0)
+> > +               return fd;
+> > +
+> >         DMA_BUF_TRACE(trace_dma_buf_fd, dmabuf, fd);
+> >
+> > +       fd_install(fd, dmabuf->file);
+> >         return fd;
+> >  }
+> >  EXPORT_SYMBOL_NS_GPL(dma_buf_fd, "DMA_BUF");
+> > --
+> > 2.53.0
+> >
+>
 
-This removes the external caller for `debug_exception_enter()` and
-`debug_exception_exit()`.
-Make them static again and remove them from the header.
-
-Remove `early_brk64()` as it has been made redundant by
-(arm64: debug: split brk64 exception entry) and is not used anymore.
-Note : in `early_brk64()` `bug_brk_handler()` is called unconditionally
-as a fall-through, but now `call_break_hook()` only calls it if the
-immediate matches.
-This does not change the behaviour in early boot, as if
-`bug_brk_handler()` was called on a non-BUG immediate it would return
-DBG_HOOK_ERROR anyway, which `call_break_hook()` will do if no immediate
-matches.
-
-Remove `trap_init()`, as it would be empty and a weak definition already
-exists in `init/main.c`.
-
-Signed-off-by: Ada Couprie Diaz <ada.coupriediaz@arm.com>
-Tested-by: Luis Claudio R. Goncalves <lgoncalv@redhat.com>
-Reviewed-by: Will Deacon <will@kernel.org>
-Acked-by: Mark Rutland <mark.rutland@arm.com>
-Link: https://lore.kernel.org/r/20250707114109.35672-14-ada.coupriediaz@arm=
-.com
-Signed-off-by: Will Deacon <will@kernel.org>
-Signed-off-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
----
- arch/arm64/include/asm/debug-monitors.h |  2 -
- arch/arm64/include/asm/exception.h      |  6 ---
- arch/arm64/include/asm/system_misc.h    |  4 --
- arch/arm64/kernel/debug-monitors.c      |  3 --
- arch/arm64/kernel/entry-common.c        |  4 +-
- arch/arm64/kernel/traps.c               | 27 -------------
- arch/arm64/mm/fault.c                   | 53 -------------------------
- 7 files changed, 2 insertions(+), 97 deletions(-)
-
-diff --git a/arch/arm64/include/asm/debug-monitors.h b/arch/arm64/include/a=
-sm/debug-monitors.h
-index 24c7981abeb0b..4f3901884c5d8 100644
---- a/arch/arm64/include/asm/debug-monitors.h
-+++ b/arch/arm64/include/asm/debug-monitors.h
-@@ -93,7 +93,5 @@ static inline bool try_step_suspended_breakpoints(struct =
-pt_regs *regs)
-=20
- bool try_handle_aarch32_break(struct pt_regs *regs);
-=20
--void debug_traps_init(void);
--
- #endif	/* __ASSEMBLY */
- #endif	/* __ASM_DEBUG_MONITORS_H */
-diff --git a/arch/arm64/include/asm/exception.h b/arch/arm64/include/asm/ex=
-ception.h
-index 9b05c6f487ccf..50c5329ff2eda 100644
---- a/arch/arm64/include/asm/exception.h
-+++ b/arch/arm64/include/asm/exception.h
-@@ -57,8 +57,6 @@ void do_el0_undef(struct pt_regs *regs, unsigned long esr=
-);
- void do_el1_undef(struct pt_regs *regs, unsigned long esr);
- void do_el0_bti(struct pt_regs *regs);
- void do_el1_bti(struct pt_regs *regs, unsigned long esr);
--void do_debug_exception(unsigned long addr_if_watchpoint, unsigned long es=
-r,
--			struct pt_regs *regs);
- #ifdef CONFIG_HAVE_HW_BREAKPOINT
- void do_breakpoint(unsigned long esr, struct pt_regs *regs);
- void do_watchpoint(unsigned long addr, unsigned long esr,
-@@ -91,8 +89,4 @@ void do_serror(struct pt_regs *regs, unsigned long esr);
- void do_signal(struct pt_regs *regs);
-=20
- void __noreturn panic_bad_stack(struct pt_regs *regs, unsigned long esr, u=
-nsigned long far);
--
--void debug_exception_enter(struct pt_regs *regs);
--void debug_exception_exit(struct pt_regs *regs);
--
- #endif	/* __ASM_EXCEPTION_H */
-diff --git a/arch/arm64/include/asm/system_misc.h b/arch/arm64/include/asm/=
-system_misc.h
-index c343442567625..344b1c1a4bbb6 100644
---- a/arch/arm64/include/asm/system_misc.h
-+++ b/arch/arm64/include/asm/system_misc.h
-@@ -25,10 +25,6 @@ void arm64_notify_die(const char *str, struct pt_regs *r=
-egs,
- 		      int signo, int sicode, unsigned long far,
- 		      unsigned long err);
-=20
--void hook_debug_fault_code(int nr, int (*fn)(unsigned long, unsigned long,
--					     struct pt_regs *),
--			   int sig, int code, const char *name);
--
- struct mm_struct;
- extern void __show_regs(struct pt_regs *);
-=20
-diff --git a/arch/arm64/kernel/debug-monitors.c b/arch/arm64/kernel/debug-m=
-onitors.c
-index ed03270fa3437..16390fd4ba5ed 100644
---- a/arch/arm64/kernel/debug-monitors.c
-+++ b/arch/arm64/kernel/debug-monitors.c
-@@ -316,9 +316,6 @@ bool try_handle_aarch32_break(struct pt_regs *regs)
- }
- NOKPROBE_SYMBOL(try_handle_aarch32_break);
-=20
--void __init debug_traps_init(void)
--{}
--
- /* Re-enable single step for syscall restarting. */
- void user_rewind_single_step(struct task_struct *task)
- {
-diff --git a/arch/arm64/kernel/entry-common.c b/arch/arm64/kernel/entry-com=
-mon.c
-index 9a1ea5a6e6b72..b98d6d1a1dfd6 100644
---- a/arch/arm64/kernel/entry-common.c
-+++ b/arch/arm64/kernel/entry-common.c
-@@ -448,7 +448,7 @@ static __always_inline void fpsimd_syscall_exit(void)
-  * accidentally schedule in exception context and it will force a warning
-  * if we somehow manage to schedule by accident.
-  */
--void debug_exception_enter(struct pt_regs *regs)
-+static void debug_exception_enter(struct pt_regs *regs)
- {
- 	preempt_disable();
-=20
-@@ -457,7 +457,7 @@ void debug_exception_enter(struct pt_regs *regs)
- }
- NOKPROBE_SYMBOL(debug_exception_enter);
-=20
--void debug_exception_exit(struct pt_regs *regs)
-+static void debug_exception_exit(struct pt_regs *regs)
- {
- 	preempt_enable_no_resched();
- }
-diff --git a/arch/arm64/kernel/traps.c b/arch/arm64/kernel/traps.c
-index 013159bc0882e..e6e815ef03c77 100644
---- a/arch/arm64/kernel/traps.c
-+++ b/arch/arm64/kernel/traps.c
-@@ -1091,30 +1091,3 @@ int ubsan_brk_handler(struct pt_regs *regs, unsigned=
- long esr)
- 	return DBG_HOOK_HANDLED;
- }
- #endif
--
--/*
-- * Initial handler for AArch64 BRK exceptions
-- * This handler only used until debug_traps_init().
-- */
--int __init early_brk64(unsigned long addr, unsigned long esr,
--		struct pt_regs *regs)
--{
--#ifdef CONFIG_CFI_CLANG
--	if (esr_is_cfi_brk(esr))
--		return cfi_brk_handler(regs, esr) !=3D DBG_HOOK_HANDLED;
--#endif
--#ifdef CONFIG_KASAN_SW_TAGS
--	if ((esr_brk_comment(esr) & ~KASAN_BRK_MASK) =3D=3D KASAN_BRK_IMM)
--		return kasan_brk_handler(regs, esr) !=3D DBG_HOOK_HANDLED;
--#endif
--#ifdef CONFIG_UBSAN_TRAP
--	if (esr_is_ubsan_brk(esr))
--		return ubsan_brk_handler(regs, esr) !=3D DBG_HOOK_HANDLED;
--#endif
--	return bug_brk_handler(regs, esr) !=3D DBG_HOOK_HANDLED;
--}
--
--void __init trap_init(void)
--{
--	debug_traps_init();
--}
-diff --git a/arch/arm64/mm/fault.c b/arch/arm64/mm/fault.c
-index 7c87d2b3b06ea..9ee5a2d2b3215 100644
---- a/arch/arm64/mm/fault.c
-+++ b/arch/arm64/mm/fault.c
-@@ -53,18 +53,12 @@ struct fault_info {
- };
-=20
- static const struct fault_info fault_info[];
--static struct fault_info debug_fault_info[];
-=20
- static inline const struct fault_info *esr_to_fault_info(unsigned long esr)
- {
- 	return fault_info + (esr & ESR_ELx_FSC);
- }
-=20
--static inline const struct fault_info *esr_to_debug_fault_info(unsigned lo=
-ng esr)
--{
--	return debug_fault_info + DBG_ESR_EVT(esr);
--}
--
- static void data_abort_decode(unsigned long esr)
- {
- 	unsigned long iss2 =3D ESR_ELx_ISS2(esr);
-@@ -911,53 +905,6 @@ void do_sp_pc_abort(unsigned long addr, unsigned long =
-esr, struct pt_regs *regs)
- }
- NOKPROBE_SYMBOL(do_sp_pc_abort);
-=20
--/*
-- * __refdata because early_brk64 is __init, but the reference to it is
-- * clobbered at arch_initcall time.
-- * See traps.c and debug-monitors.c:debug_traps_init().
-- */
--static struct fault_info __refdata debug_fault_info[] =3D {
--	{ do_bad,	SIGTRAP,	TRAP_HWBKPT,	"hardware breakpoint"	},
--	{ do_bad,	SIGTRAP,	TRAP_HWBKPT,	"hardware single-step"	},
--	{ do_bad,	SIGTRAP,	TRAP_HWBKPT,	"hardware watchpoint"	},
--	{ do_bad,	SIGKILL,	SI_KERNEL,	"unknown 3"		},
--	{ do_bad,	SIGTRAP,	TRAP_BRKPT,	"aarch32 BKPT"		},
--	{ do_bad,	SIGKILL,	SI_KERNEL,	"aarch32 vector catch"	},
--	{ early_brk64,	SIGTRAP,	TRAP_BRKPT,	"aarch64 BRK"		},
--	{ do_bad,	SIGKILL,	SI_KERNEL,	"unknown 7"		},
--};
--
--void __init hook_debug_fault_code(int nr,
--				  int (*fn)(unsigned long, unsigned long, struct pt_regs *),
--				  int sig, int code, const char *name)
--{
--	BUG_ON(nr < 0 || nr >=3D ARRAY_SIZE(debug_fault_info));
--
--	debug_fault_info[nr].fn		=3D fn;
--	debug_fault_info[nr].sig	=3D sig;
--	debug_fault_info[nr].code	=3D code;
--	debug_fault_info[nr].name	=3D name;
--}
--
--void do_debug_exception(unsigned long addr_if_watchpoint, unsigned long es=
-r,
--			struct pt_regs *regs)
--{
--	const struct fault_info *inf =3D esr_to_debug_fault_info(esr);
--	unsigned long pc =3D instruction_pointer(regs);
--
--	debug_exception_enter(regs);
--
--	if (user_mode(regs) && !is_ttbr0_addr(pc))
--		arm64_apply_bp_hardening();
--
--	if (inf->fn(addr_if_watchpoint, esr, regs)) {
--		arm64_notify_die(inf->name, regs, inf->sig, inf->code, pc, esr);
--	}
--
--	debug_exception_exit(regs);
--}
--NOKPROBE_SYMBOL(do_debug_exception);
--
- /*
-  * Used during anonymous page fault handling.
-  */
---=20
-2.53.0
-
+Best,
+Sumit.
 
