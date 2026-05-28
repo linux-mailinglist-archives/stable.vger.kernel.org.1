@@ -1,62 +1,64 @@
-Return-Path: <stable+bounces-256041-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-255836-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id UOizMbmoGGp+lwgAu9opvQ
-	(envelope-from <stable+bounces-256041-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:42:33 +0200
+	id YA95JoKmGGpolwgAu9opvQ
+	(envelope-from <stable+bounces-255836-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:33:06 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6C2D75F95EF
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:42:33 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6C4705F8ED5
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:33:06 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 4AD9F30B0204
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 20:36:54 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 5A5B0307A7E9
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 20:27:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6BDD2352C3C;
-	Thu, 28 May 2026 20:36:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 88939325485;
+	Thu, 28 May 2026 20:26:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="G/S3ur7v"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AE0dzYh8"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 354F425F7B9;
-	Thu, 28 May 2026 20:36:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0D9BE254B1F;
+	Thu, 28 May 2026 20:26:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780000589; cv=none; b=N/nipvh0h+SBOB/ahUpAaz7gt5HDQtl2Tgjx9QIYSZ02LKzWKHfUt3fR2K2GAm9UVNxe5z2WYRjqe7+l4C/x7LCeGXIZwF+863al6DdONHludj/nQXLWjkVj3Cg50pNRiY/gG4R7dWF8RaRpmrxTtzFZkvbuSbKuoWaQu8+x1oU=
+	t=1780000016; cv=none; b=sq+llc+9fubqskBPQT6ydFGEw5ftuA5uClfhLjgiMzf3hxVcRGkF6qGd5qUAeJeZdL+wtF8Xc2wJgA+jVyrCikbmi7XCF1nA1BSqZHuLI4JjkKO6V7seStKPAnqrJthe5oppUg9JFodpGPMG7QpnZBZy8gtIqUE9EZXdGF1OEJw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780000589; c=relaxed/simple;
-	bh=haALKYnhaM6Ez2txBO5Cltn40fWzywus+esme5O8dCE=;
+	s=arc-20240116; t=1780000016; c=relaxed/simple;
+	bh=RXtoEfrJWU2mA4nbEW50/kIGRg7UTH0nvB06f7k2KHU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=a8B+aXMnW0vapdII/SS5R+h7Nkz3+kNTl8n5zReLFAqv144o/ZRNac9Sjbk92ppYo6j9XuUaP6G7apMtnxy3piwVzxGkaRiJHmzRcAWXxun3KRDUtFErQCkXjpCD2ZdxcvkJbLQq2yPS+qK6lV7sVRNeYcS9+0BBlR9gGPAf3nk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=G/S3ur7v; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 99F7D1F00A3A;
-	Thu, 28 May 2026 20:36:27 +0000 (UTC)
+	 MIME-Version; b=WbNEBwu5OMlfcVCuuZE3gI7hXxrybLQuZJFc3zxmrZ8vwOzSfq6EE/gv8zXddS1W7wLJFZnyAmXXvzyvQwrvmUvpAWcdmqtzg2XClNftYAGvS4LSjXXPNGRpHoAEh+ZKOOzeOOvBxwLTCN4Fnow6xRnlTp/HGG1qmRW4tmawsHU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AE0dzYh8; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 736571F000E9;
+	Thu, 28 May 2026 20:26:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780000588;
-	bh=N58QhGVc/M0Mqvzj8kOsK6BPjyAyoAsf8eRQbOY3zV4=;
+	s=korg; t=1780000014;
+	bh=6vy1EekCKk4hAT33qc9uLIQxbPhwhq/TYRwjWyIx0Ww=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=G/S3ur7vtzzuFd1VIeLS9wZSIilEY4wn3w1a5cHc/QAAwQLcK4SLNuxuscJ1xYbyD
-	 6VBQm8MVyS/Bj1OE/5Eb13htwR5uJ29lPpjW0e3Ya7mJtCK4u7r4xTjrhNfZqbRKA1
-	 th9UIkVOstzi8tXFgprqqP6DD0x1Qifx9+vGPWuE=
+	b=AE0dzYh8qOO/uEDDuYMxpMSop3QbvrCAbW7FFLrdtkqF1eF9Oxw0D7u4y0mhWDRej
+	 9dDljaA0rQZ+Cd4gjLDn7VG8SWXHxRNsZ33Idunn4cY2iBNngwp02+OCGN8g26gIPw
+	 dB7qI9OZWhUmLdMGX7dBYJ/EI/I9FNfLZDPgbD+s=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Tom Zanussi <tom.zanussi@linux.intel.com>,
-	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
-	Rosen Penev <rosenp@gmail.com>,
-	Sashiko <sashiko-bot@kernel.org>,
-	"Masami Hiramatsu (Google)" <mhiramat@kernel.org>,
-	Steven Rostedt <rostedt@goodmis.org>
-Subject: [PATCH 6.12 099/272] tracing: Do not call map->ops->elt_free() if elt_alloc() fails
+	Viacheslav Dubeyko <Slava.Dubeyko@ibm.com>,
+	David Howells <dhowells@redhat.com>,
+	"Paulo Alcantara (Red Hat)" <pc@manguebit.org>,
+	netfs@lists.linux.dev,
+	linux-fsdevel@vger.kernel.org,
+	Ceph Development <ceph-devel@vger.kernel.org>,
+	Christian Brauner <brauner@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.18 235/377] netfs: fix VM_BUG_ON_FOLIO() issue in netfs_write_begin() call
 Date: Thu, 28 May 2026 21:47:53 +0200
-Message-ID: <20260528194632.154412821@linuxfoundation.org>
+Message-ID: <20260528194645.195418218@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260528194629.379955525@linuxfoundation.org>
-References: <20260528194629.379955525@linuxfoundation.org>
+In-Reply-To: <20260528194638.371537336@linuxfoundation.org>
+References: <20260528194638.371537336@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -76,101 +78,196 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,linux.intel.com,efficios.com,gmail.com,kernel.org,goodmis.org];
-	TAGGED_FROM(0.00)[bounces-256041-lists,stable=lfdr.de];
-	PRECEDENCE_BULK(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-255836-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[9];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
 	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sashiko.dev:url,msgid.link:url,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,goodmis.org:email,intel.com:email,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,efficios.com:email]
-X-Rspamd-Queue-Id: 6C2D75F95EF
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_SEVEN(0.00)[11];
+	MID_RHS_MATCH_FROM(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linux.dev:email,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim,msgid.link:url,manguebit.org:email]
+X-Rspamd-Queue-Id: 6C4705F8ED5
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Masami Hiramatsu (Google) <mhiramat@kernel.org>
+From: Viacheslav Dubeyko <Slava.Dubeyko@ibm.com>
 
-commit 8f0f5c4fb9df0e19a341e0c6ed8dc4fda9124f03 upstream.
+[ Upstream commit dc7832d05deb4d632e8035e3299e31a3528fa0d0 ]
 
-In paths where tracing_map_elt_alloc() failed to allocate objects,
-the map->ops->elt_alloc() call was never successful. In this case,
-map->ops->elt_free() should not be called.
+The multiple runs of generic/013 test-case is capable
+to reproduce a kernel BUG at mm/filemap.c:1504 with
+probability of 30%.
 
-Link: https://sashiko.dev/#/patchset/20260520223101.34710-1-rosenp%40gmail.com
+while true; do
+  sudo ./check generic/013
+done
 
-Cc: stable@vger.kernel.org
-Cc: Tom Zanussi <tom.zanussi@linux.intel.com>
-Cc: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
-Cc: Rosen Penev <rosenp@gmail.com>
-Reported-by: Sashiko <sashiko-bot@kernel.org>
-Fixes: 2734b629525a ("tracing: Add per-element variable support to tracing_map")
-Link: https://patch.msgid.link/177933895460.108746.5396070821443932634.stgit@devnote2
-Signed-off-by: Masami Hiramatsu (Google) <mhiramat@kernel.org>
-Signed-off-by: Steven Rostedt <rostedt@goodmis.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+[ 9849.452376] page: refcount:3 mapcount:0 mapping:00000000e58ff252 index:0x10781 pfn:0x1c322
+[ 9849.452412] memcg:ffff8881a1915800
+[ 9849.452417] aops:ceph_aops ino:1000058db9e dentry name(?):"f9XXXXXX"
+[ 9849.452432] flags: 0x17ffffc0000000(node=0|zone=2|lastcpupid=0x1fffff)
+[ 9849.452441] raw: 0017ffffc0000000 0000000000000000 dead000000000122 ffff88816110d248
+[ 9849.452445] raw: 0000000000010781 0000000000000000 00000003ffffffff ffff8881a1915800
+[ 9849.452447] page dumped because: VM_BUG_ON_FOLIO(!folio_test_locked(folio))
+[ 9849.452474] ------------[ cut here ]------------
+[ 9849.452476] kernel BUG at mm/filemap.c:1504!
+[ 9849.478635] Oops: invalid opcode: 0000 [#1] SMP KASAN NOPTI
+[ 9849.481772] CPU: 2 UID: 0 PID: 84223 Comm: fsstress Not tainted 7.0.0-rc1+ #18 PREEMPT(full)
+[ 9849.482881] Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS 1.17.0-9.fc43 06/1
+0/2025
+[ 9849.484539] RIP: 0010:folio_unlock+0x85/0xa0
+[ 9849.485076] Code: 89 df 31 f6 e8 1c f3 ff ff 48 8b 5d f8 c9 31 c0 31 d2 31 f6 31 ff c3 cc
+cc cc cc 48 c7 c6 80 6c d9 a7 48 89 df e8 4b b3 10 00 <0f> 0b 48 89 df e8 21 e6 2c 00 eb 9d 0f 1f 40 00 66 66 2e 0f 1f 84
+[ 9849.493818] RSP: 0018:ffff8881bb8076b0 EFLAGS: 00010246
+[ 9849.495740] RAX: 0000000000000000 RBX: ffffea00070c8980 RCX: 0000000000000000
+[ 9849.498678] RDX: 0000000000000000 RSI: 0000000000000000 RDI: 0000000000000000
+[ 9849.500559] RBP: ffff8881bb8076b8 R08: 0000000000000000 R09: 0000000000000000
+[ 9849.501097] R10: 0000000000000000 R11: 0000000000000000 R12: 0000000010782000
+[ 9849.502108] R13: ffff8881935de738 R14: ffff88816110d010 R15: 0000000000001000
+[ 9849.502516] FS:  00007e36cbe94740(0000) GS:ffff88824a899000(0000) knlGS:0000000000000000
+[ 9849.502996] CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+[ 9849.503810] CR2: 000000c0002b0000 CR3: 000000011bbf6004 CR4: 0000000000772ef0
+[ 9849.504459] PKRU: 55555554
+[ 9849.504626] Call Trace:
+[ 9849.505242]  <TASK>
+[ 9849.505379]  netfs_write_begin+0x7c8/0x10a0
+[ 9849.505877]  ? __kasan_check_read+0x11/0x20
+[ 9849.506384]  ? __pfx_netfs_write_begin+0x10/0x10
+[ 9849.507178]  ceph_write_begin+0x8c/0x1c0
+[ 9849.507934]  generic_perform_write+0x391/0x8f0
+[ 9849.508503]  ? __pfx_generic_perform_write+0x10/0x10
+[ 9849.509062]  ? file_update_time_flags+0x19a/0x4b0
+[ 9849.509581]  ? ceph_get_caps+0x63/0xf0
+[ 9849.510259]  ? ceph_get_caps+0x63/0xf0
+[ 9849.510530]  ceph_write_iter+0xe79/0x1ae0
+[ 9849.511282]  ? __pfx_ceph_write_iter+0x10/0x10
+[ 9849.511839]  ? lock_acquire+0x1ad/0x310
+[ 9849.512334]  ? ksys_write+0xf9/0x230
+[ 9849.512582]  ? lock_is_held_type+0xaa/0x140
+[ 9849.513128]  vfs_write+0x512/0x1110
+[ 9849.513634]  ? __fget_files+0x33/0x350
+[ 9849.513893]  ? __pfx_vfs_write+0x10/0x10
+[ 9849.514143]  ? mutex_lock_nested+0x1b/0x30
+[ 9849.514394]  ksys_write+0xf9/0x230
+[ 9849.514621]  ? __pfx_ksys_write+0x10/0x10
+[ 9849.514887]  ? do_syscall_64+0x25e/0x1520
+[ 9849.515122]  ? __kasan_check_read+0x11/0x20
+[ 9849.515366]  ? trace_hardirqs_on_prepare+0x178/0x1c0
+[ 9849.515655]  __x64_sys_write+0x72/0xd0
+[ 9849.515885]  ? trace_hardirqs_on+0x24/0x1c0
+[ 9849.516130]  x64_sys_call+0x22f/0x2390
+[ 9849.516341]  do_syscall_64+0x12b/0x1520
+[ 9849.516545]  ? do_syscall_64+0x27c/0x1520
+[ 9849.516783]  ? do_syscall_64+0x27c/0x1520
+[ 9849.517003]  ? lock_release+0x318/0x480
+[ 9849.517220]  ? __x64_sys_io_getevents+0x143/0x2d0
+[ 9849.517479]  ? percpu_ref_put_many.constprop.0+0x8f/0x210
+[ 9849.517779]  ? entry_SYSCALL_64_after_hwframe+0x76/0x7e
+[ 9849.518073]  ? do_syscall_64+0x25e/0x1520
+[ 9849.518291]  ? __kasan_check_read+0x11/0x20
+[ 9849.518519]  ? trace_hardirqs_on_prepare+0x178/0x1c0
+[ 9849.518799]  ? do_syscall_64+0x27c/0x1520
+[ 9849.519024]  ? local_clock_noinstr+0xf/0x120
+[ 9849.519262]  ? entry_SYSCALL_64_after_hwframe+0x76/0x7e
+[ 9849.519544]  ? do_syscall_64+0x25e/0x1520
+[ 9849.519781]  ? __kasan_check_read+0x11/0x20
+[ 9849.520008]  ? trace_hardirqs_on_prepare+0x178/0x1c0
+[ 9849.520273]  ? do_syscall_64+0x27c/0x1520
+[ 9849.520491]  ? trace_hardirqs_on_prepare+0x178/0x1c0
+[ 9849.520767]  ? irqentry_exit+0x10c/0x6c0
+[ 9849.520984]  ? trace_hardirqs_off+0x86/0x1b0
+[ 9849.521224]  ? exc_page_fault+0xab/0x130
+[ 9849.521472]  entry_SYSCALL_64_after_hwframe+0x76/0x7e
+[ 9849.521766] RIP: 0033:0x7e36cbd14907
+[ 9849.521989] Code: 10 00 f7 d8 64 89 02 48 c7 c0 ff ff ff ff eb b7 0f 1f 00 f3 0f 1e fa 64 8b 04 25 18 00 00 00 85 c0 75 10 b8 01 00 00 00 0f 05 <48> 3d 00 f0 ff ff 77 51 c3 48 83 ec 28 48 89 54 24 18 48 89 74 24
+[ 9849.523057] RSP: 002b:00007ffff2d2a968 EFLAGS: 00000246 ORIG_RAX: 0000000000000001
+[ 9849.523484] RAX: ffffffffffffffda RBX: 000000000000e549 RCX: 00007e36cbd14907
+[ 9849.523885] RDX: 000000000000e549 RSI: 00005bd797ec6370 RDI: 0000000000000004
+[ 9849.524277] RBP: 0000000000000004 R08: 0000000000000047 R09: 00005bd797ec6370
+[ 9849.524652] R10: 0000000000000078 R11: 0000000000000246 R12: 0000000000000049
+[ 9849.525062] R13: 0000000010781a37 R14: 00005bd797ec6370 R15: 0000000000000000
+[ 9849.525447]  </TASK>
+[ 9849.525574] Modules linked in: intel_rapl_msr intel_rapl_common intel_uncore_frequency_common intel_pmc_core pmt_telemetry pmt_discovery pmt_class intel_pmc_ssram_telemetry intel_vsec kvm_intel joydev kvm irqbypass ghash_clmulni_intel aesni_intel input_leds rapl mac_hid psmouse vga16fb serio_raw vgastate floppy i2c_piix4 bochs qemu_fw_cfg i2c_smbus pata_acpi sch_fq_codel rbd msr parport_pc ppdev lp parport efi_pstore
+[ 9849.529150] ---[ end trace 0000000000000000 ]---
+[ 9849.529502] RIP: 0010:folio_unlock+0x85/0xa0
+[ 9849.530813] Code: 89 df 31 f6 e8 1c f3 ff ff 48 8b 5d f8 c9 31 c0 31 d2 31 f6 31 ff c3 cc cc cc cc 48 c7 c6 80 6c d9 a7 48 89 df e8 4b b3 10 00 <0f> 0b 48 89 df e8 21 e6 2c 00 eb 9d 0f 1f 40 00 66 66 2e 0f 1f 84
+[ 9849.534986] RSP: 0018:ffff8881bb8076b0 EFLAGS: 00010246
+[ 9849.536198] RAX: 0000000000000000 RBX: ffffea00070c8980 RCX: 0000000000000000
+[ 9849.537718] RDX: 0000000000000000 RSI: 0000000000000000 RDI: 0000000000000000
+[ 9849.539321] RBP: ffff8881bb8076b8 R08: 0000000000000000 R09: 0000000000000000
+[ 9849.540862] R10: 0000000000000000 R11: 0000000000000000 R12: 0000000010782000
+[ 9849.542438] R13: ffff8881935de738 R14: ffff88816110d010 R15: 0000000000001000
+[ 9849.543996] FS:  00007e36cbe94740(0000) GS:ffff88824b899000(0000) knlGS:0000000000000000
+[ 9849.545854] CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+[ 9849.547092] CR2: 00007e36cb3ff000 CR3: 000000011bbf6006 CR4: 0000000000772ef0
+[ 9849.548679] PKRU: 55555554
+
+The race sequence:
+1. Read completes -> netfs_read_collection() runs
+2. netfs_wake_rreq_flag(rreq, NETFS_RREQ_IN_PROGRESS, ...)
+3. netfs_wait_for_read() returns -EFAULT to netfs_write_begin()
+4. The netfs_unlock_abandoned_read_pages() unlocks the folio
+5. netfs_write_begin() calls folio_unlock(folio) -> VM_BUG_ON_FOLIO()
+
+The key reason of the issue that netfs_unlock_abandoned_read_pages()
+doesn't check the flag NETFS_RREQ_NO_UNLOCK_FOLIO and executes
+folio_unlock() unconditionally. This patch implements in
+netfs_unlock_abandoned_read_pages() logic similar to
+netfs_unlock_read_folio().
+
+Fixes: ee4cdf7ba857 ("netfs: Speed up buffered reading")
+Signed-off-by: Viacheslav Dubeyko <Slava.Dubeyko@ibm.com>
+Signed-off-by: David Howells <dhowells@redhat.com>
+Link: https://patch.msgid.link/20260512123404.719402-8-dhowells@redhat.com
+Reviewed-by: Paulo Alcantara (Red Hat) <pc@manguebit.org>
+cc: netfs@lists.linux.dev
+cc: linux-fsdevel@vger.kernel.org
+cc: Ceph Development <ceph-devel@vger.kernel.org>
+Signed-off-by: Christian Brauner <brauner@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/trace/tracing_map.c |   17 +++++++++++++----
- 1 file changed, 13 insertions(+), 4 deletions(-)
+ fs/netfs/read_retry.c | 11 +++++++++--
+ 1 file changed, 9 insertions(+), 2 deletions(-)
 
---- a/kernel/trace/tracing_map.c
-+++ b/kernel/trace/tracing_map.c
-@@ -386,13 +386,11 @@ static void tracing_map_elt_init_fields(
+diff --git a/fs/netfs/read_retry.c b/fs/netfs/read_retry.c
+index cca9ac43c0773..68fc869513ef1 100644
+--- a/fs/netfs/read_retry.c
++++ b/fs/netfs/read_retry.c
+@@ -288,8 +288,15 @@ void netfs_unlock_abandoned_read_pages(struct netfs_io_request *rreq)
+ 			struct folio *folio = folioq_folio(p, slot);
+ 
+ 			if (folio && !folioq_is_marked2(p, slot)) {
+-				trace_netfs_folio(folio, netfs_folio_trace_abandon);
+-				folio_unlock(folio);
++				if (folio->index == rreq->no_unlock_folio &&
++				    test_bit(NETFS_RREQ_NO_UNLOCK_FOLIO,
++					     &rreq->flags)) {
++					_debug("no unlock");
++				} else {
++					trace_netfs_folio(folio,
++						netfs_folio_trace_abandon);
++					folio_unlock(folio);
++				}
+ 			}
+ 		}
  	}
- }
- 
--static void tracing_map_elt_free(struct tracing_map_elt *elt)
-+static void __tracing_map_elt_free(struct tracing_map_elt *elt)
- {
- 	if (!elt)
- 		return;
- 
--	if (elt->map->ops && elt->map->ops->elt_free)
--		elt->map->ops->elt_free(elt);
- 	kfree(elt->fields);
- 	kfree(elt->vars);
- 	kfree(elt->var_set);
-@@ -400,6 +398,17 @@ static void tracing_map_elt_free(struct
- 	kfree(elt);
- }
- 
-+static void tracing_map_elt_free(struct tracing_map_elt *elt)
-+{
-+	if (!elt)
-+		return;
-+
-+	/* Only objects initialized with alloc_elt() should be passed to free_elt().*/
-+	if (elt->map->ops && elt->map->ops->elt_free)
-+		elt->map->ops->elt_free(elt);
-+	__tracing_map_elt_free(elt);
-+}
-+
- static struct tracing_map_elt *tracing_map_elt_alloc(struct tracing_map *map)
- {
- 	struct tracing_map_elt *elt;
-@@ -444,7 +453,7 @@ static struct tracing_map_elt *tracing_m
- 	}
- 	return elt;
-  free:
--	tracing_map_elt_free(elt);
-+	__tracing_map_elt_free(elt);
- 
- 	return ERR_PTR(err);
- }
+-- 
+2.53.0
+
 
 
 
