@@ -1,145 +1,209 @@
-Return-Path: <stable+bounces-254699-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-254700-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 6EH0IneiF2osLwgAu9opvQ
-	(envelope-from <stable+bounces-254699-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 04:03:35 +0200
+	id APh2HRijF2rSLwgAu9opvQ
+	(envelope-from <stable+bounces-254700-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 04:06:16 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id E7BCD5EBA74
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 04:03:34 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id E2D915EBA8D
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 04:06:15 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 1B06B303DD17
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 02:03:31 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 5721630594DD
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 02:06:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8BE2C2248A3;
-	Thu, 28 May 2026 02:03:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C89082E7F0A;
+	Thu, 28 May 2026 02:06:09 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="AphQ2ywH"
 X-Original-To: stable@vger.kernel.org
-Received: from mailgw.kylinos.cn (mailgw.kylinos.cn [124.126.103.232])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.19])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CCEF82E718B;
-	Thu, 28 May 2026 02:03:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=124.126.103.232
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 92D4B1C860A;
+	Thu, 28 May 2026 02:06:07 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.19
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779933810; cv=none; b=eiwVGhks6oSRD7NWyB9ElDcc5yrYwptk69HPmCTam2fbjS0f2QHedE3fgXDXJ66DjK6rK2zOvxpQNanm/87+u9qn0zrmgx/qCa+AaWUBW9gHuofuSXIrIQt35y2aQXkH9nbdAPA1vvM66b0IaBVcLfV7J1ZjXVPNuCZ+rCehk+g=
+	t=1779933969; cv=none; b=QSoirRjkfRu8dRGlVVcDEDGVZk7GVX1dGT6RHJ2xh6HLPGj0DkS9gw1pnaMccwSjERVk1wMb3HLuEx6RCpcquWrytgV0CL7dEa1drfZtjlAF3F6AYFBM8aKLJskx0ukXYtQKWihmjLjjPy6A3L9zV2cehekKQOBNJTGd4I95PsM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779933810; c=relaxed/simple;
-	bh=9e65qgcU6UrnYgnWOYVQ0efxW6VtTPj1fK/IM/xgs2Q=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=AEjrvj1O0nJGIOPyNlzZnxq0hcO9j83cUm5P5R+RrCRkiRVTSDjYhaUMFW9Ub+9VRx2vHNvKSgIz0/ETJ92RMb19d/miLxR7w+cL0lZ90qKQY70BdCeDjwao+nseiF1HsZcjRIWrDC2zNYTkpwr6/6lqjLc4p4SL6k6SAmv/Uik=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kylinos.cn; spf=pass smtp.mailfrom=kylinos.cn; arc=none smtp.client-ip=124.126.103.232
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kylinos.cn
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=kylinos.cn
-X-UUID: 67510caa5a3911f1aa26b74ffac11d73-20260528
-X-CID-P-RULE: Release_Ham
-X-CID-O-INFO: VERSION:1.3.12,REQID:22559811-f1cc-4b30-a328-cd2116ec1aed,IP:0,U
-	RL:0,TC:0,Content:0,EDM:0,RT:0,SF:0,FILE:0,BULK:0,RULE:Release_Ham,ACTION:
-	release,TS:0
-X-CID-META: VersionHash:e7bac3a,CLOUDID:8a1a4817c540f06c7001fdb9491d7e33,BulkI
-	D:nil,BulkQuantity:0,Recheck:0,SF:102|850|865|898,TC:nil,Content:0|15|50,E
-	DM:-3,IP:nil,URL:0,File:nil,RT:nil,Bulk:nil,QS:nil,BEC:nil,COL:0,OSI:0,OSA
-	:0,AV:0,LES:1,SPR:NO,DKR:0,DKP:0,BRR:0,BRE:0,ARC:0
-X-CID-BVR: 2,SSN|SDN
-X-CID-BAS: 2,SSN|SDN,0,_
-X-CID-FACTOR: TF_CID_SPAM_SNR
-X-CID-RHF: D41D8CD98F00B204E9800998ECF8427E
-X-UUID: 67510caa5a3911f1aa26b74ffac11d73-20260528
-X-User: zenghongling@kylinos.cn
-Received: from localhost.localdomain [(10.44.16.150)] by mailgw.kylinos.cn
-	(envelope-from <zenghongling@kylinos.cn>)
-	(Generic MTA with TLSv1.3 TLS_AES_256_GCM_SHA384 256/256)
-	with ESMTP id 665599067; Thu, 28 May 2026 10:03:21 +0800
-From: Hongling Zeng <zenghongling@kylinos.cn>
-To: dpenkler@gmail.com,
-	gregkh@linuxfoundation.org,
-	dominik.karol.piatkowski@protonmail.com,
-	lukeyang.dev@gmail.com,
-	kees@kernel.org
-Cc: linux-kernel@vger.kernel.org,
-	zhongling0719@126.com,
-	Hongling Zeng <zenghongling@kylinos.cn>,
+	s=arc-20240116; t=1779933969; c=relaxed/simple;
+	bh=fbHrRWsCsev0XpjRGu7MWKUSpSvEPDO2W7/tolEiVlI=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=SivQud7ewQnHVKKwjENblJYUhgenp9f1T1chPSRmEOBIX3iKc5eOu17xaDV7umpdy//KshMGV2F4xtyI/v3Ly06+R8fyWGOVRK5TYBHJLklPPWSxLfoyPNKI5W2Z+oUTL7pv2s8OdCmX4ppMglsdeqs8XwfJR74eNg9Lt0oOptA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=AphQ2ywH; arc=none smtp.client-ip=198.175.65.19
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1779933968; x=1811469968;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=fbHrRWsCsev0XpjRGu7MWKUSpSvEPDO2W7/tolEiVlI=;
+  b=AphQ2ywHffViWftFWb9ThB8fbywwfUa8KXLxDEDUiy2b0WxjEUbRAkRA
+   hrssin+ZDvjfUTXkhN+2TPxUfSG8fC1pLgK/dJYALYSEGUs/Q3jE0dCJl
+   o3opgkPDB0RZwPSEzYOSDlL8macvu4ei6XWrPh9/Y+c8JRurTmVTxIeb4
+   YxOwngHtlUKMsh4KT3+uzGLSleIK9QHKQnLMNJTyoAi0+lQBWRayQaEL5
+   NSW1VuauhB4QKjUdolZ6+pxGZT255cGF/Pvk8N7bzQ73qkPOUYtMiF4dD
+   0utzg5obIAhjZsY9nn1wXtu1pH5AYkmu31wtBvdjZ5rDBkls13NSk1jq2
+   Q==;
+X-CSE-ConnectionGUID: rvugshktRwaVGjY1JlOt9w==
+X-CSE-MsgGUID: RA2/0aJjTrWdECZ8YpZ1pw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11799"; a="80744162"
+X-IronPort-AV: E=Sophos;i="6.24,172,1774335600"; 
+   d="scan'208";a="80744162"
+Received: from orviesa001.jf.intel.com ([10.64.159.141])
+  by orvoesa111.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 27 May 2026 19:06:08 -0700
+X-CSE-ConnectionGUID: 0XcchuQ2Q0+DOBeLeejZqg==
+X-CSE-MsgGUID: 1ZdgjI7BQ/yZvCad8/YcgQ==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.24,172,1774335600"; 
+   d="scan'208";a="280528462"
+Received: from igk-lkp-server01.igk.intel.com (HELO 892db79562d4) ([10.211.93.152])
+  by orviesa001.jf.intel.com with ESMTP; 27 May 2026 19:06:05 -0700
+Received: from kbuild by 892db79562d4 with local (Exim 4.98.2)
+	(envelope-from <lkp@intel.com>)
+	id 1wSQ8J-000000000F7-0YER;
+	Thu, 28 May 2026 02:06:03 +0000
+Date: Thu, 28 May 2026 04:05:45 +0200
+From: kernel test robot <lkp@intel.com>
+To: Wentao Liang <vulab@iscas.ac.cn>,
+	"Martin K . Petersen" <martin.petersen@oracle.com>
+Cc: oe-kbuild-all@lists.linux.dev, Kees Cook <kees@kernel.org>,
+	Wentao Liang <vulab@iscas.ac.cn>, linux-scsi@vger.kernel.org,
+	target-devel@vger.kernel.org, linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Subject: [PATCH] gpib: ines: Fix resource leak in ines_isa_attach()
-Date: Thu, 28 May 2026 10:03:17 +0800
-Message-Id: <20260528020317.14836-1-zenghongling@kylinos.cn>
-X-Mailer: git-send-email 2.25.1
+Subject: Re: [PATCH] target: iscsi: cxgbit: fix cnp kref leak in
+ __cxgbit_free_cdev_np()
+Message-ID: <202605280336.gXG4Wlij-lkp@intel.com>
+References: <20260527103823.869792-1-vulab@iscas.ac.cn>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [1.54 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260527103823.869792-1-vulab@iscas.ac.cn>
+X-Spamd-Result: default: False [-1.16 / 15.00];
 	MID_CONTAINS_FROM(1.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	DMARC_POLICY_ALLOW(-0.50)[intel.com,none];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	R_DKIM_ALLOW(-0.20)[intel.com:s=Intel];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-254699-lists,stable=lfdr.de];
+	FROM_HAS_DN(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
-	DMARC_NA(0.00)[kylinos.cn];
-	FREEMAIL_TO(0.00)[gmail.com,linuxfoundation.org,protonmail.com,kernel.org];
-	FREEMAIL_CC(0.00)[vger.kernel.org,126.com,kylinos.cn];
-	RCVD_COUNT_THREE(0.00)[4];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	DKIM_TRACE(0.00)[intel.com:+];
+	TAGGED_FROM(0.00)[bounces-254700-lists,stable=lfdr.de];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
 	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[zenghongling@kylinos.cn,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-0.719];
+	FROM_NEQ_ENVFROM(0.00)[lkp@intel.com,stable@vger.kernel.org];
+	MISSING_XM_UA(0.00)[];
+	RCVD_COUNT_FIVE(0.00)[6];
 	RCPT_COUNT_SEVEN(0.00)[9];
-	R_DKIM_NA(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[kylinos.cn:mid,kylinos.cn:email,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
-X-Rspamd-Queue-Id: E7BCD5EBA74
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo]
+X-Rspamd-Queue-Id: E2D915EBA8D
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-When request_irq() fails in ines_isa_attach(), the function returns -1
-without releasing the I/O port region that was successfully acquired
-earlier by request_region(). This causes a resource leak.
+Hi Wentao,
 
-Fix this by adding a proper error path that releases the I/O port
-region before returning.
+kernel test robot noticed the following build warnings:
 
-Fixes: 0de51244e7b7e3 ("gpib: ines: use request_region for isa devices")
-Signed-off-by: Hongling Zeng <zenghongling@kylinos.cn>
-Cc: stable@vger.kernel.org
----
- drivers/gpib/ines/ines_gpib.c | 7 ++++++-
- 1 file changed, 6 insertions(+), 1 deletion(-)
+[auto build test WARNING on mkp-scsi/for-next]
+[also build test WARNING on kees/for-next/pstore kees/for-next/kspp linus/master v7.1-rc5 next-20260527]
+[If your patch is applied to the wrong git tree, kindly drop us a note.
+And when submitting patch, we suggest to use '--base' as documented in
+https://git-scm.com/docs/git-format-patch#_base_tree_information]
 
-diff --git a/drivers/gpib/ines/ines_gpib.c b/drivers/gpib/ines/ines_gpib.c
-index c000f647fbb5..1e5112d05dfc 100644
---- a/drivers/gpib/ines/ines_gpib.c
-+++ b/drivers/gpib/ines/ines_gpib.c
-@@ -911,11 +911,16 @@ static int ines_isa_attach(struct gpib_board *board, const struct gpib_board_con
- 	nec7210_board_reset(nec_priv, board);
- 	if (request_irq(config->ibirq, ines_pci_interrupt, isr_flags, DRV_NAME, board)) {
- 		dev_err(board->gpib_dev, "failed to allocate IRQ %d\n", config->ibirq);
--		return -1;
-+		retval = -ENODEV;
-+		goto err_release_region;
- 	}
- 	ines_priv->irq = config->ibirq;
- 	ines_online(ines_priv, board, 1);
- 	return 0;
-+
-+err_release_region:
-+	release_region(config->ibbase, ines_isa_iosize);
-+	return retval;
- }
- 
- static void ines_pci_detach(struct gpib_board *board)
--- 
-2.25.1
+url:    https://github.com/intel-lab-lkp/linux/commits/Wentao-Liang/target-iscsi-cxgbit-fix-cnp-kref-leak-in-__cxgbit_free_cdev_np/20260527-184050
+base:   https://git.kernel.org/pub/scm/linux/kernel/git/mkp/scsi.git for-next
+patch link:    https://lore.kernel.org/r/20260527103823.869792-1-vulab%40iscas.ac.cn
+patch subject: [PATCH] target: iscsi: cxgbit: fix cnp kref leak in __cxgbit_free_cdev_np()
+config: x86_64-rhel-9.4 (https://download.01.org/0day-ci/archive/20260528/202605280336.gXG4Wlij-lkp@intel.com/config)
+compiler: gcc-14 (Debian 14.2.0-19) 14.2.0
+reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20260528/202605280336.gXG4Wlij-lkp@intel.com/reproduce)
 
+If you fix the issue in a separate patch/commit (i.e. not just a new version of
+the same patch/commit), kindly add following tags
+| Reported-by: kernel test robot <lkp@intel.com>
+| Closes: https://lore.kernel.org/oe-kbuild-all/202605280336.gXG4Wlij-lkp@intel.com/
+
+All warnings (new ones prefixed by >>):
+
+   drivers/target/iscsi/cxgbit/cxgbit_cm.c: In function '__cxgbit_free_cdev_np':
+>> drivers/target/iscsi/cxgbit/cxgbit_cm.c:547:9: warning: this 'if' clause does not guard... [-Wmisleading-indentation]
+     547 |         if (ret == -ETIMEDOUT)
+         |         ^~
+   drivers/target/iscsi/cxgbit/cxgbit_cm.c:549:17: note: ...this statement, but the latter is misleadingly indented as if it were guarded by the 'if'
+     549 |                 return ret;
+         |                 ^~~~~~
+
+
+vim +/if +547 drivers/target/iscsi/cxgbit/cxgbit_cm.c
+
+9730ffcb8957e1 Varun Prakash 2016-04-20  516  
+9730ffcb8957e1 Varun Prakash 2016-04-20  517  static int
+9730ffcb8957e1 Varun Prakash 2016-04-20  518  __cxgbit_free_cdev_np(struct cxgbit_device *cdev, struct cxgbit_np *cnp)
+9730ffcb8957e1 Varun Prakash 2016-04-20  519  {
+9730ffcb8957e1 Varun Prakash 2016-04-20  520  	int stid, ret;
+9730ffcb8957e1 Varun Prakash 2016-04-20  521  	bool ipv6 = false;
+9730ffcb8957e1 Varun Prakash 2016-04-20  522  
+9730ffcb8957e1 Varun Prakash 2016-04-20  523  	stid = cxgbit_np_hash_del(cdev, cnp);
+9730ffcb8957e1 Varun Prakash 2016-04-20  524  	if (stid < 0)
+9730ffcb8957e1 Varun Prakash 2016-04-20  525  		return -EINVAL;
+9730ffcb8957e1 Varun Prakash 2016-04-20  526  	if (!test_bit(CDEV_STATE_UP, &cdev->flags))
+9730ffcb8957e1 Varun Prakash 2016-04-20  527  		return -EINVAL;
+9730ffcb8957e1 Varun Prakash 2016-04-20  528  
+9730ffcb8957e1 Varun Prakash 2016-04-20  529  	if (cnp->np->np_sockaddr.ss_family == AF_INET6)
+9730ffcb8957e1 Varun Prakash 2016-04-20  530  		ipv6 = true;
+9730ffcb8957e1 Varun Prakash 2016-04-20  531  
+9730ffcb8957e1 Varun Prakash 2016-04-20  532  	cxgbit_get_cnp(cnp);
+9730ffcb8957e1 Varun Prakash 2016-04-20  533  	cxgbit_init_wr_wait(&cnp->com.wr_wait);
+9730ffcb8957e1 Varun Prakash 2016-04-20  534  	ret = cxgb4_remove_server(cdev->lldi.ports[0], stid,
+9730ffcb8957e1 Varun Prakash 2016-04-20  535  				  cdev->lldi.rxq_ids[0], ipv6);
+9730ffcb8957e1 Varun Prakash 2016-04-20  536  
+9730ffcb8957e1 Varun Prakash 2016-04-20  537  	if (ret > 0)
+9730ffcb8957e1 Varun Prakash 2016-04-20  538  		ret = net_xmit_errno(ret);
+9730ffcb8957e1 Varun Prakash 2016-04-20  539  
+9730ffcb8957e1 Varun Prakash 2016-04-20  540  	if (ret) {
+9730ffcb8957e1 Varun Prakash 2016-04-20  541  		cxgbit_put_cnp(cnp);
+9730ffcb8957e1 Varun Prakash 2016-04-20  542  		return ret;
+9730ffcb8957e1 Varun Prakash 2016-04-20  543  	}
+9730ffcb8957e1 Varun Prakash 2016-04-20  544  
+9730ffcb8957e1 Varun Prakash 2016-04-20  545  	ret = cxgbit_wait_for_reply(cdev, &cnp->com.wr_wait,
+9730ffcb8957e1 Varun Prakash 2016-04-20  546  				    0, 10, __func__);
+9730ffcb8957e1 Varun Prakash 2016-04-20 @547  	if (ret == -ETIMEDOUT)
+956027c993d5b2 Wentao Liang  2026-05-27  548  		cxgbit_put_cnp(cnp);
+9730ffcb8957e1 Varun Prakash 2016-04-20  549  		return ret;
+9730ffcb8957e1 Varun Prakash 2016-04-20  550  
+9730ffcb8957e1 Varun Prakash 2016-04-20  551  	if (ipv6 && cnp->com.cdev) {
+9730ffcb8957e1 Varun Prakash 2016-04-20  552  		struct sockaddr_in6 *sin6;
+9730ffcb8957e1 Varun Prakash 2016-04-20  553  
+9730ffcb8957e1 Varun Prakash 2016-04-20  554  		sin6 = (struct sockaddr_in6 *)&cnp->com.local_addr;
+9730ffcb8957e1 Varun Prakash 2016-04-20  555  		cxgb4_clip_release(cdev->lldi.ports[0],
+9730ffcb8957e1 Varun Prakash 2016-04-20  556  				   (const u32 *)&sin6->sin6_addr.s6_addr,
+9730ffcb8957e1 Varun Prakash 2016-04-20  557  				   1);
+9730ffcb8957e1 Varun Prakash 2016-04-20  558  	}
+9730ffcb8957e1 Varun Prakash 2016-04-20  559  
+9730ffcb8957e1 Varun Prakash 2016-04-20  560  	cxgb4_free_stid(cdev->lldi.tids, stid,
+9730ffcb8957e1 Varun Prakash 2016-04-20  561  			cnp->com.local_addr.ss_family);
+956027c993d5b2 Wentao Liang  2026-05-27  562  	cxgbit_put_cnp(cnp);
+9730ffcb8957e1 Varun Prakash 2016-04-20  563  	return 0;
+9730ffcb8957e1 Varun Prakash 2016-04-20  564  }
+9730ffcb8957e1 Varun Prakash 2016-04-20  565  
+
+--
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
 
