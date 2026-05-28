@@ -1,60 +1,63 @@
-Return-Path: <stable+bounces-255960-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-255361-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id MO/wIRepGGrclwgAu9opvQ
-	(envelope-from <stable+bounces-255960-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:44:07 +0200
+	id oIiVCvqgGGqblggAu9opvQ
+	(envelope-from <stable+bounces-255361-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:09:30 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id F274C5F96A8
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:44:06 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id C01725F7EDD
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:09:29 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 61CD6317C0D2
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 20:32:43 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 8D34A30DEB30
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 20:05:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3E69B33439A;
-	Thu, 28 May 2026 20:32:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A5E2C40962D;
+	Thu, 28 May 2026 20:04:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="h19TRPlT"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="X0TIh+gN"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E21BE33987F;
-	Thu, 28 May 2026 20:32:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6741B30E82E;
+	Thu, 28 May 2026 20:04:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780000362; cv=none; b=XVOpoT8a+evfQ0OWY8/40r7gVqEZd6cCmFOClHnS4F0CvKVIrdE++7ok+I/XROgvcGL6TWMFo6Sy7LJPzYj8Ceykn87rPpPJ1pPPE/gHHC/64kHniXxKM7jCJjFpXcx5Y45ebe88TrRWXqB3eYtcpchIBV7lRXrT/nglflCQpm8=
+	t=1779998694; cv=none; b=JJygmsgjFwKhDNgMMeLPBbK+IWPQe5vcNWDsRin2io9AYgAYzpFuTr6nrbaxXVk08uGSeFzsMix1OOiD6s79sYayShsWrwlszeovB2bdClUdijmTspFb/1xUG/9it4zATPuovfX1aPMcgGZz2xPoeECm590hMF5GuqFUq0R2eBI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780000362; c=relaxed/simple;
-	bh=nCAN7SWkn9jWUcZLIQXPOP1Rnh1u/CrH4uQMLaUwaWQ=;
+	s=arc-20240116; t=1779998694; c=relaxed/simple;
+	bh=LwPQEB6xmgciLemfoL75DL54QgHqo4kTfw3bMbCdriU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=DgYWy3r+HS0F043RyOsRn4VEolazC7gvCP/CzYGKlYYTLYIv+Wi7rtE4iNih0CJEidMbgD2cS6JQhqzpGE/P91fcWAmseO70Wcoz4rB3E5BDb2gQOvpOTmn44t0OglXeBTQ49hHBHAZ+q3XQ2eku+q7BfILWgOTI6LBpmHJWhyQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=h19TRPlT; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 015AB1F00A3A;
-	Thu, 28 May 2026 20:32:39 +0000 (UTC)
+	 MIME-Version; b=QFft1SAw09zKtjR2IrE1sV75S4tC+F036XDFJQ3V18XhNZfQ0w+3W8d6lQY8Ve8ivIqOHnQkYA1nJf9TbRmTs9q9ooJvouUeXzltv6VYXbGFLpZbq+HW6aUo+6bhgsjgoXQnfCnoWvfzIyAvKsHzl1gb/uJ14hKwSiHmwGX4Vcs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=X0TIh+gN; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C3B5C1F000E9;
+	Thu, 28 May 2026 20:04:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780000360;
-	bh=1FgtFi2AVLEZTI1VORZ/1N2wHVVYGGc5a5EgZhvIMNo=;
+	s=korg; t=1779998693;
+	bh=D2g3v7t1xUR3+9glFuDOnBloeR3B9ItH/CSluPI5+9g=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=h19TRPlTuodo19akuOI0n/kWXnL1f/fGy5tXCQ2Axpspe+O/pqXimlfNPeM91SxYv
-	 4GTHTnDrwO2doy7eZKTWCD+nwWiN09oMbg+EAsQ4jt08hOEHzIAh/tipJp7ybF4ixf
-	 akVMY5Lj/qheI5O5plpXSiskEA2gwHp32td3vzJc=
+	b=X0TIh+gNuwFc9Rz4yONXxBTbXHmE8tcfEHvud4OHVdtV5Wdh/lj7VlU+OYrn3/dej
+	 1R2Y3aNO+m14UjDFL+lVqxuHe4WKIagOMl0lSxyRtOSOvwvHYo+cqgF7lk1t1dapL/
+	 8kaVIsvTrXRM+zfxxQoU593a2MGzgxXHk+2BXsYI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	John Stultz <jstultz@google.com>,
-	"Peter Zijlstra (Intel)" <peterz@infradead.org>,
-	Lukas Beckmann <lbckmnn@mailbox.org>,
+	David Howells <dhowells@redhat.com>,
+	Paulo Alcantara <pc@manguebit.org>,
+	Matthew Wilcox <willy@infradead.org>,
+	netfs@lists.linux.dev,
+	linux-fsdevel@vger.kernel.org,
+	Christian Brauner <brauner@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 018/272] sched/deadline: Fix dl_server getting stuck
+Subject: [PATCH 7.0 263/461] netfs: Fix write streaming disablement if fd open O_RDWR
 Date: Thu, 28 May 2026 21:46:32 +0200
-Message-ID: <20260528194629.892351076@linuxfoundation.org>
+Message-ID: <20260528194654.774664581@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260528194629.379955525@linuxfoundation.org>
-References: <20260528194629.379955525@linuxfoundation.org>
+In-Reply-To: <20260528194646.819809818@linuxfoundation.org>
+References: <20260528194646.819809818@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,7 +72,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
@@ -77,7 +80,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-255960-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-255361-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
@@ -86,174 +89,92 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
 	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[7];
+	RCPT_COUNT_SEVEN(0.00)[10];
 	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[infradead.org:email,mailbox.org:email,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim]
-X-Rspamd-Queue-Id: F274C5F96A8
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,msgid.link:url,infradead.org:email,linux.dev:email,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,manguebit.org:email]
+X-Rspamd-Queue-Id: C01725F7EDD
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+7.0-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Peter Zijlstra <peterz@infradead.org>
+From: David Howells <dhowells@redhat.com>
 
-commit 4ae8d9aa9f9dc7137ea5e564d79c5aa5af1bc45c upstream.
+[ Upstream commit 70a7b9193bbbfceaab5974de66834c64ccc875dd ]
 
-John found it was easy to hit lockup warnings when running locktorture
-on a 2 CPU VM, which he bisected down to: commit cccb45d7c429
-("sched/deadline: Less agressive dl_server handling").
+In netfs_perform_write(), "write streaming" (the caching of dirty data in
+dirty but !uptodate folios) is performed to avoid the need to read data
+that is just going to get immediately overwritten.  However, this is/will
+be disabled in three circumstances: if the fd is open O_RDWR, if fscache is
+in use (as we need to round out the blocks for DIO) or if content
+encryption is enabled (again for rounding out purposes).
 
-While debugging it seems there is a chance where we end up with the
-dl_server dequeued, with dl_se->dl_server_active. This causes
-dl_server_start() to return without enqueueing the dl_server, thus it
-fails to run when RT tasks starve the cpu.
+The idea behind disabling it if the fd is open O_RDWR is that we'd need to
+flush the write-streaming page before we could read the data, particularly
+through mmap.  But netfs now fills in the gaps if ->read_folio() is called
+on the page, so that is unnecessary.  Further, this doesn't actually work
+if a separate fd is open for reading.
 
-When this happens, dl_server_timer() catches the
-'!dl_se->server_has_tasks(dl_se)' case, which then calls
-replenish_dl_entity() and dl_server_stopped() and finally return
-HRTIMER_NO_RESTART.
+Fix this by removing the check for O_RDWR, thereby allowing streaming
+writes even when we might read.
 
-This ends in no new timer and also no enqueue, leaving the dl_server
-'dead', allowing starvation.
+This caused a number of problems with the generic/522 xfstest, but those
+are now fixed.
 
-What should have happened is for the bandwidth timer to start the
-zero-laxity timer, which in turn would enqueue the dl_server and cause
-dl_se->server_pick_task() to be called -- which will stop the
-dl_server if no fair tasks are observed for a whole period.
-
-IOW, it is totally irrelevant if there are fair tasks at the moment of
-bandwidth refresh.
-
-This removes all dl_se->server_has_tasks() users, so remove the whole
-thing.
-
-Fixes: cccb45d7c4295 ("sched/deadline: Less agressive dl_server handling")
-Reported-by: John Stultz <jstultz@google.com>
-Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Tested-by: John Stultz <jstultz@google.com>
-[ adjust renamed variable in fair_server_has_tasks (which this patch
-removes) ]
-Signed-off-by: Lukas Beckmann <lbckmnn@mailbox.org>
+Fixes: c38f4e96e605 ("netfs: Provide func to copy data to pagecache for buffered write")
+Signed-off-by: David Howells <dhowells@redhat.com>
+Link: https://patch.msgid.link/20260512123404.719402-17-dhowells@redhat.com
+cc: Paulo Alcantara <pc@manguebit.org>
+cc: Matthew Wilcox <willy@infradead.org>
+cc: netfs@lists.linux.dev
+cc: linux-fsdevel@vger.kernel.org
+Signed-off-by: Christian Brauner <brauner@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/linux/sched.h   |  1 -
- kernel/sched/deadline.c | 12 +-----------
- kernel/sched/fair.c     |  7 +------
- kernel/sched/sched.h    |  4 ----
- 4 files changed, 2 insertions(+), 22 deletions(-)
+ fs/netfs/buffered_write.c | 17 +++++++----------
+ 1 file changed, 7 insertions(+), 10 deletions(-)
 
-diff --git a/include/linux/sched.h b/include/linux/sched.h
-index 299a65a92d2e6..464d281aa2e49 100644
---- a/include/linux/sched.h
-+++ b/include/linux/sched.h
-@@ -701,7 +701,6 @@ struct sched_dl_entity {
- 	 * runnable task.
- 	 */
- 	struct rq			*rq;
--	dl_server_has_tasks_f		server_has_tasks;
- 	dl_server_pick_f		server_pick_task;
+diff --git a/fs/netfs/buffered_write.c b/fs/netfs/buffered_write.c
+index 0ff4c790ae263..b606c3bd84bcd 100644
+--- a/fs/netfs/buffered_write.c
++++ b/fs/netfs/buffered_write.c
+@@ -204,11 +204,11 @@ ssize_t netfs_perform_write(struct kiocb *iocb, struct iov_iter *iter,
+ 		}
  
- #ifdef CONFIG_RT_MUTEXES
-diff --git a/kernel/sched/deadline.c b/kernel/sched/deadline.c
-index 6ff9055a69811..609783d7de290 100644
---- a/kernel/sched/deadline.c
-+++ b/kernel/sched/deadline.c
-@@ -916,7 +916,7 @@ static void replenish_dl_entity(struct sched_dl_entity *dl_se)
- 	 */
- 	if (dl_se->dl_defer && !dl_se->dl_defer_running &&
- 	    dl_time_before(rq_clock(dl_se->rq), dl_se->deadline - dl_se->runtime)) {
--		if (!is_dl_boosted(dl_se) && dl_se->server_has_tasks(dl_se)) {
-+		if (!is_dl_boosted(dl_se)) {
+ 		/* Decide how we should modify a folio.  We might be attempting
+-		 * to do write-streaming, in which case we don't want to a
+-		 * local RMW cycle if we can avoid it.  If we're doing local
+-		 * caching or content crypto, we award that priority over
+-		 * avoiding RMW.  If the file is open readably, then we also
+-		 * assume that we may want to read what we wrote.
++		 * to do write-streaming, as we don't want to a local RMW cycle
++		 * if we can avoid it.  If we're doing local caching or content
++		 * crypto, we award that priority over avoiding RMW.  If the
++		 * file is open readably, then we let ->read_folio() fill in
++		 * the gaps.
+ 		 */
+ 		finfo = netfs_folio_info(folio);
+ 		group = netfs_folio_group(folio);
+@@ -284,12 +284,9 @@ ssize_t netfs_perform_write(struct kiocb *iocb, struct iov_iter *iter,
  
- 			/*
- 			 * Set dl_se->dl_defer_armed and dl_throttled variables to
-@@ -1201,8 +1201,6 @@ static void __push_dl_task(struct rq *rq, struct rq_flags *rf)
- /* a defer timer will not be reset if the runtime consumed was < dl_server_min_res */
- static const u64 dl_server_min_res = 1 * NSEC_PER_MSEC;
- 
--static bool dl_server_stopped(struct sched_dl_entity *dl_se);
--
- static enum hrtimer_restart dl_server_timer(struct hrtimer *timer, struct sched_dl_entity *dl_se)
- {
- 	struct rq *rq = rq_of_dl_se(dl_se);
-@@ -1220,12 +1218,6 @@ static enum hrtimer_restart dl_server_timer(struct hrtimer *timer, struct sched_
- 		if (!dl_se->dl_runtime)
- 			return HRTIMER_NORESTART;
- 
--		if (!dl_se->server_has_tasks(dl_se)) {
--			replenish_dl_entity(dl_se);
--			dl_server_stopped(dl_se);
--			return HRTIMER_NORESTART;
--		}
--
- 		if (dl_se->dl_defer_armed) {
- 			/*
- 			 * First check if the server could consume runtime in background.
-@@ -1891,11 +1883,9 @@ static bool dl_server_stopped(struct sched_dl_entity *dl_se)
- }
- 
- void dl_server_init(struct sched_dl_entity *dl_se, struct rq *rq,
--		    dl_server_has_tasks_f has_tasks,
- 		    dl_server_pick_f pick_task)
- {
- 	dl_se->rq = rq;
--	dl_se->server_has_tasks = has_tasks;
- 	dl_se->server_pick_task = pick_task;
- }
- 
-diff --git a/kernel/sched/fair.c b/kernel/sched/fair.c
-index d26e078d0623f..f36512892adf9 100644
---- a/kernel/sched/fair.c
-+++ b/kernel/sched/fair.c
-@@ -9058,11 +9058,6 @@ static struct task_struct *__pick_next_task_fair(struct rq *rq, struct task_stru
- 	return pick_next_task_fair(rq, prev, NULL);
- }
- 
--static bool fair_server_has_tasks(struct sched_dl_entity *dl_se)
--{
--	return !!dl_se->rq->cfs.nr_running;
--}
--
- static struct task_struct *fair_server_pick_task(struct sched_dl_entity *dl_se)
- {
- 	return pick_task_fair(dl_se->rq);
-@@ -9074,7 +9069,7 @@ void fair_server_init(struct rq *rq)
- 
- 	init_dl_entity(dl_se);
- 
--	dl_server_init(dl_se, rq, fair_server_has_tasks, fair_server_pick_task);
-+	dl_server_init(dl_se, rq, fair_server_pick_task);
- }
- 
- /*
-diff --git a/kernel/sched/sched.h b/kernel/sched/sched.h
-index a09e2d25edd57..9391ff62cdaaa 100644
---- a/kernel/sched/sched.h
-+++ b/kernel/sched/sched.h
-@@ -371,9 +371,6 @@ extern s64 dl_scaled_delta_exec(struct rq *rq, struct sched_dl_entity *dl_se, s6
-  *
-  *   dl_se::rq -- runqueue we belong to.
-  *
-- *   dl_se::server_has_tasks() -- used on bandwidth enforcement; we 'stop' the
-- *                                server when it runs out of tasks to run.
-- *
-  *   dl_se::server_pick() -- nested pick_next_task(); we yield the period if this
-  *                           returns NULL.
-  *
-@@ -389,7 +386,6 @@ extern void dl_server_update(struct sched_dl_entity *dl_se, s64 delta_exec);
- extern void dl_server_start(struct sched_dl_entity *dl_se);
- extern void dl_server_stop(struct sched_dl_entity *dl_se);
- extern void dl_server_init(struct sched_dl_entity *dl_se, struct rq *rq,
--		    dl_server_has_tasks_f has_tasks,
- 		    dl_server_pick_f pick_task);
- 
- extern void dl_server_update_idle_time(struct rq *rq,
+ 		/* We don't want to do a streaming write on a file that loses
+ 		 * caching service temporarily because the backing store got
+-		 * culled and we don't really want to get a streaming write on
+-		 * a file that's open for reading as ->read_folio() then has to
+-		 * be able to flush it.
++		 * culled.
+ 		 */
+-		if ((file->f_mode & FMODE_READ) ||
+-		    netfs_is_cache_enabled(ctx)) {
++		if (netfs_is_cache_enabled(ctx)) {
+ 			if (finfo) {
+ 				netfs_stat(&netfs_n_wh_wstream_conflict);
+ 				goto flush_content;
 -- 
 2.53.0
 
