@@ -1,61 +1,62 @@
-Return-Path: <stable+bounces-255865-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-256276-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id iPzPGSymGGoQlwgAu9opvQ
-	(envelope-from <stable+bounces-255865-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:31:40 +0200
+	id eDxvDpOrGGpolwgAu9opvQ
+	(envelope-from <stable+bounces-256276-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:54:43 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8AA2A5F8E04
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:31:39 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id ED5765F9D6C
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:54:42 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 07BDC3069615
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 20:28:17 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 469E4309A06D
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 20:47:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7FAAE254B1F;
-	Thu, 28 May 2026 20:28:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E43C7328B7B;
+	Thu, 28 May 2026 20:47:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0T93+gXg"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="n/4pvZ7G"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 448E5DDC5;
-	Thu, 28 May 2026 20:28:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B6369318B9D;
+	Thu, 28 May 2026 20:47:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780000094; cv=none; b=K4fP0We4rkV1Vtbih+7Qaw8GUOcsyzxbMKQ3znOkC3AwrPNNYglhhEDSy3PuO+KMQjsSAd6v/LFUAiMB53AT66/J6FQe80P7UBfnqr+XJdzkCPhgKMqu2qhVKeEEP0Yix7YkMMv8XGF6KoeMNpJ1IguSJnx7och91Z97Mqs0bbs=
+	t=1780001246; cv=none; b=toDakkHwIJMLOX6hQYMY+36ia4KlBvi6xoppTuMe7MMuRBRkOb0Q+IAJT7sVAiYou8cmdUcBU12GR5RwIu/cZSczTat/RBDMRJFLRKuc7BjvkR7/MOsJVdQmnFpn3n1HEScnFkcrYkm89vH3j0YxbobHm8Pqyxz5pME4dJ4u5xQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780000094; c=relaxed/simple;
-	bh=cZPK6WZ+kRlT28tmJVzVzAtwUYL51x0b5SkFUIiX7kg=;
+	s=arc-20240116; t=1780001246; c=relaxed/simple;
+	bh=XtBBNnt0hiBDIStzUdy93ihg+kRzFMx8hcRY9BO1Q4s=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=cXkW8Wtqx7TcnU3wtwB59WnuCzVHCrUM/8CMvBWkIy2Eh3x5MotvU2wDLPBHyheyq9SQLetIMHeYAlvTyvhj8TUHXiY4RHvm4iJiBITknGhh04yMNUcRgCZGrQiz2MUG6bH0h4uNGJ2jZhw89iPRb21SSU2qZSOYbirigOz377w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0T93+gXg; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A28481F000E9;
-	Thu, 28 May 2026 20:28:12 +0000 (UTC)
+	 MIME-Version; b=CtAk62RTmy3E0hkDHF/bxNfdlpn1kyFk2SfZqh+mH/Fbt67Y5jrVoDWiFKPwcRAlkHzPmUXlds+64aEBpPX+CjcgL7UN0tJPf2xlwoe44mRmc405hlN5HztdgxZuEUSOABcMj36RnDlUdoU1jKaN961QRsLABGZPjVXlYdr4Z2I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=n/4pvZ7G; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 259AC1F000E9;
+	Thu, 28 May 2026 20:47:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780000093;
-	bh=xH3E9+Ni2NF95cbvoHxxKZ1aL2s1u76WyybDjrKdIWw=;
+	s=korg; t=1780001245;
+	bh=RmSsBavROsWtTVldpaj81Tq1+OJBtWywDQHGbyZ/gBc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=0T93+gXggsVmUEi2tqay73J35nAeP5b2uBm5LtoJhAzBpACGpkl0H8eE2GGrlGF9U
-	 wvg/pquJDAGb0jP3cqXOVMjc5B/NJ0OJqdGNfOvVmUp4Oz7jaH49sz6nibEbaHKQSI
-	 3pFqmpu83UWBlD5Deodc+bydIf6vKl+sF5RoeOf4=
+	b=n/4pvZ7G1WYXKd68G6SnCaFpqX19awdraG7TeEPNQ6H9/w+nVA6QLIbItE1Aq/xjs
+	 JcgPm94rjRxwi8ywLJoAotK98tSGuWomVT5G8ZxBOow9/qxuvjqNTjaqzsd9oXaDst
+	 fRoNjUdOt+onEWH/l+NBdWLHdH+BAWorKIuXk3Co=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Johannes Thumshirn <johannes.thumshirn@wdc.com>,
-	Josef Bacik <josef@toxicpanda.com>,
-	Daniel Vacek <neelx@suse.com>,
-	David Sterba <dsterba@suse.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 299/377] btrfs: dont search back for dir inode item in INO_LOOKUP_USER
-Date: Thu, 28 May 2026 21:48:57 +0200
-Message-ID: <20260528194647.015775177@linuxfoundation.org>
+	Tom Zanussi <tom.zanussi@linux.intel.com>,
+	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
+	Rosen Penev <rosenp@gmail.com>,
+	Sashiko <sashiko-bot@kernel.org>,
+	"Masami Hiramatsu (Google)" <mhiramat@kernel.org>,
+	Steven Rostedt <rostedt@goodmis.org>
+Subject: [PATCH 6.6 058/186] tracing: Do not call map->ops->elt_free() if elt_alloc() fails
+Date: Thu, 28 May 2026 21:48:58 +0200
+Message-ID: <20260528194930.540238333@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260528194638.371537336@linuxfoundation.org>
-References: <20260528194638.371537336@linuxfoundation.org>
+In-Reply-To: <20260528194928.941004471@linuxfoundation.org>
+References: <20260528194928.941004471@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -70,117 +71,106 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	RCVD_TLS_LAST(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,linux.intel.com,efficios.com,gmail.com,kernel.org,goodmis.org];
+	TAGGED_FROM(0.00)[bounces-256276-lists,stable=lfdr.de];
+	PRECEDENCE_BULK(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FROM_HAS_DN(0.00)[];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-255865-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TO_DN_SOME(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
-	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[8];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[9];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[suse.com:email,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,wdc.com:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,toxicpanda.com:email]
-X-Rspamd-Queue-Id: 8AA2A5F8E04
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[intel.com:email,efficios.com:email,goodmis.org:email,msgid.link:url,sashiko.dev:url,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim]
+X-Rspamd-Queue-Id: ED5765F9D6C
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Josef Bacik <josef@toxicpanda.com>
+From: Masami Hiramatsu (Google) <mhiramat@kernel.org>
 
-[ Upstream commit 70085399b1a1623ef488d96b4c2d0c67be1d0607 ]
+commit 8f0f5c4fb9df0e19a341e0c6ed8dc4fda9124f03 upstream.
 
-We don't need to search back to the inode item, the directory inode
-number is in key.offset, so simply use that.  If we can't find the
-directory we'll get an ENOENT at the iget().
+In paths where tracing_map_elt_alloc() failed to allocate objects,
+the map->ops->elt_alloc() call was never successful. In this case,
+map->ops->elt_free() should not be called.
 
-Note: The patch was taken from v5 of fscrypt patchset
-(https://lore.kernel.org/linux-btrfs/cover.1706116485.git.josef@toxicpanda.com/)
-which was handled over time by various people: Omar Sandoval, Sweet Tea
-Dorminy, Josef Bacik.
+Link: https://sashiko.dev/#/patchset/20260520223101.34710-1-rosenp%40gmail.com
 
-Reviewed-by: Johannes Thumshirn <johannes.thumshirn@wdc.com>
-Signed-off-by: Josef Bacik <josef@toxicpanda.com>
-Signed-off-by: Daniel Vacek <neelx@suse.com>
-Reviewed-by: David Sterba <dsterba@suse.com>
-[ add note ]
-Signed-off-by: David Sterba <dsterba@suse.com>
-Stable-dep-of: 1e92637722ae ("btrfs: check for subvolume before deleting squota qgroup")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: stable@vger.kernel.org
+Cc: Tom Zanussi <tom.zanussi@linux.intel.com>
+Cc: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
+Cc: Rosen Penev <rosenp@gmail.com>
+Reported-by: Sashiko <sashiko-bot@kernel.org>
+Fixes: 2734b629525a ("tracing: Add per-element variable support to tracing_map")
+Link: https://patch.msgid.link/177933895460.108746.5396070821443932634.stgit@devnote2
+Signed-off-by: Masami Hiramatsu (Google) <mhiramat@kernel.org>
+Signed-off-by: Steven Rostedt <rostedt@goodmis.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/btrfs/ioctl.c | 23 +++--------------------
- 1 file changed, 3 insertions(+), 20 deletions(-)
+ kernel/trace/tracing_map.c |   17 +++++++++++++----
+ 1 file changed, 13 insertions(+), 4 deletions(-)
 
-diff --git a/fs/btrfs/ioctl.c b/fs/btrfs/ioctl.c
-index c0691e93e0a58..41e549d37aac8 100644
---- a/fs/btrfs/ioctl.c
-+++ b/fs/btrfs/ioctl.c
-@@ -1832,7 +1832,7 @@ static int btrfs_search_path_in_tree_user(struct mnt_idmap *idmap,
- 	struct btrfs_root_ref *rref;
- 	struct btrfs_root *root = NULL;
- 	struct btrfs_path *path;
--	struct btrfs_key key, key2;
-+	struct btrfs_key key;
- 	struct extent_buffer *leaf;
- 	char *ptr;
- 	int slot;
-@@ -1887,24 +1887,6 @@ static int btrfs_search_path_in_tree_user(struct mnt_idmap *idmap,
- 			read_extent_buffer(leaf, ptr,
- 					(unsigned long)(iref + 1), len);
+--- a/kernel/trace/tracing_map.c
++++ b/kernel/trace/tracing_map.c
+@@ -386,13 +386,11 @@ static void tracing_map_elt_init_fields(
+ 	}
+ }
  
--			/* Check the read+exec permission of this directory */
--			ret = btrfs_previous_item(root, path, dirid,
--						  BTRFS_INODE_ITEM_KEY);
--			if (ret < 0) {
--				goto out_put;
--			} else if (ret > 0) {
--				ret = -ENOENT;
--				goto out_put;
--			}
--
--			leaf = path->nodes[0];
--			slot = path->slots[0];
--			btrfs_item_key_to_cpu(leaf, &key2, slot);
--			if (key2.objectid != dirid) {
--				ret = -ENOENT;
--				goto out_put;
--			}
--
- 			/*
- 			 * We don't need the path anymore, so release it and
- 			 * avoid deadlocks and lockdep warnings in case
-@@ -1912,11 +1894,12 @@ static int btrfs_search_path_in_tree_user(struct mnt_idmap *idmap,
- 			 * btree and lock the same leaf.
- 			 */
- 			btrfs_release_path(path);
--			temp_inode = btrfs_iget(key2.objectid, root);
-+			temp_inode = btrfs_iget(key.offset, root);
- 			if (IS_ERR(temp_inode)) {
- 				ret = PTR_ERR(temp_inode);
- 				goto out_put;
- 			}
-+			/* Check the read+exec permission of this directory. */
- 			ret = inode_permission(idmap, &temp_inode->vfs_inode,
- 					       MAY_READ | MAY_EXEC);
- 			iput(&temp_inode->vfs_inode);
--- 
-2.53.0
-
+-static void tracing_map_elt_free(struct tracing_map_elt *elt)
++static void __tracing_map_elt_free(struct tracing_map_elt *elt)
+ {
+ 	if (!elt)
+ 		return;
+ 
+-	if (elt->map->ops && elt->map->ops->elt_free)
+-		elt->map->ops->elt_free(elt);
+ 	kfree(elt->fields);
+ 	kfree(elt->vars);
+ 	kfree(elt->var_set);
+@@ -400,6 +398,17 @@ static void tracing_map_elt_free(struct
+ 	kfree(elt);
+ }
+ 
++static void tracing_map_elt_free(struct tracing_map_elt *elt)
++{
++	if (!elt)
++		return;
++
++	/* Only objects initialized with alloc_elt() should be passed to free_elt().*/
++	if (elt->map->ops && elt->map->ops->elt_free)
++		elt->map->ops->elt_free(elt);
++	__tracing_map_elt_free(elt);
++}
++
+ static struct tracing_map_elt *tracing_map_elt_alloc(struct tracing_map *map)
+ {
+ 	struct tracing_map_elt *elt;
+@@ -444,7 +453,7 @@ static struct tracing_map_elt *tracing_m
+ 	}
+ 	return elt;
+  free:
+-	tracing_map_elt_free(elt);
++	__tracing_map_elt_free(elt);
+ 
+ 	return ERR_PTR(err);
+ }
 
 
 
