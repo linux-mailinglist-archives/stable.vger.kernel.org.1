@@ -1,59 +1,60 @@
-Return-Path: <stable+bounces-255923-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-256167-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id kFsXNJSnGGp+lwgAu9opvQ
-	(envelope-from <stable+bounces-255923-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:37:40 +0200
+	id aEkkIMiqGGoomAgAu9opvQ
+	(envelope-from <stable+bounces-256167-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:51:20 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 946F45F9253
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:37:40 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1BD355F9B43
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:51:19 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id DFB2D3120C61
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 20:31:00 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id CE4C03251543
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 20:42:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7E13F313550;
-	Thu, 28 May 2026 20:30:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A9ACD32ED5C;
+	Thu, 28 May 2026 20:42:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jux5nJMO"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="R1giS03e"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 52E3C248F62;
-	Thu, 28 May 2026 20:30:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 816232F1FEC;
+	Thu, 28 May 2026 20:42:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780000258; cv=none; b=Tyxpt0iA1F9ekDj4g0fI3FeHYm58SjoqIL3QXebDtZldPBe/9HBnNwSDy221brWvsjxdFAHESHyV4k4FPFe3i4m9S57c4rkm9PE7zSjm34T9ZIwQ/TB+94DCvHYVYtKlcjb63uPr3D8/QI6cDBD0F1hNWA/w4VBZtJD0Tq4mCrc=
+	t=1780000943; cv=none; b=V1RqfIeRbrByD8g+Qy02BnRZZ9A/oDte26Xl32lTp8EXyEpi1Mu/+cj6sSGIexjve+Z09gQYhQViEV5EWUtSG8dNZU1QS9ENnWhz1C2tFh41CP/I653gYfrBXS2WORPhyxNVEFQBJtBvpKivbyVhBVUTu8jxqEx8BQ0La/hp9mo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780000258; c=relaxed/simple;
-	bh=/YAtvuEtzypG+lDm6pfTMZYcnmGNBbkzlnScQXpEQtE=;
+	s=arc-20240116; t=1780000943; c=relaxed/simple;
+	bh=tcyvNvqvAS+FyHJJNop/qLRMFCUHV+pRyknMhGIPqUk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Ia+06a3I31lnCHIzCyOBb8Do7X/6CwAX34FY+/XQxT27J0gXoUI5vQqsgUy6Vl/9A3Ns2V9OHMs4ci+W4rHVsGAwCiEV679Maq4PvcoFguPJA0VH+7QlfhpyMu4pTjUxWGJd87/Pkd76gspnqFU9oRlnumSZZC6NwYuKoao97D4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jux5nJMO; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B109B1F000E9;
-	Thu, 28 May 2026 20:30:56 +0000 (UTC)
+	 MIME-Version; b=OMdzswbvi3P+XasJtf+0aGGJpgJtUIgMvfmw6B+JH2f79aNjEgjcrf1JwWCwqQM1TcJBAruuOPnqicV4XUvR1EWHhNSKEdyMrzmqEJ1L9BNSF6DIanG8U9vJ/gNre/T+5NhsDIQQMSnKkhNOPyw3zuXqWNVjzsk/93lAvVmK3Nc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=R1giS03e; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E02B11F000E9;
+	Thu, 28 May 2026 20:42:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780000257;
-	bh=wgzm6roNsk7A6JIsJ7TM439LsCmnWdhhrQ5Rm08poO8=;
+	s=korg; t=1780000942;
+	bh=rZ3q4AlsOCkKNZtvNJM0qUMgtk4evBgOBq4XJFTty9I=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=jux5nJMOaKjJC9OWJ3LZO9TmibT0GCxO3RmyDu1NpJDzAf047pVBnuskhFHDAflad
-	 QY9fk9OLNmR0wOa7JcIzOnfWUV5GKe4pYqDU4mHCyvlqDUUWuDWFzHYi+SvCIcvDPQ
-	 aFO9tTZ7r6vI4CnftZ5soPeq9jsw666Y9Zz1DxE0=
+	b=R1giS03e7xuHRo0mRHEEONbKdJs5NF7n+tNI66SXwZbyaTLavAWGy9E3Zw+Y63v0h
+	 JttViuzxw/zWjjPdpv8Y6ufP+hFHjRHXYNDjzjA8pqjxNLE1bzW39UF7+GglNJuZ7m
+	 e+VSl2iRTAtTOdq/fXdgq5O8Q2tNEvhYMPbAiFsI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Xingwang Xiang <v3rdant.xiang@gmail.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Weiming Shi <bestswngs@gmail.com>,
+	Xiang Mei <xmei5@asu.edu>,
+	Paolo Abeni <pabeni@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 359/377] bpf, skmsg: fix verdict sk_data_ready racing with ktls rx
-Date: Thu, 28 May 2026 21:49:57 +0200
-Message-ID: <20260528194648.825146032@linuxfoundation.org>
+Subject: [PATCH 6.12 224/272] net/smc: reject CHID-0 ACCEPT that matches an empty ism_dev slot
+Date: Thu, 28 May 2026 21:49:58 +0200
+Message-ID: <20260528194635.464733877@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260528194638.371537336@linuxfoundation.org>
-References: <20260528194638.371537336@linuxfoundation.org>
+In-Reply-To: <20260528194629.379955525@linuxfoundation.org>
+References: <20260528194629.379955525@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,117 +65,97 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	TO_DN_SOME(0.00)[];
-	TAGGED_FROM(0.00)[bounces-255923-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,kernel.org];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,asu.edu,redhat.com,kernel.org];
+	TAGGED_FROM(0.00)[bounces-256167-lists,stable=lfdr.de];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	FROM_HAS_DN(0.00)[];
+	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	NEURAL_HAM(-0.00)[-0.999];
-	TAGGED_RCPT(0.00)[stable];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[6];
+	NEURAL_HAM(-0.00)[-1.000];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,msgid.link:url,linuxfoundation.org:mid,linuxfoundation.org:dkim]
-X-Rspamd-Queue-Id: 946F45F9253
+	TAGGED_RCPT(0.00)[stable];
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,msgid.link:url,linuxfoundation.org:mid,linuxfoundation.org:dkim,asu.edu:email]
+X-Rspamd-Queue-Id: 1BD355F9B43
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Xingwang Xiang <v3rdant.xiang@gmail.com>
+From: Xiang Mei <xmei5@asu.edu>
 
-[ Upstream commit ddf8029623a1af20e984c040e89ff918158397ab ]
+[ Upstream commit 277740023def559a4a2ddc3e8e784ee37a0f16a9 ]
 
-sk_psock_strp_data_ready() already checks tls_sw_has_ctx_rx() and
-defers to psock->saved_data_ready when a TLS RX context is present,
-avoiding a conflict with the TLS strparser's ownership of the receive
-queue (commit e91de6afa81c, "bpf: Fix running sk_skb program types
-with ktls").
+On the SMC-D client, slot 0 of ini->ism_dev[]/ini->ism_chid[] is
+reserved for an SMC-Dv1 device. smc_find_ism_v2_device_clnt()
+populates V2 entries starting at index 1, so when no V1 device is
+selected slot 0 is left in its kzalloc()'ed state with ism_dev[0] ==
+NULL and ism_chid[0] == 0.
 
-sk_psock_verdict_data_ready() has no equivalent guard.  When a socket
-is inserted into a sockmap (BPF_SK_SKB_VERDICT) before TLS RX is
-configured, tls_sw_strparser_arm() saves sk_psock_verdict_data_ready
-as rx_ctx->saved_data_ready.  On data arrival:
+smc_v2_determine_accepted_chid() then matches the peer's CHID against
+the array starting from index 0 using the CHID alone. A malicious
+peer replying to a SMC-Dv2-only proposal with d1.chid == 0 matches
+the empty slot, ini->ism_selected becomes 0, and the subsequent
+ism_dev[0]->lgr_lock dereference in smc_conn_create() faults at
+offsetof(struct smcd_dev, lgr_lock) == 0x68:
 
-  tls_data_ready -> tls_strp_data_ready -> tls_rx_msg_ready
-    -> saved_data_ready() = sk_psock_verdict_data_ready()
-      -> tcp_read_skb() drains sk_receive_queue via __skb_unlink()
-         without calling tcp_eat_skb(), so copied_seq is not advanced.
+  BUG: KASAN: null-ptr-deref in _raw_spin_lock_bh+0x79/0xe0
+  Write of size 4 at addr 0000000000000068 by task exploit/144
+  Call Trace:
+   _raw_spin_lock_bh
+   smc_conn_create (net/smc/smc_core.c:1997)
+   __smc_connect (net/smc/af_smc.c:1447)
+   smc_connect (net/smc/af_smc.c:1720)
+   __sys_connect
+   __x64_sys_connect
+   do_syscall_64
 
-tls_strp_msg_load() then finds tcp_inq() >= full_len (stale), calls
-tcp_recv_skb() on the now-empty queue, hits WARN_ON_ONCE(!first), and
-returns with rx_ctx->strp.anchor.frag_list pointing at a psock-owned
-(potentially freed) skb.  tls_decrypt_sg() subsequently walks that
-frag_list: use-after-free.
+Require ism_dev[i] to be non-NULL before accepting a CHID match.
 
-Apply the same fix as sk_psock_strp_data_ready(): if a TLS RX context
-is present, call psock->saved_data_ready (sock_def_readable) to wake
-recv() waiters and return immediately, leaving the receive queue
-untouched.  TLS retains sole ownership of the queue and decrypts the
-record normally through tls_sw_recvmsg().
-
-Fixes: ef5659280eb1 ("bpf, sockmap: Allow skipping sk_skb parser program")
-Signed-off-by: Xingwang Xiang <v3rdant.xiang@gmail.com>
-Link: https://patch.msgid.link/20260517145630.20521-2-v3rdant.xiang@gmail.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Fixes: a7c9c5f4af7f ("net/smc: CLC accept / confirm V2")
+Reported-by: Weiming Shi <bestswngs@gmail.com>
+Assisted-by: Claude:claude-opus-4-7
+Signed-off-by: Xiang Mei <xmei5@asu.edu>
+Link: https://patch.msgid.link/20260511062138.2839584-1-xmei5@asu.edu
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/core/skmsg.c | 9 +++++++--
- 1 file changed, 7 insertions(+), 2 deletions(-)
+ net/smc/af_smc.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/net/core/skmsg.c b/net/core/skmsg.c
-index 35a6acbf9a579..75ea4fdb27642 100644
---- a/net/core/skmsg.c
-+++ b/net/core/skmsg.c
-@@ -1268,12 +1268,19 @@ static int sk_psock_verdict_recv(struct sock *sk, struct sk_buff *skb)
- static void sk_psock_verdict_data_ready(struct sock *sk)
- {
- 	const struct proto_ops *ops = NULL;
-+	struct sk_psock *psock;
- 	struct socket *sock;
- 	int copied;
+diff --git a/net/smc/af_smc.c b/net/smc/af_smc.c
+index 23bb360ebd07b..c96abb1386be4 100644
+--- a/net/smc/af_smc.c
++++ b/net/smc/af_smc.c
+@@ -1398,7 +1398,8 @@ smc_v2_determine_accepted_chid(struct smc_clc_msg_accept_confirm *aclc,
+ 	int i;
  
- 	trace_sk_data_ready(sk);
- 
- 	rcu_read_lock();
-+	psock = sk_psock(sk);
-+	if (psock && tls_sw_has_ctx_rx(sk)) {
-+		psock->saved_data_ready(sk);
-+		rcu_read_unlock();
-+		return;
-+	}
- 	sock = READ_ONCE(sk->sk_socket);
- 	if (likely(sock))
- 		ops = READ_ONCE(sock->ops);
-@@ -1283,8 +1290,6 @@ static void sk_psock_verdict_data_ready(struct sock *sk)
- 
- 	copied = ops->read_skb(sk, sk_psock_verdict_recv);
- 	if (copied >= 0) {
--		struct sk_psock *psock;
--
- 		rcu_read_lock();
- 		psock = sk_psock(sk);
- 		if (psock)
+ 	for (i = 0; i < ini->ism_offered_cnt + 1; i++) {
+-		if (ini->ism_chid[i] == ntohs(aclc->d1.chid)) {
++		if (ini->ism_dev[i] &&
++		    ini->ism_chid[i] == ntohs(aclc->d1.chid)) {
+ 			ini->ism_selected = i;
+ 			return 0;
+ 		}
 -- 
 2.53.0
 
