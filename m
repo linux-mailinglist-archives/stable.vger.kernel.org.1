@@ -1,58 +1,59 @@
-Return-Path: <stable+bounces-255758-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-255966-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id qImTFzSmGGrClggAu9opvQ
-	(envelope-from <stable+bounces-255758-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:31:48 +0200
+	id SNBXHPynGGp+lwgAu9opvQ
+	(envelope-from <stable+bounces-255966-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:39:24 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id BA0565F8E22
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:31:47 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8E8465F93DC
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:39:23 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 33CE532190B2
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 20:23:22 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 04D7B3035674
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 20:32:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E46D32D9787;
-	Thu, 28 May 2026 20:23:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 803A6313550;
+	Thu, 28 May 2026 20:32:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xs7Zzz+m"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Cuc0+Uz/"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BD95D3016E0;
-	Thu, 28 May 2026 20:23:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5D50D223328;
+	Thu, 28 May 2026 20:32:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779999801; cv=none; b=YviUUbBpl8iOqmQQBnnWOlrKc6IvNd4dWW6sFZnJV9GID5W8jRvCicUSO9eWAGhBKceiPnPWJNfEt/m9aEbkzd7lU6eLgtQIL7mu6dcKfFopDkn41W9tZ2/Zt1OMvXDRBMgB63a213BFlXlnEvxgp7E4Jz3XhqClCGS7GhRnMDI=
+	t=1780000378; cv=none; b=umaEOEsQRSkHeVtkxiIwMOWp6PrIxveXc1BSkoousTzJkAMI0Tj8qN4+1qb2N6EZT1jglPey45mMJDk/FTHC+bZ6YBBPu08lvWYvUL3CBNnoM7VD/zegXLWiYr9TJ3lxeQTQNnwZztOGwXvlcRfeXJ3asQmJo9YaXhAO8bv0VnA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779999801; c=relaxed/simple;
-	bh=T8cJBMSe7hq6fAvF+3aYIS2cSDoYVOp66wPT8dyCkdE=;
+	s=arc-20240116; t=1780000378; c=relaxed/simple;
+	bh=gXZLikwZwCw6iJg5Gm7hi5fQmIZUC85AQn4Z8l+aLTA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=gx0uJoavjUmzmXBmv/4F7ZE4yva7/E6FoefrzzypDtHx38iRa3zmPMoyEGamepYOp9vN09ULvAk9ozx/wa7Xp4igKzl8/Fl0xeSoOvIJJs+AVZj47xsPtDF19YPEzKBbj0kPruZoUjdMvcuHerGaD4jVZlWlFpI+0TGxDuQ/t4s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xs7Zzz+m; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 289AA1F00A3A;
-	Thu, 28 May 2026 20:23:19 +0000 (UTC)
+	 MIME-Version; b=V0douASZkVrN4MBf2Rr005jf1E3dNVRdjOlDfkHfTe89U8Obj2DCDxeKfhzmlvKoODyrPp9+zBX+jZPj7DzKlbAwKR1ptjcF5vqkR2ujJ8AsZDq4zLOegNHw6U323T+c7aueb1eZF/0Fy4YNqTRZowf0g+MwjaVlTaNyM9z7mNY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Cuc0+Uz/; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BBA5C1F000E9;
+	Thu, 28 May 2026 20:32:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779999800;
-	bh=c/ckVYq+PGMUI5InQqVziKQDrSdz0ef9FV1A07rA3s0=;
+	s=korg; t=1780000377;
+	bh=nVw/GAWRPDTpoXqj3ToTPOf1tgLQuw9E99VRKweGWx8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=xs7Zzz+meNkqCF/ww9CvuVU0XYp90UbIg+rtC0CADbuR8+oUChFs7N0euWa7gP+Cq
-	 SgvC59tGHtBHysXlrU37xBXn7hM6bJN/bC//OLsZTyvYBQKEenXxl6srsA8Fn0z6lg
-	 Sutn7tkRJ6bwMB1V8RWYGDz0opLgShzq1Smq3a/k=
+	b=Cuc0+Uz/Wc8qv6YrAC+xwCNsfpQGH03OsedsQt0oc47JWwICxrj1Q0osim+yOLC3P
+	 jyB416DA7bm5BeuFVkpYNiZG8BxjXAHgDYuRVwLm+dlTgTaHRp1SeaxsnKmFhJsVi6
+	 aPj3EqmyXBluIQB7G6Ecgb789BNoR3pDRylkPbc8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable@kernel.org,
-	Sven Eckelmann <sven@narfation.org>
-Subject: [PATCH 6.18 160/377] batman-adv: tt: prevent TVLV entry number overflow
+	David Howells <dhowells@redhat.com>,
+	Asim Viladi Oglu Manizada <manizada@pm.me>,
+	Steve French <stfrench@microsoft.com>
+Subject: [PATCH 6.12 024/272] smb: client: reject userspace cifs.spnego descriptions
 Date: Thu, 28 May 2026 21:46:38 +0200
-Message-ID: <20260528194643.052189954@linuxfoundation.org>
+Message-ID: <20260528194630.063358162@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260528194638.371537336@linuxfoundation.org>
-References: <20260528194638.371537336@linuxfoundation.org>
+In-Reply-To: <20260528194629.379955525@linuxfoundation.org>
+References: <20260528194629.379955525@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -67,7 +68,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
@@ -77,7 +78,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-255758-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-255966-lists,stable=lfdr.de];
 	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
@@ -86,88 +87,79 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	NEURAL_HAM(-0.00)[-1.000];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[5];
+	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[narfation.org:email,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim]
-X-Rspamd-Queue-Id: BA0565F8E22
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,pm.me:email]
+X-Rspamd-Queue-Id: 8E8465F93DC
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sven Eckelmann <sven@narfation.org>
+From: Asim Viladi Oglu Manizada <manizada@pm.me>
 
-commit 99d9958fa10fb684b2a8e2c48a8d704122721420 upstream.
+commit 3da1fdf4efbc490041eb4f836bf596201203f8f2 upstream.
 
-The helpers to prepare the buffers for the local and global TT based
-replies are trying to sum up all TT entries which can be found for each
-VLAN. In theory, this sum can be too big for an u16 and therefore overflow.
-A too small buffer would then be allocated for the TVLV.
+cifs.spnego key descriptions contain authority-bearing fields such as
+pid, uid, creduid, and upcall_target that cifs.upcall treats as
+kernel-originating inputs. However, userspace can also create keys of
+this type through request_key(2) or add_key(2), allowing those fields to
+be supplied without CIFS origin.
 
-The too small buffer will be handled gracefully by
-batadv_tt_tvlv_generate() and is not causing a buffer overflow - just a
-truncated reply. But this overflow shouldn't have happened in the first and
-the too small buffer should never have been allocated when an overflow was
-detected.
+Only accept cifs.spnego descriptions while CIFS is using its private
+spnego_cred to request the key.
 
-Cc: stable@kernel.org
-Fixes: 7ea7b4a14275 ("batman-adv: make the TT CRC logic VLAN specific")
-Signed-off-by: Sven Eckelmann <sven@narfation.org>
+Fixes: f1d662a7d5e5 ("[CIFS] Add upcall files for cifs to use spnego/kerberos")
+Assisted-by: avom-custom-harness:gpt-5.5-qwen3.6-mod-mix
+Reviewed-by: David Howells <dhowells@redhat.com>
+Signed-off-by: Asim Viladi Oglu Manizada <manizada@pm.me>
+Signed-off-by: Steve French <stfrench@microsoft.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/batman-adv/translation-table.c |   20 +++++++++++++++++---
- 1 file changed, 17 insertions(+), 3 deletions(-)
+ fs/smb/client/cifs_spnego.c |   16 ++++++++++++++++
+ 1 file changed, 16 insertions(+)
 
---- a/net/batman-adv/translation-table.c
-+++ b/net/batman-adv/translation-table.c
-@@ -804,11 +804,18 @@ batadv_tt_prepare_tvlv_global_data(struc
- 	u16 total_entries = 0;
- 	u8 *tt_change_ptr;
- 	int vlan_entries;
-+	u16 sum_entries;
+--- a/fs/smb/client/cifs_spnego.c
++++ b/fs/smb/client/cifs_spnego.c
+@@ -8,6 +8,7 @@
+  */
  
- 	spin_lock_bh(&orig_node->vlan_list_lock);
- 	hlist_for_each_entry(vlan, &orig_node->vlan_list, list) {
- 		vlan_entries = atomic_read(&vlan->tt.num_entries);
--		total_entries += vlan_entries;
-+
-+		if (check_add_overflow(vlan_entries, total_entries, &sum_entries)) {
-+			*tt_len = 0;
-+			goto out;
-+		}
-+
-+		total_entries = sum_entries;
- 		num_vlan++;
- 	}
+ #include <linux/list.h>
++#include <linux/cred.h>
+ #include <linux/slab.h>
+ #include <linux/string.h>
+ #include <keys/user-type.h>
+@@ -46,12 +47,27 @@ cifs_spnego_key_destroy(struct key *key)
+ 	kfree(key->payload.data[0]);
+ }
  
-@@ -893,15 +900,22 @@ batadv_tt_prepare_tvlv_local_data(struct
- 	struct batadv_meshif_vlan *vlan;
- 	size_t change_offset;
- 	u16 num_vlan = 0;
--	u16 vlan_entries = 0;
- 	u16 total_entries = 0;
- 	u16 tvlv_len;
- 	u8 *tt_change_ptr;
-+	int vlan_entries;
-+	u16 sum_entries;
++static int
++cifs_spnego_key_vet_description(const char *description)
++{
++	/*
++	 * cifs.spnego descriptions are authority-bearing inputs to cifs.upcall.
++	 * They are only valid when produced by CIFS while using the private
++	 * spnego_cred installed below.  Do not let userspace create this type
++	 * of key through request_key(2)/add_key(2), since the helper treats
++	 * pid/uid/creduid/upcall_target as kernel-originating fields.
++	 */
++	if (current_cred() != spnego_cred)
++		return -EPERM;
++	return 0;
++}
  
- 	spin_lock_bh(&bat_priv->meshif_vlan_list_lock);
- 	hlist_for_each_entry(vlan, &bat_priv->meshif_vlan_list, list) {
- 		vlan_entries = atomic_read(&vlan->tt.num_entries);
--		total_entries += vlan_entries;
-+
-+		if (check_add_overflow(vlan_entries, total_entries, &sum_entries)) {
-+			tvlv_len = 0;
-+			goto out;
-+		}
-+
-+		total_entries = sum_entries;
- 		num_vlan++;
- 	}
- 
+ /*
+  * keytype for CIFS spnego keys
+  */
+ struct key_type cifs_spnego_key_type = {
+ 	.name		= "cifs.spnego",
++	.vet_description = cifs_spnego_key_vet_description,
+ 	.instantiate	= cifs_spnego_key_instantiate,
+ 	.destroy	= cifs_spnego_key_destroy,
+ 	.describe	= user_describe,
 
 
 
