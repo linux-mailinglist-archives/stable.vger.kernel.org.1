@@ -1,63 +1,59 @@
-Return-Path: <stable+bounces-256136-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-255564-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id MCQuBYaqGGpolwgAu9opvQ
-	(envelope-from <stable+bounces-256136-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:50:14 +0200
+	id GH66DiCkGGrClggAu9opvQ
+	(envelope-from <stable+bounces-255564-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:22:56 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 677F85F9A53
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:50:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9EAE55F8804
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:22:55 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id B35F43112B16
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 20:41:14 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id ED610320BCD2
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 20:14:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9469234389C;
-	Thu, 28 May 2026 20:40:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7762D33F5B4;
+	Thu, 28 May 2026 20:14:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mRCjDyFC"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Gp/60j4p"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4D9E333987F;
-	Thu, 28 May 2026 20:40:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 36719352019;
+	Thu, 28 May 2026 20:14:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780000857; cv=none; b=fYw5D24KkaoCwV8FuJvrvclkqVK6b7zipRFt/baaP+N+pZh6wbHppKUvv6lGHaTarAIFm7JPGNxCjz34UkRSc7VOAOm4N441XRjRT1Hdpb7QqEXVlkw+Y0/v9yz4c2n61cuqSbb/k/LNJ1CY70r3bkUrYJGzcC0AvzpDx/Gqf0E=
+	t=1779999267; cv=none; b=RTLI4uUdy5fmULaoaT5JtRcktB+D22kIAy2XuLuHp9DqSyNQOmFgD35wJEVkU9AENJIVMqOyI1eZv/c4Guqgfw9Y+0V6i8ijnz5KcMSBCR+O2+jih69VS0lu8b1WSV1lAVTO16vl2WQH4BFdtcIESPhkxmYZ0uEeS2VxD0XDC1o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780000857; c=relaxed/simple;
-	bh=7jpHKHp5KvdWih3wrMuGQGDXxa7VAvkgvK6XI+5pk6c=;
+	s=arc-20240116; t=1779999267; c=relaxed/simple;
+	bh=xG0hKcA2v4wDloHWl7exaeKiUEYMRXAMB9PYVhKDxlw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ohJj9V+0LUn77b9IsiL5QYnziR7kQecmTiNSxHVOCBRCHSYWCe8/cGXK4ufYUlkeksVdWcI8adocoDAYwgMyuKtH85qfZXNkj3YA8PN/y4s4ONkwDwO9t5jR2AzLLUA9sleYsJoe8atmX4KLFaKmdYsq9aMe5xFL7ryUgnH9PnY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mRCjDyFC; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A93E51F000E9;
-	Thu, 28 May 2026 20:40:55 +0000 (UTC)
+	 MIME-Version; b=jMn6mbKEuLLYlkgg4XJ977fV11fm2ItDpFyC3xmyVxM6OQuCAUJG0IDCxM8MyrITsNTjn+UXtsBXo4NN//NqdOegdibpGv4oTx/ABRtRD6eRjpcBSaZ4xHxw3H+tqwxUdo2fWXXcnKpscS3Xs3KmvXLZ/SeYnhG+rGFfhl8H4sE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Gp/60j4p; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 94B641F000E9;
+	Thu, 28 May 2026 20:14:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780000856;
-	bh=lqaEGmVaI36/uw8KBuNd97QazVD6UTFQcjC50dElQWU=;
+	s=korg; t=1779999266;
+	bh=u32zkViXeG+/vcX0vz9ODeNtpEZ9qSL7gHzj6LXIRQE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=mRCjDyFCSE5xk0gUlY3mp0nIkUEH7XJAvCOJ8qFbATIXGn/YOkRdzpeAtgRTK5A4A
-	 9tshe1aNd3BfnN4pj3FWFiMRnB1n5UY7YgaqDKQrbvgzT6FVduqPwKB6VyqBpwlB7d
-	 vIrtTTBR4g6rDXSJkO2fvEJ8bgozj4c76dVh2P+w=
+	b=Gp/60j4pNhiCouslB7Z/HfWysGogUTeH+g1KveqWBRCHKoSqG1SPj8EFZNmGym+XK
+	 8SEZ/6cheYihk/ohqj178JVZue3ndmxyJ/6l5ckPrVijLjT3xxuDqY2GKDTtghXTlV
+	 2UYbEXt0ahaXeof09dxNSiZ/f2WTcoPOuRAVf9zo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	David Howells <dhowells@redhat.com>,
-	Paulo Alcantara <pc@manguebit.org>,
-	Matthew Wilcox <willy@infradead.org>,
-	netfs@lists.linux.dev,
-	linux-fsdevel@vger.kernel.org,
-	Christian Brauner <brauner@kernel.org>,
+	Linus Walleij <linusw@kernel.org>,
+	Bartosz Golaszewski <bartosz.golaszewski@oss.qualcomm.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 193/272] netfs: Defer the emission of trace_netfs_folio()
+Subject: [PATCH 7.0 438/461] gpio: aggregator: stop using dev-sync-probe
 Date: Thu, 28 May 2026 21:49:27 +0200
-Message-ID: <20260528194634.672091157@linuxfoundation.org>
+Message-ID: <20260528194700.209314430@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260528194629.379955525@linuxfoundation.org>
-References: <20260528194629.379955525@linuxfoundation.org>
+In-Reply-To: <20260528194646.819809818@linuxfoundation.org>
+References: <20260528194646.819809818@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -77,140 +73,185 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-256136-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-255564-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[10];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,manguebit.org:email,msgid.link:url,linux.dev:email,sashiko.dev:url,infradead.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim]
-X-Rspamd-Queue-Id: 677F85F9A53
+	RCPT_COUNT_FIVE(0.00)[6];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[qualcomm.com:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,msgid.link:url]
+X-Rspamd-Queue-Id: 9EAE55F8804
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+7.0-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: David Howells <dhowells@redhat.com>
+From: Bartosz Golaszewski <bartosz.golaszewski@oss.qualcomm.com>
 
-[ Upstream commit daeb443b92817021c1234e8eded219e164b7c35d ]
+[ Upstream commit 3a27f40b457053e6112a63d14590e4a3ff553b44 ]
 
-Change netfs_perform_write() to keep the netfs_folio trace value in a
-variable and emit it later to make it easier to choose the value displayed.
-This is a prerequisite for a subsequent patch.
+dev-err-probe is an overengineered solution to a simple problem. Use a
+combination of wait_for_probe() and device_is_bound() to synchronously
+wait for the platform device to probe.
 
-Closes: https://sashiko.dev/#/patchset/20260414082004.3756080-1-dhowells%40redhat.com
-Signed-off-by: David Howells <dhowells@redhat.com>
-Link: https://patch.msgid.link/20260512123404.719402-13-dhowells@redhat.com
-cc: Paulo Alcantara <pc@manguebit.org>
-cc: Matthew Wilcox <willy@infradead.org>
-cc: netfs@lists.linux.dev
-cc: linux-fsdevel@vger.kernel.org
-Signed-off-by: Christian Brauner <brauner@kernel.org>
-Stable-dep-of: 7b4dcf1b9455 ("netfs: Fix streaming write being overwritten")
+Reviewed-by: Linus Walleij <linusw@kernel.org>
+Link: https://patch.msgid.link/20260327-gpio-kill-dev-sync-probe-v1-2-efac254f1a1d@oss.qualcomm.com
+Signed-off-by: Bartosz Golaszewski <bartosz.golaszewski@oss.qualcomm.com>
+Stable-dep-of: 61fef83f239e ("gpio: aggregator: remove the software node when deactivating the aggregator")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/netfs/buffered_write.c | 18 ++++++++++--------
- 1 file changed, 10 insertions(+), 8 deletions(-)
+ drivers/gpio/Kconfig           |  1 -
+ drivers/gpio/gpio-aggregator.c | 38 +++++++++++++++++++---------------
+ 2 files changed, 21 insertions(+), 18 deletions(-)
 
-diff --git a/fs/netfs/buffered_write.c b/fs/netfs/buffered_write.c
-index be77a137cc871..48c66d26e7b7e 100644
---- a/fs/netfs/buffered_write.c
-+++ b/fs/netfs/buffered_write.c
-@@ -143,6 +143,7 @@ ssize_t netfs_perform_write(struct kiocb *iocb, struct iov_iter *iter,
+diff --git a/drivers/gpio/Kconfig b/drivers/gpio/Kconfig
+index b45fb799e36c1..e63096002e92d 100644
+--- a/drivers/gpio/Kconfig
++++ b/drivers/gpio/Kconfig
+@@ -1986,7 +1986,6 @@ menu "Virtual GPIO drivers"
+ config GPIO_AGGREGATOR
+ 	tristate "GPIO Aggregator"
+ 	select CONFIGFS_FS
+-	select DEV_SYNC_PROBE
+ 	help
+ 	  Say yes here to enable the GPIO Aggregator, which provides a way to
+ 	  aggregate existing GPIO lines into a new virtual GPIO chip.
+diff --git a/drivers/gpio/gpio-aggregator.c b/drivers/gpio/gpio-aggregator.c
+index 6c84ca3ff1b64..b53230065f50e 100644
+--- a/drivers/gpio/gpio-aggregator.c
++++ b/drivers/gpio/gpio-aggregator.c
+@@ -32,8 +32,6 @@
+ #include <linux/gpio/forwarder.h>
+ #include <linux/gpio/machine.h>
+ 
+-#include "dev-sync-probe.h"
+-
+ #define AGGREGATOR_MAX_GPIOS 512
+ #define AGGREGATOR_LEGACY_PREFIX "_sysfs"
+ 
+@@ -42,7 +40,7 @@
+  */
+ 
+ struct gpio_aggregator {
+-	struct dev_sync_probe_data probe_data;
++	struct platform_device *pdev;
+ 	struct config_group group;
+ 	struct gpiod_lookup_table *lookups;
+ 	struct mutex lock;
+@@ -135,7 +133,7 @@ static bool gpio_aggregator_is_active(struct gpio_aggregator *aggr)
+ {
+ 	lockdep_assert_held(&aggr->lock);
+ 
+-	return aggr->probe_data.pdev && platform_get_drvdata(aggr->probe_data.pdev);
++	return aggr->pdev && platform_get_drvdata(aggr->pdev);
+ }
+ 
+ /* Only aggregators created via legacy sysfs can be "activating". */
+@@ -143,7 +141,7 @@ static bool gpio_aggregator_is_activating(struct gpio_aggregator *aggr)
+ {
+ 	lockdep_assert_held(&aggr->lock);
+ 
+-	return aggr->probe_data.pdev && !platform_get_drvdata(aggr->probe_data.pdev);
++	return aggr->pdev && !platform_get_drvdata(aggr->pdev);
+ }
+ 
+ static size_t gpio_aggregator_count_lines(struct gpio_aggregator *aggr)
+@@ -909,6 +907,7 @@ static int gpio_aggregator_activate(struct gpio_aggregator *aggr)
+ {
+ 	struct platform_device_info pdevinfo;
+ 	struct gpio_aggregator_line *line;
++	struct platform_device *pdev;
+ 	struct fwnode_handle *swnode;
+ 	unsigned int n = 0;
+ 	int ret = 0;
+@@ -962,12 +961,23 @@ static int gpio_aggregator_activate(struct gpio_aggregator *aggr)
+ 
+ 	gpiod_add_lookup_table(aggr->lookups);
+ 
+-	ret = dev_sync_probe_register(&aggr->probe_data, &pdevinfo);
+-	if (ret)
++	pdev = platform_device_register_full(&pdevinfo);
++	if (IS_ERR(pdev)) {
++		ret = PTR_ERR(pdev);
+ 		goto err_remove_lookup_table;
++	}
+ 
++	wait_for_device_probe();
++	if (!device_is_bound(&pdev->dev)) {
++		ret = -ENXIO;
++		goto err_unregister_pdev;
++	}
++
++	aggr->pdev = pdev;
+ 	return 0;
+ 
++err_unregister_pdev:
++	platform_device_unregister(pdev);
+ err_remove_lookup_table:
+ 	gpiod_remove_lookup_table(aggr->lookups);
+ 	kfree(aggr->lookups->dev_id);
+@@ -981,7 +991,8 @@ static int gpio_aggregator_activate(struct gpio_aggregator *aggr)
+ 
+ static void gpio_aggregator_deactivate(struct gpio_aggregator *aggr)
+ {
+-	dev_sync_probe_unregister(&aggr->probe_data);
++	platform_device_unregister(aggr->pdev);
++	aggr->pdev = NULL;
+ 	gpiod_remove_lookup_table(aggr->lookups);
+ 	kfree(aggr->lookups->dev_id);
+ 	kfree(aggr->lookups);
+@@ -1145,7 +1156,7 @@ gpio_aggregator_device_dev_name_show(struct config_item *item, char *page)
+ 
+ 	guard(mutex)(&aggr->lock);
+ 
+-	pdev = aggr->probe_data.pdev;
++	pdev = aggr->pdev;
+ 	if (pdev)
+ 		return sysfs_emit(page, "%s\n", dev_name(&pdev->dev));
+ 
+@@ -1322,7 +1333,6 @@ gpio_aggregator_make_group(struct config_group *group, const char *name)
+ 		return ERR_PTR(ret);
+ 
+ 	config_group_init_type_name(&aggr->group, name, &gpio_aggregator_device_type);
+-	dev_sync_probe_init(&aggr->probe_data);
+ 
+ 	return &aggr->group;
+ }
+@@ -1471,12 +1481,6 @@ static ssize_t gpio_aggregator_new_device_store(struct device_driver *driver,
+ 	scnprintf(name, sizeof(name), "%s.%d", AGGREGATOR_LEGACY_PREFIX, aggr->id);
+ 	config_group_init_type_name(&aggr->group, name, &gpio_aggregator_device_type);
+ 
+-	/*
+-	 * Since the device created by sysfs might be toggled via configfs
+-	 * 'live' attribute later, this initialization is needed.
+-	 */
+-	dev_sync_probe_init(&aggr->probe_data);
+-
+ 	/* Expose to configfs */
+ 	res = configfs_register_group(&gpio_aggregator_subsys.su_group,
+ 				      &aggr->group);
+@@ -1495,7 +1499,7 @@ static ssize_t gpio_aggregator_new_device_store(struct device_driver *driver,
+ 		goto remove_table;
  	}
  
- 	do {
-+		enum netfs_folio_trace trace;
- 		struct netfs_folio *finfo;
- 		struct netfs_group *group;
- 		unsigned long long fpos;
-@@ -216,7 +217,7 @@ ssize_t netfs_perform_write(struct kiocb *iocb, struct iov_iter *iter,
- 			if (unlikely(copied == 0))
- 				goto copy_failed;
- 			netfs_set_group(folio, netfs_group);
--			trace_netfs_folio(folio, netfs_folio_is_uptodate);
-+			trace = netfs_folio_is_uptodate;
- 			goto copied;
- 		}
+-	aggr->probe_data.pdev = pdev;
++	aggr->pdev = pdev;
+ 	module_put(THIS_MODULE);
+ 	return count;
  
-@@ -232,7 +233,7 @@ ssize_t netfs_perform_write(struct kiocb *iocb, struct iov_iter *iter,
- 			zero_user_segment(&folio->page, offset + copied, flen);
- 			__netfs_set_group(folio, netfs_group);
- 			folio_mark_uptodate(folio);
--			trace_netfs_folio(folio, netfs_modify_and_clear);
-+			trace = netfs_modify_and_clear;
- 			goto copied;
- 		}
- 
-@@ -250,7 +251,7 @@ ssize_t netfs_perform_write(struct kiocb *iocb, struct iov_iter *iter,
- 			}
- 			__netfs_set_group(folio, netfs_group);
- 			folio_mark_uptodate(folio);
--			trace_netfs_folio(folio, netfs_whole_folio_modify);
-+			trace = netfs_whole_folio_modify;
- 			goto copied;
- 		}
- 
-@@ -277,7 +278,7 @@ ssize_t netfs_perform_write(struct kiocb *iocb, struct iov_iter *iter,
- 			if (unlikely(copied == 0))
- 				goto copy_failed;
- 			netfs_set_group(folio, netfs_group);
--			trace_netfs_folio(folio, netfs_just_prefetch);
-+			trace = netfs_just_prefetch;
- 			goto copied;
- 		}
- 
-@@ -291,7 +292,7 @@ ssize_t netfs_perform_write(struct kiocb *iocb, struct iov_iter *iter,
- 			if (offset == 0 && copied == flen) {
- 				__netfs_set_group(folio, netfs_group);
- 				folio_mark_uptodate(folio);
--				trace_netfs_folio(folio, netfs_streaming_filled_page);
-+				trace = netfs_streaming_filled_page;
- 				goto copied;
- 			}
- 
-@@ -306,7 +307,7 @@ ssize_t netfs_perform_write(struct kiocb *iocb, struct iov_iter *iter,
- 			finfo->dirty_len = copied;
- 			folio_attach_private(folio, (void *)((unsigned long)finfo |
- 							     NETFS_FOLIO_INFO));
--			trace_netfs_folio(folio, netfs_streaming_write);
-+			trace = netfs_streaming_write;
- 			goto copied;
- 		}
- 
-@@ -326,9 +327,9 @@ ssize_t netfs_perform_write(struct kiocb *iocb, struct iov_iter *iter,
- 					folio_detach_private(folio);
- 				folio_mark_uptodate(folio);
- 				kfree(finfo);
--				trace_netfs_folio(folio, netfs_streaming_cont_filled_page);
-+				trace = netfs_streaming_cont_filled_page;
- 			} else {
--				trace_netfs_folio(folio, netfs_streaming_write_cont);
-+				trace = netfs_streaming_write_cont;
- 			}
- 			goto copied;
- 		}
-@@ -344,6 +345,7 @@ ssize_t netfs_perform_write(struct kiocb *iocb, struct iov_iter *iter,
- 		continue;
- 
- 	copied:
-+		trace_netfs_folio(folio, trace);
- 		flush_dcache_folio(folio);
- 
- 		/* Update the inode size if we moved the EOF marker */
 -- 
 2.53.0
 
