@@ -1,60 +1,64 @@
-Return-Path: <stable+bounces-255830-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-255471-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id COU3EmCmGGpplwgAu9opvQ
-	(envelope-from <stable+bounces-255830-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:32:32 +0200
+	id UARMCuaiGGrJlggAu9opvQ
+	(envelope-from <stable+bounces-255471-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:17:42 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id E16CE5F8E9B
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:32:31 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id BB6765F84CE
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:17:41 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 5285C302D61A
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 20:26:41 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 85E67311E0AB
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 20:10:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8411C254B1F;
-	Thu, 28 May 2026 20:26:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 88725335566;
+	Thu, 28 May 2026 20:10:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OhfNRjWc"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Gt7+fbAp"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 677F22E7379;
-	Thu, 28 May 2026 20:26:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5A70E3164B7;
+	Thu, 28 May 2026 20:10:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779999999; cv=none; b=BRuNIPOiJb60wpq9Wo4qaxu+0xNG38ltGLkbDNHK0JCqoQwyDMR9MqNsHofFqbgU/zNs3kdS3kibC7pBC5X6lSd8tH2eFMTLJDxmzB49WJDaLEkHRltGXiyjTZNIQOLx6Eeks+Lc0zMrXaDqg1WoP+fJfGOnQC/WjT/Jbss54YQ=
+	t=1779999005; cv=none; b=u54EB9j56uxpDkDftVeF1xZ4J0PFNFTBYLOmpEHMQkBxJRC58E1hT3sF6A2WkkOLd1IuoylQJCuZMWwr+NzhWx8IA0ryw395gWHIAFJJ9/ENAoAlHYaYWwI/zyB3P6qIEn7ANvFsEQ7ITKEkcjhpYZ95TK4alZacP/N+zDe7jAI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779999999; c=relaxed/simple;
-	bh=LvF5SoAuhYwIdbZhgK7lpVOwreGhunaYwzX27QLx9e4=;
+	s=arc-20240116; t=1779999005; c=relaxed/simple;
+	bh=dEqUJ6zOyKgYVUbKVdT+QuE275aqiwAJ0rBqAUz8kL4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=KMpvQFsNmMjrQUCkn8h3L+jwjw20NShTLuCBD1sk0IoTg2gZLL9y06FAOuaJuAffFxnpFVrFCzs968/pOHeJHk4bKZ0Hq7aprC4W11u2XyXSCtFh7RQJibtdFI5yqOYivoRLrY93B+BRDYJPVsWgWP4ZfVWTb/OjHaIfrhCheXM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OhfNRjWc; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C56821F000E9;
-	Thu, 28 May 2026 20:26:37 +0000 (UTC)
+	 MIME-Version; b=CMScp0IblqjIZDyK4iQ95Fj1cJBLUxuCS/xAMbU4dUq3dz72ahdGEzaXZyZKMap1GA2edN3dJYRjT9g8R/lp1iFQWiyUSU/fIkURcMvSoN3HPLYnepRIAV4wZmzSrc5g9/nDrfmjn4+9PX4XAhXiPqIPk9h0DPZkm6PYMKb47R4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Gt7+fbAp; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BBBE71F000E9;
+	Thu, 28 May 2026 20:10:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779999998;
-	bh=HoAtgKVENloJzDISrGdlkgfu1DlZkxxiKLTJm6oV6+s=;
+	s=korg; t=1779999004;
+	bh=J6CnqqE3K5Ct0FbC5s3SQiUHHBWHClCpTj/ZC1SWjnY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=OhfNRjWcw+OMiNz5it8na3c4mYaHkuKv5GUOvw6OHbBiywfsiix0eCc7UghR6jr+6
-	 vz+jYb4471TrH2tX5QvKg+JuZO4qrGhpu9aJVXKbsgDcuhHKKnqeTRm/s5WheJQcg4
-	 O2K9bRbz/xEt8om0z1XewgZujsvjuabSu73cXUnQ=
+	b=Gt7+fbApOWfpTZ7DMmDUdF9nmvjJPt6hl4us70hNZgDra1jwC+/0FndLeFVzz2qyz
+	 +aTWp2ze8KacDn06F0Dl4fMtc2CBvt9Zfga38cS+uofks04t/kKqYj4OrKnTNmAJO8
+	 HZiQJdEgdF/Z/z9S4FmoYFASOaRxgRADeN86wYzk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	David Carlier <devnexen@gmail.com>,
-	Christoph Hellwig <hch@lst.de>,
-	Jens Axboe <axboe@kernel.dk>,
+	Vasily Gorbik <gor@linux.ibm.com>,
+	"Paul E. McKenney" <paulmck@kernel.org>,
+	Samir <samir@linux.ibm.com>,
+	Shrikanth Hegde <sshegde@linux.ibm.com>,
+	Tejun Heo <tj@kernel.org>,
+	"Uladzislau Rezki (Sony)" <urezki@gmail.com>,
+	Boqun Feng <boqun@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 265/377] block: dont overwrite bip_vcnt in bio_integrity_copy_user()
+Subject: [PATCH 7.0 374/461] srcu: Dont queue workqueue handlers to never-online CPUs
 Date: Thu, 28 May 2026 21:48:23 +0200
-Message-ID: <20260528194646.040087317@linuxfoundation.org>
+Message-ID: <20260528194658.274143007@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260528194638.371537336@linuxfoundation.org>
-References: <20260528194638.371537336@linuxfoundation.org>
+In-Reply-To: <20260528194646.819809818@linuxfoundation.org>
+References: <20260528194646.819809818@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,73 +73,103 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,lst.de,kernel.dk,kernel.org];
-	TAGGED_FROM(0.00)[bounces-255830-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,linux.ibm.com,kernel.org,gmail.com];
+	TAGGED_FROM(0.00)[bounces-255471-lists,stable=lfdr.de];
 	PRECEDENCE_BULK(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	FROM_HAS_DN(0.00)[];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[7];
+	RCPT_COUNT_SEVEN(0.00)[11];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
 	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[kernel.dk:email,lst.de:email,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,msgid.link:url,linuxfoundation.org:mid,linuxfoundation.org:dkim]
-X-Rspamd-Queue-Id: E16CE5F8E9B
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim]
+X-Rspamd-Queue-Id: BB6765F84CE
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+7.0-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: David Carlier <devnexen@gmail.com>
+From: Paul E. McKenney <paulmck@kernel.org>
 
-[ Upstream commit 637ad3a56a3b889527d1dacea6fea2a8bd648140 ]
+[ Upstream commit 593889c401426004bd0ea0f6d4fcece728b03420 ]
 
-bio_integrity_add_page() already sets bip_vcnt to 1 for the bounce
-segment. Overwriting it with nr_vecs breaks bip_vcnt <= bip_max_vcnt
-on WRITE (bip_max_vcnt is 1), so the gap-merge checks in block/blk.h
-read past the bip_vec[] flex array. On READ the read is in bounds
-but lands on a saved user bvec instead of the bounce.
+While an srcu_struct structure is in the midst of switching from CPU-0
+to all-CPUs state, it can attempt to invoke callbacks for CPUs that
+have never been online.  Worse yet, it can attempt in invoke callbacks
+for CPUs that never will be online, even including imaginary CPUs not in
+cpu_possible_mask.  This can cause hangs on s390, which is not set up to
+deal with workqueue handlers being scheduled on such CPUs.  This commit
+therefore causes Tree SRCU to refrain from queueing workqueue handlers
+on CPUs that have not yet (and might never) come online.
 
-The line was added for split propagation, but bio_integrity_clone()
-doesn't copy bip_vcnt and BIP_CLONE_FLAGS excludes BIP_COPY_USER.
+Because callbacks are not invoked on CPUs that have not been
+online, it is an error to invoke call_srcu(), synchronize_srcu(), or
+synchronize_srcu_expedited() on a CPU that is not yet fully online.
+However, it turns out to be less code to redirect the callbacks
+from too-early invocations of call_srcu() than to warn about such
+invocations.  This commit therefore also redirects callbacks queued on
+not-yet-fully-online CPUs to the boot CPU.
 
-Fixes: 3991657ae707 ("block: set bip_vcnt correctly")
-Signed-off-by: David Carlier <devnexen@gmail.com>
-Reviewed-by: Christoph Hellwig <hch@lst.de>
-Link: https://patch.msgid.link/20260511215151.346228-1-devnexen@gmail.com
-Signed-off-by: Jens Axboe <axboe@kernel.dk>
+Reported-by: Vasily Gorbik <gor@linux.ibm.com>
+Fixes: 61bbcfb50514 ("srcu: Push srcu_node allocation to GP when non-preemptible")
+Signed-off-by: Paul E. McKenney <paulmck@kernel.org>
+Tested-by: Vasily Gorbik <gor@linux.ibm.com>
+Tested-by: Samir <samir@linux.ibm.com>
+Reviewed-by: Shrikanth Hegde <sshegde@linux.ibm.com>
+Cc: Tejun Heo <tj@kernel.org>
+Signed-off-by: Uladzislau Rezki (Sony) <urezki@gmail.com>
+Signed-off-by: Boqun Feng <boqun@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- block/bio-integrity.c | 1 -
- 1 file changed, 1 deletion(-)
+ kernel/rcu/srcutree.c | 12 ++++++------
+ 1 file changed, 6 insertions(+), 6 deletions(-)
 
-diff --git a/block/bio-integrity.c b/block/bio-integrity.c
-index 12d887349c260..ab4a15437925e 100644
---- a/block/bio-integrity.c
-+++ b/block/bio-integrity.c
-@@ -205,7 +205,6 @@ static int bio_integrity_copy_user(struct bio *bio, struct bio_vec *bvec,
- 	}
+diff --git a/kernel/rcu/srcutree.c b/kernel/rcu/srcutree.c
+index 0d01cd8c4b4a7..7c2f7cc131f7a 100644
+--- a/kernel/rcu/srcutree.c
++++ b/kernel/rcu/srcutree.c
+@@ -897,11 +897,9 @@ static void srcu_schedule_cbs_snp(struct srcu_struct *ssp, struct srcu_node *snp
+ {
+ 	int cpu;
  
- 	bip->bip_flags |= BIP_COPY_USER;
--	bip->bip_vcnt = nr_vecs;
- 	return 0;
- free_bip:
- 	bio_integrity_free(bio);
+-	for (cpu = snp->grplo; cpu <= snp->grphi; cpu++) {
+-		if (!(mask & (1UL << (cpu - snp->grplo))))
+-			continue;
+-		srcu_schedule_cbs_sdp(per_cpu_ptr(ssp->sda, cpu), delay);
+-	}
++	for (cpu = snp->grplo; cpu <= snp->grphi; cpu++)
++		if ((mask & (1UL << (cpu - snp->grplo))) && rcu_cpu_beenfullyonline(cpu))
++			srcu_schedule_cbs_sdp(per_cpu_ptr(ssp->sda, cpu), delay);
+ }
+ 
+ /*
+@@ -1322,7 +1320,9 @@ static unsigned long srcu_gp_start_if_needed(struct srcu_struct *ssp,
+ 	 */
+ 	idx = __srcu_read_lock_nmisafe(ssp);
+ 	ss_state = smp_load_acquire(&ssp->srcu_sup->srcu_size_state);
+-	if (ss_state < SRCU_SIZE_WAIT_CALL)
++	// If !rcu_cpu_beenfullyonline(), interrupts are still disabled,
++	// so no migration is possible in either direction from this CPU.
++	if (ss_state < SRCU_SIZE_WAIT_CALL || !rcu_cpu_beenfullyonline(raw_smp_processor_id()))
+ 		sdp = per_cpu_ptr(ssp->sda, get_boot_cpu_id());
+ 	else
+ 		sdp = raw_cpu_ptr(ssp->sda);
 -- 
 2.53.0
 
