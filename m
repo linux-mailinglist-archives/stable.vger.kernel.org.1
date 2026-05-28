@@ -1,59 +1,56 @@
-Return-Path: <stable+bounces-255813-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-255814-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id UIkyHNqmGGp+lwgAu9opvQ
-	(envelope-from <stable+bounces-255813-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:34:34 +0200
+	id mHYZD1WmGGoQlwgAu9opvQ
+	(envelope-from <stable+bounces-255814-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:32:21 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id EF0F25F9019
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:34:33 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id C83AE5F8E78
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:32:20 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 55F13317211B
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 20:25:57 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 2254E3024A00
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 20:26:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 37C29325485;
-	Thu, 28 May 2026 20:25:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D9F6D352007;
+	Thu, 28 May 2026 20:25:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Xxkltqw+"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EsVKLFlK"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CBD6D2D9787;
-	Thu, 28 May 2026 20:25:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9CDF23446C5;
+	Thu, 28 May 2026 20:25:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779999952; cv=none; b=a52cO3UHOTdM6pYqU09yLXMMvkRugXJIf1RtXwXyUHdUklqNA4kCpci/KRhzekveqZucawo36ZXkfyfkYYKGb2zdEbE78z5FmOnZDTgHVn6Oa9CohmD/q2cg1zx1FUjxdMDWpQoHky2NK+wgqvUi6gYze3CVpzItSJtmrdyIbuo=
+	t=1779999954; cv=none; b=lLuW2rFmKyCPnthNNQhr5ygIG41PCAnLIigUVDgYjw68McmnW6rqolRaj17EJ3MsnVdcQlKExTivcSDwFNIfUM+bylUzqnEKXKupXNEOJQUtIMs8TOEKqsg8zoYj3T/1CSO13mbGcIgwJ0uTYXKf6hPNByaLS9e1fP+nbv2Pw9E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779999952; c=relaxed/simple;
-	bh=XzWzasvIYYijoHV5ephMxXdo7ygWi7jcH+mlOHO6+oA=;
+	s=arc-20240116; t=1779999954; c=relaxed/simple;
+	bh=R58Rwl4r184WgooEO9V2J6pBCAzwsyGqtYebVqaGhYQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=qAJX01yyBmL9zFa20Z61PPTuK0BowXYHVzdBJ2kYOGwEKGtkmkUwUKuL/nDEEC3WjZkBU5Rvc5JOkY9nQtSE3oeO4TYUE5Xtq5bObPZDn2fdMQwI2UjEdRDnew2dryI+yQOwgx7SLLBNjSL3TS/VV4sG5XnYdhnxS3/KzfxbmSQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Xxkltqw+; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 397341F000E9;
-	Thu, 28 May 2026 20:25:50 +0000 (UTC)
+	 MIME-Version; b=HihxAsCA0mNUB9TM3d8Zza9REngqzQxORqeTJJerGteATIuq2RXzNMET24guvSLOherJokFrOTGiSlmRLQnQEWSVEVnGg0y0iKXG7pbRKmir32Pz7ocqHmk/JmvZGNZLGwY6hoZHdE0i88PpJvH95z31bvngd9GCM5JSz9T3oaY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EsVKLFlK; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 06DF31F000E9;
+	Thu, 28 May 2026 20:25:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779999950;
-	bh=wUozUQ4l5E6B/QabXv/09OHOijH4N4hybBpp36SmrmM=;
+	s=korg; t=1779999953;
+	bh=KJAGgvvGpgkf02b89AzHXc0iV20gHeUKgQcUmVMpyvA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=Xxkltqw+izbEgGJ+3erglFMMjyY9KHXOdkvNP4/RDtfH3r9Is9OkidMYgkKqjP1La
-	 bwjyjea+JNiUzK7/cvYeMxmIRr9ZaGzHPlkJPapvLsRFqcy1r9DGxaL2kRTF3XuYf4
-	 F0mrmbUw5YRptZ0SUbkEch+xJZIT2YpdNh0dnnfU=
+	b=EsVKLFlKtCveOMMmaFxKRKJpiLpWdDGvr4dP++Tobu257rWDrx617KxGboBKTsvSA
+	 ceUCmLEkxpIiP8mso4JW4OkC/jiascSRNYjafiOmDRYEyWNhHsVIOzGUhrcyNya/wt
+	 jHa/jhOg7LpP4+iCdxFK0nUY9YWQc7piUWQGxjPk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	David Howells <dhowells@redhat.com>,
-	Marc Dionne <marc.dionne@auristor.com>,
-	linux-afs@lists.infradead.org,
-	linux-fsdevel@vger.kernel.org,
-	Christian Brauner <brauner@kernel.org>,
+	Linus Walleij <linusw@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 249/377] netfs, afs: Fix write skipping in dir/link writepages
-Date: Thu, 28 May 2026 21:48:07 +0200
-Message-ID: <20260528194645.588721456@linuxfoundation.org>
+Subject: [PATCH 6.18 250/377] net: ethernet: cortina: Make RX SKB per-port
+Date: Thu, 28 May 2026 21:48:08 +0200
+Message-ID: <20260528194645.616764339@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
 In-Reply-To: <20260528194638.371537336@linuxfoundation.org>
 References: <20260528194638.371537336@linuxfoundation.org>
@@ -71,30 +68,30 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-255813-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-255814-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[9];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,msgid.link:url,infradead.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,auristor.com:email]
-X-Rspamd-Queue-Id: EF0F25F9019
+	RCPT_COUNT_FIVE(0.00)[6];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sashiko.dev:url,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,msgid.link:url,linuxfoundation.org:mid,linuxfoundation.org:dkim]
+X-Rspamd-Queue-Id: C83AE5F8E78
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
@@ -102,88 +99,85 @@ X-Rspamd-Server: lfdr
 
 ------------------
 
-From: David Howells <dhowells@redhat.com>
+From: Linus Walleij <linusw@kernel.org>
 
-[ Upstream commit 9871938f99cc6cb266a77265491660e2375271f5 ]
+[ Upstream commit 06937db21ee311ed07eba47954447245041a982d ]
 
-Fix netfs_write_single() and afs_single_writepages() to better handle a
-write that would be skipped due to lock contention and WB_SYNC_NONE by
-returning 1 from netfs_write_single() if it skipped and making
-afs_single_writepages() skip also.  If a skip occurs, the inode must be
-re-marked as the VFS may have cleared the mark.
+The SKB used to assemble packets from fragments in gmac_rx()
+is static local, but the Gemini has two ethernet ports, meaning
+there can be races between the ports on a bad day if a device
+is using both.
 
-This is really only theoretical for directories in netfs_write_single() as
-the only path to that is through afs_single_writepages() that takes the
-->validate_lock around it, thereby serialising it.
+Make the RX SKB a per-port variable and carry it over between
+invocations in the port struct instead.
 
-Fixes: 6dd80936618c ("afs: Use netfslib for directories")
-Signed-off-by: David Howells <dhowells@redhat.com>
-Link: https://patch.msgid.link/20260512123404.719402-24-dhowells@redhat.com
-cc: Marc Dionne <marc.dionne@auristor.com>
-cc: linux-afs@lists.infradead.org
-cc: linux-fsdevel@vger.kernel.org
-Signed-off-by: Christian Brauner <brauner@kernel.org>
+Zero the pointer once we call napi_gro_frags(), on error (after
+calling napi_free_frags()) or if the port is stopped.
+
+Zero it in some place where not strictly necessary just to
+emphasize what is going on.
+
+This was found by Sashiko during normal patch review.
+
+Fixes: 4d5ae32f5e1e ("net: ethernet: Add a driver for Gemini gigabit ethernet")
+Link: https://sashiko.dev/#/patchset/20260505-gemini-ethernet-fix-v2-1-997c31d06079%40kernel.org
+Signed-off-by: Linus Walleij <linusw@kernel.org>
+Link: https://patch.msgid.link/20260509-gemini-ethernet-fixes-v1-2-6c5d20ddc35b@kernel.org
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/afs/dir.c           | 11 ++++++++++-
- fs/netfs/write_issue.c |  7 ++++++-
- 2 files changed, 16 insertions(+), 2 deletions(-)
+ drivers/net/ethernet/cortina/gemini.c | 7 ++++++-
+ 1 file changed, 6 insertions(+), 1 deletion(-)
 
-diff --git a/fs/afs/dir.c b/fs/afs/dir.c
-index 89d36e3e5c799..fa84610e0b0d9 100644
---- a/fs/afs/dir.c
-+++ b/fs/afs/dir.c
-@@ -2207,7 +2207,14 @@ int afs_single_writepages(struct address_space *mapping,
- 	/* Need to lock to prevent the folio queue and folios from being thrown
- 	 * away.
- 	 */
--	down_read(&dvnode->validate_lock);
-+	if (!down_read_trylock(&dvnode->validate_lock)) {
-+		if (wbc->sync_mode == WB_SYNC_NONE) {
-+			/* The VFS will have undirtied the inode. */
-+			netfs_single_mark_inode_dirty(&dvnode->netfs.inode);
-+			return 0;
-+		}
-+		down_read(&dvnode->validate_lock);
-+	}
+diff --git a/drivers/net/ethernet/cortina/gemini.c b/drivers/net/ethernet/cortina/gemini.c
+index 6a2004bbe87f9..7cf3ed7215a30 100644
+--- a/drivers/net/ethernet/cortina/gemini.c
++++ b/drivers/net/ethernet/cortina/gemini.c
+@@ -122,6 +122,8 @@ struct gemini_ethernet_port {
+ 	struct napi_struct	napi;
+ 	struct hrtimer		rx_coalesce_timer;
+ 	unsigned int		rx_coalesce_nsecs;
++	struct sk_buff		*rx_skb;
++
+ 	unsigned int		freeq_refill;
+ 	struct gmac_txq		txq[TX_QUEUE_NUM];
+ 	unsigned int		txq_order;
+@@ -1443,10 +1445,10 @@ static unsigned int gmac_rx(struct net_device *netdev, unsigned int budget)
+ 	unsigned short m = (1 << port->rxq_order) - 1;
+ 	struct gemini_ethernet *geth = port->geth;
+ 	void __iomem *ptr_reg = port->rxq_rwptr;
++	struct sk_buff *skb = port->rx_skb;
+ 	unsigned int frame_len, frag_len;
+ 	struct gmac_rxdesc *rx = NULL;
+ 	struct gmac_queue_page *gpage;
+-	static struct sk_buff *skb;
+ 	union gmac_rxdesc_0 word0;
+ 	union gmac_rxdesc_1 word1;
+ 	union gmac_rxdesc_3 word3;
+@@ -1500,6 +1502,7 @@ static unsigned int gmac_rx(struct net_device *netdev, unsigned int budget)
+ 			if (skb) {
+ 				napi_free_frags(&port->napi);
+ 				port->stats.rx_dropped++;
++				skb = NULL;
+ 			}
  
- 	if (is_dir ?
- 	    test_bit(AFS_VNODE_DIR_VALID, &dvnode->flags) :
-@@ -2215,6 +2222,8 @@ int afs_single_writepages(struct address_space *mapping,
- 		iov_iter_folio_queue(&iter, ITER_SOURCE, dvnode->directory, 0, 0,
- 				     i_size_read(&dvnode->netfs.inode));
- 		ret = netfs_writeback_single(mapping, wbc, &iter);
-+		if (ret == 1)
-+			ret = 0; /* Skipped write due to lock conflict. */
+ 			skb = gmac_skb_if_good_frame(port, word0, frame_len);
+@@ -1550,6 +1553,7 @@ static unsigned int gmac_rx(struct net_device *netdev, unsigned int budget)
+ 		port->stats.rx_dropped++;
  	}
  
- 	up_read(&dvnode->validate_lock);
-diff --git a/fs/netfs/write_issue.c b/fs/netfs/write_issue.c
-index 9bf05099155dc..03d170b9022b7 100644
---- a/fs/netfs/write_issue.c
-+++ b/fs/netfs/write_issue.c
-@@ -829,6 +829,9 @@ static int netfs_write_folio_single(struct netfs_io_request *wreq,
-  *
-  * Write a monolithic, non-pagecache object back to the server and/or
-  * the cache.
-+ *
-+ * Return: 0 if successful; 1 if skipped due to lock conflict and WB_SYNC_NONE;
-+ * or a negative error code.
-  */
- int netfs_writeback_single(struct address_space *mapping,
- 			   struct writeback_control *wbc,
-@@ -845,8 +848,10 @@ int netfs_writeback_single(struct address_space *mapping,
++	port->rx_skb = skb;
+ 	writew(r, ptr_reg);
+ 	return budget;
+ }
+@@ -1877,6 +1881,7 @@ static int gmac_stop(struct net_device *netdev)
+ 	gmac_disable_tx_rx(netdev);
+ 	gmac_stop_dma(port);
+ 	napi_disable(&port->napi);
++	port->rx_skb = NULL;
  
- 	if (!mutex_trylock(&ictx->wb_lock)) {
- 		if (wbc->sync_mode == WB_SYNC_NONE) {
-+			/* The VFS will have undirtied the inode. */
-+			netfs_single_mark_inode_dirty(&ictx->inode);
- 			netfs_stat(&netfs_n_wb_lock_skip);
--			return 0;
-+			return 1;
- 		}
- 		netfs_stat(&netfs_n_wb_lock_wait);
- 		mutex_lock(&ictx->wb_lock);
+ 	gmac_enable_irq(netdev, 0);
+ 	gmac_cleanup_rxq(netdev);
 -- 
 2.53.0
 
