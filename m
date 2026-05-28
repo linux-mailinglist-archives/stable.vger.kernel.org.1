@@ -1,58 +1,59 @@
-Return-Path: <stable+bounces-255222-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-255576-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id eKjlIYWfGGpvlggAu9opvQ
-	(envelope-from <stable+bounces-255222-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:03:17 +0200
+	id 2L0eFJWiGGrJlggAu9opvQ
+	(envelope-from <stable+bounces-255576-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:16:21 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 03A525F7B81
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:03:16 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3B63A5F8399
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:16:21 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 8F62C31409B7
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 19:58:26 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 01F743066931
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 20:15:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 249D93E63AA;
-	Thu, 28 May 2026 19:58:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 20C3B3FE37C;
+	Thu, 28 May 2026 20:15:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1VUSBy92"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Dr08Dill"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F195A338936;
-	Thu, 28 May 2026 19:58:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ACC0C34F49F;
+	Thu, 28 May 2026 20:14:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779998305; cv=none; b=j+KAQnvrdOap3waeVsUCe6BHWprazDSbTI6CiIZ035FwYzm83XdDo+vpU6LR2uIuzVpXhrf8MEec3OXp9XjfoA/ieNKFKFWwg1kWiLMsm/s8dvNDf0SRb+qsAEf7qgJbNKQTyfz6JtBH8iEQwMwy6M5UeUg8CqspK76eSnenjHw=
+	t=1779999300; cv=none; b=PhV/69tq8su8jmzaZeU8H4jJBzAEi+I7kSSq6StCAPYYyOByJulaXV+Hpp7//HjOQQvcbY51BwAA3jgx0ehqiSjGmcvowydSWc0DdI5AlSRjWNyP85Q4SFlj3Z45NmIfJB24jouVWD02PW+soBa8rIKS14qwKkNG0HpXSapdPzA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779998305; c=relaxed/simple;
-	bh=AdGkPFnwullxNYUh6sDEHosjGwGJsvUxIXpOV5ZwVeA=;
+	s=arc-20240116; t=1779999300; c=relaxed/simple;
+	bh=h2Cjy/5VjFCRRnan7Gy/CWBPoPZXn/lOYyMoobIiSmA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=PZYJ3Lnom70+BCH5XG2yKrQD+9QOI4ryRw88h9FEPajxTw8YweraWr7iK0b9PQ1ATHh9JNiyuezxfNjNIkrRWaYmOdV7UNwEcHfMtRvmVY1zcS0iC87EC3ycNnwTntG7yUMkc1jVlwSMfe7L0u1QzSdr8dl3qVt3+LMk0Al8SMo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1VUSBy92; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5AEB21F000E9;
-	Thu, 28 May 2026 19:58:24 +0000 (UTC)
+	 MIME-Version; b=Nih/pwTUGZPbXSbE9OeAR0yApdYJkXmZOkwbDjFGOK5tUu0tKCQWf+sh6rhHIBDWmIXOGEKBLQOUUL4qv4bkUq/aU62ldSGTNMmoK5AIReEhxldxWRfUcuvHJChlXbaxVQZtQqhZhCT9lI7v5EHk3n/1XOrfEOEAgSasYYF6Q0I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Dr08Dill; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 17A551F000E9;
+	Thu, 28 May 2026 20:14:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779998304;
-	bh=3BRLXEL8gs5krS1+RsYLG19AHl0fUXKUIvLLCfW7i14=;
+	s=korg; t=1779999299;
+	bh=96h4smFk1TrSSf8wWi9QoMFe8+Lc5lmvpuRjBB7PKuk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=1VUSBy92lgjXNoDIVL9PsnkN6h8Yw5R7sSPilpISZ5eQfddQotpILG3S2IXvurD0D
-	 m90OZDgwE+tBEY8Au6GiKlci7J+zw6JY5LakfMclsUeT0pCv/J88YbS3zA/iave0iJ
-	 t6j2zjn6PiTnfzvmTXSRsz1MWdmQOPsl8hmtsqGg=
+	b=Dr08DillI25EkwU2zZB7yuAk+v/uPdc7+vbsqUdFapSHonU8m31mSNOpjNr0z93jB
+	 pOKA4QFeB7SCtAYMGwKJwsS9aAn+Hy8qSaMrJs1sxu4I64MqnFlB2oQ59zDGboJCuk
+	 6LVcb1MvVy+YmWfp4F+N8UuK3ZLpc/1vJAgAZlno=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Henry Tseng <henrytseng@qnap.com>,
-	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>
-Subject: [PATCH 7.0 127/461] cpufreq: intel_pstate: Use correct scaling factor on Raptor Lake-E
+	Tommy Kelly <linux@tkel.ly>,
+	Damien Le Moal <dlemoal@kernel.org>,
+	Niklas Cassel <cassel@kernel.org>
+Subject: [PATCH 6.18 018/377] ata: libata-scsi: do not needlessly defer commands when using PMP with FBS
 Date: Thu, 28 May 2026 21:44:16 +0200
-Message-ID: <20260528194650.662211890@linuxfoundation.org>
+Message-ID: <20260528194638.914352748@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260528194646.819809818@linuxfoundation.org>
-References: <20260528194646.819809818@linuxfoundation.org>
+In-Reply-To: <20260528194638.371537336@linuxfoundation.org>
+References: <20260528194638.371537336@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -67,7 +68,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
@@ -77,7 +78,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-255222-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-255576-lists,stable=lfdr.de];
 	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
@@ -86,58 +87,286 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	NEURAL_HAM(-0.00)[-1.000];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[5];
+	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[intel.com:email,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,msgid.link:url,qnap.com:email]
-X-Rspamd-Queue-Id: 03A525F7B81
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tkel.ly:email,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo]
+X-Rspamd-Queue-Id: 3B63A5F8399
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-7.0-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+From: Niklas Cassel <cassel@kernel.org>
 
-commit 0e7c710478b3089cdfe8669347f77b163e836c4f upstream.
+commit 759e8756da00aa115d504a18155b1d1ee1cc12e8 upstream.
 
-Raptor Lake-E has the same processor ID as Raptor Lake-S, so there is
-an entry in intel_hybrid_scaling_factor[] for it.  It does not contain
-E-cores though and hybrid_get_cpu_type() returns 0 for its P-cores, so
-they get the default "core" scaling factor.  However, the original
-Raptor Lake scaling factor for P-cores still needs to be used for
-mapping the HWP performance levels of the P-cores in Raptor Lake-E to
-frequency, as though they were part of a real hybrid system.
+The ACS specification does not allow a non-NCQ command to be issued while
+an NCQ command is outstanding.
 
-To address this, update hwp_get_cpu_scaling() to return
-hybrid_scaling_factor, which is the P-core scaling factor
-retrieved from intel_hybrid_scaling_factor[], for all CPUs
-that are not enumerated as E-cores.
+Commit 0ea84089dbf6 ("ata: libata-scsi: avoid Non-NCQ command starvation")
+introduced a feature where a deferred non-NCQ command gets issued from a
+workqueue. The design stores a single non-NCQ command per port.
 
-Fixes: 9b18d536b124 ("cpufreq: intel_pstate: Use CPPC to get scaling factors")
-Link: https://lore.kernel.org/all/20260511235328.2018458-1-srinivas.pandruvada@linux.intel.com/
-Reported-by: Henry Tseng <henrytseng@qnap.com>
-Closes: https://lore.kernel.org/linux-pm/20260508063032.3248602-1-henrytseng@qnap.com/
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
-Cc: All applicable <stable@vger.kernel.org>
-Link: https://patch.msgid.link/4523296.ejJDZkT8p0@rafael.j.wysocki
+However, when using Port Multipliers (PMPs), specifically PMPs that
+support FIS-Based Switching (FBS), non-NCQ and NCQ commands can be mixed
+on the same port, just not for the same link, see e.g. ata_std_qc_defer()
+which is, and always has operated on a per-link basis.
+
+Therefore, move the deferred_qc from struct ata_port to struct ata_link.
+This way, when using a PMP with FBS, we will not needlessly defer commands
+to all other links, just because one link issued a non-NCQ command while
+having an NCQ command outstanding. Only commands for that specific link
+will be deferred. This is in line with how PMPs with FBS worked before
+commit 0ea84089dbf6 ("ata: libata-scsi: avoid Non-NCQ command starvation").
+
+Fixes: 0ea84089dbf6 ("ata: libata-scsi: avoid Non-NCQ command starvation")
+Tested-by: Tommy Kelly <linux@tkel.ly>
+Reviewed-by: Damien Le Moal <dlemoal@kernel.org>
+Signed-off-by: Niklas Cassel <cassel@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/cpufreq/intel_pstate.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/ata/libata-core.c |    9 +++++--
+ drivers/ata/libata-eh.c   |    8 +++---
+ drivers/ata/libata-pmp.c  |    5 +++-
+ drivers/ata/libata-scsi.c |   54 +++++++++++++++++++++++++---------------------
+ include/linux/libata.h    |    6 ++---
+ 5 files changed, 47 insertions(+), 35 deletions(-)
 
---- a/drivers/cpufreq/intel_pstate.c
-+++ b/drivers/cpufreq/intel_pstate.c
-@@ -2279,7 +2279,7 @@ static int hwp_get_cpu_scaling(int cpu)
- 		 * Return the hybrid scaling factor for P-cores and use the
- 		 * default core scaling for E-cores.
- 		 */
--		if (hybrid_get_cpu_type(cpu) == INTEL_CPU_TYPE_CORE)
-+		if (hybrid_get_cpu_type(cpu) != INTEL_CPU_TYPE_ATOM)
- 			return hybrid_scaling_factor;
+--- a/drivers/ata/libata-core.c
++++ b/drivers/ata/libata-core.c
+@@ -5499,6 +5499,7 @@ void ata_link_init(struct ata_port *ap,
+ 	link->pmp = pmp;
+ 	link->active_tag = ATA_TAG_POISON;
+ 	link->hw_sata_spd_limit = UINT_MAX;
++	INIT_WORK(&link->deferred_qc_work, ata_scsi_deferred_qc_work);
  
- 		return core_get_scaling();
+ 	/* can't use iterator, ap isn't initialized yet */
+ 	for (i = 0; i < ATA_MAX_DEVICES; i++) {
+@@ -5581,7 +5582,6 @@ struct ata_port *ata_port_alloc(struct a
+ 	mutex_init(&ap->scsi_scan_mutex);
+ 	INIT_DELAYED_WORK(&ap->hotplug_task, ata_scsi_hotplug);
+ 	INIT_DELAYED_WORK(&ap->scsi_rescan_task, ata_scsi_dev_rescan);
+-	INIT_WORK(&ap->deferred_qc_work, ata_scsi_deferred_qc_work);
+ 	INIT_LIST_HEAD(&ap->eh_done_q);
+ 	init_waitqueue_head(&ap->eh_wait_q);
+ 	init_completion(&ap->park_req_pending);
+@@ -6204,12 +6204,15 @@ static void ata_port_detach(struct ata_p
+ 
+ 	/* It better be dead now and not have any remaining deferred qc. */
+ 	WARN_ON(!(ap->pflags & ATA_PFLAG_UNLOADED));
+-	WARN_ON(ap->deferred_qc);
+ 
+-	cancel_work_sync(&ap->deferred_qc_work);
+ 	cancel_delayed_work_sync(&ap->hotplug_task);
+ 	cancel_delayed_work_sync(&ap->scsi_rescan_task);
+ 
++	ata_for_each_link(link, ap, PMP_FIRST) {
++		WARN_ON(link->deferred_qc);
++		cancel_work_sync(&link->deferred_qc_work);
++	}
++
+ 	/* Delete port multiplier link transport devices */
+ 	if (ap->pmp_link) {
+ 		int i;
+--- a/drivers/ata/libata-eh.c
++++ b/drivers/ata/libata-eh.c
+@@ -643,11 +643,11 @@ void ata_scsi_cmd_error_handler(struct S
+ 			if (qc->scsicmd != scmd)
+ 				continue;
+ 			if ((qc->flags & ATA_QCFLAG_ACTIVE) ||
+-			    qc == ap->deferred_qc)
++			    qc == qc->dev->link->deferred_qc)
+ 				break;
+ 		}
+ 
+-		if (i < ATA_MAX_QUEUE && qc == ap->deferred_qc) {
++		if (i < ATA_MAX_QUEUE && qc == qc->dev->link->deferred_qc) {
+ 			/*
+ 			 * This is a deferred command that timed out while
+ 			 * waiting for the command queue to drain. Since the qc
+@@ -658,8 +658,8 @@ void ata_scsi_cmd_error_handler(struct S
+ 			 * deferred qc work from issuing this qc.
+ 			 */
+ 			WARN_ON_ONCE(qc->flags & ATA_QCFLAG_ACTIVE);
+-			ap->deferred_qc = NULL;
+-			cancel_work(&ap->deferred_qc_work);
++			qc->dev->link->deferred_qc = NULL;
++			cancel_work(&qc->dev->link->deferred_qc_work);
+ 			set_host_byte(scmd, DID_TIME_OUT);
+ 			scsi_eh_finish_cmd(scmd, &ap->eh_done_q);
+ 		} else if (i < ATA_MAX_QUEUE) {
+--- a/drivers/ata/libata-pmp.c
++++ b/drivers/ata/libata-pmp.c
+@@ -582,8 +582,11 @@ static void sata_pmp_detach(struct ata_d
+ 	if (ap->ops->pmp_detach)
+ 		ap->ops->pmp_detach(ap);
+ 
+-	ata_for_each_link(tlink, ap, EDGE)
++	ata_for_each_link(tlink, ap, EDGE) {
++		WARN_ON(tlink->deferred_qc);
++		cancel_work_sync(&tlink->deferred_qc_work);
+ 		ata_eh_detach_dev(tlink->device);
++	}
+ 
+ 	spin_lock_irqsave(ap->lock, flags);
+ 	ap->nr_pmp_links = 0;
+--- a/drivers/ata/libata-scsi.c
++++ b/drivers/ata/libata-scsi.c
+@@ -1659,8 +1659,9 @@ static void ata_qc_done(struct ata_queue
+ 
+ void ata_scsi_deferred_qc_work(struct work_struct *work)
+ {
+-	struct ata_port *ap =
+-		container_of(work, struct ata_port, deferred_qc_work);
++	struct ata_link *link =
++		container_of(work, struct ata_link, deferred_qc_work);
++	struct ata_port *ap = link->ap;
+ 	struct ata_queued_cmd *qc;
+ 	unsigned long flags;
+ 
+@@ -1671,10 +1672,10 @@ void ata_scsi_deferred_qc_work(struct wo
+ 	 * such case, we should not need any more deferring the qc, so warn if
+ 	 * qc_defer() says otherwise.
+ 	 */
+-	qc = ap->deferred_qc;
++	qc = link->deferred_qc;
+ 	if (qc && !ata_port_eh_scheduled(ap)) {
+ 		WARN_ON_ONCE(ap->ops->qc_defer(qc));
+-		ap->deferred_qc = NULL;
++		link->deferred_qc = NULL;
+ 		ata_qc_issue(qc);
+ 	}
+ 
+@@ -1683,8 +1684,7 @@ void ata_scsi_deferred_qc_work(struct wo
+ 
+ void ata_scsi_requeue_deferred_qc(struct ata_port *ap)
+ {
+-	struct ata_queued_cmd *qc = ap->deferred_qc;
+-	struct scsi_cmnd *scmd;
++	struct ata_link *link;
+ 
+ 	lockdep_assert_held(ap->lock);
+ 
+@@ -1693,20 +1693,25 @@ void ata_scsi_requeue_deferred_qc(struct
+ 	 * do not try to be smart about what to do with this deferred command
+ 	 * and simply requeue it by completing it with DID_REQUEUE.
+ 	 */
+-	if (!qc)
+-		return;
+-
+-	scmd = qc->scsicmd;
+-	ap->deferred_qc = NULL;
+-	cancel_work(&ap->deferred_qc_work);
+-	ata_qc_free(qc);
+-	scmd->result = (DID_REQUEUE << 16);
+-	scsi_done(scmd);
++	ata_for_each_link(link, ap, PMP_FIRST) {
++		struct ata_queued_cmd *qc = link->deferred_qc;
++		struct scsi_cmnd *scmd;
++
++		if (qc) {
++			scmd = qc->scsicmd;
++			link->deferred_qc = NULL;
++			cancel_work(&link->deferred_qc_work);
++			ata_qc_free(qc);
++			scmd->result = (DID_REQUEUE << 16);
++			scsi_done(scmd);
++		}
++	}
+ }
+ 
+-static void ata_scsi_schedule_deferred_qc(struct ata_port *ap)
++static void ata_scsi_schedule_deferred_qc(struct ata_link *link)
+ {
+-	struct ata_queued_cmd *qc = ap->deferred_qc;
++	struct ata_queued_cmd *qc = link->deferred_qc;
++	struct ata_port *ap = link->ap;
+ 
+ 	lockdep_assert_held(ap->lock);
+ 
+@@ -1723,12 +1728,12 @@ static void ata_scsi_schedule_deferred_q
+ 		return;
+ 	}
+ 	if (!ap->ops->qc_defer(qc))
+-		queue_work(system_highpri_wq, &ap->deferred_qc_work);
++		queue_work(system_highpri_wq, &link->deferred_qc_work);
+ }
+ 
+ static void ata_scsi_qc_complete(struct ata_queued_cmd *qc)
+ {
+-	struct ata_port *ap = qc->ap;
++	struct ata_link *link = qc->dev->link;
+ 	struct scsi_cmnd *cmd = qc->scsicmd;
+ 	u8 *cdb = cmd->cmnd;
+ 	bool have_sense = qc->flags & ATA_QCFLAG_SENSE_VALID;
+@@ -1759,11 +1764,12 @@ static void ata_scsi_qc_complete(struct
+ 
+ 	ata_qc_done(qc);
+ 
+-	ata_scsi_schedule_deferred_qc(ap);
++	ata_scsi_schedule_deferred_qc(link);
+ }
+ 
+ static int ata_scsi_qc_issue(struct ata_port *ap, struct ata_queued_cmd *qc)
+ {
++	struct ata_link *link = qc->dev->link;
+ 	int ret;
+ 
+ 	if (!ap->ops->qc_defer)
+@@ -1774,7 +1780,7 @@ static int ata_scsi_qc_issue(struct ata_
+ 	 * requeue and defer all incoming commands until the deferred qc is
+ 	 * processed, once all on-going commands complete.
+ 	 */
+-	if (ap->deferred_qc) {
++	if (link->deferred_qc) {
+ 		ata_qc_free(qc);
+ 		return SCSI_MLQUEUE_DEVICE_BUSY;
+ 	}
+@@ -1790,8 +1796,8 @@ static int ata_scsi_qc_issue(struct ata_
+ 	case ATA_DEFER_LINK_EXCL:
+ 		/*
+ 		 * Drivers making use of ap->excl_link cannot store the QC in
+-		 * ap->deferred_qc, because the ap->excl_link handling is
+-		 * incompatible with the ap->deferred_qc workqueue handling.
++		 * link->deferred_qc, because the ap->excl_link handling is
++		 * incompatible with the link->deferred_qc workqueue handling.
+ 		 */
+ 		ret = SCSI_MLQUEUE_DEVICE_BUSY;
+ 		goto free_qc;
+@@ -1817,7 +1823,7 @@ defer_qc:
+ 	 * commands complete.
+ 	 */
+ 	if (!ata_is_ncq(qc->tf.protocol)) {
+-		ap->deferred_qc = qc;
++		link->deferred_qc = qc;
+ 		return 0;
+ 	}
+ 
+--- a/include/linux/libata.h
++++ b/include/linux/libata.h
+@@ -855,6 +855,9 @@ struct ata_link {
+ 	unsigned int		sata_spd;	/* current SATA PHY speed */
+ 	enum ata_lpm_policy	lpm_policy;
+ 
++	struct work_struct	deferred_qc_work;
++	struct ata_queued_cmd	*deferred_qc;
++
+ 	/* record runtime error info, protected by host_set lock */
+ 	struct ata_eh_info	eh_info;
+ 	/* EH context */
+@@ -900,9 +903,6 @@ struct ata_port {
+ 	u64			qc_active;
+ 	int			nr_active_links; /* #links with active qcs */
+ 
+-	struct work_struct	deferred_qc_work;
+-	struct ata_queued_cmd	*deferred_qc;
+-
+ 	struct ata_link		link;		/* host default link */
+ 	struct ata_link		*slave_link;	/* see ata_slave_link_init() */
+ 
 
 
 
