@@ -1,58 +1,60 @@
-Return-Path: <stable+bounces-256091-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-255517-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id uNZeAx+rGGpolwgAu9opvQ
-	(envelope-from <stable+bounces-256091-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:52:47 +0200
+	id qFYiDGyjGGrJlggAu9opvQ
+	(envelope-from <stable+bounces-255517-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:19:56 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2ED935F9C2C
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:52:46 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id A6C6E5F8667
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:19:55 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id C8EC6300E93A
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 20:38:50 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 4D891318EC91
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 20:12:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C679C2EF652;
-	Thu, 28 May 2026 20:38:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1552033CE8A;
+	Thu, 28 May 2026 20:12:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mtxuG7Xq"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rAMIUeZD"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A9B171DE4E0;
-	Thu, 28 May 2026 20:38:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C39E93FE37C;
+	Thu, 28 May 2026 20:12:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780000729; cv=none; b=EVY2c/MsxU3BIDrySGXNMmygRTiQ5bz5wMDWPmeMAf1y2h1mYrQbPOV7gynN1nhYsHxXtEkCAQfyxzMuOBN/djaSw4q8i0PokRzvDjQ9jahbe1/uYL/2/qsFfBEcHofkZ2KU75Pm7+fAGr8wxCj79d6UhSygw8IpRC3R94RFKMY=
+	t=1779999133; cv=none; b=D+MVpDqiQPKB7Qq7rxTt6VhbcqQ6b+L832uo0SHjCm74pIlp/6XmTkkA2o8toZtjo9a4oQpwn5JT+CiTjlDDnPCjLwI2Q2un3dyc87TNan7LOktVD7Lfbqx19SOv4ItL6XRi2DKNoEyMyTmJBATNbMkfrXd5Cq3Jr2YD+9NIDho=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780000729; c=relaxed/simple;
-	bh=rMa4zBDMgUOaKF99+6TkGMWpXTiU3MoZ/djo18MeXus=;
+	s=arc-20240116; t=1779999133; c=relaxed/simple;
+	bh=LNGbRu92PaWbBbpQoISL9RHVc0navfRY+2xYV10ysmM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=keRvdiGvG7g28iwDiiX9gXML/5Fo+oRAYotgerMJ9b40fmsxW/wnu774wmpZNf87w3gPGK8LTgLKhesSfQRAs0u2FQxjrYiTPZUt8gVcFvNxQmwQycmS8HpgxIOC+xw3YHcJ4+UPCm1orNFeduY/8dy4zgp5Yo8SSZNz/SLtZPw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mtxuG7Xq; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 052771F000E9;
-	Thu, 28 May 2026 20:38:47 +0000 (UTC)
+	 MIME-Version:Content-Type; b=fq+GlAi2y7Kz75XczWqfj+/D11JcK3nWLUq5oBrMWBmhG6qmFD7KRypblIxhZb/KToy5Kv0bo7cq9wzRjJcyfXVz6mCgzu+dRbKB9rfbLpC2VwQtBCFOavZprevDJABLvjHsgt8KpduCPunNXKOTDAxET9gRQpI5y48YRUw1VeU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rAMIUeZD; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2E7D71F00A3C;
+	Thu, 28 May 2026 20:12:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780000728;
-	bh=j7id6sH68gOHeo7IxKyutd+A3i9e1ubRRgBf8mlUkQw=;
+	s=korg; t=1779999132;
+	bh=ID6RWiHmcih5qCVt1zJS83LuaKyr0uu7zAbVSddzYWk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=mtxuG7Xq6iO3oia1x7SUGAJG2Qh/RWNj6c1+HIFtKTLqxZEPyq1kFU+jEdDiL43PR
-	 GVWdzFU2PxUPzR9vZtDWmaEcMWqeIHqzW6RB8c4HkkSW95k66eRDQfXnC3cfz5jR+7
-	 fbRXb90BVh5XaXCRG3cpkr1AHCBCby/yTMjhJ/ZE=
+	b=rAMIUeZDhWCroJ8A9fw+HC+dY5M8l6orJSO74jdL7LzrkIsoWi7M1x/hmQ194e26h
+	 rQKAHkB/vMqJcAgKfJ9w2EENqaUo/FOU4REjcwW1RiuBtY1XwVllt2QqUfO/JfynkV
+	 5jjXC/rIeflG8KZLp3+5gp97B3a4vLukA5M3cF3M=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sudeep Holla <sudeep.holla@kernel.org>,
+	Werner Sembach <wse@tuxedocomputers.com>,
+	Armin Wolf <W_Armin@gmx.de>,
+	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 148/272] firmware: arm_ffa: Fix per-vcpu self notifications handling in workqueue
+Subject: [PATCH 7.0 393/461] platform/x86: uniwill-laptop: Properly initialize charging threshold
 Date: Thu, 28 May 2026 21:48:42 +0200
-Message-ID: <20260528194633.516102012@linuxfoundation.org>
+Message-ID: <20260528194658.840532297@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260528194629.379955525@linuxfoundation.org>
-References: <20260528194629.379955525@linuxfoundation.org>
+In-Reply-To: <20260528194646.819809818@linuxfoundation.org>
+References: <20260528194646.819809818@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,78 +64,129 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	RCVD_TLS_LAST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,tuxedocomputers.com,gmx.de,linux.intel.com,kernel.org];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-256091-lists,stable=lfdr.de];
-	TO_DN_SOME(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	TAGGED_FROM(0.00)[bounces-255517-lists,stable=lfdr.de];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	RCVD_TLS_LAST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	TO_DN_SOME(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[5];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim]
-X-Rspamd-Queue-Id: 2ED935F9C2C
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim,gmx.de:email,msgid.link:url,intel.com:email,tuxedocomputers.com:email]
+X-Rspamd-Queue-Id: A6C6E5F8667
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+7.0-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sudeep Holla <sudeep.holla@kernel.org>
+From: Armin Wolf <W_Armin@gmx.de>
 
-[ Upstream commit 9985d5357ed93af0d1933969c247e966957730e1 ]
+[ Upstream commit c12cc42dadd85dea210d5699d4f21def827382eb ]
 
-Per-vcpu notification handling already runs from a per-cpu work item on
-the target cpu. Routing that path back through smp_call_function_single()
-re-enters the call-function IPI path and executes the notification
-handler with interrupts disabled. That makes the framework path unsafe,
-since it takes a mutex, allocates memory with GFP_KERNEL, and invokes
-client callbacks.
+The EC might initialize the charge threshold with 0 to signal that
+said threshold is uninitialized. Detect this and replace said value
+with 100 to signal the EC that we want to take control of battery
+charging. Also set the threshold to 100 if the EC-provided value
+is invalid.
 
-Handle per-vcpu self notifications directly from the existing per-cpu
-work item instead. This keeps the per-vcpu path in task context and
-avoids the extra IPI hop entirely.
-
-Fixes: 3a3e2b83e805 ("firmware: arm_ffa: Avoid queuing work when running on the worker queue")
-Link: https://patch.msgid.link/20260428-ffa_fixes-v2-4-8595ae450034@kernel.org
-Signed-off-by: Sudeep Holla <sudeep.holla@kernel.org>
+Fixes: d050479693bb ("platform/x86: Add Uniwill laptop driver")
+Reviewed-by: Werner Sembach <wse@tuxedocomputers.com>
+Signed-off-by: Armin Wolf <W_Armin@gmx.de>
+Link: https://patch.msgid.link/20260512232145.329260-2-W_Armin@gmx.de
+Reviewed-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/firmware/arm_ffa/driver.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/platform/x86/uniwill/uniwill-acpi.c | 35 ++++++++++++++++++++-
+ 1 file changed, 34 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/firmware/arm_ffa/driver.c b/drivers/firmware/arm_ffa/driver.c
-index 61d4a4b7d97b6..39f19acdce904 100644
---- a/drivers/firmware/arm_ffa/driver.c
-+++ b/drivers/firmware/arm_ffa/driver.c
-@@ -1336,7 +1336,7 @@ static void notif_pcpu_irq_work_fn(struct work_struct *work)
- 	struct ffa_drv_info *info = container_of(work, struct ffa_drv_info,
- 						 notif_pcpu_work);
- 
--	ffa_self_notif_handle(smp_processor_id(), true, info);
-+	notif_get_and_handle(info);
+diff --git a/drivers/platform/x86/uniwill/uniwill-acpi.c b/drivers/platform/x86/uniwill/uniwill-acpi.c
+index 6341dca20b76a..4b491fe8bdea4 100644
+--- a/drivers/platform/x86/uniwill/uniwill-acpi.c
++++ b/drivers/platform/x86/uniwill/uniwill-acpi.c
+@@ -1193,6 +1193,16 @@ static int uniwill_led_init(struct uniwill_data *data)
+ 							 &init_data);
  }
  
- static const struct ffa_info_ops ffa_drv_info_ops = {
++static unsigned int uniwill_sanitize_battery_threshold(unsigned int value)
++{
++	/* 0 means "charging threshold not active" */
++	if (!value)
++		return 100;
++
++	/* Guard against invalid values */
++	return min(value, 100);
++}
++
+ static int uniwill_get_property(struct power_supply *psy, const struct power_supply_ext *ext,
+ 				void *drvdata, enum power_supply_property psp,
+ 				union power_supply_propval *val)
+@@ -1239,7 +1249,8 @@ static int uniwill_get_property(struct power_supply *psy, const struct power_sup
+ 		if (ret < 0)
+ 			return ret;
+ 
+-		val->intval = clamp_val(FIELD_GET(CHARGE_CTRL_MASK, regval), 0, 100);
++		regval = FIELD_GET(CHARGE_CTRL_MASK, regval);
++		val->intval = uniwill_sanitize_battery_threshold(regval);
+ 		return 0;
+ 	default:
+ 		return -EINVAL;
+@@ -1334,11 +1345,33 @@ static int uniwill_remove_battery(struct power_supply *battery, struct acpi_batt
+ 
+ static int uniwill_battery_init(struct uniwill_data *data)
+ {
++	unsigned int value, threshold, sanitized;
+ 	int ret;
+ 
+ 	if (!uniwill_device_supports(data, UNIWILL_FEATURE_BATTERY))
+ 		return 0;
+ 
++	ret = regmap_read(data->regmap, EC_ADDR_CHARGE_CTRL, &value);
++	if (ret < 0)
++		return ret;
++
++	/*
++	 * The charge control threshold might be initialized with 0 by
++	 * the EC to signal that said threshold is uninitialized. We thus
++	 * need to replace this placeholder value with a valid one (100)
++	 * to signal that we want to take control of battery charging.
++	 * For the sake of completeness we also apply this to other
++	 * invalid threshold values.
++	 */
++	threshold = FIELD_GET(CHARGE_CTRL_MASK, value);
++	sanitized = uniwill_sanitize_battery_threshold(threshold);
++	if (threshold != sanitized) {
++		FIELD_MODIFY(CHARGE_CTRL_MASK, &value, sanitized);
++		ret = regmap_write(data->regmap, EC_ADDR_CHARGE_CTRL, value);
++		if (ret < 0)
++			return ret;
++	}
++
+ 	ret = devm_mutex_init(data->dev, &data->battery_lock);
+ 	if (ret < 0)
+ 		return ret;
 -- 
 2.53.0
 
