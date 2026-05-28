@@ -1,63 +1,56 @@
-Return-Path: <stable+bounces-255126-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-255127-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id cFk0NGKdGGr+lQgAu9opvQ
-	(envelope-from <stable+bounces-255126-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 21:54:10 +0200
+	id kGcJNqmdGGpRlggAu9opvQ
+	(envelope-from <stable+bounces-255127-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 21:55:21 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8F9635F7649
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 21:54:10 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 54F005F770E
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 21:55:21 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 0FD0F3016423
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 19:54:07 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 6DD9230598C1
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 19:54:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AA500409606;
-	Thu, 28 May 2026 19:54:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 403313E63AA;
+	Thu, 28 May 2026 19:54:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FfwYpvM7"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Ig/gMwTG"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8010333F582;
-	Thu, 28 May 2026 19:54:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4A35334D4D6;
+	Thu, 28 May 2026 19:54:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779998044; cv=none; b=NR6un1sjuTtGGfIdAYVjVMJ/wOBcPzhlfUeb2oO/HWxs1hLvWS3McHtxN6ZLowu8hWi3Z4SuNm6yp3keor8KXH36twGDZ0k1XFRn9PLeM5762I027MFEog+QtYicdy1saPwJhRpjiZJFsvB6p9kLwTeB/2Ftyv1Z0XVaGvSkTYA=
+	t=1779998046; cv=none; b=q+VyZxbLG/YRvQVQDFTVLF2HpE2k1j5kscA82cNjDZ3LdVymCwSfuV2tnAFi1jnsdoa5TI5HvmD1YShIiGnK3DH/4vkM9/LID3gOCcKCHcjT/EdpnaoIS+M/mSlPI+RRXXDkQlJWqvUzzEvz/l04VZKvPCkpDFbBkXxSPzqwiJs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779998044; c=relaxed/simple;
-	bh=IkfLmOUEGK0hqq8whJmk6aB2anzHGeMYTGhVQH4DSCE=;
+	s=arc-20240116; t=1779998046; c=relaxed/simple;
+	bh=+QjueiJ/jXbteXXhOPPe0YPIfsVd5MW5mW1psTrkDJk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=nl8bkKD/NTyUIKtipEXEE6R2Kz4rB4xkhv1mAJJzg0wF3Is0Om+ygcNFMUjYFUCLPZAIvixinEw/zgRfqVKjayMazzFPm6/HJKkukND4hp/yMG4baH2vW4ypP4SDaT004hiX/woySyOTZ+77U30JqbcDJtBnyAfqxSzw5HVCv+s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FfwYpvM7; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 598051F00A3A;
-	Thu, 28 May 2026 19:54:00 +0000 (UTC)
+	 MIME-Version; b=jPl7N0HZtMl33bai+vcUdtcbqpezMpSQ6AmFsrIuR44HYi0QYvKexs4xKBBd+PVl6e6XVbMmqwFSyy4CVTpJaRlsbz8ZzhxIfeIK2oC2gllKADp2uIZJA8T4SKqRs8lWLSDY+UfDsWzyEdHkFdAxj9SOPpDag8KnZeMgdI5IRsE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Ig/gMwTG; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 229B71F00A3E;
+	Thu, 28 May 2026 19:54:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779998040;
-	bh=RueNuDK95rXhEvNaluciBKfM8n34w/zcq1HR7DoodtI=;
+	s=korg; t=1779998043;
+	bh=MlxoBDSAStuJQZjgpq/0eNtdWAV4h9ogWbXtdDsm9PA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=FfwYpvM7b5G+2G5OAoytu3Zv90nNrUdaL57OO0k/5awq1A/zRI/iqFFWDZckoXFWA
-	 s+0bOcdNkM+STm/P+0kP6FpndFKEckgwAlx/PTL4KiINH+pNE9XEzSLYBHJ8rdAfH4
-	 HhdVRAavX0barfca1QvI0i07u19pLB6C1N5h27k8=
+	b=Ig/gMwTGm+mLpllmx9LFYCKdLQyPX2wLv3nbBkRRI+punx9V2o35mUD7A2Z1qOPmQ
+	 dMUidvjv9jZRbflL7tdjhu6pm3N2GEfJ12AsKq1Ev6sBDdYVmJI/eyl3o3/pMsLM/1
+	 pBbtv3O8jklCy8QYoVNUcsSRYvYlIXzYm14Jy1JE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Muchun Song <songmuchun@bytedance.com>,
-	Miaohe Lin <linmiaohe@huawei.com>,
-	Oscar Salvador <osalvador@suse.de>,
-	"David Hildenbrand (Arm)" <david@kernel.org>,
-	Danilo Krummrich <dakr@kernel.org>,
-	"Huang, Ying" <huang.ying.caritas@gmail.com>,
-	Naoya Horiguchi <nao.horiguchi@gmail.com>,
-	"Rafael J. Wysocki" <rafael@kernel.org>,
-	Vishal Verma <vishal.l.verma@intel.com>,
-	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 7.0 031/461] drivers/base/memory: fix memory block reference leak in poison accounting
-Date: Thu, 28 May 2026 21:42:40 +0200
-Message-ID: <20260528194647.799008529@linuxfoundation.org>
+	Justin Iurman <justin.iurman@gmail.com>,
+	Ido Schimmel <idosch@nvidia.com>,
+	Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 7.0 032/461] ipv6: ioam: refresh hdr pointer before ioam6_event()
+Date: Thu, 28 May 2026 21:42:41 +0200
+Message-ID: <20260528194647.826544434@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
 In-Reply-To: <20260528194646.819809818@linuxfoundation.org>
 References: <20260528194646.819809818@linuxfoundation.org>
@@ -76,31 +69,31 @@ X-Spamd-Result: default: False [-0.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	MIME_TRACE(0.00)[0:+];
-	RCPT_COUNT_TWELVE(0.00)[13];
-	TAGGED_FROM(0.00)[bounces-255126-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
+	TAGGED_FROM(0.00)[bounces-255127-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,bytedance.com,huawei.com,suse.de,kernel.org,gmail.com,intel.com,linux-foundation.org];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,nvidia.com,kernel.org];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	NEURAL_HAM(-0.00)[-1.000];
+	NEURAL_HAM(-0.00)[-0.999];
 	TAGGED_RCPT(0.00)[stable];
 	MID_RHS_MATCH_FROM(0.00)[];
-	TO_DN_SOME(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,linux-foundation.org:email,intel.com:email,bytedance.com:email,suse.de:email,huawei.com:email]
-X-Rspamd-Queue-Id: 8F9635F7649
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,nvidia.com:email,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim]
+X-Rspamd-Queue-Id: 54F005F770E
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
@@ -108,63 +101,63 @@ X-Rspamd-Server: lfdr
 
 ------------------
 
-From: Muchun Song <songmuchun@bytedance.com>
+From: Justin Iurman <justin.iurman@gmail.com>
 
-commit 03a2cc1756a0570f887d624cd6c535ea0cbd4951 upstream.
+commit e46e6bc97fb1f339730ff1ba74267fbf48e7a422 upstream.
 
-memblk_nr_poison_inc() and memblk_nr_poison_sub() look up a memory block
-via find_memory_block_by_id(), which acquires a reference to the memory
-block device.
+Reported by Sashiko:
 
-Both helpers use the returned memory block without dropping that
-reference, leaking the device reference on each successful lookup.  Drop
-the reference after updating nr_hwpoison.
+In ipv6_hop_ioam(), the hdr pointer is initialized to point into the
+skb's linear data buffer. Later, the code calls skb_ensure_writable(),
+which might reallocate the buffer:
 
-Link: https://lore.kernel.org/20260428085219.1316047-3-songmuchun@bytedance.com
-Fixes: 5033091de814 ("mm/hwpoison: introduce per-memory_block hwpoison counter")
-Signed-off-by: Muchun Song <songmuchun@bytedance.com>
-Reviewed-by: Miaohe Lin <linmiaohe@huawei.com>
-Acked-by: Oscar Salvador <osalvador@suse.de>
-Acked-by: David Hildenbrand (Arm) <david@kernel.org>
-Cc: Danilo Krummrich <dakr@kernel.org>
-Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: "Huang, Ying" <huang.ying.caritas@gmail.com>
-Cc: Naoya Horiguchi <nao.horiguchi@gmail.com>
-Cc: "Rafael J. Wysocki" <rafael@kernel.org>
-Cc: Vishal Verma <vishal.l.verma@intel.com>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+	if (skb_ensure_writable(skb, optoff + 2 + hdr->opt_len))
+		goto drop;
+
+	/* Trace pointer may have changed */
+	trace = (struct ioam6_trace_hdr *)(skb_network_header(skb)
+					   + optoff + sizeof(*hdr));
+
+	ioam6_fill_trace_data(skb, ns, trace, true);
+
+	ioam6_event(IOAM6_EVENT_TRACE, dev_net(skb->dev),
+		    GFP_ATOMIC, (void *)trace, hdr->opt_len - 2);
+
+If the skb is cloned or lacks sufficient linear headroom,
+skb_ensure_writable() will invoke pskb_expand_head(), which reallocates
+the skb's data buffer and frees the old one, invalidating pointers to
+it. While the code recalculates the trace pointer immediately after the
+call to skb_ensure_writable(), it fails to recalculate the hdr pointer.
+
+This patch fixes the above by recalculating the hdr pointer before
+passing hdr->opt_len to ioam6_event(), so that we avoid any UaF.
+
+Fixes: f655c78d6225 ("net: exthdrs: ioam6: send trace event")
+Cc: stable@vger.kernel.org
+Signed-off-by: Justin Iurman <justin.iurman@gmail.com>
+Reviewed-by: Ido Schimmel <idosch@nvidia.com>
+Link: https://patch.msgid.link/20260520124242.32320-1-justin.iurman@gmail.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/base/memory.c |    8 ++++++--
- 1 file changed, 6 insertions(+), 2 deletions(-)
+ net/ipv6/exthdrs.c |    6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
---- a/drivers/base/memory.c
-+++ b/drivers/base/memory.c
-@@ -1230,8 +1230,10 @@ void memblk_nr_poison_inc(unsigned long
- 	const unsigned long block_id = pfn_to_block_id(pfn);
- 	struct memory_block *mem = find_memory_block_by_id(block_id);
+--- a/net/ipv6/exthdrs.c
++++ b/net/ipv6/exthdrs.c
+@@ -955,9 +955,9 @@ static bool ipv6_hop_ioam(struct sk_buff
+ 		if (skb_ensure_writable(skb, optoff + 2 + hdr->opt_len))
+ 			goto drop;
  
--	if (mem)
-+	if (mem) {
- 		atomic_long_inc(&mem->nr_hwpoison);
-+		put_device(&mem->dev);
-+	}
- }
+-		/* Trace pointer may have changed */
+-		trace = (struct ioam6_trace_hdr *)(skb_network_header(skb)
+-						   + optoff + sizeof(*hdr));
++		/* Trace and hdr pointers may have changed */
++		hdr = (struct ioam6_hdr *)(skb_network_header(skb) + optoff);
++		trace = (struct ioam6_trace_hdr *)((u8 *)hdr + sizeof(*hdr));
  
- void memblk_nr_poison_sub(unsigned long pfn, long i)
-@@ -1239,8 +1241,10 @@ void memblk_nr_poison_sub(unsigned long
- 	const unsigned long block_id = pfn_to_block_id(pfn);
- 	struct memory_block *mem = find_memory_block_by_id(block_id);
+ 		ioam6_fill_trace_data(skb, ns, trace, true);
  
--	if (mem)
-+	if (mem) {
- 		atomic_long_sub(i, &mem->nr_hwpoison);
-+		put_device(&mem->dev);
-+	}
- }
- 
- static unsigned long memblk_nr_poison(struct memory_block *mem)
 
 
 
