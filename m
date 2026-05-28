@@ -1,60 +1,61 @@
-Return-Path: <stable+bounces-255363-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-255364-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id AKsWAg+hGGqblggAu9opvQ
-	(envelope-from <stable+bounces-255363-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:09:51 +0200
+	id wCSnBSahGGqblggAu9opvQ
+	(envelope-from <stable+bounces-255364-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:10:14 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7AFDE5F7F08
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:09:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 80DF35F7F6B
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:10:13 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id EC41C30E5DEF
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 20:05:11 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id DC22830F11D2
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 20:05:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 16D87410D1B;
-	Thu, 28 May 2026 20:05:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EA81041C2E8;
+	Thu, 28 May 2026 20:05:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mokFNMzu"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="iADPqcT5"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DBC4630E82E;
-	Thu, 28 May 2026 20:04:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 98041413D8E;
+	Thu, 28 May 2026 20:05:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779998699; cv=none; b=HzRRxPXSj8K0YkKFgfvAwY9g4z75n0uVp7nGVqq8porPen3uOQXJsLZ+16WssGWYAjDZ/oNXZ52IdE469VHEansI6DAzXTrsA0Ukku9Cx/cJm2JqQTnuiyIqt38/IHebTWvUA9uq7haQTCEbY7krw3MzC+eXt0cEhmnXFWXtF3M=
+	t=1779998702; cv=none; b=H2Avvlzzm4J+Scxx5QdiGfThwV4CcGdFyU0cWxEM2MFpPNA12dUCcM5edsHsCUY242o0PqmG/Fz6xJD2f9oOBNgsH9RbDW1h9vRM34R1PRmcqz2NB7fNNoa/8Oeu66KviIP/ncUPB/AX42iTZYNlG7EMVfEn16Fq2zWyvkMeXYI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779998699; c=relaxed/simple;
-	bh=IM+KN85peL13/2oE+MqsuNXf43qErU9ASxBYt4GliJE=;
+	s=arc-20240116; t=1779998702; c=relaxed/simple;
+	bh=H65xPM3+itimHWW6W/s9dBynZu10LWgKV4mp5j6Mdp8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=TjX7Ix0qwah6aVWUz/bdukuDMwCpiffCj0h130CYkKgv4/nz0JvKNb/GD8U9i+qvUSuI94hTu906XlQ6Ssc6hX01OkVW+dPy9C/7AnIeySGxxvSxHm8cpDyVIsjOnxBAsG5X9EI2XoOfQ3A3YgkaqAAHeJM+VvyPM6TLaaW65Kk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mokFNMzu; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4E2A01F000E9;
-	Thu, 28 May 2026 20:04:58 +0000 (UTC)
+	 MIME-Version; b=SpoL/LC6qUTulNpsOQmBIkCZwV9PIgeSsiFLERQg08s72ONiZnU8vqq/M0CLjk9YEc54xXfCd5VqVbsxdN2RWzyF3AWUfQZHVO2MWJUXiRLkTKy/GozB7N/Eqqqy9QE0LbswQmFcTTbSQjWWz6oEInVp83K+4rVVxuWrhJDFvgs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=iADPqcT5; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 07A9B1F000E9;
+	Thu, 28 May 2026 20:05:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779998698;
-	bh=90qPoAZYnF7Z7YMpeC/MfSBe1lQ7HJhP7wW6gPoZ2OE=;
+	s=korg; t=1779998701;
+	bh=oOauYayf3SuJzh9wziOySAiZg54G3Ibtp02jYXklF7M=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=mokFNMzusfO2JM2FKOkoQk6NpUsxDWLLMD7m33mM4XRzDC668R7ksS/dsejTnszyr
-	 51Zz6rgeXT65OacwTsJIRWFdZs5SVsEdp5IeeIaN1a4jo+kKI1cqjcHLE3JpEF4vGa
-	 nxbXu5F20GxlJ/6stdOckBuVtZPmiX/6A6n3Lm+A=
+	b=iADPqcT5J28OPsV0dG5lmiOKovnzeZ18VDQf7bQ0mhDPMbOAChKBdRgqh3smRgGsC
+	 k8nB6/hZRD8W8dheewjrHLKychFtMXlFW/e0j+S0QbAH+VYDzz2ajLb4X13lBFYOLW
+	 QIp/EIQk+jr0KnPn6mq+IFNp5OQlfbSnv/QgjsxA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
 	David Howells <dhowells@redhat.com>,
 	Paulo Alcantara <pc@manguebit.org>,
+	Viacheslav Dubeyko <Slava.Dubeyko@ibm.com>,
 	Matthew Wilcox <willy@infradead.org>,
 	netfs@lists.linux.dev,
 	linux-fsdevel@vger.kernel.org,
 	Christian Brauner <brauner@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 7.0 265/461] netfs: Fix leak of request in netfs_write_begin() error handling
-Date: Thu, 28 May 2026 21:46:34 +0200
-Message-ID: <20260528194654.835468684@linuxfoundation.org>
+Subject: [PATCH 7.0 266/461] netfs: Fix potential UAF in netfs_unlock_abandoned_read_pages()
+Date: Thu, 28 May 2026 21:46:35 +0200
+Message-ID: <20260528194654.866476259@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
 In-Reply-To: <20260528194646.819809818@linuxfoundation.org>
 References: <20260528194646.819809818@linuxfoundation.org>
@@ -80,7 +81,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-255363-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-255364-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
@@ -91,11 +92,11 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	FROM_HAS_DN(0.00)[];
 	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
 	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[10];
+	RCPT_COUNT_SEVEN(0.00)[11];
 	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[infradead.org:email,msgid.link:url,sashiko.dev:url,manguebit.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,linux.dev:email,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo]
-X-Rspamd-Queue-Id: 7AFDE5F7F08
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,msgid.link:url,infradead.org:email,manguebit.org:email,linux.dev:email,sashiko.dev:url,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo]
+X-Rspamd-Queue-Id: 80DF35F7F6B
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
@@ -105,40 +106,100 @@ X-Rspamd-Server: lfdr
 
 From: David Howells <dhowells@redhat.com>
 
-[ Upstream commit 5046a34f0643441f05b0253ea64e1a3af87efe14 ]
+[ Upstream commit dbe556972100fabb8e5a1b3d2163831ff07b1e8e ]
 
-Fix netfs_write_begin() to not leak our ref on the request in the event
-that we get an error from netfs_wait_for_read().
+netfs_unlock_abandoned_read_pages(rreq) accesses the index of the folios it
+is wanting to unlock and compares that to rreq->no_unlock_folio so that it
+doesn't unlock a folio being read for netfs_perform_write() or
+netfs_write_begin().
 
-Fixes: 4090b31422a6 ("netfs: Add a function to consolidate beginning a read")
+However, given that netfs_unlock_abandoned_read_pages() is called _after_
+NETFS_RREQ_IN_PROGRESS is cleared, the one folio that it's not allowed to
+dereference is the one specified by ->no_unlock_folio as ownership
+immediately reverts to the caller.
+
+Fix this by storing the folio pointer instead and using that rather than
+the index.  Also fix netfs_unlock_read_folio() where the same applies.
+
+Fixes: ee4cdf7ba857 ("netfs: Speed up buffered reading")
 Closes: https://sashiko.dev/#/patchset/20260414082004.3756080-1-dhowells%40redhat.com
 Signed-off-by: David Howells <dhowells@redhat.com>
-Link: https://patch.msgid.link/20260512123404.719402-19-dhowells@redhat.com
+Link: https://patch.msgid.link/20260512123404.719402-20-dhowells@redhat.com
 cc: Paulo Alcantara <pc@manguebit.org>
+cc: Viacheslav Dubeyko <Slava.Dubeyko@ibm.com>
 cc: Matthew Wilcox <willy@infradead.org>
 cc: netfs@lists.linux.dev
 cc: linux-fsdevel@vger.kernel.org
 Signed-off-by: Christian Brauner <brauner@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/netfs/buffered_read.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ fs/netfs/buffered_read.c | 4 ++--
+ fs/netfs/read_collect.c  | 2 +-
+ fs/netfs/read_retry.c    | 2 +-
+ include/linux/netfs.h    | 2 +-
+ 4 files changed, 5 insertions(+), 5 deletions(-)
 
 diff --git a/fs/netfs/buffered_read.c b/fs/netfs/buffered_read.c
-index e7ad511e494cc..004d426c02b41 100644
+index 004d426c02b41..83d0b8153e96e 100644
 --- a/fs/netfs/buffered_read.c
 +++ b/fs/netfs/buffered_read.c
-@@ -687,9 +687,9 @@ int netfs_write_begin(struct netfs_inode *ctx,
- 
- 	netfs_read_to_pagecache(rreq, NULL);
- 	ret = netfs_wait_for_read(rreq);
-+	netfs_put_request(rreq, netfs_rreq_trace_put_return);
- 	if (ret < 0)
+@@ -670,7 +670,7 @@ int netfs_write_begin(struct netfs_inode *ctx,
+ 		ret = PTR_ERR(rreq);
  		goto error;
--	netfs_put_request(rreq, netfs_rreq_trace_put_return);
+ 	}
+-	rreq->no_unlock_folio	= folio->index;
++	rreq->no_unlock_folio	= folio;
+ 	__set_bit(NETFS_RREQ_NO_UNLOCK_FOLIO, &rreq->flags);
  
- have_folio:
- 	ret = folio_wait_private_2_killable(folio);
+ 	ret = netfs_begin_cache_read(rreq, ctx);
+@@ -736,7 +736,7 @@ int netfs_prefetch_for_write(struct file *file, struct folio *folio,
+ 		goto error;
+ 	}
+ 
+-	rreq->no_unlock_folio = folio->index;
++	rreq->no_unlock_folio = folio;
+ 	__set_bit(NETFS_RREQ_NO_UNLOCK_FOLIO, &rreq->flags);
+ 	ret = netfs_begin_cache_read(rreq, ctx);
+ 	if (ret == -ENOMEM || ret == -EINTR || ret == -ERESTARTSYS)
+diff --git a/fs/netfs/read_collect.c b/fs/netfs/read_collect.c
+index 3c9b847885c2a..23660a5901246 100644
+--- a/fs/netfs/read_collect.c
++++ b/fs/netfs/read_collect.c
+@@ -83,7 +83,7 @@ static void netfs_unlock_read_folio(struct netfs_io_request *rreq,
+ 	}
+ 
+ just_unlock:
+-	if (folio->index == rreq->no_unlock_folio &&
++	if (folio == rreq->no_unlock_folio &&
+ 	    test_bit(NETFS_RREQ_NO_UNLOCK_FOLIO, &rreq->flags)) {
+ 		_debug("no unlock");
+ 	} else {
+diff --git a/fs/netfs/read_retry.c b/fs/netfs/read_retry.c
+index e10eb5a073326..f59a70f3a086b 100644
+--- a/fs/netfs/read_retry.c
++++ b/fs/netfs/read_retry.c
+@@ -292,7 +292,7 @@ void netfs_unlock_abandoned_read_pages(struct netfs_io_request *rreq)
+ 			struct folio *folio = folioq_folio(p, slot);
+ 
+ 			if (folio && !folioq_is_marked2(p, slot)) {
+-				if (folio->index == rreq->no_unlock_folio &&
++				if (folio == rreq->no_unlock_folio &&
+ 				    test_bit(NETFS_RREQ_NO_UNLOCK_FOLIO,
+ 					     &rreq->flags)) {
+ 					_debug("no unlock");
+diff --git a/include/linux/netfs.h b/include/linux/netfs.h
+index 4fd1d796ad73b..243c0f7379388 100644
+--- a/include/linux/netfs.h
++++ b/include/linux/netfs.h
+@@ -252,7 +252,7 @@ struct netfs_io_request {
+ 	unsigned long long	collected_to;	/* Point we've collected to */
+ 	unsigned long long	cleaned_to;	/* Position we've cleaned folios to */
+ 	unsigned long long	abandon_to;	/* Position to abandon folios to */
+-	pgoff_t			no_unlock_folio; /* Don't unlock this folio after read */
++	const struct folio	*no_unlock_folio; /* Don't unlock this folio after read */
+ 	unsigned int		direct_bv_count; /* Number of elements in direct_bv[] */
+ 	unsigned int		debug_id;
+ 	unsigned int		rsize;		/* Maximum read size (0 for none) */
 -- 
 2.53.0
 
