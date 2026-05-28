@@ -1,208 +1,172 @@
-Return-Path: <stable+bounces-255000-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-255004-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 8MMKHnpIGGr2iQgAu9opvQ
-	(envelope-from <stable+bounces-255000-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 15:51:54 +0200
+	id gJJFB0BKGGpoiggAu9opvQ
+	(envelope-from <stable+bounces-255004-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 15:59:28 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3CCEA5F30C9
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 15:51:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 128935F33C6
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 15:59:26 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id A6AF5306B146
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 13:49:10 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 9EBE53067E74
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 13:51:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 67F2F23F417;
-	Thu, 28 May 2026 13:48:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7EA43270575;
+	Thu, 28 May 2026 13:51:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="xTzUVy0n"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hg+GZUBn"
 X-Original-To: stable@vger.kernel.org
-Received: from out-189.mta0.migadu.com (out-189.mta0.migadu.com [91.218.175.189])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B9D2E246774
-	for <stable@vger.kernel.org>; Thu, 28 May 2026 13:48:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.218.175.189
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1EA0B27E049
+	for <stable@vger.kernel.org>; Thu, 28 May 2026 13:51:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779976137; cv=none; b=Ca50tPEN8aG6MKQHxfK6EADmBoze8TV4Txq+5niROx0Ay1NoKUicBsSq1FZAYnrwuk3xSCKwrzmuu9JoNIQkmFRZGr48QOerRjHWATV+mWM3R2AR9Nq7ZG0lN33XXfPNA8igdsXrMOxj4JnYU0pfGcqg3LTM7Ns+6goQ8JDCw9M=
+	t=1779976295; cv=none; b=YyavGTonkUdKlZqKNqAfxERCtjbZBF1KoDPRuDxgbCnTD1ud8ApW/nlmD3v4f7ryo/OAsW413cTFPZYM4fzJEF42ahdIqjAqVGj3AfJ1s6ELp83e6BnR7zvpxdrQDQ0m0kgFneMgPjRyRBJ/wfKIliDjSoBZJ+BqkcZlysvuRDg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779976137; c=relaxed/simple;
-	bh=ZMNSn8FMJhcKftTmwQAwboYvQ5sk+yuXs2A8qvrkjyU=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=SGGdyO50YsLpYbiOUGK9OcPXD5O7QPVBMem8acX0fkS7yGIELeEORdYLvU3SN2EGT5oAnAjsjylpmOwk6ll4z4832r6dx7CxuSM9JqQO7/bkvcFHzi9nhHRF5qMkMxplu4andSN+TvVsWx71sNDzG6j+VSDTUDVPGBijEEg+a1Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=xTzUVy0n; arc=none smtp.client-ip=91.218.175.189
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
-Message-ID: <b1447f76-0ca4-49b1-a1ba-2670dbbe5eea@linux.dev>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1779976131;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=j1rfDTRW2cmLcCORksVjwMmc2zx0nSP0mJx5m/+xkoI=;
-	b=xTzUVy0nmLvVsdNV3uG0l8Zwz58tcumtzFYVCGuh4e+HPqzDRPWokyUZt+d2aHCOfJgIGx
-	+cuU+1wMFmxfeWhRqt0OqViZCFmKsBC7qLmWuGLD9aa1dTi1HuaiwF8+OxAy+kl9IAQIC1
-	iCxmytlKn8DO0ZoKWjdt69JvS9tbQBU=
-Date: Thu, 28 May 2026 21:48:41 +0800
+	s=arc-20240116; t=1779976295; c=relaxed/simple;
+	bh=BS2/4MsSDp5p7Rlm8Ih2pBOfC9m/UtngWdbx3YtfpUU=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=cziCJPlAFMLYc3JxSlCQusMM7+IWf9UUWX0+9vg/XKSn7nm7/+Lazy7pDd9O1d2RlKYkJt26W9HzObxnXTQfy732hqSbf/zl//iJLrss3HQVWin0TcuJSxtWc5Q9cnoIhGOTHYc7YxW6L7ne4/UIENZMnimePBYzpGSMoalQrjA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hg+GZUBn; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 356091F000E9;
+	Thu, 28 May 2026 13:51:33 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
+	s=korg; t=1779976293;
+	bh=sUwHlkNPQz0bV3hU5Pjk1dW6G9tVxLwMSFp7RueCGmw=;
+	h=Subject:To:Cc:From:Date;
+	b=hg+GZUBn41t9u8giahS5y2vr0coZnAJTZkTqAMq+ruzsfEwpyhq1yYKF9XyS7AfSE
+	 g1EBNHZmT+YFyQB9Q8nCOAT35AX5K9geE+3GkTvNkzZgFGk70Nw6q8yHUhV2Wja9xa
+	 4XuRsVBk8N+XQoHTdEqImzIzo/yPZrSr6cycrA1Y=
+Subject: FAILED: patch "[PATCH] hwmon: (pmbus/adm1266) serialize GPIO PMBus accesses with" failed to apply to 7.0-stable tree
+To: abdurrahman@nexthop.ai,bartosz.golaszewski@oss.qualcomm.com,linux@roeck-us.net
+Cc: <stable@vger.kernel.org>
+From: <gregkh@linuxfoundation.org>
+Date: Thu, 28 May 2026 15:50:40 +0200
+Message-ID: <2026052840-vigorous-cosponsor-eb81@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Subject: Re: [PATCH net] ipv4: validate ip_forward_options() option fields
- against skb tail
-To: Qi Tang <tpluszz77@gmail.com>, davem@davemloft.net, kuba@kernel.org,
- pabeni@redhat.com, edumazet@google.com
-Cc: netdev@vger.kernel.org, dsahern@kernel.org, idosch@nvidia.com,
- horms@kernel.org, lyutoon@gmail.com, stable@vger.kernel.org
-References: <20260528111204.482401-1-tpluszz77@gmail.com>
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: Jiayuan Chen <jiayuan.chen@linux.dev>
-In-Reply-To: <20260528111204.482401-1-tpluszz77@gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Migadu-Flow: FLOW_OUT
-X-Spamd-Result: default: False [-2.16 / 15.00];
+Content-Type: text/plain; charset=ANSI_X3.4-1968
+Content-Transfer-Encoding: 8bit
+X-Spamd-Result: default: False [2.34 / 15.00];
+	MID_END_EQ_FROM_USER_PART(4.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linux.dev,none];
-	R_DKIM_ALLOW(-0.20)[linux.dev:s=key1];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	MID_RHS_NOT_FQDN(0.50)[];
 	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
+	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FREEMAIL_CC(0.00)[vger.kernel.org,kernel.org,nvidia.com,gmail.com];
-	TAGGED_FROM(0.00)[bounces-255000-lists,stable=lfdr.de];
-	FROM_HAS_DN(0.00)[];
-	RCVD_COUNT_THREE(0.00)[3];
+	TAGGED_FROM(0.00)[bounces-255004-lists,stable=lfdr.de];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FREEMAIL_TO(0.00)[gmail.com,davemloft.net,kernel.org,redhat.com,google.com];
-	DKIM_TRACE(0.00)[linux.dev:+];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FROM_NO_DN(0.00)[];
 	MISSING_XM_UA(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
+	TO_DN_NONE(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[jiayuan.chen@linux.dev,stable@vger.kernel.org];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	MID_RHS_MATCH_FROM(0.00)[];
+	RCPT_COUNT_THREE(0.00)[4];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_SEVEN(0.00)[11];
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TO_DN_SOME(0.00)[]
-X-Rspamd-Queue-Id: 3CCEA5F30C9
+	DBL_BLOCKED_OPENRESOLVER(0.00)[roeck-us.net:email,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,qualcomm.com:email,nexthop.ai:email,linuxfoundation.org:dkim,gregkh:email]
+X-Rspamd-Queue-Id: 128935F33C6
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
 
-On 5/28/26 7:12 PM, Qi Tang wrote:
-> ip_forward_options() re-reads the RR/SRR/TS option length byte
-> optptr[1] and pointer byte optptr[2] from the skb on the forwarding
-> path and uses them as indexes for 4-byte writes via
-> ip_rt_get_source() (and a memcmp walk in the SRR branch).
->
-> __ip_options_compile() validates those bytes at parse time but stores
-> only the option's offset into IPCB(skb)->opt.{rr,srr,ts}.  An nftables
-> FORWARD-chain payload mutation between parse and consume can rewrite
-> the bytes, driving the indexed writes out of bounds and overlapping
-> skb_shared_info.  With optptr[2] mutated the write can land in
-> skb_shared_info.frag_list; the next time the skb is dropped
-> kfree_skb_list_reason() walks the forged list and frees an
-> attacker-controlled pointer, an arbitrary-free primitive (R15 below
-> is the corrupted frag_list):
->
->    BUG: unable to handle page fault for address: ffffed10195fd757
->    Oops: 0000 [#1] SMP KASAN NOPTI
->    RIP: 0010:kfree_skb_list_reason+0x167/0x5f0
->    RAX: 1ffff110195fd757 RBX: dffffc0000000000
->    R15: ffff8880cafebabe
->    CR2: ffffed10195fd757
->    Call Trace:
->     skb_release_data+0x565/0x820
->     sk_skb_reason_drop+0xc1/0x350
->     ip_rcv_core+0x7a8/0xcd0
->     ip_rcv+0x97/0x270
->     __netif_receive_skb_one_core+0x161/0x1b0
->     process_backlog+0x1c4/0x5b0
->     net_rx_action+0x934/0xfa0
+The patch below does not apply to the 7.0-stable tree.
+If someone wants it applied there, or to any other stable or longterm
+tree, then please email the backport, including the original git commit
+id to <stable@vger.kernel.org>.
+
+To reproduce the conflict and resubmit, you may use the following commands:
+
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-7.0.y
+git checkout FETCH_HEAD
+git cherry-pick -x bab8c6fb5af8df7e753d196c1262cb78e92ca872
+# <resolve conflicts, build, test, etc.>
+git commit -s
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2026052840-vigorous-cosponsor-eb81@gregkh' --subject-prefix 'PATCH 7.0.y' HEAD^..
+
+Possible dependencies:
 
 
-The bug is real, but I'm curious what kernel version and driver you're on.
-On my side the skb falls into SKB_SMALL_HEAD_CACHE_SIZE (704), so the 
-linear area
-is pretty long, and optptr[2] maxes out at 255, which doesn't look like 
-it can reach frag_list.
 
-May the driver use alloc_skb to allocate small liner buffer?
+thanks,
 
+greg k-h
 
-> Bound optptr[2] within optptr[1] before the RR and TS writes, and
-> clamp the SRR walk to the bytes actually present in the skb.  Match
-> the existing error handling in this function: skip the malformed
-> option in place rather than returning, so the single ip_send_check()
-> at the end still recomputes the checksum for any option that was
-> updated earlier.
->
-> Cc: stable@vger.kernel.org
-> Reported-by: Qi Tang <tpluszz77@gmail.com>
-> Reported-by: Tong Liu <lyutoon@gmail.com>
-> Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
-> Signed-off-by: Qi Tang <tpluszz77@gmail.com>
-> ---
->   net/ipv4/ip_options.c | 27 +++++++++++++++++++--------
->   1 file changed, 19 insertions(+), 8 deletions(-)
->
-> diff --git a/net/ipv4/ip_options.c b/net/ipv4/ip_options.c
-> index be8815ce3ac24..36a4e3cc39dd1 100644
-> --- a/net/ipv4/ip_options.c
-> +++ b/net/ipv4/ip_options.c
-> @@ -544,18 +544,26 @@ void ip_forward_options(struct sk_buff *skb)
->   
->   	if (opt->rr_needaddr) {
->   		optptr = (unsigned char *)raw + opt->rr;
-> -		ip_rt_get_source(&optptr[optptr[2]-5], skb, rt);
-> -		opt->is_changed = 1;
-> +		if (optptr + optptr[1] <= skb_tail_pointer(skb) &&
-> +		    optptr[2] >= 5 && optptr[2] <= optptr[1] + 1) {
-> +			ip_rt_get_source(&optptr[optptr[2] - 5], skb, rt);
-> +			opt->is_changed = 1;
-> +		}
->   	}
->   	if (opt->srr_is_hit) {
->   		int srrptr, srrspace;
->   
->   		optptr = raw + opt->srr;
->   
-> -		for ( srrptr = optptr[2], srrspace = optptr[1];
-> -		     srrptr <= srrspace;
-> -		     srrptr += 4
-> -		     ) {
-> +		/* optptr[1] (option length) may have been rewritten after the
-> +		 * parse-time check; if it now runs past the skb the option is
-> +		 * malformed, so skip the source-route rewrite below.
-> +		 */
-> +		srrspace = optptr[1];
-> +		if (optptr + srrspace > skb_tail_pointer(skb))
-> +			srrspace = 0;
-> +
-> +		for (srrptr = optptr[2]; srrptr <= srrspace; srrptr += 4) {
->   			if (srrptr + 3 > srrspace)
->   				break;
->   			if (memcmp(&opt->nexthop, &optptr[srrptr-1], 4) == 0)
-> @@ -572,8 +580,11 @@ void ip_forward_options(struct sk_buff *skb)
->   		}
->   		if (opt->ts_needaddr) {
->   			optptr = raw + opt->ts;
-> -			ip_rt_get_source(&optptr[optptr[2]-9], skb, rt);
-> -			opt->is_changed = 1;
-> +			if (optptr + optptr[1] <= skb_tail_pointer(skb) &&
-> +			    optptr[2] >= 9 && optptr[2] <= optptr[1] + 5) {
-> +				ip_rt_get_source(&optptr[optptr[2] - 9], skb, rt);
-> +				opt->is_changed = 1;
-> +			}
->   		}
->   	}
->   	if (opt->is_changed) {
+------------------ original commit in Linus's tree ------------------
+
+From bab8c6fb5af8df7e753d196c1262cb78e92ca872 Mon Sep 17 00:00:00 2001
+From: Abdurrahman Hussain <abdurrahman@nexthop.ai>
+Date: Mon, 18 May 2026 17:52:30 -0700
+Subject: [PATCH] hwmon: (pmbus/adm1266) serialize GPIO PMBus accesses with
+ pmbus_lock
+
+adm1266_gpio_get(), adm1266_gpio_get_multiple(), and
+adm1266_gpio_dbg_show() all issue PMBus reads against the device but
+none of them take pmbus_lock.  The pmbus_core framework holds
+pmbus_lock around its own multi-transaction sequences (notably the
+"set PAGE, then read paged register" pattern used by hwmon
+attributes), so an unlocked GPIO accessor can land between a PAGE
+write and the subsequent paged read in another thread and corrupt
+either side's view of the device state machine.
+
+Take pmbus_lock at the top of each of the three accessors via the
+scope-based guard().  The lock is uncontended in the common case and
+adds only a single mutex round-trip per call.
+
+Fixes: d98dfad35c38 ("hwmon: (pmbus/adm1266) Add support for GPIOs")
+Cc: stable@vger.kernel.org
+Signed-off-by: Abdurrahman Hussain <abdurrahman@nexthop.ai>
+Reviewed-by: Bartosz Golaszewski <bartosz.golaszewski@oss.qualcomm.com>
+Link: https://lore.kernel.org/r/20260518-adm1266-gpio-fixes-v3-6-e425e4f88139@nexthop.ai
+Signed-off-by: Guenter Roeck <linux@roeck-us.net>
+
+diff --git a/drivers/hwmon/pmbus/adm1266.c b/drivers/hwmon/pmbus/adm1266.c
+index 3e8f2619cb9b..0eef58dd69a6 100644
+--- a/drivers/hwmon/pmbus/adm1266.c
++++ b/drivers/hwmon/pmbus/adm1266.c
+@@ -173,6 +173,8 @@ static int adm1266_gpio_get(struct gpio_chip *chip, unsigned int offset)
+ 	else
+ 		pmbus_cmd = ADM1266_PDIO_STATUS;
+ 
++	guard(pmbus_lock)(data->client);
++
+ 	ret = i2c_smbus_read_block_data(data->client, pmbus_cmd, read_buf);
+ 	if (ret < 0)
+ 		return ret;
+@@ -195,6 +197,8 @@ static int adm1266_gpio_get_multiple(struct gpio_chip *chip, unsigned long *mask
+ 	unsigned int gpio_nr;
+ 	int ret;
+ 
++	guard(pmbus_lock)(data->client);
++
+ 	ret = i2c_smbus_read_block_data(data->client, ADM1266_GPIO_STATUS, read_buf);
+ 	if (ret < 0)
+ 		return ret;
+@@ -236,6 +240,8 @@ static void adm1266_gpio_dbg_show(struct seq_file *s, struct gpio_chip *chip)
+ 	int ret;
+ 	int i;
+ 
++	guard(pmbus_lock)(data->client);
++
+ 	for (i = 0; i < ADM1266_GPIO_NR; i++) {
+ 		write_cmd = adm1266_gpio_mapping[i][1];
+ 		ret = adm1266_pmbus_block_xfer(data, ADM1266_GPIO_CONFIG, 1, &write_cmd, read_buf);
+
 
