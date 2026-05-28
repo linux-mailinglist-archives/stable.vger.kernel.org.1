@@ -1,60 +1,61 @@
-Return-Path: <stable+bounces-256242-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-255490-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id EPjaA0arGGpolwgAu9opvQ
-	(envelope-from <stable+bounces-256242-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:53:26 +0200
+	id AFfEEZChGGqblggAu9opvQ
+	(envelope-from <stable+bounces-255490-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:12:00 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id A64325F9C74
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:53:25 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0527B5F80A8
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:11:59 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 544E3311EA5E
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 20:45:57 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id B4EE83036FB2
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 20:11:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 59E4633F595;
-	Thu, 28 May 2026 20:45:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B3603352019;
+	Thu, 28 May 2026 20:10:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZFxIEnyU"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZXX2amdr"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E8698318B9D;
-	Thu, 28 May 2026 20:45:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 73156335566;
+	Thu, 28 May 2026 20:10:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780001152; cv=none; b=OyhtFOGs5mwnXMbaBqSQI8wiWFjY/6b0jcMQIfWA3dtCdaVrjo2OCvO6rDo3Cjto1xWZAPihR3bkXp4sXEI+ujmaqcwtWmviaB27lgfNRfWgK5umrmOb0PVqJfk4mvKO3Mv9X46EYpNgTHenOm9EnUo7ukUiAksK/Q/pi12fpzM=
+	t=1779999058; cv=none; b=u2rluL9jcO0rkYuldZFfwKR4AaLbE/1NTGrIJ7UFJAnnjYUuKmAXmJxLLdgnksT2figjQ7EbxxvDQ2YP4/zNB/eYgpA7c+ww6MnSfcfpG4/EMuFZA4cTJuRUGpM8zoAD949WWUI/rQB6fUWc+0ttN44EUfFg1Gi0H1iQyP466uo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780001152; c=relaxed/simple;
-	bh=DQzYTUqKSp5KC6tXxY/5UMEA8ubGgp3QdI0rzAiof0o=;
+	s=arc-20240116; t=1779999058; c=relaxed/simple;
+	bh=dLpSV2Z/sMjAXhnznAGiRf/aLP5rWGbIb7kM4sq9H2g=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=O/3tyFodSJ5eDaxmbud3XehsY86m7aPZNnrsmqJzHV53UmOHx35yYAqCqD4cySfCx+WMBA9EDK6tDvzNN/tVgWPBLGBbefQvj7RzEvKh7q6q4MnBnLGPKj5wslqN9ELk1my1oA85lW2vpsue1zSfXuxlgo9HK861bmLHakI78LY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZFxIEnyU; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 523921F000E9;
-	Thu, 28 May 2026 20:45:50 +0000 (UTC)
+	 MIME-Version; b=PH82HUPoZNpfeDGHjW0T+3A4NcDJpEEk/bMkIS2rB92fOeZgSDmwvKd7NNGuouHbjo8YW7pmIXVSVsPMMuaS9BJQnTO1UtqGX+vOQOgSQyjNAzKeg4V6COd5svA30kNvJc3QYbj/DY+vFQKA0L9KmzRtJLtbRCcgoQxouJLai0Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZXX2amdr; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 90A631F000E9;
+	Thu, 28 May 2026 20:10:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780001150;
-	bh=3dglbacoThz2ufQzfu3Tr7osOxpOgjx7ZjQMl4V9bJ4=;
+	s=korg; t=1779999057;
+	bh=a1wOe/DOVO16XrVwsZSwUPgXLnxiHj+q4cJb8L1qMO4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=ZFxIEnyUflZPga/n4gWe8u6riL51+WejTnhrTPH4wxslDY+d7ncS7KBKxE7w20uXq
-	 hfhotcPBieSvCvMnsw3L999U0HV0k6lhI8ZU0XSOTIQbvug3DonhMJ/UDWer6E/ezr
-	 0iM30A2K1WZdf8N9MulUt4C4ZNqzmkxlieJcJsAA=
+	b=ZXX2amdrvONvSIxe5Ir/jvkpb8Tzw5p3IH6gIJmBxQp9kOuBF8KbPG7p+c20/eev5
+	 isJFDDNoteLtIqgHUh/jU3rWBWEmwRTcwnJ6oPdjHPjeQavriChZFE/IP+Fq8RqjH1
+	 LE9xE7s4WoRSr+7O7Kg9KMccZaWHRUoa/+Sp4lUI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Fabian Godehardt <fg@emlix.com>,
-	Mark Brown <broonie@kernel.org>,
-	Wenshan Lan <jetlan9@163.com>,
+	Robin Murphy <robin.murphy@arm.com>,
+	Jianpeng Chang <jianpeng.chang.cn@windriver.com>,
+	Leon Romanovsky <leonro@nvidia.com>,
+	Marek Szyprowski <m.szyprowski@samsung.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 005/186] spi: spidev: fix lock inversion between spi_lock and buf_lock
-Date: Thu, 28 May 2026 21:48:05 +0200
-Message-ID: <20260528194929.093640436@linuxfoundation.org>
+Subject: [PATCH 7.0 357/461] dma-mapping: move dma_map_resource() sanity check into debug code
+Date: Thu, 28 May 2026 21:48:06 +0200
+Message-ID: <20260528194657.758355334@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260528194928.941004471@linuxfoundation.org>
-References: <20260528194928.941004471@linuxfoundation.org>
+In-Reply-To: <20260528194646.819809818@linuxfoundation.org>
+References: <20260528194646.819809818@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,250 +70,115 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,emlix.com,kernel.org,163.com];
-	TAGGED_FROM(0.00)[bounces-256242-lists,stable=lfdr.de];
-	PRECEDENCE_BULK(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-255490-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
 	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,msgid.link:url,linuxfoundation.org:mid,linuxfoundation.org:dkim]
-X-Rspamd-Queue-Id: A64325F9C74
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_SEVEN(0.00)[8];
+	MID_RHS_MATCH_FROM(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,samsung.com:email,arm.com:email,nvidia.com:email,linuxfoundation.org:mid,linuxfoundation.org:dkim]
+X-Rspamd-Queue-Id: 0527B5F80A8
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+7.0-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Fabian Godehardt <fg@emlix.com>
+From: Jianpeng Chang <jianpeng.chang.cn@windriver.com>
 
-[ Upstream commit 40534d19ed2afb880ecf202dab26a8e7a5808d16 ]
+[ Upstream commit af0c3f05866237f7592219bfe05387bc3bfc99b5 ]
 
-The spidev driver previously used two mutexes, spi_lock and buf_lock,
-but acquired them in different orders depending on the code path:
+dma_map_resource() uses pfn_valid() to ensure the range is not RAM.
+However, pfn_valid() only checks for availability of the memory map for
+a PFN but it does not ensure that the PFN is actually backed by RAM. On
+ARM64 with SPARSEMEM (128MB section granularity), MMIO addresses that
+share a section with RAM will falsely trigger the WARN_ON_ONCE and cause
+dma_map_resource() to return DMA_MAPPING_ERROR.
 
-  write()/read(): buf_lock -> spi_lock
-  ioctl():       spi_lock -> buf_lock
+This causes a WARNING on Raspberry Pi 4 during spi_bcm2835 probe because
+the SPI FIFO register (0xfe204004) falls in the same sparsemem section
+as the end of RAM (0xf8000000-0xfbffffff), both in section 31
+(0xf8000000-0xffffffff).
 
-This AB-BA locking pattern triggers lockdep warnings and can
-cause real deadlocks:
+Move the sanity check from dma_map_resource() into debug_dma_map_phys()
+and replace the unreliable pfn_valid() with pfn_valid() &&
+!PageReserved(), which correctly identifies actual usable RAM without
+false positives for MMIO regions that happen to have struct pages.
 
-  WARNING: possible circular locking dependency detected
-  spidev_ioctl() -> mutex_lock(&spidev->buf_lock)
-  spidev_sync_write() -> mutex_lock(&spidev->spi_lock)
-  *** DEADLOCK ***
+Since dma_map_resource() is dma_map_phys(DMA_ATTR_MMIO), the check
+applies equally to both APIs. Any non-reserved page represents kernel
+memory to a sufficient degree that using DMA_ATTR_MMIO on it is almost
+certainly wrong and risks breaking coherency on non-coherent platforms.
+ZONE_DEVICE pages used for PCI P2P DMA (MEMORY_DEVICE_PCI_P2PDMA) have
+PageReserved set, so they will not trigger a false positive.
 
-The issue is reproducible with a simple userspace program that
-performs write() and SPI_IOC_WR_MAX_SPEED_HZ ioctl() calls from
-separate threads on the same spidev file descriptor.
+The check no longer blocks the mapping and uses err_printk() to
+integrate with dma-debug filtering.
 
-Fix this by simplifying the locking model and removing the lock
-inversion entirely. spidev_sync() no longer performs any locking,
-and all callers serialize access using spi_lock.
-
-buf_lock is removed since its functionality is fully covered by
-spi_lock, eliminating the possibility of lock ordering issues.
-
-This removes the lock inversion and prevents deadlocks without
-changing userspace ABI or behaviour.
-
-Signed-off-by: Fabian Godehardt <fg@emlix.com>
-Link: https://patch.msgid.link/20260211072616.489522-1-fg@emlix.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
-[ Minor context conflict resolved. ]
-Signed-off-by: Wenshan Lan <jetlan9@163.com>
+Fixes: f7326196a781 ("dma-mapping: export new dma_*map_phys() interface")
+Reviewed-by: Robin Murphy <robin.murphy@arm.com>
+Signed-off-by: Jianpeng Chang <jianpeng.chang.cn@windriver.com>
+Reviewed-by: Leon Romanovsky <leonro@nvidia.com>
+Signed-off-by: Marek Szyprowski <m.szyprowski@samsung.com>
+Link: https://lore.kernel.org/r/20260513072209.1486986-1-jianpeng.chang.cn@windriver.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/spi/spidev.c | 63 ++++++++++++++++----------------------------
- 1 file changed, 22 insertions(+), 41 deletions(-)
+ kernel/dma/debug.c   | 9 ++++++++-
+ kernel/dma/mapping.c | 4 ----
+ 2 files changed, 8 insertions(+), 5 deletions(-)
 
-diff --git a/drivers/spi/spidev.c b/drivers/spi/spidev.c
-index 16bb4fc3a4ba9..2024532dfc447 100644
---- a/drivers/spi/spidev.c
-+++ b/drivers/spi/spidev.c
-@@ -74,7 +74,6 @@ struct spidev_data {
- 	struct list_head	device_entry;
+diff --git a/kernel/dma/debug.c b/kernel/dma/debug.c
+index 1a725edbbbf6a..3248f8b4d096d 100644
+--- a/kernel/dma/debug.c
++++ b/kernel/dma/debug.c
+@@ -1251,7 +1251,14 @@ void debug_dma_map_phys(struct device *dev, phys_addr_t phys, size_t size,
+ 	entry->direction = direction;
+ 	entry->map_err_type = MAP_ERR_NOT_CHECKED;
  
- 	/* TX/RX buffers are NULL unless this device is open (users > 0) */
--	struct mutex		buf_lock;
- 	unsigned		users;
- 	u8			*tx_buffer;
- 	u8			*rx_buffer;
-@@ -102,24 +101,6 @@ spidev_sync_unlocked(struct spi_device *spi, struct spi_message *message)
- 	return status;
- }
+-	if (!(attrs & DMA_ATTR_MMIO)) {
++	if (attrs & DMA_ATTR_MMIO) {
++		unsigned long pfn = PHYS_PFN(phys);
++
++		if (pfn_valid(pfn) && !PageReserved(pfn_to_page(pfn)))
++			err_printk(dev, entry,
++				   "dma_map_resource called for RAM address %pa\n",
++				   &phys);
++	} else {
+ 		check_for_stack(dev, phys);
  
--static ssize_t
--spidev_sync(struct spidev_data *spidev, struct spi_message *message)
--{
--	ssize_t status;
--	struct spi_device *spi;
--
--	mutex_lock(&spidev->spi_lock);
--	spi = spidev->spi;
--
--	if (spi == NULL)
--		status = -ESHUTDOWN;
--	else
--		status = spidev_sync_unlocked(spi, message);
--
--	mutex_unlock(&spidev->spi_lock);
--	return status;
--}
--
- static inline ssize_t
- spidev_sync_write(struct spidev_data *spidev, size_t len)
+ 		if (!PhysHighMem(phys))
+diff --git a/kernel/dma/mapping.c b/kernel/dma/mapping.c
+index 6d3dd0bd3a886..5d59372f42770 100644
+--- a/kernel/dma/mapping.c
++++ b/kernel/dma/mapping.c
+@@ -356,10 +356,6 @@ EXPORT_SYMBOL(dma_unmap_sg_attrs);
+ dma_addr_t dma_map_resource(struct device *dev, phys_addr_t phys_addr,
+ 		size_t size, enum dma_data_direction dir, unsigned long attrs)
  {
-@@ -132,7 +113,8 @@ spidev_sync_write(struct spidev_data *spidev, size_t len)
- 
- 	spi_message_init(&m);
- 	spi_message_add_tail(&t, &m);
--	return spidev_sync(spidev, &m);
-+
-+	return spidev_sync_unlocked(spidev->spi, &m);
- }
- 
- static inline ssize_t
-@@ -147,7 +129,8 @@ spidev_sync_read(struct spidev_data *spidev, size_t len)
- 
- 	spi_message_init(&m);
- 	spi_message_add_tail(&t, &m);
--	return spidev_sync(spidev, &m);
-+
-+	return spidev_sync_unlocked(spidev->spi, &m);
- }
- 
- /*-------------------------------------------------------------------------*/
-@@ -157,7 +140,7 @@ static ssize_t
- spidev_read(struct file *filp, char __user *buf, size_t count, loff_t *f_pos)
- {
- 	struct spidev_data	*spidev;
--	ssize_t			status;
-+	ssize_t			status = -ESHUTDOWN;
- 
- 	/* chipselect only toggles at start or end of operation */
- 	if (count > bufsiz)
-@@ -165,7 +148,11 @@ spidev_read(struct file *filp, char __user *buf, size_t count, loff_t *f_pos)
- 
- 	spidev = filp->private_data;
- 
--	mutex_lock(&spidev->buf_lock);
-+	mutex_lock(&spidev->spi_lock);
-+
-+	if (spidev->spi == NULL)
-+		goto err_spi_removed;
-+
- 	status = spidev_sync_read(spidev, count);
- 	if (status > 0) {
- 		unsigned long	missing;
-@@ -176,7 +163,9 @@ spidev_read(struct file *filp, char __user *buf, size_t count, loff_t *f_pos)
- 		else
- 			status = status - missing;
- 	}
--	mutex_unlock(&spidev->buf_lock);
-+
-+err_spi_removed:
-+	mutex_unlock(&spidev->spi_lock);
- 
- 	return status;
- }
-@@ -187,7 +176,7 @@ spidev_write(struct file *filp, const char __user *buf,
- 		size_t count, loff_t *f_pos)
- {
- 	struct spidev_data	*spidev;
--	ssize_t			status;
-+	ssize_t			status = -ESHUTDOWN;
- 	unsigned long		missing;
- 
- 	/* chipselect only toggles at start or end of operation */
-@@ -196,13 +185,19 @@ spidev_write(struct file *filp, const char __user *buf,
- 
- 	spidev = filp->private_data;
- 
--	mutex_lock(&spidev->buf_lock);
-+	mutex_lock(&spidev->spi_lock);
-+
-+	if (spidev->spi == NULL)
-+		goto err_spi_removed;
-+
- 	missing = copy_from_user(spidev->tx_buffer, buf, count);
- 	if (missing == 0)
- 		status = spidev_sync_write(spidev, count);
- 	else
- 		status = -EFAULT;
--	mutex_unlock(&spidev->buf_lock);
-+
-+err_spi_removed:
-+	mutex_unlock(&spidev->spi_lock);
- 
- 	return status;
- }
-@@ -376,14 +371,6 @@ spidev_ioctl(struct file *filp, unsigned int cmd, unsigned long arg)
- 		return -ESHUTDOWN;
- 	}
- 
--	/* use the buffer lock here for triple duty:
--	 *  - prevent I/O (from us) so calling spi_setup() is safe;
--	 *  - prevent concurrent SPI_IOC_WR_* from morphing
--	 *    data fields while SPI_IOC_RD_* reads them;
--	 *  - SPI_IOC_MESSAGE needs the buffer locked "normally".
--	 */
--	mutex_lock(&spidev->buf_lock);
+-	if (IS_ENABLED(CONFIG_DMA_API_DEBUG) &&
+-	    WARN_ON_ONCE(pfn_valid(PHYS_PFN(phys_addr))))
+-		return DMA_MAPPING_ERROR;
 -
- 	switch (cmd) {
- 	/* read requests */
- 	case SPI_IOC_RD_MODE:
-@@ -516,7 +503,6 @@ spidev_ioctl(struct file *filp, unsigned int cmd, unsigned long arg)
- 		break;
- 	}
- 
--	mutex_unlock(&spidev->buf_lock);
- 	spi_dev_put(spi);
- 	mutex_unlock(&spidev->spi_lock);
- 	return retval;
-@@ -547,9 +533,6 @@ spidev_compat_ioc_message(struct file *filp, unsigned int cmd,
- 		return -ESHUTDOWN;
- 	}
- 
--	/* SPI_IOC_MESSAGE needs the buffer locked "normally" */
--	mutex_lock(&spidev->buf_lock);
--
- 	/* Check message and copy into scratch area */
- 	ioc = spidev_get_ioc_message(cmd, u_ioc, &n_ioc);
- 	if (IS_ERR(ioc)) {
-@@ -570,7 +553,6 @@ spidev_compat_ioc_message(struct file *filp, unsigned int cmd,
- 	kfree(ioc);
- 
- done:
--	mutex_unlock(&spidev->buf_lock);
- 	spi_dev_put(spi);
- 	mutex_unlock(&spidev->spi_lock);
- 	return retval;
-@@ -795,7 +777,6 @@ static int spidev_probe(struct spi_device *spi)
- 	/* Initialize the driver data */
- 	spidev->spi = spi;
- 	mutex_init(&spidev->spi_lock);
--	mutex_init(&spidev->buf_lock);
- 
- 	INIT_LIST_HEAD(&spidev->device_entry);
- 
+ 	return dma_map_phys(dev, phys_addr, size, dir, attrs | DMA_ATTR_MMIO);
+ }
+ EXPORT_SYMBOL(dma_map_resource);
 -- 
 2.53.0
 
