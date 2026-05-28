@@ -1,62 +1,60 @@
-Return-Path: <stable+bounces-256098-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-256239-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id iLASCgypGGpolwgAu9opvQ
-	(envelope-from <stable+bounces-256098-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:43:56 +0200
+	id WI+MHUqtGGqnmAgAu9opvQ
+	(envelope-from <stable+bounces-256239-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 23:02:02 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id CE2C35F9692
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:43:55 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 732EC5FA1A2
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 23:02:00 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id A4007302C834
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 20:39:11 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 25DCC308D519
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 20:45:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 67E4A31159C;
-	Thu, 28 May 2026 20:39:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C206C348C45;
+	Thu, 28 May 2026 20:45:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MUyD8cSV"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uWxJyWgQ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3CCA72E7F25;
-	Thu, 28 May 2026 20:39:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9A82934389C;
+	Thu, 28 May 2026 20:45:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780000749; cv=none; b=J1Lgf4Xf1kZ/nn4dkLRO2ExREgGjzjvHf54DYngJyiV+8YZKxSb4iZraV5YT1beX4mJ7JSAOK55ksVJeBAhu2jBvn4lxVR9kuF1StKVDoU4CDpzAJf3mQdLtDEfAzBsqaCcDcdZryHy+xl/y/sSUNrraBYhQoQCMP+6Bvjr8o0A=
+	t=1780001143; cv=none; b=uwq2sP0eeIW8rB7qVyfBFahW2jAtVGDWnfkg5EZFrrXW8SBKBchSvIs4KiVGih6B+gXGMe8fAMWAzG24Q9YIaVz9bSFfjv/CoGJgvzXHOMSUcFtvpk8wVTFhyrpwOPsKF2EhJgVU20x333IS4Kn6kJXCP6rweJ0UxdkRRztGDng=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780000749; c=relaxed/simple;
-	bh=yNA7SebAY+f78m43jb8HV7jecazc5e/mZFkK0jPjsYc=;
+	s=arc-20240116; t=1780001143; c=relaxed/simple;
+	bh=KlpiRfdjXcZr013jpCn5afZ++iu20FcOUDv4LAjD3m8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=fItkNt7VILfxQjD9XTPkks4TtzkX1vqM2MU8D6mIauBRc1HAI0q/28OMzlmInnTVxMwKURbxH+PlP7ry6QBdI5ANvsgRfz7DHTvR4CVga0K+xtHe0SYuebLDYvI1OKwNgW7u4cO95pcvZZYt6eX/nn6hfimdGHW84fHYLDIySh8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MUyD8cSV; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A0AF71F000E9;
-	Thu, 28 May 2026 20:39:07 +0000 (UTC)
+	 MIME-Version; b=DpTrB2b+myA3eifA4xCeKvBf7t4mZsNNP0whSMP5aMHL6Tcp0CcT/RVc6tviWADY4AqMWOPRmJzgtywhUSnhthssSbAKGxKWYvbM3VYhxvtXoSsdb1iliN7dtAClUVCO0LZtXMKFVqKkh98fru9V7KlR6wzrFejIgxnCNiaByw4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uWxJyWgQ; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 02D251F00A3A;
+	Thu, 28 May 2026 20:45:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780000748;
-	bh=WuUGkvch+V9UHm/CmRIlON0HMrDYHkl8YIwq04kfHGQ=;
+	s=korg; t=1780001142;
+	bh=O4vURmqey4i+0JiiCILpGSlzd1sCNFtNvA0L2ATfcbU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=MUyD8cSVhJIipF76o2SPUhih7Wh4QIgiBKnj02ZufiGHk02eXAGhwgbVkMNZ4sPiN
-	 Yb1Om1IG5QqeInMMOtnEKIh9/fvpyaiThOaN+yQOsuTB5nNi2+7THiHcr29GeBAl5m
-	 4XCeUs82T9uCrCAX1yy2Hlfhc5i86/uo0gqsHLv8=
+	b=uWxJyWgQ2YvxYJr1T1F/MThekw2YnxME5JB2gDSh/R/O4xG2Y0gF6CO85pMnwmM4f
+	 xSUIQSrlVhwjSDeKv3ncFICQONUcSqLM4WcW3DmVRVjNLxOEs4b4BnxLzYtISFs4CV
+	 ChnSo3t3KW8BTaxa7FDatryeWF3asnDUhYA5UnRQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable@kernel.org,
-	Yuan Tan <yuantan098@gmail.com>,
-	Yifan Wu <yifanwucs@gmail.com>,
-	Juefei Pu <tomapufckgml@gmail.com>,
-	Xin Liu <bird@lzu.edu.cn>,
-	Sven Eckelmann <sven@narfation.org>
-Subject: [PATCH 6.12 128/272] batman-adv: tp_meter: avoid use of uninit sender vars
+	Rajat Jain <rajatja@google.com>,
+	stable <stable@kernel.org>,
+	"Rafael J. Wysocki (Intel)" <rafael@kernel.org>,
+	Danilo Krummrich <dakr@kernel.org>
+Subject: [PATCH 6.6 022/186] sysfs: dont remove existing directory on update failure
 Date: Thu, 28 May 2026 21:48:22 +0200
-Message-ID: <20260528194632.963687265@linuxfoundation.org>
+Message-ID: <20260528194929.559182681@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260528194629.379955525@linuxfoundation.org>
-References: <20260528194629.379955525@linuxfoundation.org>
+In-Reply-To: <20260528194928.941004471@linuxfoundation.org>
+References: <20260528194928.941004471@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -71,98 +69,75 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,kernel.org,gmail.com,lzu.edu.cn,narfation.org];
-	TAGGED_FROM(0.00)[bounces-256098-lists,stable=lfdr.de];
-	PRECEDENCE_BULK(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-256239-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[9];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
 	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[narfation.org:email,lzu.edu.cn:email,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim]
-X-Rspamd-Queue-Id: CE2C35F9692
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_SEVEN(0.00)[7];
+	MID_RHS_MATCH_FROM(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,msgid.link:url,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim]
+X-Rspamd-Queue-Id: 732EC5FA1A2
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sven Eckelmann <sven@narfation.org>
+From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 
-commit 6c65cf23d4c6170fcf5714c32aa64689718cb142 upstream.
+commit 237557b8a81ab948e8332f7c0058e758f081c0a3 upstream.
 
-batadv_tp_recv_ack() and batadv_tp_stop() are only valid for tp_vars in the
-BATADV_TP_SENDER role. When called with a BATADV_TP_RECEIVER role, it
-proceeds to read sender-only members that were never initialized, leading
-to undefined behavior.
+When sysfs_update_group() is called for a named group and create_files()
+fails (e.g. -ENOMEM), internal_create_group() calls kernfs_remove(kn) on
+the group directory.  In the update path, kn was obtained via
+kernfs_find_and_get() and refers to a directory that already existed
+before this call.  Removing it silently destroys a sysfs group that the
+caller did not create.
 
-This can be triggered when a node that is currently acting as a receiver in
-an ongoing tp_meter session receives a malicious ACK packet.
+Only remove the directory if we created it ourselves.  On update failure
+the directory remains as it is left empty by remove_files() inside
+create_files(), but can be repopulated by a retry.
 
-Guard against this by checking tp_vars->role immediately after the
-lookup and bailing out if it is not BATADV_TP_SENDER, before any of
-those members are accessed.
-
-Cc: stable@kernel.org
-Fixes: 33a3bb4a3345 ("batman-adv: throughput meter implementation")
-Reported-by: Yuan Tan <yuantan098@gmail.com>
-Reported-by: Yifan Wu <yifanwucs@gmail.com>
-Reported-by: Juefei Pu <tomapufckgml@gmail.com>
-Reported-by: Xin Liu <bird@lzu.edu.cn>
-Reviewed-by: Yuan Tan <yuantan098@gmail.com>
-Signed-off-by: Sven Eckelmann <sven@narfation.org>
+Cc: Rajat Jain <rajatja@google.com>
+Fixes: c855cf2759d2 ("sysfs: Fix internal_create_group() for named group updates")
+Cc: stable <stable@kernel.org>
+Assisted-by: gkh_clanker_t1000
+Reviewed-by: Rafael J. Wysocki (Intel) <rafael@kernel.org>
+Reviewed-by: Danilo Krummrich <dakr@kernel.org>
+Link: https://patch.msgid.link/2026052003-uniquely-hastily-c093@gregkh
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/batman-adv/tp_meter.c |   11 +++++++++--
- 1 file changed, 9 insertions(+), 2 deletions(-)
+ fs/sysfs/group.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/net/batman-adv/tp_meter.c
-+++ b/net/batman-adv/tp_meter.c
-@@ -663,6 +663,9 @@ static void batadv_tp_recv_ack(struct ba
- 	if (unlikely(!tp_vars))
- 		return;
- 
-+	if (unlikely(tp_vars->role != BATADV_TP_SENDER))
-+		goto out;
-+
- 	if (unlikely(atomic_read(&tp_vars->sending) == 0))
- 		goto out;
- 
-@@ -1100,12 +1103,16 @@ void batadv_tp_stop(struct batadv_priv *
- 	if (!tp_vars) {
- 		batadv_dbg(BATADV_DBG_TP_METER, bat_priv,
- 			   "Meter: trying to interrupt an already over connection\n");
--		goto out;
-+		goto out_put_orig_node;
+--- a/fs/sysfs/group.c
++++ b/fs/sysfs/group.c
+@@ -151,7 +151,7 @@ static int internal_create_group(struct
+ 	kernfs_get(kn);
+ 	error = create_files(kn, kobj, uid, gid, grp, update);
+ 	if (error) {
+-		if (grp->name)
++		if (grp->name && !update)
+ 			kernfs_remove(kn);
  	}
- 
-+	if (unlikely(tp_vars->role != BATADV_TP_SENDER))
-+		goto out_put_tp_vars;
-+
- 	batadv_tp_sender_shutdown(tp_vars, return_value);
-+out_put_tp_vars:
- 	batadv_tp_vars_put(tp_vars);
--out:
-+out_put_orig_node:
- 	batadv_orig_node_put(orig_node);
- }
- 
+ 	kernfs_put(kn);
 
 
 
