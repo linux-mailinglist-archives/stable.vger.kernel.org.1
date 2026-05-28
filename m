@@ -1,300 +1,173 @@
-Return-Path: <stable+bounces-255063-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-255064-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id MC3JH+V2GGo8kQgAu9opvQ
-	(envelope-from <stable+bounces-255063-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 19:09:57 +0200
+	id MIKJD/NwGGq4kAgAu9opvQ
+	(envelope-from <stable+bounces-255064-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 18:44:35 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4008B5F56F3
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 19:09:57 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 950355F52D5
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 18:44:33 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 9C2A33015A61
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 16:31:49 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id B6F21301A1D7
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 16:32:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 747973F4111;
-	Thu, 28 May 2026 16:31:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 533313F413A;
+	Thu, 28 May 2026 16:32:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="ODYSg3XT"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="fmgI1+RQ"
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.14])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f172.google.com (mail-pl1-f172.google.com [209.85.214.172])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 462FE2765FF;
-	Thu, 28 May 2026 16:31:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.14
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 18D9C348C7C
+	for <stable@vger.kernel.org>; Thu, 28 May 2026 16:32:40 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779985907; cv=none; b=UsXmJfY3RVHchM5/Z0Wz86JydvW2nV+hC7Ehy4flyb3DJ5W0/XoTcxIToNljSOFub6lbfSDTS/EdDWBvvDXMPyQur8iLPblBIGxjxxJEtaYWWfDTNzVABTik0yNfykO9nk0zG1yFFEbXGnGeVVWMQL478yFtMzmSyKsNKX7zc0o=
+	t=1779985962; cv=none; b=GBfSEt2Bb5+l+nTI5qD8FwL/XsOBlfDzXO98UkhV5E+0GhFWKSpteRuwokuazeCOft9VXnHznK1EalqnnJibcMdIkCiqJQc7FMydX32i7wAipT5uVstpxJZwsg2KVojPnu0iiYJvY3sYN8Z5qWBy0KKITeoNkwBUpd8+QMG5Tkw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779985907; c=relaxed/simple;
-	bh=6/VxO29NKPftZVpE3X5f0Il43jF0FzmLQFOeYxxrxGc=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=brKKiWzLRBoz38PHEGqdjINfQoKl4izP3ylMGhbLE4+GUZipqam5vRuIQjKYXzICrImFv0MzGPjGly4j9fvyztQZnMXuSnkuVjYeL7ePLi3rAnl3wjQVs3qsD8+t12MtEND8/gWeNQqxLLmhQ9yLCe7KF4RdSBLM3g923y+sR6M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=ODYSg3XT; arc=none smtp.client-ip=198.175.65.14
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1779985905; x=1811521905;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=6/VxO29NKPftZVpE3X5f0Il43jF0FzmLQFOeYxxrxGc=;
-  b=ODYSg3XTgmlAC4Je29wHnlCwODHXB4z06f0z3ifJb5cV6SFaFOGDZVl5
-   iRN6eGqXcvYX5VRc9VKsnBmfyIE++llyy9Oin4PZ0EaTS4uJCJmvYf8Oi
-   cYedkmz79ZGugUuVio+HWV/4UzqKO8kpmCVqxr3RhlnaX3vk2HCwCqRuO
-   y0fW5uyFK5KZs+5iAztbr+SEaVBlxMNHswLvLvHj23zd9c2jbsNMlJbma
-   lx1ecC1f5Rcx/st7WE0zEkjtbajDLfIFNtoe7iNbWgKg4cW40EU69AZJi
-   eniy9LvOcI+gi+JJ1xlwYSydb8Qc6S7c9wqClMDGGzYKumzCjFI4WP3qA
-   Q==;
-X-CSE-ConnectionGUID: HP0FTtesT52TlnD6jySiHQ==
-X-CSE-MsgGUID: +JKe5pyvQrWPgnlP8ma3Yg==
-X-IronPort-AV: E=McAfee;i="6800,10657,11800"; a="84721104"
-X-IronPort-AV: E=Sophos;i="6.24,173,1774335600"; 
-   d="scan'208";a="84721104"
-Received: from fmviesa009.fm.intel.com ([10.60.135.149])
-  by orvoesa106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 28 May 2026 09:31:44 -0700
-X-CSE-ConnectionGUID: QjgaMkq9S/O3FjpqVnDpAA==
-X-CSE-MsgGUID: NNctJPBmTKyZX98hr1nCrQ==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.24,173,1774335600"; 
-   d="scan'208";a="236244866"
-Received: from lkp-server01.sh.intel.com (HELO f0d55cb201f0) ([10.239.97.150])
-  by fmviesa009.fm.intel.com with ESMTP; 28 May 2026 09:31:41 -0700
-Received: from kbuild by f0d55cb201f0 with local (Exim 4.98.2)
-	(envelope-from <lkp@intel.com>)
-	id 1wSddx-0000000069q-2wYk;
-	Thu, 28 May 2026 16:31:37 +0000
-Date: Fri, 29 May 2026 00:31:04 +0800
-From: kernel test robot <lkp@intel.com>
-To: Kacper Kokot <kacper.kokot.44@gmail.com>,
-	Pablo Neira Ayuso <pablo@netfilter.org>,
-	Florian Westphal <fw@strlen.de>, Phil Sutter <phil@nwl.cc>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	Simon Horman <horms@kernel.org>, netfilter-devel@vger.kernel.org,
-	coreteam@netfilter.org, linux-kernel@vger.kernel.org
-Cc: oe-kbuild-all@lists.linux.dev, netdev@vger.kernel.org,
-	stable@vger.kernel.org, Kacper Kokot <kacper.kokot.44@gmail.com>
-Subject: Re: [PATCH] netfilter: TCPMSS: fix dropped packets when MSS option
- is unaligned
-Message-ID: <202605290016.Qu0UrK4O-lkp@intel.com>
-References: <20260525201116.407338-2-kacper.kokot.44@gmail.com>
+	s=arc-20240116; t=1779985962; c=relaxed/simple;
+	bh=ufv1PObtyFAiJQzsskvo1bUR+MHLbc50/gzK5sojAAw=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=T7gD3UkV8cw+EymVulgkBW2F8170sW8ENoGecQoJPS989YgCKCUScDgY9BS2cnrCLLbrgZVWJvDARndlVSEhZbdeR1CpnGhhW4WMEhkXN9pOqYIFzQQjIwhK/jynEbEVWyKLJ7wQ4LqfVWxmsdAYsmKwsGvaUswsPK3b7m+SYNc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=fmgI1+RQ; arc=none smtp.client-ip=209.85.214.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-pl1-f172.google.com with SMTP id d9443c01a7336-2b4650d5f5cso54988055ad.0
+        for <stable@vger.kernel.org>; Thu, 28 May 2026 09:32:40 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1779985960; x=1780590760; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=Mh+PZK3q6XrLM8CGunVOtEsZQHIDpJMRVztO6r+erJQ=;
+        b=fmgI1+RQEhi9wUMi6GpqlHiOrLgj5NJq2zLr5kKFSRwjK56k4WmPpFnbAEt09VhD6a
+         zgNiG2SVl961/9Oduyxa5VPQV9RQYjfr5rSfIsmfgEXKbti7YNUwZKI0RP5cykhaGfYC
+         /7WLn8f7dy3a0y+pBBVSjspvQmt8sIBYAFW/9EaoT1yOdyhRvoQ2HxRWZiOmzEz+Fo8T
+         mxagicuYJyQ4847ahJfsq6LnzjxFFEcjo2PB/+qi9RISZy1hK1YofHO4DzyT9Z9kfYDp
+         aKaFmcMQzX+DUzWktFdhivDNP6eAs0OfR/nq9Ea7X+Hw6NhY7uOG8eXa4DOr5V//wvTg
+         8+AQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1779985960; x=1780590760;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=Mh+PZK3q6XrLM8CGunVOtEsZQHIDpJMRVztO6r+erJQ=;
+        b=HhGYJ/5Hid6C+EKCdyEt4iV+hI/BpwW41lbAQdXByIj2iwn/zm9pJyWKsgxqRcO7Vd
+         4I1MTUBPile/C8QmXUHZmgF6s6DIQMS+ZcZyXZO+yI5B5Fe/7Q98KYUOVhRBrdzQI9B/
+         1D7jzR2OBFmpzIHiSTqz3LlWpW531aPoty7McFS6G8XbXCyNXsfWFlda5qf6iPqTQzHG
+         //XfWKNBVskofNxV5HFsisx2XC7RmfQMdSFMiylmdmkxvB33iVW9WpCp3SS9jYnRpn78
+         psOZELIZco49oDGshyU6+kKHyh4m5uCP5XR2ZIQmdYPhfRRfBo3pthQ8zX4LabpRbMFy
+         kP7Q==
+X-Forwarded-Encrypted: i=1; AFNElJ9IeLHp2Map2U4OOxfN3KVHzshXjLQB0LpyFXgy8+1U86SrX2yT8NlI4qCcBnMr6BF7jIJ2JlI=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxVk1FRqGn9+0fIM6eg4YUhtei0iGaP6NU0jpPDiNo143SKx4xp
+	lcYq6FS5R/lWL8LJ8yCD/20f1xsDodBb4P5w9/rTN1I2bFtdYVz6r8RM
+X-Gm-Gg: Acq92OE8k/brVaMqXStBfndzU6vqWdhvLEv91yXramGG+WN6Vu3U0Op35T3G1UxUHdj
+	fCrzMGwRuVCnvNi7YtVcQ8icWKZ4PhjDWIfXiAHt/PWs593jq3NIVkHMEY4XOZXXKZ6XEIE+t1f
+	LWzS8YKdZLIc4aNnKzQK40dK5FenSC8OSqKm7f27VQsQKMMjerEVFCmJHFn6fkDyHS5mFlN4BwC
+	hLXglhoCsUKMBDgnwd/+etesxSzf3SNWx6VpTWTQxaLtpGtGc+TOkTG8oJURyY/xZb7gUR5olbn
+	+tjRMtei8xHaUfD+96e9cRxJLLmHsnqxEFfpbf4lsYiN+IgPnUvakGdwwWhzfEdT8/T54wsTUxo
+	hkghOiRgjDGOPp2DDG3R4hccByTbK6JIxaeM3HAipYJeN5sramjmQ+hMGoX76fuT0YePbYV2zlf
+	5jv5EA2VQIWtaOn0YvfVUGbVKO81+fdmzFIszRssxHfKuizCfp0xyCHDA=
+X-Received: by 2002:a17:902:f78f:b0:2be:e3bc:e8e4 with SMTP id d9443c01a7336-2bee3bcea3cmr158404015ad.18.1779985960405;
+        Thu, 28 May 2026 09:32:40 -0700 (PDT)
+Received: from teatimelab.tailcd024.ts.net ([192.129.190.145])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2beb58b387dsm191320345ad.50.2026.05.28.09.32.32
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 28 May 2026 09:32:39 -0700 (PDT)
+From: Qi Tang <tpluszz77@gmail.com>
+To: jiayuan.chen@linux.dev
+Cc: davem@davemloft.net,
+	kuba@kernel.org,
+	pabeni@redhat.com,
+	edumazet@google.com,
+	netdev@vger.kernel.org,
+	dsahern@kernel.org,
+	idosch@nvidia.com,
+	horms@kernel.org,
+	lyutoon@gmail.com,
+	stable@vger.kernel.org,
+	Qi Tang <tpluszz77@gmail.com>
+Subject: Re: [PATCH net] ipv4: validate ip_forward_options() option fields against skb tail
+Date: Fri, 29 May 2026 00:32:26 +0800
+Message-ID: <20260528163226.573363-1-tpluszz77@gmail.com>
+X-Mailer: git-send-email 2.47.3
+In-Reply-To: <b1447f76-0ca4-49b1-a1ba-2670dbbe5eea@linux.dev>
+References: <b1447f76-0ca4-49b1-a1ba-2670dbbe5eea@linux.dev>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260525201116.407338-2-kacper.kokot.44@gmail.com>
-X-Spamd-Result: default: False [0.34 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+Content-Transfer-Encoding: 8bit
+X-Spamd-Result: default: False [-0.66 / 15.00];
 	MID_CONTAINS_FROM(1.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[intel.com,none];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
-	R_DKIM_ALLOW(-0.20)[intel.com:s=Intel];
+	R_MISSING_CHARSET(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	MIME_TRACE(0.00)[0:+];
-	FREEMAIL_CC(0.00)[lists.linux.dev,vger.kernel.org,gmail.com];
-	TAGGED_FROM(0.00)[bounces-255063-lists,stable=lfdr.de];
-	FORGED_SENDER_MAILLIST(0.00)[];
+	FREEMAIL_CC(0.00)[davemloft.net,kernel.org,redhat.com,google.com,vger.kernel.org,nvidia.com,gmail.com];
+	RCPT_COUNT_TWELVE(0.00)[12];
+	TAGGED_FROM(0.00)[bounces-255064-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_TO(0.00)[gmail.com,netfilter.org,strlen.de,nwl.cc,davemloft.net,google.com,kernel.org,redhat.com,vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
+	FREEMAIL_FROM(0.00)[gmail.com];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[16];
-	RCVD_COUNT_FIVE(0.00)[6];
+	TO_DN_SOME(0.00)[];
+	RCVD_COUNT_FIVE(0.00)[5];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[lkp@intel.com,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[intel.com:+];
+	FROM_NEQ_ENVFROM(0.00)[tpluszz77@gmail.com,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[gmail.com:+];
 	NEURAL_HAM(-0.00)[-1.000];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	MISSING_XM_UA(0.00)[];
-	TO_DN_SOME(0.00)[]
-X-Rspamd-Queue-Id: 4008B5F56F3
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	FROM_HAS_DN(0.00)[]
+X-Rspamd-Queue-Id: 950355F52D5
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-Hi Kacper,
+On 5/28/26 9:48 PM, Jiayuan Chen wrote:
+> The bug is real, but I'm curious what kernel version and driver you're on.
+> On my side the skb falls into SKB_SMALL_HEAD_CACHE_SIZE (704), so the
+> linear area is pretty long, and optptr[2] maxes out at 255, which doesn't
+> look like it can reach frag_list.
+>
+> May the driver use alloc_skb to allocate small liner buffer?
 
-kernel test robot noticed the following build warnings:
+net.git at e1914add2799 (7.1-rc3), x86_64 + KASAN, plain QEMU, no special
+driver. You're right that with a normal small nh_off the +250 write stays in
+the linear area. We get the reach from a large nh_off instead.
 
-[auto build test WARNING on nf-next/main]
-[also build test WARNING on netfilter-nf/main horms-ipvs/master linus/master v7.1-rc5 next-20260527]
-[If your patch is applied to the wrong git tree, kindly drop us a note.
-And when submitting patch, we suggest to use '--base' as documented in
-https://git-scm.com/docs/git-format-patch#_base_tree_information]
+The packet is forwarded over a VXLAN-over-IPv6 tunnel, so after decap the
+inner IP packet still has the outer eth/IPv6/UDP/VXLAN/inner-eth in front of
+it in the same head (nh_off ~112 here). Inner options are 12 NOPs + RR, so
+opt->rr = 32, and nft rewrites the RR pointer byte to 0xff on the forward
+hook:
 
-url:    https://github.com/intel-lab-lkp/linux/commits/Kacper-Kokot/netfilter-TCPMSS-fix-dropped-packets-when-MSS-option-is-unaligned/20260526-041308
-base:   https://git.kernel.org/pub/scm/linux/kernel/git/netfilter/nf-next.git main
-patch link:    https://lore.kernel.org/r/20260525201116.407338-2-kacper.kokot.44%40gmail.com
-patch subject: [PATCH] netfilter: TCPMSS: fix dropped packets when MSS option is unaligned
-config: m68k-allmodconfig (https://download.01.org/0day-ci/archive/20260529/202605290016.Qu0UrK4O-lkp@intel.com/config)
-compiler: m68k-linux-gcc (GCC) 15.2.0
-reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20260529/202605290016.Qu0UrK4O-lkp@intel.com/reproduce)
+  nft add rule ip filter forward @nh,272,8 set 0xff
 
-If you fix the issue in a separate patch/commit (i.e. not just a new version of
-the same patch/commit), kindly add following tags
-| Reported-by: kernel test robot <lkp@intel.com>
-| Closes: https://lore.kernel.org/oe-kbuild-all/202605290016.Qu0UrK4O-lkp@intel.com/
+so ip_forward_options() does
 
-All warnings (new ones prefixed by >>):
+  write = head + nh_off + opt->rr + (0xff - 5)
+        = head + 112 + 32 + 250 = head + 394
 
-   net/netfilter/xt_TCPMSS.c: In function 'tcpmss_mangle_packet':
->> net/netfilter/xt_TCPMSS.c:140:66: warning: suggest parentheses around comparison in operand of '&' [-Wparentheses]
-     140 |                         if (((char *)&opt[i + 2] - (char *)tcph) & 0x1 != 0) {
-         |                                                                  ^
+with end = 384 that lands at shinfo+10, inside frag_list. ip_rt_get_source()
+writes the route source there, and kfree_skb_list_reason() walks the corrupted
+frag_list when the skb is dropped.
 
+VXLAN was just convenient. Other paths likely work too: any encap that pushes
+the options deeper, or a smaller head like you suggested. Pre-6.3 without
+skb_small_head_cache a plain forwarded packet already has end=192. I can send
+the PoC off-list if you want to repro.
 
-vim +140 net/netfilter/xt_TCPMSS.c
-
-    69	
-    70	static int
-    71	tcpmss_mangle_packet(struct sk_buff *skb,
-    72			     const struct xt_action_param *par,
-    73			     unsigned int family,
-    74			     unsigned int tcphoff,
-    75			     unsigned int minlen)
-    76	{
-    77		const struct xt_tcpmss_info *info = par->targinfo;
-    78		struct tcphdr *tcph;
-    79		int len, tcp_hdrlen;
-    80		unsigned int i;
-    81		__be16 oldval;
-    82		u16 newmss;
-    83		u8 *opt;
-    84	
-    85		/* This is a fragment, no TCP header is available */
-    86		if (par->fragoff != 0)
-    87			return 0;
-    88	
-    89		if (skb_ensure_writable(skb, skb->len))
-    90			return -1;
-    91	
-    92		len = skb->len - tcphoff;
-    93		if (len < (int)sizeof(struct tcphdr))
-    94			return -1;
-    95	
-    96		tcph = (struct tcphdr *)(skb_network_header(skb) + tcphoff);
-    97		tcp_hdrlen = tcph->doff * 4;
-    98	
-    99		if (len < tcp_hdrlen || tcp_hdrlen < sizeof(struct tcphdr))
-   100			return -1;
-   101	
-   102		if (info->mss == XT_TCPMSS_CLAMP_PMTU) {
-   103			struct net *net = xt_net(par);
-   104			unsigned int in_mtu = tcpmss_reverse_mtu(net, skb, family);
-   105			unsigned int min_mtu = min(dst_mtu(skb_dst(skb)), in_mtu);
-   106	
-   107			if (min_mtu <= minlen) {
-   108				net_err_ratelimited("unknown or invalid path-MTU (%u)\n",
-   109						    min_mtu);
-   110				return -1;
-   111			}
-   112			newmss = min_mtu - minlen;
-   113		} else
-   114			newmss = info->mss;
-   115	
-   116		opt = (u_int8_t *)tcph;
-   117		for (i = sizeof(struct tcphdr); i <= tcp_hdrlen - TCPOLEN_MSS; i += optlen(opt, i)) {
-   118			if (opt[i] == TCPOPT_MSS && opt[i+1] == TCPOLEN_MSS) {
-   119				u_int16_t oldmss;
-   120				u16 csum_oldmss, csum_newmss;
-   121	
-   122				oldmss = (opt[i+2] << 8) | opt[i+3];
-   123	
-   124				/* Never increase MSS, even when setting it, as
-   125				 * doing so results in problems for hosts that rely
-   126				 * on MSS being set correctly.
-   127				 */
-   128				if (oldmss <= newmss)
-   129					return 0;
-   130	
-   131				opt[i+2] = (newmss & 0xff00) >> 8;
-   132				opt[i+3] = newmss & 0x00ff;
-   133	
-   134				csum_oldmss = htons(oldmss);
-   135				csum_newmss = htons(newmss);
-   136	
-   137				/* MSS may be unaligned; fix up the incremental checksum
-   138				 * to avoid an invalid checksum and a dropped packet.
-   139				 */
- > 140				if (((char *)&opt[i + 2] - (char *)tcph) & 0x1 != 0) {
-   141					csum_oldmss = swab16(csum_oldmss);
-   142					csum_newmss = swab16(csum_newmss);
-   143				}
-   144	
-   145				inet_proto_csum_replace2(&tcph->check, skb,
-   146							 csum_oldmss, csum_newmss,
-   147							 false);
-   148				return 0;
-   149			}
-   150		}
-   151	
-   152		/* There is data after the header so the option can't be added
-   153		 * without moving it, and doing so may make the SYN packet
-   154		 * itself too large. Accept the packet unmodified instead.
-   155		 */
-   156		if (len > tcp_hdrlen)
-   157			return 0;
-   158	
-   159		/* tcph->doff has 4 bits, do not wrap it to 0 */
-   160		if (tcp_hdrlen >= 15 * 4)
-   161			return 0;
-   162	
-   163		/*
-   164		 * MSS Option not found ?! add it..
-   165		 */
-   166		if (skb_tailroom(skb) < TCPOLEN_MSS) {
-   167			if (pskb_expand_head(skb, 0,
-   168					     TCPOLEN_MSS - skb_tailroom(skb),
-   169					     GFP_ATOMIC))
-   170				return -1;
-   171			tcph = (struct tcphdr *)(skb_network_header(skb) + tcphoff);
-   172		}
-   173	
-   174		skb_put(skb, TCPOLEN_MSS);
-   175	
-   176		/*
-   177		 * IPv4: RFC 1122 states "If an MSS option is not received at
-   178		 * connection setup, TCP MUST assume a default send MSS of 536".
-   179		 * IPv6: RFC 2460 states IPv6 has a minimum MTU of 1280 and a minimum
-   180		 * length IPv6 header of 60, ergo the default MSS value is 1220
-   181		 * Since no MSS was provided, we must use the default values
-   182		 */
-   183		if (xt_family(par) == NFPROTO_IPV4)
-   184			newmss = min(newmss, (u16)536);
-   185		else
-   186			newmss = min(newmss, (u16)1220);
-   187	
-   188		opt = (u_int8_t *)tcph + sizeof(struct tcphdr);
-   189		memmove(opt + TCPOLEN_MSS, opt, len - sizeof(struct tcphdr));
-   190	
-   191		inet_proto_csum_replace2(&tcph->check, skb,
-   192					 htons(len), htons(len + TCPOLEN_MSS), true);
-   193		opt[0] = TCPOPT_MSS;
-   194		opt[1] = TCPOLEN_MSS;
-   195		opt[2] = (newmss & 0xff00) >> 8;
-   196		opt[3] = newmss & 0x00ff;
-   197	
-   198		inet_proto_csum_replace4(&tcph->check, skb, 0, *((__be32 *)opt), false);
-   199	
-   200		oldval = ((__be16 *)tcph)[6];
-   201		tcph->doff += TCPOLEN_MSS/4;
-   202		inet_proto_csum_replace2(&tcph->check, skb,
-   203					 oldval, ((__be16 *)tcph)[6], false);
-   204		return TCPOLEN_MSS;
-   205	}
-   206	
-
---
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+Thanks,
+Qi
 
