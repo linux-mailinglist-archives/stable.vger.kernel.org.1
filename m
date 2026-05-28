@@ -1,59 +1,61 @@
-Return-Path: <stable+bounces-255274-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-255629-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id gKe1E+afGGpAlggAu9opvQ
-	(envelope-from <stable+bounces-255274-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:04:54 +0200
+	id SH6aISOkGGrClggAu9opvQ
+	(envelope-from <stable+bounces-255629-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:22:59 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id A461B5F7C93
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:04:53 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id DB7715F880B
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:22:58 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id D7CCF31768B9
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 20:00:49 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 130533055076
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 20:17:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AB6C0409636;
-	Thu, 28 May 2026 20:00:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6AED12E92BA;
+	Thu, 28 May 2026 20:17:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Wb7906jO"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wPu9r8nn"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7E4E73BD649;
-	Thu, 28 May 2026 20:00:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3EC552DF6E6;
+	Thu, 28 May 2026 20:17:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779998449; cv=none; b=IL2EP0D5+34c7srCpxIriW0vFmyy49CvDbVSF2/1l95kNkzZ4pkfszgtzf51XIeyopTAfVgJoB+o3Iy2kCfGckzmXmDvWlLCxx4WkKhelFK2usRPiMc5YF7AXlDmBB3D6udwMjGY+FY78RbqXP0fJRIzhBo2X99PohPn7cuUarw=
+	t=1779999448; cv=none; b=sC4sXxvB5mymb/ajZ9YHLYTOvdTifr4kisf1p5Z7Z09UqHuH3hDgIhW57K7xW1AWKWb9lHg0++8UW0SfGDPQKeBN0tslmsEx2Dr/eIewgpWdfaqth0Yh1BxBhT/yHUBv0ix9nzKCEpMCy03sJXsy879ZFMLoNVqXsrplZS79hzo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779998449; c=relaxed/simple;
-	bh=fQLmOqXGNdYiFXhllSi+hwGu7WOJnD3CXSt5zlZ8Ohs=;
+	s=arc-20240116; t=1779999448; c=relaxed/simple;
+	bh=yohtCIB1p3ZT5hEjV0L0rjH9SIQKqpkgJtmRVSEhgpU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=I8XgEq8eyLg+yOpgpQAn7lGKQ8yOzNnsvrdIRgl8vtiXJVvUxn7fsC44n5gaua9gtbqoU8r0J6hzCRSobRmHwIidfUZfZ3Suo9+sN6a7L8mDq6ziQprvNAHZhYLN4bQggbQim5hLwVTkJsnJ2+AFFsGMvBUpL5goToZb3WjmrJI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Wb7906jO; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DDA701F000E9;
-	Thu, 28 May 2026 20:00:47 +0000 (UTC)
+	 MIME-Version; b=IEQcyHdvSRzW1eHYt9b1Az2aN/PN30Y0Fc3qui6l3KA1pBToEKItGaoAFSCpoUtNqvk3KSU2GwVV/SOWkVwAEuuolRbdN80IAhVXB+iHrcj4PauCat/HyRka2EzUanKKNynJIVvOtgzYqxdbz1xzW8lHCZ5aFU2eTvDbLmFHs14=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wPu9r8nn; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 94C221F000E9;
+	Thu, 28 May 2026 20:17:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779998448;
-	bh=m1oiVgk/ayDckujWlHzwYXgXUngoncTyEfqVLdMzHrg=;
+	s=korg; t=1779999447;
+	bh=FC95Ap7d7+/aILw4Q2/2fEr4RtLPvDG2y+yIy+nmAP8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=Wb7906jO+WXqHZCGCuszvTy1H7XAKyDTcr6pqcH/yqHHwY55nNLpOA5DQHYsOoJD3
-	 57OWrV/7JHAk63iFFBcjQk/WJidV3u4WSBSIcPBnOvUhnGlPnzIl6aH6QedEMu2N4E
-	 cvSL+gxa3oIPIWXhpg0RadzThs+gSCFHT+tgKam0=
+	b=wPu9r8nnxvUpyPG+8Bk3rC4nMfElVIiARWXJjDFYTC6NBXy/cSPUI1/lbcmnXB208
+	 5ge1npgSYU7RYPrak+OqjkfdYneRttH/nGorRZo9C5qiarcMfMlDhgjyg5ONsE8Z9V
+	 YfdKXLbsJ62YRTGx8+0tIFFLYsdhxNtEMQMPcGro=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Marek Vasut <marek.vasut+renesas@mailbox.org>,
-	Geert Uytterhoeven <geert+renesas@glider.be>,
+	Samuele Mariotti <smariotti@disroot.org>,
+	Paolo Valente <paolo.valente@unimore.it>,
+	Andrea Righi <arighi@nvidia.com>,
+	Tejun Heo <tj@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 7.0 177/461] ARM: dts: renesas: genmai: Drop superfluous cells
-Date: Thu, 28 May 2026 21:45:06 +0200
-Message-ID: <20260528194652.195520815@linuxfoundation.org>
+Subject: [PATCH 6.18 069/377] sched_ext: Fix missing warning in scx_set_task_state() default case
+Date: Thu, 28 May 2026 21:45:07 +0200
+Message-ID: <20260528194640.361004073@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260528194646.819809818@linuxfoundation.org>
-References: <20260528194646.819809818@linuxfoundation.org>
+In-Reply-To: <20260528194638.371537336@linuxfoundation.org>
+References: <20260528194638.371537336@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,77 +66,90 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-255274-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_TLS_LAST(0.00)[];
-	TO_DN_SOME(0.00)[];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	RCPT_COUNT_FIVE(0.00)[6];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-255629-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
 	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[stable,renesas];
+	RCPT_COUNT_SEVEN(0.00)[8];
 	MID_RHS_MATCH_FROM(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,msgid.link:url,glider.be:email,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,1.18.168.128:email,mailbox.org:email]
-X-Rspamd-Queue-Id: A461B5F7C93
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[nvidia.com:email,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,disroot.org:email,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,unimore.it:email]
+X-Rspamd-Queue-Id: DB7715F880B
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-7.0-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Marek Vasut <marek.vasut+renesas@mailbox.org>
+From: Samuele Mariotti <smariotti@disroot.org>
 
-[ Upstream commit 714e1d6bba0e0abe5c87c8e189a35fa690540df4 ]
+[ Upstream commit b905ee77d5f557a83a485b4146210f54f13365fc ]
 
-Drop superfluous address-cells and size-cells to fix DTC W=1 warning:
+In scx_set_task_state(), the default case was setting the
+warn flag, but then returning immediately. This is problematic
+because the only purpose of the warn flag is to trigger
+WARN_ONCE, but the early return prevented it from ever firing,
+leaving invalid task states undetected and untraced.
 
-    arch/arm/boot/dts/renesas/r7s72100-genmai.dts:28.17-55.4: Warning (avoid_unnecessary_addr_size): /flash@18000000: unnecessary #address-cells/#size-cells without "ranges", "dma-ranges" or child "reg" or "ranges" property
+To fix this, a WARN_ONCE call is now added directly in the
+default case.
 
-Signed-off-by: Marek Vasut <marek.vasut+renesas@mailbox.org>
-Fixes: 30e0a8cf886cb459 ("ARM: dts: renesas: genmai: Add FLASH nodes")
-Reviewed-by: Geert Uytterhoeven <geert+renesas@glider.be>
-Link: https://patch.msgid.link/20260327234244.91707-6-marek.vasut+renesas@mailbox.org
-Signed-off-by: Geert Uytterhoeven <geert+renesas@glider.be>
+The fix addresses two aspects:
+
+ - Guarantees the invalid task states are properly logged
+   and traced.
+
+ - Provides a distinct warning message
+   ("sched_ext: Invalid task state") specifically for
+   states outside the defined scx_task_state enum values,
+   making it easier to distinguish from other transition
+   warnings.
+
+This ensures proper detection and reporting of invalid states.
+
+Signed-off-by: Samuele Mariotti <smariotti@disroot.org>
+Signed-off-by: Paolo Valente <paolo.valente@unimore.it>
+Reviewed-by: Andrea Righi <arighi@nvidia.com>
+Signed-off-by: Tejun Heo <tj@kernel.org>
+Stable-dep-of: 9a415cc53711 ("sched_ext: Avoid UAF in scx_root_enable_workfn() init failure path")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/arm/boot/dts/renesas/r7s72100-genmai.dts | 3 ---
- 1 file changed, 3 deletions(-)
+ kernel/sched/ext.c |    3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/arch/arm/boot/dts/renesas/r7s72100-genmai.dts b/arch/arm/boot/dts/renesas/r7s72100-genmai.dts
-index 3c37565097145..da552a66615e0 100644
---- a/arch/arm/boot/dts/renesas/r7s72100-genmai.dts
-+++ b/arch/arm/boot/dts/renesas/r7s72100-genmai.dts
-@@ -34,9 +34,6 @@ flash@18000000 {
- 		clocks = <&mstp9_clks R7S72100_CLK_SPIBSC0>;
- 		power-domains = <&cpg_clocks>;
+--- a/kernel/sched/ext.c
++++ b/kernel/sched/ext.c
+@@ -2800,7 +2800,8 @@ static void scx_set_task_state(struct ta
+ 		warn = prev_state != SCX_TASK_READY;
+ 		break;
+ 	default:
+-		warn = true;
++		WARN_ONCE(1, "sched_ext: Invalid task state %d -> %d for %s[%d]",
++			  prev_state, state, p->comm, p->pid);
+ 		return;
+ 	}
  
--		#address-cells = <1>;
--		#size-cells = <1>;
--
- 		partitions {
- 			compatible = "fixed-partitions";
- 			#address-cells = <1>;
--- 
-2.53.0
-
 
 
 
