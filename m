@@ -1,61 +1,62 @@
-Return-Path: <stable+bounces-256012-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-255449-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id iLSCE5eoGGpolwgAu9opvQ
-	(envelope-from <stable+bounces-256012-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:41:59 +0200
+	id wC8wHKKiGGrJlggAu9opvQ
+	(envelope-from <stable+bounces-255449-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:16:34 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 37F5F5F958F
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:41:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 037885F83B5
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:16:33 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 66C3230BB5DB
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 20:35:09 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id A2D6130C859A
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 20:09:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B693633D4FB;
-	Thu, 28 May 2026 20:35:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8BC951A3157;
+	Thu, 28 May 2026 20:09:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rVe9TM6b"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wPibWqhu"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 610AD2E92BA;
-	Thu, 28 May 2026 20:35:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4793D3164B7;
+	Thu, 28 May 2026 20:09:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780000508; cv=none; b=fDFGgOHyJt0hcsXP2FiuX3qXe5333MncyO7ly190VomskAKEKqC5bStWY390SBTOyqGLwnzQJB7Iqt+6nKY2vGsyTHIzwymEgZyNmyrFTzCtVzdO+IJX4epF4BKRNCT4z/H9zj6aYWw7wZS8NdEefIwIsU2NP7COS2rG3FUDwbs=
+	t=1779998943; cv=none; b=NM9TIuevOTCODmu3dVjhgAdnfwKPghO/lf9ktSrm85py7Ilmn8IcAlY2EEbgNv0Ug9PVVgTBWhPnk9OGFagZk+TJbeka9aWYYD82i+g6GcD4z1PAaWOmN2RUBUaTuVVtCITBhFyHnWuH1g5UA39j5SCNe1Vn3n1Mk6K4l2lejAE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780000508; c=relaxed/simple;
-	bh=CqZ8YwnjNdhbEZOqiiuP8Rg4kp1raVcu6LFuamlFwwQ=;
+	s=arc-20240116; t=1779998943; c=relaxed/simple;
+	bh=j8bU5P0GPXj73FpgkNF4O5WrWXyEUbX3i2/zT7PshFc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=OkhMkOI6dqcbeX+2la5TKDenHT2OdTXINw+HInnY2sJoH2tiEHN0/fLNW8UW/6xolt0atIco4U+CvXzHBaMIQVPPUM3o5iehClbSaRrNjQjQC9qfGbLbBkD5Lg36i+agxVXk/HoJZH5cf/fT2/vctgCmxxN4D5U3WWUlgCXWyDY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rVe9TM6b; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BEEF91F000E9;
-	Thu, 28 May 2026 20:35:06 +0000 (UTC)
+	 MIME-Version; b=Rt/x8LYWx+vqpE+bkiOwaSUN8XVRk/lzDm/F4Sc2jfyKr2P/Neh5Brier7lopgkslN8wQlir6MZ7IH0m26QanOIvdfX2G4xSoiyCBZtyp8OFqiiBnGDQI4TQDTMutLR6DK3iwHzAq4Cf68GWNGcm5aiT+VDxm7Z65GvSw/x9cY4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wPibWqhu; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id ABD771F000E9;
+	Thu, 28 May 2026 20:09:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780000507;
-	bh=/O2AMIHvWhLm2hZ1UOOVXLyMogjge8f2oQ49Q772DFw=;
+	s=korg; t=1779998942;
+	bh=gn9IrJHdWKsoCqXGZu3QSc4tghNLQdUoKxQoK/sJK74=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=rVe9TM6ba9bZG+P/VtZY70UBohPJ3l73/N7Mfu0AC3Mw+GBy3ERheHVYoA+uPPXXu
-	 63JUvus9TjtXiIZsnE/pZ/Tl70A2l/82CER67bXDOxgzjfKMhgxZcJhbZXIAvnHYWp
-	 UD71PyTBY75wQD5yjNYz14fd6Vuumu7jGWl5K+Zs=
+	b=wPibWqhuVxvKRp+tlBJQ7vLWFQr7amtJ2Mj1Vqu6upIrBhHNo6o5QlbNpAtdSPceb
+	 +2b6q+jr8aZ+q5rHvzpI9hLF/AT/dQ+IbRjt5orh+6oE5DOewWKZ7mGkt0sV7JOkhw
+	 T3e9/nRMEU0pyjbfZDX397HFqrVXE5CJsMub9s+o=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Zijing Yin <yzjaurora@gmail.com>,
-	=?UTF-8?q?R=C3=A9mi=20Denis-Courmont?= <remi@remlab.net>,
-	syzbot+9f4a135646b66c509935@syzkaller.appspotmail.com,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 6.12 069/272] phonet/pep: disable BH around forwarded sk_receive_skb()
-Date: Thu, 28 May 2026 21:47:23 +0200
-Message-ID: <20260528194631.308969600@linuxfoundation.org>
+	Mahesh Salgaonkar <mahesh@linux.ibm.com>,
+	Shrikanth Hegde <sshegde@linux.ibm.com>,
+	"Ritesh Harjani (IBM)" <ritesh.list@gmail.com>,
+	Sayali Patil <sayalip@linux.ibm.com>,
+	Madhavan Srinivasan <maddy@linux.ibm.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 7.0 315/461] powerpc/time: Remove redundant preempt_disable|enable() calls from arch_irq_work_raise()
+Date: Thu, 28 May 2026 21:47:24 +0200
+Message-ID: <20260528194656.417560281@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260528194629.379955525@linuxfoundation.org>
-References: <20260528194629.379955525@linuxfoundation.org>
+In-Reply-To: <20260528194646.819809818@linuxfoundation.org>
+References: <20260528194646.819809818@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,141 +66,136 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-0.66 / 15.00];
+X-Spamd-Result: default: False [-0.16 / 15.00];
 	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_MISSING_CHARSET(0.50)[];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,remlab.net,syzkaller.appspotmail.com,google.com,kernel.org];
-	TAGGED_FROM(0.00)[bounces-256012-lists,stable=lfdr.de];
-	FROM_HAS_DN(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	RCVD_TLS_LAST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-255449-lists,stable=lfdr.de];
+	FROM_HAS_DN(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	TO_DN_SOME(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	PRECEDENCE_BULK(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,linux.ibm.com,gmail.com,kernel.org];
+	MIME_TRACE(0.00)[0:+];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[9];
 	MID_RHS_MATCH_FROM(0.00)[];
-	TAGGED_RCPT(0.00)[stable,9f4a135646b66c509935];
-	RCPT_COUNT_SEVEN(0.00)[8];
+	NEURAL_HAM(-0.00)[-1.000];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	TAGGED_RCPT(0.00)[stable];
+	TO_DN_SOME(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[appspotmail.com:email,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,remlab.net:email,msgid.link:url,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,syzkaller.appspot.com:url]
-X-Rspamd-Queue-Id: 37F5F5F958F
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim,msgid.link:url]
+X-Rspamd-Queue-Id: 037885F83B5
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+7.0-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Zijing Yin <yzjaurora@gmail.com>
+From: Sayali Patil <sayalip@linux.ibm.com>
 
-commit dbc81608e3a653dea6cf403f20cae35468b8ab9c upstream.
+[ Upstream commit 31467b23823ffec1f6fff407f8e3ca9af8b7491a ]
 
-The networking receive path is usually run from softirq context, but
-protocols that take the socket lock may have packets stored in the
-backlog and processed later from process context. In that case
-release_sock() -> __release_sock() drops the slock with spin_unlock_bh()
-and then calls sk->sk_backlog_rcv() with bottom halves enabled.
+A kernel panic is observed when handling machine check exceptions from
+real mode.
 
-Typical sk_backlog_rcv handlers process the socket whose backlog is
-being drained, so the BH state at entry is irrelevant for the slocks
-they touch. pep_do_rcv() is different: when the inbound skb targets an
-existing PEP pipe, it forwards the skb to a different *child* socket
-via sk_receive_skb(). That helper takes the child slock with
-bh_lock_sock_nested(), which is just spin_lock_nested() and assumes BH
-is already off. The same child slock therefore ends up acquired with
-BH on (process path) and with BH off (softirq path):
+  BUG: Unable to handle kernel data access on read at 0xc00000006be21300
+  Oops: Kernel access of bad area, sig: 11 [#1]
+  MSR:  8000000000001003 <SF,ME,RI,LE>  CR: 88222248  XER: 00000005
+  CFAR: c00000000003ffc4 DAR: c00000006be21300 DSISR: 40000000 IRQMASK: 0
+  NIP [c000000000029e40] arch_irq_work_raise+0x10/0x70
+  LR [c00000000003ffc8] machine_check_queue_event+0xa8/0x150
+  Call Trace:
+  [c0000000179d3c70] [c00000000003ff64] machine_check_queue_event+0x44/0x150
+  [c0000000179d3d30] [c0000000000084e0] machine_check_early_common+0x1f0/0x2c0
 
-  process context                   softirq context
-  ---------------                   ---------------
-  release_sock(listener)            __netif_receive_skb()
-   __release_sock()                  phonet_rcv()
-    spin_unlock_bh()                  __sk_receive_skb(listener)
-    [BH now ENABLED]                  [BH already disabled]
-    sk_backlog_rcv:                   sk_backlog_rcv:
-     pep_do_rcv()                      pep_do_rcv()
-      sk_receive_skb(child)             sk_receive_skb(child)
-       bh_lock_sock_nested(child)        bh_lock_sock_nested(child)
-       => SOFTIRQ-ON-W                   => IN-SOFTIRQ-W
+The crash occurs because arch_irq_work_raise() calls preempt_disable()
+from machine check exception (MCE) handlers running in real mode. In
+this context, accessing the preempt_count can fault, leading to the panic.
 
-Lockdep flags this as inconsistent lock state, and it can become a real
-self-deadlock if a softirq on the same CPU tries to receive to the same
-child socket while its slock is held in the BH-enabled path:
+The preempt_disable()/preempt_enable() pair in arch_irq_work_raise()
+was originally added by commit 0fe1ac48bef0 ("powerpc/perf_event: Fix
+oops due to perf_event_do_pending call") to avoid races while raising
+irq work from exception context.
 
-  WARNING: inconsistent lock state
-  inconsistent {SOFTIRQ-ON-W} -> {IN-SOFTIRQ-W} usage.
-   (slock-AF_PHONET/1){+.?.}-{3:3}, at: __sk_receive_skb+0x1cf/0x900
-    __sk_receive_skb              net/core/sock.c:563
-    sk_receive_skb                include/net/sock.h:2022 [inline]
-    pep_do_rcv                    net/phonet/pep.c:675
-    sk_backlog_rcv                include/net/sock.h:1190
-    __release_sock                net/core/sock.c:3216
-    release_sock                  net/core/sock.c:3815
-    pep_sock_accept               net/phonet/pep.c:879
+Later, commit 471ba0e686cb ("irq_work: Do not raise an IPI when
+queueing work on the local CPU") added preemption protection in
+irq_work_queue() path, while commit 20b876918c06 ("irq_work: Use per
+cpu atomics instead of regular atomics") added equivalent
+protection in irq_work_queue_on() before reaching arch_irq_work_raise():
 
-Wrap the forwarded sk_receive_skb() in local_bh_disable() /
-local_bh_enable() so the child slock is always acquired with BH off.
-local_bh_disable() nests safely on the softirq path.
+  irq_work_queue() / irq_work_queue_on()
+    -> preempt_disable()
+      -> __irq_work_queue_local()
+        -> irq_work_raise()
+          -> arch_irq_work_raise()
 
-Discovered via in-house syzkaller fuzzing; the same root cause also
-on the linux-6.1.y syzbot dashboard as extid 44f0626dd6284f02663c.
-Reproduced under KASAN + LOCKDEP + PROVE_LOCKING, reproducer:
-https://pastebin.com/A3t8xzCR
+As a result, callers other than mce_irq_work_raise() already execute
+with preemption disabled, making the additional
+preempt_disable()/preempt_enable() pair in arch_irq_work_raise()
+redundant.
 
-Fixes: 9641458d3ec4 ("Phonet: Pipe End Point for Phonet Pipes protocol")
-Link: https://syzkaller.appspot.com/bug?extid=44f0626dd6284f02663c
-Cc: stable@vger.kernel.org
-Signed-off-by: Zijing Yin <yzjaurora@gmail.com>
-Acked-by: Rémi Denis-Courmont <remi@remlab.net>
-Reported-by: syzbot+9f4a135646b66c509935@syzkaller.appspotmail.com
-Reviewed-by: Eric Dumazet <edumazet@google.com>
-Link: https://patch.msgid.link/20260519172635.86304-1-yzjaurora@gmail.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+The arch_irq_work_raise() function executes in NMI context when called
+from MCE handler. Hence we will not be preempted or scheduled out since
+we are in NMI context with MSR[EE]=0. Therefore, it is safe to remove
+the preempt_disable()/preempt_enable() calls from here.
+
+Remove it to avoid accessing preempt_count from real mode context.
+
+Fixes: cc15ff327569 ("powerpc/mce: Avoid using irq_work_queue() in realmode")
+Suggested-by: Mahesh Salgaonkar <mahesh@linux.ibm.com>
+Acked-by: Shrikanth Hegde <sshegde@linux.ibm.com>
+Reviewed-by: Ritesh Harjani (IBM) <ritesh.list@gmail.com>
+Signed-off-by: Sayali Patil <sayalip@linux.ibm.com>
+[Maddy: Fixed the commit title]
+Signed-off-by: Madhavan Srinivasan <maddy@linux.ibm.com>
+Link: https://patch.msgid.link/20260513081413.222490-1-sayalip@linux.ibm.com
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/phonet/pep.c |   19 +++++++++++++++++--
- 1 file changed, 17 insertions(+), 2 deletions(-)
+ arch/powerpc/kernel/time.c | 6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
 
---- a/net/phonet/pep.c
-+++ b/net/phonet/pep.c
-@@ -671,8 +671,23 @@ static int pep_do_rcv(struct sock *sk, s
+diff --git a/arch/powerpc/kernel/time.c b/arch/powerpc/kernel/time.c
+index 4bbeb8644d3da..b4472288e0d43 100644
+--- a/arch/powerpc/kernel/time.c
++++ b/arch/powerpc/kernel/time.c
+@@ -458,6 +458,10 @@ DEFINE_PER_CPU(u8, irq_work_pending);
  
- 	/* Look for an existing pipe handle */
- 	sknode = pep_find_pipe(&pn->hlist, &dst, pipe_handle);
--	if (sknode)
--		return sk_receive_skb(sknode, skb, 1);
-+	if (sknode) {
-+		int rc;
-+
-+		/* pep_do_rcv() runs from two contexts: from softirq via
-+		 * phonet_rcv() -> __sk_receive_skb() with BH disabled,
-+		 * and from process context via
-+		 * release_sock() -> __release_sock(), which drops
-+		 * the listener slock with spin_unlock_bh() before draining
-+		 * the backlog.  The child pipe slock is taken below via
-+		 * bh_lock_sock_nested(), which does not itself disable BH, so
-+		 * disable BH here to keep both acquire contexts consistent.
-+		 */
-+		local_bh_disable();
-+		rc = sk_receive_skb(sknode, skb, 1);
-+		local_bh_enable();
-+		return rc;
-+	}
+ #endif /* 32 vs 64 bit */
  
- 	switch (hdr->message_id) {
- 	case PNS_PEP_CONNECT_REQ:
++/*
++ * Must be called with preemption disabled since it updates
++ * per-CPU irq_work state and programs the local CPU decrementer.
++ */
+ void arch_irq_work_raise(void)
+ {
+ 	/*
+@@ -471,10 +475,8 @@ void arch_irq_work_raise(void)
+ 	 * which could get tangled up if we're messing with the same state
+ 	 * here.
+ 	 */
+-	preempt_disable();
+ 	set_irq_work_pending_flag();
+ 	set_dec(1);
+-	preempt_enable();
+ }
+ 
+ static void set_dec_or_work(u64 val)
+-- 
+2.53.0
+
 
 
 
