@@ -1,59 +1,60 @@
-Return-Path: <stable+bounces-256081-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-255877-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id yOrhBrOpGGrclwgAu9opvQ
-	(envelope-from <stable+bounces-256081-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:46:43 +0200
+	id iF2fG0SmGGpplwgAu9opvQ
+	(envelope-from <stable+bounces-255877-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:32:04 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9C9C55F987D
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:46:42 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id 91BEC5F8E5C
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:32:03 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id D4C1E31E8EBF
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 20:38:23 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id BCCFD306B998
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 20:28:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D933F2F1FEC;
-	Thu, 28 May 2026 20:38:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4650FDDC5;
+	Thu, 28 May 2026 20:28:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IyutsqID"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lRFlSp1Z"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ADFDC25F7B9;
-	Thu, 28 May 2026 20:38:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 05DED1C3318;
+	Thu, 28 May 2026 20:28:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780000701; cv=none; b=SjIPur6RHvAYP6a4D4S49wUe10pB12/zyPQuM73c14sqnQVoCgebyAvLh1OWbmZmFCKMf4KQkKeNQfcOnY7cBjrSSSWt+tGrjNpxZ2qT6fISnYkZS+eTJ2nOuttXuaT8+7xQWb+21biTvGBs/7ruIWCN4/O0gcXrsqnzvu9AqSA=
+	t=1780000128; cv=none; b=Hlxq3R2RjnoKsiDcxwd6QqIDP/+j3S123oZeLE5eIr6c9pK26R7lRpyp5sTBRMH6frpzpdCbtnqTsiFqVLABKo+bXFi0XMh/QS5jB3K9zsXsCyOkluocPiYE2fxI1QMxSuP05D1U2B/xMoTP37esvBJpb+e26a7Q+gE8iiexb1M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780000701; c=relaxed/simple;
-	bh=WzpN9yOiBKqr6Otoom2npJUsjuMWlndvAu+DHAbcVvc=;
+	s=arc-20240116; t=1780000128; c=relaxed/simple;
+	bh=VvzhCBqzQwcY1NeACeJW6pHU8eEsvB1257RfITwpmHk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=G6NZbLW8yhN4GOKp8Va9+1eaXoYKZ/FHyz45tnCRHGKiIh8CGpCBHdhSeQCTqlsflnfrtrCFDNcod/Cnz18adQG9wkCfTTy9zAUD1H4HncNcY3wAHn9WEUkACKN5mhbBENCiBjhgvDMTONptyMX7vLYNtm/2gM0rTrgWrV2Vc5A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IyutsqID; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1871A1F000E9;
-	Thu, 28 May 2026 20:38:19 +0000 (UTC)
+	 MIME-Version; b=V9/zeLwtvRo55NFZtDZqX+7ZIKi8/In4ujPVJl/y/Vu+gwWs20w8dPfFScAIRrc5HQfOBLqcUa5318NxWLn6M1F1J/tfu4nDiMEOvOacJnW6bfa4vss98mr8BzwqmxXqwr2JlE+lND9InfgnWpxJJnGhQ0H7z1y+GwzMcoR4UVY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lRFlSp1Z; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 63BB51F000E9;
+	Thu, 28 May 2026 20:28:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780000700;
-	bh=WgxgM0zcSDsNci5kFhFyaYs7Ls34tmvCc1WQlU6X210=;
+	s=korg; t=1780000126;
+	bh=Vw3Jz0kmkHgXYMLSCh2DR/mUDlvZGjXtZQv8T7tt/44=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=IyutsqIDtvJQPNCtF9kdujItn2ljC6u1lTO/QFhNrfz1X3+Obv0CqOandf+MfZOxH
-	 Ou+Cxsv0aDjZQuqj8TgS4w1mlnZXOATIBT9fBl1yD21GDJvwTIskwih0nkT7eAhynm
-	 Hac3Pe9S1Vj8dr8h6IpskGoxvIn614qRv9ENzp+Y=
+	b=lRFlSp1ZupfYdNKHnaaLtxmDsFmQ/ObN20ZINpzXrnc3d3/lh1PbnqQZY2HXeehbm
+	 qEzaMdDRl8yulgL6RHQJ2BCOqQ7aMt9JJrViJy7f33+w3826RXfOZmzOxWpzFKFMOO
+	 pVrWlax9ZmMxLOQEal4moykn+4cF99Tp37GbOva4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Abdurrahman Hussain <abdurrahman@nexthop.ai>,
-	Bartosz Golaszewski <bartosz.golaszewski@oss.qualcomm.com>,
-	Guenter Roeck <linux@roeck-us.net>
-Subject: [PATCH 6.12 139/272] hwmon: (pmbus/adm1266) register the gpio_chip after pmbus_do_probe()
+	Li RongQing <lirongqing@baidu.com>,
+	"Borislav Petkov (AMD)" <bp@alien8.de>,
+	Qiuxu Zhuo <qiuxu.zhuo@intel.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.18 275/377] x86/mce: Restore MCA polling interval halving
 Date: Thu, 28 May 2026 21:48:33 +0200
-Message-ID: <20260528194633.266717568@linuxfoundation.org>
+Message-ID: <20260528194646.324473420@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260528194629.379955525@linuxfoundation.org>
-References: <20260528194629.379955525@linuxfoundation.org>
+In-Reply-To: <20260528194638.371537336@linuxfoundation.org>
+References: <20260528194638.371537336@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -68,92 +69,170 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-255877-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-256081-lists,stable=lfdr.de];
-	TO_DN_SOME(0.00)[];
-	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[nexthop.ai:email,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,roeck-us.net:email,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,qualcomm.com:email]
-X-Rspamd-Queue-Id: 9C9C55F987D
+	TO_DN_SOME(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_SEVEN(0.00)[7];
+	MID_RHS_MATCH_FROM(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,intel.com:email,alien8.de:email,linuxfoundation.org:mid,linuxfoundation.org:dkim]
+X-Rspamd-Queue-Id: 91BEC5F8E5C
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Abdurrahman Hussain <abdurrahman@nexthop.ai>
+From: Borislav Petkov (AMD) <bp@alien8.de>
 
-commit 491403b9b76cf66abd81301c5901aa4a4549f1e8 upstream.
+[ Upstream commit ea324444ece9f301b5c4ff71b258cc68990c4d61 ]
 
-adm1266_probe() calls adm1266_config_gpio() -- which goes on to
-devm_gpiochip_add_data() and exposes the gpio_chip callbacks to
-gpiolib -- before pmbus_do_probe() has initialised the per-client
-PMBus state (notably the pmbus_lock mutex the core hands out via
-pmbus_get_data()).
+RongQing reported that the MCA polling interval doesn't halve when an
+error gets logged. It was traced down to the commit in Fixes:, because:
 
-That ordering is already a latent hazard: any GPIO access that lands
-between adm1266_config_gpio() and the end of pmbus_do_probe() (for
-example a sysfs read from a user space agent that opens the gpiochip
-the instant gpiolib advertises it) races pmbus_do_probe()'s own
-device accesses with no serialisation.
+  mce_timer_fn()
+  |-> mce_poll_banks()
+  |-> machine_check_poll()
+  |-> mce_log()
 
-Move adm1266_config_gpio() down past pmbus_do_probe() so the chip
-isn't reachable from userspace until the PMBus state it depends on
-is fully initialised.
+which will queue the work and return.
 
-Fixes: d98dfad35c38 ("hwmon: (pmbus/adm1266) Add support for GPIOs")
-Cc: stable@vger.kernel.org
-Signed-off-by: Abdurrahman Hussain <abdurrahman@nexthop.ai>
-Reviewed-by: Bartosz Golaszewski <bartosz.golaszewski@oss.qualcomm.com>
-Link: https://lore.kernel.org/r/20260518-adm1266-gpio-fixes-v3-4-e425e4f88139@nexthop.ai
-Signed-off-by: Guenter Roeck <linux@roeck-us.net>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Now, back in mce_timer_fn():
+
+        /*
+         * Alert userspace if needed. If we logged an MCE, reduce the polling
+         * interval, otherwise increase the polling interval.
+         */
+        if (mce_notify_irq())
+
+<--- here we haven't ran the notifier chain yet so mce_need_notify is
+not set yet so this won't hit and we won't halve the interval iv.
+
+Now the notifier chain runs. mce_early_notifier() sets the bit, does
+mce_notify_irq(), that clears the bit and then the notifier chain
+a little later logs the error.
+
+So this is a silly timing issue.
+
+But, that's all unnecessary.
+
+All it needs to happen here is, the "should we notify of a logged MCE"
+mce_notify_irq() asks, should be simply a question to the mce gen pool:
+"Are you empty?"
+
+And that then turns into a simple yes or no answer and it all
+JustWorks(tm).
+
+So do that and also distribute the functionality where it belongs:
+ - Print that MCE events have been logged in mce_log()
+ - Trigger the mcelog tool specific work in the first notifier
+
+As a result, mce_notify_irq() can go now.
+
+Fixes: 011d82611172 ("RAS: Add a Corrected Errors Collector")
+Reported-by: Li RongQing <lirongqing@baidu.com>
+Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
+Reviewed-by: Qiuxu Zhuo <qiuxu.zhuo@intel.com>
+Tested-by: Qiuxu Zhuo <qiuxu.zhuo@intel.com>
+Link: https://lore.kernel.org/r/20260112082747.2842-1-lirongqing@baidu.com
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/hwmon/pmbus/adm1266.c |    8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ arch/x86/kernel/cpu/mce/core.c | 33 +++++----------------------------
+ 1 file changed, 5 insertions(+), 28 deletions(-)
 
---- a/drivers/hwmon/pmbus/adm1266.c
-+++ b/drivers/hwmon/pmbus/adm1266.c
-@@ -466,10 +466,6 @@ static int adm1266_probe(struct i2c_clie
- 	crc8_populate_msb(pmbus_crc_table, 0x7);
- 	mutex_init(&data->buf_mutex);
+diff --git a/arch/x86/kernel/cpu/mce/core.c b/arch/x86/kernel/cpu/mce/core.c
+index 460e90a1a0b17..c8b112c6c5492 100644
+--- a/arch/x86/kernel/cpu/mce/core.c
++++ b/arch/x86/kernel/cpu/mce/core.c
+@@ -89,7 +89,6 @@ struct mca_config mca_cfg __read_mostly = {
+ };
  
--	ret = adm1266_config_gpio(data);
--	if (ret < 0)
--		return ret;
+ static DEFINE_PER_CPU(struct mce_hw_err, hw_errs_seen);
+-static unsigned long mce_need_notify;
+ 
+ /*
+  * MCA banks polled by the period polling timer for corrected events.
+@@ -151,8 +150,10 @@ EXPORT_PER_CPU_SYMBOL_GPL(injectm);
+ 
+ void mce_log(struct mce_hw_err *err)
+ {
+-	if (mce_gen_pool_add(err))
++	if (mce_gen_pool_add(err)) {
++		pr_info(HW_ERR "Machine check events logged\n");
+ 		irq_work_queue(&mce_irq_work);
++	}
+ }
+ EXPORT_SYMBOL_GPL(mce_log);
+ 
+@@ -584,28 +585,6 @@ bool mce_is_correctable(struct mce *m)
+ }
+ EXPORT_SYMBOL_GPL(mce_is_correctable);
+ 
+-/*
+- * Notify the user(s) about new machine check events.
+- * Can be called from interrupt context, but not from machine check/NMI
+- * context.
+- */
+-static bool mce_notify_irq(void)
+-{
+-	/* Not more than two messages every minute */
+-	static DEFINE_RATELIMIT_STATE(ratelimit, 60*HZ, 2);
 -
- 	ret = adm1266_set_rtc(data);
- 	if (ret < 0)
- 		return ret;
-@@ -482,6 +478,10 @@ static int adm1266_probe(struct i2c_clie
- 	if (ret)
- 		return ret;
+-	if (test_and_clear_bit(0, &mce_need_notify)) {
+-		mce_work_trigger();
+-
+-		if (__ratelimit(&ratelimit))
+-			pr_info(HW_ERR "Machine check events logged\n");
+-
+-		return true;
+-	}
+-
+-	return false;
+-}
+-
+ static int mce_early_notifier(struct notifier_block *nb, unsigned long val,
+ 			      void *data)
+ {
+@@ -617,9 +596,7 @@ static int mce_early_notifier(struct notifier_block *nb, unsigned long val,
+ 	/* Emit the trace record: */
+ 	trace_mce_record(err);
  
-+	ret = adm1266_config_gpio(data);
-+	if (ret < 0)
-+		return ret;
-+
- 	adm1266_init_debugfs(data);
+-	set_bit(0, &mce_need_notify);
+-
+-	mce_notify_irq();
++	mce_work_trigger();
  
- 	return 0;
+ 	return NOTIFY_DONE;
+ }
+@@ -1771,7 +1748,7 @@ static void mce_timer_fn(struct timer_list *t)
+ 	 * Alert userspace if needed. If we logged an MCE, reduce the polling
+ 	 * interval, otherwise increase the polling interval.
+ 	 */
+-	if (mce_notify_irq())
++	if (!mce_gen_pool_empty())
+ 		iv = max(iv / 2, (unsigned long) HZ/100);
+ 	else
+ 		iv = min(iv * 2, round_jiffies_relative(check_interval * HZ));
+-- 
+2.53.0
+
 
 
 
