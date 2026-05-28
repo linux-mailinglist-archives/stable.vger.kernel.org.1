@@ -1,62 +1,62 @@
-Return-Path: <stable+bounces-255346-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-255955-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id yHJHI0ahGGqblggAu9opvQ
-	(envelope-from <stable+bounces-255346-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:10:46 +0200
+	id qBbAK/qnGGpolwgAu9opvQ
+	(envelope-from <stable+bounces-255955-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:39:22 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id E6B095F7FD1
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:10:45 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 339D75F93CE
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:39:22 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 6AF07319D237
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 20:04:14 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 9C7363138BE4
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 20:32:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 16A5D3F870F;
-	Thu, 28 May 2026 20:04:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 23D3633D4FB;
+	Thu, 28 May 2026 20:32:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0gApYYM5"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TQ15Tz2v"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 75B603164B7;
-	Thu, 28 May 2026 20:04:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8DB1C33C51D;
+	Thu, 28 May 2026 20:32:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779998652; cv=none; b=bH3bf7TD/dzk9g6pl+YY3GO7R2cxvoRIMKX9oU1U245JRsyJ9xKrUngYk22a38H/BkbhOGPvnpWmvEH0YQ9yoRtDonuc8+mhknSFrf2JUwxq525z9/Njo+vXjgEb1gEPgxjA7lXTXS0nPwVXVToQCdTRZN4bscBD7wh+jzAj0xI=
+	t=1780000347; cv=none; b=fQmCdBJs+qkjZ/ppKTdtZy4v3gB2yinB/LV7pHAMJXGPoonl4JcogtiCo4q0mluAQnQZZgAzq+bglM0krzbu2cyXbYfzVq+wNzGAso0cVjYwxRgXeQWrStvMrX6tZDtg7lEJJv7PvcgDUh6ae86O/z6ylNnGvImAviLb86QRvgc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779998652; c=relaxed/simple;
-	bh=0UTCGh20+YnN2qFquxKguoUE0K3NRtlZ208/qtIIvKw=;
+	s=arc-20240116; t=1780000347; c=relaxed/simple;
+	bh=SHkvn+rr65oTrBGSb8j3o7CEHsJtm4eaZfVPR5EASWY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=AE/Opv+a2lZRUHoJGfa4wjIpW7de/n8ZNmXFTkvpRNaU65fy9txF1dncnp1UIsshB8lvDeORXiPYKucv1l2Fr8xZ486Xd1H5uXvX+xgdKRIaftSADY4b14tO/o++pkt40Z3VJKWDaoMKxx1hNLO/bkNIzufSHDpz1k7oSyIfmjw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0gApYYM5; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DB4921F000E9;
-	Thu, 28 May 2026 20:04:10 +0000 (UTC)
+	 MIME-Version; b=uGkF9AfjzkWCkJdXJrCi8nJk5OFxISXVw64/zsZ83ZCUDtONDGq73/85VOZ6Jh831tuVyElh+urrWBPd1hpdZk7Phwegu7d3uHK2X16SkYts+HMVa4gzMj6HYEfe73KhyDEh1PuIiLDLw8dm/OWU2N+nu6PwmjaPpls/jXcgP0c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TQ15Tz2v; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EF9A31F000E9;
+	Thu, 28 May 2026 20:32:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779998651;
-	bh=Md1ZmyeajaJ6H9yiWJHXpLeJ9z8F/MpiZr8wOMQYbtA=;
+	s=korg; t=1780000346;
+	bh=dX3VYqatBM0uMCDZ4KUpDK/jvVMeWAQLZbH0tBLXn6M=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=0gApYYM5K2eGKnWXL8HjU/YctyFesqOxq6zDh4cIl8Jf69VA/Qnm3D1Orv2vyH8V9
-	 tCuDHes+4jOmDq2lYkLPT7qR56SiGWmA/VCMTgUh/RDUxkGDHLR+2PqzW9hwk3IOWE
-	 r8RrUrMir7YA4dY1fYKjgjjuMEbJUWqlmsma/8+0=
+	b=TQ15Tz2vx8rw3Za9wGXORJ4SO0SjkmyTACrJZLDMxn2WcigqS77HETGHiG9ydQU5n
+	 IWLWpv4mv/m8LfYxOqi/fix6Gf0iZMMkWs99LXe4Z+BGgYxvg/DbJGr6XDAaOnk9Xz
+	 9bWcj5x4U/0pLphPumkJuFIec/k8LQi+O5VyTIlA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	David Howells <dhowells@redhat.com>,
-	Paulo Alcantara <pc@manguebit.org>,
-	netfs@lists.linux.dev,
-	linux-fsdevel@vger.kernel.org,
-	Christian Brauner <brauner@kernel.org>,
+	Davide Ornaghi <d.ornaghi97@gmail.com>,
+	Navaneeth K <knavaneeth786@gmail.com>,
+	Namjae Jeon <linkinjeon@kernel.org>,
+	Steve French <stfrench@microsoft.com>,
+	Alva Lan <alvalan9@foxmail.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 7.0 250/461] netfs: Fix cancellation of a DIO and single read subrequests
+Subject: [PATCH 6.12 005/272] ksmbd: validate owner of durable handle on reconnect
 Date: Thu, 28 May 2026 21:46:19 +0200
-Message-ID: <20260528194654.386331388@linuxfoundation.org>
+Message-ID: <20260528194629.532743464@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260528194646.819809818@linuxfoundation.org>
-References: <20260528194646.819809818@linuxfoundation.org>
+In-Reply-To: <20260528194629.379955525@linuxfoundation.org>
+References: <20260528194629.379955525@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -67,375 +67,374 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-255346-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
-	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TO_DN_SOME(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	TAGGED_FROM(0.00)[bounces-255955-lists,stable=lfdr.de];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	NEURAL_HAM(-0.00)[-1.000];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,kernel.org,microsoft.com,foxmail.com];
+	MIME_TRACE(0.00)[0:+];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
 	RCPT_COUNT_SEVEN(0.00)[9];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim,sashiko.dev:url,linux.dev:email,manguebit.org:email,msgid.link:url]
-X-Rspamd-Queue-Id: E6B095F7FD1
+	TO_DN_SOME(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim,foxmail.com:email]
+X-Rspamd-Queue-Id: 339D75F93CE
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-7.0-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: David Howells <dhowells@redhat.com>
+From: Namjae Jeon <linkinjeon@kernel.org>
 
-[ Upstream commit 6f0f7ac1915abc0d202f0eb4b003a6548a5ba60d ]
+[ Upstream commit 49110a8ce654bbe56bef7c5e44cce31f4b102b8a ]
 
-When the preparation of a new subrequest for a read fails, if the
-subrequest has already been added to the stream->subrequests list, it can't
-simply be put and abandoned as the collector may see it.  Also, if it
-hasn't been queued yet, it has two outstanding refs that both need to be
-put.  Both DIO read and single-read dispatch fail at this; further, both
-differ in the order they do things to the way buffered read works.
+Currently, ksmbd does not verify if the user attempting to reconnect
+to a durable handle is the same user who originally opened the file.
+This allows any authenticated user to hijack an orphaned durable handle
+by predicting or brute-forcing the persistent ID.
 
-Fix cancellation of both DIO-read and single-read subrequests that failed
-preparation by the following steps:
+According to MS-SMB2, the server MUST verify that the SecurityContext
+of the reconnect request matches the SecurityContext associated with
+the existing open.
+Add a durable_owner structure to ksmbd_file to store the original opener's
+UID, GID, and account name. and catpure the owner information when a file
+handle becomes orphaned. and implementing ksmbd_vfs_compare_durable_owner()
+to validate the identity of the requester during SMB2_CREATE (DHnC).
 
- (1) Harmonise all three reads (buffered, dio, single) to queue the subreq
-     before prepping it.
-
- (2) Make all three call netfs_queue_read() to do the queuing.
-
- (3) Set NETFS_RREQ_ALL_QUEUED independently of the queuing as we don't
-     know the length of the subreq at this point.
-
- (4) In all cases, set the error and NETFS_SREQ_FAILED flag on the subreq
-     and then call netfs_read_subreq_terminated() to deal with it.  This
-     will pass responsibility off to the collector for dealing with it.
-
-Fixes: e2d46f2ec332 ("netfs: Change the read result collector to only use one work item")
-Closes: https://sashiko.dev/#/patchset/20260425125426.3855807-1-dhowells%40redhat.com
-Signed-off-by: David Howells <dhowells@redhat.com>
-Link: https://patch.msgid.link/20260512123404.719402-2-dhowells@redhat.com
-cc: Paulo Alcantara <pc@manguebit.org>
-cc: netfs@lists.linux.dev
-cc: linux-fsdevel@vger.kernel.org
-Signed-off-by: Christian Brauner <brauner@kernel.org>
+Fixes: c8efcc786146 ("ksmbd: add support for durable handles v1/v2")
+Reported-by: Davide Ornaghi <d.ornaghi97@gmail.com>
+Reported-by: Navaneeth K <knavaneeth786@gmail.com>
+Signed-off-by: Namjae Jeon <linkinjeon@kernel.org>
+Signed-off-by: Steve French <stfrench@microsoft.com>
+[ Minor context conflict resolved. ]
+Signed-off-by: Alva Lan <alvalan9@foxmail.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/netfs/buffered_read.c | 34 +++++++++++++-------------------
- fs/netfs/direct_read.c   | 42 +++++++++++++---------------------------
- fs/netfs/internal.h      |  3 +++
- fs/netfs/read_collect.c  | 11 +++++++++++
- fs/netfs/read_single.c   | 23 ++++++++++------------
- 5 files changed, 50 insertions(+), 63 deletions(-)
+ fs/smb/server/mgmt/user_session.c |  7 ++-
+ fs/smb/server/oplock.c            |  7 +++
+ fs/smb/server/oplock.h            |  1 +
+ fs/smb/server/smb2pdu.c           |  3 +-
+ fs/smb/server/vfs_cache.c         | 87 +++++++++++++++++++++++++++----
+ fs/smb/server/vfs_cache.h         | 12 ++++-
+ 6 files changed, 102 insertions(+), 15 deletions(-)
 
-diff --git a/fs/netfs/buffered_read.c b/fs/netfs/buffered_read.c
-index a8c0d86118c58..a27ed501b6d43 100644
---- a/fs/netfs/buffered_read.c
-+++ b/fs/netfs/buffered_read.c
-@@ -156,9 +156,8 @@ static void netfs_read_cache_to_pagecache(struct netfs_io_request *rreq,
- 			netfs_cache_read_terminated, subreq);
- }
+diff --git a/fs/smb/server/mgmt/user_session.c b/fs/smb/server/mgmt/user_session.c
+index 151248e02e9eb..ecd511351f19b 100644
+--- a/fs/smb/server/mgmt/user_session.c
++++ b/fs/smb/server/mgmt/user_session.c
+@@ -161,11 +161,10 @@ void ksmbd_session_destroy(struct ksmbd_session *sess)
+ 	if (!sess)
+ 		return;
  
--static void netfs_queue_read(struct netfs_io_request *rreq,
--			     struct netfs_io_subrequest *subreq,
--			     bool last_subreq)
-+void netfs_queue_read(struct netfs_io_request *rreq,
-+		      struct netfs_io_subrequest *subreq)
- {
- 	struct netfs_io_stream *stream = &rreq->io_streams[0];
- 
-@@ -178,11 +177,6 @@ static void netfs_queue_read(struct netfs_io_request *rreq,
- 		}
++	ksmbd_tree_conn_session_logoff(sess);
++	ksmbd_destroy_file_table(sess);
+ 	if (sess->user)
+ 		ksmbd_free_user(sess->user);
+-
+-	ksmbd_tree_conn_session_logoff(sess);
+-	ksmbd_destroy_file_table(&sess->file_table);
+ 	ksmbd_launch_ksmbd_durable_scavenger();
+ 	ksmbd_session_rpc_clear_list(sess);
+ 	free_channel_list(sess);
+@@ -402,7 +401,7 @@ void destroy_previous_session(struct ksmbd_conn *conn,
+ 		goto out;
  	}
  
--	if (last_subreq) {
--		smp_wmb(); /* Write lists before ALL_QUEUED. */
--		set_bit(NETFS_RREQ_ALL_QUEUED, &rreq->flags);
--	}
--
- 	spin_unlock(&rreq->lock);
+-	ksmbd_destroy_file_table(&prev_sess->file_table);
++	ksmbd_destroy_file_table(prev_sess);
+ 	prev_sess->state = SMB2_SESSION_EXPIRED;
+ 	ksmbd_all_conn_set_status(id, KSMBD_SESS_NEED_SETUP);
+ 	ksmbd_launch_ksmbd_durable_scavenger();
+diff --git a/fs/smb/server/oplock.c b/fs/smb/server/oplock.c
+index 590ddd31a68da..bbb2cb3782d0c 100644
+--- a/fs/smb/server/oplock.c
++++ b/fs/smb/server/oplock.c
+@@ -1841,6 +1841,7 @@ int smb2_check_durable_oplock(struct ksmbd_conn *conn,
+ 			      struct ksmbd_share_config *share,
+ 			      struct ksmbd_file *fp,
+ 			      struct lease_ctx_info *lctx,
++			      struct ksmbd_user *user,
+ 			      char *name)
+ {
+ 	struct oplock_info *opinfo = opinfo_get(fp);
+@@ -1849,6 +1850,12 @@ int smb2_check_durable_oplock(struct ksmbd_conn *conn,
+ 	if (!opinfo)
+ 		return 0;
+ 
++	if (ksmbd_vfs_compare_durable_owner(fp, user) == false) {
++		ksmbd_debug(SMB, "Durable handle reconnect failed: owner mismatch\n");
++		ret = -EBADF;
++		goto out;
++	}
++
+ 	if (opinfo->is_lease == false) {
+ 		if (lctx) {
+ 			pr_err("create context include lease\n");
+diff --git a/fs/smb/server/oplock.h b/fs/smb/server/oplock.h
+index 921e3199e4df4..d91a8266e065e 100644
+--- a/fs/smb/server/oplock.h
++++ b/fs/smb/server/oplock.h
+@@ -126,5 +126,6 @@ int smb2_check_durable_oplock(struct ksmbd_conn *conn,
+ 			      struct ksmbd_share_config *share,
+ 			      struct ksmbd_file *fp,
+ 			      struct lease_ctx_info *lctx,
++			      struct ksmbd_user *user,
+ 			      char *name);
+ #endif /* __KSMBD_OPLOCK_H */
+diff --git a/fs/smb/server/smb2pdu.c b/fs/smb/server/smb2pdu.c
+index 700d9da3c65a9..a691801e1d7bd 100644
+--- a/fs/smb/server/smb2pdu.c
++++ b/fs/smb/server/smb2pdu.c
+@@ -3016,7 +3016,8 @@ int smb2_open(struct ksmbd_work *work)
+ 		}
+ 
+ 		if (dh_info.reconnected == true) {
+-			rc = smb2_check_durable_oplock(conn, share, dh_info.fp, lc, name);
++			rc = smb2_check_durable_oplock(conn, share, dh_info.fp,
++					lc, sess->user, name);
+ 			if (rc) {
+ 				ksmbd_put_durable_fd(dh_info.fp);
+ 				goto err_out2;
+diff --git a/fs/smb/server/vfs_cache.c b/fs/smb/server/vfs_cache.c
+index 08f25a2d75416..d29cc1d01bd2c 100644
+--- a/fs/smb/server/vfs_cache.c
++++ b/fs/smb/server/vfs_cache.c
+@@ -18,6 +18,7 @@
+ #include "connection.h"
+ #include "mgmt/tree_connect.h"
+ #include "mgmt/user_session.h"
++#include "mgmt/user_config.h"
+ #include "smb_common.h"
+ #include "server.h"
+ 
+@@ -383,6 +384,8 @@ static void __ksmbd_close_fd(struct ksmbd_file_table *ft, struct ksmbd_file *fp)
+ 
+ 	if (ksmbd_stream_fd(fp))
+ 		kfree(fp->stream.name);
++	kfree(fp->owner.name);
++
+ 	kmem_cache_free(filp_cache, fp);
  }
  
-@@ -233,6 +227,8 @@ static void netfs_read_to_pagecache(struct netfs_io_request *rreq,
- 		subreq->start	= start;
- 		subreq->len	= size;
+@@ -694,11 +697,13 @@ void ksmbd_update_fstate(struct ksmbd_file_table *ft, struct ksmbd_file *fp,
+ }
  
-+		netfs_queue_read(rreq, subreq);
-+
- 		source = netfs_cache_prepare_read(rreq, subreq, rreq->i_size);
- 		subreq->source = source;
- 		if (source == NETFS_DOWNLOAD_FROM_SERVER) {
-@@ -253,6 +249,7 @@ static void netfs_read_to_pagecache(struct netfs_io_request *rreq,
- 				       rreq->debug_id, subreq->debug_index,
- 				       subreq->len, size,
- 				       subreq->start, ictx->zero_point, rreq->i_size);
-+				netfs_cancel_read(subreq, ret);
- 				break;
- 			}
- 			subreq->len = len;
-@@ -261,12 +258,7 @@ static void netfs_read_to_pagecache(struct netfs_io_request *rreq,
- 			if (rreq->netfs_ops->prepare_read) {
- 				ret = rreq->netfs_ops->prepare_read(subreq);
- 				if (ret < 0) {
--					subreq->error = ret;
--					/* Not queued - release both refs. */
--					netfs_put_subrequest(subreq,
--							     netfs_sreq_trace_put_cancel);
--					netfs_put_subrequest(subreq,
--							     netfs_sreq_trace_put_cancel);
-+					netfs_cancel_read(subreq, ret);
- 					break;
- 				}
- 				trace_netfs_sreq(subreq, netfs_sreq_trace_prepare);
-@@ -289,23 +281,23 @@ static void netfs_read_to_pagecache(struct netfs_io_request *rreq,
- 
- 		pr_err("Unexpected read source %u\n", source);
- 		WARN_ON_ONCE(1);
-+		netfs_cancel_read(subreq, ret);
- 		break;
- 
- 	issue:
- 		slice = netfs_prepare_read_iterator(subreq, ractl);
- 		if (slice < 0) {
- 			ret = slice;
--			subreq->error = ret;
--			trace_netfs_sreq(subreq, netfs_sreq_trace_cancel);
--			/* Not queued - release both refs. */
--			netfs_put_subrequest(subreq, netfs_sreq_trace_put_cancel);
--			netfs_put_subrequest(subreq, netfs_sreq_trace_put_cancel);
-+			netfs_cancel_read(subreq, ret);
- 			break;
- 		}
--		size -= slice;
- 		start += slice;
-+		size -= slice;
-+		if (size <= 0) {
-+			smp_wmb(); /* Write lists before ALL_QUEUED. */
-+			set_bit(NETFS_RREQ_ALL_QUEUED, &rreq->flags);
-+		}
- 
--		netfs_queue_read(rreq, subreq, size <= 0);
- 		netfs_issue_read(rreq, subreq);
- 		cond_resched();
- 	} while (size > 0);
-diff --git a/fs/netfs/direct_read.c b/fs/netfs/direct_read.c
-index f72e6da88cca7..6a8fb0d55e040 100644
---- a/fs/netfs/direct_read.c
-+++ b/fs/netfs/direct_read.c
-@@ -45,12 +45,11 @@ static void netfs_prepare_dio_read_iterator(struct netfs_io_subrequest *subreq)
-  * Perform a read to a buffer from the server, slicing up the region to be read
-  * according to the network rsize.
-  */
--static int netfs_dispatch_unbuffered_reads(struct netfs_io_request *rreq)
-+static void netfs_dispatch_unbuffered_reads(struct netfs_io_request *rreq)
+ static int
+-__close_file_table_ids(struct ksmbd_file_table *ft,
++__close_file_table_ids(struct ksmbd_session *sess,
+ 		       struct ksmbd_tree_connect *tcon,
+ 		       bool (*skip)(struct ksmbd_tree_connect *tcon,
+-				    struct ksmbd_file *fp))
++				    struct ksmbd_file *fp,
++				    struct ksmbd_user *user))
  {
--	struct netfs_io_stream *stream = &rreq->io_streams[0];
- 	unsigned long long start = rreq->start;
- 	ssize_t size = rreq->len;
--	int ret = 0;
-+	int ret;
- 
- 	do {
- 		struct netfs_io_subrequest *subreq;
-@@ -58,7 +57,10 @@ static int netfs_dispatch_unbuffered_reads(struct netfs_io_request *rreq)
- 
- 		subreq = netfs_alloc_subrequest(rreq);
- 		if (!subreq) {
--			ret = -ENOMEM;
-+			/* Stash the error in the request if there's not
-+			 * already an error set.
-+			 */
-+			cmpxchg(&rreq->error, 0, -ENOMEM);
++	struct ksmbd_file_table *ft = &sess->file_table;
+ 	struct ksmbd_file *fp;
+ 	unsigned int id = 0;
+ 	int num = 0;
+@@ -711,7 +716,7 @@ __close_file_table_ids(struct ksmbd_file_table *ft,
  			break;
  		}
  
-@@ -66,25 +68,13 @@ static int netfs_dispatch_unbuffered_reads(struct netfs_io_request *rreq)
- 		subreq->start	= start;
- 		subreq->len	= size;
- 
--		__set_bit(NETFS_SREQ_IN_PROGRESS, &subreq->flags);
--
--		spin_lock(&rreq->lock);
--		list_add_tail(&subreq->rreq_link, &stream->subrequests);
--		if (list_is_first(&subreq->rreq_link, &stream->subrequests)) {
--			if (!stream->active) {
--				stream->collected_to = subreq->start;
--				/* Store list pointers before active flag */
--				smp_store_release(&stream->active, true);
--			}
--		}
--		trace_netfs_sreq(subreq, netfs_sreq_trace_added);
--		spin_unlock(&rreq->lock);
-+		netfs_queue_read(rreq, subreq);
- 
- 		netfs_stat(&netfs_n_rh_download);
- 		if (rreq->netfs_ops->prepare_read) {
- 			ret = rreq->netfs_ops->prepare_read(subreq);
- 			if (ret < 0) {
--				netfs_put_subrequest(subreq, netfs_sreq_trace_put_cancel);
-+				netfs_cancel_read(subreq, ret);
- 				break;
- 			}
- 		}
-@@ -113,8 +103,6 @@ static int netfs_dispatch_unbuffered_reads(struct netfs_io_request *rreq)
- 		set_bit(NETFS_RREQ_ALL_QUEUED, &rreq->flags);
- 		netfs_wake_collector(rreq);
- 	}
--
--	return ret;
+-		if (skip(tcon, fp) ||
++		if (skip(tcon, fp, sess->user) ||
+ 		    !atomic_dec_and_test(&fp->refcount)) {
+ 			id++;
+ 			write_unlock(&ft->lock);
+@@ -763,7 +768,8 @@ static inline bool is_reconnectable(struct ksmbd_file *fp)
  }
  
- /*
-@@ -137,21 +125,17 @@ static ssize_t netfs_unbuffered_read(struct netfs_io_request *rreq, bool sync)
- 	// TODO: Use bounce buffer if requested
- 
- 	inode_dio_begin(rreq->inode);
-+	netfs_dispatch_unbuffered_reads(rreq);
- 
--	ret = netfs_dispatch_unbuffered_reads(rreq);
--
--	if (!rreq->submitted) {
--		netfs_put_request(rreq, netfs_rreq_trace_put_no_submit);
--		inode_dio_end(rreq->inode);
--		ret = 0;
--		goto out;
--	}
-+	/* The collector will get run, even if we don't manage to submit any
-+	 * subreqs, so we shouldn't call inode_dio_end() here.
-+	 */
- 
- 	if (sync)
- 		ret = netfs_wait_for_read(rreq);
- 	else
- 		ret = -EIOCBQUEUED;
--out:
-+
- 	_leave(" = %zd", ret);
- 	return ret;
+ static bool tree_conn_fd_check(struct ksmbd_tree_connect *tcon,
+-			       struct ksmbd_file *fp)
++			       struct ksmbd_file *fp,
++			       struct ksmbd_user *user)
+ {
+ 	return fp->tcon != tcon;
  }
-diff --git a/fs/netfs/internal.h b/fs/netfs/internal.h
-index d436e20d34185..645996ecfc803 100644
---- a/fs/netfs/internal.h
-+++ b/fs/netfs/internal.h
-@@ -23,6 +23,8 @@
- /*
-  * buffered_read.c
-  */
-+void netfs_queue_read(struct netfs_io_request *rreq,
-+		      struct netfs_io_subrequest *subreq);
- void netfs_cache_read_terminated(void *priv, ssize_t transferred_or_error);
- int netfs_prefetch_for_write(struct file *file, struct folio *folio,
- 			     size_t offset, size_t len);
-@@ -108,6 +110,7 @@ static inline void netfs_see_subrequest(struct netfs_io_subrequest *subreq,
-  */
- bool netfs_read_collection(struct netfs_io_request *rreq);
- void netfs_read_collection_worker(struct work_struct *work);
-+void netfs_cancel_read(struct netfs_io_subrequest *subreq, int error);
- void netfs_cache_read_terminated(void *priv, ssize_t transferred_or_error);
- 
- /*
-diff --git a/fs/netfs/read_collect.c b/fs/netfs/read_collect.c
-index e5f6665b3341e..d2d902f466271 100644
---- a/fs/netfs/read_collect.c
-+++ b/fs/netfs/read_collect.c
-@@ -575,6 +575,17 @@ void netfs_read_subreq_terminated(struct netfs_io_subrequest *subreq)
+@@ -898,8 +904,62 @@ void ksmbd_stop_durable_scavenger(void)
+ 	kthread_stop(server_conf.dh_task);
  }
- EXPORT_SYMBOL(netfs_read_subreq_terminated);
  
 +/*
-+ * Cancel a read subrequest due to preparation failure.
++ * ksmbd_vfs_copy_durable_owner - Copy owner info for durable reconnect
++ * @fp: ksmbd file pointer to store owner info
++ * @user: user pointer to copy from
++ *
++ * This function binds the current user's identity to the file handle
++ * to satisfy MS-SMB2 Step 8 (SecurityContext matching) during reconnect.
++ *
++ * Return: 0 on success, or negative error code on failure
 + */
-+void netfs_cancel_read(struct netfs_io_subrequest *subreq, int error)
++static int ksmbd_vfs_copy_durable_owner(struct ksmbd_file *fp,
++		struct ksmbd_user *user)
 +{
-+	trace_netfs_sreq(subreq, netfs_sreq_trace_cancel);
-+	subreq->error = error;
-+	__set_bit(NETFS_SREQ_FAILED, &subreq->flags);
-+	netfs_read_subreq_terminated(subreq);
++	if (!user)
++		return -EINVAL;
++
++	/* Duplicate the user name to ensure identity persistence */
++	fp->owner.name = kstrdup(user->name, GFP_KERNEL);
++	if (!fp->owner.name)
++		return -ENOMEM;
++
++	fp->owner.uid = user->uid;
++	fp->owner.gid = user->gid;
++
++	return 0;
 +}
 +
- /*
-  * Handle termination of a read from the cache.
-  */
-diff --git a/fs/netfs/read_single.c b/fs/netfs/read_single.c
-index d0e23bc42445f..8833550d2eb60 100644
---- a/fs/netfs/read_single.c
-+++ b/fs/netfs/read_single.c
-@@ -89,7 +89,6 @@ static void netfs_single_read_cache(struct netfs_io_request *rreq,
-  */
- static int netfs_single_dispatch_read(struct netfs_io_request *rreq)
++/**
++ * ksmbd_vfs_compare_durable_owner - Verify if the requester is original owner
++ * @fp: existing ksmbd file pointer
++ * @user: user pointer of the reconnect requester
++ *
++ * Compares the UID, GID, and name of the current requester against the
++ * original owner stored in the file handle.
++ *
++ * Return: true if the user matches, false otherwise
++ */
++bool ksmbd_vfs_compare_durable_owner(struct ksmbd_file *fp,
++		struct ksmbd_user *user)
++{
++	if (!user || !fp->owner.name)
++		return false;
++
++	/* Check if the UID and GID match first (fast path) */
++	if (fp->owner.uid != user->uid || fp->owner.gid != user->gid)
++		return false;
++
++	/* Validate the account name to ensure the same SecurityContext */
++	if (strcmp(fp->owner.name, user->name))
++		return false;
++
++	return true;
++}
++
+ static bool session_fd_check(struct ksmbd_tree_connect *tcon,
+-			     struct ksmbd_file *fp)
++			     struct ksmbd_file *fp, struct ksmbd_user *user)
  {
--	struct netfs_io_stream *stream = &rreq->io_streams[0];
- 	struct netfs_io_subrequest *subreq;
- 	int ret = 0;
+ 	struct ksmbd_inode *ci;
+ 	struct oplock_info *op;
+@@ -909,6 +969,9 @@ static bool session_fd_check(struct ksmbd_tree_connect *tcon,
+ 	if (!is_reconnectable(fp))
+ 		return false;
  
-@@ -102,14 +101,7 @@ static int netfs_single_dispatch_read(struct netfs_io_request *rreq)
- 	subreq->len	= rreq->len;
- 	subreq->io_iter	= rreq->buffer.iter;
++	if (ksmbd_vfs_copy_durable_owner(fp, user))
++		return false;
++
+ 	conn = fp->conn;
+ 	ci = fp->f_ci;
+ 	down_write(&ci->m_lock);
+@@ -940,7 +1003,7 @@ static bool session_fd_check(struct ksmbd_tree_connect *tcon,
  
--	__set_bit(NETFS_SREQ_IN_PROGRESS, &subreq->flags);
--
--	spin_lock(&rreq->lock);
--	list_add_tail(&subreq->rreq_link, &stream->subrequests);
--	trace_netfs_sreq(subreq, netfs_sreq_trace_added);
--	/* Store list pointers before active flag */
--	smp_store_release(&stream->active, true);
--	spin_unlock(&rreq->lock);
-+	netfs_queue_read(rreq, subreq);
+ void ksmbd_close_tree_conn_fds(struct ksmbd_work *work)
+ {
+-	int num = __close_file_table_ids(&work->sess->file_table,
++	int num = __close_file_table_ids(work->sess,
+ 					 work->tcon,
+ 					 tree_conn_fd_check);
  
- 	netfs_single_cache_prepare_read(rreq, subreq);
- 	switch (subreq->source) {
-@@ -121,10 +113,14 @@ static int netfs_single_dispatch_read(struct netfs_io_request *rreq)
- 				goto cancel;
- 		}
+@@ -949,7 +1012,7 @@ void ksmbd_close_tree_conn_fds(struct ksmbd_work *work)
  
-+		smp_wmb(); /* Write lists before ALL_QUEUED. */
-+		set_bit(NETFS_RREQ_ALL_QUEUED, &rreq->flags);
- 		rreq->netfs_ops->issue_read(subreq);
- 		rreq->submitted += subreq->len;
- 		break;
- 	case NETFS_READ_FROM_CACHE:
-+		smp_wmb(); /* Write lists before ALL_QUEUED. */
-+		set_bit(NETFS_RREQ_ALL_QUEUED, &rreq->flags);
- 		trace_netfs_sreq(subreq, netfs_sreq_trace_submit);
- 		netfs_single_read_cache(rreq, subreq);
- 		rreq->submitted += subreq->len;
-@@ -134,14 +130,15 @@ static int netfs_single_dispatch_read(struct netfs_io_request *rreq)
- 		pr_warn("Unexpected single-read source %u\n", subreq->source);
- 		WARN_ON_ONCE(true);
- 		ret = -EIO;
--		break;
-+		goto cancel;
+ void ksmbd_close_session_fds(struct ksmbd_work *work)
+ {
+-	int num = __close_file_table_ids(&work->sess->file_table,
++	int num = __close_file_table_ids(work->sess,
+ 					 work->tcon,
+ 					 session_fd_check);
+ 
+@@ -1046,6 +1109,10 @@ int ksmbd_reopen_durable_fd(struct ksmbd_work *work, struct ksmbd_file *fp)
  	}
+ 	up_write(&ci->m_lock);
  
--	smp_wmb(); /* Write lists before ALL_QUEUED. */
--	set_bit(NETFS_RREQ_ALL_QUEUED, &rreq->flags);
- 	return ret;
- cancel:
--	netfs_put_subrequest(subreq, netfs_sreq_trace_put_cancel);
-+	netfs_cancel_read(subreq, ret);
-+	smp_wmb(); /* Write lists before ALL_QUEUED. */
-+	set_bit(NETFS_RREQ_ALL_QUEUED, &rreq->flags);
-+	netfs_wake_collector(rreq);
- 	return ret;
++	fp->owner.uid = fp->owner.gid = 0;
++	kfree(fp->owner.name);
++	fp->owner.name = NULL;
++
+ 	return 0;
  }
  
+@@ -1060,12 +1127,14 @@ int ksmbd_init_file_table(struct ksmbd_file_table *ft)
+ 	return 0;
+ }
+ 
+-void ksmbd_destroy_file_table(struct ksmbd_file_table *ft)
++void ksmbd_destroy_file_table(struct ksmbd_session *sess)
+ {
++	struct ksmbd_file_table *ft = &sess->file_table;
++
+ 	if (!ft->idr)
+ 		return;
+ 
+-	__close_file_table_ids(ft, NULL, session_fd_check);
++	__close_file_table_ids(sess, NULL, session_fd_check);
+ 	idr_destroy(ft->idr);
+ 	kfree(ft->idr);
+ 	ft->idr = NULL;
+diff --git a/fs/smb/server/vfs_cache.h b/fs/smb/server/vfs_cache.h
+index 5bbb179736c29..1b2a947490ca5 100644
+--- a/fs/smb/server/vfs_cache.h
++++ b/fs/smb/server/vfs_cache.h
+@@ -67,6 +67,13 @@ enum {
+ 	FP_CLOSED
+ };
+ 
++/* Owner information for durable handle reconnect */
++struct durable_owner {
++	unsigned int uid;
++	unsigned int gid;
++	char *name;
++};
++
+ struct ksmbd_file {
+ 	struct file			*filp;
+ 	u64				persistent_id;
+@@ -111,6 +118,7 @@ struct ksmbd_file {
+ 	bool				is_durable;
+ 	bool				is_persistent;
+ 	bool				is_resilient;
++	struct durable_owner		owner;
+ };
+ 
+ static inline void set_ctx_actor(struct dir_context *ctx,
+@@ -137,7 +145,7 @@ static inline bool ksmbd_stream_fd(struct ksmbd_file *fp)
+ }
+ 
+ int ksmbd_init_file_table(struct ksmbd_file_table *ft);
+-void ksmbd_destroy_file_table(struct ksmbd_file_table *ft);
++void ksmbd_destroy_file_table(struct ksmbd_session *sess);
+ int ksmbd_close_fd(struct ksmbd_work *work, u64 id);
+ struct ksmbd_file *ksmbd_lookup_fd_fast(struct ksmbd_work *work, u64 id);
+ struct ksmbd_file *ksmbd_lookup_foreign_fd(struct ksmbd_work *work, u64 id);
+@@ -163,6 +171,8 @@ void ksmbd_free_global_file_table(void);
+ void ksmbd_set_fd_limit(unsigned long limit);
+ void ksmbd_update_fstate(struct ksmbd_file_table *ft, struct ksmbd_file *fp,
+ 			 unsigned int state);
++bool ksmbd_vfs_compare_durable_owner(struct ksmbd_file *fp,
++		struct ksmbd_user *user);
+ 
+ /*
+  * INODE hash
 -- 
 2.53.0
 
