@@ -1,335 +1,206 @@
-Return-Path: <stable+bounces-255069-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-255047-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id aEhpGHZ4GGo8kQgAu9opvQ
-	(envelope-from <stable+bounces-255069-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 19:16:38 +0200
+	id oBrWHjJhGGpEjggAu9opvQ
+	(envelope-from <stable+bounces-255047-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 17:37:22 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id DDF215F57FD
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 19:16:37 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 254B15F4820
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 17:37:21 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 4472B3191CAC
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 17:00:05 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id CE9363006470
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 15:28:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F35943F926F;
-	Thu, 28 May 2026 17:00:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C42B126A08F;
+	Thu, 28 May 2026 15:28:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=dell.com header.i=@dell.com header.b="yePlNNRH"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="GfuDqkcx"
 X-Original-To: stable@vger.kernel.org
-Received: from mx0a-00154904.pphosted.com (mx0a-00154904.pphosted.com [148.163.133.20])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-oo1-f48.google.com (mail-oo1-f48.google.com [209.85.161.48])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6EC7528727D;
-	Thu, 28 May 2026 17:00:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=148.163.133.20
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5C3492E7361
+	for <stable@vger.kernel.org>; Thu, 28 May 2026 15:28:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.161.48
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779987603; cv=fail; b=l6nwfhz89b3wcEbR9utL7m+cq0aVuz0UsepiWmNNYw6ecSzQY6fOm2baiNkY9dxYzEZPhth7eKUbWhVDyoL1geE8yuiepbLO0lrkggK6TMfKGZk6B4mAIW3gtuhn9dB9FBCcdBAxA8UYEdMUS3kzvrpJ9QvjkZ5HzbDoMUT0wDk=
+	t=1779982092; cv=pass; b=STvHTSx7aqAGsosMwE9EiLbhF0GablZ6NRlncBI5XNwA0nhHvKYofoSU0Qg6wiuIbHbIb4Zs3f+cFMe1VkGdM3LJ7zwJbluUdKPOK1e1cqLguQ/A1L0nRTsHLylnY4uG5kga+pbkRye8q4cDsfERQqz1trdoQzkJQnScxB2UrJI=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779987603; c=relaxed/simple;
-	bh=bOekgAa+KuQe/hOkVn3vMLhsExrY2CHgPEjkgRv7iJA=;
-	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
-	 Content-Type:MIME-Version; b=hXzPL/Q3N0UKJjKvcYSAqhob4a6tWHaY67+8gUXdpQ0+FzJM0WfdvYah19CzPyqtuwyQvJyBL/3AAerDlOxESjBU3ZFauG85rxo2bNOgJo892IxFcwCFlSQEAXIdK71rYwvl5eEUVOpwkiiKtGFMkfug+WJaKEAdS6gbGDBw0SM=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=dell.com; spf=pass smtp.mailfrom=dell.com; dkim=pass (2048-bit key) header.d=dell.com header.i=@dell.com header.b=yePlNNRH; arc=fail smtp.client-ip=148.163.133.20
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=dell.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=dell.com
-Received: from pps.filterd (m0170390.ppops.net [127.0.0.1])
-	by mx0a-00154904.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 64SFJ2Hb2109283;
-	Thu, 28 May 2026 11:24:31 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=dell.com; h=cc
-	:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=smtpout1; bh=U
-	VKDTefhl9FpMMforkQHVa9zlcQa7B6QB+Ww23T+x2o=; b=yePlNNRHYsnkcL+4p
-	XAb1x7k6tBTrliMPZ/D2R2hjkAIluKjPrc3o90ESiDkjRw2+3B4VpePymDBkV24K
-	IVb4RiEiXF46udUtO+EUNi7uq3rxzquXF7Lo9bmsc0WXuPjPslHQZ6w3tH2lrzB7
-	IfLOwBKhveJaB5Y3d7LwyRlYdB1etOuGH7S52SDapILpTHIfD/yyefofJAclTu5L
-	QCm4ztKtEIOAPNMCYafpjPvBBixeHOP+php8Fi7XNlUmyow3jH9KvfKleEAfT51j
-	amUZ/bhNelXh+QxnBVY2aMeTkkA6OVFK0hsHUeWu7I/0otS34NZ/v5m/zX6CpeZ6
-	/T2QQ==
-Received: from mx0a-00154901.pphosted.com (mx0a-00154901.pphosted.com [67.231.149.39])
-	by mx0a-00154904.pphosted.com (PPS) with ESMTPS id 4ee7xrbfar-1
-	(version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NOT);
-	Thu, 28 May 2026 11:24:31 -0400 (EDT)
-Received: from pps.filterd (m0142699.ppops.net [127.0.0.1])
-	by mx0a-00154901.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 64SEi15O286172;
-	Thu, 28 May 2026 11:24:30 -0400
-Received: from ch5pr02cu005.outbound.protection.outlook.com (mail-northcentralusazon11012026.outbound.protection.outlook.com [40.107.200.26])
-	by mx0a-00154901.pphosted.com (PPS) with ESMTPS id 4eep972agj-1
-	(version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=OK);
-	Thu, 28 May 2026 11:24:30 -0400 (EDT)
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=CZ3TthABX/4kWMgNeIxtiS/sYk3749p7yzMi7DWvZqy7xS6qW9G8eOJzMtOte77qCe7UjvX2OhR1xHBA64bNg+9kvDR6Py/TXqqaXOS4ZqHL6PmqKbQ1XTZUJDDBEqivyzY2lcCNy2eMDOGrAwO1EUZPImBw7XXlVcvbT44WOAxi1XFf2HTFkNbUNE1+BNThUC7g5TDaZK/0lPPq7vNlaTRLNdc8CtePwvLG0lNYiXPvwcTmdVMBwGmhgtb76nO3PHPwH0y8iskshCcqr4weZNFQ9FhW0dc78Ri09wVYG56354gyTFLMhjSDYlCI0CkZh3mLt0t/HE66p0rvF10cyg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=UVKDTefhl9FpMMforkQHVa9zlcQa7B6QB+Ww23T+x2o=;
- b=ErHcuwoi9UX4bndaL9qnJtzGh9ZNYFzlIhAKIIm/1RW+4q5fs+3dOojfS4wVS8S6ci1h1XItS5AnE+co+uAZjA/tyt0odfBwr4eJ5lFYibEf/HAVWSUWWo/ReiCErVtnSskX/oUzfDqNbRj3QF8Nko/yxOUdn68C7J3Vs2M/Ulnw1e5IO+VJJhUXgE/n7hwjf+QsthKnGCnovKrCC9ogTHtQ3hj9osNXZH5COy941u7V+u4A2HcWhUSJKqo3434oOrokcQpKirQr2nb7bLqmNBUwDBxrk4k2PgRIKLgfSGWcTzGYTSkuVM/vSVhgzGsMqdqtPDmLnxah5v6ji6a+Cg==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=dell.com; dmarc=pass action=none header.from=dell.com;
- dkim=pass header.d=dell.com; arc=none
-Received: from DS0PR19MB7696.namprd19.prod.outlook.com (2603:10b6:8:f8::5) by
- DSWPR19MB997315.namprd19.prod.outlook.com (2603:10b6:8:36f::20) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.71.13; Thu, 28 May
- 2026 15:24:27 +0000
-Received: from DS0PR19MB7696.namprd19.prod.outlook.com
- ([fe80::9d6:bb81:6340:84a9]) by DS0PR19MB7696.namprd19.prod.outlook.com
- ([fe80::9d6:bb81:6340:84a9%4]) with mapi id 15.21.0071.011; Thu, 28 May 2026
- 15:24:27 +0000
-From: "Achkinazi, Igor" <Igor.Achkinazi@dell.com>
-To: "kbusch@kernel.org" <kbusch@kernel.org>, "hch@lst.de" <hch@lst.de>,
-        "sagi@grimberg.me" <sagi@grimberg.me>,
-        "axboe@kernel.dk" <axboe@kernel.dk>
-CC: "linux-nvme@lists.infradead.org" <linux-nvme@lists.infradead.org>,
-        "linux-block@vger.kernel.org" <linux-block@vger.kernel.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        "stable@vger.kernel.org" <stable@vger.kernel.org>
-Subject: [PATCH v2] nvme-multipath: set BIO_REMAPPED on bios remapped to
- per-path namespace disks
-Thread-Topic: [PATCH v2] nvme-multipath: set BIO_REMAPPED on bios remapped to
- per-path namespace disks
-Thread-Index: AQHc7rYSFc/wmEX1xUeXcN5PEFcVhw==
-Date: Thu, 28 May 2026 15:24:27 +0000
-Message-ID:
- <DS0PR19MB76963295FC34844B413479F9FD092@DS0PR19MB7696.namprd19.prod.outlook.com>
-References:
- <MW5PR19MB548483D1FAE4F322E4C97352FD032@MW5PR19MB5484.namprd19.prod.outlook.com>
-In-Reply-To:
- <MW5PR19MB548483D1FAE4F322E4C97352FD032@MW5PR19MB5484.namprd19.prod.outlook.com>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach:
-X-MS-TNEF-Correlator:
-msip_labels:
- MSIP_Label_73dd1fcc-24d7-4f55-9dc2-c1518f171327_Enabled=True;MSIP_Label_73dd1fcc-24d7-4f55-9dc2-c1518f171327_SiteId=945c199a-83a2-4e80-9f8c-5a91be5752dd;MSIP_Label_73dd1fcc-24d7-4f55-9dc2-c1518f171327_SetDate=2026-05-18T14:50:42.0000000Z;MSIP_Label_73dd1fcc-24d7-4f55-9dc2-c1518f171327_Name=No
- Protection (Label Only) - Internal
- Use;MSIP_Label_73dd1fcc-24d7-4f55-9dc2-c1518f171327_ContentBits=3;MSIP_Label_73dd1fcc-24d7-4f55-9dc2-c1518f171327_Method=Standard
-x-ms-publictraffictype: Email
-x-ms-traffictypediagnostic: DS0PR19MB7696:EE_|DSWPR19MB997315:EE_
-x-ms-office365-filtering-correlation-id: a6e38231-e635-468d-f19d-08debccd34ad
-x-ms-exchange-senderadcheck: 1
-x-ms-exchange-antispam-relay: 0
-x-microsoft-antispam:
- BCL:0;ARA:13230040|786006|1800799024|366016|376014|38070700021|22082099003|56012099006|11063799006|18002099003;
-x-microsoft-antispam-message-info:
- 1R5XElb4SnSL2Hg3kFOrWhhIElM93JxZ7irWK1MyePbnIrYOBYt7rtMDkKYU434dEh8A/NKJckmXyGopp5DZx5hrDGwqT9TYLsihhzASK8Lyt9oVNFgZ9ytY7M4wAXb+EnRhmFIbHXz9zuNwjR1Km2h0TcJdJJ0OoePS9LwM8hYKiJOnExsy5FI4Cr287wXv4l6UWMCoHnYZtyOOmBI2PzN/MMFsKv+EelHTQqbzedVNvj7vTboPn48d2Q8HqXehvXqJwlZJqkiB4q/ZMRc5rcGoDRDkSXmRK9y8XJAixXHV6aLWAko7TabUeHfksgK53TowKGUqjaXUlMLyiNobQhwfAfw5Ro3EP6S2cTap0KNikBOW1f4In5Tln8L6vO59VKaiD1vLYjt6Lrc7IwoC1dFylDyRPSgdIIwzkGLGgZHrehxlHTil8WXSNZx6gcauWSNbWLQ02eiWMhPHy/Yy35ICBG056N2Mtru0LDCnbK10AKX2cajHfwHPfvWP6vBYpSZbKcflVSVCssmXN4RpjPDMkfM0/+sjIDjLiAbnBLCPxnnELCpQHx+LzZuEunY80yIYrmO1fcKVs5rKQPnwVCcDDi+/kL11vjJI1tWFmtF1MawuvEcNpy6yRshewyls40KzD60CSGy5R9lRNNc5jNV/fHpzCbkdV5D9KfRo4Jnj9cL01fdk7xIrTRvCevZHqiLeInWWvMHgwrjbMTiLUUXCS+K3aAWlrnmUwUX/5OVrJb4KibuqBgpg29OVMAh+
-x-forefront-antispam-report:
- CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DS0PR19MB7696.namprd19.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(786006)(1800799024)(366016)(376014)(38070700021)(22082099003)(56012099006)(11063799006)(18002099003);DIR:OUT;SFP:1101;
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0:
- =?us-ascii?Q?ZX0RZ/r0nxE3xgHY6CgEoX0dv/FPVQ96e+omWE8gzchwRf6GHLaHtpR9gChE?=
- =?us-ascii?Q?FZQjGQ1RV8OxlyDa6YFWuJik8b3+HWDFkcLeqmrX2nkXVmKYw/qe6wE+CF6b?=
- =?us-ascii?Q?g9HxJbQH6Xp5W3dnAyWXaFE9SHnzvkS757mdQj75umvFkzTT9Ral6+NHKI1J?=
- =?us-ascii?Q?gRqze8i57+DR1UEGuKDQwPzckr2JYO+hBhCknma27qpxhRyp8MavP3VBqO8e?=
- =?us-ascii?Q?wHinwU+36tdtJV8V5Chm0Ay6FcVr7LF5PTSV23WS9HYnYMic3jL62mkVpMgO?=
- =?us-ascii?Q?gG+3RW9jxfHRub8aKFo5NCLv1nj7LLszyn1bMDGD6kEtoVpkkNZY2qCCZVxi?=
- =?us-ascii?Q?BiuopNZ42f1Yp3GWw+AyiaT+t9jXlJY7FUNK/RQGx73r8d0UmCayIhY0R9xL?=
- =?us-ascii?Q?b75y66R1CjUaG7yEdugrdVp4TmZlZS+IrNq4EwnzSKwaoZX1GbFsAlKDRop7?=
- =?us-ascii?Q?8UpXS7LVTC5TDA9XK2BBGisD139HelHAPwuziLqv2KQ6REsA1M2/fq/529NC?=
- =?us-ascii?Q?w/XsVQkqCw8VnIznpnbE/ZL6SrPM5ibWQWDEut+s+tY4mqv7cjjVsUnjJmzP?=
- =?us-ascii?Q?Yc8U6bOHInehvtLh7TcMIiXqe0O+TBz1WoI1ffRexi3olWRO56+jTYk3hja3?=
- =?us-ascii?Q?t9UIgSV4pWaqhK1V0LM3kJZFTUNtoHu+SI52l2J6WHEoG+9n92v+DOgVMeVU?=
- =?us-ascii?Q?4+HjUOp24zTA4f+HrwGFoTQBsE7+amt85GVQxkf6lzSsVaD379vbbnHEH7OA?=
- =?us-ascii?Q?kh9yNwjqPtvPcUqrpMrLymDmGG8WurPv5FrqDnZOXni4ypYUCT2sao5YAg6r?=
- =?us-ascii?Q?2YeI3ar3tSM27KKxLXhA86VZCx1tBEXCUbhn0Gh5N7VXn3/wz9zNW7R6/rKX?=
- =?us-ascii?Q?zq/ZZ6M9rqbwSt/QTtmtiQ4+wUPFJRu8FFbhWpi9DdvvkW0tegJ7yV4KOvK8?=
- =?us-ascii?Q?7Lqh9Dgs/vG/EW8pqy0x8I4WiNfTG4kkG5AnXUfKGx+2vHyv6hP4VAPwocZ1?=
- =?us-ascii?Q?fq9ni2qyX1rL4sN0bcTxqziq/LOj4K6XTenBKvEBJt5br1i7AQ3ogvWK4S1p?=
- =?us-ascii?Q?BPsnuqLyxgcnxsUSY1+aQoZm5PYYBXtSUc2GnHETY4paCzrVixoefAoL9xqK?=
- =?us-ascii?Q?R8KrDLClkq95YODzfurLP+3wOrHABV8XDBGDZvH8PJBoksEGkDpLJ9NumhUt?=
- =?us-ascii?Q?d3hxJSTP0+EvPlcMjyK8ZP9lDF+9QCjZysDjYHWwe7jknYZXmYf2wDoMoorb?=
- =?us-ascii?Q?wHTXAAdxy7OXg7rPyF8sJmWRX3DDGXqCTpHRHw3sQoPeSxGXG3LDxzEDJUN9?=
- =?us-ascii?Q?XoVlSeOpUwuv1EgBqESEevCu+5m6VXmaEB8QuslksUi3yKkAG2grYhJucBzG?=
- =?us-ascii?Q?H2pcRb8+haAITxEBd7NyPKWiaOKVl8nh5tuFXq6WWTNA37Nje9fEeswwwiJF?=
- =?us-ascii?Q?Ajn186qnVdSs1JUCFmv5O6t3IkYv1ejWIj+q6B1FQiZEDFJyU8PrL3lAGUza?=
- =?us-ascii?Q?8vKro+igBWjCrqgQYnubZHvufH2HGZQ0EV3KconMqnW9Ilt9DXs0WkMTHYCz?=
- =?us-ascii?Q?chumvMqkwJhp3PmKHh3UZ2BuxLd+f645gH4J+GPCkmS3NouBSjBZoDCadIRq?=
- =?us-ascii?Q?/SnS9F8hNtioPvLGao+WMt7lzyGagA1GfRvFSkHN7073QwIuA5g0YRVRx+A5?=
- =?us-ascii?Q?stK1CcKPReVVnRwHGmzCptF28dg7moJnzMu0QxpkOSHPxSZFxNiBjuimpYDt?=
- =?us-ascii?Q?G8bNvznZ6A=3D=3D?=
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: quoted-printable
+	s=arc-20240116; t=1779982092; c=relaxed/simple;
+	bh=QQZRMUyG4rdg9VbIhpDJ4B7GggxoScpV42/zNaHlETA=;
+	h=MIME-Version:From:Date:Message-ID:Subject:To:Cc:Content-Type; b=JmH+UyKhDdF/llYdNX50rAJhMhlCho59nVF1U0RcDLBQ7IwzONqQXdlzs4rVoGaUjUz2IVSqETmxTp6RnkdA3eBnzKKF9UQcJytoO9wkNZAYtz1JxkKhMXwhk7ykoHjmaKoKm8NQ9p8wnEr1/rH2/n6bb3XHZ1vqS8dQ2zc3WXc=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=GfuDqkcx; arc=pass smtp.client-ip=209.85.161.48
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-oo1-f48.google.com with SMTP id 006d021491bc7-69d774f16ffso2607642eaf.3
+        for <stable@vger.kernel.org>; Thu, 28 May 2026 08:28:12 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1779982091; cv=none;
+        d=google.com; s=arc-20240605;
+        b=hT/Q20I4ofWJeUlKImfumzb0JBTMbRdxvA/gbaIbPVADgeQc2nQ/Xf/37B44sWVDjA
+         xKynSS/jBswTJ/TAdYuWDYAWPnZ4kwwbvim0foRjfPUVvYFaQ7LPuM1W+hCpOEur8nzK
+         t61ba0ElucoLoHiETuFrlnpQxXbnmu/1ZhBvdLrUV0bre4jqOeF5/9glmoCR4PajsSVV
+         Abzv0SLq9mBMt05EZ63W0NlVMigodWRJAD+GxmZ6k5AlzrNTj2OVY9v4qYlunpG8UDtv
+         6P6Q/WnKuupptGBFFCmGUoSIAZHVfLlxdNM6rhvuk8mgyHv3hME7O4EjgLw+k1Mgl2+W
+         Ojug==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=cc:to:subject:message-id:date:from:mime-version:dkim-signature;
+        bh=i0leLrUUC77byTFf4T2aIVlZtxOK+NbeHXiUHb/7zfE=;
+        fh=6DVKTgGr6kARr2Mmf/XvkDvdlglgJ3vcfpn0ZZQ1IwU=;
+        b=Gl/mFJo8sG0IE7/SGh2hB9no08z+dw4DvsteDQpDHJ7TpQ2/0r8/TtaP4eUBzDxrIt
+         XbV7/DErdqeED9VmPf24KUNoYCRbcolwfoZVg+N+ZMSvS7cdRoiAqjz9t9IZGrjj7znr
+         sse5GbhJpDJ1fs1YZsZQ+2vfu3HV899ryezzklEM3AbT0gpKu5wa/pK4pnjKvp+U2bns
+         g1GR5na89W463m8bJjkQTX5lBFcHf2S3ml2uNiQqxmiZhIeGmBU6XM8T/MwMaJDaoIRZ
+         6Tjwar1AFaJ2tBVASOeHg/BjQuKjZAePRZEwAEfb13JSNeLhDYBrA2FXuTQrxu8U99vV
+         mx0w==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1779982091; x=1780586891; darn=vger.kernel.org;
+        h=cc:to:subject:message-id:date:from:mime-version:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=i0leLrUUC77byTFf4T2aIVlZtxOK+NbeHXiUHb/7zfE=;
+        b=GfuDqkcxzhGtWCb6j9Jt2pXXoNhUxA+e5Bj90cyAGSaO5tTVYQCMR32CQMI2TAU4VQ
+         0ktrTPAvf9T32ffX9N604td1xtaVktw1drvJ3ut2zvn8vNhRkUPYLpihkJfSQfD2jQdi
+         kTvp6+5Y0LYdnAir/AvH5YZgWpzTCV8+FZT6IB8bgLbhBJS8X05RW/2hH25RLc6R9tSM
+         BCA3S3XDnS5/TBZQVT5+P+6C8mzu7FAlbZtj/XRJ+oo+ciE1QxPHNf69/a12zlU4O5P4
+         v4/1hJS/NVZBojFdQ2ysczS6WTCtIPC+XH2CzVazt5jn42iAxDqqNtDXdspsVwrje6Xa
+         YrlA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1779982091; x=1780586891;
+        h=cc:to:subject:message-id:date:from:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=i0leLrUUC77byTFf4T2aIVlZtxOK+NbeHXiUHb/7zfE=;
+        b=W7ZD7aKywUC9qKnvuSpn4Wq2hd3W0bKtQuFUnksAFRJGHkA7JDiMgYkOVErmUwIegR
+         d8KvvoSfB8maCw/23iyZ5W2pcAuz/lq4KfX0t/r0sOMA9OsYVD2Vzt4b6No7jrmBp81+
+         /30Um0cvt9CksR7gWir1IdG/JXDr61KaUIAUIMXXBpXIhWlW6U3suIvuGTaQULzuPjRw
+         84PVUcfdlrDo16Iw6m2MbyjPRMEz69lUjuez5STkOVmIsVE4D6QlMdZtP3tNBMeqYAdu
+         ThKhfEtLoBGCqjP1tVswS+edWkrKaReZoxpdLWscltMKMPT6pPzH9v/QaVRsL0hQp3i6
+         Eu4Q==
+X-Forwarded-Encrypted: i=1; AFNElJ+JGn3B68E5v1jujhsLI06CrrFRHQDZHr1kEkohw/wU8xAdeUXMw27mBEC1lrlMjCEvO8wwlqk=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyhM5/9Bv+Ld12H2+erirjrtIqx5DbgF+GViilIoJDHi96i8qs/
+	NyNyzGVblVjDxbbUG7RKC9/HnsMSFK4fzOJesO5ZywY44lW2rukYsOfzpRrHErmxGzoBoyhqdsj
+	ACZnewBQmVCRRvCoeCaHIfc9PC2O1D/8=
+X-Gm-Gg: Acq92OGU20eAYtH3UaC1xHfYFn9ZxYROzxiJiiZ53fpHWTUYfBqBmAfZCDg7poPD20+
+	+geIfr/V9coHCd9XTVtTbp6FQiasG0Fr2eKNptksMO6hsO877iqHdg8RdsMpSxLbsiiHHnfxZLc
+	+SLXpe9vrGWBqIn48fqFWXrL1X+ZBchnCeoGEV8DFpwlKcgYC8fJKxdT3pHck00adIjDLNm8UPE
+	osvR0eajltEyD2Rv/uQJYl6A38POYrxWHmUwRiukJrW3QDtnrMnmLfTW8GCKabdHNloSmm8ELmp
+	r32wL3h4uavvZVYEWDX1gQzoWg==
+X-Received: by 2002:a05:6820:1995:b0:67b:bd89:90ed with SMTP id
+ 006d021491bc7-69d7eca473fmr15377134eaf.41.1779982091287; Thu, 28 May 2026
+ 08:28:11 -0700 (PDT)
+Received: from 469456477896 named unknown by gmailapi.google.com with
+ HTTPREST; Thu, 28 May 2026 08:28:10 -0700
+Received: from 469456477896 named unknown by gmailapi.google.com with
+ HTTPREST; Thu, 28 May 2026 08:28:10 -0700
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-Exchange-RoutingPolicyChecked:
-	n8Gw7j0zObRdZcg2ePNVJQN69j02eDlrsQOpdWHzuZemeiJIjbbfCM6oLvykVPVLQq46RBVPRtruevtD5JMleZDECqy6dlBsqjI1GV1yv71Fj4p52HBuIXXED5okKwZmvfTH+nd+NOdcDq/ECnn8zX+nXvBGOn+DhWc2X2s4xfj/M1rvTXAG/cbDTdT8c8qlSOBMq1K9R6lZsMG9WdVNTLeEFg7o2bVg2AYQbjUEmSgaIVpJ+aA3rvbmkS3RVka+fq5rzRd33afWSn9FqwYO3Fmjfy08dponujfF93V1VLupamn+k7jBPgnScYI2foq5XayEW3/gFEVPL64LqNaJwQ==
-X-OriginatorOrg: Dell.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: DS0PR19MB7696.namprd19.prod.outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: a6e38231-e635-468d-f19d-08debccd34ad
-X-MS-Exchange-CrossTenant-originalarrivaltime: 28 May 2026 15:24:27.1186
- (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 945c199a-83a2-4e80-9f8c-5a91be5752dd
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: oE06EcpvTKSksIvOfNEMVc2mMnb0m5VyWTDa8NpZsIZ2CgeA7OwBzPjEUeuev8iezN6ch+MRIkPc+fERZ8AtOw==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DSWPR19MB997315
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.125,FMLib:17.12.100.49
- definitions=2026-05-28_05,2026-05-28_03,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- phishscore=0 bulkscore=0 priorityscore=1501 lowpriorityscore=0 spamscore=0
- impostorscore=0 suspectscore=0 clxscore=1015 malwarescore=0 adultscore=0
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.22.0-2605210000 definitions=main-2605280155
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNTI4MDE1NCBTYWx0ZWRfXy2dQozYorbZ/
- K51u7U/mfijcDxr1WMTBDildkBqbFwX9aMrX/lnsDhqe+hTQyITaD9zOyHXacuSL8Yd7bWh2FeL
- I3+E3YgBGOlwQ4PtaKuKwH+ClnjLIUx54JQZkglt7T99Q3gIjAMkXOs8aewjx7XsomGpKdG9sNb
- 0L7BIr8teW3CIUM9D5GqmAaNJ6BO7MC3svr7r/v9LGI9nYIt+3HbG973WqJ+n/SQR7lD8V+ogTC
- JqgNcPWmI4L6FByzwuZi2zu4cQ6N575YJ6eZXbOjPebk36wVqmWsa7kahZBvD/5Qai74UJX0x1R
- Pqxdv3eUU0YtPMd+6vinp5BF+blg45NcbLdnf6vw18ervnNh8TzHySmBcvfX9vT9Y8VRmJVIYBP
- 0HLVOarhloJAfTND5iOvaU30shMkB5icI4BCMtxEu7wYsyy9SYjK6D1aN+GlwwdaMP/IdnSjzaA
- tCuDuFkMtHbgI/7eE7g==
-X-Authority-Analysis: v=2.4 cv=R4Mz39RX c=1 sm=1 tr=0 ts=6a185e2f cx=c_pps
- a=j0++y401J6f/BxNAf5EDow==:117 a=z/mQ4Ysz8XfWz/Q5cLBRGdckG28=:19
- a=lCpzRmAYbLLaTzLvsPZ7Mbvzbb8=:19 a=xqWC_Br6kY4A:10 a=kj9zAlcOel0A:10
- a=NGcC8JguVDcA:10 a=VkNPw1HP01LnGYTKEx00:22 a=6gNNCFAoQcIphELLPWWu:22
- a=sEWawkeXllE7TocFc0N_:22 a=VwQbUJbxAAAA:8 a=VabnemYjAAAA:8 a=iLNU1ar6AAAA:8
- a=I5ez-9YcqGaXH_xP4T0A:9 a=CjuIK1q_8ugA:10 a=gbU3OgOOxF9bX48Letew:22
- a=gKebqoRLp9LExxC7YDUY:22
-X-Proofpoint-GUID: dpGZgTQBui_EqAzkXJnFv-cn_v62yLDc
-X-Proofpoint-ORIG-GUID: dpGZgTQBui_EqAzkXJnFv-cn_v62yLDc
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 malwarescore=0
- phishscore=0 spamscore=0 lowpriorityscore=0 impostorscore=0 clxscore=1015
- priorityscore=1501 suspectscore=0 bulkscore=0 adultscore=0
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.22.0-2605210000 definitions=main-2605280154
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	ARC_REJECT(1.00)[cv is fail on i=2];
-	DMARC_POLICY_ALLOW(-0.50)[dell.com,reject];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
-	R_DKIM_ALLOW(-0.20)[dell.com:s=smtpout1];
+From: Siho Lee <25esihoya@gmail.com>
+Date: Thu, 28 May 2026 08:28:10 -0700
+X-Gm-Features: AVHnY4IdqTJ7zDmth5WMGZnzwixk6rFBEMqwDoQ3EpXt7LiTgL1t7notH1b99jM
+Message-ID: <CAOYEF6nkrD4o_Kw_gxbv7Vefxpp=E6N4X_s-3KEcS1f3Hb1uAg@mail.gmail.com>
+Subject: [PATCH v2 net] netfilter: nft_payload: validate offset for all
+ csum_type paths
+To: Pablo Neira Ayuso <pablo@netfilter.org>, Florian Westphal <fw@strlen.de>
+Cc: netfilter-devel@vger.kernel.org, netdev@vger.kernel.org, 
+	stable@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+X-Spamd-Result: default: False [-2.16 / 15.00];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=2];
+	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
+	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
-	MIME_TRACE(0.00)[0:+];
-	MISSING_XM_UA(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	RCVD_COUNT_SEVEN(0.00)[9];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[Igor.Achkinazi@dell.com,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[8];
-	PRECEDENCE_BULK(0.00)[];
-	TAGGED_FROM(0.00)[bounces-255069-lists,stable=lfdr.de];
-	TO_DN_EQ_ADDR_ALL(0.00)[];
+	TAGGED_FROM(0.00)[bounces-255047-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	DKIM_TRACE(0.00)[dell.com:+]
-X-Rspamd-Queue-Id: DDF215F57FD
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TO_DN_SOME(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	FREEMAIL_FROM(0.00)[gmail.com];
+	DKIM_TRACE(0.00)[gmail.com:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	MISSING_XM_UA(0.00)[];
+	RCVD_COUNT_FIVE(0.00)[6];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[25esihoya@gmail.com,stable@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	TAGGED_RCPT(0.00)[stable];
+	MID_RHS_MATCH_FROMTLD(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[5];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[mail.gmail.com:mid,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo]
+X-Rspamd-Queue-Id: 254B15F4820
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-When nvme_ns_head_submit_bio() remaps a bio from the multipath head to
-a per-path namespace, bio_set_dev() clears BIO_REMAPPED.  The remapped
-bio is then resubmitted through submit_bio_noacct() which calls
-bio_check_eod() because BIO_REMAPPED is not set.
+From e11e35dfd10960ea8ca4258dfa6ed7aeb207179f Mon Sep 17 00:00:00 2001
+From: Siho Lee <25esihoya@gmail.com>
+Date: Fri, 29 May 2026 00:23:35 +0900
+Subject: [PATCH v2] netfilter: nft_payload: validate offset for all csum_type
+ paths
 
-This races with nvme_ns_remove() which zeroes the per-path capacity
-before synchronize_srcu():
+When csum_type is NFT_PAYLOAD_CSUM_NONE and csum_flags is 0, the
+bounds check inside the csum condition block is skipped entirely.
 
-  CPU 0 (IO submission)
-  ---------------------
-  srcu_read_lock()
-  nvme_find_path() -> ns
-    [NVME_NS_READY is set]
+For NFT_PAYLOAD_LL_HEADER, offset is computed as:
+    offset = skb_mac_header(skb) - skb->data - vlan_hlen
+which evaluates to -14 (or -18 with VLAN) after eth_type_trans()
+pulls the Ethernet header. This is a valid negative offset that
+refers to the Ethernet header area (used by bridge/vlan rules).
 
-  CPU 1 (namespace removal)
-  -------------------------
-  clear_bit(NVME_NS_READY)
-  set_capacity(ns->disk, 0)
-  synchronize_srcu()  <- blocks
+However, without any bounds check in the csum=NONE path:
+- skb_ensure_writable(skb, max(offset + priv->len, 0)):
+  max() converts negative values to 0, making it a no-op.
+- skb_store_bits(skb, offset, src, priv->len):
+  A negative offset that exceeds skb headroom writes out of bounds.
 
-  CPU 0 (IO submission)
-  ---------------------
-  bio_set_dev(bio, ns->disk->part0)
-    [clears BIO_REMAPPED]
-  submit_bio_noacct(bio)
-    -> bio_check_eod() sees capacity=3D0
-    -> bio fails with IO error
+Add proper validation after the csum condition block:
+- Negative offsets: ensure they fall within skb_headroom(skb)
+  (bridge/vlan rules legitimately access the Ethernet header)
+- Positive offsets: ensure offset + len does not exceed skb->len
 
-The SRCU read lock prevents synchronize_srcu() from completing, but
-does not prevent set_capacity(0) from executing.  The bio fails the
-EOD check before it reaches the NVMe driver, so nvme_failover_req()
-never gets a chance to redirect it to another path of multipath.  IO errors
-are reported to the application despite another path being available.
+Also remove the max() wrapper from skb_ensure_writable() since
+the new validation guarantees the offset is within range.
 
-On older kernels (before commit 0b64682e78f7 "block: skip unnecessary
-checks for split bio"), the same race was also reachable through split
-remainders resubmitted via submit_bio_noacct().
-
-Observed during NVMe multipath failover testing at Dell on
-5.14.0-570.23.1.el9_6.x86_64 (RHEL 9.7) and
-6.4.0-150600.23.53-default (SLES 15.6).
-
-Fix this by setting BIO_REMAPPED after bio_set_dev() in
-nvme_ns_head_submit_bio().  This skips bio_check_eod() on the per-path
-device; the EOD check already passed on the multipath head.
-
-NVMe per-path namespace devices are always whole disks (bd_partno=3D0),
-so the blk_partition_remap() skip also gated by BIO_REMAPPED is a
-no-op.  The flag does not persist across failover and cannot go stale
-if the namespace geometry changes between attempts: nvme_failover_req()
-calls bio_set_dev() to redirect the bio back to the multipath head,
-which clears BIO_REMAPPED.  When nvme_requeue_work() resubmits through
-submit_bio_noacct(), bio_check_eod() runs normally against the current
-capacity.
-
-Same approach as commit 3a905c37c351 ("block: skip bio_check_eod for
-partition-remapped bios").
-
-A broader solution that moves bio validation into the queue-entered
-context and eliminates the set_capacity(0) hack is being developed
-upstream, however this minimal fix is suitable for backporting to
-stable kernels affected today. The link to the mentioned patch:
-https://lore.kernel.org/linux-block/20260519172326.3462354-1-kbusch@meta.co=
-m/
-
-Fixes: a7c7f7b2b641 ("nvme: use bio_set_dev to assign ->bi_bdev")
+Fixes: d5953d680f7e ("netfilter: nft_payload: sanitize offset and
+length before calling skb_checksum()")
 Cc: stable@vger.kernel.org
-Signed-off-by: Igor Achkinazi <igor.achkinazi@dell.com>
+Signed-off-by: Siho Lee <25esihoya@gmail.com>
 ---
-v2:
-  - Corrected race description: primary race is in the initial
-    submit_bio_noacct() call in nvme_ns_head_submit_bio(), not
-    only in split remainders (which are no longer affected on
-    current mainline since commit 0b64682e78f7)
-  - Dropped incorrect arguments about submit_bio_noacct_nocheck
-    export status and BIO_REMAPPED propagation to split clones
-  - Added analysis showing BIO_REMAPPED flag does not persist
-    across failover (nvme_failover_req clears it via bio_set_dev)
-  - Referenced upstream RFC series addressing the root cause
+ net/netfilter/nft_payload.c | 12 +++++++++++-
+ 1 file changed, 11 insertions(+), 1 deletion(-)
 
- drivers/nvme/host/multipath.c | 7 +++++++
- 1 file changed, 7 insertions(+)
+diff --git a/net/netfilter/nft_payload.c b/net/netfilter/nft_payload.c
+index 01e13e5255a9..2c891c13bbf5 100644
+--- a/net/netfilter/nft_payload.c
++++ b/net/netfilter/nft_payload.c
+@@ -892,7 +892,17 @@ static void nft_payload_set_eval(const struct
+nft_expr *expr,
+ 			goto err;
+ 	}
 
-diff --git a/drivers/nvme/host/multipath.c b/drivers/nvme/host/multipath.c
-index 263161cb8ac0..04f7c7e59945 100644
---- a/drivers/nvme/host/multipath.c
-+++ b/drivers/nvme/host/multipath.c
-@@ -511,6 +511,13 @@ static void nvme_ns_head_submit_bio(struct bio *bio)
-        ns =3D nvme_find_path(head);
-        if (likely(ns)) {
-                bio_set_dev(bio, ns->disk->part0);
-+               /*
-+                * Skip bio_check_eod() when this bio enters
-+                * submit_bio_noacct() for the per-path device.
-+                * The EOD check already passed on the multipath head.
-+                */
-+               bio_set_flag(bio, BIO_REMAPPED);
-                bio->bi_opf |=3D REQ_NVME_MPATH;
-                trace_block_bio_remap(bio, disk_devt(ns->head->disk),
-                                      bio->bi_iter.bi_sector);
---
+-	if (skb_ensure_writable(skb, max(offset + priv->len, 0)) ||
++	/* Negative offset (LL_HEADER with bridge/vlan) must be within headroom.
++	 * Positive offset must be within skb length.
++	 */
++	if (offset < 0) {
++		if (-offset > (int)skb_headroom(skb))
++			goto err;
++	} else if (offset + priv->len > skb->len) {
++		goto err;
++	}
++
++	if (skb_ensure_writable(skb, offset + priv->len) ||
+ 	    skb_store_bits(skb, offset, src, priv->len) < 0)
+ 		goto err;
+
+-- 
 2.43.0
-
-
-Internal Use - Confidential
 
