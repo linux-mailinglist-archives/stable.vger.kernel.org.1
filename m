@@ -1,60 +1,59 @@
-Return-Path: <stable+bounces-255530-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-255852-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id YHpqKZ6jGGrClggAu9opvQ
-	(envelope-from <stable+bounces-255530-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:20:46 +0200
+	id 2L6uN7ioGGp+lwgAu9opvQ
+	(envelope-from <stable+bounces-255852-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:42:32 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 05B0D5F86EA
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:20:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5E2125F95E8
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:42:32 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 260B031A5D90
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 20:12:51 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 56565305430B
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 20:27:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6178D352019;
-	Thu, 28 May 2026 20:12:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 20774325485;
+	Thu, 28 May 2026 20:27:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="peHdP8w+"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gF1bvvcj"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 26C4C335566;
-	Thu, 28 May 2026 20:12:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EF74D19A288;
+	Thu, 28 May 2026 20:27:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779999170; cv=none; b=K8pOIuiYzo0x0gKi6JusqZueXvUbu+SHh0MKe7FxJIezViiWl+BDBAdKLIzghTt4EKNrM3ITq/BTkFUSwubO9Wplc5S1LlFVK7lxIreWb7YJV6lHRWKg1tavVuytli4NzT3R+aZIVjvSCO9Pm4IKOEDdt3mzIMxJAL4kGNe92eM=
+	t=1780000057; cv=none; b=apLVhnx1gHE7uh2YL6bx0WwVkTpZJf4/79gkXNuxhPP6if1Bun62BBMeBC/n6lqBF/xZqPnT5E1CFUu8KEer1a0HrJy282dMiHtHHERY86mQF8PHzopaDxELePEPwVjXrWfdTuoIzOirHVYiWNiaWDN3/LTPVTyx5JE83ACA4Mc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779999170; c=relaxed/simple;
-	bh=S6AkcyZCuQXD4FpjOP+LZmPtwYn7j7Y78DQEOIXAHck=;
+	s=arc-20240116; t=1780000057; c=relaxed/simple;
+	bh=JcoW9DuSUq/+FBqbPn1lelxmmET8aiRyIQeGS8iJZbM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=KYfEF1P+NQs7i0x7c2gwbPrewGDC6Yb/Xc15zKWpVsrmxWRyZiH2b4OZCvTugUmbaN6eMKmTwXMOA2AnpW+kgvqc1PuYOJNz9Ct8S3MciYsMhkHdz32ErSTqRzZVe2iYi7uJpnwiNBjCiVWSe6g3Qr2QFrECOFsG7naBgUWnrgI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=peHdP8w+; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 854AB1F000E9;
-	Thu, 28 May 2026 20:12:48 +0000 (UTC)
+	 MIME-Version; b=rwFVIQg6QKZZqJODONTZXfu6Qx5fK60d4YeHpRqA+3wnhejJ32mh3/6rP7wtmwMO5MvbsEGVQkQOG1p1wPYLDQmDUVmb0wR+h/YXmyD8xGYWUS1W0jGx0JE/YVmZSmxBTBR8odWd3gWGA8rHlsGGQwdA2BvgkaqR/tnDkCUaUfU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gF1bvvcj; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5800C1F00A3C;
+	Thu, 28 May 2026 20:27:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779999169;
-	bh=NGMjod/rFQJ/yG6bJAzFeSRjS32O5oSc55IclPprBWc=;
+	s=korg; t=1780000056;
+	bh=xEMScNGUK27luyb4PW2DmU6bPmBW4iIaZhVtIPOMTfw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=peHdP8w+gBHsZTAG1a8nXBuBRWYyS6TL9YQoGk2HsqGpGmM1fNF8EeMVsawxmv5gn
-	 Yfb1Ryi5b5+oyd/G/qg7Nwy0Ew3ZB8L9i5EY3ltPyh+q8u+pAB6BpWVvCFvKEHFILO
-	 634DkFf/C/fi+itayaqu+72Zx52ln1Y48FFrjImI=
+	b=gF1bvvcjyZNpKraiKuDRPSy183NoYqsvoy2DISRifklgvYZmUzxuR/GVg6SxWd/s9
+	 k2TpSl+nxJCZk5sPzAHeD0lNPiSPICULnIH/nVg84VEaGR2lm2bSL5qFIu7WAfkoGQ
+	 jvNxE+L5AafFE18nhCkFF3anGlBcCd4z71WTLQLk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ahmed Yaseen <yaseen@ghoul.dev>,
-	Denis Benato <denis.benato@linux.dev>,
-	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
+	Jan Beulich <jbeulich@suse.com>,
+	Juergen Gross <jgross@suse.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 7.0 396/461] platform/x86: asus-armoury: fix mini-LED mode get/set on MODE2 devices
-Date: Thu, 28 May 2026 21:48:45 +0200
-Message-ID: <20260528194658.931904674@linuxfoundation.org>
+Subject: [PATCH 6.18 288/377] x86/xen: Fix xen_e820_swap_entry_with_ram()
+Date: Thu, 28 May 2026 21:48:46 +0200
+Message-ID: <20260528194646.689606734@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260528194646.819809818@linuxfoundation.org>
-References: <20260528194646.819809818@linuxfoundation.org>
+In-Reply-To: <20260528194638.371537336@linuxfoundation.org>
+References: <20260528194638.371537336@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,123 +63,73 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-2.16 / 15.00];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_MISSING_CHARSET(0.50)[];
 	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-255530-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	TO_DN_SOME(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	RCVD_TLS_LAST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-255852-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_SEVEN(0.00)[7];
+	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim,msgid.link:url,linux.dev:email,intel.com:email,ghoul.dev:email]
-X-Rspamd-Queue-Id: 05B0D5F86EA
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim]
+X-Rspamd-Queue-Id: 5E2125F95E8
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-7.0-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ahmed Yaseen <yaseen@ghoul.dev>
+From: Juergen Gross <jgross@suse.com>
 
-[ Upstream commit d2d2e7c8fb37b27301ee5c8343b2f7037efc6ea6 ]
+[ Upstream commit 28e03f78e69cf6628b81f24777799778528a84c1 ]
 
-The mini-LED current_value attribute does not work on devices that use
-ASUS_WMI_DEVID_MINI_LED_MODE2 (2024 and newer models).
+When swapping a not page-aligned E820 map entry with RAM, the start
+address of the modified entry is calculated wrong (the offset into the
+page is subtracted instead of being added to the page address).
 
-Reading is broken: mini_led_mode_current_value_show() fetches the mode
-from the device but then decodes a literal 0 instead of the value it
-just read:
-
-    mode = FIELD_GET(ASUS_MINI_LED_MODE_MASK, 0);
-
-So mode is always 0, and the attribute always reports the same thing
-regardless of the real hardware state.
-
-Writing is broken too. The number a user writes is an index; the value
-the firmware actually wants is looked up from that index in
-mini_led_mode_map[]. mini_led_mode_current_value_store() skips that
-lookup and passes the raw index straight to armoury_attr_uint_store().
-On 2024 devices the firmware numbers its modes differently from the
-index, so some writes are rejected with -EINVAL and the rest send the
-wrong mode to the hardware.
-
-Fix both paths: decode the value actually read from the device when
-reading, and look up the firmware value before sending it when
-writing. Older (MODE1) devices were unaffected because there the index
-and the firmware value are the same.
-
-Fixes: f99eb098090e ("platform/x86: asus-armoury: move existing tunings to asus-armoury module")
-Signed-off-by: Ahmed Yaseen <yaseen@ghoul.dev>
-Reviewed-by: Denis Benato <denis.benato@linux.dev>
-Link: https://patch.msgid.link/20260517182957.11069-1-yaseen@ghoul.dev
-Reviewed-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
-Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+Fixes: be35d91c8880 ("xen: tolerate ACPI NVS memory overlapping with Xen allocated memory")
+Reported-by: Jan Beulich <jbeulich@suse.com>
+Reviewed-by: Jan Beulich <jbeulich@suse.com>
+Signed-off-by: Juergen Gross <jgross@suse.com>
+Message-ID: <20260505102417.208138-1-jgross@suse.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/platform/x86/asus-armoury.c | 16 ++++++++++++----
- 1 file changed, 12 insertions(+), 4 deletions(-)
+ arch/x86/xen/setup.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/platform/x86/asus-armoury.c b/drivers/platform/x86/asus-armoury.c
-index 5b0987ccc2702..495dc1e31d40e 100644
---- a/drivers/platform/x86/asus-armoury.c
-+++ b/drivers/platform/x86/asus-armoury.c
-@@ -370,7 +370,7 @@ static ssize_t mini_led_mode_current_value_show(struct kobject *kobj,
- 	if (err)
- 		return err;
+diff --git a/arch/x86/xen/setup.c b/arch/x86/xen/setup.c
+index 3823e52aef523..6260f65a78c5e 100644
+--- a/arch/x86/xen/setup.c
++++ b/arch/x86/xen/setup.c
+@@ -655,7 +655,7 @@ static void __init xen_e820_swap_entry_with_ram(struct e820_entry *swap_entry)
+ 			/* Fill new entry (keep size and page offset). */
+ 			entry->type = swap_entry->type;
+ 			entry->addr = entry_end - swap_size +
+-				      swap_addr - swap_entry->addr;
++				      swap_entry->addr - swap_addr;
+ 			entry->size = swap_entry->size;
  
--	mode = FIELD_GET(ASUS_MINI_LED_MODE_MASK, 0);
-+	mode = FIELD_GET(ASUS_MINI_LED_MODE_MASK, mode);
- 
- 	for (i = 0; i < mini_led_mode_map_size; i++)
- 		if (mode == mini_led_mode_map[i])
-@@ -386,6 +386,7 @@ static ssize_t mini_led_mode_current_value_store(struct kobject *kobj,
- {
- 	u32 *mini_led_mode_map;
- 	size_t mini_led_mode_map_size;
-+	char mapped_value[12];
- 	u32 mode;
- 	int err;
- 
-@@ -414,9 +415,16 @@ static ssize_t mini_led_mode_current_value_store(struct kobject *kobj,
- 		return -ENODEV;
- 	}
- 
--	return armoury_attr_uint_store(kobj, attr, buf, count,
--				       0, mini_led_mode_map[mode],
--				       NULL, asus_armoury.mini_led_dev_id);
-+	/*
-+	 * armoury_attr_uint_store() parses and sends the value from the
-+	 * passed buffer; hand it the mapped firmware value so the device
-+	 * receives the translated mode instead of the raw index.
-+	 */
-+	snprintf(mapped_value, sizeof(mapped_value), "%u", mini_led_mode_map[mode]);
-+
-+	return armoury_attr_uint_store(kobj, attr, mapped_value, count, 0,
-+				       mini_led_mode_map[mode], NULL,
-+				       asus_armoury.mini_led_dev_id);
- }
- 
- static ssize_t mini_led_mode_possible_values_show(struct kobject *kobj,
+ 			/* Convert old entry to RAM, align to pages. */
 -- 
 2.53.0
 
