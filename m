@@ -1,81 +1,61 @@
-Return-Path: <stable+bounces-256415-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-256416-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id uJMeE1muGGrBmAgAu9opvQ
-	(envelope-from <stable+bounces-256415-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 23:06:33 +0200
+	id MP8jIKCuGGpolwgAu9opvQ
+	(envelope-from <stable+bounces-256416-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 23:07:44 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id DC77B5FA396
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 23:06:32 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id E03FD5FA408
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 23:07:43 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 2EF0530C5108
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 20:59:21 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 9DC3D3158546
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 20:59:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4A8B32E736C;
-	Thu, 28 May 2026 20:59:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EA0921DED49;
+	Thu, 28 May 2026 20:59:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernelci.org header.i=@kernelci.org header.b="PQvqyjMG"
+	dkim=pass (1024-bit key) header.d=narfation.org header.i=@narfation.org header.b="kzdnZ3pr"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-dy1-f173.google.com (mail-dy1-f173.google.com [74.125.82.173])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from dvalin.narfation.org (dvalin.narfation.org [213.160.73.56])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DBCDB1DED49
-	for <stable@vger.kernel.org>; Thu, 28 May 2026 20:59:07 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.82.173
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 878C11E1DE5
+	for <stable@vger.kernel.org>; Thu, 28 May 2026 20:59:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=213.160.73.56
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780001949; cv=none; b=QV63OJf/KrS7As3K9pknV4yeoko7hDg4Lh+2dpS3ROWMoHmlEdwvC3pfC2nM3nPaZMRmXYD1HxxORadtPXr6AGeZIzSH0+ecT5NgyKESlvS8kiXvnvsfJr8+1u0PgGYEylWdM+D/pB/apGzf60f+XlfUNGTC8d5qkgRZ8usG1p8=
+	t=1780001982; cv=none; b=YcSPlzfVZp6CRzO6HhV98GCzjegdHhnQZZskO+hkx+IdUqryavviiNbPpid5s4H3i9jXtw8qb/w1iJqP/2QYOYf+vMz8R5+eloF5o4n48AM1usw4/XSS4XYAX1LjTo8HEeKH21goaPkvf6KJIFuqDe+JMdKmWca9fth27gvtz3A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780001949; c=relaxed/simple;
-	bh=QWVuf5BpUt+Js6oaDZCRJWZR6aE41jAGjjzz/JiWek8=;
-	h=Content-Type:MIME-Version:Subject:From:To:Cc:Date:Message-ID; b=B8371Hfir8ZFHTg1tOuOm9G/J5Kmvueh4g1kQ+SfpXDpVoI6fWM11J+LZ4vC2P90cJrtl4wVUs317Bi1bnN7BWURutkLfjsZKbmpYa05AwPhbogKvv7q9pAYTTmQ2nQUIN5wcKvtat4qifgjUXRvpKO4krUGOPQFoRuqe3DWfIM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=kernelci.org; spf=pass smtp.mailfrom=kernelci.org; dkim=pass (2048-bit key) header.d=kernelci.org header.i=@kernelci.org header.b=PQvqyjMG; arc=none smtp.client-ip=74.125.82.173
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=kernelci.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=kernelci.org
-Received: by mail-dy1-f173.google.com with SMTP id 5a478bee46e88-3044857f09aso9425821eec.1
-        for <stable@vger.kernel.org>; Thu, 28 May 2026 13:59:07 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=kernelci.org; s=google; t=1780001947; x=1780606747; darn=vger.kernel.org;
-        h=message-id:date:reply-to:cc:to:from:subject
-         :content-transfer-encoding:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=9W4is2ZaNAM3rg10Mm8PAbNG51BuI85TH1aqHwikNUE=;
-        b=PQvqyjMG7YuMV2nQn7GtyNO42iQrZFB0/AKtfI6d17RZnU2IdF5K38OFQm86JDDbiq
-         XFoWFKZSZ1hru8eUlc3/9k1mFKYhdxy1VXjE7NmwVe5KIoKTq7sqeVQnZ8L6BPm2AJ4N
-         rKw9KDq9x/+vkO1FNykkNEPbuZ7Lsx0zq7qtEnubGY4udFq8WzKNypTRMUii6Cgxy2m6
-         Momq9MkOpLB2xyzIaPijpfADTluS/5IflEYFAmIC/DyY/3Yr89gbbkf0aeDQIPuXlI14
-         fE+W4zB+maYb7wnGWuRYIe9CMz3bb7QVIq0cXbhsPgQtkcyrOqGiM1NPK51oVJLFHcj4
-         WspQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1780001947; x=1780606747;
-        h=message-id:date:reply-to:cc:to:from:subject
-         :content-transfer-encoding:mime-version:x-gm-gg:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=9W4is2ZaNAM3rg10Mm8PAbNG51BuI85TH1aqHwikNUE=;
-        b=hQ9q9p2EdXbZl2NX+NvHyiym+VwCfQCT6zIpf3a3HPdbyCML/i8lXa0VwysXKzcfyi
-         1mUUR2COt1VM6of5WddMRXENHPkxtkUvBAGv+SELYqqRVePHxfo5wg3qo56swh1T22E+
-         HQpU4lEQOr7XIsnnAv8inKdS/jacL2imV28dDDX1SMXi2ci0+zRDxkznOOjzn0zrCAgI
-         S/oylECdk4og/T2phnfbWbTbyzXslf4mlKt3AHvU07PFrDtWt+RVD1otPjTSLJY8dfe2
-         B0p63elQlEN1Z0fXYIcx64rxZ/7BFsGSZ8QFAL254Kdan+SNQZHNA+lf1uULOlpWBeDY
-         OncA==
-X-Forwarded-Encrypted: i=1; AFNElJ+bWU8Dw1VyMkSaXD3hfWpY5OCF43UprdBJ2tUtREJSvO2EnmEUo7t2JhiwNz0cB0nKebDPOZo=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxgAHbVnfxuErS/60vL5eT/TCLPW7I3yo/HaMvX20X/sY1fjxg0
-	DrpRSizzB0Pk3QjlEHw/wRvmhaKQ3Kz1PM3VnOzg+Y3WfH68cg3NtWomyL0pw263ZD4=
-X-Gm-Gg: Acq92OGQbwRta3oPi/+C3rstPRUkIya5Y6gaZ0afGYFIRBBUPsFwaFvAA7C3/RHFfXV
-	USM+aUU8ZQhrAGs8WjkTw3IfpNniHKF0ZxAoOfOw117cUVz1SnlBpIVP0OYue8ebvxeBE4ibsA8
-	VpJGkzOdL+mTbxSP0bzkT4hP+/UFoZ/WC3MH9gKdV53e/UnYrgq6lz7YxN+Sh2fDPXTGQoRBJTt
-	JxtwVnG+ydMD6xxPUYuTiOGTCOGIPel4rySRr6jzIJePc/KttXD+4a/39InExEbUXlfjgfPPKqN
-	qRVC/lFN+JkFdmBellDERDQMhUh4YGoiAHXW2xmsSlt3+aoJILnCHiwzT8LBT/vuVH7496gUzyd
-	m1aqOrleJZvfcY6BdJPdz3eRly4sKNGzty3pW4LonclZwfaxArNcE+WiWGUm9o8bnO4Lq5BmveV
-	md9+Y8KgEx9QWsQU0PjU3DAAbl5nU=
-X-Received: by 2002:a05:7300:430a:b0:2de:2f38:a7cb with SMTP id 5a478bee46e88-304eb1f6384mr58075eec.18.1780001947020;
-        Thu, 28 May 2026 13:59:07 -0700 (PDT)
-Received: from 330cfa3079ca ([20.38.40.137])
-        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-304e99788fcsm267351eec.27.2026.05.28.13.59.06
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 28 May 2026 13:59:06 -0700 (PDT)
-Content-Type: text/plain; charset="utf-8"
+	s=arc-20240116; t=1780001982; c=relaxed/simple;
+	bh=EigHn4txzROAKDa3iZ5t2duh2s83Lp/0m1pa9p+X+vE=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=GLRaywYXD6DJTOgyQHGCpHq0aPiSrT6u3aCeE/XF9JrzTjCPvwbZ3dwZfiRKzvH6viNmF7mawHvKTI9l6rlPsx7iKCfneEDR8/2F6b77tzaAUqo6W2X3hb0o+8MQpcnkvvv1RreL2cdi9u7lLTdZAVePDambHPtULQwF57+1vSI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=narfation.org; spf=pass smtp.mailfrom=narfation.org; dkim=pass (1024-bit key) header.d=narfation.org header.i=@narfation.org header.b=kzdnZ3pr; arc=none smtp.client-ip=213.160.73.56
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=narfation.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=narfation.org
+Received: by dvalin.narfation.org (Postfix) id C4A331FDD5;
+	Thu, 28 May 2026 20:59:39 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=narfation.org;
+	s=20121; t=1780001979;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=zYbtB6mUWfsUx/ljFRl7JCFIQRM/HnmkiCXRX2+uufo=;
+	b=kzdnZ3prLCrlDaj6PW6VFyVNo8U/ycdqAHMngILCXI51/baRg7fdywUCOT0QMKlOJwFQvM
+	Pgd80LfL2Up+vm36wup9V3VX4gV4E4qUZxFiYgcCkh5/F//QRY7iQPW6v8N6R8pj9ZPaRd
+	k4EcLa/H+XvdYcYJMKcs0hqQK+LC9uI=
+From: Sven Eckelmann <sven@narfation.org>
+To: stable@vger.kernel.org
+Cc: Sven Eckelmann <sven@narfation.org>,
+	stable@kernel.org
+Subject: [PATCH 6.6.y] batman-adv: tt: fix TOCTOU race for reported vlans
+Date: Thu, 28 May 2026 22:59:34 +0200
+Message-ID: <20260528205934.661589-1-sven@narfation.org>
+X-Mailer: git-send-email 2.47.3
+In-Reply-To: <2026052808-finite-shut-37dd@gregkh>
+References: <2026052808-finite-shut-37dd@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -83,114 +63,104 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: 
- =?utf-8?b?W1JFR1JFU1NJT05dIHN0YWJsZS1yYy9saW51eC02LjEyLnk6IChidWlsZCkgLi9p?=
- =?utf-8?b?bmNsdWRlL2xpbnV4L2Jpby1pbnRlZ3JpdHkuaDoxMDE6MTI6IGVycm9yOiDigJhi?=
- =?utf-8?b?aW9faW50ZWdyaXR5X21hcF8uLi4=?=
-From: KernelCI bot <bot@kernelci.org>
-To: kernelci-results@groups.io
-Cc: gus@collabora.com, stable@vger.kernel.org
-Reply-To: kernelci@lists.linux.dev
-Date: Thu, 28 May 2026 20:59:06 -0000
-Message-ID: <178000194591.7095.11275948264529325340@330cfa3079ca>
 X-Spamd-Result: default: False [-0.66 / 15.00];
-	URI_HIDDEN_PATH(1.00)[https://files.kernelci.org/kbuild-gcc-14-i386-6a189f8cee38c2a863e3d06e/.config];
+	MID_CONTAINS_FROM(1.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	MID_RHS_NOT_FQDN(0.50)[];
-	DMARC_POLICY_ALLOW(-0.50)[kernelci.org,reject];
-	R_DKIM_ALLOW(-0.20)[kernelci.org:s=google];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	R_MISSING_CHARSET(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[narfation.org,none];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_DKIM_ALLOW(-0.20)[narfation.org:s=20121];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-256415-lists,stable=lfdr.de];
-	FROM_HAS_DN(0.00)[];
-	REPLYTO_DOM_NEQ_FROM_DOM(0.00)[];
-	RCVD_TLS_LAST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-256416-lists,stable=lfdr.de];
 	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[kernelci.org:+];
-	MISSING_XM_UA(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	DKIM_TRACE(0.00)[narfation.org:+];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	TO_DN_SOME(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[sven@narfation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
 	RCPT_COUNT_THREE(0.00)[3];
-	RCVD_COUNT_FIVE(0.00)[5];
-	TO_DN_NONE(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[bot@kernelci.org,stable@vger.kernel.org];
-	REPLYTO_DOM_NEQ_TO_DOM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	HAS_REPLYTO(0.00)[kernelci@lists.linux.dev];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[lists.linux.dev:replyto,kernelci.org:url,kernelci.org:email,kernelci.org:dkim,linux.dev:email,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo]
-X-Rspamd-Queue-Id: DC77B5FA396
+	NEURAL_HAM(-0.00)[-1.000];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[narfation.org:email,narfation.org:mid,narfation.org:dkim,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
+X-Rspamd-Queue-Id: E03FD5FA408
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
+commit 94d27005016be15ffc638b2ecbc4d58805ad7b48 upstream.
 
+The local TT based TVLV is generated by first checking the number of VLANs
+which have at least one TT entry. A new buffer with the correct size for
+the VLANs is then allocated. Only then, the list of VLANs s used to fill
+the VLAN entries in the buffer. During this time, the meshif_vlan_list_lock
+is held. But the actual number of TT entries of each VLAN can still
+increase during this time - just not the number of VLANs in the list.
 
+But the prefilter used in the buffer size calculation might still cause an
+increase of the number of VLANs which need to be stored. Simply because a
+VLAN might now suddenly have at least one entry when it had none in the
+pre-alloc check - and then needs to occupy space which was not allocated.
 
+It is better to overestimate the buffer size at the beginning and then fill
+the buffer only with the VLANs which are not empty.
 
-Hello,
-
-New build issue found on stable-rc/linux-6.12.y:
-
+Cc: stable@kernel.org
+Fixes: 16116dac2339 ("batman-adv: prevent TT request storms by not sending inconsistent TT TLVLs")
+[ Context, drop flex array dependency ]
+Signed-off-by: Sven Eckelmann <sven@narfation.org>
 ---
- ./include/linux/bio-integrity.h:101:12: error: ‘bio_integrity_map_user’ defined but not used [-Werror=unused-function] in block/bdev.o (block/bdev.c) [logspec:kbuild,kbuild.compiler.error]
----
+ net/batman-adv/translation-table.c | 14 ++++++++++----
+ 1 file changed, 10 insertions(+), 4 deletions(-)
 
-- dashboard: https://d.kernelci.org/i/maestro:f6c8b85f1de48666821b8110b7be27db7b679266
-- giturl: https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git
-- commit HEAD:  97928cc88900a9fb07a4dddbd1db19eb0ce55c56
+diff --git a/net/batman-adv/translation-table.c b/net/batman-adv/translation-table.c
+index d830ccf01669..fa0d26cf1d80 100644
+--- a/net/batman-adv/translation-table.c
++++ b/net/batman-adv/translation-table.c
+@@ -934,11 +934,8 @@ batadv_tt_prepare_tvlv_local_data(struct batadv_priv *bat_priv,
+ 	spin_lock_bh(&bat_priv->softif_vlan_list_lock);
+ 	hlist_for_each_entry(vlan, &bat_priv->softif_vlan_list, list) {
+ 		vlan_entries = atomic_read(&vlan->tt.num_entries);
+-		if (vlan_entries < 1)
+-			continue;
+-
+-		num_vlan++;
+ 		total_entries += vlan_entries;
++		num_vlan++;
+ 	}
+ 
+ 	change_offset = sizeof(**tt_data);
+@@ -962,6 +959,7 @@ batadv_tt_prepare_tvlv_local_data(struct batadv_priv *bat_priv,
+ 	(*tt_data)->num_vlan = htons(num_vlan);
+ 
+ 	tt_vlan = (struct batadv_tvlv_tt_vlan_data *)(*tt_data + 1);
++	num_vlan = 0;
+ 	hlist_for_each_entry(vlan, &bat_priv->softif_vlan_list, list) {
+ 		vlan_entries = atomic_read(&vlan->tt.num_entries);
+ 		if (vlan_entries < 1)
+@@ -972,8 +970,16 @@ batadv_tt_prepare_tvlv_local_data(struct batadv_priv *bat_priv,
+ 		tt_vlan->reserved = 0;
+ 
+ 		tt_vlan++;
++		num_vlan++;
+ 	}
+ 
++	/* recalculate in case number of VLANs reduced */
++	change_offset = sizeof(**tt_data);
++	change_offset += num_vlan * sizeof(*tt_vlan);
++	tvlv_len = *tt_len + change_offset;
++
++	(*tt_data)->num_vlan = htons(num_vlan);
++
+ 	tt_change_ptr = (u8 *)*tt_data + change_offset;
+ 	*tt_change = (struct batadv_tvlv_tt_change *)tt_change_ptr;
+ 
+-- 
+2.47.3
 
-
-Please include the KernelCI tag when submitting a fix:
-
-Reported-by: kernelci.org bot <bot@kernelci.org>
-
-
-Log excerpt:
-=====================================================
-                 from block/bdev.c:15:
-./include/linux/bio-integrity.h:101:12: error: ‘bio_integrity_map_user’ defined but not used [-Werror=unused-function]
-  101 | static int bio_integrity_map_user(struct bio *bio, struct iov_iter *iter)
-      |            ^~~~~~~~~~~~~~~~~~~~~~
-  CC      crypto/aead.o
-  CC      kernel/sysctl.o
-In file included from block/blk.h:5,
-                 from block/fops.c:21:
-./include/linux/bio-integrity.h:101:12: error: ‘bio_integrity_map_user’ defined but not used [-Werror=unused-function]
-  101 | static int bio_integrity_map_user(struct bio *bio, struct iov_iter *iter)
-      |            ^~~~~~~~~~~~~~~~~~~~~~
-cc1: all warnings being treated as errors
-
-=====================================================
-
-
-# Builds where the incident occurred:
-
-## defconfig+kcidebug+x86-board on (i386):
-- compiler: gcc-14
-- config: https://files.kernelci.org/kbuild-gcc-14-x86-kcidebug-6a189fc1ee38c2a863e3d0a8/.config
-- dashboard: https://d.kernelci.org/build/maestro:6a189fc1ee38c2a863e3d0a8
-
-## i386_defconfig on (i386):
-- compiler: gcc-14
-- config: https://files.kernelci.org/kbuild-gcc-14-i386-6a189f8cee38c2a863e3d06e/.config
-- dashboard: https://d.kernelci.org/build/maestro:6a189f8cee38c2a863e3d06e
-
-## i386_defconfig+kselftest on (i386):
-- compiler: gcc-14
-- config: https://files.kernelci.org/kbuild-gcc-14-i386-kselftest-6a189f9eee38c2a863e3d089/.config
-- dashboard: https://d.kernelci.org/build/maestro:6a189f9eee38c2a863e3d089
-
-
-#kernelci issue maestro:f6c8b85f1de48666821b8110b7be27db7b679266
-
---
-This is an experimental report format. Please send feedback in!
-Talk to us at kernelci@lists.linux.dev
-
-Made with love by the KernelCI team - https://kernelci.org
 
