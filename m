@@ -1,60 +1,59 @@
-Return-Path: <stable+bounces-255500-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-255860-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id cK75N9mhGGqvlggAu9opvQ
-	(envelope-from <stable+bounces-255500-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:13:13 +0200
+	id CIhgLe6lGGoQlwgAu9opvQ
+	(envelope-from <stable+bounces-255860-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:30:38 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9E9825F8172
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:13:13 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id BCA8F5F8D96
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:30:37 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 223E6306D93B
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 20:11:28 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 9F6D03041EC9
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 20:28:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8C42333CE8A;
-	Thu, 28 May 2026 20:11:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 731742D9787;
+	Thu, 28 May 2026 20:28:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bMQmsIIT"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kprIomCo"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5844E335566;
-	Thu, 28 May 2026 20:11:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 49463DDC5;
+	Thu, 28 May 2026 20:27:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779999086; cv=none; b=RhyoGG1X9iuuPAW0VDPccSwdWg0O/Dv+IALDzsO5X2DGBoFeXx9iJAwxKNuH963RD0A+9MkxYxk/KG8XkWhKXNXYFqRZ7pq1CzrRbMf399+IQ/WWkFfRDbHBMIn3pB1HuZ7lB+zU85Zmpikbk8JTPYiq9zh67E7mgj6FmifoHZM=
+	t=1780000080; cv=none; b=sCtLZG/cN+YPjkZFbUYMLAGQv510wwM4oUXXGSGnK6O9CvxzC+sRvWE33LNwOz1OME38k8e91ywS+HZz7AEyJYL639ataHfiY9C+cMXyuO++ghxX9XdlFH4C4lCPOMKGwpk1AHUofjPSiTkByvENUO+oH2cQnOISOvlNv/cwORQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779999086; c=relaxed/simple;
-	bh=J88ToUdF91FodsOr7tCtxMLns72ZvTA7QdIA13L0Dd8=;
+	s=arc-20240116; t=1780000080; c=relaxed/simple;
+	bh=9QE2U7gmuEyDIZ5pEh3Ip1w6tPlq7NxkkD3RwcS/l7s=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ORSbCXKhP8Hzp4CZO9n6YDpIyzl4Od2tIkv0mP3k2WEDftyrBc79ifhBabOn1OivAXJdYSr/Z+0FnZWbLm5VUuj2x58lKjlBMf7pnz9V9R9LwW53zFKyMj69iyU4l5I4itdSk16Tmy/hizeTpDa4FOD91hwG6bOHpZytyiZXogI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bMQmsIIT; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7456C1F000E9;
-	Thu, 28 May 2026 20:11:24 +0000 (UTC)
+	 MIME-Version; b=Gm8Pf7Vt6u2uhG5PfbYX75A7k+Orwf6V+Lm2I6iI5I1W3jBLjKuP7GtFYOAlEoyKdf07m6yH3wr47CJi9gAxEuDaxU041CPcW2hcIPyF2ffiHrT77QUo8fQ4K9VeX61WXnVHgj0GtG9q2jpUnwnWcYHHhfABuL7zj04ZSeCJGCo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kprIomCo; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A7D051F000E9;
+	Thu, 28 May 2026 20:27:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779999085;
-	bh=wzFU8F7/+pKv3PD+o+HqmEnsH5Hm612RG7XcgDKcG9g=;
+	s=korg; t=1780000079;
+	bh=KDu8vJQzeKFuvyYd/YIlHWaBEz2KhXi83SxekSWtbPw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=bMQmsIITYeowI3YldOXL+bu9E6UsK0oDbG4SgyEVsUk1kES+wxVbF3mfx6cP8XCF6
-	 FUMx6NCH6fBlALyH9aupO3GWqmld5D6PgaLRgWOWg50DKKcFVbXZ0ZRuggZQU9CQ5y
-	 Qad05iOBuVhk7Vk3Ddo0RtlQKoO7QChFOWqHLQSI=
+	b=kprIomCo1XgoUx98QJ1YKbNF1SxfVlmQ0zb5WvMfRuIukZARBTHhGxxtAA8WByGgb
+	 j9jTDOgb39vFur3toPGF2d8JJPIf99oCMIpr85WJUKdM/V6epHrga8jt3kaP8JdIAE
+	 DNyTf0IY+eetqohvleneYZlgNEqaWgMFuxkqs3fA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Nicolai Buchwitz <nb@tipi-net.de>,
-	Andrew Lunn <andrew@lunn.ch>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Gabriel Krisman Bertazi <krisman@suse.de>,
+	Jens Axboe <axboe@kernel.dk>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 7.0 404/461] net: phy: honor eee_disabled_modes in phy_support_eee()
+Subject: [PATCH 6.18 295/377] io_uring/net: punt IORING_OP_BIND async if it needs file create
 Date: Thu, 28 May 2026 21:48:53 +0200
-Message-ID: <20260528194659.173337757@linuxfoundation.org>
+Message-ID: <20260528194646.892299345@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260528194646.819809818@linuxfoundation.org>
-References: <20260528194646.819809818@linuxfoundation.org>
+In-Reply-To: <20260528194638.371537336@linuxfoundation.org>
+References: <20260528194638.371537336@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,80 +68,118 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-255500-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-255860-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
-	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[7];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,msgid.link:url,tipi-net.de:email,lunn.ch:email]
-X-Rspamd-Queue-Id: 9E9825F8172
+	RCPT_COUNT_FIVE(0.00)[6];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,suse.de:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,kernel.dk:email]
+X-Rspamd-Queue-Id: BCA8F5F8D96
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-7.0-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Nicolai Buchwitz <nb@tipi-net.de>
+From: Jens Axboe <axboe@kernel.dk>
 
-[ Upstream commit 3655063e083889ed4b79b7dda9cec65478dce09a ]
+[ Upstream commit ccd25890f73c082fe2657ed227b497d6ac5fdc40 ]
 
-phy_support_eee() copies supported_eee into advertising_eee
-unconditionally, overwriting any filtering applied during phy_probe()
-based on DT eee-broken-* properties or driver-populated
-eee_disabled_modes. MAC drivers that call phy_support_eee() after
-probe (e.g. bcmgenet, fec, lan743x, lan78xx, r8169) then cause the PHY
-to advertise EEE for modes the user marked as broken.
+For two reasons:
 
-The symptom is that ethtool --show-eee on the local interface reports
-"not supported" (supported & ~eee_disabled_modes is empty) while the
-link partner sees EEE negotiated and active.
+1) An opcode cannot block inside io_uring_enter() doing submissions, as
+   it'll stall the submission side pipeline.
 
-phy_probe() already filters advertising_eee via eee_disabled_modes
-after calling of_set_phy_eee_broken(). Apply the same mask in
-phy_support_eee() so the filtering survives the copy.
+2) Ending up in sb_start_write() -> __sb_start_write() ->
+   percpu_down_read_freezable() introduces a new lockdep edge, which it
+   correctly complains about.
 
-Fixes: 49168d1980e2 ("net: phy: Add phy_support_eee() indicating MAC support EEE")
-Signed-off-by: Nicolai Buchwitz <nb@tipi-net.de>
-Reviewed-by: Andrew Lunn <andrew@lunn.ch>
-Link: https://patch.msgid.link/20260518-devel-phy-support-eee-fix-v2-1-05b52626fa68@tipi-net.de
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Check if the socket type is AF_UNIX and has a non-empty pathname. If it
+does, mark it REQ_F_FORCE_ASYNC to punt the submission to io-wq rather
+than attempt to do it inline.
+
+Fixes: 7481fd93fa0a ("io_uring: Introduce IORING_OP_BIND")
+Reviewed-by: Gabriel Krisman Bertazi <krisman@suse.de>
+Signed-off-by: Jens Axboe <axboe@kernel.dk>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/phy/phy_device.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ io_uring/net.c | 26 +++++++++++++++++++++++++-
+ 1 file changed, 25 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/net/phy/phy_device.c b/drivers/net/phy/phy_device.c
-index f3696d9819d35..893ad97fc60c3 100644
---- a/drivers/net/phy/phy_device.c
-+++ b/drivers/net/phy/phy_device.c
-@@ -2933,7 +2933,8 @@ EXPORT_SYMBOL_GPL(phy_advertise_eee_all);
-  */
- void phy_support_eee(struct phy_device *phydev)
- {
--	linkmode_copy(phydev->advertising_eee, phydev->supported_eee);
-+	linkmode_andnot(phydev->advertising_eee, phydev->supported_eee,
-+			phydev->eee_disabled_modes);
- 	phydev->eee_cfg.tx_lpi_enabled = true;
- 	phydev->eee_cfg.eee_enabled = true;
+diff --git a/io_uring/net.c b/io_uring/net.c
+index ad08f693bccb9..7595850c2217a 100644
+--- a/io_uring/net.c
++++ b/io_uring/net.c
+@@ -4,6 +4,7 @@
+ #include <linux/file.h>
+ #include <linux/slab.h>
+ #include <linux/net.h>
++#include <linux/un.h>
+ #include <linux/compat.h>
+ #include <net/compat.h>
+ #include <linux/io_uring.h>
+@@ -1837,11 +1838,29 @@ int io_connect(struct io_kiocb *req, unsigned int issue_flags)
+ 	return IOU_COMPLETE;
  }
+ 
++/*
++ * Check if bind request would potentially end up with filename_create(),
++ * which in turn end up in mnt_want_write() which will grab the fs
++ * percpu start write sem. This can trigger a lockdep warning.
++ */
++static int io_bind_file_create(const struct io_async_msghdr *io, int addr_len)
++{
++	const struct sockaddr_un *sun;
++
++	if (io->addr.ss_family != AF_UNIX)
++		return 0;
++	if (addr_len <= offsetof(struct sockaddr_un, sun_path))
++		return 0;
++	sun = (const struct sockaddr_un *) &io->addr;
++	return sun->sun_path[0] != '\0';
++}
++
+ int io_bind_prep(struct io_kiocb *req, const struct io_uring_sqe *sqe)
+ {
+ 	struct io_bind *bind = io_kiocb_to_cmd(req, struct io_bind);
+ 	struct sockaddr __user *uaddr;
+ 	struct io_async_msghdr *io;
++	int ret;
+ 
+ 	if (sqe->len || sqe->buf_index || sqe->rw_flags || sqe->splice_fd_in)
+ 		return -EINVAL;
+@@ -1852,7 +1871,12 @@ int io_bind_prep(struct io_kiocb *req, const struct io_uring_sqe *sqe)
+ 	io = io_msg_alloc_async(req);
+ 	if (unlikely(!io))
+ 		return -ENOMEM;
+-	return move_addr_to_kernel(uaddr, bind->addr_len, &io->addr);
++	ret = move_addr_to_kernel(uaddr, bind->addr_len, &io->addr);
++	if (unlikely(ret))
++		return ret;
++	if (io_bind_file_create(io, bind->addr_len))
++		req->flags |= REQ_F_FORCE_ASYNC;
++	return 0;
+ }
+ 
+ int io_bind(struct io_kiocb *req, unsigned int issue_flags)
 -- 
 2.53.0
 
