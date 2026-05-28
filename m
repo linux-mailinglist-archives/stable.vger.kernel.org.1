@@ -1,60 +1,59 @@
-Return-Path: <stable+bounces-255884-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-255566-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id ANwhJQ6nGGp+lwgAu9opvQ
-	(envelope-from <stable+bounces-255884-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:35:26 +0200
+	id QJgvGyOkGGrClggAu9opvQ
+	(envelope-from <stable+bounces-255566-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:22:59 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3D2D55F909D
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:35:26 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 09E265F880C
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:22:59 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 592BC30E7111
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 20:29:12 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id EF823320EB7F
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 20:14:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8AF5E2FD7C3;
-	Thu, 28 May 2026 20:29:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EE6F8352019;
+	Thu, 28 May 2026 20:14:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jtO1Dmij"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="n0zzuEAH"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 666F51C3318;
-	Thu, 28 May 2026 20:29:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C516E33F5BE;
+	Thu, 28 May 2026 20:14:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780000149; cv=none; b=ATxJqiVN4a9GtCq/92hOhrCXSQShUJpIUNBhXcMMHsxCLVnvE2wnCymIcS0M/ZIwhOSpIWHTAWfLF8/pGL4Bk899SBhhCCgkoCBHUjIHqKM4uOlF8Ta3IGbcAVEx8CijvFw2iQUsN+as42UHdCnmBnkBABrATVjo1frLjBcDuLA=
+	t=1779999272; cv=none; b=UpaLoZoUrPm//4FxUu/JizQkVuIZsws6PIis0/1Ux6L4iorb1iK0AS7oHz5D9pWVmfKYtATBk6RcWXj6bVdRBhZyZJSmU0i4XvSo8s9AGFVWYR39YYUyAGF1fLi021glfYpHRG2Xse+5UX76MCHZ3DEBSt1x/OBrSUYR2oL3oqc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780000149; c=relaxed/simple;
-	bh=GOve0eUp6m9ZEXADk67ExpDUF66FgzAyAJCdbSKYaR0=;
+	s=arc-20240116; t=1779999272; c=relaxed/simple;
+	bh=UK04WdMjVz9Ubx0SSqQIJBjvMLzYLjg1iywcf8B9USA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Npl98gOuVwYKJCwW4ZnRABQS0Nwpgi2VbyfYm2YrQFjg2OY9KFv+czbvDIolPnm8kWFcfSceec0VhHmWAOBfmKq0+u2eQY3u8iw2iiGKy4UWQRvE9erRcI7T/NCLHkNQgyBRom+l/cfBUxXe+1at3tz0bjeH5xtESx77/yl8jww=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jtO1Dmij; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C28AC1F000E9;
-	Thu, 28 May 2026 20:29:07 +0000 (UTC)
+	 MIME-Version; b=Bfswa9nKiTrbL9IzWfC6g7Jky+1u6FDqw+VKj9Tm0jwQzZfHIvq5aguf5fTsLBPQEDma1Mc5rBm+i1i9Soc+0a7W/LPW06pZGxP/eriPtuWelbq3RYhKrPjaiaDH5W1pNpCjotX9MQ28xzmqEMZsIu+UPOZlLJyR7kd88M5eNHs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=n0zzuEAH; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2E2321F000E9;
+	Thu, 28 May 2026 20:14:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780000148;
-	bh=ynhdHy4USQJma5ZWyK1mTZZxI2JIRZtiR7xfUNu4qMU=;
+	s=korg; t=1779999271;
+	bh=e5vMLpaIF5sbPAGKjfLimh1wPu/x2h/8oGaceZjQ7Gg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=jtO1Dmij+insy5v4WIH0OusmwgEy065XCDSDY/7qGgs08eclzb/AH7mWlz4bQZNwg
-	 4GqRqvYDGwG9oCH5xYU5xmgUVwWoRxeRDJKIx/zyGamGqUkZnh0rsM9Xc2Rm7PoqWi
-	 mgRdzwJIffiHPznZc8dgZiKQ5yB7f5jvS6zyOCpw=
+	b=n0zzuEAHMCEVw+RLYxM7J2UhPAcT9CPV6URc0eDS3tm68nx/xW0ArX5ZT30f3+/Cz
+	 cZGDo9q/2NjuYmxO/HP/kuzP74BI0r+ywvZCWkrW6UqHdYl8TcDsI9kOadARX+VOGk
+	 gn6Q1fbTnpLS5a78iJhXLJjwPpc1OH4mlISBUO6I=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Louis-Alexis Eyraud <louisalexis.eyraud@collabora.com>,
-	CK Hu <ck.hu@mediatek.com>,
-	Chun-Kuang Hu <chunkuang.hu@kernel.org>,
+	Xingwang Xiang <v3rdant.xiang@gmail.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 320/377] drm/mediatek: mtk_hdmi_ddc: Fix non-static global variable
-Date: Thu, 28 May 2026 21:49:18 +0200
-Message-ID: <20260528194647.664812549@linuxfoundation.org>
+Subject: [PATCH 7.0 430/461] bpf, skmsg: fix verdict sk_data_ready racing with ktls rx
+Date: Thu, 28 May 2026 21:49:19 +0200
+Message-ID: <20260528194659.968930922@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260528194638.371537336@linuxfoundation.org>
-References: <20260528194638.371537336@linuxfoundation.org>
+In-Reply-To: <20260528194646.819809818@linuxfoundation.org>
+References: <20260528194646.819809818@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,75 +64,117 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-255884-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TO_DN_SOME(0.00)[];
+	TAGGED_FROM(0.00)[bounces-255566-lists,stable=lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[7];
-	MID_RHS_MATCH_FROM(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	NEURAL_HAM(-0.00)[-0.999];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim,mediatek.com:email,collabora.com:email]
-X-Rspamd-Queue-Id: 3D2D55F909D
+	MID_RHS_MATCH_FROM(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[6];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,linuxfoundation.org:mid,linuxfoundation.org:dkim,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
+X-Rspamd-Queue-Id: 09E265F880C
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+7.0-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Louis-Alexis Eyraud <louisalexis.eyraud@collabora.com>
+From: Xingwang Xiang <v3rdant.xiang@gmail.com>
 
-[ Upstream commit 87ed4e845d5a90bba1a56c0a5c580a13982e8648 ]
+[ Upstream commit ddf8029623a1af20e984c040e89ff918158397ab ]
 
-The struct 'mtk_hdmi_ddc_driver' is not used outside of the
-mtk_hdmi_ddc.c file, so make it static to silence sparse warning:
-```
-drivers/gpu/drm/mediatek/mtk_hdmi_ddc.c:331:24: sparse: warning: symbol
-  'mtk_hdmi_ddc_driver' was not declared. Should it be static?
-```
+sk_psock_strp_data_ready() already checks tls_sw_has_ctx_rx() and
+defers to psock->saved_data_ready when a TLS RX context is present,
+avoiding a conflict with the TLS strparser's ownership of the receive
+queue (commit e91de6afa81c, "bpf: Fix running sk_skb program types
+with ktls").
 
-Fixes: c241118b6216 ("drm/mediatek: mtk_hdmi_ddc: Switch to register as module_platform_driver")
-Signed-off-by: Louis-Alexis Eyraud <louisalexis.eyraud@collabora.com>
-Reviewed-by: CK Hu <ck.hu@mediatek.com>
-Link: https://patchwork.kernel.org/project/dri-devel/patch/20260429-mediatek-drm-fix-sparse-warnings-v1-4-d95c4d118b83@collabora.com/
-Signed-off-by: Chun-Kuang Hu <chunkuang.hu@kernel.org>
+sk_psock_verdict_data_ready() has no equivalent guard.  When a socket
+is inserted into a sockmap (BPF_SK_SKB_VERDICT) before TLS RX is
+configured, tls_sw_strparser_arm() saves sk_psock_verdict_data_ready
+as rx_ctx->saved_data_ready.  On data arrival:
+
+  tls_data_ready -> tls_strp_data_ready -> tls_rx_msg_ready
+    -> saved_data_ready() = sk_psock_verdict_data_ready()
+      -> tcp_read_skb() drains sk_receive_queue via __skb_unlink()
+         without calling tcp_eat_skb(), so copied_seq is not advanced.
+
+tls_strp_msg_load() then finds tcp_inq() >= full_len (stale), calls
+tcp_recv_skb() on the now-empty queue, hits WARN_ON_ONCE(!first), and
+returns with rx_ctx->strp.anchor.frag_list pointing at a psock-owned
+(potentially freed) skb.  tls_decrypt_sg() subsequently walks that
+frag_list: use-after-free.
+
+Apply the same fix as sk_psock_strp_data_ready(): if a TLS RX context
+is present, call psock->saved_data_ready (sock_def_readable) to wake
+recv() waiters and return immediately, leaving the receive queue
+untouched.  TLS retains sole ownership of the queue and decrypts the
+record normally through tls_sw_recvmsg().
+
+Fixes: ef5659280eb1 ("bpf, sockmap: Allow skipping sk_skb parser program")
+Signed-off-by: Xingwang Xiang <v3rdant.xiang@gmail.com>
+Link: https://patch.msgid.link/20260517145630.20521-2-v3rdant.xiang@gmail.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/mediatek/mtk_hdmi_ddc.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ net/core/skmsg.c | 9 +++++++--
+ 1 file changed, 7 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/gpu/drm/mediatek/mtk_hdmi_ddc.c b/drivers/gpu/drm/mediatek/mtk_hdmi_ddc.c
-index 6358e1af69b49..2acbdb025d893 100644
---- a/drivers/gpu/drm/mediatek/mtk_hdmi_ddc.c
-+++ b/drivers/gpu/drm/mediatek/mtk_hdmi_ddc.c
-@@ -328,7 +328,7 @@ static const struct of_device_id mtk_hdmi_ddc_match[] = {
- };
- MODULE_DEVICE_TABLE(of, mtk_hdmi_ddc_match);
+diff --git a/net/core/skmsg.c b/net/core/skmsg.c
+index 6187a83bd7411..e1850caf1a71a 100644
+--- a/net/core/skmsg.c
++++ b/net/core/skmsg.c
+@@ -1268,12 +1268,19 @@ static int sk_psock_verdict_recv(struct sock *sk, struct sk_buff *skb)
+ static void sk_psock_verdict_data_ready(struct sock *sk)
+ {
+ 	const struct proto_ops *ops = NULL;
++	struct sk_psock *psock;
+ 	struct socket *sock;
+ 	int copied;
  
--struct platform_driver mtk_hdmi_ddc_driver = {
-+static struct platform_driver mtk_hdmi_ddc_driver = {
- 	.probe = mtk_hdmi_ddc_probe,
- 	.remove = mtk_hdmi_ddc_remove,
- 	.driver = {
+ 	trace_sk_data_ready(sk);
+ 
+ 	rcu_read_lock();
++	psock = sk_psock(sk);
++	if (psock && tls_sw_has_ctx_rx(sk)) {
++		psock->saved_data_ready(sk);
++		rcu_read_unlock();
++		return;
++	}
+ 	sock = READ_ONCE(sk->sk_socket);
+ 	if (likely(sock))
+ 		ops = READ_ONCE(sock->ops);
+@@ -1283,8 +1290,6 @@ static void sk_psock_verdict_data_ready(struct sock *sk)
+ 
+ 	copied = ops->read_skb(sk, sk_psock_verdict_recv);
+ 	if (copied >= 0) {
+-		struct sk_psock *psock;
+-
+ 		rcu_read_lock();
+ 		psock = sk_psock(sk);
+ 		if (psock)
 -- 
 2.53.0
 
