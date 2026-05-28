@@ -1,62 +1,59 @@
-Return-Path: <stable+bounces-255499-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-256102-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id CIYgFRCjGGrJlggAu9opvQ
-	(envelope-from <stable+bounces-255499-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:18:24 +0200
+	id 0NeaJlSsGGpolwgAu9opvQ
+	(envelope-from <stable+bounces-256102-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:57:56 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id A971F5F8589
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:18:23 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id 97ABA5F9EC2
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:57:55 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 305893137240
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 20:11:27 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 9D67F3042D61
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 20:39:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9796833F5B4;
-	Thu, 28 May 2026 20:11:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A89F835CB66;
+	Thu, 28 May 2026 20:39:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yvS8uSuz"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="beu0Koa/"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 49FC332ABC0;
-	Thu, 28 May 2026 20:11:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 64FFC3438AE;
+	Thu, 28 May 2026 20:39:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779999083; cv=none; b=c5fiPMLZg24Jw+8X4m3Ly3SLvKvviddz8P2CjdmhGrDe452vAPqMHVvCDLb7jYhL+ZSNyPt2ozFtvPj1TV4cvpcH3FZ5xq+VYwqY6HPRV0JFt6OHBsx4AKaB+cTuF2O+Oz5noEDgtY82EyApL1CMssUnw9KJ5mXW1YHqWYQszpk=
+	t=1780000762; cv=none; b=BaBbrGHp4lW9qLyU9Ak3t9JAh1+T0wgm8RQQlBPnpa9R13YVGARlE7hIFEaN6CqCZVZDnfv84I/GsH4LRyPoAujF13FBOcVL9nS4t4A0NAqFyYwu4OezrPQdygyDRcXduIznluiVq5vWoGgpVJPExEsbN2m8G7Z1Ym1YSQsCEoY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779999083; c=relaxed/simple;
-	bh=FaZ4Vs96FFsP/UdOP9LahdLsfme3ue1mnrzpDpmg44A=;
+	s=arc-20240116; t=1780000762; c=relaxed/simple;
+	bh=n0dG1b1mv4vL5qwFAuInD9Rf/pGVb63Ee8qLrnIRK2w=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=nkgwg2Wmum8MIDC2+xBSNWfTr2pR20Vr8Yc8nY4QqEpbMva1q6zv1OXaF0kkIxXfpIPxTiQ8yYZMAnuqb97DV635S2xNf/yFcn3btH5hhh9j14GbHwL1qGaahvhrKHJpclqMtQyDhkcfThvLpIoac7KKH0wYWbi+hTD3wUbG1zE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yvS8uSuz; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AD6A41F00A3A;
-	Thu, 28 May 2026 20:11:21 +0000 (UTC)
+	 MIME-Version; b=M8CKJNrs2iP9LhXiOOIte+KL9+GgGAxF7KtZwkxLgNBwjl5qZyxM0damxaCSH00PvqI/CnNwp4RGozRH8PZ6Som1D6DbcmVcYwrY21SELsb73P+M9DTdZ6iUN7KoYVGGx57asP6nXjDszc5w/Uz4l7iBD3JPqoBaK2EInNea5Ug=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=beu0Koa/; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C32A81F000E9;
+	Thu, 28 May 2026 20:39:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779999082;
-	bh=yG3sNT6Q1MY+dhNbLrTSjEHnSRVTNioV2PpMLlxvVhk=;
+	s=korg; t=1780000761;
+	bh=W21x2FO0QXXQIL2BHGWwNhG5KtF7gDEqE/WSgkWU59k=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=yvS8uSuzrIgMAAwm59WizTJiO8lRyT4Yt32ZjsSdO3SKB06eDB2PMhC/HYXNl7bBo
-	 9puO07spSvfbn0dOKnOgkTbvWZtOTpIUttKmyvWNQCkglmN9G6cX/+W6UyZXY0MqvI
-	 yfwjzY+9l7dLcpCzZUs26nPbxBuzOuF3SuCPnP4c=
+	b=beu0Koa/MwAGhpPJqcvYUfrt9azYHRj2E9PG17M0pjRrvcIGyG/oF0ycLXZkme47z
+	 OCAxiGqqr0EsS85P9dQ+fgt9BlaXkg/JdBEvcIl/Z12lNNP87Vmaz8yp6Hyxo7KiMF
+	 Yq4eDx94Snx9up7VnCI/rVn+oklVMMfifHZe/aX8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+ae231e0552fa77b26ea1@syzkaller.appspotmail.com,
-	Thomas Gleixner <tglx@kernel.org>,
-	Nikolay Aleksandrov <nikolay@nvidia.com>,
-	Ido Schimmel <idosch@nvidia.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Viresh Kumar <viresh.kumar@linaro.org>,
+	Sudeep Holla <sudeep.holla@arm.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 7.0 403/461] bridge: mcast: Fix a possible use-after-free when removing a bridge port
+Subject: [PATCH 6.12 158/272] firmware: arm_ffa: Fix big-endian support in __ffa_partition_info_regs_get()
 Date: Thu, 28 May 2026 21:48:52 +0200
-Message-ID: <20260528194659.140954099@linuxfoundation.org>
+Message-ID: <20260528194633.773909176@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260528194646.819809818@linuxfoundation.org>
-References: <20260528194646.819809818@linuxfoundation.org>
+In-Reply-To: <20260528194629.379955525@linuxfoundation.org>
+References: <20260528194629.379955525@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -67,167 +64,122 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	TAGGED_FROM(0.00)[bounces-255499-lists,stable=lfdr.de];
-	FROM_HAS_DN(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	PRECEDENCE_BULK(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	TAGGED_FROM(0.00)[bounces-256102-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
+	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
-	PRECEDENCE_BULK(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[9];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable,ae231e0552fa77b26ea1];
-	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[nvidia.com:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,msgid.link:url,appspotmail.com:email,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
-X-Rspamd-Queue-Id: A971F5F8589
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linaro.org:email,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,arm.com:email,linuxfoundation.org:mid,linuxfoundation.org:dkim]
+X-Rspamd-Queue-Id: 97ABA5F9EC2
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-7.0-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ido Schimmel <idosch@nvidia.com>
+From: Sudeep Holla <sudeep.holla@arm.com>
 
-[ Upstream commit 4df78ff02629c7729168f0696a7a2123c389818d ]
+[ Upstream commit 7bc0f589c81d62bc95f9ed142847219fc5d8ef6c ]
 
-When per-VLAN multicast snooping is enabled, the bridge iterates over
-all the bridge ports, disables the per-port multicast context on each
-port and enables the per-{port, VLAN} multicast contexts instead. The
-reverse happens when per-VLAN multicast snooping is disabled.
+Currently the FF-A driver doesn't support big-endian correctly. It is
+hard to regularly test the setup due to lack of test infrastructure and
+tools.
 
-When global multicast snooping is enabled, the bridge iterates over all
-the bridge ports and enables the per-port multicast context on each
-port. The reverse happens when multicast snooping is disabled.
+In order to support full stack, we need to take small steps in getting
+the support for big-endian kernel added slowly. This change fixes the
+support in __ffa_partition_info_regs_get() so that the response from the
+firmware are converted correctly as required. With this change, we can
+enumerate all the FF-A devices correctly in the big-endian kernel if the
+FFA_PARTITION_INFO_REGS_GET is supported.
 
-The above scheme can result in a situation where both types of contexts
-(per-port and per-{port, VLAN}) are enabled on a single bridge port:
-
- # ip link add name br1 up type bridge mcast_snooping 1 mcast_querier 1 vlan_filtering 1
- # ip link add name dummy1 up master br1 type dummy
- # ip link set dev br1 type bridge mcast_vlan_snooping 1
- # ip link set dev br1 type bridge mcast_snooping 0
- # ip link set dev br1 type bridge mcast_snooping 1
-
-This is not intended and it is a problem since the commit cited below.
-Prior to this commit, when removing a bridge port,
-br_multicast_disable_port() would disable the per-port multicast context
-and the per-{port, VLAN} multicast contexts would get disabled when
-flushing VLANs.
-
-After this commit, br_multicast_disable_port() only disables the
-per-port multicast context if per-VLAN multicast snooping is disabled.
-If both types of contexts were enabled on the port when it was removed,
-the per-port multicast context would remain enabled when freeing the
-bridge port, leading to a use-after-free [1].
-
-Fix by preventing the bridge from enabling / disabling the per-port
-multicast contexts when toggling global multicast snooping if per-VLAN
-multicast snooping is enabled.
-
-[1]
-ODEBUG: free active (active state 0) object: ffff88810f8bda78 object type: timer_list hint: br_ip6_multicast_port_query_expired (net/bridge/br_multicast.c:1927)
-WARNING: lib/debugobjects.c:629 at debug_print_object+0x1b1/0x3e0, CPU#5: swapper/5/0
-[...]
-Call Trace:
-<IRQ>
-__debug_check_no_obj_freed (lib/debugobjects.c:1116)
-kfree (mm/slub.c:2620 mm/slub.c:6250 mm/slub.c:6565)
-kobject_cleanup (lib/kobject.c:689)
-rcu_do_batch (kernel/rcu/tree.c:2617)
-rcu_core (kernel/rcu/tree.c:2869)
-handle_softirqs (kernel/softirq.c:622)
-__irq_exit_rcu (kernel/softirq.c:656 kernel/softirq.c:496 kernel/softirq.c:735)
-irq_exit_rcu (kernel/softirq.c:752)
-sysvec_apic_timer_interrupt (arch/x86/kernel/apic/apic.c:1061 (discriminator 47) arch/x86/kernel/apic/apic.c:1061 (discriminator 47))
-</IRQ>
-
-Fixes: 4b30ae9adb04 ("net: bridge: mcast: re-implement br_multicast_{enable, disable}_port functions")
-Reported-by: syzbot+ae231e0552fa77b26ea1@syzkaller.appspotmail.com
-Closes: https://lore.kernel.org/netdev/87qznowlfs.ffs@tglx/
-Reported-by: Thomas Gleixner <tglx@kernel.org>
-Acked-by: Nikolay Aleksandrov <nikolay@nvidia.com>
-Signed-off-by: Ido Schimmel <idosch@nvidia.com>
-Link: https://patch.msgid.link/20260517121122.188333-2-idosch@nvidia.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Tested-by: Viresh Kumar <viresh.kumar@linaro.org>
+Message-Id: <20250217-ffa_updates-v3-5-bd1d9de615e7@arm.com>
+Signed-off-by: Sudeep Holla <sudeep.holla@arm.com>
+Stable-dep-of: 3974ea193840 ("firmware: arm_ffa: Bound PARTITION_INFO_GET_REGS copies")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/bridge/br_multicast.c | 22 +++++++++++++++++-----
- 1 file changed, 17 insertions(+), 5 deletions(-)
+ drivers/firmware/arm_ffa/driver.c | 31 +++++++++++++++++++++++++++++--
+ 1 file changed, 29 insertions(+), 2 deletions(-)
 
-diff --git a/net/bridge/br_multicast.c b/net/bridge/br_multicast.c
-index 881d866d687a0..2eef4f3345cd7 100644
---- a/net/bridge/br_multicast.c
-+++ b/net/bridge/br_multicast.c
-@@ -4640,10 +4640,24 @@ static void br_multicast_start_querier(struct net_bridge_mcast *brmctx,
- 	rcu_read_unlock();
- }
- 
--static void br_multicast_del_grps(struct net_bridge *br)
-+static void br_multicast_enable_all_ports(struct net_bridge *br)
+diff --git a/drivers/firmware/arm_ffa/driver.c b/drivers/firmware/arm_ffa/driver.c
+index a6c5f89476c06..f033bd8ee816d 100644
+--- a/drivers/firmware/arm_ffa/driver.c
++++ b/drivers/firmware/arm_ffa/driver.c
+@@ -304,14 +304,24 @@ __ffa_partition_info_get(u32 uuid0, u32 uuid1, u32 uuid2, u32 uuid3,
+ #define CURRENT_INDEX(x)	((u16)(FIELD_GET(CURRENT_INDEX_MASK, (x))))
+ #define UUID_INFO_TAG(x)	((u16)(FIELD_GET(UUID_INFO_TAG_MASK, (x))))
+ #define PARTITION_INFO_SZ(x)	((u16)(FIELD_GET(PARTITION_INFO_SZ_MASK, (x))))
++#define PART_INFO_ID_MASK	GENMASK(15, 0)
++#define PART_INFO_EXEC_CXT_MASK	GENMASK(31, 16)
++#define PART_INFO_PROPS_MASK	GENMASK(63, 32)
++#define PART_INFO_ID(x)		((u16)(FIELD_GET(PART_INFO_ID_MASK, (x))))
++#define PART_INFO_EXEC_CXT(x)	((u16)(FIELD_GET(PART_INFO_EXEC_CXT_MASK, (x))))
++#define PART_INFO_PROPERTIES(x)	((u32)(FIELD_GET(PART_INFO_PROPS_MASK, (x))))
+ static int
+ __ffa_partition_info_get_regs(u32 uuid0, u32 uuid1, u32 uuid2, u32 uuid3,
+ 			      struct ffa_partition_info *buffer, int num_parts)
  {
- 	struct net_bridge_port *port;
+ 	u16 buf_sz, start_idx, cur_idx, count = 0, prev_idx = 0, tag = 0;
++	struct ffa_partition_info *buf = buffer;
+ 	ffa_value_t partition_info;
  
-+	if (br_opt_get(br, BROPT_MCAST_VLAN_SNOOPING_ENABLED))
-+		return;
+ 	do {
++		__le64 *regs;
++		int idx;
 +
-+	list_for_each_entry(port, &br->port_list, list)
-+		__br_multicast_enable_port_ctx(&port->multicast_ctx);
-+}
+ 		start_idx = prev_idx ? prev_idx + 1 : 0;
+ 
+ 		invoke_ffa_fn((ffa_value_t){
+@@ -335,8 +345,25 @@ __ffa_partition_info_get_regs(u32 uuid0, u32 uuid1, u32 uuid2, u32 uuid3,
+ 		if (buf_sz > sizeof(*buffer))
+ 			buf_sz = sizeof(*buffer);
+ 
+-		memcpy(buffer + prev_idx * buf_sz, &partition_info.a3,
+-		       (cur_idx - start_idx + 1) * buf_sz);
++		regs = (void *)&partition_info.a3;
++		for (idx = 0; idx < cur_idx - start_idx + 1; idx++, buf++) {
++			union {
++				uuid_t uuid;
++				u64 regs[2];
++			} uuid_regs = {
++				.regs = {
++					le64_to_cpu(*(regs + 1)),
++					le64_to_cpu(*(regs + 2)),
++					}
++			};
++			u64 val = *(u64 *)regs;
 +
-+static void br_multicast_disable_all_ports(struct net_bridge *br)
-+{
-+	struct net_bridge_port *port;
-+
-+	if (br_opt_get(br, BROPT_MCAST_VLAN_SNOOPING_ENABLED))
-+		return;
-+
- 	list_for_each_entry(port, &br->port_list, list)
- 		__br_multicast_disable_port_ctx(&port->multicast_ctx);
- }
-@@ -4651,7 +4665,6 @@ static void br_multicast_del_grps(struct net_bridge *br)
- int br_multicast_toggle(struct net_bridge *br, unsigned long val,
- 			struct netlink_ext_ack *extack)
- {
--	struct net_bridge_port *port;
- 	bool change_snoopers = false;
- 	int err = 0;
++			buf->id = PART_INFO_ID(val);
++			buf->exec_ctxt = PART_INFO_EXEC_CXT(val);
++			buf->properties = PART_INFO_PROPERTIES(val);
++			uuid_copy(&buf->uuid, &uuid_regs.uuid);
++			regs += 3;
++		}
+ 		prev_idx = cur_idx;
  
-@@ -4668,7 +4681,7 @@ int br_multicast_toggle(struct net_bridge *br, unsigned long val,
- 	br_opt_toggle(br, BROPT_MULTICAST_ENABLED, !!val);
- 	if (!br_opt_get(br, BROPT_MULTICAST_ENABLED)) {
- 		change_snoopers = true;
--		br_multicast_del_grps(br);
-+		br_multicast_disable_all_ports(br);
- 		goto unlock;
- 	}
- 
-@@ -4676,8 +4689,7 @@ int br_multicast_toggle(struct net_bridge *br, unsigned long val,
- 		goto unlock;
- 
- 	br_multicast_open(br);
--	list_for_each_entry(port, &br->port_list, list)
--		__br_multicast_enable_port_ctx(&port->multicast_ctx);
-+	br_multicast_enable_all_ports(br);
- 
- 	change_snoopers = true;
- 
+ 	} while (cur_idx < (count - 1));
 -- 
 2.53.0
 
