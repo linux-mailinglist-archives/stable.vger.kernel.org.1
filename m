@@ -1,60 +1,60 @@
-Return-Path: <stable+bounces-255400-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-255793-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id qPFvKCWiGGqblggAu9opvQ
-	(envelope-from <stable+bounces-255400-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:14:29 +0200
+	id AEbsMQumGGoQlwgAu9opvQ
+	(envelope-from <stable+bounces-255793-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:31:07 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3A07D5F8226
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:14:29 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 46B1D5F8DCE
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:31:07 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id CDDA2304CFDD
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 20:06:44 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 36E51301389D
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 20:25:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2BBCF32ABC0;
-	Thu, 28 May 2026 20:06:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1116F2F260C;
+	Thu, 28 May 2026 20:24:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="owACfsh+"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CN0b3SDK"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E51D62F260C;
-	Thu, 28 May 2026 20:06:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C70272E7379;
+	Thu, 28 May 2026 20:24:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779998804; cv=none; b=ee79MaSFtMUpjHP29A/Lt2vuslwKAvFvp3jYBbqyPc42/seFpq29crReQigKIBsdBTveSgXmBI9A3gH/pFdYBqmiMO+nIn61FIistMXr16NY2aQ2LfgMSot/bp8W4rstsZDYYxJTKXKylHcXsKWmrd9tyBYpfkiyamd+O6cMrjs=
+	t=1779999898; cv=none; b=RQH0rV9Apnwy6uEzBKafVrwtkw7ksGBsmk5Ha1hyG4tzrbOEyfDMnVIKzXmyMmsqqZXYmHRNORaL4L8bggiWcUIt6Tl2Hf2VOKgbm9UZZ2jLIfFmCgN2TNvLfgIdJ2Rbh7C2+YqwRuo/XXk6+qBgkBl3t3dWvbIcRkrw0q++oqw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779998804; c=relaxed/simple;
-	bh=+QIgEQZXJmGhPa/RQaZG7oNkaWWIRIpTG8grnK1uYqc=;
+	s=arc-20240116; t=1779999898; c=relaxed/simple;
+	bh=/ynRrY3gbYdQ60iA47hVGzda/MoStqVCaduRQ6864ls=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=iEXrn5qgGJfC5CPEpQeUMG3tEKdqR5w5KnekK+jkJnAwcWm9tYM8sKXkLY8OL1ovpTEQU7gE7US7jzaofs0aSbOOK67RIGVJrONkIuG1K8WaAW2TAtbh9hitdNTCLYxhL64N1JphW+FGudR/BrMpxVuWL3xEJOIkY+F1Z3wILV4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=owACfsh+; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4E9011F000E9;
-	Thu, 28 May 2026 20:06:42 +0000 (UTC)
+	 MIME-Version; b=cYtzLq/WS2JJsW/r1ZJ9IVEzcoF9ybu1sengJfaq1w5iWF61zRTMl3el7dcs3MsXzrL+gSqN0Z9VAtfgMul38hOe2tp5vLlRWCdje+f0gXhrYa9qALk7krkq4yOh4FEERF2FXT2Iy49lJPKTltTTvKj/qlu8r/4cihlJHQI2P60=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CN0b3SDK; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2A2861F000E9;
+	Thu, 28 May 2026 20:24:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779998802;
-	bh=c56OjHFlmSaCLMxkcq4uIQT7uwXK54jOekbpNKrPAEo=;
+	s=korg; t=1779999897;
+	bh=KonAzl9D4u6z51PxnafDEzdyGZRqmKxlKdGGH7Npn+Y=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=owACfsh+98lxoLifae7K0FoEfkZo8H/8jNsexBAstpZH2X8DtWUxqpShp6mM/dBTn
-	 +imMGYDbtBSdzVNe16KVaSqXjjZ/Ile4HO/XB7Fy4SvA53cGROxQWNtK5KivkGclN0
-	 /xbv9df4T48aFdhJSw5d+GwgRA2i13YItY0LEVD4=
+	b=CN0b3SDK12Tdxy5s/74e4QV0MjUa4TwIIjWon/jLSSF0UvVF0YCfxfDFmcSvt8kEQ
+	 +URo0b7uRfaBX2uBqTzihQ5JZy7mkB3eGBnHqQ6Iio7/cbMdfwcR47H6JqZ8OM2H+j
+	 R2kVTrc4veJ0lvefOvnMKAKC2MJvVCQmeOLT8Jhw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Li RongQing <lirongqing@baidu.com>,
-	"Borislav Petkov (AMD)" <bp@alien8.de>,
-	Qiuxu Zhuo <qiuxu.zhuo@intel.com>,
+	Linus Walleij <linus.walleij@linaro.org>,
+	Guenter Roeck <linux@roeck-us.net>,
+	Arnd Bergmann <arnd@arndb.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 7.0 302/461] x86/mce: Restore MCA polling interval halving
-Date: Thu, 28 May 2026 21:47:11 +0200
-Message-ID: <20260528194655.987083809@linuxfoundation.org>
+Subject: [PATCH 6.18 194/377] ARM: integrator: Fix early initialization
+Date: Thu, 28 May 2026 21:47:12 +0200
+Message-ID: <20260528194644.026356879@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260528194646.819809818@linuxfoundation.org>
-References: <20260528194646.819809818@linuxfoundation.org>
+In-Reply-To: <20260528194638.371537336@linuxfoundation.org>
+References: <20260528194638.371537336@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,7 +69,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
@@ -77,7 +77,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-255400-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-255793-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
@@ -86,150 +86,108 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
 	NEURAL_HAM(-0.00)[-1.000];
 	RCPT_COUNT_SEVEN(0.00)[7];
 	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim,alien8.de:email]
-X-Rspamd-Queue-Id: 3A07D5F8226
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,linaro.org:email,arndb.de:email,roeck-us.net:email,linuxfoundation.org:mid,linuxfoundation.org:dkim]
+X-Rspamd-Queue-Id: 46B1D5F8DCE
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-7.0-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Borislav Petkov (AMD) <bp@alien8.de>
+From: Guenter Roeck <linux@roeck-us.net>
 
-[ Upstream commit ea324444ece9f301b5c4ff71b258cc68990c4d61 ]
+[ Upstream commit 90d77b30a666049ad24df463f52e5d529c44e8cd ]
 
-RongQing reported that the MCA polling interval doesn't halve when an
-error gets logged. It was traced down to the commit in Fixes:, because:
+Starting with commit bdb249fce9ad4 ("ARM: integrator: read counter using
+syscon/regmap"), intcp_init_early calls syscon_regmap_lookup_by_compatible
+which in turn calls of_syscon_register. This function allocates memory.
+Since the memory management code has not been initialized at that time,
+the call always fails. It either returns -ENOMEM or crashes as follows.
 
-  mce_timer_fn()
-  |-> mce_poll_banks()
-  |-> machine_check_poll()
-  |-> mce_log()
+Unable to handle kernel NULL pointer dereference at virtual address 0000000c when read
+[0000000c] *pgd=00000000
+Internal error: Oops: 5 [#1] ARM
+Modules linked in:
+CPU: 0 UID: 0 PID: 0 Comm: swapper Not tainted 6.15.0-rc5-00026-g5fcc9bf84ee5 #1 PREEMPT
+Hardware name: ARM Integrator/CP (Device Tree)
+PC is at __kmalloc_cache_noprof+0xec/0x39c
+LR is at __kmalloc_cache_noprof+0x34/0x39c
+...
+Call trace:
+ __kmalloc_cache_noprof from of_syscon_register+0x7c/0x310
+ of_syscon_register from device_node_get_regmap+0xa4/0xb0
+ device_node_get_regmap from intcp_init_early+0xc/0x40
+ intcp_init_early from start_kernel+0x60/0x688
+ start_kernel from 0x0
 
-which will queue the work and return.
+The crash is seen due to a dereferenced pointer which is not supposed to be
+NULL but is NULL if the memory management subsystem has not been
+initialized. The crash is not seen with all versions of gcc. Some versions
+such as gcc 9.x apparently do not dereference the pointer, presumably if
+tracing is disabled. The problem has been reproduced with gcc 10.x, 11.x,
+and 13.x. Either case, if the crash is not seen, the call to
+syscon_regmap_lookup_by_compatible returns -ENOMEM, and
+sched_clock_register is never called.
 
-Now, back in mce_timer_fn():
+Fix the problem by moving the early initialization code into the standard
+machine initialization code.
 
-        /*
-         * Alert userspace if needed. If we logged an MCE, reduce the polling
-         * interval, otherwise increase the polling interval.
-         */
-        if (mce_notify_irq())
-
-<--- here we haven't ran the notifier chain yet so mce_need_notify is
-not set yet so this won't hit and we won't halve the interval iv.
-
-Now the notifier chain runs. mce_early_notifier() sets the bit, does
-mce_notify_irq(), that clears the bit and then the notifier chain
-a little later logs the error.
-
-So this is a silly timing issue.
-
-But, that's all unnecessary.
-
-All it needs to happen here is, the "should we notify of a logged MCE"
-mce_notify_irq() asks, should be simply a question to the mce gen pool:
-"Are you empty?"
-
-And that then turns into a simple yes or no answer and it all
-JustWorks(tm).
-
-So do that and also distribute the functionality where it belongs:
- - Print that MCE events have been logged in mce_log()
- - Trigger the mcelog tool specific work in the first notifier
-
-As a result, mce_notify_irq() can go now.
-
-Fixes: 011d82611172 ("RAS: Add a Corrected Errors Collector")
-Reported-by: Li RongQing <lirongqing@baidu.com>
-Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
-Reviewed-by: Qiuxu Zhuo <qiuxu.zhuo@intel.com>
-Tested-by: Qiuxu Zhuo <qiuxu.zhuo@intel.com>
-Link: https://lore.kernel.org/r/20260112082747.2842-1-lirongqing@baidu.com
+Fixes: bdb249fce9ad4 ("ARM: integrator: read counter using syscon/regmap")
+Cc: Linus Walleij <linus.walleij@linaro.org>
+Signed-off-by: Guenter Roeck <linux@roeck-us.net>
+Link: https://lore.kernel.org/20250518164118.3859567-1-linux@roeck-us.net
+Signed-off-by: Linus Walleij <linus.walleij@linaro.org>
+Link: https://lore.kernel.org/r/20260505-integrator-fixes-v1-1-56ab9aac59db@kernel.org
+Signed-off-by: Arnd Bergmann <arnd@arndb.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/x86/kernel/cpu/mce/core.c | 33 +++++----------------------------
- 1 file changed, 5 insertions(+), 28 deletions(-)
+ arch/arm/mach-versatile/integrator_cp.c | 13 ++++---------
+ 1 file changed, 4 insertions(+), 9 deletions(-)
 
-diff --git a/arch/x86/kernel/cpu/mce/core.c b/arch/x86/kernel/cpu/mce/core.c
-index 8dd424ac5de8a..f3a793e3a6c8f 100644
---- a/arch/x86/kernel/cpu/mce/core.c
-+++ b/arch/x86/kernel/cpu/mce/core.c
-@@ -90,7 +90,6 @@ struct mca_config mca_cfg __read_mostly = {
- };
- 
- static DEFINE_PER_CPU(struct mce_hw_err, hw_errs_seen);
--static unsigned long mce_need_notify;
- 
- /*
-  * MCA banks polled by the period polling timer for corrected events.
-@@ -152,8 +151,10 @@ EXPORT_PER_CPU_SYMBOL_GPL(injectm);
- 
- void mce_log(struct mce_hw_err *err)
- {
--	if (mce_gen_pool_add(err))
-+	if (mce_gen_pool_add(err)) {
-+		pr_info(HW_ERR "Machine check events logged\n");
- 		irq_work_queue(&mce_irq_work);
-+	}
+diff --git a/arch/arm/mach-versatile/integrator_cp.c b/arch/arm/mach-versatile/integrator_cp.c
+index 2ed4ded56b3fe..03dfb5f720b7b 100644
+--- a/arch/arm/mach-versatile/integrator_cp.c
++++ b/arch/arm/mach-versatile/integrator_cp.c
+@@ -86,14 +86,6 @@ static u64 notrace intcp_read_sched_clock(void)
+ 	return val;
  }
- EXPORT_SYMBOL_GPL(mce_log);
  
-@@ -585,28 +586,6 @@ bool mce_is_correctable(struct mce *m)
- }
- EXPORT_SYMBOL_GPL(mce_is_correctable);
- 
--/*
-- * Notify the user(s) about new machine check events.
-- * Can be called from interrupt context, but not from machine check/NMI
-- * context.
-- */
--static bool mce_notify_irq(void)
+-static void __init intcp_init_early(void)
 -{
--	/* Not more than two messages every minute */
--	static DEFINE_RATELIMIT_STATE(ratelimit, 60*HZ, 2);
--
--	if (test_and_clear_bit(0, &mce_need_notify)) {
--		mce_work_trigger();
--
--		if (__ratelimit(&ratelimit))
--			pr_info(HW_ERR "Machine check events logged\n");
--
--		return true;
--	}
--
--	return false;
+-	cm_map = syscon_regmap_lookup_by_compatible("arm,core-module-integrator");
+-	if (IS_ERR(cm_map))
+-		return;
+-	sched_clock_register(intcp_read_sched_clock, 32, 24000000);
 -}
 -
- static int mce_early_notifier(struct notifier_block *nb, unsigned long val,
- 			      void *data)
+ static void __init intcp_init_irq_of(void)
  {
-@@ -618,9 +597,7 @@ static int mce_early_notifier(struct notifier_block *nb, unsigned long val,
- 	/* Emit the trace record: */
- 	trace_mce_record(err);
+ 	cm_init();
+@@ -119,6 +111,10 @@ static void __init intcp_init_of(void)
+ {
+ 	struct device_node *cpcon;
  
--	set_bit(0, &mce_need_notify);
--
--	mce_notify_irq();
-+	mce_work_trigger();
- 
- 	return NOTIFY_DONE;
- }
-@@ -1804,7 +1781,7 @@ static void mce_timer_fn(struct timer_list *t)
- 	 * Alert userspace if needed. If we logged an MCE, reduce the polling
- 	 * interval, otherwise increase the polling interval.
- 	 */
--	if (mce_notify_irq())
-+	if (!mce_gen_pool_empty())
- 		iv = max(iv / 2, (unsigned long) HZ/100);
- 	else
- 		iv = min(iv * 2, round_jiffies_relative(check_interval * HZ));
++	cm_map = syscon_regmap_lookup_by_compatible("arm,core-module-integrator");
++	if (!IS_ERR(cm_map))
++		sched_clock_register(intcp_read_sched_clock, 32, 24000000);
++
+ 	cpcon = of_find_matching_node(NULL, intcp_syscon_match);
+ 	if (!cpcon)
+ 		return;
+@@ -138,7 +134,6 @@ static const char * intcp_dt_board_compat[] = {
+ DT_MACHINE_START(INTEGRATOR_CP_DT, "ARM Integrator/CP (Device Tree)")
+ 	.reserve	= integrator_reserve,
+ 	.map_io		= intcp_map_io,
+-	.init_early	= intcp_init_early,
+ 	.init_irq	= intcp_init_irq_of,
+ 	.init_machine	= intcp_init_of,
+ 	.dt_compat      = intcp_dt_board_compat,
 -- 
 2.53.0
 
