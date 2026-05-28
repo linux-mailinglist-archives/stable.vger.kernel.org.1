@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-255777-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-255778-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 0EsiMBSoGGpolwgAu9opvQ
-	(envelope-from <stable+bounces-255777-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:39:48 +0200
+	id 4GVRLN+lGGrClggAu9opvQ
+	(envelope-from <stable+bounces-255778-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:30:23 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 28F9C5F941B
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:39:48 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 303B35F8D5E
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:30:23 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 17A1432315FE
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 20:24:46 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 29E27312241A
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 20:24:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 40A8E3624C5;
-	Thu, 28 May 2026 20:24:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D656834F259;
+	Thu, 28 May 2026 20:24:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JUEtZ4NS"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YZVpw3bG"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E54F93630A7;
-	Thu, 28 May 2026 20:24:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B1DDB352033;
+	Thu, 28 May 2026 20:24:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779999854; cv=none; b=XFUvQcoNobO54zCHxQZg7kH72iwCyZ3Fe9/KeeZi+AhM0eMOkd48MYvnhUefpBq/KBW0xaF654+Fqcnjz3TlcqKy15Mrz6dz0vIXmCEeQTCPXPzNAbaAjrAvJipgBVmilFvZoZbHNFCsvk2EUdDfya9CI2HlWTj6RniG3gB80JU=
+	t=1779999856; cv=none; b=GfjdlXGwBl1Xt7Bnzf4CH6L5TBfiHRwIVKnq9LrqVuYkePh7SadkQ4F4zSNJ81B4g8bYm8LWTiDixsoGNcTFQsuVKhWc7RAf9AKQPH44IgDLtKjQS2XE/OWV4/qYDLmAfzOMwWxAojdKp7HKN8VFAlKkt+R83JcBE1QeM9DRTYk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779999854; c=relaxed/simple;
-	bh=xnYLR5k4VqqJWa1+RAvcTKgd/PYIiV3C+lsFiupR4gA=;
+	s=arc-20240116; t=1779999856; c=relaxed/simple;
+	bh=E2MaoaFPerAUZMJvUkUS1xu4WIC4GQxamIJiN52I7Yg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=RW9k/Aoq1HYSXj8orWrmJMPJMVkf/RRviV9JvA+Yo1cFP6bq/hKdw2pO8qBHuatBby5uOVps2N/ikFEXb0OjVydboRDFPGrGJuvPwhZjY3d6gg0SHRdsFj4L6S+UQKOgBpuN/MiSC6m8YGYXzs+oknOVLyc7lbkSszpzru/hY/o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JUEtZ4NS; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4E6C91F000E9;
-	Thu, 28 May 2026 20:24:12 +0000 (UTC)
+	 MIME-Version:Content-Type; b=pXMlIahHdZbHe4YEtsWdP+OWFWSI41haDhBygWpfiBWNX3RDw6kW/5iQfoO4/4pH+FIbBXa+tfei5Txbii89KXVsFfbzQThIFfiStHMHVPapQqicVmjkrLTy8VInFmv02mgTyvqV1cj+dyC2PMCog4hMx6u0wRYR80huoyLF1tg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YZVpw3bG; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1C8311F000E9;
+	Thu, 28 May 2026 20:24:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779999852;
-	bh=QpnNSRUWWdFnIFoOPrzdJVTXl4j0gAe7ahVmU0UBZQc=;
+	s=korg; t=1779999855;
+	bh=QHVwIQjFws1m/6S5LEmgCuUwBKtgkyMa0JmsrpgEKk8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=JUEtZ4NSPkD3mH31qdTltZV1qQ9mxkKUyntzoKj1A8qI0MeNd+cofBec9V9ZU4ovH
-	 zLUBdu3fkW1Z+KSjDJGHr85Ji184leGXgvKwkgVC5b1IWLNuiZExQme7Bquyl6JFP6
-	 VdSFnTSdN8gm6TTt9P1bAiCoDmPhbEEjYVFXg/IY=
+	b=YZVpw3bGpGx2X7xBCLRcMfcy28YZCZgyYXqGgWYH2z2sVhJ8MbXL32mETqj8Caz0l
+	 KIcDmxclDBsgUBQ7jk2Eld1pVKAOYyXNdOxBbamfP2SsHbStjfhdFHdjXLRZowtXY1
+	 O9IHriGhPdy74wX0pO+AGblPCqQxJKqEC/uEzK7w=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Shitalkumar Gandhi <shitalkumar.gandhi@cambiumnetworks.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Gabor Juhos <j4g8y7@gmail.com>,
+	Miquel Raynal <miquel.raynal@bootlin.com>,
+	Vinod Koul <vkoul@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 214/377] net: ti: icssm-prueth: fix eth_ports_node leak in probe
-Date: Thu, 28 May 2026 21:47:32 +0200
-Message-ID: <20260528194644.595202697@linuxfoundation.org>
+Subject: [PATCH 6.18 215/377] phy: marvell: mvebu-a3700-utmi: fix incorrect USB2_PHY_CTRL register access
+Date: Thu, 28 May 2026 21:47:33 +0200
+Message-ID: <20260528194644.625649866@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
 In-Reply-To: <20260528194638.371537336@linuxfoundation.org>
 References: <20260528194638.371537336@linuxfoundation.org>
@@ -63,35 +64,36 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	RCVD_TLS_LAST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,bootlin.com,kernel.org];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-255777-lists,stable=lfdr.de];
-	TO_DN_SOME(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	TAGGED_FROM(0.00)[bounces-255778-lists,stable=lfdr.de];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	RCVD_TLS_LAST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	TO_DN_SOME(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,cambiumnetworks.com:email,linuxfoundation.org:mid,linuxfoundation.org:dkim]
-X-Rspamd-Queue-Id: 28F9C5F941B
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,bootlin.com:email,msgid.link:url,linuxfoundation.org:mid,linuxfoundation.org:dkim]
+X-Rspamd-Queue-Id: 303B35F8D5E
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
@@ -99,37 +101,45 @@ X-Rspamd-Server: lfdr
 
 ------------------
 
-From: Shitalkumar Gandhi <shital.gandhi45@gmail.com>
+From: Gabor Juhos <j4g8y7@gmail.com>
 
-[ Upstream commit 6635fa84403c3a59455b66007c019a7cc632db30 ]
+[ Upstream commit 91ddf6f722084383fb05be731c0107814b055c0c ]
 
-The error path on of_property_read_u32() failure inside
-icssm_prueth_probe() returns without putting eth_ports_node,
-which was acquired before the for_each_child_of_node() loop.
+The mvebu_a3700_utmi_phy_power_off() function tries to modify the
+USB2_PHY_CTRL register by using the IO address of the PHY IP block along
+with the readl/writel IO accessors. However, the register exist in the
+USB miscellaneous register space, and as such it must be accessed via
+regmap like it is done in the mvebu_a3700_utmi_phy_power_on() function.
 
-Drop it before returning.
+Change the code to use regmap_update_bits() for modífying the register
+to fix this.
 
-Fixes: 511f6c1ae093 ("net: ti: icssm-prueth: Adds ICSSM Ethernet driver")
-Signed-off-by: Shitalkumar Gandhi <shitalkumar.gandhi@cambiumnetworks.com>
-Link: https://patch.msgid.link/20260506195813.641610-1-shitalkumar.gandhi@cambiumnetworks.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Fixes: cc8b7a0ae866 ("phy: add A3700 UTMI PHY driver")
+Signed-off-by: Gabor Juhos <j4g8y7@gmail.com>
+Reviewed-by: Miquel Raynal <miquel.raynal@bootlin.com>
+Link: https://patch.msgid.link/20260321-a3700-utmi-fix-usb2_phy_ctrl-access-v1-1-6005ff4b5058@gmail.com
+Signed-off-by: Vinod Koul <vkoul@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/ti/icssm/icssm_prueth.c | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/phy/marvell/phy-mvebu-a3700-utmi.c | 5 ++---
+ 1 file changed, 2 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/net/ethernet/ti/icssm/icssm_prueth.c b/drivers/net/ethernet/ti/icssm/icssm_prueth.c
-index 293b7af04263f..cc92f20685843 100644
---- a/drivers/net/ethernet/ti/icssm/icssm_prueth.c
-+++ b/drivers/net/ethernet/ti/icssm/icssm_prueth.c
-@@ -1347,6 +1347,7 @@ static int icssm_prueth_probe(struct platform_device *pdev)
- 			dev_err(dev, "%pOF error reading port_id %d\n",
- 				eth_node, ret);
- 			of_node_put(eth_node);
-+			of_node_put(eth_ports_node);
- 			return ret;
- 		}
+diff --git a/drivers/phy/marvell/phy-mvebu-a3700-utmi.c b/drivers/phy/marvell/phy-mvebu-a3700-utmi.c
+index 04f4fb4bed702..f882bc57649c7 100644
+--- a/drivers/phy/marvell/phy-mvebu-a3700-utmi.c
++++ b/drivers/phy/marvell/phy-mvebu-a3700-utmi.c
+@@ -168,9 +168,8 @@ static int mvebu_a3700_utmi_phy_power_off(struct phy *phy)
+ 	u32 reg;
  
+ 	/* Disable PHY pull-up and enable USB2 suspend */
+-	reg = readl(utmi->regs + USB2_PHY_CTRL(usb32));
+-	reg &= ~(RB_USB2PHY_PU | RB_USB2PHY_SUSPM(usb32));
+-	writel(reg, utmi->regs + USB2_PHY_CTRL(usb32));
++	regmap_update_bits(utmi->usb_misc, USB2_PHY_CTRL(usb32),
++			   RB_USB2PHY_PU | RB_USB2PHY_SUSPM(usb32), 0);
+ 
+ 	/* Power down OTG module */
+ 	if (usb32) {
 -- 
 2.53.0
 
