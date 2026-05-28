@@ -1,59 +1,59 @@
-Return-Path: <stable+bounces-255860-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-256271-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id CIhgLe6lGGoQlwgAu9opvQ
-	(envelope-from <stable+bounces-255860-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:30:38 +0200
+	id qH99FF2rGGpolwgAu9opvQ
+	(envelope-from <stable+bounces-256271-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:53:49 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id BCA8F5F8D96
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:30:37 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id B6D735F9CCC
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:53:47 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 9F6D03041EC9
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 20:28:01 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 9762030432C0
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 20:47:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 731742D9787;
-	Thu, 28 May 2026 20:28:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 13404328B7B;
+	Thu, 28 May 2026 20:47:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kprIomCo"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dTC+9Xo/"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 49463DDC5;
-	Thu, 28 May 2026 20:27:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CFBFE23394D;
+	Thu, 28 May 2026 20:47:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780000080; cv=none; b=sCtLZG/cN+YPjkZFbUYMLAGQv510wwM4oUXXGSGnK6O9CvxzC+sRvWE33LNwOz1OME38k8e91ywS+HZz7AEyJYL639ataHfiY9C+cMXyuO++ghxX9XdlFH4C4lCPOMKGwpk1AHUofjPSiTkByvENUO+oH2cQnOISOvlNv/cwORQ=
+	t=1780001232; cv=none; b=bYgwQbE0jsdE8zuKvcYjdBarzRx5/8RcpzACOfXeNY+UiT3o8eUID4zdlh65WXlR+AobgcY/6NpFa9hupv7Pf5U3BsyonVg5wbEAYZvoIX4nLkHj2IxTwj21HXFf3Sx2HdCldu4IWCuLq3pykKlBr66s+6cyEmAYvtIN3J/NhWY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780000080; c=relaxed/simple;
-	bh=9QE2U7gmuEyDIZ5pEh3Ip1w6tPlq7NxkkD3RwcS/l7s=;
+	s=arc-20240116; t=1780001232; c=relaxed/simple;
+	bh=tcRvOknP630dFVmp0UWX5bQS+TMtcH9r61QKQAIHLhE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Gm8Pf7Vt6u2uhG5PfbYX75A7k+Orwf6V+Lm2I6iI5I1W3jBLjKuP7GtFYOAlEoyKdf07m6yH3wr47CJi9gAxEuDaxU041CPcW2hcIPyF2ffiHrT77QUo8fQ4K9VeX61WXnVHgj0GtG9q2jpUnwnWcYHHhfABuL7zj04ZSeCJGCo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kprIomCo; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A7D051F000E9;
-	Thu, 28 May 2026 20:27:58 +0000 (UTC)
+	 MIME-Version; b=LLVc2JIosDFpXjvlCHh7T9soTi0POk/DlO2m7YPGV2C6Kar3ybwzXBev85scijvmZUXJ+kQFGR/D1LY8r9gjJJb/67XVgxJ0uAkOUUYKau+FYSg98DnbdyGlaBl2AtkZd1S6JBjmCzFCxKUP7in6W6wz9VYJrrVGNZUQexdmGiE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dTC+9Xo/; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 384E31F000E9;
+	Thu, 28 May 2026 20:47:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780000079;
-	bh=KDu8vJQzeKFuvyYd/YIlHWaBEz2KhXi83SxekSWtbPw=;
+	s=korg; t=1780001231;
+	bh=LWeIpXqXcucHNxNc9oUie+Ao5rG1DDQsnD9DCBvoNwI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=kprIomCo1XgoUx98QJ1YKbNF1SxfVlmQ0zb5WvMfRuIukZARBTHhGxxtAA8WByGgb
-	 j9jTDOgb39vFur3toPGF2d8JJPIf99oCMIpr85WJUKdM/V6epHrga8jt3kaP8JdIAE
-	 DNyTf0IY+eetqohvleneYZlgNEqaWgMFuxkqs3fA=
+	b=dTC+9Xo/gqG+2mwzdOrqFRFg9BH9voC4hKBKyl8BmkZJDx66Sqx0hucUltUyajXXd
+	 M4vakDYd0Gikxfoml1T/WJqRyhvJP6fXyWTN74VIlHqfIS4xjphQNIWEFmP2FNzrDB
+	 2yvqjUNoE4XV6NeIntbmNb5c0KlmnkbcmD5hIGlE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Gabriel Krisman Bertazi <krisman@suse.de>,
-	Jens Axboe <axboe@kernel.dk>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 295/377] io_uring/net: punt IORING_OP_BIND async if it needs file create
+	Herbert Xu <herbert@gondor.apana.org.au>,
+	Michael Bommarito <michael.bommarito@gmail.com>,
+	Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 6.6 053/186] ipv4: raw: reject IP_HDRINCL packets with ihl < 5
 Date: Thu, 28 May 2026 21:48:53 +0200
-Message-ID: <20260528194646.892299345@linuxfoundation.org>
+Message-ID: <20260528194930.403692683@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260528194638.371537336@linuxfoundation.org>
-References: <20260528194638.371537336@linuxfoundation.org>
+In-Reply-To: <20260528194928.941004471@linuxfoundation.org>
+References: <20260528194928.941004471@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,125 +64,124 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	RCVD_TLS_LAST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-255860-lists,stable=lfdr.de];
 	TO_DN_SOME(0.00)[];
-	FROM_HAS_DN(0.00)[];
+	TAGGED_FROM(0.00)[bounces-256271-lists,stable=lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gondor.apana.org.au,gmail.com,kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	FROM_HAS_DN(0.00)[];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	NEURAL_HAM(-0.00)[-0.999];
 	TAGGED_RCPT(0.00)[stable];
+	MID_RHS_MATCH_FROM(0.00)[];
 	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,suse.de:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,kernel.dk:email]
-X-Rspamd-Queue-Id: BCA8F5F8D96
+	DBL_BLOCKED_OPENRESOLVER(0.00)[apana.org.au:email,msgid.link:url,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim]
+X-Rspamd-Queue-Id: B6D735F9CCC
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jens Axboe <axboe@kernel.dk>
+From: Michael Bommarito <michael.bommarito@gmail.com>
 
-[ Upstream commit ccd25890f73c082fe2657ed227b497d6ac5fdc40 ]
+commit 915fab69823a14c170dbaa3b41978768e0fe62fc upstream.
 
-For two reasons:
+raw_send_hdrinc() validates that the caller-supplied IPv4 header
+fits within the message length:
 
-1) An opcode cannot block inside io_uring_enter() doing submissions, as
-   it'll stall the submission side pipeline.
+    iphlen = iph->ihl * 4;
+    err = -EINVAL;
+    if (iphlen > length)
+        goto error_free;
 
-2) Ending up in sb_start_write() -> __sb_start_write() ->
-   percpu_down_read_freezable() introduces a new lockdep edge, which it
-   correctly complains about.
+    if (iphlen >= sizeof(*iph)) {
+        /* fix up saddr, tot_len, id, csum, transport_header */
+    }
 
-Check if the socket type is AF_UNIX and has a non-empty pathname. If it
-does, mark it REQ_F_FORCE_ASYNC to punt the submission to io-wq rather
-than attempt to do it inline.
+It does not, however, reject ihl < 5.  For such a packet the
+"if (iphlen >= sizeof(*iph))" branch is skipped, leaving the
+crafted iphdr untouched, but the packet is still handed to
+__ip_local_out() and onward.  Downstream consumers that read
+iph->ihl assume a sane value: net/ipv4/ah4.c:ah_output() in
+particular subtracts sizeof(struct iphdr) from top_iph->ihl * 4
+and passes the (signed-int-negative, then cast to size_t)
+result to memcpy(), producing an OOB access of length close to
+SIZE_MAX and a host kernel panic.
 
-Fixes: 7481fd93fa0a ("io_uring: Introduce IORING_OP_BIND")
-Reviewed-by: Gabriel Krisman Bertazi <krisman@suse.de>
-Signed-off-by: Jens Axboe <axboe@kernel.dk>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+An IPv4 header with ihl < 5 is malformed by definition (RFC 791:
+"Internet Header Length is the length of the internet header in
+32 bit words ... Note that the minimum value for a correct header
+is 5.").  The kernel should not be willing to inject such a
+packet into its own output path.
+
+Reject "iphlen < sizeof(*iph)" alongside the existing
+"iphlen > length" check.  This matches the principle that locally
+constructed packets that re-enter the IP stack must pass the same
+basic sanity tests that a foreign packet would be subjected to.
+
+Once this lands, the "if (iphlen >= sizeof(*iph))" wrapper around
+the fixup branch becomes redundant; left in place to keep the
+patch minimal and backport-friendly.  A follow-up can unwrap it.
+
+Note that commit 86f4c90a1c5c ("ipv4, ipv6: ensure raw socket
+message is big enough to hold an IP header") ensures the message
+buffer is large enough to hold an iphdr, but does not constrain
+the self-reported iph->ihl.
+
+Reachability: the malformed packet source is any caller with
+CAP_NET_RAW, including an unprivileged process in a user+net
+namespace on a kernel with CONFIG_USER_NS=y.  The reproduced AH
+crash also requires a matching xfrm AH policy on the outgoing
+route; a container granted CAP_NET_ADMIN can install that state
+and policy in its netns.  Loopback bypasses xfrm_output, so the
+trigger uses a real netdev.
+
+Reproduced on UML + KASAN: kernel-mode fault at addr 0x0 with
+memcpy_orig at the crash site.  Same shape reproduces inside a
+rootless Docker container with --cap-add NET_ADMIN on a stock
+distro kernel.
+
+Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
+Cc: stable@vger.kernel.org
+Suggested-by: Herbert Xu <herbert@gondor.apana.org.au>
+Signed-off-by: Michael Bommarito <michael.bommarito@gmail.com>
+Link: https://patch.msgid.link/77ec2b5e8111961c2c39883c92e8aa2709039c17.1778614451.git.michael.bommarito@gmail.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- io_uring/net.c | 26 +++++++++++++++++++++++++-
- 1 file changed, 25 insertions(+), 1 deletion(-)
+ net/ipv4/raw.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/io_uring/net.c b/io_uring/net.c
-index ad08f693bccb9..7595850c2217a 100644
---- a/io_uring/net.c
-+++ b/io_uring/net.c
-@@ -4,6 +4,7 @@
- #include <linux/file.h>
- #include <linux/slab.h>
- #include <linux/net.h>
-+#include <linux/un.h>
- #include <linux/compat.h>
- #include <net/compat.h>
- #include <linux/io_uring.h>
-@@ -1837,11 +1838,29 @@ int io_connect(struct io_kiocb *req, unsigned int issue_flags)
- 	return IOU_COMPLETE;
- }
+--- a/net/ipv4/raw.c
++++ b/net/ipv4/raw.c
+@@ -383,7 +383,7 @@ static int raw_send_hdrinc(struct sock *
+ 	 * in, reject the frame as invalid
+ 	 */
+ 	err = -EINVAL;
+-	if (iphlen > length)
++	if (iphlen > length || iphlen < sizeof(*iph))
+ 		goto error_free;
  
-+/*
-+ * Check if bind request would potentially end up with filename_create(),
-+ * which in turn end up in mnt_want_write() which will grab the fs
-+ * percpu start write sem. This can trigger a lockdep warning.
-+ */
-+static int io_bind_file_create(const struct io_async_msghdr *io, int addr_len)
-+{
-+	const struct sockaddr_un *sun;
-+
-+	if (io->addr.ss_family != AF_UNIX)
-+		return 0;
-+	if (addr_len <= offsetof(struct sockaddr_un, sun_path))
-+		return 0;
-+	sun = (const struct sockaddr_un *) &io->addr;
-+	return sun->sun_path[0] != '\0';
-+}
-+
- int io_bind_prep(struct io_kiocb *req, const struct io_uring_sqe *sqe)
- {
- 	struct io_bind *bind = io_kiocb_to_cmd(req, struct io_bind);
- 	struct sockaddr __user *uaddr;
- 	struct io_async_msghdr *io;
-+	int ret;
- 
- 	if (sqe->len || sqe->buf_index || sqe->rw_flags || sqe->splice_fd_in)
- 		return -EINVAL;
-@@ -1852,7 +1871,12 @@ int io_bind_prep(struct io_kiocb *req, const struct io_uring_sqe *sqe)
- 	io = io_msg_alloc_async(req);
- 	if (unlikely(!io))
- 		return -ENOMEM;
--	return move_addr_to_kernel(uaddr, bind->addr_len, &io->addr);
-+	ret = move_addr_to_kernel(uaddr, bind->addr_len, &io->addr);
-+	if (unlikely(ret))
-+		return ret;
-+	if (io_bind_file_create(io, bind->addr_len))
-+		req->flags |= REQ_F_FORCE_ASYNC;
-+	return 0;
- }
- 
- int io_bind(struct io_kiocb *req, unsigned int issue_flags)
--- 
-2.53.0
-
+ 	if (iphlen >= sizeof(*iph)) {
 
 
 
