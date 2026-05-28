@@ -1,59 +1,63 @@
-Return-Path: <stable+bounces-255546-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-255887-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id EF9VE7CjGGrJlggAu9opvQ
-	(envelope-from <stable+bounces-255546-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:21:04 +0200
+	id OLikLiCnGGp+lwgAu9opvQ
+	(envelope-from <stable+bounces-255887-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:35:44 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id C24825F8715
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:21:03 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 79CD05F90C1
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:35:44 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id B839831F396D
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 20:13:36 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 6358230E9F51
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 20:29:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4A52D33CE8A;
-	Thu, 28 May 2026 20:13:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E869A2F39B4;
+	Thu, 28 May 2026 20:29:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Wq4+0Pel"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SXXLMNGl"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0342132ABC0;
-	Thu, 28 May 2026 20:13:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B76AD2FD7C3;
+	Thu, 28 May 2026 20:29:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779999215; cv=none; b=b2BCgbXwkkHFRRzVOqnhqs/gC0ONtjTEHDsHnJrJXVRpnp+IkRIMngAd0+U0C3Hm4b1tC/F298Dhz0jqxh4DV8cQI35un19YEFyh2I3UVigbys9fyI9XpnjYEJNnr2h1sibuop0QtbM0W84EcEVF4dxDkO8sFphWTX7hzq5MEX0=
+	t=1780000157; cv=none; b=PqAMAhP1+3DqI8hPdiD5kQ3d8CJxunsv8PsBFKGL5TKGIZfmCqxiHhjxzfpIyIH+skLMGnzumYtYbxb+OWhVt5uSUgkyVoHIzODOLDDcRBUDjzpwvTq2TKVXWumIagGfnA5+cks2ZT1vCxw+e/tN32UwrFg7mCokUF4I5mVXUsA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779999215; c=relaxed/simple;
-	bh=kiBwi/pZehvHzfCB5B00W5BIQsntLdhbj+oQuks8n6c=;
+	s=arc-20240116; t=1780000157; c=relaxed/simple;
+	bh=HX6HQLhaceHM1mRqUbRAGOLKacEoJfyXzbXD5OGBI5Y=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=rFxeKagO6Gb43SJ6ZvSF+slxwR3IwLusv8H3iXQhfMC2tHHnzcKJ3z0BnWozita7KDmRY2uDfMfHIFjN7g0Q4JOCBv1emkEF3euCaJTYdwCMC+KlctLOjdM+tXcwb9fyPsusZmdjt8F/vGccQsi4pfPJo5MLNI9sjghGl6RBNvw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Wq4+0Pel; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 606001F00A3D;
-	Thu, 28 May 2026 20:13:33 +0000 (UTC)
+	 MIME-Version; b=HfxZ8X64rUytR3G/rusBIF+j2e+/L5XinewCElwKavFI0EnYv4g7UBi1gGDQ0hs3OwZ9pbE6ca1IyZJXW8n54iLDMrtHyGkY+vJ6Tv3L4YAu1N/4Nl6Pvq9try9vwgbbXZ3KoW4USIODemtXHOccLqXbo8xfXkG612iwrZjDL6o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SXXLMNGl; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 27F7E1F000E9;
+	Thu, 28 May 2026 20:29:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779999213;
-	bh=OxxKu9IpZ4NzhVbRgXJd+NJ8mI02jrfp5rCmOnBY82M=;
+	s=korg; t=1780000156;
+	bh=zHYvlcuMX1m/fbmdJLge+P0R9ZFkm3mH6O/nGfNJSMQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=Wq4+0Pelj9r/KEcVyj5WY2JpO00Pwh11lwXhYpUPCGuEr170mDUYpedA7vdpRnfnj
-	 aHMxEp4ci2j/HjZ7OKOWIcrcmT35E4fZxnYH9knrY+1pZb17VzB8EXvNxqeG9JlSlT
-	 vNVh51EcN9fonp9UbMsT+tlizLn94sSZSRrhPruc=
+	b=SXXLMNGls0hyJ4CKtInHWoHV3r+bMxR4jvp8Cmnw3O9adWFoVbzYMasDK+fgrGYUT
+	 iFBvnt3zRH+n8dl+kNFhMTZLhNRsvbI7MleAI6AjpRoimbgLWKyPuc15ccjXEDda/U
+	 dqBLG7jMgUhnk4S7+dPfMjPsds5KkdL1RRGrF2po=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Zhi Li <lizhi2@eswincomputing.com>,
-	Paolo Abeni <pabeni@redhat.com>,
+	Arkadiusz Kubalewski <Arkadiusz.kubalewski@intel.com>,
+	Grzegorz Nitka <grzegorz.nitka@intel.com>,
+	Aleksandr Loktionov <aleksandr.loktionov@intel.com>,
+	Alexander Nowlin <alexander.nowlin@intel.com>,
+	Tony Nguyen <anthony.l.nguyen@intel.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 7.0 432/461] net: stmmac: eswin: fix HSP CSR init ordering after clock enable
+Subject: [PATCH 6.18 323/377] ice: ptp: use primary NAC semaphore on E825
 Date: Thu, 28 May 2026 21:49:21 +0200
-Message-ID: <20260528194700.031889977@linuxfoundation.org>
+Message-ID: <20260528194647.757498081@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260528194646.819809818@linuxfoundation.org>
-References: <20260528194646.819809818@linuxfoundation.org>
+In-Reply-To: <20260528194638.371537336@linuxfoundation.org>
+References: <20260528194638.371537336@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -68,201 +72,98 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-255887-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-255546-lists,stable=lfdr.de];
-	TO_DN_SOME(0.00)[];
-	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim,msgid.link:url]
-X-Rspamd-Queue-Id: C24825F8715
+	TO_DN_SOME(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_SEVEN(0.00)[10];
+	MID_RHS_MATCH_FROM(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,msgid.link:url,intel.com:email,linuxfoundation.org:mid,linuxfoundation.org:dkim]
+X-Rspamd-Queue-Id: 79CD05F90C1
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-7.0-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Zhi Li <lizhi2@eswincomputing.com>
+From: Grzegorz Nitka <grzegorz.nitka@intel.com>
 
-[ Upstream commit 23386defe949c0db4f746bed7098fc5e06746083 ]
+[ Upstream commit 7b28523546c7e4adbb8436f2986efcfc8382985e ]
 
-Fix the initialization ordering of the HSP CSR configuration in the
-EIC7700 DWMAC glue driver.
+For E825 2xNAC configurations, PTP semaphore operations must hit the
+primary NAC register block so both sides coordinate on the same lock.
 
-The HSP CSR registers control MAC-side RGMII delay behavior and must
-only be accessed after the corresponding clocks are enabled. The
-previous implementation could trigger register access before clock
-enablement, leading to undefined behavior depending on boot state.
+Commit e2193f9f9ec9 ("ice: enable timesync operation on 2xNAC E825
+devices") updated other primary-only PTP register accesses to
+use the primary NAC on non-primary functions, but left ice_ptp_lock()
+and ice_ptp_unlock() operating on the local NAC. As a result, secondary
+NAC PTP paths can take a different semaphore than the primary side.
 
-Move the HSP CSR configuration into the post-clock-enable initialization
-path to ensure all register accesses occur under valid clock domains.
+Select the primary hardware in ice_ptp_lock() and ice_ptp_unlock() when
+the current function is not primary, keeping semaphore operations
+symmetric and consistent with the rest of the 2xNAC PTP register access
+path.
 
-This change ensures deterministic initialization and prevents
-clock-dependent register access failures during probe or resume.
-
-Fixes: ea77dbbdbc4e ("net: stmmac: add Eswin EIC7700 glue driver")
-Signed-off-by: Zhi Li <lizhi2@eswincomputing.com>
-Link: https://patch.msgid.link/20260518022055.444-1-lizhi2@eswincomputing.com
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Fixes: e2193f9f9ec9 ("ice: enable timesync operation on 2xNAC E825 devices")
+Reviewed-by: Arkadiusz Kubalewski <Arkadiusz.kubalewski@intel.com>
+Signed-off-by: Grzegorz Nitka <grzegorz.nitka@intel.com>
+Reviewed-by: Aleksandr Loktionov <aleksandr.loktionov@intel.com>
+Tested-by: Alexander Nowlin <alexander.nowlin@intel.com>
+Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
+Link: https://patch.msgid.link/20260515182419.1597859-6-anthony.l.nguyen@intel.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- .../ethernet/stmicro/stmmac/dwmac-eic7700.c   | 73 +++++++++++--------
- 1 file changed, 41 insertions(+), 32 deletions(-)
+ drivers/net/ethernet/intel/ice/ice_ptp_hw.c | 9 +++++++++
+ 1 file changed, 9 insertions(+)
 
-diff --git a/drivers/net/ethernet/stmicro/stmmac/dwmac-eic7700.c b/drivers/net/ethernet/stmicro/stmmac/dwmac-eic7700.c
-index bcb8e000e720b..63001c4acdb7a 100644
---- a/drivers/net/ethernet/stmicro/stmmac/dwmac-eic7700.c
-+++ b/drivers/net/ethernet/stmicro/stmmac/dwmac-eic7700.c
-@@ -42,6 +42,11 @@ static const char * const eic7700_clk_names[] = {
- 
- struct eic7700_qos_priv {
- 	struct plat_stmmacenet_data *plat_dat;
-+	struct regmap *eic7700_hsp_regmap;
-+	u32 eth_axi_lp_ctrl_offset;
-+	u32 eth_phy_ctrl_offset;
-+	u32 eth_clk_offset;
-+	u32 eth_clk_dly_param;
- };
- 
- static int eic7700_clks_config(void *priv, bool enabled)
-@@ -61,8 +66,28 @@ static int eic7700_clks_config(void *priv, bool enabled)
- static int eic7700_dwmac_init(struct device *dev, void *priv)
+diff --git a/drivers/net/ethernet/intel/ice/ice_ptp_hw.c b/drivers/net/ethernet/intel/ice/ice_ptp_hw.c
+index 0f378e68f72f1..99bf38cf352a2 100644
+--- a/drivers/net/ethernet/intel/ice/ice_ptp_hw.c
++++ b/drivers/net/ethernet/intel/ice/ice_ptp_hw.c
+@@ -5264,9 +5264,13 @@ static void ice_ptp_init_phy_e830(struct ice_ptp_hw *ptp)
+  */
+ bool ice_ptp_lock(struct ice_hw *hw)
  {
- 	struct eic7700_qos_priv *dwc = priv;
-+	int ret;
-+
-+	ret = eic7700_clks_config(dwc, true);
-+	if (ret)
-+		return ret;
-+
-+	ret = regmap_set_bits(dwc->eic7700_hsp_regmap,
-+			      dwc->eth_phy_ctrl_offset,
-+			      EIC7700_ETH_TX_CLK_SEL |
-+			      EIC7700_ETH_PHY_INTF_SELI);
-+	if (ret) {
-+		eic7700_clks_config(dwc, false);
-+		return ret;
-+	}
-+
-+	regmap_write(dwc->eic7700_hsp_regmap, dwc->eth_axi_lp_ctrl_offset,
-+		     EIC7700_ETH_CSYSREQ_VAL);
++	struct ice_pf *pf = container_of(hw, struct ice_pf, hw);
+ 	u32 hw_lock;
+ 	int i;
  
--	return eic7700_clks_config(dwc, true);
-+	regmap_write(dwc->eic7700_hsp_regmap, dwc->eth_clk_offset,
-+		     dwc->eth_clk_dly_param);
++	if (!ice_is_primary(hw))
++		hw = ice_get_primary_hw(pf);
 +
-+	return 0;
+ #define MAX_TRIES 15
+ 
+ 	for (i = 0; i < MAX_TRIES; i++) {
+@@ -5293,6 +5297,11 @@ bool ice_ptp_lock(struct ice_hw *hw)
+  */
+ void ice_ptp_unlock(struct ice_hw *hw)
+ {
++	struct ice_pf *pf = container_of(hw, struct ice_pf, hw);
++
++	if (!ice_is_primary(hw))
++		hw = ice_get_primary_hw(pf);
++
+ 	wr32(hw, PFTSYN_SEM + (PFTSYN_SEM_BYTES * hw->pf_id), 0);
  }
  
- static void eic7700_dwmac_exit(struct device *dev, void *priv)
-@@ -93,12 +118,6 @@ static int eic7700_dwmac_probe(struct platform_device *pdev)
- 	struct plat_stmmacenet_data *plat_dat;
- 	struct stmmac_resources stmmac_res;
- 	struct eic7700_qos_priv *dwc_priv;
--	struct regmap *eic7700_hsp_regmap;
--	u32 eth_axi_lp_ctrl_offset;
--	u32 eth_phy_ctrl_offset;
--	u32 eth_phy_ctrl_regset;
--	u32 eth_rxd_dly_offset;
--	u32 eth_dly_param = 0;
- 	u32 delay_ps;
- 	int i, ret;
- 
-@@ -121,8 +140,9 @@ static int eic7700_dwmac_probe(struct platform_device *pdev)
- 				  "rx-internal-delay-ps", &delay_ps)) {
- 		u32 val = min(delay_ps / 100, EIC7700_MAX_DELAY_UNIT);
- 
--		eth_dly_param &= ~EIC7700_ETH_RX_ADJ_DELAY;
--		eth_dly_param |= FIELD_PREP(EIC7700_ETH_RX_ADJ_DELAY, val);
-+		dwc_priv->eth_clk_dly_param &= ~EIC7700_ETH_RX_ADJ_DELAY;
-+		dwc_priv->eth_clk_dly_param |=
-+				 FIELD_PREP(EIC7700_ETH_RX_ADJ_DELAY, val);
- 	} else {
- 		return dev_err_probe(&pdev->dev, -EINVAL,
- 			"missing required property rx-internal-delay-ps\n");
-@@ -133,53 +153,42 @@ static int eic7700_dwmac_probe(struct platform_device *pdev)
- 				  "tx-internal-delay-ps", &delay_ps)) {
- 		u32 val = min(delay_ps / 100, EIC7700_MAX_DELAY_UNIT);
- 
--		eth_dly_param &= ~EIC7700_ETH_TX_ADJ_DELAY;
--		eth_dly_param |= FIELD_PREP(EIC7700_ETH_TX_ADJ_DELAY, val);
-+		dwc_priv->eth_clk_dly_param &= ~EIC7700_ETH_TX_ADJ_DELAY;
-+		dwc_priv->eth_clk_dly_param |=
-+				 FIELD_PREP(EIC7700_ETH_TX_ADJ_DELAY, val);
- 	} else {
- 		return dev_err_probe(&pdev->dev, -EINVAL,
- 			"missing required property tx-internal-delay-ps\n");
- 	}
- 
--	eic7700_hsp_regmap = syscon_regmap_lookup_by_phandle(pdev->dev.of_node,
--							     "eswin,hsp-sp-csr");
--	if (IS_ERR(eic7700_hsp_regmap))
-+	dwc_priv->eic7700_hsp_regmap =
-+			syscon_regmap_lookup_by_phandle(pdev->dev.of_node,
-+							"eswin,hsp-sp-csr");
-+	if (IS_ERR(dwc_priv->eic7700_hsp_regmap))
- 		return dev_err_probe(&pdev->dev,
--				PTR_ERR(eic7700_hsp_regmap),
-+				PTR_ERR(dwc_priv->eic7700_hsp_regmap),
- 				"Failed to get hsp-sp-csr regmap\n");
- 
- 	ret = of_property_read_u32_index(pdev->dev.of_node,
- 					 "eswin,hsp-sp-csr",
--					 1, &eth_phy_ctrl_offset);
-+					 1, &dwc_priv->eth_phy_ctrl_offset);
- 	if (ret)
- 		return dev_err_probe(&pdev->dev, ret,
- 				     "can't get eth_phy_ctrl_offset\n");
- 
--	regmap_read(eic7700_hsp_regmap, eth_phy_ctrl_offset,
--		    &eth_phy_ctrl_regset);
--	eth_phy_ctrl_regset |=
--		(EIC7700_ETH_TX_CLK_SEL | EIC7700_ETH_PHY_INTF_SELI);
--	regmap_write(eic7700_hsp_regmap, eth_phy_ctrl_offset,
--		     eth_phy_ctrl_regset);
--
- 	ret = of_property_read_u32_index(pdev->dev.of_node,
- 					 "eswin,hsp-sp-csr",
--					 2, &eth_axi_lp_ctrl_offset);
-+					 2, &dwc_priv->eth_axi_lp_ctrl_offset);
- 	if (ret)
- 		return dev_err_probe(&pdev->dev, ret,
- 				     "can't get eth_axi_lp_ctrl_offset\n");
- 
--	regmap_write(eic7700_hsp_regmap, eth_axi_lp_ctrl_offset,
--		     EIC7700_ETH_CSYSREQ_VAL);
--
- 	ret = of_property_read_u32_index(pdev->dev.of_node,
- 					 "eswin,hsp-sp-csr",
--					 3, &eth_rxd_dly_offset);
-+					 3, &dwc_priv->eth_clk_offset);
- 	if (ret)
- 		return dev_err_probe(&pdev->dev, ret,
--				     "can't get eth_rxd_dly_offset\n");
--
--	regmap_write(eic7700_hsp_regmap, eth_rxd_dly_offset,
--		     eth_dly_param);
-+				     "can't get eth_clk_offset\n");
- 
- 	plat_dat->num_clks = ARRAY_SIZE(eic7700_clk_names);
- 	plat_dat->clks = devm_kcalloc(&pdev->dev,
 -- 
 2.53.0
 
