@@ -1,212 +1,238 @@
-Return-Path: <stable+bounces-255040-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-255042-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id SFgTAbVYGGoQjQgAu9opvQ
-	(envelope-from <stable+bounces-255040-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 17:01:09 +0200
+	id INj+OmJZGGq9jQgAu9opvQ
+	(envelope-from <stable+bounces-255042-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 17:04:02 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8D6775F411F
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 17:01:03 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id EBE8E5F417E
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 17:04:01 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 0FA30301BA7B
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 14:54:24 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 9E8E730ABCC0
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 14:59:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 26F8948C402;
-	Thu, 28 May 2026 14:54:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6F7A12E737E;
+	Thu, 28 May 2026 14:59:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="DKXluEVU"
+	dkim=pass (2048-bit key) header.d=kernelci.org header.i=@kernelci.org header.b="JlgKr+UR"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-ed1-f52.google.com (mail-ed1-f52.google.com [209.85.208.52])
+Received: from mail-dl1-f42.google.com (mail-dl1-f42.google.com [74.125.82.42])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2AEBB3F86F1
-	for <stable@vger.kernel.org>; Thu, 28 May 2026 14:54:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.208.52
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779980054; cv=pass; b=GUPrYDtLShjKdjABnYDV3hGpJqVOx2I7rXTsPoNkXbzeStnwSikCUu4A9n8DbWtTAdPMSghJ1fO5Im1VujJyu4OUAF+G0YHh9X0rFkbTHuStOHyOkqPLEZPl07Djxoyl7AGVAzlUg+4G/k0+5SeisOENOnljHHpNprMbMFo9/3c=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779980054; c=relaxed/simple;
-	bh=BnmP4dPy4FDVByFtz0lAGPhCBqLsWkN0Jv1LQoJfels=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=o/3+v2JMin8SG5rAbzVItyfYfa0JuUOSEgjKM+3V/SkuJ2rwkrXHxPn2/ImcPB/Osq1tQ2CfBvkZbILdu4myhPtEC+Pd2rv4d4BcrWYY7OtijdmUL4luMgKp+wjbRJZsLzCJXaN1PfbelkLOR4Sr6zYTtzebTlEvM4/u+ampJZg=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=DKXluEVU; arc=pass smtp.client-ip=209.85.208.52
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
-Received: by mail-ed1-f52.google.com with SMTP id 4fb4d7f45d1cf-689be822f34so7137433a12.0
-        for <stable@vger.kernel.org>; Thu, 28 May 2026 07:54:13 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1779980048; cv=none;
-        d=google.com; s=arc-20240605;
-        b=IEhA9KCvwxbPBZwciwwAWG9Z63W5jGT0Bc6sB+RLE135q6ametVbgGQina8vfAscc+
-         pR+CbYSSCNqiqQ5V4UCADP1yG6eqxD1enkQVxkV9lZK9qOGKFgGSLqMiCfsDa9pDJR/+
-         jEzAlnS0i94OFwcJCXp8J9rmKn/EOAPe160ej2Cz4AM+XgNgYbuoPh/rr/nYr1wZYl8j
-         I7gnt6GuWBYAricoQCM7GUvDXgd4RhVUawCNtwwC2l/HIVN9j0iZinfx1wEN75dzNy6O
-         JCF4K9VxX6+zdHMwlnU3bme3/M6ShkI79/8fYXRdPKeTQ7rp9WHGW8v+IUGS8otUtYev
-         /jlA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=9OXz/l5MhiOrtGyFdSgSY2UmTjKKZnnagh0u7LsCdfw=;
-        fh=1Ho7w/CB0dF13B8fQId2fY1FUlOe69QBFSXolcCIIz4=;
-        b=YvN/guvTxNZdTFwkFi4Tassmh7iOiLtIyzNUTpcnbn6DxDj3sN2hRO7KDSeS9Aynmv
-         FhJp4BuNLzk5ENeDLQwjJHcgVJNyknRSF1K7p8Ej+dLoQb432jzyp+tzOM3stEwB5uuf
-         9kVV/aIdmbM1TOXB0mdFRK/nr4AJU9JjcKSCB835g+ScOZl1h4DwRphaeDQ3Jpr/AwHl
-         6deBZIDLehCD0dQB19SP51R/ntRVrc0RIJrI39tY4QH8OWIymzVmMjMeSsj4pNrJ3lWs
-         aw8fASQQSuHdI9AiTPMtYeP1sUyA0t8qBWfv5s9VVFH5SVMsxzzSMu1KV4IuE0Tvx3sR
-         A6YA==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 284EF2E7373
+	for <stable@vger.kernel.org>; Thu, 28 May 2026 14:59:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.82.42
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1779980348; cv=none; b=ULEKsQxRM4oHMu3IXc8qn5rpzPaQmvevBvAsrosOjTYHkZwGarqWLcdDEonlzkxQeUuO7CVIBqMH+/poyLQQ8/i02hhQFOhoqv7rS9685+NeFAOumscSl9+blo1OYdDRWZl6B82U1mS5uQaa7UVlyDQG5+tYbx5S2qx8QsNdgLE=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1779980348; c=relaxed/simple;
+	bh=PjhsIqd26TKF/DUKspFSngGzl/tBIwbjCZlW6KlpINQ=;
+	h=Content-Type:MIME-Version:Subject:From:To:Cc:Date:Message-ID; b=caWYb996U64Z5bLUc3kVwKIAa/I8ILnS4ZlnYvIe0zDWlXsN4Kwsh7sRL/SYUg6N1frBSK8X6ebu1SZnm60PDkybN6+iy/pHVbsUjiMtF0vYOjGODazb5m9qIVGywIOavVVHqAPhTYclcpvn4ra3wmS2reQg7+cqyyNcZfzv1wg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=kernelci.org; spf=pass smtp.mailfrom=kernelci.org; dkim=pass (2048-bit key) header.d=kernelci.org header.i=@kernelci.org header.b=JlgKr+UR; arc=none smtp.client-ip=74.125.82.42
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=kernelci.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=kernelci.org
+Received: by mail-dl1-f42.google.com with SMTP id a92af1059eb24-1329fc4bf77so4097572c88.1
+        for <stable@vger.kernel.org>; Thu, 28 May 2026 07:59:05 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1779980048; x=1780584848; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
+        d=kernelci.org; s=google; t=1779980345; x=1780585145; darn=vger.kernel.org;
+        h=message-id:date:reply-to:cc:to:from:subject
+         :content-transfer-encoding:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=9OXz/l5MhiOrtGyFdSgSY2UmTjKKZnnagh0u7LsCdfw=;
-        b=DKXluEVU2BkFOC8xGrZ55LgCv54YARMWCPmGaXEHvx6/VqPxH15uNPr+ePOcntXtiO
-         /OwXIyqM517513rCSgRFYhdHTnuWopY14uqJLHePM2AOVLRLHsOSKHF4XYmEcGIWnVmP
-         I0fe7iDXJRInKlhTHAG3iYUO/xTl5UWZwlWaKQzm0MvnDdR/ojpVhm8GHL4aIARG3Oho
-         FnKuqlMdlRQZHqeuz98Dj6Pzv838ZDvFMiciO83e2XhwIIe92bgPEbV1G+upfY8VrNdc
-         ngeonglUM1S1f8FpsGztnJo7Di8NLFODVvDc/wYQPz7gMuzQg6FRZJZwkjgtX75yE699
-         RAjg==
+        bh=p0ANB4RvVADiLo+7igfCDW3H5yzLKDEj5vkrztXW7Do=;
+        b=JlgKr+URFFxcZTvZt/C0ouoHRnhbhQ96nsA46AOa/gKCqdx6tfojjsZOVGZ3GnEb8t
+         hO+sEDkiPAROkcgB/lP9Ac/OS/ZnJ9XGEMvs/CQLGdHnSUOMIsydIDOHcZJpo7iVwU+a
+         +xTgcDIf2B5uV0x/ZD2Y6+af9/2a4MmVs7kpgAI0J3lS6VmwgGbft302U8PWwyZyX2YR
+         ITljTp7tQY1d/YPSy7Ox5QARPqBJ6J/GqFizoBAvhF1fjN2gOOUFSv0QXPTenKnGXypM
+         3teHChgd5pUaPfjggUuIvyGSD5wJJ+LWpQNdtLc/B76e2MLapkFz9+83HgZYR9cMp4/E
+         P49w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1779980048; x=1780584848;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=9OXz/l5MhiOrtGyFdSgSY2UmTjKKZnnagh0u7LsCdfw=;
-        b=EsN0NDt9VcCU2iTUIzKWCwLEBixjakOA0DvfdkyzOiJeFG7x0DoZDNqE1e7LojP4QN
-         nh0yD1QmNox9twlaYgE3ujaQGXxo/WRVYcN2UL/LmyX8XzzGQDj6ycWJKVSj5jCNi7CC
-         xMO09h12NL9aUO4TlWCQ4Lr1jn/4nuynv4fnuXDHcvXa2kN0iGFiccwxHpD2eV7NqYn3
-         qBnroN5Gsp8Qf4XG68xHoWP40AoJKt+5y54SbNFj6acGb6TLktVR1WOwQJAzJ/QjYlHj
-         S+nVns9ko+Ah5ITJHaxSrYe5tOFNwUGu8F/gkcEtg0NUa6FNAYS62r8g2wA926gdF39H
-         sifg==
-X-Forwarded-Encrypted: i=1; AFNElJ/R5IMSyMclN8jPYxd2TzLaUaYlecXI4P54dABQBeTBaytWY/ME+dyXHLJ3TRg+y/9ZPibpibk=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyBrX05GppcvKxFJhta+bAzVdxWZPndzPzoRJ0zd7j6tE0LUUs0
-	K8WU0WoD7soaG3WsDD5mjltrbg5/5SfZdYtFh+Tx5Hz6gXGfgeGvE+ahCNvMRV++N991GQiLy8w
-	FvDaINHebJ8kktyL2wBJyCFC7noLVo9rD5TFN9n/vJT5+vRO9i1Sb
-X-Gm-Gg: Acq92OFvHau3c2lKbxSoDHf7r+T6CbqmuwxaeXN/jFDQ3BcjXf/+0QGt7uMzfYtLcHW
-	yNk16myIdQM2j0ZvgOd5bSCcTFspRD7bNr/eC1UHtk+tIY7gfD1xzZ7auZUO3eCw0VUd7ZRv4tz
-	JKPPWocYppHx76nTDZk3eJJ/IexYLdMqz5xrhK5wBS1NhG5VyG6Y0V/3qYdctN5LtVJPeJL4MPc
-	eK8kJ/42kQSI629Ua317fpuiZv7dGFwcV0c7sjRpICPcLTHVlh3TsquW4VdqpOY6Xp2JseKqwPl
-	L8t93bEDY9hmlBSjLfm21mtrKmg1+9FJbpGaLWFm0ch4sTvb
-X-Received: by 2002:a17:907:75d9:b0:bbe:37ee:8a2b with SMTP id
- a640c23a62f3a-bdd279ce23fmr1206290366b.33.1779980047494; Thu, 28 May 2026
- 07:54:07 -0700 (PDT)
+        d=1e100.net; s=20251104; t=1779980345; x=1780585145;
+        h=message-id:date:reply-to:cc:to:from:subject
+         :content-transfer-encoding:mime-version:x-gm-gg:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=p0ANB4RvVADiLo+7igfCDW3H5yzLKDEj5vkrztXW7Do=;
+        b=HeavSNypbWC7oEZREkiS+S6xSOjJPnOI4Cdhmwi8SRnuZUA6UDrgpfj7aqnZVyivH5
+         KC41dQF7VvPW1pFbqbvdgO3kMeluub9gNV2h3nPeuvuwJo/8FLxTmjs4tW0yXgToc17n
+         X1RZModYjiIUgQnI21rwHXKLoY+ueSVZYbiDll2C67E9QZUTc2bDWCy0Zm7JSA1YUHMO
+         ITSWR1hI+d7F1PgVuLaHJCLLdBqkZATeWN9U/YVYCJKwjir1Dr9Ge3JQtvXx/jOmav53
+         EDI7J/IKR8ojNzTxSxbLzV9yIMPTHhHtNUvOcf+VrcnnG6Nbsq7/W+nzF3VI5QT4lfMJ
+         LKEw==
+X-Forwarded-Encrypted: i=1; AFNElJ8YCbIqISghHSk9gJCgVrmdo6eooQ7YYXhSKeR14c+wiBl9+d8WPQGndMyG95UbYag6kulp3gk=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwYxuV1EBxBSFZmcodRS+vJUrf4MYZFBfwGCb6Ht72P5XWcEklP
+	wkhEi2qJc5hjWC/fQ+Hb420ELZElp55IaR5vrZ0DEbH8XF41apwKzTlsfO2qLxKNUNY=
+X-Gm-Gg: Acq92OH7s8x47VTqNKgQ4Q5Dl4QpeEFGzabljFjHJdZ1Y6rGZspTOTrDqsKx8UVdQzt
+	zNkGDFM984y31dLiPOYSLeX/l/2ZM1/aXy4AfDZRwe1YCVsgQet/KmsdQu+NnwB9vr3K1lB3GW8
+	WDK5wN6tsuP73L78mYsKah9Cm3oe7Qn852nyeMN4RDOf/7K4LiYz03yEKspmv82i4AkInSUtw0c
+	SpPvXzmK0WPmmxY7ZKBpHKkcBIpr36oWtZuzGGz0dBs5kpWQ5MpDCOiNwu+iali8UAsNDrjx0q5
+	yqBLokmtLUDJMdP+sqTaObvtlFjCUUrrkgmi1BLXr+4mUEluLKe4h9OgndmYJpixDNRL+KUXwi2
+	o8ng0KftCp252ZEZyDRuTapLP50x0QfB4uZL1MQWPHnk9XSpyFVoxfdDnXzsew3+/uU4qj+vD8e
+	m8PdWCogKTMiB8dmhpVL7tTVeTE0Q=
+X-Received: by 2002:a05:7022:fa04:b0:135:d749:574f with SMTP id a92af1059eb24-1365f820df3mr10986228c88.13.1779980345030;
+        Thu, 28 May 2026 07:59:05 -0700 (PDT)
+Received: from 330cfa3079ca ([20.38.40.137])
+        by smtp.gmail.com with ESMTPSA id a92af1059eb24-1366a40305csm11658901c88.7.2026.05.28.07.59.04
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 28 May 2026 07:59:04 -0700 (PDT)
+Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260523181446.69525-1-devnexen@gmail.com> <ae16f5c2-c6d9-4274-9a27-f87bfe931b1f@amd.com>
-In-Reply-To: <ae16f5c2-c6d9-4274-9a27-f87bfe931b1f@amd.com>
-From: Sumit Semwal <sumit.semwal@linaro.org>
-Date: Thu, 28 May 2026 20:23:52 +0530
-X-Gm-Features: AVHnY4LutoQ-7Ka86XumSZSoxXa9nFy3SHyGiarPBSsSmWM-nR_geKS3HNuAjkA
-Message-ID: <CAO_48GFOZESPnm5iLa0D+4itq7hjc9EyRUjMY4QwN5EsLn97SQ@mail.gmail.com>
-Subject: Re: [PATCH] dma-buf: fix UAF in dma_buf_fd() tracepoint
-To: =?UTF-8?Q?Christian_K=C3=B6nig?= <christian.koenig@amd.com>
-Cc: David Carlier <devnexen@gmail.com>, gaoxiang17@xiaomi.com, linux-media@vger.kernel.org, 
-	dri-devel@lists.freedesktop.org, linaro-mm-sig@lists.linaro.org, 
-	linux-kernel@vger.kernel.org, 
-	syzbot+7f4987d0afb97dd090cb@syzkaller.appspotmail.com, stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Spamd-Result: default: False [-0.66 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=2];
-	DMARC_POLICY_ALLOW(-0.50)[linaro.org,none];
-	R_DKIM_ALLOW(-0.20)[linaro.org:s=google];
+Content-Transfer-Encoding: 7bit
+Subject: [REGRESSION] stable-rc/linux-6.6.y: (build) use of undeclared
+ identifier
+ 'class_pmbus_lock_t' in drivers/hwmon...
+From: KernelCI bot <bot@kernelci.org>
+To: kernelci-results@groups.io
+Cc: gus@collabora.com, stable@vger.kernel.org
+Reply-To: kernelci@lists.linux.dev
+Date: Thu, 28 May 2026 14:59:04 -0000
+Message-ID: <177998034399.6981.4184961464784113279@330cfa3079ca>
+X-Spamd-Result: default: False [-1.66 / 15.00];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	DMARC_POLICY_ALLOW(-0.50)[kernelci.org,reject];
+	MID_RHS_NOT_FQDN(0.50)[];
+	R_DKIM_ALLOW(-0.20)[kernelci.org:s=google];
 	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	REPLYTO_DOM_NEQ_FROM_DOM(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_HAS_DN(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-255040-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	RSPAMD_URIBL_FAIL(0.00)[linaro.org:query timed out,appspotmail.com:query timed out];
-	FREEMAIL_CC(0.00)[gmail.com,xiaomi.com,vger.kernel.org,lists.freedesktop.org,lists.linaro.org,syzkaller.appspotmail.com];
+	REPLYTO_DOM_NEQ_TO_DOM(0.00)[];
+	TAGGED_FROM(0.00)[bounces-255042-lists,stable=lfdr.de];
 	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	RSPAMD_EMAILBL_FAIL(0.00)[devnexen.gmail.com:query timed out,christian.koenig.amd.com:query timed out,stable.vger.kernel.org:query timed out];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[sumit.semwal@linaro.org,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[linaro.org:+];
-	RCPT_COUNT_SEVEN(0.00)[9];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	TAGGED_RCPT(0.00)[stable,7f4987d0afb97dd090cb];
-	TO_DN_SOME(0.00)[];
+	DKIM_TRACE(0.00)[kernelci.org:+];
 	MISSING_XM_UA(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,amd.com:email,mail.gmail.com:mid,linaro.org:dkim,syzkaller.appspot.com:url,appspotmail.com:email]
-X-Rspamd-Queue-Id: 8D6775F411F
+	HAS_REPLYTO(0.00)[kernelci@lists.linux.dev];
+	RCVD_COUNT_FIVE(0.00)[5];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[bot@kernelci.org,stable@vger.kernel.org];
+	RCPT_COUNT_THREE(0.00)[3];
+	TO_DN_NONE(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	NEURAL_HAM(-0.00)[-1.000];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[lists.linux.dev:replyto,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,linux.dev:email]
+X-Rspamd-Queue-Id: EBE8E5F417E
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-Hi David,
 
-On Tue, 26 May 2026 at 00:25, Christian K=C3=B6nig <christian.koenig@amd.co=
-m> wrote:
->
-> On 5/23/26 20:14, David Carlier wrote:
-> > Once FD_ADD() returns, the fd is live in the file descriptor table
-> > and a thread sharing that table can close() it before DMA_BUF_TRACE()
-> > runs. The close drops the last reference, __fput() frees the dma_buf,
-> > and the tracepoint then dereferences dmabuf to take dmabuf->name_lock
-> > -- slab-use-after-free.
-> >
-> > Split FD_ADD() back into get_unused_fd_flags() + fd_install() and
-> > emit the tracepoint between them. While the fdtable slot is reserved
-> > with a NULL file pointer, a racing close() returns -EBADF without
-> > entering __fput(), so the dma_buf stays alive across the trace. Same
-> > approach as commit 2d76319c4cbb ("dma-buf: fix UAF in dma_buf_put()
-> > tracepoint").
-> >
-> > This undoes the FD_ADD() conversion done in commit 34dfce523c90
-> > ("dma: convert dma_buf_fd() to FD_ADD()"); FD_ADD() has no place to
-> > hook the tracepoint safely.
-> >
-> > Reported-by: syzbot+7f4987d0afb97dd090cb@syzkaller.appspotmail.com
-> > Closes: https://syzkaller.appspot.com/bug?extid=3D7f4987d0afb97dd090cb
-> > Fixes: 281a22631423 ("dma-buf: add some tracepoints to debug.")
-> > Cc: stable@vger.kernel.org # 7.0.x
-> > Signed-off-by: David Carlier <devnexen@gmail.com>
->
-> Reviewed-by: Christian K=C3=B6nig <christian.koenig@amd.com>
 
-Thanks very much for the patch; applied to drm-misc-fixes.
->
-> > ---
-> >  drivers/dma-buf/dma-buf.c | 6 +++++-
-> >  1 file changed, 5 insertions(+), 1 deletion(-)
-> >
-> > diff --git a/drivers/dma-buf/dma-buf.c b/drivers/dma-buf/dma-buf.c
-> > index 71f37544a5c6..d504c636dc29 100644
-> > --- a/drivers/dma-buf/dma-buf.c
-> > +++ b/drivers/dma-buf/dma-buf.c
-> > @@ -792,9 +792,13 @@ int dma_buf_fd(struct dma_buf *dmabuf, int flags)
-> >         if (!dmabuf || !dmabuf->file)
-> >                 return -EINVAL;
-> >
-> > -       fd =3D FD_ADD(flags, dmabuf->file);
-> > +       fd =3D get_unused_fd_flags(flags);
-> > +       if (fd < 0)
-> > +               return fd;
-> > +
-> >         DMA_BUF_TRACE(trace_dma_buf_fd, dmabuf, fd);
-> >
-> > +       fd_install(fd, dmabuf->file);
-> >         return fd;
-> >  }
-> >  EXPORT_SYMBOL_NS_GPL(dma_buf_fd, "DMA_BUF");
-> > --
-> > 2.53.0
-> >
->
 
-Best,
-Sumit.
+
+Hello,
+
+New build issue found on stable-rc/linux-6.6.y:
+
+---
+ use of undeclared identifier 'class_pmbus_lock_t' in drivers/hwmon/pmbus/adm1266.o (drivers/hwmon/pmbus/adm1266.c) [logspec:kbuild,kbuild.compiler.error]
+---
+
+- dashboard: https://d.kernelci.org/i/maestro:6b1d329039d2c41ae22b07421d5ab18bf0e195d5
+- giturl: https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git
+- commit HEAD:  99fb050c8b9077f8b09d4272318b23bdeb2d7251
+
+
+Please include the KernelCI tag when submitting a fix:
+
+Reported-by: kernelci.org bot <bot@kernelci.org>
+
+
+Log excerpt:
+=====================================================
+/tmp/kci/linux/drivers/hwmon/pmbus/adm1266.c:176:2: error: use of undeclared identifier 'class_pmbus_lock_t'
+  176 |         guard(pmbus_lock)(data->client);
+      |         ^~~~~~~~~~~~~~~~~
+/tmp/kci/linux/include/linux/cleanup.h:137:2: note: expanded from macro 'guard'
+  137 |         CLASS(_name, __UNIQUE_ID(guard))
+      |         ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/tmp/kci/linux/include/linux/cleanup.h:86:2: note: expanded from macro 'CLASS'
+   86 |         class_##_name##_t var __cleanup(class_##_name##_destructor) =   \
+      |         ^~~~~~~~~~~~~~~~~
+<scratch space>:60:1: note: expanded from here
+   60 | class_pmbus_lock_t
+      | ^~~~~~~~~~~~~~~~~~
+/tmp/kci/linux/drivers/hwmon/pmbus/adm1266.c:200:2: error: use of undeclared identifier 'class_pmbus_lock_t'
+  200 |         guard(pmbus_lock)(data->client);
+      |         ^~~~~~~~~~~~~~~~~
+/tmp/kci/linux/include/linux/cleanup.h:137:2: note: expanded from macro 'guard'
+  137 |         CLASS(_name, __UNIQUE_ID(guard))
+      |         ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/tmp/kci/linux/include/linux/cleanup.h:86:2: note: expanded from macro 'CLASS'
+   86 |         class_##_name##_t var __cleanup(class_##_name##_destructor) =   \
+      |         ^~~~~~~~~~~~~~~~~
+<scratch space>:71:1: note: expanded from here
+   71 | class_pmbus_lock_t
+      | ^~~~~~~~~~~~~~~~~~
+/tmp/kci/linux/drivers/hwmon/pmbus/adm1266.c:243:2: error: use of undeclared identifier 'class_pmbus_lock_t'
+  243 |         guard(pmbus_lock)(data->client);
+      |         ^~~~~~~~~~~~~~~~~
+/tmp/kci/linux/include/linux/cleanup.h:137:2: note: expanded from macro 'guard'
+  137 |         CLASS(_name, __UNIQUE_ID(guard))
+      |         ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/tmp/kci/linux/include/linux/cleanup.h:86:2: note: expanded from macro 'CLASS'
+   86 |         class_##_name##_t var __cleanup(class_##_name##_destructor) =   \
+      |         ^~~~~~~~~~~~~~~~~
+<scratch space>:82:1: note: expanded from here
+   82 | class_pmbus_lock_t
+      | ^~~~~~~~~~~~~~~~~~
+/tmp/kci/linux/drivers/hwmon/pmbus/adm1266.c:337:2: error: use of undeclared identifier 'class_pmbus_lock_t'
+  337 |         guard(pmbus_lock)(client);
+      |         ^~~~~~~~~~~~~~~~~
+/tmp/kci/linux/include/linux/cleanup.h:137:2: note: expanded from macro 'guard'
+  137 |         CLASS(_name, __UNIQUE_ID(guard))
+      |         ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/tmp/kci/linux/include/linux/cleanup.h:86:2: note: expanded from macro 'CLASS'
+   86 |         class_##_name##_t var __cleanup(class_##_name##_destructor) =   \
+      |         ^~~~~~~~~~~~~~~~~
+<scratch space>:68:1: note: expanded from here
+   68 | class_pmbus_lock_t
+      | ^~~~~~~~~~~~~~~~~~
+/tmp/kci/linux/drivers/hwmon/pmbus/adm1266.c:403:2: error: use of undeclared identifier 'class_pmbus_lock_t'
+  403 |         guard(pmbus_lock)(data->client);
+      |         ^~~~~~~~~~~~~~~~~
+/tmp/kci/linux/include/linux/cleanup.h:137:2: note: expanded from macro 'guard'
+  137 |         CLASS(_name, __UNIQUE_ID(guard))
+      |         ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/tmp/kci/linux/include/linux/cleanup.h:86:2: note: expanded from macro 'CLASS'
+   86 |         class_##_name##_t var __cleanup(class_##_name##_destructor) =   \
+      |         ^~~~~~~~~~~~~~~~~
+<scratch space>:87:1: note: expanded from here
+   87 | class_pmbus_lock_t
+      | ^~~~~~~~~~~~~~~~~~
+5 errors generated.
+
+=====================================================
+
+
+# Builds where the incident occurred:
+
+## defconfig+allmodconfig on (arm64):
+- compiler: clang-21
+- config: None
+- dashboard: https://d.kernelci.org/build/maestro:6a183892ee38c2a863e11dc9
+
+## x86_64_defconfig+allmodconfig on (x86_64):
+- compiler: clang-21
+- config: None
+- dashboard: https://d.kernelci.org/build/maestro:6a18389cee38c2a863e11dd9
+
+
+#kernelci issue maestro:6b1d329039d2c41ae22b07421d5ab18bf0e195d5
+
+--
+This is an experimental report format. Please send feedback in!
+Talk to us at kernelci@lists.linux.dev
+
+Made with love by the KernelCI team - https://kernelci.org
 
