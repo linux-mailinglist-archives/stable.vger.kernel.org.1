@@ -1,57 +1,60 @@
-Return-Path: <stable+bounces-256287-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-255875-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id ACMsEKyrGGpolwgAu9opvQ
-	(envelope-from <stable+bounces-256287-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:55:08 +0200
+	id sDT4MQKnGGp+lwgAu9opvQ
+	(envelope-from <stable+bounces-255875-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:35:14 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id CE2CE5F9DA1
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:55:07 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 44B395F9080
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:35:14 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id B86B331A6561
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 20:48:08 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 90B4630DEB2F
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 20:28:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9939D34041D;
-	Thu, 28 May 2026 20:47:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8C4C9318B96;
+	Thu, 28 May 2026 20:28:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XjtFTg8Z"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lZJK6XJR"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7618933F595;
-	Thu, 28 May 2026 20:47:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 661B61EA65;
+	Thu, 28 May 2026 20:28:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780001277; cv=none; b=YzlaQOxi9pFhP5Hq+oAiJ1szef3ARUULlXybR5JcEa9dO0BUnFiwgTli55b6/xVf0+wgaw+lb1nNJzOKvnfc+h2dfh0ThluTJgakzZn868Q92IPXiiDCZkKaLpkOu4JdheZ03Bm8cnpalXS0TFxb9k+ZBfd6u+zeCopqlOYjRxo=
+	t=1780000122; cv=none; b=rOkZN216IMwR//mNQz2A6svhC6jM6L3YMZYR8JBABTDC8G+C5mN97oxeMGRIfAueiiqZPiANk+H3mQ0XeTuolNznvYJLTfe+3uRgZf68BlKBV7dy7CKKVMit6lChaIaNTB9QBgEMCnUyIQCSQZ+JoAk51a5Rc3I2x93K2uzMetg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780001277; c=relaxed/simple;
-	bh=3fJ07+tJtuLSUpqE45RHWN4mZD1UbdO9wZMEk7MkO+s=;
+	s=arc-20240116; t=1780000122; c=relaxed/simple;
+	bh=3/RNdyASp0D3453Jz2Um389MnWN9E5sdaMcWu5cXzhU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=rNslG6TnqBmA2uCO202um10pgpL6dr6uUNDnh8hqEATGsnqXqlUkdUf3FuFrfLeh54MQwzd8YwDcOVf0RxUJwgNwp2oqDZ5lAzn2P9imkLkQ+PB308XA1ngM4CmunGu78AKxVyzU2kt2/b1zfDuabDEGmjwEfTfZQy1mDUCfYiE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XjtFTg8Z; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D2A1D1F000E9;
-	Thu, 28 May 2026 20:47:55 +0000 (UTC)
+	 MIME-Version; b=fdtFpjIkxGujrlnKT7LnhrtAuhyCHccBpb1R4UMduLzJzEwfz5LHpnD+FWMqqnpV3wMKfWzm4ty516r8RMaDLGnyGJGongrAf49GikY0d07eCm547n+jyViUKmaDecL1E2G8ElxmQqvoXFUvLpS1E9GbisB/iD81MEhJai8fq/E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lZJK6XJR; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C46001F000E9;
+	Thu, 28 May 2026 20:28:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780001276;
-	bh=RHAB45tVw/ZhDYWCdXkmpHjy1JRI/Gbpe0bUZIYqO/o=;
+	s=korg; t=1780000121;
+	bh=BlTH07+j/XmIJL0V4FtHrdDZ+08Gs4ltTS2D2uvqjQI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=XjtFTg8ZNL/mf9pdh4iFogGP8RQFTI7X6w+wU7Bcc7zPeNlbcXua8VVHbf3kzgzl2
-	 gbFnTlahrfIAJkVu6zELlHBJl9pvAUhxtGlI095S8GpRsZssgbY2nfA7o/skI6V2no
-	 QtFoQXR4oLcyoarJmry2W7RQ9SpIMsFaPwPdKwwk=
+	b=lZJK6XJRTa+kMepBxUAd7Mq8ySW6UXXee8IBTzIviRI7O7IKKwettiTB42MUJDzrC
+	 d8i+n8Hfx3mev+e+0M0SXUq1tDfqhZ/OgHJL4xr/e173JMEmRz2hqYHo3GXUCzw7FI
+	 WwqMQCyVLs5ZDFak7KRJjN/sXk6f0UqGtf0s3N4Q=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Takashi Iwai <tiwai@suse.de>
-Subject: [PATCH 6.6 031/186] ALSA: asihpi: Fix potential OOB array access at reading cache
+	Christophe JAILLET <christophe.jaillet@wanadoo.fr>,
+	Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>,
+	John.Harrison@Igalia.com,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.18 273/377] drm/msm/dpu: dont mix devm and drmm functions
 Date: Thu, 28 May 2026 21:48:31 +0200
-Message-ID: <20260528194929.802751721@linuxfoundation.org>
+Message-ID: <20260528194646.269305439@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260528194928.941004471@linuxfoundation.org>
-References: <20260528194928.941004471@linuxfoundation.org>
+In-Reply-To: <20260528194638.371537336@linuxfoundation.org>
+References: <20260528194638.371537336@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,69 +69,86 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-256287-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,wanadoo.fr,oss.qualcomm.com,Igalia.com,kernel.org];
+	TAGGED_FROM(0.00)[bounces-255875-lists,stable=lfdr.de];
 	PRECEDENCE_BULK(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
 	FROM_HAS_DN(0.00)[];
-	RCPT_COUNT_THREE(0.00)[4];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[7];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
 	TO_DN_SOME(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,suse.de:email,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,sashiko.dev:url,msgid.link:url]
-X-Rspamd-Queue-Id: CE2CE5F9DA1
+	DBL_BLOCKED_OPENRESOLVER(0.00)[qualcomm.com:email,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,igalia.com:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,patchwork.freedesktop.org:url]
+X-Rspamd-Queue-Id: 44B395F9080
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Takashi Iwai <tiwai@suse.de>
+From: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
 
-commit 7b7d6572145c1dab2dd9bfb550b188e5f0ff3c3f upstream.
+[ Upstream commit c0c70a11365cba7fba25a77463582bcec0f7846e ]
 
-find_control() to retrieve a cached info accesses the array with the
-given index blindly, which may lead to an OOB array access.
-Add a sanity check for avoiding it.
+Mixing devm and drmm functions will result in a use-after-free on msm
+driver teardown if userspace keeps a reference on the drm device:
+The WB connector data will be destroyed because of the use of
+devm_kzalloc()), while the usersoace still can try interacting with the
+WB connector (which uses drmm_ functions).
 
-Link: https://sashiko.dev/#/patchset/20260511230121.28606-1-rosenp%40gmail.com
-Cc: <stable@vger.kernel.org>
-Link: https://patch.msgid.link/20260515085606.242284-1-tiwai@suse.de
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Change dpu_writeback_init() to use drmm_.
+
+Fixes: 0b37ac63fc9d ("drm/msm/dpu: use drmm_writeback_connector_init()")
+Reported-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+Closes: https://lore.kernel.org/r/78c764b8-44cf-4db5-88e7-807a85954518@wanadoo.fr
+Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
+Reviewed-by: John.Harrison@Igalia.com
+Patchwork: https://patchwork.freedesktop.org/patch/722656/
+Link: https://lore.kernel.org/r/20260505-wb-drop-encoder-v5-1-42567b7c7af2@oss.qualcomm.com
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/pci/asihpi/hpicmn.c |    6 ++++++
- 1 file changed, 6 insertions(+)
+ drivers/gpu/drm/msm/disp/dpu1/dpu_writeback.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
---- a/sound/pci/asihpi/hpicmn.c
-+++ b/sound/pci/asihpi/hpicmn.c
-@@ -276,6 +276,12 @@ static short find_control(u16 control_in
- 		return 0;
- 	}
+diff --git a/drivers/gpu/drm/msm/disp/dpu1/dpu_writeback.c b/drivers/gpu/drm/msm/disp/dpu1/dpu_writeback.c
+index 7545c0293efbd..6f2370c9dd988 100644
+--- a/drivers/gpu/drm/msm/disp/dpu1/dpu_writeback.c
++++ b/drivers/gpu/drm/msm/disp/dpu1/dpu_writeback.c
+@@ -5,6 +5,7 @@
  
-+	if (control_index >= p_cache->control_count) {
-+		HPI_DEBUG_LOG(VERBOSE, "control_index out of bounce %d\n",
-+			control_index);
-+		return 0;
-+	}
-+
- 	*pI = p_cache->p_info[control_index];
- 	if (!*pI) {
- 		HPI_DEBUG_LOG(VERBOSE, "Uncached Control %d\n",
+ #include <drm/drm_edid.h>
+ #include <drm/drm_framebuffer.h>
++#include <drm/drm_managed.h>
+ 
+ #include "dpu_writeback.h"
+ 
+@@ -125,7 +126,7 @@ int dpu_writeback_init(struct drm_device *dev, struct drm_encoder *enc,
+ 	struct dpu_wb_connector *dpu_wb_conn;
+ 	int rc = 0;
+ 
+-	dpu_wb_conn = devm_kzalloc(dev->dev, sizeof(*dpu_wb_conn), GFP_KERNEL);
++	dpu_wb_conn = drmm_kzalloc(dev, sizeof(*dpu_wb_conn), GFP_KERNEL);
+ 	if (!dpu_wb_conn)
+ 		return -ENOMEM;
+ 
+-- 
+2.53.0
+
 
 
 
