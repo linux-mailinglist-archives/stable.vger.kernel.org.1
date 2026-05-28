@@ -1,61 +1,60 @@
-Return-Path: <stable+bounces-256056-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-256244-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id wD7jHV6pGGpolwgAu9opvQ
-	(envelope-from <stable+bounces-256056-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:45:18 +0200
+	id eP5zAVCtGGpymAgAu9opvQ
+	(envelope-from <stable+bounces-256244-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 23:02:08 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1273F5F975D
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:45:17 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id 159AE5FA1B8
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 23:02:07 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 5EB7D31189CB
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 20:37:17 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id D92383031A30
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 20:45:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 22D0733439A;
-	Thu, 28 May 2026 20:37:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E5EA833F5B4;
+	Thu, 28 May 2026 20:45:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Gr2F1eme"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Y7gwuJ1W"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EF936197A7D;
-	Thu, 28 May 2026 20:37:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8868F318B9D;
+	Thu, 28 May 2026 20:45:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780000631; cv=none; b=rIEWGW/0cCEhCw/FFoFjSj8OqKQQ72DFS6VcSwOJKTgKQAY3vs+SyKT1PiUnKRVv6gzlrF4wqudFEzVl1/+jpTQIcKo2UA+XFoXAYE14SygqjNEzbkjUPen83mybfLJbG1eH8frFFDAXRdKz/LMgYTC9o/AhSsXX0GnSqXuZIPI=
+	t=1780001157; cv=none; b=q8Xz7IG/wA1Lfd0QqZ5g5HYKdZzVhO927yKf4XzTCR9jjEC3SC5xgM263nqXAcdI8+xG8fwAz3i4zCO/93t1vQqu4LOADK+0daZdKKJwpV2vhE1RoP8SKSmPNON68MhHu7esrxSM1jROGtuoG+f8C3LN2xJv96OyM/OovBlYyoA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780000631; c=relaxed/simple;
-	bh=Xg4yxkHYg3ASa/YAB29EpwlyC3p1RhgGYLIw1u+DHmQ=;
+	s=arc-20240116; t=1780001157; c=relaxed/simple;
+	bh=9l2n35Jk5YvqxcdnXqzajwp7r0ztlr2hxLaN4MlETDk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=fwnSneWbtQWimn42Lnh0AsKb1mIQdxt+RmcxM31fMoM+HhnWAOKL9KB7dLa8xTocvh98d96OL2uiVOqT6CAvLQ9RaTodocY7Q0RpATCGXefu0KbNNPoCRz8Dbzu55AyIMhicLEjIikb2MNVp/F1JVFxpwRrfGAol+SQq8m5UwMc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Gr2F1eme; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 58FD61F000E9;
-	Thu, 28 May 2026 20:37:10 +0000 (UTC)
+	 MIME-Version; b=popVI2W4/eJ9S1MHBhThtSjiDvOcazzOhCjV040rpR4B7pYTu3FJMfyuaYql63X5spRzbRLuF7uNe7o0Hc8NkpdhO2T/VLOK20ojV9Uc+VGD53SjaH7+gO8ae4BPmnWGQH/5Hh+u4MrVhgH5HwJvG6JLEC5aCYfSWRkkZpFz8Vc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Y7gwuJ1W; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E59BF1F000E9;
+	Thu, 28 May 2026 20:45:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780000630;
-	bh=2Djo6S0Z3sWywQljFse5wma0sG70RzhxOsAM8cK6RFA=;
+	s=korg; t=1780001156;
+	bh=uwz1yMNh9Yv644GBxjXGkVUksnEe+zsvwk+t4LD/AXA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=Gr2F1emePD7q0LpodFQzwnx4jIFaUDHS6BPNQf53ByXb30Fj02fJQn59PMsSyMJkd
-	 f5QOFjqXg8wZTjxdGRJb4+jBnaNcqSKmHCRl2HeCxCbW+NdOBZmxo/DjR7YqfusxCk
-	 KkDrUhrLvzYZqgtC1IUGa0p3k7A5LU7bFDd72sT4=
+	b=Y7gwuJ1WkchV3rMBymProq/7z6Hax3EsrPZtAWUX/xuyVcIWcXuqFraGCPHcWoYoD
+	 kL+FLK5e8r+kLhhW8FEbUP+Z1DI2+rD3G7W82BuxWmvIL4isI/9Hx9rN1LY2VRr3bu
+	 tUWOp6GUV5QEJuWbOCoPQ6JkUzD0G5kWYgWo0fyw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable <stable@kernel.org>,
-	Bartosz Golaszewski <bartosz.golaszewski@oss.qualcomm.com>,
-	"Rafael J. Wysocki (Intel)" <rafael@kernel.org>,
-	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-	Sakari Ailus <sakari.ailus@linux.intel.com>
-Subject: [PATCH 6.12 113/272] device property: set fwnode->secondary to NULL in fwnode_init()
+	Gui-Dong Han <hanguidong02@gmail.com>,
+	Danilo Krummrich <dakr@kernel.org>,
+	Sasha Levin <sashal@kernel.org>,
+	David Sauerwein <dssauerw@amazon.de>
+Subject: [PATCH 6.6 007/186] driver core: platform: use generic driver_override infrastructure
 Date: Thu, 28 May 2026 21:48:07 +0200
-Message-ID: <20260528194632.545014948@linuxfoundation.org>
+Message-ID: <20260528194929.148644569@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260528194629.379955525@linuxfoundation.org>
-References: <20260528194629.379955525@linuxfoundation.org>
+In-Reply-To: <20260528194928.941004471@linuxfoundation.org>
+References: <20260528194928.941004471@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -70,72 +69,235 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	RCVD_TLS_LAST(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,kernel.org,amazon.de];
+	TAGGED_FROM(0.00)[bounces-256244-lists,stable=lfdr.de];
+	PRECEDENCE_BULK(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FROM_HAS_DN(0.00)[];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-256056-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TO_DN_SOME(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[8];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[7];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,intel.com:email,msgid.link:url,qualcomm.com:email,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo]
-X-Rspamd-Queue-Id: 1273F5F975D
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,amazon.de:email,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim]
+X-Rspamd-Queue-Id: 159AE5FA1B8
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Bartosz Golaszewski <bartosz.golaszewski@oss.qualcomm.com>
+From: Danilo Krummrich <dakr@kernel.org>
 
-commit 215c90ee656114f5e8c32408228d97082f8e0eef upstream.
+[ Upstream commit 2b38efc05bf7a8568ec74bfffea0f5cfa62bc01d ]
 
-If a firmware node is allocated on the stack (for instance: temporary
-software node whose life-time we control) or on the heap - but using a
-non-zeroing allocation function - and initialized using fwnode_init(),
-its secondary pointer will contain uninitalized memory which likely will
-be neither NULL nor IS_ERR() and so may end up being dereferenced (for
-example: in dev_to_swnode()). Set fwnode->secondary to NULL on
-initialization.
+When a driver is probed through __driver_attach(), the bus' match()
+callback is called without the device lock held, thus accessing the
+driver_override field without a lock, which can cause a UAF.
 
-Cc: stable <stable@kernel.org>
-Fixes: 01bb86b380a3 ("driver core: Add fwnode_init()")
-Signed-off-by: Bartosz Golaszewski <bartosz.golaszewski@oss.qualcomm.com>
-Reviewed-by: Rafael J. Wysocki (Intel) <rafael@kernel.org>
-Reviewed-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Reviewed-by: Sakari Ailus <sakari.ailus@linux.intel.com>
-Link: https://patch.msgid.link/20260506115701.23035-1-bartosz.golaszewski@oss.qualcomm.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fix this by using the driver-core driver_override infrastructure taking
+care of proper locking internally.
+
+Note that calling match() from __driver_attach() without the device lock
+held is intentional. [1]
+
+Link: https://lore.kernel.org/driver-core/DGRGTIRHA62X.3RY09D9SOK77P@kernel.org/ [1]
+Reported-by: Gui-Dong Han <hanguidong02@gmail.com>
+Closes: https://bugzilla.kernel.org/show_bug.cgi?id=220789
+Fixes: 3d713e0e382e ("driver core: platform: add device binding path 'driver_override'")
+Reviewed-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Link: https://patch.msgid.link/20260303115720.48783-5-dakr@kernel.org
+Signed-off-by: Danilo Krummrich <dakr@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: David Sauerwein <dssauerw@amazon.de>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/linux/fwnode.h |    1 +
- 1 file changed, 1 insertion(+)
+ drivers/base/platform.c         | 37 +++++----------------------------
+ drivers/bus/simple-pm-bus.c     |  4 ++--
+ drivers/clk/imx/clk-scu.c       |  3 +--
+ drivers/slimbus/qcom-ngd-ctrl.c |  6 ++----
+ include/linux/platform_device.h |  5 -----
+ sound/soc/samsung/i2s.c         |  6 +++---
+ 6 files changed, 13 insertions(+), 48 deletions(-)
 
---- a/include/linux/fwnode.h
-+++ b/include/linux/fwnode.h
-@@ -200,6 +200,7 @@ struct fwnode_operations {
- static inline void fwnode_init(struct fwnode_handle *fwnode,
- 			       const struct fwnode_operations *ops)
+diff --git a/drivers/base/platform.c b/drivers/base/platform.c
+index 76bfcba250039..1cc9a876b3cde 100644
+--- a/drivers/base/platform.c
++++ b/drivers/base/platform.c
+@@ -561,7 +561,6 @@ static void platform_device_release(struct device *dev)
+ 	kfree(pa->pdev.dev.platform_data);
+ 	kfree(pa->pdev.mfd_cell);
+ 	kfree(pa->pdev.resource);
+-	kfree(pa->pdev.driver_override);
+ 	kfree(pa);
+ }
+ 
+@@ -1265,38 +1264,9 @@ static ssize_t numa_node_show(struct device *dev,
+ }
+ static DEVICE_ATTR_RO(numa_node);
+ 
+-static ssize_t driver_override_show(struct device *dev,
+-				    struct device_attribute *attr, char *buf)
+-{
+-	struct platform_device *pdev = to_platform_device(dev);
+-	ssize_t len;
+-
+-	device_lock(dev);
+-	len = sysfs_emit(buf, "%s\n", pdev->driver_override);
+-	device_unlock(dev);
+-
+-	return len;
+-}
+-
+-static ssize_t driver_override_store(struct device *dev,
+-				     struct device_attribute *attr,
+-				     const char *buf, size_t count)
+-{
+-	struct platform_device *pdev = to_platform_device(dev);
+-	int ret;
+-
+-	ret = driver_set_override(dev, &pdev->driver_override, buf, count);
+-	if (ret)
+-		return ret;
+-
+-	return count;
+-}
+-static DEVICE_ATTR_RW(driver_override);
+-
+ static struct attribute *platform_dev_attrs[] = {
+ 	&dev_attr_modalias.attr,
+ 	&dev_attr_numa_node.attr,
+-	&dev_attr_driver_override.attr,
+ 	NULL,
+ };
+ 
+@@ -1336,10 +1306,12 @@ static int platform_match(struct device *dev, struct device_driver *drv)
  {
-+	fwnode->secondary = NULL;
- 	fwnode->ops = ops;
- 	INIT_LIST_HEAD(&fwnode->consumers);
- 	INIT_LIST_HEAD(&fwnode->suppliers);
+ 	struct platform_device *pdev = to_platform_device(dev);
+ 	struct platform_driver *pdrv = to_platform_driver(drv);
++	int ret;
+ 
+ 	/* When driver_override is set, only bind to the matching driver */
+-	if (pdev->driver_override)
+-		return !strcmp(pdev->driver_override, drv->name);
++	ret = device_match_driver_override(dev, drv);
++	if (ret >= 0)
++		return ret;
+ 
+ 	/* Attempt an OF style match first */
+ 	if (of_driver_match_device(dev, drv))
+@@ -1482,6 +1454,7 @@ static const struct dev_pm_ops platform_dev_pm_ops = {
+ struct bus_type platform_bus_type = {
+ 	.name		= "platform",
+ 	.dev_groups	= platform_dev_groups,
++	.driver_override = true,
+ 	.match		= platform_match,
+ 	.uevent		= platform_uevent,
+ 	.probe		= platform_probe,
+diff --git a/drivers/bus/simple-pm-bus.c b/drivers/bus/simple-pm-bus.c
+index aafcc481de91d..cb71774400d42 100644
+--- a/drivers/bus/simple-pm-bus.c
++++ b/drivers/bus/simple-pm-bus.c
+@@ -36,7 +36,7 @@ static int simple_pm_bus_probe(struct platform_device *pdev)
+ 	 * that's not listed in simple_pm_bus_of_match. We don't want to do any
+ 	 * of the simple-pm-bus tasks for these devices, so return early.
+ 	 */
+-	if (pdev->driver_override)
++	if (device_has_driver_override(&pdev->dev))
+ 		return 0;
+ 
+ 	match = of_match_device(dev->driver->of_match_table, dev);
+@@ -78,7 +78,7 @@ static int simple_pm_bus_remove(struct platform_device *pdev)
+ {
+ 	const void *data = of_device_get_match_data(&pdev->dev);
+ 
+-	if (pdev->driver_override || data)
++	if (device_has_driver_override(&pdev->dev) || data)
+ 		return 0;
+ 
+ 	dev_dbg(&pdev->dev, "%s\n", __func__);
+diff --git a/drivers/clk/imx/clk-scu.c b/drivers/clk/imx/clk-scu.c
+index 564f549ec204f..3a68576cdae76 100644
+--- a/drivers/clk/imx/clk-scu.c
++++ b/drivers/clk/imx/clk-scu.c
+@@ -700,8 +700,7 @@ struct clk_hw *imx_clk_scu_alloc_dev(const char *name,
+ 		return ERR_PTR(ret);
+ 	}
+ 
+-	ret = driver_set_override(&pdev->dev, &pdev->driver_override,
+-				  "imx-scu-clk", strlen("imx-scu-clk"));
++	ret = device_set_driver_override(&pdev->dev, "imx-scu-clk");
+ 	if (ret) {
+ 		platform_device_put(pdev);
+ 		return ERR_PTR(ret);
+diff --git a/drivers/slimbus/qcom-ngd-ctrl.c b/drivers/slimbus/qcom-ngd-ctrl.c
+index fe3a96577f31f..d0d289c49c8d1 100644
+--- a/drivers/slimbus/qcom-ngd-ctrl.c
++++ b/drivers/slimbus/qcom-ngd-ctrl.c
+@@ -1537,10 +1537,8 @@ static int of_qcom_slim_ngd_register(struct device *parent,
+ 		ngd->id = id;
+ 		ngd->pdev->dev.parent = parent;
+ 
+-		ret = driver_set_override(&ngd->pdev->dev,
+-					  &ngd->pdev->driver_override,
+-					  QCOM_SLIM_NGD_DRV_NAME,
+-					  strlen(QCOM_SLIM_NGD_DRV_NAME));
++		ret = device_set_driver_override(&ngd->pdev->dev,
++						 QCOM_SLIM_NGD_DRV_NAME);
+ 		if (ret) {
+ 			platform_device_put(ngd->pdev);
+ 			kfree(ngd);
+diff --git a/include/linux/platform_device.h b/include/linux/platform_device.h
+index 7a41c72c19591..8828b0d275d79 100644
+--- a/include/linux/platform_device.h
++++ b/include/linux/platform_device.h
+@@ -31,11 +31,6 @@ struct platform_device {
+ 	struct resource	*resource;
+ 
+ 	const struct platform_device_id	*id_entry;
+-	/*
+-	 * Driver name to force a match.  Do not set directly, because core
+-	 * frees it.  Use driver_set_override() to set or clear it.
+-	 */
+-	const char *driver_override;
+ 
+ 	/* MFD cell pointer */
+ 	struct mfd_cell *mfd_cell;
+diff --git a/sound/soc/samsung/i2s.c b/sound/soc/samsung/i2s.c
+index 3af48c9b5ab7b..925782e676730 100644
+--- a/sound/soc/samsung/i2s.c
++++ b/sound/soc/samsung/i2s.c
+@@ -1364,10 +1364,10 @@ static int i2s_create_secondary_device(struct samsung_i2s_priv *priv)
+ 	if (!pdev_sec)
+ 		return -ENOMEM;
+ 
+-	pdev_sec->driver_override = kstrdup("samsung-i2s", GFP_KERNEL);
+-	if (!pdev_sec->driver_override) {
++	ret = device_set_driver_override(&pdev_sec->dev, "samsung-i2s");
++	if (ret) {
+ 		platform_device_put(pdev_sec);
+-		return -ENOMEM;
++		return ret;
+ 	}
+ 
+ 	ret = platform_device_add(pdev_sec);
+-- 
+2.53.0
+
 
 
 
