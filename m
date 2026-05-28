@@ -1,60 +1,58 @@
-Return-Path: <stable+bounces-255867-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-256277-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id eMEgFPumGGp+lwgAu9opvQ
-	(envelope-from <stable+bounces-255867-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:35:07 +0200
+	id MDE1AJWrGGpolwgAu9opvQ
+	(envelope-from <stable+bounces-256277-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:54:45 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id C49285F905B
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:35:06 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id C02D65F9D73
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:54:44 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id A397530DC179
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 20:28:20 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 02D66309AE88
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 20:47:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 470292D9787;
-	Thu, 28 May 2026 20:28:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E7D382F1FEF;
+	Thu, 28 May 2026 20:47:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MACM0Oki"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xSy1B4Si"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0FFB11EA65;
-	Thu, 28 May 2026 20:28:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C62B82F9D85;
+	Thu, 28 May 2026 20:47:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780000100; cv=none; b=dPNBEm9eHSmQJWbJmp1bvcmNJ6vokNHEz4bWo189AwshjLmdWNaW+nPS+h92FZ2JuIkQpmbHzupXAgZlchjtsdr+XG6tJbWjtU1tU6p/4bxUludplhsJyhQQ+GCBRUUCM4O6xfe1nS9DDGubYURbrhiawN0FzfI5sgMM7OBQjw4=
+	t=1780001249; cv=none; b=n9+5bldcVg0ybAEjmX2YAzYbY+n9oLinB9qUx3kk8fFFinJtIV9WRPmvj1K26OtzSj11fsxvsVnURvMbTZOOpy9rWSfqdrrVb+MNInywaQwEPPHC/GwkouQZH73IHU6hIFTwajLHcL8y/2NvXOn5cedIJP0jRA+4H67/sZXGMYM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780000100; c=relaxed/simple;
-	bh=GEXT96pCHlIlLSmkXH2QJeBK+tOnc6/VxQv0mnv67YM=;
+	s=arc-20240116; t=1780001249; c=relaxed/simple;
+	bh=LKPSAqwmVyD5OR3Cfn+arMnHKKvfKvduAgITziDVfLE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=hPYe85ej+DqLjOOd36EdIlFzX8wpgJzxpktdY8886fvmqosQLZXHQYK3KSuOQMzV5dv/nQu1KVs+7ZRXvdgDWM1L4O6Z1CVnnt+7kHEnZJ5RS3In+RU6H39cWcMrT4LfrHqhUddt9rRWC6fmC1CZwmzBOASPW5erT8QfeLI0QD0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MACM0Oki; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6DC7C1F000E9;
-	Thu, 28 May 2026 20:28:18 +0000 (UTC)
+	 MIME-Version; b=CxkXDZYEbKHD2uEXhTuoCVz6a3yJo9tid99uhpXc+aG4qgeJPESpi6cuWvGkxQ0ddVl2ThpxY059DfScpbtVumVd0IG0ceQKWuz8ZU67MxKyY9gWJKZnkHd3bcKqgsLogr5zw93huYR0D5jJNvLDVzzYvXcPSi6/CWzA9RyLcLk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xSy1B4Si; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E3F8A1F000E9;
+	Thu, 28 May 2026 20:47:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780000099;
-	bh=22YPI7fdEjW2gVbpRrjaUpQMm5gvhIMLj68aq/eamfU=;
+	s=korg; t=1780001248;
+	bh=q3Wj/xV8At5ANL2f1/1CMq94cLt9o52e6wB8+sk8tg8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=MACM0Oki/Md233PJ64WD0S8c8KnQPtux4WJKSK54iSK3EHW08dB1eAne8a628kwZ4
-	 8lHcJxfQenH3P6sosE939eOFZ49ymr9L4R7tiyn3dvPDSjzLTLQECuvoFqnVcif7vQ
-	 r+DPNpF47bonevQja79Km61lUbZlFC/YyoetSWv4=
+	b=xSy1B4SibhD0uB6NY86hQEA9Ma/s9ZrLWvz75HjgkNqXRniod7FsmoqzRe0iPYvU6
+	 HeViAF2PCcWq+DPdtsq8yuutiBDNnDJT4qziHUrNWMWrFpX5lHN8fXYX0gwVp7IOca
+	 r3eQbbzZEPbNJU1GSvYnMpfoVGQfzcz+p1rnjkdk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Qu Wenruo <wqu@suse.com>,
-	Boris Burkov <boris@bur.io>,
-	David Sterba <dsterba@suse.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 301/377] btrfs: check squota parent usage on membership change
+	Vladimir Murzin <vladimir.murzin@arm.com>,
+	Catalin Marinas <catalin.marinas@arm.com>
+Subject: [PATCH 6.6 059/186] arm64: probes: Handle probes on hinted conditional branch instructions
 Date: Thu, 28 May 2026 21:48:59 +0200
-Message-ID: <20260528194647.074909933@linuxfoundation.org>
+Message-ID: <20260528194930.566222434@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260528194638.371537336@linuxfoundation.org>
-References: <20260528194638.371537336@linuxfoundation.org>
+In-Reply-To: <20260528194928.941004471@linuxfoundation.org>
+References: <20260528194928.941004471@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,123 +67,68 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-255867-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-256277-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[7];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,bur.io:email,suse.com:email,linuxfoundation.org:mid,linuxfoundation.org:dkim]
-X-Rspamd-Queue-Id: C49285F905B
+	RCPT_COUNT_FIVE(0.00)[5];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[arm.com:email,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim]
+X-Rspamd-Queue-Id: C02D65F9D73
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Boris Burkov <boris@bur.io>
+From: Vladimir Murzin <vladimir.murzin@arm.com>
 
-[ Upstream commit 9c46bcda5f347febdbb4d117fb21a37ffcec5fa4 ]
+commit 2ccd8ff980b50e842481bae71102fa3883fc4377 upstream.
 
-We could have detected the quick inherit bug more directly if we had
-an extra warning about squota hierarchy consistency while modifying the
-hierarchy. In squotas, the parent usage always simply adds up to the sum of
-its children, so we can just check for that when changing membership and
-detect more accounting bugs.
+BC.cond instructions introduced by FEAT_HBC cannot be executed
+out-of-line, like other branch instructions. However, they can be
+simulated in the same way as B.cond instructions.
 
-Reviewed-by: Qu Wenruo <wqu@suse.com>
-Signed-off-by: Boris Burkov <boris@bur.io>
-Signed-off-by: David Sterba <dsterba@suse.com>
-Stable-dep-of: 1e92637722ae ("btrfs: check for subvolume before deleting squota qgroup")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Extend the B.cond decoder mask to match BC.cond instructions as well,
+and handle them using the existing B.cond simulation path.
+
+Fixes: 7f86d128e437 ("arm64: add HWCAP for FEAT_HBC (hinted conditional branches)")
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Vladimir Murzin <vladimir.murzin@arm.com>
+Signed-off-by: Catalin Marinas <catalin.marinas@arm.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/btrfs/qgroup.c | 39 +++++++++++++++++++++++++++++++++++++++
- 1 file changed, 39 insertions(+)
+ arch/arm64/include/asm/insn.h |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/fs/btrfs/qgroup.c b/fs/btrfs/qgroup.c
-index 7b62d2faaf7ec..db1df67bccf38 100644
---- a/fs/btrfs/qgroup.c
-+++ b/fs/btrfs/qgroup.c
-@@ -346,6 +346,42 @@ int btrfs_verify_qgroup_counts(const struct btrfs_fs_info *fs_info, u64 qgroupid
- }
- #endif
- 
-+static bool squota_check_parent_usage(struct btrfs_fs_info *fs_info, struct btrfs_qgroup *parent)
-+{
-+	u64 excl_sum = 0;
-+	u64 rfer_sum = 0;
-+	u64 excl_cmpr_sum = 0;
-+	u64 rfer_cmpr_sum = 0;
-+	struct btrfs_qgroup_list *glist;
-+	int nr_members = 0;
-+	bool mismatch;
-+
-+	if (btrfs_qgroup_mode(fs_info) != BTRFS_QGROUP_MODE_SIMPLE)
-+		return false;
-+	if (btrfs_qgroup_level(parent->qgroupid) == 0)
-+		return false;
-+
-+	/* Eligible parent qgroup. Squota; level > 0; empty members list. */
-+	list_for_each_entry(glist, &parent->members, next_member) {
-+		excl_sum += glist->member->excl;
-+		rfer_sum += glist->member->rfer;
-+		excl_cmpr_sum += glist->member->excl_cmpr;
-+		rfer_cmpr_sum += glist->member->rfer_cmpr;
-+		nr_members++;
-+	}
-+	mismatch = (parent->excl != excl_sum || parent->rfer != rfer_sum ||
-+		    parent->excl_cmpr != excl_cmpr_sum || parent->rfer_cmpr != excl_cmpr_sum);
-+
-+	WARN(mismatch,
-+	     "parent squota qgroup %hu/%llu has mismatched usage from its %d members. "
-+	     "%llu %llu %llu %llu vs %llu %llu %llu %llu\n",
-+	     btrfs_qgroup_level(parent->qgroupid),
-+	     btrfs_qgroup_subvolid(parent->qgroupid), nr_members, parent->excl,
-+	     parent->rfer, parent->excl_cmpr, parent->rfer_cmpr, excl_sum,
-+	     rfer_sum, excl_cmpr_sum, rfer_cmpr_sum);
-+	return mismatch;
-+}
-+
- __printf(2, 3)
- static void qgroup_mark_inconsistent(struct btrfs_fs_info *fs_info, const char *fmt, ...)
- {
-@@ -1565,6 +1601,7 @@ int btrfs_add_qgroup_relation(struct btrfs_trans_handle *trans, u64 src, u64 dst
- 		goto out;
- 	}
- 	ret = quick_update_accounting(fs_info, src, dst, 1);
-+	squota_check_parent_usage(fs_info, parent);
- 	spin_unlock(&fs_info->qgroup_lock);
- out:
- 	kfree(prealloc);
-@@ -1623,6 +1660,8 @@ static int __del_qgroup_relation(struct btrfs_trans_handle *trans, u64 src,
- 		spin_lock(&fs_info->qgroup_lock);
- 		del_relation_rb(fs_info, src, dst);
- 		ret = quick_update_accounting(fs_info, src, dst, -1);
-+		ASSERT(parent);
-+		squota_check_parent_usage(fs_info, parent);
- 		spin_unlock(&fs_info->qgroup_lock);
- 	}
- out:
--- 
-2.53.0
-
+--- a/arch/arm64/include/asm/insn.h
++++ b/arch/arm64/include/asm/insn.h
+@@ -399,7 +399,7 @@ __AARCH64_INSN_FUNCS(cbz,	0x7F000000, 0x
+ __AARCH64_INSN_FUNCS(cbnz,	0x7F000000, 0x35000000)
+ __AARCH64_INSN_FUNCS(tbz,	0x7F000000, 0x36000000)
+ __AARCH64_INSN_FUNCS(tbnz,	0x7F000000, 0x37000000)
+-__AARCH64_INSN_FUNCS(bcond,	0xFF000010, 0x54000000)
++__AARCH64_INSN_FUNCS(bcond,	0xFF000000, 0x54000000)
+ __AARCH64_INSN_FUNCS(svc,	0xFFE0001F, 0xD4000001)
+ __AARCH64_INSN_FUNCS(hvc,	0xFFE0001F, 0xD4000002)
+ __AARCH64_INSN_FUNCS(smc,	0xFFE0001F, 0xD4000003)
 
 
 
