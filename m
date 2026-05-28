@@ -1,59 +1,62 @@
-Return-Path: <stable+bounces-256197-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-256405-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id ECmZHt2qGGpolwgAu9opvQ
-	(envelope-from <stable+bounces-256197-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:51:41 +0200
+	id sBE8OfmtGGpolwgAu9opvQ
+	(envelope-from <stable+bounces-256405-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 23:04:57 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id ED90D5F9B74
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:51:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7294A5FA302
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 23:04:57 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 047C63062C32
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 20:43:49 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id ED33E304225A
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 20:53:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B583A332909;
-	Thu, 28 May 2026 20:43:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0E6B41A9B46;
+	Thu, 28 May 2026 20:53:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MtCrN9H/"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qPIdUYjL"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C42C9339866;
-	Thu, 28 May 2026 20:43:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D29D735202A;
+	Thu, 28 May 2026 20:53:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780001028; cv=none; b=IAN571TSBEr2ls1LDiQ4TL/653T2xSPRNtV/u8CcPdUgPYoCZjWToiqNmWGGUsbZv0zwRaXR5109kni5oJQD6P6qLq5i/ggZz183DiQCGdjsPZIy7A1Bb8A952O26NnwE/UwKzeb/Gqi8Oistnf7V6ZNAErMhaYpwZXi7nw4Fq4=
+	t=1780001605; cv=none; b=T2yx5m12eB2tYC56ULvrOn1l06hMRst8mz2wG0wo0+RnJFWmUqrNUM8w7W4XVanN6/LGw9EbIYk9aKhBK5d2SJuV5gth/gJE9oYBKV1odmB6DqVpfVYV7WwscwFf71OLuKeDbM1RqaRGGQc9EUYzdtPN8wcw7qxy42ZV4ydcwwM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780001028; c=relaxed/simple;
-	bh=J4GwtFbvKLB+Qanq8O7k+8BHNtXgMN/q/40umQDX524=;
+	s=arc-20240116; t=1780001605; c=relaxed/simple;
+	bh=+2rkZp/0bb2TWESH3oD2/FB/oxQMzlspxpYZ+Au2D/4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=k4a3twL+s1Kue92BNwbE0uXQBW37tKE/Ixs8sHnWZ+FCk9ilxmVT9FrXVwrwVim1wDrJcLrF3IlPU5w+DKPVcmWsz2BYHPOmqB6iXH3pbr0NvnQp2S3SX29Y5q5ZwinjPlv6jWHt1zJNE6aJawhXs3qUd0gGu5oN5i+tr4eIYzg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MtCrN9H/; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AD8621F000E9;
-	Thu, 28 May 2026 20:43:45 +0000 (UTC)
+	 MIME-Version; b=Kimp5tIE1HxOFbgdg08BKW7ptYeEIw8EnwAJzilPTAQ8UBLErtREBkDtqzhF13YVRGD+MCByXhSWXOIZeCquIKN9XFa5XaWJr/r/HYHgnsJlwqxts5rgzYDkLncxICQeyawAzeM49vevZhJ//bFtLk6RkbSuQIJMFsw5Gv0D9Yw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qPIdUYjL; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3A9291F00A3A;
+	Thu, 28 May 2026 20:53:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780001026;
-	bh=9Z/ABK7UoolF4DteHd/x4C7wexjkBevjIS/NE0Puywg=;
+	s=korg; t=1780001604;
+	bh=c9Y5g1F8uLduP0an0nB4Mb+/6PAbPaXrgY4zpv6YLgc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=MtCrN9H/N2vGPfbYaubn4IqNt6IRm6brlZSCpoU8DhSilePvAqKW9/VPcNhGx+ruh
-	 GG+ypmDAG5pI6frU/oSdmy0tFEmUkePc9SSbOb1zqgeajNcpaqeQy+5cWlo1DJjpbF
-	 oCI6UB5fwCyEvioBrXaZ4OvL6Phf8LSg4muHNvjU=
+	b=qPIdUYjLmcAaq4DyJOjBCEFpPJkNCCp1bTNoMRbZinq9I4XqQALYOITm4cgTk+kSj
+	 +VmypObfHczwDIpZuxDG64EtGFBu33safVgNniQ2GjeZ4m7nczXuZ65+RCgt+dyNh0
+	 grLmy1LyxZUHOIl9xdfk1miQMsZ6//CMhMWd53Ug=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Nikhil P. Rao" <nikhil.rao@amd.com>,
+	Jeroen Massar <jmassar@nvidia.com>,
+	Jianbo Liu <jianbol@nvidia.com>,
+	Cosmin Ratiu <cratiu@nvidia.com>,
+	Tariq Toukan <tariqt@nvidia.com>,
 	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 255/272] pds_core: fix error handling in pdsc_devcmd_wait
-Date: Thu, 28 May 2026 21:50:29 +0200
-Message-ID: <20260528194636.249553464@linuxfoundation.org>
+Subject: [PATCH 6.6 150/186] net/mlx5: Do not restore destination-less TC rules
+Date: Thu, 28 May 2026 21:50:30 +0200
+Message-ID: <20260528194933.005954403@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260528194629.379955525@linuxfoundation.org>
-References: <20260528194629.379955525@linuxfoundation.org>
+In-Reply-To: <20260528194928.941004471@linuxfoundation.org>
+References: <20260528194928.941004471@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -73,86 +76,79 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-256405-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-256197-lists,stable=lfdr.de];
-	TO_DN_SOME(0.00)[];
-	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TO_DN_SOME(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
 	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,msgid.link:url,amd.com:email,linuxfoundation.org:mid,linuxfoundation.org:dkim]
-X-Rspamd-Queue-Id: ED90D5F9B74
+	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_SEVEN(0.00)[9];
+	MID_RHS_MATCH_FROM(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,nvidia.com:email,linuxfoundation.org:mid,linuxfoundation.org:dkim]
+X-Rspamd-Queue-Id: 7294A5FA302
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Nikhil P. Rao <nikhil.rao@amd.com>
+From: Jeroen Massar <jmassar@nvidia.com>
 
-[ Upstream commit 0e46b6635b03d29807f810c3b415c4755a3f958d ]
+[ Upstream commit 8d0a5af8b1ba598e7340761729801624e7a9330e ]
 
-Fix two cases where pdsc_devcmd_wait() returns stale success from
-the completion register instead of an error:
+After IPsec policy/state TX rules are added, any TC flow rule, which
+forwards packets to uplink, is modified to forward to IPsec TX tables.
+As these tables are destroyed dynamically, whenever there is no
+reference to them, the destinations of this kind of rules must be
+restored to uplink, unless there is no destination for that rule.
 
-1. FW crash: If firmware stops running, the wait loop breaks early with
-   running=false. The condition "if ((!done || timeout) && running)" is
-   false, so error handling is bypassed and stale status is returned.
-   Check !running first and return -ENXIO.
+The flow rules FLOW_ACTION_ACCEPT, DROP, TRAP, GOTO and SAMPLE do not
+have a destination port, and thus out_count = 0.
 
-2. Timeout: If a command times out, err is set to -ETIMEDOUT but then
-   overwritten by pdsc_err_to_errno(status) which reads stale status.
-   Return -ETIMEDOUT immediately after cleaning up.
+At cleanup time of the rules in mlx5_esw_ipsec_modify_flow_dests
+we call mlx5_eswitch_restore_ipsec_rule but as the above types
+do not have a destination we get an underflow of out_count, as
+the port is passed, which is esw_attr->out_count - 1.
 
-Both errors now propagate to pdsc_devcmd_locked() which queues
-health_work for recovery.
+This change avoids calling mlx5_eswitch_restore_ipsec_rule when
+there are no output destinations and thus avoids the underflow.
 
-Fixes: 45d76f492938 ("pds_core: set up device and adminq")
-Signed-off-by: Nikhil P. Rao <nikhil.rao@amd.com>
-Link: https://patch.msgid.link/20260515212907.998028-1-nikhil.rao@amd.com
+Fixes: d1569537a837 ("net/mlx5e: Modify and restore TC rules for IPSec TX rules")
+Signed-off-by: Jeroen Massar <jmassar@nvidia.com>
+Reviewed-by: Jianbo Liu <jianbol@nvidia.com>
+Reviewed-by: Cosmin Ratiu <cratiu@nvidia.com>
+Signed-off-by: Tariq Toukan <tariqt@nvidia.com>
+Link: https://patch.msgid.link/20260513063302.333761-1-tariqt@nvidia.com
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/amd/pds_core/dev.c | 11 +++++++++--
- 1 file changed, 9 insertions(+), 2 deletions(-)
+ drivers/net/ethernet/mellanox/mlx5/core/esw/ipsec_fs.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/net/ethernet/amd/pds_core/dev.c b/drivers/net/ethernet/amd/pds_core/dev.c
-index 495ef4ef8c103..1d1e559bd99d3 100644
---- a/drivers/net/ethernet/amd/pds_core/dev.c
-+++ b/drivers/net/ethernet/amd/pds_core/dev.c
-@@ -162,12 +162,19 @@ static int pdsc_devcmd_wait(struct pdsc *pdsc, u8 opcode, int max_seconds)
- 		dev_dbg(dev, "DEVCMD %d %s after %ld secs\n",
- 			opcode, pdsc_devcmd_str(opcode), duration / HZ);
+diff --git a/drivers/net/ethernet/mellanox/mlx5/core/esw/ipsec_fs.c b/drivers/net/ethernet/mellanox/mlx5/core/esw/ipsec_fs.c
+index eed8fcde26138..7dfec1629bab7 100644
+--- a/drivers/net/ethernet/mellanox/mlx5/core/esw/ipsec_fs.c
++++ b/drivers/net/ethernet/mellanox/mlx5/core/esw/ipsec_fs.c
+@@ -129,7 +129,8 @@ static int mlx5_esw_ipsec_modify_flow_dests(struct mlx5_eswitch *esw,
  
--	if ((!done || timeout) && running) {
-+	if (!running) {
-+		dev_err(dev, "DEVCMD %d %s fw not running\n",
-+			opcode, pdsc_devcmd_str(opcode));
-+		pdsc_devcmd_clean(pdsc);
-+		return -ENXIO;
-+	}
-+
-+	if (!done || timeout) {
- 		dev_err(dev, "DEVCMD %d %s timeout, done %d timeout %d max_seconds=%d\n",
- 			opcode, pdsc_devcmd_str(opcode), done, timeout,
- 			max_seconds);
--		err = -ETIMEDOUT;
- 		pdsc_devcmd_clean(pdsc);
-+		return -ETIMEDOUT;
- 	}
+ 	attr = flow->attr;
+ 	esw_attr = attr->esw_attr;
+-	if (esw_attr->out_count - esw_attr->split_count > 1)
++	if (!esw_attr->out_count ||
++	    esw_attr->out_count - esw_attr->split_count > 1)
+ 		return 0;
  
- 	status = pdsc_devcmd_status(pdsc);
+ 	err = mlx5_eswitch_restore_ipsec_rule(esw, flow->rule[0], esw_attr,
 -- 
 2.53.0
 
