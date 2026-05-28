@@ -1,63 +1,60 @@
-Return-Path: <stable+bounces-255770-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-255452-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id IGTpHgqlGGrClggAu9opvQ
-	(envelope-from <stable+bounces-255770-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:26:50 +0200
+	id kPByOfagGGqblggAu9opvQ
+	(envelope-from <stable+bounces-255452-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:09:26 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id C8D6F5F8B17
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:26:49 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id 252095F7ECE
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:09:26 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id E0BD1303BDC5
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 20:23:54 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 4066D3024281
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 20:09:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3E0FB2F39B4;
-	Thu, 28 May 2026 20:23:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EF982344DAC;
+	Thu, 28 May 2026 20:09:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Z5/12ro2"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="axv4Rucm"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F2FD02E7379;
-	Thu, 28 May 2026 20:23:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C3A0032ABC0;
+	Thu, 28 May 2026 20:09:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779999834; cv=none; b=AneUC0uWGJvfHCEdKK9VqTGChzZeAfp4UY5wFulcadtqiYsaIPUJlxVCKgsfiUq6SsHultm5gVXC+RumxaItRtmmfQ1Z2petET5j45VBp1DLgNcv36R8KGL1/8t8/C5ZaN6Q4vJe7p5AdmMxY7IvqeV0z3E878HxufU+pHsJx5M=
+	t=1779998951; cv=none; b=BTwg61Irr+lyei8USIkNAoIWt34jMOX5ZRRyVNySqI2K8ew19S38fmtEQbb7uV3H1NYUKEmdvQ4LDbJ9SlWKHx100spGRw56c1DI5AISmgT7V2I/M7AU9JgzfolKKmeb6axwmoHWgQZItnbGQ0UhdMS6OAsuBFustfjUrnEpf9w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779999834; c=relaxed/simple;
-	bh=YYEl8zMouIrCcx/WgwPK8VXLG2LO25RzXOTat06lbbQ=;
+	s=arc-20240116; t=1779998951; c=relaxed/simple;
+	bh=L6lQ6mcsrGASS+Gq2kKtaQftFMc934SxWWXfBEGZt8I=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=n9VO/94sM2Ae+rNRKYfazXPmFrjIGpxdGz5SMGpqTB1uKC+pY7EBhvcwHT5OC3dLa2KVnoVf9jMjsbXdPVe+Zvvq89SFJW3sT6B7EFO7J0Yy2kOwdk70HcXlvSQlFWs2PIPeVtLk8qxWT+SYEW89Df9F3FXYww7zys4xiE/NJow=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Z5/12ro2; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2537A1F000E9;
-	Thu, 28 May 2026 20:23:51 +0000 (UTC)
+	 MIME-Version; b=MzEUvwWYzWhEHBPtCbR/8aIM64Oax61m9JNSFYo5ufytmafOpYV6ApAPZTGXyj1/2KGE66FGcXmGATalaM+lTPhIjlIqka5ERY9oZ+IXE9k7+3+16lP1my1Sk8qloCwRuAqSSXxsZ9izMWD0HrQlyTCckuliMnElYXPoEZvCHlY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=axv4Rucm; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2B9981F00A3C;
+	Thu, 28 May 2026 20:09:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779999832;
-	bh=1jAWuROhiz9WGpmvsQrlUuLASlwwTHCFr9kUioGdfQQ=;
+	s=korg; t=1779998950;
+	bh=MRooS93FD0xp4YufVvEZjurI3UFYcTyW2/K81xRp+14=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=Z5/12ro27H8WMgpbcjAUho1OL7Tu9DPL3Ttx4BRdV1aHLeiFNnXvcX+NtsSD5Kr5M
-	 CSuXWleknUIbUnQPEZB/0557Z+tOFlkazuqowHl27culnb40P/fh8j0WstduReST7D
-	 ledRaY7buZxnvDZYYh9ijPkQbD2vdgoUFx7gf1Ec=
+	b=axv4Rucmi7nkH1U209iwENnfGNWe7wHuQ//R/IR3+gDAZM4TgM+fbS+6q0l5k9zoL
+	 gUqlXnRIymVR6WlGzDHcsxlwJdomSZCB08GL4nD2RJGG2Oa59dYb7n9n8FBuhL0CpR
+	 bn+49GMQ4aXQ7M1c3LjSu0sfpJOwyi/RQ6oqG3zs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Martin Karsten <mkarsten@uwaterloo.ca>,
-	Dragos Tatulea <dtatulea@nvidia.com>,
-	Tariq Toukan <tariqt@nvidia.com>,
-	Cosmin Ratiu <cratiu@nvidia.com>,
-	Joe Damato <joe@dama.to>,
+	Sashiko <sashiko-bot@kernel.org>,
 	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 208/377] net: napi: Avoid gro timer misfiring at end of busypoll
-Date: Thu, 28 May 2026 21:47:26 +0200
-Message-ID: <20260528194644.427140119@linuxfoundation.org>
+Subject: [PATCH 7.0 318/461] net: tls: prevent chain-after-chain in plain text SG
+Date: Thu, 28 May 2026 21:47:27 +0200
+Message-ID: <20260528194656.511339318@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260528194638.371537336@linuxfoundation.org>
-References: <20260528194638.371537336@linuxfoundation.org>
+In-Reply-To: <20260528194646.819809818@linuxfoundation.org>
+References: <20260528194646.819809818@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -72,7 +69,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
@@ -80,7 +77,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-255770-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-255452-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
@@ -89,107 +86,105 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
 	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[10];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[nvidia.com:email,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,uwaterloo.ca:email,msgid.link:url,linuxfoundation.org:mid,linuxfoundation.org:dkim,dama.to:email]
-X-Rspamd-Queue-Id: C8D6F5F8B17
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,msgid.link:url]
+X-Rspamd-Queue-Id: 252095F7ECE
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+7.0-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dragos Tatulea <dtatulea@nvidia.com>
+From: Jakub Kicinski <kuba@kernel.org>
 
-[ Upstream commit 58e2330bd45572a6e3d46ea94cf7a9641f43591a ]
+[ Upstream commit ff26a0e8377dec07e4a7230db7675bed1b9a6d03 ]
 
-When in irq deferral mode (defer-hard-irqs > 0), a short enough
-gro-flush timeout can trigger before NAPI_STATE_SCHED is cleared if the
-last poll in busy_poll_stop() takes too long. This can have the effect
-of leaving the queue stuck with interrupts disabled and no timer armed
-which results in a tx timeout if there is no subsequent busypoll cycle.
+Sashiko points out that if end = 0 (start != 0) the current
+code will create a chain link to content type right after
+the wrap link:
 
-To prevent this, defer the gro-flush timer arm after the last poll.
+  This would create a chain where the wrap link points directly
+  to another chain link. The scatterlist API sg_next iterator
+  does not recursively resolve consecutive chain links.
 
-Fixes: 7fd3253a7de6 ("net: Introduce preferred busy-polling")
-Co-developed-by: Martin Karsten <mkarsten@uwaterloo.ca>
-Signed-off-by: Martin Karsten <mkarsten@uwaterloo.ca>
-Signed-off-by: Dragos Tatulea <dtatulea@nvidia.com>
-Reviewed-by: Tariq Toukan <tariqt@nvidia.com>
-Reviewed-by: Cosmin Ratiu <cratiu@nvidia.com>
-Reviewed-by: Joe Damato <joe@dama.to>
-Link: https://patch.msgid.link/20260506090808.820559-2-dtatulea@nvidia.com
+meaning this is illegal input to crypto.
+
+The wrapping link is unnecessary if end = 0. end is the entry after
+the last one used so end = 0 means there's nothing pushed after
+the wrap:
+
+   end         start            i
+    v            v              v
+  [   ]...[   ][ d ][ d ][ d ][ d ][rsv for wrap]
+
+Skip the wrapping in this case.
+
+TLS 1.3 can use the "wrapping slot" for it's chaining if end = 0.
+This avoids the chain-after-chain.
+
+Move the wrap chaining before marking END and chaining off content
+type, that feels like more logical ordering to me, but should not
+matter from functional perspective.
+
+Reported-by: Sashiko <sashiko-bot@kernel.org>
+Fixes: 9aaaa56845a0 ("bpf: Sockmap/tls, skmsg can have wrapped skmsg that needs extra chaining")
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Link: https://patch.msgid.link/20260511174920.433155-3-kuba@kernel.org
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/core/dev.c | 21 ++++++++++++---------
- 1 file changed, 12 insertions(+), 9 deletions(-)
+ net/tls/tls_sw.c | 24 ++++++++++++++++++------
+ 1 file changed, 18 insertions(+), 6 deletions(-)
 
-diff --git a/net/core/dev.c b/net/core/dev.c
-index 29f2f35ae5ebe..681d7de89c505 100644
---- a/net/core/dev.c
-+++ b/net/core/dev.c
-@@ -6777,9 +6777,9 @@ static void skb_defer_free_flush(void)
+diff --git a/net/tls/tls_sw.c b/net/tls/tls_sw.c
+index fe73c6da73392..97e02ac7f0086 100644
+--- a/net/tls/tls_sw.c
++++ b/net/tls/tls_sw.c
+@@ -789,21 +789,33 @@ static int tls_push_record(struct sock *sk, int flags,
+ 	i = msg_pl->sg.end;
+ 	sk_msg_iter_var_prev(i);
  
- #if defined(CONFIG_NET_RX_BUSY_POLL)
- 
--static void __busy_poll_stop(struct napi_struct *napi, bool skip_schedule)
-+static void __busy_poll_stop(struct napi_struct *napi, unsigned long timeout)
- {
--	if (!skip_schedule) {
-+	if (!timeout) {
- 		gro_normal_list(&napi->gro);
- 		__napi_schedule(napi);
- 		return;
-@@ -6789,6 +6789,8 @@ static void __busy_poll_stop(struct napi_struct *napi, bool skip_schedule)
- 	gro_flush_normal(&napi->gro, HZ >= 1000);
- 
- 	clear_bit(NAPI_STATE_SCHED, &napi->state);
-+	hrtimer_start(&napi->timer, ns_to_ktime(timeout),
-+		      HRTIMER_MODE_REL_PINNED);
- }
- 
- enum {
-@@ -6800,8 +6802,7 @@ static void busy_poll_stop(struct napi_struct *napi, void *have_poll_lock,
- 			   unsigned flags, u16 budget)
- {
- 	struct bpf_net_context __bpf_net_ctx, *bpf_net_ctx;
--	bool skip_schedule = false;
--	unsigned long timeout;
-+	unsigned long timeout = 0;
- 	int rc;
- 
- 	/* Busy polling means there is a high chance device driver hard irq
-@@ -6821,10 +6822,12 @@ static void busy_poll_stop(struct napi_struct *napi, void *have_poll_lock,
- 
- 	if (flags & NAPI_F_PREFER_BUSY_POLL) {
- 		napi->defer_hard_irqs_count = napi_get_defer_hard_irqs(napi);
--		timeout = napi_get_gro_flush_timeout(napi);
--		if (napi->defer_hard_irqs_count && timeout) {
--			hrtimer_start(&napi->timer, ns_to_ktime(timeout), HRTIMER_MODE_REL_PINNED);
--			skip_schedule = true;
-+		if (napi->defer_hard_irqs_count) {
-+			/* A short enough gro flush timeout and long enough
-+			 * poll can result in timer firing too early.
-+			 * Timer will be armed later if necessary.
-+			 */
-+			timeout = napi_get_gro_flush_timeout(napi);
- 		}
++	/* msg_pl->sg.data is a ring; data[MAX+1] is reserved for the wrap
++	 * link (frags won't use it). 'i' is now the last filled entry:
++	 *
++	 *         i   end              start
++	 *         v    v                 v            [ rsv ]
++	 *  [ d ][ d ][   ][   ]...[   ][ d ][ d ][ d ][chain]
++	 *    ^   END                                     v
++	 *     `-----------------------------------------'
++	 *
++	 * Note that SGL does not allow chain-after-chain, so for TLS 1.3,
++	 * we must make sure we don't create the wrap entry and then chain
++	 * link to content_type immediately at index 0.
++	 */
++	if (i < msg_pl->sg.start)
++		sg_chain(msg_pl->sg.data, ARRAY_SIZE(msg_pl->sg.data),
++			 msg_pl->sg.data);
++
+ 	rec->content_type = record_type;
+ 	if (prot->version == TLS_1_3_VERSION) {
+ 		/* Add content type to end of message.  No padding added */
+ 		sg_set_buf(&rec->sg_content_type, &rec->content_type, 1);
+ 		sg_mark_end(&rec->sg_content_type);
+-		sg_chain(msg_pl->sg.data, msg_pl->sg.end + 1,
+-			 &rec->sg_content_type);
++		sg_chain(msg_pl->sg.data, i + 2, &rec->sg_content_type);
+ 	} else {
+ 		sg_mark_end(sk_msg_elem(msg_pl, i));
  	}
  
-@@ -6839,7 +6842,7 @@ static void busy_poll_stop(struct napi_struct *napi, void *have_poll_lock,
- 	trace_napi_poll(napi, rc, budget);
- 	netpoll_poll_unlock(have_poll_lock);
- 	if (rc == budget)
--		__busy_poll_stop(napi, skip_schedule);
-+		__busy_poll_stop(napi, timeout);
- 	bpf_net_ctx_clear(bpf_net_ctx);
- 	local_bh_enable();
- }
+-	if (msg_pl->sg.end < msg_pl->sg.start)
+-		sg_chain(msg_pl->sg.data, ARRAY_SIZE(msg_pl->sg.data),
+-			 msg_pl->sg.data);
+-
+ 	i = msg_pl->sg.start;
+ 	sg_chain(rec->sg_aead_in, 2, &msg_pl->sg.data[i]);
+ 
 -- 
 2.53.0
 
