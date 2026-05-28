@@ -1,177 +1,198 @@
-Return-Path: <stable+bounces-254835-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-254836-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id UILRGhwaGGoBdQgAu9opvQ
-	(envelope-from <stable+bounces-254835-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 12:34:04 +0200
+	id IMaoNIwZGGpCdQgAu9opvQ
+	(envelope-from <stable+bounces-254836-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 12:31:40 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 71CEF5F0A24
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 12:34:02 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7574C5F09C8
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 12:31:39 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id D40E9300B8D7
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 10:29:37 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 2F8BC300A339
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 10:31:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BEBF03B7B66;
-	Thu, 28 May 2026 10:29:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EF6C5397E8E;
+	Thu, 28 May 2026 10:31:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (4096-bit key) header.d=ssi.bg header.i=@ssi.bg header.b="ZnkrZz5+"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="RURdwQQL";
+	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="IBvpIKZW"
 X-Original-To: stable@vger.kernel.org
-Received: from mx.ssi.bg (mx.ssi.bg [193.238.174.39])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A565A30C359;
-	Thu, 28 May 2026 10:29:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.238.174.39
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CCA79189F43
+	for <stable@vger.kernel.org>; Thu, 28 May 2026 10:31:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779964173; cv=none; b=bukKeBEYd4xD0RpMyXBLiAWfWq1QZPWvzm6gUEirf/s1f0pd9xgG+iZlWPIeQeUiRhZySSNUFrMVa3x1w6PPjod2E7gMTpmIKOKca7GbjJCxQm9lhhJ61joGmFGj+MTdZUqw5du8/W+Dkyy/piIorxfFvFL+DUR+i72kRghf5ZA=
+	t=1779964291; cv=none; b=YI8kVVPSbUQlJr9ChzO1BVQXCPId535/zYvD438KnXBpHxcR4VCq3W1vqHBd4bxseqQ7fPp3qftVf7ht7ypkKnPU4+vZl07gA6KBK1eiwW9pHMDekuec5MO4z5Xg7FvAXaJAyrPrijONuADAkrD3OLf0fhx4OEooXCczpXdFfF0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779964173; c=relaxed/simple;
-	bh=JTt807Qy7bn1+1XqPQYWbpkGmyn4635Qbiems4WwloQ=;
-	h=Date:From:To:cc:Subject:In-Reply-To:Message-ID:References:
-	 MIME-Version:Content-Type; b=cumhlUGfTUpcoyIZ6d8Ci9CI6vZsgFy+63+JxRAW5QVpYgQeenOjPVdr6TsVlgpmVVwHaYv4E8nv1EVpn6xXkjunzS0wOna//x4ozqj0q/a6IC6GPNN740nDqWngweM3y/QSs50YL/kDANDWoepEgoPQMVpL5h111FdZipcRIgU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=ssi.bg; spf=pass smtp.mailfrom=ssi.bg; dkim=pass (4096-bit key) header.d=ssi.bg header.i=@ssi.bg header.b=ZnkrZz5+; arc=none smtp.client-ip=193.238.174.39
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=ssi.bg
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ssi.bg
-Received: from mx.ssi.bg (localhost [127.0.0.1])
-	by mx.ssi.bg (Potsfix) with ESMTP id 46BE421108;
-	Thu, 28 May 2026 13:29:27 +0300 (EEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ssi.bg; h=cc:cc
-	:content-type:content-type:date:from:from:in-reply-to:message-id
-	:mime-version:references:reply-to:subject:subject:to:to; s=ssi;
-	 bh=+MAlYPIe9hB3K5acB14N7+FZdX7wf1HTiLIubdRiq8Q=; b=ZnkrZz5+xFt4
-	0RhHbpxE39ZfvrGiV4BNylloI129EiKRNo6Bak7G8J34v876kBvhzzabOZ4KUp15
-	K5s8PID1yxg5eVNQS+EG5jzUXlQ0eYk9+9cnt0C0NM9re5xPeDrUuKXqx/zNkx46
-	CCXwf/l9sEo1j0bnxyUxhWIDgi79RZGhe3Cs4S1pa8A15bEAL+SFRqUmm4BON3V8
-	0H0e9sqvKPzYJhej3C7ToCXGvbULo/6+ynrHXFQo9IJBt/odGmBArCV2LDjbzUdr
-	KbJydSv1YO0k2S38bTC++tUa4pCk/7Nf6LPOXFDvfQ7v726djfoWICzrw7oF9QHJ
-	vrBfe9o2xUpItcBvyqvKwIGYIE0a4LROTCQWaJCyu3BcxSoPmcvpbeCZFYofm444
-	jWbZRnWa26t/ThwJNG0hbmgMChgn1Q9M8aDlraJr9X6eU68eymDDLlg4Q/7Avz1K
-	IQortVsc7QLw8BojrX0LIZ6/w8apEqUgXaPeWTqZ2bvkUrTsSkNhbKKMLNxbqpwy
-	+4ONjy9nux/wOIf3pTWsKniy+12ku4AsUCO3vYG64ELlH2AK/GgWxhIIvFF4QxCk
-	SxzloCr3O9ds7cwM2Opj4W/AEovVtFaWpm27N3bSTz4Fw1CT/lK9aO0mxpAy0jvV
-	+/xefDvi09VTs3ZrbcMd2Tj8VpAhyDk=
-Received: from box.ssi.bg (box.ssi.bg [193.238.174.46])
-	by mx.ssi.bg (Potsfix) with ESMTPS;
-	Thu, 28 May 2026 13:29:27 +0300 (EEST)
-Received: from ja.ssi.bg (unknown [213.16.62.126])
-	by box.ssi.bg (Potsfix) with ESMTPSA id 897BD609E9;
-	Thu, 28 May 2026 13:29:26 +0300 (EEST)
-Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by ja.ssi.bg (8.18.2/8.18.1) with ESMTP id 64SATPsG030077;
-	Thu, 28 May 2026 13:29:25 +0300
-Date: Thu, 28 May 2026 13:29:25 +0300 (EEST)
-From: Julian Anastasov <ja@ssi.bg>
+	s=arc-20240116; t=1779964291; c=relaxed/simple;
+	bh=uMZInyhct2J6By9KxHA5ABF9l3RGFcif2+JpLTJpi2g=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=raJuSYQSS3Kp0BtEJKy98DiuZ59uZABRCTcomO+R5iZse2eB/fW4eK9Q8H9DFgmNyAIlaumE3IpSXUHDHy8WVmv36WvFD71piD4UFSp92FkxUEm+r/r/u15olSGBCUWtJtawzl7NDSZJTIG3mwhMgn0rfRubIPJZXIz9JMqs/No=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=RURdwQQL; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=IBvpIKZW; arc=none smtp.client-ip=170.10.129.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1779964288;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=Aww6jC3I0Nj95YFehLzt5woPsMu1GhH9KVyzIE2qdSg=;
+	b=RURdwQQLjSUSGU64TXzz/+FAxz74ijsOa1eFqRMQS6ZuBON6bXmsodRPDjalTWEc8UkMCH
+	9hV3as0UfzYAvFQY/qzz/FpOcycznNqgGqF7xu1jkdEqdSdHg54g+38mO5Zhn/iN1yR9J5
+	ixGECI/q1itAsjvETay8Hdv1hg/YVbA=
+Received: from mail-wr1-f71.google.com (mail-wr1-f71.google.com
+ [209.85.221.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-593-DHN-I9pZNCOUJ0cTUujWGw-1; Thu, 28 May 2026 06:31:27 -0400
+X-MC-Unique: DHN-I9pZNCOUJ0cTUujWGw-1
+X-Mimecast-MFC-AGG-ID: DHN-I9pZNCOUJ0cTUujWGw_1779964286
+Received: by mail-wr1-f71.google.com with SMTP id ffacd0b85a97d-44d9ace59efso7390328f8f.1
+        for <stable@vger.kernel.org>; Thu, 28 May 2026 03:31:27 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=redhat.com; s=google; t=1779964286; x=1780569086; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=Aww6jC3I0Nj95YFehLzt5woPsMu1GhH9KVyzIE2qdSg=;
+        b=IBvpIKZWXj0J0IVWvVuueUTaYy5x9zH3gB5XP7WNB2tVzcW3KkxIEPfSweb1jyvNu+
+         nIXyf5ryB5CZ9W+evXRfpsBT9UgV/sld8OUaIAFAeY3CDJqYViD6kAaoA2B/T8aei7f4
+         K6hWSZ1cR928VAKp+sBv6ShSj4oXlI/urufjJNJgkv9siJTY2otkPwadnktAxrdISDLh
+         JdfA8dvAJuLYSQrmq+ReH50wZ1CSZicsmogV2xacCes8gJH6/ihwoYpVY4vp4CFAhvfc
+         E6vLKfcpng/5bMx6io2mDtpoo3NHy0g8EXfAnLbAffI2wCVTGJVrePPRdWedp4InGwlM
+         UhKw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1779964286; x=1780569086;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=Aww6jC3I0Nj95YFehLzt5woPsMu1GhH9KVyzIE2qdSg=;
+        b=a6G6x+R2Co86mmIhdxe06egM+RBjfdPKlTH1wexOR2GdSBh2vMKL0NzcBLKh/CFJoD
+         y48osDHI6Os9iXpzlYdkdeKTbxOGSisuOZgJniyzmZi9OVe1NPTHNaVi68xVkNKLiEIC
+         hBARyVMZ1kfsiufenYTjcl6CZ9JhwApdTnByq3gUyo6CxixQBsLdAyAeDVlNrpzHp1mn
+         zEsvqppQvfgNktqBvG51YwV1XLFiQ18v+af31OJ0/5zH/YaXe5teKKk4SMwwqVOzQO7k
+         lzwMYdaZqpmFNO8794cSUbjgL/hUjRKvvTd0KJMSY0enRyt791BPBM3v1Gr2m5jqetN3
+         5rDg==
+X-Forwarded-Encrypted: i=1; AFNElJ/vBTgRTBpVY/U31R/MKKBr7lcbR7pIdL3rOwnO9YXxjr5Pe9BbzNliqsVmp99TF2yo3zjuP3E=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yz1oP68371MavebjYsg+kJp7lEnlAKUB5/uKQtrzMvTHf8nfcfD
+	bHQN5Oo4aD1F6qvWDxXugIeK6Vi8zMibx57bGNmk8mxa46OYKxWtZUHtW35BYPls1G1H5Tu3khC
+	IcuCrNLVWFjRfK/Qv3IBvC7xc2vfBlMHBqHMk2WW7k2VX7Sys6+UbzP5mhA==
+X-Gm-Gg: Acq92OGtTvGtIw4iF2+usOpeuZNp+xkQHxpD1vq9QQC+Bbxw+1J+Ehg7kLqnEUkOomy
+	fXo3evsxMvw+idU0FBBcDLDA2xMoLA23expKcFtjwwf613GcRG7XW3+vgkTrQsfXcLPEqcJgojs
+	L9CYikqwyj8mwvARUaVuZ09SzbZLONARyjWX20+cLwes1rf8lvIxZCgR6x31/ULFLhKIcVB7loa
+	69THwb403+OTsZx+7SuBHCEdZYj05RllGu7I20LCPEYomuJUwU0cbCTfC4x6e05fgrKEVFhMC67
+	xVjYFOAG9a6aLdbOu6vLrgx7cc/9nNZGLiNGtZrOpcPHkamQKWLZ9YhmiOTwIP0RCaD89DZqx28
+	UshfALOGbcRUwqMfC7QuuFBPh8Al8c7Z3KejhkyyylLMTUXccrsISv24b7GtnnuWCAEPJkPJXjA
+	4JxKZk86I3/pA=
+X-Received: by 2002:a05:600c:1992:b0:48a:76a3:2b9b with SMTP id 5b1f17b1804b1-490426c5416mr418407325e9.17.1779964286058;
+        Thu, 28 May 2026 03:31:26 -0700 (PDT)
+X-Received: by 2002:a05:600c:1992:b0:48a:76a3:2b9b with SMTP id 5b1f17b1804b1-490426c5416mr418406935e9.17.1779964285634;
+        Thu, 28 May 2026 03:31:25 -0700 (PDT)
+Received: from debian (2a01cb0580324c00f1205deb3ed928e2.ipv6.abo.wanadoo.fr. [2a01:cb05:8032:4c00:f120:5deb:3ed9:28e2])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-49092a817d3sm38019705e9.10.2026.05.28.03.31.24
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 28 May 2026 03:31:24 -0700 (PDT)
+Date: Thu, 28 May 2026 12:31:22 +0200
+From: Guillaume Nault <gnault@redhat.com>
 To: Wentao Liang <vulab@iscas.ac.cn>
-cc: Simon Horman <horms@verge.net.au>, Pablo Neira Ayuso <pablo@netfilter.org>,
-        Florian Westphal <fw@strlen.de>,
-        "David S . Miller" <davem@davemloft.net>,
-        Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>,
-        Paolo Abeni <pabeni@redhat.com>, Phil Sutter <phil@nwl.cc>,
-        netdev@vger.kernel.org, lvs-devel@vger.kernel.org,
-        netfilter-devel@vger.kernel.org, coreteam@netfilter.org,
-        linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Subject: Re: [PATCH] netfilter: ipvs: fix ct refcount leak when template is
- invalid
-In-Reply-To: <20260528072100.1163109-1-vulab@iscas.ac.cn>
-Message-ID: <155bcc31-033b-18ec-8ff1-bb0d32e4b44a@ssi.bg>
-References: <20260528072100.1163109-1-vulab@iscas.ac.cn>
+Cc: James Chapman <jchapman@katalix.com>,
+	"David S . Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	Simon Horman <horms@kernel.org>, netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Subject: Re: [PATCH] l2tp: fix tunnel refcount leak on register failure
+Message-ID: <ahgZerhdz5KcVMNz@debian>
+References: <20260528043418.1153320-1-vulab@iscas.ac.cn>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-X-Spamd-Result: default: False [-2.16 / 15.00];
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260528043418.1153320-1-vulab@iscas.ac.cn>
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[ssi.bg,reject];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
-	R_DKIM_ALLOW(-0.20)[ssi.bg:s=ssi];
+	DMARC_POLICY_ALLOW(-0.50)[redhat.com,quarantine];
+	MID_RHS_NOT_FQDN(0.50)[];
+	R_DKIM_ALLOW(-0.20)[redhat.com:s=mimecast20190719,redhat.com:s=google];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	DKIM_TRACE(0.00)[ssi.bg:+];
-	RCPT_COUNT_TWELVE(0.00)[15];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-254835-lists,stable=lfdr.de];
+	DKIM_TRACE(0.00)[redhat.com:+];
 	RCVD_TLS_LAST(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-254836-lists,stable=lfdr.de];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	MISSING_XM_UA(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[iscas.ac.cn:email,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,ssi.bg:email,ssi.bg:mid,ssi.bg:dkim];
-	TO_DN_SOME(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[ja@ssi.bg,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	TO_DN_SOME(0.00)[];
+	RCVD_COUNT_FIVE(0.00)[6];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gnault@redhat.com,stable@vger.kernel.org];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
 	NEURAL_HAM(-0.00)[-1.000];
 	TAGGED_RCPT(0.00)[stable];
-	MID_RHS_MATCH_FROM(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[10];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	RCVD_COUNT_SEVEN(0.00)[7]
-X-Rspamd-Queue-Id: 71CEF5F0A24
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,iscas.ac.cn:email]
+X-Rspamd-Queue-Id: 7574C5F09C8
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
+On Thu, May 28, 2026 at 04:34:18AM +0000, Wentao Liang wrote:
+> pppol2tp_tunnel_get() creates a new tunnel via l2tp_tunnel_create()
+> which initializes tunnel->ref_count to 1, then increments it to 2 via
+> refcount_inc(). If l2tp_tunnel_register() subsequently fails, the
+> error path calls kfree(tunnel) directly, bypassing the refcount
+> mechanism entirely.
 
-	Hello,
+This is the expected behaviour. Since l2tp_tunnel_register() failed,
+the tunnel hasn't been exposed to the rest of the system and we're
+guaranteed that nothing depends on it.
 
-On Thu, 28 May 2026, Wentao Liang wrote:
+> This leaves the tunnel's ref_count at 2 with no
+> way to properly release it through l2tp_tunnel_put().
 
-> ip_vs_sched_persist() calls ip_vs_ct_in_get() to look up an existing
-> connection template, which returns ct with a reference held. If the
-> template exists but fails the ip_vs_check_template() validation, the
-> function can leak the reference in two ways:
+The tunnel is simply freed. The refcount doesn't matter here.
 
-	You missed the __ip_vs_conn_put(ct) in ip_vs_check_template()
-when 0 is returned :) So, there is no leak.
+> Replace kfree(tunnel) with l2tp_tunnel_put(tunnel) to properly release
+> the reference through the standard refcount cleanup path, which will
+> call l2tp_tunnel_free() when the counter reaches zero.
 
-> 
-> 1. If no destination is found (scheduler returns NULL), the function
->    returns NULL at the !dest check without calling ip_vs_conn_put(ct).
-> 
-> 2. If a destination is found and a new template is created via
->    ip_vs_conn_new(), the old ct pointer is overwritten without its
->    reference being released.
-> 
-> Fix this by adding ip_vs_conn_put(ct) before the early return when no
-> destination is found, and before overwriting ct with the new template.
-> 
+This is buggy. At this point, the refcount is 2, and l2tp_tunnel_put()
+will decrement it by only one. So this patch just leaks the the tunnel
+forever.
+
 > Cc: stable@vger.kernel.org
-> Fixes: 5b57a98c1f0d ("IPVS: compact ip_vs_sched_persist()")
+> Fixes: 6b9f34239b00 ("l2tp: fix races in tunnel creation")
 > Signed-off-by: Wentao Liang <vulab@iscas.ac.cn>
 > ---
->  net/netfilter/ipvs/ip_vs_core.c | 2 ++
->  1 file changed, 2 insertions(+)
+>  net/l2tp/l2tp_ppp.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
 > 
-> diff --git a/net/netfilter/ipvs/ip_vs_core.c b/net/netfilter/ipvs/ip_vs_core.c
-> index d40b404c1bf6..bdc3f296876a 100644
-> --- a/net/netfilter/ipvs/ip_vs_core.c
-> +++ b/net/netfilter/ipvs/ip_vs_core.c
-> @@ -536,6 +536,7 @@ ip_vs_sched_persist(struct ip_vs_service *svc,
->  			IP_VS_DBG(1, "p-schedule: no dest found.\n");
->  			kfree(param.pe_data);
->  			*ignored = 0;
-> +			ip_vs_conn_put(ct);
->  			return NULL;
->  		}
->  
-> @@ -551,6 +552,7 @@ ip_vs_sched_persist(struct ip_vs_service *svc,
->  		if (ct == NULL) {
->  			kfree(param.pe_data);
->  			*ignored = -1;
-> +			ip_vs_conn_put(ct);
->  			return NULL;
->  		}
+> diff --git a/net/l2tp/l2tp_ppp.c b/net/l2tp/l2tp_ppp.c
+> index 99d6582f41de..16672e9df748 100644
+> --- a/net/l2tp/l2tp_ppp.c
+> +++ b/net/l2tp/l2tp_ppp.c
+> @@ -661,7 +661,7 @@ static struct l2tp_tunnel *pppol2tp_tunnel_get(struct net *net,
+>  			refcount_inc(&tunnel->ref_count);
+>  			error = l2tp_tunnel_register(tunnel, net, &tcfg);
+>  			if (error < 0) {
+> -				kfree(tunnel);
+> +				l2tp_tunnel_put(tunnel);
+>  				return ERR_PTR(error);
+>  			}
 >  
 > -- 
 > 2.34.1
-
-Regards
-
---
-Julian Anastasov <ja@ssi.bg>
+> 
+> 
 
 
