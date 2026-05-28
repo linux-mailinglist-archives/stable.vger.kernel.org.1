@@ -1,61 +1,58 @@
-Return-Path: <stable+bounces-255547-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-256317-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id UHWKANqjGGrClggAu9opvQ
-	(envelope-from <stable+bounces-255547-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:21:46 +0200
+	id 4EJ3OP2rGGpEmAgAu9opvQ
+	(envelope-from <stable+bounces-256317-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:56:29 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6085B5F8773
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:21:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4BAC75F9E55
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:56:29 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id A4AFF31F5163
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 20:13:39 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 1F2BE3229E5C
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 20:49:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9A23F33F5B4;
-	Thu, 28 May 2026 20:13:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 704E7330307;
+	Thu, 28 May 2026 20:49:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DaXz/2sa"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LsHnkQY0"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7931932ABC0;
-	Thu, 28 May 2026 20:13:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 46220331A7E;
+	Thu, 28 May 2026 20:49:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779999218; cv=none; b=npWiu4l9Eckd/zV6NPT6LP73X3xM2EFk7b9lgcp3Fzsrt1KMomphal7wLbM7TaUj8mJDPMPkoUGM7QhT3BiAbMnAdij9W9VltJVTAs6Jjk/QeApqw5Uuh/tuIio6l2py8J4/HsbX41k+2YBPqthk9a+nes094y6mb8RAncmzfUc=
+	t=1780001361; cv=none; b=PGEjxIYrV64PgdM8YhTIUWw1+TovOMevmDZaeK9Om6VYy9jDnx3Fzf9USmElJ+2JSwAsikWa6zxRhAxP1NWorFu5ZsWBCJ0OWWGyB87fD+85Y1fmS5GPrCIjvD/HDbLQJI/8F5uWmWwhvTiug3H6++A9OE6rDcITpT+a/vuWqyQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779999218; c=relaxed/simple;
-	bh=SQLjxWddgW6PsWprr1n/lPLvkTW/NnQUI7Z5aZl4NQE=;
+	s=arc-20240116; t=1780001361; c=relaxed/simple;
+	bh=HwncqfSRUmMvSdYVClF21KsJaNLvxuNK0KFDzTlOwo0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=f9jXCoCGmx4v/DRFDBMLOyMu3cMksYMZf2pcw41pUjalThntPkKc67p9qQcCEDHlWIYZUhu5GZAXgelPmrK7Sz7rPsoEKm6ZzwsYGFilCPGH/mLLONvvs3lyT2BbeO6c+7bYWsE2u4kn3mp3XhNCGcmnY9WFZ0r1WvZlUoiTCNM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DaXz/2sa; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id ACA201F000E9;
-	Thu, 28 May 2026 20:13:36 +0000 (UTC)
+	 MIME-Version; b=nnGzTfWduyViDObUw47dpc3ysPzHxVHgASluqSBTnfs6Jg1YPz9LJYxhYF3PsXMDeIqbRS9jkfMt504lSqO0RPF+stah2rw8f5sb8EngWqVu+s/OyrjrrXCJNkGs0UkV78msUKO0l+NiBclk1jTsa0hgExXnlTqjmeOhGitpyaU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LsHnkQY0; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A3D801F000E9;
+	Thu, 28 May 2026 20:49:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779999217;
-	bh=foMvkMCtMqePSbNW044/dcqLLaQn8Ab44m+ZicyR9/8=;
+	s=korg; t=1780001360;
+	bh=7pf0e9nGe/WOlC++onfGbVwZ+jXT7R0mtfkb9Q86aHU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=DaXz/2sagwZmFWQMH5pzh+1BqeyjTLN22OPx/WHnVMFiD6xxsou8WoMaZsJcM0xND
-	 zAG9wTfIxi1etHB6jdjqXeZGL4rJuC1Q1th9mURJtv+it5FAtpVUfo3Gmd4i33vqA9
-	 QI0qm7rvs2YEMfucA9wuqSoWr/GjRF2SOxTDQiGQ=
+	b=LsHnkQY0KT/oex2veuWHcpR6BR20Lj1t5OFYRMHrAg4NBSmm5WP2UTSX7TD1pwQvZ
+	 DwrX2cD2sI0gXQoYFZ/87dUy7BIyulIw1I8rZEec8QPLmwBmy/BAP3Iq26LjfQlJGf
+	 7OIvQE6n1N3H7aqkQ01OGMuQQAh/QV7ADzBHkLp0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Xiang Mei <xmei5@asu.edu>,
-	Weiming Shi <bestswngs@gmail.com>,
-	Willem de Bruijn <willemb@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Sudeep Holla <sudeep.holla@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 7.0 450/461] tap: fix stack info leak in tap_ioctl() SIOCGIFHWADDR
+Subject: [PATCH 6.6 099/186] firmware: arm_ffa: Skip free_pages on RX buffer alloc failure
 Date: Thu, 28 May 2026 21:49:39 +0200
-Message-ID: <20260528194700.566193622@linuxfoundation.org>
+Message-ID: <20260528194931.606707292@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260528194646.819809818@linuxfoundation.org>
-References: <20260528194646.819809818@linuxfoundation.org>
+In-Reply-To: <20260528194928.941004471@linuxfoundation.org>
+References: <20260528194928.941004471@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -75,76 +72,62 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,asu.edu,gmail.com,google.com,kernel.org];
-	TAGGED_FROM(0.00)[bounces-255547-lists,stable=lfdr.de];
-	PRECEDENCE_BULK(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
+	RCVD_TLS_LAST(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	TAGGED_FROM(0.00)[bounces-256317-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[8];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,linuxfoundation.org:mid,linuxfoundation.org:dkim,asu.edu:email,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
-X-Rspamd-Queue-Id: 6085B5F8773
+	RCPT_COUNT_FIVE(0.00)[5];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,msgid.link:url,linuxfoundation.org:mid,linuxfoundation.org:dkim]
+X-Rspamd-Queue-Id: 4BAC75F9E55
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-7.0-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Weiming Shi <bestswngs@gmail.com>
+From: Sudeep Holla <sudeep.holla@kernel.org>
 
-[ Upstream commit bddc09212c24934643bd44fc794748d2bbb3b6cd ]
+[ Upstream commit 09527e2c534911619d7e098729711100290bc3e1 ]
 
-In the SIOCGIFHWADDR path, tap_ioctl() copies 16 bytes of an
-uninitialised on-stack struct sockaddr_storage to userspace via
-ifr_hwaddr, but netif_get_mac_address() only writes sa_family and
-dev->addr_len (6 for Ethernet) bytes, leaving sa_data[6..13] uninitialised.
+If the RX buffer allocation fails in ffa_init(), the error path jumps to
+free_pages even though no buffer has been allocated yet. Route that case
+directly to free_drv_info so the cleanup path is only used after at
+least one RX/TX buffer allocation has succeeded.
 
-Those 8 trailing bytes leak kernel stack contents; SIOCGIFHWADDR on a
-macvtap chardev returns kernel .text and direct-map pointers, defeating
-KASLR.
-
-Initialise ss at declaration.
-
-Fixes: 3b23a32a6321 ("net: fix dev_ifsioc_locked() race condition")
-Reported-by: Xiang Mei <xmei5@asu.edu>
-Signed-off-by: Weiming Shi <bestswngs@gmail.com>
-Reviewed-by: Willem de Bruijn <willemb@google.com>
-Link: https://patch.msgid.link/20260520075736.3415676-3-bestswngs@gmail.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Fixes: 3bbfe9871005 ("firmware: arm_ffa: Add initial Arm FFA driver support")
+Link: https://patch.msgid.link/20260428-ffa_fixes-v2-2-8595ae450034@kernel.org
+Signed-off-by: Sudeep Holla <sudeep.holla@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/tap.c | 2 +-
+ drivers/firmware/arm_ffa/driver.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/net/tap.c b/drivers/net/tap.c
-index b8240737dc519..a590e07ce0a98 100644
---- a/drivers/net/tap.c
-+++ b/drivers/net/tap.c
-@@ -919,11 +919,11 @@ static long tap_ioctl(struct file *file, unsigned int cmd,
- 	struct tap_queue *q = file->private_data;
- 	struct tap_dev *tap;
- 	void __user *argp = (void __user *)arg;
-+	struct sockaddr_storage ss = {};
- 	struct ifreq __user *ifr = argp;
- 	unsigned int __user *up = argp;
- 	unsigned short u;
- 	int __user *sp = argp;
--	struct sockaddr_storage ss;
- 	int s;
- 	int ret;
+diff --git a/drivers/firmware/arm_ffa/driver.c b/drivers/firmware/arm_ffa/driver.c
+index 488f8345dd1b6..ece91d8d820b5 100644
+--- a/drivers/firmware/arm_ffa/driver.c
++++ b/drivers/firmware/arm_ffa/driver.c
+@@ -743,7 +743,7 @@ static int __init ffa_init(void)
+ 	drv_info->rx_buffer = alloc_pages_exact(RXTX_BUFFER_SIZE, GFP_KERNEL);
+ 	if (!drv_info->rx_buffer) {
+ 		ret = -ENOMEM;
+-		goto free_pages;
++		goto free_drv_info;
+ 	}
  
+ 	drv_info->tx_buffer = alloc_pages_exact(RXTX_BUFFER_SIZE, GFP_KERNEL);
 -- 
 2.53.0
 
