@@ -1,61 +1,59 @@
-Return-Path: <stable+bounces-255901-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-256311-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id OGkHOYOmGGpolwgAu9opvQ
-	(envelope-from <stable+bounces-255901-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:33:07 +0200
+	id SAZoA/2tGGpolwgAu9opvQ
+	(envelope-from <stable+bounces-256311-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 23:05:01 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id E81EB5F8EDC
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:33:06 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4E0D55FA318
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 23:05:00 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 618CE303CC48
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 20:29:57 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id AB904309D12B
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 20:49:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D7C86260580;
-	Thu, 28 May 2026 20:29:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CF104331A7E;
+	Thu, 28 May 2026 20:49:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QfwHEFi6"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vJ191wLO"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BEC13DDC5;
-	Thu, 28 May 2026 20:29:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A2F42317142;
+	Thu, 28 May 2026 20:49:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780000196; cv=none; b=J/UAJcqBB0nvL7xFeuYHwYLlgcdca2SB2PRzv0JCauCHoOnZ6K9PeK1K2XjT1uXxEzotMDjmgpblkuFslcpdOPicpd8NExyvlOhIsUrvvWoTcI2SujchW+5TUpv6G4lLJT+sKPL7Wlf5MiDarN2wpxvhl9U0X6NXIjLmdR6Tnak=
+	t=1780001344; cv=none; b=M4J5dhIO8pYZJMKvzW0yQF1+pZuh31WoCAh8lLjlOucC8ZzjbbHosgdLauktbKLSU+23EK0nfvQXnxdodDlDVFd9cy+mxnRUlkWK1WNg/TugMt2K3pn9V87c6zL3GCH1k/olCj9de+zeosobpsx1TDBWGMQc6Pmah3sQKVj5nQU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780000196; c=relaxed/simple;
-	bh=SNGeyUku1yR0M+j4bDuQtfiOogVvdMEfujIb8vTnVZc=;
+	s=arc-20240116; t=1780001344; c=relaxed/simple;
+	bh=zXrw5FkQFrwoNchugioL+RRguPSQ3CPe4ApWRrWiLlw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Ir9Nz1wkcjWbARg8AqLgHA8yaHdNSh5OZS4SP6EXHnBDf/Z5chKi7oyjrBY6HgkzRj0HTyeStZsSxDBVC1xkrw/N6DfuccRltx2quu3hTIg80x2Bzk5aRDSfpPKxcN+nhxNWf+cTHe+JTpatcIm7JOtBJp/xWb+UrIAdwW9TtXM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QfwHEFi6; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2890A1F000E9;
-	Thu, 28 May 2026 20:29:54 +0000 (UTC)
+	 MIME-Version; b=A1nSRjm5k2eSMOmJ9w6CCL4FWzTaVSa8Gy28gga7PEwaoP88HaVb4M8hgcD6TEHuOTfg+H79YhwFg5kkubYx+FHi+FuvouVBN2+H2i9OOEv95QBbCukcg3OiJ6Jo+ISi0filaqeULSiG8lb9t6ooXnTXk8gNXt3IdqO98hNs/fo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vJ191wLO; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D90561F000E9;
+	Thu, 28 May 2026 20:49:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780000195;
-	bh=hLJ6hCJLFeivxUTIFNIOi7OzlakrUG1dHcB4eor9J4E=;
+	s=korg; t=1780001343;
+	bh=+ynrWIaXaSeKpYjsI4Kbk76srkaK71afYX3fw3zR3go=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=QfwHEFi6qZgy43BPO3VaYlyHGUDOxp6EY6pfTmIxanaWAdN36uTwXEhDA888178Tm
-	 xhFb09iyJUFnUlQ0TsoN09d6Z2fqxSOSSiN779ADVW5Iv+Ji28jLgXYbICrQWo/Fli
-	 aGo51iPy+Kbq9YTsFw6FjL54vNEuGBYw2VUD7Rh4=
+	b=vJ191wLODe9UHm7DRujkeWEvPdhmY3e71RJMIrXQGHKcxwZYjC5Mx2rmLvD3AYfM6
+	 BsICxxGbC++s4UKX0dHZxsGc7gbhUXmRCKZaBa/dvgk2ecn3rXx9ZA7x4euXsEFqa1
+	 qNiJ3pDWuDbfSZGiziZQSgQAbolvL9ljBmZl4+s0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Shiraz Saleem <shirazsaleem@microsoft.com>,
-	Konstantin Taranov <kotaranov@microsoft.com>,
-	Long Li <longli@microsoft.com>,
-	Leon Romanovsky <leon@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 336/377] RDMA/mana_ib: Report max_msg_sz in mana_ib_query_port
+	Abdurrahman Hussain <abdurrahman@nexthop.ai>,
+	Bartosz Golaszewski <bartosz.golaszewski@oss.qualcomm.com>,
+	Guenter Roeck <linux@roeck-us.net>
+Subject: [PATCH 6.6 094/186] hwmon: (pmbus/adm1266) register the gpio_chip after pmbus_do_probe()
 Date: Thu, 28 May 2026 21:49:34 +0200
-Message-ID: <20260528194648.145467960@linuxfoundation.org>
+Message-ID: <20260528194931.473554951@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260528194638.371537336@linuxfoundation.org>
-References: <20260528194638.371537336@linuxfoundation.org>
+In-Reply-To: <20260528194928.941004471@linuxfoundation.org>
+References: <20260528194928.941004471@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -75,64 +73,87 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-255901-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-256311-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
-	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[8];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,msgid.link:url,linuxfoundation.org:mid,linuxfoundation.org:dkim]
-X-Rspamd-Queue-Id: E81EB5F8EDC
+	RCPT_COUNT_FIVE(0.00)[6];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,roeck-us.net:email,qualcomm.com:email,nexthop.ai:email,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim]
+X-Rspamd-Queue-Id: 4E0D55FA318
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Shiraz Saleem <shirazsaleem@microsoft.com>
+From: Abdurrahman Hussain <abdurrahman@nexthop.ai>
 
-[ Upstream commit c9a40f6531b81baa9619bcc2697ff86896afcce7 ]
+commit 491403b9b76cf66abd81301c5901aa4a4549f1e8 upstream.
 
-Report max_msg_sz for mana_ib, which is 16MB.
+adm1266_probe() calls adm1266_config_gpio() -- which goes on to
+devm_gpiochip_add_data() and exposes the gpio_chip callbacks to
+gpiolib -- before pmbus_do_probe() has initialised the per-client
+PMBus state (notably the pmbus_lock mutex the core hands out via
+pmbus_get_data()).
 
-Fixes: 4bda1d5332ec ("RDMA/mana_ib: Implement port parameters")
-Signed-off-by: Shiraz Saleem <shirazsaleem@microsoft.com>
-Signed-off-by: Konstantin Taranov <kotaranov@microsoft.com>
-Link: https://patch.msgid.link/20260512094209.264955-1-kotaranov@linux.microsoft.com
-Reviewed-by: Long Li <longli@microsoft.com>
-Signed-off-by: Leon Romanovsky <leon@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+That ordering is already a latent hazard: any GPIO access that lands
+between adm1266_config_gpio() and the end of pmbus_do_probe() (for
+example a sysfs read from a user space agent that opens the gpiochip
+the instant gpiolib advertises it) races pmbus_do_probe()'s own
+device accesses with no serialisation.
+
+Move adm1266_config_gpio() down past pmbus_do_probe() so the chip
+isn't reachable from userspace until the PMBus state it depends on
+is fully initialised.
+
+Fixes: d98dfad35c38 ("hwmon: (pmbus/adm1266) Add support for GPIOs")
+Cc: stable@vger.kernel.org
+Signed-off-by: Abdurrahman Hussain <abdurrahman@nexthop.ai>
+Reviewed-by: Bartosz Golaszewski <bartosz.golaszewski@oss.qualcomm.com>
+Link: https://lore.kernel.org/r/20260518-adm1266-gpio-fixes-v3-4-e425e4f88139@nexthop.ai
+Signed-off-by: Guenter Roeck <linux@roeck-us.net>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/infiniband/hw/mana/main.c | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/hwmon/pmbus/adm1266.c |    8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/infiniband/hw/mana/main.c b/drivers/infiniband/hw/mana/main.c
-index fac159f7128d9..4143be70eea20 100644
---- a/drivers/infiniband/hw/mana/main.c
-+++ b/drivers/infiniband/hw/mana/main.c
-@@ -639,6 +639,7 @@ int mana_ib_query_port(struct ib_device *ibdev, u32 port,
- 	if (mana_ib_is_rnic(dev)) {
- 		props->gid_tbl_len = 16;
- 		props->ip_gids = true;
-+		props->max_msg_sz = SZ_16M;
- 		if (port == 1)
- 			props->port_cap_flags = IB_PORT_CM_SUP;
- 	}
--- 
-2.53.0
-
+--- a/drivers/hwmon/pmbus/adm1266.c
++++ b/drivers/hwmon/pmbus/adm1266.c
+@@ -466,10 +466,6 @@ static int adm1266_probe(struct i2c_clie
+ 	crc8_populate_msb(pmbus_crc_table, 0x7);
+ 	mutex_init(&data->buf_mutex);
+ 
+-	ret = adm1266_config_gpio(data);
+-	if (ret < 0)
+-		return ret;
+-
+ 	ret = adm1266_set_rtc(data);
+ 	if (ret < 0)
+ 		return ret;
+@@ -482,6 +478,10 @@ static int adm1266_probe(struct i2c_clie
+ 	if (ret)
+ 		return ret;
+ 
++	ret = adm1266_config_gpio(data);
++	if (ret < 0)
++		return ret;
++
+ 	adm1266_init_debugfs(data);
+ 
+ 	return 0;
 
 
 
