@@ -1,60 +1,61 @@
-Return-Path: <stable+bounces-256342-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-255932-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id eF32AWOuGGpolwgAu9opvQ
-	(envelope-from <stable+bounces-256342-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 23:06:43 +0200
+	id qMEeIkmnGGpolwgAu9opvQ
+	(envelope-from <stable+bounces-255932-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:36:25 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2C1465FA39D
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 23:06:42 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4A1B75F9163
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:36:25 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id D17863019A19
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 20:50:33 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 5D5F53002B3F
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 20:31:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D19E8330B32;
-	Thu, 28 May 2026 20:50:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BB28232AAD6;
+	Thu, 28 May 2026 20:31:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UbhtxvKo"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cAHt1dF0"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AFDCE2F260C;
-	Thu, 28 May 2026 20:50:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 79C01223328;
+	Thu, 28 May 2026 20:31:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780001432; cv=none; b=iVCrU2UoKkVPFzg8BHgx0yqlAxI6LUW1LJtQYovyyOG+f7yu9/mXd8jq/072ym+UNMmiFtWGt8h6TwQMUROs6X7jeN3oWc36aj0tsIsCxadgJ1jEoGZSB4jaNQOehjFWVdGVVXqZCqJxdqd0gHCkcAqUMjmtxI4iN1xgD3c/6RQ=
+	t=1780000283; cv=none; b=Cl/mj9fKegfbMSNPY0tbfQjwt6fgq4tdhVd7XoG111/+nqUgpNqyl/EYsmsOHnft0BXkBLEihl994pf7iYS2mx+6U6Ay5j+tTSNPd15m9FhCrBzWld/Cl7IYWLS6NoQXWLLc39/1EcdnlbrDNgleT9Hpj62pLnbF0jnzeXo05eQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780001432; c=relaxed/simple;
-	bh=MOZgA7tYl2kKoNIOFbSS5IS39WzYbyAK7Mm+V28ZgIc=;
+	s=arc-20240116; t=1780000283; c=relaxed/simple;
+	bh=UNj/rtlyfds3bwHldcgYs4+OL2KIzUw768zA1mBERps=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=tSTW8tCsmytr937PiIwTLZnuw5Yjb3lWFcjQehcqdxZUdrZrdPW8dTnS82SXf6h6Xwm5uNEBNNQjr7JM7Hw261nmqN9vLxawx923P7zd4YFbVDPxGlGFluPzVTzLs0+7uLTHF6boXvjFCTpZqckhhu6DNtfPs7Hcdm2o+va0N5c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UbhtxvKo; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 19B201F000E9;
-	Thu, 28 May 2026 20:50:30 +0000 (UTC)
+	 MIME-Version; b=WIqPaImX0GOIf5ssa+NtxGclsmtev6gNNgqn70cTG/x3JNikxYvW8mEvdY5SdW/OrJFprlfi5gQSTNuYa9POGyM9tu6yHX26sMYZzZ+fkFOPpHNgqoOH2eYn4iVeOM52W8TIy84u20ygk8Jj1QUNS5GftXBO3WLhkBbBl9AmpmM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cAHt1dF0; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B01E71F000E9;
+	Thu, 28 May 2026 20:31:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780001431;
-	bh=6XCH76SssE3YFUkd9uV0sVb/2qP8fvGnJwtBkQ63kqw=;
+	s=korg; t=1780000282;
+	bh=hRy3bKgKqtwuMYD6ppJM7Zqf2eF+ohvPAJGaqzUnFTo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=UbhtxvKoq/+JEXxbaBRScSFnBYlpBRobYQq8Zr2TF8Bf3inthZwYF3IW5CX0DHp5s
-	 cypUrLPLa4LW7bjPDCbUTT6sYg7zWCFveGe1/9zh/EZKQXkqBj6bBX4GAuB/M0O7Q/
-	 3CNm6Vde2SQQ+mwnCjRatqC6iKhjvsMPRNb+6IwU=
+	b=cAHt1dF0Nk4C0YGGA0v4ApI0gHr6pE+dLlswC+eWUrP+kHbclIQ4OpgaL4GcNkHQ8
+	 r3JzlTpcV62sB/LVCkBPpeaYZUuLUOFV1N5KtyIL/zJh1LwBtvA5hiJH1mPJKhzwPd
+	 x/hA524cdLD2PnVeSg0F4couKnaAnQdmgRcgEqZU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Gabor Juhos <j4g8y7@gmail.com>,
-	Miquel Raynal <miquel.raynal@bootlin.com>,
-	Vinod Koul <vkoul@kernel.org>,
+	Carolina Jubran <cjubran@nvidia.com>,
+	Dragos Tatulea <dtatulea@nvidia.com>,
+	Nimrod Oren <noren@nvidia.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 125/186] phy: marvell: mvebu-a3700-utmi: fix incorrect USB2_PHY_CTRL register access
-Date: Thu, 28 May 2026 21:50:05 +0200
-Message-ID: <20260528194932.320450241@linuxfoundation.org>
+Subject: [PATCH 6.18 368/377] selftests: net: Fix checksums in xdp_native
+Date: Thu, 28 May 2026 21:50:06 +0200
+Message-ID: <20260528194649.081146121@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260528194928.941004471@linuxfoundation.org>
-References: <20260528194928.941004471@linuxfoundation.org>
+In-Reply-To: <20260528194638.371537336@linuxfoundation.org>
+References: <20260528194638.371537336@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,82 +65,195 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-2.16 / 15.00];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,bootlin.com,kernel.org];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-256342-lists,stable=lfdr.de];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	RCVD_TLS_LAST(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-255932-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
+	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TO_DN_SOME(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_SEVEN(0.00)[8];
 	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_SEVEN(0.00)[7];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,bootlin.com:email,linuxfoundation.org:mid,linuxfoundation.org:dkim]
-X-Rspamd-Queue-Id: 2C1465FA39D
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,msgid.link:url,nvidia.com:email,linuxfoundation.org:mid,linuxfoundation.org:dkim]
+X-Rspamd-Queue-Id: 4A1B75F9163
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Gabor Juhos <j4g8y7@gmail.com>
+From: Nimrod Oren <noren@nvidia.com>
 
-[ Upstream commit 91ddf6f722084383fb05be731c0107814b055c0c ]
+[ Upstream commit dfc077043351a81887d1e4c9ac244e9243f3cbf2 ]
 
-The mvebu_a3700_utmi_phy_power_off() function tries to modify the
-USB2_PHY_CTRL register by using the IO address of the PHY IP block along
-with the readl/writel IO accessors. However, the register exist in the
-USB miscellaneous register space, and as such it must be accessed via
-regmap like it is done in the mvebu_a3700_utmi_phy_power_on() function.
+Data adjustment cases failed with "Data exchange failed" when using IPv4
+because the program did not update the IP and UDP checksums in the IPv4
+branch. The issue was masked when both IPv4 and IPv6 were configured,
+since the test harness prefers IPv6.
 
-Change the code to use regmap_update_bits() for modífying the register
-to fix this.
+While here, generalize csum_fold_helper() to fold twice so it works for
+any 32-bit input.
 
-Fixes: cc8b7a0ae866 ("phy: add A3700 UTMI PHY driver")
-Signed-off-by: Gabor Juhos <j4g8y7@gmail.com>
-Reviewed-by: Miquel Raynal <miquel.raynal@bootlin.com>
-Link: https://patch.msgid.link/20260321-a3700-utmi-fix-usb2_phy_ctrl-access-v1-1-6005ff4b5058@gmail.com
-Signed-off-by: Vinod Koul <vkoul@kernel.org>
+Fixes: 0b65cfcef9c5 ("selftests: drv-net: Test tail-adjustment support")
+Reviewed-by: Carolina Jubran <cjubran@nvidia.com>
+Reviewed-by: Dragos Tatulea <dtatulea@nvidia.com>
+Signed-off-by: Nimrod Oren <noren@nvidia.com>
+Link: https://patch.msgid.link/20260520153928.3371765-1-noren@nvidia.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/phy/marvell/phy-mvebu-a3700-utmi.c | 5 ++---
- 1 file changed, 2 insertions(+), 3 deletions(-)
+ .../selftests/net/lib/xdp_native.bpf.c        | 55 ++++++++++---------
+ 1 file changed, 30 insertions(+), 25 deletions(-)
 
-diff --git a/drivers/phy/marvell/phy-mvebu-a3700-utmi.c b/drivers/phy/marvell/phy-mvebu-a3700-utmi.c
-index 04f4fb4bed702..f882bc57649c7 100644
---- a/drivers/phy/marvell/phy-mvebu-a3700-utmi.c
-+++ b/drivers/phy/marvell/phy-mvebu-a3700-utmi.c
-@@ -168,9 +168,8 @@ static int mvebu_a3700_utmi_phy_power_off(struct phy *phy)
- 	u32 reg;
+diff --git a/tools/testing/selftests/net/lib/xdp_native.bpf.c b/tools/testing/selftests/net/lib/xdp_native.bpf.c
+index c368fc045f4b4..d5134f93f7d7f 100644
+--- a/tools/testing/selftests/net/lib/xdp_native.bpf.c
++++ b/tools/testing/selftests/net/lib/xdp_native.bpf.c
+@@ -268,6 +268,17 @@ static int xdp_mode_tx_handler(struct xdp_md *ctx, __u16 port)
+ 	return XDP_PASS;
+ }
  
- 	/* Disable PHY pull-up and enable USB2 suspend */
--	reg = readl(utmi->regs + USB2_PHY_CTRL(usb32));
--	reg &= ~(RB_USB2PHY_PU | RB_USB2PHY_SUSPM(usb32));
--	writel(reg, utmi->regs + USB2_PHY_CTRL(usb32));
-+	regmap_update_bits(utmi->usb_misc, USB2_PHY_CTRL(usb32),
-+			   RB_USB2PHY_PU | RB_USB2PHY_SUSPM(usb32), 0);
++static __always_inline __u16 csum_fold_helper(__u32 csum)
++{
++	csum = (csum & 0xffff) + (csum >> 16);
++	return ~((csum & 0xffff) + (csum >> 16));
++}
++
++static __always_inline __u16 csum_fold_udp_helper(__u32 csum)
++{
++	return csum_fold_helper(csum) ? : 0xffff;
++}
++
+ static void *update_pkt(struct xdp_md *ctx, __s16 offset, __u32 *udp_csum)
+ {
+ 	void *data_end = (void *)(long)ctx->data_end;
+@@ -281,21 +292,22 @@ static void *update_pkt(struct xdp_md *ctx, __s16 offset, __u32 *udp_csum)
  
- 	/* Power down OTG module */
- 	if (usb32) {
+ 	if (eth->h_proto == bpf_htons(ETH_P_IP)) {
+ 		struct iphdr *iph = data + sizeof(*eth);
+-		__u16 total_len;
+ 
+ 		if (iph + 1 > (struct iphdr *)data_end)
+ 			return NULL;
+ 
+-		iph->tot_len = bpf_htons(bpf_ntohs(iph->tot_len) + offset);
+-
+ 		udph = (void *)eth + sizeof(*iph) + sizeof(*eth);
+ 		if (!udph || udph + 1 > (struct udphdr *)data_end)
+ 			return NULL;
+ 
+-		len_new = bpf_htons(bpf_ntohs(udph->len) + offset);
++		len = iph->tot_len;
++		len_new = bpf_htons(bpf_ntohs(len) + offset);
++		iph->tot_len = len_new;
++		iph->check = csum_fold_helper(
++			bpf_csum_diff(&len, sizeof(len), &len_new,
++				      sizeof(len_new), ~((__u32)iph->check)));
+ 	} else if (eth->h_proto  == bpf_htons(ETH_P_IPV6)) {
+ 		struct ipv6hdr *ipv6h = data + sizeof(*eth);
+-		__u16 payload_len;
+ 
+ 		if (ipv6h + 1 > (struct ipv6hdr *)data_end)
+ 			return NULL;
+@@ -304,33 +316,27 @@ static void *update_pkt(struct xdp_md *ctx, __s16 offset, __u32 *udp_csum)
+ 		if (!udph || udph + 1 > (struct udphdr *)data_end)
+ 			return NULL;
+ 
+-		*udp_csum = ~((__u32)udph->check);
+-
+ 		len = ipv6h->payload_len;
+ 		len_new = bpf_htons(bpf_ntohs(len) + offset);
+ 		ipv6h->payload_len = len_new;
+-
+-		*udp_csum = bpf_csum_diff(&len, sizeof(len), &len_new,
+-					  sizeof(len_new), *udp_csum);
+-
+-		len = udph->len;
+-		len_new = bpf_htons(bpf_ntohs(udph->len) + offset);
+-		*udp_csum = bpf_csum_diff(&len, sizeof(len), &len_new,
+-					  sizeof(len_new), *udp_csum);
+ 	} else {
+ 		return NULL;
+ 	}
+ 
++	len = udph->len;
++	len_new = bpf_htons(bpf_ntohs(len) + offset);
++
++	*udp_csum = ~((__u32)udph->check);
++	*udp_csum = bpf_csum_diff(&len, sizeof(len), &len_new,
++				  sizeof(len_new), *udp_csum);
++	*udp_csum = bpf_csum_diff(&len, sizeof(len), &len_new,
++				  sizeof(len_new), *udp_csum);
++
+ 	udph->len = len_new;
+ 
+ 	return udph;
+ }
+ 
+-static __u16 csum_fold_helper(__u32 csum)
+-{
+-	return ~((csum & 0xffff) + (csum >> 16)) ? : 0xffff;
+-}
+-
+ static int xdp_adjst_tail_shrnk_data(struct xdp_md *ctx, __u16 offset,
+ 				     __u32 hdr_len)
+ {
+@@ -359,7 +365,7 @@ static int xdp_adjst_tail_shrnk_data(struct xdp_md *ctx, __u16 offset,
+ 		return -1;
+ 
+ 	udp_csum = bpf_csum_diff((__be32 *)tmp_buff, offset, 0, 0, udp_csum);
+-	udph->check = (__u16)csum_fold_helper(udp_csum);
++	udph->check = (__u16)csum_fold_udp_helper(udp_csum);
+ 
+ 	if (bpf_xdp_adjust_tail(ctx, 0 - offset) < 0)
+ 		return -1;
+@@ -403,7 +409,7 @@ static int xdp_adjst_tail_grow_data(struct xdp_md *ctx, __u16 offset)
+ 		return -1;
+ 
+ 	udp_csum = bpf_csum_diff(0, 0, (__be32 *)tmp_buff, offset, udp_csum);
+-	udph->check = (__u16)csum_fold_helper(udp_csum);
++	udph->check = (__u16)csum_fold_udp_helper(udp_csum);
+ 
+ 	buff_len = bpf_xdp_get_buff_len(ctx);
+ 
+@@ -483,8 +489,7 @@ static int xdp_adjst_head_shrnk_data(struct xdp_md *ctx, __u64 hdr_len,
+ 		return -1;
+ 
+ 	udp_csum = bpf_csum_diff((__be32 *)tmp_buff, offset, 0, 0, udp_csum);
+-
+-	udph->check = (__u16)csum_fold_helper(udp_csum);
++	udph->check = (__u16)csum_fold_udp_helper(udp_csum);
+ 
+ 	if (bpf_xdp_load_bytes(ctx, 0, tmp_buff, MAX_ADJST_OFFSET) < 0)
+ 		return -1;
+@@ -541,7 +546,7 @@ static int xdp_adjst_head_grow_data(struct xdp_md *ctx, __u64 hdr_len,
+ 		return -1;
+ 
+ 	udp_csum = bpf_csum_diff(0, 0, (__be32 *)data_buff, offset, udp_csum);
+-	udph->check = (__u16)csum_fold_helper(udp_csum);
++	udph->check = (__u16)csum_fold_udp_helper(udp_csum);
+ 
+ 	if (hdr_len > MAX_ADJST_OFFSET || hdr_len == 0)
+ 		return -1;
 -- 
 2.53.0
 
