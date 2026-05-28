@@ -1,58 +1,59 @@
-Return-Path: <stable+bounces-256280-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-255871-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id KGC7L3yrGGpolwgAu9opvQ
-	(envelope-from <stable+bounces-256280-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:54:20 +0200
+	id IMgsGBinGGpolwgAu9opvQ
+	(envelope-from <stable+bounces-255871-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:35:36 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 21DD25F9D3A
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:54:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id BE5B75F90A5
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:35:35 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 66E2830F1956
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 20:47:38 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id DC24D328AA5E
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 20:28:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 081DB328B7B;
-	Thu, 28 May 2026 20:47:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 56569DDC5;
+	Thu, 28 May 2026 20:28:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="flwJcDP0"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="n3mXAU07"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DFF5F2F9D85;
-	Thu, 28 May 2026 20:47:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 39D171EA65;
+	Thu, 28 May 2026 20:28:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780001257; cv=none; b=DHxw51mgoy3vzRW5kLTuHgxa5a7dU5sc73LzqS5+qId5yCCIHXNBQyLlQxw+ZzWGZltRaUNkPD6aCwMovYUkfT8tsbOApEGGinVTS4neIfX62H9RV4KkeU5NyxhnwEUqiyN+IbTB2I73Sd61/CcwVjfRzs0FMLB3acIIgoB0rRs=
+	t=1780000111; cv=none; b=DiGXbBkpJ7OC7q9dVny7L5Ti4AGPyOjU5TXA5UU0mKgZaAHX7ycMCJogi7uC963JwywpOblrZ5NAGsMTVsOi4Nyh6O8i9YSWrMOUpANX03JDNdVZduvKCSo8M2FsG1smiiXLBDj4W7h0Tu2If5vEWsmrYedr5RDnPJQS/K6LMnY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780001257; c=relaxed/simple;
-	bh=w8bj23SSJXLlMajD/g6TqpdFSLKif4xJxPH3DRFbj1o=;
+	s=arc-20240116; t=1780000111; c=relaxed/simple;
+	bh=TG6mbm7SZIRnRLG8DEtuZDqWWGEwvkU1/ouQoHTd59o=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=O8ouBJbeUUKcdb0CvTyWO57zxwMzukM5aluruMYqwSQCluaoNASPfFwcfA2ZCSY3zbYdRokWFm3PMhzjFgPquMEF2AZ5PwJ/n+8E4POoJePienn4lhdv3NG61kmng7inNr4Cpp/iCPJSUHuhFrd1ldCghX1YQhjG6PSxdSV0G3w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=flwJcDP0; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 49E911F000E9;
-	Thu, 28 May 2026 20:47:36 +0000 (UTC)
+	 MIME-Version:Content-Type; b=LeQADL87JXZCslUPNRylpTQkFW+t0tmJt4runQPha9HTOg4bJkGutJFvcObAzjNBSI8+HS+QuZkN84I1tjIhBD2A0gwh/zbV4hbSHrgJ/owcQ1+CkUs3BJhUq7CveakHB1KVXPKe6hQTBSMwc+L7BzMazAuZ5Mr142bcIPspVtU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=n3mXAU07; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 987B81F000E9;
+	Thu, 28 May 2026 20:28:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780001256;
-	bh=rnlthpMlU797uSokMGtDgELRK25t+Ptz2r7R5G+klPw=;
+	s=korg; t=1780000110;
+	bh=sz+QpVytAl3Y8HUTOEtJONAk4C042OzcejtE1HxLqZY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=flwJcDP0hunHUKSGOjdhTlC3MVzT1So8nKsuWFDALWi5uqP/qwtfsgj1IP47d55Bc
-	 U33MysRiIEkdCR+ttxNCM/8i36B9/qaGLMdfvEldiFSvmyytXnwAeHQxc6+mYN4mVQ
-	 faI8D7kVmht5S3/0/aYPCydUkQYXa92JybWQE+QA=
+	b=n3mXAU07jqVpom5w8NlbcUtsSMfXs+8YQZ5IOTxqu1bCyaimV0HBwDd3NTjsUTd+f
+	 pNrQ6JO0g04bfEVsh1CWGKy8Hf6KVX/R9S8lzKHGOm5B9keXltZ+NjhSKXSELagLXy
+	 e2za2gVbIcRRF+YUQ8/oNvcDUK57ad6qTarZREeY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Johan Hovold <johan@kernel.org>,
-	Mark Brown <broonie@kernel.org>
-Subject: [PATCH 6.6 062/186] spi: qup: fix error pointer deref after DMA setup failure
-Date: Thu, 28 May 2026 21:49:02 +0200
-Message-ID: <20260528194930.639014723@linuxfoundation.org>
+	=?UTF-8?q?C=C3=A1ssio=20Gabriel?= <cassiogabrielcontato@gmail.com>,
+	Mark Brown <broonie@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.18 305/377] ASoC: amd: acp-sdw-legacy: check CPU DAI name before logging
+Date: Thu, 28 May 2026 21:49:03 +0200
+Message-ID: <20260528194647.194815547@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260528194928.941004471@linuxfoundation.org>
-References: <20260528194928.941004471@linuxfoundation.org>
+In-Reply-To: <20260528194638.371537336@linuxfoundation.org>
+References: <20260528194638.371537336@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,80 +63,81 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_MISSING_CHARSET(0.50)[];
 	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
+	TAGGED_FROM(0.00)[bounces-255871-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-256280-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,kernel.org];
 	TO_DN_SOME(0.00)[];
+	MIME_TRACE(0.00)[0:+];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[5];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
 	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sashiko.dev:url,msgid.link:url,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim]
-X-Rspamd-Queue-Id: 21DD25F9D3A
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	MID_RHS_MATCH_FROM(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_FIVE(0.00)[6];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,msgid.link:url,linuxfoundation.org:mid,linuxfoundation.org:dkim]
+X-Rspamd-Queue-Id: BE5B75F90A5
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Johan Hovold <johan@kernel.org>
+From: Cássio Gabriel <cassiogabrielcontato@gmail.com>
 
-commit a7e8f3efd50a165ba0189f6dc57f7e51a7d149db upstream.
+[ Upstream commit 1afd8f06dcb1d561af3b239c5b14a88b87c13454 ]
 
-The driver falls back to PIO mode if DMA setup fails during probe.
+devm_kasprintf() can fail and return NULL. The legacy AMD SoundWire
+machine driver logs cpus->dai_name before checking the allocation result.
 
-Make sure to the clear the DMA channel pointers on setup failure to
-avoid dereferencing an error pointer (or attempting to release a channel
-a second time) on later probe errors or driver unbind.
+Move the debug print after the NULL check, matching the ordering used by
+the SOF AMD SoundWire path after commit 5726b68473f7 ("ASoC: amd/sdw_utils:
+avoid NULL deref when devm_kasprintf() fails").
 
-This issue was flagged by Sashiko when reviewing a devres allocation
-conversion patch.
-
-Fixes: 612762e82ae6 ("spi: qup: Add DMA capabilities")
-Link: https://sashiko.dev/#/patchset/20260505072909.618363-1-johan%40kernel.org?part=4
-Cc: stable@vger.kernel.org	# 4.1
-Signed-off-by: Johan Hovold <johan@kernel.org>
-Link: https://patch.msgid.link/20260512074334.914735-1-johan@kernel.org
+Fixes: 2981d9b0789c ("ASoC: amd: acp: add soundwire machine driver for legacy stack")
+Signed-off-by: Cássio Gabriel <cassiogabrielcontato@gmail.com>
+Link: https://patch.msgid.link/20260511-asoc-amd-acp-sdw-legacy-dai-name-null-v1-1-dc6151b6da8a@gmail.com
 Signed-off-by: Mark Brown <broonie@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/spi/spi-qup.c |    3 +++
- 1 file changed, 3 insertions(+)
+ sound/soc/amd/acp/acp-sdw-legacy-mach.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/spi/spi-qup.c
-+++ b/drivers/spi/spi-qup.c
-@@ -967,8 +967,11 @@ static int spi_qup_init_dma(struct spi_c
+diff --git a/sound/soc/amd/acp/acp-sdw-legacy-mach.c b/sound/soc/amd/acp/acp-sdw-legacy-mach.c
+index 798c73d7e26de..e87d9e9991e1c 100644
+--- a/sound/soc/amd/acp/acp-sdw-legacy-mach.c
++++ b/sound/soc/amd/acp/acp-sdw-legacy-mach.c
+@@ -244,9 +244,9 @@ static int create_sdw_dailink(struct snd_soc_card *card,
+ 			cpus->dai_name = devm_kasprintf(dev, GFP_KERNEL,
+ 							"SDW%d Pin%d",
+ 							link_num, cpu_pin_id);
+-			dev_dbg(dev, "cpu->dai_name:%s\n", cpus->dai_name);
+ 			if (!cpus->dai_name)
+ 				return -ENOMEM;
++			dev_dbg(dev, "cpu->dai_name:%s\n", cpus->dai_name);
  
- err:
- 	dma_release_channel(host->dma_tx);
-+	host->dma_tx = NULL;
- err_tx:
- 	dma_release_channel(host->dma_rx);
-+	host->dma_rx = NULL;
-+
- 	return ret;
- }
- 
+ 			codec_maps[j].cpu = 0;
+ 			codec_maps[j].codec = j;
+-- 
+2.53.0
+
 
 
 
