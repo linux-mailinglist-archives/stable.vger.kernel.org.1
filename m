@@ -1,60 +1,59 @@
-Return-Path: <stable+bounces-255788-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-256048-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id EHIUBf+lGGrClggAu9opvQ
-	(envelope-from <stable+bounces-255788-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:30:55 +0200
+	id ELe3HIKqGGpolwgAu9opvQ
+	(envelope-from <stable+bounces-256048-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:50:10 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id AB4A95F8DC0
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:30:54 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id 82C915F9A4B
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:50:09 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 62C673129D0E
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 20:24:53 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 3837D30CB5A1
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 20:37:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E0E5034252B;
-	Thu, 28 May 2026 20:24:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0182033D4E2;
+	Thu, 28 May 2026 20:36:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="eRDnOuVf"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="05+H7Yfe"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B45463002A0;
-	Thu, 28 May 2026 20:24:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B70B61FC0EA;
+	Thu, 28 May 2026 20:36:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779999884; cv=none; b=W/4E6dAS02RyZrHz5V8Ai9KSggwkxeTueVdjD0ZLReUXC4sbsW0zBJsqZYMk4TFHskevY8+G5cb2hFHvycTYcaA6cc2nM3lB9AiLJV9npcacdnAsrtHvAVap5oQoss1pv6MKtTSS7WJJIHE4Z1WXeZojA8oaqs4g9U0/8WZtNlM=
+	t=1780000608; cv=none; b=WRZA/Q5hErkIe0RWjT+DCR7M3oA+8bJhykUHdmz+VfGEUUpE3HVC5WfcOILOkdA654Cb3PABQNFT5j0BbNYpt5au42Fw+0OCep7S5pVuVfyZxPGjEqDO6BwunsufRT1pNTEh5ugVtYmoxHM6tEUinDMkshSElb+5YYgiL9iHFus=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779999884; c=relaxed/simple;
-	bh=U7LkFHK4ZIFhOwjUbBfo8N9s7IFDMw9/x89meLC7rzQ=;
+	s=arc-20240116; t=1780000608; c=relaxed/simple;
+	bh=NUEnIOlL80sgwYutfhOJ2Vra+2cMQQiTpcRsUd7+P6k=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=PoZINzq26DddSATSiGcMJ46VeWMdn3YDbuT7B5kMhRY2VRpBsJr+oKrAUgJRf7pAt4MqDn87o3qVzFGf2oYRbx0ptv30CFdsPOtkfu1D1gd5L0jTCEdxIvZe8QrnPoU5BWYIK1ul1nWUqFScCswYtZLZ/NLiPyU3gtGswzVGsUQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=eRDnOuVf; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1EB911F000E9;
-	Thu, 28 May 2026 20:24:42 +0000 (UTC)
+	 MIME-Version; b=abFMsEQM+tC+pUO9qSavXojDkoFBCHiQp78/vpgK7chOCit2Cc9Iq4hi4fKhBTh+iTx9ujcN5nMo1i7o5rXxTE8pjWU0KhXEnZRcZxe+CWBjQZG+FGy84qld75r4NdR97WpOnEfVMRGkSwBV6vomIj6pLWRzpuB+nbJfa1eaRu0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=05+H7Yfe; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 20A7A1F000E9;
+	Thu, 28 May 2026 20:36:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779999883;
-	bh=nE+Ere9PkdNlsEbuMaemKEi72D1OGJBywalajqZzqTw=;
+	s=korg; t=1780000607;
+	bh=xPaTOWlEpOkbG3rkt4p6EqTgPwJbYu70Outl9Y1BrUk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=eRDnOuVfunrUnTcgOcOH/jA7EW6DKmctUJOf4Qfn1IDjzFZCE5+uMr737FULx2vO8
-	 fNA2n5/FMcIjxGeQKCKd+L2mbdRGXYgGduHKunPK4NoLgBGqzmW6gsbcDwkxozhSsi
-	 wUDn0vW0sUU8nd3ocunR4SkdWk+aYqbefpFZTnQA=
+	b=05+H7Yfex58sxas04+31yV3ciDjmObO4HsmqLRgSDjmViOOc5GAPcNn+wgb+RALzQ
+	 rZo9QBbW7+NhCLVx7/wa/LZNL52linqBcMCIUwaKG106pj2wyqCXjoLbQP+ULGX+vN
+	 vNQcBtAod9XEMlM7NbTQ2jlq67Sj5Uint2rfYdpU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Zhihao Cheng <chengzhihao1@huawei.com>,
-	Yang Erkun <yangerkun@huawei.com>,
-	Christian Brauner <brauner@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 224/377] nsfs: fix wrong error code returned for pidns ioctls
+	Herbert Xu <herbert@gondor.apana.org.au>,
+	Michael Bommarito <michael.bommarito@gmail.com>,
+	Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 6.12 088/272] ipv4: raw: reject IP_HDRINCL packets with ihl < 5
 Date: Thu, 28 May 2026 21:47:42 +0200
-Message-ID: <20260528194644.878758876@linuxfoundation.org>
+Message-ID: <20260528194631.842473004@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260528194638.371537336@linuxfoundation.org>
-References: <20260528194638.371537336@linuxfoundation.org>
+In-Reply-To: <20260528194629.379955525@linuxfoundation.org>
+References: <20260528194629.379955525@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,79 +64,124 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-255788-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TO_DN_SOME(0.00)[];
+	TAGGED_FROM(0.00)[bounces-256048-lists,stable=lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gondor.apana.org.au,gmail.com,kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[7];
-	MID_RHS_MATCH_FROM(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	NEURAL_HAM(-0.00)[-0.999];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,msgid.link:url,huawei.com:email,linuxfoundation.org:mid,linuxfoundation.org:dkim]
-X-Rspamd-Queue-Id: AB4A95F8DC0
+	MID_RHS_MATCH_FROM(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[6];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,apana.org.au:email]
+X-Rspamd-Queue-Id: 82C915F9A4B
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Zhihao Cheng <chengzhihao1@huawei.com>
+From: Michael Bommarito <michael.bommarito@gmail.com>
 
-[ Upstream commit 725ecd80688bf3c57ca9205431f2c06174ff0756 ]
+commit 915fab69823a14c170dbaa3b41978768e0fe62fc upstream.
 
-When executing NS_GET_PID_FROM_PIDNS (or similar pidns ioctls), if the
-target task cannot be found in the corresponding pid_ns, the error code
-should be ESRCH instead of ENOTTY.
+raw_send_hdrinc() validates that the caller-supplied IPv4 header
+fits within the message length:
 
-This bug was introduced when the extensible ioctl handling was added.
-Without proper return, ret would be overwritten by the default case in
-the extensible ioctl switch statement.
+    iphlen = iph->ihl * 4;
+    err = -EINVAL;
+    if (iphlen > length)
+        goto error_free;
 
-Fixes: a1d220d9dafa8 ("nsfs: iterate through mount namespaces")
-Signed-off-by: Zhihao Cheng <chengzhihao1@huawei.com>
-Link: https://patch.msgid.link/20260507112301.1042757-1-chengzhihao1@huawei.com
-Reviewed-by: Yang Erkun <yangerkun@huawei.com>
-Signed-off-by: Christian Brauner <brauner@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+    if (iphlen >= sizeof(*iph)) {
+        /* fix up saddr, tot_len, id, csum, transport_header */
+    }
+
+It does not, however, reject ihl < 5.  For such a packet the
+"if (iphlen >= sizeof(*iph))" branch is skipped, leaving the
+crafted iphdr untouched, but the packet is still handed to
+__ip_local_out() and onward.  Downstream consumers that read
+iph->ihl assume a sane value: net/ipv4/ah4.c:ah_output() in
+particular subtracts sizeof(struct iphdr) from top_iph->ihl * 4
+and passes the (signed-int-negative, then cast to size_t)
+result to memcpy(), producing an OOB access of length close to
+SIZE_MAX and a host kernel panic.
+
+An IPv4 header with ihl < 5 is malformed by definition (RFC 791:
+"Internet Header Length is the length of the internet header in
+32 bit words ... Note that the minimum value for a correct header
+is 5.").  The kernel should not be willing to inject such a
+packet into its own output path.
+
+Reject "iphlen < sizeof(*iph)" alongside the existing
+"iphlen > length" check.  This matches the principle that locally
+constructed packets that re-enter the IP stack must pass the same
+basic sanity tests that a foreign packet would be subjected to.
+
+Once this lands, the "if (iphlen >= sizeof(*iph))" wrapper around
+the fixup branch becomes redundant; left in place to keep the
+patch minimal and backport-friendly.  A follow-up can unwrap it.
+
+Note that commit 86f4c90a1c5c ("ipv4, ipv6: ensure raw socket
+message is big enough to hold an IP header") ensures the message
+buffer is large enough to hold an iphdr, but does not constrain
+the self-reported iph->ihl.
+
+Reachability: the malformed packet source is any caller with
+CAP_NET_RAW, including an unprivileged process in a user+net
+namespace on a kernel with CONFIG_USER_NS=y.  The reproduced AH
+crash also requires a matching xfrm AH policy on the outgoing
+route; a container granted CAP_NET_ADMIN can install that state
+and policy in its netns.  Loopback bypasses xfrm_output, so the
+trigger uses a real netdev.
+
+Reproduced on UML + KASAN: kernel-mode fault at addr 0x0 with
+memcpy_orig at the crash site.  Same shape reproduces inside a
+rootless Docker container with --cap-add NET_ADMIN on a stock
+distro kernel.
+
+Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
+Cc: stable@vger.kernel.org
+Suggested-by: Herbert Xu <herbert@gondor.apana.org.au>
+Signed-off-by: Michael Bommarito <michael.bommarito@gmail.com>
+Link: https://patch.msgid.link/77ec2b5e8111961c2c39883c92e8aa2709039c17.1778614451.git.michael.bommarito@gmail.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/nsfs.c | 2 +-
+ net/ipv4/raw.c |    2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/fs/nsfs.c b/fs/nsfs.c
-index f22c2a636e8f3..e2f9a725883c7 100644
---- a/fs/nsfs.c
-+++ b/fs/nsfs.c
-@@ -261,7 +261,7 @@ static long ns_ioctl(struct file *filp, unsigned int ioctl,
- 		else
- 			tsk = find_task_by_pid_ns(arg, pid_ns);
- 		if (!tsk)
--			break;
-+			return ret;
+--- a/net/ipv4/raw.c
++++ b/net/ipv4/raw.c
+@@ -390,7 +390,7 @@ static int raw_send_hdrinc(struct sock *
+ 	 * in, reject the frame as invalid
+ 	 */
+ 	err = -EINVAL;
+-	if (iphlen > length)
++	if (iphlen > length || iphlen < sizeof(*iph))
+ 		goto error_free;
  
- 		switch (ioctl) {
- 		case NS_GET_PID_FROM_PIDNS:
--- 
-2.53.0
-
+ 	if (iphlen >= sizeof(*iph)) {
 
 
 
