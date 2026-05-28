@@ -1,55 +1,60 @@
-Return-Path: <stable+bounces-255217-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-255178-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id IH7mAn2eGGpAlggAu9opvQ
-	(envelope-from <stable+bounces-255217-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 21:58:53 +0200
+	id QKwNLvCdGGpAlggAu9opvQ
+	(envelope-from <stable+bounces-255178-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 21:56:32 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id A573C5F7933
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 21:58:52 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id 661B35F77B9
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 21:56:32 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 4C58B302A7F8
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 19:58:11 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id A3F533013601
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 19:56:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5CB8C348C45;
-	Thu, 28 May 2026 19:58:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 78B7933120C;
+	Thu, 28 May 2026 19:56:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NHqop1mp"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JB9rUovx"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2FE463290B0;
-	Thu, 28 May 2026 19:58:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 49716330B2D;
+	Thu, 28 May 2026 19:56:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779998290; cv=none; b=jGD7Ra8XIpeV+eev8rwlPuKvzGt4eoX3EOmrT33exlTtjmMRO+iIcGHNpCnQZ1LOJ8RyyBgHVomsaKHYxIK+U2vPHLbtWgi5UQaT08gdf8ENBcONYa8CEIdRQlZE2UlnnOds1dslYbCeclbf9KOTWSvsP/deMikUZ1TUIybwuso=
+	t=1779998184; cv=none; b=pVgrIcP/zWLMYHRweqD7UX0FwY85gCcl82iW97WOdTovGVk7EZ6KHh6QGaOQ+cucrzYBDRZihLPXnWau1ijlCR8PiyHTE/JK+XRbHCzBS7rjiQmd050b/kS2yeUE+MVFHgXUcLjTFYA1ERSlNI8br9aFlhngfgmuSGyWKqxdY+M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779998290; c=relaxed/simple;
-	bh=R7qf7Bh/03aMMealRcLc2RGvYYvjQuuv2+MKO+FyuGc=;
+	s=arc-20240116; t=1779998184; c=relaxed/simple;
+	bh=AhgjTAiltEgaspXPlrcPw9U51M0bQKST8d7udR1qnmw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=JYjutEtR99GMd6WBrIpU3AuOxri1HvmFn88pWPPPAMEAtb2T8FKQmmt8nQsAc+IYhKmbzXVNPSUEO2NdjDXMjAnyGonXs1rLWQmUM4MqH3mEYW6/Fa5jZGvIqbNELQCSZPxgr3T3XSATE/z4Q18ZpH/Mj8XsKHaKtDcTOdJSxbk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NHqop1mp; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8CAAE1F000E9;
-	Thu, 28 May 2026 19:58:08 +0000 (UTC)
+	 MIME-Version; b=YtiVlWS5BxmryNM7XBCQdeFQHN9nsGm4WGf1EVIzIHUPMRZiHIPRZzOhj9DgYoYM9wZ4igK3Z0IUR/KGrfgg7A2k7T13NScgmx5wV3v8DAJQ2kuFIAbTuYXpMPQGsssuze/M9+BOaaJeeSJ7vDnBPZGhCOEuBGZ9eeUCwxX0s6I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JB9rUovx; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AFD141F000E9;
+	Thu, 28 May 2026 19:56:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779998289;
-	bh=MLfojNjalCnhV3CksdehAb2TjQUUbuOQ9dzRk0muMt8=;
+	s=korg; t=1779998183;
+	bh=/elto59Q/AbKXgzboFjhYRMTxMNfxbb5IbyJgdo+DpA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=NHqop1mp+ckPZnRaAfDWICF3k5M9GVmy/GKWeXMbHJUx+27kj9kd+GX4y+Nq3ft9S
-	 O0OvORPxDZzAsZmWuu24AHB7FFBXmUN9GLh5JQ2LVHipiKppfHPQRaVAxdme6+tNkE
-	 wBwJl5KH95gpqRF3IZFlkkmlNarzaVsRVJRh/ME4=
+	b=JB9rUovxFivmylF4PHAkzQUIivgZz+bvI7Evb1XuBas3I5Hf0XEY6jSn3QQWVgFqX
+	 SJgGATiO69mzf7y90knkgLVL3xyI1pgPbP2TrAR/rfo6ziXVK6st36xINNskemvlRj
+	 Nsul5Fdj51qqvLR4jaeiXBmRVAvJ7uCw9yBVWfYs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Stefano Garzarella <sgarzare@redhat.com>,
-	Paolo Abeni <pabeni@redhat.com>
-Subject: [PATCH 7.0 075/461] vsock/virtio: reset connection on receiving queue overflow
-Date: Thu, 28 May 2026 21:43:24 +0200
-Message-ID: <20260528194649.088656993@linuxfoundation.org>
+	Jose Ignacio Tornos Martinez <jtornosm@redhat.com>,
+	Jacob Keller <jacob.e.keller@intel.com>,
+	Michal Swiatkowski <michal.swiatkowski@linux.intel.com>,
+	Paul Menzel <pmenzel@molgen.mpg.de>,
+	Rafal Romanowski <rafal.romanowski@intel.com>,
+	Tony Nguyen <anthony.l.nguyen@intel.com>,
+	Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 7.0 076/461] ice: fix VF queue configuration with low MTU values
+Date: Thu, 28 May 2026 21:43:25 +0200
+Message-ID: <20260528194649.119088727@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
 In-Reply-To: <20260528194646.819809818@linuxfoundation.org>
 References: <20260528194646.819809818@linuxfoundation.org>
@@ -67,30 +72,30 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-255178-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-255217-lists,stable=lfdr.de];
-	TO_DN_SOME(0.00)[];
-	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[5];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,msgid.link:url,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim]
-X-Rspamd-Queue-Id: A573C5F7933
+	TO_DN_SOME(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_SEVEN(0.00)[10];
+	MID_RHS_MATCH_FROM(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,intel.com:email,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,msgid.link:url,mpg.de:email]
+X-Rspamd-Queue-Id: 661B35F77B9
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
@@ -98,86 +103,59 @@ X-Rspamd-Server: lfdr
 
 ------------------
 
-From: Stefano Garzarella <sgarzare@redhat.com>
+From: Jose Ignacio Tornos Martinez <jtornosm@redhat.com>
 
-commit a4f0b001782b21663d10df983b4b208195bec66c upstream.
+commit 3ba4dd024d26372733d1c02e13e076c6016e3320 upstream.
 
-When there is no more space to queue an incoming packet, the packet is
-silently dropped. This causes data loss without any notification to
-either peer, since there is no retransmission.
+The ice driver's VF queue configuration validation rejects
+databuffer_size values below 1024 bytes, which prevents VFs from
+using MTU values below 871 bytes.
 
-Under normal circumstances, this should never happen. However, it could
-happen if the other peer doesn't respect the credit, or if the skb
-overhead, which we recently began to take into account with commit
-059b7dbd20a6 ("vsock/virtio: fix potential unbounded skb queue"),
-is too high.
+The iavf driver calculates databuffer_size based on the MTU using:
+  databuffer_size = ALIGN(MTU + LIBETH_RX_LL_LEN, 128)
 
-Fix this by resetting the connection and setting the local socket error
-to ENOBUFS when virtio_transport_recv_enqueue() can no longer queue a
-packet, so both peers are explicitly notified of the failure rather than
-silently losing data.
+where LIBETH_RX_LL_LEN = 26 (ETH_HLEN + 2*VLAN_HLEN + ETH_FCS_LEN).
 
-Fixes: ae6fcfbf5f03 ("vsock/virtio: discard packets if credit is not respected")
-Cc: stable@vger.kernel.org
-Signed-off-by: Stefano Garzarella <sgarzare@redhat.com>
-Link: https://patch.msgid.link/20260518090656.134588-2-sgarzare@redhat.com
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+For MTU values below 871:
+  MTU 870: 870 + 26 = 896, aligned to 128 = 896 (< 1024, rejected)
+  MTU 871: 871 + 26 = 897, aligned to 128 = 1024 (>= 1024, accepted)
+
+The 1024-byte minimum seems unnecessarily restrictive, because the hardware
+supports databuffer_size as low as 128 bytes (the alignment boundary),
+which should allow MTU values down to the standard minimum of 68 bytes.
+
+I haven't found the reason why the limit was configured in the commit
+9c7dd7566d18 ("ice: add validation in OP_CONFIG_VSI_QUEUES VF message"), so
+with no more information and since it is working, change the minimum
+databuffer_size validation from 1024 to 128 bytes to allow standard low
+MTU values while still preventing invalid configurations.
+
+Fixes: 9c7dd7566d18 ("ice: add validation in OP_CONFIG_VSI_QUEUES VF message")
+cc: stable@vger.kernel.org
+Signed-off-by: Jose Ignacio Tornos Martinez <jtornosm@redhat.com>
+Reviewed-by: Jacob Keller <jacob.e.keller@intel.com>
+Reviewed-by: Michal Swiatkowski <michal.swiatkowski@linux.intel.com>
+Reviewed-by: Paul Menzel <pmenzel@molgen.mpg.de>
+Tested-by: Rafal Romanowski <rafal.romanowski@intel.com>
+Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
+Link: https://patch.msgid.link/20260515182419.1597859-3-anthony.l.nguyen@intel.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/vmw_vsock/virtio_transport_common.c |   20 +++++++++++++++-----
- 1 file changed, 15 insertions(+), 5 deletions(-)
+ drivers/net/ethernet/intel/ice/virt/queues.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/net/vmw_vsock/virtio_transport_common.c
-+++ b/net/vmw_vsock/virtio_transport_common.c
-@@ -1350,7 +1350,7 @@ destroy:
- 	return err;
- }
+--- a/drivers/net/ethernet/intel/ice/virt/queues.c
++++ b/drivers/net/ethernet/intel/ice/virt/queues.c
+@@ -840,7 +840,7 @@ int ice_vc_cfg_qs_msg(struct ice_vf *vf,
  
--static void
-+static bool
- virtio_transport_recv_enqueue(struct vsock_sock *vsk,
- 			      struct sk_buff *skb)
- {
-@@ -1365,10 +1365,8 @@ virtio_transport_recv_enqueue(struct vso
- 	spin_lock_bh(&vvs->rx_lock);
+ 			if (qpi->rxq.databuffer_size != 0 &&
+ 			    (qpi->rxq.databuffer_size > ((16 * 1024) - 128) ||
+-			     qpi->rxq.databuffer_size < 1024))
++			     qpi->rxq.databuffer_size < 128))
+ 				goto error_param;
  
- 	can_enqueue = virtio_transport_inc_rx_pkt(vvs, len);
--	if (!can_enqueue) {
--		free_pkt = true;
-+	if (!can_enqueue)
- 		goto out;
--	}
- 
- 	if (le32_to_cpu(hdr->flags) & VIRTIO_VSOCK_SEQ_EOM)
- 		vvs->msg_count++;
-@@ -1408,6 +1406,8 @@ out:
- 	spin_unlock_bh(&vvs->rx_lock);
- 	if (free_pkt)
- 		kfree_skb(skb);
-+
-+	return can_enqueue;
- }
- 
- static int
-@@ -1420,7 +1420,17 @@ virtio_transport_recv_connected(struct s
- 
- 	switch (le16_to_cpu(hdr->op)) {
- 	case VIRTIO_VSOCK_OP_RW:
--		virtio_transport_recv_enqueue(vsk, skb);
-+		if (!virtio_transport_recv_enqueue(vsk, skb)) {
-+			/* There is no more space to queue the packet, so let's
-+			 * close the connection; otherwise, we'll lose data.
-+			 */
-+			(void)virtio_transport_reset(vsk, skb);
-+			virtio_transport_do_close(vsk, true);
-+			sk->sk_err = ENOBUFS;
-+			sk_error_report(sk);
-+			vsock_remove_sock(vsk);
-+			break;
-+		}
- 		vsock_data_ready(sk);
- 		return err;
- 	case VIRTIO_VSOCK_OP_CREDIT_REQUEST:
+ 			ring->rx_buf_len = qpi->rxq.databuffer_size;
 
 
 
