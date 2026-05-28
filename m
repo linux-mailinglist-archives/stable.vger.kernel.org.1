@@ -1,60 +1,58 @@
-Return-Path: <stable+bounces-255847-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-256091-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id WJxAEb2mGGpolwgAu9opvQ
-	(envelope-from <stable+bounces-255847-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:34:05 +0200
+	id uNZeAx+rGGpolwgAu9opvQ
+	(envelope-from <stable+bounces-256091-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:52:47 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id DEB7D5F8FB2
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:34:04 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2ED935F9C2C
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:52:46 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id B6AE9304E647
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 20:27:27 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id C8EC6300E93A
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 20:38:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5F0DA254B1F;
-	Thu, 28 May 2026 20:27:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C679C2EF652;
+	Thu, 28 May 2026 20:38:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GfNniC0l"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mtxuG7Xq"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 273ACDDC5;
-	Thu, 28 May 2026 20:27:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A9B171DE4E0;
+	Thu, 28 May 2026 20:38:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780000047; cv=none; b=jurYED83iLxYNMVugmlcrWbzwgo4+dw6tqd0/s0ILnPJNXc6f+TNSMxeJR7rxctmgqvMTJy1RF3GpUYlTofp68EpTljNMB/4xQCKCd7QpDTZ7b+BRobZJ53qlxwvl2x+RrQZNQ9z+PJtExH7pbxZEqZfSEcEI4R9UEQLHMcWNsU=
+	t=1780000729; cv=none; b=EVY2c/MsxU3BIDrySGXNMmygRTiQ5bz5wMDWPmeMAf1y2h1mYrQbPOV7gynN1nhYsHxXtEkCAQfyxzMuOBN/djaSw4q8i0PokRzvDjQ9jahbe1/uYL/2/qsFfBEcHofkZ2KU75Pm7+fAGr8wxCj79d6UhSygw8IpRC3R94RFKMY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780000047; c=relaxed/simple;
-	bh=rRqZKv9Q7zzgOondW7B0s6CvmJ6Yo/mMdozEA1hPqII=;
+	s=arc-20240116; t=1780000729; c=relaxed/simple;
+	bh=rMa4zBDMgUOaKF99+6TkGMWpXTiU3MoZ/djo18MeXus=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=R9WrJvv/TUKEBCLBegvHOEzfRC+pm5QkTRxz1JuRJ8W3BcZOyl+FUA1jmnPx2t7wWb4dR6yCHRqBTouwcpMEFcl7Xc6DBXzGb2CE9Jg3f/QLCM05dLiZ+JbF+2LqIvmImq0IzTaRVMiLaX+rZzevrq8zms+mNYAwLdMfCKFikj8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GfNniC0l; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2DBC61F000E9;
-	Thu, 28 May 2026 20:27:25 +0000 (UTC)
+	 MIME-Version; b=keRvdiGvG7g28iwDiiX9gXML/5Fo+oRAYotgerMJ9b40fmsxW/wnu774wmpZNf87w3gPGK8LTgLKhesSfQRAs0u2FQxjrYiTPZUt8gVcFvNxQmwQycmS8HpgxIOC+xw3YHcJ4+UPCm1orNFeduY/8dy4zgp5Yo8SSZNz/SLtZPw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mtxuG7Xq; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 052771F000E9;
+	Thu, 28 May 2026 20:38:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780000045;
-	bh=TABISjAnavl4EgV8bjMrkX+tQGWIzyNJMB43iNc0KBs=;
+	s=korg; t=1780000728;
+	bh=j7id6sH68gOHeo7IxKyutd+A3i9e1ubRRgBf8mlUkQw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=GfNniC0lFTzKVk+TPfjgxshagQMpvspNuApV1kT+AQI20FcVk4WnFvDE5G9p+IJ2T
-	 rSFytmyjqIhbeqq4D0T6TsZAtS+Q9cUC+E7fj5OhNXHrcjO9NTld8vE+LwcSiySwXC
-	 LZmzl34DmQNmRbK1+zBAsJWzct3jA2KWA+vOE/Co=
+	b=mtxuG7Xq6iO3oia1x7SUGAJG2Qh/RWNj6c1+HIFtKTLqxZEPyq1kFU+jEdDiL43PR
+	 GVWdzFU2PxUPzR9vZtDWmaEcMWqeIHqzW6RB8c4HkkSW95k66eRDQfXnC3cfz5jR+7
+	 fbRXb90BVh5XaXCRG3cpkr1AHCBCby/yTMjhJ/ZE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sabrina Dubroca <sd@queasysnail.net>,
-	David Carlier <devnexen@gmail.com>,
-	Antonio Quartulli <antonio@openvpn.net>,
+	Sudeep Holla <sudeep.holla@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 284/377] ovpn: tcp - use cached peer pointer in ovpn_tcp_close()
+Subject: [PATCH 6.12 148/272] firmware: arm_ffa: Fix per-vcpu self notifications handling in workqueue
 Date: Thu, 28 May 2026 21:48:42 +0200
-Message-ID: <20260528194646.578279376@linuxfoundation.org>
+Message-ID: <20260528194633.516102012@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260528194638.371537336@linuxfoundation.org>
-References: <20260528194638.371537336@linuxfoundation.org>
+In-Reply-To: <20260528194629.379955525@linuxfoundation.org>
+References: <20260528194629.379955525@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,115 +67,73 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	URIBL_MULTI_FAIL(0.00)[queasysnail.net:server fail,tor.lore.kernel.org:server fail,linuxfoundation.org:server fail,openvpn.net:server fail];
-	TAGGED_FROM(0.00)[bounces-255847-lists,stable=lfdr.de];
-	PRECEDENCE_BULK(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
+	RCVD_TLS_LAST(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,queasysnail.net,gmail.com,openvpn.net,kernel.org];
 	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-256091-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	RCPT_COUNT_SEVEN(0.00)[7];
 	MID_RHS_MATCH_FROM(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	TO_DN_SOME(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[5];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[openvpn.net:email,queasysnail.net:email,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim]
-X-Rspamd-Queue-Id: DEB7D5F8FB2
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim]
+X-Rspamd-Queue-Id: 2ED935F9C2C
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: David Carlier <devnexen@gmail.com>
+From: Sudeep Holla <sudeep.holla@kernel.org>
 
-[ Upstream commit 775d8d7ad02aa345e1588424a6a8b9ae49fb9012 ]
+[ Upstream commit 9985d5357ed93af0d1933969c247e966957730e1 ]
 
-ovpn_tcp_close() loads the ovpn_socket via rcu_dereference_sk_user_data()
-under rcu_read_lock(), takes a reference on sock->peer, caches the peer
-pointer in a local, and drops the read lock. It then passes sock->peer
-(rather than the cached local) to ovpn_peer_del(), re-dereferencing the
-ovpn_socket after the RCU read section has ended.
+Per-vcpu notification handling already runs from a per-cpu work item on
+the target cpu. Routing that path back through smp_call_function_single()
+re-enters the call-function IPI path and executes the notification
+handler with interrupts disabled. That makes the framework path unsafe,
+since it takes a mutex, allocates memory with GFP_KERNEL, and invokes
+client callbacks.
 
-Unlike ovpn_tcp_sendmsg(), which uses the same "load under RCU, use
-after unlock" pattern but is protected by lock_sock() held across the
-function, ovpn_tcp_close() runs without the socket lock: inet_release()
-invokes sk_prot->close() without taking lock_sock first.
+Handle per-vcpu self notifications directly from the existing per-cpu
+work item instead. This keeps the per-vcpu path in task context and
+avoids the extra IPI hop entirely.
 
-ovpn_socket_release() can therefore complete its kref_put -> detach ->
-synchronize_rcu -> kfree(sock) sequence concurrently, in the window
-after ovpn_tcp_close() drops rcu_read_lock() but before it dereferences
-sock->peer. The synchronize_rcu() in ovpn_socket_release() protects
-readers that use the dereferenced pointer inside the RCU read section,
-not those that escape the pointer to a local and use it afterwards.
-
-A reproducer follows the pattern of commit 94560267d6c4 ("ovpn: tcp -
-don't deref NULL sk_socket member after tcp_close()"): trigger a peer
-removal (keepalive expiration or netlink OVPN_CMD_DEL_PEER) at the same
-moment userspace closes the TCP fd. That commit fixed the detach-side
-of the same race window; this one fixes the close-side at a different
-victim.
-
-Tighten the entry block to read sock->peer exactly once into the cached
-peer local, and route all subsequent uses (the hold check, the
-ovpn_peer_del() call, and the prot->close() invocation) through that
-local. sock->peer is only ever written once in ovpn_socket_new() under
-lock_sock(), before rcu_assign_sk_user_data() publishes the ovpn_socket,
-and is never reassigned afterwards - but the previous multi-read pattern
-made that invariant implicit rather than explicit. The same multi-read
-shape exists in ovpn_tcp_recvmsg(), ovpn_tcp_sendmsg(),
-ovpn_tcp_data_ready() and ovpn_tcp_write_space(); those will be cleaned
-up via a dedicated helper in a follow-up net-next series.
-
-Fixes: 11851cbd60ea ("ovpn: implement TCP transport")
-Reviewed-by: Sabrina Dubroca <sd@queasysnail.net>
-Assisted-by: Claude:claude-opus-4-7
-Signed-off-by: David Carlier <devnexen@gmail.com>
-Signed-off-by: Antonio Quartulli <antonio@openvpn.net>
+Fixes: 3a3e2b83e805 ("firmware: arm_ffa: Avoid queuing work when running on the worker queue")
+Link: https://patch.msgid.link/20260428-ffa_fixes-v2-4-8595ae450034@kernel.org
+Signed-off-by: Sudeep Holla <sudeep.holla@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ovpn/tcp.c | 9 +++++++--
- 1 file changed, 7 insertions(+), 2 deletions(-)
+ drivers/firmware/arm_ffa/driver.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/net/ovpn/tcp.c b/drivers/net/ovpn/tcp.c
-index 5499c1572f3e2..5f345ae7d59d2 100644
---- a/drivers/net/ovpn/tcp.c
-+++ b/drivers/net/ovpn/tcp.c
-@@ -581,14 +581,19 @@ static void ovpn_tcp_close(struct sock *sk, long timeout)
+diff --git a/drivers/firmware/arm_ffa/driver.c b/drivers/firmware/arm_ffa/driver.c
+index 61d4a4b7d97b6..39f19acdce904 100644
+--- a/drivers/firmware/arm_ffa/driver.c
++++ b/drivers/firmware/arm_ffa/driver.c
+@@ -1336,7 +1336,7 @@ static void notif_pcpu_irq_work_fn(struct work_struct *work)
+ 	struct ffa_drv_info *info = container_of(work, struct ffa_drv_info,
+ 						 notif_pcpu_work);
  
- 	rcu_read_lock();
- 	sock = rcu_dereference_sk_user_data(sk);
--	if (!sock || !sock->peer || !ovpn_peer_hold(sock->peer)) {
-+	if (!sock) {
- 		rcu_read_unlock();
- 		return;
- 	}
-+
- 	peer = sock->peer;
-+	if (!peer || !ovpn_peer_hold(peer)) {
-+		rcu_read_unlock();
-+		return;
-+	}
- 	rcu_read_unlock();
- 
--	ovpn_peer_del(sock->peer, OVPN_DEL_PEER_REASON_TRANSPORT_DISCONNECT);
-+	ovpn_peer_del(peer, OVPN_DEL_PEER_REASON_TRANSPORT_DISCONNECT);
- 	peer->tcp.sk_cb.prot->close(sk, timeout);
- 	ovpn_peer_put(peer);
+-	ffa_self_notif_handle(smp_processor_id(), true, info);
++	notif_get_and_handle(info);
  }
+ 
+ static const struct ffa_info_ops ffa_drv_info_ops = {
 -- 
 2.53.0
 
