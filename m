@@ -1,60 +1,60 @@
-Return-Path: <stable+bounces-255849-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-255529-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id +CkJAr2lGGoQlwgAu9opvQ
-	(envelope-from <stable+bounces-255849-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:29:49 +0200
+	id eJv2IjaiGGqblggAu9opvQ
+	(envelope-from <stable+bounces-255529-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:14:46 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id 067965F8D1D
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:29:47 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 396E65F8257
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:14:46 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id CDF95305600A
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 20:27:44 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 82C853076509
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 20:12:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D1AC633D6F0;
-	Thu, 28 May 2026 20:27:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 87ABE33CE8A;
+	Thu, 28 May 2026 20:12:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kDfrRKZf"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KI8WQI6X"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 90E7E32A3FF;
-	Thu, 28 May 2026 20:27:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 58EA5402B8F;
+	Thu, 28 May 2026 20:12:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780000052; cv=none; b=jIu4Et+ZwwAmTcr/cE8Km/jegngOkahyPiHj9ub5QfWUrGUJkW8lS8T+A37Bkqn9omTy/vPeUbkFVaQAGsSESdRnAJOpnGMZvh326e3ZQqsN16BfRKWRHn6cNaP/Vioqra9CVJWSz4BpFXMhi+Ngfx9yylTwunzccp6BM+qOBIU=
+	t=1779999167; cv=none; b=HRFzZb8t8pShmezJt5oPaGEQzkWKSWKl8CaotEUzI3jDo3VfU6LadXbR632LGvCF3ce6vw+hiSXaXWHBDBDCbH9RAlcz83+02quNBSc+vm9pc1geob8HnQ4xVLkytA1EURmDMEwU2q/LDhSMZxM5N6gX5iZgTdhmX2OMHe/tg44=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780000052; c=relaxed/simple;
-	bh=6oC/0yoCxSFpl0jG8K94hzwuW1u2xJf+7QCe9kWEkx4=;
+	s=arc-20240116; t=1779999167; c=relaxed/simple;
+	bh=2lRXF/Rgr4PuX+NsNnH9zJktH2bWVaauuzTEBv0ux3k=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=liP48h+rQThPyxmn01PK5yazIXaqsG/Kvucv2NHwkuV9sLgaUclDn+NKceKmxVrrOVeY+UQgaCFgu9pgv6RILnM9q+BtlDdUKlw/TLtujFJJw0l/lcP+PLB2mFW3O70qcyAsBtg8EpSKLmSB/jivXctGwUYmLZH4fSWU87ZkPIw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kDfrRKZf; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BB9291F00ADE;
-	Thu, 28 May 2026 20:27:30 +0000 (UTC)
+	 MIME-Version:Content-Type; b=VTvCMgOYrXQP0/Cm5bUnG8UmxbkiOmL2dG2FaPBx3NQJxwftwT6pru5uLBQB0UL2WvV0+WmkTwf/Wgy8Wtf/7vhy+N/zYiRBtD6rnoCEkd8WjuckgbygtTNdJl05kaidIroyHxG9p+50ldGJOL75b57coeLi8Zrf/DXXa0TbjDE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KI8WQI6X; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B6E4D1F000E9;
+	Thu, 28 May 2026 20:12:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780000051;
-	bh=vueji10p+Up9QLbNCYafMpKKO3EVdwfk9OF8yzuw13A=;
+	s=korg; t=1779999166;
+	bh=8AXHzSDIRT0ga5i0k8zgUC6RucoIUKt8hD33up1dLmU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=kDfrRKZfp9nAD1SwqIQx2WhBR1XzsNytOUq6MOFyOHJQcOhoQVDJ9PHJDAl0C/V1s
-	 L22GYMtsHgMwxY5GYytQMzfniYpSN4gipmUrjnlKfXkwvkJB1RXMBU/PinRbCfV2Xh
-	 4b22zmWSVyuYLhDKeRTXy83KRoMkauThQtCGDHqE=
+	b=KI8WQI6XWEyBDVTOgwkW2TXBBOZddq1RmoYeB/AznJvpHZYmR5as41gf8PV3NF73W
+	 sGnuBqoQNrEphzYpznYBVV3XvLQ9xKrXFEDRoMYiauQw9X+9v6Ebrfbf597tzRNIWO
+	 HtQUyOc+92/hubgAX3y0BqjPPKWU8/j3JMGH/Ml8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Hyunwoo Kim <imv4bel@gmail.com>,
-	Sabrina Dubroca <sd@queasysnail.net>,
-	Antonio Quartulli <antonio@openvpn.net>,
+	Werner Sembach <wse@tuxedocomputers.com>,
+	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
+	Armin Wolf <W_Armin@gmx.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 286/377] ovpn: fix race between deleting interface and adding new peer
+Subject: [PATCH 7.0 395/461] platform/x86: uniwill-laptop: Fix behavior of "force" module param
 Date: Thu, 28 May 2026 21:48:44 +0200
-Message-ID: <20260528194646.633525718@linuxfoundation.org>
+Message-ID: <20260528194658.902127143@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260528194638.371537336@linuxfoundation.org>
-References: <20260528194638.371537336@linuxfoundation.org>
+In-Reply-To: <20260528194646.819809818@linuxfoundation.org>
+References: <20260528194646.819809818@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,159 +64,89 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,queasysnail.net,openvpn.net,kernel.org];
-	TAGGED_FROM(0.00)[bounces-255849-lists,stable=lfdr.de];
-	PRECEDENCE_BULK(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,tuxedocomputers.com,linux.intel.com,gmx.de,kernel.org];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
 	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-255529-lists,stable=lfdr.de];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	RCVD_TLS_LAST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	TO_DN_SOME(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	MID_RHS_MATCH_FROM(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
 	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
-	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[openvpn.net:email,queasysnail.net:email,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim]
-X-Rspamd-Queue-Id: 067965F8D1D
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim,msgid.link:url,tuxedocomputers.com:email,gmx.de:email,intel.com:email]
+X-Rspamd-Queue-Id: 396E65F8257
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+7.0-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Antonio Quartulli <antonio@openvpn.net>
+From: Armin Wolf <W_Armin@gmx.de>
 
-[ Upstream commit 982422b11e6f95f766a8cd2c2b1cbdb77e234a61 ]
+[ Upstream commit fb4b67c44557cb4cbb15900083d4e1af22320339 ]
 
-While deleting an existing ovpn interface, there is a very
-narrow window where adding a new peer via netlink may cause
-the netdevice to hang and prevent its unregistration.
+Users might want to force-enable all possible features even on
+machines with a valid device descriptor. Until now the "force"
+module param was ignored on such machines. Fix this to make
+it easier to test for support of new features.
 
-It may happen during ovpn_dellink(), when all existing peers are
-freed and the device is queued for deregistration, but a
-CMD_PEER_NEW message comes in adding a new peer that takes again
-a reference to the netdev.
-
-At this point there is no way to release the device because we are
-under the assumption that all peers were already released.
-
-Fix the race condition by releasing all peers in ndo_uninit(),
-when the netdevice has already been removed from the netdev
-list.
-
-Also ovpn_peer_add() has now an extra check that forces the
-function to bail out if the device reg_state is not REGISTERED.
-This way any incoming CMD_PEER_NEW racing with the interface
-deletion routine will simply stop before adding the peer.
-
-Note that the above check happens while holding the netdev_lock
-to prevent racing netdev state changes.
-
-ovpn_dellink() is now empty and can be removed.
-
-Reported-by: Hyunwoo Kim <imv4bel@gmail.com>
-Closes: https://lore.kernel.org/netdev/aaVgJ16edTfQkYbx@v4bel/
-Suggested-by: Sabrina Dubroca <sd@queasysnail.net>
-Fixes: 80747caef33d ("ovpn: introduce the ovpn_peer object")
-Reviewed-by: Sabrina Dubroca <sd@queasysnail.net>
-Signed-off-by: Antonio Quartulli <antonio@openvpn.net>
+Fixes: d050479693bb ("platform/x86: Add Uniwill laptop driver")
+Reviewed-by: Werner Sembach <wse@tuxedocomputers.com>
+Reviewed-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+Signed-off-by: Armin Wolf <W_Armin@gmx.de>
+Link: https://patch.msgid.link/20260512232145.329260-4-W_Armin@gmx.de
+Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ovpn/main.c | 12 ++----------
- drivers/net/ovpn/peer.c | 21 ++++++++++++++++++---
- 2 files changed, 20 insertions(+), 13 deletions(-)
+ drivers/platform/x86/uniwill/uniwill-acpi.c | 8 ++++++--
+ 1 file changed, 6 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/net/ovpn/main.c b/drivers/net/ovpn/main.c
-index 1bb1afe766a41..3f76b1b0e5f60 100644
---- a/drivers/net/ovpn/main.c
-+++ b/drivers/net/ovpn/main.c
-@@ -92,6 +92,8 @@ static void ovpn_net_uninit(struct net_device *dev)
- {
- 	struct ovpn_priv *ovpn = netdev_priv(dev);
+diff --git a/drivers/platform/x86/uniwill/uniwill-acpi.c b/drivers/platform/x86/uniwill/uniwill-acpi.c
+index 07951e01b43db..540604c297715 100644
+--- a/drivers/platform/x86/uniwill/uniwill-acpi.c
++++ b/drivers/platform/x86/uniwill/uniwill-acpi.c
+@@ -2189,8 +2189,6 @@ static int __init uniwill_init(void)
+ 		if (!force)
+ 			return -ENODEV;
  
-+	disable_delayed_work_sync(&ovpn->keepalive_work);
-+	ovpn_peers_free(ovpn, NULL, OVPN_DEL_PEER_REASON_TEARDOWN);
- 	gro_cells_destroy(&ovpn->gro_cells);
- }
- 
-@@ -208,15 +210,6 @@ static int ovpn_newlink(struct net_device *dev,
- 	return register_netdevice(dev);
- }
- 
--static void ovpn_dellink(struct net_device *dev, struct list_head *head)
--{
--	struct ovpn_priv *ovpn = netdev_priv(dev);
--
--	cancel_delayed_work_sync(&ovpn->keepalive_work);
--	ovpn_peers_free(ovpn, NULL, OVPN_DEL_PEER_REASON_TEARDOWN);
--	unregister_netdevice_queue(dev, head);
--}
--
- static int ovpn_fill_info(struct sk_buff *skb, const struct net_device *dev)
- {
- 	struct ovpn_priv *ovpn = netdev_priv(dev);
-@@ -235,7 +228,6 @@ static struct rtnl_link_ops ovpn_link_ops = {
- 	.policy = ovpn_policy,
- 	.maxtype = IFLA_OVPN_MAX,
- 	.newlink = ovpn_newlink,
--	.dellink = ovpn_dellink,
- 	.fill_info = ovpn_fill_info,
- };
- 
-diff --git a/drivers/net/ovpn/peer.c b/drivers/net/ovpn/peer.c
-index a3d856724b84a..87a83321f1dd5 100644
---- a/drivers/net/ovpn/peer.c
-+++ b/drivers/net/ovpn/peer.c
-@@ -1029,14 +1029,29 @@ static int ovpn_peer_add_p2p(struct ovpn_priv *ovpn, struct ovpn_peer *peer)
-  */
- int ovpn_peer_add(struct ovpn_priv *ovpn, struct ovpn_peer *peer)
- {
-+	int ret = -ENODEV;
-+
-+	/* Prevent adding new peers while destroying the ovpn interface.
-+	 * Failing to do so would end up holding the device reference
-+	 * endlessly hostage of the new peer object with no chance of
-+	 * release..
-+	 */
-+	netdev_lock(ovpn->dev);
-+	if (ovpn->dev->reg_state != NETREG_REGISTERED)
-+		goto out;
-+
- 	switch (ovpn->mode) {
- 	case OVPN_MODE_MP:
--		return ovpn_peer_add_mp(ovpn, peer);
-+		ret = ovpn_peer_add_mp(ovpn, peer);
-+		break;
- 	case OVPN_MODE_P2P:
--		return ovpn_peer_add_p2p(ovpn, peer);
-+		ret = ovpn_peer_add_p2p(ovpn, peer);
-+		break;
+-		/* Assume that the device supports all features */
+-		device_descriptor.features = UINT_MAX;
+ 		pr_warn("Loading on a potentially unsupported device\n");
+ 	} else {
+ 		/*
+@@ -2208,6 +2206,12 @@ static int __init uniwill_init(void)
+ 		device_descriptor = *descriptor;
  	}
-+out:
-+	netdev_unlock(ovpn->dev);
  
--	return -EOPNOTSUPP;
-+	return ret;
- }
- 
- /**
++	if (force) {
++		/* Assume that the device supports all features */
++		device_descriptor.features = UINT_MAX;
++		pr_warn("Enabling potentially unsupported features\n");
++	}
++
+ 	ret = platform_driver_register(&uniwill_driver);
+ 	if (ret < 0)
+ 		return ret;
 -- 
 2.53.0
 
