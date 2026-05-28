@@ -1,63 +1,60 @@
-Return-Path: <stable+bounces-256020-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-255776-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id gL/lNPqnGGp+lwgAu9opvQ
-	(envelope-from <stable+bounces-256020-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:39:22 +0200
+	id +IIZKnGmGGrClggAu9opvQ
+	(envelope-from <stable+bounces-255776-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:32:49 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7BFA25F93CF
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:39:22 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 212FB5F8EB1
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:32:48 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 924F1307B5B4
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 20:35:31 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 2E391302AD06
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 20:24:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C99953368B5;
-	Thu, 28 May 2026 20:35:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id ED5CB35CB95;
+	Thu, 28 May 2026 20:24:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="A2uDD0hm"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OKnSPdG3"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 899A92E92BA;
-	Thu, 28 May 2026 20:35:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 61C0535E950;
+	Thu, 28 May 2026 20:24:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780000530; cv=none; b=RZllsBI/aIaNhasQ/xEY21cn+M8237ZsHrescKyUfOoxWc06f3ptIUI+iWz6zSAMYLGFioPcQKkVP8vFBLxPbUCsL9Q1HTz9QlxE2J1rFoH0gFQxCzLTOcYrShopT3D9L2jeHdmJt5PBw49lqjzmQ1Zcba71LJCB5eBlq2i0CIc=
+	t=1779999851; cv=none; b=pIPz9LXeXE9HiqFLdCfr3DsVsYt1mWbad/mVS4SbYfhMIlCMJE9UHS6gTYxQek6HsOtLK9vKInhFKA6wnBVfaBjGwJUrFW//gkNz0W3TCfV8VS7Xy3eZzYzNR+AMGrLyKW2geyP4KvOM8Uka+wi/7tYogCCCB0eTvSgKG+p5GGI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780000530; c=relaxed/simple;
-	bh=BC+TUa8BdMvceaocy+Y0/Xh5+t9d7g8GK4TGb9+DOKg=;
+	s=arc-20240116; t=1779999851; c=relaxed/simple;
+	bh=lwNu+QzENARMoTVOGbXAV9WS1CZ1PAwa1UkhhF6AyDU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=i6/kb5iDAAw2mqePdjETrUmwiy+cc4IskSCdV1teL2CJ2EUjYvINZKeYRJ2p3jKFB49jrrDRpMMGpWHKvwLg82BWSb40ogX9y82gB2bR1TfNOXZMR7PWJUB+D1L6zlSaGpYAUhwaWIuS2yZlOjyEl1gpCGyE6BsPz7Jv8A1DYvE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=A2uDD0hm; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F12D51F000E9;
-	Thu, 28 May 2026 20:35:28 +0000 (UTC)
+	 MIME-Version; b=irGSj7AET1BaobYianrCSIpEWKz7NSMYik/tV+dV9PTjeIrjYdl446hvcvqLCACUogOUhYFVHVRNCWapzjL8C5coWGT+p8bEsuXlXZOtaRjWY8O7O1KKktUaaHBZxBZP4KMWcuihyHV+jb7eAx5uOHKjxZaVf7YyZIlGsN8DE+Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OKnSPdG3; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 817631F00A3F;
+	Thu, 28 May 2026 20:24:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780000529;
-	bh=1y3MqMDtsLVrV/Vi7zISgcun5tceEnGsQOBaahJNkUY=;
+	s=korg; t=1779999850;
+	bh=p+fICQSzhUuQBHy6VP/QpNmQMrdQV7ddGAlJyr9DOOM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=A2uDD0hmHNclDjG9S4DEazhgr5J5go+2VelJ6qorMUYgF0/a7v4nz+5IRSxW0c1iM
-	 agFu83e5nrgaptPNG9bIxztbmrgCg3LWcLppZJG7L+5vZB1H9jrxleWl7V0g1m5E3r
-	 PJ994xMXgYNU+pjmphpsR3fvs4zjc168rslv0OyA=
+	b=OKnSPdG3Fbk0MvUg4wIsIUYEnrcgZkyQ1kKfkG4pgfdJWYDgRfiy1UoH1MbbVaiHT
+	 bsAegO/ejlQAUXld9gPolm98eecAQAr1FjsRMiaSgzNyZtCYvKHtszq3IyKqKVv2bD
+	 ZLZSGhBEaOxcUC7kbeIH7/z/Gv8P0gbvi0pDn/Do=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yizhou Zhao <zhaoyz24@mails.tsinghua.edu.cn>,
-	Yuxiang Yang <yangyx22@mails.tsinghua.edu.cn>,
-	Xuewei Feng <fengxw06@126.com>,
-	Qi Li <qli01@tsinghua.edu.cn>,
-	Ke Xu <xuke@tsinghua.edu.cn>,
-	Fernando Fernandez Mancera <fmancera@suse.de>,
-	Pablo Neira Ayuso <pablo@netfilter.org>
-Subject: [PATCH 6.12 076/272] netfilter: nft_inner: Fix IPv6 inner_thoff desync
-Date: Thu, 28 May 2026 21:47:30 +0200
-Message-ID: <20260528194631.503309543@linuxfoundation.org>
+	Ijae Kim <ae878000@gmail.com>,
+	Myeonghun Pak <mhun512@gmail.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.18 213/377] net: lan966x: avoid unregistering netdev on register failure
+Date: Thu, 28 May 2026 21:47:31 +0200
+Message-ID: <20260528194644.567234615@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260528194629.379955525@linuxfoundation.org>
-References: <20260528194629.379955525@linuxfoundation.org>
+In-Reply-To: <20260528194638.371537336@linuxfoundation.org>
+References: <20260528194638.371537336@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -67,88 +64,103 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-2.16 / 15.00];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,mails.tsinghua.edu.cn,126.com,tsinghua.edu.cn,suse.de,netfilter.org];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-256020-lists,stable=lfdr.de];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	RCVD_TLS_LAST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	TO_DN_SOME(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,kernel.org];
+	TAGGED_FROM(0.00)[bounces-255776-lists,stable=lfdr.de];
 	PRECEDENCE_BULK(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
 	MID_RHS_MATCH_FROM(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_SEVEN(0.00)[10];
+	NEURAL_HAM(-0.00)[-1.000];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[netfilter.org:email,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,suse.de:email,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim]
-X-Rspamd-Queue-Id: 7BFA25F93CF
+	TAGGED_RCPT(0.00)[stable];
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,msgid.link:url,linuxfoundation.org:mid,linuxfoundation.org:dkim]
+X-Rspamd-Queue-Id: 212FB5F8EB1
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yizhou Zhao <zhaoyz24@mails.tsinghua.edu.cn>
+From: Myeonghun Pak <mhun512@gmail.com>
 
-commit b6a91f68ebfed9c38e0e9150f58a9b85da07181c upstream.
+[ Upstream commit c4f3d6eb1fcf6cd9ce4644f604d5aad1ce594dfc ]
 
-In nft_inner_parse_l2l3(), when processing inner IPv6 packets,
-ipv6_find_hdr() correctly computes the transport header offset
-traversing all extension headers, but the result is immediately
-overwritten with nhoff + sizeof(_ip6h) (40 bytes), which only
-accounts for the IPv6 base header. This creates a desync between
-inner_thoff (wrong — points to extension header start) and l4proto
-(correct — e.g., IPPROTO_TCP), enabling transport header forgery
-and potential firewall bypass. This issue affects stable versions
-from Linux 6.2.
+lan966x_probe_port() stores the newly allocated net_device in the
+port before calling register_netdev(). If register_netdev() fails,
+the probe error path calls lan966x_cleanup_ports(), which sees
+port->dev and calls unregister_netdev() for a device that was never
+registered.
 
-For comparison, the normal (non-inner) IPv6 path correctly
-preserves ipv6_find_hdr()'s result. Removing the incorrect overwrite
-ensures that ipv6_find_hdr()'s calculated transport header offset is
-preserved, thereby fixing the desynchronization.
+Destroy the phylink instance created for this port and clear port->dev
+before returning the registration error. The common cleanup path now skips
+ports without port->dev before reaching the registered netdev cleanup, so
+it only handles ports that reached the registered-netdev lifetime.
 
-Fixes: 3a07327d10a0 ("netfilter: nft_inner: support for inner tunnel header matching")
-Cc: stable@vger.kernel.org
-Reported-by: Yizhou Zhao <zhaoyz24@mails.tsinghua.edu.cn>
-Reported-by: Yuxiang Yang <yangyx22@mails.tsinghua.edu.cn>
-Reported-by: Xuewei Feng <fengxw06@126.com>
-Reported-by: Qi Li <qli01@tsinghua.edu.cn>
-Reported-by: Ke Xu <xuke@tsinghua.edu.cn>
-Assisted-by: GLM:5.1 Z.ai
-Signed-off-by: Yizhou Zhao <zhaoyz24@mails.tsinghua.edu.cn>
-Reviewed-by: Fernando Fernandez Mancera <fmancera@suse.de>
-Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+This also avoids treating an uninitialized FDMA netdev and the failed port
+as a NULL == NULL match in the common cleanup path.
+
+Fixes: d28d6d2e37d1 ("net: lan966x: add port module support")
+Co-developed-by: Ijae Kim <ae878000@gmail.com>
+Signed-off-by: Ijae Kim <ae878000@gmail.com>
+Signed-off-by: Myeonghun Pak <mhun512@gmail.com>
+Link: https://patch.msgid.link/20260506124331.31945-1-mhun512@gmail.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/netfilter/nft_inner.c |    1 -
- 1 file changed, 1 deletion(-)
+ drivers/net/ethernet/microchip/lan966x/lan966x_main.c | 8 +++++---
+ 1 file changed, 5 insertions(+), 3 deletions(-)
 
---- a/net/netfilter/nft_inner.c
-+++ b/net/netfilter/nft_inner.c
-@@ -156,7 +156,6 @@ static int nft_inner_parse_l2l3(const st
- 			return -1;
+diff --git a/drivers/net/ethernet/microchip/lan966x/lan966x_main.c b/drivers/net/ethernet/microchip/lan966x/lan966x_main.c
+index 47752d3fde0b1..1179a6e127c52 100644
+--- a/drivers/net/ethernet/microchip/lan966x/lan966x_main.c
++++ b/drivers/net/ethernet/microchip/lan966x/lan966x_main.c
+@@ -749,11 +749,10 @@ static void lan966x_cleanup_ports(struct lan966x *lan966x)
  
- 		if (fragoff == 0) {
--			thoff = nhoff + sizeof(_ip6h);
- 			ctx->flags |= NFT_PAYLOAD_CTX_INNER_TH;
- 			ctx->inner_thoff = thoff;
- 			ctx->l4proto = l4proto;
+ 	for (p = 0; p < lan966x->num_phys_ports; p++) {
+ 		port = lan966x->ports[p];
+-		if (!port)
++		if (!port || !port->dev)
+ 			continue;
+ 
+-		if (port->dev)
+-			unregister_netdev(port->dev);
++		unregister_netdev(port->dev);
+ 
+ 		lan966x_xdp_port_deinit(port);
+ 		if (lan966x->fdma && lan966x->fdma_ndev == port->dev)
+@@ -873,6 +872,9 @@ static int lan966x_probe_port(struct lan966x *lan966x, u32 p,
+ 	err = register_netdev(dev);
+ 	if (err) {
+ 		dev_err(lan966x->dev, "register_netdev failed\n");
++		phylink_destroy(phylink);
++		port->phylink = NULL;
++		port->dev = NULL;
+ 		return err;
+ 	}
+ 
+-- 
+2.53.0
+
 
 
 
