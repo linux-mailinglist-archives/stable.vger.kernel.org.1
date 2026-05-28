@@ -1,59 +1,56 @@
-Return-Path: <stable+bounces-255291-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-255337-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id SAH6EUCgGGpAlggAu9opvQ
-	(envelope-from <stable+bounces-255291-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:06:24 +0200
+	id WDCGMtOfGGpvlggAu9opvQ
+	(envelope-from <stable+bounces-255337-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:04:35 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id A2A105F7D39
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:06:23 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id E2AF85F7C50
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:04:34 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id DE74330F4BA2
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 20:01:38 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id E92AE30207CB
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 20:03:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4021D338595;
-	Thu, 28 May 2026 20:01:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B25ED2F260C;
+	Thu, 28 May 2026 20:03:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CpLZ8f0V"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fMfTtkFt"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1A8F232ABC0;
-	Thu, 28 May 2026 20:01:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9325724677F;
+	Thu, 28 May 2026 20:03:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779998497; cv=none; b=p2ILo9yIZrXeVWDlxepO7MrcsIm3LlGTUkYEzJvyBC+6Fbvc4OSeAQbXS9PO/mY2m1fTCitDN6uZuGCqEnFtMtYk7LMTdyMEFv3U0TteigmMAdqj6FioBlRRw2KRlsU77xssKzQpR2lhg+daq7x11bkbEe121HXAGrtQOSeO0K8=
+	t=1779998627; cv=none; b=gdVBf70uiucCOg0fQxckxKAQG0m1VC1VUz813Fwbu5GGxXq0Y1Bd/6FsEmtdJpZ0fehCz2JAMlxpY2T8dMqyHeD7RPTCOfgzXK68lUhjig2/5eh5xy2uBiicyUr49PWTtiVziNnqLflFlT/FETBXLeNBABdGSq5NL+SIr3bzKPA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779998497; c=relaxed/simple;
-	bh=fGUQ3DvRaT1IWgAr72K47uFvjO5PpRV/doGwvBclYUI=;
+	s=arc-20240116; t=1779998627; c=relaxed/simple;
+	bh=99JC67z3cuglC5qmGIbK9lgF2meyhUmBxhCYoTMvuHk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=chdbXIPa/ekJsKwp52+sS/emN05DhYpkcLL0CNGrQC5RUasx0hAtVgJ9fGMoj5SVPhidfnX+mQJ1YTx8nddfMbkHSvYhdGQFosbkgNaeQ8ft3/z/H1q8HpCLN0Vgs0pHsJ8p8LKT4jAQWpRq7umecPFo6g+9aeRZkZ8Iekg9dRQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CpLZ8f0V; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7A5BE1F00A3E;
-	Thu, 28 May 2026 20:01:35 +0000 (UTC)
+	 MIME-Version; b=oci1D0l0blapFQqDS23ndcQLyxGq4yYEBv4IOnEuEvSpX1yqjWha/vi2OxIhdBbbd/kpuyZnBduagf5kUHe71M1DNbhO6zCK4TCmTPNqGwVxlpbpRP0lQVSakUIba0SBy75JXfxqzMcANpZw0xS+0kjcr983wzEplGWn52jT3EY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fMfTtkFt; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BA3761F00A3A;
+	Thu, 28 May 2026 20:03:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779998496;
-	bh=8/S+p04B0S6uuG/IaOcWI54HfK6Vxf0GacUBSKTQchA=;
+	s=korg; t=1779998626;
+	bh=UTc+GU2W+vm/NssqOD47R97PeMucewp94BUPiJ2263k=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=CpLZ8f0VfDvv3e05ugt7p1BrRFCijYBPI6vdwvNqGJY2E6tuJQe6idRhBMFA3zfgU
-	 mAJfeiqeryvHYf1kGDUNcYQposFVjM3h/dkt3tBqruDBGHz2StXyNxbMz5tTgABtLK
-	 hLTUX0/VzPOldt+XXkMAnGm8e4rDEsjvN8pm0r4c=
+	b=fMfTtkFt1KVIIhKd2ocY1QyYe0AXucH+HpHl/RwZeKC1lrzg0Qnl8WmqYcl2qNUX6
+	 vv/8rxcJY9NSE2pQQ+pALrFCCaywHxtqqWBkucgrrM3zRjh71w5tFUYTic3Wu6jtPR
+	 tjERRy8a80xmQTxUnou6V9k8c1Ltv8XDSue1Lst8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alexandre Ghiti <alexghiti@rivosinc.com>,
-	=?UTF-8?q?Bj=C3=B6rn=20T=C3=B6pel?= <bjorn@rivosinc.com>,
-	"Guo Ren (Alibaba DAMO Academy)" <guoren@kernel.org>,
-	Fangyu Yu <fangyu.yu@linux.alibaba.com>,
-	Paul Walmsley <pjw@kernel.org>,
+	David Gow <david@davidgow.net>,
+	Shuah Khan <skhan@linuxfoundation.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 7.0 193/461] riscv: mm: Fixup no5lvl failure when vaddr is invalid
-Date: Thu, 28 May 2026 21:45:22 +0200
-Message-ID: <20260528194652.667687018@linuxfoundation.org>
+Subject: [PATCH 7.0 194/461] kunit: config: Enable KUNIT_DEBUGFS by default
+Date: Thu, 28 May 2026 21:45:23 +0200
+Message-ID: <20260528194652.698714777@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
 In-Reply-To: <20260528194646.819809818@linuxfoundation.org>
 References: <20260528194646.819809818@linuxfoundation.org>
@@ -66,35 +63,35 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-2.16 / 15.00];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-255291-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	TO_DN_SOME(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	RCVD_TLS_LAST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-255337-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_SEVEN(0.00)[9];
+	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,msgid.link:url,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,alibaba.com:email,rivosinc.com:email]
-X-Rspamd-Queue-Id: A2A105F7D39
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo]
+X-Rspamd-Queue-Id: E2AF85F7C50
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
@@ -102,82 +99,40 @@ X-Rspamd-Server: lfdr
 
 ------------------
 
-From: Guo Ren (Alibaba DAMO Academy) <guoren@kernel.org>
+From: David Gow <david@davidgow.net>
 
-[ Upstream commit db909bd7986c10da074917af3dae83a60fa65093 ]
+[ Upstream commit 17e4c68ff35090d8cb743e3c82c09f92fda1ebda ]
 
-Unlike no4lvl, no5lvl still continues to detect satp, which
-requires va=pa mapping. When pa=0x800000000000, no5lvl
-would fail in Sv48 mode due to an illegal VA value of
-0x800000000000.
+The KUNIT_DEBUGFS option is currently enabled based on the value of
+KUNIT_ALL_TESTS, but it really doesn't have anything to do with the set of
+enabled tests, so just enable it by default anyway. In particular, this
+shouldn't be only visible if KUNIT_ALL_TESTS is set, which is quite
+confusing.
 
-So, prevent detecting the satp flow for no5lvl, when
-vaddr is invalid. Add the is_vaddr_valid() function for
-checking.
-
-Fixes: 26e7aacb83df ("riscv: Allow to downgrade paging mode from the command line")
-Cc: Alexandre Ghiti <alexghiti@rivosinc.com>
-Cc: Björn Töpel <bjorn@rivosinc.com>
-Signed-off-by: Guo Ren (Alibaba DAMO Academy) <guoren@kernel.org>
-Tested-by: Fangyu Yu <fangyu.yu@linux.alibaba.com>
-Link: https://patch.msgid.link/20260125055212.433163-1-guoren@kernel.org
-[pjw@kernel.org: cleaned up commit message]
-Signed-off-by: Paul Walmsley <pjw@kernel.org>
+Link: https://lore.kernel.org/r/20260425034155.53913-1-david@davidgow.net
+Fixes: beaed42c427d ("kunit: default KUNIT_* fragments to KUNIT_ALL_TESTS")
+Signed-off-by: David Gow <david@davidgow.net>
+Signed-off-by: Shuah Khan <skhan@linuxfoundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/riscv/mm/init.c | 25 +++++++++++++++++++++++++
- 1 file changed, 25 insertions(+)
+ lib/kunit/Kconfig | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/arch/riscv/mm/init.c b/arch/riscv/mm/init.c
-index 811e03786c560..1b221c3fe2750 100644
---- a/arch/riscv/mm/init.c
-+++ b/arch/riscv/mm/init.c
-@@ -846,6 +846,27 @@ static void __init set_mmap_rnd_bits_max(void)
- 	mmap_rnd_bits_max = MMAP_VA_BITS - PAGE_SHIFT - 3;
- }
+diff --git a/lib/kunit/Kconfig b/lib/kunit/Kconfig
+index 498cc51e493dc..f80ca3aeedb05 100644
+--- a/lib/kunit/Kconfig
++++ b/lib/kunit/Kconfig
+@@ -16,8 +16,8 @@ menuconfig KUNIT
+ if KUNIT
  
-+static bool __init is_vaddr_valid(unsigned long va)
-+{
-+	unsigned long up = 0;
-+
-+	switch (satp_mode) {
-+	case SATP_MODE_39:
-+		up = 1UL << 38;
-+		break;
-+	case SATP_MODE_48:
-+		up = 1UL << 47;
-+		break;
-+	case SATP_MODE_57:
-+		up = 1UL << 56;
-+		break;
-+	default:
-+		return false;
-+	}
-+
-+	return (va < up) || (va >= (ULONG_MAX - up + 1));
-+}
-+
- /*
-  * There is a simple way to determine if 4-level is supported by the
-  * underlying hardware: establish 1:1 mapping in 4-level page table mode
-@@ -887,6 +908,9 @@ static __init void set_satp_mode(uintptr_t dtb_pa)
- 			   set_satp_mode_pmd + PMD_SIZE,
- 			   PMD_SIZE, PAGE_KERNEL_EXEC);
- retry:
-+	if (!is_vaddr_valid(set_satp_mode_pmd))
-+		goto out;
-+
- 	create_pgd_mapping(early_pg_dir,
- 			   set_satp_mode_pmd,
- 			   pgtable_l5_enabled ?
-@@ -909,6 +933,7 @@ static __init void set_satp_mode(uintptr_t dtb_pa)
- 		disable_pgtable_l4();
- 	}
- 
-+out:
- 	memset(early_pg_dir, 0, PAGE_SIZE);
- 	memset(early_p4d, 0, PAGE_SIZE);
- 	memset(early_pud, 0, PAGE_SIZE);
+ config KUNIT_DEBUGFS
+-	bool "KUnit - Enable /sys/kernel/debug/kunit debugfs representation" if !KUNIT_ALL_TESTS
+-	default KUNIT_ALL_TESTS
++	bool "KUnit - Enable /sys/kernel/debug/kunit debugfs representation"
++	default y
+ 	help
+ 	  Enable debugfs representation for kunit.  Currently this consists
+ 	  of /sys/kernel/debug/kunit/<test_suite>/results files for each
 -- 
 2.53.0
 
