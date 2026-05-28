@@ -1,61 +1,60 @@
-Return-Path: <stable+bounces-255428-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-255786-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id YHxpN+OiGGrKlggAu9opvQ
-	(envelope-from <stable+bounces-255428-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:17:39 +0200
+	id YDamE/mlGGrClggAu9opvQ
+	(envelope-from <stable+bounces-255786-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:30:49 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 788AE5F84C4
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:17:39 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id C1B9A5F8DB2
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:30:48 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id DFF2231CBC08
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 20:08:02 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 7F2B831286ED
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 20:24:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B4C562F260C;
-	Thu, 28 May 2026 20:08:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 67B04317163;
+	Thu, 28 May 2026 20:24:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zGQCURXu"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FI2EfCNB"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7BC0E3290B0;
-	Thu, 28 May 2026 20:08:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2F62333C51D;
+	Thu, 28 May 2026 20:24:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779998882; cv=none; b=gotukP1s2It/BfkYCldLTpO/ezmhL4Get70Abt4GhvGrkCqJsH+C3J/zKHPBqYgkxMrYyWbE7gNAu7Q33fZ2Tri4WTCVZri1VMdYAdb1OFOHVEx7mhxY1dw7r1eDbP+TSfICES42hi3A7zbZkL5Zn8b7AgXvdusoASyQAle6qI0=
+	t=1779999879; cv=none; b=tZYqZQ7QUgM+DlM2wUq8tZlwZNWca8xthyjNtIeM/rEkoLGOLmA0S4cekvVDyMEZl2lMvgzv2/Mv3ZGNh8/h7bcuQQzo5MPWcOdQfzY43Uan+o9Va20d1TI22OvgdKKvesqwwMgAsl+VIhwIqPGqPEiaVGCkaIqyglmJovWzTD0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779998882; c=relaxed/simple;
-	bh=YS8uCvQeZX1lKnWcT+krphTwpqmfsgS+xrqU9JiHwAU=;
+	s=arc-20240116; t=1779999879; c=relaxed/simple;
+	bh=517p9j9WozpB3EC+5Q2CUE7pePp9qe6OJ/kTdJCI3J8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=EtEv0YZ19pbWJ4n5nCVUcNTMqr2HGAW7iU44q1zYKr1FPzf8lb6gmpebKKuw/4yHY2yAX2zDJ+Z5n9cL14dl/oyeixBUj0c5+HHnS3Infy9ngtszFs9CTpoKoWkXoE4pgfbpb7a669/bl/ePNrrFWJwxqX0o+Qp5F13Iv5WyroQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zGQCURXu; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B29581F00A3E;
-	Thu, 28 May 2026 20:08:00 +0000 (UTC)
+	 MIME-Version; b=NTErr/ww9C2J1/dg4sbW0FAlL1genXTXStDhKA52wokyi5k19sHgbN1acXTzfqfVcIJrRkCmfLz8Sq1oVIRZqpxEwyeXhgAqOSId2xvqj+ifw1uWk9byIKKSwo7NzRndDC97VCtd5W5RpU4hiFEei/mw5h3ElGzx2rq+UAKb5BE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FI2EfCNB; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 84A491F000E9;
+	Thu, 28 May 2026 20:24:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779998881;
-	bh=cZwGYDvTilNYtpI9A0OhNu3X7TolSak3KZJmnoVsK6k=;
+	s=korg; t=1779999878;
+	bh=k+jhgIHdRMmSFg3yDmRW8SVYNNm7JHSnqFRGCFHSzWg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=zGQCURXumcFgnGFRD8mByduRJEhblX9zmFpPE6srSxrRdrlP/NRahxrOd74/LqhkH
-	 3N0lOLmg0B0YLbFgVipr1zCDc4SMD9AbH+Ywd1N8as6cOT6SCASpKIJ5GhGFuf5C2z
-	 HolI0hscmrUZOBjUzBIcWxsXSynibcLW972Pdce8=
+	b=FI2EfCNBwkbvToCvkolgGkiKMnHHvQaMukh1s3E/PwGdgDNQpurTtN19f97aOU903
+	 CIBxGChnRYeuHRPlX10S6cjtf8bZj4P3A8Zu+mWm7iCdsAP2bZ4nhuLoJorCzRDPEp
+	 xubfygcjYnUcY5liMAXEQMSaECvkzcMZioXxA2tE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Or Har-Toov <ohartoov@nvidia.com>,
-	Mark Bloch <mbloch@nvidia.com>,
-	Tariq Toukan <tariqt@nvidia.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	kernel test robot <lkp@intel.com>,
+	Rosen Penev <rosenp@gmail.com>,
+	Thomas Gleixner <tglx@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 7.0 331/461] net/mlx5: Skip disabled vports when setting max TX speed
+Subject: [PATCH 6.18 222/377] irqchip/ath79-cpu: Remove unused function
 Date: Thu, 28 May 2026 21:47:40 +0200
-Message-ID: <20260528194656.928491889@linuxfoundation.org>
+Message-ID: <20260528194644.821374203@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260528194646.819809818@linuxfoundation.org>
-References: <20260528194646.819809818@linuxfoundation.org>
+In-Reply-To: <20260528194638.371537336@linuxfoundation.org>
+References: <20260528194638.371537336@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -70,129 +69,76 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	RCVD_TLS_LAST(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,intel.com,gmail.com,kernel.org];
+	TAGGED_FROM(0.00)[bounces-255786-lists,stable=lfdr.de];
+	PRECEDENCE_BULK(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FROM_HAS_DN(0.00)[];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-255428-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TO_DN_SOME(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[8];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[7];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,linuxfoundation.org:mid,linuxfoundation.org:dkim,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,nvidia.com:email]
-X-Rspamd-Queue-Id: 788AE5F84C4
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,msgid.link:url,intel.com:email,linuxfoundation.org:mid,linuxfoundation.org:dkim]
+X-Rspamd-Queue-Id: C1B9A5F8DB2
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-7.0-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Or Har-Toov <ohartoov@nvidia.com>
+From: Rosen Penev <rosenp@gmail.com>
 
-[ Upstream commit c6df9a65cbb0fe7808a4b2872095f4c849b3196a ]
+[ Upstream commit 0fa10fb77069fb67aa51384868ef3702b7791465 ]
 
-When setting vports max TX speed during LAG activation or bond state
-changes, the code iterates over all eswitch vports. However, some
-vports may not be enabled yet.
+ath79_cpu_irq_init() was part of the legacy pre-OF code that got removed a
+while back.
 
-Skip vports that are not enabled to avoid sending FW commands for
-uninitialized vports. Save the LAG aggregated speed in the vport
-struct so it can be applied when the vport is enabled later.
+Remove it to get rid of a missing prototype warning, reported by the kernel test
+robot.
 
-Fixes: 50f1d188c580 ("net/mlx5: Propagate LAG effective max_tx_speed to vports")
-Signed-off-by: Or Har-Toov <ohartoov@nvidia.com>
-Reviewed-by: Mark Bloch <mbloch@nvidia.com>
-Signed-off-by: Tariq Toukan <tariqt@nvidia.com>
-Link: https://patch.msgid.link/20260513063640.334132-1-tariqt@nvidia.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+[ tglx: Fix the subject prefix. Sigh ... ]
+
+Fixes: 51fa4f8912c0 ("MIPS: ath79: drop legacy IRQ code")
+Reported-by: kernel test robot <lkp@intel.com>
+Signed-off-by: Rosen Penev <rosenp@gmail.com>
+Signed-off-by: Thomas Gleixner <tglx@kernel.org>
+Link: https://patch.msgid.link/20260506085522.1210143-1-rosenp@gmail.com
+Closes: https://lore.kernel.org/oe-kbuild-all/202412011509.kGQkDr1y-lkp@intel.com/
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- .../net/ethernet/mellanox/mlx5/core/eswitch.c | 21 +++++++++++++++++++
- .../net/ethernet/mellanox/mlx5/core/eswitch.h |  1 +
- .../net/ethernet/mellanox/mlx5/core/lag/lag.c |  5 +++++
- 3 files changed, 27 insertions(+)
+ drivers/irqchip/irq-ath79-cpu.c | 7 -------
+ 1 file changed, 7 deletions(-)
 
-diff --git a/drivers/net/ethernet/mellanox/mlx5/core/eswitch.c b/drivers/net/ethernet/mellanox/mlx5/core/eswitch.c
-index 123c96716a544..7c8311f412323 100644
---- a/drivers/net/ethernet/mellanox/mlx5/core/eswitch.c
-+++ b/drivers/net/ethernet/mellanox/mlx5/core/eswitch.c
-@@ -908,6 +908,24 @@ static void esw_vport_cleanup(struct mlx5_eswitch *esw, struct mlx5_vport *vport
- 	esw_vport_cleanup_acl(esw, vport);
+diff --git a/drivers/irqchip/irq-ath79-cpu.c b/drivers/irqchip/irq-ath79-cpu.c
+index 923e4bba37767..9b7273a7f8ced 100644
+--- a/drivers/irqchip/irq-ath79-cpu.c
++++ b/drivers/irqchip/irq-ath79-cpu.c
+@@ -85,10 +85,3 @@ static int __init ar79_cpu_intc_of_init(
  }
- 
-+static void mlx5_esw_vport_set_max_tx_speed(struct mlx5_eswitch *esw,
-+					    struct mlx5_vport *vport)
-+{
-+	int ret;
-+
-+	if (!MLX5_CAP_ESW(esw->dev, esw_vport_state_max_tx_speed))
-+		return;
-+
-+	ret = mlx5_modify_vport_max_tx_speed(esw->dev,
-+					     MLX5_VPORT_STATE_OP_MOD_ESW_VPORT,
-+					     vport->vport, true,
-+					     vport->agg_max_tx_speed);
-+	if (ret)
-+		mlx5_core_dbg(esw->dev,
-+			      "Failed to set vport %d speed %d, err=%d\n",
-+			      vport->vport, vport->agg_max_tx_speed, ret);
-+}
-+
- int mlx5_esw_vport_enable(struct mlx5_eswitch *esw, struct mlx5_vport *vport,
- 			  enum mlx5_eswitch_vport_event enabled_events)
- {
-@@ -948,6 +966,9 @@ int mlx5_esw_vport_enable(struct mlx5_eswitch *esw, struct mlx5_vport *vport,
- 
- 	esw->enabled_vports++;
- 	esw_debug(esw->dev, "Enabled VPORT(%d)\n", vport_num);
-+
-+	if (vport->agg_max_tx_speed)
-+		mlx5_esw_vport_set_max_tx_speed(esw, vport);
- done:
- 	mutex_unlock(&esw->state_lock);
- 	return ret;
-diff --git a/drivers/net/ethernet/mellanox/mlx5/core/eswitch.h b/drivers/net/ethernet/mellanox/mlx5/core/eswitch.h
-index c2563bee74dfe..29cce1bbce941 100644
---- a/drivers/net/ethernet/mellanox/mlx5/core/eswitch.h
-+++ b/drivers/net/ethernet/mellanox/mlx5/core/eswitch.h
-@@ -247,6 +247,7 @@ struct mlx5_vport {
- 	enum mlx5_eswitch_vport_event enabled_events;
- 	int index;
- 	struct mlx5_devlink_port *dl_port;
-+	u32 agg_max_tx_speed;
- };
- 
- struct mlx5_esw_indir_table;
-diff --git a/drivers/net/ethernet/mellanox/mlx5/core/lag/lag.c b/drivers/net/ethernet/mellanox/mlx5/core/lag/lag.c
-index 044adfdf9aa26..82e884e70168c 100644
---- a/drivers/net/ethernet/mellanox/mlx5/core/lag/lag.c
-+++ b/drivers/net/ethernet/mellanox/mlx5/core/lag/lag.c
-@@ -1074,6 +1074,11 @@ static void mlx5_lag_modify_device_vports_speed(struct mlx5_core_dev *mdev,
- 		if (vport->vport == MLX5_VPORT_UPLINK)
- 			continue;
- 
-+		vport->agg_max_tx_speed = speed;
-+
-+		if (!vport->enabled)
-+			continue;
-+
- 		ret = mlx5_modify_vport_max_tx_speed(mdev, op_mod,
- 						     vport->vport, true, speed);
- 		if (ret)
+ IRQCHIP_DECLARE(ar79_cpu_intc, "qca,ar7100-cpu-intc",
+ 		ar79_cpu_intc_of_init);
+-
+-void __init ath79_cpu_irq_init(unsigned irq_wb_chan2, unsigned irq_wb_chan3)
+-{
+-	irq_wb_chan[2] = irq_wb_chan2;
+-	irq_wb_chan[3] = irq_wb_chan3;
+-	mips_cpu_irq_init();
+-}
 -- 
 2.53.0
 
