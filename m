@@ -1,59 +1,58 @@
-Return-Path: <stable+bounces-255426-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-255428-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 6B6fBN+iGGrJlggAu9opvQ
-	(envelope-from <stable+bounces-255426-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:17:35 +0200
+	id YHxpN+OiGGrKlggAu9opvQ
+	(envelope-from <stable+bounces-255428-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:17:39 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 81A665F84AC
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:17:34 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 788AE5F84C4
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:17:39 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id B0B3C31C85B3
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 20:07:58 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id DFF2231CBC08
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 20:08:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E1440318EE1;
-	Thu, 28 May 2026 20:07:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B4C562F260C;
+	Thu, 28 May 2026 20:08:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="U5C4f357"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zGQCURXu"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B481E339866;
-	Thu, 28 May 2026 20:07:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7BC0E3290B0;
+	Thu, 28 May 2026 20:08:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779998876; cv=none; b=Jqmmc/8AWWOVebpsw1nCLizlkuBb4OLFo3NBecMAN6GcVPbEvEYZYBUdOu3m+IpR1PbZS0y4cy0DVsZIGmJjeubSCtgZ5k9P0unik2t1BdKLzfGjaTkYrIeJwpZ31E6jd+mV8cmFeUgMGQGRvvDNo/g4n1QwtsBQGVb24LY4P6M=
+	t=1779998882; cv=none; b=gotukP1s2It/BfkYCldLTpO/ezmhL4Get70Abt4GhvGrkCqJsH+C3J/zKHPBqYgkxMrYyWbE7gNAu7Q33fZ2Tri4WTCVZri1VMdYAdb1OFOHVEx7mhxY1dw7r1eDbP+TSfICES42hi3A7zbZkL5Zn8b7AgXvdusoASyQAle6qI0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779998876; c=relaxed/simple;
-	bh=oIXaZEjqmXXBxWwVCT76ET8jE/AtxMqtQgghpwtCouc=;
+	s=arc-20240116; t=1779998882; c=relaxed/simple;
+	bh=YS8uCvQeZX1lKnWcT+krphTwpqmfsgS+xrqU9JiHwAU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=C6iH3krGWtsDYxqTzhn65h4AvqzL9A+hqHOSdJjxaCPe/wdDmj5PbYmGTuOOD94qngej/AgunnBJHXsxEAoSuCDdNWqRSBasR7/RQPIJIUN3lRne6T7IYFWB/iQ5VI+AH2gTqBPm+Dp0ji1Iow+lQ0ibFEkBeCg1KKGHDgBK9lo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=U5C4f357; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 256201F000E9;
-	Thu, 28 May 2026 20:07:54 +0000 (UTC)
+	 MIME-Version; b=EtEv0YZ19pbWJ4n5nCVUcNTMqr2HGAW7iU44q1zYKr1FPzf8lb6gmpebKKuw/4yHY2yAX2zDJ+Z5n9cL14dl/oyeixBUj0c5+HHnS3Infy9ngtszFs9CTpoKoWkXoE4pgfbpb7a669/bl/ePNrrFWJwxqX0o+Qp5F13Iv5WyroQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zGQCURXu; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B29581F00A3E;
+	Thu, 28 May 2026 20:08:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779998875;
-	bh=IoCjViE5gnCWw8VyZGrQIFfvUf6R2Ycw6lJVQqju7gw=;
+	s=korg; t=1779998881;
+	bh=cZwGYDvTilNYtpI9A0OhNu3X7TolSak3KZJmnoVsK6k=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=U5C4f357eboez/PgvH8cFl11ZJ9qbDCQaQ6DmWOROzBMr9jIhlyYL3JBG1Z4VjjW+
-	 +8IoCNXMY3O7U9NrWftd8XkWaAgQKAO08LyWJwy2NVnb7Mu0c0XnXP4kxgmNxPk4r3
-	 AXSLqcMfCVTct2BO5TtRGHAxEFKWjmVLcj1mVSkQ=
+	b=zGQCURXumcFgnGFRD8mByduRJEhblX9zmFpPE6srSxrRdrlP/NRahxrOd74/LqhkH
+	 3N0lOLmg0B0YLbFgVipr1zCDc4SMD9AbH+Ywd1N8as6cOT6SCASpKIJ5GhGFuf5C2z
+	 HolI0hscmrUZOBjUzBIcWxsXSynibcLW972Pdce8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jeroen Massar <jmassar@nvidia.com>,
-	Jianbo Liu <jianbol@nvidia.com>,
-	Cosmin Ratiu <cratiu@nvidia.com>,
+	Or Har-Toov <ohartoov@nvidia.com>,
+	Mark Bloch <mbloch@nvidia.com>,
 	Tariq Toukan <tariqt@nvidia.com>,
 	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 7.0 330/461] net/mlx5: Do not restore destination-less TC rules
-Date: Thu, 28 May 2026 21:47:39 +0200
-Message-ID: <20260528194656.900249540@linuxfoundation.org>
+Subject: [PATCH 7.0 331/461] net/mlx5: Skip disabled vports when setting max TX speed
+Date: Thu, 28 May 2026 21:47:40 +0200
+Message-ID: <20260528194656.928491889@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
 In-Reply-To: <20260528194646.819809818@linuxfoundation.org>
 References: <20260528194646.819809818@linuxfoundation.org>
@@ -79,7 +78,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-255426-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-255428-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
@@ -90,11 +89,11 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	FROM_HAS_DN(0.00)[];
 	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[9];
+	RCPT_COUNT_SEVEN(0.00)[8];
 	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[nvidia.com:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,msgid.link:url]
-X-Rspamd-Queue-Id: 81A665F84AC
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,linuxfoundation.org:mid,linuxfoundation.org:dkim,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,nvidia.com:email]
+X-Rspamd-Queue-Id: 788AE5F84C4
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
@@ -102,53 +101,98 @@ X-Rspamd-Server: lfdr
 
 ------------------
 
-From: Jeroen Massar <jmassar@nvidia.com>
+From: Or Har-Toov <ohartoov@nvidia.com>
 
-[ Upstream commit 8d0a5af8b1ba598e7340761729801624e7a9330e ]
+[ Upstream commit c6df9a65cbb0fe7808a4b2872095f4c849b3196a ]
 
-After IPsec policy/state TX rules are added, any TC flow rule, which
-forwards packets to uplink, is modified to forward to IPsec TX tables.
-As these tables are destroyed dynamically, whenever there is no
-reference to them, the destinations of this kind of rules must be
-restored to uplink, unless there is no destination for that rule.
+When setting vports max TX speed during LAG activation or bond state
+changes, the code iterates over all eswitch vports. However, some
+vports may not be enabled yet.
 
-The flow rules FLOW_ACTION_ACCEPT, DROP, TRAP, GOTO and SAMPLE do not
-have a destination port, and thus out_count = 0.
+Skip vports that are not enabled to avoid sending FW commands for
+uninitialized vports. Save the LAG aggregated speed in the vport
+struct so it can be applied when the vport is enabled later.
 
-At cleanup time of the rules in mlx5_esw_ipsec_modify_flow_dests
-we call mlx5_eswitch_restore_ipsec_rule but as the above types
-do not have a destination we get an underflow of out_count, as
-the port is passed, which is esw_attr->out_count - 1.
-
-This change avoids calling mlx5_eswitch_restore_ipsec_rule when
-there are no output destinations and thus avoids the underflow.
-
-Fixes: d1569537a837 ("net/mlx5e: Modify and restore TC rules for IPSec TX rules")
-Signed-off-by: Jeroen Massar <jmassar@nvidia.com>
-Reviewed-by: Jianbo Liu <jianbol@nvidia.com>
-Reviewed-by: Cosmin Ratiu <cratiu@nvidia.com>
+Fixes: 50f1d188c580 ("net/mlx5: Propagate LAG effective max_tx_speed to vports")
+Signed-off-by: Or Har-Toov <ohartoov@nvidia.com>
+Reviewed-by: Mark Bloch <mbloch@nvidia.com>
 Signed-off-by: Tariq Toukan <tariqt@nvidia.com>
-Link: https://patch.msgid.link/20260513063302.333761-1-tariqt@nvidia.com
+Link: https://patch.msgid.link/20260513063640.334132-1-tariqt@nvidia.com
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/mellanox/mlx5/core/esw/ipsec_fs.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ .../net/ethernet/mellanox/mlx5/core/eswitch.c | 21 +++++++++++++++++++
+ .../net/ethernet/mellanox/mlx5/core/eswitch.h |  1 +
+ .../net/ethernet/mellanox/mlx5/core/lag/lag.c |  5 +++++
+ 3 files changed, 27 insertions(+)
 
-diff --git a/drivers/net/ethernet/mellanox/mlx5/core/esw/ipsec_fs.c b/drivers/net/ethernet/mellanox/mlx5/core/esw/ipsec_fs.c
-index 3cfe743610d3f..ab50d2c734ede 100644
---- a/drivers/net/ethernet/mellanox/mlx5/core/esw/ipsec_fs.c
-+++ b/drivers/net/ethernet/mellanox/mlx5/core/esw/ipsec_fs.c
-@@ -142,7 +142,8 @@ static int mlx5_esw_ipsec_modify_flow_dests(struct mlx5_eswitch *esw,
+diff --git a/drivers/net/ethernet/mellanox/mlx5/core/eswitch.c b/drivers/net/ethernet/mellanox/mlx5/core/eswitch.c
+index 123c96716a544..7c8311f412323 100644
+--- a/drivers/net/ethernet/mellanox/mlx5/core/eswitch.c
++++ b/drivers/net/ethernet/mellanox/mlx5/core/eswitch.c
+@@ -908,6 +908,24 @@ static void esw_vport_cleanup(struct mlx5_eswitch *esw, struct mlx5_vport *vport
+ 	esw_vport_cleanup_acl(esw, vport);
+ }
  
- 	attr = flow->attr;
- 	esw_attr = attr->esw_attr;
--	if (esw_attr->out_count - esw_attr->split_count > 1)
-+	if (!esw_attr->out_count ||
-+	    esw_attr->out_count - esw_attr->split_count > 1)
- 		return 0;
++static void mlx5_esw_vport_set_max_tx_speed(struct mlx5_eswitch *esw,
++					    struct mlx5_vport *vport)
++{
++	int ret;
++
++	if (!MLX5_CAP_ESW(esw->dev, esw_vport_state_max_tx_speed))
++		return;
++
++	ret = mlx5_modify_vport_max_tx_speed(esw->dev,
++					     MLX5_VPORT_STATE_OP_MOD_ESW_VPORT,
++					     vport->vport, true,
++					     vport->agg_max_tx_speed);
++	if (ret)
++		mlx5_core_dbg(esw->dev,
++			      "Failed to set vport %d speed %d, err=%d\n",
++			      vport->vport, vport->agg_max_tx_speed, ret);
++}
++
+ int mlx5_esw_vport_enable(struct mlx5_eswitch *esw, struct mlx5_vport *vport,
+ 			  enum mlx5_eswitch_vport_event enabled_events)
+ {
+@@ -948,6 +966,9 @@ int mlx5_esw_vport_enable(struct mlx5_eswitch *esw, struct mlx5_vport *vport,
  
- 	err = mlx5_eswitch_restore_ipsec_rule(esw, flow->rule[0], esw_attr,
+ 	esw->enabled_vports++;
+ 	esw_debug(esw->dev, "Enabled VPORT(%d)\n", vport_num);
++
++	if (vport->agg_max_tx_speed)
++		mlx5_esw_vport_set_max_tx_speed(esw, vport);
+ done:
+ 	mutex_unlock(&esw->state_lock);
+ 	return ret;
+diff --git a/drivers/net/ethernet/mellanox/mlx5/core/eswitch.h b/drivers/net/ethernet/mellanox/mlx5/core/eswitch.h
+index c2563bee74dfe..29cce1bbce941 100644
+--- a/drivers/net/ethernet/mellanox/mlx5/core/eswitch.h
++++ b/drivers/net/ethernet/mellanox/mlx5/core/eswitch.h
+@@ -247,6 +247,7 @@ struct mlx5_vport {
+ 	enum mlx5_eswitch_vport_event enabled_events;
+ 	int index;
+ 	struct mlx5_devlink_port *dl_port;
++	u32 agg_max_tx_speed;
+ };
+ 
+ struct mlx5_esw_indir_table;
+diff --git a/drivers/net/ethernet/mellanox/mlx5/core/lag/lag.c b/drivers/net/ethernet/mellanox/mlx5/core/lag/lag.c
+index 044adfdf9aa26..82e884e70168c 100644
+--- a/drivers/net/ethernet/mellanox/mlx5/core/lag/lag.c
++++ b/drivers/net/ethernet/mellanox/mlx5/core/lag/lag.c
+@@ -1074,6 +1074,11 @@ static void mlx5_lag_modify_device_vports_speed(struct mlx5_core_dev *mdev,
+ 		if (vport->vport == MLX5_VPORT_UPLINK)
+ 			continue;
+ 
++		vport->agg_max_tx_speed = speed;
++
++		if (!vport->enabled)
++			continue;
++
+ 		ret = mlx5_modify_vport_max_tx_speed(mdev, op_mod,
+ 						     vport->vport, true, speed);
+ 		if (ret)
 -- 
 2.53.0
 
