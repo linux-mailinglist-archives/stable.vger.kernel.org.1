@@ -1,60 +1,58 @@
-Return-Path: <stable+bounces-255763-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-256009-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id KG65KNmnGGpolwgAu9opvQ
-	(envelope-from <stable+bounces-255763-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:38:49 +0200
+	id eM99EuGnGGpolwgAu9opvQ
+	(envelope-from <stable+bounces-256009-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:38:57 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3F5B15F9341
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:38:49 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 26A715F9378
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:38:57 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 4BDCE311C454
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 20:23:36 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id C6FFC306E931
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 20:35:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EEE522E7379;
-	Thu, 28 May 2026 20:23:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3CFCC3346BE;
+	Thu, 28 May 2026 20:35:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="aZqFPZYx"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gaadEX3t"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BC2B42E7377;
-	Thu, 28 May 2026 20:23:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 04CF22E92BA;
+	Thu, 28 May 2026 20:34:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779999815; cv=none; b=dgLjNnzvpz+TuAaxJRW9eMeE9+qd0yzM8IRhWgebr/xo1+/CAyHCadcntHG7teplP3pv0B3lo9lKcM+C132qMoEjAxQ1+oVY7oe6Se72jTve4u8rheYGnncFQ9MweLYgZzRe5/ssbvBrWUBQuCMZS5uu/xVWALs2wuLlot1jvxU=
+	t=1780000500; cv=none; b=okfKZE7lZFAXbjina7tld3NDaFjcs6KrnfQwfBFI5mF0sqqCLdkYZV702Kvx0kDjDys8PrlP0mNilTDWz80vjDjVqFffDpGuXwG73cf3awpdl/XbyZd1EAi/y+6B9p+MUt09awQh34mUm1ghvZpOfJoF59Tsk8Z9jCg3B09SQ4o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779999815; c=relaxed/simple;
-	bh=R/iEIi8WFe3ZEff56GAlnybFO8BS4H+PmgdgSKkJms0=;
+	s=arc-20240116; t=1780000500; c=relaxed/simple;
+	bh=BEoH65E5FzR62SNQ1q4TPZ6x5LBCYY9bHDKaEzEQbec=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=hOYZQPDGtFa+4xkD+Otc2v8B/kQ/OTuNlWHHBkmSdAhBkpKa58zljyNfXrwOl3M7QAiTBb+UTul8XUdg7iQYH1dFktAHqujD2E/JDWt7S3CH2ZM8LFLX7ew5NMMmAPlf1KvEBXuicrklA+K4lO7tXOxIIuwx0i+FG59Loc+84ac=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=aZqFPZYx; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 26C9C1F000E9;
-	Thu, 28 May 2026 20:23:33 +0000 (UTC)
+	 MIME-Version; b=JGJbjHLU4I+HCrWaQI1xroiD2deK/J1ETtSuzyDDRgZ+5vFI/Gu4jrm4HTEVat3+/S+BhhnjJgnISooDIKLkPwpXkeXUWwLNRC967nUWAjv1rcdLaLVarUtFtmclLnelT0VGcb84ug2K/SN20sEHegwXQjKtQoLzT+AXHOcV2G8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gaadEX3t; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 637361F000E9;
+	Thu, 28 May 2026 20:34:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779999814;
-	bh=WGKIBPQSvNy6h1W8P2FdfgTNat3UsERcc3ezyQ0lm6c=;
+	s=korg; t=1780000498;
+	bh=QmkCRR6uK+YrA/yobcQZ3LmX6CLwvDaftVADJ74Ko3c=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=aZqFPZYx6KVtVJfcX+Kc9DRmRdyBA2pATr9uw3dlUpYFCV4PB+2BqwQChXCMX7FR7
-	 kDYv8qOWtY/CGPxCRKN4HjwMSIU5kZgJl8Q4VbEMDHysAkHgrTl6VF4rcgSZRfBRXm
-	 vpGY+Ur35NQ/o98dl+pnkzm9GDMNYp+zZt+jCCMU=
+	b=gaadEX3tUEuRyael17QLEIhkUuuKL/nt3VyzRnq2N1reyTS6udIx3135LY3IY2rYt
+	 p5lGhrDH5wQkYRN5U5WdVuq2Xb/gkTMR2f2nXle1WqVCqP/JBM6zjJmH6Eh1NYO6Vq
+	 o6mcAZqICqL8TqgGg/JqE3Qics2Q5S7/qD3aKoUM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Tristan Madani <tristan@talencesecurity.com>,
-	Florian Westphal <fw@strlen.de>,
-	Pablo Neira Ayuso <pablo@netfilter.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 202/377] netfilter: ebtables: close dangling table module init race
+	Michael Bommarito <michael.bommarito@gmail.com>,
+	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+Subject: [PATCH 6.12 066/272] Bluetooth: L2CAP: ecred_reconfigure: send packed pdu, not stack pointer
 Date: Thu, 28 May 2026 21:47:20 +0200
-Message-ID: <20260528194644.251356518@linuxfoundation.org>
+Message-ID: <20260528194631.228056166@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260528194638.371537336@linuxfoundation.org>
-References: <20260528194638.371537336@linuxfoundation.org>
+In-Reply-To: <20260528194629.379955525@linuxfoundation.org>
+References: <20260528194629.379955525@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,152 +63,122 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-255763-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TO_DN_SOME(0.00)[];
+	TAGGED_FROM(0.00)[bounces-256009-lists,stable=lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,intel.com];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[7];
-	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,talencesecurity.com:email,netfilter.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim]
-X-Rspamd-Queue-Id: 3F5B15F9341
+	MID_RHS_MATCH_FROM(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[5];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[intel.com:email,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim]
+X-Rspamd-Queue-Id: 26A715F9378
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Florian Westphal <fw@strlen.de>
+From: Michael Bommarito <michael.bommarito@gmail.com>
 
-[ Upstream commit 92c603fa07bc0d6a17345de3ad7954730b8de44b ]
+commit 3374ef8cf99368a40f7efd51a2a375a4c5dc6f0d upstream.
 
-sashiko reported for a related patch:
- In modules like iptable_raw.c, [..], if register_pernet_subsys() fails,
- the rollback might call kfree(rawtable_ops) before [..]
- During this window, could a concurrent userspace process find the globally
- visible template, trigger table_init(), [..]
+Commit 1c08108f3014 ("Bluetooth: L2CAP: Avoid -Wflex-array-member-not-at-end
+warnings") converted the on-stack request PDU in l2cap_ecred_reconfigure()
+from an explicit packed struct to DEFINE_RAW_FLEX(), but did not adjust the
+size and source-pointer arguments to l2cap_send_cmd():
 
-The table init functions must always register the template last.
+  -    struct {
+  -            struct l2cap_ecred_reconf_req req;
+  -            __le16 scid;
+  -    } pdu;
+  +    DEFINE_RAW_FLEX(struct l2cap_ecred_reconf_req, pdu, scid, 1);
+       ...
+       l2cap_send_cmd(conn, chan->ident, L2CAP_ECRED_RECONF_REQ,
+                      sizeof(pdu), &pdu);
 
-Otherwise, set/getsockopt can instantiate a table in a namespace
-while the required pernet ops (contain the destructor) isn't available.
-This change is also required in x_tables, handled in followup change.
+After the conversion, DEFINE_RAW_FLEX() expands to declare an anonymous
+union pdu_u plus a local pointer "pdu" pointing at it. Therefore:
 
-Fixes: 87663c39f898 ("netfilter: ebtables: do not hook tables by default")
-Reviewed-by: Tristan Madani <tristan@talencesecurity.com>
-Signed-off-by: Florian Westphal <fw@strlen.de>
-Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+  - sizeof(pdu) is now sizeof(struct l2cap_ecred_reconf_req *) = 8 on
+    64-bit (4 on 32-bit), not the 6 bytes of (mtu, mps, scid[1]).
+  - &pdu is the address of the local pointer's stack storage, not the
+    address of the request payload.
+
+l2cap_send_cmd() forwards (data, count) to l2cap_build_cmd(), which calls
+skb_put_data(skb, data, count). The L2CAP_ECRED_RECONFIGURE_REQ packet
+body therefore contains 8 bytes copied from the kernel stack starting at
+&pdu -- the 8 bytes overlap the pdu pointer's value, leaking a kernel
+stack address to the paired Bluetooth peer. The intended (mtu, mps, scid)
+fields are not transmitted at all, so the peer rejects the request as
+malformed and the L2CAP_ECRED_RECONFIGURE feature itself has been broken
+for the local-side initiator since the introducing commit landed.
+
+The sibling site l2cap_ecred_conn_req() in the same commit was converted
+correctly (sizeof(*pdu) + len, pdu); only this site was missed.
+
+Restore the original semantics: pass the full flex-struct size via
+struct_size(pdu, scid, 1) and the pdu pointer (the struct address) as
+the source.
+
+Validated on a stock 7.0-based host kernel via the real call path:
+setsockopt(SOL_BLUETOOTH, BT_RCVMTU, ...) on a BT_CONNECTED
+L2CAP_MODE_EXT_FLOWCTL socket emits an L2CAP_ECRED_RECONFIGURE_REQ
+whose body is 8 bytes (the on-stack pdu local's value) rather than
+the expected 6. Three captures from fresh socket / fresh hciemu peer
+on the same host -- low bytes vary per call, high 0xffff confirms a
+kernel virtual address (KASLR-randomised stack slot, not a fixed
+string):
+
+  RECONF_REQ body (ident=0x02 len=8): 42 fb 54 af 0e ca ff ff
+  RECONF_REQ body (ident=0x02 len=8): 52 3d 2e af 0e ca ff ff
+  RECONF_REQ body (ident=0x02 len=8): b2 fc 5b af 0e ca ff ff
+
+After this patch the body is 6 bytes carrying the expected
+little-endian (mtu, mps, scid).
+
+Cc: stable@vger.kernel.org
+Fixes: 1c08108f3014 ("Bluetooth: L2CAP: Avoid -Wflex-array-member-not-at-end warnings")
+Assisted-by: Claude:claude-opus-4-7
+Signed-off-by: Michael Bommarito <michael.bommarito@gmail.com>
+Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/bridge/netfilter/ebtable_broute.c | 12 +++++-------
- net/bridge/netfilter/ebtable_filter.c | 12 +++++-------
- net/bridge/netfilter/ebtable_nat.c    | 10 ++++------
- 3 files changed, 14 insertions(+), 20 deletions(-)
+ net/bluetooth/l2cap_core.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/net/bridge/netfilter/ebtable_broute.c b/net/bridge/netfilter/ebtable_broute.c
-index e6f9e343b41f1..f05c79f215ea0 100644
---- a/net/bridge/netfilter/ebtable_broute.c
-+++ b/net/bridge/netfilter/ebtable_broute.c
-@@ -112,18 +112,16 @@ static struct pernet_operations broute_net_ops = {
+--- a/net/bluetooth/l2cap_core.c
++++ b/net/bluetooth/l2cap_core.c
+@@ -7199,7 +7199,7 @@ static void l2cap_ecred_reconfigure(stru
+ 	chan->ident = l2cap_get_ident(conn);
  
- static int __init ebtable_broute_init(void)
- {
--	int ret = ebt_register_template(&broute_table, broute_table_init);
-+	int ret = register_pernet_subsys(&broute_net_ops);
- 
- 	if (ret)
- 		return ret;
- 
--	ret = register_pernet_subsys(&broute_net_ops);
--	if (ret) {
--		ebt_unregister_template(&broute_table);
--		return ret;
--	}
-+	ret = ebt_register_template(&broute_table, broute_table_init);
-+	if (ret)
-+		unregister_pernet_subsys(&broute_net_ops);
- 
--	return 0;
-+	return ret;
+ 	l2cap_send_cmd(conn, chan->ident, L2CAP_ECRED_RECONF_REQ,
+-		       sizeof(pdu), &pdu);
++		       struct_size(pdu, scid, 1), pdu);
  }
  
- static void __exit ebtable_broute_fini(void)
-diff --git a/net/bridge/netfilter/ebtable_filter.c b/net/bridge/netfilter/ebtable_filter.c
-index 02b6501c15a5e..0fc03b07e62ae 100644
---- a/net/bridge/netfilter/ebtable_filter.c
-+++ b/net/bridge/netfilter/ebtable_filter.c
-@@ -93,18 +93,16 @@ static struct pernet_operations frame_filter_net_ops = {
- 
- static int __init ebtable_filter_init(void)
- {
--	int ret = ebt_register_template(&frame_filter, frame_filter_table_init);
-+	int ret = register_pernet_subsys(&frame_filter_net_ops);
- 
- 	if (ret)
- 		return ret;
- 
--	ret = register_pernet_subsys(&frame_filter_net_ops);
--	if (ret) {
--		ebt_unregister_template(&frame_filter);
--		return ret;
--	}
-+	ret = ebt_register_template(&frame_filter, frame_filter_table_init);
-+	if (ret)
-+		unregister_pernet_subsys(&frame_filter_net_ops);
- 
--	return 0;
-+	return ret;
- }
- 
- static void __exit ebtable_filter_fini(void)
-diff --git a/net/bridge/netfilter/ebtable_nat.c b/net/bridge/netfilter/ebtable_nat.c
-index 9985a82555c41..8a10375d89099 100644
---- a/net/bridge/netfilter/ebtable_nat.c
-+++ b/net/bridge/netfilter/ebtable_nat.c
-@@ -93,16 +93,14 @@ static struct pernet_operations frame_nat_net_ops = {
- 
- static int __init ebtable_nat_init(void)
- {
--	int ret = ebt_register_template(&frame_nat, frame_nat_table_init);
-+	int ret = register_pernet_subsys(&frame_nat_net_ops);
- 
- 	if (ret)
- 		return ret;
- 
--	ret = register_pernet_subsys(&frame_nat_net_ops);
--	if (ret) {
--		ebt_unregister_template(&frame_nat);
--		return ret;
--	}
-+	ret = ebt_register_template(&frame_nat, frame_nat_table_init);
-+	if (ret)
-+		unregister_pernet_subsys(&frame_nat_net_ops);
- 
- 	return ret;
- }
--- 
-2.53.0
-
+ int l2cap_chan_reconfigure(struct l2cap_chan *chan, __u16 mtu)
 
 
 
