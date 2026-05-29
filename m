@@ -1,143 +1,204 @@
-Return-Path: <stable+bounces-256680-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-256681-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id wJpSAvfWGWqjzQgAu9opvQ
-	(envelope-from <stable+bounces-256680-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 29 May 2026 20:12:07 +0200
+	id KDKhBGPTGWodzQgAu9opvQ
+	(envelope-from <stable+bounces-256681-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 29 May 2026 19:56:51 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5A9B56071B0
-	for <lists+stable@lfdr.de>; Fri, 29 May 2026 20:12:06 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1808E606EA3
+	for <lists+stable@lfdr.de>; Fri, 29 May 2026 19:56:50 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 7BE05309EF9C
-	for <lists+stable@lfdr.de>; Fri, 29 May 2026 17:38:24 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id E03453003830
+	for <lists+stable@lfdr.de>; Fri, 29 May 2026 17:42:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D81A4390212;
-	Fri, 29 May 2026 17:38:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6FA4338F250;
+	Fri, 29 May 2026 17:42:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="jWdPzf++"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="AwEflVMQ"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f46.google.com (mail-wm1-f46.google.com [209.85.128.46])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ADFC938F630;
-	Fri, 29 May 2026 17:38:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DEAE7390995
+	for <stable@vger.kernel.org>; Fri, 29 May 2026 17:42:45 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.46
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780076302; cv=none; b=ks0ofYEEQ2I261kaIHlJbsYYlGpsDjLUkwHwTxvKz12rjP2/GQ5dHl33Z8RzNEAa9lEOI4Mny2qfedHAy6Q3MgBhtvqBIzO1KmzFQ+WQxA+Of9B4d9WOuiHM2FMPSgUApFRRXKbOXDXUDDrMeD+6hDJji+p4pIlCPpTDTtLkYNs=
+	t=1780076567; cv=none; b=P3U/uaua7ZmrVTIOdpmtHSzGzH84tGiozIiOHcpxNHCXzq3I8941usQLrtxm/NNno84b9N5JuXzzKIyWbKzkrIwEnbGPLdPMLsnJIiCTtkBtfrqwRxnU3XOK/AOwwSV+XIad5ycEk+bMAO8qk4SmXeE2vz640oH4HInAfr8OdV4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780076302; c=relaxed/simple;
-	bh=cmkxqSxtIDKahIbN1h44TcAFb3tO9nJLrFhtJRI2s5s=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=SW+8Mjhgq3Ggpx1yHvaAkCn+5+5J/SYwyFb3KD+BILc1sP9W79VCC1hWW0T2IJBqaMpfEIesxQOmWMEPl/B94gzt928a1Q/Y6RLS9/VFuTc9+O33CAIVL0Hc1s+pm0SzenlNz3k+IDysRV4bUJHXfuo+vmr+TJReYNIGxkM4Mdc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=jWdPzf++; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2FF071F00893;
-	Fri, 29 May 2026 17:38:19 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1780076301;
-	bh=P/GJ+nOxf/TVyXP/2khmzVXEKgvkAXFYHGowDjyeIQU=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=jWdPzf++hmsqrd5XdRXF1X2lp0YhUFz7CNjNEsdQaQOyG8A+Q6QMLNa+T+/BkEt62
-	 69+BtJ1FnwmAFZLSacCRNxcrzTAXWz1+II0ouZ0VUrOD95zA97IUe7H0KC20Xn3GfU
-	 XDfC9DOV//349e5DuqRenO6ExOHZe1Dm4i7lJBT33Kvsj8qnGbxov7N4kZfd++DX6A
-	 hyhKOlWYqNlBX4jGNKZTaXIaSedD4Bk0sHMu4NBsF/bL2M82vj+ipN82jSJvdrwy5B
-	 oFHRE+vac09Rig5EN6EQj5Vr9kokWfsNVL5rw+/uoqlAn+09SIiqgdmRVf5lVwb4q4
-	 IpAyV/3SfJbgg==
-Date: Fri, 29 May 2026 19:38:17 +0200
-From: Manivannan Sadhasivam <mani@kernel.org>
-To: Wentao Liang <vulab@iscas.ac.cn>
-Cc: "David S . Miller" <davem@davemloft.net>, 
-	Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, 
-	Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, linux-arm-msm@vger.kernel.org, 
-	netdev@vger.kernel.org, linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Subject: Re: [PATCH] net: qrtr: fix node refcount leak on ctrl packet alloc
- failure
-Message-ID: <54wyv42wcizvq3j6kadyecwr7csx4i72jzdnuea5bnjvpuqpll@ufmlxecdc3ka>
-References: <20260528080019.1176700-1-vulab@iscas.ac.cn>
+	s=arc-20240116; t=1780076567; c=relaxed/simple;
+	bh=LNYMZSCC/cAzhF+LBgIl6sgAGyIlLiiPJxEGjkswYyA=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=lkeEaj60/Odhzeh8Frz6OXj54FHnI3FIPpOKdj1Z2Yr1d4AIez41V3S0vkcIy/65hZqhCXIevzSJa35EInwiMh798XkhmCNnuzCFxyznDYV2bTdOZDC9dLHabXJA0CGdoeRQtaiA18EObU5ucMiBB9gV7LUVyErM8IZt/swNXLE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=AwEflVMQ; arc=none smtp.client-ip=209.85.128.46
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-wm1-f46.google.com with SMTP id 5b1f17b1804b1-4896c22fcbaso123248365e9.0
+        for <stable@vger.kernel.org>; Fri, 29 May 2026 10:42:45 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1780076564; x=1780681364; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=+HADlY/OIlF0hpDL5/ae4J9awZWb2JktfXMYyTtRGzk=;
+        b=AwEflVMQ7pQsx30LNG6PgR0iFIpAY5RV+RyTI2t3AG1c9g0JG4fsUTcYdSAA2XkAN6
+         f9PYchNMEQ6gr4NTdSnL4oAFXWX2GLayxWdF7U/9J/2ma+tMhHk+qISuavKfJCC0xag4
+         lOYg3VKcOn7KizN+7BLsPzZ0WMrwdo+isQUgaYgZDfNdYGrQo4ZmewEYzzd1y+XnAJ7m
+         TOb35uzrLRuAw8fw6EpUOOQfXOprg2+gd0TaVBP7iEqc5R4Nd9vEwBZZf2f3G7mQ3qdb
+         QzqPLIx94DaWcIhngqZLWw6zwxRP1MsIoOdg2siaEkV+nfckEu+KgwbKLy5eItTwOl5O
+         SRPQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1780076564; x=1780681364;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=+HADlY/OIlF0hpDL5/ae4J9awZWb2JktfXMYyTtRGzk=;
+        b=MNenJKSayto/NPLYIkWQZNjsQ75PGAUk7m9FFaaAiTOCDclL2Ltap/5FAxuR95ooJ2
+         Exabldltu/WQ0TAUp3azjsgKvfayY5z2wkjoUCkLV3SzT4RslM0q/C80lIFCHipFBqZE
+         GRzsd3WCe/FdeAFq+sgJr4nHyiyfLaj5TxsEn2sk9A2WudR7a+TISCr9TZnXcXn/9Ebu
+         9o1d06bWdt1xOd550icpG/h3W8zk6NFHaJR2IosXlty6fAOZVknbu5FeqGZ6gM6N7F2X
+         s6KTBm35bkjh7bizBcY7egLZgTE/ATLW+FqH7Wr1ipmwd9tfqoX1VNawNopSynhEYgL8
+         B4fA==
+X-Forwarded-Encrypted: i=1; AFNElJ8RkKTwcplYLfTNAeu9XHXalvNwZ8Z1Cwd+KcATEbDuLiMBmSOKxIUPQr1JmXbsSG4wEDl9W5U=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyNjvvPU1kC83zkVOr/hXwtnxhizjiq7u8O3QK8pq5jcvVSJ5oV
+	kMTPL3qmvUVYyRFAUuiUm6npQOAPbEmAhJsKRyoN3GuJGk6xVVs4E1oS
+X-Gm-Gg: Acq92OEv1oK2PbL6WPZJYtI80iiSqNarqCQWk+1/QwmI4hkFtnyZJ44XOCY6YnqsogJ
+	hyDRVX73/YvMlcMtNoCYmWxNaFb+cIiuHKQIL6VNK1l9JcWHKiPa4EdURszVM2oI/it8To34s7h
+	3YABUW2+BZk4Eq6Zz4X+IqG9o7nTqJ96zZFh85qLvjZJR6qRsn9dj6+21bk1vxjJ5ljsU6MlxL+
+	4tUBvpxFJnnqpCOfgviVuUKO6fzsZFpUXRu2CVyCimj9fTKn/1Q/3FhwB/LlC0MOQQaun9OsJ2W
+	zNGV1wdEdbmAQLR/aY4IDOAqactPl2poixVtkR5DR1Eeu7oo4Q4vcXak+o2EGSMI/qeaGBD84Mn
+	N1ef85/OEPGtn8Kqe5OQS59byc3xEPP913NdsWANnEP62Z7uZyCq5l6LpYmmBxZe04dFgpJwImw
+	n7+rh6ZnRGK81pcCJIVjWMWW7EWw==
+X-Received: by 2002:a05:600c:a00c:b0:489:1f04:96c3 with SMTP id 5b1f17b1804b1-490a2904aa4mr12256725e9.2.1780076564142;
+        Fri, 29 May 2026 10:42:44 -0700 (PDT)
+Received: from localhost ([2a03:2880:32ff:7::])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4909c13d018sm25065735e9.8.2026.05.29.10.42.40
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 29 May 2026 10:42:41 -0700 (PDT)
+From: Vlad Poenaru <vlad.wing@gmail.com>
+To: Alexei Starovoitov <ast@kernel.org>,
+	Daniel Borkmann <daniel@iogearbox.net>,
+	Andrii Nakryiko <andrii@kernel.org>,
+	bpf@vger.kernel.org
+Cc: Martin KaFai Lau <martin.lau@linux.dev>,
+	Eduard Zingerman <eddyz87@gmail.com>,
+	Kumar Kartikeya Dwivedi <memxor@gmail.com>,
+	Song Liu <song@kernel.org>,
+	Yonghong Song <yonghong.song@linux.dev>,
+	Jiri Olsa <jolsa@kernel.org>,
+	Toke =?utf-8?Q?H=C3=B8iland-J=C3=B8rgensen?= <toke@redhat.com>,
+	linux-kernel@vger.kernel.org,
+	stable@vger.kernel.org
+Subject: [PATCH bpf] bpf, lpm_trie: Allow lookups from sleepable BPF programs
+Date: Fri, 29 May 2026 10:42:33 -0700
+Message-ID: <20260529174233.2954240-1-vlad.wing@gmail.com>
+X-Mailer: git-send-email 2.52.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <20260528080019.1176700-1-vulab@iscas.ac.cn>
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	MID_RHS_NOT_FQDN(0.50)[];
-	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20260515];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
+	R_MISSING_CHARSET(0.50)[];
+	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	FREEMAIL_CC(0.00)[linux.dev,gmail.com,kernel.org,redhat.com,vger.kernel.org];
+	TAGGED_FROM(0.00)[bounces-256681-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-256680-lists,stable=lfdr.de];
-	FROM_HAS_DN(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
+	RECEIVED_HELO_LOCALHOST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[kernel.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	MISSING_XM_UA(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FREEMAIL_FROM(0.00)[gmail.com];
+	RCPT_COUNT_TWELVE(0.00)[13];
+	DKIM_TRACE(0.00)[gmail.com:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[mani@kernel.org,stable@vger.kernel.org];
+	FROM_NEQ_ENVFROM(0.00)[vladwing@gmail.com,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[10];
+	RCVD_COUNT_FIVE(0.00)[5];
+	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,iscas.ac.cn:email]
-X-Rspamd-Queue-Id: 5A9B56071B0
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo]
+X-Rspamd-Queue-Id: 1808E606EA3
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-On Thu, May 28, 2026 at 08:00:19AM +0000, Wentao Liang wrote:
-> qrtr_send_resume_tx() calls qrtr_node_lookup() which takes a
-> reference on the returned node. If the subsequent call to
-> qrtr_alloc_ctrl_packet() fails due to memory allocation failure, the
-> function returns -ENOMEM without calling qrtr_node_release() to
-> release the node reference.
-> 
-> Add qrtr_node_release(node) before returning on the allocation failure
-> path to properly release the reference.
-> 
-> Cc: stable@vger.kernel.org
-> Fixes: cb6530b99faf ("net: qrtr: Move resume-tx transmission to recvmsg")
-> Signed-off-by: Wentao Liang <vulab@iscas.ac.cn>
+trie_lookup_elem() annotates its rcu_dereference_check() walks with
+only rcu_read_lock_bh_held(). Because rcu_dereference_check(p, c)
+resolves to "c || rcu_read_lock_held()", this passes for XDP/NAPI and
+classic RCU readers but fails for sleepable BPF programs, which enter
+via __bpf_prog_enter_sleepable() and hold only rcu_read_lock_trace().
 
-Reviewed-by: Manivannan Sadhasivam <mani@kernel.org>
+A sleepable LSM hook that ends up doing bpf_map_lookup_elem() on an LPM
+trie therefore triggers lockdep on debug kernels:
 
-- Mani
+  =============================
+  WARNING: suspicious RCU usage
+  7.1.0-... Tainted: G            E
+  -----------------------------
+  kernel/bpf/lpm_trie.c:249 suspicious rcu_dereference_check() usage!
+  1 lock held by net_tests/540:
+   #0: (rcu_tasks_trace_srcu_struct){....}-{0:0},
+       at: __bpf_prog_enter_sleepable+0x26/0x280
+  Call Trace:
+   dump_stack_lvl
+   lockdep_rcu_suspicious
+   trie_lookup_elem
+   bpf_prog_..._enforce_security_socket_connect
+   bpf_trampoline_...
+   security_socket_connect
+   __sys_connect
+   do_syscall_64
 
-> ---
->  net/qrtr/af_qrtr.c | 4 +++-
->  1 file changed, 3 insertions(+), 1 deletion(-)
-> 
-> diff --git a/net/qrtr/af_qrtr.c b/net/qrtr/af_qrtr.c
-> index 7cec6a7859b0..c9f892427f7c 100644
-> --- a/net/qrtr/af_qrtr.c
-> +++ b/net/qrtr/af_qrtr.c
-> @@ -1009,8 +1009,10 @@ static int qrtr_send_resume_tx(struct qrtr_cb *cb)
->  		return -EINVAL;
->  
->  	skb = qrtr_alloc_ctrl_packet(&pkt, GFP_KERNEL);
-> -	if (!skb)
-> +	if (!skb) {
-> +		qrtr_node_release(node);
->  		return -ENOMEM;
-> +	}
->  
->  	pkt->cmd = cpu_to_le32(QRTR_TYPE_RESUME_TX);
->  	pkt->client.node = cpu_to_le32(cb->dst_node);
-> -- 
-> 2.34.1
-> 
+This is lockdep-only -- no UAF, since Tasks Trace RCU does serialize
+against the trie's reclaim path -- but it spams the console once per
+distinct callsite on every debug kernel running a sleepable BPF LSM
+that does map lookups on an LPM trie, which is increasingly common.
 
+Other map types already use the bpf_rcu_lock_held() helper, which
+accepts all three contexts (classic, BH, Tasks Trace). Use it here as
+well, matching the established convention.
+
+Fixes: 694cea395fde ("bpf: Allow RCU-protected lookups to happen from bh context")
+Cc: stable@vger.kernel.org
+Signed-off-by: Vlad Poenaru <vlad.wing@gmail.com>
+---
+ kernel/bpf/lpm_trie.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
+
+diff --git a/kernel/bpf/lpm_trie.c b/kernel/bpf/lpm_trie.c
+index 0f57608b385d..ac36063cb7e6 100644
+--- a/kernel/bpf/lpm_trie.c
++++ b/kernel/bpf/lpm_trie.c
+@@ -246,7 +246,7 @@ static void *trie_lookup_elem(struct bpf_map *map, void *_key)
+ 
+ 	/* Start walking the trie from the root node ... */
+ 
+-	for (node = rcu_dereference_check(trie->root, rcu_read_lock_bh_held());
++	for (node = rcu_dereference_check(trie->root, bpf_rcu_lock_held());
+ 	     node;) {
+ 		unsigned int next_bit;
+ 		size_t matchlen;
+@@ -280,7 +280,7 @@ static void *trie_lookup_elem(struct bpf_map *map, void *_key)
+ 		 */
+ 		next_bit = extract_bit(key->data, node->prefixlen);
+ 		node = rcu_dereference_check(node->child[next_bit],
+-					     rcu_read_lock_bh_held());
++					     bpf_rcu_lock_held());
+ 	}
+ 
+ 	if (!found)
 -- 
-மணிவண்ணன் சதாசிவம்
+2.53.0-Meta
+
 
