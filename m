@@ -1,214 +1,280 @@
-Return-Path: <stable+bounces-256640-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-256641-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id YJ6DDy6dGWq7xwgAu9opvQ
-	(envelope-from <stable+bounces-256640-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 29 May 2026 16:05:34 +0200
+	id YH6UFCSdGWq7xwgAu9opvQ
+	(envelope-from <stable+bounces-256641-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 29 May 2026 16:05:24 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8D6A7603416
-	for <lists+stable@lfdr.de>; Fri, 29 May 2026 16:05:33 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id BA1ED603400
+	for <lists+stable@lfdr.de>; Fri, 29 May 2026 16:05:23 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id AA113311D217
-	for <lists+stable@lfdr.de>; Fri, 29 May 2026 13:59:54 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 5D00830DAD32
+	for <lists+stable@lfdr.de>; Fri, 29 May 2026 14:00:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EB4643DEAD7;
-	Fri, 29 May 2026 13:59:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A225D3E121E;
+	Fri, 29 May 2026 14:00:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="S5CbpKTK"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="neeNnvpP"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-wm1-f48.google.com (mail-wm1-f48.google.com [209.85.128.48])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 623E63BB13F
-	for <stable@vger.kernel.org>; Fri, 29 May 2026 13:59:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.48
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 34A593DEAC1;
+	Fri, 29 May 2026 14:00:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780063190; cv=none; b=ILNljcjcwcGGy0+qI4SZ0v1vD2xYx1kN6BqB398ddsBX+K4T1bTpMNe03qitL2lOecro1zgPw7eP/tLmNfVHzU9A6XOLHN1bGUmGROjGLoiBxS2DoVV+kOTWovUzU4NHE/JoBKq9NYYagnJPNusOXWifV3jdlqQilohQPtf/9RE=
+	t=1780063224; cv=none; b=pLaB9h6UKwKL3r2h+l4Rye9jQlR0zn1CNhlr5Y/9Z4rp468oLGcSjwsx4EWfpV6IsDnnY2/2ql3cz3tnFtl3NbP6CfdmfNBKXyUfpY/PYFxoFaTcN9om4YvPW7RDjif4740xspMxYDfn8yE9WiKcSyIUuHp2mxZ32k+/w9qBSvY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780063190; c=relaxed/simple;
-	bh=KYVlRd1aquTP3bMRf1yqpg8Q8zkl/MFBUrtYhsbb0b8=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=uq9jHpMbir1nzbt7YexWNaGgm1JRZkODao1GRWgUbnxf7dMXSUa5bVOv/JB71WGMa42Mi6nzv6/+Ugv5tg3abQ04FzFOLT3c6WTb9pKq/Nk0U86FrO4GnXt2DPLNKRylYdYdBGoOgHkuijJFV6xWyegyrb98Ki8UQf0cq3Sdv8c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=S5CbpKTK; arc=none smtp.client-ip=209.85.128.48
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-wm1-f48.google.com with SMTP id 5b1f17b1804b1-490227b682cso7168215e9.3
-        for <stable@vger.kernel.org>; Fri, 29 May 2026 06:59:47 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1780063186; x=1780667986; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=n5MBJ+x5az2tq5WcU9vWA3tYOf7P2ieIA9xjXOxXWIs=;
-        b=S5CbpKTKucfo8HNm5fURinWau6BF7wBsryw7Hc4eXGO4cDX5ZYYRqvGMo6yM1UdYSN
-         yGWv9dZ37cpre8Xo+xvTr3IfLMGCOw4Z8ZvL0fL4S+fj9re8EogSqBjnkKReV6IpCUtM
-         G+snvZz8HCpGrfqzL9Q1QYptrJPb+5XBzM9UonTuRnUfn8P9biR/ayP7FWcHZsW0WxIO
-         XRQCGVvK1EedoynXe/lK9p7JnUI0Y/dSAra9R4MQhBX+wEMvS3kw/VTWsy+FYQzs7E89
-         jeM6SVey1P+8WcYf2kAX2kAjh2J67SXkbVSka35C4aku1qRd94VCzjLinlnS94Ujar35
-         78/g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1780063186; x=1780667986;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=n5MBJ+x5az2tq5WcU9vWA3tYOf7P2ieIA9xjXOxXWIs=;
-        b=H47WYiyQOAVH6WCg40phV636QwH6Pjk7VPr6xpsHr+PifJ6bPHYs8HUTsBW60iG2/E
-         wzmRj3grScptkE7dnwOTOWNn+wf40TAvvPISb5il4cL/OSdV3dJMk+QNPjAO8CwWRGuW
-         kVk7PTPfgsbTIidB5XDt2ENa02U4i1FPwd6+F1gmkUtTRW7fMlxBrZO9ptY4IJ9rhifm
-         V0rKlvSlTd6LA2d/pOETGlJMwQD5yqrFYw/WdGxk0XEugrXN8GLPJjj0FXi07/Gat4cR
-         biTauUSjJqA2VXDteETB/IbVSSF38mgrjLTQZF7Hadr6dxH9F5rgBUA8cVFy1zGjUDJP
-         7foQ==
-X-Forwarded-Encrypted: i=1; AFNElJ9T3bTy9QR8Xi6dzL90t/HobThwhzBuZZO3zsRNN5DvGNe3shLFzCOI1Fhze4ubnKizTQkzrCQ=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzNv+WLae6mB+kP6n0AUzkhP4wRUOhqsuxOuM2TuU8Sch3KjEhA
-	hxRwQ5pLsSSsgzqyb0/5Aw7TSFd3QpC+vglUaITWgZUa33QRAJ5lPZWm
-X-Gm-Gg: Acq92OEJLdYNJkjnohSChF0haw+ESjHeO80FBZXhpO1ReGa8lVOcWU76KVnF2sXDDVA
-	B2kn+SfLzH9Dh3Sd0MyNJw6DwVn53FTwMffcPxP+H848lI5DO/dirlWujp+mHs3e6iwRpCR2PZR
-	mk8lSHqSDqRGpvWujQB/gl7FcQGsGparLtpohs2j6JkPwyyTt4266FbxOTpxwd2/Hi3SDSqP5O4
-	g9QTvnLI/Nmnstc8809pT84VyGRnTL92oY9AM700SbzzTu8XDt3LcJMFqAiMx8pl2p/luMC3kBJ
-	aLQ+vpxNXV+EVvLPxyer226f/rpDaWn/4oCU90pKJaV2Un7WKNTd8kuztC708OdlNk99DeUi6mq
-	QGmRFVIlodOolCdyJN2yTtkpTg202iXkjyTCwoxVMufhm1acV77KBfcCRmek6VaETfE1P8i9nDj
-	UYDLELtd75sjS55DdvmO9NFM37270GQkcTq/D+xO4JFD/axbo2xVKpYxZirW07n2mn2xXWwUVZX
-	BkKSAXXL1FsSMxkLSpNTD65m+U9suIbPg==
-X-Received: by 2002:a05:600c:4f53:b0:489:1fa8:b895 with SMTP id 5b1f17b1804b1-4909c0845ccmr21882065e9.2.1780063185440;
-        Fri, 29 May 2026 06:59:45 -0700 (PDT)
-Received: from ?IPV6:2a02:aa16:1105:8100:157a:cab0:dc27:cd03? ([2a02:aa16:1105:8100:157a:cab0:dc27:cd03])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4909c0c39b0sm25645315e9.2.2026.05.29.06.59.44
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 29 May 2026 06:59:45 -0700 (PDT)
-Message-ID: <a1cf0b32-1ad1-4297-a371-3807bf49160f@gmail.com>
-Date: Fri, 29 May 2026 15:59:44 +0200
+	s=arc-20240116; t=1780063224; c=relaxed/simple;
+	bh=W2pTYBq+b+oXiGU1QZzMVV+zQTudHkur2VT97ExkcZg=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=LdMAs4NS+7IOPaRfLMtkF+jLeH0F3JTuEVmqkXZ2unvdpHttZdUhzASK6YFR5LcTvSzYxwDmYerbYDZ+FRKIxO9ba91T34hQzUh2Cb2aI98FLSoDEbknb62cfNsYrlQNREaJI47vC56Z0otdeiK8AbXt80B7WG4heIip+VHYCj0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=neeNnvpP; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6EFDA1F00893;
+	Fri, 29 May 2026 14:00:17 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1780063223;
+	bh=o53KZSM1xwnMx9qRi9blrTJDTT9nvtmbWfg0I22/pKw=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=neeNnvpPJ5li6VA0xHi+YFqdkMv2Z2MOaS7H1Wgd4ceLe4M5SB91cfCT5ZZ8dDZlV
+	 PKe6T3haHkhV+DXKVCfhRjx0RiQJjkgdRnG2MNfFrDkdri/AJFgSEU+FM0qR59oiAo
+	 +CDHcC1rjjFIkvr716svKIRiGkFhqD7ts2Iup6pf4yA54hvqRcmfah0snxc0hJQ7FB
+	 sSBT8f1Q8LOXvAoS+ftsJRLjaNhK9Y5nkxKrIK0E+/eiIg4/187gfg0UqH/50Q6JS7
+	 MvkeYaQdtGqiC//rj1Hce2Aj/IOHTDZmenaNoPt6hQMEr3yF8fev/ZeUZyMbJ8F7+X
+	 w6Tv3aWA/tCLA==
+Date: Fri, 29 May 2026 15:00:14 +0100
+From: Lorenzo Stoakes <ljs@kernel.org>
+To: Kiryl Shutsemau <kirill@shutemov.name>
+Cc: akpm@linux-foundation.org, rppt@kernel.org, peterx@redhat.com, 
+	david@kernel.org, surenb@google.com, vbabka@kernel.org, Liam.Howlett@oracle.com, 
+	ziy@nvidia.com, corbet@lwn.net, skhan@linuxfoundation.org, seanjc@google.com, 
+	pbonzini@redhat.com, jthoughton@google.com, aarcange@redhat.com, sj@kernel.org, 
+	usama.arif@linux.dev, linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
+	linux-doc@vger.kernel.org, linux-kselftest@vger.kernel.org, kvm@vger.kernel.org, 
+	kernel-team@meta.com, "Kiryl Shutsemau (Meta)" <kas@kernel.org>, 
+	stable@vger.kernel.org
+Subject: Re: [PATCH v5 04/18] mm: skip out-of-range bits in mk_vma_flags()
+Message-ID: <ahmQvfNk7S4F0LBj@lucifer>
+References: <20260526130509.2748441-1-kirill@shutemov.name>
+ <20260526130509.2748441-5-kirill@shutemov.name>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net] netdevsim: fib: fix use-after-free of FIB data via
- debugfs
-To: Ido Schimmel <idosch@nvidia.com>
-Cc: Jakub Kicinski <kuba@kernel.org>, Andrew Lunn <andrew+netdev@lunn.ch>,
- "David S . Miller" <davem@davemloft.net>, Eric Dumazet
- <edumazet@google.com>, Paolo Abeni <pabeni@redhat.com>,
- netdev@vger.kernel.org, linux-kernel@vger.kernel.org, stable@vger.kernel.org
-References: <20260526160910.1614609-1-yzjaurora@gmail.com>
- <20260527083214.GA444725@shredder>
-Content-Language: en-US
-From: Zijing yin <yzjaurora@gmail.com>
-In-Reply-To: <20260527083214.GA444725@shredder>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Spamd-Result: default: False [-0.66 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260526130509.2748441-5-kirill@shutemov.name>
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
-	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
+	MID_RHS_NOT_FQDN(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20260515];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	TO_DN_SOME(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-256640-lists,stable=lfdr.de];
-	DKIM_TRACE(0.00)[gmail.com:+];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-256641-lists,stable=lfdr.de];
+	RCPT_COUNT_TWELVE(0.00)[25];
+	MIME_TRACE(0.00)[0:+];
 	FROM_HAS_DN(0.00)[];
-	FREEMAIL_FROM(0.00)[gmail.com];
-	RCVD_COUNT_FIVE(0.00)[5];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[yzjaurora@gmail.com,stable@vger.kernel.org];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	MISSING_XM_UA(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[9];
-	MID_RHS_MATCH_FROM(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[ljs@kernel.org,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[kernel.org:+];
+	TAGGED_RCPT(0.00)[stable];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable,netdev];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
-X-Rspamd-Queue-Id: 8D6A7603416
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo]
+X-Rspamd-Queue-Id: BA1ED603400
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-Thanks so much for the feedback!
-I have sent the revised patch accordingly:
-https://lore.kernel.org/netdev/20260529135718.1804031-1-yzjaurora@gmail.com/T/#u
-Hope you have a nice weekend!
+On Tue, May 26, 2026 at 02:04:52PM +0100, Kiryl Shutsemau wrote:
+> From: "Kiryl Shutsemau (Meta)" <kas@kernel.org>
+>
+> vma_flags_t is one unsigned long on 32-bit -- NUM_VMA_FLAG_BITS ==
+> BITS_PER_LONG by design, so VM_xxx-declared bits sit in the first
+> word and hit the single-long fast path. But the bit enum declares
+> some bits unconditionally above BITS_PER_LONG (VMA_UFFD_MINOR_BIT
+> == 41 today, with VM_UFFD_MINOR == VM_NONE on 32-bit so no VMA
+> actually carries the bit).
 
-On 27.05.2026 10:32, Ido Schimmel wrote:
-> On Tue, May 26, 2026 at 09:09:08AM -0700, Zijing Yin wrote:
->> @@ -1600,6 +1597,16 @@ struct nsim_fib_data *nsim_fib_create(struct devlink *devlink,
->>  		goto err_nexthop_nb_unregister;
->>  	}
->>  
->> +	/* Publish the debugfs interface only after every data structure it
->> +	 * operates on has been initialized. The files reference this
->> +	 * nsim_fib_data (e.g. "nexthop_bucket_activity" looks up
->> +	 * data->nexthop_ht), so a concurrent debugfs access must never be able
->> +	 * to observe a half-constructed instance.
->> +	 */
->> +	err = nsim_fib_debugfs_init(data, nsim_dev);
->> +	if (err)
->> +		goto err_fib_notifier_unregister;
->> +
->>  	devl_resource_occ_get_register(devlink,
->>  				       NSIM_RESOURCE_IPV4_FIB,
->>  				       nsim_fib_ipv4_resource_occ_get,
->> @@ -1622,6 +1629,8 @@ struct nsim_fib_data *nsim_fib_create(struct devlink *devlink,
->>  				       data);
->>  	return data;
->>  
->> +err_fib_notifier_unregister:
->> +	unregister_fib_notifier(devlink_net(devlink), &data->fib_nb);
->>  err_nexthop_nb_unregister:
->>  	unregister_nexthop_notifier(devlink_net(devlink), &data->nexthop_nb);
->>  err_rhashtable_fib_destroy:
->> @@ -1633,16 +1642,23 @@ struct nsim_fib_data *nsim_fib_create(struct devlink *devlink,
->>  	rhashtable_free_and_destroy(&data->nexthop_ht, nsim_nexthop_free,
->>  				    data);
->>  	mutex_destroy(&data->fib_lock);
->> -err_debugfs_exit:
->> +err_nh_lock_destroy:
->>  	mutex_destroy(&data->nh_lock);
->> -	nsim_fib_debugfs_exit(data);
->> -err_data_free:
->>  	kfree(data);
->>  	return ERR_PTR(err);
->>  }
->>  
->>  void nsim_fib_destroy(struct devlink *devlink, struct nsim_fib_data *data)
->>  {
->> +	/* Tear down the debugfs files before freeing the data structures they
->> +	 * operate on. debugfs_remove_recursive() waits for any in-flight file
->> +	 * operation (e.g. a write to "fib/nexthop_bucket_activity", which looks
->> +	 * up data->nexthop_ht) to finish and prevents new ones from starting,
->> +	 * so the rhashtables are not freed while a concurrent accessor still
->> +	 * dereferences them.
->> +	 */
->> +	nsim_fib_debugfs_exit(data);
-> 
-> Thanks for the patch. Let's try to keep both functions symmetric:
-> 
-> Call nsim_fib_debugfs_exit() just before unregister_fib_notifier().
-> 
-> Also, I would drop the comments.
-> 
->> +
->>  	devl_resource_occ_get_unregister(devlink,
->>  					 NSIM_RESOURCE_NEXTHOPS);
->>  	devl_resource_occ_get_unregister(devlink,
->> @@ -1665,6 +1681,5 @@ void nsim_fib_destroy(struct devlink *devlink, struct nsim_fib_data *data)
->>  	WARN_ON_ONCE(!list_empty(&data->fib_rt_list));
->>  	mutex_destroy(&data->fib_lock);
->>  	mutex_destroy(&data->nh_lock);
->> -	nsim_fib_debugfs_exit(data);
->>  	kfree(data);
->>  }
->> -- 
->> 2.43.0
->>
+Yeah ugh.
 
+>
+> Passing such a bit to mk_vma_flags() goes through __set_bit(41,
+> &one_long) and writes one word past the end. The compiler folds
+> the OOB store with wraparound (1UL << (41 % 32) == bit 9) into
+> the first word. Bit 9 is already in __VMA_UFFD_FLAGS so the mask
+> happens to come out right today, but any high-numbered bit whose
+
+That is... helpful :) but not great that this is the situation, an
+oversight, clearly! How I hate 32-bit kernels :)
+
+> mod-BITS_PER_LONG position is otherwise unused would silently OR
+> an extra bit into the mask.
+>
+> Add VMA_NO_BIT and have DECLARE_VMA_BIT() resolve any bitnum out
+> of range to it. vma_flags_set_flag() drops negative bit values.
+> The ternary collapses at compile time, the runtime check folds
+> away when the bit is in range, and the common path is unchanged.
+
+Hmm are you sure it does?
+
+A key design goal was that mk_vma_flags() generates compile-time constants
+the same as if the bitmap were constructed independently.
+
+This surely must generate code? Or at least runs a significant risk of it?
+
+Setting a precedent here would probably lead to VMA_NO_BIT being used more
+and therefore generating code in more places I think.
+
+And I'm not sure I really want to bend over backwards here to work around
+issues with 32-bit kernels when in the long run the intent is that we move
+to making these values 64-bit anyway.
+
+Perhaps it's even wise possibly to just make these values 64-bit already,
+ahead of time?
+
+(I did look at this in terms of wanting something like a VMA_NO_BIT so we
+could get VM_NONE-like behaviour but nothing I tried failed to generate
+code.)
+
+A simple solution that doesn't require change to the core is to just uglify
+userfaultfd_k.h a bit with:
+
+#ifdef HAVE_ARCH_USERFAULTFD_MINOR
+#define __VMA_UFFD_FLAGS mk_vma_flags(VMA_UFFD_MISSING_BIT, VMA_UFFD_WP_BIT, \
+				      VMA_UFFD_MINOR_BIT)
+#else
+#define __VMA_UFFD_FLAGS mk_vma_flags(VMA_UFFD_MISSING_BIT, VMA_UFFD_WP_BIT)
+#endif
+
+But of course that becomes much more horrible with your changes...
+
+Another alternative, which I used for VMA_DROPPABLE is to add something
+like this in mm.h:
+
+#ifdef CONFIG_HAVE_ARCH_USERFAULTFD_MINOR
+#define VM_UFFD_MINOR	INIT_VM_FLAG(UFFD_MINOR)
++define VMA_UFFD_MINOR	mk_vma_flags(VMA_UFFD_MINOR_BIT)
+#else
+#define VM_UFFD_MINOR	VM_NONE
++define VMA_UFFD_MINOR	EMPTY_VMA_FLAGS
+#endif
+
+Then we can do:
+
+#define __VMA_UFFD_FLAGS append_vma_flags(VMA_MINOR, VMA_UFFD_MISSING_BIT, \
+					  VMA_UFFD_WP_BIT)
+
+With you changes in 08/18 on top it'd get hairier, but we could make our
+life easier by implementing something like:
+
+static __always_inline vma_flags_t __mk_vma_flags_from_masks(size_t count,
+	const vma_flags_t *masks)
+{
+	vma_flags_t flags = EMPTY_VMA_FLAGS;
+	int i;
+
+	for (i = 0; i < count; i++)
+		mask = vma_flags_set_mask(&flags, masks[i]);
+
+	return flags;
+}
+
+#define mk_vma_flags_from_masks(...) __mk_vma_flags_from_masks(, \
+		COUNT_ARGS(__VA_ARGS__), (const vma_flags_t []){__VA_ARGS__})
+
+(untested code - you would need to ensure it generated equivalent
+constants as VM_xxx would now :)
+
+Then you could get VMA_UFFD_RWP with:
+
+#ifdef CONFIG_USERFAULTFD_RWP
+#define VMA_UFFD_RWP	mk_vma_flags(VMA_UFFD_RWP_BIT)
+#else
+#define VMA_UFFD_RWP	EMPTY_VMA_FLAGS
+#endif
+
+And then:
+
+
+/* Always available if CONFIG_USERFAULTFD set. */
+#define __VMA_UFFD_DEFAULT_FLAGS \
+		mk_vma_flags(VMA_UFFD_MISSING_BIT, VMA_UFFD_WP_BIT)
+
+#define __VMA_UFFD_FLAGS mk_vma_flags_from_masks(__VMA_UFFD_DEFAULT_FLAGS \
+		VMA_MINOR, VMA_RWP)
+
+Which is kind ok-ish right? I mean it's all a bit fugly obviously.
+
+>
+> Bits declared in the enum are now safe to pass to mk_vma_flags()
+> regardless of arch.
+
+I mean another issue here is we're then codifying behaviour that's legacy
+ahead of time. I really want to avoid that.
+
+>
+> Fixes: 9ea35a25d51b ("mm: introduce VMA flags bitmap type")
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Kiryl Shutsemau <kas@kernel.org>
+> ---
+>  include/linux/mm.h | 15 +++++++++++++--
+>  1 file changed, 13 insertions(+), 2 deletions(-)
+>
+> diff --git a/include/linux/mm.h b/include/linux/mm.h
+> index 0f2612a70fb1..71b11945e4fc 100644
+> --- a/include/linux/mm.h
+> +++ b/include/linux/mm.h
+> @@ -286,8 +286,17 @@ extern unsigned int kobjsize(const void *objp);
+>   */
+>  typedef int __bitwise vma_flag_t;
+>
+> -#define DECLARE_VMA_BIT(name, bitnum) \
+> -	VMA_ ## name ## _BIT = ((__force vma_flag_t)bitnum)
+> +/*
+> + * VMA_NO_BIT means "no bit"; mk_vma_flags() skips it. DECLARE_VMA_BIT()
+> + * below uses it for any bit number that doesn't fit in the bitmap, so
+> + * callers don't need to track which bits are valid on the current build.
+> + */
+> +#define VMA_NO_BIT	((__force vma_flag_t)-1)
+> +
+> +#define DECLARE_VMA_BIT(name, bitnum)					\
+> +	VMA_ ## name ## _BIT = (((bitnum) < NUM_VMA_FLAG_BITS) ?	\
+> +				((__force vma_flag_t)(bitnum)) :	\
+> +				VMA_NO_BIT)
+>  #define DECLARE_VMA_BIT_ALIAS(name, aliased) \
+>  	VMA_ ## name ## _BIT = (VMA_ ## aliased ## _BIT)
+>  enum {
+> @@ -1081,6 +1090,8 @@ static __always_inline void vma_flags_set_flag(vma_flags_t *flags,
+>  {
+>  	unsigned long *bitmap = flags->__vma_flags;
+>
+> +	if ((__force int)bit < 0)
+> +		return;
+>  	__set_bit((__force int)bit, bitmap);
+>  }
+>
+> --
+> 2.54.0
+>
+
+Either way, I think we should break out any fix like this from the series.
+
+Andrew is I think also not a fan of fixes patches in the middle of series
+anyway :P
+
+Cheers, Lorenzo
 
