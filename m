@@ -1,168 +1,162 @@
-Return-Path: <stable+bounces-256628-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-256629-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id eL+QMlOLGWosxggAu9opvQ
-	(envelope-from <stable+bounces-256628-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 29 May 2026 14:49:23 +0200
+	id SEvgNp2NGWpTxggAu9opvQ
+	(envelope-from <stable+bounces-256629-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 29 May 2026 14:59:09 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7829060276C
-	for <lists+stable@lfdr.de>; Fri, 29 May 2026 14:49:23 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7C813602947
+	for <lists+stable@lfdr.de>; Fri, 29 May 2026 14:59:09 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id C927730170B9
-	for <lists+stable@lfdr.de>; Fri, 29 May 2026 12:49:22 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id BC5C230391D9
+	for <lists+stable@lfdr.de>; Fri, 29 May 2026 12:55:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C48C823C39A;
-	Fri, 29 May 2026 12:49:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 62B1B2DCF46;
+	Fri, 29 May 2026 12:55:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="IQw04np3"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="HKme3PJu"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-wm1-f43.google.com (mail-wm1-f43.google.com [209.85.128.43])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4A61323E342
-	for <stable@vger.kernel.org>; Fri, 29 May 2026 12:49:16 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.43
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3E6B92C21E8;
+	Fri, 29 May 2026 12:55:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780058959; cv=none; b=sAJFebYvrG+Ju+BW8SN1cSbCwZo8IWU9jzx6Pc692Emat1zClqYFeDbsLmmuJsfTZcgVDZESqL0Dgxwsignxi8jGixNmiNKiVgVl2/5L55IILK9dS8WCVcRncF53h1pKZ49wr9/q6lt3a/IIo7R8GnKiU3AQ1+Ykm+e2FhZ7mNs=
+	t=1780059348; cv=none; b=eYuLjFCUiRkTpW9vHJAtjKJH3Orpaf487dqPJFQ1aW3i/ZqN8V87dKqQ5R6FQ++ckPJwvXi0umdBNRRl2xaOdxtrpQNJcsm0Nw5hWTU0lkpvUFxRzv63AmJ5qdA0ErXBoecFzJlSMc8Gx7EPKyKRD7DIj0kHkI1vRKGoGiz7YIg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780058959; c=relaxed/simple;
-	bh=o1aNfHq1uozEsSWkvZYZ4Uu4NkcthQtaXLPjQAF+8FY=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=AlvsunhjcEA9b5W7I4lSQltJNbWMmaRcGGLH1KFVpgjwK7mEXtDxRrJ6W/XSJoQ4BN/9GyrF/7PyZDP2jYg4zjYi7WzGm2UtPYBHuxrJmZNuirKx92/36lyUMXxOH1qBrFENALQsd48jmKa/EyjlHszX1ZltsNql750Xw3LLfmw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=IQw04np3; arc=none smtp.client-ip=209.85.128.43
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-wm1-f43.google.com with SMTP id 5b1f17b1804b1-49039a8851fso82859455e9.2
-        for <stable@vger.kernel.org>; Fri, 29 May 2026 05:49:16 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1780058954; x=1780663754; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:subject:cc:to:from:date:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=8GDkBuC5UsNjEzh9y+dU4msIG/STJQsz4VWpz07Z1rE=;
-        b=IQw04np3xkUH8X1m0vyC/KA68XT8buwEr5wY09anqrHW2lGgbHny0Kpz9yyVqzJlQd
-         vdMfooIP06MWjYhqWpVax6gAEBb/kvtONdlIkVITetWm38zSIVhJSnG4ovtFPMI/Ps3w
-         pCjC2a/n3ZWMUT5VayCLIENIE0l+G4fFszHVo3sEQdK/gxstJcA2H7ohgj5DY1Vgm78e
-         vSiTCkcu/D+fNSWY1G9mTu11kXth4pVslItyqwhpzfhldUzqtt+YixNXzM3j3gjCio6U
-         mgUZiEaGZ2I6Gz5qI3d9fkLttNUPg3fdF0M1c64OMWkvbOlBvp7rTaVqMzXnynCIYS5o
-         VzHA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1780058954; x=1780663754;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=8GDkBuC5UsNjEzh9y+dU4msIG/STJQsz4VWpz07Z1rE=;
-        b=qH6etLibWe4Ml/XPn/MLZwl1+3QdjUsGR8aA7uzF9wvR5eEOG2qbthrAemLxsgFPzH
-         SfBF+qqaCbqmgfTqnEOqOUJiVUCGdipq7rBOqPyt79vdaG1cURURzSimb7lnq9LzY2mB
-         sV8NnSQXlauwCFu4RI29O8qoYZ88AsNY/4halaw/RafLo8PuY1XPz2VRMTAFMqykRMqN
-         03hDjNngfJKr9OrjgT1oExpS1dbiQlyVOjZya0h1m4JJF8u1uPMmZjrmUZx7H3dNhmr/
-         ZhyQEXRYGFtDqfJ1Skh/e9n7OV2WVNfm9LWr65eedao4Z4HMPzVdK1q1+AuZC1dCq/ir
-         Ykcw==
-X-Gm-Message-State: AOJu0YxAUWwIV8vRgNUgbE4N1jK4NN8gJIL49/iDiYdVBZWhV06JMSx9
-	bme4Y+XTTpcPJVwyAuQoiScimDySo1t07EPC2ytaGoDxnX77H9IxRKJpVD4VGucz
-X-Gm-Gg: Acq92OFK8oOodgfS3pI/TQVonhobE5Y/qcBKlcY0Ek/zyOeus1UgXarUChUL2z0WPoQ
-	QqeiUX7HkcOptbxxzVjCWBemiu4/0AjrhG0tBeHVZjfBdG6ikUrBqu91CKHp1qnnsmZCnCTQaD4
-	2BIZv1Pu8UCw+sqsHybEMYvVM2z+H3h7w7u5McCLw5ikbGnEQVqwO9Hx4xzwYW8dmHtuOgN7MEp
-	qnFfZ7T69rp9KMLml/F7CnRFp0Ec/sztXdBEV3LNHXxeajyIJKeQ8cRYU+FbJQcgt7skRiSC48k
-	CsjyehouGpYs8QOhX8MOmwN9OvX5EjrfUHjr6mneiq7/l9gEeMov97+Yv7dXYiLPaq7Vf9LpFEp
-	g7zly2Bxp1Me6+MOHDEZR2zr7NnQO+MIgwPcdg2ETYIYhQqaq2F6c8SpFlzjyF8LnZ9Rfb2hpZ2
-	VTpZHiZxVjcWKgkhKKshYAC4jKtAyvAyci14oBwUqkPnA5EkyYpNEiBEJIoGjNZ7qrn35TUzI=
-X-Received: by 2002:a05:600c:8508:b0:48f:e230:80a2 with SMTP id 5b1f17b1804b1-4909c0ce6bfmr51557605e9.32.1780058954425;
-        Fri, 29 May 2026 05:49:14 -0700 (PDT)
-Received: from pumpkin (82-69-66-36.dsl.in-addr.zen.co.uk. [82.69.66.36])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4909c1049f8sm13781475e9.18.2026.05.29.05.49.13
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 29 May 2026 05:49:14 -0700 (PDT)
-Date: Fri, 29 May 2026 13:49:11 +0100
-From: David Laight <david.laight.linux@gmail.com>
-To: Andrzej Kacprowski <andrzej.kacprowski@linux.intel.com>
-Cc: stable@vger.kernel.org
-Subject: Re: [PATCH] accel/ivpu: Fix signed integer truncation in IPC
- receive
-Message-ID: <20260529134911.40728b88@pumpkin>
-In-Reply-To: <20260529115005.131888-1-andrzej.kacprowski@linux.intel.com>
-References: <20260529115005.131888-1-andrzej.kacprowski@linux.intel.com>
-X-Mailer: Claws Mail 4.1.1 (GTK 3.24.38; arm-unknown-linux-gnueabihf)
+	s=arc-20240116; t=1780059348; c=relaxed/simple;
+	bh=rf9ietTEoUdNUWP+4Xs/on4TPwZiiiKAB2KYgWpPhmg=;
+	h=From:To:Cc:In-Reply-To:References:Subject:Message-Id:Date:
+	 MIME-Version:Content-Type; b=I1kTxr6A2QhFCoXObyPg9oLOdWIYUQlAPs6e8Neo7Rg4OpNdfxcFbZAlB/GatxFAeJlPcOF8wC1ffzy9yQNj/Vtv7C06fMqkJ1qHz9zCwJpX/rrmiKUKbD3whm0IUXYuSU57OdJkErnZjt17CAt9CaL9v6ymsAT+HDoEZpVifQM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=HKme3PJu; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CF6271F00893;
+	Fri, 29 May 2026 12:55:33 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1780059346;
+	bh=+6AiMcZa3bd0LPjamkN4r9S9jW+Apu//pCbttaoWdDI=;
+	h=From:To:Cc:In-Reply-To:References:Subject:Date;
+	b=HKme3PJuW/g8Xe3fa9pH4ndcExyYxHcd2cNlg9NECKqK4v1asLZhvhZEXzEeGPFwC
+	 krMU26G83m8iPSglCfYKCqgciw6JWvcuzjQUTI3wFtoI62nF0UChddzGFraXimF9pJ
+	 1k54Uu9U94IdLdsnRGH4hwmLSLP/pSSK0uKpJsDzqk30FcWpIwESOtKLiumR4V+6As
+	 unm055hDnQ1A4hKk4u4dzRoTU87SIvLvelBGdBip7ZDoIZon4MXvQ/IpRhuSbyjuUY
+	 udebOV+LpQuBbeFt6sWaU5lZ0itKuFGMHeMAFQa8OxgbyKZLGpVxsvBB1IjU2d1o4J
+	 48Eb2LMB+rd1A==
+From: Srinivas Kandagatla <srini@kernel.org>
+To: Lee Jones <lee@kernel.org>, 
+ Mark Brown <broonie@opensource.wolfsonmicro.com>, 
+ Thierry Reding <thierry.reding@avionic-design.de>, 
+ Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>, 
+ Andrew Lunn <andrew+netdev@lunn.ch>, 
+ "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
+ Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
+ Vinod Koul <vkoul@kernel.org>, "Rafael J. Wysocki" <rafael@kernel.org>, 
+ Danilo Krummrich <dakr@kernel.org>, Rob Herring <robh@kernel.org>, 
+ Saravana Kannan <saravanak@kernel.org>, 
+ Madhavan Srinivasan <maddy@linux.ibm.com>, 
+ Michael Ellerman <mpe@ellerman.id.au>, Nicholas Piggin <npiggin@gmail.com>, 
+ "Christophe Leroy (CS GROUP)" <chleroy@kernel.org>, 
+ Andi Shyti <andi.shyti@kernel.org>, 
+ Andy Shevchenko <andriy.shevchenko@linux.intel.com>, 
+ Joerg Roedel <joro@8bytes.org>, Will Deacon <will@kernel.org>, 
+ Robin Murphy <robin.murphy@arm.com>, Doug Berger <opendmb@gmail.com>, 
+ Florian Fainelli <florian.fainelli@broadcom.com>, 
+ Broadcom internal kernel review list <bcm-kernel-feedback-list@broadcom.com>, 
+ Ulf Hansson <ulfh@kernel.org>, Frank Li <Frank.Li@nxp.com>, 
+ Sascha Hauer <s.hauer@pengutronix.de>, 
+ Pengutronix Kernel Team <kernel@pengutronix.de>, 
+ Fabio Estevam <festevam@gmail.com>, Matthew Brost <matthew.brost@intel.com>, 
+ =?utf-8?q?Thomas_Hellstr=C3=B6m?= <thomas.hellstrom@linux.intel.com>, 
+ Rodrigo Vivi <rodrigo.vivi@intel.com>, David Airlie <airlied@gmail.com>, 
+ Simona Vetter <simona@ffwll.ch>, Peter Chen <peter.chen@kernel.org>, 
+ Paul Cercueil <paul@crapouillou.net>, Bin Liu <b-liu@ti.com>, 
+ Philipp Zabel <p.zabel@pengutronix.de>, 
+ Maximilian Luz <luzmaximilian@gmail.com>, Hans de Goede <hansg@kernel.org>, 
+ =?utf-8?q?Ilpo_J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>, 
+ Krzysztof Kozlowski <krzk@kernel.org>, 
+ Benjamin Herrenschmidt <benh@kernel.crashing.org>, 
+ Bartosz Golaszewski <bartosz.golaszewski@oss.qualcomm.com>
+Cc: brgl@kernel.org, linux-kernel@vger.kernel.org, netdev@vger.kernel.org, 
+ linux-arm-msm@vger.kernel.org, linux-sound@vger.kernel.org, 
+ driver-core@lists.linux.dev, devicetree@vger.kernel.org, 
+ linuxppc-dev@lists.ozlabs.org, linux-i2c@vger.kernel.org, 
+ iommu@lists.linux.dev, linux-pm@vger.kernel.org, imx@lists.linux.dev, 
+ linux-arm-kernel@lists.infradead.org, intel-xe@lists.freedesktop.org, 
+ dri-devel@lists.freedesktop.org, linux-usb@vger.kernel.org, 
+ linux-mips@vger.kernel.org, platform-driver-x86@vger.kernel.org, 
+ stable@vger.kernel.org
+In-Reply-To: <20260521-pdev-fwnode-ref-v1-0-88c324a1b8d2@oss.qualcomm.com>
+References: <20260521-pdev-fwnode-ref-v1-0-88c324a1b8d2@oss.qualcomm.com>
+Subject: Re: (subset) [PATCH 00/23] driver core: count references of the
+ platform device's fwnode, not OF node
+Message-Id: <178005933352.9337.17178239685242465219.b4-ty@kernel.org>
+Date: Fri, 29 May 2026 13:55:33 +0100
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Mailer: b4 0.14.3
+X-Spamd-Result: default: False [-0.66 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
-	MID_RHS_NOT_FQDN(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
-	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
+	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20260515];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	RCPT_COUNT_TWO(0.00)[2];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-256628-lists,stable=lfdr.de];
-	TO_DN_SOME(0.00)[];
-	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-256629-lists,stable=lfdr.de];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[5];
+	RCVD_COUNT_THREE(0.00)[4];
+	FREEMAIL_TO(0.00)[kernel.org,opensource.wolfsonmicro.com,avionic-design.de,gmail.com,lunn.ch,davemloft.net,google.com,redhat.com,linuxfoundation.org,linux.ibm.com,ellerman.id.au,linux.intel.com,8bytes.org,arm.com,broadcom.com,nxp.com,pengutronix.de,intel.com,ffwll.ch,crapouillou.net,ti.com,kernel.crashing.org,oss.qualcomm.com];
+	RCVD_TLS_LAST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[kernel.org:+];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	TO_DN_SOME(0.00)[];
+	RCPT_COUNT_GT_50(0.00)[66];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[davidlaightlinux@gmail.com,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[gmail.com:+];
+	FROM_NEQ_ENVFROM(0.00)[srini@kernel.org,stable@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
+	TAGGED_RCPT(0.00)[stable,netdev];
+	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
-	FREEMAIL_FROM(0.00)[gmail.com];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,intel.com:email]
-X-Rspamd-Queue-Id: 7829060276C
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo]
+X-Rspamd-Queue-Id: 7C813602947
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-On Fri, 29 May 2026 13:50:05 +0200
-Andrzej Kacprowski <andrzej.kacprowski@linux.intel.com> wrote:
 
-> Fix potential buffer overflow where firmware-supplied data_size is cast
-> to signed int before being used in min_t(). Large unsigned values
-> (>= 0x80000000) become negative, causing unsigned wraparound and  
-> oversized memcpy operations that can overflow the stack buffer.
+On Thu, 21 May 2026 10:36:23 +0200, Bartosz Golaszewski wrote:
+> I'd like to first apologize for the long, treewide series and an
+> extensive Cc list but I think it's important to show the big picture and
+> the end result of this rework.
 > 
-> Change min_t(int, ...) to min_t(u32, ...) to ensure large values are
-> properly clamped instead of becoming negative.
-
-Just use min(), no need for the casts that min_t() adds.
-
-This is another (slightly unusual) example of why min_t() is broken.
-Even with min() doing strict type checks the correct fix would have been to
-use (u32)sizeof(*jsm_msg) - and completely ignore what checkpatch says.
-
--- David
-
+> Platform device core provides helper interfaces for dealing with
+> dynamically created platform devices. Most users should use
+> platform_device_register_full() which encapsulates most of the
+> operations but some modules will want to use the split approach of
+> calling platform_device_alloc() + platform_device_add() separately for
+> various reasons.
 > 
-> Fixes: 3b434a3445ff ("accel/ivpu: Use threaded IRQ to handle JOB done messages")
-> Cc: <stable@vger.kernel.org> # v6.18+
-> Signed-off-by: Andrzej Kacprowski <andrzej.kacprowski@linux.intel.com>
-> ---
->  drivers/accel/ivpu/ivpu_ipc.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
-> 
-> diff --git a/drivers/accel/ivpu/ivpu_ipc.c b/drivers/accel/ivpu/ivpu_ipc.c
-> index f47df092bb0d..9980a7898bed 100644
-> --- a/drivers/accel/ivpu/ivpu_ipc.c
-> +++ b/drivers/accel/ivpu/ivpu_ipc.c
-> @@ -276,7 +276,7 @@ int ivpu_ipc_receive(struct ivpu_device *vdev, struct ivpu_ipc_consumer *cons,
->  	if (ipc_buf)
->  		memcpy(ipc_buf, rx_msg->ipc_hdr, sizeof(*ipc_buf));
->  	if (rx_msg->jsm_msg) {
-> -		u32 size = min_t(int, rx_msg->ipc_hdr->data_size, sizeof(*jsm_msg));
-> +		u32 size = min_t(u32, rx_msg->ipc_hdr->data_size, sizeof(*jsm_msg));
->  
->  		if (rx_msg->jsm_msg->result != VPU_JSM_STATUS_SUCCESS) {
->  			ivpu_err(vdev, "IPC resp result error: %d\n", rx_msg->jsm_msg->result);
+> [...]
+
+Applied, thanks!
+
+[03/23] slimbus: qcom-ngd-ctrl: fix OF node refcount
+        commit: 0208edaf0b32cae5b922729c4ef52dcd865e2e19
+
+Best regards,
+-- 
+Srinivas Kandagatla <srini@kernel.org>
 
 
