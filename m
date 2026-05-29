@@ -1,63 +1,60 @@
-Return-Path: <stable+bounces-256820-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-256818-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id mIAQLHIjGmow1wgAu9opvQ
-	(envelope-from <stable+bounces-256820-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 01:38:26 +0200
+	id OCVzG2EiGmow1wgAu9opvQ
+	(envelope-from <stable+bounces-256818-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 01:33:53 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 738D5609DAD
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 01:38:26 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id F1BC4609C3E
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 01:33:52 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id EA58E30683FC
-	for <lists+stable@lfdr.de>; Fri, 29 May 2026 23:34:43 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 0FC033059FA5
+	for <lists+stable@lfdr.de>; Fri, 29 May 2026 23:33:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 553E63B7750;
-	Fri, 29 May 2026 23:34:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B62443C3C1E;
+	Fri, 29 May 2026 23:33:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Qm46BBSS"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="RocYaN3Y"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CCE3E35AC07;
-	Fri, 29 May 2026 23:34:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BD4FB3C0A12
+	for <stable@vger.kernel.org>; Fri, 29 May 2026 23:33:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780097681; cv=none; b=cnYCFO9YEP4g2eeBxfGV2HTnVFjgPUhyCnHjquS2QryHRefFgtxLS9PuvwfRL8h5pWrkxTWsr2dXh9S5EVyv6+EdmSEDhUc/NaMSvmn8ST+uSPdckOS3voGZ4b05aGekxfDiDhEXuF9xXrFKlfOgrlEmYB1YpuxjAOB4zczR2vI=
+	t=1780097609; cv=none; b=KsXO2SA5h8kjjcLca8bZwYRp+lyZCOPUfQNWIiw0LAg5+C5qg2jVqWRz01TZZBYeblNkfFjcJZN22VU3NaNQJ5lWmkckfZ1spp83X0WVI6BoKJ3ZHR9x4IpnI790sh6dPEJu9Tpn29y5iN7Ab3/NQweMfRhc71r747WihnRvag4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780097681; c=relaxed/simple;
-	bh=b8Kck+xuHwWrflj4CXJK6WlvQP8VgGSpelKBTEAkHWo=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=StffH/249UAfzS+uD0N+TeuetgR2SiEBnC2yoiG17phGsmR8QvQREHJziuRDYRr3pPr7u6GovWftzUd3/FDbBgncmMsaNDUMMxMWu4xTOsRqSKcN4KqEsQq7ROrY0PhX55/4Dn4CXN7gK9S9T5NfV4LyksJ5aBWa45NVRA8yoCM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Qm46BBSS; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1C5D11F00893;
-	Fri, 29 May 2026 23:34:39 +0000 (UTC)
+	s=arc-20240116; t=1780097609; c=relaxed/simple;
+	bh=1MKLDni8SB4UFA+FMtRekHF1p+ors6PMGRd8O+gFRfU=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=A5Ev3OFyS6IzXBVveTzj0pvf0QzbaaxKkAE2UigmNv5c7G02nZ8qQPc1aaQ4qFkxB58oWpl18fW06ATftq9CixN4zlZ0Ett0wvhvEH4Pdl+e5EuMEtL0CzJMeG56sEm7d72DQFHOhJyU5Slz1Hbgn4pD4It8MgJoaUb0gBwncVk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=RocYaN3Y; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 30E4E1F00893;
+	Fri, 29 May 2026 23:33:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1780097679;
-	bh=v5fZjVvIPi8DCkgOLIKe29rCtOkSMS7f2MSh2pmPCnw=;
-	h=From:To:Cc:Subject:Date;
-	b=Qm46BBSSjglxlGIPd4ehemTzUm94BNxqqvVNMJAu7weG6clBqZ3qzSWZEsLyaDJ51
-	 a+3mq0iAR1TAkVIh5tSEGBA4QEg7RgANZcznYFyK3V+RV0p7LHSMTb0O7VRP89c9Yu
-	 zghpEBtLkxBEag4Z12drDKGiDNA5Fa/u3pLsMDg2vM6e2sQPWDLREUEzyUJRwkCcKt
-	 4vIZp+uU3KsBQX2v8gwh+pHofS017vbAoXfawSJw3Txo+dLtt6tZ2tVNo/O6GkVmEN
-	 1rQeA6Egl6Dl2ejOe+pkXr3mcgr4vw+aUJgxJsB3ZqmPevh2lbLsaLkkGmFKpxt31z
-	 P1enIaZKdcYRg==
-From: Eric Biggers <ebiggers@kernel.org>
-To: linux-crypto@vger.kernel.org,
-	Herbert Xu <herbert@gondor.apana.org.au>
-Cc: linux-kernel@vger.kernel.org,
-	loongarch@lists.linux.dev,
-	Qunqin Zhao <zhaoqunqin@loongson.cn>,
-	Huacai Chen <chenhuacai@kernel.org>,
-	Yinggang Gu <guyinggang@loongson.cn>,
-	Lee Jones <lee@kernel.org>,
-	Eric Biggers <ebiggers@kernel.org>,
-	stable@vger.kernel.org
-Subject: [PATCH] crypto: loongson - Remove broken and unused loongson-rng
-Date: Fri, 29 May 2026 16:32:08 -0700
-Message-ID: <20260529233208.8703-1-ebiggers@kernel.org>
-X-Mailer: git-send-email 2.54.0
+	s=k20260515; t=1780097607;
+	bh=gVAJHNxfqYnH3DBLKbSP/o25PtG0/+cNKlA9JqgCWYc=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References;
+	b=RocYaN3YKMUo6/xQlmNHiguhLjDYRNskcQvf7Y9F79CrTY8F9/d3b7zn+xCvbNjLP
+	 QzPbqnrc3CyaZiJgY8GN9HGTvtNb9UrZC3boJ8HjlvjKYWzqyusj5lHYm2jFjoAB6N
+	 sHtI2LcVmHuTVG2cHlbU/c4HdBqcndrMp6T/4l5134sBEmijzwS+7msdFMb4u7OVvb
+	 kBw2VeEw1JDj30EI/xJqp/9ftWwuYYF8olLjZJsMod4nD8ra/hvtjC4ziY/FoScX32
+	 f0YITQQ61T/BcGBrMbVlPdrQR8W/iZlBgzq2DSdKcixFrSMfLKIau0RuCLdB7PnL2v
+	 fdB3JmCeDOZHQ==
+From: Sasha Levin <sashal@kernel.org>
+To: stable@vger.kernel.org
+Cc: Christophe JAILLET <christophe.jaillet@wanadoo.fr>,
+	"David S. Miller" <davem@davemloft.net>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10.y 1/2] qed: Use the bitmap API to simplify some functions
+Date: Fri, 29 May 2026 19:33:24 -0400
+Message-ID: <20260529233325.1901920-1-sashal@kernel.org>
+X-Mailer: git-send-email 2.53.0
+In-Reply-To: <2026052809-snowfall-thermos-6a66@gregkh>
+References: <2026052809-snowfall-thermos-6a66@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -66,390 +63,130 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-0.66 / 15.00];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	MID_CONTAINS_FROM(1.00)[];
-	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
 	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20260515];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-256820-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	FROM_NEQ_ENVFROM(0.00)[ebiggers@kernel.org,stable@vger.kernel.org];
+	FREEMAIL_CC(0.00)[wanadoo.fr,davemloft.net,kernel.org];
+	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[10];
-	NEURAL_HAM(-0.00)[-1.000];
-	DKIM_TRACE(0.00)[kernel.org:+];
-	TAGGED_RCPT(0.00)[stable];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-256818-lists,stable=lfdr.de];
+	RCPT_COUNT_THREE(0.00)[4];
 	TO_DN_SOME(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	DKIM_TRACE(0.00)[kernel.org:+];
+	NEURAL_HAM(-0.00)[-1.000];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[loongson.cn:email,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo]
-X-Rspamd-Queue-Id: 738D5609DAD
+	TAGGED_RCPT(0.00)[stable];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo]
+X-Rspamd-Queue-Id: F1BC4609C3E
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-The loongson-rng rng_alg has several vulnerabilities, including not
-providing forward security, and a use-after-free bug due to the use of
-wait_for_completion_interruptible().
+From: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
 
-Meanwhile, the rng_alg framework doesn't really have any purpose in the
-first place other than to access the software algorithms crypto/drbg.c
-and crypto/jitterentropy.c.  Hardware-specific rng_algs have no
-in-kernel user, and unlike hwrng there's no feed into the actual Linux
-RNG.  As such, there's really no point to this code.  There are of
-course other rng_alg drivers that are similarly unused, but they're
-similarly in the process of being phased out, e.g.
-https://lore.kernel.org/r/20260529193648.18172-1-ebiggers@kernel.org and
-https://lore.kernel.org/r/20260529220430.34135-1-ebiggers@kernel.org
+[ Upstream commit 5e6c7ccd3ea4b25dd6b4b0363859913f315deacb ]
 
-Given that, there's no point in fixing forward these vulnerabilities,
-and it makes much more sense to simply roll back the addition of this
-driver.  If this platform provides TRNG (not PRNG) functionality, it
-could make sense to add a hwrng driver, but it would be quite different.
+'cid_map' is a bitmap. So use 'bitmap_zalloc()' to simplify code,
+improve the semantic and avoid some open-coded arithmetic in allocator
+arguments.
 
-Link: https://lore.kernel.org/linux-crypto/20260525145939.GC2018@quark/
-Fixes: 766b2d724c8d ("crypto: loongson - add Loongson RNG driver support")
-Cc: stable@vger.kernel.org
-Signed-off-by: Eric Biggers <ebiggers@kernel.org>
+Also change the corresponding 'kfree()' into 'bitmap_free()' to keep
+consistency.
+
+Also change some 'memset()' into 'bitmap_zero()' to keep consistency. This
+is also much less verbose.
+
+Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+Signed-off-by: David S. Miller <davem@davemloft.net>
+Stable-dep-of: 2bccfb8476ca ("qed: fix double free in qed_cxt_tables_alloc()")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- MAINTAINERS                                 |   1 -
- arch/loongarch/configs/loongson32_defconfig |   1 -
- arch/loongarch/configs/loongson64_defconfig |   1 -
- drivers/crypto/Kconfig                      |   1 -
- drivers/crypto/Makefile                     |   1 -
- drivers/crypto/loongson/Kconfig             |   6 -
- drivers/crypto/loongson/Makefile            |   1 -
- drivers/crypto/loongson/loongson-rng.c      | 209 --------------------
- 8 files changed, 221 deletions(-)
- delete mode 100644 drivers/crypto/loongson/Kconfig
- delete mode 100644 drivers/crypto/loongson/Makefile
- delete mode 100644 drivers/crypto/loongson/loongson-rng.c
+ drivers/net/ethernet/qlogic/qed/qed_cxt.c | 24 +++++------------------
+ 1 file changed, 5 insertions(+), 19 deletions(-)
 
-diff --git a/MAINTAINERS b/MAINTAINERS
-index 882214b0e7db..6c805560c77c 100644
---- a/MAINTAINERS
-+++ b/MAINTAINERS
-@@ -15068,11 +15068,10 @@ F:	drivers/pwm/pwm-loongson.c
- LOONGSON SECURITY ENGINE DRIVERS
- M:	Qunqin Zhao <zhaoqunqin@loongson.cn>
- L:	linux-crypto@vger.kernel.org
- S:	Maintained
- F:	drivers/char/tpm/tpm_loongson.c
--F:	drivers/crypto/loongson/
- F:	drivers/mfd/loongson-se.c
- F:	include/linux/mfd/loongson-se.h
+diff --git a/drivers/net/ethernet/qlogic/qed/qed_cxt.c b/drivers/net/ethernet/qlogic/qed/qed_cxt.c
+index 1c3737921b6cf..8fc8f428266a9 100644
+--- a/drivers/net/ethernet/qlogic/qed/qed_cxt.c
++++ b/drivers/net/ethernet/qlogic/qed/qed_cxt.c
+@@ -1037,12 +1037,12 @@ static void qed_cid_map_free(struct qed_hwfn *p_hwfn)
+ 	u32 type, vf;
  
- LOONGSON-2 SOC SERIES CLOCK DRIVER
- M:	Yinbo Zhu <zhuyinbo@loongson.cn>
-diff --git a/arch/loongarch/configs/loongson32_defconfig b/arch/loongarch/configs/loongson32_defconfig
-index d5ef396dffe3..82897236863f 100644
---- a/arch/loongarch/configs/loongson32_defconfig
-+++ b/arch/loongarch/configs/loongson32_defconfig
-@@ -1089,11 +1089,10 @@ CONFIG_CRYPTO_LZ4HC=m
- CONFIG_CRYPTO_USER_API_HASH=m
- CONFIG_CRYPTO_USER_API_SKCIPHER=m
- CONFIG_CRYPTO_USER_API_RNG=m
- CONFIG_CRYPTO_USER_API_AEAD=m
- CONFIG_CRYPTO_DEV_VIRTIO=m
--CONFIG_CRYPTO_DEV_LOONGSON_RNG=m
- CONFIG_DMA_CMA=y
- CONFIG_CMA_SIZE_MBYTES=0
- CONFIG_PRINTK_TIME=y
- CONFIG_STRIP_ASM_SYMS=y
- CONFIG_MAGIC_SYSRQ=y
-diff --git a/arch/loongarch/configs/loongson64_defconfig b/arch/loongarch/configs/loongson64_defconfig
-index cba4cdff5acd..a94e88bd7ec5 100644
---- a/arch/loongarch/configs/loongson64_defconfig
-+++ b/arch/loongarch/configs/loongson64_defconfig
-@@ -1122,11 +1122,10 @@ CONFIG_CRYPTO_LZ4HC=m
- CONFIG_CRYPTO_USER_API_HASH=m
- CONFIG_CRYPTO_USER_API_SKCIPHER=m
- CONFIG_CRYPTO_USER_API_RNG=m
- CONFIG_CRYPTO_USER_API_AEAD=m
- CONFIG_CRYPTO_DEV_VIRTIO=m
--CONFIG_CRYPTO_DEV_LOONGSON_RNG=m
- CONFIG_DMA_CMA=y
- CONFIG_DMA_NUMA_CMA=y
- CONFIG_CMA_SIZE_MBYTES=0
- CONFIG_PRINTK_TIME=y
- CONFIG_STRIP_ASM_SYMS=y
-diff --git a/drivers/crypto/Kconfig b/drivers/crypto/Kconfig
-index 3449b3c9c6ad..075ec9432789 100644
---- a/drivers/crypto/Kconfig
-+++ b/drivers/crypto/Kconfig
-@@ -844,11 +844,10 @@ config CRYPTO_DEV_CCREE
- 	  Choose this if you wish to use hardware acceleration of
- 	  cryptographic operations on the system REE.
- 	  If unsure say Y.
+ 	for (type = 0; type < MAX_CONN_TYPES; type++) {
+-		kfree(p_mngr->acquired[type].cid_map);
++		bitmap_free(p_mngr->acquired[type].cid_map);
+ 		p_mngr->acquired[type].max_count = 0;
+ 		p_mngr->acquired[type].start_cid = 0;
  
- source "drivers/crypto/hisilicon/Kconfig"
--source "drivers/crypto/loongson/Kconfig"
+ 		for (vf = 0; vf < MAX_NUM_VFS; vf++) {
+-			kfree(p_mngr->acquired_vf[type][vf].cid_map);
++			bitmap_free(p_mngr->acquired_vf[type][vf].cid_map);
+ 			p_mngr->acquired_vf[type][vf].max_count = 0;
+ 			p_mngr->acquired_vf[type][vf].start_cid = 0;
+ 		}
+@@ -1055,15 +1055,10 @@ qed_cid_map_alloc_single(struct qed_hwfn *p_hwfn,
+ 			 u32 cid_start,
+ 			 u32 cid_count, struct qed_cid_acquired_map *p_map)
+ {
+-	u32 size;
+-
+ 	if (!cid_count)
+ 		return 0;
  
- source "drivers/crypto/amlogic/Kconfig"
+-	size = DIV_ROUND_UP(cid_count,
+-			    sizeof(unsigned long) * BITS_PER_BYTE) *
+-	       sizeof(unsigned long);
+-	p_map->cid_map = kzalloc(size, GFP_KERNEL);
++	p_map->cid_map = bitmap_zalloc(cid_count, GFP_KERNEL);
+ 	if (!p_map->cid_map)
+ 		return -ENOMEM;
  
- config CRYPTO_DEV_SA2UL
- 	tristate "Support for TI security accelerator"
-diff --git a/drivers/crypto/Makefile b/drivers/crypto/Makefile
-index 283bbc650b5b..ad773158ae56 100644
---- a/drivers/crypto/Makefile
-+++ b/drivers/crypto/Makefile
-@@ -41,11 +41,10 @@ obj-$(CONFIG_CRYPTO_DEV_VIRTIO) += virtio/
- obj-$(CONFIG_CRYPTO_DEV_BCM_SPU) += bcm/
- obj-y += inside-secure/
- obj-$(CONFIG_CRYPTO_DEV_ARTPEC6) += axis/
- obj-y += xilinx/
- obj-y += hisilicon/
--obj-y += loongson/
- obj-$(CONFIG_CRYPTO_DEV_AMLOGIC_GXL) += amlogic/
- obj-y += intel/
- obj-y += starfive/
- obj-y += cavium/
- obj-y += ti/
-diff --git a/drivers/crypto/loongson/Kconfig b/drivers/crypto/loongson/Kconfig
-deleted file mode 100644
-index f4e1544ffbb4..000000000000
---- a/drivers/crypto/loongson/Kconfig
-+++ /dev/null
-@@ -1,6 +0,0 @@
--config CRYPTO_DEV_LOONGSON_RNG
--	tristate "Support for Loongson RNG Driver"
--	depends on MFD_LOONGSON_SE
--	select CRYPTO_RNG
--	help
--	  Support for Loongson RNG Driver.
-diff --git a/drivers/crypto/loongson/Makefile b/drivers/crypto/loongson/Makefile
-deleted file mode 100644
-index 1ce5ec32b553..000000000000
---- a/drivers/crypto/loongson/Makefile
-+++ /dev/null
-@@ -1 +0,0 @@
--obj-$(CONFIG_CRYPTO_DEV_LOONGSON_RNG)  += loongson-rng.o
-diff --git a/drivers/crypto/loongson/loongson-rng.c b/drivers/crypto/loongson/loongson-rng.c
-deleted file mode 100644
-index 3a4940260f9e..000000000000
---- a/drivers/crypto/loongson/loongson-rng.c
-+++ /dev/null
-@@ -1,209 +0,0 @@
--// SPDX-License-Identifier: GPL-2.0
--/* Copyright (c) 2019 HiSilicon Limited. */
--/* Copyright (c) 2025 Loongson Technology Corporation Limited. */
--
--#include <linux/crypto.h>
--#include <linux/err.h>
--#include <linux/hw_random.h>
--#include <linux/io.h>
--#include <linux/iopoll.h>
--#include <linux/kernel.h>
--#include <linux/list.h>
--#include <linux/mfd/loongson-se.h>
--#include <linux/module.h>
--#include <linux/mutex.h>
--#include <linux/platform_device.h>
--#include <linux/random.h>
--#include <crypto/internal/rng.h>
--
--#define SE_SEED_SIZE 32
--
--struct loongson_rng_list {
--	struct mutex lock;
--	struct list_head list;
--	int registered;
--};
--
--struct loongson_rng {
--	u32 used;
--	struct loongson_se_engine *engine;
--	struct list_head list;
--	struct mutex lock;
--};
--
--struct loongson_rng_ctx {
--	struct loongson_rng *rng;
--};
--
--struct loongson_rng_cmd {
--	u32 cmd_id;
--	union {
--		u32 len;
--		u32 ret;
--	} u;
--	u32 seed_off;
--	u32 out_off;
--	u32 pad[4];
--};
--
--static struct loongson_rng_list rng_devices = {
--	.lock = __MUTEX_INITIALIZER(rng_devices.lock),
--	.list = LIST_HEAD_INIT(rng_devices.list),
--};
--
--static int loongson_rng_generate(struct crypto_rng *tfm, const u8 *src,
--			  unsigned int slen, u8 *dstn, unsigned int dlen)
--{
--	struct loongson_rng_ctx *ctx = crypto_rng_ctx(tfm);
--	struct loongson_rng *rng = ctx->rng;
--	struct loongson_rng_cmd *cmd = rng->engine->command;
--	int err, len;
--
--	mutex_lock(&rng->lock);
--	cmd->seed_off = 0;
--	do {
--		len = min(dlen, rng->engine->buffer_size);
--		cmd = rng->engine->command;
--		cmd->u.len = len;
--		err = loongson_se_send_engine_cmd(rng->engine);
--		if (err)
--			break;
--
--		cmd = rng->engine->command_ret;
--		if (cmd->u.ret) {
--			err = -EIO;
--			break;
--		}
--
--		memcpy(dstn, rng->engine->data_buffer, len);
--		dlen -= len;
--		dstn += len;
--	} while (dlen > 0);
--	mutex_unlock(&rng->lock);
--
--	return err;
--}
--
--static int loongson_rng_init(struct crypto_tfm *tfm)
--{
--	struct loongson_rng_ctx *ctx = crypto_tfm_ctx(tfm);
--	struct loongson_rng *rng;
--	u32 min_used = U32_MAX;
--
--	mutex_lock(&rng_devices.lock);
--	list_for_each_entry(rng, &rng_devices.list, list) {
--		if (rng->used < min_used) {
--			ctx->rng = rng;
--			min_used = rng->used;
--		}
--	}
--	ctx->rng->used++;
--	mutex_unlock(&rng_devices.lock);
--
--	return 0;
--}
--
--static void loongson_rng_exit(struct crypto_tfm *tfm)
--{
--	struct loongson_rng_ctx *ctx = crypto_tfm_ctx(tfm);
--
--	mutex_lock(&rng_devices.lock);
--	ctx->rng->used--;
--	mutex_unlock(&rng_devices.lock);
--}
--
--static int loongson_rng_seed(struct crypto_rng *tfm, const u8 *seed,
--			     unsigned int slen)
--{
--	struct loongson_rng_ctx *ctx = crypto_rng_ctx(tfm);
--	struct loongson_rng *rng = ctx->rng;
--	struct loongson_rng_cmd *cmd;
--	int err;
--
--	if (slen < SE_SEED_SIZE)
--		return -EINVAL;
--
--	slen = min(slen, rng->engine->buffer_size);
--
--	mutex_lock(&rng->lock);
--	cmd = rng->engine->command;
--	cmd->u.len = slen;
--	cmd->seed_off = rng->engine->buffer_off;
--	memcpy(rng->engine->data_buffer, seed, slen);
--	err = loongson_se_send_engine_cmd(rng->engine);
--	if (err)
--		goto out;
--
--	cmd = rng->engine->command_ret;
--	if (cmd->u.ret)
--		err = -EIO;
--out:
--	mutex_unlock(&rng->lock);
--
--	return err;
--}
--
--static struct rng_alg loongson_rng_alg = {
--	.generate = loongson_rng_generate,
--	.seed =	loongson_rng_seed,
--	.seedsize = SE_SEED_SIZE,
--	.base = {
--		.cra_name = "stdrng",
--		.cra_driver_name = "loongson_stdrng",
--		.cra_priority = 300,
--		.cra_ctxsize = sizeof(struct loongson_rng_ctx),
--		.cra_module = THIS_MODULE,
--		.cra_init = loongson_rng_init,
--		.cra_exit = loongson_rng_exit,
--	},
--};
--
--static int loongson_rng_probe(struct platform_device *pdev)
--{
--	struct loongson_rng_cmd *cmd;
--	struct loongson_rng *rng;
--	int ret = 0;
--
--	rng = devm_kzalloc(&pdev->dev, sizeof(*rng), GFP_KERNEL);
--	if (!rng)
--		return -ENOMEM;
--
--	rng->engine = loongson_se_init_engine(pdev->dev.parent, SE_ENGINE_RNG);
--	if (!rng->engine)
--		return -ENODEV;
--	cmd = rng->engine->command;
--	cmd->cmd_id = SE_CMD_RNG;
--	cmd->out_off = rng->engine->buffer_off;
--	mutex_init(&rng->lock);
--
--	mutex_lock(&rng_devices.lock);
--
--	if (!rng_devices.registered) {
--		ret = crypto_register_rng(&loongson_rng_alg);
--		if (ret) {
--			dev_err(&pdev->dev, "failed to register crypto(%d)\n", ret);
--			goto out;
--		}
--		rng_devices.registered = 1;
--	}
--
--	list_add_tail(&rng->list, &rng_devices.list);
--out:
--	mutex_unlock(&rng_devices.lock);
--
--	return ret;
--}
--
--static struct platform_driver loongson_rng_driver = {
--	.probe		= loongson_rng_probe,
--	.driver		= {
--		.name	= "loongson-rng",
--	},
--};
--module_platform_driver(loongson_rng_driver);
--
--MODULE_ALIAS("platform:loongson-rng");
--MODULE_LICENSE("GPL");
--MODULE_AUTHOR("Yinggang Gu <guyinggang@loongson.cn>");
--MODULE_AUTHOR("Qunqin Zhao <zhaoqunqin@loongson.cn>");
--MODULE_DESCRIPTION("Loongson Random Number Generator driver");
-
-base-commit: 5624ea54f3ba5c83d2e5503411a31a8be0278c1e
+@@ -1217,7 +1212,6 @@ void qed_cxt_mngr_setup(struct qed_hwfn *p_hwfn)
+ 	struct qed_cid_acquired_map *p_map;
+ 	struct qed_conn_type_cfg *p_cfg;
+ 	int type;
+-	u32 len;
+ 
+ 	/* Reset acquired cids */
+ 	for (type = 0; type < MAX_CONN_TYPES; type++) {
+@@ -1226,11 +1220,7 @@ void qed_cxt_mngr_setup(struct qed_hwfn *p_hwfn)
+ 		p_cfg = &p_mngr->conn_cfg[type];
+ 		if (p_cfg->cid_count) {
+ 			p_map = &p_mngr->acquired[type];
+-			len = DIV_ROUND_UP(p_map->max_count,
+-					   sizeof(unsigned long) *
+-					   BITS_PER_BYTE) *
+-			      sizeof(unsigned long);
+-			memset(p_map->cid_map, 0, len);
++			bitmap_zero(p_map->cid_map, p_map->max_count);
+ 		}
+ 
+ 		if (!p_cfg->cids_per_vf)
+@@ -1238,11 +1228,7 @@ void qed_cxt_mngr_setup(struct qed_hwfn *p_hwfn)
+ 
+ 		for (vf = 0; vf < MAX_NUM_VFS; vf++) {
+ 			p_map = &p_mngr->acquired_vf[type][vf];
+-			len = DIV_ROUND_UP(p_map->max_count,
+-					   sizeof(unsigned long) *
+-					   BITS_PER_BYTE) *
+-			      sizeof(unsigned long);
+-			memset(p_map->cid_map, 0, len);
++			bitmap_zero(p_map->cid_map, p_map->max_count);
+ 		}
+ 	}
+ }
 -- 
-2.54.0
+2.53.0
 
 
