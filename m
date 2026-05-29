@@ -1,61 +1,62 @@
-Return-Path: <stable+bounces-256766-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-256767-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id qDLUGYDzGWp/0AgAu9opvQ
-	(envelope-from <stable+bounces-256766-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 29 May 2026 22:13:52 +0200
+	id GM+QMqfzGWp/0AgAu9opvQ
+	(envelope-from <stable+bounces-256767-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 29 May 2026 22:14:31 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 151D260855F
-	for <lists+stable@lfdr.de>; Fri, 29 May 2026 22:13:51 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8550F60857E
+	for <lists+stable@lfdr.de>; Fri, 29 May 2026 22:14:31 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 4CEA9305C518
-	for <lists+stable@lfdr.de>; Fri, 29 May 2026 20:08:26 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 4B8E7308B0EE
+	for <lists+stable@lfdr.de>; Fri, 29 May 2026 20:08:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0232540961D;
-	Fri, 29 May 2026 20:06:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 482AA43D513;
+	Fri, 29 May 2026 20:06:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=narfation.org header.i=@narfation.org header.b="CFP5F4gQ"
+	dkim=pass (1024-bit key) header.d=narfation.org header.i=@narfation.org header.b="V5YRxAnC"
 X-Original-To: stable@vger.kernel.org
 Received: from dvalin.narfation.org (dvalin.narfation.org [213.160.73.56])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 86C214014BB
-	for <stable@vger.kernel.org>; Fri, 29 May 2026 20:06:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B998743CECB
+	for <stable@vger.kernel.org>; Fri, 29 May 2026 20:06:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=213.160.73.56
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780085193; cv=none; b=uYRhh19FlL/mnhDEEQg66wyekXpOX3VQhc7M3bGS14c2dKVQ8eLYCJPEBYF5eTwRM0crKuTp+/DWq1QKeIA8cPCJxs3exITZTWNtiTbVgxt+/DJa5wT17IreZ4aFMVXFBJ4pun19TpZPtZlbxW/3oSBvRX9GSs1ipxOAHCnQA80=
+	t=1780085205; cv=none; b=axgcrNJgoi3qHTBscYIrucMsccy/CiZfJiR9U0xKcC4pfAlZ6T/+J91XPe1yFvmZKRhINfuw7bP53/g0RoYEe+A50JVrVi9S9fBsbf6hBCF1ZDpxBwaQDxDjocJEtOwrYodjX5aOPxroNE9ooBDkEHmaN1AfRUQyitA9I6oRXQQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780085193; c=relaxed/simple;
-	bh=sMW7URACETjBQKLLCpI4UCRbvtgLrVnlftGVV6PXgTc=;
+	s=arc-20240116; t=1780085205; c=relaxed/simple;
+	bh=8R2srUfKDxGTI+/xkmm7TjYbN+fpdJPkAYS9COv4smI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=lNiugUnEsTXdFayTrfy6fdIxCQLkMJJ8Eoxz54AM4K+dUScMdujNxCu5lK9dBGsQoPE5K78GXjrVuRZb7a/qKdQWytiRpyQMMYOi1nmxNkZpcQSQvFjVecQ4+1Ea4IdwCdhR69+wlM8tJafeYCHncMS1Hp2a6qx19+Fsqg+/uKQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=narfation.org; spf=pass smtp.mailfrom=narfation.org; dkim=pass (1024-bit key) header.d=narfation.org header.i=@narfation.org header.b=CFP5F4gQ; arc=none smtp.client-ip=213.160.73.56
+	 MIME-Version; b=S7ORyysMKaQ8EDD3w62BqDv63XemTFytTm4lp/9exqcxu8H0s1XunYLTMjgboSiic+JEr902uo6T8S3NKQShSccLTHKMhXl/OgcgTU2I4/o9wvcx78QKeUIcs0pP0bcEHkldsX2oi/HhBsC0BrOYfe9Kobzcv8+nS/t9R3MmY6A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=narfation.org; spf=pass smtp.mailfrom=narfation.org; dkim=pass (1024-bit key) header.d=narfation.org header.i=@narfation.org header.b=V5YRxAnC; arc=none smtp.client-ip=213.160.73.56
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=narfation.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=narfation.org
-Received: by dvalin.narfation.org (Postfix) id 9B75D20059;
-	Fri, 29 May 2026 20:06:30 +0000 (UTC)
+Received: by dvalin.narfation.org (Postfix) id 48B6E20059;
+	Fri, 29 May 2026 20:06:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=narfation.org;
-	s=20121; t=1780085190;
+	s=20121; t=1780085202;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=eRZSMLtlwuMAC2FklXZ9oc+wVsW/1222agDUWPUMhsw=;
-	b=CFP5F4gQLnDWd0gUW8LJBjKY9tOz2izNydMVaMGbqqHBOKlxbOMt9UO9Hu6DCuqqh46XkW
-	x+tounIM5EeSnV2vZHIg5fb+hK+SdbvjPhZzP8+S4Zs/VudSOeBwye6bWx6QMMVCeZk/86
-	aLEMqZ7KggHh5B0vH8SD9Kr54e1QX7w=
+	bh=du/gSIhyBe1Tm3IX/29YFwUV25zMA/stw8sQvLjAUVs=;
+	b=V5YRxAnCV2eoeC3bnKhDXKVKEaCcgUzx5kj91JUBEdtavw3MVa6hJ/SEMmQy7UV118mbVQ
+	d6MkzSCdJJk/yh0L8g7N5kvz2R+1z5I62MlhPmdByBC8xJ034/JEDg7KLUvBefK9d7CemJ
+	Ro8AM3/N10BaMnSibaf+kd0bn05o7r4=
 From: Sven Eckelmann <sven@narfation.org>
 To: stable@vger.kernel.org
 Cc: Sven Eckelmann <sven@narfation.org>,
 	stable@kernel.org
-Subject: [PATCH 5.15.y 1/2] batman-adv: tp_meter: fix tp_vars reference leak in receiver shutdown
-Date: Fri, 29 May 2026 22:06:00 +0200
-Message-ID: <20260529200601.477663-1-sven@narfation.org>
+Subject: [PATCH 5.15.y 2/2] batman-adv: tp_meter: fix race condition in send error reporting
+Date: Fri, 29 May 2026 22:06:01 +0200
+Message-ID: <20260529200601.477663-2-sven@narfation.org>
 X-Mailer: git-send-email 2.47.3
-In-Reply-To: <2026052834-cleat-culprit-4b87@gregkh>
+In-Reply-To: <20260529200601.477663-1-sven@narfation.org>
 References: <2026052834-cleat-culprit-4b87@gregkh>
+ <20260529200601.477663-1-sven@narfation.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -68,12 +69,12 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[narfation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	R_DKIM_ALLOW(-0.20)[narfation.org:s=20121];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-256766-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-256767-lists,stable=lfdr.de];
 	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
@@ -87,98 +88,189 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	PRECEDENCE_BULK(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
 	NEURAL_HAM(-0.00)[-1.000];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,narfation.org:email,narfation.org:mid,narfation.org:dkim]
-X-Rspamd-Queue-Id: 151D260855F
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[narfation.org:email,narfation.org:mid,narfation.org:dkim,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo]
+X-Rspamd-Queue-Id: 8550F60857E
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-commit 77098e4bea37af51d3962efa88a5af2ea5e1ac57 upstream.
+commit 71dce47f0758537fff78fddb5fb0d4632d29b29f upstream.
 
-The receiver shutdown timer handler, batadv_tp_receiver_shutdown(), is
-responsible for releasing the tp_vars reference it holds. However, the
-existing logic for coordinating this release with batadv_tp_stop_all() was
-flawed.
+batadv_tp_sender_shutdown() previously used two separate variables to track
+session state: sending (an atomic flag indicating whether the session was
+active) and reason (a plain enum storing the stop reason). This introduced
+a race window between the two writes: after sending was cleared to 0,
+batadv_tp_send() could observe the stopped state and call
+batadv_tp_sender_end() before reason was written, causing the wrong stop
+reason to be reported to the caller.
 
-timer_shutdown_sync() guarantees the timer will not fire again after it
-returns, but it returns non-zero only when the timer was pending at the
-time of the call. If the timer had already expired (and
-batadv_tp_stop_all() would unsucessfully try to  rearm itself),
-batadv_tp_stop_all() skips its batadv_tp_vars_put(), and
-batadv_tp_receiver_shutdown() fails to put its own reference as well.
-
-Fix this by introducing a new atomic variable receiving that is set to 1
-when the receiver is initialized and cleared atomically with atomic_xchg()
-by whichever side claims it first. Only the side that observes the
-transition from 1 to 0 is responsible for releasing the tp_vars timer
-reference, eliminating the uncertainty.
+Fix this by consolidating both variables into a single atomic send_result,
+which holds 0 while the session is running and the stop reason once it
+ends.
 
 Cc: stable@kernel.org
-Fixes: 3d3cf6a7314a ("batman-adv: stop tp_meter sessions during mesh teardown")
+Fixes: 33a3bb4a3345 ("batman-adv: throughput meter implementation")
 Signed-off-by: Sven Eckelmann <sven@narfation.org>
 ---
- net/batman-adv/tp_meter.c | 13 +++++++++++--
- net/batman-adv/types.h    |  3 +++
- 2 files changed, 14 insertions(+), 2 deletions(-)
+ net/batman-adv/tp_meter.c | 40 ++++++++++++++++++++++++---------------
+ net/batman-adv/types.h    | 10 +++++-----
+ 2 files changed, 30 insertions(+), 20 deletions(-)
 
 diff --git a/net/batman-adv/tp_meter.c b/net/batman-adv/tp_meter.c
-index e1ab239bc0e0e..2160ef46df1bb 100644
+index 2160ef46df1bb..f1f02281d0cbe 100644
 --- a/net/batman-adv/tp_meter.c
 +++ b/net/batman-adv/tp_meter.c
-@@ -8,6 +8,7 @@
- #include "main.h"
+@@ -413,11 +413,14 @@ static void batadv_tp_sender_cleanup(struct batadv_tp_vars *tp_vars)
+ static void batadv_tp_sender_end(struct batadv_priv *bat_priv,
+ 				 struct batadv_tp_vars *tp_vars)
+ {
++	enum batadv_tp_meter_reason reason;
+ 	u32 session_cookie;
  
- #include <linux/atomic.h>
-+#include <linux/bug.h>
- #include <linux/build_bug.h>
- #include <linux/byteorder/generic.h>
- #include <linux/cache.h>
-@@ -1157,6 +1158,9 @@ static void batadv_tp_receiver_shutdown(struct timer_list *t)
- 	spin_unlock_bh(&tp_vars->unacked_lock);
- 
- 	/* drop reference of timer */
-+	if (WARN_ON(atomic_xchg(&tp_vars->receiving, 0) != 1))
-+		return;
++	reason = atomic_read(&tp_vars->send_result);
 +
- 	batadv_tp_vars_put(tp_vars);
+ 	batadv_dbg(BATADV_DBG_TP_METER, bat_priv,
+ 		   "Test towards %pM finished..shutting down (reason=%d)\n",
+-		   tp_vars->other_end, tp_vars->reason);
++		   tp_vars->other_end, reason);
+ 
+ 	batadv_dbg(BATADV_DBG_TP_METER, bat_priv,
+ 		   "Last timing stats: SRTT=%ums RTTVAR=%ums RTO=%ums\n",
+@@ -430,7 +433,7 @@ static void batadv_tp_sender_end(struct batadv_priv *bat_priv,
+ 	session_cookie = batadv_tp_session_cookie(tp_vars->session,
+ 						  tp_vars->icmp_uid);
+ 
+-	batadv_tp_batctl_notify(tp_vars->reason,
++	batadv_tp_batctl_notify(reason,
+ 				tp_vars->other_end,
+ 				bat_priv,
+ 				tp_vars->start_time,
+@@ -446,10 +449,18 @@ static void batadv_tp_sender_end(struct batadv_priv *bat_priv,
+ static void batadv_tp_sender_shutdown(struct batadv_tp_vars *tp_vars,
+ 				      enum batadv_tp_meter_reason reason)
+ {
+-	if (atomic_xchg(&tp_vars->sending, 0) != 1)
+-		return;
++	atomic_cmpxchg(&tp_vars->send_result, 0, reason);
++}
+ 
+-	tp_vars->reason = reason;
++/**
++ * batadv_tp_sender_stopped() - check if tp session was stopped with reason
++ * @tp_vars: the private data of the current TP meter session
++ *
++ * Return: whether stop reason was found
++ */
++static bool batadv_tp_sender_stopped(struct batadv_tp_vars *tp_vars)
++{
++	return atomic_read(&tp_vars->send_result) != 0;
  }
  
-@@ -1375,6 +1379,7 @@ batadv_tp_init_recv(struct batadv_priv *bat_priv,
+ /**
+@@ -479,7 +490,7 @@ static void batadv_tp_reset_sender_timer(struct batadv_tp_vars *tp_vars)
+ 	/* most of the time this function is invoked while normal packet
+ 	 * reception...
+ 	 */
+-	if (unlikely(atomic_read(&tp_vars->sending) == 0))
++	if (unlikely(batadv_tp_sender_stopped(tp_vars)))
+ 		/* timer ref will be dropped in batadv_tp_sender_cleanup */
+ 		return;
  
- 	ether_addr_copy(tp_vars->other_end, icmp->orig);
- 	tp_vars->role = BATADV_TP_RECEIVER;
-+	atomic_set(&tp_vars->receiving, 1);
- 	memcpy(tp_vars->session, icmp->session, sizeof(tp_vars->session));
- 	tp_vars->last_recv = BATADV_TP_FIRST_SEQ;
- 	tp_vars->bat_priv = bat_priv;
-@@ -1547,8 +1552,12 @@ void batadv_tp_stop_all(struct batadv_priv *bat_priv)
- 			break;
- 		case BATADV_TP_RECEIVER:
- 			batadv_tp_list_detach(tp_var);
--			if (timer_shutdown_sync(&tp_var->timer))
--				batadv_tp_vars_put(tp_var);
-+			timer_shutdown_sync(&tp_var->timer);
-+
-+			if (atomic_xchg(&tp_var->receiving, 0) != 1)
-+				break;
-+
-+			batadv_tp_vars_put(tp_var);
+@@ -499,7 +510,7 @@ static void batadv_tp_sender_timeout(struct timer_list *t)
+ 	struct batadv_tp_vars *tp_vars = from_timer(tp_vars, t, timer);
+ 	struct batadv_priv *bat_priv = tp_vars->bat_priv;
+ 
+-	if (atomic_read(&tp_vars->sending) == 0)
++	if (batadv_tp_sender_stopped(tp_vars))
+ 		return;
+ 
+ 	/* if the user waited long enough...shutdown the test */
+@@ -661,7 +672,7 @@ static void batadv_tp_recv_ack(struct batadv_priv *bat_priv,
+ 	if (unlikely(tp_vars->role != BATADV_TP_SENDER))
+ 		goto out;
+ 
+-	if (unlikely(atomic_read(&tp_vars->sending) == 0))
++	if (unlikely(batadv_tp_sender_stopped(tp_vars)))
+ 		goto out;
+ 
+ 	/* old ACK? silently drop it.. */
+@@ -827,21 +838,21 @@ static int batadv_tp_send(void *arg)
+ 
+ 	if (unlikely(tp_vars->role != BATADV_TP_SENDER)) {
+ 		err = BATADV_TP_REASON_DST_UNREACHABLE;
+-		tp_vars->reason = err;
++		batadv_tp_sender_shutdown(tp_vars, err);
+ 		goto out;
+ 	}
+ 
+ 	orig_node = batadv_orig_hash_find(bat_priv, tp_vars->other_end);
+ 	if (unlikely(!orig_node)) {
+ 		err = BATADV_TP_REASON_DST_UNREACHABLE;
+-		tp_vars->reason = err;
++		batadv_tp_sender_shutdown(tp_vars, err);
+ 		goto out;
+ 	}
+ 
+ 	primary_if = batadv_primary_if_get_selected(bat_priv);
+ 	if (unlikely(!primary_if)) {
+ 		err = BATADV_TP_REASON_DST_UNREACHABLE;
+-		tp_vars->reason = err;
++		batadv_tp_sender_shutdown(tp_vars, err);
+ 		goto out;
+ 	}
+ 
+@@ -860,7 +871,7 @@ static int batadv_tp_send(void *arg)
+ 	queue_delayed_work(batadv_event_workqueue, &tp_vars->finish_work,
+ 			   msecs_to_jiffies(tp_vars->test_length));
+ 
+-	while (atomic_read(&tp_vars->sending) != 0) {
++	while (!batadv_tp_sender_stopped(tp_vars)) {
+ 		if (unlikely(!batadv_tp_avail(tp_vars, payload_len))) {
+ 			batadv_tp_wait_available(tp_vars, payload_len);
+ 			continue;
+@@ -883,8 +894,7 @@ static int batadv_tp_send(void *arg)
+ 				   "Meter: %s() cannot send packets (%d)\n",
+ 				   __func__, err);
+ 			/* ensure nobody else tries to stop the thread now */
+-			if (atomic_xchg(&tp_vars->sending, 0) == 1)
+-				tp_vars->reason = err;
++			batadv_tp_sender_shutdown(tp_vars, err);
  			break;
  		}
  
+@@ -1006,7 +1016,7 @@ void batadv_tp_start(struct batadv_priv *bat_priv, const u8 *dst,
+ 	ether_addr_copy(tp_vars->other_end, dst);
+ 	kref_init(&tp_vars->refcount);
+ 	tp_vars->role = BATADV_TP_SENDER;
+-	atomic_set(&tp_vars->sending, 1);
++	atomic_set(&tp_vars->send_result, 0);
+ 	memcpy(tp_vars->session, session_id, sizeof(session_id));
+ 	tp_vars->icmp_uid = icmp_uid;
+ 
 diff --git a/net/batman-adv/types.h b/net/batman-adv/types.h
-index f20ab9cade18b..9efc5bbeca1e0 100644
+index 9efc5bbeca1e0..4485422e8e788 100644
 --- a/net/batman-adv/types.h
 +++ b/net/batman-adv/types.h
-@@ -1391,6 +1391,9 @@ struct batadv_tp_vars {
- 	/** @sending: sending binary semaphore: 1 if sending, 0 is not */
- 	atomic_t sending;
+@@ -1388,15 +1388,15 @@ struct batadv_tp_vars {
+ 	/** @role: receiver/sender modi */
+ 	enum batadv_tp_meter_role role;
  
-+	/** @receiving: receiving binary semaphore: 1 if receiving, 0 is not */
-+	atomic_t receiving;
-+
- 	/** @reason: reason for a stopped session */
- 	enum batadv_tp_meter_reason reason;
+-	/** @sending: sending binary semaphore: 1 if sending, 0 is not */
+-	atomic_t sending;
++	/**
++	 * @send_result: 0 when sending is ongoing and otherwise
++	 * enum batadv_tp_meter_reason
++	 */
++	atomic_t send_result;
+ 
+ 	/** @receiving: receiving binary semaphore: 1 if receiving, 0 is not */
+ 	atomic_t receiving;
+ 
+-	/** @reason: reason for a stopped session */
+-	enum batadv_tp_meter_reason reason;
+-
+ 	/** @finish_work: work item for the finishing procedure */
+ 	struct delayed_work finish_work;
  
 -- 
 2.47.3
