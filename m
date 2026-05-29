@@ -1,68 +1,62 @@
-Return-Path: <stable+bounces-256789-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-256790-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id uEDOM0EIGmo70wgAu9opvQ
-	(envelope-from <stable+bounces-256789-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 29 May 2026 23:42:25 +0200
+	id gC8nLn4IGmo70wgAu9opvQ
+	(envelope-from <stable+bounces-256790-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 29 May 2026 23:43:26 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 758D2608F97
-	for <lists+stable@lfdr.de>; Fri, 29 May 2026 23:42:25 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 44887608FA1
+	for <lists+stable@lfdr.de>; Fri, 29 May 2026 23:43:26 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 037F1303CC65
-	for <lists+stable@lfdr.de>; Fri, 29 May 2026 21:42:16 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 08C963025281
+	for <lists+stable@lfdr.de>; Fri, 29 May 2026 21:42:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0BE533B9D9A;
-	Fri, 29 May 2026 21:42:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 805E93B47CA;
+	Fri, 29 May 2026 21:42:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="SzvS1/zG"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="TLK0ydzh"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AF1E93B47CA
-	for <stable@vger.kernel.org>; Fri, 29 May 2026 21:42:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 362A83A63F2
+	for <stable@vger.kernel.org>; Fri, 29 May 2026 21:42:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780090933; cv=none; b=se81RKZCNFha5UEqCRat+mTQ4k8rzKksjq98TWATpJ+nlzdEmTayNh1Nv9lW6zv3S/EXDGBap1FsaZtLCh9u8/czbeFaDVZvUqJSxZY0xg7aoJjEAuorGUbBPXPtagRIFr3K3fjtyc58ZUfmQdglvLfmRnQa7MVG27JJgXrChuc=
+	t=1780090956; cv=none; b=AagMTVBUwLkIXsq5uNadCkvkvKfmIKQHga3+GhR86bw8pg4BhLjjY+c6v4SfK5FLOVvplhSIWXC2J8TrYUvUJjpGiYDl3VH2dTuYuY1+HV/af3TryW5ibwP1BbThasPMy2v7wzhQSirNx2QDpFFOpPbKypdOVckkOCCucsSRFAw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780090933; c=relaxed/simple;
-	bh=xNhYWaPn/sHoEDIb3v6vi4Nn3huUNl0AEi4+gTzt2jg=;
+	s=arc-20240116; t=1780090956; c=relaxed/simple;
+	bh=3kNX89mOpEf98Gc7gSaH/KhvIm/G8louBayOEeCsihk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Ufy5ixR5nGU73vNSwsviDbxer1cA4eWHWjF2zlMpdoJdrll+mzjHsMxCdxAoUWVvsKGlnwUrJC7eagjIU4CPYoSuDWB9cXXpVYV3O/5TM81pyEeFHb3IbYg8qxZbKg0Ym7gdPv7sTbHbkPB/ZmN6ln1otwh1SRazPDVxB3BxrF4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=SzvS1/zG; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 338C31F0089A;
-	Fri, 29 May 2026 21:42:11 +0000 (UTC)
+	 MIME-Version; b=NKruvHO5qDZ7wGfHZBEEar+iS7OHrRts5IjnlxQ57qGqjYc47AA8L8LUn8gJFwIbR8knwxR3dGPLGY+2U164M89Wi/gJmclJhwMU14Al5rVvqAMkp1WeUUlUOLARQLM57Z8dwB0X4nZyFHnRQXX8l8OHaBxWQvQvMstCZujjDhk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=TLK0ydzh; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 516AF1F00893;
+	Fri, 29 May 2026 21:42:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1780090932;
-	bh=ln24HMhKlXXAbRf/ANTSOd7BQcdCD3HyOf4D6N5Fkxc=;
+	s=k20260515; t=1780090955;
+	bh=f526ohzls8Bu7jsriXy6qakxGeiNZeWELigGz6coV/w=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=SzvS1/zGYds1wWTglSVyzkFablMfUC5cYrmDfecFQR3GWHeN7bSwk+5aXSlM5Xieu
-	 S6PmRQSFc2Y/8qgEijZb/tM2lxpy2fqLHJCRlfLA8OGZGbE+gldHHUpcCLzkzVdJnM
-	 kPkmfodgTzUSx7ThgfojxwEeXmMXSURIh9U4qwh9Z3LOPPJnTtLpJxKYC2Xk06m02i
-	 uDjMMrphaSKJ+Sg5jBgMm9fOfcp6GusuWKXjiuSTt44z3u7cCEg51vuenVr/OFtHiw
-	 JUGfSelrW6oSOnTU7AMZ+dy3G7WbwvCc3aRk9Cb34POqy+5Vm0DltQt3ZxMkwzEA5b
-	 fNiey+zRxSL7w==
+	b=TLK0ydzhPf7dBNOczY2tiiihuoR8EVjj+xAEnkgXYbfPt/ZTfnVPwkirlf7REJDgV
+	 dYTqBX7azZP0YueP2BhVPmOYo02aDHHQLMFD1N5glqWEiH9JzbmDRCGOTe4ac07MIZ
+	 vLuaB71Hgj/5WMKAvawE4hfeLer0/T8ZQVjtdsMWGsajSHkH9yg9Fq+Sx3H7jNwMrP
+	 iqKZswpA6Ph0pRh+JmMwAPi7Z7T5v5QmzRAcmMz7lx2BtnBqvFDktpOBMUdZCm+Y+A
+	 V7KRa96+8M6/HQylOeYQGWHXbns/nMFBrpNwCqUKQuIAdynxsyFslieUaMnhyXqlY8
+	 +SSWVYJKC0LgA==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org
-Cc: David Howells <dhowells@redhat.com>,
-	Hyunwoo Kim <imv4bel@gmail.com>,
-	Simon Horman <horms@kernel.org>,
-	Jiayuan Chen <jiayuan.chen@linux.dev>,
-	linux-afs@lists.infradead.org,
-	stable@kernel.org,
-	Jeffrey Altman <jaltman@auristor.com>,
-	Marc Dionne <marc.dionne@auristor.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+Cc: Shuai Zhang <shuai.zhang@oss.qualcomm.com>,
+	Paul Menzel <pmenzel@molgen.mpg.de>,
+	Bartosz Golaszewski <bartosz.golaszewski@linaro.org>,
+	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12.y 2/2] rxrpc: Fix RESPONSE packet verification to extract skb to a linear buffer
-Date: Fri, 29 May 2026 17:42:08 -0400
-Message-ID: <20260529214208.1792984-2-sashal@kernel.org>
+Subject: [PATCH 6.1.y] Bluetooth: hci_qca: Convert timeout from jiffies to ms
+Date: Fri, 29 May 2026 17:42:32 -0400
+Message-ID: <20260529214232.1794166-1-sashal@kernel.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260529214208.1792984-1-sashal@kernel.org>
-References: <2026052808-unroasted-trace-cf4d@gregkh>
- <20260529214208.1792984-1-sashal@kernel.org>
+In-Reply-To: <2026052801-kangaroo-scrubber-70c6@gregkh>
+References: <2026052801-kangaroo-scrubber-70c6@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -71,229 +65,184 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-0.66 / 15.00];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	MID_CONTAINS_FROM(1.00)[];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20260515];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-256790-lists,stable=lfdr.de];
 	MIME_TRACE(0.00)[0:+];
-	FREEMAIL_CC(0.00)[redhat.com,gmail.com,kernel.org,linux.dev,lists.infradead.org,auristor.com];
-	RCVD_COUNT_THREE(0.00)[4];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-256789-lists,stable=lfdr.de];
-	DKIM_TRACE(0.00)[kernel.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
 	TO_DN_SOME(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[kernel.org:+];
 	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_SEVEN(0.00)[11];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,infradead.org:email,linux.dev:email,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo]
-X-Rspamd-Queue-Id: 758D2608F97
+	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_FIVE(0.00)[6];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[intel.com:email,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,qualcomm.com:email,mpg.de:email]
+X-Rspamd-Queue-Id: 44887608FA1
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-From: David Howells <dhowells@redhat.com>
+From: Shuai Zhang <shuai.zhang@oss.qualcomm.com>
 
-[ Upstream commit 8bfab4b6ffc2fe92da86300728fc8c3c7ebffb56 ]
+[ Upstream commit 375ba7484132662a4a8c7547d088fb6275c00282 ]
 
-This improves the fix for CVE-2026-43500.
+Since the timer uses jiffies as its unit rather than ms, the timeout value
+must be converted from ms to jiffies when configuring the timer. Otherwise,
+the intended 8s timeout is incorrectly set to approximately 33s.
 
-Fix the verification of RESPONSE packets to avoid the problem of
-overwriting a RESPONSE packet sent via splice to a local address by
-extracting the contents of the UDP packet into a kmalloc'd linear buffer
-rather than decrypting the data in place in the sk_buff (which may corrupt
-the original buffer).
+To improve readability, embed msecs_to_jiffies() directly in the macro
+definitions and drop the _MS suffix from macros that now yield jiffies
+values: MEMDUMP_TIMEOUT, FW_DOWNLOAD_TIMEOUT, IBS_DISABLE_SSR_TIMEOUT,
+CMD_TRANS_TIMEOUT, and IBS_BTSOC_TX_IDLE_TIMEOUT.
 
-Fixes: 24481a7f5733 ("rxrpc: Fix conn-level packet handling to unshare RESPONSE packets")
-Reported-by: Hyunwoo Kim <imv4bel@gmail.com>
-Closes: https://lore.kernel.org/r/afKV2zGR6rrelPC7@v4bel/
-Signed-off-by: David Howells <dhowells@redhat.com>
-cc: Simon Horman <horms@kernel.org>
-cc: Jiayuan Chen <jiayuan.chen@linux.dev>
-cc: linux-afs@lists.infradead.org
-cc: stable@kernel.org
-Reviewed-by: Jeffrey Altman <jaltman@auristor.com>
-Tested-by: Marc Dionne <marc.dionne@auristor.com>
-Link: https://patch.msgid.link/20260515230516.2718212-4-dhowells@redhat.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+IBS_WAKE_RETRANS_TIMEOUT_MS and IBS_HOST_TX_IDLE_TIMEOUT_MS are
+intentionally left unchanged. Their values are stored in the struct fields
+wake_retrans and tx_idle_delay, which hold ms values at runtime and can be
+modified via debugfs. The msecs_to_jiffies() conversion happens at each
+call site against the field value, so it cannot be embedded in the macro.
+
+Wake timer depends on commit c347ca17d62a
+
+Cc: stable@vger.kernel.org
+Fixes: d841502c79e3 ("Bluetooth: hci_qca: Collect controller memory dump during SSR")
+Reviewed-by: Paul Menzel <pmenzel@molgen.mpg.de>
+Acked-by: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
+Signed-off-by: Shuai Zhang <shuai.zhang@oss.qualcomm.com>
+Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+[ adapted to `vmalloc`-based memdump path and older `qca_serdev_shutdown(struct device *dev)` signature ]
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/rxrpc/ar-internal.h |  5 +++--
- net/rxrpc/conn_event.c  | 32 +++++++++++++-------------------
- net/rxrpc/insecure.c    |  5 +++--
- net/rxrpc/rxkad.c       | 29 ++++++++++-------------------
- 4 files changed, 29 insertions(+), 42 deletions(-)
+ drivers/bluetooth/hci_qca.c | 33 ++++++++++++++++-----------------
+ 1 file changed, 16 insertions(+), 17 deletions(-)
 
-diff --git a/net/rxrpc/ar-internal.h b/net/rxrpc/ar-internal.h
-index 914176b027afb..61dd1298124f6 100644
---- a/net/rxrpc/ar-internal.h
-+++ b/net/rxrpc/ar-internal.h
-@@ -270,8 +270,9 @@ struct rxrpc_security {
- 				    struct sk_buff *);
+diff --git a/drivers/bluetooth/hci_qca.c b/drivers/bluetooth/hci_qca.c
+index fe50aa88d8316..0b3bf9ea1a472 100644
+--- a/drivers/bluetooth/hci_qca.c
++++ b/drivers/bluetooth/hci_qca.c
+@@ -46,13 +46,12 @@
+ #define HCI_MAX_IBS_SIZE	10
  
- 	/* verify a response */
--	int (*verify_response)(struct rxrpc_connection *,
--			       struct sk_buff *);
-+	int (*verify_response)(struct rxrpc_connection *conn,
-+			       struct sk_buff *response_skb,
-+			       void *response, unsigned int len);
+ #define IBS_WAKE_RETRANS_TIMEOUT_MS	100
+-#define IBS_BTSOC_TX_IDLE_TIMEOUT_MS	200
++#define IBS_BTSOC_TX_IDLE_TIMEOUT	msecs_to_jiffies(200)
+ #define IBS_HOST_TX_IDLE_TIMEOUT_MS	2000
+-#define CMD_TRANS_TIMEOUT_MS		100
+-#define MEMDUMP_TIMEOUT_MS		8000
+-#define IBS_DISABLE_SSR_TIMEOUT_MS \
+-	(MEMDUMP_TIMEOUT_MS + FW_DOWNLOAD_TIMEOUT_MS)
+-#define FW_DOWNLOAD_TIMEOUT_MS		3000
++#define CMD_TRANS_TIMEOUT		msecs_to_jiffies(100)
++#define MEMDUMP_TIMEOUT			msecs_to_jiffies(8000)
++#define FW_DOWNLOAD_TIMEOUT		msecs_to_jiffies(3000)
++#define IBS_DISABLE_SSR_TIMEOUT		(MEMDUMP_TIMEOUT + FW_DOWNLOAD_TIMEOUT)
  
- 	/* clear connection security */
- 	void (*clear)(struct rxrpc_connection *);
-diff --git a/net/rxrpc/conn_event.c b/net/rxrpc/conn_event.c
-index 3a58fb9210383..ab66903e4d72f 100644
---- a/net/rxrpc/conn_event.c
-+++ b/net/rxrpc/conn_event.c
-@@ -229,28 +229,22 @@ static void rxrpc_call_is_secure(struct rxrpc_call *call)
- static int rxrpc_verify_response(struct rxrpc_connection *conn,
- 				 struct sk_buff *skb)
+ /* susclk rate */
+ #define SUSCLK_RATE_32KHZ	32768
+@@ -1059,7 +1058,7 @@ static void qca_controller_memdump(struct work_struct *work)
+ 				    dump_size);
+ 			queue_delayed_work(qca->workqueue,
+ 					   &qca->ctrl_memdump_timeout,
+-					   msecs_to_jiffies(MEMDUMP_TIMEOUT_MS)
++					   MEMDUMP_TIMEOUT
+ 					  );
+ 
+ 			skb_pull(skb, sizeof(dump_size));
+@@ -1327,7 +1326,7 @@ static int qca_set_baudrate(struct hci_dev *hdev, uint8_t baudrate)
+ 
+ 	if (hu->serdev)
+ 		serdev_device_wait_until_sent(hu->serdev,
+-		      msecs_to_jiffies(CMD_TRANS_TIMEOUT_MS));
++		      CMD_TRANS_TIMEOUT);
+ 
+ 	/* Give the controller time to process the request */
+ 	switch (qca_soc_type(hu)) {
+@@ -1358,8 +1357,8 @@ static inline void host_set_baudrate(struct hci_uart *hu, unsigned int speed)
+ 
+ static int qca_send_power_pulse(struct hci_uart *hu, bool on)
  {
-+	unsigned int len = skb->len - sizeof(struct rxrpc_wire_header);
-+	void *buffer;
++	int timeout = CMD_TRANS_TIMEOUT;
  	int ret;
+-	int timeout = msecs_to_jiffies(CMD_TRANS_TIMEOUT_MS);
+ 	u8 cmd = on ? QCA_WCN3990_POWERON_PULSE : QCA_WCN3990_POWEROFF_PULSE;
  
--	if (skb_cloned(skb) || skb_has_frag_list(skb) ||
--	    skb_has_shared_frag(skb)) {
--		/* Copy the packet if shared so that we can do in-place
--		 * decryption.
--		 */
--		struct sk_buff *nskb = skb_copy(skb, GFP_NOFS);
--
--		if (nskb) {
--			rxrpc_new_skb(nskb, rxrpc_skb_new_unshared);
--			ret = conn->security->verify_response(conn, nskb);
--			rxrpc_free_skb(nskb, rxrpc_skb_put_response_copy);
--		} else {
--			/* OOM - Drop the packet. */
--			rxrpc_see_skb(skb, rxrpc_skb_see_unshare_nomem);
--			ret = -ENOMEM;
--		}
--	} else {
--		ret = conn->security->verify_response(conn, skb);
--	}
-+	buffer = kmalloc(len, GFP_NOFS);
-+	if (!buffer)
-+		return -ENOMEM;
-+
-+	ret = skb_copy_bits(skb, sizeof(struct rxrpc_wire_header), buffer, len);
-+	if (ret < 0)
-+		goto out;
-+
-+	ret = conn->security->verify_response(conn, skb, buffer, len);
+ 	/* These power pulses are single byte command which are sent
+@@ -1561,7 +1560,7 @@ static void qca_wait_for_dump_collection(struct hci_dev *hdev)
+ 	struct qca_data *qca = hu->priv;
  
-+out:
-+	kfree(buffer);
- 	return ret;
+ 	wait_on_bit_timeout(&qca->flags, QCA_MEMDUMP_COLLECTION,
+-			    TASK_UNINTERRUPTIBLE, MEMDUMP_TIMEOUT_MS);
++			    TASK_UNINTERRUPTIBLE, MEMDUMP_TIMEOUT);
+ 
+ 	clear_bit(QCA_MEMDUMP_COLLECTION, &qca->flags);
  }
- 
-diff --git a/net/rxrpc/insecure.c b/net/rxrpc/insecure.c
-index 5514403fd18d2..4a3b96aed933c 100644
---- a/net/rxrpc/insecure.c
-+++ b/net/rxrpc/insecure.c
-@@ -44,9 +44,10 @@ static int none_respond_to_challenge(struct rxrpc_connection *conn,
- }
- 
- static int none_verify_response(struct rxrpc_connection *conn,
--				struct sk_buff *skb)
-+				struct sk_buff *response_skb,
-+				void *response, unsigned int len)
+@@ -2390,7 +2389,7 @@ static void qca_serdev_remove(struct serdev_device *serdev)
+ static void qca_serdev_shutdown(struct device *dev)
  {
--	return rxrpc_abort_conn(conn, skb, RX_PROTOCOL_ERROR, -EPROTO,
-+	return rxrpc_abort_conn(conn, response_skb, RX_PROTOCOL_ERROR, -EPROTO,
- 				rxrpc_eproto_rxnull_response);
- }
+ 	int ret;
+-	int timeout = msecs_to_jiffies(CMD_TRANS_TIMEOUT_MS);
++	int timeout = CMD_TRANS_TIMEOUT;
+ 	struct serdev_device *serdev = to_serdev_device(dev);
+ 	struct qca_serdev *qcadev = serdev_device_get_drvdata(serdev);
+ 	struct hci_uart *hu = &qcadev->serdev_hu;
+@@ -2448,7 +2447,7 @@ static int __maybe_unused qca_suspend(struct device *dev)
+ 	bool tx_pending = false;
+ 	int ret = 0;
+ 	u8 cmd;
+-	u32 wait_timeout = 0;
++	unsigned long wait_timeout = 0;
  
-diff --git a/net/rxrpc/rxkad.c b/net/rxrpc/rxkad.c
-index bb8b7858b8c26..c4d946ffc7deb 100644
---- a/net/rxrpc/rxkad.c
-+++ b/net/rxrpc/rxkad.c
-@@ -875,7 +875,6 @@ static int rxkad_decrypt_ticket(struct rxrpc_connection *conn,
- 	*_expiry = 0;
+ 	set_bit(QCA_SUSPENDING, &qca->flags);
  
- 	ASSERT(server_key->payload.data[0] != NULL);
--	ASSERTCMP((unsigned long) ticket & 7UL, ==, 0);
+@@ -2469,15 +2468,15 @@ static int __maybe_unused qca_suspend(struct device *dev)
+ 	if (test_bit(QCA_IBS_DISABLED, &qca->flags) ||
+ 	    test_bit(QCA_SSR_TRIGGERED, &qca->flags)) {
+ 		wait_timeout = test_bit(QCA_SSR_TRIGGERED, &qca->flags) ?
+-					IBS_DISABLE_SSR_TIMEOUT_MS :
+-					FW_DOWNLOAD_TIMEOUT_MS;
++					IBS_DISABLE_SSR_TIMEOUT :
++					FW_DOWNLOAD_TIMEOUT;
  
- 	memcpy(&iv, &server_key->payload.data[2], sizeof(iv));
+ 		/* QCA_IBS_DISABLED flag is set to true, During FW download
+ 		 * and during memory dump collection. It is reset to false,
+ 		 * After FW download complete.
+ 		 */
+ 		wait_on_bit_timeout(&qca->flags, QCA_IBS_DISABLED,
+-			    TASK_UNINTERRUPTIBLE, msecs_to_jiffies(wait_timeout));
++			    TASK_UNINTERRUPTIBLE, wait_timeout);
  
-@@ -1024,14 +1023,15 @@ static int rxkad_decrypt_response(struct rxrpc_connection *conn,
-  * verify a response
-  */
- static int rxkad_verify_response(struct rxrpc_connection *conn,
--				 struct sk_buff *skb)
-+				 struct sk_buff *skb,
-+				 void *buffer, unsigned int len)
- {
- 	struct rxkad_response *response;
- 	struct rxrpc_skb_priv *sp = rxrpc_skb(skb);
- 	struct rxrpc_crypt session_key;
- 	struct key *server_key;
- 	time64_t expiry;
--	void *ticket = NULL;
-+	void *ticket;
- 	u32 version, kvno, ticket_len, level;
- 	__be32 csum;
- 	int ret, i;
-@@ -1054,13 +1054,8 @@ static int rxkad_verify_response(struct rxrpc_connection *conn,
- 		}
+ 		if (test_bit(QCA_IBS_DISABLED, &qca->flags)) {
+ 			bt_dev_err(hu->hdev, "SSR or FW download time out");
+@@ -2529,7 +2528,7 @@ static int __maybe_unused qca_suspend(struct device *dev)
+ 
+ 	if (tx_pending) {
+ 		serdev_device_wait_until_sent(hu->serdev,
+-					      msecs_to_jiffies(CMD_TRANS_TIMEOUT_MS));
++					      CMD_TRANS_TIMEOUT);
+ 		serial_clock_vote(HCI_IBS_TX_VOTE_CLOCK_OFF, hu);
  	}
  
--	ret = -ENOMEM;
--	response = kzalloc(sizeof(struct rxkad_response), GFP_NOFS);
--	if (!response)
--		goto error;
--
--	if (skb_copy_bits(skb, sizeof(struct rxrpc_wire_header),
--			  response, sizeof(*response)) < 0) {
-+	response = buffer;
-+	if (len < sizeof(*response)) {
- 		ret = rxrpc_abort_conn(conn, skb, RXKADPACKETSHORT, -EPROTO,
- 				       rxkad_abort_resp_short);
+@@ -2538,7 +2537,7 @@ static int __maybe_unused qca_suspend(struct device *dev)
+ 	 */
+ 	ret = wait_event_interruptible_timeout(qca->suspend_wait_q,
+ 			qca->rx_ibs_state == HCI_IBS_RX_ASLEEP,
+-			msecs_to_jiffies(IBS_BTSOC_TX_IDLE_TIMEOUT_MS));
++			IBS_BTSOC_TX_IDLE_TIMEOUT);
+ 	if (ret == 0) {
+ 		ret = -ETIMEDOUT;
  		goto error;
-@@ -1072,6 +1067,9 @@ static int rxkad_verify_response(struct rxrpc_connection *conn,
- 
- 	trace_rxrpc_rx_response(conn, sp->hdr.serial, version, kvno, ticket_len);
- 
-+	buffer	+= sizeof(*response);
-+	len	-= sizeof(*response);
-+
- 	if (version != RXKAD_VERSION) {
- 		ret = rxrpc_abort_conn(conn, skb, RXKADINCONSISTENCY, -EPROTO,
- 				       rxkad_abort_resp_version);
-@@ -1091,13 +1089,8 @@ static int rxkad_verify_response(struct rxrpc_connection *conn,
- 	}
- 
- 	/* extract the kerberos ticket and decrypt and decode it */
--	ret = -ENOMEM;
--	ticket = kmalloc(ticket_len, GFP_NOFS);
--	if (!ticket)
--		goto error;
--
--	if (skb_copy_bits(skb, sizeof(struct rxrpc_wire_header) + sizeof(*response),
--			  ticket, ticket_len) < 0) {
-+	ticket = buffer;
-+	if (ticket_len > len) {
- 		ret = rxrpc_abort_conn(conn, skb, RXKADPACKETSHORT, -EPROTO,
- 				       rxkad_abort_resp_short_tkt);
- 		goto error;
-@@ -1177,8 +1170,6 @@ static int rxkad_verify_response(struct rxrpc_connection *conn,
- 	ret = rxrpc_get_server_data_key(conn, &session_key, expiry, kvno);
- 
- error:
--	kfree(ticket);
--	kfree(response);
- 	key_put(server_key);
- 	_leave(" = %d", ret);
- 	return ret;
 -- 
 2.53.0
 
