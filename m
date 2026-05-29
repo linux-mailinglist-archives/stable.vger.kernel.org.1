@@ -1,151 +1,218 @@
-Return-Path: <stable+bounces-256666-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-256667-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id oCeVJRrTGWodzQgAu9opvQ
-	(envelope-from <stable+bounces-256666-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 29 May 2026 19:55:38 +0200
+	id aEz+BqvKGWqBzAgAu9opvQ
+	(envelope-from <stable+bounces-256667-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 29 May 2026 19:19:39 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id BB210606E72
-	for <lists+stable@lfdr.de>; Fri, 29 May 2026 19:55:37 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id A70246064DB
+	for <lists+stable@lfdr.de>; Fri, 29 May 2026 19:19:38 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 2417F329216A
-	for <lists+stable@lfdr.de>; Fri, 29 May 2026 17:05:35 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 2F9233005156
+	for <lists+stable@lfdr.de>; Fri, 29 May 2026 17:06:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DEC143769FA;
-	Fri, 29 May 2026 17:05:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6556C379EE1;
+	Fri, 29 May 2026 17:06:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b="ABQLmk1c"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="RJMHeiJj"
 X-Original-To: stable@vger.kernel.org
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 822E6378D82
-	for <stable@vger.kernel.org>; Fri, 29 May 2026 17:05:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B4847379EE6
+	for <stable@vger.kernel.org>; Fri, 29 May 2026 17:06:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780074333; cv=none; b=bRh55OeKR7iRpGdP3hBjoxL4y/IGqaBvdD3darskUmHRzL0baSpAVBqHcD1TFXCwEqXSWqCOvXcmleHbr/lMjVps/NEYjxHeykCPH5lAtaEixEwGNjfd3PK3g5QLbOovAk7oiLJlYMvFrYAHRdxhERomjCO1U24WLtdPKpraxec=
+	t=1780074374; cv=none; b=Ra4V/f+82gkJ7aIzF2QjwyMZFSpbdB8c4qqPOWPzad7fGDFX11kJnCbVtfGXTdBAZIuad5xI8/ZKoZkC7Aq137uZYepgBYrUR1H28VBGpFciAga4c+jA7Nnxft0SU2ZboCQYNBVkUrlGGmLNeKeFqxu5mX2mW7Lv8CAMTZlGzRY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780074333; c=relaxed/simple;
-	bh=fhv+F4PMFpsg55KDSG9Z1A+Pt8O7O/9mlFmEknERxGE=;
-	h=Message-ID:Date:MIME-Version:Subject:To:References:From:Cc:
-	 In-Reply-To:Content-Type; b=j2OJzAxMAYN1FaM0sdDcYFpC4MwBYqq2hXMxRVCVYsFUjpMMsbjuXWAF7rCGngGhI3a+u+tk0ItQ/q9X4U89ttg57jQkDuOXyOuUKwpCRPDr3JSV2Kh3gag3Ob7byyw/fjV37O41qrnixuiVzhamvfs/3pI0xnhQe45Co/0VNW0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b=ABQLmk1c; arc=none smtp.client-ip=217.140.110.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id AB70A34FB;
-	Fri, 29 May 2026 10:05:25 -0700 (PDT)
-Received: from [10.57.36.140] (unknown [10.57.36.140])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id DC4953F905;
-	Fri, 29 May 2026 10:05:29 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
-	t=1780074330; bh=fhv+F4PMFpsg55KDSG9Z1A+Pt8O7O/9mlFmEknERxGE=;
-	h=Date:Subject:To:References:From:Cc:In-Reply-To:From;
-	b=ABQLmk1cufg9gpt7uCZFlyS5DspuAcLnWSZSB3mGuwbri1mSIjTgCjvazUcsjHmoG
-	 hja2d6sxnFSqXyMn+lUmw2C4lPAhbVgj5TGybBKk8dEhz8ocOCpdKyasjCeDV66t1/
-	 Ko28on+dqg4IhTE8OmqwJOSHnTRsMXdBAQtJLH8A=
-Message-ID: <a328aaa6-0e34-4dfc-b4ab-0193e8bca6ee@arm.com>
-Date: Fri, 29 May 2026 18:05:27 +0100
+	s=arc-20240116; t=1780074374; c=relaxed/simple;
+	bh=rKE9dn4vHgg0nNO2QesMHGv3NJiE8OuTbAi6gTzW0z0=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=dBMDHXUeVgWbWPNnNP7hU10upGpBoW3Ni6RyCy3SXSq0yBAolrp0eZwV+DswFBfpiK3/OosRubWC4P3wdjLgpoJK0RnHcqSV+2zCKR+JBFnnZZ+1TfG0NYdAjZLxEIUcujJHvQlzLp1wknuGxBnMQoO28dUA9Yfq3BX7ZH/Zln4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=RJMHeiJj; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8D23E1F00893;
+	Fri, 29 May 2026 17:06:11 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1780074372;
+	bh=gszwxumVNIPAj9EK3b1WwC7R1PFLNGvFo1tQaw20jus=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References;
+	b=RJMHeiJjSGNhYnl4+FsgtIEHBbIXpS6gnriHOxu0DAXTJ8ybvoeY/VToYmS4t+1eo
+	 JlTN+mouA04eiOZh370X9ZUVmOqw9jsgdFp5cbWgpQ6R2YcQoL3lUuxIuMnunQHVS4
+	 Xlr64mKfRfYwm+P/PrjnEwCpevSGJVo5R+cLU4vGkYEpU1jc6WH4rm0eARNgOnI+lC
+	 2sPzswFZe+Nc7/sOdpdSqpQkuRcv/LALXZ/qWA/EzKEX/9Hl5Jk0pA73hW98AclavC
+	 CQx7tjFs37i+5bB0N6MrzYqyzAGcoEvoE9RiJxJyLkM590MvhITOWlXtcz8aAYqHme
+	 QCZPmeIizvM5w==
+From: Sasha Levin <sashal@kernel.org>
+To: stable@vger.kernel.org
+Cc: Ido Schimmel <idosch@nvidia.com>,
+	Mat Martineau <martineau@kernel.org>,
+	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+	"David S. Miller" <davem@davemloft.net>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1.y 1/2] genetlink: Use internal flags for multicast groups
+Date: Fri, 29 May 2026 13:06:09 -0400
+Message-ID: <20260529170610.1279657-1-sashal@kernel.org>
+X-Mailer: git-send-email 2.53.0
+In-Reply-To: <2026052830-undefined-astronomy-bd6a@gregkh>
+References: <2026052830-undefined-astronomy-bd6a@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v6.12-stable 00/14] Backport: arm64: debug: remove hook
- registration, split exception entry
-To: Sebastian Andrzej Siewior <bigeasy@linutronix.de>, stable@vger.kernel.org
-References: <20260528144825.850351-1-bigeasy@linutronix.de>
- <48316697-6c3b-465c-a49a-d2adb749d459@arm.com>
-From: Ada Couprie Diaz <ada.coupriediaz@arm.com>
-Content-Language: en-US, en-GB, fr
-Cc: Ada Couprie Diaz <ada.coupriediaz@arm.com>
-Organization: Arm Ltd.
-In-Reply-To: <48316697-6c3b-465c-a49a-d2adb749d459@arm.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-2.16 / 15.00];
+X-Spamd-Result: default: False [-0.66 / 15.00];
+	MID_CONTAINS_FROM(1.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[arm.com,none];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
-	R_DKIM_ALLOW(-0.20)[arm.com:s=foss];
+	R_MISSING_CHARSET(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20260515];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TO_DN_SOME(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-256666-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	HAS_ORG_HEADER(0.00)[];
-	DKIM_TRACE(0.00)[arm.com:+];
-	RCPT_COUNT_THREE(0.00)[3];
-	FROM_HAS_DN(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[5];
+	TAGGED_FROM(0.00)[bounces-256667-lists,stable=lfdr.de];
+	MIME_TRACE(0.00)[0:+];
+	TO_DN_SOME(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[ada.coupriediaz@arm.com,stable@vger.kernel.org];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	DKIM_TRACE(0.00)[kernel.org:+];
 	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[stable];
-	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,arm.com:email,arm.com:mid,arm.com:dkim]
-X-Rspamd-Queue-Id: BB210606E72
+	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_FIVE(0.00)[6];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[intel.com:email,nvidia.com:email,davemloft.net:email,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo]
+X-Rspamd-Queue-Id: A70246064DB
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-On 29/05/2026 14:38, Ada Couprie Diaz wrote:
+From: Ido Schimmel <idosch@nvidia.com>
 
-> Hi Sebastian, thanks a lot for the backport !
->
-> I'll take a more thorough look soon just to check, but the original
-> series contained a bug with pseudo-NMIs, which I corrected
-> in a later patch[0] in commit ea0d55ae4b32 ("arm64: debug:
-> always unmask interrupts in el0_softstp()").
->
-> I see that the bug is present in the backport, so the fix should 
-> definitely
-> be added to the series !
->
-> Kind regards,
-> Ada
->
-> [0]: 
-> https://lore.kernel.org/all/20251014092536.18831-1-ada.coupriediaz@arm.com/
->
-> On 28/05/2026 15:48, Sebastian Andrzej Siewior wrote:
->> Hi,
->>
->> this is a backport of the "arm64: debug: remove hook registration, split
->> exception entry" series
->>     https://lore.kernel.org/all/20250707114109.35672-1-ada.coupriediaz@arm.com/ 
->>
->>
->> which has been merged as of v6.17-rc1. It fixes the HW breakpoint issue
->> on PREEMPT_RT.
->>
->> I only picked one dependency and manually fixed the other conflicts to
->> avoid a larger backport.
+[ Upstream commit cd4d7263d58ab98fd4dee876776e4da6c328faa3 ]
 
-Given the conflicts do not seem to have required significant code changes,
-I don't know how useful it is but it all looks good to me ; conditional 
-on pulling
-the EL0 soft-step fix for pseudo-NMIs with the backport.
+As explained in commit e03781879a0d ("drop_monitor: Require
+'CAP_SYS_ADMIN' when joining "events" group"), the "flags" field in the
+multicast group structure reuses uAPI flags despite the field not being
+exposed to user space. This makes it impossible to extend its use
+without adding new uAPI flags, which is inappropriate for internal
+kernel checks.
 
-Reviewed-by: Ada Couprie Diaz <ada.coupriediaz@arm.com>
+Solve this by adding internal flags (i.e., "GENL_MCAST_*") and convert
+the existing users to use them instead of the uAPI flags.
 
-Thanks again for backporting the series !
-Kind regards,
-Ada
+Tested using the reproducers in commit 44ec98ea5ea9 ("psample: Require
+'CAP_NET_ADMIN' when joining "packets" group") and commit e03781879a0d
+("drop_monitor: Require 'CAP_SYS_ADMIN' when joining "events" group").
 
->>
->> This has been prepared against v6.12.91. v6.12-stable is the only
->> relevant tree for a backport (earlier stable version have no PREEMPT_RT
->> support).
->>
->> [...]
->>
->> Sebastian
+No functional changes intended.
+
+Signed-off-by: Ido Schimmel <idosch@nvidia.com>
+Reviewed-by: Mat Martineau <martineau@kernel.org>
+Reviewed-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Signed-off-by: David S. Miller <davem@davemloft.net>
+Stable-dep-of: d1ebfce2c1d1 ("smb: client: require net admin for CIFS SWN netlink")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
+---
+ include/net/genetlink.h | 9 ++++++---
+ net/core/drop_monitor.c | 2 +-
+ net/mptcp/pm_netlink.c  | 2 +-
+ net/netlink/genetlink.c | 4 ++--
+ net/psample/psample.c   | 2 +-
+ 5 files changed, 11 insertions(+), 8 deletions(-)
+
+diff --git a/include/net/genetlink.h b/include/net/genetlink.h
+index b39d06bbb8390..e302515296813 100644
+--- a/include/net/genetlink.h
++++ b/include/net/genetlink.h
+@@ -8,16 +8,19 @@
+ 
+ #define GENLMSG_DEFAULT_SIZE (NLMSG_DEFAULT_SIZE - GENL_HDRLEN)
+ 
++/* Binding to multicast group requires %CAP_NET_ADMIN */
++#define GENL_MCAST_CAP_NET_ADMIN	BIT(0)
++/* Binding to multicast group requires %CAP_SYS_ADMIN */
++#define GENL_MCAST_CAP_SYS_ADMIN	BIT(1)
++
+ /**
+  * struct genl_multicast_group - generic netlink multicast group
+  * @name: name of the multicast group, names are per-family
+- * @flags: GENL_* flags (%GENL_ADMIN_PERM or %GENL_UNS_ADMIN_PERM)
+- * @cap_sys_admin: whether %CAP_SYS_ADMIN is required for binding
++ * @flags: GENL_MCAST_* flags
+  */
+ struct genl_multicast_group {
+ 	char			name[GENL_NAMSIZ];
+ 	u8			flags;
+-	u8			cap_sys_admin:1;
+ };
+ 
+ struct genl_ops;
+diff --git a/net/core/drop_monitor.c b/net/core/drop_monitor.c
+index fef94f3b03de0..768a79428dc92 100644
+--- a/net/core/drop_monitor.c
++++ b/net/core/drop_monitor.c
+@@ -181,7 +181,7 @@ static struct sk_buff *reset_per_cpu_data(struct per_cpu_dm_data *data)
+ }
+ 
+ static const struct genl_multicast_group dropmon_mcgrps[] = {
+-	{ .name = "events", .cap_sys_admin = 1 },
++	{ .name = "events", .flags = GENL_MCAST_CAP_SYS_ADMIN, },
+ };
+ 
+ static void send_dm_alert(struct work_struct *work)
+diff --git a/net/mptcp/pm_netlink.c b/net/mptcp/pm_netlink.c
+index a16a7a538c425..4169c86ab0df5 100644
+--- a/net/mptcp/pm_netlink.c
++++ b/net/mptcp/pm_netlink.c
+@@ -1302,7 +1302,7 @@ bool mptcp_pm_nl_is_backup(struct mptcp_sock *msk, struct mptcp_addr_info *skc)
+ static const struct genl_multicast_group mptcp_pm_mcgrps[] = {
+ 	[MPTCP_PM_CMD_GRP_OFFSET]	= { .name = MPTCP_PM_CMD_GRP_NAME, },
+ 	[MPTCP_PM_EV_GRP_OFFSET]        = { .name = MPTCP_PM_EV_GRP_NAME,
+-					    .flags = GENL_UNS_ADMIN_PERM,
++					    .flags = GENL_MCAST_CAP_NET_ADMIN,
+ 					  },
+ };
+ 
+diff --git a/net/netlink/genetlink.c b/net/netlink/genetlink.c
+index fd3c1f1ca6ea6..3a3b29ff63b31 100644
+--- a/net/netlink/genetlink.c
++++ b/net/netlink/genetlink.c
+@@ -1431,10 +1431,10 @@ static int genl_bind(struct net *net, int group)
+ 			continue;
+ 
+ 		grp = &family->mcgrps[i];
+-		if ((grp->flags & GENL_UNS_ADMIN_PERM) &&
++		if ((grp->flags & GENL_MCAST_CAP_NET_ADMIN) &&
+ 		    !ns_capable(net->user_ns, CAP_NET_ADMIN))
+ 			ret = -EPERM;
+-		if (grp->cap_sys_admin &&
++		if ((grp->flags & GENL_MCAST_CAP_SYS_ADMIN) &&
+ 		    !ns_capable(net->user_ns, CAP_SYS_ADMIN))
+ 			ret = -EPERM;
+ 
+diff --git a/net/psample/psample.c b/net/psample/psample.c
+index c34e902855dbe..ddd211a151d0d 100644
+--- a/net/psample/psample.c
++++ b/net/psample/psample.c
+@@ -32,7 +32,7 @@ enum psample_nl_multicast_groups {
+ static const struct genl_multicast_group psample_nl_mcgrps[] = {
+ 	[PSAMPLE_NL_MCGRP_CONFIG] = { .name = PSAMPLE_NL_MCGRP_CONFIG_NAME },
+ 	[PSAMPLE_NL_MCGRP_SAMPLE] = { .name = PSAMPLE_NL_MCGRP_SAMPLE_NAME,
+-				      .flags = GENL_UNS_ADMIN_PERM },
++				      .flags = GENL_MCAST_CAP_NET_ADMIN, },
+ };
+ 
+ static struct genl_family psample_nl_family __ro_after_init;
+-- 
+2.53.0
+
 
