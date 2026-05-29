@@ -1,138 +1,144 @@
-Return-Path: <stable+bounces-256552-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-256553-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id mLowLI1PGWrzuQgAu9opvQ
-	(envelope-from <stable+bounces-256552-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 29 May 2026 10:34:21 +0200
+	id ACw/F2NRGWrzuQgAu9opvQ
+	(envelope-from <stable+bounces-256553-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 29 May 2026 10:42:11 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0B5E65FF445
-	for <lists+stable@lfdr.de>; Fri, 29 May 2026 10:34:20 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id CF7745FF586
+	for <lists+stable@lfdr.de>; Fri, 29 May 2026 10:42:10 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 8CC2B30ED213
-	for <lists+stable@lfdr.de>; Fri, 29 May 2026 08:29:17 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 3FB3230F8430
+	for <lists+stable@lfdr.de>; Fri, 29 May 2026 08:38:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 02FC6348C61;
-	Fri, 29 May 2026 08:29:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1CAF836BCC4;
+	Fri, 29 May 2026 08:38:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=nabladev.com header.i=@nabladev.com header.b="iAuoTFe3"
+	dkim=pass (2048-bit key) header.d=amazon.de header.i=@amazon.de header.b="mPwWyoru"
 X-Original-To: stable@vger.kernel.org
-Received: from mx.nabladev.com (mx.nabladev.com [178.251.229.89])
+Received: from pdx-out-007.esa.us-west-2.outbound.mail-perimeter.amazon.com (pdx-out-007.esa.us-west-2.outbound.mail-perimeter.amazon.com [52.34.181.151])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A39E33AA1A9;
-	Fri, 29 May 2026 08:29:15 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=178.251.229.89
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D6C6DDF59;
+	Fri, 29 May 2026 08:38:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=52.34.181.151
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780043356; cv=none; b=qAvNpyUvuqG8tJkh7uYK5l0QMWxCRllChQnD3BdcPFir1yXhVqxDZqLiw4rSEzyK9VtQGvhT/PjxGaV2nhsRz/zBwT7yWvUrW3hp4CcN734sT/FsAhAO9UeoRj5aU/S1cevOk5fCVyI8yWkIfTJ9FIgVD4R5HU3PxtFInZkos+k=
+	t=1780043908; cv=none; b=Bu63Qa9O9RazuLN51X3JH146oX7Lz7KhIqoljwkUUAkTgd2ksl8kUkMobuI4jy7tBJ7mqfIGK9r/agfEtPls4igaqSrOVPgW81Wyo1seh1Awuar49BKajpVSsVOlE9hxdlCiErG6zba39FB3DBmQC6PON0DAPnzWAycitMRlSds=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780043356; c=relaxed/simple;
-	bh=S52jU5dbMzoEDr1Ks4z1FhHQPDmpE3182g8P6PLOGQ8=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=gm7blii7ZSvPTb9OPzufgCfkzVV6C47gSfNphZWmbcF8swNGdgp3Mus8jOmcTF53B5mHyPNrrjl5CueeK3HYNxIWp6X7WzFpabE/8DD/RwDjednbwvlFnP80Bw5zcMTaFdgBf76rzflUBXQMT9QJaowCmNH6+m2Y/OW9ixp3aVA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nabladev.com; spf=pass smtp.mailfrom=nabladev.com; dkim=pass (2048-bit key) header.d=nabladev.com header.i=@nabladev.com header.b=iAuoTFe3; arc=none smtp.client-ip=178.251.229.89
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nabladev.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nabladev.com
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 18DB41143F1;
-	Fri, 29 May 2026 10:29:13 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nabladev.com;
-	s=dkim; t=1780043353;
-	h=from:subject:date:message-id:to:cc:mime-version:content-type:
-	 in-reply-to:references; bh=98SNgItw4uMA3pnPyRwjxxmJwMoJlkSxGVv2NItBoZQ=;
-	b=iAuoTFe36qDO9U5KBbZ/49S+XMGfGXgAPl/uhDh0nQm2VPU5Swi3/ZZd7YLgjUawCce9zC
-	4Kz4GYNqJ0CpVEguVPYkFooTm1gIL1q0KcqsYfn4seyf6ccqXiozFgDelp3ayJArRpejz+
-	sdLDEVhNhw/FptoU++SrV97WfpZ7W4/+vElxOq5wbRIOcn5FhYc7XfNPYEFAtStXjV7vaW
-	kSS2jpwUDBL8682YBZTYkkIJJQM3QsUXMG+uOZD+OTn1lLTN9Z5kyBMK2eTtb2aAPSrPaA
-	OkBIThJ8wC8oZ3qw0YqbeLwDb8/kHjt3HgnMRam8ZmZcL/BuVa6/+BPToQ/JoQ==
-Date: Fri, 29 May 2026 10:29:11 +0200
-From: Pavel Machek <pavel@nabladev.com>
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: stable@vger.kernel.org, patches@lists.linux.dev,
-	linux-kernel@vger.kernel.org, torvalds@linux-foundation.org,
-	akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org,
-	patches@kernelci.org, lkft-triage@lists.linaro.org,
-	pavel@nabladev.com, jonathanh@nvidia.com, f.fainelli@gmail.com,
-	sudipm.mukherjee@gmail.com, rwarsow@gmx.de, conor@kernel.org,
-	hargar@microsoft.com, broonie@kernel.org, achill@achill.org,
-	sr@sladewatkins.com
-Subject: Re: [PATCH 6.6 000/186] 6.6.142-rc1 review
-Message-ID: <ahlOV7Eo3UXTCqS8@duo.ucw.cz>
-References: <20260528194928.941004471@linuxfoundation.org>
+	s=arc-20240116; t=1780043908; c=relaxed/simple;
+	bh=PP63Nxpfk1pg0J5X5ib1D46jVYgN+lrbAlGgTS/6zag=;
+	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type:Content-Disposition; b=tAPJQnfA/adx7lOezWfrVxgbCi/Tp6o3r0lJoD82ARj8ETVZ3j8/3BBvyjPxynFos/MnoXxBMP2WebXMMxaG84YFUptXgw0wndc1IZmaBfS7Yt5xrXpgcUFMT7M5+pznRGU8YtunLCmxfPhgsWZrD9Z+/IU3+My2KrRhDM7lC04=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amazon.de; spf=pass smtp.mailfrom=amazon.de; dkim=pass (2048-bit key) header.d=amazon.de header.i=@amazon.de header.b=mPwWyoru; arc=none smtp.client-ip=52.34.181.151
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amazon.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=amazon.de
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+  d=amazon.de; i=@amazon.de; q=dns/txt; s=amazoncorp2;
+  t=1780043907; x=1811579907;
+  h=from:to:cc:subject:date:message-id:in-reply-to:
+   references:mime-version:content-transfer-encoding;
+  bh=PP63Nxpfk1pg0J5X5ib1D46jVYgN+lrbAlGgTS/6zag=;
+  b=mPwWyoruHCkXBKO29XKQDvBqrNgMI5VaAOAJ7+BbWzIHjW4UgqM4G5u8
+   60dTLYu3A8x6tq5DfmMRn4r8mwSOsNQu+TtOtWZRUDU+4MK6q17bbFyTO
+   AUUPFGywVw+NF+g51BilXffTQlGI83OYg5aeBIgxyPb9FNECZlWHuNG1A
+   rWx5S21+/VnbgPbZT+ZZVnZIprj05Fba2cqP8oYQyo6VThBXDp3AZIOAi
+   BZ6qCoLd7yH8SD8FrhpVKGeyiV1SVslTvNHnNeTmFbiPlNG6JgrueXIVh
+   ZJ+PgVD7AS8Z/lcLyFN9IVSKP/bYiXnkwlHuRgVdrl9XiSSsz4dpqKdVE
+   w==;
+X-CSE-ConnectionGUID: TmDwMfudR42EvBM/XquFOA==
+X-CSE-MsgGUID: 1hu4YY2cT8m/0v6pZTfXNw==
+X-IronPort-AV: E=Sophos;i="6.24,175,1774310400"; 
+   d="scan'208";a="20684257"
+Received: from ip-10-5-9-48.us-west-2.compute.internal (HELO smtpout.naws.us-west-2.prod.farcaster.email.amazon.dev) ([10.5.9.48])
+  by internal-pdx-out-007.esa.us-west-2.outbound.mail-perimeter.amazon.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 29 May 2026 08:38:23 +0000
+Received: from EX19MTAUWB001.ant.amazon.com [205.251.233.104:28357]
+ by smtpin.naws.us-west-2.prod.farcaster.email.amazon.dev [10.0.19.154:2525] with esmtp (Farcaster)
+ id 130eb445-6549-4bc9-ac7e-f69eb12094af; Fri, 29 May 2026 08:38:23 +0000 (UTC)
+X-Farcaster-Flow-ID: 130eb445-6549-4bc9-ac7e-f69eb12094af
+Received: from EX19D001UWA001.ant.amazon.com (10.13.138.214) by
+ EX19MTAUWB001.ant.amazon.com (10.250.64.248) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.2562.37;
+ Fri, 29 May 2026 08:38:23 +0000
+Received: from dev-dsk-doebel-1a-7b355d76.us-east-1.amazon.com (10.169.119.5)
+ by EX19D001UWA001.ant.amazon.com (10.13.138.214) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.2562.37;
+ Fri, 29 May 2026 08:38:22 +0000
+From: Bjoern Doebel <doebel@amazon.de>
+To: Paolo Bonzini <pbonzini@redhat.com>
+CC: Bjoern Doebel <doebel@amazon.de>, <linux-kernel@vger.kernel.org>,
+	<kvm@vger.kernel.org>, Sean Christopherson <seanjc@google.com>, "Alexander
+ Bulekov" <bkov@amazon.com>, Fred Griffoul <fgriffo@amazon.co.uk>,
+	<stable@vger.kernel.org>, <zcgao@amazon.com>
+Subject: Re: stable backports for "KVM: x86: Fix shadow paging use-after-free due to unexpected GFN"
+Date: Fri, 29 May 2026 08:37:44 +0000
+Message-ID: <ahlQQlD1ygfiQ3bG@dev-dsk-doebel-1a-7b355d76.us-east-1.amazon.com>
+X-Mailer: git-send-email 2.50.1
+In-Reply-To: <62bedd23-a9d8-4c05-bf39-662c2d37b793@redhat.com>
+References: <20260503201029.106481-1-pbonzini@redhat.com> <62bedd23-a9d8-4c05-bf39-662c2d37b793@redhat.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha1;
-	protocol="application/pgp-signature"; boundary="FAMopUN2KCf+JaFk"
+Content-Type: text/plain; charset="us-ascii"
 Content-Disposition: inline
-In-Reply-To: <20260528194928.941004471@linuxfoundation.org>
-X-Last-TLS-Session-Version: TLSv1.3
-X-Spamd-Result: default: False [-2.76 / 15.00];
-	SIGNED_PGP(-2.00)[];
-	SUSPICIOUS_RECIPS(1.50)[];
+Status: RO
+Lines: 11
+X-ClientProxiedBy: EX19D031UWA004.ant.amazon.com (10.13.139.19) To
+ EX19D001UWA001.ant.amazon.com (10.13.138.214)
+Content-Transfer-Encoding: 7bit
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[nabladev.com,reject];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
-	MIME_GOOD(-0.20)[multipart/signed,text/plain];
-	R_DKIM_ALLOW(-0.20)[nabladev.com:s=dkim];
+	DMARC_POLICY_ALLOW(-0.50)[amazon.de,quarantine];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	R_DKIM_ALLOW(-0.20)[amazon.de:s=amazoncorp2];
 	MAILLIST(-0.15)[generic];
+	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-256552-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	RECEIVED_HELO_LOCALHOST(0.00)[];
-	FREEMAIL_CC(0.00)[vger.kernel.org,lists.linux.dev,linux-foundation.org,roeck-us.net,kernel.org,kernelci.org,lists.linaro.org,nabladev.com,nvidia.com,gmail.com,gmx.de,microsoft.com,achill.org,sladewatkins.com];
-	MIME_TRACE(0.00)[0:+,1:+,2:~];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	MISSING_XM_UA(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCVD_COUNT_SEVEN(0.00)[7];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
 	NEURAL_HAM(-0.00)[-1.000];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[pavel@nabladev.com,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[nabladev.com:+];
+	TO_DN_SOME(0.00)[];
+	MIME_TRACE(0.00)[0:+];
 	TAGGED_RCPT(0.00)[stable];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[20];
-	TO_DN_SOME(0.00)[]
-X-Rspamd-Queue-Id: 0B5E65FF445
+	RCPT_COUNT_SEVEN(0.00)[9];
+	RCVD_TLS_LAST(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[doebel@amazon.de,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	TAGGED_FROM(0.00)[bounces-256553-lists,stable=lfdr.de];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[dev-dsk-doebel-1a-7b355d76.us-east-1.amazon.com:mid,amazon.de:dkim,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo];
+	DKIM_TRACE(0.00)[amazon.de:+]
+X-Rspamd-Queue-Id: CF7745FF586
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
+Hi Paolo,
 
---FAMopUN2KCf+JaFk
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+On Tue, May 05, 2026 at 12:13:34PM +0200, Paolo Bonzini wrote:
+> I'll get to testing and sending them out, but it will take a while; if
+> anybody wants to help testing, I can provide my tentative patches.
 
-Hi!
+took us a while, but if you are still looking for help, my friend Nathan
+and I would volunteer to test these in the context of Amazon Linux.
 
-> This is the start of the stable review cycle for the 6.6.142 release.
-> There are 186 patches in this series, all will be posted as a response
-> to this one.  If anyone has any issues with these being applied, please
-> let me know.
+Best,
+Bjoern
 
-CIP testing did not find any problems here:
 
-https://gitlab.com/cip-project/cip-testing/linux-stable-rc-ci/-/tree/linux-6.6.y
 
-Tested-by: Pavel Machek (CIP) <pavel@nabladev.com>
 
-Best regards,
-                                                                Pavel
+Amazon Web Services Development Center Germany GmbH
+Tamara-Danz-Str. 13
+10243 Berlin
+Geschaeftsfuehrung: Christof Hellmis, Andreas Stieger
+Eingetragen am Amtsgericht Charlottenburg unter HRB 257764 B
+Sitz: Berlin
+Ust-ID: DE 365 538 597
 
---FAMopUN2KCf+JaFk
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iF0EABECAB0WIQRPfPO7r0eAhk010v0w5/Bqldv68gUCahlOVwAKCRAw5/Bqldv6
-8qByAJ9SF9sWzd1YJFADG5+kMs02i00ZvwCfRoPx8Le7bixi5kWu6dY4/IFIDZc=
-=I207
------END PGP SIGNATURE-----
-
---FAMopUN2KCf+JaFk--
 
