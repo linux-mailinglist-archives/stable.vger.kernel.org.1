@@ -1,50 +1,50 @@
-Return-Path: <stable+bounces-256810-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-256811-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id yKvtJXghGmoa1wgAu9opvQ
-	(envelope-from <stable+bounces-256810-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 01:30:00 +0200
+	id 2CJMIn8hGmoa1wgAu9opvQ
+	(envelope-from <stable+bounces-256811-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 01:30:07 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 14931609BC2
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 01:29:59 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 41397609BD0
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 01:30:07 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 6A5B4304FFF5
-	for <lists+stable@lfdr.de>; Fri, 29 May 2026 23:29:58 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 8E97C305762F
+	for <lists+stable@lfdr.de>; Fri, 29 May 2026 23:30:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 891713B7750;
-	Fri, 29 May 2026 23:29:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4EE933BED26;
+	Fri, 29 May 2026 23:29:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="2Cppx1N1"
+	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="lr0ibSPb"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2BA5F2DCF67;
-	Fri, 29 May 2026 23:29:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 17D993AD526;
+	Fri, 29 May 2026 23:29:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780097395; cv=none; b=g0eTWEQQ0MLe3vWKwYbU69VE3fUifejf6J7Wdf7u04XZ0n5PApO0gZFgYJL1nNntwpz471iGktQEF9MFbHbxrrh7bEWRQroOtxbEsIFAbT6BnSfvMxOTqYRqDvWSnZkClC1rA6q0KHicb92S7J1Ze+4K0gUdh1B3KQquAvRCL2I=
+	t=1780097397; cv=none; b=IdfWP/cgFzWt2d1dg4I8bU2AbDQuYQWlUD4fmWBG+sfsd+mNkLpaLmIVgDsyIrYpEu0fIjXVL4CfT868qKc99SLFE/MABZvbjWPeNgZPj0ZMQSnKD9SA/MVuDog5Lz3nvaaN94/rZ+jB7bnm1gAEzVYH41MFSs/XizPAsMJ4efA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780097395; c=relaxed/simple;
-	bh=8SEQFrnYH8u6gqXakHiYWrySaDDMLgNyuxA19ojtJI0=;
-	h=Date:To:From:Subject:Message-Id; b=l67P7utQLo4MQOhfv9qRyuDz3LN/mU+F0juVLjq5+8/WsCFevHZ/E6We1cb0W+6JdTigHHtUWdlsQKFXqOQEcf2eHHQWurD2FUddRPj4miT7XnbGfgOiLBlgib5d5U0HQKJ5FWSF/pMhBm+j9mIEj6hnfF0nZuKOA6X8p8jZMwo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=2Cppx1N1; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8EB651F00893;
-	Fri, 29 May 2026 23:29:53 +0000 (UTC)
+	s=arc-20240116; t=1780097397; c=relaxed/simple;
+	bh=jxVsQT2wMWKho6tHCJAfuGvj0eaodyXHLPdy0QfgrHc=;
+	h=Date:To:From:Subject:Message-Id; b=fZAZxXe5fXKqEeDJQ/IJeqHpADHptBMmDyhdzRNy9JcOYgXIh4ToAqDO7gkC034c5XcFg22xn1kyRHTHTkLXkjsa25re99s66lTc4e8NPfiin1/WW2iB4QfgMEyex2+K5mxPzMh1r05a5aUPBbjJugrP7dNHSiGGtM0Kh+jLx9Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=lr0ibSPb; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9A67E1F00893;
+	Fri, 29 May 2026 23:29:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=linux-foundation.org; s=korg; t=1780097393;
-	bh=AHl22bmmZXr+zPPrmakL+0LslAhKPNqCz5pcXxVWlC0=;
+	d=linux-foundation.org; s=korg; t=1780097395;
+	bh=tlRXvnQygYhlfs8Xybbmq7gsUXbIh7aRpEOTGlyD6HQ=;
 	h=Date:To:From:Subject;
-	b=2Cppx1N1MuS7D2O+I8meufll/iNYu+JUaMKXA1nbR4YezOgzuNViZ+ykws4SW22zx
-	 xOIF/CZVxPqxJzAtvaGXEN4C+hyHX3SN6k4PNBhyi5RJlTMCwkS1UKXyiKBIqgMvs9
-	 8Doz5I20myuJ/9rcveAfKJLWJ45zTWf+8PvwuXZo=
-Date: Fri, 29 May 2026 16:29:53 -0700
+	b=lr0ibSPb3Gk7Fgl2rEp24kv4IxK+yrWeUB/RwM50Ii+rdx83RL5vNmoistmWe4zcM
+	 rcXZqizMSLj3+sfwshvdzeJ5oA9PY1WqMl04Chx8Xtn9dxqf/S07cvfT6dIB0Adf0k
+	 AEsLqNs8XEBTx8CG1nzz4sB+6mF2mUgiukP3tITs=
+Date: Fri, 29 May 2026 16:29:55 -0700
 To: mm-commits@vger.kernel.org,vbabka@kernel.org,surenb@google.com,stable@vger.kernel.org,sashiko-bot@kernel.org,rppt@kernel.org,peterx@redhat.com,mhocko@suse.com,ljs@kernel.org,david@kernel.org,kas@kernel.org,akpm@linux-foundation.org
 From: Andrew Morton <akpm@linux-foundation.org>
-Subject: + fs-proc-task_mmu-fix-make_uffd_wp_huge_pte-prot-update-race.patch added to mm-new branch
-Message-Id: <20260529232953.8EB651F00893@smtp.kernel.org>
+Subject: + fs-proc-task_mmu-use-huge_page_size-in-pagemap_scan_hugetlb_entry.patch added to mm-new branch
+Message-Id: <20260529232955.9A67E1F00893@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -53,20 +53,20 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 X-Spamd-Result: default: False [-1.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	R_DKIM_ALLOW(-0.20)[linux-foundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-256810-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-256811-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	DMARC_NA(0.00)[linux-foundation.org];
 	DKIM_TRACE(0.00)[linux-foundation.org:+];
 	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
 	RCPT_COUNT_TWELVE(0.00)[12];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[akpm@linux-foundation.org,stable@vger.kernel.org];
@@ -76,18 +76,18 @@ X-Spamd-Result: default: False [-1.16 / 15.00];
 	NEURAL_HAM(-0.00)[-1.000];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	FROM_HAS_DN(0.00)[]
-X-Rspamd-Queue-Id: 14931609BC2
+X-Rspamd-Queue-Id: 41397609BD0
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
 
 The patch titled
-     Subject: fs/proc/task_mmu: fix make_uffd_wp_huge_pte() prot-update race
+     Subject: fs/proc/task_mmu: use huge_page_size() in pagemap_scan_hugetlb_entry()
 has been added to the -mm mm-new branch.  Its filename is
-     fs-proc-task_mmu-fix-make_uffd_wp_huge_pte-prot-update-race.patch
+     fs-proc-task_mmu-use-huge_page_size-in-pagemap_scan_hugetlb_entry.patch
 
 This patch will shortly appear at
-     https://git.kernel.org/pub/scm/linux/kernel/git/akpm/25-new.git/tree/patches/fs-proc-task_mmu-fix-make_uffd_wp_huge_pte-prot-update-race.patch
+     https://git.kernel.org/pub/scm/linux/kernel/git/akpm/25-new.git/tree/patches/fs-proc-task_mmu-use-huge_page_size-in-pagemap_scan_hugetlb_entry.patch
 
 This patch will later appear in the mm-new branch at
     git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
@@ -117,70 +117,16 @@ and is updated there most days
 
 ------------------------------------------------------
 From: "Kiryl Shutsemau (Meta)" <kas@kernel.org>
-Subject: fs/proc/task_mmu: fix make_uffd_wp_huge_pte() prot-update race
-Date: Fri, 29 May 2026 18:23:25 +0100
+Subject: fs/proc/task_mmu: use huge_page_size() in pagemap_scan_hugetlb_entry()
+Date: Fri, 29 May 2026 18:23:26 +0100
 
-Patch series "userfaultfd/pagemap: pre-existing fixes".
+The partial-page check compares against HPAGE_SIZE (PMD_SIZE), which is
+wrong for gigantic hugetlb hstates (e.g.  1G).  The walker hands the
+callback a huge_page_size()-sized range, never start + HPAGE_SIZE, so the
+comparison always declares it partial and aborts the WP.  Compare against
+the actual hstate's page size.
 
-These are pre-existing bug fixes that were carried at the front of the
-userfaultfd RWP working-set-tracking series up to v5 [1].  Per review
-feedback that fixes should not sit in the middle of a feature series, they
-are split out and sent on their own; the RWP series is reposted rebased on
-top of this.
-
-All six were flagged by the Sashiko AI review of the RWP series and carry
-Reported-by: Sashiko AI review <sashiko-bot@kernel.org>.  They are
-independent of RWP, apply to mm-new directly, and carry Cc: stable@.
-
-  1: fs/proc/task_mmu: a missing huge_ptep_modify_prot_start() in
-     make_uffd_wp_huge_pte() can lose hardware Dirty/Accessed updates
-     when PAGEMAP_SCAN write-protects a hugetlb PTE.
-
-  2: fs/proc/task_mmu: pagemap_scan_hugetlb_entry() compares the range
-     against HPAGE_SIZE rather than the hstate page size, so it never
-     write-protects gigantic hugetlb pages.
-
-  3: fs/proc/task_mmu: PAGEMAP_SCAN with PM_SCAN_WP_MATCHING over an
-     unpopulated hugetlb range self-deadlocks -- pagemap_scan_pte_hole()
-     calls uffd_wp_range() while walk_hugetlb_range() holds the hugetlb
-     vma lock for read, and hugetlb_change_protection() then takes it
-     for write. Install the marker inline instead.
-
-  4: mm/huge_memory: change_non_present_huge_pmd() drops pmd_swp_uffd_wp
-     on a device-private PMD permission downgrade, silently losing the
-     uffd-wp marker.
-
-  5: userfaultfd: must_wait() applies pte_write() to a locklessly read
-     PTE without checking pte_present(), so swap/migration entries
-     decode random offset bits and a thread can stay parked on a stale
-     fault.
-
-  6: userfaultfd: __VMA_UFFD_FLAGS feeds VMA_UFFD_MINOR_BIT (41) to
-     mk_vma_flags() unconditionally, an out-of-bounds write into the
-     single-word vma_flags_t on 32-bit. Build the mask from config-gated
-     per-mode masks so an unavailable bit is never materialised.
-
-
-This patch (of 6):
-
-make_uffd_wp_huge_pte() arms the UFFD_WP bit on a present HugeTLB PTE by
-calling huge_ptep_modify_prot_commit() with a ptent snapshot that was
-fetched without the corresponding huge_ptep_modify_prot_start().  The
-start helper is what atomically clears the entry so the kernel-owned
-snapshot stays consistent until the commit; without it, the hardware may
-set Dirty or Accessed in the live PTE between the original read and the
-commit, and huge_ptep_modify_prot_commit() (whose generic implementation
-just calls set_huge_pte_at()) then writes the stale snapshot back over the
-live hardware bits, losing the update.
-
-The non-hugetlb sibling make_uffd_wp_pte() does this correctly via
-ptep_modify_prot_start() / ptep_modify_prot_commit().  Mirror that pattern
-for the present-PTE branch.  The migration case stays as-is -- migration
-entries are non-present, so there's no hardware update to race against.
-
-Link: https://lore.kernel.org/20260529172331.356655-1-kas@kernel.org
-Link: https://lore.kernel.org/20260529172331.356655-2-kas@kernel.org
-Link: https://lore.kernel.org/all/20260526130509.2748441-1-kirill@shutemov.name/ [1]
+Link: https://lore.kernel.org/20260529172331.356655-3-kas@kernel.org
 Fixes: 52526ca7fdb9 ("fs/proc/task_mmu: implement IOCTL to get and optionally clear info about PTEs")
 Signed-off-by: Kiryl Shutsemau <kas@kernel.org>
 Reported-by: Sashiko AI review <sashiko-bot@kernel.org>
@@ -195,32 +141,20 @@ Cc: <stable@vger.kernel.org>
 Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 ---
 
- fs/proc/task_mmu.c |   12 ++++++++----
- 1 file changed, 8 insertions(+), 4 deletions(-)
+ fs/proc/task_mmu.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/fs/proc/task_mmu.c~fs-proc-task_mmu-fix-make_uffd_wp_huge_pte-prot-update-race
+--- a/fs/proc/task_mmu.c~fs-proc-task_mmu-use-huge_page_size-in-pagemap_scan_hugetlb_entry
 +++ a/fs/proc/task_mmu.c
-@@ -2610,12 +2610,16 @@ static void make_uffd_wp_huge_pte(struct
- 	if (softleaf_is_hwpoison(entry) || softleaf_is_marker(entry))
- 		return;
+@@ -2960,7 +2960,7 @@ static int pagemap_scan_hugetlb_entry(pt
+ 	if (~categories & PAGE_IS_WRITTEN)
+ 		goto out_unlock;
  
--	if (softleaf_is_migration(entry))
-+	if (softleaf_is_migration(entry)) {
- 		set_huge_pte_at(vma->vm_mm, addr, ptep,
- 				pte_swp_mkuffd_wp(ptent), psize);
--	else
--		huge_ptep_modify_prot_commit(vma, addr, ptep, ptent,
--					     huge_pte_mkuffd_wp(ptent));
-+	} else {
-+		pte_t old_pte, new_pte;
-+
-+		old_pte = huge_ptep_modify_prot_start(vma, addr, ptep);
-+		new_pte = huge_pte_mkuffd_wp(old_pte);
-+		huge_ptep_modify_prot_commit(vma, addr, ptep, old_pte, new_pte);
-+	}
- }
- #endif /* CONFIG_HUGETLB_PAGE */
- 
+-	if (end != start + HPAGE_SIZE) {
++	if (end != start + huge_page_size(hstate_vma(vma))) {
+ 		/* Partial HugeTLB page WP isn't possible. */
+ 		pagemap_scan_backout_range(p, start, end);
+ 		p->arg.walk_end = start;
 _
 
 Patches currently in -mm which might be from kas@kernel.org are
