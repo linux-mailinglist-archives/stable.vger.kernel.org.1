@@ -1,61 +1,65 @@
-Return-Path: <stable+bounces-256752-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-256753-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id CF8YDensGWrSzwgAu9opvQ
-	(envelope-from <stable+bounces-256752-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 29 May 2026 21:45:45 +0200
+	id UEY6IOLtGWr5zwgAu9opvQ
+	(envelope-from <stable+bounces-256753-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 29 May 2026 21:49:54 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id CA461607F7D
-	for <lists+stable@lfdr.de>; Fri, 29 May 2026 21:45:44 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id CFBB7607FCA
+	for <lists+stable@lfdr.de>; Fri, 29 May 2026 21:49:53 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 1D798301DCCB
-	for <lists+stable@lfdr.de>; Fri, 29 May 2026 19:45:44 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 90106304BE51
+	for <lists+stable@lfdr.de>; Fri, 29 May 2026 19:47:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F3BB01DDA18;
-	Fri, 29 May 2026 19:45:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 45F0C313E38;
+	Fri, 29 May 2026 19:47:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=narfation.org header.i=@narfation.org header.b="A67QCWOi"
+	dkim=pass (1024-bit key) header.d=narfation.org header.i=@narfation.org header.b="PyElnTGE"
 X-Original-To: stable@vger.kernel.org
 Received: from dvalin.narfation.org (dvalin.narfation.org [213.160.73.56])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A244F7E792
-	for <stable@vger.kernel.org>; Fri, 29 May 2026 19:45:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A8C174AEEF
+	for <stable@vger.kernel.org>; Fri, 29 May 2026 19:47:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=213.160.73.56
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780083942; cv=none; b=G78UTBY8xrQTQ+S6bIkfgadWB3JLr+KzwCSScAZCT0IcCJHvKmsjDmx3pEnQhfzp3+wNj7ZxKc5h2PA6uUX8G7QsjSicvVT72kT3mp1UXvlJ4CcnIOCx3s15qFv1673GATs1fQwpHBT/XOZwcqBNXpJvxRC5iTFqSlNskoQuMOA=
+	t=1780084067; cv=none; b=rn7ApLPBlwJ1xV0vgGyDV25Q6WuQ83pdfuCYLAEJcTiBQeqWPpgT0nu5uKfxxuRl5H+cKOso9FvPQMeFTHBh3DSpsODe9wNSJfBvWztZ4an6A6ENe6XLaqU5rWcf+SDwsYzioltgQVEbTuP8xFVU9nvsvCUhF2qZmN0vLVlJ90g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780083942; c=relaxed/simple;
-	bh=2kCpauDJWiO2DCc17A0fAlqnEI1pz/lNM1R1P0OJqKA=;
+	s=arc-20240116; t=1780084067; c=relaxed/simple;
+	bh=wsbedGL3NzhMB69n3ktkjb0elfyf+/k5uFhnDEclWvQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=mbTWM6q9CnzlfKNd7OA9GK0/PFopNH4cfUaZAG0NOzQaIFnJJslp1rAHchwBWPw6GmFOIRIUUB9SiNkVcU9uCPpFQCZGczcE8AzuY+l19kCQMEYxNXPCvPJLCZItr7Z0qG5gZm0mFT8V6BO5MiVQyip6EX54TANLsSlfUKkFwPg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=narfation.org; spf=pass smtp.mailfrom=narfation.org; dkim=pass (1024-bit key) header.d=narfation.org header.i=@narfation.org header.b=A67QCWOi; arc=none smtp.client-ip=213.160.73.56
+	 MIME-Version; b=WdNMbAkZP5HUwZzfL1IIxHXuUD1F/wCsLJOk7xrgYag15fkp7vhlj8QGKQpBrbapqEiPve98s0sqOuu3tEbdUZ1Drcyujm+BR4gUdV5le6Rkb3jbVTHQc9eIQ9zHs+WD4Q74rhlZlxPsKtrbcEugRg+C0l9oMeWEoH+JOJkDTzs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=narfation.org; spf=pass smtp.mailfrom=narfation.org; dkim=pass (1024-bit key) header.d=narfation.org header.i=@narfation.org header.b=PyElnTGE; arc=none smtp.client-ip=213.160.73.56
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=narfation.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=narfation.org
-Received: by dvalin.narfation.org (Postfix) id D3B4D1FE5D;
-	Fri, 29 May 2026 19:45:39 +0000 (UTC)
+Received: by dvalin.narfation.org (Postfix) id B7F581FE5D;
+	Fri, 29 May 2026 19:47:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=narfation.org;
-	s=20121; t=1780083939;
+	s=20121; t=1780084063;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=MHmsXeklRqJykdVALOr1o6+GpWtVh2xCdA/OamVBMBw=;
-	b=A67QCWOi8Pzp+obgkWm1GmwyARZH2RgQD/0msQFOOq1AjcHjCN7m6su/Rk9P58JlcIQTF4
-	1J8zno9jAl9n1PgEjSV26GYa8E6cFJ2opO108gvdbxC1FWHtr00IeF1rtcHJ26F81MHHzl
-	e2o9PCWB56VucYYFTA2OFif+Ep1gDUw=
+	bh=CuTOnUEH5p3b9VLIQG1n1Bj/Yqu3+588xh0AGEZIBHs=;
+	b=PyElnTGEbTkfsd+MM18eraGhK3aPVZU50jIT2b+4jtRihU4jSm+N/wujnsUu4YdSOrMkLL
+	ZDQEEMz82azMTMKzaEQuZmo9MLFwmRL896ITqymnlsuo9Ps3IdBogVn/we+IR77oqFlFcb
+	9EnaUt93K9JP/NyyTBzsjP2oWvd73HU=
 From: Sven Eckelmann <sven@narfation.org>
 To: stable@vger.kernel.org
 Cc: Sven Eckelmann <sven@narfation.org>,
-	stable@kernel.org
-Subject: [PATCH 6.1.y] batman-adv: tt: prevent TVLV entry number overflow
-Date: Fri, 29 May 2026 21:45:29 +0200
-Message-ID: <20260529194529.471742-1-sven@narfation.org>
+	stable@kernel.org,
+	Yuan Tan <yuantan098@gmail.com>,
+	Yifan Wu <yifanwucs@gmail.com>,
+	Juefei Pu <tomapufckgml@gmail.com>,
+	Xin Liu <bird@lzu.edu.cn>
+Subject: [PATCH 6.1.y] batman-adv: tvlv: reject oversized TVLV packets
+Date: Fri, 29 May 2026 21:47:23 +0200
+Message-ID: <20260529194723.472301-1-sven@narfation.org>
 X-Mailer: git-send-email 2.47.3
-In-Reply-To: <2026052819-replace-figure-0a43@gregkh>
-References: <2026052819-replace-figure-0a43@gregkh>
+In-Reply-To: <2026052837-emu-chemo-dfdc@gregkh>
+References: <2026052837-emu-chemo-dfdc@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -68,100 +72,106 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[narfation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	R_DKIM_ALLOW(-0.20)[narfation.org:s=20121];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-256752-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	FREEMAIL_CC(0.00)[narfation.org,kernel.org,gmail.com,lzu.edu.cn];
+	RCVD_TLS_LAST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_TLS_LAST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	DKIM_TRACE(0.00)[narfation.org:+];
+	TAGGED_FROM(0.00)[bounces-256753-lists,stable=lfdr.de];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	TO_DN_SOME(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[sven@narfation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	RCPT_COUNT_THREE(0.00)[3];
-	PRECEDENCE_BULK(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
+	DKIM_TRACE(0.00)[narfation.org:+];
 	NEURAL_HAM(-0.00)[-1.000];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[narfation.org:email,narfation.org:mid,narfation.org:dkim,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo]
-X-Rspamd-Queue-Id: CA461607F7D
+	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_SEVEN(0.00)[7];
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,narfation.org:email,narfation.org:mid,narfation.org:dkim,lzu.edu.cn:email]
+X-Rspamd-Queue-Id: CFBB7607FCA
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-commit 99d9958fa10fb684b2a8e2c48a8d704122721420 upstream.
+commit f50487e3566358b2b982b7801945e858c78ad9ab upstream.
 
-The helpers to prepare the buffers for the local and global TT based
-replies are trying to sum up all TT entries which can be found for each
-VLAN. In theory, this sum can be too big for an u16 and therefore overflow.
-A too small buffer would then be allocated for the TVLV.
+batadv_tvlv_container_ogm_append() builds a TVLV packet section from
+the tvlv.container_list. The total size of this section is computed by
+batadv_tvlv_container_list_size(), which sums the sizes of all registered
+containers.
 
-The too small buffer will be handled gracefully by
-batadv_tt_tvlv_generate() and is not causing a buffer overflow - just a
-truncated reply. But this overflow shouldn't have happened in the first and
-the too small buffer should never have been allocated when an overflow was
-detected.
+The return type and accumulator in batadv_tvlv_container_list_size() were
+u16. If the accumulated size exceeds U16_MAX, the value wraps around,
+causing the subsequent allocation in batadv_tvlv_container_ogm_append()
+to be undersized. The memcpy-style copy that follows would then write
+beyond the end of the allocated buffer, corrupting kernel memory.
+
+Fix this by widening the return type of batadv_tvlv_container_list_size()
+to size_t. In batadv_tvlv_container_ogm_append(), check the computed length
+against U16_MAX before proceeding, and bail out as if the allocation had
+failed when the limit is exceeded.
 
 Cc: stable@kernel.org
-Fixes: 7ea7b4a14275 ("batman-adv: make the TT CRC logic VLAN specific")
+Fixes: ef26157747d4 ("batman-adv: tvlv - basic infrastructure")
+Reported-by: Yuan Tan <yuantan098@gmail.com>
+Reported-by: Yifan Wu <yifanwucs@gmail.com>
+Reported-by: Juefei Pu <tomapufckgml@gmail.com>
+Reported-by: Xin Liu <bird@lzu.edu.cn>
+Reviewed-by: Yuan Tan <yuantan098@gmail.com>
 Signed-off-by: Sven Eckelmann <sven@narfation.org>
 ---
- net/batman-adv/translation-table.c | 20 +++++++++++++++++---
- 1 file changed, 17 insertions(+), 3 deletions(-)
+ net/batman-adv/tvlv.c | 11 ++++++++---
+ 1 file changed, 8 insertions(+), 3 deletions(-)
 
-diff --git a/net/batman-adv/translation-table.c b/net/batman-adv/translation-table.c
-index e0503c8f24c35..53d2aadcafa15 100644
---- a/net/batman-adv/translation-table.c
-+++ b/net/batman-adv/translation-table.c
-@@ -850,11 +850,18 @@ batadv_tt_prepare_tvlv_global_data(struct batadv_orig_node *orig_node,
- 	u16 total_entries = 0;
- 	u8 *tt_change_ptr;
- 	int vlan_entries;
-+	u16 sum_entries;
+diff --git a/net/batman-adv/tvlv.c b/net/batman-adv/tvlv.c
+index 83e20b0be747b..99e5e8518dcc9 100644
+--- a/net/batman-adv/tvlv.c
++++ b/net/batman-adv/tvlv.c
+@@ -13,6 +13,7 @@
+ #include <linux/gfp.h>
+ #include <linux/if_ether.h>
+ #include <linux/kref.h>
++#include <linux/limits.h>
+ #include <linux/list.h>
+ #include <linux/lockdep.h>
+ #include <linux/netdevice.h>
+@@ -160,10 +161,10 @@ batadv_tvlv_container_get(struct batadv_priv *bat_priv, u8 type, u8 version)
+  *
+  * Return: size of all currently registered tvlv containers in bytes.
+  */
+-static u16 batadv_tvlv_container_list_size(struct batadv_priv *bat_priv)
++static size_t batadv_tvlv_container_list_size(struct batadv_priv *bat_priv)
+ {
+ 	struct batadv_tvlv_container *tvlv;
+-	u16 tvlv_len = 0;
++	size_t tvlv_len = 0;
  
- 	spin_lock_bh(&orig_node->vlan_list_lock);
- 	hlist_for_each_entry(vlan, &orig_node->vlan_list, list) {
- 		vlan_entries = atomic_read(&vlan->tt.num_entries);
--		total_entries += vlan_entries;
-+
-+		if (check_add_overflow(vlan_entries, total_entries, &sum_entries)) {
-+			*tt_len = 0;
-+			goto out;
-+		}
-+
-+		total_entries = sum_entries;
- 		num_vlan++;
- 	}
+ 	lockdep_assert_held(&bat_priv->tvlv.container_list_lock);
  
-@@ -941,15 +948,22 @@ batadv_tt_prepare_tvlv_local_data(struct batadv_priv *bat_priv,
- 	struct batadv_softif_vlan *vlan;
- 	size_t change_offset;
- 	u16 num_vlan = 0;
--	u16 vlan_entries = 0;
- 	u16 total_entries = 0;
- 	u16 tvlv_len;
- 	u8 *tt_change_ptr;
-+	int vlan_entries;
-+	u16 sum_entries;
+@@ -316,13 +317,17 @@ int batadv_tvlv_container_ogm_append(struct batadv_priv *bat_priv,
+ {
+ 	struct batadv_tvlv_container *tvlv;
+ 	struct batadv_tvlv_hdr *tvlv_hdr;
+-	u16 tvlv_value_len;
++	size_t tvlv_value_len;
+ 	void *tvlv_value;
+ 	int tvlv_len_ret;
+ 	bool ret;
  
- 	spin_lock_bh(&bat_priv->softif_vlan_list_lock);
- 	hlist_for_each_entry(vlan, &bat_priv->softif_vlan_list, list) {
- 		vlan_entries = atomic_read(&vlan->tt.num_entries);
--		total_entries += vlan_entries;
-+
-+		if (check_add_overflow(vlan_entries, total_entries, &sum_entries)) {
-+			tvlv_len = 0;
-+			goto out;
-+		}
-+
-+		total_entries = sum_entries;
- 		num_vlan++;
- 	}
+ 	spin_lock_bh(&bat_priv->tvlv.container_list_lock);
+ 	tvlv_value_len = batadv_tvlv_container_list_size(bat_priv);
++	if (tvlv_value_len > U16_MAX) {
++		tvlv_len_ret = -E2BIG;
++		goto end;
++	}
  
+ 	ret = batadv_tvlv_realloc_packet_buff(packet_buff, packet_buff_len,
+ 					      packet_min_len, tvlv_value_len);
 -- 
 2.47.3
 
