@@ -1,51 +1,51 @@
-Return-Path: <stable+bounces-256614-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-256615-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 2HtwHQ6DGWobxQgAu9opvQ
-	(envelope-from <stable+bounces-256614-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 29 May 2026 14:14:06 +0200
+	id zFCoGoKDGWouxQgAu9opvQ
+	(envelope-from <stable+bounces-256615-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 29 May 2026 14:16:02 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1C7EB602172
-	for <lists+stable@lfdr.de>; Fri, 29 May 2026 14:14:06 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C4587602225
+	for <lists+stable@lfdr.de>; Fri, 29 May 2026 14:16:01 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id DEB99316B231
-	for <lists+stable@lfdr.de>; Fri, 29 May 2026 12:09:13 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 3CF3931D192C
+	for <lists+stable@lfdr.de>; Fri, 29 May 2026 12:10:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 28E923C1413;
-	Fri, 29 May 2026 12:09:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3AF513DB333;
+	Fri, 29 May 2026 12:10:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="boHAtK05"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="kyXtXwqq"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 107F538C2DE;
-	Fri, 29 May 2026 12:09:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1F8BC3C1985;
+	Fri, 29 May 2026 12:10:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780056552; cv=none; b=jhgDAs30z81wUL2BlBgPqype+f4Ce7+rBcG+Gdj9en9pk/wenXD7rI74HqxcYBiHm4eA68AP7yOYIoAX0qH5Dbp2QwV5jX4igtbEuMVzkNIW6u+5+qTv7h+Pg4NIA5kkiY/4s2JKFFQANtFutTiQVbQ6Q5CcHV8eR0xB0zbxyZk=
+	t=1780056616; cv=none; b=QTPP3UlL+OG3HX3ptVS5GCNdYLLbesEPTRGW9XJxOlftFp5ous0TNLxg/Bke1drYSN2EFvhK2lBKTJRuFOY4gjw7QeYInh1XnA2X1Tm+NYm0Ar7ZRboDIfpCfPgDiC+jSkhgVL7xa8mHy12qYO3Oj+aZmnmt+nU/foqZFxysI08=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780056552; c=relaxed/simple;
-	bh=rto4zqqjKLfYX6UD66fjrO6XfgUVE45eZnao8JfIbnI=;
+	s=arc-20240116; t=1780056616; c=relaxed/simple;
+	bh=ZLfFtQxQ+THgENy168wSADjvsd1lVfmS5lB3JrO4Lfk=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=gqSQNKXff0Lu/1x5N1YLocN9qy2tPMdL8C9tT1H0+V26cKjtUDiCWLDJyET5ce0uADh1slexUhuWvfpe4AyhHAbuPSZ5iFe0jBmI+s4h2fj/mEBv8PbSCu8QolUj7i88tdEmuJ4NlWcu141Ex9JRmHQfzZXrrT7+WajjMSdeNDE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=boHAtK05; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3019A1F00893;
-	Fri, 29 May 2026 12:09:07 +0000 (UTC)
+	 In-Reply-To:Content-Type; b=gldqHBNvi9DsAl6ck4G8exqGY75JGlHhQoLLBkgnrWXZVGXr2Eawz2RMoy9OFPkOQHen+1rSZmQw3L98Fv90v+bu46daGSBYxGzLg60NQUPW6zdPXW3CpK5UzNiVvcXbFnlXq0axqJ6JzMLKjjxlILbHAZOdN69tUXEB2LEeNVU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=kyXtXwqq; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 602E71F00893;
+	Fri, 29 May 2026 12:10:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1780056551;
-	bh=CShwEWo9cW6R29h3T+uOG/SZzXZmcNWwo5C80hFvKxk=;
+	s=k20260515; t=1780056614;
+	bh=8SKoGN1Us/22ltFHkqd1z9zCVAyjuesLzj8RdQcSeq0=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=boHAtK054f8c7dl8eyj46Ajo5vx6iBzLzbx+1oNLKU+87AWrzFSc4YeOHPNfZ5Zec
-	 sGUm6+6drASEhJamy2i+ilwcEXx9HqckABeD3vjaBf2zyXczzbq+IQTToanRvh2TX4
-	 /kcGnGJEcXCrAuxz5JJJ5h4IeixUSBk35X1BPA8woiI4+4q+AjUo1G/M2mGGFtMwbL
-	 8xDUG+6x9kh5jF+x0yJwYWx8L4tHI+xKlU8BL14iTVvplyze5sGYoldVbJ67O9jsyw
-	 8ldSq1L+FHNHh8jwKS59yhQGO1Lc3uiNmtkWsvgfIgSpinDtc4xlUFbB1m9PjxDx6G
-	 YLSUEKwrno0Yg==
-Message-ID: <6c77d706-5944-4e7d-8a4a-b3a6cac6a83b@kernel.org>
-Date: Fri, 29 May 2026 14:09:05 +0200
+	b=kyXtXwqqOddMoY8gTSbOeyLygeyJn59wS8YL53J1HhrzYUBxjz3ahzcWonJ4HRFBf
+	 nqUEUeOI3Kp1OIO4JzHOKzv22hfYGKMACaB+9PsC5b4L2Pz5yUQmH/ZalRt/FNcHFJ
+	 exH36+LZnJprGKyv+cCLoOjR43FM1PayTzG3OkHSMu/zFnG47636RyEz1FgXO9P1Ic
+	 GI/NTIyzox5qTxCXuF6iB7X2+kG2qNE6T+Jg8oVYC5caP8JP+FDTkpmDAOVymzb70r
+	 HdU8kNuxCqutakqfU8W5/ZKTnZqau4IG3/G0XiAiufXG1usB1lRnxWe9H4glnF26Tw
+	 QTQtcXx1vjKdw==
+Message-ID: <6eac8493-83d9-48fa-bba9-92408cc30b50@kernel.org>
+Date: Fri, 29 May 2026 14:10:11 +0200
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -53,8 +53,8 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v5 3/7] firmware: samsung: acpm: Fix dummy stubs to return
- ERR_PTR
+Subject: Re: [PATCH v5 4/7] firmware: samsung: acpm: Add memory barrier before
+ advancing RX pointer
 To: Arnd Bergmann <arnd@arndb.de>, Tudor Ambarus <tudor.ambarus@linaro.org>,
  Alim Akhtar <alim.akhtar@samsung.com>
 Cc: linux-kernel@vger.kernel.org, linux-samsung-soc@vger.kernel.org,
@@ -63,8 +63,12 @@ Cc: linux-kernel@vger.kernel.org, linux-samsung-soc@vger.kernel.org,
  =?UTF-8?Q?Andr=C3=A9_Draszik?= <andre.draszik@linaro.org>,
  jyescas@google.com, kernel-team@android.com, stable@vger.kernel.org
 References: <20260505-acpm-fixes-sashiko-reports-v5-0-43b5ee7f1674@linaro.org>
- <20260505-acpm-fixes-sashiko-reports-v5-3-43b5ee7f1674@linaro.org>
- <03dc9ccc-d819-413e-b8fd-23ccd85675ba@app.fastmail.com>
+ <20260505-acpm-fixes-sashiko-reports-v5-4-43b5ee7f1674@linaro.org>
+ <a1629d9d-0357-42a3-aef8-c8d1cfa5ad39@app.fastmail.com>
+ <ad30ca8b-01ba-40b9-a631-503ff463bc50@kernel.org>
+ <26e9c700-c519-4888-8739-c48c73b8a39f@app.fastmail.com>
+ <ed771a16-6241-4246-976e-48349e544b5b@linaro.org>
+ <9d6bda31-839b-4cf8-b715-0d24760c73c2@app.fastmail.com>
 From: Krzysztof Kozlowski <krzk@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=krzk@kernel.org; keydata=
@@ -110,7 +114,7 @@ Autocrypt: addr=krzk@kernel.org; keydata=
  jWt87ecuHlpL3uuQ0ZZNWqHgZoQLXoqC2ZV5KrtKWb/jyiFX/sxSrodALf0zf+tfHv0FZWT2
  zHjUqd0t4njD/UOsuIMOQn4Ig0SdivYPfZukb5cdasKJukG1NOpbW7yRNivaCnfZz6dTawXw
  XRIV/KDsHQiyVxKvN73bThKhONkcX2LWuD928tAR6XMM2G5ovxLe09vuOzzfTWQDsm++9UKF a/A=
-In-Reply-To: <03dc9ccc-d819-413e-b8fd-23ccd85675ba@app.fastmail.com>
+In-Reply-To: <9d6bda31-839b-4cf8-b715-0d24760c73c2@app.fastmail.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 X-Spamd-Result: default: False [-2.16 / 15.00];
@@ -121,7 +125,7 @@ X-Spamd-Result: default: False [-2.16 / 15.00];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-256614-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-256615-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
@@ -138,40 +142,44 @@ X-Spamd-Result: default: False [-2.16 / 15.00];
 	TAGGED_RCPT(0.00)[stable];
 	RCPT_COUNT_SEVEN(0.00)[11];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[arndb.de:email,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
-X-Rspamd-Queue-Id: 1C7EB602172
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linux.dev:email,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
+X-Rspamd-Queue-Id: C4587602225
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-On 29/05/2026 13:51, Arnd Bergmann wrote:
-> On Tue, May 5, 2026, at 15:13, Tudor Ambarus wrote:
->> Sashiko identified a potential NULL pointer dereference [1].
+On 29/05/2026 13:44, Arnd Bergmann wrote:
+> On Fri, May 29, 2026, at 13:20, Tudor Ambarus wrote:
+>> On 5/29/26 11:25 AM, Arnd Bergmann wrote:
 >>
->> The dummy stub implementation for devm_acpm_get_by_node() returns NULL
->> when CONFIG_EXYNOS_ACPM_PROTOCOL is disabled.
+>> I missed the data dependency chain. I focused too much on the read
+>> part in __ioread32_copy() that I missed the RAM store implications
+>> in it. The RAM store is forced to wait for its SRAM load, and the
+>> writel is forced to wait for all the RAM stores. So the entire
+>> payload is guaranteed to be visible in memory RAM before the writel.
+>>
+>> Maybe I thought about the reordering of the final __raw_readl() loop
+>> iteration with the writel(). But the dma_wmb() -> __dma_wmb() ->
+>> dmb(oshst) from writel has a compiler barrier, so the compiler can't
+>> reorder the code. And given the ARM64 device memory accesses ordering,
+>> the ordering is protected.
 > 
-> I meant to comment on this yesterday as well.
+> Ok, thanks for checking and confirming my thoughts.
 > 
-> Having stub functions like this return NULL is a common way to
-> define optional interfaces, where callers still work when the
-> feature is disabled, though this clearly does not work for
-> acpm because some callers have a NULL pointer dereference
-> when compile testing.
+>> My bad, sorry. We shall either drop or revert the patch. Please let
+>> me know if you prefer a revert.
 > 
-> My preferred solution to this type of problem would be to
-> just remove the stub helpers and drop the ||COMPILE_TEST
-> from the one user that calls them, see below.
+> I'll leave it up to Krzysztof, as he's already sent it to
+> soc@lists.linux.dev as part of the 7.1 fixes, and I'd
+> like to send the rest to Linus soon.
 > 
-> The point here is that CONFIG_EXYNOS_ACPM_PROTOCOL already
-> supports compile-testing itself, and all (both) drivers using
-> it clearly require the support, so this just simplifies
-> the option space without losing any build coverage.
-> 
-> Signed-off-by: Arnd Bergmann <arnd@arndb.de>
+> Krzysztof, if you can send an updated pull request without
+> this patch (and maybe also without b4a38606991c ("firmware:
+> samsung: acpm: Fix dummy stubs to return ERR_PTR"), see
+> separate email), I'll just merge the other fixes and
+> send that off instead.
 > 
 
-Sure, I am fine with it. I'll take your patch with a bit adjusted commit
-msg.
+Yes, I will do that.
 
 Best regards,
 Krzysztof
