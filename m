@@ -1,152 +1,116 @@
-Return-Path: <stable+bounces-256819-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-256821-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 2DmIBkIjGmpM1wgAu9opvQ
-	(envelope-from <stable+bounces-256819-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 01:37:38 +0200
+	id OAQpCbQjGmow1wgAu9opvQ
+	(envelope-from <stable+bounces-256821-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 01:39:32 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6B63B609D7A
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 01:37:36 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8F325609DF4
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 01:39:30 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 8E5D3309E972
-	for <lists+stable@lfdr.de>; Fri, 29 May 2026 23:33:35 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 3B3FA305C52F
+	for <lists+stable@lfdr.de>; Fri, 29 May 2026 23:36:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 989183C585C;
-	Fri, 29 May 2026 23:33:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6502B3BE175;
+	Fri, 29 May 2026 23:36:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="lzVjB4tU"
+	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="ulUk/p9P"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 92AE23B635B
-	for <stable@vger.kernel.org>; Fri, 29 May 2026 23:33:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 48AA33ACA54;
+	Fri, 29 May 2026 23:36:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780097610; cv=none; b=NdWLu4Uto2qw7ge76N00SeEkw2sbMWEt749KqXif7LSMagGJ1PdImcQ91j+ecjG1XfIuvqrBCt4zQVzhaqEIxcTLTBAGgFqMUSlDdBkckTlhVkRDptR13zHnfue7G5+XQdxlzD0kMhS+IEeX8r2npUuR1jXDTA8afyvHoim3TDY=
+	t=1780097782; cv=none; b=t1bQFUSQfuMRGz6sjOtJ7EFRlzsYefra+uZtwugiQwYt+1OC7QroCXFMblXEmiBYBE25ZpxV4zM8buY/iYKQDtcUKP0kso28l80IeydRaEZ24s8CBj9rTTY/Jw1IlHigM+MK68+om9ciUqGg5OiAcm5Ucs3uvRKoPx9AkKMRMpk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780097610; c=relaxed/simple;
-	bh=wW7U8pjvNLCogfsTF31JpYjCnHPEDsJNjqr0nve1u20=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=B61uNKbNfVOekOD6+n1WPZMvuegtaZjhQGYopPwJVIaT38h3cXXC6d1ifH8rszCnsWOF55Q0ZAlzX6e3VbdaQyE0ZqfuE1lpuYkYTak6iPTPR3FR+TEmuvqyuajDi+dX19i36MXMsWgaRx9MqfTw2TmAlYTWfVff0HpHg3w9vrM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=lzVjB4tU; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E03971F00899;
-	Fri, 29 May 2026 23:33:27 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1780097608;
-	bh=N4uhUikO13T8zmSXuJfL24ns1Sg7o6hA1SZ02WYtkis=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=lzVjB4tUV1yABb/3A4pOUaLvE3G2r8IRqW0VFsGBCpIl28s/2a9mPibPOTtzsniz0
-	 zlV7nPyklWEkAWi7bey+FihiJYKfkxkyyItkhUjJEb9Pi5svCqzVG0k6L5w7yKh96H
-	 fvSplD+8elM5VX2/JQMXUMIfz8ljriESKlfLoSz7zMljpva742MjbLFU5zRuZ+SD58
-	 4MiBhCEcaAzDTzL5zQR74rPLQ6Ms+x68ZcNsnf4+F2VHiirIuL1IKJsw8h8bJaT95d
-	 qq2KEZPPQy2JX5MZeDYki32nvZAUr6wJGHzBVLmEgPutE+3RbQLvOlY2Ncvzf8clVC
-	 vjltK62PPtSow==
-From: Sasha Levin <sashal@kernel.org>
-To: stable@vger.kernel.org
-Cc: Dawei Feng <dawei.feng@seu.edu.cn>,
-	Zilin Guan <zilin@seu.edu.cn>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10.y 2/2] qed: fix double free in qed_cxt_tables_alloc()
-Date: Fri, 29 May 2026 19:33:25 -0400
-Message-ID: <20260529233325.1901920-2-sashal@kernel.org>
-X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260529233325.1901920-1-sashal@kernel.org>
-References: <2026052809-snowfall-thermos-6a66@gregkh>
- <20260529233325.1901920-1-sashal@kernel.org>
+	s=arc-20240116; t=1780097782; c=relaxed/simple;
+	bh=QYH0qQU7CL2duY239JSSFXtuqCOj/Fhw+AyC/a3+zr8=;
+	h=Date:From:To:Cc:Subject:Message-Id:In-Reply-To:References:
+	 Mime-Version:Content-Type; b=HVAqSKrQ1boTycwWaOmnFkW8u5OXU5gfiRCJfWZrqTGDafCR80AToGssPLKtZivqjMKVBx/hK3XfHQv9KKnGtEFso4PF2xcNlDEIwf6OAcTd7Ejp2igXL9GnvG1zWj2z1e+rjcIlNB174xYk6qePeN5iuA29g3DdTp48RE6pMfI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=ulUk/p9P; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 56F5B1F00893;
+	Fri, 29 May 2026 23:36:20 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=linux-foundation.org; s=korg; t=1780097781;
+	bh=k3wCANRDmAKnXOY0pPU0bwPiXfptLlw7s4pYpBbRNU4=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References;
+	b=ulUk/p9P7YXsrGGptPVWPz2KPipAsJg/6MY76t9tFV+gqOTYJs0eAMBbniM2mJwc0
+	 g6iBt611x45wbrhaEJrVgM0xixkRg5S/3BuNLpsOokCV8yxW2udIy/lswLlVRW76Bw
+	 CXycO56vcCfWETEgvzF0gK0ZONBTV2d6/CK1IFTE=
+Date: Fri, 29 May 2026 16:36:19 -0700
+From: Andrew Morton <akpm@linux-foundation.org>
+To: Lorenzo Stoakes <ljs@kernel.org>
+Cc: Dev Jain <dev.jain@arm.com>, liam@infradead.org, jgg@ziepe.ca,
+ leon@kernel.org, david@kernel.org, shuah@kernel.org, vbabka@kernel.org,
+ jannh@google.com, pfalcato@suse.de, rppt@kernel.org, surenb@google.com,
+ mhocko@suse.com, balbirs@nvidia.com, linux-mm@kvack.org,
+ linux-kernel@vger.kernel.org, linux-fsdevel@vger.kernel.org,
+ linux-kselftest@vger.kernel.org, ryan.roberts@arm.com,
+ anshuman.khandual@arm.com, stable@vger.kernel.org
+Subject: Re: [PATCH] fs/proc/task_mmu: do not warn on seeing non-migration
+ pmd entry
+Message-Id: <20260529163619.fecd655a4db1f4a6543d5342@linux-foundation.org>
+In-Reply-To: <ahmdJFCw2arBdsd9@lucifer>
+References: <20260529111704.1078346-1-dev.jain@arm.com>
+	<ahmdJFCw2arBdsd9@lucifer>
+X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-0.66 / 15.00];
-	MID_CONTAINS_FROM(1.00)[];
+Mime-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+X-Spamd-Result: default: False [-1.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
-	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
-	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20260515];
+	MV_CASE(0.50)[];
+	R_DKIM_ALLOW(-0.20)[linux-foundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-256819-lists,stable=lfdr.de];
-	MIME_TRACE(0.00)[0:+];
-	TO_DN_SOME(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-256821-lists,stable=lfdr.de];
+	DMARC_NA(0.00)[linux-foundation.org];
+	RCPT_COUNT_TWELVE(0.00)[21];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linux-foundation.org:+];
 	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[kernel.org:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	MID_RHS_MATCH_FROM(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[akpm@linux-foundation.org,stable@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[5];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,msgid.link:url,seu.edu.cn:email]
-X-Rspamd-Queue-Id: 6B63B609D7A
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,linux-foundation.org:mid,linux-foundation.org:dkim]
+X-Rspamd-Queue-Id: 8F325609DF4
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-From: Dawei Feng <dawei.feng@seu.edu.cn>
+On Fri, 29 May 2026 17:45:24 +0100 Lorenzo Stoakes <ljs@kernel.org> wrote:
 
-[ Upstream commit 2bccfb8476ca5f3548afbd623dc7a6980d4e77de ]
+> > +	/* Exercise pagemap on a PMD device-private entry. */
+> > +	ret = hmm_read_self_pagemap(buffer->ptr, npages, self->page_size);
+> > +	ASSERT_EQ(ret, 0);
+> > +
+> >  	/* Check what the device read. */
+> >  	for (i = 0, ptr = buffer->mirror; i < size / sizeof(*ptr); ++i)
+> >  		ASSERT_EQ(ptr[i], i);
+> 
+> Thanks for this!
+> 
+> though, hmm it really feels like you maybe want to add this as a test and
+> make this a series :)
 
-If one of the later PF or VF CID bitmap allocations fails,
-qed_cid_map_alloc() jumps to cid_map_fail and frees the previously
-allocated CID bitmaps before returning an error. qed_cxt_tables_alloc()
-then calls qed_cxt_mngr_free(), which invokes qed_cid_map_free()
-again.
-
-Fix this by setting each CID bitmap pointer to NULL after bitmap_free()
-to avoid double free.
-
-The bug was first flagged by an experimental analysis tool we are
-developing for kernel memory-management bugs while analyzing
-v6.13-rc1. The tool is still under development and is not yet publicly
-available. Manual inspection confirms that the bug is still
-present in v7.1-rc3.
-
-Runtime reproduction was not attempted because exercising the failing
-allocation path requires device-specific setup.
-
-Fixes: fe56b9e6a8d9 ("qed: Add module with basic common support")
-Cc: stable@vger.kernel.org
-Signed-off-by: Zilin Guan <zilin@seu.edu.cn>
-Signed-off-by: Dawei Feng <dawei.feng@seu.edu.cn>
-Link: https://patch.msgid.link/20260520070323.2762379-1-dawei.feng@seu.edu.cn
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
----
- drivers/net/ethernet/qlogic/qed/qed_cxt.c | 2 ++
- 1 file changed, 2 insertions(+)
-
-diff --git a/drivers/net/ethernet/qlogic/qed/qed_cxt.c b/drivers/net/ethernet/qlogic/qed/qed_cxt.c
-index 8fc8f428266a9..2585d36b94f2f 100644
---- a/drivers/net/ethernet/qlogic/qed/qed_cxt.c
-+++ b/drivers/net/ethernet/qlogic/qed/qed_cxt.c
-@@ -1038,11 +1038,13 @@ static void qed_cid_map_free(struct qed_hwfn *p_hwfn)
- 
- 	for (type = 0; type < MAX_CONN_TYPES; type++) {
- 		bitmap_free(p_mngr->acquired[type].cid_map);
-+		p_mngr->acquired[type].cid_map = NULL;
- 		p_mngr->acquired[type].max_count = 0;
- 		p_mngr->acquired[type].start_cid = 0;
- 
- 		for (vf = 0; vf < MAX_NUM_VFS; vf++) {
- 			bitmap_free(p_mngr->acquired_vf[type][vf].cid_map);
-+			p_mngr->acquired_vf[type][vf].cid_map = NULL;
- 			p_mngr->acquired_vf[type][vf].max_count = 0;
- 			p_mngr->acquired_vf[type][vf].start_cid = 0;
- 		}
--- 
-2.53.0
-
+yes please!
 
