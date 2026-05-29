@@ -1,192 +1,199 @@
-Return-Path: <stable+bounces-256723-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-256724-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id YBMTKeLeGWpmzggAu9opvQ
-	(envelope-from <stable+bounces-256723-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 29 May 2026 20:45:54 +0200
+	id qNopHAPjGWpmzggAu9opvQ
+	(envelope-from <stable+bounces-256724-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 29 May 2026 21:03:31 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 41641607766
-	for <lists+stable@lfdr.de>; Fri, 29 May 2026 20:45:54 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id BF355607A4F
+	for <lists+stable@lfdr.de>; Fri, 29 May 2026 21:03:30 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 85769304C4C3
-	for <lists+stable@lfdr.de>; Fri, 29 May 2026 18:40:34 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id A6CBC300CBC9
+	for <lists+stable@lfdr.de>; Fri, 29 May 2026 19:03:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EE0154611F4;
-	Fri, 29 May 2026 18:36:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3353B357739;
+	Fri, 29 May 2026 19:03:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="QUEE2exu";
-	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="FXEG7KX/"
+	dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b="bUYYfvmY"
 X-Original-To: stable@vger.kernel.org
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+Received: from mail-24427.protonmail.ch (mail-24427.protonmail.ch [109.224.244.27])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7527044D031
-	for <stable@vger.kernel.org>; Fri, 29 May 2026 18:36:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8B0A737C0FB
+	for <stable@vger.kernel.org>; Fri, 29 May 2026 19:03:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=109.224.244.27
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780079806; cv=none; b=cSlAsgfwq0YjphUISy9JgsIhTK0UEvzHYZ3L1jn/8Z1r70s/fTUb9XuconxN/pKWjoeVSio3clvOtZOdDbzpW5r05v7FRmB91STAgwljR/m9jKd2sxJLB1+B3w3TWWGj3vT+RVyfcuRjXgdk/+Q9AWHUA9En2jJ/jfJhoeG04IA=
+	t=1780081407; cv=none; b=GzpBpBGed7QjDd1pxIpG5x+YXFZ8I6Iv3SzKB11Yex0NmuXJNM7I3MyGthUU6dp6teP36XY5I246p+Ju7suMpPhzMLv3NZ9Xu8XlR5SVf57QYYfUh/fhoc4FVHqH+ZeduKDBC4n06YGXfGE/xnpNGe1kTAU+Mso/8yYJF7rm6DQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780079806; c=relaxed/simple;
-	bh=qhNRXPjJiLrNoLYnZFebbOWX1YrMRfkvrSsBcG3U8go=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=p6qHeABxB0tEq2atmak0e99Zpf+9RPJDDh7QaLcONt8wbBotB+onbFDS34H3Szg5qf9JfWJEJrL5xgq9TrV66HQNEZ44M7sNqxYTds07Leom5aulB+V730be6B0nj+sxLE6xFScmKO102WUVnVv3PauzCmLQXT7CSUVIBm/mKPo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=QUEE2exu; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=FXEG7KX/; arc=none smtp.client-ip=170.10.133.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1780079802;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=+1XJAuHtEwSrf2OyC4wSiD7WDpcF6b/VSFdi0YQ2gfw=;
-	b=QUEE2exuqbF/Rb5maPz9hGt6tCUrm4mrqeuC5JsuFCJeCqmmNuTDhqpWxTfu3llAn0aIN4
-	t9QJZV1MLhk74vrFfmPRu5Dxn+RR2h6EmxT7QCdPWOiF17HPLsg8KEakdgg/rakpTbn/HI
-	ehCV25m4n0uGK9cvkN5AReGrrbuXLtE=
-Received: from mail-wm1-f70.google.com (mail-wm1-f70.google.com
- [209.85.128.70]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-642-eGH4G4PhPrOWUShNuQGsqw-1; Fri, 29 May 2026 14:36:41 -0400
-X-MC-Unique: eGH4G4PhPrOWUShNuQGsqw-1
-X-Mimecast-MFC-AGG-ID: eGH4G4PhPrOWUShNuQGsqw_1780079800
-Received: by mail-wm1-f70.google.com with SMTP id 5b1f17b1804b1-48fd396daedso78500565e9.0
-        for <stable@vger.kernel.org>; Fri, 29 May 2026 11:36:40 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=redhat.com; s=google; t=1780079800; x=1780684600; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=+1XJAuHtEwSrf2OyC4wSiD7WDpcF6b/VSFdi0YQ2gfw=;
-        b=FXEG7KX/dCeQdfM8fDrgMQMqAQTjx+aTJFMux/gQ193edRiRQEknx2gTeZsYUza353
-         MK0qoy4SeAUSK9PE9Fy2xXgSY4YOjmGU7Zx/TfyW4n+mU5r3lEO5hLa/Q3hmxNOcI/te
-         n49EMDbfPPfsJb9sdNDjttnWcSvL/ioefdBMGJKqvoqFZZvIvrAHjQGSVQpcspFlw4qq
-         LDBgOBl5LR7AB8K4fz0HzlJQPRKOjfjJ6QvtXDvX0KGUL4lfFF5apslua32OQRxf1SNg
-         IZR/MtHiLTDV2yTmkCHRTKS59xIkADpHXBQx9SkGk3NmgPNfYOg2dzI8teqDWAKGVsUR
-         iWRA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1780079800; x=1780684600;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=+1XJAuHtEwSrf2OyC4wSiD7WDpcF6b/VSFdi0YQ2gfw=;
-        b=ZIgCbhOPsTRnLsweZx6QKZtz2wNCkZhvPy214JgkroliHBbwYAHBwps+i7VHIAdi/z
-         0lY8e56FOzBifXrqIZOM/iWUpLw8aYwd7L/J6rEm7eoneSmyOoDMwOHjSebwSi4sTkxE
-         BpACuHWvkE8SQpCbfh2bEN0OoC2CNQ5tA9U3sdkbcTzlIgOfuXO8kj32Kk/4l3SXbSW9
-         BaAAJmOuTMpTTUQNKFcG5X1gmN/ej4uk09dnO+0I45s2h0S8iswDVovrcwcPlL8hO/fo
-         i3kVPdc/K3wXUH2I7eAQdN9nqBwsJPboIiNUavFjwEl1okU5m0651EdxNj3dm/pLIlKX
-         F1Mg==
-X-Forwarded-Encrypted: i=1; AFNElJ9aWSqVJqBsijf0z11JXiE0zPkm9dgqatrqNUyXfv4sPKLMVzHc9Dh/b8xjk8kgdVABicqVMDk=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxJt84V3GfjOksoP1SCiqeNIzwb1wKBJEf29bdT1ZwC5hnwfdld
-	BvTAlwygDjW+oYvFVEW2EEfvqIqbZRZ8yfE+Ywive95fcjPvTRA902PTgfDkO6pi/j0NHNwOboo
-	Mf3yLH/Q5EiY0Q2yp9iErknM8iib7dWnMQM7IMRWNVxFjAFBT0OeyJ5t0Jg==
-X-Gm-Gg: Acq92OH3sFtdXw9JWmgm//dsBtN9CR10gBbPDp/leRWIKsgVHTPeCLFBgvAAXH79WHR
-	IFokR6+iZmcmVVuwIkkpvGXR72E4RwDpDCnUrV1OLdaIqp3yWJKbs/OeUeF3z0RYhIrVepNZOD/
-	YVR68TLDsmYzoad9sps+hbKrALC0xtHhhkuw3qrAOdaByVnVkiFRWXc4efVwTRT1AenZuq2ffKy
-	3hcTafgDnzo/JZb6Zxha06PnrzAnp3IMSl/6ueXmJm9/Q0qqRPGhCie2rIUf8zcc/2q8Qcoh6ce
-	8ZjMeRb/7d2N9Bpz1hACemKmebYsRUvYu4L75xRr37zznxnSFNth0svQnLuX2+XgSGktFejaI/q
-	fE7UarxnNX/auQcTXQcknN7+bzeYUuS2SzKPXO3hlBp2Zfcuzyk5s60xkHeOurt/2xVIgGKzrRB
-	swZ8JiiO7LJHFfnoW+bvmSPf7xJ0VjWLsh7gzrxQ==
-X-Received: by 2002:a05:600d:8492:b0:490:51e2:d992 with SMTP id 5b1f17b1804b1-490a293fa59mr7911295e9.13.1780079799934;
-        Fri, 29 May 2026 11:36:39 -0700 (PDT)
-X-Received: by 2002:a05:600d:8492:b0:490:51e2:d992 with SMTP id 5b1f17b1804b1-490a293fa59mr7911005e9.13.1780079799550;
-        Fri, 29 May 2026 11:36:39 -0700 (PDT)
-Received: from [192.168.10.48] ([151.49.251.208])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-45ef354b5bdsm4989755f8f.21.2026.05.29.11.36.38
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 29 May 2026 11:36:38 -0700 (PDT)
-From: Paolo Bonzini <pbonzini@redhat.com>
-To: linux-kernel@vger.kernel.org,
-	kvm@vger.kernel.org
-Cc: seanjc@google.com,
-	Tom Lendacky <thomas.lendacky@amd.com>,
-	Michael Roth <michael.roth@amd.com>,
-	stable@vger.kernel.org
-Subject: [PATCH 18/24] KVM: SEV: Don't terminate SNP VMs on #VMGEXIT without a registered GHCB
-Date: Fri, 29 May 2026 20:35:43 +0200
-Message-ID: <20260529183549.1104619-19-pbonzini@redhat.com>
-X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260529183549.1104619-1-pbonzini@redhat.com>
-References: <20260529183549.1104619-1-pbonzini@redhat.com>
+	s=arc-20240116; t=1780081407; c=relaxed/simple;
+	bh=swipAQJGsymOXQRCYCRtnSYJ2ZKD88VZmePVBMviK98=;
+	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=PR1a76n1k5j15vjvY2EmCnF3TaqAHLoWtA9zJeztPHyHZShmM3dYEJaWgVs6bkfC+7IA8Q4vOnZkB1D7ExySgshSylpFC/nAkP98TKrfDT4rRXIkHXLzAh/GelIgl9+9kpJI5QcSHdmFBxl1CS6P3Uit+mOUK50R5D5DlAUcGmE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me; spf=pass smtp.mailfrom=proton.me; dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b=bUYYfvmY; arc=none smtp.client-ip=109.224.244.27
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=proton.me
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=proton.me;
+	s=protonmail; t=1780081401; x=1780340601;
+	bh=dvB/3QyedObdEd0vUZp5FaAP+aJh2ZYKSH7sTm+EfQk=;
+	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
+	 Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
+	 Message-ID:BIMI-Selector;
+	b=bUYYfvmYMc6S4MxvcfWmvLl/pJakR8e4yjIBGLmXiRr5QWXmSgaWakrhulNPRd+D0
+	 Ihpoat7/6JjzlHSwPECXTC49Uuc8pzqUB1Uw7WsJC+IJ/1/JomvxqNd8nVMFJ+wQZj
+	 9mtmRQM4TPdnHLr2fDTHE7lLPOvvjepypm99q8l5d9ZcSmAnGBIMM1H431GCun2dev
+	 wQ+LfUPGMVjRhQDjCawsAptgPaoRyCSy+5TUN9pe7Jgqg1YtIH8+SHxQtWzPkvnLjb
+	 27LBOXXkTjSuJ+ata20j+BZ2ytkyvBdIvFpSGLxtmceSS4EZXb/9ZZCIyC7837eyvg
+	 l+D/Y3jp0thhQ==
+Date: Fri, 29 May 2026 19:03:18 +0000
+To: =?utf-8?Q?Micka=C3=ABl_Sala=C3=BCn?= <mic@digikod.net>
+From: hexlabsecurity@proton.me
+Cc: Justin Suess <utilityemal77@gmail.com>, "gnoack@google.com" <gnoack@google.com>, "linux-security-module@vger.kernel.org" <linux-security-module@vger.kernel.org>, "stable@vger.kernel.org" <stable@vger.kernel.org>
+Subject: Re: [REPORT] landlock: SCOPE_SIGNAL bypass via F_SETOWN to invoker pgid -> SIGIO/SIGKILL to non-sandboxed targets
+Message-ID: <YKesampb9JYT6cYp0iFbzuxr6hCIaFu-9YhkphsUJ1l8ktqIUpjeBictEvT74GFc0RwQ6WVNcKyVWuOskeQJPhWGhOOB6BUJiff_UXfzm_g=@proton.me>
+In-Reply-To: <20260529.li6kaiDaim4B@digikod.net>
+References: <TSwHGN3I-u6p6xv7CqnvDOhR3la_kQWq0rdjBdA0gt30AsYLwddoxjCCFmqXcQMxWHS4ShULEp7sO_8HdFRGPLk30rIQHy3EurwJyrjP3NQ=@proton.me> <20260529.li6kaiDaim4B@digikod.net>
+Feedback-ID: 199661219:user:proton
+X-Pm-Message-ID: 15b272239d115edf4f07f7b2aec89dc502a73ad4
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-0.66 / 15.00];
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	MID_CONTAINS_FROM(1.00)[];
-	DMARC_POLICY_ALLOW(-0.50)[redhat.com,quarantine];
-	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
-	R_DKIM_ALLOW(-0.20)[redhat.com:s=mimecast20190719,redhat.com:s=google];
+	DMARC_POLICY_ALLOW(-0.50)[proton.me,quarantine];
+	R_DKIM_ALLOW(-0.20)[proton.me:s=protonmail];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	RCVD_COUNT_THREE(0.00)[3];
+	TAGGED_FROM(0.00)[bounces-256724-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-256723-lists,stable=lfdr.de];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[6];
+	TO_DN_EQ_ADDR_SOME(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	FROM_HAS_DN(0.00)[];
+	FREEMAIL_CC(0.00)[gmail.com,google.com,vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	TO_DN_SOME(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[pbonzini@redhat.com,stable@vger.kernel.org];
+	FROM_NEQ_ENVFROM(0.00)[hexlabsecurity@proton.me,stable@vger.kernel.org];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_FIVE(0.00)[5];
+	MID_RHS_MATCH_FROM(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
-	DKIM_TRACE(0.00)[redhat.com:+];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	RCPT_COUNT_FIVE(0.00)[6];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,amd.com:email]
-X-Rspamd-Queue-Id: 41641607766
+	PRECEDENCE_BULK(0.00)[];
+	DKIM_TRACE(0.00)[proton.me:+];
+	TAGGED_RCPT(0.00)[stable];
+	FROM_NO_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	MISSING_XM_UA(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,proton.me:mid,proton.me:dkim]
+X-Rspamd-Queue-Id: BF355607A4F
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-From: Sean Christopherson <seanjc@google.com>
+Hi Micka=C3=ABl,
 
-If the guest attempts a non-MSR #VMGEXIT without the registered GHCB,
-return a GHCB_HV_RESP_MALFORMED_INPUT+GHCB_ERR_NOT_REGISTERED error to the
-guest instead of exiting KVM_RUN with -EINVAL (and in likelihood killing
-the VM).  KVM has already mapped the requested GHCB, i.e. can cleanly
-report an error, and so exiting with -EINVAL is completely unjustified.
+> Could you please replace the reproducer code with a proper kselftest?
+> That would need to be a new email patch (v3) [...]
 
-Fixes: 0c76b1d08280 ("KVM: SEV: Add support to handle GHCB GPA register VMGEXIT")
-Cc: stable@vger.kernel.org
-Reviewed-by: Tom Lendacky <thomas.lendacky@amd.com>
-Reviewed-by: Michael Roth <michael.roth@amd.com>
-Signed-off-by: Sean Christopherson <seanjc@google.com>
-Message-ID: <20260501202250.2115252-19-seanjc@google.com>
-Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
----
- arch/x86/kvm/svm/sev.c | 9 ++++++---
- 1 file changed, 6 insertions(+), 3 deletions(-)
+Done -- v3 is a two-patch series:
 
-diff --git a/arch/x86/kvm/svm/sev.c b/arch/x86/kvm/svm/sev.c
-index 6c6a6d663e29..7c2ebc81306f 100644
---- a/arch/x86/kvm/svm/sev.c
-+++ b/arch/x86/kvm/svm/sev.c
-@@ -4520,9 +4520,12 @@ int sev_handle_vmgexit(struct kvm_vcpu *vcpu)
- 	sev_es_sync_from_ghcb(svm);
- 
- 	/* SEV-SNP guest requires that the GHCB GPA must be registered */
--	if (is_sev_snp_guest(vcpu) && !ghcb_gpa_is_registered(svm, ghcb_gpa)) {
--		vcpu_unimpl(&svm->vcpu, "vmgexit: GHCB GPA [%#llx] is not registered.\n", ghcb_gpa);
--		return -EINVAL;
-+	if (is_sev_snp_guest(vcpu) &&
-+	    !ghcb_gpa_is_registered(svm, control->ghcb_gpa)) {
-+		vcpu_unimpl(vcpu, "vmgexit: GHCB GPA [%#llx] is not registered.\n",
-+			    control->ghcb_gpa);
-+		svm_vmgexit_bad_input(svm, GHCB_ERR_NOT_REGISTERED);
-+		return 1;
- 	}
- 
- 	ret = sev_es_validate_vmgexit(svm);
--- 
-2.54.0
+  [PATCH v3 1/2] landlock: fix LANDLOCK_SCOPE_SIGNAL bypass via F_SETOWN to=
+ invoker's pgid
+  [PATCH v3 2/2] selftests/landlock: test SCOPE_SIGNAL on the SIGIO/fowner =
+pgid path
+
+Patch 2 replaces the informal reproducer with a regression test in
+scoped_signal_test.c, reusing the existing fown/SIGURG idiom. It adds
+TEST(sigio_to_pgid_members): a sandboxed child at the head of its pgid hlis=
+t
+arms F_SETSIG(SIGURG) / F_SETOWN(-pgrp) / O_ASYNC and triggers the fan-out;=
+ the
+in-domain child must be signaled (positive control) and the non-sandboxed
+parent must not.
+
+I also added the Fixes: tag and Cc: stable that v2 was missing:
+
+  Fixes: 18eb75f3af40 ("landlock: Always allow signals between threads of t=
+he same process")
+
+That is where the same-thread-group exemption on the fowner path was
+introduced (v6.15; backported to 6.12.y/6.13.y/6.14.y -- the original v6.12
+signal scoping captured the subject unconditionally and was not affected).
+The fix hunk itself is unchanged from v1/v2 and keeps Justin's Tested-by.
+
+A/B on 6.12.90 + CONFIG_SECURITY_LANDLOCK (same .config, only the hunk
+differs): without patch 1 the new test fails (the parent is signaled); with=
+ it
+the test passes and the landlock signal-scoping suite is 20/20. checkpatch =
+is
+clean except one expected Reported-by/Closes warning -- the original report=
+ was
+sent to security@kernel.org, so there is no public URL to point Closes: at.
+
+Thanks,
+Bryam Vargas
+
+Independent security researcher. HEXLAB SAS (registration pending) -- Cali,=
+ Colombia.
+
+This series fixes a LANDLOCK_SCOPE_SIGNAL bypass on the asynchronous SIGIO
+(fcntl(F_SETOWN)) delivery path and adds the kselftest requested in review.
+
+Patch 1 narrows the same-thread-group exemption in control_current_fowner()
+so that F_SETOWN to a process group (or session) always captures the caller=
+'s
+Landlock subject. Without it, a sandboxed task at the head of its pgid hlis=
+t
+(the default position after fork()) skips the capture, and the SIGIO fan-ou=
+t
+reaches non-sandboxed members of the process group, defeating SCOPE_SIGNAL.
+The direct kill() path (hook_task_kill) is unaffected.
+
+Patch 2 adds a regression test to scoped_signal_test.c, replacing the infor=
+mal
+reproducer that previously accompanied the fix.
+
+The defect was introduced by commit 18eb75f3af40 ("landlock: Always allow
+signals between threads of the same process") in v6.15, and is present in t=
+he
+stable branches that backported it (6.12.y, 6.13.y, 6.14.y).
+control_current_fowner() is identical across those branches, so patch 1 app=
+lies
+as-is (stable kernels before the fown_subject conversion store the domain i=
+n
+landlock_file(file)->fown_domain; the exemption and the fix are the same).
+
+A/B verified on 6.12.90 + CONFIG_SECURITY_LANDLOCK (same .config, only the =
+fix
+hunk differs):
+  - without patch 1: the new test fails -- the non-sandboxed parent receive=
+s
+    the signal (SCOPE_SIGNAL bypassed);
+  - with patch 1: the new test passes, and the whole landlock signal-scopin=
+g
+    suite passes 20/20 (no regression).
+
+v2 -> v3:
+  - patch 1: add Fixes: tag and Cc: stable; the fix hunk is unchanged from =
+v1/v2.
+  - patch 2 (new): replace the git-notes reproducer with a kselftest.
+  - v1/v2 were sent to security@kernel.org (embargoed; not in a public arch=
+ive).
+
+Bryam Vargas (2):
+  landlock: fix LANDLOCK_SCOPE_SIGNAL bypass via F_SETOWN to invoker's pgid
+  selftests/landlock: test SCOPE_SIGNAL on the SIGIO/fowner pgid path
+
+ security/landlock/fs.c                        | 12 +++
+ .../selftests/landlock/scoped_signal_test.c   | 97 +++++++++++++++++++
+ 2 files changed, 109 insertions(+)
+
+base-commit: 27fa82620cbaa89a7fc11ac3057701d598813e87
 
 
