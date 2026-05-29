@@ -1,65 +1,61 @@
-Return-Path: <stable+bounces-256775-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-256776-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id eKVnAuz0GWp/0AgAu9opvQ
-	(envelope-from <stable+bounces-256775-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 29 May 2026 22:19:56 +0200
+	id MBHBL/H2GWos0QgAu9opvQ
+	(envelope-from <stable+bounces-256776-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 29 May 2026 22:28:33 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id A2BB36086B6
-	for <lists+stable@lfdr.de>; Fri, 29 May 2026 22:19:55 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5CF8C6088B0
+	for <lists+stable@lfdr.de>; Fri, 29 May 2026 22:28:33 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 113F8303B31A
-	for <lists+stable@lfdr.de>; Fri, 29 May 2026 20:14:21 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 755513096498
+	for <lists+stable@lfdr.de>; Fri, 29 May 2026 20:14:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9D80233D6F7;
-	Fri, 29 May 2026 20:14:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 99EA7343D8A;
+	Fri, 29 May 2026 20:14:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=narfation.org header.i=@narfation.org header.b="w+gADhqc"
+	dkim=pass (1024-bit key) header.d=narfation.org header.i=@narfation.org header.b="NOSpQKOn"
 X-Original-To: stable@vger.kernel.org
 Received: from dvalin.narfation.org (dvalin.narfation.org [213.160.73.56])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3BC8E3382E5
-	for <stable@vger.kernel.org>; Fri, 29 May 2026 20:14:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F08BB3C2D
+	for <stable@vger.kernel.org>; Fri, 29 May 2026 20:14:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=213.160.73.56
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780085645; cv=none; b=Nnn37EZ/roIp9/HWYjwY8oD+huAdt5c7oPF/U3oSqntm5bSROj9DG8/wGlqZbDbfBOUkbwaMSRbjo0rb7Iau3WA5rYCG2UhoWyfCuaz7hTaau/gwh0ZOB+X98mEmjoDfElyd51f0mhsvYp7bclws0yxYoDwGBHocnsDd6in4pt0=
+	t=1780085681; cv=none; b=cCiTnzX+glxUapymxcOtw3FlC+OgChVU5S0ak6qXRmmPIy6aJwdLGN5Y7QjNa8x/PzftG6UdCq+fObvZZ+OB8q2wOHM1HK063gTo1Eqa7guY7JubKxHdPF3FX5XxfvW8HpL5LUmaOpv9s5NA3lw9JFzEeNyx45mbKoaVsEZiDug=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780085645; c=relaxed/simple;
-	bh=DyUa9lUYKmbETPtiiZhKa9ZI1mh2puOVbjHzr4J2NVc=;
+	s=arc-20240116; t=1780085681; c=relaxed/simple;
+	bh=pIdFlXbaPEtVsZCEcgJBXF08XaSYiSmjQa2dB4LtshI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=OUsXkGaT+s8meD0Oc5p5PrBbwbUVBZwpu8BHnxGAaYmg8Cpzy9eJKSqkHdgXBOHN0aTqPb9+wO4wqElhy2oIWogJ70Sj785Om1u78y/em/9Gg5KZyZnQ9kqbPugUJQsBsR+QnS+9DV1fq6TaNNUqlCsPFoRuyGh5VU+BM6n7lic=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=narfation.org; spf=pass smtp.mailfrom=narfation.org; dkim=pass (1024-bit key) header.d=narfation.org header.i=@narfation.org header.b=w+gADhqc; arc=none smtp.client-ip=213.160.73.56
+	 MIME-Version; b=ZXSLnnVt8ERKIClosy4KKDi22aAWiOWjNVLz6wCILekN0SjVZO4AiZvUoBCRfK7QmeI6YofhdOXimnIGYNYvb0W/ssW+oLaKCDglNyxuSxLz0a/il0SHcxsWMTodjixowD7qPwuBGHV3blguPMDBY+s07U3gEHqi+3QA2gsft4M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=narfation.org; spf=pass smtp.mailfrom=narfation.org; dkim=pass (1024-bit key) header.d=narfation.org header.i=@narfation.org header.b=NOSpQKOn; arc=none smtp.client-ip=213.160.73.56
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=narfation.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=narfation.org
-Received: by dvalin.narfation.org (Postfix) id 8BC2E1FE5D;
-	Fri, 29 May 2026 20:14:02 +0000 (UTC)
+Received: by dvalin.narfation.org (Postfix) id 64D341FE5D;
+	Fri, 29 May 2026 20:14:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=narfation.org;
-	s=20121; t=1780085642;
+	s=20121; t=1780085678;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=o9Y6gMmEBkfFX+ZnWGnPq8U64NY0kvXODmiCf73mcAE=;
-	b=w+gADhqcBsIbfhyB6AtePGEoqVlZr8PVELXhUE9fH+aCf2EbCfmLmpgpzvHiLSKPkRaEEp
-	vbrzgnnOvoxbj0nGBM2frg8JqZI96NNEwqQBiSrcKIJBg9byrQ11dNTBS/HN7k1xDB0t8I
-	IxW+EUqlMgOvYnQ7OFcePFhJTadhBDM=
+	bh=C+41Ubo/HkSmqMBbHz+gs5vKNiWjoRPTN+Iior7eG48=;
+	b=NOSpQKOni/8u3HALv6EJQWiIFTk8FxKioyvzXwEQ03azQP3Lr8MxglpdtiOq/G4mW4YosL
+	z34QpKeRietjwmKA5xfTSVNOkBF31RCjNWqF/e4tVTORZfl9WvtHJvcRtLipQD7Tb4YkSr
+	FIer69U9azM7FhE0L3FD6Y+KT5Kb9oA=
 From: Sven Eckelmann <sven@narfation.org>
 To: stable@vger.kernel.org
 Cc: Sven Eckelmann <sven@narfation.org>,
-	stable@kernel.org,
-	Yuan Tan <yuantan098@gmail.com>,
-	Yifan Wu <yifanwucs@gmail.com>,
-	Juefei Pu <tomapufckgml@gmail.com>,
-	Xin Liu <bird@lzu.edu.cn>
-Subject: [PATCH 5.10.y] batman-adv: tvlv: reject oversized TVLV packets
-Date: Fri, 29 May 2026 22:13:55 +0200
-Message-ID: <20260529201355.479939-1-sven@narfation.org>
+	stable@kernel.org
+Subject: [PATCH 5.10.y] batman-adv: tp_meter: fix race condition in send error reporting
+Date: Fri, 29 May 2026 22:14:34 +0200
+Message-ID: <20260529201434.480245-1-sven@narfation.org>
 X-Mailer: git-send-email 2.47.3
-In-Reply-To: <2026052839-sample-democracy-7987@gregkh>
-References: <2026052839-sample-democracy-7987@gregkh>
+In-Reply-To: <2026052834-wad-startle-2b67@gregkh>
+References: <2026052834-wad-startle-2b67@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -72,106 +68,206 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[narfation.org,none];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[narfation.org:s=20121];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	FREEMAIL_CC(0.00)[narfation.org,kernel.org,gmail.com,lzu.edu.cn];
-	RCVD_TLS_LAST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-256776-lists,stable=lfdr.de];
 	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-256775-lists,stable=lfdr.de];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	RCVD_TLS_LAST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	DKIM_TRACE(0.00)[narfation.org:+];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
+	TO_DN_SOME(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[sven@narfation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[narfation.org:+];
-	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_THREE(0.00)[3];
+	PRECEDENCE_BULK(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_SEVEN(0.00)[7];
-	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[narfation.org:email,narfation.org:mid,narfation.org:dkim,lzu.edu.cn:email,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo]
-X-Rspamd-Queue-Id: A2BB36086B6
+	NEURAL_HAM(-0.00)[-1.000];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,narfation.org:email,narfation.org:mid,narfation.org:dkim]
+X-Rspamd-Queue-Id: 5CF8C6088B0
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-commit f50487e3566358b2b982b7801945e858c78ad9ab upstream.
+commit 71dce47f0758537fff78fddb5fb0d4632d29b29f upstream.
 
-batadv_tvlv_container_ogm_append() builds a TVLV packet section from
-the tvlv.container_list. The total size of this section is computed by
-batadv_tvlv_container_list_size(), which sums the sizes of all registered
-containers.
+batadv_tp_sender_shutdown() previously used two separate variables to track
+session state: sending (an atomic flag indicating whether the session was
+active) and reason (a plain enum storing the stop reason). This introduced
+a race window between the two writes: after sending was cleared to 0,
+batadv_tp_send() could observe the stopped state and call
+batadv_tp_sender_end() before reason was written, causing the wrong stop
+reason to be reported to the caller.
 
-The return type and accumulator in batadv_tvlv_container_list_size() were
-u16. If the accumulated size exceeds U16_MAX, the value wraps around,
-causing the subsequent allocation in batadv_tvlv_container_ogm_append()
-to be undersized. The memcpy-style copy that follows would then write
-beyond the end of the allocated buffer, corrupting kernel memory.
-
-Fix this by widening the return type of batadv_tvlv_container_list_size()
-to size_t. In batadv_tvlv_container_ogm_append(), check the computed length
-against U16_MAX before proceeding, and bail out as if the allocation had
-failed when the limit is exceeded.
+Fix this by consolidating both variables into a single atomic send_result,
+which holds 0 while the session is running and the stop reason once it
+ends.
 
 Cc: stable@kernel.org
-Fixes: ef26157747d4 ("batman-adv: tvlv - basic infrastructure")
-Reported-by: Yuan Tan <yuantan098@gmail.com>
-Reported-by: Yifan Wu <yifanwucs@gmail.com>
-Reported-by: Juefei Pu <tomapufckgml@gmail.com>
-Reported-by: Xin Liu <bird@lzu.edu.cn>
-Reviewed-by: Yuan Tan <yuantan098@gmail.com>
+Fixes: 33a3bb4a3345 ("batman-adv: throughput meter implementation")
+[ Context ]
 Signed-off-by: Sven Eckelmann <sven@narfation.org>
 ---
- net/batman-adv/tvlv.c | 11 ++++++++---
- 1 file changed, 8 insertions(+), 3 deletions(-)
+ net/batman-adv/tp_meter.c | 40 ++++++++++++++++++++++++---------------
+ net/batman-adv/types.h    | 10 +++++-----
+ 2 files changed, 30 insertions(+), 20 deletions(-)
 
-diff --git a/net/batman-adv/tvlv.c b/net/batman-adv/tvlv.c
-index 75f7ea827ed9d..8da8184a2ebdf 100644
---- a/net/batman-adv/tvlv.c
-+++ b/net/batman-adv/tvlv.c
-@@ -13,6 +13,7 @@
- #include <linux/if_ether.h>
- #include <linux/kernel.h>
- #include <linux/kref.h>
-+#include <linux/limits.h>
- #include <linux/list.h>
- #include <linux/lockdep.h>
- #include <linux/netdevice.h>
-@@ -160,10 +161,10 @@ batadv_tvlv_container_get(struct batadv_priv *bat_priv, u8 type, u8 version)
-  *
-  * Return: size of all currently registered tvlv containers in bytes.
-  */
--static u16 batadv_tvlv_container_list_size(struct batadv_priv *bat_priv)
-+static size_t batadv_tvlv_container_list_size(struct batadv_priv *bat_priv)
+diff --git a/net/batman-adv/tp_meter.c b/net/batman-adv/tp_meter.c
+index 247f96e4027c7..6c114963e64f6 100644
+--- a/net/batman-adv/tp_meter.c
++++ b/net/batman-adv/tp_meter.c
+@@ -402,11 +402,14 @@ static void batadv_tp_sender_cleanup(struct batadv_priv *bat_priv,
+ static void batadv_tp_sender_end(struct batadv_priv *bat_priv,
+ 				 struct batadv_tp_vars *tp_vars)
  {
- 	struct batadv_tvlv_container *tvlv;
--	u16 tvlv_len = 0;
-+	size_t tvlv_len = 0;
++	enum batadv_tp_meter_reason reason;
+ 	u32 session_cookie;
  
- 	lockdep_assert_held(&bat_priv->tvlv.container_list_lock);
++	reason = atomic_read(&tp_vars->send_result);
++
+ 	batadv_dbg(BATADV_DBG_TP_METER, bat_priv,
+ 		   "Test towards %pM finished..shutting down (reason=%d)\n",
+-		   tp_vars->other_end, tp_vars->reason);
++		   tp_vars->other_end, reason);
  
-@@ -316,13 +317,17 @@ int batadv_tvlv_container_ogm_append(struct batadv_priv *bat_priv,
+ 	batadv_dbg(BATADV_DBG_TP_METER, bat_priv,
+ 		   "Last timing stats: SRTT=%ums RTTVAR=%ums RTO=%ums\n",
+@@ -419,7 +422,7 @@ static void batadv_tp_sender_end(struct batadv_priv *bat_priv,
+ 	session_cookie = batadv_tp_session_cookie(tp_vars->session,
+ 						  tp_vars->icmp_uid);
+ 
+-	batadv_tp_batctl_notify(tp_vars->reason,
++	batadv_tp_batctl_notify(reason,
+ 				tp_vars->other_end,
+ 				bat_priv,
+ 				tp_vars->start_time,
+@@ -435,10 +438,18 @@ static void batadv_tp_sender_end(struct batadv_priv *bat_priv,
+ static void batadv_tp_sender_shutdown(struct batadv_tp_vars *tp_vars,
+ 				      enum batadv_tp_meter_reason reason)
  {
- 	struct batadv_tvlv_container *tvlv;
- 	struct batadv_tvlv_hdr *tvlv_hdr;
--	u16 tvlv_value_len;
-+	size_t tvlv_value_len;
- 	void *tvlv_value;
- 	int tvlv_len_ret;
- 	bool ret;
+-	if (atomic_xchg(&tp_vars->sending, 0) != 1)
+-		return;
++	atomic_cmpxchg(&tp_vars->send_result, 0, reason);
++}
  
- 	spin_lock_bh(&bat_priv->tvlv.container_list_lock);
- 	tvlv_value_len = batadv_tvlv_container_list_size(bat_priv);
-+	if (tvlv_value_len > U16_MAX) {
-+		tvlv_len_ret = -E2BIG;
-+		goto end;
-+	}
+-	tp_vars->reason = reason;
++/**
++ * batadv_tp_sender_stopped() - check if tp session was stopped with reason
++ * @tp_vars: the private data of the current TP meter session
++ *
++ * Return: whether stop reason was found
++ */
++static bool batadv_tp_sender_stopped(struct batadv_tp_vars *tp_vars)
++{
++	return atomic_read(&tp_vars->send_result) != 0;
+ }
  
- 	ret = batadv_tvlv_realloc_packet_buff(packet_buff, packet_buff_len,
- 					      packet_min_len, tvlv_value_len);
+ /**
+@@ -468,7 +479,7 @@ static void batadv_tp_reset_sender_timer(struct batadv_tp_vars *tp_vars)
+ 	/* most of the time this function is invoked while normal packet
+ 	 * reception...
+ 	 */
+-	if (unlikely(atomic_read(&tp_vars->sending) == 0))
++	if (unlikely(batadv_tp_sender_stopped(tp_vars)))
+ 		/* timer ref will be dropped in batadv_tp_sender_cleanup */
+ 		return;
+ 
+@@ -488,7 +499,7 @@ static void batadv_tp_sender_timeout(struct timer_list *t)
+ 	struct batadv_tp_vars *tp_vars = from_timer(tp_vars, t, timer);
+ 	struct batadv_priv *bat_priv = tp_vars->bat_priv;
+ 
+-	if (atomic_read(&tp_vars->sending) == 0)
++	if (batadv_tp_sender_stopped(tp_vars))
+ 		return;
+ 
+ 	/* if the user waited long enough...shutdown the test */
+@@ -650,7 +661,7 @@ static void batadv_tp_recv_ack(struct batadv_priv *bat_priv,
+ 	if (unlikely(tp_vars->role != BATADV_TP_SENDER))
+ 		goto out;
+ 
+-	if (unlikely(atomic_read(&tp_vars->sending) == 0))
++	if (unlikely(batadv_tp_sender_stopped(tp_vars)))
+ 		goto out;
+ 
+ 	/* old ACK? silently drop it.. */
+@@ -819,21 +830,21 @@ static int batadv_tp_send(void *arg)
+ 
+ 	if (unlikely(tp_vars->role != BATADV_TP_SENDER)) {
+ 		err = BATADV_TP_REASON_DST_UNREACHABLE;
+-		tp_vars->reason = err;
++		batadv_tp_sender_shutdown(tp_vars, err);
+ 		goto out;
+ 	}
+ 
+ 	orig_node = batadv_orig_hash_find(bat_priv, tp_vars->other_end);
+ 	if (unlikely(!orig_node)) {
+ 		err = BATADV_TP_REASON_DST_UNREACHABLE;
+-		tp_vars->reason = err;
++		batadv_tp_sender_shutdown(tp_vars, err);
+ 		goto out;
+ 	}
+ 
+ 	primary_if = batadv_primary_if_get_selected(bat_priv);
+ 	if (unlikely(!primary_if)) {
+ 		err = BATADV_TP_REASON_DST_UNREACHABLE;
+-		tp_vars->reason = err;
++		batadv_tp_sender_shutdown(tp_vars, err);
+ 		goto out;
+ 	}
+ 
+@@ -852,7 +863,7 @@ static int batadv_tp_send(void *arg)
+ 	queue_delayed_work(batadv_event_workqueue, &tp_vars->finish_work,
+ 			   msecs_to_jiffies(tp_vars->test_length));
+ 
+-	while (atomic_read(&tp_vars->sending) != 0) {
++	while (!batadv_tp_sender_stopped(tp_vars)) {
+ 		if (unlikely(!batadv_tp_avail(tp_vars, payload_len))) {
+ 			batadv_tp_wait_available(tp_vars, payload_len);
+ 			continue;
+@@ -875,8 +886,7 @@ static int batadv_tp_send(void *arg)
+ 				   "Meter: %s() cannot send packets (%d)\n",
+ 				   __func__, err);
+ 			/* ensure nobody else tries to stop the thread now */
+-			if (atomic_xchg(&tp_vars->sending, 0) == 1)
+-				tp_vars->reason = err;
++			batadv_tp_sender_shutdown(tp_vars, err);
+ 			break;
+ 		}
+ 
+@@ -998,7 +1008,7 @@ void batadv_tp_start(struct batadv_priv *bat_priv, const u8 *dst,
+ 	ether_addr_copy(tp_vars->other_end, dst);
+ 	kref_init(&tp_vars->refcount);
+ 	tp_vars->role = BATADV_TP_SENDER;
+-	atomic_set(&tp_vars->sending, 1);
++	atomic_set(&tp_vars->send_result, 0);
+ 	memcpy(tp_vars->session, session_id, sizeof(session_id));
+ 	tp_vars->icmp_uid = icmp_uid;
+ 
+diff --git a/net/batman-adv/types.h b/net/batman-adv/types.h
+index f7e5a8f7570a3..7c05a67a936a3 100644
+--- a/net/batman-adv/types.h
++++ b/net/batman-adv/types.h
+@@ -1404,11 +1404,11 @@ struct batadv_tp_vars {
+ 	/** @role: receiver/sender modi */
+ 	enum batadv_tp_meter_role role;
+ 
+-	/** @sending: sending binary semaphore: 1 if sending, 0 is not */
+-	atomic_t sending;
+-
+-	/** @reason: reason for a stopped session */
+-	enum batadv_tp_meter_reason reason;
++	/**
++	 * @send_result: 0 when sending is ongoing and otherwise
++	 * enum batadv_tp_meter_reason
++	 */
++	atomic_t send_result;
+ 
+ 	/** @finish_work: work item for the finishing procedure */
+ 	struct delayed_work finish_work;
 -- 
 2.47.3
 
