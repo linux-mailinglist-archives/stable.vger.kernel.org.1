@@ -1,299 +1,135 @@
-Return-Path: <stable+bounces-256469-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-256470-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id qH+zC30GGWrlpggAu9opvQ
-	(envelope-from <stable+bounces-256469-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 29 May 2026 05:22:37 +0200
+	id kFChBZIHGWr7pggAu9opvQ
+	(envelope-from <stable+bounces-256470-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 29 May 2026 05:27:14 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9A0675FCAE3
-	for <lists+stable@lfdr.de>; Fri, 29 May 2026 05:22:36 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 969E85FCBC7
+	for <lists+stable@lfdr.de>; Fri, 29 May 2026 05:27:13 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id DFBDE30AC440
-	for <lists+stable@lfdr.de>; Fri, 29 May 2026 03:19:27 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id A40BF305697E
+	for <lists+stable@lfdr.de>; Fri, 29 May 2026 03:24:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5FE4D36C5B2;
-	Fri, 29 May 2026 03:19:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9206D3546C6;
+	Fri, 29 May 2026 03:24:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="V99MNcJx"
+	dkim=pass (2048-bit key) header.d=codewreck.org header.i=@codewreck.org header.b="a+NQ8Qxz"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-oi1-f170.google.com (mail-oi1-f170.google.com [209.85.167.170])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from submarine.notk.org (submarine.notk.org [62.210.214.84])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B8F19367B73
-	for <stable@vger.kernel.org>; Fri, 29 May 2026 03:19:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.170
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9CA2F3033FE;
+	Fri, 29 May 2026 03:24:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=62.210.214.84
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780024765; cv=none; b=PluDNTB+/XlfDef9tVwuLPmtZQYsQWQGOPs+ksCimjOeg/UbO4oScF9vSKHN4WHMf6yP/JnRxTJpImimmQgX04GaG3lvcFtU5tVT94yvrJTiiYCimpxAbWLaLQ6tpaflkCZJejZ0PLK6sRNvfCfa+4XfTtpjgISzkrFU/KELmS0=
+	t=1780025042; cv=none; b=iPOVhIVWFCbqn0WMbHCInvkYuhmFAaYNyCzVoht9XB8Tp1X0WOztxoh1vGmLKaaoGfUKoSH575OHIhHHDrMiJdaOk35PsUPaB7nYa0UFPIbO34/XjMrrafBi40AsYuIxUtqvUeQ2oZxai6qjpqzV0+f0VCd15RAOO8yVfpsOfTI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780024765; c=relaxed/simple;
-	bh=40T2GLBqj4FpYx2f+Q5O8Te1Fo7OcJyPDzJ1RlcCGmM=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=io3CQC4mLpJtedRFSMdleraaAVK9F7i5rN5g/lMaQiYuYixMRgonKEuC4sHWFaqz3P1mAiranXmvIvkV9qbdmLso/Sy51iwN029sbLd/nCRpdgI6HIuvOlS7nu3Z5/Ki7SyGeBN83kDRh4WiQgOaWWrUdUNBcAh2SbTgSyshARc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=V99MNcJx; arc=none smtp.client-ip=209.85.167.170
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-oi1-f170.google.com with SMTP id 5614622812f47-485433a6889so2346739b6e.0
-        for <stable@vger.kernel.org>; Thu, 28 May 2026 20:19:23 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1780024763; x=1780629563; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=o9Db9daSum/vcEWTe0jIogWuT23gsSW5PUBP5KH0NAU=;
-        b=V99MNcJxDllHIiIlVvlfYNZaYIxV/vgbwNdLncReVf2RD5vEgR6Zhl8a1k61Buv2xM
-         7Ns2p2a7fglX4/jVzyS4RUvab+46F+gpImkFUDDETE/e1o5cDz+BkR9OPHWgaUk+sgh2
-         sb8P4b5BUW1wWYvEmHcu7R5gHOn8/pwohfdVyw4DzJ87hzQkujqct9Me1m3hN3k7pgFY
-         Czeg9Mvl0jSLiXkWPgWDZ5gKWjZHp/b5du7Y5+djc1p9fv7+XEvBtdH0fSIDCkG16Y3l
-         8My/Lk38kgrO9gvhYnKYr0U85/Ek2J8zQZF/lqBg5wjqgbiAqe4+wfO+XrqAe2W2DVpv
-         uihQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1780024763; x=1780629563;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=o9Db9daSum/vcEWTe0jIogWuT23gsSW5PUBP5KH0NAU=;
-        b=gpATBovtA5k3OEKjniLLFBmSWZzNlfF0HvlCR+uFJ2ioiKiI6Rw8Jg/62YguS+A/yC
-         6HLfZFYMg4wHHNDg/y4VjNpYmkRKXhGDYExdG0/cttN1pGhTKtvz+bX6u2MQ0S3WSa4d
-         ZUJJ7zmREgdshMXZxyYM81VdatWkVmFc/NiMIc/tvsULsa2XtF5CPoRpCFCH1jV0yu+V
-         0lWTHCBTEPzkZr4YoxWRwgY9PWul5XxOUZ3tzUAVvqPnqS4+AUrUWBRbmXDX29IgCMal
-         egmIUQUAHkEtpnjjRLAedPj/L+OBeLtt/MAYuKi1uqU81i1j4fp7UZfGEPtV17SMVudl
-         WByA==
-X-Forwarded-Encrypted: i=1; AFNElJ+vLaWeT45ofG+c6af/Nxk1vtOVDMpsw9PlopcuxcigKFRjrJG4B5aw2bL8Zy5/DczOQNgOEXk=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxobCZ2WrXOfnaAoc07QcqH4SMYIZwnk1iu+s0WQJ4sjNcJrwzM
-	nNy23GJT3rQ+CU6eDfy9+nd+xmeCVYwBQaSRSocoyCYo5KDG5Y/s4CGc
-X-Gm-Gg: Acq92OGeIdr4BdTMUdgw3wYENdgFOx3bK48or87tvp4ycWD+4hrtEUWW9MFkjrMQ6It
-	age0zI8HwApAdDcSfe80NpND/1BEx2dBdfkdWY1fABh3/mT+8ToH6e0Ok5dx+i1AsvAvcmrvd98
-	i/riUS0X6oMwc3WufotftqHF//ecEsCEEHNaEL4p7bv98zA9G+P/roO8opeazZmTlRFT1OfHek1
-	F2FyiGhUIALS8YrwKPb+TMJSnyPTXqDuK2NDsXDgzOA/66+8uRwTPJWBemYyIOstlkg/hOkj6g1
-	KA06RvZiEjFt/p4S0eaqaMvkmc0dOjIBuLMlcBqZFyb0NC6bZbU65uQXfYViXzZva1wwGrgSlzm
-	OAfvh3ck8vveOS/ZLWkNRhGvy4gkYT7V7YLqVsHN5GjfiSHW3D2AnEr2FDs2Gd4pO5HF6tAcBJH
-	mu02MORD5xqQDb141gB/AT5KbkEuopZVAoNbxnIADuCOJ64nRmJfBd/Gj1WKWKc3eXfaI3DYLHr
-	mk35KL5goUjI67ZLGtC+1HBTutBwY3TPM2bZ24CA1H7qQms3k85yMJFlhX3r2DOPQ==
-X-Received: by 2002:a05:6808:3318:b0:485:467f:a307 with SMTP id 5614622812f47-485e6c9fd72mr901051b6e.42.1780024762736;
-        Thu, 28 May 2026 20:19:22 -0700 (PDT)
-Received: from rdf-gcp2.us-central1-b.c.storage-xlrait-66065.internal (163.80.112.136.bc.googleusercontent.com. [136.112.80.163])
-        by smtp.gmail.com with ESMTPSA id 46e09a7af769-7e695bb393bsm556788a34.7.2026.05.28.20.19.21
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 28 May 2026 20:19:22 -0700 (PDT)
-From: Russ Fellows <russ.fellows@gmail.com>
-To: linux-fsdevel@vger.kernel.org
-Cc: miklos@szeredi.hu,
-	linux-kernel@vger.kernel.org,
-	Russ Fellows <russ.fellows@gmail.com>,
-	stable@vger.kernel.org
-Subject: [PATCH 1/2] fuse: fix FOPEN_PARALLEL_DIRECT_WRITES being ignored for passthrough writes
-Date: Fri, 29 May 2026 03:19:15 +0000
-Message-ID: <20260529031918.7361-2-russ.fellows@gmail.com>
-X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20260529031918.7361-1-russ.fellows@gmail.com>
-References: <20260529031918.7361-1-russ.fellows@gmail.com>
+	s=arc-20240116; t=1780025042; c=relaxed/simple;
+	bh=YUkUoPBftuWX9HCUCBudk0FhDhp6GzhTSntIlpRXolA=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=p9K7iH04jfKw8w047Wn+QukFM5+yKUfhmpufSFgB2cOIqLy7nPkNZn1rZMm42EzfNpbDZdXDkWNJb1hlTzUjnI5tE9Tm0JFc5tSUDq+hzc77n/8W0bNTueP5Ymj9vY99lf50FWG2CdEOx3YCwDamXjyPx1hOCgMviih85auK+Ww=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=codewreck.org; spf=pass smtp.mailfrom=codewreck.org; dkim=pass (2048-bit key) header.d=codewreck.org header.i=@codewreck.org header.b=a+NQ8Qxz; arc=none smtp.client-ip=62.210.214.84
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=codewreck.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=codewreck.org
+Received: from gaia.codewreck.org (localhost [127.0.0.1])
+	by submarine.notk.org (Postfix) with ESMTPS id 4D20B14C2D6;
+	Fri, 29 May 2026 05:23:53 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=codewreck.org;
+	s=2; t=1780025038;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=gGyzxxYWethV6Gpfku8kke6m2vrxw5sCfsD011CzK8I=;
+	b=a+NQ8QxzfXE1qUm0z4plcL1P3IHpAwp2tyXM9TiUdelVxxI4EHxe7JTKlCG5T7qUVCOnJs
+	xiUqnl1bg30I5WrUp0x33cw/EjJ//jEaXZpqu7tWH/aqBaY+avbA2gWgRR4Qt97HBY86dd
+	KHoL2ccb5i5b2/Z0keSwlUeHs6xDogZYhvKHy8bSRE2q0Qy0AdJLnzac+F13/j78jjanjC
+	nRHuUjw+O+JRb3vWj81wIPGtDk46krwQASF3hWm/xJdz+lfdokObQThw3Ds7Kzy6mDvQmZ
+	7rI+7qL5Jp7Pm5X7FG0xBJx0l2LaJJssnZl8JUTK4b7zp0QFICeREbqcUN04pA==
+Received: from localhost (gaia.codewreck.org [local])
+	by gaia.codewreck.org (OpenSMTPD) with ESMTPA id a707abcc;
+	Fri, 29 May 2026 03:23:51 +0000 (UTC)
+Date: Fri, 29 May 2026 12:23:36 +0900
+From: Dominique Martinet <asmadeus@codewreck.org>
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: stable@vger.kernel.org, patches@lists.linux.dev,
+	linux-kernel@vger.kernel.org, torvalds@linux-foundation.org,
+	akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org,
+	patches@kernelci.org, lkft-triage@lists.linaro.org,
+	pavel@nabladev.com, jonathanh@nvidia.com, f.fainelli@gmail.com,
+	sudipm.mukherjee@gmail.com, rwarsow@gmx.de, conor@kernel.org,
+	hargar@microsoft.com, broonie@kernel.org, achill@achill.org,
+	sr@sladewatkins.com
+Subject: Re: [PATCH 6.12 000/272] 6.12.92-rc1 review
+Message-ID: <ahkGuI6N6Uu_GlOZ@codewreck.org>
+References: <20260528194629.379955525@linuxfoundation.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-1.66 / 15.00];
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20260528194629.379955525@linuxfoundation.org>
+X-Spamd-Result: default: False [-0.66 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
-	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
-	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
+	DMARC_POLICY_ALLOW(-0.50)[codewreck.org,none];
+	R_DKIM_ALLOW(-0.20)[codewreck.org:s=2];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-256469-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	FREEMAIL_CC(0.00)[szeredi.hu,vger.kernel.org,gmail.com];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FREEMAIL_FROM(0.00)[gmail.com];
-	TO_DN_SOME(0.00)[];
+	FREEMAIL_CC(0.00)[vger.kernel.org,lists.linux.dev,linux-foundation.org,roeck-us.net,kernel.org,kernelci.org,lists.linaro.org,nabladev.com,nvidia.com,gmail.com,gmx.de,microsoft.com,achill.org,sladewatkins.com];
+	TAGGED_FROM(0.00)[bounces-256470-lists,stable=lfdr.de];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[russfellows@gmail.com,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	RECEIVED_HELO_LOCALHOST(0.00)[];
+	RCPT_COUNT_TWELVE(0.00)[20];
+	RCVD_TLS_LAST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[codewreck.org:+];
+	MISSING_XM_UA(0.00)[];
+	TO_DN_SOME(0.00)[];
 	RCVD_COUNT_FIVE(0.00)[5];
-	DKIM_TRACE(0.00)[gmail.com:+];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[asmadeus@codewreck.org,stable@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[5];
+	MID_RHS_MATCH_FROM(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
-X-Rspamd-Queue-Id: 9A0675FCAE3
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,codewreck.org:mid,codewreck.org:dkim]
+X-Rspamd-Queue-Id: 969E85FCBC7
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-FOPEN_PARALLEL_DIRECT_WRITES has no effect on passthrough-backed FUSE
-files due to two independent bugs that each prevent it from working.
-Both must be fixed to restore parallel write concurrency.
+Greg Kroah-Hartman wrote on Thu, May 28, 2026 at 09:46:14PM +0200:
+> This is the start of the stable review cycle for the 6.12.92 release.
+> There are 272 patches in this series, all will be posted as a response
+> to this one.  If anyone has any issues with these being applied, please
+> let me know.
+> 
+> Responses should be made by Sat, 30 May 2026 19:45:52 +0000.
+> Anything received after that time might be too late.
+> 
+> The whole patch series can be found in one patch at:
+> 	https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-6.12.92-rc1.gz
+> or in the git tree and branch at:
+> 	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-6.12.y
+> and the diffstat can be found below.
 
-Bug 1: fuse_passthrough_write_iter() acquires the exclusive inode lock
-directly:
+Tested 97928cc88900 ("Linux 6.12.92-rc1") on:
+- arm i.MX6ULL (Armadillo 640)
+- arm64 i.MX8ULP (Armadillo IoT A9E)
 
-    inode_lock(inode);
-    ret = backing_file_write_iter(...);
-    inode_unlock(inode);
+No obvious regression in dmesg or basic tests:
+Tested-by: Dominique Martinet <dominique.martinet@atmark-techno.com>
 
-This serializes all concurrent writers regardless of whether the server
-set FOPEN_PARALLEL_DIRECT_WRITES.  The flag is checked by
-fuse_dio_wr_exclusive_lock(), called from fuse_dio_lock(), called from
-fuse_direct_write_iter() -- the non-passthrough O_DIRECT path.
-fuse_file_write_iter() routes passthrough opens to
-fuse_passthrough_write_iter() instead, bypassing the flag check entirely.
-
-Bug 2: fuse_file_io_open() in iomode.c strips FOPEN_PARALLEL_DIRECT_WRITES
-from any open that lacks FOPEN_DIRECT_IO:
-
-    if (!(ff->open_flags & FOPEN_DIRECT_IO))
-        ff->open_flags &= ~FOPEN_PARALLEL_DIRECT_WRITES;
-
-This is correct for regular direct-IO opens where FOPEN_DIRECT_IO ensures
-O_DIRECT is actually in effect.  It is wrong for passthrough opens: a
-passthrough file already bypasses the FUSE page cache by definition, so
-FOPEN_DIRECT_IO is redundant and should not be required to preserve the
-parallel-writes flag.
-
-Note: adding FOPEN_DIRECT_IO to the daemon's open flags is not a valid
-workaround.  fuse_file_write_iter() checks FOPEN_DIRECT_IO before
-FOPEN_PASSTHROUGH, so setting both causes writes to be routed through
-fuse_direct_write_iter() (requiring a userspace round-trip) instead of
-fuse_passthrough_write_iter() (zero-copy kernel path).
-
-Combined effect: a daemon that opens with FOPEN_PASSTHROUGH |
-FOPEN_PARALLEL_DIRECT_WRITES (without FOPEN_DIRECT_IO) has the parallel
-flag stripped by Bug 2 before Bug 1 is even reached.  Both bugs must be
-fixed together.
-
-Fix Bug 1: make fuse_dio_lock() and fuse_dio_unlock() non-static and call
-them from fuse_passthrough_write_iter(), replacing the open-coded
-inode_lock/inode_unlock.  This reuses the existing logic that handles
-FOPEN_PARALLEL_DIRECT_WRITES, append writes, writes past EOF, and
-page-cache IO mode transitions.
-
-Fix Bug 2: skip the FOPEN_PARALLEL_DIRECT_WRITES strip when
-FOPEN_PASSTHROUGH is set.  The flag remains stripped for non-passthrough
-opens without FOPEN_DIRECT_IO, preserving existing behaviour.
-
-Safety: backing_file_write_iter() calls into the backing filesystem's
-write_iter (e.g. xfs_file_write_iter), which acquires the backing inode's
-own lock independently.  The FUSE inode lock and the backing inode lock are
-entirely separate; using inode_lock_shared on the FUSE inode does not
-affect the backing filesystem's concurrency control.
-
-Fixes: 4d99ff8f6b85 ("fuse: implement open/create with FOPEN_PASSTHROUGH")
-Cc: stable@vger.kernel.org
-Signed-off-by: Russ Fellows <russ.fellows@gmail.com>
----
- fs/fuse/file.c        |  6 +++---
- fs/fuse/fuse_i.h      |  2 ++
- fs/fuse/iomode.c      |  8 ++++++--
- fs/fuse/passthrough.c |  6 +++---
- 4 files changed, 14 insertions(+), 8 deletions(-)
-
-diff --git a/fs/fuse/file.c b/fs/fuse/file.c
-index f94f3dc082c6..602c3f18676e 100644
---- a/fs/fuse/file.c
-+++ b/fs/fuse/file.c
-@@ -1428,8 +1428,8 @@ static bool fuse_dio_wr_exclusive_lock(struct kiocb *iocb, struct iov_iter *from
- 	return false;
- }
- 
--static void fuse_dio_lock(struct kiocb *iocb, struct iov_iter *from,
--			  bool *exclusive)
-+void fuse_dio_lock(struct kiocb *iocb, struct iov_iter *from,
-+		   bool *exclusive)
- {
- 	struct inode *inode = file_inode(iocb->ki_filp);
- 	struct fuse_inode *fi = get_fuse_inode(inode);
-@@ -1455,7 +1455,7 @@ static void fuse_dio_lock(struct kiocb *iocb, struct iov_iter *from,
- 	}
- }
- 
--static void fuse_dio_unlock(struct kiocb *iocb, bool exclusive)
-+void fuse_dio_unlock(struct kiocb *iocb, bool exclusive)
- {
- 	struct inode *inode = file_inode(iocb->ki_filp);
- 	struct fuse_inode *fi = get_fuse_inode(inode);
-@@ -1469,7 +1469,7 @@ static void fuse_dio_unlock(struct kiocb *iocb, bool exclusive)
- 	}
- }
- 
--static const struct iomap_write_ops fuse_iomap_write_ops = {
-+static const struct iomap_write_ops fuse_iomap_write_ops = {	/* unchanged */
- 	.read_folio_range = fuse_iomap_read_folio_range,
- };
- 
-diff --git a/fs/fuse/fuse_i.h b/fs/fuse/fuse_i.h
-index 17423d4e3cfa..120de517cea0 100644
---- a/fs/fuse/fuse_i.h
-+++ b/fs/fuse/fuse_i.h
-@@ -1541,6 +1541,8 @@ int fuse_file_io_open(struct file *file, struct inode *inode);
- void fuse_file_io_release(struct fuse_file *ff, struct inode *inode);
- 
- /* file.c */
-+void fuse_dio_lock(struct kiocb *iocb, struct iov_iter *from, bool *exclusive);
-+void fuse_dio_unlock(struct kiocb *iocb, bool exclusive);
- struct fuse_file *fuse_file_open(struct fuse_mount *fm, u64 nodeid,
- 				 unsigned int open_flags, bool isdir);
- void fuse_file_release(struct inode *inode, struct fuse_file *ff,
-diff --git a/fs/fuse/iomode.c b/fs/fuse/iomode.c
-index c99e285f3..b3f51e3d1 100644
---- a/fs/fuse/iomode.c
-+++ b/fs/fuse/iomode.c
-@@ -214,10 +214,14 @@ int fuse_file_io_open(struct file *file, struct inode *inode)
- 	if (fuse_inode_backing(fi) && !(ff->open_flags & FOPEN_PASSTHROUGH))
- 		goto fail;
- 
--	/*
--	 * FOPEN_PARALLEL_DIRECT_WRITES requires FOPEN_DIRECT_IO.
--	 */
--	if (!(ff->open_flags & FOPEN_DIRECT_IO))
-+	/*
-+	 * FOPEN_PARALLEL_DIRECT_WRITES requires FOPEN_DIRECT_IO, except for
-+	 * passthrough opens which bypass the page cache regardless and do not
-+	 * need FOPEN_DIRECT_IO to guarantee direct I/O semantics.
-+	 */
-+	if (!(ff->open_flags & FOPEN_DIRECT_IO) &&
-+	    !(ff->open_flags & FOPEN_PASSTHROUGH))
- 		ff->open_flags &= ~FOPEN_PARALLEL_DIRECT_WRITES;
- 
- 	/*
-diff --git a/fs/fuse/passthrough.c b/fs/fuse/passthrough.c
-index f2d08ac2459b..f83d0a27cfb9 100644
---- a/fs/fuse/passthrough.c
-+++ b/fs/fuse/passthrough.c
-@@ -54,11 +54,11 @@ ssize_t fuse_passthrough_write_iter(struct kiocb *iocb,
- 				    struct iov_iter *iter)
- {
- 	struct file *file = iocb->ki_filp;
--	struct inode *inode = file_inode(file);
- 	struct fuse_file *ff = file->private_data;
- 	struct file *backing_file = fuse_file_passthrough(ff);
- 	size_t count = iov_iter_count(iter);
- 	ssize_t ret;
-+	bool exclusive;
- 	struct backing_file_ctx ctx = {
- 		.cred = ff->cred,
- 		.end_write = fuse_passthrough_end_write,
-@@ -70,10 +70,10 @@ ssize_t fuse_passthrough_write_iter(struct kiocb *iocb,
- 	if (!count)
- 		return 0;
- 
--	inode_lock(inode);
-+	fuse_dio_lock(iocb, iter, &exclusive);
- 	ret = backing_file_write_iter(backing_file, iter, iocb, iocb->ki_flags,
- 				      &ctx);
--	inode_unlock(inode);
-+	fuse_dio_unlock(iocb, exclusive);
- 
- 	return ret;
- }
 -- 
-2.51.0
+Dominique Martinet
 
