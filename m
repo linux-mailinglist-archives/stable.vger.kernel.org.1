@@ -1,188 +1,162 @@
-Return-Path: <stable+bounces-256621-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-256622-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id aJS7JLaIGWr4xQgAu9opvQ
-	(envelope-from <stable+bounces-256621-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 29 May 2026 14:38:14 +0200
+	id aNmQCsmJGWoJxggAu9opvQ
+	(envelope-from <stable+bounces-256622-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 29 May 2026 14:42:49 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 10E52602583
-	for <lists+stable@lfdr.de>; Fri, 29 May 2026 14:38:13 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id C412F6025FF
+	for <lists+stable@lfdr.de>; Fri, 29 May 2026 14:42:48 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 7F4BB301874D
-	for <lists+stable@lfdr.de>; Fri, 29 May 2026 12:37:21 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 95163307A862
+	for <lists+stable@lfdr.de>; Fri, 29 May 2026 12:41:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 62D303D7A03;
-	Fri, 29 May 2026 12:37:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2C83C3E1231;
+	Fri, 29 May 2026 12:41:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="xtXw/yL0"
+	dkim=pass (2048-bit key) header.d=googlemail.com header.i=@googlemail.com header.b="tJEZq8rs"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-wr1-f46.google.com (mail-wr1-f46.google.com [209.85.221.46])
+Received: from mail-wm1-f50.google.com (mail-wm1-f50.google.com [209.85.128.50])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DCDAE3176EF
-	for <stable@vger.kernel.org>; Fri, 29 May 2026 12:37:16 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.46
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9A83B3E1688
+	for <stable@vger.kernel.org>; Fri, 29 May 2026 12:41:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.50
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780058238; cv=none; b=BarNGtkDDJO3IjSmYnBfTYaMnCVlGgvDmuXP6Pe9W/hxDTESzCSSnsdADHzQFeE39L7nXtopWBVvKDgP2dSH/daENULF3qbB6n9dgq5V+Jo3a9dLFR86wUUPjMIZ+Hho9Udri9V+4vFCOe/gD8v8lw/ksiGA3JF3Z+mHNQADsdQ=
+	t=1780058488; cv=none; b=HIxq8DV9UyMgTWijZCSxIWI59LY2Am4PEr4W6QRSebbcdMDhOwTGGG5n2z3LbdlahUMUvWDhyCUq7nGLJ8lgf9+O2tPzlRx9h1Vd+ZygzzuBj6PUnPazCfgu4FHtvt5YBB69VEFKrJTlItnEJU1ib4BJeY1E5OTKWkJCyYOwoNQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780058238; c=relaxed/simple;
-	bh=DojchXGz/KKYSE94iO1v9P4Lxh1mNKs7SpCF/Nl2JGU=;
+	s=arc-20240116; t=1780058488; c=relaxed/simple;
+	bh=YiDK6n2b1QGMLZO4K1qXgkhW0GAIX7vsmRnLupBxlRQ=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=mSnpvxtzYwZi/bo1w81z5+Aoy2mnsdedx6CeOax/WMMhKdKKmAN2/XTUaMiHnEyWw4uDmnaSYBucDPbMg92fByMXKmUoy2tb3TFLEWL4pu4jKorxjHITLbDHFVwykEPc+o9zDCCnFsPJ/ntVVvcwwRApYiirB9VJ1upZzkp+obI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=xtXw/yL0; arc=none smtp.client-ip=209.85.221.46
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
-Received: by mail-wr1-f46.google.com with SMTP id ffacd0b85a97d-45eea4c0649so1414971f8f.0
-        for <stable@vger.kernel.org>; Fri, 29 May 2026 05:37:16 -0700 (PDT)
+	 In-Reply-To:Content-Type; b=L0i8ceTPJ23LUbIcpqJWCwVU519g0rGDQTXIZtx8P8K2L9lDRDyn2yrlD+s05WL97imL1bQf/7F5Qc+Lmzf5e22lINtYOLDEy0Kr1S5fnS68C/xFicR18GhZ8ke+UmQ4EWEg+lKC8WvDJM0HMk1nOYNtcUcNs7D4YyRiU7PevXM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=googlemail.com; spf=pass smtp.mailfrom=googlemail.com; dkim=pass (2048-bit key) header.d=googlemail.com header.i=@googlemail.com header.b=tJEZq8rs; arc=none smtp.client-ip=209.85.128.50
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=googlemail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=googlemail.com
+Received: by mail-wm1-f50.google.com with SMTP id 5b1f17b1804b1-4903d5c67bfso45336575e9.1
+        for <stable@vger.kernel.org>; Fri, 29 May 2026 05:41:26 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1780058235; x=1780663035; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
+        d=googlemail.com; s=20251104; t=1780058485; x=1780663285; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
          :from:to:cc:subject:date:message-id:reply-to;
-        bh=RQzxiBtnUr7ain8V9TqP5xGod1EBAScgia3DVab5ruI=;
-        b=xtXw/yL0BJXLsXKDdDDkxRhQ7QSaPmFGBsCrTsSiCRbednhJqwwGJgy/1GbtEcR4EQ
-         OsH4xv5X1qWVmtO6zsGi9cUoXZU9NyLEwAt7WCyr+eHbgs+XGNVVpwmJn/Y3X+XcIKgU
-         ZGvxDYIhwQYzPokgGdgjsnHC8UB8tl/zG8tXBkErZxEg4+gjiMHlpYjaZfHbng/W+ES5
-         +scVzVyGqVAJmWtoQ4pVVw5svdbx6KptkIRyNBP7VLHaH1VMdzcH7MNd5KqjV6aajmR7
-         Xq9JNPLhwwnZE0kQMjY1+TT2jNKBBmscqEU0kwr6o7B9hEpBnnxmPFa7w1QshW93Ljbu
-         1Gag==
+        bh=QJtaZBNX7TDfrNfEwglPi8SAZdfZecurqD9zImFlbIQ=;
+        b=tJEZq8rsZ4F6d9Ha9S863eWwjjeoRj0DLDF3GCKC5mDmJLvT3/b2MlE9aJwkDMekII
+         wJxrOrX3deumxy3TgeNNyY29Z57AmVqZ2fMO4mTTZDs3IVqo5j7wfZHGzsSeaLlonrVl
+         +hB+29ZaL7RwzqJ1bb4Q/qtg4Br8Dl7ruAQLdCI0Q0m9DvogW+IHjjOtz4bzDRWmEIGQ
+         lwew7DsghkjTkSw40oMyXT3w+PgHGpPMhT1GSh4mp5FYF9rrg9Xnj/E9qfr5vm7fzWjJ
+         VheYNWWmAKKgxotMI6W/tB7yzgrE6Tj3eeDqWjbyWS1r+pbldYZIgmbkGLvdJGR8c5ut
+         TYNA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1780058235; x=1780663035;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
+        d=1e100.net; s=20251104; t=1780058485; x=1780663285;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
          :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=RQzxiBtnUr7ain8V9TqP5xGod1EBAScgia3DVab5ruI=;
-        b=ZGQ3d3GHOY+qnXtf0Z3bHYUD0cp3trisBVAgCV+cxPFDcMEInj3S6MQcr5HzNacWR9
-         ijspuD4TVxweti6s9ma0Zv5HcTD9y8QlWwEQr9PEq+kTDyqLgKC+WH/xCTvk7qh3GGec
-         OAqFRDX+uT6rPe6fAShQgyoPxSs7gGWLs30G4l1ZjZ5UcDv2u/vJCLGLsp76KrSXgob/
-         r2OTfzX+rvJV+awDeVJoD4DW6+ykJMmLVJZaqeiLHtPbMw9WMjT3nVKTK7CKHXjCIhAc
-         wl0tVu4pjtQCVAPygPQeNGbhvKXFlhONDZCc6rakJqwKYXKMXi/cbhbd5BPU4OxrnPJm
-         vS4g==
-X-Forwarded-Encrypted: i=1; AFNElJ8te6Nb51/fCQWWD4XWOudxyrhYnYSTlgptY4VJpenSQ0BnipL7bqc5z4OB9I1ahWpNnkgj9NQ=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yx6Qhxg9Ji7znSfFD+8i5uE+gJp/rkEOSytSB4MeRV+ZVPmNPcy
-	p/cDK9CukxglF4ueoybffWYW8LawmK3OQCnqTQoMimZwwonyb5DFkLmDTEODkzCREes=
-X-Gm-Gg: Acq92OHdvgRirPJF4zxEnhtFb0t5LsrL+jcmnkGOd6WEFfdQ8Y4dzYcldU7+NFLCUDe
-	5LeG/blRktnC2YBWLXEBbikXKVw6mMWTKKVlWSGIXCfNF1FHT+t5xJ8tVWwTDDHiFm5nrkn1xnf
-	u8zzb3TFvwG4nAYeu5MDNG+SEZjUfeAF2gR3QM6FgCI7LwHm+9I5nJ5RDMTFHGAJ8QPAd6w4OEQ
-	oEp+I12U60t96fp/jZzFMfok27lq4Hcp73Try/ldqQFuIjpS0NAaO4tY6K3jSruJVo3Be3Q4JG6
-	M6w8Ur0CSu4woi2Vbp33RLwkEsEBPez03L1OhQfIwrbsxH79Fz2TAPp2gdNXfsW/XxXyzb6rTMq
-	GfSzlvp+9gS+VLu7zSOPBHL0LOtFb1zjuLI4yUuxBPs+yQW0OeIHD1asZau6M+fmz/ApUUzc55K
-	XKG1fSOXMeK1QRdFIeYTrADq4+r16+BKNPFthUHByjJA==
-X-Received: by 2002:a05:6000:470c:b0:45e:f2bd:2b16 with SMTP id ffacd0b85a97d-45ef2bd2d41mr3802790f8f.18.1780058235304;
-        Fri, 29 May 2026 05:37:15 -0700 (PDT)
-Received: from [10.11.12.110] ([82.76.215.73])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-45ef34a0374sm2981872f8f.2.2026.05.29.05.37.14
+        bh=QJtaZBNX7TDfrNfEwglPi8SAZdfZecurqD9zImFlbIQ=;
+        b=JkXBl2GnKH0JEnT0we+PbI+mgiy5sGapgef0f7+7uH/gWVlh8nQam8+hh9gegGCX13
+         5g6XOnRINQE52h+kBnhZiqOv40HVeInvXt+JVqblfrX0TW0OwN9yjggp44A4tQYGObbq
+         NQZevGzIoLmvdC7DUYk+CfSMeSv0hLtPhc/1DxgUZd1fccIzs2NbRMHP08uE0BwnmaUi
+         cV0VLFleuTtvrhjgxdRZ7YlnbeRrXCs3IhFLstI42AvIYhXXgmALoxH2InpcgZ616723
+         o3/FQXaCjcCQXMblwf/RkDn1ViYxCmfMIhUKcPaxZAnHfReuDujQRxJy5+HOpkdpUUNi
+         i32g==
+X-Forwarded-Encrypted: i=1; AFNElJ8N4vcQg06pwilAck7ezH6f5+kJS2KUvayWKDMODywgGw+cW77VLZvSYDJp2ugz28qP78o2CBk=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwnRDMm4Ih3DNzn1INUDbO+vDIlmVad15Gb9jQkl+pm6TJISsqd
+	9l8hLeWZwd++9nyOvtMQfggVZbEdcwJn19mr0SDTUb0NI6/NaoBPdyM=
+X-Gm-Gg: Acq92OGCJV26kaKWqcYC6Y61YVqOk0OsqRlFH5+ZEPCLPqqwv6tJuSE397UOF0wQntS
+	E354sO/inXimiNys/Zfu2hqEyPG8K7STOCr7dseFtWuCEHT7qZMqQv26JPQMVmqPNlL3IlloXip
+	SEVR4jNiH44Sa1mSRlxwNX2ZQCD6/D2S0+eaZO3vLVQLtvE1M8XW8dSl8uRHenptArNwUzz5/A1
+	LaAngv8+9dRjDq6ptpbfoiu2ZDR8Nmrw6f0/K88+KvV0O5TfcUTHrOQT0uSp3y5YSw4kHHk3yXs
+	slKI3GgseMltcaXhrMeAJQpUWxFoRFQKPcpYxzSDnLS44GjjOC2D1aWPS3H4pnDndg2ieeRUkOa
+	x4dT8DynGj827uj3fEiOk/VQQayHip0Ix4H6wxgn9LPoZZ2mFUg2urGUx8BZUQBVHmQjx2KgEMn
+	72NewduLN3clHWEyxJEku/kl+OD+2Bl9UNcTrggr6Cf/HpyxfgjpL0DYHMMKx5kjhnRnOO72TFS
+	Hi+PMydGjQabw==
+X-Received: by 2002:a05:600c:a40c:b0:48a:6fd4:d3d3 with SMTP id 5b1f17b1804b1-4909c0ba8bdmr29887095e9.20.1780058484793;
+        Fri, 29 May 2026 05:41:24 -0700 (PDT)
+Received: from [192.168.1.3] (p5b2b4ac5.dip0.t-ipconnect.de. [91.43.74.197])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-45ef3559645sm3319328f8f.26.2026.05.29.05.41.23
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 29 May 2026 05:37:14 -0700 (PDT)
-Message-ID: <a7994860-24a3-4f87-84bf-109ed653dda4@linaro.org>
-Date: Fri, 29 May 2026 15:37:13 +0300
+        Fri, 29 May 2026 05:41:24 -0700 (PDT)
+Message-ID: <cf7c08ee-ee23-4ddf-af38-f51c1e3196fc@googlemail.com>
+Date: Fri, 29 May 2026 14:41:23 +0200
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v5 3/7] firmware: samsung: acpm: Fix dummy stubs to return
- ERR_PTR
-To: Krzysztof Kozlowski <krzk@kernel.org>, Arnd Bergmann <arnd@arndb.de>,
- Alim Akhtar <alim.akhtar@samsung.com>
-Cc: linux-kernel@vger.kernel.org, linux-samsung-soc@vger.kernel.org,
- linux-arm-kernel@lists.infradead.org,
- Peter Griffin <peter.griffin@linaro.org>,
- =?UTF-8?Q?Andr=C3=A9_Draszik?= <andre.draszik@linaro.org>,
- jyescas@google.com, kernel-team@android.com, stable@vger.kernel.org
-References: <20260505-acpm-fixes-sashiko-reports-v5-0-43b5ee7f1674@linaro.org>
- <20260505-acpm-fixes-sashiko-reports-v5-3-43b5ee7f1674@linaro.org>
- <03dc9ccc-d819-413e-b8fd-23ccd85675ba@app.fastmail.com>
- <6c77d706-5944-4e7d-8a4a-b3a6cac6a83b@kernel.org>
-Content-Language: en-US
-From: Tudor Ambarus <tudor.ambarus@linaro.org>
-In-Reply-To: <6c77d706-5944-4e7d-8a4a-b3a6cac6a83b@kernel.org>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Spamd-Result: default: False [-2.16 / 15.00];
+User-Agent: Betterbird (Windows)
+Subject: Re: [PATCH 7.0 000/461] 7.0.11-rc1 review
+Content-Language: de-DE
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org
+Cc: patches@lists.linux.dev, linux-kernel@vger.kernel.org,
+ torvalds@linux-foundation.org, akpm@linux-foundation.org,
+ linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
+ lkft-triage@lists.linaro.org, pavel@nabladev.com, jonathanh@nvidia.com,
+ f.fainelli@gmail.com, sudipm.mukherjee@gmail.com, rwarsow@gmx.de,
+ conor@kernel.org, hargar@microsoft.com, broonie@kernel.org,
+ achill@achill.org, sr@sladewatkins.com
+References: <20260528194646.819809818@linuxfoundation.org>
+From: Peter Schneider <pschneider1968@googlemail.com>
+In-Reply-To: <20260528194646.819809818@linuxfoundation.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+X-Spamd-Result: default: False [-0.65 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linaro.org,none];
-	R_DKIM_ALLOW(-0.20)[linaro.org:s=google];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	DMARC_POLICY_ALLOW(-0.50)[googlemail.com,quarantine];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
+	R_DKIM_ALLOW(-0.20)[googlemail.com:s=20251104];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
+	XM_UA_NO_VERSION(0.01)[];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[linaro.org:+];
-	FROM_HAS_DN(0.00)[];
+	TAGGED_FROM(0.00)[bounces-256622-lists,stable=lfdr.de];
+	FREEMAIL_FROM(0.00)[googlemail.com];
+	RCPT_COUNT_TWELVE(0.00)[20];
+	MIME_TRACE(0.00)[0:+];
+	FREEMAIL_CC(0.00)[lists.linux.dev,vger.kernel.org,linux-foundation.org,roeck-us.net,kernel.org,kernelci.org,lists.linaro.org,nabladev.com,nvidia.com,gmail.com,gmx.de,microsoft.com,achill.org,sladewatkins.com];
 	RCVD_TLS_LAST(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-256621-lists,stable=lfdr.de];
-	MIME_TRACE(0.00)[0:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[tudor.ambarus@linaro.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	TO_DN_SOME(0.00)[];
 	RCVD_COUNT_FIVE(0.00)[5];
-	MID_RHS_MATCH_FROM(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[pschneider1968@googlemail.com,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[googlemail.com:+];
 	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[11];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,arndb.de:email,linaro.org:email,linaro.org:mid,linaro.org:dkim]
-X-Rspamd-Queue-Id: 10E52602583
+	TAGGED_RCPT(0.00)[stable];
+	MID_RHS_MATCH_FROM(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,googlemail.com:mid,googlemail.com:dkim,mailvelope.com:url]
+X-Rspamd-Queue-Id: C412F6025FF
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
+Am 28.05.2026 um 21:42 schrieb Greg Kroah-Hartman:
+> This is the start of the stable review cycle for the 7.0.11 release.
+> There are 461 patches in this series, all will be posted as a response
+> to this one.  If anyone has any issues with these being applied, please
+> let me know.
+
+Builds, boots and works on my 2-socket Ivy Bridge Xeon E5-2697 v2 server. No dmesg oddities or regressions found.
+
+Tested-by: Peter Schneider <pschneider1968@googlemail.com>
 
 
-On 5/29/26 3:09 PM, Krzysztof Kozlowski wrote:
-> On 29/05/2026 13:51, Arnd Bergmann wrote:
->> On Tue, May 5, 2026, at 15:13, Tudor Ambarus wrote:
->>> Sashiko identified a potential NULL pointer dereference [1].
->>>
->>> The dummy stub implementation for devm_acpm_get_by_node() returns NULL
->>> when CONFIG_EXYNOS_ACPM_PROTOCOL is disabled.
->>
->> I meant to comment on this yesterday as well.
->>
->> Having stub functions like this return NULL is a common way to
->> define optional interfaces, where callers still work when the
->> feature is disabled, though this clearly does not work for
->> acpm because some callers have a NULL pointer dereference
->> when compile testing.
->>
->> My preferred solution to this type of problem would be to
->> just remove the stub helpers and drop the ||COMPILE_TEST
->> from the one user that calls them, see below.
->>
->> The point here is that CONFIG_EXYNOS_ACPM_PROTOCOL already
->> supports compile-testing itself, and all (both) drivers using
->> it clearly require the support, so this just simplifies
+Beste Grüße,
+Peter Schneider
 
-I confirm that the ACPM protocol is mandatory for the clients to
-work, thanks!
+-- 
+Climb the mountain not to plant your flag, but to embrace the challenge,
+enjoy the air and behold the view. Climb it so you can see the world,
+not so the world can see you.                    -- David McCullough Jr.
 
->> the option space without losing any build coverage.
-
-nice, I didn't know this. I guess it's a "greedy" algorithm in
-allmodconfig, if the dependency is met the dependents are enabled too.
-
->>
->> Signed-off-by: Arnd Bergmann <arnd@arndb.de>
-
-Reviewed-by: Tudor Ambarus <tudor.ambarus@linaro.org>
->>
-> 
-> Sure, I am fine with it. I'll take your patch with a bit adjusted commit
-> msg.
-> 
-
-Thank you! I need to drop the devm_acpm_get_by_phandle dummy stub from:
-https://lore.kernel.org/linux-samsung-soc/a59c6e3a-6092-4114-8961-c2a71a812959@kernel.org/T/#m0ac077507129c37b84443513eecadd70b5eaf8b8
-
-Shall I send again the entire set?
-
-Cheers,
-ta
+OpenPGP:  0xA3828BD796CCE11A8CADE8866E3A92C92C3FF244
+Download: https://www.peters-netzplatz.de/download/pschneider1968_pub.asc
+https://keys.mailvelope.com/pks/lookup?op=get&search=pschneider1968@googlemail.com
+https://keys.mailvelope.com/pks/lookup?op=get&search=pschneider1968@gmail.com
 
