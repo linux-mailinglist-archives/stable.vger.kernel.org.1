@@ -1,101 +1,101 @@
-Return-Path: <stable+bounces-256710-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-256712-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 0NSmApDdGWpazggAu9opvQ
-	(envelope-from <stable+bounces-256710-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 29 May 2026 20:40:16 +0200
+	id KGrlBSfdGWo4zggAu9opvQ
+	(envelope-from <stable+bounces-256712-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 29 May 2026 20:38:31 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id D4273607651
-	for <lists+stable@lfdr.de>; Fri, 29 May 2026 20:40:15 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id C0F456075E7
+	for <lists+stable@lfdr.de>; Fri, 29 May 2026 20:38:30 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id F3EBB303E0BA
-	for <lists+stable@lfdr.de>; Fri, 29 May 2026 18:36:55 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 917EF307CDBD
+	for <lists+stable@lfdr.de>; Fri, 29 May 2026 18:37:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2E2E0425CD0;
-	Fri, 29 May 2026 18:36:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0519442B72C;
+	Fri, 29 May 2026 18:36:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="W5aGWrLk";
-	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="ISL1fgGN"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="ZJjXHS7e";
+	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="Pprur9qd"
 X-Original-To: stable@vger.kernel.org
 Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 98FA7421F1A
-	for <stable@vger.kernel.org>; Fri, 29 May 2026 18:36:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 45D154279FD
+	for <stable@vger.kernel.org>; Fri, 29 May 2026 18:36:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780079765; cv=none; b=KO4XJ3g9Fkxr75gvCZdWrESNNG7sTZj64WEbLmTnWUxJoHKmRyiKbb+MkzmenEXT6+H1nY3mRiuSF2u7BMabOcCahSBPjV2O+X+Y4nuE8eO16vYskohRv2TO+yN9Ehmk1lTnPgHfAhR5p1xmeRqLw4CAQFplT2nO+IgSbrMPPfI=
+	t=1780079768; cv=none; b=SQt6yq/QUMLBWYWfOd0hjJBIbxI/TRk6ron+vauEvp7AOif5VVAeS4cq17YUPRKIP90FvR5P6CGwtLNs28n9o9zWi6nahfPaevgZ/2Xbxww0OoNnGhwSRR4XI/bheK/AqEQNVEx/4zPgoFrdqvqcupR/dUp1+KnfcgZ3lyCh7EY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780079765; c=relaxed/simple;
-	bh=Ic42NJxjVTuyyhMYhy6XU5l/gYDKkJGnaGzHHnNqay0=;
+	s=arc-20240116; t=1780079768; c=relaxed/simple;
+	bh=f+nkgUwG6A0jJd/pAJCpY6wq36Ry3jzJBqYji69OyE0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=NUrPN/diic5sKd+PdO+C9314gScASbEPNQtaArZscGIhLsah32RayoyLQCa138QfJZXsdZw3NRhuEyu5pL39Gl7k/P9ygheLUu0H/oByAFMyYxf22jgwbuZmw3bWyqc5Jcp6pp1KR24w72aOYFkhMKqMTbj65bt1X4eNN+UZINw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=W5aGWrLk; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=ISL1fgGN; arc=none smtp.client-ip=170.10.133.124
+	 MIME-Version; b=IF6l64ptA0b6z6h+WRRtHW27Uli/mcn6GDOm9qM3Caxgya2H4VTuukCMHcWF8XSWL6BIAXOA/BKvxg4c4iTmfeTpOUAGUYi19cFL8Wq6jPoDWPm1udutbJ1PSZVRR1goPwJqOm/W1G4TnljE2EdOSKgvJKPjuuZjBsNx5w3ggHc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=ZJjXHS7e; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=Pprur9qd; arc=none smtp.client-ip=170.10.133.124
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1780079761;
+	s=mimecast20190719; t=1780079764;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=oaDspuaK+51kNrKIJDmVaTpEzuF1DrT0Ap9tU5k1194=;
-	b=W5aGWrLkNyBCswg4maOjNyaCb7IuQ4oYivDIqZs/NErKpmgJ+8gZoZhI4WmHcG6Naq+byY
-	tO2iSeNpkE2r5Zt1rRTiV4OWKuyR28xz/6VPYsJXEYroKWsMNlmkTLhYC1EmoPGcN3F07Z
-	IwXrb7E0d5D1L432VD80O7JmysEr0aY=
-Received: from mail-wm1-f70.google.com (mail-wm1-f70.google.com
- [209.85.128.70]) by relay.mimecast.com with ESMTP with STARTTLS
+	bh=XndtQXgYoKhYp0VgWVa9fVm5ME+RcvJYRIMg+5FuNQc=;
+	b=ZJjXHS7eeUAEi+rJVgMrE3PaLyzPnHax7jtt2HCX6TGGTSq/l5JMxs0PD0mm5eCVl2ZHPl
+	aJFW7ZTotBAsDUxHreXILnQM4787HSJ8CBVf1yVlLk2GQX06/w1nZf+RZt7N1LPjDJlkgh
+	7CllZtIBqismyalprbuhmGjQRe3C6uw=
+Received: from mail-wm1-f69.google.com (mail-wm1-f69.google.com
+ [209.85.128.69]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-658-rLQNasZCObSY8-7OB6PmgA-1; Fri, 29 May 2026 14:36:00 -0400
-X-MC-Unique: rLQNasZCObSY8-7OB6PmgA-1
-X-Mimecast-MFC-AGG-ID: rLQNasZCObSY8-7OB6PmgA_1780079759
-Received: by mail-wm1-f70.google.com with SMTP id 5b1f17b1804b1-490402ae2c1so79740425e9.0
-        for <stable@vger.kernel.org>; Fri, 29 May 2026 11:36:00 -0700 (PDT)
+ us-mta-542-IEdc4vAnNvKRklPIPUvBjA-1; Fri, 29 May 2026 14:36:02 -0400
+X-MC-Unique: IEdc4vAnNvKRklPIPUvBjA-1
+X-Mimecast-MFC-AGG-ID: IEdc4vAnNvKRklPIPUvBjA_1780079761
+Received: by mail-wm1-f69.google.com with SMTP id 5b1f17b1804b1-49058295985so43196185e9.2
+        for <stable@vger.kernel.org>; Fri, 29 May 2026 11:36:02 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=redhat.com; s=google; t=1780079759; x=1780684559; darn=vger.kernel.org;
+        d=redhat.com; s=google; t=1780079761; x=1780684561; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=oaDspuaK+51kNrKIJDmVaTpEzuF1DrT0Ap9tU5k1194=;
-        b=ISL1fgGNShxnQjGfQF2kQ7B/utyID71pnDqI5ctnmKMnLPWhl0v5/AZ26TygE50CIQ
-         o3VGT/Iof0LL9/c+H8RDCRDW9HXa8RSLV/CmUjMqwMYCKfvDRAF2zPz9OE+zEAEDhqQD
-         rImawR8DEYDvjnFw9Bb7DcB6tJUahKaO8rax+kT4eL5V4rIrHbsTo/PW4Fc8mDfmT/uS
-         W3Spib4Mh9kMeKSlwXp4h7TwORZITWSu6OaTGLYw+bQzj6K3uFMf19lXznTxJtKCtNww
-         C299CHBLK8uHLRlFZdOgKG5Jspv8R/nTAQpz7EOjJy+YBo5id9ybssMOFGKhfT/g2pUA
-         9hnA==
+        bh=XndtQXgYoKhYp0VgWVa9fVm5ME+RcvJYRIMg+5FuNQc=;
+        b=Pprur9qdqaQrq/F6LOS953AZYsH5rwPrVxedBf1zhCULsPHZSZ3c2tGW61raWAgGN8
+         9x3dl+2PnnS5aU17xAjnfChodtJHWO12TyHcqQ20L/L6JmNRl3Z8EFaa6MB0RmOhrRKL
+         2u/E/7Mt10lTHij/Ktgm+1ioOCDDYG04p/JOMjKjFkVAtEmEjEi50rNn4sUBAq+c4c1B
+         /vcRT0vpd2oP8d3h0O+lALsKsPT1MM13kOOVHT0Hc1vcx3hJ8IXDbfO0pbKwwvLQgtfu
+         w74QgmLfMkv+1wiNeumjohLJ7Mx3boh5iLH2yamTNkCbXcF0RUn5Rg9MDVRqO5s87cmf
+         DQ8g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1780079759; x=1780684559;
+        d=1e100.net; s=20251104; t=1780079761; x=1780684561;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to;
-        bh=oaDspuaK+51kNrKIJDmVaTpEzuF1DrT0Ap9tU5k1194=;
-        b=neagN7iV5JVV7ZVQrpugJL0znDLVQlBEwKbH3y7EH/4+vbCFyJKQ+cqSdA4Q0nnsg2
-         ZWROXvHBz+VsLJCTHxcUGbM1EwRfnA61xMlGEgjFBUXyTd7ha/TlKoV3/C8s1uhjmOxP
-         z9dxwkygr0bX1Q4hASpcNCJq34Et+6BTXg7F9NKPCuCjy+QnqMNaNuB1LZPzq0JzKTWy
-         1Itbfu+OyY53mslKEBKHbfTmVnEgcSLXcOWb8houwOPkeInaYfjvrThkd0gqLZKf3NkJ
-         +C44AwHf5Ir+RvBLT0ZxakrNoHZzTdIwpTDu+QPRkeW0U6vOwCa2WtEKQkid7GkLEdYF
-         9EbA==
-X-Forwarded-Encrypted: i=1; AFNElJ9uNI0FU630nZcEV7mgB9CnxsDtdHj7Z1PjYjNCCyrsWSypM2W4QLcu2nDbd2zWHqfnz5TroGs=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwTSpfnrko9MhctDZTTf3UvWXy3xwj+8xGL1aqjabhrPjjJ2QiX
-	gg09DWs6xV7ZN39OhM/qGsHTuquqRlUhEwahDzPSLm12P8CNtHMiQWVCJZ6H4ritFASU8OpWYAT
-	ZfyPzEcE2lBXdH4+Ackzqm7upVXkMuwwpyyL9ELyPUaIGP8WkfenZvC++RA==
-X-Gm-Gg: Acq92OEaHxl0ELKzLQbXIsEurMSA2xfBz7OthCl4PKn63VJPG3JVdzSxEy39FiNDIPW
-	oHyJBKfS0kS5INIEy0Emas/2WGgFXAkH9kjZ001XOBiOtKKHfUyURhlRwztwlcGDmSd5OmZa+nj
-	ZvhllRnY7f804semnUSxQq1GblsTYCYuZjwhLm2KGO6g/en9C41Zu+juqUGxyDoOLgoHI61dZAv
-	YEPNJRajEJxybuYgI2YS/3yfVDki0+WviCHxgrf66hG9uTYMNg62+YNviRUyQ3AuC8FI+95hnFn
-	LGUWtAvsRMF9I6ahOQT/2yLAT7EOJJDTB6MqAKv14FJg6HPpXZnUMpNNpezgpwBEuElpfzDIFmK
-	8fNjBeNHBUzyUtWL5iVBbVVZjF4cV5uGVJX5dVasPRXfDmY4J50soMl62wfxCDHmbpvqpExgBWf
-	TzSqQNdtfzueTiM7BdZErYAldTGrGIUxBKFdtAKg==
-X-Received: by 2002:a05:600c:45c9:b0:490:8b0b:d3b1 with SMTP id 5b1f17b1804b1-490a2a4bac0mr7346645e9.12.1780079759016;
-        Fri, 29 May 2026 11:35:59 -0700 (PDT)
-X-Received: by 2002:a05:600c:45c9:b0:490:8b0b:d3b1 with SMTP id 5b1f17b1804b1-490a2a4bac0mr7346335e9.12.1780079758656;
-        Fri, 29 May 2026 11:35:58 -0700 (PDT)
+        bh=XndtQXgYoKhYp0VgWVa9fVm5ME+RcvJYRIMg+5FuNQc=;
+        b=prC5tZLEMHXTtPtWYMnHrhJCRrW1MJW8N+zfJOpub+fvIHot38O3zz0Z9rhOPu9Eca
+         xnOIfCLmPW6fmr7KR4pa7xi7XS2miSWu5PoScQWmncWdsqsshhifLruxKt98Pp0R3PkA
+         j0wKQdTfTHjYts+AzjT6pfnzv2CLu/N3YRPdvZwAAc3jZCa8DJ7ETN667fisX8WqGUbi
+         PJje4dWMtfAgq1RrRCZaPnuYHTvkXoqR4cXXPeUl5jbJOvv3UrrHX4cSNaL8JLK2bRQ4
+         mZtzba65SiRQZ2ViXFf9Pk75z4Nwxh0EpBvLnF2aM04uoe+FL+wuFSb9PMeNRIP3++iO
+         IS4Q==
+X-Forwarded-Encrypted: i=1; AFNElJ9lq9TYzexoklhOiAmM6Arrlz+AyjXiWzDgxD/vVCicQikUxsqEMc35FlwkvPZWpuUc3GIcWbw=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyI/+a7Bgs3iWecB4kwAjCswTJxZhvH9ZVpRliHz7psFsTU7IU8
+	wdDoteKb2/lHilc7Op/3Relrni7zqOnY5S4RI5BpIMa4x6s57Q6CywM9RGgkRSc1oaSIH9jlsWr
+	v2OvmlGTni92Blvin3U8HsYv+XKpetImmSakx+l4VTnb063kbH3ua3te3tg==
+X-Gm-Gg: Acq92OEd89p3DTNGlParRbmLKc2wXN6NOY9S6oV7mkUHC66S0V3vLcAMhOztjlhKCDJ
+	2bSNqLsKgc0+swnVJ2gtskl55m9HKHRH9NkPgSKbwjkt68Krjx3apzLmfYcpnPogHmXwc9kc4aN
+	I1uxN/z972Q/1ajnwzJWIIlTVLWUWF7bBbwrlTTSqMNl8eXDAsvVOWN4cC6tr20jDUkv+7F5yRB
+	kKOoP7yudoTI8z6t0YyTy/GyIm7DeaDB/fyTxVmXk1M3kpzzITP3dN+eyu6KULrJbCMn2oDRQD6
+	ADJeS9OxLjcJVBVDZB5FU+6cI6Eq/IaKZvVz9hdkVD7OOoAfeKvvdRqfClLibtftuYyvgebQqQr
+	ALIQJuVf2rCOPwHicaEL0lCfXABd/8134l6cf6qF+XoMALxOPJJedQGtkClp+qTqZGQMg43zXUp
+	AQjD9j4KXxmv6CSi956lAM6n/BxxXTuuRojcBW5A==
+X-Received: by 2002:a05:600c:a305:b0:490:7227:100 with SMTP id 5b1f17b1804b1-490a2933b22mr9949035e9.18.1780079761512;
+        Fri, 29 May 2026 11:36:01 -0700 (PDT)
+X-Received: by 2002:a05:600c:a305:b0:490:7227:100 with SMTP id 5b1f17b1804b1-490a2933b22mr9948755e9.18.1780079761169;
+        Fri, 29 May 2026 11:36:01 -0700 (PDT)
 Received: from [192.168.10.48] ([151.49.251.208])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4909c114e99sm19737625e9.25.2026.05.29.11.35.57
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4909d6a0a89sm73788825e9.7.2026.05.29.11.35.59
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 29 May 2026 11:35:58 -0700 (PDT)
+        Fri, 29 May 2026 11:35:59 -0700 (PDT)
 From: Paolo Bonzini <pbonzini@redhat.com>
 To: linux-kernel@vger.kernel.org,
 	kvm@vger.kernel.org
@@ -103,9 +103,9 @@ Cc: seanjc@google.com,
 	Tom Lendacky <thomas.lendacky@amd.com>,
 	Michael Roth <michael.roth@amd.com>,
 	stable@vger.kernel.org
-Subject: [PATCH 03/24] KVM: SEV: Reject MMIO requests larger than 8 bytes with GHCB v2+
-Date: Fri, 29 May 2026 20:35:28 +0200
-Message-ID: <20260529183549.1104619-4-pbonzini@redhat.com>
+Subject: [PATCH 04/24] KVM: SEV: Ignore Port I/O requests of length '0'
+Date: Fri, 29 May 2026 20:35:29 +0200
+Message-ID: <20260529183549.1104619-5-pbonzini@redhat.com>
 X-Mailer: git-send-email 2.54.0
 In-Reply-To: <20260529183549.1104619-1-pbonzini@redhat.com>
 References: <20260529183549.1104619-1-pbonzini@redhat.com>
@@ -121,13 +121,13 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	MID_CONTAINS_FROM(1.00)[];
 	DMARC_POLICY_ALLOW(-0.50)[redhat.com,quarantine];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	R_DKIM_ALLOW(-0.20)[redhat.com:s=mimecast20190719,redhat.com:s=google];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-256710-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-256712-lists,stable=lfdr.de];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_COUNT_FIVE(0.00)[6];
 	MIME_TRACE(0.00)[0:+];
@@ -140,47 +140,56 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	NEURAL_HAM(-0.00)[-1.000];
 	DKIM_TRACE(0.00)[redhat.com:+];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
 	RCPT_COUNT_FIVE(0.00)[6];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[amd.com:email,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo]
-X-Rspamd-Queue-Id: D4273607651
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,amd.com:email]
+X-Rspamd-Queue-Id: C0F456075E7
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
 From: Sean Christopherson <seanjc@google.com>
 
-When using GHCB v2+, reject MMIO requests that are larger than 8 bytes.
-Per the GHCB spec:
+Explicitly ignore Port I/O requests of length '0' (or count '0'), so that
+setting up the software scratch area (and other code) doesn't have to
+worry about underflowing the length, and to allow for WARNing on trying
+to configure the scratch area with len==0.
 
-  SW_EXITINFO2 must be less than or equal to 0x7fffffff for version 1 and
-  less than or equal to 0x8 for all other versions.
-
-Fixes: 4af663c2f64a ("KVM: SEV: Allow per-guest configuration of GHCB protocol version")
+Fixes: 291bd20d5d88 ("KVM: SVM: Add initial support for a VMGEXIT VMEXIT")
 Cc: stable@vger.kernel.org
 Reviewed-by: Tom Lendacky <thomas.lendacky@amd.com>
 Signed-off-by: Sean Christopherson <seanjc@google.com>
-Message-ID: <20260501202250.2115252-4-seanjc@google.com>
+Message-ID: <20260501202250.2115252-5-seanjc@google.com>
 Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
 ---
- arch/x86/kvm/svm/sev.c | 5 +++++
- 1 file changed, 5 insertions(+)
+ arch/x86/kvm/svm/sev.c | 8 ++++++++
+ 1 file changed, 8 insertions(+)
 
 diff --git a/arch/x86/kvm/svm/sev.c b/arch/x86/kvm/svm/sev.c
-index fb2174b6d1ba..e6579ca9f364 100644
+index e6579ca9f364..52703c954856 100644
 --- a/arch/x86/kvm/svm/sev.c
 +++ b/arch/x86/kvm/svm/sev.c
-@@ -4502,6 +4502,11 @@ int sev_handle_vmgexit(struct kvm_vcpu *vcpu)
- 		if (!len)
- 			return 1;
- 
-+		if (to_kvm_sev_info(vcpu->kvm)->ghcb_version >= 2 && len > 8) {
-+			svm_vmgexit_bad_input(svm, GHCB_ERR_INVALID_INPUT);
+@@ -4585,6 +4585,11 @@ int sev_handle_vmgexit(struct kvm_vcpu *vcpu)
+ 			    control->exit_info_1, control->exit_info_2);
+ 		ret = -EINVAL;
+ 		break;
++	case SVM_EXIT_IOIO:
++		if (!((control->exit_info_1 & SVM_IOIO_SIZE_MASK) >> SVM_IOIO_SIZE_SHIFT))
 +			return 1;
-+		}
 +
- 		ret = setup_vmgexit_scratch(svm, !is_write, len);
- 		if (ret)
- 			break;
++		fallthrough;
+ 	default:
+ 		ret = svm_invoke_exit_handler(vcpu, control->exit_code);
+ 	}
+@@ -4605,6 +4610,9 @@ int sev_es_string_io(struct vcpu_svm *svm, int size, unsigned int port, int in)
+ 	if (unlikely(check_mul_overflow(count, size, &bytes)))
+ 		return -EINVAL;
+ 
++	if (!bytes)
++		return 1;
++
+ 	r = setup_vmgexit_scratch(svm, in, bytes);
+ 	if (r)
+ 		return r;
 -- 
 2.54.0
 
