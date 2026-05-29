@@ -1,226 +1,182 @@
-Return-Path: <stable+bounces-256632-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-256634-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id SIlOHLuTGWrVxggAu9opvQ
-	(envelope-from <stable+bounces-256632-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 29 May 2026 15:25:15 +0200
+	id AKkONNiXGWrVxggAu9opvQ
+	(envelope-from <stable+bounces-256634-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 29 May 2026 15:42:48 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id EC5A8602D39
-	for <lists+stable@lfdr.de>; Fri, 29 May 2026 15:25:14 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 69324602FF5
+	for <lists+stable@lfdr.de>; Fri, 29 May 2026 15:42:48 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 3F6CE3034A23
-	for <lists+stable@lfdr.de>; Fri, 29 May 2026 13:24:34 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 7B2B23160AAE
+	for <lists+stable@lfdr.de>; Fri, 29 May 2026 13:39:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4CC93330B30;
-	Fri, 29 May 2026 13:24:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CDBFC3385B2;
+	Fri, 29 May 2026 13:39:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="mCgKHquV"
+	dkim=pass (2048-bit key) header.d=arndb.de header.i=@arndb.de header.b="Lo9E5V+A";
+	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="k4e7HwEX"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pl1-f201.google.com (mail-pl1-f201.google.com [209.85.214.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from fout-b2-smtp.messagingengine.com (fout-b2-smtp.messagingengine.com [202.12.124.145])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B450833031C
-	for <stable@vger.kernel.org>; Fri, 29 May 2026 13:24:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1304130E84E;
+	Fri, 29 May 2026 13:39:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=202.12.124.145
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780061073; cv=none; b=LJUFHoqZjqP46UqjJxyCVNe+dYtwX7o9GUw22AVunVsXqt4a2eunwOMv1YQf6CAEpZdiJHIcy9xOUVaRqElhN1l+HEo+FLV6euYCh0+YUhxrP5hOSwej/sGniXWHGgLjKRptV/4cx4q0LjNH/2WJ/OZNLmHEjxf12BwL/FfrS0g=
+	t=1780061960; cv=none; b=Z1BsWw1RhG96P2QrLY1Qy0mH9aPzY02Sh8/XqEZWTSzxNz7X/RUqd4U4oqraKW5lD9bBjEtV/1yJo0sgyYeL/tAoNOTRxIKK8Pt54+MIik/D/RJ2QDttKqMtOAK0iuSBhxP9fayVEMMLBaWKAL5ZdADn6Y0Tm4TE7vuPXk6wEoE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780061073; c=relaxed/simple;
-	bh=2ibxLK2d2nHMil68CLe+zIQaT9mcEauOlK1p68CnYdk=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=KYn4yCIPPNrkbvMutbiDa8HYmEjmWvuLBbmx9YGdj8K+lmwxORastjAJAC0lDU/NtfomqqRXmSNin//BZB+XyMWMNWlkGYnI1et94Xzj7M+lTV9HKgasF5m6cmotIuo3SbO3w2swDA1EzB6dosWIW7QOYxsJL2qjeGmjFPdWrJo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=mCgKHquV; arc=none smtp.client-ip=209.85.214.201
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
-Received: by mail-pl1-f201.google.com with SMTP id d9443c01a7336-2ba3245a43dso158880735ad.0
-        for <stable@vger.kernel.org>; Fri, 29 May 2026 06:24:31 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1780061071; x=1780665871; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:from:subject:message-id:references
-         :mime-version:in-reply-to:date:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=pmBmVT1K0qRRQvsSc3WIbJk2+VawOhHvfWgErZcdak4=;
-        b=mCgKHquV1CICUwb8PGhoHbtfFfy0szgYVIzBB+0nPdYw/Vy6EldpH2sE2rwqE2Jr6A
-         xJuJ8JDkz4HWh8keigYJ5EwuASQepw6wJte+3AYNE/2W5QjGvnerFZfuQC6q5kc6g4cV
-         /3Ne4RfZewaL55l3AtFBQYzAH+n8y8bMGQhs7yPMLyRN9eiAL5wMmGf8XGr5rAT4XHhT
-         ReLIM5h9OBtIefmC+P/wDzwlmUbnBmWX52xXCtgqEVUdIWek5QyHWitnTBlxWXh0vl4t
-         24daxq0SsXIOuXoLlMUSWrYW0EkvRl0hxSi/sP0LfjDiVqb1caQRQxQzR/TMi+2TLCFW
-         pwVQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1780061071; x=1780665871;
-        h=content-transfer-encoding:cc:to:from:subject:message-id:references
-         :mime-version:in-reply-to:date:x-gm-message-state:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=pmBmVT1K0qRRQvsSc3WIbJk2+VawOhHvfWgErZcdak4=;
-        b=hVjTMGE5yNVNWdWrkg1F9cPvkbK+minBWopDqp1TtDTPRQAsHbDsioXM5phvzJNRaS
-         bYov7+H0qK8tkPiIu9ctIFhDiMYNnT6klJ+sRaGpnv0SZPIsT2DwOq5+ycJrVhe1oWdN
-         YR4OJR5gYKacbDqV582lBP7is1DK31A7QhVKBMlxxVNaWMOB+mqNXHYsBFDIDyynCDWb
-         vOeRqHpbps7js/Plem7m/zwhvX4LFmxNQ3k85LRoZG/EhY38ANSBlTFIBn/jyQZZGgNp
-         J3cMnWnie4DqeRAov9r0RbfBz087tenH9aRTUAD6bMJde3MbLCo95AIriMxD0G4blXCG
-         RJGQ==
-X-Forwarded-Encrypted: i=1; AFNElJ//3jjg6A7hemXtsQxrzBu1i8lGGGn0UsLgP46nfeZo9/ALSlsLnYsnIO5mS63MJ+aiE/xxCdk=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyJgNgdTnDvmov3ARJyvGBqKAy8FvHMY8hvHDSlOm7VJZGmoPmT
-	lRG24/lHXy5tMMJyBq77lOYqWjtefJrq/a4Hd5Rh1Fbo6LbniMh6wTfexNBhHqZJT1dYHz2fEQt
-	Mc0dRcg==
-X-Received: from plbkk16.prod.google.com ([2002:a17:903:710:b0:2bf:222e:c947])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:902:e84d:b0:2bf:af8:7de8
- with SMTP id d9443c01a7336-2bf20bb94b3mr38276425ad.30.1780061070656; Fri, 29
- May 2026 06:24:30 -0700 (PDT)
-Date: Fri, 29 May 2026 06:24:30 -0700
-In-Reply-To: <20260529091714.287963-2-clopez@suse.de>
+	s=arc-20240116; t=1780061960; c=relaxed/simple;
+	bh=y8t00ur7uXmiajJe2YfDx54F9I+lF1FFYTdJA+RSpiY=;
+	h=MIME-Version:Date:From:To:Cc:Message-Id:In-Reply-To:References:
+	 Subject:Content-Type; b=THO05Fih34iZ5y9CfcsrgpBm/7x3c1NGNdhhlhXsZjTuYhjnh2+Xf47li5q3W0y1rFTICaoVlCcb7dqNUj3XuHs4ShWELlVi5tJvgafMU3GOPyEFNPcR4m/X2nV90tNSni+DP+h+POIwPlnsqS8ETs/Yf4dMqsvATIWEu3SUg18=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arndb.de; spf=pass smtp.mailfrom=arndb.de; dkim=pass (2048-bit key) header.d=arndb.de header.i=@arndb.de header.b=Lo9E5V+A; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=k4e7HwEX; arc=none smtp.client-ip=202.12.124.145
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arndb.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arndb.de
+Received: from phl-compute-04.internal (phl-compute-04.internal [10.202.2.44])
+	by mailfout.stl.internal (Postfix) with ESMTP id AB2111D0012F;
+	Fri, 29 May 2026 09:39:17 -0400 (EDT)
+Received: from phl-imap-05 ([10.202.2.95])
+  by phl-compute-04.internal (MEProxy); Fri, 29 May 2026 09:39:18 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=arndb.de; h=cc
+	:cc:content-transfer-encoding:content-type:content-type:date
+	:date:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:subject:subject:to:to; s=fm3; t=1780061957;
+	 x=1780148357; bh=dijpLU+OU7oGppfwXWO2pPWD4SaRJOSfT1ZxhEnI80s=; b=
+	Lo9E5V+AZL+GiAHP4+j8owKk2lO0iOlOEcfTYsz4aXEz8bL7ZnY4EPL6cuyhJuKF
+	Y6b1sBPh6Ghrk5t6ZoK4vnpaf6lMlrBCL175Kq8Uc8VKotoIWt7Bl1mzYMO5avEm
+	7l9EA+oKCsdohu0ntJigWmz0jTuYK5LakwTUhhNtIrNFY7Ncc6Yaio8H9/WySJDz
+	K9CAzp0DpcTiXz+ltW0A3bWhFG8Ghjdi88yaiSsTCfYbBmQVshOvi8Ed8+xKu8y0
+	cskhNLOvTb6qescVEiTwk6qGfg5f9QRjTMUvY5f+J8RSd21lMALfqF0E5Mxhdi73
+	HdwkUCM2RUuPLb8/Q1ufxw==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	messagingengine.com; h=cc:cc:content-transfer-encoding
+	:content-type:content-type:date:date:feedback-id:feedback-id
+	:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:subject:subject:to:to:x-me-proxy
+	:x-me-sender:x-me-sender:x-sasl-enc; s=fm3; t=1780061957; x=
+	1780148357; bh=dijpLU+OU7oGppfwXWO2pPWD4SaRJOSfT1ZxhEnI80s=; b=k
+	4e7HwEXRVNh6dH900tHVwoL7ogfzg7KG3xdLfAFyAiYv3GRBwARAIMCTAfyG+bCF
+	tpoEr921JcUq1xlDloncqsLNJ6AGH7Qp/MRcYe+t4RLBlmLk1QdrVDrTbjOgwCdU
+	bW4JhmJSVGnfuHp6LzrNkODwJt6bmcfhF86OA0ui0QrTgOGOKSqAT0sDeEhZOdmr
+	aBhrJim3pno17MpxdAsdPMQ+4D47mPk4AhkLCa449FgkG6qCa9QJOo6hvsc2xUC8
+	UIP8ubjbMfa6kebQ2RyWL7yyVtptJPwrQCEboNDG4usYYlTaVI2XhbbGJduxQnFu
+	JRFtmbEyONFtVZB8CS47w==
+X-ME-Sender: <xms:BJcZalCWshej6AmMmJXaY_6zBVacFwUK7u4zefuHmr_Mz1Jiqi4iRw>
+    <xme:BJcZauWzZFebLRwx6O8-trkwKe91XRP7xKJnCB_qZWbosiuRkIjqJbywp-etEJLd3
+    55UrTOTDfAfa9cncsrmPNaEDXkWzn5atnQhem9hdrR5LKchUbpkizk>
+X-ME-Proxy-Cause: dmFkZTGyRrIgFgQ6qfer+Y4a1h2hQq6z7xkQeot4goKpuHSqMIzgKw47he6xTaYx2ppKRa
+    VqvD1CTTOrF9lbkxxeuSc1JZk3o6VnpMitGIIDR/YC3t8SVtOqJyFHkHw5x3fk8hu4gw4z
+    FOGLeRY21OB6MM/Gufhtmf5TbvS8+zZvhpro4mmVIbzRBstlAYcH4RKIEQduH7m89NY66z
+    5l4IPLL2B38MOxmhI/2RVQQRxFkJfsM1cCWOQJlTz6yfu1CFqgWrqqQvf0BYGjr80yIv2Q
+    ZByDnlVnbFzNzAP6QRxmyyX2lSVWFBYkykG62xXXsUcBdPeYs7q5bJ6EKHzlrvnRdEfvKv
+    iW7rxVF0SWC3/HI545Y1U4SwZ3bpvqA+YfBS9FnD0s/5xCYVx2kRh/5eNbm0ccCeJiFFNl
+    g+WDJciGwQWuioJVW0i/8uWhWk+xYxe8hvTEsWhD2xWpO2ECT9SusERqhWOUd93qDRZMX1
+    +p+d6PDvYHyOrIvDZdRBQNOkwEkwdqRWVgvvoIvk7KLliPVvf3D1OZ59RzVs4kZu1j/2ed
+    nhmiU+WICvO97G1nWX8KCbVDYgNAngwT3+BthY8yLHGNyS1vbQjurA2IxStDiOWJSFDpO/
+    SBKHkpUcHhl8Z3HasfHDtpvtk3rISL2zRhGJ1Re0nkZFed8Rhwp+4A7uyRsg
+X-ME-Proxy: <xmx:BJcZalmCK4e3Ic54lPmbCwKLn9HE1cZbVaecAebrT12EKo987ihSGw>
+    <xmx:BJcZaiazXC_cC6W9gQDrNLB0dNNsaYKrtAj8Q31zqVGysp5V4qF53A>
+    <xmx:BJcZaq4B_9TqZn9TAgDUPRx40h8zrarbk5xtL6NvK0r2igI0B69ZPQ>
+    <xmx:BJcZasDcfGcxG8N1ipfTYGLyhCuAisAuM2QLcPpM8eCruxUOe7S-Kw>
+    <xmx:BZcZasHvx4WBlV5jYiCc9RHyNL1NH40bZL6NS_ZGrXwXXp3nwRj3mZQp>
+Feedback-ID: i56a14606:Fastmail
+Received: by mailuser.phl.internal (Postfix, from userid 501)
+	id 9E60B182007A; Fri, 29 May 2026 09:39:16 -0400 (EDT)
+X-Mailer: MessagingEngine.com Webmail Interface
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-References: <20260529091714.287963-2-clopez@suse.de>
-Message-ID: <ahmTjp-95M5IjGxu@google.com>
-Subject: Re: [PATCH] KVM: x86: Take PIC lock on KVM_GET_IRQCHIP path
-From: Sean Christopherson <seanjc@google.com>
-To: "Carlos =?utf-8?B?TMOzcGV6?=" <clopez@suse.de>
-Cc: kvm@vger.kernel.org, pbonzini@redhat.com, stable@vger.kernel.org, 
-	Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, 
-	Dave Hansen <dave.hansen@linux.intel.com>, 
-	"maintainer:X86 ARCHITECTURE (32-BIT AND 64-BIT)" <x86@kernel.org>, "H. Peter Anvin" <hpa@zytor.com>, Avi Kivity <avi@qumranet.com>, 
-	Qing He <qing.he@intel.com>, "Yaozu (Eddie) Dong" <eddie.dong@intel.com>, 
-	Marcelo Tosatti <mtosatti@redhat.com>, 
-	"open list:X86 ARCHITECTURE (32-BIT AND 64-BIT)" <linux-kernel@vger.kernel.org>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: quoted-printable
-X-Spamd-Result: default: False [-1.66 / 15.00];
+MIME-Version: 1.0
+X-ThreadId: AIgwaTVwlN8Z
+Date: Fri, 29 May 2026 15:38:28 +0200
+From: "Arnd Bergmann" <arnd@arndb.de>
+To: "Tudor Ambarus" <tudor.ambarus@linaro.org>,
+ "Krzysztof Kozlowski" <krzk@kernel.org>,
+ "Alim Akhtar" <alim.akhtar@samsung.com>
+Cc: linux-kernel@vger.kernel.org, linux-samsung-soc@vger.kernel.org,
+ linux-arm-kernel@lists.infradead.org,
+ "Peter Griffin" <peter.griffin@linaro.org>,
+ =?UTF-8?Q?Andr=C3=A9_Draszik?= <andre.draszik@linaro.org>,
+ jyescas@google.com, kernel-team@android.com, stable@vger.kernel.org
+Message-Id: <d6663bd0-178e-46d6-af3a-69b8be197375@app.fastmail.com>
+In-Reply-To: <a7994860-24a3-4f87-84bf-109ed653dda4@linaro.org>
+References: 
+ <20260505-acpm-fixes-sashiko-reports-v5-0-43b5ee7f1674@linaro.org>
+ <20260505-acpm-fixes-sashiko-reports-v5-3-43b5ee7f1674@linaro.org>
+ <03dc9ccc-d819-413e-b8fd-23ccd85675ba@app.fastmail.com>
+ <6c77d706-5944-4e7d-8a4a-b3a6cac6a83b@kernel.org>
+ <a7994860-24a3-4f87-84bf-109ed653dda4@linaro.org>
+Subject: Re: [PATCH v5 3/7] firmware: samsung: acpm: Fix dummy stubs to return ERR_PTR
+Content-Type: text/plain
+Content-Transfer-Encoding: 7bit
+X-Spamd-Result: default: False [-2.15 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[google.com,reject];
-	MV_CASE(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
-	R_DKIM_ALLOW(-0.20)[google.com:s=20251104];
+	DMARC_POLICY_ALLOW(-0.50)[arndb.de,none];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_DKIM_ALLOW(-0.20)[arndb.de:s=fm3,messagingengine.com:s=fm3];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
+	XM_UA_NO_VERSION(0.01)[];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-256632-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	RCVD_COUNT_THREE(0.00)[4];
-	RCPT_COUNT_TWELVE(0.00)[15];
-	DKIM_TRACE(0.00)[google.com:+];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	MISSING_XM_UA(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[seanjc@google.com,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-256634-lists,stable=lfdr.de];
+	DKIM_TRACE(0.00)[arndb.de:+,messagingengine.com:+];
+	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	MID_RHS_MATCH_FROM(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
-	NEURAL_HAM(-0.00)[-1.000];
+	FROM_HAS_DN(0.00)[];
 	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,suse.de:email]
-X-Rspamd-Queue-Id: EC5A8602D39
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[arnd@arndb.de,stable@vger.kernel.org];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	RCVD_COUNT_FIVE(0.00)[6];
+	RCPT_COUNT_SEVEN(0.00)[11];
+	NEURAL_HAM(-0.00)[-1.000];
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[messagingengine.com:dkim,app.fastmail.com:mid,arndb.de:dkim,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
+X-Rspamd-Queue-Id: 69324602FF5
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-On Fri, May 29, 2026, Carlos L=C3=B3pez wrote:
-> When userspace issues the KVM_SET_IRQCHIP ioctl to set the state of
-> the PIC, kvm_vm_ioctl_set_irqchip() grabs @kvm->arch.vpic->lock before
-> updating the state. However, the KVM_GET_IRQCHIP ioctl to retrieve the
-> same PIC state does not grab such lock, potentially causing torn reads
-> for userspace.
+On Fri, May 29, 2026, at 14:37, Tudor Ambarus wrote:
+> On 5/29/26 3:09 PM, Krzysztof Kozlowski wrote:
+>> On 29/05/2026 13:51, Arnd Bergmann wrote:
+>
+> I confirm that the ACPM protocol is mandatory for the clients to
+> work, thanks!
+>
+>>> the option space without losing any build coverage.
+>
+> nice, I didn't know this. I guess it's a "greedy" algorithm in
+> allmodconfig, if the dependency is met the dependents are enabled too.
 
-Meh, if userspace hasn't fully paused the VM, save/restore is going to fail
-anyways.  Heck, torn reads is probably _better_ than the alternative, becau=
-se
-at least that might cause visible failure during the restore.  If there are
-concurrent modifications in-flight, then KVM_GET_IRQCHIP is going to return
-stale data (assuming userspace doesn't redo KVM_GET_IRQCHIP), i.e. save/res=
-tore
-will effectively corrupt the guest.
+It's not even that interesting I think: the way I understand it,
+the values (=m for allmodconfig, random for randconfig) are
+assigned first and then adjusted if dependencies are not
+met. This means with my change, anything that would have
+CONFIG_EXYNOS_ACPM_PROTOCOL=n and CONFIG_EXYNOS_ACPM_CLK=m now
+turns off EXYNOS_ACPM_CLK as well, rather than turning on
+CONFIG_EXYNOS_ACPM_PROTOCOL, but this still covers all
+the combinations we need to test.
 
-> Fix this by grabbing the lock on the read path.
->=20
-> This issue goes all the way back. The bug was introduced with the
-> addition of PIC ioctl code itself in 6ceb9d791eee ("KVM: Add get/
-> set irqchip ioctls for in-kernel PIC live migration support"). Later,
-> 894a9c5543ab ("KVM: x86: missing locking in PIT/IRQCHIP/SET_BSP_CPU
-> ioctl paths") added the locking for kvm_vm_ioctl_set_irqchip(), but
-> missed kvm_vm_ioctl_get_irqchip().
->=20
-> Fixes: 6ceb9d791eee ("KVM: Add get/set irqchip ioctls for in-kernel PIC l=
-ive migration support")
-> Fixes: 894a9c5543ab ("KVM: x86: missing locking in PIT/IRQCHIP/SET_BSP_CP=
-U ioctl paths")
-> Cc: stable@vger.kernel.org
+>> Sure, I am fine with it. I'll take your patch with a bit adjusted commit
+>> msg.
+>> 
+>
+> Thank you! I need to drop the devm_acpm_get_by_phandle dummy stub from:
+> https://lore.kernel.org/linux-samsung-soc/a59c6e3a-6092-4114-8961-c2a71a812959@kernel.org/T/#m0ac077507129c37b84443513eecadd70b5eaf8b8
+>
+> Shall I send again the entire set?
 
-This isn't stable material.  There's basically zero chance this actively
-problematic for any VMM.
+I'll just send my change on top of your 8ad2c29d53e6 ("firmware:
+samsung: acpm: Add devm_acpm_get_by_phandle helper"). Since there
+is no way to hit the actual bug on a running kernel, it can wait for
+the merge window, and that way we don't need a rebase.
 
-Honestly, it's tempting to I'm tempted to do the opposite, and yank out the
-locking for the KVM_SET_IRQCHIP path, because userspace really can't be rel=
-ying
-on kernel locking for correctness across save/restore.  I don't _actually_ =
-think
-we should do that, but it certainly is tempting.
-
-Ah, actually, maybe SET has locking because it's also used to reset PIC sta=
-te,
-i.e. isn't limited to just save/restore?  Doesn't really matter.
-
-> Reported-by: Claude Code:claude-opus-4.6
-> Signed-off-by: Carlos L=C3=B3pez <clopez@suse.de>
-> ---
->  arch/x86/kvm/irq.c | 8 ++++++--
->  1 file changed, 6 insertions(+), 2 deletions(-)
->=20
-> diff --git a/arch/x86/kvm/irq.c b/arch/x86/kvm/irq.c
-> index 9519fec09ee6..251df563427b 100644
-> --- a/arch/x86/kvm/irq.c
-> +++ b/arch/x86/kvm/irq.c
-> @@ -584,14 +584,18 @@ int kvm_vm_ioctl_get_irqchip(struct kvm *kvm, struc=
-t kvm_irqchip *chip)
-> =20
->  	r =3D 0;
->  	switch (chip->chip_id) {
-> -	case KVM_IRQCHIP_PIC_MASTER:
-> +	case KVM_IRQCHIP_PIC_MASTER: {
-> +		guard(spinlock)(&pic->lock);
-
-I'd much rather use "manual" spin_(un)lock() instead of guard().  Or scoped=
-_guard()
-to avoid the curly braces, but even then, I find this:
-
-		scoped_guard(spinlock, &pic->lock)
-			memcpy(&chip->chip.pic, &pic->pics[0],
-			       sizeof(struct kvm_pic_state));
-
-to be much harder to read than:
-
-		spin_lock(&pic->lock);
-		memcpy(&chip->chip.pic, &pic->pics[0],
-			sizeof(struct kvm_pic_state));
-		spin_unlock(&pic->lock);
-
-And no one can reasonably argue that guard() or scoped_guard() makes the th=
-is
-particular code more robust.
-
->  		memcpy(&chip->chip.pic, &pic->pics[0],
->  			sizeof(struct kvm_pic_state));
->  		break;
-> -	case KVM_IRQCHIP_PIC_SLAVE:
-> +	}
-> +	case KVM_IRQCHIP_PIC_SLAVE: {
-> +		guard(spinlock)(&pic->lock);
->  		memcpy(&chip->chip.pic, &pic->pics[1],
->  			sizeof(struct kvm_pic_state));
->  		break;
-> +	}
->  	case KVM_IRQCHIP_IOAPIC:
->  		kvm_get_ioapic(kvm, &chip->chip.ioapic);
->  		break;
->=20
-> base-commit: d1568b1332b6b3b36b222c2868fc102727c12a34
-> --=20
-> 2.51.0
->=20
+     Arnd
 
