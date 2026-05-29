@@ -1,63 +1,65 @@
-Return-Path: <stable+bounces-256690-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-256691-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id KL22DobWGWqjzQgAu9opvQ
-	(envelope-from <stable+bounces-256690-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 29 May 2026 20:10:14 +0200
+	id SLH1Br3WGWqjzQgAu9opvQ
+	(envelope-from <stable+bounces-256691-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 29 May 2026 20:11:09 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id AF1CA60716B
-	for <lists+stable@lfdr.de>; Fri, 29 May 2026 20:10:13 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1AEA960718A
+	for <lists+stable@lfdr.de>; Fri, 29 May 2026 20:11:08 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id EA0E430B237D
-	for <lists+stable@lfdr.de>; Fri, 29 May 2026 18:07:55 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 3BD0730074CF
+	for <lists+stable@lfdr.de>; Fri, 29 May 2026 18:08:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C1B3F3FDBFD;
-	Fri, 29 May 2026 18:07:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1D6133EA97A;
+	Fri, 29 May 2026 18:08:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="OG2swdoJ"
+	dkim=pass (1024-bit key) header.d=narfation.org header.i=@narfation.org header.b="dOBzRi2c"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from dvalin.narfation.org (dvalin.narfation.org [213.160.73.56])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 15B423FB7F2
-	for <stable@vger.kernel.org>; Fri, 29 May 2026 18:07:48 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 591E036AB53
+	for <stable@vger.kernel.org>; Fri, 29 May 2026 18:08:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=213.160.73.56
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780078072; cv=none; b=D4F5ilJymliCr69SAzjv6BaDHWt8OYcFwqAaPzDLcDkEXzO/UfVoXDeT3hvDfDJCBl5Ke21A6MDmqsps2WvKUUr+UqeAfraXX+nypN6wKYxAxnrYCcYqKHiWa3HSO31+U8GG6nnXHewoqmIqaznziTpu+Zb0SDUfManxuGZo9mI=
+	t=1780078124; cv=none; b=OtBEgibyDQoeespQlUIbXhLz0t6Ksrx3ySvyGLRdozxxe919QsKjiceCog9BMnPSs77qMiNcCy0kUTDEu47uZp9q1LIVH2MEfS68zehJUZpeBcvdoXuNhvIUFZLU1sbIS8roByjDAjr5sSNjfPh1jT1RmQMaQ+08VVUvOO7B184=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780078072; c=relaxed/simple;
-	bh=IyY/lwyWYhS5V7U8wGFT91cqaG7vhEF98HX7pB4MzEg=;
+	s=arc-20240116; t=1780078124; c=relaxed/simple;
+	bh=qBUO1PBBRuM4Q8Bi+C5Afk5KHHCKYQoNpnWccq72hU0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=eimveNKXh/HEuLiOonPh9NzDKn0ScPgn75PVvw4P3ePXY/ylDLwQxC9iSGu3IRK2OVhWDpVLx+YZ2kcLTXEXIJDLoB1nU2EYL8uVKc6QMfvRMlL+CIDmbw1Vpl65OeeZTqdwTsBNl1osxxOn66u8mxadD0rppv8GEsu8fnevASs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=OG2swdoJ; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CA7501F00893;
-	Fri, 29 May 2026 18:07:47 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1780078068;
-	bh=OFcPptDmGab3q0xWhalTnsnOP6uOzPlgFc1VXrOdlSw=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=OG2swdoJyBSs44+huxocc1Z9zisXi08vRLJmNMd8LCeapCnCOWRqToHlcDzpzXyU7
-	 rdrbSqvPJWBPsjt6+ynFWNBhzWSN4CxN7eSE8nu0ffaX6wUz7y2utxd2aYgDjeRiLH
-	 VQ7YWw8bElT7adtejo8q2ySMnLxteoBXOvVt/tmp5cmQ6CHfUMlBmW0pt064VR2BeW
-	 wegdGMh/2Ek/E+p9yvc6dhS9CYfbo+6zpjw7LkVcCKfZM8n1P2oC+mkTgjCUnLNCa+
-	 6vPIz9XTuLmbQcj7aOkBETWWg9kTA/b947TxY5Rhgya7HpOWP33QWoZuR3BICXvNHF
-	 gMlo6pUDbJxQA==
-From: Sasha Levin <sashal@kernel.org>
+	 MIME-Version; b=inMY5qhmgl0uAqXxPfgp1Klsd2QEi2rMfr+C5SlvkpRFkmg2UOgWBHja9DyHnR6mYojoTkTdKmvKcqSScBUY60ZbAxgLJYEMBD5UXGXnjMRilDPJU6+ufFKuxOmNmmdThliczsdCoSjrdI5oQAU4VFXqLR0IoMtKX9xacKTyoxk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=narfation.org; spf=pass smtp.mailfrom=narfation.org; dkim=pass (1024-bit key) header.d=narfation.org header.i=@narfation.org header.b=dOBzRi2c; arc=none smtp.client-ip=213.160.73.56
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=narfation.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=narfation.org
+Received: by dvalin.narfation.org (Postfix) id 764572000E;
+	Fri, 29 May 2026 18:08:40 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=narfation.org;
+	s=20121; t=1780078120;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=M7EKCZR79Mvh7RTzfjQ7VwQNbE3CYoCLJZnZ/zzPsmE=;
+	b=dOBzRi2cRLNgyD9EGBczJV1OereHyTj1DZ5UglH56KsjcGhDi3HlY9UTaBHaxDjqtqc5PW
+	s0xPaxjpRcHg4pAe3zmsGlNt1B3MYTj1rPfnYJvNNPlyCmCm/YBLo9zbWR6NYhjF9qgER2
+	4Q1zuFVLPtYxXBo8iFVH+tfqoC+Zn2A=
+From: Sven Eckelmann <sven@narfation.org>
 To: stable@vger.kernel.org
-Cc: Tom Lendacky <thomas.lendacky@amd.com>,
-	Dave Hansen <dave.hansen@intel.com>,
-	"Borislav Petkov (AMD)" <bp@alien8.de>,
-	Rik van Riel <riel@surriel.com>,
+Cc: Sven Eckelmann <sven@narfation.org>,
 	stable@kernel.org,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18.y] x86/mm: Disable broadcast TLB flush when PCID is disabled
-Date: Fri, 29 May 2026 14:07:46 -0400
-Message-ID: <20260529180746.1509509-1-sashal@kernel.org>
-X-Mailer: git-send-email 2.53.0
-In-Reply-To: <2026052811-otter-banister-f094@gregkh>
-References: <2026052811-otter-banister-f094@gregkh>
+	Yuan Tan <yuantan098@gmail.com>,
+	Yifan Wu <yifanwucs@gmail.com>,
+	Juefei Pu <tomapufckgml@gmail.com>,
+	Xin Liu <bird@lzu.edu.cn>
+Subject: [PATCH 6.12.y] batman-adv: tvlv: reject oversized TVLV packets
+Date: Fri, 29 May 2026 20:08:04 +0200
+Message-ID: <20260529180804.414401-1-sven@narfation.org>
+X-Mailer: git-send-email 2.47.3
+In-Reply-To: <2026052836-occupier-racism-d548@gregkh>
+References: <2026052836-occupier-racism-d548@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -66,103 +68,111 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-0.66 / 15.00];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	MID_CONTAINS_FROM(1.00)[];
-	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
-	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20260515];
+	DMARC_POLICY_ALLOW(-0.50)[narfation.org,none];
+	R_DKIM_ALLOW(-0.20)[narfation.org:s=20121];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-256690-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
+	FREEMAIL_CC(0.00)[narfation.org,kernel.org,gmail.com,lzu.edu.cn];
+	RCVD_TLS_LAST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-256691-lists,stable=lfdr.de];
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[7];
+	FROM_NEQ_ENVFROM(0.00)[sven@narfation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	DKIM_TRACE(0.00)[narfation.org:+];
 	NEURAL_HAM(-0.00)[-1.000];
-	DKIM_TRACE(0.00)[kernel.org:+];
 	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	TO_DN_SOME(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[intel.com:email,surriel.com:email,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,alien8.de:email,amd.com:email,msgid.link:url]
-X-Rspamd-Queue-Id: AF1CA60716B
+	DBL_BLOCKED_OPENRESOLVER(0.00)[narfation.org:email,narfation.org:mid,narfation.org:dkim,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,lzu.edu.cn:email]
+X-Rspamd-Queue-Id: 1AEA960718A
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-From: Tom Lendacky <thomas.lendacky@amd.com>
+commit f50487e3566358b2b982b7801945e858c78ad9ab upstream.
 
-[ Upstream commit 44126343d58c68adaa8343fbf1c07dd20078c35e ]
+batadv_tvlv_container_ogm_append() builds a TVLV packet section from
+the tvlv.container_list. The total size of this section is computed by
+batadv_tvlv_container_list_size(), which sums the sizes of all registered
+containers.
 
-Booting with "nopcid" clears X86_FEATURE_PCID and keeps CR4.PCIDE from being
-set to one. On AMD CPUs that support INVLPGB, broadcast TLB flushing remains
-enabled.
+The return type and accumulator in batadv_tvlv_container_list_size() were
+u16. If the accumulated size exceeds U16_MAX, the value wraps around,
+causing the subsequent allocation in batadv_tvlv_container_ogm_append()
+to be undersized. The memcpy-style copy that follows would then write
+beyond the end of the allocated buffer, corrupting kernel memory.
 
-There are two checks that decide whether the global ASID code runs,
-mm_global_asid() and consider_global_asid(), that key off of the
-X86_FEATURE_INVLPGB feature. Once an mm becomes active on more than three
-CPUs, consider_global_asid() assigns it a global ASID, after which
-flush_tlb_mm_range() takes the broadcast_tlb_flush() path using a non-zero
-PCID. Issuing an INVLPGB with a non-zero PCID while CR4.PCIDE is not set
-results in a #GP:
+Fix this by widening the return type of batadv_tvlv_container_list_size()
+to size_t. In batadv_tvlv_container_ogm_append(), check the computed length
+against U16_MAX before proceeding, and bail out as if the allocation had
+failed when the limit is exceeded.
 
-  Oops: general protection fault, kernel NULL pointer dereference 0x1: 0000 [#1] SMP NOPTI
-  CPU: 158 UID: 0 PID: 3119 Comm: snap Not tainted 7.1.0-rc3 #1 PREEMPT(full)
-  Hardware name: ...
-  RIP: 0010:broadcast_tlb_flush
-  Code: ... 89 da 48 83 c8 07 <0f> 01 fe eb 08 cc cc cc ...
-  Call Trace:
-   <TASK>
-   flush_tlb_mm_range
-   ptep_clear_flush
-   wp_page_copy
-   ? _raw_spin_unlock
-   __handle_mm_fault
-   handle_mm_fault
-   do_user_addr_fault
-   exc_page_fault
-   asm_exc_page_fault
-
-All processors that support broadcast TLB invalidation also have PCID support,
-so it is only the "nopcid" scenario that is of concern. In this situation just
-disable the broadcast TLB support using the CPUID dependency support by making
-X86_FEATURE_INVLPGB dependent on X86_FEATURE_PCID.
-
-  [ bp: Massage commit message. ]
-
-Fixes: 4afeb0ed1753 ("x86/mm: Enable broadcast TLB invalidation for multi-threaded processes")
-Suggested-by: Dave Hansen <dave.hansen@intel.com>
-Assisted-by: Claude:claude-opus-4.7
-Signed-off-by: Tom Lendacky <thomas.lendacky@amd.com>
-Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
-Acked-by: Rik van Riel <riel@surriel.com>
-Cc: <stable@kernel.org>
-Link: https://patch.msgid.link/b915acfd63e8b2a094fdeb8dc608738072518764.1779296450.git.thomas.lendacky@amd.com
-[ adjusted insertion point to after X86_FEATURE_SPEC_CTRL_SSBD ]
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: stable@kernel.org
+Fixes: ef26157747d4 ("batman-adv: tvlv - basic infrastructure")
+Reported-by: Yuan Tan <yuantan098@gmail.com>
+Reported-by: Yifan Wu <yifanwucs@gmail.com>
+Reported-by: Juefei Pu <tomapufckgml@gmail.com>
+Reported-by: Xin Liu <bird@lzu.edu.cn>
+Reviewed-by: Yuan Tan <yuantan098@gmail.com>
+Signed-off-by: Sven Eckelmann <sven@narfation.org>
 ---
- arch/x86/kernel/cpu/cpuid-deps.c | 1 +
- 1 file changed, 1 insertion(+)
+ net/batman-adv/tvlv.c | 11 ++++++++---
+ 1 file changed, 8 insertions(+), 3 deletions(-)
 
-diff --git a/arch/x86/kernel/cpu/cpuid-deps.c b/arch/x86/kernel/cpu/cpuid-deps.c
-index 46efcbd6afa41..155df2e586749 100644
---- a/arch/x86/kernel/cpu/cpuid-deps.c
-+++ b/arch/x86/kernel/cpu/cpuid-deps.c
-@@ -89,6 +89,7 @@ static const struct cpuid_dep cpuid_deps[] = {
- 	{ X86_FEATURE_SHSTK,			X86_FEATURE_XSAVES    },
- 	{ X86_FEATURE_FRED,			X86_FEATURE_LKGS      },
- 	{ X86_FEATURE_SPEC_CTRL_SSBD,		X86_FEATURE_SPEC_CTRL },
-+	{ X86_FEATURE_INVLPGB,			X86_FEATURE_PCID      },
- 	{}
- };
+diff --git a/net/batman-adv/tvlv.c b/net/batman-adv/tvlv.c
+index 76c6e0599694c..8d6b017c433cc 100644
+--- a/net/batman-adv/tvlv.c
++++ b/net/batman-adv/tvlv.c
+@@ -13,6 +13,7 @@
+ #include <linux/gfp.h>
+ #include <linux/if_ether.h>
+ #include <linux/kref.h>
++#include <linux/limits.h>
+ #include <linux/list.h>
+ #include <linux/lockdep.h>
+ #include <linux/netdevice.h>
+@@ -160,10 +161,10 @@ batadv_tvlv_container_get(struct batadv_priv *bat_priv, u8 type, u8 version)
+  *
+  * Return: size of all currently registered tvlv containers in bytes.
+  */
+-static u16 batadv_tvlv_container_list_size(struct batadv_priv *bat_priv)
++static size_t batadv_tvlv_container_list_size(struct batadv_priv *bat_priv)
+ {
+ 	struct batadv_tvlv_container *tvlv;
+-	u16 tvlv_len = 0;
++	size_t tvlv_len = 0;
  
+ 	lockdep_assert_held(&bat_priv->tvlv.container_list_lock);
+ 
+@@ -316,13 +317,17 @@ int batadv_tvlv_container_ogm_append(struct batadv_priv *bat_priv,
+ {
+ 	struct batadv_tvlv_container *tvlv;
+ 	struct batadv_tvlv_hdr *tvlv_hdr;
+-	u16 tvlv_value_len;
++	size_t tvlv_value_len;
+ 	void *tvlv_value;
+ 	int tvlv_len_ret;
+ 	bool ret;
+ 
+ 	spin_lock_bh(&bat_priv->tvlv.container_list_lock);
+ 	tvlv_value_len = batadv_tvlv_container_list_size(bat_priv);
++	if (tvlv_value_len > U16_MAX) {
++		tvlv_len_ret = -E2BIG;
++		goto end;
++	}
+ 
+ 	ret = batadv_tvlv_realloc_packet_buff(packet_buff, packet_buff_len,
+ 					      packet_min_len, tvlv_value_len);
 -- 
-2.53.0
+2.47.3
 
 
