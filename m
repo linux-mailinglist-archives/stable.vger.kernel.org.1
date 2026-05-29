@@ -1,61 +1,61 @@
-Return-Path: <stable+bounces-256697-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-256698-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id AHl8I6fXGWqjzQgAu9opvQ
-	(envelope-from <stable+bounces-256697-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 29 May 2026 20:15:03 +0200
+	id iP8SLr3XGWqjzQgAu9opvQ
+	(envelope-from <stable+bounces-256698-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 29 May 2026 20:15:25 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id D108B607236
-	for <lists+stable@lfdr.de>; Fri, 29 May 2026 20:15:02 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 62BC560723E
+	for <lists+stable@lfdr.de>; Fri, 29 May 2026 20:15:25 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id D49AA301B4D5
-	for <lists+stable@lfdr.de>; Fri, 29 May 2026 18:15:01 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id A937E300C326
+	for <lists+stable@lfdr.de>; Fri, 29 May 2026 18:15:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2871439BFEC;
-	Fri, 29 May 2026 18:14:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 94BE43A8743;
+	Fri, 29 May 2026 18:15:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=narfation.org header.i=@narfation.org header.b="qU0wXmXW"
+	dkim=pass (1024-bit key) header.d=narfation.org header.i=@narfation.org header.b="ZTwH/zGa"
 X-Original-To: stable@vger.kernel.org
 Received: from dvalin.narfation.org (dvalin.narfation.org [213.160.73.56])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C5AD6374E7A
-	for <stable@vger.kernel.org>; Fri, 29 May 2026 18:14:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2E9C13A1690
+	for <stable@vger.kernel.org>; Fri, 29 May 2026 18:15:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=213.160.73.56
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780078499; cv=none; b=MxOCjc1Jvjjmr0jbvj3O0Ot4qtAP0qyvZb2fiI5Ravy3OFzkdFd6kud0jC3GbPe+uc0NvIX3NIKCrg14p/A5PhmkouD9F+4xr+ZnAh0U63elwnVYcLYH+yBJOGrOv4X69ESSDFouhDpejg1fK4SCGpo5Hx3hr+Rv/QAVRRhREzQ=
+	t=1780078522; cv=none; b=ZvGJZe2aIUxFjER/Sa7XwIA+9SPfowvoZaDAscY37L2rPSpywxSaZvL1OCJwmBtL77mCLUbG4IHrYf4zSn30CIgj7XYfTg7Fd+B3RNIhZXF9KRyCDH8ErHARWCYnz2lIsltrKDRrWT9OvlW0N1BWGQS3RxNqT2g1qCHptpvYCz4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780078499; c=relaxed/simple;
-	bh=chEIjeQAazK+6170AjMXLDOWPLva75T1eCeCD4L7qOk=;
+	s=arc-20240116; t=1780078522; c=relaxed/simple;
+	bh=5Z/18GwPMPAuVvnVbaqIsK4bR8EtHz1wemM482i2oKk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=cog0gO+DmAjpfkACKHRgxPGDxAmHa+pYXbeINU0/Hr5/iQxSgGyFqHh+jUfAzrw1wiXOSjEiUB3w72CLw0ezab3EXgyYMlGS19pJduarExvXdkvYhsy6Xi5jFt8HtXV/GrF5Uk5cEAzKb3VvEbHksnDxMs1jJk7sdvo1kuFPK5Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=narfation.org; spf=pass smtp.mailfrom=narfation.org; dkim=pass (1024-bit key) header.d=narfation.org header.i=@narfation.org header.b=qU0wXmXW; arc=none smtp.client-ip=213.160.73.56
+	 MIME-Version; b=EmDigLBhtulIMUS9K8STKVS8rSDbtyfBpk7y7guFNaHt//sXbq6JdwDp+6r1VJ33rNuep7Qj+Z3scM+NrTeNrQMeQNS7kh/aMCZzTyPqKJlyVrNAIL2GrNXfLu55PfG7cIbWbtfNVztzlpQdxv6bFPNQZrw582wiOEycWcYQFHA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=narfation.org; spf=pass smtp.mailfrom=narfation.org; dkim=pass (1024-bit key) header.d=narfation.org header.i=@narfation.org header.b=ZTwH/zGa; arc=none smtp.client-ip=213.160.73.56
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=narfation.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=narfation.org
-Received: by dvalin.narfation.org (Postfix) id 3C7B62000E;
-	Fri, 29 May 2026 18:14:56 +0000 (UTC)
+Received: by dvalin.narfation.org (Postfix) id 70EB22000E;
+	Fri, 29 May 2026 18:15:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=narfation.org;
-	s=20121; t=1780078496;
+	s=20121; t=1780078519;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=LX8i1teD4MIfIGTxH5mUflCIpagllhj+GPdHvNP1Y68=;
-	b=qU0wXmXW4pZURgE3999NVgkDTJiVsp6+nh78XDMN2d8frXgveUF2Jx1aDElR0MDqbsYloX
-	TxPJ8DRpt093og0Nh2zCEa/a5qMtcI/81vt3n0DqFGDRFveB0xZoBeDRtPre8iurq1eg61
-	tpU84W9/Vaiemos3ZFvWidcZXytxd9U=
+	bh=zM7NwxMpGgGkkOPREsXsTnRud2bmFnHSqFMoiKwR4U4=;
+	b=ZTwH/zGaiCpxWrcee7YgAQb7c37bp6M1AespEI0r+R4ISQOTCs34CETtzFoSECqjpjdI6G
+	bwd2ofXEf6x8IVFlaSmIWVJv49K9sG7DYWVb10HxG9nwl+EylveudOOYxc+1u68zsZWtM2
+	lL0SUDEk3Wp/XOVx+ZipdxFWzUtSkL8=
 From: Sven Eckelmann <sven@narfation.org>
 To: stable@vger.kernel.org
 Cc: Sven Eckelmann <sven@narfation.org>,
 	stable@kernel.org
-Subject: [PATCH 6.6.y] batman-adv: tt: fix TOCTOU race for reported vlans
-Date: Fri, 29 May 2026 20:14:40 +0200
-Message-ID: <20260529181440.416491-1-sven@narfation.org>
+Subject: [PATCH 6.6.y] batman-adv: tt: avoid empty VLAN responses
+Date: Fri, 29 May 2026 20:15:14 +0200
+Message-ID: <20260529181514.416732-1-sven@narfation.org>
 X-Mailer: git-send-email 2.47.3
-In-Reply-To: <2026052808-finite-shut-37dd@gregkh>
-References: <2026052808-finite-shut-37dd@gregkh>
+In-Reply-To: <2026052842-snugness-statutory-4b6d@gregkh>
+References: <2026052842-snugness-statutory-4b6d@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -68,12 +68,12 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[narfation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	R_DKIM_ALLOW(-0.20)[narfation.org:s=20121];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-256697-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-256698-lists,stable=lfdr.de];
 	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
@@ -87,63 +87,76 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	PRECEDENCE_BULK(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
 	NEURAL_HAM(-0.00)[-1.000];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,narfation.org:email,narfation.org:mid,narfation.org:dkim]
-X-Rspamd-Queue-Id: D108B607236
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[narfation.org:email,narfation.org:mid,narfation.org:dkim,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo]
+X-Rspamd-Queue-Id: 62BC560723E
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-commit 94d27005016be15ffc638b2ecbc4d58805ad7b48 upstream.
+commit fa1bd704940b5bcbc32c0b28db9167405c8ee5e0 upstream.
 
-The local TT based TVLV is generated by first checking the number of VLANs
-which have at least one TT entry. A new buffer with the correct size for
-the VLANs is then allocated. Only then, the list of VLANs s used to fill
-the VLAN entries in the buffer. During this time, the meshif_vlan_list_lock
-is held. But the actual number of TT entries of each VLAN can still
-increase during this time - just not the number of VLANs in the list.
-
-But the prefilter used in the buffer size calculation might still cause an
-increase of the number of VLANs which need to be stored. Simply because a
-VLAN might now suddenly have at least one entry when it had none in the
-pre-alloc check - and then needs to occupy space which was not allocated.
-
-It is better to overestimate the buffer size at the beginning and then fill
-the buffer only with the VLANs which are not empty.
+The commit 16116dac2339 ("batman-adv: prevent TT request storms by not
+sending inconsistent TT TLVLs") added checks to the local (direct) TT
+response code. But the response can also be done indirectly by another node
+using the global TT state. To avoid such inconsistency states reported in
+the original fix, also avoid sending empty VLANs for replies from the
+global TT state.
 
 Cc: stable@kernel.org
-Fixes: 16116dac2339 ("batman-adv: prevent TT request storms by not sending inconsistent TT TLVLs")
+Fixes: 7ea7b4a14275 ("batman-adv: make the TT CRC logic VLAN specific")
 [ Context, drop flex array dependency ]
 Signed-off-by: Sven Eckelmann <sven@narfation.org>
 ---
- net/batman-adv/translation-table.c | 14 ++++++++++----
- 1 file changed, 10 insertions(+), 4 deletions(-)
+ net/batman-adv/translation-table.c | 21 ++++++++++++++++++---
+ 1 file changed, 18 insertions(+), 3 deletions(-)
 
 diff --git a/net/batman-adv/translation-table.c b/net/batman-adv/translation-table.c
-index 8ffebece03c52..d4cebe122e528 100644
+index d4cebe122e528..4045ddefc29b4 100644
 --- a/net/batman-adv/translation-table.c
 +++ b/net/batman-adv/translation-table.c
-@@ -934,11 +934,8 @@ batadv_tt_prepare_tvlv_local_data(struct batadv_priv *bat_priv,
- 	spin_lock_bh(&bat_priv->softif_vlan_list_lock);
- 	hlist_for_each_entry(vlan, &bat_priv->softif_vlan_list, list) {
- 		vlan_entries = atomic_read(&vlan->tt.num_entries);
--		if (vlan_entries < 1)
--			continue;
--
--		num_vlan++;
- 		total_entries += vlan_entries;
-+		num_vlan++;
+@@ -843,17 +843,19 @@ batadv_tt_prepare_tvlv_global_data(struct batadv_orig_node *orig_node,
+ 				   s32 *tt_len)
+ {
+ 	u16 num_vlan = 0;
+-	u16 num_entries = 0;
+ 	u16 tvlv_len = 0;
+ 	unsigned int change_offset;
+ 	struct batadv_tvlv_tt_vlan_data *tt_vlan;
+ 	struct batadv_orig_node_vlan *vlan;
++	u16 total_entries = 0;
+ 	u8 *tt_change_ptr;
++	int vlan_entries;
+ 
+ 	spin_lock_bh(&orig_node->vlan_list_lock);
+ 	hlist_for_each_entry(vlan, &orig_node->vlan_list, list) {
++		vlan_entries = atomic_read(&vlan->tt.num_entries);
++		total_entries += vlan_entries;
+ 		num_vlan++;
+-		num_entries += atomic_read(&vlan->tt.num_entries);
  	}
  
  	change_offset = sizeof(**tt_data);
-@@ -964,6 +961,7 @@ batadv_tt_prepare_tvlv_local_data(struct batadv_priv *bat_priv,
+@@ -861,7 +863,7 @@ batadv_tt_prepare_tvlv_global_data(struct batadv_orig_node *orig_node,
+ 
+ 	/* if tt_len is negative, allocate the space needed by the full table */
+ 	if (*tt_len < 0)
+-		*tt_len = batadv_tt_len(num_entries);
++		*tt_len = batadv_tt_len(total_entries);
+ 
+ 	if (change_offset > U16_MAX || *tt_len > U16_MAX - change_offset) {
+ 		*tt_len = 0;
+@@ -882,14 +884,27 @@ batadv_tt_prepare_tvlv_global_data(struct batadv_orig_node *orig_node,
  	(*tt_data)->num_vlan = htons(num_vlan);
  
  	tt_vlan = (struct batadv_tvlv_tt_vlan_data *)(*tt_data + 1);
 +	num_vlan = 0;
- 	hlist_for_each_entry(vlan, &bat_priv->softif_vlan_list, list) {
- 		vlan_entries = atomic_read(&vlan->tt.num_entries);
- 		if (vlan_entries < 1)
-@@ -974,8 +972,16 @@ batadv_tt_prepare_tvlv_local_data(struct batadv_priv *bat_priv,
+ 	hlist_for_each_entry(vlan, &orig_node->vlan_list, list) {
++		vlan_entries = atomic_read(&vlan->tt.num_entries);
++		if (vlan_entries < 1)
++			continue;
++
+ 		tt_vlan->vid = htons(vlan->vid);
+ 		tt_vlan->crc = htonl(vlan->tt.crc);
  		tt_vlan->reserved = 0;
  
  		tt_vlan++;
