@@ -1,220 +1,237 @@
-Return-Path: <stable+bounces-256492-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-256493-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 4Ig3Ht0VGWoMqQgAu9opvQ
-	(envelope-from <stable+bounces-256492-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 29 May 2026 06:28:13 +0200
+	id 4OklBjMWGWoMqQgAu9opvQ
+	(envelope-from <stable+bounces-256493-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 29 May 2026 06:29:39 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id EE8B85FCF74
-	for <lists+stable@lfdr.de>; Fri, 29 May 2026 06:28:12 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6A5C45FCFA0
+	for <lists+stable@lfdr.de>; Fri, 29 May 2026 06:29:38 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 209F2304B54F
-	for <lists+stable@lfdr.de>; Fri, 29 May 2026 04:26:08 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 66347303FA93
+	for <lists+stable@lfdr.de>; Fri, 29 May 2026 04:27:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AF7FF37267A;
-	Fri, 29 May 2026 04:26:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D00E6372EF1;
+	Fri, 29 May 2026 04:27:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="CFE6uyuj"
+	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="l1SrQdca"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3226237267B;
-	Fri, 29 May 2026 04:26:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 59BD2372ECD;
+	Fri, 29 May 2026 04:27:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780028767; cv=none; b=B9+TBlbH40j06dHoSdCFN9HFy8A/Dlg3jXWxpnf7zQrndb1zQWjX2I1KyLCMhPfskZhf7GrMLzK26nGCwGTKBmg6qpj2BfbnEZkZAEKAjNczElh6OQdcGkIuwI7kILnq3IwbPRnJWxadhkNIIkv3stWMTYoczLVfhkXGvR6uebA=
+	t=1780028835; cv=none; b=W5Oe6j3jA+dGsLXbXZiyAu5kZOSg4wP2v+WyK8n8UQ9sfpe1J0LxDULhdJki7kVFDcpFemWX+zFWg4r7Wh2koOg1dbj4bKYKbIVVsJP3m+J1ttMwZ3kcmnC/4ylKwEETDe0pBRT7CVt8l29eCv2pBeaNT8CgsFaI1WPC6Msri80=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780028767; c=relaxed/simple;
-	bh=uu5BOfm8+S+tPh+49bXWe65GXBRtrByjT9X1QWSBO2s=;
-	h=Date:To:From:Subject:Message-Id; b=Ea1ji3kPPCGM5ueuLnvq17qYEDYj0qxA+CyeEHM87hSS/u70LReqgBiuR5lcIrVioQyP0zzWBiF2zRh7E4VAdpMGpKu4Pbn4WWcfnqt/n3RnFr6Migj9I7zI72awqxKfEV5O4ny2CE/lnyI0Q4GVxBgaHJJj62hx/QcVMze5e2U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=CFE6uyuj; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 092121F00899;
-	Fri, 29 May 2026 04:26:06 +0000 (UTC)
+	s=arc-20240116; t=1780028835; c=relaxed/simple;
+	bh=7H3jtJrmGkzHd5U27g4ueC2xm7p/e8Q7gC1xS9vASf0=;
+	h=Date:To:From:Subject:Message-Id; b=PTffzlcEuS80Cf+MT3PJ/CFqh6Vnh0HISOtxaUPYz3M7eYiKkAR7Km/89zOm0vbVdha8DyK+SfqP+Jus/nzMLhVW5ynxR1QC9Ppcwx/xuDhz9gPVDCxgtXQ3yd2WqU1d/9TVxaqFsjt92Jord2ZdX7HJfN7uXyvsySraqLcuYCc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=l1SrQdca; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E72D41F00893;
+	Fri, 29 May 2026 04:27:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=linux-foundation.org; s=korg; t=1780028766;
-	bh=zI8EhYVVcC/2y8u0J5tTqy9zn+y3urqmrgoqqObgVtA=;
+	d=linux-foundation.org; s=korg; t=1780028834;
+	bh=/6480lqJ6RmSTe5TykyJwi6gLJad4vicRL+rezlK/mQ=;
 	h=Date:To:From:Subject;
-	b=CFE6uyujyZZe/tAZyvN4gtJqW89yziGoSWtT791n/mGDUt3nPzwKLAF/fr2SjwnJx
-	 WxJoI4cxbm0Px7cbCzWnwE14EPonmVDbA1SlhZ5B1KVjrM5Gei+HKfe9fsMj1x5U6R
-	 DKA6BwYXFyDy/YYqLH+9UWo/o82BI8R6wkSd47oU=
-Date: Thu, 28 May 2026 21:26:05 -0700
-To: mm-commits@vger.kernel.org,zaslonko@linux.ibm.com,stable@vger.kernel.org,ptikhomirov@virtuozzo.com,ojeda@kernel.org,oberpar@linux.ibm.com,nathan@kernel.org,masahiroy@kernel.org,linux@weissschuh.net,arnd@arndb.de,khorenko@virtuozzo.com,akpm@linux-foundation.org
+	b=l1SrQdca/Lh5J3qFbbuxGEnMwABQR0ewP4gDhQ4a5I1gXi4dUv7NmWFwfzNr/EVj3
+	 wA3DUWcTMyyj8OD5Vi6na9dIi5g1m2vPf7UWPlqlYA3CeaOq9gUMgM/wFxiR4XEK86
+	 mRLhWhMnIPOwUT7CJ6f5m2H4aeyIPVIkEd96nhWo=
+Date: Thu, 28 May 2026 21:27:13 -0700
+To: mm-commits@vger.kernel.org,stable@vger.kernel.org,piaojun@huawei.com,mark@fasheh.com,junxiao.bi@oracle.com,joseph.qi@linux.alibaba.com,jlbec@evilplan.org,heming.zhao@suse.com,gechangwei@live.cn,michael.bommarito@gmail.com,akpm@linux-foundation.org
 From: Andrew Morton <akpm@linux-foundation.org>
-Subject: [merged mm-nonmm-stable] gcov-use-atomic-counter-updates-to-fix-concurrent-access-crashes.patch removed from -mm tree
-Message-Id: <20260529042606.092121F00899@smtp.kernel.org>
+Subject: [merged mm-nonmm-stable] ocfs2-reject-dinodes-with-non-canonical-i_mode-type.patch removed from -mm tree
+Message-Id: <20260529042713.E72D41F00893@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-X-Spamd-Result: default: False [3.84 / 15.00];
-	R_BAD_CTE_7BIT(3.50)[unknown];
-	BROKEN_CONTENT_TYPE(1.50)[];
+X-Spamd-Result: default: False [0.34 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linux-foundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	TAGGED_FROM(0.00)[bounces-256493-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-256492-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	DMARC_NA(0.00)[linux-foundation.org];
-	DKIM_TRACE(0.00)[linux-foundation.org:+];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[akpm@linux-foundation.org,stable@vger.kernel.org];
+	DMARC_NA(0.00)[linux-foundation.org];
 	FROM_HAS_DN(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FREEMAIL_TO(0.00)[vger.kernel.org,huawei.com,fasheh.com,oracle.com,linux.alibaba.com,evilplan.org,suse.com,live.cn,gmail.com,linux-foundation.org];
+	DKIM_TRACE(0.00)[linux-foundation.org:+];
 	MISSING_XM_UA(0.00)[];
-	TO_DN_NONE(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
+	FROM_NEQ_ENVFROM(0.00)[akpm@linux-foundation.org,stable@vger.kernel.org];
+	RCPT_COUNT_SEVEN(0.00)[11];
 	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_TWELVE(0.00)[12];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linux-foundation.org:email,linux-foundation.org:dkim,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,smtp.kernel.org:mid,virtuozzo.com:email,arndb.de:email]
-X-Rspamd-Queue-Id: EE8B85FCF74
+	TO_DN_NONE(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	MIME_TRACE(0.00)[0:+];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linux-foundation.org:email,linux-foundation.org:dkim,oracle.com:email,fasheh.com:email]
+X-Rspamd-Queue-Id: 6A5C45FCFA0
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
 
 The quilt patch titled
-     Subject: gcov: use atomic counter updates to fix concurrent access crashes
+     Subject: ocfs2: reject dinodes with non-canonical i_mode type
 has been removed from the -mm tree.  Its filename was
-     gcov-use-atomic-counter-updates-to-fix-concurrent-access-crashes.patch
+     ocfs2-reject-dinodes-with-non-canonical-i_mode-type.patch
 
 This patch was dropped because it was merged into the mm-nonmm-stable branch
 of git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
 
 ------------------------------------------------------
-From: Konstantin Khorenko <khorenko@virtuozzo.com>
-Subject: gcov: use atomic counter updates to fix concurrent access crashes
-Date: Mon, 11 May 2026 12:50:52 +0200
+From: Michael Bommarito <michael.bommarito@gmail.com>
+Subject: ocfs2: reject dinodes with non-canonical i_mode type
+Date: Tue, 19 May 2026 07:04:02 -0400
 
-GCC's GCOV instrumentation can merge global branch counters with loop
-induction variables as an optimization.  In inflate_fast(), the inner copy
-loops get transformed so that the GCOV counter value is loaded multiple
-times to compute the loop base address, start index, and end bound.  Since
-GCOV counters are global (not per-CPU), concurrent execution on different
-CPUs causes the counter to change between loads, producing inconsistent
-values and out-of-bounds memory writes.
+Patch series "ocfs2: harden inode validators against forged metadata", v2.
 
-The crash manifests during IPComp (IP Payload Compression) processing when
-inflate_fast() runs concurrently on multiple CPUs:
+This series adds three structural checks to OCFS2 dinode validation so
+malformed on-disk fields are rejected before ocfs2_populate_inode() copies
+them into the in-core inode.
 
-  BUG: unable to handle page fault for address: ffffd0a3c0902ffa
-  RIP: inflate_fast+1431
-  Call Trace:
-   zlib_inflate
-   __deflate_decompress
-   crypto_comp_decompress
-   ipcomp_decompress [xfrm_ipcomp]
-   ipcomp_input [xfrm_ipcomp]
-   xfrm_input
+The checks cover:
 
-At the crash point, the compiler generated three loads from the same
-global GCOV counter (__gcov0.inflate_fast+216) to compute base, start, and
-end for an indexed loop.  Another CPU modified the counter between loads,
-making the values inconsistent - the write went 3.4 MB past a 65 KB
-buffer.
+  - i_mode values whose type bits do not name a canonical POSIX file
+    type;
+  - non-device dinodes whose id1.dev1.i_rdev field is non-zero; and
+  - non-inline dinodes that claim non-zero i_size while i_clusters is
+    zero, covering directories unconditionally and regular files on
+    non-sparse volumes.
 
-Add -fprofile-update=prefer-atomic to CFLAGS_GCOV at the global level in
-the top-level Makefile, guarded by a try-run compile test.  The test
-compiles a minimal program with and without -fprofile-update=prefer-atomic
-using the full KBUILD_CFLAGS, then compares undefined symbols in the
-resulting object files.  If prefer-atomic introduces new undefined
-references (such as __atomic_fetch_add_8 on i386 or __aarch64_ldadd8_relax
-on arm64 with outline-atomics), the flag is not added -- the kernel does
-not link against libatomic.
+The normal read path reports these through ocfs2_error(), matching the
+existing suballoc-slot, inline-data, chain-list, and refcount checks.  The
+online filecheck path uses the same structural predicates but keeps its
+own reporting contract, returning OCFS2_FILECHECK_ERR_INVALIDINO instead
+of calling ocfs2_error().
 
-On architectures where GCC inlines 64-bit atomic counter updates (x86_64,
-s390, ...) the test passes and the flag is enabled, preventing the
-compiler from merging counters with loop induction variables and fixing
-the observed concurrent-access crash.
 
-On architectures where the flag would introduce libatomic dependencies, it
-is silently omitted and behaviour is no worse than before this patch.
+This patch (of 3):
 
-Move the CFLAGS_GCOV block from its original position (before the arch
-Makefile include) to after the core KBUILD_CFLAGS assignments but before
-the scripts/Makefile.gcc-plugins include.  This placement ensures the
-try-run test sees arch-specific flags (-m32, -march=,
--mno-outline-atomics) while avoiding GCC plugin flags (-fplugin=) that
-would break the test on clean builds when plugin shared objects do not yet
-exist.
+ocfs2_validate_inode_block() currently accepts any non-zero i_mode value. 
+ocfs2_populate_inode() then copies that mode verbatim into inode->i_mode
+and dispatches on i_mode & S_IFMT to the file/dir/symlink/special_file
+iops; an unrecognised type falls through to ocfs2_special_file_iops and
+init_special_inode().
 
-Link: https://lore.kernel.org/20260511105052.417187-2-khorenko@virtuozzo.com
-Signed-off-by: Konstantin Khorenko <khorenko@virtuozzo.com>
-Tested-by: Arnd Bergmann <arnd@arndb.de>
-Tested-by: Peter Oberparleiter <oberpar@linux.ibm.com>
-Reviewed-by: Peter Oberparleiter <oberpar@linux.ibm.com>
-Cc: Masahiro Yamada <masahiroy@kernel.org>
-Cc: Miguel Ojeda <ojeda@kernel.org>
-Cc: Mikhail Zaslonko <zaslonko@linux.ibm.com>
-Cc: Nathan Chancellor <nathan@kernel.org>
-Cc: Pavel Tikhomirov <ptikhomirov@virtuozzo.com>
-Cc: Thomas Weißschuh <linux@weissschuh.net>
+Reject dinodes whose type bits do not name one of the seven canonical
+POSIX file types.  Use fs_umode_to_ftype(), the same generic file-type
+conversion helper OCFS2 already uses for directory entries, so the
+accepted inode type set matches the kernel file-type vocabulary instead of
+open-coding a local switch.
+
+Apply the same structural check to the online filecheck read path. 
+filecheck keeps its own error namespace, so it reports malformed i_mode
+through the filecheck logger and OCFS2_FILECHECK_ERR_INVALIDINO instead of
+calling ocfs2_error(), but it must not allow a malformed dinode to proceed
+into ocfs2_populate_inode().
+
+Link: https://lore.kernel.org/20260519110404.1803902-1-michael.bommarito@gmail.com
+Link: https://lore.kernel.org/20260519110404.1803902-2-michael.bommarito@gmail.com
+Fixes: b657c95c1108 ("ocfs2: Wrap inode block reads in a dedicated function.")
+Signed-off-by: Michael Bommarito <michael.bommarito@gmail.com>
+Link: https://sashiko.dev/#/patchset/20260517111015.3187935-1-michael.bommarito%40gmail.com
+Assisted-by: Claude:claude-opus-4-7
+Reviewed-by: Joseph Qi <joseph.qi@linux.alibaba.com>
+Cc: Changwei Ge <gechangwei@live.cn>
+Cc: Heming Zhao <heming.zhao@suse.com>
+Cc: Joel Becker <jlbec@evilplan.org>
+Cc: Jun Piao <piaojun@huawei.com>
+Cc: Junxiao Bi <junxiao.bi@oracle.com>
+Cc: Mark Fasheh <mark@fasheh.com>
 Cc: <stable@vger.kernel.org>
 Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 ---
 
- Makefile |   27 +++++++++++++++++++++------
- 1 file changed, 21 insertions(+), 6 deletions(-)
+ fs/ocfs2/inode.c |   36 ++++++++++++++++++++++++++++++++++--
+ 1 file changed, 34 insertions(+), 2 deletions(-)
 
---- a/Makefile~gcov-use-atomic-counter-updates-to-fix-concurrent-access-crashes
-+++ a/Makefile
-@@ -826,12 +826,6 @@ endif # KBUILD_EXTMOD
- # Defaults to vmlinux, but the arch makefile usually adds further targets
- all: vmlinux
+--- a/fs/ocfs2/inode.c~ocfs2-reject-dinodes-with-non-canonical-i_mode-type
++++ a/fs/ocfs2/inode.c
+@@ -13,6 +13,7 @@
+ #include <linux/pagemap.h>
+ #include <linux/quotaops.h>
+ #include <linux/iversion.h>
++#include <linux/fs_dirent.h>
  
--CFLAGS_GCOV	:= -fprofile-arcs -ftest-coverage
--ifdef CONFIG_CC_IS_GCC
--CFLAGS_GCOV	+= -fno-tree-loop-im
--endif
--export CFLAGS_GCOV
--
- # The arch Makefiles can override CC_FLAGS_FTRACE. We may also append it later.
- ifdef CONFIG_FUNCTION_TRACER
-   CC_FLAGS_FTRACE := -pg
-@@ -1149,6 +1143,27 @@ endif
- # Ensure compilers do not transform certain loops into calls to wcslen()
- KBUILD_CFLAGS += -fno-builtin-wcslen
+ #include <asm/byteorder.h>
  
-+CFLAGS_GCOV	:= -fprofile-arcs -ftest-coverage
-+ifdef CONFIG_CC_IS_GCC
-+CFLAGS_GCOV	+= -fno-tree-loop-im
-+# Use atomic counter updates to avoid concurrent-access crashes in GCOV.
-+# Only enable if -fprofile-update=prefer-atomic does not introduce new
-+# undefined symbols (e.g. libatomic calls that the kernel cannot link).
-+CFLAGS_GCOV	+= $(call try-run,\
-+	echo 'long long x; void f(void){x++;}' | \
-+	$(CC) $(KBUILD_CPPFLAGS) $(KBUILD_CFLAGS) -w -fprofile-arcs \
-+	-ftest-coverage -x c - -c -o "$$TMP.base" && \
-+	echo 'long long x; void f(void){x++;}' | \
-+	$(CC) $(KBUILD_CPPFLAGS) $(KBUILD_CFLAGS) -w -fprofile-arcs \
-+	-ftest-coverage -fprofile-update=prefer-atomic \
-+	-x c - -c -o "$$TMP" && \
-+	$(NM) "$$TMP.base" | grep ' U ' > "$$TMP.ubase" || true ; \
-+	$(NM) "$$TMP" | grep ' U ' > "$$TMP.utest" || true ; \
-+	cmp -s "$$TMP.ubase" "$$TMP.utest",\
-+	-fprofile-update=prefer-atomic)
-+endif
-+export CFLAGS_GCOV
+@@ -64,7 +65,12 @@ static int ocfs2_filecheck_read_inode_bl
+ static int ocfs2_filecheck_validate_inode_block(struct super_block *sb,
+ 						struct buffer_head *bh);
+ static int ocfs2_filecheck_repair_inode_block(struct super_block *sb,
+-					      struct buffer_head *bh);
++						      struct buffer_head *bh);
 +
- # change __FILE__ to the relative path to the source directory
- ifdef building_out_of_srctree
- KBUILD_CPPFLAGS += -fmacro-prefix-map=$(srcroot)/=
++static bool ocfs2_valid_inode_mode(umode_t mode)
++{
++	return fs_umode_to_ftype(mode) != FT_UNKNOWN;
++}
+ 
+ void ocfs2_set_inode_flags(struct inode *inode)
+ {
+@@ -1494,6 +1500,24 @@ int ocfs2_validate_inode_block(struct su
+ 		goto bail;
+ 	}
+ 
++	/*
++	 * Reject dinodes whose i_mode does not name one of the seven
++	 * canonical POSIX file types.  ocfs2_populate_inode() copies
++	 * i_mode verbatim into inode->i_mode and then dispatches via
++	 * switch (mode & S_IFMT) to file/dir/symlink/special_file iops;
++	 * an unrecognised type falls into ocfs2_special_file_iops with
++	 * init_special_inode(), which interprets i_rdev.  Constrain the
++	 * type here so the dispatch only ever sees a value mkfs.ocfs2 /
++	 * VFS can produce.
++	 */
++	if (!ocfs2_valid_inode_mode(le16_to_cpu(di->i_mode))) {
++		rc = ocfs2_error(sb,
++				 "Invalid dinode #%llu: mode 0%o has unknown file type\n",
++				 (unsigned long long)bh->b_blocknr,
++				 le16_to_cpu(di->i_mode));
++		goto bail;
++	}
++
+ 	if (le16_to_cpu(di->i_dyn_features) & OCFS2_INLINE_DATA_FL) {
+ 		struct ocfs2_inline_data *data = &di->id2.i_data;
+ 
+@@ -1624,6 +1648,15 @@ static int ocfs2_filecheck_validate_inod
+ 		     (unsigned long long)bh->b_blocknr,
+ 		     le32_to_cpu(di->i_fs_generation));
+ 		rc = -OCFS2_FILECHECK_ERR_GENERATION;
++		goto bail;
++	}
++
++	if (!ocfs2_valid_inode_mode(le16_to_cpu(di->i_mode))) {
++		mlog(ML_ERROR,
++		     "Filecheck: invalid dinode #%llu: mode 0%o has unknown file type\n",
++		     (unsigned long long)bh->b_blocknr,
++		     le16_to_cpu(di->i_mode));
++		rc = -OCFS2_FILECHECK_ERR_INVALIDINO;
+ 	}
+ 
+ bail:
+@@ -1812,4 +1845,3 @@ const struct ocfs2_caching_operations oc
+ 	.co_io_lock		= ocfs2_inode_cache_io_lock,
+ 	.co_io_unlock		= ocfs2_inode_cache_io_unlock,
+ };
+-
 _
 
-Patches currently in -mm which might be from khorenko@virtuozzo.com are
+Patches currently in -mm which might be from michael.bommarito@gmail.com are
 
-selftests-memfd-fix-wmaybe-uninitialized-warning-in-memfd_test.patch
-selftests-memfd-remove-unused-variable-sig-in-fuse_test.patch
 
 
