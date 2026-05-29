@@ -1,221 +1,193 @@
-Return-Path: <stable+bounces-256498-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-256499-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id gL5lOHgZGWoMqQgAu9opvQ
-	(envelope-from <stable+bounces-256498-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 29 May 2026 06:43:36 +0200
+	id yEqcD4caGWoMqQgAu9opvQ
+	(envelope-from <stable+bounces-256499-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 29 May 2026 06:48:07 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id E66D45FD10D
-	for <lists+stable@lfdr.de>; Fri, 29 May 2026 06:43:35 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id E53CC5FD264
+	for <lists+stable@lfdr.de>; Fri, 29 May 2026 06:48:06 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id E746A301AD82
-	for <lists+stable@lfdr.de>; Fri, 29 May 2026 04:43:32 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 6694F3059303
+	for <lists+stable@lfdr.de>; Fri, 29 May 2026 04:46:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C96AD36CE03;
-	Fri, 29 May 2026 04:43:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2800C382F02;
+	Fri, 29 May 2026 04:45:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b="nre+ebtF"
+	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="mvCKFrG5"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-06.mail-europe.com (mail-06.mail-europe.com [85.9.210.45])
+Received: from out-188.mta1.migadu.com (out-188.mta1.migadu.com [95.215.58.188])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D72B133BBD0;
-	Fri, 29 May 2026 04:43:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=85.9.210.45
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 71DCB380FE7
+	for <stable@vger.kernel.org>; Fri, 29 May 2026 04:45:51 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.215.58.188
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780029808; cv=none; b=esoOZzhlRll3ZsfwG7v51ZFShyW2HjdP8J4CAt2Zv2nO4IZK4nEw2kRaRjGoyGMQTyADGcxjPr+EuH4uub0JTvCF7rh8hbyjiuGqMzErcPoASiDrTbHs2cf9rampGWI4UcKJ1rUElNp5LaOWq2eLkbSDF43L+wHKqQPZ38Zul0Y=
+	t=1780029957; cv=none; b=l3YfVe3Q6RHhMnF/Ob8+9QA6WndPiyGRlGNi0Zv7Py4FrL0SntdpoMzZxWAxfEQg5txLNL0rz9LTOEu2900SIovGlUcLfV3OMKmJaYVARdRS0Ey7fdOaB8wWFlLbagEEO26FaD7XcLoDcs29ZxY+klFqRZ2QAtTNWRqYKlPxyeQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780029808; c=relaxed/simple;
-	bh=9QsG94ozGLcVgTXSGl+5HJtA6MOC8d987DuLlCfjuGQ=;
-	h=Date:To:From:Cc:Subject:Message-ID:MIME-Version:Content-Type; b=ClUjZPUsIa+fBVhffVusnsE3Sb/S9C+0MbuTAbS+k0YnhtcK4M376v8y8wjLTPKCKVWcyVnfBIvQF/NHr622X7u2eb8yNFbA3Uw1/hcPI9W3lQOseQdeewZzN/bj85vG5U9TkuYcuV3G9x0byWh+W3qnNhg50JZS7JSzsWEJ05g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me; spf=pass smtp.mailfrom=proton.me; dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b=nre+ebtF; arc=none smtp.client-ip=85.9.210.45
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=proton.me
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=proton.me;
-	s=protonmail; t=1780029787; x=1780288987;
-	bh=NLDGejXulI3vKNIGZvvVuiMBMn/rItJ+RB1Daevmvdo=;
-	h=Date:To:From:Cc:Subject:Message-ID:Feedback-ID:From:To:Cc:Date:
-	 Subject:Reply-To:Feedback-ID:Message-ID:BIMI-Selector;
-	b=nre+ebtFoxQBcQ0ow/kK8wcTPpR4hoifJbImdXm1/qwVSZtzxKLNZG62IpS8RHRME
-	 2nG9WWSfDo0rzK1QTEOaGHcXwMVlTMMXYi9X4AZqYiuLNHQbhxDO4szl8eScbcGbJB
-	 Ikrb0iWsKtA4Qy01Jtvg5MV2cGwettKqH6Ob/TwkBwOmVr333osXw0E/Ip1ziUEbzZ
-	 9dO2gDmCUk/oq7wL9uH8zRvSjPS0OLzNg4ktoDmfj/j7QE0LZSAESHI/5tiEd42psy
-	 S+hjQB3DiQNMNLHt23StHuVTs/AkwpvjePH+uKGJ/IdDpej8SWILef1ut1ig4Ega0/
-	 moIGSRPk7SYgw==
-Date: Fri, 29 May 2026 04:43:02 +0000
-To: Justin Suess <utilityemal77@gmail.com>
-From: hexlabsecurity@proton.me
-Cc: "mic@digikod.net" <mic@digikod.net>, "gnoack@google.com" <gnoack@google.com>, "linux-security-module@vger.kernel.org" <linux-security-module@vger.kernel.org>, "stable@vger.kernel.org" <stable@vger.kernel.org>
-Subject: Re: [REPORT] landlock: SCOPE_SIGNAL bypass via F_SETOWN to invoker pgid -> SIGIO/SIGKILL to non-sandboxed targets
-Message-ID: <TSwHGN3I-u6p6xv7CqnvDOhR3la_kQWq0rdjBdA0gt30AsYLwddoxjCCFmqXcQMxWHS4ShULEp7sO_8HdFRGPLk30rIQHy3EurwJyrjP3NQ=@proton.me>
-Feedback-ID: 199661219:user:proton
-X-Pm-Message-ID: 238a1234b7e8ff5b1822e53dd20a613b6a6d40c1
+	s=arc-20240116; t=1780029957; c=relaxed/simple;
+	bh=UTab68kfRBB32AY8Ee/j0U1ChdCgNTDT6rDHfNlRX2M=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=c6PS6oWQVAOsTarbOUMbUoHT0cdAQYTkYgwWO7mHhxRkUuz1Fz0YYVqzlp+Lm90z7GgmdF+kK7PmeFPNtN1NVrhIsIaNW1hcmnIcAUhNnkxXgpuU9JtFrYeebjjhQ6nIrj64Bnwx3Iv4ETIFLT5XHEztC7LrPRxbrVLtYCkorQU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=mvCKFrG5; arc=none smtp.client-ip=95.215.58.188
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
+Message-ID: <c8507975-a3da-4917-b2d6-8bc82391cd38@linux.dev>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1780029948;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=gs+9bgW4cdfyBDWLiaGX4dFJDYRG1N9W9XM+Wx2Um4c=;
+	b=mvCKFrG5lABMDZvrVj+VPwRRlT5rwxEjjKTtd6cA7TfxV3msXKwScFEwrwv5dN8HF5/ZGh
+	xz0X+t+hZDhWYCMjseu9H1GieVHzR03/br338Sdmqb4EYO+XLNJFeuVaIRORwb54A6qBsx
+	RXGtXMN8mYdF6bwi7dRGiTwn8iqcXqo=
+Date: Fri, 29 May 2026 12:45:37 +0800
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-X-Spamd-Result: default: False [-1.16 / 15.00];
-	FAKE_REPLY(1.00)[];
+Subject: Re: [PATCH v2 1/3] bpf: cgroup: use kvfree() for replaced sysctl
+ write buffer
+To: Dawei Feng <dawei.feng@seu.edu.cn>, martin.lau@linux.dev
+Cc: emil@etsalapatis.com, ast@kernel.org, daniel@iogearbox.net,
+ andrii@kernel.org, eddyz87@gmail.com, memxor@gmail.com, song@kernel.org,
+ yonghong.song@linux.dev, jolsa@kernel.org, kees@kernel.org,
+ joel.granados@kernel.org, bpf@vger.kernel.org, linux-kernel@vger.kernel.org,
+ linux-fsdevel@vger.kernel.org, jianhao.xu@seu.edu.cn,
+ stable@vger.kernel.org, Zilin Guan <zilin@seu.edu.cn>
+References: <20260529031026.2716641-1-dawei.feng@seu.edu.cn>
+ <20260529031026.2716641-2-dawei.feng@seu.edu.cn>
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: Jiayuan Chen <jiayuan.chen@linux.dev>
+In-Reply-To: <20260529031026.2716641-2-dawei.feng@seu.edu.cn>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Migadu-Flow: FLOW_OUT
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[proton.me,quarantine];
-	R_DKIM_ALLOW(-0.20)[proton.me:s=protonmail];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
+	DMARC_POLICY_ALLOW(-0.50)[linux.dev,none];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	R_DKIM_ALLOW(-0.20)[linux.dev:s=key1];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[3];
+	TAGGED_FROM(0.00)[bounces-256499-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_TO(0.00)[gmail.com];
-	FROM_NEQ_ENVFROM(0.00)[hexlabsecurity@proton.me,stable@vger.kernel.org];
-	MIME_TRACE(0.00)[0:+];
-	TO_DN_EQ_ADDR_SOME(0.00)[];
+	RCVD_COUNT_THREE(0.00)[3];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	TAGGED_FROM(0.00)[bounces-256498-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[etsalapatis.com,kernel.org,iogearbox.net,gmail.com,linux.dev,vger.kernel.org,seu.edu.cn];
+	RCPT_COUNT_TWELVE(0.00)[19];
+	MIME_TRACE(0.00)[0:+];
+	FROM_HAS_DN(0.00)[];
+	MISSING_XM_UA(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[5];
-	MID_RHS_MATCH_FROM(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
 	PRECEDENCE_BULK(0.00)[];
-	DKIM_TRACE(0.00)[proton.me:+];
+	FROM_NEQ_ENVFROM(0.00)[jiayuan.chen@linux.dev,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[linux.dev:+];
+	MID_RHS_MATCH_FROM(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
 	TAGGED_RCPT(0.00)[stable];
-	FROM_NO_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
-	MISSING_XM_UA(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,proton.me:email,proton.me:mid,proton.me:dkim]
-X-Rspamd-Queue-Id: E66D45FD10D
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,linux.dev:email,linux.dev:mid,linux.dev:dkim,seu.edu.cn:email]
+X-Rspamd-Queue-Id: E53CC5FD264
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-Thanks Justin -- much appreciated for reproducing on mic/next and for the
-Tested-by.
 
-v2 below addresses your review:
-  - the commit message is trimmed to just the bug and the fix;
-  - the reproducer and the A/B verification are moved below the --- so
-    they become git notes, not part of the commit;
-  - added your Tested-by.
+On 5/29/26 11:10 AM, Dawei Feng wrote:
+> proc_sys_call_handler() allocates its temporary sysctl buffer with
+> kvzalloc() and passes it to __cgroup_bpf_run_filter_sysctl(). Since
+> kvzalloc() may fall back to vmalloc() for large allocations, freeing
+> that buffer with kfree() is wrong and can corrupt memory.
+>
+> Use kvfree() to safely handle both kmalloc and kvzalloc()/vmalloc
+> allocations.
+>
+> The bug was first flagged by an experimental analysis tool we are
+> developing for kernel memory-management bugs while analyzing
+> v6.13-rc1. The tool is still under development and is not yet publicly
+> available. Manual inspection confirms that the bug is still
+> present in v7.1-rc5.
+>
+> Reproduced the bug based on v7.1-rc4 in a QEMU x86_64 guest booted with
+> KASAN and CONFIG_FAILSLAB enabled. To exercise the replacement path, the
+> test tree also included the accompanying fix for the stale ret == 1
+> check in __cgroup_bpf_run_filter_sysctl(). The reproducer confines
+> failslab injections to the proc_sys_call_handler() range, uses
+> stacktrace-depth=32, and injects fail-nth=1 while writing 8191 bytes to
+> /proc/sys/kernel/domainname from a task in the target cgroup. Under
+> that setup, fail-nth=1 triggered the fault:
+>
+>    BUG: unable to handle page fault for address: ffffeb0200024d48
+>    #PF: supervisor read access in kernel mode
+>    #PF: error_code(0x0000) - not-present page
+>    PGD 0 P4D 0
+>    Oops: Oops: 0000  SMP KASAN NOPTI
+>    CPU: 2 UID: 0 PID: 209 Comm: repro_proc_sys_ Not tainted 7.1.0-rc4-00686-g97625979a5d4  PREEMPT(lazy)
+>    Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS 1.15.0-1 04/01/2014
+>    RIP: 0010:kfree+0x6e/0x510
+>    Code: 80 48 01 ef 0f 82 ae 04 00 00 48 c7 c0 00 00 00 80 48 2b 05 04 1b 23 04 48 01 c7 48 c1 ef 0c 48 c1 e7 06 48 03 3d e2 1a 23 04 <4c> 8b 57 08 4c 89 d0 83 e0 01 48 83 e8 01 49 09 c2 49 >
+>    RSP: 0018:ffff888108de7ab8 EFLAGS: 00010282
+>    RAX: 0000777f80000000 RBX: ffff88815af398c0 RCX: 0000000000000080
+>    RDX: 0000000000000000 RSI: 0000000000000000 RDI: ffffeb0200024d40
+>    RBP: ffffc90000935000 R08: 0000000000000001 R09: 0000000000000001
+>    R10: ffffffff86b4b297 R11: 0000000000000000 R12: ffffffff819b71fd
+>    R13: 0000000000000001 R14: ffff888108de7cc0 R15: 0000000000000000
+>    FS:  00007f8988cc2b80(0000) GS:ffff8881d3256000(0000) knlGS:0000000000000000
+>    CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+>    CR2: ffffeb0200024d48 CR3: 0000000101d6b000 CR4: 0000000000350ef0
+>    Call Trace:
+>     <TASK>
+>     ? __cgroup_bpf_run_filter_sysctl+0x626/0xc30
+>     __cgroup_bpf_run_filter_sysctl+0x74d/0xc30
+>     ? __pfx___cgroup_bpf_run_filter_sysctl+0x10/0x10
+>     ? srso_return_thunk+0x5/0x5f
+>     ? __kvmalloc_node_noprof+0x345/0x870
+>     ? proc_sys_call_handler+0x250/0x480
+>     ? srso_return_thunk+0x5/0x5f
+>     proc_sys_call_handler+0x3a2/0x480
+>     ? __pfx_proc_sys_call_handler+0x10/0x10
+>     ? srso_return_thunk+0x5/0x5f
+>     ? selinux_file_permission+0x39f/0x500
+>     ? srso_return_thunk+0x5/0x5f
+>     ? lock_is_held_type+0x9e/0x120
+>     vfs_write+0x98e/0x1000
+>     ? srso_return_thunk+0x5/0x5f
+>     ? kmem_cache_free+0x308/0x550
+>     ? __pfx_vfs_write+0x10/0x10
+>     ? __pfx_do_sys_openat2+0x10/0x10
+>     ksys_write+0xf2/0x1d0
+>     ? __pfx_ksys_write+0x10/0x10
+>     ? srso_return_thunk+0x5/0x5f
+>     ? trace_irq_enable.constprop.0+0x110/0x140
+>     do_syscall_64+0x115/0x690
+>     entry_SYSCALL_64_after_hwframe+0x77/0x7f
+>     RIP: 0033:0x7f8988dd8907
+>     Code: 10 00 f7 d8 64 89 02 48 c7 c0 ff ff ff ff eb b7 0f 1f 00 f3 0f 1e fa 64 8b 04 25 18 00 00 00 85 c0 75 10 b8  01 00 00 00 0f 05 <48> 3d 00 f0 ff ff 77 51 c3 48 83 ec 28 48 89 54 24 18 >
+>     RSP: 002b:00007fff4069b878 EFLAGS: 00000246 ORIG_RAX: 0000000000000001
+>     RAX: ffffffffffffffda RBX: 0000000000000003 RCX: 00007f8988dd8907
+>     RDX: 0000000000001fff RSI: 0000564f97ef46b0 RDI: 0000000000000005
+>     RBP: 0000564f97ef46b0 R08: 0000000000000000 R09: 0000564f97ef46b0
+>     R10: 0000000000000004 R11: 0000000000000246 R12: 0000000000000000
+>     R13: 0000000000001fff R14: 0000000000000005 R15: 0000000000000001
+>     </TASK>
+> With this fix applied on top of the same test setup, rerunning the
+> reproducer with fail-nth=1 yields no corresponding Oops reports.
+>
+> Fixes: 4508943794ef ("proc: use kvzalloc for our kernel buffer")
+> Cc: stable@vger.kernel.org
+>
+> Signed-off-by: Zilin Guan <zilin@seu.edu.cn>
+> Signed-off-by: Dawei Feng <dawei.feng@seu.edu.cn>
 
-The fix hunk is unchanged. I agree the concise statement of the defect is
-"we fail to check the subject on fan-out signal types (PIDTYPE_PGID and
-PIDTYPE_SID, i.e. type > PIDTYPE_TGID)". The patch keeps the explicit
-PIDTYPE_PGID / PIDTYPE_SID test for readability and to stay robust if the
-enum is ever reordered -- happy to switch to "> PIDTYPE_TGID" if you
-prefer. I'll follow up separately on the erratum entry and a regression
-test, as you suggested.
 
-Independent security researcher. HEXLAB SAS (registration pending) --
-Cali, Colombia.
+Reviewed-by: Jiayuan Chen <jiayuan.chen@linux.dev>
 
-Thanks,
-Bryam Vargas
-
------ v2 patch (inline, plain text) -----
-
-From 75f801309cd64f74d04ef86236bd973314dd7d94 Mon Sep 17 00:00:00 2001
-From: Bryam Vargas <hexlabsecurity@proton.me>
-Date: Thu, 28 May 2026 23:33:13 -0500
-Subject: [PATCH v2] landlock: fix LANDLOCK_SCOPE_SIGNAL bypass via F_SETOWN=
- to
- invoker's pgid
-
-A Landlock-restricted process can bypass LANDLOCK_SCOPE_SIGNAL on the
-SIGIO delivery path and deliver arbitrary signals (including SIGKILL via
-F_SETSIG) to non-Landlocked targets that share its pgid, by exploiting a
-producer-side cache-vs-live evaluation gap.
-
-The SIGIO path in hook_file_send_sigiotask() consults a cached subject
-stored in landlock_file(file)->fown_subject at fcntl(F_SETOWN) time
-(via hook_file_set_fowner()), instead of evaluating the live Landlock
-domain of the invoking task at signal-send time. The capture is gated
-by control_current_fowner(), which returns false (skipping capture)
-when pid_task(fown->pid, fown->pid_type) is in current's thread group.
-
-This is correct for PIDTYPE_TGID / PIDTYPE_PID, where the target is a
-single task sharing current's cred. It is unsafe for PIDTYPE_PGID and
-PIDTYPE_SID: when current is at the head of its pgid hlist -- the
-default placement after fork(), hlist_add_head_rcu() in kernel/fork.c --
-pid_task(pgid, PIDTYPE_PGID) resolves to current itself,
-same_thread_group(current, current) is true, the capture is skipped, and
-fown_subject.domain stays NULL. hook_file_send_sigiotask() then
-short-circuits at "if (!subject->domain) return 0;", letting the kernel
-fan the signal out to every member of the group, including tasks outside
-current's Landlock domain that SCOPE_SIGNAL is supposed to protect.
-
-The direct kill() path (hook_task_kill) is unaffected: it evaluates
-current's live domain on every call. Only the cached SIGIO path is
-broken.
-
-Tighten control_current_fowner() to apply the thread-group exemption
-only when the target identifies a single task whose Landlock cred is
-necessarily shared with current (PIDTYPE_TGID, PIDTYPE_PID). For
-PIDTYPE_PGID and PIDTYPE_SID, always capture the current Landlock
-subject so the consumer's scope check runs against every member of the
-group at delivery time.
-
-Reported-by: Bryam Vargas <hexlabsecurity@proton.me>
-Tested-by: Justin Suess <utilityemal77@gmail.com>
-Signed-off-by: Bryam Vargas <hexlabsecurity@proton.me>
----
-v2: per review, the commit message is trimmed to the bug + the fix; the
-    reproducer and the A/B verification are moved below the --- so they
-    stay out of the commit. Added Tested-by. The hunk is unchanged from
-    v1 (v1 sent to security@kernel.org 2026-05-28, embargoed -- not yet
-    in a public archive).
-
-Reproducer (ordinary unprivileged user; sandbox active in the child):
-
-  int pfd[2]; pipe(pfd);
-  landlock_create_ruleset(&{.scoped =3D LANDLOCK_SCOPE_SIGNAL},
-                          sizeof(attr), 0);
-  prctl(PR_SET_NO_NEW_PRIVS, 1, 0, 0, 0);
-  landlock_restrict_self(rfd, 0);
-  fcntl(pfd[0], F_SETSIG, SIGKILL);
-  fcntl(pfd[0], F_SETOWN, -getpgrp());           /* PIDTYPE_PGID */
-  fcntl(pfd[0], F_SETFL, O_ASYNC);
-  write(pfd[1], "X", 1);                         /* trigger SIGIO */
-  /* every pgid member receives SIGKILL, including the non-sandboxed
-   * parent / supervisor / sibling workers */
-
-A/B-verified on a 6.12.90 lab kernel (same .config, only this hunk
-differs): pre-fix the sandboxed child's SIGKILL reaches the
-non-sandboxed parent (SCOPE_SIGNAL bypassed); post-fix it is blocked.
-hook_task_kill's direct-kill enforcement and the intra-thread-group
-F_SETOWN cases continue to work post-patch.
-
- security/landlock/fs.c | 12 ++++++++++++
- 1 file changed, 12 insertions(+)
-
-diff --git a/security/landlock/fs.c b/security/landlock/fs.c
-index c1ecfe239032..edaa52572cbd 100644
---- a/security/landlock/fs.c
-+++ b/security/landlock/fs.c
-@@ -1909,6 +1909,18 @@ static bool control_current_fowner(struct fown_struc=
-t *const fown)
- =09if (!p)
- =09=09return true;
-
-+=09/*
-+=09 * For PIDTYPE_PGID and PIDTYPE_SID, signal delivery fans out to
-+=09 * every member of the group at SIGIO time. Even when pid_task()
-+=09 * resolves to current itself (e.g., current is the pgid hlist
-+=09 * head post-fork), non-current members of the group are still
-+=09 * valid targets that must be checked by hook_file_send_sigiotask().
-+=09 * Always capture the current subject for those types so the
-+=09 * consumer scope check runs against the live fown_subject.
-+=09 */
-+=09if (fown->pid_type =3D=3D PIDTYPE_PGID || fown->pid_type =3D=3D PIDTYPE=
-_SID)
-+=09=09return true;
-+
- =09return !same_thread_group(p, current);
- }
---
-2.43.0
 
