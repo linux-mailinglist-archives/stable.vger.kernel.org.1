@@ -1,280 +1,182 @@
-Return-Path: <stable+bounces-256641-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-256642-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id YH6UFCSdGWq7xwgAu9opvQ
-	(envelope-from <stable+bounces-256641-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 29 May 2026 16:05:24 +0200
+	id WFFcBFShGWq7xwgAu9opvQ
+	(envelope-from <stable+bounces-256642-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 29 May 2026 16:23:16 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id BA1ED603400
-	for <lists+stable@lfdr.de>; Fri, 29 May 2026 16:05:23 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7DBCF603757
+	for <lists+stable@lfdr.de>; Fri, 29 May 2026 16:23:14 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 5D00830DAD32
-	for <lists+stable@lfdr.de>; Fri, 29 May 2026 14:00:28 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id C97673112D0E
+	for <lists+stable@lfdr.de>; Fri, 29 May 2026 14:11:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A225D3E121E;
-	Fri, 29 May 2026 14:00:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DFD8633A9EB;
+	Fri, 29 May 2026 14:11:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="neeNnvpP"
+	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="sIsK/TYT"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 34A593DEAC1;
-	Fri, 29 May 2026 14:00:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CA88C2E7381;
+	Fri, 29 May 2026 14:11:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.156.1
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780063224; cv=none; b=pLaB9h6UKwKL3r2h+l4Rye9jQlR0zn1CNhlr5Y/9Z4rp468oLGcSjwsx4EWfpV6IsDnnY2/2ql3cz3tnFtl3NbP6CfdmfNBKXyUfpY/PYFxoFaTcN9om4YvPW7RDjif4740xspMxYDfn8yE9WiKcSyIUuHp2mxZ32k+/w9qBSvY=
+	t=1780063867; cv=none; b=Kz2aSzeJpknxbyPDVD2dQ7jyqjpPnXm+Yla/y9qyrwiMuyP7fSAO9HC6BRGPnni8trEA6iScf+lvQcjdtHnj+CUr+nmzw2Fr53mhn4s7m7QxlrZq0za3vPRrHxOVfkDc0wsWgrBMATkN6LUAwava5M2r+PJH2XbI1uLbnbXkrN8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780063224; c=relaxed/simple;
-	bh=W2pTYBq+b+oXiGU1QZzMVV+zQTudHkur2VT97ExkcZg=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=LdMAs4NS+7IOPaRfLMtkF+jLeH0F3JTuEVmqkXZ2unvdpHttZdUhzASK6YFR5LcTvSzYxwDmYerbYDZ+FRKIxO9ba91T34hQzUh2Cb2aI98FLSoDEbknb62cfNsYrlQNREaJI47vC56Z0otdeiK8AbXt80B7WG4heIip+VHYCj0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=neeNnvpP; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6EFDA1F00893;
-	Fri, 29 May 2026 14:00:17 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1780063223;
-	bh=o53KZSM1xwnMx9qRi9blrTJDTT9nvtmbWfg0I22/pKw=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=neeNnvpPJ5li6VA0xHi+YFqdkMv2Z2MOaS7H1Wgd4ceLe4M5SB91cfCT5ZZ8dDZlV
-	 PKe6T3haHkhV+DXKVCfhRjx0RiQJjkgdRnG2MNfFrDkdri/AJFgSEU+FM0qR59oiAo
-	 +CDHcC1rjjFIkvr716svKIRiGkFhqD7ts2Iup6pf4yA54hvqRcmfah0snxc0hJQ7FB
-	 sSBT8f1Q8LOXvAoS+ftsJRLjaNhK9Y5nkxKrIK0E+/eiIg4/187gfg0UqH/50Q6JS7
-	 MvkeYaQdtGqiC//rj1Hce2Aj/IOHTDZmenaNoPt6hQMEr3yF8fev/ZeUZyMbJ8F7+X
-	 w6Tv3aWA/tCLA==
-Date: Fri, 29 May 2026 15:00:14 +0100
-From: Lorenzo Stoakes <ljs@kernel.org>
-To: Kiryl Shutsemau <kirill@shutemov.name>
-Cc: akpm@linux-foundation.org, rppt@kernel.org, peterx@redhat.com, 
-	david@kernel.org, surenb@google.com, vbabka@kernel.org, Liam.Howlett@oracle.com, 
-	ziy@nvidia.com, corbet@lwn.net, skhan@linuxfoundation.org, seanjc@google.com, 
-	pbonzini@redhat.com, jthoughton@google.com, aarcange@redhat.com, sj@kernel.org, 
-	usama.arif@linux.dev, linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
-	linux-doc@vger.kernel.org, linux-kselftest@vger.kernel.org, kvm@vger.kernel.org, 
-	kernel-team@meta.com, "Kiryl Shutsemau (Meta)" <kas@kernel.org>, 
-	stable@vger.kernel.org
-Subject: Re: [PATCH v5 04/18] mm: skip out-of-range bits in mk_vma_flags()
-Message-ID: <ahmQvfNk7S4F0LBj@lucifer>
-References: <20260526130509.2748441-1-kirill@shutemov.name>
- <20260526130509.2748441-5-kirill@shutemov.name>
+	s=arc-20240116; t=1780063867; c=relaxed/simple;
+	bh=XVlQg+/h1vSCThb7iGl0DNWVJafcEcVn1hfKtGhR6fI=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=jsJAM4/9k80BoUMDwNnr9izeu3jAmUvKxjwkAG5+y/TZILNQM14pJCIsBCEI4BxeY91i2tMBNttCuq4P+UYc0sc0o9y5yZZmXZGtKOvbqeLA1HvaHWbB57ewKuARb20NanUvYUQWSCYzR30SY4Fp2UK56KDOg64Ia7X2P77AL5o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=sIsK/TYT; arc=none smtp.client-ip=148.163.156.1
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
+Received: from pps.filterd (m0360083.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 64TBbKvt2418177;
+	Fri, 29 May 2026 14:10:54 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+	:content-transfer-encoding:date:from:message-id:mime-version
+	:subject:to; s=pp1; bh=lgbPAz26tAknd8qvQW4f5tYMn929446gN9YHMUjWj
+	Bo=; b=sIsK/TYTDQMJxAxZBAMk2kex5MjQs7rkSE64xvqdl1mzTXSeJjbNMetQd
+	dZbgWcR5BQRk42CqES8yuA0FTPmWCQw3EwCKLHe4zne237mRbVWWiS8OIj4gsaoj
+	JcwjgyPEI1P+a/E2gMMz4HO7YUlh6tVFw4Ag7lKMKedsbxGxSrKR3v3n2bBqQjM3
+	Me1OWozm/io/iyTm+sGc4/bsH41AAqeE75UH2eRYIUo0+aqf1/6Ssb9FFE6aM+8W
+	Poua5Z/0ft+DHDDn6ED7R8DcwHF8nuh/kZ4XXuFKXaKIJYh9fBu2Y4hkokUU/S+3
+	sfG/j8L+lAm33p7KWPgczh/4WPy+A==
+Received: from ppma12.dal12v.mail.ibm.com (dc.9e.1632.ip4.static.sl-reverse.com [50.22.158.220])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4ee884s56g-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Fri, 29 May 2026 14:10:53 +0000 (GMT)
+Received: from pps.filterd (ppma12.dal12v.mail.ibm.com [127.0.0.1])
+	by ppma12.dal12v.mail.ibm.com (8.18.1.7/8.18.1.7) with ESMTP id 64TE96w3027125;
+	Fri, 29 May 2026 14:10:53 GMT
+Received: from smtprelay01.fra02v.mail.ibm.com ([9.218.2.227])
+	by ppma12.dal12v.mail.ibm.com (PPS) with ESMTPS id 4edjrbdyfn-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Fri, 29 May 2026 14:10:52 +0000 (GMT)
+Received: from smtpav03.fra02v.mail.ibm.com (smtpav03.fra02v.mail.ibm.com [10.20.54.102])
+	by smtprelay01.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 64TEAniJ34013510
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Fri, 29 May 2026 14:10:49 GMT
+Received: from smtpav03.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 4B4E22004D;
+	Fri, 29 May 2026 14:10:49 +0000 (GMT)
+Received: from smtpav03.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 380FA20040;
+	Fri, 29 May 2026 14:10:47 +0000 (GMT)
+Received: from mac.bl1-in.ibm.com (unknown [9.123.11.154])
+	by smtpav03.fra02v.mail.ibm.com (Postfix) with ESMTP;
+	Fri, 29 May 2026 14:10:47 +0000 (GMT)
+From: Gautam Menghani <gautam@linux.ibm.com>
+To: maddy@linux.ibm.com, mpe@ellerman.id.au, npiggin@gmail.com,
+        chleroy@kernel.org
+Cc: Gautam Menghani <gautam@linux.ibm.com>, linuxppc-dev@lists.ozlabs.org,
+        linux-kernel@vger.kernel.org, atrajeev@linux.ibm.com,
+        harshpb@linux.ibm.com, stable@vger.kernel.org,
+        Sean Christopherson <seanjc@google.com>
+Subject: [PATCH v3] powerpc/pseries/Kconfig: Enable CONFIG_VPA_PMU to be used with KVM
+Date: Fri, 29 May 2026 19:40:31 +0530
+Message-ID: <20260529141032.69559-1-gautam@linux.ibm.com>
+X-Mailer: git-send-email 2.50.1
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260526130509.2748441-5-kirill@shutemov.name>
-X-Spamd-Result: default: False [-1.66 / 15.00];
+Content-Transfer-Encoding: 8bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-Reinject: loops=2 maxloops=12
+X-Authority-Analysis: v=2.4 cv=L4MtheT8 c=1 sm=1 tr=0 ts=6a199e6e cx=c_pps
+ a=bLidbwmWQ0KltjZqbj+ezA==:117 a=bLidbwmWQ0KltjZqbj+ezA==:17
+ a=NGcC8JguVDcA:10 a=VkNPw1HP01LnGYTKEx00:22 a=RnoormkPH1_aCDwRdu11:22
+ a=iQ6ETzBq9ecOQQE5vZCe:22 a=VwQbUJbxAAAA:8 a=1XWaLZrsAAAA:8 a=VnNF1IyMAAAA:8
+ a=dkYHUGA-BDwxkZPz_lEA:9
+X-Proofpoint-ORIG-GUID: IMJAOJv4ObE1BMRJRflC2YmpI8lFl0Jw
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNTI5MDE0MSBTYWx0ZWRfX187YlHsiJbUL
+ 5JokN0h1VxwZTTP0zHyy90T5xWG7jmq/yvy1AUjB6vp8oPllUvjF6XPX5DtF+m53v+W/1fVTOdt
+ Pjqx4paNguhLlnlZW+cdADtv1ZNtsHGRbxBVrdWxtGnOQR2P7rQeqa/u0jmDvCytTbDFWje6YOh
+ fJZ6HrSgQH9OTOh/BeZW830EmIJReitfQrS+QTA+jGkBoOmwKhu0/J4DpK1EdSfvlsyeYhG8hCY
+ 9asjw+8+aoKLX95CIFrj66LHqQpfNovF2oWZYj53RgIYUQxHDffL2rZ9iQLK8dG9sh5ajCOyi72
+ vAIGTGH1TivlYLlSIVKjl/6DO4I59YYMAeuP4ZozAjrEgGeZx82Zyx42tg95V4BxhQ7TsuV+/PE
+ 0+RLtSsZckU21WSzgdUeYWDmO3ykzzM5nhs+q0U9xUZ6jREaxUGlVfa/ypm+xuy0phI0KksFPdc
+ 1VNYrfot/SoircqqkQg==
+X-Proofpoint-GUID: lRQ20GSOgXYU8galxn3fTwmrFCsIs-OK
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.125,FMLib:17.12.100.49
+ definitions=2026-05-29_04,2026-05-28_03,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ phishscore=0 lowpriorityscore=0 suspectscore=0 clxscore=1015 malwarescore=0
+ bulkscore=0 impostorscore=0 adultscore=0 priorityscore=1501 spamscore=0
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.22.0-2605210000 definitions=main-2605290141
+X-Spamd-Result: default: False [-0.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	MID_RHS_NOT_FQDN(0.50)[];
-	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20260515];
+	MID_CONTAINS_FROM(1.00)[];
+	DMARC_POLICY_ALLOW(-0.50)[ibm.com,none];
+	R_MISSING_CHARSET(0.50)[];
 	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	R_DKIM_ALLOW(-0.20)[ibm.com:s=pp1];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
+	TAGGED_FROM(0.00)[bounces-256642-lists,stable=lfdr.de];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linux.ibm.com:mid,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo];
+	FREEMAIL_TO(0.00)[linux.ibm.com,ellerman.id.au,gmail.com,kernel.org];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-256641-lists,stable=lfdr.de];
-	RCPT_COUNT_TWELVE(0.00)[25];
-	MIME_TRACE(0.00)[0:+];
 	FROM_HAS_DN(0.00)[];
-	MISSING_XM_UA(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	FROM_NEQ_ENVFROM(0.00)[gautam@linux.ibm.com,stable@vger.kernel.org];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[ljs@kernel.org,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[kernel.org:+];
+	RCPT_COUNT_SEVEN(0.00)[11];
+	NEURAL_HAM(-0.00)[-1.000];
+	DKIM_TRACE(0.00)[ibm.com:+];
 	TAGGED_RCPT(0.00)[stable];
 	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo]
-X-Rspamd-Queue-Id: BA1ED603400
+	RCVD_COUNT_SEVEN(0.00)[11]
+X-Rspamd-Queue-Id: 7DBCF603757
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-On Tue, May 26, 2026 at 02:04:52PM +0100, Kiryl Shutsemau wrote:
-> From: "Kiryl Shutsemau (Meta)" <kas@kernel.org>
->
-> vma_flags_t is one unsigned long on 32-bit -- NUM_VMA_FLAG_BITS ==
-> BITS_PER_LONG by design, so VM_xxx-declared bits sit in the first
-> word and hit the single-long fast path. But the bit enum declares
-> some bits unconditionally above BITS_PER_LONG (VMA_UFFD_MINOR_BIT
-> == 41 today, with VM_UFFD_MINOR == VM_NONE on 32-bit so no VMA
-> actually carries the bit).
+Currently, CONFIG_VPA_PMU is not enabled any of the configs, and
+consequently cannot be used for KVM guests at all.
 
-Yeah ugh.
+Mark CONFIG_VPA_PMU as "default m" to ensure it is available when KVM is
+being used.
 
->
-> Passing such a bit to mk_vma_flags() goes through __set_bit(41,
-> &one_long) and writes one word past the end. The compiler folds
-> the OOB store with wraparound (1UL << (41 % 32) == bit 9) into
-> the first word. Bit 9 is already in __VMA_UFFD_FLAGS so the mask
-> happens to come out right today, but any high-numbered bit whose
+Fixes: 176cda0619b6c ("powerpc/perf: Add perf interface to expose vpa counters")
+Cc: stable@vger.kernel.org # v6.13+
+Suggested-by: Sean Christopherson <seanjc@google.com>
+Signed-off-by: Gautam Menghani <gautam@linux.ibm.com>
+---
+v2 -> v3:
+1. Make CONFIG_VPA_PMU as default m so that it can separately disabled
+(Sean)
 
-That is... helpful :) but not great that this is the situation, an
-oversight, clearly! How I hate 32-bit kernels :)
+v1 -> v2:
+1. Rebased on latest master
 
-> mod-BITS_PER_LONG position is otherwise unused would silently OR
-> an extra bit into the mask.
->
-> Add VMA_NO_BIT and have DECLARE_VMA_BIT() resolve any bitnum out
-> of range to it. vma_flags_set_flag() drops negative bit values.
-> The ternary collapses at compile time, the runtime check folds
-> away when the bit is in range, and the common path is unchanged.
+ arch/powerpc/platforms/pseries/Kconfig | 1 +
+ 1 file changed, 1 insertion(+)
 
-Hmm are you sure it does?
+diff --git a/arch/powerpc/platforms/pseries/Kconfig b/arch/powerpc/platforms/pseries/Kconfig
+index f7052b131a4c..74910ce3a541 100644
+--- a/arch/powerpc/platforms/pseries/Kconfig
++++ b/arch/powerpc/platforms/pseries/Kconfig
+@@ -154,6 +154,7 @@ config HV_PERF_CTRS
+ config VPA_PMU
+ 	tristate "VPA PMU events"
+ 	depends on KVM_BOOK3S_64_HV && HV_PERF_CTRS
++	default m
+ 	help
+ 	  Enable access to the VPA PMU counters via perf. This enables
+ 	  code that support measurement for KVM on PowerVM(KoP) feature.
+-- 
+2.53.0
 
-A key design goal was that mk_vma_flags() generates compile-time constants
-the same as if the bitmap were constructed independently.
-
-This surely must generate code? Or at least runs a significant risk of it?
-
-Setting a precedent here would probably lead to VMA_NO_BIT being used more
-and therefore generating code in more places I think.
-
-And I'm not sure I really want to bend over backwards here to work around
-issues with 32-bit kernels when in the long run the intent is that we move
-to making these values 64-bit anyway.
-
-Perhaps it's even wise possibly to just make these values 64-bit already,
-ahead of time?
-
-(I did look at this in terms of wanting something like a VMA_NO_BIT so we
-could get VM_NONE-like behaviour but nothing I tried failed to generate
-code.)
-
-A simple solution that doesn't require change to the core is to just uglify
-userfaultfd_k.h a bit with:
-
-#ifdef HAVE_ARCH_USERFAULTFD_MINOR
-#define __VMA_UFFD_FLAGS mk_vma_flags(VMA_UFFD_MISSING_BIT, VMA_UFFD_WP_BIT, \
-				      VMA_UFFD_MINOR_BIT)
-#else
-#define __VMA_UFFD_FLAGS mk_vma_flags(VMA_UFFD_MISSING_BIT, VMA_UFFD_WP_BIT)
-#endif
-
-But of course that becomes much more horrible with your changes...
-
-Another alternative, which I used for VMA_DROPPABLE is to add something
-like this in mm.h:
-
-#ifdef CONFIG_HAVE_ARCH_USERFAULTFD_MINOR
-#define VM_UFFD_MINOR	INIT_VM_FLAG(UFFD_MINOR)
-+define VMA_UFFD_MINOR	mk_vma_flags(VMA_UFFD_MINOR_BIT)
-#else
-#define VM_UFFD_MINOR	VM_NONE
-+define VMA_UFFD_MINOR	EMPTY_VMA_FLAGS
-#endif
-
-Then we can do:
-
-#define __VMA_UFFD_FLAGS append_vma_flags(VMA_MINOR, VMA_UFFD_MISSING_BIT, \
-					  VMA_UFFD_WP_BIT)
-
-With you changes in 08/18 on top it'd get hairier, but we could make our
-life easier by implementing something like:
-
-static __always_inline vma_flags_t __mk_vma_flags_from_masks(size_t count,
-	const vma_flags_t *masks)
-{
-	vma_flags_t flags = EMPTY_VMA_FLAGS;
-	int i;
-
-	for (i = 0; i < count; i++)
-		mask = vma_flags_set_mask(&flags, masks[i]);
-
-	return flags;
-}
-
-#define mk_vma_flags_from_masks(...) __mk_vma_flags_from_masks(, \
-		COUNT_ARGS(__VA_ARGS__), (const vma_flags_t []){__VA_ARGS__})
-
-(untested code - you would need to ensure it generated equivalent
-constants as VM_xxx would now :)
-
-Then you could get VMA_UFFD_RWP with:
-
-#ifdef CONFIG_USERFAULTFD_RWP
-#define VMA_UFFD_RWP	mk_vma_flags(VMA_UFFD_RWP_BIT)
-#else
-#define VMA_UFFD_RWP	EMPTY_VMA_FLAGS
-#endif
-
-And then:
-
-
-/* Always available if CONFIG_USERFAULTFD set. */
-#define __VMA_UFFD_DEFAULT_FLAGS \
-		mk_vma_flags(VMA_UFFD_MISSING_BIT, VMA_UFFD_WP_BIT)
-
-#define __VMA_UFFD_FLAGS mk_vma_flags_from_masks(__VMA_UFFD_DEFAULT_FLAGS \
-		VMA_MINOR, VMA_RWP)
-
-Which is kind ok-ish right? I mean it's all a bit fugly obviously.
-
->
-> Bits declared in the enum are now safe to pass to mk_vma_flags()
-> regardless of arch.
-
-I mean another issue here is we're then codifying behaviour that's legacy
-ahead of time. I really want to avoid that.
-
->
-> Fixes: 9ea35a25d51b ("mm: introduce VMA flags bitmap type")
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Kiryl Shutsemau <kas@kernel.org>
-> ---
->  include/linux/mm.h | 15 +++++++++++++--
->  1 file changed, 13 insertions(+), 2 deletions(-)
->
-> diff --git a/include/linux/mm.h b/include/linux/mm.h
-> index 0f2612a70fb1..71b11945e4fc 100644
-> --- a/include/linux/mm.h
-> +++ b/include/linux/mm.h
-> @@ -286,8 +286,17 @@ extern unsigned int kobjsize(const void *objp);
->   */
->  typedef int __bitwise vma_flag_t;
->
-> -#define DECLARE_VMA_BIT(name, bitnum) \
-> -	VMA_ ## name ## _BIT = ((__force vma_flag_t)bitnum)
-> +/*
-> + * VMA_NO_BIT means "no bit"; mk_vma_flags() skips it. DECLARE_VMA_BIT()
-> + * below uses it for any bit number that doesn't fit in the bitmap, so
-> + * callers don't need to track which bits are valid on the current build.
-> + */
-> +#define VMA_NO_BIT	((__force vma_flag_t)-1)
-> +
-> +#define DECLARE_VMA_BIT(name, bitnum)					\
-> +	VMA_ ## name ## _BIT = (((bitnum) < NUM_VMA_FLAG_BITS) ?	\
-> +				((__force vma_flag_t)(bitnum)) :	\
-> +				VMA_NO_BIT)
->  #define DECLARE_VMA_BIT_ALIAS(name, aliased) \
->  	VMA_ ## name ## _BIT = (VMA_ ## aliased ## _BIT)
->  enum {
-> @@ -1081,6 +1090,8 @@ static __always_inline void vma_flags_set_flag(vma_flags_t *flags,
->  {
->  	unsigned long *bitmap = flags->__vma_flags;
->
-> +	if ((__force int)bit < 0)
-> +		return;
->  	__set_bit((__force int)bit, bitmap);
->  }
->
-> --
-> 2.54.0
->
-
-Either way, I think we should break out any fix like this from the series.
-
-Andrew is I think also not a fan of fixes patches in the middle of series
-anyway :P
-
-Cheers, Lorenzo
 
