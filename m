@@ -1,50 +1,50 @@
-Return-Path: <stable+bounces-256482-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-256483-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id CKZvABIRGWogqAgAu9opvQ
-	(envelope-from <stable+bounces-256482-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 29 May 2026 06:07:46 +0200
+	id gLlkIEoRGWogqAgAu9opvQ
+	(envelope-from <stable+bounces-256483-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 29 May 2026 06:08:42 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9B63A5FCE44
-	for <lists+stable@lfdr.de>; Fri, 29 May 2026 06:07:45 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8274E5FCE63
+	for <lists+stable@lfdr.de>; Fri, 29 May 2026 06:08:41 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 1A263303CF84
-	for <lists+stable@lfdr.de>; Fri, 29 May 2026 04:07:10 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id E2CF23059F8F
+	for <lists+stable@lfdr.de>; Fri, 29 May 2026 04:07:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D43D2370ADA;
-	Fri, 29 May 2026 04:07:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 44CA736F8F5;
+	Fri, 29 May 2026 04:07:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="K91Q9EI4"
+	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="0QmUAFXh"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5066436F8F3;
-	Fri, 29 May 2026 04:07:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CA31D370AC8;
+	Fri, 29 May 2026 04:07:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780027626; cv=none; b=huJT5TubGrW4+v2y5bGcoKuiHPvY+4vZvRtkCpldVZeZCs4GWRluqhIJUwhnSXwqYeyEW6UbqQJ0HZ/NJfktJHFGAuWP2Fsmr1vOU1fT0wccT8fQ5LRNpa7J5G2O9Dg+OVuk8N7FZhHWvMLbC5U110w7uIv7KwPp1q5aWHo4gDU=
+	t=1780027634; cv=none; b=pYciqa75ytULCquWUTBOnPMpGH325wyyK0wsVn0mL5GSQJu1Qk+/K4gfLVy7v7foVmaEomE7iDllLLX2qkJC3GpP7HU/NOy54nz+ECYQHksD3zLnRZOgPxQjRh0Wp/nWMGeNrwHVANHLAslrZIKSWbSoTHWsotOqQlX5ROOa6yg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780027626; c=relaxed/simple;
-	bh=Vm/5ZY9yBnUCt0p+ejFLJg5wN425Gc4KYXYyU8ShOTI=;
-	h=Date:To:From:Subject:Message-Id; b=GMezJOI+1+abxsVHvhJ7pHYWCf3JCQVlt6wmz0tbSQdVqWR+xoSxEaEIribhPvw6eF59G3cNTFgsQuUu6dIh4YGwRgTj48rD35gg3kOuV2O9oe/i9onpgk3bDx9He4J2328tuD3I8TLoY0ZK4HX1YzMcaRA1u9LznspcjrmUQR4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=K91Q9EI4; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 246D81F00893;
-	Fri, 29 May 2026 04:07:03 +0000 (UTC)
+	s=arc-20240116; t=1780027634; c=relaxed/simple;
+	bh=EJO+WoAbwgDzIdkVLUU5z+zkNu0IIhDMPAFpi9LoZKA=;
+	h=Date:To:From:Subject:Message-Id; b=nxSJ95GzkjEZ13lyJUEfLk2aavTUM0TI3+ePUBtrG9qFXnrslTRBp8c3mICdtWHd2r58JAXL8WN6HAN344PwdRuniQVc6ImUUtYXFhIMyyESoMwnc1Nr1goeeTzhcWatr0F68QcKb/OAhY0akxJ7WZVJOH+MpI7Bs1OLpU3vDDQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=0QmUAFXh; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9BB6F1F00899;
+	Fri, 29 May 2026 04:07:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=linux-foundation.org; s=korg; t=1780027623;
-	bh=WvAva1x8+ftDyxYKlJo6Nf6lqDHfd5B57x5w6jkTaTU=;
+	d=linux-foundation.org; s=korg; t=1780027631;
+	bh=NLbnSmQc416jEJx79fpVBepqLWVCA4ma0Ke0OrDH47k=;
 	h=Date:To:From:Subject;
-	b=K91Q9EI4fgWKmJuNHcPf9doc9Kh11pKzjNJSsreovPxVp5TljR74NhCnQm0x6DTWn
-	 g+WvAfqIA6Is76+6Vwjj+x6ta+4OUAXKswJ/XbEQLGHAbUiPSpnWVzFWGGrrOZqq79
-	 v/2aEruflBimFH3GZtaczG1YFEwSnwLbAxamG0ps=
-Date: Thu, 28 May 2026 21:07:02 -0700
-To: mm-commits@vger.kernel.org,stable@vger.kernel.org,osalvador@suse.de,muchun.song@linux.dev,david@kernel.org,almasrymina@google.com,kartikey406@gmail.com,akpm@linux-foundation.org
+	b=0QmUAFXhJyFDl9yjfShNkhKqr//iK/UX8bP+3zKIqYB3cfZK/YeApKTFlXX3WoPUw
+	 MtlGoW8wc3PxDgvNOFyCEK0spudj1swVcw4KvwUm9FTtzCMCw5+otQEpwr/1oyiDoa
+	 HplF44m9POzBe2gJnLu97UwNxR9ytHk2m0BRGetQ=
+Date: Thu, 28 May 2026 21:07:11 -0700
+To: mm-commits@vger.kernel.org,vbabka@kernel.org,surenb@google.com,stable@vger.kernel.org,rppt@kernel.org,osalvador@suse.de,npiggin@gmail.com,mpe@ellerman.id.au,mhocko@suse.com,maddy@linux.ibm.com,ljs@kernel.org,liam@infradead.org,joao.m.martins@oracle.com,david@kernel.org,aneesh.kumar@linux.ibm.com,songmuchun@bytedance.com,akpm@linux-foundation.org
 From: Andrew Morton <akpm@linux-foundation.org>
-Subject: [merged mm-stable] mm-hugetlb-fix-hugetlb-cgroup-rsvd-charge-uncharge-mismatch.patch removed from -mm tree
-Message-Id: <20260529040703.246D81F00893@smtp.kernel.org>
+Subject: [merged mm-stable] mm-sparse-vmemmap-fix-vmemmap-accounting-underflow.patch removed from -mm tree
+Message-Id: <20260529040711.9BB6F1F00899@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -53,127 +53,182 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 X-Spamd-Result: default: False [-1.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	R_DKIM_ALLOW(-0.20)[linux-foundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-256482-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[akpm@linux-foundation.org,stable@vger.kernel.org];
-	DMARC_NA(0.00)[linux-foundation.org];
-	DKIM_TRACE(0.00)[linux-foundation.org:+];
 	RCVD_COUNT_THREE(0.00)[4];
+	DMARC_NA(0.00)[linux-foundation.org];
+	FREEMAIL_TO(0.00)[vger.kernel.org,kernel.org,google.com,suse.de,gmail.com,ellerman.id.au,suse.com,linux.ibm.com,infradead.org,oracle.com,bytedance.com,linux-foundation.org];
+	TAGGED_FROM(0.00)[bounces-256483-lists,stable=lfdr.de];
+	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FREEMAIL_TO(0.00)[vger.kernel.org,suse.de,linux.dev,kernel.org,google.com,gmail.com,linux-foundation.org];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
-	FROM_HAS_DN(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	DKIM_TRACE(0.00)[linux-foundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	MISSING_XM_UA(0.00)[];
 	TO_DN_NONE(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	MISSING_XM_UA(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[8];
+	FROM_NEQ_ENVFROM(0.00)[akpm@linux-foundation.org,stable@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	MIME_TRACE(0.00)[0:+];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[suse.de:email,smtp.kernel.org:mid,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo]
-X-Rspamd-Queue-Id: 9B63A5FCE44
+	RCPT_COUNT_TWELVE(0.00)[17];
+	FROM_HAS_DN(0.00)[]
+X-Rspamd-Queue-Id: 8274E5FCE63
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
 
 The quilt patch titled
-     Subject: mm/hugetlb: fix hugetlb cgroup rsvd charge/uncharge mismatch
+     Subject: mm/sparse-vmemmap: fix vmemmap accounting underflow
 has been removed from the -mm tree.  Its filename was
-     mm-hugetlb-fix-hugetlb-cgroup-rsvd-charge-uncharge-mismatch.patch
+     mm-sparse-vmemmap-fix-vmemmap-accounting-underflow.patch
 
 This patch was dropped because it was merged into the mm-stable branch
 of git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
 
 ------------------------------------------------------
-From: Deepanshu Kartikey <kartikey406@gmail.com>
-Subject: mm/hugetlb: fix hugetlb cgroup rsvd charge/uncharge mismatch
-Date: Sat, 28 Mar 2026 12:25:34 +0530
+From: Muchun Song <songmuchun@bytedance.com>
+Subject: mm/sparse-vmemmap: fix vmemmap accounting underflow
+Date: Tue, 28 Apr 2026 16:18:50 +0800
 
-In alloc_hugetlb_folio(), a single h_cg pointer is used for both the rsvd
-and non-rsvd hugetlb cgroup charges.  When map_chg is set,
-hugetlb_cgroup_charge_cgroup_rsvd() stores the charged cgroup in h_cg, but
-the immediately following hugetlb_cgroup_charge_cgroup() overwrites h_cg
-with the non-rsvd cgroup pointer.
+Patch series "mm: Fix vmemmap optimization accounting and initialization",
+v8.
 
-As a result, hugetlb_cgroup_commit_charge_rsvd() stores the wrong
-(non-rsvd) cgroup pointer into the folio's rsvd slot.
+The series fixes several bugs in vmemmap optimization, mainly around
+incorrect page accounting and memmap initialization in DAX and memory
+hotplug paths.  It also fixes pageblock migratetype initialization and
+struct page initialization for ZONE_DEVICE compound pages.
 
-When the folio is later freed, free_huge_folio() unconditionally calls
-both hugetlb_cgroup_uncharge_folio() and
-hugetlb_cgroup_uncharge_folio_rsvd().  The rsvd uncharge reads back the
-wrong cgroup from the folio and decrements a counter that was never
-charged for that cgroup, causing a page_counter underflow:
+Patches 1-4 fix vmemmap accounting issues.  Patch 1 fixes an accounting
+underflow in the section activation failure path by moving vmemmap page
+accounting into the lower-level allocation and freeing helpers.  Patch 2
+fixes incorrect altmap passing in the memory hotplug error path.  Patch 3
+passes pgmap through memory deactivation paths so the teardown side can
+determine whether vmemmap optimization was in effect.  Patch 4 uses that
+information to account the optimized DAX vmemmap size correctly.
 
-  page_counter underflow: -512 nr_pages=512
-  WARNING: mm/page_counter.c:61 at page_counter_cancel
+Patches 5-6 fix initialization issues in mm/mm_init.  One makes sure all
+pageblocks in ZONE_DEVICE compound pages get their migratetype
+initialized.  The other fixes a case where DAX memory hotplug reuses an
+unoptimized early-section memmap while compound_nr_pages() still assumes
+vmemmap optimization, leaving tail struct pages uninitialized.
 
-Fix this by introducing a separate h_cg_rsvd pointer exclusively for the
-rsvd charge path, keeping the rsvd and non-rsvd charges fully independent
-through their charge, commit, and error uncharge paths.
 
-Link: https://lore.kernel.org/20260328065534.346053-1-kartikey406@gmail.com
-Fixes: 08cf9faf7558 ("hugetlb_cgroup: support noreserve mappings")
-Reported-by: syzbot+226c1f947186f8fef796@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=226c1f947186f8fef796
-Signed-off-by: Deepanshu Kartikey <kartikey406@gmail.com>
-Reviewed-by: Muchun Song <muchun.song@linux.dev>
-Cc: David Hildenbrand <david@kernel.org>
-Cc: Oscar Salvador <osalvador@suse.de>
-Cc: Mina Almasry <almasrymina@google.com>
+This patch (of 6):
+
+In section_activate(), if populate_section_memmap() fails, the error
+handling path calls section_deactivate() to roll back the state.  This
+causes a vmemmap accounting imbalance.
+
+Since commit c3576889d87b ("mm: fix accounting of memmap pages"), memmap
+pages are accounted for only after populate_section_memmap() succeeds. 
+However, the failure path unconditionally calls section_deactivate(),
+which decreases the vmemmap count.  Consequently, a failure in
+populate_section_memmap() leads to an accounting underflow, incorrectly
+reducing the system's tracked vmemmap usage.
+
+Fix this more thoroughly by moving all accounting calls into the lower
+level functions that actually perform the vmemmap allocation and freeing:
+
+  - populate_section_memmap() accounts for newly allocated vmemmap pages -
+depopulate_section_memmap() unaccounts when vmemmap is freed
+
+This ensures proper accounting in all code paths, including error handling
+and early section cases.
+
+Link: https://lore.kernel.org/20260428081855.1249045-1-songmuchun@bytedance.com
+Link: https://lore.kernel.org/20260428081855.1249045-2-songmuchun@bytedance.com
+Fixes: c3576889d87b ("mm: fix accounting of memmap pages")
+Signed-off-by: Muchun Song <songmuchun@bytedance.com>
+Acked-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
+Acked-by: Oscar Salvador <osalvador@suse.de>
+Acked-by: David Hildenbrand (Arm) <david@kernel.org>
+Acked-by: Liam R. Howlett <liam@infradead.org>
+Cc: "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>
+Cc: Joao Martins <joao.m.martins@oracle.com>
+Cc: Lorenzo Stoakes <ljs@kernel.org>
+Cc: Madhavan Srinivasan <maddy@linux.ibm.com>
+Cc: Michael Ellerman <mpe@ellerman.id.au>
+Cc: Michal Hocko <mhocko@suse.com>
+Cc: Nicholas Piggin <npiggin@gmail.com>
+Cc: Suren Baghdasaryan <surenb@google.com>
+Cc: Vlastimil Babka <vbabka@kernel.org>
 Cc: <stable@vger.kernel.org>
 Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 ---
 
- mm/hugetlb.c |    7 ++++---
- 1 file changed, 4 insertions(+), 3 deletions(-)
+ mm/sparse-vmemmap.c |   20 ++++++++++++--------
+ 1 file changed, 12 insertions(+), 8 deletions(-)
 
---- a/mm/hugetlb.c~mm-hugetlb-fix-hugetlb-cgroup-rsvd-charge-uncharge-mismatch
-+++ a/mm/hugetlb.c
-@@ -2859,6 +2859,7 @@ struct folio *alloc_hugetlb_folio(struct
- 	map_chg_state map_chg;
- 	int ret, idx;
- 	struct hugetlb_cgroup *h_cg = NULL;
-+	struct hugetlb_cgroup *h_cg_rsvd = NULL;
- 	gfp_t gfp = htlb_alloc_mask(h) | __GFP_RETRY_MAYFAIL;
+--- a/mm/sparse-vmemmap.c~mm-sparse-vmemmap-fix-vmemmap-accounting-underflow
++++ a/mm/sparse-vmemmap.c
+@@ -651,7 +651,12 @@ static struct page * __meminit populate_
+ 		unsigned long nr_pages, int nid, struct vmem_altmap *altmap,
+ 		struct dev_pagemap *pgmap)
+ {
+-	return __populate_section_memmap(pfn, nr_pages, nid, altmap, pgmap);
++	struct page *page = __populate_section_memmap(pfn, nr_pages, nid, altmap,
++						      pgmap);
++
++	memmap_pages_add(DIV_ROUND_UP(nr_pages * sizeof(struct page), PAGE_SIZE));
++
++	return page;
+ }
  
- 	idx = hstate_index(h);
-@@ -2909,7 +2910,7 @@ struct folio *alloc_hugetlb_folio(struct
- 	 */
- 	if (map_chg) {
- 		ret = hugetlb_cgroup_charge_cgroup_rsvd(
--			idx, pages_per_huge_page(h), &h_cg);
-+			idx, pages_per_huge_page(h), &h_cg_rsvd);
- 		if (ret)
- 			goto out_subpool_put;
- 	}
-@@ -2951,7 +2952,7 @@ struct folio *alloc_hugetlb_folio(struct
- 	 */
- 	if (map_chg) {
- 		hugetlb_cgroup_commit_charge_rsvd(idx, pages_per_huge_page(h),
--						  h_cg, folio);
-+						  h_cg_rsvd, folio);
- 	}
+ static void depopulate_section_memmap(unsigned long pfn, unsigned long nr_pages,
+@@ -660,13 +665,17 @@ static void depopulate_section_memmap(un
+ 	unsigned long start = (unsigned long) pfn_to_page(pfn);
+ 	unsigned long end = start + nr_pages * sizeof(struct page);
  
- 	spin_unlock_irq(&hugetlb_lock);
-@@ -3003,7 +3004,7 @@ out_uncharge_cgroup:
- out_uncharge_cgroup_reservation:
- 	if (map_chg)
- 		hugetlb_cgroup_uncharge_cgroup_rsvd(idx, pages_per_huge_page(h),
--						    h_cg);
-+						    h_cg_rsvd);
- out_subpool_put:
- 	/*
- 	 * put page to subpool iff the quota of subpool's rsv_hpages is used
++	memmap_pages_add(-1L * (DIV_ROUND_UP(nr_pages * sizeof(struct page), PAGE_SIZE)));
+ 	vmemmap_free(start, end, altmap);
+ }
++
+ static void free_map_bootmem(struct page *memmap)
+ {
+ 	unsigned long start = (unsigned long)memmap;
+ 	unsigned long end = (unsigned long)(memmap + PAGES_PER_SECTION);
+ 
++	memmap_boot_pages_add(-1L * (DIV_ROUND_UP(PAGES_PER_SECTION * sizeof(struct page),
++						  PAGE_SIZE)));
+ 	vmemmap_free(start, end, NULL);
+ }
+ 
+@@ -769,14 +778,10 @@ static void section_deactivate(unsigned
+ 	 * The memmap of early sections is always fully populated. See
+ 	 * section_activate() and pfn_valid() .
+ 	 */
+-	if (!section_is_early) {
+-		memmap_pages_add(-1L * (DIV_ROUND_UP(nr_pages * sizeof(struct page), PAGE_SIZE)));
++	if (!section_is_early)
+ 		depopulate_section_memmap(pfn, nr_pages, altmap);
+-	} else if (memmap) {
+-		memmap_boot_pages_add(-1L * (DIV_ROUND_UP(nr_pages * sizeof(struct page),
+-							  PAGE_SIZE)));
++	else if (memmap)
+ 		free_map_bootmem(memmap);
+-	}
+ 
+ 	if (empty)
+ 		ms->section_mem_map = (unsigned long)NULL;
+@@ -821,7 +826,6 @@ static struct page * __meminit section_a
+ 		section_deactivate(pfn, nr_pages, altmap);
+ 		return ERR_PTR(-ENOMEM);
+ 	}
+-	memmap_pages_add(DIV_ROUND_UP(nr_pages * sizeof(struct page), PAGE_SIZE));
+ 
+ 	return memmap;
+ }
 _
 
-Patches currently in -mm which might be from kartikey406@gmail.com are
+Patches currently in -mm which might be from songmuchun@bytedance.com are
 
+mm-hugetlb_vmemmap-fix-incorrect-vmemmap-restore-in-rollback.patch
+mm-memory_hotplug-factor-out-altmap-freeing-checks.patch
+drivers-base-memory-make-memory-block-get-put-explicit.patch
 
 
