@@ -1,81 +1,81 @@
-Return-Path: <stable+bounces-256518-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-256519-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id iPP3HXouGWrmsAgAu9opvQ
-	(envelope-from <stable+bounces-256518-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 29 May 2026 08:13:14 +0200
+	id qB05KaAtGWogrwgAu9opvQ
+	(envelope-from <stable+bounces-256519-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 29 May 2026 08:09:36 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id D468E5FDCB1
-	for <lists+stable@lfdr.de>; Fri, 29 May 2026 08:13:13 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 38B0D5FDC5A
+	for <lists+stable@lfdr.de>; Fri, 29 May 2026 08:09:35 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id E045F3032F6F
-	for <lists+stable@lfdr.de>; Fri, 29 May 2026 06:08:16 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 8A6C3305C510
+	for <lists+stable@lfdr.de>; Fri, 29 May 2026 06:08:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6E3E639DBFA;
-	Fri, 29 May 2026 06:08:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 31B0336D512;
+	Fri, 29 May 2026 06:08:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="EFoMaHX4"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="qE9OuFe6"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-dy1-f174.google.com (mail-dy1-f174.google.com [74.125.82.174])
+Received: from mail-dy1-f169.google.com (mail-dy1-f169.google.com [74.125.82.169])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 080CE36D512
-	for <stable@vger.kernel.org>; Fri, 29 May 2026 06:08:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.82.174
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9C96921E097
+	for <stable@vger.kernel.org>; Fri, 29 May 2026 06:08:22 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.82.169
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780034896; cv=none; b=imLzZ36nJzp3Dux4KwDxHkYaBMLz+ZBWiIDo1iwCm+jWdQFwKwCERcx2EChrQ2v5mU6xTz478PWC8ZzZtGPAkPhYmM/yardv9C5cmBmGI8alOJaSsI6vSMrifuEGMOASLkNZunytUDi2daQa6Bk5wz0OfH1SiI4eD6mEx8HkDcU=
+	t=1780034904; cv=none; b=cNhXqSwnwro5K6sTcx8q8OhGDmnfFw/IAGjWUIYwuMytsOOw8el7yJZ3SrCidiweP66viQV1+J9KCIQA8UDmGiYQ2+j1GjoZerGIWGdESF0sHJ52WP4jSBNCKmaSGOCNHSb4K2vm8W5VSrbIb+L+2gKxdduB0tatjzhPPxmQqOA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780034896; c=relaxed/simple;
-	bh=HHC6e+kD/9SrX7+OVxyl7mUnMFwBNgh86D5aLKZXzRE=;
+	s=arc-20240116; t=1780034904; c=relaxed/simple;
+	bh=LnibKwQpOlJb46nJLQJXqOxe6+XkRwc4fqRIjM3B9hE=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=UWZSPS7jMU21TKxYbBKA5d+F7X+FOKbhZBxtXAmfzbCIa9fh3cgyHC3Tvhnn1aQheJfepaWpISthFd4XrtOkDqZXCSZ7wvMbdMnFwYmnZhTfIr04Ukn089Pz5SCtwD+DAb6dV+w37AxO8JTUeVbk/QvdNoFEBnHiJYSFNBagSYE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=EFoMaHX4; arc=none smtp.client-ip=74.125.82.174
+	 MIME-Version; b=CCwNSZT/xcd4Kx/z2esj3h6mwF9Q0aJ44KER5HrC0VzNEU3SwLtggeWLEAZKYJnabRKAAtkqIdq1S8SNrYh3asDqJ/jgE7+7oKFDqVbNXrTo0pnRhIicaetnjvfSmBGA4Ck/yUqQ0P3citEiqGI2fhxJCXyUJjlurWV7uJYlnhQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=qE9OuFe6; arc=none smtp.client-ip=74.125.82.169
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-dy1-f174.google.com with SMTP id 5a478bee46e88-304b8ced372so4022019eec.0
-        for <stable@vger.kernel.org>; Thu, 28 May 2026 23:08:14 -0700 (PDT)
+Received: by mail-dy1-f169.google.com with SMTP id 5a478bee46e88-304b8ced372so4022141eec.0
+        for <stable@vger.kernel.org>; Thu, 28 May 2026 23:08:22 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1780034894; x=1780639694; darn=vger.kernel.org;
+        d=gmail.com; s=20251104; t=1780034902; x=1780639702; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=KAYqt2vh2yfr426P6OZcPGX7qTEFDCZm7KXgv2UYgjw=;
-        b=EFoMaHX4GAONe+IvOSTmsqigKs80LGBRUHUvyCuQv7UGefqvNlVism4AROPgrfipWx
-         zb8vYMwIY2VXeTGP/BeAhBb4NdhWJoS00FCRLi2ykPzqC5Rp5yF4/V8byNNmpoj+Z1Hs
-         kHg33o0kkb0vXM4yiRrzKdt/jsHYLZg06ykFpdHBw/1+wYr5EQh6H2t8LXYNG28Fl+zL
-         XHEyJT3dPmJZqSp7orLcWOWu+yEVrasmUp7AiywkII1qCtcvOG6mTtd/mzG55ITTsQR2
-         CNC6GR3IWz0l5hEyKbuTH3cXzKh8THmOYWfXP79rDpNaA1URY/Zfn2kI2x+IKuBIi6x9
-         NacA==
+        bh=mfOCqyAcCU6kRgfu94uoahS3a9se4soGGGXVfKTWfOw=;
+        b=qE9OuFe6ibDO7+0cTj9uOB7gBlpz5a0oSh8jvxk4wNeow5OV6jRfTiBR1G1fgI1QqG
+         lpBkd8JrB19EZWuVOI54pYM73oiICr58X4RvwdGUKb0lRjFu+eN1/HVbTPQlAgqF0CWf
+         shMvjEHXca1fWPSN+G5bRBQt88zTh8+jXwr+POkNkibfNhZeAVo3uXITKGxAVqxYTV/t
+         SA548FAcUUS2UnmcVVIZbPeiCNXiiIkIyEfBpXgg19+hk8R1Gz2OYJ1HHi/CoICvu+OH
+         xxtZ39WuFxXFm/eVLMA4CPEzuwp8H1Z+TPacRWW4tvgYCG6qnVrw6hbs3HP45PAMGmd4
+         HAzg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1780034894; x=1780639694;
+        d=1e100.net; s=20251104; t=1780034902; x=1780639702;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to;
-        bh=KAYqt2vh2yfr426P6OZcPGX7qTEFDCZm7KXgv2UYgjw=;
-        b=CpCXt7I4exgCcpVuH4DbmEvPI+TGcydZ2hp+t8WeoyBerGncBijQXkTa2LD8UzBVHg
-         2t3CPkjMGujiOHw1LYtJzQsOJ0Wp9TanEJSmQkMSdBb9qDiUPYkjkjRKb6arfeD7rqVz
-         amsWeZWJ25m47nCohbpQAKACFGr9Z3PDLmATSo7ntw0vPCcIhvDaF/x6819+DtWb6OJu
-         JJw0zmbLb7gLs/mBa99M7+lJJusXLq0YjVnJ82cPWUC+tHx347mbbEX1Uh5ImkaaEh88
-         K+vqyfInRrKXCKn1UOqExnmO9sKlldS97n3tTsw1oxp6MoHvGjPYSx5kGLqpo81pFzE9
-         EqJw==
-X-Gm-Message-State: AOJu0YwH8eLIkNrhKKw58Q66GoVWhJG4ZWhCjUgoHaxdWP//flyt6iEu
-	bgcq8H8TAau+y37sInQU+JM39PrKdRF6GJ/aP99EIMZ0GPj9G1bIdl1+lXHEREuyksI=
-X-Gm-Gg: Acq92OFJSEAzAM69mwVNwWkgwXT9+qh+d56uQDVIEw4lEnqkmVrwic0nW1gefJ7ZiJH
-	17hb4aThVPrSiH6bF9OgRF/vs2Ow3NYcoBC7BAUIVC86+CHTXDGxcqAyA5x8Oq0Op6+CnqQRd7G
-	hyCWA0VH4Q7qQMplx/shOfJ0T2MnZ5EXrjJ6DJUl4eRv/xKu/xSImfH9PLBklrjQdBteh4HTOil
-	gI52VnaD9tdZQrFUOkc93IwFZ9G6Z5W9Tr582AFCLqS2w/HaJ1W419+gbtkmrtdSZ0IVtGcJFJW
-	dSf2ZC/juHL8GU2bLfAuyTf/cBkGZYNVaOuK73HdfkiM1sNWmLA65REBEUg43c63x2ATMTUj2DC
-	eww5HJYkaRKlX9DkVJCWZ6BJg17pXRpiRFa0LrHI417je/zazelyU1EGbIPks+0Q1eJXZKgJSjm
-	dcz0E4fY9RMLTwX+EK53ixpnslyNP91F+/Pjy5GAL2oFg8j4YFrhmMFXEW4BT1NQdVmQzjSVbqk
-	swCuBB/7JcWLXWMxBdsOt6TXQ==
-X-Received: by 2002:a05:7301:e2b:b0:2be:1f58:32a3 with SMTP id 5a478bee46e88-304eb228f05mr682330eec.29.1780034893923;
-        Thu, 28 May 2026 23:08:13 -0700 (PDT)
+        bh=mfOCqyAcCU6kRgfu94uoahS3a9se4soGGGXVfKTWfOw=;
+        b=ke1Zm/r2YqoU9bvVYndg/0A9QSJZFcmT3IzYFWQDFkrFkEZvSBs4DbENzpf8a1O/UA
+         Ae7Rw4iDz8GH3aQX23UqcFcWNkTsG/IncoiyyXtQiy2U8rbQ9TKlPmWhT7ZQty/TgoKP
+         oHNnSsaM4akJAf6gnkJ0mpa+sctUg8V+AtBlv5mdlSKfx7a0BKGlgwl9BH4aCo5ALfTm
+         qVReB8bc3DiCR1XxQ0zSempfh/ff4Nv6bP5GBro52AQcCjGrjYH9ZOQDzj9lbn0GHztC
+         0nQI4XOMHuId9majPpBwuEYhO+KFttdTp+lyZ1fVyHi4QqS8wYxTq1pwF0cwarD6YKqg
+         vXBg==
+X-Gm-Message-State: AOJu0YzO95NzEAc/fJeoWbnx0P8nwvC3B3NZ5ChU23wI+GLp5I4T66Mi
+	EgyfshiLJsyuPglj9r+2PQBzDqrHZGx2TN/F2Pt6dNsuOh2riasHs3bPS+b+kaHLdxs=
+X-Gm-Gg: Acq92OGx9BJwywlTOrhSah48vfjHnOrazqsXJs0WdPo3dBP5W3fxI0Ge63r0GATBYXn
+	+fWqUBNB9lsf3ZfghPWfPcGWx+G4+d30TTJRegIFA4roeO5VB17Zo7gmg+MwvcJOCk3JSiIoBVu
+	cPwbeuYnJXx1OICtKUwiMN4g/DK/CEuoj8vcF8jR3g0gSFYiEid7YLeNmxsJ8ZFNfsC2fiUDZ8E
+	20VMIFryNuIiWmdqatFaN1cA6JkTQHEGSsuDJuKx4vBbdR24RI1x3m+lkLBYmPI0irRTg0fr7QS
+	1hY4gHl5+besxDYweOsXzzVmeDOykE53KR8++3YzlWfOMCnkCl7UnIFe0n26vwotEauzZv+BiJ1
+	TjC5RLx494/Goqpydb5kSusXGtCqSAI8mZPS5G7LX0dI059AXxgV+LAqTlOVuOyMigjeKQLKJj6
+	6hZvgcGh6iMpXmjnk2hpaClE7aeMwt2gasx95DSgt26YV+e6b7+OMKGg4cEchoL14OjGAsNFzhp
+	YBV9CdjLDXkwrKkwDz5Xx9nQg==
+X-Received: by 2002:a05:7300:8ca7:b0:304:5a53:7dac with SMTP id 5a478bee46e88-304eb1d10c2mr616545eec.25.1780034896962;
+        Thu, 28 May 2026 23:08:16 -0700 (PDT)
 Received: from localhost.localdomain ([2600:381:9b0d:7988:3c9b:bcf6:17d8:5fef])
-        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-304ed578c48sm637742eec.20.2026.05.28.23.08.11
+        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-304ed578c48sm637742eec.20.2026.05.28.23.08.14
         (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
-        Thu, 28 May 2026 23:08:13 -0700 (PDT)
+        Thu, 28 May 2026 23:08:16 -0700 (PDT)
 From: Ian Klatzco <iklatzco@gmail.com>
 To: stable@vger.kernel.org
 Cc: gregkh@linuxfoundation.org,
@@ -84,12 +84,13 @@ Cc: gregkh@linuxfoundation.org,
 	yeoreum.yun@arm.com,
 	David Wang <00107082@163.com>,
 	Ian Klatzco <iklatzco@gmail.com>
-Subject: [PATCH 6.12.y] perf: Fix dangling cgroup pointer in cpuctx
-Date: Thu, 28 May 2026 23:06:57 -0700
-Message-Id: <20260529060658.69703-1-iklatzco@gmail.com>
+Subject: [PATCH 6.6.y] perf: Fix dangling cgroup pointer in cpuctx
+Date: Thu, 28 May 2026 23:06:58 -0700
+Message-Id: <20260529060658.69703-2-iklatzco@gmail.com>
 X-Mailer: git-send-email 2.39.3 (Apple Git-146)
-In-Reply-To: <CAB=irMzhVj6B=T6XS7VyN9K_5Q+gCHD7dsw7fKSPWuNfjEATvA@mail.gmail.com>
+In-Reply-To: <20260529060658.69703-1-iklatzco@gmail.com>
 References: <CAB=irMzhVj6B=T6XS7VyN9K_5Q+gCHD7dsw7fKSPWuNfjEATvA@mail.gmail.com>
+ <20260529060658.69703-1-iklatzco@gmail.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -103,13 +104,13 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
 	R_MISSING_CHARSET(0.50)[];
 	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
 	FREEMAIL_CC(0.00)[linuxfoundation.org,kernel.org,infradead.org,arm.com,163.com,gmail.com];
-	TAGGED_FROM(0.00)[bounces-256518-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-256519-lists,stable=lfdr.de];
 	RCVD_COUNT_FIVE(0.00)[5];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
@@ -124,9 +125,9 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	TAGGED_RCPT(0.00)[stable];
 	FREEMAIL_FROM(0.00)[gmail.com];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[infradead.org:email,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,arm.com:email]
-X-Rspamd-Queue-Id: D468E5FDCB1
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,infradead.org:email,arm.com:email]
+X-Rspamd-Queue-Id: 38B0D5FDC5A
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
@@ -152,10 +153,10 @@ Signed-off-by: Ian Klatzco <iklatzco@gmail.com>
  1 file changed, 4 insertions(+), 12 deletions(-)
 
 diff --git a/kernel/events/core.c b/kernel/events/core.c
-index 6fce2bac6dae..9099c0cc933b 100644
+index eba5eb6fcb87..a4187dea6402 100644
 --- a/kernel/events/core.c
 +++ b/kernel/events/core.c
-@@ -2096,18 +2096,6 @@ list_del_event(struct perf_event *event, struct perf_event_context *ctx)
+@@ -2056,18 +2056,6 @@ list_del_event(struct perf_event *event, struct perf_event_context *ctx)
  	if (event->group_leader == event)
  		del_event_from_groups(event, ctx);
  
@@ -174,7 +175,7 @@ index 6fce2bac6dae..9099c0cc933b 100644
  	ctx->generation++;
  	event->pmu_ctx->nr_events--;
  }
-@@ -2457,6 +2445,10 @@ __perf_remove_from_context(struct perf_event *event,
+@@ -2401,6 +2389,10 @@ __perf_remove_from_context(struct perf_event *event,
  		state = PERF_EVENT_STATE_DEAD;
  	}
  	event_sched_out(event, ctx);
