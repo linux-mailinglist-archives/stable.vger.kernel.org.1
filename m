@@ -1,231 +1,332 @@
-Return-Path: <stable+bounces-256495-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-256496-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id GJGcD7AVGWr+qAgAu9opvQ
-	(envelope-from <stable+bounces-256495-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 29 May 2026 06:27:28 +0200
+	id QJkhBfcXGWoMqQgAu9opvQ
+	(envelope-from <stable+bounces-256496-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 29 May 2026 06:37:11 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id D3A4E5FCF65
-	for <lists+stable@lfdr.de>; Fri, 29 May 2026 06:27:27 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1DB975FD092
+	for <lists+stable@lfdr.de>; Fri, 29 May 2026 06:37:09 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id D76FA3038553
-	for <lists+stable@lfdr.de>; Fri, 29 May 2026 04:27:20 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id AF16430248A5
+	for <lists+stable@lfdr.de>; Fri, 29 May 2026 04:33:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BB1FD373BEC;
-	Fri, 29 May 2026 04:27:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2A071369D72;
+	Fri, 29 May 2026 04:33:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="I5Fs9ts3"
+	dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b="HoRW3lS/"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f41.google.com (mail-wm1-f41.google.com [209.85.128.41])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D802A373BE4;
-	Fri, 29 May 2026 04:27:16 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3DFEF367B93
+	for <stable@vger.kernel.org>; Fri, 29 May 2026 04:33:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.41
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780028838; cv=none; b=i6n7NhsG8VUTMTYZqHXkiJSkb+5JpdP9QKqdZH+wmK+skTY0dvft9JqS1htwICY8/ZpnKf58YoQXlFKG98Qs247v3h/3yed9whMRQnp9TZ4KDB/eaI3W5V9DDs/Bm+8Ch4DDZ+vmfo6x2ZCigDGOhCu83mQc0HZhZP9R6Pva0p0=
+	t=1780029183; cv=none; b=YsMsMm7zweplmHI8aSREgWlWMIOKM8uKIkrKdwJPG2Dy1A0jyJslDjbm/+zJMZFB82wTI+1ihJ+mS+F+KIs4eWPh8m2GSmE2/trpKqlIdvycCWKWqYKdMt6d/UQkxtOdh6HEvbkYMutJimu1BGzVq0Dz25LHIqBl4FV2WLX/1vE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780028838; c=relaxed/simple;
-	bh=qsPONvq5w1NtH29U42Umw2XookIWHrVwLFY02qFulKQ=;
-	h=Date:To:From:Subject:Message-Id; b=OOz0IvJY6cXbCvBgtXvtdPkL5+HpgObnJuGKG0fTiud5c+8e6kBgkLiui5ORZVeOfOcdjjrX97c3RhBEI7DVMutWrl54Z/dFmKxg9rcElZ3bLUHYicxTo83z4M+l9CIi9do6D/OefqFsdzplEpA5jE2r7B4B2OMewv4kmaA+i48=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=I5Fs9ts3; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AC27F1F00893;
-	Fri, 29 May 2026 04:27:16 +0000 (UTC)
+	s=arc-20240116; t=1780029183; c=relaxed/simple;
+	bh=62zNBFgvQLro1VxRfSmByKmGGLlJc7xQqiJ97q0s+sc=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=GIYcp1yVRfYZ9IaNIyOf/wLVV0CvP6Tw3TZO46yXjRzRanGo7VjSNEYLSCMvdEJncnl3k1s+KoOPAxwvzctk+1YylRF7v0vWjFAZPLfhvdQrT3qClT0dBlNGqcMn6nYvBDeTL95k+QauuBoT0K0SV5xk07xqgzW262Aiunk13EU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com; spf=pass smtp.mailfrom=suse.com; dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b=HoRW3lS/; arc=none smtp.client-ip=209.85.128.41
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.com
+Received: by mail-wm1-f41.google.com with SMTP id 5b1f17b1804b1-4903d5c67bfso42715235e9.1
+        for <stable@vger.kernel.org>; Thu, 28 May 2026 21:33:00 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=linux-foundation.org; s=korg; t=1780028836;
-	bh=0TU9tacIfC2l7bNczHIGcIdr2LaZOopC/UX0pncXbtc=;
-	h=Date:To:From:Subject;
-	b=I5Fs9ts3O8ITMFu7ykc9F/bh4Zoej6oVq/PgUmTPBuG0EBASkiqAOQbwGw76wKKAz
-	 0/McC9ceypuIPHgyynMa7HBXfeS8L9OLPf8rKXIDwUi+GMt+6HvwVkLegUbrTUfZ6M
-	 VkBudKyYKreu2987ujBwTtW1xaaR7QiLQnO8fAhY=
-Date: Thu, 28 May 2026 21:27:16 -0700
-To: mm-commits@vger.kernel.org,stable@vger.kernel.org,piaojun@huawei.com,mark@fasheh.com,junxiao.bi@oracle.com,joseph.qi@linux.alibaba.com,jlbec@evilplan.org,heming.zhao@suse.com,gechangwei@live.cn,michael.bommarito@gmail.com,akpm@linux-foundation.org
-From: Andrew Morton <akpm@linux-foundation.org>
-Subject: [merged mm-nonmm-stable] ocfs2-reject-non-inline-dinodes-with-i_size-and-zero-i_clusters.patch removed from -mm tree
-Message-Id: <20260529042716.AC27F1F00893@smtp.kernel.org>
+        d=suse.com; s=google; t=1780029180; x=1780633980; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:autocrypt:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:from:to:cc:subject:date:message-id:reply-to;
+        bh=u61ZBIXJlKau2NUbJ1xnjRW0I95FN1h148sm4DYkpJc=;
+        b=HoRW3lS/QiYx29JPg32G/KJC7MvKL1GO0LaBOrmAaveu38y0Atg1GA+8t6rnHKdZLL
+         C0GyNkdbjidxC/GyBvTREFGvNyarfJ8cfXDLmHW2yZyYq8EuOGIK9eR5b6J+0C/F5X+T
+         SwbOditl1zUTHCdyLgM0DrSSJRo2ieCHEGohnvecPH8nAckSML3/y429vxTLGOvqAycL
+         vBPPHAdt5j2oov8A6HlxbLq520WgdUDVVLyb+SEH1/nZGnt6pF5OwINcsKorI5ho/F7+
+         nx7NMDiEYUOzmQZv0qDnbuSksPuzT/M/HtmFJ+llSwJ5mnHpGr1A656ioGROmFQ4mioD
+         KhUQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1780029180; x=1780633980;
+        h=content-transfer-encoding:in-reply-to:autocrypt:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=u61ZBIXJlKau2NUbJ1xnjRW0I95FN1h148sm4DYkpJc=;
+        b=XhDXsx+8zs/LXBZ5Y5g0e4vjOK1PzzpFY/t+WtvMiIiZUxnU7/ilGDee/S66e9O7Rx
+         CSfh11JR97IQduS5KL3dijrO35OUWjV6H3RwrT/I30n+YaL+HLjhIp+DOhUM3BrjP4w+
+         EawX+6ZVDXKKh77x0hmyKMSemTasQr6GaaGQMEf/y7Nyxh28pkIdGp/qHl0cQmYAMOS3
+         QXxMIUZkv9/4+DPh0/plJScHF1TujXdg63nW6vW75kqKsgwT89ofzFjUREW/iX9TBA/J
+         m1qBOR4i6krOKS8eKAp4GGPEeyU3iMPS8ownKBkM3+MVZnZaomri0BOg+VcNsuuRGsSY
+         nySA==
+X-Forwarded-Encrypted: i=1; AFNElJ8VyAB9mkRZYMi+uUPYSIhSLqFyfjKgfKe9Eq4jh2X1o8z7UNxN09dD66u1KEAz7H1YaEoAWQo=@vger.kernel.org
+X-Gm-Message-State: AOJu0Ywzu3ena78Ca2eWk4pfaswd/Xxw5+x7rBqA0uKBX8GeQLscXhln
+	wg4gFchfSzzp86fNKjUOPP7P3pmYHeOPtxP7BJZxZDlV980edkapP6Nr0uQobfN24B7XeKRi3q2
+	fSZJb
+X-Gm-Gg: Acq92OEVZVfSPlPIYQvCTvw1Qs2oCqls1u8jc9/Vcb9jeYP6lzo4dboM91q1A6QwbIG
+	jSVktWFzCd6/t9CiLvW+CYZxiUxvxIUDoCHTPUAPI81bszYjuNOlf8ydh7vtawnNS1pcxxiyp5p
+	1iPVvRIrYfeFzGkRJMM8KHAAZ5lH5unq6gIb3OgGadXyzQPtb4KLKLnkrdiZ2TUBgeNdGTcYU8v
+	E/KiIDdF6DDuEwL2Se5t3JFSkNBkW+eeCfCUUvWilHgGtpBDiqtPAxPNHBe9r913oyDLIHSZj/K
+	941HGaJRoy/dRMQWcWWvy3AQToYG/uOPaTehzVC5QNt8SXvj8RRNRpGcj66eTYTt/igD7oJMKxr
+	Z77lnNnoVoyuenOQvoehV8WUcFkKHskCi9tBfb0FS4bFyFSQfLV6M+oDoiFUJEaV3KpW/HAXZNf
+	VEfBdRXdxE/DdP+aQMR1t5LG0/aCMVBb6jqedtQnvuc0X7uuGWbn70B2yaO2d/3EC7eUH9G66fS
+	D1CAOov/zHNUAxiKumLZznleG4pzPpNtkZNUmV8nwZqt8ZSOq6qjZOO3y/sczTe1DqN
+X-Received: by 2002:a05:600c:5247:b0:490:3d62:eb0 with SMTP id 5b1f17b1804b1-4909c0c6e4fmr20211615e9.24.1780029179368;
+        Thu, 28 May 2026 21:32:59 -0700 (PDT)
+Received: from ?IPV6:2403:580d:fda1:0:2bb5:f164:6e6a:38d8? (2403-580d-fda1-0-2bb5-f164-6e6a-38d8.ip6.aussiebb.net. [2403:580d:fda1:0:2bb5:f164:6e6a:38d8])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2bf23c5a350sm4567425ad.83.2026.05.28.21.32.56
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 28 May 2026 21:32:58 -0700 (PDT)
+Message-ID: <48638d5d-906c-4280-aeff-cc68cacea595@suse.com>
+Date: Fri, 29 May 2026 14:02:53 +0930
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-X-Spamd-Result: default: False [0.34 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 1/2] btrfs: fix false IO failure after falling back to
+ buffered IO
+To: Qu Wenruo <quwenruo.btrfs@gmx.com>, Boris Burkov <boris@bur.io>
+Cc: linux-btrfs@vger.kernel.org, stable@vger.kernel.org
+References: <cover.1779846117.git.wqu@suse.com>
+ <b3393b113c45ac7bd7b2649576b5667395c22a1b.1779846117.git.wqu@suse.com>
+ <20260527160112.GB1981571@zen.localdomain>
+ <2a0b085c-bc28-49b9-8c75-376ad2fe9daf@gmx.com>
+Content-Language: en-US
+From: Qu Wenruo <wqu@suse.com>
+Autocrypt: addr=wqu@suse.com; keydata=
+ xsBNBFnVga8BCACyhFP3ExcTIuB73jDIBA/vSoYcTyysFQzPvez64TUSCv1SgXEByR7fju3o
+ 8RfaWuHCnkkea5luuTZMqfgTXrun2dqNVYDNOV6RIVrc4YuG20yhC1epnV55fJCThqij0MRL
+ 1NxPKXIlEdHvN0Kov3CtWA+R1iNN0RCeVun7rmOrrjBK573aWC5sgP7YsBOLK79H3tmUtz6b
+ 9Imuj0ZyEsa76Xg9PX9Hn2myKj1hfWGS+5og9Va4hrwQC8ipjXik6NKR5GDV+hOZkktU81G5
+ gkQtGB9jOAYRs86QG/b7PtIlbd3+pppT0gaS+wvwMs8cuNG+Pu6KO1oC4jgdseFLu7NpABEB
+ AAHNGFF1IFdlbnJ1byA8d3F1QHN1c2UuY29tPsLAlAQTAQgAPgIbAwULCQgHAgYVCAkKCwIE
+ FgIDAQIeAQIXgBYhBC3fcuWlpVuonapC4cI9kfOhJf6oBQJnEXVgBQkQ/lqxAAoJEMI9kfOh
+ Jf6o+jIH/2KhFmyOw4XWAYbnnijuYqb/obGae8HhcJO2KIGcxbsinK+KQFTSZnkFxnbsQ+VY
+ fvtWBHGt8WfHcNmfjdejmy9si2jyy8smQV2jiB60a8iqQXGmsrkuR+AM2V360oEbMF3gVvim
+ 2VSX2IiW9KERuhifjseNV1HLk0SHw5NnXiWh1THTqtvFFY+CwnLN2GqiMaSLF6gATW05/sEd
+ V17MdI1z4+WSk7D57FlLjp50F3ow2WJtXwG8yG8d6S40dytZpH9iFuk12Sbg7lrtQxPPOIEU
+ rpmZLfCNJJoZj603613w/M8EiZw6MohzikTWcFc55RLYJPBWQ+9puZtx1DopW2jOwE0EWdWB
+ rwEIAKpT62HgSzL9zwGe+WIUCMB+nOEjXAfvoUPUwk+YCEDcOdfkkM5FyBoJs8TCEuPXGXBO
+ Cl5P5B8OYYnkHkGWutAVlUTV8KESOIm/KJIA7jJA+Ss9VhMjtePfgWexw+P8itFRSRrrwyUf
+ E+0WcAevblUi45LjWWZgpg3A80tHP0iToOZ5MbdYk7YFBE29cDSleskfV80ZKxFv6koQocq0
+ vXzTfHvXNDELAuH7Ms/WJcdUzmPyBf3Oq6mKBBH8J6XZc9LjjNZwNbyvsHSrV5bgmu/THX2n
+ g/3be+iqf6OggCiy3I1NSMJ5KtR0q2H2Nx2Vqb1fYPOID8McMV9Ll6rh8S8AEQEAAcLAfAQY
+ AQgAJgIbDBYhBC3fcuWlpVuonapC4cI9kfOhJf6oBQJnEXWBBQkQ/lrSAAoJEMI9kfOhJf6o
+ cakH+QHwDszsoYvmrNq36MFGgvAHRjdlrHRBa4A1V1kzd4kOUokongcrOOgHY9yfglcvZqlJ
+ qfa4l+1oxs1BvCi29psteQTtw+memmcGruKi+YHD7793zNCMtAtYidDmQ2pWaLfqSaryjlzR
+ /3tBWMyvIeWZKURnZbBzWRREB7iWxEbZ014B3gICqZPDRwwitHpH8Om3eZr7ygZck6bBa4MU
+ o1XgbZcspyCGqu1xF/bMAY2iCDcq6ULKQceuKkbeQ8qxvt9hVxJC2W3lHq8dlK1pkHPDg9wO
+ JoAXek8MF37R8gpLoGWl41FIUb3hFiu3zhDDvslYM4BmzI18QgQTQnotJH8=
+In-Reply-To: <2a0b085c-bc28-49b9-8c75-376ad2fe9daf@gmx.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
-	R_DKIM_ALLOW(-0.20)[linux-foundation.org:s=korg];
+	DMARC_POLICY_ALLOW(-0.50)[suse.com,quarantine];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
+	R_DKIM_ALLOW(-0.20)[suse.com:s=google];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-256495-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	DMARC_NA(0.00)[linux-foundation.org];
-	FROM_HAS_DN(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FREEMAIL_TO(0.00)[vger.kernel.org,huawei.com,fasheh.com,oracle.com,linux.alibaba.com,evilplan.org,suse.com,live.cn,gmail.com,linux-foundation.org];
-	DKIM_TRACE(0.00)[linux-foundation.org:+];
-	MISSING_XM_UA(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[akpm@linux-foundation.org,stable@vger.kernel.org];
-	RCPT_COUNT_SEVEN(0.00)[11];
-	NEURAL_HAM(-0.00)[-1.000];
-	TO_DN_NONE(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
 	MIME_TRACE(0.00)[0:+];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-256496-lists,stable=lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
+	FREEMAIL_TO(0.00)[gmx.com,bur.io];
+	DKIM_TRACE(0.00)[suse.com:+];
+	RCPT_COUNT_THREE(0.00)[4];
+	FROM_HAS_DN(0.00)[];
+	TO_DN_SOME(0.00)[];
+	RCVD_COUNT_FIVE(0.00)[5];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[wqu@suse.com,stable@vger.kernel.org];
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	NEURAL_HAM(-0.00)[-1.000];
+	TAGGED_RCPT(0.00)[stable];
+	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linux-foundation.org:email,linux-foundation.org:dkim,smtp.kernel.org:mid,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo]
-X-Rspamd-Queue-Id: D3A4E5FCF65
+	DBL_BLOCKED_OPENRESOLVER(0.00)[suse.com:mid,suse.com:dkim,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo]
+X-Rspamd-Queue-Id: 1DB975FD092
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
 
-The quilt patch titled
-     Subject: ocfs2: reject non-inline dinodes with i_size and zero i_clusters
-has been removed from the -mm tree.  Its filename was
-     ocfs2-reject-non-inline-dinodes-with-i_size-and-zero-i_clusters.patch
 
-This patch was dropped because it was merged into the mm-nonmm-stable branch
-of git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
+在 2026/5/28 07:10, Qu Wenruo 写道:
+> 
+> 
+> 在 2026/5/28 01:31, Boris Burkov 写道:
+>> On Wed, May 27, 2026 at 02:36:44PM +0930, Qu Wenruo wrote:
+>>> [BUG]
+>>> The test case generic/362 will fail with "nodatasum" mount option (*):
+>>>
+>>>   MOUNT_OPTIONS -- -o nodatasum /dev/mapper/test-scratch1 /mnt/scratch
+>>>
+>>>   generic/362  0s ... - output mismatch (see /home/adam/xfstests/ 
+>>> results//generic/362.out.bad)
+>>>      --- tests/generic/362.out    2024-08-24 15:31:37.200000000 +0930
+>>>      +++ /home/adam/xfstests/results//generic/362.out.bad    
+>>> 2026-05-27 10:21:17.574771567 +0930
+>>>      @@ -1,2 +1,3 @@
+>>>       QA output created by 362
+>>>      +First write failed: Input/output error
+>>>       Silence is golden
+>>>      ...
+>>>
+>>> *: If the test case has been executed before with default data checksum,
+>>> the failure will not reproduce. Need the following fix to make it
+>>> reliably reproducible:
+>>> https://lore.kernel.org/linux-btrfs/20260526070055.60193-1-wqu@suse.com/
+>>>
+>>> [CAUSE]
+>>> Btrfs direct write disable page fault of the input buffer, this is to
+>>> avoid a deadlock specific to btrfs.
+>>>
+>>> So for the test case generic/362, it uses an anonymous page as input
+>>> buffer. And since the page is not yet faulted in, the direct IO will
+>>> fail with -EFAULT, causing us to go through the following call chain:
+>>>
+>>>   btrfs_direct_write()
+>>
+>> I believe that when direct_write() sees EFAULT from btrfs_dio_write() it
+>> should do the fault and retry, not fallback straight to buffered.
+> 
+> It doesn't return -EFAULT.
+> 
+> btrfs_direct_write() returned an dio pointer, although it has not 
+> submitted any bytes for that dio structure.
+> 
+> So later iomap_dio_complete() returned 0.
+> 
 
-------------------------------------------------------
-From: Michael Bommarito <michael.bommarito@gmail.com>
-Subject: ocfs2: reject non-inline dinodes with i_size and zero i_clusters
-Date: Tue, 19 May 2026 07:04:04 -0400
+I added more trace_printk(), and it shows it's the EFAULT handling reset 
+the error number:
+("r/i=" shows the root id and ino from btrfs, "i=" shows the generic 
+ino, "pos=" shows the file pos and length)
 
-On a volume mounted without OCFS2_FEATURE_INCOMPAT_SPARSE_ALLOC, a
-non-inline regular file with non-zero i_size and zero i_clusters is
-structurally malformed: the extent map declares no allocated clusters yet
-the size header claims content exists.  Keep rejecting that shape, but
-express it through a shared predicate so the same invariant is available
-to normal inode reads and online filecheck.
+  22.223076: __iomap_dio_rw: enter, i=257 pos=0/4096
+  22.223078: btrfs_dio_iomap_begin: enter, r/i=5/257 pos=0/4096
+  22.223097: btrfs_dio_iomap_begin: exit, r/i=5/257 pos=0/4096 phy=13631488
+  22.223106: __iomap_dio_rw: while loop, iomap_dio_iter ret=-14
+  22.223107: btrfs_dio_iomap_end: enter, r/i=5/257 pos=0/4096 written=0 
+ordered=0/4096
+  22.223126: btrfs_dio_iomap_end: exit, r/i=5/257 pos=0/4096 written=0 
+ret=-15
+  22.223179: __iomap_dio_rw: after while loop, ret=-15 dio->size=0
+  22.223180: __iomap_dio_rw: exit with dio, i=257
 
-The same zero-cluster shape is also malformed for non-inline directories. 
-ocfs2 directory growth allocates backing storage before advancing i_size,
-and ocfs2_dir_foreach_blk_el() later walks until ctx->pos reaches
-i_size_read(inode).  A forged directory dinode with a huge i_size and no
-clusters would repeatedly fail on holes while advancing through the
-claimed size.
+As you can see, iomap_dio_iter() itself returned -EFAULT, which is 
+expected as we disabled the page fault for the iov_iter.
 
-Sparse regular files remain exempt: on sparse-alloc volumes, truncate can
-legitimately grow i_size without allocating clusters.  System inodes and
-inline-data dinodes also retain their separate storage rules.
+But then it's at the following code block that our return value is reset 
+to 0:
 
-Mirror the check in ocfs2_filecheck_validate_inode_block() as well. 
-filecheck reports through its own error namespace, so malformed
-size/cluster state is logged as a filecheck invalid-inode result rather
-than via ocfs2_error(), but it must not proceed into
-ocfs2_populate_inode().
+         if (ret == -EFAULT && dio->size && (dio_flags & 
+IOMAP_DIO_PARTIAL)) {
+                 if (!(iocb->ki_flags & IOCB_NOWAIT))
+                         wait_for_completion = true;
+                 ret = 0;
+         }
 
-Link: https://lore.kernel.org/20260519110404.1803902-4-michael.bommarito@gmail.com
-Fixes: b657c95c1108 ("ocfs2: Wrap inode block reads in a dedicated function.")
-Signed-off-by: Michael Bommarito <michael.bommarito@gmail.com>
-Link: https://sashiko.dev/#/patchset/20260517111015.3187935-1-michael.bommarito%40gmail.com
-Assisted-by: Claude:claude-opus-4-7
-Reviewed-by: Joseph Qi <joseph.qi@linux.alibaba.com>
-Cc: Mark Fasheh <mark@fasheh.com>
-Cc: Joel Becker <jlbec@evilplan.org>
-Cc: Junxiao Bi <junxiao.bi@oracle.com>
-Cc: Changwei Ge <gechangwei@live.cn>
-Cc: Jun Piao <piaojun@huawei.com>
-Cc: Heming Zhao <heming.zhao@suse.com>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
----
-
- fs/ocfs2/inode.c |   60 +++++++++++++++++++++++++++++++++++++++++++++
- 1 file changed, 60 insertions(+)
-
---- a/fs/ocfs2/inode.c~ocfs2-reject-non-inline-dinodes-with-i_size-and-zero-i_clusters
-+++ a/fs/ocfs2/inode.c
-@@ -82,6 +82,24 @@ static bool ocfs2_dinode_has_unexpected_
- 	return !S_ISCHR(mode) && !S_ISBLK(mode) && di->id1.dev1.i_rdev != 0;
- }
- 
-+static bool ocfs2_dinode_has_size_without_clusters(struct super_block *sb,
-+						   struct ocfs2_dinode *di)
-+{
-+	umode_t mode = le16_to_cpu(di->i_mode);
-+
-+	if (le32_to_cpu(di->i_flags) & OCFS2_SYSTEM_FL)
-+		return false;
-+	if (le16_to_cpu(di->i_dyn_features) & OCFS2_INLINE_DATA_FL)
-+		return false;
-+	if (!le64_to_cpu(di->i_size) || le32_to_cpu(di->i_clusters))
-+		return false;
-+
-+	if (S_ISDIR(mode))
-+		return true;
-+
-+	return !ocfs2_sparse_alloc(OCFS2_SB(sb)) && S_ISREG(mode);
-+}
-+
- void ocfs2_set_inode_flags(struct inode *inode)
- {
- 	unsigned int flags = OCFS2_I(inode)->ip_attr;
-@@ -1563,6 +1581,33 @@ int ocfs2_validate_inode_block(struct su
- 		goto bail;
- 	}
- 
-+	/*
-+	 * Non-inline directories must not have i_size without allocated
-+	 * clusters: directory growth adds storage before advancing i_size,
-+	 * and readdir walks i_size block-by-block.  A forged directory
-+	 * with zero clusters and a huge i_size would repeatedly fault on
-+	 * holes while advancing through the claimed size.
-+	 *
-+	 * Non-inline regular files have the same invariant on non-sparse
-+	 * volumes.  Sparse regular files are different: truncate can
-+	 * legitimately grow i_size without allocating clusters, so keep
-+	 * the sparse-alloc carveout for S_IFREG only.  System inodes and
-+	 * inline-data dinodes have their own storage rules.
-+	 */
-+	if (ocfs2_dinode_has_size_without_clusters(sb, di)) {
-+		if (S_ISDIR(le16_to_cpu(di->i_mode)))
-+			rc = ocfs2_error(sb,
-+					 "Invalid dinode #%llu: directory i_size %llu with i_clusters 0 and no inline-data flag\n",
-+					 (unsigned long long)bh->b_blocknr,
-+					 (unsigned long long)le64_to_cpu(di->i_size));
-+		else
-+			rc = ocfs2_error(sb,
-+					 "Invalid dinode #%llu: regular file i_size %llu with i_clusters 0 and no inline-data flag on non-sparse volume\n",
-+					 (unsigned long long)bh->b_blocknr,
-+					 (unsigned long long)le64_to_cpu(di->i_size));
-+		goto bail;
-+	}
-+
- 	if (le16_to_cpu(di->i_dyn_features) & OCFS2_INLINE_DATA_FL) {
- 		struct ocfs2_inline_data *data = &di->id2.i_data;
- 
-@@ -1712,6 +1757,21 @@ static int ocfs2_filecheck_validate_inod
- 		     le16_to_cpu(di->i_mode),
- 		     (unsigned long long)le64_to_cpu(di->id1.dev1.i_rdev));
- 		rc = -OCFS2_FILECHECK_ERR_INVALIDINO;
-+		goto bail;
-+	}
-+
-+	if (ocfs2_dinode_has_size_without_clusters(sb, di)) {
-+		if (S_ISDIR(le16_to_cpu(di->i_mode)))
-+			mlog(ML_ERROR,
-+			     "Filecheck: invalid dinode #%llu: directory i_size %llu with i_clusters 0 and no inline-data flag\n",
-+			     (unsigned long long)bh->b_blocknr,
-+			     (unsigned long long)le64_to_cpu(di->i_size));
-+		else
-+			mlog(ML_ERROR,
-+			     "Filecheck: invalid dinode #%llu: regular file i_size %llu with i_clusters 0 and no inline-data flag on non-sparse volume\n",
-+			     (unsigned long long)bh->b_blocknr,
-+			     (unsigned long long)le64_to_cpu(di->i_size));
-+		rc = -OCFS2_FILECHECK_ERR_INVALIDINO;
- 	}
- 
- bail:
-_
-
-Patches currently in -mm which might be from michael.bommarito@gmail.com are
+So that explains why we will never get a -EFAULT directly from 
+__iomap_dio_rw(), at least for the write case.
 
 
+> Furthermore, the page fault in won't make any difference for this 
+> particular case, exactly explained by the comment itself, that the page 
+> cache will be invalidated.
+
+Sorry, I got confused with another case where the buffer page is from 
+page cache.
+
+For this particular case, it's unrelated, and we are able to fault-in 
+the anonymous page.
+
+
+>>> [FIX]
+>>> When a short dio write happened, we shouldn't mark it as an error, but
+>>> treat it like a truncated write.
+>>
+>> I am quite skeptical of this as the proper fix. I looked into this
+>> really thoroughly back in
+>> https://lore.kernel.org/linux-btrfs/20230328051957.1161316-12-hch@lst.de/
+>> and remember concluding it was much better to do the OE split and submit
+>> separate direct writes, and I believe it was more or less working.
+
+Firstly, the OE split and the proper fix doesn't conflict at all.
+
+In fact both co-operate with each other pretty well, especially shown by 
+the second write of the test case, shown by the trace:
+
+  22.223529: btrfs_direct_write: enter, r/i=5/257 pos=0/8192
+  22.223530: __iomap_dio_rw: enter, i=257 pos=0/8192
+  22.223531: btrfs_dio_iomap_begin: enter, r/i=5/257 pos=0/8192
+  22.223545: btrfs_dio_iomap_begin: exit, r/i=5/257 pos=0/8192 phy=13635584
+  22.223561: __iomap_dio_rw: while loop, iomap_dio_iter ret=0
+  22.223561: btrfs_dio_iomap_end: enter, r/i=5/257 pos=0/8192 
+written=4096 ordered=4096/4096
+
+Here we only copied the first page, and at this stage, the original 8K 
+OE is already being split into two.
+And the fix will properly truncate and remove the later half.
+
+  22.223568: btrfs_dio_iomap_end: exit, r/i=5/257 pos=4096/4096 
+written=4096 ret=-15
+  22.223582: btrfs_dio_iomap_begin: enter, r/i=5/257 pos=4096/4096
+  22.223588: btrfs_dio_iomap_begin: exit, r/i=5/257 pos=4096/4096 
+phy=13639680
+
+This time we retry with the 2nd page.
+
+  22.223588: __iomap_dio_rw: while loop, iomap_dio_iter ret=-14
+
+And still failed to fault in.
+
+  22.223588: btrfs_dio_iomap_end: enter, r/i=5/257 pos=4096/4096 
+written=0 ordered=4096/4096
+  22.223590: btrfs_dio_iomap_end: exit, r/i=5/257 pos=4096/4096 
+written=0 ret=-15
+
+So again remove the failed OE.
+
+  22.223610: __iomap_dio_rw: after while loop, ret=-15 dio->size=4096
+  22.223712: __iomap_dio_rw: exit with dio, i=257
+  22.223713: btrfs_direct_write: iomap_dio_complete() ret=4096
+
+So __iomap_dio_rw() only succeeded writed 4K.
+
+Now btrfs will fault-in the 2nd page and retry.
+
+  22.223717: __iomap_dio_rw: enter, i=257 pos=4096/4096
+  22.223718: btrfs_dio_iomap_begin: enter, r/i=5/257 pos=4096/4096
+  22.223730: btrfs_dio_iomap_begin: exit, r/i=5/257 pos=4096/4096 
+phy=13639680
+  22.223740: __iomap_dio_rw: while loop, iomap_dio_iter ret=0
+  22.223740: btrfs_dio_iomap_end: enter, r/i=5/257 pos=4096/4096 
+written=4096 ordered=4096/4096
+  22.223741: btrfs_dio_iomap_end: exit, r/i=5/257 pos=4096/4096 
+written=4096 ret=0
+
+Now with the 2nd page faulted in, this time we succeeded in handling the 
+2nd page, and every thing goes one.
+
+  22.223755: __iomap_dio_rw: after while loop, ret=0 dio->size=4096
+  22.223847: __iomap_dio_rw: exit with dio, i=257
+  22.223848: btrfs_direct_write: iomap_dio_complete() ret=8192
+  22.223849: btrfs_direct_write: exit, r/i=5/257 pos=0/8192 ret=8192 
+written=8192
+
+So this looks exactly the correct fix.
+
+If this extra trace helps, I can definitely reword the commit message to 
+reduce any possible confusion.
+
+Thanks,
+Qu
 
