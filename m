@@ -1,64 +1,61 @@
-Return-Path: <stable+bounces-256749-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-256750-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id UCJZB8zrGWrDzwgAu9opvQ
-	(envelope-from <stable+bounces-256749-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 29 May 2026 21:41:00 +0200
+	id L5uiCrrsGWrSzwgAu9opvQ
+	(envelope-from <stable+bounces-256750-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 29 May 2026 21:44:58 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id B63AE607F38
-	for <lists+stable@lfdr.de>; Fri, 29 May 2026 21:40:59 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 63CF1607F6F
+	for <lists+stable@lfdr.de>; Fri, 29 May 2026 21:44:56 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 126E33051C9F
-	for <lists+stable@lfdr.de>; Fri, 29 May 2026 19:37:05 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 4D7E8302B746
+	for <lists+stable@lfdr.de>; Fri, 29 May 2026 19:43:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 677DD3AA514;
-	Fri, 29 May 2026 19:37:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BC8353A875D;
+	Fri, 29 May 2026 19:43:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="CNX1Patm"
+	dkim=pass (1024-bit key) header.d=narfation.org header.i=@narfation.org header.b="y8VEN6aV"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from dvalin.narfation.org (dvalin.narfation.org [213.160.73.56])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E2BA53769EB;
-	Fri, 29 May 2026 19:37:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5A0772D8393
+	for <stable@vger.kernel.org>; Fri, 29 May 2026 19:43:45 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=213.160.73.56
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780083424; cv=none; b=H0MMl3phyogvYUFG+3XyRp0Wt32kRiHiP+nhiIqk70W0vNU7WhdZxADL0VL5XVQdfYvJfRzJ12xkzuyl79a+SqehpUozwgShLzwn0R8vQa5OoW55R9pioUfunAJ+ypR6Fgf9DLesZiKwvjO5HPtkAASUMZLOt1MXrcJizMYcFHQ=
+	t=1780083826; cv=none; b=jA8cPelibvJrlZPxzru80cfepJfndWvWywvAvJ6cw2qUGsmXNMS7rQmCyKtHjeFchEFtOnmn8YTZAJNWr9mFayvoNNq6tGL6DdwpIf9uUVMRGGy+UaMRNMvjOFFQrbAAGm9WAgB8K8hTKWCbYGTzvHSWtJvphkckJxWXb0LnC8k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780083424; c=relaxed/simple;
-	bh=DH0ypP6T3jGcAHeAyaZKvqeGqJORA7lJUCKoYnLIZ/U=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=SiNn45Pa9VmC+o+jNgzJeU7Qjh28ZxkTBACmV5+2/8BA4m/lMPgLELRLpDAmYxuQSHK+SCgdYR1lJooyyLCNPKsMmy4+77iFrIeirxMJoukSsTie9tPrOM08rq/3m3pZgm72Q4CDP0lsulZ+V9uEjWWd53p7YBqP48yw6o7RclU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=CNX1Patm; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 275591F00893;
-	Fri, 29 May 2026 19:37:02 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1780083422;
-	bh=uXXSjeJFPuB/KuxWxyJIQTywCncWt6wmewMVR0k3lww=;
-	h=From:To:Cc:Subject:Date;
-	b=CNX1Patm49sY+ooeTxvKjWszj/W1CVvN+O/h0HWvCoY11KGu0XP193ZcddNGOaeGx
-	 DNSdnNcG5NdRghUyYwoBB8KCopTuRZuEejVNnlm0YiBe91DFOwZ+Z1QQ/vcsqXE5uj
-	 NTSdiRFzxTGbtV7CcUXylvuex2iB/4/CzbdN7M/R2EWy8NwR6LRFbtGHwbk/w2UosM
-	 1J8fbg5++Z5zN1ecs2ug/PiaiAPiWNzMXVQdex5OcRToyeXEBI2D+5YfZM/Me/2k2X
-	 xrDlEKtHUKekah2TTEW1l+lAE7K9FNnntUOltLlE2Hl70s2aQ7kPR0tL0Q3cq5fzCu
-	 eKGyVBHaNqWAg==
-From: Eric Biggers <ebiggers@kernel.org>
-To: linux-crypto@vger.kernel.org,
-	Herbert Xu <herbert@gondor.apana.org.au>
-Cc: linux-sunxi@lists.linux.dev,
-	linux-arm-kernel@lists.infradead.org,
-	linux-kernel@vger.kernel.org,
-	Chen-Yu Tsai <wens@kernel.org>,
-	Jernej Skrabec <jernej.skrabec@gmail.com>,
-	Samuel Holland <samuel@sholland.org>,
-	Corentin Labbe <clabbe.montjoie@gmail.com>,
-	Eric Biggers <ebiggers@kernel.org>,
-	stable@vger.kernel.org
-Subject: [PATCH] crypto: sun4i-ss - Remove insecure and unused rng_alg
-Date: Fri, 29 May 2026 12:36:48 -0700
-Message-ID: <20260529193648.18172-1-ebiggers@kernel.org>
-X-Mailer: git-send-email 2.54.0
+	s=arc-20240116; t=1780083826; c=relaxed/simple;
+	bh=IMVwDw1jiyEPQYQd6NJ3IB5GZG0SQ1Tff/BQcnk4/kI=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=JupSKA2wpfEE7Dr53UOeEkJjKzFezfUml5m2CW2a57F/ue/1WxSVEpE0wzl+rEiCYRQYuT5mOPeuMXoa0KAEVvGnhAeY/C10UIwoN6nGJuArB5lMLBr2IKv+OW1u6TYTlnXzUDKXSIfzRHoklaWzeNCSLfzd4J5mKf3ugcmwzD0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=narfation.org; spf=pass smtp.mailfrom=narfation.org; dkim=pass (1024-bit key) header.d=narfation.org header.i=@narfation.org header.b=y8VEN6aV; arc=none smtp.client-ip=213.160.73.56
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=narfation.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=narfation.org
+Received: by dvalin.narfation.org (Postfix) id 162EC20059;
+	Fri, 29 May 2026 19:43:37 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=narfation.org;
+	s=20121; t=1780083817;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=cJnzEFnRdZERTIXqUnUajFfRxu3r2b7LIRKg3Ktwxwo=;
+	b=y8VEN6aVFBWlESDV0UeDDXm79H5s5wzazFf5lwqnQx/lD4ptxWJhEZ790myZ6pPE79U5JH
+	E1o46IFWP3/7/UOOIW6+gGk5xl+p8MX0whQqDEGk9iUnLs/o8/y4JJ2PwXBJUEuwfQgTgf
+	E0TBVLktlkNZLkF0m91isQ4zRQkYbl0=
+From: Sven Eckelmann <sven@narfation.org>
+To: stable@vger.kernel.org
+Cc: Sven Eckelmann <sven@narfation.org>,
+	stable@kernel.org
+Subject: [PATCH 6.1.y] batman-adv: tt: reject oversized local TVLV buffers
+Date: Fri, 29 May 2026 21:43:08 +0200
+Message-ID: <20260529194308.471196-1-sven@narfation.org>
+X-Mailer: git-send-email 2.47.3
+In-Reply-To: <2026052827-crate-spotter-3e8f@gregkh>
+References: <2026052827-crate-spotter-3e8f@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -66,395 +63,88 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [0.84 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-0.66 / 15.00];
 	MID_CONTAINS_FROM(1.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
-	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20260515];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	DMARC_POLICY_ALLOW(-0.50)[narfation.org,none];
+	R_DKIM_ALLOW(-0.20)[narfation.org:s=20121];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FREEMAIL_CC(0.00)[lists.linux.dev,lists.infradead.org,vger.kernel.org,kernel.org,gmail.com,sholland.org];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-256749-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	RCPT_COUNT_THREE(0.00)[3];
+	RCVD_TLS_LAST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-256750-lists,stable=lfdr.de];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[ebiggers@kernel.org,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[kernel.org:+];
-	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_SEVEN(0.00)[11];
 	TO_DN_SOME(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
-X-Rspamd-Queue-Id: B63AE607F38
+	FROM_NEQ_ENVFROM(0.00)[sven@narfation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	DKIM_TRACE(0.00)[narfation.org:+];
+	PRECEDENCE_BULK(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	NEURAL_HAM(-0.00)[-1.000];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[narfation.org:email,narfation.org:mid,narfation.org:dkim,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
+X-Rspamd-Queue-Id: 63CF1607F6F
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-Remove sun4i_ss_rng, as it is insecure and unused:
+commit 1e9fab756f8395096d5bba7be0c373c4c8f5d165 upstream.
 
-- It has multiple vulnerabilities.  sun4i_ss_prng_seed() is missing
-  locking and has a buffer overflow.  sun4i_ss_prng_generate() fails to
-  fill the entire buffer with cryptographic random bytes, because it
-  rounds the destination length down and also doesn't actually wait for
-  the hardware to be ready before pulling bytes from it.
+The commit 3a359bf5c61d ("batman-adv: reject oversized global TT response
+buffers") added a check to ensure that a global return buffer size can be
+stored in an u16. The same buffer handling also exists for the local data
+buffer but was not touched.
 
-- No user of this code is known.  It's usable only theoretically via the
-  "rng" algorithm type of AF_ALG.  But userspace actually just uses the
-  actual Linux RNG (/dev/random etc) instead.  And rng_algs don't
-  contribute entropy to the actual Linux RNG either.  (This may have
-  been confused with hwrng, which does contribute entropy.)
+A similar check should be also be in place for the local TVLV buffer. It
+doesn't have the similar attack surface because it is only generated from
+locally discovered MAC addresses but the dynamic nature could still cause
+temporarily to large buffers.
 
-Fixes: b8ae5c7387ad ("crypto: sun4i-ss - support the Security System PRNG")
-Cc: stable@vger.kernel.org
-Cc: Corentin Labbe <clabbe.montjoie@gmail.com>
-Signed-off-by: Eric Biggers <ebiggers@kernel.org>
+Cc: stable@kernel.org
+Fixes: 7ea7b4a14275 ("batman-adv: make the TT CRC logic VLAN specific")
+[ Context ]
+Signed-off-by: Sven Eckelmann <sven@narfation.org>
 ---
- arch/arm/configs/sunxi_defconfig              |  1 -
- drivers/crypto/allwinner/Kconfig              |  8 ---
- drivers/crypto/allwinner/sun4i-ss/Makefile    |  1 -
- .../crypto/allwinner/sun4i-ss/sun4i-ss-core.c | 44 ------------
- .../crypto/allwinner/sun4i-ss/sun4i-ss-prng.c | 69 -------------------
- drivers/crypto/allwinner/sun4i-ss/sun4i-ss.h  | 20 ------
- 6 files changed, 143 deletions(-)
- delete mode 100644 drivers/crypto/allwinner/sun4i-ss/sun4i-ss-prng.c
+ net/batman-adv/translation-table.c | 8 +++++---
+ 1 file changed, 5 insertions(+), 3 deletions(-)
 
-diff --git a/arch/arm/configs/sunxi_defconfig b/arch/arm/configs/sunxi_defconfig
-index a83d29fed175..f4b8d8f7dbef 100644
---- a/arch/arm/configs/sunxi_defconfig
-+++ b/arch/arm/configs/sunxi_defconfig
-@@ -168,11 +168,10 @@ CONFIG_NFS_V3_ACL=y
- CONFIG_NFS_V4=y
- CONFIG_ROOT_NFS=y
- CONFIG_NLS_CODEPAGE_437=y
- CONFIG_NLS_ISO8859_1=y
- CONFIG_CRYPTO_DEV_SUN4I_SS=y
--CONFIG_CRYPTO_DEV_SUN4I_SS_PRNG=y
- CONFIG_CRYPTO_DEV_SUN8I_CE=y
- CONFIG_CRYPTO_DEV_SUN8I_SS=y
- CONFIG_DMA_CMA=y
- CONFIG_PRINTK_TIME=y
- CONFIG_DEBUG_FS=y
-diff --git a/drivers/crypto/allwinner/Kconfig b/drivers/crypto/allwinner/Kconfig
-index b8e75210a0e3..06ea0e9fe6f2 100644
---- a/drivers/crypto/allwinner/Kconfig
-+++ b/drivers/crypto/allwinner/Kconfig
-@@ -22,18 +22,10 @@ config CRYPTO_DEV_SUN4I_SS
- 	  and SHA1 and MD5 hash algorithms.
- 
- 	  To compile this driver as a module, choose M here: the module
- 	  will be called sun4i-ss.
- 
--config CRYPTO_DEV_SUN4I_SS_PRNG
--	bool "Support for Allwinner Security System PRNG"
--	depends on CRYPTO_DEV_SUN4I_SS
--	select CRYPTO_RNG
--	help
--	  Select this option if you want to provide kernel-side support for
--	  the Pseudo-Random Number Generator found in the Security System.
--
- config CRYPTO_DEV_SUN4I_SS_DEBUG
- 	bool "Enable sun4i-ss stats"
- 	depends on CRYPTO_DEV_SUN4I_SS
- 	depends on DEBUG_FS
- 	help
-diff --git a/drivers/crypto/allwinner/sun4i-ss/Makefile b/drivers/crypto/allwinner/sun4i-ss/Makefile
-index c0a2797d3168..06a9ae81f9f8 100644
---- a/drivers/crypto/allwinner/sun4i-ss/Makefile
-+++ b/drivers/crypto/allwinner/sun4i-ss/Makefile
-@@ -1,4 +1,3 @@
- # SPDX-License-Identifier: GPL-2.0-only
- obj-$(CONFIG_CRYPTO_DEV_SUN4I_SS) += sun4i-ss.o
- sun4i-ss-y += sun4i-ss-core.o sun4i-ss-hash.o sun4i-ss-cipher.o
--sun4i-ss-$(CONFIG_CRYPTO_DEV_SUN4I_SS_PRNG) += sun4i-ss-prng.o
-diff --git a/drivers/crypto/allwinner/sun4i-ss/sun4i-ss-core.c b/drivers/crypto/allwinner/sun4i-ss/sun4i-ss-core.c
-index 813c4bc6312a..35ef0930e77f 100644
---- a/drivers/crypto/allwinner/sun4i-ss/sun4i-ss-core.c
-+++ b/drivers/crypto/allwinner/sun4i-ss/sun4i-ss-core.c
-@@ -211,27 +211,10 @@ static struct sun4i_ss_alg_template ss_algs[] = {
- 			.cra_init = sun4i_ss_cipher_init,
- 			.cra_exit = sun4i_ss_cipher_exit,
- 		}
- 	}
- },
--#ifdef CONFIG_CRYPTO_DEV_SUN4I_SS_PRNG
--{
--	.type = CRYPTO_ALG_TYPE_RNG,
--	.alg.rng = {
--		.base = {
--			.cra_name		= "stdrng",
--			.cra_driver_name	= "sun4i_ss_rng",
--			.cra_priority		= 300,
--			.cra_ctxsize		= 0,
--			.cra_module		= THIS_MODULE,
--		},
--		.generate               = sun4i_ss_prng_generate,
--		.seed                   = sun4i_ss_prng_seed,
--		.seedsize               = SS_SEED_LEN / BITS_PER_BYTE,
--	}
--},
--#endif
- };
- 
- static int sun4i_ss_debugfs_show(struct seq_file *seq, void *v)
+diff --git a/net/batman-adv/translation-table.c b/net/batman-adv/translation-table.c
+index f1e93a6048203..6c40d690ac6c3 100644
+--- a/net/batman-adv/translation-table.c
++++ b/net/batman-adv/translation-table.c
+@@ -924,12 +924,12 @@ batadv_tt_prepare_tvlv_local_data(struct batadv_priv *bat_priv,
  {
- 	unsigned int i;
-@@ -245,18 +228,10 @@ static int sun4i_ss_debugfs_show(struct seq_file *seq, void *v)
- 				   ss_algs[i].alg.crypto.base.cra_driver_name,
- 				   ss_algs[i].alg.crypto.base.cra_name,
- 				   ss_algs[i].stat_req, ss_algs[i].stat_opti, ss_algs[i].stat_fb,
- 				   ss_algs[i].stat_bytes);
- 			break;
--#ifdef CONFIG_CRYPTO_DEV_SUN4I_SS_PRNG
--		case CRYPTO_ALG_TYPE_RNG:
--			seq_printf(seq, "%s %s reqs=%lu tsize=%lu\n",
--				   ss_algs[i].alg.rng.base.cra_driver_name,
--				   ss_algs[i].alg.rng.base.cra_name,
--				   ss_algs[i].stat_req, ss_algs[i].stat_bytes);
--			break;
--#endif
- 		case CRYPTO_ALG_TYPE_AHASH:
- 			seq_printf(seq, "%s %s reqs=%lu\n",
- 				   ss_algs[i].alg.hash.halg.base.cra_driver_name,
- 				   ss_algs[i].alg.hash.halg.base.cra_name,
- 				   ss_algs[i].stat_req);
-@@ -471,19 +446,10 @@ static int sun4i_ss_probe(struct platform_device *pdev)
- 				dev_err(ss->dev, "Fail to register %s\n",
- 					ss_algs[i].alg.hash.halg.base.cra_name);
- 				goto error_alg;
- 			}
- 			break;
--#ifdef CONFIG_CRYPTO_DEV_SUN4I_SS_PRNG
--		case CRYPTO_ALG_TYPE_RNG:
--			err = crypto_register_rng(&ss_algs[i].alg.rng);
--			if (err) {
--				dev_err(ss->dev, "Fail to register %s\n",
--					ss_algs[i].alg.rng.base.cra_name);
--			}
--			break;
--#endif
- 		}
- 	}
+ 	struct batadv_tvlv_tt_vlan_data *tt_vlan;
+ 	struct batadv_softif_vlan *vlan;
++	size_t change_offset;
+ 	u16 num_vlan = 0;
+ 	u16 vlan_entries = 0;
+ 	u16 total_entries = 0;
+ 	u16 tvlv_len;
+ 	u8 *tt_change_ptr;
+-	int change_offset;
  
- 	/* Ignore error of debugfs */
- 	ss->dbgfs_dir = debugfs_create_dir("sun4i-ss", NULL);
-@@ -499,15 +465,10 @@ static int sun4i_ss_probe(struct platform_device *pdev)
- 			crypto_unregister_skcipher(&ss_algs[i].alg.crypto);
- 			break;
- 		case CRYPTO_ALG_TYPE_AHASH:
- 			crypto_unregister_ahash(&ss_algs[i].alg.hash);
- 			break;
--#ifdef CONFIG_CRYPTO_DEV_SUN4I_SS_PRNG
--		case CRYPTO_ALG_TYPE_RNG:
--			crypto_unregister_rng(&ss_algs[i].alg.rng);
--			break;
--#endif
- 		}
- 	}
- error_pm:
- 	sun4i_ss_pm_exit(ss);
- 	return err;
-@@ -524,15 +485,10 @@ static void sun4i_ss_remove(struct platform_device *pdev)
- 			crypto_unregister_skcipher(&ss_algs[i].alg.crypto);
- 			break;
- 		case CRYPTO_ALG_TYPE_AHASH:
- 			crypto_unregister_ahash(&ss_algs[i].alg.hash);
- 			break;
--#ifdef CONFIG_CRYPTO_DEV_SUN4I_SS_PRNG
--		case CRYPTO_ALG_TYPE_RNG:
--			crypto_unregister_rng(&ss_algs[i].alg.rng);
--			break;
--#endif
- 		}
- 	}
+ 	spin_lock_bh(&bat_priv->softif_vlan_list_lock);
+ 	hlist_for_each_entry(vlan, &bat_priv->softif_vlan_list, list) {
+@@ -948,8 +948,10 @@ batadv_tt_prepare_tvlv_local_data(struct batadv_priv *bat_priv,
+ 	if (*tt_len < 0)
+ 		*tt_len = batadv_tt_len(total_entries);
  
- 	sun4i_ss_pm_exit(ss);
- }
-diff --git a/drivers/crypto/allwinner/sun4i-ss/sun4i-ss-prng.c b/drivers/crypto/allwinner/sun4i-ss/sun4i-ss-prng.c
-deleted file mode 100644
-index 491fcb7b81b4..000000000000
---- a/drivers/crypto/allwinner/sun4i-ss/sun4i-ss-prng.c
-+++ /dev/null
-@@ -1,69 +0,0 @@
--// SPDX-License-Identifier: GPL-2.0-or-later
--#include "sun4i-ss.h"
--
--int sun4i_ss_prng_seed(struct crypto_rng *tfm, const u8 *seed,
--		       unsigned int slen)
--{
--	struct sun4i_ss_alg_template *algt;
--	struct rng_alg *alg = crypto_rng_alg(tfm);
--
--	algt = container_of(alg, struct sun4i_ss_alg_template, alg.rng);
--	memcpy(algt->ss->seed, seed, slen);
--
--	return 0;
--}
--
--int sun4i_ss_prng_generate(struct crypto_rng *tfm, const u8 *src,
--			   unsigned int slen, u8 *dst, unsigned int dlen)
--{
--	struct sun4i_ss_alg_template *algt;
--	struct rng_alg *alg = crypto_rng_alg(tfm);
--	int i, err;
--	u32 v;
--	u32 *data = (u32 *)dst;
--	const u32 mode = SS_OP_PRNG | SS_PRNG_CONTINUE | SS_ENABLED;
--	size_t len;
--	struct sun4i_ss_ctx *ss;
--	unsigned int todo = (dlen / 4) * 4;
--
--	algt = container_of(alg, struct sun4i_ss_alg_template, alg.rng);
--	ss = algt->ss;
--
--	err = pm_runtime_resume_and_get(ss->dev);
--	if (err < 0)
--		return err;
--
--	if (IS_ENABLED(CONFIG_CRYPTO_DEV_SUN4I_SS_DEBUG)) {
--		algt->stat_req++;
--		algt->stat_bytes += todo;
--	}
--
--	spin_lock_bh(&ss->slock);
--
--	writel(mode, ss->base + SS_CTL);
--
--	while (todo > 0) {
--		/* write the seed */
--		for (i = 0; i < SS_SEED_LEN / BITS_PER_LONG; i++)
--			writel(ss->seed[i], ss->base + SS_KEY0 + i * 4);
--
--		/* Read the random data */
--		len = min_t(size_t, SS_DATA_LEN / BITS_PER_BYTE, todo);
--		readsl(ss->base + SS_TXFIFO, data, len / 4);
--		data += len / 4;
--		todo -= len;
--
--		/* Update the seed */
--		for (i = 0; i < SS_SEED_LEN / BITS_PER_LONG; i++) {
--			v = readl(ss->base + SS_KEY0 + i * 4);
--			ss->seed[i] = v;
--		}
--	}
--
--	writel(0, ss->base + SS_CTL);
--	spin_unlock_bh(&ss->slock);
--
--	pm_runtime_put(ss->dev);
--
--	return 0;
--}
-diff --git a/drivers/crypto/allwinner/sun4i-ss/sun4i-ss.h b/drivers/crypto/allwinner/sun4i-ss/sun4i-ss.h
-index 6c5d4aa6453c..f7d1c79ac677 100644
---- a/drivers/crypto/allwinner/sun4i-ss/sun4i-ss.h
-+++ b/drivers/crypto/allwinner/sun4i-ss/sun4i-ss.h
-@@ -29,12 +29,10 @@
- #include <crypto/hash.h>
- #include <crypto/internal/hash.h>
- #include <crypto/internal/skcipher.h>
- #include <crypto/aes.h>
- #include <crypto/internal/des.h>
--#include <crypto/internal/rng.h>
--#include <crypto/rng.h>
+-	tvlv_len = *tt_len;
+-	tvlv_len += change_offset;
++	if (check_add_overflow(*tt_len, change_offset, &tvlv_len)) {
++		tvlv_len = 0;
++		goto out;
++	}
  
- #define SS_CTL            0x00
- #define SS_KEY0           0x04
- #define SS_KEY1           0x08
- #define SS_KEY2           0x0C
-@@ -60,14 +58,10 @@
- #define SS_RXFIFO         0x200
- #define SS_TXFIFO         0x204
- 
- /* SS_CTL configuration values */
- 
--/* PRNG generator mode - bit 15 */
--#define SS_PRNG_ONESHOT		(0 << 15)
--#define SS_PRNG_CONTINUE	(1 << 15)
--
- /* IV mode for hash */
- #define SS_IV_ARBITRARY		(1 << 14)
- 
- /* SS operation mode - bits 12-13 */
- #define SS_ECB			(0 << 12)
-@@ -92,18 +86,14 @@
- #define SS_OP_AES		(0 << 4)
- #define SS_OP_DES		(1 << 4)
- #define SS_OP_3DES		(2 << 4)
- #define SS_OP_SHA1		(3 << 4)
- #define SS_OP_MD5		(4 << 4)
--#define SS_OP_PRNG		(5 << 4)
- 
- /* Data end bit - bit 2 */
- #define SS_DATA_END		(1 << 2)
- 
--/* PRNG start bit - bit 1 */
--#define SS_PRNG_START		(1 << 1)
--
- /* SS Enable bit - bit 0 */
- #define SS_DISABLED		(0 << 0)
- #define SS_ENABLED		(1 << 0)
- 
- /* SS_FCSR configuration values */
-@@ -126,13 +116,10 @@
- #define SS_RXFIFO_EMP_INT_PENDING	(1 << 10)
- #define SS_TXFIFO_AVA_INT_PENDING	(1 << 8)
- #define SS_RXFIFO_EMP_INT_ENABLE	(1 << 2)
- #define SS_TXFIFO_AVA_INT_ENABLE	(1 << 0)
- 
--#define SS_SEED_LEN 192
--#define SS_DATA_LEN 160
--
- /*
-  * struct ss_variant - Describe SS hardware variant
-  * @sha1_in_be:		The SHA1 digest is given by SS in BE, and so need to be inverted.
-  */
- struct ss_variant {
-@@ -149,24 +136,20 @@ struct sun4i_ss_ctx {
- 	struct device *dev;
- 	struct resource *res;
- 	char buf[4 * SS_RX_MAX];/* buffer for linearize SG src */
- 	char bufo[4 * SS_TX_MAX]; /* buffer for linearize SG dst */
- 	spinlock_t slock; /* control the use of the device */
--#ifdef CONFIG_CRYPTO_DEV_SUN4I_SS_PRNG
--	u32 seed[SS_SEED_LEN / BITS_PER_LONG];
--#endif
- 	struct dentry *dbgfs_dir;
- 	struct dentry *dbgfs_stats;
- };
- 
- struct sun4i_ss_alg_template {
- 	u32 type;
- 	u32 mode;
- 	union {
- 		struct skcipher_alg crypto;
- 		struct ahash_alg hash;
--		struct rng_alg rng;
- 	} alg;
- 	struct sun4i_ss_ctx *ss;
- 	unsigned long stat_req;
- 	unsigned long stat_fb;
- 	unsigned long stat_bytes;
-@@ -229,8 +212,5 @@ int sun4i_ss_aes_setkey(struct crypto_skcipher *tfm, const u8 *key,
- 			unsigned int keylen);
- int sun4i_ss_des_setkey(struct crypto_skcipher *tfm, const u8 *key,
- 			unsigned int keylen);
- int sun4i_ss_des3_setkey(struct crypto_skcipher *tfm, const u8 *key,
- 			 unsigned int keylen);
--int sun4i_ss_prng_generate(struct crypto_rng *tfm, const u8 *src,
--			   unsigned int slen, u8 *dst, unsigned int dlen);
--int sun4i_ss_prng_seed(struct crypto_rng *tfm, const u8 *seed, unsigned int slen);
-
-base-commit: 49e05bb00f2e8168695f7af4d694c39e1423e8a2
+ 	*tt_data = kmalloc(tvlv_len, GFP_ATOMIC);
+ 	if (!*tt_data) {
 -- 
-2.54.0
+2.47.3
 
 
