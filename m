@@ -1,249 +1,185 @@
-Return-Path: <stable+bounces-256740-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-256741-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id EAkKFMnoGWpazwgAu9opvQ
-	(envelope-from <stable+bounces-256740-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 29 May 2026 21:28:09 +0200
+	id wCzCI7rpGWqFzwgAu9opvQ
+	(envelope-from <stable+bounces-256741-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 29 May 2026 21:32:10 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id BE172607D50
-	for <lists+stable@lfdr.de>; Fri, 29 May 2026 21:28:08 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E12F8607E6F
+	for <lists+stable@lfdr.de>; Fri, 29 May 2026 21:32:09 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id B04B6300CE52
-	for <lists+stable@lfdr.de>; Fri, 29 May 2026 19:28:03 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id DC087301AA45
+	for <lists+stable@lfdr.de>; Fri, 29 May 2026 19:31:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7690F390C94;
-	Fri, 29 May 2026 19:28:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A03853B388A;
+	Fri, 29 May 2026 19:31:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="k/GtG2DG"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="mjMYfz6w"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-dy1-f170.google.com (mail-dy1-f170.google.com [74.125.82.170])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 19A833909B1
-	for <stable@vger.kernel.org>; Fri, 29 May 2026 19:28:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CA0033AD528
+	for <stable@vger.kernel.org>; Fri, 29 May 2026 19:31:14 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.82.170
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780082882; cv=none; b=smgTQimOazQAliURxR/Ko9w3vi/xwLxUOkpCw7EEV8EAjSz9XPhVIuCtnTM+Q35UhnMfc0rJqh4LsnKrkh8N8ujXRgKPhkIfCbHeJ7MENAfq75mP9oiECinoyG/vx/Q3LGDCd+Go6QSnqwhzmNh6sPfmZwS32xj17WNA687fn5Q=
+	t=1780083077; cv=none; b=lXX3s/JHhTCj0ejg7AD1YSWmU0fYuRgaqQiJFmw0FDDpCxYFgDz4f9m+yylYvXm3D65BSz055oTvaMeBl4SOWKOc4xlj38Cc5abz3AKCV5YmtsM4iHK6hCV3ac3dlp+rpDQjeLmYlGmG1M1IDuriCNwTM8gWrUypWaYuWiu4QkA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780082882; c=relaxed/simple;
-	bh=UcfZRJst1WBNdYsMV+G2dudoPZlOLl4Y5F6emKvivUM=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=GTlhOKgaCT7OS1coDveDt8vCALxRt8SBFh5J4u/HLNPa08zZn6SnIWdkD94+PypKW+sN0Z7n984mjfySaJ2b+dGWuJoD9uNMq6IKHl71Z6JpC8nITzImwS8AE2Q98pknSpZabABIb+oTTS/ZOR1VeqLx9xcyTy1Gx7QuMUzbDbo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=k/GtG2DG; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BB6B51F00898;
-	Fri, 29 May 2026 19:27:59 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1780082880;
-	bh=3yL4hB6UuPv1gJfM5gsvzvJ3Q+XMVd8R06MIchCzuFw=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=k/GtG2DG+YmFHdw3FZZJEfAmzJBLMlSinCL92mDw6jPBxhr01L5432gWUAE/Pjvtw
-	 TEc/Xp6nHNXTptMvb/nu03cgUtIUduaoNrMRt4tY9LVqO3GYjMk6mj9OAT3P/2GQgg
-	 j0A4HzaELpJo/OLO75+KHYXNsWnUpsCOKauYi6PFcaIVGoaZODpC+6vRfmhereLdWN
-	 rHQPfrgors5H8dWDicK4mnhabsirb/mJKfrRReSM7hrE34uvijnc9vUdLQu/qyTH5d
-	 v2z3W+J4NWzsdWfRZy85nkdHIcR9BGb4bFBhdiz45yipEPyVHEDHjXd9hrZTUsz1S0
-	 yaKAlSffD8Fjg==
-From: Sasha Levin <sashal@kernel.org>
-To: stable@vger.kernel.org
-Cc: Shuai Zhang <shuai.zhang@oss.qualcomm.com>,
-	Paul Menzel <pmenzel@molgen.mpg.de>,
-	Bartosz Golaszewski <bartosz.golaszewski@linaro.org>,
-	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12.y 3/3] Bluetooth: hci_qca: Convert timeout from jiffies to ms
-Date: Fri, 29 May 2026 15:27:56 -0400
-Message-ID: <20260529192756.1699014-3-sashal@kernel.org>
-X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260529192756.1699014-1-sashal@kernel.org>
-References: <2026052859-baboon-unhappy-5be2@gregkh>
- <20260529192756.1699014-1-sashal@kernel.org>
+	s=arc-20240116; t=1780083077; c=relaxed/simple;
+	bh=zSJ4kB4tDIOBKRki3ZLehnLNadR+84J/X2etwho5jMk=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=FeQypZLPZJpG3NJ9fRoJVk7I3W3RH0bQYYBPitIYFa7eLZeM1Dno2wr1Gwz4bb+c558NzeJ9nBzcz22JAkdQlI+0OTLK8v47MDL/h0RFqYqBPzrWke9l+x9PNcg/wlr3/M0pTnn3AGBk0fP0ymTiQTVRlu8VTJnX8kbCQl3WmEY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=mjMYfz6w; arc=none smtp.client-ip=74.125.82.170
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-dy1-f170.google.com with SMTP id 5a478bee46e88-304e6c6464dso2913211eec.1
+        for <stable@vger.kernel.org>; Fri, 29 May 2026 12:31:14 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1780083074; x=1780687874; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=6YZwbJmOdj/CzDOJRzvaxizYubzK8nMz96rk/mNhROM=;
+        b=mjMYfz6wGEPLh7wkt52IxKisSFcuB9mEu76Jck4vDbmAOZEo+1NemqRNVfwAkvEEe1
+         Ns9jLKmtUiVNOLMZ35dA8RqP7KqgzU5olzzh7IeLnRjdxh5EDUAT10UENKOYOeKIknEK
+         07q2jKz/yGNHUhXrQHwTbBey3DPgxJviEmRXMRzE8DpK4E8/+PQ0Tf2LtuoWw5Ed7Ul5
+         01RNE/99w2eVOgtw3yPwcRotMkgqAeodclzNac1AiNsGJnJVqhHIpigUxnlb3DZQdRR5
+         ciFDvVL7++9YeTaBnt/W70ecwp74xYw4oiER03Xlvm+wtia4KzQA0sVJcEjPoKg0V6UT
+         npwA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1780083074; x=1780687874;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=6YZwbJmOdj/CzDOJRzvaxizYubzK8nMz96rk/mNhROM=;
+        b=Cx7d/T93qvqy5HfVNQrGBcD6sTV+U+T1SVnjlBNkPives+g2KH2GFd+aFeeB6jE0JM
+         cHcaTTLwLbkbqYefPjvq+moaVJXw92xhNrOrMq6ahUPaFEOMj1NwZq4XFEIEBtf7Rexp
+         j381cZohnqfRlyFgcYmp8sA4dmWkAH1BgchoPR+69jTTtGhayegvW8yVW34HU5MgOpvs
+         iWMMtx/CEpTfQZeoiqQ/QxsecvsMUzQRycdAoFyOMESM6MjIxXAOnNMvliMEf2Q+VLib
+         XAwanBCFAvfPTO3WCy54/E3X1QTbO92jeJrpa08pRCNkxs8qjr5wa7f1dfmZ5wU13ef9
+         POWQ==
+X-Forwarded-Encrypted: i=1; AFNElJ/Bhdp2YLPFo+Srj//NEoBalGSqVtZ6PMviy7Iq5/GkIKJds/sGZ2cYmsnhpJlE6an7nOTYWgY=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yxa4miJ+RQoRukRwxMhg48t1VsuVbH+dwQQpRWdZsHoFXtD3YFM
+	dmEN+JTZYGP956ozPvHMaguKvq/zMFOI6e0OFsVrM+CT+Af22Zr4q+meba7uxw==
+X-Gm-Gg: Acq92OHmR730VbC7hgxQ2rjInljVLyOIJzQzhRqc9Pe2odSJWvjdDqxeB0L6CLNpB1S
+	CuJou5q+te0MDjZyDdewjsNmCxn+GTlj2BgXt8NQFVMNyb4DRz94TuqdElwPeeDeAgYwIbq44PB
+	KxZrVsLD3nsmAB/qX1svUynFf6VXX1WLwWLt58bOhepXwZfOS3N64Qh0zvLjUsrMg0+kdqXOhJG
+	FTyARcjqOiStXRVa2CEnYsuk/zUR+52hfYnFYIQlms2CqoB7yrukFmT8Jb39grTZHPqUyAh7Cj3
+	idRZIdb3kd7bLd4c7vA3eZRZ6hiMn+q5tWwUkv3OXFAtZTlIuQEmpe5pTbj4T6zbmW6RtvhhtAI
+	+nvUjxMU8YcQFWlVhl76PRqYpQil9KH1LaatcWAEWuPzRZn2pGfa4bq3IRLl1FRgdeljz78tvLn
+	LiHUcvafvTopJVqK2IXlfUihBc1d67JFeyrd2yt00uqnpy+X/HZGivNJnn93OrxurPZ/YB1RJaE
+	jE=
+X-Received: by 2002:a05:7300:5726:b0:2e2:3381:2fba with SMTP id 5a478bee46e88-304fa523d3amr696259eec.3.1780083073492;
+        Fri, 29 May 2026 12:31:13 -0700 (PDT)
+Received: from google.com ([2a00:79e0:2ebe:8:307d:2a52:8823:4a01])
+        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-304ed2efb4esm2188760eec.8.2026.05.29.12.31.12
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 29 May 2026 12:31:12 -0700 (PDT)
+Date: Fri, 29 May 2026 12:31:09 -0700
+From: Dmitry Torokhov <dmitry.torokhov@gmail.com>
+To: Tianchu Chen <tianchu.chen@linux.dev>
+Cc: jikos@kernel.org, bentiss@kernel.org, linux-input@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Subject: Re: [PATCH] HID: hid-goodix-spi: validate report size to prevent
+ stack buffer overflow
+Message-ID: <ahnn8iPJP5nbN2rS@google.com>
+References: <f7e444a3facbe5fb2627167ab205771476e46bc8@linux.dev>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-0.66 / 15.00];
-	MID_CONTAINS_FROM(1.00)[];
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <f7e444a3facbe5fb2627167ab205771476e46bc8@linux.dev>
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
-	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
+	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
 	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
-	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20260515];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-256740-lists,stable=lfdr.de];
-	MIME_TRACE(0.00)[0:+];
-	TO_DN_SOME(0.00)[];
+	TAGGED_FROM(0.00)[bounces-256741-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[kernel.org:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TO_DN_SOME(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	FREEMAIL_FROM(0.00)[gmail.com];
+	DKIM_TRACE(0.00)[gmail.com:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	MISSING_XM_UA(0.00)[];
+	RCVD_COUNT_FIVE(0.00)[5];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[dmitrytorokhov@gmail.com,stable@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
 	RCPT_COUNT_FIVE(0.00)[6];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[qualcomm.com:email,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,linaro.org:email,intel.com:email,mpg.de:email]
-X-Rspamd-Queue-Id: BE172607D50
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tencent.com:email,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
+X-Rspamd-Queue-Id: E12F8607E6F
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-From: Shuai Zhang <shuai.zhang@oss.qualcomm.com>
+On Fri, May 29, 2026 at 01:42:47PM +0000, Tianchu Chen wrote:
+> From: Tianchu Chen <flynnnchen@tencent.com>
+> 
+> goodix_hid_set_raw_report() builds a protocol frame in a 128-byte stack
+> buffer (tmp_buf), writing an 11-12 byte header followed by the
+> caller-supplied report data.  The HID core caps report size at
+> HID_MAX_BUFFER_SIZE (16384) by default, while the driver does not set
+> hid_ll_driver.max_buffer_size and performs no bounds checking before
+> copying the payload:
+> 
+>     memcpy(tmp_buf + tx_len, buf, len);
+> 
+> A hidraw SET_REPORT ioctl with a report larger than ~116 bytes
+> overflows the stack buffer.
+> 
+> Add a size check after constructing the header, rejecting reports that
+> would exceed the buffer capacity.
+> 
+> Discovered by Atuin - Automated Vulnerability Discovery Engine.
+> 
+> Fixes: 75e16c8ce283 ("HID: hid-goodix: Add Goodix HID-over-SPI driver")
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Tianchu Chen <flynnnchen@tencent.com>
+> ---
+>  drivers/hid/hid-goodix-spi.c | 3 +++
+>  1 file changed, 3 insertions(+)
+> 
+> diff --git a/drivers/hid/hid-goodix-spi.c b/drivers/hid/hid-goodix-spi.c
+> index 80c0288a3..288cb827e 100644
+> --- a/drivers/hid/hid-goodix-spi.c
+> +++ b/drivers/hid/hid-goodix-spi.c
+> @@ -520,6 +520,9 @@ static int goodix_hid_set_raw_report(struct hid_device *hid,
+>  	memcpy(tmp_buf + tx_len, args, args_len);
+>  	tx_len += args_len;
+>  
+> +	if (tx_len + len > sizeof(tmp_buf))
+> +		return -EINVAL;
+> +
 
-[ Upstream commit 375ba7484132662a4a8c7547d088fb6275c00282 ]
+We can also consider returning -E2BIG here.
 
-Since the timer uses jiffies as its unit rather than ms, the timeout value
-must be converted from ms to jiffies when configuring the timer. Otherwise,
-the intended 8s timeout is incorrectly set to approximately 33s.
+>  	memcpy(tmp_buf + tx_len, buf, len);
+>  	tx_len += len;
+>  
 
-To improve readability, embed msecs_to_jiffies() directly in the macro
-definitions and drop the _MS suffix from macros that now yield jiffies
-values: MEMDUMP_TIMEOUT, FW_DOWNLOAD_TIMEOUT, IBS_DISABLE_SSR_TIMEOUT,
-CMD_TRANS_TIMEOUT, and IBS_BTSOC_TX_IDLE_TIMEOUT.
+In any case:
 
-IBS_WAKE_RETRANS_TIMEOUT_MS and IBS_HOST_TX_IDLE_TIMEOUT_MS are
-intentionally left unchanged. Their values are stored in the struct fields
-wake_retrans and tx_idle_delay, which hold ms values at runtime and can be
-modified via debugfs. The msecs_to_jiffies() conversion happens at each
-call site against the field value, so it cannot be embedded in the macro.
+Reviewed-by: Dmitry Torokhov <dmitry.torokhov@gmail.com>
 
-Wake timer depends on commit c347ca17d62a
+I think we can ignore Sashiko's ramblings on this patch, it needs some
+instructions detailing order of operations/timing of callbacks in HID
+subsystem.
 
-Cc: stable@vger.kernel.org
-Fixes: d841502c79e3 ("Bluetooth: hci_qca: Collect controller memory dump during SSR")
-Reviewed-by: Paul Menzel <pmenzel@molgen.mpg.de>
-Acked-by: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
-Signed-off-by: Shuai Zhang <shuai.zhang@oss.qualcomm.com>
-Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
----
- drivers/bluetooth/hci_qca.c | 33 ++++++++++++++++-----------------
- 1 file changed, 16 insertions(+), 17 deletions(-)
+Thanks.
 
-diff --git a/drivers/bluetooth/hci_qca.c b/drivers/bluetooth/hci_qca.c
-index a7357943122c4..7897307a7fe29 100644
---- a/drivers/bluetooth/hci_qca.c
-+++ b/drivers/bluetooth/hci_qca.c
-@@ -47,13 +47,12 @@
- #define HCI_MAX_IBS_SIZE	10
- 
- #define IBS_WAKE_RETRANS_TIMEOUT_MS	100
--#define IBS_BTSOC_TX_IDLE_TIMEOUT_MS	200
-+#define IBS_BTSOC_TX_IDLE_TIMEOUT	msecs_to_jiffies(200)
- #define IBS_HOST_TX_IDLE_TIMEOUT_MS	2000
--#define CMD_TRANS_TIMEOUT_MS		100
--#define MEMDUMP_TIMEOUT_MS		8000
--#define IBS_DISABLE_SSR_TIMEOUT_MS \
--	(MEMDUMP_TIMEOUT_MS + FW_DOWNLOAD_TIMEOUT_MS)
--#define FW_DOWNLOAD_TIMEOUT_MS		3000
-+#define CMD_TRANS_TIMEOUT		msecs_to_jiffies(100)
-+#define MEMDUMP_TIMEOUT			msecs_to_jiffies(8000)
-+#define FW_DOWNLOAD_TIMEOUT		msecs_to_jiffies(3000)
-+#define IBS_DISABLE_SSR_TIMEOUT		(MEMDUMP_TIMEOUT + FW_DOWNLOAD_TIMEOUT)
- 
- /* susclk rate */
- #define SUSCLK_RATE_32KHZ	32768
-@@ -1078,7 +1077,7 @@ static void qca_controller_memdump(struct work_struct *work)
- 
- 			queue_delayed_work(qca->workqueue,
- 					   &qca->ctrl_memdump_timeout,
--					   msecs_to_jiffies(MEMDUMP_TIMEOUT_MS));
-+					   MEMDUMP_TIMEOUT);
- 			skb_pull(skb, sizeof(qca_memdump->ram_dump_size));
- 			qca_memdump->current_seq_no = 0;
- 			qca_memdump->received_dump = 0;
-@@ -1350,7 +1349,7 @@ static int qca_set_baudrate(struct hci_dev *hdev, uint8_t baudrate)
- 
- 	if (hu->serdev)
- 		serdev_device_wait_until_sent(hu->serdev,
--		      msecs_to_jiffies(CMD_TRANS_TIMEOUT_MS));
-+		      CMD_TRANS_TIMEOUT);
- 
- 	/* Give the controller time to process the request */
- 	switch (qca_soc_type(hu)) {
-@@ -1381,8 +1380,8 @@ static inline void host_set_baudrate(struct hci_uart *hu, unsigned int speed)
- 
- static int qca_send_power_pulse(struct hci_uart *hu, bool on)
- {
-+	int timeout = CMD_TRANS_TIMEOUT;
- 	int ret;
--	int timeout = msecs_to_jiffies(CMD_TRANS_TIMEOUT_MS);
- 	u8 cmd = on ? QCA_WCN3990_POWERON_PULSE : QCA_WCN3990_POWEROFF_PULSE;
- 
- 	/* These power pulses are single byte command which are sent
-@@ -1584,7 +1583,7 @@ static void qca_wait_for_dump_collection(struct hci_dev *hdev)
- 	struct qca_data *qca = hu->priv;
- 
- 	wait_on_bit_timeout(&qca->flags, QCA_MEMDUMP_COLLECTION,
--			    TASK_UNINTERRUPTIBLE, MEMDUMP_TIMEOUT_MS);
-+			    TASK_UNINTERRUPTIBLE, MEMDUMP_TIMEOUT);
- 
- 	clear_bit(QCA_MEMDUMP_COLLECTION, &qca->flags);
- }
-@@ -2519,7 +2518,7 @@ static void qca_serdev_remove(struct serdev_device *serdev)
- static void qca_serdev_shutdown(struct serdev_device *serdev)
- {
- 	int ret;
--	int timeout = msecs_to_jiffies(CMD_TRANS_TIMEOUT_MS);
-+	int timeout = CMD_TRANS_TIMEOUT;
- 	struct qca_serdev *qcadev = serdev_device_get_drvdata(serdev);
- 	struct hci_uart *hu = &qcadev->serdev_hu;
- 	struct hci_dev *hdev = hu->hdev;
-@@ -2576,7 +2575,7 @@ static int __maybe_unused qca_suspend(struct device *dev)
- 	bool tx_pending = false;
- 	int ret = 0;
- 	u8 cmd;
--	u32 wait_timeout = 0;
-+	unsigned long wait_timeout = 0;
- 
- 	set_bit(QCA_SUSPENDING, &qca->flags);
- 
-@@ -2597,15 +2596,15 @@ static int __maybe_unused qca_suspend(struct device *dev)
- 	if (test_bit(QCA_IBS_DISABLED, &qca->flags) ||
- 	    test_bit(QCA_SSR_TRIGGERED, &qca->flags)) {
- 		wait_timeout = test_bit(QCA_SSR_TRIGGERED, &qca->flags) ?
--					IBS_DISABLE_SSR_TIMEOUT_MS :
--					FW_DOWNLOAD_TIMEOUT_MS;
-+					IBS_DISABLE_SSR_TIMEOUT :
-+					FW_DOWNLOAD_TIMEOUT;
- 
- 		/* QCA_IBS_DISABLED flag is set to true, During FW download
- 		 * and during memory dump collection. It is reset to false,
- 		 * After FW download complete.
- 		 */
- 		wait_on_bit_timeout(&qca->flags, QCA_IBS_DISABLED,
--			    TASK_UNINTERRUPTIBLE, msecs_to_jiffies(wait_timeout));
-+			    TASK_UNINTERRUPTIBLE, wait_timeout);
- 
- 		if (test_bit(QCA_IBS_DISABLED, &qca->flags)) {
- 			bt_dev_err(hu->hdev, "SSR or FW download time out");
-@@ -2657,7 +2656,7 @@ static int __maybe_unused qca_suspend(struct device *dev)
- 
- 	if (tx_pending) {
- 		serdev_device_wait_until_sent(hu->serdev,
--					      msecs_to_jiffies(CMD_TRANS_TIMEOUT_MS));
-+					      CMD_TRANS_TIMEOUT);
- 		serial_clock_vote(HCI_IBS_TX_VOTE_CLOCK_OFF, hu);
- 	}
- 
-@@ -2666,7 +2665,7 @@ static int __maybe_unused qca_suspend(struct device *dev)
- 	 */
- 	ret = wait_event_interruptible_timeout(qca->suspend_wait_q,
- 			qca->rx_ibs_state == HCI_IBS_RX_ASLEEP,
--			msecs_to_jiffies(IBS_BTSOC_TX_IDLE_TIMEOUT_MS));
-+			IBS_BTSOC_TX_IDLE_TIMEOUT);
- 	if (ret == 0) {
- 		ret = -ETIMEDOUT;
- 		goto error;
 -- 
-2.53.0
-
+Dmitry
 
