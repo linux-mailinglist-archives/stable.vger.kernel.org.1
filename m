@@ -1,303 +1,177 @@
-Return-Path: <stable+bounces-256530-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-256531-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id MLZEIGU2GWrzswgAu9opvQ
-	(envelope-from <stable+bounces-256530-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 29 May 2026 08:47:01 +0200
+	id OPH3KWk5GWpVtAgAu9opvQ
+	(envelope-from <stable+bounces-256531-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 29 May 2026 08:59:53 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8334C5FE1DA
-	for <lists+stable@lfdr.de>; Fri, 29 May 2026 08:46:59 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 535C45FE409
+	for <lists+stable@lfdr.de>; Fri, 29 May 2026 08:59:53 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 499C53002F7F
-	for <lists+stable@lfdr.de>; Fri, 29 May 2026 06:45:25 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 53E2031C1CF8
+	for <lists+stable@lfdr.de>; Fri, 29 May 2026 06:52:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 122203AA9E8;
-	Fri, 29 May 2026 06:45:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 45D383AB5BB;
+	Fri, 29 May 2026 06:52:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="t0iz5BRK";
-	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="fp1y/pB5";
-	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="ojfIjkYI";
-	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="mxhtg3sP"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="oRPIQRXl"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
+Received: from mail-wr1-f50.google.com (mail-wr1-f50.google.com [209.85.221.50])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B13843AA9D4
-	for <stable@vger.kernel.org>; Fri, 29 May 2026 06:45:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.131
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780037123; cv=none; b=hnuEqvU3WZEH0AqdCoxxHkhm2AAmSLCeCxLa8r1HI8Ghkd48C8rvYBcoUdu/IJ0uz31vAnMMfcGGCZXhlaV+J7/h/tyLnWqnRovwvZ5q7w/U3a3PmJkm4cwC9GmFc7dHeyqM+EMormMBZv0nXpQHps0dYBCRUbkjsF6DKhLBd/w=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780037123; c=relaxed/simple;
-	bh=1TxjLqhPlkY8s9kpbe/og5fpssH1ox29Lplr1Nppq1o=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=KI6lVekVALI44hvlXCt1WSbuxbngM+RFMo6Bh1KDU9hJOaL54haSy8VFyUNg8o5AL5+Qw7wPLZKNnE2kW59SIP7NEo2QyfjUribrHs3k4FrVnSQfMjuSpWwOnitZhk+cjKp6P5+Fqa5R4SHxo5BvuLjeT+GcIasCkqb+pqHzdPo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de; spf=pass smtp.mailfrom=suse.de; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=t0iz5BRK; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=fp1y/pB5; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=ojfIjkYI; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=mxhtg3sP; arc=none smtp.client-ip=195.135.223.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.de
-Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out2.suse.de (Postfix) with ESMTPS id E576266F47;
-	Fri, 29 May 2026 06:45:19 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1780037120; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=00oEdflBq6KtkPgqg+2OlO9BXkLU2OZ1RZrsgnWL2Ac=;
-	b=t0iz5BRKXWdsSEWHa3rj+u4/+i2ZOjAHjRrsExfQHjs8lH7LnN5F/qQaYSGiC/3e/dmFWM
-	6YCbHFBS5obGZIl62ruSzz+2gsZ6W6exB3tMsqyhHk1AwfHc0imeMAqNx2+KtMtAXxwZ5T
-	F28uH2gkgm63iT3cN1BI/JIGMskTGuI=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1780037120;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=00oEdflBq6KtkPgqg+2OlO9BXkLU2OZ1RZrsgnWL2Ac=;
-	b=fp1y/pB54Vrz/Gb3TnWm5e81o1BdVG+PTYhbL3hYbvGRKEphT0G94xAwVPzVFa/xVZrV+E
-	20Mfe7yIX0SvAKAQ==
-Authentication-Results: smtp-out2.suse.de;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=ojfIjkYI;
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=mxhtg3sP
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1780037119; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=00oEdflBq6KtkPgqg+2OlO9BXkLU2OZ1RZrsgnWL2Ac=;
-	b=ojfIjkYI2nuF/7Y9I3HXPpfSAdVFyF2wj+tTT3rH6IQSCd4S8qHpxeeskZ90XoMJEG9Kt9
-	ZCNkQsg8ViBgBJN9GZ8g8CgM2pkNqiK+tCXOJgrTzy9+v4jTaSr4CVWpfFuDV35LM5pn7N
-	BeBEfFMVT7+6Fa0WSWZFsPSM/gSAux4=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1780037119;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=00oEdflBq6KtkPgqg+2OlO9BXkLU2OZ1RZrsgnWL2Ac=;
-	b=mxhtg3sP8KzGeSU/0ymb06q22HJ+tACNXXIH+2p/Oq0CyaFARXUnxhZhzIEFkQOULfL4P7
-	A7SOsUwjZi6qZHBA==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id A9C215B1E1;
-	Fri, 29 May 2026 06:45:19 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id bvg5KP81GWrcLgAAD6G6ig
-	(envelope-from <hare@suse.de>); Fri, 29 May 2026 06:45:19 +0000
-Message-ID: <b8d1fda2-a2da-4b35-9bd5-941834f26c32@suse.de>
-Date: Fri, 29 May 2026 08:45:19 +0200
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C3F333630A9
+	for <stable@vger.kernel.org>; Fri, 29 May 2026 06:52:45 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.221.50
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1780037567; cv=pass; b=fz/l1ISaNdSRMhpKz35lBUTVsnq0ofOmYA4QBnztTiue/ycjV/dzRRurZG3CE04UMx4NQyzdTX9L0tZkvdD9vCP7wesBsWumRuqHm+PU84sZpMCkTMCAeG88t2+dWL89i+bhIZ0ZgKk3SV9ulsD/4osSx6U9lTw+JEagLG2M61g=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1780037567; c=relaxed/simple;
+	bh=kfRQBWZrpEVVcnkeXr04N7MfphpLoboVNgmHFGTrJ/0=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=YV6GRxgLKb0CoukbTu8Dqvs4VqbVZ2AQs34gEtzr+dQZyK4eOZSfedbcoKYQTlXUTonl3g0C3r7as1kddesSWLhRFH7WxqvTlAssfwmGyl5oIuSCEFiqjbyhBuOPiV8iGwliQI50rlFRKC1r/Ah4SMAq+E890wclersJLpUf57E=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=oRPIQRXl; arc=pass smtp.client-ip=209.85.221.50
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-wr1-f50.google.com with SMTP id ffacd0b85a97d-45ef1198766so191555f8f.0
+        for <stable@vger.kernel.org>; Thu, 28 May 2026 23:52:45 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1780037564; cv=none;
+        d=google.com; s=arc-20240605;
+        b=KrNwj9qATLYC6Epj3ytEPqOVXTYFcr64rDHOQzwR+0c7agZH6eu/P6vDonF5RXkqrq
+         n5MiMUREWVMlBa1qQKW2z/udIoE1BaIimoElgo/Xc0XR+rjozvuPe6U4sNLPCbk5i9y9
+         DBaTscLiZjPAtmcdbQ8tZWXedW2mhAoUIFsxa2fr+TSJp+g9luxC4uuGCF75qguxT+ZL
+         7kphmX6YdGt96qnalPg6dznWwqG0g+AZYQFYYWkzDkpm96ZV5eSevqB7reCTxGqUX/lN
+         8y2uPHp4GKOHAY9TBF52FdMcjv/EYe/mzbAXOWUKP1/9uCG/LPO11gWjySsTtC27J8sq
+         4Sbw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:dkim-signature;
+        bh=kfRQBWZrpEVVcnkeXr04N7MfphpLoboVNgmHFGTrJ/0=;
+        fh=Jswm+WUyGm1sWyFyQPOnBj8EJ8fq1RIdf3JZSW7wwBk=;
+        b=UfaFXAm2C70MWciFQSNyJfE83sWqjPGWgugtBrNKfeQ+OE3P8Gn4snvUt4pY5cKpBa
+         QsYaSkw6kCgXIUbptDiK42zIhWuLPgVt4fyiL486EMLRgY/JGpbCVkk58b+3RgwGFvAi
+         9PY6lA8y3/46UFidIAyN+2n3NSsSfLw25OJvL2nIV2eahv6AQ1H06kNr2FxgX87D8rgs
+         kBdbY9Ga34npQADiWnbrudaCH97zgjLpEDTRnkbHuJLmiBmmOkx9EKqqMGvDwLb6zQFO
+         +wFRgISVrDADj3FlXu58hbIBLgySAPsxUcRRhyC8dx+C+c8cOi8lSAVfo6mxIOsC7DcN
+         3iMA==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1780037564; x=1780642364; darn=vger.kernel.org;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=kfRQBWZrpEVVcnkeXr04N7MfphpLoboVNgmHFGTrJ/0=;
+        b=oRPIQRXl5RxN+R5q0MMZuh1Ke87ir+4TlNeH2PxpQUL9+Bg0K8Tyk0sRs6ILS/BU6I
+         ov+d8qlgDdV5dI//669Z+ghXaqKadPpYACesWknw4RVqCQ67HXOYksJph+FJpcTJDmHZ
+         DJpNna2sYRE9otuZFeYvdt8CBXbdhrngefZzZSnu+2M8pH31krIB0dJK2q8k+MdLRYeo
+         pKglpUed8we17rSVlbjTUKlOeIw5OoaOY4QNgD7I9bjtN/vN98kh+9m001mp2yusN9qZ
+         COKJbXzHXAwvHJI7IM+aftbGilsNq5adUG2WApiEm8luiL40YUzVGN4bgIwoED+V53Su
+         T6Vg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1780037564; x=1780642364;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=kfRQBWZrpEVVcnkeXr04N7MfphpLoboVNgmHFGTrJ/0=;
+        b=GOHGQ/MhSD7MzDkXAlv7zglbbjfysuPohz3MUxt40Rw7kMsjfWktv7VvuMOdUsfIjq
+         Xwf3pgMIrRrvZ+8yT7YMEqTN+5ILb+c1SHLRj3794yjb8rpktI8QqF2Db3t4VlsQGe8c
+         0XZcXWmijlj9yxI4wJiLvxcNhG6FIqvgS77ffRssdwtpIrEFEmdfw0hbLd9YHRlQVMKF
+         jJ7oSeC5DAs97RFyLh/Q9omk2IFfMLyIIfwsZb23B+Le5tUodN9gFfV2IIFYFvkkFamm
+         QvjZCQl32EmfwVty7JeXBwUk7rJ8O5L2bjlRsuZvLB0ZTKERDVX38CSQtwrto9ld65nB
+         bNRA==
+X-Forwarded-Encrypted: i=1; AFNElJ/1yXtGhfZiPJumx8TPgkC0G65iwIZMfY+VI2FfWUbgUfZQboV50DAy4LZTDHK6zt3cjje++2I=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzQzaKS4xn0+Da7k0BZF3qOkwlV9TC/0SnWwO+aHVaeIRCNdHrG
+	1GMdDLqDjn4HBTiVhOOAQFGsziWWDCNuQB1whVYZ1v0XuJiADxcNkmfyB+UjFt5DclAf810K25N
+	U5Gn1z7EHCsBv/txRAB9qJL3bpGaDiZY=
+X-Gm-Gg: Acq92OG/15el4yXKfpxQ1X9xfU2C9qyi29yrTAS+DhqMc7R3urmz3dvpqwkXazW9srI
+	4JaORdCFwnzd3tT0lAi0+zvdg/tQa3OF4E/d/db8NxV785n9pZkqH7bkOIpBHG/G5YCoU0I9Vah
+	GHFNfLuzS/pezA2vAPg2ncnFewBEW2duBld0InZ6PJZJWz8+kFHU23XxhomiE5xyHu/QBs42E+p
+	lVQtiuHxAewu55mUf8zvCFK9yMpCy1GmC/kSTk0fviqSXqMNOxOF61baDJVBH5pxA6gFCvi2TZW
+	yXRo361UcoPLNE50A+PngTGSvaRt
+X-Received: by 2002:a05:6000:4915:b0:45e:ec31:91db with SMTP id
+ ffacd0b85a97d-45ef132db76mr2142532f8f.1.1780037564017; Thu, 28 May 2026
+ 23:52:44 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2] nvme-multipath: set BIO_REMAPPED on bios remapped to
- per-path namespace disks
-To: "Achkinazi, Igor" <Igor.Achkinazi@dell.com>,
- "kbusch@kernel.org" <kbusch@kernel.org>, "hch@lst.de" <hch@lst.de>,
- "sagi@grimberg.me" <sagi@grimberg.me>, "axboe@kernel.dk" <axboe@kernel.dk>
-Cc: "linux-nvme@lists.infradead.org" <linux-nvme@lists.infradead.org>,
- "linux-block@vger.kernel.org" <linux-block@vger.kernel.org>,
- "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
- "stable@vger.kernel.org" <stable@vger.kernel.org>
-References: <MW5PR19MB548483D1FAE4F322E4C97352FD032@MW5PR19MB5484.namprd19.prod.outlook.com>
- <DS0PR19MB76963295FC34844B413479F9FD092@DS0PR19MB7696.namprd19.prod.outlook.com>
-Content-Language: en-US
-From: Hannes Reinecke <hare@suse.de>
-In-Reply-To: <DS0PR19MB76963295FC34844B413479F9FD092@DS0PR19MB7696.namprd19.prod.outlook.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-Spam-Flag: NO
-X-Spam-Score: -4.51
-X-Spam-Level: 
-X-Spamd-Result: default: False [-2.16 / 15.00];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[suse.de,none];
-	R_DKIM_ALLOW(-0.20)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
+References: <20260527070824.2677331-1-maoyixie.tju@gmail.com>
+ <CAAVpQUBKHhj6h5Rke=N9NyeUOPvVB0RKJSr2=HPkUKgAqQA0Bg@mail.gmail.com>
+ <CAHPEe=H5SFJN-=EFggXdNreN_A_LE2r_KHrpWU4UxJmq+g-bhg@mail.gmail.com> <CAAVpQUAp8pvg=s0K3QmkN62Osat-kf+4XPosfgbBZ_avzZR04A@mail.gmail.com>
+In-Reply-To: <CAAVpQUAp8pvg=s0K3QmkN62Osat-kf+4XPosfgbBZ_avzZR04A@mail.gmail.com>
+From: Maoyi Xie <maoyixie.tju@gmail.com>
+Date: Fri, 29 May 2026 14:52:33 +0800
+X-Gm-Features: AVHnY4IOOkLMXNm_j8bV0jM4Vc6N9eDKu9CgnwIhR-_I7cCTyGyv25rgE_WIjvA
+Message-ID: <CAHPEe=G330Dve0BdMhs783LiwC68eik7dc=Amm_Qz=kdD9nQ3A@mail.gmail.com>
+Subject: Re: [PATCH net] rtnetlink: Require CAP_NET_ADMIN in link netns for changelink.
+To: Kuniyuki Iwashima <kuniyu@google.com>
+Cc: Jakub Kicinski <kuba@kernel.org>, "David S . Miller" <davem@davemloft.net>, 
+	Paolo Abeni <pabeni@redhat.com>, Eric Dumazet <edumazet@google.com>, 
+	David Ahern <dsahern@kernel.org>, Xiao Liang <shaw.leon@gmail.com>, 
+	Nikolaos Gkarlis <nickgarlis@gmail.com>, netdev@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	stable@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+X-Spamd-Result: default: False [-0.66 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=2];
+	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	DKIM_TRACE(0.00)[suse.de:+];
-	TAGGED_FROM(0.00)[bounces-256530-lists,stable=lfdr.de];
-	FROM_HAS_DN(0.00)[];
-	TO_DN_EQ_ADDR_SOME(0.00)[];
+	TAGGED_FROM(0.00)[bounces-256531-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FREEMAIL_CC(0.00)[kernel.org,davemloft.net,redhat.com,google.com,gmail.com,vger.kernel.org];
 	TO_DN_SOME(0.00)[];
 	MIME_TRACE(0.00)[0:+];
+	FROM_HAS_DN(0.00)[];
+	MISSING_XM_UA(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[6];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[hare@suse.de,stable@vger.kernel.org];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
 	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[9];
-	MID_RHS_MATCH_FROM(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[maoyixietju@gmail.com,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[gmail.com:+];
+	MID_RHS_MATCH_FROMTLD(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[suse.de:email,suse.de:mid,suse.de:dkim,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo]
-X-Rspamd-Queue-Id: 8334C5FE1DA
+	RCPT_COUNT_SEVEN(0.00)[11];
+	FREEMAIL_FROM(0.00)[gmail.com];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[mail.gmail.com:mid,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
+X-Rspamd-Queue-Id: 535C45FE409
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-On 5/28/26 17:24, Achkinazi, Igor wrote:
-> When nvme_ns_head_submit_bio() remaps a bio from the multipath head to
-> a per-path namespace, bio_set_dev() clears BIO_REMAPPED.  The remapped
-> bio is then resubmitted through submit_bio_noacct() which calls
-> bio_check_eod() because BIO_REMAPPED is not set.
-> 
-> This races with nvme_ns_remove() which zeroes the per-path capacity
-> before synchronize_srcu():
-> 
->    CPU 0 (IO submission)
->    ---------------------
->    srcu_read_lock()
->    nvme_find_path() -> ns
->      [NVME_NS_READY is set]
-> 
->    CPU 1 (namespace removal)
->    -------------------------
->    clear_bit(NVME_NS_READY)
->    set_capacity(ns->disk, 0)
->    synchronize_srcu()  <- blocks
-> 
->    CPU 0 (IO submission)
->    ---------------------
->    bio_set_dev(bio, ns->disk->part0)
->      [clears BIO_REMAPPED]
->    submit_bio_noacct(bio)
->      -> bio_check_eod() sees capacity=0
->      -> bio fails with IO error
-> 
-> The SRCU read lock prevents synchronize_srcu() from completing, but
-> does not prevent set_capacity(0) from executing.  The bio fails the
-> EOD check before it reaches the NVMe driver, so nvme_failover_req()
-> never gets a chance to redirect it to another path of multipath.  IO errors
-> are reported to the application despite another path being available.
-> 
-> On older kernels (before commit 0b64682e78f7 "block: skip unnecessary
-> checks for split bio"), the same race was also reachable through split
-> remainders resubmitted via submit_bio_noacct().
-> 
-> Observed during NVMe multipath failover testing at Dell on
-> 5.14.0-570.23.1.el9_6.x86_64 (RHEL 9.7) and
-> 6.4.0-150600.23.53-default (SLES 15.6).
-> 
-> Fix this by setting BIO_REMAPPED after bio_set_dev() in
-> nvme_ns_head_submit_bio().  This skips bio_check_eod() on the per-path
-> device; the EOD check already passed on the multipath head.
-> 
-> NVMe per-path namespace devices are always whole disks (bd_partno=0),
-> so the blk_partition_remap() skip also gated by BIO_REMAPPED is a
-> no-op.  The flag does not persist across failover and cannot go stale
-> if the namespace geometry changes between attempts: nvme_failover_req()
-> calls bio_set_dev() to redirect the bio back to the multipath head,
-> which clears BIO_REMAPPED.  When nvme_requeue_work() resubmits through
-> submit_bio_noacct(), bio_check_eod() runs normally against the current
-> capacity.
-> 
-> Same approach as commit 3a905c37c351 ("block: skip bio_check_eod for
-> partition-remapped bios").
-> 
-> A broader solution that moves bio validation into the queue-entered
-> context and eliminates the set_capacity(0) hack is being developed
-> upstream, however this minimal fix is suitable for backporting to
-> stable kernels affected today. The link to the mentioned patch:
-> https://lore.kernel.org/linux-block/20260519172326.3462354-1-kbusch@meta.com/
-> 
-> Fixes: a7c7f7b2b641 ("nvme: use bio_set_dev to assign ->bi_bdev")
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Igor Achkinazi <igor.achkinazi@dell.com>
-> ---
-> v2:
->    - Corrected race description: primary race is in the initial
->      submit_bio_noacct() call in nvme_ns_head_submit_bio(), not
->      only in split remainders (which are no longer affected on
->      current mainline since commit 0b64682e78f7)
->    - Dropped incorrect arguments about submit_bio_noacct_nocheck
->      export status and BIO_REMAPPED propagation to split clones
->    - Added analysis showing BIO_REMAPPED flag does not persist
->      across failover (nvme_failover_req clears it via bio_set_dev)
->    - Referenced upstream RFC series addressing the root cause
-> 
->   drivers/nvme/host/multipath.c | 7 +++++++
->   1 file changed, 7 insertions(+)
-> 
-> diff --git a/drivers/nvme/host/multipath.c b/drivers/nvme/host/multipath.c
-> index 263161cb8ac0..04f7c7e59945 100644
-> --- a/drivers/nvme/host/multipath.c
-> +++ b/drivers/nvme/host/multipath.c
-> @@ -511,6 +511,13 @@ static void nvme_ns_head_submit_bio(struct bio *bio)
->          ns = nvme_find_path(head);
->          if (likely(ns)) {
->                  bio_set_dev(bio, ns->disk->part0);
-> +               /*
-> +                * Skip bio_check_eod() when this bio enters
-> +                * submit_bio_noacct() for the per-path device.
-> +                * The EOD check already passed on the multipath head.
-> +                */
-> +               bio_set_flag(bio, BIO_REMAPPED);
->                  bio->bi_opf |= REQ_NVME_MPATH;
->                  trace_block_bio_remap(bio, disk_devt(ns->head->disk),
->                                        bio->bi_iter.bi_sector);
-> --
-> 2.43.0
-> 
-> 
-> Internal Use - Confidential
-> 
-... or you could introduce __bio_set_dev():
+Hi Kuniyuki,
 
-diff --git a/include/linux/bio.h b/include/linux/bio.h
-index 97d747320b35..5a2709adeea7 100644
---- a/include/linux/bio.h
-+++ b/include/linux/bio.h
-@@ -518,15 +518,20 @@ static inline void blkcg_punt_bio_submit(struct 
-bio *bio)
-  }
-  #endif /* CONFIG_BLK_CGROUP */
+> > > Do all other callers of ->get_link_net(), dev_get_iflink_dev()
+> > > and batadv_getlink_net(), require the same capability check ?
+> >
+> > No. Those are read paths.
+>
+> See how netif_change_proto_down() uses dev_get_iflink_dev().
 
--static inline void bio_set_dev(struct bio *bio, struct block_device *bdev)
-+static inline void __bio_set_dev(struct bio *bio, struct block_device 
-*bdev)
-  {
--       bio_clear_flag(bio, BIO_REMAPPED);
-         if (bio->bi_bdev != bdev)
-                 bio_clear_flag(bio, BIO_BPS_THROTTLED);
-         bio->bi_bdev = bdev;
-         bio_associate_blkg(bio);
-  }
+Thanks for catching that. You're right, "all read paths" was too
+broad. netif_change_proto_down() is a mutation function and it calls
+dev_get_iflink_dev() inside its logic.
 
-+static inline void bio_set_dev(struct bio *bio, struct block_device *bdev)
-+{
-+       bio_clear_flag(bio, BIO_REMAPPED);
-+       __bio_set_dev(bio, bdev);
-+}
-+
-  /*
-   * BIO list management for use by remapping drivers (e.g. DM or MD) 
-and loop.
-   *
+I read through it. The resolved iflink_dev is only used there to test
+reachability (the !iflink_dev return) and to read
+netif_carrier_ok(iflink_dev) for the carrier_on conditional. The
+mutations (proto_down, carrier_off/on) target dev, which is in the
+caller's netns and was cap checked at the rtnl setlink entry. So I do
+not see a parallel cap gap on that path.
 
-to avoid all this clear-and-set-flag dance.
+If you agree, I would like to keep this series scoped to the
+rtnl_changelink path Xiao reported. The per-type cap check on
+t->net->user_ns mirrors 8b484efd5cb4. If you see another angle on the
+dev_get_iflink_dev() callers, please tell me and I will look again.
 
-Cheers,
-
-Hannes
--- 
-Dr. Hannes Reinecke                  Kernel Storage Architect
-hare@suse.de                                +49 911 74053 688
-SUSE Software Solutions GmbH, Frankenstr. 146, 90461 Nürnberg
-HRB 36809 (AG Nürnberg), GF: I. Totev, A. McDonald, W. Knoblich
+Thanks,
+Maoyi
 
