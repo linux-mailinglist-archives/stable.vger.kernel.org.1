@@ -1,77 +1,78 @@
-Return-Path: <stable+bounces-256542-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-256544-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id oMBtHdpJGWrzuQgAu9opvQ
-	(envelope-from <stable+bounces-256542-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 29 May 2026 10:10:02 +0200
+	id yNhhB/pIGWrHuAgAu9opvQ
+	(envelope-from <stable+bounces-256544-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 29 May 2026 10:06:18 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id D70C25FEFD8
-	for <lists+stable@lfdr.de>; Fri, 29 May 2026 10:10:01 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id B20FC5FEF1F
+	for <lists+stable@lfdr.de>; Fri, 29 May 2026 10:06:17 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 58A5C31602C0
-	for <lists+stable@lfdr.de>; Fri, 29 May 2026 08:04:04 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id E4D4030963E9
+	for <lists+stable@lfdr.de>; Fri, 29 May 2026 08:04:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 559753B7776;
-	Fri, 29 May 2026 08:03:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A50613B6BFF;
+	Fri, 29 May 2026 08:03:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="NVQB4pLq"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="BKb4v2Fx"
 X-Original-To: stable@vger.kernel.org
 Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.16])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7C21D3B6C11
-	for <stable@vger.kernel.org>; Fri, 29 May 2026 08:03:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AA9733B6BFE
+	for <stable@vger.kernel.org>; Fri, 29 May 2026 08:03:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.16
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780041824; cv=none; b=pRC2792ueusJCzQMu7G5j+eP+edtUintoDzhe29mtBUG1BwrSpm3dQMmakBQcl52Y7ysPYSFu3yEAU8HQ+jF9//HD6zRPnEjQ9eVhD/Pr4PjF0v9ulYl9K5aANvzHjU+sbsFgZrA7er8gtagUzbkPD1sYNBrM+lvUaiDEP06c20=
+	t=1780041825; cv=none; b=aGfe0wJRAUE/sQgZ4Qv+m2HzWQvFss5SnEOK97tXyaSfzEg5/Oci2AOZNPheicrPVGnpx6Z9ERyJK3PnCxas+4ZDHalMy/Fv5hF6UxzchRzJjimzkM4CKrQbKfCOcjyEDh9JtJbxPgz+EY5ILGvLvDTNpqzTJ3tpO8vlgADE2y8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780041824; c=relaxed/simple;
-	bh=vsJULIgCzsHGDamx1IlbHt6HaQRnN7wQJmkLT6lhAfA=;
+	s=arc-20240116; t=1780041825; c=relaxed/simple;
+	bh=NEqbIOhrxcFFKAZpTx5n47Vd1HYn6Oo6l0+Xp+rYT6s=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=VLnKxfIH/+BPlQW3DuQ8LiizqfwOwJO9riBCU2xnHCrJ3lFQMrH+kIemARokFmYqBeDb9RQusEaxqDgOjhVadem8fp4sb9NK10N3T6hk7r0R/YOxS4sQ8kIzajxIonHanGcVT8IwjL0fevsMAh/DITvJkUWnL322TGPV+xwjPus=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=NVQB4pLq; arc=none smtp.client-ip=198.175.65.16
+	 MIME-Version:Content-Type; b=re+r0YKrxHskd5hb59GUxHbFA2OOardObpAzf45wyZODP441DiLCyxxy2ut2rkQbvGgi7Q/C26AMr3d8ii9gdFVUMUSmt4vcYobDMKpHYAMhbeagKg7ecnFB4Bjo23STKJhvYdbKqwGvHL+N2yGgWbKNh11oo2rR6miGSERfXGA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=BKb4v2Fx; arc=none smtp.client-ip=198.175.65.16
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1780041818; x=1811577818;
+  t=1780041820; x=1811577820;
   h=from:to:cc:subject:date:message-id:in-reply-to:
    references:mime-version:content-transfer-encoding;
-  bh=vsJULIgCzsHGDamx1IlbHt6HaQRnN7wQJmkLT6lhAfA=;
-  b=NVQB4pLq/Z/Cx9iE+tS77Tj2i1YVJBAGEteQ6FO8JR4srxuxViEEbKnh
-   q41X3HCfbpeYcmQTWQsreieLVXOptB1JClhiTQPWaAPobQKbpUhQWZx51
-   +pFLPpxqu4MT1C2h+mewyhHCMIhflBU7Rwi+X6fGpg+3eHCmifu+Gz7pO
-   w9Fbe1SPb9c4/l/w6DKKUPKJnbULGEPIwq7JCX0sIejrmvfapheDsN0lP
-   thvwUaaWZjZGxPQBZbe34MQPjoLyh2NnsdeOc+b3NmV9J2MFAIeVzcyAJ
-   x6hyU0xzONA/mJ3JEzdPcdHLSzitx3MEA5WrW2awJYjjPQz3/o9GcPUHN
-   g==;
-X-CSE-ConnectionGUID: mLifYDtsSqWvpff6a8Q7Qg==
-X-CSE-MsgGUID: Or4lizcJTzup6xI8GGdQqA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11800"; a="81073753"
+  bh=NEqbIOhrxcFFKAZpTx5n47Vd1HYn6Oo6l0+Xp+rYT6s=;
+  b=BKb4v2FxTrdWj16rWzYWDSHh38zA79divQDz4+m23HH255qgUU7lWt4b
+   jjonWM+Pv6fF5vyK5gBr8gnXdcl63eGw39g56GuXSB3UJP8TLD4fprmmy
+   ueEh8Dq8B7e17cw4HTg4YYm8SZmgMWZ0nqHZxyIOyMUXVlxAezCe960hS
+   UV49QVrQ0siNTtYVLL6Pa0bY3ujDeNrvkCf8D5/HZ/dL++U/eAYFxuiwa
+   vUMCqtjulQFHJR5eHXnUszJttEzBK/HHWBbotO+d1fBi73g7ZP4cygG46
+   Qx/EosTWw6+XtMAmyQwOHFvei3fGTrrb5a46YcRBFOI1vcXu0ee9P90QP
+   A==;
+X-CSE-ConnectionGUID: i3jQZhmfSlqBRn/R/vUJvw==
+X-CSE-MsgGUID: gsjk96mkTN2seX9SpQH5dQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11800"; a="81073755"
 X-IronPort-AV: E=Sophos;i="6.24,175,1774335600"; 
-   d="scan'208";a="81073753"
+   d="scan'208";a="81073755"
 Received: from orviesa005.jf.intel.com ([10.64.159.145])
-  by orvoesa108.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 29 May 2026 01:03:37 -0700
-X-CSE-ConnectionGUID: +Y+mvbt0T3aVqU82BD3NPg==
-X-CSE-MsgGUID: wzftlPWaSIKU8088flnRLg==
+  by orvoesa108.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 29 May 2026 01:03:40 -0700
+X-CSE-ConnectionGUID: Wff0vm3YRamfkvj4a2W5FQ==
+X-CSE-MsgGUID: b9OxQ2T7Q+yPX+iP+Zst9w==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.24,175,1774335600"; 
-   d="scan'208";a="247726759"
+   d="scan'208";a="247726766"
 Received: from mjarzebo-mobl1.ger.corp.intel.com (HELO jhogande-mobl3.intel.com) ([10.245.246.54])
-  by orviesa005-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 29 May 2026 01:03:35 -0700
+  by orviesa005-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 29 May 2026 01:03:38 -0700
 From: =?UTF-8?q?Jouni=20H=C3=B6gander?= <jouni.hogander@intel.com>
 To: stable@vger.kernel.org
 Cc: =?UTF-8?q?Jouni=20H=C3=B6gander?= <jouni.hogander@intel.com>,
 	Suraj Kandpal <suraj.kandpal@intel.com>,
 	Tvrtko Ursulin <tursulin@ursulin.net>
-Subject: [PATCH 5.15.y 1/4] drm/i915/psr: Add defininitions for INTEL_WA_REGISTER_CAPS DPCD register
-Date: Fri, 29 May 2026 11:03:14 +0300
-Message-ID: <20260529080317.343937-1-jouni.hogander@intel.com>
+Subject: [PATCH 5.15.y 2/4] drm/i915/psr: Read Intel DPCD workaround register
+Date: Fri, 29 May 2026 11:03:15 +0300
+Message-ID: <20260529080317.343937-2-jouni.hogander@intel.com>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <2026052830-confirm-prepaid-2f4e@gregkh>
+In-Reply-To: <20260529080317.343937-1-jouni.hogander@intel.com>
 References: <2026052830-confirm-prepaid-2f4e@gregkh>
+ <20260529080317.343937-1-jouni.hogander@intel.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -85,12 +86,12 @@ X-Spamd-Result: default: False [-1.16 / 15.00];
 	MID_CONTAINS_FROM(1.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[intel.com,none];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	R_DKIM_ALLOW(-0.20)[intel.com:s=Intel];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-256542-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-256544-lists,stable=lfdr.de];
 	DKIM_TRACE(0.00)[intel.com:+];
 	TO_DN_SOME(0.00)[];
 	MIME_TRACE(0.00)[0:+];
@@ -105,70 +106,65 @@ X-Spamd-Result: default: False [-1.16 / 15.00];
 	RCVD_COUNT_FIVE(0.00)[5];
 	TAGGED_RCPT(0.00)[stable];
 	NEURAL_HAM(-0.00)[-1.000];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,intel.com:email,intel.com:mid,intel.com:dkim,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,ursulin.net:email]
-X-Rspamd-Queue-Id: D70C25FEFD8
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,intel.com:email,intel.com:mid,intel.com:dkim,msgid.link:url,ursulin.net:email]
+X-Rspamd-Queue-Id: B20FC5FEF1F
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-commit fbceb39b536e40c2f7cc47ab42037bb7c2b7ced9 upstream.
+commit f30bece421a4ae34359254e1dc2a187a42b6af9b upstream.
 
-EDP specification says:
+Read Intel DPCD workaround register and store it into
+intel_connector->dp.psr_caps. psr_caps was chosen as currently it contains
+only PSR workaround for PSR2 SDP on prior scanline implementation.
 
-"If either VSC SDP is unable to be transmitted 100 ns before the SU region,
-the Source device may optionally transmit the VSC SDP during the prior
-video scan line’s HBlank period There is a Intel specific drm dp register
-currently containing bits related how TCON can support PSR2 with SDP on
-prior line."
-
-Unfortunately many panels are having problems in implementing this. So
-there is a custom Intel specific DPCD register (INTEL_WA_REGISTER_CAPS) to
-figure out if this is properly implemented on a panel or if panel doesn't
-require that 100 ns delay before the SU region. Here are the definitions in
-this custom DPCD address:
-
-0 = Panel doesn't support SDP on prior line
-1 = Panel supports SDP on prior line
-2 = Panel doesn't have 100ns requirement
-3 = Reserved
-
-Add definitions for this new register and it's values into new header
-intel_dpcd.h.
-
-v2: add INTEL_DPCD_ prefix to definitions
-
-Bspec: 74741
 Signed-off-by: Jouni Högander <jouni.hogander@intel.com>
 Reviewed-by: Suraj Kandpal <suraj.kandpal@intel.com>
-Link: https://patch.msgid.link/20260515095756.2799483-2-jouni.hogander@intel.com
-(cherry picked from commit 1da1c9294825f08f622c473480d185680c2a3b75)
+Link: https://patch.msgid.link/20260515095756.2799483-3-jouni.hogander@intel.com
+(cherry picked from commit c48ff24d0f4ab7ad696b2d35ad64ce7e049c668c)
 Signed-off-by: Tvrtko Ursulin <tursulin@ursulin.net>
 ---
- drivers/gpu/drm/i915/display/intel_dpcd.h | 15 +++++++++++++++
- 1 file changed, 15 insertions(+)
- create mode 100644 drivers/gpu/drm/i915/display/intel_dpcd.h
+ drivers/gpu/drm/i915/display/intel_display_types.h | 1 +
+ drivers/gpu/drm/i915/display/intel_psr.c           | 7 +++++++
+ 2 files changed, 8 insertions(+)
 
-diff --git a/drivers/gpu/drm/i915/display/intel_dpcd.h b/drivers/gpu/drm/i915/display/intel_dpcd.h
-new file mode 100644
-index 000000000000..4aea5326f2ed
---- /dev/null
-+++ b/drivers/gpu/drm/i915/display/intel_dpcd.h
-@@ -0,0 +1,15 @@
-+/* SPDX-License-Identifier: MIT */
-+/*
-+ * Copyright © 2026 Intel Corporation
-+ */
+diff --git a/drivers/gpu/drm/i915/display/intel_display_types.h b/drivers/gpu/drm/i915/display/intel_display_types.h
+index 90e055f05699..ef4c280d2cb6 100644
+--- a/drivers/gpu/drm/i915/display/intel_display_types.h
++++ b/drivers/gpu/drm/i915/display/intel_display_types.h
+@@ -1554,6 +1554,7 @@ struct intel_dp {
+ 	u8 lttpr_phy_caps[DP_MAX_LTTPR_COUNT][DP_LTTPR_PHY_CAP_SIZE];
+ 	u8 fec_capable;
+ 	u8 pcon_dsc_dpcd[DP_PCON_DSC_ENCODER_CAP_SIZE];
++	u8 intel_wa_dpcd;
+ 	/* source rates */
+ 	int num_source_rates;
+ 	const int *source_rates;
+diff --git a/drivers/gpu/drm/i915/display/intel_psr.c b/drivers/gpu/drm/i915/display/intel_psr.c
+index 93d2fd4cd16b..aa00e062a2a6 100644
+--- a/drivers/gpu/drm/i915/display/intel_psr.c
++++ b/drivers/gpu/drm/i915/display/intel_psr.c
+@@ -30,6 +30,7 @@
+ #include "intel_atomic.h"
+ #include "intel_de.h"
+ #include "intel_display_types.h"
++#include "intel_dpcd.h"
+ #include "intel_dp_aux.h"
+ #include "intel_hdmi.h"
+ #include "intel_psr.h"
+@@ -363,6 +364,12 @@ void intel_psr_init_dpcd(struct intel_dp *intel_dp)
+ 			intel_dp_get_su_granularity(intel_dp);
+ 		}
+ 	}
 +
-+#ifndef __INTEL_DPCD_H__
-+#define __INTEL_DPCD_H__
-+
-+#define INTEL_DPCD_INTEL_WA_REGISTER_CAPS					0x3f0
-+# define INTEL_DPCD_INTEL_WA_REGISTER_CAPS_PSR2_EARLYSCANLINE_SDP_SUPPORT_MASK	REG_GENMASK(1, 0)
-+# define INTEL_DPCD_INTEL_WA_REGISTER_CAPS_FALL_BACK_TO_PSR1			0
-+# define INTEL_DPCD_INTEL_WA_REGISTER_CAPS_PSR2_WITH_EARLY_SCANLINE		1
-+# define INTEL_DPCD_INTEL_WA_REGISTER_CAPS_PSR2_WITHOUT_EARLY_SCANLINE		2
-+
-+#endif /* __INTEL_DPCD_H__ */
++	if (intel_dp->psr.sink_psr2_support)
++		drm_dp_dpcd_read(&intel_dp->aux,
++				 INTEL_DPCD_INTEL_WA_REGISTER_CAPS,
++				 &intel_dp->intel_wa_dpcd,
++				 sizeof(intel_dp->intel_wa_dpcd));
+ }
+ 
+ static void hsw_psr_setup_aux(struct intel_dp *intel_dp)
 -- 
 2.43.0
 
