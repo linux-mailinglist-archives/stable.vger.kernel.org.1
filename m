@@ -1,186 +1,140 @@
-Return-Path: <stable+bounces-256615-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-256618-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id zFCoGoKDGWouxQgAu9opvQ
-	(envelope-from <stable+bounces-256615-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 29 May 2026 14:16:02 +0200
+	id uNdNLHOGGWouxQgAu9opvQ
+	(envelope-from <stable+bounces-256618-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 29 May 2026 14:28:35 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id C4587602225
-	for <lists+stable@lfdr.de>; Fri, 29 May 2026 14:16:01 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2D1B360244D
+	for <lists+stable@lfdr.de>; Fri, 29 May 2026 14:28:34 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 3CF3931D192C
-	for <lists+stable@lfdr.de>; Fri, 29 May 2026 12:10:18 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 3944D322AC80
+	for <lists+stable@lfdr.de>; Fri, 29 May 2026 12:21:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3AF513DB333;
-	Fri, 29 May 2026 12:10:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 79BEB369D6B;
+	Fri, 29 May 2026 12:21:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="kyXtXwqq"
+	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="MKgyE5Ci";
+	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="oHVgbi/z"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1F8BC3C1985;
-	Fri, 29 May 2026 12:10:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2D58E35A3A9;
+	Fri, 29 May 2026 12:21:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780056616; cv=none; b=QTPP3UlL+OG3HX3ptVS5GCNdYLLbesEPTRGW9XJxOlftFp5ous0TNLxg/Bke1drYSN2EFvhK2lBKTJRuFOY4gjw7QeYInh1XnA2X1Tm+NYm0Ar7ZRboDIfpCfPgDiC+jSkhgVL7xa8mHy12qYO3Oj+aZmnmt+nU/foqZFxysI08=
+	t=1780057302; cv=none; b=kZLvEPockjoJBn6Y+kPrbs8T+zRxIdTWzPIBmmtvQcjk34o/2p0mZtFe8CZeCL8MTn3Lql+/Tjz/KYw+xefz5A7ntoRZJo+pwLug5OpfYqU3kSg0gLJcAlfKBmdFocv/YcSmFNn0PiXRrFX0lBnVX5VvBzHU3xaP/ynKQDtZIGw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780056616; c=relaxed/simple;
-	bh=ZLfFtQxQ+THgENy168wSADjvsd1lVfmS5lB3JrO4Lfk=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=gldqHBNvi9DsAl6ck4G8exqGY75JGlHhQoLLBkgnrWXZVGXr2Eawz2RMoy9OFPkOQHen+1rSZmQw3L98Fv90v+bu46daGSBYxGzLg60NQUPW6zdPXW3CpK5UzNiVvcXbFnlXq0axqJ6JzMLKjjxlILbHAZOdN69tUXEB2LEeNVU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=kyXtXwqq; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 602E71F00893;
-	Fri, 29 May 2026 12:10:12 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1780056614;
-	bh=8SKoGN1Us/22ltFHkqd1z9zCVAyjuesLzj8RdQcSeq0=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=kyXtXwqqOddMoY8gTSbOeyLygeyJn59wS8YL53J1HhrzYUBxjz3ahzcWonJ4HRFBf
-	 nqUEUeOI3Kp1OIO4JzHOKzv22hfYGKMACaB+9PsC5b4L2Pz5yUQmH/ZalRt/FNcHFJ
-	 exH36+LZnJprGKyv+cCLoOjR43FM1PayTzG3OkHSMu/zFnG47636RyEz1FgXO9P1Ic
-	 GI/NTIyzox5qTxCXuF6iB7X2+kG2qNE6T+Jg8oVYC5caP8JP+FDTkpmDAOVymzb70r
-	 HdU8kNuxCqutakqfU8W5/ZKTnZqau4IG3/G0XiAiufXG1usB1lRnxWe9H4glnF26Tw
-	 QTQtcXx1vjKdw==
-Message-ID: <6eac8493-83d9-48fa-bba9-92408cc30b50@kernel.org>
-Date: Fri, 29 May 2026 14:10:11 +0200
+	s=arc-20240116; t=1780057302; c=relaxed/simple;
+	bh=K+/FyB5WY2rfHsP/2J2VOpMApdZG6GG+CHiM/Tcqx8g=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=RELb1wi3ly+OSM29Rmdcm4GuC9LwJ7y4OYbfW8YAAeKm7ZhmAa3uk6YPrLD/wOoklBj5rlHIvn/hhrxS+U6x/x3xiP1ci040oQLbZiUE6f2hlay099s4eHOqex5S2FVrCtWa9dw7V3lr1dOwb5R1Hophjl/B7Z0a/3ZftRB4Jl4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=MKgyE5Ci; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=oHVgbi/z; arc=none smtp.client-ip=193.142.43.55
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
+Date: Fri, 29 May 2026 14:21:37 +0200
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020; t=1780057299;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=Lk6J8Yay4yJw29ZMp1a44IgTYA3zIlsMamRU59bPHEk=;
+	b=MKgyE5Ci4fmUYnA5JOEnB4n4ljFf5Au4EUx66ry6llbuCwmprN1bF9bi91TPTzfqcPG/rh
+	UdAaxjYkl26wGci7upMeJXE4aQsyKimpRJKJgu10pRFDT9zDZe+u7U4jFReNbVB4dBmoG4
+	+ng4kxcR1YkcKmhaT0vcTbtHI5S4FWmujTC9+qlywDmoNIa2BUEv9NBG1Cl8k7nAhuvhCB
+	Rs15yPqHLzolELj25UgKJia8ckEm+ikv2vKE/CMgmAno0K3n3CLwIm7wE49P3BUYDRDKBz
+	IxwTtVBWHzfrNu2G0QG1sHHjqzoatLBVyxmMj4OqGbYxf0X7iJojHr7fdvEkeQ==
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020e; t=1780057299;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=Lk6J8Yay4yJw29ZMp1a44IgTYA3zIlsMamRU59bPHEk=;
+	b=oHVgbi/zFlD1tQdiDiwM6YKnRLFgyzv6Lnl4DT2HVyxg5F/aj3ru4qKlT7az3qQRzXBfv/
+	K0fGA1qi1JoTY5AA==
+From: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
+To: Maarten Lankhorst <dev@lankhorst.se>
+Cc: Runyu Xiao <runyu.xiao@seu.edu.cn>, jani.nikula@linux.intel.com,
+	rodrigo.vivi@intel.com, joonas.lahtinen@linux.intel.com,
+	tursulin@ursulin.net, airlied@gmail.com, simona@ffwll.ch,
+	clrkwllms@kernel.org, rostedt@goodmis.org, jerome.anand@intel.com,
+	pierre-louis.bossart@linux.dev, tiwai@suse.de,
+	intel-gfx@lists.freedesktop.org, intel-xe@lists.freedesktop.org,
+	dri-devel@lists.freedesktop.org, linux-kernel@vger.kernel.org,
+	linux-rt-devel@lists.linux.dev, jianhao.xu@seu.edu.cn,
+	stable@vger.kernel.org
+Subject: Re: [PATCH] drm/i915/audio: use generic_handle_irq_safe() for LPE
+ audio irq
+Message-ID: <20260529122137.VZtFvQvw@linutronix.de>
+References: <20260528154551.3708290-1-runyu.xiao@seu.edu.cn>
+ <20260529074816.k1K16jyy@linutronix.de>
+ <2023cf0e-85a8-4128-857d-cae806ff0e58@lankhorst.se>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v5 4/7] firmware: samsung: acpm: Add memory barrier before
- advancing RX pointer
-To: Arnd Bergmann <arnd@arndb.de>, Tudor Ambarus <tudor.ambarus@linaro.org>,
- Alim Akhtar <alim.akhtar@samsung.com>
-Cc: linux-kernel@vger.kernel.org, linux-samsung-soc@vger.kernel.org,
- linux-arm-kernel@lists.infradead.org,
- Peter Griffin <peter.griffin@linaro.org>,
- =?UTF-8?Q?Andr=C3=A9_Draszik?= <andre.draszik@linaro.org>,
- jyescas@google.com, kernel-team@android.com, stable@vger.kernel.org
-References: <20260505-acpm-fixes-sashiko-reports-v5-0-43b5ee7f1674@linaro.org>
- <20260505-acpm-fixes-sashiko-reports-v5-4-43b5ee7f1674@linaro.org>
- <a1629d9d-0357-42a3-aef8-c8d1cfa5ad39@app.fastmail.com>
- <ad30ca8b-01ba-40b9-a631-503ff463bc50@kernel.org>
- <26e9c700-c519-4888-8739-c48c73b8a39f@app.fastmail.com>
- <ed771a16-6241-4246-976e-48349e544b5b@linaro.org>
- <9d6bda31-839b-4cf8-b715-0d24760c73c2@app.fastmail.com>
-From: Krzysztof Kozlowski <krzk@kernel.org>
-Content-Language: en-US
-Autocrypt: addr=krzk@kernel.org; keydata=
- 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 a/A=
-In-Reply-To: <9d6bda31-839b-4cf8-b715-0d24760c73c2@app.fastmail.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <2023cf0e-85a8-4128-857d-cae806ff0e58@lankhorst.se>
 X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
-	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20260515];
+	DMARC_POLICY_ALLOW(-0.50)[linutronix.de,none];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_DKIM_ALLOW(-0.20)[linutronix.de:s=2020,linutronix.de:s=2020e];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-256615-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-256618-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
+	RCVD_COUNT_THREE(0.00)[3];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[kernel.org:+];
+	FREEMAIL_CC(0.00)[seu.edu.cn,linux.intel.com,intel.com,ursulin.net,gmail.com,ffwll.ch,kernel.org,goodmis.org,linux.dev,suse.de,lists.freedesktop.org,vger.kernel.org,lists.linux.dev];
+	RCPT_COUNT_TWELVE(0.00)[20];
 	MIME_TRACE(0.00)[0:+];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	FROM_HAS_DN(0.00)[];
-	TO_DN_SOME(0.00)[];
+	MISSING_XM_UA(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[krzk@kernel.org,stable@vger.kernel.org];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	FROM_NEQ_ENVFROM(0.00)[bigeasy@linutronix.de,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[linutronix.de:+];
 	MID_RHS_MATCH_FROM(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_SEVEN(0.00)[11];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linux.dev:email,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
-X-Rspamd-Queue-Id: C4587602225
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,linutronix.de:mid,linutronix.de:dkim]
+X-Rspamd-Queue-Id: 2D1B360244D
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-On 29/05/2026 13:44, Arnd Bergmann wrote:
-> On Fri, May 29, 2026, at 13:20, Tudor Ambarus wrote:
->> On 5/29/26 11:25 AM, Arnd Bergmann wrote:
->>
->> I missed the data dependency chain. I focused too much on the read
->> part in __ioread32_copy() that I missed the RAM store implications
->> in it. The RAM store is forced to wait for its SRAM load, and the
->> writel is forced to wait for all the RAM stores. So the entire
->> payload is guaranteed to be visible in memory RAM before the writel.
->>
->> Maybe I thought about the reordering of the final __raw_readl() loop
->> iteration with the writel(). But the dma_wmb() -> __dma_wmb() ->
->> dmb(oshst) from writel has a compiler barrier, so the compiler can't
->> reorder the code. And given the ARM64 device memory accesses ordering,
->> the ordering is protected.
-> 
-> Ok, thanks for checking and confirming my thoughts.
-> 
->> My bad, sorry. We shall either drop or revert the patch. Please let
->> me know if you prefer a revert.
-> 
-> I'll leave it up to Krzysztof, as he's already sent it to
-> soc@lists.linux.dev as part of the 7.1 fixes, and I'd
-> like to send the rest to Linus soon.
-> 
-> Krzysztof, if you can send an updated pull request without
-> this patch (and maybe also without b4a38606991c ("firmware:
-> samsung: acpm: Fix dummy stubs to return ERR_PTR"), see
-> separate email), I'll just merge the other fixes and
-> send that off instead.
-> 
+On 2026-05-29 11:50:18 [+0200], Maarten Lankhorst wrote:
+> Hey,
+Hi,
 
-Yes, I will do that.
+> It's been absolutely rock stable since the last time I submitted it.
+> I've been using it on my local machine, and the amount of times >100us
+> (evasion failed) with and without PREEMPT_RT are identical with
+> the vblank changes.
+> It still applies cleanly when rebasing.
+> 
+> The vblank patches are the most involved change, and they ensure that
+> absolutely no lock contention happens in the critical path with irqs off.
 
-Best regards,
-Krzysztof
+So that is the good part.
+
+> Unfortunately the status is still same as the time I submitted it before it,
+> and pending reviews on the series.
+
+my memory is that you have no work items and the auto-CI isn't worse
+than before. The series just waits for a review then?
+
+> Kind regards,
+> ~Maarten Lankhorst
+
+Sebastian
 
