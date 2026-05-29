@@ -1,66 +1,66 @@
-Return-Path: <stable+bounces-256619-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-256620-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 6CcEKGWGGWouxQgAu9opvQ
-	(envelope-from <stable+bounces-256619-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 29 May 2026 14:28:21 +0200
+	id yK5ONWeHGWqdxQgAu9opvQ
+	(envelope-from <stable+bounces-256620-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 29 May 2026 14:32:39 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id CD1D460241A
-	for <lists+stable@lfdr.de>; Fri, 29 May 2026 14:28:20 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 567256024BF
+	for <lists+stable@lfdr.de>; Fri, 29 May 2026 14:32:38 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 61836302739D
-	for <lists+stable@lfdr.de>; Fri, 29 May 2026 12:23:56 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 49F5B3084312
+	for <lists+stable@lfdr.de>; Fri, 29 May 2026 12:27:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8447B3BA24F;
-	Fri, 29 May 2026 12:23:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B771B2641EE;
+	Fri, 29 May 2026 12:27:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="Qwh7z1YN"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="Uq95sogn"
 X-Original-To: stable@vger.kernel.org
 Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.20])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7941236AB7C
-	for <stable@vger.kernel.org>; Fri, 29 May 2026 12:23:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3B7D71946DA
+	for <stable@vger.kernel.org>; Fri, 29 May 2026 12:27:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.20
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780057434; cv=none; b=B2f6SvIPHpaF8WC4R9SXQH/1rt0PEP7e9mUpZUwallT/EvdIMnLrHCbIiSTBeri8VEfjNyqREacNZsBFLK8T2UpFAxXuhPtD5ARYQR7SqsiNYthLnmDEc+3x3E0B+zXN29FjZ/hBQ48H6SXJc1r+LQJhf8UfreLYXUI4r5QR9/s=
+	t=1780057657; cv=none; b=t1Tq6T6rk06eWhr+/nFw1noWLSw+NeMslNGc2py5PYD8tLEeW2BkGhwldm+3cN3Pn+5aXBmBFAVUWvSiCl3E8qyyCBDxeZ5ojps7BtKKW800ibJv64uyBuNJrkrJ12A198pnsGHLcQfprADymQdDE4qM0HD7rS2maRYriekiIMM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780057434; c=relaxed/simple;
-	bh=fDrEew63oKedZYzWJjWxYyWisAICIOrMMrTYw4gEUeA=;
+	s=arc-20240116; t=1780057657; c=relaxed/simple;
+	bh=CXuqIZDWCLi9QpcPkAQ/R27XriGKsnNHkBqh657t6Do=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=PQtGHo75EbyZmllvuqPp6bzBjJyer5vX4wNe83aiaYSJ5XGsS7Wq3B5OGZXoxrRMFLb7ewrPZhQDuEzigv3EBMSmdtl4GNYs6w6ndapB12m06Qjw3EbnD1B5GJi+dgZfunuRhNk36KIw5igVQpUyyYy5N4usIaY1glf5EtHccTI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=Qwh7z1YN; arc=none smtp.client-ip=198.175.65.20
+	 In-Reply-To:Content-Type; b=DCdOgIosC5MmEN0I12J9Ca9TJpU1r1Tpb3bKl2Mz3/86IZRZI4yadEOIuZnvnAtrl2xAWK7TF/xkuNXXcXiqw89TM/eBFF6MI9LXvc3EvtLXH7wG4GsPq62qzvvS7KBMBHzxsbcuYyLkf7VkXEKGGI8KCTiQuOn+JC5pNNTaLIQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=Uq95sogn; arc=none smtp.client-ip=198.175.65.20
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1780057432; x=1811593432;
+  t=1780057655; x=1811593655;
   h=message-id:date:mime-version:subject:to:cc:references:
    from:in-reply-to:content-transfer-encoding;
-  bh=fDrEew63oKedZYzWJjWxYyWisAICIOrMMrTYw4gEUeA=;
-  b=Qwh7z1YNoe1iZBCyxSBpBeZ3UC3SAzSmMGM+oom0X1TI1vCYVU5BgQG+
-   cwwkBAtJiUd91LfDxtQ4t/dTi5B8XxF6IFqtFVgBHZkmo+EsoiD3JIV9J
-   C0nUbMX4P844ckviVZnuBr/vF9z8fwWPke8udLoWeXOufa7dFwQoqkQCB
-   Mhm/nuCaWQ12cIruic0uAChkCniud2H5XNIFDlV1CaskiHjd34JYe50yY
-   JSeYMbP/G1hFJTHhR0+V8Cq1IVY7AUikp4mcVp5pzg3c5Os8t2ymnJCP3
-   m3sWuufoBb1OHGg/CuD/Sfh1YBLdIGtDWUWHGTqQlecnB8VCXmn+rL5Jh
-   w==;
-X-CSE-ConnectionGUID: nJzgD7r0Q8a4fz3FODKIxg==
-X-CSE-MsgGUID: G+LlJc4fTCOkm9ZFNy8BCg==
-X-IronPort-AV: E=McAfee;i="6800,10657,11800"; a="80634668"
+  bh=CXuqIZDWCLi9QpcPkAQ/R27XriGKsnNHkBqh657t6Do=;
+  b=Uq95sognb9+N/9K+MvXKe8i4FRBlpu0SUm430jh1wPhxkhKJ6UT6uvmc
+   1zbduQ46uJDEBB+7wGn7zMCS447GEKkMRiHqAFIKOXfLlTvWQg9sP7ykQ
+   zs7ZzLKpKtbNxySDJvh6dWpJhqCRzG8bxFv2ZbNAsUznlP8eolzUKS5+N
+   A2ONtKVU36k8kfYtUpHidBEQXDqh9HHR66OJ0mH2VNykU1tNteClCI+fn
+   1QAnjBJViAMO1oEhoZxo2l7uhdPEDsr2H2WloFZi66tK0dAoeXWR386Rp
+   IgG8JrX8RIFZ6HjhlBDVZHF7zYl9UH0cidn0JwiqF62mBJDMm+YXVRhto
+   g==;
+X-CSE-ConnectionGUID: oKJavN+KSn2LlSW46FfZoQ==
+X-CSE-MsgGUID: 0TjLODi6R5GuTLPUB6u4ug==
+X-IronPort-AV: E=McAfee;i="6800,10657,11800"; a="80634925"
 X-IronPort-AV: E=Sophos;i="6.24,175,1774335600"; 
-   d="scan'208";a="80634668"
+   d="scan'208";a="80634925"
 Received: from fmviesa003.fm.intel.com ([10.60.135.143])
-  by orvoesa112.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 29 May 2026 05:23:49 -0700
-X-CSE-ConnectionGUID: pZLvH75iQ/Kj7tE+ncKrRA==
-X-CSE-MsgGUID: Al7sdM+RTQ2Zjc7FpR6YAQ==
+  by orvoesa112.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 29 May 2026 05:27:35 -0700
+X-CSE-ConnectionGUID: ztCH4yb9SK203vJ193d+XA==
+X-CSE-MsgGUID: Hkhc2gMUQS6R6Vf4U8QtKw==
 X-ExtLoop1: 1
 Received: from mgoluns-desk.ger.corp.intel.com (HELO [10.245.80.25]) ([10.245.80.25])
-  by fmviesa003-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 29 May 2026 05:23:47 -0700
-Message-ID: <8cd98877-6535-4ca4-8c96-88c136a2dac1@linux.intel.com>
-Date: Fri, 29 May 2026 14:23:44 +0200
+  by fmviesa003-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 29 May 2026 05:27:33 -0700
+Message-ID: <fcad21ec-ebeb-41af-a94a-b31120fa945a@linux.intel.com>
+Date: Fri, 29 May 2026 14:27:29 +0200
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -68,16 +68,15 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] accel/ivpu: Add buffer overflow check in MS
- get_info_ioctl
+Subject: Re: [PATCH] accel/ivpu: Add bounds check for firmware runtime memory
 To: Andrzej Kacprowski <andrzej.kacprowski@linux.intel.com>,
  dri-devel@lists.freedesktop.org
 Cc: oded.gabbay@gmail.com, jeff.hugo@oss.qualcomm.com, lizhi.hou@amd.com,
  dawid.osuchowski@linux.intel.com, stable@vger.kernel.org
-References: <20260529120841.135852-1-andrzej.kacprowski@linux.intel.com>
+References: <20260529120853.135876-1-andrzej.kacprowski@linux.intel.com>
 Content-Language: en-US
 From: "Wachowski, Karol" <karol.wachowski@linux.intel.com>
-In-Reply-To: <20260529120841.135852-1-andrzej.kacprowski@linux.intel.com>
+In-Reply-To: <20260529120853.135876-1-andrzej.kacprowski@linux.intel.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
 X-Spamd-Result: default: False [-0.66 / 15.00];
@@ -85,14 +84,14 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[intel.com,none];
 	R_DKIM_ALLOW(-0.20)[intel.com:s=Intel];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	FREEMAIL_CC(0.00)[gmail.com,oss.qualcomm.com,amd.com,linux.intel.com,vger.kernel.org];
 	RCVD_TLS_LAST(0.00)[];
 	DKIM_TRACE(0.00)[intel.com:+];
-	TAGGED_FROM(0.00)[bounces-256619-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-256620-lists,stable=lfdr.de];
 	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
@@ -101,50 +100,57 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	RCVD_COUNT_FIVE(0.00)[5];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[karol.wachowski@linux.intel.com,stable@vger.kernel.org];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	NEURAL_HAM(-0.00)[-1.000];
 	RCPT_COUNT_SEVEN(0.00)[7];
 	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linux.intel.com:mid,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,intel.com:email,intel.com:dkim]
-X-Rspamd-Queue-Id: CD1D460241A
+	DBL_BLOCKED_OPENRESOLVER(0.00)[intel.com:email,intel.com:dkim,linux.intel.com:mid,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
+X-Rspamd-Queue-Id: 567256024BF
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
 On 29-May-26 14:08, Andrzej Kacprowski wrote:
-> Add validation that the info size returned from the metric stream info
-> query is not exceeded when checked against the allocated buffer size.
-> If the firmware returns a size larger than the buffer, reject the
-> operation with -EOVERFLOW instead of proceeding with an incorrect
-> buffer copy.
+> Validate that the firmware runtime memory specified in the image
+> header is properly aligned and sized to hold the firmware image.
+> This prevents errors during memory allocation and image transfer.
 > 
-> Fixes: cdfad4db7756 ("accel/ivpu: Add NPU profiling support")
-> Cc: <stable@vger.kernel.org> # v6.18+
+> Fixes: 2007e210b6a1 ("accel/ivpu: Split FW runtime and global memory buffers")
+> Cc: <stable@vger.kernel.org> # v7.0+
 > Signed-off-by: Andrzej Kacprowski <andrzej.kacprowski@linux.intel.com>
 
 Reviewed-by: Karol Wachowski <karol.wachowski@linux.intel.com>
 
 > ---
->   drivers/accel/ivpu/ivpu_ms.c | 7 +++++++
->   1 file changed, 7 insertions(+)
+>   drivers/accel/ivpu/ivpu_fw.c | 16 ++++++++++++++++
+>   1 file changed, 16 insertions(+)
 > 
-> diff --git a/drivers/accel/ivpu/ivpu_ms.c b/drivers/accel/ivpu/ivpu_ms.c
-> index be43851f5f32..cd176e77b9a0 100644
-> --- a/drivers/accel/ivpu/ivpu_ms.c
-> +++ b/drivers/accel/ivpu/ivpu_ms.c
-> @@ -291,6 +291,13 @@ int ivpu_ms_get_info_ioctl(struct drm_device *dev, void *data, struct drm_file *
->   	if (ret)
->   		goto unlock;
+> diff --git a/drivers/accel/ivpu/ivpu_fw.c b/drivers/accel/ivpu/ivpu_fw.c
+> index 107f8ad31050..33c50779c06b 100644
+> --- a/drivers/accel/ivpu/ivpu_fw.c
+> +++ b/drivers/accel/ivpu/ivpu_fw.c
+> @@ -259,6 +259,22 @@ static int ivpu_fw_parse(struct ivpu_device *vdev)
+>   		return -EINVAL;
+>   	}
 >   
-> +	if (info_size > ivpu_bo_size(bo)) {
-> +		ivpu_warn_ratelimited(vdev, "MS info overflow: %#llx > %#zx\n",
-> +				      info_size, ivpu_bo_size(bo));
-> +		ret = -EOVERFLOW;
-> +		goto unlock;
+> +	if (!PAGE_ALIGNED(runtime_addr)) {
+> +		ivpu_err(vdev, "Runtime address 0x%llx not page aligned\n", runtime_addr);
+> +		return -EINVAL;
 > +	}
 > +
->   	if (args->buffer_size < info_size) {
->   		ret = -ENOSPC;
->   		goto unlock;
+> +	if (!PAGE_ALIGNED(runtime_size)) {
+> +		ivpu_err(vdev, "Runtime size %llu not page aligned\n", runtime_size);
+> +		return -EINVAL;
+> +	}
+> +
+> +	if (runtime_size < image_size) {
+> +		ivpu_err(vdev, "Runtime size too small: %llu, image size: %llu\n",
+> +			 runtime_size, image_size);
+> +		return -EINVAL;
+> +	}
+> +
+>   	if (!ivpu_is_within_range(image_load_addr, image_size, &vdev->hw->ranges.runtime)) {
+>   		ivpu_err(vdev, "Invalid firmware load address: 0x%llx and size %llu\n",
+>   			 image_load_addr, image_size);
 
 
