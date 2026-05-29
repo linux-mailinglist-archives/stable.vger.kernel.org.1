@@ -1,101 +1,101 @@
-Return-Path: <stable+bounces-256718-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-256719-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id YOSyIQDeGWo4zggAu9opvQ
-	(envelope-from <stable+bounces-256718-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 29 May 2026 20:42:08 +0200
+	id eBO1AN7eGWpmzggAu9opvQ
+	(envelope-from <stable+bounces-256719-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 29 May 2026 20:45:50 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 04D3A6076A4
-	for <lists+stable@lfdr.de>; Fri, 29 May 2026 20:42:07 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id AB710607757
+	for <lists+stable@lfdr.de>; Fri, 29 May 2026 20:45:49 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 8877A30E9438
-	for <lists+stable@lfdr.de>; Fri, 29 May 2026 18:39:08 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id E75F130DE236
+	for <lists+stable@lfdr.de>; Fri, 29 May 2026 18:39:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9B77743E4A1;
-	Fri, 29 May 2026 18:36:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AA05344DB9D;
+	Fri, 29 May 2026 18:36:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="ex0p/+tv";
-	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="hIeMoaCF"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="hpMYdvI1";
+	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="XT41YxNM"
 X-Original-To: stable@vger.kernel.org
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E3641423A87
-	for <stable@vger.kernel.org>; Fri, 29 May 2026 18:36:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 61DD943D50D
+	for <stable@vger.kernel.org>; Fri, 29 May 2026 18:36:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780079786; cv=none; b=gr4lIsinJzUuViVx9ZTIVTv0mHbfxKVwXD9J730empBMRc+lXDqFtRg9GRtjpFYSzx2dSykmTMdcthN5F43f85oTlrdUzIYT9yzg0QyeTuhIEGSxi4ZgAXKrMIuf67Fle8aeynKL49FsVTzxbhjbUxx7LOmPUYtUBzyVwCL2ci8=
+	t=1780079798; cv=none; b=MJFy2xszJ6u7m3Fopspk5leAkA+GWBCk+V+mXpvFqITq//Pc3OF4v161cnfRC0Z7fsiBBGX9Ci50fDUQ5K0oLYDbScMWCoj7jXp6PkfILv2u1RNr/q1vr9toLJc0tlvPk3QHz2EX/yDGkbUHQ8C6WLWiJCRZOjtAxi0l8Y/BP+g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780079786; c=relaxed/simple;
-	bh=Rdf4N65bOt7x8Nwrw5ueMoXtOuEXS+ZMINlCI3t8Sys=;
+	s=arc-20240116; t=1780079798; c=relaxed/simple;
+	bh=ulXu0NlgwaVVwx3zWk7XuRF/3f9bu/79QRsDBDGWEjo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=fEJYz9unatmKGp85MksIO944jXT1zexqpjoFfqzTrul+gKZd0Pe6+AjxbVvZ9OtblWcIpllI0ecEHG/j2dJZJefSftQAUa5S0KohcKSJq1f1/F2YmOU52jn1xIV34eNWlkcQ1b7fTXKSTCJHNY/rPN9iUrA1qtNaf89ulNHaIWw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=ex0p/+tv; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=hIeMoaCF; arc=none smtp.client-ip=170.10.133.124
+	 MIME-Version; b=LbXQwfTlF60W4wD9/p5RyKzcxe5oo1jHlvtOUQa0LtStTIAu83lNxm8789FYl5tIgu3cFbAeGDIfMeEyBbo4QB0Z1eaDsuMqFbiYO2xdOwT6C5nYDnh1of71CTUwcK559tkFSKkuYO0R/qMz1Mh/F/1sp5jV3X0lSvfabPYQ5QE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=hpMYdvI1; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=XT41YxNM; arc=none smtp.client-ip=170.10.129.124
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1780079778;
+	s=mimecast20190719; t=1780079790;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=S6iAVB9mfQ/7q9K71+HvMK+Lw89cTkPEsSBKbCzolaQ=;
-	b=ex0p/+tvLSJQH3k13Yqr/9jvyUUhSd4ON95Rhr7udVCusUl8rHCFj3wmNzjzi+L5wt1BkO
-	TMxLyk1H5cWkAZr2WQ8HRcYh/BPFjJQhU88ufp2MpxkpTHMZmYpke608wLyVc2tI+HUBZD
-	g3+piUtU/or5cCVY2l0bwYOkxjArXvs=
-Received: from mail-wm1-f69.google.com (mail-wm1-f69.google.com
- [209.85.128.69]) by relay.mimecast.com with ESMTP with STARTTLS
+	bh=+/A1VY1s6jcVoa3c05BPgiOhjQWKntgd+9grtxQ/UaE=;
+	b=hpMYdvI1rd1LAhmvjOV0+PMxQukzbBtd1AYuQ1fu+C9k4vjLsX8tZcMSKSAHTKqIwX6xJl
+	Z9uEa1WrNKJZ6lvpTEiSL1F2SkyaxJ/FgJfouR+dlhAZ2zX3ozRc4PAalh2sIRW/UQ0ugc
+	vR7x/vkrUyuI6epBqrCPwIaSvkwSyIA=
+Received: from mail-wr1-f72.google.com (mail-wr1-f72.google.com
+ [209.85.221.72]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-442-R6K63Xu2PCWWk3aP2CBnbA-1; Fri, 29 May 2026 14:36:16 -0400
-X-MC-Unique: R6K63Xu2PCWWk3aP2CBnbA-1
-X-Mimecast-MFC-AGG-ID: R6K63Xu2PCWWk3aP2CBnbA_1780079775
-Received: by mail-wm1-f69.google.com with SMTP id 5b1f17b1804b1-4905428aad6so56259295e9.1
-        for <stable@vger.kernel.org>; Fri, 29 May 2026 11:36:16 -0700 (PDT)
+ us-mta-619-308Rol_kPkiRyS1_axkR3g-1; Fri, 29 May 2026 14:36:29 -0400
+X-MC-Unique: 308Rol_kPkiRyS1_axkR3g-1
+X-Mimecast-MFC-AGG-ID: 308Rol_kPkiRyS1_axkR3g_1780079788
+Received: by mail-wr1-f72.google.com with SMTP id ffacd0b85a97d-45eec27f5a5so1146588f8f.2
+        for <stable@vger.kernel.org>; Fri, 29 May 2026 11:36:28 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=redhat.com; s=google; t=1780079775; x=1780684575; darn=vger.kernel.org;
+        d=redhat.com; s=google; t=1780079788; x=1780684588; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=S6iAVB9mfQ/7q9K71+HvMK+Lw89cTkPEsSBKbCzolaQ=;
-        b=hIeMoaCFudUrTMHCPGwG+QndgOsetPGNO8qbXkR91riPOic+wxJnAOu5qOa0GG/dBO
-         LZgRoXg7GIfXhFAmMzwgAsojlnrGvImh2/VZTGmGU48rB+tE4vKA/+ekFd5VRKSz0wNL
-         4rZxex9GMu9Uz/y1TEaratSKS/faooYyuku46BRZCOS2Ly527X0PL9t7iAeOI1GIlx8l
-         xER4arrSzTHuk18kJiUZb1Js2tvykIfRSA63ezctGCCRYJ0k/HUUzPfD4l444/elyTa/
-         MesRxhpJKCP47xwrvTP3QEdX0iLB+jp1U02LepTltRgga2Dmot59YeFmoDxyaW7wplp5
-         +h7Q==
+        bh=+/A1VY1s6jcVoa3c05BPgiOhjQWKntgd+9grtxQ/UaE=;
+        b=XT41YxNMUCIAu7hgtAXY7IT66gfTWDAbjEbeSqaIADMqFcV08Awt5YUyfl8apmCNZA
+         wRcGK6jQiAWeGH9XC3bGYwgDzWaHumTivIvjASA/C9X8ebEWBlaErnszrHGn3Ukp0vSu
+         qMEEA3tTVnJ3+fWnRr4gTg4ysDVUl3bu2OdsuLCkefIYUZj6q95mkTLqK+0FfX2UoDMX
+         YS7vkR8Pt/O0jbJ0K9bNTkE+hKn9Siel7/ggsrvnrdSh6tn1bEEUxAf7M+Lx6eNQqHGz
+         nxRI0Y6ZwPXIhAcJYV/G9uH0cBQ1byEttzdw1AG1DQbVxBWEB99kmo+1UkOX+8ALxM5T
+         m5OQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1780079775; x=1780684575;
+        d=1e100.net; s=20251104; t=1780079788; x=1780684588;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to;
-        bh=S6iAVB9mfQ/7q9K71+HvMK+Lw89cTkPEsSBKbCzolaQ=;
-        b=CsoHe5fSemBYfiAwCRf4sy5NXjyobki83BMcWhQ9b9ewFRRkWCUUvfA1/kwYJBXjCA
-         zqiOx/H0ke+aPqVaC3WuBkg3DuSrpXKElm99wn6fqjaHKJ+kvH4jTHCPV9SvpFm89H5a
-         z6T/sd+c+elQxrr7g2crsrqDNXvElj4Fja5o4CWEyarM5Ml6UtGM8ZE3Rac1UMeM+e2I
-         EFc5+LPXmtiPQuUAup3EyW9lkNYNI0wdnymwfeKiHE1ZdmnbtdTfPi1sg6vB45sV+v/v
-         asmUUFrFs22t7vcTP2bSdvHJIBWcvWBRo4E6JTnz3EWAI++jmvFX9kDQwDjX4FkjQgDV
-         0Xdg==
-X-Forwarded-Encrypted: i=1; AFNElJ8sMYKeVkVc4RNYtEpDkBNe+syGMTsTWpzwG+sy0U2vsttlYKXVIkoJw+KksRPKJ75JdtyovOY=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxWrZeUUAjotJXYGyST/rx24ku/79TojWBkRF5XqydyTabz+vxc
-	QcRw+o7axWnnJE0KSzulC8eni6FNZfPIjnjXQ3O0H2rS/fLELPd8YKcC2ZAvDoEztKp8wuQG3uB
-	GkbPdxJAaY1m7GO+U/Wt76Chdee/kfHZkRzWMmb9FADySpCdEvJzQA6O4Sg==
-X-Gm-Gg: Acq92OESoSOrMZp4JQ8oJI7o66bYrZOco9ZjO2tdyNTXCJzzRP9joFC88sgxrLhzFVG
-	5DZ750xt1L3E6L4zGg8YBwZNqHT4PiFNUsXMa/GQ6fXv4h1F+YBWsAg4zw6xbkI3crPW7bA6f22
-	09b/695DL4iJkoZclydcZXFiGqJRR+Uiygx49DVI7iTRvPjzfD66zWsYMTlbCmtsRugQ0mkAyiX
-	2spohqLLf50s+GX//urEIzs6Y0Q4AzplBKBOPGyhyxyPkvXw4wCX1ECFj/2abzZishClKjz2zjK
-	/Rd82iq/Y3inn7xxf6Rb9axDo1SFGm4J+76Q7hvuJN+kWBX2+KtYh5VEsgtSdglriwQ8HoomMJs
-	FPMejJgps7jm1tbYOwigyfOwcP3MjlUe0YtdM2v950rw8A+c2gV22hp8bx12l8QXKkdjC7o7jYC
-	Z040Ysi7Ekv5TNlnupa6KuGKdqnCP0EkXzr69N3A==
-X-Received: by 2002:a05:600c:3b14:b0:490:4b89:5361 with SMTP id 5b1f17b1804b1-490a2904d7fmr14591355e9.7.1780079775214;
-        Fri, 29 May 2026 11:36:15 -0700 (PDT)
-X-Received: by 2002:a05:600c:3b14:b0:490:4b89:5361 with SMTP id 5b1f17b1804b1-490a2904d7fmr14590955e9.7.1780079774772;
-        Fri, 29 May 2026 11:36:14 -0700 (PDT)
+        bh=+/A1VY1s6jcVoa3c05BPgiOhjQWKntgd+9grtxQ/UaE=;
+        b=flIcIvWU0qniEaImKh2esP2TXJv0ZtpHxbWtMelaxGVwznbXMnziJHtWM+az8vZtub
+         KqFbyZvErBM0kQC3PdS6oPEq99HJzPAytHa3r8igGGtrGemfH8MyGkWzXqekvz79hnpD
+         q2yF0HWW/zT5xkwMvkP/0uP28o0ACRPMUqAhmR5mw0cJL2e/sJry4ayDZUP1r5NoCaf9
+         yd1pDVMsFEt3FXdlL7hIc5/+aR//RMQOT1/TzOl8uYiSORKr8SRv8ZaW3mTTBkLmGdWu
+         v0iHckKPsxyh8Bc9U6mbgX+lYgSZ9us7Y3bCi8ANXBESPkZ7sCdw9RjAvJtI6tvKuEKA
+         XsEQ==
+X-Forwarded-Encrypted: i=1; AFNElJ8wRJy1fCCS4wDwR2Zgh6LCEWsNzyUxzncwNxa8BdkeV8apgm8GiQrdq2WKEfGO5a/FflYtkNc=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yz7/VgE+Xl+nWbN8ry21tlpqFMZt0wicvpJGN67HELV6gHkGCqS
+	azYQbhhPcFNPRSuslo5wVpywNOLZK0z1q+C+V0nLpak0hDK24UlD9za1ONZTmvouSgzsRuliXeF
+	m4DT46dJoQioJUvcP33Rg3dki5/0v6+wdo6Bg8l6VQT8pfQHljyrEjqsf+A==
+X-Gm-Gg: Acq92OF+M4zM5+zFgJh3XuxuIdrxeLovjH/To8Y5uEB897f/uCSqLsdNp2dccCXMXFd
+	FtGf4zZRchZLaWRMwQ/Qb56oB2R06S+AD/84NoiI7WtxtkqZITP2I7GAZTYgPwhpjwbCFvQPckf
+	wZu9JI8+fqsI6ovHwdA3ZB+uwoyFu6na2DmOLA/+PXYS9Zrv3z9a7z4okpoJ6FHlrJOH9XOKLG3
+	GB/KxOqodP/fAR7BqLS2yDxSbjYBWOajk3vvWZuKhdxCygMmj7vxjFyRGjXhp9C+JeGOLiNZC2T
+	fdqDd3rK2Rb6Nb4BTD5VAxCFPww9aZd/wrTZW6Kt2dZOd8t1CA9Cpm0ByUMb/IN4ORPaGvuBCIt
+	ruawPDD1hC209hgvipYtu6pK7lr8BpjPcJpDOFGEfWMHC0I6jFAjxyIDC7NhS7rNZRfarPG97vl
+	BqBzcf+NHAHE/izSwNM5JbsTLoDhOPTBxOy+QnLQ==
+X-Received: by 2002:a05:6000:1376:b0:45e:f52b:f4b7 with SMTP id ffacd0b85a97d-45ef6b20038mr1460686f8f.17.1780079787899;
+        Fri, 29 May 2026 11:36:27 -0700 (PDT)
+X-Received: by 2002:a05:6000:1376:b0:45e:f52b:f4b7 with SMTP id ffacd0b85a97d-45ef6b20038mr1460639f8f.17.1780079787478;
+        Fri, 29 May 2026 11:36:27 -0700 (PDT)
 Received: from [192.168.10.48] ([151.49.251.208])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4909c110243sm29636005e9.6.2026.05.29.11.36.12
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-45ef356b129sm6889251f8f.32.2026.05.29.11.36.26
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 29 May 2026 11:36:13 -0700 (PDT)
+        Fri, 29 May 2026 11:36:26 -0700 (PDT)
 From: Paolo Bonzini <pbonzini@redhat.com>
 To: linux-kernel@vger.kernel.org,
 	kvm@vger.kernel.org
@@ -103,9 +103,9 @@ Cc: seanjc@google.com,
 	Tom Lendacky <thomas.lendacky@amd.com>,
 	Michael Roth <michael.roth@amd.com>,
 	stable@vger.kernel.org
-Subject: [PATCH 10/24] KVM: SEV: Use READ_ONCE() when reading entries/indices from PSC buffer
-Date: Fri, 29 May 2026 20:35:35 +0200
-Message-ID: <20260529183549.1104619-11-pbonzini@redhat.com>
+Subject: [PATCH 14/24] KVM: Don't WARN if memory is dirtied without a vCPU when the VM is dying
+Date: Fri, 29 May 2026 20:35:39 +0200
+Message-ID: <20260529183549.1104619-15-pbonzini@redhat.com>
 X-Mailer: git-send-email 2.54.0
 In-Reply-To: <20260529183549.1104619-1-pbonzini@redhat.com>
 References: <20260529183549.1104619-1-pbonzini@redhat.com>
@@ -121,13 +121,13 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	MID_CONTAINS_FROM(1.00)[];
 	DMARC_POLICY_ALLOW(-0.50)[redhat.com,quarantine];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	R_DKIM_ALLOW(-0.20)[redhat.com:s=mimecast20190719,redhat.com:s=google];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-256718-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-256719-lists,stable=lfdr.de];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_COUNT_FIVE(0.00)[6];
 	MIME_TRACE(0.00)[0:+];
@@ -140,78 +140,68 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	NEURAL_HAM(-0.00)[-1.000];
 	DKIM_TRACE(0.00)[redhat.com:+];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
 	RCPT_COUNT_FIVE(0.00)[6];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,amd.com:email]
-X-Rspamd-Queue-Id: 04D3A6076A4
+	DBL_BLOCKED_OPENRESOLVER(0.00)[amd.com:email,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo]
+X-Rspamd-Queue-Id: AB710607757
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
 From: Sean Christopherson <seanjc@google.com>
 
-Use READ_ONCE() when reading entries/indices from the guest-accessible
-Page State Change buffer to defend against TOCTOU bugs.
+When marking a page dirty, complain about not having a running/loaded vCPU
+if and only if the VM is still alive, i.e. its refcount is non-zero.  This
+will allow fixing a memory leak for x86 SEV-ES guests without hitting what
+is effectively a false positive on the WARN.
 
-Don't bother with READ_ONCE()/WRITE_ONCE() for cases where KVM is writing
-(and not consuming the result!), as the guest isn't supposed to touch the
-buffer while it's being processed.  I.e. using READ_ONCE() is all about
-protecting against misbehaving guests.
+For some SEV-ES VM-Exits, KVM keeps a writable mapping of a guest page
+across an exit to userspace, and typically unmaps the page on the next
+KVM_RUN.  But if userspace never calls KVM_RUN after such an exit, then KVM
+needs to unmap the page when the vCPU is destroyed, which in turn triggers
+the WARN about not having a running vCPU.
 
-Fixes: 9b54e248d264 ("KVM: SEV: Add support to handle Page State Change VMGEXIT")
+Alternatively, SEV-ES could temporarily load the vCPU to suppress the WARN,
+as is done in nested_vmx_free_vcpu() (but for completely unrelated reasons;
+suppressing WARN from nested_put_vmcs12_pages() is pure happenstance).  But
+loading a vCPU during destruction is gross (ideally nVMX code would be
+cleaned up), risks complicating the SEV-ES code (KVM would need to ensure
+the temporarily load()+put() only runs when the vCPU isn't already loaded),
+and is ultimately pointless.
+
+The motivation for the WARN is to guard against KVM dirtying guest memory
+without pushing the corresponding GFN to the active vCPU's dirty ring, e.g.
+to ensure userspace doesn't miss a dirty page.  But for the VM's refcount
+to reach zero, there can't be _any_ userspace mappings to the dirty ring,
+as mapping the dirty ring requires doing mmap() on the vCPU FD.  I.e. if
+userspace had a valid mapping for the dirty ring, then the vCPU file and
+thus the owning VM would still be alive.  And so since userspace can't
+possibly reach the dirty ring, whether or not KVM technically "misses" a
+push to the dirty ring is irrelevant.
+
+Reported-by: Michael Roth <michael.roth@amd.com>
 Cc: stable@vger.kernel.org
-Reviewed-by: Tom Lendacky <thomas.lendacky@amd.com>
+Reviewed-by: Michael Roth <michael.roth@amd.com>
 Signed-off-by: Sean Christopherson <seanjc@google.com>
-Message-ID: <20260501202250.2115252-11-seanjc@google.com>
+Message-ID: <20260501202250.2115252-15-seanjc@google.com>
 Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
 ---
- arch/x86/kvm/svm/sev.c | 12 ++++++------
- 1 file changed, 6 insertions(+), 6 deletions(-)
+ virt/kvm/kvm_main.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/arch/x86/kvm/svm/sev.c b/arch/x86/kvm/svm/sev.c
-index 6e8cbae2135a..62b5befe0eed 100644
---- a/arch/x86/kvm/svm/sev.c
-+++ b/arch/x86/kvm/svm/sev.c
-@@ -3872,9 +3872,9 @@ static void __snp_complete_one_psc(struct vcpu_svm *svm)
- 	 */
- 	for (idx = svm->sev_es.psc_idx; svm->sev_es.psc_inflight;
- 	     svm->sev_es.psc_inflight--, idx++) {
--		struct psc_entry *entry = &entries[idx];
-+		struct psc_entry entry = READ_ONCE(entries[idx]);
+diff --git a/virt/kvm/kvm_main.c b/virt/kvm/kvm_main.c
+index 89489996fbc1..881f92d7a469 100644
+--- a/virt/kvm/kvm_main.c
++++ b/virt/kvm/kvm_main.c
+@@ -3520,7 +3520,8 @@ void mark_page_dirty_in_slot(struct kvm *kvm,
+ 	if (WARN_ON_ONCE(vcpu && vcpu->kvm != kvm))
+ 		return;
  
--		entry->cur_page = entry->pagesize ? 512 : 1;
-+		entries[idx].cur_page = entry.pagesize ? 512 : 1;
- 	}
+-	WARN_ON_ONCE(!vcpu && !kvm_arch_allow_write_without_running_vcpu(kvm));
++	WARN_ON_ONCE(!vcpu && refcount_read(&kvm->users_count) &&
++		     !kvm_arch_allow_write_without_running_vcpu(kvm));
+ #endif
  
- 	hdr->cur_entry = idx;
-@@ -3938,8 +3938,8 @@ static int snp_begin_psc(struct vcpu_svm *svm)
- 	 * validation, so take care to only use validated copies of values used
- 	 * for things like array indexing.
- 	 */
--	idx_start = hdr->cur_entry;
--	idx_end = hdr->end_entry;
-+	idx_start = READ_ONCE(hdr->cur_entry);
-+	idx_end = READ_ONCE(hdr->end_entry);
- 
- 	if (idx_end >= max_nr_entries) {
- 		snp_complete_psc(svm, VMGEXIT_PSC_ERROR_INVALID_HDR);
-@@ -3948,7 +3948,7 @@ static int snp_begin_psc(struct vcpu_svm *svm)
- 
- 	/* Find the start of the next range which needs processing. */
- 	for (idx = idx_start; idx <= idx_end; idx++, hdr->cur_entry++) {
--		entry_start = entries[idx];
-+		entry_start = READ_ONCE(entries[idx]);
- 
- 		gfn = entry_start.gfn;
- 		huge = entry_start.pagesize;
-@@ -3992,7 +3992,7 @@ static int snp_begin_psc(struct vcpu_svm *svm)
- 	 * KVM_HC_MAP_GPA_RANGE exit.
- 	 */
- 	while (++idx <= idx_end) {
--		struct psc_entry entry = entries[idx];
-+		struct psc_entry entry = READ_ONCE(entries[idx]);
- 
- 		if (entry.operation != entry_start.operation ||
- 		    entry.gfn != entry_start.gfn + npages ||
+ 	if (memslot && kvm_slot_dirty_track_enabled(memslot)) {
 -- 
 2.54.0
 
