@@ -1,78 +1,113 @@
-Return-Path: <stable+bounces-256567-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-256568-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id MNNOIZxXGWqCvggAu9opvQ
-	(envelope-from <stable+bounces-256567-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 29 May 2026 11:08:44 +0200
+	id GDuHB8BaGWoLvwgAu9opvQ
+	(envelope-from <stable+bounces-256568-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 29 May 2026 11:22:08 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2B4F35FFB1B
-	for <lists+stable@lfdr.de>; Fri, 29 May 2026 11:08:44 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id 226EB5FFD92
+	for <lists+stable@lfdr.de>; Fri, 29 May 2026 11:22:07 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 5707D30588AA
-	for <lists+stable@lfdr.de>; Fri, 29 May 2026 09:07:01 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id C7F83306CADB
+	for <lists+stable@lfdr.de>; Fri, 29 May 2026 09:17:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 032883BAD91;
-	Fri, 29 May 2026 09:07:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9B7143B6C05;
+	Fri, 29 May 2026 09:17:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="ICtBynQc"
+	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="xMQ5Kc5i";
+	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="QiAiAg2c";
+	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="xMQ5Kc5i";
+	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="QiAiAg2c"
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.15])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 060A23BA22E
-	for <stable@vger.kernel.org>; Fri, 29 May 2026 09:06:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.15
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7A9F8351C13
+	for <stable@vger.kernel.org>; Fri, 29 May 2026 09:17:45 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780045620; cv=none; b=ndTzs2AE4j2gpbuoY1nbHgF9gtV0mSL9XXy/TpzbOx7pFLcwKDb17QxTMplWTTCKXGlwufTxPIAN2scpmP78/FjN9r3HkLDylw6R+/qHfd78Zty9rJTUDwdYwYpEyY+QR7DIk1jZcPKeCa7N/oRjHQjGlG94JcKVrbXQDCngpmc=
+	t=1780046267; cv=none; b=iJODUghuBH+3z78hsdyLQ9h+/Z6qLghZi6okCoo7dMtdZnXQDL8nZzXgipcZlFoIQweNz0+0B7t3QOD92A2y0PZYIsRTtn0pil4+HoslcSwyiWvnPzBUBw675CLEam7whw8yGp4PmYkXn7BGFxR9gZTuqgDPDPH/+u5UxTf2ivo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780045620; c=relaxed/simple;
-	bh=6pJtueWEW2WEbc9xquCDbkkoxYpipuH+WYWNUC7obGk=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=sWxhhDoX3vqfOAPfZmmQ+av9Z1m4p7nYw5Tayz3g58iy8HsRSXP6A0cDGX1QuRnP6x7DKJ43L9rx9nTcX+ONVXVo5fNe0m62RIBZnH4NO1TQZhIMei4EsV8bLaOb5Z1PlX85jZh1sRT1kz489HfzTFbDDsbNurqIcg7UDiPt78k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=ICtBynQc; arc=none smtp.client-ip=198.175.65.15
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1780045620; x=1811581620;
-  h=from:to:cc:subject:date:message-id:in-reply-to:
-   references:mime-version:content-transfer-encoding;
-  bh=6pJtueWEW2WEbc9xquCDbkkoxYpipuH+WYWNUC7obGk=;
-  b=ICtBynQclm1Iz/hwAKTkDsQnG9ho3qNWTwDx8IUcO031iJ3BcU+S2AXh
-   +OG2hr5uvZdEuByyRwks4CXrAAbz4vd2BZ3sh1GsbzLLQkFZQOc9Vjefp
-   SONGIsqCcJhIksXoNPU34kl/eElx4y4U9/bXhmAMR15rgTP56w4WtSX4k
-   KGQ+FjX9VK0+Bgt0n7KsQfM/yt5z7Jsv6+ogvCAarNLSNlsinxskLLCGB
-   sqXGi3kQG17aA6PRpeje4X90PixyMuIoRcJIcoy3BNtUm4xI1F2CtTYdQ
-   CH61S6P3PmtTlEjBF7orl1krRVHbP0bH6W2CJsRsJej8pC+0r4O17NFZ8
-   Q==;
-X-CSE-ConnectionGUID: RVwh1Tb4T2KbDC5p+ucdzg==
-X-CSE-MsgGUID: K0Hz52IgRIOzmBrcH14YvA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11800"; a="84520503"
-X-IronPort-AV: E=Sophos;i="6.24,175,1774335600"; 
-   d="scan'208";a="84520503"
-Received: from orviesa010.jf.intel.com ([10.64.159.150])
-  by orvoesa107.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 29 May 2026 02:06:59 -0700
-X-CSE-ConnectionGUID: JB4+hW0KQA+HX1ZMp0Idig==
-X-CSE-MsgGUID: LOIW0Ra3QnahJXdZ75cWeg==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.24,175,1774335600"; 
-   d="scan'208";a="241987050"
-Received: from mjarzebo-mobl1.ger.corp.intel.com (HELO jhogande-mobl3.intel.com) ([10.245.246.54])
-  by orviesa010-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 29 May 2026 02:06:57 -0700
-From: =?UTF-8?q?Jouni=20H=C3=B6gander?= <jouni.hogander@intel.com>
-To: stable@vger.kernel.org
-Cc: =?UTF-8?q?Jouni=20H=C3=B6gander?= <jouni.hogander@intel.com>,
-	Suraj Kandpal <suraj.kandpal@intel.com>,
-	Tvrtko Ursulin <tursulin@ursulin.net>
-Subject: [PATCH 6.6.y 4/4] drm/i915/psr: Apply Intel DPCD workaround when SDP on prior line used
-Date: Fri, 29 May 2026 12:06:36 +0300
-Message-ID: <20260529090636.530204-4-jouni.hogander@intel.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20260529090636.530204-1-jouni.hogander@intel.com>
-References: <2026052827-tweezers-colonize-3631@gregkh>
- <20260529090636.530204-1-jouni.hogander@intel.com>
+	s=arc-20240116; t=1780046267; c=relaxed/simple;
+	bh=aIMXXMmdGFJQMy3lk/GrhI7bsQb0dQo6GQ6Q1+ldTZs=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=TeWWoL2ZCFrstaN8jvR1PkkCgWTxq6tqxKCodgmlk8G9+rMqjVRyDfxcl27F4nVW63n0iXGvXz+SNUdY97LLtwYg5uMs4ILRieEbkgswQsYtPEC2RaCHeWM2uw8sNZRJGlyvq/0BUbT0UOmryfljvelrQYugHDRT2XsKTwK7Ges=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de; spf=pass smtp.mailfrom=suse.de; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=xMQ5Kc5i; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=QiAiAg2c; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=xMQ5Kc5i; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=QiAiAg2c; arc=none smtp.client-ip=195.135.223.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.de
+Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-out2.suse.de (Postfix) with ESMTPS id B60026724E;
+	Fri, 29 May 2026 09:17:43 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1780046263; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=YMzWa8hGe9L9/zv4+cFX6ZWXDFKfDHw88RAycQYHp9A=;
+	b=xMQ5Kc5iQHQxbZThQ3G59fersrqkSJOTIaUtMgTBmoo49BXYNMq6MnMXBXhHUxijRktkwa
+	lDkeBO3fgobhjXR7olUP5+nRayASZbuufCEn6w1I+I7FvEUpmqVAwBH0b8QgwWhqykuXF+
+	B3VoGhECzKvSRjNOAJ8TNMe4pl8QXyQ=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1780046263;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=YMzWa8hGe9L9/zv4+cFX6ZWXDFKfDHw88RAycQYHp9A=;
+	b=QiAiAg2cfyf3Yl0bwhOyCHJhruzP/GaOX0a9ho4kyyR94bq9ib0b99yeXApRFBxkY2hDtJ
+	hPz/btxOGGY+P7Aw==
+Authentication-Results: smtp-out2.suse.de;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=xMQ5Kc5i;
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=QiAiAg2c
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1780046263; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=YMzWa8hGe9L9/zv4+cFX6ZWXDFKfDHw88RAycQYHp9A=;
+	b=xMQ5Kc5iQHQxbZThQ3G59fersrqkSJOTIaUtMgTBmoo49BXYNMq6MnMXBXhHUxijRktkwa
+	lDkeBO3fgobhjXR7olUP5+nRayASZbuufCEn6w1I+I7FvEUpmqVAwBH0b8QgwWhqykuXF+
+	B3VoGhECzKvSRjNOAJ8TNMe4pl8QXyQ=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1780046263;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=YMzWa8hGe9L9/zv4+cFX6ZWXDFKfDHw88RAycQYHp9A=;
+	b=QiAiAg2cfyf3Yl0bwhOyCHJhruzP/GaOX0a9ho4kyyR94bq9ib0b99yeXApRFBxkY2hDtJ
+	hPz/btxOGGY+P7Aw==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id DF0CB779A7;
+	Fri, 29 May 2026 09:17:42 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+	by imap1.dmz-prg2.suse.org with ESMTPSA
+	id gtLGM7ZZGWp+SAAAD6G6ig
+	(envelope-from <clopez@suse.de>); Fri, 29 May 2026 09:17:42 +0000
+From: =?UTF-8?q?Carlos=20L=C3=B3pez?= <clopez@suse.de>
+To: kvm@vger.kernel.org,
+	seanjc@google.com,
+	pbonzini@redhat.com
+Cc: =?UTF-8?q?Carlos=20L=C3=B3pez?= <clopez@suse.de>,
+	stable@vger.kernel.org,
+	Thomas Gleixner <tglx@kernel.org>,
+	Ingo Molnar <mingo@redhat.com>,
+	Borislav Petkov <bp@alien8.de>,
+	Dave Hansen <dave.hansen@linux.intel.com>,
+	x86@kernel.org (maintainer:X86 ARCHITECTURE (32-BIT AND 64-BIT)),
+	"H. Peter Anvin" <hpa@zytor.com>,
+	Avi Kivity <avi@qumranet.com>,
+	"He, Qing" <qing.he@intel.com>,
+	"Yaozu (Eddie) Dong" <eddie.dong@intel.com>,
+	Marcelo Tosatti <mtosatti@redhat.com>,
+	linux-kernel@vger.kernel.org (open list:X86 ARCHITECTURE (32-BIT AND 64-BIT))
+Subject: [PATCH] KVM: x86: Take PIC lock on KVM_GET_IRQCHIP path
+Date: Fri, 29 May 2026 11:17:15 +0200
+Message-ID: <20260529091714.287963-2-clopez@suse.de>
+X-Mailer: git-send-email 2.51.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -80,102 +115,92 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
-Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
 Content-Transfer-Encoding: 8bit
+X-Spam-Level: 
+X-Spam-Flag: NO
+X-Spam-Score: -3.51
 X-Spamd-Result: default: False [-1.16 / 15.00];
-	MID_CONTAINS_FROM(1.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[intel.com,none];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
-	R_DKIM_ALLOW(-0.20)[intel.com:s=Intel];
+	MID_CONTAINS_FROM(1.00)[];
+	DMARC_POLICY_ALLOW(-0.50)[suse.de,none];
+	R_DKIM_ALLOW(-0.20)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-256567-lists,stable=lfdr.de];
-	DKIM_TRACE(0.00)[intel.com:+];
-	TO_DN_SOME(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	HAS_ORG_HEADER(0.00)[];
-	RCVD_TLS_LAST(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[suse.de:+];
+	RCVD_TLS_LAST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-256568-lists,stable=lfdr.de];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	TO_DN_SOME(0.00)[];
+	RCVD_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[jouni.hogander@intel.com,stable@vger.kernel.org];
-	RCPT_COUNT_THREE(0.00)[4];
-	RCVD_COUNT_FIVE(0.00)[5];
-	TAGGED_RCPT(0.00)[stable];
+	FROM_NEQ_ENVFROM(0.00)[clopez@suse.de,stable@vger.kernel.org];
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
 	NEURAL_HAM(-0.00)[-1.000];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,msgid.link:url,intel.com:email,intel.com:mid,intel.com:dkim,ursulin.net:email]
-X-Rspamd-Queue-Id: 2B4F35FFB1B
+	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_SEVEN(0.00)[9];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[suse.de:email,suse.de:mid,suse.de:dkim,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo]
+X-Rspamd-Queue-Id: 226EB5FFD92
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-commit 4703049f768fc1c1caac754134118bee1a3af189 upstream.
+When userspace issues the KVM_SET_IRQCHIP ioctl to set the state of
+the PIC, kvm_vm_ioctl_set_irqchip() grabs @kvm->arch.vpic->lock before
+updating the state. However, the KVM_GET_IRQCHIP ioctl to retrieve the
+same PIC state does not grab such lock, potentially causing torn reads
+for userspace.
 
-There is Intel specific workaround DPCD address containing workaround for
-case where SDP is on prior line. Apply this workaround according to values
-in the offset.
+Fix this by grabbing the lock on the read path.
 
-Fixes: 61e887329e33 ("drm/i915/xelpd: Handle PSR2 SDP indication in the prior scanline")
-Cc: <stable@vger.kernel.org> # v5.15+
-Signed-off-by: Jouni Högander <jouni.hogander@intel.com>
-Reviewed-by: Suraj Kandpal <suraj.kandpal@intel.com>
-Link: https://patch.msgid.link/20260515095756.2799483-4-jouni.hogander@intel.com
-(cherry picked from commit c3fe899fbeac86ea4a5ca9dd845b2cbc0da46249)
-Signed-off-by: Tvrtko Ursulin <tursulin@ursulin.net>
-Signed-off-by: Jouni Högander <jouni.hogander@intel.com>
+This issue goes all the way back. The bug was introduced with the
+addition of PIC ioctl code itself in 6ceb9d791eee ("KVM: Add get/
+set irqchip ioctls for in-kernel PIC live migration support"). Later,
+894a9c5543ab ("KVM: x86: missing locking in PIT/IRQCHIP/SET_BSP_CPU
+ioctl paths") added the locking for kvm_vm_ioctl_set_irqchip(), but
+missed kvm_vm_ioctl_get_irqchip().
+
+Fixes: 6ceb9d791eee ("KVM: Add get/set irqchip ioctls for in-kernel PIC live migration support")
+Fixes: 894a9c5543ab ("KVM: x86: missing locking in PIT/IRQCHIP/SET_BSP_CPU ioctl paths")
+Cc: stable@vger.kernel.org
+Reported-by: Claude Code:claude-opus-4.6
+Signed-off-by: Carlos López <clopez@suse.de>
 ---
- drivers/gpu/drm/i915/display/intel_psr.c | 27 +++++++++++++++++++++++-
- 1 file changed, 26 insertions(+), 1 deletion(-)
+ arch/x86/kvm/irq.c | 8 ++++++--
+ 1 file changed, 6 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/gpu/drm/i915/display/intel_psr.c b/drivers/gpu/drm/i915/display/intel_psr.c
-index 49842f7877f4..416686a6566b 100644
---- a/drivers/gpu/drm/i915/display/intel_psr.c
-+++ b/drivers/gpu/drm/i915/display/intel_psr.c
-@@ -1007,6 +1007,30 @@ static bool psr2_granularity_check(struct intel_dp *intel_dp,
- 	return true;
- }
+diff --git a/arch/x86/kvm/irq.c b/arch/x86/kvm/irq.c
+index 9519fec09ee6..251df563427b 100644
+--- a/arch/x86/kvm/irq.c
++++ b/arch/x86/kvm/irq.c
+@@ -584,14 +584,18 @@ int kvm_vm_ioctl_get_irqchip(struct kvm *kvm, struct kvm_irqchip *chip)
  
-+static bool apply_scanline_indication_wa(struct intel_dp *intel_dp,
-+					 struct intel_crtc_state *crtc_state)
-+{
-+	u8 early_scanline_support = intel_dp->intel_wa_dpcd &
-+		INTEL_DPCD_INTEL_WA_REGISTER_CAPS_PSR2_EARLYSCANLINE_SDP_SUPPORT_MASK;
-+
-+	if (intel_dp->edp_dpcd[0] >= DP_EDP_15)
-+		return true;
-+
-+	switch (early_scanline_support)	{
-+	case INTEL_DPCD_INTEL_WA_REGISTER_CAPS_FALL_BACK_TO_PSR1:
-+		crtc_state->req_psr2_sdp_prior_scanline = false;
-+		return false;
-+	case INTEL_DPCD_INTEL_WA_REGISTER_CAPS_PSR2_WITH_EARLY_SCANLINE:
-+		return true;
-+	case INTEL_DPCD_INTEL_WA_REGISTER_CAPS_PSR2_WITHOUT_EARLY_SCANLINE:
-+		crtc_state->req_psr2_sdp_prior_scanline = false;
-+		return true;
-+	default:
-+		MISSING_CASE(early_scanline_support);
-+		return false;
+ 	r = 0;
+ 	switch (chip->chip_id) {
+-	case KVM_IRQCHIP_PIC_MASTER:
++	case KVM_IRQCHIP_PIC_MASTER: {
++		guard(spinlock)(&pic->lock);
+ 		memcpy(&chip->chip.pic, &pic->pics[0],
+ 			sizeof(struct kvm_pic_state));
+ 		break;
+-	case KVM_IRQCHIP_PIC_SLAVE:
 +	}
-+}
-+
- static bool _compute_psr2_sdp_prior_scanline_indication(struct intel_dp *intel_dp,
- 							struct intel_crtc_state *crtc_state)
- {
-@@ -1028,7 +1052,8 @@ static bool _compute_psr2_sdp_prior_scanline_indication(struct intel_dp *intel_d
- 		return false;
- 
- 	crtc_state->req_psr2_sdp_prior_scanline = true;
--	return true;
-+
-+	return apply_scanline_indication_wa(intel_dp, crtc_state);
- }
- 
- static bool _compute_psr2_wake_times(struct intel_dp *intel_dp,
++	case KVM_IRQCHIP_PIC_SLAVE: {
++		guard(spinlock)(&pic->lock);
+ 		memcpy(&chip->chip.pic, &pic->pics[1],
+ 			sizeof(struct kvm_pic_state));
+ 		break;
++	}
+ 	case KVM_IRQCHIP_IOAPIC:
+ 		kvm_get_ioapic(kvm, &chip->chip.ioapic);
+ 		break;
+
+base-commit: d1568b1332b6b3b36b222c2868fc102727c12a34
 -- 
-2.43.0
+2.51.0
 
 
