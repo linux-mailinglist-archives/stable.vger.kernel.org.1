@@ -1,145 +1,180 @@
-Return-Path: <stable+bounces-256554-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-256555-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id eEoMLCtRGWrzuQgAu9opvQ
-	(envelope-from <stable+bounces-256554-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 29 May 2026 10:41:15 +0200
+	id aKyaFDlSGWrzuQgAu9opvQ
+	(envelope-from <stable+bounces-256555-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 29 May 2026 10:45:45 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0F9DE5FF55A
-	for <lists+stable@lfdr.de>; Fri, 29 May 2026 10:41:15 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id BD2B65FF658
+	for <lists+stable@lfdr.de>; Fri, 29 May 2026 10:45:44 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 6E5FB301BED7
-	for <lists+stable@lfdr.de>; Fri, 29 May 2026 08:41:14 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id CF1CA30F59D3
+	for <lists+stable@lfdr.de>; Fri, 29 May 2026 08:42:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 98F86348C4C;
-	Fri, 29 May 2026 08:41:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6A8E03B3883;
+	Fri, 29 May 2026 08:42:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=amazon.de header.i=@amazon.de header.b="kvRAtzob"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="IVBa8IqF"
 X-Original-To: stable@vger.kernel.org
-Received: from pdx-out-013.esa.us-west-2.outbound.mail-perimeter.amazon.com (pdx-out-013.esa.us-west-2.outbound.mail-perimeter.amazon.com [34.218.115.239])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.14])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7535C2BCF45;
-	Fri, 29 May 2026 08:41:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=34.218.115.239
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BE46834F259
+	for <stable@vger.kernel.org>; Fri, 29 May 2026 08:42:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.14
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780044072; cv=none; b=mjl1VQI+zlGtBQXaTP19C7ExM2tNy25Exjf3F3w8o7fmXRUlTWVCGfcLUb3EVC+L6INNuzz9saDUSgJ6yUSPaXKTwfelqOyksV4sVX7vR2JOFZS6PiAQWDunFw6/WcIL4YKQA6L29w5xlzfyl00eLorKJt5Ae0zEaK+ZKOUomjM=
+	t=1780044160; cv=none; b=c4GRATgw/YV0k+XF2NtmNmzXY9vNrSRDz2xOhaItey51gAwSBjXgWMQlxTar8PkwfnGTKnz0qZ5ZPCJD586mmkd4pzCYYHUNXXA5+zHGtL/w4ZGZK8vWwnrYaxyYe/NyCkl7MX0dWmzo+JlBzdwYCx7aHHCuj6OunBreyaIBDBk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780044072; c=relaxed/simple;
-	bh=7ZOOnZ0LsxWu/V4l6cuXWju/geuBx0Ghn+hIvG09L44=;
-	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type:Content-Disposition; b=A3/aeyrTnOGafZMDRhcdJ4kF++nJF0pZwbGpX46jtlKt4lry8ZnEXiIz3fvRIzbc4/MBbd9eU9EUd/l7XS4FiWeB8Glpkm/Pg3m1RvVJsjbQc+6OlaaIg0FgJ7t+w45SCXKwd7sRJyIhv6faQJ2miOAMKdvvG+NaStnS39Ao2Vs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amazon.de; spf=pass smtp.mailfrom=amazon.de; dkim=pass (2048-bit key) header.d=amazon.de header.i=@amazon.de header.b=kvRAtzob; arc=none smtp.client-ip=34.218.115.239
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amazon.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=amazon.de
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-  d=amazon.de; i=@amazon.de; q=dns/txt; s=amazoncorp2;
-  t=1780044071; x=1811580071;
+	s=arc-20240116; t=1780044160; c=relaxed/simple;
+	bh=Rs0Y22wpUKPWQ2SgisODoAQQyajUgEzS4+hilwyjesA=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=XWTZ7NGZZxmQ5m0Z6h37A4+RlTwuuScimwwMVXOeMl/zfepeFCVMNKe4IClNEXAhn5vOvRI+QnYVntogCv5UbYpzkzQwF+0AQOFTS26bTpfIWTwC2WLFdaSs7MaNEXgS5j9cF5lDJeADy/4GIBhIkJrzTqTaJbbBkrxV0eJi/ms=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=IVBa8IqF; arc=none smtp.client-ip=192.198.163.14
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1780044156; x=1811580156;
   h=from:to:cc:subject:date:message-id:in-reply-to:
    references:mime-version:content-transfer-encoding;
-  bh=uFT89SlVEX/0jI//PCM8qJr9ykfpa+z58mb97MEoSM0=;
-  b=kvRAtzob7ldMlocHbpyPp/vokAUpSlqSGJaBfRQ2UGOz2jFA6CM3g+J4
-   RfpLm8JmDNfqcVs3+BtJgGIwZA1B1TvRHya0HoZGcjCltE6/VXv4dqxgc
-   5+8awTJfJSj/VOddfWuXA87TtGsgOFJ//J2a8UldtJFoC1xYns/MWlbKi
-   bSDqijX+EPij2jafs2g84+Vp48Ed4Oj7mGCo8IvOuPzNK7u4Hf54K0hwe
-   +M33ZdcErO2KLVTWdRJZp2zikhGl0Vr6+OwGBGKFjL3NSCmzOsX8l9GyP
-   E9hLcdF02d7I4E8LHadHu0NApc5Lay0UIDVNzKzL716eN2hpz1kI8WaBl
-   w==;
-X-CSE-ConnectionGUID: otawseM6S+O32ZpDJTpEqg==
-X-CSE-MsgGUID: HCOUtE5jR/elNDzli9Ambw==
-X-IronPort-AV: E=Sophos;i="6.24,175,1774310400"; 
-   d="scan'208";a="20493375"
-Received: from ip-10-5-0-115.us-west-2.compute.internal (HELO smtpout.naws.us-west-2.prod.farcaster.email.amazon.dev) ([10.5.0.115])
-  by internal-pdx-out-013.esa.us-west-2.outbound.mail-perimeter.amazon.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 29 May 2026 08:41:07 +0000
-Received: from EX19MTAUWA001.ant.amazon.com [205.251.233.182:23966]
- by smtpin.naws.us-west-2.prod.farcaster.email.amazon.dev [10.0.40.245:2525] with esmtp (Farcaster)
- id 60c81e0b-e71d-4971-b825-decb01011d55; Fri, 29 May 2026 08:41:06 +0000 (UTC)
-X-Farcaster-Flow-ID: 60c81e0b-e71d-4971-b825-decb01011d55
-Received: from EX19D001UWA001.ant.amazon.com (10.13.138.214) by
- EX19MTAUWA001.ant.amazon.com (10.250.64.204) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.2562.37;
- Fri, 29 May 2026 08:41:06 +0000
-Received: from dev-dsk-doebel-1a-7b355d76.us-east-1.amazon.com (10.169.119.5)
- by EX19D001UWA001.ant.amazon.com (10.13.138.214) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.2562.37;
- Fri, 29 May 2026 08:41:05 +0000
-From: Bjoern Doebel <doebel@amazon.de>
-To: Sasha Levin <sashal@kernel.org>
-CC: Bjoern Doebel <doebel@amazon.de>, <linux-kernel@vger.kernel.org>,
-	<kvm@vger.kernel.org>, Sean Christopherson <seanjc@google.com>, "Alexander
- Bulekov" <bkov@amazon.com>, Fred Griffoul <fgriffo@amazon.co.uk>,
-	<stable@vger.kernel.org>, Paolo Bonzini <pbonzini@redhat.com>
-Subject: Re: [PATCH 6.1.y] KVM: x86: Fix shadow paging use-after-free due to unexpected GFN
-Date: Fri, 29 May 2026 08:40:47 +0000
-Message-ID: <ahlQ/m2bMK0yEYfQ@dev-dsk-doebel-1a-7b355d76.us-east-1.amazon.com>
-X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20260509122858.475f3b407568.re-kvm-x86-shadow-paging-uaf-6.1@kernel.org>
-References: <20260505070812.221568-1-pbonzini@redhat.com> <20260509122858.475f3b407568.re-kvm-x86-shadow-paging-uaf-6.1@kernel.org>
+  bh=Rs0Y22wpUKPWQ2SgisODoAQQyajUgEzS4+hilwyjesA=;
+  b=IVBa8IqF9zpioHP5reXheTLPbZ2WuZtwSx5aXmMauu1J5WFtkEuYzY7t
+   QRtwUXMxGFaDtfDktMfyvKwkGEuVtpw9rgCkkBK6FEJhOyTkof7vP+Zch
+   TMLiJ8SH7CBTgU6m6qkvieFIyYdzGZG3KDRZMM0bpmgjgTGbc0YaHZ46H
+   Zd5CdP9xrp6JFuihNnRq5Hjo8fUq1QvVEevyi9t4alZlHYjvQ/6GiD6Ne
+   Ua6F51aytg9CyAW7XnfjSN23ZOyWJfwNDjB4ehbsW0x05kPkR89dVEZIg
+   T5dghpMInvfOTVvobzdw0N7GKG4T/ouIVJFzvVr+De2lkfKoqtA++QJVY
+   A==;
+X-CSE-ConnectionGUID: r07xsGrUSY2O0wIyhSA77g==
+X-CSE-MsgGUID: UDgB3kkLR2Os8V0keerkKQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11800"; a="80922449"
+X-IronPort-AV: E=Sophos;i="6.24,175,1774335600"; 
+   d="scan'208";a="80922449"
+Received: from fmviesa002.fm.intel.com ([10.60.135.142])
+  by fmvoesa108.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 29 May 2026 01:42:35 -0700
+X-CSE-ConnectionGUID: gHAwzCNoQxOg1aIks+Nhgg==
+X-CSE-MsgGUID: eP8NMj3wRFKQy6Z3h65iMA==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.24,175,1774335600"; 
+   d="scan'208";a="266418796"
+Received: from mjarzebo-mobl1.ger.corp.intel.com (HELO jhogande-mobl3.intel.com) ([10.245.246.54])
+  by fmviesa002-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 29 May 2026 01:42:33 -0700
+From: =?UTF-8?q?Jouni=20H=C3=B6gander?= <jouni.hogander@intel.com>
+To: stable@vger.kernel.org
+Cc: =?UTF-8?q?Jouni=20H=C3=B6gander?= <jouni.hogander@intel.com>,
+	Suraj Kandpal <suraj.kandpal@intel.com>,
+	Tvrtko Ursulin <tursulin@ursulin.net>
+Subject: [PATCH 6.1.y 1/4] drm/i915/psr: Apply Intel DPCD workaround when SDP on prior line used
+Date: Fri, 29 May 2026 11:41:55 +0300
+Message-ID: <20260529084158.459248-1-jouni.hogander@intel.com>
+X-Mailer: git-send-email 2.43.0
+In-Reply-To: <2026052828-boaster-whenever-f598@gregkh>
+References: <2026052828-boaster-whenever-f598@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Disposition: inline
-Status: RO
-Lines: 12
-X-ClientProxiedBy: EX19D045UWA003.ant.amazon.com (10.13.139.46) To
- EX19D001UWA001.ant.amazon.com (10.13.138.214)
-Content-Transfer-Encoding: 7bit
-X-Spamd-Result: default: False [-2.16 / 15.00];
+Content-Type: text/plain; charset=UTF-8
+Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
+Content-Transfer-Encoding: 8bit
+X-Spamd-Result: default: False [-1.16 / 15.00];
+	MID_CONTAINS_FROM(1.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[amazon.de,quarantine];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
-	R_DKIM_ALLOW(-0.20)[amazon.de:s=amazoncorp2];
+	DMARC_POLICY_ALLOW(-0.50)[intel.com,none];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	R_DKIM_ALLOW(-0.20)[intel.com:s=Intel];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[amazon.de:+];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
-	NEURAL_HAM(-0.00)[-1.000];
+	TAGGED_FROM(0.00)[bounces-256555-lists,stable=lfdr.de];
+	DKIM_TRACE(0.00)[intel.com:+];
 	TO_DN_SOME(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_SEVEN(0.00)[9];
+	HAS_ORG_HEADER(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[doebel@amazon.de,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	TAGGED_FROM(0.00)[bounces-256554-lists,stable=lfdr.de];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,amazon.de:dkim,dev-dsk-doebel-1a-7b355d76.us-east-1.amazon.com:mid];
-	RCVD_COUNT_SEVEN(0.00)[7]
-X-Rspamd-Queue-Id: 0F9DE5FF55A
+	FROM_NEQ_ENVFROM(0.00)[jouni.hogander@intel.com,stable@vger.kernel.org];
+	RCPT_COUNT_THREE(0.00)[4];
+	RCVD_COUNT_FIVE(0.00)[5];
+	TAGGED_RCPT(0.00)[stable];
+	NEURAL_HAM(-0.00)[-1.000];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,intel.com:email,intel.com:mid,intel.com:dkim]
+X-Rspamd-Queue-Id: BD2B65FF658
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-Hi Sasha,
+commit 4703049f768fc1c1caac754134118bee1a3af189 upstream.
 
-On Sat, May 09, 2026 at 08:46:50AM -0400, Sasha Levin wrote:
-> > [PATCH 6.1.y] KVM: x86: Fix shadow paging use-after-free due to unexpected GFN
-> 
-> Queued for 6.1.y, thanks.
+There is Intel specific workaround DPCD address containing workaround for
+case where SDP is on prior line. Apply this workaround according to values
+in the offset.
 
-As I don't see that commit on the stable/linux-6.1.y branch, did this perhaps
-get lost in the frenzy of the last weeks?
+Fixes: 61e887329e33 ("drm/i915/xelpd: Handle PSR2 SDP indication in the prior scanline")
+Cc: <stable@vger.kernel.org> # v5.15+
+Signed-off-by: Jouni Högander <jouni.hogander@intel.com>
+Reviewed-by: Suraj Kandpal <suraj.kandpal@intel.com>
+Link: https://patch.msgid.link/20260515095756.2799483-4-jouni.hogander@intel.com
+(cherry picked from commit c3fe899fbeac86ea4a5ca9dd845b2cbc0da46249)
+Signed-off-by: Tvrtko Ursulin <tursulin@ursulin.net>
+Signed-off-by: Jouni Högander <jouni.hogander@intel.com>
+---
+ drivers/gpu/drm/i915/display/intel_psr.c | 27 +++++++++++++++++++++++-
+ 1 file changed, 26 insertions(+), 1 deletion(-)
 
-Best,
-Bjoern
-
-
-
-
-Amazon Web Services Development Center Germany GmbH
-Tamara-Danz-Str. 13
-10243 Berlin
-Geschaeftsfuehrung: Christof Hellmis, Andreas Stieger
-Eingetragen am Amtsgericht Charlottenburg unter HRB 257764 B
-Sitz: Berlin
-Ust-ID: DE 365 538 597
+diff --git a/drivers/gpu/drm/i915/display/intel_psr.c b/drivers/gpu/drm/i915/display/intel_psr.c
+index e2d7c0a6802a..505c3c4251a5 100644
+--- a/drivers/gpu/drm/i915/display/intel_psr.c
++++ b/drivers/gpu/drm/i915/display/intel_psr.c
+@@ -811,6 +811,30 @@ static bool psr2_granularity_check(struct intel_dp *intel_dp,
+ 	return true;
+ }
+ 
++static bool apply_scanline_indication_wa(struct intel_dp *intel_dp,
++					 struct intel_crtc_state *crtc_state)
++{
++	u8 early_scanline_support = intel_dp->intel_wa_dpcd &
++		INTEL_DPCD_INTEL_WA_REGISTER_CAPS_PSR2_EARLYSCANLINE_SDP_SUPPORT_MASK;
++
++	if (intel_dp->edp_dpcd[0] >= DP_EDP_15)
++		return true;
++
++	switch (early_scanline_support)	{
++	case INTEL_DPCD_INTEL_WA_REGISTER_CAPS_FALL_BACK_TO_PSR1:
++		crtc_state->req_psr2_sdp_prior_scanline = false;
++		return false;
++	case INTEL_DPCD_INTEL_WA_REGISTER_CAPS_PSR2_WITH_EARLY_SCANLINE:
++		return true;
++	case INTEL_DPCD_INTEL_WA_REGISTER_CAPS_PSR2_WITHOUT_EARLY_SCANLINE:
++		crtc_state->req_psr2_sdp_prior_scanline = false;
++		return true;
++	default:
++		MISSING_CASE(early_scanline_support);
++		return false;
++	}
++}
++
+ static bool _compute_psr2_sdp_prior_scanline_indication(struct intel_dp *intel_dp,
+ 							struct intel_crtc_state *crtc_state)
+ {
+@@ -832,7 +856,8 @@ static bool _compute_psr2_sdp_prior_scanline_indication(struct intel_dp *intel_d
+ 		return false;
+ 
+ 	crtc_state->req_psr2_sdp_prior_scanline = true;
+-	return true;
++
++	return apply_scanline_indication_wa(intel_dp, crtc_state);
+ }
+ 
+ static bool _compute_psr2_wake_times(struct intel_dp *intel_dp,
+-- 
+2.43.0
 
 
