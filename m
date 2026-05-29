@@ -1,314 +1,319 @@
-Return-Path: <stable+bounces-256758-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-256759-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id UAMNGEPwGWpD0AgAu9opvQ
-	(envelope-from <stable+bounces-256758-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 29 May 2026 22:00:03 +0200
+	id OBmHGHHwGWpD0AgAu9opvQ
+	(envelope-from <stable+bounces-256759-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 29 May 2026 22:00:49 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id C5004608264
-	for <lists+stable@lfdr.de>; Fri, 29 May 2026 22:00:02 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id B2C1B608279
+	for <lists+stable@lfdr.de>; Fri, 29 May 2026 22:00:48 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 9BACF302C6F7
-	for <lists+stable@lfdr.de>; Fri, 29 May 2026 19:56:42 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 4857C3048DE7
+	for <lists+stable@lfdr.de>; Fri, 29 May 2026 19:57:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 752FA3A8737;
-	Fri, 29 May 2026 19:56:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E6137374722;
+	Fri, 29 May 2026 19:57:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=narfation.org header.i=@narfation.org header.b="T4/CFRdH"
+	dkim=pass (1024-bit key) header.d=narfation.org header.i=@narfation.org header.b="dHMAnOJh"
 X-Original-To: stable@vger.kernel.org
 Received: from dvalin.narfation.org (dvalin.narfation.org [213.160.73.56])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B26E43B38B9
-	for <stable@vger.kernel.org>; Fri, 29 May 2026 19:56:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5A5572E7635
+	for <stable@vger.kernel.org>; Fri, 29 May 2026 19:57:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=213.160.73.56
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780084602; cv=none; b=bud/wVO/l6dkt4bQjqzKA4tqq2fUrTJcYwSQdgX4WPgPoqIWYrCkYIFoCxAij8n6x0vWFPiKVATRKAWkf8xQoUEFem+r90QNueGb0g+Wh7I3UpjzBQGpyJovifz4hbOwKWL/v7v3vpnXJ8dBYKWPk8v4dl9Lm4RLKfi1twb+1JA=
+	t=1780084633; cv=none; b=DJB9oKqtAI0dpRgbjLtt5Swgbcfq3aHTdXgKfX79pyLuW2ACfnc9Vpax9hgamzTmk2gk/C0XDiXKNUXoftGS5hBB4pUhd/i+cy/WZpms6VxOSguYWZz1lzjK0KlX7QGRpObPgbzVgAlsilrH53uOwMsmkMcowPEe8sy1fOuJw4Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780084602; c=relaxed/simple;
-	bh=9m4GiSWz9QfTsh8qOcpVOedj3FlEi39kj7olZSfWKbQ=;
+	s=arc-20240116; t=1780084633; c=relaxed/simple;
+	bh=E1HDHcPFwAuNoltUcn7gjrHPVymk+4GgRoBoeUFMlnU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=Fj6cqnDdfyH22KIP96/AMUPSvWWS6YGWEL4b3018YMEZTFpnkirDRMaCs+IxUOmpVS6lz8ImH44uXfZgkjzYeVQMVbgly/vyxEizFzmDjtJOOGrmrIlb9Zkqk4g4hfK9AuhERhCfNsg8WJWJ15dEIttsv+HfbIGEVGexzqbr+gY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=narfation.org; spf=pass smtp.mailfrom=narfation.org; dkim=pass (1024-bit key) header.d=narfation.org header.i=@narfation.org header.b=T4/CFRdH; arc=none smtp.client-ip=213.160.73.56
+	 MIME-Version; b=VM8UHJckFUo1cLDtPD9x8e5zVpDJ/g+sES0q70Hl5TXRxdJD0Uxlb1bAiyoLC19Jz8qMoAOmg4Lxg4wG0qGAQ9jMDa3bXpGu8cgkHA9YBkpZsPzOxIjL0u1r3nnXIaycia4FPsDPWHoEy2dxxNa5nMTLsu6g4fYERCZIsjoM230=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=narfation.org; spf=pass smtp.mailfrom=narfation.org; dkim=pass (1024-bit key) header.d=narfation.org header.i=@narfation.org header.b=dHMAnOJh; arc=none smtp.client-ip=213.160.73.56
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=narfation.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=narfation.org
-Received: by dvalin.narfation.org (Postfix) id A62921FE5D;
-	Fri, 29 May 2026 19:56:38 +0000 (UTC)
+Received: by dvalin.narfation.org (Postfix) id A2FC61FEDA;
+	Fri, 29 May 2026 19:57:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=narfation.org;
-	s=20121; t=1780084598;
+	s=20121; t=1780084630;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 to:to:cc:cc:mime-version:mime-version:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=uHLjLkffEPtccf0fPVP3iTIi7Qf8xZsdDX0Kk9Dxvds=;
-	b=T4/CFRdHZWqeex7IfKHX0d0vZ7as+M3VoudPUHitnDvLKE1g1RpvMl3fPOk+GK9db3gCQU
-	NZJEu3zWvl0m7POX/JSb+mhUWeVrg5CTzh8dcc6W297oISlqn7F79NCCcFEsGczlNl0C9/
-	F3QRQYMcPieZA5eR3KoWb5wsc13YwOw=
+	bh=OBDF294P0F0hBMcYrJpk7bldnQwaH2p9R14lw/5/9A8=;
+	b=dHMAnOJh4vhJHXlMSH+rDOKB7gPewotoiI4266WnS8mC+4QicpmT+42dS0MAPPlCM1USzq
+	pJg2k4EkDzSXKO8GfVsw0LmQNb1Swpza7OORYTI47yNUavTK0NNJ2PAstOlFZ8nDg+ws9I
+	OYxWpbI6R1GwCtgKkUkoRSzF351wzdU=
 From: Sven Eckelmann <sven@narfation.org>
 To: stable@vger.kernel.org
 Cc: Sven Eckelmann <sven@narfation.org>,
 	stable@kernel.org
-Subject: [PATCH 6.1.y] batman-adv: iv: recover OGM scheduling after forward packet error
-Date: Fri, 29 May 2026 21:56:18 +0200
-Message-ID: <20260529195618.474477-1-sven@narfation.org>
+Subject: [PATCH 6.1.y] batman-adv: bla: avoid double decrement of bla.num_requests
+Date: Fri, 29 May 2026 21:57:07 +0200
+Message-ID: <20260529195707.474694-1-sven@narfation.org>
 X-Mailer: git-send-email 2.47.3
-In-Reply-To: <2026052854-calcium-sequence-9862@gregkh>
-References: <2026052854-calcium-sequence-9862@gregkh>
+In-Reply-To: <2026052854-landmark-pendant-d7ad@gregkh>
+References: <2026052854-landmark-pendant-d7ad@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-1.16 / 15.00];
+X-Spamd-Result: default: False [-0.66 / 15.00];
 	MID_CONTAINS_FROM(1.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[narfation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64];
 	R_DKIM_ALLOW(-0.20)[narfation.org:s=20121];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-256758-lists,stable=lfdr.de];
-	DKIM_TRACE(0.00)[narfation.org:+];
-	RCVD_TLS_LAST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-256759-lists,stable=lfdr.de];
 	MIME_TRACE(0.00)[0:+];
-	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	DKIM_TRACE(0.00)[narfation.org:+];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	TO_DN_SOME(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[sven@narfation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
 	RCPT_COUNT_THREE(0.00)[3];
-	NEURAL_HAM(-0.00)[-1.000];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	PRECEDENCE_BULK(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
+	NEURAL_HAM(-0.00)[-1.000];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	DBL_BLOCKED_OPENRESOLVER(0.00)[narfation.org:email,narfation.org:mid,narfation.org:dkim,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
-X-Rspamd-Queue-Id: C5004608264
+X-Rspamd-Queue-Id: B2C1B608279
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-commit aa3153bd139a6c48667dcd02608d3b2c80bff02c upstream.
+commit 83ab69bd12b80f6ea169c8bea6977701b53a043d upstream.
 
-When batadv_iv_ogm_schedule_buff() fails to allocate and queue a forward
-packet for OGM transmission, the work item that drives periodic OGM
-scheduling is never re-armed. This silently halts transmission of the
-node's own OGMs on the affected interface — only OGMs from other peers
-continue to be aggregated and forwarded.
+The bla.num_requests is increased when no request_sent was in progress. And
+it is decremented in various places (announcement was received, backbone is
+purged, periodic work). But the check if the request_sent is actually set
+to a specific state and the atomic_dec/_inc are not safe because they are
+not atomic (TOCTOU) and multiple such code portions can run concurrently.
 
-Fix this by tracking whether batadv_iv_ogm_queue_add() (and transitively
-batadv_iv_ogm_aggregate_new()) successfully scheduled a forward packet.
-When scheduling fails, batadv_iv_ogm_schedule_buff() falls back to queuing
-a dedicated recovery work item (reschedule_work) that fires after one
-originator interval and calls batadv_iv_ogm_schedule() again.
+At the same time, it is necessary to modify request_sent (state) and
+bla.num_requests atomically. Otherwise batadv_bla_send_request() might set
+request_sent to 1 and is interrupted.  batadv_handle_announce() can then
+set request_sent back to 0 and decrement num_requests before
+batadv_bla_send_request() incremented it.
+
+The two operations must therefore be locked. And since state (request_sent)
+and wait_periods are only accessed inside this lock, they can be converted
+to simpler datatypes. And to avoid that the bla.num_requests is touched by
+a parallel running context with a valid backbone_gw reference after
+batadv_bla_purge_backbone_gw() ran, a third state "stopped" is required to
+correctly signal that a backbone_gw is in the state of being cleaned up.
 
 Cc: stable@kernel.org
-Fixes: c6c8fea29769 ("net: Add batman-adv meshing protocol")
+Fixes: 23721387c409 ("batman-adv: add basic bridge loop avoidance code")
 Signed-off-by: Sven Eckelmann <sven@narfation.org>
 ---
- net/batman-adv/bat_iv_ogm.c | 76 +++++++++++++++++++++++++++----------
- net/batman-adv/types.h      |  3 ++
- 2 files changed, 60 insertions(+), 19 deletions(-)
+ net/batman-adv/bridge_loop_avoidance.c | 51 ++++++++++++++++++--------
+ net/batman-adv/soft-interface.c        |  1 +
+ net/batman-adv/types.h                 | 39 ++++++++++++++++----
+ 3 files changed, 67 insertions(+), 24 deletions(-)
 
-diff --git a/net/batman-adv/bat_iv_ogm.c b/net/batman-adv/bat_iv_ogm.c
-index c93d30462054c..c52e3b8288986 100644
---- a/net/batman-adv/bat_iv_ogm.c
-+++ b/net/batman-adv/bat_iv_ogm.c
-@@ -224,6 +224,8 @@ static void batadv_iv_ogm_iface_disable(struct batadv_hard_iface *hard_iface)
- 	hard_iface->bat_iv.ogm_buff = NULL;
+diff --git a/net/batman-adv/bridge_loop_avoidance.c b/net/batman-adv/bridge_loop_avoidance.c
+index f614709e6cda7..5f383a455f4dc 100644
+--- a/net/batman-adv/bridge_loop_avoidance.c
++++ b/net/batman-adv/bridge_loop_avoidance.c
+@@ -514,8 +514,8 @@ batadv_bla_get_backbone_gw(struct batadv_priv *bat_priv, const u8 *orig,
+ 	entry->crc = BATADV_BLA_CRC_INIT;
+ 	entry->bat_priv = bat_priv;
+ 	spin_lock_init(&entry->crc_lock);
+-	atomic_set(&entry->request_sent, 0);
+-	atomic_set(&entry->wait_periods, 0);
++	entry->state = BATADV_BLA_BACKBONE_GW_SYNCED;
++	entry->wait_periods = 0;
+ 	ether_addr_copy(entry->orig, orig);
+ 	INIT_WORK(&entry->report_work, batadv_bla_loopdetect_report);
+ 	kref_init(&entry->refcount);
+@@ -544,9 +544,13 @@ batadv_bla_get_backbone_gw(struct batadv_priv *bat_priv, const u8 *orig,
+ 		batadv_bla_send_announce(bat_priv, entry);
  
- 	mutex_unlock(&hard_iface->bat_iv.ogm_buff_mutex);
-+
-+	cancel_delayed_work_sync(&hard_iface->bat_iv.reschedule_work);
- }
- 
- static void batadv_iv_ogm_iface_update_mac(struct batadv_hard_iface *hard_iface)
-@@ -528,8 +530,10 @@ batadv_iv_ogm_can_aggregate(const struct batadv_ogm_packet *new_bat_ogm_packet,
-  * @if_incoming: interface where the packet was received
-  * @if_outgoing: interface for which the retransmission should be considered
-  * @own_packet: true if it is a self-generated ogm
-+ *
-+ * Return: whether forward packet was scheduled
-  */
--static void batadv_iv_ogm_aggregate_new(const unsigned char *packet_buff,
-+static bool batadv_iv_ogm_aggregate_new(const unsigned char *packet_buff,
- 					int packet_len, unsigned long send_time,
- 					bool direct_link,
- 					struct batadv_hard_iface *if_incoming,
-@@ -553,13 +557,13 @@ static void batadv_iv_ogm_aggregate_new(const unsigned char *packet_buff,
- 
- 	skb = netdev_alloc_skb_ip_align(NULL, skb_size);
- 	if (!skb)
--		return;
-+		return false;
- 
- 	forw_packet_aggr = batadv_forw_packet_alloc(if_incoming, if_outgoing,
- 						    queue_left, bat_priv, skb);
- 	if (!forw_packet_aggr) {
- 		kfree_skb(skb);
--		return;
-+		return false;
+ 		/* this will be decreased in the worker thread */
+-		atomic_inc(&entry->request_sent);
+-		atomic_set(&entry->wait_periods, BATADV_BLA_WAIT_PERIODS);
+-		atomic_inc(&bat_priv->bla.num_requests);
++		spin_lock_bh(&bat_priv->bla.num_requests_lock);
++		if (entry->state == BATADV_BLA_BACKBONE_GW_SYNCED) {
++			entry->state = BATADV_BLA_BACKBONE_GW_UNSYNCED;
++			entry->wait_periods = BATADV_BLA_WAIT_PERIODS;
++			atomic_inc(&bat_priv->bla.num_requests);
++		}
++		spin_unlock_bh(&bat_priv->bla.num_requests_lock);
  	}
  
- 	forw_packet_aggr->skb->priority = TC_PRIO_CONTROL;
-@@ -581,6 +585,8 @@ static void batadv_iv_ogm_aggregate_new(const unsigned char *packet_buff,
- 			  batadv_iv_send_outstanding_bat_ogm_packet);
+ 	return entry;
+@@ -649,10 +653,12 @@ static void batadv_bla_send_request(struct batadv_bla_backbone_gw *backbone_gw)
+ 			      backbone_gw->vid, BATADV_CLAIM_TYPE_REQUEST);
  
- 	batadv_forw_packet_ogmv1_queue(bat_priv, forw_packet_aggr, send_time);
-+
-+	return true;
- }
- 
- /* aggregate a new packet into the existing ogm packet */
-@@ -610,8 +616,10 @@ static void batadv_iv_ogm_aggregate(struct batadv_forw_packet *forw_packet_aggr,
-  * @if_outgoing: interface for which the retransmission should be considered
-  * @own_packet: true if it is a self-generated ogm
-  * @send_time: timestamp (jiffies) when the packet is to be sent
-+ *
-+ * Return: whether forward packet was scheduled
-  */
--static void batadv_iv_ogm_queue_add(struct batadv_priv *bat_priv,
-+static bool batadv_iv_ogm_queue_add(struct batadv_priv *bat_priv,
- 				    unsigned char *packet_buff,
- 				    int packet_len,
- 				    struct batadv_hard_iface *if_incoming,
-@@ -663,14 +671,16 @@ static void batadv_iv_ogm_queue_add(struct batadv_priv *bat_priv,
- 		if (!own_packet && atomic_read(&bat_priv->aggregated_ogms))
- 			send_time += max_aggregation_jiffies;
- 
--		batadv_iv_ogm_aggregate_new(packet_buff, packet_len,
--					    send_time, direct_link,
--					    if_incoming, if_outgoing,
--					    own_packet);
-+		return batadv_iv_ogm_aggregate_new(packet_buff, packet_len,
-+						   send_time, direct_link,
-+						   if_incoming, if_outgoing,
-+						   own_packet);
- 	} else {
- 		batadv_iv_ogm_aggregate(forw_packet_aggr, packet_buff,
- 					packet_len, direct_link);
- 		spin_unlock_bh(&bat_priv->forw_bat_list_lock);
-+
-+		return true;
+ 	/* no local broadcasts should be sent or received, for now. */
+-	if (!atomic_read(&backbone_gw->request_sent)) {
++	spin_lock_bh(&backbone_gw->bat_priv->bla.num_requests_lock);
++	if (backbone_gw->state == BATADV_BLA_BACKBONE_GW_SYNCED) {
++		backbone_gw->state = BATADV_BLA_BACKBONE_GW_UNSYNCED;
+ 		atomic_inc(&backbone_gw->bat_priv->bla.num_requests);
+-		atomic_set(&backbone_gw->request_sent, 1);
  	}
++	spin_unlock_bh(&backbone_gw->bat_priv->bla.num_requests_lock);
  }
  
-@@ -782,6 +792,8 @@ static void batadv_iv_ogm_schedule_buff(struct batadv_hard_iface *hard_iface)
- 	u32 seqno;
- 	u16 tvlv_len = 0;
- 	unsigned long send_time;
-+	bool reschedule = false;
-+	bool scheduled;
- 	int ret;
- 
- 	lockdep_assert_held(&hard_iface->bat_iv.ogm_buff_mutex);
-@@ -810,11 +822,8 @@ static void batadv_iv_ogm_schedule_buff(struct batadv_hard_iface *hard_iface)
- 						       ogm_buff_len,
- 						       BATADV_OGM_HLEN);
- 		if (ret < 0) {
--			/* OGMs must be queued even when the buffer allocation for
--			 * TVLVs failed. just fall back to the non-TVLV version
--			 */
--			ret = 0;
--			*ogm_buff_len = BATADV_OGM_HLEN;
-+			reschedule = true;
-+			goto out;
- 		}
- 
- 		tvlv_len = ret;
-@@ -836,8 +845,11 @@ static void batadv_iv_ogm_schedule_buff(struct batadv_hard_iface *hard_iface)
- 		/* OGMs from secondary interfaces are only scheduled on their
- 		 * respective interfaces.
- 		 */
--		batadv_iv_ogm_queue_add(bat_priv, *ogm_buff, *ogm_buff_len,
--					hard_iface, hard_iface, 1, send_time);
-+		scheduled = batadv_iv_ogm_queue_add(bat_priv, *ogm_buff, *ogm_buff_len,
-+						    hard_iface, hard_iface, 1, send_time);
-+		if (!scheduled)
-+			reschedule = true;
-+
- 		goto out;
- 	}
- 
-@@ -852,15 +864,28 @@ static void batadv_iv_ogm_schedule_buff(struct batadv_hard_iface *hard_iface)
- 		if (!kref_get_unless_zero(&tmp_hard_iface->refcount))
- 			continue;
- 
--		batadv_iv_ogm_queue_add(bat_priv, *ogm_buff,
--					*ogm_buff_len, hard_iface,
--					tmp_hard_iface, 1, send_time);
--
-+		scheduled = batadv_iv_ogm_queue_add(bat_priv, *ogm_buff,
-+						    *ogm_buff_len, hard_iface,
-+						    tmp_hard_iface, 1, send_time);
- 		batadv_hardif_put(tmp_hard_iface);
-+
-+		if (!scheduled && tmp_hard_iface == hard_iface)
-+			reschedule = true;
- 	}
- 	rcu_read_unlock();
- 
- out:
-+	if (reschedule) {
-+		/* there was a failure scheduling the own forward packet.
-+		 * as result, the batadv_iv_send_outstanding_bat_ogm_packet()
-+		 * work item is no longer scheduled. it is therefore necessary
-+		 * to reschedule it manually
-+		 */
-+		queue_delayed_work(batadv_event_workqueue,
-+				   &hard_iface->bat_iv.reschedule_work,
-+				   msecs_to_jiffies(atomic_read(&bat_priv->orig_interval)));
-+	}
-+
- 	batadv_hardif_put(primary_if);
- }
- 
-@@ -875,6 +900,17 @@ static void batadv_iv_ogm_schedule(struct batadv_hard_iface *hard_iface)
- 	mutex_unlock(&hard_iface->bat_iv.ogm_buff_mutex);
- }
- 
-+static void batadv_iv_ogm_reschedule(struct work_struct *work)
-+{
-+	struct delayed_work *delayed_work = to_delayed_work(work);
-+	struct batadv_hard_iface *hard_iface;
-+
-+	hard_iface = container_of(delayed_work,
-+				  struct batadv_hard_iface,
-+				  bat_iv.reschedule_work);
-+	batadv_iv_ogm_schedule(hard_iface);
-+}
-+
  /**
-  * batadv_iv_orig_ifinfo_sum() - Get bcast_own sum for originator over interface
-  * @orig_node: originator which reproadcasted the OGMs directly
-@@ -2278,6 +2314,8 @@ batadv_iv_ogm_neigh_is_sob(struct batadv_neigh_node *neigh1,
+@@ -873,10 +879,12 @@ static bool batadv_handle_announce(struct batadv_priv *bat_priv, u8 *an_addr,
+ 		/* if we have sent a request and the crc was OK,
+ 		 * we can allow traffic again.
+ 		 */
+-		if (atomic_read(&backbone_gw->request_sent)) {
++		spin_lock_bh(&bat_priv->bla.num_requests_lock);
++		if (backbone_gw->state == BATADV_BLA_BACKBONE_GW_UNSYNCED) {
++			backbone_gw->state = BATADV_BLA_BACKBONE_GW_SYNCED;
+ 			atomic_dec(&backbone_gw->bat_priv->bla.num_requests);
+-			atomic_set(&backbone_gw->request_sent, 0);
+ 		}
++		spin_unlock_bh(&bat_priv->bla.num_requests_lock);
+ 	}
  
- static void batadv_iv_iface_enabled(struct batadv_hard_iface *hard_iface)
- {
-+	INIT_DELAYED_WORK(&hard_iface->bat_iv.reschedule_work, batadv_iv_ogm_reschedule);
+ 	batadv_backbone_gw_put(backbone_gw);
+@@ -1255,9 +1263,13 @@ static void batadv_bla_purge_backbone_gw(struct batadv_priv *bat_priv, int now)
+ 				purged = true;
+ 
+ 				/* don't wait for the pending request anymore */
+-				if (atomic_read(&backbone_gw->request_sent))
++				spin_lock_bh(&bat_priv->bla.num_requests_lock);
++				if (backbone_gw->state == BATADV_BLA_BACKBONE_GW_UNSYNCED)
+ 					atomic_dec(&bat_priv->bla.num_requests);
+ 
++				backbone_gw->state = BATADV_BLA_BACKBONE_GW_STOPPED;
++				spin_unlock_bh(&bat_priv->bla.num_requests_lock);
 +
- 	/* begin scheduling originator messages on that interface */
- 	batadv_iv_ogm_schedule(hard_iface);
- }
+ 				batadv_bla_del_backbone_claims(backbone_gw);
+ 
+ 				hlist_del_rcu(&backbone_gw->hash_entry);
+@@ -1508,7 +1520,7 @@ static void batadv_bla_periodic_work(struct work_struct *work)
+ 				batadv_bla_send_loopdetect(bat_priv,
+ 							   backbone_gw);
+ 
+-			/* request_sent is only set after creation to avoid
++			/* state is only set to unsynced after creation to avoid
+ 			 * problems when we are not yet known as backbone gw
+ 			 * in the backbone.
+ 			 *
+@@ -1517,14 +1529,21 @@ static void batadv_bla_periodic_work(struct work_struct *work)
+ 			 * some grace time.
+ 			 */
+ 
+-			if (atomic_read(&backbone_gw->request_sent) == 0)
+-				continue;
++			spin_lock_bh(&bat_priv->bla.num_requests_lock);
++			if (backbone_gw->state != BATADV_BLA_BACKBONE_GW_UNSYNCED)
++				goto unlock_next;
+ 
+-			if (!atomic_dec_and_test(&backbone_gw->wait_periods))
+-				continue;
++			if (backbone_gw->wait_periods > 0)
++				backbone_gw->wait_periods--;
+ 
++			if (backbone_gw->wait_periods > 0)
++				goto unlock_next;
++
++			backbone_gw->state = BATADV_BLA_BACKBONE_GW_SYNCED;
+ 			atomic_dec(&backbone_gw->bat_priv->bla.num_requests);
+-			atomic_set(&backbone_gw->request_sent, 0);
++
++unlock_next:
++			spin_unlock_bh(&bat_priv->bla.num_requests_lock);
+ 		}
+ 		rcu_read_unlock();
+ 	}
+diff --git a/net/batman-adv/soft-interface.c b/net/batman-adv/soft-interface.c
+index d7b525a495e45..c0549abcae7a6 100644
+--- a/net/batman-adv/soft-interface.c
++++ b/net/batman-adv/soft-interface.c
+@@ -785,6 +785,7 @@ static int batadv_softif_init_late(struct net_device *dev)
+ 	atomic_set(&bat_priv->tt.ogm_append_cnt, 0);
+ #ifdef CONFIG_BATMAN_ADV_BLA
+ 	atomic_set(&bat_priv->bla.num_requests, 0);
++	spin_lock_init(&bat_priv->bla.num_requests_lock);
+ #endif
+ 	atomic_set(&bat_priv->tp_num, 0);
+ 
 diff --git a/net/batman-adv/types.h b/net/batman-adv/types.h
-index a115212decf4f..248160eb21ce5 100644
+index 248160eb21ce5..ca1c258faa095 100644
 --- a/net/batman-adv/types.h
 +++ b/net/batman-adv/types.h
-@@ -83,6 +83,9 @@ struct batadv_hard_iface_bat_iv {
- 	/** @ogm_seqno: OGM sequence number - used to identify each OGM */
- 	atomic_t ogm_seqno;
+@@ -1027,6 +1027,12 @@ struct batadv_priv_bla {
+ 	/** @num_requests: number of bla requests in flight */
+ 	atomic_t num_requests;
  
-+	/** @reschedule_work: recover OGM schedule after schedule error */
-+	struct delayed_work reschedule_work;
++	/**
++	 * @num_requests_lock: locks update num_requests +
++	 * batadv_backbone_gw::state + batadv_backbone_gw::wait_periods update
++	 */
++	spinlock_t num_requests_lock;
 +
- 	/** @ogm_buff_mutex: lock protecting ogm_buff and ogm_buff_len */
- 	struct mutex ogm_buff_mutex;
- };
+ 	/**
+ 	 * @claim_hash: hash table containing mesh nodes this host has claimed
+ 	 */
+@@ -1755,6 +1761,27 @@ struct batadv_priv {
+ 
+ #ifdef CONFIG_BATMAN_ADV_BLA
+ 
++enum batadv_bla_backbone_gw_state {
++	/**
++	 * @BATADV_BLA_BACKBONE_GW_STOPPED: backbone gw is being removed
++	 * and it must not longer work on requests
++	 */
++	BATADV_BLA_BACKBONE_GW_STOPPED,
++
++	/**
++	 * @BATADV_BLA_BACKBONE_GW_UNSYNCED: backbone was detected out
++	 * of sync and a request was send. No traffic is forwarded until the
++	 * situation is resolved
++	 */
++	BATADV_BLA_BACKBONE_GW_UNSYNCED,
++
++	/**
++	 * @BATADV_BLA_BACKBONE_GW_SYNCED: backbone is consider to be in
++	 * sync. traffic can be forwarded
++	 */
++	BATADV_BLA_BACKBONE_GW_SYNCED,
++};
++
+ /**
+  * struct batadv_bla_backbone_gw - batman-adv gateway bridged into the LAN
+  */
+@@ -1780,16 +1807,12 @@ struct batadv_bla_backbone_gw {
+ 	/**
+ 	 * @wait_periods: grace time for bridge forward delays and bla group
+ 	 *  forming at bootup phase - no bcast traffic is formwared until it has
+-	 *  elapsed
++	 *  elapsed. Must only be access with num_requests_lock.
+ 	 */
+-	atomic_t wait_periods;
++	u8 wait_periods;
+ 
+-	/**
+-	 * @request_sent: if this bool is set to true we are out of sync with
+-	 *  this backbone gateway - no bcast traffic is formwared until the
+-	 *  situation was resolved
+-	 */
+-	atomic_t request_sent;
++	/** @state: sync state. Must only be access with num_requests_lock. */
++	enum batadv_bla_backbone_gw_state state;
+ 
+ 	/** @crc: crc16 checksum over all claims */
+ 	u16 crc;
 -- 
 2.47.3
 
