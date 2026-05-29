@@ -1,177 +1,309 @@
-Return-Path: <stable+bounces-256725-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-256726-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 8OpNMTvkGWrwzggAu9opvQ
-	(envelope-from <stable+bounces-256725-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 29 May 2026 21:08:43 +0200
+	id iFp/FkDkGWrrzggAu9opvQ
+	(envelope-from <stable+bounces-256726-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 29 May 2026 21:08:48 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2DD5F607B81
-	for <lists+stable@lfdr.de>; Fri, 29 May 2026 21:08:43 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id CC45A607B88
+	for <lists+stable@lfdr.de>; Fri, 29 May 2026 21:08:47 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 193CE302837C
-	for <lists+stable@lfdr.de>; Fri, 29 May 2026 19:07:50 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id A5849300DE1E
+	for <lists+stable@lfdr.de>; Fri, 29 May 2026 19:08:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2D91A3EF67B;
-	Fri, 29 May 2026 19:07:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2AD253B38AD;
+	Fri, 29 May 2026 19:08:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b="VdevuVAs"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="WAAc9LBG"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-10697.protonmail.ch (mail-10697.protonmail.ch [79.135.106.97])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D5B9B386C20
-	for <stable@vger.kernel.org>; Fri, 29 May 2026 19:07:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=79.135.106.97
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B2990381AEA
+	for <stable@vger.kernel.org>; Fri, 29 May 2026 19:08:15 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780081667; cv=none; b=C09FIY08AIQJFUywxjHq1uPIGPaygWte7lesMUS4Z8QdRy2b+OAOAvwdlOKeH8m2dth6dCkc0uj797BdeyXWybrqnCHg3G9K8rBaHISsQH+SlS+8yjyFFZGoFVwoAscgll9Z5/kfLLmyjBiJ3urUv+VkHewsqRJ1jCTEmtkuYaA=
+	t=1780081697; cv=none; b=tU8EWSdnwLkiNbSSeddMz0VT4ERRRCmFMgEbul7pGsD7MOGLUblMm6rfJUBBL3+IMmJf8tuQRf8BPXihvoO4vJBTQuqcYIOmzgHFRSPjhVWDgZQepXEVbg+hXXGDnDNwhC5Y/tKDljvf2jUNZo0uzCejife8Z2DYllYmbhxduLo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780081667; c=relaxed/simple;
-	bh=9Knp7eknG8Hf0NCMMDVCwin6Qa9hITGRKVhniVc+xt8=;
-	h=Date:To:From:Cc:Subject:Message-ID:MIME-Version:Content-Type; b=EQVWF0eYSSqX2SUXAjE9UXXxvVv9xbQ/g81Jb16bmZeZonwYg/QVNeNlyfoaNTycm5y5J3QqIO9EcoJGHWSSsS7TX6SIOc+JefNFQ2KFEEFHBLutFc2Gw9GiAmwPi59fsY8mgj0GkUKSYfrF9WaWs+DxwLg+elX58gXN884N0Vo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me; spf=pass smtp.mailfrom=proton.me; dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b=VdevuVAs; arc=none smtp.client-ip=79.135.106.97
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=proton.me
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=proton.me;
-	s=o2cwkjzz2zemxbfasfglysqqvy.protonmail; t=1780081656; x=1780340856;
-	bh=9Knp7eknG8Hf0NCMMDVCwin6Qa9hITGRKVhniVc+xt8=;
-	h=Date:To:From:Cc:Subject:Message-ID:Feedback-ID:From:To:Cc:Date:
-	 Subject:Reply-To:Feedback-ID:Message-ID:BIMI-Selector;
-	b=VdevuVAsQm1f/41th3gpmNf3jFrhSJcdT1lXG+/OaKr1oB6+dTEppDGg87rlJLDoN
-	 YCDWghgqmvUXwwCHpxWgOu0Jacsm/d4qWEofhYPRgaAEO4kyqibAmfYuavZrhLjglm
-	 t1FbfJhYmrr6NE2dCcqYGo4Uk/MwpA663IeYeY8VwJyJge37/7tDSA+XNjwoUuwUax
-	 ZZKI/+/2oJXS7kKDKY1MDvFATzPeKHcMO8OU/tH3t2sH7DjUYQwQEvmVfoDimgWD49
-	 AZjimqRPpwnuz+CfYx8gihzhik3V5eu8QNmhctAyEtbVICijfX/tHz8VmPKxOWHcKX
-	 pvSricqt4p7ow==
-Date: Fri, 29 May 2026 19:07:30 +0000
-To: =?utf-8?Q?Micka=C3=ABl_Sala=C3=BCn?= <mic@digikod.net>
-From: hexlabsecurity@proton.me
-Cc: Justin Suess <utilityemal77@gmail.com>, "gnoack@google.com" <gnoack@google.com>, "linux-security-module@vger.kernel.org" <linux-security-module@vger.kernel.org>, "stable@vger.kernel.org" <stable@vger.kernel.org>
-Subject: [PATCH v3 1/2] landlock: fix LANDLOCK_SCOPE_SIGNAL bypass via F_SETOWN to invoker's pgid
-Message-ID: <7rvmLIHR1Zh8RDF1IY1-SYRHzErgw9gPHq0k98RLYVsmHqAejjxcuJi8V3QaSbW-SnNvY5tfM2Xn_S1dEajKV_f7iyitoPwJgOSTZQ0nytc=@proton.me>
-Feedback-ID: 199661219:user:proton
-X-Pm-Message-ID: b9b20d077289ff690bb836e70c188ab1ae8e0ba4
+	s=arc-20240116; t=1780081697; c=relaxed/simple;
+	bh=ULZxM+/ZMpsSh/9Kd9ZFFEwTgEfc7dYYHXUVKersgEM=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=ZmM9u7lpWf5eoPZ0lfqbZun95EDuIAldpQ6lBUsH/5TOeCXYGyTpVUUufSrvs2/WrhMO4aTzyuYGkjSgG8zTQNGipdLn8tYGmHFIJmsAhuAtfQqc8B8phEBELIh3BaPdu/qRzwoJ79sLN0ngaNxnTNQ29WJJ8t0ZwDc8vQXv3ws=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=WAAc9LBG; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C2D251F00893;
+	Fri, 29 May 2026 19:08:14 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1780081695;
+	bh=UxBHuaTNC/YrlXzRiddNqzCbGONDglVSrVAD5Kt+jx4=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References;
+	b=WAAc9LBGzqePrEptq+aQOw8vYEurlaRDDhI9VB84Bxg32JtlahTe+gGq3U1XYD/+D
+	 FXywm89In8XagX4v0F8UOuERg+cCrvQSx3sOi4QkkmHXGzrmWKSQAh8Iy+1SJpqtTZ
+	 xA2TckyLHUyZdezT6WK4T64ABB36rlVp2szpmPkhp/+a0vc0FuZUw7T3ZJVt72wX89
+	 EMpqm4jDd9lIH+X5j7BCV9iFD0O7Hmmg/ECZ2r8AYQV/YOd4hO7HG2atsqW6C15UHO
+	 +8BD/aP8O8CJ6o8EHMY6sBTpocwNZpy4sUG0iC1RPbay2VuqjkCzxGN5aUTKUtx8kH
+	 vXEUO1cavfq4A==
+From: Sasha Levin <sashal@kernel.org>
+To: stable@vger.kernel.org
+Cc: =?UTF-8?q?Safa=20Karaku=C5=9F?= <safa.karakus@secunnix.com>,
+	Siwei Zhang <oss@fourdim.xyz>,
+	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15.y] Bluetooth: fix UAF in l2cap_sock_cleanup_listen() vs l2cap_conn_del()
+Date: Fri, 29 May 2026 15:08:13 -0400
+Message-ID: <20260529190813.1682934-1-sashal@kernel.org>
+X-Mailer: git-send-email 2.53.0
+In-Reply-To: <2026052807-humped-occultist-d89d@gregkh>
+References: <2026052807-humped-occultist-d89d@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-X-Spamd-Result: default: False [-2.16 / 15.00];
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-Spamd-Result: default: False [-1.16 / 15.00];
+	MID_CONTAINS_FROM(1.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[proton.me,quarantine];
-	R_DKIM_ALLOW(-0.20)[proton.me:s=o2cwkjzz2zemxbfasfglysqqvy.protonmail];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20260515];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[3];
-	TAGGED_FROM(0.00)[bounces-256725-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	TO_DN_EQ_ADDR_SOME(0.00)[];
+	TAGGED_FROM(0.00)[bounces-256726-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
 	MIME_TRACE(0.00)[0:+];
-	FREEMAIL_CC(0.00)[gmail.com,google.com,vger.kernel.org];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	TO_DN_SOME(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[hexlabsecurity@proton.me,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	RCPT_COUNT_FIVE(0.00)[5];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
 	PRECEDENCE_BULK(0.00)[];
-	DKIM_TRACE(0.00)[proton.me:+];
+	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[kernel.org:+];
+	NEURAL_HAM(-0.00)[-1.000];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	FROM_NO_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	MISSING_XM_UA(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,proton.me:email,proton.me:mid,proton.me:dkim]
-X-Rspamd-Queue-Id: 2DD5F607B81
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,intel.com:email,secunnix.com:email]
+X-Rspamd-Queue-Id: CC45A607B88
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-From b5fdc79ce1cb2881d59dfed01d3d9170306be9e8 Mon Sep 17 00:00:00 2001
-From: Bryam Vargas <hexlabsecurity@proton.me>
-Date: Fri, 29 May 2026 12:49:41 -0500
-Subject: [PATCH v3 1/2] landlock: fix LANDLOCK_SCOPE_SIGNAL bypass via
- F_SETOWN to invoker's pgid
+From: Safa Karakuş <safa.karakus@secunnix.com>
 
-A Landlock-restricted process can bypass LANDLOCK_SCOPE_SIGNAL on the
-SIGIO delivery path and deliver arbitrary signals (including SIGKILL via
-F_SETSIG) to non-Landlocked targets that share its pgid, by exploiting a
-producer-side cache-vs-live evaluation gap.
+[ Upstream commit ab1513597c6cf17cd1ad2a21e3b045421b48e022 ]
 
-The SIGIO path in hook_file_send_sigiotask() consults a cached subject
-stored in landlock_file(file)->fown_subject at fcntl(F_SETOWN) time
-(via hook_file_set_fowner()), instead of evaluating the live Landlock
-domain of the invoking task at signal-send time. The capture is gated
-by control_current_fowner(), which returns false (skipping capture)
-when pid_task(fown->pid, fown->pid_type) is in current's thread group.
+bt_accept_dequeue() unlinks a not-yet-accepted child from the parent
+accept queue and release_sock()s it before returning, so the returned
+sk has no caller reference and is unlocked.
 
-This is correct for PIDTYPE_TGID / PIDTYPE_PID, where the target is a
-single task sharing current's cred. It is unsafe for PIDTYPE_PGID and
-PIDTYPE_SID: when current is at the head of its pgid hlist -- the
-default placement after fork(), hlist_add_head_rcu() in kernel/fork.c --
-pid_task(pgid, PIDTYPE_PGID) resolves to current itself,
-same_thread_group(current, current) is true, the capture is skipped, and
-fown_subject.domain stays NULL. hook_file_send_sigiotask() then
-short-circuits at "if (!subject->domain) return 0;", letting the kernel
-fan the signal out to every member of the group, including tasks outside
-current's Landlock domain that SCOPE_SIGNAL is supposed to protect.
+l2cap_sock_cleanup_listen() walks these children on listening-socket
+close.  A concurrent HCI disconnect drives hci_rx_work ->
+l2cap_conn_del() which runs l2cap_chan_del() + l2cap_sock_kill() and
+frees the child sk and its l2cap_chan; cleanup_listen() then uses both:
 
-The direct kill() path (hook_task_kill) is unaffected: it evaluates
-current's live domain on every call. Only the cached SIGIO path is
-broken.
+  BUG: KASAN: slab-use-after-free in l2cap_sock_kill
+    l2cap_sock_kill / l2cap_sock_cleanup_listen / __x64_sys_close
+  Freed by: l2cap_conn_del -> l2cap_sock_close_cb -> l2cap_sock_kill
 
-Tighten control_current_fowner() to apply the thread-group exemption
-only when the target identifies a single task whose Landlock cred is
-necessarily shared with current (PIDTYPE_TGID, PIDTYPE_PID). For
-PIDTYPE_PGID and PIDTYPE_SID, always capture the current Landlock
-subject so the consumer's scope check runs against every member of the
-group at delivery time.
+This is distinct from the two fixes already in this area: commit
+e83f5e24da741 ("Bluetooth: serialize accept_q access") serialises the
+accept_q list/poll and takes temporary refs inside bt_accept_dequeue(),
+and CVE-2025-39860 serialises the userspace close()/accept() race by
+calling cleanup_listen() under lock_sock() in l2cap_sock_release().
+Neither covers l2cap_conn_del() running from hci_rx_work, so this UAF
+still reproduces on current bluetooth/master.
 
-Stable kernels before the fown_subject conversion store the domain in
-landlock_file(file)->fown_domain; control_current_fowner() is identical
-there, so the same exemption and the same fix apply.
+Take the reference at the source: bt_accept_dequeue() does sock_hold()
+while sk is still locked, before release_sock(); callers sock_put().
+cleanup_listen() pins the chan with l2cap_chan_hold_unless_zero() under
+a brief child sk lock (serialising vs l2cap_sock_teardown_cb()), drops
+it before l2cap_chan_lock(), and skips a duplicate l2cap_sock_kill() on
+SOCK_DEAD.  conn->lock is not taken here: cleanup_listen() runs under
+the parent sk lock and that would invert
+conn->lock -> chan->lock -> sk_lock (lockdep).
 
-Fixes: 18eb75f3af40 ("landlock: Always allow signals between threads of the=
- same process")
+KASAN/SMP: an unprivileged listen/close vs HCI-disconnect race produced
+12 use-after-free reports per run before this change; 0, and no lockdep
+report, over 1600+ raced iterations after it on bluetooth/master.
+
+Fixes: 15f02b910562 ("Bluetooth: L2CAP: Add initial code for Enhanced Credit Based Mode")
 Cc: stable@vger.kernel.org
-Reported-by: Bryam Vargas <hexlabsecurity@proton.me>
-Tested-by: Justin Suess <utilityemal77@gmail.com>
-Signed-off-by: Bryam Vargas <hexlabsecurity@proton.me>
+Reported-by: Siwei Zhang <oss@fourdim.xyz>
+Reviewed-by: Siwei Zhang <oss@fourdim.xyz>
+Signed-off-by: Safa Karakuş <safa.karakus@secunnix.com>
+Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- security/landlock/fs.c | 12 ++++++++++++
- 1 file changed, 12 insertions(+)
+ net/bluetooth/af_bluetooth.c | 10 +++++++
+ net/bluetooth/l2cap_sock.c   | 51 +++++++++++++++++++++++++++++++-----
+ net/bluetooth/rfcomm/sock.c  |  9 ++++++-
+ net/bluetooth/sco.c          |  9 ++++++-
+ 4 files changed, 70 insertions(+), 9 deletions(-)
 
-diff --git a/security/landlock/fs.c b/security/landlock/fs.c
-index c1ecfe239032..edaa52572cbd 100644
---- a/security/landlock/fs.c
-+++ b/security/landlock/fs.c
-@@ -1909,6 +1909,18 @@ static bool control_current_fowner(struct fown_struc=
-t *const fown)
- =09if (!p)
- =09=09return true;
-=20
-+=09/*
-+=09 * For PIDTYPE_PGID and PIDTYPE_SID, signal delivery fans out to
-+=09 * every member of the group at SIGIO time. Even when pid_task()
-+=09 * resolves to current itself (e.g., current is the pgid hlist
-+=09 * head post-fork), non-current members of the group are still
-+=09 * valid targets that must be checked by hook_file_send_sigiotask().
-+=09 * Always capture the current subject for those types so the
-+=09 * consumer scope check runs against the live fown_subject.
-+=09 */
-+=09if (fown->pid_type =3D=3D PIDTYPE_PGID || fown->pid_type =3D=3D PIDTYPE=
-_SID)
-+=09=09return true;
+diff --git a/net/bluetooth/af_bluetooth.c b/net/bluetooth/af_bluetooth.c
+index aebef5cf12d48..33d68fc263504 100644
+--- a/net/bluetooth/af_bluetooth.c
++++ b/net/bluetooth/af_bluetooth.c
+@@ -259,6 +259,16 @@ struct sock *bt_accept_dequeue(struct sock *parent, struct socket *newsock)
+ 			if (newsock)
+ 				sock_graft(sk, newsock);
+ 
++			/* Hand the caller a reference taken while sk is
++			 * still locked.  bt_accept_unlink() just dropped
++			 * the accept-queue reference; without this hold a
++			 * concurrent teardown (e.g. l2cap_conn_del() ->
++			 * l2cap_sock_kill()) could free sk between
++			 * release_sock() and the caller using it.  Every
++			 * caller drops this with sock_put() when done.
++			 */
++			sock_hold(sk);
 +
- =09return !same_thread_group(p, current);
+ 			release_sock(sk);
+ 			return sk;
+ 		}
+diff --git a/net/bluetooth/l2cap_sock.c b/net/bluetooth/l2cap_sock.c
+index faaa5e4525c07..be35e3887aa2c 100644
+--- a/net/bluetooth/l2cap_sock.c
++++ b/net/bluetooth/l2cap_sock.c
+@@ -366,8 +366,13 @@ static int l2cap_sock_accept(struct socket *sock, struct socket *newsock,
+ 		}
+ 
+ 		nsk = bt_accept_dequeue(sk, newsock);
+-		if (nsk)
++		if (nsk) {
++			/* Drop the bridging ref from bt_accept_dequeue();
++			 * the grafted socket keeps nsk alive from here.
++			 */
++			sock_put(nsk);
+ 			break;
++		}
+ 
+ 		if (!timeo) {
+ 			err = -EAGAIN;
+@@ -1444,22 +1449,54 @@ static void l2cap_sock_cleanup_listen(struct sock *parent)
+ 	BT_DBG("parent %p state %s", parent,
+ 	       state_to_string(parent->sk_state));
+ 
+-	/* Close not yet accepted channels */
++	/* Close not yet accepted channels.
++	 *
++	 * bt_accept_dequeue() now returns sk with an extra reference held
++	 * (taken while sk was still locked) so a concurrent l2cap_conn_del()
++	 * -> l2cap_sock_kill() cannot free sk under us.
++	 *
++	 * cleanup_listen() runs under the parent sk lock, so unlike
++	 * l2cap_sock_shutdown() we must NOT take conn->lock here: that would
++	 * establish sk_lock -> conn->lock and invert the established
++	 * conn->lock -> chan->lock -> sk_lock order (lockdep deadlock).
++	 *
++	 * Instead, briefly take the child sk lock to fetch and pin its chan.
++	 * l2cap_conn_del() reaches the chan free only via
++	 * l2cap_chan_del() -> l2cap_sock_teardown_cb(), which itself takes
++	 * the child sk lock; holding it across l2cap_chan_hold_unless_zero()
++	 * therefore guarantees the chan cannot be freed while we read and
++	 * pin it (hold_unless_zero() additionally skips a chan already past
++	 * its last reference).  We then drop the sk lock before taking
++	 * chan->lock, so sk and chan locks are never held together.
++	 */
+ 	while ((sk = bt_accept_dequeue(parent, NULL))) {
+-		struct l2cap_chan *chan = l2cap_pi(sk)->chan;
++		struct l2cap_chan *chan;
++
++		lock_sock_nested(sk, L2CAP_NESTING_NORMAL);
++		chan = l2cap_chan_hold_unless_zero(l2cap_pi(sk)->chan);
++		release_sock(sk);
++		if (!chan) {
++			/* l2cap_conn_del() already tearing this child down */
++			sock_put(sk);
++			continue;
++		}
+ 
+ 		BT_DBG("child chan %p state %s", chan,
+ 		       state_to_string(chan->state));
+ 
+-		l2cap_chan_hold(chan);
+ 		l2cap_chan_lock(chan);
+-
+ 		__clear_chan_timer(chan);
+ 		l2cap_chan_close(chan, ECONNRESET);
+-		l2cap_sock_kill(sk);
+-
++		/* l2cap_conn_del() may already have killed this socket
++		 * (it sets SOCK_DEAD); skip the duplicate to avoid a
++		 * double sock_put()/l2cap_chan_put().
++		 */
++		if (!sock_flag(sk, SOCK_DEAD))
++			l2cap_sock_kill(sk);
+ 		l2cap_chan_unlock(chan);
++
+ 		l2cap_chan_put(chan);
++		sock_put(sk);
+ 	}
  }
-=20
---=20
-2.43.0
+ 
+diff --git a/net/bluetooth/rfcomm/sock.c b/net/bluetooth/rfcomm/sock.c
+index d1f2c936a8a81..0716f8bf01f36 100644
+--- a/net/bluetooth/rfcomm/sock.c
++++ b/net/bluetooth/rfcomm/sock.c
+@@ -180,6 +180,8 @@ static void rfcomm_sock_cleanup_listen(struct sock *parent)
+ 	while ((sk = bt_accept_dequeue(parent, NULL))) {
+ 		rfcomm_sock_close(sk);
+ 		rfcomm_sock_kill(sk);
++		/* Drop the reference handed back by bt_accept_dequeue(). */
++		sock_put(sk);
+ 	}
+ 
+ 	parent->sk_state  = BT_CLOSED;
+@@ -503,8 +505,13 @@ static int rfcomm_sock_accept(struct socket *sock, struct socket *newsock, int f
+ 		}
+ 
+ 		nsk = bt_accept_dequeue(sk, newsock);
+-		if (nsk)
++		if (nsk) {
++			/* Drop the bridging ref from bt_accept_dequeue();
++			 * the grafted socket keeps nsk alive from here.
++			 */
++			sock_put(nsk);
+ 			break;
++		}
+ 
+ 		if (!timeo) {
+ 			err = -EAGAIN;
+diff --git a/net/bluetooth/sco.c b/net/bluetooth/sco.c
+index d0ef74c45914c..5901dbbc19181 100644
+--- a/net/bluetooth/sco.c
++++ b/net/bluetooth/sco.c
+@@ -394,6 +394,8 @@ static void sco_sock_cleanup_listen(struct sock *parent)
+ 	while ((sk = bt_accept_dequeue(parent, NULL))) {
+ 		sco_sock_close(sk);
+ 		sco_sock_kill(sk);
++		/* Drop the reference handed back by bt_accept_dequeue(). */
++		sock_put(sk);
+ 	}
+ 
+ 	parent->sk_state  = BT_CLOSED;
+@@ -687,8 +689,13 @@ static int sco_sock_accept(struct socket *sock, struct socket *newsock,
+ 		}
+ 
+ 		ch = bt_accept_dequeue(sk, newsock);
+-		if (ch)
++		if (ch) {
++			/* Drop the bridging ref from bt_accept_dequeue();
++			 * the grafted socket keeps ch alive from here.
++			 */
++			sock_put(ch);
+ 			break;
++		}
+ 
+ 		if (!timeo) {
+ 			err = -EAGAIN;
+-- 
+2.53.0
 
 
