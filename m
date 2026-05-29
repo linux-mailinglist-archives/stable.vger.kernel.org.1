@@ -1,181 +1,170 @@
-Return-Path: <stable+bounces-256597-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-256598-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id aKNvEc1tGWpzwggAu9opvQ
-	(envelope-from <stable+bounces-256597-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 29 May 2026 12:43:25 +0200
+	id yBA6GgBuGWpzwggAu9opvQ
+	(envelope-from <stable+bounces-256598-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 29 May 2026 12:44:16 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2F3BB601014
-	for <lists+stable@lfdr.de>; Fri, 29 May 2026 12:43:24 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id F16EA601047
+	for <lists+stable@lfdr.de>; Fri, 29 May 2026 12:44:15 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 18A73303C8FF
-	for <lists+stable@lfdr.de>; Fri, 29 May 2026 10:42:32 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 4B2223059FF4
+	for <lists+stable@lfdr.de>; Fri, 29 May 2026 10:44:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 485043C9EEB;
-	Fri, 29 May 2026 10:42:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 860F63C9892;
+	Fri, 29 May 2026 10:44:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="hGn2PofR"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="jpdAWPvL"
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.12])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pf1-f170.google.com (mail-pf1-f170.google.com [209.85.210.170])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D07EB261B71
-	for <stable@vger.kernel.org>; Fri, 29 May 2026 10:42:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.12
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 34CC93C1413
+	for <stable@vger.kernel.org>; Fri, 29 May 2026 10:44:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.170
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780051346; cv=none; b=Hi2ab3JfV9qkRTDI/ndubzoPsoLuQSsmXwR2RmHGlUOv+l7OCNs1xMnPYdv8OAVcvHWlZ0Via2uGqA/KnvhVIG3ZMF74f5BguG59ELG1SaxVuDgAZ/Xse3IJMFDD8hKMHgksFkNKm37EgZoHoSGzwx2Eqpz7zL614l6Pp2eshmk=
+	t=1780051453; cv=none; b=D/wdcxv85kgdoOzBTUKe+d7ej6gMEdsgG94if3JBeLI0S/eg045XMoNF8/n2168rdOsFxzo4LA/o2neSfXQQ1ApYTMSHW6xnl5oroG6nwGoNu6ccvg+Ywv/5RL1fmf7gIGrkDLsgiBViTUGa7sygGL2AFkExz/zN2ht8ljGFVqs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780051346; c=relaxed/simple;
-	bh=nhiGTZV7kwxtAmstGwsZ21tvm4gRMd51iWB8DgbgR+o=;
+	s=arc-20240116; t=1780051453; c=relaxed/simple;
+	bh=I5S8k/JMKwGUwSZMT68XJfAURo2N9wKPHUe4tpEhYjY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=nIEZq8ZwdIlJ7ywYpAf3GJUejKuoh9kLMQP500p4eIwDwhMuUocYJWYbGLqzFxAtXtGJUlRgsPTLbHd9KjX3jEGzgu6I5HR8yQVOaxtw+rzqkGu3RgPC47nxKoN3cB45nGNY9v2begeO3703xS3x5cuPhXS3rQmtJzUJVWopY64=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=hGn2PofR; arc=none smtp.client-ip=198.175.65.12
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1780051345; x=1811587345;
-  h=from:to:cc:subject:date:message-id:in-reply-to:
-   references:mime-version:content-transfer-encoding;
-  bh=nhiGTZV7kwxtAmstGwsZ21tvm4gRMd51iWB8DgbgR+o=;
-  b=hGn2PofRDLDTF1l7Bp7/ITxGltrXOCHDODGpmIkyS3p9RWm6uRNK1QKj
-   7ZJ0HHSi8uQyJCmlz0xCuslUb0yqs8SFXqq4GbhL+GAI1OiAVSEPdl1vX
-   tLTbXTWdEftJ5jsdO4e2ldJh1BHe0ZI5W1VtqZlGvOUGvQFMKXGP6sp88
-   1fWIk4y4JOsbzuwiTnJLbu3ptQiZnj4/bNk9wwQrdRN5/EpuM25kJYHRg
-   o0nkMvJ+SbXSGmtNi44uWqmgmwApxW4boyHL9M4tPK3IOzABKVZmWoW3h
-   GUOrtzcHznaaiu2IjNpRDEqpXVBFFHcD9GEz6XCKJzRArJsTaKj+qx0hY
-   Q==;
-X-CSE-ConnectionGUID: H1KNXAKqR8qj/pgzT/6BGA==
-X-CSE-MsgGUID: u7RDgSdATxijtSNxwxQQbw==
-X-IronPort-AV: E=McAfee;i="6800,10657,11800"; a="92376499"
-X-IronPort-AV: E=Sophos;i="6.24,175,1774335600"; 
-   d="scan'208";a="92376499"
-Received: from fmviesa010.fm.intel.com ([10.60.135.150])
-  by orvoesa104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 29 May 2026 03:42:25 -0700
-X-CSE-ConnectionGUID: yAfTr2HuQ4qbVNmBmb5E9g==
-X-CSE-MsgGUID: L1XZVqp3SO6NeHHt3knHRg==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.24,175,1774335600"; 
-   d="scan'208";a="238625167"
-Received: from mjarzebo-mobl1.ger.corp.intel.com (HELO jhogande-mobl3.intel.com) ([10.245.246.54])
-  by fmviesa010-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 29 May 2026 03:42:23 -0700
-From: =?UTF-8?q?Jouni=20H=C3=B6gander?= <jouni.hogander@intel.com>
-To: stable@vger.kernel.org
-Cc: =?UTF-8?q?Jouni=20H=C3=B6gander?= <jouni.hogander@intel.com>,
-	Suraj Kandpal <suraj.kandpal@intel.com>,
-	Tvrtko Ursulin <tursulin@ursulin.net>
-Subject: [PATCH 6.12.y 4/4] drm/i915/psr: Apply Intel DPCD workaround when SDP on prior line used
-Date: Fri, 29 May 2026 13:42:06 +0300
-Message-ID: <20260529104206.758103-4-jouni.hogander@intel.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20260529104206.758103-1-jouni.hogander@intel.com>
-References: <2026052816-harvest-stinking-041d@gregkh>
- <20260529104206.758103-1-jouni.hogander@intel.com>
+	 MIME-Version; b=DQoQ0vmuFLHqbYA8KLMZYCZgtoge+oLSoemCWRYyM5xqcK6zv2mB6vvlXfTkyGsxYEGpF03VT8dq0+Fi0WlNe/z+C12Ci1u04tQLJW2hsYLAQEvgMCoV/hNW36ZI7157GiA23Re3YoFJUW9lwvE7hN0C45EnQYd29GfC1DLZrDM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=jpdAWPvL; arc=none smtp.client-ip=209.85.210.170
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-pf1-f170.google.com with SMTP id d2e1a72fcca58-8353ca0f1f1so6350454b3a.1
+        for <stable@vger.kernel.org>; Fri, 29 May 2026 03:44:11 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1780051451; x=1780656251; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=dEo/wAF2Vg4x050FkAPkUeP1qeuJRwK4JVX4fGCPq9o=;
+        b=jpdAWPvLXL/6AnocOgYKW9yHV6WwPO4S6Qe4PbHduN8q+13NGQdbe3QxqhfGaz1wHp
+         ePZhwWzaYyY97KEi8jWiO9O0k+h+QY9E3Plvt4v1HsWdcbYDiZdJbJgs5pIusLjuSQXe
+         vF0XqIi39Yzo3ehga8niAMLv1sMQmaOfTJcr9vjLkLuiFJ3ovR07ifEOrhmaBwaAowV5
+         Z8toqXAC08NbV+Ea88z12IKX494x/BV5lfc1Kc4W5o5iMR6mfSfZnA5EsdM8UX4KuAxF
+         iFuKCF1gKT1p+XCbRRmKtHOT6dIdboS9eydTfO2XRjqkVIkQvhNucEG9PjMGAtKfofFI
+         oGdw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1780051451; x=1780656251;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=dEo/wAF2Vg4x050FkAPkUeP1qeuJRwK4JVX4fGCPq9o=;
+        b=VbzZM6wJaL7ysneGzlrSbRcEvbTjML+LB0kp90xMW0TB/p1sSpKA3KP5F+RokrJZEV
+         CKzKCNxCWVyeTnFlhdg4bHex0SYq74zgUp5rTgateFAVL5QMuVBhg6pyhQuXJh460l/I
+         mPB/iVwL9sAK3bIPwdhnMiUWxkIcKUqnC1VFWrh2HY8d13DW65Kq36M+n8sqvAYVJB/C
+         K6+IamSA5Yghkjnf7xs+Uq74rx62jLlJsjtV86G3bjBbc7T2hhYxznfT1hvFpMCXGtXl
+         CwSTdSsgnbPXLR4fMKTRQXnXZYe8HA0euNrNT5vqFvHQVU0LXve7JeBn0susj1EUY9fX
+         lE8g==
+X-Forwarded-Encrypted: i=1; AFNElJ+onm5WHR7Twwx9QlKT+MQ6fh9Kgds0SFndqRiCqsXIK+K1r2H6+WCOKyvI7LDwerSPRvpmdr0=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yx0COQDBrFoeAZLyqo3tCrZwp1PPd7Bsu3baGjPOVsme+yiZaZ/
+	VuW15EWPGiUFs86S5XX52XLwmZzQYwR7rut1KDcNtrGtipHFJ+pTSWdVkepfXO4w
+X-Gm-Gg: Acq92OEmMM8VYvUL4X/SgCzj0tNPZvQOWKYE4veP5kCREPnHcc3HPnKbH40viwmpgxz
+	Y38Bw2lbRZJcvjXG8nJUJiQAT0lD9tKFac/BwfZamVIxr0+vnFSr0mDOzAri642dw38hH0iCJ7o
+	eaNTYH7p1pRM9jBdDd6LQxWzVgH7A8Gu3T6fHko5M+Sj9x3X5xgOg3qqzIsCa3OSS1kyC2HmdiL
+	tfu6x22lpS8yj6ytaRIShnyFUM82dNmqnogm2rWJ5AtunYw/9IXVxGt/pw5Wvj3jzs7nVCkt9yU
+	CbEOHk7uQaegK5u2GEtZ8JLew15NAN9Op3d571JJlMEoRqaVjhzlu9cLbA6i7leip8P5tulb5mQ
+	0gOx0fL7aA5f4VxCv7F/rcUi9BysrBOxNUxpLkv5AgGIlKsfJFdAApSX3oCOWANE9i1fMiyw4mg
+	LWVNSjkx0QEv3RL4Pudj6eKuM2tQNu6xvcYXCMELNu/SoDB0LSuv5w9kQ=
+X-Received: by 2002:a05:6a00:2905:b0:838:5145:c1c5 with SMTP id d2e1a72fcca58-84210b3b262mr2263498b3a.21.1780051451262;
+        Fri, 29 May 2026 03:44:11 -0700 (PDT)
+Received: from teatimelab.tailcd024.ts.net ([192.129.190.145])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-8421bfec5cbsm335418b3a.41.2026.05.29.03.44.02
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 29 May 2026 03:44:10 -0700 (PDT)
+From: Qi Tang <tpluszz77@gmail.com>
+To: fw@strlen.de
+Cc: jiayuan.chen@linux.dev,
+	pablo@netfilter.org,
+	netfilter-devel@vger.kernel.org,
+	davem@davemloft.net,
+	kuba@kernel.org,
+	pabeni@redhat.com,
+	edumazet@google.com,
+	netdev@vger.kernel.org,
+	dsahern@kernel.org,
+	idosch@nvidia.com,
+	horms@kernel.org,
+	lyutoon@gmail.com,
+	stable@vger.kernel.org,
+	Qi Tang <tpluszz77@gmail.com>
+Subject: Re: [PATCH net] ipv4: validate ip_forward_options() option fields against skb tail
+Date: Fri, 29 May 2026 18:43:56 +0800
+Message-ID: <20260529104356.911666-1-tpluszz77@gmail.com>
+X-Mailer: git-send-email 2.47.3
+In-Reply-To: <ahlfI38aDciPfG2S@strlen.de>
+References: <ahlfI38aDciPfG2S@strlen.de>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-1.16 / 15.00];
+X-Spamd-Result: default: False [-0.66 / 15.00];
 	MID_CONTAINS_FROM(1.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[intel.com,none];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
-	R_DKIM_ALLOW(-0.20)[intel.com:s=Intel];
+	R_MISSING_CHARSET(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
+	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-256597-lists,stable=lfdr.de];
-	DKIM_TRACE(0.00)[intel.com:+];
-	TO_DN_SOME(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	HAS_ORG_HEADER(0.00)[];
+	FREEMAIL_FROM(0.00)[gmail.com];
+	FREEMAIL_CC(0.00)[linux.dev,netfilter.org,vger.kernel.org,davemloft.net,kernel.org,redhat.com,google.com,nvidia.com,gmail.com];
+	TAGGED_FROM(0.00)[bounces-256598-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_TWELVE(0.00)[15];
+	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[jouni.hogander@intel.com,stable@vger.kernel.org];
-	RCPT_COUNT_THREE(0.00)[4];
+	FROM_NEQ_ENVFROM(0.00)[tpluszz77@gmail.com,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	DKIM_TRACE(0.00)[gmail.com:+];
 	RCVD_COUNT_FIVE(0.00)[5];
 	TAGGED_RCPT(0.00)[stable];
 	NEURAL_HAM(-0.00)[-1.000];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,intel.com:email,intel.com:mid,intel.com:dkim,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,ursulin.net:email]
-X-Rspamd-Queue-Id: 2F3BB601014
+	TO_DN_SOME(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo]
+X-Rspamd-Queue-Id: F16EA601047
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-commit 4703049f768fc1c1caac754134118bee1a3af189 upstream.
+Florian Westphal <fw@strlen.de> wrote:
+> I'm not sure netfilter is the only facility that can munge data this
+> way nowadays.  The plan is to disable arbitrary network header rewrites:
+>
+> https://lore.kernel.org/netfilter-devel/20260527121147.22076-1-fw@strlen.de/
 
-There is Intel specific workaround DPCD address containing workaround for
-case where SDP is on prior line. Apply this workaround according to values
-in the offset.
+Agreed, the source side is the better place for this on mainline.
 
-Fixes: 61e887329e33 ("drm/i915/xelpd: Handle PSR2 SDP indication in the prior scanline")
-Cc: <stable@vger.kernel.org> # v5.15+
-Signed-off-by: Jouni Högander <jouni.hogander@intel.com>
-Reviewed-by: Suraj Kandpal <suraj.kandpal@intel.com>
-Link: https://patch.msgid.link/20260515095756.2799483-4-jouni.hogander@intel.com
-(cherry picked from commit c3fe899fbeac86ea4a5ca9dd845b2cbc0da46249)
-Signed-off-by: Tvrtko Ursulin <tursulin@ursulin.net>
-Signed-off-by: Jouni Högander <jouni.hogander@intel.com>
----
- drivers/gpu/drm/i915/display/intel_psr.c | 27 +++++++++++++++++++++++-
- 1 file changed, 26 insertions(+), 1 deletion(-)
+I went looking for other ways into the window between option compile
+(ip_rcv_options() in ip_rcv_finish_core, after PREROUTING) and
+ip_forward_options(), and only found nft_payload and nfqueue at the
+FORWARD hook. tc/cls-act run before compile (ingress) or after
+ip_forward_options (egress), BPF at the netfilter hook can't write the
+packet (base helpers only, no bpf_skb_store_bytes), and the LWT_IN BPF
+path is blocked by the verifier. So your two-part restriction closes the
+only in-tree triggers I could find.
 
-diff --git a/drivers/gpu/drm/i915/display/intel_psr.c b/drivers/gpu/drm/i915/display/intel_psr.c
-index 9c38b9577016..5173f5759ce8 100644
---- a/drivers/gpu/drm/i915/display/intel_psr.c
-+++ b/drivers/gpu/drm/i915/display/intel_psr.c
-@@ -1303,6 +1303,30 @@ static bool psr2_granularity_check(struct intel_dp *intel_dp,
- 	return true;
- }
- 
-+static bool apply_scanline_indication_wa(struct intel_dp *intel_dp,
-+					 struct intel_crtc_state *crtc_state)
-+{
-+	u8 early_scanline_support = intel_dp->intel_wa_dpcd &
-+		INTEL_DPCD_INTEL_WA_REGISTER_CAPS_PSR2_EARLYSCANLINE_SDP_SUPPORT_MASK;
-+
-+	if (intel_dp->edp_dpcd[0] >= DP_EDP_15)
-+		return true;
-+
-+	switch (early_scanline_support)	{
-+	case INTEL_DPCD_INTEL_WA_REGISTER_CAPS_FALL_BACK_TO_PSR1:
-+		crtc_state->req_psr2_sdp_prior_scanline = false;
-+		return false;
-+	case INTEL_DPCD_INTEL_WA_REGISTER_CAPS_PSR2_WITH_EARLY_SCANLINE:
-+		return true;
-+	case INTEL_DPCD_INTEL_WA_REGISTER_CAPS_PSR2_WITHOUT_EARLY_SCANLINE:
-+		crtc_state->req_psr2_sdp_prior_scanline = false;
-+		return true;
-+	default:
-+		MISSING_CASE(early_scanline_support);
-+		return false;
-+	}
-+}
-+
- static bool _compute_psr2_sdp_prior_scanline_indication(struct intel_dp *intel_dp,
- 							struct intel_crtc_state *crtc_state)
- {
-@@ -1324,7 +1348,8 @@ static bool _compute_psr2_sdp_prior_scanline_indication(struct intel_dp *intel_d
- 		return false;
- 
- 	crtc_state->req_psr2_sdp_prior_scanline = true;
--	return true;
-+
-+	return apply_scanline_indication_wa(intel_dp, crtc_state);
- }
- 
- static int intel_psr_entry_setup_frames(struct intel_dp *intel_dp,
--- 
-2.43.0
+This is just one consumer of the pattern; __ip_options_echo(),
+ipmr_cache_report() and the CIPSO/CALIPSO netlbl_skbuff_getattr() path
+are the same, posted as a series here:
 
+  https://lore.kernel.org/netdev/20260524041442.2432071-1-tpluszz77@gmail.com/
+
+so if the source-side restriction is the way to go it probably makes
+more sense to drop these consumer-side checks than to fix each site.
+Your call.
+
+Thanks,
+Qi
 
