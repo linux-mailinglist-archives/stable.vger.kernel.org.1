@@ -1,66 +1,84 @@
-Return-Path: <stable+bounces-256620-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-256621-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id yK5ONWeHGWqdxQgAu9opvQ
-	(envelope-from <stable+bounces-256620-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 29 May 2026 14:32:39 +0200
+	id aJS7JLaIGWr4xQgAu9opvQ
+	(envelope-from <stable+bounces-256621-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 29 May 2026 14:38:14 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 567256024BF
-	for <lists+stable@lfdr.de>; Fri, 29 May 2026 14:32:38 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 10E52602583
+	for <lists+stable@lfdr.de>; Fri, 29 May 2026 14:38:13 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 49F5B3084312
-	for <lists+stable@lfdr.de>; Fri, 29 May 2026 12:27:38 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 7F4BB301874D
+	for <lists+stable@lfdr.de>; Fri, 29 May 2026 12:37:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B771B2641EE;
-	Fri, 29 May 2026 12:27:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 62D303D7A03;
+	Fri, 29 May 2026 12:37:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="Uq95sogn"
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="xtXw/yL0"
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.20])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wr1-f46.google.com (mail-wr1-f46.google.com [209.85.221.46])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3B7D71946DA
-	for <stable@vger.kernel.org>; Fri, 29 May 2026 12:27:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.20
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DCDAE3176EF
+	for <stable@vger.kernel.org>; Fri, 29 May 2026 12:37:16 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.46
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780057657; cv=none; b=t1Tq6T6rk06eWhr+/nFw1noWLSw+NeMslNGc2py5PYD8tLEeW2BkGhwldm+3cN3Pn+5aXBmBFAVUWvSiCl3E8qyyCBDxeZ5ojps7BtKKW800ibJv64uyBuNJrkrJ12A198pnsGHLcQfprADymQdDE4qM0HD7rS2maRYriekiIMM=
+	t=1780058238; cv=none; b=BarNGtkDDJO3IjSmYnBfTYaMnCVlGgvDmuXP6Pe9W/hxDTESzCSSnsdADHzQFeE39L7nXtopWBVvKDgP2dSH/daENULF3qbB6n9dgq5V+Jo3a9dLFR86wUUPjMIZ+Hho9Udri9V+4vFCOe/gD8v8lw/ksiGA3JF3Z+mHNQADsdQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780057657; c=relaxed/simple;
-	bh=CXuqIZDWCLi9QpcPkAQ/R27XriGKsnNHkBqh657t6Do=;
+	s=arc-20240116; t=1780058238; c=relaxed/simple;
+	bh=DojchXGz/KKYSE94iO1v9P4Lxh1mNKs7SpCF/Nl2JGU=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=DCdOgIosC5MmEN0I12J9Ca9TJpU1r1Tpb3bKl2Mz3/86IZRZI4yadEOIuZnvnAtrl2xAWK7TF/xkuNXXcXiqw89TM/eBFF6MI9LXvc3EvtLXH7wG4GsPq62qzvvS7KBMBHzxsbcuYyLkf7VkXEKGGI8KCTiQuOn+JC5pNNTaLIQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=Uq95sogn; arc=none smtp.client-ip=198.175.65.20
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1780057655; x=1811593655;
-  h=message-id:date:mime-version:subject:to:cc:references:
-   from:in-reply-to:content-transfer-encoding;
-  bh=CXuqIZDWCLi9QpcPkAQ/R27XriGKsnNHkBqh657t6Do=;
-  b=Uq95sognb9+N/9K+MvXKe8i4FRBlpu0SUm430jh1wPhxkhKJ6UT6uvmc
-   1zbduQ46uJDEBB+7wGn7zMCS447GEKkMRiHqAFIKOXfLlTvWQg9sP7ykQ
-   zs7ZzLKpKtbNxySDJvh6dWpJhqCRzG8bxFv2ZbNAsUznlP8eolzUKS5+N
-   A2ONtKVU36k8kfYtUpHidBEQXDqh9HHR66OJ0mH2VNykU1tNteClCI+fn
-   1QAnjBJViAMO1oEhoZxo2l7uhdPEDsr2H2WloFZi66tK0dAoeXWR386Rp
-   IgG8JrX8RIFZ6HjhlBDVZHF7zYl9UH0cidn0JwiqF62mBJDMm+YXVRhto
-   g==;
-X-CSE-ConnectionGUID: oKJavN+KSn2LlSW46FfZoQ==
-X-CSE-MsgGUID: 0TjLODi6R5GuTLPUB6u4ug==
-X-IronPort-AV: E=McAfee;i="6800,10657,11800"; a="80634925"
-X-IronPort-AV: E=Sophos;i="6.24,175,1774335600"; 
-   d="scan'208";a="80634925"
-Received: from fmviesa003.fm.intel.com ([10.60.135.143])
-  by orvoesa112.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 29 May 2026 05:27:35 -0700
-X-CSE-ConnectionGUID: ztCH4yb9SK203vJ193d+XA==
-X-CSE-MsgGUID: Hkhc2gMUQS6R6Vf4U8QtKw==
-X-ExtLoop1: 1
-Received: from mgoluns-desk.ger.corp.intel.com (HELO [10.245.80.25]) ([10.245.80.25])
-  by fmviesa003-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 29 May 2026 05:27:33 -0700
-Message-ID: <fcad21ec-ebeb-41af-a94a-b31120fa945a@linux.intel.com>
-Date: Fri, 29 May 2026 14:27:29 +0200
+	 In-Reply-To:Content-Type; b=mSnpvxtzYwZi/bo1w81z5+Aoy2mnsdedx6CeOax/WMMhKdKKmAN2/XTUaMiHnEyWw4uDmnaSYBucDPbMg92fByMXKmUoy2tb3TFLEWL4pu4jKorxjHITLbDHFVwykEPc+o9zDCCnFsPJ/ntVVvcwwRApYiirB9VJ1upZzkp+obI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=xtXw/yL0; arc=none smtp.client-ip=209.85.221.46
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+Received: by mail-wr1-f46.google.com with SMTP id ffacd0b85a97d-45eea4c0649so1414971f8f.0
+        for <stable@vger.kernel.org>; Fri, 29 May 2026 05:37:16 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1780058235; x=1780663035; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=RQzxiBtnUr7ain8V9TqP5xGod1EBAScgia3DVab5ruI=;
+        b=xtXw/yL0BJXLsXKDdDDkxRhQ7QSaPmFGBsCrTsSiCRbednhJqwwGJgy/1GbtEcR4EQ
+         OsH4xv5X1qWVmtO6zsGi9cUoXZU9NyLEwAt7WCyr+eHbgs+XGNVVpwmJn/Y3X+XcIKgU
+         ZGvxDYIhwQYzPokgGdgjsnHC8UB8tl/zG8tXBkErZxEg4+gjiMHlpYjaZfHbng/W+ES5
+         +scVzVyGqVAJmWtoQ4pVVw5svdbx6KptkIRyNBP7VLHaH1VMdzcH7MNd5KqjV6aajmR7
+         Xq9JNPLhwwnZE0kQMjY1+TT2jNKBBmscqEU0kwr6o7B9hEpBnnxmPFa7w1QshW93Ljbu
+         1Gag==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1780058235; x=1780663035;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=RQzxiBtnUr7ain8V9TqP5xGod1EBAScgia3DVab5ruI=;
+        b=ZGQ3d3GHOY+qnXtf0Z3bHYUD0cp3trisBVAgCV+cxPFDcMEInj3S6MQcr5HzNacWR9
+         ijspuD4TVxweti6s9ma0Zv5HcTD9y8QlWwEQr9PEq+kTDyqLgKC+WH/xCTvk7qh3GGec
+         OAqFRDX+uT6rPe6fAShQgyoPxSs7gGWLs30G4l1ZjZ5UcDv2u/vJCLGLsp76KrSXgob/
+         r2OTfzX+rvJV+awDeVJoD4DW6+ykJMmLVJZaqeiLHtPbMw9WMjT3nVKTK7CKHXjCIhAc
+         wl0tVu4pjtQCVAPygPQeNGbhvKXFlhONDZCc6rakJqwKYXKMXi/cbhbd5BPU4OxrnPJm
+         vS4g==
+X-Forwarded-Encrypted: i=1; AFNElJ8te6Nb51/fCQWWD4XWOudxyrhYnYSTlgptY4VJpenSQ0BnipL7bqc5z4OB9I1ahWpNnkgj9NQ=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yx6Qhxg9Ji7znSfFD+8i5uE+gJp/rkEOSytSB4MeRV+ZVPmNPcy
+	p/cDK9CukxglF4ueoybffWYW8LawmK3OQCnqTQoMimZwwonyb5DFkLmDTEODkzCREes=
+X-Gm-Gg: Acq92OHdvgRirPJF4zxEnhtFb0t5LsrL+jcmnkGOd6WEFfdQ8Y4dzYcldU7+NFLCUDe
+	5LeG/blRktnC2YBWLXEBbikXKVw6mMWTKKVlWSGIXCfNF1FHT+t5xJ8tVWwTDDHiFm5nrkn1xnf
+	u8zzb3TFvwG4nAYeu5MDNG+SEZjUfeAF2gR3QM6FgCI7LwHm+9I5nJ5RDMTFHGAJ8QPAd6w4OEQ
+	oEp+I12U60t96fp/jZzFMfok27lq4Hcp73Try/ldqQFuIjpS0NAaO4tY6K3jSruJVo3Be3Q4JG6
+	M6w8Ur0CSu4woi2Vbp33RLwkEsEBPez03L1OhQfIwrbsxH79Fz2TAPp2gdNXfsW/XxXyzb6rTMq
+	GfSzlvp+9gS+VLu7zSOPBHL0LOtFb1zjuLI4yUuxBPs+yQW0OeIHD1asZau6M+fmz/ApUUzc55K
+	XKG1fSOXMeK1QRdFIeYTrADq4+r16+BKNPFthUHByjJA==
+X-Received: by 2002:a05:6000:470c:b0:45e:f2bd:2b16 with SMTP id ffacd0b85a97d-45ef2bd2d41mr3802790f8f.18.1780058235304;
+        Fri, 29 May 2026 05:37:15 -0700 (PDT)
+Received: from [10.11.12.110] ([82.76.215.73])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-45ef34a0374sm2981872f8f.2.2026.05.29.05.37.14
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Fri, 29 May 2026 05:37:14 -0700 (PDT)
+Message-ID: <a7994860-24a3-4f87-84bf-109ed653dda4@linaro.org>
+Date: Fri, 29 May 2026 15:37:13 +0300
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -68,89 +86,103 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] accel/ivpu: Add bounds check for firmware runtime memory
-To: Andrzej Kacprowski <andrzej.kacprowski@linux.intel.com>,
- dri-devel@lists.freedesktop.org
-Cc: oded.gabbay@gmail.com, jeff.hugo@oss.qualcomm.com, lizhi.hou@amd.com,
- dawid.osuchowski@linux.intel.com, stable@vger.kernel.org
-References: <20260529120853.135876-1-andrzej.kacprowski@linux.intel.com>
+Subject: Re: [PATCH v5 3/7] firmware: samsung: acpm: Fix dummy stubs to return
+ ERR_PTR
+To: Krzysztof Kozlowski <krzk@kernel.org>, Arnd Bergmann <arnd@arndb.de>,
+ Alim Akhtar <alim.akhtar@samsung.com>
+Cc: linux-kernel@vger.kernel.org, linux-samsung-soc@vger.kernel.org,
+ linux-arm-kernel@lists.infradead.org,
+ Peter Griffin <peter.griffin@linaro.org>,
+ =?UTF-8?Q?Andr=C3=A9_Draszik?= <andre.draszik@linaro.org>,
+ jyescas@google.com, kernel-team@android.com, stable@vger.kernel.org
+References: <20260505-acpm-fixes-sashiko-reports-v5-0-43b5ee7f1674@linaro.org>
+ <20260505-acpm-fixes-sashiko-reports-v5-3-43b5ee7f1674@linaro.org>
+ <03dc9ccc-d819-413e-b8fd-23ccd85675ba@app.fastmail.com>
+ <6c77d706-5944-4e7d-8a4a-b3a6cac6a83b@kernel.org>
 Content-Language: en-US
-From: "Wachowski, Karol" <karol.wachowski@linux.intel.com>
-In-Reply-To: <20260529120853.135876-1-andrzej.kacprowski@linux.intel.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+From: Tudor Ambarus <tudor.ambarus@linaro.org>
+In-Reply-To: <6c77d706-5944-4e7d-8a4a-b3a6cac6a83b@kernel.org>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-Spamd-Result: default: False [-0.66 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[intel.com,none];
-	R_DKIM_ALLOW(-0.20)[intel.com:s=Intel];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	DMARC_POLICY_ALLOW(-0.50)[linaro.org,none];
+	R_DKIM_ALLOW(-0.20)[linaro.org:s=google];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FREEMAIL_CC(0.00)[gmail.com,oss.qualcomm.com,amd.com,linux.intel.com,vger.kernel.org];
-	RCVD_TLS_LAST(0.00)[];
-	DKIM_TRACE(0.00)[intel.com:+];
-	TAGGED_FROM(0.00)[bounces-256620-lists,stable=lfdr.de];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[linaro.org:+];
 	FROM_HAS_DN(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-256621-lists,stable=lfdr.de];
+	MIME_TRACE(0.00)[0:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[tudor.ambarus@linaro.org,stable@vger.kernel.org];
 	TO_DN_SOME(0.00)[];
 	RCVD_COUNT_FIVE(0.00)[5];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[karol.wachowski@linux.intel.com,stable@vger.kernel.org];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[7];
 	MID_RHS_MATCH_FROM(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[intel.com:email,intel.com:dkim,linux.intel.com:mid,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
-X-Rspamd-Queue-Id: 567256024BF
+	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_SEVEN(0.00)[11];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,arndb.de:email,linaro.org:email,linaro.org:mid,linaro.org:dkim]
+X-Rspamd-Queue-Id: 10E52602583
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-On 29-May-26 14:08, Andrzej Kacprowski wrote:
-> Validate that the firmware runtime memory specified in the image
-> header is properly aligned and sized to hold the firmware image.
-> This prevents errors during memory allocation and image transfer.
+
+
+On 5/29/26 3:09 PM, Krzysztof Kozlowski wrote:
+> On 29/05/2026 13:51, Arnd Bergmann wrote:
+>> On Tue, May 5, 2026, at 15:13, Tudor Ambarus wrote:
+>>> Sashiko identified a potential NULL pointer dereference [1].
+>>>
+>>> The dummy stub implementation for devm_acpm_get_by_node() returns NULL
+>>> when CONFIG_EXYNOS_ACPM_PROTOCOL is disabled.
+>>
+>> I meant to comment on this yesterday as well.
+>>
+>> Having stub functions like this return NULL is a common way to
+>> define optional interfaces, where callers still work when the
+>> feature is disabled, though this clearly does not work for
+>> acpm because some callers have a NULL pointer dereference
+>> when compile testing.
+>>
+>> My preferred solution to this type of problem would be to
+>> just remove the stub helpers and drop the ||COMPILE_TEST
+>> from the one user that calls them, see below.
+>>
+>> The point here is that CONFIG_EXYNOS_ACPM_PROTOCOL already
+>> supports compile-testing itself, and all (both) drivers using
+>> it clearly require the support, so this just simplifies
+
+I confirm that the ACPM protocol is mandatory for the clients to
+work, thanks!
+
+>> the option space without losing any build coverage.
+
+nice, I didn't know this. I guess it's a "greedy" algorithm in
+allmodconfig, if the dependency is met the dependents are enabled too.
+
+>>
+>> Signed-off-by: Arnd Bergmann <arnd@arndb.de>
+
+Reviewed-by: Tudor Ambarus <tudor.ambarus@linaro.org>
+>>
 > 
-> Fixes: 2007e210b6a1 ("accel/ivpu: Split FW runtime and global memory buffers")
-> Cc: <stable@vger.kernel.org> # v7.0+
-> Signed-off-by: Andrzej Kacprowski <andrzej.kacprowski@linux.intel.com>
-
-Reviewed-by: Karol Wachowski <karol.wachowski@linux.intel.com>
-
-> ---
->   drivers/accel/ivpu/ivpu_fw.c | 16 ++++++++++++++++
->   1 file changed, 16 insertions(+)
+> Sure, I am fine with it. I'll take your patch with a bit adjusted commit
+> msg.
 > 
-> diff --git a/drivers/accel/ivpu/ivpu_fw.c b/drivers/accel/ivpu/ivpu_fw.c
-> index 107f8ad31050..33c50779c06b 100644
-> --- a/drivers/accel/ivpu/ivpu_fw.c
-> +++ b/drivers/accel/ivpu/ivpu_fw.c
-> @@ -259,6 +259,22 @@ static int ivpu_fw_parse(struct ivpu_device *vdev)
->   		return -EINVAL;
->   	}
->   
-> +	if (!PAGE_ALIGNED(runtime_addr)) {
-> +		ivpu_err(vdev, "Runtime address 0x%llx not page aligned\n", runtime_addr);
-> +		return -EINVAL;
-> +	}
-> +
-> +	if (!PAGE_ALIGNED(runtime_size)) {
-> +		ivpu_err(vdev, "Runtime size %llu not page aligned\n", runtime_size);
-> +		return -EINVAL;
-> +	}
-> +
-> +	if (runtime_size < image_size) {
-> +		ivpu_err(vdev, "Runtime size too small: %llu, image size: %llu\n",
-> +			 runtime_size, image_size);
-> +		return -EINVAL;
-> +	}
-> +
->   	if (!ivpu_is_within_range(image_load_addr, image_size, &vdev->hw->ranges.runtime)) {
->   		ivpu_err(vdev, "Invalid firmware load address: 0x%llx and size %llu\n",
->   			 image_load_addr, image_size);
 
+Thank you! I need to drop the devm_acpm_get_by_phandle dummy stub from:
+https://lore.kernel.org/linux-samsung-soc/a59c6e3a-6092-4114-8961-c2a71a812959@kernel.org/T/#m0ac077507129c37b84443513eecadd70b5eaf8b8
+
+Shall I send again the entire set?
+
+Cheers,
+ta
 
