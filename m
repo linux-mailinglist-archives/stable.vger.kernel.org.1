@@ -1,68 +1,117 @@
-Return-Path: <stable+bounces-256708-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-256709-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id SO2vEG3cGWpGzggAu9opvQ
-	(envelope-from <stable+bounces-256708-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 29 May 2026 20:35:25 +0200
+	id WMp4N1ndGWpWzggAu9opvQ
+	(envelope-from <stable+bounces-256709-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 29 May 2026 20:39:21 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id EC32F6074A8
-	for <lists+stable@lfdr.de>; Fri, 29 May 2026 20:35:24 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 738E060761D
+	for <lists+stable@lfdr.de>; Fri, 29 May 2026 20:39:21 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 838C13020131
-	for <lists+stable@lfdr.de>; Fri, 29 May 2026 18:35:22 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 9D5E03024E39
+	for <lists+stable@lfdr.de>; Fri, 29 May 2026 18:36:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F0D6A410D06;
-	Fri, 29 May 2026 18:35:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 612F5425CFC;
+	Fri, 29 May 2026 18:36:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="HnyS2I7z"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="Ka5a/O6h";
+	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="NbgtCbQ0"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5AF1F409DE0
-	for <stable@vger.kernel.org>; Fri, 29 May 2026 18:35:15 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2DDA7423A66
+	for <stable@vger.kernel.org>; Fri, 29 May 2026 18:35:56 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780079718; cv=none; b=GBk0y4lvFWBW25PWhBpUIzDCKGbMs90yRIclDntFIpVUYV9XvDm8r5Sn+jutyGxmDrBgZs8T3yDw6PlronezzcLm8Hy6fHKSoSm/kzsB5xwnpQX4+cjjen/Vm49yWgy9WMVCOHHqkQr+ITkxoLQTRNdjV1TyRPQY6kV0LFhhygI=
+	t=1780079760; cv=none; b=DSXxPu5r9vEZin+t8U1MBU4JLZotW8ko4jg+dByiL0zVIuobd/zSb06Gqg0VvcUJ4x8tGj8iu90qR/579W5aurFB6b7/AvDGQcfrTpxaNlqby1nBY4c48h2kgWi+eCD6cXm0LOAlzA+2219DCgFmISWrX+x8RjA747368EcB9ig=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780079718; c=relaxed/simple;
-	bh=fZz664kVd/aQwbvVM94fjoLRS05hQvNcFIWp9rcb0+s=;
+	s=arc-20240116; t=1780079760; c=relaxed/simple;
+	bh=d9xvjs+tTx/sVZNCwndNXY07gix+BakluyzBTGottoM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=er8S8vzhhotDBDnnIAfIrMdg5nGVUvrw/PDUHbL9xEID2hoKfIgLbI9dTCFQ7dgQjpE02k6StMsS2zHsGGwGk57hGGtrQrGQbyK4ftKBLPxV9C6q5h+lTv4Hv8yzrmiAM/7+zFewoTZKpq22KtxQsAR9aKs0Cl7lOgPPNao4wmw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=HnyS2I7z; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B7A551F0089B;
-	Fri, 29 May 2026 18:35:13 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1780079714;
-	bh=ezd0P1gcDAfQ29ti+x+72H2yDuC5+RtI093Dg5GgHNE=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=HnyS2I7zh0hfLteJlIAZZyjMvMEHv0MLtIe7sUY9Tvmqn7MK8F9Gxey48dS6Ax0S1
-	 ZkudII6506jVPSedVM7e5R3RvGJ4s20zl3pE95iGCc/M43LyZQVswcbJhoVRx/it7S
-	 sV3fRrnqyoBnZ0rjUZdHC4u2VAtqHLGtulenrOl6b+MQNP2Meqt9IBX5i7SQJYWOhw
-	 Nk9684U4PzxbZsyTegivTPM0Z8y56C834WZZfKON8sNdAGnNX7ZtDS72n18ZcHgX5Q
-	 DzIqD4BX9e2zJCUO94RCP3euqfLLf5LEQnQM4W6cR1jQVlwfXUqxxXzl609tXKE0sB
-	 HpcRWn3pE3w4A==
-From: Sasha Levin <sashal@kernel.org>
-To: stable@vger.kernel.org
-Cc: David Howells <dhowells@redhat.com>,
-	Hyunwoo Kim <imv4bel@gmail.com>,
-	Simon Horman <horms@kernel.org>,
-	Jiayuan Chen <jiayuan.chen@linux.dev>,
-	linux-afs@lists.infradead.org,
-	stable@kernel.org,
-	Jeffrey Altman <jaltman@auristor.com>,
-	Marc Dionne <marc.dionne@auristor.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18.y 3/3] rxrpc: Fix RESPONSE packet verification to extract skb to a linear buffer
-Date: Fri, 29 May 2026 14:35:08 -0400
-Message-ID: <20260529183508.1594050-3-sashal@kernel.org>
-X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260529183508.1594050-1-sashal@kernel.org>
-References: <2026052807-twenty-relish-478b@gregkh>
- <20260529183508.1594050-1-sashal@kernel.org>
+	 MIME-Version; b=Xi6YFzPg7fEsHzq23edy4axFZnkPWvJ+MoO2pMhQwnqEUISC8aWq+CTqpnwFmVFTvLHwgPXG9LcLF/RrfHsQIfXctRg8QydunJ4QQrC3H7d2lROYSDH1YA9EJOk4Yi14nda0J2tFJzjTY/jIBnzaK7mxYTZMqPK436/Nw1OSwvQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=Ka5a/O6h; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=NbgtCbQ0; arc=none smtp.client-ip=170.10.129.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1780079756;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=bItx102/eY014jSvfKnVDtrZQixF/uHwn/vTfUZ9ulM=;
+	b=Ka5a/O6hURURRfck86omhX0On33avbU68gRZKtnXdod6jGtm4bJxUDAsh2vMy3NSTKDAev
+	sz22WWxiDZFtEgZeTD81XjkMUtSPC3X2cBi+azFZ1X3SKU6DEStw3214tGMSULhKphJRw4
+	drZd9dvrQiqrA3fCRTsfqJdBhQNvkpg=
+Received: from mail-wr1-f72.google.com (mail-wr1-f72.google.com
+ [209.85.221.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-605-kB8t2Q8yMh2QEqzf3HpG5Q-1; Fri, 29 May 2026 14:35:54 -0400
+X-MC-Unique: kB8t2Q8yMh2QEqzf3HpG5Q-1
+X-Mimecast-MFC-AGG-ID: kB8t2Q8yMh2QEqzf3HpG5Q_1780079753
+Received: by mail-wr1-f72.google.com with SMTP id ffacd0b85a97d-45ed830a0eeso2879501f8f.3
+        for <stable@vger.kernel.org>; Fri, 29 May 2026 11:35:54 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=redhat.com; s=google; t=1780079753; x=1780684553; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=bItx102/eY014jSvfKnVDtrZQixF/uHwn/vTfUZ9ulM=;
+        b=NbgtCbQ010XyI1gQ6VOPWKSPEcwOXucv/uB6U+6QjR1MsGeSBmCyv4fgwID7Qd9RlC
+         hOeHuKyLTt19NVFFDp0dfnH7pS7IPVzs/U0gCpRLWD469fId6MWP5iA9vC3Nxt+rVpSs
+         X5GtCiTY1Uhx13L5yZESp/2Y/9rvIfetDZAzGTF0f+ypJUWRWPia9WD/2jWqKsyR7T7c
+         9/KYr8zMNWwhifwJSEZPl94Q5b41J5JX/RkLfJ2mtonRK0VO77suVjZhKaEL+HXRHdDE
+         0nUukwyQko41cI9h5gj8W0sFvqNolZv9nu4fwoWvLWpZeh9knrCTzed6ghlT9yk99fgx
+         LG4Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1780079753; x=1780684553;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=bItx102/eY014jSvfKnVDtrZQixF/uHwn/vTfUZ9ulM=;
+        b=Wt1kSMXWkA1M6jG0DFDfXOQBYZvI67jl4LMHL4IOuFsx4h25T02OcBVtsbV3/0vWl5
+         MIwTCuC7HLgex4HirUruIkMTcy4ZXJjaSG6Mua6r9kdI4FGChn1l+xaI5U/aliJqiSmI
+         gzPMwMyWHXAQbRfnfaePKvsj3DHMMo4FUgkXM4jUnaoioYe799U1Odrt8vRCPLHnSAXO
+         z8yhPho0eGAETgmUyXtvW0m5SfKuaq58GpIDnW6KzOscInB7bvxku4Br3jyo2OuDr5Ft
+         N8LUP2WSV0iUEFu9/OMgH4vDexESjH7qQK50YsMEMRM74s2n22JNridTb8fGTSjjvbGY
+         FyWg==
+X-Forwarded-Encrypted: i=1; AFNElJ+PG03HFlKK1fjxPJJKhmuZAldyAk+8/XoC9xrSMz54YSnbirii/SXdLpIdJklhxLXwW/4g8dU=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzqTnFvLnTVuURZq0qC2zg5+xI21Qa5hjbvq5SS2T3OuXg47o9M
+	GuC75hWLpQ2Rt0kfK2n8sst4xlYl1ptY0f9TBm5N4D02e1AXZEvmjMto7lJnVR3GkIX3U5Kg2XU
+	DCVbxFJCQhlPerczoZh3XndTNBIH0YFEwyD9tF9M6ter0XvRmuN3t/S5E1g==
+X-Gm-Gg: Acq92OF+LyO+jJ3vkIpLfXZ2n05bDq2R6OK8hSbUxSmawHvc9B1DHonm9Q9/KEW7z+U
+	uM//CcfU6ZeHTWl8lDld7HysDBYr7T8lTDQTB3OcqXr2syH7Cwab+88e52CqHgZ7g0ZS2HUQQw8
+	L3TXgVfrPDTUutqTICzd0nIErO2BtYQMGTbDe4KnyP0kuhs9YQFEYCUpUolE6+JiJW20WAHAwfM
+	RRwdzzAt2cyJOL/dQeQXN7LpwFOYE4Lo0JD05MK0v6Mn97fMEhCySxE/gB0tCRWQhb5cHFfCYHV
+	71kgqDehEU8rWez5+jR+Xcorj7mndOjVOVBnOBy2x1W02UCZ5KXIheJidGlzTYz3w9eDDpiEoVr
+	XA0+PviEZBrSm1pmvQ6AJsr/kjDKJbn4kpo+UJT4idnXGpDL4jui+rHQgZBQhOz6bbfI63/QBiv
+	iXTFeVgQizytCiA9CUZzZapBJWGdPn0S9MqiTmGg==
+X-Received: by 2002:a05:600c:6287:b0:490:a1a6:6f24 with SMTP id 5b1f17b1804b1-490a29338a8mr12422015e9.15.1780079753312;
+        Fri, 29 May 2026 11:35:53 -0700 (PDT)
+X-Received: by 2002:a05:600c:6287:b0:490:a1a6:6f24 with SMTP id 5b1f17b1804b1-490a29338a8mr12421485e9.15.1780079752861;
+        Fri, 29 May 2026 11:35:52 -0700 (PDT)
+Received: from [192.168.10.48] ([151.49.251.208])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-45ef3559645sm5101632f8f.26.2026.05.29.11.35.51
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 29 May 2026 11:35:52 -0700 (PDT)
+From: Paolo Bonzini <pbonzini@redhat.com>
+To: linux-kernel@vger.kernel.org,
+	kvm@vger.kernel.org
+Cc: seanjc@google.com,
+	Tom Lendacky <thomas.lendacky@amd.com>,
+	Michael Roth <michael.roth@amd.com>,
+	Stan Shaw <shawstan96@gmail.com>,
+	Peter Gonda <pgonda@google.com>,
+	Jacky Li <jackyli@google.com>,
+	stable@vger.kernel.org
+Subject: [PATCH 01/24] KVM: SEV: Require in-GHCB scratch area if GHCB v2+ is in use
+Date: Fri, 29 May 2026 20:35:26 +0200
+Message-ID: <20260529183549.1104619-2-pbonzini@redhat.com>
+X-Mailer: git-send-email 2.54.0
+In-Reply-To: <20260529183549.1104619-1-pbonzini@redhat.com>
+References: <20260529183549.1104619-1-pbonzini@redhat.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -73,656 +122,138 @@ Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-0.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	MID_CONTAINS_FROM(1.00)[];
+	DMARC_POLICY_ALLOW(-0.50)[redhat.com,quarantine];
 	R_MISSING_CHARSET(0.50)[];
-	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
-	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20260515];
+	R_DKIM_ALLOW(-0.20)[redhat.com:s=mimecast20190719,redhat.com:s=google];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	FREEMAIL_CC(0.00)[redhat.com,gmail.com,kernel.org,linux.dev,lists.infradead.org,auristor.com];
-	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-256708-lists,stable=lfdr.de];
-	DKIM_TRACE(0.00)[kernel.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	TO_DN_SOME(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
+	TAGGED_FROM(0.00)[bounces-256709-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[google.com,amd.com,gmail.com,vger.kernel.org];
+	RCVD_COUNT_FIVE(0.00)[6];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	FROM_HAS_DN(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	FROM_NEQ_ENVFROM(0.00)[pbonzini@redhat.com,stable@vger.kernel.org];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[9];
 	NEURAL_HAM(-0.00)[-1.000];
+	DKIM_TRACE(0.00)[redhat.com:+];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_SEVEN(0.00)[11];
+	TO_DN_SOME(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linux.dev:email,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,auristor.com:email,msgid.link:url,infradead.org:email,ietf.org:url]
-X-Rspamd-Queue-Id: EC32F6074A8
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,amd.com:email]
+X-Rspamd-Queue-Id: 738E060761D
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-From: David Howells <dhowells@redhat.com>
+From: Michael Roth <michael.roth@amd.com>
 
-[ Upstream commit 8bfab4b6ffc2fe92da86300728fc8c3c7ebffb56 ]
+As per the GHCB spec, when using GHCB v2+ require the software scratch area
+to reside in the GHCB's shared buffer.  Note, things like Page State Change
+(PSC) requests _rely_ on this behavior, as the guest can't provide a length
+when making the request, i.e. the size of the guest payload is bounded by
+the size of the shared buffer.
 
-This improves the fix for CVE-2026-43500.
+Failure to force usage of the GHCB, and a slew of other flaws, lets a
+malicious SNP guest corrupt host kernel heap memory, and leak host heap
+layout information.
 
-Fix the verification of RESPONSE packets to avoid the problem of
-overwriting a RESPONSE packet sent via splice to a local address by
-extracting the contents of the UDP packet into a kmalloc'd linear buffer
-rather than decrypting the data in place in the sk_buff (which may corrupt
-the original buffer).
+setup_vmgexit_scratch() allocates a buffer via kvzalloc(exit_info_2),
+where exit_info_2 is guest-controlled. With exit_info_2=24, this yields
+a 24-byte allocation in kmalloc-cg-32 (32-byte slab objects). The buffer
+holds an 8-byte psc_hdr followed by 8-byte psc_entry structs, so only
+entries[0] and entries[1] are in-bounds.
 
-Fixes: 24481a7f5733 ("rxrpc: Fix conn-level packet handling to unshare RESPONSE packets")
-Reported-by: Hyunwoo Kim <imv4bel@gmail.com>
-Closes: https://lore.kernel.org/r/afKV2zGR6rrelPC7@v4bel/
-Signed-off-by: David Howells <dhowells@redhat.com>
-cc: Simon Horman <horms@kernel.org>
-cc: Jiayuan Chen <jiayuan.chen@linux.dev>
-cc: linux-afs@lists.infradead.org
-cc: stable@kernel.org
-Reviewed-by: Jeffrey Altman <jaltman@auristor.com>
-Tested-by: Marc Dionne <marc.dionne@auristor.com>
-Link: https://patch.msgid.link/20260515230516.2718212-4-dhowells@redhat.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+snp_begin_psc() validates end_entry against VMGEXIT_PSC_MAX_COUNT (253)
+but NOT against the actual buffer size:
+
+      idx_end = hdr->end_entry;
+
+      if (idx_end >= VMGEXIT_PSC_MAX_COUNT) {   // checks 253, not buffer
+          snp_complete_psc(svm, ...);
+          return 1;
+      }
+
+      for (idx = idx_start; idx <= idx_end; idx++) {
+          entry_start = entries[idx];           // OOB when idx >= 2
+
+The guest sets end_entry=10+, causing the host to iterate entries[2+]
+which are OOB into adjacent slab objects. For each OOB entry:
+
+  - The host reads 8 bytes (OOB READ / info leak oracle)
+  - If the data passes PSC validation, __snp_complete_one_psc() writes
+    cur_page = 1 or 512 into the entry (OOB WRITE, sev.c:3806)
+  - If validation fails, the error response reveals whether adjacent
+    memory is zero vs non-zero (information disclosure to guest)
+
+The guest controls allocation size (exit_info_2), entry range
+(cur_entry/end_entry), and can fire unlimited VMGEXITs to repeatedly
+hit different slab positions.
+
+By exploiting the variety of bugs, a malicious SEV-SNP guest can:
+    - OOB read adjacent kmalloc-cg-32 objects (heap layout disclosure)
+    - OOB write cur_page bits into adjacent objects (heap corruption)
+    - Trigger use-after-free conditions across VMGEXITs
+
+E.g. with KASAN enabled, a single insmod of the PoC guest module
+produces 73 KASAN reports:
+
+    BUG: KASAN: slab-out-of-bounds in snp_begin_psc+0x126/0x890
+    Read of size 8 at addr ffff888219ffb5e0 by task qemu-system-x86/2199
+
+    BUG: KASAN: slab-out-of-bounds in snp_begin_psc+0x468/0x890
+    Write of size 8 at addr ffff888351566648 by task qemu-system-x86/2199
+
+    The buggy address belongs to the object at ffff888XXXXXXXXX
+     which belongs to the cache kmalloc-cg-32 of size 32
+    The buggy address is located N bytes to the right of
+     allocated 32-byte region [ffff888XXXXXXXXX, ffff888XXXXXXXXX)
+
+  Breakdown:
+    62 slab-out-of-bounds (reads + writes past allocation)
+     7 slab-use-after-free
+     4 use-after-free
+
+All credit to Stan for the wonderful description and reproducer!
+
+Reported-by: Stan Shaw <shawstan96@gmail.com>
+Cc: Michael Roth <michael.roth@amd.com>
+Cc: Tom Lendacky <thomas.lendacky@amd.com>
+Cc: Peter Gonda <pgonda@google.com>
+Cc: Jacky Li <jackyli@google.com>
+Fixes: 4af663c2f64a ("KVM: SEV: Allow per-guest configuration of GHCB protocol version")
+Cc: stable@vger.kernel.org
+Signed-off-by: Michael Roth <michael.roth@amd.com>
+[sean: write changelog]
+Reviewed-by: Tom Lendacky <thomas.lendacky@amd.com>
+Signed-off-by: Sean Christopherson <seanjc@google.com>
+Message-ID: <20260501202250.2115252-2-seanjc@google.com>
+Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
 ---
- net/rxrpc/ar-internal.h |  7 +--
- net/rxrpc/conn_event.c  | 32 ++++++--------
- net/rxrpc/insecure.c    |  5 ++-
- net/rxrpc/rxgk.c        | 96 +++++++++++++----------------------------
- net/rxrpc/rxgk_app.c    | 46 ++++++++------------
- net/rxrpc/rxgk_common.h | 92 +--------------------------------------
- net/rxrpc/rxkad.c       | 29 +++++--------
- 7 files changed, 82 insertions(+), 225 deletions(-)
+ arch/x86/kvm/svm/sev.c | 4 ++++
+ 1 file changed, 4 insertions(+)
 
-diff --git a/net/rxrpc/ar-internal.h b/net/rxrpc/ar-internal.h
-index 783367eea798b..98f2165159d72 100644
---- a/net/rxrpc/ar-internal.h
-+++ b/net/rxrpc/ar-internal.h
-@@ -307,15 +307,16 @@ struct rxrpc_security {
- 				    struct sk_buff *challenge);
- 
- 	/* verify a response */
--	int (*verify_response)(struct rxrpc_connection *,
--			       struct sk_buff *);
-+	int (*verify_response)(struct rxrpc_connection *conn,
-+			       struct sk_buff *response_skb,
-+			       void *response, unsigned int len);
- 
- 	/* clear connection security */
- 	void (*clear)(struct rxrpc_connection *);
- 
- 	/* Default ticket -> key decoder */
- 	int (*default_decode_ticket)(struct rxrpc_connection *conn, struct sk_buff *skb,
--				     unsigned int ticket_offset, unsigned int ticket_len,
-+				     void *ticket, unsigned int ticket_len,
- 				     struct key **_key);
- };
- 
-diff --git a/net/rxrpc/conn_event.c b/net/rxrpc/conn_event.c
-index 442414d90ba1c..c96ca615b787c 100644
---- a/net/rxrpc/conn_event.c
-+++ b/net/rxrpc/conn_event.c
-@@ -243,28 +243,22 @@ static void rxrpc_call_is_secure(struct rxrpc_call *call)
- static int rxrpc_verify_response(struct rxrpc_connection *conn,
- 				 struct sk_buff *skb)
- {
-+	unsigned int len = skb->len - sizeof(struct rxrpc_wire_header);
-+	void *buffer;
- 	int ret;
- 
--	if (skb_cloned(skb) || skb_has_frag_list(skb) ||
--	    skb_has_shared_frag(skb)) {
--		/* Copy the packet if shared so that we can do in-place
--		 * decryption.
--		 */
--		struct sk_buff *nskb = skb_copy(skb, GFP_NOFS);
--
--		if (nskb) {
--			rxrpc_new_skb(nskb, rxrpc_skb_new_unshared);
--			ret = conn->security->verify_response(conn, nskb);
--			rxrpc_free_skb(nskb, rxrpc_skb_put_response_copy);
--		} else {
--			/* OOM - Drop the packet. */
--			rxrpc_see_skb(skb, rxrpc_skb_see_unshare_nomem);
--			ret = -ENOMEM;
--		}
--	} else {
--		ret = conn->security->verify_response(conn, skb);
--	}
-+	buffer = kmalloc(len, GFP_NOFS);
-+	if (!buffer)
-+		return -ENOMEM;
+diff --git a/arch/x86/kvm/svm/sev.c b/arch/x86/kvm/svm/sev.c
+index c2126b3c3072..23170b64f4a3 100644
+--- a/arch/x86/kvm/svm/sev.c
++++ b/arch/x86/kvm/svm/sev.c
+@@ -3703,6 +3703,10 @@ static int setup_vmgexit_scratch(struct vcpu_svm *svm, bool sync, u64 len)
+ 		scratch_va = (void *)svm->sev_es.ghcb;
+ 		scratch_va += (scratch_gpa_beg - control->ghcb_gpa);
+ 	} else {
++		/* GHCB v2 requires the scratch area to be within the GHCB. */
++		if (to_kvm_sev_info(svm->vcpu.kvm)->ghcb_version >= 2)
++			goto e_scratch;
 +
-+	ret = skb_copy_bits(skb, sizeof(struct rxrpc_wire_header), buffer, len);
-+	if (ret < 0)
-+		goto out;
-+
-+	ret = conn->security->verify_response(conn, skb, buffer, len);
- 
-+out:
-+	kfree(buffer);
- 	return ret;
- }
- 
-diff --git a/net/rxrpc/insecure.c b/net/rxrpc/insecure.c
-index 7a26c6097d033..0b39046bdc616 100644
---- a/net/rxrpc/insecure.c
-+++ b/net/rxrpc/insecure.c
-@@ -54,9 +54,10 @@ static int none_sendmsg_respond_to_challenge(struct sk_buff *challenge,
- }
- 
- static int none_verify_response(struct rxrpc_connection *conn,
--				struct sk_buff *skb)
-+				struct sk_buff *response_skb,
-+				void *response, unsigned int len)
- {
--	return rxrpc_abort_conn(conn, skb, RX_PROTOCOL_ERROR, -EPROTO,
-+	return rxrpc_abort_conn(conn, response_skb, RX_PROTOCOL_ERROR, -EPROTO,
- 				rxrpc_eproto_rxnull_response);
- }
- 
-diff --git a/net/rxrpc/rxgk.c b/net/rxrpc/rxgk.c
-index b40fba607a6bd..1ad5f7ea32800 100644
---- a/net/rxrpc/rxgk.c
-+++ b/net/rxrpc/rxgk.c
-@@ -1084,11 +1084,12 @@ static int rxgk_sendmsg_respond_to_challenge(struct sk_buff *challenge,
-  *	unsigned int call_numbers<>;
-  * };
-  */
--static int rxgk_do_verify_authenticator(struct rxrpc_connection *conn,
--					const struct krb5_enctype *krb5,
--					struct sk_buff *skb,
--					__be32 *p, __be32 *end)
-+static int rxgk_verify_authenticator(struct rxrpc_connection *conn,
-+				     const struct krb5_enctype *krb5,
-+				     struct sk_buff *skb,
-+				     void *auth, unsigned int auth_len)
- {
-+	__be32 *p = auth, *end = auth + auth_len;
- 	u32 app_len, call_count, level, epoch, cid, i;
- 
- 	_enter("");
-@@ -1151,37 +1152,6 @@ static int rxgk_do_verify_authenticator(struct rxrpc_connection *conn,
- 	return 0;
- }
- 
--/*
-- * Extract the authenticator and verify it.
-- */
--static int rxgk_verify_authenticator(struct rxrpc_connection *conn,
--				     const struct krb5_enctype *krb5,
--				     struct sk_buff *skb,
--				     unsigned int auth_offset, unsigned int auth_len)
--{
--	void *auth;
--	__be32 *p;
--	int ret;
--
--	auth = kmalloc(auth_len, GFP_NOFS);
--	if (!auth)
--		return -ENOMEM;
--
--	ret = skb_copy_bits(skb, auth_offset, auth, auth_len);
--	if (ret < 0) {
--		ret = rxrpc_abort_conn(conn, skb, RXGK_NOTAUTH, -EPROTO,
--				       rxgk_abort_resp_short_auth);
--		goto error;
--	}
--
--	p = auth;
--	ret = rxgk_do_verify_authenticator(conn, krb5, skb, p,
--					   p + auth_len / sizeof(*p));
--error:
--	kfree(auth);
--	return ret;
--}
--
- /*
-  * Verify a response.
-  *
-@@ -1192,49 +1162,45 @@ static int rxgk_verify_authenticator(struct rxrpc_connection *conn,
-  * };
-  */
- static int rxgk_verify_response(struct rxrpc_connection *conn,
--				struct sk_buff *skb)
-+				struct sk_buff *skb,
-+				void *buffer, unsigned int len)
- {
- 	const struct krb5_enctype *krb5;
- 	struct rxrpc_key_token *token;
- 	struct rxrpc_skb_priv *sp = rxrpc_skb(skb);
--	struct rxgk_response rhdr;
-+	struct rxgk_response *rhdr;
- 	struct rxgk_context *gk;
- 	struct key *key = NULL;
--	unsigned int offset = sizeof(struct rxrpc_wire_header);
--	unsigned int len = skb->len - sizeof(struct rxrpc_wire_header);
--	unsigned int token_offset, token_len;
--	unsigned int auth_offset, auth_len;
-+	unsigned int resp_token_len, auth_len;
-+	void *resp_token, *auth;
- 	__be32 xauth_len;
- 	int ret, ec;
- 
- 	_enter("{%d}", conn->debug_id);
- 
- 	/* Parse the RXGK_Response object */
--	if (sizeof(rhdr) + sizeof(__be32) > len)
--		goto short_packet;
--
--	if (skb_copy_bits(skb, offset, &rhdr, sizeof(rhdr)) < 0)
-+	if (len < sizeof(*rhdr) + sizeof(__be32))
- 		goto short_packet;
--	offset	+= sizeof(rhdr);
--	len	-= sizeof(rhdr);
--
--	token_offset	= offset;
--	token_len	= ntohl(rhdr.token_len);
--	if (token_len > len ||
--	    xdr_round_up(token_len) + sizeof(__be32) > len)
-+	rhdr = buffer;
-+	buffer	+= sizeof(*rhdr);
-+	len	-= sizeof(*rhdr);
-+
-+	resp_token	= buffer;
-+	resp_token_len	= ntohl(rhdr->token_len);
-+	if (resp_token_len > len ||
-+	    xdr_round_up(resp_token_len) + sizeof(__be32) > len)
- 		goto short_packet;
- 
--	trace_rxrpc_rx_response(conn, sp->hdr.serial, 0, sp->hdr.cksum, token_len);
-+	trace_rxrpc_rx_response(conn, sp->hdr.serial, 0, sp->hdr.cksum, resp_token_len);
- 
--	offset	+= xdr_round_up(token_len);
--	len	-= xdr_round_up(token_len);
-+	buffer	+= xdr_round_up(resp_token_len);
-+	len	-= xdr_round_up(resp_token_len);
- 
--	if (skb_copy_bits(skb, offset, &xauth_len, sizeof(xauth_len)) < 0)
--		goto short_packet;
--	offset	+= sizeof(xauth_len);
-+	xauth_len = *(__be32 *)buffer;
-+	buffer	+= sizeof(xauth_len);
- 	len	-= sizeof(xauth_len);
- 
--	auth_offset	= offset;
-+	auth		= buffer;
- 	auth_len	= ntohl(xauth_len);
- 	if (auth_len > len)
- 		goto short_packet;
-@@ -1249,7 +1215,7 @@ static int rxgk_verify_response(struct rxrpc_connection *conn,
- 	 * to the app to deal with - which might mean a round trip to
- 	 * userspace.
- 	 */
--	ret = rxgk_extract_token(conn, skb, token_offset, token_len, &key);
-+	ret = rxgk_extract_token(conn, skb, resp_token, resp_token_len, &key);
- 	if (ret < 0)
- 		goto out;
- 
-@@ -1263,7 +1229,7 @@ static int rxgk_verify_response(struct rxrpc_connection *conn,
- 	 */
- 	token = key->payload.data[0];
- 	conn->security_level = token->rxgk->level;
--	conn->rxgk.start_time = __be64_to_cpu(rhdr.start_time);
-+	conn->rxgk.start_time = __be64_to_cpu(rhdr->start_time);
- 
- 	gk = rxgk_generate_transport_key(conn, token->rxgk, sp->hdr.cksum, GFP_NOFS);
- 	if (IS_ERR(gk)) {
-@@ -1273,18 +1239,18 @@ static int rxgk_verify_response(struct rxrpc_connection *conn,
- 
- 	krb5 = gk->krb5;
- 
--	trace_rxrpc_rx_response(conn, sp->hdr.serial, krb5->etype, sp->hdr.cksum, token_len);
-+	trace_rxrpc_rx_response(conn, sp->hdr.serial, krb5->etype, sp->hdr.cksum,
-+				resp_token_len);
- 
- 	/* Decrypt, parse and verify the authenticator. */
--	ret = rxgk_decrypt_skb(krb5, gk->resp_enc, skb,
--			       &auth_offset, &auth_len, &ec);
-+	ret = rxgk_decrypt(krb5, gk->resp_enc, &auth, &auth_len, &ec);
- 	if (ret < 0) {
- 		rxrpc_abort_conn(conn, skb, RXGK_SEALEDINCON, ret,
- 				 rxgk_abort_resp_auth_dec);
- 		goto out_gk;
- 	}
- 
--	ret = rxgk_verify_authenticator(conn, krb5, skb, auth_offset, auth_len);
-+	ret = rxgk_verify_authenticator(conn, krb5, skb, auth, auth_len);
- 	if (ret < 0)
- 		goto out_gk;
- 
-diff --git a/net/rxrpc/rxgk_app.c b/net/rxrpc/rxgk_app.c
-index 0ef2a29eb6958..200a30064fae1 100644
---- a/net/rxrpc/rxgk_app.c
-+++ b/net/rxrpc/rxgk_app.c
-@@ -40,7 +40,7 @@
-  * };
-  */
- int rxgk_yfs_decode_ticket(struct rxrpc_connection *conn, struct sk_buff *skb,
--			   unsigned int ticket_offset, unsigned int ticket_len,
-+			   void *buffer, unsigned int ticket_len,
- 			   struct key **_key)
- {
- 	struct rxrpc_key_token *token;
-@@ -49,7 +49,7 @@ int rxgk_yfs_decode_ticket(struct rxrpc_connection *conn, struct sk_buff *skb,
- 	size_t pre_ticket_len, payload_len;
- 	unsigned int klen, enctype;
- 	void *payload, *ticket;
--	__be32 *t, *p, *q, tmp[2];
-+	__be32 *t, *p, *q, *tmp;
- 	int ret;
- 
- 	_enter("");
-@@ -59,10 +59,7 @@ int rxgk_yfs_decode_ticket(struct rxrpc_connection *conn, struct sk_buff *skb,
- 					rxgk_abort_resp_short_yfs_tkt);
- 
- 	/* Get the session key length */
--	ret = skb_copy_bits(skb, ticket_offset, tmp, sizeof(tmp));
--	if (ret < 0)
--		return rxrpc_abort_conn(conn, skb, RXGK_INCONSISTENCY, -EPROTO,
--					rxgk_abort_resp_short_yfs_klen);
-+	tmp = buffer;
- 	enctype = ntohl(tmp[0]);
- 	klen = ntohl(tmp[1]);
- 
-@@ -84,12 +81,7 @@ int rxgk_yfs_decode_ticket(struct rxrpc_connection *conn, struct sk_buff *skb,
- 	 * it.
- 	 */
- 	ticket = payload + pre_ticket_len;
--	ret = skb_copy_bits(skb, ticket_offset, ticket, ticket_len);
--	if (ret < 0) {
--		ret = rxrpc_abort_conn(conn, skb, RXGK_INCONSISTENCY, -EPROTO,
--				       rxgk_abort_resp_short_yfs_tkt);
--		goto error;
--	}
-+	memcpy(ticket, buffer, ticket_len);
- 
- 	/* Fill out the form header. */
- 	p = payload;
-@@ -131,7 +123,7 @@ int rxgk_yfs_decode_ticket(struct rxrpc_connection *conn, struct sk_buff *skb,
- 		goto error;
- 	}
- 
--	/* Ticket read in with skb_copy_bits above */
-+	/* Ticket appended above. */
- 	q += xdr_round_up(ticket_len) / 4;
- 	if (WARN_ON((unsigned long)q - (unsigned long)payload != payload_len)) {
- 		ret = -EIO;
-@@ -182,14 +174,15 @@ int rxgk_yfs_decode_ticket(struct rxrpc_connection *conn, struct sk_buff *skb,
-  * [tools.ietf.org/html/draft-wilkinson-afs3-rxgk-afs-08 sec 6.1]
-  */
- int rxgk_extract_token(struct rxrpc_connection *conn, struct sk_buff *skb,
--		       unsigned int token_offset, unsigned int token_len,
-+		       void *token, unsigned int token_len,
- 		       struct key **_key)
- {
- 	const struct krb5_enctype *krb5;
- 	const struct krb5_buffer *server_secret;
- 	struct crypto_aead *token_enc = NULL;
- 	struct key *server_key;
--	unsigned int ticket_offset, ticket_len;
-+	unsigned int ticket_len;
-+	void *ticket;
- 	u32 kvno, enctype;
- 	int ret, ec = 0;
- 
-@@ -197,24 +190,23 @@ int rxgk_extract_token(struct rxrpc_connection *conn, struct sk_buff *skb,
- 		__be32 kvno;
- 		__be32 enctype;
- 		__be32 token_len;
--	} container;
-+	} *container;
- 
--	if (token_len < sizeof(container))
-+	if (token_len < sizeof(*container))
- 		goto short_packet;
- 
- 	/* Decode the RXGK_TokenContainer object.  This tells us which server
- 	 * key we should be using.  We can then fetch the key, get the secret
- 	 * and set up the crypto to extract the token.
- 	 */
--	if (skb_copy_bits(skb, token_offset, &container, sizeof(container)) < 0)
--		goto short_packet;
-+	container = token;
-+	token += sizeof(*container);
- 
--	kvno		= ntohl(container.kvno);
--	enctype		= ntohl(container.enctype);
--	ticket_len	= ntohl(container.token_len);
--	ticket_offset	= token_offset + sizeof(container);
-+	kvno		= ntohl(container->kvno);
-+	enctype		= ntohl(container->enctype);
-+	ticket_len	= ntohl(container->token_len);
- 
--	if (ticket_len > xdr_round_down(token_len - sizeof(container)))
-+	if (ticket_len > xdr_round_down(token_len - sizeof(*container)))
- 		goto short_packet;
- 
- 	_debug("KVNO %u", kvno);
-@@ -237,8 +229,8 @@ int rxgk_extract_token(struct rxrpc_connection *conn, struct sk_buff *skb,
- 	 * gain access to K0, from which we can derive the transport key and
- 	 * thence decode the authenticator.
- 	 */
--	ret = rxgk_decrypt_skb(krb5, token_enc, skb,
--			       &ticket_offset, &ticket_len, &ec);
-+	ticket = token;
-+	ret = rxgk_decrypt(krb5, token_enc, &ticket, &ticket_len, &ec);
- 	crypto_free_aead(token_enc);
- 	token_enc = NULL;
- 	if (ret < 0) {
-@@ -248,7 +240,7 @@ int rxgk_extract_token(struct rxrpc_connection *conn, struct sk_buff *skb,
- 		return ret;
- 	}
- 
--	ret = conn->security->default_decode_ticket(conn, skb, ticket_offset,
-+	ret = conn->security->default_decode_ticket(conn, skb, ticket,
- 						    ticket_len, _key);
- 	if (ret < 0)
- 		goto cant_get_token;
-diff --git a/net/rxrpc/rxgk_common.h b/net/rxrpc/rxgk_common.h
-index 112b5366ce119..3deed5863f5aa 100644
---- a/net/rxrpc/rxgk_common.h
-+++ b/net/rxrpc/rxgk_common.h
-@@ -41,10 +41,10 @@ struct rxgk_context {
-  * rxgk_app.c
-  */
- int rxgk_yfs_decode_ticket(struct rxrpc_connection *conn, struct sk_buff *skb,
--			   unsigned int ticket_offset, unsigned int ticket_len,
-+			   void *ticket, unsigned int ticket_len,
- 			   struct key **_key);
- int rxgk_extract_token(struct rxrpc_connection *conn, struct sk_buff *skb,
--		       unsigned int token_offset, unsigned int token_len,
-+		       void *token, unsigned int token_len,
- 		       struct key **_key);
- 
- /*
-@@ -61,50 +61,6 @@ int rxgk_set_up_token_cipher(const struct krb5_buffer *server_key,
- 			     const struct krb5_enctype **_krb5,
- 			     gfp_t gfp);
- 
--/*
-- * Apply decryption and checksumming functions to part of an skbuff.  The
-- * offset and length are updated to reflect the actual content of the encrypted
-- * region.
-- */
--static inline
--int rxgk_decrypt_skb(const struct krb5_enctype *krb5,
--		     struct crypto_aead *aead,
--		     struct sk_buff *skb,
--		     unsigned int *_offset, unsigned int *_len,
--		     int *_error_code)
--{
--	struct scatterlist sg[16];
--	size_t offset = 0, len = *_len;
--	int nr_sg, ret;
--
--	sg_init_table(sg, ARRAY_SIZE(sg));
--	nr_sg = skb_to_sgvec(skb, sg, *_offset, len);
--	if (unlikely(nr_sg < 0))
--		return nr_sg;
--
--	ret = crypto_krb5_decrypt(krb5, aead, sg, nr_sg,
--				  &offset, &len);
--	switch (ret) {
--	case 0:
--		*_offset += offset;
--		*_len = len;
--		break;
--	case -EBADMSG: /* Checksum mismatch. */
--	case -EPROTO:
--		*_error_code = RXGK_SEALEDINCON;
--		break;
--	case -EMSGSIZE:
--		*_error_code = RXGK_PACKETSHORT;
--		break;
--	case -ENOPKG: /* Would prefer RXGK_BADETYPE, but not available for YFS. */
--	default:
--		*_error_code = RXGK_INCONSISTENCY;
--		break;
--	}
--
--	return ret;
--}
--
- /*
-  * Apply decryption and checksumming functions a flat data buffer.  The data
-  * point and length are updated to reflect the actual content of the encrypted
-@@ -148,50 +104,6 @@ static inline int rxgk_decrypt(const struct krb5_enctype *krb5,
- 	return ret;
- }
- 
--/*
-- * Check the MIC on a region of an skbuff.  The offset and length are updated
-- * to reflect the actual content of the secure region.
-- */
--static inline
--int rxgk_verify_mic_skb(const struct krb5_enctype *krb5,
--			struct crypto_shash *shash,
--			const struct krb5_buffer *metadata,
--			struct sk_buff *skb,
--			unsigned int *_offset, unsigned int *_len,
--			u32 *_error_code)
--{
--	struct scatterlist sg[16];
--	size_t offset = 0, len = *_len;
--	int nr_sg, ret;
--
--	sg_init_table(sg, ARRAY_SIZE(sg));
--	nr_sg = skb_to_sgvec(skb, sg, *_offset, len);
--	if (unlikely(nr_sg < 0))
--		return nr_sg;
--
--	ret = crypto_krb5_verify_mic(krb5, shash, metadata, sg, nr_sg,
--				     &offset, &len);
--	switch (ret) {
--	case 0:
--		*_offset += offset;
--		*_len = len;
--		break;
--	case -EBADMSG: /* Checksum mismatch */
--	case -EPROTO:
--		*_error_code = RXGK_SEALEDINCON;
--		break;
--	case -EMSGSIZE:
--		*_error_code = RXGK_PACKETSHORT;
--		break;
--	case -ENOPKG: /* Would prefer RXGK_BADETYPE, but not available for YFS. */
--	default:
--		*_error_code = RXGK_INCONSISTENCY;
--		break;
--	}
--
--	return ret;
--}
--
- /*
-  * Check the MIC on a flat buffer.  The data pointer and length are updated to
-  * reflect the actual content of the secure region.
-diff --git a/net/rxrpc/rxkad.c b/net/rxrpc/rxkad.c
-index 951a8913ee3f0..6fbd883401acd 100644
---- a/net/rxrpc/rxkad.c
-+++ b/net/rxrpc/rxkad.c
-@@ -963,7 +963,6 @@ static int rxkad_decrypt_ticket(struct rxrpc_connection *conn,
- 	*_expiry = 0;
- 
- 	ASSERT(server_key->payload.data[0] != NULL);
--	ASSERTCMP((unsigned long) ticket & 7UL, ==, 0);
- 
- 	memcpy(&iv, &server_key->payload.data[2], sizeof(iv));
- 
-@@ -1112,14 +1111,15 @@ static int rxkad_decrypt_response(struct rxrpc_connection *conn,
-  * verify a response
-  */
- static int rxkad_verify_response(struct rxrpc_connection *conn,
--				 struct sk_buff *skb)
-+				 struct sk_buff *skb,
-+				 void *buffer, unsigned int len)
- {
- 	struct rxkad_response *response;
- 	struct rxrpc_skb_priv *sp = rxrpc_skb(skb);
- 	struct rxrpc_crypt session_key;
- 	struct key *server_key;
- 	time64_t expiry;
--	void *ticket = NULL;
-+	void *ticket;
- 	u32 version, kvno, ticket_len, level;
- 	__be32 csum;
- 	int ret, i;
-@@ -1142,13 +1142,8 @@ static int rxkad_verify_response(struct rxrpc_connection *conn,
- 		}
- 	}
- 
--	ret = -ENOMEM;
--	response = kzalloc(sizeof(struct rxkad_response), GFP_NOFS);
--	if (!response)
--		goto error;
--
--	if (skb_copy_bits(skb, sizeof(struct rxrpc_wire_header),
--			  response, sizeof(*response)) < 0) {
-+	response = buffer;
-+	if (len < sizeof(*response)) {
- 		ret = rxrpc_abort_conn(conn, skb, RXKADPACKETSHORT, -EPROTO,
- 				       rxkad_abort_resp_short);
- 		goto error;
-@@ -1160,6 +1155,9 @@ static int rxkad_verify_response(struct rxrpc_connection *conn,
- 
- 	trace_rxrpc_rx_response(conn, sp->hdr.serial, version, kvno, ticket_len);
- 
-+	buffer	+= sizeof(*response);
-+	len	-= sizeof(*response);
-+
- 	if (version != RXKAD_VERSION) {
- 		ret = rxrpc_abort_conn(conn, skb, RXKADINCONSISTENCY, -EPROTO,
- 				       rxkad_abort_resp_version);
-@@ -1179,13 +1177,8 @@ static int rxkad_verify_response(struct rxrpc_connection *conn,
- 	}
- 
- 	/* extract the kerberos ticket and decrypt and decode it */
--	ret = -ENOMEM;
--	ticket = kmalloc(ticket_len, GFP_NOFS);
--	if (!ticket)
--		goto error;
--
--	if (skb_copy_bits(skb, sizeof(struct rxrpc_wire_header) + sizeof(*response),
--			  ticket, ticket_len) < 0) {
-+	ticket = buffer;
-+	if (ticket_len > len) {
- 		ret = rxrpc_abort_conn(conn, skb, RXKADPACKETSHORT, -EPROTO,
- 				       rxkad_abort_resp_short_tkt);
- 		goto error;
-@@ -1265,8 +1258,6 @@ static int rxkad_verify_response(struct rxrpc_connection *conn,
- 	ret = rxrpc_get_server_data_key(conn, &session_key, expiry, kvno);
- 
- error:
--	kfree(ticket);
--	kfree(response);
- 	key_put(server_key);
- 	_leave(" = %d", ret);
- 	return ret;
+ 		/*
+ 		 * The guest memory must be read into a kernel buffer, so
+ 		 * limit the size
 -- 
-2.53.0
+2.54.0
 
 
