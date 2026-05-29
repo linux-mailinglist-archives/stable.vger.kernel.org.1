@@ -1,261 +1,238 @@
-Return-Path: <stable+bounces-256587-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-256588-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id cMegGH1oGWpMwQgAu9opvQ
-	(envelope-from <stable+bounces-256587-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 29 May 2026 12:20:45 +0200
+	id 6Hw1GjhpGWpMwQgAu9opvQ
+	(envelope-from <stable+bounces-256588-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 29 May 2026 12:23:52 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 596A6600B2A
-	for <lists+stable@lfdr.de>; Fri, 29 May 2026 12:20:44 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 04503600BF5
+	for <lists+stable@lfdr.de>; Fri, 29 May 2026 12:23:51 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 8162B3083E58
-	for <lists+stable@lfdr.de>; Fri, 29 May 2026 10:16:09 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id A858A3061019
+	for <lists+stable@lfdr.de>; Fri, 29 May 2026 10:17:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B6C39231827;
-	Fri, 29 May 2026 10:15:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 44F4133987F;
+	Fri, 29 May 2026 10:17:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="hSV/vthy"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="gYVRzuet"
 X-Original-To: stable@vger.kernel.org
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ej1-f53.google.com (mail-ej1-f53.google.com [209.85.218.53])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 140032741B5;
-	Fri, 29 May 2026 10:15:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.156.1
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780049749; cv=none; b=KzRTLK3eXyGtpuBFJWA7Zm92EZ1JjkBoSffiP4LTVfz8wJt9s2EdO5lz+W6nsiQYfMqPC5n5D/2FWaEa2z2EKKE0sA38d0mUkeak3seSiNcJPYjbQRTRop+ODckO3ycGjVCsysy1kw6CpMPXStJLPdcgwPXocgZVmk+o3UABYTM=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780049749; c=relaxed/simple;
-	bh=ZHzfii8xK/ftUdVJRxfkWuueMhXA62aGgA97PZv1iAo=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=f+Trwng9+hyMwC/P/QrCxqr6coGPJJJFa8U23M1LRylKCsRgJohDRcZrraJZeJE1pTvPVPHhOZ7FWu/qjhbHGwNQj2bEM6jZuTDA26bBD5qr+bzJQmbEINy2k+eilxxTrG5hIwG3O88NNuaF0cX6Qtdk7GMMZuU1lyJxOYRCeNY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=hSV/vthy; arc=none smtp.client-ip=148.163.156.1
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
-Received: from pps.filterd (m0353729.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 64SLlhCX1684655;
-	Fri, 29 May 2026 10:15:27 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-type:date:from:in-reply-to:message-id:mime-version
-	:references:reply-to:subject:to; s=pp1; bh=uy6t5ppD1nY+GglA2XoAi
-	IuSE97XRVs9Lr9qT794SiM=; b=hSV/vthy5rrvWcEUEjF4xtTtt9H9DHoUg0Xep
-	3ApAMW9c2I4KPMujcrYH0TRZvo3ZQih7Fh0aeGXcA2TB/loEV3ytkRt39hZqQ/xq
-	lXpR6B31EpPhZ7RpxB+sXO2xrIlOxk0rOnFRTEPqvC9zjZXuNlX8jHMR1sIimI11
-	RRuu7SpulT8s9arHUhkyFPKXrrVOwcwcU/HNDdJeUIk4cN5I+13GKtlhSdR3yOzy
-	TdF55pQ9LOxYegcElLsjEq9At3DbpmPBByM8qQcrlcsgq23HT6d66MlM5HAZqRnA
-	Dlcp7Vq6JdmhwYnK1+fR/xajeHiGCgIkr4Zam/MdC7h0egiUg==
-Received: from ppma23.wdc07v.mail.ibm.com (5d.69.3da9.ip4.static.sl-reverse.com [169.61.105.93])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4ee884g1k9-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Fri, 29 May 2026 10:15:27 +0000 (GMT)
-Received: from pps.filterd (ppma23.wdc07v.mail.ibm.com [127.0.0.1])
-	by ppma23.wdc07v.mail.ibm.com (8.18.1.7/8.18.1.7) with ESMTP id 64TA9O0q022777;
-	Fri, 29 May 2026 10:15:25 GMT
-Received: from smtprelay04.fra02v.mail.ibm.com ([9.218.2.228])
-	by ppma23.wdc07v.mail.ibm.com (PPS) with ESMTPS id 4edjrc51nb-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Fri, 29 May 2026 10:15:25 +0000 (GMT)
-Received: from smtpav03.fra02v.mail.ibm.com (smtpav03.fra02v.mail.ibm.com [10.20.54.102])
-	by smtprelay04.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 64TAFMWe8454638
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Fri, 29 May 2026 10:15:22 GMT
-Received: from smtpav03.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id E223F20040;
-	Fri, 29 May 2026 10:15:21 +0000 (GMT)
-Received: from smtpav03.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 438582004B;
-	Fri, 29 May 2026 10:15:19 +0000 (GMT)
-Received: from linux.ibm.com (unknown [9.126.150.29])
-	by smtpav03.fra02v.mail.ibm.com (Postfix) with SMTP;
-	Fri, 29 May 2026 10:15:19 +0000 (GMT)
-Date: Fri, 29 May 2026 15:45:18 +0530
-From: Srikar Dronamraju <srikar@linux.ibm.com>
-To: Shrikanth Hegde <sshegde@linux.ibm.com>
-Cc: maddy@linux.ibm.com, linuxppc-dev@lists.ozlabs.org, peterz@infradead.org,
-        mingo@kernel.org, christophe.leroy@csgroup.eu,
-        linux-kernel@vger.kernel.org, venkat88@linux.ibm.com,
-        yu.c.chen@intel.com, tim.c.chen@linux.intel.com,
-        kprateek.nayak@amd.com, riteshh@linux.ibm.com, stable@vger.kernel.org,
-        "Ritesh Harjani (IBM)" <ritesh.list@gmail.com>
-Subject: Re: [PATCH] sched/topology: Provide arch_llc_mask for cache aware
- scheduling
-Message-ID: <ahlnNsaQH-zg5tV2@linux.ibm.com>
-Reply-To: Srikar Dronamraju <srikar@linux.ibm.com>
-References: <20260529075712.1181039-1-sshegde@linux.ibm.com>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CDFDD81732
+	for <stable@vger.kernel.org>; Fri, 29 May 2026 10:17:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.218.53
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1780049832; cv=pass; b=WSrq7FKKbudAg9sLaV8L6aYRQmuZDTdH9lh5fxwjXTByH18W1aot+YPLkfqVxvpaqzlYZejrpHiHpy8DtsagKI7/hL9ntZS9htu6MJwDMtQr6Rcf9qSQUPl9yaPiSYKtChBewxc5Jl0DNalPQ7+d1d5t/9kDDgE7SwOtU50GOSs=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1780049832; c=relaxed/simple;
+	bh=oN19ZOQuE7WVi9huNyO9ICvw7+sfGs4Qu+L+afX5JN0=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=tu9E6jpHYwGkFPNi56cfnfyNOfnL/fun/eSTJL9EWjXsprYRPkF8GZ2q0fmpY3ElWT0E1VnIs+a+afLZI27LJg3WTDCWMmsWps0pQEQY3KLD2k7iWNZe+CVroFs4aMGpPdn+/RSrsUCtjUasqfGS/S6L4mWAF79hPOxVQCP1GHM=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=gYVRzuet; arc=pass smtp.client-ip=209.85.218.53
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-ej1-f53.google.com with SMTP id a640c23a62f3a-bd2e8931915so2722417966b.1
+        for <stable@vger.kernel.org>; Fri, 29 May 2026 03:17:10 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1780049829; cv=none;
+        d=google.com; s=arc-20240605;
+        b=JSSVKoNaI/EZyma0rbXVDSdmqa/MG8Ts2B5m9/J5wxCUtdPJ6I2UGCMAFu5oMGLC2W
+         fvmt4JOWwUiMsqCTiObNN93Phn9MFmwqeJSLrBbSakjQoI31XuRMT0XvkjTftpAshjMN
+         mvp0yyB36+/CcK+eQgNwkEZRUhEM7+dWHcB4yEGecn6Z/ez2hcg2+HhEaAtUYW1sd5dX
+         D1NDQiqMm/aqciqqwJs6ViiloAdm/JLIH0u1GUrDkB0ybLpLoaBuxREiaBRLaiawbEAj
+         LUN5VBfNQCpbmAPW+rB/aD27LGycsPg85RgqyNul2F+/RkvEWPI0+P9XC8wJpt8CLJSM
+         x3XA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=1iJ9dA03FdMF2EGmhu6kHfMDm4N03M3/64bl9s5U4dc=;
+        fh=MWFWtlRxEaBjIqdXZ+n5mKXui+agkn2wy40L6tiKGWE=;
+        b=lTKYQL/4ocNmK7LzCKC96AWrW/xn4KpZ/fp/+4m2hASAoMWnj2QKDc+6QHnU54W2Pc
+         bAm3cImG0I4BBUSNQ8qnWYcqzIxJo39icn4wgTGSs1NSV6ww0dQ4ir93Fueng57648W1
+         HDN0Fsc5e9KY8QYd3NLpIhtgvhkMJMANpgP6KN5zZWcj8Z6pvsT6EoX4lrvckljmVcHg
+         0WzzHLkhGNCeEowL3L0fzLNp1q2gGndmaAUxhveFhH1Gkpn0//WWsxpka9ctPX9Yt8ow
+         vnlOmY6v6dIeiQ+2p/HHYUBK1knVD13xTkrENyFMDQaazh5EEeREoRpDoKicYlbcjlws
+         Nq4Q==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1780049829; x=1780654629; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=1iJ9dA03FdMF2EGmhu6kHfMDm4N03M3/64bl9s5U4dc=;
+        b=gYVRzuetgJTRBTT4BIY4OuvwCg7HU0TiWWqQ+6NyxMk/YN5fn40BPkzrd8d0Jrign4
+         9suKRT6RSbawQ3kR0xPBQJ0Fo9fYA09EkQNGbR4gtg4NrD69WJzYJRuKHrbcdN3KCa8r
+         +55IxtYvx2a3j56UPnMzhThh36fczX4xZJ9cGvGrRcU9E7yyTCrKopr67s+nhC9/88X6
+         gf2PWk+9wSOEcCq/88H/CV0eI6FAcY4tMsc6GNgpEeaOCWqaNclJTUUtpWHaqhQwh+7o
+         pnDURzrkJArquxDZ9w+EoAzOm08pXx8Xk8OHX1vBohY4bgCij9CENlHatI0IA1c2EKbn
+         K7AQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1780049829; x=1780654629;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=1iJ9dA03FdMF2EGmhu6kHfMDm4N03M3/64bl9s5U4dc=;
+        b=r7K14m+b34r84GUYs7+cxqafiwH8cF+g059FGxyToSQfi+wIQoVMwhehcmj8qxem/V
+         8i1qQ40Hby5WTUzwuDicDsq0GxfEL7RysxPYXcQPT1Ocx3cf48AEhSibO/6bKdBQwkbo
+         d+GKNwnDa7nleX12Z904Eny54oOoQgyRqPpVpI6tEm+58rtXOtorAgrAV4h1l31pLgI5
+         1rC+rNubQuIWgIHqlP81uQrTGqKcpVxfa5hmxA6768sznfIqUaRFjkvZBhGwd9rG+QYt
+         P4sWLePmK704E6AE8ZR+jfGMz4hDBqgvAEw5oqDlJ6p7LIDxY1/JgyPZ7i877TJSK/jI
+         p90Q==
+X-Forwarded-Encrypted: i=1; AFNElJ+qtuW33mrkuDRhgHPjDKuFwFwzMw/9MuP4Nb2K7pK5lrHMlEw2KEEOI8rYCIfAlZk8ucIO2NY=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzU8lf10MyV092XR79tGiDihKKMX0rz1kGpsaDIKDbPm646D1wM
+	te49xlLQzKSJaGaowD2ZAZWD+UIoOLKAG2eVqQvYjw4s24fqGm3fw6CZptzjDQaJi6r2ubf0NFP
+	srjxdkHjacXZ0gKdHtXG/K+8lwR+xyakE82HDiAk=
+X-Gm-Gg: Acq92OEBD1qCsl8sNetexWXESPys9ClO7+sGwiYhNrlpYdt0ZY5tAbtveeyjFyxB2wB
+	U+uf8O6DAfHaHWDjtHSZX6i7FrR3kSSTpU7Mw/cGXkVb6/Yt/QfU/vPpFrVCPY6o0vRClAv4cLI
+	ZhAwEiiBVjmIxc8GKlNpAREkFhgNzCXYWvhCr9LokOxJER2rZ3wBL+ChQa70TOz36Dt1PQgTSCU
+	DvLzjoQDeeMllD2pM53WdbApcUFQ40R94tEGB1mvex7jlQmygP+pC16omAA+C+GkhqMWfqcNv7d
+	TwQ5kdE8dnIoud7TS9KJZ3wxJHmJJ23w/2DZrWGJxDTksyk+3Pyj6pB+C+mt7A==
+X-Received: by 2002:a17:906:fe07:b0:bdb:5c26:d499 with SMTP id
+ a640c23a62f3a-be9a7fa80a6mr127001566b.22.1780049829213; Fri, 29 May 2026
+ 03:17:09 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-In-Reply-To: <20260529075712.1181039-1-sshegde@linux.ibm.com>
-X-TM-AS-GCONF: 00
-X-Proofpoint-Reinject: loops=2 maxloops=12
-X-Authority-Analysis: v=2.4 cv=fIYJG5ae c=1 sm=1 tr=0 ts=6a19673f cx=c_pps
- a=3Bg1Hr4SwmMryq2xdFQyZA==:117 a=3Bg1Hr4SwmMryq2xdFQyZA==:17
- a=8nJEP1OIZ-IA:10 a=NGcC8JguVDcA:10 a=VkNPw1HP01LnGYTKEx00:22
- a=RnoormkPH1_aCDwRdu11:22 a=uAbxVGIbfxUO_5tXvNgY:22 a=VwQbUJbxAAAA:8
- a=VnNF1IyMAAAA:8 a=QyXUC8HyAAAA:8 a=pGLkceISAAAA:8 a=UZhIc3m1dWDYcD9tvD4A:9
- a=wPNLvfGTeEIA:10
-X-Proofpoint-ORIG-GUID: 84M-2t6QsD-y15zqN6r6FdqxPN0jhaF7
-X-Proofpoint-GUID: nwXy-Tm7YMjuiWDOdsK30iKORNlUITXV
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNTI5MDEwMCBTYWx0ZWRfX0hnZS8YC9wVD
- QYHyvNoXC7jpVx4jT4ZppDeHTeUMTEG44HcJCPGjY+X5k35NAcp+lgDjS9Xeuiquo0i5OVPf3Ug
- F6AOhd1y6Oq21MPVjdqXIAkeUaeeY57mmSS+NZsLEmKlvGS5B33iW+C+L0IWfiZOpVl17AI4k4b
- RXNnyJT005qyFGtXLiOFx83jHP9aA3mfQaMQTYz2bxWVUbFp3gS2QnWs5+OK4TgIVvp/HoAfmjg
- 2VJZI7snZylAcFPpQOhcpR/IznVm8dl+7Z8orZurntX1Egwqp6XW+y5z56fO677L3Hs4/wH0QUi
- BRPaZ+DfXzeIB9DUoVEea2OJcsltl8vPbIEgWQEk5zISDLuP63EzQbQTfOLN5iDt0ANLCWVMikV
- PF0C5JpQp716vfHUbKuAteErBIZSo+lpNJ3qPyP04597c1KeKpVEvy6dBOh6gERYwIAqLk0k/WA
- wO4C6zDxnCtrYIiO5UA==
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.125,FMLib:17.12.100.49
- definitions=2026-05-29_03,2026-05-28_03,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- phishscore=0 lowpriorityscore=0 suspectscore=0 impostorscore=0
- priorityscore=1501 malwarescore=0 clxscore=1011 adultscore=0 spamscore=0
- bulkscore=0 classifier=typeunknown authscore=0 authtc= authcc= route=outbound
- adjust=0 reason=mlx scancount=1 engine=8.22.0-2605210000
- definitions=main-2605290100
-X-Spamd-Result: default: False [-0.66 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[ibm.com,none];
-	R_DKIM_ALLOW(-0.20)[ibm.com:s=pp1];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
+References: <20260528230516.1839694-1-mattst88@gmail.com> <20260528230516.1839694-2-mattst88@gmail.com>
+In-Reply-To: <20260528230516.1839694-2-mattst88@gmail.com>
+From: Magnus Lindholm <linmag7@gmail.com>
+Date: Fri, 29 May 2026 12:16:56 +0200
+X-Gm-Features: AVHnY4ImbLCMtDpPYGgCG8ujxIMUAyT9qcsj2ridFJBYG__Iuv1d0L9ULK_fPaY
+Message-ID: <CA+=Fv5SisLyZRfemTxeTnXoh6-uRvVOsv5r3A=mcCjuvGzWfcQ@mail.gmail.com>
+Subject: Re: [PATCH 2/2] alpha: marvel: Fix lock ordering in init_io7_irqs()
+To: Matt Turner <mattst88@gmail.com>
+Cc: linux-alpha@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	Richard Henderson <richard.henderson@linaro.org>, Thomas Gleixner <tglx@kernel.org>, stable@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Spamd-Result: default: False [-2.16 / 15.00];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=2];
+	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
+	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FREEMAIL_CC(0.00)[linux.ibm.com,lists.ozlabs.org,infradead.org,kernel.org,csgroup.eu,vger.kernel.org,intel.com,linux.intel.com,amd.com,gmail.com];
-	TAGGED_FROM(0.00)[bounces-256587-lists,stable=lfdr.de];
-	REPLYTO_EQ_FROM(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TO_DN_SOME(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[14];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-256588-lists,stable=lfdr.de];
+	FREEMAIL_FROM(0.00)[gmail.com];
+	FREEMAIL_TO(0.00)[gmail.com];
+	TO_DN_SOME(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[ibm.com:+];
-	MISSING_XM_UA(0.00)[];
-	HAS_REPLYTO(0.00)[srikar@linux.ibm.com];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[srikar@linux.ibm.com,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,intel.com:email];
-	MID_RHS_MATCH_FROM(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[6];
 	NEURAL_HAM(-0.00)[-1.000];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[linmag7@gmail.com,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[gmail.com:+];
+	MID_RHS_MATCH_FROMTLD(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
 	TAGGED_RCPT(0.00)[stable];
-	RCVD_COUNT_SEVEN(0.00)[11]
-X-Rspamd-Queue-Id: 596A6600B2A
+	MISSING_XM_UA(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[mail.gmail.com:mid,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo]
+X-Rspamd-Queue-Id: 04503600BF5
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-* Shrikanth Hegde <sshegde@linux.ibm.com> [2026-05-29 13:27:12]:
-
-> Venkat Reported a boot kernel panic next-20260522. Git bisect pointed to
-> b5ea300a17e3 ("sched/cache: Make LLC id continuous")
-> 
-> Stacktrace points to llc_mask being null.
-> 
-> NIP [c000000000e58504] _find_first_bit+0x44/0x130
-> LR [c000000000e58500] _find_first_bit+0x40/0x130
-> Call Trace:
-> build_sched_domains+0xad8/0xe50
-> sched_init_smp+0xa8/0x164
-> kernel_init_freeable+0x250/0x370
-> ret_from_kernel_user_thread+0x14/0x1c
-> 
-> On powerpc, cpu_coregroup_mask is available only when the underlying
-> hardware support coregroup. In shared LPAR, QEMU guest or power9 etc
-> coregroup isn't supported. In such cases llc_mask was being referenced
-> when it was null leading to panic.
-> 
-> On powerpc, LLC is at SMT core level. So assumption that coregroup(MC)
-> domain point to LLC is wrong. Provide a way for archs to say where its
-> LLC is if it not at MC domain. 
-> 
-> Based on tip/master at 5c89783224e9 ("Merge branch into tip/master: 'x86/tdx'")
+On Fri, May 29, 2026 at 1:05=E2=80=AFAM Matt Turner <mattst88@gmail.com> wr=
+ote:
+>
+> Move irq_set_chip_and_handler() and irq_set_status_flags() calls
+> outside the io7->irq_lock raw spinlock.  These functions take
+> sparse_irq_lock, which is a mutex, and taking a sleeping lock while
+> holding a raw spinlock is invalid.  The raw spinlock only needs to
+> protect the hardware CSR accesses.
+>
+> This fixes the following lockdep splat during boot:
+>
+>   [ BUG: Invalid wait context ]
+>   swapper/0/0 is trying to lock:
+>   sparse_irq_lock{....}-{4:4}, at: irq_mark_irq
+>   other info that might help us debug this:
+>   context-{5:5}
+>   1 lock held by swapper/0/0:
+>    #0: &io7->irq_lock{....}-{2:2}, at: init_io7_irqs.constprop.0
+>
 > Cc: stable@vger.kernel.org
-> 
-> Fixes: b5ea300a17e3 ("sched/cache: Make LLC id continuous")
-> Reported-by: Venkat Rao Bagalkote <venkat88@linux.ibm.com>
-> Closes: https://lore.kernel.org/all/51154de7-3700-4cb4-82f2-1b3a8fa427f7@linux.ibm.com/
-> Reviewed-by: Chen Yu <yu.c.chen@intel.com>
-> Tested-by: Venkat Rao Bagalkote <venkat88@linux.ibm.com> 
-> Tested-by: Ritesh Harjani (IBM) <ritesh.list@gmail.com>
-> Co-developed-by: Chen, Yu C <yu.c.chen@intel.com>
-> Signed-off-by: Shrikanth Hegde <sshegde@linux.ibm.com>
+> Assisted-by: Claude:claude-opus-4-6
+> Signed-off-by: Matt Turner <mattst88@gmail.com>
 > ---
->  arch/powerpc/include/asm/topology.h |  6 ++++++
->  kernel/sched/topology.c             | 13 +++++++++++--
->  2 files changed, 17 insertions(+), 2 deletions(-)
-> 
-> diff --git a/arch/powerpc/include/asm/topology.h b/arch/powerpc/include/asm/topology.h
-> index 66ed5fe1b718..e3de0f3d8b86 100644
-> --- a/arch/powerpc/include/asm/topology.h
-> +++ b/arch/powerpc/include/asm/topology.h
-> @@ -135,6 +135,12 @@ struct cpumask *cpu_coregroup_mask(int cpu);
->  const struct cpumask *cpu_die_mask(int cpu);
->  int cpu_die_id(int cpu);
->  
-> +/* Points to where the LLC is. On power9 this will point at CACHE
-> + * domain, On others it will point to SMT domain. In all cases
-> + * cpu_l2_cache_mask points to where LLC is
-> + */
-
-Nit: Regular comment style could have been better.
-
-> +#define arch_llc_mask(cpu)     cpu_l2_cache_mask(cpu)
+>  arch/alpha/kernel/sys_marvel.c | 25 ++++++++++++-------------
+>  1 file changed, 12 insertions(+), 13 deletions(-)
+>
+> diff --git ./arch/alpha/kernel/sys_marvel.c ./arch/alpha/kernel/sys_marve=
+l.c
+> index bebeea3c286d..a37707e05e34 100644
+> --- ./arch/alpha/kernel/sys_marvel.c
+> +++ ./arch/alpha/kernel/sys_marvel.c
+> @@ -263,6 +263,18 @@ init_io7_irqs(struct io7 *io7,
+>          */
+>         printk("  Interrupts reported to CPU at PE %u\n", boot_cpuid);
+>
+> +       /* Set up the lsi irqs.  */
+> +       for (i =3D 0; i < 128; ++i) {
+> +               irq_set_chip_and_handler(base + i, lsi_ops, handle_level_=
+irq);
+> +               irq_set_status_flags(base + i, IRQ_LEVEL);
+> +       }
 > +
->  #ifdef CONFIG_PPC64
->  #include <asm/smp.h>
->  
-> diff --git a/kernel/sched/topology.c b/kernel/sched/topology.c
-> index df2ceb54c970..622e2e01974c 100644
-> --- a/kernel/sched/topology.c
-> +++ b/kernel/sched/topology.c
-> @@ -2063,12 +2063,21 @@ const struct cpumask *tl_mc_mask(struct sched_domain_topology_level *tl, int cpu
->  	return cpu_coregroup_mask(cpu);
->  }
->  
-> -#define llc_mask(cpu) cpu_coregroup_mask(cpu)
-> +/*
-> + * Majority of architectures have LLC at MC domain level with exception
-> + * such as powerpc. Provide a way for arch to specify where its LLC is
-> + * if it falls in exception category
-> + */
-> +# ifndef arch_llc_mask
-> +#define arch_llc_mask(cpu) cpu_coregroup_mask(cpu)
-> +# endif
->  
->  #else
-> -#define llc_mask(cpu) cpumask_of(cpu)
-> +#define arch_llc_mask(cpu) cpumask_of(cpu)
->  #endif
->  
-> +#define llc_mask(cpu) arch_llc_mask(cpu)
+> +       /* Set up the msi irqs.  */
+> +       for (i =3D 128; i < (128 + 512); ++i) {
+> +               irq_set_chip_and_handler(base + i, msi_ops, handle_level_=
+irq);
+> +               irq_set_status_flags(base + i, IRQ_LEVEL);
+> +       }
 > +
+>         raw_spin_lock(&io7->irq_lock);
+>
+>         /* set up the error irqs */
+> @@ -272,12 +284,6 @@ init_io7_irqs(struct io7 *io7,
+>         io7_redirect_irq(io7, &io7->csrs->STV_CTL.csr, boot_cpuid);
+>         io7_redirect_irq(io7, &io7->csrs->HEI_CTL.csr, boot_cpuid);
+>
+> -       /* Set up the lsi irqs.  */
+> -       for (i =3D 0; i < 128; ++i) {
+> -               irq_set_chip_and_handler(base + i, lsi_ops, handle_level_=
+irq);
+> -               irq_set_status_flags(base + i, IRQ_LEVEL);
+> -       }
+> -
+>         /* Disable the implemented irqs in hardware.  */
+>         for (i =3D 0; i < 0x60; ++i)
+>                 init_one_io7_lsi(io7, i, boot_cpuid);
+> @@ -285,13 +291,6 @@ init_io7_irqs(struct io7 *io7,
+>         init_one_io7_lsi(io7, 0x74, boot_cpuid);
+>         init_one_io7_lsi(io7, 0x75, boot_cpuid);
+>
+> -
+> -       /* Set up the msi irqs.  */
+> -       for (i =3D 128; i < (128 + 512); ++i) {
+> -               irq_set_chip_and_handler(base + i, msi_ops, handle_level_=
+irq);
+> -               irq_set_status_flags(base + i, IRQ_LEVEL);
+> -       }
+> -
+>         for (i =3D 0; i < 16; ++i)
+>                 init_one_io7_msi(io7, i, boot_cpuid);
+>
+> --
+> 2.53.0
+>
 
-Instead of having another define, could we have modified current users of
-llc_mask() to arch_llc_mask()? Again its not a problem, but why have 2
-defines since both point to the same thing.
+With the preceding irq_set_status_flags(base + i, ...) fix applied, this
+looks correct to me. The generic IRQ descriptor setup is moved outside
+io7->irq_lock, while the raw spinlock still protects the IO7 hardware CSR
+accesses. That matches the lockdep report and avoids taking sparse_irq_lock
+from raw-spinlock context.
 
->  const struct cpumask *tl_pkg_mask(struct sched_domain_topology_level *tl, int cpu)
->  {
->  	return cpu_node_mask(cpu);
-> -- 
-> 2.47.3
-> 
-
-Otherwise, looks good to me.
-
-Reviewed-by: Srikar Dronamraju <srikar@linux.ibm.com>
-
--- 
-Thanks and Regards
-Srikar Dronamraju
+Reviewed-by: Magnus Lindholm <linmag7@gmail.com>
 
