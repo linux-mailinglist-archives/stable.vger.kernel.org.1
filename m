@@ -1,67 +1,60 @@
-Return-Path: <stable+bounces-256829-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-256830-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id KKOhLiAmGmqJ1wgAu9opvQ
-	(envelope-from <stable+bounces-256829-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 01:49:52 +0200
+	id EAgwJiQmGmqJ1wgAu9opvQ
+	(envelope-from <stable+bounces-256830-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 01:49:56 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3EA04609F66
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 01:49:52 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8CD34609F6D
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 01:49:55 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 67A423056685
-	for <lists+stable@lfdr.de>; Fri, 29 May 2026 23:49:50 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 2EE6830215BF
+	for <lists+stable@lfdr.de>; Fri, 29 May 2026 23:49:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 779C333D6F7;
-	Fri, 29 May 2026 23:49:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C636736214C;
+	Fri, 29 May 2026 23:49:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="gxIwKWMz"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Nup+spfE"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3C393275870
-	for <stable@vger.kernel.org>; Fri, 29 May 2026 23:49:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A5245352021
+	for <stable@vger.kernel.org>; Fri, 29 May 2026 23:49:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780098587; cv=none; b=akeACaLXm5iovYdSzemCGfDKQI1N0OYa5nsLq4J9MG9PWlDuRZoV4ksXgKuWx72pvcHZpazQb7HsVIzIxFD0hmYoP7bslHFIJ//XBBP4bIpl/BIBEpytoOJEFrcieVSBNefr2mPMTj/DTxcymDxor/bF+HwPfV2E95chDA8Lg3k=
+	t=1780098588; cv=none; b=tKlCtwJ8vCQe1/aByTrPNNQGhsQEb2yhWT6VsHn6ZmwqNlHzMlCqgAcjQuwDNF1lIYFXtrU78gMzydXmxEwn6bLnHRr2mfZ2q7v09t9YZXO+tKU//OTGeGv+N4AIhVuG7FqveKaCKGf9iPRuuSINuyrzRYRl3hETz+UB9mdZHk8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780098587; c=relaxed/simple;
-	bh=qNAbnz0tRZJLYwM3Hb6a9YM57H6Z123zUewiNKSqVgs=;
+	s=arc-20240116; t=1780098588; c=relaxed/simple;
+	bh=QrOxchwV3Ka/8yfig2dtWMs8Cp7MP7OSLKvZbKA19B0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=kag+Eyan49BpptfvCUo7Hn5aaUFGGB7CeiJwFNNBlZRE1c3d+S8z9njFGUHj3p6bXWL7VR91KbXMWL0IPPacJXoBjdJ1lRrzQN2SIcdFquhGqhBU1fj48be0U81b+1MxlDABnLSNY6MOen/ZJtd6jjwQ5CSRRDxqk8jIxR87a3M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=gxIwKWMz; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 21DFB1F00899;
-	Fri, 29 May 2026 23:49:45 +0000 (UTC)
+	 MIME-Version; b=RjTZ2dufNHhTBlFM/SR28u3E8armWk10S20aERdRrqqj4Geqk/RTiRPBpDmhcR3nZGv2iMft2XHP7gLn21FdbK8YV1IiZrd6nXoS3P4eDqdBeauFZNrfB5IPNnLqNRNOoFpf5IpMcoi1PhIq0wsKzb36ZM0e47qR4w1Wdb4OYbc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Nup+spfE; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DCE681F00893;
+	Fri, 29 May 2026 23:49:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1780098586;
-	bh=ZI/i1faoccKQZX9sWqbVXQZjjBOK9Oyc6IYXWjIYeso=;
+	s=k20260515; t=1780098587;
+	bh=OcOtLRujMJ9lJ56KOBHxyRb9jSlXHWv790cpdr5HsHg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=gxIwKWMzndWTjkuLW9YXiZFa7uOZilH5w9i09wHXczaT7hkfYbxXXcoMVE2TlOwra
-	 ewvOvIZFJOaL1LRSulCLe7R504YsPsY1ljZHg5EYZuelmWdFJ18Q0c9xtQE5AOV9oD
-	 wL9RuvTMJUCzha1NtZwhAt2ZmjuJqyFthbggmLc512KR3xFYevS3RyRlLfL28zEGXr
-	 Cc2LYR9thIKj5nHPWpXA5TTmGdVDwTC6LNpQZ69BaaFvbiAPygrotX8gYptsa6Vk+T
-	 SkV0EcPRn3RAbpb6BjWwFB05EPUBNcnBp74zNmKzZG37a0FXAQ21pHiFZ/9XpcUVDk
-	 HY2XQAu1NdS+Q==
+	b=Nup+spfEpR5KG7Y1RJ/O4WI/rBy6iXj+6A0y84g036Sp25rk6DH+dl/aYY09cmdp5
+	 QfmPRNQXRyFCwDvcdrhzvTOR8BMhJ/sh09y1oGpw5Vmzniy+c5PMaWREzBkuOjxDsB
+	 TnY3Rhq0RHpmAE4tYam0/QLTNie11PS+4T30oLzsrFX8Y2zaCqtzS4Dr3uhVOaBZ8+
+	 IF/mUTCay8pgC7ZgwhXK78iuHQS2MSUYkQHMCuBSjL4iqwDftDa/Ix1bd08OzM1drn
+	 gRXdzjy7YDSEAexdy3DnrPwQQaljQGCLtW+T22zFrys6CwKR2VR+oJ0AM90agxQh4F
+	 41tnjRDAGW2aw==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org
-Cc: Haoze Xie <royenheart@gmail.com>,
-	stable@kernel.org,
-	Yuan Tan <yuantan098@gmail.com>,
-	Yifan Wu <yifanwucs@gmail.com>,
-	Juefei Pu <tomapufckgml@gmail.com>,
-	Xin Liu <bird@lzu.edu.cn>,
-	Ren Wei <n05ec@lzu.edu.cn>,
-	Pablo Neira Ayuso <pablo@netfilter.org>,
+Cc: Michael Bommarito <michael.bommarito@gmail.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10.y 2/2] netfilter: nf_queue: hold bridge skb->dev while queued
-Date: Fri, 29 May 2026 19:49:42 -0400
-Message-ID: <20260529234942.1939638-2-sashal@kernel.org>
+Subject: [PATCH 6.6.y] net: hsr: defer node table free until after RCU readers
+Date: Fri, 29 May 2026 19:49:45 -0400
+Message-ID: <20260529234945.1939832-1-sashal@kernel.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260529234942.1939638-1-sashal@kernel.org>
-References: <2026052832-chamomile-jazz-bc30@gregkh>
- <20260529234942.1939638-1-sashal@kernel.org>
+In-Reply-To: <2026052840-drizzle-buckshot-3d43@gregkh>
+References: <2026052840-drizzle-buckshot-3d43@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -70,128 +63,85 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-0.66 / 15.00];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	MID_CONTAINS_FROM(1.00)[];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20260515];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	FREEMAIL_CC(0.00)[gmail.com,kernel.org];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	FREEMAIL_CC(0.00)[gmail.com,kernel.org,lzu.edu.cn,netfilter.org];
-	RCVD_COUNT_THREE(0.00)[4];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-256829-lists,stable=lfdr.de];
-	DKIM_TRACE(0.00)[kernel.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	TAGGED_FROM(0.00)[bounces-256830-lists,stable=lfdr.de];
+	RCPT_COUNT_THREE(0.00)[4];
 	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[kernel.org:+];
 	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_SEVEN(0.00)[10];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,netfilter.org:email]
-X-Rspamd-Queue-Id: 3EA04609F66
+	TAGGED_RCPT(0.00)[stable];
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,msgid.link:url]
+X-Rspamd-Queue-Id: 8CD34609F6D
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-From: Haoze Xie <royenheart@gmail.com>
+From: Michael Bommarito <michael.bommarito@gmail.com>
 
-[ Upstream commit e196115ec330a18de415bdb9f5071aa9f08e53ce ]
+[ Upstream commit aaec7096f9961eb223b5b149abe9495525c205d9 ]
 
-br_pass_frame_up() rewrites skb->dev from the ingress port to the bridge
-master before queueing bridge LOCAL_IN packets. NFQUEUE only holds
-references on state.in/out and bridge physdevs, so a queued bridge
-packet can retain a freed bridge master in skb->dev until reinjection.
+HSR node-list and node-status generic-netlink operations run under
+rcu_read_lock(). They walk hsr->node_db through hsr_get_next_node() and
+hsr_get_node_data(), but RTM_DELLINK teardown removes the same node table
+with plain list_del() and frees each node immediately.
 
-When the verdict is reinjected later, br_netif_receive_skb() re-enters
-the receive path with skb->dev still pointing at the freed bridge master,
-triggering a use-after-free.
+That lets a generic-netlink reader hold a struct hsr_node pointer across
+hsr_dellink(). In a KASAN build, widening the reader window after
+hsr_get_next_node() obtains the node reproduces a slab-use-after-free
+when the reader copies node->macaddress_A; the freeing stack is
+hsr_del_nodes() from hsr_dellink().
 
-Store skb->dev in the queue entry, hold a reference on it for the queue
-lifetime, and use the saved device when dropping queued packets during
-NETDEV_DOWN handling.
+Use list_del_rcu() and defer the free through the existing
+hsr_free_node_rcu() callback. This matches the lifetime rule used by the
+HSR prune paths, which already delete nodes with list_del_rcu() and
+call_rcu().
 
-Fixes: ac2863445686 ("netfilter: bridge: add nf_afinfo to enable queuing to userspace")
-Cc: stable@kernel.org
-Reported-by: Yuan Tan <yuantan098@gmail.com>
-Reported-by: Yifan Wu <yifanwucs@gmail.com>
-Reported-by: Juefei Pu <tomapufckgml@gmail.com>
-Reported-by: Xin Liu <bird@lzu.edu.cn>
-Signed-off-by: Haoze Xie <royenheart@gmail.com>
-Signed-off-by: Ren Wei <n05ec@lzu.edu.cn>
-Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
+Fixes: b9a1e627405d ("hsr: implement dellink to clean up resources")
+Cc: stable@vger.kernel.org # v5.3+
+Signed-off-by: Michael Bommarito <michael.bommarito@gmail.com>
+Link: https://patch.msgid.link/20260513233838.3064715-2-michael.bommarito@gmail.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+[ replaced `list_del`+`call_rcu(hsr_free_node_rcu)` with `list_del_rcu`+`kfree_rcu(node, rcu_head)` ]
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/net/netfilter/nf_queue.h | 1 +
- net/netfilter/nf_queue.c         | 4 +++-
- net/netfilter/nfnetlink_queue.c  | 2 ++
- 3 files changed, 6 insertions(+), 1 deletion(-)
+ net/hsr/hsr_framereg.c | 6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
 
-diff --git a/include/net/netfilter/nf_queue.h b/include/net/netfilter/nf_queue.h
-index b1d43894296a6..6b4de68a762e3 100644
---- a/include/net/netfilter/nf_queue.h
-+++ b/include/net/netfilter/nf_queue.h
-@@ -12,6 +12,7 @@
- struct nf_queue_entry {
- 	struct list_head	list;
- 	struct sk_buff		*skb;
-+	struct net_device	*skb_dev;
- 	unsigned int		id;
- 	unsigned int		hook_index;	/* index in hook_entries->hook[] */
- #if IS_ENABLED(CONFIG_BRIDGE_NETFILTER)
-diff --git a/net/netfilter/nf_queue.c b/net/netfilter/nf_queue.c
-index d7542c5c4ae61..d9d35658a357c 100644
---- a/net/netfilter/nf_queue.c
-+++ b/net/netfilter/nf_queue.c
-@@ -60,6 +60,7 @@ static void nf_queue_entry_release_refs(struct nf_queue_entry *entry)
- 	struct nf_hook_state *state = &entry->state;
+diff --git a/net/hsr/hsr_framereg.c b/net/hsr/hsr_framereg.c
+index 26329db09210b..3f6c412721822 100644
+--- a/net/hsr/hsr_framereg.c
++++ b/net/hsr/hsr_framereg.c
+@@ -114,8 +114,10 @@ void hsr_del_nodes(struct list_head *node_db)
+ 	struct hsr_node *node;
+ 	struct hsr_node *tmp;
  
- 	/* Release those devices we held, or Alexey will kill me. */
-+	dev_put(entry->skb_dev);
- 	dev_put(state->in);
- 	dev_put(state->out);
- 	if (state->sk)
-@@ -103,6 +104,7 @@ bool nf_queue_entry_get_refs(struct nf_queue_entry *entry)
- 	if (state->sk && !refcount_inc_not_zero(&state->sk->sk_refcnt))
- 		return false;
+-	list_for_each_entry_safe(node, tmp, node_db, mac_list)
+-		kfree(node);
++	list_for_each_entry_safe(node, tmp, node_db, mac_list) {
++		list_del_rcu(&node->mac_list);
++		kfree_rcu(node, rcu_head);
++	}
+ }
  
-+	dev_hold(entry->skb_dev);
- 	dev_hold(state->in);
- 	dev_hold(state->out);
- 
-@@ -204,11 +206,11 @@ static int __nf_queue(struct sk_buff *skb, const struct nf_hook_state *state,
- 
- 	*entry = (struct nf_queue_entry) {
- 		.skb	= skb,
-+		.skb_dev = skb->dev,
- 		.state	= *state,
- 		.hook_index = index,
- 		.size	= sizeof(*entry) + route_key_size,
- 	};
--
- 	__nf_queue_entry_init_physdevs(entry);
- 
- 	if (!nf_queue_entry_get_refs(entry)) {
-diff --git a/net/netfilter/nfnetlink_queue.c b/net/netfilter/nfnetlink_queue.c
-index bfe909267c9d9..1541d6801001c 100644
---- a/net/netfilter/nfnetlink_queue.c
-+++ b/net/netfilter/nfnetlink_queue.c
-@@ -911,6 +911,8 @@ dev_cmp(struct nf_queue_entry *entry, unsigned long ifindex)
- 	if (physinif == ifindex || physoutif == ifindex)
- 		return 1;
- #endif
-+	if (entry->skb_dev && entry->skb_dev->ifindex == ifindex)
-+		return 1;
- 	if (entry->state.in)
- 		if (entry->state.in->ifindex == ifindex)
- 			return 1;
+ void prp_handle_san_frame(bool san, enum hsr_port_type port,
 -- 
 2.53.0
 
