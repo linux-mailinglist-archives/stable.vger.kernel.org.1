@@ -1,223 +1,135 @@
-Return-Path: <stable+bounces-256538-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-256539-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id oPUfLJtGGWrHuAgAu9opvQ
-	(envelope-from <stable+bounces-256538-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 29 May 2026 09:56:11 +0200
+	id kCNiMDBFGWrHuAgAu9opvQ
+	(envelope-from <stable+bounces-256539-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 29 May 2026 09:50:08 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 28A7A5FEDFC
-	for <lists+stable@lfdr.de>; Fri, 29 May 2026 09:56:11 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id 651225FEC9B
+	for <lists+stable@lfdr.de>; Fri, 29 May 2026 09:50:08 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 461683034334
-	for <lists+stable@lfdr.de>; Fri, 29 May 2026 07:47:45 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id A922D3067E4C
+	for <lists+stable@lfdr.de>; Fri, 29 May 2026 07:48:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7BD0619CCF7;
-	Fri, 29 May 2026 07:47:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 700A53ACEFE;
+	Fri, 29 May 2026 07:48:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="BQ2xNQjF"
+	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="rnLY2qa5";
+	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="RsCD7dVz"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 51FBD1C860A;
-	Fri, 29 May 2026 07:47:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 236CA405F7;
+	Fri, 29 May 2026 07:48:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780040862; cv=none; b=Wal5w2uN7Zf+k1mWxe7KLvsaCH/7lgKDSbLWhk2wVhw/5NlLaX5i5zeDysOrjKVH4Q5BGGXy4/GYb/ddmRFSyq7wDzrGG1GSNPn9I8orunjJsy6NNMVn7nftUP46vvuhE69qowW8Bbe9T2s1EqyIbnN2lZFJDge5vnhBmEXC2uM=
+	t=1780040901; cv=none; b=aTnjrVt3le9okhr3VhresDtzt2sKkEQCkP6FPY6zVKkYlGeUASp8QteXFeEryD0d9GcuTOiB0d7Mjq6sCzritatWtjLe9NZCIc7sscQQ1ms7mM3hU3h4OJcJoVNklmnsMaXx7pTe+ibdWAhwiN1mnPS2JaUWTzeLgvjSDooUb1I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780040862; c=relaxed/simple;
-	bh=bT80htsJM5fMPojIJl9otZSe7IXP6SzmCHZSrqVUfx8=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=gvTF08PkzwR4SIVW7AhjeJQOCiYYAHQrlzyc26zjr/Q3wxQSCOcSLLeL0rTHF1LXmsYyHBuz2/q9t+jDCC/vfsA4dYuVH+hZU4EpF136QMDET/K2xblElreuV1IQ5fSrbDX0SOPlDmzcUEbum3fR/oXQw4ys85RchsITINQ6dNc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=BQ2xNQjF; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7763B1F00893;
-	Fri, 29 May 2026 07:47:38 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1780040861;
-	bh=iomTY4Ad9VMho5vTBG2rGPVpkuu5FijZvMIWhno+SFY=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=BQ2xNQjFvx798LQaafRp0qHl4e/SQjVrVHNZPyfzx/PuBbDNICyKY0w5mzA//yE8+
-	 bnaL6668ZqrU3Y+QDFDECJba7z6HMVy6WccEJCjRy3m7EVNMDER3pydwX72seN44K+
-	 WHdMtkhF7Z5LTT6t/hWwhgDZJxnSigaA4ua3ohZ5qd6A8XgJKBjU4GXSkXkPNTkJ1x
-	 JpUiJw0ZmEMWoZnYfw5YIrPUpqSk5qxJH0NlyrLo04QtI/xJELrSJg8VEaIZOi7wZC
-	 KroKImR6OBgZwj1H4MuUQGIul1DnXn9/Gz0mITY9LfQL1jAhnpkbrIYkCh7AVeWMjZ
-	 1HOhvGCpE/X2w==
-Message-ID: <ad30ca8b-01ba-40b9-a631-503ff463bc50@kernel.org>
-Date: Fri, 29 May 2026 09:47:37 +0200
+	s=arc-20240116; t=1780040901; c=relaxed/simple;
+	bh=kv31X/78h7SzduqUTT6enGHh5SPXO0ebMl/ZIIMU+xc=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=Oj1VERvOriG4EitP5EdPQG595nhWHNflVyZJmI9PaN3z269yU0oUTI/sDcOdHX7NW/G58t80hj1z9D/4tUCRcwJo983mcWeWZLfPwEtLldmOPU9hS6ExvDywQBHG6ZRE9ivVNAwhnwroWvoprRLeaE6BGMAHfg+7bktbIt0GFTo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=rnLY2qa5; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=RsCD7dVz; arc=none smtp.client-ip=193.142.43.55
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
+Date: Fri, 29 May 2026 09:48:16 +0200
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020; t=1780040898;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=DDsih4SqsFbZVSQ6/Dn2K0NJqce5HwZ23VRoi6b0lL4=;
+	b=rnLY2qa54BPXzDgQe1mXijqDIefpWP8kX/cTIu052hfdonoVoGNqzJi3lF75EU0CTF83Fe
+	4PRO+W6JbnM5K2+2+RdIvXajW7XD20q2daszzewpOCfup4Z/t89WzJub/qc6/RO44sRMvl
+	qGFdBVRX4pmNYqRkvlIpMNDBiUBMYiZ6gdgr8QThr54Fw0ZyI84HtpUSOQtELadLHYE1cR
+	iVsKPV4UQCXBiidlbJMYS8Vm6f5n1btzQZikw5YMvFGAG8Hi50526dc4tcc6cmWjw0EJeu
+	JN15wuhpk41j2/tKZvhs5yvAnvhMZ0XfHmsofVPV93rwK+bz+rdG91IUAz2KOA==
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020e; t=1780040898;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=DDsih4SqsFbZVSQ6/Dn2K0NJqce5HwZ23VRoi6b0lL4=;
+	b=RsCD7dVzqySTQbWDZdkyNwg2IMtYYh8D4+KJwfntZV6NgNhuaqd+3B+FaSriYcITsgphJ3
+	UxZ+Sws9XIDjw4Dw==
+From: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
+To: Runyu Xiao <runyu.xiao@seu.edu.cn>,
+	Maarten Lankhorst <dev@lankhorst.se>
+Cc: jani.nikula@linux.intel.com, rodrigo.vivi@intel.com,
+	joonas.lahtinen@linux.intel.com, tursulin@ursulin.net,
+	airlied@gmail.com, simona@ffwll.ch, clrkwllms@kernel.org,
+	rostedt@goodmis.org, jerome.anand@intel.com,
+	pierre-louis.bossart@linux.dev, tiwai@suse.de,
+	intel-gfx@lists.freedesktop.org, intel-xe@lists.freedesktop.org,
+	dri-devel@lists.freedesktop.org, linux-kernel@vger.kernel.org,
+	linux-rt-devel@lists.linux.dev, jianhao.xu@seu.edu.cn,
+	stable@vger.kernel.org
+Subject: Re: [PATCH] drm/i915/audio: use generic_handle_irq_safe() for LPE
+ audio irq
+Message-ID: <20260529074816.k1K16jyy@linutronix.de>
+References: <20260528154551.3708290-1-runyu.xiao@seu.edu.cn>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v5 4/7] firmware: samsung: acpm: Add memory barrier before
- advancing RX pointer
-To: Arnd Bergmann <arnd@arndb.de>, Tudor Ambarus <tudor.ambarus@linaro.org>,
- Alim Akhtar <alim.akhtar@samsung.com>
-Cc: linux-kernel@vger.kernel.org, linux-samsung-soc@vger.kernel.org,
- linux-arm-kernel@lists.infradead.org,
- Peter Griffin <peter.griffin@linaro.org>,
- =?UTF-8?Q?Andr=C3=A9_Draszik?= <andre.draszik@linaro.org>,
- jyescas@google.com, kernel-team@android.com, stable@vger.kernel.org
-References: <20260505-acpm-fixes-sashiko-reports-v5-0-43b5ee7f1674@linaro.org>
- <20260505-acpm-fixes-sashiko-reports-v5-4-43b5ee7f1674@linaro.org>
- <a1629d9d-0357-42a3-aef8-c8d1cfa5ad39@app.fastmail.com>
-From: Krzysztof Kozlowski <krzk@kernel.org>
-Content-Language: en-US
-Autocrypt: addr=krzk@kernel.org; keydata=
- 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 a/A=
-In-Reply-To: <a1629d9d-0357-42a3-aef8-c8d1cfa5ad39@app.fastmail.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
+In-Reply-To: <20260528154551.3708290-1-runyu.xiao@seu.edu.cn>
 X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
-	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20260515];
+	DMARC_POLICY_ALLOW(-0.50)[linutronix.de,none];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
+	R_DKIM_ALLOW(-0.20)[linutronix.de:s=2020,linutronix.de:s=2020e];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	DKIM_TRACE(0.00)[kernel.org:+];
-	TAGGED_FROM(0.00)[bounces-256538-lists,stable=lfdr.de];
-	FROM_HAS_DN(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
+	TAGGED_FROM(0.00)[bounces-256539-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[3];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	FREEMAIL_CC(0.00)[linux.intel.com,intel.com,ursulin.net,gmail.com,ffwll.ch,kernel.org,goodmis.org,linux.dev,suse.de,lists.freedesktop.org,vger.kernel.org,lists.linux.dev,seu.edu.cn];
+	RCPT_COUNT_TWELVE(0.00)[20];
 	MIME_TRACE(0.00)[0:+];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[krzk@kernel.org,stable@vger.kernel.org];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	FROM_HAS_DN(0.00)[];
+	MISSING_XM_UA(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[11];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[bigeasy@linutronix.de,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[linutronix.de:+];
 	MID_RHS_MATCH_FROM(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
 	TAGGED_RCPT(0.00)[stable];
-	TO_DN_SOME(0.00)[]
-X-Rspamd-Queue-Id: 28A7A5FEDFC
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,linutronix.de:mid,linutronix.de:dkim]
+X-Rspamd-Queue-Id: 651225FEC9B
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-On 28/05/2026 19:44, Arnd Bergmann wrote:
-> On Tue, May 5, 2026, at 15:13, Tudor Ambarus wrote:
->> Sashiko identified a silent data corruption in [1].
->>
->> In acpm_get_rx(), the driver reads the response payload from SRAM using
->> __ioread32_copy() and subsequently updates the hardware RX rear pointer
->> via writel().
->>
->> On weakly ordered architectures like ARM64, writel() provides a write
->> memory barrier (wmb()), which strictly orders prior writes against
->> subsequent writes. However, it does not order prior reads against
->> subsequent writes. Consequently, the CPU is permitted to reorder the
->> writel() store to become globally visible before the payload reads
->> have completed.
-> 
-> I am very confused by this after seeing it in the Exynos fixes pull
-> request. How would anything get reordered here? What I see is that
-> 
-> - The SRAM is device memory, so any access to it is architecturally
->   ordered against other accesses to the same device. Even on
->   architectures that don't guarantee this, Linux I/O accessors
->   do.
+On 2026-05-28 23:45:51 [+0800], Runyu Xiao wrote:
+> intel_lpe_audio_irq_handler() forwards the LPE audio child IRQ from the
+> i915 parent IRQ path with generic_handle_irq(). The forwarded child top
+> half is not an independent hardirq entry point; it inherits the context
+> of the outer i915 interrupt dispatch path.
+=E2=80=A6
 
-Well, __ioread32_copy does not guarantee that, I think. That's the
-relaxed version.
+This looks very familiar and is work in progress
+	https://lore.kernel.org/all/20260310115709.2276203-16-dev@lankhorst.se/
 
-However everything is guarded with mutex, so we do not consider here
-other threads and within single thread it indeed does not look like
-misordered.
+Maarten, where do we stand on the i915 series?
 
-> 
-> - The __ioread32_copy() writes data from MMIO into main memory,
->   and the store into main memory is guaranteed to be both before
->   the final writel() (because of the implied __iowmb()) and
+> Fixes: eef57324d926 ("drm/i915: setup bridge for HDMI LPE audio driver")
+> Cc: stable@vger.kernel.org
 
-Yes
+No stable fix needed because i915 can not be turned on PREEMPT_RT.
 
->   after the read (because of the data dependency).
-
-I don't see the data dependency regarding the write. We read 'rx_front'
-and 'i' in the loop. The 'i' is used for subsequent read (addr = base +
-mlen*i) and that's dependency, but that 'addr' is not used in any
-further writes.
-
-> 
-> - The smp_store_release() in addition orders the write into
->   rx_data->completed after the previous memory asccesses and
->   before the writel().
-
-smp_store_release() wasn't there before the next commit, so maybe that
-was missing when interpreting Sashiko suggestions.
-
-There is no code flow where smp_store_release() does not appear, except
-when RX queue is empty from the start, but that case would exit early or
-would not matter.
-
-Tudor, please validate this more. I postpone for now pull with firmware
-driver changes which were put on top of these fixes.
-
-
-> 
->> If this reordering occurs, the firmware may observe the updated rear
->> pointer, assume the queue slot is available, and overwrite the SRAM
->> payload while the kernel is still actively reading from it, leading
->> to silent data corruption.
-> 
-> It is possible that I'm still missing the point here, but it
-> very much sounds like you trusted a chatbot over trying to
-> understand what is actually going on. Can you explain a
-> sceneario where the barrier actually makes a difference,
-> and what the corresponding barrier operation on the other
-> side is?
-> 
->      Arnd
-
-
-Best regards,
-Krzysztof
+Sebastian
 
