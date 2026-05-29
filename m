@@ -1,145 +1,192 @@
-Return-Path: <stable+bounces-256570-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-256571-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id aIt/DyxbGWoLvwgAu9opvQ
-	(envelope-from <stable+bounces-256570-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 29 May 2026 11:23:56 +0200
+	id gBk3JYNbGWoLvwgAu9opvQ
+	(envelope-from <stable+bounces-256571-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 29 May 2026 11:25:23 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id AC9725FFE0E
-	for <lists+stable@lfdr.de>; Fri, 29 May 2026 11:23:55 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 26EFA5FFE43
+	for <lists+stable@lfdr.de>; Fri, 29 May 2026 11:25:22 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 6365530E5A84
-	for <lists+stable@lfdr.de>; Fri, 29 May 2026 09:21:58 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 5616A305374B
+	for <lists+stable@lfdr.de>; Fri, 29 May 2026 09:22:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 60F7A7082D;
-	Fri, 29 May 2026 09:21:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 47A123BA24F;
+	Fri, 29 May 2026 09:22:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="j8/wX8ya"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Jv2cf8dI"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 40BDC3BCD21;
-	Fri, 29 May 2026 09:21:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 237053AD520;
+	Fri, 29 May 2026 09:22:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780046514; cv=none; b=gF8CrFaxA7sQvZK/YkfKTenF3AFCsDGepWqZgE1e3Nqdsp9lLNhyd+8NbGydtfS/LF+x0dAjbeGfqIX/6KEIaDqH56OF0ThwcBezkV+5Gmky8yqvkawr+Caq0TvqeftAo38kLF5fnsc1kpiH4QJDpIN5RRK9Ifb8k+F3JNLKbvU=
+	t=1780046565; cv=none; b=pCk/qxHqO9K85Gp7q7SMhSGS/KYsfcs9IPiB6WnTBtNOoiXdczrpHJdraN6IoUtaNInUkPpHExZ+eNWkBPHKkObHq9lYJdpCfJ01dupA+7ZwE72cmyDW83u9bx06XADbXBScg/Km4qfp6+lYBxEcY1qzuH3m5XDoi08nK3ewPcU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780046514; c=relaxed/simple;
-	bh=Noamqn6zfjS1zp50LV+Ze7iB8DfoAawei9zA3VWezAk=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=bvOXTsQvN6B1SFW5mpoqgLD+kx8BSiOTdQNG2C+iSGjTSdt6l0w2rdb+MrW9ibP7mAdVIEiMArLshk32hIxWgNWCCEAG6cfWf+zem0eLSg1Vfj3h2UBPE1pAKspTWqb5og3kGXViu7CqiQB3yNOce9FOYrQvoO1csfjaz5B14K8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=j8/wX8ya; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7A97C1F0089A;
-	Fri, 29 May 2026 09:21:49 +0000 (UTC)
+	s=arc-20240116; t=1780046565; c=relaxed/simple;
+	bh=/uOukBw5T7l2tJnXLlmvp2DuF04Sp7Y2Ix3bxnflXTI=;
+	h=Date:Message-ID:From:To:Cc:Subject:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=Cz2nJwTy+s7sva9UdCpzF5irs8saS7yfUOdg7XOxfwDIZSC2J7bfmkwgn0f1qwAoUg/O0j939hXlcH+WvpNM9hQkoVJBERzfvglCl0VJMngk4QhskbKNcrtgCHEhmwK4DjLzfCwL2cRwFeY6ptJptCUrRmOFD5eneaRa5kC3Agg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Jv2cf8dI; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B9B271F00893;
+	Fri, 29 May 2026 09:22:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1780046512;
-	bh=URAm25BpcfH+MJ/3jqio7OXT3NwLezv3H50Eqja7FMk=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=j8/wX8ya3tGZwfFrg4IWB9rdazMJOYKxTcKmcuiUansaIfmt1zCT5m8LvZeFiowr1
-	 zmdPNQtpvTWPK3iH5EGcOtwLZcMK7qaLQ+OjDx3Etn97TIQMcppNIPdLRxRLvlJMPC
-	 foN6WnFuskTHTemkWNj3uMqAkKzqsjMYtOHEeluWDs74IhuyYC7H6FgIjJhUp/VdnE
-	 SI4sJU2VHkGIYUlnI+O/YRMEQhDx+rrtCOgA+pJKtLET89DYXVcwdbHaqjOb/vioGH
-	 nB5q6dyOaynMveMT5gXiPzDClB9u5sR/n6s8aapMTb7HlHmzx7+hk13Qhodd6lzQTq
-	 1fQPTUVFF2ySw==
-Message-ID: <c5591024-0d8e-4c41-9e35-56689fa94731@kernel.org>
-Date: Fri, 29 May 2026 11:21:47 +0200
+	s=k20260515; t=1780046563;
+	bh=TmeAf3Ybvh22BotVc9J8HU5aFJTBYRisynSo9SzTQqs=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References;
+	b=Jv2cf8dIg3u3/4h/MRPg7XZ9u6bG0aIX7EubS3mCH9+OW+uvRtM27zzQvthavml7O
+	 GzwhrpWPWTW8OvkGKTCIsupp/sZ2rRElbG3fQVInBqESrt/r7qVINXCcNfBs85uMCI
+	 IRj8mj9S7qzrltVb8FjBliVdnzCjMvAXjjj95tE9c5ZGzeQwy1dzXVoZi/R6xeRRNV
+	 EVDhdBkz7npRtn5sWDbSZKTjIUKPUImMUfqderLN1S4phongLqNHQpciBCrfyEKzKk
+	 Gr+eUMn0lR/bLYY00uRajpfL2/av/X1pO+EeDRcoFiXomdXAuiMYea39M6vvVRTubS
+	 uVLrOgND86mrw==
+Received: from sofa.misterjones.org ([185.219.108.64] helo=goblin-girl.misterjones.org)
+	by disco-boy.misterjones.org with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.98.2)
+	(envelope-from <maz@kernel.org>)
+	id 1wStQP-00000007LU9-2NUG;
+	Fri, 29 May 2026 09:22:41 +0000
+Date: Fri, 29 May 2026 10:22:41 +0100
+Message-ID: <868q92vace.wl-maz@kernel.org>
+From: Marc Zyngier <maz@kernel.org>
+To: Mark Brown <broonie@kernel.org>
+Cc: Oliver Upton <oupton@kernel.org>,
+	Joey Gouly <joey.gouly@arm.com>,
+	Steffen Eiden <seiden@linux.ibm.com>,
+	Suzuki K Poulose <suzuki.poulose@arm.com>,
+	Catalin Marinas <catalin.marinas@arm.com>,
+	Will Deacon <will@kernel.org>,
+	Mark Rutland <mark.rutland@arm.com>,
+	linux-arm-kernel@lists.infradead.org,
+	kvmarm@lists.linux.dev,
+	linux-kernel@vger.kernel.org,
+	stable@vger.kernel.org
+Subject: Re: [PATCH v2] KVM: arm64: Preserve all guest ZCR_EL2.LEN values
+In-Reply-To: <20260529-kvm-arm64-fix-zcr-len-nv-v2-1-86cad51992bd@kernel.org>
+References: <20260529-kvm-arm64-fix-zcr-len-nv-v2-1-86cad51992bd@kernel.org>
+User-Agent: Wanderlust/2.15.9 (Almost Unreal) SEMI-EPG/1.14.7 (Harue)
+ FLIM-LB/1.14.9 (=?UTF-8?B?R29qxY0=?=) APEL-LB/10.8 EasyPG/1.0.0 Emacs/30.1
+ (aarch64-unknown-linux-gnu) MULE/6.0 (HANACHIRUSATO)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] ASoC: fsl_sai: Fix 32 slots TDM broken by integer shift
- UB in xMR write
-To: Chancel Liu <chancel.liu@nxp.com>, shengjiu.wang@gmail.com,
- Xiubo.Lee@gmail.com, festevam@gmail.com, nicoleotsuka@gmail.com,
- lgirdwood@gmail.com, broonie@kernel.org, perex@perex.cz, tiwai@suse.com
-Cc: linux-kernel@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
- linux-sound@vger.kernel.org, stable@vger.kernel.org
-References: <20260529085020.3727790-1-chancel.liu@nxp.com>
-Content-Language: fr-FR
-From: "Christophe Leroy (CS GROUP)" <chleroy@kernel.org>
-In-Reply-To: <20260529085020.3727790-1-chancel.liu@nxp.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-0.66 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+MIME-Version: 1.0 (generated by SEMI-EPG 1.14.7 - "Harue")
+Content-Type: text/plain; charset=US-ASCII
+X-SA-Exim-Connect-IP: 185.219.108.64
+X-SA-Exim-Rcpt-To: broonie@kernel.org, oupton@kernel.org, joey.gouly@arm.com, seiden@linux.ibm.com, suzuki.poulose@arm.com, catalin.marinas@arm.com, will@kernel.org, mark.rutland@arm.com, linux-arm-kernel@lists.infradead.org, kvmarm@lists.linux.dev, linux-kernel@vger.kernel.org, stable@vger.kernel.org
+X-SA-Exim-Mail-From: maz@kernel.org
+X-SA-Exim-Scanned: No (on disco-boy.misterjones.org); SAEximRunCond expanded to false
+X-Spamd-Result: default: False [-1.16 / 15.00];
+	MID_CONTAINS_FROM(1.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
 	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20260515];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-256570-lists,stable=lfdr.de];
-	FREEMAIL_TO(0.00)[nxp.com,gmail.com,kernel.org,perex.cz,suse.com];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	RCPT_COUNT_TWELVE(0.00)[13];
-	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-256571-lists,stable=lfdr.de];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[chleroy@kernel.org,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	RCPT_COUNT_TWELVE(0.00)[12];
+	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[kernel.org:+];
-	MID_RHS_MATCH_FROM(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	TO_DN_SOME(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[maz@kernel.org,stable@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCVD_COUNT_FIVE(0.00)[5];
 	TAGGED_RCPT(0.00)[stable];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	NEURAL_HAM(-0.00)[-1.000];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
 	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo]
-X-Rspamd-Queue-Id: AC9725FFE0E
+X-Rspamd-Queue-Id: 26EFA5FFE43
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
+Thanks for respinning this patch quickly.
 
-
-Le 29/05/2026 à 10:50, Chancel Liu a écrit :
-> When configuring 32 slots TDM (channels == slots == 32), the xMR
-> (Mask Register) write used:
-> ~0UL - ((1 << min(channels, slots)) - 1)
+On Fri, 29 May 2026 00:01:44 +0100,
+Mark Brown <broonie@kernel.org> wrote:
 > 
-> The literal '1' is a signed 32-bit int. Shifting it by 32 positions is
-> undefined behaviour which may set this register to 0xFFFFFFFF, masking
-> all 32 slots.
-> 
-> Use 1ULL so the shift is carried out in 64 bits. For 32 slots this
-> produces a zero mask after truncation to the 32-bit register:
-> ~0ULL - ((1ULL << 32) - 1)
->    = 0xFFFFFFFFFFFFFFFF - (0x100000000 - 1)
->    = 0xFFFFFFFFFFFFFFFF - 0xFFFFFFFF
->    = 0xFFFFFFFF00000000
->    -> Truncates to 0x00000000
-> Behaviour for fewer than 32 slots is unchanged.
+> Since commit b3d29a823099 ("KVM: arm64: nv: Handle ZCR_EL2 traps") when
+> guests write to ZCR_EL2 we have clamped the value of ZCR_EL2.LEN to be
+> at most that configuring the maximum guest VL when accessed directly as
+> ZCR_EL2. This is not clearly the behaviour the architecture documents
+> for ZCR_EL2.LEN, while things are a little ambiguous currently there is
+> a fairly direct reading that suggests values will be read as written.
+> Further, the documented procedure for enumerating vector lengths means
+> that it is expected that values larger than the largest supported vector
+> length will be written in practice.
 
-Why not use macro GENMASK_U32() instead ?
+Honestly, that's not the core issue. And even $SUBJECT fails to
+capture what is at stake here.
 
 > 
-> Fixes: 770f58d7d2c5 ("ASoC: fsl_sai: Support multiple data channel enable bits")
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Chancel Liu <chancel.liu@nxp.com>
-> ---
->   sound/soc/fsl/fsl_sai.c | 2 +-
->   1 file changed, 1 insertion(+), 1 deletion(-)
-> 
-> diff --git a/sound/soc/fsl/fsl_sai.c b/sound/soc/fsl/fsl_sai.c
-> index d6dd95680892..821e3bd51b6e 100644
-> --- a/sound/soc/fsl/fsl_sai.c
-> +++ b/sound/soc/fsl/fsl_sai.c
-> @@ -797,7 +797,7 @@ static int fsl_sai_hw_params(struct snd_pcm_substream *substream,
->   				   FSL_SAI_CR4_FSD_MSTR, FSL_SAI_CR4_FSD_MSTR);
->   
->   	regmap_write(sai->regmap, FSL_SAI_xMR(tx),
-> -		     ~0UL - ((1 << min(channels, slots)) - 1));
-> +		     ~0ULL - ((1ULL << min(channels, slots)) - 1));
->   
->   	return 0;
->   }
+> The reasoning for the current behaviour is not specifically articulated, my
 
+I don't think there is a reasoning behind each and every bug.
+
+> best guess is that it is intended to ensure that the guest can not see an
+> effective VL greater than the maximum that has been configured, though
+> this will be ineffective when a VHE guest uses the ZCR_EL1 accessor.
+
+This last point *IS* the core problem. It is that the guest can access
+VLs beyond what is intended by the VM configuration. Not getting the
+read-as-written behaviour really is secondary compared to that issue.
+
+[...]
+
+I've rewritten the commit message to make it plain what the problem
+is, see below. I've also slightly tidied up access_zcr_el2(), but the
+fix otherwise looks good.
+
+Thanks,
+
+	M.
+
+KVM: arm64: Correctly cap ZCR_EL2 provided by a guest hypervisor
+
+ZCR_EL2 can be updated by a VHE guest hypervisor either using ZCR_EL2
+(which traps) or ZCR_EL1 (which does not trap). KVM handles both in
+different way:
+
+- on ZCR_EL2 trap, ZCR_EL2.LEN is immediately capped at the VM's own
+  VL limit. This has the potential to break existing SW that relies
+  on the full LEN field to be stateful.
+
+- on ZCR_EL1 access, we do absolutely nothing.
+
+On restoring the SVE context for an L2 guest, we directly restore the
+guest hypervisor's view of ZCR_EL2 into the physical ZCR_EL2. If the
+guest's view of the register was updated using the ZCR_EL2 accessor,
+the value has already been sanitised (with the caveat mentioned above).
+
+But if the guest used ZCR_EL1, the raw value is written into the HW,
+and the L2 guest can now access VLs that it shouldn't.
+
+Fix all the above by moving the VL capping to the restore points,
+ensuring that:
+
+- the HW is always programmed with a capped value, irrespective of
+  the accessor being used,
+
+- the ZCR_EL2.LEN field is always completely stateful, irrespective
+  of the accessor being used.
+
+Additionally, move ZCR_EL2 to be a sanitised register, ensuring that
+only the LEN field is actually stateful. This requires some creative
+construction of the RES0 mask, as the sysreg generation script does
+not yet generate RAZ/WI fields.
+
+-- 
+Without deviation from the norm, progress is not possible.
 
