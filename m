@@ -1,234 +1,183 @@
-Return-Path: <stable+bounces-256456-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-256457-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id YN8IOubgGGoJoggAu9opvQ
-	(envelope-from <stable+bounces-256456-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 29 May 2026 02:42:14 +0200
+	id 8EoEEazpGGruoggAu9opvQ
+	(envelope-from <stable+bounces-256457-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 29 May 2026 03:19:40 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 952BD5FBBEC
-	for <lists+stable@lfdr.de>; Fri, 29 May 2026 02:42:14 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id DD2895FBF28
+	for <lists+stable@lfdr.de>; Fri, 29 May 2026 03:19:39 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 9EC133007E28
-	for <lists+stable@lfdr.de>; Fri, 29 May 2026 00:41:37 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id CAD5F303878D
+	for <lists+stable@lfdr.de>; Fri, 29 May 2026 01:19:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 38CED34BA5B;
-	Fri, 29 May 2026 00:41:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F41F73546F3;
+	Fri, 29 May 2026 01:19:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=amazon.com header.i=@amazon.com header.b="Cu4ySRQF"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="h4S0loMQ"
 X-Original-To: stable@vger.kernel.org
-Received: from iad-out-014.esa.us-east-1.outbound.mail-perimeter.amazon.com (iad-out-014.esa.us-east-1.outbound.mail-perimeter.amazon.com [50.16.246.183])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pf1-f180.google.com (mail-pf1-f180.google.com [209.85.210.180])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B08EBC2EA;
-	Fri, 29 May 2026 00:41:34 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=50.16.246.183
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780015296; cv=fail; b=UD2BfBO0OTqtPkWswalHSu7/eWRx1fRKqxpdnZbuYkpzR28BCcq2JjxWfgjXKcWH6qcEhUcvp2PgSXzg7nRm//p+HoS2BJ9RwxlU3UCujEIZyXk5qDXiU9hWOOWZ7vjwVOvCd7hdWC8i72xILqh9wWxqRlyTYqCZGcjLkoomlik=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780015296; c=relaxed/simple;
-	bh=Gg04BNdVu70AunOA8CDR+++izIAeTphoW9/ws/wbeP0=;
-	h=Subject:From:To:CC:Date:Message-ID:References:In-Reply-To:
-	 Content-Type:MIME-Version; b=dWbnJpooMHJxziJNn0ptV6rWCllOo+CFIOt0kK4uGAA2yPgrEVxzINTixCGye1SKz30O5mxYlfP8srVOGsT1veFfLTjaFkWnwDBsJJQWDlWQcGLN4fJuTOWefrGqBb7GHmzzDaCGfhGmIqrHz6Z4YlzOFV66KV6IcRZs/QbzAb8=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amazon.com; spf=pass smtp.mailfrom=amazon.com; dkim=pass (2048-bit key) header.d=amazon.com header.i=@amazon.com header.b=Cu4ySRQF; arc=fail smtp.client-ip=50.16.246.183
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amazon.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=amazon.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 040D73546EC
+	for <stable@vger.kernel.org>; Fri, 29 May 2026 01:19:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.180
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1780017574; cv=none; b=RJbHOxh23FAA4hBUbHShC0pFIYpKeZmx0hzfpgijJ2wsExeoW/gBMk+h6G+E/G3e2AA88GTdG/T/9+0pzwWplMJMeKl3o/1vee8aJtpi7jZeMWa/y3PeVbsF7+jZ7/ouj+9fq27ekHrKfuSk9KuqZQmI6+DM1cpIe1Q1+GgNgNg=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1780017574; c=relaxed/simple;
+	bh=9+5tF0J6/VIAoz29m+zdLF6hSRtmeSnELRVfUP1Q47c=;
+	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
+	 Content-Disposition; b=V1bplOV8yQANd1Vou0e87w47EZru8NhBdwrSb/euzYZy/okvkviyWPEHRCQJBVVeM74GaKHtcw1jEK8GUGdzMxKEzx7VuNQCzZreUpuTaW+t6F/UKD4AgTfmsSvxc7LwEA6BfEzuWczwFlj+2BdB+d+Jhry1YdjRJDgSJqMx0Qc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=h4S0loMQ; arc=none smtp.client-ip=209.85.210.180
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-pf1-f180.google.com with SMTP id d2e1a72fcca58-82fbdd60b64so10862013b3a.3
+        for <stable@vger.kernel.org>; Thu, 28 May 2026 18:19:32 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-  d=amazon.com; i=@amazon.com; q=dns/txt; s=amazoncorp2;
-  t=1780015294; x=1811551294;
-  h=from:to:cc:date:message-id:references:in-reply-to:
-   content-id:content-transfer-encoding:mime-version:subject;
-  bh=Gg04BNdVu70AunOA8CDR+++izIAeTphoW9/ws/wbeP0=;
-  b=Cu4ySRQFOnL35rjgMuqh/OJAtI8HmEaM4YaY8d1M/C8oWmHX1lkq6++z
-   QqqXtEBYZAOTmvInRqwaz4J9TFXlSk1JMY1VLWro7FBbSNeEeU5fs0c60
-   hZvYIC3/l7RSm2lTSiq8wL4x8kpGaEoXisUFh5SDRaHvRljKnrhzwBFDh
-   /AE7gkIsVITzvZjFz3zNB7WEsEfvDpzrq9a/gX+z+3wmSUmDvoBe+5exK
-   AN/PssTuQhP3PHEZd9amLXmPA7Tp6r+7YhIdl70E/hmYXXRjsisuTu+o9
-   uNQQl72S2eJBlEmKBdQE+WysX1WHXB76SGPU92pk8j/uXjrxP4sH2O7Mf
-   w==;
-X-CSE-ConnectionGUID: NT+ba504RX6YZPm9eqMARg==
-X-CSE-MsgGUID: Dr7Wtmp2SW6pRdrxcj1oRA==
-X-IronPort-AV: E=Sophos;i="6.24,174,1774310400"; 
-   d="scan'208";a="19201061"
-Subject: Re: [BUG] net: tcp: SO_LINGER with l_linger=0 leaks memory when closing
- sockets with pending send data
-Thread-Topic: [BUG] net: tcp: SO_LINGER with l_linger=0 leaks memory when closing sockets
- with pending send data
-Received: from ip-10-4-22-235.ec2.internal (HELO smtpout.naws.us-east-1.prod.farcaster.email.amazon.dev) ([10.4.22.235])
-  by internal-iad-out-014.esa.us-east-1.outbound.mail-perimeter.amazon.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 29 May 2026 00:41:33 +0000
-Received: from EX19MTAUEA002.ant.amazon.com [52.94.133.129:12549]
- by smtpin.naws.us-east-1.prod.farcaster.email.amazon.dev [10.0.4.242:2525] with esmtp (Farcaster)
- id 7803ee9a-3fb1-4956-aa11-2e35c92b8202; Fri, 29 May 2026 00:41:33 +0000 (UTC)
-X-Farcaster-Flow-ID: 7803ee9a-3fb1-4956-aa11-2e35c92b8202
-Received: from EX19EXOUEC001.ant.amazon.com (10.252.135.173) by
- EX19MTAUEA002.ant.amazon.com (10.252.134.9) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.2562.37;
- Fri, 29 May 2026 00:41:33 +0000
-Received: from EX19EXOUEB001.ant.amazon.com (10.252.135.46) by
- EX19EXOUEC001.ant.amazon.com (10.252.135.173) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.2562.37;
- Fri, 29 May 2026 00:41:32 +0000
-Received: from DS2PR08CU001.outbound.protection.outlook.com (10.252.135.199)
- by EX19EXOUEB001.ant.amazon.com (10.252.135.46) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.2562.37
- via Frontend Transport; Fri, 29 May 2026 00:41:32 +0000
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=zHzJJpLC1wESxPIoQg/skGIRVKrIPcCzB8H/iGiDG+NgrekFjf61mYXEMiHMhVh64x3Iz7BTsu4VsCbwDtU93GklM7YtgDtIznSD6OhJs9GUNYX13KiwhgU2UBeegwRZJ/nvm0PGMbofyxQtrNF0aoHQFr0qtCqdtLmc/fdzaS4vkEinkl6G0rgtYmwa0nVP4XMVR8xt4/1HeDoKFbBxZusA5zjDHeIwvONow//WrPA94bFaVnIBUFHtc2MksVHep7LxknIEqrk1d/b+KSOGgE/8+7ejy8hQ8DNoPFsZ+JWicw/5NsQvjTsBFjWHaY57OUmfogPGgGjzDjPIHcHNtw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=Gg04BNdVu70AunOA8CDR+++izIAeTphoW9/ws/wbeP0=;
- b=vSg0k62D7/tdJWPZp00BDyPBTx46esCiP/dXXmRybr37AKUFXUhSsXHX1/+3RdMReB6ixFEaFTmTahh1Na+XZrBUAwOYSxzwCeQVpwadhb/ey5R7osMlZegYD8S2zWBirErdIO5dfcNNzZFsOLzkeJxK7/YatOHgyODud4AQzEhHZc2shKH1UY2bDfJ/+znVbiUogaSle4ih2wCEpzi76Ki0NzKcbcrYuxHBOOGbYG8uT/EXqgpDa+j+oUVc6RlBHwBQnhsLZa1RdGWfJIp6Kjh/ss1e+2tX9uYltoow7bzJEHxtjepxEsWEYXrT7dU4JszqPzS+d80y4UfBzG9Z9w==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=amazon.com; dmarc=pass action=none header.from=amazon.com;
- dkim=pass header.d=amazon.com; arc=none
-Received: from SA1PR18MB4728.namprd18.prod.outlook.com (2603:10b6:806:1db::15)
- by MW3PR18MB3498.namprd18.prod.outlook.com (2603:10b6:303:5f::23) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.71.14; Fri, 29 May
- 2026 00:41:30 +0000
-Received: from SA1PR18MB4728.namprd18.prod.outlook.com
- ([fe80::3fa5:9d2e:e6a6:67d5]) by SA1PR18MB4728.namprd18.prod.outlook.com
- ([fe80::3fa5:9d2e:e6a6:67d5%6]) with mapi id 15.21.0071.011; Fri, 29 May 2026
- 00:41:30 +0000
-From: "Ahmed, Aaron" <aarnahmd@amazon.com>
-To: Kuniyuki Iwashima <kuniyu@google.com>
-CC: "stable@vger.kernel.org" <stable@vger.kernel.org>,
-	"netdev@vger.kernel.org" <netdev@vger.kernel.org>, "ncardwell@google.com"
-	<ncardwell@google.com>, "edumazet@google.com" <edumazet@google.com>,
-	aws-binance-tam <aws-binance-tam@amazon.com>
-Thread-Index: AQHczskVAbHrfsqWm0ylDOIzc6Zy8LXj+36AgA8bggCAAJPFgIAtIPKAgAB9AQCAAqwjgA==
-Date: Fri, 29 May 2026 00:41:30 +0000
-Message-ID: <A2E89DBD-8DF5-44A0-A09B-ACDBDB7FB31D@amazon.com>
-References: <48BADABE-4DFB-4DAD-8248-E94D8F5238D2@amazon.com>
- <CAAVpQUCfMsWBpPpywbwBLRCdHUqWqFBoDK=17dwDkG6T0dQxzw@mail.gmail.com>
- <A7A3F2FE-B18C-4F6D-A5E4-78164D6904F5@amazon.com>
- <CAAVpQUCKQQF=noqxQwD=dJvO3tuhPZxssDygyuVaZxTQGKiWfQ@mail.gmail.com>
- <9E49374E-D1D6-4D41-BFE0-03EE734DF9F2@amazon.com>
- <CAAVpQUBtKBzq36Wz9p3MaHR=G10-NFBtQXgGW3S3QV5THW2iCg@mail.gmail.com>
-In-Reply-To: <CAAVpQUBtKBzq36Wz9p3MaHR=G10-NFBtQXgGW3S3QV5THW2iCg@mail.gmail.com>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach:
-X-MS-TNEF-Correlator:
-msip_labels: MSIP_Label_19e68092-05df-4271-8e3e-b2a4c82ba797_Enabled=true;MSIP_Label_19e68092-05df-4271-8e3e-b2a4c82ba797_SetDate=2026-05-29T00:34:28Z;MSIP_Label_19e68092-05df-4271-8e3e-b2a4c82ba797_ContentBits=0;MSIP_Label_19e68092-05df-4271-8e3e-b2a4c82ba797_Enabled=true;MSIP_Label_19e68092-05df-4271-8e3e-b2a4c82ba797_Tag=50,
- 3, 0,
- 1;MSIP_Label_19e68092-05df-4271-8e3e-b2a4c82ba797_Name=Confidential;MSIP_Label_19e68092-05df-4271-8e3e-b2a4c82ba797_ActionId=d7f6e09f-6046-4dfb-aaaf-054c5b0ecaa2;MSIP_Label_19e68092-05df-4271-8e3e-b2a4c82ba797_SiteId=5280104a-472d-4538-9ccf-1e1d0efe8b1b;MSIP_Label_19e68092-05df-4271-8e3e-b2a4c82ba797_Method=Standard;
-user-agent: Microsoft-MacOutlook/16.108.26042616
-authentication-results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=amazon.com;
-x-ms-publictraffictype: Email
-x-ms-traffictypediagnostic: SA1PR18MB4728:EE_|MW3PR18MB3498:EE_
-x-ms-office365-filtering-correlation-id: abefcefb-875e-46ba-ac94-08debd1b0652
-x-ms-exchange-senderadcheck: 1
-x-ms-exchange-antispam-relay: 0
-x-microsoft-antispam: BCL:0;ARA:13230040|376014|1800799024|366016|38070700021|11063799006|4143699003|56012099006|18002099003|22082099003;
-x-microsoft-antispam-message-info: CjDINAsCPTg1tuaj2VtcVvhKARHQp/kWZ7BO/vTwBEg5rybGWdg950j5e0i+tlLttnfrjffxmRCAqOX7hccPQndG72lxfGQwBCH1i08xzckDDTQm+pBpb3+/mcM9bXpoAfjMOlHsdlFKNX+df8eUNqqE8ZnfIIqVsYqkRpc8+M7lKs1ZD+hQnDVWNtU1N5t+4bY3IaGrozTHxcxSIPmZEb70/AnD0iwRZqDMdUzPwrcnQpaGj+mFIgqGga3UIpYLVLFqhNypNXhjHjfOB6hC9a/45Tpw3g31jnzd4htg6qH4B648PgmkmRwHkPhJCbBURRsrTxDE4HaQg6UIKoFEmW1G2YnHGWQ3LdQBbxCYnBSYrTM62PM39gA8oyA1gdpcmepdSgmpw+0tmi/Xv0H/KArPGUE7ZT3rfODVyW+mzFpEExp0Gsg/G9Vpuuny/NBJ8fbdmkyK/FeP7tgksC2YDPMdBbieQdySRQxSZkur7yMA8qBjGSezYYP2+5mpQ86Ty4mJUtXGD6Z78noqROoTbDiYitecwqr4fwyFMAFGjHY4rBzrX/2rNt9176gGzV68HG765eCv7PolWj13ZBceU2wQlosGrlfwMK0CXwZF16xIARa+Re63OhL+Ui8Q4+CKovH7viNWPFpX+rtO6gI9PyB/nzltxb+pqMQ3x/G4XVs8AqNJd+iWingFKvlVSG7AeAXr1xy/2jAl3KeXxWp856NcUxCc9t3qSVZAjZh2NK7wh6Jt2wx75hoVhvWSbGZE
-x-forefront-antispam-report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:SA1PR18MB4728.namprd18.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(1800799024)(366016)(38070700021)(11063799006)(4143699003)(56012099006)(18002099003)(22082099003);DIR:OUT;SFP:1101;
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0: =?utf-8?B?Z3RrYTRuNFBIcVhlZEw4eUlySEZPVEE2V2F6Qkc4dmlIVkdzeGFxYjVWVHBp?=
- =?utf-8?B?NHdZZGR5Rmd1NEF2dktwbnA4YmpCUDVFcE1GeWZTM2ZCZG1aUmduQUtzYTBY?=
- =?utf-8?B?Nm84YW92UHJrVjlkc0xqUS9rMkpIV2RyWFp1VVRXc213UnAvc05IRy9rbHRC?=
- =?utf-8?B?M2xnNVM5aENkVDhESlVZVHMvSTlnaVY3MUNHMVM5aU5zWkxUcHR3OStRVFVK?=
- =?utf-8?B?VXFjaXl1bjEySGhVWXNzTFV5WHZzZG5OeWVZN0hDb1pWQ0hmUThCVTVFRUlW?=
- =?utf-8?B?WWlJOWE3a3VwbHEwcllvYVlPbkcyOUgwK0RZbXR3VE4xOGxVTFpLNTRiWVQx?=
- =?utf-8?B?TjhXeDNXNjdnOFdKbFdZQ0VUNEhVbmVtZlRWemc0WmRXRVJoTHdQRWQyUFh4?=
- =?utf-8?B?VjQwUXVSc3ZPZFNrM3FxZ3BadWJDUFFUT2FPUloyTFVlQ1VxT2lxMTR4Ym1a?=
- =?utf-8?B?UjVodWhUQURUM2s2MmE1VHB6Snk5UEMxQUY4L0lNc0s3b2pNTElkRFJLZVg2?=
- =?utf-8?B?Q3hxOGppTTdtU1ppMzRoWjNrVHQ4K2M5R0k1bkpmeDZaRHVtVko5dnBhT2Vs?=
- =?utf-8?B?cHV4ZFNtdjlSNGtHLytVb1NIL01FNmRKMWl3ZUdMbG9ZREtuTFhiYkxPaHIw?=
- =?utf-8?B?N3VNZGk3NlFmc3AxTWFTa1RwclVqWE9ZUGk4WW1UbzBrTmJDSlFzRGRHbWdt?=
- =?utf-8?B?OGw0K0hEL2twYzRXRllMWWNRRW0yVndnQklyQzlCd0hJNFF0MUpndlRHZElm?=
- =?utf-8?B?TjdhYUdsZ3gvQng4WlBLQTVHRVNUMmJMWHNpYjhlcnBSMVhUSW1ONE9SOEI5?=
- =?utf-8?B?Wkh1OU5JRVgyVmtVWVRVZUcweEFPM2V3MGJMeTdUa3dPS085M1JoUHdJcWNu?=
- =?utf-8?B?RWYxQXIrZUdSSjlER2M4N2ZwVnlVN2l3Wm9tS2FCYjB5bkMrTmxuTnoxQnVE?=
- =?utf-8?B?TnZ4dE9QbnUxai8wekV6VGlvby9CWDI1eit6Y1Z3VEhrSUlndURqZHcxTUUz?=
- =?utf-8?B?M3BSUjgxUFYxa242QzEzSjNzUmlpL2hXYk5yYTJ4akMxclhTamE4cmczSmpa?=
- =?utf-8?B?QThLQWVjRmN2ZEUyNGp4bExRYUNsbFVlczN3anhLSkxZbXZOS0xOSm11Rkti?=
- =?utf-8?B?Ykp3UUNzVGQ3ZHYvL0tlank5aVk4QlJpZlNqRXAxbU03YndsbksxYTgySXJr?=
- =?utf-8?B?NGVvdEZ4SE1KdGdMQjE1c0l5MGRRZ1MrMzR4dkFYT3NpRkc5UkVjRkpoTXlM?=
- =?utf-8?B?UmJIMG9oclk0cXdMSnVZMnVFWGFNVVhjbFNjMlJUeCtGbzR3TGRtRHBsbkJE?=
- =?utf-8?B?SnNoN3hONSsyWHFkekQvaFdNV0phZ2ppV2duWDRFSUJYdE9lRkFBMEJRcmFV?=
- =?utf-8?B?UGFZbHJmUWVqN2VVTm8rYVQ1STFicjNLTGdKOFZMWmVlaW90Rzdkd1ZxWXRu?=
- =?utf-8?B?QmdHOXppSUxFeEx0K0dhakxSMlU0VnBZWk01UHA3SjJhZVlFUlpwUVZIQXhP?=
- =?utf-8?B?bE5aMzZDdUFhZ1lvOGtxMytjbElzNkkrQ1BXUXBEY0h2OElDY0xSRG9JRnVO?=
- =?utf-8?B?Z2N0QVBNWmZmK25jZlFLZ3c3K3lLdGlDQ1ZzTm5pSkVod3ZVMUswMndnWUtX?=
- =?utf-8?B?cFZOa29GRGZzandoSkQzT3FVbFM5aWJQSXZ2SkZsVTFWbEsxSitOeEQrMlZE?=
- =?utf-8?B?T1RxQmxCbUhrL3hwN09kbnlPZ1FrSytRYmR0dlVXQkpOVklVdGJFNXl0SEpx?=
- =?utf-8?B?V0MyNlpNSHVrK1RRdUgxcUplMlVlbXJlTmJYMThXWFd3L1l1TkRkc01jRVdN?=
- =?utf-8?B?dlRwMjBRc09hUWtydXBSaExWdkFBL3JpdVI5M250WGNYQjVkMDhkZjZQNkpt?=
- =?utf-8?B?YmhvdjJQZVptMUorMzFrYmNzTThoTlZENHF6cFZzZmNObkxOSWJMWGU2dkNR?=
- =?utf-8?B?aE1rcHRSa1MvWjlvemZ2TTJGNCs5Zi91UHNVcjNaVXg1cExHanZWVmx0eHE3?=
- =?utf-8?B?MlNWSjROMFBUVWkvYm5BS2F0ZFBsL3ZhdVZvRWdYc2g4RlVDcDNac3JhNGl4?=
- =?utf-8?B?cFZQVDgxTVVKZDVLZm5EUTlsa3pWajdmVlZqRkRMUHFuRFF0MFJENU0rTjZX?=
- =?utf-8?B?aHBpdmpvcmdZN2t1cXdDVTN0UkRWZWlIcVJzd1pwcVhiN3VvQW56V094VDFL?=
- =?utf-8?B?bnBsYkkyQUdEQm5uVGVzTFI0cVRLZ21jZGJ5MHhZNVhZekFVc0hWUnN0VkJn?=
- =?utf-8?B?Y0pnUCtJYzlQQTZ2ck11aUo0aG0zdUtPZEVQaFNDN2t2eVd1aXkrR1RXZjZO?=
- =?utf-8?B?SCtWMFFaOTVZVGlUcFcwN2xESHBzQU9DZ2VBcW5yd2dkUmNMQ0JFQT09?=
-Content-Type: text/plain; charset="utf-8"
-Content-ID: <D1F2CCBF9FFD54418EBC2B625709EC1D@namprd18.prod.outlook.com>
-Content-Transfer-Encoding: base64
+        d=gmail.com; s=20251104; t=1780017572; x=1780622372; darn=vger.kernel.org;
+        h=content-disposition:mime-version:message-id:subject:cc:to:from:date
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=qIjpzaojjPAZHKihdp6RPFa2Tfe6qCRbgRVNDw+LS2c=;
+        b=h4S0loMQ50rxVdUCadzO/8AKEv8cRbZkXW02Xok2Adjt17yK/wQ3GrTbR1D8D0Wph0
+         cu4wTR2J2o2MxJb3RCQALxAUYY0BJQd7cUAzKw6msD9Pic9pVMCEpqttxchAdnNzdei6
+         IXhm0YNWGPsPH99ZhpEp3CMSipxgT0JWk06y1FqYfv+8UZ2l1MPfC4IO2ZF8iMiIeHKW
+         NKvmUbTkAncAbJyy/W6N+QXQ6zaKUwOBDSYIlk+8R8bsbTgBksUIYeSmsWg66bRqn/GD
+         hYmSbYHkMS5Rmxm4SzlM0drZRzhPqFRBs+gOI7ytDsmOa3fnLunugVGqWlDwLY234ofZ
+         gccg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1780017572; x=1780622372;
+        h=content-disposition:mime-version:message-id:subject:cc:to:from:date
+         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=qIjpzaojjPAZHKihdp6RPFa2Tfe6qCRbgRVNDw+LS2c=;
+        b=szlEI+dv6cU/2EhUNjmCepXgEhvQnp6EFM/E3Q1/EZhVuCU8dDqftqse+40Gl9G1/q
+         boifzIak0j5WoMLj3Zvm9nboPX61j67QKqiyssEmo26ljSMUvu8R/VYFntRtH0pNafej
+         j/GDE81ORWYtFy35e2sRHnMKXjvnxaIbURsVjQALcZRsHHbdD9KOtxQgbQRF3SjesKPN
+         Sqr5B3VMHfKJTSHdJUOw8Sh+qLtT7pRiF+myPs0Nkg+qCFwxj8WvBLe6hDCXc8ybI0ae
+         wtFZjaoRT7JIoefxwdY1goks431t3GaFRY5Dimiw5bmN8gUb6iQML/fO2v6f1s3iT/Zb
+         ocBQ==
+X-Forwarded-Encrypted: i=1; AFNElJ85nKTmmeiqldPo0O5Tx1nbCztuBCqucz6gI/zAJ/QWABAq6EjX47YuYPTgcSRCDKCQTzPrFd4=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxnYiwpK0qV0EdaKeLm5HXIw4QWurTfzUNsGO9C7OzY5cvp/DFq
+	7BAveqm2dxm7srxsXfLEsaeg2FIdT+Aof6YBfXjnstupSB2LfjA4/+Z0
+X-Gm-Gg: Acq92OEYuADvNz+EqNvAhDFwXH8xWUwsbPAFHaxOMKfH0uX4PQrYcR2ZMZdhKRlJYRl
+	JXWJW4c+KnzsM1UQm6ryk/HVtBVedk3GQA9OlRrTj9YIhcD3SmRXQy0dRdphH0SdwS3ot3ONbBI
+	jDHMc+g3fqCTPvowUgD/o4X5QTCPZ1bZfbDbcuIwvF46bvnbT7smUTFRSzzgthoCZJSVX96h/s1
+	l0tFE3inNUcjgvWHI9ZqyuZuaeKrq8bwllA1nCt+dkq4hh237IVVesKoFZarRMiKm+iCQxysIlw
+	hDVU+anHsORdCu+F+yLuR5PXTeFakL0Rx3oeERSqTT3Qp299dRIJ7Hq8Bi27BQXIwK/+mdlyujU
+	ifGCNq+IFf7mRygqsBg8p2elBTANl2NYBgRga3MDbI5ToFzjQXiYZdu30YJJFQsAlFLwJBgOpoh
+	fbWoY0s5RYW1FsmvYeMBdXDS3c4r6cJ2e+iAsL2hVHR975ofGZ1LMhDw==
+X-Received: by 2002:a05:6a00:4f86:b0:83e:2c38:f5d5 with SMTP id d2e1a72fcca58-84212b81ad5mr662298b3a.28.1780017572235;
+        Thu, 28 May 2026 18:19:32 -0700 (PDT)
+Received: from v4bel ([58.123.110.97])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-84214cec0d9sm35920b3a.55.2026.05.28.18.19.28
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 28 May 2026 18:19:31 -0700 (PDT)
+Date: Fri, 29 May 2026 10:19:27 +0900
+From: Hyunwoo Kim <imv4bel@gmail.com>
+To: gregkh@linuxfoundation.org, arve@android.com, tkjos@android.com,
+	brauner@kernel.org, cmllamas@google.com, aliceryhl@google.com,
+	mo@sdhn.cc, wedsonaf@gmail.com, Liam.Howlett@oracle.com
+Cc: linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org,
+	stable@vger.kernel.org, imv4bel@gmail.com
+Subject: [PATCH] rust_binder: use a u64 stride when cleaning up the offsets
+ array
+Message-ID: <ahjpn-3WQTywTdyj@v4bel>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-Exchange-RoutingPolicyChecked: SmYM3sKrD+qXz6JK8pszbKrxlhQaJ+H3x5dYfsoN6pkrp7K5k4qaVRpotwlDSW7tNpKC+U9P8s6U5lXbO702CyMSndqhRPPS1YVh7PB1o6uz1sL5c+RNjpwG6lSX3F2u7M2xywe2O/jrA32WEvUOLNkXnb4Mp8yTDI0uM+GvZq9M8k/A7hdJJMuKrTG6rygxzv7/Yz1mz0mnENAYwpxf1xjPxXFzs5C3FsLIpCmOOwM7L3STi+WY8rUnStuvqvRZXvcjdm07a2kXrNTyo1hkT2dYOBzZ4K+SwcMTRot0wlf5PRnrr1FaSkE7lvWX8R/ixv0HASEe14KgC4+L5lrlQg==
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: SA1PR18MB4728.namprd18.prod.outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: abefcefb-875e-46ba-ac94-08debd1b0652
-X-MS-Exchange-CrossTenant-originalarrivaltime: 29 May 2026 00:41:30.0650
- (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 5280104a-472d-4538-9ccf-1e1d0efe8b1b
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: zCrfMx9NgqYWVIAss6PT4fgrlnTmEdJQPCqeNrGlbYW0TIvsKtJ8BEjOFAybILlrpLpVenOyXcRWCUZbo675fA==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: MW3PR18MB3498
-X-OriginatorOrg: amazon.com
-X-Spamd-Result: default: False [-6.06 / 15.00];
-	WHITELIST_DMARC(-7.00)[amazon.com:D:+];
-	ARC_REJECT(1.00)[cv is fail on i=2];
-	MIME_BASE64_TEXT_BOGUS(1.00)[];
-	DMARC_POLICY_ALLOW(-0.50)[amazon.com,quarantine];
-	R_DKIM_ALLOW(-0.20)[amazon.com:s=amazoncorp2];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+X-Spamd-Result: default: False [-1.66 / 15.00];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	MID_RHS_NOT_FQDN(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
+	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	MAILLIST(-0.15)[generic];
-	MIME_BASE64_TEXT(0.10)[];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	FREEMAIL_CC(0.00)[vger.kernel.org,gmail.com];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-256456-lists,stable=lfdr.de];
-	MIME_TRACE(0.00)[0:+];
-	TO_DN_SOME(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TO_DN_EQ_ADDR_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[readme.md:url,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[6];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[aarnahmd@amazon.com,stable@vger.kernel.org];
+	TAGGED_FROM(0.00)[bounces-256457-lists,stable=lfdr.de];
 	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[amazon.com:+];
-	NEURAL_HAM(-0.00)[-0.999];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FREEMAIL_TO(0.00)[linuxfoundation.org,android.com,kernel.org,google.com,sdhn.cc,gmail.com,oracle.com];
+	RCPT_COUNT_TWELVE(0.00)[13];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[gmail.com:+];
+	MISSING_XM_UA(0.00)[];
+	FREEMAIL_FROM(0.00)[gmail.com];
+	RCVD_COUNT_FIVE(0.00)[5];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[imv4bel@gmail.com,stable@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	TO_DN_NONE(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	MID_RHS_MATCH_FROM(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	RCVD_COUNT_SEVEN(0.00)[10]
-X-Rspamd-Queue-Id: 952BD5FBBEC
+	NEURAL_HAM(-0.00)[-1.000];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo]
+X-Rspamd-Queue-Id: DD2895FBF28
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-SGkgS3VuaXl1a2ksDQoNCk9uIE1vbiwgQXByIDI3LCAyMDI2IGF0IDU6MTYgUE0gS3VuaXl1a2kg
-SXdhc2hpbWEgPGt1bml5dUBnb29nbGUuY29tPiB3cm90ZToNCj4gU29ycnksIEkgZGlkbid0IGhh
-dmUgdGltZSB0byBsb29rIGludG8gaXQuDQoNCk5vIHdvcnJpZXMsIHRoYW5rcyBmb3IgdGhlIHJl
-c3BvbnNlLg0KDQo+DQo+IENvdWxkIHlvdSB0cnkgcmVwcm9kdWNpbmcgdGhlIGlzc3VlIG9uIHRo
-ZSBsYXRlc3QgbmV0LW5leHQuZ2l0DQo+IGFuZC9vciB0aGUgbGF0ZXN0IExUUyB0cmVlIDYuMTgu
-eSA/DQo+DQo+IEFuZCBpZiB5b3UgY2FuIHN0aWxsIHJlcHJvLCBwbGVhc2UgdXBkYXRlIFJFQURN
-RS5tZCBhY2NvcmRpbmdseQ0KPiBhbmQgdXBsb2FkIHlvdXIgLmNvbmZpZyBmaWxlIHNpbmNlIEkg
-ZG9uJ3QgaGF2ZSBhY2Nlc3MgdG8gQW1hem9uIExpbnV4IDopDQoNClJlcHJvZHVjZWQgb24gbGF0
-ZXN0IDYuMTgueSBMVFMgKDYuMTguMzMpLiBVcGRhdGVkIHRoZSBSRUFETUUNCmFuZCB1cGxvYWRl
-ZCAuY29uZmlnOg0KDQogIGh0dHBzOi8vZ2l0aHViLmNvbS9hYWhtZWQ3MS90Y3AtbGluZ2VyLW1l
-bWxlYWstcmVwcm9kdWNlcg0KDQpUaGFua3MsDQpBYXJvbg0KDQo=
+Allocation's Drop walks the offsets array (binder_size_t = u64 entries),
+cleaning up the objects, but it used usize instead of u64 for both the
+stride and the per-entry read.
+
+On 64-bit kernels (usize == u64) this is harmless, but on 32-bit kernels
+it walks the 8-byte entries in 4-byte steps, iterating an N-entry array
+2N times, and reads the always-zero high word as offset 0, cleaning up
+the object at offset 0 N extra times. As a result the referenced node or
+handle ends up with a lower reference count than it actually has (a
+refcount over-decrement), and binder's reference accounting is corrupted;
+for example, the owner can be notified of a strong reference release
+(BR_RELEASE) even though references still remain.
+
+Change the stride to u64, and read each entry as a u64, narrowing it to
+usize with try_into().
+
+On 32-bit ARM, when this over-decrement would drive a count below zero,
+the driver's existing refcount guard refuses it and fires:
+
+  rust_binder: Failure: refcount underflow!
+
+Cc: stable@vger.kernel.org
+Fixes: eafedbc7c050 ("rust_binder: add Rust Binder driver")
+Signed-off-by: Hyunwoo Kim <imv4bel@gmail.com>
+---
+ drivers/android/binder/allocation.rs | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
+
+diff --git a/drivers/android/binder/allocation.rs b/drivers/android/binder/allocation.rs
+index 0cab959e4b7e..f4ffc57a8cb2 100644
+--- a/drivers/android/binder/allocation.rs
++++ b/drivers/android/binder/allocation.rs
+@@ -251,7 +251,7 @@ fn drop(&mut self) {
+ 
+             if let Some(offsets) = info.offsets.clone() {
+                 let view = AllocationView::new(self, offsets.start);
+-                for i in offsets.step_by(size_of::<usize>()) {
++                for i in offsets.step_by(size_of::<u64>()) {
+                     if view.cleanup_object(i).is_err() {
+                         pr_warn!("Error cleaning up object at offset {}\n", i)
+                     }
+@@ -412,7 +412,7 @@ pub(crate) fn transfer_binder_object(
+     }
+ 
+     fn cleanup_object(&self, index_offset: usize) -> Result {
+-        let offset = self.alloc.read(index_offset)?;
++        let offset: usize = self.alloc.read::<u64>(index_offset)?.try_into().map_err(|_| EINVAL)?;
+         let header = self.read::<BinderObjectHeader>(offset)?;
+         match header.type_ {
+             BINDER_TYPE_WEAK_BINDER | BINDER_TYPE_BINDER => {
+-- 
+2.43.0
+
 
