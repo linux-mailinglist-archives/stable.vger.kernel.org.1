@@ -1,59 +1,62 @@
-Return-Path: <stable+bounces-258510-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-259124-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id wOgZM3wqG2r//ggAu9opvQ
-	(envelope-from <stable+bounces-258510-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:20:44 +0200
+	id GGXkICgyG2qkAAkAu9opvQ
+	(envelope-from <stable+bounces-259124-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:53:28 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 52B70611879
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:20:44 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id EBA7D612BEA
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:53:27 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id B7F0F302D11D
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 18:09:53 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 864A130680EE
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 18:44:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 781543C2762;
-	Sat, 30 May 2026 18:09:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 164ED33E36A;
+	Sat, 30 May 2026 18:44:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vqbODgi3"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vUn0SW7I"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 47CF731F98D;
-	Sat, 30 May 2026 18:09:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DF8C825B08A;
+	Sat, 30 May 2026 18:44:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780164592; cv=none; b=Wg0Q/sUdT/Eg2Ow1Bwc+8BxSdUTxdyKRCwpKD8ouUpRmMoIr581yUgHDzQqydd8RaC7dAb4iw5fdG/X/qTdR+yETWvtcGcwyofE9nRkUGC/Wt4BeMO1LP+iP9OvT8FCSVYVuDFm7CTIBus6ckSgzDWsNNerHAJhsAVMbfdYRzQw=
+	t=1780166690; cv=none; b=QzYJfx2CI5Xtd8M+ctWyo30aR+bHdCr+iCDlCPBoQvxT8UUTzLOyvHM9l6xt9C9ue6dBCH7s0BKP3srGlAKN5E8eCnea7wBokxrD7HvSAdzFd8jNnSM4kSm7hKps3cZHlaf/VFl05lq3GlTOgEKXLI8j09g8i0VCj7ooxD0558I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780164592; c=relaxed/simple;
-	bh=CeA1HJ1Z/zwFkijymsgxaD1ZHAwDf/JpRsiAHAiD3KM=;
+	s=arc-20240116; t=1780166690; c=relaxed/simple;
+	bh=GCFVZunY13Buggl03pyWxs4IBpqkjyvE9fLI8Ow3xv0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=mWQiVyV5v/1C2q3ivat1y66t7uVUHj3ZQBOFJTKnVm7qS+zDznqX95mSncAxmrIKyw9slDfH0jBAkv8IYIYUGw0kgEldZCOIa6Mg7e8x6/e2oAQL3wtULmASLcTbnBFxw+/HFFWUbFlTYpsl6fBHYXlaUgT2IwLwWVwH96A1a2g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vqbODgi3; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8C4901F00893;
-	Sat, 30 May 2026 18:09:50 +0000 (UTC)
+	 MIME-Version; b=lwONCLzMsDBIaAkSJ5fmBLkIgXtvuLB6k/nnuW6OeKI9BiiIgLV3aqrYy+wX5QYPynlPEnl+NmV7MnLfqOKVU27oX1JXicbDzeUgB3LcAInMTdRGe9Tfvdjf28dK/lUwH+bNvCmFcPpmtMEfJMl3qcZjtVxDyEFB2i36oSUkQI4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vUn0SW7I; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3C2611F00893;
+	Sat, 30 May 2026 18:44:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780164591;
-	bh=y6tW4MpLHta7A2bAOpIQKtLChXnhFv/VZrqoLQzjG9M=;
+	s=korg; t=1780166689;
+	bh=ZgWNC6/Qel1HI+UuLA0qQSq5DstV/09LjdJ7xN4BBqQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=vqbODgi3Or34RcVWatLzJvyRfp5nRMEPXs6/G7TqllcweHru4c7qvEkxgElcixzmE
-	 VzvRdGO9bmS9Aqb1lo7MAuDJVq1UmFV6WwgkU1SUbLG+RBnq37iFAes+GEWmfoUajL
-	 kOPgbKox2OtOZa9UajvL7mhSX/1GWWJcCLrn9ADE=
+	b=vUn0SW7IuLEbGe5icsApUB8VAht5qMvlEx0icRvvQ69vc2hF+YSpBCitS3HmdI2Yb
+	 DomOgIxlL2Guqb0Vtgsn2mYGJmZmlt0tSMNWwAZucKrIc2SZG3RxTyDBvHLIsDXl37
+	 ld7hVA4gO0SpfFllUy5YbzAatcab1qajDsMmbtVQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Wolfram Sang <wsa+renesas@sang-engineering.com>,
-	Jassi Brar <jassisinghbrar@gmail.com>,
+	Weiming Shi <bestswngs@gmail.com>,
+	Florian Westphal <fw@strlen.de>,
+	Pablo Neira Ayuso <pablo@netfilter.org>,
+	Xiang Mei <xmei5@asu.edu>,
+	Fernando Fernandez Mancera <fmancera@suse.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 601/776] mailbox: mailbox-test: initialize struct earlier
+Subject: [PATCH 5.10 434/589] netfilter: nfnetlink_osf: fix divide-by-zero in OSF_WSS_MODULO
 Date: Sat, 30 May 2026 18:05:15 +0200
-Message-ID: <20260530160255.563917169@linuxfoundation.org>
+Message-ID: <20260530160236.120494555@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260530160240.228940103@linuxfoundation.org>
-References: <20260530160240.228940103@linuxfoundation.org>
+In-Reply-To: <20260530160224.570625122@linuxfoundation.org>
+References: <20260530160224.570625122@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,99 +67,101 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	TO_DN_SOME(0.00)[];
-	TAGGED_FROM(0.00)[bounces-258510-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,sang-engineering.com,gmail.com,kernel.org];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,strlen.de,netfilter.org,asu.edu,suse.de,kernel.org];
+	TAGGED_FROM(0.00)[bounces-259124-lists,stable=lfdr.de];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	FROM_HAS_DN(0.00)[];
+	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[stable,renesas];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[6];
+	NEURAL_HAM(-0.00)[-1.000];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[9];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim,sang-engineering.com:email]
-X-Rspamd-Queue-Id: 52B70611879
+	TAGGED_RCPT(0.00)[stable];
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,asu.edu:email,suse.de:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,strlen.de:email,netfilter.org:email]
+X-Rspamd-Queue-Id: EBA7D612BEA
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Wolfram Sang <wsa+renesas@sang-engineering.com>
+From: Xiang Mei <xmei5@asu.edu>
 
-[ Upstream commit bbcf9af68bfedb3d9cc3c7eae62f5c844d8b78b9 ]
+[ Upstream commit 2195574dc6d9017d32ac346987e12659f931d932 ]
 
-The waitqueue must be initialized before the debugfs files are created
-because from that time, requests from userspace can already be made.
-Similarily, drvdata and spinlock needs to be initialized before we
-request the channel, otherwise dangling irqs might run into problems
-like a NULL pointer exception.
+nf_osf_match_one() computes ctx->window % f->wss.val in the
+OSF_WSS_MODULO branch with no guard for f->wss.val == 0. A
+CAP_NET_ADMIN user can add such a fingerprint via nfnetlink; a
+subsequent matching TCP SYN divides by zero and panics the kernel.
 
-Fixes: 8ea4484d0c2b ("mailbox: Add generic mechanism for testing Mailbox Controllers")
-Signed-off-by: Wolfram Sang <wsa+renesas@sang-engineering.com>
-Signed-off-by: Jassi Brar <jassisinghbrar@gmail.com>
+Reject the bogus fingerprint in nfnl_osf_add_callback() above the
+per-option for-loop. f->wss is per-fingerprint, not per-option, so
+the check must run regardless of f->opt_num (including 0). Also
+reject wss.wc >= OSF_WSS_MAX; nf_osf_match_one() already treats that
+as "should not happen".
+
+Crash:
+ Oops: divide error: 0000 [#1] SMP KASAN NOPTI
+ RIP: 0010:nf_osf_match_one (net/netfilter/nfnetlink_osf.c:98)
+ Call Trace:
+ <IRQ>
+  nf_osf_match (net/netfilter/nfnetlink_osf.c:220)
+  xt_osf_match_packet (net/netfilter/xt_osf.c:32)
+  ipt_do_table (net/ipv4/netfilter/ip_tables.c:348)
+  nf_hook_slow (net/netfilter/core.c:622)
+  ip_local_deliver (net/ipv4/ip_input.c:265)
+  ip_rcv (include/linux/skbuff.h:1162)
+  __netif_receive_skb_one_core (net/core/dev.c:6181)
+  process_backlog (net/core/dev.c:6642)
+  __napi_poll (net/core/dev.c:7710)
+  net_rx_action (net/core/dev.c:7945)
+  handle_softirqs (kernel/softirq.c:622)
+
+Fixes: 11eeef41d5f6 ("netfilter: passive OS fingerprint xtables match")
+Reported-by: Weiming Shi <bestswngs@gmail.com>
+Suggested-by: Florian Westphal <fw@strlen.de>
+Suggested-by: Pablo Neira Ayuso <pablo@netfilter.org>
+Signed-off-by: Xiang Mei <xmei5@asu.edu>
+Reviewed-by: Fernando Fernandez Mancera <fmancera@suse.de>
+Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/mailbox/mailbox-test.c | 13 ++++++-------
- 1 file changed, 6 insertions(+), 7 deletions(-)
+ net/netfilter/nfnetlink_osf.c | 4 ++++
+ 1 file changed, 4 insertions(+)
 
-diff --git a/drivers/mailbox/mailbox-test.c b/drivers/mailbox/mailbox-test.c
-index 247e83af060e3..41efe64976598 100644
---- a/drivers/mailbox/mailbox-test.c
-+++ b/drivers/mailbox/mailbox-test.c
-@@ -365,6 +365,12 @@ static int mbox_test_probe(struct platform_device *pdev)
- 	if (!tdev)
- 		return -ENOMEM;
+diff --git a/net/netfilter/nfnetlink_osf.c b/net/netfilter/nfnetlink_osf.c
+index a2d7bfb4c1a69..be9bf079aeddf 100644
+--- a/net/netfilter/nfnetlink_osf.c
++++ b/net/netfilter/nfnetlink_osf.c
+@@ -321,6 +321,10 @@ static int nfnl_osf_add_callback(struct net *net, struct sock *ctnl,
+ 	if (f->opt_num > ARRAY_SIZE(f->opt))
+ 		return -EINVAL;
  
-+	tdev->dev = &pdev->dev;
-+	spin_lock_init(&tdev->lock);
-+	mutex_init(&tdev->mutex);
-+	init_waitqueue_head(&tdev->waitq);
-+	platform_set_drvdata(pdev, tdev);
++	if (f->wss.wc >= OSF_WSS_MAX ||
++	    (f->wss.wc == OSF_WSS_MODULO && f->wss.val == 0))
++		return -EINVAL;
 +
- 	/* It's okay for MMIO to be NULL */
- 	res = platform_get_resource(pdev, IORESOURCE_MEM, 0);
- 	tdev->tx_mmio = devm_ioremap_resource(&pdev->dev, res);
-@@ -396,12 +402,6 @@ static int mbox_test_probe(struct platform_device *pdev)
- 	if (!tdev->rx_channel && (tdev->rx_mmio != tdev->tx_mmio))
- 		tdev->rx_channel = tdev->tx_channel;
- 
--	tdev->dev = &pdev->dev;
--	platform_set_drvdata(pdev, tdev);
--
--	spin_lock_init(&tdev->lock);
--	mutex_init(&tdev->mutex);
--
- 	if (tdev->rx_channel) {
- 		tdev->rx_buffer = devm_kzalloc(&pdev->dev,
- 					       MBOX_MAX_MSG_LEN, GFP_KERNEL);
-@@ -415,7 +415,6 @@ static int mbox_test_probe(struct platform_device *pdev)
- 	if (ret)
- 		goto err_free_chans;
- 
--	init_waitqueue_head(&tdev->waitq);
- 	dev_info(&pdev->dev, "Successfully registered\n");
- 
- 	return 0;
+ 	for (i = 0; i < f->opt_num; i++) {
+ 		if (!f->opt[i].length || f->opt[i].length > MAX_IPOPTLEN)
+ 			return -EINVAL;
 -- 
 2.53.0
 
