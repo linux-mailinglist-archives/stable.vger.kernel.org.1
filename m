@@ -1,62 +1,59 @@
-Return-Path: <stable+bounces-258502-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-259123-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id qEvSKt8nG2qf/ggAu9opvQ
-	(envelope-from <stable+bounces-258502-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:09:35 +0200
+	id aCzeKLkwG2p5AAkAu9opvQ
+	(envelope-from <stable+bounces-259123-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:47:21 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5244B6111D5
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:09:35 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2E1E16127F4
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:47:21 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 16542300C00E
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 18:09:29 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 70099301FB3C
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 18:44:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CED363B9D80;
-	Sat, 30 May 2026 18:09:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 18CE1351C2F;
+	Sat, 30 May 2026 18:44:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nDOXGNsW"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Se0KujH4"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A441B29B799;
-	Sat, 30 May 2026 18:09:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E1E3E3469FC;
+	Sat, 30 May 2026 18:44:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780164565; cv=none; b=YHdk4TfRg0W/jiL/rEpbnvMs5G0VUjgOZcanxN5Elf1PAR//VoxQ0NulErW68Yi9uu8wnrEpEmTaQq9EwhKt4yTYNcaeSQTcPL3OnpcErqRxqkZ0Tt689DpwpXY8mDtfZf3D2ZUh+JSVMugBev1ODqSrDhxe+WTNfj+vE2RUXmE=
+	t=1780166687; cv=none; b=BjAjs6Eq1f/Qv//dhOJDsDnpS5tdYCbBTwZkhPphsbWXN6l1x7KnnY0HpFBvOkLPR2iDfhFFU6y15EYH/ZwYVbd0tscZCJ1aJmko3fha7sGSlv1GTc5Ko/Iwm63eOeTXzk4wEYQXjYyFWLz1uQSxAS8qNT6d3Fw6M6WTo1UdcvA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780164565; c=relaxed/simple;
-	bh=z/ffiA/0KkMGR6pS+bx2wsv8y4kWrZPBGJH8Rsw3b7g=;
+	s=arc-20240116; t=1780166687; c=relaxed/simple;
+	bh=fWafcRpAIjiDnZ/QQ0nVLKog2nPQzLTuK0X22sBGrq0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=lDwybrhKuw/hi+vOckWPg7ijNlkAvrmWSezrnRG2cFMmgzkeDcnkABzjWLWTR1OMwsCSy065uaG+ScpUMI3dZvX9Poqu3CAcbSNytX1zL6QdT9Axnz4h2ivem1Ai85ACZMo4UXcb8qH1/fA3x5gpiOX0Etv4g0kwGyplPG1ZoRI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nDOXGNsW; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E8C691F00893;
-	Sat, 30 May 2026 18:09:23 +0000 (UTC)
+	 MIME-Version; b=p4QTJMb8abaG4oLS4WNViPxk51ErCXAzoe/aWD6hkNS0huNzNouV7UkEYJhzgVzlyqKoXZWI+Josv3RXwcbU+muQtV2uRYUizgGcnSjEEb+Qtca2N+AavET1+3RQ8chjuB4Ksybcw2FhwMf9yZbMVPgScJMJVjBeeVXzZed6PNs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Se0KujH4; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 068A11F00893;
+	Sat, 30 May 2026 18:44:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780164564;
-	bh=ydZMYrGb/u6Qj2kI/JwHoIbiC91uLS9GH5U8Seotni4=;
+	s=korg; t=1780166686;
+	bh=LADOyQutXuTuCS1wMVb/xuaegvqb5DavlH/PJBTJNPw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=nDOXGNsWyNinDRt5jNaLMebd8E4VgziNnPymmcOWNRGmanXMCBr4au2pRqZx1d4I5
-	 uDKLdOOmPMnbOajTzyeiMX48elxmoDDAtLAvIvEd0tFBqPj75VQagdPiI0O5DvkWgK
-	 a5e73eyo03C8GqJVwADA+3j0Q0RC60BzxB2+pYP8=
+	b=Se0KujH4hZ5p0RyBl6w2Nv2WB+cL0FiMrluKVURplZCl4KTclQ09H2jxttXWFgv4c
+	 fOzeJF6l6fdcXTDfazSZ2GKMvFz61XIU8kJNLnqWZscHHotDVAFT0yqZOY8dKmCN8q
+	 4SOVur5aWb0E8vd4DbM/mkDRX/8nKI33lgpK7Ads=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Kohei Enju <kohei@enjuk.jp>,
-	Aleksandr Loktionov <aleksandr.loktionov@intel.com>,
-	Sunitha Mekala <sunithax.d.mekala@intel.com>,
-	Jacob Keller <jacob.e.keller@intel.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Florian Westphal <fw@strlen.de>,
+	Jason Gunthorpe <jgg@nvidia.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 563/776] i40e: dont advertise IFF_SUPP_NOFCS
+Subject: [PATCH 5.10 396/589] RDMA/core: Prefer NLA_NUL_STRING
 Date: Sat, 30 May 2026 18:04:37 +0200
-Message-ID: <20260530160254.679075711@linuxfoundation.org>
+Message-ID: <20260530160235.191643379@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260530160240.228940103@linuxfoundation.org>
-References: <20260530160240.228940103@linuxfoundation.org>
+In-Reply-To: <20260530160224.570625122@linuxfoundation.org>
+References: <20260530160224.570625122@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -71,81 +68,85 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-258502-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	RCVD_TLS_LAST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-0.996];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[9];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-259123-lists,stable=lfdr.de];
 	TO_DN_SOME(0.00)[];
-	FROM_HAS_DN(0.00)[]
-X-Rspamd-Queue-Id: 5244B6111D5
+	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-0.995];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_FIVE(0.00)[6];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[nvidia.com:email,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim,msgid.link:url,strlen.de:email]
+X-Rspamd-Queue-Id: 2E1E16127F4
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kohei Enju <kohei@enjuk.jp>
+From: Florian Westphal <fw@strlen.de>
 
-[ Upstream commit a24162f18825684ad04e3a5d0531f8a50d679347 ]
+[ Upstream commit 6ed3d14fc45d3da6025e7fe4a6a09066856698e2 ]
 
-i40e advertises IFF_SUPP_NOFCS, allowing users to use the SO_NOFCS
-socket option. However, this option is silently ignored, as the driver
-does not check skb->no_fcs, and always enables FCS insertion offload.
+These attributes are evaluated as c-string (passed to strcmp), but
+NLA_STRING doesn't check for the presence of a \0 terminator.
 
-Fix this by removing the advertisement of IFF_SUPP_NOFCS.
+Either this needs to switch to nla_strcmp() and needs to adjust printf fmt
+specifier to not use plain %s, or this needs to use NLA_NUL_STRING.
 
-This behavior can be reproduced with a simple AF_PACKET socket:
+As the code has been this way for long time, it seems to me that userspace
+does include the terminating nul, even tough its not enforced so far, and
+thus NLA_NUL_STRING use is the simpler solution.
 
-  import socket
-  s = socket.socket(socket.AF_PACKET, socket.SOCK_RAW)
-  s.setsockopt(socket.SOL_SOCKET, 43, 1) # SO_NOFCS
-  s.bind(("eth0", 0))
-  s.send(b'\xff' * 64)
-
-Previously, send() succeeds but the driver ignores SO_NOFCS.
-With this change, send() fails with -EPROTONOSUPPORT, as expected.
-
-Fixes: 41c445ff0f48 ("i40e: main driver core")
-Signed-off-by: Kohei Enju <kohei@enjuk.jp>
-Reviewed-by: Aleksandr Loktionov <aleksandr.loktionov@intel.com>
-Tested-by: Sunitha Mekala <sunithax.d.mekala@intel.com>
-Signed-off-by: Jacob Keller <jacob.e.keller@intel.com>
-Link: https://patch.msgid.link/20260416-iwl-net-submission-2026-04-14-v2-9-686c33c9828d@intel.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Fixes: 30dc5e63d6a5 ("RDMA/core: Add support for iWARP Port Mapper user space service")
+Link: https://patch.msgid.link/r/20260330122742.13315-1-fw@strlen.de
+Signed-off-by: Florian Westphal <fw@strlen.de>
+Signed-off-by: Jason Gunthorpe <jgg@nvidia.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/intel/i40e/i40e_main.c | 1 -
- 1 file changed, 1 deletion(-)
+ drivers/infiniband/core/iwpm_msg.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/net/ethernet/intel/i40e/i40e_main.c b/drivers/net/ethernet/intel/i40e/i40e_main.c
-index 31a8217f6aa97..1cc3faf499942 100644
---- a/drivers/net/ethernet/intel/i40e/i40e_main.c
-+++ b/drivers/net/ethernet/intel/i40e/i40e_main.c
-@@ -13817,7 +13817,6 @@ static int i40e_config_netdev(struct i40e_vsi *vsi)
- 	netdev->neigh_priv_len = sizeof(u32) * 4;
+diff --git a/drivers/infiniband/core/iwpm_msg.c b/drivers/infiniband/core/iwpm_msg.c
+index 46686990a8271..698ec2e730510 100644
+--- a/drivers/infiniband/core/iwpm_msg.c
++++ b/drivers/infiniband/core/iwpm_msg.c
+@@ -381,9 +381,9 @@ int iwpm_remove_mapping(struct sockaddr_storage *local_addr, u8 nl_client)
+ /* netlink attribute policy for the received response to register pid request */
+ static const struct nla_policy resp_reg_policy[IWPM_NLA_RREG_PID_MAX] = {
+ 	[IWPM_NLA_RREG_PID_SEQ]     = { .type = NLA_U32 },
+-	[IWPM_NLA_RREG_IBDEV_NAME]  = { .type = NLA_STRING,
++	[IWPM_NLA_RREG_IBDEV_NAME]  = { .type = NLA_NUL_STRING,
+ 					.len = IWPM_DEVNAME_SIZE - 1 },
+-	[IWPM_NLA_RREG_ULIB_NAME]   = { .type = NLA_STRING,
++	[IWPM_NLA_RREG_ULIB_NAME]   = { .type = NLA_NUL_STRING,
+ 					.len = IWPM_ULIBNAME_SIZE - 1 },
+ 	[IWPM_NLA_RREG_ULIB_VER]    = { .type = NLA_U16 },
+ 	[IWPM_NLA_RREG_PID_ERR]     = { .type = NLA_U16 }
+@@ -698,7 +698,7 @@ int iwpm_remote_info_cb(struct sk_buff *skb, struct netlink_callback *cb)
  
- 	netdev->priv_flags |= IFF_UNICAST_FLT;
--	netdev->priv_flags |= IFF_SUPP_NOFCS;
- 	/* Setup netdev TC information */
- 	i40e_vsi_config_netdev_tc(vsi, vsi->tc_config.enabled_tc);
- 
+ /* netlink attribute policy for the received request for mapping info */
+ static const struct nla_policy resp_mapinfo_policy[IWPM_NLA_MAPINFO_REQ_MAX] = {
+-	[IWPM_NLA_MAPINFO_ULIB_NAME] = { .type = NLA_STRING,
++	[IWPM_NLA_MAPINFO_ULIB_NAME] = { .type = NLA_NUL_STRING,
+ 					.len = IWPM_ULIBNAME_SIZE - 1 },
+ 	[IWPM_NLA_MAPINFO_ULIB_VER]  = { .type = NLA_U16 }
+ };
 -- 
 2.53.0
 
