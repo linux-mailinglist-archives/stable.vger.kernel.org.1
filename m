@@ -1,58 +1,59 @@
-Return-Path: <stable+bounces-258887-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-257507-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id AHjTGHAtG2qU/wgAu9opvQ
-	(envelope-from <stable+bounces-258887-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:33:20 +0200
+	id qCSILZIcG2p3/QgAu9opvQ
+	(envelope-from <stable+bounces-257507-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:21:22 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 09B6D611F63
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:33:19 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4307C60F78B
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:21:22 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id DF29D3069348
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 18:31:18 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 0F3EA3099282
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 17:13:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 051B1349CCF;
-	Sat, 30 May 2026 18:31:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 17D71340414;
+	Sat, 30 May 2026 17:13:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HfoVmkvb"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KkBv0MGP"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D39C13242BA;
-	Sat, 30 May 2026 18:31:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 01CD833F8A2;
+	Sat, 30 May 2026 17:13:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780165874; cv=none; b=BQ2WrclCph4/SoDWjB9chJUowcwonSol+q3LMKr34UwauK2p0UUo9oCYWC4nAhIjsnI36jXnPicWXDbltnLy5r41xBe8bxvj2u8rgPQJJS00RQH7480U8JdLT4YuQLP6Oaez3fPrLHx/SAAZ+wCWw0SL166UbtcqYdByp3mJ3ZY=
+	t=1780161234; cv=none; b=Lp8AvUJxXh8ZBN2g7lBdyt2yRIrwxaV2HV6Wh+qEfnu+HkL0W9EM7PV1kuJkyQOCrqyNuZOpzpUfbXnjJMshQ/6gviDUd09UdNLWtcGSnwb4r0E2BgBaAs38yfSvF4MuyRJB5kjvz7eCc+7QE4j6z2+gYlxyBigltK9ky2F2WA4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780165874; c=relaxed/simple;
-	bh=BOuUqagMj51506S4AzcyONHkFdkvohsr+9gCP4xb6h8=;
+	s=arc-20240116; t=1780161234; c=relaxed/simple;
+	bh=mdSf650pbY2RE55QNkmg9eqjdOoXW/feUtQRMhp0Pis=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=I21x7jAaMaPTJtDx76WkwsTiqTqlTggDc0lB1aOZRIivuj4n65UMCW/E6DNes7+VgHRcHe+3vOAxn3x1WAuOyK+SiBewMpcEpsKCYcT+GiQHS7QJkjMA8wQOOBRZ8roVucz0LynZW4FvD0vSuaqpDeC1kf2FBJc7F+/1F+M61Gs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HfoVmkvb; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CD9EE1F00893;
-	Sat, 30 May 2026 18:31:12 +0000 (UTC)
+	 MIME-Version; b=jka/9AE/MDDuTXe/uH7N8CfBNK+FfF5+oXOGp3MLqSpg56Dx2egw/QP6LeN9CEu9oFBUIEsk7BarLoehfgxYuIb/8B+Wyss3u7SwVPvZGUqLP15tghnm6DZ6TSYapI17dLFSeyhNCzFm1A1IvdI+CpjdkfAUKaCaKxAEsd5/WhI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KkBv0MGP; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 25E511F00893;
+	Sat, 30 May 2026 17:13:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780165873;
-	bh=ZzRlr/7OtsbeQiH3TCNR90Qyb7AbXBDKBDWy1VxOZ2s=;
+	s=korg; t=1780161233;
+	bh=cFMLg1FuTO8L+QGP5/XiNEPHT5Ig58YdCQ3VEp0Z3Gw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=HfoVmkvbACVKQk7YIvE4ux6TEQEJQPdFQggDsl+NW0zq6I2UDFlzUbXSGVyRcN6ga
-	 0mBCHoa6bZgpPHR9wkh3zyH9z4ubLGe+iuN7J/+JgrNPxfYlOpcLsHjkOVNSfkxnyR
-	 HtfJGyjlGH/fL5B84uJtsYNeXIzEe9sOEgJu3Edk=
+	b=KkBv0MGPM4HnSdrZNij8XMDCGU0d3vSIOHuMixTyeo2rmJY+D0eplhcq86A023wEm
+	 gEq0nGXPozMMjMIOt3FOg+m9QkBpLLAn/tsg0ugW2RYXUzcLBKKbXckNuiQRZqIYvm
+	 fMaKjfGFFBP0MsQ9LRD2nhWIrJeqRpMPt933dpak=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Matt Fleming <mfleming@cloudflare.com>,
-	Corey Minyard <corey@minyard.net>
-Subject: [PATCH 5.10 206/589] ipmi: Check event message buffer response for bad data
+	syzbot+0ea5108a1f5fb4fcc2d8@syzkaller.appspotmail.com,
+	Andreas Gruenbacher <agruenba@redhat.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 563/969] gfs2: Call unlock_new_inode before d_instantiate
 Date: Sat, 30 May 2026 18:01:27 +0200
-Message-ID: <20260530160230.362466423@linuxfoundation.org>
+Message-ID: <20260530160315.934717518@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260530160224.570625122@linuxfoundation.org>
-References: <20260530160224.570625122@linuxfoundation.org>
+In-Reply-To: <20260530160300.485627683@linuxfoundation.org>
+References: <20260530160300.485627683@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,80 +64,84 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	RCVD_TLS_LAST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
+	TAGGED_FROM(0.00)[bounces-257507-lists,stable=lfdr.de];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-258887-lists,stable=lfdr.de];
 	TO_DN_SOME(0.00)[];
-	FROM_HAS_DN(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-0.995];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[5];
+	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,cloudflare.com:email,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo]
-X-Rspamd-Queue-Id: 09B6D611F63
+	TAGGED_RCPT(0.00)[stable,0ea5108a1f5fb4fcc2d8];
+	RCPT_COUNT_FIVE(0.00)[6];
+	FROM_HAS_DN(0.00)[]
+X-Rspamd-Queue-Id: 4307C60F78B
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Corey Minyard <corey@minyard.net>
+From: Andreas Gruenbacher <agruenba@redhat.com>
 
-commit 36920f30e78e69df01f9691c470b6f3ba8aebf98 upstream.
+[ Upstream commit 2ff7cf7e0640ff071ebc5c7e3dc2df024a7c91e6 ]
 
-The event message buffer response data size got checked later when
-processing, but check it right after the response comes back.  It
-appears some BMCs may return an empty message instead of an error
-when fetching events.
+As Neil Brown describes in detail in the link referenced below, new
+inodes must be unlocked before they can be instantiated.
 
-There are apparently some new BMCs that make this error, so we need to
-compensate.
+An even better fix is to use d_instantiate_new(), which combines
+d_instantiate() and unlock_new_inode().
 
-Reported-by: Matt Fleming <mfleming@cloudflare.com>
-Closes: https://lore.kernel.org/lkml/20260415115930.3428942-1-matt@readmodwrite.com/
-Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Corey Minyard <corey@minyard.net>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 3d36e57ff768 ("gfs2: gfs2_create_inode rework")
+Reported-by: syzbot+0ea5108a1f5fb4fcc2d8@syzkaller.appspotmail.com
+Link: https://lore.kernel.org/linux-fsdevel/177153754005.8396.8777398743501764194@noble.neil.brown.name/
+Signed-off-by: Andreas Gruenbacher <agruenba@redhat.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/char/ipmi/ipmi_si_intf.c |    8 +++++++-
- 1 file changed, 7 insertions(+), 1 deletion(-)
+ fs/gfs2/inode.c | 3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
 
---- a/drivers/char/ipmi/ipmi_si_intf.c
-+++ b/drivers/char/ipmi/ipmi_si_intf.c
-@@ -623,7 +623,13 @@ static void handle_transaction_done(stru
- 		 */
- 		msg = smi_info->curr_msg;
- 		smi_info->curr_msg = NULL;
--		if (msg->rsp[2] != 0) {
-+		/*
-+		 * It appears some BMCs, with no event data, return no
-+		 * data in the message and not a 0x80 error as the
-+		 * spec says they should.  Shut down processing if
-+		 * the data is not the right length.
-+		 */
-+		if (msg->rsp[2] != 0 || msg->rsp_size != 19) {
- 			/* Error getting event, probably done. */
- 			msg->done(msg);
+diff --git a/fs/gfs2/inode.c b/fs/gfs2/inode.c
+index 3048e3ca4b382..c291b9382e994 100644
+--- a/fs/gfs2/inode.c
++++ b/fs/gfs2/inode.c
+@@ -779,7 +779,7 @@ static int gfs2_create_inode(struct inode *dir, struct dentry *dentry,
+ 		goto fail_gunlock4;
  
+ 	mark_inode_dirty(inode);
+-	d_instantiate(dentry, inode);
++	d_instantiate_new(dentry, inode);
+ 	/* After instantiate, errors should result in evict which will destroy
+ 	 * both inode and iopen glocks properly. */
+ 	if (file) {
+@@ -791,7 +791,6 @@ static int gfs2_create_inode(struct inode *dir, struct dentry *dentry,
+ 	gfs2_glock_dq_uninit(ghs + 1);
+ 	gfs2_glock_put(io_gl);
+ 	gfs2_qa_put(dip);
+-	unlock_new_inode(inode);
+ 	return error;
+ 
+ fail_gunlock4:
+-- 
+2.53.0
+
 
 
 
