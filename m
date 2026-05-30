@@ -1,59 +1,59 @@
-Return-Path: <stable+bounces-259180-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-257802-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id cOyLF94wG2p5AAkAu9opvQ
-	(envelope-from <stable+bounces-259180-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:47:58 +0200
+	id cF5INAkgG2rO/QgAu9opvQ
+	(envelope-from <stable+bounces-257802-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:36:09 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 23790612842
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:47:57 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 221E7610007
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:36:08 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 69190301913F
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 18:47:57 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id AB21930477D7
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 17:30:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E6ACB231A21;
-	Sat, 30 May 2026 18:47:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 30C1E30E853;
+	Sat, 30 May 2026 17:30:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RwEccew6"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CP34Ay90"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CF1E5137750;
-	Sat, 30 May 2026 18:47:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 04BB33A542F;
+	Sat, 30 May 2026 17:30:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780166874; cv=none; b=ipeBfBH0etxyqcEdXj4eIDZK3kJd4OzJABfHqFtRAXKWHiLG/02JQs6avEXYK72wN0h6aILXatQvRqkyT04HVMKmISI5OlYrEuvzht1Gw2U2bH0kGVd9yn4IDR35Dqwfn7fqOj2qnA7Lr+4TTeeSuXswAjsQV3jq1QlQSLq30EU=
+	t=1780162220; cv=none; b=giE/QKzPhDBVlIxPk46KZvehWzZBj9MnuMckLcsk1yMEAoIm1wwOAfmLY3nk6jAYquBrS2hz47zQFQfZ+fWTW/zzmWBjTEpX6OYXIlj6RcLPNHzAxW6bRXbL5ZoS8xL/wHFXThU/2aMsVse0SusAC/lyYyYngQ8DisXxRtzlLz4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780166874; c=relaxed/simple;
-	bh=T853UM8fa0pecTD/3DtrJe5j+TTRjs9IPpLBryC2mHc=;
+	s=arc-20240116; t=1780162220; c=relaxed/simple;
+	bh=p7jkk3vnsDFGMmhVxKCsTlZFPE9Hbkpz2G6XdhwsN/k=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=tQFr726Du5w+KXPdWjjJ6pqCfHEyg08LCE3zhHio0pmvyKPi0SJnt8jeCzblKocJBDMSaC+8e18D5oTHJ1orepqbO/X1u2STDiun/oGROYoAgF820nUVjcU0sGHIMsndAhaOgcFfJzlOsP9fVwhyftmG2zsDqA4sq6IDzP3+JSA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RwEccew6; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1C8DB1F00893;
-	Sat, 30 May 2026 18:47:52 +0000 (UTC)
+	 MIME-Version; b=U42/LDMY1c2lL6PdtrfaqRTQiBTwcKOWopT3LbYJpbikZnjPBuvBbWddYxG28FdrqkiOwmjCKj4/5kNCuQqJuTA0wtXipIcA1YbEx30beDwRJ9NDO9EywlA3a9FaH/eqaGVZsi5GCTt5bXUXyJOpsmHNmmsTe4XCeaBiNgSrB78=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CP34Ay90; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4CD761F00893;
+	Sat, 30 May 2026 17:30:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780166873;
-	bh=ykT75Mnyo2iz3KY1a6SUiqTAJOSsmVPm2y6nqrP2avA=;
+	s=korg; t=1780162218;
+	bh=tDy9bMhLsMOKu7AsfGUpNi5ZfGWL1W6q1BO2rhT6QnU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=RwEccew688qmkAwosbKhMZmAqtO/mfouWYJsQyKBeoJjGTzWd2kpVrctNv2BSCOMA
-	 iPkWN1/VxvopM8HXNwvxqLJq6tu+GlyzniBB/e8wsD7SZWNGOeBGRH9KWh4JFmb3rn
-	 pf/mX4kHPQMolPDZe/aHsgnpTazS5U1vUnizPdMw=
+	b=CP34Ay90UnkI6KOMDT4uVFhGoikdcQlxZH7xmy1D59Ax4UcWnaat3hqI0HtetvCAN
+	 mGgorPBViVeyFCs5g6szA3iH2HBsDdDoIjrLK9/DzpbKcjbyfUEWsLqsTeSZFrRLFh
+	 bEY/FrAjz7W2Ug4tF7DiN39fP5X8Tn9V1vtZi7lk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yannick Vignon <yannick.vignon@nxp.com>,
-	"David S. Miller" <davem@davemloft.net>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 497/589] net/sched: taprio: Fix init procedure
-Date: Sat, 30 May 2026 18:06:18 +0200
-Message-ID: <20260530160237.681665893@linuxfoundation.org>
+	Zilin Guan <zilin@seu.edu.cn>,
+	Dawei Feng <dawei.feng@seu.edu.cn>,
+	Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 6.1 855/969] qed: fix double free in qed_cxt_tables_alloc()
+Date: Sat, 30 May 2026 18:06:19 +0200
+Message-ID: <20260530160324.278547804@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260530160224.570625122@linuxfoundation.org>
-References: <20260530160224.570625122@linuxfoundation.org>
+In-Reply-To: <20260530160300.485627683@linuxfoundation.org>
+References: <20260530160300.485627683@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -68,7 +68,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
@@ -78,7 +78,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-259180-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-257802-lists,stable=lfdr.de];
 	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
@@ -89,51 +89,65 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	TAGGED_RCPT(0.00)[stable];
 	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,davemloft.net:email,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,nxp.com:email]
-X-Rspamd-Queue-Id: 23790612842
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,seu.edu.cn:email,msgid.link:url]
+X-Rspamd-Queue-Id: 221E7610007
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yannick Vignon <yannick.vignon@nxp.com>
+From: Dawei Feng <dawei.feng@seu.edu.cn>
 
-[ Upstream commit ebca25ead0711729e0aeeec45062e7ac4df3e158 ]
+commit 2bccfb8476ca5f3548afbd623dc7a6980d4e77de upstream.
 
-Commit 13511704f8d759 ("net: taprio offload: enforce qdisc to netdev queue mapping")
-resulted in duplicate entries in the qdisc hash.
-While this did not impact the overall operation of the qdisc and taprio
-code paths, it did result in an infinite loop when dumping the qdisc
-properties, at least on one target (NXP LS1028 ARDB).
-Removing the duplicate call to qdisc_hash_add() solves the problem.
+If one of the later PF or VF CID bitmap allocations fails,
+qed_cid_map_alloc() jumps to cid_map_fail and frees the previously
+allocated CID bitmaps before returning an error. qed_cxt_tables_alloc()
+then calls qed_cxt_mngr_free(), which invokes qed_cid_map_free()
+again.
 
-Fixes: 13511704f8d759 ("net: taprio offload: enforce qdisc to netdev queue mapping")
-Signed-off-by: Yannick Vignon <yannick.vignon@nxp.com>
-Signed-off-by: David S. Miller <davem@davemloft.net>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fix this by setting each CID bitmap pointer to NULL after bitmap_free()
+to avoid double free.
+
+The bug was first flagged by an experimental analysis tool we are
+developing for kernel memory-management bugs while analyzing
+v6.13-rc1. The tool is still under development and is not yet publicly
+available. Manual inspection confirms that the bug is still
+present in v7.1-rc3.
+
+Runtime reproduction was not attempted because exercising the failing
+allocation path requires device-specific setup.
+
+Fixes: fe56b9e6a8d9 ("qed: Add module with basic common support")
+Cc: stable@vger.kernel.org
+Signed-off-by: Zilin Guan <zilin@seu.edu.cn>
+Signed-off-by: Dawei Feng <dawei.feng@seu.edu.cn>
+Link: https://patch.msgid.link/20260520070323.2762379-1-dawei.feng@seu.edu.cn
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/sched/sch_taprio.c | 2 --
- 1 file changed, 2 deletions(-)
+ drivers/net/ethernet/qlogic/qed/qed_cxt.c |    2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/net/sched/sch_taprio.c b/net/sched/sch_taprio.c
-index 85812bad227bc..50f430280337d 100644
---- a/net/sched/sch_taprio.c
-+++ b/net/sched/sch_taprio.c
-@@ -1723,8 +1723,6 @@ static void taprio_attach(struct Qdisc *sch)
- 		if (FULL_OFFLOAD_IS_ENABLED(q->flags)) {
- 			qdisc->flags |= TCQ_F_ONETXQUEUE | TCQ_F_NOPARENT;
- 			old = dev_graft_qdisc(qdisc->dev_queue, qdisc);
--			if (ntx < dev->real_num_tx_queues)
--				qdisc_hash_add(qdisc, false);
- 		} else {
- 			old = dev_graft_qdisc(qdisc->dev_queue, sch);
- 			qdisc_refcount_inc(sch);
--- 
-2.53.0
-
+--- a/drivers/net/ethernet/qlogic/qed/qed_cxt.c
++++ b/drivers/net/ethernet/qlogic/qed/qed_cxt.c
+@@ -1038,11 +1038,13 @@ static void qed_cid_map_free(struct qed_
+ 
+ 	for (type = 0; type < MAX_CONN_TYPES; type++) {
+ 		bitmap_free(p_mngr->acquired[type].cid_map);
++		p_mngr->acquired[type].cid_map = NULL;
+ 		p_mngr->acquired[type].max_count = 0;
+ 		p_mngr->acquired[type].start_cid = 0;
+ 
+ 		for (vf = 0; vf < MAX_NUM_VFS; vf++) {
+ 			bitmap_free(p_mngr->acquired_vf[type][vf].cid_map);
++			p_mngr->acquired_vf[type][vf].cid_map = NULL;
+ 			p_mngr->acquired_vf[type][vf].max_count = 0;
+ 			p_mngr->acquired_vf[type][vf].start_cid = 0;
+ 		}
 
 
 
