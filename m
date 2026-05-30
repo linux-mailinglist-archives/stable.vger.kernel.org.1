@@ -1,109 +1,255 @@
-Return-Path: <stable+bounces-257539-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-258044-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id sBhSCFEdG2qV/QgAu9opvQ
-	(envelope-from <stable+bounces-257539-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:24:33 +0200
+	id eDhLIgwiG2oN/ggAu9opvQ
+	(envelope-from <stable+bounces-258044-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:44:44 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9E67B60F8E8
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:24:32 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7F4A761049C
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:44:43 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 0B7723032044
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 17:15:47 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id DDF1730028F6
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 17:43:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C8A013AB291;
-	Sat, 30 May 2026 17:15:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 90F583AFCF3;
+	Sat, 30 May 2026 17:43:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="YprZPr7h"
 X-Original-To: stable@vger.kernel.org
-Received: from bregans-1.gladserv.net (bregans-1.gladserv.net [185.128.211.58])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f179.google.com (mail-pl1-f179.google.com [209.85.214.179])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 488613B7B72;
-	Sat, 30 May 2026 17:15:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.128.211.58
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DC822344DB9
+	for <stable@vger.kernel.org>; Sat, 30 May 2026 17:43:51 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.179
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780161334; cv=none; b=nh3BP9GuU4L+3yGjfT1SVsuMnhazo9B7qadANQOYmFCNFe8pvwtyy0QNhGy3zW4zpFgnoJARmND80og97Ii01isvlsByyU8tHno4e6pMkz9ZcUcnPtPvva1FA89lXeyotOTsOrlj8lrqUS0qsiaIuKgqflP2xARvZmF8o4LqZh0=
+	t=1780163034; cv=none; b=G79cLW9XYnL2P7RQpKDOA1lxNfx8FmLQAIMi40G//PHZ7UZod+SqjYnZ0aHBjVCMg5beUuLkW0mJG0qt3FB685mncYyDiOt0FRRk+4qTT2jKnqsOjiUoQFaNrHYqa8Pha58iOL77pjXZbTRsBEXorXa7bDdcJmp23u1tU/KDaws=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780161334; c=relaxed/simple;
-	bh=dA/XogY6jsf3biBWOYyoIjABOPjl+0wybZKtaPB5MBo=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=S0U6KtuURW6ZRvvJwpocM34AEunMSTBCB9Lc3s58HffsLGcT18PqT1VbspxWIaeT/Y+PkK7za/GTeb+t6pzeh6U0oQioxmpztJ8pFfzs54Tapr7Lwfr95zUhVZCnUv08M7Xvb6zBcWQ9GLEIXD0z15K9fciL2zVAaNEMiN5LS0o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=librecast.net; spf=pass smtp.mailfrom=librecast.net; arc=none smtp.client-ip=185.128.211.58
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=librecast.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=librecast.net
-From: Brett A C Sheffield <bacs@librecast.net>
-To: gregkh@linuxfoundation.org
-Cc: stable@vger.kernel.org,
-	patches@lists.linux.dev,
-	linux-kernel@vger.kernel.org,
-	torvalds@linux-foundation.org,
-	akpm@linux-foundation.org,
-	linux@roeck-us.net,
-	shuah@kernel.org,
-	patches@kernelci.org,
-	lkft-triage@lists.linaro.org,
-	pavel@nabladev.com,
-	jonathanh@nvidia.com,
-	f.fainelli@gmail.com,
-	sudipm.mukherjee@gmail.com,
-	rwarsow@gmx.de,
-	conor@kernel.org,
-	hargar@microsoft.com,
-	broonie@kernel.org,
-	achill@achill.org,
-	sr@sladewatkins.com,
-	Brett A C Sheffield <bacs@librecast.net>
-Subject: Re: [PATCH 6.1 000/969] 6.1.175-rc1 review
-Date: Sat, 30 May 2026 17:15:18 +0000
-Message-ID: <20260530171521.20143-1-bacs@librecast.net>
-X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260530160300.485627683@linuxfoundation.org>
-References: <20260530160300.485627683@linuxfoundation.org>
+	s=arc-20240116; t=1780163034; c=relaxed/simple;
+	bh=V183WnI5pnoKUBivwNX7yBT6eyXdkhaOPmmYa38jyaY=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=di+My6OkNRpIEfYbWr74o6oDuWHWxAMdoyyuAF/kIjdMAj1AzPiT6nALCDFJgj37ChNZD1A+e9CDUIM4S5MIUQJcbwwTBInhjFnjc39RtGVd1IDNByMdAYXbjumYX90x+vYyECjd+e2fYFr4PmQxWnMPqVoOxpXOM1iSKurjQT8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=YprZPr7h; arc=none smtp.client-ip=209.85.214.179
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+Received: by mail-pl1-f179.google.com with SMTP id d9443c01a7336-2bf2d865383so65ad.1
+        for <stable@vger.kernel.org>; Sat, 30 May 2026 10:43:51 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1780163031; x=1780767831; darn=vger.kernel.org;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=QOyDHP4ZxCe5uNffp9qfUHpgLGSQaBL/VpuY0l97f+w=;
+        b=YprZPr7hw0gVeUdsf1NoyIA+yaNO7E17rk5XHbHAMqI9mIJnd3qaLM8ROpL2Koy1K4
+         ZW2Pr5ISj4teWjqPqGNebb+G/NhAEqqA9umtOUHyyp41opJRy6S9l61sw2JcK9CrTm8+
+         dtR9jOK0IawCl/QCqxrfZxzVYcH+RD5TjglYSDiBrKiPTJkx2j1/vHPtlhgdH2IocP48
+         xZQqfEU0JjtPRhY8DXNJlK5AQsomz+2XPwrnQHDT/i6ktRkXvKQT/JJWuwWcAJc/OTFr
+         ZUXL6lucOCo4xJlXHvSJrfjfDr/LN75syFqoeA8HsLHkRkK0hjqQSyAUXl8W6Lmsx75D
+         y1lA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1780163031; x=1780767831;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=QOyDHP4ZxCe5uNffp9qfUHpgLGSQaBL/VpuY0l97f+w=;
+        b=WRVR4XKpJS0MouzBaPLS02bFpP+dXXdGStE8wi+WAg528uU4mZJU3CXIPyAdWZTRCK
+         pFdx1MCXWM3X3Qnz2WmHELQE6XeyJwwaVdWdgoxVB0mqiKXjILj7LzqdRxPlE7Rviae+
+         eVfIGEpS2afNZ/LkKCurgXaiFZu6j22UdCtZ7gM8NEcyINxZBoNmkbuMjjNgknDR83V4
+         4CAvMi2o5dwcSdwxghVtaauhC+5XwQp7zIvg81wVoCR6wG24wJPUtn+8+C4z4gdN790Q
+         1i5TVHgF3IGdBwwOk9+iY3Zi7jJUd4pQ1Yp454oBVSpiQg5keDWl7DanmGjvexBmDbbq
+         CYTw==
+X-Forwarded-Encrypted: i=1; AFNElJ+dcmMFNMQK7nj8vgcsRfhMBDe3xlNHr7ar9sE8UsbBD0Ev01VVZwK1mUxSy3xVK38ZIcQEMps=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzYF+jeTEWeoti8umVmt3FzdbQvjGs84R2rg+nIrd9ISsOk05Xy
+	tejjxo6Mja0YsnKjyU2U3+XSqR1rXVFfEbqCSqQCfgEimkHrrc6nSYczJnF6KARjs7T6OmO3O9D
+	dssihLQ==
+X-Gm-Gg: Acq92OFMY1AtvxCjlPbZe0SKz4EHFj5jGg/ghp92plV4H+bDRqx4LB1FAb4wvK3B2iI
+	Vvka+0su4YffgFXhkQ2qlaIjUmkIKKgqAOjNbpqspU/BYw/UawuP4kUCU88mUoGNPWcpmG1ceUr
+	RwtQ4JQ3UZUbelbjdkVT9qtYshdYWJVzCg3hqc4DfbhNF1JbbAyAJQCXjmVU/RF44Jr/bM2L0Y9
+	LoZx7nVLWs788yr0wznFUOn+goh/Zk5rLzxalxUvNSgyp+UmFHu87dqS9kpGR0TCbFLdLC9sCt8
+	aV/q2/7co5hVeq4+VTQGzzFX3A7f+zEsfkwZlKJvujphc0CzCe9hNAaovw4b5AAm6TIFwcmr6sL
+	e2cMgJkz+2udg3Q8fWHrJIr0/REpRDAtxbATSlcPMnNdZIvcsTVxANVPMLmPnOX/l4tdEIqiP1s
+	XZbOWW/0QIfxTuvcU76P0RIvN0vx2ILc2bpYOeX/UDotPlA/CMe/Je3muWlxeWLQ8IMXaP9XbhE
+	+EIbQEgS5uwOQLgfft4fPWHKow7Mu6coGcc6BSZcaHpQNBvdJ6iNEES
+X-Received: by 2002:a17:902:ef44:b0:2b4:60e6:44bc with SMTP id d9443c01a7336-2c07cb2ec5bmr239755ad.13.1780163030509;
+        Sat, 30 May 2026 10:43:50 -0700 (PDT)
+Received: from google.com (112.174.16.34.bc.googleusercontent.com. [34.16.174.112])
+        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-c85a187eb12sm203716a12.6.2026.05.30.10.43.49
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sat, 30 May 2026 10:43:49 -0700 (PDT)
+Date: Sat, 30 May 2026 17:43:45 +0000
+From: Carlos Llamas <cmllamas@google.com>
+To: Benjamin Tissoires <benjamin.tissoires@redhat.com>
+Cc: Bastien Nocera <hadess@hadess.net>,
+	Benjamin Tissoires <bentiss@kernel.org>,
+	Jiri Kosina <jikos@kernel.org>,
+	Filipe =?iso-8859-1?Q?La=EDns?= <lains@riseup.net>,
+	Ping Cheng <ping.cheng@wacom.com>,
+	Jason Gerecke <jason.gerecke@wacom.com>,
+	Viresh Kumar <vireshk@kernel.org>, Johan Hovold <johan@kernel.org>,
+	Alex Elder <elder@kernel.org>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	Lee Jones <lee@kernel.org>, linux-input@vger.kernel.org,
+	linux-kernel@vger.kernel.org, greybus-dev@lists.linaro.org,
+	linux-staging@lists.linux.dev, linux-usb@vger.kernel.org,
+	stable@vger.kernel.org
+Subject: Re: [PATCH 2/4] HID: core: introduce hid_safe_input_report()
+Message-ID: <ahsh0UtTX6e0ZeHa@google.com>
+References: <20260415-wip-fix-core-v1-0-ed3c4c823175@kernel.org>
+ <20260415-wip-fix-core-v1-2-ed3c4c823175@kernel.org>
+ <8fedad8e9caecd379f2296562cd6abd37f7cee46.camel@hadess.net>
+ <CAO-hwJ+EgC0pM6L6vGFEaRFt2Nwj5b-CCf_5e5VkvrXgdHrjNg@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [1.54 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+In-Reply-To: <CAO-hwJ+EgC0pM6L6vGFEaRFt2Nwj5b-CCf_5e5VkvrXgdHrjNg@mail.gmail.com>
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	MID_CONTAINS_FROM(1.00)[];
-	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	DMARC_POLICY_ALLOW(-0.50)[google.com,reject];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
+	R_DKIM_ALLOW(-0.20)[google.com:s=20251104];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	DKIM_TRACE(0.00)[google.com:+];
+	RCPT_COUNT_TWELVE(0.00)[18];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-257539-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-258044-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[21];
-	DMARC_NA(0.00)[librecast.net];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[3];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	MISSING_XM_UA(0.00)[];
+	FROM_HAS_DN(0.00)[];
 	TO_DN_SOME(0.00)[];
+	RCVD_COUNT_FIVE(0.00)[5];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[bacs@librecast.net,stable@vger.kernel.org];
-	FREEMAIL_CC(0.00)[vger.kernel.org,lists.linux.dev,linux-foundation.org,roeck-us.net,kernel.org,kernelci.org,lists.linaro.org,nabladev.com,nvidia.com,gmail.com,gmx.de,microsoft.com,achill.org,sladewatkins.com,librecast.net];
-	NEURAL_HAM(-0.00)[-0.971];
+	FROM_NEQ_ENVFROM(0.00)[cmllamas@google.com,stable@vger.kernel.org];
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	NEURAL_HAM(-0.00)[-1.000];
 	TAGGED_RCPT(0.00)[stable];
-	R_DKIM_NA(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	FROM_HAS_DN(0.00)[]
-X-Rspamd-Queue-Id: 9E67B60F8E8
+	MID_RHS_MATCH_FROM(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,hadess.net:email]
+X-Rspamd-Queue-Id: 7F4A761049C
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-# Librecast Test Results
+On Thu, Apr 16, 2026 at 04:46:28PM +0200, Benjamin Tissoires wrote:
+> On Thu, Apr 16, 2026 at 11:41 AM Bastien Nocera <hadess@hadess.net> wrote:
+> >
+> > On Wed, 2026-04-15 at 11:38 +0200, Benjamin Tissoires wrote:
+> > > hid_input_report() is used in too many places to have a commit that
+> > > doesn't cross subsystem borders. Instead of changing the API,
+> > > introduce
+> > > a new one when things matters in the transport layers:
+> > > - usbhid
+> > > - i2chid
+> > >
+> > > This effectively revert to the old behavior for those two transport
+> > > layers.
+> > >
+> > > Fixes: 0a3fe972a7cb ("HID: core: Mitigate potential OOB by removing
+> > > bogus memset()")
+> > > Cc: stable@vger.kernel.org
+> > > Signed-off-by: Benjamin Tissoires <bentiss@kernel.org>
+> > > ---
+> > >  drivers/hid/hid-core.c             | 21 +++++++++++++++++++++
+> > >  drivers/hid/i2c-hid/i2c-hid-core.c |  7 ++++---
+> > >  drivers/hid/usbhid/hid-core.c      | 11 ++++++-----
+> > >  include/linux/hid.h                |  2 ++
+> > >  4 files changed, 33 insertions(+), 8 deletions(-)
+> > >
+> > > diff --git a/drivers/hid/hid-core.c b/drivers/hid/hid-core.c
+> > > index a806820df7e5..cb0ad99e7a0a 100644
+> > > --- a/drivers/hid/hid-core.c
+> > > +++ b/drivers/hid/hid-core.c
+> > > @@ -2191,6 +2191,27 @@ int hid_input_report(struct hid_device *hid,
+> > > enum hid_report_type type, u8 *data
+> > >  }
+> > >  EXPORT_SYMBOL_GPL(hid_input_report);
+> > >
+> > > +/**
+> > > + * hid_safe_input_report - report data from lower layer (usb, bt...)
+> > > + *
+> > > + * @hid: hid device
+> > > + * @type: HID report type (HID_*_REPORT)
+> > > + * @data: report contents
+> > > + * @bufsize: allocated size of the data buffer
+> > > + * @size: useful size of data parameter
+> > > + * @interrupt: distinguish between interrupt and control transfers
+> > > + *
+> > > + * This is data entry for lower layers.
+> >
+> > You probably want to explain why it should be used instead of
+> > hid_input_report() in this doc blurb, and modify the hid_input_report()
+> > docs to mention that this should be used.
+> 
+> Good point. Sending v2 ASAP.
+> 
+> >
+> > Maybe hid_input_report() should also be marked as deprecated somehow,
+> > to avoid new users?
+> 
+> Well, it's not entirely deprecated because, for instance, in uhid we
+> only have the buffer with the provided size around. So we can't be
+> less restrictive in that precise case, and then switching to _safe
+> will not change a bit.
+> 
+> Cheers,
+> Benjamin
 
-020/020 [ OK ] liblcrq
-010/010 [ OK ] libmld
-120/120 [ OK ] liblibrecast
+Hi Benjamin, our CI started failing with commit 0a3fe972a7cb ("HID:
+core: Mitigate potential OOB by removing bogus memset()"), so I was
+hoping your patchset would fix this.
 
-CPU/kernel: Linux auntie 6.1.175-rc1-00982-g02eba76b9117 #1 SMP PREEMPT_DYNAMIC Sat May 30 17:06:16 -00 2026 x86_64 AMD Ryzen 9 9950X 16-Core Processor AuthenticAMD GNU/Linux
+However, I just realized our call path goes through uhid precisely,
+which still triggers the EINVAL error since uhid as not converted to
+hid_safe_input_report().
 
-Tested-by: Brett A C Sheffield <bacs@librecast.net>
+My vague understanding though, is that uhid_event uses a static buffer
+in ev->data[UHID_DATA_MAX], so maybe we can use that through
+uhid_dev_input{2}()?
+
+I ran the following path through our CI and it fixed our issue, so I
+wanted to get your thoughts on this.
+
+Carlos Llamas
+
+---
+ drivers/hid/uhid.c | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
+
+diff --git a/drivers/hid/uhid.c b/drivers/hid/uhid.c
+index 524b53a3c87b..37b60c3aaf66 100644
+--- a/drivers/hid/uhid.c
++++ b/drivers/hid/uhid.c
+@@ -595,8 +595,8 @@ static int uhid_dev_input(struct uhid_device *uhid, struct uhid_event *ev)
+ 	if (!READ_ONCE(uhid->running))
+ 		return -EINVAL;
+ 
+-	hid_input_report(uhid->hid, HID_INPUT_REPORT, ev->u.input.data,
+-			 min_t(size_t, ev->u.input.size, UHID_DATA_MAX), 0);
++	hid_safe_input_report(uhid->hid, HID_INPUT_REPORT, ev->u.input.data, UHID_DATA_MAX,
++			      min_t(size_t, ev->u.input.size, UHID_DATA_MAX), 0);
+ 
+ 	return 0;
+ }
+@@ -606,8 +606,8 @@ static int uhid_dev_input2(struct uhid_device *uhid, struct uhid_event *ev)
+ 	if (!READ_ONCE(uhid->running))
+ 		return -EINVAL;
+ 
+-	hid_input_report(uhid->hid, HID_INPUT_REPORT, ev->u.input2.data,
+-			 min_t(size_t, ev->u.input2.size, UHID_DATA_MAX), 0);
++	hid_safe_input_report(uhid->hid, HID_INPUT_REPORT, ev->u.input2.data, UHID_DATA_MAX,
++			      min_t(size_t, ev->u.input2.size, UHID_DATA_MAX), 0);
+ 
+ 	return 0;
+ }
 
