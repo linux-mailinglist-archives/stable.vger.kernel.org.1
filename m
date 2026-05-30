@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-258155-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-258157-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 6Om0KFQlG2pm/ggAu9opvQ
-	(envelope-from <stable+bounces-258155-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:58:44 +0200
+	id wK58MlQjG2pa/ggAu9opvQ
+	(envelope-from <stable+bounces-258157-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:50:12 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id F3632610BFC
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:58:43 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id D3A646107D1
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:50:11 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id EFA6630E55FA
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 17:50:01 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id B62A13001A62
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 17:50:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9950E349CCF;
-	Sat, 30 May 2026 17:50:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D3644349CCF;
+	Sat, 30 May 2026 17:50:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yn84Xn1M"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EXhuv7aK"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7842D304BCB;
-	Sat, 30 May 2026 17:49:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AAD0534104B;
+	Sat, 30 May 2026 17:50:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780163400; cv=none; b=WqaK6T7hn3bbyekxd54S7sUX4yis2UrhVH6krXeXtjvtTkGTJYyjt2pjigreYVvwWgC+fbTXWLgp7gCIXzOmkh2a0oOWRY5lB/Gx1TQOOBB7e3IaPgLCfux5bUUqaQVUmXtWmWcB9ua2ZXUUAyrb/qBx3CkuOsC3JQaGv3EkZE0=
+	t=1780163406; cv=none; b=f7HdCIxVMV1VkBoJlj8TtAuIOJoflNLFp8Z/4bpCVBtokoE3vVUTQihJyR3mB/IV/wPWtxr6c2B48tNpUTkMh9A+OedbAnpgKp9XBF7fTIywBnNKrU/VjAmMuX7Ycl9aAvPAbnQY4iMhDcu7R2giOgGiUEDzLj+Jo1KzXCp4cBA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780163400; c=relaxed/simple;
-	bh=RG5hCrTyE0pGsIbd3IBoABB3/XfP9XAYNjQeFGSMr+w=;
+	s=arc-20240116; t=1780163406; c=relaxed/simple;
+	bh=zNwBpnrJq+Cg5EfhA8KRzRLcVlI8R3rQL9ovlWEHT0A=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ZS9gzcwYyvLo2yPpcrrJHFGeepa9W+YEnt7hC9gkN+ruCOPlho0sWM/HcfQGI7G/fIfY1Eq7RoUnH0/4rS50tjwraL4jvu686IhDMfAesgRyH24Bl8fqcwslbzx/R3k4/iY8aRlqVrTxp1Vzm8fkbbpc528sx2mpgu1dcpegb5w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yn84Xn1M; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9211F1F00893;
-	Sat, 30 May 2026 17:49:58 +0000 (UTC)
+	 MIME-Version; b=ozMDyV67F8+0WEM3pIEIk9CbG8aXMuj4TiChYB2iJ6JMyaI7UJuVK604hZ1GwUdJ5pQjX62zAcJVV9K1tHxVQsoPTKPTOO9tzgFgCdpf5/3waACbx8x6d8cV/ZiYh/3MHJYj2rBr7VFEA5aWRGh9E9dB0lWP/VTfhIftZSW/VIg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EXhuv7aK; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F10E21F00893;
+	Sat, 30 May 2026 17:50:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780163399;
-	bh=VZMNnt5CTI0Jw0SYb2+lsuOtffM3s78L9xhCKbE+7ls=;
+	s=korg; t=1780163405;
+	bh=5BGV6UwswOOP4OY4Z8Xv8C1FBD0UwEqLHZfbIvaoqGo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=yn84Xn1MC9ap0DdCLK05Gx0stkgoh4Zz5CeZK5RTmh5LybxYogC1oATcE6/ktIWpM
-	 IzAn1INTw3rCKFBwAztKOmR7bh1hdXuidM/48jFhVFy5IFMIlHTMJo4rTVvDPYK1pr
-	 QxFVzD/a23fsoWMlLqb5dqfF80EX1iTInlpCmIsI=
+	b=EXhuv7aKc5BT6VrliJagAY3bi+jcpQr4LMnx/x8Oxe3g6gxhsK+WqwOi5hcCRnplh
+	 M6V8vcgUARXudC63q8NnFM2P07firXC1QeHGlptnP5eAFI2CA5LbqXgbLuzSwAOGv2
+	 K7Z/RISbaLnkEUqptbBu5kBDesYwnU0UPuRG1lwA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Chia-Ming Chang <chiamingc@synology.com>,
-	robbieko <robbieko@synology.com>,
-	Nikolay Borisov <nik.borisov@suse.com>,
-	Jan Kara <jack@suse.cz>
-Subject: [PATCH 5.15 247/776] inotify: fix watch count leak when fsnotify_add_inode_mark_locked() fails
-Date: Sat, 30 May 2026 17:59:21 +0200
-Message-ID: <20260530160246.915429975@linuxfoundation.org>
+	Eric Dumazet <edumazet@google.com>,
+	Kuniyuki Iwashima <kuniyu@google.com>,
+	Zhenzhong Wu <jt26wzz@gmail.com>,
+	Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 5.15 248/776] tcp: call sk_data_ready() after listener migration
+Date: Sat, 30 May 2026 17:59:22 +0200
+Message-ID: <20260530160246.941618292@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
 In-Reply-To: <20260530160240.228940103@linuxfoundation.org>
 References: <20260530160240.228940103@linuxfoundation.org>
@@ -69,29 +69,31 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-258155-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,google.com,gmail.com,kernel.org];
+	TAGGED_FROM(0.00)[bounces-258157-lists,stable=lfdr.de];
+	PRECEDENCE_BULK(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	PRECEDENCE_BULK(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-0.996];
+	NEURAL_HAM(-0.00)[-1.000];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
 	TO_DN_SOME(0.00)[];
-	FROM_HAS_DN(0.00)[]
-X-Rspamd-Queue-Id: F3632610BFC
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,msgid.link:url,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim]
+X-Rspamd-Queue-Id: D3A646107D1
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
@@ -99,46 +101,70 @@ X-Rspamd-Server: lfdr
 
 ------------------
 
-From: Chia-Ming Chang <chiamingc@synology.com>
+From: Zhenzhong Wu <jt26wzz@gmail.com>
 
-commit 6a320935fa4293e9e599ec9f85dc9eb3be7029f8 upstream.
+commit 3864c6ba1e041bc75342353a70fa2a2c6f909923 upstream.
 
-When fsnotify_add_inode_mark_locked() fails in inotify_new_watch(),
-the error path calls inotify_remove_from_idr() but does not call
-dec_inotify_watches() to undo the preceding inc_inotify_watches().
-This leaks a watch count, and repeated failures can exhaust the
-max_user_watches limit with -ENOSPC even when no watches are active.
+When inet_csk_listen_stop() migrates an established child socket from
+a closing listener to another socket in the same SO_REUSEPORT group,
+the target listener gets a new accept-queue entry via
+inet_csk_reqsk_queue_add(), but that path never notifies the target
+listener's waiters. A nonblocking accept() still works because it
+checks the queue directly, but poll()/epoll_wait() waiters and
+blocking accept() callers can also remain asleep indefinitely.
 
-Prior to commit 1cce1eea0aff ("inotify: Convert to using per-namespace
-limits"), the watch count was incremented after fsnotify_add_mark_locked()
-succeeded, so this path was not affected. The conversion moved
-inc_inotify_watches() before the mark insertion without adding the
-corresponding rollback.
+Call READ_ONCE(nsk->sk_data_ready)(nsk) after a successful migration
+in inet_csk_listen_stop().
 
-Add the missing dec_inotify_watches() call in the error path.
+However, after inet_csk_reqsk_queue_add() succeeds, the ref acquired
+in reuseport_migrate_sock() is effectively transferred to
+nreq->rsk_listener. Another CPU can then dequeue nreq via accept()
+or listener shutdown, hit reqsk_put(), and drop that listener ref.
+Since listeners are SOCK_RCU_FREE, wrap the post-queue_add()
+dereferences of nsk in rcu_read_lock()/rcu_read_unlock(), which also
+covers the existing sock_net(nsk) access in that path.
 
-Fixes: 1cce1eea0aff ("inotify: Convert to using per-namespace limits")
+The reqsk_timer_handler() path does not need the same changes for two
+reasons: half-open requests become readable only after the final ACK,
+where tcp_child_process() already wakes the listener; and once nreq is
+visible via inet_ehash_insert(), the success path no longer touches
+nsk directly.
+
+Fixes: 54b92e841937 ("tcp: Migrate TCP_ESTABLISHED/TCP_SYN_RECV sockets in accept queues.")
 Cc: stable@vger.kernel.org
-Signed-off-by: Chia-Ming Chang <chiamingc@synology.com>
-Signed-off-by: robbieko <robbieko@synology.com>
-Reviewed-by: Nikolay Borisov <nik.borisov@suse.com>
-Link: https://patch.msgid.link/20260224093442.3076294-1-chiamingc@synology.com
-Signed-off-by: Jan Kara <jack@suse.cz>
+Suggested-by: Eric Dumazet <edumazet@google.com>
+Reviewed-by: Kuniyuki Iwashima <kuniyu@google.com>
+Signed-off-by: Zhenzhong Wu <jt26wzz@gmail.com>
+Reviewed-by: Eric Dumazet <edumazet@google.com>
+Link: https://patch.msgid.link/20260422024554.130346-2-jt26wzz@gmail.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/notify/inotify/inotify_user.c |    1 +
- 1 file changed, 1 insertion(+)
+ net/ipv4/inet_connection_sock.c |    3 +++
+ 1 file changed, 3 insertions(+)
 
---- a/fs/notify/inotify/inotify_user.c
-+++ b/fs/notify/inotify/inotify_user.c
-@@ -614,6 +614,7 @@ static int inotify_new_watch(struct fsno
- 	if (ret) {
- 		/* we failed to get on the inode, get off the idr */
- 		inotify_remove_from_idr(group, tmp_i_mark);
-+		dec_inotify_watches(group->inotify_data.ucounts);
- 		goto out_err;
- 	}
+--- a/net/ipv4/inet_connection_sock.c
++++ b/net/ipv4/inet_connection_sock.c
+@@ -1251,16 +1251,19 @@ void inet_csk_listen_stop(struct sock *s
+ 			if (nreq) {
+ 				refcount_set(&nreq->rsk_refcnt, 1);
  
++				rcu_read_lock();
+ 				if (inet_csk_reqsk_queue_add(nsk, nreq, child)) {
+ 					__NET_INC_STATS(sock_net(nsk),
+ 							LINUX_MIB_TCPMIGRATEREQSUCCESS);
+ 					reqsk_migrate_reset(req);
++					READ_ONCE(nsk->sk_data_ready)(nsk);
+ 				} else {
+ 					__NET_INC_STATS(sock_net(nsk),
+ 							LINUX_MIB_TCPMIGRATEREQFAILURE);
+ 					reqsk_migrate_reset(nreq);
+ 					__reqsk_free(nreq);
+ 				}
++				rcu_read_unlock();
+ 
+ 				/* inet_csk_reqsk_queue_add() has already
+ 				 * called inet_child_forget() on failure case.
 
 
 
