@@ -1,71 +1,59 @@
-Return-Path: <stable+bounces-257513-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-258259-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 2HFHMmAbG2oq/QgAu9opvQ
-	(envelope-from <stable+bounces-257513-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:16:16 +0200
+	id WNazGJYmG2qf/ggAu9opvQ
+	(envelope-from <stable+bounces-258259-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:04:06 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 73AF460F470
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:16:16 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id C2CA5610E95
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:04:05 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id CBB603011E9E
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 17:14:20 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 876B3311029F
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 17:55:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 617A53016E1;
-	Sat, 30 May 2026 17:14:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5C3873546EA;
+	Sat, 30 May 2026 17:55:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fhTP4CPO"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pLGKOzb9"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 357443148DA;
-	Sat, 30 May 2026 17:14:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3DB35261B9E;
+	Sat, 30 May 2026 17:55:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780161256; cv=none; b=R5OIHbSn0uTgf26sri9/BcPb3x14G+Nb7mNGjxLPHhafIppaiRVoK7K+9zHonaX3fFdV41nllDBmp2GhClDD9Mgp9bdkYNFkLFq+Yj3ZDJopaQaXTnZ8wfagS5TEJpcTto/gL2BNJSJNrRxO6GN2xQLVA00iXCv9vFEoLXAZ1bA=
+	t=1780163749; cv=none; b=mMrgRXa4GqaDl3BxzKHe5PQ/NeWI4SxE2Ps5UhMInuaIhpqlaNdvfz6dgVhmPsyYbr+9iiiikOfYLf+BrBes6eXAt/mSP9RoIJ9Xb+Rs0uEPgxKqd7UkBQdtCzIfw3KCrXXD80vnAZxj5dv/veSktgzztosbB1TBSxeZeCkpPLE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780161256; c=relaxed/simple;
-	bh=a5Q/A/13+Owi5IXBqqwhOEWMvQ/MgDq6vD40jxwKIJM=;
+	s=arc-20240116; t=1780163749; c=relaxed/simple;
+	bh=IKzkaAjUlGAD5ly/GvDF5Y7yPPH8+uZbMauo3MRcOe8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=H8cAAl71UaH+zzIe/PYonKOUkcknCIPjUp7xRBEGXTvNG3NjOorGOzuKPM3AwG6Iy5vr9Mjpfqw7l/8On+jDFiVxkzZ6/DbYrGuoN8dCxPON/hP7otMVhSXfRvc3w4AgXgStaM6We4oZ246avmTkYXaxBPRGOwCCidVxP4HWlGc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fhTP4CPO; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3CC831F00893;
-	Sat, 30 May 2026 17:14:14 +0000 (UTC)
+	 MIME-Version:Content-Type; b=fb7NvjW3mQ/rzhFnu5Q1hmi9Y6dn3x01duGrcPyTS8SZ5T/O0tCfWwI1mEBhRP23I33bxdkKE0BXZYfX/ZpQzZndn+O54L7wToIJH3P2vy6pMhUazoXLu0qxCimdlN4KSqK2aUJqZlfQ04IpsIKaGCEdA6mnoKrKDSmiUcMo9xU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pLGKOzb9; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 806911F00893;
+	Sat, 30 May 2026 17:55:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780161255;
-	bh=YD8oiUH34ymWG2q6j6mROjTbewvKQMMtoKNWU9TaSiQ=;
+	s=korg; t=1780163748;
+	bh=Yxk1y9n5mscGRLu+gdIGUdYHvyrqWBqG5js6Mq/XxvI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=fhTP4CPOGxeupry4ZcuQGvLFfrrvDnCo1qG7XBIZ1buovnMP9S/w98/1pwkcsMCk/
-	 ImsnezGnyu8LYVVv9DeRmDVXFDCOEakJUVChaikrLxyoFbky+hPbAiZpjDb17ta5u5
-	 TQmwq1xM29i1rKV0xh06yfFpX8J5+RE75M7xZiHk=
+	b=pLGKOzb9sueut+kaBEl3W5pzkKJNv0BluI4fjyDijjkqIK36Cs/f5I6UJBMIi2Wqa
+	 vNx6ybIr7ErDny6XAj/kxwfaNNXiBBP5LOJb3EcEzdf0xhI/iWP3/HDYKL4ON/vdO9
+	 7IC5C2pe+8FkQy4s0pQVfmC2D62iOoRx4vHArOcs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	AnishMulay <anishm7030@gmail.com>,
-	SeongJae Park <sj@kernel.org>,
-	Dev Jain <dev.jain@arm.com>,
-	Anshuman Khandual <anshuman.khandual@arm.com>,
-	Sayali Patil <sayalip@linux.ibm.com>,
-	"David Hildenbrand (Arm)" <david@kernel.org>,
-	Liam Howlett <liam.howlett@oracle.com>,
-	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
-	Michal Hocko <mhocko@suse.com>,
-	Mike Rapoport <rppt@kernel.org>,
-	Shuah Khan <shuah@kernel.org>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Vlastimil Babka <vbabka@kernel.org>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 540/969] selftests/mm: skip migration tests if NUMA is unavailable
+	"Artem S. Tashkinov" <aros@gmx.com>,
+	Krishna Chomal <krishna.chomal108@gmail.com>,
+	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>
+Subject: [PATCH 5.15 350/776] platform/x86: hp-wmi: Ignore backlight and FnLock events
 Date: Sat, 30 May 2026 18:01:04 +0200
-Message-ID: <20260530160315.283253300@linuxfoundation.org>
+Message-ID: <20260530160249.625294489@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260530160300.485627683@linuxfoundation.org>
-References: <20260530160300.485627683@linuxfoundation.org>
+In-Reply-To: <20260530160240.228940103@linuxfoundation.org>
+References: <20260530160240.228940103@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -75,95 +63,81 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-0.66 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-257513-lists,stable=lfdr.de];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,kernel.org,arm.com,linux.ibm.com,oracle.com,suse.com,google.com,linux-foundation.org];
-	RCPT_COUNT_TWELVE(0.00)[18];
-	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-258259-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmx.com,gmail.com,linux.intel.com];
+	TO_DN_SOME(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_FIVE(0.00)[6];
+	NEURAL_HAM(-0.00)[-0.999];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	TO_DN_SOME(0.00)[];
-	FROM_HAS_DN(0.00)[]
-X-Rspamd-Queue-Id: 73AF460F470
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,intel.com:email,msgid.link:url,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,gmx.com:email]
+X-Rspamd-Queue-Id: C2CA5610E95
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: AnishMulay <anishm7030@gmail.com>
+From: Krishna Chomal <krishna.chomal108@gmail.com>
 
-[ Upstream commit 54218f10dfbe88c8e41c744fd45a756cde60b8c4 ]
+commit e8c597368b8500a824c639bfb5ed0044068c6870 upstream.
 
-Currently, the migration test asserts that numa_available() returns 0.  On
-systems where NUMA is not available (returning -1), such as certain ARM64
-configurations or single-node systems, this assertion fails and crashes
-the test.
+On HP OmniBook 7 the keyboard backlight and FnLock keys are handled
+directly by the firmware. However, they still trigger WMI events which
+results in "Unknown key code" warnings in dmesg.
 
-Update the test to check the return value of numa_available().  If it is
-less than 0, skip the test gracefully instead of failing.
+Add these key codes to the keymap with KE_IGNORE to silence the warnings
+since no software action is needed.
 
-This aligns the behavior with other MM selftests (like rmap) that skip
-when NUMA support is missing.
-
-Link: https://lkml.kernel.org/r/20260218163941.13499-1-anishm7030@gmail.com
-Fixes: 0c2d08728470 ("mm: add selftests for migration entries")
-Signed-off-by: AnishMulay <anishm7030@gmail.com>
-Reviewed-by: SeongJae Park <sj@kernel.org>
-Reviewed-by: Dev Jain <dev.jain@arm.com>
-Reviewed-by: Anshuman Khandual <anshuman.khandual@arm.com>
-Tested-by: Sayali Patil <sayalip@linux.ibm.com>
-Acked-by: David Hildenbrand (Arm) <david@kernel.org>
-Cc: Liam Howlett <liam.howlett@oracle.com>
-Cc: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
-Cc: Michal Hocko <mhocko@suse.com>
-Cc: Mike Rapoport <rppt@kernel.org>
-Cc: Shuah Khan <shuah@kernel.org>
-Cc: Suren Baghdasaryan <surenb@google.com>
-Cc: Vlastimil Babka <vbabka@kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Tested-by: Artem S. Tashkinov <aros@gmx.com>
+Reported-by: Artem S. Tashkinov <aros@gmx.com>
+Closes: https://bugzilla.kernel.org/show_bug.cgi?id=221181
+Signed-off-by: Krishna Chomal <krishna.chomal108@gmail.com>
+Link: https://patch.msgid.link/20260403080155.169653-1-krishna.chomal108@gmail.com
+Reviewed-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- tools/testing/selftests/vm/migration.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/platform/x86/hp/hp-wmi.c |    5 +++++
+ 1 file changed, 5 insertions(+)
 
-diff --git a/tools/testing/selftests/vm/migration.c b/tools/testing/selftests/vm/migration.c
-index 1cec8425e3caa..6ea9826e6f979 100644
---- a/tools/testing/selftests/vm/migration.c
-+++ b/tools/testing/selftests/vm/migration.c
-@@ -32,7 +32,8 @@ FIXTURE_SETUP(migration)
- {
- 	int n;
+--- a/drivers/platform/x86/hp/hp-wmi.c
++++ b/drivers/platform/x86/hp/hp-wmi.c
+@@ -166,6 +166,11 @@ static const struct key_entry hp_wmi_key
+ 	{ KE_KEY, 0x21a9,  { KEY_TOUCHPAD_OFF } },
+ 	{ KE_KEY, 0x121a9, { KEY_TOUCHPAD_ON } },
+ 	{ KE_KEY, 0x231b,  { KEY_HELP } },
++	{ KE_IGNORE, 0x21ab, }, /* FnLock on */
++	{ KE_IGNORE, 0x121ab, }, /* FnLock off */
++	{ KE_IGNORE, 0x30021aa, }, /* kbd backlight: level 2 -> off */
++	{ KE_IGNORE, 0x33221aa, }, /* kbd backlight: off -> level 1 */
++	{ KE_IGNORE, 0x36421aa, }, /* kbd backlight: level 1 -> level 2*/
+ 	{ KE_END, 0 }
+ };
  
--	ASSERT_EQ(numa_available(), 0);
-+	if (numa_available() < 0)
-+		SKIP(return, "NUMA not available");
- 	self->nthreads = numa_num_task_cpus() - 1;
- 	self->n1 = -1;
- 	self->n2 = -1;
--- 
-2.53.0
-
 
 
 
