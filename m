@@ -1,59 +1,60 @@
-Return-Path: <stable+bounces-258689-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-259269-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id AD9FEt4qG2ra/ggAu9opvQ
-	(envelope-from <stable+bounces-258689-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:22:22 +0200
+	id uCDbD/UyG2qqAAkAu9opvQ
+	(envelope-from <stable+bounces-259269-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:56:53 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id BFB826119F1
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:22:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id BA8AF612CE2
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:56:52 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 70BA2301DC23
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 18:20:05 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 3D24530A77BF
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 18:52:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EC03C284690;
-	Sat, 30 May 2026 18:20:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C4DA3137750;
+	Sat, 30 May 2026 18:52:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rn3a9pam"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Z1a5EP2T"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D4AC3233D9E;
-	Sat, 30 May 2026 18:20:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9F93F26FA60;
+	Sat, 30 May 2026 18:52:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780165204; cv=none; b=HH2P8KZQe59oQz4B9p74nuL34I33eqaeSwTcFDR4Kh2GsQlOSeTf3uCADoW6S1Io2E6k4JwO8wq3hvkMEx7+uYozBmGYN3Wwqlz44Pag0G25rYNT92hkQbfD6wSTTW5MS7MkXuuvgwd7Ti2boOjG5TEWaMl2m2Z1cJrWubY5TnE=
+	t=1780167177; cv=none; b=jCHdH0VwU3IdnugzPyWUZCH5r9NZuud4yxr9FEqQKrAklg5OQbr1J7ABCDJj7Akft0N+OzsQpZkYYYCONT7cLqqj4YcyhtZYJYcXGU3upOJsw35PImOX0J5ZkbAvi4z2B4NeaToUcGBWsg2Ud1HCBxktTi9Lo0k9uSCJ02VIDXg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780165204; c=relaxed/simple;
-	bh=xvavtGN4xyQLMkYrx6o5NWy6ptPVGXJac3TCbKJKPrQ=;
+	s=arc-20240116; t=1780167177; c=relaxed/simple;
+	bh=MYA1K4ViHd1+ZQ4IyvTs4O+t+jxs7b6kFc+hrDlNiFo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=YuFxGa6xWhOxYdAzMFmSkTrBNdV7lYzLNhjQ9ExebBYEjXtNj8rx3G0N+hBhh0YjFL6bFbdKjh0eQhHr9yqu/TFZzqYYcVXUQ3DM47MtKKjbH8d1RR4oYu4LK8j1FafdDeCcyFPRPJioLFlkb8+5DKyxqjngipLGk8jivou7v7M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rn3a9pam; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 255011F00893;
-	Sat, 30 May 2026 18:20:02 +0000 (UTC)
+	 MIME-Version; b=uQUyrTibbp7MKZvRSN1olt4jO/UZYbw+PBn1o17RY9lp4cPuBRjofrxLET1DCgmL/amajtBA5nUZuAcdcBTPsJRCAivNG1dg+p2Yvp7q/8bUHl5olyot449xGp9wcYnVwSe06fS9vXRpU0C5ZYfSJcpXhgp2GqxbUjDbNjqk8OM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Z1a5EP2T; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BE0D11F00893;
+	Sat, 30 May 2026 18:52:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780165203;
-	bh=BvG1ohil4A5hki7LUQPfCdSGSDtMco6YePEUuP+iYTQ=;
+	s=korg; t=1780167175;
+	bh=NexSRb1Jmm0PG+xfdpxH0RlKpjC+k56DCWx2mm1t8Lg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=rn3a9pamBJ9NKeYGxvPIkmJvXkHKss8pJFbp6s9Qn/NXp6dvQjtxiCqMRrHGcYYwM
-	 V2PT8YhZUhLds2IDRix9neiwwX8Cqid8LVTD7PZG/JSNVW/gNQwH+Ttz8Q0Rou0Q5y
-	 rgyDnzGSisizB6pv9CdH9Mhl2D9kZtlwMkHz8boY=
+	b=Z1a5EP2TjWrVGCmOCArlxaMWXZ+srzEhuQ+RV6fflqjqXjqVmXM49In7Nr2+6rmRo
+	 IipFUiCVraPB+xOwIhO9xmFBpz3UiNaj60i/EKidYKsWMB9Rn8XwUrITBI76jgPCED
+	 LkKoCvgLgCgliN7z+mrwQtjx5uqwmsSZVNist0TQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Lukas Bulwahn <lukas.bulwahn@redhat.com>,
-	Jiri Kosina <jkosina@suse.com>,
+	Kees Cook <kees@kernel.org>,
+	Andy Shevchenko <andy@kernel.org>,
+	Jani Nikula <jani.nikula@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 753/776] HID: quirks: really enable the intended work around for appledisplay
+Subject: [PATCH 5.10 586/589] string: add mem_is_zero() helper to check if memory area is all zeros
 Date: Sat, 30 May 2026 18:07:47 +0200
-Message-ID: <20260530160259.219109046@linuxfoundation.org>
+Message-ID: <20260530160239.989962360@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260530160240.228940103@linuxfoundation.org>
-References: <20260530160240.228940103@linuxfoundation.org>
+In-Reply-To: <20260530160224.570625122@linuxfoundation.org>
+References: <20260530160224.570625122@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -73,66 +74,75 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-259269-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-258689-lists,stable=lfdr.de];
-	TO_DN_SOME(0.00)[];
-	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TO_DN_SOME(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
 	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,suse.com:email]
-X-Rspamd-Queue-Id: BFB826119F1
+	NEURAL_HAM(-0.00)[-0.996];
+	RCPT_COUNT_SEVEN(0.00)[7];
+	MID_RHS_MATCH_FROM(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[intel.com:email,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim,patchwork.freedesktop.org:url]
+X-Rspamd-Queue-Id: BA8AF612CE2
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Lukas Bulwahn <lukas.bulwahn@redhat.com>
+From: Jani Nikula <jani.nikula@intel.com>
 
-[ Upstream commit 5f90dcfa8dc32a488581b78e575cdd7808ba5c78 ]
+[ Upstream commit 3942bb49728ad9e1f94d953a88af169a8f5d8099 ]
 
-Commit c7fabe4ad921 ("HID: quirks: work around VID/PID conflict for
-appledisplay") intends to add a quirk for kernels built with Apple Cinema
-Display support, but it refers to the non-existing config option
-CONFIG_APPLEDISPLAY, whereas the config option for Apple Cinema Display
-support is named CONFIG_USB_APPLEDISPLAY.
+Almost two thirds of the memchr_inv() usages check if the memory area is
+all zeros, with no interest in where in the buffer the first non-zero
+byte is located. Checking for !memchr_inv(s, 0, n) is also not very
+intuitive or discoverable. Add an explicit mem_is_zero() helper for this
+use case.
 
-Refer to the intended config option CONFIG_USB_APPLEDISPLAY in the ifdef
-directive.
-
-Fixes: c7fabe4ad921 ("HID: quirks: work around VID/PID conflict for appledisplay")
-Signed-off-by: Lukas Bulwahn <lukas.bulwahn@redhat.com>
-Signed-off-by: Jiri Kosina <jkosina@suse.com>
+Reviewed-by: Kees Cook <kees@kernel.org>
+Reviewed-by: Andy Shevchenko <andy@kernel.org>
+Link: https://patchwork.freedesktop.org/patch/msgid/20240814100035.3100852-1-jani.nikula@intel.com
+Signed-off-by: Jani Nikula <jani.nikula@intel.com>
+Stable-dep-of: 3e6ccd790ed6 ("gpio: cdev: check if uAPI v2 config attributes are correctly zeroed")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/hid/hid-quirks.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ include/linux/string.h | 12 ++++++++++++
+ 1 file changed, 12 insertions(+)
 
-diff --git a/drivers/hid/hid-quirks.c b/drivers/hid/hid-quirks.c
-index 9eb4d02cc6d77..6e9501fe1a281 100644
---- a/drivers/hid/hid-quirks.c
-+++ b/drivers/hid/hid-quirks.c
-@@ -222,7 +222,7 @@ static const struct hid_device_id hid_quirks[] = {
-  * used as a driver. See hid_scan_report().
-  */
- static const struct hid_device_id hid_have_special_driver[] = {
--#if IS_ENABLED(CONFIG_APPLEDISPLAY)
-+#if IS_ENABLED(CONFIG_USB_APPLEDISPLAY)
- 	{ HID_USB_DEVICE(USB_VENDOR_ID_APPLE, 0x9218) },
- 	{ HID_USB_DEVICE(USB_VENDOR_ID_APPLE, 0x9219) },
- 	{ HID_USB_DEVICE(USB_VENDOR_ID_APPLE, 0x921c) },
+diff --git a/include/linux/string.h b/include/linux/string.h
+index 0cef345a6e87a..98b053d9c7005 100644
+--- a/include/linux/string.h
++++ b/include/linux/string.h
+@@ -170,6 +170,18 @@ static inline void memcpy_flushcache(void *dst, const void *src, size_t cnt)
+ void *memchr_inv(const void *s, int c, size_t n);
+ char *strreplace(char *s, char old, char new);
+ 
++/**
++ * mem_is_zero - Check if an area of memory is all 0's.
++ * @s: The memory area
++ * @n: The size of the area
++ *
++ * Return: True if the area of memory is all 0's.
++ */
++static inline bool mem_is_zero(const void *s, size_t n)
++{
++	return !memchr_inv(s, 0, n);
++}
++
+ extern void kfree_const(const void *x);
+ 
+ extern char *kstrdup(const char *s, gfp_t gfp) __malloc;
 -- 
 2.53.0
 
