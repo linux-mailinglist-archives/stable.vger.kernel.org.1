@@ -1,61 +1,59 @@
-Return-Path: <stable+bounces-258764-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-257413-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 0BfGJFsrG2r//ggAu9opvQ
-	(envelope-from <stable+bounces-258764-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:24:27 +0200
+	id 4JE+JxIbG2oq/QgAu9opvQ
+	(envelope-from <stable+bounces-257413-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:14:58 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id BD754611A7A
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:24:26 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0E6BF60F36B
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:14:58 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id B18CE3002932
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 18:24:21 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 8A50F30C0C0D
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 17:08:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E33B4274FDC;
-	Sat, 30 May 2026 18:24:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id ABDE73AF643;
+	Sat, 30 May 2026 17:08:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jiFlLKyK"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="T2Oly1qF"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 56B6121ADC7;
-	Sat, 30 May 2026 18:24:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 863AA39B4A6;
+	Sat, 30 May 2026 17:08:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780165460; cv=none; b=eWE3WU9YZX8bKjN9BVgMA+oUMAjOY99E1+EWeCX2mKlyIkPMbhdmjxuFxWNNvMQRB4rMMep6YQT10emE0yW5Pp/z0UaVu6zcNkmAzRMzhkILcGYGRCcxALWFrS1YCTBWN78T7YtwKW1JOTSLtuKc8IqX/JeCmtVbowwPe8P106g=
+	t=1780160911; cv=none; b=sS1NnmPfac8upTR0YXajeokYOl272J5WKCrM0ei8SKSZMXOVKoAfQyIvUNIuz7CRy49PHqEg+pUZ83b8y3nmFOhtXzNSe7hAG0L1ETFDURUraj+yONtciw411bbf0VtFQW9CwF5DoLWDm32OftUivYL1kl7629SUoN9JX9SAh8g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780165460; c=relaxed/simple;
-	bh=e4YUgNhu8pVFDiNy8AR/mHd53Pt750qw+Gbu+2g+mqM=;
+	s=arc-20240116; t=1780160911; c=relaxed/simple;
+	bh=wu7sfyoCFtIhn0wkDampejCZP24Dkob5Y4bZgOfQL5U=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ewCwRyVdx80J8xQuuKpt42J6RfzsXqIrLKrM7VEA/Zc0wlmO2dc//yuwpOE/xpMLk03+V/YOew7S0fflMugfh/zh5+2yaVV1psojdD9lm8wRvJtctgRfFu1xVCodsS+AYJHASRCnJhMv/MYTg4DJB9FEOs9AeSk5sEK9moSpRLY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jiFlLKyK; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8DA931F00893;
-	Sat, 30 May 2026 18:24:18 +0000 (UTC)
+	 MIME-Version; b=F/ETIjKWaMs1L6VHo6Bca3lE/q++UNHQNAQEzWLNkZl5hxhbBgrlUCbLsR59tDWeWkECPhGl5PsbfdMBnafkhLHPyfqm9pMOnLHwQ4pQwGwSuyFnC0nsIHHy/C3kCqMDqUbr+OkhbUCxjcKudFDaqtqSjLlCnRaVQZg/Laoncxw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=T2Oly1qF; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A9C2D1F00899;
+	Sat, 30 May 2026 17:08:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780165459;
-	bh=AmmjzoYGUkINjTU9ciJjQ77710EQUWa14rJ8Fbnmrzg=;
+	s=korg; t=1780160910;
+	bh=7bh2VfIYzQxgmQ53Hsriu9vcAxvGSBjo+dkry2WMWuc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=jiFlLKyK7mh1ZuzhlsDgbDN3nt2Oz5F2KYwLD2raPhumknYsL9aHhEw0HPIsYHJIP
-	 kyiQfMKeum9SpjWYkVAaYX20vw6UAOBySmGnWxppmAq5xRlDBqM/wheCS7/BfQ2mas
-	 jIDDL9hcFJJlhXWjNbkdlBUMIF0gJdqK8Lhm2+sA=
+	b=T2Oly1qFl8/eGoWEranHhhiaq4X/faJ/ofAazI/XjRwQS6XyhzcBT1igCOEM8GClS
+	 GEox07PAzpkL9vc70s+Xi1gqXYlKkMeVUTf8M88XuRMmxr9WVE3h6kenvvZW9h4GE5
+	 QrFJrV/P86Sbr95ayPMQ7NgKc3SCsqbnQma+AGVQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Cezar Bulinaru <cbulinaru@gmail.com>,
-	Willem de Bruijn <willemb@google.com>,
-	"David S. Miller" <davem@davemloft.net>,
-	Vasiliy Kovalev <kovalev@altlinux.org>,
+	Richard Clark <richard.xnu.clark@gmail.com>,
+	Thomas Gleixner <tglx@linutronix.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 084/589] net: tap: NULL pointer derefence in dev_parse_header_protocol when skb->dev is null
+Subject: [PATCH 6.1 441/969] hrtimers: Update the return type of enqueue_hrtimer()
 Date: Sat, 30 May 2026 17:59:25 +0200
-Message-ID: <20260530160226.874986870@linuxfoundation.org>
+Message-ID: <20260530160312.450410435@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260530160224.570625122@linuxfoundation.org>
-References: <20260530160224.570625122@linuxfoundation.org>
+In-Reply-To: <20260530160300.485627683@linuxfoundation.org>
+References: <20260530160300.485627683@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,149 +64,83 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,google.com,davemloft.net,altlinux.org,kernel.org];
-	TAGGED_FROM(0.00)[bounces-258764-lists,stable=lfdr.de];
-	PRECEDENCE_BULK(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
+	TO_DN_SOME(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
+	TAGGED_FROM(0.00)[bounces-257413-lists,stable=lfdr.de];
 	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	RCVD_TLS_LAST(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,linutronix.de,kernel.org];
+	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[8];
+	RCPT_COUNT_FIVE(0.00)[6];
+	NEURAL_HAM(-0.00)[-0.999];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,altlinux.org:email,davemloft.net:email,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo]
-X-Rspamd-Queue-Id: BD754611A7A
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	FROM_HAS_DN(0.00)[]
+X-Rspamd-Queue-Id: 0E6BF60F36B
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Cezar Bulinaru <cbulinaru@gmail.com>
+From: Richard Clark <richard.xnu.clark@gmail.com>
 
-commit 4f61f133f354853bc394ec7d6028adb9b02dd701 upstream.
+[ Upstream commit da7100d3bf7d6f5c49ef493ea963766898e9b069 ]
 
-Fixes a NULL pointer derefence bug triggered from tap driver.
-When tap_get_user calls virtio_net_hdr_to_skb the skb->dev is null
-(in tap.c skb->dev is set after the call to virtio_net_hdr_to_skb)
-virtio_net_hdr_to_skb calls dev_parse_header_protocol which
-needs skb->dev field to be valid.
+The return type should be 'bool' instead of 'int' according to the calling
+context in the kernel, and its internal implementation, i.e. :
 
-The line that trigers the bug is in dev_parse_header_protocol
-(dev is at offset 0x10 from skb and is stored in RAX register)
-  if (!dev->header_ops || !dev->header_ops->parse_protocol)
-  22e1:   mov    0x10(%rbx),%rax
-  22e5:	  mov    0x230(%rax),%rax
+	return timerqueue_add();
 
-Setting skb->dev before the call in tap.c fixes the issue.
+which is a bool-return function.
 
-BUG: kernel NULL pointer dereference, address: 0000000000000230
-RIP: 0010:virtio_net_hdr_to_skb.constprop.0+0x335/0x410 [tap]
-Code: c0 0f 85 b7 fd ff ff eb d4 41 39 c6 77 cf 29 c6 48 89 df 44 01 f6 e8 7a 79 83 c1 48 85 c0 0f 85 d9 fd ff ff eb b7 48 8b 43 10 <48> 8b 80 30 02 00 00 48 85 c0 74 55 48 8b 40 28 48 85 c0 74 4c 48
-RSP: 0018:ffffc90005c27c38 EFLAGS: 00010246
-RAX: 0000000000000000 RBX: ffff888298f25300 RCX: 0000000000000010
-RDX: 0000000000000005 RSI: ffffc90005c27cb6 RDI: ffff888298f25300
-RBP: ffffc90005c27c80 R08: 00000000ffffffea R09: 00000000000007e8
-R10: ffff88858ec77458 R11: 0000000000000000 R12: 0000000000000001
-R13: 0000000000000014 R14: ffffc90005c27e08 R15: ffffc90005c27cb6
-FS:  0000000000000000(0000) GS:ffff88858ec40000(0000) knlGS:0000000000000000
-CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-CR2: 0000000000000230 CR3: 0000000281408006 CR4: 00000000003706e0
-Call Trace:
- tap_get_user+0x3f1/0x540 [tap]
- tap_sendmsg+0x56/0x362 [tap]
- ? get_tx_bufs+0xc2/0x1e0 [vhost_net]
- handle_tx_copy+0x114/0x670 [vhost_net]
- handle_tx+0xb0/0xe0 [vhost_net]
- handle_tx_kick+0x15/0x20 [vhost_net]
- vhost_worker+0x7b/0xc0 [vhost]
- ? vhost_vring_call_reset+0x40/0x40 [vhost]
- kthread+0xfa/0x120
- ? kthread_complete_and_exit+0x20/0x20
- ret_from_fork+0x1f/0x30
+[ tglx: Adjust function arguments ]
 
-Fixes: 924a9bc362a5 ("net: check if protocol extracted by virtio_net_hdr_set_proto is correct")
-Signed-off-by: Cezar Bulinaru <cbulinaru@gmail.com>
-Reviewed-by: Willem de Bruijn <willemb@google.com>
-Signed-off-by: David S. Miller <davem@davemloft.net>
-[ kovalev: bp to fix CVE-2022-50073 ]
-Signed-off-by: Vasiliy Kovalev <kovalev@altlinux.org>
+Signed-off-by: Richard Clark <richard.xnu.clark@gmail.com>
+Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
+Link: https://lore.kernel.org/all/Z2ppT7me13dtxm1a@MBC02GN1V4Q05P
+Stable-dep-of: f2e388a019e4 ("hrtimer: Reduce trace noise in hrtimer_start()")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/tap.c | 23 +++++++++++++----------
- 1 file changed, 13 insertions(+), 10 deletions(-)
+ kernel/time/hrtimer.c | 7 +++----
+ 1 file changed, 3 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/net/tap.c b/drivers/net/tap.c
-index 16fa0e3e752ab..18f19fc66c64f 100644
---- a/drivers/net/tap.c
-+++ b/drivers/net/tap.c
-@@ -703,11 +703,22 @@ static ssize_t tap_get_user(struct tap_queue *q, void *msg_control,
- 	skb_reset_mac_header(skb);
- 	skb->protocol = eth_hdr(skb)->h_proto;
- 
-+	rcu_read_lock();
-+	tap = rcu_dereference(q->tap);
-+	if (!tap) {
-+		kfree_skb(skb);
-+		rcu_read_unlock();
-+		return total_len;
-+	}
-+	skb->dev = tap->dev;
-+
- 	if (vnet_hdr_len) {
- 		err = virtio_net_hdr_to_skb(skb, &vnet_hdr,
- 					    tap_is_little_endian(q));
--		if (err)
-+		if (err) {
-+			rcu_read_unlock();
- 			goto err_kfree;
-+		}
- 	}
- 
- 	skb_probe_transport_header(skb);
-@@ -717,8 +728,6 @@ static ssize_t tap_get_user(struct tap_queue *q, void *msg_control,
- 	    vlan_get_protocol_and_depth(skb, skb->protocol, &depth) != 0)
- 		skb_set_network_header(skb, depth);
- 
--	rcu_read_lock();
--	tap = rcu_dereference(q->tap);
- 	/* copy skb_ubuf_info for callback when skb has no error */
- 	if (zerocopy) {
- 		skb_shinfo(skb)->destructor_arg = msg_control;
-@@ -729,14 +738,8 @@ static ssize_t tap_get_user(struct tap_queue *q, void *msg_control,
- 		uarg->callback(uarg, false);
- 	}
- 
--	if (tap) {
--		skb->dev = tap->dev;
--		dev_queue_xmit(skb);
--	} else {
--		kfree_skb(skb);
--	}
-+	dev_queue_xmit(skb);
- 	rcu_read_unlock();
--
- 	return total_len;
- 
- err_kfree:
+diff --git a/kernel/time/hrtimer.c b/kernel/time/hrtimer.c
+index 002b29e566cb3..062dda96e2706 100644
+--- a/kernel/time/hrtimer.c
++++ b/kernel/time/hrtimer.c
+@@ -1096,11 +1096,10 @@ EXPORT_SYMBOL_GPL(hrtimer_forward);
+  * The timer is inserted in expiry order. Insertion into the
+  * red black tree is O(log(n)). Must hold the base lock.
+  *
+- * Returns 1 when the new timer is the leftmost timer in the tree.
++ * Returns true when the new timer is the leftmost timer in the tree.
+  */
+-static int enqueue_hrtimer(struct hrtimer *timer,
+-			   struct hrtimer_clock_base *base,
+-			   enum hrtimer_mode mode)
++static bool enqueue_hrtimer(struct hrtimer *timer, struct hrtimer_clock_base *base,
++			    enum hrtimer_mode mode)
+ {
+ 	debug_activate(timer, mode);
+ 	WARN_ON_ONCE(!base->cpu_base->online);
 -- 
 2.53.0
 
