@@ -1,59 +1,59 @@
-Return-Path: <stable+bounces-258267-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-257490-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id uPF4Mq4mG2qS/ggAu9opvQ
-	(envelope-from <stable+bounces-258267-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:04:30 +0200
+	id mKpYCgsbG2oq/QgAu9opvQ
+	(envelope-from <stable+bounces-257490-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:14:51 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6AA77610EF3
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:04:30 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id BC31B60F362
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:14:46 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id AE7F3302AC2A
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 17:56:17 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 70547302A8AF
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 17:12:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B47ED3AEB5C;
-	Sat, 30 May 2026 17:56:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 624F4340414;
+	Sat, 30 May 2026 17:12:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="q93+SyMI"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PhKY+7Mq"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1E3CA3B9D80;
-	Sat, 30 May 2026 17:56:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 39A4C3016E1;
+	Sat, 30 May 2026 17:12:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780163776; cv=none; b=eyTLQASItbFvqVO4CXQEpQGRMlN0zxuYrtdMyfJjLi0iRSkr5H032UE7sc+KQiMc1HwHb/z23iwCWE2T1aDKFpyQczKoJu4SYd+uB2Pb7r1kJ4hPhEuyzSgaPvXhVgAe04VR1pP5R99i8wxsWy5mXDjLj/f/RlDIDN27uteHUjU=
+	t=1780161177; cv=none; b=ph/h1RbRXYUIecgdia7enIxrx6++w+s3HS34zr1y5j2headbCthF2t7nhJC7h8qEwdVTlp4EZgl/BRzT9L9OdK21V6kKnya1GVv/KEYEsyVNnDEYH5e5vy6YBlS0RQvmu+cYnZ9L0OJg+xkd5PqhixAURGPm7r9sR6txZIyNy10=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780163776; c=relaxed/simple;
-	bh=DzwwgwcZmftP2UI3r/kP+EXdCApaaOarJkgp07SoIlM=;
+	s=arc-20240116; t=1780161177; c=relaxed/simple;
+	bh=lXiMLg8MvTfHsPjqdf0kCWBUO6+2Gj68rGO81Ws7SEU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=eyqTGMZwlcDIl6uZ9jkkEClpzRKIiqCDCInLt/GXqQg4+5aa6pJsCVzM+gIvFuOnwUEz/iVIPq+WngGlltAd+NnyRpcnFHOXPS4VzJV42PalGJBKcjR9933sMFVxbLbPuurb7+uTkisVEEWzZytBBsaz/LIJcCFGzra/GOvZo0M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=q93+SyMI; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 595E71F00893;
-	Sat, 30 May 2026 17:56:14 +0000 (UTC)
+	 MIME-Version:Content-Type; b=Vzui19T/qpAASl1ZbkFXhdUfkV0pSigGSK82EXVoSjAj+G76KYsN695VoB9gvegSrM2JKRVOqjtxLPVEgjmDmOUXMxRaazMAL/cGo/aR13/ntbBMsA28kEe8ARCnDC8m+ZiAJVZAq2pV9CljkA1/xif1Ljc4fVTWmjyh1dYHUks=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PhKY+7Mq; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5E73C1F00893;
+	Sat, 30 May 2026 17:12:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780163775;
-	bh=FT21sPruUvlCgc+hF/trBixde/2vKJU9giopyinD5RE=;
+	s=korg; t=1780161176;
+	bh=X28fBZm+A9ijJfYWissvJposzhF2RNao+wBRdyHxA04=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=q93+SyMIQ8Z92AOvxKBmWbZOpDTzXm8SQMpR0QalwtiLf6p/ATCJIzTPunVv4ftzG
-	 3JqSr+jt1jvICucaATdCtY5t/9AT8uHrfDeEatfwwS7a5CuTsxYA6KgEqkuDKzdwbd
-	 eU9J82/8SP1xYs2wvXVgHRcf+HCsyw7wczMqPhvI=
+	b=PhKY+7Mq5nQBl9uDJky150xTQ+a74zGvTb+A70pkbTFwZOz7I87IrVGRMc5wY8p8n
+	 3y6KYqTh5wzQSz5BDss/ezkGU7B8ANtrLlQdHW9xVgEavFGi0O/VSSXYkkbpVqfPW9
+	 4cD+TMKGIivaiG5U22Xop1f+alg2NC7dpZNJCjlE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Wenyou Yang <wenyou.yang@atmel.com>,
-	Johan Hovold <johan@kernel.org>,
-	Mark Brown <broonie@kernel.org>
-Subject: [PATCH 5.15 357/776] regulator: act8945a: fix OF node reference imbalance
-Date: Sat, 30 May 2026 18:01:11 +0200
-Message-ID: <20260530160249.807316174@linuxfoundation.org>
+	=?UTF-8?q?C=C3=A1ssio=20Gabriel?= <cassiogabrielcontato@gmail.com>,
+	Mark Brown <broonie@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 548/969] ASoC: SOF: compress: return the configured codec from get_params
+Date: Sat, 30 May 2026 18:01:12 +0200
+Message-ID: <20260530160315.507891999@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260530160240.228940103@linuxfoundation.org>
-References: <20260530160240.228940103@linuxfoundation.org>
+In-Reply-To: <20260530160300.485627683@linuxfoundation.org>
+References: <20260530160300.485627683@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,77 +63,122 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	TAGGED_FROM(0.00)[bounces-257490-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,kernel.org];
+	FROM_HAS_DN(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-258267-lists,stable=lfdr.de];
-	TO_DN_SOME(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-0.996];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	TO_DN_SOME(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
+	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,atmel.com:email]
-X-Rspamd-Queue-Id: 6AA77610EF3
+	RCPT_COUNT_FIVE(0.00)[6]
+X-Rspamd-Queue-Id: BC31B60F362
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Johan Hovold <johan@kernel.org>
+From: Cássio Gabriel <cassiogabrielcontato@gmail.com>
 
-commit 0d15ce31375ccef4162f960b34547a821b7619d2 upstream.
+[ Upstream commit 2c4fdd055f92a2fc8602dcd88bcea08c374b7e8b ]
 
-The driver reuses the OF node of the parent multi-function device but
-fails to take another reference to balance the one dropped by the
-platform bus code when unbinding the MFD and deregistering the child
-devices.
+The SOF compressed offload path accepts codec parameters in
+sof_compr_set_params() and forwards them to firmware as
+extended data in the SOF IPC stream params message.
 
-Fix this by using the intended helper for reusing OF nodes.
+However, sof_compr_get_params() still returns success without
+filling the snd_codec structure. Since the compress core allocates
+that structure zeroed and copies it back to userspace on success,
+SNDRV_COMPRESS_GET_PARAMS returns an all-zero codec description
+even after the stream has been configured successfully.
 
-Fixes: 38c09961048b ("regulator: act8945a: add regulator driver for ACT8945A")
-Cc: stable@vger.kernel.org	# 4.6
-Cc: Wenyou Yang <wenyou.yang@atmel.com>
-Signed-off-by: Johan Hovold <johan@kernel.org>
-Link: https://patch.msgid.link/20260408073055.5183-7-johan@kernel.org
+The stale TODO in this callback conflates get_params() with capability
+discovery. Supported codec enumeration belongs in get_caps() and
+get_codec_caps(). get_params() should report the current codec settings.
+
+Cache the codec accepted by sof_compr_set_params() in the per-stream SOF
+compress state and return it from sof_compr_get_params().
+
+Fixes: 6324cf901e14 ("ASoC: SOF: compr: Add compress ops implementation")
+Signed-off-by: Cássio Gabriel <cassiogabrielcontato@gmail.com>
+Link: https://patch.msgid.link/20260325-sof-compr-get-params-v1-1-0758815f13c7@gmail.com
 Signed-off-by: Mark Brown <broonie@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/regulator/act8945a-regulator.c |    3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ sound/soc/sof/compress.c | 8 +++++---
+ sound/soc/sof/sof-priv.h | 2 ++
+ 2 files changed, 7 insertions(+), 3 deletions(-)
 
---- a/drivers/regulator/act8945a-regulator.c
-+++ b/drivers/regulator/act8945a-regulator.c
-@@ -302,8 +302,9 @@ static int act8945a_pmic_probe(struct pl
- 		num_regulators = ARRAY_SIZE(act8945a_regulators);
- 	}
+diff --git a/sound/soc/sof/compress.c b/sound/soc/sof/compress.c
+index 71c66c1b518c6..5ce304f010cfd 100644
+--- a/sound/soc/sof/compress.c
++++ b/sound/soc/sof/compress.c
+@@ -240,6 +240,7 @@ static int sof_compr_set_params(struct snd_soc_component *component,
+ 	sstream->sampling_rate = params->codec.sample_rate;
+ 	sstream->channels = params->codec.ch_out;
+ 	sstream->sample_container_bytes = pcm->params.sample_container_bytes;
++	sstream->codec_params = params->codec;
  
-+	device_set_of_node_from_dev(&pdev->dev, pdev->dev.parent);
+ 	spcm->prepared[cstream->direction] = true;
+ 
+@@ -252,9 +253,10 @@ static int sof_compr_set_params(struct snd_soc_component *component,
+ static int sof_compr_get_params(struct snd_soc_component *component,
+ 				struct snd_compr_stream *cstream, struct snd_codec *params)
+ {
+-	/* TODO: we don't query the supported codecs for now, if the
+-	 * application asks for an unsupported codec the set_params() will fail.
+-	 */
++	struct sof_compr_stream *sstream = cstream->runtime->private_data;
 +
- 	config.dev = &pdev->dev;
--	config.dev->of_node = pdev->dev.parent->of_node;
- 	config.driver_data = act8945a;
- 	for (i = 0; i < num_regulators; i++) {
- 		rdev = devm_regulator_register(&pdev->dev, &regulators[i],
++	*params = sstream->codec_params;
++
+ 	return 0;
+ }
+ 
+diff --git a/sound/soc/sof/sof-priv.h b/sound/soc/sof/sof-priv.h
+index 6f5b06473011d..77c9741fc1480 100644
+--- a/sound/soc/sof/sof-priv.h
++++ b/sound/soc/sof/sof-priv.h
+@@ -17,6 +17,7 @@
+ #include <sound/sof/info.h>
+ #include <sound/sof/pm.h>
+ #include <sound/sof/trace.h>
++#include <sound/compress_params.h>
+ #include <uapi/sound/sof/fw.h>
+ #include <sound/sof/ext_manifest.h>
+ 
+@@ -112,6 +113,7 @@ struct sof_compr_stream {
+ 	u32 sampling_rate;
+ 	u16 channels;
+ 	u16 sample_container_bytes;
++	struct snd_codec codec_params;
+ 	size_t posn_offset;
+ };
+ 
+-- 
+2.53.0
+
 
 
 
