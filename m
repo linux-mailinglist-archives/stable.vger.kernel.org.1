@@ -1,60 +1,61 @@
-Return-Path: <stable+bounces-258341-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-257531-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 4IYgFPMnG2qS/ggAu9opvQ
-	(envelope-from <stable+bounces-258341-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:09:55 +0200
+	id mOMQCowbG2pk/QgAu9opvQ
+	(envelope-from <stable+bounces-257531-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:17:00 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id CBB7361120F
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:09:54 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id C9CA760F4CE
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:16:59 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id B96E13147B6D
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 18:00:27 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 1F133301D018
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 17:15:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 910213BFE4D;
-	Sat, 30 May 2026 18:00:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 172903998B1;
+	Sat, 30 May 2026 17:15:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0U8Y1fq0"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BRxGroRX"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 275432C11D9;
-	Sat, 30 May 2026 18:00:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F2335350A05;
+	Sat, 30 May 2026 17:15:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780164027; cv=none; b=L7TrVYcXwrcV4Ku+6bzfDaO0I/+ie1tIEsGjW/h7FWWq5sI3OUWyrwKeT6fx+uvaQulJIFAh7ygBZREfTla61ONNpuSGRv78yDzTvryV9CLx64LxggrIIeRYltCvuCG46tOVG5b4PcMI4AtQWd+f9O0KLE+6YvmckCNkMLB9GkQ=
+	t=1780161317; cv=none; b=ewYf69Z8/mUWnYyDbFoqHnxABh7EH3SHjw5mso3bH/wZiOlZmukajfzSvk8S5Z+nBLnU4lcWiCUrPdF8iraElSDnDA+SKvT19EJORm04efZerftSH8uJK5gwozwXMvKN3BxwduZTCg6/zfC0+LHbwT2KqLoWvQwmPpA9Lap1GV8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780164027; c=relaxed/simple;
-	bh=rvpy5uUk/y5XP6Lh8GcEFfP8yljhIcXpgOxfY2C95O4=;
+	s=arc-20240116; t=1780161317; c=relaxed/simple;
+	bh=aRPZutJ+zuiOdihpV6NDAGhLLMKUuX+ct7gebHfyPdY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=dkHwR4p9/MnJP0XtMD1NopVrNWw7u+9r2haBDicuDiMW17LCrjyVoH5b15O2GD6AXyqkslGccdQvjKV1nudvBtN/M3bfJ2r4u2SwWlPRakrT+OLdiApi+5tzgpALtk9p7RP3fb1bb9Mb2QAUH/gNXja5ig+xJ5i7gF4VsCje6O0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0U8Y1fq0; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5F7051F00893;
-	Sat, 30 May 2026 18:00:25 +0000 (UTC)
+	 MIME-Version; b=lbKfkjqQOxkS/CcMVcnqryICE1+dMztjmOLDtfP7AsR1YtJffaUdkthx1a88l2SFcYlabdi2G4X3E7mBuw8lMLKlvVrlojCINfVg64Y8EelTxSjiQQn3aLrW9DvKZ182X56XDYEx8uRJxigoXBKpsp371sjkCcvtJEiVFFKmIf0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BRxGroRX; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0F69F1F00893;
+	Sat, 30 May 2026 17:15:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780164026;
-	bh=yct4aGMCrbaZsfXniIkm+Y9Wx34qSRCkdEtvi7oltgg=;
+	s=korg; t=1780161316;
+	bh=fZU5W4bD18sJy8rQKD0DYdXD2zcQhYcVjnOXFUqFzdk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=0U8Y1fq0gRQPgWV+yLyeXQLapah/HSkAPqmGGuqaB7BaCOJOfG/jt8gAfQ8bAZREb
-	 C2SjBP3pb8zgIcOUWbW0W32veWuATlADwVDUwCeLO3jyrFNHxxuIeEMYvxwzlxwKNv
-	 gm5BdK2C49rsSCzLbxh1QGjhv5mNq+yUgV4xE64g=
+	b=BRxGroRX6BddyfDCeu3umAluhmEilzBvsPBX/offSPAtayuPcSYx354nJsD1Ou0xC
+	 /8UWqDhalsK9MLBcaar83bKOBfTCheYCdg+ZkqEoh3F/fs9kUDkPbTFIlU6jKr3CXv
+	 GSRDsXOU23jnW4PuIw3EFoJ2wia6DBJVHxMttKZ8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ioana Ciornei <ioana.ciornei@nxp.com>,
-	Cai Xinchen <caixinchen1@huawei.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Alok Tiwari <alok.a.tiwari@oracle.com>,
+	Manivannan Sadhasivam <mani@kernel.org>,
+	Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>,
+	Bjorn Andersson <andersson@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 398/776] dpaa2: compile dpaa2 even CONFIG_FSL_DPAA2_ETH=n
+Subject: [PATCH 6.1 588/969] soc: qcom: llcc: fix v1 SB syndrome register offset
 Date: Sat, 30 May 2026 18:01:52 +0200
-Message-ID: <20260530160250.789766905@linuxfoundation.org>
+Message-ID: <20260530160316.649536162@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260530160240.228940103@linuxfoundation.org>
-References: <20260530160240.228940103@linuxfoundation.org>
+In-Reply-To: <20260530160300.485627683@linuxfoundation.org>
+References: <20260530160300.485627683@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -70,69 +71,72 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-258341-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-257531-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
 	PRECEDENCE_BULK(0.00)[];
 	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-0.996];
+	NEURAL_HAM(-0.00)[-1.000];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[7];
+	RCPT_COUNT_SEVEN(0.00)[8];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
 	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[]
-X-Rspamd-Queue-Id: CBB7361120F
+X-Rspamd-Queue-Id: C9CA760F4CE
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Cai Xinchen <caixinchen1@huawei.com>
+From: Alok Tiwari <alok.a.tiwari@oracle.com>
 
-[ Upstream commit 97daf00745f7f9f261b0e91418de6e79d7826c36 ]
+[ Upstream commit 24e7625df5ce065393249b78930781be593bc381 ]
 
-CONFIG_FSL_DPAA2_ETH and CONFIG_FSL_DPAA2_SWITCH are not
-associated, but the compilation of FSL_DPAA2_SWITCH depends on
-the compilation of the dpaa2 folder. The files controlled by
-CONFIG_FSL_DPAA2_SWITCH in the dpaa2 folder are not controlled
-by CONFIG_FSL_DPAA2_ETH, except for the files controlled by
-CONFIG_FSL_DPAA2_SWITCH. Therefore, removing the restriction will
-not affect the compilation of the files in the directory.
+The llcc_v1_edac_reg_offset table uses 0x2304c for trp_ecc_sb_err_syn0,
+which is inconsistent with the surrounding TRP ECC registers (0x2034x)
+and with llcc_v2_1_edac_reg_offset, where trp_ecc_sb_err_syn0 is 0x2034c
+adjacent to trp_ecc_error_status0/1 at 0x20344/0x20348.
 
-Fixes: f48298d3fbfaa ("staging: dpaa2-switch: move the driver out of staging")
-Suggested-by: Ioana Ciornei <ioana.ciornei@nxp.com>
-Signed-off-by: Cai Xinchen <caixinchen1@huawei.com>
-Link: https://patch.msgid.link/20260312065907.476663-3-caixinchen1@huawei.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Use 0x2034c for llcc v1 so the SB syndrome register follows the expected
++0x4 progression from trp_ecc_error_status1. This fixes EDAC reading the
+wrong register for SB syndrome reporting.
+
+Fixes: c13d7d261e36 ("soc: qcom: llcc: Pass LLCC version based register offsets to EDAC driver")
+Signed-off-by: Alok Tiwari <alok.a.tiwari@oracle.com>
+Reviewed-by: Manivannan Sadhasivam <mani@kernel.org>
+Reviewed-by: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
+Link: https://lore.kernel.org/r/20260330095118.2657362-1-alok.a.tiwari@oracle.com
+Signed-off-by: Bjorn Andersson <andersson@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/freescale/Makefile | 3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
+ drivers/soc/qcom/llcc-qcom.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/net/ethernet/freescale/Makefile b/drivers/net/ethernet/freescale/Makefile
-index de7b318422330..d0a259e47960f 100644
---- a/drivers/net/ethernet/freescale/Makefile
-+++ b/drivers/net/ethernet/freescale/Makefile
-@@ -22,6 +22,5 @@ ucc_geth_driver-objs := ucc_geth.o ucc_geth_ethtool.o
- obj-$(CONFIG_FSL_FMAN) += fman/
- obj-$(CONFIG_FSL_DPAA_ETH) += dpaa/
- 
--obj-$(CONFIG_FSL_DPAA2_ETH) += dpaa2/
--
-+obj-y += dpaa2/
- obj-y += enetc/
+diff --git a/drivers/soc/qcom/llcc-qcom.c b/drivers/soc/qcom/llcc-qcom.c
+index 16a05143d0d62..bf1e050002bf9 100644
+--- a/drivers/soc/qcom/llcc-qcom.c
++++ b/drivers/soc/qcom/llcc-qcom.c
+@@ -299,7 +299,7 @@ static const struct llcc_slice_config sm8450_data[] =  {
+ static const struct llcc_edac_reg_offset llcc_v1_edac_reg_offset = {
+ 	.trp_ecc_error_status0 = 0x20344,
+ 	.trp_ecc_error_status1 = 0x20348,
+-	.trp_ecc_sb_err_syn0 = 0x2304c,
++	.trp_ecc_sb_err_syn0 = 0x2034c,
+ 	.trp_ecc_db_err_syn0 = 0x20370,
+ 	.trp_ecc_error_cntr_clear = 0x20440,
+ 	.trp_interrupt_0_status = 0x20480,
 -- 
 2.53.0
 
