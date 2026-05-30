@@ -1,57 +1,59 @@
-Return-Path: <stable+bounces-258885-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-258280-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id mLPsOmkvG2qU/wgAu9opvQ
-	(envelope-from <stable+bounces-258885-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:41:45 +0200
+	id UABwEosnG2qf/ggAu9opvQ
+	(envelope-from <stable+bounces-258280-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:08:11 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9116761242F
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:41:45 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id A0D226110AA
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:08:10 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 30BFF31A2E41
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 18:31:17 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 27E9E312B660
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 17:57:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2C4053546F6;
-	Sat, 30 May 2026 18:31:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7DD773BED32;
+	Sat, 30 May 2026 17:57:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zushqdgn"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xnlVzvai"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 068F639989B;
-	Sat, 30 May 2026 18:31:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3B7CF3BF694;
+	Sat, 30 May 2026 17:56:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780165867; cv=none; b=ghSQlsCHk7H02YAz8BShs6GlZ30Y+Sf2O2byA0kCm9Pi2iS4REUPcTAKo1BRjcD2DqcU4YEkhot3ph/YxLq+3i6VedDHEk3WzBbgeXPAVnZMqoHeXReF/RPGsbc8hyj0lAWeyFMApjEWN1TKK64ThPP/lQ2OOPQusJepHWoKVNU=
+	t=1780163820; cv=none; b=JViV4qPfVj+J8IiCehnfxALxyom/+tU14dbwIOij0l82uK4R0PATIjvGN1MzVbnFU7UtVcRlRWVMqd9awsQA3LWoe/2ZAONGpFoufrTg6JsqB/sprlmHKd9oyv1jqWTv72y1MzSqkmEUzQ1TIuCtFcaHarAgV93wnwlgjyRZBiY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780165867; c=relaxed/simple;
-	bh=Z8KRuH9M7iPLx5r4Ef+hPIRBoUWCJph6dnW1gzyZSIc=;
+	s=arc-20240116; t=1780163820; c=relaxed/simple;
+	bh=aG6Ot7X/groQWzqhyrYcRfm5nPimvYL2Tfos3cGTm3Q=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=iP3Gk4Xygwv8qdUPka2dYc97FOEcHfnetSMhT7/B4RxNRa7k3ogSBrvMScZ0cMHCXk5e88tSwPW1yEFLcyDlD8mUBz3yn2nr/XabHh6OVhWvmLeUAT4ntsrucrm3hzdQWtgxCAd69Xqbss9K944SCZ0L2xBk45nErlLA61A3jt4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zushqdgn; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E14041F00898;
-	Sat, 30 May 2026 18:31:04 +0000 (UTC)
+	 MIME-Version:Content-Type; b=RHvBxxrn4tOxwDTTY3p+RANB8ajFX8C/RaKY3Bt9t56RRlx7FHV24iLrKvF1jdSSH18EvH3fMdYtf3UPT3DUr7lvjCeVkLifTmIVzK4ia7/63tlAgXzIxFSaLtPiZ1i6s41PqaJTz7vPzLfuCkqR/2CDEzMTJSIL3jWih2ulZeo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xnlVzvai; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7E9E51F00893;
+	Sat, 30 May 2026 17:56:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780165865;
-	bh=LqAAMTuw3VNVC+OyPZEwT09cRdU1feVgRRqFtye/5vU=;
+	s=korg; t=1780163818;
+	bh=3xf3b0M4FOHKKhqdzApUcnGu04cEtIV7lg8AaVP0H8A=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=zushqdgnnZ6PtiYkPgQHFjxwxnX7cmnSsfwWt8Kcfgrt14+2AMiJVdGnvgIBnh5eu
-	 CQtQ1a7NwAFecSIPGDPNZEbDof1nXtAYCt7cUNP/oVQ+AEJZp1MT1Kk+8XyixHf+W/
-	 uHt8bV1tp7rZGpl6Ano8zn5DbYJ1RADrEEjJsg7A=
+	b=xnlVzvaihtOIZuQ7Lfpc611LXHa4FZpx+7e2RvRQtO705MCKJne8EZ3nQ7H7BGrK3
+	 PAYQUnMCe40H8ZAw3WL2t25Afv/tRKIPcdTy86Vb2Gqs5hOO7lH/xwUWzNpo3ON6nG
+	 KOkocBJ7RkNwzuHKjQn71a3SEr5VtcyDDS9cAM+Y=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Martin K. Petersen" <martin.petersen@oracle.com>
-Subject: [PATCH 5.10 204/589] scsi: target: configfs: Bound snprintf() return in tg_pt_gp_members_show()
-Date: Sat, 30 May 2026 18:01:25 +0200
-Message-ID: <20260530160230.297935380@linuxfoundation.org>
+	=?UTF-8?q?Timur=20Krist=C3=B3f?= <timur.kristof@gmail.com>,
+	Kent Russell <kent.russell@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>
+Subject: [PATCH 5.15 372/776] drm/amdgpu/pm: align Hawaii mclk workaround with radeon
+Date: Sat, 30 May 2026 18:01:26 +0200
+Message-ID: <20260530160250.157723384@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260530160224.570625122@linuxfoundation.org>
-References: <20260530160224.570625122@linuxfoundation.org>
+In-Reply-To: <20260530160240.228940103@linuxfoundation.org>
+References: <20260530160240.228940103@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,83 +63,79 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-0.66 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	TAGGED_FROM(0.00)[bounces-258280-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-258885-lists,stable=lfdr.de];
-	PRECEDENCE_BULK(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,amd.com];
+	TO_DN_SOME(0.00)[];
 	MIME_TRACE(0.00)[0:+];
 	FROM_HAS_DN(0.00)[];
-	RCPT_COUNT_THREE(0.00)[4];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[6];
+	NEURAL_HAM(-0.00)[-0.997];
+	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-0.994];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable];
-	TO_DN_SOME(0.00)[];
+	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,oracle.com:email]
-X-Rspamd-Queue-Id: 9116761242F
+	TAGGED_RCPT(0.00)[stable];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,amd.com:email]
+X-Rspamd-Queue-Id: A0D226110AA
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+From: Alex Deucher <alexander.deucher@amd.com>
 
-commit 772a896a56e0e3ef9424a025cec9176f9d8f4552 upstream.
+commit 1987c79b4fe5789dfa14423e78b5c25f6acf3e9d upstream.
 
-target_tg_pt_gp_members_show() formats LUN paths with snprintf() into a
-256-byte stack buffer, then will memcpy() cur_len bytes from that
-buffer.  snprintf() returns the length the output would have had, which
-can exceed the buffer size when the fabric WWN is long because iSCSI IQN
-names can be up to 223 bytes.  The check at the memcpy() site only
-guards the destination page write, not the source read, so memcpy() will
-read past the stack buffer and copy adjacent stack contents to the sysfs
-reader, which when CONFIG_FORTIFY_SOURCE is enabled, fortify_panic()
-will be triggered.
+Align the hawaii mclk workaround with radeon and windows.
 
-Commit 27e06650a5ea ("scsi: target: target_core_configfs: Add length
-check to avoid buffer overflow") added the same bound to the
-target_lu_gp_members_show() but the tg_pt_gp variant was missed so
-resolve that here.
-
-Cc: Martin K. Petersen <martin.petersen@oracle.com>
-Fixes: c66ac9db8d4a ("[SCSI] target: Add LIO target core v4.0.0-rc6")
-Assisted-by: gregkh_clanker_t1000
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Link: https://patch.msgid.link/2026041159-garter-theft-3be0@gregkh
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+Link: https://gitlab.freedesktop.org/drm/amd/-/work_items/1816
+Fixes: 9f4b35411cfe ("drm/amd/powerplay: add CI asics support to smumgr (v3)")
+Reviewed-by: Timur Kristóf <timur.kristof@gmail.com>
+Reviewed-by: Kent Russell <kent.russell@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+(cherry picked from commit 9649528b637f668c5af9f2b83ca4ad8576ae2121)
+Cc: stable@vger.kernel.org
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/target/target_core_configfs.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/gpu/drm/amd/pm/powerplay/smumgr/ci_smumgr.c |    8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
---- a/drivers/target/target_core_configfs.c
-+++ b/drivers/target/target_core_configfs.c
-@@ -3043,7 +3043,7 @@ static ssize_t target_tg_pt_gp_members_s
- 			config_item_name(&lun->lun_group.cg_item));
- 		cur_len++; /* Extra byte for NULL terminator */
- 
--		if ((cur_len + len) > PAGE_SIZE) {
-+		if (cur_len > TG_PT_GROUP_NAME_BUF || (cur_len + len) > PAGE_SIZE) {
- 			pr_warn("Ran out of lu_gp_show_attr"
- 				"_members buffer\n");
- 			break;
+--- a/drivers/gpu/drm/amd/pm/powerplay/smumgr/ci_smumgr.c
++++ b/drivers/gpu/drm/amd/pm/powerplay/smumgr/ci_smumgr.c
+@@ -1328,10 +1328,10 @@ static int ci_populate_all_memory_levels
+ 	if ((dpm_table->mclk_table.count >= 2) &&
+ 	    ((dev_id == 0x67B0) ||  (dev_id == 0x67B1)) &&
+ 	    (adev->pdev->revision == 0)) {
+-		smu_data->smc_state_table.MemoryLevel[1].MinVddci =
+-				smu_data->smc_state_table.MemoryLevel[0].MinVddci;
+-		smu_data->smc_state_table.MemoryLevel[1].MinMvdd =
+-				smu_data->smc_state_table.MemoryLevel[0].MinMvdd;
++		smu_data->smc_state_table.MemoryLevel[1].MinVddc =
++				smu_data->smc_state_table.MemoryLevel[0].MinVddc;
++		smu_data->smc_state_table.MemoryLevel[1].MinVddcPhases =
++				smu_data->smc_state_table.MemoryLevel[0].MinVddcPhases;
+ 	}
+ 	smu_data->smc_state_table.MemoryLevel[0].ActivityLevel = 0x1F;
+ 	CONVERT_FROM_HOST_TO_SMC_US(smu_data->smc_state_table.MemoryLevel[0].ActivityLevel);
 
 
 
