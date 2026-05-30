@@ -1,60 +1,59 @@
-Return-Path: <stable+bounces-257943-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-257142-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id iEaPBmkiG2oN/ggAu9opvQ
-	(envelope-from <stable+bounces-257943-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:46:17 +0200
+	id 0LeDCJ4XG2pV/AgAu9opvQ
+	(envelope-from <stable+bounces-257142-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:00:14 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id A7570610587
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:46:16 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id BD6C460EB1D
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:00:13 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id C429F301A177
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 17:38:19 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 2DFD43007ACC
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 16:52:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6EA8E33F590;
-	Sat, 30 May 2026 17:38:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7644C34E75C;
+	Sat, 30 May 2026 16:52:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mgCP2rl0"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qMxHaPF7"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 31EAB34C9AF;
-	Sat, 30 May 2026 17:38:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 91254332EA7;
+	Sat, 30 May 2026 16:52:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780162699; cv=none; b=UEm1feJfSXbTF1HUxI2G83J8buRGaRSCOB1mur6KkMDOJlHJVsspLvKf56AtDez1iMKSQmgPSs9oODCBlQB6iHYrWoUOECBNwOZNbfA5GfoijnavV0TeQX0+MbYKshYkMlLeXu0/KXSzWo3jVdreglnvWnvPCQIXUsLhf6PHOzg=
+	t=1780159953; cv=none; b=uYOrz8AwOSirm7H77Rwfv0cR9aki2WvgosNZpWPtApZptOFhCr1k3pAv9bMJ27wsOOfcL3OK6nEzDr+92ciHZEbGLEf5GiVYhKveLbLh6sD2RxMM3lli8H/KWIJMdAqO0PgEkcbe07rPzar/YZwW+yKNkcQArSUbNTtnUl7LpaE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780162699; c=relaxed/simple;
-	bh=ThI906zswaFC5byJyMdZddQ7N52jdO+K0O5+hdZWse4=;
+	s=arc-20240116; t=1780159953; c=relaxed/simple;
+	bh=4/wnVLvL4lsmtsneclfu0rCJMJu02qPW5TNdmZsk7lg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=BmreVU1uA5x3sEAttuo4+3wB6tzcKcZEYUvZL5PXpg5B0XkBTCIpcm34dtpA2rAqONCRUW77v0LPGfMYIvkBVFBg3ccC9CzgTB5Dx1vCInVke3AbbDtaGjfY+R7/mPmIDk4kVBe4FtzwTbx02xZYIt+AvUy4HKg/bQmjASlIMVs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mgCP2rl0; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 384021F00898;
-	Sat, 30 May 2026 17:38:17 +0000 (UTC)
+	 MIME-Version; b=NLVbY4GQgylfC78TXKPPJo9qKyIzKqQNs97W2whJI5rPOPBwQlq9BjlSGxStuPjPz6GftQUnnD+FdgdD9XnFdJUZB0f8GKDDtsIJd4f3EXqyBwgogu2p4hSzZmcwt/f4cDkVcZsPmtA8tAjzQfmRBA5DHoA8EUKrgPRvvM+aHgM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qMxHaPF7; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 29BAB1F00898;
+	Sat, 30 May 2026 16:52:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780162697;
-	bh=zHD/F+lyT7+d53L+OsBCnYGESD+eYL4zAQn9YLhMrfk=;
+	s=korg; t=1780159949;
+	bh=YISbciPfmZmGQyss/E/6SgoyNOG/UZQKOXq0IMGwMD8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=mgCP2rl0DuVS+77ZwZcOoBvITZFWxsnOSYqpDO+sXvuItGmif3JgIXJT4vsXugb5X
-	 w0QAwXPkDywVRE1tY2mr2YVJRI92FBJMCK4WQWp3RZjmw5uOkTH+d9Bx9Hg3bQDE+y
-	 vNT5WmkvEpTCngNTiTfSPc4WHNGGUoDqtuLiq6IU=
+	b=qMxHaPF7FtU39InHePYc2zBimWJ8ZDYtLl/MkH0xHYSxUHMOngG3qx/UUBgoActXu
+	 QF0T7q7HwHSEuGm3NiuYC9NwCVXvTPrNCUsI6st9EiZ2+8hMRuV+QGBEQ3+PQ5RRGc
+	 fEuE0Sgs7lBRXN99sT4UBu1FepZgPBGtJJSeU4l8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Arthur Husband <artmoty@gmail.com>,
-	Damien Le Moal <dlemoal@kernel.org>,
-	Niklas Cassel <cassel@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 014/776] ata: ahci: force 32-bit DMA for JMicron JMB582/JMB585
-Date: Sat, 30 May 2026 17:55:28 +0200
-Message-ID: <20260530160240.629734029@linuxfoundation.org>
+	David Lechner <dlechner@baylibre.com>,
+	Stable@vger.kernel.org,
+	Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Subject: [PATCH 6.1 205/969] iio: adc: ti-ads7950: use iio_push_to_buffers_with_ts_unaligned()
+Date: Sat, 30 May 2026 17:55:29 +0200
+Message-ID: <20260530160306.138183041@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260530160240.228940103@linuxfoundation.org>
-References: <20260530160240.228940103@linuxfoundation.org>
+In-Reply-To: <20260530160300.485627683@linuxfoundation.org>
+References: <20260530160300.485627683@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -67,118 +66,92 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,kernel.org];
-	TAGGED_FROM(0.00)[bounces-257943-lists,stable=lfdr.de];
-	PRECEDENCE_BULK(0.00)[];
+	TAGGED_FROM(0.00)[bounces-257142-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[7];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sata-io.org:url,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim]
-X-Rspamd-Queue-Id: A7570610587
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	RCPT_COUNT_FIVE(0.00)[6];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	TAGGED_RCPT(0.00)[stable];
+	MID_RHS_MATCH_FROM(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	FROM_HAS_DN(0.00)[]
+X-Rspamd-Queue-Id: BD6C460EB1D
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Arthur Husband <artmoty@gmail.com>
+From: David Lechner <dlechner@baylibre.com>
 
-[ Upstream commit 105c42566a550e2d05fc14f763216a8765ee5d0e ]
+commit 7806c060cceb2d6895efbb6cff2f2f17cf1ec5de upstream.
 
-The JMicron JMB585 (and JMB582) SATA controllers advertise 64-bit DMA
-support via the S64A bit in the AHCI CAP register, but their 64-bit DMA
-implementation is defective. Under sustained I/O, DMA transfers targeting
-addresses above 4GB silently corrupt data -- writes land at incorrect
-memory addresses with no errors logged.
+Use iio_push_to_buffers_with_ts_unaligned() to avoid unaligned access
+when writing the timestamp in the rx_buf.
 
-The failure pattern is similar to the ASMedia ASM1061
-(commit 20730e9b2778 ("ahci: add 43-bit DMA address quirk for ASMedia
-ASM1061 controllers")), which also falsely advertised full 64-bit DMA
-support. However, the JMB585 requires a stricter 32-bit DMA mask rather
-than 43-bit, as corruption occurs with any address above 4GB.
+The previous implementation would have been fine on architectures that
+support 4-byte alignment of 64-bit integers but could cause issues on
+architectures that require 8-byte alignment.
 
-On the Minisforum N5 Pro specifically, the combination of the JMB585's
-broken 64-bit DMA with the AMD Family 1Ah (Strix Point) IOMMU causes
-silent data corruption that is only detectable via checksumming
-filesystems (BTRFS/ZFS scrub). The corruption occurs when 32-bit IOVA
-space is exhausted and the kernel transparently switches to 64-bit DMA
-addresses.
-
-Add device-specific PCI ID entries for the JMB582 (0x0582) and JMB585
-(0x0585) before the generic JMicron class match, using a new board type
-that combines AHCI_HFLAG_IGN_IRQ_IF_ERR (preserving existing behavior)
-with AHCI_HFLAG_32BIT_ONLY to force 32-bit DMA masks.
-
-Signed-off-by: Arthur Husband <artmoty@gmail.com>
-Reviewed-by: Damien Le Moal <dlemoal@kernel.org>
-Signed-off-by: Niklas Cassel <cassel@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 902c4b2446d4 ("iio: adc: New driver for TI ADS7950 chips")
+Signed-off-by: David Lechner <dlechner@baylibre.com>
+Cc: <Stable@vger.kernel.org>
+Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/ata/ahci.c | 14 ++++++++++++++
- 1 file changed, 14 insertions(+)
+ drivers/iio/adc/ti-ads7950.c |   11 +++++------
+ 1 file changed, 5 insertions(+), 6 deletions(-)
 
-diff --git a/drivers/ata/ahci.c b/drivers/ata/ahci.c
-index 408a25956f6e0..d87b0da31dc25 100644
---- a/drivers/ata/ahci.c
-+++ b/drivers/ata/ahci.c
-@@ -61,6 +61,7 @@ enum board_ids {
- 	/* board IDs for specific chipsets in alphabetical order */
- 	board_ahci_al,
- 	board_ahci_avn,
-+	board_ahci_jmb585,
- 	board_ahci_mcp65,
- 	board_ahci_mcp77,
- 	board_ahci_mcp89,
-@@ -200,6 +201,15 @@ static const struct ata_port_info ahci_port_info[] = {
- 		.udma_mask	= ATA_UDMA6,
- 		.port_ops	= &ahci_avn_ops,
- 	},
-+	/* JMicron JMB582/585: 64-bit DMA is broken, force 32-bit */
-+	[board_ahci_jmb585] = {
-+		AHCI_HFLAGS	(AHCI_HFLAG_IGN_IRQ_IF_ERR |
-+				 AHCI_HFLAG_32BIT_ONLY),
-+		.flags		= AHCI_FLAG_COMMON,
-+		.pio_mask	= ATA_PIO4,
-+		.udma_mask	= ATA_UDMA6,
-+		.port_ops	= &ahci_ops,
-+	},
- 	[board_ahci_mcp65] = {
- 		AHCI_HFLAGS	(AHCI_HFLAG_NO_FPDMA_AA | AHCI_HFLAG_NO_PMP |
- 				 AHCI_HFLAG_YES_NCQ),
-@@ -436,6 +446,10 @@ static const struct pci_device_id ahci_pci_tbl[] = {
- 	/* Elkhart Lake IDs 0x4b60 & 0x4b62 https://sata-io.org/product/8803 not tested yet */
- 	{ PCI_VDEVICE(INTEL, 0x4b63), board_ahci_low_power }, /* Elkhart Lake AHCI */
+--- a/drivers/iio/adc/ti-ads7950.c
++++ b/drivers/iio/adc/ti-ads7950.c
+@@ -47,8 +47,6 @@
+ #define TI_ADS7950_MAX_CHAN	16
+ #define TI_ADS7950_NUM_GPIOS	4
  
-+	/* JMicron JMB582/585: force 32-bit DMA (broken 64-bit implementation) */
-+	{ PCI_VDEVICE(JMICRON, 0x0582), board_ahci_jmb585 },
-+	{ PCI_VDEVICE(JMICRON, 0x0585), board_ahci_jmb585 },
-+
- 	/* JMicron 360/1/3/5/6, match class to avoid IDE function */
- 	{ PCI_VENDOR_ID_JMICRON, PCI_ANY_ID, PCI_ANY_ID, PCI_ANY_ID,
- 	  PCI_CLASS_STORAGE_SATA_AHCI, 0xffffff, board_ahci_ign_iferr },
--- 
-2.53.0
-
+-#define TI_ADS7950_TIMESTAMP_SIZE (sizeof(int64_t) / sizeof(__be16))
+-
+ /* val = value, dec = left shift, bits = number of bits of the mask */
+ #define TI_ADS7950_EXTRACT(val, dec, bits) \
+ 	(((val) >> (dec)) & ((1 << (bits)) - 1))
+@@ -105,8 +103,7 @@ struct ti_ads7950_state {
+ 	 * DMA (thus cache coherency maintenance) may require the
+ 	 * transfer buffers to live in their own cache lines.
+ 	 */
+-	u16 rx_buf[TI_ADS7950_MAX_CHAN + 2 + TI_ADS7950_TIMESTAMP_SIZE]
+-		__aligned(IIO_DMA_MINALIGN);
++	u16 rx_buf[TI_ADS7950_MAX_CHAN + 2] __aligned(IIO_DMA_MINALIGN);
+ 	u16 tx_buf[TI_ADS7950_MAX_CHAN + 2];
+ 	u16 single_tx;
+ 	u16 single_rx;
+@@ -313,8 +310,10 @@ static irqreturn_t ti_ads7950_trigger_ha
+ 	if (ret < 0)
+ 		goto out;
+ 
+-	iio_push_to_buffers_with_timestamp(indio_dev, &st->rx_buf[2],
+-					   iio_get_time_ns(indio_dev));
++	iio_push_to_buffers_with_ts_unaligned(indio_dev, &st->rx_buf[2],
++					      sizeof(*st->rx_buf) *
++					      TI_ADS7950_MAX_CHAN,
++					      iio_get_time_ns(indio_dev));
+ 
+ out:
+ 	mutex_unlock(&st->slock);
 
 
 
