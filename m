@@ -1,60 +1,60 @@
-Return-Path: <stable+bounces-258063-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-257312-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id uEfSBaIjG2pm/ggAu9opvQ
-	(envelope-from <stable+bounces-258063-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:51:30 +0200
+	id cA5dEGsaG2pV/AgAu9opvQ
+	(envelope-from <stable+bounces-257312-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:12:11 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 981C0610874
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:51:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8DEFD60F1BF
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:12:09 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 3660D30C0B2C
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 17:44:57 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 7728D308ED66
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 17:02:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DFD6933F8A4;
-	Sat, 30 May 2026 17:44:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DC44C394E8A;
+	Sat, 30 May 2026 17:02:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2TbXdMfq"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cpZ/RWAc"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AF27023392B;
-	Sat, 30 May 2026 17:44:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BFBBB34104B;
+	Sat, 30 May 2026 17:02:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780163096; cv=none; b=phz/FdYYzrzcI1h9Ydf130stY0U3Kv30x2pmhnDEgvs3ogWuvoClvYbtYawlX/ItXDPSXhAVESCZ9kf8a10SMTmrP8XC2qrsrbfATCnN0hlkfqlyKRQ3rDRxoHnSX1HckVid4HZUUvF+qBrSJ+3qHx2hljddcpyv31g9A81NOXY=
+	t=1780160570; cv=none; b=q1rzM2pJzZYp6zS4gqIHNoqlkd/UvHTac08K7HNWcJI1Zp5h6+StcsrX9tGb3RmEg/0U4NI222S9aCfPp6V180plpqSwsFTw4CBNsUnYFxJ0rBF/HYYR4VowD+JMt5azx/7W8CyXQwa7ZrAG1OrRg4y8PG5NavDZ6SPOyho7hDw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780163096; c=relaxed/simple;
-	bh=JdC8zvT57Wq7TmNLOU4aZU2eS9+vlfOdp+mqDX4DJqY=;
+	s=arc-20240116; t=1780160570; c=relaxed/simple;
+	bh=ePEDMs0uckC2hZ/U7Fr1e5Omdlb6WHiWem5CRNMLKyA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=n2lJqh1HfpIf8x41nTu/l8TkTlsEwi4gEuSAncYSyeAzfimeicsgVj0wJkcDxJZfr4t+UuEQ0GfntIrpBWPpDWjjRdAcVzpICgdAlnt1EcH/7rpos12S9TMWHQSogbjK6chnmKq2RkHyg0wlQ3u19JAsCSN7xQTorKYJ6erx97Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2TbXdMfq; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 005001F00893;
-	Sat, 30 May 2026 17:44:54 +0000 (UTC)
+	 MIME-Version:Content-Type; b=DF9iGtB7dlF354JENGlJ/ES6VXCDu7UH5LZ8DcN3mwooD2p5Of538Upfoe9OpQGpR0MKqEOPNOYgHDNRA8+zRRzCG2Lws7xoQqbVm04CT72hi/0tY0AtFKhQwRxz4kXOpA0lsnXY2Q6pnHebcH5iI68CnWd0XAnxEtbLnQVB+A4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cpZ/RWAc; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D5CF71F00893;
+	Sat, 30 May 2026 17:02:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780163095;
-	bh=/YPQD0oKRUXqM0X2U0OxqQ53EVu45NAtlRCWHg05D08=;
+	s=korg; t=1780160569;
+	bh=paNJrmx5B3ifxnVrR3Q4xOCa1qmUS+jdArCwtLNB3zw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=2TbXdMfqKKpuITzGEsdUio+HB8OQfgxYZpnpVh+8HLDiuOB31oJ8TBHmTXaWi8Leq
-	 UTbBvz2rFRSnEuk9R9LSV6iOZkasE/oy1aquClmKPGC0got73ilmGn9zAMx3P3lS6s
-	 4d4b1KXv46yppsDILfpNATiYE0BRmj94THejtlec=
+	b=cpZ/RWAc1k/c1G1MO4KzbBnSv8GWHfDez89EeBy4QJ/7HRS8b7/ZAjc2TeGuR62cc
+	 Jw5HhOEKQV0mfA9oPA8VabId8V97TlG7k9loewRzZeN7740S5nZ/XMUOv15p58yk8S
+	 pCggH3vgd8HajcEd8G1+axwUrKAe25w+oom4mc9o=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	John Efstathiades <john.efstathiades@pebblebay.com>,
-	Oleksij Rempel <o.rempel@pengutronix.de>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Wenshan Lan <jetlan9@163.com>
-Subject: [PATCH 5.15 153/776] net: usb: lan78xx: Fix double free issue with interrupt buffer allocation
-Date: Sat, 30 May 2026 17:57:47 +0200
-Message-ID: <20260530160244.414328748@linuxfoundation.org>
+	=?UTF-8?q?C=C3=A1ssio=20Gabriel?= <cassiogabrielcontato@gmail.com>,
+	Cezary Rojewski <cezary.rojewski@intel.com>,
+	Hans de Goede <johannes.goede@oss.qualcomm.com>,
+	Mark Brown <broonie@kernel.org>
+Subject: [PATCH 6.1 344/969] ASoC: Intel: bytcr_wm5102: Fix MCLK leak on platform_clock_control error
+Date: Sat, 30 May 2026 17:57:48 +0200
+Message-ID: <20260530160309.865959430@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260530160240.228940103@linuxfoundation.org>
-References: <20260530160240.228940103@linuxfoundation.org>
+In-Reply-To: <20260530160300.485627683@linuxfoundation.org>
+References: <20260530160300.485627683@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,136 +64,76 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_MISSING_CHARSET(0.50)[];
 	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,pebblebay.com,pengutronix.de,kernel.org,163.com];
-	TAGGED_FROM(0.00)[bounces-258063-lists,stable=lfdr.de];
-	PRECEDENCE_BULK(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,intel.com,oss.qualcomm.com,kernel.org];
+	TAGGED_FROM(0.00)[bounces-257312-lists,stable=lfdr.de];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	FROM_HAS_DN(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	MID_RHS_MATCH_FROM(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
 	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
-	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,pengutronix.de:email,msgid.link:url,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim]
-X-Rspamd-Queue-Id: 981C0610874
+	TO_DN_SOME(0.00)[]
+X-Rspamd-Queue-Id: 8DEFD60F1BF
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Oleksij Rempel <o.rempel@pengutronix.de>
+From: Cássio Gabriel <cassiogabrielcontato@gmail.com>
 
-[ Upstream commit 03819abbeb11117dcbba40bfe322b88c0c88a6b6 ]
+commit 13d30682e8dee191ac04e93642f0372a723e8b0c upstream.
 
-In lan78xx_probe(), the buffer `buf` was being freed twice: once
-implicitly through `usb_free_urb(dev->urb_intr)` with the
-`URB_FREE_BUFFER` flag and again explicitly by `kfree(buf)`. This caused
-a double free issue.
+If byt_wm5102_prepare_and_enable_pll1() fails in the
+SND_SOC_DAPM_EVENT_ON() path, platform_clock_control() returns after
+clk_prepare_enable(priv->mclk) without disabling the clock again.
 
-To resolve this, reordered `kmalloc()` and `usb_alloc_urb()` calls to
-simplify the initialization sequence and removed the redundant
-`kfree(buf)`.  Now, `buf` is allocated after `usb_alloc_urb()`, ensuring
-it is correctly managed by  `usb_fill_int_urb()` and freed by
-`usb_free_urb()` as intended.
+This leaks an MCLK enable reference on failed power-up attempts. Add the
+missing clk_disable_unprepare() on the error path, matching the unwind
+used by the other Intel platform_clock_control() implementations.
 
-Fixes: a6df95cae40b ("lan78xx: Fix memory allocation bug")
-Cc: John Efstathiades <john.efstathiades@pebblebay.com>
-Signed-off-by: Oleksij Rempel <o.rempel@pengutronix.de>
-Link: https://patch.msgid.link/20241116130558.1352230-1-o.rempel@pengutronix.de
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-[ Adjust context. Make the function usb_alloc_urb() call before
-kmalloc(). ]
-Signed-off-by: Wenshan Lan <jetlan9@163.com>
+Fixes: 9a87fc1e0619 ("ASoC: Intel: bytcr_wm5102: Add machine driver for BYT/WM5102")
+Cc: stable@vger.kernel.org
+Signed-off-by: Cássio Gabriel <cassiogabrielcontato@gmail.com>
+Reviewed-by: Cezary Rojewski <cezary.rojewski@intel.com>
+Reviewed-by: Hans de Goede <johannes.goede@oss.qualcomm.com>
+Link: https://patch.msgid.link/20260427-bytcr-wm5102-mclk-leak-v1-1-02b96d08e99c@gmail.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/usb/lan78xx.c |   29 ++++++++++++++---------------
- 1 file changed, 14 insertions(+), 15 deletions(-)
+ sound/soc/intel/boards/bytcr_wm5102.c |    1 +
+ 1 file changed, 1 insertion(+)
 
---- a/drivers/net/usb/lan78xx.c
-+++ b/drivers/net/usb/lan78xx.c
-@@ -4111,29 +4111,30 @@ static int lan78xx_probe(struct usb_inte
- 
- 	period = ep_intr->desc.bInterval;
- 	maxp = usb_maxpacket(dev->udev, dev->pipe_intr, 0);
--	buf = kmalloc(maxp, GFP_KERNEL);
--	if (!buf) {
-+
-+	dev->urb_intr = usb_alloc_urb(0, GFP_KERNEL);
-+	if (!dev->urb_intr) {
- 		ret = -ENOMEM;
- 		goto out3;
- 	}
- 
--	dev->urb_intr = usb_alloc_urb(0, GFP_KERNEL);
--	if (!dev->urb_intr) {
-+	buf = kmalloc(maxp, GFP_KERNEL);
-+	if (!buf) {
- 		ret = -ENOMEM;
--		goto out4;
--	} else {
--		usb_fill_int_urb(dev->urb_intr, dev->udev,
--				 dev->pipe_intr, buf, maxp,
--				 intr_complete, dev, period);
--		dev->urb_intr->transfer_flags |= URB_FREE_BUFFER;
-+		goto free_urbs;
- 	}
- 
-+	usb_fill_int_urb(dev->urb_intr, dev->udev,
-+			 dev->pipe_intr, buf, maxp,
-+			 intr_complete, dev, period);
-+	dev->urb_intr->transfer_flags |= URB_FREE_BUFFER;
-+
- 	dev->maxpacket = usb_maxpacket(dev->udev, dev->pipe_out, 1);
- 
- 	/* Reject broken descriptors. */
- 	if (dev->maxpacket == 0) {
- 		ret = -ENODEV;
--		goto out5;
-+		goto free_urbs;
- 	}
- 
- 	/* driver requires remote-wakeup capability during autosuspend. */
-@@ -4141,7 +4142,7 @@ static int lan78xx_probe(struct usb_inte
- 
- 	ret = lan78xx_phy_init(dev);
- 	if (ret < 0)
--		goto out5;
-+		goto free_urbs;
- 
- 	ret = register_netdev(netdev);
- 	if (ret != 0) {
-@@ -4163,10 +4164,8 @@ static int lan78xx_probe(struct usb_inte
- 
- out6:
- 	phy_disconnect(netdev->phydev);
--out5:
-+free_urbs:
- 	usb_free_urb(dev->urb_intr);
--out4:
--	kfree(buf);
- out3:
- 	lan78xx_unbind(dev, intf);
- out2:
+--- a/sound/soc/intel/boards/bytcr_wm5102.c
++++ b/sound/soc/intel/boards/bytcr_wm5102.c
+@@ -111,6 +111,7 @@ static int platform_clock_control(struct
+ 		ret = byt_wm5102_prepare_and_enable_pll1(codec_dai, 48000);
+ 		if (ret) {
+ 			dev_err(card->dev, "Error setting codec sysclk: %d\n", ret);
++			clk_disable_unprepare(priv->mclk);
+ 			return ret;
+ 		}
+ 	} else {
 
 
 
