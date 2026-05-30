@@ -1,59 +1,61 @@
-Return-Path: <stable+bounces-258694-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-257885-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id SGkpKuQqG2ra/ggAu9opvQ
-	(envelope-from <stable+bounces-258694-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:22:28 +0200
+	id OAZGEtMgG2qu/QgAu9opvQ
+	(envelope-from <stable+bounces-257885-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:39:31 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 26A1B6119F8
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:22:27 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id A3CC46101F1
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:39:30 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 470C0301F7B2
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 18:20:22 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id A7D33306A886
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 17:34:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 81086284690;
-	Sat, 30 May 2026 18:20:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4748D33A9DA;
+	Sat, 30 May 2026 17:34:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="W+sfhEn7"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="o2qwg+yP"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5B904274FDC;
-	Sat, 30 May 2026 18:20:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 19A24341AB8;
+	Sat, 30 May 2026 17:34:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780165221; cv=none; b=dgLucyV4emcA6kTV20BNdkLiPrko3ttI38u1Jg2pqUuRTe+6qo7y6MJNlMjBPuIZFNAIujHpFNqlZ4hlAIfx+Vpmr2TmHpcO2vkLVYS7xf/uAW7kAc06uBDT3tj7MJsuQR2OUyDRk4FzYHoPayhJ2SE1e7x6Wij9m42MsbBp1zk=
+	t=1780162498; cv=none; b=BXz9F6bXuYLcpjSF9di0WK/Ue6B4WQemYgfb3ACCoTRHWovn4ojItTbDunkJF0flKIFzjpoIV34/iVBkTQr78VuOtTu3Au2s/BWStErCS+MBAjlraKYwbgSk0SxLv4i/QM3IrH4oMzEeVWNLgoCZTXbaatUH3BmVjxtu6B+guWA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780165221; c=relaxed/simple;
-	bh=fdWtphvnOj4zxZTAy90Sd7MJqSicRdf7vA/OKOmGthM=;
+	s=arc-20240116; t=1780162498; c=relaxed/simple;
+	bh=k8OO6IXo+kL3DkEX6M1aUCv66CCobWqwXjcGjYJMzs0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=E5Iue7N6vE15T7N1K63ildVZfbw41xbwSeBJIvz2oqPRFL93H8VhcYobaL2OlwgIHzJ43voM0aObTwaUX7viMVgwJNoIOpqp6tHUMHLUJhQ9sxoHa/pIUQHBowTRRr+n+4OXEk51iVOYEyMK4qnAcEQJdBktFrFFr3v1RJIdHLY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=W+sfhEn7; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A00701F00893;
-	Sat, 30 May 2026 18:20:19 +0000 (UTC)
+	 MIME-Version:Content-Type; b=e+7nxp62R9hvIMsStESZDLoyWPV7FtCfX7gkSFm0SyXrI1UuPWUaLUKkLnblqQ5Y2/+o6ih5wbEDq6diwIxw/HXm7Rv8/CkkR3iTjS2zfbc83zSPcch92+qF20miksdWhL1OgX4MTQQHjYCFt7yOV+wQVb+2Wx9EwrKYWuSjOCk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=o2qwg+yP; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5AEED1F00893;
+	Sat, 30 May 2026 17:34:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780165220;
-	bh=6H2l5hWFtC9YB/YjESuDw+k/odBI0qOkTk2/DXpyT8k=;
+	s=korg; t=1780162497;
+	bh=mjKp4T3V5hP8UNz/WJKlUkLRW910UB4a1WAUnZOeUAk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=W+sfhEn7faPlKfH8FMVCcen1W+HUdllGpgAgYnDvnyk/EHFuIWRFa34+L13vXTNhY
-	 NuG4CSkuOYo1NkAaAhkrpCR3BkTCXA/OoRvxAG5XkHWXKIyuBmv3xrTTBmMiFpCPuq
-	 3JrWQPHr0jyw9Hi24+ubFgVSvBMHNKF44LPmnJO8=
+	b=o2qwg+yPt1Llbn7D7dGBT3klGyyq5kKkH+8btfOabjW+YwCb9kia2DxR8D5c1rNdi
+	 uMo2oz9d6gZN1SGsX/AA3kp4auwkFG8NXyFH53lWaFoUAD9byEpo+R20Qduddf/noH
+	 gLVgQQ6n8yba+ohctusDss2VvfN4sKd99acp43LM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Linus Walleij <linusw@kernel.org>,
+	=?UTF-8?q?=E9=92=B1=E4=B8=80=E9=93=AD?= <yimingqian591@gmail.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sabrina Dubroca <sd@queasysnail.net>,
 	Paolo Abeni <pabeni@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 748/776] net: ethernet: cortina: Make RX SKB per-port
+Subject: [PATCH 6.1 938/969] net: tls: fix off-by-one in sg_chain entry count for wrapped sk_msg ring
 Date: Sat, 30 May 2026 18:07:42 +0200
-Message-ID: <20260530160259.103471782@linuxfoundation.org>
+Message-ID: <20260530160326.655077321@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260530160240.228940103@linuxfoundation.org>
-References: <20260530160240.228940103@linuxfoundation.org>
+In-Reply-To: <20260530160300.485627683@linuxfoundation.org>
+References: <20260530160300.485627683@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,121 +65,111 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	RCVD_TLS_LAST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,kernel.org,queasysnail.net,redhat.com];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-258694-lists,stable=lfdr.de];
-	TO_DN_SOME(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-0.999];
+	TAGGED_FROM(0.00)[bounces-257885-lists,stable=lfdr.de];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	RCVD_TLS_LAST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	TO_DN_SOME(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
+	RCPT_COUNT_SEVEN(0.00)[8];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,linuxfoundation.org:mid,linuxfoundation.org:dkim,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,sashiko.dev:url]
-X-Rspamd-Queue-Id: 26A1B6119F8
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,msgid.link:url,linuxfoundation.org:mid,linuxfoundation.org:dkim]
+X-Rspamd-Queue-Id: A3CC46101F1
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Linus Walleij <linusw@kernel.org>
+From: Jakub Kicinski <kuba@kernel.org>
 
-[ Upstream commit 06937db21ee311ed07eba47954447245041a982d ]
+[ Upstream commit 285943c6e7ca309bbea84b253745154241d9788a ]
 
-The SKB used to assemble packets from fragments in gmac_rx()
-is static local, but the Gemini has two ethernet ports, meaning
-there can be races between the ports on a bad day if a device
-is using both.
+When an sk_msg scatterlist ring wraps (sg.end < sg.start),
+tls_push_record() chains the tail portion of the ring to the head
+using sg_chain(). An extra entry in the sg array is reserved for
+this:
 
-Make the RX SKB a per-port variable and carry it over between
-invocations in the port struct instead.
+  struct sk_msg_sg {
+        [...]
+        /* The extra two elements:
+         * 1) used for chaining the front and sections when the list becomes
+         *    partitioned (e.g. end < start). The crypto APIs require the
+         *    chaining;
+         * 2) to chain tailer SG entries after the message.
+         */
+        struct scatterlist              data[MAX_MSG_FRAGS + 2];
 
-Zero the pointer once we call napi_gro_frags(), on error (after
-calling napi_free_frags()) or if the port is stopped.
+The current code uses MAX_SKB_FRAGS + 1 as the ring size:
 
-Zero it in some place where not strictly necessary just to
-emphasize what is going on.
+    sg_chain(&msg_pl->sg.data[msg_pl->sg.start],
+             MAX_SKB_FRAGS - msg_pl->sg.start + 1,
+             msg_pl->sg.data);
 
-This was found by Sashiko during normal patch review.
+This places the chain pointer at
 
-Fixes: 4d5ae32f5e1e ("net: ethernet: Add a driver for Gemini gigabit ethernet")
-Link: https://sashiko.dev/#/patchset/20260505-gemini-ethernet-fix-v2-1-997c31d06079%40kernel.org
-Signed-off-by: Linus Walleij <linusw@kernel.org>
-Link: https://patch.msgid.link/20260509-gemini-ethernet-fixes-v1-2-6c5d20ddc35b@kernel.org
+  sg_chain(data[start], (MAX_SKB_FRAGS - msg_start + 1) .. =
+  &data[start] + (MAX_SKB_FRAGS - msg_start + 1) - 1 =
+  data[start + (MAX_SKB_FRAGS - start + 1) - 1] =
+  data[MAX_SKB_FRAGS]
+
+instead of the true last entry. This is likely due to a "race" of
+the commit under Fixes landing close to
+commit 031097d9e079 ("bpf: sk_msg, zap ingress queue on psock down")
+
+Convert to ARRAY_SIZE and drop the data[start] / - start (as suggested
+by Sabrina).
+
+Reported-by: 钱一铭 <yimingqian591@gmail.com>
+Fixes: 9aaaa56845a0 ("bpf: Sockmap/tls, skmsg can have wrapped skmsg that needs extra chaining")
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Reviewed-by: Sabrina Dubroca <sd@queasysnail.net>
+Link: https://patch.msgid.link/20260511174920.433155-2-kuba@kernel.org
 Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/cortina/gemini.c | 7 ++++++-
- 1 file changed, 6 insertions(+), 1 deletion(-)
+ net/tls/tls_sw.c | 6 ++----
+ 1 file changed, 2 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/net/ethernet/cortina/gemini.c b/drivers/net/ethernet/cortina/gemini.c
-index 3a11dccec8c1b..29f8e19661efa 100644
---- a/drivers/net/ethernet/cortina/gemini.c
-+++ b/drivers/net/ethernet/cortina/gemini.c
-@@ -120,6 +120,8 @@ struct gemini_ethernet_port {
- 	struct napi_struct	napi;
- 	struct hrtimer		rx_coalesce_timer;
- 	unsigned int		rx_coalesce_nsecs;
-+	struct sk_buff		*rx_skb;
-+
- 	unsigned int		freeq_refill;
- 	struct gmac_txq		txq[TX_QUEUE_NUM];
- 	unsigned int		txq_order;
-@@ -1411,10 +1413,10 @@ static unsigned int gmac_rx(struct net_device *netdev, unsigned int budget)
- 	unsigned short m = (1 << port->rxq_order) - 1;
- 	struct gemini_ethernet *geth = port->geth;
- 	void __iomem *ptr_reg = port->rxq_rwptr;
-+	struct sk_buff *skb = port->rx_skb;
- 	unsigned int frame_len, frag_len;
- 	struct gmac_rxdesc *rx = NULL;
- 	struct gmac_queue_page *gpage;
--	static struct sk_buff *skb;
- 	union gmac_rxdesc_0 word0;
- 	union gmac_rxdesc_1 word1;
- 	union gmac_rxdesc_3 word3;
-@@ -1468,6 +1470,7 @@ static unsigned int gmac_rx(struct net_device *netdev, unsigned int budget)
- 			if (skb) {
- 				napi_free_frags(&port->napi);
- 				port->stats.rx_dropped++;
-+				skb = NULL;
- 			}
- 
- 			skb = gmac_skb_if_good_frame(port, word0, frame_len);
-@@ -1518,6 +1521,7 @@ static unsigned int gmac_rx(struct net_device *netdev, unsigned int budget)
- 		port->stats.rx_dropped++;
+diff --git a/net/tls/tls_sw.c b/net/tls/tls_sw.c
+index ef7dda0915d33..a46f3cc4b3f14 100644
+--- a/net/tls/tls_sw.c
++++ b/net/tls/tls_sw.c
+@@ -801,11 +801,9 @@ static int tls_push_record(struct sock *sk, int flags,
+ 		sg_mark_end(sk_msg_elem(msg_pl, i));
  	}
  
-+	port->rx_skb = skb;
- 	writew(r, ptr_reg);
- 	return budget;
- }
-@@ -1846,6 +1850,7 @@ static int gmac_stop(struct net_device *netdev)
- 	gmac_disable_tx_rx(netdev);
- 	gmac_stop_dma(port);
- 	napi_disable(&port->napi);
-+	port->rx_skb = NULL;
+-	if (msg_pl->sg.end < msg_pl->sg.start) {
+-		sg_chain(&msg_pl->sg.data[msg_pl->sg.start],
+-			 MAX_SKB_FRAGS - msg_pl->sg.start + 1,
++	if (msg_pl->sg.end < msg_pl->sg.start)
++		sg_chain(msg_pl->sg.data, ARRAY_SIZE(msg_pl->sg.data),
+ 			 msg_pl->sg.data);
+-	}
  
- 	gmac_enable_irq(netdev, 0);
- 	gmac_cleanup_rxq(netdev);
+ 	i = msg_pl->sg.start;
+ 	sg_chain(rec->sg_aead_in, 2, &msg_pl->sg.data[i]);
 -- 
 2.53.0
 
