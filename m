@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-258069-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-258111-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id WF8ENeAjG2rO/QgAu9opvQ
-	(envelope-from <stable+bounces-258069-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:52:32 +0200
+	id kG5fJGYkG2pm/ggAu9opvQ
+	(envelope-from <stable+bounces-258111-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:54:46 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 513F56108E3
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:52:32 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 16734610A2D
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:54:46 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 2E55C30AA122
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 17:45:19 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 206E03028B2D
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 17:47:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A79AA3546EA;
-	Sat, 30 May 2026 17:45:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A42D43BD646;
+	Sat, 30 May 2026 17:47:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="L2Lal82j"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PWCUQSnI"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 854C725B0BC;
-	Sat, 30 May 2026 17:45:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6E8FD3B9DB6;
+	Sat, 30 May 2026 17:47:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780163116; cv=none; b=AwHxIUyOY8TnnSH1ke2Qu4aKZt2KlPl8ujwNGgXVvOob0el4FPy5/rbZSgCnXIINoBSpRsO8tHrLVAug9N4YHhg0cYJ/XszjmCk1MGUW5LZHXyz08pm82X5grlOYiaHehI9Dwmu6vtIAqgFOUnazg5IFcQNE4pdcPPaKK0m9DSA=
+	t=1780163254; cv=none; b=tCv3o+Axk0042cbRUE9Hnuyc565RlFjkweeQyNd6IaGvpGRAVassRLY+qWPeCCi1m4dK3JlQRSbo1ij5YscxWsZEZ4BjaVR9swyR7nQVLV9vJOwFnM7mHREItItWyD7Iy9p4GVncS8bpjj5Hx9LQf9YTfilVMjMoutLYEMCLM2o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780163116; c=relaxed/simple;
-	bh=0Xs0DVOwvvzyLUn9S9E43mBp5AeUPfKFEv/yjmw/qcE=;
+	s=arc-20240116; t=1780163254; c=relaxed/simple;
+	bh=Ff64B8fWcF3F96qEgyB139FQ4e66gZ6veRtJ+rFEvYs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ZmY68VpVYN0d2oKay9705S156Bpu5EDOfWWkXm4k+oyRdrJnjWpy8Xi9hbkE3C9RvQwqpnp0NRHcSl3aDDR+BZWo5di8EnJXDSmO4tKrPuNGvM50Hf2If51cW2zWlEyCyrguNuxUlzxrDx9ARujVQgTxREnsEBn+EjVnJ+1AB9A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=L2Lal82j; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8DD6B1F00893;
-	Sat, 30 May 2026 17:45:14 +0000 (UTC)
+	 MIME-Version; b=inAefaw+ewtTAUfB+qPyTeahqGVaMQlPwdEiLSZq3BzLFDYSfafzd/FV56oJEiXoyKk/i1jN8Vke24wLswab3ZV3n6AMWsEO3o+bYywKMbwQfkN1UqUL+i1prM8a2sBQnWVKcnZAdZZAzeUxcXhLDMinLWyYxLEWD3St3lDKYy8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PWCUQSnI; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9DF531F00893;
+	Sat, 30 May 2026 17:47:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780163115;
-	bh=sAs+Qtma3DNUenqVBRgeL4c9rNc8WnxRUZzLJaz7RbQ=;
+	s=korg; t=1780163252;
+	bh=1nR4AiNfossZXVgtTJh5RFkHNG6JSqfzSyspmQSSmts=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=L2Lal82jepk45clMsDT6H4/lLDWQRKUYh7Y615Mc4h2nWYNzsBjwYGXW94lyulmgO
-	 X6j5XefGh7QihAHzXjw7SvZQhK7kxlcYi6hLGByFqNYUbcPcpFvRwPxF+ORHViQA0X
-	 yrkNEeFmubRaaMaNJ9Ak5l94ybHYaA7FERNf8oqs=
+	b=PWCUQSnIsm5PLIBMRrX/5ZcIxFlUuZhhtuqLYn9u2g/RHNFXbwW6+mi14HRp+z8R5
+	 YDnt7K7LPoEaQpPmqNL6ROkSdgkCAdnjeX/FmSkwPG/W6PaZCwXncUDZ5OU/gIZVkT
+	 aXUE8CONbC17tBuJF/mXXqr5ulVhrSM+9cpOVeAk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Guangshuo Li <lgs201920130244@gmail.com>,
-	Zhongqiu Han <zhongqiu.han@oss.qualcomm.com>,
-	Viresh Kumar <viresh.kumar@linaro.org>,
-	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 158/776] cpufreq: governor: fix double free in cpufreq_dbs_governor_init() error path
-Date: Sat, 30 May 2026 17:57:52 +0200
-Message-ID: <20260530160244.554496856@linuxfoundation.org>
+	Yu Kuai <yukuai3@huawei.com>,
+	Song Liu <song@kernel.org>,
+	Johnny Hao <johnny_haocn@sina.com>,
+	Harshit Mogalapalli <harshit.m.mogalapalli@oracle.com>
+Subject: [PATCH 5.15 159/776] md/md-bitmap: Synchronize bitmap_get_stats() with bitmap lifetime
+Date: Sat, 30 May 2026 17:57:53 +0200
+Message-ID: <20260530160244.581821421@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
 In-Reply-To: <20260530160240.228940103@linuxfoundation.org>
 References: <20260530160240.228940103@linuxfoundation.org>
@@ -70,30 +69,31 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	TAGGED_FROM(0.00)[bounces-258069-lists,stable=lfdr.de];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,oss.qualcomm.com,linaro.org,intel.com,kernel.org];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,huawei.com,kernel.org,sina.com,oracle.com];
+	TAGGED_FROM(0.00)[bounces-258111-lists,stable=lfdr.de];
+	PRECEDENCE_BULK(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FROM_HAS_DN(0.00)[];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
-	PRECEDENCE_BULK(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[8];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
 	TO_DN_SOME(0.00)[];
-	FROM_HAS_DN(0.00)[]
-X-Rspamd-Queue-Id: 513F56108E3
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,sina.com:email,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,oracle.com:email,huawei.com:email]
+X-Rspamd-Queue-Id: 16734610A2D
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
@@ -101,54 +101,85 @@ X-Rspamd-Server: lfdr
 
 ------------------
 
-From: Guangshuo Li <lgs201920130244@gmail.com>
+From: Yu Kuai <yukuai3@huawei.com>
 
-[ Upstream commit 6dcf9d0064ce2f3e3dfe5755f98b93abe6a98e1e ]
+[ Upstream commit 8d28d0ddb986f56920ac97ae704cc3340a699a30 ]
 
-When kobject_init_and_add() fails, cpufreq_dbs_governor_init() calls
-kobject_put(&dbs_data->attr_set.kobj).
+After commit ec6bb299c7c3 ("md/md-bitmap: add 'sync_size' into struct
+md_bitmap_stats"), following panic is reported:
 
-The kobject release callback cpufreq_dbs_data_release() calls
-gov->exit(dbs_data) and kfree(dbs_data), but the current error path
-then calls gov->exit(dbs_data) and kfree(dbs_data) again, causing a
-double free.
+Oops: general protection fault, probably for non-canonical address
+RIP: 0010:bitmap_get_stats+0x2b/0xa0
+Call Trace:
+ <TASK>
+ md_seq_show+0x2d2/0x5b0
+ seq_read_iter+0x2b9/0x470
+ seq_read+0x12f/0x180
+ proc_reg_read+0x57/0xb0
+ vfs_read+0xf6/0x380
+ ksys_read+0x6c/0xf0
+ do_syscall_64+0x82/0x170
+ entry_SYSCALL_64_after_hwframe+0x76/0x7e
 
-Keep the direct kfree(dbs_data) for the gov->init() failure path, but
-after kobject_init_and_add() has been called, let kobject_put() handle
-the cleanup through cpufreq_dbs_data_release().
+Root cause is that bitmap_get_stats() can be called at anytime if mddev
+is still there, even if bitmap is destroyed, or not fully initialized.
+Deferenceing bitmap in this case can crash the kernel. Meanwhile, the
+above commit start to deferencing bitmap->storage, make the problem
+easier to trigger.
 
-Fixes: 4ebe36c94aed ("cpufreq: Fix kobject memleak")
-Signed-off-by: Guangshuo Li <lgs201920130244@gmail.com>
-Reviewed-by: Zhongqiu Han <zhongqiu.han@oss.qualcomm.com>
-Acked-by: Viresh Kumar <viresh.kumar@linaro.org>
-Cc: All applicable <stable@vger.kernel.org>
-Link: https://patch.msgid.link/20260401024535.1395801-1-lgs201920130244@gmail.com
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fix the problem by protecting bitmap_get_stats() with bitmap_info.mutex.
+
+Cc: stable@vger.kernel.org # v6.12+
+Fixes: 32a7627cf3a3 ("[PATCH] md: optimised resync using Bitmap based intent logging")
+Reported-and-tested-by: Harshit Mogalapalli <harshit.m.mogalapalli@oracle.com>
+Closes: https://lore.kernel.org/linux-raid/ca3a91a2-50ae-4f68-b317-abd9889f3907@oracle.com/T/#m6e5086c95201135e4941fe38f9efa76daf9666c5
+Signed-off-by: Yu Kuai <yukuai3@huawei.com>
+Link: https://lore.kernel.org/r/20250124092055.4050195-1-yukuai1@huaweicloud.com
+Signed-off-by: Song Liu <song@kernel.org>
+[ The context change is due to the commit 38f287d7e495
+("md/md-bitmap: replace md_bitmap_status() with a new helper md_bitmap_get_stats()")
+in v6.12 and the commit f9cfe7e7f96a ("md: Fix md_seq_ops() regressions") in v6.8
+which are irrelevant to the logic of this patch. ]
+Signed-off-by: Johnny Hao <johnny_haocn@sina.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/cpufreq/cpufreq_governor.c |    6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ drivers/md/md-bitmap.c |    4 ++++
+ drivers/md/md.c        |    4 ++++
+ 2 files changed, 8 insertions(+)
 
---- a/drivers/cpufreq/cpufreq_governor.c
-+++ b/drivers/cpufreq/cpufreq_governor.c
-@@ -468,13 +468,13 @@ int cpufreq_dbs_governor_init(struct cpu
- 	/* Failure, so roll back. */
- 	pr_err("initialization failed (dbs_data kobject init error %d)\n", ret);
+--- a/drivers/md/md-bitmap.c
++++ b/drivers/md/md-bitmap.c
+@@ -2033,6 +2033,10 @@ void md_bitmap_status(struct seq_file *s
  
--	kobject_put(&dbs_data->attr_set.kobj);
--
- 	policy->governor_data = NULL;
+ 	if (!bitmap)
+ 		return;
++	if (bitmap->mddev->bitmap_info.external)
++		return;
++	if (!bitmap->storage.sb_page) /* no superblock */
++		return;
  
- 	if (!have_governor_per_policy())
- 		gov->gdbs_data = NULL;
--	gov->exit(dbs_data);
+ 	counts = &bitmap->counts;
+ 
+--- a/drivers/md/md.c
++++ b/drivers/md/md.c
+@@ -8300,6 +8300,9 @@ static int md_seq_show(struct seq_file *
+ 		return 0;
+ 	}
+ 
++	/* prevent bitmap to be freed after checking */
++	mutex_lock(&mddev->bitmap_info.mutex);
 +
-+	kobject_put(&dbs_data->attr_set.kobj);
-+	goto free_policy_dbs_info;
+ 	spin_lock(&mddev->lock);
+ 	if (mddev->pers || mddev->raid_disks || !list_empty(&mddev->disks)) {
+ 		seq_printf(seq, "%s : %sactive", mdname(mddev),
+@@ -8371,6 +8374,7 @@ static int md_seq_show(struct seq_file *
+ 		seq_printf(seq, "\n");
+ 	}
+ 	spin_unlock(&mddev->lock);
++	mutex_unlock(&mddev->bitmap_info.mutex);
  
- free_dbs_data:
- 	kfree(dbs_data);
+ 	return 0;
+ }
 
 
 
