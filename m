@@ -1,65 +1,59 @@
-Return-Path: <stable+bounces-258884-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-258279-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 0GsuO00wG2p5AAkAu9opvQ
-	(envelope-from <stable+bounces-258884-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:45:33 +0200
+	id yObDGVMlG2pm/ggAu9opvQ
+	(envelope-from <stable+bounces-258279-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:58:43 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 550A36126C0
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:45:33 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1A274610BEE
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:58:42 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 2967831A27C6
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 18:31:16 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id D4B553011EB4
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 17:56:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7F26D3BE175;
-	Sat, 30 May 2026 18:31:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3F4363B7B72;
+	Sat, 30 May 2026 17:56:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sR17ciZZ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hkwMMQd6"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 54D2326738C;
-	Sat, 30 May 2026 18:31:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2130123D7E6;
+	Sat, 30 May 2026 17:56:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780165863; cv=none; b=QhoMjA6ZPZRSiRHrjTWbLAXXbSnHFXPh1Z7sxaQ4Lj+1kOAG5V1z2b+hJaXHEi3qqUu+lQBEUJ7Uai2S1IvjuJA13slR1p5D15uafBl1q4yr8rKoTHsARxXovpiIjCs8uuPso7s0K/0Sk6UwxiplPWAYO9AusXiwaOQHQXLFEOU=
+	t=1780163816; cv=none; b=jHtD6dy4/REaOjbj9mNMqqGb357HAl11sFuobiM28iv97AlDmxhrvGjWhLZy1lh/8/jeStewle+3JeVs+FGavM4dCJuLNsOEiI7vFr3PT7sB3TkkjWncqwFd+5R9ysvAGeTkWG22/HdgY3SkdUuMp/YB+GjxkVSS4Cc5/T+R0Ho=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780165863; c=relaxed/simple;
-	bh=ItrcxufUcgvLkvk3ZkCxGpX4Ab2wnBkjotJ42qtQz/A=;
+	s=arc-20240116; t=1780163816; c=relaxed/simple;
+	bh=AVF1yD7eJdU/WjosqsHYt9WsMlt57AJE9LftHPClJqM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=JHLG7tDyev4ezLUPMibpvB0skrbxrKPjO8D3iogVJP3jaH6IWQ50trnrltyra1leXSqAMErc4n1/LoKsiv+KF0rEWkctJThjjcdYZiKULpX9bkCBFMnyyPuPjQhzKwY6UtTgepE6Ugrgm9z3mnKwuDEdTymVsNGOmcLEt6RLvfM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sR17ciZZ; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A6CAD1F00893;
-	Sat, 30 May 2026 18:31:01 +0000 (UTC)
+	 MIME-Version:Content-Type; b=GIdrqqpsqAY/Lqqvu7NXYf1HYKrOBPOhm/qB/o3xf7EgfHKNd38zwK/ZZbSe+tMmBNfel1Kx+0ep2POqVDsaWDVC5VHeaRlkzjoOqgVap1YQqZY1sq4tqF9Cndp0PrdttZWYJ+5XRXQUozcjlgybENsK+X2PnxXe+JryuD8ON3U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hkwMMQd6; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2D12A1F00893;
+	Sat, 30 May 2026 17:56:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780165862;
-	bh=Dnzdko5w/gGGGTMAEuho96rtMolAV7DoTFtmMCjsQQQ=;
+	s=korg; t=1780163814;
+	bh=cn3TQpdOX5bwCOKox6YrGtaBQ/m6KOjGlRQ6f747ALU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=sR17ciZZ51JQoSnx1NdCoG+GM01559NG75qHrXIS3pwbf2eYPCE/WC/z/5VQreQ01
-	 9x2La7ciYJQ1ae43DW1QKbnje6OnO21A/by7hwLAOJN4H9t+j/oNKng709nxNl6+uZ
-	 u9Dep0/Ir3Z4TNAgLcR6IiBg0tgP+fKxWXjttdRU=
+	b=hkwMMQd6Q1Mj1LMtSVcrH0AF3cle8qzKlg5QmmzQYb17rPiVMooOrzzbxQFl9XpNE
+	 OcSy8EivSWVbxU3eFpX7iGYfDmyHXu9HolHdiPiia2UAlTTLVC763CBOrStJZwglTO
+	 VewErN6WLULy19haNHH/9yCJ3geqgOL4fkazryoo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable@kernel.org,
-	Yuan Tan <yuantan098@gmail.com>,
-	Yifan Wu <yifanwucs@gmail.com>,
-	Juefei Pu <tomapufckgml@gmail.com>,
-	Xin Liu <bird@lzu.edu.cn>,
-	Kai Ma <k4729.23098@gmail.com>,
-	Ren Wei <n05ec@lzu.edu.cn>,
-	Fernando Fernandez Mancera <fmancera@suse.de>,
-	Pablo Neira Ayuso <pablo@netfilter.org>
-Subject: [PATCH 5.10 203/589] netfilter: reject zero shift in nft_bitwise
-Date: Sat, 30 May 2026 18:01:24 +0200
-Message-ID: <20260530160230.267661557@linuxfoundation.org>
+	=?UTF-8?q?Timur=20Krist=C3=B3f?= <timur.kristof@gmail.com>,
+	Kent Russell <kent.russell@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>
+Subject: [PATCH 5.15 371/776] drm/amdgpu/pm: add missing revision check for CI
+Date: Sat, 30 May 2026 18:01:25 +0200
+Message-ID: <20260530160250.133238845@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260530160224.570625122@linuxfoundation.org>
-References: <20260530160224.570625122@linuxfoundation.org>
+In-Reply-To: <20260530160240.228940103@linuxfoundation.org>
+References: <20260530160240.228940103@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,86 +63,76 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-0.16 / 15.00];
+X-Spamd-Result: default: False [-0.66 / 15.00];
 	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	RCPT_COUNT_TWELVE(0.00)[12];
-	TAGGED_FROM(0.00)[bounces-258884-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,kernel.org,gmail.com,lzu.edu.cn,suse.de,netfilter.org];
+	MIME_TRACE(0.00)[0:+];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,amd.com];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	TAGGED_FROM(0.00)[bounces-258279-lists,stable=lfdr.de];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	NEURAL_HAM(-0.00)[-0.997];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[stable];
 	MID_RHS_MATCH_FROM(0.00)[];
-	TO_DN_SOME(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[lzu.edu.cn:email,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,suse.de:email,netfilter.org:email]
-X-Rspamd-Queue-Id: 550A36126C0
+	TAGGED_RCPT(0.00)[stable];
+	TO_DN_SOME(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[6]
+X-Rspamd-Queue-Id: 1A274610BEE
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kai Ma <k4729.23098@gmail.com>
+From: Alex Deucher <alexander.deucher@amd.com>
 
-commit fe11e5c40817b84abaa5d83bfb6586d8412bfd07 upstream.
+commit 2a561b361b7681509710f3cfc3d95d54c87ac69f upstream.
 
-Reject zero shift operands for nft_bitwise left and right shift
-expressions during initialization.
+The ci_populate_all_memory_levels() workaround only
+applies to revision 0 SKUs.
 
-The carry propagation logic computes the carry from the adjacent 32-bit
-word using BITS_PER_TYPE(u32) - shift. A zero shift operand turns this
-into a 32-bit shift, which is undefined behaviour.
-
-Reject zero shift operands in the control plane, alongside the existing
-check for values greater than or equal to 32, so malformed rules never
-reach the packet path.
-
-Fixes: 567d746b55bc ("netfilter: bitwise: add support for shifts.")
-Cc: stable@kernel.org
-Reported-by: Yuan Tan <yuantan098@gmail.com>
-Reported-by: Yifan Wu <yifanwucs@gmail.com>
-Reported-by: Juefei Pu <tomapufckgml@gmail.com>
-Reported-by: Xin Liu <bird@lzu.edu.cn>
-Signed-off-by: Kai Ma <k4729.23098@gmail.com>
-Signed-off-by: Ren Wei <n05ec@lzu.edu.cn>
-Reviewed-by: Fernando Fernandez Mancera <fmancera@suse.de>
-Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
+Link: https://gitlab.freedesktop.org/drm/amd/-/work_items/1816
+Fixes: 9f4b35411cfe ("drm/amd/powerplay: add CI asics support to smumgr (v3)")
+Reviewed-by: Timur Kristóf <timur.kristof@gmail.com>
+Reviewed-by: Kent Russell <kent.russell@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+(cherry picked from commit 1db15ba8f72f400bbad8ae0ce24fafc43429d4bd)
+Cc: stable@vger.kernel.org
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/netfilter/nft_bitwise.c |    3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/gpu/drm/amd/pm/powerplay/smumgr/ci_smumgr.c |    5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
---- a/net/netfilter/nft_bitwise.c
-+++ b/net/netfilter/nft_bitwise.c
-@@ -149,7 +149,8 @@ static int nft_bitwise_init_shift(struct
- 	if (err < 0)
- 		return err;
+--- a/drivers/gpu/drm/amd/pm/powerplay/smumgr/ci_smumgr.c
++++ b/drivers/gpu/drm/amd/pm/powerplay/smumgr/ci_smumgr.c
+@@ -1325,8 +1325,9 @@ static int ci_populate_all_memory_levels
  
--	if (priv->data.data[0] >= BITS_PER_TYPE(u32)) {
-+	if (!priv->data.data[0] ||
-+	    priv->data.data[0] >= BITS_PER_TYPE(u32)) {
- 		nft_data_release(&priv->data, desc.type);
- 		return -EINVAL;
- 	}
+ 	dev_id = adev->pdev->device;
+ 
+-	if ((dpm_table->mclk_table.count >= 2)
+-		&& ((dev_id == 0x67B0) ||  (dev_id == 0x67B1))) {
++	if ((dpm_table->mclk_table.count >= 2) &&
++	    ((dev_id == 0x67B0) ||  (dev_id == 0x67B1)) &&
++	    (adev->pdev->revision == 0)) {
+ 		smu_data->smc_state_table.MemoryLevel[1].MinVddci =
+ 				smu_data->smc_state_table.MemoryLevel[0].MinVddci;
+ 		smu_data->smc_state_table.MemoryLevel[1].MinMvdd =
 
 
 
