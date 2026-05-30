@@ -1,64 +1,60 @@
-Return-Path: <stable+bounces-257730-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-259111-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id mDRMMjAeG2q4/QgAu9opvQ
-	(envelope-from <stable+bounces-257730-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:28:16 +0200
+	id ILUIIgAwG2qU/wgAu9opvQ
+	(envelope-from <stable+bounces-259111-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:44:16 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id CBA4B60FBBF
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:28:15 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 804086125F8
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:44:14 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id E8C7A300A25D
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 17:26:21 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id CA05030086A0
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 18:44:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2782F34389F;
-	Sat, 30 May 2026 17:26:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A29E42773DE;
+	Sat, 30 May 2026 18:44:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Ayv7Jg0Z"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ehg5mcXN"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BD70F334695;
-	Sat, 30 May 2026 17:26:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7F17B21B191;
+	Sat, 30 May 2026 18:44:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780161979; cv=none; b=F+8884rEtrNnIpPSpWfkdM4GGgSknffzN0ojDwbo9QR0tF4PPmvD54zfLjP/95BlHU9+lhNJg3Iib3hIVPkMBvos50RZGH6RidWih1FDbLlFTj4q0uz3pcIOnNLQ/58rRd8fTsOf0wOQX83fJGvjewTjvmZYkfSom1OKyMk/otc=
+	t=1780166648; cv=none; b=RhiEZoFnceXHjkf7+ZTM2XM/ADWwfU3hTVyw1kMaI0TK/W4VUHstz5tHcOJekpDf3WjiXTu7RE+8JoENGBs3kTz9262+agoOGxOKDq6EY8uxv+UIHQLQ73P98jF+2CEMTzERcLhGytBnT0z+HBjMULvIOvqZbdeep0tID64wyLc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780161979; c=relaxed/simple;
-	bh=0lSbo812KyAb4W5Moy8GRRVUJDLYuw+XlS+FxSHBDxk=;
+	s=arc-20240116; t=1780166648; c=relaxed/simple;
+	bh=dbH9qiT9CI9jY3eLN55wVKRZbMBYV7kKAL4XdpOnyuQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Cw15RBOj/FcJJxhoiF13oBj9AMlA8dfg3x24iKITNJa/lykwFS0o/nRE5mH/fKP7WAY1YEKJi4z3wE5YJKK/XREAew51IF8cjSR+MXDrQ9lQ715K9+Yn8NkGDvrp8/RPpr+Kjn7nUL/UUQgr+GBR+4xI9xhhJD6ELsqrk85t/gU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Ayv7Jg0Z; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0D47C1F00893;
-	Sat, 30 May 2026 17:26:17 +0000 (UTC)
+	 MIME-Version; b=p0CvzWy3Nezv8J4bbIh3PRsh7pP++DHg3ktSU2sVHFDZ5X15hkPu5JKfjBw83m3tAMRv7l2Q0Wt2/6EvOFYvHQAgEMNHT7b1RuCZU6X+SBOcmGKkYcf04C4sX1EZqzXEp3YZyDBduQcHwPz25Dz/ROpJSJgLd5e01uJfC5YbVU8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ehg5mcXN; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 78BF11F00893;
+	Sat, 30 May 2026 18:44:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780161978;
-	bh=I/7LVcyrT7iI/TdGVGQKqkA7Lcxf2N5NNlEgMvnCgHc=;
+	s=korg; t=1780166647;
+	bh=Q1iSgwUtQnFIaYXo+wsAyN94IBO2QhSLQDdMQ3PE1mM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=Ayv7Jg0ZcBth6XN+Z+aFTi1Wz8fvFb+eGLtiAybyy8KVWchS+N16Vsq/cXXGO+F5x
-	 sC+mEaUvgEEmUwV5eEuGWgODsHW03B/aElcyWJbnno/hNYjDJkmKMrCCgz8Fyg3tt8
-	 xFo39U0D5IMwH+wZXXvJJyK7XJN4kP6PWe9Tozpc=
+	b=ehg5mcXNFPhuBw6EGyOk41zjrBQn0YO3UykNdbXapQFLOzUvfug4YHIgTXa2lnD2W
+	 dzdzl7NTMf2FZCLa9Zj1hmlKXpBGTfsFUr4Co7P2ime98zXPXyQb+wPoY7eny+eE/f
+	 P7FXFJqQve69QrutAxDMF3iXc0c5/AEPQGe5VPCc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Petr Oros <poros@redhat.com>,
-	Aleksandr Loktionov <aleksandr.loktionov@intel.com>,
-	Rafal Romanowski <rafal.romanowski@intel.com>,
-	Simon Horman <horms@kernel.org>,
-	Przemek Kitszel <przemyslaw.kitszel@intel.com>,
-	Jacob Keller <jacob.e.keller@intel.com>,
-	Paolo Abeni <pabeni@redhat.com>,
+	Michael Bommarito <michael.bommarito@gmail.com>,
+	Xin Long <lucien.xin@gmail.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 784/969] iavf: stop removing VLAN filters from PF on interface down
+Subject: [PATCH 5.10 427/589] sctp: fix OOB write to userspace in sctp_getsockopt_peer_auth_chunks
 Date: Sat, 30 May 2026 18:05:08 +0200
-Message-ID: <20260530160322.249333763@linuxfoundation.org>
+Message-ID: <20260530160235.947680395@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260530160300.485627683@linuxfoundation.org>
-References: <20260530160300.485627683@linuxfoundation.org>
+In-Reply-To: <20260530160224.570625122@linuxfoundation.org>
+References: <20260530160224.570625122@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,266 +65,103 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-257730-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
-	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TO_DN_SOME(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	TAGGED_FROM(0.00)[bounces-259111-lists,stable=lfdr.de];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
-	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[11];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,kernel.org];
+	MIME_TRACE(0.00)[0:+];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-0.996];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[intel.com:email,msgid.link:url,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim]
-X-Rspamd-Queue-Id: CBA4B60FBBF
+	TO_DN_SOME(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,msgid.link:url,linuxfoundation.org:mid,linuxfoundation.org:dkim]
+X-Rspamd-Queue-Id: 804086125F8
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Petr Oros <poros@redhat.com>
+From: Michael Bommarito <michael.bommarito@gmail.com>
 
-[ Upstream commit f2ce65b9b917474a1a6ce68d357e15fac2aca0f2 ]
+[ Upstream commit 0cf004ffb61cd32d140531c3a84afe975f9fc7ea ]
 
-When a VF goes down, the driver currently sends DEL_VLAN to the PF for
-every VLAN filter (ACTIVE -> DISABLE -> send DEL -> INACTIVE), then
-re-adds them all on UP (INACTIVE -> ADD -> send ADD -> ADDING ->
-ACTIVE). This round-trip is unnecessary because:
+sctp_getsockopt_peer_auth_chunks() checks that the caller's optval
+buffer is large enough for the peer AUTH chunk list with
 
- 1. The PF disables the VF's queues via VIRTCHNL_OP_DISABLE_QUEUES,
-    which already prevents all RX/TX traffic regardless of VLAN filter
-    state.
+    if (len < num_chunks)
+            return -EINVAL;
 
- 2. The VLAN filters remaining in PF HW while the VF is down is
-    harmless - packets matching those filters have nowhere to go with
-    queues disabled.
+but then writes num_chunks bytes to p->gauth_chunks, which lives
+at offset offsetof(struct sctp_authchunks, gauth_chunks) == 8
+inside optval.  The check is missing the sizeof(struct
+sctp_authchunks) = 8-byte header.  When the caller supplies
+len == num_chunks (for any num_chunks > 0) the test passes but
+copy_to_user() writes sizeof(struct sctp_authchunks) = 8 bytes
+past the declared buffer.
 
- 3. The DEL+ADD cycle during down/up creates race windows where the
-    VLAN filter list is incomplete. With spoofcheck enabled, the PF
-    enables TX VLAN filtering on the first non-zero VLAN add, blocking
-    traffic for any VLANs not yet re-added.
+The sibling function sctp_getsockopt_local_auth_chunks() at the
+next line already has the correct check:
 
-Remove the entire DISABLE/INACTIVE state machinery:
- - Remove IAVF_VLAN_DISABLE and IAVF_VLAN_INACTIVE enum values
- - Remove iavf_restore_filters() and its call from iavf_open()
- - Remove VLAN filter handling from iavf_clear_mac_vlan_filters(),
-   rename it to iavf_clear_mac_filters()
- - Remove DEL_VLAN_FILTER scheduling from iavf_down()
- - Remove all DISABLE/INACTIVE handling from iavf_del_vlans()
+    if (len < sizeof(struct sctp_authchunks) + num_chunks)
+            return -EINVAL;
 
-VLAN filters now stay ACTIVE across down/up cycles. Only explicit
-user removal (ndo_vlan_rx_kill_vid) or PF/VF reset triggers VLAN
-filter deletion/re-addition.
+Align the peer variant with its sibling.
 
-Fixes: ed1f5b58ea01 ("i40evf: remove VLAN filters on close")
-Signed-off-by: Petr Oros <poros@redhat.com>
-Reviewed-by: Aleksandr Loktionov <aleksandr.loktionov@intel.com>
-Tested-by: Rafal Romanowski <rafal.romanowski@intel.com>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Reviewed-by: Przemek Kitszel <przemyslaw.kitszel@intel.com>
-Signed-off-by: Jacob Keller <jacob.e.keller@intel.com>
-Link: https://patch.msgid.link/20260427-jk-iwl-net-petr-oros-fixes-v1-2-cdcb48303fd8@intel.com
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Reproducer confirms on v7.0-13-generic: an unprivileged userspace
+caller that opens a loopback SCTP association with AUTH enabled,
+queries num_chunks with a short optval, then issues the real
+getsockopt with len == num_chunks and sentinel bytes painted past
+the buffer observes those sentinel bytes overwritten with the
+peer's AUTH chunk type.  The bytes written are under the peer's
+control but land in the caller's own userspace; this is not a
+kernel memory corruption, but it is a kernel-side contract
+violation that can silently corrupt adjacent userspace data.
+
+Fixes: 65b07e5d0d09 ("[SCTP]: API updates to suport SCTP-AUTH extensions.")
+Assisted-by: Claude:claude-opus-4-6
+Signed-off-by: Michael Bommarito <michael.bommarito@gmail.com>
+Acked-by: Xin Long <lucien.xin@gmail.com>
+Link: https://patch.msgid.link/20260416031903.1447072-1-michael.bommarito@gmail.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/intel/iavf/iavf.h        |  6 +--
- drivers/net/ethernet/intel/iavf/iavf_main.c   | 39 ++-----------------
- .../net/ethernet/intel/iavf/iavf_virtchnl.c   | 33 +++-------------
- 3 files changed, 12 insertions(+), 66 deletions(-)
+ net/sctp/socket.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/net/ethernet/intel/iavf/iavf.h b/drivers/net/ethernet/intel/iavf/iavf.h
-index 64309bf18ef74..dbbe622dec12f 100644
---- a/drivers/net/ethernet/intel/iavf/iavf.h
-+++ b/drivers/net/ethernet/intel/iavf/iavf.h
-@@ -159,10 +159,8 @@ enum iavf_vlan_state_t {
- 	IAVF_VLAN_INVALID,
- 	IAVF_VLAN_ADD,		/* filter needs to be added */
- 	IAVF_VLAN_ADDING,	/* ADD sent to PF, waiting for response */
--	IAVF_VLAN_ACTIVE,	/* filter is accepted by PF */
--	IAVF_VLAN_DISABLE,	/* filter needs to be deleted by PF, then marked INACTIVE */
--	IAVF_VLAN_INACTIVE,	/* filter is inactive, we are in IFF_DOWN */
--	IAVF_VLAN_REMOVE,	/* filter needs to be removed from list */
-+	IAVF_VLAN_ACTIVE,	/* PF confirmed, filter is in HW */
-+	IAVF_VLAN_REMOVE,	/* filter queued for DEL from PF */
- };
+diff --git a/net/sctp/socket.c b/net/sctp/socket.c
+index e0f608eb46902..8c7bdf01e32a1 100644
+--- a/net/sctp/socket.c
++++ b/net/sctp/socket.c
+@@ -6880,7 +6880,7 @@ static int sctp_getsockopt_peer_auth_chunks(struct sock *sk, int len,
  
- struct iavf_vlan_filter {
-diff --git a/drivers/net/ethernet/intel/iavf/iavf_main.c b/drivers/net/ethernet/intel/iavf/iavf_main.c
-index 667949e8833bf..6346479366aa4 100644
---- a/drivers/net/ethernet/intel/iavf/iavf_main.c
-+++ b/drivers/net/ethernet/intel/iavf/iavf_main.c
-@@ -875,27 +875,6 @@ static void iavf_del_vlan(struct iavf_adapter *adapter, struct iavf_vlan vlan)
- 	spin_unlock_bh(&adapter->mac_vlan_list_lock);
- }
+ 	/* See if the user provided enough room for all the data */
+ 	num_chunks = ntohs(ch->param_hdr.length) - sizeof(struct sctp_paramhdr);
+-	if (len < num_chunks)
++	if (len < sizeof(struct sctp_authchunks) + num_chunks)
+ 		return -EINVAL;
  
--/**
-- * iavf_restore_filters
-- * @adapter: board private structure
-- *
-- * Restore existing non MAC filters when VF netdev comes back up
-- **/
--static void iavf_restore_filters(struct iavf_adapter *adapter)
--{
--	struct iavf_vlan_filter *f;
--
--	/* re-add all VLAN filters */
--	spin_lock_bh(&adapter->mac_vlan_list_lock);
--
--	list_for_each_entry(f, &adapter->vlan_filter_list, list) {
--		if (f->state == IAVF_VLAN_INACTIVE)
--			f->state = IAVF_VLAN_ADD;
--	}
--
--	spin_unlock_bh(&adapter->mac_vlan_list_lock);
--	adapter->aq_required |= IAVF_FLAG_AQ_ADD_VLAN_FILTER;
--}
- 
- /**
-  * iavf_get_num_vlans_added - get number of VLANs added
-@@ -1322,13 +1301,12 @@ static void iavf_up_complete(struct iavf_adapter *adapter)
- }
- 
- /**
-- * iavf_clear_mac_vlan_filters - Remove mac and vlan filters not sent to PF
-- * yet and mark other to be removed.
-+ * iavf_clear_mac_filters - Remove MAC filters not sent to PF yet and mark
-+ * others to be removed.
-  * @adapter: board private structure
-  **/
--static void iavf_clear_mac_vlan_filters(struct iavf_adapter *adapter)
-+static void iavf_clear_mac_filters(struct iavf_adapter *adapter)
- {
--	struct iavf_vlan_filter *vlf, *vlftmp;
- 	struct iavf_mac_filter *f, *ftmp;
- 
- 	spin_lock_bh(&adapter->mac_vlan_list_lock);
-@@ -1347,11 +1325,6 @@ static void iavf_clear_mac_vlan_filters(struct iavf_adapter *adapter)
- 		}
- 	}
- 
--	/* disable all VLAN filters */
--	list_for_each_entry_safe(vlf, vlftmp, &adapter->vlan_filter_list,
--				 list)
--		vlf->state = IAVF_VLAN_DISABLE;
--
- 	spin_unlock_bh(&adapter->mac_vlan_list_lock);
- }
- 
-@@ -1447,7 +1420,7 @@ void iavf_down(struct iavf_adapter *adapter)
- 	iavf_napi_disable_all(adapter);
- 	iavf_irq_disable(adapter);
- 
--	iavf_clear_mac_vlan_filters(adapter);
-+	iavf_clear_mac_filters(adapter);
- 	iavf_clear_cloud_filters(adapter);
- 	iavf_clear_fdir_filters(adapter);
- 	iavf_clear_adv_rss_conf(adapter);
-@@ -1462,8 +1435,6 @@ void iavf_down(struct iavf_adapter *adapter)
- 		 */
- 		if (!list_empty(&adapter->mac_filter_list))
- 			adapter->aq_required |= IAVF_FLAG_AQ_DEL_MAC_FILTER;
--		if (!list_empty(&adapter->vlan_filter_list))
--			adapter->aq_required |= IAVF_FLAG_AQ_DEL_VLAN_FILTER;
- 		if (!list_empty(&adapter->cloud_filter_list))
- 			adapter->aq_required |= IAVF_FLAG_AQ_DEL_CLOUD_FILTER;
- 		if (!list_empty(&adapter->fdir_list_head))
-@@ -4352,8 +4323,6 @@ static int iavf_open(struct net_device *netdev)
- 
- 	spin_unlock_bh(&adapter->mac_vlan_list_lock);
- 
--	/* Restore filters that were removed with IFF_DOWN */
--	iavf_restore_filters(adapter);
- 	iavf_restore_fdir_filters(adapter);
- 
- 	iavf_configure(adapter);
-diff --git a/drivers/net/ethernet/intel/iavf/iavf_virtchnl.c b/drivers/net/ethernet/intel/iavf/iavf_virtchnl.c
-index de01edc5df79b..ca7448e096a86 100644
---- a/drivers/net/ethernet/intel/iavf/iavf_virtchnl.c
-+++ b/drivers/net/ethernet/intel/iavf/iavf_virtchnl.c
-@@ -808,22 +808,12 @@ void iavf_del_vlans(struct iavf_adapter *adapter)
- 	spin_lock_bh(&adapter->mac_vlan_list_lock);
- 
- 	list_for_each_entry_safe(f, ftmp, &adapter->vlan_filter_list, list) {
--		/* since VLAN capabilities are not allowed, we dont want to send
--		 * a VLAN delete request because it will most likely fail and
--		 * create unnecessary errors/noise, so just free the VLAN
--		 * filters marked for removal to enable bailing out before
--		 * sending a virtchnl message
--		 */
- 		if (f->state == IAVF_VLAN_REMOVE &&
- 		    !VLAN_FILTERING_ALLOWED(adapter)) {
- 			list_del(&f->list);
- 			kfree(f);
- 			adapter->num_vlan_filters--;
--		} else if (f->state == IAVF_VLAN_DISABLE &&
--		    !VLAN_FILTERING_ALLOWED(adapter)) {
--			f->state = IAVF_VLAN_INACTIVE;
--		} else if (f->state == IAVF_VLAN_REMOVE ||
--			   f->state == IAVF_VLAN_DISABLE) {
-+		} else if (f->state == IAVF_VLAN_REMOVE) {
- 			count++;
- 		}
- 	}
-@@ -855,13 +845,7 @@ void iavf_del_vlans(struct iavf_adapter *adapter)
- 		vvfl->vsi_id = adapter->vsi_res->vsi_id;
- 		vvfl->num_elements = count;
- 		list_for_each_entry_safe(f, ftmp, &adapter->vlan_filter_list, list) {
--			if (f->state == IAVF_VLAN_DISABLE) {
--				vvfl->vlan_id[i] = f->vlan.vid;
--				f->state = IAVF_VLAN_INACTIVE;
--				i++;
--				if (i == count)
--					break;
--			} else if (f->state == IAVF_VLAN_REMOVE) {
-+			if (f->state == IAVF_VLAN_REMOVE) {
- 				vvfl->vlan_id[i] = f->vlan.vid;
- 				list_del(&f->list);
- 				kfree(f);
-@@ -906,8 +890,7 @@ void iavf_del_vlans(struct iavf_adapter *adapter)
- 		vvfl_v2->vport_id = adapter->vsi_res->vsi_id;
- 		vvfl_v2->num_elements = count;
- 		list_for_each_entry_safe(f, ftmp, &adapter->vlan_filter_list, list) {
--			if (f->state == IAVF_VLAN_DISABLE ||
--			    f->state == IAVF_VLAN_REMOVE) {
-+			if (f->state == IAVF_VLAN_REMOVE) {
- 				struct virtchnl_vlan_supported_caps *filtering_support =
- 					&adapter->vlan_v2_caps.filtering.filtering_support;
- 				struct virtchnl_vlan *vlan;
-@@ -921,13 +904,9 @@ void iavf_del_vlans(struct iavf_adapter *adapter)
- 				vlan->tci = f->vlan.vid;
- 				vlan->tpid = f->vlan.tpid;
- 
--				if (f->state == IAVF_VLAN_DISABLE) {
--					f->state = IAVF_VLAN_INACTIVE;
--				} else {
--					list_del(&f->list);
--					kfree(f);
--					adapter->num_vlan_filters--;
--				}
-+				list_del(&f->list);
-+				kfree(f);
-+				adapter->num_vlan_filters--;
- 				i++;
- 				if (i == count)
- 					break;
+ 	if (copy_to_user(to, ch->chunks, num_chunks))
 -- 
 2.53.0
 
