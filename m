@@ -1,60 +1,65 @@
-Return-Path: <stable+bounces-258742-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-258139-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id GAapKagrG2ow/wgAu9opvQ
-	(envelope-from <stable+bounces-258742-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:25:44 +0200
+	id UHZ5KXokG2pm/ggAu9opvQ
+	(envelope-from <stable+bounces-258139-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:55:06 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2391B611B32
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:25:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2009C610A5A
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:55:05 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id D091E308484B
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 18:23:06 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 8391B30160C7
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 17:49:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6B547274FDC;
-	Sat, 30 May 2026 18:23:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2B362341AC7;
+	Sat, 30 May 2026 17:49:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jY3Q/bkm"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="p05ODKQm"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2575617555;
-	Sat, 30 May 2026 18:23:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7FCEF261B9E;
+	Sat, 30 May 2026 17:49:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780165386; cv=none; b=juF5nRfrNLufz3JVAw8DNOEQg6Qe+kejog92VDTKI58Ap07lR86saZ1p1uBgnQInrdLfsvA+4CdY0ouHzVr8Iqi7XWjTf2demo+PxjzLmLNDEiBIzj5b8ukWGGlUkw8V6ePkK7lbx1H4PGO2J3EnL9u9ZpMSEIzROANvhme8zoM=
+	t=1780163348; cv=none; b=nBAD+K6vr0yeEjBfCJPW7Rh4Bd2bCawR+yriWuET4Xjoe35gnfe2QnFMyc61xoGP3XaXst67R7Lt22BJdj5Qf9B6F5BqZOmOdOnzjOzmMJ+h+9Jt7KdzzCr/izCUqQbJAR2ACp5E25lqVxHMzt4jomyFClqNrlPiVuTxYtP3UqA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780165386; c=relaxed/simple;
-	bh=3dxNNz4WuVHGWE7SJtsaaH8e438wZ9ev/NOqH950VKk=;
+	s=arc-20240116; t=1780163348; c=relaxed/simple;
+	bh=VrN/W+wyCgc49qZF9UoRtGUhByBaCVpgT0KaT+xefEI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=A2ZJNqLfPLGXnHyj9PLmspOlOTltWaWd8UCRmLPEMEef8qUnqSsaSZCxzxZQaKVWRQGX12ibVma5B6KZ0wGvhH2dgTIqzdjQnTf05WL6zdPipH7Qnu6xqOl8Mgfuy3rC90T/iI6CrWBc/wC0gsQ3ub3yVyrPoyHYgzIi6eNa0iA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jY3Q/bkm; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6A57B1F00893;
-	Sat, 30 May 2026 18:23:04 +0000 (UTC)
+	 MIME-Version; b=ENItQm3dbwvEWQOX36RXGLqECzFVv6kHAEe8LbMnTncpKH/3jd7QQ+pi+xGwdwmbfnBprVV1ZtVb3AAH4Kt0ptgAb6a2LTKEZ1XpD8bBMzXVJfdX9ZhgaIBR5VQrKuDq/ox6bzFzqMAx/N6BAuaWLN8boMb1AAzptD9EmQShLK0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=p05ODKQm; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C3DEE1F00893;
+	Sat, 30 May 2026 17:49:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780165385;
-	bh=5DjZttWFBad1QmM1y4TxH6ZAOQXdHzBHD6701CPAI7Y=;
+	s=korg; t=1780163346;
+	bh=Rmup59E2eI1KZyl9f4Gl9+rvJ7sbFYMLLLoqh9pujzE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=jY3Q/bkm7g/v3LonkgjhN03jwlUCL+W6/XhGKNjF6GWmaLLPiGcdEz/XnQPHhvf7F
-	 zc0Vtmiu94+4bl2e/dcEGRYt77W6ZBoNJvRKiU4q4k+aLmSj8AjwFI2/k78tQi47re
-	 1CVRT0A1VpoTJKQ2MWnCsjpDrsZ1KpEnktt78gtM=
+	b=p05ODKQmD/vFXT0bAvipr7Q/Ca//LpawsQqKfBSKp4omQMIUsiw8AAMEhkppNAWhA
+	 m41S4Ui9CfJf8skIHMzpkhFZF2xpuUa0iOw/bj1YSmsXMcMb6foZciiwpeHgUYVtkG
+	 3Yd+nqLGk6eDvbtoXIFp8OPgZjqIQcmIyHGm0jJo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+ci3edea60a44225dec@syzkaller.appspotmail.com,
-	Alice Mikityanska <alice@isovalent.com>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 033/589] l2tp: Drop large packets with UDP encap
+	stable@kernel.org,
+	Yifan Wu <yifanwucs@gmail.com>,
+	Juefei Pu <tomapufckgml@gmail.com>,
+	Yuan Tan <yuantan098@gmail.com>,
+	Xin Liu <bird@lzu.edu.cn>,
+	Ren Wei <enjou1224z@gmail.com>,
+	Zhengchuan Liang <zcliangcn@gmail.com>,
+	Ren Wei <n05ec@lzu.edu.cn>,
+	Paolo Abeni <pabeni@redhat.com>
+Subject: [PATCH 5.15 200/776] net: caif: clear client service pointer on teardown
 Date: Sat, 30 May 2026 17:58:34 +0200
-Message-ID: <20260530160225.455515259@linuxfoundation.org>
+Message-ID: <20260530160245.677443390@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260530160224.570625122@linuxfoundation.org>
-References: <20260530160224.570625122@linuxfoundation.org>
+In-Reply-To: <20260530160240.228940103@linuxfoundation.org>
+References: <20260530160240.228940103@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,143 +70,99 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	TAGGED_FROM(0.00)[bounces-258139-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,kernel.org,gmail.com,lzu.edu.cn,redhat.com];
 	RCVD_COUNT_THREE(0.00)[4];
-	TAGGED_FROM(0.00)[bounces-258742-lists,stable=lfdr.de];
-	FROM_HAS_DN(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	RCPT_COUNT_TWELVE(0.00)[12];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	PRECEDENCE_BULK(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[7];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable,ci3edea60a44225dec];
 	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,msgid.link:url,linuxfoundation.org:mid,linuxfoundation.org:dkim,appspotmail.com:email,isovalent.com:email]
-X-Rspamd-Queue-Id: 2391B611B32
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	TAGGED_RCPT(0.00)[stable];
+	MID_RHS_MATCH_FROM(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,lzu.edu.cn:email,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim]
+X-Rspamd-Queue-Id: 2009C610A5A
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alice Mikityanska <alice@isovalent.com>
+From: Zhengchuan Liang <zcliangcn@gmail.com>
 
-[ Upstream commit ebe560ea5f54134279356703e73b7f867c89db13 ]
+commit f7cf8ece8cee3c1ee361991470cdb1eb65ab02e8 upstream.
 
-syzbot reported a WARN on my patch series [1]. The actual issue is an
-overflow of 16-bit UDP length field, and it exists in the upstream code.
-My series added a debug WARN with an overflow check that exposed the
-issue, that's why syzbot tripped on my patches, rather than on upstream
-code.
+`caif_connect()` can tear down an existing client after remote shutdown by
+calling `caif_disconnect_client()` followed by `caif_free_client()`.
+`caif_free_client()` releases the service layer referenced by
+`adap_layer->dn`, but leaves that pointer stale.
 
-syzbot's repro:
+When the socket is later destroyed, `caif_sock_destructor()` calls
+`caif_free_client()` again and dereferences the freed service pointer.
 
-r0 = socket$pppl2tp(0x18, 0x1, 0x1)
-r1 = socket$inet6_udp(0xa, 0x2, 0x0)
-connect$inet6(r1, &(0x7f00000000c0)={0xa, 0x0, 0x0, @loopback, 0xfffffffc}, 0x1c)
-connect$pppl2tp(r0, &(0x7f0000000240)=@pppol2tpin6={0x18, 0x1, {0x0, r1, 0x4, 0x0, 0x0, 0x0, {0xa, 0x4e22, 0xffff, @ipv4={'\x00', '\xff\xff', @empty}}}}, 0x32)
-writev(r0, &(0x7f0000000080)=[{&(0x7f0000000000)="ee", 0x34000}], 0x1)
+Clear the client/service links before releasing the service object so
+repeated teardown becomes harmless.
 
-It basically sends an oversized (0x34000 bytes) PPPoL2TP packet with UDP
-encapsulation, and l2tp_xmit_core doesn't check for overflows when it
-assigns the UDP length field. The value gets trimmed to 16 bites.
-
-Add an overflow check that drops oversized packets and avoids sending
-packets with trimmed UDP length to the wire.
-
-syzbot's stack trace (with my patch applied):
-
-len >= 65536u
-WARNING: ./include/linux/udp.h:38 at udp_set_len_short include/linux/udp.h:38 [inline], CPU#1: syz.0.17/5957
-WARNING: ./include/linux/udp.h:38 at l2tp_xmit_core net/l2tp/l2tp_core.c:1293 [inline], CPU#1: syz.0.17/5957
-WARNING: ./include/linux/udp.h:38 at l2tp_xmit_skb+0x1204/0x18d0 net/l2tp/l2tp_core.c:1327, CPU#1: syz.0.17/5957
-Modules linked in:
-CPU: 1 UID: 0 PID: 5957 Comm: syz.0.17 Not tainted syzkaller #0 PREEMPT(full)
-Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS 1.16.2-debian-1.16.2-1 04/01/2014
-RIP: 0010:udp_set_len_short include/linux/udp.h:38 [inline]
-RIP: 0010:l2tp_xmit_core net/l2tp/l2tp_core.c:1293 [inline]
-RIP: 0010:l2tp_xmit_skb+0x1204/0x18d0 net/l2tp/l2tp_core.c:1327
-Code: 0f 0b 90 e9 21 f9 ff ff e8 e9 05 ec f6 90 0f 0b 90 e9 8d f9 ff ff e8 db 05 ec f6 90 0f 0b 90 e9 cc f9 ff ff e8 cd 05 ec f6 90 <0f> 0b 90 e9 de fa ff ff 44 89 f1 80 e1 07 80 c1 03 38 c1 0f 8c 4f
-RSP: 0018:ffffc90003d67878 EFLAGS: 00010293
-RAX: ffffffff8ad985e3 RBX: ffff8881a6400090 RCX: ffff8881697f0000
-RDX: 0000000000000000 RSI: 0000000000034010 RDI: 000000000000ffff
-RBP: dffffc0000000000 R08: 0000000000000003 R09: 0000000000000004
-R10: dffffc0000000000 R11: fffff520007acf00 R12: ffff8881baf20900
-R13: 0000000000034010 R14: ffff8881a640008e R15: ffff8881760f7000
-FS:  000055557e81f500(0000) GS:ffff8882a9467000(0000) knlGS:0000000000000000
-CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-CR2: 0000200000033000 CR3: 00000001612f4000 CR4: 00000000000006f0
-Call Trace:
- <TASK>
- pppol2tp_sendmsg+0x40a/0x5f0 net/l2tp/l2tp_ppp.c:302
- sock_sendmsg_nosec net/socket.c:727 [inline]
- __sock_sendmsg net/socket.c:742 [inline]
- sock_write_iter+0x503/0x550 net/socket.c:1195
- do_iter_readv_writev+0x619/0x8c0 fs/read_write.c:-1
- vfs_writev+0x33c/0x990 fs/read_write.c:1059
- do_writev+0x154/0x2e0 fs/read_write.c:1105
- do_syscall_x64 arch/x86/entry/syscall_64.c:63 [inline]
- do_syscall_64+0x14d/0xf80 arch/x86/entry/syscall_64.c:94
- entry_SYSCALL_64_after_hwframe+0x77/0x7f
-RIP: 0033:0x7f636479c629
-Code: ff c3 66 2e 0f 1f 84 00 00 00 00 00 0f 1f 44 00 00 48 89 f8 48 89 f7 48 89 d6 48 89 ca 4d 89 c2 4d 89 c8 4c 8b 4c 24 08 0f 05 <48> 3d 01 f0 ff ff 73 01 c3 48 c7 c1 e8 ff ff ff f7 d8 64 89 01 48
-RSP: 002b:00007ffffd4241c8 EFLAGS: 00000246 ORIG_RAX: 0000000000000014
-RAX: ffffffffffffffda RBX: 00007f6364a15fa0 RCX: 00007f636479c629
-RDX: 0000000000000001 RSI: 0000200000000080 RDI: 0000000000000003
-RBP: 00007f6364832b39 R08: 0000000000000000 R09: 0000000000000000
-R10: 0000000000000000 R11: 0000000000000246 R12: 0000000000000000
-R13: 00007f6364a15fac R14: 00007f6364a15fa0 R15: 00007f6364a15fa0
- </TASK>
-
-[1]: https://lore.kernel.org/all/20260226201600.222044-1-alice.kernel@fastmail.im/
-
-Fixes: 3557baabf280 ("[L2TP]: PPP over L2TP driver core")
-Reported-by: syzbot+ci3edea60a44225dec@syzkaller.appspotmail.com
-Closes: https://lore.kernel.org/netdev/69a1dfba.050a0220.3a55be.0026.GAE@google.com/
-Signed-off-by: Alice Mikityanska <alice@isovalent.com>
-Link: https://patch.msgid.link/20260403174949.843941-1-alice.kernel@fastmail.im
+Fixes: 43e369210108 ("caif: Move refcount from service layer to sock and dev.")
+Cc: stable@kernel.org
+Reported-by: Yifan Wu <yifanwucs@gmail.com>
+Reported-by: Juefei Pu <tomapufckgml@gmail.com>
+Co-developed-by: Yuan Tan <yuantan098@gmail.com>
+Signed-off-by: Yuan Tan <yuantan098@gmail.com>
+Suggested-by: Xin Liu <bird@lzu.edu.cn>
+Tested-by: Ren Wei <enjou1224z@gmail.com>
+Signed-off-by: Zhengchuan Liang <zcliangcn@gmail.com>
+Signed-off-by: Ren Wei <n05ec@lzu.edu.cn>
+Link: https://patch.msgid.link/9f3d37847c0037568aae698ca23cd47c6691acb0.1775897577.git.zcliangcn@gmail.com
 Signed-off-by: Paolo Abeni <pabeni@redhat.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/l2tp/l2tp_core.c | 5 +++++
- 1 file changed, 5 insertions(+)
+ net/caif/cfsrvl.c |   14 ++++++++++++--
+ 1 file changed, 12 insertions(+), 2 deletions(-)
 
-diff --git a/net/l2tp/l2tp_core.c b/net/l2tp/l2tp_core.c
-index 83615f5968dd5..b03de90e3d418 100644
---- a/net/l2tp/l2tp_core.c
-+++ b/net/l2tp/l2tp_core.c
-@@ -1083,6 +1083,11 @@ static int l2tp_xmit_core(struct l2tp_session *session, struct sk_buff *skb, uns
- 		uh->source = inet->inet_sport;
- 		uh->dest = inet->inet_dport;
- 		udp_len = uhlen + session->hdr_len + data_len;
-+		if (udp_len > U16_MAX) {
-+			kfree_skb(skb);
-+			ret = NET_XMIT_DROP;
-+			goto out_unlock;
-+		}
- 		uh->len = htons(udp_len);
+--- a/net/caif/cfsrvl.c
++++ b/net/caif/cfsrvl.c
+@@ -197,10 +197,20 @@ bool cfsrvl_phyid_match(struct cflayer *
  
- 		/* Calculate UDP checksum if configured to do so */
--- 
-2.53.0
-
+ void caif_free_client(struct cflayer *adap_layer)
+ {
++	struct cflayer *serv_layer;
+ 	struct cfsrvl *servl;
+-	if (adap_layer == NULL || adap_layer->dn == NULL)
++
++	if (!adap_layer)
++		return;
++
++	serv_layer = adap_layer->dn;
++	if (!serv_layer)
+ 		return;
+-	servl = container_obj(adap_layer->dn);
++
++	layer_set_dn(adap_layer, NULL);
++	layer_set_up(serv_layer, NULL);
++
++	servl = container_obj(serv_layer);
+ 	servl->release(&servl->layer);
+ }
+ EXPORT_SYMBOL(caif_free_client);
 
 
 
