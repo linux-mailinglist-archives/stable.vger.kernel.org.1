@@ -1,60 +1,60 @@
-Return-Path: <stable+bounces-258523-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-257748-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id MGp7EnUqG2r//ggAu9opvQ
-	(envelope-from <stable+bounces-258523-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:20:37 +0200
+	id qMy/NEMeG2q4/QgAu9opvQ
+	(envelope-from <stable+bounces-257748-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:28:35 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id D2FCD611860
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:20:36 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id B40BD60FBF9
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:28:35 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id B5DD4309F247
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 18:10:36 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id E0116301F7DF
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 17:27:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B323E3AB26B;
-	Sat, 30 May 2026 18:10:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 47FB2344DB9;
+	Sat, 30 May 2026 17:27:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qouEoV+a"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="n8giFRTz"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9BBFA29B799;
-	Sat, 30 May 2026 18:10:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0C12533E36A;
+	Sat, 30 May 2026 17:27:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780164635; cv=none; b=ENUw/qDxUI655wPUl4TFX7UEza9YiIDp/UR58TFkp9L+5Vll/bx3i9TBKTU83TsaffkP9ipK+HIOPvruXN7DxETwMc9+vg8Qj7E51Zdtahtuygy4gPmyxaTHp7F/djv3LZ6hnL/1I3B4ls94gIgcJbtYLSYfRxz4YhR4NcjI8QU=
+	t=1780162040; cv=none; b=p20krZEe7/xmD5DWK0cSdAYdfaeMdpKbw7ysa2eplrintp4IxP/YZe1ooRp+lXCxgjfbuEXhMBzYAn2/4hSlhhccN8CQo5ejhJysxn4lf4fOUsC73r9lY/OJVB56OKxYzAld7M8LnPJal58OX+4AOkngH1auxI1bPgLzXAfDlSQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780164635; c=relaxed/simple;
-	bh=/T/3DMjGQhmHUSgckRtgHu/InYaY94JijIWbqu6Z0nY=;
+	s=arc-20240116; t=1780162040; c=relaxed/simple;
+	bh=CbOw6TFrSFKhp8Lo+/zrU4Z7DBlnF2gyNa/NRijSHe0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Nz60B2dL6qhLbmbQrw2ABPmPjaIANv/cGUmz2WPcgwiXZdIH4M/VtelJ6a2RvAcdUCcH3PLddzN8Vp7E0kBuQpy7gYuZuzi7DGYt6T/oxrh85y5uqBcCjtOEDiX/2xYyfNCkPHGE64nuFpGwZetYtEoc5LlNBKxC0+OEsumrnbg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qouEoV+a; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DF0201F00893;
-	Sat, 30 May 2026 18:10:33 +0000 (UTC)
+	 MIME-Version:Content-Type; b=rJ7KAAL3rl+YPpysWKG2FSGNtk9Q2vsRPG8dwaSiofybarRlwjoMu7obJauda0N3F6sa9maiBdeCQCziZq0M5qeZD6o/h6LdS+UJmUBG/3Ep3uLVm7Yf5MvW27/tGvsB1hSV7T2IO+0sptS4bLhu1sIzYAMiGbQYfRF9ZZJ5/+c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=n8giFRTz; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 507831F00893;
+	Sat, 30 May 2026 17:27:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780164634;
-	bh=ulJ9hI2yVVvoqMUNTGi6Ft/VP2KIPCQFxs6ONV3ICDI=;
+	s=korg; t=1780162038;
+	bh=jTFnTYGQ7Y7rQrWb0c4j0SSsC9GFG7k8ZGXobeY2dwk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=qouEoV+aWxbxaBEs9Bdjs8F2GHc3x9Nl2HmO5hbO+0UikzLhwfWUEZvUW9bhsbq9I
-	 Fn9FCpUCaKW27WV7eTDdWgiMwRcRvWXMLdo24xGWAklhR/gbmDjqK8KtFYf4ZJzWaH
-	 1hugIog/4VERWlXWpYr66boFSVR1eXQxvMa1qeuc=
+	b=n8giFRTzL9/rYranqokUkCi7Ai/jW+C1X54+62Xd2MzLyqfURYJIfGnl+0PMLdo/t
+	 JGxLKIJ2o/xAG4OB+Bq42zXMeDIBXdlZ6TDcgNqZUGIzXZP5EPk3/M1/kHBzhcqjP6
+	 yLNamc2clWvq+Qa0K5HAhnqsLY0bB+uayBjER7ac=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Nikola Z. Ivanov" <zlatistiv@gmail.com>,
-	Eric Dumazet <edumazet@google.com>,
+	Liang Li <liali@redhat.com>,
+	Hangbin Liu <liuhangbin@gmail.com>,
 	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 613/776] netdevsim: zero initialize struct iphdr in dummy sk_buff
+Subject: [PATCH 6.1 803/969] bonding: fix NULL pointer dereference in actor_port_prio setting
 Date: Sat, 30 May 2026 18:05:27 +0200
-Message-ID: <20260530160255.846997240@linuxfoundation.org>
+Message-ID: <20260530160322.804040003@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260530160240.228940103@linuxfoundation.org>
-References: <20260530160240.228940103@linuxfoundation.org>
+In-Reply-To: <20260530160300.485627683@linuxfoundation.org>
+References: <20260530160300.485627683@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,78 +64,97 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,google.com,kernel.org];
-	TAGGED_FROM(0.00)[bounces-258523-lists,stable=lfdr.de];
-	PRECEDENCE_BULK(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,redhat.com,gmail.com,kernel.org];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
 	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-257748-lists,stable=lfdr.de];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-0.999];
+	RCVD_TLS_LAST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	TO_DN_SOME(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	MID_RHS_MATCH_FROM(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
 	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
-	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,linuxfoundation.org:mid,linuxfoundation.org:dkim,syzkaller.appspot.com:url,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
-X-Rspamd-Queue-Id: D2FCD611860
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,linuxfoundation.org:mid,linuxfoundation.org:dkim,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo]
+X-Rspamd-Queue-Id: B40BD60FBF9
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Nikola Z. Ivanov <zlatistiv@gmail.com>
+From: Hangbin Liu <liuhangbin@gmail.com>
 
-[ Upstream commit 35eaa6d8d6c2ee65e96f507add856e0eacf24591 ]
+[ Upstream commit 067bf016e99ad72aa4ff869d6dec1fd62a9c6202 ]
 
-Syzbot reports a KMSAN uninit-value originating from
-nsim_dev_trap_skb_build, with the allocation also
-being performed in the same function.
+Liang reported an issue where setting a slave’s actor_port_prio to
+predefined values such as 0, 255, or 65535 would cause a system crash.
 
-Fix this by calling skb_put_zero instead of skb_put to
-guarantee zero initialization of the whole IP header.
+The problem occurs because in bond_opt_parse(), when the provided value
+matches a predefined table entry, the function returns that table entry,
+which does not contain slave information. Later, in
+bond_option_actor_port_prio_set(), calling bond_slave_get_rtnl() leads
+to a NULL pointer dereference.
 
-Closes: https://syzkaller.appspot.com/bug?extid=23d7fcd204e3837866ff
-Fixes: da58f90f11f5 ("netdevsim: Add devlink-trap support")
-Signed-off-by: Nikola Z. Ivanov <zlatistiv@gmail.com>
-Reviewed-by: Eric Dumazet <edumazet@google.com>
-Link: https://patch.msgid.link/20260426201434.742030-1-zlatistiv@gmail.com
+Since actor_port_prio is defined as a u16 and initialized to the default
+value of 255 in ad_initialize_port(), there is no need for the
+bond_actor_port_prio_tbl. Using the BOND_OPTFLAG_RAWVAL flag is sufficient.
+
+Fixes: 6b6dc81ee7e8 ("bonding: add support for per-port LACP actor priority")
+Reported-by: Liang Li <liali@redhat.com>
+Signed-off-by: Hangbin Liu <liuhangbin@gmail.com>
+Link: https://patch.msgid.link/20251105072620.164841-1-liuhangbin@gmail.com
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/netdevsim/dev.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/net/bonding/bond_options.c | 9 +--------
+ 1 file changed, 1 insertion(+), 8 deletions(-)
 
-diff --git a/drivers/net/netdevsim/dev.c b/drivers/net/netdevsim/dev.c
-index d8f91bc38f406..3136ff369acd4 100644
---- a/drivers/net/netdevsim/dev.c
-+++ b/drivers/net/netdevsim/dev.c
-@@ -674,7 +674,7 @@ static struct sk_buff *nsim_dev_trap_skb_build(void)
- 	skb->protocol = htons(ETH_P_IP);
+diff --git a/drivers/net/bonding/bond_options.c b/drivers/net/bonding/bond_options.c
+index 2991290f450ee..40731d180bb50 100644
+--- a/drivers/net/bonding/bond_options.c
++++ b/drivers/net/bonding/bond_options.c
+@@ -225,13 +225,6 @@ static const struct bond_opt_value bond_ad_actor_sys_prio_tbl[] = {
+ 	{ NULL,      -1,    0},
+ };
  
- 	skb_set_network_header(skb, skb->len);
--	iph = skb_put(skb, sizeof(struct iphdr));
-+	iph = skb_put_zero(skb, sizeof(struct iphdr));
- 	iph->protocol = IPPROTO_UDP;
- 	iph->saddr = in_aton("192.0.2.1");
- 	iph->daddr = in_aton("198.51.100.1");
+-static const struct bond_opt_value bond_actor_port_prio_tbl[] = {
+-	{ "minval",  0,     BOND_VALFLAG_MIN},
+-	{ "maxval",  65535, BOND_VALFLAG_MAX},
+-	{ "default", 255,   BOND_VALFLAG_DEFAULT},
+-	{ NULL,      -1,    0},
+-};
+-
+ static const struct bond_opt_value bond_ad_user_port_key_tbl[] = {
+ 	{ "minval",  0,     BOND_VALFLAG_MIN | BOND_VALFLAG_DEFAULT},
+ 	{ "maxval",  1023,  BOND_VALFLAG_MAX},
+@@ -497,7 +490,7 @@ static const struct bond_option bond_opts[BOND_OPT_LAST] = {
+ 		.id = BOND_OPT_ACTOR_PORT_PRIO,
+ 		.name = "actor_port_prio",
+ 		.unsuppmodes = BOND_MODE_ALL_EX(BIT(BOND_MODE_8023AD)),
+-		.values = bond_actor_port_prio_tbl,
++		.flags = BOND_OPTFLAG_RAWVAL,
+ 		.set = bond_option_actor_port_prio_set,
+ 	},
+ 	[BOND_OPT_AD_ACTOR_SYSTEM] = {
 -- 
 2.53.0
 
