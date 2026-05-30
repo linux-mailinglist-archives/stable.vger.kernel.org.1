@@ -1,60 +1,60 @@
-Return-Path: <stable+bounces-258428-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-257653-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id gCZFCkEnG2qS/ggAu9opvQ
-	(envelope-from <stable+bounces-258428-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:06:57 +0200
+	id wLAAFn4eG2q4/QgAu9opvQ
+	(envelope-from <stable+bounces-257653-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:29:34 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 46874611036
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:06:56 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id B3F6A60FCA6
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:29:33 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 45737300B8EA
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 18:05:20 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id C1DE630AE17C
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 17:22:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C2D223AFCE3;
-	Sat, 30 May 2026 18:05:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CA2D2332EA7;
+	Sat, 30 May 2026 17:22:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NTb3A4f5"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ws0GDdgx"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AC1F923392B;
-	Sat, 30 May 2026 18:05:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8F33130E847;
+	Sat, 30 May 2026 17:22:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780164318; cv=none; b=VJVjDKNOQ3T/uBlVJt+5neRC7SDeG1LBIjCfC1bkXjcjN+u3al5y5eSLRzV2G45OJgNdr7Eh4sjutSlRa/q8QkpLdH7dOBMGRp8jJV/yK3YOHcPs+/OOQACjSCtWgowWul1qBpYGap+3uSD2JOpvqoEMUmUjqrQWChLu6nK/DKQ=
+	t=1780161722; cv=none; b=Intq3ElY2fpTt57vFVzCooWHJ60nMReGx9OGcc/X8FgUFQWD+AA7tg2Z94JbH/19MEwaq6ZHrhLU5xlodko/w6RnnMDdnlgKVl60GcJgDa/mI6eTidougDUZbnkBwPvGmeTrKBIEyAF3nWrKBl0tqkgsgMPFHWXtq18Y5ZYqhL4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780164318; c=relaxed/simple;
-	bh=KUQBwcGgSge74wFTvwBZKOWVSquxrJfWCDj8YbxfVUI=;
+	s=arc-20240116; t=1780161722; c=relaxed/simple;
+	bh=eMBibLZZA4AWsKPs1mWc+FJUoYJSWxP05SzjSE97wJs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=XN1sus0xqUzKmeyeQ9ABJL/02v8qrwew5XAnh6K0zAVIwrKhDoQU2PMT+/IGeAYv+qImH8wd/SarWp0dRMvSWQUhijaHket8e1ZLtxP4B59BuI2dgJNYCCnbGumekAx6J+kvmnUpTfZScR440f8zlIX1t3qs4W7DwH5ellnKQ/4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NTb3A4f5; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A45E81F00898;
-	Sat, 30 May 2026 18:05:16 +0000 (UTC)
+	 MIME-Version; b=DXaxcDSiHGTh2PA0LjIKa/pvoUw80BNzT0N9LRrvEe3XuxquG8a1hM5SxtALOWF0FxmttEPjJxbGteO0uIjMeUVDtxqc9Kqbz+B4yB6+ni8Ntxk0DK7Do6Y6E1qOwwCoFZAxvNROJ+CnkGuPb1MWJ7BrtUlrySFkErEC6u/dYU8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ws0GDdgx; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D2AA81F00893;
+	Sat, 30 May 2026 17:22:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780164317;
-	bh=E//6u3KnRZk1BkTQiI1e2R72cPx8vgGVmzQQMCqsfSQ=;
+	s=korg; t=1780161721;
+	bh=Ml1DiEQk5hYx6l1Rffbfnx/lPfb+PfqwwcEF0fDoUdM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=NTb3A4f5dr0Ms5DzMLq2YC1ZAPUQi8GnqM1IHtX+mGbLYpc/yn+WLsZNhSIklkc6U
-	 WqT3s0BUB9bJvqSNMQWmpNTKs6DMukOm8damrcPxwCm4F6sJpfSOO19MFwMZMH2Ku/
-	 i3s6bZulSdKkKmrwpCFYUjRbLFKCK4CxbZNL2PNA=
+	b=ws0GDdgx2DKiUwQnP0GGRx+b58+HCxVJRwkND+WCddHsNLLOhh2042/HkD75uaD+U
+	 +IrbIJrIH9/JaWn/XU+zc1Ca35tMWIAWa6+hK3J3e4LDzrjtHBbJ2zG1WrVa2ldEFq
+	 k4y0D0mL5Gvc/CjcdiMd6CTgz8zN6ZJl7QYxcsOM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ian Rogers <irogers@google.com>,
-	Arnaldo Carvalho de Melo <acme@redhat.com>,
-	Namhyung Kim <namhyung@kernel.org>,
+	Simon Horman <horms@kernel.org>,
+	Weiming Shi <bestswngs@gmail.com>,
+	Paolo Abeni <pabeni@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 518/776] perf util: Kill die() prototype, dead for a long time
+Subject: [PATCH 6.1 708/969] slip: bound decode() reads against the compressed packet length
 Date: Sat, 30 May 2026 18:03:52 +0200
-Message-ID: <20260530160253.629268159@linuxfoundation.org>
+Message-ID: <20260530160320.077534267@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260530160240.228940103@linuxfoundation.org>
-References: <20260530160240.228940103@linuxfoundation.org>
+In-Reply-To: <20260530160300.485627683@linuxfoundation.org>
+References: <20260530160300.485627683@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,68 +69,188 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	RCVD_TLS_LAST(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,kernel.org,gmail.com,redhat.com];
+	TAGGED_FROM(0.00)[bounces-257653-lists,stable=lfdr.de];
+	PRECEDENCE_BULK(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FROM_HAS_DN(0.00)[];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-258428-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TO_DN_SOME(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
-	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[7];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[7];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim]
-X-Rspamd-Queue-Id: 46874611036
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,msgid.link:url,linuxfoundation.org:mid,linuxfoundation.org:dkim]
+X-Rspamd-Queue-Id: B3F6A60FCA6
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Arnaldo Carvalho de Melo <acme@redhat.com>
+From: Weiming Shi <bestswngs@gmail.com>
 
-[ Upstream commit e5cce1b9c82fbd48e2f1f7a25a9fad8ee228176f ]
+[ Upstream commit 4c1367a2d7aad643a6f87c6931b13cc1a25e8ca7 ]
 
-In fef2a735167a827a ("perf tools: Kill die()") the die() function was
-removed, but not the prototype in util.h, now when building with
-LIBPERL=1, during a 'make -C tools/perf build-test' routine test, it is
-failing as perl likes die() calls and then this clashes with this
-remnant, remove it.
+slhc_uncompress() parses a VJ-compressed TCP header by advancing a
+pointer through the packet via decode() and pull16(). Neither helper
+bounds-checks against isize, and decode() masks its return with
+& 0xffff so it can never return the -1 that callers test for -- those
+error paths are dead code.
 
-Fixes: fef2a735167a827a ("perf tools: Kill die()")
-Reviewed-by: Ian Rogers <irogers@google.com>
-Signed-off-by: Arnaldo Carvalho de Melo <acme@redhat.com>
-Signed-off-by: Namhyung Kim <namhyung@kernel.org>
+A short compressed frame whose change byte requests optional fields
+lets decode() read past the end of the packet. The over-read bytes
+are folded into the cached cstate and reflected into subsequent
+reconstructed packets.
+
+Make decode() and pull16() take the packet end pointer and return -1
+when exhausted. Add a bounds check before the TCP-checksum read.
+The existing == -1 tests now do what they were always meant to.
+
+Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
+Reported-by: Simon Horman <horms@kernel.org>
+Closes: https://lore.kernel.org/netdev/20260414134126.758795-2-horms@kernel.org/
+Signed-off-by: Weiming Shi <bestswngs@gmail.com>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Link: https://patch.msgid.link/20260416100147.531855-5-bestswngs@gmail.com
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/perf/util/util.h | 1 -
- 1 file changed, 1 deletion(-)
+ drivers/net/slip/slhc.c | 43 ++++++++++++++++++++++++-----------------
+ 1 file changed, 25 insertions(+), 18 deletions(-)
 
-diff --git a/tools/perf/util/util.h b/tools/perf/util/util.h
-index 9f0d36ba77f2d..130c68dff4ce0 100644
---- a/tools/perf/util/util.h
-+++ b/tools/perf/util/util.h
-@@ -14,7 +14,6 @@
+diff --git a/drivers/net/slip/slhc.c b/drivers/net/slip/slhc.c
+index 3474792a37a67..ef586ab250747 100644
+--- a/drivers/net/slip/slhc.c
++++ b/drivers/net/slip/slhc.c
+@@ -80,9 +80,9 @@
+ #include <asm/unaligned.h>
  
- /* General helper functions */
- void usage(const char *err) __noreturn;
--void die(const char *err, ...) __noreturn __printf(1, 2);
+ static unsigned char *encode(unsigned char *cp, unsigned short n);
+-static long decode(unsigned char **cpp);
++static long decode(unsigned char **cpp, const unsigned char *end);
+ static unsigned char * put16(unsigned char *cp, unsigned short x);
+-static unsigned short pull16(unsigned char **cpp);
++static long pull16(unsigned char **cpp, const unsigned char *end);
  
- struct dirent;
- struct strlist;
+ /* Allocate compression data structure
+  *	slots must be in range 0 to 255 (zero meaning no compression)
+@@ -190,30 +190,34 @@ encode(unsigned char *cp, unsigned short n)
+ 	return cp;
+ }
+ 
+-/* Pull a 16-bit integer in host order from buffer in network byte order */
+-static unsigned short
+-pull16(unsigned char **cpp)
++/* Pull a 16-bit integer in host order from buffer in network byte order.
++ * Returns -1 if the buffer is exhausted, otherwise the 16-bit value.
++ */
++static long
++pull16(unsigned char **cpp, const unsigned char *end)
+ {
+-	short rval;
++	long rval;
+ 
++	if (*cpp + 2 > end)
++		return -1;
+ 	rval = *(*cpp)++;
+ 	rval <<= 8;
+ 	rval |= *(*cpp)++;
+ 	return rval;
+ }
+ 
+-/* Decode a number */
++/* Decode a number. Returns -1 if the buffer is exhausted. */
+ static long
+-decode(unsigned char **cpp)
++decode(unsigned char **cpp, const unsigned char *end)
+ {
+ 	int x;
+ 
++	if (*cpp >= end)
++		return -1;
+ 	x = *(*cpp)++;
+-	if(x == 0){
+-		return pull16(cpp) & 0xffff;	/* pull16 returns -1 on error */
+-	} else {
+-		return x & 0xff;		/* -1 if PULLCHAR returned error */
+-	}
++	if (x == 0)
++		return pull16(cpp, end);
++	return x & 0xff;
+ }
+ 
+ /*
+@@ -499,6 +503,7 @@ slhc_uncompress(struct slcompress *comp, unsigned char *icp, int isize)
+ 	struct cstate *cs;
+ 	int len, hdrlen;
+ 	unsigned char *cp = icp;
++	const unsigned char *end = icp + isize;
+ 
+ 	/* We've got a compressed packet; read the change byte */
+ 	comp->sls_i_compressed++;
+@@ -536,6 +541,8 @@ slhc_uncompress(struct slcompress *comp, unsigned char *icp, int isize)
+ 	thp = &cs->cs_tcp;
+ 	ip = &cs->cs_ip;
+ 
++	if (cp + 2 > end)
++		goto bad;
+ 	thp->check = *(__sum16 *)cp;
+ 	cp += 2;
+ 
+@@ -566,26 +573,26 @@ slhc_uncompress(struct slcompress *comp, unsigned char *icp, int isize)
+ 	default:
+ 		if(changes & NEW_U){
+ 			thp->urg = 1;
+-			if((x = decode(&cp)) == -1) {
++			if((x = decode(&cp, end)) == -1) {
+ 				goto bad;
+ 			}
+ 			thp->urg_ptr = htons(x);
+ 		} else
+ 			thp->urg = 0;
+ 		if(changes & NEW_W){
+-			if((x = decode(&cp)) == -1) {
++			if((x = decode(&cp, end)) == -1) {
+ 				goto bad;
+ 			}
+ 			thp->window = htons( ntohs(thp->window) + x);
+ 		}
+ 		if(changes & NEW_A){
+-			if((x = decode(&cp)) == -1) {
++			if((x = decode(&cp, end)) == -1) {
+ 				goto bad;
+ 			}
+ 			thp->ack_seq = htonl( ntohl(thp->ack_seq) + x);
+ 		}
+ 		if(changes & NEW_S){
+-			if((x = decode(&cp)) == -1) {
++			if((x = decode(&cp, end)) == -1) {
+ 				goto bad;
+ 			}
+ 			thp->seq = htonl( ntohl(thp->seq) + x);
+@@ -593,7 +600,7 @@ slhc_uncompress(struct slcompress *comp, unsigned char *icp, int isize)
+ 		break;
+ 	}
+ 	if(changes & NEW_I){
+-		if((x = decode(&cp)) == -1) {
++		if((x = decode(&cp, end)) == -1) {
+ 			goto bad;
+ 		}
+ 		ip->id = htons (ntohs (ip->id) + x);
 -- 
 2.53.0
 
