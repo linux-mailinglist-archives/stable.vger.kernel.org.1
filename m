@@ -1,59 +1,77 @@
-Return-Path: <stable+bounces-258906-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-257528-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id eBfpEzwtG2pa/wgAu9opvQ
-	(envelope-from <stable+bounces-258906-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:32:28 +0200
+	id GO3eOeMcG2p3/QgAu9opvQ
+	(envelope-from <stable+bounces-257528-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:22:43 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5DA55611EEE
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:32:27 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6B80E60F863
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:22:43 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 0E7673007209
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 18:32:23 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 4799530C1129
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 17:15:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CB53C329E79;
-	Sat, 30 May 2026 18:32:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E54D73A3E76;
+	Sat, 30 May 2026 17:15:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="izr8nNop"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gVAzIXiT"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A86E226738C;
-	Sat, 30 May 2026 18:32:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A70643A7848;
+	Sat, 30 May 2026 17:15:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780165939; cv=none; b=D8VtxRSF8FKKdodtACCj46WR5ws0F6orKXobwr+SJKGlZBs0bWPPRz3EHpMLBo3lq5X/Dnfa9oHtXSLRr2MNuXSgXgjZY68gU6A5YjBXJxNQTb//8W7qSToJc7rxknYyd3Root0eLcDNZvVu3bTohrBvW+3xrnTJ+5hUfX0nMDM=
+	t=1780161307; cv=none; b=kaTMw5kahMcpoSniXmeuSvWUAVC5tQbuPylKw5V5VNhpWl/FVBPeCKyPTuXoXFsRkcnP1AD8erAkap6DdxNeDjGEiez+BFpOwEfETqRBaxg45mH7bsqPRepWs8IIKw3nhf8DoiCvpapWbVfCBPVQJV6jLTXfVtydSqrmvlCsP+E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780165939; c=relaxed/simple;
-	bh=5sF7I7sre+T2fGlhRNTX1sBSUi9davGWB/kcpk6THgM=;
+	s=arc-20240116; t=1780161307; c=relaxed/simple;
+	bh=r7UHvwublkafXJWchB+cL5QK3WX3kBTAjno8btwAZiY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=YNq0Az1mn2xe4qm/V7e4TLqtJa+U8KuKzq69XZ/+o2LCVaLgv/lbzCM0beoP8HHvRVv1/yO+aK/GpL6RuKKvJXtalm6boNd/IazrhkuxrUFv9TOfOtm/UhkGcUEHIRZBqZYAVdIRw7S3EHym0r9baHR4lM2PJvajx8PNw2hIoiw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=izr8nNop; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EBA4B1F00893;
-	Sat, 30 May 2026 18:32:17 +0000 (UTC)
+	 MIME-Version; b=jaePJ51dwLaVE0/9Ok7+/hgrIYyl1ocGOvuDlnW1Sz2VufdmtgYQOP02xnIm2fkFw/9OJaw06febI/QAiHgb8JaivglJupLzIIUteGfW7KWnRYlqtIi4EJtCH33nyTB5d1reyjCTDIjEfXGfug7xhZk4tcaF4F0p5kCLUaMluMc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gVAzIXiT; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5A9D81F00893;
+	Sat, 30 May 2026 17:15:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780165938;
-	bh=6wOjPhaAvDuNxScZj0bgimehltVr0VkjB/AqOTcV3Zk=;
+	s=korg; t=1780161306;
+	bh=dppS2R9Jqq4uM1EY6WlygO6oT50+ZNY/kFe3nZV8/Bo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=izr8nNopwe4cVhRXKrfrtmzlnfRt6bJuw6u7cxKppMlMDYiNFJ3dskfd15bfjvb3N
-	 Mn2lB8FoXcyxoRbaiZZA6po3UNzQN3Ka3wV8/fTypSVg6hns4g/icqGLuVAth1Vpci
-	 cMpZJSc7dJlQwh4rks4iOCM3+jxeHxuuyl5DkIvk=
+	b=gVAzIXiT9W4jlKSnLIiGkV/ZvCxV6Q6D6XKRSYhxPJmkW3eafEOgZ152u3M8Q3RhY
+	 AxdapT2dRLhRw3ZMM7CLVwBciBEUQ2H8aTtqbFdRA8kwIM0KYkcpNxjLrfKyibX2wF
+	 uJmQFZrC6Cy80NiIMszIGZzsrS684TtKphdgqWm0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Takashi Sakamoto <o-takashi@sakamocchi.jp>,
-	=?UTF-8?q?C=C3=A1ssio=20Gabriel?= <cassiogabrielcontato@gmail.com>,
-	Takashi Iwai <tiwai@suse.de>
-Subject: [PATCH 5.10 227/589] ALSA: firewire-tascam: Do not drop unread control events
-Date: Sat, 30 May 2026 18:01:48 +0200
-Message-ID: <20260530160230.944862917@linuxfoundation.org>
+	Michal Grzedzicki <mge@meta.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	"Alexey Gladkov (Intel)" <legion@kernel.org>,
+	Ben Segall <bsegall@google.com>,
+	David Hildenbrand <david@kernel.org>,
+	Dietmar Eggemann <dietmar.eggemann@arm.com>,
+	Ingo Molnar <mingo@redhat.com>,
+	Juri Lelli <juri.lelli@redhat.com>,
+	Kees Cook <kees@kernel.org>,
+	"Liam R. Howlett" <Liam.Howlett@oracle.com>,
+	"Lorenzo Stoakes (Oracle)" <ljs@kernel.org>,
+	Mel Gorman <mgorman@suse.de>,
+	Michal Hocko <mhocko@suse.com>,
+	Mike Rapoport <rppt@kernel.org>,
+	Peter Zijlstra <peterz@infradead.org>,
+	Steven Rostedt <rostedt@goodmis.org>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Valentin Schneider <vschneid@redhat.com>,
+	Vincent Guittot <vincent.guittot@linaro.org>,
+	Vlastimil Babka <vbabka@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 585/969] unshare: fix nsproxy leak in ksys_unshare() on set_cred_ucounts() failure
+Date: Sat, 30 May 2026 18:01:49 +0200
+Message-ID: <20260530160316.566365667@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260530160224.570625122@linuxfoundation.org>
-References: <20260530160224.570625122@linuxfoundation.org>
+In-Reply-To: <20260530160300.485627683@linuxfoundation.org>
+References: <20260530160300.485627683@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,85 +81,126 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-2.16 / 15.00];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-258906-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-257528-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,sakamocchi.jp,gmail.com,suse.de];
-	TO_DN_SOME(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-0.996];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCPT_COUNT_TWELVE(0.00)[24];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	TAGGED_RCPT(0.00)[stable];
 	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,suse.de:email,msgid.link:url]
-X-Rspamd-Queue-Id: 5DA55611EEE
+	FROM_HAS_DN(0.00)[]
+X-Rspamd-Queue-Id: 6B80E60F863
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Cássio Gabriel <cassiogabrielcontato@gmail.com>
+From: Michal Grzedzicki <mge@meta.com>
 
-commit 0749daa8eb5ab90334aaad3b0671efd7150d43b1 upstream.
+[ Upstream commit a98621a0f187a934c115dcfe79a49520ae892111 ]
 
-tscm_hwdep_read_queue() copies as many queued control events as fit in
-the userspace buffer. When the buffer is smaller than the current
-contiguous queue segment, length is rounded down to the number of bytes
-that can be copied.
+When set_cred_ucounts() fails in ksys_unshare() new_nsproxy is leaked.
 
-However, after copying that shortened length, the code advances pull_pos
-to the original tail_pos, marking the whole contiguous segment as
-consumed. Any events between the copied portion and tail_pos are lost.
+Let's call put_nsproxy() if that happens.
 
-Limit tail_pos to the position after the entries actually copied before
-updating pull_pos. When the whole segment fits, this is equivalent to the
-old tail_pos update; when the buffer is smaller, the remaining events
-stay queued for the next read.
-
-Fixes: a8c0d13267a4 ("ALSA: firewire-tascam: notify events of change of state for userspace applications")
-Cc: stable@vger.kernel.org
-Suggested-by: Takashi Sakamoto <o-takashi@sakamocchi.jp>
-Signed-off-by: Cássio Gabriel <cassiogabrielcontato@gmail.com>
-Reviewed-by: Takashi Sakamoto <o-takashi@sakamocchi.jp>
-Co-developed-by: Takashi Sakamoto <o-takashi@sakamocchi.jp>
-Signed-off-by: Takashi Sakamoto <o-takashi@sakamocchi.jp>
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
-Link: https://patch.msgid.link/20260503-alsa-firewire-tascam-read-queue-v2-1-126c6efd7642@gmail.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Link: https://lkml.kernel.org/r/20260213193959.2556730-1-mge@meta.com
+Fixes: 905ae01c4ae2 ("Add a reference to ucounts for each cred")
+Signed-off-by: Michal Grzedzicki <mge@meta.com>
+Reviewed-by: Andrew Morton <akpm@linux-foundation.org>
+Cc: Alexey Gladkov (Intel) <legion@kernel.org>
+Cc: Ben Segall <bsegall@google.com>
+Cc: David Hildenbrand <david@kernel.org>
+Cc: Dietmar Eggemann <dietmar.eggemann@arm.com>
+Cc: Ingo Molnar <mingo@redhat.com>
+Cc: Juri Lelli <juri.lelli@redhat.com>
+Cc: Kees Cook <kees@kernel.org>
+Cc: "Liam R. Howlett" <Liam.Howlett@oracle.com>
+Cc: Lorenzo Stoakes (Oracle) <ljs@kernel.org>
+Cc: Mel Gorman <mgorman@suse.de>
+Cc: Michal Hocko <mhocko@suse.com>
+Cc: Mike Rapoport <rppt@kernel.org>
+Cc: Peter Zijlstra <peterz@infradead.org>
+Cc: Steven Rostedt <rostedt@goodmis.org>
+Cc: Suren Baghdasaryan <surenb@google.com>
+Cc: Valentin Schneider <vschneid@redhat.com>
+Cc: Vincent Guittot <vincent.guittot@linaro.org>
+Cc: Vlastimil Babka <vbabka@kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/firewire/tascam/tascam-hwdep.c |    1 +
- 1 file changed, 1 insertion(+)
+ kernel/fork.c | 11 +++++++----
+ 1 file changed, 7 insertions(+), 4 deletions(-)
 
---- a/sound/firewire/tascam/tascam-hwdep.c
-+++ b/sound/firewire/tascam/tascam-hwdep.c
-@@ -73,6 +73,7 @@ static long tscm_hwdep_read_queue(struct
- 			length = rounddown(remained, sizeof(*entries));
- 		if (length == 0)
- 			break;
-+		tail_pos = head_pos + length / sizeof(*entries);
+diff --git a/kernel/fork.c b/kernel/fork.c
+index 96ecab82e38af..db2a9016f636f 100644
+--- a/kernel/fork.c
++++ b/kernel/fork.c
+@@ -3285,11 +3285,10 @@ int ksys_unshare(unsigned long unshare_flags)
+ 					 new_cred, new_fs);
+ 	if (err)
+ 		goto bad_unshare_cleanup_cred;
+-
+ 	if (new_cred) {
+ 		err = set_cred_ucounts(new_cred);
+ 		if (err)
+-			goto bad_unshare_cleanup_cred;
++			goto bad_unshare_cleanup_nsproxy;
+ 	}
  
- 		spin_unlock_irq(&tscm->lock);
- 		if (copy_to_user(pos, &entries[head_pos], length))
+ 	if (new_fs || new_fd || do_sysvsem || new_cred || new_nsproxy) {
+@@ -3305,8 +3304,10 @@ int ksys_unshare(unsigned long unshare_flags)
+ 			shm_init_task(current);
+ 		}
+ 
+-		if (new_nsproxy)
++		if (new_nsproxy) {
+ 			switch_task_namespaces(current, new_nsproxy);
++			new_nsproxy = NULL;
++		}
+ 
+ 		task_lock(current);
+ 
+@@ -3335,13 +3336,15 @@ int ksys_unshare(unsigned long unshare_flags)
+ 
+ 	perf_event_namespaces(current);
+ 
++bad_unshare_cleanup_nsproxy:
++	if (new_nsproxy)
++		put_nsproxy(new_nsproxy);
+ bad_unshare_cleanup_cred:
+ 	if (new_cred)
+ 		put_cred(new_cred);
+ bad_unshare_cleanup_fd:
+ 	if (new_fd)
+ 		put_files_struct(new_fd);
+-
+ bad_unshare_cleanup_fs:
+ 	if (new_fs)
+ 		free_fs_struct(new_fs);
+-- 
+2.53.0
+
 
 
 
