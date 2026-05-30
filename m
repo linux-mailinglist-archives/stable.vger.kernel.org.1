@@ -1,60 +1,58 @@
-Return-Path: <stable+bounces-258700-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-257352-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id sIRiLIUqG2r//ggAu9opvQ
-	(envelope-from <stable+bounces-258700-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:20:53 +0200
+	id 0FMhKScbG2oq/QgAu9opvQ
+	(envelope-from <stable+bounces-257352-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:15:19 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id B5F36611896
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:20:52 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 09EC660F3AD
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:15:18 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id CF5D43002D03
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 18:20:47 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 950D130A3B6D
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 17:04:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DEB28233D9E;
-	Sat, 30 May 2026 18:20:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E95F5366567;
+	Sat, 30 May 2026 17:04:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="P0HyQvWq"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gazhJfXe"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CBFC7217704;
-	Sat, 30 May 2026 18:20:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CA4012690D5;
+	Sat, 30 May 2026 17:04:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780165244; cv=none; b=OkzNAeetDW56LJtWW5hW1AtBuuQSeFlItjx8yv0IA/yi8Uxj5+Sak4+USvg9w88S6cYYY9R6DKWcoB+7skO+UciWop8/vDbxIk0XaxC1vAofEY50ukrPTn3etRiTObOGdonBw0gbPnWHDdPkKCWvkb9KYC1KHEs0djkyzf/pcwY=
+	t=1780160695; cv=none; b=oHdUdDmp2oZMxsOtYbOkGZz2+fOCVcpJbahIE38ha2LApeKVYWqrAkXYXYTt0Dd6UGWpS2oMpdSzEU3ukEh952kx6wM3091QVENORXlwE7pBQDWwXF6XFSESwqusiCEs9Un+ZMe3WABbBRLaw0MCdzdLQ+FPU7if25qJspxwzBA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780165244; c=relaxed/simple;
-	bh=fUc+WG7wZ6PB1PW5HH4bwXmE6T0GoWanmq49hDxqfFk=;
+	s=arc-20240116; t=1780160695; c=relaxed/simple;
+	bh=btAn/3MUUgpN9QgVPwDeYuM98I7Mf/0npcteWLykBR8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=qpQUKs8u5mDs7NOXFEWbGiG1B2xYSR77qasmxaZ3g8cBye3NxJvOr1bhRl8gwk8TcL+YWTxKw6y9xW1ay4v8/sT8WF/fFyety1pLC9JJSyHLIfzO1/TNQZKp9zXr8H1KqyfzghUymMeTQSEfq6QXgTaaWoZT0geHd2AyIC2N+vw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=P0HyQvWq; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F27781F00898;
-	Sat, 30 May 2026 18:20:40 +0000 (UTC)
+	 MIME-Version:Content-Type; b=MExkyge7PfgYl71IYeDxcGejeVj/gx9utDKEVrQN6WnEitEB6Y8tJjpgS06oC4m+I3WCExqD3iCQJFYz61qqe1rrJjYQ8LpD8gnPIdRfxNEmfIZ66rH2rmHQdm7XgFhcy4JMHjD8K9mLTDtZ+qIuDkKh1ShX2Fvyfo44XATGWgo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gazhJfXe; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1AF5E1F00893;
+	Sat, 30 May 2026 17:04:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780165241;
-	bh=Xn+6bKzmT/+KOY3T8g6cZbVcC3PIjdODICYYyXUggmU=;
+	s=korg; t=1780160694;
+	bh=32Ivv3MpeqKdMJsBBCo88V35ct+q9hkFUyhjcO7t2RI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=P0HyQvWqhy5uZs3VXWe9As8IXSv7rahsX9En6j/9ywyaJJPejNyEtXOuHkYAoANSC
-	 sFLMifNyikw+Q3zGCmRWrZ0iR9az4rOxpzFQ1DXEpj3Z7qz/S8k5kANn8wjFPFXM67
-	 El71405jjyPpC6K+mOWIwGbSAdvGQSqJ5ssQdPkY=
+	b=gazhJfXe/y02SfPtMEeIGGsu2BsXsUSyupYLR0z7zKZ94vmEw7cXJqwIal0WU1a0D
+	 fNPhXpCJ6zv62B+TyXNPQsIDK3GCtcf1lBgpQpO3e6z/3Q0fs7tFyZo6mAUK60Fin+
+	 tkefhe2pMUa9L6ocQ4c1u0su92Rjp6s3zvaFT9Z4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Peng Li <lipeng321@huawei.com>,
-	Guangbin Huang <huangguangbin2@huawei.com>,
-	"David S. Miller" <davem@davemloft.net>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 021/589] net: lapbether: remove trailing whitespaces
+	David Woodhouse <dwmw@amazon.co.uk>,
+	Marc Zyngier <maz@kernel.org>
+Subject: [PATCH 6.1 378/969] KVM: arm64: vgic: Fix IIDR revision field extracted from wrong value
 Date: Sat, 30 May 2026 17:58:22 +0200
-Message-ID: <20260530160225.137129581@linuxfoundation.org>
+Message-ID: <20260530160310.739463342@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260530160224.570625122@linuxfoundation.org>
-References: <20260530160224.570625122@linuxfoundation.org>
+In-Reply-To: <20260530160300.485627683@linuxfoundation.org>
+References: <20260530160300.485627683@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,91 +62,87 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-258700-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
+	TAGGED_FROM(0.00)[bounces-257352-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	MIME_TRACE(0.00)[0:+];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	FROM_HAS_DN(0.00)[];
 	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[7];
-	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim,huawei.com:email,davemloft.net:email]
-X-Rspamd-Queue-Id: B5F36611896
+	MID_RHS_MATCH_FROM(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[5]
+X-Rspamd-Queue-Id: 09EC660F3AD
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Peng Li <lipeng321@huawei.com>
+From: David Woodhouse <dwmw@amazon.co.uk>
 
-[ Upstream commit 2e350780ae4f2be8a2525929b6c69c2dd9591a20 ]
+commit a0e6ae45af17e8b27958830595799c702ffbab8d upstream.
 
-This patch removes trailing whitespaces.
+The uaccess write handlers for GICD_IIDR in both GICv2 and GICv3
+extract the revision field from 'reg' (the current IIDR value read back
+from the emulated distributor) instead of 'val' (the value userspace is
+trying to write). This means userspace can never actually change the
+implementation revision — the extracted value is always the current one.
 
-Signed-off-by: Peng Li <lipeng321@huawei.com>
-Signed-off-by: Guangbin Huang <huangguangbin2@huawei.com>
-Signed-off-by: David S. Miller <davem@davemloft.net>
-Stable-dep-of: b120e4432f9f ("net: lapbether: handle NETDEV_PRE_TYPE_CHANGE")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fix the FIELD_GET to use 'val' so that userspace can select a different
+revision for migration compatibility.
+
+Fixes: 49a1a2c70a7f ("KVM: arm64: vgic-v3: Advertise GICR_CTLR.{IR, CES} as a new GICD_IIDR revision")
+Signed-off-by: David Woodhouse <dwmw@amazon.co.uk>
+Link: https://patch.msgid.link/20260407210949.2076251-2-dwmw2@infradead.org
+Signed-off-by: Marc Zyngier <maz@kernel.org>
+Cc: stable@vger.kernel.org
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/wan/lapbether.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ arch/arm64/kvm/vgic/vgic-mmio-v2.c |    2 +-
+ arch/arm64/kvm/vgic/vgic-mmio-v3.c |    2 +-
+ 2 files changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/net/wan/lapbether.c b/drivers/net/wan/lapbether.c
-index 1276071f93c04..f77cd8b69afe1 100644
---- a/drivers/net/wan/lapbether.c
-+++ b/drivers/net/wan/lapbether.c
-@@ -6,7 +6,7 @@
-  *
-  *	This is a "pseudo" network driver to allow LAPB over Ethernet.
-  *
-- *	This driver can use any ethernet destination address, and can be 
-+ *	This driver can use any ethernet destination address, and can be
-  *	limited to accept frames from one dedicated ethernet card only.
-  *
-  *	History
-@@ -67,7 +67,7 @@ static struct lapbethdev *lapbeth_get_x25_dev(struct net_device *dev)
- 	struct lapbethdev *lapbeth;
+--- a/arch/arm64/kvm/vgic/vgic-mmio-v2.c
++++ b/arch/arm64/kvm/vgic/vgic-mmio-v2.c
+@@ -91,7 +91,7 @@ static int vgic_mmio_uaccess_write_v2_mi
+ 		 * migration from old kernels to new kernels with legacy
+ 		 * userspace.
+ 		 */
+-		reg = FIELD_GET(GICD_IIDR_REVISION_MASK, reg);
++		reg = FIELD_GET(GICD_IIDR_REVISION_MASK, val);
+ 		switch (reg) {
+ 		case KVM_VGIC_IMP_REV_2:
+ 		case KVM_VGIC_IMP_REV_3:
+--- a/arch/arm64/kvm/vgic/vgic-mmio-v3.c
++++ b/arch/arm64/kvm/vgic/vgic-mmio-v3.c
+@@ -167,7 +167,7 @@ static int vgic_mmio_uaccess_write_v3_mi
+ 		if ((reg ^ val) & ~GICD_IIDR_REVISION_MASK)
+ 			return -EINVAL;
  
- 	list_for_each_entry_rcu(lapbeth, &lapbeth_devices, node, lockdep_rtnl_is_held()) {
--		if (lapbeth->ethdev == dev) 
-+		if (lapbeth->ethdev == dev)
- 			return lapbeth;
- 	}
- 	return NULL;
-@@ -418,7 +418,7 @@ static int lapbeth_device_event(struct notifier_block *this,
- 	case NETDEV_GOING_DOWN:
- 		/* ethernet device closes -> close LAPB interface */
- 		lapbeth = lapbeth_get_x25_dev(dev);
--		if (lapbeth) 
-+		if (lapbeth)
- 			dev_close(lapbeth->axdev);
- 		break;
- 	case NETDEV_UNREGISTER:
--- 
-2.53.0
-
+-		reg = FIELD_GET(GICD_IIDR_REVISION_MASK, reg);
++		reg = FIELD_GET(GICD_IIDR_REVISION_MASK, val);
+ 		switch (reg) {
+ 		case KVM_VGIC_IMP_REV_2:
+ 		case KVM_VGIC_IMP_REV_3:
 
 
 
