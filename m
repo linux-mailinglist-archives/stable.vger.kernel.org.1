@@ -1,62 +1,62 @@
-Return-Path: <stable+bounces-258379-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-258984-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id eLsQAsIoG2ra/ggAu9opvQ
-	(envelope-from <stable+bounces-258379-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:13:22 +0200
+	id mMbEE0MvG2qU/wgAu9opvQ
+	(envelope-from <stable+bounces-258984-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:41:07 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 55789611417
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:13:21 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id E51DC6123E8
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:41:06 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 494BF3058304
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 18:02:37 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id CC43530A2C37
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 18:36:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 90DED349CC5;
-	Sat, 30 May 2026 18:02:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 75B052E7379;
+	Sat, 30 May 2026 18:36:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wFHaL2Z2"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="scIniIbg"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7217C23392B;
-	Sat, 30 May 2026 18:02:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 00CE639A7FE;
+	Sat, 30 May 2026 18:36:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780164156; cv=none; b=lQcy970y2+heb48PL1eL8bJs+e61jWiOpuYflX/rRm+9vEeWi6JyJD7CZayHRxUDXCg23fCvegfvADJ2mOeKeC9G5MAyXj0+zbcDFAzN5BI+YFhZwOer/gOYEw4Q3p9z+TuDaqfEhZH10wWLAxbPsLZKTJSCYmhLz0aVR+UBlKw=
+	t=1780166205; cv=none; b=b7c4+LxmWjyqrK/Xt2VNX3eQkweY6q+8GY1fdUTTkWqyXoeEmD76FvWrdcNxJh9Amk1GZbSJvAr0rYVZVESfUOJBxdeX6UpNkpnqJ0O9l5KYg12sw3tq3emz7HqXlhLWDNaxjSqCLRmZgmyclzCF/ZgqblhjDhIRIZuMZ9fC1kA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780164156; c=relaxed/simple;
-	bh=pcMm/nkCcOK00rdLJVd1S55bB8KK+8iPHBLqzchCiKY=;
+	s=arc-20240116; t=1780166205; c=relaxed/simple;
+	bh=TSPA0BqS5EWY3cotj8znqzh9Bo9qs824OuoL8zroLik=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=bqoLD+ja9Qp83gDaCA3CBlZOPCxry+7NVciG//w3h+eOgPupZOlbXzIBlVfn0SbXrEXgtlcKKhhZwqGJ1/egKV0tx7zNaFOQf4oED2W/G6PTUzNnV5nAAXRRHrFdX71Q6IX/e1qbeLb1RAfN+E2izNMtAMLPLQHsky+sM9bj5Nk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wFHaL2Z2; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4FCB51F00893;
-	Sat, 30 May 2026 18:02:32 +0000 (UTC)
+	 MIME-Version; b=Ytz0qW0OIa6HKE1r+Rd5ZxyrlvJE8jE7zVJ61HQFarB0B22ZlGXSG3SKc0hRVRoZPf5E4dzn+xZrbEdu0NWwcDLcz7QrCVQw83yzGCiVsTxNdQ9g81ciLA2FRZi1EBUiXhV+Tg36Fox7Ic+Cgpn1Ku4A3iygzfUnOwJDvMXyhcc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=scIniIbg; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 463A31F00893;
+	Sat, 30 May 2026 18:36:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780164155;
-	bh=sBEOdY7325/hTyJ8z/K85yckifulLV/qJR3UUz8jxaA=;
+	s=korg; t=1780166203;
+	bh=fUW8QdtEX1O9Ukbh4Rb4B9tTbMjg9j4cxMM9ZN+rV5E=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=wFHaL2Z2wmp8NPW8z3gZ1YA4/WL5pZLH1wFi3t9uy6pxBoR56jKwkEWhw30N5RviU
-	 VSVZ7QxiOuf/O+7kIOhXY5Z9T1jIBHWXbRj7atIR1Lqnn5CCH9suF89fCjqBenaFO/
-	 ODd2LRKvR4s0pBTU4o5gsrWztYLPT/5DgaRe84FU=
+	b=scIniIbgaZewc7PmDzGQZfkKZMmNdZ4ushyYPIkmFAQp8sNTIFqyfbZlKfcX7O4VK
+	 h5I6E8gtX4DhH0+afC2r4+CPbkAmKX1D2yKZY869vxz/PSyCPwwtQdA3vO7y85WTEC
+	 x/fsSJyXz3qu9hHgzCMJMDOX7B0yMzSPbLJuUL/w=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Vidya Sagar <vidyas@nvidia.com>,
-	Manikanta Maddireddy <mmaddireddy@nvidia.com>,
-	Manivannan Sadhasivam <mani@kernel.org>,
-	Bjorn Helgaas <bhelgaas@google.com>,
-	Jon Hunter <jonathanh@nvidia.com>,
+	Hante Meuleman <hante.meuleman@broadcom.com>,
+	Pieter-Paul Giesberts <pieter-paul.giesberts@broadcom.com>,
+	Franky Lin <franky.lin@broadcom.com>,
+	Arend van Spriel <arend.vanspriel@broadcom.com>,
+	Kalle Valo <kvalo@codeaurora.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 471/776] PCI: tegra194: Fix polling delay for L2 state
+Subject: [PATCH 5.10 304/589] brcmfmac: support chipsets with different core enumeration space
 Date: Sat, 30 May 2026 18:03:05 +0200
-Message-ID: <20260530160252.518462974@linuxfoundation.org>
+Message-ID: <20260530160232.946983917@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260530160240.228940103@linuxfoundation.org>
-References: <20260530160240.228940103@linuxfoundation.org>
+In-Reply-To: <20260530160224.570625122@linuxfoundation.org>
+References: <20260530160224.570625122@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -71,7 +71,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
@@ -79,7 +79,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-258379-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-258984-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
@@ -88,71 +88,226 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	NEURAL_HAM(-0.00)[-0.995];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	NEURAL_HAM(-0.00)[-0.996];
 	RCPT_COUNT_SEVEN(0.00)[9];
 	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[nvidia.com:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,msgid.link:url]
-X-Rspamd-Queue-Id: 55789611417
+	DBL_BLOCKED_OPENRESOLVER(0.00)[broadcom.com:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,codeaurora.org:email]
+X-Rspamd-Queue-Id: E51DC6123E8
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Vidya Sagar <vidyas@nvidia.com>
+From: Arend van Spriel <arend.vanspriel@broadcom.com>
 
-[ Upstream commit adaffed907f14f954096555665ad6af2ae724d83 ]
+[ Upstream commit 1ce050c159528ee74e31498411dfed8e0935d10c ]
 
-As per PCIe r7.0, sec 5.3.3.2.1, after sending PME_Turn_Off message, Root
-Port should wait for 1-10 msec for PME_TO_Ack message. Currently, driver is
-polling for 10 msec with 1 usec delay which is aggressive.  Use existing
-macro PCIE_PME_TO_L2_TIMEOUT_US to poll for 10 msec with 1 msec delay.
-Since this function is used in non-atomic context only, use non-atomic poll
-function.
+Historically the broadcom wifi chipsets always had enumeration
+space containing all core information at same place. However, for
+new chipsets the ASIC developers moved away from that given fact.
+So we have to accommodate that it can differ per chipset.
 
-Fixes: 56e15a238d92 ("PCI: tegra: Add Tegra194 PCIe support")
-Signed-off-by: Vidya Sagar <vidyas@nvidia.com>
-Signed-off-by: Manikanta Maddireddy <mmaddireddy@nvidia.com>
-Signed-off-by: Manivannan Sadhasivam <mani@kernel.org>
-Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
-Tested-by: Jon Hunter <jonathanh@nvidia.com>
-Reviewed-by: Jon Hunter <jonathanh@nvidia.com>
-Link: https://patch.msgid.link/20260324190755.1094879-2-mmaddireddy@nvidia.com
+Reviewed-by: Hante Meuleman <hante.meuleman@broadcom.com>
+Reviewed-by: Pieter-Paul Giesberts <pieter-paul.giesberts@broadcom.com>
+Reviewed-by: Franky Lin <franky.lin@broadcom.com>
+Signed-off-by: Arend van Spriel <arend.vanspriel@broadcom.com>
+Signed-off-by: Kalle Valo <kvalo@codeaurora.org>
+Link: https://lore.kernel.org/r/1627505434-9544-5-git-send-email-arend.vanspriel@broadcom.com
+Stable-dep-of: dd8592fc6007 ("wifi: brcmfmac: Fix error pointer dereference")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/pci/controller/dwc/pcie-tegra194.c | 9 ++++-----
- 1 file changed, 4 insertions(+), 5 deletions(-)
+ .../broadcom/brcm80211/brcmfmac/bcmsdh.c         |  3 ++-
+ .../wireless/broadcom/brcm80211/brcmfmac/chip.c  | 16 ++++++++++++----
+ .../wireless/broadcom/brcm80211/brcmfmac/chip.h  |  5 ++++-
+ .../wireless/broadcom/brcm80211/brcmfmac/pcie.c  |  3 ++-
+ .../wireless/broadcom/brcm80211/brcmfmac/sdio.c  | 12 ++++++++----
+ .../wireless/broadcom/brcm80211/include/soc.h    |  2 +-
+ 6 files changed, 29 insertions(+), 12 deletions(-)
 
-diff --git a/drivers/pci/controller/dwc/pcie-tegra194.c b/drivers/pci/controller/dwc/pcie-tegra194.c
-index 882e739d00128..8782ad616caa1 100644
---- a/drivers/pci/controller/dwc/pcie-tegra194.c
-+++ b/drivers/pci/controller/dwc/pcie-tegra194.c
-@@ -221,8 +221,6 @@
- #define CAP_SPCIE_CAP_OFF_USP_TX_PRESET0_MASK	GENMASK(11, 8)
- #define CAP_SPCIE_CAP_OFF_USP_TX_PRESET0_SHIFT	8
+diff --git a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/bcmsdh.c b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/bcmsdh.c
+index 75dc7904a4bd6..106804b93f1a4 100644
+--- a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/bcmsdh.c
++++ b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/bcmsdh.c
+@@ -128,7 +128,8 @@ int brcmf_sdiod_intr_register(struct brcmf_sdio_dev *sdiodev)
  
--#define PME_ACK_TIMEOUT 10000
--
- #define LTSSM_TIMEOUT 50000	/* 50ms */
+ 		if (sdiodev->bus_if->chip == BRCM_CC_43362_CHIP_ID) {
+ 			/* assign GPIO to SDIO core */
+-			addr = CORE_CC_REG(SI_ENUM_BASE, gpiocontrol);
++			addr = brcmf_chip_enum_base(sdiodev->func1->device);
++			addr = CORE_CC_REG(addr, gpiocontrol);
+ 			gpiocontrol = brcmf_sdiod_readl(sdiodev, addr, &ret);
+ 			gpiocontrol |= 0x2;
+ 			brcmf_sdiod_writel(sdiodev, addr, gpiocontrol, &ret);
+diff --git a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/chip.c b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/chip.c
+index 5bf11e46fc49a..a0097ffe33590 100644
+--- a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/chip.c
++++ b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/chip.c
+@@ -893,7 +893,8 @@ int brcmf_chip_dmp_erom_scan(struct brcmf_chip_priv *ci)
+ 	u32 base, wrap;
+ 	int err;
  
- #define GEN3_GEN4_EQ_PRESET_INIT	5
-@@ -1498,9 +1496,10 @@ static int tegra_pcie_try_link_l2(struct tegra_pcie_dw *pcie)
- 	val |= APPL_PM_XMT_TURNOFF_STATE;
- 	appl_writel(pcie, val, APPL_RADM_STATUS);
+-	eromaddr = ci->ops->read32(ci->ctx, CORE_CC_REG(SI_ENUM_BASE, eromptr));
++	eromaddr = ci->ops->read32(ci->ctx,
++				   CORE_CC_REG(ci->pub.enum_base, eromptr));
  
--	return readl_poll_timeout_atomic(pcie->appl_base + APPL_DEBUG, val,
--				 val & APPL_DEBUG_PM_LINKST_IN_L2_LAT,
--				 1, PME_ACK_TIMEOUT);
-+	return readl_poll_timeout(pcie->appl_base + APPL_DEBUG, val,
-+				  val & APPL_DEBUG_PM_LINKST_IN_L2_LAT,
-+				  PCIE_PME_TO_L2_TIMEOUT_US/10,
-+				  PCIE_PME_TO_L2_TIMEOUT_US);
+ 	while (desc_type != DMP_DESC_EOT) {
+ 		val = brcmf_chip_dmp_get_desc(ci, &eromaddr, &desc_type);
+@@ -941,6 +942,11 @@ int brcmf_chip_dmp_erom_scan(struct brcmf_chip_priv *ci)
+ 	return 0;
  }
  
- static void tegra_pcie_dw_pme_turnoff(struct tegra_pcie_dw *pcie)
++u32 brcmf_chip_enum_base(u16 devid)
++{
++	return SI_ENUM_BASE_DEFAULT;
++}
++
+ static int brcmf_chip_recognition(struct brcmf_chip_priv *ci)
+ {
+ 	struct brcmf_core *core;
+@@ -953,7 +959,8 @@ static int brcmf_chip_recognition(struct brcmf_chip_priv *ci)
+ 	 * For different chiptypes or old sdio hosts w/o chipcommon,
+ 	 * other ways of recognition should be added here.
+ 	 */
+-	regdata = ci->ops->read32(ci->ctx, CORE_CC_REG(SI_ENUM_BASE, chipid));
++	regdata = ci->ops->read32(ci->ctx,
++				  CORE_CC_REG(ci->pub.enum_base, chipid));
+ 	ci->pub.chip = regdata & CID_ID_MASK;
+ 	ci->pub.chiprev = (regdata & CID_REV_MASK) >> CID_REV_SHIFT;
+ 	socitype = (regdata & CID_TYPE_MASK) >> CID_TYPE_SHIFT;
+@@ -973,7 +980,7 @@ static int brcmf_chip_recognition(struct brcmf_chip_priv *ci)
+ 		ci->resetcore = brcmf_chip_sb_resetcore;
+ 
+ 		core = brcmf_chip_add_core(ci, BCMA_CORE_CHIPCOMMON,
+-					   SI_ENUM_BASE, 0);
++					   SI_ENUM_BASE_DEFAULT, 0);
+ 		brcmf_chip_sb_corerev(ci, core);
+ 		core = brcmf_chip_add_core(ci, BCMA_CORE_SDIO_DEV,
+ 					   BCM4329_CORE_BUS_BASE, 0);
+@@ -1087,7 +1094,7 @@ static int brcmf_chip_setup(struct brcmf_chip_priv *chip)
+ 	return ret;
+ }
+ 
+-struct brcmf_chip *brcmf_chip_attach(void *ctx,
++struct brcmf_chip *brcmf_chip_attach(void *ctx, u16 devid,
+ 				     const struct brcmf_buscore_ops *ops)
+ {
+ 	struct brcmf_chip_priv *chip;
+@@ -1112,6 +1119,7 @@ struct brcmf_chip *brcmf_chip_attach(void *ctx,
+ 	chip->num_cores = 0;
+ 	chip->ops = ops;
+ 	chip->ctx = ctx;
++	chip->pub.enum_base = brcmf_chip_enum_base(devid);
+ 
+ 	err = ops->prepare(ctx);
+ 	if (err < 0)
+diff --git a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/chip.h b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/chip.h
+index 8fa38658e727a..d69f101f58344 100644
+--- a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/chip.h
++++ b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/chip.h
+@@ -15,6 +15,7 @@
+  *
+  * @chip: chip identifier.
+  * @chiprev: chip revision.
++ * @enum_base: base address of core enumeration space.
+  * @cc_caps: chipcommon core capabilities.
+  * @cc_caps_ext: chipcommon core extended capabilities.
+  * @pmucaps: PMU capabilities.
+@@ -27,6 +28,7 @@
+ struct brcmf_chip {
+ 	u32 chip;
+ 	u32 chiprev;
++	u32 enum_base;
+ 	u32 cc_caps;
+ 	u32 cc_caps_ext;
+ 	u32 pmucaps;
+@@ -70,7 +72,7 @@ struct brcmf_buscore_ops {
+ };
+ 
+ int brcmf_chip_get_raminfo(struct brcmf_chip *pub);
+-struct brcmf_chip *brcmf_chip_attach(void *ctx,
++struct brcmf_chip *brcmf_chip_attach(void *ctx, u16 devid,
+ 				     const struct brcmf_buscore_ops *ops);
+ void brcmf_chip_detach(struct brcmf_chip *chip);
+ struct brcmf_core *brcmf_chip_get_core(struct brcmf_chip *chip, u16 coreid);
+@@ -85,5 +87,6 @@ void brcmf_chip_set_passive(struct brcmf_chip *ci);
+ bool brcmf_chip_set_active(struct brcmf_chip *ci, u32 rstvec);
+ bool brcmf_chip_sr_capable(struct brcmf_chip *pub);
+ char *brcmf_chip_name(u32 chipid, u32 chiprev, char *buf, uint len);
++u32 brcmf_chip_enum_base(u16 devid);
+ 
+ #endif /* BRCMF_AXIDMP_H */
+diff --git a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/pcie.c b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/pcie.c
+index 721d587425c7a..0f5431e4ac208 100644
+--- a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/pcie.c
++++ b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/pcie.c
+@@ -1860,7 +1860,8 @@ brcmf_pcie_probe(struct pci_dev *pdev, const struct pci_device_id *id)
+ 
+ 	devinfo->pdev = pdev;
+ 	pcie_bus_dev = NULL;
+-	devinfo->ci = brcmf_chip_attach(devinfo, &brcmf_pcie_buscore_ops);
++	devinfo->ci = brcmf_chip_attach(devinfo, pdev->device,
++					&brcmf_pcie_buscore_ops);
+ 	if (IS_ERR(devinfo->ci)) {
+ 		ret = PTR_ERR(devinfo->ci);
+ 		devinfo->ci = NULL;
+diff --git a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/sdio.c b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/sdio.c
+index 3c0d5c68eaca2..68fbb38c63d5c 100644
+--- a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/sdio.c
++++ b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/sdio.c
+@@ -3903,7 +3903,7 @@ static u32 brcmf_sdio_buscore_read32(void *ctx, u32 addr)
+ 	 * It can be identified as 4339 by looking at the chip revision. It
+ 	 * is corrected here so the chip.c module has the right info.
+ 	 */
+-	if (addr == CORE_CC_REG(SI_ENUM_BASE, chipid) &&
++	if (addr == CORE_CC_REG(SI_ENUM_BASE_DEFAULT, chipid) &&
+ 	    (sdiodev->func1->device == SDIO_DEVICE_ID_BROADCOM_4339 ||
+ 	     sdiodev->func1->device == SDIO_DEVICE_ID_BROADCOM_4335_4339)) {
+ 		rev = (val & CID_REV_MASK) >> CID_REV_SHIFT;
+@@ -3939,12 +3939,15 @@ brcmf_sdio_probe_attach(struct brcmf_sdio *bus)
+ 	int reg_addr;
+ 	u32 reg_val;
+ 	u32 drivestrength;
++	u32 enum_base;
+ 
+ 	sdiodev = bus->sdiodev;
+ 	sdio_claim_host(sdiodev->func1);
+ 
+-	pr_debug("F1 signature read @0x18000000=0x%4x\n",
+-		 brcmf_sdiod_readl(sdiodev, SI_ENUM_BASE, NULL));
++	enum_base = brcmf_chip_enum_base(sdiodev->func1->device);
++
++	pr_debug("F1 signature read @0x%08x=0x%4x\n", enum_base,
++		 brcmf_sdiod_readl(sdiodev, enum_base, NULL));
+ 
+ 	/*
+ 	 * Force PLL off until brcmf_chip_attach()
+@@ -3963,7 +3966,8 @@ brcmf_sdio_probe_attach(struct brcmf_sdio *bus)
+ 		goto fail;
+ 	}
+ 
+-	bus->ci = brcmf_chip_attach(sdiodev, &brcmf_sdio_buscore_ops);
++	bus->ci = brcmf_chip_attach(sdiodev, sdiodev->func1->device,
++				    &brcmf_sdio_buscore_ops);
+ 	if (IS_ERR(bus->ci)) {
+ 		brcmf_err("brcmf_chip_attach failed!\n");
+ 		bus->ci = NULL;
+diff --git a/drivers/net/wireless/broadcom/brcm80211/include/soc.h b/drivers/net/wireless/broadcom/brcm80211/include/soc.h
+index 92d942b44f2c2..8249211913660 100644
+--- a/drivers/net/wireless/broadcom/brcm80211/include/soc.h
++++ b/drivers/net/wireless/broadcom/brcm80211/include/soc.h
+@@ -6,7 +6,7 @@
+ #ifndef	_BRCM_SOC_H
+ #define	_BRCM_SOC_H
+ 
+-#define SI_ENUM_BASE		0x18000000	/* Enumeration space base */
++#define SI_ENUM_BASE_DEFAULT	0x18000000
+ 
+ /* Common core control flags */
+ #define	SICF_BIST_EN		0x8000
 -- 
 2.53.0
 
