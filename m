@@ -1,67 +1,60 @@
-Return-Path: <stable+bounces-258434-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-257631-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id KPTaA/cmG2qf/ggAu9opvQ
-	(envelope-from <stable+bounces-258434-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:05:43 +0200
+	id ANgoHT0eG2q4/QgAu9opvQ
+	(envelope-from <stable+bounces-257631-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:28:29 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id C22DC610F6F
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:05:42 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id CC5AE60FBE4
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:28:28 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 4A177300A321
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 18:05:39 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 307AB302E7B4
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 17:20:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5E4873AB291;
-	Sat, 30 May 2026 18:05:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 83C633242D7;
+	Sat, 30 May 2026 17:20:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0mqg1kwq"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="b0pVlxuh"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 34F2D341AC7;
-	Sat, 30 May 2026 18:05:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 51DF9340293;
+	Sat, 30 May 2026 17:20:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780164338; cv=none; b=fHPznDricBwFUxzByObTAKCKIPXdQtyYxPQjwrnNwhpTma44x4ai864rCMjGIkz4XRrCVXJCwq8dmxe3jyDg2Y0W0SruvrGNkh+JbvTk01rd7w1Kp6auN+959ApLjI/VrhfpI3YkuHiwj4xfNoAKNgiBuNE7+s6J9lpElP3UqhE=
+	t=1780161649; cv=none; b=pADAw09TYAVY3WDk7SZlFDa9LCLgljZNhJXCUeLaLTRVRdfe5buz5MHVo1X23y62duP7Ues0nWVlmfTN9CdHAJFk7C572h1wBIeBxI1PDkuQeUpQjv7diMG/+LWWK4qByqpLhNmikpNhnTi1uPJl2QxSD1pSMD2RxXtGq+oH2Lk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780164338; c=relaxed/simple;
-	bh=RTsFj8iRKJJ0rFGf7VSa0gNuXk8wT6DRjU2tnBf0BWU=;
+	s=arc-20240116; t=1780161649; c=relaxed/simple;
+	bh=6RjE1c2fYY8ewrMgxh/r63o/1z58OIpnwOAYIWXMU/s=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=SVm9myPp/5c7CfSU+sIIsbHYjmhvYTajn7bAVPsivd6fPPrvGBbGhuVXhslYPwjc6GNumYqN/rLvwHeFTLGDcS6BO8suN9IFJKa5NqDPdI4FF+phaaVEk5F7lYrxZ9p7LkVs26kTDmWMRiNVE5kzhqRfZ7TDZP9Ty1I37pWBBak=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0mqg1kwq; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 079B71F00898;
-	Sat, 30 May 2026 18:05:36 +0000 (UTC)
+	 MIME-Version; b=YFsk/Rses4tz6kiDu3QPmMubviSSpwYJ2/M5rIDH3cvdym2lxdkEeGQ8vLa0B9eXLn0CFwYfWpSQKKCeg+0vfQEVZudq8vmTbz3GpPVaCYAO8/+S9Znujx+FH9KBHlKTTA3lT8fv3YkePiTWsYAXLofVQjgHlAFhnQyDg3S3r00=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=b0pVlxuh; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9487E1F00893;
+	Sat, 30 May 2026 17:20:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780164336;
-	bh=G948YoqqogHdLfVGd9QAKWDVtBB+oYTAhix92RlV+Js=;
+	s=korg; t=1780161648;
+	bh=ikGAWtpVvkVCx4k8BeokdLfQVF3j5chhMkSP0Jv2PUs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=0mqg1kwqN4f181Cl33y1bbHtEQKzhV+7fJggDpDAOYZ1zVUWX2aZM6OneGPjCiYmg
-	 bXRgCXCflDBdtl1dmFWvUGmlEzYG/7Tb0DrkCUzXHwXEv41G9bBcZFYP5Yym887JPr
-	 z9VRz4akdl1jOSb+/YJyGEETs22YDqTIav3QMIxM=
+	b=b0pVlxuhzwbnalFGZdtzAgpjgLA75VWGAXJeQ4NBZxh9MaJHJfH3lCs0oSm+ijDNK
+	 fRMIKh8109wwNvp885EF/h6oERJBiuHG8Beeimx2/NuwrM18SiKcQ6Z8U1crYlVo6V
+	 U6O3ioIzxGnehHQgcjWA9MzdssiY4De3GnM1YwD4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Junrui Luo <moonafterrain@outlook.com>,
-	Yuhao Jiang <danisjiang@gmail.com>,
-	Joseph Qi <joseph.qi@linux.alibaba.com>,
-	Mark Fasheh <mark@fasheh.com>,
-	Joel Becker <jlbec@evilplan.org>,
-	Junxiao Bi <junxiao.bi@oracle.com>,
-	Changwei Ge <gechangwei@live.cn>,
-	Jun Piao <piaojun@huawei.com>,
-	Heming Zhao <heming.zhao@suse.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
+	Junxi Qian <qjx1298677004@gmail.com>,
+	Vinicius Costa Gomes <vinicius.gomes@intel.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 495/776] ocfs2/dlm: fix off-by-one in dlm_match_regions() region comparison
+Subject: [PATCH 6.1 685/969] net/sched: taprio: fix use-after-free in advance_sched() on schedule switch
 Date: Sat, 30 May 2026 18:03:29 +0200
-Message-ID: <20260530160253.098584597@linuxfoundation.org>
+Message-ID: <20260530160319.422949820@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260530160240.228940103@linuxfoundation.org>
-References: <20260530160240.228940103@linuxfoundation.org>
+In-Reply-To: <20260530160300.485627683@linuxfoundation.org>
+References: <20260530160300.485627683@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -74,80 +67,91 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-258434-lists,stable=lfdr.de];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,outlook.com,gmail.com,linux.alibaba.com,fasheh.com,evilplan.org,oracle.com,live.cn,huawei.com,suse.com,linux-foundation.org,kernel.org];
+	RCVD_TLS_LAST(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,intel.com,kernel.org];
+	TAGGED_FROM(0.00)[bounces-257631-lists,stable=lfdr.de];
+	PRECEDENCE_BULK(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_TLS_LAST(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[14];
+	FROM_HAS_DN(0.00)[];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
-	TO_DN_SOME(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-0.996];
-	TAGGED_RCPT(0.00)[stable];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo]
-X-Rspamd-Queue-Id: C22DC610F6F
+	TAGGED_RCPT(0.00)[stable];
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[intel.com:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
+X-Rspamd-Queue-Id: CC5AE60FBE4
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Junrui Luo <moonafterrain@outlook.com>
+From: Vinicius Costa Gomes <vinicius.gomes@intel.com>
 
-[ Upstream commit 01b61e8dda9b0fdb0d4cda43de25f4e390554d7b ]
+[ Upstream commit 105425b1969c5affe532713cfac1c0b320d7ac2b ]
 
-The local-vs-remote region comparison loop uses '<=' instead of '<',
-causing it to read one entry past the valid range of qr_regions.  The
-other loops in the same function correctly use '<'.
+In advance_sched(), when should_change_schedules() returns true,
+switch_schedules() is called to promote the admin schedule to oper.
+switch_schedules() queues the old oper schedule for RCU freeing via
+call_rcu(), but 'next' still points into an entry of the old oper
+schedule. The subsequent 'next->end_time = end_time' and
+rcu_assign_pointer(q->current_entry, next) are use-after-free.
 
-Fix the loop condition to use '<' for consistency and correctness.
+Fix this by selecting 'next' from the new oper schedule immediately
+after switch_schedules(), and using its pre-calculated end_time.
+setup_first_end_time() sets the first entry's end_time to
+base_time + interval when the schedule is installed, so the value
+is already correct.
 
-Link: https://lkml.kernel.org/r/SYBPR01MB78813DA26B50EC5E01F00566AF7BA@SYBPR01MB7881.ausprd01.prod.outlook.com
-Fixes: ea2034416b54 ("ocfs2/dlm: Add message DLM_QUERY_REGION")
-Signed-off-by: Junrui Luo <moonafterrain@outlook.com>
-Reported-by: Yuhao Jiang <danisjiang@gmail.com>
-Reviewed-by: Joseph Qi <joseph.qi@linux.alibaba.com>
-Cc: Mark Fasheh <mark@fasheh.com>
-Cc: Joel Becker <jlbec@evilplan.org>
-Cc: Junxiao Bi <junxiao.bi@oracle.com>
-Cc: Changwei Ge <gechangwei@live.cn>
-Cc: Jun Piao <piaojun@huawei.com>
-Cc: Heming Zhao <heming.zhao@suse.com>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+The deleted 'end_time = sched_base_time(admin)' assignment was also
+harmful independently: it would overwrite the new first entry's
+pre-calculated end_time with just base_time.
+
+Fixes: a3d43c0d56f1 ("taprio: Add support adding an admin schedule")
+Reported-by: Junxi Qian <qjx1298677004@gmail.com>
+Signed-off-by: Vinicius Costa Gomes <vinicius.gomes@intel.com>
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/ocfs2/dlm/dlmdomain.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ net/sched/sch_taprio.c | 9 +++++----
+ 1 file changed, 5 insertions(+), 4 deletions(-)
 
-diff --git a/fs/ocfs2/dlm/dlmdomain.c b/fs/ocfs2/dlm/dlmdomain.c
-index 5a4b0f7293fa2..45b1ae68c179a 100644
---- a/fs/ocfs2/dlm/dlmdomain.c
-+++ b/fs/ocfs2/dlm/dlmdomain.c
-@@ -1002,7 +1002,7 @@ static int dlm_match_regions(struct dlm_ctxt *dlm,
- 	for (i = 0; i < localnr; ++i) {
- 		foundit = 0;
- 		r = remote;
--		for (j = 0; j <= qr->qr_numregions; ++j) {
-+		for (j = 0; j < qr->qr_numregions; ++j) {
- 			if (!memcmp(l, r, O2HB_MAX_REGION_NAME_LEN)) {
- 				foundit = 1;
- 				break;
+diff --git a/net/sched/sch_taprio.c b/net/sched/sch_taprio.c
+index ce529b9448819..8da723f054f56 100644
+--- a/net/sched/sch_taprio.c
++++ b/net/sched/sch_taprio.c
+@@ -739,11 +739,12 @@ static enum hrtimer_restart advance_sched(struct hrtimer *timer)
+ 	end_time = min_t(ktime_t, end_time, oper->cycle_end_time);
+ 
+ 	if (should_change_schedules(admin, oper, end_time)) {
+-		/* Set things so the next time this runs, the new
+-		 * schedule runs.
+-		 */
+-		end_time = sched_base_time(admin);
+ 		switch_schedules(q, &admin, &oper);
++		/* After changing schedules, the next entry is the first one
++		 * in the new schedule, with a pre-calculated end_time.
++		 */
++		next = list_first_entry(&oper->entries, struct sched_entry, list);
++		end_time = next->end_time;
+ 	}
+ 
+ 	next->end_time = end_time;
 -- 
 2.53.0
 
