@@ -1,59 +1,65 @@
-Return-Path: <stable+bounces-258432-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-259086-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id cNWFKncnG2qf/ggAu9opvQ
-	(envelope-from <stable+bounces-258432-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:07:51 +0200
+	id EIx/KuoxG2qqAAkAu9opvQ
+	(envelope-from <stable+bounces-259086-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:52:26 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id D44AB611085
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:07:50 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 29C4D612ACC
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:52:25 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 2FCFE3021D14
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 18:05:32 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 5431F31124FE
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 18:42:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C81023AFD11;
-	Sat, 30 May 2026 18:05:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E2FD729E11A;
+	Sat, 30 May 2026 18:42:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="x5bAZBRt"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rftb9uUK"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A26CD3AC0FA;
-	Sat, 30 May 2026 18:05:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BF3451B87C0;
+	Sat, 30 May 2026 18:42:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780164331; cv=none; b=LL2fCoKl7XcEiEfq5Zs7DEXTyzZKEBLEjzZzwInn8ThgUh2khSKRsW+tKTrvAU7ftiEHLxMLPxhNoGQD9ti+1e4Z2eZnDUkdHmUgl4pz8raIvIlhikuIvl9zLaEY1NJdJtCYcQ6ptvADMwXq+t+JG86wpCpDQ8Lrvz/3XO3Lkzc=
+	t=1780166566; cv=none; b=lQ+XcQ2+rpDFeb04nN6X6nOkWM2eHHQqJZpCSaZ6KidIrh6kRhqacPm/+ZY0ls4AOp4YKvoXVVSbP76umSFIH/tAqTmhT0CGlIxNkpjuQki/LuhX0EnrseC3HHC5JqYEMEhy/66FO1+yRZPG4flFeasTsQ6TH6STfF+hMyDjLQA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780164331; c=relaxed/simple;
-	bh=ZfkSe/WXmIrM5x7uT+M7zMFEDUuXzwslcuvxYPmLSRA=;
+	s=arc-20240116; t=1780166566; c=relaxed/simple;
+	bh=2XHQzUAxoonQW2Vv9/QwW+xAINisYtk9/+3sKN8F2R8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=S0vyD8uQU0XkbPIAOOf2Uu4QpqQ57e4j/3pRxoGTpTlbXdyNEimT4I9bunaayjfaoyuTytcNAh9XeJ2qlHEWJqjbz9YE0nYylHlz8PjtzE7UCBZd6i/I5I8AbNh8ux7d4IDlsP54g3Yn5Lsb9Ch1QqPbbldoWWR7SQEv4B9S620=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=x5bAZBRt; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A08831F00893;
-	Sat, 30 May 2026 18:05:29 +0000 (UTC)
+	 MIME-Version:Content-Type; b=I7xPtFchsFFu86aGgFsvObg/LJ84BMaYqzGJdqc8d65KUbMogLLr9qOeuG2785ftV7uETT9LNPZyUYtCkvFnu3mwXynv3BXdNK+aKREZ5iWm+fWCJpx+hNy6ItQAhbwOPXa9zQeMonIvSyZpaCyM62WWOxFiLTPCCUTkNfMlSwQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rftb9uUK; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1A0A71F00893;
+	Sat, 30 May 2026 18:42:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780164330;
-	bh=2aOrTfaUHZrclItKxsqrr1DAOSHly11yx8cnV7mMKro=;
+	s=korg; t=1780166565;
+	bh=TYr3Q4TLJ1SRttmxlvp8+7dMxnVX3CE2yvLEI2ecATw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=x5bAZBRt2AiUZzEhkJvb4RAYKBO4pAjwAJZjvPnxMyfTYJjsgjuukAKNQHkOWE0QY
-	 I1ghXdr29d8rKIc6djNZmtob0SipMyOo0lJwgMmM08PHl/svPFT5fwgTzH5S24aHtU
-	 ivr7uDGcMD9l+4yQUunTJiKNKDS6dhMdaXjS+H+E=
+	b=rftb9uUKJzhxCRLfUWqrBr3mZ0Kq7M24E4n7JLj10SO6f4RbXstZ1Mrx/4dDMq3e6
+	 eEJSFBQvJ2+3ImUZYYqYEEMfYwJ4LvmSz9YlVvboDIMc+5fQ1RzFZ1iqxJwVKLra3G
+	 2/Nniay+JGoos6VHpFqsNmPv+EoAsoNkol7Gklf8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-	Andi Shyti <andi.shyti@kernel.org>,
+	John Hawley <warthog9@eaglescrag.net>,
+	Andrea Righi <arighi@nvidia.com>,
+	Marcos Paulo de Souza <mpdesouza@suse.com>,
+	Matthieu Baerts <matttbe@kernel.org>,
+	Fernando Fernandez Mancera <fmancera@suse.de>,
+	Pedro Falcato <pfalcato@suse.de>,
+	"=?UTF-8?q?Ricardo=20B . =20Marli=C3=A8re?=" <rbm@suse.com>,
+	Steven Rostedt <rostedt@goodmis.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 521/776] driver core: Move dev_err_probe() to where it belogs
-Date: Sat, 30 May 2026 18:03:55 +0200
-Message-ID: <20260530160253.698238524@linuxfoundation.org>
+Subject: [PATCH 5.10 355/589] ktest: Avoid undef warning when WARNINGS_FILE is unset
+Date: Sat, 30 May 2026 18:03:56 +0200
+Message-ID: <20260530160234.188564466@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260530160240.228940103@linuxfoundation.org>
-References: <20260530160240.228940103@linuxfoundation.org>
+In-Reply-To: <20260530160224.570625122@linuxfoundation.org>
+References: <20260530160224.570625122@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,88 +69,80 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-258432-lists,stable=lfdr.de];
-	TO_DN_SOME(0.00)[];
+	TAGGED_FROM(0.00)[bounces-259086-lists,stable=lfdr.de];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-0.996];
+	RCVD_COUNT_THREE(0.00)[4];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCPT_COUNT_TWELVE(0.00)[12];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	TO_DN_SOME(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	NEURAL_HAM(-0.00)[-0.997];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
+	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[intel.com:email,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo]
-X-Rspamd-Queue-Id: D44AB611085
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,suse.com:email,suse.de:email,msgid.link:url,nvidia.com:email,eaglescrag.net:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,goodmis.org:email]
+X-Rspamd-Queue-Id: 29C4D612ACC
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+From: Ricardo B. Marlière <rbm@suse.com>
 
-[ Upstream commit 9e0cace7a6254070159ebd86497eadc29ea307ca ]
+[ Upstream commit 057854f8a595160656fe77ed7bf0d2403724b915 ]
 
-dev_err_probe() belongs to the printing API, hence
-move the definition from device.h to dev_printk.h.
+check_buildlog() probes $warnings_file with -f even when WARNINGS_FILE is
+not configured. Perl warns about the uninitialized value and adds noise to
+the test log, which can hide the output we actually care about.
 
-There is no change to the callers at all, since:
-1) implementation is located in the same core.c;
-2) dev_printk.h is guaranteed to be included by device.h.
+Check that WARNINGS_FILE is defined before testing whether the file exists.
 
-Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Reviewed-by: Andi Shyti <andi.shyti@kernel.org>
-Link: https://lore.kernel.org/r/20230721131309.16821-1-andriy.shevchenko@linux.intel.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Stable-dep-of: 797cc011ae02 ("backlight: sky81452-backlight: Check return value of devm_gpiod_get_optional() in sky81452_bl_parse_dt()")
+Cc: John Hawley <warthog9@eaglescrag.net>
+Cc: Andrea Righi <arighi@nvidia.com>
+Cc: Marcos Paulo de Souza <mpdesouza@suse.com>
+Cc: Matthieu Baerts <matttbe@kernel.org>
+Cc: Fernando Fernandez Mancera <fmancera@suse.de>
+Cc: Pedro Falcato <pfalcato@suse.de>
+Link: https://patch.msgid.link/20260307-ktest-fixes-v1-1-565d412f4925@suse.com
+Fixes: 4283b169abfb ("ktest: Add make_warnings_file and process full warnings")
+Signed-off-by: Ricardo B. Marlière <rbm@suse.com>
+Signed-off-by: Steven Rostedt <rostedt@goodmis.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/linux/dev_printk.h | 2 ++
- include/linux/device.h     | 2 --
- 2 files changed, 2 insertions(+), 2 deletions(-)
+ tools/testing/ktest/ktest.pl | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/include/linux/dev_printk.h b/include/linux/dev_printk.h
-index 65eec5be8ccb9..ae80a303c216b 100644
---- a/include/linux/dev_printk.h
-+++ b/include/linux/dev_printk.h
-@@ -275,4 +275,6 @@ do {									\
- 	WARN_ONCE(condition, "%s %s: " format, \
- 			dev_driver_string(dev), dev_name(dev), ## arg)
+diff --git a/tools/testing/ktest/ktest.pl b/tools/testing/ktest/ktest.pl
+index 512a3cc586fdd..a5c1871d3c8e7 100755
+--- a/tools/testing/ktest/ktest.pl
++++ b/tools/testing/ktest/ktest.pl
+@@ -2419,7 +2419,7 @@ sub check_buildlog {
+     my $save_no_reboot = $no_reboot;
+     $no_reboot = 1;
  
-+__printf(3, 4) int dev_err_probe(const struct device *dev, int err, const char *fmt, ...);
-+
- #endif /* _DEVICE_PRINTK_H_ */
-diff --git a/include/linux/device.h b/include/linux/device.h
-index 97fb43c6d919d..2c16bc2149c20 100644
---- a/include/linux/device.h
-+++ b/include/linux/device.h
-@@ -1030,8 +1030,6 @@ void device_links_supplier_sync_state_pause(void);
- void device_links_supplier_sync_state_resume(void);
- void device_link_wait_removal(void);
+-    if (-f $warnings_file) {
++    if (defined($warnings_file) && -f $warnings_file) {
+ 	open(IN, $warnings_file) or
+ 	    dodie "Error opening $warnings_file";
  
--__printf(3, 4) int dev_err_probe(const struct device *dev, int err, const char *fmt, ...);
--
- /* Create alias, so I can be autoloaded. */
- #define MODULE_ALIAS_CHARDEV(major,minor) \
- 	MODULE_ALIAS("char-major-" __stringify(major) "-" __stringify(minor))
 -- 
 2.53.0
 
