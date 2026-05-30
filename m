@@ -1,60 +1,62 @@
-Return-Path: <stable+bounces-257388-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-258770-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id uHD+AFUZG2pV/AgAu9opvQ
-	(envelope-from <stable+bounces-257388-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:07:33 +0200
+	id SK3pFvorG2r//ggAu9opvQ
+	(envelope-from <stable+bounces-258770-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:27:06 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9529560EEC8
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:07:32 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1685E611C29
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:27:05 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 0199D301DCD5
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 17:07:11 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 5F51730B01B1
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 18:24:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A47553AFB13;
-	Sat, 30 May 2026 17:07:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E374625B0B3;
+	Sat, 30 May 2026 18:24:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zsUZayTr"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0D0d6qph"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6A074481DD;
-	Sat, 30 May 2026 17:07:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B8ACF21ADC7;
+	Sat, 30 May 2026 18:24:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780160825; cv=none; b=GL357lByaPhFdVEqVIw08N/VfVglhIdRKaQVjfwjEb/7qlIxLhdK2CdvFauVwvypDbf5P6PILBagbcyD+ko9L7C6XORhJN6pZ83t42wJ5KkqfSbRLnutLcRVnKJrMjEyCQJKymFe8Q1zYtt68QJ3P4gZZ5vL6jAM5o13+onZQp0=
+	t=1780165480; cv=none; b=CJFIeCgSn9LnPwDXfH6VdlpqiHom7+V3Y8jTz3PtuzwWbc6LgpGQhESzmufrRHpODgoZr/rkXK+2BHrSSKzOzRtMXZnr7sLiujs+d11eptrXXy0xUS7DOrWU/vsU8Q3kmxexjhSXXPYYo+mLWwFV8qP5bSH/8kL5E8My18PbWA8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780160825; c=relaxed/simple;
-	bh=THYi1h6wOv3PTkw2fQy8hAAW8geWlSrb1ycMM3944xQ=;
+	s=arc-20240116; t=1780165480; c=relaxed/simple;
+	bh=wFA9Qi71l+DtOqFZQYE1u5uWxXo2szxOPiQw/go5DE0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=jHKPlQBFK9G1ZcapVmzoUzSljd0gLzs0QSth5ElMsthaCIYYm2F80iAc0b9eeq0rIvWkDE7bw0UZKGJfjLY5Sbk/XhFglHbjuPnuTmFTMzs+DEPO669ITnuYx1rFgRce45kgiHV2zG2sOAWRz+G82axtwDaNpqIfFgo4AIDIXp4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zsUZayTr; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AB1531F0089F;
-	Sat, 30 May 2026 17:07:03 +0000 (UTC)
+	 MIME-Version; b=Qhzp2a/WlD2s8TWiv/i6A1WfBfDTF/7OOrtkqrVkxwhDql7Ooof8SLDbjSJ0BNNEkG0VquWz3gkNBor6xseV+7/AGVKVFxCokd4gMgASNf6lgIUyFWh3dxN3zupRoDk36N/ueySZ1tZufm+HTLCaJjQoea7mqnO8D5QEI2LB754=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0D0d6qph; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 09B1B1F00893;
+	Sat, 30 May 2026 18:24:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780160824;
-	bh=6KcXKhYhLglromLpnxu6wdB7hnu9LXIqbgUuYONRN1g=;
+	s=korg; t=1780165479;
+	bh=2fMr5pmn6k8qf5/UBWi2e9nO1D8tlHJtKP0lSqUPQgM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=zsUZayTrKfLt94oPiR5OiNdGDppFMrXmphAtbP8tEZtmBgUKiW3N83+7yS80eIF9u
-	 hmB3jm9zO6GoQ0CleRHylv7rx1MwgT3G9IvJr8i/tDAXkKOF2p5vscEzfLCUcIlTXj
-	 pR8wbDFkonIsxK/NSTPT7YMNFF8fQUMbo3F0h6Uk=
+	b=0D0d6qphjQbxTI4t6VyzX8q4S4hsmsgNMWI7q/IowFshYcf+mhzTQB6ocOx8fZFOH
+	 mv7QcBNQmnBETl72IDfyrcwFBhgc5wDMIKw8rPldhGO642pRg/wvg0dV2ckqISH7gb
+	 LOfdAJjtWBXzjJxNL+qbyPp8z/NbsfRcMBp3h0Vg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Zilin Guan <zilin@seu.edu.cn>,
-	Jeff Chen <jeff.chen_1@nxp.com>,
-	Johannes Berg <johannes.berg@intel.com>,
+	Harry Wentland <harry.wentland@amd.com>,
+	Hamza Mahfooz <hamza.mahfooz@amd.com>,
+	Alex Hung <alex.hung@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
+	Vasiliy Kovalev <kovalev@altlinux.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 446/969] wifi: mwifiex: Fix memory leak in mwifiex_11n_aggregate_pkt()
-Date: Sat, 30 May 2026 17:59:30 +0200
-Message-ID: <20260530160312.591338416@linuxfoundation.org>
+Subject: [PATCH 5.10 090/589] drm/amd/display: Add null checker before passing variables
+Date: Sat, 30 May 2026 17:59:31 +0200
+Message-ID: <20260530160227.055687089@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260530160300.485627683@linuxfoundation.org>
-References: <20260530160300.485627683@linuxfoundation.org>
+In-Reply-To: <20260530160224.570625122@linuxfoundation.org>
+References: <20260530160224.570625122@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,76 +71,92 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-257388-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
-	PRECEDENCE_BULK(0.00)[];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-258770-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
 	TO_DN_SOME(0.00)[];
-	FROM_HAS_DN(0.00)[]
-X-Rspamd-Queue-Id: 9529560EEC8
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_SEVEN(0.00)[9];
+	MID_RHS_MATCH_FROM(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,altlinux.org:email]
+X-Rspamd-Queue-Id: 1685E611C29
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Zilin Guan <zilin@seu.edu.cn>
+From: Alex Hung <alex.hung@amd.com>
 
-[ Upstream commit 990a73dec3fdc145fef6c827c29205437d533ece ]
+commit 8092aa3ab8f7b737a34b71f91492c676a843043a upstream.
 
-In mwifiex_11n_aggregate_pkt(), skb_aggr is allocated via
-mwifiex_alloc_dma_align_buf(). If mwifiex_is_ralist_valid() returns false,
-the function currently returns -1 immediately without freeing the
-previously allocated skb_aggr, causing a memory leak.
+Checks null pointer before passing variables to functions.
 
-Since skb_aggr has not yet been queued via skb_queue_tail(), no other
-references to this memory exist. Therefore, it has to be freed locally
-before returning the error.
+This fixes 3 NULL_RETURNS issues reported by Coverity.
 
-Fix this by calling mwifiex_write_data_complete() to free skb_aggr before
-returning the error status.
-
-Compile tested only. Issue found using a prototype static analysis tool
-and code review.
-
-Fixes: 5e6e3a92b9a4 ("wireless: mwifiex: initial commit for Marvell mwifiex driver")
-Signed-off-by: Zilin Guan <zilin@seu.edu.cn>
-Reviewed-by: Jeff Chen <jeff.chen_1@nxp.com>
-Link: https://patch.msgid.link/20260119092625.1349934-1-zilin@seu.edu.cn
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+Reviewed-by: Harry Wentland <harry.wentland@amd.com>
+Acked-by: Hamza Mahfooz <hamza.mahfooz@amd.com>
+Signed-off-by: Alex Hung <alex.hung@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Fixes: cdaae8371aa9 ("drm/amd/display: Handle GPU reset for DC block")
+Fixes: dcd5fb82ffb4 ("drm/amd/display: Fix reference counting for struct dc_sink.")
+Fixes: 4562236b3bc0 ("drm/amd/dc: Add dc display driver (v2)")
+[ kovalev: bp to fix CVE-2024-43902; added Fixes tags ]
+Signed-off-by: Vasiliy Kovalev <kovalev@altlinux.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/marvell/mwifiex/11n_aggr.c | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c | 9 ++++++---
+ 1 file changed, 6 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/net/wireless/marvell/mwifiex/11n_aggr.c b/drivers/net/wireless/marvell/mwifiex/11n_aggr.c
-index 34b4b34276d6d..042b1fe5f0d67 100644
---- a/drivers/net/wireless/marvell/mwifiex/11n_aggr.c
-+++ b/drivers/net/wireless/marvell/mwifiex/11n_aggr.c
-@@ -203,6 +203,7 @@ mwifiex_11n_aggregate_pkt(struct mwifiex_private *priv,
+diff --git a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
+index c22783b882067..bd15de4dee75e 100644
+--- a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
++++ b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
+@@ -1778,7 +1778,8 @@ static int dm_suspend(void *handle)
+ 		mutex_lock(&dm->dc_lock);
+ 		dm->cached_dc_state = dc_copy_state(dm->dc->current_state);
  
- 		if (!mwifiex_is_ralist_valid(priv, pra_list, ptrindex)) {
- 			spin_unlock_bh(&priv->wmm.ra_list_spinlock);
-+			mwifiex_write_data_complete(adapter, skb_aggr, 1, -1);
- 			return -1;
- 		}
+-		dm_gpureset_toggle_interrupts(adev, dm->cached_dc_state, false);
++		if (dm->cached_dc_state)
++			dm_gpureset_toggle_interrupts(adev, dm->cached_dc_state, false);
+ 
+ 		amdgpu_dm_commit_zero_streams(dm->dc);
+ 
+@@ -5396,7 +5397,8 @@ static void create_eml_sink(struct amdgpu_dm_connector *aconnector)
+ 		aconnector->dc_sink = aconnector->dc_link->local_sink ?
+ 		aconnector->dc_link->local_sink :
+ 		aconnector->dc_em_sink;
+-		dc_sink_retain(aconnector->dc_sink);
++		if (aconnector->dc_sink)
++			dc_sink_retain(aconnector->dc_sink);
+ 	}
+ }
+ 
+@@ -6575,7 +6577,8 @@ static int amdgpu_dm_connector_get_modes(struct drm_connector *connector)
+ 				drm_add_modes_noedid(connector, 640, 480);
+ 	} else {
+ 		amdgpu_dm_connector_ddc_get_modes(connector, edid);
+-		amdgpu_dm_connector_add_common_modes(encoder, connector);
++		if (encoder)
++			amdgpu_dm_connector_add_common_modes(encoder, connector);
+ 	}
+ 	amdgpu_dm_fbc_init(connector);
  
 -- 
 2.53.0
