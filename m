@@ -1,56 +1,63 @@
-Return-Path: <stable+bounces-257215-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-257226-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id qCUsJOsYG2r2/AgAu9opvQ
-	(envelope-from <stable+bounces-257215-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:05:47 +0200
+	id OBYSNm4YG2pV/AgAu9opvQ
+	(envelope-from <stable+bounces-257226-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:03:42 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id E860560EE0A
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:05:46 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 557C860ED1F
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:03:42 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 2CB2830B5F60
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 16:56:54 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 9F645304CFCE
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 16:57:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5F7943403F3;
-	Sat, 30 May 2026 16:56:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C305832BF24;
+	Sat, 30 May 2026 16:57:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zdOGJgSX"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="r4VelWCy"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 42419332919;
-	Sat, 30 May 2026 16:56:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 96FA0332EA7;
+	Sat, 30 May 2026 16:57:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780160213; cv=none; b=mEyJMruYptgK3NprFKz+fs2Bp/zxGzC/iGmb5r+2+cfi4XNAM/zddqil2tdXEV0T/ZO2V6kiazp2pqkcHNdnJ2vL4y7wJGdMR48PJsGEhosKYKaDkm7aumexvIFbPALtr1Yvcyb66QvtwEJhbg+WslNVbWDRUXbof9q4Tw+OpOU=
+	t=1780160253; cv=none; b=VPlOtraC3TFORyCOytGEZ8yYFeZ6aMlL+JNwfB+eSUuvf+IuYrWsel64tSPl6umxLnlgS03CT4F5yyBpbP/pJ/cyg8DEEGXPpqu03+urDvPRN3Yh4tsS52A1YxKJ6kImGfQEYYU0VN3eWnLF8GMyu4zgrxqK1xC8W5BlSkhCcGk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780160213; c=relaxed/simple;
-	bh=6wB9XwudaZq/kqu/RB7mHQ3MM2fuCthnZHh9tya4J18=;
+	s=arc-20240116; t=1780160253; c=relaxed/simple;
+	bh=E4nlI91c6kjwlSq5FY0PgNsSP3JpA3uOZb/2TBr07ew=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=lqp4GU3T9TXuotx66ihXAhGZV6+WWzJLOrIUB71R2sKQlm0u3HHdeX21mPzFIaXxlQputrOLyQbcjOsytSXu7MG9WFEw+VRnwESlh+8wiFgGayY9qTaGxcMRBeMmXQIXMhQQi41z89caCY9sPmMUufXJ+q85FLmRI6ROcT+ncJk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zdOGJgSX; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 728191F00893;
-	Sat, 30 May 2026 16:56:51 +0000 (UTC)
+	 MIME-Version; b=TdQvuy34InQ5OQg/UYs2O6pxaB3Uk3OidCzf1cdVx+2vBH/531UbF2pgIg5Z1r9c2TSygFaqcX/XesXvh/t5HehaSNz5zD/aMOxp0wbhAj++k6kBJb/4AvO2ZkIQ7AyMPCxQHsUWmLGeNo4xfzYa87lnSqEK8y7Z/v5wPnVa9ys=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=r4VelWCy; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DD8381F00893;
+	Sat, 30 May 2026 16:57:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780160212;
-	bh=qvcoGOPCL9iEreoVI3vKf8zTHnMaCC2kWFRyXKr/5Kw=;
+	s=korg; t=1780160252;
+	bh=egG9ZJpG7kRwge7fGh6SJVS3TVXQDIvTJR4FIg8a/9w=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=zdOGJgSXFpS88FMItqpEY0Vfn/kKxFgnEMI0rp8g8kxuOvIAuBmuHjHoOdO/NIdLq
-	 6nu/tKq0sBIe6J7aXU22KEES2rA20JOMnnmSZh9v0vv2+oAS+gnb6hUAeEspOyI+aM
-	 GSWH6la+zqb5qCL4Zv0pN+W5dqA5HrpQNoEijHPs=
+	b=r4VelWCyrCMRmgd9MSdzMg4maVW67HwfqZYbSHVHjSCfvMkJ7vx5ZPjmYC0EepXmj
+	 s8RF27qFKfnbswtQlpf35+XBCLRqnOAm3WG8oEB3d9gNa/nrY6WpaJ6dylgP6b0Fo+
+	 2t5F/9hLEnpW1B4xVUQUv3Uf/ZKFzvBwKCKRGkv0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Andrea Mayer <andrea.mayer@uniroma2.it>,
-	Justin Iurman <justin.iurman@gmail.com>,
-	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 6.1 269/969] seg6: fix seg6 lwtunnel output redirect for L2 reduced encap mode
-Date: Sat, 30 May 2026 17:56:33 +0200
-Message-ID: <20260530160307.901943695@linuxfoundation.org>
+	stable@kernel.org,
+	Yifan Wu <yifanwucs@gmail.com>,
+	Juefei Pu <tomapufckgml@gmail.com>,
+	Yuan Tan <yuantan098@gmail.com>,
+	Xin Liu <bird@lzu.edu.cn>,
+	Yuhang Zheng <z1652074432@gmail.com>,
+	Eric Biggers <ebiggers@kernel.org>,
+	Yucheng Lu <kanolyc@gmail.com>,
+	Ren Wei <n05ec@lzu.edu.cn>,
+	Herbert Xu <herbert@gondor.apana.org.au>
+Subject: [PATCH 6.1 270/969] crypto: authencesn - reject short ahash digests during instance creation
+Date: Sat, 30 May 2026 17:56:34 +0200
+Message-ID: <20260530160307.930216914@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
 In-Reply-To: <20260530160300.485627683@linuxfoundation.org>
 References: <20260530160300.485627683@linuxfoundation.org>
@@ -64,25 +71,24 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TO_DN_SOME(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-257215-lists,stable=lfdr.de];
 	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-257226-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,kernel.org,gmail.com,lzu.edu.cn,gondor.apana.org.au];
+	RCPT_COUNT_TWELVE(0.00)[13];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,uniroma2.it,gmail.com,kernel.org];
 	RCVD_COUNT_THREE(0.00)[4];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[6];
 	NEURAL_HAM(-0.00)[-1.000];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
@@ -90,9 +96,9 @@ X-Spamd-Result: default: False [-0.16 / 15.00];
 	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[]
-X-Rspamd-Queue-Id: E860560EE0A
+X-Rspamd-Queue-Id: 557C860ED1F
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
@@ -100,43 +106,61 @@ X-Rspamd-Server: lfdr
 
 ------------------
 
-From: Andrea Mayer <andrea.mayer@uniroma2.it>
+From: Yucheng Lu <kanolyc@gmail.com>
 
-commit ade67d5f588832c7ba131aadd4215a94ce0a15c8 upstream.
+commit 5db6ef9847717329f12c5ea8aba7e9f588a980c0 upstream.
 
-When SEG6_IPTUN_MODE_L2ENCAP_RED (L2ENCAP_RED) was introduced, the
-condition in seg6_build_state() that excludes L2 encap modes from
-setting LWTUNNEL_STATE_OUTPUT_REDIRECT was not updated to account for
-the new mode.
-As a consequence, L2ENCAP_RED routes incorrectly trigger seg6_output()
-on the output path, where the packet is silently dropped because
-skb_mac_header_was_set() fails on L3 packets.
+authencesn requires either a zero authsize or an authsize of at least
+4 bytes because the ESN encrypt/decrypt paths always move 4 bytes of
+high-order sequence number data at the end of the authenticated data.
 
-Extend the check to also exclude L2ENCAP_RED, consistent with L2ENCAP.
+While crypto_authenc_esn_setauthsize() already rejects explicit
+non-zero authsizes in the range 1..3, crypto_authenc_esn_create()
+still copied auth->digestsize into inst->alg.maxauthsize without
+validating it.  The AEAD core then initialized the tfm's default
+authsize from that value.
 
-Fixes: 13f0296be8ec ("seg6: add support for SRv6 H.L2Encaps.Red behavior")
-Cc: stable@vger.kernel.org
-Signed-off-by: Andrea Mayer <andrea.mayer@uniroma2.it>
-Reviewed-by: Justin Iurman <justin.iurman@gmail.com>
-Link: https://patch.msgid.link/20260418162838.31979-1-andrea.mayer@uniroma2.it
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+As a result, selecting an ahash with digest size 1..3, such as
+cbcmac(cipher_null), exposed authencesn instances whose default
+authsize was invalid even though setauthsize() would have rejected the
+same value.  AF_ALG could then trigger the ESN tail handling with a
+too-short tag and hit an out-of-bounds access.
+
+Reject authencesn instances whose ahash digest size is in the invalid
+non-zero range 1..3 so that no tfm can inherit an unsupported default
+authsize.
+
+Fixes: f15f05b0a5de ("crypto: ccm - switch to separate cbcmac driver")
+Cc: stable@kernel.org
+Reported-by: Yifan Wu <yifanwucs@gmail.com>
+Reported-by: Juefei Pu <tomapufckgml@gmail.com>
+Co-developed-by: Yuan Tan <yuantan098@gmail.com>
+Signed-off-by: Yuan Tan <yuantan098@gmail.com>
+Suggested-by: Xin Liu <bird@lzu.edu.cn>
+Tested-by: Yuhang Zheng <z1652074432@gmail.com>
+Reviewed-by: Eric Biggers <ebiggers@kernel.org>
+Signed-off-by: Yucheng Lu <kanolyc@gmail.com>
+Signed-off-by: Ren Wei <n05ec@lzu.edu.cn>
+Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/ipv6/seg6_iptunnel.c |    3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ crypto/authencesn.c |    5 +++++
+ 1 file changed, 5 insertions(+)
 
---- a/net/ipv6/seg6_iptunnel.c
-+++ b/net/ipv6/seg6_iptunnel.c
-@@ -712,7 +712,8 @@ static int seg6_build_state(struct net *
- 	newts->type = LWTUNNEL_ENCAP_SEG6;
- 	newts->flags |= LWTUNNEL_STATE_INPUT_REDIRECT;
+--- a/crypto/authencesn.c
++++ b/crypto/authencesn.c
+@@ -400,6 +400,11 @@ static int crypto_authenc_esn_create(str
+ 	auth = crypto_spawn_ahash_alg(&ctx->auth);
+ 	auth_base = &auth->base;
  
--	if (tuninfo->mode != SEG6_IPTUN_MODE_L2ENCAP)
-+	if (tuninfo->mode != SEG6_IPTUN_MODE_L2ENCAP &&
-+	    tuninfo->mode != SEG6_IPTUN_MODE_L2ENCAP_RED)
- 		newts->flags |= LWTUNNEL_STATE_OUTPUT_REDIRECT;
- 
- 	newts->headroom = seg6_lwt_headroom(tuninfo);
++	if (auth->digestsize > 0 && auth->digestsize < 4) {
++		err = -EINVAL;
++		goto err_free_inst;
++	}
++
+ 	err = crypto_grab_skcipher(&ctx->enc, aead_crypto_instance(inst),
+ 				   crypto_attr_alg_name(tb[2]), 0, mask);
+ 	if (err)
 
 
 
