@@ -1,59 +1,58 @@
-Return-Path: <stable+bounces-257380-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-258732-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id YArRFIkbG2oq/QgAu9opvQ
-	(envelope-from <stable+bounces-257380-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:16:57 +0200
+	id WPC1ENUsG2pa/wgAu9opvQ
+	(envelope-from <stable+bounces-258732-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:30:45 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id B2C8260F4C0
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:16:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id AC0AA611DED
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:30:44 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 2736630CC938
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 17:06:38 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 54DDD30BA8DB
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 18:22:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8917B32B11D;
-	Sat, 30 May 2026 17:06:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7452C233D9E;
+	Sat, 30 May 2026 18:22:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XZHPTN0Z"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="aCC2NZBl"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5A51D32D42B;
-	Sat, 30 May 2026 17:06:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5FD4221ADC7;
+	Sat, 30 May 2026 18:22:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780160797; cv=none; b=cuy54D4MUUAtviLZUvlNLhHGNm+uCxR1OmJAiK3Sp9RBHdJE2JKOX4q4xEKc4G3+3beACpnHRmAxPSTFW8EM1Js+8PiGfGu9HG+THhjR+c29pW3h5G91LVqKnCdUtghXab5as5WVgE7uqZhC3mo6rrp/vxZbUIsrj1N4vjRRJOM=
+	t=1780165351; cv=none; b=sEtfD3daO/6qcQwEMKCDzqoR+VNvF8yB06xR1tw9kA0pPLeGu+6u5W3tObZWP55gwTmWMrKjL/I8izIG/DUeHSqjVgXex3nwbjXTNNupazI4tii8Fhqe3Zgfr+UIBolud2J3ZE+0REIbMeENJZPcQwAAGtmsGkO5z7u3m60zcx0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780160797; c=relaxed/simple;
-	bh=tVuKWpCKJLEmFz9h4d81/G8Kg21//jsnGKsTBzH3pvE=;
+	s=arc-20240116; t=1780165351; c=relaxed/simple;
+	bh=kMwNDafhdbzO8HjIS0SCXoaKRPWdNrz4qCNnIPx8yfg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ESTatzbKKkEbzmewdRP544+dP/tAiFe1s2JADtmpFlJoz27eI14/eWYHsDJeSEs80tqqsF2TScUOXcGlo/hdIfHelLBhec4Xz0Y7hbQe1ILgQFxW1i3bgYuSjUPsWIl+NUzJ635zSR3HSkF/ZLXEkdJQnt4dN6Z7CJ8hW16/7mU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XZHPTN0Z; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 80FC11F00893;
-	Sat, 30 May 2026 17:06:35 +0000 (UTC)
+	 MIME-Version; b=VEIZdOAw6+UyWURSwvZCMkkdL3ZDDTYP+sh4LveRcdXCt9UGJOaQrwWM7u63GUi5qMfL/stQI4x49a/7bPQFW9AOR4DENC3Aal2gQijWkLmT2K/mzWLcBbz2Uf6EwyODFisztMwRf66V2hBiKv7UefW5yHVl9TIZqTzFYl99MLU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=aCC2NZBl; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A406D1F00893;
+	Sat, 30 May 2026 18:22:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780160796;
-	bh=Qu2jXj8Aic6kawJT9F4pKSP/LN6AWTPntgDfbl7khqY=;
+	s=korg; t=1780165350;
+	bh=tHFvfLIzGf//Z+keStRLv+6pAZFPzjNh2Qx3oTdkOUI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=XZHPTN0ZEK25F3iVCyEbHVpdQuxiUe8Y+7EZkug4z0uOaieSyWQZqjnJ5ceYo8Erh
-	 /lDjf+B+x2Lga/26Z8HkPUFk5eoAVkqfuQ+yz2CtgMsYDiEIAiVYbE2pMBvAleOccw
-	 gGr/3mxEyB8Axc1jOJBEPnUjfTcI+cVVnOt354j4=
+	b=aCC2NZBlZzCfyYrsn+Ck6JF9vs6ZdxPuK2VpMQq9Bu5rlT4OyPYX+6Cv+gzfOJI16
+	 BI/Lt8Of01/RiMYUxw/Y3AxwpEKjAfwqtVU/0Zvi1cj7e/nl4pNLBST/GCuAh6Xc5U
+	 KtfiznNUfH/6wHatktyLSbCIROYdmzQ4NVU3ubF0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Amir Shetaia <Amir.Shetaia@amd.com>,
-	Alysa Liu <Alysa.Liu@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>
-Subject: [PATCH 6.1 408/969] drm/amdkfd: validate SVM ioctl nattr against buffer size
-Date: Sat, 30 May 2026 17:58:52 +0200
-Message-ID: <20260530160311.547892427@linuxfoundation.org>
+	Helge Deller <deller@gmx.de>,
+	stable <stable@kernel.org>
+Subject: [PATCH 5.10 052/589] fbdev: tdfxfb: avoid divide-by-zero on FBIOPUT_VSCREENINFO
+Date: Sat, 30 May 2026 17:58:53 +0200
+Message-ID: <20260530160225.959414478@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260530160300.485627683@linuxfoundation.org>
-References: <20260530160300.485627683@linuxfoundation.org>
+In-Reply-To: <20260530160224.570625122@linuxfoundation.org>
+References: <20260530160224.570625122@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -73,128 +72,64 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-257380-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-258732-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmx.de,kernel.org];
 	RCVD_COUNT_THREE(0.00)[4];
-	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
 	TO_DN_SOME(0.00)[];
+	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	RCPT_COUNT_FIVE(0.00)[6];
+	RCPT_COUNT_FIVE(0.00)[5];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
 	TAGGED_RCPT(0.00)[stable];
 	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	FROM_HAS_DN(0.00)[]
-X-Rspamd-Queue-Id: B2C8260F4C0
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,gmx.de:email]
+X-Rspamd-Queue-Id: AC0AA611DED
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alysa Liu <Alysa.Liu@amd.com>
+From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 
-commit 045e0ff208f0838a246c10204105126611b267a1 upstream.
+commit 8f98b81fe011e1879e6a7b1247e69e06a5e17af2 upstream.
 
-Validate nattr field against the buffer size, preventing
-out-of-bounds buffer access via user-controlled attribute count.
+Much like commit 19f953e74356 ("fbdev: fb_pm2fb: Avoid potential divide
+by zero error"), we also need to prevent that same crash from happening
+in the udlfb driver as it uses pixclock directly when dividing, which
+will crash.
 
-Reviewed-by: Amir Shetaia <Amir.Shetaia@amd.com>
-Signed-off-by: Alysa Liu <Alysa.Liu@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-(cherry picked from commit 5eca8bfdfa456c3304ca77523718fe24254c172f)
-Cc: stable@vger.kernel.org
+Cc: Helge Deller <deller@gmx.de>
+Assisted-by: gregkh_clanker_t1000
+Cc: stable <stable@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Helge Deller <deller@gmx.de>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/amd/amdkfd/kfd_chardev.c |   26 ++++++++++++++++++++++++--
- drivers/gpu/drm/amd/amdkfd/kfd_priv.h    |    3 +++
- 2 files changed, 27 insertions(+), 2 deletions(-)
+ drivers/video/fbdev/tdfxfb.c |    3 +++
+ 1 file changed, 3 insertions(+)
 
---- a/drivers/gpu/drm/amd/amdkfd/kfd_chardev.c
-+++ b/drivers/gpu/drm/amd/amdkfd/kfd_chardev.c
-@@ -26,6 +26,7 @@
- #include <linux/err.h>
- #include <linux/fs.h>
- #include <linux/file.h>
-+#include <linux/overflow.h>
- #include <linux/sched.h>
- #include <linux/slab.h>
- #include <linux/uaccess.h>
-@@ -1614,6 +1615,16 @@ static int kfd_ioctl_smi_events(struct f
- 	return kfd_smi_event_open(pdd->dev, &args->anon_fd);
- }
- 
-+static int kfd_ioctl_svm_validate(void *kdata, unsigned int usize)
-+{
-+	struct kfd_ioctl_svm_args *args = kdata;
-+	size_t expected = struct_size(args, attrs, args->nattr);
-+
-+	if (expected == SIZE_MAX || usize < expected)
-+		return -EINVAL;
-+	return 0;
-+}
-+
- #if IS_ENABLED(CONFIG_HSA_AMD_SVM)
- 
- static int kfd_ioctl_set_xnack_mode(struct file *filep,
-@@ -2672,7 +2683,11 @@ static int kfd_ioctl_criu(struct file *f
- 
- #define AMDKFD_IOCTL_DEF(ioctl, _func, _flags) \
- 	[_IOC_NR(ioctl)] = {.cmd = ioctl, .func = _func, .flags = _flags, \
--			    .cmd_drv = 0, .name = #ioctl}
-+			    .validate = NULL, .cmd_drv = 0, .name = #ioctl}
-+
-+#define AMDKFD_IOCTL_DEF_V(ioctl, _func, _validate, _flags) \
-+	[_IOC_NR(ioctl)] = {.cmd = ioctl, .func = _func, .flags = _flags, \
-+			    .validate = _validate, .cmd_drv = 0, .name = #ioctl}
- 
- /** Ioctl table */
- static const struct amdkfd_ioctl_desc amdkfd_ioctls[] = {
-@@ -2769,7 +2784,8 @@ static const struct amdkfd_ioctl_desc am
- 	AMDKFD_IOCTL_DEF(AMDKFD_IOC_SMI_EVENTS,
- 			kfd_ioctl_smi_events, 0),
- 
--	AMDKFD_IOCTL_DEF(AMDKFD_IOC_SVM, kfd_ioctl_svm, 0),
-+	AMDKFD_IOCTL_DEF_V(AMDKFD_IOC_SVM, kfd_ioctl_svm,
-+			   kfd_ioctl_svm_validate, 0),
- 
- 	AMDKFD_IOCTL_DEF(AMDKFD_IOC_SET_XNACK_MODE,
- 			kfd_ioctl_set_xnack_mode, 0),
-@@ -2882,6 +2898,12 @@ static long kfd_ioctl(struct file *filep
- 		memset(kdata, 0, usize);
+--- a/drivers/video/fbdev/tdfxfb.c
++++ b/drivers/video/fbdev/tdfxfb.c
+@@ -497,6 +497,9 @@ static int tdfxfb_check_var(struct fb_va
+ 		}
  	}
  
-+	if (ioctl->validate) {
-+		retcode = ioctl->validate(kdata, usize);
-+		if (retcode)
-+			goto err_i1;
-+	}
++	if (!var->pixclock)
++		return -EINVAL;
 +
- 	retcode = func(filep, process, kdata);
- 
- 	if (cmd & IOC_OUT)
---- a/drivers/gpu/drm/amd/amdkfd/kfd_priv.h
-+++ b/drivers/gpu/drm/amd/amdkfd/kfd_priv.h
-@@ -924,10 +924,13 @@ extern struct srcu_struct kfd_processes_
- typedef int amdkfd_ioctl_t(struct file *filep, struct kfd_process *p,
- 				void *data);
- 
-+typedef int amdkfd_ioctl_validate_t(void *kdata, unsigned int usize);
-+
- struct amdkfd_ioctl_desc {
- 	unsigned int cmd;
- 	int flags;
- 	amdkfd_ioctl_t *func;
-+	amdkfd_ioctl_validate_t *validate;
- 	unsigned int cmd_drv;
- 	const char *name;
- };
+ 	if (PICOS2KHZ(var->pixclock) > par->max_pixclock) {
+ 		DPRINTK("pixclock too high (%ldKHz)\n",
+ 			PICOS2KHZ(var->pixclock));
 
 
 
