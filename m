@@ -1,59 +1,60 @@
-Return-Path: <stable+bounces-258280-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-257506-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id UABwEosnG2qf/ggAu9opvQ
-	(envelope-from <stable+bounces-258280-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:08:11 +0200
+	id CBFIHEsbG2pk/QgAu9opvQ
+	(envelope-from <stable+bounces-257506-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:15:55 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id A0D226110AA
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:08:10 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6D5BC60F425
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:15:54 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 27E9E312B660
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 17:57:01 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id C93DE3013D5E
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 17:13:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7DD773BED32;
-	Sat, 30 May 2026 17:57:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6BDB234A79D;
+	Sat, 30 May 2026 17:13:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xnlVzvai"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sUu1yLP9"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3B7CF3BF694;
-	Sat, 30 May 2026 17:56:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4F9D93148DA;
+	Sat, 30 May 2026 17:13:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780163820; cv=none; b=JViV4qPfVj+J8IiCehnfxALxyom/+tU14dbwIOij0l82uK4R0PATIjvGN1MzVbnFU7UtVcRlRWVMqd9awsQA3LWoe/2ZAONGpFoufrTg6JsqB/sprlmHKd9oyv1jqWTv72y1MzSqkmEUzQ1TIuCtFcaHarAgV93wnwlgjyRZBiY=
+	t=1780161231; cv=none; b=FD5qVrDS2bXLP+htKLhKcczK214x2itkMNFnSfUUgvlTP/K6N/7AhpH6aXT2uiM8+xQmAFSSCq3qMKsNDTCgNQgNGyYu8itD2Af/HgKlqipMEMrGbMNPMg3WI870AcL0BfwN3QO7qKR+5S7wH0YmhK8PAejJyzx1Yk5umb7Pgro=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780163820; c=relaxed/simple;
-	bh=aG6Ot7X/groQWzqhyrYcRfm5nPimvYL2Tfos3cGTm3Q=;
+	s=arc-20240116; t=1780161231; c=relaxed/simple;
+	bh=e1FoCwN6zW+BbEJm+Ix8TTAhuBoUtH/eNDvKgG+n1RI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=RHvBxxrn4tOxwDTTY3p+RANB8ajFX8C/RaKY3Bt9t56RRlx7FHV24iLrKvF1jdSSH18EvH3fMdYtf3UPT3DUr7lvjCeVkLifTmIVzK4ia7/63tlAgXzIxFSaLtPiZ1i6s41PqaJTz7vPzLfuCkqR/2CDEzMTJSIL3jWih2ulZeo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xnlVzvai; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7E9E51F00893;
-	Sat, 30 May 2026 17:56:57 +0000 (UTC)
+	 MIME-Version; b=HrqhVP0ecgdZFXrRuyP1MX+dfBtZR734cZtUExQqgLfvjFA83T6yji+/A0P1AkQYaiDe2f6kreH2IxThT4TS5hbYazpbioPJu7xIJegY2HLpwUhhVSkvvqRNegokSQhGzrYuh1DJRVLr6Rr2Ts7dtLGpQTubqwn80sUT8WuCY/U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sUu1yLP9; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 92B5D1F00893;
+	Sat, 30 May 2026 17:13:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780163818;
-	bh=3xf3b0M4FOHKKhqdzApUcnGu04cEtIV7lg8AaVP0H8A=;
+	s=korg; t=1780161230;
+	bh=4zvXf9xdHpOMVULEqDE1aoWSLUei/qcOp5llj/2zn3A=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=xnlVzvaihtOIZuQ7Lfpc611LXHa4FZpx+7e2RvRQtO705MCKJne8EZ3nQ7H7BGrK3
-	 PAYQUnMCe40H8ZAw3WL2t25Afv/tRKIPcdTy86Vb2Gqs5hOO7lH/xwUWzNpo3ON6nG
-	 KOkocBJ7RkNwzuHKjQn71a3SEr5VtcyDDS9cAM+Y=
+	b=sUu1yLP9ua1d6xODqla1N835ePGzfMv/bnspU6yAbFcJM6CfuEB4jWLsKvSQ7dWak
+	 UST4GkYUGfnXCCdxhZpWtQKvdIk34foR2CfWVKhgOfDbSz4sCNuzrH046CN5sdH9vH
+	 oxMa/xcz4wfnG6ai2XI26bYhgoafy9wMsFS8ZXHk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Timur=20Krist=C3=B3f?= <timur.kristof@gmail.com>,
-	Kent Russell <kent.russell@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>
-Subject: [PATCH 5.15 372/776] drm/amdgpu/pm: align Hawaii mclk workaround with radeon
+	Dan Carpenter <error27@gmail.com>,
+	Ming-Hung Tsai <mtsai@redhat.com>,
+	Mikulas Patocka <mpatocka@redhat.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 562/969] dm cache: fix missing return in invalidate_committeds error path
 Date: Sat, 30 May 2026 18:01:26 +0200
-Message-ID: <20260530160250.157723384@linuxfoundation.org>
+Message-ID: <20260530160315.905861333@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260530160240.228940103@linuxfoundation.org>
-References: <20260530160240.228940103@linuxfoundation.org>
+In-Reply-To: <20260530160300.485627683@linuxfoundation.org>
+References: <20260530160300.485627683@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,79 +64,88 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-0.66 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_MISSING_CHARSET(0.50)[];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-258280-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
+	TAGGED_FROM(0.00)[bounces-257506-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,redhat.com,kernel.org];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,amd.com];
-	TO_DN_SOME(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[6];
-	NEURAL_HAM(-0.00)[-0.997];
-	PRECEDENCE_BULK(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	PRECEDENCE_BULK(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,amd.com:email]
-X-Rspamd-Queue-Id: A0D226110AA
+	TO_DN_SOME(0.00)[];
+	FROM_HAS_DN(0.00)[]
+X-Rspamd-Queue-Id: 6D5BC60F425
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alex Deucher <alexander.deucher@amd.com>
+From: Ming-Hung Tsai <mtsai@redhat.com>
 
-commit 1987c79b4fe5789dfa14423e78b5c25f6acf3e9d upstream.
+[ Upstream commit 8c0ee19db81f0fa1ff25fd75b22b17c0cc2acde3 ]
 
-Align the hawaii mclk workaround with radeon and windows.
+In passthrough mode, dm-cache defers write submission until after
+metadata commit completes via the invalidate_committed() continuation.
+On commit error, invalidate_committed() calls invalidate_complete() to
+end the bio and free the migration struct, after which it should return
+immediately.
 
-Link: https://gitlab.freedesktop.org/drm/amd/-/work_items/1816
-Fixes: 9f4b35411cfe ("drm/amd/powerplay: add CI asics support to smumgr (v3)")
-Reviewed-by: Timur Kristóf <timur.kristof@gmail.com>
-Reviewed-by: Kent Russell <kent.russell@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-(cherry picked from commit 9649528b637f668c5af9f2b83ca4ad8576ae2121)
-Cc: stable@vger.kernel.org
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+The patch 4ca8b8bd952d ("dm cache: fix write hang in passthrough mode")
+omitted this early return, causing execution to fall through into the
+success path on error. This results in use-after-free on the migration
+struct in the subsequent calls.
+
+Fix by adding the missing return after the invalidate_complete() call.
+
+Fixes: 4ca8b8bd952d ("dm cache: fix write hang in passthrough mode")
+Reported-by: Dan Carpenter <error27@gmail.com>
+Closes: https://lore.kernel.org/dm-devel/adjMq6T5RRjv_uxM@stanley.mountain/
+Signed-off-by: Ming-Hung Tsai <mtsai@redhat.com>
+Signed-off-by: Mikulas Patocka <mpatocka@redhat.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/pm/powerplay/smumgr/ci_smumgr.c |    8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ drivers/md/dm-cache-target.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
---- a/drivers/gpu/drm/amd/pm/powerplay/smumgr/ci_smumgr.c
-+++ b/drivers/gpu/drm/amd/pm/powerplay/smumgr/ci_smumgr.c
-@@ -1328,10 +1328,10 @@ static int ci_populate_all_memory_levels
- 	if ((dpm_table->mclk_table.count >= 2) &&
- 	    ((dev_id == 0x67B0) ||  (dev_id == 0x67B1)) &&
- 	    (adev->pdev->revision == 0)) {
--		smu_data->smc_state_table.MemoryLevel[1].MinVddci =
--				smu_data->smc_state_table.MemoryLevel[0].MinVddci;
--		smu_data->smc_state_table.MemoryLevel[1].MinMvdd =
--				smu_data->smc_state_table.MemoryLevel[0].MinMvdd;
-+		smu_data->smc_state_table.MemoryLevel[1].MinVddc =
-+				smu_data->smc_state_table.MemoryLevel[0].MinVddc;
-+		smu_data->smc_state_table.MemoryLevel[1].MinVddcPhases =
-+				smu_data->smc_state_table.MemoryLevel[0].MinVddcPhases;
- 	}
- 	smu_data->smc_state_table.MemoryLevel[0].ActivityLevel = 0x1F;
- 	CONVERT_FROM_HOST_TO_SMC_US(smu_data->smc_state_table.MemoryLevel[0].ActivityLevel);
+diff --git a/drivers/md/dm-cache-target.c b/drivers/md/dm-cache-target.c
+index cd48cefe0409a..e47033fc53106 100644
+--- a/drivers/md/dm-cache-target.c
++++ b/drivers/md/dm-cache-target.c
+@@ -1502,8 +1502,10 @@ static void invalidate_committed(struct work_struct *ws)
+ 	struct bio *bio = mg->overwrite_bio;
+ 	struct per_bio_data *pb = get_per_bio_data(bio);
+ 
+-	if (mg->k.input)
++	if (mg->k.input) {
+ 		invalidate_complete(mg, false);
++		return;
++	}
+ 
+ 	init_continuation(&mg->k, invalidate_completed);
+ 	remap_to_origin_clear_discard(cache, bio, mg->invalidate_oblock);
+-- 
+2.53.0
+
 
 
 
