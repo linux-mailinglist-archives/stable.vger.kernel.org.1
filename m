@@ -1,60 +1,60 @@
-Return-Path: <stable+bounces-259128-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-258523-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id CNhNJzgyG2qqAAkAu9opvQ
-	(envelope-from <stable+bounces-259128-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:53:44 +0200
+	id MGp7EnUqG2r//ggAu9opvQ
+	(envelope-from <stable+bounces-258523-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:20:37 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1F7FF612C1B
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:53:43 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id D2FCD611860
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:20:36 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id BF42F3090881
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 18:45:04 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id B5DD4309F247
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 18:10:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 717E02EBBB7;
-	Sat, 30 May 2026 18:45:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B323E3AB26B;
+	Sat, 30 May 2026 18:10:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UJc9hHQZ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qouEoV+a"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 50E9823B61B;
-	Sat, 30 May 2026 18:45:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9BBFA29B799;
+	Sat, 30 May 2026 18:10:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780166704; cv=none; b=C5M3Lwy1/0Bkg2qDR+Cqd9x8KV70ESE/XtTP3D9pfGOkyCMM4Mw3EGdkhpW6a+KsLJ1PgdbvfcZikKwh3ybqj/qsfvV/duOqn0HaJkrGEYRpLYxeDH4XyL4qjxb8fPz+G7cQFolIV+NtrCxjsF9Co66foIeda1tDhmX5tsw7qpE=
+	t=1780164635; cv=none; b=ENUw/qDxUI655wPUl4TFX7UEza9YiIDp/UR58TFkp9L+5Vll/bx3i9TBKTU83TsaffkP9ipK+HIOPvruXN7DxETwMc9+vg8Qj7E51Zdtahtuygy4gPmyxaTHp7F/djv3LZ6hnL/1I3B4ls94gIgcJbtYLSYfRxz4YhR4NcjI8QU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780166704; c=relaxed/simple;
-	bh=yJyjeGXHGIQPg17D9KdyLxGaKSGB7nGHiXiirRGMj4A=;
+	s=arc-20240116; t=1780164635; c=relaxed/simple;
+	bh=/T/3DMjGQhmHUSgckRtgHu/InYaY94JijIWbqu6Z0nY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=H1kEPiT86AEtSpHAXHDZQcPrcIzUkAu66WtlqgJ52IFFXm54KmayIFMwL0m0xoFx/ZKU6ErLoxursVezIZeax+ML6/+Cjz6UeeTq2F3u5xjhBbde5kOexPwXWDsY0jMqbSlXNgJutqsaytDW4VsFmUkxAYn/SoCOZAO2/g04B3Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UJc9hHQZ; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 577B21F00893;
-	Sat, 30 May 2026 18:45:02 +0000 (UTC)
+	 MIME-Version; b=Nz60B2dL6qhLbmbQrw2ABPmPjaIANv/cGUmz2WPcgwiXZdIH4M/VtelJ6a2RvAcdUCcH3PLddzN8Vp7E0kBuQpy7gYuZuzi7DGYt6T/oxrh85y5uqBcCjtOEDiX/2xYyfNCkPHGE64nuFpGwZetYtEoc5LlNBKxC0+OEsumrnbg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qouEoV+a; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DF0201F00893;
+	Sat, 30 May 2026 18:10:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780166703;
-	bh=6CmJ5FogBxezo+3Vfn+UIXGM4haG6mVBgny4pIMyITw=;
+	s=korg; t=1780164634;
+	bh=ulJ9hI2yVVvoqMUNTGi6Ft/VP2KIPCQFxs6ONV3ICDI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=UJc9hHQZIkbTshfi2+/c52TEHMY0GSHitNUI3tY1xn43bRkKkwzyf+qfssXivWQJA
-	 S1F+/u06tyHUjqkmRkoe/FRd7YEd5UyvK/Gk2oe2iQLQqNH6b38gSua/V2umFPJDM4
-	 lV+z30M8SdFlJbQ39SLQaU8cwBFfAdUmBxGNnyII=
+	b=qouEoV+aWxbxaBEs9Bdjs8F2GHc3x9Nl2HmO5hbO+0UikzLhwfWUEZvUW9bhsbq9I
+	 Fn9FCpUCaKW27WV7eTDdWgiMwRcRvWXMLdo24xGWAklhR/gbmDjqK8KtFYf4ZJzWaH
+	 1hugIog/4VERWlXWpYr66boFSVR1eXQxvMa1qeuc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
+	"Nikola Z. Ivanov" <zlatistiv@gmail.com>,
 	Eric Dumazet <edumazet@google.com>,
-	Jamal Hadi Salim <jhs@mojatatu.com>,
 	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 446/589] net/sched: sch_fq_codel: remove data-races from fq_codel_dump_stats()
+Subject: [PATCH 5.15 613/776] netdevsim: zero initialize struct iphdr in dummy sk_buff
 Date: Sat, 30 May 2026 18:05:27 +0200
-Message-ID: <20260530160236.421131258@linuxfoundation.org>
+Message-ID: <20260530160255.846997240@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260530160224.570625122@linuxfoundation.org>
-References: <20260530160224.570625122@linuxfoundation.org>
+In-Reply-To: <20260530160240.228940103@linuxfoundation.org>
+References: <20260530160240.228940103@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,76 +69,73 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	RCVD_TLS_LAST(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,google.com,kernel.org];
+	TAGGED_FROM(0.00)[bounces-258523-lists,stable=lfdr.de];
+	PRECEDENCE_BULK(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FROM_HAS_DN(0.00)[];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-259128-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TO_DN_SOME(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	NEURAL_HAM(-0.00)[-0.997];
-	RCPT_COUNT_SEVEN(0.00)[7];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-0.999];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[7];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[mojatatu.com:email,msgid.link:url,linuxfoundation.org:mid,linuxfoundation.org:dkim,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
-X-Rspamd-Queue-Id: 1F7FF612C1B
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,linuxfoundation.org:mid,linuxfoundation.org:dkim,syzkaller.appspot.com:url,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
+X-Rspamd-Queue-Id: D2FCD611860
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Eric Dumazet <edumazet@google.com>
+From: Nikola Z. Ivanov <zlatistiv@gmail.com>
 
-[ Upstream commit bbfaa73ea6871db03dc05d7f05f00557a8981f25 ]
+[ Upstream commit 35eaa6d8d6c2ee65e96f507add856e0eacf24591 ]
 
-fq_codel_dump_stats() acquires the qdisc spinlock a bit too late.
+Syzbot reports a KMSAN uninit-value originating from
+nsim_dev_trap_skb_build, with the allocation also
+being performed in the same function.
 
-Move this acquisition before we fill st.qdisc_stats with live data.
+Fix this by calling skb_put_zero instead of skb_put to
+guarantee zero initialization of the whole IP header.
 
-Fixes: edb09eb17ed8 ("net: sched: do not acquire qdisc spinlock in qdisc/class stats dump")
-Signed-off-by: Eric Dumazet <edumazet@google.com>
-Reviewed-by: Jamal Hadi Salim <jhs@mojatatu.com>
-Link: https://patch.msgid.link/20260421142509.3967231-1-edumazet@google.com
+Closes: https://syzkaller.appspot.com/bug?extid=23d7fcd204e3837866ff
+Fixes: da58f90f11f5 ("netdevsim: Add devlink-trap support")
+Signed-off-by: Nikola Z. Ivanov <zlatistiv@gmail.com>
+Reviewed-by: Eric Dumazet <edumazet@google.com>
+Link: https://patch.msgid.link/20260426201434.742030-1-zlatistiv@gmail.com
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/sched/sch_fq_codel.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/net/netdevsim/dev.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/net/sched/sch_fq_codel.c b/net/sched/sch_fq_codel.c
-index 3c1efe360defa..10bdc0de394cc 100644
---- a/net/sched/sch_fq_codel.c
-+++ b/net/sched/sch_fq_codel.c
-@@ -559,6 +559,8 @@ static int fq_codel_dump_stats(struct Qdisc *sch, struct gnet_dump *d)
- 	};
- 	struct list_head *pos;
+diff --git a/drivers/net/netdevsim/dev.c b/drivers/net/netdevsim/dev.c
+index d8f91bc38f406..3136ff369acd4 100644
+--- a/drivers/net/netdevsim/dev.c
++++ b/drivers/net/netdevsim/dev.c
+@@ -674,7 +674,7 @@ static struct sk_buff *nsim_dev_trap_skb_build(void)
+ 	skb->protocol = htons(ETH_P_IP);
  
-+	sch_tree_lock(sch);
-+
- 	st.qdisc_stats.maxpacket = q->cstats.maxpacket;
- 	st.qdisc_stats.drop_overlimit = q->drop_overlimit;
- 	st.qdisc_stats.ecn_mark = q->cstats.ecn_mark;
-@@ -567,7 +569,6 @@ static int fq_codel_dump_stats(struct Qdisc *sch, struct gnet_dump *d)
- 	st.qdisc_stats.memory_usage  = q->memory_usage;
- 	st.qdisc_stats.drop_overmemory = q->drop_overmemory;
- 
--	sch_tree_lock(sch);
- 	list_for_each(pos, &q->new_flows)
- 		st.qdisc_stats.new_flows_len++;
- 
+ 	skb_set_network_header(skb, skb->len);
+-	iph = skb_put(skb, sizeof(struct iphdr));
++	iph = skb_put_zero(skb, sizeof(struct iphdr));
+ 	iph->protocol = IPPROTO_UDP;
+ 	iph->saddr = in_aton("192.0.2.1");
+ 	iph->daddr = in_aton("198.51.100.1");
 -- 
 2.53.0
 
