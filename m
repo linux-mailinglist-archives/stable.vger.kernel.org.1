@@ -1,64 +1,66 @@
-Return-Path: <stable+bounces-258095-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-258698-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id sPJzNAMjG2rO/QgAu9opvQ
-	(envelope-from <stable+bounces-258095-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:48:51 +0200
+	id 6AUFDWYsG2pa/wgAu9opvQ
+	(envelope-from <stable+bounces-258698-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:28:54 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 753976106D5
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:48:51 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8B677611D04
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:28:52 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 0D9533024FAD
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 17:46:49 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 51C713075434
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 18:20:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A40183C09E4;
-	Sat, 30 May 2026 17:46:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1DECB219303;
+	Sat, 30 May 2026 18:20:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IAK0zWf+"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Qdn4sukh"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 78CD13BFE3B;
-	Sat, 30 May 2026 17:46:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5299024EAB1;
+	Sat, 30 May 2026 18:20:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780163200; cv=none; b=DhHyHvON2o4+jrOxeX+wW4l2HRAaxpNiHROLQG5KrhJhG/MgugDi2PQgyWwlsH/FIvNsQuhlwyHvbF2+ByyKQVM2MY0dGyr323eWDjbUq6mRpvcMiryQtXYRWNZcp5c5/FCOuIw85OvrilnvUgJrWl0zdRab/5MsgZsdZLbjESg=
+	t=1780165238; cv=none; b=d1pBN70sFVDRjADx+LH8SSOxhsJEVy88NPLpaM3hsqnA4UNNLpOyx2WXRNzSFM93NHe1k/QkNx2DqRRRAPiToScShglRoMFZkjdK5/U4DvlRxqJWORxy1g0T72iRsth/gi9AGFS+stG7JSemllWJ56doXLs+RWoFjxz2bwXnx1Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780163200; c=relaxed/simple;
-	bh=EJL9IKT44M+glzGF0JZCOSyFgJ6obqjRJQZaXggwprk=;
+	s=arc-20240116; t=1780165238; c=relaxed/simple;
+	bh=1P+/jLpJfTGAiis4arMgapkZ0i15rGVZrbiTQWw2NJ8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=QTQ22T/sQs77k7/EOY0NLjOwnLT6vEHUK9O3ShPL47GkRTgmWB1Lbh2eBozCRBUCQm5eJ+dCG4EqbhHIhguVZKUFvGEy4xhbVKaMu8WObYwATiF0Wtvhq8mVtVMA8V6cg6tPS7H+nkclYcMlry2pnwDYKbVvALmXMzGK6h0tqjg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IAK0zWf+; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 978891F00893;
-	Sat, 30 May 2026 17:46:38 +0000 (UTC)
+	 MIME-Version; b=Z6+kWDycwwq/cuGaJpYvV7Y3Enjc1CKBNA4PvfXPilPlBeMqgmVIAKP/t6sMSrXlaXOk/CbRZRvOuBPvvY/I6D1zAtO+7Gp9cbqNdiOsD9kTp/RantHcANRTskCRVkfS1Fkg+Tvc9L4nQVzCunrYWeBdnXPfCAF2j7HxmfQn1Ds=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Qdn4sukh; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 265CC1F00893;
+	Sat, 30 May 2026 18:20:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780163199;
-	bh=E/d/ioNfvaV5eNQjlZFdYASgD40q7mjrvEkgd7+oLNQ=;
+	s=korg; t=1780165234;
+	bh=ZlM/Ofjo4fJEcqex5HFq0b4hJb0BuJwECrS9gfx3d8o=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=IAK0zWf+rOXr2IWpcN4ELwmdHHLtNOvrj54XU95V4EadjtYFx4n7lTInOCvwgypeR
-	 ViLewiGzfaN94BzP6cCfQoNidlip/Xie4RkuAqUhimTwvC+syj5o4zS5jxTQsNdsNt
-	 rmAnSBmYG7y5ec8GGR0VfsYJnDGymmEFvLPNVSJM=
+	b=Qdn4sukhhFNUIuB8EAEcJtiZ7QIdJE9SvAwrL6UjZqZasu/tDsaWieVjDc2SFnk+2
+	 FgeHdcet5yKoqDn+rzF3ekwiwFmACN35cjbNhOVR84tz22F26p7MbjCbmkNpg88ier
+	 8O7UIkcVn7Qum871hS43gNBgxp2I66OuHNcVA0lY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Lyude Paul <lyude@redhat.com>,
-	Danilo Krummrich <dakr@kernel.org>,
-	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
-	Maxime Ripard <mripard@kernel.org>,
-	Thomas Zimmermann <tzimmermann@suse.de>,
-	David Airlie <airlied@gmail.com>,
-	Simona Vetter <simona@ffwll.ch>,
-	stable <stable@kernel.org>
-Subject: [PATCH 5.15 186/776] drm/nouveau: fix u32 overflow in pushbuf reloc bounds check
+	Yifan Wu <yifanwucs@gmail.com>,
+	Juefei Pu <tomapufckgml@gmail.com>,
+	Yuan Tan <yuantan098@gmail.com>,
+	Xin Liu <bird@lzu.edu.cn>,
+	Ren Wei <enjou1224z@gmail.com>,
+	Ruide Cao <caoruide123@gmail.com>,
+	Ren Wei <n05ec@lzu.edu.cn>,
+	Simon Horman <horms@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 019/589] net: sched: act_csum: validate nested VLAN headers
 Date: Sat, 30 May 2026 17:58:20 +0200
-Message-ID: <20260530160245.307722341@linuxfoundation.org>
+Message-ID: <20260530160225.084295835@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260530160240.228940103@linuxfoundation.org>
-References: <20260530160240.228940103@linuxfoundation.org>
+In-Reply-To: <20260530160224.570625122@linuxfoundation.org>
+References: <20260530160224.570625122@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -71,84 +73,95 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,redhat.com,kernel.org,linux.intel.com,suse.de,gmail.com,ffwll.ch];
-	TAGGED_FROM(0.00)[bounces-258095-lists,stable=lfdr.de];
-	PRECEDENCE_BULK(0.00)[];
+	TAGGED_FROM(0.00)[bounces-258698-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,lzu.edu.cn,kernel.org];
 	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	RCPT_COUNT_TWELVE(0.00)[13];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[11];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[intel.com:email,suse.de:email,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,ffwll.ch:email]
-X-Rspamd-Queue-Id: 753976106D5
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	NEURAL_HAM(-0.00)[-0.995];
+	TAGGED_RCPT(0.00)[stable];
+	MID_RHS_MATCH_FROM(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,lzu.edu.cn:email,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim]
+X-Rspamd-Queue-Id: 8B677611D04
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+From: Ruide Cao <caoruide123@gmail.com>
 
-commit 2fc87d37be1b730a149b035f9375fdb8cc5333a5 upstream.
+[ Upstream commit c842743d073bdd683606cb414eb0ca84465dd834 ]
 
-nouveau_gem_pushbuf_reloc_apply() validates each relocation with
+tcf_csum_act() walks nested VLAN headers directly from skb->data when an
+skb still carries in-payload VLAN tags. The current code reads
+vlan->h_vlan_encapsulated_proto and then pulls VLAN_HLEN bytes without
+first ensuring that the full VLAN header is present in the linear area.
 
-    if (r->reloc_bo_offset + 4 > nvbo->bo.base.size)
+If only part of an inner VLAN header is linearized, accessing
+h_vlan_encapsulated_proto reads past the linear area, and the following
+skb_pull(VLAN_HLEN) may violate skb invariants.
 
-but reloc_bo_offset is __u32 (uapi/drm/nouveau_drm.h) and the integer
-literal 4 promotes to unsigned int, so the addition is performed in 32
-bits and wraps before the comparison against the size_t bo size.
+Fix this by requiring pskb_may_pull(skb, VLAN_HLEN) before accessing and
+pulling each nested VLAN header. If the header still is not fully
+available, drop the packet through the existing error path.
 
-Cast to u64 so the addition happens in 64-bit arithmetic.
-
-Cc: Lyude Paul <lyude@redhat.com>
-Cc: Danilo Krummrich <dakr@kernel.org>
-Cc: Maarten Lankhorst <maarten.lankhorst@linux.intel.com>
-Cc: Maxime Ripard <mripard@kernel.org>
-Cc: Thomas Zimmermann <tzimmermann@suse.de>
-Cc: David Airlie <airlied@gmail.com>
-Cc: Simona Vetter <simona@ffwll.ch>
-Reported-by: Anthropic
-Cc: stable <stable@kernel.org>
-Assisted-by: gkh_clanker_t1000
-Fixes: a1606a9596e5 ("drm/nouveau: new gem pushbuf interface, bump to 0.0.16")
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-[ Add Fixes: tag. - Danilo ]
-Signed-off-by: Danilo Krummrich <dakr@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 2ecba2d1e45b ("net: sched: act_csum: Fix csum calc for tagged packets")
+Reported-by: Yifan Wu <yifanwucs@gmail.com>
+Reported-by: Juefei Pu <tomapufckgml@gmail.com>
+Co-developed-by: Yuan Tan <yuantan098@gmail.com>
+Signed-off-by: Yuan Tan <yuantan098@gmail.com>
+Suggested-by: Xin Liu <bird@lzu.edu.cn>
+Tested-by: Ren Wei <enjou1224z@gmail.com>
+Signed-off-by: Ruide Cao <caoruide123@gmail.com>
+Signed-off-by: Ren Wei <n05ec@lzu.edu.cn>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Link: https://patch.msgid.link/22df2fcb49f410203eafa5d97963dd36089f4ecf.1774892775.git.caoruide123@gmail.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/nouveau/nouveau_gem.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ net/sched/act_csum.c | 6 +++++-
+ 1 file changed, 5 insertions(+), 1 deletion(-)
 
---- a/drivers/gpu/drm/nouveau/nouveau_gem.c
-+++ b/drivers/gpu/drm/nouveau/nouveau_gem.c
-@@ -668,7 +668,7 @@ nouveau_gem_pushbuf_reloc_apply(struct n
- 		}
- 		nvbo = (void *)(unsigned long)bo[r->reloc_bo_index].user_priv;
+diff --git a/net/sched/act_csum.c b/net/sched/act_csum.c
+index 4fa4fcb842ba7..107dc690de051 100644
+--- a/net/sched/act_csum.c
++++ b/net/sched/act_csum.c
+@@ -602,8 +602,12 @@ static int tcf_csum_act(struct sk_buff *skb, const struct tc_action *a,
+ 			protocol = skb->protocol;
+ 			orig_vlan_tag_present = true;
+ 		} else {
+-			struct vlan_hdr *vlan = (struct vlan_hdr *)skb->data;
++			struct vlan_hdr *vlan;
  
--		if (unlikely(r->reloc_bo_offset + 4 >
-+		if (unlikely((u64)r->reloc_bo_offset + 4 >
- 			     nvbo->bo.base.size)) {
- 			NV_PRINTK(err, cli, "reloc outside of bo\n");
- 			ret = -EINVAL;
++			if (!pskb_may_pull(skb, VLAN_HLEN))
++				goto drop;
++
++			vlan = (struct vlan_hdr *)skb->data;
+ 			protocol = vlan->h_vlan_encapsulated_proto;
+ 			skb_pull(skb, VLAN_HLEN);
+ 			skb_reset_network_header(skb);
+-- 
+2.53.0
+
 
 
 
