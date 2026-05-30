@@ -1,60 +1,65 @@
-Return-Path: <stable+bounces-257855-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-259235-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 4J6TFaAgG2rO/QgAu9opvQ
-	(envelope-from <stable+bounces-257855-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:38:40 +0200
+	id yDI6IJsxG2qKAAkAu9opvQ
+	(envelope-from <stable+bounces-259235-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:51:07 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id DA35D61015B
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:38:39 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7FA746129B0
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:51:06 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 6CB6330344DB
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 17:33:21 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 7270C3002F4E
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 18:51:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C485232B106;
-	Sat, 30 May 2026 17:33:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 81DD9233952;
+	Sat, 30 May 2026 18:51:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vayxBJ9c"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MqWw+fM9"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A1B6933A9DA;
-	Sat, 30 May 2026 17:33:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 44077137750;
+	Sat, 30 May 2026 18:51:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780162398; cv=none; b=hSb2/6NWGXJOnRW9pmsMvCLrhQvAA+8OCPrAC20noP5heZyrQgowZzWMZtgGbWpiEgSvcG2xauuvWr/beOnbqKP3xSsE2sZC5cqsLRnPUXfkBeAgkvU8nOH7fndSZwQ6qC3R2Xqmqiu/kllwtFU4W+TT27vEBgbwhKYMLAYNAQE=
+	t=1780167062; cv=none; b=PnPf9E9I/c03IIbcGSpT2OevVKmnmf2ayiSiP19rExRofbu3UcX6TtcTrvLYuC7N8UClycgvgO4ifdmYojdsSYmmx+4aezbVE9nMC/hSSweuwLcs0PV/NCRmiVZ+87/je1iJCtf5QOVfj6sZBMgnTAFZKFY33NoWkQVCUzBzYH4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780162398; c=relaxed/simple;
-	bh=6gwCw1cQPYUREz48HDN8EJ1xyaJWH2Rfn1e5BUV3lrc=;
+	s=arc-20240116; t=1780167062; c=relaxed/simple;
+	bh=WPdrJK96+PMuqiUFy+5E3sE/37AVgtylyRsY7kqVIKA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=qTzQb26fJa5Dqm8olIJEs7zwIFTcmqDl14u70c0D4frCWn8Cl784qCNZZj1zq13sKXKfEoLv0XtZ3ovlRUzN/NwWdrDE+osIWajPZHQh+xNE8NG8UGTKhe79F/CjSXVShE7wfoiBEXO/CZJMQ+k4iUOuWUfcISv82CSQFLA/XYo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vayxBJ9c; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E3EF81F00893;
-	Sat, 30 May 2026 17:33:16 +0000 (UTC)
+	 MIME-Version; b=o7tc2+h1NVdGVAj69LDSVlsLBs5R7TIE7GB6JF1ZNPqy1uJYp410lqG0Yo3J+Y3KqbhkRlEXwKSJGAnv2O5c/y32zqOUjN/wtqkPe8cZ73nbfU8IBrPENUHfOuY7Vt9/zr8LBd0Neymm/VzPg0EtLQGmYBwBLDVBvkAjeVoqMrI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MqWw+fM9; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8D79D1F00893;
+	Sat, 30 May 2026 18:51:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780162397;
-	bh=TW2y0AR25E+JOWyJe5nzVM52R4LYQ5ZCCvKgEKgyymU=;
+	s=korg; t=1780167061;
+	bh=MJMU5qlDeFj6TlMF88fIfcEClN39AhZqyj+Kvt0P0yg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=vayxBJ9c1CSFyQYf7cxPNwBjZkWV4NZrNYgKDy1aMvckL3onuoDZDQXke3SCDHHvI
-	 IxxKGgGfgpopuJbDzx9xqdryFXXTkPvKE8CcvWfOanFC8MbF9Hl1S1qS6/CSt044JE
-	 DCO9fMoLXpIBBuIDrmgIdWDVmQU/lALjtj/lqZQI=
+	b=MqWw+fM95r982Cy3lW5+ULWmgy+Q2c/Zd/g2NU2WI+o6V2pjzXaRcrmkn+h6FE13x
+	 CAtYAZD8QTLX4+VJEt12fQhCD7ODpin53hkP/b9kzCPDgt5OwOF9NaHoGEVzdLJFWi
+	 kaMyn6niPdA2xOmYgoUcrLUrWwOFt33dtAOKYVBM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	kernel test robot <lkp@intel.com>,
-	Randy Dunlap <rdunlap@infradead.org>,
-	Florian Westphal <fw@strlen.de>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 910/969] netfilter: xtables: fix up kconfig dependencies
+	stable@kernel.org,
+	Yuan Tan <yuantan098@gmail.com>,
+	Yifan Wu <yifanwucs@gmail.com>,
+	Juefei Pu <tomapufckgml@gmail.com>,
+	Xin Liu <bird@lzu.edu.cn>,
+	Ruide Cao <caoruide123@gmail.com>,
+	Ren Wei <enjou1224z@gmail.com>,
+	Ren Wei <n05ec@lzu.edu.cn>,
+	Sven Eckelmann <sven@narfation.org>
+Subject: [PATCH 5.10 553/589] batman-adv: fix fragment reassembly length accounting
 Date: Sat, 30 May 2026 18:07:14 +0200
-Message-ID: <20260530160325.853138028@linuxfoundation.org>
+Message-ID: <20260530160239.194112738@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260530160300.485627683@linuxfoundation.org>
-References: <20260530160300.485627683@linuxfoundation.org>
+In-Reply-To: <20260530160224.570625122@linuxfoundation.org>
+References: <20260530160224.570625122@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -67,92 +72,167 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	TAGGED_FROM(0.00)[bounces-259235-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,kernel.org,gmail.com,lzu.edu.cn,narfation.org];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	RCPT_COUNT_TWELVE(0.00)[12];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-257855-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
 	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[7];
-	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[infradead.org:email,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,strlen.de:email,intel.com:email,linuxfoundation.org:mid,linuxfoundation.org:dkim]
-X-Rspamd-Queue-Id: DA35D61015B
+	MID_RHS_MATCH_FROM(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,lzu.edu.cn:email,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,narfation.org:email]
+X-Rspamd-Queue-Id: 7FA746129B0
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Florian Westphal <fw@strlen.de>
+From: Ruide Cao <caoruide123@gmail.com>
 
-[ Upstream commit 749d4ef0868c5d8a98e07073791b2198178c93b4 ]
+commit 9cd3f16c320bfdadd4509358122368deb56a5741 upstream.
 
-Randy Dunlap reports arptables build failure:
-arp_tables.c:(.text+0x20): undefined reference to `xt_find_table'
+batman-adv keeps a running payload length for queued fragments and uses it
+to validate a fragment chain before reassembly.
 
-... because recent change removed a 'select' on the xtables core.
-Add a "depends" clause on arptables to resolve this.
+That accounting currently allows the accumulated fragment length to be
+truncated during updates. As a result, malformed fragment chains can
+bypass the intended validation and drive reassembly with inconsistent
+length state, leading to a local denial of service.
 
-Kernel test robot reports another build breakage:
-iptable_nat.c:(.text+0x8): undefined reference to `ipt_unregister_table_exit'
+Fix the accounting by storing the accumulated length in a length-typed
+field and rejecting update overflows before the existing validation logic
+runs.
 
-... because of a typo, the nat table selected ip6tables.
+The fix was verified against the original reproducer and against valid
+fragment reassembly paths.
 
-Reported-by: kernel test robot <lkp@intel.com>
-Reported-by: Randy Dunlap <rdunlap@infradead.org>
-Closes: https://lore.kernel.org/netfilter-devel/d0dfbaef-046a-4c42-9daa-53636664bf6d@infradead.org/
-Fixes: a9525c7f6219 ("netfilter: xtables: allow xtables-nft only builds")
-Fixes: 4654467dc7e1 ("netfilter: arptables: allow xtables-nft only builds")
-Acked-by: Randy Dunlap <rdunlap@infradead.org>
-Tested-by: Randy Dunlap <rdunlap@infradead.org> # build-tested
-Signed-off-by: Florian Westphal <fw@strlen.de>
-Stable-dep-of: b4597d5fd7d2 ("netfilter: x_tables: add and use xtables_unregister_table_exit")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 610bfc6bc99b ("batman-adv: Receive fragmented packets and merge")
+Cc: stable@kernel.org
+Reported-by: Yuan Tan <yuantan098@gmail.com>
+Reported-by: Yifan Wu <yifanwucs@gmail.com>
+Reported-by: Juefei Pu <tomapufckgml@gmail.com>
+Reported-by: Xin Liu <bird@lzu.edu.cn>
+Signed-off-by: Ruide Cao <caoruide123@gmail.com>
+Tested-by: Ren Wei <enjou1224z@gmail.com>
+Signed-off-by: Ren Wei <n05ec@lzu.edu.cn>
+Signed-off-by: Sven Eckelmann <sven@narfation.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/ipv4/netfilter/Kconfig | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ net/batman-adv/fragmentation.c |   23 +++++++++++++++++------
+ net/batman-adv/types.h         |    2 +-
+ 2 files changed, 18 insertions(+), 7 deletions(-)
 
-diff --git a/net/ipv4/netfilter/Kconfig b/net/ipv4/netfilter/Kconfig
-index 5ee86c7ae4dcb..0f60a740d117d 100644
---- a/net/ipv4/netfilter/Kconfig
-+++ b/net/ipv4/netfilter/Kconfig
-@@ -217,7 +217,7 @@ config IP_NF_NAT
- 	default m if NETFILTER_ADVANCED=n
- 	select NF_NAT
- 	select NETFILTER_XT_NAT
--	select IP6_NF_IPTABLES_LEGACY
-+	select IP_NF_IPTABLES_LEGACY
- 	help
- 	  This enables the `nat' table in iptables. This allows masquerading,
- 	  port forwarding and other forms of full Network Address Port
-@@ -343,6 +343,7 @@ config NFT_COMPAT_ARP
- config IP_NF_ARPFILTER
- 	tristate "arptables-legacy packet filtering support"
- 	select IP_NF_ARPTABLES
-+	depends on NETFILTER_XTABLES
- 	help
- 	  ARP packet filtering defines a table `filter', which has a series of
- 	  rules for simple ARP packet filtering at local input and
--- 
-2.53.0
-
+--- a/net/batman-adv/fragmentation.c
++++ b/net/batman-adv/fragmentation.c
+@@ -17,6 +17,7 @@
+ #include <linux/lockdep.h>
+ #include <linux/minmax.h>
+ #include <linux/netdevice.h>
++#include <linux/overflow.h>
+ #include <linux/skbuff.h>
+ #include <linux/slab.h>
+ #include <linux/spinlock.h>
+@@ -82,9 +83,9 @@ void batadv_frag_purge_orig(struct batad
+  *
+  * Return: the maximum size of payload that can be fragmented.
+  */
+-static int batadv_frag_size_limit(void)
++static size_t batadv_frag_size_limit(void)
+ {
+-	int limit = BATADV_FRAG_MAX_FRAG_SIZE;
++	size_t limit = BATADV_FRAG_MAX_FRAG_SIZE;
+ 
+ 	limit -= sizeof(struct batadv_frag_packet);
+ 	limit *= BATADV_FRAG_MAX_FRAGMENTS;
+@@ -145,7 +146,9 @@ static bool batadv_frag_insert_packet(st
+ 	struct batadv_frag_packet *frag_packet;
+ 	u8 bucket;
+ 	u16 seqno, hdr_size = sizeof(struct batadv_frag_packet);
++	bool overflow = false;
+ 	bool ret = false;
++	size_t data_len;
+ 
+ 	/* Linearize packet to avoid linearizing 16 packets in a row when doing
+ 	 * the later merge. Non-linear merge should be added to remove this
+@@ -155,6 +158,7 @@ static bool batadv_frag_insert_packet(st
+ 		goto err;
+ 
+ 	frag_packet = (struct batadv_frag_packet *)skb->data;
++	data_len = skb->len - hdr_size;
+ 	seqno = ntohs(frag_packet->seqno);
+ 	bucket = seqno % BATADV_FRAG_BUFFER_COUNT;
+ 
+@@ -173,7 +177,7 @@ static bool batadv_frag_insert_packet(st
+ 	spin_lock_bh(&chain->lock);
+ 	if (batadv_frag_init_chain(chain, seqno)) {
+ 		hlist_add_head(&frag_entry_new->list, &chain->fragment_list);
+-		chain->size = skb->len - hdr_size;
++		chain->size = data_len;
+ 		chain->timestamp = jiffies;
+ 		chain->total_size = ntohs(frag_packet->total_size);
+ 		ret = true;
+@@ -190,7 +194,11 @@ static bool batadv_frag_insert_packet(st
+ 		if (frag_entry_curr->no < frag_entry_new->no) {
+ 			hlist_add_before(&frag_entry_new->list,
+ 					 &frag_entry_curr->list);
+-			chain->size += skb->len - hdr_size;
++
++			if (check_add_overflow(chain->size, data_len,
++					       &chain->size))
++				overflow = true;
++
+ 			chain->timestamp = jiffies;
+ 			ret = true;
+ 			goto out;
+@@ -203,13 +211,16 @@ static bool batadv_frag_insert_packet(st
+ 	/* Reached the end of the list, so insert after 'frag_entry_last'. */
+ 	if (likely(frag_entry_last)) {
+ 		hlist_add_behind(&frag_entry_new->list, &frag_entry_last->list);
+-		chain->size += skb->len - hdr_size;
++
++		if (check_add_overflow(chain->size, data_len, &chain->size))
++			overflow = true;
++
+ 		chain->timestamp = jiffies;
+ 		ret = true;
+ 	}
+ 
+ out:
+-	if (chain->size > batadv_frag_size_limit() ||
++	if (overflow || chain->size > batadv_frag_size_limit() ||
+ 	    chain->total_size != ntohs(frag_packet->total_size) ||
+ 	    chain->total_size > batadv_frag_size_limit()) {
+ 		/* Clear chain if total size of either the list or the packet
+--- a/net/batman-adv/types.h
++++ b/net/batman-adv/types.h
+@@ -304,7 +304,7 @@ struct batadv_frag_table_entry {
+ 	u16 seqno;
+ 
+ 	/** @size: accumulated size of packets in list */
+-	u16 size;
++	size_t size;
+ 
+ 	/** @total_size: expected size of the assembled packet */
+ 	u16 total_size;
 
 
 
