@@ -1,60 +1,60 @@
-Return-Path: <stable+bounces-259259-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-258651-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id eJ9iAwUyG2qkAAkAu9opvQ
-	(envelope-from <stable+bounces-259259-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:52:53 +0200
+	id KMYuGqAqG2r//ggAu9opvQ
+	(envelope-from <stable+bounces-258651-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:21:20 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id A6840612B63
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:52:52 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 29E1F6118F4
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:21:20 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 183193015863
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 18:52:24 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id DAFCC308B727
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 18:17:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C6342231A23;
-	Sat, 30 May 2026 18:52:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3ABC8241C8C;
+	Sat, 30 May 2026 18:17:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LypnB7AN"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AQMZUmCZ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AA236137750;
-	Sat, 30 May 2026 18:52:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E80C23242BE;
+	Sat, 30 May 2026 18:17:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780167141; cv=none; b=gEiZRigFyXiG+cVgfOP0d+jIi0TKEAIMEbd3W3PqviXO0GEqOKrIlOQLSQZw+tzwCZ/FFzUDiigYld+TwDmuSrqi233duCmVRlywMtA+tq/JgYh300Fx0pbutl4U0lt3KQRpYIu8TmAY3F+yJCuU77EIg4rPcRT8sx7gvs42yNw=
+	t=1780165071; cv=none; b=Vt2mUcOi/m3y/ATGr4AStQEpiflzZnqrGhf2uUpQyZB975Hf32dNBRdmXP7unuET0qDL2GTCLSZVw/ss/Awioun7igJf0Auxas/uJ76kf+56JxkO1foktGl3ZHem4k+WTg4v0VoVwICUKlWTYi2eVib7c2w4Myn+9tzJCPzdYJQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780167141; c=relaxed/simple;
-	bh=scdsR/eoTi8RBcLyNRLIOhg3tUUivo25Scx8uscX0So=;
+	s=arc-20240116; t=1780165071; c=relaxed/simple;
+	bh=k9wvHpSG8QzUJmM5SguZWHXOoivCdJtA+2lV3lLtakc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=QMZVABDMuLgS61Sg6wvwnKzPRJXF5PgTYpHPu6Ri1FmEooP3V4R1LYGuaGReCClh2Z2xmgAfRH7gNA7ysFd/ulDE3jSyWcoL81sEfQ6+gES5uD3YGEHszLSMNecidGKPx02yGh+O+GeHUNEzjHoRTHtK1gQStpH9RSNk3tBNOE0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LypnB7AN; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F20CC1F00893;
-	Sat, 30 May 2026 18:52:19 +0000 (UTC)
+	 MIME-Version; b=dCuXG71JNcRRhyGz6jktqJ6eTKP56rFwv6MYhZVcj1STtavJdAWZ4FAntb2cUA/7Wjx5bdgSjBAJOEfSfFuLIsIfwVCmZ3Gkva4d/was2ayYWg9pd5Yi3CdmIe1y58DlG1usc1ytmTOy96L7XngFmc/sYYdMFB+cU8MS8vE6mv4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AQMZUmCZ; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EA9851F00893;
+	Sat, 30 May 2026 18:17:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780167140;
-	bh=XK8PziWoCZ2Amp8q6CAmR4v1ARO7VMV5HOVFs1vN4SU=;
+	s=korg; t=1780165069;
+	bh=GfOkRO8RgCDcGv+78QE7ejo71/kRA+c3LJ+wiDp/n9M=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=LypnB7ANWIQ7Kpp9+3Ggv5o5QoT0AxpEQhIoKez8IABcF204mRPM2Z7y2L6olX5Si
-	 r7lN5fWnxuJleLowogkBSlPLYKulyNwdkiMwgVvs6WxIHzADmp/OiC+M7WQ2mK0+xP
-	 RVw1TUNtSgK8kdpYmn6YXuhdv1bPCHVKZreRxB2I=
+	b=AQMZUmCZY5EjLu7JUdSmESKTcASho29+3lYXApBr1v14CtBY3xf4QAq9Iz7BaCbyo
+	 bRzqYYt7NXzSV8g24ACqbYF8TP7+ekIngmN8/8KyUqcbGq5JTe7fm2pprq3/qLWRJ0
+	 b7nR1XRu8MXN45sNMjABOWLH/deZ4N8nx7Giyit8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	kernel test robot <lkp@intel.com>,
-	Rosen Penev <rosenp@gmail.com>,
-	Thomas Gleixner <tglx@kernel.org>,
+	Tristan Madani <tristan@talencesecurity.com>,
+	Florian Westphal <fw@strlen.de>,
+	Pablo Neira Ayuso <pablo@netfilter.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 574/589] irqchip/ath79-cpu: Remove unused function
+Subject: [PATCH 5.15 741/776] netfilter: ebtables: move to two-stage removal scheme
 Date: Sat, 30 May 2026 18:07:35 +0200
-Message-ID: <20260530160239.698977233@linuxfoundation.org>
+Message-ID: <20260530160258.938041452@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260530160224.570625122@linuxfoundation.org>
-References: <20260530160224.570625122@linuxfoundation.org>
+In-Reply-To: <20260530160240.228940103@linuxfoundation.org>
+References: <20260530160240.228940103@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,76 +69,226 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,intel.com,gmail.com,kernel.org];
-	TAGGED_FROM(0.00)[bounces-259259-lists,stable=lfdr.de];
-	PRECEDENCE_BULK(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-0.999];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-258651-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
 	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[intel.com:email,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim,msgid.link:url]
-X-Rspamd-Queue-Id: A6840612B63
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_SEVEN(0.00)[7];
+	MID_RHS_MATCH_FROM(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[talencesecurity.com:email,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,strlen.de:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,netfilter.org:email]
+X-Rspamd-Queue-Id: 29E1F6118F4
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Rosen Penev <rosenp@gmail.com>
+From: Florian Westphal <fw@strlen.de>
 
-[ Upstream commit 0fa10fb77069fb67aa51384868ef3702b7791465 ]
+[ Upstream commit b7f0544d86d439cb946515d2ef6a0a75e8626710 ]
 
-ath79_cpu_irq_init() was part of the legacy pre-OF code that got removed a
-while back.
+Like previous patches for x_tables, follow same pattern in ebtables.
+We can't reuse xt helpers: ebt_table struct layout is incompatible.
 
-Remove it to get rid of a missing prototype warning, reported by the kernel test
-robot.
+table->ops assignment is now done while still holding the ebt mutex
+to make sure we never expose partially-filled table struct.
 
-[ tglx: Fix the subject prefix. Sigh ... ]
-
-Fixes: 51fa4f8912c0 ("MIPS: ath79: drop legacy IRQ code")
-Reported-by: kernel test robot <lkp@intel.com>
-Signed-off-by: Rosen Penev <rosenp@gmail.com>
-Signed-off-by: Thomas Gleixner <tglx@kernel.org>
-Link: https://patch.msgid.link/20260506085522.1210143-1-rosenp@gmail.com
-Closes: https://lore.kernel.org/oe-kbuild-all/202412011509.kGQkDr1y-lkp@intel.com/
+Fixes: 87663c39f898 ("netfilter: ebtables: do not hook tables by default")
+Reviewed-by: Tristan Madani <tristan@talencesecurity.com>
+Signed-off-by: Florian Westphal <fw@strlen.de>
+Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/irqchip/irq-ath79-cpu.c | 7 -------
- 1 file changed, 7 deletions(-)
+ net/bridge/netfilter/ebtable_broute.c |  2 +-
+ net/bridge/netfilter/ebtable_filter.c |  2 +-
+ net/bridge/netfilter/ebtable_nat.c    |  2 +-
+ net/bridge/netfilter/ebtables.c       | 60 +++++++++++++++++----------
+ 4 files changed, 40 insertions(+), 26 deletions(-)
 
-diff --git a/drivers/irqchip/irq-ath79-cpu.c b/drivers/irqchip/irq-ath79-cpu.c
-index 923e4bba37767..9b7273a7f8ced 100644
---- a/drivers/irqchip/irq-ath79-cpu.c
-+++ b/drivers/irqchip/irq-ath79-cpu.c
-@@ -85,10 +85,3 @@ static int __init ar79_cpu_intc_of_init(
+diff --git a/net/bridge/netfilter/ebtable_broute.c b/net/bridge/netfilter/ebtable_broute.c
+index 3d4ea774d7e8f..c5d6fb937394c 100644
+--- a/net/bridge/netfilter/ebtable_broute.c
++++ b/net/bridge/netfilter/ebtable_broute.c
+@@ -128,8 +128,8 @@ static int __init ebtable_broute_init(void)
+ 
+ static void __exit ebtable_broute_fini(void)
+ {
+-	unregister_pernet_subsys(&broute_net_ops);
+ 	ebt_unregister_template(&broute_table);
++	unregister_pernet_subsys(&broute_net_ops);
  }
- IRQCHIP_DECLARE(ar79_cpu_intc, "qca,ar7100-cpu-intc",
- 		ar79_cpu_intc_of_init);
+ 
+ module_init(ebtable_broute_init);
+diff --git a/net/bridge/netfilter/ebtable_filter.c b/net/bridge/netfilter/ebtable_filter.c
+index 257d63b5dec16..ee3d6d5a03a35 100644
+--- a/net/bridge/netfilter/ebtable_filter.c
++++ b/net/bridge/netfilter/ebtable_filter.c
+@@ -116,8 +116,8 @@ static int __init ebtable_filter_init(void)
+ 
+ static void __exit ebtable_filter_fini(void)
+ {
+-	unregister_pernet_subsys(&frame_filter_net_ops);
+ 	ebt_unregister_template(&frame_filter);
++	unregister_pernet_subsys(&frame_filter_net_ops);
+ }
+ 
+ module_init(ebtable_filter_init);
+diff --git a/net/bridge/netfilter/ebtable_nat.c b/net/bridge/netfilter/ebtable_nat.c
+index 39179c2cf87d2..c98840b68fc52 100644
+--- a/net/bridge/netfilter/ebtable_nat.c
++++ b/net/bridge/netfilter/ebtable_nat.c
+@@ -115,8 +115,8 @@ static int __init ebtable_nat_init(void)
+ 
+ static void __exit ebtable_nat_fini(void)
+ {
+-	unregister_pernet_subsys(&frame_nat_net_ops);
+ 	ebt_unregister_template(&frame_nat);
++	unregister_pernet_subsys(&frame_nat_net_ops);
+ }
+ 
+ module_init(ebtable_nat_init);
+diff --git a/net/bridge/netfilter/ebtables.c b/net/bridge/netfilter/ebtables.c
+index c74efcc2b4996..5390b25cdb45e 100644
+--- a/net/bridge/netfilter/ebtables.c
++++ b/net/bridge/netfilter/ebtables.c
+@@ -42,6 +42,7 @@
+ 
+ struct ebt_pernet {
+ 	struct list_head tables;
++	struct list_head dead_tables;
+ };
+ 
+ struct ebt_template {
+@@ -1162,11 +1163,6 @@ static int do_replace(struct net *net, sockptr_t arg, unsigned int len)
+ 
+ static void __ebt_unregister_table(struct net *net, struct ebt_table *table)
+ {
+-	mutex_lock(&ebt_mutex);
+-	list_del(&table->list);
+-	mutex_unlock(&ebt_mutex);
+-	audit_log_nfcfg(table->name, AF_BRIDGE, table->private->nentries,
+-			AUDIT_XT_OP_UNREGISTER, GFP_KERNEL);
+ 	EBT_ENTRY_ITERATE(table->private->entries, table->private->entries_size,
+ 			  ebt_cleanup_entry, net, NULL);
+ 	if (table->private->nentries)
+@@ -1267,13 +1263,15 @@ int ebt_register_table(struct net *net, const struct ebt_table *input_table,
+ 	for (i = 0; i < num_ops; i++)
+ 		ops[i].priv = table;
+ 
+-	list_add(&table->list, &ebt_net->tables);
+-	mutex_unlock(&ebt_mutex);
 -
--void __init ath79_cpu_irq_init(unsigned irq_wb_chan2, unsigned irq_wb_chan3)
--{
--	irq_wb_chan[2] = irq_wb_chan2;
--	irq_wb_chan[3] = irq_wb_chan3;
--	mips_cpu_irq_init();
+ 	table->ops = ops;
+ 	ret = nf_register_net_hooks(net, ops, num_ops);
+-	if (ret)
++	if (ret) {
++		synchronize_rcu();
+ 		__ebt_unregister_table(net, table);
++	} else {
++		list_add(&table->list, &ebt_net->tables);
++	}
++	mutex_unlock(&ebt_mutex);
+ 
+ 	audit_log_nfcfg(repl->name, AF_BRIDGE, repl->nentries,
+ 			AUDIT_XT_OP_REGISTER, GFP_KERNEL);
+@@ -1339,7 +1337,7 @@ void ebt_unregister_template(const struct ebt_table *t)
+ }
+ EXPORT_SYMBOL(ebt_unregister_template);
+ 
+-static struct ebt_table *__ebt_find_table(struct net *net, const char *name)
++void ebt_unregister_table_pre_exit(struct net *net, const char *name)
+ {
+ 	struct ebt_pernet *ebt_net = net_generic(net, ebt_pernet_id);
+ 	struct ebt_table *t;
+@@ -1348,30 +1346,36 @@ static struct ebt_table *__ebt_find_table(struct net *net, const char *name)
+ 
+ 	list_for_each_entry(t, &ebt_net->tables, list) {
+ 		if (strcmp(t->name, name) == 0) {
++			list_move(&t->list, &ebt_net->dead_tables);
+ 			mutex_unlock(&ebt_mutex);
+-			return t;
++			nf_unregister_net_hooks(net, t->ops, hweight32(t->valid_hooks));
++			return;
+ 		}
+ 	}
+ 
+ 	mutex_unlock(&ebt_mutex);
+-	return NULL;
 -}
+-
+-void ebt_unregister_table_pre_exit(struct net *net, const char *name)
+-{
+-	struct ebt_table *table = __ebt_find_table(net, name);
+-
+-	if (table)
+-		nf_unregister_net_hooks(net, table->ops, hweight32(table->valid_hooks));
+ }
+ EXPORT_SYMBOL(ebt_unregister_table_pre_exit);
+ 
+ void ebt_unregister_table(struct net *net, const char *name)
+ {
+-	struct ebt_table *table = __ebt_find_table(net, name);
++	struct ebt_pernet *ebt_net = net_generic(net, ebt_pernet_id);
++	struct ebt_table *t;
+ 
+-	if (table)
+-		__ebt_unregister_table(net, table);
++	mutex_lock(&ebt_mutex);
++
++	list_for_each_entry(t, &ebt_net->dead_tables, list) {
++		if (strcmp(t->name, name) == 0) {
++			list_del(&t->list);
++			audit_log_nfcfg(t->name, AF_BRIDGE, t->private->nentries,
++					AUDIT_XT_OP_UNREGISTER, GFP_KERNEL);
++			__ebt_unregister_table(net, t);
++			mutex_unlock(&ebt_mutex);
++			return;
++		}
++	}
++
++	mutex_unlock(&ebt_mutex);
+ }
+ 
+ /* userspace just supplied us with counters */
+@@ -2555,11 +2559,21 @@ static int __net_init ebt_pernet_init(struct net *net)
+ 	struct ebt_pernet *ebt_net = net_generic(net, ebt_pernet_id);
+ 
+ 	INIT_LIST_HEAD(&ebt_net->tables);
++	INIT_LIST_HEAD(&ebt_net->dead_tables);
+ 	return 0;
+ }
+ 
++static void __net_exit ebt_pernet_exit(struct net *net)
++{
++	struct ebt_pernet *ebt_net = net_generic(net, ebt_pernet_id);
++
++	WARN_ON_ONCE(!list_empty(&ebt_net->tables));
++	WARN_ON_ONCE(!list_empty(&ebt_net->dead_tables));
++}
++
+ static struct pernet_operations ebt_net_ops = {
+ 	.init = ebt_pernet_init,
++	.exit = ebt_pernet_exit,
+ 	.id   = &ebt_pernet_id,
+ 	.size = sizeof(struct ebt_pernet),
+ };
 -- 
 2.53.0
 
