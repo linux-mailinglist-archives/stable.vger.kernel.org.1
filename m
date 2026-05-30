@@ -1,59 +1,60 @@
-Return-Path: <stable+bounces-258695-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-258082-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id eDCbB2IsG2pa/wgAu9opvQ
-	(envelope-from <stable+bounces-258695-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:28:50 +0200
+	id IMT9GN8jG2rO/QgAu9opvQ
+	(envelope-from <stable+bounces-258082-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:52:31 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 952F2611CFA
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:28:49 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id BEBAF6108DC
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:52:30 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 8F65B306D601
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 18:20:25 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 120EA3017258
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 17:46:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 20CA9339863;
-	Sat, 30 May 2026 18:20:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7D2B6351C2F;
+	Sat, 30 May 2026 17:46:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="x8lTO3XI"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LM3RyL5M"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A49093BF677;
-	Sat, 30 May 2026 18:20:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4826125B0BC;
+	Sat, 30 May 2026 17:45:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780165224; cv=none; b=WPliWUWGLLR8rc0Hfks73uW82JPlqk5s1CjiO9PzFYQGDA7vbwFIzbfhX46DCB0uhG4WAbDmHTzoI0r64r/YubiVN9DZeRtKYFnmzNJ0tqtiJYZ5e3e4Bw96kdTcDtifUBuWtLZnkwG+GCZlsLZkKHGKmHkPZzX8Dr6u2cPDCq8=
+	t=1780163160; cv=none; b=V+f7b3VW6Z5jxuJacGfI3wZt1s3fc0/nS5AW0Wqfe0BZfcXgsb/rtr161qRQVmHcQA0ox3f61Smqp3ljb4O9bSmjiNPJJLkfP05jX/NLFod375A9J8uNFPlN5uv/VSgKJ6mpQ9SkZUo9l1aVjeRhDF+M+1YiCLz5HVxXzNQmQos=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780165224; c=relaxed/simple;
-	bh=0WnvGGg0zAlboB16WXwMEssXS0ShBu+qbr/hFJ2P1xQ=;
+	s=arc-20240116; t=1780163160; c=relaxed/simple;
+	bh=nKjXhNixmmRpU6sIcsmt9uK0/uRqXivl8VCARL7DwDo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ITf9r549PnzJuRJuEgJzKkkqZ2EwSv1BJ2wnNOCYOThjis+vKuzUqKJDPP8FKfol5CzK/bwyBTkCRzZBJT7Qo7tScYfAIRB8ErdX7vvTcxY4nK4KcRZ+408pQ6t+JE2ldFdQr6quR9BBAAP//ygBYEv+Md8wxThSuyBda1viW0g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=x8lTO3XI; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EA4841F00893;
-	Sat, 30 May 2026 18:20:22 +0000 (UTC)
+	 MIME-Version; b=JtKCE9lydZkq3tJVigKh7Xkjh0lj+17MtXszvjQ82L3y8B++wUkgKhEcN3eZdW3uXT0BLKtHT3DxpBeGgPqpUUnlfv3VmC9/ppvTx9z6l2hxL2qMm+vRPHO56oGXyjz0uigbbwgDB9ww0aBqz329s6o0n4Z+lyYZ6xJvscBK+fU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LM3RyL5M; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8ED2B1F00893;
+	Sat, 30 May 2026 17:45:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780165223;
-	bh=rMZxCuP/K/IKPZ67UlbEOqba+GmY4EhB/302nEGDAKM=;
+	s=korg; t=1780163159;
+	bh=QSm6KChBq7z47iQJS7yX4BdWvd2A4OIeBwCatOu+Kxw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=x8lTO3XIvwgaiCrlZsobJxOo0Y+D7JI4aVa18j/RCJ8+/xrdh0sW0KItGg2fnRwWD
-	 iDcVRagqSidBLCMDbHH3SUWdu1yVxcflo5Jk1e+I5Ri4O5aJn/nQnAi/g18+zhoHJV
-	 eBK0U/rcT7zsWm9RLH+46SwsL58iy8AUVmsEDFQ8=
+	b=LM3RyL5MZumeX3mNNQ82v9YTEBALD2I3MeqryhOlkky3/fptgtOj59m+YC5B0rMt6
+	 GP47EIAyG5FesgtZR9JwBux9ens6e9TSaoFDwEb37mifDsU1Q7qnE3HPW2HXcXkoZv
+	 CxJVAN1fO+IYVUuRlFiUezA0N8gKicj4p1IhE7hA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Kuninori Morimoto <kuninori.morimoto.gx@renesas.com>,
-	Mark Brown <broonie@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 008/589] ASoC: soc-core: call missing INIT_LIST_HEAD() for card_aux_list
+	Alexander Potapenko <glider@google.com>,
+	Sebastian Alba Vives <sebasjosue84@gmail.com>,
+	Sean Christopherson <seanjc@google.com>,
+	Herbert Xu <herbert@gondor.apana.org.au>
+Subject: [PATCH 5.15 175/776] crypto: ccp: Dont attempt to copy CSR to userspace if PSP command failed
 Date: Sat, 30 May 2026 17:58:09 +0200
-Message-ID: <20260530160224.795243636@linuxfoundation.org>
+Message-ID: <20260530160245.019992796@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260530160224.570625122@linuxfoundation.org>
-References: <20260530160224.570625122@linuxfoundation.org>
+In-Reply-To: <20260530160240.228940103@linuxfoundation.org>
+References: <20260530160240.228940103@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -68,98 +69,116 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	RCVD_TLS_LAST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
+	TAGGED_FROM(0.00)[bounces-258082-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,google.com,gmail.com,gondor.apana.org.au];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-258695-lists,stable=lfdr.de];
-	TO_DN_SOME(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-0.996];
+	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	PRECEDENCE_BULK(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[renesas.com:email,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,msgid.link:url,linuxfoundation.org:mid,linuxfoundation.org:dkim]
-X-Rspamd-Queue-Id: 952F2611CFA
+	TAGGED_RCPT(0.00)[stable];
+	TO_DN_SOME(0.00)[];
+	FROM_HAS_DN(0.00)[]
+X-Rspamd-Queue-Id: BEBAF6108DC
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kuninori Morimoto <kuninori.morimoto.gx@renesas.com>
+From: Sean Christopherson <seanjc@google.com>
 
-[ Upstream commit b9eff9732cb0f86a68c9d1592a98ceab47c01e95 ]
+commit abe4a6d6f606113251868c2c4a06ba904bb41eed upstream.
 
-Component has "card_aux_list" which is added/deled in bind/unbind aux dev
-function (A), and used in for_each_card_auxs() loop (B).
+When retrieving the PEK CSR, don't attempt to copy the blob to userspace
+if the firmware command failed.  If the failure was due to an invalid
+length, i.e. the userspace buffer+length was too small, copying the number
+of bytes _firmware_ requires will overflow the kernel-allocated buffer and
+leak data to userspace.
 
-	static void soc_unbind_aux_dev(...)
-	{
-		...
-		for_each_card_auxs_safe(...) {
-			...
-(A)			list_del(&component->card_aux_list);
-		}			     ^^^^^^^^^^^^^
-	}
+  BUG: KASAN: slab-out-of-bounds in instrument_copy_to_user ../include/linux/instrumented.h:129 [inline]
+  BUG: KASAN: slab-out-of-bounds in _inline_copy_to_user ../include/linux/uaccess.h:205 [inline]
+  BUG: KASAN: slab-out-of-bounds in _copy_to_user+0x66/0xa0 ../lib/usercopy.c:26
+  Read of size 2084 at addr ffff898144612e20 by task syz.9.219/21405
 
-	static int soc_bind_aux_dev(...)
-	{
-		...
-		for_each_card_pre_auxs(...) {
-			...
-(A)			list_add(&component->card_aux_list, ...);
-		}			     ^^^^^^^^^^^^^
-		...
-	}
+  CPU: 14 UID: 0 PID: 21405 Comm: syz.9.219 Tainted: G     U     O        7.0.0-smp-DEV #28 PREEMPTLAZY
+  Tainted: [U]=USER, [O]=OOT_MODULE
+  Hardware name: Google, Inc. Arcadia_IT_80/Arcadia_IT_80, BIOS 12.62.0-0 11/19/2025
+  Call Trace:
+   <TASK>
+   dump_stack_lvl+0xc5/0x110 ../lib/dump_stack.c:120
+   print_address_description ../mm/kasan/report.c:378 [inline]
+   print_report+0xbc/0x260 ../mm/kasan/report.c:482
+   kasan_report+0xa2/0xe0 ../mm/kasan/report.c:595
+   check_region_inline ../mm/kasan/generic.c:-1 [inline]
+   kasan_check_range+0x264/0x2c0 ../mm/kasan/generic.c:200
+   instrument_copy_to_user ../include/linux/instrumented.h:129 [inline]
+   _inline_copy_to_user ../include/linux/uaccess.h:205 [inline]
+   _copy_to_user+0x66/0xa0 ../lib/usercopy.c:26
+   copy_to_user ../include/linux/uaccess.h:236 [inline]
+   sev_ioctl_do_pek_csr+0x31f/0x590 ../drivers/crypto/ccp/sev-dev.c:1872
+   sev_ioctl+0x3a4/0x490 ../drivers/crypto/ccp/sev-dev.c:2562
+   vfs_ioctl ../fs/ioctl.c:51 [inline]
+   __do_sys_ioctl ../fs/ioctl.c:597 [inline]
+   __se_sys_ioctl+0x11d/0x1b0 ../fs/ioctl.c:583
+   do_syscall_x64 ../arch/x86/entry/syscall_64.c:63 [inline]
+   do_syscall_64+0xe0/0x800 ../arch/x86/entry/syscall_64.c:94
+   entry_SYSCALL_64_after_hwframe+0x76/0x7e
+   </TASK>
 
-	#define for_each_card_auxs(card, component)	\
-(B)		list_for_each_entry(component, ..., card_aux_list)
-						    ^^^^^^^^^^^^^
+WARN if the driver says the command succeeded, but the firmware error code
+says otherwise, as __sev_do_cmd_locked() is expected to return -EIO on any
+firwmware error.
 
-But it has been used without calling INIT_LIST_HEAD().
-
-	> git grep card_aux_list sound/soc
-	sound/soc/soc-core.c:           list_del(&component->card_aux_list);
-	sound/soc/soc-core.c:           list_add(&component->card_aux_list, ...);
-
-call missing INIT_LIST_HEAD() for it.
-
-Signed-off-by: Kuninori Morimoto <kuninori.morimoto.gx@renesas.com>
-Link: https://patch.msgid.link/87341mxa8l.wl-kuninori.morimoto.gx@renesas.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Reported-by: Alexander Potapenko <glider@google.com>
+Reported-by: Sebastian Alba Vives <sebasjosue84@gmail.com>
+Fixes: e799035609e1 ("crypto: ccp: Implement SEV_PEK_CSR ioctl command")
+Cc: stable@vger.kernel.org
+Signed-off-by: Sean Christopherson <seanjc@google.com>
+Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- sound/soc/soc-core.c | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/crypto/ccp/sev-dev.c |    8 +++++++-
+ 1 file changed, 7 insertions(+), 1 deletion(-)
 
-diff --git a/sound/soc/soc-core.c b/sound/soc/soc-core.c
-index e7310642be6a5..de81858dee34a 100644
---- a/sound/soc/soc-core.c
-+++ b/sound/soc/soc-core.c
-@@ -2628,6 +2628,7 @@ int snd_soc_component_initialize(struct snd_soc_component *component,
- 	INIT_LIST_HEAD(&component->dobj_list);
- 	INIT_LIST_HEAD(&component->card_list);
- 	INIT_LIST_HEAD(&component->list);
-+	INIT_LIST_HEAD(&component->card_aux_list);
- 	mutex_init(&component->io_mutex);
+--- a/drivers/crypto/ccp/sev-dev.c
++++ b/drivers/crypto/ccp/sev-dev.c
+@@ -477,7 +477,10 @@ cmd:
  
- 	component->name = fmt_single_name(dev, &component->id);
--- 
-2.53.0
-
+ 	ret = __sev_do_cmd_locked(SEV_CMD_PEK_CSR, &data, &argp->error);
+ 
+-	 /* If we query the CSR length, FW responded with expected data. */
++	/*
++	 * Firmware will returns the length of the CSR blob (either the minimum
++	 * required length or the actual length written), return it to the user.
++	 */
+ 	input.length = data.len;
+ 
+ 	if (copy_to_user((void __user *)argp->data, &input, sizeof(input))) {
+@@ -485,6 +488,9 @@ cmd:
+ 		goto e_free_blob;
+ 	}
+ 
++	if (ret || WARN_ON_ONCE(argp->error))
++		goto e_free_blob;
++
+ 	if (blob) {
+ 		if (copy_to_user(input_address, blob, input.length))
+ 			ret = -EFAULT;
 
 
 
