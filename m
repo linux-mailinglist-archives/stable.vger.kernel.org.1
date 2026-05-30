@@ -1,60 +1,59 @@
-Return-Path: <stable+bounces-257733-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-258506-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id iGPxImgfG2rO/QgAu9opvQ
-	(envelope-from <stable+bounces-257733-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:33:28 +0200
+	id UAA5MAQoG2rM/ggAu9opvQ
+	(envelope-from <stable+bounces-258506-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:10:12 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 193E360FE92
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:33:27 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8345D611251
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:10:12 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 3E04F3070DFD
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 17:26:31 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id DECD930157F3
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 18:09:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EFBFA39A4A4;
-	Sat, 30 May 2026 17:26:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3791531F98D;
+	Sat, 30 May 2026 18:09:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NQh6q6ng"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RU6f1sUe"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A54A1344DA4;
-	Sat, 30 May 2026 17:26:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 165492F90E0;
+	Sat, 30 May 2026 18:09:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780161989; cv=none; b=cAVq6Pre2alIashBf7/AX4C5tCJeQPNaUE9T1Re2cB9QQr2RVqRKd0ThMX+L+bAC0QdctRoy/VWcFU4oStddFirEm9B56bRzwhlqSvgt7183Eo6v8kRxjiTyWqFNvV703o0iBKnRJn5Fy3HuJa8BNxsqi+y0x/PWktCItzYTIlI=
+	t=1780164579; cv=none; b=RjVJJ4ezvEfOin0WJD5hn4bttfPKIqWXtGeLFGyaxOYodYn4PYSR2Zg8u256PmFDpiwKzNG1b193HijW67jt3con3bY0NeEMKrvXV8CPfZjmAGQONBCHI072OIK3Ph/VOpykwKD5AA6Nfhtgbu47KQyseNG0pJH2TvuXxFjx4R8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780161989; c=relaxed/simple;
-	bh=2CB1fHA4VlLpqA8fLPcax/topshBCOouG87iQSEwBqM=;
+	s=arc-20240116; t=1780164579; c=relaxed/simple;
+	bh=AGGn5L+w9KRk/Ugf+OYDLmFsoP+y0upSskkYsUiTR0M=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=GI1Z8zs8jphh69MVhDOmwZAIDSTyVWJwpreOLPMUNOJKE3Y6g78I5UFQYs3+DkIVgHFN4cQ2fNpGTbpKt3MEDqnbNOT1HpRRmrXbE9gjqKe7zvfvNaJrPb2nq+3BlanXIYh0AB6VkG/X0Y4PsNah7uq08qWUo9K+sEE5X1B0r9k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NQh6q6ng; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E91C71F00893;
-	Sat, 30 May 2026 17:26:27 +0000 (UTC)
+	 MIME-Version; b=RWGBDSDUG8BDRm+8ejKhMbE4bVk8ClTE/2s7yPboJrzLVKAWi4I8u4bhz6erqlLL7alr/roAJ+q31/JIs3KPadRoW3WQqqGkPBVP0lOFjA7lYS4x/0KMHMo5Kp96EcxnK2yboQX0DonznuXiuJW8buCTy2/s/UGdAHvwfSjNB84=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RU6f1sUe; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5B5A21F00893;
+	Sat, 30 May 2026 18:09:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780161988;
-	bh=Lfvdxzg26D0mzMSptymcqWX5noTznT8FwQRDCRRUJKM=;
+	s=korg; t=1780164578;
+	bh=4QkgSoMRTh7CmsyHdgcO7JnyaTHQw3dQ8xsSHFq0MVk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=NQh6q6ng16KsAiq+fxJpjFDBry0jTdlKfdOdgOC+kiQp/2i76ZUkTawFh00C1t5hX
-	 yFPkBavD/1mOYwxuG/5w4UK5h96k6BKufivYvZCwyK88PilsGVJJ3iRzD93gcKK6ig
-	 rHvK87Hoql/RacDJ3lXEl3Bkdrm+SOuNVCVebME4=
+	b=RU6f1sUes2EdlBrj0tCmKZR1bTnqFCOZ2BN/1clEgKDBOkuzhhoDkBgSVYfYtF9hs
+	 lp6dwYxWxBNS0ox3U1iNgTImabsS8x8tK0QK9YCz/ugjAEEAuH9EvNqZxpKeQdHRNJ
+	 9E/FoCHdSIhzszDHDWQ20m+qfXWxA8Ca6KgTGXNE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jacob Keller <jacob.e.keller@intel.com>,
-	Marek Szlosek <marek.szlosek@intel.com>,
-	Tony Nguyen <anthony.l.nguyen@intel.com>,
+	Wolfram Sang <wsa+renesas@sang-engineering.com>,
+	Jassi Brar <jassisinghbrar@gmail.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 787/969] ice: Pull common tasks into ice_vf_post_vsi_rebuild
+Subject: [PATCH 5.15 597/776] mailbox: mailbox-test: free channels on probe error
 Date: Sat, 30 May 2026 18:05:11 +0200
-Message-ID: <20260530160322.336427103@linuxfoundation.org>
+Message-ID: <20260530160255.470191561@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260530160300.485627683@linuxfoundation.org>
-References: <20260530160300.485627683@linuxfoundation.org>
+In-Reply-To: <20260530160240.228940103@linuxfoundation.org>
+References: <20260530160240.228940103@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,125 +64,94 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-257733-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TO_DN_SOME(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-258506-lists,stable=lfdr.de];
+	MIME_TRACE(0.00)[0:+];
+	RCVD_TLS_LAST(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,sang-engineering.com,gmail.com,kernel.org];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[6];
+	NEURAL_HAM(-0.00)[-0.996];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[7];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	MID_RHS_MATCH_FROM(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,intel.com:email,linuxfoundation.org:mid,linuxfoundation.org:dkim]
-X-Rspamd-Queue-Id: 193E360FE92
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TAGGED_RCPT(0.00)[stable,renesas];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	FROM_HAS_DN(0.00)[]
+X-Rspamd-Queue-Id: 8345D611251
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jacob Keller <jacob.e.keller@intel.com>
+From: Wolfram Sang <wsa+renesas@sang-engineering.com>
 
-[ Upstream commit aeead3d04fa050a94ed314cc5de97125a957dc9f ]
+[ Upstream commit c02053a9055d5fdfd32432287cca8958db1d5bc5 ]
 
-The Single Root IOV implementation of .post_vsi_rebuild performs some tasks
-that will ultimately need to be shared with the Scalable IOV implementation
-such as rebuilding the host configuration.
+On probe error, free the previously obtained channels. This not only
+prevents a leak, but also UAF scenarios because the client structure
+will be removed nonetheless because it was allocated with devm.
 
-Refactor by introducing a new wrapper function, ice_vf_post_vsi_rebuild
-which performs the tasks that will be shared between SR-IOV and Scalable
-IOV. Move the ice_vf_rebuild_host_cfg and ice_vf_set_initialized calls into
-this wrapper. Then call the implementation specific post_vsi_rebuild
-handler afterwards.
-
-This ensures that we will properly re-initialize filters and expected
-settings for both SR-IOV and Scalable IOV.
-
-Signed-off-by: Jacob Keller <jacob.e.keller@intel.com>
-Tested-by: Marek Szlosek <marek.szlosek@intel.com>
-Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
-Stable-dep-of: 54ef02487914 ("ice: fix NULL pointer dereference in ice_reset_all_vfs()")
+Link: https://sashiko.dev/#/patchset/20260327151217.5327-2-wsa%2Brenesas%40sang-engineering.com
+Fixes: 8ea4484d0c2b ("mailbox: Add generic mechanism for testing Mailbox Controllers")
+Signed-off-by: Wolfram Sang <wsa+renesas@sang-engineering.com>
+Signed-off-by: Jassi Brar <jassisinghbrar@gmail.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/intel/ice/ice_sriov.c  |  2 --
- drivers/net/ethernet/intel/ice/ice_vf_lib.c | 19 +++++++++++++++++--
- 2 files changed, 17 insertions(+), 4 deletions(-)
+ drivers/mailbox/mailbox-test.c | 15 ++++++++++++---
+ 1 file changed, 12 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/net/ethernet/intel/ice/ice_sriov.c b/drivers/net/ethernet/intel/ice/ice_sriov.c
-index b719e9a771e36..148712037bcbb 100644
---- a/drivers/net/ethernet/intel/ice/ice_sriov.c
-+++ b/drivers/net/ethernet/intel/ice/ice_sriov.c
-@@ -841,8 +841,6 @@ static int ice_sriov_vsi_rebuild(struct ice_vf *vf)
-  */
- static void ice_sriov_post_vsi_rebuild(struct ice_vf *vf)
- {
--	ice_vf_rebuild_host_cfg(vf);
--	ice_vf_set_initialized(vf);
- 	ice_ena_vf_mappings(vf);
- 	wr32(&vf->pf->hw, VFGEN_RSTAT(vf->vf_id), VIRTCHNL_VFR_VFACTIVE);
- }
-diff --git a/drivers/net/ethernet/intel/ice/ice_vf_lib.c b/drivers/net/ethernet/intel/ice/ice_vf_lib.c
-index 9dbe6e9bb1f79..d146259c7b82f 100644
---- a/drivers/net/ethernet/intel/ice/ice_vf_lib.c
-+++ b/drivers/net/ethernet/intel/ice/ice_vf_lib.c
-@@ -270,6 +270,21 @@ static int ice_vf_rebuild_vsi(struct ice_vf *vf)
+diff --git a/drivers/mailbox/mailbox-test.c b/drivers/mailbox/mailbox-test.c
+index 29c04157b5e88..1d546cae922ce 100644
+--- a/drivers/mailbox/mailbox-test.c
++++ b/drivers/mailbox/mailbox-test.c
+@@ -405,18 +405,27 @@ static int mbox_test_probe(struct platform_device *pdev)
+ 	if (tdev->rx_channel) {
+ 		tdev->rx_buffer = devm_kzalloc(&pdev->dev,
+ 					       MBOX_MAX_MSG_LEN, GFP_KERNEL);
+-		if (!tdev->rx_buffer)
+-			return -ENOMEM;
++		if (!tdev->rx_buffer) {
++			ret = -ENOMEM;
++			goto err_free_chans;
++		}
+ 	}
+ 
+ 	ret = mbox_test_add_debugfs(pdev, tdev);
+ 	if (ret)
+-		return ret;
++		goto err_free_chans;
+ 
+ 	init_waitqueue_head(&tdev->waitq);
+ 	dev_info(&pdev->dev, "Successfully registered\n");
+ 
  	return 0;
++
++err_free_chans:
++	if (tdev->tx_channel)
++		mbox_free_channel(tdev->tx_channel);
++	if (tdev->rx_channel)
++		mbox_free_channel(tdev->rx_channel);
++	return ret;
  }
  
-+/**
-+ * ice_vf_post_vsi_rebuild - Reset tasks that occur after VSI rebuild
-+ * @vf: the VF being reset
-+ *
-+ * Perform reset tasks which must occur after the VSI has been re-created or
-+ * rebuilt during a VF reset.
-+ */
-+static void ice_vf_post_vsi_rebuild(struct ice_vf *vf)
-+{
-+	ice_vf_rebuild_host_cfg(vf);
-+	ice_vf_set_initialized(vf);
-+
-+	vf->vf_ops->post_vsi_rebuild(vf);
-+}
-+
- /**
-  * ice_is_any_vf_in_unicast_promisc - check if any VF(s)
-  * are in unicast promiscuous mode
-@@ -495,7 +510,7 @@ void ice_reset_all_vfs(struct ice_pf *pf)
- 
- 		ice_vf_pre_vsi_rebuild(vf);
- 		ice_vf_rebuild_vsi(vf);
--		vf->vf_ops->post_vsi_rebuild(vf);
-+		ice_vf_post_vsi_rebuild(vf);
- 
- 		mutex_unlock(&vf->cfg_lock);
- 	}
-@@ -647,7 +662,7 @@ int ice_reset_vf(struct ice_vf *vf, u32 flags)
- 		goto out_unlock;
- 	}
- 
--	vf->vf_ops->post_vsi_rebuild(vf);
-+	ice_vf_post_vsi_rebuild(vf);
- 	vsi = ice_get_vf_vsi(vf);
- 	if (WARN_ON(!vsi)) {
- 		err = -EINVAL;
+ static int mbox_test_remove(struct platform_device *pdev)
 -- 
 2.53.0
 
