@@ -1,59 +1,61 @@
-Return-Path: <stable+bounces-257425-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-258807-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id uML0MJ0bG2pk/QgAu9opvQ
-	(envelope-from <stable+bounces-257425-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:17:17 +0200
+	id 2NzgGdYtG2qU/wgAu9opvQ
+	(envelope-from <stable+bounces-258807-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:35:02 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5F62660F504
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:17:16 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id BC2F461204C
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:35:01 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id E0ECD30F5D68
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 17:09:24 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 33E533046FF5
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 18:26:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 062B8481DD;
-	Sat, 30 May 2026 17:09:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D2EBA25B0B3;
+	Sat, 30 May 2026 18:26:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KznRchGQ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="F9rGYBGB"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B16FC3AFCFB;
-	Sat, 30 May 2026 17:09:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9C217219303;
+	Sat, 30 May 2026 18:26:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780160953; cv=none; b=RZAXhDGL8vphx4ilA3igkYyVS7gA2ZsKLC+qA13zMbKPAwKNdN46WvloxEwktWe5f5CjK5Bt5uUtr1lNJu29NEbD15U8Vex7cqyv69NWvRLDy8OL5RJBXjTU1/lpVMPlRD7RBwbRiQZBeXtradyTu6RsPR5Tv0q+Ja6XAk4OoXg=
+	t=1780165604; cv=none; b=Fgbvzvil2Dpc+7wYPlNKH5rrKBQL2lLDXW2Kv1I/xeqIgvkzIgLgI7bZTM9/OKIazgs5ESTrWk0f7NjiENtoj6wFuNQ4erd1RMQr3ttsDWFQ0+uznSIu6vIpJh3/2HDU8XJAdx5SSuq9SaC9VwWNyRoU3wEIPTEBMLJuzcFNBUE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780160953; c=relaxed/simple;
-	bh=mUvOx+MaaLjZ5LmLNlRMGEQs5liWWgKLwBalP8ZFaBA=;
+	s=arc-20240116; t=1780165604; c=relaxed/simple;
+	bh=LTU7jlDjBt3cRkSAlb0u0f10KZooxMRHzX0tNTCDDnw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=NIx0F1sS28PnO/VDfY2H8RH2mq5Ubo3klgxXlOUuQ2sxQMVeH3tGk3OIr8XXIbM+kuUuQJ69Ual916TwZ0OIf8mAeZWR/tkWkZqu/sdqp2GS14DwGXm06Jrhsy05FGSSaK4P8G7+EwMLjEi05EQ6ufPf7oTVxukUKtJgmJo6Ifs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KznRchGQ; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id ED52A1F00893;
-	Sat, 30 May 2026 17:09:11 +0000 (UTC)
+	 MIME-Version; b=IqMEieq4Juxww2/VkjzhTCzD3gQu7urApMPI4V6FXcxlApDT+HvmsCdYDlclM1AbJBfaU4QPIUfm6D1vIpBs3B1GXjo17tD1oY/ekHIdq9lkE88wdMT1QK2kwvZMnj21vn4AaSMo3IT4+x1jo8SY8XyblFO4/tct4SIKWMXT8oc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=F9rGYBGB; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DD0B01F00893;
+	Sat, 30 May 2026 18:26:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780160952;
-	bh=rUC46mSl69a5od/KAs/WqW9k+ZXdtrLJo78WGUkRGRE=;
+	s=korg; t=1780165603;
+	bh=UAZf/+QlYRqu6C7jdYSttAM9UIdqgqGspu61cgfsu4c=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=KznRchGQedW6uBe+SZ1sEtG8y2oe1A+qe8GtYjiI2LFlQX4Z+cPEqf5I+Jp0aChUO
-	 KR+VDMMsse9OeYfDbaLxvOuFMCNzS24gwBehxvtWNwaAHR7DTNZs6orU3gS0buJCDX
-	 J4HWyo8vB86k+sCAhrRKZNql0E5uFGd2IBzSSOJA=
+	b=F9rGYBGBPa1bpFy9jYye6O5cZIxD1V8Ov+jE8rTeqTFXIlgfIhWyFMV3O0fWwW1r3
+	 OnXKm5jFWxSMKxTrudXlbzvrJMCFLj0cVAMtI2jqBZUOT4E65p1cCnOxNbovLeBPAG
+	 rITmauCYJUhNr9UnpVLtaBJ1jnAUazpKOMZ6WY6I=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Taegu Ha <hataegu0826@gmail.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	"Paulo Alcantara (SUSE)" <pc@cjr.nz>,
+	Zhang Xiaoxu <zhangxiaoxu5@huawei.com>,
+	Steve French <stfrench@microsoft.com>,
+	Vasiliy Kovalev <kovalev@altlinux.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 483/969] ppp: require CAP_NET_ADMIN in target netns for unattached ioctls
+Subject: [PATCH 5.10 126/589] cifs: Fix connections leak when tlink setup failed
 Date: Sat, 30 May 2026 18:00:07 +0200
-Message-ID: <20260530160313.641061670@linuxfoundation.org>
+Message-ID: <20260530160228.080867626@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260530160300.485627683@linuxfoundation.org>
-References: <20260530160300.485627683@linuxfoundation.org>
+In-Reply-To: <20260530160224.570625122@linuxfoundation.org>
+References: <20260530160224.570625122@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,81 +68,113 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-257425-lists,stable=lfdr.de];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,kernel.org];
-	TO_DN_SOME(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_TLS_LAST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-258807-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_SEVEN(0.00)[8];
 	MID_RHS_MATCH_FROM(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
-	FROM_HAS_DN(0.00)[]
-X-Rspamd-Queue-Id: 5F62660F504
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,altlinux.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,cjr.nz:email]
+X-Rspamd-Queue-Id: BC2F461204C
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Taegu Ha <hataegu0826@gmail.com>
+From: Zhang Xiaoxu <zhangxiaoxu5@huawei.com>
 
-[ Upstream commit 2bb6379416fd19f44c3423a00bfd8626259f6067 ]
+commit 1dcdf5f5b2137185cbdd5385f29949ab3da4f00c upstream.
 
-/dev/ppp open is currently authorized against file->f_cred->user_ns,
-while unattached administrative ioctls operate on current->nsproxy->net_ns.
+If the tlink setup failed, lost to put the connections, then
+the module refcnt leak since the cifsd kthread not exit.
 
-As a result, a local unprivileged user can create a new user namespace
-with CLONE_NEWUSER, gain CAP_NET_ADMIN only in that new user namespace,
-and still issue PPPIOCNEWUNIT, PPPIOCATTACH, or PPPIOCATTCHAN against
-an inherited network namespace.
+Also leak the fscache info, and for next mount with fsc, it will
+print the follow errors:
+  CIFS: Cache volume key already in use (cifs,127.0.0.1:445,TEST)
 
-Require CAP_NET_ADMIN in the user namespace that owns the target network
-namespace before handling unattached PPP administrative ioctls.
+Let's check the result of tlink setup, and do some cleanup.
 
-This preserves normal pppd operation in the network namespace it is
-actually privileged in, while rejecting the userns-only inherited-netns
-case.
-
-Fixes: 273ec51dd7ce ("net: ppp_generic - introduce net-namespace functionality v2")
-Signed-off-by: Taegu Ha <hataegu0826@gmail.com>
-Link: https://patch.msgid.link/20260409071117.4354-1-hataegu0826@gmail.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Fixes: 56c762eb9bee ("cifs: Refactor out cifs_mount()")
+Reviewed-by: Paulo Alcantara (SUSE) <pc@cjr.nz>
+Signed-off-by: Zhang Xiaoxu <zhangxiaoxu5@huawei.com>
+Signed-off-by: Steve French <stfrench@microsoft.com>
+[ kovalev: bp to fix CVE-2022-49822; adapted to use direct xid/ses/tcon
+  variables instead of mnt_ctx struct fields due to the older kernel not
+  having the corresponding cifs_mount() refactoring (see upstream commit
+  c88f7dcd6d64); additionally NULL out mntdata after dfs_cache_add_vol()
+  transfers its ownership to vol_list, otherwise the new error path from
+  mount_setup_tlink() failure would double-free it via kfree(mntdata) in
+  the error: label ]
+Signed-off-by: Vasiliy Kovalev <kovalev@altlinux.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ppp/ppp_generic.c | 3 +++
- 1 file changed, 3 insertions(+)
+ fs/cifs/connect.c | 17 +++++++++++++----
+ 1 file changed, 13 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/net/ppp/ppp_generic.c b/drivers/net/ppp/ppp_generic.c
-index f184368d5c5e7..89973d0959a68 100644
---- a/drivers/net/ppp/ppp_generic.c
-+++ b/drivers/net/ppp/ppp_generic.c
-@@ -1062,6 +1062,9 @@ static int ppp_unattached_ioctl(struct net *net, struct ppp_file *pf,
- 	struct ppp_net *pn;
- 	int __user *p = (int __user *)arg;
+diff --git a/fs/cifs/connect.c b/fs/cifs/connect.c
+index 769c7759601db..3ce86a88fad4a 100644
+--- a/fs/cifs/connect.c
++++ b/fs/cifs/connect.c
+@@ -4770,6 +4770,8 @@ int cifs_mount(struct cifs_sb_info *cifs_sb, struct smb_vol *vol)
+ 	rc = dfs_cache_add_vol(mntdata, vol, cifs_sb->origin_fullpath);
+ 	if (rc)
+ 		goto error;
++	/* mntdata is now owned by vol_list */
++	mntdata = NULL;
+ 	/*
+ 	 * After reconnecting to a different server, unique ids won't
+ 	 * match anymore, so we disable serverino. This prevents
+@@ -4786,9 +4788,13 @@ int cifs_mount(struct cifs_sb_info *cifs_sb, struct smb_vol *vol)
+ 	vol->prepath = NULL;
  
-+	if (!ns_capable(net->user_ns, CAP_NET_ADMIN))
-+		return -EPERM;
+ out:
+-	free_xid(xid);
+ 	cifs_try_adding_channels(ses);
+-	return mount_setup_tlink(cifs_sb, ses, tcon);
++	rc = mount_setup_tlink(cifs_sb, ses, tcon);
++	if (rc)
++		goto error;
 +
- 	switch (cmd) {
- 	case PPPIOCNEWUNIT:
- 		/* Create a new ppp unit */
++	free_xid(xid);
++	return rc;
+ 
+ error:
+ 	kfree(ref_path);
+@@ -4820,9 +4826,12 @@ int cifs_mount(struct cifs_sb_info *cifs_sb, struct smb_vol *vol)
+ 			goto error;
+ 	}
+ 
+-	free_xid(xid);
++	rc = mount_setup_tlink(cifs_sb, ses, tcon);
++	if (rc)
++		goto error;
+ 
+-	return mount_setup_tlink(cifs_sb, ses, tcon);
++	free_xid(xid);
++	return rc;
+ 
+ error:
+ 	mount_put_conns(cifs_sb, xid, server, ses, tcon);
 -- 
 2.53.0
 
