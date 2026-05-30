@@ -1,58 +1,58 @@
-Return-Path: <stable+bounces-257276-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-258057-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 0CNZIfsZG2pV/AgAu9opvQ
-	(envelope-from <stable+bounces-257276-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:10:19 +0200
+	id +BQVCwkiG2rO/QgAu9opvQ
+	(envelope-from <stable+bounces-258057-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:44:41 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id EA95860F062
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:10:18 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id C6132610493
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:44:40 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 040C7300F5C7
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 17:00:38 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 1E75C30041E2
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 17:44:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B04CA35200B;
-	Sat, 30 May 2026 17:00:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5FDA9348C5E;
+	Sat, 30 May 2026 17:44:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="x1y7egnF"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rkiO/46y"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E333832D42B;
-	Sat, 30 May 2026 17:00:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AC2AE3AA182;
+	Sat, 30 May 2026 17:44:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780160437; cv=none; b=Yp/zjFEipEjm4NUXIYwNrBpO2nr8lb9axJ8nxPAvAQyXwyejo+Q1N28WsQWfMLCtVMCPcJ1sYoywVIBv4EnGmW2k1My9w8AtTgAPAvtNXZMme6YE0Bd3nhdI4t9qybqO7sgseTpXZmCXMm+dl2znyuFZsV5WuD7v36c3TVAyLJ8=
+	t=1780163077; cv=none; b=KhR5WMmBBS8xhCbRnlmWmUD7yf1S7KR1qTYHa4axmwo2G9l09/6x79RP1i5gku54fmFa4WH5z9DhPQlJSQAtkFSplV1su2cfJSwkW4HPS5+58Xuj7XmSeTD7A4cWlxAhb/6qWbkA4hgq9jlhCDe/Wv7iaGvr1PprExP4FQvpGRI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780160437; c=relaxed/simple;
-	bh=OTtGavW3jXhdOETriyLj4qSWzBs1j6JaUcYv9h7MeFw=;
+	s=arc-20240116; t=1780163077; c=relaxed/simple;
+	bh=5CEERwxLFWm2aOgnfnl+0O0tHTEbij0/Ch36OsQ6xxE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=df93H9lycYuQ9zK54zKFuNb928Y1dy7NzqJmH35NUWtiotTpymoEQw2aSSjnjE0oO3xll6gN+zCxxDg4XLsQb+okSA/9VRWDbWSNO1pzHhFpGFeefxAoOuHWmiVVlTZnKDpYlGjmf3XwtL0XT2Ofw5Tfz4gVLFbtGwL9dlMDteg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=x1y7egnF; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 03F291F00893;
-	Sat, 30 May 2026 17:00:34 +0000 (UTC)
+	 MIME-Version; b=t/rbw/R9R0pe65bsKEPivcwvEkQyApX9TpD5SB61AhVGI0NGHilz3ut7qF9bIu2wth9DjEEZ+cZdCJnY6rjK7ExelnfbGRiY/VFgGR10al8nN9spj24/eeqHol+XkvX/lsH/+mpKK3QsIL/2A41etu3U/+5dAGk5ks/Y/iTf7s0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rkiO/46y; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EE8DC1F00893;
+	Sat, 30 May 2026 17:44:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780160435;
-	bh=6yoTdM9HbVoy/2FmKGINzo2s/rXHNu8SXesT4BHNRok=;
+	s=korg; t=1780163075;
+	bh=VIwFizWpR5V61nO1JgbumISQbx+OchFfpsyVTYtMEEA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=x1y7egnF4EHYh2RaS3msUOR/l7J7dxfjwAgW0H8zHF4VP36A9/eVGVNpeiCveNBeD
-	 XxaKd/O6nTqhTm/dsgRN8Z6KWu5+TF10918Ibzo/LIlj/cDaY3S569mkXwd1OVVpKH
-	 5v2TyJFCf/7tarlZjJljlH5vwUKi/DQqwQkq1jcE=
+	b=rkiO/46y8pciig5EXCoH69w9vkShDmV8Nyxipdi9qkvdSfZ0sZXWizjZz3mxv36JR
+	 5cInpqChOGo3Cg9k22dH8jsGxsSJHRmR+ODqbEYYZhb69qk3GZmp9bL5bauvUWx8Ij
+	 zLhseXQV1oJuThuyTOWbBzJDdQ7su+ZjUPSkwiMA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Michael Bommarito <michael.bommarito@gmail.com>,
-	Jan Kara <jack@suse.cz>
-Subject: [PATCH 6.1 336/969] udf: reject descriptors with oversized CRC length
-Date: Sat, 30 May 2026 17:57:40 +0200
-Message-ID: <20260530160309.649530924@linuxfoundation.org>
+	Jean-Baptiste Maneyrol <jean-baptiste.maneyrol@tdk.com>,
+	Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Subject: [PATCH 5.15 147/776] iio: imu: inv_icm42600: fix odr switch when turning buffer off
+Date: Sat, 30 May 2026 17:57:41 +0200
+Message-ID: <20260530160244.249752088@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260530160300.485627683@linuxfoundation.org>
-References: <20260530160300.485627683@linuxfoundation.org>
+In-Reply-To: <20260530160240.228940103@linuxfoundation.org>
+References: <20260530160240.228940103@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,85 +63,81 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TO_DN_SOME(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-257276-lists,stable=lfdr.de];
-	MIME_TRACE(0.00)[0:+];
-	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,suse.cz];
 	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[5];
-	NEURAL_HAM(-0.00)[-0.999];
+	RCVD_TLS_LAST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-258057-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	MID_RHS_MATCH_FROM(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	FROM_HAS_DN(0.00)[]
-X-Rspamd-Queue-Id: EA95860F062
+	RCPT_COUNT_FIVE(0.00)[5];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[huawei.com:email,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,tdk.com:email]
+X-Rspamd-Queue-Id: C6132610493
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Michael Bommarito <michael.bommarito@gmail.com>
+From: Jean-Baptiste Maneyrol <jean-baptiste.maneyrol@tdk.com>
 
-commit 55d41b0a20128e86b9e960dd2e3f0a2d69a18df7 upstream.
+[ Upstream commit ffd32db8263d2d785a2c419486a450dc80693235 ]
 
-udf_read_tagged() skips CRC verification when descCRCLength +
-sizeof(struct tag) exceeds the block size.  A crafted UDF image can
-set descCRCLength to an oversized value to bypass CRC validation
-entirely; the descriptor is then accepted based solely on the 8-bit
-tag checksum, which is trivially recomputable.
+ODR switch is done in 2 steps when FIFO is on : change the ODR register
+value and acknowledge change when reading the FIFO ODR change flag.
+When we are switching odr and turning buffer off just afterward, we are
+losing the FIFO ODR change flag and ODR switch is blocked.
 
-Reject such descriptors instead of silently accepting them.  A
-legitimate single-block descriptor should never have a CRC length that
-exceeds the block.
+Fix the issue by force applying any waiting ODR change when turning
+buffer off.
 
-Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
+Fixes: ec74ae9fd37c ("iio: imu: inv_icm42600: add accurate timestamping")
+Signed-off-by: Jean-Baptiste Maneyrol <jean-baptiste.maneyrol@tdk.com>
 Cc: stable@vger.kernel.org
-Assisted-by: Claude:claude-opus-4-6
-Assisted-by: Codex:gpt-5-4
-Signed-off-by: Michael Bommarito <michael.bommarito@gmail.com>
-Link: https://patch.msgid.link/20260413211240.853662-1-michael.bommarito@gmail.com
-Signed-off-by: Jan Kara <jack@suse.cz>
+Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/udf/misc.c |    8 ++++++--
- 1 file changed, 6 insertions(+), 2 deletions(-)
+ drivers/iio/imu/inv_icm42600/inv_icm42600_buffer.c |    3 +++
+ 1 file changed, 3 insertions(+)
 
---- a/fs/udf/misc.c
-+++ b/fs/udf/misc.c
-@@ -250,8 +250,12 @@ struct buffer_head *udf_read_tagged(stru
- 	}
+--- a/drivers/iio/imu/inv_icm42600/inv_icm42600_buffer.c
++++ b/drivers/iio/imu/inv_icm42600/inv_icm42600_buffer.c
+@@ -377,6 +377,7 @@ out_unlock:
+ static int inv_icm42600_buffer_postdisable(struct iio_dev *indio_dev)
+ {
+ 	struct inv_icm42600_state *st = iio_device_get_drvdata(indio_dev);
++	struct inv_icm42600_timestamp *ts = iio_priv(indio_dev);
+ 	struct device *dev = regmap_get_device(st->map);
+ 	unsigned int sensor;
+ 	unsigned int *watermark;
+@@ -398,6 +399,8 @@ static int inv_icm42600_buffer_postdisab
  
- 	/* Verify the descriptor CRC */
--	if (le16_to_cpu(tag_p->descCRCLength) + sizeof(struct tag) > sb->s_blocksize ||
--	    le16_to_cpu(tag_p->descCRC) == crc_itu_t(0,
-+	if (le16_to_cpu(tag_p->descCRCLength) + sizeof(struct tag) > sb->s_blocksize) {
-+		udf_err(sb, "block %u: CRC length %u exceeds block size\n",
-+			block, le16_to_cpu(tag_p->descCRCLength));
-+		goto error_out;
-+	}
-+	if (le16_to_cpu(tag_p->descCRC) == crc_itu_t(0,
- 					bh->b_data + sizeof(struct tag),
- 					le16_to_cpu(tag_p->descCRCLength)))
- 		return bh;
+ 	mutex_lock(&st->lock);
+ 
++	inv_icm42600_timestamp_apply_odr(ts, 0, 0, 0);
++
+ 	ret = inv_icm42600_buffer_set_fifo_en(st, st->fifo.en & ~sensor);
+ 	if (ret)
+ 		goto out_unlock;
 
 
 
