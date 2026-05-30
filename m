@@ -1,59 +1,58 @@
-Return-Path: <stable+bounces-258758-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-258154-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id IDPtN9QrG2ow/wgAu9opvQ
-	(envelope-from <stable+bounces-258758-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:26:28 +0200
+	id eAACDWElG2rO/QgAu9opvQ
+	(envelope-from <stable+bounces-258154-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:58:57 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5B679611BCA
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:26:28 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8CC27610C21
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:58:56 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 44A56309F094
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 18:24:01 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 7CC8930A1EDA
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 17:49:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E065D274FDC;
-	Sat, 30 May 2026 18:24:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 44130341AC7;
+	Sat, 30 May 2026 17:49:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="w9vbTKCS"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jHTZ2xOb"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B070117555;
-	Sat, 30 May 2026 18:23:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 04E3A304BCB;
+	Sat, 30 May 2026 17:49:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780165440; cv=none; b=je1FzGXufxk+h3UCI5NhYFnJMmd/SdmA5AO4VboBr7AKbVxGmWcg4rh0nQeeZeNQ1eLl0gMYMjwD00loBIXafjvYivA6W4HO3bAgqsis0CPSaT/DInfimlsvFFchiMXSF/Y+c+AxaotXOD4YHuSBBL6OVZy1enVaCpOdqYF88wM=
+	t=1780163397; cv=none; b=ELvqne7aj8Hcu0FpnlOibv0e/pHR824JDvkYElPhzTR4MV6J1DaJeyxmuABTnCQrPhqJhqLUwBKwGfXNBDKJK6kuVURIauIg00O3QsHtGl5PWHG74MXCNVZMiag/aL3EwRrGN+U0yKMSJeJyIjHnngNj1rWZolTo9Htj3/EBqdw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780165440; c=relaxed/simple;
-	bh=B+YCe+OmBErqSY/IjpWu+06s4GMa50EHlO+t3ilXdIM=;
+	s=arc-20240116; t=1780163397; c=relaxed/simple;
+	bh=qUkMHwi+ecYUjs8J2odd8KTPKekwHg/WbckUrr+Bct0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=RSxLOmY7KB/upiga6c8GPx9tRoivDeYFSTFRH5Y3VF0ULNEOZitBsfImYpbZ02xOk/iuw8vNV//dD+wvtNT1+8WT9sxjzgal5n9dmGOYlAmDUZB30V1zBrg3z/NWLwo+s+VHdK50Zxc27nILLu/ksGGQKQ0wY6UCMqRzaSYA4Yo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=w9vbTKCS; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F38A61F00893;
-	Sat, 30 May 2026 18:23:58 +0000 (UTC)
+	 MIME-Version; b=AZlpl6LJZQXAppA/nnhM9boze1kOWQjh8b5Nd2esqR/p3Yx0/QgJ0tAtq8Yg4Gbe7xe1UJ6lHT/6kYSuKcM/IwL4APd7VlmLMKZ1R6VSQ0cjkv3QBY0gK7OjILzl5RP/PozrWyLzNN6+61JS3uz5A0gcy+9YwNx7kuGLUgo2ZSc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jHTZ2xOb; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4A9381F00893;
+	Sat, 30 May 2026 17:49:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780165439;
-	bh=40OqTM1IDnkTucoSCjhsPYggcXK9s76ndKCHGranOss=;
+	s=korg; t=1780163395;
+	bh=bXQ7o/MFPlV6cGyzmBqcTpivw6K6lydgvpYhejwYDGM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=w9vbTKCST9EomF5LfHYq2TX+VCxizUyM6MLkpH914Ar7Q1QhH0eaM4H+byHPDuQuQ
-	 pr54KZFY2ijDLL3H65uIkPDaZPHBnN4faXAdcoqotkrvz+xUL9Vdez2DyUOvIKIWhx
-	 W4BVyQymOzEAvZG2vkTKIqNX/T5I1e6d1GkK589k=
+	b=jHTZ2xObNbCDWNMVakrZP7Ko07XgZr+3phtVBlEhrNQO3x+wFnRVXRxZ/Snqqdrpa
+	 bXDCehckztI8vXhw9GGXc1B+XWqlv7cjuA7fV+3rI7WnXr3647cXxoN0U891eH94DL
+	 a60COfu6TM2EnHlrzOUlaNaDUtozS3kEYv6y0Sg8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mingzhe Zou <mingzhe.zou@easystack.cn>,
-	Coly Li <colyli@fnnas.com>,
-	Jens Axboe <axboe@kernel.dk>
-Subject: [PATCH 5.10 079/589] bcache: fix cached_dev.sb_bio use-after-free and crash
+	Junrui Luo <moonafterrain@outlook.com>,
+	Yu Kuai <yukuai@fnnas.com>
+Subject: [PATCH 5.15 246/776] md/raid5: validate payload size before accessing journal metadata
 Date: Sat, 30 May 2026 17:59:20 +0200
-Message-ID: <20260530160226.685223976@linuxfoundation.org>
+Message-ID: <20260530160246.889404319@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260530160224.570625122@linuxfoundation.org>
-References: <20260530160224.570625122@linuxfoundation.org>
+In-Reply-To: <20260530160240.228940103@linuxfoundation.org>
+References: <20260530160240.228940103@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,101 +65,176 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	RCVD_TLS_LAST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-258758-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-258154-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,outlook.com,fnnas.com];
 	TO_DN_SOME(0.00)[];
-	FROM_HAS_DN(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	NEURAL_HAM(-0.00)[-0.994];
+	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-0.996];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
+	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,msgid.link:url,kernel.dk:email,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,fnnas.com:email,easystack.cn:email]
-X-Rspamd-Queue-Id: 5B679611BCA
+	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_FIVE(0.00)[5];
+	FROM_HAS_DN(0.00)[]
+X-Rspamd-Queue-Id: 8CC27610C21
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mingzhe Zou <mingzhe.zou@easystack.cn>
+From: Junrui Luo <moonafterrain@outlook.com>
 
-commit fec114a98b8735ee89c75216c45a78e28be0f128 upstream.
+commit b0cc3ae97e893bf54bbce447f4e9fd2e0b88bff9 upstream.
 
-In our production environment, we have received multiple crash reports
-regarding libceph, which have caught our attention:
+r5c_recovery_analyze_meta_block() and
+r5l_recovery_verify_data_checksum_for_mb() iterate over payloads in a
+journal metadata block using on-disk payload size fields without
+validating them against the remaining space in the metadata block.
 
-```
-[6888366.280350] Call Trace:
-[6888366.280452]  blk_update_request+0x14e/0x370
-[6888366.280561]  blk_mq_end_request+0x1a/0x130
-[6888366.280671]  rbd_img_handle_request+0x1a0/0x1b0 [rbd]
-[6888366.280792]  rbd_obj_handle_request+0x32/0x40 [rbd]
-[6888366.280903]  __complete_request+0x22/0x70 [libceph]
-[6888366.281032]  osd_dispatch+0x15e/0xb40 [libceph]
-[6888366.281164]  ? inet_recvmsg+0x5b/0xd0
-[6888366.281272]  ? ceph_tcp_recvmsg+0x6f/0xa0 [libceph]
-[6888366.281405]  ceph_con_process_message+0x79/0x140 [libceph]
-[6888366.281534]  ceph_con_v1_try_read+0x5d7/0xf30 [libceph]
-[6888366.281661]  ceph_con_workfn+0x329/0x680 [libceph]
-```
+A corrupted journal contains payload sizes extending beyond the PAGE_SIZE
+boundary can cause out-of-bounds reads when accessing payload fields or
+computing offsets.
 
-After analyzing the coredump file, we found that the address of
-dc->sb_bio has been freed. We know that cached_dev is only freed when it
-is stopped.
+Add bounds validation for each payload type to ensure the full payload
+fits within meta_size before processing.
 
-Since sb_bio is a part of struct cached_dev, rather than an alloc every
-time.  If the device is stopped while writing to the superblock, the
-released address will be accessed at endio.
-
-This patch hopes to wait for sb_write to complete in cached_dev_free.
-
-It should be noted that we analyzed the cause of the problem, then tell
-all details to the QWEN and adopted the modifications it made.
-
-Signed-off-by: Mingzhe Zou <mingzhe.zou@easystack.cn>
-Fixes: cafe563591446 ("bcache: A block layer cache")
-Cc: stable@vger.kernel.org # 3.10+
-Signed-off-by: Coly Li <colyli@fnnas.com>
-Link: https://patch.msgid.link/20260322134102.480107-1-colyli@fnnas.com
-Signed-off-by: Jens Axboe <axboe@kernel.dk>
+Fixes: b4c625c67362 ("md/r5cache: r5cache recovery: part 1")
+Cc: stable@vger.kernel.org
+Signed-off-by: Junrui Luo <moonafterrain@outlook.com>
+Link: https://lore.kernel.org/linux-raid/SYBPR01MB78815E78D829BB86CD7C8015AF5FA@SYBPR01MB7881.ausprd01.prod.outlook.com/
+Signed-off-by: Yu Kuai <yukuai@fnnas.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/md/bcache/super.c |    7 +++++++
- 1 file changed, 7 insertions(+)
+ drivers/md/raid5-cache.c |   48 ++++++++++++++++++++++++++++++++---------------
+ 1 file changed, 33 insertions(+), 15 deletions(-)
 
---- a/drivers/md/bcache/super.c
-+++ b/drivers/md/bcache/super.c
-@@ -1396,6 +1396,13 @@ static void cached_dev_free(struct closu
+--- a/drivers/md/raid5-cache.c
++++ b/drivers/md/raid5-cache.c
+@@ -2017,15 +2017,27 @@ r5l_recovery_verify_data_checksum_for_mb
+ 		return -ENOMEM;
  
- 	mutex_unlock(&bch_register_lock);
- 
-+	/*
-+	 * Wait for any pending sb_write to complete before free.
-+	 * The sb_bio is embedded in struct cached_dev, so we must
-+	 * ensure no I/O is in progress.
-+	 */
-+	closure_sync(&dc->sb_write);
+ 	while (mb_offset < le32_to_cpu(mb->meta_size)) {
++		sector_t payload_len;
 +
- 	if (dc->sb_disk)
- 		put_page(virt_to_page(dc->sb_disk));
+ 		payload = (void *)mb + mb_offset;
+ 		payload_flush = (void *)mb + mb_offset;
  
+ 		if (le16_to_cpu(payload->header.type) == R5LOG_PAYLOAD_DATA) {
++			payload_len = sizeof(struct r5l_payload_data_parity) +
++				(sector_t)sizeof(__le32) *
++				(le32_to_cpu(payload->size) >> (PAGE_SHIFT - 9));
++			if (mb_offset + payload_len > le32_to_cpu(mb->meta_size))
++				goto mismatch;
+ 			if (r5l_recovery_verify_data_checksum(
+ 				    log, ctx, page, log_offset,
+ 				    payload->checksum[0]) < 0)
+ 				goto mismatch;
+ 		} else if (le16_to_cpu(payload->header.type) == R5LOG_PAYLOAD_PARITY) {
++			payload_len = sizeof(struct r5l_payload_data_parity) +
++				(sector_t)sizeof(__le32) *
++				(le32_to_cpu(payload->size) >> (PAGE_SHIFT - 9));
++			if (mb_offset + payload_len > le32_to_cpu(mb->meta_size))
++				goto mismatch;
+ 			if (r5l_recovery_verify_data_checksum(
+ 				    log, ctx, page, log_offset,
+ 				    payload->checksum[0]) < 0)
+@@ -2038,22 +2050,18 @@ r5l_recovery_verify_data_checksum_for_mb
+ 				    payload->checksum[1]) < 0)
+ 				goto mismatch;
+ 		} else if (le16_to_cpu(payload->header.type) == R5LOG_PAYLOAD_FLUSH) {
+-			/* nothing to do for R5LOG_PAYLOAD_FLUSH here */
++			payload_len = sizeof(struct r5l_payload_flush) +
++				(sector_t)le32_to_cpu(payload_flush->size);
++			if (mb_offset + payload_len > le32_to_cpu(mb->meta_size))
++				goto mismatch;
+ 		} else /* not R5LOG_PAYLOAD_DATA/PARITY/FLUSH */
+ 			goto mismatch;
+ 
+-		if (le16_to_cpu(payload->header.type) == R5LOG_PAYLOAD_FLUSH) {
+-			mb_offset += sizeof(struct r5l_payload_flush) +
+-				le32_to_cpu(payload_flush->size);
+-		} else {
+-			/* DATA or PARITY payload */
++		if (le16_to_cpu(payload->header.type) != R5LOG_PAYLOAD_FLUSH) {
+ 			log_offset = r5l_ring_add(log, log_offset,
+ 						  le32_to_cpu(payload->size));
+-			mb_offset += sizeof(struct r5l_payload_data_parity) +
+-				sizeof(__le32) *
+-				(le32_to_cpu(payload->size) >> (PAGE_SHIFT - 9));
+ 		}
+-
++		mb_offset += payload_len;
+ 	}
+ 
+ 	put_page(page);
+@@ -2104,6 +2112,7 @@ r5c_recovery_analyze_meta_block(struct r
+ 	log_offset = r5l_ring_add(log, ctx->pos, BLOCK_SECTORS);
+ 
+ 	while (mb_offset < le32_to_cpu(mb->meta_size)) {
++		sector_t payload_len;
+ 		int dd;
+ 
+ 		payload = (void *)mb + mb_offset;
+@@ -2112,6 +2121,12 @@ r5c_recovery_analyze_meta_block(struct r
+ 		if (le16_to_cpu(payload->header.type) == R5LOG_PAYLOAD_FLUSH) {
+ 			int i, count;
+ 
++			payload_len = sizeof(struct r5l_payload_flush) +
++				(sector_t)le32_to_cpu(payload_flush->size);
++			if (mb_offset + payload_len >
++			    le32_to_cpu(mb->meta_size))
++				return -EINVAL;
++
+ 			count = le32_to_cpu(payload_flush->size) / sizeof(__le64);
+ 			for (i = 0; i < count; ++i) {
+ 				stripe_sect = le64_to_cpu(payload_flush->flush_stripes[i]);
+@@ -2125,12 +2140,17 @@ r5c_recovery_analyze_meta_block(struct r
+ 				}
+ 			}
+ 
+-			mb_offset += sizeof(struct r5l_payload_flush) +
+-				le32_to_cpu(payload_flush->size);
++			mb_offset += payload_len;
+ 			continue;
+ 		}
+ 
+ 		/* DATA or PARITY payload */
++		payload_len = sizeof(struct r5l_payload_data_parity) +
++			(sector_t)sizeof(__le32) *
++			(le32_to_cpu(payload->size) >> (PAGE_SHIFT - 9));
++		if (mb_offset + payload_len > le32_to_cpu(mb->meta_size))
++			return -EINVAL;
++
+ 		stripe_sect = (le16_to_cpu(payload->header.type) == R5LOG_PAYLOAD_DATA) ?
+ 			raid5_compute_sector(
+ 				conf, le64_to_cpu(payload->location), 0, &dd,
+@@ -2195,9 +2215,7 @@ r5c_recovery_analyze_meta_block(struct r
+ 		log_offset = r5l_ring_add(log, log_offset,
+ 					  le32_to_cpu(payload->size));
+ 
+-		mb_offset += sizeof(struct r5l_payload_data_parity) +
+-			sizeof(__le32) *
+-			(le32_to_cpu(payload->size) >> (PAGE_SHIFT - 9));
++		mb_offset += payload_len;
+ 	}
+ 
+ 	return 0;
 
 
 
