@@ -1,114 +1,164 @@
-Return-Path: <stable+bounces-258401-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-259009-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id iMdHBK0mG2qS/ggAu9opvQ
-	(envelope-from <stable+bounces-258401-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:04:29 +0200
+	id 2OjXL1wvG2paAAkAu9opvQ
+	(envelope-from <stable+bounces-259009-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:41:32 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6358E610EE8
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:04:27 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6249D612428
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:41:32 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 42B33300FCAE
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 18:03:51 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 8DADC30AD5C8
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 18:38:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D60F83C0608;
-	Sat, 30 May 2026 18:03:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 37303331200;
+	Sat, 30 May 2026 18:38:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b="XkU7k0Sk"
+	dkim=fail reason="signature verification failed" (2048-bit key) header.d=igalia.com header.i=@igalia.com header.b="TM3fkiHy"
 X-Original-To: stable@vger.kernel.org
-Received: from m16.mail.163.com (m16.mail.163.com [220.197.31.5])
+Received: from fanzine2.igalia.com (fanzine2.igalia.com [213.97.179.56])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 744DE2FDC5E;
-	Sat, 30 May 2026 18:03:39 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=220.197.31.5
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C961126738C
+	for <stable@vger.kernel.org>; Sat, 30 May 2026 18:38:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=213.97.179.56
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780164227; cv=none; b=Dx+txqBDdoxgm1bk3j6qnKS+GJ1LyL7D7UqONImM4LWW1yfU/HHMCRGMjBsUy4NqDbwz01gsPXFuwOq+ku9QfnUDdczqYbTj3NEJGJ8M9MAVHH5JGua9EtaVkw8VtdBkkNJezNjTiyi3wuLn31I4yjabU1EfmwgfmIBa+Svdsh4=
+	t=1780166288; cv=none; b=hMORP6/hrlGe6YPVpsagf7d+vEuYbQ1fQbA45KnpM1HJMFCfJK9CCVOispUEp855uXVwPh8RIN8Rkm/e8Ui6nRZWdGeoExi+R0nf74VkJYKlH9WqqIIJNAHDCfLz+6/LOT+nqcwSa6au/jKoU6DcGA1eZ0wc7s3JwF/PIrk5h7w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780164227; c=relaxed/simple;
-	bh=OqNA2skOn5pRwMZwWulbW5b96RksUG9RppDGaZAT2ek=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=myOcIKbOSJ+sfvqIYPVe+gGg03GJH9UNpa3wtvOwC3xYi+0ey0dTVu0EUiOqeM5kJGA1ZvL3bHKSeUb3zU35NHLLMTuYbb7Uel+lAg5FjXdFZVkO4CNnTMg1u+DCsvUqVyZyC7ZVYQWrX98p58wxekdpHbaUTM70QfoqXrHVkms=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kylinos.cn; spf=pass smtp.mailfrom=163.com; dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b=XkU7k0Sk; arc=none smtp.client-ip=220.197.31.5
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kylinos.cn
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=163.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
-	s=s110527; h=From:To:Subject:Date:Message-Id:MIME-Version; bh=Oq
-	NA2skOn5pRwMZwWulbW5b96RksUG9RppDGaZAT2ek=; b=XkU7k0SkVaWrQlokr4
-	mqPGY618gKgB0d3bzy9Orf1YFbk2v2qS3tu564zkBYlDL1CEgvGJLQydTH9BXYqx
-	JqOHzmmenPwwp3OWWSA2k0+Tt8zISzqVkBeRb7PycOYfkQtL7HUOfm2D1teK8dmJ
-	35G0/qqvnyfIOlakvp6/a9sf0=
-Received: from localhost.localdomain (unknown [])
-	by gzga-smtp-mtada-g1-3 (Coremail) with SMTP id _____wDnr5o5JhtqllXLAQ--.2025S2;
-	Sun, 31 May 2026 02:02:35 +0800 (CST)
-From: Yang Xiuwei <yangxiuwei@kylinos.cn>
-To: rc@rexion.ai
-Cc: James.Bottomley@HansenPartnership.com,
-	martin.petersen@oracle.com,
-	axboe@kernel.dk,
-	fujita.tomonori@lab.ntt.co.jp,
-	linux-scsi@vger.kernel.org,
-	linux-block@vger.kernel.org,
-	io-uring@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	bvanassche@acm.org,
-	csander@purestorage.com,
-	stable@vger.kernel.org,
-	Yang Xiuwei <yangxiuwei@kylinos.cn>
-Subject: Re: [PATCH v2] scsi: bsg: read io_uring command fields once
-Date: Sun, 31 May 2026 02:02:08 +0800
-Message-Id: <20260530180208.3588677-1-yangxiuwei@kylinos.cn>
-X-Mailer: git-send-email 2.25.1
-In-Reply-To: <20260527191817.142769-1-rc@rexion.ai>
-References: <20260527191817.142769-1-rc@rexion.ai>
+	s=arc-20240116; t=1780166288; c=relaxed/simple;
+	bh=T4N0sBAg6OvCjb2pgLo2/mx0ExzDNFlAqYzZFdtR9+M=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=SxJc9h1ywtiJU+vO2Q0DMExzMy/IlCmEYIrXSWIOGx2TwQTbSY4c60dOAimG4SWO8+S4HZoG8A7RlKigJIltpnt14/dwp3I0jO3mv207hzQ5Yh1z59VXFvNpRQiNxeXPme/FC6ToGYyt9ANMLe4fTTwj1X9hVrYOolxhQ98Eb1c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=igalia.com; spf=pass smtp.mailfrom=igalia.com; dkim=pass (2048-bit key) header.d=igalia.com header.i=@igalia.com header.b=TM3fkiHy; arc=none smtp.client-ip=213.97.179.56
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=igalia.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=igalia.com
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=igalia.com;
+	s=20170329; h=Cc:To:Content-Transfer-Encoding:Content-Type:MIME-Version:
+	Message-Id:Date:Subject:From:Sender:Reply-To:Content-ID:Content-Description:
+	Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:
+	In-Reply-To:References:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
+	List-Post:List-Owner:List-Archive;
+	bh=9JbDhtonn5q5rNu0vzNVx69cnGfGhDTfpZJpjnWnyZo=; b=TM3fkiHyv83epjq0c3vSbI6fqd
+	yRzc7gbHz+i5QMdUEcncvS9ffDIbyofcNQrF1pIndwbyz8NNloM7sJUyVAIBtvtTOVlqmUXIcBJ4t
+	1h5NCCu8JRwVlQNjfD1lk9tB4B18WNmrR5cTMcu/3T9rqFGtaQwF1dtoNqnt9OZgqCTRehC1DElwS
+	ljE9e3e37+xqteqXUW3nvjPCR5kK2fz1+gFu2hZ9e07+w0jb948s6qFTjbKt6k6BQVuR+ZqUsGI7E
+	1oQ8sU417FngGyU79aikDaOEqmiw646HZePGvOB3SPe3BbXqsXgy3Dj7spY2fvlQ/kodlPIizFSN7
+	EpNfjBlA==;
+Received: from [189.7.87.67] (helo=[10.0.0.1])
+	by fanzine2.igalia.com with esmtpsa 
+	(Cipher TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256) (Exim)
+	id 1wTOZP-00ALNh-Ep; Sat, 30 May 2026 20:38:03 +0200
+From: =?utf-8?q?Ma=C3=ADra_Canal?= <mcanal@igalia.com>
+Subject: [PATCH 0/4] drm/v3d: Fix RPi 4 system hangs from stale cache and
+ MMU state
+Date: Sat, 30 May 2026 15:37:41 -0300
+Message-Id: <20260530-v3d-fix-rpi4-freezes-v1-0-c2c8307da6ce@igalia.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:_____wDnr5o5JhtqllXLAQ--.2025S2
-X-Coremail-Antispam: 1Uf129KBjDUn29KB7ZKAUJUUUUU529EdanIXcx71UUUUU7v73
-	VFW2AGmfu7bjvjm3AaLaJ3UbIYCTnIWIevJa73UjIFyTuYvjxUoVbkDUUUU
-Sender: yangxiuwei2025@163.com
-X-CM-SenderInfo: p1dqw55lxzvxisqskqqrwthudrp/xtbCwRv4iWobJjt7zQAA3x
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	MID_CONTAINS_FROM(1.00)[];
+X-B4-Tracking: v=1; b=H4sIAAAAAAAC/x2MwQ5AMBAFf0X2bJMqFfyKOKCv7AXZJiLEv2scJ
+ 5mZhyJUEKnLHlKcEmXfEhR5RvM6bgtYfGKyxtbG2YbP0nOQi/WQioMCNyI30whXtN5UMyilhyI
+ 5/7Yf3vcDIzHD0mYAAAA=
+X-Change-ID: 20260528-v3d-fix-rpi4-freezes-8bae519d04ce
+To: Melissa Wen <mwen@igalia.com>, Iago Toral <itoral@igalia.com>
+Cc: kernel-dev@igalia.com, dri-devel@lists.freedesktop.org, 
+ stable@vger.kernel.org, =?utf-8?q?Ma=C3=ADra_Canal?= <mcanal@igalia.com>
+X-Mailer: b4 0.14.3
+X-Developer-Signature: v=1; a=openpgp-sha256; l=2299; i=mcanal@igalia.com;
+ h=from:subject:message-id; bh=T4N0sBAg6OvCjb2pgLo2/mx0ExzDNFlAqYzZFdtR9+M=;
+ b=owGbwMvMwMVo/5mvq6zj1yrG02pJDFnSeh1/ImPY9O9mRZem8Uj0Lrh0wHDTj87QyGcGtm+fe
+ rgsXLK0k9GYhYGRi0FWTJHlx5PYWkaxcnbNZeUXYQaxMoFMYeDiFICJzGDjYJive6Hf7nLl5p67
+ tT3HXRYtjk6qZZ3/84D1hi+sejvFbi7653RtYo6g3SYvmR9Nu00/1s9RE5hVd6YzLkq8nMHk0Jp
+ PP9hKmjJ76qsWKKhMZzD48SKoyMzTl6eRLU1kmqYQk88GzVWTf2z54Xmjxfskv3PLk3hVs0cWmc
+ Wl/t6Lkhz++P9p6E03M9bqrV/E9Wz2teOfq6Yf8JNSLZ5Ve7MrPvjwlY/2iQ/36t8q/P82m1kqu
+ 3gWxyrtyNr7//M0O03ZvzazRJquX3y+rf11o/rhzelLCmqLOD5U3567rz3BJdf8C1fRk7oE+w+X
+ E9hCD288PeXzkpT2qPIzU4zvN7e8uWdleHCn6tr3le+5AA==
+X-Developer-Key: i=mcanal@igalia.com; a=openpgp;
+ fpr=F8E45D7D0116770729A677D13FF30E8A7688FAAA
+X-Spamd-Result: default: False [-0.36 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
-	R_DKIM_ALLOW(-0.20)[163.com:s=s110527];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
+	R_DKIM_REJECT(1.00)[igalia.com:s=20170329];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	MAILLIST(-0.15)[generic];
+	DMARC_POLICY_SOFTFAIL(0.10)[igalia.com : SPF not aligned (relaxed),none];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[13];
-	RCVD_COUNT_THREE(0.00)[4];
-	TAGGED_FROM(0.00)[bounces-258401-lists,stable=lfdr.de];
-	MIME_TRACE(0.00)[0:+];
-	DMARC_NA(0.00)[kylinos.cn];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[yangxiuwei@kylinos.cn,stable@vger.kernel.org];
+	TAGGED_FROM(0.00)[bounces-259009-lists,stable=lfdr.de];
 	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[163.com:+];
+	RCVD_COUNT_THREE(0.00)[4];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TO_DN_SOME(0.00)[];
+	DKIM_TRACE(0.00)[igalia.com:-];
+	NEURAL_SPAM(0.00)[0.525];
+	RCPT_COUNT_FIVE(0.00)[6];
+	FROM_NEQ_ENVFROM(0.00)[mcanal@igalia.com,stable@vger.kernel.org];
 	PRECEDENCE_BULK(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	MID_RHS_MATCH_FROM(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	NEURAL_HAM(-0.00)[-1.000];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,kylinos.cn:mid,kylinos.cn:email]
-X-Rspamd-Queue-Id: 6358E610EE8
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[igalia.com:mid,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo]
+X-Rspamd-Queue-Id: 6249D612428
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-Hi Rahul,
+Some users have reported hard system hangs on the Raspberry Pi 4 (V3D 4.2)
+under GPU load [1][2][3]. Investigation had traced these to V3D caches and
+MMU being left in an inconsistent state across PM transitions. This series
+addresses three distinct issues in the cache and MMU maintenance:
 
-Thanks for the report and for v2.
+  1. PATCH 1: Addresses an issue on pre-V3D 7.1 hardware, in which
+     starting a clean while an L2T flush is still pending can clobber bits
+     in L2TCACTL and leave the caches inconsistent. This issue existed
+     before the runtime PM series.
 
-Reviewed-by: Yang Xiuwei <yangxiuwei@kylinos.cn>
+  2. PATCH 2: Fixes the MMU TLB/cache flush in v3d_mmu_set_page_table()
+     being silently skipped during runtime resume. Directly addresses
+     the system hangs reported by the users.
+
+  3. PATCH 3: Cleans the V3D caches on runtime suspend, so all dirty lines
+     are written back to memory before the power domain is shut down.
+     Directly addresses the error `v3d fec00000.v3d: MMU error from
+     client L2T (7) at 0xff877600, pte invalid` reported during the
+     hangs.
+
+Together these restore correct cache/MMU coherency around runtime PM,
+addressing the reported hangs. Moreover, with this fixes, it was possible
+to reduce the autosuspend delay, which was increased as the shorter delays
+used to cause more frequent runtime suspend/resume cycles, which exposed
+the cache and MMU coherency bugs as random GPU hangs. With those fixed,
+we can reduce the autosuspend delay to a more reasonable value.
+
+[1] https://github.com/raspberrypi/linux/issues/7381
+[2] https://github.com/raspberrypi/linux/issues/7396
+[3] https://github.com/raspberrypi/linux/issues/7397
+
+Best regards,
+- Maíra
+
+---
+Maíra Canal (4):
+      drm/v3d: Wait for pending L2T flush before cleaning caches
+      drm/v3d: Flush MMU TLB and cache during runtime resume
+      drm/v3d: Clean caches before runtime suspend
+      drm/v3d: Reduce PM runtime autosuspend delay
+
+ drivers/gpu/drm/v3d/v3d_drv.c   |  2 +-
+ drivers/gpu/drm/v3d/v3d_gem.c   |  8 ++++++++
+ drivers/gpu/drm/v3d/v3d_mmu.c   | 31 ++++++++++++++++++++++---------
+ drivers/gpu/drm/v3d/v3d_power.c |  2 ++
+ 4 files changed, 33 insertions(+), 10 deletions(-)
+---
+base-commit: 61de054a772a1feda6364931ab1baf9038abf1c8
+change-id: 20260528-v3d-fix-rpi4-freezes-8bae519d04ce
 
 
