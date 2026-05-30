@@ -1,59 +1,58 @@
-Return-Path: <stable+bounces-258105-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-257292-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 8AivIEgkG2rO/QgAu9opvQ
-	(envelope-from <stable+bounces-258105-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:54:16 +0200
+	id sDYWJikaG2pV/AgAu9opvQ
+	(envelope-from <stable+bounces-257292-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:11:05 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 014406109E1
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:54:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 09F8660F0EA
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:11:04 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id CBA6D30D2288
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 17:47:13 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 6620B30557CB
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 17:01:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 79F2F3AEB5C;
-	Sat, 30 May 2026 17:47:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2D59B366567;
+	Sat, 30 May 2026 17:01:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XjwB8lri"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TeM4q+l/"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 540CF351C2F;
-	Sat, 30 May 2026 17:47:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 04FD932D42B;
+	Sat, 30 May 2026 17:01:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780163233; cv=none; b=pQkUxkuKXw7HX51Z25SG88UvVr/ca5ddZbufP0l592ykOcAQ8eJUldLTvwU2rMFmyVqf6MO/dXSkUEthpt3br5f8byMntMd77AzHtantj/sY8BxZsutd3It3s7tIKCDlrOSLwAXcIC2V+vaRmox6ptNZBy6uegsrbVrzMkMW6sQ=
+	t=1780160495; cv=none; b=TWfWp0j1Gz23mZuwxK12CsxJ8EIbmJBUZYQ28dP+2xYeqFyTvP8Kd1PTEi9vBs0mGLO7e00QIiYSx2vXKLGbPERoCChYQmK+/ktnJ7gRR/dCBmk0JZ/PuOynpCJ79hMMM32f/QFwnAs2HHC4Cyo24+4WqEf29gSfjPB9qTc8X1M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780163233; c=relaxed/simple;
-	bh=cqWysi9PUvfJvAV5JHAn9ZkDGDe6RC4jAtPL5b6tDPo=;
+	s=arc-20240116; t=1780160495; c=relaxed/simple;
+	bh=Dqh/IL8UF/LqIOwG+HqOYsgPgCnO6H/e4sAx2afH9bc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=WTo7X/zFr6Qdds2iCq7xq+km2zbC2P3f8pf+wMs2IM48RHjE3xuYb8d5bHYwtlTj4UqDviFq6MUkuz34P99powb3pFhpi+1kAzsEYFAaRW71mzy2cHHZAW6gU9gGEPV9lUaByGJV+uCiVNL/6Qh+vuEDav63hZVV/6Q9yaqsASI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XjwB8lri; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 967071F00893;
-	Sat, 30 May 2026 17:47:11 +0000 (UTC)
+	 MIME-Version; b=KDcWBay98UpsqqqhJDrZAYhMb6J/nlFDTyNFNY9cerIj1jUVMExZqRiQmHSLg2351VV+VZF6CFBGmWpPQ2TCCm9zSB47wT6OqCN4bckKO4U078xbSV0lVL+njHDVUQDhaUFIuspNkTKwqRA4ZJENJOg3ma9Zzbx6WHodCeRz5D0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TeM4q+l/; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D00C01F00893;
+	Sat, 30 May 2026 17:01:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780163232;
-	bh=/tqtTCOoK2p4T1fpLHz2U9aNjEptVfNQcVplYRzCDeM=;
+	s=korg; t=1780160493;
+	bh=PrvCNAcMwtt7LZ6auAaCrQbWv+qtilu3ta44D2Cz9H0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=XjwB8lriRUbyarfMLtNwFTVyzhV9ydNgT0pBV3k7aJWL9+Bpgq4B5alik3Op1muwB
-	 apuXBm10rWuIgr+0OQ0thHmj3IjPxl/9nVsF1sgYfuREST2RurAvD6fTbLr3DHOKqO
-	 yJESdzfxB8PqIUAsJQtLFwg1ZRl2S4u6yKyy+u3M=
+	b=TeM4q+l/fEKPpBHsNDq76XeF/pgMQ4hNv0k4QE2xxgSZOVC1liYcrXsY0wTfeTGlm
+	 /SPoMwRP1JZYr5jXP4DNGJ9E/wGk8fVx+AQoV6NTYGNfvhFTi2xIPgUFKOWJmlKyEh
+	 jEDwyAmRXWAoXau3ZQwBdYuVhdvGKnBwJbcSMiJA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	David Gow <davidgow@google.com>,
-	Maxime Ripard <mripard@kernel.org>,
-	Li hongliang <1468888505@139.com>
-Subject: [PATCH 5.15 163/776] drivers: base: Free devm resources when unregistering a device
-Date: Sat, 30 May 2026 17:57:57 +0200
-Message-ID: <20260530160244.704150318@linuxfoundation.org>
+	Michael Bommarito <michael.bommarito@gmail.com>,
+	Jan Kara <jack@suse.cz>
+Subject: [PATCH 6.1 354/969] isofs: validate Rock Ridge CE continuation extent against volume size
+Date: Sat, 30 May 2026 17:57:58 +0200
+Message-ID: <20260530160310.122327583@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260530160240.228940103@linuxfoundation.org>
-References: <20260530160240.228940103@linuxfoundation.org>
+In-Reply-To: <20260530160300.485627683@linuxfoundation.org>
+References: <20260530160300.485627683@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,100 +63,101 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-258105-lists,stable=lfdr.de];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,google.com,kernel.org,139.com];
 	TO_DN_SOME(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-257292-lists,stable=lfdr.de];
+	MIME_TRACE(0.00)[0:+];
 	RCVD_TLS_LAST(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,suse.cz];
 	RCVD_COUNT_THREE(0.00)[4];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_FIVE(0.00)[5];
+	NEURAL_HAM(-0.00)[-0.999];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	FROM_HAS_DN(0.00)[]
-X-Rspamd-Queue-Id: 014406109E1
+X-Rspamd-Queue-Id: 09F8660F0EA
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: David Gow <davidgow@google.com>
+From: Michael Bommarito <michael.bommarito@gmail.com>
 
-[ Upstream commit 699fb50d99039a50e7494de644f96c889279aca3 ]
+commit a36d990f591320e9dd379ab30063ebfe91d47e1f upstream.
 
-In the current code, devres_release_all() only gets called if the device
-has a bus and has been probed.
+rock_continue() reads rs->cont_extent verbatim from the Rock Ridge CE
+record and passes it to sb_bread() without checking that the block
+number is within the mounted ISO 9660 volume.  commit e595447e177b
+("[PATCH] rock.c: handle corrupted directories") added cont_offset
+and cont_size rejection for the CE continuation but did not validate
+the extent block number itself.  commit f54e18f1b831 ("isofs: Fix
+infinite looping over CE entries") later capped the CE chain length
+at RR_MAX_CE_ENTRIES = 32 but again left the block number unchecked.
 
-This leads to issues when using bus-less or driver-less devices where
-the device might never get freed if a managed resource holds a reference
-to the device. This is happening in the DRM framework for example.
+With a crafted ISO mounted via udisks2 (desktop optical auto-mount)
+or via CAP_SYS_ADMIN mount, rs->cont_extent can therefore point at
+an out-of-range block or at blocks belonging to an adjacent
+filesystem on the same block device.  sb_bread() on an out-of-range
+block returns NULL cleanly via the block layer EIO path, so there
+is no memory-safety violation.  For in-range reads of adjacent-
+filesystem data, the CE buffer is parsed as Rock Ridge records and
+only the text of SL sub-records reaches userspace through
+readlink(), which makes the info-leak channel narrow and difficult
+to exploit; still, rejecting the malformed CE outright matches the
+rejection shape already present in the same function for
+cont_offset and cont_size.
 
-We should thus call devres_release_all() in the device_del() function to
-make sure that the device-managed actions are properly executed when the
-device is unregistered, even if it has neither a bus nor a driver.
+Add an ISOFS_SB(sb)->s_nzones bounds check to rock_continue() next
+to the existing offset/size rejection, printing the same
+corrupted-directory-entry notice.
 
-This is effectively the same change than commit 2f8d16a996da ("devres:
-release resources on device_del()") that got reverted by commit
-a525a3ddeaca ("driver core: free devres in device_release") over
-memory leaks concerns.
-
-This patch effectively combines the two commits mentioned above to
-release the resources both on device_del() and device_release() and get
-the best of both worlds.
-
-Fixes: a525a3ddeaca ("driver core: free devres in device_release")
-Signed-off-by: David Gow <davidgow@google.com>
-Signed-off-by: Maxime Ripard <mripard@kernel.org>
-Link: https://lore.kernel.org/r/20230720-kunit-devm-inconsistencies-test-v3-3-6aa7e074f373@kernel.org
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Signed-off-by: Li hongliang <1468888505@139.com>
+Fixes: f54e18f1b831 ("isofs: Fix infinite looping over CE entries")
+Cc: stable@vger.kernel.org
+Assisted-by: Claude:claude-opus-4-7
+Signed-off-by: Michael Bommarito <michael.bommarito@gmail.com>
+Link: https://patch.msgid.link/20260419212155.2169382-2-michael.bommarito@gmail.com
+Signed-off-by: Jan Kara <jack@suse.cz>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/base/core.c |   12 ++++++++++++
- 1 file changed, 12 insertions(+)
+ fs/isofs/rock.c |    9 +++++++++
+ 1 file changed, 9 insertions(+)
 
---- a/drivers/base/core.c
-+++ b/drivers/base/core.c
-@@ -3604,9 +3604,21 @@ void device_del(struct device *dev)
- 	device_remove_properties(dev);
- 	device_links_purge(dev);
+--- a/fs/isofs/rock.c
++++ b/fs/isofs/rock.c
+@@ -101,6 +101,15 @@ static int rock_continue(struct rock_sta
+ 		goto out;
+ 	}
  
-+	/*
-+	 * If a device does not have a driver attached, we need to clean
-+	 * up any managed resources. We do this in device_release(), but
-+	 * it's never called (and we leak the device) if a managed
-+	 * resource holds a reference to the device. So release all
-+	 * managed resources here, like we do in driver_detach(). We
-+	 * still need to do so again in device_release() in case someone
-+	 * adds a new resource after this point, though.
-+	 */
-+	devres_release_all(dev);
++	if ((unsigned)rs->cont_extent >= ISOFS_SB(rs->inode->i_sb)->s_nzones) {
++		printk(KERN_NOTICE "rock: corrupted directory entry. "
++			"extent=%u out of volume (nzones=%lu)\n",
++			(unsigned)rs->cont_extent,
++			ISOFS_SB(rs->inode->i_sb)->s_nzones);
++		ret = -EIO;
++		goto out;
++	}
 +
- 	if (dev->bus)
- 		blocking_notifier_call_chain(&dev->bus->p->bus_notifier,
- 					     BUS_NOTIFY_REMOVED_DEVICE, dev);
-+
- 	kobject_uevent(&dev->kobj, KOBJ_REMOVE);
- 	glue_dir = get_glue_dir(dev);
- 	kobject_del(&dev->kobj);
+ 	if (rs->cont_extent) {
+ 		struct buffer_head *bh;
+ 
 
 
 
