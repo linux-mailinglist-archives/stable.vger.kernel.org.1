@@ -1,59 +1,64 @@
-Return-Path: <stable+bounces-257330-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-258717-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id KHnAKrwaG2oq/QgAu9opvQ
-	(envelope-from <stable+bounces-257330-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:13:32 +0200
+	id SEbwMK4sG2ow/wgAu9opvQ
+	(envelope-from <stable+bounces-258717-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:30:06 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1922160F2AB
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:13:32 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 74907611D92
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:30:06 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 2784E30D9FFD
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 17:03:41 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 6CCF6309BDCD
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 18:21:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5640F32B11D;
-	Sat, 30 May 2026 17:03:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2D569284690;
+	Sat, 30 May 2026 18:21:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ht9XF/bJ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ymKSfVsa"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 37BE934BA42;
-	Sat, 30 May 2026 17:03:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F09032E7390;
+	Sat, 30 May 2026 18:21:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780160620; cv=none; b=t6LoJ0DmhsI++4CXpGRclxsm+I2YXG6y+BACAVSIMayxLSb2yem3s9nvHGU98opIKz6KWhzwg65yaFbrQFkNrnxWHhpkOtTPJks+XVkCF5pR30X9km/KzSARPzEGx52jinFs1KxtHEML+o5+FVGe5gUOBCj1TcyN3vXTj1xmDJE=
+	t=1780165302; cv=none; b=jT+Pkh23/xNFd4Xyx1yKkpt0LB4FppBHrbaJ4JnlT6I1t9kiobqsDrKnCkWfSM73T4BhjRLvy4D/iY21TPxNR9IyrW6/YPFrePIgHIOSYWhjpWFQzWaZfatBrv9Pfbt6R9WbU9VM9ifFXQyvBpoErvtWrTDLYL0Kra/dU/TWpHM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780160620; c=relaxed/simple;
-	bh=j+NJ6s3tSg53oykHm1sZn1DO+sb9M/tx8VxkiEupR7I=;
+	s=arc-20240116; t=1780165302; c=relaxed/simple;
+	bh=NiWlwjaXWhfYPOO1Ht6vmMgV1777i1SfJybtvRVC09Y=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=b3dByLez7Hn4zIvGWPcIbykjsoyzJb45E5JuHW8PlA4cbJq6urVY0Chq8NVWKYOK8AdMx+KbCazRsPN8H6uj2itnRy9QvwpJ5WXBgtBtEw4IdohY9TwVeFW1X2PmO96p5bSYBS74OjZzKBSI9DW8Hfoj22QklFV6XFDOA25hzfQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ht9XF/bJ; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 835601F00893;
-	Sat, 30 May 2026 17:03:38 +0000 (UTC)
+	 MIME-Version; b=eQWDSl4Rt/zHGdt61R0kx66ut+KAuTWKdcl1REGKTq29AZLmAo9UW0XJ4Gv8Aldx78niH6kkQ+YJCPn7hjSYkego/9Ke3NRyx7o9LecQyPyUjLTI14vnPltEeKdkFII25dnAotE5mCLAQJw+mhnaXwchhTkJpG1+Sj8yz2e+CTs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ymKSfVsa; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E994D1F00893;
+	Sat, 30 May 2026 18:21:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780160619;
-	bh=1ZIzXkGx7RvYTFanJatjfw0WcFOWy8GKQunXnkl6KkU=;
+	s=korg; t=1780165300;
+	bh=8LmY217q/lEqvKfjvRrvB+YwUx954Ray4NXIMRO1nDw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=ht9XF/bJOhn74ypXs2z+uABuaUtNY6IlthnEUA+tE2yzLhMc/HaksJS938lzd65AC
-	 pCpJT3Vnr+fapnsKBWq/1QZZ2hXhUgeYQuCZOkwe7nCvTXetnWhXWpDjcq3FgBQbGd
-	 aUuvcuoiFN/M6OVNRypXAowbBWTaDQwN26EBCBZQ=
+	b=ymKSfVsaj9GiXmRlYmaI3bv0Q3qS3tpjhvMY1+sXVx0gdhzJdYcxCpwHD4wb5SCTW
+	 559AuW9dzfRMpy2e/1aasEqlcSml/zAdxn6ZvPNlxrXR04jutaPoQYVHHm/IhwjqC+
+	 km3zBPPHQhzt0p8+fLGC8ZjzkbSnJm2JAbsTqm/E=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Bartosz Golaszewski <bartosz.golaszewski@oss.qualcomm.com>,
-	Johan Hovold <johan@kernel.org>,
-	Mark Brown <broonie@kernel.org>
-Subject: [PATCH 6.1 387/969] regulator: max77650: fix OF node reference imbalance
+	Yifan Wu <yifanwucs@gmail.com>,
+	Juefei Pu <tomapufckgml@gmail.com>,
+	Yuan Tan <yuantan098@gmail.com>,
+	Xin Liu <bird@lzu.edu.cn>,
+	Yuhang Zheng <z1652074432@gmail.com>,
+	Ren Wei <n05ec@lzu.edu.cn>,
+	Florian Westphal <fw@strlen.de>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 030/589] netfilter: xt_multiport: validate range encoding in checkentry
 Date: Sat, 30 May 2026 17:58:31 +0200
-Message-ID: <20260530160310.995198664@linuxfoundation.org>
+Message-ID: <20260530160225.375884111@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260530160300.485627683@linuxfoundation.org>
-References: <20260530160300.485627683@linuxfoundation.org>
+In-Reply-To: <20260530160224.570625122@linuxfoundation.org>
+References: <20260530160224.570625122@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,71 +71,134 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-257330-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	RCPT_COUNT_FIVE(0.00)[6];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,lzu.edu.cn,strlen.de,kernel.org];
+	TAGGED_FROM(0.00)[bounces-258717-lists,stable=lfdr.de];
 	PRECEDENCE_BULK(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[stable];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[11];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	FROM_HAS_DN(0.00)[]
-X-Rspamd-Queue-Id: 1922160F2AB
+	TAGGED_RCPT(0.00)[stable];
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[strlen.de:email,lzu.edu.cn:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
+X-Rspamd-Queue-Id: 74907611D92
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Johan Hovold <johan@kernel.org>
+From: Ren Wei <n05ec@lzu.edu.cn>
 
-commit 2edaf5f7ada0ab5c9ec1f0836bd19779a8d85262 upstream.
+[ Upstream commit ff64c5bfef12461df8450e0f50bb693b5269c720 ]
 
-The driver reuses the OF node of the parent multi-function device but
-fails to take another reference to balance the one dropped by the
-platform bus code when unbinding the MFD and deregistering the child
-devices.
+ports_match_v1() treats any non-zero pflags entry as the start of a
+port range and unconditionally consumes the next ports[] element as
+the range end.
 
-Fix this by using the intended helper for reusing OF nodes.
+The checkentry path currently validates protocol, flags and count, but
+it does not validate the range encoding itself. As a result, malformed
+rules can mark the last slot as a range start or place two range starts
+back to back, leaving ports_match_v1() to step past the last valid
+ports[] element while interpreting the rule.
 
-Fixes: bcc61f1c44fd ("regulator: max77650: add regulator support")
-Cc: stable@vger.kernel.org	# 5.1
-Reviewed-by: Bartosz Golaszewski <bartosz.golaszewski@oss.qualcomm.com>
-Signed-off-by: Johan Hovold <johan@kernel.org>
-Link: https://patch.msgid.link/20260408073055.5183-4-johan@kernel.org
-Signed-off-by: Mark Brown <broonie@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Reject malformed multiport v1 rules in checkentry by validating that
+each range start has a following element and that the following element
+is not itself marked as another range start.
+
+Fixes: a89ecb6a2ef7 ("[NETFILTER]: x_tables: unify IPv4/IPv6 multiport match")
+Reported-by: Yifan Wu <yifanwucs@gmail.com>
+Reported-by: Juefei Pu <tomapufckgml@gmail.com>
+Co-developed-by: Yuan Tan <yuantan098@gmail.com>
+Signed-off-by: Yuan Tan <yuantan098@gmail.com>
+Suggested-by: Xin Liu <bird@lzu.edu.cn>
+Tested-by: Yuhang Zheng <z1652074432@gmail.com>
+Signed-off-by: Ren Wei <n05ec@lzu.edu.cn>
+Signed-off-by: Florian Westphal <fw@strlen.de>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/regulator/max77650-regulator.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ net/netfilter/xt_multiport.c | 34 ++++++++++++++++++++++++++++++----
+ 1 file changed, 30 insertions(+), 4 deletions(-)
 
---- a/drivers/regulator/max77650-regulator.c
-+++ b/drivers/regulator/max77650-regulator.c
-@@ -339,7 +339,7 @@ static int max77650_regulator_probe(stru
- 	parent = dev->parent;
+diff --git a/net/netfilter/xt_multiport.c b/net/netfilter/xt_multiport.c
+index 44a00f5acde8a..a1691ff405d3c 100644
+--- a/net/netfilter/xt_multiport.c
++++ b/net/netfilter/xt_multiport.c
+@@ -105,6 +105,28 @@ multiport_mt(const struct sk_buff *skb, struct xt_action_param *par)
+ 	return ports_match_v1(multiinfo, ntohs(pptr[0]), ntohs(pptr[1]));
+ }
  
- 	if (!dev->of_node)
--		dev->of_node = parent->of_node;
-+		device_set_of_node_from_dev(dev, parent);
++static bool
++multiport_valid_ranges(const struct xt_multiport_v1 *multiinfo)
++{
++	unsigned int i;
++
++	for (i = 0; i < multiinfo->count; i++) {
++		if (!multiinfo->pflags[i])
++			continue;
++
++		if (++i >= multiinfo->count)
++			return false;
++
++		if (multiinfo->pflags[i])
++			return false;
++
++		if (multiinfo->ports[i - 1] > multiinfo->ports[i])
++			return false;
++	}
++
++	return true;
++}
++
+ static inline bool
+ check(u_int16_t proto,
+       u_int8_t ip_invflags,
+@@ -127,8 +149,10 @@ static int multiport_mt_check(const struct xt_mtchk_param *par)
+ 	const struct ipt_ip *ip = par->entryinfo;
+ 	const struct xt_multiport_v1 *multiinfo = par->matchinfo;
  
- 	rdescs = devm_kcalloc(dev, MAX77650_REGULATOR_NUM_REGULATORS,
- 			      sizeof(*rdescs), GFP_KERNEL);
+-	return check(ip->proto, ip->invflags, multiinfo->flags,
+-		     multiinfo->count) ? 0 : -EINVAL;
++	if (!check(ip->proto, ip->invflags, multiinfo->flags, multiinfo->count))
++		return -EINVAL;
++
++	return multiport_valid_ranges(multiinfo) ? 0 : -EINVAL;
+ }
+ 
+ static int multiport_mt6_check(const struct xt_mtchk_param *par)
+@@ -136,8 +160,10 @@ static int multiport_mt6_check(const struct xt_mtchk_param *par)
+ 	const struct ip6t_ip6 *ip = par->entryinfo;
+ 	const struct xt_multiport_v1 *multiinfo = par->matchinfo;
+ 
+-	return check(ip->proto, ip->invflags, multiinfo->flags,
+-		     multiinfo->count) ? 0 : -EINVAL;
++	if (!check(ip->proto, ip->invflags, multiinfo->flags, multiinfo->count))
++		return -EINVAL;
++
++	return multiport_valid_ranges(multiinfo) ? 0 : -EINVAL;
+ }
+ 
+ static struct xt_match multiport_mt_reg[] __read_mostly = {
+-- 
+2.53.0
+
 
 
 
