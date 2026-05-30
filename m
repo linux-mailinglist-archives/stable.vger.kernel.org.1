@@ -1,62 +1,65 @@
-Return-Path: <stable+bounces-258459-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-257684-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id yLlzMronG2qS/ggAu9opvQ
-	(envelope-from <stable+bounces-258459-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:08:58 +0200
+	id ONJeMkMeG2qu/QgAu9opvQ
+	(envelope-from <stable+bounces-257684-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:28:35 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 740A1611132
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:08:58 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 47D6860FBF8
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:28:35 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 8540B3017EDF
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 18:07:04 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 8691530AB9C0
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 17:23:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3B0AB3AE18D;
-	Sat, 30 May 2026 18:07:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 168B1332EA7;
+	Sat, 30 May 2026 17:23:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="i2QZWfd2"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="T4NAIPMd"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1E4673112C1;
-	Sat, 30 May 2026 18:07:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D337D33E36A;
+	Sat, 30 May 2026 17:23:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780164421; cv=none; b=Md9Ia3COR4PxgSKogLHhfHgaLLC758gD2cb5Zrr6tBXRVFDW4tI9+oMC0DGBWFI+pEJDo40PsOnFka69gatK5pNhV7w0TSXpVMgCLyVBiBcHt60L7HkHFe+y2CWK2gME1JDFi1trAD4zyj6sVO+uHacdWatvLgvnQ1v/6W2TZzE=
+	t=1780161826; cv=none; b=FpBPHRFUZ3pUr17czLmITqosEh1GKMRJT8aFdRatcmTRIYRGDolktz2OUvqtYRsNJNTf6JSwb6CLdVgrjfF1qgFs9J/ezmfx9QHYdg55CQTvjEW6sgEkPXI6jQ8DqY8zFmwmJEsTK+KXifmzFcRMEw/gI0lss4F2Q/HVBb4Hod8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780164421; c=relaxed/simple;
-	bh=0gRDwAVO6xiorPG++dxozmDMsIKgEkKVBPUcuB1zagw=;
+	s=arc-20240116; t=1780161826; c=relaxed/simple;
+	bh=Yp9oXmhQ/0eiWQFs4VtugDu2BC4ezIlzhyDxdxB2xCg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=bEc6Z6LqTSbQged4Og+BCNWFBbgany7IFXkR/vTgPqsAs83M5kwdvuUxE6pIEzf9gE/Y/USKujWxIiGZFO6rIoa8N3Qt4Ej79tE+u8jwlZmahfnLBzxc67439rYLaENuh+pbhPRDirAqqLdcQAPImpQl8bNZADmR+rpztldsuDE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=i2QZWfd2; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 649A41F00893;
-	Sat, 30 May 2026 18:06:59 +0000 (UTC)
+	 MIME-Version; b=ICWqxLE49w9Ff4LicqeP0k3TirLQjQFneqsWgS25xV9W9hFWmyNk7dpAZG2kns3TFvHFekmrbiYY6AvaBqe3xfE4Bwf53Z9L0xAcbW6k+rx12ohCtEHCYifBUGLU9w2e9rfWEvKYDQnH/evZijSmVZr4RptV3g7WiLRyCGmzspE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=T4NAIPMd; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 245D91F00893;
+	Sat, 30 May 2026 17:23:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780164420;
-	bh=PqZUNvP/5kjQcHsIEZsV0kaZNZQLP3k8TAopIE78tKo=;
+	s=korg; t=1780161825;
+	bh=bHFi3QHOP4LiyCEK/FA6JS/W9ShNPNIgpd/s4N956LY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=i2QZWfd2FORpKYuQvN8YZo5nJwrXBwk1WOHW/Bml10c2/9OTW4EcJ1iky48sdezKD
-	 4/tGd+m8HrtkVpL26SPe8thfpx0IzLCGSBM3XTf0r6HaAK3+jVWj+3gR0S+1NCVgoq
-	 wmP3JNlhiF4o67/+fn/Wfi9AkvHCkae/HtTDBGvc=
+	b=T4NAIPMdljVEeaHzjrd34a5a4NFGfiutZeLU9nTGsmndyGqFoStpl/SHwnQkiTJGC
+	 J87l7oXyUhVu/+wFkOmEmyFzXwosOWc36JmHfqOac5KjN81wlSa56hQ7ceYmZ05qEv
+	 rCUAjeRhdOOfVIeLR56XlTi6bCPjYvPXKMK0jcaU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>,
-	Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>,
-	Taniya Das <taniya.das@oss.qualcomm.com>,
-	Bjorn Andersson <andersson@kernel.org>,
-	Sasha Levin <sashal@kernel.org>,
-	Val Packett <val@packett.cool>
-Subject: [PATCH 5.15 549/776] clk: qcom: dispcc-sc7180: Add missing MDSS resets
+	Yuan Tan <yuantan098@gmail.com>,
+	Yifan Wu <yifanwucs@gmail.com>,
+	Juefei Pu <tomapufckgml@gmail.com>,
+	Xin Liu <bird@lzu.edu.cn>,
+	Jiexun Wang <wangjiexun2025@gmail.com>,
+	Ren Wei <n05ec@lzu.edu.cn>,
+	Florian Westphal <fw@strlen.de>,
+	Pablo Neira Ayuso <pablo@netfilter.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 739/969] netfilter: xt_policy: fix strict mode inbound policy matching
 Date: Sat, 30 May 2026 18:04:23 +0200
-Message-ID: <20260530160254.351113256@linuxfoundation.org>
+Message-ID: <20260530160320.959530950@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260530160240.228940103@linuxfoundation.org>
-References: <20260530160240.228940103@linuxfoundation.org>
+In-Reply-To: <20260530160300.485627683@linuxfoundation.org>
+References: <20260530160300.485627683@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,89 +72,79 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-258459-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-257684-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,lzu.edu.cn,strlen.de,netfilter.org,kernel.org];
 	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	RCVD_TLS_LAST(0.00)[];
+	RCPT_COUNT_TWELVE(0.00)[12];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
-	PRECEDENCE_BULK(0.00)[];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-0.996];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[9];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
 	TO_DN_SOME(0.00)[];
-	FROM_HAS_DN(0.00)[]
-X-Rspamd-Queue-Id: 740A1611132
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	TAGGED_RCPT(0.00)[stable];
+	MID_RHS_MATCH_FROM(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[lzu.edu.cn:email,strlen.de:email,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim,netfilter.org:email]
+X-Rspamd-Queue-Id: 47D6860FBF8
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
+From: Jiexun Wang <wangjiexun2025@gmail.com>
 
-[ Upstream commit b0bc6011c5499bdfddd0390262bfa13dce1eff74 ]
+[ Upstream commit 4b2b4d7d4e203c92db8966b163edfacb1f0e1e29 ]
 
-The MDSS resets have so far been left undescribed. Fix that.
+match_policy_in() walks sec_path entries from the last transform to the
+first one, but strict policy matching needs to consume info->pol[] in
+the same forward order as the rule layout.
 
-Fixes: dd3d06622138 ("clk: qcom: Add display clock controller driver for SC7180")
-Signed-off-by: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
-Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
-Reviewed-by: Taniya Das <taniya.das@oss.qualcomm.com>
-Tested-by: Val Packett <val@packett.cool> # sc7180-ecs-liva-qc710
-Link: https://lore.kernel.org/r/20260120-topic-7180_dispcc_bcr-v1-2-0b1b442156c3@oss.qualcomm.com
-Signed-off-by: Bjorn Andersson <andersson@kernel.org>
+Derive the strict-match policy position from the number of transforms
+already consumed so that multi-element inbound rules are matched
+consistently.
+
+Fixes: c4b885139203 ("[NETFILTER]: x_tables: replace IPv4/IPv6 policy match by address family independant version")
+Reported-by: Yuan Tan <yuantan098@gmail.com>
+Reported-by: Yifan Wu <yifanwucs@gmail.com>
+Reported-by: Juefei Pu <tomapufckgml@gmail.com>
+Reported-by: Xin Liu <bird@lzu.edu.cn>
+Signed-off-by: Jiexun Wang <wangjiexun2025@gmail.com>
+Signed-off-by: Ren Wei <n05ec@lzu.edu.cn>
+Acked-by: Florian Westphal <fw@strlen.de>
+Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/clk/qcom/dispcc-sc7180.c | 8 ++++++++
- 1 file changed, 8 insertions(+)
+ net/netfilter/xt_policy.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/clk/qcom/dispcc-sc7180.c b/drivers/clk/qcom/dispcc-sc7180.c
-index 5d2ae297e7413..040149f24d798 100644
---- a/drivers/clk/qcom/dispcc-sc7180.c
-+++ b/drivers/clk/qcom/dispcc-sc7180.c
-@@ -16,6 +16,7 @@
- #include "clk-regmap-divider.h"
- #include "common.h"
- #include "gdsc.h"
-+#include "reset.h"
+diff --git a/net/netfilter/xt_policy.c b/net/netfilter/xt_policy.c
+index cb6e8279010a4..b5fa65558318f 100644
+--- a/net/netfilter/xt_policy.c
++++ b/net/netfilter/xt_policy.c
+@@ -63,7 +63,7 @@ match_policy_in(const struct sk_buff *skb, const struct xt_policy_info *info,
+ 		return 0;
  
- enum {
- 	P_BI_TCXO,
-@@ -635,6 +636,11 @@ static struct gdsc mdss_gdsc = {
- 	.flags = HW_CTRL,
- };
- 
-+static const struct qcom_reset_map disp_cc_sc7180_resets[] = {
-+	[DISP_CC_MDSS_CORE_BCR] = { 0x2000 },
-+	[DISP_CC_MDSS_RSCC_BCR] = { 0x4000 },
-+};
-+
- static struct gdsc *disp_cc_sc7180_gdscs[] = {
- 	[MDSS_GDSC] = &mdss_gdsc,
- };
-@@ -686,6 +692,8 @@ static const struct qcom_cc_desc disp_cc_sc7180_desc = {
- 	.config = &disp_cc_sc7180_regmap_config,
- 	.clks = disp_cc_sc7180_clocks,
- 	.num_clks = ARRAY_SIZE(disp_cc_sc7180_clocks),
-+	.resets = disp_cc_sc7180_resets,
-+	.num_resets = ARRAY_SIZE(disp_cc_sc7180_resets),
- 	.gdscs = disp_cc_sc7180_gdscs,
- 	.num_gdscs = ARRAY_SIZE(disp_cc_sc7180_gdscs),
- };
+ 	for (i = sp->len - 1; i >= 0; i--) {
+-		pos = strict ? i - sp->len + 1 : 0;
++		pos = strict ? sp->len - i - 1 : 0;
+ 		if (pos >= info->len)
+ 			return 0;
+ 		e = &info->pol[pos];
 -- 
 2.53.0
 
