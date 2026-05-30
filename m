@@ -1,60 +1,58 @@
-Return-Path: <stable+bounces-258039-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-257260-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id oA9eGmUjG2rO/QgAu9opvQ
-	(envelope-from <stable+bounces-258039-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:50:29 +0200
+	id AEYpEykZG2pV/AgAu9opvQ
+	(envelope-from <stable+bounces-257260-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:06:49 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 019CA610805
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:50:28 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id AA3F860EE6F
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:06:48 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 23AF230316E2
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 17:43:41 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 4673D30FF7EC
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 16:59:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C08A9348C5E;
-	Sat, 30 May 2026 17:43:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E9E0B33FE15;
+	Sat, 30 May 2026 16:59:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="b2IElQUd"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gucBkNEt"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 91E4C33F8A4;
-	Sat, 30 May 2026 17:43:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A97703403F3;
+	Sat, 30 May 2026 16:59:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780163020; cv=none; b=C3562uUnj2MqYe6xGO/dEtNFmQdqIhuwLPASKqhvvP9Ztmi3eRkxdtIHk1mJ0RNA4+DIQ346ZCceRvk5qywzTUDQMDgGBlbaYyV1ps7g1iU34IAeqRqi3ZrlU2u6bc/qUiLVD+qfdMiqRH+zPsSsBnyGlzD/mbURxJiiSwvsNys=
+	t=1780160377; cv=none; b=us2fCjBY733d5obHZFfABfVOveNZ86Rd8Z1pqjn3B3Rjubwb+HSMxerVn2fhH8yLOdpSfYW1jCi0rbJWVUjacBAbzqSO3sdMf8z57GqHoD3/PhqaNRG7ZCFyiuEggRAcEeP0/BpHaFbzLwomOcJqbX9tE7LAAG6YKqGJyFrDFow=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780163020; c=relaxed/simple;
-	bh=52rnjJBW4zrC4lSH0ZNbR3BsC/FMQ5F+WUhGmNl4VFg=;
+	s=arc-20240116; t=1780160377; c=relaxed/simple;
+	bh=AGUTEzE30Ns87dEg4h6MRtAA/7vPE4mH/my/uajNUcM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=q6/09ZmyG2dfFzmUSHb+NbG8oCwq5UOLrtjwWlfbPgxvWmNOEyi/IkWtv142u0HLZPa+5iQI6Snx+Yw2f1zHhpUm1CHv3fGaKKPcSHJ6YoIcaeqSiK24j2ahZzDWf17R0td8+TuP53rNDl5B0qGr4tnNa+oxGTGRsVHdqmEH3vM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=b2IElQUd; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D63751F00893;
-	Sat, 30 May 2026 17:43:38 +0000 (UTC)
+	 MIME-Version; b=LMSwgximDXVNR9V+RGp1x6zh3CwuWWNKGk2xTI1S2wiu4crsQeQgGRaTg4cwv0Ucq/nt3ekH88ooZJl7RXbGVsiEEvsDstH2yC4V7pZXDXtUL5GNc3L3SnsmEc0d1RKcYKMB89/drOVl7pGJ9TVC0+n8d1sSS1odxF2gnIlBWoA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gucBkNEt; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C95881F00893;
+	Sat, 30 May 2026 16:59:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780163019;
-	bh=3XUnQKXkT3Z05RodphU4P3ZMT9KiM2YE8YtHyhpimDo=;
+	s=korg; t=1780160376;
+	bh=LRqWn8DZWjvCYwLZ3iF/FVWJvk00njRxh0nLWFwBlhk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=b2IElQUdSk2Y6ZBtCrU5CHnXPOICMErj2mR8zNDVFEF7FByPsWze7lvLpdrpH29aK
-	 yxG4Tygp5XFU+lK2sHMOM+71eO9gsvN+quB38HeifWUruAn5euRDyJ7O2erBuBbcIt
-	 JeRkQhcuChlSKnOkNFBmcEVk/qWy8hwqtfxKD41k=
+	b=gucBkNEtHABMB6Ml2UREQkJzikk1LB6esdUESVgPWRx7xgOfiu/aXP4MRtyRIuys6
+	 3fmsNrDpVA2zDNoqyLf4O7HoIZ8n8mm5DrdaDDlc3VDLFowQ6kJEmEtlDG7WNCdrC9
+	 7myzTm7c5UnPimlRhlmnF4C9auoWcIbwTrvEGs2E=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Filipe Manana <fdmanana@suse.com>,
-	Qu Wenruo <wqu@suse.com>,
-	David Sterba <dsterba@suse.com>,
-	Alva Lan <alvalan9@foxmail.com>
-Subject: [PATCH 5.15 132/776] btrfs: send: check for inline extents in range_is_hole_in_parent()
+	Miklos Szeredi <mszeredi@redhat.com>,
+	Jan Kara <jack@suse.cz>
+Subject: [PATCH 6.1 322/969] fanotify: fix false positive on permission events
 Date: Sat, 30 May 2026 17:57:26 +0200
-Message-ID: <20260530160243.812822630@linuxfoundation.org>
+Message-ID: <20260530160309.293115966@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260530160240.228940103@linuxfoundation.org>
-References: <20260530160240.228940103@linuxfoundation.org>
+In-Reply-To: <20260530160300.485627683@linuxfoundation.org>
+References: <20260530160300.485627683@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -67,79 +65,119 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,suse.com,foxmail.com];
-	TAGGED_FROM(0.00)[bounces-258039-lists,stable=lfdr.de];
-	PRECEDENCE_BULK(0.00)[];
+	TAGGED_FROM(0.00)[bounces-257260-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[7];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[foxmail.com:email,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,suse.com:email,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim]
-X-Rspamd-Queue-Id: 019CA610805
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	RCPT_COUNT_FIVE(0.00)[5];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	TAGGED_RCPT(0.00)[stable];
+	MID_RHS_MATCH_FROM(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	FROM_HAS_DN(0.00)[]
+X-Rspamd-Queue-Id: AA3F860EE6F
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Qu Wenruo <wqu@suse.com>
+From: Miklos Szeredi <mszeredi@redhat.com>
 
-[ Upstream commit 08b096c1372cd69627f4f559fb47c9fb67a52b39 ]
+commit 7746e3bd4cc19b5092e00d32d676e329bfcb6900 upstream.
 
-Before accessing the disk_bytenr field of a file extent item we need
-to check if we are dealing with an inline extent.
-This is because for inline extents their data starts at the offset of
-the disk_bytenr field. So accessing the disk_bytenr
-means we are accessing inline data or in case the inline data is less
-than 8 bytes we can actually cause an invalid
-memory access if this inline extent item is the first item in the leaf
-or access metadata from other items.
+fsnotify_get_mark_safe() may return false for a mark on an unrelated group,
+which results in bypassing the permission check.
 
-Fixes: 82bfb2e7b645 ("Btrfs: incremental send, fix unnecessary hole writes for sparse files")
-Reviewed-by: Filipe Manana <fdmanana@suse.com>
-Signed-off-by: Qu Wenruo <wqu@suse.com>
-Reviewed-by: David Sterba <dsterba@suse.com>
-Signed-off-by: David Sterba <dsterba@suse.com>
-[ Avoid leaking the path by using { ret = 0; goto out; } instead of
-returning directly. ]
-Signed-off-by: Alva Lan <alvalan9@foxmail.com>
+Fix by skipping over detached marks that are not in the current group.
+
+CC: stable@vger.kernel.org
+Fixes: abc77577a669 ("fsnotify: Provide framework for dropping SRCU lock in ->handle_event")
+Signed-off-by: Miklos Szeredi <mszeredi@redhat.com>
+Link: https://patch.msgid.link/20260410144950.156160-1-mszeredi@redhat.com
+Signed-off-by: Jan Kara <jack@suse.cz>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/btrfs/send.c |    4 ++++
- 1 file changed, 4 insertions(+)
+ fs/notify/fsnotify.c             |    2 +-
+ fs/notify/mark.c                 |   18 +++++++++++-------
+ include/linux/fsnotify_backend.h |    1 +
+ 3 files changed, 13 insertions(+), 8 deletions(-)
 
---- a/fs/btrfs/send.c
-+++ b/fs/btrfs/send.c
-@@ -5892,6 +5892,10 @@ static int range_is_hole_in_parent(struc
- 		extent_end = btrfs_file_extent_end(path);
- 		if (extent_end <= start)
- 			goto next;
-+		if (btrfs_file_extent_type(leaf, fi) == BTRFS_FILE_EXTENT_INLINE) {
-+			ret = 0;
-+			goto out;
-+		}
- 		if (btrfs_file_extent_disk_bytenr(leaf, fi) == 0) {
- 			search_start = extent_end;
- 			goto next;
+--- a/fs/notify/fsnotify.c
++++ b/fs/notify/fsnotify.c
+@@ -398,7 +398,7 @@ static struct fsnotify_mark *fsnotify_fi
+ 	return hlist_entry_safe(node, struct fsnotify_mark, obj_list);
+ }
+ 
+-static struct fsnotify_mark *fsnotify_next_mark(struct fsnotify_mark *mark)
++struct fsnotify_mark *fsnotify_next_mark(struct fsnotify_mark *mark)
+ {
+ 	struct hlist_node *node = NULL;
+ 
+--- a/fs/notify/mark.c
++++ b/fs/notify/mark.c
+@@ -380,9 +380,6 @@ EXPORT_SYMBOL_GPL(fsnotify_put_mark);
+  */
+ static bool fsnotify_get_mark_safe(struct fsnotify_mark *mark)
+ {
+-	if (!mark)
+-		return true;
+-
+ 	if (refcount_inc_not_zero(&mark->refcnt)) {
+ 		spin_lock(&mark->lock);
+ 		if (mark->flags & FSNOTIFY_MARK_FLAG_ATTACHED) {
+@@ -423,15 +420,22 @@ bool fsnotify_prepare_user_wait(struct f
+ 	int type;
+ 
+ 	fsnotify_foreach_iter_type(type) {
++		struct fsnotify_mark *mark = iter_info->marks[type];
++
+ 		/* This can fail if mark is being removed */
+-		if (!fsnotify_get_mark_safe(iter_info->marks[type])) {
+-			__release(&fsnotify_mark_srcu);
+-			goto fail;
++		while (mark && !fsnotify_get_mark_safe(mark)) {
++			if (mark->group == iter_info->current_group) {
++				__release(&fsnotify_mark_srcu);
++				goto fail;
++			}
++			/* This is a mark in an unrelated group, skip */
++			mark = fsnotify_next_mark(mark);
++			iter_info->marks[type] = mark;
+ 		}
+ 	}
+ 
+ 	/*
+-	 * Now that both marks are pinned by refcount in the inode / vfsmount
++	 * Now that all marks are pinned by refcount in the inode / vfsmount / etc
+ 	 * lists, we can drop SRCU lock, and safely resume the list iteration
+ 	 * once userspace returns.
+ 	 */
+--- a/include/linux/fsnotify_backend.h
++++ b/include/linux/fsnotify_backend.h
+@@ -820,6 +820,7 @@ static inline void fsnotify_clear_sb_mar
+ }
+ extern void fsnotify_get_mark(struct fsnotify_mark *mark);
+ extern void fsnotify_put_mark(struct fsnotify_mark *mark);
++struct fsnotify_mark *fsnotify_next_mark(struct fsnotify_mark *mark);
+ extern void fsnotify_finish_user_wait(struct fsnotify_iter_info *iter_info);
+ extern bool fsnotify_prepare_user_wait(struct fsnotify_iter_info *iter_info);
+ 
 
 
 
