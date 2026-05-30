@@ -1,59 +1,64 @@
-Return-Path: <stable+bounces-259274-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-258656-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 2JQgOxsyG2qqAAkAu9opvQ
-	(envelope-from <stable+bounces-259274-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:53:15 +0200
+	id GGbtG64qG2r//ggAu9opvQ
+	(envelope-from <stable+bounces-258656-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:21:34 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 99B94612BC7
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:53:15 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id EBA8561191E
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:21:33 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id DEF3D30004F9
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 18:53:14 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 2880130932BB
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 18:18:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7EFA0242D67;
-	Sat, 30 May 2026 18:53:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CB13332F770;
+	Sat, 30 May 2026 18:18:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OC9gHyIc"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bZrmtBmc"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 690062E7389;
-	Sat, 30 May 2026 18:53:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9FB7E17555;
+	Sat, 30 May 2026 18:18:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780167193; cv=none; b=iiaphfPMdNoKRRyk4kSBgibAiHwyKAA5LtUXPhBNluCgtcRTilibiJvcdllLei2vPRyD3fiF8RkBzrzfUXgJMYKXAM3ZgaMi8T3FIx4rAubNLQ3oLaUdi+pK+L5CinjRBPDeNig6OfLWccEsOHjv6De+LNbaB4sU+JxRRxWpE4Q=
+	t=1780165087; cv=none; b=m+jqN3x2D8Uwwofj2b7y04676sov+aafl4zXKg+ha3vPbUp7ZHVcrn2nN8HldeGEYYASuAIo5IE5OfIdClOVML5laeSAtzrQO/xGUihIKuy5jU+GzGgbpdp7+CNw9R+4j+4bVsX8VevXyrB8sv1ew2ThJI9zwYViFFTZr6pvClo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780167193; c=relaxed/simple;
-	bh=T11FWqIN+YW1HLs5Ju+fiZ1cjt8twpeb0sbN0GpVbcU=;
+	s=arc-20240116; t=1780165087; c=relaxed/simple;
+	bh=d8W0B/po5XdCoI9X1UjlQ8fPx+9RCFczPJ+Wts0JZ8c=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=SJ0h1P+xVLhiEgvlb6x2J3hDHesoAF47yzqtNXQbfdy0RzamJzSqe4WYgJFaOrY5kKkWWpLL0czQFnWkWiyQZCHEmdqJe8NFou6CiPHDDxjEIP3PFKJ+H2KOgSaEKSfSxUais8Oer8Hp1f57gJG6lJ6mYZk4azrLmvP3BHg9QL8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OC9gHyIc; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 709D71F00893;
-	Sat, 30 May 2026 18:53:11 +0000 (UTC)
+	 MIME-Version; b=Mjq29OEgbXFEbekGhbhy6eoBkxdXdBAf91EWWnCjtXQQM7lvqcuGOU5aVw4BTJ22hWFW0VOptkYDfWux3lec4S0yihz39w1x0Sm2HHr/7JOb+kHxv2dwD7funzlPoCo5kc8ZYMO+EryENayhN5C1w5jXCq38FbHJn+k3bQDw/eM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bZrmtBmc; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C02BA1F00893;
+	Sat, 30 May 2026 18:18:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780167192;
-	bh=OS7KxnuOLu5AejDWjJIubTSK+oKHCh+hYQ5EnAh4iw8=;
+	s=korg; t=1780165086;
+	bh=9VOiyT9sy1ZwA671DIO/js7PqctWPmRAEfeGnscUzBs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=OC9gHyIcWFPUGBKpNTgXKh/6tKfilXsKxv389p+zS6SH4HhWyRP4BtTPbL2PE69TK
-	 EastQZTzN3z9xaJVCD69zsq14rogQleBdYuji5tJbWVnwDIWy4b5aXHWTme3eSUqPh
-	 kjircoL9tK5Eu3FWqvPLaPXRxFjY+1osV88jCdwo=
+	b=bZrmtBmcqwrIMPg4JIXpPrT3cP12FeQHd1QeuwSvS4d0VI6SpKVdP1cAGor8DN+3c
+	 f5ksQhe6fHWR7EZewATonCSFFto1dJepRiNqC+3rKlivqLAy3aYaR3/3vQIMRt87i8
+	 h3mdBLDTaLJCxLF/V2kCxAyZy2mKMF/JEncvVqFQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ethan Nelson-Moore <enelsonmoore@gmail.com>,
-	Paolo Abeni <pabeni@redhat.com>,
+	intel-wired-lan@lists.osuosl.org,
+	Bart Van Assche <bvanassche@acm.org>,
+	Aleksandr Loktionov <aleksandr.loktionov@intel.com>,
+	Przemek Kitszel <przemyslaw.kitszel@intel.com>,
+	Arpana Arland <arpanax.arland@intel.com>,
+	Jacob Keller <jacob.e.keller@intel.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 578/589] net: ethernet: cs89x0: remove stale CONFIG_MACH_MX31ADS reference
+Subject: [PATCH 5.15 745/776] ice: fix locking in ice_dcb_rebuild()
 Date: Sat, 30 May 2026 18:07:39 +0200
-Message-ID: <20260530160239.794105045@linuxfoundation.org>
+Message-ID: <20260530160259.032942490@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260530160224.570625122@linuxfoundation.org>
-References: <20260530160224.570625122@linuxfoundation.org>
+In-Reply-To: <20260530160240.228940103@linuxfoundation.org>
+References: <20260530160240.228940103@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,77 +71,88 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-259274-lists,stable=lfdr.de];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,redhat.com,kernel.org];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_TLS_LAST(0.00)[];
-	TO_DN_SOME(0.00)[];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
-	RCPT_COUNT_FIVE(0.00)[6];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-258656-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-0.995];
-	TAGGED_RCPT(0.00)[stable];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	NEURAL_HAM(-0.00)[-0.996];
+	RCPT_COUNT_SEVEN(0.00)[11];
 	MID_RHS_MATCH_FROM(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim,msgid.link:url]
-X-Rspamd-Queue-Id: 99B94612BC7
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,acm.org:email,msgid.link:url,linuxfoundation.org:mid,linuxfoundation.org:dkim,osuosl.org:email,intel.com:email]
+X-Rspamd-Queue-Id: EBA8561191E
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ethan Nelson-Moore <enelsonmoore@gmail.com>
+From: Bart Van Assche <bvanassche@acm.org>
 
-[ Upstream commit 36a8d04a8293afcb9304cf0cd3741f67698f2a1a ]
+[ Upstream commit 0ded1f36ba4021cba50513e80be6b6e173710168 ]
 
-The legacy ARM board file for MACH_MX31ADS was removed in commit
-c93197b0041d ("ARM: imx: Remove i.MX31 board files"), but a reference
-to it remained in the cs89x0 driver. Drop this unused code.
+Move the mutex_lock() call up to prevent that DCB settings change after
+the first ice_query_port_ets() call. The second ice_query_port_ets()
+call in ice_dcb_rebuild() is already protected by pf->tc_mutex.
 
-Signed-off-by: Ethan Nelson-Moore <enelsonmoore@gmail.com>
-Fixes: c93197b0041d ("ARM: imx: Remove i.MX31 board files")
-Link: https://patch.msgid.link/20260509023732.42256-1-enelsonmoore@gmail.com
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+This also fixes a bug in an error path, as before taking the first
+"goto dcb_error" in the function jumped over mutex_lock() to
+mutex_unlock().
+
+This bug has been detected by the clang thread-safety analyzer.
+
+Cc: intel-wired-lan@lists.osuosl.org
+Fixes: 242b5e068b25 ("ice: Fix DCB rebuild after reset")
+Signed-off-by: Bart Van Assche <bvanassche@acm.org>
+Reviewed-by: Aleksandr Loktionov <aleksandr.loktionov@intel.com>
+Reviewed-by: Przemek Kitszel <przemyslaw.kitszel@intel.com>
+Tested-by: Arpana Arland <arpanax.arland@intel.com>
+Signed-off-by: Jacob Keller <jacob.e.keller@intel.com>
+Link: https://patch.msgid.link/20260506-jk-iwl-net-2026-05-04-v2-6-a5ea4dc837a9@intel.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/cirrus/cs89x0.c | 2 --
- 1 file changed, 2 deletions(-)
+ drivers/net/ethernet/intel/ice/ice_dcb_lib.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/net/ethernet/cirrus/cs89x0.c b/drivers/net/ethernet/cirrus/cs89x0.c
-index 33ace33070593..77af8ace4d7b1 100644
---- a/drivers/net/ethernet/cirrus/cs89x0.c
-+++ b/drivers/net/ethernet/cirrus/cs89x0.c
-@@ -1270,7 +1270,6 @@ static const struct net_device_ops net_ops = {
+diff --git a/drivers/net/ethernet/intel/ice/ice_dcb_lib.c b/drivers/net/ethernet/intel/ice/ice_dcb_lib.c
+index dd4195e964faf..b415e375d6205 100644
+--- a/drivers/net/ethernet/intel/ice/ice_dcb_lib.c
++++ b/drivers/net/ethernet/intel/ice/ice_dcb_lib.c
+@@ -450,14 +450,14 @@ void ice_dcb_rebuild(struct ice_pf *pf)
+ 	struct ice_dcbx_cfg *err_cfg;
+ 	enum ice_status ret;
  
- static void __init reset_chip(struct net_device *dev)
- {
--#if !defined(CONFIG_MACH_MX31ADS)
- 	struct net_local *lp = netdev_priv(dev);
- 	unsigned long reset_start_time;
++	mutex_lock(&pf->tc_mutex);
++
+ 	ret = ice_query_port_ets(pf->hw.port_info, &buf, sizeof(buf), NULL);
+ 	if (ret) {
+ 		dev_err(dev, "Query Port ETS failed\n");
+ 		goto dcb_error;
+ 	}
  
-@@ -1297,7 +1296,6 @@ static void __init reset_chip(struct net_device *dev)
- 	while ((readreg(dev, PP_SelfST) & INIT_DONE) == 0 &&
- 	       time_before(jiffies, reset_start_time + 2))
- 		;
--#endif /* !CONFIG_MACH_MX31ADS */
- }
+-	mutex_lock(&pf->tc_mutex);
+-
+ 	if (!pf->hw.port_info->qos_cfg.is_sw_lldp)
+ 		ice_cfg_etsrec_defaults(pf->hw.port_info);
  
- /* This is the real probe routine.
 -- 
 2.53.0
 
