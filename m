@@ -1,60 +1,59 @@
-Return-Path: <stable+bounces-259054-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-257683-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 2GVpA9ovG2qU/wgAu9opvQ
-	(envelope-from <stable+bounces-259054-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:43:38 +0200
+	id AMxlKJoeG2qu/QgAu9opvQ
+	(envelope-from <stable+bounces-257683-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:30:02 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7D8C6612591
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:43:37 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0E92760FCE9
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:30:01 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 9EF1F301487A
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 18:40:36 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 935F730C0103
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 17:23:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D41AF1B87C0;
-	Sat, 30 May 2026 18:40:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 021193161A3;
+	Sat, 30 May 2026 17:23:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dymGMNqt"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2gb+Fa/6"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8CCEC25B08A;
-	Sat, 30 May 2026 18:40:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CF337340293;
+	Sat, 30 May 2026 17:23:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780166435; cv=none; b=HRHPmI6nIzCEF7wmd2jJkSkJX6C/5zMIMFIqOqUcvFJkWrntXvXrjntcHGqTtqU/Q0chIA1kOqs2Qw0FCth7gn0aBL/05gMjgMfx488lClvfH1g3T3x+IB7iT2LsYC8wTAXh4gkT8LqjYOYNHoDUPh+xbRDF5Hhn1Hog/Ch7Owg=
+	t=1780161823; cv=none; b=kUmYxZubAU7YaDYLOtoyd6bggzVM3Zgn9ANYpX01GVAsS1HtcENZRgVR3V04Ah4+6NvuoNb5zo5COYzrYnos+lMsy4vQi8i3eZgu9dZnSySWcLwimhkKHv3GDwMSigIiKJyfRg5LRhupVcTa5pHe8ChEPUuHq2RlYkkZarVyLyA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780166435; c=relaxed/simple;
-	bh=gqc1/eD5q76G3TGgKnrW8aI+8l61XI8VRrsy1N2Q87g=;
+	s=arc-20240116; t=1780161823; c=relaxed/simple;
+	bh=SIIsNrtTEMh+Qw+ORh0OHRCCjNIxI3mOUUczk5cM1HE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Q53htsVPGhqx0gJS7Zuoeth0TR8ZV9CASUPYJvL419pCt6aa2L9+dsCN6uS2BT3QrlJDLgs4O9S5qLavQLIVbKXIkYEq1LUL1ODkphC3ahWV7JonOL/wHBc8J1As9DPzGJvxdmZgN0lRXW0gwaFfJpmR/JHTpoItxMbu4Sv6pAg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dymGMNqt; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D40F21F00893;
-	Sat, 30 May 2026 18:40:33 +0000 (UTC)
+	 MIME-Version; b=uQ3p8+PS1ZcomN5hxP2y+hQbXgNiCpKLEfI5BEdDYNUxFfMLN6vZVdiWzQdEl6Do0HQXoBvSB5z8/Q1NbN7ZuVd2hbON6xuBuC595zWWCOL1oT7n2ri0AqS/C+zzvu7OTHlcPeZx4y4Pa5PLS/+uCxKHW6QYbzNR9mig57olpGo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2gb+Fa/6; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D1B731F00893;
+	Sat, 30 May 2026 17:23:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780166434;
-	bh=Z7RJv6FzeHGKkk6vivhOHA9XaiDv82IQ/ioYsX+uXx8=;
+	s=korg; t=1780161822;
+	bh=wf/dlg6fSIVZTjcj2GvMmV9zAT0pu807dTvf+BVwyK8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=dymGMNqthrdqT8D6U9/O6YCiJEdOqH/RNjkCIyyoYzv5eJL+VRZqFsyFfNZzVkZdv
-	 ozTt4eyLGy3WlArrfRVKpLtAZ4MEZ52zhTLbxQf9Z4aPSQzhbif586Hp5PF8aNxt2g
-	 v42LTTdTr7G/wWYbhAf2woaDtxKOT4Ph9Eg3U30g=
+	b=2gb+Fa/6PF2vbPZSgKx5V6Wv61Kpt9OBGfZgbQ29vhXPuaaZ92kb/55RSy5CmvLM0
+	 PwxCRKXoQb9GIpcyd7NSqqyRLXZ5CBMv5CliP5LAAXjRF282j3LFLkGr/vU4XdEKLh
+	 Lch40QHLgGzg4Lnqk633KKZklyu1+8YdlyfsUU+8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Tom Zanussi <zanussi@kernel.org>,
-	Pengpeng Hou <pengpeng@iscas.ac.cn>,
-	"Steven Rostedt (Google)" <rostedt@goodmis.org>,
+	Wolfram Sang <wsa+renesas@sang-engineering.com>,
+	Jassi Brar <jassisinghbrar@gmail.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 373/589] tracing: Rebuild full_name on each hist_field_name() call
+Subject: [PATCH 6.1 730/969] mailbox: mailbox-test: make data_ready a per-instance variable
 Date: Sat, 30 May 2026 18:04:14 +0200
-Message-ID: <20260530160234.621568704@linuxfoundation.org>
+Message-ID: <20260530160320.702876657@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260530160224.570625122@linuxfoundation.org>
-References: <20260530160224.570625122@linuxfoundation.org>
+In-Reply-To: <20260530160300.485627683@linuxfoundation.org>
+References: <20260530160300.485627683@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,89 +64,108 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-259054-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TO_DN_SOME(0.00)[];
+	TAGGED_FROM(0.00)[bounces-257683-lists,stable=lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,sang-engineering.com,gmail.com,kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	NEURAL_HAM(-0.00)[-0.996];
-	RCPT_COUNT_SEVEN(0.00)[7];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	NEURAL_HAM(-0.00)[-1.000];
+	TAGGED_RCPT(0.00)[stable,renesas];
 	MID_RHS_MATCH_FROM(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,msgid.link:url,goodmis.org:email,iscas.ac.cn:email,linuxfoundation.org:mid,linuxfoundation.org:dkim]
-X-Rspamd-Queue-Id: 7D8C6612591
+	RCPT_COUNT_FIVE(0.00)[6];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sang-engineering.com:email,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim]
+X-Rspamd-Queue-Id: 0E92760FCE9
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Pengpeng Hou <pengpeng@iscas.ac.cn>
+From: Wolfram Sang <wsa+renesas@sang-engineering.com>
 
-[ Upstream commit 5ec1d1e97de134beed3a5b08235a60fc1c51af96 ]
+[ Upstream commit 6e937f4e769e60947909e3525965f0137b9039e8 ]
 
-hist_field_name() uses a static MAX_FILTER_STR_VAL buffer for fully
-qualified variable-reference names, but it currently appends into that
-buffer with strcat() without rebuilding it first. As a result, repeated
-calls append a new "system.event.field" name onto the previous one,
-which can eventually run past the end of full_name.
+While not the default case, multiple tests can be run simultaneously.
+Then, data_ready being a global variable will be overwritten and the
+per-instance lock will not help. Turn the global variable into a
+per-instance one to avoid this problem.
 
-Build the name with snprintf() on each call and return NULL if the fully
-qualified name does not fit in MAX_FILTER_STR_VAL.
-
-Link: https://patch.msgid.link/20260401112224.85582-1-pengpeng@iscas.ac.cn
-Fixes: 067fe038e70f ("tracing: Add variable reference handling to hist triggers")
-Reviewed-by: Tom Zanussi <zanussi@kernel.org>
-Tested-by: Tom Zanussi <zanussi@kernel.org>
-Signed-off-by: Pengpeng Hou <pengpeng@iscas.ac.cn>
-Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
+Fixes: e339c80af95e ("mailbox: mailbox-test: don't rely on rx_buffer content to signal data ready")
+Signed-off-by: Wolfram Sang <wsa+renesas@sang-engineering.com>
+Signed-off-by: Jassi Brar <jassisinghbrar@gmail.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/trace/trace_events_hist.c | 12 +++++++-----
- 1 file changed, 7 insertions(+), 5 deletions(-)
+ drivers/mailbox/mailbox-test.c | 9 ++++-----
+ 1 file changed, 4 insertions(+), 5 deletions(-)
 
-diff --git a/kernel/trace/trace_events_hist.c b/kernel/trace/trace_events_hist.c
-index f499838d9103f..381d7e3989ada 100644
---- a/kernel/trace/trace_events_hist.c
-+++ b/kernel/trace/trace_events_hist.c
-@@ -1100,12 +1100,14 @@ static const char *hist_field_name(struct hist_field *field,
- 		 field->flags & HIST_FIELD_FL_VAR_REF) {
- 		if (field->system) {
- 			static char full_name[MAX_FILTER_STR_VAL];
-+			int len;
-+
-+			len = snprintf(full_name, sizeof(full_name), "%s.%s.%s",
-+				       field->system, field->event_name,
-+				       field->name);
-+			if (len >= sizeof(full_name))
-+				return NULL;
+diff --git a/drivers/mailbox/mailbox-test.c b/drivers/mailbox/mailbox-test.c
+index 41efe64976598..113858fe168c3 100644
+--- a/drivers/mailbox/mailbox-test.c
++++ b/drivers/mailbox/mailbox-test.c
+@@ -27,8 +27,6 @@
+ #define MBOX_HEXDUMP_MAX_LEN	(MBOX_HEXDUMP_LINE_LEN *		\
+ 				 (MBOX_MAX_MSG_LEN / MBOX_BYTES_PER_LINE))
  
--			strcat(full_name, field->system);
--			strcat(full_name, ".");
--			strcat(full_name, field->event_name);
--			strcat(full_name, ".");
--			strcat(full_name, field->name);
- 			field_name = full_name;
- 		} else
- 			field_name = field->name;
+-static bool mbox_data_ready;
+-
+ struct mbox_test_device {
+ 	struct device		*dev;
+ 	void __iomem		*tx_mmio;
+@@ -41,6 +39,7 @@ struct mbox_test_device {
+ 	spinlock_t		lock;
+ 	struct mutex		mutex;
+ 	wait_queue_head_t	waitq;
++	bool			data_ready;
+ 	struct fasync_struct	*async_queue;
+ 	struct dentry		*root_debugfs_dir;
+ };
+@@ -161,7 +160,7 @@ static bool mbox_test_message_data_ready(struct mbox_test_device *tdev)
+ 	unsigned long flags;
+ 
+ 	spin_lock_irqsave(&tdev->lock, flags);
+-	data_ready = mbox_data_ready;
++	data_ready = tdev->data_ready;
+ 	spin_unlock_irqrestore(&tdev->lock, flags);
+ 
+ 	return data_ready;
+@@ -226,7 +225,7 @@ static ssize_t mbox_test_message_read(struct file *filp, char __user *userbuf,
+ 	*(touser + l) = '\0';
+ 
+ 	memset(tdev->rx_buffer, 0, MBOX_MAX_MSG_LEN);
+-	mbox_data_ready = false;
++	tdev->data_ready = false;
+ 
+ 	spin_unlock_irqrestore(&tdev->lock, flags);
+ 
+@@ -296,7 +295,7 @@ static void mbox_test_receive_message(struct mbox_client *client, void *message)
+ 				     message, MBOX_MAX_MSG_LEN);
+ 		memcpy(tdev->rx_buffer, message, MBOX_MAX_MSG_LEN);
+ 	}
+-	mbox_data_ready = true;
++	tdev->data_ready = true;
+ 	spin_unlock_irqrestore(&tdev->lock, flags);
+ 
+ 	wake_up_interruptible(&tdev->waitq);
 -- 
 2.53.0
 
