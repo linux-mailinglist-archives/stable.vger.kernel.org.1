@@ -1,59 +1,59 @@
-Return-Path: <stable+bounces-257802-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-259181-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id cF5INAkgG2rO/QgAu9opvQ
-	(envelope-from <stable+bounces-257802-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:36:09 +0200
+	id eBClItwxG2qKAAkAu9opvQ
+	(envelope-from <stable+bounces-259181-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:52:12 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 221E7610007
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:36:08 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 25486612A97
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:52:12 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id AB21930477D7
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 17:30:21 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id AFF20303A64F
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 18:48:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 30C1E30E853;
-	Sat, 30 May 2026 17:30:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4F0661D63E4;
+	Sat, 30 May 2026 18:47:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CP34Ay90"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="iv0efIOl"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 04BB33A542F;
-	Sat, 30 May 2026 17:30:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 20F0E1A9F90;
+	Sat, 30 May 2026 18:47:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780162220; cv=none; b=giE/QKzPhDBVlIxPk46KZvehWzZBj9MnuMckLcsk1yMEAoIm1wwOAfmLY3nk6jAYquBrS2hz47zQFQfZ+fWTW/zzmWBjTEpX6OYXIlj6RcLPNHzAxW6bRXbL5ZoS8xL/wHFXThU/2aMsVse0SusAC/lyYyYngQ8DisXxRtzlLz4=
+	t=1780166878; cv=none; b=jY6SlwMBIRuca3aX/6ugo0VcNZ6IH5giV9PT942PxkMoke6PR2hG8log+JTA/DWVXRyZTH00A7ieBkans/o0auzXVTH/fUg2HI5/KE7lQExbIBIWbrl7mqPGnVv13AuKJV8GR1DNkiGoFiIjhgqLcZykDPVuBF6zvaB8Ako5GBM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780162220; c=relaxed/simple;
-	bh=p7jkk3vnsDFGMmhVxKCsTlZFPE9Hbkpz2G6XdhwsN/k=;
+	s=arc-20240116; t=1780166878; c=relaxed/simple;
+	bh=Bwj8IcuT7tGP6l/XN4MWA10YoNRHmU/vRZcHP9tntD4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=U42/LDMY1c2lL6PdtrfaqRTQiBTwcKOWopT3LbYJpbikZnjPBuvBbWddYxG28FdrqkiOwmjCKj4/5kNCuQqJuTA0wtXipIcA1YbEx30beDwRJ9NDO9EywlA3a9FaH/eqaGVZsi5GCTt5bXUXyJOpsmHNmmsTe4XCeaBiNgSrB78=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CP34Ay90; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4CD761F00893;
-	Sat, 30 May 2026 17:30:18 +0000 (UTC)
+	 MIME-Version; b=uYORkDcBZrILIrUjYk98U9T4/kUxlWpJcms2S/1cyvBytCgqQo7x8zC46U8k3U+nEYTvxirXWdCoJNBorsyG9rP0VMjnD5EfKWwj5Tgk4S2xCG+TRkc1I05Hwnn6Qib1SgSXDxEsur/hajFeFaFoCvRIoILyKJPHHh4NBiykloY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=iv0efIOl; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6661A1F00893;
+	Sat, 30 May 2026 18:47:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780162218;
-	bh=tDy9bMhLsMOKu7AsfGUpNi5ZfGWL1W6q1BO2rhT6QnU=;
+	s=korg; t=1780166877;
+	bh=SH4Yb84BIbTJnkIjC5GlWjdKxq1SW4sKIAgNuyLRymQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=CP34Ay90UnkI6KOMDT4uVFhGoikdcQlxZH7xmy1D59Ax4UcWnaat3hqI0HtetvCAN
-	 mGgorPBViVeyFCs5g6szA3iH2HBsDdDoIjrLK9/DzpbKcjbyfUEWsLqsTeSZFrRLFh
-	 bEY/FrAjz7W2Ug4tF7DiN39fP5X8Tn9V1vtZi7lk=
+	b=iv0efIOlOUlSxhD+24D2iZdUBB4+zeyP/jvY4qi4i2MkzTxc2ohe9dN5K5IFp9rVB
+	 PuW7B9aYPR6z76Ze0+ibjKUYWWRKuVScY3zmIEJeOL/+pDjIX/HQoGioTmrQzU7plB
+	 IMZPgZbaOACT+RO4ghVF1oYKQrmIXN37TwHKL1oQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Zilin Guan <zilin@seu.edu.cn>,
-	Dawei Feng <dawei.feng@seu.edu.cn>,
-	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 6.1 855/969] qed: fix double free in qed_cxt_tables_alloc()
+	Qingfang Deng <qingfang.deng@linux.dev>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 498/589] flow_dissector: do not dissect PPPoE PFC frames
 Date: Sat, 30 May 2026 18:06:19 +0200
-Message-ID: <20260530160324.278547804@linuxfoundation.org>
+Message-ID: <20260530160237.705043867@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260530160300.485627683@linuxfoundation.org>
-References: <20260530160300.485627683@linuxfoundation.org>
+In-Reply-To: <20260530160224.570625122@linuxfoundation.org>
+References: <20260530160224.570625122@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -68,7 +68,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
@@ -78,76 +78,119 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-257802-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-259181-lists,stable=lfdr.de];
 	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	NEURAL_HAM(-0.00)[-0.999];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
 	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,seu.edu.cn:email,msgid.link:url]
-X-Rspamd-Queue-Id: 221E7610007
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,msgid.link:url,linux.dev:email]
+X-Rspamd-Queue-Id: 25486612A97
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dawei Feng <dawei.feng@seu.edu.cn>
+From: Qingfang Deng <qingfang.deng@linux.dev>
 
-commit 2bccfb8476ca5f3548afbd623dc7a6980d4e77de upstream.
+[ Upstream commit d6c19b31a3c1d519fabdcf0aa239e6b6109b9473 ]
 
-If one of the later PF or VF CID bitmap allocations fails,
-qed_cid_map_alloc() jumps to cid_map_fail and frees the previously
-allocated CID bitmaps before returning an error. qed_cxt_tables_alloc()
-then calls qed_cxt_mngr_free(), which invokes qed_cid_map_free()
-again.
+RFC 2516 Section 7 states that Protocol Field Compression (PFC) is NOT
+RECOMMENDED for PPPoE. In practice, pppd does not support negotiating
+PFC for PPPoE sessions, and the flow dissector driver has assumed an
+uncompressed frame until the blamed commit.
 
-Fix this by setting each CID bitmap pointer to NULL after bitmap_free()
-to avoid double free.
+During the review process of that commit [1], support for PFC is
+suggested. However, having a compressed (1-byte) protocol field means
+the subsequent PPP payload is shifted by one byte, causing 4-byte
+misalignment for the network header and an unaligned access exception
+on some architectures.
 
-The bug was first flagged by an experimental analysis tool we are
-developing for kernel memory-management bugs while analyzing
-v6.13-rc1. The tool is still under development and is not yet publicly
-available. Manual inspection confirms that the bug is still
-present in v7.1-rc3.
+The exception can be reproduced by sending a PPPoE PFC frame to an
+ethernet interface of a MIPS board, with RPS enabled, even if no PPPoE
+session is active on that interface:
 
-Runtime reproduction was not attempted because exercising the failing
-allocation path requires device-specific setup.
+$ 0   : 00000000 80c40000 00000000 85144817
+$ 4   : 00000008 00000100 80a75758 81dc9bb8
+$ 8   : 00000010 8087ae2c 0000003d 00000000
+$12   : 000000e0 00000039 00000000 00000000
+$16   : 85043240 80a75758 81dc9bb8 00006488
+$20   : 0000002f 00000007 85144810 80a70000
+$24   : 81d1bda0 00000000
+$28   : 81dc8000 81dc9aa8 00000000 805ead08
+Hi    : 00009d51
+Lo    : 2163358a
+epc   : 805e91f0 __skb_flow_dissect+0x1b0/0x1b50
+ra    : 805ead08 __skb_get_hash_net+0x74/0x12c
+Status: 11000403        KERNEL EXL IE
+Cause : 40800010 (ExcCode 04)
+BadVA : 85144817
+PrId  : 0001992f (MIPS 1004Kc)
+Call Trace:
+[<805e91f0>] __skb_flow_dissect+0x1b0/0x1b50
+[<805ead08>] __skb_get_hash_net+0x74/0x12c
+[<805ef330>] get_rps_cpu+0x1b8/0x3fc
+[<805fca70>] netif_receive_skb_list_internal+0x324/0x364
+[<805fd120>] napi_complete_done+0x68/0x2a4
+[<8058de5c>] mtk_napi_rx+0x228/0xfec
+[<805fd398>] __napi_poll+0x3c/0x1c4
+[<805fd754>] napi_threaded_poll_loop+0x234/0x29c
+[<805fd848>] napi_threaded_poll+0x8c/0xb0
+[<80053544>] kthread+0x104/0x12c
+[<80002bd8>] ret_from_kernel_thread+0x14/0x1c
 
-Fixes: fe56b9e6a8d9 ("qed: Add module with basic common support")
-Cc: stable@vger.kernel.org
-Signed-off-by: Zilin Guan <zilin@seu.edu.cn>
-Signed-off-by: Dawei Feng <dawei.feng@seu.edu.cn>
-Link: https://patch.msgid.link/20260520070323.2762379-1-dawei.feng@seu.edu.cn
+Code: 02d51821  1060045b  00000000 <8c640000> 3084000f  2c820005  144001a2  00042080  8e220000
+
+To reduce the attack surface and maintain performance, do not process
+PPPoE PFC frames.
+
+[1] https://lore.kernel.org/r/20220630231016.GA392@debian.home
+Fixes: 46126db9c861 ("flow_dissector: Add PPPoE dissectors")
+Signed-off-by: Qingfang Deng <qingfang.deng@linux.dev>
+Link: https://patch.msgid.link/20260415022456.141758-1-qingfang.deng@linux.dev
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/qlogic/qed/qed_cxt.c |    2 ++
- 1 file changed, 2 insertions(+)
+ net/core/flow_dissector.c | 13 +++++--------
+ 1 file changed, 5 insertions(+), 8 deletions(-)
 
---- a/drivers/net/ethernet/qlogic/qed/qed_cxt.c
-+++ b/drivers/net/ethernet/qlogic/qed/qed_cxt.c
-@@ -1038,11 +1038,13 @@ static void qed_cid_map_free(struct qed_
- 
- 	for (type = 0; type < MAX_CONN_TYPES; type++) {
- 		bitmap_free(p_mngr->acquired[type].cid_map);
-+		p_mngr->acquired[type].cid_map = NULL;
- 		p_mngr->acquired[type].max_count = 0;
- 		p_mngr->acquired[type].start_cid = 0;
- 
- 		for (vf = 0; vf < MAX_NUM_VFS; vf++) {
- 			bitmap_free(p_mngr->acquired_vf[type][vf].cid_map);
-+			p_mngr->acquired_vf[type][vf].cid_map = NULL;
- 			p_mngr->acquired_vf[type][vf].max_count = 0;
- 			p_mngr->acquired_vf[type][vf].start_cid = 0;
+diff --git a/net/core/flow_dissector.c b/net/core/flow_dissector.c
+index c3d64e2d59295..86eb489ee76e0 100644
+--- a/net/core/flow_dissector.c
++++ b/net/core/flow_dissector.c
+@@ -1229,16 +1229,13 @@ bool __skb_flow_dissect(const struct net *net,
+ 			break;
  		}
+ 
+-		/* least significant bit of the most significant octet
+-		 * indicates if protocol field was compressed
++		/* PFC (compressed 1-byte protocol) frames are not processed.
++		 * A compressed protocol field has the least significant bit of
++		 * the most significant octet set, which will fail the following
++		 * ppp_proto_is_valid(), returning FLOW_DISSECT_RET_OUT_BAD.
+ 		 */
+ 		ppp_proto = ntohs(hdr->proto);
+-		if (ppp_proto & 0x0100) {
+-			ppp_proto = ppp_proto >> 8;
+-			nhoff += PPPOE_SES_HLEN - 1;
+-		} else {
+-			nhoff += PPPOE_SES_HLEN;
+-		}
++		nhoff += PPPOE_SES_HLEN;
+ 
+ 		if (ppp_proto == PPP_IP) {
+ 			proto = htons(ETH_P_IP);
+-- 
+2.53.0
+
 
 
 
