@@ -1,60 +1,60 @@
-Return-Path: <stable+bounces-258425-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-257651-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id mCc6JLYpG2ra/ggAu9opvQ
-	(envelope-from <stable+bounces-258425-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:17:26 +0200
+	id CCL6K3AdG2qV/QgAu9opvQ
+	(envelope-from <stable+bounces-257651-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:25:04 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 032D46116D5
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:17:25 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 728FF60F969
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:25:04 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 28B16302BEB3
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 18:05:09 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 1912330188BA
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 17:21:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F347734389B;
-	Sat, 30 May 2026 18:05:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 27BDC33FE15;
+	Sat, 30 May 2026 17:21:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bsdfEj8g"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CEAEGTaj"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B2C3333B6C4;
-	Sat, 30 May 2026 18:05:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 012B5263F44;
+	Sat, 30 May 2026 17:21:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780164308; cv=none; b=DcE4Q9gBCDqDGzAps+MdJJtOHFW7PKRYY3ljJ7POVnnbzLvwdcdpAV9OHyvxciBJ1BjaPzBg+IFN352C5yTJBalN5fjXP0V9KjGZDtmThEJGGuemxI0ux8Bv2Dc83OLnKBJdrmrL2oH7vAUr36NBLFWOQZ4AMdkVOifzA7+23SU=
+	t=1780161715; cv=none; b=SCUSlc7GxZpG1UQ3gvkysULbcMIPwG+4yM83gEmwSPQcDkHL1dsEiG+lG8UXnCDIkfVSVDiSy+qjZbY1LUwzhnsFMdfwouKbVMg+je/lOt460MANWYmjnXCU/7h5zkNIL2SULQ2H4mqi1Dz6ydmW/N9wpO68UvX+T6Ghx5CGvis=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780164308; c=relaxed/simple;
-	bh=2hte2+H1i/vKwTpV8vFGv9OqjZ8g5rvSbnTBnpAq/44=;
+	s=arc-20240116; t=1780161715; c=relaxed/simple;
+	bh=Y7CqHk9L1KrvRVm2TeQpwW7qfYqLM70ysvuxVuNzb84=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=eUvPXbPzy7AzIOTw85aTln8AqcARtuBmveYtb3GzBC1o1Qmat9HcFCvxs75s48vdSCaFPK2zPHDSJqIBiAvkix/+XweMwDpde2NkClz4PlaGJOPiFq5NAI+oc3LOa9H1aYN7S3i3A0UpWlZCPYBR8v71FF781XBCFiWMovDhxgs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bsdfEj8g; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BC76D1F00893;
-	Sat, 30 May 2026 18:05:06 +0000 (UTC)
+	 MIME-Version; b=SH85u+95TTkuLWGBVzVC/bnK5zyeaIyefSPhWqOz2UBo6b86ffqfSVV9Fr3UZUohY6jnDrwww11IkoWHFTdLDY55Eppny0+wxvmlpVA2TtbeDsWcFl7nIRUiS+7g7vSmMMSFKkn0uv4vFVSpmA4k8pRvIjqA7Rr1lSKRpl0+xTs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CEAEGTaj; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 419E81F00893;
+	Sat, 30 May 2026 17:21:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780164307;
-	bh=FPTHTLJKfVi6ol2KDKopAcrJ/BVBqHA3NyAejcP/Zrs=;
+	s=korg; t=1780161714;
+	bh=EyX89lOhA5T3TB8ghm0Nk4i3+Kjq58IT29NvXpTZ7vY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=bsdfEj8gKwIgW/TXnyq7V2FS8mfBnk83HPb3Y0tr1caiDf7mX5WOtk9bReCOnNy9W
-	 iwuF8YQj1Sb5i62OB0JykYZNS6rO/z9tQkPHaKagOd72/FB7IZb6xzSTxFajW5dI12
-	 BNuQRi3v45bQCOvo/HR0vlXjCJjkg98peWmrm2iA=
+	b=CEAEGTajAiAZcf6QxQ3HUHqdU7XrxbVPjMmbaXsXQAskzDHJvzpcv0ZwXKFDqqmdr
+	 GXQdI3pJ9Fgive4LwPAMP4d7gy9RQjP7+aYPjhiSSozH/olNHsbFYDVV0NKf7pE3Up
+	 9Gz9ctflUxSo58MguOxaD745P57s/8bcalqs3aRI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Leo Yan <leo.yan@arm.com>,
-	Mike Leach <mike.leach@arm.com>,
-	Namhyung Kim <namhyung@kernel.org>,
+	"Kito Xu (veritas501)" <hxzene@gmail.com>,
+	Fernando Fernandez Mancera <fmancera@suse.de>,
+	Pablo Neira Ayuso <pablo@netfilter.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 515/776] perf: tools: cs-etm: Fix print issue for Coresight debug in ETE/TRBE trace
-Date: Sat, 30 May 2026 18:03:49 +0200
-Message-ID: <20260530160253.558003927@linuxfoundation.org>
+Subject: [PATCH 6.1 706/969] netfilter: nfnetlink_osf: fix potential NULL dereference in ttl check
+Date: Sat, 30 May 2026 18:03:50 +0200
+Message-ID: <20260530160320.019027594@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260530160240.228940103@linuxfoundation.org>
-References: <20260530160240.228940103@linuxfoundation.org>
+In-Reply-To: <20260530160300.485627683@linuxfoundation.org>
+References: <20260530160300.485627683@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,143 +69,103 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	TAGGED_FROM(0.00)[bounces-257651-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,suse.de,netfilter.org,kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-258425-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TO_DN_SOME(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[7];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	PRECEDENCE_BULK(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[7];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[arm.com:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
-X-Rspamd-Queue-Id: 032D46116D5
+	TO_DN_SOME(0.00)[];
+	FROM_HAS_DN(0.00)[]
+X-Rspamd-Queue-Id: 728FF60F969
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mike Leach <mike.leach@arm.com>
+From: Fernando Fernandez Mancera <fmancera@suse.de>
 
-[ Upstream commit 6c478e7b3eba3f387a2d6c749e3e3ee0f8ad1c53 ]
+[ Upstream commit 711987ba281fd806322a7cd244e98e2a81903114 ]
 
-Building perf with CORESIGHT=1 and the optional CSTRACE_RAW=1 enables
-additional debug printing of raw trace data when using command:-
-perf report --dump.
+The nf_osf_ttl() function accessed skb->dev to perform a local interface
+address lookup without verifying that the device pointer was valid.
 
-This raw trace prints the CoreSight formatted trace frames, which may be
-used to investigate suspected issues with trace quality / corruption /
-decode.
+Additionally, the implementation utilized an in_dev_for_each_ifa_rcu
+loop to match the packet source address against local interface
+addresses. It assumed that packets from the same subnet should not see a
+decrement on the initial TTL. A packet might appear it is from the same
+subnet but it actually isn't especially in modern environments with
+containers and virtual switching.
 
-These frames are not present in ETE + TRBE trace.
-This fix removes the unnecessary call to print these frames.
+Remove the device dereference and interface loop. Replace the logic with
+a switch statement that evaluates the TTL according to the ttl_check.
 
-This fix also rationalises implementation - original code had helper
-function that unnecessarily repeated initialisation calls that had
-already been made.
-
-Due to an addtional fault with the OpenCSD library, this call when ETE/TRBE
-are being decoded will cause a segfault in perf. This fix also prevents
-that problem for perf using older (<= 1.8.0 version) OpenCSD libraries.
-
-Fixes: 68ffe3902898 ("perf tools: Add decoder mechanic to support dumping trace data")
-Reported-by: Leo Yan <leo.yan@arm.com>
-Signed-off-by: Mike Leach <mike.leach@arm.com>
-Signed-off-by: Namhyung Kim <namhyung@kernel.org>
+Fixes: 11eeef41d5f6 ("netfilter: passive OS fingerprint xtables match")
+Reported-by: Kito Xu (veritas501) <hxzene@gmail.com>
+Closes: https://lore.kernel.org/netfilter-devel/20260414074556.2512750-1-hxzene@gmail.com/
+Signed-off-by: Fernando Fernandez Mancera <fmancera@suse.de>
+Reviewed-by: Pablo Neira Ayuso <pablo@netfilter.org>
+Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- .../perf/util/cs-etm-decoder/cs-etm-decoder.c | 51 +++++--------------
- 1 file changed, 13 insertions(+), 38 deletions(-)
+ net/netfilter/nfnetlink_osf.c | 22 +++++++---------------
+ 1 file changed, 7 insertions(+), 15 deletions(-)
 
-diff --git a/tools/perf/util/cs-etm-decoder/cs-etm-decoder.c b/tools/perf/util/cs-etm-decoder/cs-etm-decoder.c
-index 31fa3b45134a2..fc74a95a23faf 100644
---- a/tools/perf/util/cs-etm-decoder/cs-etm-decoder.c
-+++ b/tools/perf/util/cs-etm-decoder/cs-etm-decoder.c
-@@ -214,46 +214,24 @@ cs_etm_decoder__init_def_logger_printing(struct cs_etm_decoder_params *d_params,
- 					      (void *)decoder,
- 					      cs_etm_decoder__print_str_cb);
- 	if (ret != 0)
--		ret = -1;
--
--	return 0;
--}
-+		return -1;
+diff --git a/net/netfilter/nfnetlink_osf.c b/net/netfilter/nfnetlink_osf.c
+index 2207bda442d54..6d3dfbeb398cb 100644
+--- a/net/netfilter/nfnetlink_osf.c
++++ b/net/netfilter/nfnetlink_osf.c
+@@ -31,26 +31,18 @@ EXPORT_SYMBOL_GPL(nf_osf_fingers);
+ static inline int nf_osf_ttl(const struct sk_buff *skb,
+ 			     int ttl_check, unsigned char f_ttl)
+ {
+-	struct in_device *in_dev = __in_dev_get_rcu(skb->dev);
+ 	const struct iphdr *ip = ip_hdr(skb);
+-	const struct in_ifaddr *ifa;
+-	int ret = 0;
  
- #ifdef CS_LOG_RAW_FRAMES
--static void
--cs_etm_decoder__init_raw_frame_logging(struct cs_etm_decoder_params *d_params,
--				       struct cs_etm_decoder *decoder)
--{
--	/* Only log these during a --dump operation */
--	if (d_params->operation == CS_ETM_OPERATION_PRINT) {
--		/* set up a library default logger to process the
--		 *  raw frame printer we add later
--		 */
--		ocsd_def_errlog_init(OCSD_ERR_SEV_ERROR, 1);
+-	if (ttl_check == NF_OSF_TTL_TRUE)
++	switch (ttl_check) {
++	case NF_OSF_TTL_TRUE:
+ 		return ip->ttl == f_ttl;
+-	if (ttl_check == NF_OSF_TTL_NOCHECK)
+-		return 1;
+-	else if (ip->ttl <= f_ttl)
++		break;
++	case NF_OSF_TTL_NOCHECK:
+ 		return 1;
 -
--		/* no stdout / err / file output */
--		ocsd_def_errlog_config_output(C_API_MSGLOGOUT_FLG_NONE, NULL);
--
--		/* set the string CB for the default logger,
--		 * passes strings to perf print logger.
--		 */
--		ocsd_def_errlog_set_strprint_cb(decoder->dcd_tree,
--						(void *)decoder,
--						cs_etm_decoder__print_str_cb);
--
-+	/*
-+	 * Only log raw frames if --dump operation and hardware is actually
-+	 * generating formatted CoreSight trace frames
-+	 */
-+	if ((d_params->operation == CS_ETM_OPERATION_PRINT) &&
-+	    (d_params->formatted == true)) {
- 		/* use the built in library printer for the raw frames */
--		ocsd_dt_set_raw_frame_printer(decoder->dcd_tree,
--					      CS_RAW_DEBUG_FLAGS);
-+		ret = ocsd_dt_set_raw_frame_printer(decoder->dcd_tree,
-+						    CS_RAW_DEBUG_FLAGS);
-+		if (ret != 0)
-+			return -1;
+-	in_dev_for_each_ifa_rcu(ifa, in_dev) {
+-		if (inet_ifa_match(ip->saddr, ifa)) {
+-			ret = (ip->ttl == f_ttl);
+-			break;
+-		}
++	case NF_OSF_TTL_LESS:
++	default:
++		return ip->ttl <= f_ttl;
  	}
--}
--#else
--static void
--cs_etm_decoder__init_raw_frame_logging(
--		struct cs_etm_decoder_params *d_params __maybe_unused,
--		struct cs_etm_decoder *decoder __maybe_unused)
--{
--}
- #endif
-+	return 0;
-+}
- 
- static ocsd_datapath_resp_t
- cs_etm_decoder__do_soft_timestamp(struct cs_etm_queue *etmq,
-@@ -716,9 +694,6 @@ cs_etm_decoder__new(int decoders, struct cs_etm_decoder_params *d_params,
- 	if (ret != 0)
- 		goto err_free_decoder;
- 
--	/* init raw frame logging if required */
--	cs_etm_decoder__init_raw_frame_logging(d_params, decoder);
 -
- 	for (i = 0; i < decoders; i++) {
- 		ret = cs_etm_decoder__create_etm_decoder(d_params,
- 							 &t_params[i],
+-	return ret;
+ }
+ 
+ struct nf_osf_hdr_ctx {
 -- 
 2.53.0
 
