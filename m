@@ -1,62 +1,59 @@
-Return-Path: <stable+bounces-258766-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-258162-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id MAZRAF0rG2r//ggAu9opvQ
-	(envelope-from <stable+bounces-258766-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:24:29 +0200
+	id UGFPO2IjG2rO/QgAu9opvQ
+	(envelope-from <stable+bounces-258162-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:50:26 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id C2D1C611A81
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:24:28 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D00446107FE
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:50:26 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 166CA3013874
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 18:24:28 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 252613004918
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 17:50:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4D892219303;
-	Sat, 30 May 2026 18:24:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4A266342CA7;
+	Sat, 30 May 2026 17:50:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zyDeDLSa"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gtAEw1dU"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1DB2C21B191;
-	Sat, 30 May 2026 18:24:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 31015320CAD;
+	Sat, 30 May 2026 17:50:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780165467; cv=none; b=AJ3+mdNe2pZKzegSH0ogWU/84firOaAEqT9y3bHtBazgXcGq4kCLV2ITfbjazG/a6AoYN6dWaiHlIN766y3GeKpV+l0lt0OtIh0JW7BwUobW5OXV0xrwWc1ede5pZpRUkpKp7D7OOLRTXM6koPOUN05PZ8kNXwQz+HwjpA2GBng=
+	t=1780163423; cv=none; b=J74owcuTEY4ezBn5Pnp31hWBJRiVQpbKikSXAlCKus7PjiKRABJBomGIsXwilAklxZqNwjhGavS5a+mphJ2eHJ9Pq4xDVB1HKSPUJFAnLfdFbX9aYcFspwD0rv7zWJrPIOccV1xJfnejHKXv92Bibn/e+n1O/DhtVnTVYLAlmig=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780165467; c=relaxed/simple;
-	bh=IDPav0oiOP/xdZ14nHr1T8A1Wm3UnW7lab7NAqbQ+fU=;
+	s=arc-20240116; t=1780163423; c=relaxed/simple;
+	bh=zfxaCAQCztBhNgaRJA2FxreP9xn3hTotN50jyTJeK20=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=OGINH3etB+sDrBKaSPqHgltUo8QlpNiy6/sVRCyrr9ERanrwGvR4zBWcgErWXqBVx7XNzmSj7+e7EgKRiY97ncgOLfGlxqbILPOzlt+POxBOjwqlB6lvnFq+0Rik3L/YJpKYun0OSIudVnQvugC2UHa2mm8xvuJXOWgBU8Xo6p8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zyDeDLSa; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6148F1F00893;
-	Sat, 30 May 2026 18:24:25 +0000 (UTC)
+	 MIME-Version; b=Pb6264zHcRtBNxLbP3PLvjP3peWZVv2PuRIPU7t3qEhMaEzkctOn5DtBXvE3HqdZ/WJKg6jI3h8pcntrO5QUi0sFR25MtlQqa3NrsrBZ+0oN5iYfndXSCSS8BHMKi3RdyQLI+4dawLvciT8pspQP6+nOzofCnVnywB9NHUlgNcg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gtAEw1dU; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 75A5E1F00893;
+	Sat, 30 May 2026 17:50:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780165466;
-	bh=5q/3SBpQ1RfnNrswUyc1wx/1CZPkCijyzMK/4uTadgU=;
+	s=korg; t=1780163422;
+	bh=DfOfz5wYvEOSKjzx4IXSc9F9CT4ehgnAq8ufLRRq9Xs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=zyDeDLSa5Y0+bK3xLgUtqa2DDhMX0q/9tKYmtTAq9p+bbrfDnTsu83ADx7n1MpSDg
-	 H5oGXnuzuJEOO710nRAWdAwMPobSULzrue9zW1Ko0qyLLnPrM1p4k+D/DRjhvSRaEj
-	 A01ZNSJMRoMGQNRIu0u8i3vvSwfHf24kwzS94trw=
+	b=gtAEw1dU0iXpIvIiBV5VCXBbmgiMoErTqcy3ZwWHgFrwFFzhSzpFye+hJcRZv/7fv
+	 mc/HPDYND0GZgMDE8p5TVWv/gCCuuNhcoxBwVnzvybNj8p6AEmv/iAR0fv5eUq9N60
+	 I5NE6X6X+veaxYvMNnxdOW0LmWsgfR+V5PivLLco=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Marco Patalano <mpatalan@redhat.com>,
-	Arun Easi <aeasi@marvell.com>,
-	Nilesh Javali <njavali@marvell.com>,
-	"Martin K. Petersen" <martin.petersen@oracle.com>,
-	Vasiliy Kovalev <kovalev@altlinux.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 086/589] scsi: qla2xxx: Fix crash when I/O abort times out
+	Thomas Fourier <fourier.thomas@gmail.com>,
+	Thorsten Blum <thorsten.blum@linux.dev>,
+	Herbert Xu <herbert@gondor.apana.org.au>
+Subject: [PATCH 5.15 253/776] crypto: hisilicon - Fix dma_unmap_single() direction
 Date: Sat, 30 May 2026 17:59:27 +0200
-Message-ID: <20260530160226.929931638@linuxfoundation.org>
+Message-ID: <20260530160247.071160049@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260530160224.570625122@linuxfoundation.org>
-References: <20260530160224.570625122@linuxfoundation.org>
+In-Reply-To: <20260530160240.228940103@linuxfoundation.org>
+References: <20260530160240.228940103@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -67,132 +64,73 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-258766-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TO_DN_SOME(0.00)[];
+	TAGGED_FROM(0.00)[bounces-258162-lists,stable=lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,linux.dev,gondor.apana.org.au];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
-	NEURAL_HAM(-0.00)[-0.996];
-	RCPT_COUNT_SEVEN(0.00)[9];
-	MID_RHS_MATCH_FROM(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	NEURAL_HAM(-0.00)[-1.000];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[marvell.com:email,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim,oracle.com:email,altlinux.org:email]
-X-Rspamd-Queue-Id: C2D1C611A81
+	MID_RHS_MATCH_FROM(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[6];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linux.dev:email,apana.org.au:email,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim]
+X-Rspamd-Queue-Id: D00446107FE
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Arun Easi <aeasi@marvell.com>
+From: Thomas Fourier <fourier.thomas@gmail.com>
 
-commit 68ad83188d782b2ecef2e41ac245d27e0710fe8e upstream.
+commit 1ee57ab93b75eb59f426aef37b5498a7ffc28278 upstream.
 
-While performing CPU hotplug, a crash with the following stack was seen:
+The direction used to map the buffer skreq->iv is DMA_TO_DEVICE but it is
+unmapped with direction DMA_BIDIRECTIONAL in the error path.
 
-Call Trace:
-     qla24xx_process_response_queue+0x42a/0x970 [qla2xxx]
-     qla2x00_start_nvme_mq+0x3a2/0x4b0 [qla2xxx]
-     qla_nvme_post_cmd+0x166/0x240 [qla2xxx]
-     nvme_fc_start_fcp_op.part.0+0x119/0x2e0 [nvme_fc]
-     blk_mq_dispatch_rq_list+0x17b/0x610
-     __blk_mq_sched_dispatch_requests+0xb0/0x140
-     blk_mq_sched_dispatch_requests+0x30/0x60
-     __blk_mq_run_hw_queue+0x35/0x90
-     __blk_mq_delay_run_hw_queue+0x161/0x180
-     blk_execute_rq+0xbe/0x160
-     __nvme_submit_sync_cmd+0x16f/0x220 [nvme_core]
-     nvmf_connect_admin_queue+0x11a/0x170 [nvme_fabrics]
-     nvme_fc_create_association.cold+0x50/0x3dc [nvme_fc]
-     nvme_fc_connect_ctrl_work+0x19/0x30 [nvme_fc]
-     process_one_work+0x1e8/0x3c0
+Change the unmap to match the mapping.
 
-On abort timeout, completion was called without checking if the I/O was
-already completed.
-
-Verify that I/O and abort request are indeed outstanding before attempting
-completion.
-
-Fixes: 71c80b75ce8f ("scsi: qla2xxx: Do command completion on abort timeout")
-Reported-by: Marco Patalano <mpatalan@redhat.com>
-Tested-by: Marco Patalano <mpatalan@redhat.com>
-Cc: stable@vger.kernel.org
-Signed-off-by: Arun Easi <aeasi@marvell.com>
-Signed-off-by: Nilesh Javali <njavali@marvell.com>
-Link: https://lore.kernel.org/r/20221129092634.15347-1-njavali@marvell.com
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
-[ kovalev: bp to fix CVE-2022-50493 ]
-Signed-off-by: Vasiliy Kovalev <kovalev@altlinux.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 915e4e8413da ("crypto: hisilicon - SEC security accelerator driver")
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Thomas Fourier <fourier.thomas@gmail.com>
+Reviewed-by: Thorsten Blum <thorsten.blum@linux.dev>
+Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/scsi/qla2xxx/qla_init.c | 14 ++++++++++----
- 1 file changed, 10 insertions(+), 4 deletions(-)
+ drivers/crypto/hisilicon/sec/sec_algs.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/scsi/qla2xxx/qla_init.c b/drivers/scsi/qla2xxx/qla_init.c
-index 79b9571f63508..4a057748ba175 100644
---- a/drivers/scsi/qla2xxx/qla_init.c
-+++ b/drivers/scsi/qla2xxx/qla_init.c
-@@ -101,6 +101,7 @@ static void qla24xx_abort_iocb_timeout(void *data)
- 	struct qla_qpair *qpair = sp->qpair;
- 	u32 handle;
- 	unsigned long flags;
-+	int sp_found = 0, cmdsp_found = 0;
- 
- 	if (sp->cmd_sp)
- 		ql_dbg(ql_dbg_async, sp->vha, 0x507c,
-@@ -115,22 +116,27 @@ static void qla24xx_abort_iocb_timeout(void *data)
- 	spin_lock_irqsave(qpair->qp_lock_ptr, flags);
- 	for (handle = 1; handle < qpair->req->num_outstanding_cmds; handle++) {
- 		if (sp->cmd_sp && (qpair->req->outstanding_cmds[handle] ==
--		    sp->cmd_sp))
-+		    sp->cmd_sp)) {
- 			qpair->req->outstanding_cmds[handle] = NULL;
-+			cmdsp_found = 1;
-+		}
- 
- 		/* removing the abort */
- 		if (qpair->req->outstanding_cmds[handle] == sp) {
- 			qpair->req->outstanding_cmds[handle] = NULL;
-+			sp_found = 1;
- 			break;
- 		}
- 	}
- 	spin_unlock_irqrestore(qpair->qp_lock_ptr, flags);
- 
--	if (sp->cmd_sp)
-+	if (cmdsp_found && sp->cmd_sp)
- 		sp->cmd_sp->done(sp->cmd_sp, QLA_OS_TIMER_EXPIRED);
- 
--	abt->u.abt.comp_status = cpu_to_le16(CS_TIMEOUT);
--	sp->done(sp, QLA_OS_TIMER_EXPIRED);
-+	if (sp_found) {
-+		abt->u.abt.comp_status = cpu_to_le16(CS_TIMEOUT);
-+		sp->done(sp, QLA_OS_TIMER_EXPIRED);
-+	}
- }
- 
- static void qla24xx_abort_sp_done(srb_t *sp, int res)
--- 
-2.53.0
-
+--- a/drivers/crypto/hisilicon/sec/sec_algs.c
++++ b/drivers/crypto/hisilicon/sec/sec_algs.c
+@@ -844,7 +844,7 @@ err_free_elements:
+ 	if (crypto_skcipher_ivsize(atfm))
+ 		dma_unmap_single(info->dev, sec_req->dma_iv,
+ 				 crypto_skcipher_ivsize(atfm),
+-				 DMA_BIDIRECTIONAL);
++				 DMA_TO_DEVICE);
+ err_unmap_out_sg:
+ 	if (split)
+ 		sec_unmap_sg_on_err(skreq->dst, steps, splits_out,
 
 
 
