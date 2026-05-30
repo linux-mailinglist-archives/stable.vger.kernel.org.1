@@ -1,59 +1,58 @@
-Return-Path: <stable+bounces-257450-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-258218-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id wAwDIVscG2p3/QgAu9opvQ
-	(envelope-from <stable+bounces-257450-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:20:27 +0200
+	id SCtNAzEkG2pm/ggAu9opvQ
+	(envelope-from <stable+bounces-258218-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:53:53 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id E728D60F6DA
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:20:26 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id B5D7D6109A0
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:53:52 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 267B7302BA73
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 17:10:41 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 36BFE3012D6B
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 17:53:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5FFF834EF07;
-	Sat, 30 May 2026 17:10:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4BF37341AC7;
+	Sat, 30 May 2026 17:53:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MfV33oNL"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BXnGVbrL"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1591F32B11F;
-	Sat, 30 May 2026 17:10:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3126530EF7D;
+	Sat, 30 May 2026 17:53:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780161040; cv=none; b=encF/mbNJ2xBiLAErD6D2sS+HASt/u7Ihif9qcoL7NjorHnBZc5qOsjnIm9F4Rb/itw62PyN7gsdKLJZP2iDetaNFX+jwKZwhd4TneI4sOeZVOBoCZM4Bt9vqrjHvYtDtWDL9vuHs5wNEPN0sKjcTpfS18bZY97MZv/5jT1cdV4=
+	t=1780163610; cv=none; b=RPdMUTsNAjAaOjMbSEPjqqtH5jSaIxZb5DB97s2uOEYA+F8OLZXUtfD/Hj0graWMpui+4jku8M/QUF0l8NveqdLeRoCMD9c4bKz7sIvIYcN8bVZbOpF2NEhFFGmSytlruPmPehoE7HJtaZFtg2aFtK2S7vpgWOl+9oLaqq6tBbg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780161040; c=relaxed/simple;
-	bh=A+oaVPCQCW2ZoWoKLsbhKIj1RD+XYK7HvHKgVAUnbto=;
+	s=arc-20240116; t=1780163610; c=relaxed/simple;
+	bh=IVf59HmkctsbkKjNovB+8THHT7wWRRhTK8mDZiMfvMU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ohU+7OVwhsG/KaoP/RapeLt6FANMbQyPc5iWeVl2UlZGu+45rsUxMoKJUIQ4ZwxRHTNMkOe+cs8oCycsyVvxuXsYjtHjjUuFg7ECRHFtDze8PgiPmPE3V1NFwlECQF1qaMhte1wjZEu44B85pKsFGoIqygPaXpMdbMsR16BDkvQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MfV33oNL; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6094E1F00893;
-	Sat, 30 May 2026 17:10:38 +0000 (UTC)
+	 MIME-Version; b=LezGY3YgZmJp2rr0vr992SZr8/nHn+6qeb4azlLwymRpn3IV1PkzPFVBTMN4zz2CJpnRuVrzZaO9MgqAtHQoHMOtG2h9IcPcNQLN2Rqpvzx6kJSYS3N/66X5lzKc573a/Djmj2jUNL09kfnGk3ENZK1pvRqxxptfVwNvFWDbRoc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BXnGVbrL; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 760531F00893;
+	Sat, 30 May 2026 17:53:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780161039;
-	bh=2b99o5AjbAnXrxALOa1Jmk+DeeViZlkAEYR5Y0Hf1wE=;
+	s=korg; t=1780163609;
+	bh=n8kZG0Dim0Y05762bIabJZpARB4Q2V7a1omT7HOnFlA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=MfV33oNLRBmMBz6kZfy7VIMckZm5hkeUrTrWdPfU4ylCgHyVH+LcKot8cvo5YIbeL
-	 ybRhxaJFiPsKqAgIfXxaEp2LFkvm4QG3KewtNZsKcy1vCBMRkfj/B4KexKgxlKaUPz
-	 6EGhTqR/BNf2+PLXo9E5g3KgQTBZcXGfs0W79RLs=
+	b=BXnGVbrLAONFKZnH73e9REXyxRUe88bpHiPtiHCwtcdvkT1sYY21GobmhIkprfVbR
+	 9HXDuGG/tvAuhrFryIU/S/A3eOq84HECE18eElXuCVU6vCbFmPJOXpeflf2y6E6ujr
+	 EiuPV3fL/gZu1YDVGbjKPYOqczUH/17XRbrXx8DY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ming-Hung Tsai <mtsai@redhat.com>,
-	Mikulas Patocka <mpatocka@redhat.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 500/969] dm cache: support shrinking the origin device
+	SeungJu Cheon <suunj1331@gmail.com>,
+	Takashi Iwai <tiwai@suse.de>
+Subject: [PATCH 5.15 310/776] sound: ua101: fix division by zero at probe
 Date: Sat, 30 May 2026 18:00:24 +0200
-Message-ID: <20260530160314.134113700@linuxfoundation.org>
+Message-ID: <20260530160248.579689985@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260530160300.485627683@linuxfoundation.org>
-References: <20260530160300.485627683@linuxfoundation.org>
+In-Reply-To: <20260530160240.228940103@linuxfoundation.org>
+References: <20260530160240.228940103@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,227 +68,76 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-257450-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
 	MIME_TRACE(0.00)[0:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-258218-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,suse.de];
 	TO_DN_SOME(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	RCPT_COUNT_FIVE(0.00)[6];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[stable];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_FIVE(0.00)[5];
 	FROM_HAS_DN(0.00)[]
-X-Rspamd-Queue-Id: E728D60F6DA
+X-Rspamd-Queue-Id: B5D7D6109A0
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ming-Hung Tsai <mtsai@redhat.com>
+From: SeungJu Cheon <suunj1331@gmail.com>
 
-[ Upstream commit c2662b1544cbd8ea3181381bb899b8e681dfedc7 ]
+commit d1f73f169c1014463b5060e3f60813e13ddc7b87 upstream.
 
-This patch introduces formal support for shrinking the cache origin by
-reducing the cache target length via table reloads. Cache blocks mapped
-beyond the new target length must be clean and are invalidated during
-preresume. If any dirty blocks exist in the area being removed, the
-preresume operation fails without setting the NEEDS_CHECK flag in
-superblock, and the resume ioctl returns EFBIG. The cache device remains
-suspended until a table reload with target length that fits existing
-mappings is performed.
+Add a missing sanity check for bNrChannels in detect_usb_format()
+to prevent a division by zero in playback_urb_complete() and
+capture_urb_complete().
 
-Without this patch, reducing the cache target length could result in
-io errors (RHBZ: 2134334), out-of-bounds memory access to the discard
-bitset, and security concerns regarding data leakage.
+USB core does not validate class-specific descriptor fields such
+as bNrChannels, so drivers must verify them before use. If a
+device provides bNrChannels = 0, frame_bytes becomes zero and is
+later used as a divisor in the URB completion handlers, leading
+to a kernel crash.
 
-Verification steps:
-
-1. create a cache metadata with some cached blocks mapped to the tail
-   of the origin device. Here we use cache_restore v1.0 to build a
-   metadata with one clean block mapped to the last origin block.
-
-cat <<EOF >> cmeta.xml
-<superblock uuid="" block_size="128" nr_cache_blocks="512" \
-policy="smq" hint_width="4">
-  <mappings>
-    <mapping cache_block="0" origin_block="4095" dirty="false"/>
-  </mappings>
-</superblock>
-EOF
-dmsetup create cmeta --table "0 8192 linear /dev/sdc 0"
-cache_restore -i cmeta.xml -o /dev/mapper/cmeta --metadata-version=2
-dmsetup remove cmeta
-
-2. bring up the cache whilst shrinking the cache origin by one block:
-
-dmsetup create cmeta --table "0 8192 linear /dev/sdc 0"
-dmsetup create cdata --table "0 65536 linear /dev/sdc 8192"
-dmsetup create corig --table "0 524160 linear /dev/sdc 262144"
-dmsetup create cache --table "0 524160 cache /dev/mapper/cmeta \
-/dev/mapper/cdata /dev/mapper/corig 128 2 metadata2 writethrough smq 0"
-
-3. check the number of cached data blocks via dmsetup status. It is
-   expected to be zero.
-
-dmsetup status cache | cut -d ' ' -f 7
-
-In addition to the script above, this patch can be verified using the
-"cache/resize" tests in dmtest-python:
-
-./dmtest run --rx cache/resize/shrink_origin --result-set default
-
-Signed-off-by: Ming-Hung Tsai <mtsai@redhat.com>
-Signed-off-by: Mikulas Patocka <mpatocka@redhat.com>
-Stable-dep-of: 322586745bd1 ("dm cache: fix dirty mapping checking in passthrough mode switching")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 63978ab3e3e9 ("sound: add Edirol UA-101 support")
+Cc: stable@vger.kernel.org
+Signed-off-by: SeungJu Cheon <suunj1331@gmail.com>
+Link: https://patch.msgid.link/20260426111239.103296-1-suunj1331@gmail.com
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/md/dm-cache-target.c | 72 ++++++++++++++++++++++++++++++++++--
- 1 file changed, 69 insertions(+), 3 deletions(-)
+ sound/usb/misc/ua101.c |    7 +++++++
+ 1 file changed, 7 insertions(+)
 
-diff --git a/drivers/md/dm-cache-target.c b/drivers/md/dm-cache-target.c
-index c57df4d91c9b2..cbc519f4895e1 100644
---- a/drivers/md/dm-cache-target.c
-+++ b/drivers/md/dm-cache-target.c
-@@ -405,6 +405,12 @@ struct cache {
- 	mempool_t migration_pool;
+--- a/sound/usb/misc/ua101.c
++++ b/sound/usb/misc/ua101.c
+@@ -994,6 +994,13 @@ static int detect_usb_format(struct ua10
  
- 	struct bio_set bs;
-+
-+	/*
-+	 * Cache_size entries. Set bits indicate blocks mapped beyond the
-+	 * target length, which are marked for invalidation.
-+	 */
-+	unsigned long *invalid_bitset;
- };
- 
- struct per_bio_data {
-@@ -1930,6 +1936,9 @@ static void __destroy(struct cache *cache)
- 	if (cache->discard_bitset)
- 		free_bitset(cache->discard_bitset);
- 
-+	if (cache->invalid_bitset)
-+		free_bitset(cache->invalid_bitset);
-+
- 	if (cache->copier)
- 		dm_kcopyd_client_destroy(cache->copier);
- 
-@@ -2518,6 +2527,13 @@ static int cache_create(struct cache_args *ca, struct cache **result)
- 	}
- 	clear_bitset(cache->discard_bitset, from_dblock(cache->discard_nr_blocks));
- 
-+	cache->invalid_bitset = alloc_bitset(from_cblock(cache->cache_size));
-+	if (!cache->invalid_bitset) {
-+		*error = "could not allocate bitset for invalid blocks";
-+		goto bad;
-+	}
-+	clear_bitset(cache->invalid_bitset, from_cblock(cache->cache_size));
-+
- 	cache->copier = dm_kcopyd_client_create(&dm_kcopyd_throttle);
- 	if (IS_ERR(cache->copier)) {
- 		*error = "could not create kcopyd client";
-@@ -2816,6 +2832,24 @@ static int load_mapping(void *context, dm_oblock_t oblock, dm_cblock_t cblock,
- 	return policy_load_mapping(cache->policy, oblock, cblock, dirty, hint, hint_valid);
- }
- 
-+static int load_filtered_mapping(void *context, dm_oblock_t oblock, dm_cblock_t cblock,
-+				 bool dirty, uint32_t hint, bool hint_valid)
-+{
-+	struct cache *cache = context;
-+
-+	if (from_oblock(oblock) >= from_oblock(cache->origin_blocks)) {
-+		if (dirty) {
-+			DMERR("%s: unable to shrink origin; cache block %u is dirty",
-+			      cache_device_name(cache), from_cblock(cblock));
-+			return -EFBIG;
-+		}
-+		set_bit(from_cblock(cblock), cache->invalid_bitset);
-+		return 0;
+ 	ua->capture.channels = fmt_capture->bNrChannels;
+ 	ua->playback.channels = fmt_playback->bNrChannels;
++	if (!ua->capture.channels || !ua->playback.channels) {
++		dev_err(&ua->dev->dev,
++			"invalid channel count: capture %u, playback %u\n",
++			ua->capture.channels, ua->playback.channels);
++		return -EINVAL;
 +	}
 +
-+	return load_mapping(context, oblock, cblock, dirty, hint, hint_valid);
-+}
-+
- /*
-  * The discard block size in the on disk metadata is not
-  * necessarily the same as we're currently using.  So we have to
-@@ -2970,6 +3004,24 @@ static int resize_cache_dev(struct cache *cache, dm_cblock_t new_size)
- 	return 0;
- }
- 
-+static int truncate_oblocks(struct cache *cache)
-+{
-+	uint32_t nr_blocks = from_cblock(cache->cache_size);
-+	uint32_t i;
-+	int r;
-+
-+	for_each_set_bit(i, cache->invalid_bitset, nr_blocks) {
-+		r = dm_cache_remove_mapping(cache->cmd, to_cblock(i));
-+		if (r) {
-+			DMERR_LIMIT("%s: invalidation failed; couldn't update on disk metadata",
-+				    cache_device_name(cache));
-+			return r;
-+		}
-+	}
-+
-+	return 0;
-+}
-+
- static int cache_preresume(struct dm_target *ti)
- {
- 	int r = 0;
-@@ -2994,11 +3046,25 @@ static int cache_preresume(struct dm_target *ti)
- 	}
- 
- 	if (!cache->loaded_mappings) {
-+		/*
-+		 * The fast device could have been resized since the last
-+		 * failed preresume attempt.  To be safe we start by a blank
-+		 * bitset for cache blocks.
-+		 */
-+		clear_bitset(cache->invalid_bitset, from_cblock(cache->cache_size));
-+
- 		r = dm_cache_load_mappings(cache->cmd, cache->policy,
--					   load_mapping, cache);
-+					   load_filtered_mapping, cache);
- 		if (r) {
- 			DMERR("%s: could not load cache mappings", cache_device_name(cache));
--			metadata_operation_failed(cache, "dm_cache_load_mappings", r);
-+			if (r != -EFBIG)
-+				metadata_operation_failed(cache, "dm_cache_load_mappings", r);
-+			return r;
-+		}
-+
-+		r = truncate_oblocks(cache);
-+		if (r) {
-+			metadata_operation_failed(cache, "dm_cache_remove_mapping", r);
- 			return r;
- 		}
- 
-@@ -3464,7 +3530,7 @@ static void cache_io_hints(struct dm_target *ti, struct queue_limits *limits)
- 
- static struct target_type cache_target = {
- 	.name = "cache",
--	.version = {2, 2, 0},
-+	.version = {2, 3, 0},
- 	.module = THIS_MODULE,
- 	.ctr = cache_ctr,
- 	.dtr = cache_dtr,
--- 
-2.53.0
-
+ 	ua->capture.frame_bytes =
+ 		fmt_capture->bSubframeSize * ua->capture.channels;
+ 	ua->playback.frame_bytes =
 
 
 
