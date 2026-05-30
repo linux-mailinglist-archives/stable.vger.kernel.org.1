@@ -1,58 +1,59 @@
-Return-Path: <stable+bounces-257812-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-259222-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id MH6IMnMgG2rO/QgAu9opvQ
-	(envelope-from <stable+bounces-257812-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:37:55 +0200
+	id SHC1DyMzG2qqAAkAu9opvQ
+	(envelope-from <stable+bounces-259222-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:57:39 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 642116100DB
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:37:55 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id A9B85612DAE
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:57:38 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 195E23086925
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 17:30:56 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id DE0F43035D4A
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 18:50:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BEE9A3403F9;
-	Sat, 30 May 2026 17:30:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8AF68231A21;
+	Sat, 30 May 2026 18:50:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="U2CDxmj0"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ICJQ+tVZ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A296E19D8AC;
-	Sat, 30 May 2026 17:30:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 77B44137750;
+	Sat, 30 May 2026 18:50:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780162253; cv=none; b=g0KrCBVLwlxntMTLcVloWyvhAFTWgu5NPsoO2za9Yithpkt5y8tZ/5vtcmydOAZjEUzXLhAbgg57INwOp2oyfqSioixVvl32I4Jsoj54q0Mserfga43v5qD+VwH6I+fddvuwhCRuk7Z2NRvFh1Eev/r5vvnZxC52ZMNeaUuLzl8=
+	t=1780167018; cv=none; b=OMRDKXkzjO8vKDL9kUTgVLPPdeufjSoz1UUnX21gW3/A0NO/wVFNiweM1oxwQyqwgWvMxxXFBk65enYFeTed8NyDbCPgzHKP3bZJlDfSgWiK5wHGXwgGCZcoc+216X5jPxeDe4tv9ihr6wnbP+AY+ASQXMGeYkLijzGA+oF6RYo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780162253; c=relaxed/simple;
-	bh=VoGNJLmVC6MhAxR7fsjxrbfvxJhdgSz2oN6Ggr67CIg=;
+	s=arc-20240116; t=1780167018; c=relaxed/simple;
+	bh=SKTGVG1R44ZdIx/AxO5yWA743zY1ZESykpesX4bmi0E=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=sCYWU8UFSkGcakTKIIxrfevViUm6nZiCeoOeyxokJrjejJmtLGkVAX8aXeL0QFZcbU+C4BbJvwbfe4jNJ35jLrLsMXi7MTthep9+0M5RJHhxaZHDM3JeK70O7lJ7IaeNIouwJ0AorpbtP3we5ljubFtl4MRcwUyoqPtXTeBWR5s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=U2CDxmj0; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B39961F00893;
-	Sat, 30 May 2026 17:30:51 +0000 (UTC)
+	 MIME-Version; b=ZJmpd0jEtGaN8FZo0tf7iXRBkCtiOd0IUi24AOM2rK6HVPnwGY/aHtqLX7G5e7PT5Mvks8pQgtDFfpZ9jzVd1alQ4MTVTQKbL3RiisGFDiyz94u9NpdDTEFiu/AZbASNtLAUgyHQxJ16WR9M8zoZ42GvFvYVeKpEZByFafICqog=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ICJQ+tVZ; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BE5BC1F00893;
+	Sat, 30 May 2026 18:50:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780162252;
-	bh=ZH9emll4YyrZ5LKhfmDugGKGFYY7q3VbnbYSGM4u4q8=;
+	s=korg; t=1780167017;
+	bh=m8rJHqGpp0gcVajv0OpQLW9W4v4nkyxPgEJSZ38k43Q=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=U2CDxmj0auhZh2Q5yW+iVxNwfzVyrdazstqSX7uTue313QVA4nM4mu3GJd1byfpch
-	 RPnaFxiPDJB6BKzdy6YrNRkac6v4Ewz7A6BaDndpSjPRz6CW7JTqS9/4j66PkZFgem
-	 4SfdNXYv4QSToY94FUhaV3X27zcQzn47J2ICc4yM=
+	b=ICJQ+tVZ8g/VcBCO7/wJHZF2a8mH5L3flfjMujbrYC5ysHO3hAEaf6g28i19Q4voG
+	 bvtSPlKarKlsr7lJaJOWZU/I0VRNl14DUbikU3gB0n1rlC9/EgdkJJt0YSPGOukaPt
+	 CsuLBRBDbJCqWAzoYXCkDJYKQa9FanwXeBEP5RYQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Osama Abdelkader <osama.abdelkader@gmail.com>,
-	Luca Ceresoli <luca.ceresoli@bootlin.com>
-Subject: [PATCH 6.1 867/969] drm/bridge: chipone-icn6211: use devm_drm_bridge_add in i2c probe
+	Viacheslav Dubeyko <Slava.Dubeyko@ibm.com>,
+	Alex Markuze <amarkuze@redhat.com>,
+	Ilya Dryomov <idryomov@gmail.com>
+Subject: [PATCH 5.10 510/589] ceph: fix a buffer leak in __ceph_setxattr()
 Date: Sat, 30 May 2026 18:06:31 +0200
-Message-ID: <20260530160324.618886694@linuxfoundation.org>
+Message-ID: <20260530160238.008128786@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260530160300.485627683@linuxfoundation.org>
-References: <20260530160300.485627683@linuxfoundation.org>
+In-Reply-To: <20260530160224.570625122@linuxfoundation.org>
+References: <20260530160224.570625122@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,74 +64,71 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	TO_DN_SOME(0.00)[];
-	TAGGED_FROM(0.00)[bounces-257812-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,bootlin.com];
-	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-259222-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,ibm.com,redhat.com,gmail.com];
 	RCVD_COUNT_THREE(0.00)[4];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	TO_DN_SOME(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	RCPT_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	NEURAL_HAM(-0.00)[-0.999];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
 	TAGGED_RCPT(0.00)[stable];
 	MID_RHS_MATCH_FROM(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[5];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,bootlin.com:email]
-X-Rspamd-Queue-Id: 642116100DB
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
+X-Rspamd-Queue-Id: A9B85612DAE
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Osama Abdelkader <osama.abdelkader@gmail.com>
+From: Viacheslav Dubeyko <Slava.Dubeyko@ibm.com>
 
-commit 73d01051e8040c0b1de7fd26b3b8d0c2ffa6895c upstream.
+commit 5d3cc36b4e77a27ce7b686b7c59c7072bcb3fa8e upstream.
 
-Use devm_drm_bridge_add() so the bridge is released if probe
-fails after registration, and drop drm_bridge_remove() in chipone_i2c_probe.
+The old_blob in __ceph_setxattr() can store
+ci->i_xattrs.prealloc_blob value during the retry.
+However, it is never called the ceph_buffer_put()
+for the old_blob object. This patch fixes the issue of
+the buffer leak.
 
-Signed-off-by: Osama Abdelkader <osama.abdelkader@gmail.com>
-Fixes: 8dde6f7452a1 ("drm: bridge: icn6211: Add I2C configuration support")
 Cc: stable@vger.kernel.org
-Reviewed-by: Luca Ceresoli <luca.ceresoli@bootlin.com>
-Link: https://patch.msgid.link/20260430194944.78119-1-osama.abdelkader@gmail.com
-Signed-off-by: Luca Ceresoli <luca.ceresoli@bootlin.com>
+Signed-off-by: Viacheslav Dubeyko <Slava.Dubeyko@ibm.com>
+Reviewed-by: Alex Markuze <amarkuze@redhat.com>
+Signed-off-by: Ilya Dryomov <idryomov@gmail.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/bridge/chipone-icn6211.c |    4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ fs/ceph/xattr.c |    1 +
+ 1 file changed, 1 insertion(+)
 
---- a/drivers/gpu/drm/bridge/chipone-icn6211.c
-+++ b/drivers/gpu/drm/bridge/chipone-icn6211.c
-@@ -758,7 +758,9 @@ static int chipone_i2c_probe(struct i2c_
- 	dev_set_drvdata(dev, icn);
- 	i2c_set_clientdata(client, icn);
+--- a/fs/ceph/xattr.c
++++ b/fs/ceph/xattr.c
+@@ -1132,6 +1132,7 @@ retry:
  
--	drm_bridge_add(&icn->bridge);
-+	ret = devm_drm_bridge_add(dev, &icn->bridge);
-+	if (ret)
-+		return ret;
- 
- 	return chipone_dsi_host_attach(icn);
- }
+ do_sync:
+ 	spin_unlock(&ci->i_ceph_lock);
++	ceph_buffer_put(old_blob);
+ do_sync_unlocked:
+ 	if (lock_snap_rwsem)
+ 		up_read(&mdsc->snap_rwsem);
 
 
 
