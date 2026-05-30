@@ -1,61 +1,60 @@
-Return-Path: <stable+bounces-259160-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-258517-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id EHAAOXkyG2qqAAkAu9opvQ
-	(envelope-from <stable+bounces-259160-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:54:49 +0200
+	id ME/oCxIoG2qS/ggAu9opvQ
+	(envelope-from <stable+bounces-258517-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:10:26 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 45C7A612C88
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:54:49 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id C855D61128C
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:10:25 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 970243016907
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 18:46:50 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id CC56B3014750
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 18:10:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A7B43231A21;
-	Sat, 30 May 2026 18:46:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 08B83352027;
+	Sat, 30 May 2026 18:10:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="d5F4qgvv"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="aUwoyj+V"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 97C5114A60F;
-	Sat, 30 May 2026 18:46:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C9B59362157;
+	Sat, 30 May 2026 18:10:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780166809; cv=none; b=FJmSAJcqHc0V6wHvXCGipp3b6AniA80tgHR1iHey1PynrjxLmpULRYN2uEz65i48B/HKRuG27AcAHSymy4TkYOhHpe5kk6yrpAXohCTsT6esadvRJN6vPdWiMEwqUjuzeERp3U51GqtvKql21i6IGUa3zf+twhehMQWpQQHSob8=
+	t=1780164615; cv=none; b=RMHeOmtKa9FWwdqePwWzx4tAd6VrrcZ0JD/zOEQZrbfaXyhz6dPJHAYYmnvjEW1sK0mmXyh8YEYAuf/VCnvxf86VpnXyn84fvfFdhtXnHsdkm4YGUYTMwjwnyrtJmwNnx8IOGAD6WmNKMd2++fPfkbHKKx7UQ/XZrLRw74MSzRM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780166809; c=relaxed/simple;
-	bh=o/brf/2QkKxkeiQQojLmLw2r5NekRkkMaCQneoCsSFA=;
+	s=arc-20240116; t=1780164615; c=relaxed/simple;
+	bh=QVQLBJG4Pd24WwQd6Ud75o7ppa4TkQhJexkec/zL2nI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=NtcOvGh1+P67DT25RZx5SnMbJQhHmi/rIu7nH72D15wJjdrPK5jkKHsqooEktLfwvieio3rrT2oKVe7iD9wv3RfbO9acVTBFItOFsSw/SPlnIEidgbZUTYAANfPxT8F0VfQkmO+ihUeX1pbVuPmtbx7PYrOTjZBa3R+kurqQ/vA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=d5F4qgvv; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A56B81F00898;
-	Sat, 30 May 2026 18:46:46 +0000 (UTC)
+	 MIME-Version:Content-Type; b=p0dr6WRa2C6x7LlV2ceL/HYgvf8fnOjwZuEskGJxtC/h+8r8DViARA+KpX1Upl6Vd+C464+6qROuD85J07Fbk+uHsuemE7eaN5i2cAzhCRrGrBObUyzovkbSTsoHEg/aT+RTrNo2A9NfPozx8EVcgw3/D/SxPMh+Jw85hMyRrac=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=aUwoyj+V; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DA52B1F00893;
+	Sat, 30 May 2026 18:10:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780166807;
-	bh=ndTAfJoc1aCtvKoABBPemmBUeS1YtfTeCTOzPlhsIEg=;
+	s=korg; t=1780164614;
+	bh=wfkJZE7ExU5tVJSDyyxPYj3gmjYrFN3BOIY4YSnaD3o=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=d5F4qgvvDOh/j/OrcKCTXO8HC4DkpkcK2/EV4pR2RYatSLh2YSwjEhSPvaYtHRtyR
-	 0CpV7veXeodQ37XXQXMTQEIJvKgx0iGDvEHLEi86QwJIRyIjizPn/uZqnEuQlebY96
-	 xKpFcifPnoHiIfgeiG4V1s2V5TBrHSNJKVlbyqCQ=
+	b=aUwoyj+V1KC1hIjq+yOQdCeYkhf4O1KOWpNVYXKk8qbyaq7crPcDB7AAYBF5eJCpf
+	 +wblp8E36CG45k6q8ofHCijX+64e51PNILnr7d1Q6aLLMmKCk4uoAVmqpZDZe4MuPc
+	 RE/I22T+IojnevfRFAZ61cu7AwJWYyHfIvaLZO9s=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Xiang Mei <xmei5@asu.edu>,
-	Weiming Shi <bestswngs@gmail.com>,
-	Simon Horman <horms@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
+	=?UTF-8?q?Timur=20Krist=C3=B3f?= <timur.kristof@gmail.com>,
+	=?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 440/589] slip: reject VJ receive packets on instances with no rstate array
+Subject: [PATCH 5.15 607/776] drm/amdgpu/uvd3.1: Dont validate the firmware when already validated
 Date: Sat, 30 May 2026 18:05:21 +0200
-Message-ID: <20260530160236.271608399@linuxfoundation.org>
+Message-ID: <20260530160255.703477379@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260530160224.570625122@linuxfoundation.org>
-References: <20260530160224.570625122@linuxfoundation.org>
+In-Reply-To: <20260530160240.228940103@linuxfoundation.org>
+References: <20260530160240.228940103@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,133 +64,97 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-0.66 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,amd.com,kernel.org];
 	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,asu.edu,gmail.com,kernel.org,redhat.com];
-	TAGGED_FROM(0.00)[bounces-259160-lists,stable=lfdr.de];
-	PRECEDENCE_BULK(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	TAGGED_FROM(0.00)[bounces-258517-lists,stable=lfdr.de];
 	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	FROM_HAS_DN(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	NEURAL_HAM(-0.00)[-0.997];
+	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
 	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-0.995];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[8];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,asu.edu:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
-X-Rspamd-Queue-Id: 45C7A612C88
+	RCPT_COUNT_SEVEN(0.00)[7];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TO_DN_SOME(0.00)[]
+X-Rspamd-Queue-Id: C855D61128C
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Weiming Shi <bestswngs@gmail.com>
+From: Timur Kristóf <timur.kristof@gmail.com>
 
-[ Upstream commit e76607442d5b73e1ba6768f501ef815bb58c2c0e ]
+[ Upstream commit 13e4cf116dbf7a1fb8123a59bea2c098f30d3736 ]
 
-slhc_init() accepts rslots == 0 as a valid configuration, with the
-documented meaning of 'no receive compression'. In that case the
-allocation loop in slhc_init() is skipped, so comp->rstate stays
-NULL and comp->rslot_limit stays 0 (from the kzalloc of struct
-slcompress).
+UVD 3.1 firmware validation seems to always fail after
+attempting it when it had already been validated.
+(This works similarly with the VCE 1.0 as well.)
 
-The receive helpers do not defend against that configuration.
-slhc_uncompress() dereferences comp->rstate[x] when the VJ header
-carries an explicit connection ID, and slhc_remember() later assigns
-cs = &comp->rstate[...] after only comparing the packet's slot number
-to comp->rslot_limit. Because rslot_limit is 0, slot 0 passes the
-range check, and the code dereferences a NULL rstate.
+Don't attempt repeating the validation when it's already done.
 
-The configuration is reachable in-tree through PPP. PPPIOCSMAXCID
-stores its argument in a signed int, and (val >> 16) uses arithmetic
-shift. Passing 0xffff0000 therefore sign-extends to -1, so val2 + 1
-is 0 and ppp_generic.c ends up calling slhc_init(0, 1). Because
-/dev/ppp open is gated by ns_capable(CAP_NET_ADMIN), the whole path
-is reachable from an unprivileged user namespace. Once the malformed
-VJ state is installed, any inbound VJ-compressed or VJ-uncompressed
-frame that selects slot 0 crashes the kernel in softirq context:
+This caused issues in situations when the system isn't able
+to suspend the GPU properly and so the GPU isn't actually
+powered down. Then amdgpu would fail when calling the IP
+block resume function.
 
- Oops: general protection fault, probably for non-canonical
-       address 0xdffffc0000000000: 0000 [#1] SMP KASAN NOPTI
- KASAN: null-ptr-deref in range [0x0000000000000000-0x0000000000000007]
- RIP: 0010:slhc_uncompress (drivers/net/slip/slhc.c:519)
- Call Trace:
-  <TASK>
-  ppp_receive_nonmp_frame (drivers/net/ppp/ppp_generic.c:2466)
-  ppp_input (drivers/net/ppp/ppp_generic.c:2359)
-  ppp_async_process (drivers/net/ppp/ppp_async.c:492)
-  tasklet_action_common (kernel/softirq.c:926)
-  handle_softirqs (kernel/softirq.c:623)
-  run_ksoftirqd (kernel/softirq.c:1055)
-  smpboot_thread_fn (kernel/smpboot.c:160)
-  kthread (kernel/kthread.c:436)
-  ret_from_fork (arch/x86/kernel/process.c:164)
-  </TASK>
-
-Reject the receive side on such instances instead of touching rstate.
-slhc_uncompress() falls through to its existing 'bad' label, which
-bumps sls_i_error and enters the toss state. slhc_remember() mirrors
-that with an explicit sls_i_error increment followed by slhc_toss();
-the sls_i_runt counter is not used here because a missing rstate is
-an internal configuration state, not a runt packet.
-
-The transmit path is unaffected: the only in-tree caller that picks
-rslots from userspace (ppp_generic.c) still supplies tslots >= 1, and
-slip.c always calls slhc_init(16, 16), so comp->tstate remains valid
-and slhc_compress() continues to work.
-
-Fixes: 4ab42d78e37a ("ppp, slip: Validate VJ compression slot parameters completely")
-Reported-by: Xiang Mei <xmei5@asu.edu>
-Signed-off-by: Weiming Shi <bestswngs@gmail.com>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Link: https://patch.msgid.link/20260415204130.258866-2-bestswngs@gmail.com
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Closes: https://gitlab.freedesktop.org/drm/amd/-/work_items/2887
+Fixes: bb7978111dd3 ("drm/amdgpu: fix SI UVD firmware validate resume fail")
+Signed-off-by: Timur Kristóf <timur.kristof@gmail.com>
+Reviewed-by: Christian König <christian.koenig@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+(cherry picked from commit 889a2cfd889c4a4dd9d0c89ce9a8e60b78be71dd)
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/slip/slhc.c | 6 ++++++
- 1 file changed, 6 insertions(+)
+ drivers/gpu/drm/amd/amdgpu/uvd_v3_1.c | 10 ++++++++++
+ 1 file changed, 10 insertions(+)
 
-diff --git a/drivers/net/slip/slhc.c b/drivers/net/slip/slhc.c
-index 603a29f3905ba..f7d92bae7774d 100644
---- a/drivers/net/slip/slhc.c
-+++ b/drivers/net/slip/slhc.c
-@@ -506,6 +506,8 @@ slhc_uncompress(struct slcompress *comp, unsigned char *icp, int isize)
- 		comp->sls_i_error++;
- 		return 0;
- 	}
-+	if (!comp->rstate)
-+		goto bad;
- 	changes = *cp++;
- 	if(changes & NEW_C){
- 		/* Make sure the state index is in range, then grab the state.
-@@ -649,6 +651,10 @@ slhc_remember(struct slcompress *comp, unsigned char *icp, int isize)
- 	struct cstate *cs;
- 	unsigned int ihl;
+diff --git a/drivers/gpu/drm/amd/amdgpu/uvd_v3_1.c b/drivers/gpu/drm/amd/amdgpu/uvd_v3_1.c
+index fbfed90503868..3a27bed57b4ff 100644
+--- a/drivers/gpu/drm/amd/amdgpu/uvd_v3_1.c
++++ b/drivers/gpu/drm/amd/amdgpu/uvd_v3_1.c
+@@ -242,6 +242,10 @@ static void uvd_v3_1_mc_resume(struct amdgpu_device *adev)
+ 	uint64_t addr;
+ 	uint32_t size;
  
-+	if (!comp->rstate) {
-+		comp->sls_i_error++;
-+		return slhc_toss(comp);
++	/* When the keyselect is already set, don't perturb it. */
++	if (RREG32(mmUVD_FW_START))
++		return;
++
+ 	/* program the VCPU memory controller bits 0-27 */
+ 	addr = (adev->uvd.inst->gpu_addr + AMDGPU_UVD_FIRMWARE_OFFSET) >> 3;
+ 	size = AMDGPU_UVD_FIRMWARE_SIZE(adev) >> 3;
+@@ -284,6 +288,12 @@ static int uvd_v3_1_fw_validate(struct amdgpu_device *adev)
+ 	int i;
+ 	uint32_t keysel = adev->uvd.keyselect;
+ 
++	if (RREG32(mmUVD_FW_START) & UVD_FW_STATUS__PASS_MASK) {
++		dev_dbg(adev->dev, "UVD keyselect already set: 0x%x (on CPU: 0x%x)\n",
++			RREG32(mmUVD_FW_START), adev->uvd.keyselect);
++		return 0;
 +	}
- 	/* The packet is shorter than a legal IP header.
- 	 * Also make sure isize is positive.
- 	 */
++
+ 	WREG32(mmUVD_FW_START, keysel);
+ 
+ 	for (i = 0; i < 10; ++i) {
 -- 
 2.53.0
 
