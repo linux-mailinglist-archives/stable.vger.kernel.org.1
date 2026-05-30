@@ -1,59 +1,65 @@
-Return-Path: <stable+bounces-258602-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-257829-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id gEI/Jn0pG2ra/ggAu9opvQ
-	(envelope-from <stable+bounces-258602-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:16:29 +0200
+	id CDLxM3sgG2qu/QgAu9opvQ
+	(envelope-from <stable+bounces-257829-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:38:03 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1650D611662
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:16:28 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8A8CF610104
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:38:03 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 49106306DF85
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 18:15:04 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id E27EB300B3DA
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 17:31:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DBE083B7B72;
-	Sat, 30 May 2026 18:15:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DBA8730E0DC;
+	Sat, 30 May 2026 17:31:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fR5q4Lbp"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="s3UjTmqB"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A2CBF39A7FE;
-	Sat, 30 May 2026 18:15:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9EF5830676E;
+	Sat, 30 May 2026 17:31:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780164901; cv=none; b=OlN/PgvloDpeX+qXD84+fogBpmkyxGEmpoCLboT8h4rABlzdhSRpDOruKDB9krteQ2Uqc6/mjTdAFbpbLTxjVmG/KyMGW1vTehkqkPJs1LryTaEDFNtNuhIABrHqoIOt4RZeTkBjB5sgrXcJ4I2JOsS6ERmJ5ODC7QqqBxLOJu0=
+	t=1780162309; cv=none; b=nrHcAyWneBZdlPMb5+iggkr+yCoB/EJCVxe9bKB1L0T79Pv9r54RhQyVoICDfbmBIkkBMbY79acPQDKWrUZIE4XE2rYNnMRJdrGhNF7cW86GT+OdA0EChpvrrMW7OY+NhoeG4RcKQ1R8QvBVFp+6EybjCJUZp22WWtSbDf0dEvc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780164901; c=relaxed/simple;
-	bh=shfNEo0BSU0yKPW3C+wS2VxpZzpv7RDKqT48AEvD+Hg=;
+	s=arc-20240116; t=1780162309; c=relaxed/simple;
+	bh=RbZ9nRIEGNDO8SGxk3bpAVE6bLAzCRe2lY4Iav86gGQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=gH5dXWDSzus/TeKiR3BJ64a6pl6Pk+N6PbpWgWUp1QAPyWgQrLnwz1gJHUCvAca/EEwKEnlrPvNEpe2gjviPahzjSuVZjw8iKJiI79iylGOTN8soWn3q8maco4wUg3iKg4eH8n17VEWrpwbT6S+c8Dw3il39hB1o0FpA+oA7FlE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fR5q4Lbp; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7DDA31F00893;
-	Sat, 30 May 2026 18:14:59 +0000 (UTC)
+	 MIME-Version; b=qUj21ePkel3fxbp82yECDazRcZAfEs+jHLQWsuGtHd9tslJxUBLCDFJHlANv7iPLL3yo6goSMNUKGaXMl05LH/z0G6ChHI+Cc+5lrBclM0XLTzSFDdzLJPTjVHl48rwkd0bWTVsCrUajA0i3H9kQ8j6HA6RKl3DKOXdFDl1dKVQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=s3UjTmqB; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CB9561F00893;
+	Sat, 30 May 2026 17:31:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780164900;
-	bh=hLlJJMm6obIYNaTL4cBh7PnPl98lnMybu9Y2RzqLR+w=;
+	s=korg; t=1780162308;
+	bh=UL0SUqGX9OuYjo79nrBrilzUAEopfz/NrT/3FZ87KpM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=fR5q4LbpEBihokjWADAn3JUZQIsf+9QR6WUNNUbmpZIAO35b/ts3KvvRpEKxwQOhm
-	 zrFeic189AmeMEvZE8sQJS83+HZMONbltP5KFaK/z5FT5uiOzLnYnqFQlPw1Nlev6r
-	 7FzNMD3gwcOSE19t4Zh1k7aAgUhsDsii3RVbU8Q0=
+	b=s3UjTmqB+yDHXuh0ZUCf/4GWYN/aF5lg31dj/qud9xa8dKGK3nTd9YiUlWWervlSm
+	 5ASU1tfHoKRUpazNr3Yzmiiiolr8slr0p3Gpi987q9yGQBbkPHc0Btzox6InsfVkeP
+	 Xi97cDPu1UdOYiM0d7ndsDlw5CjSN8KdxSMWTsq4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Herbert Xu <herbert@gondor.apana.org.au>,
-	Michael Bommarito <michael.bommarito@gmail.com>,
-	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 5.15 693/776] ipv4: raw: reject IP_HDRINCL packets with ihl < 5
+	stable@kernel.org,
+	Yuan Tan <yuantan098@gmail.com>,
+	Yifan Wu <yifanwucs@gmail.com>,
+	Juefei Pu <tomapufckgml@gmail.com>,
+	Xin Liu <bird@lzu.edu.cn>,
+	Ruide Cao <caoruide123@gmail.com>,
+	Ren Wei <enjou1224z@gmail.com>,
+	Ren Wei <n05ec@lzu.edu.cn>,
+	Sven Eckelmann <sven@narfation.org>
+Subject: [PATCH 6.1 883/969] batman-adv: fix fragment reassembly length accounting
 Date: Sat, 30 May 2026 18:06:47 +0200
-Message-ID: <20260530160257.752844682@linuxfoundation.org>
+Message-ID: <20260530160325.076555941@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260530160240.228940103@linuxfoundation.org>
-References: <20260530160240.228940103@linuxfoundation.org>
+In-Reply-To: <20260530160300.485627683@linuxfoundation.org>
+References: <20260530160300.485627683@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,124 +70,169 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	TO_DN_SOME(0.00)[];
-	TAGGED_FROM(0.00)[bounces-258602-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gondor.apana.org.au,gmail.com,kernel.org];
-	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-257829-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,kernel.org,gmail.com,lzu.edu.cn,narfation.org];
 	RCVD_COUNT_THREE(0.00)[4];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	RCPT_COUNT_TWELVE(0.00)[12];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	NEURAL_HAM(-0.00)[-0.995];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
 	TAGGED_RCPT(0.00)[stable];
 	MID_RHS_MATCH_FROM(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,msgid.link:url,apana.org.au:email]
-X-Rspamd-Queue-Id: 1650D611662
+	DBL_BLOCKED_OPENRESOLVER(0.00)[lzu.edu.cn:email,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,narfation.org:email,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim]
+X-Rspamd-Queue-Id: 8A8CF610104
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Michael Bommarito <michael.bommarito@gmail.com>
+From: Ruide Cao <caoruide123@gmail.com>
 
-commit 915fab69823a14c170dbaa3b41978768e0fe62fc upstream.
+commit 9cd3f16c320bfdadd4509358122368deb56a5741 upstream.
 
-raw_send_hdrinc() validates that the caller-supplied IPv4 header
-fits within the message length:
+batman-adv keeps a running payload length for queued fragments and uses it
+to validate a fragment chain before reassembly.
 
-    iphlen = iph->ihl * 4;
-    err = -EINVAL;
-    if (iphlen > length)
-        goto error_free;
+That accounting currently allows the accumulated fragment length to be
+truncated during updates. As a result, malformed fragment chains can
+bypass the intended validation and drive reassembly with inconsistent
+length state, leading to a local denial of service.
 
-    if (iphlen >= sizeof(*iph)) {
-        /* fix up saddr, tot_len, id, csum, transport_header */
-    }
+Fix the accounting by storing the accumulated length in a length-typed
+field and rejecting update overflows before the existing validation logic
+runs.
 
-It does not, however, reject ihl < 5.  For such a packet the
-"if (iphlen >= sizeof(*iph))" branch is skipped, leaving the
-crafted iphdr untouched, but the packet is still handed to
-__ip_local_out() and onward.  Downstream consumers that read
-iph->ihl assume a sane value: net/ipv4/ah4.c:ah_output() in
-particular subtracts sizeof(struct iphdr) from top_iph->ihl * 4
-and passes the (signed-int-negative, then cast to size_t)
-result to memcpy(), producing an OOB access of length close to
-SIZE_MAX and a host kernel panic.
+The fix was verified against the original reproducer and against valid
+fragment reassembly paths.
 
-An IPv4 header with ihl < 5 is malformed by definition (RFC 791:
-"Internet Header Length is the length of the internet header in
-32 bit words ... Note that the minimum value for a correct header
-is 5.").  The kernel should not be willing to inject such a
-packet into its own output path.
-
-Reject "iphlen < sizeof(*iph)" alongside the existing
-"iphlen > length" check.  This matches the principle that locally
-constructed packets that re-enter the IP stack must pass the same
-basic sanity tests that a foreign packet would be subjected to.
-
-Once this lands, the "if (iphlen >= sizeof(*iph))" wrapper around
-the fixup branch becomes redundant; left in place to keep the
-patch minimal and backport-friendly.  A follow-up can unwrap it.
-
-Note that commit 86f4c90a1c5c ("ipv4, ipv6: ensure raw socket
-message is big enough to hold an IP header") ensures the message
-buffer is large enough to hold an iphdr, but does not constrain
-the self-reported iph->ihl.
-
-Reachability: the malformed packet source is any caller with
-CAP_NET_RAW, including an unprivileged process in a user+net
-namespace on a kernel with CONFIG_USER_NS=y.  The reproduced AH
-crash also requires a matching xfrm AH policy on the outgoing
-route; a container granted CAP_NET_ADMIN can install that state
-and policy in its netns.  Loopback bypasses xfrm_output, so the
-trigger uses a real netdev.
-
-Reproduced on UML + KASAN: kernel-mode fault at addr 0x0 with
-memcpy_orig at the crash site.  Same shape reproduces inside a
-rootless Docker container with --cap-add NET_ADMIN on a stock
-distro kernel.
-
-Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
-Cc: stable@vger.kernel.org
-Suggested-by: Herbert Xu <herbert@gondor.apana.org.au>
-Signed-off-by: Michael Bommarito <michael.bommarito@gmail.com>
-Link: https://patch.msgid.link/77ec2b5e8111961c2c39883c92e8aa2709039c17.1778614451.git.michael.bommarito@gmail.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Fixes: 610bfc6bc99b ("batman-adv: Receive fragmented packets and merge")
+Cc: stable@kernel.org
+Reported-by: Yuan Tan <yuantan098@gmail.com>
+Reported-by: Yifan Wu <yifanwucs@gmail.com>
+Reported-by: Juefei Pu <tomapufckgml@gmail.com>
+Reported-by: Xin Liu <bird@lzu.edu.cn>
+Signed-off-by: Ruide Cao <caoruide123@gmail.com>
+Tested-by: Ren Wei <enjou1224z@gmail.com>
+Signed-off-by: Ren Wei <n05ec@lzu.edu.cn>
+Signed-off-by: Sven Eckelmann <sven@narfation.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/ipv4/raw.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ net/batman-adv/fragmentation.c |   23 +++++++++++++++++------
+ net/batman-adv/types.h         |    2 +-
+ 2 files changed, 18 insertions(+), 7 deletions(-)
 
---- a/net/ipv4/raw.c
-+++ b/net/ipv4/raw.c
-@@ -407,7 +407,7 @@ static int raw_send_hdrinc(struct sock *
- 	 * in, reject the frame as invalid
- 	 */
- 	err = -EINVAL;
--	if (iphlen > length)
-+	if (iphlen > length || iphlen < sizeof(*iph))
- 		goto error_free;
+--- a/net/batman-adv/fragmentation.c
++++ b/net/batman-adv/fragmentation.c
+@@ -17,6 +17,7 @@
+ #include <linux/lockdep.h>
+ #include <linux/minmax.h>
+ #include <linux/netdevice.h>
++#include <linux/overflow.h>
+ #include <linux/skbuff.h>
+ #include <linux/slab.h>
+ #include <linux/spinlock.h>
+@@ -81,9 +82,9 @@ void batadv_frag_purge_orig(struct batad
+  *
+  * Return: the maximum size of payload that can be fragmented.
+  */
+-static int batadv_frag_size_limit(void)
++static size_t batadv_frag_size_limit(void)
+ {
+-	int limit = BATADV_FRAG_MAX_FRAG_SIZE;
++	size_t limit = BATADV_FRAG_MAX_FRAG_SIZE;
  
- 	if (iphlen >= sizeof(*iph)) {
+ 	limit -= sizeof(struct batadv_frag_packet);
+ 	limit *= BATADV_FRAG_MAX_FRAGMENTS;
+@@ -144,7 +145,9 @@ static bool batadv_frag_insert_packet(st
+ 	struct batadv_frag_packet *frag_packet;
+ 	u8 bucket;
+ 	u16 seqno, hdr_size = sizeof(struct batadv_frag_packet);
++	bool overflow = false;
+ 	bool ret = false;
++	size_t data_len;
+ 
+ 	/* Linearize packet to avoid linearizing 16 packets in a row when doing
+ 	 * the later merge. Non-linear merge should be added to remove this
+@@ -154,6 +157,7 @@ static bool batadv_frag_insert_packet(st
+ 		goto err;
+ 
+ 	frag_packet = (struct batadv_frag_packet *)skb->data;
++	data_len = skb->len - hdr_size;
+ 	seqno = ntohs(frag_packet->seqno);
+ 	bucket = seqno % BATADV_FRAG_BUFFER_COUNT;
+ 
+@@ -172,7 +176,7 @@ static bool batadv_frag_insert_packet(st
+ 	spin_lock_bh(&chain->lock);
+ 	if (batadv_frag_init_chain(chain, seqno)) {
+ 		hlist_add_head(&frag_entry_new->list, &chain->fragment_list);
+-		chain->size = skb->len - hdr_size;
++		chain->size = data_len;
+ 		chain->timestamp = jiffies;
+ 		chain->total_size = ntohs(frag_packet->total_size);
+ 		ret = true;
+@@ -189,7 +193,11 @@ static bool batadv_frag_insert_packet(st
+ 		if (frag_entry_curr->no < frag_entry_new->no) {
+ 			hlist_add_before(&frag_entry_new->list,
+ 					 &frag_entry_curr->list);
+-			chain->size += skb->len - hdr_size;
++
++			if (check_add_overflow(chain->size, data_len,
++					       &chain->size))
++				overflow = true;
++
+ 			chain->timestamp = jiffies;
+ 			ret = true;
+ 			goto out;
+@@ -202,13 +210,16 @@ static bool batadv_frag_insert_packet(st
+ 	/* Reached the end of the list, so insert after 'frag_entry_last'. */
+ 	if (likely(frag_entry_last)) {
+ 		hlist_add_behind(&frag_entry_new->list, &frag_entry_last->list);
+-		chain->size += skb->len - hdr_size;
++
++		if (check_add_overflow(chain->size, data_len, &chain->size))
++			overflow = true;
++
+ 		chain->timestamp = jiffies;
+ 		ret = true;
+ 	}
+ 
+ out:
+-	if (chain->size > batadv_frag_size_limit() ||
++	if (overflow || chain->size > batadv_frag_size_limit() ||
+ 	    chain->total_size != ntohs(frag_packet->total_size) ||
+ 	    chain->total_size > batadv_frag_size_limit()) {
+ 		/* Clear chain if total size of either the list or the packet
+--- a/net/batman-adv/types.h
++++ b/net/batman-adv/types.h
+@@ -294,7 +294,7 @@ struct batadv_frag_table_entry {
+ 	u16 seqno;
+ 
+ 	/** @size: accumulated size of packets in list */
+-	u16 size;
++	size_t size;
+ 
+ 	/** @total_size: expected size of the assembled packet */
+ 	u16 total_size;
 
 
 
