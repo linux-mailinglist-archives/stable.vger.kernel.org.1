@@ -1,57 +1,59 @@
-Return-Path: <stable+bounces-258263-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-257460-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id oAGnKp8mG2qf/ggAu9opvQ
-	(envelope-from <stable+bounces-258263-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:04:15 +0200
+	id sIObJtAbG2pk/QgAu9opvQ
+	(envelope-from <stable+bounces-257460-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:18:08 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 34F02610EB5
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:04:15 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 10F2E60F551
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:18:07 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 08BA03112D3A
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 17:56:04 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 25E5C3104DFD
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 17:11:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BBDDA2628D;
-	Sat, 30 May 2026 17:56:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 59189395AD8;
+	Sat, 30 May 2026 17:11:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="aQ7Z94Bn"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bEVvRtr6"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A20D9320CAD;
-	Sat, 30 May 2026 17:56:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 33C1134389B;
+	Sat, 30 May 2026 17:11:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780163762; cv=none; b=MU4IAg/Id7tDPL1rpyyTotOFgw3mI4DfIeXq2e0yAAtnm2Rib3OMKZnTU6U1end7fNpENxO2I1HQFhglYIggNT/NSTtTe3tivhtPx7e4af0MMLOqur9OGzz7u5t6QDMeVKQmRV9/rnU5/YE0fCZ+Pv4Wqoqc3mk52TiEsMuNkMo=
+	t=1780161074; cv=none; b=DwslQbqtXaJ/OsDWqy+zV6t3jVob5RJJ8jTTvlwgCtuXfcZCUslk9FuYEGySOmjgjWLOWCZq8ZlbeCQUIFsVWLN95o2WBbBfiIo1lKyHQu4ZoNCtEMQqGGtDf8lhwYvdY1YXaUeVuPITZrZiGXqrHK8Cb1RAzB7wS669Z/b22to=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780163762; c=relaxed/simple;
-	bh=I3E7qfSw0dWHGK+2PE0jVklTme0kd68Eq18wb6qLGyo=;
+	s=arc-20240116; t=1780161074; c=relaxed/simple;
+	bh=XT3qWqaM5U/Dy0EgjVrksJWFti1sWNwhU6XyFkgjkGs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=SYT5GR4cRPGnhCedT+D8u69MHDvCwIWn6WPXZNWtZcutIb1FiJGtNdZNxiQvyDsRBn5cdOwPtnOWRZX9RYk+huHfhz9JwjFYtkFQz40rKJCJtmzUL0ha/C/K6x8K8nB3LKkrX804lAXyLIb0/R2MENDI8MHQwgPPj5yWTpdT8dY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=aQ7Z94Bn; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E6B0D1F00893;
-	Sat, 30 May 2026 17:56:00 +0000 (UTC)
+	 MIME-Version:Content-Type; b=dkFSH5dnZoPS1SL4pdJqP/jv6nhttL8tCl5MqDZq895/WGaeREtgYdm2gfkPaj+pFwGZtitt2dljouvOcXARbqOLZe8NDjhCkTw338pY9A40Jzo8N1KLZcIx9BKJYTQ2FFLPkhhXINgHjMgfd5wM2IHf2kTet2SfRgwIvNREp7s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bEVvRtr6; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7E6D71F00893;
+	Sat, 30 May 2026 17:11:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780163761;
-	bh=5VZj25ApfdOKPq70i3cRDn7LJH3yuwQ4FiVBYocfakk=;
+	s=korg; t=1780161073;
+	bh=CE2FtvwYBL1FUfU69UKiwjL+hiZoLCbJwt+7EWb57X4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=aQ7Z94Bn5WKSnzzoRHVqIQlAwO2IT448po7Qs5X20uaVxGxFiKpZS616WZHMG8i3g
-	 /zPPLNc5SRxLCajoHOdgH85OWq26Wvnrn/Ur9YKs/C5YpTF/wYZEx2cn0H5ec105f2
-	 RAq4WswuZpOi+7qlZtjgkeirMXdqmiLM3J0F4iB4=
+	b=bEVvRtr6QXdFINu2dPlzXXO3xNPZHQATm3jBoJ7RHjoAtTDVhR6zF/xtr6gpC+vzA
+	 uhH4j9u38svPGgohUVZGzb3L5hVOdU93mp22W+tZiAzGDLoFlzkDXqc9YgFTgwy5bp
+	 sNZcJqdQ0NWqJ7wwrY12LT+mNoCURxpIMHZAQ1Bg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mikulas Patocka <mpatocka@redhat.com>
-Subject: [PATCH 5.15 327/776] dm-thin: fix metadata refcount underflow
-Date: Sat, 30 May 2026 18:00:41 +0200
-Message-ID: <20260530160249.022739984@linuxfoundation.org>
+	=?UTF-8?q?Timur=20Krist=C3=B3f?= <timur.kristof@gmail.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 518/969] drm/amd/pm/ci: Disable MCLK DPM on problematic CI ASICs
+Date: Sat, 30 May 2026 18:00:42 +0200
+Message-ID: <20260530160314.652226109@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260530160240.228940103@linuxfoundation.org>
-References: <20260530160240.228940103@linuxfoundation.org>
+In-Reply-To: <20260530160300.485627683@linuxfoundation.org>
+References: <20260530160300.485627683@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,92 +63,102 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-0.66 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-258263-lists,stable=lfdr.de];
-	PRECEDENCE_BULK(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,amd.com,kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	TAGGED_FROM(0.00)[bounces-257460-lists,stable=lfdr.de];
 	FROM_HAS_DN(0.00)[];
-	RCPT_COUNT_THREE(0.00)[4];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	MID_RHS_MATCH_FROM(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
 	TO_DN_SOME(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim]
-X-Rspamd-Queue-Id: 34F02610EB5
+	RCPT_COUNT_FIVE(0.00)[6]
+X-Rspamd-Queue-Id: 10F2E60F551
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mikulas Patocka <mpatocka@redhat.com>
+From: Timur Kristóf <timur.kristof@gmail.com>
 
-commit 09a65adc7d8bbfce06392cb6d375468e2728ead5 upstream.
+[ Upstream commit 9851f29cb06c09f7dad3867d8b0feec3fc71b6c8 ]
 
-There's a bug in dm-thin in the function rebalance_children. If the
-internal btree node has one entry, the code tries to copy all btree
-entries from the node's child to the node itself and then decrement the
-child's reference count.
+There are two known cases where MCLK DPM can causes issues:
 
-If the child node is shared (it has reference count > 1), we won't free
-it, so there would be two pointers to each of the grandchildren nodes.
-But the reference counts of the grandchildren is not increased, thus the
-reference count doesn't match the number of pointers that point to the
-grandchildren. This results in "device mapper: space map common: unable
-to decrement block" errors.
+Radeon R9 M380 found in iMac computers from 2015.
+The SMU in this GPU just hangs as soon as we send it the
+PPSMC_MSG_MCLKDPM_Enable command, even when MCLK switching is
+disabled, and even when we only populate one MCLK DPM level.
+Apply workaround to all devices with the same subsystem ID.
 
-Fix this bug by incrementing reference counts on the grandchildren if the
-btree node is shared.
+Radeon R7 260X due to old memory controller microcode.
+We only flash the MC ucode when it isn't set up by the VBIOS,
+therefore there is no way to make sure that it has the correct
+ucode version.
 
-Signed-off-by: Mikulas Patocka <mpatocka@redhat.com>
-Fixes: 3241b1d3e0aa ("dm: add persistent data library")
-Cc: stable@vger.kernel.org
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+I verified that this patch fixes the SMU hang on the R9 M380
+which would previously fail to boot. This also fixes the UVD
+initialization error on that GPU which happened because the
+SMU couldn't ungate the UVD after it hung.
+
+Fixes: 86457c3b21cb ("drm/amd/powerplay: Add support for CI asics to hwmgr")
+Signed-off-by: Timur Kristóf <timur.kristof@gmail.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/md/persistent-data/dm-btree-remove.c |    8 ++++++++
- 1 file changed, 8 insertions(+)
+ drivers/gpu/drm/amd/pm/powerplay/hwmgr/hwmgr.c | 15 +++++++++++++++
+ 1 file changed, 15 insertions(+)
 
---- a/drivers/md/persistent-data/dm-btree-remove.c
-+++ b/drivers/md/persistent-data/dm-btree-remove.c
-@@ -415,12 +415,20 @@ static int rebalance_children(struct sha
- 
- 	if (le32_to_cpu(n->header.nr_entries) == 1) {
- 		struct dm_block *child;
-+		int is_shared;
- 		dm_block_t b = value64(n, 0);
- 
-+		r = dm_tm_block_is_shared(info->tm, b, &is_shared);
-+		if (r)
-+			return r;
-+
- 		r = dm_tm_read_lock(info->tm, b, &btree_node_validator, &child);
- 		if (r)
- 			return r;
- 
-+		if (is_shared)
-+			inc_children(info->tm, dm_block_data(child), vt);
-+
- 		memcpy(n, dm_block_data(child),
- 		       dm_bm_block_size(dm_tm_get_bm(info->tm)));
- 
+diff --git a/drivers/gpu/drm/amd/pm/powerplay/hwmgr/hwmgr.c b/drivers/gpu/drm/amd/pm/powerplay/hwmgr/hwmgr.c
+index f2cef0930aa96..997435a50f21e 100644
+--- a/drivers/gpu/drm/amd/pm/powerplay/hwmgr/hwmgr.c
++++ b/drivers/gpu/drm/amd/pm/powerplay/hwmgr/hwmgr.c
+@@ -104,6 +104,21 @@ int hwmgr_early_init(struct pp_hwmgr *hwmgr)
+ 					 PP_GFXOFF_MASK);
+ 		hwmgr->pp_table_version = PP_TABLE_V0;
+ 		hwmgr->od_enabled = false;
++		switch (hwmgr->chip_id) {
++		case CHIP_BONAIRE:
++			/* R9 M380 in iMac 2015: SMU hangs when enabling MCLK DPM
++			 * R7 260X cards with old MC ucode: MCLK DPM is unstable
++			 */
++			if (adev->pdev->subsystem_vendor == 0x106B ||
++			    adev->pdev->device == 0x6658) {
++				dev_info(adev->dev, "disabling MCLK DPM on quirky ASIC");
++				adev->pm.pp_feature &= ~PP_MCLK_DPM_MASK;
++				hwmgr->feature_mask &= ~PP_MCLK_DPM_MASK;
++			}
++			break;
++		default:
++			break;
++		}
+ 		smu7_init_function_pointers(hwmgr);
+ 		break;
+ 	case AMDGPU_FAMILY_CZ:
+-- 
+2.53.0
+
 
 
 
