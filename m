@@ -1,71 +1,60 @@
-Return-Path: <stable+bounces-257514-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-258260-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id iPKJHosbG2oq/QgAu9opvQ
-	(envelope-from <stable+bounces-257514-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:16:59 +0200
+	id qIUvDKAlG2pm/ggAu9opvQ
+	(envelope-from <stable+bounces-258260-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:00:00 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7FA0A60F4C7
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:16:58 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id A7F60610C93
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:59:58 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 9DC0E30260A2
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 17:14:21 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 56A153018C01
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 17:55:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E7EC839B4A6;
-	Sat, 30 May 2026 17:14:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E0EC0341AC7;
+	Sat, 30 May 2026 17:55:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mOt0TWYp"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QRoPBuR1"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B05C63148DA;
-	Sat, 30 May 2026 17:14:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B9B022628D;
+	Sat, 30 May 2026 17:55:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780161259; cv=none; b=NkITT4GNWBjcAf1IjGsErgQu6oO5vIJhq8ZASUjsTwPdk+kTkWmOCZZ2mK7N6cVEpnKuwtMbkKKnG7P2rk8LofLZGTy6VKrmoBQnweCXkaKQVjiwv37qPAjVA6u+Fc3+WfwaIutYN5Z+g9PXA1JOh/4dq4AtN7QivXdJ5wHb+vA=
+	t=1780163752; cv=none; b=uQ8yPVnMiWhm1hAzd8msdFmmjXp3iXTZfgSKq/j5HnLX2mGZYfX3lHLxDBERmjx7GwtaSjTKN6ei5ZakWqKV26NGHeUiUYodU8qHzd5NW33M4RGAci4vDzKso2bb7ywkVwKAz8Y6ldtMvdJvSoVjX515vMpJrsRDsuWe5iMPVa4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780161259; c=relaxed/simple;
-	bh=OsHXkvkk3Epts+TQqrHhjbk+6DCNx3LxS3Wn8IC6wfY=;
+	s=arc-20240116; t=1780163752; c=relaxed/simple;
+	bh=yqfoCTlw3CJLOL+ZLDQEvu9ENBKxe4uo5Q0uEJyZz38=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Fq+6hJ2u5frXKj52/MlGDKkQCZDXIq5GGb82rixyNfD9u5XbtHAlpx3rEJ6J6X4JFCHtbLPrYMwC06hK1eErVK2isVK5t7qvwYGFXWpS4kg0e/001DiwYSirZvdXf00GUldWk81baqWyl+1MxiDbwgPjbvWTr4eSlQJkNjmHVfA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mOt0TWYp; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8726C1F00893;
-	Sat, 30 May 2026 17:14:17 +0000 (UTC)
+	 MIME-Version; b=tfphZW3YAbfjQrWBiZB7b7jB9TK1kl3l5y1/o4sfA+tnx5ztQpgUPb+2zbyUaH2HFuodFzndO81RpvikfeNlMGbAUp8mj9POQnMofWUM4EHj5Zawc1S8UIl9zazwv20nVB0TomZwTSFirvT05FC2h2C2tjvItkGAWlNOxsCPU3Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QRoPBuR1; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0AE9C1F00893;
+	Sat, 30 May 2026 17:55:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780161258;
-	bh=SObUhL/jdGMlCNYg5VE4ClLQ8KHS2bcDNWzzdRKhYms=;
+	s=korg; t=1780163751;
+	bh=AK7dXAMU/Nw+ZezqPCdT10t8SgVyWObiIB7qTzFiXls=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=mOt0TWYpiNzXUp9MVg2K26Mw/eRptFt4wQiAjjBdIcJSTaVkNZcv56wnRn3zsT/oS
-	 yZL1bHK7tPMsEp4IqYg76rikdx9HXmtfPQv631VlS6pty8x+29ymHlvPJZeF7ZyGy2
-	 IvvRUp1kmdR+gTqaFIq8F8e+sRkb4tvp9tvZRmPg=
+	b=QRoPBuR1XIAShI9jt5irOR7N+QVzcjRV6l+8gXnksDrnstD7BcbzNVJ6qf3OoGzAD
+	 LXRyMzpSg3UyH08bwZBzHhs+qlseprE0WdyXeg9WmC6ZC3XsdED0DlROrQUCiE0hqL
+	 q+TP8Flp5UXOzgo7iyBJFsBd5zvQXJPPSAb0+6RE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jane Chu <jane.chu@oracle.com>,
-	David Hildenbrand <david@kernel.org>,
-	Hillf Danton <hillf.zj@alibaba-inc.com>,
-	Jonathan Corbet <corbet@lwn.net>,
-	Liam Howlett <liam.howlett@oracle.com>,
-	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
-	Michal Hocko <mhocko@suse.com>,
-	Mike Rapoport <rppt@kernel.org>,
-	Muchun Song <muchun.song@linux.dev>,
-	Oscar Salvador <osalvador@suse.de>,
-	Shuah Khan <skhan@linuxfoundation.org>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Vlastimil Babka <vbabka@suse.cz>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 541/969] Documentation: fix a hugetlbfs reservation statement
+	Ricardo Ribalda <ribalda@chromium.org>,
+	Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
+	Hans de Goede <johannes.goede@oss.qualcomm.com>,
+	Hans Verkuil <hverkuil+cisco@kernel.org>
+Subject: [PATCH 5.15 351/776] media: uvcvideo: Enable VB2_DMABUF for metadata stream
 Date: Sat, 30 May 2026 18:01:05 +0200
-Message-ID: <20260530160315.311232068@linuxfoundation.org>
+Message-ID: <20260530160249.651859180@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260530160300.485627683@linuxfoundation.org>
-References: <20260530160300.485627683@linuxfoundation.org>
+In-Reply-To: <20260530160240.228940103@linuxfoundation.org>
+References: <20260530160240.228940103@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -76,98 +65,87 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_MISSING_CHARSET(0.50)[];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-257514-lists,stable=lfdr.de];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	RCVD_COUNT_THREE(0.00)[4];
+	TAGGED_FROM(0.00)[bounces-258260-lists,stable=lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[18];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
-	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[stable];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-0.997];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TAGGED_RCPT(0.00)[stable,cisco];
+	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[]
-X-Rspamd-Queue-Id: 7FA0A60F4C7
+X-Rspamd-Queue-Id: A7F60610C93
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jane Chu <jane.chu@oracle.com>
+From: Ricardo Ribalda <ribalda@chromium.org>
 
-[ Upstream commit 7a197d346a44384a1a858a98ef03766840e561d4 ]
+commit fbac03467e53d8d72e5099c03df26d9adae11416 upstream.
 
-Documentation/mm/hugetlbfs_reserv.rst has
-	if (resv_needed <= (resv_huge_pages - free_huge_pages))
-		resv_huge_pages += resv_needed;
-which describes this code in gather_surplus_pages()
-	needed = (h->resv_huge_pages + delta) - h->free_huge_pages;
-	if (needed <= 0) {
-		h->resv_huge_pages += delta;
-		return 0;
-	}
-which means if there are enough free hugepages to account for the new
-reservation, simply update the global reservation count without
-further action.
+The UVC driver has two video streams, one for the frames and another one
+for the metadata. Both streams share most of the codebase, but only the
+data stream declares support for DMABUF transfer mode.
 
-But the description is backwards, it should be
-	if (resv_needed <= (free_huge_pages - resv_huge_pages))
-instead.
+I have tried the DMABUF transfer mode with CONFIG_DMABUF_HEAPS_SYSTEM
+and the frames looked correct.
 
-Link: https://lkml.kernel.org/r/20260302201015.1824798-1-jane.chu@oracle.com
-Fixes: 70bc0dc578b3 ("Documentation: vm, add hugetlbfs reservation overview")
-Signed-off-by: Jane Chu <jane.chu@oracle.com>
-Cc: David Hildenbrand <david@kernel.org>
-Cc: Hillf Danton <hillf.zj@alibaba-inc.com>
-Cc: Jonathan Corbet <corbet@lwn.net>
-Cc: Liam Howlett <liam.howlett@oracle.com>
-Cc: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
-Cc: Michal Hocko <mhocko@suse.com>
-Cc: Mike Rapoport <rppt@kernel.org>
-Cc: Muchun Song <muchun.song@linux.dev>
-Cc: Oscar Salvador <osalvador@suse.de>
-Cc: Shuah Khan <skhan@linuxfoundation.org>
-Cc: Suren Baghdasaryan <surenb@google.com>
-Cc: Vlastimil Babka <vbabka@suse.cz>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+This patch announces the support for DMABUF for the metadata stream.
+This is useful for apps/HALs that only want to support DMABUF.
+
+Cc: stable@vger.kernel.org
+Fixes: 088ead2552458 ("media: uvcvideo: Add a metadata device node")
+Signed-off-by: Ricardo Ribalda <ribalda@chromium.org>
+Reviewed-by: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
+Reviewed-by: Hans de Goede <johannes.goede@oss.qualcomm.com>
+Link: https://patch.msgid.link/20260309-uvc-metadata-dmabuf-v1-1-fc8b87bd29c5@chromium.org
+Signed-off-by: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
+Signed-off-by: Hans Verkuil <hverkuil+cisco@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- Documentation/mm/hugetlbfs_reserv.rst | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/media/usb/uvc/uvc_queue.c |    3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
 
-diff --git a/Documentation/mm/hugetlbfs_reserv.rst b/Documentation/mm/hugetlbfs_reserv.rst
-index f143954e0d056..1c238b10e1772 100644
---- a/Documentation/mm/hugetlbfs_reserv.rst
-+++ b/Documentation/mm/hugetlbfs_reserv.rst
-@@ -157,7 +157,7 @@ are enough free huge pages to accommodate the reservation.  If there are,
- the global reservation count resv_huge_pages is adjusted something like the
- following::
+--- a/drivers/media/usb/uvc/uvc_queue.c
++++ b/drivers/media/usb/uvc/uvc_queue.c
+@@ -217,7 +217,7 @@ int uvc_queue_init(struct uvc_video_queu
+ 	int ret;
  
--	if (resv_needed <= (resv_huge_pages - free_huge_pages))
-+	if (resv_needed <= (free_huge_pages - resv_huge_pages)
- 		resv_huge_pages += resv_needed;
- 
- Note that the global lock hugetlb_lock is held when checking and adjusting
--- 
-2.53.0
-
+ 	queue->queue.type = type;
+-	queue->queue.io_modes = VB2_MMAP | VB2_USERPTR;
++	queue->queue.io_modes = VB2_MMAP | VB2_USERPTR | VB2_DMABUF;
+ 	queue->queue.drv_priv = queue;
+ 	queue->queue.buf_struct_size = sizeof(struct uvc_buffer);
+ 	queue->queue.mem_ops = &vb2_vmalloc_memops;
+@@ -230,7 +230,6 @@ int uvc_queue_init(struct uvc_video_queu
+ 		queue->queue.ops = &uvc_meta_queue_qops;
+ 		break;
+ 	default:
+-		queue->queue.io_modes |= VB2_DMABUF;
+ 		queue->queue.ops = &uvc_queue_qops;
+ 		break;
+ 	}
 
 
 
