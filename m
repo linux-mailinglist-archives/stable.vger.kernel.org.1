@@ -1,59 +1,61 @@
-Return-Path: <stable+bounces-257429-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-258810-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id AJxJLqAaG2oq/QgAu9opvQ
-	(envelope-from <stable+bounces-257429-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:13:04 +0200
+	id WL51IwgsG2r//ggAu9opvQ
+	(envelope-from <stable+bounces-258810-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:27:20 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id B93FA60F280
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:13:03 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 313C5611C5C
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:27:20 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 816CB3038DA1
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 17:09:28 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 843BE3014266
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 18:26:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C567039B4A6;
-	Sat, 30 May 2026 17:09:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C36DB2773DE;
+	Sat, 30 May 2026 18:26:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="r2p8YIqS"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yAD0s1xH"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 854D134BA42;
-	Sat, 30 May 2026 17:09:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8B907219303;
+	Sat, 30 May 2026 18:26:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780160966; cv=none; b=PjkS1CUNe4aB5Cs8IEluXTmqgwJCErE+9P7UcgqCLyS/ap7UXigVSFn9Y+NV7TY/iUmH3w5BURrqFMcg09qxYyBxxFCkgfyHJCxgmU+6tRPj27TgHZsAbWLUEPNGirBg+vBM+ojQ7MRNRCovfOv2lgqxNvgTJ9q2toSEhCzbA3o=
+	t=1780165614; cv=none; b=vAgEmSyngyh00Kv+IvHqFOVfLrCqME/nhUa6w4f5MyyQvoLZffKIDePzieYxfNMVdtTjdg0M1GR4dVU6JcLihOJ+CXLKhWSm1jMEQk9pY3QwINiQ5HFh7Nld0BURfoCWUeZTvJoS5uDjsffTy0Fp6GgDlCCCf8SPsm/q7vRMgH8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780160966; c=relaxed/simple;
-	bh=pIoiKTl8wL6PRMnn1jdAjiBPMD4HlsvEGlx7FnCKljA=;
+	s=arc-20240116; t=1780165614; c=relaxed/simple;
+	bh=A3mqkrx/mFOJjt9TUqD+TnVUe88r0qn7yuuNKK97X84=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=KX+rrcgne/5rfNHG/ikmbTW5kEpZ2M4Jdo2jWPjNQLTUB6modaBx40B4tGE/9CLXb1QttpAU7lM11cArYAyjwwkraP0XecQJMGFuywP1WjW0PYMmGQJ2ItfHmzHdh3MRm/pPLnZ+GDgjeVJTTz3Jb2oZmQUTtvOWghqgozG6dpE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=r2p8YIqS; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CE8EF1F00893;
-	Sat, 30 May 2026 17:09:24 +0000 (UTC)
+	 MIME-Version; b=T4isXg0HVhbfbMSNqoSm2T437pA7EnsKExeD0iPQLjnyp9FCrTWmBJFa0K3z09IKUm3I/6GX6rZc2ElTPXHIt7sMhn/8fhHVKV0X/bQkOO4NhjzazlbZ7l/6MuLbTmbbTr1+8LCKw10WZhuBHLlPFiRMtsnDckLAaQ64HNDtakM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yAD0s1xH; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C4B2F1F00893;
+	Sat, 30 May 2026 18:26:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780160965;
-	bh=DstBsNC4yKgDnNl4TnchrEwS/NJPj2C5XtDHEI3jabo=;
+	s=korg; t=1780165613;
+	bh=ykYhWK55qvT7wpifCRTYGPnIEwK7yH1oNAHB9RpeqSI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=r2p8YIqSD+iylJSIQEQQMQQ4+nIJR4RqtSMgni3Zg1mbsjKoSzZBFPTx9PjhmjsvI
-	 8o9ZoS9Fz4Bc6Vzw6B5EiYpBdJZrSx0K3cBGPdF0M0r+C3nI4h61jO2htG4O2GUWeT
-	 nXjFjJAataMmxNM9AhPBKl/38+r4VWAEPkQTdEmU=
+	b=yAD0s1xH5dj39CHVf4cFC+aNl8z4OGYyuR0wQmRdEKsiZrlPxta8o5ZVNTXzwC9mi
+	 JK/cQ5uC3HDr7RuaL0EvuKO+wV43ykDI8vXqydL0aJyxuoPWmJ2Zkc70oFWn0pFsUH
+	 f7K5SqHTSHsAtUYUNZXHe/FHYjl27fqprYtqy8Z8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jonathan Rissanen <jonathan.rissanen@axis.com>,
-	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 486/969] Bluetooth: hci_ldisc: Clear HCI_UART_PROTO_INIT on error
+	Samuel Page <sam@bynar.io>,
+	Qi Tang <tpluszz77@gmail.com>,
+	Zijun Hu <nightu@northwestern.edu>,
+	Miklos Szeredi <mszeredi@redhat.com>,
+	Christian Brauner <brauner@kernel.org>
+Subject: [PATCH 5.10 129/589] fuse: reject oversized dirents in page cache
 Date: Sat, 30 May 2026 18:00:10 +0200
-Message-ID: <20260530160313.727887868@linuxfoundation.org>
+Message-ID: <20260530160228.164344445@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260530160300.485627683@linuxfoundation.org>
-References: <20260530160300.485627683@linuxfoundation.org>
+In-Reply-To: <20260530160224.570625122@linuxfoundation.org>
+References: <20260530160224.570625122@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,82 +68,85 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-257429-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
-	RCPT_COUNT_FIVE(0.00)[6];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,bynar.io,gmail.com,northwestern.edu,redhat.com,kernel.org];
+	TAGGED_FROM(0.00)[bounces-258810-lists,stable=lfdr.de];
 	PRECEDENCE_BULK(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[stable];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-0.995];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[8];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	FROM_HAS_DN(0.00)[]
-X-Rspamd-Queue-Id: B93FA60F280
+	TAGGED_RCPT(0.00)[stable];
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[bynar.io:email,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,msgid.link:url]
+X-Rspamd-Queue-Id: 313C5611C5C
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jonathan Rissanen <jonathan.rissanen@axis.com>
+From: Samuel Page <sam@bynar.io>
 
-[ Upstream commit 68d39ea5e0adc9ecaea1ce8abd842ec972eb8718 ]
+commit 51a8de6c50bf947c8f534cd73da4c8f0a13e7bed upstream.
 
-When hci_register_dev() fails in hci_uart_register_dev()
-HCI_UART_PROTO_INIT is not cleared before calling hu->proto->close(hu)
-and setting hu->hdev to NULL. This means incoming UART data will reach
-the protocol-specific recv handler in hci_uart_tty_receive() after
-resources are freed.
+fuse_add_dirent_to_cache() computes a serialized dirent size from the
+server-controlled namelen field and copies the dirent into a single
+page-cache page. The existing logic only checks whether the dirent fits
+in the remaining space of the current page and advances to a fresh page
+if not. It never checks whether the dirent itself exceeds PAGE_SIZE.
 
-Clear HCI_UART_PROTO_INIT with a write lock before calling
-hu->proto->close() and setting hu->hdev to NULL. The write lock ensures
-all active readers have completed and no new reader can enter the
-protocol recv path before resources are freed.
+As a result, a malicious FUSE server can return a dirent with
+namelen=4095, producing a serialized record size of 4120 bytes. On 4 KiB
+page systems this causes memcpy() to overflow the cache page by 24 bytes
+into the following kernel page.
 
-This allows the protocol-specific recv functions to remove the
-"HCI_UART_REGISTERED" guard without risking a null pointer dereference
-if hci_register_dev() fails.
+Reject dirents that cannot fit in a single page before copying them into
+the readdir cache.
 
-Fixes: 5df5dafc171b ("Bluetooth: hci_uart: Fix another race during initialization")
-Signed-off-by: Jonathan Rissanen <jonathan.rissanen@axis.com>
-Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 69e34551152a ("fuse: allow caching readdir")
+Cc: stable@vger.kernel.org # v6.16+
+Assisted-by: Bynario AI
+Signed-off-by: Samuel Page <sam@bynar.io>
+Reported-by: Qi Tang <tpluszz77@gmail.com>
+Reported-by: Zijun Hu <nightu@northwestern.edu>
+Signed-off-by: Miklos Szeredi <mszeredi@redhat.com>
+Link: https://patch.msgid.link/20260420090139.662772-1-mszeredi@redhat.com
+Signed-off-by: Christian Brauner <brauner@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/bluetooth/hci_ldisc.c | 3 +++
- 1 file changed, 3 insertions(+)
+ fs/fuse/readdir.c |    4 ++++
+ 1 file changed, 4 insertions(+)
 
-diff --git a/drivers/bluetooth/hci_ldisc.c b/drivers/bluetooth/hci_ldisc.c
-index 2752857dbccf3..f86ac94d53a4e 100644
---- a/drivers/bluetooth/hci_ldisc.c
-+++ b/drivers/bluetooth/hci_ldisc.c
-@@ -694,6 +694,9 @@ static int hci_uart_register_dev(struct hci_uart *hu)
+--- a/fs/fuse/readdir.c
++++ b/fs/fuse/readdir.c
+@@ -41,6 +41,10 @@ static void fuse_add_dirent_to_cache(str
+ 	unsigned int offset;
+ 	void *addr;
  
- 	if (hci_register_dev(hdev) < 0) {
- 		BT_ERR("Can't register HCI device");
-+		percpu_down_write(&hu->proto_lock);
-+		clear_bit(HCI_UART_PROTO_INIT, &hu->flags);
-+		percpu_up_write(&hu->proto_lock);
- 		hu->proto->close(hu);
- 		hu->hdev = NULL;
- 		hci_free_dev(hdev);
--- 
-2.53.0
-
++	/* Dirent doesn't fit in readdir cache page?  Skip caching. */
++	if (reclen > PAGE_SIZE)
++		return;
++
+ 	spin_lock(&fi->rdc.lock);
+ 	/*
+ 	 * Is cache already completed?  Or this entry does not go at the end of
 
 
 
