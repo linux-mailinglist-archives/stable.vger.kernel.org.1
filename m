@@ -1,61 +1,60 @@
-Return-Path: <stable+bounces-257738-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-259135-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id eK2TMjweG2q4/QgAu9opvQ
-	(envelope-from <stable+bounces-257738-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:28:28 +0200
+	id GDK6HkwyG2qqAAkAu9opvQ
+	(envelope-from <stable+bounces-259135-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:54:04 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id DD3A560FBE3
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:28:27 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 14E0B612C3F
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:54:03 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 50E823012E5D
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 17:26:47 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 97435311D21A
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 18:45:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CC02233F5A0;
-	Sat, 30 May 2026 17:26:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 070A81FC0EA;
+	Sat, 30 May 2026 18:45:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AwGODUnU"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Zl5QcgAY"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 95504334695;
-	Sat, 30 May 2026 17:26:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AB39D2E7398;
+	Sat, 30 May 2026 18:45:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780162006; cv=none; b=XJnyWSz7ovMMPgUk/PCHlwWwqnwb5GKKv7sUqps3L2HU4KtxCQr5buhyaQvJOc+n6mFopXKE6MzgShwz5JkwsXtZXXSSd59bjqzpBdp7K5a0U8J4dojch0NVvsCYbzYum9/+HJoLbgj34+9HjR/2sgtHS96O3dQhuaomMUSZBfk=
+	t=1780166726; cv=none; b=IF3f87p1DuKoX+VxsSJq3Pw5OdlTmnfOGjya7i0wnxd58oej54NEA8nUmP1ol9DxE2HPLPoruBpVkv1VgmOW/5qd3+7FaZCba4RtuXF9GGeARgthB7tz1W4wbKOl6oqF8lYxAqarnEi+psgOUruRRQp7MYbOy0xZNA5/ZyygWos=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780162006; c=relaxed/simple;
-	bh=ykgZG/i4kk0o9ZhUX59VNn/JnxYaUnXJEMwmRL1+2vw=;
+	s=arc-20240116; t=1780166726; c=relaxed/simple;
+	bh=kHNkDnL6ouqM3b8+AAkcQ5x3mg/3ZNzKC4/x9m4oMhM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=o00Vl0uMDGnqP4uXyUB0AEvH6LPWIHtPm0BDFWza18jGxyMWVVEcUj86Jwg4rb4K6V0Robb0h+mZcgRZBhPvHWigjXeC9N3YMw4b0ngmT12u22LYbRjlZEG89mLc1b4VAgnZ+UQpn9jxeY7zLhe5ILAb9t5YiD2RJwDqSbejVRQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AwGODUnU; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A2AAD1F00893;
-	Sat, 30 May 2026 17:26:44 +0000 (UTC)
+	 MIME-Version; b=q1bbNiFA71+K+u5wRz4kYXhVzExQBpmpRplYJ4X2DWvr38vh6bnIwSwypm3Cyl7Lko03v6mxdGXAwy7oDzeyMdaKRsdqKjGCL5Pp7cuZQDDS7Uvce1VmJEeT2QtIrnJyDZwnhYvg14kNybao5NJMSAPbYl6/Dd6W79uyjCMdL9U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Zl5QcgAY; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 033A11F00893;
+	Sat, 30 May 2026 18:45:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780162005;
-	bh=ROpI0bVBm1KiyQN7zNtVaxOvHLQRoyJw4UmuewKD8ho=;
+	s=korg; t=1780166725;
+	bh=5ng/522UJ3tQejIud9SlQjbvk+UkXJ6H61SoxNCJG6M=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=AwGODUnUkMOYY/9UvVa+3+FpcMsoNI7rDumAnz0KyPmdKCjfTcw5Le7hLYgJrGo50
-	 LGBAgkoYp7T05YUg9zv1q5J9DQNEf8SST9Ye7oHiW9yDJ6feg16xHAAkU80pQM2i7S
-	 uaO8xKRBHy2DWOSW7TQxzPqtpBbg8zkVfhoWoaKo=
+	b=Zl5QcgAYCwXTcxrIfRldZ7A6+8B7QD1G5gFK5sw5x/TQI9Mzu65GA0UPtOnOIiB6o
+	 vMiuGIiUY6IqtdI4nloUAYJizJCjMnxfTrdzzfgdM1FzFvH32j58AKaPm0YbqUBscP
+	 TqvfEjGQkLR7pI2eWNkJ2adSvGuMZVJf6i0VHD9c=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Liang Jie <liangjie@lixiang.com>,
-	Tom Talpey <tom@talpey.com>,
-	Steve French <stfrench@microsoft.com>,
-	Alva Lan <alvalan9@foxmail.com>,
+	Yiming Qian <yimingqian591@gmail.com>,
+	Florian Westphal <fw@strlen.de>,
+	Pablo Neira Ayuso <pablo@netfilter.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 791/969] smb: client: correctly handle ErrorContextData as a flexible array
-Date: Sat, 30 May 2026 18:05:15 +0200
-Message-ID: <20260530160322.454157581@linuxfoundation.org>
+Subject: [PATCH 5.10 435/589] netfilter: conntrack: remove sprintf usage
+Date: Sat, 30 May 2026 18:05:16 +0200
+Message-ID: <20260530160236.148933996@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260530160300.485627683@linuxfoundation.org>
-References: <20260530160300.485627683@linuxfoundation.org>
+In-Reply-To: <20260530160224.570625122@linuxfoundation.org>
+References: <20260530160224.570625122@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -70,100 +69,212 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,lixiang.com,talpey.com,microsoft.com,foxmail.com,kernel.org];
-	TAGGED_FROM(0.00)[bounces-257738-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,strlen.de,netfilter.org,kernel.org];
+	TAGGED_FROM(0.00)[bounces-259135-lists,stable=lfdr.de];
 	PRECEDENCE_BULK(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	FROM_HAS_DN(0.00)[];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[8];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
 	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,talpey.com:email]
-X-Rspamd-Queue-Id: DD3A560FBE3
+	DBL_BLOCKED_OPENRESOLVER(0.00)[strlen.de:email,netfilter.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
+X-Rspamd-Queue-Id: 14E0B612C3F
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Liang Jie <liangjie@lixiang.com>
+From: Florian Westphal <fw@strlen.de>
 
-[ Upstream commit 215b7f9ecb8d7c14d56febdcdd246f3579c32aba ]
+[ Upstream commit 6e7066bdb481a87fe88c4fa563e348c03b2d373d ]
 
-The `smb2_symlink_err_rsp` structure was previously defined with
-`ErrorContextData` as a single `__u8` byte. However, the `ErrorContextData`
-field is intended to be a variable-length array based on `ErrorDataLength`.
-This mismatch leads to incorrect pointer arithmetic and potential memory
-access issues when processing error contexts.
+Replace it with scnprintf, the buffer sizes are expected to be large enough
+to hold the result, no need for snprintf+overflow check.
 
-Updates the `ErrorContextData` field to be a flexible array
-(`__u8 ErrorContextData[]`). Additionally, it modifies the corresponding
-casts in the `symlink_data()` function to properly handle the flexible
-array, ensuring correct memory calculations and data handling.
+Increase buffer size in mangle_content_len() while at it.
 
-These changes improve the robustness of SMB2 symlink error processing.
+BUG: KASAN: stack-out-of-bounds in vsnprintf+0xea5/0x1270
+Write of size 1 at addr [..]
+ vsnprintf+0xea5/0x1270
+ sprintf+0xb1/0xe0
+ mangle_content_len+0x1ac/0x280
+ nf_nat_sdp_session+0x1cc/0x240
+ process_sdp+0x8f8/0xb80
+ process_invite_request+0x108/0x2b0
+ process_sip_msg+0x5da/0xf50
+ sip_help_tcp+0x45e/0x780
+ nf_confirm+0x34d/0x990
+ [..]
 
-Signed-off-by: Liang Jie <liangjie@lixiang.com>
-Suggested-by: Tom Talpey <tom@talpey.com>
-Signed-off-by: Steve French <stfrench@microsoft.com>
-[ Remove the __counted_by_le annotation in v6.1. ]
-Signed-off-by: Alva Lan <alvalan9@foxmail.com>
+Fixes: 9fafcd7b2032 ("[NETFILTER]: nf_conntrack/nf_nat: add SIP helper port")
+Reported-by: Yiming Qian <yimingqian591@gmail.com>
+Signed-off-by: Florian Westphal <fw@strlen.de>
+Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/smb/client/smb2file.c | 4 ++--
- fs/smb/client/smb2pdu.h  | 2 +-
- 2 files changed, 3 insertions(+), 3 deletions(-)
+ net/netfilter/nf_nat_amanda.c |  2 +-
+ net/netfilter/nf_nat_sip.c    | 33 ++++++++++++++++++---------------
+ 2 files changed, 19 insertions(+), 16 deletions(-)
 
-diff --git a/fs/smb/client/smb2file.c b/fs/smb/client/smb2file.c
-index fe016144f3405..def2602ea0fb9 100644
---- a/fs/smb/client/smb2file.c
-+++ b/fs/smb/client/smb2file.c
-@@ -41,14 +41,14 @@ static struct smb2_symlink_err_rsp *symlink_data(const struct kvec *iov)
- 		end = (struct smb2_error_context_rsp *)((u8 *)err + iov->iov_len);
- 		do {
- 			if (le32_to_cpu(p->ErrorId) == SMB2_ERROR_ID_DEFAULT) {
--				sym = (struct smb2_symlink_err_rsp *)&p->ErrorContextData;
-+				sym = (struct smb2_symlink_err_rsp *)p->ErrorContextData;
- 				break;
- 			}
- 			cifs_dbg(FYI, "%s: skipping unhandled error context: 0x%x\n",
- 				 __func__, le32_to_cpu(p->ErrorId));
+diff --git a/net/netfilter/nf_nat_amanda.c b/net/netfilter/nf_nat_amanda.c
+index 3bc7e0854efe4..41c30065dae12 100644
+--- a/net/netfilter/nf_nat_amanda.c
++++ b/net/netfilter/nf_nat_amanda.c
+@@ -62,7 +62,7 @@ static unsigned int help(struct sk_buff *skb,
+ 		return NF_DROP;
+ 	}
  
- 			len = ALIGN(le32_to_cpu(p->ErrorDataLength), 8);
--			p = (struct smb2_error_context_rsp *)((u8 *)&p->ErrorContextData + len);
-+			p = (struct smb2_error_context_rsp *)(p->ErrorContextData + len);
- 		} while (p < end);
- 	} else if (le32_to_cpu(err->ByteCount) >= sizeof(*sym) &&
- 		   iov->iov_len >= SMB2_SYMLINK_STRUCT_SIZE) {
-diff --git a/fs/smb/client/smb2pdu.h b/fs/smb/client/smb2pdu.h
-index 2823526b66f7e..d12ca9c7e62bc 100644
---- a/fs/smb/client/smb2pdu.h
-+++ b/fs/smb/client/smb2pdu.h
-@@ -79,7 +79,7 @@ struct smb2_symlink_err_rsp {
- struct smb2_error_context_rsp {
- 	__le32 ErrorDataLength;
- 	__le32 ErrorId;
--	__u8  ErrorContextData; /* ErrorDataLength long array */
-+	__u8  ErrorContextData[];
- } __packed;
+-	sprintf(buffer, "%u", port);
++	snprintf(buffer, sizeof(buffer), "%u", port);
+ 	if (!nf_nat_mangle_udp_packet(skb, exp->master, ctinfo,
+ 				      protoff, matchoff, matchlen,
+ 				      buffer, strlen(buffer))) {
+diff --git a/net/netfilter/nf_nat_sip.c b/net/netfilter/nf_nat_sip.c
+index f0a735e868518..15d4267cf49ff 100644
+--- a/net/netfilter/nf_nat_sip.c
++++ b/net/netfilter/nf_nat_sip.c
+@@ -68,25 +68,27 @@ static unsigned int mangle_packet(struct sk_buff *skb, unsigned int protoff,
+ }
  
- /* ErrorId values */
+ static int sip_sprintf_addr(const struct nf_conn *ct, char *buffer,
++			    size_t size,
+ 			    const union nf_inet_addr *addr, bool delim)
+ {
+ 	if (nf_ct_l3num(ct) == NFPROTO_IPV4)
+-		return sprintf(buffer, "%pI4", &addr->ip);
++		return scnprintf(buffer, size, "%pI4", &addr->ip);
+ 	else {
+ 		if (delim)
+-			return sprintf(buffer, "[%pI6c]", &addr->ip6);
++			return scnprintf(buffer, size, "[%pI6c]", &addr->ip6);
+ 		else
+-			return sprintf(buffer, "%pI6c", &addr->ip6);
++			return scnprintf(buffer, size, "%pI6c", &addr->ip6);
+ 	}
+ }
+ 
+ static int sip_sprintf_addr_port(const struct nf_conn *ct, char *buffer,
++				 size_t size,
+ 				 const union nf_inet_addr *addr, u16 port)
+ {
+ 	if (nf_ct_l3num(ct) == NFPROTO_IPV4)
+-		return sprintf(buffer, "%pI4:%u", &addr->ip, port);
++		return scnprintf(buffer, size, "%pI4:%u", &addr->ip, port);
+ 	else
+-		return sprintf(buffer, "[%pI6c]:%u", &addr->ip6, port);
++		return scnprintf(buffer, size, "[%pI6c]:%u", &addr->ip6, port);
+ }
+ 
+ static int map_addr(struct sk_buff *skb, unsigned int protoff,
+@@ -119,7 +121,7 @@ static int map_addr(struct sk_buff *skb, unsigned int protoff,
+ 	if (nf_inet_addr_cmp(&newaddr, addr) && newport == port)
+ 		return 1;
+ 
+-	buflen = sip_sprintf_addr_port(ct, buffer, &newaddr, ntohs(newport));
++	buflen = sip_sprintf_addr_port(ct, buffer, sizeof(buffer), &newaddr, ntohs(newport));
+ 	return mangle_packet(skb, protoff, dataoff, dptr, datalen,
+ 			     matchoff, matchlen, buffer, buflen);
+ }
+@@ -212,7 +214,7 @@ static unsigned int nf_nat_sip(struct sk_buff *skb, unsigned int protoff,
+ 					       &addr, true) > 0 &&
+ 		    nf_inet_addr_cmp(&addr, &ct->tuplehash[dir].tuple.src.u3) &&
+ 		    !nf_inet_addr_cmp(&addr, &ct->tuplehash[!dir].tuple.dst.u3)) {
+-			buflen = sip_sprintf_addr(ct, buffer,
++			buflen = sip_sprintf_addr(ct, buffer, sizeof(buffer),
+ 					&ct->tuplehash[!dir].tuple.dst.u3,
+ 					true);
+ 			if (!mangle_packet(skb, protoff, dataoff, dptr, datalen,
+@@ -229,7 +231,7 @@ static unsigned int nf_nat_sip(struct sk_buff *skb, unsigned int protoff,
+ 					       &addr, false) > 0 &&
+ 		    nf_inet_addr_cmp(&addr, &ct->tuplehash[dir].tuple.dst.u3) &&
+ 		    !nf_inet_addr_cmp(&addr, &ct->tuplehash[!dir].tuple.src.u3)) {
+-			buflen = sip_sprintf_addr(ct, buffer,
++			buflen = sip_sprintf_addr(ct, buffer, sizeof(buffer),
+ 					&ct->tuplehash[!dir].tuple.src.u3,
+ 					false);
+ 			if (!mangle_packet(skb, protoff, dataoff, dptr, datalen,
+@@ -247,7 +249,7 @@ static unsigned int nf_nat_sip(struct sk_buff *skb, unsigned int protoff,
+ 		    htons(n) == ct->tuplehash[dir].tuple.dst.u.udp.port &&
+ 		    htons(n) != ct->tuplehash[!dir].tuple.src.u.udp.port) {
+ 			__be16 p = ct->tuplehash[!dir].tuple.src.u.udp.port;
+-			buflen = sprintf(buffer, "%u", ntohs(p));
++			buflen = scnprintf(buffer, sizeof(buffer), "%u", ntohs(p));
+ 			if (!mangle_packet(skb, protoff, dataoff, dptr, datalen,
+ 					   poff, plen, buffer, buflen)) {
+ 				nf_ct_helper_log(skb, ct, "cannot mangle rport");
+@@ -430,7 +432,8 @@ static unsigned int nf_nat_sip_expect(struct sk_buff *skb, unsigned int protoff,
+ 
+ 	if (!nf_inet_addr_cmp(&exp->tuple.dst.u3, &exp->saved_addr) ||
+ 	    exp->tuple.dst.u.udp.port != exp->saved_proto.udp.port) {
+-		buflen = sip_sprintf_addr_port(ct, buffer, &newaddr, port);
++		buflen = sip_sprintf_addr_port(ct, buffer, sizeof(buffer),
++					       &newaddr, port);
+ 		if (!mangle_packet(skb, protoff, dataoff, dptr, datalen,
+ 				   matchoff, matchlen, buffer, buflen)) {
+ 			nf_ct_helper_log(skb, ct, "cannot mangle packet");
+@@ -450,8 +453,8 @@ static int mangle_content_len(struct sk_buff *skb, unsigned int protoff,
+ {
+ 	enum ip_conntrack_info ctinfo;
+ 	struct nf_conn *ct = nf_ct_get(skb, &ctinfo);
++	char buffer[sizeof("4294967295")];
+ 	unsigned int matchoff, matchlen;
+-	char buffer[sizeof("65536")];
+ 	int buflen, c_len;
+ 
+ 	/* Get actual SDP length */
+@@ -466,7 +469,7 @@ static int mangle_content_len(struct sk_buff *skb, unsigned int protoff,
+ 			      &matchoff, &matchlen) <= 0)
+ 		return 0;
+ 
+-	buflen = sprintf(buffer, "%u", c_len);
++	buflen = scnprintf(buffer, sizeof(buffer), "%u", c_len);
+ 	return mangle_packet(skb, protoff, dataoff, dptr, datalen,
+ 			     matchoff, matchlen, buffer, buflen);
+ }
+@@ -503,7 +506,7 @@ static unsigned int nf_nat_sdp_addr(struct sk_buff *skb, unsigned int protoff,
+ 	char buffer[INET6_ADDRSTRLEN];
+ 	unsigned int buflen;
+ 
+-	buflen = sip_sprintf_addr(ct, buffer, addr, false);
++	buflen = sip_sprintf_addr(ct, buffer, sizeof(buffer), addr, false);
+ 	if (mangle_sdp_packet(skb, protoff, dataoff, dptr, datalen,
+ 			      sdpoff, type, term, buffer, buflen))
+ 		return 0;
+@@ -521,7 +524,7 @@ static unsigned int nf_nat_sdp_port(struct sk_buff *skb, unsigned int protoff,
+ 	char buffer[sizeof("nnnnn")];
+ 	unsigned int buflen;
+ 
+-	buflen = sprintf(buffer, "%u", port);
++	buflen = scnprintf(buffer, sizeof(buffer), "%u", port);
+ 	if (!mangle_packet(skb, protoff, dataoff, dptr, datalen,
+ 			   matchoff, matchlen, buffer, buflen))
+ 		return 0;
+@@ -541,7 +544,7 @@ static unsigned int nf_nat_sdp_session(struct sk_buff *skb, unsigned int protoff
+ 	unsigned int buflen;
+ 
+ 	/* Mangle session description owner and contact addresses */
+-	buflen = sip_sprintf_addr(ct, buffer, addr, false);
++	buflen = sip_sprintf_addr(ct, buffer, sizeof(buffer), addr, false);
+ 	if (mangle_sdp_packet(skb, protoff, dataoff, dptr, datalen, sdpoff,
+ 			      SDP_HDR_OWNER, SDP_HDR_MEDIA, buffer, buflen))
+ 		return 0;
 -- 
 2.53.0
 
