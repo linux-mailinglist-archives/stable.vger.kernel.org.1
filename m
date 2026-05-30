@@ -1,60 +1,59 @@
-Return-Path: <stable+bounces-258392-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-258997-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id SJqLAIsmG2qS/ggAu9opvQ
-	(envelope-from <stable+bounces-258392-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:03:55 +0200
+	id 4FIpDSsxG2qKAAkAu9opvQ
+	(envelope-from <stable+bounces-258997-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:49:15 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id D53DC610E64
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:03:54 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9168B6128E3
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:49:14 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 5C33330144E2
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 18:03:22 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id D195630F5E99
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 18:37:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7224639478D;
-	Sat, 30 May 2026 18:03:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 52FAD39478D;
+	Sat, 30 May 2026 18:37:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jg3kjdfT"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CHdr0kei"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5913E29B78B;
-	Sat, 30 May 2026 18:03:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 388EF41A8F;
+	Sat, 30 May 2026 18:37:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780164199; cv=none; b=JIjVlwblC7YJM9EgIVmJGupWdVWdJ8Znh+wVx5VJUmexTLNrRPZUg4GIDGKV0OUc9COTv3VibLmvDDt532wzmr+EiVXio3by8PNbnxBNoPjYXS7HFD73ws2igSWYgo0GlgnafktnDUBQ3gfIA3W1roLxRIKofK8NEHedlozhuHQ=
+	t=1780166249; cv=none; b=g35Q28XNwQ9E09ylsBHSi8tsZTs98soDSnArLue7/RHVrMW7mQvckpeWxs/SKwYsXoZ9w4jSyxN/IkKEKimIfs0m1laTwJrJRgLtG1wfUvLt9fdy+T06cK86DIzrpAdpAJIVSJ//mnY9dIQbP9TKg6Gk4cBchndIGbiuhwFJvew=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780164199; c=relaxed/simple;
-	bh=6wSOeGwNdqKiohV2FeG0jS8+3cDbJMpc66t2l/dquA4=;
+	s=arc-20240116; t=1780166249; c=relaxed/simple;
+	bh=zGHmjQ6/jYbpWU4XJ0N7b0OR3V539bRMUKJ7NgusHnQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Uodqh+1XS4P82UcoZOji7SSL3HuWKIM2wWelDLPmCDP+Jfnv/kApVfdLz2TK18SzMGdpNBsgxJInlaJdQQzSDHAbYZ2idW/6whcjCWcNeJtFjm7gZ2Pan1R4Ods40VLsiuuI5q5MbMMiOQZcQtifpI2ey1zau6y2EuynGuVmumQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jg3kjdfT; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9E9431F00893;
-	Sat, 30 May 2026 18:03:17 +0000 (UTC)
+	 MIME-Version; b=DZg4H9if6Yh3HRXjoZgP2Rr+lOreD5SW6imM2rqtlypzc8hS78SOR31BVp1RfTCScf7fQVvSJrDBOF6Au15cgJUIb72n/KVBFvs2NdIwFqyUmHrXk6V/VI/5m5C1Od2bC99m0J0PiVnTXIRVLrWeKEzR4aQTUI5/lm4e2FUmRR4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CHdr0kei; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7A3F51F00898;
+	Sat, 30 May 2026 18:37:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780164198;
-	bh=VevRnWcs8jHQnwiYnQQmIq83qAL13HrXnGWbsSVTLSE=;
+	s=korg; t=1780166248;
+	bh=YUrrkJrSQ/CYOdIAS8FlkjedtnbYPJxR9gTb2sOGJ4M=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=jg3kjdfTxp2qhRiyBF8fyauQ3ZLWL8twrLZgx1xmhF3L81pkMNxuUKX1OO+FCtFMq
-	 023dyHGYiPErKLLNix0xYhEDXBzrv//wzdb3wqsndRc6ErMg9Ni2xjWfXUhrlazjQC
-	 U+IIqxc2FoKQGkx4dgUXSht7HRss9xV/raVgGvZM=
+	b=CHdr0keiJPx8v4BpnCdh42X4pfvkNzz/pT1dkQCUkTClQPrCxmacPfC2gemooY3Hr
+	 ApERRxRkB01gYtIh+wAM7Wja9hdX0+TkUdQI2GJQbUr4V5rb8ZgJbSkFn3Gl+1K1WH
+	 1L0Ii9b9XsuyD4/i3U6/hd6RuIzm4oyx6+N5cfqY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	kernel test robot <lkp@intel.com>,
-	Dan Carpenter <error27@gmail.com>,
-	Andreas Gruenbacher <agruenba@redhat.com>,
+	Jonathan Rissanen <jonathan.rissanen@axis.com>,
+	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 483/776] gfs2: prevent NULL pointer dereference during unmount
+Subject: [PATCH 5.10 316/589] Bluetooth: hci_ldisc: Clear HCI_UART_PROTO_INIT on error
 Date: Sat, 30 May 2026 18:03:17 +0200
-Message-ID: <20260530160252.819636337@linuxfoundation.org>
+Message-ID: <20260530160233.243542239@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260530160240.228940103@linuxfoundation.org>
-References: <20260530160240.228940103@linuxfoundation.org>
+In-Reply-To: <20260530160224.570625122@linuxfoundation.org>
+References: <20260530160224.570625122@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,74 +68,78 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,intel.com,gmail.com,redhat.com,kernel.org];
-	TAGGED_FROM(0.00)[bounces-258392-lists,stable=lfdr.de];
-	PRECEDENCE_BULK(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
+	RCVD_TLS_LAST(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	TAGGED_FROM(0.00)[bounces-258997-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-0.995];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[7];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,intel.com:email,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo]
-X-Rspamd-Queue-Id: D53DC610E64
+	RCPT_COUNT_FIVE(0.00)[6];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,intel.com:email,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
+X-Rspamd-Queue-Id: 9168B6128E3
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Andreas Gruenbacher <agruenba@redhat.com>
+From: Jonathan Rissanen <jonathan.rissanen@axis.com>
 
-[ Upstream commit 74b4dbb946060a3233604d91859a9abd3708141d ]
+[ Upstream commit 68d39ea5e0adc9ecaea1ce8abd842ec972eb8718 ]
 
-When flushing out outstanding glock work during an unmount, gfs2_log_flush()
-can be called when sdp->sd_jdesc has already been deallocated and sdp->sd_jdesc
-is NULL.  Commit 35264909e9d1 ("gfs2: Fix NULL pointer dereference in
-gfs2_log_flush") added a check for that to gfs2_log_flush() itself, but it
-missed the sdp->sd_jdesc dereference in gfs2_log_release().  Fix that.
+When hci_register_dev() fails in hci_uart_register_dev()
+HCI_UART_PROTO_INIT is not cleared before calling hu->proto->close(hu)
+and setting hu->hdev to NULL. This means incoming UART data will reach
+the protocol-specific recv handler in hci_uart_tty_receive() after
+resources are freed.
 
-Reported-by: kernel test robot <lkp@intel.com>
-Reported-by: Dan Carpenter <error27@gmail.com>
-Closes: https://lore.kernel.org/r/202604071139.HNJiCaAi-lkp@intel.com/
-Fixes: 35264909e9d1 ("gfs2: Fix NULL pointer dereference in gfs2_log_flush")
-Signed-off-by: Andreas Gruenbacher <agruenba@redhat.com>
+Clear HCI_UART_PROTO_INIT with a write lock before calling
+hu->proto->close() and setting hu->hdev to NULL. The write lock ensures
+all active readers have completed and no new reader can enter the
+protocol recv path before resources are freed.
+
+This allows the protocol-specific recv functions to remove the
+"HCI_UART_REGISTERED" guard without risking a null pointer dereference
+if hci_register_dev() fails.
+
+Fixes: 5df5dafc171b ("Bluetooth: hci_uart: Fix another race during initialization")
+Signed-off-by: Jonathan Rissanen <jonathan.rissanen@axis.com>
+Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/gfs2/log.c | 5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
+ drivers/bluetooth/hci_ldisc.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/fs/gfs2/log.c b/fs/gfs2/log.c
-index e19b09620a0b7..354362c7c4f99 100644
---- a/fs/gfs2/log.c
-+++ b/fs/gfs2/log.c
-@@ -470,8 +470,9 @@ void gfs2_log_release(struct gfs2_sbd *sdp, unsigned int blks)
- {
- 	atomic_add(blks, &sdp->sd_log_blks_free);
- 	trace_gfs2_log_blocks(sdp, blks);
--	gfs2_assert_withdraw(sdp, atomic_read(&sdp->sd_log_blks_free) <=
--				  sdp->sd_jdesc->jd_blocks);
-+	gfs2_assert_withdraw(sdp, !sdp->sd_jdesc ||
-+			atomic_read(&sdp->sd_log_blks_free) <=
-+			sdp->sd_jdesc->jd_blocks);
- 	if (atomic_read(&sdp->sd_log_blks_needed))
- 		wake_up(&sdp->sd_log_waitq);
- }
+diff --git a/drivers/bluetooth/hci_ldisc.c b/drivers/bluetooth/hci_ldisc.c
+index 436d82a7f5871..b1e036bb682f8 100644
+--- a/drivers/bluetooth/hci_ldisc.c
++++ b/drivers/bluetooth/hci_ldisc.c
+@@ -691,6 +691,9 @@ static int hci_uart_register_dev(struct hci_uart *hu)
+ 
+ 	if (hci_register_dev(hdev) < 0) {
+ 		BT_ERR("Can't register HCI device");
++		percpu_down_write(&hu->proto_lock);
++		clear_bit(HCI_UART_PROTO_INIT, &hu->flags);
++		percpu_up_write(&hu->proto_lock);
+ 		hu->proto->close(hu);
+ 		hu->hdev = NULL;
+ 		hci_free_dev(hdev);
 -- 
 2.53.0
 
