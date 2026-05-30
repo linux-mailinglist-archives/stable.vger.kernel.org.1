@@ -1,57 +1,59 @@
-Return-Path: <stable+bounces-258203-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-257398-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id YPiMCw4mG2qS/ggAu9opvQ
-	(envelope-from <stable+bounces-258203-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:01:50 +0200
+	id SKEUJZcZG2oq/QgAu9opvQ
+	(envelope-from <stable+bounces-257398-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:08:39 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 94317610D85
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:01:49 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 56BDC60EF54
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:08:39 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id C519B3018757
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 17:52:39 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 8CFB2301EE0D
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 17:07:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 42985320CAD;
-	Sat, 30 May 2026 17:52:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AA20B32D42B;
+	Sat, 30 May 2026 17:07:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pTA66ni5"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="g3aq1HPo"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 27C9F261B9E;
-	Sat, 30 May 2026 17:52:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A42593A8730;
+	Sat, 30 May 2026 17:07:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780163559; cv=none; b=WqZLVIcgKAhqKabr7tvxhyziZmr/47tMj7mW1XRPAa5Stjr1Mj4+mePftu0mhWMKg4n5v55LHP2V0d2eCD1EunRXJguaCjuegWclvL2Vl+aJAwhMeuCa0ZmYmmzOicSl71JMkra6rfLX+1oDI/Aii6pZ+bOjAPrgPwFMhSaN2nc=
+	t=1780160861; cv=none; b=D0KJ8mB1SBMqYDd1ZOUqH76R3vV8nC5YNOpaseSLJBYQoTQsWWCbThzSWReshaawJXsiPF2Tpq9xDbh+h6DRtS6aWtUPosV7YQeBPKt8KfES+UBxb/MOVs8GHsn2axOgt6k+RnOcGgvR7eHiCmlB1dRD7GJxNq7gy5nXYM1Jbo4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780163559; c=relaxed/simple;
-	bh=+MtB33wZgsLHktOlx1hkqssMGOMeRTSQLjbwdU2z1c4=;
+	s=arc-20240116; t=1780160861; c=relaxed/simple;
+	bh=sSdei+ls5Y4BInrG5i0XodigETDg5DeL12bqGHMzKh0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=PsG6yPOaq4Pz2SHsv4LtlT+0wW0yDViphls98zSf46HHNXG2fR1tIN45blQiMNCbaSpA3W49fwLOBmkdGiII7qWOrFrPeOHPYz/4sx9B+2B1kVtNnjPFneo0SYuMUSSEO5EjzkBs1ydsDj3UeVW+nrK8kZLAbOFeRIrkC0z+M0I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pTA66ni5; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6C4A91F00893;
-	Sat, 30 May 2026 17:52:37 +0000 (UTC)
+	 MIME-Version; b=Af0cR6wtPtW62ODG30AJ0bJ4AqcINawrXWdyk9Xgh9itXPaO1gLQLqyj8XbNTDVJ1vL84FsFbwIByRvLQtetha5x3DlwNdFIKeFfaGEu6OtD7YKzkTRJLNlXI61t0BWgn6DtR0LybN/e9FiQ0twk2VMN1DRv7FW7+rEecDyjd08=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=g3aq1HPo; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A2CBF1F00893;
+	Sat, 30 May 2026 17:07:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780163558;
-	bh=l1TsI5ugpccldLCTjGf8vaiQQfURPy/1zVTSDVrLuts=;
+	s=korg; t=1780160859;
+	bh=YZUiZUrdNUV9L5Oc/WFBL1mEn4JP8nhOHDbV1AOPKbI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=pTA66ni5AdrPnbmiP2NLhmEDg33BOpKWIHo8Q2H1rMi80/SxUODHMOAG2vPfBcHg9
-	 bzr8Y2EzlVcTEAbGPswhHeijzoDDRBLfV45qBvecRgXZgnzRyVqgakFQh6lIMbZ7EO
-	 iMIMZc17pMnddQ0quUNWGQupByxlgtRVDFuP1QRQ=
+	b=g3aq1HPoJRfh/P0051cFEHISUfsCAy5U4zdjg3mhzoP0g63mfppagyP+nhyMLEpGt
+	 esoEZ7wCcK6KHHhVVgaIHfHZLiui5Enp59NMll10LlnLRHk5ZRK5Wk3fMn2XnIV6bX
+	 VCSXKURD+vrDpBBMqEoIcKuICPBjWAR0p/mhtqjI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Takashi Iwai <tiwai@suse.de>
-Subject: [PATCH 5.15 265/776] ALSA: caiaq: Dont abort when no input device is available
+	Petr Pavlu <petr.pavlu@suse.com>,
+	Sami Tolvanen <samitolvanen@google.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 455/969] module: Fix freeing of charp module parameters when CONFIG_SYSFS=n
 Date: Sat, 30 May 2026 17:59:39 +0200
-Message-ID: <20260530160247.389513670@linuxfoundation.org>
+Message-ID: <20260530160312.844684887@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260530160240.228940103@linuxfoundation.org>
-References: <20260530160240.228940103@linuxfoundation.org>
+In-Reply-To: <20260530160300.485627683@linuxfoundation.org>
+References: <20260530160300.485627683@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,84 +66,155 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-258203-lists,stable=lfdr.de];
-	PRECEDENCE_BULK(0.00)[];
+	TAGGED_FROM(0.00)[bounces-257398-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	FROM_HAS_DN(0.00)[];
-	RCPT_COUNT_THREE(0.00)[4];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-0.999];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	TO_DN_SOME(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	RCPT_COUNT_FIVE(0.00)[6];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	TAGGED_RCPT(0.00)[stable];
+	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,msgid.link:url,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim]
-X-Rspamd-Queue-Id: 94317610D85
+	FROM_HAS_DN(0.00)[]
+X-Rspamd-Queue-Id: 56BDC60EF54
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Takashi Iwai <tiwai@suse.de>
+From: Petr Pavlu <petr.pavlu@suse.com>
 
-commit b32ae47a2b0a1fb4bd4942242847966d9b178222 upstream.
+[ Upstream commit deffe1edba626d474fef38007c03646ca5876a0e ]
 
-The previous fix to handle the error from setup_card() caused a
-regression for the models that have no dedicated input device;
-snd_usb_caiaq_input_init() just returns -EINVAL, and we treat it as a
-fatal error although it should be ignored.
+When setting a charp module parameter, the param_set_charp() function
+allocates memory to store a copy of the input value. Later, when the module
+is potentially unloaded, the destroy_params() function is called to free
+this allocated memory.
 
-As a regression fix, change the error code to -ENODEV, and ignore this
-error in the callee, to continue probing.
+However, destroy_params() is available only when CONFIG_SYSFS=y, otherwise
+only a dummy variant is present. In the unlikely case that the kernel is
+configured with CONFIG_MODULES=y and CONFIG_SYSFS=n, this results in
+a memory leak of charp values when a module is unloaded.
 
-Fixes: 28abd224db4a ("ALSA: caiaq: Handle probe errors properly")
-Cc: <stable@vger.kernel.org>
-Link: https://bugzilla.kernel.org/show_bug.cgi?id=221423
-Link: https://patch.msgid.link/20260427145642.6637-1-tiwai@suse.de
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fix this issue by making destroy_params() always available when
+CONFIG_MODULES=y. Rename the function to module_destroy_params() to clarify
+that it is intended for use by the module loader.
+
+Fixes: e180a6b7759a ("param: fix charp parameters set via sysfs")
+Signed-off-by: Petr Pavlu <petr.pavlu@suse.com>
+Signed-off-by: Sami Tolvanen <samitolvanen@google.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/usb/caiaq/device.c |    2 +-
- sound/usb/caiaq/input.c  |    2 +-
- 2 files changed, 2 insertions(+), 2 deletions(-)
+ include/linux/moduleparam.h | 11 +++--------
+ kernel/module/main.c        |  4 ++--
+ kernel/params.c             | 27 ++++++++++++++++++---------
+ 3 files changed, 23 insertions(+), 19 deletions(-)
 
---- a/sound/usb/caiaq/device.c
-+++ b/sound/usb/caiaq/device.c
-@@ -366,7 +366,7 @@ static int setup_card(struct snd_usb_cai
+diff --git a/include/linux/moduleparam.h b/include/linux/moduleparam.h
+index 061e19c94a6bc..f73ca4d62683b 100644
+--- a/include/linux/moduleparam.h
++++ b/include/linux/moduleparam.h
+@@ -392,14 +392,9 @@ extern char *parse_args(const char *name,
+ 				     const char *doing, void *arg));
  
- #ifdef CONFIG_SND_USB_CAIAQ_INPUT
- 	ret = snd_usb_caiaq_input_init(cdev);
--	if (ret < 0) {
-+	if (ret < 0 && ret != -ENODEV) {
- 		dev_err(dev, "Unable to set up input system (ret=%d)\n", ret);
- 		return ret;
- 	}
---- a/sound/usb/caiaq/input.c
-+++ b/sound/usb/caiaq/input.c
-@@ -804,7 +804,7 @@ int snd_usb_caiaq_input_init(struct snd_
+ /* Called by module remove. */
+-#ifdef CONFIG_SYSFS
+-extern void destroy_params(const struct kernel_param *params, unsigned num);
+-#else
+-static inline void destroy_params(const struct kernel_param *params,
+-				  unsigned num)
+-{
+-}
+-#endif /* !CONFIG_SYSFS */
++#ifdef CONFIG_MODULES
++void module_destroy_params(const struct kernel_param *params, unsigned int num);
++#endif
  
- 	default:
- 		/* no input methods supported on this device */
--		ret = -EINVAL;
-+		ret = -ENODEV;
- 		goto exit_free_idev;
- 	}
+ /* All the helper functions */
+ /* The macros to do compile-time type checking stolen from Jakub
+diff --git a/kernel/module/main.c b/kernel/module/main.c
+index 6b3cffd9f8a8a..e83e84f699ded 100644
+--- a/kernel/module/main.c
++++ b/kernel/module/main.c
+@@ -1172,7 +1172,7 @@ static void free_module(struct module *mod)
+ 	module_unload_free(mod);
  
+ 	/* Free any allocated parameters. */
+-	destroy_params(mod->kp, mod->num_kp);
++	module_destroy_params(mod->kp, mod->num_kp);
+ 
+ 	if (is_livepatch_module(mod))
+ 		free_module_elf(mod);
+@@ -2890,7 +2890,7 @@ static int load_module(struct load_info *info, const char __user *uargs,
+ 	mod_sysfs_teardown(mod);
+  coming_cleanup:
+ 	mod->state = MODULE_STATE_GOING;
+-	destroy_params(mod->kp, mod->num_kp);
++	module_destroy_params(mod->kp, mod->num_kp);
+ 	blocking_notifier_call_chain(&module_notify_list,
+ 				     MODULE_STATE_GOING, mod);
+ 	klp_module_going(mod);
+diff --git a/kernel/params.c b/kernel/params.c
+index 5ae507cd19960..82109c0cf9918 100644
+--- a/kernel/params.c
++++ b/kernel/params.c
+@@ -743,15 +743,6 @@ void module_param_sysfs_remove(struct module *mod)
+ }
+ #endif
+ 
+-void destroy_params(const struct kernel_param *params, unsigned num)
+-{
+-	unsigned int i;
+-
+-	for (i = 0; i < num; i++)
+-		if (params[i].ops->free)
+-			params[i].ops->free(params[i].arg);
+-}
+-
+ struct module_kobject * __init_or_module
+ lookup_or_create_module_kobject(const char *name)
+ {
+@@ -971,3 +962,21 @@ static int __init param_sysfs_init(void)
+ subsys_initcall(param_sysfs_init);
+ 
+ #endif /* CONFIG_SYSFS */
++
++#ifdef CONFIG_MODULES
++
++/*
++ * module_destroy_params - free all parameters for one module
++ * @params: module parameters (array)
++ * @num: number of module parameters
++ */
++void module_destroy_params(const struct kernel_param *params, unsigned int num)
++{
++	unsigned int i;
++
++	for (i = 0; i < num; i++)
++		if (params[i].ops->free)
++			params[i].ops->free(params[i].arg);
++}
++
++#endif /* CONFIG_MODULES */
+-- 
+2.53.0
+
 
 
 
