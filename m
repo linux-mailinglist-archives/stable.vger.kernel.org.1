@@ -1,59 +1,60 @@
-Return-Path: <stable+bounces-257718-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-258493-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id UOnOKTAfG2rO/QgAu9opvQ
-	(envelope-from <stable+bounces-257718-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:32:32 +0200
+	id cLdbHVMqG2r//ggAu9opvQ
+	(envelope-from <stable+bounces-258493-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:20:03 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0D38760FDEA
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:32:31 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E4FA9611800
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:20:02 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 191493011102
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 17:25:42 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id B844A30528A4
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 18:08:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AFF2E2FDC5E;
-	Sat, 30 May 2026 17:25:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6B42B3BFE4D;
+	Sat, 30 May 2026 18:08:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jI46h5jM"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="s5LLF4JG"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2A7333ACEEA;
-	Sat, 30 May 2026 17:25:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4C9B93191D0;
+	Sat, 30 May 2026 18:08:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780161941; cv=none; b=Rt59N3sYDq9mqlCvxr0vjWMDRvmuncL8l8lR7cHYwmo192guvNU3s5pLXlaarWn+TzMfdF4X4CRbD8u84YOlKQ/FRXnksKMNVbsIDcYpR4bQqqDkIEByZI86+4zs0cWuNk2ENDWgp+6ZL5HYDWTDLiPnolM8oUDhDsib3Bk8Yrc=
+	t=1780164535; cv=none; b=nf/uFpvpSHqN7gApe1+lwlt/iYZWvNgqBEymw4O7MshBOJh9AlZ6yaTuCTXyB8ziDdmsfFX2csHftDPes8xFw6mjKNxuzyAx7a+ybmd9KQAHbuuxq2rZO9yvsG3JZBgqbmgsoSMgQSLgHWrBLKT6GLGsfvlXHe14h5hl1SbYVzw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780161941; c=relaxed/simple;
-	bh=USePpIzmNBtnY/ihBJLxqD8s9i+i5gD0SgObkk6y+Q0=;
+	s=arc-20240116; t=1780164535; c=relaxed/simple;
+	bh=p671LR28dbrt0TD0MTJXYK5uu4O/KnkcLbX6/Ih3n1w=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ptPotMWqivxImbMzAGL0GF220IE16cYJWMxofZNNO7Qj9zGpn+/z3y/T0aUsK2LJ52cAqHRR9q1Wu5Kjom3nOzBTTOHhXmDjVauoetcYcKjrwMqX2PAd1/P8397H+BhNSTYpvD7+nDeGSmvFfsnzUnNNwneIjwQiG4+OQZ2wFoo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jI46h5jM; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 37C051F00893;
-	Sat, 30 May 2026 17:25:38 +0000 (UTC)
+	 MIME-Version; b=tUhkpSy0ZqFIenfsegr4C0eqMlQtbV2Oa/PYwaguxNwWjCKA+qySe5Eb8zHdQSGnRMfBIyjXXIX7uXPfh5Gg5yQ898UGzJ1mY/wK8CTTDgBqAJqpbZY8mu09qV2ioD08gVXXz4YDQdEZg4yBp1E0VA3Vk6c0RybzpNuFFr1oEak=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=s5LLF4JG; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 909701F00893;
+	Sat, 30 May 2026 18:08:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780161938;
-	bh=mnEdN45WTgN/laSDiuIFq3YRIfb33lrRbTSmCNMPnXQ=;
+	s=korg; t=1780164534;
+	bh=BbyE6iEFmsLqBv/MPTxq+/w8cO0yvRXZFRz6iYcdpIk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=jI46h5jMz7VMuyPTkZmmugII7wQQTlZBbJopZYVnZBlr+ihGMHr6BN781y1Li5cZl
-	 jpbUX3o2I3wBO927XAJi+/Ovqj/tuWFoNliExJwFzh+n8Q239yXTH1y0nESMGQLjNq
-	 GwHDUfokU1MutTg6uM7gcwXDJDtEO8kZ+YJay0Xk=
+	b=s5LLF4JGa9IztVrZ9YHREqbeHspAyDo1deXFBpWpXk+pt45DGTeJE5iYKvpHPpbvA
+	 RGUHuVtJeIdR+cZBxyZ7PLdHcekDUOH+ofV2Zm4wk9SSJ/5irYn8czA4/EZkW9Wxts
+	 khF4Z4cUXvSfXokWHIM+GTyoy0YdY73d9MZkejiM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	wangdicheng <wangdicheng@kylinos.cn>,
-	Takashi Iwai <tiwai@suse.de>,
+	Hyunwoo Kim <imv4bel@gmail.com>,
+	Namjae Jeon <linkinjeon@kernel.org>,
+	Steve French <stfrench@microsoft.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 773/969] ALSA: hda/conexant: Renaming the codec with device ID 0x1f86 and 0x1f87
+Subject: [PATCH 5.15 583/776] ksmbd: scope conn->binding slowpath to bound sessions only
 Date: Sat, 30 May 2026 18:04:57 +0200
-Message-ID: <20260530160321.929171881@linuxfoundation.org>
+Message-ID: <20260530160255.149057278@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260530160300.485627683@linuxfoundation.org>
-References: <20260530160300.485627683@linuxfoundation.org>
+In-Reply-To: <20260530160240.228940103@linuxfoundation.org>
+References: <20260530160240.228940103@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -73,102 +74,84 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,kernel.org,microsoft.com];
+	TAGGED_FROM(0.00)[bounces-258493-lists,stable=lfdr.de];
 	PRECEDENCE_BULK(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-257718-lists,stable=lfdr.de];
-	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[kylinos.cn:email,msgid.link:url,linuxfoundation.org:mid,linuxfoundation.org:dkim,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,suse.de:email]
-X-Rspamd-Queue-Id: 0D38760FDEA
+	TAGGED_RCPT(0.00)[stable];
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
+X-Rspamd-Queue-Id: E4FA9611800
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: wangdicheng <wangdicheng@kylinos.cn>
+From: Hyunwoo Kim <imv4bel@gmail.com>
 
-[ Upstream commit 7f4c540e0859e2025675d2c5c5c6ab88eaf817e2 ]
+[ Upstream commit b0da97c034b6107d14e537e212d4ce8b22109a58 ]
 
-Due to changes in the manufacturer's plan, all 0x14f11f86 will be
-named CX11880, and 0x14f11f87 will be named SN6140
+When the binding SESSION_SETUP sets conn->binding = true, the flag stays
+set after the call so that the global session lookup in
+ksmbd_session_lookup_all() can find the session, which was not added to
+conn->sessions. Because the flag is connection-wide, the global lookup
+path will also resolve any other session by id if asked.
 
-Signed-off-by: wangdicheng <wangdicheng@kylinos.cn>
-Link: https://patch.msgid.link/20250616074331.581309-1-wangdich9700@163.com
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
-Stable-dep-of: b0e2333a2311 ("ALSA: hda/conexant: Fix missing error check for jack detection")
+Tighten the global lookup so that the returned session must have this
+connection registered in its channel xarray (sess->ksmbd_chann_list).
+The channel entry is installed by the existing binding_session path in
+ntlm_authenticate()/krb5_authenticate() when a SESSION_SETUP completes
+successfully, so this condition is a strict equivalent of "this
+connection has been accepted as a channel of this session". Connections
+that have not bound to a given session cannot reach it via the global
+table.
+
+The existing conn->binding gate for entering the slowpath is preserved
+so that non-binding connections keep the fast-path-only behavior, and
+the session->state check is unchanged.
+
+Fixes: f5a544e3bab7 ("ksmbd: add support for SMB3 multichannel")
+Signed-off-by: Hyunwoo Kim <imv4bel@gmail.com>
+Acked-by: Namjae Jeon <linkinjeon@kernel.org>
+Signed-off-by: Steve French <stfrench@microsoft.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/pci/hda/patch_conexant.c | 12 ++++++------
- 1 file changed, 6 insertions(+), 6 deletions(-)
+ fs/ksmbd/mgmt/user_session.c | 7 ++++++-
+ 1 file changed, 6 insertions(+), 1 deletion(-)
 
-diff --git a/sound/pci/hda/patch_conexant.c b/sound/pci/hda/patch_conexant.c
-index 394932123b51d..7aeaccc9189c8 100644
---- a/sound/pci/hda/patch_conexant.c
-+++ b/sound/pci/hda/patch_conexant.c
-@@ -42,7 +42,7 @@ struct conexant_spec {
- 	unsigned int gpio_led;
- 	unsigned int gpio_mute_led_mask;
- 	unsigned int gpio_mic_led_mask;
--	bool is_cx8070_sn6140;
-+	bool is_cx11880_sn6140;
- };
+diff --git a/fs/ksmbd/mgmt/user_session.c b/fs/ksmbd/mgmt/user_session.c
+index 23a0662bbfd32..b6b6572d402d3 100644
+--- a/fs/ksmbd/mgmt/user_session.c
++++ b/fs/ksmbd/mgmt/user_session.c
+@@ -301,8 +301,13 @@ struct ksmbd_session *ksmbd_session_lookup_all(struct ksmbd_conn *conn,
+ 	struct ksmbd_session *sess;
  
- 
-@@ -195,7 +195,7 @@ static int cx_auto_init(struct hda_codec *codec)
- 	cxt_init_gpio_led(codec);
- 	snd_hda_apply_fixup(codec, HDA_FIXUP_ACT_INIT);
- 
--	if (spec->is_cx8070_sn6140)
-+	if (spec->is_cx11880_sn6140)
- 		cx_fixup_headset_recog(codec);
- 
- 	return 0;
-@@ -247,7 +247,7 @@ static void cx_update_headset_mic_vref(struct hda_codec *codec, struct hda_jack_
- {
- 	unsigned int mic_present;
- 
--	/* In cx8070 and sn6140, the node 16 can only be configured to headphone or disabled,
-+	/* In cx11880 and sn6140, the node 16 can only be configured to headphone or disabled,
- 	 * the node 19 can only be configured to microphone or disabled.
- 	 * Check hp&mic tag to process headset plugin & plugout.
- 	 */
-@@ -1210,11 +1210,11 @@ static int patch_conexant_auto(struct hda_codec *codec)
- 	codec->spec = spec;
- 	codec->patch_ops = cx_auto_patch_ops;
- 
--	/* init cx8070/sn6140 flag and reset headset_present_flag */
-+	/* init cx11880/sn6140 flag and reset headset_present_flag */
- 	switch (codec->core.vendor_id) {
- 	case 0x14f11f86:
- 	case 0x14f11f87:
--		spec->is_cx8070_sn6140 = true;
-+		spec->is_cx11880_sn6140 = true;
- 		snd_hda_jack_detect_enable_callback(codec, 0x19, cx_update_headset_mic_vref);
- 		break;
- 	}
-@@ -1302,7 +1302,7 @@ static int patch_conexant_auto(struct hda_codec *codec)
-  */
- 
- static const struct hda_device_id snd_hda_id_conexant[] = {
--	HDA_CODEC_ENTRY(0x14f11f86, "CX8070", patch_conexant_auto),
-+	HDA_CODEC_ENTRY(0x14f11f86, "CX11880", patch_conexant_auto),
- 	HDA_CODEC_ENTRY(0x14f11f87, "SN6140", patch_conexant_auto),
- 	HDA_CODEC_ENTRY(0x14f12008, "CX8200", patch_conexant_auto),
- 	HDA_CODEC_ENTRY(0x14f120d0, "CX11970", patch_conexant_auto),
+ 	sess = ksmbd_session_lookup(conn, id);
+-	if (!sess && conn->binding)
++	if (!sess && conn->binding) {
+ 		sess = ksmbd_session_lookup_slowpath(id);
++		if (sess && !xa_load(&sess->ksmbd_chann_list, (long)conn)) {
++			ksmbd_user_session_put(sess);
++			sess = NULL;
++		}
++	}
+ 	if (sess && sess->state != SMB2_SESSION_VALID) {
+ 		ksmbd_user_session_put(sess);
+ 		sess = NULL;
 -- 
 2.53.0
 
