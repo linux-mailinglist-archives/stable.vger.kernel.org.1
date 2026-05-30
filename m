@@ -1,58 +1,65 @@
-Return-Path: <stable+bounces-258243-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-258850-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 0BlhGVgnG2qf/ggAu9opvQ
-	(envelope-from <stable+bounces-258243-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:07:20 +0200
+	id 4BwqOPwuG2qU/wgAu9opvQ
+	(envelope-from <stable+bounces-258850-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:39:56 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id DD2A9611053
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:07:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5F332612328
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:39:56 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 6A5EC3085E98
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 17:54:57 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 34248317A43C
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 18:30:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B85D4261B9E;
-	Sat, 30 May 2026 17:54:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F0C0333AD99;
+	Sat, 30 May 2026 18:29:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mAONZHaZ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0TQKWDih"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 02A6C2628D;
-	Sat, 30 May 2026 17:54:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C68003C199A;
+	Sat, 30 May 2026 18:29:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780163696; cv=none; b=GtVXvWh8KaDdSCjJuikDnH4Dr4A5mns87Ne/xe5LmyTIteeEmXiDSbBKbtOaIgyuQarf7ACkSUnKD1PlZfQlq/cglW8Uv29xG07tPytErsif5NNMapdPnxb5v2VPjOZXv94Ood9BTS3Pl7iDtoH+KyxTt+ZIwBBKWlSjIKH41Sk=
+	t=1780165749; cv=none; b=I7RwTTfuF7DF6jCMYV+7FhdIh7gnK8oAusbHp/3S1ybo74nMMpVlofRPaAp0u0x6XRFVs3vmP9Ez0Pfr6yIJ5XsaOsIc8dst+ds5NnapdRzNxlIuDut+BXj7kazdHzD5WKqA6F5kqx5Qzg9CtcOD5mehDEW/DPo4YMlfW6Q6PuE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780163696; c=relaxed/simple;
-	bh=9yCsUUcCBbx3uGDTs6g8bHdPlZCcjCCnit4p9n3r8Is=;
+	s=arc-20240116; t=1780165749; c=relaxed/simple;
+	bh=YouFtrKGQwiZSfdRidCk6xiBuH2+9iG5gYELzcOBsPU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ZGaO46RzywDMJIucmN0nyFLVuC3huFfGfVVJj3gHurh1Y5/9SJGkuGtBwVLG9ioDMPpOTnH3B/4NzFM4KdOgXsavjvw/4PbQei29UCzh8TKRz/blS2oS1bppJRMME//nI30Cn7oROTk6mec1RYYmk99qG+XbH1KbhoqIp3XEoFw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mAONZHaZ; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 45FAD1F00893;
-	Sat, 30 May 2026 17:54:54 +0000 (UTC)
+	 MIME-Version; b=LYkYab95sexrgwSdwPeuV9OcmAryVmX/3pRWMV+dHYI8sPLG3t1tVBiumBbAiLj9lyn33JlBGQZ8XQM3EBQxAwCsYU5+/fpK2CVLb1Njsw5kr7Tb6w1sNgAb1ZJ07zNZvT/P/dooW5IppZm9cni9/IF6OMmbH8cg3Xm9L00tFQY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0TQKWDih; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D665E1F00893;
+	Sat, 30 May 2026 18:29:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780163694;
-	bh=rp4dHnvpRGNLBvOF0PT3qLdOa5AvMfUNMaf1RLLQbt0=;
+	s=korg; t=1780165748;
+	bh=3fbbWE4hSiIe5YJpvta9lnhjOAPeXjSj5LGkV+uO+iU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=mAONZHaZl48xQfxwRaGYVY92rMcrQ/i3eTmHCWqDp9uUndW9f2xCjSyqxFK4c7OFc
-	 j4JD6IdGSeDinpQsImeTWcOi4F/z7JDci5FwL981LVzXHsE8iX3DaxQD6m+hQimuF+
-	 7FzrVBkWJEhUwHONkWh/hUpsF8YkR22UgqrjkYJU=
+	b=0TQKWDihTuquEFKkXCjG72Mb6kot32hI7Ey3jYRRPdRzmhClJLYKzWrTLg223tpyn
+	 33Q6eLfXBdYzs1wgZ6jKOKLrMEz0as0oi4iYJWQceo7ZXa1niLA1BmG2dTeGK9SK5Z
+	 zPEM2ygJkkHpa8czNI6xTmsgBb1uz5omzyQKEPuk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Junrui Luo <moonafterrain@outlook.com>,
-	Yu Kuai <yukuai@fnnas.com>
-Subject: [PATCH 5.15 335/776] md/raid10: fix divide-by-zero in setup_geo() with zero far_copies
-Date: Sat, 30 May 2026 18:00:49 +0200
-Message-ID: <20260530160249.229871916@linuxfoundation.org>
+	stable@kernel.org,
+	Yuan Tan <yuantan098@gmail.com>,
+	Yifan Wu <yifanwucs@gmail.com>,
+	Juefei Pu <tomapufckgml@gmail.com>,
+	Xin Liu <bird@lzu.edu.cn>,
+	Ao Zhou <draw51280@163.com>,
+	Ren Wei <n05ec@lzu.edu.cn>,
+	Allison Henderson <achender@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 5.10 169/589] net: rds: fix MR cleanup on copy error
+Date: Sat, 30 May 2026 18:00:50 +0200
+Message-ID: <20260530160229.236134891@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260530160240.228940103@linuxfoundation.org>
-References: <20260530160240.228940103@linuxfoundation.org>
+In-Reply-To: <20260530160224.570625122@linuxfoundation.org>
+References: <20260530160224.570625122@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -72,66 +79,75 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-258243-lists,stable=lfdr.de];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,outlook.com,fnnas.com];
+	TAGGED_FROM(0.00)[bounces-258850-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,kernel.org,gmail.com,lzu.edu.cn,163.com];
 	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
-	TO_DN_SOME(0.00)[];
+	RCPT_COUNT_TWELVE(0.00)[12];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	RCPT_COUNT_FIVE(0.00)[5];
+	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-0.995];
+	NEURAL_HAM(-0.00)[-0.994];
 	TAGGED_RCPT(0.00)[stable];
 	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,fnnas.com:email,outlook.com:email]
-X-Rspamd-Queue-Id: DD2A9611053
+	DBL_BLOCKED_OPENRESOLVER(0.00)[lzu.edu.cn:email,msgid.link:url,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
+X-Rspamd-Queue-Id: 5F332612328
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Junrui Luo <moonafterrain@outlook.com>
+From: Ao Zhou <draw51280@163.com>
 
-commit 9aa6d860b0930e2f72795665c42c44252a558a0c upstream.
+commit 8141a2dc70080eda1aedc0389ed2db2b292af5bd upstream.
 
-setup_geo() extracts near_copies (nc) and far_copies (fc) from the
-user-provided layout parameter without checking for zero. When fc=0
-with the "improved" far set layout selected, 'geo->far_set_size =
-disks / fc' triggers a divide-by-zero.
+__rds_rdma_map() hands sg/pages ownership to the transport after
+get_mr() succeeds. If copying the generated cookie back to user space
+fails after that point, the error path must not free those resources
+again before dropping the MR reference.
 
-Validate nc and fc immediately after extraction, returning -1 if
-either is zero.
+Remove the duplicate unpin/free from the put_user() failure branch so
+that MR teardown is handled only through the existing final cleanup
+path.
 
-Fixes: 475901aff158 ("MD RAID10: Improve redundancy for 'far' and 'offset' algorithms (part 1)")
-Cc: stable@vger.kernel.org
-Signed-off-by: Junrui Luo <moonafterrain@outlook.com>
-Link: https://lore.kernel.org/linux-raid/SYBPR01MB7881A5E2556806CC1D318582AF232@SYBPR01MB7881.ausprd01.prod.outlook.com
-Signed-off-by: Yu Kuai <yukuai@fnnas.com>
+Fixes: 0d4597c8c5ab ("net/rds: Track user mapped pages through special API")
+Cc: stable@kernel.org
+Reported-by: Yuan Tan <yuantan098@gmail.com>
+Reported-by: Yifan Wu <yifanwucs@gmail.com>
+Reported-by: Juefei Pu <tomapufckgml@gmail.com>
+Reported-by: Xin Liu <bird@lzu.edu.cn>
+Signed-off-by: Ao Zhou <draw51280@163.com>
+Signed-off-by: Ren Wei <n05ec@lzu.edu.cn>
+Reviewed-by: Allison Henderson <achender@kernel.org>
+Link: https://patch.msgid.link/79c8ef73ec8e5844d71038983940cc2943099baf.1776764247.git.draw51280@163.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/md/raid10.c |    2 ++
- 1 file changed, 2 insertions(+)
+ net/rds/rdma.c |    4 ----
+ 1 file changed, 4 deletions(-)
 
---- a/drivers/md/raid10.c
-+++ b/drivers/md/raid10.c
-@@ -4004,6 +4004,8 @@ static int setup_geo(struct geom *geo, s
- 	nc = layout & 255;
- 	fc = (layout >> 8) & 255;
- 	fo = layout & (1<<16);
-+	if (!nc || !fc)
-+		return -1;
- 	geo->raid_disks = disks;
- 	geo->near_copies = nc;
- 	geo->far_copies = fc;
+--- a/net/rds/rdma.c
++++ b/net/rds/rdma.c
+@@ -326,10 +326,6 @@ static int __rds_rdma_map(struct rds_soc
+ 
+ 	if (args->cookie_addr &&
+ 	    put_user(cookie, (u64 __user *)(unsigned long)args->cookie_addr)) {
+-		if (!need_odp) {
+-			unpin_user_pages(pages, nr_pages);
+-			kfree(sg);
+-		}
+ 		ret = -EFAULT;
+ 		goto out;
+ 	}
 
 
 
