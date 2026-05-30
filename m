@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-259063-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-259065-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id CCsmGskxG2qqAAkAu9opvQ
-	(envelope-from <stable+bounces-259063-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:51:53 +0200
+	id mIgsNUYvG2paAAkAu9opvQ
+	(envelope-from <stable+bounces-259065-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:41:10 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id C0E13612A6E
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:51:52 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id B77C9612404
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:41:10 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 9D4E831273F3
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 18:41:07 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id A24EE3003D11
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 18:41:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CF8252773DE;
-	Sat, 30 May 2026 18:41:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3315C21B191;
+	Sat, 30 May 2026 18:41:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1qBbXvtH"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Mo4cRbGD"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ADF16344DB9;
-	Sat, 30 May 2026 18:41:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0B377344DB9;
+	Sat, 30 May 2026 18:41:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780166465; cv=none; b=gJ/PC6E5VdREH19w2CVEypExOd0ozIHg8N3RxHxGj9yslAdLMie8yA1nWaU+4P40DZJpDVmN2V9xNJg85/PbfhH6heyE5xs63zKE9nYxPvfmPeC52q5941md3J6qFDuwW+ZnUZ/c07D+fQpbPgRXIsh1sakIPvhHhsAoybXy/7M=
+	t=1780166469; cv=none; b=SqpSUPjx/XJwK25ubTiu38q4CcVt7qiUrcfbKEj9sTIOotUThrXKmAsaNOYSDgBytj1AgQVqeeF5FjJoErAlmI/c9THAU3IuRwvj60vbXNF5heaFiiZi5mnZg+07J0zekYQIhw2v8FWRfhPLhQYgf9j+d3xOWD8Q7ytuOM0DeKU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780166465; c=relaxed/simple;
-	bh=oMUn0VArbsUMPOK0CtA/3HvTC9kb9t4DZT8W4UxJxL4=;
+	s=arc-20240116; t=1780166469; c=relaxed/simple;
+	bh=/x4Q3gv/NJovyPpVNRSqgMiAsbJfWzIQY1ssq7YM9Kg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=uWkmJyrByXzrnG24pfGXFPAZ1UpHW6SZrSOF96Yq4PLU7vNBIM/7NnWdz42OUIPnXsZYj3NO+f4vcycwVHu/gzCQmi5w6ReyqS2feeAa7VqJz2kAUMlZy/y1Ea5kidfeKYxhFfzEr2H9Ih+Q9y6ZLm8YzJxIJaLPOHOg+E4Nz70=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1qBbXvtH; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F25D11F00893;
-	Sat, 30 May 2026 18:41:03 +0000 (UTC)
+	 MIME-Version; b=iLCVr+irAEzOKHZRvKzY4wxzpmswY/pznj8sGw9oUx7DBm6yNEVTjFKjbcvGvpHwck9ANmHfwEvGEJMucfUXoSkzNmsttT8lUutRCxweiRLzVu7SgVvensREV1DiLm3RN21vTZBsWLiqK23sh/a5eki1xLkshwnatQtQxvg2zjY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Mo4cRbGD; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 47E101F00893;
+	Sat, 30 May 2026 18:41:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780166464;
-	bh=ZqSL8975WtrLBNOoFaesfd1iGAAiXrU/A6jTrJ8W8z4=;
+	s=korg; t=1780166467;
+	bh=tsoJwK+GHOOGu5ckh+32A63OuQHR7VN8Ccg9y5gz3J0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=1qBbXvtHcwnben6oiKfShY6iRkp4mDt+mHWzLyEuKo5i041vFLQrD77GapdoeoN9l
-	 iHwUhm0EzE8L5qiVWPzSwhWYjD/2NkeanG8komAXWVcwKybH/QBhqY/jM0cOWNO6Gg
-	 6T8Z3wWEr6iv3vgs2fmgfbAj8q4gzG+OXeDCzqBo=
+	b=Mo4cRbGDlDvCyBBm7wa5m/Ci8xWsudqCdIdikat7lZ2wmjeubYdoeQJQNfpCPC6dY
+	 +u1YICk3l2zuFhTLiULZY9JlojeAkq0LLtmkpqyARug5ABlCf6cfgFaoEmhw2OJtYJ
+	 /dawb/bg/bGmjUckBqOlde4ejQtG9udoIwvFzWa0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ethan Tidmore <ethantidmore06@gmail.com>,
-	Linus Walleij <linusw@kernel.org>,
+	Ian Rogers <irogers@google.com>,
+	Namhyung Kim <namhyung@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 381/589] pinctrl: pinctrl-pic32: Fix resource leak
-Date: Sat, 30 May 2026 18:04:22 +0200
-Message-ID: <20260530160234.813347636@linuxfoundation.org>
+Subject: [PATCH 5.10 382/589] perf branch: Avoid incrementing NULL
+Date: Sat, 30 May 2026 18:04:23 +0200
+Message-ID: <20260530160234.842327300@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
 In-Reply-To: <20260530160224.570625122@linuxfoundation.org>
 References: <20260530160224.570625122@linuxfoundation.org>
@@ -66,33 +66,32 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-259063-lists,stable=lfdr.de];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,kernel.org];
 	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	RCPT_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-259065-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[stable];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
-X-Rspamd-Queue-Id: C0E13612A6E
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim]
+X-Rspamd-Queue-Id: B77C9612404
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
@@ -100,70 +99,37 @@ X-Rspamd-Server: lfdr
 
 ------------------
 
-From: Ethan Tidmore <ethantidmore06@gmail.com>
+From: Ian Rogers <irogers@google.com>
 
-[ Upstream commit fe5560688f3ba98364c7de7b4f8dc240ffd1ff75 ]
+[ Upstream commit c969a9d7bbf46f983c4a48566b3b2f7340b02296 ]
 
-Fix three possible resource leaks by using the devres version of
-clk_prepare_enable(). Also, update error message accordingly.
+If the entry is NULL the value is meaningless so early return NULL to
+avoid an increment of NULL. This was happening in calls from
+has_stitched_lbr when running the "perf record LBR tests". The return
+value isn't used in that case, so returning NULL as no effect.
 
-Detected by Smatch:
-drivers/pinctrl/pinctrl-pic32.c:2211 pic32_pinctrl_probe() warn:
-'pctl->clk' from clk_prepare_enable() not released on lines: 2208.
-
-drivers/pinctrl/pinctrl-pic32.c:2274 pic32_gpio_probe() warn:
-'bank->clk' from clk_prepare_enable() not released on lines: 2264,2272.
-
-Fixes: 2ba384e6c3810 ("pinctrl: pinctrl-pic32: Add PIC32 pin control driver")
-Signed-off-by: Ethan Tidmore <ethantidmore06@gmail.com>
-Signed-off-by: Linus Walleij <linusw@kernel.org>
+Fixes: 42bbabed09ce ("perf tools: Add hw_idx in struct branch_stack")
+Signed-off-by: Ian Rogers <irogers@google.com>
+Signed-off-by: Namhyung Kim <namhyung@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/pinctrl/pinctrl-pic32.c | 20 ++++----------------
- 1 file changed, 4 insertions(+), 16 deletions(-)
+ tools/perf/util/branch.h | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/drivers/pinctrl/pinctrl-pic32.c b/drivers/pinctrl/pinctrl-pic32.c
-index a6e2a4a4ca952..07dc358359e32 100644
---- a/drivers/pinctrl/pinctrl-pic32.c
-+++ b/drivers/pinctrl/pinctrl-pic32.c
-@@ -2162,16 +2162,10 @@ static int pic32_pinctrl_probe(struct platform_device *pdev)
- 	if (IS_ERR(pctl->reg_base))
- 		return PTR_ERR(pctl->reg_base);
+diff --git a/tools/perf/util/branch.h b/tools/perf/util/branch.h
+index 17b2ccc61094b..9a20b6fc8dda2 100644
+--- a/tools/perf/util/branch.h
++++ b/tools/perf/util/branch.h
+@@ -63,6 +63,9 @@ static inline struct branch_entry *perf_sample__branch_entries(struct perf_sampl
+ {
+ 	u64 *entry = (u64 *)sample->branch_stack;
  
--	pctl->clk = devm_clk_get(&pdev->dev, NULL);
-+	pctl->clk = devm_clk_get_enabled(&pdev->dev, NULL);
- 	if (IS_ERR(pctl->clk)) {
- 		ret = PTR_ERR(pctl->clk);
--		dev_err(&pdev->dev, "clk get failed\n");
--		return ret;
--	}
--
--	ret = clk_prepare_enable(pctl->clk);
--	if (ret) {
--		dev_err(&pdev->dev, "clk enable failed\n");
-+		dev_err(&pdev->dev, "Failed to get and enable clock\n");
- 		return ret;
- 	}
- 
-@@ -2227,16 +2221,10 @@ static int pic32_gpio_probe(struct platform_device *pdev)
- 	if (irq < 0)
- 		return irq;
- 
--	bank->clk = devm_clk_get(&pdev->dev, NULL);
-+	bank->clk = devm_clk_get_enabled(&pdev->dev, NULL);
- 	if (IS_ERR(bank->clk)) {
- 		ret = PTR_ERR(bank->clk);
--		dev_err(&pdev->dev, "clk get failed\n");
--		return ret;
--	}
--
--	ret = clk_prepare_enable(bank->clk);
--	if (ret) {
--		dev_err(&pdev->dev, "clk enable failed\n");
-+		dev_err(&pdev->dev, "Failed to get and enable clock\n");
- 		return ret;
- 	}
- 
++	if (entry == NULL)
++		return NULL;
++
+ 	entry++;
+ 	if (sample->no_hw_idx)
+ 		return (struct branch_entry *)entry;
 -- 
 2.53.0
 
