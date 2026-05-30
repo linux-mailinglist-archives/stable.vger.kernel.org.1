@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-259291-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-256971-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 8GNnJitCG2oMAgkAu9opvQ
-	(envelope-from <stable+bounces-259291-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 22:01:47 +0200
+	id AGeMDEoPG2q/+ggAu9opvQ
+	(envelope-from <stable+bounces-256971-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 18:24:42 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 946FE613280
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 22:01:45 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id C671860E222
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 18:24:41 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id B7FBB300B50E
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:01:42 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id EC9923019568
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 16:24:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EE6E12F6184;
-	Sat, 30 May 2026 20:01:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EBC34348C46;
+	Sat, 30 May 2026 16:24:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tUtz4mxy"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sjkXfR5C"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 944A3286D56;
-	Sat, 30 May 2026 20:01:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D9204346A04;
+	Sat, 30 May 2026 16:24:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780171299; cv=none; b=UzWBv+T76/Hkg9zq38KI2KUk5K4HBVE1cLIi3zUaRfeY7Zwo8IImh1es9GYYYjbArJCF/JXol2dmJBuijU/4kKSu7qWMXR0egE5B243Ww3S6Jd102ru2k/4znBdymdKcaWQKUN+CwciOl+bmcd8hyfctBOyz5tkWJBUlDfuI2hY=
+	t=1780158277; cv=none; b=IokAmruF3F7U8T/c4EzZtJxecgm4KUL5ZaO89VxhIrhAzsxyGkWa/iPwmQoF+N5U/AmrjDFlSg5OPnVi4IddH6dV2JuQtmC9j89FmxXuuPu1g5dbF2u2UrnbXzVlx0GBAHuuCrmBx+LnFyG3qY2Ibi3lh7eldZ6/aOdJAHPLDMs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780171299; c=relaxed/simple;
-	bh=dNXWmVDZE7TIHn3Kldykv9FY5vwtGO/nYw306FjS4vI=;
+	s=arc-20240116; t=1780158277; c=relaxed/simple;
+	bh=FSFc9K3gEXIdgb5uGYN+O+Ai5+jkmXnk+4MCiRcJk44=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=jD0cst3GUE/oQimwjb8ubZCUwo1gFDAagp4hKvGtsWRybbdEoJlz/MRmJBvF3fWpJhkQGhBEOx4EcpcP2SKtCXKUnzqmdbJO1kdl3MCPXMVfpJ72ge8Fqvfeu4lctSg48Q9kxJ2ZXuLdyKT5O4TG5pbixLMUj/t/89KzYgZ4pes=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tUtz4mxy; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8E4691F00893;
-	Sat, 30 May 2026 20:01:37 +0000 (UTC)
+	 MIME-Version:Content-Type; b=phJQnBGobagKnXstr9zM0BNLvvTcwoEtacgQlh8NmNObyxgQiM0I/uj3B3+r/MhyczKY5FjjTV3yXZOrp48bKd2B3AGRCHlqppQINdvCfK/+FraiXArmlaydlO0bsOYRfyeoSgL1FjpKDqokbUzg5Q+NdQCA+vF1xHiaCTQCWXE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sjkXfR5C; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8710C1F00893;
+	Sat, 30 May 2026 16:24:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780171298;
-	bh=sVK6vbmQ177D+us09e8NUIbuX4svyI/zUiMovqklpuo=;
+	s=korg; t=1780158276;
+	bh=JkflEZDoHpxmVVgPEKQuDIfhvDOHncDqO13/A6GHYnw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=tUtz4mxyvxHGFqeHig8YeraraVoHzWPc9BkRpSEQIHc9Q+0K8NUIec9uaQT6uL7Cy
-	 AIobDlulUDqQCtI5NkoYJre31L9LtifrVsnmZgA1/jJoXDy36H5YjerYD3aKM4ciFX
-	 VwQilmkCK3DePXIfw0yahURBRz5n3uoXfR9RLESU=
+	b=sjkXfR5COqEzu76Jl+nOApVSM+xofX5fqoFYbV3+w/oEWiV3Hg0Eg+0RT9AK2uIZR
+	 akoIEgOsV4M/0P5K15WGcfWvdshlqZjOw2M3ejTuH9QM7YZ7tU2aroG75K9zd4+xSq
+	 Kk9gJuEJ72TkGtAS5MaVtDWPSFWhcXaccaICGehM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Fredric Cover <FredTheDude@proton.me>,
-	Steve French <stfrench@microsoft.com>,
-	Sasha Levin <sashal@kernel.org>,
-	Henrique Carvalho <henrique.carvalho@suse.com>
-Subject: [PATCH 6.1 015/969] fs/smb/client: fix out-of-bounds read in cifs_sanitize_prepath
-Date: Sat, 30 May 2026 17:52:19 +0200
-Message-ID: <20260530160300.890067812@linuxfoundation.org>
+	=?UTF-8?q?Gilson=20Marquato=20J=C3=BAnior?= <gilsonmandalogo@hotmail.com>,
+	Mark Brown <broonie@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 016/969] ASoC: amd: yc: Add DMI entry for HP Laptop 15-fc0xxx
+Date: Sat, 30 May 2026 17:52:20 +0200
+Message-ID: <20260530160300.915299164@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
 In-Reply-To: <20260530160300.485627683@linuxfoundation.org>
 References: <20260530160300.485627683@linuxfoundation.org>
@@ -64,35 +63,36 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-259291-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TAGGED_FROM(0.00)[bounces-256971-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,hotmail.com,kernel.org];
 	TO_DN_SOME(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
-	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[7];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	MID_RHS_MATCH_FROM(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,proton.me:email,linuxfoundation.org:mid,linuxfoundation.org:dkim]
-X-Rspamd-Queue-Id: 946FE613280
+	RCPT_COUNT_FIVE(0.00)[6];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,linuxfoundation.org:mid,linuxfoundation.org:dkim,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo]
+X-Rspamd-Queue-Id: C671860E222
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
@@ -100,45 +100,42 @@ X-Rspamd-Server: lfdr
 
 ------------------
 
-From: Fredric Cover <FredTheDude@proton.me>
+From: Gilson Marquato Júnior <gilsonmandalogo@hotmail.com>
 
-[ Upstream commit 78ec5bf2f589ec7fd8f169394bfeca541b077317 ]
+[ Upstream commit 8ec017cf31299c4b6287ebe27afe81c986aeef88 ]
 
-When cifs_sanitize_prepath is called with an empty string or a string
-containing only delimiters (e.g., "/"), the current logic attempts to
-check *(cursor2 - 1) before cursor2 has advanced. This results in an
-out-of-bounds read.
+The HP Laptop 15-fc0xxx (subsystem ID 0x103c8dc9) has an internal
+DMIC connected to the AMD ACP6x audio coprocessor. Add a DMI quirk
+entry so the internal microphone is properly detected on this model.
 
-This patch adds an early exit check after stripping prepended
-delimiters. If no path content remains, the function returns NULL.
+Tested on HP Laptop 15-fc0237ns with Fedora 43 (kernel 6.19.9).
 
-The bug was identified via manual audit and verified using a
-standalone test case compiled with AddressSanitizer, which
-triggered a SEGV on affected inputs.
-
-Signed-off-by: Fredric Cover <FredTheDude@proton.me>
-Reviewed-by: Henrique Carvalho <[2]henrique.carvalho@suse.com>
-Signed-off-by: Steve French <stfrench@microsoft.com>
+Signed-off-by: Gilson Marquato Júnior <gilsonmandalogo@hotmail.com>
+Link: https://patch.msgid.link/20260330-hp-15-fc0xxx-dmic-v2-v1-1-6dd6f53a1917@hotmail.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/smb/client/fs_context.c | 4 ++++
- 1 file changed, 4 insertions(+)
+ sound/soc/amd/yc/acp6x-mach.c | 7 +++++++
+ 1 file changed, 7 insertions(+)
 
-diff --git a/fs/smb/client/fs_context.c b/fs/smb/client/fs_context.c
-index 9000299e98cb4..35f2c94aafd14 100644
---- a/fs/smb/client/fs_context.c
-+++ b/fs/smb/client/fs_context.c
-@@ -454,6 +454,10 @@ char *cifs_sanitize_prepath(char *prepath, gfp_t gfp)
- 	while (IS_DELIM(*cursor1))
- 		cursor1++;
+diff --git a/sound/soc/amd/yc/acp6x-mach.c b/sound/soc/amd/yc/acp6x-mach.c
+index d650091d3f302..c9bc2289d3661 100644
+--- a/sound/soc/amd/yc/acp6x-mach.c
++++ b/sound/soc/amd/yc/acp6x-mach.c
+@@ -45,6 +45,13 @@ static struct snd_soc_card acp6x_card = {
+ };
  
-+	/* exit in case of only delimiters */
-+	if (!*cursor1)
-+		return NULL;
-+
- 	/* copy the first letter */
- 	*cursor2 = *cursor1;
- 
+ static const struct dmi_system_id yc_acp_quirk_table[] = {
++	{
++		.driver_data = &acp6x_card,
++		.matches = {
++			DMI_MATCH(DMI_BOARD_VENDOR, "HP"),
++			DMI_MATCH(DMI_PRODUCT_NAME, "HP Laptop 15-fc0xxx"),
++		}
++	},
+ 	{
+ 		.driver_data = &acp6x_card,
+ 		.matches = {
 -- 
 2.53.0
 
