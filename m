@@ -1,66 +1,59 @@
-Return-Path: <stable+bounces-257540-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-258312-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id IAqZGT0dG2qV/QgAu9opvQ
-	(envelope-from <stable+bounces-257540-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:24:13 +0200
+	id AClxLvMlG2rO/QgAu9opvQ
+	(envelope-from <stable+bounces-258312-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:01:23 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id C29E260F8DA
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:24:12 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 36842610D3F
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:01:23 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 678EE303AF0E
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 17:15:53 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 6D50F301B4C5
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 17:58:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A706E3AE18D;
-	Sat, 30 May 2026 17:15:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DD20621E098;
+	Sat, 30 May 2026 17:58:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1mRTnx0f"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GnLGqJbZ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 58D103A7848;
-	Sat, 30 May 2026 17:15:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A537134041A;
+	Sat, 30 May 2026 17:58:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780161337; cv=none; b=FJttuHB7ibaMy73tl21YyMlq9APnzF3EIWV5hinK+4xOrmHLocsBYuqhyZ1VQO6xJ3J4qGjuKiPuthEgdLb+yYWJBf2WP9MwoupgqQ0m0xZPy9DgT9OZB18XOEGGmelIr/eFA9aIbGee9rtrAH7Wv7LfxCHweotQknpDDqqk5wo=
+	t=1780163927; cv=none; b=RxYLm1vU6CJKaXtuN92Kzssjyz3o0lm+3MD6iOA/ESU+cTSGW22tqZFA+3y/H/YY/xgDe3NXqoZeOkfIi7UAb/ON5LW0g3NXSL/kY92TCuV9o1n4qqTDDn51UktK9/dVgc3GPX8mr3VSikENNQ05VB9TSCnjEmALsjFuJ6TJ1vQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780161337; c=relaxed/simple;
-	bh=ASaqLvbQAqkpcwWQS1Osuu+ldqnt7V9oQEYY7oC0s0g=;
+	s=arc-20240116; t=1780163927; c=relaxed/simple;
+	bh=HTMmToUKvKLBOpLErAicquz0SD9QN4XoEzafBcU5em4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=px8njfXnF9/D9stNDa5Pa64suwKQOLZynMJNzwjGSduHmyrZ3k7p1uhWYQApnjDOP3yEFj3q8t8/x3gaZQWkUjTtk9TJKd5EUm3wjwUw7XlRH9zA+h1AsBwPU6P+ZIj5zuIT0n7drwWMlAIsG9kS8viU8B9akYcrIp5MUNFrRo8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1mRTnx0f; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9F2EF1F00893;
-	Sat, 30 May 2026 17:15:35 +0000 (UTC)
+	 MIME-Version; b=gQ8HWpy5E+ZEw2Ekr3t/n/Ys9kh6JDlyqbueFMbC6nnu9hw1jt0GpUARqGsN7Aet8f58gPwoXIrKV1QnUgTvC20+J13v3RxpK3IO/uVkcw0L57hKXwYwcc0LfCOorD/naBfr88OGyTztU4PoaNiIqs/C2B2/oWgBrrY3Is10B5k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GnLGqJbZ; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E847E1F00898;
+	Sat, 30 May 2026 17:58:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780161336;
-	bh=lWcqVYzzTO0YY+pcJDjOXQziaF2cCL+UeRZsRuGU6K8=;
+	s=korg; t=1780163926;
+	bh=7jb3kFub0Lz8BYiEhpfXJfr0wDqoAFAP4Ys1hjPestI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=1mRTnx0f3VRFRUDD0cDEaMwP1Vkt0ttW+FQugUZKaLVJiNxJtGevkPjOCSncWW2sV
-	 TvxrJ9h+plqgWInDf0W9p/ApzWU4Iim40bQdqzlBRODVlpNieYghhmL5fu7Zmq0yO3
-	 sXud9OukkVCbttPPKCEDndTZmkwapUUCGZRzRSCc=
+	b=GnLGqJbZEU0vkGiQbBI5D/WECuPgIpw2Sv7dbpuyCPQXVAnP4XKfT1VIytvkuJYKX
+	 zrhtYRx1rwLMOG47Iwx1cflv3Vh3spShwRoxTopvL85Mvo4oQmfQQMnymzgLIXuk/j
+	 lJw0l0tvjPRgxfJB9dkU+59vNqb1y+MZWFodUTpo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	ZhengYuan Huang <gality369@gmail.com>,
-	Heming Zhao <heming.zhao@suse.com>,
-	Joseph Qi <joseph.qi@linux.alibaba.com>,
-	Mark Fasheh <mark@fasheh.com>,
-	Joel Becker <jlbec@evilplan.org>,
-	Junxiao Bi <junxiao.bi@oracle.com>,
-	Changwei Ge <gechangwei@live.cn>,
-	Jun Piao <piaojun@huawei.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
+	David Carlier <devnexen@gmail.com>,
+	Martin KaFai Lau <martin.lau@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 594/969] ocfs2: validate bg_bits during freefrag scan
+Subject: [PATCH 5.15 404/776] bpf: Use RCU-safe iteration in dev_map_redirect_multi() SKB path
 Date: Sat, 30 May 2026 18:01:58 +0200
-Message-ID: <20260530160316.820698785@linuxfoundation.org>
+Message-ID: <20260530160250.943989105@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260530160300.485627683@linuxfoundation.org>
-References: <20260530160300.485627683@linuxfoundation.org>
+In-Reply-To: <20260530160240.228940103@linuxfoundation.org>
+References: <20260530160240.228940103@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -76,149 +69,99 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-257540-lists,stable=lfdr.de];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,suse.com,linux.alibaba.com,fasheh.com,evilplan.org,oracle.com,live.cn,huawei.com,linux-foundation.org,kernel.org];
-	RCPT_COUNT_TWELVE(0.00)[13];
+	TAGGED_FROM(0.00)[bounces-258312-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,kernel.org];
+	TO_DN_SOME(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	NEURAL_HAM(-0.00)[-0.995];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	TO_DN_SOME(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[6];
 	FROM_HAS_DN(0.00)[]
-X-Rspamd-Queue-Id: C29E260F8DA
+X-Rspamd-Queue-Id: 36842610D3F
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: ZhengYuan Huang <gality369@gmail.com>
+From: David Carlier <devnexen@gmail.com>
 
-[ Upstream commit 8f687eeed3da3012152b0f9473f578869de0cd7b ]
+[ Upstream commit 8ed82f807bb09d2c8455aaa665f2c6cb17bc6a19 ]
 
-[BUG]
-A crafted filesystem can trigger an out-of-bounds bitmap walk when
-OCFS2_IOC_INFO is issued with OCFS2_INFO_FL_NON_COHERENT.
+The DEVMAP_HASH branch in dev_map_redirect_multi() uses
+hlist_for_each_entry_safe() to iterate hash buckets, but this function
+runs under RCU protection (called from xdp_do_generic_redirect_map()
+in softirq context). Concurrent writers (__dev_map_hash_update_elem,
+dev_map_hash_delete_elem) modify the list using RCU primitives
+(hlist_add_head_rcu, hlist_del_rcu).
 
-BUG: KASAN: use-after-free in instrument_atomic_read include/linux/instrumented.h:68 [inline]
-BUG: KASAN: use-after-free in _test_bit include/asm-generic/bitops/instrumented-non-atomic.h:141 [inline]
-BUG: KASAN: use-after-free in test_bit_le include/asm-generic/bitops/le.h:21 [inline]
-BUG: KASAN: use-after-free in ocfs2_info_freefrag_scan_chain fs/ocfs2/ioctl.c:495 [inline]
-BUG: KASAN: use-after-free in ocfs2_info_freefrag_scan_bitmap fs/ocfs2/ioctl.c:588 [inline]
-BUG: KASAN: use-after-free in ocfs2_info_handle_freefrag fs/ocfs2/ioctl.c:662 [inline]
-BUG: KASAN: use-after-free in ocfs2_info_handle_request+0x1c66/0x3370 fs/ocfs2/ioctl.c:754
-Read of size 8 at addr ffff888031bce000 by task syz.0.636/1435
-Call Trace:
- __dump_stack lib/dump_stack.c:94 [inline]
- dump_stack_lvl+0xbe/0x130 lib/dump_stack.c:120
- print_address_description mm/kasan/report.c:378 [inline]
- print_report+0xd1/0x650 mm/kasan/report.c:482
- kasan_report+0xfb/0x140 mm/kasan/report.c:595
- check_region_inline mm/kasan/generic.c:186 [inline]
- kasan_check_range+0x11c/0x200 mm/kasan/generic.c:200
- __kasan_check_read+0x11/0x20 mm/kasan/shadow.c:31
- instrument_atomic_read include/linux/instrumented.h:68 [inline]
- _test_bit include/asm-generic/bitops/instrumented-non-atomic.h:141 [inline]
- test_bit_le include/asm-generic/bitops/le.h:21 [inline]
- ocfs2_info_freefrag_scan_chain fs/ocfs2/ioctl.c:495 [inline]
- ocfs2_info_freefrag_scan_bitmap fs/ocfs2/ioctl.c:588 [inline]
- ocfs2_info_handle_freefrag fs/ocfs2/ioctl.c:662 [inline]
- ocfs2_info_handle_request+0x1c66/0x3370 fs/ocfs2/ioctl.c:754
- ocfs2_info_handle+0x18d/0x2a0 fs/ocfs2/ioctl.c:828
- ocfs2_ioctl+0x632/0x6e0 fs/ocfs2/ioctl.c:913
- vfs_ioctl fs/ioctl.c:51 [inline]
- __do_sys_ioctl fs/ioctl.c:597 [inline]
- __se_sys_ioctl fs/ioctl.c:583 [inline]
- __x64_sys_ioctl+0x197/0x1e0 fs/ioctl.c:583
- ...
+hlist_for_each_entry_safe() performs plain pointer dereferences without
+rcu_dereference(), missing the acquire barrier needed to pair with
+writers' rcu_assign_pointer(). On weakly-ordered architectures (ARM64,
+POWER), a reader can observe a partially-constructed node. It also
+defeats CONFIG_PROVE_RCU lockdep validation and KCSAN data-race
+detection.
 
-[CAUSE]
-ocfs2_info_freefrag_scan_chain() uses on-disk bg_bits directly as the
-bitmap scan limit. The coherent path reads group descriptors through
-ocfs2_read_group_descriptor(), which validates the descriptor before
-use. The non-coherent path uses ocfs2_read_blocks_sync() instead and
-skips that validation, so an impossible bg_bits value can drive the
-bitmap walk past the end of the block.
+Replace with hlist_for_each_entry_rcu() using rcu_read_lock_bh_held()
+as the lockdep condition, consistent with the rcu_dereference_check()
+used in the DEVMAP (non-hash) branch of the same functions. Also fix
+the same incorrect lockdep_is_held(&dtab->index_lock) condition in
+dev_map_enqueue_multi(), where the lock is not held either.
 
-[FIX]
-Compute the bitmap capacity from the filesystem format with
-ocfs2_group_bitmap_size(), report descriptors whose bg_bits exceeds
-that limit, and clamp the scan to the computed capacity. This keeps the
-freefrag report going while avoiding reads beyond the buffer.
-
-Link: https://lkml.kernel.org/r/20260410034220.3825769-1-gality369@gmail.com
-Fixes: d24a10b9f8ed ("Ocfs2: Add a new code 'OCFS2_INFO_FREEFRAG' for o2info ioctl.")
-Signed-off-by: ZhengYuan Huang <gality369@gmail.com>
-Reviewed-by: Heming Zhao <heming.zhao@suse.com>
-Reviewed-by: Joseph Qi <joseph.qi@linux.alibaba.com>
-Cc: Mark Fasheh <mark@fasheh.com>
-Cc: Joel Becker <jlbec@evilplan.org>
-Cc: Junxiao Bi <junxiao.bi@oracle.com>
-Cc: Changwei Ge <gechangwei@live.cn>
-Cc: Jun Piao <piaojun@huawei.com>
-Cc: Heming Zhao <heming.zhao@suse.com>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Fixes: e624d4ed4aa8 ("xdp: Extend xdp_redirect_map with broadcast support")
+Signed-off-by: David Carlier <devnexen@gmail.com>
+Signed-off-by: Martin KaFai Lau <martin.lau@kernel.org>
+Link: https://patch.msgid.link/20260320072645.16731-1-devnexen@gmail.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/ocfs2/ioctl.c | 18 +++++++++++++++++-
- 1 file changed, 17 insertions(+), 1 deletion(-)
+ kernel/bpf/devmap.c | 5 ++---
+ 1 file changed, 2 insertions(+), 3 deletions(-)
 
-diff --git a/fs/ocfs2/ioctl.c b/fs/ocfs2/ioctl.c
-index afd54ec661030..84fb4bc33db9e 100644
---- a/fs/ocfs2/ioctl.c
-+++ b/fs/ocfs2/ioctl.c
-@@ -442,13 +442,16 @@ static int ocfs2_info_freefrag_scan_chain(struct ocfs2_super *osb,
- 	struct buffer_head *bh = NULL;
- 	struct ocfs2_group_desc *bg = NULL;
+diff --git a/kernel/bpf/devmap.c b/kernel/bpf/devmap.c
+index 6274cf7011901..6ad4b068abc77 100644
+--- a/kernel/bpf/devmap.c
++++ b/kernel/bpf/devmap.c
+@@ -635,7 +635,7 @@ int dev_map_enqueue_multi(struct xdp_frame *xdpf, struct net_device *dev_rx,
+ 		for (i = 0; i < dtab->n_buckets; i++) {
+ 			head = dev_map_index_hash(dtab, i);
+ 			hlist_for_each_entry_rcu(dst, head, index_hlist,
+-						 lockdep_is_held(&dtab->index_lock)) {
++						rcu_read_lock_bh_held()) {
+ 				if (!is_valid_dst(dst, xdpf))
+ 					continue;
  
--	unsigned int max_bits, num_clusters;
-+	unsigned int max_bits, max_bitmap_bits, num_clusters;
- 	unsigned int offset = 0, cluster, chunk;
- 	unsigned int chunk_free, last_chunksize = 0;
- 
- 	if (!le32_to_cpu(rec->c_free))
- 		goto bail;
- 
-+	max_bitmap_bits = 8 * ocfs2_group_bitmap_size(osb->sb, 0,
-+					      osb->s_feature_incompat);
-+
- 	do {
- 		if (!bg)
- 			blkno = le64_to_cpu(rec->c_blkno);
-@@ -480,6 +483,19 @@ static int ocfs2_info_freefrag_scan_chain(struct ocfs2_super *osb,
- 			continue;
- 
- 		max_bits = le16_to_cpu(bg->bg_bits);
-+
-+		/*
-+		 * Non-coherent scans read raw blocks and do not get the
-+		 * bg_bits validation from
-+		 * ocfs2_read_group_descriptor().
-+		 */
-+		if (max_bits > max_bitmap_bits) {
-+			mlog(ML_ERROR,
-+			     "Group desc #%llu has %u bits, max bitmap bits %u\n",
-+			     (unsigned long long)blkno, max_bits, max_bitmap_bits);
-+			max_bits = max_bitmap_bits;
-+		}
-+
- 		offset = 0;
- 
- 		for (chunk = 0; chunk < chunks_in_group; chunk++) {
+@@ -717,7 +717,6 @@ int dev_map_redirect_multi(struct net_device *dev, struct sk_buff *skb,
+ 	struct bpf_dtab_netdev *dst, *last_dst = NULL;
+ 	int excluded_devices[1+MAX_NEST_DEV];
+ 	struct hlist_head *head;
+-	struct hlist_node *next;
+ 	int num_excluded = 0;
+ 	unsigned int i;
+ 	int err;
+@@ -757,7 +756,7 @@ int dev_map_redirect_multi(struct net_device *dev, struct sk_buff *skb,
+ 	} else { /* BPF_MAP_TYPE_DEVMAP_HASH */
+ 		for (i = 0; i < dtab->n_buckets; i++) {
+ 			head = dev_map_index_hash(dtab, i);
+-			hlist_for_each_entry_safe(dst, next, head, index_hlist) {
++			hlist_for_each_entry_rcu(dst, head, index_hlist, rcu_read_lock_bh_held()) {
+ 				if (is_ifindex_excluded(excluded_devices, num_excluded,
+ 							dst->dev->ifindex))
+ 					continue;
 -- 
 2.53.0
 
