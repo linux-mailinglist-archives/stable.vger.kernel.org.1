@@ -1,62 +1,66 @@
-Return-Path: <stable+bounces-258823-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-258221-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id aKDpHAAuG2pa/wgAu9opvQ
-	(envelope-from <stable+bounces-258823-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:35:44 +0200
+	id +NrnIRYnG2qf/ggAu9opvQ
+	(envelope-from <stable+bounces-258221-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:06:14 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 004AA6120B7
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:35:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E2D2F610FE3
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:06:13 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 4EE5330F7D55
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 18:27:40 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id EB16F30EDE84
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 17:53:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 73B1E282F23;
-	Sat, 30 May 2026 18:27:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C073D3546EA;
+	Sat, 30 May 2026 17:53:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WoKrPGpr"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lEsM1IC9"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 49779279DC9;
-	Sat, 30 May 2026 18:27:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8500E30EF7D;
+	Sat, 30 May 2026 17:53:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780165658; cv=none; b=DdnQqkp+Pmxr6XSLL1feEB6ch4mC0r8Gh9CmRR3tv29Knat5f1RJT7L9IXD+vFXTQuPFWnM11fCNEcf6rSghs6qnaYw73pZWYH62+7q4eqhR33zjEKDjhNk64I5NbvZ2c6MlUNdw0J4Sg3I+vI5xlc+X88bxVryipXsx5hE1pVE=
+	t=1780163620; cv=none; b=c7YEHIJCUhIctFsOhW6a7yDFd/isnc8+g+yJO4JwcsEIL7UdMNkHOFvcNeBrjUg6s/GA5V5LXMq6K4yRNBMlr59kIB0YI9jcO3maj6GVN1PnXCc0sZ+TkpSLY5xtByp5ff+gVPmcZjlnuJIxU/ybTj+vITdsQZiW+YUXVMZlVi8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780165658; c=relaxed/simple;
-	bh=DUvV1HesAXIAmCp3qcl+Ykaxk4f17asbkrSlhPenJxI=;
+	s=arc-20240116; t=1780163620; c=relaxed/simple;
+	bh=LjDDV0pbRKn0rXM0iVaf1yMOYwVCJt6lVj8BQtOObXc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ivWoi4vJ1eFGa2wsBtQm1b936Ml/vHW1nLJ8nAbB8jtbYE6qlXGrB+9TJmaCewK2X0JQx/AZ6dLpWoN3woONTIMcJvNugnY6gSGvWdb7/6eTGt1+w4xNTXU1shknIbZOosx9ELb4eZeosBywnEX/axPuz0jaufs0p7l7Y5lo+Po=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WoKrPGpr; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8DBEF1F00893;
-	Sat, 30 May 2026 18:27:36 +0000 (UTC)
+	 MIME-Version; b=EBSPJrpT3uNJfmY2fXuTr9wwSh5PXsuqUxGCKVX0kDiHfZg/a9oLsUkwfbOf6fKiZYWbAMHmneiJ1jGekzk6CLeApwgVOdy5bExSpb5n/6xwHfMVKTx+ZVOFAHadx8RQanrzjmpoTyPVzrJCcoTNF+OokWnS5x0QgUVRrpAh1HE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lEsM1IC9; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C90B41F00893;
+	Sat, 30 May 2026 17:53:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780165657;
-	bh=P/nfNh0T8m/1KkJAGbePJ6ny6W4cxyD6T5UpMZhX/XY=;
+	s=korg; t=1780163619;
+	bh=IOZndCv3WTbE4P9m7YNcEgYmVe7UhPLn2AcEnj55xdE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=WoKrPGpr38m5J5xadENWPXknnki6BEPf8zGJLdWOvWcvmmTJj2MKixzVn/tPl91cg
-	 wIypVaN3VuU9n7B9TTJidBRFaD7wu75yqiCvhTmGVhUWLauRpPnzOIfTb+L02Jvoct
-	 2/gFYzNqJPr5cxZgqSNTRNY7HLJuFEGZo5r3UCRU=
+	b=lEsM1IC9+rYjfgbLfYwWjiV7xvUG/lcidgB6nKcRHaVrPYOfEQc0DEy7TTNbdLxuk
+	 zAE2cchZiaNOPXVJXKHe6ELFMuituHxX5vNfU+sPuJIjh1N4FlEGkOH4rWig94Udo5
+	 L2VNRGOyu3Q8p93FMNP47sgd7HugKB8WgdU8fiO0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Thomas Zimmermann <tzimmermann@suse.de>,
-	Tzung-Bi Shih <tzungbi@kernel.org>,
-	Julius Werner <jwerner@chromium.org>,
-	Samuel Holland <samuel@sholland.org>,
-	Brian Norris <briannorris@chromium.org>,
-	chrome-platform@lists.linux.dev
-Subject: [PATCH 5.10 144/589] firmware: google: framebuffer: Do not mark framebuffer as busy
-Date: Sat, 30 May 2026 18:00:25 +0200
-Message-ID: <20260530160228.565585984@linuxfoundation.org>
+	stable@kernel.org,
+	Yuan Tan <yuantan098@gmail.com>,
+	Yifan Wu <yifanwucs@gmail.com>,
+	Juefei Pu <tomapufckgml@gmail.com>,
+	Xin Liu <bird@lzu.edu.cn>,
+	Xiao Liu <lx24@stu.ynu.edu.cn>,
+	Nan Li <tonanli66@gmail.com>,
+	Ren Wei <n05ec@lzu.edu.cn>,
+	Allison Henderson <achender@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>
+Subject: [PATCH 5.15 312/776] net/rds: handle zerocopy send cleanup before the message is queued
+Date: Sat, 30 May 2026 18:00:26 +0200
+Message-ID: <20260530160248.633466448@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260530160224.570625122@linuxfoundation.org>
-References: <20260530160224.570625122@linuxfoundation.org>
+In-Reply-To: <20260530160240.228940103@linuxfoundation.org>
+References: <20260530160240.228940103@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,81 +73,122 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	TAGGED_FROM(0.00)[bounces-258221-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,kernel.org,gmail.com,lzu.edu.cn,stu.ynu.edu.cn,redhat.com];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	RCPT_COUNT_TWELVE(0.00)[13];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-258823-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	NEURAL_HAM(-0.00)[-0.996];
-	RCPT_COUNT_SEVEN(0.00)[9];
-	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[suse.de:email,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,msgid.link:url,sholland.org:email,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,linux.dev:email,chromium.org:email]
-X-Rspamd-Queue-Id: 004AA6120B7
+	MID_RHS_MATCH_FROM(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,msgid.link:url,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,lzu.edu.cn:email]
+X-Rspamd-Queue-Id: E2D2F610FE3
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Thomas Zimmermann <tzimmermann@suse.de>
+From: Nan Li <tonanli66@gmail.com>
 
-commit f3850d399de3b6142b02315227ef9e772ed0c302 upstream.
+commit 44b550d88b267320459d518c0743a241ab2108fa upstream.
 
-Remove the flag IORESOURCE_BUSY flag from coreboot's framebuffer
-resource. It prevents simpledrm from successfully requesting the
-range for its own use; resulting in errors such as
+A zerocopy send can fail after user pages have been pinned but before
+the message is attached to the sending socket.
 
-[    2.775430] simple-framebuffer simple-framebuffer.0: [drm] could not acquire memory region [mem 0x80000000-0x80407fff flags 0x80000200]
+The purge path currently infers zerocopy state from rm->m_rs, so an
+unqueued message can be cleaned up as if it owned normal payload pages.
+However, zerocopy ownership is really determined by the presence of
+op_mmp_znotifier, regardless of whether the message has reached the
+socket queue.
 
-As with other uses of simple-framebuffer, the simple-framebuffer
-device should only declare it's I/O resources, but not actively use
-them.
+Capture op_mmp_znotifier up front in rds_message_purge() and use it as
+the cleanup discriminator. If the message is already associated with a
+socket, keep the existing completion path. Otherwise, drop the pinned
+page accounting directly and release the notifier before putting the
+payload pages.
 
-Signed-off-by: Thomas Zimmermann <tzimmermann@suse.de>
-Fixes: 851b4c14532d ("firmware: coreboot: Add coreboot framebuffer driver")
-Acked-by: Tzung-Bi Shih <tzungbi@kernel.org>
-Acked-by: Julius Werner <jwerner@chromium.org>
-Cc: Samuel Holland <samuel@sholland.org>
-Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: Tzung-Bi Shih <tzungbi@kernel.org>
-Cc: Brian Norris <briannorris@chromium.org>
-Cc: Julius Werner <jwerner@chromium.org>
-Cc: chrome-platform@lists.linux.dev
-Cc: <stable@vger.kernel.org> # v4.18+
-Link: https://patch.msgid.link/20260217155836.96267-3-tzimmermann@suse.de
+This keeps early send failure cleanup consistent with the zerocopy
+lifetime rules without changing the normal queued completion path.
+
+Fixes: 0cebaccef3ac ("rds: zerocopy Tx support.")
+Cc: stable@kernel.org
+Reported-by: Yuan Tan <yuantan098@gmail.com>
+Reported-by: Yifan Wu <yifanwucs@gmail.com>
+Reported-by: Juefei Pu <tomapufckgml@gmail.com>
+Reported-by: Xin Liu <bird@lzu.edu.cn>
+Co-developed-by: Xiao Liu <lx24@stu.ynu.edu.cn>
+Signed-off-by: Xiao Liu <lx24@stu.ynu.edu.cn>
+Signed-off-by: Nan Li <tonanli66@gmail.com>
+Signed-off-by: Ren Wei <n05ec@lzu.edu.cn>
+Reviewed-by: Allison Henderson <achender@kernel.org>
+Link: https://patch.msgid.link/d2ea98a6313d5467bac00f7c9fef8c7acddb9258.1777550074.git.tonanli66@gmail.com
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/firmware/google/framebuffer-coreboot.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ net/rds/message.c |   20 +++++++++++++++-----
+ 1 file changed, 15 insertions(+), 5 deletions(-)
 
---- a/drivers/firmware/google/framebuffer-coreboot.c
-+++ b/drivers/firmware/google/framebuffer-coreboot.c
-@@ -50,7 +50,7 @@ static int framebuffer_probe(struct core
- 		return -ENODEV;
+--- a/net/rds/message.c
++++ b/net/rds/message.c
+@@ -129,24 +129,34 @@ static void rds_rm_zerocopy_callback(str
+  */
+ static void rds_message_purge(struct rds_message *rm)
+ {
++	struct rds_znotifier *znotifier;
+ 	unsigned long i, flags;
+-	bool zcopy = false;
++	bool zcopy;
  
- 	memset(&res, 0, sizeof(res));
--	res.flags = IORESOURCE_MEM | IORESOURCE_BUSY;
-+	res.flags = IORESOURCE_MEM;
- 	res.name = "Coreboot Framebuffer";
- 	res.start = fb->physical_address;
- 	length = PAGE_ALIGN(fb->y_resolution * fb->bytes_per_line);
+ 	if (unlikely(test_bit(RDS_MSG_PAGEVEC, &rm->m_flags)))
+ 		return;
+ 
+ 	spin_lock_irqsave(&rm->m_rs_lock, flags);
++	znotifier = rm->data.op_mmp_znotifier;
++	rm->data.op_mmp_znotifier = NULL;
++	zcopy = !!znotifier;
++
+ 	if (rm->m_rs) {
+ 		struct rds_sock *rs = rm->m_rs;
+ 
+-		if (rm->data.op_mmp_znotifier) {
+-			zcopy = true;
+-			rds_rm_zerocopy_callback(rs, rm->data.op_mmp_znotifier);
++		if (znotifier) {
++			rds_rm_zerocopy_callback(rs, znotifier);
+ 			rds_wake_sk_sleep(rs);
+-			rm->data.op_mmp_znotifier = NULL;
+ 		}
+ 		sock_put(rds_rs_to_sk(rs));
+ 		rm->m_rs = NULL;
++	} else if (znotifier) {
++		/*
++		 * Zerocopy can fail before the message is queued on the
++		 * socket, so there is no rs to carry the notification.
++		 */
++		mm_unaccount_pinned_pages(&znotifier->z_mmp);
++		kfree(rds_info_from_znotifier(znotifier));
+ 	}
+ 	spin_unlock_irqrestore(&rm->m_rs_lock, flags);
+ 
 
 
 
