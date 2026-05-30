@@ -1,57 +1,60 @@
-Return-Path: <stable+bounces-258087-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-258711-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id cFquMfAjG2rO/QgAu9opvQ
-	(envelope-from <stable+bounces-258087-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:52:48 +0200
+	id EJyaLKIqG2ra/ggAu9opvQ
+	(envelope-from <stable+bounces-258711-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:21:22 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 59F9F61090D
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:52:48 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 63017611901
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:21:22 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 52A9F30C6CCD
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 17:46:17 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id AD5E930117EB
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 18:21:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DD5443AB482;
-	Sat, 30 May 2026 17:46:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DD907233D9E;
+	Sat, 30 May 2026 18:21:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pLR2FHZn"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="s6xnAUoM"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C364C223DC6;
-	Sat, 30 May 2026 17:46:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C1F5A2E7390;
+	Sat, 30 May 2026 18:21:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780163176; cv=none; b=Xgi9zqCzdaZYzRtumiCcYJyQWp9OhrN657wGL1azSR0veYz0h8rpTutlNYwifyXFpXqBQX5SGvkNALp6Rmb89dgtD6RG2qlMlPRiCxolpNKsnXUS6M1xgAUvxgiEIbxVukqLS/IXz+90IQ6xanVBUVTLN5KwLTNpzRgIXg1VoFo=
+	t=1780165280; cv=none; b=L3TX36v0BjYYrEXZD3IGn+JdL4i9wA2T5SPFAgv7po9iWIe8jXU0w87t2+oz13SkAaXVVLJgPiuxwOLCljFqVpxV1Pg2j2W8XFQiPB2n3KhIG121lT4RvVvyJBI89ueLWgUGQ5oZbHMG3wXtKWx/G4jidnsG2GEi6cCZd74Kwy0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780163176; c=relaxed/simple;
-	bh=krFK53l77oo/a1ZxlOzR4TGfvCD58u3HrSliXOBUgMo=;
+	s=arc-20240116; t=1780165280; c=relaxed/simple;
+	bh=LC8nYf3II/3iCH3xypaufJepryUCFcvimGUfmvbZYyo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=CKti9ul4J4krpsNybKopqdwpITqKXD5O+fmMuWZoJ8bdGk5n+05UDwsaYKZZnk9JzweVLIwMp62xjFIP4a9vEhvJ0Tku8Liuu5BuCBwvO1lAXbkOmJpOfUYdQMfdd/6q+TDCteU3t/MGj7YuL0dkhDkg6Zl1lLGfaKHfNN/pCy0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pLR2FHZn; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1379A1F00893;
-	Sat, 30 May 2026 17:46:14 +0000 (UTC)
+	 MIME-Version; b=l2d8NHO+z3b4wpAGaMUYyyC75SFWjUBnyrWFIrykLmsLtPGu294hExh/FRQw3OWjVc/t2a9DsmC8aQ3TjQTutRQqfPYNwBCjRehXlRrbTwVpQfqnK4LeMLiZZILjhAt95Ila5TWJ+y3zi1fiSSKutFPw0ENPnOq3QXB9npWGCJ4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=s6xnAUoM; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0E4381F00893;
+	Sat, 30 May 2026 18:21:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780163175;
-	bh=PTISUM+ESGvFjLBRWrTmMIHQGQ2+PhIJ4TfcNa1I5TU=;
+	s=korg; t=1780165279;
+	bh=/ijhUwSq/7jqBaIMgBY4Z9ANLQAtq00kontjcj46kNQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=pLR2FHZnemC9Qup/66QMs1gBsPEpRbxrFy44dqrqSqf3uH4T8BfmmY44MHjRR4jn7
-	 65sK2ae74l6VuSGjivRFtg3ESypGL/FWvK6gIxE++qDRKDs+OELy06Ed1+ipqiwknZ
-	 hNdf9IqfM3hR+8FIyCTsiO15wd+NsVXxboroTk44=
+	b=s6xnAUoM5i4HZSNFM7a973hceGUVliaB99yQPa19UIQKmsj6l10Q1ajm2kQeZYrBA
+	 MwYeBmDrUzmb/rDVwTC4rM0YG4Cv5IeKsOLsjHKWNENwSyMmK+V8wRVMK7Z+Mli6fq
+	 p2zB/J0Yrqttom0JNcqas56cCxV2Rvaa78uf/UFo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Daniel Starke <daniel.starke@siemens.com>
-Subject: [PATCH 5.15 179/776] tty: n_gsm: fix flow control handling in tx path
+	Pengpeng Hou <pengpeng@iscas.ac.cn>,
+	Arend van Spriel <arend.vanspriel@broadcom.com>,
+	Johannes Berg <johannes.berg@intel.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 012/589] wifi: brcmfmac: validate bsscfg indices in IF events
 Date: Sat, 30 May 2026 17:58:13 +0200
-Message-ID: <20260530160245.125617544@linuxfoundation.org>
+Message-ID: <20260530160224.901479845@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260530160240.228940103@linuxfoundation.org>
-References: <20260530160240.228940103@linuxfoundation.org>
+In-Reply-To: <20260530160224.570625122@linuxfoundation.org>
+References: <20260530160224.570625122@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,68 +67,79 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-258711-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
-	TAGGED_FROM(0.00)[bounces-258087-lists,stable=lfdr.de];
-	RCPT_COUNT_THREE(0.00)[4];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[stable];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	NEURAL_HAM(-0.00)[-0.996];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	MID_RHS_MATCH_FROM(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	FROM_HAS_DN(0.00)[]
-X-Rspamd-Queue-Id: 59F9F61090D
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,intel.com:email,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim,broadcom.com:email,iscas.ac.cn:email]
+X-Rspamd-Queue-Id: 63017611901
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Daniel Starke <daniel.starke@siemens.com>
+From: Pengpeng Hou <pengpeng@iscas.ac.cn>
 
-commit 59ff0680ecbfec742b1e0381e7cc46b41eb06647 upstream.
+[ Upstream commit 304950a467d83678bd0b0f46331882e2ac23b12d ]
 
-The current implementation constipates all transmission paths during flow
-control except for flow control frames. However, these may not be located
-at the beginning of the transmission queue of the control channel.
-Ensure that flow control frames in the transmission queue for the control
-channel are always handled even if constipated by skipping through other
-messages.
+brcmf_fweh_handle_if_event() validates the firmware-provided interface
+index before it touches drvr->iflist[], but it still uses the raw
+bsscfgidx field as an array index without a matching range check.
 
-Fixes: 0af021678d5d ("tty: n_gsm: fix deadlock and link starvation in outgoing data path")
-Signed-off-by: Daniel Starke <daniel.starke@siemens.com>
-Link: https://lore.kernel.org/r/20220707113223.3685-3-daniel.starke@siemens.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Reject IF events whose bsscfg index does not fit in drvr->iflist[]
+before indexing the interface array.
+
+Signed-off-by: Pengpeng Hou <pengpeng@iscas.ac.cn>
+Acked-by: Arend van Spriel <arend.vanspriel@broadcom.com>
+Link: https://patch.msgid.link/20260323074551.93530-1-pengpeng@iscas.ac.cn
+[add missing wifi prefix]
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/tty/n_gsm.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/net/wireless/broadcom/brcm80211/brcmfmac/fweh.c | 5 +++++
+ 1 file changed, 5 insertions(+)
 
---- a/drivers/tty/n_gsm.c
-+++ b/drivers/tty/n_gsm.c
-@@ -897,7 +897,7 @@ static int gsm_data_kick(struct gsm_mux
- 	/* Serialize control messages and control channel messages first */
- 	list_for_each_entry_safe(msg, nmsg, &gsm->tx_ctrl_list, list) {
- 		if (gsm->constipated && !gsm_is_flow_ctrl_msg(msg))
--			return -EAGAIN;
-+			continue;
- 		ret = gsm_send_packet(gsm, msg);
- 		switch (ret) {
- 		case -ENOSPC:
+diff --git a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/fweh.c b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/fweh.c
+index 1285d3685c4f5..51260a0c8e0a7 100644
+--- a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/fweh.c
++++ b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/fweh.c
+@@ -151,6 +151,11 @@ static void brcmf_fweh_handle_if_event(struct brcmf_pub *drvr,
+ 		bphy_err(drvr, "invalid interface index: %u\n", ifevent->ifidx);
+ 		return;
+ 	}
++	if (ifevent->bsscfgidx >= BRCMF_MAX_IFS) {
++		bphy_err(drvr, "invalid bsscfg index: %u\n",
++			 ifevent->bsscfgidx);
++		return;
++	}
+ 
+ 	ifp = drvr->iflist[ifevent->bsscfgidx];
+ 
+-- 
+2.53.0
+
 
 
 
