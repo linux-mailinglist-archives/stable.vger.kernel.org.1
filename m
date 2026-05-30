@@ -1,61 +1,65 @@
-Return-Path: <stable+bounces-257403-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-258178-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id CDjeNrcZG2oq/QgAu9opvQ
-	(envelope-from <stable+bounces-257403-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:09:11 +0200
+	id cOpWEu4kG2pm/ggAu9opvQ
+	(envelope-from <stable+bounces-258178-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:57:02 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id E3E4A60EFDD
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:09:10 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id BCB03610B0D
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:57:00 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 324333009E1C
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 17:08:01 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 22BBF3036E5C
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 17:51:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9BCF534104B;
-	Sat, 30 May 2026 17:07:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 66C7B349CCF;
+	Sat, 30 May 2026 17:51:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ibKkaBOo"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yMVbCFUA"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 73FE635200B;
-	Sat, 30 May 2026 17:07:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 36BD5320CAD;
+	Sat, 30 May 2026 17:51:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780160878; cv=none; b=TDuVs9AaOZf/0BwA6m25nNoa6hGZKJR8RJjoucwrmWukkfhe7hkTuGSKl0KrNqNTTQFEZTEmG8MlHqs9AQtC0Y2dVMSOTM4w1JUxSSWZqhFwZ/SHnVXNNXT3yTRoitF0cyXNPKM71SRGfFIJGeCLI5x5rDOJW6k0c1tKR+PoBY0=
+	t=1780163476; cv=none; b=aK0UeqSZzatbSlBSDVHamb0kUuD39N76/A1ch96aoAhlkdcnW/4YH7nKh5Cqr5LWKJZpk8tdTOa3XV1lGV0YbKKjOTnJkek5vzOzZfsY/PwmodzkGLL6g1/qDfcVvaNj/VtgmkRXDwVTt8EYomhqXvZaNftRgFknziKz1sF4OrU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780160878; c=relaxed/simple;
-	bh=0ZbgGw9Hpv99k5iWoL5cxJfEv0nIaBMfnjIrahkR8Tc=;
+	s=arc-20240116; t=1780163476; c=relaxed/simple;
+	bh=2yu6VQTy7OCxmoXUn/8JhgO/dAjmald1E4Bg7fQ6k54=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=PYDdLYaRydkl6vJOklY1xthQUit1vwTc0sJEZll8f5xkdji+rzpSU+1VW2Rpjy6FMiSHbi7GeSTeb4Oof+02D/4raOMt3hiqZE2E24Yum+sFB5m2qu9pDvqbwrUbFFpDhxrpO38lLvP5csmdfnRlZwXVNLRxp3DniTh49qEiVBc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ibKkaBOo; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A36761F00893;
-	Sat, 30 May 2026 17:07:56 +0000 (UTC)
+	 MIME-Version; b=p7AK0STD7JshsLAyTh9M28hF0+FkOjKI6uUUEyLc3bTgPvPdmLe7FxRPXSDNCGCpH9VACwD20PDxLtelwOwIT2FRDPIWb0nzdNZCkyagEtBptK8RlL3ZDfvS7EprLZaB9DWkehIh1fDTZzoCjID/f1zInmkeofZ8o41AG4L/7+M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yMVbCFUA; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7A4341F00893;
+	Sat, 30 May 2026 17:51:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780160877;
-	bh=T1F8IeqNhlmt/TArBB2Bky2JIf4D+2DG6kdHqTvs4PM=;
+	s=korg; t=1780163475;
+	bh=YpJAm/fNLF7kgd7Ft//sVJoghP2r2WZNmS1/SYY71h0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=ibKkaBOoLLREga3H1boK5RFvlAmjeS0JRoZoWG4WPjXeze45e3/6NQH4Kw6l1c1o7
-	 NjZ/DjmbhVmR2DMpNOg5WYsAoKRJUbpuNvcF8TQvIweRUBRyqfbAEarpOfLbPUQn69
-	 yDMDlpFz+Xk5F8AmlH0CVVUdnM1z9Qsg085zzpqY=
+	b=yMVbCFUAMQXwCyv8Y2fuGFWpK+wqGU7gDtpAyJP+usnIbNclxUWJc6KRUAALttwcX
+	 tYupBCgs/TNePyUPfI6sJhcb3b4pTA+CYZC1XSe5B1crOrfQ+UPAKZLX40TnsvD1tY
+	 Ke2VKUojvJDBuk194NxKIMgWghxKxPwlAmE2EL4E=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Aditya Gupta <adityag@linux.ibm.com>,
-	Sourabh Jain <sourabhjain@linux.ibm.com>,
-	Hari Bathini <hbathini@linux.ibm.com>,
-	Madhavan Srinivasan <maddy@linux.ibm.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 460/969] powerpc/crash: fix backup region offset update to elfcorehdr
+	stable@kernel.org,
+	Yuan Tan <yuantan098@gmail.com>,
+	Yifan Wu <yifanwucs@gmail.com>,
+	Juefei Pu <tomapufckgml@gmail.com>,
+	Xin Liu <bird@lzu.edu.cn>,
+	Kai Ma <k4729.23098@gmail.com>,
+	Ren Wei <n05ec@lzu.edu.cn>,
+	Fernando Fernandez Mancera <fmancera@suse.de>,
+	Pablo Neira Ayuso <pablo@netfilter.org>
+Subject: [PATCH 5.15 270/776] netfilter: reject zero shift in nft_bitwise
 Date: Sat, 30 May 2026 17:59:44 +0200
-Message-ID: <20260530160312.985086893@linuxfoundation.org>
+Message-ID: <20260530160247.536382910@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260530160300.485627683@linuxfoundation.org>
-References: <20260530160300.485627683@linuxfoundation.org>
+In-Reply-To: <20260530160240.228940103@linuxfoundation.org>
+References: <20260530160240.228940103@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,96 +69,86 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-2.16 / 15.00];
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_FROM(0.00)[bounces-257403-lists,stable=lfdr.de];
-	FROM_HAS_DN(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	RCVD_TLS_LAST(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
 	MIME_TRACE(0.00)[0:+];
+	RCPT_COUNT_TWELVE(0.00)[12];
+	TAGGED_FROM(0.00)[bounces-258178-lists,stable=lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,kernel.org,gmail.com,lzu.edu.cn,suse.de,netfilter.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	FROM_HAS_DN(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[8];
-	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	TO_DN_SOME(0.00)[]
-X-Rspamd-Queue-Id: E3E4A60EFDD
+	MID_RHS_MATCH_FROM(0.00)[];
+	TO_DN_SOME(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,lzu.edu.cn:email,suse.de:email,netfilter.org:email,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim]
+X-Rspamd-Queue-Id: BCB03610B0D
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sourabh Jain <sourabhjain@linux.ibm.com>
+From: Kai Ma <k4729.23098@gmail.com>
 
-[ Upstream commit 789335cacdf37da93bb7c70322dff8c7e82881df ]
+commit fe11e5c40817b84abaa5d83bfb6586d8412bfd07 upstream.
 
-update_backup_region_phdr() in file_load_64.c iterates over all the
-program headers in the kdump kernel’s elfcorehdr and updates the
-p_offset of the program header whose physical address starts at 0.
+Reject zero shift operands for nft_bitwise left and right shift
+expressions during initialization.
 
-However, the loop logic is incorrect because the program header pointer
-is not updated during iteration. Since elfcorehdr typically contains
-PT_NOTE entries first, the PT_LOAD program header with physical address
-0 is never reached. As a result, its p_offset is not updated to point to
-the backup region.
+The carry propagation logic computes the carry from the adjacent 32-bit
+word using BITS_PER_TYPE(u32) - shift. A zero shift operand turns this
+into a 32-bit shift, which is undefined behaviour.
 
-Because of this behavior, the capture kernel exports the first 64 KB of
-the crashed kernel’s memory at offset 0, even though that memory
-actually lives in the backup region. When a crash happens, purgatory
-copies the first 64 KB of the crashed kernel’s memory into the backup
-region so the capture kernel can safely use it.
+Reject zero shift operands in the control plane, alongside the existing
+check for values greater than or equal to 32, so malformed rules never
+reach the packet path.
 
-This has not caused problems so far because the first 64 KB is usually
-identical in both the crashed and capture kernels. However, this is
-just an assumption and is not guaranteed to always hold true.
-
-Fix update_backup_region_phdr() to correctly update the p_offset of the
-program header with a starting physical address of 0 by correcting the
-logic used to iterate over the program headers.
-
-Fixes: cb350c1f1f86 ("powerpc/kexec_file: Prepare elfcore header for crashing kernel")
-Reviewed-by: Aditya Gupta <adityag@linux.ibm.com>
-Signed-off-by: Sourabh Jain <sourabhjain@linux.ibm.com>
-Reviewed-by: Hari Bathini <hbathini@linux.ibm.com>
-Signed-off-by: Madhavan Srinivasan <maddy@linux.ibm.com>
-Link: https://patch.msgid.link/20260312083051.1935737-2-sourabhjain@linux.ibm.com
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 567d746b55bc ("netfilter: bitwise: add support for shifts.")
+Cc: stable@kernel.org
+Reported-by: Yuan Tan <yuantan098@gmail.com>
+Reported-by: Yifan Wu <yifanwucs@gmail.com>
+Reported-by: Juefei Pu <tomapufckgml@gmail.com>
+Reported-by: Xin Liu <bird@lzu.edu.cn>
+Signed-off-by: Kai Ma <k4729.23098@gmail.com>
+Signed-off-by: Ren Wei <n05ec@lzu.edu.cn>
+Reviewed-by: Fernando Fernandez Mancera <fmancera@suse.de>
+Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/powerpc/kexec/file_load_64.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ net/netfilter/nft_bitwise.c |    3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/arch/powerpc/kexec/file_load_64.c b/arch/powerpc/kexec/file_load_64.c
-index 04d100ca18b86..9e3382e824311 100644
---- a/arch/powerpc/kexec/file_load_64.c
-+++ b/arch/powerpc/kexec/file_load_64.c
-@@ -768,7 +768,7 @@ static void update_backup_region_phdr(struct kimage *image, Elf64_Ehdr *ehdr)
- 	unsigned int i;
+--- a/net/netfilter/nft_bitwise.c
++++ b/net/netfilter/nft_bitwise.c
+@@ -149,7 +149,8 @@ static int nft_bitwise_init_shift(struct
+ 	if (err < 0)
+ 		return err;
  
- 	phdr = (Elf64_Phdr *)(ehdr + 1);
--	for (i = 0; i < ehdr->e_phnum; i++) {
-+	for (i = 0; i < ehdr->e_phnum; i++, phdr++) {
- 		if (phdr->p_paddr == BACKUP_SRC_START) {
- 			phdr->p_offset = image->arch.backup_start;
- 			pr_debug("Backup region offset updated to 0x%lx\n",
--- 
-2.53.0
-
+-	if (priv->data.data[0] >= BITS_PER_TYPE(u32)) {
++	if (!priv->data.data[0] ||
++	    priv->data.data[0] >= BITS_PER_TYPE(u32)) {
+ 		nft_data_release(&priv->data, desc.type);
+ 		return -EINVAL;
+ 	}
 
 
 
