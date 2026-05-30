@@ -1,60 +1,66 @@
-Return-Path: <stable+bounces-257673-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-259050-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 8PXvLpUdG2qV/QgAu9opvQ
-	(envelope-from <stable+bounces-257673-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:25:41 +0200
+	id gH1VOaUxG2qkAAkAu9opvQ
+	(envelope-from <stable+bounces-259050-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:51:17 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5DC4E60F9C6
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:25:41 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5D6F46129E4
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:51:17 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 14CF5303323A
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 17:23:13 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id C5FA03036763
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 18:40:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A771B33FE15;
-	Sat, 30 May 2026 17:23:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 575EA33AD99;
+	Sat, 30 May 2026 18:40:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YvL5P3E+"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Gzc0pUz6"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8E63B263F44;
-	Sat, 30 May 2026 17:23:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F0E9D21B191;
+	Sat, 30 May 2026 18:40:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780161790; cv=none; b=MG2scpzyzJvH1tvEa2oHO5wKIXDdi9fhRH5PVB5vTwvGbmMOH3aw1aXMrsjZk9c8TT41Kl6yEkQlSC+HmDCvqMVJgKYQeaBpS8VyfEHckB6IoVZXDQRCgBIt8g2mmtJk/aKDsL8BpnJh+VvXLBFXxcAK3sVz4gfanvd/R/GRNLI=
+	t=1780166423; cv=none; b=AtbPXJwgbOBlOyOo/tt8UNfNmnRaxnhLvzQyiRUABa9gNzzmNH3qv+UkdudlDKhxn/nYx+5LpuhxPSg9X4FPAaNIi/nx24uc4VC0DQHZOuj5ISiwKmCffB7YLRWUbKgKCOnZwtq8zHoTrwPYFhcj04DZz/YHWIUTCQTVlmmyJq0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780161790; c=relaxed/simple;
-	bh=TREyT0MxGa3VAyptw68Gj/4TA8KgRnqoJEHelUfgUaA=;
+	s=arc-20240116; t=1780166423; c=relaxed/simple;
+	bh=FEFVOEgR+sM9Ywt35iFvtKQ0ExYqJ6FXIHrUgA2NX7M=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=E+ud9ZTk/4tQZEKyfK9FshQs6iub6TOpYOZ2WceUGdKuYewVsTbwurpBfERB75KSuwf6D0BOeQ6ZlQLp1pBgFlBd6ziuXPpj1PkxKQQZU4IOfGPJyavyQX5l4HMiNMTSo/4vQS2YF5tLoFwK3qwfk6BCVCJWRBNo9bDXfWp5teU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YvL5P3E+; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CEECE1F00893;
-	Sat, 30 May 2026 17:23:08 +0000 (UTC)
+	 MIME-Version; b=YoLaF4boKrmfLR4Ia2n5bCsZQMeak6kzKN218dTf7s6zjqfqlqzbXGnClPhagUv2BA2tlLAAfuGIyGsu+yYc4Z/fg0S9cVTFg/P8E1NK63URE0+PQnfuBxLZez6w6gT51gNu9ZO+IFdKn78ZZsssDBVZVNfh3tje+kHBVsUcj4s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Gzc0pUz6; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D80F01F00898;
+	Sat, 30 May 2026 18:40:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780161789;
-	bh=oVFLohBmfTgO57S43zFa32Nk/AhLN74JvRHI3ho0CoE=;
+	s=korg; t=1780166421;
+	bh=KlAz+y9mB++rDaypldnsZQspS+iQEueyiA55lwyCvsE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=YvL5P3E+xB5+stvS1w4Choe+BnZwurOPvtHp8YVoRec827NMtOrPBrwbir63o75Mc
-	 D6O4uS7N9Tw5d0h3cqYmQSLHTePFqNu1/nTJX+Mj7bDK4ak9aKPq64qMtiaWzM7mNF
-	 z33tVLxQirnUM5SAdqJ9Q/w9rsPT2vIgrufdZozM=
+	b=Gzc0pUz6YRPUcEBONlDEq4hK9iSmhfyWIzz7qqdIgKyr3K7shAbn31XqHnU1C36vh
+	 Wn8nxOY+hkwk0u/LauAHQu7cQI4OYlvibOjoMWbLTOA28jQx0StOtEbUgiPPStPB0Q
+	 pmeKuGw4lZm8vUCMBMO+gzMSMv6+aLmiuc6RAVE8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	cuitao <cuitao@kylinos.cn>,
-	=?UTF-8?q?Michal=20Koutn=C3=BD?= <mkoutny@suse.com>,
-	Tejun Heo <tj@kernel.org>,
+	ZhengYuan Huang <gality369@gmail.com>,
+	Joseph Qi <joseph.qi@linux.alibaba.com>,
+	Mark Fasheh <mark@fasheh.com>,
+	Joel Becker <jlbec@evilplan.org>,
+	Junxiao Bi <junxiao.bi@oracle.com>,
+	Changwei Ge <gechangwei@live.cn>,
+	Jun Piao <piaojun@huawei.com>,
+	Heming Zhao <heming.zhao@suse.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 726/969] cgroup/rdma: fix integer overflow in rdmacg_try_charge()
+Subject: [PATCH 5.10 369/589] ocfs2: fix listxattr handling when the buffer is full
 Date: Sat, 30 May 2026 18:04:10 +0200
-Message-ID: <20260530160320.589935755@linuxfoundation.org>
+Message-ID: <20260530160234.526211742@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260530160300.485627683@linuxfoundation.org>
-References: <20260530160300.485627683@linuxfoundation.org>
+In-Reply-To: <20260530160224.570625122@linuxfoundation.org>
+References: <20260530160224.570625122@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,77 +70,124 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-2.16 / 15.00];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_FROM(0.00)[bounces-257673-lists,stable=lfdr.de];
-	FROM_HAS_DN(0.00)[];
+	TAGGED_FROM(0.00)[bounces-259050-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,linux.alibaba.com,fasheh.com,evilplan.org,oracle.com,live.cn,huawei.com,suse.com,linux-foundation.org,kernel.org];
 	RCVD_COUNT_THREE(0.00)[4];
-	RCVD_TLS_LAST(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	RCPT_COUNT_TWELVE(0.00)[13];
 	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
-	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[7];
-	MID_RHS_MATCH_FROM(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	NEURAL_HAM(-0.00)[-0.996];
 	TAGGED_RCPT(0.00)[stable];
-	TO_DN_SOME(0.00)[]
-X-Rspamd-Queue-Id: 5DC4E60F9C6
+	MID_RHS_MATCH_FROM(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[huawei.com:email,oracle.com:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,fasheh.com:email,live.cn:email]
+X-Rspamd-Queue-Id: 5D6F46129E4
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: cuitao <cuitao@kylinos.cn>
+From: ZhengYuan Huang <gality369@gmail.com>
 
-[ Upstream commit c802f460dd485c1332b5a35e7adcfb2bc22536a2 ]
+[ Upstream commit d12f558e6200b3f47dbef9331ed6d115d2410e59 ]
 
-The expression `rpool->resources[index].usage + 1` is computed in int
-arithmetic before being assigned to s64 variable `new`. When usage equals
-INT_MAX (the default "max" value), the addition overflows to INT_MIN.
-This negative value then passes the `new > max` check incorrectly,
-allowing a charge that should be rejected and corrupting usage to
-negative.
+[BUG]
+If an OCFS2 inode has both inline and block-based xattrs, listxattr()
+can return a size larger than the caller's buffer when the inline names
+consume that buffer exactly.
 
-Fix by casting usage to s64 before the addition so the arithmetic is
-done in 64-bit.
+kernel BUG at mm/usercopy.c:102!
+Oops: invalid opcode: 0000 [#1] SMP KASAN NOPTI
+RIP: 0010:usercopy_abort+0xb7/0xd0 mm/usercopy.c:102
+Call Trace:
+ __check_heap_object+0xe3/0x120 mm/slub.c:8243
+ check_heap_object mm/usercopy.c:196 [inline]
+ __check_object_size mm/usercopy.c:250 [inline]
+ __check_object_size+0x5c5/0x780 mm/usercopy.c:215
+ check_object_size include/linux/ucopysize.h:22 [inline]
+ check_copy_size include/linux/ucopysize.h:59 [inline]
+ copy_to_user include/linux/uaccess.h:219 [inline]
+ listxattr+0xb0/0x170 fs/xattr.c:926
+ filename_listxattr fs/xattr.c:958 [inline]
+ path_listxattrat+0x137/0x320 fs/xattr.c:988
+ __do_sys_listxattr fs/xattr.c:1001 [inline]
+ __se_sys_listxattr fs/xattr.c:998 [inline]
+ __x64_sys_listxattr+0x7f/0xd0 fs/xattr.c:998
+ ...
 
-Fixes: 39d3e7584a68 ("rdmacg: Added rdma cgroup controller")
-Signed-off-by: cuitao <cuitao@kylinos.cn>
-Reviewed-by: Michal Koutný <mkoutny@suse.com>
-Signed-off-by: Tejun Heo <tj@kernel.org>
+[CAUSE]
+Commit 936b8834366e ("ocfs2: Refactor xattr list and remove
+ocfs2_xattr_handler().") replaced the old per-handler list accounting
+with ocfs2_xattr_list_entry(), but it kept using size == 0 to detect
+probe mode.
+
+That assumption stops being true once ocfs2_listxattr() finishes the
+inline-xattr pass. If the inline names fill the caller buffer exactly,
+the block-xattr pass runs with a non-NULL buffer and a remaining size of
+zero. ocfs2_xattr_list_entry() then skips the bounds check, keeps
+counting block names, and returns a positive size larger than the
+supplied buffer.
+
+[FIX]
+Detect probe mode by testing whether the destination buffer pointer is
+NULL instead of whether the remaining size is zero.
+
+That restores the pre-refactor behavior and matches the OCFS2 getxattr
+helpers. Once the remaining buffer reaches zero while more names are
+left, the block-xattr pass now returns -ERANGE instead of reporting a
+size larger than the allocated list buffer.
+
+Link: https://lkml.kernel.org/r/20260410040339.3837162-1-gality369@gmail.com
+Fixes: 936b8834366e ("ocfs2: Refactor xattr list and remove ocfs2_xattr_handler().")
+Signed-off-by: ZhengYuan Huang <gality369@gmail.com>
+Reviewed-by: Joseph Qi <joseph.qi@linux.alibaba.com>
+Cc: Mark Fasheh <mark@fasheh.com>
+Cc: Joel Becker <jlbec@evilplan.org>
+Cc: Junxiao Bi <junxiao.bi@oracle.com>
+Cc: Changwei Ge <gechangwei@live.cn>
+Cc: Jun Piao <piaojun@huawei.com>
+Cc: Heming Zhao <heming.zhao@suse.com>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/cgroup/rdma.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ fs/ocfs2/xattr.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/kernel/cgroup/rdma.c b/kernel/cgroup/rdma.c
-index 3135406608c75..3265fbbbe7e29 100644
---- a/kernel/cgroup/rdma.c
-+++ b/kernel/cgroup/rdma.c
-@@ -281,7 +281,7 @@ int rdmacg_try_charge(struct rdma_cgroup **rdmacg,
- 			ret = PTR_ERR(rpool);
- 			goto err;
- 		} else {
--			new = rpool->resources[index].usage + 1;
-+			new = (s64)rpool->resources[index].usage + 1;
- 			if (new > rpool->resources[index].max) {
- 				ret = -EAGAIN;
- 				goto err;
+diff --git a/fs/ocfs2/xattr.c b/fs/ocfs2/xattr.c
+index d1409187b3fd1..be982b727facb 100644
+--- a/fs/ocfs2/xattr.c
++++ b/fs/ocfs2/xattr.c
+@@ -913,8 +913,8 @@ static int ocfs2_xattr_list_entry(struct super_block *sb,
+ 	total_len = prefix_len + name_len + 1;
+ 	*result += total_len;
+ 
+-	/* we are just looking for how big our buffer needs to be */
+-	if (!size)
++	/* No buffer means we are only looking for the required size. */
++	if (!buffer)
+ 		return 0;
+ 
+ 	if (*result > size)
 -- 
 2.53.0
 
