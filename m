@@ -1,59 +1,60 @@
-Return-Path: <stable+bounces-258759-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-258155-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id KAf3JNcrG2ow/wgAu9opvQ
-	(envelope-from <stable+bounces-258759-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:26:31 +0200
+	id 6Om0KFQlG2pm/ggAu9opvQ
+	(envelope-from <stable+bounces-258155-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:58:44 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 49F60611BD1
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:26:31 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id F3632610BFC
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:58:43 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id B259A30A0788
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 18:24:06 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id EFA6630E55FA
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 17:50:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7EB3721ADC7;
-	Sat, 30 May 2026 18:24:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9950E349CCF;
+	Sat, 30 May 2026 17:50:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kzMq5mXo"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yn84Xn1M"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 562E017555;
-	Sat, 30 May 2026 18:24:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7842D304BCB;
+	Sat, 30 May 2026 17:49:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780165444; cv=none; b=ox9Xqn13Aj2CRk1AkVGfabgDKfrGUYvv825+wi7OiEBSHNN9N31v8OLB1wHH5as8Sz5R7nh+ziKpNdbdKX8w3HUgNKvXOXWPH9T1f0IzO89L2N+UvHgd5GflvH1d6++ZZd5Wz1AVs+cLhAntDOdUSCM+q/eKx+tk6sLq5eShdWY=
+	t=1780163400; cv=none; b=WqaK6T7hn3bbyekxd54S7sUX4yis2UrhVH6krXeXtjvtTkGTJYyjt2pjigreYVvwWgC+fbTXWLgp7gCIXzOmkh2a0oOWRY5lB/Gx1TQOOBB7e3IaPgLCfux5bUUqaQVUmXtWmWcB9ua2ZXUUAyrb/qBx3CkuOsC3JQaGv3EkZE0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780165444; c=relaxed/simple;
-	bh=zczHV+iiesuxZGrVqEqJXxiUMm3Ut6xuV32OSOsqxpc=;
+	s=arc-20240116; t=1780163400; c=relaxed/simple;
+	bh=RG5hCrTyE0pGsIbd3IBoABB3/XfP9XAYNjQeFGSMr+w=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=W+Cy4wxU5otZtVnXbs8IP0dcL+HB210IlnFs7i4irC6lbxQgoWUhDm8IgQab0u1KOYz3OH5sKTQy6NaEe/AUlosX4XLLSRq/v/y0m0CY1Ny4zoZwV8Af234TsV6I5Tw2H1pAffROwJaqsIHxTCwK3bYwg5+hP3r8oVjVTAclmDs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kzMq5mXo; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4A1F91F00893;
-	Sat, 30 May 2026 18:24:02 +0000 (UTC)
+	 MIME-Version; b=ZS9gzcwYyvLo2yPpcrrJHFGeepa9W+YEnt7hC9gkN+ruCOPlho0sWM/HcfQGI7G/fIfY1Eq7RoUnH0/4rS50tjwraL4jvu686IhDMfAesgRyH24Bl8fqcwslbzx/R3k4/iY8aRlqVrTxp1Vzm8fkbbpc528sx2mpgu1dcpegb5w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yn84Xn1M; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9211F1F00893;
+	Sat, 30 May 2026 17:49:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780165442;
-	bh=8ZCvt6llz37doXh4S1XSOozPvO8JYxxzWrO1Oiopbnk=;
+	s=korg; t=1780163399;
+	bh=VZMNnt5CTI0Jw0SYb2+lsuOtffM3s78L9xhCKbE+7ls=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=kzMq5mXo+J5wimIbJDOk/OSqueGpzioXUBOvkmuoiosp92Lp6qlmgCJDtaaE6sIjP
-	 1qPqlJKhWrPvzWq4kD3AEc5bZtWt9MlWG33Cn/7MM9WSmfYHK8RDsjQhs9dVtOL1xk
-	 4T/X6JdNy/WYRvnBensPEi3rkb5ymjQxXAnhQ3Yw=
+	b=yn84Xn1MC9ap0DdCLK05Gx0stkgoh4Zz5CeZK5RTmh5LybxYogC1oATcE6/ktIWpM
+	 IzAn1INTw3rCKFBwAztKOmR7bh1hdXuidM/48jFhVFy5IFMIlHTMJo4rTVvDPYK1pr
+	 QxFVzD/a23fsoWMlLqb5dqfF80EX1iTInlpCmIsI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+47321e8fd5a4c84088db@syzkaller.appspotmail.com,
-	Jeongjun Park <aha310510@gmail.com>,
-	Hans Verkuil <hverkuil+cisco@kernel.org>
-Subject: [PATCH 5.10 080/589] media: as102: fix to not free memory after the device is registered in as102_usb_probe()
+	Chia-Ming Chang <chiamingc@synology.com>,
+	robbieko <robbieko@synology.com>,
+	Nikolay Borisov <nik.borisov@suse.com>,
+	Jan Kara <jack@suse.cz>
+Subject: [PATCH 5.15 247/776] inotify: fix watch count leak when fsnotify_add_inode_mark_locked() fails
 Date: Sat, 30 May 2026 17:59:21 +0200
-Message-ID: <20260530160226.756172386@linuxfoundation.org>
+Message-ID: <20260530160246.915429975@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260530160224.570625122@linuxfoundation.org>
-References: <20260530160224.570625122@linuxfoundation.org>
+In-Reply-To: <20260530160240.228940103@linuxfoundation.org>
+References: <20260530160240.228940103@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,108 +65,80 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	R_MISSING_CHARSET(0.50)[];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	TO_DN_SOME(0.00)[];
-	TAGGED_FROM(0.00)[bounces-258759-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,syzkaller.appspotmail.com,gmail.com,kernel.org];
-	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-258155-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
+	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	NEURAL_HAM(-0.00)[-0.996];
-	TAGGED_RCPT(0.00)[stable,47321e8fd5a4c84088db,cisco];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	PRECEDENCE_BULK(0.00)[];
 	MID_RHS_MATCH_FROM(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[6];
+	NEURAL_HAM(-0.00)[-0.996];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[syzkaller.appspot.com:url,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,appspotmail.com:email]
-X-Rspamd-Queue-Id: 49F60611BD1
+	TAGGED_RCPT(0.00)[stable];
+	TO_DN_SOME(0.00)[];
+	FROM_HAS_DN(0.00)[]
+X-Rspamd-Queue-Id: F3632610BFC
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jeongjun Park <aha310510@gmail.com>
+From: Chia-Ming Chang <chiamingc@synology.com>
 
-commit 8bd29dbe03fc5b0f039ab2395ff37b64236d2f0c upstream.
+commit 6a320935fa4293e9e599ec9f85dc9eb3be7029f8 upstream.
 
-In as102_usb driver, the following race condition occurs:
-```
-		CPU0						CPU1
-as102_usb_probe()
-  kzalloc(); // alloc as102_dev_t
-  ....
-  usb_register_dev();
-						fd = sys_open("/path/to/dev"); // open as102 fd
-						....
-  usb_deregister_dev();
-  ....
-  kfree(); // free as102_dev_t
-  ....
-						sys_close(fd);
-						  as102_release() // UAF!!
-						    as102_usb_release()
-						      kfree(); // DFB!!
-```
+When fsnotify_add_inode_mark_locked() fails in inotify_new_watch(),
+the error path calls inotify_remove_from_idr() but does not call
+dec_inotify_watches() to undo the preceding inc_inotify_watches().
+This leaks a watch count, and repeated failures can exhaust the
+max_user_watches limit with -ENOSPC even when no watches are active.
 
-When a USB character device registered with usb_register_dev() is later
-unregistered (via usb_deregister_dev() or disconnect), the device node is
-removed so new open() calls fail. However, file descriptors that are
-already open do not go away immediately: they remain valid until the last
-reference is dropped and the driver's .release() is invoked.
+Prior to commit 1cce1eea0aff ("inotify: Convert to using per-namespace
+limits"), the watch count was incremented after fsnotify_add_mark_locked()
+succeeded, so this path was not affected. The conversion moved
+inc_inotify_watches() before the mark insertion without adding the
+corresponding rollback.
 
-In as102, as102_usb_probe() calls usb_register_dev() and then, on an
-error path, does usb_deregister_dev() and frees as102_dev_t right away.
-If userspace raced a successful open() before the deregistration, that
-open FD will later hit as102_release() --> as102_usb_release() and access
-or free as102_dev_t again, occur a race to use-after-free and
-double-free vuln.
+Add the missing dec_inotify_watches() call in the error path.
 
-The fix is to never kfree(as102_dev_t) directly once usb_register_dev()
-has succeeded. After deregistration, defer freeing memory to .release().
-
-In other words, let release() perform the last kfree when the final open
-FD is closed.
-
-Cc: <stable@vger.kernel.org>
-Reported-by: syzbot+47321e8fd5a4c84088db@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=47321e8fd5a4c84088db
-Fixes: cd19f7d3e39b ("[media] as102: fix leaks at failure paths in as102_usb_probe()")
-Signed-off-by: Jeongjun Park <aha310510@gmail.com>
-Signed-off-by: Hans Verkuil <hverkuil+cisco@kernel.org>
+Fixes: 1cce1eea0aff ("inotify: Convert to using per-namespace limits")
+Cc: stable@vger.kernel.org
+Signed-off-by: Chia-Ming Chang <chiamingc@synology.com>
+Signed-off-by: robbieko <robbieko@synology.com>
+Reviewed-by: Nikolay Borisov <nik.borisov@suse.com>
+Link: https://patch.msgid.link/20260224093442.3076294-1-chiamingc@synology.com
+Signed-off-by: Jan Kara <jack@suse.cz>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/media/usb/as102/as102_usb_drv.c |    2 ++
- 1 file changed, 2 insertions(+)
+ fs/notify/inotify/inotify_user.c |    1 +
+ 1 file changed, 1 insertion(+)
 
---- a/drivers/media/usb/as102/as102_usb_drv.c
-+++ b/drivers/media/usb/as102/as102_usb_drv.c
-@@ -405,7 +405,9 @@ static int as102_usb_probe(struct usb_in
- failed_dvb:
- 	as102_free_usb_stream_buffer(as102_dev);
- failed_stream:
-+	usb_set_intfdata(intf, NULL);
- 	usb_deregister_dev(intf, &as102_usb_class_driver);
-+	return ret;
- failed:
- 	usb_put_dev(as102_dev->bus_adap.usb_dev);
- 	usb_set_intfdata(intf, NULL);
+--- a/fs/notify/inotify/inotify_user.c
++++ b/fs/notify/inotify/inotify_user.c
+@@ -614,6 +614,7 @@ static int inotify_new_watch(struct fsno
+ 	if (ret) {
+ 		/* we failed to get on the inode, get off the idr */
+ 		inotify_remove_from_idr(group, tmp_i_mark);
++		dec_inotify_watches(group->inotify_data.ucounts);
+ 		goto out_err;
+ 	}
+ 
 
 
 
