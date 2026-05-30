@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-258125-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-257379-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id eDTiAsokG2rO/QgAu9opvQ
-	(envelope-from <stable+bounces-258125-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:56:26 +0200
+	id yPZuBDIaG2pV/AgAu9opvQ
+	(envelope-from <stable+bounces-257379-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:11:14 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6270F610AD8
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:56:25 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7E10560F0F8
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:11:13 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id DBBD5302D945
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 17:48:21 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id E11153067728
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 17:06:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5F2333AFCF3;
-	Sat, 30 May 2026 17:48:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 46A163A0E97;
+	Sat, 30 May 2026 17:06:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DG4QwcFl"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uLoaYXm6"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2904E349CCF;
-	Sat, 30 May 2026 17:48:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1FF4A32D42B;
+	Sat, 30 May 2026 17:06:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780163301; cv=none; b=p7henzc3zv2/ZIJ9R7F6zkjr7iaM7HPN41Yf3JMNxBgCT3yasK0HOPx7bjCofSfwPBi3svYa+YgKbC38a+hn8HiJ67PD+5qBW9oUKoC8vBBxqLnS9KC7JcIGREGa4yT9ikHU2tY3hEENJorjlK7FiZb1rUaZ0+QJTkMKyqkc5+Y=
+	t=1780160794; cv=none; b=Ju7quNbhfUXuBubzvxNHZzaGjwalYWdsFv9C6l7fuWLylRq2+AXb2Wta1uGe7SNh7Pq5Ddl/oTxKZxXZDdeBIGVUICMeNESlMgfu6L8cvPFMoWpJXNx7jnLZNkotfFJ26sC8Uhnp1IRp24JnnE1pm0icaVepRIUU/V9QWC62L+M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780163301; c=relaxed/simple;
-	bh=G32AxUK+8kUeRcu/txDeB07oDOQy4HvnVbfFD9Uj5m0=;
+	s=arc-20240116; t=1780160794; c=relaxed/simple;
+	bh=oeaKAFx/uX6pZAyVOXLTLDtUPtjK9R1bxrk8/oMxaxY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=fA2JqamaQOm6YaAG/lte+JjUvk7jPeDBJuPH8Z4LMBnwomXcc90NYPfVSX5SZsB0OveENTSa9bYB7G6nQNax4FV/XTgcvR40tTlLMrXkElY7Jp6jeKszivKLsvyUAy9nXkmet5W5k1xGzRpSNKq579gEEyRng2g/e3LnC1G4pdw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DG4QwcFl; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2884A1F00893;
-	Sat, 30 May 2026 17:48:18 +0000 (UTC)
+	 MIME-Version; b=Iy9DyOSCBggv1ftfQC27vREAvIy1jjAtDf7i8Jua6s86OyYwbL/TwRMydpo+LnMh8Kk1j/WhG8Fh05pFHsG2i23Rkx1GBB2jBR1qRxw7QE/ci3YK4+F0zn248SEZB8BWv/QnoWI30vJkksa8hbkh9YA73WEU/zErZHzV1L9voQw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uLoaYXm6; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 381A71F00893;
+	Sat, 30 May 2026 17:06:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780163299;
-	bh=5UJhx2KS7NyXat7bibUeuM3KnfJUTHqMS7CsPQV3jKQ=;
+	s=korg; t=1780160792;
+	bh=Nx8H03Cr/e7eT8eQb+W3E45jEmKrMCP6ctELxZwm7/U=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=DG4QwcFlAuezn0WVShKdNZVfEy4J0QVZ00vPXCKkMqBFKztYN3uD1+4PFovTcFsJM
-	 3bmdbzQn3+QojVP80O6n41103Mir0mqyRmMrR1XYNJjE3v4N1cp0LBQZkV3DJ+U/vC
-	 /wzF7Ox0GL0BXbFCU/dSFMay3/dEfVjXbqevPLq4=
+	b=uLoaYXm6K89l01N0mLSkrh64KNVEOesE4H4/Et+wQy1jZT0zH0Axe1P250qHzvdmM
+	 SlIqJlpIIUQVOMPSkKSoExxeiV+YcTQ2nfXt7t64Sz0R5OUw4aUkLavBeRmn/PO/2b
+	 n0948PnDMxDtn5ubdyhxmuU+efQMmnJ9ZNakCznY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Takashi Iwai <tiwai@suse.de>
-Subject: [PATCH 5.15 216/776] ALSA: caiaq: Handle probe errors properly
-Date: Sat, 30 May 2026 17:58:50 +0200
-Message-ID: <20260530160246.101625975@linuxfoundation.org>
+	Thomas Zimmermann <tzimmermann@suse.de>,
+	Ashutosh Desai <ashutoshdesai993@gmail.com>
+Subject: [PATCH 6.1 407/969] drm/gem: Fix inconsistent plane dimension calculation in drm_gem_fb_init_with_funcs()
+Date: Sat, 30 May 2026 17:58:51 +0200
+Message-ID: <20260530160311.520174865@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260530160240.228940103@linuxfoundation.org>
-References: <20260530160240.228940103@linuxfoundation.org>
+In-Reply-To: <20260530160300.485627683@linuxfoundation.org>
+References: <20260530160300.485627683@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,159 +65,90 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-258125-lists,stable=lfdr.de];
-	PRECEDENCE_BULK(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	FROM_HAS_DN(0.00)[];
-	RCPT_COUNT_THREE(0.00)[4];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable];
+	TAGGED_FROM(0.00)[bounces-257379-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,suse.de,gmail.com];
 	TO_DN_SOME(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,suse.de:email,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim]
-X-Rspamd-Queue-Id: 6270F610AD8
+	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_FIVE(0.00)[5];
+	FROM_HAS_DN(0.00)[]
+X-Rspamd-Queue-Id: 7E10560F0F8
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Takashi Iwai <tiwai@suse.de>
+From: Ashutosh Desai <ashutoshdesai993@gmail.com>
 
-commit 28abd224db4a49560b452115bca3672a20e45b2f upstream.
+commit 3d4c2268bd7243c3780fe32bf24ff876da272acf upstream.
 
-The probe procedure of setup_card() in caiaq driver doesn't treat the
-error cases gracefully, e.g. the error from snd_card_register() calls
-snd_card_free() but continues.  This would lead to a UAF for the
-further calls like snd_usb_caiaq_control_init(), as Berk suggested in
-another patch in the link below.
+drm_gem_fb_init_with_funcs() computes sub-sampled plane dimensions
+using plain integer division:
 
-However, the problem is not only that; in general, this function drops
-the all error handlings (as it's a void function) although its caller
-can propagate an error to snd_probe(), which eventually calls
-snd_card_free() as a proper error path.  That said, we should treat
-each error case in setup_card(), and just return the error code
-promptly, which is then handled later as a fatal error in snd_probe().
+  unsigned int width  = mode_cmd->width  / (i ? info->hsub : 1);
+  unsigned int height = mode_cmd->height / (i ? info->vsub : 1);
 
-This patch achieves it by changing the setup_card() to return an error
-code.  Also, the superfluous snd_card_free() call is removed, too.
+However, the ioctl-level framebuffer_check() in drm_framebuffer.c uses
+drm_format_info_plane_width/height() which round up dimensions via
+DIV_ROUND_UP(). This inconsistency corrupts the subsequent GEM object
+size check for certain pixel format and dimension combinations.
 
-Note that card->private_free can be set still safely at returning an
-error.  All called functions in card_free() have checks of the
-unassigned resources or NULL checks.
+For example, with NV12 (vsub=2) and a 1-pixel-tall framebuffer the
+GEM size validation path sees height=0 instead of height=1. The
+expression (height - 1) then wraps to UINT_MAX as an unsigned int,
+causing min_size to overflow and wrap back to a small value. A tiny
+GEM object therefore passes the size guard, yet when the GPU accesses
+the chroma plane it will read or write memory beyond the object's
+bounds.
 
-Fixes: 8e3cd08ed8e5 ("[ALSA] caiaq - add control API and more input features")
-Cc: stable@vger.kernel.org
-Link: https://lore.kernel.org/20260413034941.1131465-2-berkcgoksel@gmail.com
-Link: https://patch.msgid.link/20260414105916.364073-1-tiwai@suse.de
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
+Fix by replacing the open-coded divisions with drm_format_info_plane_width()
+and drm_format_info_plane_height(), which use DIV_ROUND_UP() and match
+the calculation already used in framebuffer_check().
+
+Fixes: 4c3dbb2c312c ("drm: Add GEM backed framebuffer library")
+Cc: stable@vger.kernel.org # v4.14+
+Reviewed-by: Thomas Zimmermann <tzimmermann@suse.de>
+Signed-off-by: Ashutosh Desai <ashutoshdesai993@gmail.com>
+Signed-off-by: Thomas Zimmermann <tzimmermann@suse.de>
+Link: https://patch.msgid.link/20260420013637.457751-1-ashutoshdesai993@gmail.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- sound/usb/caiaq/device.c |   33 ++++++++++++++++++++++++---------
- 1 file changed, 24 insertions(+), 9 deletions(-)
+ drivers/gpu/drm/drm_gem_framebuffer_helper.c |    4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
---- a/sound/usb/caiaq/device.c
-+++ b/sound/usb/caiaq/device.c
-@@ -290,7 +290,7 @@ int snd_usb_caiaq_set_auto_msg(struct sn
- 					  tmp, sizeof(tmp));
- }
- 
--static void setup_card(struct snd_usb_caiaqdev *cdev)
-+static int setup_card(struct snd_usb_caiaqdev *cdev)
- {
- 	int ret;
- 	char val[4];
-@@ -325,8 +325,10 @@ static void setup_card(struct snd_usb_ca
- 		snd_usb_caiaq_send_command(cdev, EP1_CMD_READ_IO, NULL, 0);
- 
- 		if (!wait_event_timeout(cdev->ep1_wait_queue,
--					cdev->control_state[0] != 0xff, HZ))
--			return;
-+					cdev->control_state[0] != 0xff, HZ)) {
-+			dev_err(dev, "Read timeout for control state\n");
-+			return -EINVAL;
-+		}
- 
- 		/* fix up some defaults */
- 		if ((cdev->control_state[1] != 2) ||
-@@ -347,33 +349,43 @@ static void setup_card(struct snd_usb_ca
- 	    cdev->spec.num_digital_audio_out +
- 	    cdev->spec.num_digital_audio_in > 0) {
- 		ret = snd_usb_caiaq_audio_init(cdev);
--		if (ret < 0)
-+		if (ret < 0) {
- 			dev_err(dev, "Unable to set up audio system (ret=%d)\n", ret);
-+			return ret;
-+		}
+--- a/drivers/gpu/drm/drm_gem_framebuffer_helper.c
++++ b/drivers/gpu/drm/drm_gem_framebuffer_helper.c
+@@ -166,8 +166,8 @@ int drm_gem_fb_init_with_funcs(struct dr
  	}
  
- 	if (cdev->spec.num_midi_in +
- 	    cdev->spec.num_midi_out > 0) {
- 		ret = snd_usb_caiaq_midi_init(cdev);
--		if (ret < 0)
-+		if (ret < 0) {
- 			dev_err(dev, "Unable to set up MIDI system (ret=%d)\n", ret);
-+			return ret;
-+		}
- 	}
+ 	for (i = 0; i < info->num_planes; i++) {
+-		unsigned int width = mode_cmd->width / (i ? info->hsub : 1);
+-		unsigned int height = mode_cmd->height / (i ? info->vsub : 1);
++		unsigned int width = drm_format_info_plane_width(info, mode_cmd->width, i);
++		unsigned int height = drm_format_info_plane_height(info, mode_cmd->height, i);
+ 		unsigned int min_size;
  
- #ifdef CONFIG_SND_USB_CAIAQ_INPUT
- 	ret = snd_usb_caiaq_input_init(cdev);
--	if (ret < 0)
-+	if (ret < 0) {
- 		dev_err(dev, "Unable to set up input system (ret=%d)\n", ret);
-+		return ret;
-+	}
- #endif
- 
- 	/* finally, register the card and all its sub-instances */
- 	ret = snd_card_register(cdev->chip.card);
- 	if (ret < 0) {
- 		dev_err(dev, "snd_card_register() returned %d\n", ret);
--		snd_card_free(cdev->chip.card);
-+		return ret;
- 	}
- 
- 	ret = snd_usb_caiaq_control_init(cdev);
--	if (ret < 0)
-+	if (ret < 0) {
- 		dev_err(dev, "Unable to set up control system (ret=%d)\n", ret);
-+		return ret;
-+	}
-+
-+	return 0;
- }
- 
- static void card_free(struct snd_card *card)
-@@ -499,8 +511,11 @@ static int init_card(struct snd_usb_caia
- 	snprintf(card->longname, sizeof(card->longname), "%s %s (%s)",
- 		       cdev->vendor_name, cdev->product_name, usbpath);
- 
--	setup_card(cdev);
- 	card->private_free = card_free;
-+	err = setup_card(cdev);
-+	if (err < 0)
-+		return err;
-+
- 	return 0;
- 
-  err_kill_urb:
+ 		objs[i] = drm_gem_object_lookup(file, mode_cmd->handles[i]);
 
 
 
