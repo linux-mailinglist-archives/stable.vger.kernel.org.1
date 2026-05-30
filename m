@@ -1,59 +1,59 @@
-Return-Path: <stable+bounces-258214-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-257440-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id eFRXO0ImG2qS/ggAu9opvQ
-	(envelope-from <stable+bounces-258214-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:02:42 +0200
+	id 8OznOrkbG2pk/QgAu9opvQ
+	(envelope-from <stable+bounces-257440-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:17:45 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 644E2610DD7
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:02:42 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id A1C2C60F534
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:17:45 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 7EE5230CB6B0
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 17:53:17 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 98B2630FFF5C
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 17:10:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F192C341AC7;
-	Sat, 30 May 2026 17:53:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 09B893ACA7C;
+	Sat, 30 May 2026 17:10:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rDUErdEk"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Lu0EoGNI"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DD0CB2628D;
-	Sat, 30 May 2026 17:53:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C0A3739B4A6;
+	Sat, 30 May 2026 17:10:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780163595; cv=none; b=jMshcm3jF8GaN6q7BcYh3/7iyvx9VnMTX1yXmjqeOnhRmJCjhNjz8C2Kr2yq+DmLiHOACaJx+7UlqZYNmzzPS6y40YuOQHnJCcb0odJGIwFb7+IohymPv3Wp4TGinQCVp36mqZw8APy3TRYse4km4PYsLUe8ISOzJUYzqis/9RE=
+	t=1780161003; cv=none; b=JY+UIclbh6uPkbNPAG8kHsZwDnuAPm5KMmsSH97Z8USO7z9ONiL7MVVmcS2DGEsv99lvov25/2q1bjqCjjDXYl4b03p+khP2NSfiVP0ar65+eQYRVg9zqgWBYrTGBSUppAusecWhUCCf6wWMxwXiSVees+YVxADdWLivgrt+8/U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780163595; c=relaxed/simple;
-	bh=Ft6PnKICmDhabOTJzE4ThXduhY8GSxh3rDItmoasoB4=;
+	s=arc-20240116; t=1780161003; c=relaxed/simple;
+	bh=Q3RruLrSSXF+lqAQjUy04uFR5gorsspEhtKQStcl1OI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=KJ82Jm2wlozEjrVpk+Dnuh8YPZ25SE2vSuwVN2F54XDRI0v+d2VejK/eyiP7GRQMosNjZqP/3dDEimu5r0kV+N40k0IAINi/Yt/zUmU9NBLywEp3FW9NbI0CZuSu6ZTiWI5kkHVZx/p56ygZk2UjuHrEUtHTG5Ue5v3imqKCn8g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rDUErdEk; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2C79D1F00893;
-	Sat, 30 May 2026 17:53:13 +0000 (UTC)
+	 MIME-Version; b=BihWXCreYJdS12lcUKIZLigGSw/pupthrw0rkcUFdn36s8br7EfnFfJLHaWWE3hCXzyl4CN5yj0kFCN3UGYnr+/o21RP47iFtT/3/WrVEtNjnfmzTlZ9HmHoYlpuOcMFupy5g3+d0Vrycq4AVJC9HmkhzEwO693WuDy2K8xwOnc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Lu0EoGNI; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C56B71F00899;
+	Sat, 30 May 2026 17:10:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780163594;
-	bh=UN0w7Lv/LbJW1pv0kyjkoUpL0DuKUZudggnqkmQnH6w=;
+	s=korg; t=1780161002;
+	bh=aDRdaZ5o6zN6ujMHJcDQcesvNDGbgIT9J4YVangUsU4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=rDUErdEk4Zd2jv23Kw0RJG2/NulTXR/psxVhifIU0U3ze4ALyZtAaqG1496r7L2Ua
-	 BB1V+WCMagH0r0l8CpdG79Nnk+gzrR83bcJ5CazZDT1Ci4Iij6Wwbzws+gVlNffG3y
-	 KuhsfuII5a+xJav0Um2WiWN2aoQ5/u9E8lVfgRUo=
+	b=Lu0EoGNIIXBzUD9429SSLkhaK9rpfE9nL6BBw2+2KF5Gh4+2YMKWnO+ttqCVVKXUj
+	 ipKfRnd8VNnBv/RRnOJabcl37nIc8oTNoi57HLx0NtXcxnpI9IA/uWW+oiNEq7CAIB
+	 uUJ8CJEgCObUHC6Z1YzH8fGFs96ROSd0koumEWHk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable@kernel.org,
-	Siwei Zhang <oss@fourdim.xyz>,
-	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
-Subject: [PATCH 5.15 306/776] Bluetooth: L2CAP: Fix null-ptr-deref in l2cap_sock_state_change_cb()
+	Ming-Hung Tsai <mtsai@redhat.com>,
+	Mikulas Patocka <mpatocka@redhat.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 496/969] dm cache: fix write path cache coherency in passthrough mode
 Date: Sat, 30 May 2026 18:00:20 +0200
-Message-ID: <20260530160248.476924260@linuxfoundation.org>
+Message-ID: <20260530160314.019143699@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260530160240.228940103@linuxfoundation.org>
-References: <20260530160240.228940103@linuxfoundation.org>
+In-Reply-To: <20260530160300.485627683@linuxfoundation.org>
+References: <20260530160300.485627683@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,67 +66,118 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-257440-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-258214-lists,stable=lfdr.de];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	TO_DN_SOME(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
 	RCPT_COUNT_FIVE(0.00)[6];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	TAGGED_RCPT(0.00)[stable];
+	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,intel.com:email,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim]
-X-Rspamd-Queue-Id: 644E2610DD7
+	FROM_HAS_DN(0.00)[]
+X-Rspamd-Queue-Id: A1C2C60F534
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Siwei Zhang <oss@fourdim.xyz>
+From: Ming-Hung Tsai <mtsai@redhat.com>
 
-commit 2ff1a41a912de8517b4482e946dd951b7d80edbf upstream.
+[ Upstream commit 0c5eef0aad508231d8e43ff8392692925e131b68 ]
 
-Add the same NULL guard already present in
-l2cap_sock_resume_cb() and l2cap_sock_ready_cb().
+In passthrough mode, dm-cache defers write bio submission until cache
+invalidation completes to maintain existing coherency, requiring the
+target map function to return DM_MAPIO_SUBMITTED. The current map_bio()
+returns DM_MAPIO_REMAPPED, violating the required ordering constraint.
 
-Fixes: 89bc500e41fc ("Bluetooth: Add state tracking to struct l2cap_chan")
-Cc: stable@kernel.org
-Signed-off-by: Siwei Zhang <oss@fourdim.xyz>
-Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Reproduce steps:
+
+1. Create a cache device
+
+dmsetup create cmeta --table "0 8192 linear /dev/sdc 0"
+dmsetup create cdata --table "0 131072 linear /dev/sdc 8192"
+dmsetup create corig --table "0 262144 linear /dev/sdc 262144"
+dd if=/dev/zero of=/dev/mapper/cmeta bs=4k count=1 oflag=direct
+dmsetup create cache --table "0 262144 cache /dev/mapper/cmeta \
+/dev/mapper/cdata /dev/mapper/corig 128 2 metadata2 writethrough smq 0"
+
+2. Promote the first data block into the cache
+
+fio --filename=/dev/mapper/cache --name=populate --rw=write --bs=4k \
+--direct=1 --size=64k
+
+3. Reload the cache into passthrough mode
+
+dmsetup suspend cache
+dmsetup reload cache --table "0 262144 cache /dev/mapper/cmeta \
+/dev/mapper/cdata /dev/mapper/corig 128 2 metadata2 passthrough smq 0"
+dmsetup resume cache
+
+4. Write to the first data block, and check io ordering using ftrace
+
+echo 1 > /sys/kernel/debug/tracing/events/block/block_bio_queue/enable
+echo 1 > /sys/kernel/debug/tracing/events/block/block_bio_complete/enable
+echo 1 > /sys/kernel/debug/tracing/events/block/block_rq_complete/enable
+fio --filename=/dev/mapper/cache --name=test --rw=write --bs=64k \
+--direct=1 --size 64k
+
+5. ftrace logs show that write operations to the cache origin (252:2)
+   and metadata operations (252:0) are unsynchronized: the origin write
+   occurs before metadata commit.
+
+ <snip>
+       fio-146  [000] .....  420.139562: block_bio_queue: 252,3 WS 0 + 128 [fio]
+       fio-146  [000] .....  420.149395: block_bio_queue: 252,2 WS 0 + 128 [fio]
+       fio-146  [000] .....  420.149763: block_bio_queue: 8,32 WS 262144 + 128 [fio]
+       fio-146  [000] dNh1.  420.151446: block_rq_complete: 8,32 WS () 262144 + 128 be,0,4 [0]
+       fio-146  [000] dNh1.  420.152731: block_bio_complete: 252,2 WS 0 + 128 [0]
+       fio-146  [000] dNh1.  420.154229: block_bio_complete: 252,3 WS 0 + 128 [0]
+ kworker/0:0-9  [000] .....  420.160530: block_bio_queue: 252,0 W 408 + 8 [kworker/0:0]
+ kworker/0:0-9  [000] .....  420.161641: block_bio_queue: 8,32 W 408 + 8 [kworker/0:0]
+ kworker/0:0-9  [000] .....  420.162533: block_bio_queue: 252,0 W 416 + 8 [kworker/0:0]
+ kworker/0:0-9  [000] .....  420.162821: block_bio_queue: 8,32 W 416 + 8 [kworker/0:0]
+ <snip>
+
+Fixes: b29d4986d0da ("dm cache: significant rework to leverage dm-bio-prison-v2")
+Signed-off-by: Ming-Hung Tsai <mtsai@redhat.com>
+Signed-off-by: Mikulas Patocka <mpatocka@redhat.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/bluetooth/l2cap_sock.c |    3 +++
- 1 file changed, 3 insertions(+)
+ drivers/md/dm-cache-target.c | 1 +
+ 1 file changed, 1 insertion(+)
 
---- a/net/bluetooth/l2cap_sock.c
-+++ b/net/bluetooth/l2cap_sock.c
-@@ -1611,6 +1611,9 @@ static void l2cap_sock_state_change_cb(s
- {
- 	struct sock *sk = chan->data;
- 
-+	if (!sk)
-+		return;
-+
- 	sk->sk_state = state;
- 
- 	if (err)
+diff --git a/drivers/md/dm-cache-target.c b/drivers/md/dm-cache-target.c
+index e0373522cb88c..e2e234c3649a0 100644
+--- a/drivers/md/dm-cache-target.c
++++ b/drivers/md/dm-cache-target.c
+@@ -1676,6 +1676,7 @@ static int map_bio(struct cache *cache, struct bio *bio, dm_oblock_t block,
+ 				bio_drop_shared_lock(cache, bio);
+ 				atomic_inc(&cache->stats.demotion);
+ 				invalidate_start(cache, cblock, block, bio);
++				return DM_MAPIO_SUBMITTED;
+ 			} else
+ 				remap_to_origin_clear_discard(cache, bio, block);
+ 		} else {
+-- 
+2.53.0
+
 
 
 
