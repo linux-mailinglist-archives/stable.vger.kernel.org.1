@@ -1,59 +1,61 @@
-Return-Path: <stable+bounces-257158-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-257937-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id AFkbO9gXG2pV/AgAu9opvQ
-	(envelope-from <stable+bounces-257158-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:01:12 +0200
+	id 6OMbGI4gG2rO/QgAu9opvQ
+	(envelope-from <stable+bounces-257937-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:38:22 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 54BC760EBC0
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:01:11 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0FAF5610131
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:38:21 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 97C77302DF69
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 16:53:27 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id D9A74301B271
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 17:38:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2CBA333F5A3;
-	Sat, 30 May 2026 16:53:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D4FCB2E7379;
+	Sat, 30 May 2026 17:37:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HQ6FptbW"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ticZcsTu"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0DCD532D42B;
-	Sat, 30 May 2026 16:53:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6AFCB33F590;
+	Sat, 30 May 2026 17:37:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780160007; cv=none; b=hCLBE0MlJ+FXmunm/Yu2zh5yu6rk2h7wqbS7caJg3qXeNx8RKjfM9R8+MrdjrHzmULWv38EBtcspO/ca7i/hgJxwLstRUNPxQc8HthaDVmRu3hufMNUhiETfG5/TaGcBJ35v1ssVdLl6YWHiq5qmSamjDQNg8JaynL9Wv3qiB/0=
+	t=1780162677; cv=none; b=XU5IFKCR7D9dFH57HIIwNBYI1HJjPQ3PKDQE93fFrJt7M6pjvXeWo3QQj9C5bf1eau+QcIf2aoK5O1nhCFKOuyFwGo0Q8ZLzmKwuGAtoRDXOFWMf/ZFKNLOtEgpndFiFU8AHUFAs8Gt9VgfoiigAjQr3HKb10Co/0TnUKxujPkE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780160007; c=relaxed/simple;
-	bh=xsu/jpr94rgEtIRLXsbmMq+9Om8zj+CxC7kySM9nhDI=;
+	s=arc-20240116; t=1780162677; c=relaxed/simple;
+	bh=tf4Mzbj4SvfmaWGSoBJHOTrtfNwUPdvb8LOz7T62sIo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=rBwJIVwDE+vS+3GoLb9yUo3FGtzus4dEU+ToFKBsx5zRbTBxy7ec04kxrzJh/Jj7dVhfrphVzDrtBhnnJ7MhVCgKJ3buEEDAnVsPYNoyDGloyfqrghxqSRHm5lV6W1A6K0mtcm7VuzCV7DAOGeO9Wq9NKHKPw8l9abqLCl8BeGc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HQ6FptbW; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0F00C1F00893;
-	Sat, 30 May 2026 16:53:24 +0000 (UTC)
+	 MIME-Version; b=slOvzlVkF7dYDy3iJR/lsXMX5Z/dqNG4Kaga7T3gw7V5HyhXMuocoBvFzSigzkE3UfK+6SnEBY2524w3+ObxjMgT1d+6L6tp6aa3w/wv32hXPoaks7JL+4dedxLh2xVvWYK/4h3cVVCUiKMxiTcq1sL4XLIu7XuvTWOfy18Hbug=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ticZcsTu; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A4DDF1F00893;
+	Sat, 30 May 2026 17:37:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780160005;
-	bh=a/2QXxnYOgw0enw6Bgpwq9ZJVLh8rKLed8jsCD+ELmg=;
+	s=korg; t=1780162676;
+	bh=wjQhOQaua4B5FHilpJpQvBnBFQfGnrrcjAPWkxdMzUM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=HQ6FptbWCO3InXzsBZK7dVjizVi0t7Njn4HSDxVDSQVFCh9+Czx43K9NWrL1hVEiR
-	 hDx1fM/ajew/0b0Q3jGGml5z4Tr7bDojbLhnz4vQEy8vMQprU+bKoQie4DN6NiHmXT
-	 YR6Cp5Fm2HnhRSMVXAlDaUNXl3ZifMzLEu34c2/w=
+	b=ticZcsTuAAoLkRnaRdmXM1aASM3dJI3czGVNpzhCmaE66UCj1FYniFn2AtKh6KfHA
+	 nS7pGFJ6h+2I2GnIFVswdHQ2Nbgx/FoTucZdO7TDYArf+WjWp+pjny5WHLXcSPq1/a
+	 QBkLAi447N6u7bGZkBZzG+MLkHyY9heOUfi3Qxt4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	hkbinbin <hkbinbinbin@gmail.com>,
-	Zhu Yanjun <yanjun.zhu@linux.dev>,
-	Jason Gunthorpe <jgg@nvidia.com>
-Subject: [PATCH 6.1 219/969] RDMA/rxe: Validate pad and ICRC before payload_size() in rxe_rcv
-Date: Sat, 30 May 2026 17:55:43 +0200
-Message-ID: <20260530160306.500435961@linuxfoundation.org>
+	Iskhakov Daniil <dish@amicon.ru>,
+	Agalakov Daniil <ade@amicon.ru>,
+	Aleksandr Loktionov <aleksandr.loktionov@intel.com>,
+	Tony Nguyen <anthony.l.nguyen@intel.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 030/776] e1000: check return value of e1000_read_eeprom
+Date: Sat, 30 May 2026 17:55:44 +0200
+Message-ID: <20260530160241.049747997@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260530160300.485627683@linuxfoundation.org>
-References: <20260530160300.485627683@linuxfoundation.org>
+In-Reply-To: <20260530160240.228940103@linuxfoundation.org>
+References: <20260530160240.228940103@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,87 +66,110 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-1.66 / 15.00];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+X-Spamd-Result: default: False [7.84 / 15.00];
+	URIBL_BLACK(7.50)[linuxtesting.org:url];
 	R_MISSING_CHARSET(0.50)[];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
+	BAD_REP_POLICIES(0.10)[];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-257158-lists,stable=lfdr.de];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,linux.dev,nvidia.com];
-	TO_DN_SOME(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
+	DMARC_POLICY_ALLOW(0.00)[linuxfoundation.org,none];
+	TAGGED_FROM(0.00)[bounces-257937-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	MIME_TRACE(0.00)[0:+];
+	R_DKIM_ALLOW(0.00)[linuxfoundation.org:s=korg];
+	GREYLIST(0.00)[pass,meta];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	ARC_ALLOW(0.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	PRECEDENCE_BULK(0.00)[];
+	NEURAL_HAM(-0.00)[-0.962];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	TO_DN_SOME(0.00)[];
 	MID_RHS_MATCH_FROM(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
-	FROM_HAS_DN(0.00)[]
-X-Rspamd-Queue-Id: 54BC760EBC0
-X-Rspamd-Action: no action
+	RCPT_COUNT_SEVEN(0.00)[8];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	R_SPF_ALLOW(0.00)[+ip4:172.232.135.74:c];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,linuxtesting.org:url,linuxfoundation.org:mid,linuxfoundation.org:dkim,intel.com:email]
+X-Rspamd-Queue-Id: 0FAF5610131
+X-Rspamd-Action: add header
 X-Rspamd-Server: lfdr
+X-Spam: Yes
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: hkbinbin <hkbinbinbin@gmail.com>
+From: Agalakov Daniil <ade@amicon.ru>
 
-commit 7244491dab347f648e661da96dc0febadd9daec3 upstream.
+[ Upstream commit d3baa34a470771399c1495bc04b1e26ac15d598e ]
 
-rxe_rcv() currently checks only that the incoming packet is at least
-header_size(pkt) bytes long before payload_size() is used.
+[Why]
+e1000_set_eeprom() performs a read-modify-write operation when the write
+range is not word-aligned. This requires reading the first and last words
+of the range from the EEPROM to preserve the unmodified bytes.
 
-However, payload_size() subtracts both the attacker-controlled BTH pad
-field and RXE_ICRC_SIZE from pkt->paylen:
+However, the code does not check the return value of e1000_read_eeprom().
+If the read fails, the operation continues using uninitialized data from
+eeprom_buff. This results in corrupted data being written back to the
+EEPROM for the boundary words.
 
-  payload_size = pkt->paylen - offset[RXE_PAYLOAD] - bth_pad(pkt)
-                 - RXE_ICRC_SIZE
+Add the missing error checks and abort the operation if reading fails.
 
-This means a short packet can still make payload_size() underflow even
-if it includes enough bytes for the fixed headers. Simply requiring
-header_size(pkt) + RXE_ICRC_SIZE is not sufficient either, because a
-packet with a forged non-zero BTH pad can still leave payload_size()
-negative and pass an underflowed value to later receive-path users.
+Found by Linux Verification Center (linuxtesting.org) with SVACE.
 
-Fix this by validating pkt->paylen against the full minimum length
-required by payload_size(): header_size(pkt) + bth_pad(pkt) +
-RXE_ICRC_SIZE.
-
-Cc: stable@vger.kernel.org
-Fixes: 8700e3e7c485 ("Soft RoCE driver")
-Link: https://patch.msgid.link/r/20260401121907.1468366-1-hkbinbinbin@gmail.com
-Signed-off-by: hkbinbin <hkbinbinbin@gmail.com>
-Reviewed-by: Zhu Yanjun <yanjun.zhu@linux.dev>
-Signed-off-by: Jason Gunthorpe <jgg@nvidia.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
+Co-developed-by: Iskhakov Daniil <dish@amicon.ru>
+Signed-off-by: Iskhakov Daniil <dish@amicon.ru>
+Signed-off-by: Agalakov Daniil <ade@amicon.ru>
+Reviewed-by: Aleksandr Loktionov <aleksandr.loktionov@intel.com>
+Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/infiniband/sw/rxe/rxe_recv.c |    3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/net/ethernet/intel/e1000/e1000_ethtool.c | 8 +++++++-
+ 1 file changed, 7 insertions(+), 1 deletion(-)
 
---- a/drivers/infiniband/sw/rxe/rxe_recv.c
-+++ b/drivers/infiniband/sw/rxe/rxe_recv.c
-@@ -322,7 +322,8 @@ void rxe_rcv(struct sk_buff *skb)
- 	pkt->qp = NULL;
- 	pkt->mask |= rxe_opcode[pkt->opcode].mask;
+diff --git a/drivers/net/ethernet/intel/e1000/e1000_ethtool.c b/drivers/net/ethernet/intel/e1000/e1000_ethtool.c
+index 0a57172dfcbc4..631165b895b61 100644
+--- a/drivers/net/ethernet/intel/e1000/e1000_ethtool.c
++++ b/drivers/net/ethernet/intel/e1000/e1000_ethtool.c
+@@ -496,14 +496,19 @@ static int e1000_set_eeprom(struct net_device *netdev,
+ 		 */
+ 		ret_val = e1000_read_eeprom(hw, first_word, 1,
+ 					    &eeprom_buff[0]);
++		if (ret_val)
++			goto out;
++
+ 		ptr++;
+ 	}
+-	if (((eeprom->offset + eeprom->len) & 1) && (ret_val == 0)) {
++	if ((eeprom->offset + eeprom->len) & 1) {
+ 		/* need read/modify/write of last changed EEPROM word
+ 		 * only the first byte of the word is being modified
+ 		 */
+ 		ret_val = e1000_read_eeprom(hw, last_word, 1,
+ 					    &eeprom_buff[last_word - first_word]);
++		if (ret_val)
++			goto out;
+ 	}
  
--	if (unlikely(skb->len < header_size(pkt)))
-+	if (unlikely(pkt->paylen < header_size(pkt) + bth_pad(pkt) +
-+		       RXE_ICRC_SIZE))
- 		goto drop;
+ 	/* Device's eeprom is always little-endian, word addressable */
+@@ -522,6 +527,7 @@ static int e1000_set_eeprom(struct net_device *netdev,
+ 	if ((ret_val == 0) && (first_word <= EEPROM_CHECKSUM_REG))
+ 		e1000_update_eeprom_checksum(hw);
  
- 	err = hdr_check(pkt);
++out:
+ 	kfree(eeprom_buff);
+ 	return ret_val;
+ }
+-- 
+2.53.0
+
 
 
 
