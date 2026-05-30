@@ -1,60 +1,61 @@
-Return-Path: <stable+bounces-257325-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-257327-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id GM3GMLIaG2pR/QgAu9opvQ
-	(envelope-from <stable+bounces-257325-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:13:22 +0200
+	id 4IKdIpAZG2oq/QgAu9opvQ
+	(envelope-from <stable+bounces-257327-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:08:32 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3315760F29C
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:13:22 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 06F6560EF2E
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:08:31 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 620CF30D524F
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 17:03:35 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 958123049E10
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 17:03:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 055A135200B;
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BACA23A0E97;
 	Sat, 30 May 2026 17:03:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="RoN5eM5e"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="UpmzQ+qB"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DBA1E481DD
-	for <stable@vger.kernel.org>; Sat, 30 May 2026 17:03:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 910E732B11D
+	for <stable@vger.kernel.org>; Sat, 30 May 2026 17:03:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780160614; cv=none; b=N5zU8oOOMQZfPuDtxtTuHTWctFq+eks3aqf1ghF4X4N4oWM0Zlp1uqSOXpVgQ9othjnSniDyWv1jbMK7+J+j3M1uePgYiabOadUmvLFANTV6vH10n0gynXmMNuDAbqQ0V6RDa2B20hAQAPXZwNb2L4CfqlGVWo9H5cg0K59D+6A=
+	t=1780160615; cv=none; b=s0Zu+ez355Y4MPmy/BpwG03SqUn2srXVbDb0gKeUJwYFiNJgWXrI5uhS5hf+17ZdpTrqB0qH46N2LZkdhNEAv/wsjiFRvMjryyoU3pjPvHHWhvTMwusOViz/Q6pITYqvmZLUdkDQ8j2fudfHSDJeMr8z7qhKb+ZYL/HGfc+tFlI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780160614; c=relaxed/simple;
-	bh=94R9a64P91vN20hff9ATaNOJmmR4tEw+Nfw7ZF8ZLDo=;
+	s=arc-20240116; t=1780160615; c=relaxed/simple;
+	bh=kFqIJs2V0Wgfk0iGdAJTzzGuu/cRkwKfgqtJ+9afPQs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=jX9bRnjeCeURMamU82t9+7mUGWtwWuNzGZb6G7UnHXO8u4Gfunxj/ZJF5RBP2rcoeHABYi+PuJhXB789xJJUyb9ICyXvtQOh5SQhllJdfYH/cKhdTxBTFU/Cy914AWa23Qo3PJCW1FPu6s5eAYs+VaWWuHz/kQjtEn/3rI3R1pk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=RoN5eM5e; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 40EF01F00898;
+	 MIME-Version:Content-Type; b=Kc3fQE1yoESJ9+0GGMHuF7o70wkA2ttb9wa488/dE+Z+VMDr0UesJyDS2Kfg9m1YHT5gfsdWtqXf9awudh0G9Z5DwNsM/AwlSPxlUA6hGmupxFeiDkY7FcIgo8CI1iZIbVLwYC1mt5fpTLfVtI+D0A9YQXorvfuar5ZMpkzfT5M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=UpmzQ+qB; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EF32D1F00899;
 	Sat, 30 May 2026 17:03:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1780160613;
-	bh=S8/UVf+yenVYyzB9TTtvI2gmdt8hOmvukiHq72xYOXk=;
+	s=k20260515; t=1780160614;
+	bh=vYDr6eJ2H7syDZRVQCiaXT6H8iO7fbAktzkcWg63wnI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=RoN5eM5edgCBYYYebFhEB6akFv0MwRWSwXpCHz2pLfEy1GUgIv4OizE0u19iCwiGY
-	 PtMuUmWUY/ciWY27znnkOpMfTDEN7GJW1JYKX4WCA48D7/vSvky8bnZsKoWiHs20D9
-	 51ExjRVxzlONxYqONfS+AdbY+pf2yrQCHS7C1PeHLutf33pmhgnhipOMKPKlhBCa3h
-	 JusxVY8KJAlKlQN56ioGrHA/3h5DqGkHiCkywoSHV+1O5WwQxtviFAUYe4S0rS1VUt
-	 wIpmJWDZbwIEK7vriI+I7VgGb7BnGyUtKBUDDg2Lwr1TocWqrQdwEBOldsdjACfqdH
-	 AsX39frlfZ6bA==
+	b=UpmzQ+qBHQowvqIBlGxVvjOsJE7KuHZOZPIBO8ZCxjb6VXSXulY5By6yxDo48QoVG
+	 5Alv9nwu943xvDXMU2VnZuWNc7aPPYLsR8jyaEQkuKtUFGz99vVdrxriOBVlEfwBHu
+	 XjGXZppMzHlaPqzQ3NLrnR6OtzAYw8Y7IGqpTD8nTqoiIJctQ/7ma5YFYwSx/IvCzW
+	 eCXPgC3tgj8lX2iNjRtydZUe2010STYGRhYzEM0T7P82SZ3q/7Ooi4QJyuaaS/uUU3
+	 CN/RAuRKlsZBxOee7cF/Aw0OSUR8n+HkTG1dpaiXquCSswa2xOKprTn2+F4ebVoToY
+	 /IU2RZGdJgeFA==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org
 Cc: "David E. Box" <david.e.box@linux.intel.com>,
 	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1.y 1/4] platform/x86/intel/vsec: Add private data for per-device data
-Date: Sat, 30 May 2026 13:03:28 -0400
-Message-ID: <20260530170331.3037528-1-sashal@kernel.org>
+Subject: [PATCH 6.1.y 2/4] platform/x86/intel/vsec: Create wrapper to walk PCI config space
+Date: Sat, 30 May 2026 13:03:29 -0400
+Message-ID: <20260530170331.3037528-2-sashal@kernel.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <2026052831-compacter-avenue-4d0c@gregkh>
+In-Reply-To: <20260530170331.3037528-1-sashal@kernel.org>
 References: <2026052831-compacter-avenue-4d0c@gregkh>
+ <20260530170331.3037528-1-sashal@kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -67,18 +68,18 @@ X-Spamd-Result: default: False [-1.16 / 15.00];
 	MID_CONTAINS_FROM(1.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20260515];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	DKIM_TRACE(0.00)[kernel.org:+];
-	TAGGED_FROM(0.00)[bounces-257325-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-257327-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
@@ -88,66 +89,90 @@ X-Spamd-Result: default: False [-1.16 / 15.00];
 	TAGGED_RCPT(0.00)[stable];
 	MIME_TRACE(0.00)[0:+];
 	TO_DN_SOME(0.00)[]
-X-Rspamd-Queue-Id: 3315760F29C
+X-Rspamd-Queue-Id: 06F6560EF2E
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
 From: "David E. Box" <david.e.box@linux.intel.com>
 
-[ Upstream commit dc957ab6aa05c118c3da0542428a4d6602aa2d2d ]
+[ Upstream commit b0631f8a5740c55b52d02174cc4c9c84cc7a16a1 ]
 
-Introduce a new private structure, struct vsec_priv, to hold a pointer to
-the platform-specific information. Although the driver didn’t previously
-require this per-device data, adding it now lays the groundwork for
-upcoming patches that will manage such data. No functional changes.
+Combine three PCI config space walkers — intel_vsec_walk_dvsec(),
+intel_vsec_walk_vsec(), and intel_vsec_walk_header() — into a new wrapper
+function, intel_vsec_feature_walk().  This refactoring simplifies the probe
+logic and lays the groundwork for future patches that will loop over these
+calls. No functional changes.
 
 Signed-off-by: David E. Box <david.e.box@linux.intel.com>
-Link: https://lore.kernel.org/r/20250703022832.1302928-3-david.e.box@linux.intel.com
+Link: https://lore.kernel.org/r/20250703022832.1302928-4-david.e.box@linux.intel.com
 Reviewed-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
 Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
 Stable-dep-of: 348ccc754d89 ("platform/x86/intel/vsec: Fix enable_cnt imbalance on PCIe error recovery")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/platform/x86/intel/vsec.c | 12 ++++++++++++
- 1 file changed, 12 insertions(+)
+ drivers/platform/x86/intel/vsec.c | 38 +++++++++++++++++++++----------
+ 1 file changed, 26 insertions(+), 12 deletions(-)
 
 diff --git a/drivers/platform/x86/intel/vsec.c b/drivers/platform/x86/intel/vsec.c
-index 40477d1d41b59..1a9f8267b0b07 100644
+index 1a9f8267b0b07..e31e5db593401 100644
 --- a/drivers/platform/x86/intel/vsec.c
 +++ b/drivers/platform/x86/intel/vsec.c
-@@ -73,6 +73,10 @@ static enum intel_vsec_id intel_vsec_allow_list[] = {
- 	VSEC_ID_SDSI,
- };
+@@ -376,11 +376,35 @@ static bool intel_vsec_walk_vsec(struct pci_dev *pdev,
+ 	return have_devices;
+ }
  
-+struct vsec_priv {
-+	struct intel_vsec_platform_info *info;
-+};
++static bool intel_vsec_get_features(struct pci_dev *pdev,
++				    struct intel_vsec_platform_info *info)
++{
++	bool found = false;
 +
- static const char *intel_vsec_name(enum intel_vsec_id id)
- {
- 	switch (id) {
-@@ -375,6 +379,7 @@ static bool intel_vsec_walk_vsec(struct pci_dev *pdev,
++	/*
++	 * Both DVSEC and VSEC capabilities can exist on the same device,
++	 * so both intel_vsec_walk_dvsec() and intel_vsec_walk_vsec() must be
++	 * called independently. Additionally, intel_vsec_walk_header() is
++	 * needed for devices that do not have VSEC/DVSEC but provide the
++	 * information via device_data.
++	 */
++	if (intel_vsec_walk_dvsec(pdev, info))
++		found = true;
++
++	if (intel_vsec_walk_vsec(pdev, info))
++		found = true;
++
++	if (info && (info->quirks & VSEC_QUIRK_NO_DVSEC) &&
++	    intel_vsec_walk_header(pdev, info))
++		found = true;
++
++	return found;
++}
++
  static int intel_vsec_pci_probe(struct pci_dev *pdev, const struct pci_device_id *id)
  {
  	struct intel_vsec_platform_info *info;
-+	struct vsec_priv *priv;
- 	bool have_devices = false;
+ 	struct vsec_priv *priv;
+-	bool have_devices = false;
  	int ret;
  
-@@ -387,6 +392,13 @@ static int intel_vsec_pci_probe(struct pci_dev *pdev, const struct pci_device_id
- 	if (!info)
- 		return -EINVAL;
+ 	ret = pcim_enable_device(pdev);
+@@ -399,17 +423,7 @@ static int intel_vsec_pci_probe(struct pci_dev *pdev, const struct pci_device_id
+ 	priv->info = info;
+ 	pci_set_drvdata(pdev, priv);
  
-+	priv = devm_kzalloc(&pdev->dev, sizeof(*priv), GFP_KERNEL);
-+	if (!priv)
-+		return -ENOMEM;
-+
-+	priv->info = info;
-+	pci_set_drvdata(pdev, priv);
-+
- 	if (intel_vsec_walk_dvsec(pdev, info))
- 		have_devices = true;
+-	if (intel_vsec_walk_dvsec(pdev, info))
+-		have_devices = true;
+-
+-	if (intel_vsec_walk_vsec(pdev, info))
+-		have_devices = true;
+-
+-	if (info && (info->quirks & VSEC_QUIRK_NO_DVSEC) &&
+-	    intel_vsec_walk_header(pdev, info))
+-		have_devices = true;
+-
+-	if (!have_devices)
++	if (!intel_vsec_get_features(pdev, info))
+ 		return -ENODEV;
  
+ 	return 0;
 -- 
 2.53.0
 
