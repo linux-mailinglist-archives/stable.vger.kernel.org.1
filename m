@@ -1,60 +1,62 @@
-Return-Path: <stable+bounces-258415-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-257682-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 4A5cNyonG2qf/ggAu9opvQ
-	(envelope-from <stable+bounces-258415-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:06:34 +0200
+	id cFOhIqQdG2qW/QgAu9opvQ
+	(envelope-from <stable+bounces-257682-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:25:56 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6151261101E
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:06:34 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3185260FA0E
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:25:56 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 927953019113
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 18:04:35 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id F3320304237A
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 17:23:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3B9D823392B;
-	Sat, 30 May 2026 18:04:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 760A7340293;
+	Sat, 30 May 2026 17:23:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="I4AstRDr"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OTu5wreM"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 18E243AB291;
-	Sat, 30 May 2026 18:04:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 40A1733E36A;
+	Sat, 30 May 2026 17:23:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780164275; cv=none; b=uWj8UZUaAagfvNCb429j/VU9Gfx1fa3gXO85m9FL7PiDMuu7Qw7MVKKBRR1GSuRbq/No+MMTMRrkzmY92ufmCFsgYzf1tQEUAyP8VvILtC1wWRYvisdbsvC2sDnM5ml4EV8r54ErGx4jXkbDrVVxYH9sIR8B2dPg93K+yhibriY=
+	t=1780161820; cv=none; b=X+/9TFudT3mddux1uunxDi9jUodb4WaYzigC7HPZzJtAFiRWe8oLMfyAGgwzWTbd/fb9Gh3frPK4t/MeMkLXd9DZ4NqzOtUqUdKXfoj4vTT63r8n4mnrJFKBE3NsHaBt8r13nfTxR1I3yQX/9p3z7wk2pi1LR7sFwvWn5nuFzM8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780164275; c=relaxed/simple;
-	bh=/9GqUJNeM8upjZFzywJs6p4cI8TOwmGld1oTXqkTILg=;
+	s=arc-20240116; t=1780161820; c=relaxed/simple;
+	bh=CTfCbwUp0TwMA70soEGgTtzAYWNjcKSP0Flc9cF8RMI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Q+Jv6Ye8+mWTRy0hjf/dwtR+MkT7iRBbsgiEmj98ODrLNOyI9bUoaepC2cm55X9whhvFntSMLTa26eH3zfgubc5kgwqnAVU82siLtEH/q7VONgk80Ulnhv27UPTLFrBzOiG4i5tpkp6g0+JmI5ZTs7GtS2hsDGiW3nUAHEb6tcU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=I4AstRDr; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6312B1F00893;
-	Sat, 30 May 2026 18:04:33 +0000 (UTC)
+	 MIME-Version; b=k94mujpxazLJluNMWhPmm5wx2NEe+P8Ax5plvni0G09g33fnE4kBsoD08sO1HuLpB16ZubraQH2hdi6a8uDy5D5I0rj09FvfAhrqdD+kz1kJSrhyRP9Rky7you7LtezAO3fRWOiupzvJC0AVAfZa2M5pwGG+qiWlB3oU9yi5dMg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OTu5wreM; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 85D0B1F00893;
+	Sat, 30 May 2026 17:23:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780164274;
-	bh=Ye3/V/mp1UFXuwXg6N7Fi8wBe6rM9ElhMqDPraxtB6o=;
+	s=korg; t=1780161819;
+	bh=yPJN1e7rzPNkMCt0OApgNjIOF0U4KnW2mRPbIuZVB+A=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=I4AstRDrdRgGuJ3lMUKBPMBzLsAdhsr+0HWDK/LQKTEKXk3qezODGegIqfCi3V863
-	 dfbUrmkTJRZ6lzay5le9lWaQqR/+MizqVMxo8TkXmV8M5fC9sOg3Z1lMHyREsAaOn0
-	 DBP8CLuOiY29SAb9EgL0tm8j6cLYNx7UzZlHwB+4=
+	b=OTu5wreMcZgOxp3nEJdu8qDE5yPK5ZzCo5aCVprLjn/wy/4iSobOWB1K6r1tQ8Gn5
+	 0267ykDHnbhG0R3x8aJEuWNXz1/tEv+7XrOpu/eyoJkmvRpUqhu4Vd9ruu4EPP1vnv
+	 TTWStJq87zpoH6dFMBdqa6P9aJjy9Mqq84FHhWDI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Chen Ni <nichen@iscas.ac.cn>,
-	Linus Walleij <linusw@kernel.org>,
-	Miquel Raynal <miquel.raynal@bootlin.com>,
+	Eric Dumazet <edumazet@google.com>,
+	Fernando Fernandez Mancera <fmancera@suse.de>,
+	Joe Damato <joe@dama.to>,
+	Ido Schimmel <idosch@nvidia.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 506/776] mtd: physmap_of_gemini: Fix disabled pinctrl state check
+Subject: [PATCH 6.1 696/969] ipv6: fix possible UAF in icmpv6_rcv()
 Date: Sat, 30 May 2026 18:03:40 +0200
-Message-ID: <20260530160253.355454979@linuxfoundation.org>
+Message-ID: <20260530160319.734648615@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260530160240.228940103@linuxfoundation.org>
-References: <20260530160240.228940103@linuxfoundation.org>
+In-Reply-To: <20260530160300.485627683@linuxfoundation.org>
+References: <20260530160300.485627683@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,70 +71,99 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	RCVD_TLS_LAST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-257682-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-258415-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TO_DN_SOME(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[7];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[9];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[bootlin.com:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,iscas.ac.cn:email]
-X-Rspamd-Queue-Id: 6151261101E
+	TO_DN_SOME(0.00)[];
+	FROM_HAS_DN(0.00)[]
+X-Rspamd-Queue-Id: 3185260FA0E
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Chen Ni <nichen@iscas.ac.cn>
+From: Eric Dumazet <edumazet@google.com>
 
-[ Upstream commit b7c0982184b0661f5b1b805f3a56f1bd3757b63e ]
+[ Upstream commit f996edd7615e686ada141b7f3395025729ff8ccb ]
 
-The condition for checking the disabled pinctrl state incorrectly checks
-gf->enabled_state instead of gf->disabled_state. This causes misleading
-error messages and could lead to incorrect behavior when only one of the
-pinctrl states is defined.
+Caching saddr and daddr before pskb_pull() is problematic
+since skb->head can change.
 
-Fix the condition to properly check gf->disabled_state.
+Remove these temporary variables:
 
-Fixes: 9d3b5086f6d4 ("mtd: physmap_of_gemini: Handle pin control")
-Signed-off-by: Chen Ni <nichen@iscas.ac.cn>
-Reviewed-by: Linus Walleij <linusw@kernel.org>
-Signed-off-by: Miquel Raynal <miquel.raynal@bootlin.com>
+- We only access &ipv6_hdr(skb)->saddr and &ipv6_hdr(skb)->daddr
+  when net_dbg_ratelimited() is called in the slow path.
+
+- Avoid potential future misuse after pskb_pull() call.
+
+Fixes: 4b3418fba0fe ("ipv6: icmp: include addresses in debug messages")
+Signed-off-by: Eric Dumazet <edumazet@google.com>
+Reviewed-by: Fernando Fernandez Mancera <fmancera@suse.de>
+Reviewed-by: Joe Damato <joe@dama.to>
+Reviewed-by: Ido Schimmel <idosch@nvidia.com>
+Link: https://patch.msgid.link/20260416103505.2380753-1-edumazet@google.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/mtd/maps/physmap-gemini.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ net/ipv6/icmp.c | 10 ++++------
+ 1 file changed, 4 insertions(+), 6 deletions(-)
 
-diff --git a/drivers/mtd/maps/physmap-gemini.c b/drivers/mtd/maps/physmap-gemini.c
-index d4a46e159d38f..8d5b791dd08d4 100644
---- a/drivers/mtd/maps/physmap-gemini.c
-+++ b/drivers/mtd/maps/physmap-gemini.c
-@@ -181,7 +181,7 @@ int of_flash_probe_gemini(struct platform_device *pdev,
- 		dev_err(dev, "no enabled pin control state\n");
+diff --git a/net/ipv6/icmp.c b/net/ipv6/icmp.c
+index 80eabb22d144f..877cb5e8ded7b 100644
+--- a/net/ipv6/icmp.c
++++ b/net/ipv6/icmp.c
+@@ -889,7 +889,6 @@ static int icmpv6_rcv(struct sk_buff *skb)
+ 	struct net *net = dev_net(skb->dev);
+ 	struct net_device *dev = icmp6_dev(skb);
+ 	struct inet6_dev *idev = __in6_dev_get(dev);
+-	const struct in6_addr *saddr, *daddr;
+ 	struct icmp6hdr *hdr;
+ 	u8 type;
  
- 	gf->disabled_state = pinctrl_lookup_state(gf->p, "disabled");
--	if (IS_ERR(gf->enabled_state)) {
-+	if (IS_ERR(gf->disabled_state)) {
- 		dev_err(dev, "no disabled pin control state\n");
- 	} else {
- 		ret = pinctrl_select_state(gf->p, gf->disabled_state);
+@@ -920,12 +919,10 @@ static int icmpv6_rcv(struct sk_buff *skb)
+ 
+ 	__ICMP6_INC_STATS(dev_net(dev), idev, ICMP6_MIB_INMSGS);
+ 
+-	saddr = &ipv6_hdr(skb)->saddr;
+-	daddr = &ipv6_hdr(skb)->daddr;
+-
+ 	if (skb_checksum_validate(skb, IPPROTO_ICMPV6, ip6_compute_pseudo)) {
+ 		net_dbg_ratelimited("ICMPv6 checksum failed [%pI6c > %pI6c]\n",
+-				    saddr, daddr);
++				    &ipv6_hdr(skb)->saddr,
++				    &ipv6_hdr(skb)->daddr);
+ 		goto csum_error;
+ 	}
+ 
+@@ -1007,7 +1004,8 @@ static int icmpv6_rcv(struct sk_buff *skb)
+ 			break;
+ 
+ 		net_dbg_ratelimited("icmpv6: msg of unknown type [%pI6c > %pI6c]\n",
+-				    saddr, daddr);
++				    &ipv6_hdr(skb)->saddr,
++				    &ipv6_hdr(skb)->daddr);
+ 
+ 		/*
+ 		 * error of unknown type.
 -- 
 2.53.0
 
