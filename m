@@ -1,64 +1,59 @@
-Return-Path: <stable+bounces-258833-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-257437-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id qOtGLwUtG2pa/wgAu9opvQ
-	(envelope-from <stable+bounces-258833-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:31:33 +0200
+	id cPPzAjocG2p3/QgAu9opvQ
+	(envelope-from <stable+bounces-257437-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:19:54 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 37DEE611E33
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:31:33 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4DA7D60F67E
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:19:53 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id BCE0B30C67B8
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 18:28:23 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 07B203014BE2
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 17:09:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EAE793C416A;
-	Sat, 30 May 2026 18:28:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CD441395AD8;
+	Sat, 30 May 2026 17:09:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="S1KxqtDA"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="e/yyOxHT"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B481F3C3425;
-	Sat, 30 May 2026 18:28:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A26B63148DA;
+	Sat, 30 May 2026 17:09:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780165691; cv=none; b=djjWJggWgJCi4SLAbOsmOJ9I6PYYFa8IxoGRCdheYoyiVrunL3T9EKwyz7ef2FwWAFzbIaz5KgORHUexRzSJ5SyHNMQk9V4qLksLIs2dGiw6T/zdYGa7Hrs/YNPyCisoGivFfmwodpCD7PeW12VhUp1ycRjzANhX5R/ZMLTv+hY=
+	t=1780160993; cv=none; b=qcAhs1y2keKMo5dnkzJRMztZ0xFrY+NJZoehbF1PK6BJVTkVtSZWA18bA6wBjo34ugWxKFC/qCe9N+Tjs9CDdBQCPn9wTYfLVxnnif20eXBYqSRdDXdvebb+S+FX7Cbg94lXFni+C07urIpBclF1QtBGlQc3RqAk4mDRmVxuoC8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780165691; c=relaxed/simple;
-	bh=darWRC4vbreeCrw7jKXqe6YD79VYHJQAiNenBleNpG4=;
+	s=arc-20240116; t=1780160993; c=relaxed/simple;
+	bh=KyD9ub65fXdZ/stWG/lrogv+v/ajFzan7T7S4rOjnJ8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=C2UA8CDQpolhs/1079kgf6K7GgPQlgu3Oot6TQ63YYFCmGrETCLm606Top+b65u601alTjCRsNYgMjtx0QgGr7yuxMCxRiftOd5mlnjAIgf4/UyX5we57Ic8e48QJtlAxF/oWRHgByVYweHLNQd3echAn5voaswrefWBGV/9Dvs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=S1KxqtDA; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 07F421F00893;
-	Sat, 30 May 2026 18:28:09 +0000 (UTC)
+	 MIME-Version; b=W26f6dfpw67IvsD4rd13ItxvKoLgLBrbbutjeEwhuKz6UN1iQNiP18hq6fcKSTDTELj0z73qMVmI0ATmsPwGqGMstJtDbVwQFjeAqg9jRDOZBAv7Iq1MV8/GdmGJhPuz2Ey7DtxdsxdcbYt7xh2t++4G4P1Jv5DAuL7lCezfA1A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=e/yyOxHT; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DCEBE1F00898;
+	Sat, 30 May 2026 17:09:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780165690;
-	bh=pzhxrbqOV0YKWdTu9rSV08dIgE3B3b+fNe+Wq5DxD4c=;
+	s=korg; t=1780160992;
+	bh=POxAFIt0tZLkqLDwV5SNEavsXv0ZLNOD9wNXCRqqhes=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=S1KxqtDALr9sBcwvfDXXK/XrI6fpdpEDhG90jFLVIdCeFAb5z8wxF9/npOJGnACJW
-	 spxXO3UZk5LnYpws+LWnkw/PXNkpC+oLJjxcunG6eu8Y63S8ZN8DIKjQLvpceaP/Eo
-	 gOhus4WfDHDCWxfVsWGIks2gBiUSWWb2k5XcQ79s=
+	b=e/yyOxHT+nKV+ogJW73yQM3gUqyVERCh83ztOTaZpLjptGfuqSsx4+9bvhNVlWfOs
+	 /g9MkktZwIHyltY8t5E3RFP+WosK0yr6M8gN9KzihLwdW8aZV2vnw8xHvyUJB2fN6y
+	 qM2t0jojno/d6Ecw3tcPcm0JcdLeNOR+R70P2ZWQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Anderson Nascimento <anderson@allelesecurity.com>,
-	David Howells <dhowells@redhat.com>,
-	Marc Dionne <marc.dionne@auristor.com>,
-	Jeffrey Altman <jaltman@auristor.com>,
-	Simon Horman <horms@kernel.org>,
-	linux-afs@lists.infradead.org,
-	stable@kernel.org,
-	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 5.10 136/589] rxrpc: Fix missing validation of ticket length in non-XDR key preparsing
-Date: Sat, 30 May 2026 18:00:17 +0200
-Message-ID: <20260530160228.355304139@linuxfoundation.org>
+	Sander Vanheule <sander@svanheule.net>,
+	Mark Brown <broonie@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 494/969] ASoC: sti: use managed regmap_field allocations
+Date: Sat, 30 May 2026 18:00:18 +0200
+Message-ID: <20260530160313.959467533@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260530160224.570625122@linuxfoundation.org>
-References: <20260530160224.570625122@linuxfoundation.org>
+In-Reply-To: <20260530160300.485627683@linuxfoundation.org>
+References: <20260530160300.485627683@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -71,90 +66,78 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-258833-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TAGGED_FROM(0.00)[bounces-257437-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	TO_DN_SOME(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	RCPT_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	NEURAL_HAM(-0.00)[-0.995];
-	RCPT_COUNT_SEVEN(0.00)[11];
-	MID_RHS_MATCH_FROM(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,auristor.com:email,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,infradead.org:email]
-X-Rspamd-Queue-Id: 37DEE611E33
+	MID_RHS_MATCH_FROM(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	FROM_HAS_DN(0.00)[]
+X-Rspamd-Queue-Id: 4DA7D60F67E
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Anderson Nascimento <anderson@allelesecurity.com>
+From: Sander Vanheule <sander@svanheule.net>
 
-commit ac33733b10b484d666f97688561670afd5861383 upstream.
+[ Upstream commit 1696fad8b259a2d46e51cd6e17e4bcdbe02279fa ]
 
-In rxrpc_preparse(), there are two paths for parsing key payloads: the
-XDR path (for large payloads) and the non-XDR path (for payloads <= 28
-bytes). While the XDR path (rxrpc_preparse_xdr_rxkad()) correctly
-validates the ticket length against AFSTOKEN_RK_TIX_MAX, the non-XDR
-path fails to do so.
+The regmap_field objects allocated at player init are never freed and
+may leak resources if the driver is removed.
 
-This allows an unprivileged user to provide a very large ticket length.
-When this key is later read via rxrpc_read(), the total
-token size (toksize) calculation results in a value that exceeds
-AFSTOKEN_LENGTH_MAX, triggering a WARN_ON().
+Switch to devm_regmap_field_alloc() to automatically limit the lifetime
+of the allocations the lifetime of the device.
 
-[ 2001.302904] WARNING: CPU: 2 PID: 2108 at net/rxrpc/key.c:778 rxrpc_read+0x109/0x5c0 [rxrpc]
-
-Fix this by adding a check in the non-XDR parsing path of rxrpc_preparse()
-to ensure the ticket length does not exceed AFSTOKEN_RK_TIX_MAX,
-bringing it into parity with the XDR parsing logic.
-
-Fixes: 8a7a3eb4ddbe ("KEYS: RxRPC: Use key preparsing")
-Fixes: 84924aac08a4 ("rxrpc: Fix checker warning")
-Reported-by: Anderson Nascimento <anderson@allelesecurity.com>
-Signed-off-by: Anderson Nascimento <anderson@allelesecurity.com>
-Signed-off-by: David Howells <dhowells@redhat.com>
-cc: Marc Dionne <marc.dionne@auristor.com>
-cc: Jeffrey Altman <jaltman@auristor.com>
-cc: Simon Horman <horms@kernel.org>
-cc: linux-afs@lists.infradead.org
-cc: stable@kernel.org
-Link: https://patch.msgid.link/20260422161438.2593376-7-dhowells@redhat.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 76c2145ded6b ("ASoC: sti: Add CPU DAI driver for playback")
+Signed-off-by: Sander Vanheule <sander@svanheule.net>
+Link: https://patch.msgid.link/20260220152634.480766-3-sander@svanheule.net
+Signed-off-by: Mark Brown <broonie@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/rxrpc/key.c |    4 ++++
- 1 file changed, 4 insertions(+)
+ sound/soc/sti/uniperif_player.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
---- a/net/rxrpc/key.c
-+++ b/net/rxrpc/key.c
-@@ -755,6 +755,10 @@ static int rxrpc_preparse(struct key_pre
- 	if (v1->security_index != RXRPC_SECURITY_RXKAD)
- 		goto error;
+diff --git a/sound/soc/sti/uniperif_player.c b/sound/soc/sti/uniperif_player.c
+index e5c4e5245b255..da07f825f3c5f 100644
+--- a/sound/soc/sti/uniperif_player.c
++++ b/sound/soc/sti/uniperif_player.c
+@@ -1028,11 +1028,11 @@ static int uni_player_parse_dt_audio_glue(struct platform_device *pdev,
+ 		return PTR_ERR(regmap);
+ 	}
  
-+	ret = -EKEYREJECTED;
-+	if (v1->ticket_length > AFSTOKEN_RK_TIX_MAX)
-+		goto error;
-+
- 	plen = sizeof(*token->kad) + v1->ticket_length;
- 	prep->quotalen += plen + sizeof(*token);
+-	player->clk_sel = regmap_field_alloc(regmap, regfield[0]);
++	player->clk_sel = devm_regmap_field_alloc(&pdev->dev, regmap, regfield[0]);
+ 	if (IS_ERR(player->clk_sel))
+ 		return PTR_ERR(player->clk_sel);
  
+-	player->valid_sel = regmap_field_alloc(regmap, regfield[1]);
++	player->valid_sel = devm_regmap_field_alloc(&pdev->dev, regmap, regfield[1]);
+ 	if (IS_ERR(player->valid_sel))
+ 		return PTR_ERR(player->valid_sel);
+ 
+-- 
+2.53.0
+
 
 
 
