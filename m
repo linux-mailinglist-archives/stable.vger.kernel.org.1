@@ -1,65 +1,59 @@
-Return-Path: <stable+bounces-257516-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-258897-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 0IsFOmUbG2pk/QgAu9opvQ
-	(envelope-from <stable+bounces-257516-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:16:21 +0200
+	id 8D6UI3gwG2p5AAkAu9opvQ
+	(envelope-from <stable+bounces-258897-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:46:16 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8B0AE60F478
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:16:21 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id F1E76612735
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:46:15 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 92B28301955F
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 17:14:27 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 1465A31ABD6D
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 18:31:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C9F5E34A79D;
-	Sat, 30 May 2026 17:14:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7752432F770;
+	Sat, 30 May 2026 18:31:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kwQGvqrQ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GBcsbFya"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 93B2F3016E1;
-	Sat, 30 May 2026 17:14:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 589E62EF652;
+	Sat, 30 May 2026 18:31:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780161266; cv=none; b=H3/ZpJVJc2vvi9Wu+M2pNhkjAuG0Q4dtq1hJavfB3ptVxY6Ql6Hwje4lyjTSRcbM4fPCfe4XdmdsldijuqLW3/B1b5cYXORTw0zhups0qRH9gT4/HnY5IRwQZ1so9n1yhE8FhsY9K7bwF50+vkdkwLDboP1DcuGQ3PocwIUSK/g=
+	t=1780165909; cv=none; b=jIDIRM5rR+otpQEeH7JqkBnYmUW1kEJObcXliNa/OxL9/UAkTwAGHMbH6ktyhCSlCqyg1LFEu1/15rg2Z5/BnCaUHqJ5V+9HY3E6qDK2imEb3s4y9zHLbQ5TIZT86vMuKvWgafhIutd+PiHn1MACXJXGXmwMpRkiz2nYTYZqsSo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780161266; c=relaxed/simple;
-	bh=o/BQ1O0uKcbgueY/r3Wt2YHPiaOFXUyb7OlJQz2QOK8=;
+	s=arc-20240116; t=1780165909; c=relaxed/simple;
+	bh=fAmkElquu7l9KVHw1u9Z8unmCeElkVp6j29sIqLRhAY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=DQxgWxq1nAAfwM2tTszVhajq6iLn9fltD3RznsT5C23RzGkk3c/Hqq6hjT78O4sOHTFwiecu0SZrLEDV0ZbJzh8i7aGI091KuHHwLySO1v5BK0WbWg/5ilkuJm1lvLe/4dzrgtK5xzHgvf2eWw6/RJ59CukEUGwOXx2nhmBdkdo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kwQGvqrQ; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8D1B51F00893;
-	Sat, 30 May 2026 17:14:24 +0000 (UTC)
+	 MIME-Version; b=qACfkLDWVHpxWRBRx1toUaKu4YhfPnpwi9bEFtaxQOsEH33QM7uPnZlqPNYfQcfcs49yfBUzfmyUmGn5GATe+Kx4uY6bMaRzTXoes+mxyCXzjPVrO1PDlrKlqJjvJaumIn9XrnPyWAW9dhPghkTc02iAmhtCGoovZtDt347B8Ss=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GBcsbFya; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 986DE1F00893;
+	Sat, 30 May 2026 18:31:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780161265;
-	bh=s3Kp7gh3FNgfds3Yb1wao5v8wl6Uf5/P4k9nXMxtKgU=;
+	s=korg; t=1780165908;
+	bh=D7/6Y8nKBDk2Blw16ds+ENDmdAT8KD/3Vs3hwQbpS/8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=kwQGvqrQzAO3QNeXWCLg3kO2+Mej+G/YsxVqMWfbhlSod/D6fM3u88xg9I1+x7OpJ
-	 1gME6D5RkLqrVQloPNfKXUE0gcoOLbIia1kJQmcd/H97PcbQUWwfsK1RlW/p45vOIP
-	 9QxRWLH8Q65fytrDeE3sYs5jzt/8AHmgDsVjawfw=
+	b=GBcsbFyavvRjL2ST6BVld/Qv4X2a1EE7xQeWvb/rQ0qMYZ2WESCkYWGYfagxwf+S6
+	 INqEnc5d7leKHgjkV4/JPb76v71XDnbWGKSWvDy4+TNpri0ffJdCwXRoc/DP1wvvLN
+	 WpM727ARRNOVsy6hM18hfacACCqE+ervqt2s3Xds=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	John Hawley <warthog9@eaglescrag.net>,
-	Andrea Righi <arighi@nvidia.com>,
-	Marcos Paulo de Souza <mpdesouza@suse.com>,
-	Matthieu Baerts <matttbe@kernel.org>,
-	Fernando Fernandez Mancera <fmancera@suse.de>,
-	Pedro Falcato <pfalcato@suse.de>,
-	"=?UTF-8?q?Ricardo=20B . =20Marli=C3=A8re?=" <rbm@suse.com>,
-	Steven Rostedt <rostedt@goodmis.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 566/969] ktest: Run POST_KTEST hooks on failure and cancellation
-Date: Sat, 30 May 2026 18:01:30 +0200
-Message-ID: <20260530160316.022170611@linuxfoundation.org>
+	addy ke <addy.ke@rock-chips.com>,
+	Johan Hovold <johan@kernel.org>,
+	Mark Brown <broonie@kernel.org>
+Subject: [PATCH 5.10 210/589] spi: rockchip: fix controller deregistration
+Date: Sat, 30 May 2026 18:01:31 +0200
+Message-ID: <20260530160230.478262786@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260530160300.485627683@linuxfoundation.org>
-References: <20260530160300.485627683@linuxfoundation.org>
+In-Reply-To: <20260530160224.570625122@linuxfoundation.org>
+References: <20260530160224.570625122@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,138 +63,80 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-2.16 / 15.00];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-257516-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[12];
+	RCVD_TLS_LAST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-258897-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
-	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[stable];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-0.996];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TO_DN_SOME(0.00)[]
-X-Rspamd-Queue-Id: 8B0AE60F478
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,msgid.link:url,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,rock-chips.com:email]
+X-Rspamd-Queue-Id: F1E76612735
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ricardo B. Marlière <rbm@suse.com>
+From: Johan Hovold <johan@kernel.org>
 
-[ Upstream commit bc6e165a452da909cef0efbc286e6695624db372 ]
+commit 53e7a16070feb7d1d4d81a583eaac5e25048b9c3 upstream.
 
-PRE_KTEST can be useful for setting up the environment and POST_KTEST to
-tear it down, however POST_KTEST only runs on the normal end-of-run path.
-It is skipped when ktest exits through dodie() or cancel_test(). Final
-cleanup hooks are skipped.
+Make sure to deregister the controller before freeing underlying
+resources like DMA channels during driver unbind.
 
-Factor the final hook execution into run_post_ktest(), call it from the
-normal exit path and from the early exit paths, and guard it so the hook
-runs at most once.
-
-Cc: John Hawley <warthog9@eaglescrag.net>
-Cc: Andrea Righi <arighi@nvidia.com>
-Cc: Marcos Paulo de Souza <mpdesouza@suse.com>
-Cc: Matthieu Baerts <matttbe@kernel.org>
-Cc: Fernando Fernandez Mancera <fmancera@suse.de>
-Cc: Pedro Falcato <pfalcato@suse.de>
-Link: https://patch.msgid.link/20260307-ktest-fixes-v1-8-565d412f4925@suse.com
-Fixes: 921ed4c7208e ("ktest: Add PRE/POST_KTEST and TEST options")
-Signed-off-by: Ricardo B. Marlière <rbm@suse.com>
-Signed-off-by: Steven Rostedt <rostedt@goodmis.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 64e36824b32b ("spi/rockchip: add driver for Rockchip RK3xxx SoCs integrated SPI")
+Cc: stable@vger.kernel.org	# 3.17
+Cc: addy ke <addy.ke@rock-chips.com>
+Signed-off-by: Johan Hovold <johan@kernel.org>
+Link: https://patch.msgid.link/20260324082326.901043-3-johan@kernel.org
+Signed-off-by: Mark Brown <broonie@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- tools/testing/ktest/ktest.pl | 27 ++++++++++++++++++++++-----
- 1 file changed, 22 insertions(+), 5 deletions(-)
+ drivers/spi/spi-rockchip.c |    4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/tools/testing/ktest/ktest.pl b/tools/testing/ktest/ktest.pl
-index 28eebfa32621d..df8588dadc2ca 100755
---- a/tools/testing/ktest/ktest.pl
-+++ b/tools/testing/ktest/ktest.pl
-@@ -98,6 +98,7 @@ my $test_type;
- my $build_type;
- my $build_options;
- my $final_post_ktest;
-+my $post_ktest_done = 0;
- my $pre_ktest;
- my $post_ktest;
- my $pre_test;
-@@ -1530,6 +1531,24 @@ sub get_test_name() {
-     return $name;
- }
+--- a/drivers/spi/spi-rockchip.c
++++ b/drivers/spi/spi-rockchip.c
+@@ -792,7 +792,7 @@ static int rockchip_spi_probe(struct pla
+ 		ctlr->can_dma = rockchip_spi_can_dma;
+ 	}
  
-+sub run_post_ktest {
-+    my $cmd;
+-	ret = devm_spi_register_controller(&pdev->dev, ctlr);
++	ret = spi_register_controller(ctlr);
+ 	if (ret < 0) {
+ 		dev_err(&pdev->dev, "Failed to register controller\n");
+ 		goto err_free_dma_rx;
+@@ -828,6 +828,8 @@ static int rockchip_spi_remove(struct pl
+ 	clk_disable_unprepare(rs->spiclk);
+ 	clk_disable_unprepare(rs->apb_pclk);
+ 
++	spi_unregister_controller(ctlr);
 +
-+    return if ($post_ktest_done);
-+
-+    if (defined($final_post_ktest)) {
-+	$cmd = $final_post_ktest;
-+    } elsif (defined($post_ktest)) {
-+	$cmd = $post_ktest;
-+    } else {
-+	return;
-+    }
-+
-+    my $cp_post_ktest = eval_kernel_version($cmd);
-+    run_command $cp_post_ktest;
-+    $post_ktest_done = 1;
-+}
-+
- sub dodie {
-     # avoid recursion
-     return if ($in_die);
-@@ -1589,6 +1608,7 @@ sub dodie {
-     if (defined($post_test)) {
- 	run_command $post_test;
-     }
-+    run_post_ktest;
- 
-     die @_, "\n";
- }
-@@ -4223,6 +4243,7 @@ sub cancel_test {
- 	send_email("KTEST: Your [$name] test was cancelled",
- 	    "Your test started at $script_start_time was cancelled: sig int");
-     }
-+    run_post_ktest;
-     die "\nCaught Sig Int, test interrupted: $!\n"
- }
- 
-@@ -4533,11 +4554,7 @@ for (my $i = 1; $i <= $opt{"NUM_TESTS"}; $i++) {
-     success $i;
- }
- 
--if (defined($final_post_ktest)) {
--
--    my $cp_final_post_ktest = eval_kernel_version $final_post_ktest;
--    run_command $cp_final_post_ktest;
--}
-+run_post_ktest;
- 
- if ($opt{"POWEROFF_ON_SUCCESS"}) {
-     halt;
--- 
-2.53.0
-
+ 	pm_runtime_put_noidle(&pdev->dev);
+ 	pm_runtime_disable(&pdev->dev);
+ 	pm_runtime_set_suspended(&pdev->dev);
 
 
 
