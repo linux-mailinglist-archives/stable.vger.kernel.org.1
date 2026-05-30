@@ -1,59 +1,59 @@
-Return-Path: <stable+bounces-258318-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-258905-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id ALU+AiYoG2qS/ggAu9opvQ
-	(envelope-from <stable+bounces-258318-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:10:46 +0200
+	id WPkcCjktG2qU/wgAu9opvQ
+	(envelope-from <stable+bounces-258905-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:32:25 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 927E36112DE
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:10:45 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id 33DE0611ED9
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:32:24 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 2382E3139FA2
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 17:59:09 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 59E093002F59
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 18:32:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7F43F33032B;
-	Sat, 30 May 2026 17:59:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 855B32FDC5E;
+	Sat, 30 May 2026 18:32:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PBMtPCgv"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Sv8roMP2"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 53354320CAD;
-	Sat, 30 May 2026 17:59:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6809941A8F;
+	Sat, 30 May 2026 18:32:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780163948; cv=none; b=jXxS1Bfcq6bD1M+haWSqLZU6TUtDQAOEo7bAZruobGvw6WkdSXP7X/MWZWF4XfEcJuT0EfCxhBJTvF4X8PpplMohs1QNQTLVq6NpVN7oISWKf+nnKZaApDVCnY8JKNm+6lu6EwnVJajWeaVJ+0D56irmNMsUepW/vDDWUBqTZv0=
+	t=1780165936; cv=none; b=m5KulFZNYAavbO0WRVfUtL3tfXZZCOmv7ORh1bNpwSyQqioqw3dE1GfIOxqn3+RPWeCIpyRgoN0MKePnAnXHzpaD3JTDQOu2yRFg7bffxnRrKZHOJnq1X4f4BzLTWCIrtcX+B24ZQseJAIjXgLTFGGmE4DNOg1M9e8CgLmJ731g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780163948; c=relaxed/simple;
-	bh=CsrpRdWi5u4/0dvUeF7aubNjPjQdC6pCAK4Fah6vCpY=;
+	s=arc-20240116; t=1780165936; c=relaxed/simple;
+	bh=QHEBAbdyTEzsUg3c4Wq58F98mJ1LPpEqtg3lZLNTs/A=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=sNE4osgI8l2Sz4taKn7XfUqLXHCiLvBU1oBvy9XvaWVhsqKVP3F0uieaGjKiQ++JEtjiFc+tt8cqDRC8/VtfdpMdkd6AxA2/Bb56Hue9Y/R/QPEUk87OBw18gxM6R+IbuKDdaAdzU0G+yNAuGxFJ8C3M3ofKym1j4QNbRsC/ekw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PBMtPCgv; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 992E71F00893;
-	Sat, 30 May 2026 17:59:06 +0000 (UTC)
+	 MIME-Version; b=aNPKXe4+yEk8p9sMT9N5/cwuJZTjeQmthPq8C+SfnY5TukQmrYlSDSLn5KRtvxreibJNoqLVBpwhezGcJp2gVQrF6BqO3T2xOkNWQsUcjZiIlyWzTdPJHs5TQW5df816FADwCZKGWer7T/IqQPlqUYwDcoztSblkq9sDRa1bvyM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Sv8roMP2; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 790FB1F00893;
+	Sat, 30 May 2026 18:32:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780163947;
-	bh=cleHq9yNTBCTcBzN+3Cgmx6d7hIPcQZgh5tPz+vbmhE=;
+	s=korg; t=1780165935;
+	bh=cHnn7vMxizjOwdw9kpbsfQXX1wx76Kc/jSXEtKwJa6c=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=PBMtPCgvndIc0BtBdfyNRiT5shPE8LQciHYmZ/VHRVui4PB3qMfe0TeUBurWX3VPl
-	 r9QRrbCGzB9oxLrydHPA+udEAy0riF6reIVA42EYCLnOCTgKwvAu4FnGOPiLPi9Bjz
-	 A/HUMAZiX0XOu5XcA0nYGkUq4GtiUgeFtREvpLvM=
+	b=Sv8roMP2G2oqwXvxJgp1kikfPnDpKf0oGP4FoqpbgwuVJU0xim5OIWW85UvQHdX/v
+	 WPmqdNBB01nKS9RpR/jhKl3bjaqC2MqgRrI36MRJ8ue5G4+ibFk0uXEkpIS9YZI9x3
+	 uJRm8c/2cdV+OtwWMkU9IEbXRXfID2pwj1YLzLOE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Brian Masney <bmasney@redhat.com>,
-	Thomas Gleixner <tglx@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 392/776] irqchip/irq-pic32-evic: Address warning related to wrong printf() formatter
-Date: Sat, 30 May 2026 18:01:46 +0200
-Message-ID: <20260530160250.623163521@linuxfoundation.org>
+	stable <stable@kernel.org>,
+	Felix Gu <ustc.gu@gmail.com>,
+	Heikki Krogerus <heikki.krogerus@linux.intel.com>
+Subject: [PATCH 5.10 226/589] usb: ulpi: fix memory leak on ulpi_register() error paths
+Date: Sat, 30 May 2026 18:01:47 +0200
+Message-ID: <20260530160230.919846467@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260530160240.228940103@linuxfoundation.org>
-References: <20260530160240.228940103@linuxfoundation.org>
+In-Reply-To: <20260530160224.570625122@linuxfoundation.org>
+References: <20260530160224.570625122@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,80 +63,87 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-2.16 / 15.00];
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-258318-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	MIME_TRACE(0.00)[0:+];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
 	TO_DN_SOME(0.00)[];
+	TAGGED_FROM(0.00)[bounces-258905-lists,stable=lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,kernel.org,gmail.com,linux.intel.com];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	NEURAL_HAM(-0.00)[-0.997];
+	FROM_HAS_DN(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	NEURAL_HAM(-0.00)[-0.996];
 	TAGGED_RCPT(0.00)[stable];
 	MID_RHS_MATCH_FROM(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[6]
-X-Rspamd-Queue-Id: 927E36112DE
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,msgid.link:url,intel.com:email]
+X-Rspamd-Queue-Id: 33DE0611ED9
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Brian Masney <bmasney@redhat.com>
+From: Felix Gu <ustc.gu@gmail.com>
 
-[ Upstream commit 86be659415b0ddefebc3120e309091aa215a9064 ]
+commit 0b9fcab1b8608d429e5f239afb197de928d4de7d upstream.
 
-This driver is currently only build on 32 bit MIPS systems. When building
-it on x86_64, the following warning occurs:
+Commit 01af542392b5 ("usb: ulpi: fix double free in
+ulpi_register_interface() error path") removed kfree(ulpi) from
+ulpi_register_interface() to fix a double-free when device_register()
+fails.
 
-    drivers/irqchip/irq-pic32-evic.c: In function ‘pic32_ext_irq_of_init’:
-    ./include/linux/kern_levels.h:5:25: error: format ‘%d’ expects argument of type
-     ‘int’, but argument 2 has type ‘long unsigned int’ [-Werror=format=]
+But when ulpi_of_register() or ulpi_read_id() fail before
+device_register() is called, the ulpi allocation is leaked.
 
-Update the printf() formatter in preparation for allowing this driver to
-be compiled on all architectures.
+Add kfree(ulpi) on both error paths to properly clean up the allocation.
 
-Fixes: aaa8666ada780 ("IRQCHIP: irq-pic32-evic: Add support for PIC32 interrupt controller")
-Signed-off-by: Brian Masney <bmasney@redhat.com>
-Signed-off-by: Thomas Gleixner <tglx@kernel.org>
-Link: https://patch.msgid.link/20260222-irqchip-pic32-v1-1-37f50d1f14af@redhat.com
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 01af542392b5 ("usb: ulpi: fix double free in ulpi_register_interface() error path")
+Cc: stable <stable@kernel.org>
+Signed-off-by: Felix Gu <ustc.gu@gmail.com>
+Reviewed-by: Heikki Krogerus <heikki.krogerus@linux.intel.com>
+Link: https://patch.msgid.link/20260407-ulpi-v1-1-f3fafe53f7b2@gmail.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/irqchip/irq-pic32-evic.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/usb/common/ulpi.c |    5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/irqchip/irq-pic32-evic.c b/drivers/irqchip/irq-pic32-evic.c
-index 1d9bb28d13e5d..1a72047f3aa2e 100644
---- a/drivers/irqchip/irq-pic32-evic.c
-+++ b/drivers/irqchip/irq-pic32-evic.c
-@@ -198,7 +198,7 @@ static void __init pic32_ext_irq_of_init(struct irq_domain *domain)
+--- a/drivers/usb/common/ulpi.c
++++ b/drivers/usb/common/ulpi.c
+@@ -246,12 +246,15 @@ static int ulpi_register(struct device *
+ 	ACPI_COMPANION_SET(&ulpi->dev, ACPI_COMPANION(dev));
  
- 	of_property_for_each_u32(node, pname, prop, p, hwirq) {
- 		if (i >= ARRAY_SIZE(priv->ext_irqs)) {
--			pr_warn("More than %d external irq, skip rest\n",
-+			pr_warn("More than %zu external irq, skip rest\n",
- 				ARRAY_SIZE(priv->ext_irqs));
- 			break;
- 		}
--- 
-2.53.0
-
+ 	ret = ulpi_of_register(ulpi);
+-	if (ret)
++	if (ret) {
++		kfree(ulpi);
+ 		return ret;
++	}
+ 
+ 	ret = ulpi_read_id(ulpi);
+ 	if (ret) {
+ 		of_node_put(ulpi->dev.of_node);
++		kfree(ulpi);
+ 		return ret;
+ 	}
+ 
 
 
 
