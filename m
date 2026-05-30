@@ -1,59 +1,59 @@
-Return-Path: <stable+bounces-258230-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-257454-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id aHx4G5MkG2rO/QgAu9opvQ
-	(envelope-from <stable+bounces-258230-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:55:31 +0200
+	id mAQmEPYbG2p3/QgAu9opvQ
+	(envelope-from <stable+bounces-257454-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:18:46 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 656AF610A90
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:55:30 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id CA1D660F5D0
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:18:45 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id BBB3A301A27C
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 17:54:19 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id CFEBF306407B
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 17:10:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 00E513C09F5;
-	Sat, 30 May 2026 17:54:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F0FD1395AD8;
+	Sat, 30 May 2026 17:10:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hD4E4HCz"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rHZwTqLY"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DD3153AC0FC;
-	Sat, 30 May 2026 17:54:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CF06A3148DA;
+	Sat, 30 May 2026 17:10:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780163650; cv=none; b=ZVJMx1twakWyOXLIFNFf2gywafHd9Czw/WEDxuwDZKLgIeSILMWF8K4Q8mB7WsrBUERYOwQ5m924ckGRzR8ltrqFVgvtsmEn8R7f3187Io48PLOGVf//RGcOTnb3JiJjXnaUL9FMemUNcLmadfAxVydGg9xzG+B8MUNAFwHFnec=
+	t=1780161052; cv=none; b=OPGAXg1K3+hm+xl/lZEDLOc3khCGCbVQHRXsmN12T+Qqk2V8PeLA22ZD6SHyNiV63Uh/52PARTuNoyYQOrDg3Jcbf5l8uAdMuB27PN39ZS4ZRqZj5MYinBTnZ7qkpScJXmxxCB874gC1P9eb/3hC7B3YmHdkv7lr4FQh5gikTK4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780163650; c=relaxed/simple;
-	bh=jnlx91KWtPPM1Pp5uYK4lCo7TvY5Zv3usfq/9kIXF80=;
+	s=arc-20240116; t=1780161052; c=relaxed/simple;
+	bh=eA2LAAmzMx6RFyZEgkxp7f0H0ie/s7KnRMXdJK7tdt4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=auD5DOIzuKZcSWkaDJ7FsBCMysIljmR3A24JorNdnQF63XflmhmDGCVOqNTNfvMwuXIFQR3bbf865f2fowAvSJ+8WlNyB5LldgZggbq7x6tIZqFGyXHUbvbFhIPdhUYMN3f+Ol6mKGTmdyCjMBNWBcdHY8gIgXTwdv3XeJtkzAA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hD4E4HCz; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2D5B71F00893;
-	Sat, 30 May 2026 17:54:08 +0000 (UTC)
+	 MIME-Version; b=OJH6lA86XyMrtKAZs3AqzB6eZtgpkGDOOxL2V4VmQ4LKJyEz1zVEN8CrjhDvScl7PnBDhz4kt/RRwAtFpr5CoOCYGmFCXpvEwxOCMagDfWXsSFKj6vwetzLov24GrUYGt2TsrQ51pxhlItdnWpVHxjhzVmyBj85P5fE4OZDhByM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rHZwTqLY; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 269F31F00893;
+	Sat, 30 May 2026 17:10:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780163649;
-	bh=s54vcQJ3dcEq4dX8rg3S9fXBg80JSOQPYUpEgjA/L6A=;
+	s=korg; t=1780161051;
+	bh=Uiv9YqIhEdJrf335en/8i5kWcJ0zIWWxUa/Xqf+eOiI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=hD4E4HCzfAIh3hsLD38sPsiotvqTF3b7wfGDA7659E4ZxlYCswk96fZCO5C5liXGg
-	 3wpo7o7NI6rBFn/SYOsWlEKrl/9XRNoSqeZmf8eu79OE+78zUyKsvCNMNxRF0nVkg9
-	 D67X55hHCR+zpSiVyvjwrsUOJ34vpjb7PdHgkeLA=
+	b=rHZwTqLYuXBvjpezU54cVbOpoUspXdENhK3enn2t85oi8rbu2eU7+Pd1SM7q2JqRP
+	 jQ6YiiVEQHYzajAFUIod4STrtdpkdkPBZBHpt+1qXRNdetLnU/5CFVU5JJq56gX70C
+	 rhVY9qawXd4D6H9T2bVWNkM0Ibmm0+GGsF4oQFmk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Thorsten Blum <thorsten.blum@linux.dev>,
-	Daniel Lezcano <daniel.lezcano@kernel.org>,
-	Baolin Wang <baolin.wang@linux.alibaba.com>
-Subject: [PATCH 5.15 321/776] thermal/drivers/sprd: Fix temperature clamping in sprd_thm_temp_to_rawdata
-Date: Sat, 30 May 2026 18:00:35 +0200
-Message-ID: <20260530160248.865323942@linuxfoundation.org>
+	Pei Xiao <xiaopei01@kylinos.cn>,
+	Mark Brown <broonie@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 512/969] spi: hisi-kunpeng: prevent infinite while() loop in hisi_spi_flush_fifo
+Date: Sat, 30 May 2026 18:00:36 +0200
+Message-ID: <20260530160314.475055739@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260530160240.228940103@linuxfoundation.org>
-References: <20260530160240.228940103@linuxfoundation.org>
+In-Reply-To: <20260530160300.485627683@linuxfoundation.org>
+References: <20260530160300.485627683@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,72 +66,87 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-257454-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-258230-lists,stable=lfdr.de];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	TO_DN_SOME(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
 	RCPT_COUNT_FIVE(0.00)[6];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	TAGGED_RCPT(0.00)[stable];
+	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,linux.dev:email,alibaba.com:email,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim]
-X-Rspamd-Queue-Id: 656AF610A90
+	FROM_HAS_DN(0.00)[]
+X-Rspamd-Queue-Id: CA1D660F5D0
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Thorsten Blum <thorsten.blum@linux.dev>
+From: Pei Xiao <xiaopei01@kylinos.cn>
 
-commit 83c0f9a5d679a6f8d84fc49b2f62ea434ccab4b6 upstream.
+[ Upstream commit 9f61daf2c2debe9f5cf4e1a4471e56a89a6fe45a ]
 
-The temperature was never clamped to SPRD_THM_TEMP_LOW or
-SPRD_THM_TEMP_HIGH because the return value of clamp() was not used. Fix
-this by assigning the clamped value to 'temp'.
+The hisi_spi_flush_fifo()'s inner while loop that lacks any timeout
+mechanism. Maybe the hardware never becomes empty, the loop will spin
+forever, causing the CPU to hang.
 
-Casting SPRD_THM_TEMP_LOW and SPRD_THM_TEMP_HIGH to int is also
-redundant and can be removed.
+Fix this by adding a inner_limit based on loops_per_jiffy. The inner loop
+now exits after approximately one jiffy if the FIFO remains non-empty, logs
+a ratelimited warning, and breaks out of the outer loop. Additionally, add
+a cpu_relax() inside the busy loop to improve power efficiency.
 
-Fixes: 554fdbaf19b1 ("thermal: sprd: Add Spreadtrum thermal driver support")
-Signed-off-by: Thorsten Blum <thorsten.blum@linux.dev>
-Signed-off-by: Daniel Lezcano <daniel.lezcano@kernel.org>
-Reviewed-by: Baolin Wang <baolin.wang@linux.alibaba.com>
-Cc: stable@vger.kernel.org
-Link: https://patch.msgid.link/20260307102422.306055-1-thorsten.blum@linux.dev
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: c770d8631e18 ("spi: Add HiSilicon SPI Controller Driver for Kunpeng SoCs")
+Signed-off-by: Pei Xiao <xiaopei01@kylinos.cn>
+Link: https://patch.msgid.link/d834ce28172886bfaeb9c8ca00cfd9bf1c65d5a1.1773889292.git.xiaopei01@kylinos.cn
+Signed-off-by: Mark Brown <broonie@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/thermal/sprd_thermal.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/spi/spi-hisi-kunpeng.c | 12 +++++++++++-
+ 1 file changed, 11 insertions(+), 1 deletion(-)
 
---- a/drivers/thermal/sprd_thermal.c
-+++ b/drivers/thermal/sprd_thermal.c
-@@ -192,7 +192,7 @@ static int sprd_thm_temp_to_rawdata(int
- {
- 	u32 val;
+diff --git a/drivers/spi/spi-hisi-kunpeng.c b/drivers/spi/spi-hisi-kunpeng.c
+index 54730e93fba45..06c8893243b7d 100644
+--- a/drivers/spi/spi-hisi-kunpeng.c
++++ b/drivers/spi/spi-hisi-kunpeng.c
+@@ -198,8 +198,18 @@ static void hisi_spi_flush_fifo(struct hisi_spi *hs)
+ 	unsigned long limit = loops_per_jiffy << 1;
  
--	clamp(temp, (int)SPRD_THM_TEMP_LOW, (int)SPRD_THM_TEMP_HIGH);
-+	temp = clamp(temp, SPRD_THM_TEMP_LOW, SPRD_THM_TEMP_HIGH);
+ 	do {
+-		while (hisi_spi_rx_not_empty(hs))
++		unsigned long inner_limit = loops_per_jiffy;
++
++		while (hisi_spi_rx_not_empty(hs) && --inner_limit) {
+ 			readl(hs->regs + HISI_SPI_DOUT);
++			cpu_relax();
++		}
++
++		if (!inner_limit) {
++			dev_warn_ratelimited(hs->dev, "RX FIFO flush timeout\n");
++			break;
++		}
++
+ 	} while (hisi_spi_busy(hs) && limit--);
+ }
  
- 	/*
- 	 * According to the thermal datasheet, the formula of converting
+-- 
+2.53.0
+
 
 
 
