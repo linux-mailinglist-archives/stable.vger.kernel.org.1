@@ -1,59 +1,60 @@
-Return-Path: <stable+bounces-258371-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-257569-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 6MIcOOcoG2ra/ggAu9opvQ
-	(envelope-from <stable+bounces-258371-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:13:59 +0200
+	id WGIDAZsdG2qW/QgAu9opvQ
+	(envelope-from <stable+bounces-257569-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:25:47 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 84C87611485
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:13:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7BCF360F9DC
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:25:46 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 223D330E9811
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 18:02:09 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 5CAAB30048EB
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 17:17:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 47CD0349CC5;
-	Sat, 30 May 2026 18:02:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 25B0D3AB482;
+	Sat, 30 May 2026 17:17:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="F5qWYz17"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pWexbPk2"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 221BB29B78B;
-	Sat, 30 May 2026 18:02:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DFDC13546F6;
+	Sat, 30 May 2026 17:17:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780164128; cv=none; b=ofMDsrDMsl7G+GoEUYAR9If5akWr8QjkST9hurffELtapIFtdyi0ed1ApNj7MHJomwNgzruEIJn8wvxGwwGnTzgziBKd4KDSjj8AZ2kxyYNgv2wnarP7OIvEWNIR4Lt2Z2C/MgvqWiQmtJ8ke52Bse3tPUGKeCrWCbFc6x1Gou0=
+	t=1780161437; cv=none; b=AaiRr/P7nOci+kP4Xnk72l+czI0z2+pfRRILzQluBg9zIAESRA6qw+6Jt4BRGTb++JWOUvW/fClI/pdUtGyxuuwuMhLNpyZQ6Zm464XS69TLl17GhGiz9OqciiX7mm2nrPREOnaBL4i2KQgrsz0SVglFJf1jpIdhkOC0SQD7yq8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780164128; c=relaxed/simple;
-	bh=DoZVCa+rcIoHCdo/HBDsK9sT1OhaWTvUsuAkxbABWxw=;
+	s=arc-20240116; t=1780161437; c=relaxed/simple;
+	bh=P3CKKG5sbuC+dLYC3qDeHQfaufkxyh3fU5kQ2KjxnHo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=UR1frPzTd3fhJhNONsh1C+3y1+NiQ7NKahpf1Uwv2CrKWGvjOWATT38ATj0fG8oM7G/UxcunVRkeSFXMSnjgVlCyVkoLSae7/Y2eMzsFi/9sHKb1SEGUsE2ddWA59D5pI52LcSf7+lyj175SkI/2ddfPY7hki8t0Cf7fh92Jz0Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=F5qWYz17; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 244251F00893;
-	Sat, 30 May 2026 18:02:05 +0000 (UTC)
+	 MIME-Version; b=napDTdkbDzJaswFsqYDIBq1/ToHVDjqhNMIXtwu4gbyKd4sB10qiu6Og6gjdV+qZ9JPu+I4dOcSn7jtj0EZypw9IvjupBN088IYwHv29ufnJgEa3HzPoY7AI8l1wUcHMdEY3N41HmXFR7XtJFNd9bH169FZlmxkYj/3oW0EQ1yY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pWexbPk2; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3489A1F00893;
+	Sat, 30 May 2026 17:17:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780164126;
-	bh=HS2hQwo9gP5O2eceR6CYwo24AAQLwqGtMQiAZ6VBV9A=;
+	s=korg; t=1780161436;
+	bh=hr1AZOhNcQyHq2ixEjArvZ9gIGf89zYG6lVEGeRYjI8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=F5qWYz170bfx9Ath9I7rgchc4oDDibW77xVsufT2ghH4ExREgR9LsTWIEhCQaw3SH
-	 r9rFZlo7GT8DSO+/vYdfaVZGXI6nvQ/QACfe+L4CH+vgJOKfDqsnPJClMWu///ETd1
-	 cY7jOQAydXDYlMxTtGFZsU7ipkOLYm+cOL287b8I=
+	b=pWexbPk2SPNtf3jCw5iHD1MwGAx9a3Tcy1HwfC9PY+IwfWrf/fBNJxIWyOm8EJDFR
+	 vgNcDR4+TAC7jGmugWcSKlsLsddnznf4E0fnEs6zWYp7/OFIdqbun7TH9AfA4uhXsk
+	 AjbRYZBXcETudaKQoa6WcpSYjAdmSfIkehDfHFcE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ming-Hung Tsai <mtsai@redhat.com>,
-	Mikulas Patocka <mpatocka@redhat.com>,
+	Yihan Ding <dingyihan@uniontech.com>,
+	Paul Chaignon <paul.chaignon@gmail.com>,
+	Alexei Starovoitov <ast@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 433/776] dm cache: fix null-deref with concurrent writes in passthrough mode
+Subject: [PATCH 6.1 623/969] bpf: allow UTF-8 literals in bpf_bprintf_prepare()
 Date: Sat, 30 May 2026 18:02:27 +0200
-Message-ID: <20260530160251.624327317@linuxfoundation.org>
+Message-ID: <20260530160317.645321480@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260530160240.228940103@linuxfoundation.org>
-References: <20260530160240.228940103@linuxfoundation.org>
+In-Reply-To: <20260530160300.485627683@linuxfoundation.org>
+References: <20260530160300.485627683@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,119 +65,118 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	MIME_TRACE(0.00)[0:+];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,uniontech.com,gmail.com,kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-258371-lists,stable=lfdr.de];
-	TO_DN_SOME(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	TAGGED_FROM(0.00)[bounces-257569-lists,stable=lfdr.de];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
 	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim]
-X-Rspamd-Queue-Id: 84C87611485
+	TO_DN_SOME(0.00)[];
+	NEURAL_HAM(-0.00)[-0.999];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	MID_RHS_MATCH_FROM(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_SEVEN(0.00)[7];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	FROM_HAS_DN(0.00)[]
+X-Rspamd-Queue-Id: 7BCF360F9DC
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ming-Hung Tsai <mtsai@redhat.com>
+From: Yihan Ding <dingyihan@uniontech.com>
 
-[ Upstream commit 7d1f98d668ee34c1d15bdc0420fdd062f24a27c0 ]
+[ Upstream commit b960430ea8862ef37ce53c8bf74a8dc79d3f2404 ]
 
-In passthrough mode, when dm-cache starts to invalidate a cache
-entry and bio prison cell lock fails due to concurrent write to
-the same cached block, mg->cell remains NULL. The error path in
-invalidate_complete() attempts to unlock and free the cell
-unconditionally, causing a NULL pointer dereference:
+bpf_bprintf_prepare() only needs ASCII parsing for conversion
+specifiers. Plain text can safely carry bytes >= 0x80, so allow
+UTF-8 literals outside '%' sequences while keeping ASCII control
+bytes rejected and format specifiers ASCII-only.
 
-KASAN: null-ptr-deref in range [0x0000000000000000-0x0000000000000007]
-CPU: 0 UID: 0 PID: 134 Comm: fio Not tainted 6.19.0-rc7 #3 PREEMPT
-RIP: 0010:dm_cell_unlock_v2+0x3f/0x210
-<snip>
-Call Trace:
- invalidate_complete+0xef/0x430
- map_bio+0x130f/0x1a10
- cache_map+0x320/0x6b0
- __map_bio+0x458/0x510
- dm_submit_bio+0x40e/0x16d0
- __submit_bio+0x419/0x870
-<snip>
+This keeps existing parsing rules for format directives unchanged,
+while allowing helpers such as bpf_trace_printk() to emit UTF-8
+literal text.
 
-Reproduce steps:
+Update test_snprintf_negative() in the same commit so selftests keep
+matching the new plain-text vs format-specifier split during bisection.
 
-1. Create a cache device
-
-dmsetup create cmeta --table "0 8192 linear /dev/sdc 0"
-dmsetup create cdata --table "0 131072 linear /dev/sdc 8192"
-dmsetup create corig --table "0 262144 linear /dev/sdc 262144"
-dd if=/dev/zero of=/dev/mapper/cmeta bs=4k count=1 oflag=direct
-dmsetup create cache --table "0 262144 cache /dev/mapper/cmeta \
-/dev/mapper/cdata /dev/mapper/corig 128 2 metadata2 writethrough smq 0"
-
-2. Promote the first data block into cache
-
-fio --filename=/dev/mapper/cache --name=populate --rw=write --bs=4k \
---direct=1 --size=64k
-
-3. Reload the cache into passthrough mode
-
-dmsetup suspend cache
-dmsetup reload cache --table "0 262144 cache /dev/mapper/cmeta \
-/dev/mapper/cdata /dev/mapper/corig 128 2 metadata2 passthrough smq 0"
-dmsetup resume cache
-
-4. Write to the first cached block concurrently
-
-fio --filename=/dev/mapper/cache --name test --rw=randwrite --bs=4k \
---randrepeat=0 --direct=1 --numjobs=2 --size 64k
-
-Fix by checking if mg->cell is valid before attempting to unlock it.
-
-Fixes: b29d4986d0da ("dm cache: significant rework to leverage dm-bio-prison-v2")
-Signed-off-by: Ming-Hung Tsai <mtsai@redhat.com>
-Signed-off-by: Mikulas Patocka <mpatocka@redhat.com>
+Fixes: 48cac3f4a96d ("bpf: Implement formatted output helpers with bstr_printf")
+Signed-off-by: Yihan Ding <dingyihan@uniontech.com>
+Acked-by: Paul Chaignon <paul.chaignon@gmail.com>
+Link: https://lore.kernel.org/r/20260416120142.1420646-2-dingyihan@uniontech.com
+Signed-off-by: Alexei Starovoitov <ast@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/md/dm-cache-target.c | 6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
+ kernel/bpf/helpers.c                            | 17 ++++++++++++++++-
+ .../testing/selftests/bpf/prog_tests/snprintf.c |  3 ++-
+ 2 files changed, 18 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/md/dm-cache-target.c b/drivers/md/dm-cache-target.c
-index 1660d4fec7511..8571c095793b5 100644
---- a/drivers/md/dm-cache-target.c
-+++ b/drivers/md/dm-cache-target.c
-@@ -1448,8 +1448,10 @@ static void invalidate_complete(struct dm_cache_migration *mg, bool success)
- 	struct cache *cache = mg->cache;
+diff --git a/kernel/bpf/helpers.c b/kernel/bpf/helpers.c
+index be9dc396537f1..a19524c672012 100644
+--- a/kernel/bpf/helpers.c
++++ b/kernel/bpf/helpers.c
+@@ -840,7 +840,13 @@ int bpf_bprintf_prepare(char *fmt, u32 fmt_size, const u64 *raw_args,
+ 		data->buf = buffers->buf;
  
- 	bio_list_init(&bios);
--	if (dm_cell_unlock_v2(cache->prison, mg->cell, &bios))
--		free_prison_cell(cache, mg->cell);
-+	if (mg->cell) {
-+		if (dm_cell_unlock_v2(cache->prison, mg->cell, &bios))
-+			free_prison_cell(cache, mg->cell);
-+	}
+ 	for (i = 0; i < fmt_size; i++) {
+-		if ((!isprint(fmt[i]) && !isspace(fmt[i])) || !isascii(fmt[i])) {
++		unsigned char c = fmt[i];
++
++		/*
++		 * Permit bytes >= 0x80 in plain text so UTF-8 literals can pass
++		 * through unchanged, while still rejecting ASCII control bytes.
++		 */
++		if (isascii(c) && !isprint(c) && !isspace(c)) {
+ 			err = -EINVAL;
+ 			goto out;
+ 		}
+@@ -862,6 +868,15 @@ int bpf_bprintf_prepare(char *fmt, u32 fmt_size, const u64 *raw_args,
+ 		 * always access fmt[i + 1], in the worst case it will be a 0
+ 		 */
+ 		i++;
++		c = fmt[i];
++		/*
++		 * The format parser below only understands ASCII conversion
++		 * specifiers and modifiers, so reject non-ASCII after '%'.
++		 */
++		if (!isascii(c)) {
++			err = -EINVAL;
++			goto out;
++		}
  
- 	if (!success && mg->overwrite_bio)
- 		bio_io_error(mg->overwrite_bio);
+ 		/* skip optional "[0 +-][num]" width formatting field */
+ 		while (fmt[i] == '0' || fmt[i] == '+'  || fmt[i] == '-' ||
+diff --git a/tools/testing/selftests/bpf/prog_tests/snprintf.c b/tools/testing/selftests/bpf/prog_tests/snprintf.c
+index 4be6fdb78c6a1..20a3c622bd28a 100644
+--- a/tools/testing/selftests/bpf/prog_tests/snprintf.c
++++ b/tools/testing/selftests/bpf/prog_tests/snprintf.c
+@@ -114,7 +114,8 @@ static void test_snprintf_negative(void)
+ 	ASSERT_ERR(load_single_snprintf("%--------"), "invalid specifier 5");
+ 	ASSERT_ERR(load_single_snprintf("%lc"), "invalid specifier 6");
+ 	ASSERT_ERR(load_single_snprintf("%llc"), "invalid specifier 7");
+-	ASSERT_ERR(load_single_snprintf("\x80"), "non ascii character");
++	ASSERT_OK(load_single_snprintf("\x80"), "non ascii plain text");
++	ASSERT_ERR(load_single_snprintf("%\x80"), "non ascii in specifier");
+ 	ASSERT_ERR(load_single_snprintf("\x1"), "non printable character");
+ }
+ 
 -- 
 2.53.0
 
