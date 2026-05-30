@@ -1,60 +1,59 @@
-Return-Path: <stable+bounces-258762-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-257412-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 4BPuIuArG2r//ggAu9opvQ
-	(envelope-from <stable+bounces-258762-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:26:40 +0200
+	id OFnaOfAaG2oq/QgAu9opvQ
+	(envelope-from <stable+bounces-257412-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:14:24 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 05500611BE7
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:26:39 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7D4B860F337
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:14:24 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 588FE30A4E84
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 18:24:14 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 2FD0B30B237B
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 17:08:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0452D274FDC;
-	Sat, 30 May 2026 18:24:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 673F53AB285;
+	Sat, 30 May 2026 17:08:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="t6uR+SyC"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="svGW7dR6"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AC44117555;
-	Sat, 30 May 2026 18:24:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4DC5339E162;
+	Sat, 30 May 2026 17:08:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780165453; cv=none; b=IVAnV4C1nkXOhDvPHXz5xOE06ohrvzVKOp4PeEGEFXh44MB53NCj4xJnisXnT6JrJ0O8J5iD9wbuqtLMy7+qQuXdU/FY2F3DDsq1E3+VoMpoFwertjQ7hmp6dfnVRHevenIm2occk6YkosQhxHFDJ2mazg9y8R2z23vMeu1PKNo=
+	t=1780160907; cv=none; b=VCyaqSfG0eyvQsnf/73aLujWk/DJdjxPlO4kr6T1r8NFrJ82z4I/05/njK5mNsy43UYlm8aZP8pJxDBhAttbtUlJaVHzJHw/kc4/IVtf+GxlhCs66Vgo88G19+KP1j3RaxVL+pREnYsm94Q614UsxOo+cGvpvcwmLdw4fJGmA8U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780165453; c=relaxed/simple;
-	bh=VTgYNG3Qvw7l3JlaWDzu4RBRx+GFemr1OgV8drToG48=;
+	s=arc-20240116; t=1780160907; c=relaxed/simple;
+	bh=C8C7bJJP3PRMgHSM9v2cZeRoOLpJmMPMg2WHeG32bJc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=X58m/zl7q4kpEOstJS309O6VDyytjVIfYrV1rwnxKAvY6xse1K8zGiLSz1zvhLquxRzEfIid9UTYWyhudffAZQY8zqrj3jG6hhv0hyiU3bfI1JxiB+93LB6xyRy+J552kC9uoELLTaPfsByD9HCBbL9A6gx4qI422TiWDRdFvV8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=t6uR+SyC; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EEE411F00893;
-	Sat, 30 May 2026 18:24:11 +0000 (UTC)
+	 MIME-Version:Content-Type; b=Rtx5wCc0e8YRv9ZjVNXBXYFG/1EurmAVVR7lOnQCrm6QyRSlRQjgM9fnX6By8Q0cVgZ3QdZLdUfyy2Fq96INNvzkVh0g+aHnHa0rLijoskGchbHiKwwG538+B44yggmzJXwzB3jlGZc8revd+Am74fNXHFoRjZDwiUThMuLAwaU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=svGW7dR6; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7BA0B1F00893;
+	Sat, 30 May 2026 17:08:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780165452;
-	bh=hzbb1tOmHDmpzG8pu3LJN98CQf7jp4XPVo3Eug3DcAs=;
+	s=korg; t=1780160906;
+	bh=E4Dh6WxIyHIBQN4K5q1V7uN/D3IrYmYvibsH0jyz3Xg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=t6uR+SyCeoZu3vlmg1O0idB85GMIusVS9IHy/U6iSM/4Y6/cfY8T0v0go3R4lXjxk
-	 8NjJA/JH77fLyaFKBaBiy8ZuxeaQfjkbM90S9tvscA7lnxU5HbXTEqXd0mKB2bhpfY
-	 IKgayaL2L7P/vXN0f7sSuwc3hJlNSjzFhxKIW++w=
+	b=svGW7dR6k+P7/UpC+5Dir4J2SJIythIxvNlit7ivOariChiae/USbISnL2sKFiduY
+	 zCclWCIXuLkybd0eipzCPQuseQz3ch5f3A+DHRBhn6arfRDhyiVFkJsL6fAQ0XLFK0
+	 pjANWVm8SnmJrYcutr8SzMrtz8bMkNaKj0OvTTuk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+96f901260a0b2d29cd1a@syzkaller.appspotmail.com,
-	Yihan Ding <dingyihan@uniontech.com>,
-	Abd-Alrhman Masalkhi <abd.masalkhi@gmail.com>,
-	Hans Verkuil <hverkuil+cisco@kernel.org>
-Subject: [PATCH 5.10 082/589] media: vidtv: fix pass-by-value structs causing MSAN warnings
-Date: Sat, 30 May 2026 17:59:23 +0200
-Message-ID: <20260530160226.813785021@linuxfoundation.org>
+	Brian Masney <bmasney@redhat.com>,
+	Thomas Gleixner <tglx@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 440/969] irqchip/irq-pic32-evic: Address warning related to wrong printf() formatter
+Date: Sat, 30 May 2026 17:59:24 +0200
+Message-ID: <20260530160312.421854638@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260530160224.570625122@linuxfoundation.org>
-References: <20260530160224.570625122@linuxfoundation.org>
+In-Reply-To: <20260530160300.485627683@linuxfoundation.org>
+References: <20260530160300.485627683@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,215 +63,80 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	TAGGED_FROM(0.00)[bounces-258762-lists,stable=lfdr.de];
-	FROM_HAS_DN(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-257412-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,syzkaller.appspotmail.com,uniontech.com,gmail.com,kernel.org];
-	MIME_TRACE(0.00)[0:+];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[7];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-0.999];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable,96f901260a0b2d29cd1a,cisco];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_HAS_DN(0.00)[];
 	TO_DN_SOME(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	NEURAL_HAM(-0.00)[-1.000];
+	TAGGED_RCPT(0.00)[stable];
+	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[syzkaller.appspot.com:url,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,appspotmail.com:email,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,uniontech.com:email,args.pid:url]
-X-Rspamd-Queue-Id: 05500611BE7
+	RCPT_COUNT_FIVE(0.00)[6]
+X-Rspamd-Queue-Id: 7D4B860F337
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Abd-Alrhman Masalkhi <abd.masalkhi@gmail.com>
+From: Brian Masney <bmasney@redhat.com>
 
-commit 5f8e73bde67e931468bc2a1860d78d72f0c6ba41 upstream.
+[ Upstream commit 86be659415b0ddefebc3120e309091aa215a9064 ]
 
-vidtv_ts_null_write_into() and vidtv_ts_pcr_write_into() take their
-argument structs by value, causing MSAN to report uninit-value warnings.
-While only vidtv_ts_null_write_into() has triggered a report so far,
-both functions share the same issue.
+This driver is currently only build on 32 bit MIPS systems. When building
+it on x86_64, the following warning occurs:
 
-Fix by passing both structs by const pointer instead, avoiding the
-stack copy of the struct along with its MSAN shadow and origin metadata.
-The functions do not modify the structs, which is enforced by the const
-qualifier.
+    drivers/irqchip/irq-pic32-evic.c: In function ‘pic32_ext_irq_of_init’:
+    ./include/linux/kern_levels.h:5:25: error: format ‘%d’ expects argument of type
+     ‘int’, but argument 2 has type ‘long unsigned int’ [-Werror=format=]
 
-Fixes: f90cf6079bf67 ("media: vidtv: add a bridge driver")
-Cc: stable@vger.kernel.org
-Reported-by: syzbot+96f901260a0b2d29cd1a@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=96f901260a0b2d29cd1a
-Tested-by: syzbot+96f901260a0b2d29cd1a@syzkaller.appspotmail.com
-Suggested-by: Yihan Ding <dingyihan@uniontech.com>
-Signed-off-by: Abd-Alrhman Masalkhi <abd.masalkhi@gmail.com>
-Signed-off-by: Hans Verkuil <hverkuil+cisco@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Update the printf() formatter in preparation for allowing this driver to
+be compiled on all architectures.
+
+Fixes: aaa8666ada780 ("IRQCHIP: irq-pic32-evic: Add support for PIC32 interrupt controller")
+Signed-off-by: Brian Masney <bmasney@redhat.com>
+Signed-off-by: Thomas Gleixner <tglx@kernel.org>
+Link: https://patch.msgid.link/20260222-irqchip-pic32-v1-1-37f50d1f14af@redhat.com
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/media/test-drivers/vidtv/vidtv_mux.c |    4 +-
- drivers/media/test-drivers/vidtv/vidtv_ts.c  |   50 +++++++++++++--------------
- drivers/media/test-drivers/vidtv/vidtv_ts.h  |    4 +-
- 3 files changed, 29 insertions(+), 29 deletions(-)
+ drivers/irqchip/irq-pic32-evic.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/media/test-drivers/vidtv/vidtv_mux.c
-+++ b/drivers/media/test-drivers/vidtv/vidtv_mux.c
-@@ -233,7 +233,7 @@ static u32 vidtv_mux_push_pcr(struct vid
- 	/* the 27Mhz clock will feed both parts of the PCR bitfield */
- 	args.pcr = m->timing.clk;
+diff --git a/drivers/irqchip/irq-pic32-evic.c b/drivers/irqchip/irq-pic32-evic.c
+index 1d9bb28d13e5d..1a72047f3aa2e 100644
+--- a/drivers/irqchip/irq-pic32-evic.c
++++ b/drivers/irqchip/irq-pic32-evic.c
+@@ -198,7 +198,7 @@ static void __init pic32_ext_irq_of_init(struct irq_domain *domain)
  
--	nbytes += vidtv_ts_pcr_write_into(args);
-+	nbytes += vidtv_ts_pcr_write_into(&args);
- 	m->mux_buf_offset += nbytes;
- 
- 	m->num_streamed_pcr++;
-@@ -363,7 +363,7 @@ static u32 vidtv_mux_pad_with_nulls(stru
- 	args.continuity_counter = &ctx->cc;
- 
- 	for (i = 0; i < npkts; ++i) {
--		m->mux_buf_offset += vidtv_ts_null_write_into(args);
-+		m->mux_buf_offset += vidtv_ts_null_write_into(&args);
- 		args.dest_offset  = m->mux_buf_offset;
- 	}
- 
---- a/drivers/media/test-drivers/vidtv/vidtv_ts.c
-+++ b/drivers/media/test-drivers/vidtv/vidtv_ts.c
-@@ -48,7 +48,7 @@ void vidtv_ts_inc_cc(u8 *continuity_coun
- 		*continuity_counter = 0;
- }
- 
--u32 vidtv_ts_null_write_into(struct null_packet_write_args args)
-+u32 vidtv_ts_null_write_into(const struct null_packet_write_args *args)
- {
- 	u32 nbytes = 0;
- 	struct vidtv_mpeg_ts ts_header = {};
-@@ -56,21 +56,21 @@ u32 vidtv_ts_null_write_into(struct null
- 	ts_header.sync_byte          = TS_SYNC_BYTE;
- 	ts_header.bitfield           = cpu_to_be16(TS_NULL_PACKET_PID);
- 	ts_header.payload            = 1;
--	ts_header.continuity_counter = *args.continuity_counter;
-+	ts_header.continuity_counter = *args->continuity_counter;
- 
- 	/* copy TS header */
--	nbytes += vidtv_memcpy(args.dest_buf,
--			       args.dest_offset + nbytes,
--			       args.buf_sz,
-+	nbytes += vidtv_memcpy(args->dest_buf,
-+			       args->dest_offset + nbytes,
-+			       args->buf_sz,
- 			       &ts_header,
- 			       sizeof(ts_header));
- 
--	vidtv_ts_inc_cc(args.continuity_counter);
-+	vidtv_ts_inc_cc(args->continuity_counter);
- 
- 	/* fill the rest with empty data */
--	nbytes += vidtv_memset(args.dest_buf,
--			       args.dest_offset + nbytes,
--			       args.buf_sz,
-+	nbytes += vidtv_memset(args->dest_buf,
-+			       args->dest_offset + nbytes,
-+			       args->buf_sz,
- 			       TS_FILL_BYTE,
- 			       TS_PACKET_LEN - nbytes);
- 
-@@ -83,17 +83,17 @@ u32 vidtv_ts_null_write_into(struct null
- 	return nbytes;
- }
- 
--u32 vidtv_ts_pcr_write_into(struct pcr_write_args args)
-+u32 vidtv_ts_pcr_write_into(const struct pcr_write_args *args)
- {
- 	u32 nbytes = 0;
- 	struct vidtv_mpeg_ts ts_header = {};
- 	struct vidtv_mpeg_ts_adaption ts_adap = {};
- 
- 	ts_header.sync_byte     = TS_SYNC_BYTE;
--	ts_header.bitfield      = cpu_to_be16(args.pid);
-+	ts_header.bitfield      = cpu_to_be16(args->pid);
- 	ts_header.scrambling    = 0;
- 	/* cc is not incremented, but it is needed. see 13818-1 clause 2.4.3.3 */
--	ts_header.continuity_counter = *args.continuity_counter;
-+	ts_header.continuity_counter = *args->continuity_counter;
- 	ts_header.payload            = 0;
- 	ts_header.adaptation_field   = 1;
- 
-@@ -102,27 +102,27 @@ u32 vidtv_ts_pcr_write_into(struct pcr_w
- 	ts_adap.PCR    = 1;
- 
- 	/* copy TS header */
--	nbytes += vidtv_memcpy(args.dest_buf,
--			       args.dest_offset + nbytes,
--			       args.buf_sz,
-+	nbytes += vidtv_memcpy(args->dest_buf,
-+			       args->dest_offset + nbytes,
-+			       args->buf_sz,
- 			       &ts_header,
- 			       sizeof(ts_header));
- 
- 	/* write the adap after the TS header */
--	nbytes += vidtv_memcpy(args.dest_buf,
--			       args.dest_offset + nbytes,
--			       args.buf_sz,
-+	nbytes += vidtv_memcpy(args->dest_buf,
-+			       args->dest_offset + nbytes,
-+			       args->buf_sz,
- 			       &ts_adap,
- 			       sizeof(ts_adap));
- 
- 	/* write the PCR optional */
--	nbytes += vidtv_ts_write_pcr_bits(args.dest_buf,
--					  args.dest_offset + nbytes,
--					  args.pcr);
--
--	nbytes += vidtv_memset(args.dest_buf,
--			       args.dest_offset + nbytes,
--			       args.buf_sz,
-+	nbytes += vidtv_ts_write_pcr_bits(args->dest_buf,
-+					  args->dest_offset + nbytes,
-+					  args->pcr);
-+
-+	nbytes += vidtv_memset(args->dest_buf,
-+			       args->dest_offset + nbytes,
-+			       args->buf_sz,
- 			       TS_FILL_BYTE,
- 			       TS_PACKET_LEN - nbytes);
- 
---- a/drivers/media/test-drivers/vidtv/vidtv_ts.h
-+++ b/drivers/media/test-drivers/vidtv/vidtv_ts.h
-@@ -91,7 +91,7 @@ void vidtv_ts_inc_cc(u8 *continuity_coun
-  *
-  * Return: The number of bytes written into the buffer.
-  */
--u32 vidtv_ts_null_write_into(struct null_packet_write_args args);
-+u32 vidtv_ts_null_write_into(const struct null_packet_write_args *args);
- 
- /**
-  * vidtv_ts_pcr_write_into - Write a PCR  packet into a buffer.
-@@ -102,6 +102,6 @@ u32 vidtv_ts_null_write_into(struct null
-  *
-  * Return: The number of bytes written into the buffer.
-  */
--u32 vidtv_ts_pcr_write_into(struct pcr_write_args args);
-+u32 vidtv_ts_pcr_write_into(const struct pcr_write_args *args);
- 
- #endif //VIDTV_TS_H
+ 	of_property_for_each_u32(node, pname, prop, p, hwirq) {
+ 		if (i >= ARRAY_SIZE(priv->ext_irqs)) {
+-			pr_warn("More than %d external irq, skip rest\n",
++			pr_warn("More than %zu external irq, skip rest\n",
+ 				ARRAY_SIZE(priv->ext_irqs));
+ 			break;
+ 		}
+-- 
+2.53.0
+
 
 
 
