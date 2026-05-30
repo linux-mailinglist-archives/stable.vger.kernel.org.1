@@ -1,58 +1,64 @@
-Return-Path: <stable+bounces-257453-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-258834-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id UAmILW8cG2p3/QgAu9opvQ
-	(envelope-from <stable+bounces-257453-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:20:47 +0200
+	id 8Jn0DS8uG2qU/wgAu9opvQ
+	(envelope-from <stable+bounces-258834-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:36:31 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2973160F738
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:20:47 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 84F1F612142
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:36:29 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id D73AD30356FF
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 17:10:50 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 9267530382B5
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 18:28:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0AAF834389B;
-	Sat, 30 May 2026 17:10:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3A0FD3BFAFA;
+	Sat, 30 May 2026 18:28:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zrErXivb"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bvIgIEHR"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E45BA3191D0;
-	Sat, 30 May 2026 17:10:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0AA4E3BF66D;
+	Sat, 30 May 2026 18:28:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780161049; cv=none; b=fk/oGsGNM8iBRpgTuGCMk2u9TyWMbpjvWefBPnIsSeoa4I91uWQi8IMxMIc74S7VVglPpfNuU9IpRLParlRRTij80aawe6+pNPKisHNTgVUpILlQZKa1EraqVfrEZvzMCDkxTCI3ffWLgwE+PWe8RmgebdFhv96Nww/sYtC/x/s=
+	t=1780165695; cv=none; b=erL2A1X8BEykECj49RWmt8+pT6HjD5mlJEEraowrkrr5wQ4SN8TIhtThUr7aV8XYnxbK6Q6KMFnJ6pDHOFxgJLjcbohVoz/adIay92Z2okBea0kJGpafhlKYRBr7tW0yGm+MTVFK/E5kPRPuOz7t2MdiIuqhXHE9dbiziykxrwo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780161049; c=relaxed/simple;
-	bh=2BDkywFzFhLnecd4U24lQfpnSNukOACnbjy2+Jb8vQY=;
+	s=arc-20240116; t=1780165695; c=relaxed/simple;
+	bh=qtqvXb87+Y4Q5OYEBcONsf1UYHmmT3iuALaUSwJQk7o=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=eX8c4GIOMOUKcfcr9XWCi1hzSVaMJ0LyTGxAtQIaA5tLA+GHVYF4i1qvch86BbpG5OKMzBqP3+Ki00/1JgHGoiPI0TrKOUalmlt4vYSwL0eXTaJYcf4l6DF3GyUF6b6C8MwLUjKh7mWpGd6UseGdroCmWCvHTFyZVSiDM9fjWfQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zrErXivb; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EC7FF1F00893;
-	Sat, 30 May 2026 17:10:47 +0000 (UTC)
+	 MIME-Version; b=Wv0MaV4yl+WXvU4W+KzlDLOMK98ftIA1/LjP2mCpnPYp53RinZjfM9TeKAdpNZPDXeVa69T6iLjUnuDDFPVgH409V01ime23uLRrKfbDhKl0SETPF5dcbauZL4RA8uwuACjyV1PtWNCklDjRLspkdPRfhfAdG06BL+xRWhm5GUE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bvIgIEHR; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4F7881F00893;
+	Sat, 30 May 2026 18:28:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780161048;
-	bh=U9lLW0BNiVfhKwMDjpqJQ7k1GUpVvpzxqnAha2G+epA=;
+	s=korg; t=1780165693;
+	bh=lf6XRyrQS2pPt4kKu7LXMGsa9SERN6xrdRHzEE3jXaE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=zrErXivbE9YUj3JFrWLAlLw5EAlWjzqynrJlehWvIE9f7ieom+ksAUph+4/zztVeL
-	 VCQNPsJjGwNMxTvBh4yXK7+F/YsHCbeCYjz0hoWMqF5HGpfbT/u+03CnmR4EiSzIgW
-	 RqKeCgTozelS4OLZhJkizTItZ8sbEUdQlxgY38KU=
+	b=bvIgIEHRSSgFEyolg+c9qKu+XpOnSAwbpYoCE1WcViKWFb1+Vzci2Fo2K/0hQqxMj
+	 nQ1t6r0CSyl9f+UZFVugU3UT1D3F0Ep9duAST0wa2nDEFv/TU77zUBRfWAD1bEScCK
+	 3zWtJv9e66RcfBZVRUgJgpfS4eO38lN05KqMQWu0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alex Deucher <alexander.deucher@amd.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 511/969] drm/amdgpu/gfx10: look at the right prop for gfx queue priority
+	stable@kernel.org,
+	Yifan Wu <yifanwucs@gmail.com>,
+	Juefei Pu <tomapufckgml@gmail.com>,
+	Yuan Tan <yuantan098@gmail.com>,
+	Xin Liu <bird@lzu.edu.cn>,
+	Luxiao Xu <rakukuip@gmail.com>,
+	Ren Wei <n05ec@lzu.edu.cn>,
+	Paolo Abeni <pabeni@redhat.com>
+Subject: [PATCH 5.10 154/589] net: strparser: fix skb_head leak in strp_abort_strp()
 Date: Sat, 30 May 2026 18:00:35 +0200
-Message-ID: <20260530160314.445186786@linuxfoundation.org>
+Message-ID: <20260530160228.836745544@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260530160300.485627683@linuxfoundation.org>
-References: <20260530160300.485627683@linuxfoundation.org>
+In-Reply-To: <20260530160224.570625122@linuxfoundation.org>
+References: <20260530160224.570625122@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,73 +68,92 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-2.16 / 15.00];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-257453-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,kernel.org,gmail.com,lzu.edu.cn,redhat.com];
+	TAGGED_FROM(0.00)[bounces-258834-lists,stable=lfdr.de];
+	PRECEDENCE_BULK(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	FROM_HAS_DN(0.00)[];
-	TO_DN_SOME(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[stable];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-0.995];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[11];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[5]
-X-Rspamd-Queue-Id: 2973160F738
+	TAGGED_RCPT(0.00)[stable];
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[lzu.edu.cn:email,msgid.link:url,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
+X-Rspamd-Queue-Id: 84F1F612142
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alex Deucher <alexander.deucher@amd.com>
+From: Luxiao Xu <rakukuip@gmail.com>
 
-[ Upstream commit 355d96cdec5c61fd83f7eb54f1a28e38809645d6 ]
+commit fe72340daaf1af588be88056faf98965f39e6032 upstream.
 
-Look at hqd_queue_priority rather than hqd_pipe_priority.
-In practice, it didn't matter as both were always set for
-kernel queues, but that will change in the future.
+When the stream parser is aborted, for example after a message assembly timeout,
+it can still hold a reference to a partially assembled message in
+strp->skb_head.
 
-Fixes: b07d1d73b09e ("drm/amd/amdgpu: Enable high priority gfx queue")
-Reviewed-by：Jesse Zhang <jesse.zhang@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+That skb is not released in strp_abort_strp(), which leaks the partially
+assembled message and can be triggered repeatedly to exhaust memory.
+
+Fix this by freeing strp->skb_head and resetting the parser state in the
+abort path. Leave strp_stop() unchanged so final cleanup still happens in
+strp_done() after the work and timer have been synchronized.
+
+Fixes: 43a0c6751a32 ("strparser: Stream parser for messages")
+Cc: stable@kernel.org
+Reported-by: Yifan Wu <yifanwucs@gmail.com>
+Reported-by: Juefei Pu <tomapufckgml@gmail.com>
+Co-developed-by: Yuan Tan <yuantan098@gmail.com>
+Signed-off-by: Yuan Tan <yuantan098@gmail.com>
+Suggested-by: Xin Liu <bird@lzu.edu.cn>
+Tested-by: Yuan Tan <yuantan098@gmail.com>
+Signed-off-by: Luxiao Xu <rakukuip@gmail.com>
+Signed-off-by: Ren Wei <n05ec@lzu.edu.cn>
+Link: https://patch.msgid.link/ade3857a9404999ce9a1c27ec523efc896072678.1775482694.git.rakukuip@gmail.com
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/amd/amdgpu/gfx_v10_0.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ net/strparser/strparser.c |    8 ++++++++
+ 1 file changed, 8 insertions(+)
 
-diff --git a/drivers/gpu/drm/amd/amdgpu/gfx_v10_0.c b/drivers/gpu/drm/amd/amdgpu/gfx_v10_0.c
-index 48462beddccf0..8953f093b9617 100644
---- a/drivers/gpu/drm/amd/amdgpu/gfx_v10_0.c
-+++ b/drivers/gpu/drm/amd/amdgpu/gfx_v10_0.c
-@@ -6411,7 +6411,7 @@ static void gfx_v10_0_gfx_mqd_set_priority(struct amdgpu_device *adev,
- 	/* set up default queue priority level
- 	 * 0x0 = low priority, 0x1 = high priority
- 	 */
--	if (prop->hqd_pipe_priority == AMDGPU_GFX_PIPE_PRIO_HIGH)
-+	if (prop->hqd_queue_priority == AMDGPU_GFX_QUEUE_PRIORITY_MAXIMUM)
- 		priority = 1;
+--- a/net/strparser/strparser.c
++++ b/net/strparser/strparser.c
+@@ -45,6 +45,14 @@ static void strp_abort_strp(struct strpa
  
- 	tmp = RREG32_SOC15(GC, 0, mmCP_GFX_HQD_QUEUE_PRIORITY);
--- 
-2.53.0
-
+ 	strp->stopped = 1;
+ 
++	if (strp->skb_head) {
++		kfree_skb(strp->skb_head);
++		strp->skb_head = NULL;
++	}
++
++	strp->skb_nextp = NULL;
++	strp->need_bytes = 0;
++
+ 	if (strp->sk) {
+ 		struct sock *sk = strp->sk;
+ 
 
 
 
