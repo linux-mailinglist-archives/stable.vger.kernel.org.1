@@ -1,60 +1,57 @@
-Return-Path: <stable+bounces-257731-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-257733-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id gCN8NWAfG2qu/QgAu9opvQ
-	(envelope-from <stable+bounces-257731-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:33:20 +0200
+	id iGPxImgfG2rO/QgAu9opvQ
+	(envelope-from <stable+bounces-257733-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:33:28 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 53F7660FE7D
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:33:20 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 193E360FE92
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:33:27 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 46A96306BA94
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 17:26:27 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 3E04F3070DFD
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 17:26:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 790933438B7;
-	Sat, 30 May 2026 17:26:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EFBFA39A4A4;
+	Sat, 30 May 2026 17:26:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kMMMR19f"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NQh6q6ng"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5B0F033B6C4;
-	Sat, 30 May 2026 17:26:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A54A1344DA4;
+	Sat, 30 May 2026 17:26:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780161986; cv=none; b=ktF4cMdNlR5Py9nexW5Dy64cJcvo2+dYudIbLXoK9GGXlkwAGaH1pVGiXoEjwJuDii5CtGs2WLKPocbUUwkPTPAbviSIQTI1KlMclAMtMvH3Xwrdzq+Sw6Pc+cj9ZLC3uZQnYRSD5TqmyFRFokSkHgLC4YxCIADkf6YA10+4foY=
+	t=1780161989; cv=none; b=cAVq6Pre2alIashBf7/AX4C5tCJeQPNaUE9T1Re2cB9QQr2RVqRKd0ThMX+L+bAC0QdctRoy/VWcFU4oStddFirEm9B56bRzwhlqSvgt7183Eo6v8kRxjiTyWqFNvV703o0iBKnRJn5Fy3HuJa8BNxsqi+y0x/PWktCItzYTIlI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780161986; c=relaxed/simple;
-	bh=6psvR3LFaQ4JiGweijI0kx3r1/aT0mxe0ken+1q9AEg=;
+	s=arc-20240116; t=1780161989; c=relaxed/simple;
+	bh=2CB1fHA4VlLpqA8fLPcax/topshBCOouG87iQSEwBqM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=JNsucRJU0GcQ4kVqt0OQN8TAovHe/MC4zkgqBYptMX+NOIEI9sfI8LMZ6RexpZT+i4kuCEGhav5Qb1mNwbneI0Mt1xI7fuokaah38FK9Y1nM/on3S9hegPKrFntmfnHTZGaT5L/Z92m9TcNPKyFtc6tdhnUniyWOmVJm6jr5c/Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kMMMR19f; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A04AD1F00898;
-	Sat, 30 May 2026 17:26:24 +0000 (UTC)
+	 MIME-Version; b=GI1Z8zs8jphh69MVhDOmwZAIDSTyVWJwpreOLPMUNOJKE3Y6g78I5UFQYs3+DkIVgHFN4cQ2fNpGTbpKt3MEDqnbNOT1HpRRmrXbE9gjqKe7zvfvNaJrPb2nq+3BlanXIYh0AB6VkG/X0Y4PsNah7uq08qWUo9K+sEE5X1B0r9k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NQh6q6ng; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E91C71F00893;
+	Sat, 30 May 2026 17:26:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780161985;
-	bh=sJ/awdC9Mrgt38N8cmpdc1RH9ivkqVaI88R+U4dFcxA=;
+	s=korg; t=1780161988;
+	bh=Lfvdxzg26D0mzMSptymcqWX5noTznT8FwQRDCRRUJKM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=kMMMR19f2aeU45iTvYgWDQcniV5U2qER5I+xDlkyFPsClWNZ/T15TJ9JMCWR6fYig
-	 vJSwOeBKq82pHrKSg4pEYiv3xqlZBUmEXBdT+9nQ/o8prCxrnnitHOD6GNLUC6HKyn
-	 MSK6X3B65hQP0Jz1CFEk54yEi4ClTPcYHvoDxv6Q=
+	b=NQh6q6ng16KsAiq+fxJpjFDBry0jTdlKfdOdgOC+kiQp/2i76ZUkTawFh00C1t5hX
+	 yFPkBavD/1mOYwxuG/5w4UK5h96k6BKufivYvZCwyK88PilsGVJJ3iRzD93gcKK6ig
+	 rHvK87Hoql/RacDJ3lXEl3Bkdrm+SOuNVCVebME4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Petr Oros <poros@redhat.com>,
-	Aleksandr Loktionov <aleksandr.loktionov@intel.com>,
-	Rafal Romanowski <rafal.romanowski@intel.com>,
-	Przemek Kitszel <przemyslaw.kitszel@intel.com>,
 	Jacob Keller <jacob.e.keller@intel.com>,
-	Paolo Abeni <pabeni@redhat.com>,
+	Marek Szlosek <marek.szlosek@intel.com>,
+	Tony Nguyen <anthony.l.nguyen@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 786/969] iavf: add VIRTCHNL_OP_ADD_VLAN to success completion handler
-Date: Sat, 30 May 2026 18:05:10 +0200
-Message-ID: <20260530160322.308238183@linuxfoundation.org>
+Subject: [PATCH 6.1 787/969] ice: Pull common tasks into ice_vf_post_vsi_rebuild
+Date: Sat, 30 May 2026 18:05:11 +0200
+Message-ID: <20260530160322.336427103@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
 In-Reply-To: <20260530160300.485627683@linuxfoundation.org>
 References: <20260530160300.485627683@linuxfoundation.org>
@@ -80,7 +77,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-257731-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-257733-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
@@ -91,11 +88,11 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	FROM_HAS_DN(0.00)[];
 	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[10];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,msgid.link:url,linuxfoundation.org:mid,linuxfoundation.org:dkim,intel.com:email]
-X-Rspamd-Queue-Id: 53F7660FE7D
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,intel.com:email,linuxfoundation.org:mid,linuxfoundation.org:dkim]
+X-Rspamd-Queue-Id: 193E360FE92
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
@@ -103,56 +100,90 @@ X-Rspamd-Server: lfdr
 
 ------------------
 
-From: Petr Oros <poros@redhat.com>
+From: Jacob Keller <jacob.e.keller@intel.com>
 
-[ Upstream commit 34d33313b52eeac3a97ad2e3176d523ec70d9283 ]
+[ Upstream commit aeead3d04fa050a94ed314cc5de97125a957dc9f ]
 
-The V1 ADD_VLAN opcode had no success handler; filters sent via V1
-stayed in ADDING state permanently.  Add a fallthrough case so V1
-filters also transition ADDING -> ACTIVE on PF confirmation.
+The Single Root IOV implementation of .post_vsi_rebuild performs some tasks
+that will ultimately need to be shared with the Scalable IOV implementation
+such as rebuilding the host configuration.
 
-Critically, add an `if (v_retval) break` guard: the error switch in
-iavf_virtchnl_completion() does NOT return after handling errors,
-it falls through to the success switch.  Without this guard, a
-PF-rejected ADD would incorrectly mark ADDING filters as ACTIVE,
-creating a driver/HW mismatch where the driver believes the filter
-is installed but the PF never accepted it.
+Refactor by introducing a new wrapper function, ice_vf_post_vsi_rebuild
+which performs the tasks that will be shared between SR-IOV and Scalable
+IOV. Move the ice_vf_rebuild_host_cfg and ice_vf_set_initialized calls into
+this wrapper. Then call the implementation specific post_vsi_rebuild
+handler afterwards.
 
-For V2, this is harmless: iavf_vlan_add_reject() in the error
-block already kfree'd all ADDING filters, so the success handler
-finds nothing to transition.
+This ensures that we will properly re-initialize filters and expected
+settings for both SR-IOV and Scalable IOV.
 
-Fixes: 968996c070ef ("iavf: Fix VLAN_V2 addition/rejection")
-Signed-off-by: Petr Oros <poros@redhat.com>
-Reviewed-by: Aleksandr Loktionov <aleksandr.loktionov@intel.com>
-Tested-by: Rafal Romanowski <rafal.romanowski@intel.com>
-Reviewed-by: Przemek Kitszel <przemyslaw.kitszel@intel.com>
 Signed-off-by: Jacob Keller <jacob.e.keller@intel.com>
-Link: https://patch.msgid.link/20260427-jk-iwl-net-petr-oros-fixes-v1-4-cdcb48303fd8@intel.com
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Tested-by: Marek Szlosek <marek.szlosek@intel.com>
+Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
+Stable-dep-of: 54ef02487914 ("ice: fix NULL pointer dereference in ice_reset_all_vfs()")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/intel/iavf/iavf_virtchnl.c | 4 ++++
- 1 file changed, 4 insertions(+)
+ drivers/net/ethernet/intel/ice/ice_sriov.c  |  2 --
+ drivers/net/ethernet/intel/ice/ice_vf_lib.c | 19 +++++++++++++++++--
+ 2 files changed, 17 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/net/ethernet/intel/iavf/iavf_virtchnl.c b/drivers/net/ethernet/intel/iavf/iavf_virtchnl.c
-index 6fb657ec654e8..9ae7c92ae1b1f 100644
---- a/drivers/net/ethernet/intel/iavf/iavf_virtchnl.c
-+++ b/drivers/net/ethernet/intel/iavf/iavf_virtchnl.c
-@@ -2501,9 +2501,13 @@ void iavf_virtchnl_completion(struct iavf_adapter *adapter,
- 		spin_unlock_bh(&adapter->adv_rss_lock);
- 		}
- 		break;
-+	case VIRTCHNL_OP_ADD_VLAN:
- 	case VIRTCHNL_OP_ADD_VLAN_V2: {
- 		struct iavf_vlan_filter *f;
+diff --git a/drivers/net/ethernet/intel/ice/ice_sriov.c b/drivers/net/ethernet/intel/ice/ice_sriov.c
+index b719e9a771e36..148712037bcbb 100644
+--- a/drivers/net/ethernet/intel/ice/ice_sriov.c
++++ b/drivers/net/ethernet/intel/ice/ice_sriov.c
+@@ -841,8 +841,6 @@ static int ice_sriov_vsi_rebuild(struct ice_vf *vf)
+  */
+ static void ice_sriov_post_vsi_rebuild(struct ice_vf *vf)
+ {
+-	ice_vf_rebuild_host_cfg(vf);
+-	ice_vf_set_initialized(vf);
+ 	ice_ena_vf_mappings(vf);
+ 	wr32(&vf->pf->hw, VFGEN_RSTAT(vf->vf_id), VIRTCHNL_VFR_VFACTIVE);
+ }
+diff --git a/drivers/net/ethernet/intel/ice/ice_vf_lib.c b/drivers/net/ethernet/intel/ice/ice_vf_lib.c
+index 9dbe6e9bb1f79..d146259c7b82f 100644
+--- a/drivers/net/ethernet/intel/ice/ice_vf_lib.c
++++ b/drivers/net/ethernet/intel/ice/ice_vf_lib.c
+@@ -270,6 +270,21 @@ static int ice_vf_rebuild_vsi(struct ice_vf *vf)
+ 	return 0;
+ }
  
-+		if (v_retval)
-+			break;
++/**
++ * ice_vf_post_vsi_rebuild - Reset tasks that occur after VSI rebuild
++ * @vf: the VF being reset
++ *
++ * Perform reset tasks which must occur after the VSI has been re-created or
++ * rebuilt during a VF reset.
++ */
++static void ice_vf_post_vsi_rebuild(struct ice_vf *vf)
++{
++	ice_vf_rebuild_host_cfg(vf);
++	ice_vf_set_initialized(vf);
 +
- 		spin_lock_bh(&adapter->mac_vlan_list_lock);
- 		list_for_each_entry(f, &adapter->vlan_filter_list, list) {
- 			if (f->state == IAVF_VLAN_ADDING)
++	vf->vf_ops->post_vsi_rebuild(vf);
++}
++
+ /**
+  * ice_is_any_vf_in_unicast_promisc - check if any VF(s)
+  * are in unicast promiscuous mode
+@@ -495,7 +510,7 @@ void ice_reset_all_vfs(struct ice_pf *pf)
+ 
+ 		ice_vf_pre_vsi_rebuild(vf);
+ 		ice_vf_rebuild_vsi(vf);
+-		vf->vf_ops->post_vsi_rebuild(vf);
++		ice_vf_post_vsi_rebuild(vf);
+ 
+ 		mutex_unlock(&vf->cfg_lock);
+ 	}
+@@ -647,7 +662,7 @@ int ice_reset_vf(struct ice_vf *vf, u32 flags)
+ 		goto out_unlock;
+ 	}
+ 
+-	vf->vf_ops->post_vsi_rebuild(vf);
++	ice_vf_post_vsi_rebuild(vf);
+ 	vsi = ice_get_vf_vsi(vf);
+ 	if (WARN_ON(!vsi)) {
+ 		err = -EINVAL;
 -- 
 2.53.0
 
