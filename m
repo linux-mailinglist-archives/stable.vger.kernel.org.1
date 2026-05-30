@@ -1,65 +1,59 @@
-Return-Path: <stable+bounces-258728-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-258134-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id +Nb6F8MsG2pa/wgAu9opvQ
-	(envelope-from <stable+bounces-258728-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:30:27 +0200
+	id uOPnEgQlG2pm/ggAu9opvQ
+	(envelope-from <stable+bounces-258134-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:57:24 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id B6A20611DCF
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:30:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A021C610B29
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:57:23 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 1A59E300EF6A
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 18:22:19 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 774FA30E0261
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 17:48:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 65A002EF652;
-	Sat, 30 May 2026 18:22:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1B0B0346E55;
+	Sat, 30 May 2026 17:48:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="W1UeO6fh"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ebxsCp7k"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2F546219303;
-	Sat, 30 May 2026 18:22:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0544C261B9E;
+	Sat, 30 May 2026 17:48:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780165338; cv=none; b=TQ6BDX7rgldDxQ5pglWmX9pKJnxSnGXL+XAd2oyHbdSF1MYDjQT/iEcvXYVy2GETY/ljhn+wfHqmxjpar/vLAFhCxO/6taHIl0zVJLNNweRFkVt387eckWQoGh/FiCU0Svw+gfiCNyKjtrvaLoNk8ZDtpYxtl+O12XWStshZldY=
+	t=1780163330; cv=none; b=IgbOWYl+GQj5xt0zdnGDmkF4c7tbdNfi1JGqrcu8q89PN3x30GOxFWTm337gcP7q8l5W3KdEIUmmgbAD2gVhP2uiQ3rBGu0ly/XUqbpbQfsqReCnufrYe3DBRBW5UGJobxJPuU/c7TR3bER7yxwh+RdgXTuWSc4LYIKVNHd/4eA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780165338; c=relaxed/simple;
-	bh=56+UWgFkz6O5Ru7Ag/plZec5JtEitiYTSjvST7om9Q0=;
+	s=arc-20240116; t=1780163330; c=relaxed/simple;
+	bh=iQaCgu338TuRoYw2QvvCpeljyxBXCAYep4JS12vp83Q=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=qPt9Ct3+9SpgHunFGfmdi8ekB8E3fbyghWqoFXmnbFNspX/RBhYp1EQM8uJ0RKzlvNBcYk+c/SCKk3M7sBwpHAbwoYVz3H8GN1rPW+SvsKk6CIMzENM/tdno7JLe+5zo4hS9Ah2ZRoAVpO8dPjn2F0ukqmDDa7/BNLrfvhUeO2o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=W1UeO6fh; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7382E1F00893;
-	Sat, 30 May 2026 18:22:16 +0000 (UTC)
+	 MIME-Version; b=N5TeoypGa74nR9K18o1ZoQNeBpZNz6lLSMkgkAMAYk4kP2J1SLLRs7DRoXe8khNAvEq1nOxRgmkSskpNqz4YbwcwSTmXQqwLJJZlJcZ33SuPd16o3Cd4VSyQpem6Qoq2P8Cvjp1IquyHTNWS0TDDBy7UqBFtdzcwhyN/yrt5jaM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ebxsCp7k; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 499581F00893;
+	Sat, 30 May 2026 17:48:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780165337;
-	bh=vWdNMl4gPPZdX7m+DiaXkLBxooIh+UJQSd6p+KB0pOQ=;
+	s=korg; t=1780163329;
+	bh=M1dKRaDbd3sMl8B+0IH5O2jrVK8Gz8C1mBAj3FPPrtg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=W1UeO6fhWwqBZLTV5jUx93GZ+HDR1oz/Y8cR1SmCqSm7gpNawesAk375zthP5H5TK
-	 rN6JIpRNyQGZgqtOSA5vdJMCX2KwNdQSZVFteuybPdM7SLaQvGJh11CGSgdGFAaljI
-	 vK2+kQcbiCs65Qw5EEXMUKc5OXGEYlei8sMcpw2k=
+	b=ebxsCp7kWz6Vh6MspdUuBBuj8nDGhkhgXfrPNZ3NzVGzG4yN0S3ljM1+7V7xgqs0n
+	 h3g5f4eD3AmqLaebMd/HI67q7Ku62Kz1XooJK8lFMx5NviaO6CWUdjR7E2kPxgupEe
+	 Px877aPrQrs8m1wCeK0MzfSXjfSKsZPsgWQZhXhw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yifan Wu <yifanwucs@gmail.com>,
-	Juefei Pu <tomapufckgml@gmail.com>,
-	Yuan Tan <yuantan098@gmail.com>,
-	Xin Liu <bird@lzu.edu.cn>,
-	Ren Wei <enjou1224z@gmail.com>,
-	Zhengchuan Liang <zcliangcn@gmail.com>,
-	Ren Wei <n05ec@lzu.edu.cn>,
-	Florian Westphal <fw@strlen.de>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 031/589] netfilter: ip6t_eui64: reject invalid MAC header for all packets
+	Yiming Qian <yimingqian591@gmail.com>,
+	Herbert Xu <herbert@gondor.apana.org.au>,
+	Eric Biggers <ebiggers@kernel.org>
+Subject: [PATCH 5.15 198/776] crypto: pcrypt - Fix handling of MAY_BACKLOG requests
 Date: Sat, 30 May 2026 17:58:32 +0200
-Message-ID: <20260530160225.401254377@linuxfoundation.org>
+Message-ID: <20260530160245.625586794@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260530160224.570625122@linuxfoundation.org>
-References: <20260530160224.570625122@linuxfoundation.org>
+In-Reply-To: <20260530160240.228940103@linuxfoundation.org>
+References: <20260530160240.228940103@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -79,16 +73,16 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-258728-lists,stable=lfdr.de];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,lzu.edu.cn,strlen.de,kernel.org];
+	TAGGED_FROM(0.00)[bounces-258134-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,gondor.apana.org.au,kernel.org];
 	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[12];
+	TO_DN_SOME(0.00)[];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	TO_DN_SOME(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
@@ -97,61 +91,61 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	TAGGED_RCPT(0.00)[stable];
 	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[strlen.de:email,lzu.edu.cn:email,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim]
-X-Rspamd-Queue-Id: B6A20611DCF
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim]
+X-Rspamd-Queue-Id: A021C610B29
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Zhengchuan Liang <zcliangcn@gmail.com>
+From: Herbert Xu <herbert@gondor.apana.org.au>
 
-[ Upstream commit fdce0b3590f724540795b874b4c8850c90e6b0a8 ]
+commit 915b692e6cb723aac658c25eb82c58fd81235110 upstream.
 
-`eui64_mt6()` derives a modified EUI-64 from the Ethernet source address
-and compares it with the low 64 bits of the IPv6 source address.
+MAY_BACKLOG requests can return EBUSY.  Handle them by checking
+for that value and filtering out EINPROGRESS notifications.
 
-The existing guard only rejects an invalid MAC header when
-`par->fragoff != 0`. For packets with `par->fragoff == 0`, `eui64_mt6()`
-can still reach `eth_hdr(skb)` even when the MAC header is not valid.
-
-Fix this by removing the `par->fragoff != 0` condition so that packets
-with an invalid MAC header are rejected before accessing `eth_hdr(skb)`.
-
-Fixes: 1da177e4c3f41 ("Linux-2.6.12-rc2")
-Reported-by: Yifan Wu <yifanwucs@gmail.com>
-Reported-by: Juefei Pu <tomapufckgml@gmail.com>
-Co-developed-by: Yuan Tan <yuantan098@gmail.com>
-Signed-off-by: Yuan Tan <yuantan098@gmail.com>
-Suggested-by: Xin Liu <bird@lzu.edu.cn>
-Tested-by: Ren Wei <enjou1224z@gmail.com>
-Signed-off-by: Zhengchuan Liang <zcliangcn@gmail.com>
-Signed-off-by: Ren Wei <n05ec@lzu.edu.cn>
-Signed-off-by: Florian Westphal <fw@strlen.de>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Reported-by: Yiming Qian <yimingqian591@gmail.com>
+Fixes: 5a1436beec57 ("crypto: pcrypt - call the complete function on error")
+Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
+Cc: Eric Biggers <ebiggers@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/ipv6/netfilter/ip6t_eui64.c | 3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
+ crypto/pcrypt.c |    7 +++++--
+ 1 file changed, 5 insertions(+), 2 deletions(-)
 
-diff --git a/net/ipv6/netfilter/ip6t_eui64.c b/net/ipv6/netfilter/ip6t_eui64.c
-index d704f7ed300c2..da69a27e8332c 100644
---- a/net/ipv6/netfilter/ip6t_eui64.c
-+++ b/net/ipv6/netfilter/ip6t_eui64.c
-@@ -22,8 +22,7 @@ eui64_mt6(const struct sk_buff *skb, struct xt_action_param *par)
- 	unsigned char eui64[8];
+--- a/crypto/pcrypt.c
++++ b/crypto/pcrypt.c
+@@ -69,6 +69,9 @@ static void pcrypt_aead_done(struct cryp
+ 	struct pcrypt_request *preq = aead_request_ctx(req);
+ 	struct padata_priv *padata = pcrypt_request_padata(preq);
  
- 	if (!(skb_mac_header(skb) >= skb->head &&
--	      skb_mac_header(skb) + ETH_HLEN <= skb->data) &&
--	    par->fragoff != 0) {
-+	      skb_mac_header(skb) + ETH_HLEN <= skb->data)) {
- 		par->hotdrop = true;
- 		return false;
- 	}
--- 
-2.53.0
-
++	if (err == -EINPROGRESS)
++		return;
++
+ 	padata->info = err;
+ 
+ 	padata_do_serial(padata);
+@@ -82,7 +85,7 @@ static void pcrypt_aead_enc(struct padat
+ 
+ 	ret = crypto_aead_encrypt(req);
+ 
+-	if (ret == -EINPROGRESS)
++	if (ret == -EINPROGRESS || ret == -EBUSY)
+ 		return;
+ 
+ 	padata->info = ret;
+@@ -133,7 +136,7 @@ static void pcrypt_aead_dec(struct padat
+ 
+ 	ret = crypto_aead_decrypt(req);
+ 
+-	if (ret == -EINPROGRESS)
++	if (ret == -EINPROGRESS || ret == -EBUSY)
+ 		return;
+ 
+ 	padata->info = ret;
 
 
 
