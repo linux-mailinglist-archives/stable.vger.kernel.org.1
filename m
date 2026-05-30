@@ -1,59 +1,66 @@
-Return-Path: <stable+bounces-257214-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-257973-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id GFOhAlcYG2pV/AgAu9opvQ
-	(envelope-from <stable+bounces-257214-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:03:19 +0200
+	id kMmhE7QiG2rO/QgAu9opvQ
+	(envelope-from <stable+bounces-257973-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:47:32 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7AA8260ECE8
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:03:18 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id BF9C661063E
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:47:31 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id F07F9302D309
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 16:56:49 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id A77E8306195A
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 17:39:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6A56133F5A3;
-	Sat, 30 May 2026 16:56:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EE30E34389F;
+	Sat, 30 May 2026 17:39:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DP+7l2ym"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YcokFxKh"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3AECB332EA7;
-	Sat, 30 May 2026 16:56:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CC5042E7379;
+	Sat, 30 May 2026 17:39:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780160209; cv=none; b=JxIXnncNUmUdNOXk+51heqH+BmvKS69yr1X0t/BkVWZlB/uwoJcbVuOhJX5IQsNbalJIryYM1Ot66x4ORNXCWQY9WqORoqkPxYABd/6cvRS/4zeaqUiJ3A1kd248/Kc5HEgb8RurFxBkhPnC9MVDJFC+5L2gK6c1dC/+WDy8Xa4=
+	t=1780162798; cv=none; b=QOVu8jBFVV30AorqeOOJAkjFKndPBaXG3y1+9/Gjb4eCA2rcQq+GFmYxumNY8hiJ6athzaQ3VsYnn5XtSu2ZP4q15l68w5dLa2P9gQUV5Gr/yZoH9lQJAuB8wIBTaDIw+N6tUZnuYGMzwjlvD1/2bfN/bi6Lc2pnULrpouMwaJw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780160209; c=relaxed/simple;
-	bh=4nJWUnU6M2iTFNHz9ZsMM7gIAsEGEzdOFv91VaDO+8Q=;
+	s=arc-20240116; t=1780162798; c=relaxed/simple;
+	bh=XI4SUBd5fCW65tlNS2iWC4A9SRs12qU2SjQre1B12Gc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ojl4yyhoep3ux1eAF9RDSLEGxSMhvMgonskjtpkmQhzZ7XSsxbkAFJ0S3dkZ0HSqLLsbPoIz2xnGRt4fXHTRLPZ1k9P8QMDSOExoz0MBLD3pdVnfBJsLcmirTCf50oEWrcNKQSDlcp6XnC7jbUzsHgiJmw9WvZMhvGBCbR2OrXo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DP+7l2ym; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5B6571F00893;
-	Sat, 30 May 2026 16:56:47 +0000 (UTC)
+	 MIME-Version; b=Q9D2IjvyGBwqg934s9TdtN8Ipve9oqhjQBdPQ+11+RdnUw5ZmE5VpkAs8/o9KspOOWsSiC8wc1bdlqyqvvru2DAs0Rmy5lJZ2EPtPXqOO1qos4wHp+7QF1uUV+woMts8J3Ff9xA4RL/7Ij4jwmQAeUXR/sj++9dJA97IXb7jtyw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YcokFxKh; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1E10E1F00893;
+	Sat, 30 May 2026 17:39:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780160208;
-	bh=nqd5xaMwBb2MGVEB2VmMKQQjuz8grq5xtUj7xnifvWI=;
+	s=korg; t=1780162797;
+	bh=k1Uv7XvGkw1fvY1FrOds+Ns8rOwZxscmXwvxaWUuuaA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=DP+7l2ymve3y+w8uSFga3AOnY1VPP5OochusLhNcqFcjjyLk29VyfXs+oQahNEF2l
-	 iwxbTlsdfcrVe66WalDnuzjd4HEKyj17X1yISK2EyvN1Z8TNAKPOmobYRJ3EBa/Fyl
-	 fEdKEsU3k2Zc4avUy9ay/yUCPVNDhrBUK20WH87Q=
+	b=YcokFxKhI0tO+pblWfY4X/XV+CDWfZbsznk3/o2Z2WNvN5Jg3xePXoASRI9p/b3xi
+	 9Qsuq9nvKqB2+NVVHNJmCz7ANbCpGigUYmvaDzeR04aP6NqjqPAtbm9gzOuPvWZcIP
+	 W/GC0t1RmxCyAdLufs6TBQfFmvJm5cFZB9CryREA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jens Axboe <axboe@kernel.dk>,
-	Bin Liu <b-liu@ti.com>,
-	Ulf Hansson <ulf.hansson@linaro.org>
-Subject: [PATCH 6.1 227/969] mmc: block: use single block write in retry
+	Yifan Wu <yifanwucs@gmail.com>,
+	Juefei Pu <tomapufckgml@gmail.com>,
+	Yuan Tan <yuantan098@gmail.com>,
+	Xin Liu <bird@lzu.edu.cn>,
+	Ren Wei <enjou1224z@gmail.com>,
+	Jiexun Wang <wangjiexun2025@gmail.com>,
+	Ren Wei <n05ec@lzu.edu.cn>,
+	Kuniyuki Iwashima <kuniyu@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 037/776] af_unix: read UNIX_DIAG_VFS data under unix_state_lock
 Date: Sat, 30 May 2026 17:55:51 +0200
-Message-ID: <20260530160306.723096615@linuxfoundation.org>
+Message-ID: <20260530160241.250206106@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260530160300.485627683@linuxfoundation.org>
-References: <20260530160300.485627683@linuxfoundation.org>
+In-Reply-To: <20260530160240.228940103@linuxfoundation.org>
+References: <20260530160240.228940103@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,122 +76,107 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-257214-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-257973-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,lzu.edu.cn,google.com,kernel.org];
 	RCVD_COUNT_THREE(0.00)[4];
-	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TO_DN_SOME(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	RCPT_COUNT_TWELVE(0.00)[13];
+	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	RCPT_COUNT_FIVE(0.00)[6];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
 	TAGGED_RCPT(0.00)[stable];
 	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	FROM_HAS_DN(0.00)[]
-X-Rspamd-Queue-Id: 7AA8260ECE8
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,lzu.edu.cn:email,linuxfoundation.org:mid,linuxfoundation.org:dkim]
+X-Rspamd-Queue-Id: BF9C661063E
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Bin Liu <b-liu@ti.com>
+From: Jiexun Wang <wangjiexun2025@gmail.com>
 
-commit c7c6d4f5103864f73ee3a78bfd6da241f84197dd upstream.
+[ Upstream commit 39897df386376912d561d4946499379effa1e7ef ]
 
-Due to errata i2493[0], multi-block write would still fail in retries.
+Exact UNIX diag lookups hold a reference to the socket, but not to
+u->path. Meanwhile, unix_release_sock() clears u->path under
+unix_state_lock() and drops the path reference after unlocking.
 
-With i2493, the MMC interface has the potential of write failures when
-issuing multi-block writes operating in HS200 mode with excessive IO
-supply noise.
+Read the inode and device numbers for UNIX_DIAG_VFS while holding
+unix_state_lock(), then emit the netlink attribute after dropping the
+lock.
 
-While the errata provides guidance in hardware design and layout to
-minimize the IO supply noise, in theory the write failure cannot be
-resolved in hardware. The software solution to ensure the data integrity
-is to add minimum 5us delay between block writes. Single-block write is
-the practical way to introduce the delay.
+This keeps the VFS data stable while the reply is being built.
 
-This patch reuses recovery_mode flag, and switches to single-block
-write in retry when multi-block write fails. It covers both CQE and
-non-CQE cases.
-
-[0] https://www.ti.com/lit/pdf/sprz582
-Cc: stable@vger.kernel.org
-Suggested-by: Jens Axboe <axboe@kernel.dk>
-Signed-off-by: Bin Liu <b-liu@ti.com>
-Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 5f7b0569460b ("unix_diag: Unix inode info NLA")
+Reported-by: Yifan Wu <yifanwucs@gmail.com>
+Reported-by: Juefei Pu <tomapufckgml@gmail.com>
+Co-developed-by: Yuan Tan <yuantan098@gmail.com>
+Signed-off-by: Yuan Tan <yuantan098@gmail.com>
+Suggested-by: Xin Liu <bird@lzu.edu.cn>
+Tested-by: Ren Wei <enjou1224z@gmail.com>
+Signed-off-by: Jiexun Wang <wangjiexun2025@gmail.com>
+Signed-off-by: Ren Wei <n05ec@lzu.edu.cn>
+Reviewed-by: Kuniyuki Iwashima <kuniyu@google.com>
+Link: https://patch.msgid.link/20260407080015.1744197-1-n05ec@lzu.edu.cn
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/mmc/core/block.c |   12 ++++++++++--
- drivers/mmc/core/queue.h |    3 +++
- 2 files changed, 13 insertions(+), 2 deletions(-)
+ net/unix/diag.c | 21 +++++++++++++--------
+ 1 file changed, 13 insertions(+), 8 deletions(-)
 
---- a/drivers/mmc/core/block.c
-+++ b/drivers/mmc/core/block.c
-@@ -1401,6 +1401,9 @@ static void mmc_blk_data_prep(struct mmc
- 		    rq_data_dir(req) == WRITE &&
- 		    (md->flags & MMC_BLK_REL_WR);
+diff --git a/net/unix/diag.c b/net/unix/diag.c
+index 486276a1782ed..699fba7b7591d 100644
+--- a/net/unix/diag.c
++++ b/net/unix/diag.c
+@@ -25,18 +25,23 @@ static int sk_diag_dump_name(struct sock *sk, struct sk_buff *nlskb)
  
-+	if (mqrq->flags & MQRQ_XFER_SINGLE_BLOCK)
-+		recovery_mode = 1;
+ static int sk_diag_dump_vfs(struct sock *sk, struct sk_buff *nlskb)
+ {
+-	struct dentry *dentry = unix_sk(sk)->path.dentry;
++	struct unix_diag_vfs uv;
++	struct dentry *dentry;
++	bool have_vfs = false;
+ 
++	unix_state_lock(sk);
++	dentry = unix_sk(sk)->path.dentry;
+ 	if (dentry) {
+-		struct unix_diag_vfs uv = {
+-			.udiag_vfs_ino = d_backing_inode(dentry)->i_ino,
+-			.udiag_vfs_dev = dentry->d_sb->s_dev,
+-		};
+-
+-		return nla_put(nlskb, UNIX_DIAG_VFS, sizeof(uv), &uv);
++		uv.udiag_vfs_ino = d_backing_inode(dentry)->i_ino;
++		uv.udiag_vfs_dev = dentry->d_sb->s_dev;
++		have_vfs = true;
+ 	}
++	unix_state_unlock(sk);
+ 
+-	return 0;
++	if (!have_vfs)
++		return 0;
 +
- 	memset(brq, 0, sizeof(struct mmc_blk_request));
++	return nla_put(nlskb, UNIX_DIAG_VFS, sizeof(uv), &uv);
+ }
  
- 	mmc_crypto_prepare_req(mqrq);
-@@ -1540,10 +1543,13 @@ static void mmc_blk_cqe_complete_rq(stru
- 		err = 0;
- 
- 	if (err) {
--		if (mqrq->retries++ < MMC_CQE_RETRIES)
-+		if (mqrq->retries++ < MMC_CQE_RETRIES) {
-+			if (rq_data_dir(req) == WRITE)
-+				mqrq->flags |= MQRQ_XFER_SINGLE_BLOCK;
- 			blk_mq_requeue_request(req, true);
--		else
-+		} else {
- 			blk_mq_end_request(req, BLK_STS_IOERR);
-+		}
- 	} else if (mrq->data) {
- 		if (blk_update_request(req, BLK_STS_OK, mrq->data->bytes_xfered))
- 			blk_mq_requeue_request(req, true);
-@@ -2081,6 +2087,8 @@ static void mmc_blk_mq_complete_rq(struc
- 	} else if (!blk_rq_bytes(req)) {
- 		__blk_mq_end_request(req, BLK_STS_IOERR);
- 	} else if (mqrq->retries++ < MMC_MAX_RETRIES) {
-+		if (rq_data_dir(req) == WRITE)
-+			mqrq->flags |= MQRQ_XFER_SINGLE_BLOCK;
- 		blk_mq_requeue_request(req, true);
- 	} else {
- 		if (mmc_card_removed(mq->card))
---- a/drivers/mmc/core/queue.h
-+++ b/drivers/mmc/core/queue.h
-@@ -61,6 +61,8 @@ enum mmc_drv_op {
- 	MMC_DRV_OP_GET_EXT_CSD,
- };
- 
-+#define	MQRQ_XFER_SINGLE_BLOCK		BIT(0)
-+
- struct mmc_queue_req {
- 	struct mmc_blk_request	brq;
- 	struct scatterlist	*sg;
-@@ -69,6 +71,7 @@ struct mmc_queue_req {
- 	void			*drv_op_data;
- 	unsigned int		ioc_count;
- 	int			retries;
-+	u32			flags;
- };
- 
- struct mmc_queue {
+ static int sk_diag_dump_peer(struct sock *sk, struct sk_buff *nlskb)
+-- 
+2.53.0
+
 
 
 
