@@ -1,69 +1,65 @@
-Return-Path: <stable+bounces-257930-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-257153-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id YPetCeIhG2rO/QgAu9opvQ
-	(envelope-from <stable+bounces-257930-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:44:02 +0200
+	id CAnTDAAXG2pV/AgAu9opvQ
+	(envelope-from <stable+bounces-257153-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 18:57:36 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 885A6610433
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:44:01 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id A069560EA88
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 18:57:35 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 51C633036749
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 17:37:29 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id A282F30594E2
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 16:53:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 339BD3546F6;
-	Sat, 30 May 2026 17:37:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EE33F3403F3;
+	Sat, 30 May 2026 16:53:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DP/4l9nM"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1c1yUSG+"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7878C2E7379;
-	Sat, 30 May 2026 17:37:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D13151CAA6C;
+	Sat, 30 May 2026 16:53:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780162648; cv=none; b=EAQIHFQaX+BaBYeRuskL/n4oFAskTx/G6oEppDG+DQvmB5eBnJ8Us36Uph1A0pcA2Wey2wg8Hw1rP1ChayscN4AWFRxfAzWIGzE+uR0+tYI7Jt/H8Lcd2Rk2+RpiaoOy16ewEUGEz8cZ/v/MAjJwivppLuh85kn4cZRv2SLDMvU=
+	t=1780159988; cv=none; b=fxpfH+nKq0srxvgMNI1YZGjpOM0p2a4VydzYZOIT39B2mE1230LPORBUE+pUpOLMabP4p6ujoUcEcxlKrxe9UDOMUYH4s8xK48A0bhu31eCpbKNC+n5/cS4qi8PzSE1TvJO/HBBvHat76qd3b4pRZ9bXje1GKSWpMb/Mkdtr7rY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780162648; c=relaxed/simple;
-	bh=ilI1cjcY5PP8Bvr/ykQ5JpLfF4VOX66kSKgSiDPrPWQ=;
+	s=arc-20240116; t=1780159988; c=relaxed/simple;
+	bh=noKqYjWBZsfu41yh4hKgIknEsWfFUBXt9bo9ExTmAls=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=fDeWDek8uT3KhNe9WR8SsIs3zkoUiyV5uVB6LYtZ/2HTAAsiF6i41vwZu/McIFqEZrEjWrdc84xBk/vxuuJMpEo5K6MQ9DztbbK0uZs2AaHwFglzzmhbZ4mnW2Ju5djvZnzEyxemC+zZEDLyyy0rQf1j9kSMZqsSyWSRwG0QZn8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DP/4l9nM; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BCD9F1F00893;
-	Sat, 30 May 2026 17:37:25 +0000 (UTC)
+	 MIME-Version; b=DEjnG5edCLr6pctskNfj01B1sEKirCZyehENfza8ez592VVJaU8fK/3bCOyycxNs5CVGmvnk0XPBTaHEzqkAT9lIQZQUz5ssuu7DuCI1eEZZs23l/2YUFQH4IgxJi6ZyiHrMFOEw4xHfpyBInaUTkVDSxfPMHxJtYiHeo02b/ls=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1c1yUSG+; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id ABB9C1F00893;
+	Sat, 30 May 2026 16:53:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780162646;
-	bh=Sd7MsEMohxWvTlxXVvZGehncgIevKkvKzOLpSr3PavU=;
+	s=korg; t=1780159987;
+	bh=59PcNLZ8Me4WLvsUS+Y+3cJH8f6ggH/YxOINU9fJoGM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=DP/4l9nMMT8gXnWg1HibSXsv2woaBabwrMqWw0swRWUi8RMSA2DAMT4NfDrFOpNC3
-	 FagsY4qrkIJjD2VQaa7uxXC9nj0X3rZT5kAZfWHV0y6yO2ZzYnYtbQ2FERlC9SDVji
-	 Np1QD01hootkT/q0DCOOs98UzW+chqjmJen3jRf8=
+	b=1c1yUSG+pLTB7iJkItB14k0HcHEsEMcaFyETDrou89h212R4vL9/qKJFksHp2ahCL
+	 R322h5J+F9UiCc+kgNZ0jg7YiXB1Cmn0yaHj32J24p6Uk4IgOjpz9TxApnIVWHERu9
+	 MBTEE6OdpCvAzqLmYotBKz0q52Vx+vBDKOjcr3ts=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Paolo Abeni <pabeni@redhat.com>,
-	Eric Dumazet <edumazet@google.com>,
-	Xiumei Mu <xmu@redhiat.com>,
-	Soheil Hassas Yeganeh <soheil@google.com>,
-	Davidlohr Bueso <dave@stgolabs.net>,
-	Alexander Viro <viro@zeniv.linux.org.uk>,
-	Carlos Maiolino <cmaiolino@redhat.com>,
-	Christian Brauner <brauner@kernel.org>,
-	Eric Biggers <ebiggers@kernel.org>,
-	Jacob Keller <jacob.e.keller@intel.com>,
-	Jens Axboe <axboe@kernel.dk>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 023/776] epoll: use refcount to reduce ep_mutex contention
-Date: Sat, 30 May 2026 17:55:37 +0200
-Message-ID: <20260530160240.861610519@linuxfoundation.org>
+	stable@kernel.org,
+	Yuan Tan <yuantan098@gmail.com>,
+	Yifan Wu <yifanwucs@gmail.com>,
+	Juefei Pu <tomapufckgml@gmail.com>,
+	Xin Liu <bird@lzu.edu.cn>,
+	Ao Zhou <draw51280@163.com>,
+	Ren Wei <n05ec@lzu.edu.cn>,
+	Allison Henderson <achender@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 6.1 214/969] net: rds: fix MR cleanup on copy error
+Date: Sat, 30 May 2026 17:55:38 +0200
+Message-ID: <20260530160306.366508312@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260530160240.228940103@linuxfoundation.org>
-References: <20260530160240.228940103@linuxfoundation.org>
+In-Reply-To: <20260530160300.485627683@linuxfoundation.org>
+References: <20260530160300.485627683@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -76,470 +72,81 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	RCVD_TLS_LAST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-257930-lists,stable=lfdr.de];
-	RCPT_COUNT_TWELVE(0.00)[16];
-	FROM_HAS_DN(0.00)[];
+	TAGGED_FROM(0.00)[bounces-257153-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,kernel.org,gmail.com,lzu.edu.cn,163.com];
+	RCPT_COUNT_TWELVE(0.00)[12];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	MID_RHS_MATCH_FROM(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
 	TO_DN_SOME(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,kernel.dk:email,intel.com:email,stgolabs.net:email]
-X-Rspamd-Queue-Id: 885A6610433
+	FROM_HAS_DN(0.00)[]
+X-Rspamd-Queue-Id: A069560EA88
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Paolo Abeni <pabeni@redhat.com>
+From: Ao Zhou <draw51280@163.com>
 
-[ Upstream commit 58c9b016e12855286370dfb704c08498edbc857a ]
+commit 8141a2dc70080eda1aedc0389ed2db2b292af5bd upstream.
 
-We are observing huge contention on the epmutex during an http
-connection/rate test:
+__rds_rdma_map() hands sg/pages ownership to the transport after
+get_mr() succeeds. If copying the generated cookie back to user space
+fails after that point, the error path must not free those resources
+again before dropping the MR reference.
 
- 83.17% 0.25%  nginx            [kernel.kallsyms]         [k] entry_SYSCALL_64_after_hwframe
-[...]
-           |--66.96%--__fput
-                      |--60.04%--eventpoll_release_file
-                                 |--58.41%--__mutex_lock.isra.6
-                                           |--56.56%--osq_lock
+Remove the duplicate unpin/free from the put_user() failure branch so
+that MR teardown is handled only through the existing final cleanup
+path.
 
-The application is multi-threaded, creates a new epoll entry for
-each incoming connection, and does not delete it before the
-connection shutdown - that is, before the connection's fd close().
-
-Many different threads compete frequently for the epmutex lock,
-affecting the overall performance.
-
-To reduce the contention this patch introduces explicit reference counting
-for the eventpoll struct. Each registered event acquires a reference,
-and references are released at ep_remove() time.
-
-The eventpoll struct is released by whoever - among EP file close() and
-and the monitored file close() drops its last reference.
-
-Additionally, this introduces a new 'dying' flag to prevent races between
-the EP file close() and the monitored file close().
-ep_eventpoll_release() marks, under f_lock spinlock, each epitem as dying
-before removing it, while EP file close() does not touch dying epitems.
-
-The above is needed as both close operations could run concurrently and
-drop the EP reference acquired via the epitem entry. Without the above
-flag, the monitored file close() could reach the EP struct via the epitem
-list while the epitem is still listed and then try to put it after its
-disposal.
-
-An alternative could be avoiding touching the references acquired via
-the epitems at EP file close() time, but that could leave the EP struct
-alive for potentially unlimited time after EP file close(), with nasty
-side effects.
-
-With all the above in place, we can drop the epmutex usage at disposal time.
-
-Overall this produces a significant performance improvement in the
-mentioned connection/rate scenario: the mutex operations disappear from
-the topmost offenders in the perf report, and the measured connections/rate
-grows by ~60%.
-
-To make the change more readable this additionally renames ep_free() to
-ep_clear_and_put(), and moves the actual memory cleanup in a separate
-ep_free() helper.
-
-Link: https://lkml.kernel.org/r/4a57788dcaf28f5eb4f8dfddcc3a8b172a7357bb.1679504153.git.pabeni@redhat.com
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
-Co-developed-by: Eric Dumazet <edumazet@google.com>
-Signed-off-by: Eric Dumazet <edumazet@google.com>
-Tested-by: Xiumei Mu <xmu@redhiat.com>
-Acked-by: Soheil Hassas Yeganeh <soheil@google.com>
-Reviewed-by: Davidlohr Bueso <dave@stgolabs.net>
-Cc: Alexander Viro <viro@zeniv.linux.org.uk>
-Cc: Carlos Maiolino <cmaiolino@redhat.com>
-Cc: Christian Brauner <brauner@kernel.org>
-Cc: Eric Biggers <ebiggers@kernel.org>
-Cc: Jacob Keller <jacob.e.keller@intel.com>
-Cc: Jens Axboe <axboe@kernel.dk>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-Stable-dep-of: 07712db80857 ("eventpoll: defer struct eventpoll free to RCU grace period")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 0d4597c8c5ab ("net/rds: Track user mapped pages through special API")
+Cc: stable@kernel.org
+Reported-by: Yuan Tan <yuantan098@gmail.com>
+Reported-by: Yifan Wu <yifanwucs@gmail.com>
+Reported-by: Juefei Pu <tomapufckgml@gmail.com>
+Reported-by: Xin Liu <bird@lzu.edu.cn>
+Signed-off-by: Ao Zhou <draw51280@163.com>
+Signed-off-by: Ren Wei <n05ec@lzu.edu.cn>
+Reviewed-by: Allison Henderson <achender@kernel.org>
+Link: https://patch.msgid.link/79c8ef73ec8e5844d71038983940cc2943099baf.1776764247.git.draw51280@163.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/eventpoll.c | 195 +++++++++++++++++++++++++++++++------------------
- 1 file changed, 123 insertions(+), 72 deletions(-)
+ net/rds/rdma.c |    4 ----
+ 1 file changed, 4 deletions(-)
 
-diff --git a/fs/eventpoll.c b/fs/eventpoll.c
-index fb5e2af47f02d..217b8016a6b50 100644
---- a/fs/eventpoll.c
-+++ b/fs/eventpoll.c
-@@ -57,13 +57,7 @@
-  * we need a lock that will allow us to sleep. This lock is a
-  * mutex (ep->mtx). It is acquired during the event transfer loop,
-  * during epoll_ctl(EPOLL_CTL_DEL) and during eventpoll_release_file().
-- * Then we also need a global mutex to serialize eventpoll_release_file()
-- * and ep_free().
-- * This mutex is acquired by ep_free() during the epoll file
-- * cleanup path and it is also acquired by eventpoll_release_file()
-- * if a file has been pushed inside an epoll set and it is then
-- * close()d without a previous call to epoll_ctl(EPOLL_CTL_DEL).
-- * It is also acquired when inserting an epoll fd onto another epoll
-+ * The epmutex is acquired when inserting an epoll fd onto another epoll
-  * fd. We do this so that we walk the epoll tree and ensure that this
-  * insertion does not create a cycle of epoll file descriptors, which
-  * could lead to deadlock. We need a global mutex to prevent two
-@@ -153,6 +147,13 @@ struct epitem {
- 	/* The file descriptor information this item refers to */
- 	struct epoll_filefd ffd;
+--- a/net/rds/rdma.c
++++ b/net/rds/rdma.c
+@@ -326,10 +326,6 @@ static int __rds_rdma_map(struct rds_soc
  
-+	/*
-+	 * Protected by file->f_lock, true for to-be-released epitem already
-+	 * removed from the "struct file" items list; together with
-+	 * eventpoll->refcount orchestrates "struct eventpoll" disposal
-+	 */
-+	bool dying;
-+
- 	/* List containing poll wait queues */
- 	struct eppoll_entry *pwqlist;
- 
-@@ -218,6 +219,12 @@ struct eventpoll {
- 	struct hlist_head refs;
- 	u8 loop_check_depth;
- 
-+	/*
-+	 * usage count, used together with epitem->dying to
-+	 * orchestrate the disposal of this struct
-+	 */
-+	refcount_t refcount;
-+
- #ifdef CONFIG_NET_RX_BUSY_POLL
- 	/* used to track busy poll napi_id */
- 	unsigned int napi_id;
-@@ -241,9 +248,7 @@ struct ep_pqueue {
- /* Maximum number of epoll watched descriptors, per user */
- static long max_user_watches __read_mostly;
- 
--/*
-- * This mutex is used to serialize ep_free() and eventpoll_release_file().
-- */
-+/* Used for cycles detection */
- static DEFINE_MUTEX(epmutex);
- 
- static u64 loop_check_gen = 0;
-@@ -551,8 +556,7 @@ static void ep_remove_wait_queue(struct eppoll_entry *pwq)
- 
- /*
-  * This function unregisters poll callbacks from the associated file
-- * descriptor.  Must be called with "mtx" held (or "epmutex" if called from
-- * ep_free).
-+ * descriptor.  Must be called with "mtx" held.
-  */
- static void ep_unregister_pollwait(struct eventpoll *ep, struct epitem *epi)
- {
-@@ -675,11 +679,40 @@ static void epi_rcu_free(struct rcu_head *head)
- 	kmem_cache_free(epi_cache, epi);
- }
- 
-+static void ep_get(struct eventpoll *ep)
-+{
-+	refcount_inc(&ep->refcount);
-+}
-+
-+/*
-+ * Returns true if the event poll can be disposed
-+ */
-+static bool ep_refcount_dec_and_test(struct eventpoll *ep)
-+{
-+	if (!refcount_dec_and_test(&ep->refcount))
-+		return false;
-+
-+	WARN_ON_ONCE(!RB_EMPTY_ROOT(&ep->rbr.rb_root));
-+	return true;
-+}
-+
-+static void ep_free(struct eventpoll *ep)
-+{
-+	mutex_destroy(&ep->mtx);
-+	free_uid(ep->user);
-+	wakeup_source_unregister(ep->ws);
-+	kfree(ep);
-+}
-+
- /*
-  * Removes a "struct epitem" from the eventpoll RB tree and deallocates
-  * all the associated resources. Must be called with "mtx" held.
-+ * If the dying flag is set, do the removal only if force is true.
-+ * This prevents ep_clear_and_put() from dropping all the ep references
-+ * while running concurrently with eventpoll_release_file().
-+ * Returns true if the eventpoll can be disposed.
-  */
--static int ep_remove(struct eventpoll *ep, struct epitem *epi)
-+static bool __ep_remove(struct eventpoll *ep, struct epitem *epi, bool force)
- {
- 	struct file *file = epi->ffd.file;
- 	struct epitems_head *to_free;
-@@ -694,6 +727,11 @@ static int ep_remove(struct eventpoll *ep, struct epitem *epi)
- 
- 	/* Remove the current item from the list of epoll hooks */
- 	spin_lock(&file->f_lock);
-+	if (epi->dying && !force) {
-+		spin_unlock(&file->f_lock);
-+		return false;
-+	}
-+
- 	to_free = NULL;
- 	head = file->f_ep;
- 	if (head->first == &epi->fllink && !epi->fllink.next) {
-@@ -728,28 +766,28 @@ static int ep_remove(struct eventpoll *ep, struct epitem *epi)
- 	call_rcu(&epi->rcu, epi_rcu_free);
- 
- 	percpu_counter_dec(&ep->user->epoll_watches);
-+	return ep_refcount_dec_and_test(ep);
-+}
- 
--	return 0;
-+/*
-+ * ep_remove variant for callers owing an additional reference to the ep
-+ */
-+static void ep_remove_safe(struct eventpoll *ep, struct epitem *epi)
-+{
-+	WARN_ON_ONCE(__ep_remove(ep, epi, false));
- }
- 
--static void ep_free(struct eventpoll *ep)
-+static void ep_clear_and_put(struct eventpoll *ep)
- {
--	struct rb_node *rbp;
-+	struct rb_node *rbp, *next;
- 	struct epitem *epi;
-+	bool dispose;
- 
- 	/* We need to release all tasks waiting for these file */
- 	if (waitqueue_active(&ep->poll_wait))
- 		ep_poll_safewake(ep, NULL, 0);
- 
--	/*
--	 * We need to lock this because we could be hit by
--	 * eventpoll_release_file() while we're freeing the "struct eventpoll".
--	 * We do not need to hold "ep->mtx" here because the epoll file
--	 * is on the way to be removed and no one has references to it
--	 * anymore. The only hit might come from eventpoll_release_file() but
--	 * holding "epmutex" is sufficient here.
--	 */
--	mutex_lock(&epmutex);
-+	mutex_lock(&ep->mtx);
- 
- 	/*
- 	 * Walks through the whole tree by unregistering poll callbacks.
-@@ -762,26 +800,25 @@ static void ep_free(struct eventpoll *ep)
+ 	if (args->cookie_addr &&
+ 	    put_user(cookie, (u64 __user *)(unsigned long)args->cookie_addr)) {
+-		if (!need_odp) {
+-			unpin_user_pages(pages, nr_pages);
+-			kfree(sg);
+-		}
+ 		ret = -EFAULT;
+ 		goto out;
  	}
- 
- 	/*
--	 * Walks through the whole tree by freeing each "struct epitem". At this
--	 * point we are sure no poll callbacks will be lingering around, and also by
--	 * holding "epmutex" we can be sure that no file cleanup code will hit
--	 * us during this operation. So we can avoid the lock on "ep->lock".
--	 * We do not need to lock ep->mtx, either, we only do it to prevent
--	 * a lockdep warning.
-+	 * Walks through the whole tree and try to free each "struct epitem".
-+	 * Note that ep_remove_safe() will not remove the epitem in case of a
-+	 * racing eventpoll_release_file(); the latter will do the removal.
-+	 * At this point we are sure no poll callbacks will be lingering around.
-+	 * Since we still own a reference to the eventpoll struct, the loop can't
-+	 * dispose it.
- 	 */
--	mutex_lock(&ep->mtx);
--	while ((rbp = rb_first_cached(&ep->rbr)) != NULL) {
-+	for (rbp = rb_first_cached(&ep->rbr); rbp; rbp = next) {
-+		next = rb_next(rbp);
- 		epi = rb_entry(rbp, struct epitem, rbn);
--		ep_remove(ep, epi);
-+		ep_remove_safe(ep, epi);
- 		cond_resched();
- 	}
-+
-+	dispose = ep_refcount_dec_and_test(ep);
- 	mutex_unlock(&ep->mtx);
- 
--	mutex_unlock(&epmutex);
--	mutex_destroy(&ep->mtx);
--	free_uid(ep->user);
--	wakeup_source_unregister(ep->ws);
--	kfree(ep);
-+	if (dispose)
-+		ep_free(ep);
- }
- 
- static int ep_eventpoll_release(struct inode *inode, struct file *file)
-@@ -789,7 +826,7 @@ static int ep_eventpoll_release(struct inode *inode, struct file *file)
- 	struct eventpoll *ep = file->private_data;
- 
- 	if (ep)
--		ep_free(ep);
-+		ep_clear_and_put(ep);
- 
- 	return 0;
- }
-@@ -937,33 +974,34 @@ void eventpoll_release_file(struct file *file)
- {
- 	struct eventpoll *ep;
- 	struct epitem *epi;
--	struct hlist_node *next;
-+	bool dispose;
- 
- 	/*
--	 * We don't want to get "file->f_lock" because it is not
--	 * necessary. It is not necessary because we're in the "struct file"
--	 * cleanup path, and this means that no one is using this file anymore.
--	 * So, for example, epoll_ctl() cannot hit here since if we reach this
--	 * point, the file counter already went to zero and fget() would fail.
--	 * The only hit might come from ep_free() but by holding the mutex
--	 * will correctly serialize the operation. We do need to acquire
--	 * "ep->mtx" after "epmutex" because ep_remove() requires it when called
--	 * from anywhere but ep_free().
--	 *
--	 * Besides, ep_remove() acquires the lock, so we can't hold it here.
-+	 * Use the 'dying' flag to prevent a concurrent ep_clear_and_put() from
-+	 * touching the epitems list before eventpoll_release_file() can access
-+	 * the ep->mtx.
- 	 */
--	mutex_lock(&epmutex);
--	if (unlikely(!file->f_ep)) {
--		mutex_unlock(&epmutex);
--		return;
--	}
--	hlist_for_each_entry_safe(epi, next, file->f_ep, fllink) {
-+again:
-+	spin_lock(&file->f_lock);
-+	if (file->f_ep && file->f_ep->first) {
-+		epi = hlist_entry(file->f_ep->first, struct epitem, fllink);
-+		epi->dying = true;
-+		spin_unlock(&file->f_lock);
-+
-+		/*
-+		 * ep access is safe as we still own a reference to the ep
-+		 * struct
-+		 */
- 		ep = epi->ep;
--		mutex_lock_nested(&ep->mtx, 0);
--		ep_remove(ep, epi);
-+		mutex_lock(&ep->mtx);
-+		dispose = __ep_remove(ep, epi, true);
- 		mutex_unlock(&ep->mtx);
-+
-+		if (dispose)
-+			ep_free(ep);
-+		goto again;
- 	}
--	mutex_unlock(&epmutex);
-+	spin_unlock(&file->f_lock);
- }
- 
- static int ep_alloc(struct eventpoll **pep)
-@@ -986,6 +1024,7 @@ static int ep_alloc(struct eventpoll **pep)
- 	ep->rbr = RB_ROOT_CACHED;
- 	ep->ovflist = EP_UNACTIVE_PTR;
- 	ep->user = user;
-+	refcount_set(&ep->refcount, 1);
- 
- 	*pep = ep;
- 
-@@ -1257,10 +1296,10 @@ static int ep_poll_callback(wait_queue_entry_t *wait, unsigned mode, int sync, v
- 		 */
- 		list_del_init(&wait->entry);
- 		/*
--		 * ->whead != NULL protects us from the race with ep_free()
--		 * or ep_remove(), ep_remove_wait_queue() takes whead->lock
--		 * held by the caller. Once we nullify it, nothing protects
--		 * ep/epi or even wait.
-+		 * ->whead != NULL protects us from the race with
-+		 * ep_clear_and_put() or ep_remove(), ep_remove_wait_queue()
-+		 * takes whead->lock held by the caller. Once we nullify it,
-+		 * nothing protects ep/epi or even wait.
- 		 */
- 		smp_store_release(&ep_pwq_from_wait(wait)->whead, NULL);
- 	}
-@@ -1531,16 +1570,22 @@ static int ep_insert(struct eventpoll *ep, const struct epoll_event *event,
- 	if (tep)
- 		mutex_unlock(&tep->mtx);
- 
-+	/*
-+	 * ep_remove_safe() calls in the later error paths can't lead to
-+	 * ep_free() as the ep file itself still holds an ep reference.
-+	 */
-+	ep_get(ep);
-+
- 	/* now check if we've created too many backpaths */
- 	if (unlikely(full_check && reverse_path_check())) {
--		ep_remove(ep, epi);
-+		ep_remove_safe(ep, epi);
- 		return -EINVAL;
- 	}
- 
- 	if (epi->event.events & EPOLLWAKEUP) {
- 		error = ep_create_wakeup_source(epi);
- 		if (error) {
--			ep_remove(ep, epi);
-+			ep_remove_safe(ep, epi);
- 			return error;
- 		}
- 	}
-@@ -1564,7 +1609,7 @@ static int ep_insert(struct eventpoll *ep, const struct epoll_event *event,
- 	 * high memory pressure.
- 	 */
- 	if (unlikely(!epq.epi)) {
--		ep_remove(ep, epi);
-+		ep_remove_safe(ep, epi);
- 		return -ENOMEM;
- 	}
- 
-@@ -2096,7 +2141,7 @@ static int do_epoll_create(int flags)
- out_free_fd:
- 	put_unused_fd(fd);
- out_free_ep:
--	ep_free(ep);
-+	ep_clear_and_put(ep);
- 	return error;
- }
- 
-@@ -2238,10 +2283,16 @@ int do_epoll_ctl(int epfd, int op, int fd, struct epoll_event *epds,
- 			error = -EEXIST;
- 		break;
- 	case EPOLL_CTL_DEL:
--		if (epi)
--			error = ep_remove(ep, epi);
--		else
-+		if (epi) {
-+			/*
-+			 * The eventpoll itself is still alive: the refcount
-+			 * can't go to zero here.
-+			 */
-+			ep_remove_safe(ep, epi);
-+			error = 0;
-+		} else {
- 			error = -ENOENT;
-+		}
- 		break;
- 	case EPOLL_CTL_MOD:
- 		if (epi) {
--- 
-2.53.0
-
 
 
 
