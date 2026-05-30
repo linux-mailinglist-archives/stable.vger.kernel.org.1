@@ -1,59 +1,60 @@
-Return-Path: <stable+bounces-257289-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-258098-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 2IilOh4aG2pV/AgAu9opvQ
-	(envelope-from <stable+bounces-257289-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:10:54 +0200
+	id gEvDLwkjG2pa/ggAu9opvQ
+	(envelope-from <stable+bounces-258098-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:48:57 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9AD7360F0C3
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:10:54 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8181C6106EB
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:48:57 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 5BB8830398AC
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 17:01:24 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id BD52A302A41B
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 17:46:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 13E9C366567;
-	Sat, 30 May 2026 17:01:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 61D3D3B8920;
+	Sat, 30 May 2026 17:46:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KskSb15d"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OY1AfqJB"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E8252481DD;
-	Sat, 30 May 2026 17:01:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3E32D3B1EC0;
+	Sat, 30 May 2026 17:46:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780160482; cv=none; b=k7HC8SxaHN7v33f/P3GTRh9dHddj0zvm5+AAuBtESJY1f6a5rgx9qyXbTkgLgHDCxNMvzALoJx9i0iEl2bDoqGYea2b4HsLIL0vo5GufBVF1yomt49u7N5f5rWGM5xRp4azphMPqF58INxJkhgLmz6yvoxoBb8NX5jO/W3Bh4ZA=
+	t=1780163210; cv=none; b=Q5G/ZkwpYa+GImmqFh9LDvRol4LnFGSygI2NkDPiTUSngnTZUf1BZBnrPpX0m2QHF2iawqam8fQ7VkBHkJ8rr7j80TbIbvvqzM+gANwUr0/oKBI+e74YLNHkqkYy6Wv5r6yctCn6X6OzUxYnutxJ789x32Mtx7W3jlNW+M0TrHo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780160482; c=relaxed/simple;
-	bh=/gcWVnpTMJ8/5awFc2qFaeAZT45b+F4U6hey4+rcQco=;
+	s=arc-20240116; t=1780163210; c=relaxed/simple;
+	bh=MEpWQyq2teihkodI4gjcndNEg2odwFYQoW2m0Fplit4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=H8qK1JMmh3wAFM7sV5iccTFDjFkRE+0SozNcHdyWvRiZ7MLprIcb/H3O4IcTZxy4d7OZej9IfN9OUBaEqriTGxWTC4ZxzNl7gKnZ4XPQs3zzaJmBbh5ALrBdwD2zud8nPB8fjyXvfkVhMafoKhMAmnOfgQb4CcS+g9yTjOWe/3Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KskSb15d; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 23FCF1F00893;
-	Sat, 30 May 2026 17:01:20 +0000 (UTC)
+	 MIME-Version:Content-Type; b=ZQ3qTM9n3AOgZFOiQ3GQip60yX7EOUcGS2D34bZiFtya5LLcGahFx6/XerGpLUOH1RuNsztMiRtjmAgKF7laLbkJWiKaRV+PpBBwIr446buBl0ojWLmhib/C/6dfdlTRhdZ27fLaLKh5plmKljLMlgaTuPVh0ts7tYQmvyRF6ds=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OY1AfqJB; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 895171F00893;
+	Sat, 30 May 2026 17:46:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780160481;
-	bh=4NWaHR0aAIBToX3oVIWrfRddG+pUq6QbsNks7jPXjOw=;
+	s=korg; t=1780163209;
+	bh=qLZCUWinIgITKMqk5DM3xwakRqZ9dE30jJrb4MMSwzw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=KskSb15d4BL4qQXDQAeadZ7dt23S8P0NUHNhC2JRN51BLkiKI7gs2tQ3lz7zfwA2s
-	 9yOAdnVNrDpa6EjZt2lkllBZd0TPm2zxK4CsBFb9p3vEBukG0MoieD2ojYEpyL7plh
-	 wpIUYF8Qn1CjqCJL231gs9DGncpN9P8vOIEEgdao=
+	b=OY1AfqJBfw/6mYjlacEwDg4k1AAqDhyOARRTg4gWDcD455qLUqHXn9b2l/wAli5fU
+	 Gr8vfdcTYYG/9wRGglQa/OTuMBcnzw2Uwdxat35B1Vph06oyRK+InNaj2D/Zeg9O9f
+	 OWscM1IdP/pnhwEtWg5Z6kV9MncrPDpxPC+ox1Ms=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Tony Asleson <tasleson@redhat.com>,
-	Mikulas Patocka <mpatocka@redhat.com>,
-	"Bryn M. Reeves" <bmr@redhat.com>
-Subject: [PATCH 6.1 351/969] dm: fix a buffer overflow in ioctl processing
-Date: Sat, 30 May 2026 17:57:55 +0200
-Message-ID: <20260530160310.046884049@linuxfoundation.org>
+	=?UTF-8?q?Miquel=20Sabat=C3=A9=20Sol=C3=A0?= <mikisabate@gmail.com>,
+	Viresh Kumar <viresh.kumar@linaro.org>,
+	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+	Bin Lan <lanbincn@139.com>
+Subject: [PATCH 5.15 162/776] cpufreq: Avoid a bad reference count on CPU node
+Date: Sat, 30 May 2026 17:57:56 +0200
+Message-ID: <20260530160244.675448483@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260530160300.485627683@linuxfoundation.org>
-References: <20260530160300.485627683@linuxfoundation.org>
+In-Reply-To: <20260530160240.228940103@linuxfoundation.org>
+References: <20260530160240.228940103@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,90 +64,90 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-257289-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	MIME_TRACE(0.00)[0:+];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,linaro.org,intel.com,139.com];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TO_DN_SOME(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-258098-lists,stable=lfdr.de];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	RCPT_COUNT_FIVE(0.00)[6];
+	RCVD_TLS_LAST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	TO_DN_SOME(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[stable];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
 	MID_RHS_MATCH_FROM(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	FROM_HAS_DN(0.00)[]
-X-Rspamd-Queue-Id: 9AD7360F0C3
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,msgid.link:url,intel.com:email,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim]
+X-Rspamd-Queue-Id: 8181C6106EB
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mikulas Patocka <mpatocka@redhat.com>
+From: Miquel Sabaté Solà <mikisabate@gmail.com>
 
-commit 2fa49cc884f6496a915c35621ba4da35649bf159 upstream.
+[ Upstream commit c0f02536fffbbec71aced36d52a765f8c4493dc2 ]
 
-Tony Asleson (using Claude) found a buffer overflow in dm-ioctl in the
-function retrieve_status:
+In the parse_perf_domain function, if the call to
+of_parse_phandle_with_args returns an error, then the reference to the
+CPU device node that was acquired at the start of the function would not
+be properly decremented.
 
-1. The code in retrieve_status checks that the output string fits into
-   the output buffer and writes the output string there
-2. Then, the code aligns the "outptr" variable to the next 8-byte
-   boundary:
-	outptr = align_ptr(outptr);
-3. The alignment doesn't check overflow, so outptr could point past the
-   buffer end
-4. The "for" loop is iterated again, it executes:
-	remaining = len - (outptr - outbuf);
-5. If "outptr" points past "outbuf + len", the arithmetics wraps around
-   and the variable "remaining" contains unusually high number
-6. With "remaining" being high, the code writes more data past the end of
-   the buffer
+Address this by declaring the variable with the __free(device_node)
+cleanup attribute.
 
-Luckily, this bug has no security implications because:
-1. Only root can issue device mapper ioctls
-2. The commonly used libraries that communicate with device mapper
-   (libdevmapper and devicemapper-rs) use buffer size that is aligned to
-   8 bytes - thus, "outptr = align_ptr(outptr)" can't overshoot the input
-   buffer and the bug can't happen accidentally
-
-Reported-by: Tony Asleson <tasleson@redhat.com>
-Signed-off-by: Mikulas Patocka <mpatocka@redhat.com>
-Reviewed-by: Bryn M. Reeves <bmr@redhat.com>
-Cc: stable@vger.kernel.org
+Signed-off-by: Miquel Sabaté Solà <mikisabate@gmail.com>
+Acked-by: Viresh Kumar <viresh.kumar@linaro.org>
+Link: https://patch.msgid.link/20240917134246.584026-1-mikisabate@gmail.com
+Cc: All applicable <stable@vger.kernel.org>
+Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+[ Minor context conflict resolved. ]
+Signed-off-by: Bin Lan <lanbincn@139.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/md/dm-ioctl.c |    4 ++++
- 1 file changed, 4 insertions(+)
+ include/linux/cpufreq.h |    5 +----
+ 1 file changed, 1 insertion(+), 4 deletions(-)
 
---- a/drivers/md/dm-ioctl.c
-+++ b/drivers/md/dm-ioctl.c
-@@ -1316,6 +1316,10 @@ static void retrieve_status(struct dm_ta
- 		used = param->data_start + (outptr - outbuf);
+--- a/include/linux/cpufreq.h
++++ b/include/linux/cpufreq.h
+@@ -1014,11 +1014,10 @@ static inline int cpufreq_table_count_va
+ static inline int parse_perf_domain(int cpu, const char *list_name,
+ 				    const char *cell_name)
+ {
+-	struct device_node *cpu_np;
+ 	struct of_phandle_args args;
+ 	int ret;
  
- 		outptr = align_ptr(outptr);
-+		if (!outptr || outptr > outbuf + len) {
-+			param->flags |= DM_BUFFER_FULL_FLAG;
-+			break;
-+		}
- 		spec->next = outptr - outbuf;
- 	}
+-	cpu_np = of_cpu_device_node_get(cpu);
++	struct device_node *cpu_np __free(device_node) = of_cpu_device_node_get(cpu);
+ 	if (!cpu_np)
+ 		return -ENODEV;
+ 
+@@ -1027,8 +1026,6 @@ static inline int parse_perf_domain(int
+ 	if (ret < 0)
+ 		return ret;
+ 
+-	of_node_put(cpu_np);
+-
+ 	return args.args[0];
+ }
  
 
 
