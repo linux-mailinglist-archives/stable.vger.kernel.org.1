@@ -1,59 +1,61 @@
-Return-Path: <stable+bounces-258977-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-257600-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id WLcIJDYvG2qU/wgAu9opvQ
-	(envelope-from <stable+bounces-258977-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:40:54 +0200
+	id EHhHJpccG2qQ/QgAu9opvQ
+	(envelope-from <stable+bounces-257600-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:21:27 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 246376123C5
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:40:53 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 37A0160F7A0
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:21:27 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id F04963059302
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 18:36:22 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 577CD3024E25
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 17:19:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 72D2133E36A;
-	Sat, 30 May 2026 18:36:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7FF553242D7;
+	Sat, 30 May 2026 17:19:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="da9J51C4"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qg5d5iq8"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 58FBE3546F6;
-	Sat, 30 May 2026 18:36:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5FCB81C5799;
+	Sat, 30 May 2026 17:19:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780166180; cv=none; b=SXN0HCvv73NmyEUYPBgxR9UdnDOS6EhqkpsdBj8TyyUH/GU1vH3mdGex4C2Xtsl8dMC56bJfYWCSdfH7zuYTsp+LtPmEb08lAAi25nXYDRKCPna68KQepjsBRwQobPp9wTMdx6QJF1DFfJT6p7qvW+/o2aHdPY14UO+CdUvRnp0=
+	t=1780161543; cv=none; b=TQVm6m6RxhTUXMFJ3azlLgHeAywzrDGdpcu2YS2BqhuRAAWB6HVCf4HJE85qIbTGvAZ7rEAWte7NoSIOElQGOgomvbramxy2Wyt+m/o32nYET2RBYBmTmZgsNZRe1FiHj9y7hgd8wkmcl+ZEYhnIDQQk3hCBvy6kZMuuKJ/42s0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780166180; c=relaxed/simple;
-	bh=vvOpxwn72xueN0A0V4KqAvEP9Buk7iNT3HN++L5pwoc=;
+	s=arc-20240116; t=1780161543; c=relaxed/simple;
+	bh=WFCravKNqdQbXM6Y/WjeT8bASb8a+tVlT5QemSs3ZJo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=m+arbGbBLDoL8BVQ4W4DQBORzHvwRaCf6jIWB9rCv1tSwgEBpLxJKVF47T6izjnWNuwhbar7bUaHs1t2A6xQFrLPiQLB1FFXmk2TsihigRoUwRV5QpVJ/A4UeygDnLK7vfWw4S0mfgnRfSs4XCHX1BGx6jMKFdCm4UsM3iXMXYE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=da9J51C4; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9C6781F00893;
-	Sat, 30 May 2026 18:36:18 +0000 (UTC)
+	 MIME-Version; b=mOyAsRCqkL2+3HZf+9rTMp7q1yJ14nMWfkRFmJfLXpiOYC/mWXf4GwO5hNbuYW1q48pCO9t6kOaAvv4D1EJFW1zdvqY2hvTwVZmngbeh4N5wouUTZ2JLO30pwoo3EEfKRMcy98oO7ADwVNJ0RyZgx9RJLblZP3w6HmmlIvlbBxo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qg5d5iq8; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 549421F00893;
+	Sat, 30 May 2026 17:19:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780166179;
-	bh=gydkaJ05FDCM0EmAst5+RK755V2j7fEXQQQd4eHeQF0=;
+	s=korg; t=1780161542;
+	bh=j8jf9RdU7HbD0t4g4FEo2rgETtOIL+SzqCbO+RiECwY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=da9J51C4Drm+tm3uq5+8frMM2hvaspFG0P4xxnq6aft5KJDy5bIZxfHH2fPsqclpc
-	 LcZzEyTq2xAZSgXx2C+Fes3/psj05PZac//ilkynqh8htIEsFIjVbRGRiduYrIJ2KE
-	 LJeo9DKyAO9WtOtsZxEnpuCDZtR0YWp0dnW0fSiE=
+	b=qg5d5iq8RQ/DLb5TPRqVFNpBMLzirnRIYTrwxKWbcT6ecCnC4X8PrYy8i558edJPm
+	 y7qhZAs5awkdsDOZ0hyOk4aeLpEWq29NDLBxVQF4KWqoRvaLfZdtiOBonZaX4vWZgB
+	 /OmA00rRuoHIMc350hNhg7+y/uvfwmk6Ei2f720o=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Brian Masney <bmasney@redhat.com>,
-	Thomas Gleixner <tglx@kernel.org>,
+	Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>,
+	Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>,
+	Val Packett <val@packett.cool>,
+	Bjorn Andersson <andersson@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 297/589] irqchip/irq-pic32-evic: Address warning related to wrong printf() formatter
+Subject: [PATCH 6.1 654/969] clk: qcom: gcc-sc8180x: Use retention for USB power domains
 Date: Sat, 30 May 2026 18:02:58 +0200
-Message-ID: <20260530160232.773326773@linuxfoundation.org>
+Message-ID: <20260530160318.530477573@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260530160224.570625122@linuxfoundation.org>
-References: <20260530160224.570625122@linuxfoundation.org>
+In-Reply-To: <20260530160300.485627683@linuxfoundation.org>
+References: <20260530160300.485627683@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,78 +65,98 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-2.16 / 15.00];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	R_MISSING_CHARSET(0.50)[];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-258977-lists,stable=lfdr.de];
-	FROM_HAS_DN(0.00)[];
+	TAGGED_FROM(0.00)[bounces-257600-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
-	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	RCPT_COUNT_FIVE(0.00)[6];
-	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-0.997];
-	TAGGED_RCPT(0.00)[stable];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	PRECEDENCE_BULK(0.00)[];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[8];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,linuxfoundation.org:mid,linuxfoundation.org:dkim,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo]
-X-Rspamd-Queue-Id: 246376123C5
+	TAGGED_RCPT(0.00)[stable];
+	TO_DN_SOME(0.00)[];
+	FROM_HAS_DN(0.00)[]
+X-Rspamd-Queue-Id: 37A0160F7A0
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Brian Masney <bmasney@redhat.com>
+From: Val Packett <val@packett.cool>
 
-[ Upstream commit 86be659415b0ddefebc3120e309091aa215a9064 ]
+[ Upstream commit 25bc96f26cd6c19dde13a0b9859183e531d6fbfc ]
 
-This driver is currently only build on 32 bit MIPS systems. When building
-it on x86_64, the following warning occurs:
+The USB subsystem does not expect to lose its state on suspend:
 
-    drivers/irqchip/irq-pic32-evic.c: In function ‘pic32_ext_irq_of_init’:
-    ./include/linux/kern_levels.h:5:25: error: format ‘%d’ expects argument of type
-     ‘int’, but argument 2 has type ‘long unsigned int’ [-Werror=format=]
+    xhci-hcd xhci-hcd.0.auto: xHC error in resume, USBSTS 0x401, Reinit
+    usb usb1: root hub lost power or was reset
 
-Update the printf() formatter in preparation for allowing this driver to
-be compiled on all architectures.
+(The reinitialization usually succeeds, but it does slow down resume.)
 
-Fixes: aaa8666ada780 ("IRQCHIP: irq-pic32-evic: Add support for PIC32 interrupt controller")
-Signed-off-by: Brian Masney <bmasney@redhat.com>
-Signed-off-by: Thomas Gleixner <tglx@kernel.org>
-Link: https://patch.msgid.link/20260222-irqchip-pic32-v1-1-37f50d1f14af@redhat.com
+To maintain state during suspend, the relevant GDSCs need to stay in
+retention mode, like they do on other similar SoCs. Change the mode to
+PWRSTS_RET_ON to fix.
+
+Fixes: 4433594bbe5d ("clk: qcom: gcc: Add global clock controller driver for SC8180x")
+Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
+Reviewed-by: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
+Signed-off-by: Val Packett <val@packett.cool>
+Link: https://lore.kernel.org/r/20260312112321.370983-4-val@packett.cool
+Signed-off-by: Bjorn Andersson <andersson@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/irqchip/irq-pic32-evic.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/clk/qcom/gcc-sc8180x.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/irqchip/irq-pic32-evic.c b/drivers/irqchip/irq-pic32-evic.c
-index 34c4b4ffacd15..5c40ec5e55f1d 100644
---- a/drivers/irqchip/irq-pic32-evic.c
-+++ b/drivers/irqchip/irq-pic32-evic.c
-@@ -199,7 +199,7 @@ static void __init pic32_ext_irq_of_init(struct irq_domain *domain)
+diff --git a/drivers/clk/qcom/gcc-sc8180x.c b/drivers/clk/qcom/gcc-sc8180x.c
+index 00e2e22a14175..e0992f280692b 100644
+--- a/drivers/clk/qcom/gcc-sc8180x.c
++++ b/drivers/clk/qcom/gcc-sc8180x.c
+@@ -4106,7 +4106,7 @@ static struct gdsc usb30_sec_gdsc = {
+ 	.pd = {
+ 		.name = "usb30_sec_gdsc",
+ 	},
+-	.pwrsts = PWRSTS_OFF_ON,
++	.pwrsts = PWRSTS_RET_ON,
+ 	.flags = POLL_CFG_GDSCR,
+ };
  
- 	of_property_for_each_u32(node, pname, prop, p, hwirq) {
- 		if (i >= ARRAY_SIZE(priv->ext_irqs)) {
--			pr_warn("More than %d external irq, skip rest\n",
-+			pr_warn("More than %zu external irq, skip rest\n",
- 				ARRAY_SIZE(priv->ext_irqs));
- 			break;
- 		}
+@@ -4124,7 +4124,7 @@ static struct gdsc usb30_prim_gdsc = {
+ 	.pd = {
+ 		.name = "usb30_prim_gdsc",
+ 	},
+-	.pwrsts = PWRSTS_OFF_ON,
++	.pwrsts = PWRSTS_RET_ON,
+ 	.flags = POLL_CFG_GDSCR,
+ };
+ 
+@@ -4196,7 +4196,7 @@ static struct gdsc usb30_mp_gdsc = {
+ 	.pd = {
+ 		.name = "usb30_mp_gdsc",
+ 	},
+-	.pwrsts = PWRSTS_OFF_ON,
++	.pwrsts = PWRSTS_RET_ON,
+ 	.flags = POLL_CFG_GDSCR,
+ };
+ 
 -- 
 2.53.0
 
