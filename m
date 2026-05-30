@@ -1,66 +1,61 @@
-Return-Path: <stable+bounces-259052-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-258447-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id ECPPKqYxG2qkAAkAu9opvQ
-	(envelope-from <stable+bounces-259052-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:51:18 +0200
+	id 4DrHHZwnG2qS/ggAu9opvQ
+	(envelope-from <stable+bounces-258447-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:08:28 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 387BB6129EC
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:51:18 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7BCA76110DC
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:08:27 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 9D39C308845E
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 18:40:29 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 97A2630118E9
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 18:06:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4991639A7FE;
-	Sat, 30 May 2026 18:40:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6A3A23BFE4D;
+	Sat, 30 May 2026 18:06:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="iz2DLqC4"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="c+CRI0CK"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EB3C221B191;
-	Sat, 30 May 2026 18:40:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 425533AFCE3;
+	Sat, 30 May 2026 18:06:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780166429; cv=none; b=If+CEtGlUDp51g3jV1nMp53c6r3vUVSZtMP6kX92KE0nTxJZ1AWyRlWVzeXI6Bofpdyd+g9Pl28bvZfb9QriSZKIHBL6jEutoz5k4Pcq60gMzejA6ovGtFdUXbAZFC6fFNyAkQxCnHkFgzbHIku628/g/zVucHbYifJv8e3RIyk=
+	t=1780164381; cv=none; b=HXlQ3+BLzgdQ7S9e5sPOMh3biwVtG/ms+cy/xdWjNa178aYi9GPffh749yxcCS0f+h2G3vjHt8QJ66aOrr8Nx9EClK/07jSl42xuLDYV6p8fuFIX8o04F5agB1lW6lGt8rNd7ZjPIy11MedoDuENr/MWFWJK52jaW515tS6kZvc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780166429; c=relaxed/simple;
-	bh=W3Vz0NYI0MyRHaOC6G8jeJK3WlKEARtOf9Q2SZkA6Nk=;
+	s=arc-20240116; t=1780164381; c=relaxed/simple;
+	bh=gDODUjN4/SohszmZG4mZfgYx+EHxtbCdvsrwygI+lsw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=nLIn4NdaCSjhA0IhjA1oJ1wlNqalG2Qav3k0EBGSPgDwv0MVUTDnI1GAa3s23RDOGfXrH6wX2OrUkc4VYvo1hxScHonLHzzKrd/X0tOKmbIzH9b1zOjcE4ewk3NJxfA3vA/38duKn8NZsumPFvGHDBKtKFEu9tRPE5w9NCL7ZvY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=iz2DLqC4; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3D6B51F00893;
-	Sat, 30 May 2026 18:40:27 +0000 (UTC)
+	 MIME-Version; b=NMYchNu7eE6WE1U2UcTcFalvKHmiSUxQjtlw8y6TA2GWeiW5DOiFee5ub2EnbN//LtqA3+qevnyGVdUerluiu/MXbDodNv00kH/959X5MJByY7W2BiAdxsQ+SnvQZX8iZpGRUaXxL1kP3mMR+YXzxvs/BSN5OfQH3BMq/KYRqMA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=c+CRI0CK; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5B1FA1F00893;
+	Sat, 30 May 2026 18:06:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780166427;
-	bh=df4ykMegQve/fAHWbSDsITWrWCSvcCNk2tmf1WjgMmo=;
+	s=korg; t=1780164380;
+	bh=ueFqDP5Tch56DH6suXeaOZU2nAPiVpyAOxt1aPaIONg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=iz2DLqC4iRJa2UrZyB10fqvooxCjAFllmZoz/WrX8Z8Ix8elLMxso7j9DcE8CxBy+
-	 6BDQrKoqt5gbBDcn7XHhZfzp5yGmu0sAKcWVmnm2M539g347sT8cYZPn73+zrR+4PN
-	 yYua5CfwcSaeKWYg/POPL/GAO0V2xSPGBRZRqE+8=
+	b=c+CRI0CKilFVFGHpuqO66VzuVrlvNp0PtZE8Ko1nff6DwdmOgHzv/NSSGQrXXYYh9
+	 QqY0CCehF/tGHS9ORi3ABpOcXigMqDVgaUWjBwk3VsIUa65BYAgts5FjIscBiQcEiy
+	 IH6jHVlLi8ZvtGMjdwMYTOaQGtNfmTaLXlaCCvfg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	ZhengYuan Huang <gality369@gmail.com>,
-	Joseph Qi <joseph.qi@linux.alibaba.com>,
-	Mark Fasheh <mark@fasheh.com>,
-	Joel Becker <jlbec@evilplan.org>,
-	Junxiao Bi <junxiao.bi@oracle.com>,
-	Changwei Ge <gechangwei@live.cn>,
-	Jun Piao <piaojun@huawei.com>,
-	Heming Zhao <heming.zhao@suse.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
+	Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>,
+	Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>,
+	Val Packett <val@packett.cool>,
+	Bjorn Andersson <andersson@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 371/589] ocfs2: validate group add input before caching
+Subject: [PATCH 5.15 538/776] clk: qcom: gcc-sc8180x: Add missing GDSCs
 Date: Sat, 30 May 2026 18:04:12 +0200
-Message-ID: <20260530160234.573070985@linuxfoundation.org>
+Message-ID: <20260530160254.094967128@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260530160224.570625122@linuxfoundation.org>
-References: <20260530160224.570625122@linuxfoundation.org>
+In-Reply-To: <20260530160240.228940103@linuxfoundation.org>
+References: <20260530160240.228940103@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -73,142 +68,124 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_MISSING_CHARSET(0.50)[];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-259052-lists,stable=lfdr.de];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,linux.alibaba.com,fasheh.com,evilplan.org,oracle.com,live.cn,huawei.com,suse.com,linux-foundation.org,kernel.org];
+	RCVD_TLS_LAST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-258447-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_TLS_LAST(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[13];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	TO_DN_SOME(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-0.996];
-	TAGGED_RCPT(0.00)[stable];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-0.995];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[8];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[huawei.com:email,oracle.com:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,live.cn:email,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
-X-Rspamd-Queue-Id: 387BB6129EC
+	TAGGED_RCPT(0.00)[stable];
+	TO_DN_SOME(0.00)[];
+	FROM_HAS_DN(0.00)[]
+X-Rspamd-Queue-Id: 7BCA76110DC
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: ZhengYuan Huang <gality369@gmail.com>
+From: Val Packett <val@packett.cool>
 
-[ Upstream commit 70b672833f4025341c11b22c7f83778a5cd611bc ]
+[ Upstream commit 3565741eb985a8a7cc6656eb33496195468cb99e ]
 
-[BUG]
-OCFS2_IOC_GROUP_ADD can trigger a BUG_ON in
-ocfs2_set_new_buffer_uptodate():
+There are 5 more GDSCs that we were ignoring and not putting to sleep,
+which are listed in downstream DTS. Add them.
 
-kernel BUG at fs/ocfs2/uptodate.c:509!
-Oops: invalid opcode: 0000 [#1] SMP KASAN NOPTI
-RIP: 0010:ocfs2_set_new_buffer_uptodate+0x194/0x1e0 fs/ocfs2/uptodate.c:509
-Code: ffffe88f 42b9fe4c 89e64889 dfe8b4df
-Call Trace:
- ocfs2_group_add+0x3f1/0x1510 fs/ocfs2/resize.c:507
- ocfs2_ioctl+0x309/0x6e0 fs/ocfs2/ioctl.c:887
- vfs_ioctl fs/ioctl.c:51 [inline]
- __do_sys_ioctl fs/ioctl.c:597 [inline]
- __se_sys_ioctl fs/ioctl.c:583 [inline]
- __x64_sys_ioctl+0x197/0x1e0 fs/ioctl.c:583
- x64_sys_call+0x1144/0x26a0 arch/x86/include/generated/asm/syscalls_64.h:17
- do_syscall_x64 arch/x86/entry/syscall_64.c:63 [inline]
- do_syscall_64+0x93/0xf80 arch/x86/entry/syscall_64.c:94
- entry_SYSCALL_64_after_hwframe+0x76/0x7e
-RIP: 0033:0x7bbfb55a966d
-
-[CAUSE]
-ocfs2_group_add() calls ocfs2_set_new_buffer_uptodate() on a
-user-controlled group block before ocfs2_verify_group_and_input()
-validates that block number. That helper is only valid for newly
-allocated metadata and asserts that the block is not already present in
-the chosen metadata cache. The code also uses INODE_CACHE(inode) even
-though the group descriptor belongs to main_bm_inode and later journal
-accesses use that cache context instead.
-
-[FIX]
-Validate the on-disk group descriptor before caching it, then add it to
-the metadata cache tracked by INODE_CACHE(main_bm_inode). Keep the
-validation failure path separate from the later cleanup path so we only
-remove the buffer from that cache after it has actually been inserted.
-This keeps the group buffer lifetime consistent across validation,
-journaling, and cleanup.
-
-Link: https://lkml.kernel.org/r/20260410020209.3786348-1-gality369@gmail.com
-Fixes: 7909f2bf8353 ("[PATCH 2/2] ocfs2: Implement group add for online resize")
-Signed-off-by: ZhengYuan Huang <gality369@gmail.com>
-Reviewed-by: Joseph Qi <joseph.qi@linux.alibaba.com>
-Cc: Mark Fasheh <mark@fasheh.com>
-Cc: Joel Becker <jlbec@evilplan.org>
-Cc: Junxiao Bi <junxiao.bi@oracle.com>
-Cc: Changwei Ge <gechangwei@live.cn>
-Cc: Jun Piao <piaojun@huawei.com>
-Cc: Heming Zhao <heming.zhao@suse.com>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Fixes: 4433594bbe5d ("clk: qcom: gcc: Add global clock controller driver for SC8180x")
+Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
+Reviewed-by: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
+Signed-off-by: Val Packett <val@packett.cool>
+Link: https://lore.kernel.org/r/20260312112321.370983-3-val@packett.cool
+Signed-off-by: Bjorn Andersson <andersson@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/ocfs2/resize.c | 12 +++++++-----
- 1 file changed, 7 insertions(+), 5 deletions(-)
+ drivers/clk/qcom/gcc-sc8180x.c | 50 ++++++++++++++++++++++++++++++++++
+ 1 file changed, 50 insertions(+)
 
-diff --git a/fs/ocfs2/resize.c b/fs/ocfs2/resize.c
-index 3d85d0b52034b..763aff7e2d5a4 100644
---- a/fs/ocfs2/resize.c
-+++ b/fs/ocfs2/resize.c
-@@ -502,14 +502,14 @@ int ocfs2_group_add(struct inode *inode, struct ocfs2_new_group_input *input)
- 		goto out_unlock;
- 	}
+diff --git a/drivers/clk/qcom/gcc-sc8180x.c b/drivers/clk/qcom/gcc-sc8180x.c
+index ba004281f2944..00e2e22a14175 100644
+--- a/drivers/clk/qcom/gcc-sc8180x.c
++++ b/drivers/clk/qcom/gcc-sc8180x.c
+@@ -4200,6 +4200,51 @@ static struct gdsc usb30_mp_gdsc = {
+ 	.flags = POLL_CFG_GDSCR,
+ };
  
--	ocfs2_set_new_buffer_uptodate(INODE_CACHE(inode), group_bh);
--
- 	ret = ocfs2_verify_group_and_input(main_bm_inode, fe, input, group_bh);
- 	if (ret) {
- 		mlog_errno(ret);
- 		goto out_free_group_bh;
- 	}
- 
-+	ocfs2_set_new_buffer_uptodate(INODE_CACHE(main_bm_inode), group_bh);
++static struct gdsc hlos1_vote_mmnoc_mmu_tbu_hf0_gdsc = {
++	.gdscr = 0x7d050,
++	.pd = {
++		.name = "hlos1_vote_mmnoc_mmu_tbu_hf0_gdsc",
++	},
++	.pwrsts = PWRSTS_OFF_ON,
++	.flags = VOTABLE,
++};
 +
- 	trace_ocfs2_group_add((unsigned long long)input->group,
- 			       input->chain, input->clusters, input->frees);
- 
-@@ -517,7 +517,7 @@ int ocfs2_group_add(struct inode *inode, struct ocfs2_new_group_input *input)
- 	if (IS_ERR(handle)) {
- 		mlog_errno(PTR_ERR(handle));
- 		ret = -EINVAL;
--		goto out_free_group_bh;
-+		goto out_remove_cache;
- 	}
- 
- 	cl_bpc = le16_to_cpu(fe->id2.i_chain.cl_bpc);
-@@ -571,9 +571,11 @@ int ocfs2_group_add(struct inode *inode, struct ocfs2_new_group_input *input)
- out_commit:
- 	ocfs2_commit_trans(osb, handle);
- 
--out_free_group_bh:
-+out_remove_cache:
- 	if (ret < 0)
--		ocfs2_remove_from_cache(INODE_CACHE(inode), group_bh);
-+		ocfs2_remove_from_cache(INODE_CACHE(main_bm_inode), group_bh);
++static struct gdsc hlos1_vote_mmnoc_mmu_tbu_hf1_gdsc = {
++	.gdscr = 0x7d058,
++	.pd = {
++		.name = "hlos1_vote_mmnoc_mmu_tbu_hf1_gdsc",
++	},
++	.pwrsts = PWRSTS_OFF_ON,
++	.flags = VOTABLE,
++};
 +
-+out_free_group_bh:
- 	brelse(group_bh);
++static struct gdsc hlos1_vote_mmnoc_mmu_tbu_sf_gdsc = {
++	.gdscr = 0x7d054,
++	.pd = {
++		.name = "hlos1_vote_mmnoc_mmu_tbu_sf_gdsc",
++	},
++	.pwrsts = PWRSTS_OFF_ON,
++	.flags = VOTABLE,
++};
++
++static struct gdsc hlos1_vote_turing_mmu_tbu0_gdsc = {
++	.gdscr = 0x7d05c,
++	.pd = {
++		.name = "hlos1_vote_turing_mmu_tbu0_gdsc",
++	},
++	.pwrsts = PWRSTS_OFF_ON,
++	.flags = VOTABLE,
++};
++
++static struct gdsc hlos1_vote_turing_mmu_tbu1_gdsc = {
++	.gdscr = 0x7d060,
++	.pd = {
++		.name = "hlos1_vote_turing_mmu_tbu1_gdsc",
++	},
++	.pwrsts = PWRSTS_OFF_ON,
++	.flags = VOTABLE,
++};
++
+ static struct clk_regmap *gcc_sc8180x_clocks[] = {
+ 	[GCC_AGGRE_NOC_PCIE_TBU_CLK] = &gcc_aggre_noc_pcie_tbu_clk.clkr,
+ 	[GCC_AGGRE_UFS_CARD_AXI_CLK] = &gcc_aggre_ufs_card_axi_clk.clkr,
+@@ -4500,6 +4545,11 @@ static struct gdsc *gcc_sc8180x_gdscs[] = {
+ 	[USB30_MP_GDSC] = &usb30_mp_gdsc,
+ 	[USB30_PRIM_GDSC] = &usb30_prim_gdsc,
+ 	[USB30_SEC_GDSC] = &usb30_sec_gdsc,
++	[HLOS1_VOTE_MMNOC_MMU_TBU_HF0_GDSC] = &hlos1_vote_mmnoc_mmu_tbu_hf0_gdsc,
++	[HLOS1_VOTE_MMNOC_MMU_TBU_HF1_GDSC] = &hlos1_vote_mmnoc_mmu_tbu_hf1_gdsc,
++	[HLOS1_VOTE_MMNOC_MMU_TBU_SF_GDSC] = &hlos1_vote_mmnoc_mmu_tbu_sf_gdsc,
++	[HLOS1_VOTE_TURING_MMU_TBU0_GDSC] = &hlos1_vote_turing_mmu_tbu0_gdsc,
++	[HLOS1_VOTE_TURING_MMU_TBU1_GDSC] = &hlos1_vote_turing_mmu_tbu1_gdsc,
+ };
  
- out_unlock:
+ static const struct regmap_config gcc_sc8180x_regmap_config = {
 -- 
 2.53.0
 
