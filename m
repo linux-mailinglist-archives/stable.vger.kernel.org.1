@@ -1,58 +1,58 @@
-Return-Path: <stable+bounces-258644-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-257897-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id qNArFcQpG2ra/ggAu9opvQ
-	(envelope-from <stable+bounces-258644-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:17:40 +0200
+	id kCyVCCIgG2rO/QgAu9opvQ
+	(envelope-from <stable+bounces-257897-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:36:34 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id ED58F6116EB
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:17:39 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id C3A9061002A
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:36:33 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id AFDF33014157
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 18:17:27 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 6765E304FE42
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 17:35:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D51A33242BE;
-	Sat, 30 May 2026 18:17:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B041C3AD520;
+	Sat, 30 May 2026 17:35:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VAE/PfRF"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zChey8T1"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B684C233D9E;
-	Sat, 30 May 2026 18:17:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 357DD3AB26B;
+	Sat, 30 May 2026 17:35:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780165046; cv=none; b=DoPipez74LxhGtrjWa4Vom63HOL493rLfwi26zD0t6zNRqs/XfQEZmjJM0annr1/xfAN/7qyRozigXgj9b0UjBr3gyNFDXl3WoEWYXCj1tq9oS/AbZgYqKkKFYuariBAkIgoK4lAQxXNsvS0fszVWvBIDCa7WLcKnM+jyfDqDDM=
+	t=1780162541; cv=none; b=C7gw1rANS4E2KlQb6xpQuFrfAqIHpXsnfPutjSWEIRAcZePrdRnVVgyQV+fmIFlUSe3n/VdTAWf6Zgxdh44dpfuHBCxpT7/P74fVK3pZD+VIfsk7l9DfIVAP3JUVMKeHk5VOXlHh1/EmsDVxkUcnvRQp2JWk1d32/RgvoEuQX7U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780165046; c=relaxed/simple;
-	bh=yY9ZO0V1k892pR8/kRNUhPkaF/XKhg/d5Ec5dSQJpco=;
+	s=arc-20240116; t=1780162541; c=relaxed/simple;
+	bh=Xwc0upyC+FRq70OM/0wx7tFCktNxeu5uE6jWv7ThLHE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=bPTfISvpVnQn0EEkSSVay4v9ISriUt+G0dKu+wSmAYa2G78OxYq9pjj5k2/NFR6Npp4q+sl0USDj+0JoXn0mly/493R4UGCPL8yNUQWcAxYYfXndIHNuYMCGSN+PXYAXrRuCRD5tpLM2QI66j7Ro8er9cZLe+eXy5dpzPTGOpxc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VAE/PfRF; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B8CD61F00893;
-	Sat, 30 May 2026 18:17:24 +0000 (UTC)
+	 MIME-Version; b=dYfT4gq9CAtk/yNccBifASdQ12r5QD/fVVZevqwnokA/+hvSIzreQESXKtl7JJlTJAuMPWHcp5pZoKRl5sTSiHO9kqI6vWIn8lp7eM0dBcP42UFARfd6r56fcQEUEf9LrSkTjDYZZHB26ESshZCKGV0SRsh/x76Os+14mwSUx3Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zChey8T1; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 793341F00893;
+	Sat, 30 May 2026 17:35:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780165045;
-	bh=4OeTYEJwpYbBzz8bmOe4U0s/qa4URnWZIjXRONxj6Ro=;
+	s=korg; t=1780162540;
+	bh=fUNm1dNo6f+Hf2hfBqIfU6u7jNCEFLKjUMtuJ7I3Iu0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=VAE/PfRFdYJioPaVqgiR7HEs3qxwJ8Qcr8LAfJ1F66p9F5DFsY2ZXsUI5jsXNwIVQ
-	 xF81EBxBvSiQvx0UTZBtf5ovy9EYim1hf0vuFKjwq3bKgFJ+OYLMMghp+qpgryD4aP
-	 KxtE78oKo9a4WyGsMIxrHXoxoioTqSTy7iGbB72o=
+	b=zChey8T1r6BiLh01Yw8AdiaLd5Yl/aPUNs+q8WIDNSI0AVroJ/SeH0sNkZSx7WGte
+	 k5uqvPDqbDIaBxpxzMCluECSbiMAguvn14EeLqNPChrj8+ToGTRTg6Hbri3NnAch5c
+	 2kDTB5Vy3CSjO9STVh2K8Z3ZN1ZttcW+bc6pkQuE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Abdurrahman Hussain <abdurrahman@nexthop.ai>,
-	Guenter Roeck <linux@roeck-us.net>
-Subject: [PATCH 5.15 717/776] hwmon: (pmbus/adm1266) reject implausible blackbox record_count
-Date: Sat, 30 May 2026 18:07:11 +0200
-Message-ID: <20260530160258.349492360@linuxfoundation.org>
+	Florian Westphal <fw@strlen.de>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 908/969] netfilter: xtables: allow xtables-nft only builds
+Date: Sat, 30 May 2026 18:07:12 +0200
+Message-ID: <20260530160325.794139812@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260530160240.228940103@linuxfoundation.org>
-References: <20260530160240.228940103@linuxfoundation.org>
+In-Reply-To: <20260530160300.485627683@linuxfoundation.org>
+References: <20260530160300.485627683@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -67,7 +67,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
@@ -77,73 +77,337 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-258644-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-257897-lists,stable=lfdr.de];
 	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-0.995];
+	NEURAL_HAM(-0.00)[-1.000];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
 	RCPT_COUNT_FIVE(0.00)[5];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,roeck-us.net:email]
-X-Rspamd-Queue-Id: ED58F6116EB
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,strlen.de:email,linuxfoundation.org:mid,linuxfoundation.org:dkim]
+X-Rspamd-Queue-Id: C3A9061002A
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Abdurrahman Hussain <abdurrahman@nexthop.ai>
+From: Florian Westphal <fw@strlen.de>
 
-commit 4afca954622d672ea65ed961bed01cf91caa034e upstream.
+[ Upstream commit a9525c7f6219cee9284c0031c5930e8d41384677 ]
 
-adm1266_nvmem_read_blackbox() loops over a record_count that comes
-straight from byte 3 of the BLACKBOX_INFO response.  The destination
-buffer is data->dev_mem, sized for the nvmem cell's declared 2048
-bytes (ADM1266_BLACKBOX_MAX_RECORDS * ADM1266_BLACKBOX_SIZE = 32 * 64).
-A device that reports a record_count greater than 32 -- whether due
-to firmware bugs, bus corruption, or a non-responsive slave returning
-0xff -- would walk read_buff past the end of the dev_mem allocation
-on the trailing iterations.
+Add hidden IP(6)_NF_IPTABLES_LEGACY symbol.
 
-Cap record_count at ADM1266_BLACKBOX_MAX_RECORDS (introduced here)
-before entering the loop and return -EIO on any larger value, so a
-malformed BLACKBOX_INFO response cannot drive the loop out of bounds.
+When any of the "old" builtin tables are enabled the "old" iptables
+interface will be supported.
 
-Fixes: 15609d189302 ("hwmon: (pmbus/adm1266) read blackbox")
-Cc: stable@vger.kernel.org
-Signed-off-by: Abdurrahman Hussain <abdurrahman@nexthop.ai>
-Link: https://lore.kernel.org/r/20260515-adm1266-fixes-v1-3-1c1ea1349cfe@nexthop.ai
-Signed-off-by: Guenter Roeck <linux@roeck-us.net>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+To disable the old set/getsockopt interface the existing options
+for the builtin tables need to be turned off:
+
+CONFIG_IP_NF_IPTABLES=m
+CONFIG_IP_NF_FILTER is not set
+CONFIG_IP_NF_NAT is not set
+CONFIG_IP_NF_MANGLE is not set
+CONFIG_IP_NF_RAW is not set
+CONFIG_IP_NF_SECURITY is not set
+
+Same for CONFIG_IP6_NF_ variants.
+
+This allows to build a kernel that only supports ip(6)tables-nft
+(iptables-over-nftables api).
+
+In the future the _LEGACY symbol will become visible and the select
+statements will be turned into 'depends on', but for now be on safe side
+so "make oldconfig" won't break things.
+
+Signed-off-by: Florian Westphal <fw@strlen.de>
+Stable-dep-of: b4597d5fd7d2 ("netfilter: x_tables: add and use xtables_unregister_table_exit")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/hwmon/pmbus/adm1266.c |    3 +++
- 1 file changed, 3 insertions(+)
+ net/ipv4/netfilter/Kconfig  | 15 ++++++++++++---
+ net/ipv4/netfilter/Makefile |  2 +-
+ net/ipv6/netfilter/Kconfig  | 20 ++++++++++++++------
+ net/ipv6/netfilter/Makefile |  2 +-
+ net/netfilter/Kconfig       | 12 ++++++------
+ 5 files changed, 34 insertions(+), 17 deletions(-)
 
---- a/drivers/hwmon/pmbus/adm1266.c
-+++ b/drivers/hwmon/pmbus/adm1266.c
-@@ -46,6 +46,7 @@
+diff --git a/net/ipv4/netfilter/Kconfig b/net/ipv4/netfilter/Kconfig
+index 483778f379d44..5ee86c7ae4dcb 100644
+--- a/net/ipv4/netfilter/Kconfig
++++ b/net/ipv4/netfilter/Kconfig
+@@ -10,6 +10,10 @@ config NF_DEFRAG_IPV4
+ 	tristate
+ 	default n
  
- #define ADM1266_BLACKBOX_OFFSET		0
- #define ADM1266_BLACKBOX_SIZE		64
-+#define ADM1266_BLACKBOX_MAX_RECORDS	32
++# old sockopt interface and eval loop
++config IP_NF_IPTABLES_LEGACY
++	tristate
++
+ config NF_SOCKET_IPV4
+ 	tristate "IPv4 socket lookup support"
+ 	help
+@@ -152,7 +156,7 @@ config IP_NF_MATCH_ECN
+ config IP_NF_MATCH_RPFILTER
+ 	tristate '"rpfilter" reverse path filter match support'
+ 	depends on NETFILTER_ADVANCED
+-	depends on IP_NF_MANGLE || IP_NF_RAW
++	depends on IP_NF_MANGLE || IP_NF_RAW || NFT_COMPAT
+ 	help
+ 	  This option allows you to match packets whose replies would
+ 	  go out via the interface the packet came in.
+@@ -173,6 +177,7 @@ config IP_NF_MATCH_TTL
+ config IP_NF_FILTER
+ 	tristate "Packet filtering"
+ 	default m if NETFILTER_ADVANCED=n
++	select IP_NF_IPTABLES_LEGACY
+ 	help
+ 	  Packet filtering defines a table `filter', which has a series of
+ 	  rules for simple packet filtering at local input, forwarding and
+@@ -182,7 +187,7 @@ config IP_NF_FILTER
  
- #define ADM1266_PMBUS_BLOCK_MAX		255
+ config IP_NF_TARGET_REJECT
+ 	tristate "REJECT target support"
+-	depends on IP_NF_FILTER
++	depends on IP_NF_FILTER || NFT_COMPAT
+ 	select NF_REJECT_IPV4
+ 	default m if NETFILTER_ADVANCED=n
+ 	help
+@@ -212,6 +217,7 @@ config IP_NF_NAT
+ 	default m if NETFILTER_ADVANCED=n
+ 	select NF_NAT
+ 	select NETFILTER_XT_NAT
++	select IP6_NF_IPTABLES_LEGACY
+ 	help
+ 	  This enables the `nat' table in iptables. This allows masquerading,
+ 	  port forwarding and other forms of full Network Address Port
+@@ -252,6 +258,7 @@ endif # IP_NF_NAT
+ config IP_NF_MANGLE
+ 	tristate "Packet mangling"
+ 	default m if NETFILTER_ADVANCED=n
++	select IP_NF_IPTABLES_LEGACY
+ 	help
+ 	  This option adds a `mangle' table to iptables: see the man page for
+ 	  iptables(8).  This table is used for various packet alterations
+@@ -275,7 +282,7 @@ config IP_NF_TARGET_CLUSTERIP
  
-@@ -362,6 +363,8 @@ static int adm1266_nvmem_read_blackbox(s
- 		return -EIO;
+ config IP_NF_TARGET_ECN
+ 	tristate "ECN target support"
+-	depends on IP_NF_MANGLE
++	depends on IP_NF_MANGLE || NFT_COMPAT
+ 	depends on NETFILTER_ADVANCED
+ 	help
+ 	  This option adds a `ECN' target, which can be used in the iptables mangle
+@@ -300,6 +307,7 @@ config IP_NF_TARGET_TTL
+ # raw + specific targets
+ config IP_NF_RAW
+ 	tristate  'raw table support (required for NOTRACK/TRACE)'
++	select IP_NF_IPTABLES_LEGACY
+ 	help
+ 	  This option adds a `raw' table to iptables. This table is the very
+ 	  first in the netfilter framework and hooks in at the PREROUTING
+@@ -313,6 +321,7 @@ config IP_NF_SECURITY
+ 	tristate "Security table"
+ 	depends on SECURITY
+ 	depends on NETFILTER_ADVANCED
++	select IP_NF_IPTABLES_LEGACY
+ 	help
+ 	  This option adds a `security' table to iptables, for use
+ 	  with Mandatory Access Control (MAC) policy.
+diff --git a/net/ipv4/netfilter/Makefile b/net/ipv4/netfilter/Makefile
+index 93bad11842517..2e606a13ee5ff 100644
+--- a/net/ipv4/netfilter/Makefile
++++ b/net/ipv4/netfilter/Makefile
+@@ -25,7 +25,7 @@ obj-$(CONFIG_NFT_FIB_IPV4) += nft_fib_ipv4.o
+ obj-$(CONFIG_NFT_DUP_IPV4) += nft_dup_ipv4.o
  
- 	record_count = buf[3];
-+	if (record_count > ADM1266_BLACKBOX_MAX_RECORDS)
-+		return -EIO;
+ # generic IP tables
+-obj-$(CONFIG_IP_NF_IPTABLES) += ip_tables.o
++obj-$(CONFIG_IP_NF_IPTABLES_LEGACY) += ip_tables.o
  
- 	for (index = 0; index < record_count; index++) {
- 		ret = adm1266_pmbus_block_xfer(data, ADM1266_READ_BLACKBOX, 1, &index, read_buff);
+ # the three instances of ip_tables
+ obj-$(CONFIG_IP_NF_FILTER) += iptable_filter.o
+diff --git a/net/ipv6/netfilter/Kconfig b/net/ipv6/netfilter/Kconfig
+index 0ba62f4868f97..f3c8e2d918e13 100644
+--- a/net/ipv6/netfilter/Kconfig
++++ b/net/ipv6/netfilter/Kconfig
+@@ -6,6 +6,10 @@
+ menu "IPv6: Netfilter Configuration"
+ 	depends on INET && IPV6 && NETFILTER
+ 
++# old sockopt interface and eval loop
++config IP6_NF_IPTABLES_LEGACY
++	tristate
++
+ config NF_SOCKET_IPV6
+ 	tristate "IPv6 socket lookup support"
+ 	help
+@@ -147,7 +151,7 @@ config IP6_NF_MATCH_MH
+ config IP6_NF_MATCH_RPFILTER
+ 	tristate '"rpfilter" reverse path filter match support'
+ 	depends on NETFILTER_ADVANCED
+-	depends on IP6_NF_MANGLE || IP6_NF_RAW
++	depends on IP6_NF_MANGLE || IP6_NF_RAW || NFT_COMPAT
+ 	help
+ 	  This option allows you to match packets whose replies would
+ 	  go out via the interface the packet came in.
+@@ -186,6 +190,8 @@ config IP6_NF_TARGET_HL
+ config IP6_NF_FILTER
+ 	tristate "Packet filtering"
+ 	default m if NETFILTER_ADVANCED=n
++	select IP6_NF_IPTABLES_LEGACY
++	tristate
+ 	help
+ 	  Packet filtering defines a table `filter', which has a series of
+ 	  rules for simple packet filtering at local input, forwarding and
+@@ -195,7 +201,7 @@ config IP6_NF_FILTER
+ 
+ config IP6_NF_TARGET_REJECT
+ 	tristate "REJECT target support"
+-	depends on IP6_NF_FILTER
++	depends on IP6_NF_FILTER || NFT_COMPAT
+ 	select NF_REJECT_IPV6
+ 	default m if NETFILTER_ADVANCED=n
+ 	help
+@@ -221,6 +227,7 @@ config IP6_NF_TARGET_SYNPROXY
+ config IP6_NF_MANGLE
+ 	tristate "Packet mangling"
+ 	default m if NETFILTER_ADVANCED=n
++	select IP6_NF_IPTABLES_LEGACY
+ 	help
+ 	  This option adds a `mangle' table to iptables: see the man page for
+ 	  iptables(8).  This table is used for various packet alterations
+@@ -230,6 +237,7 @@ config IP6_NF_MANGLE
+ 
+ config IP6_NF_RAW
+ 	tristate  'raw table support (required for TRACE)'
++	select IP6_NF_IPTABLES_LEGACY
+ 	help
+ 	  This option adds a `raw' table to ip6tables. This table is the very
+ 	  first in the netfilter framework and hooks in at the PREROUTING
+@@ -243,6 +251,7 @@ config IP6_NF_SECURITY
+ 	tristate "Security table"
+ 	depends on SECURITY
+ 	depends on NETFILTER_ADVANCED
++	select IP6_NF_IPTABLES_LEGACY
+ 	help
+ 	  This option adds a `security' table to iptables, for use
+ 	  with Mandatory Access Control (MAC) policy.
+@@ -254,6 +263,7 @@ config IP6_NF_NAT
+ 	depends on NF_CONNTRACK
+ 	depends on NETFILTER_ADVANCED
+ 	select NF_NAT
++	select IP6_NF_IPTABLES_LEGACY
+ 	select NETFILTER_XT_NAT
+ 	help
+ 	  This enables the `nat' table in ip6tables. This allows masquerading,
+@@ -262,25 +272,23 @@ config IP6_NF_NAT
+ 
+ 	  To compile it as a module, choose M here.  If unsure, say N.
+ 
+-if IP6_NF_NAT
+-
+ config IP6_NF_TARGET_MASQUERADE
+ 	tristate "MASQUERADE target support"
+ 	select NETFILTER_XT_TARGET_MASQUERADE
++	depends on IP6_NF_NAT
+ 	help
+ 	  This is a backwards-compat option for the user's convenience
+ 	  (e.g. when running oldconfig). It selects NETFILTER_XT_TARGET_MASQUERADE.
+ 
+ config IP6_NF_TARGET_NPT
+ 	tristate "NPT (Network Prefix translation) target support"
++	depends on IP6_NF_NAT || NFT_COMPAT
+ 	help
+ 	  This option adds the `SNPT' and `DNPT' target, which perform
+ 	  stateless IPv6-to-IPv6 Network Prefix Translation per RFC 6296.
+ 
+ 	  To compile it as a module, choose M here.  If unsure, say N.
+ 
+-endif # IP6_NF_NAT
+-
+ endif # IP6_NF_IPTABLES
+ endmenu
+ 
+diff --git a/net/ipv6/netfilter/Makefile b/net/ipv6/netfilter/Makefile
+index b8d6dc9aeeb6f..66ce6fa5b2f52 100644
+--- a/net/ipv6/netfilter/Makefile
++++ b/net/ipv6/netfilter/Makefile
+@@ -4,7 +4,7 @@
+ #
+ 
+ # Link order matters here.
+-obj-$(CONFIG_IP6_NF_IPTABLES) += ip6_tables.o
++obj-$(CONFIG_IP6_NF_IPTABLES_LEGACY) += ip6_tables.o
+ obj-$(CONFIG_IP6_NF_FILTER) += ip6table_filter.o
+ obj-$(CONFIG_IP6_NF_MANGLE) += ip6table_mangle.o
+ obj-$(CONFIG_IP6_NF_RAW) += ip6table_raw.o
+diff --git a/net/netfilter/Kconfig b/net/netfilter/Kconfig
+index 4b8d04640ff32..344c287aa3f41 100644
+--- a/net/netfilter/Kconfig
++++ b/net/netfilter/Kconfig
+@@ -816,7 +816,7 @@ config NETFILTER_XT_TARGET_AUDIT
+ 
+ config NETFILTER_XT_TARGET_CHECKSUM
+ 	tristate "CHECKSUM target support"
+-	depends on IP_NF_MANGLE || IP6_NF_MANGLE
++	depends on IP_NF_MANGLE || IP6_NF_MANGLE || NFT_COMPAT
+ 	depends on NETFILTER_ADVANCED
+ 	help
+ 	  This option adds a `CHECKSUM' target, which can be used in the iptables mangle
+@@ -867,7 +867,7 @@ config NETFILTER_XT_TARGET_CONNSECMARK
+ config NETFILTER_XT_TARGET_CT
+ 	tristate '"CT" target support'
+ 	depends on NF_CONNTRACK
+-	depends on IP_NF_RAW || IP6_NF_RAW
++	depends on IP_NF_RAW || IP6_NF_RAW || NFT_COMPAT
+ 	depends on NETFILTER_ADVANCED
+ 	help
+ 	  This options adds a `CT' target, which allows to specify initial
+@@ -878,7 +878,7 @@ config NETFILTER_XT_TARGET_CT
+ 
+ config NETFILTER_XT_TARGET_DSCP
+ 	tristate '"DSCP" and "TOS" target support'
+-	depends on IP_NF_MANGLE || IP6_NF_MANGLE
++	depends on IP_NF_MANGLE || IP6_NF_MANGLE || NFT_COMPAT
+ 	depends on NETFILTER_ADVANCED
+ 	help
+ 	  This option adds a `DSCP' target, which allows you to manipulate
+@@ -894,7 +894,7 @@ config NETFILTER_XT_TARGET_DSCP
+ 
+ config NETFILTER_XT_TARGET_HL
+ 	tristate '"HL" hoplimit target support'
+-	depends on IP_NF_MANGLE || IP6_NF_MANGLE
++	depends on IP_NF_MANGLE || IP6_NF_MANGLE || NFT_COMPAT
+ 	depends on NETFILTER_ADVANCED
+ 	help
+ 	This option adds the "HL" (for IPv6) and "TTL" (for IPv4)
+@@ -1078,7 +1078,7 @@ config NETFILTER_XT_TARGET_TPROXY
+ 	depends on NETFILTER_ADVANCED
+ 	depends on IPV6 || IPV6=n
+ 	depends on IP6_NF_IPTABLES || IP6_NF_IPTABLES=n
+-	depends on IP_NF_MANGLE
++	depends on IP_NF_MANGLE || NFT_COMPAT
+ 	select NF_DEFRAG_IPV4
+ 	select NF_DEFRAG_IPV6 if IP6_NF_IPTABLES != n
+ 	select NF_TPROXY_IPV4
+@@ -1145,7 +1145,7 @@ config NETFILTER_XT_TARGET_TCPMSS
+ 
+ config NETFILTER_XT_TARGET_TCPOPTSTRIP
+ 	tristate '"TCPOPTSTRIP" target support'
+-	depends on IP_NF_MANGLE || IP6_NF_MANGLE
++	depends on IP_NF_MANGLE || IP6_NF_MANGLE || NFT_COMPAT
+ 	depends on NETFILTER_ADVANCED
+ 	help
+ 	  This option adds a "TCPOPTSTRIP" target, which allows you to strip
+-- 
+2.53.0
+
 
 
 
