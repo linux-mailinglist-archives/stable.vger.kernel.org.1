@@ -1,58 +1,58 @@
-Return-Path: <stable+bounces-258604-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-259211-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id IIerFoUpG2ra/ggAu9opvQ
-	(envelope-from <stable+bounces-258604-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:16:37 +0200
+	id 2F0EGwAzG2qqAAkAu9opvQ
+	(envelope-from <stable+bounces-259211-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:57:04 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 100AB611670
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:16:36 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id CDF77612D07
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:57:03 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 712DC30747A8
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 18:15:11 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id C871C302F0CC
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 18:49:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C3A7D274FDC;
-	Sat, 30 May 2026 18:15:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 215D6233943;
+	Sat, 30 May 2026 18:49:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WlubRIT1"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wRq8PfjW"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A7E06258EDA;
-	Sat, 30 May 2026 18:15:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0185A15E5BB;
+	Sat, 30 May 2026 18:49:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780164909; cv=none; b=Z/cQuy1Ali50ETon7PqidgRJXeCIhDRWArJfWniLQMEOnCt6eRX9i8Uybtv3MdTQJNm3iOorJNFU/50W3ej6VjmUa1WiZeG0GlNYsoDqIMmfUr43HmvHIBN3dIwT2VgOPbtVtOxJjnysVQIJ2i3GUAzCwMVo/GIfVh5bw7PgQbQ=
+	t=1780166979; cv=none; b=qqV3IEQ/mFp0KiUOmuIFP8U1Apx9K7UiYwiHAG9RjzKEuWwGMdmYkwsT2ShJBkgGFVvCoAGVAPpR7vDUylCSuQE6v4qiuPEJ2TNZvWtDO1mAH284fz0sEKXKt9yPoD2K8YM5juENaXjZoN403K6G/Wbr07SPjj0IccZ9AfxVaOc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780164909; c=relaxed/simple;
-	bh=IQk/brV4TYJQ1K/YX00p4nhGuysPkZoXqBGnaVXKAxY=;
+	s=arc-20240116; t=1780166979; c=relaxed/simple;
+	bh=LEbjtSkvjPbzfRoXm6LCthBKEA1PytU6AoOJHsKet8g=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=pRIHZ3WhJCZENuBt31oU9kDRQ5DFe0HWq+mL+Xkxd7CTLkV8yF1A2H2BhDDixUTjsnW8msMFOSV8bZUfQDYHG3N1YMjEFddjgToqmeqj6M0yUN/MIWdVyPiz+5JkMJ3+1R6FjAhDmBXmI1Gz6Z10PW+Iy8Kx6FR9jvTYiQfX0jI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WlubRIT1; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EA9161F00893;
-	Sat, 30 May 2026 18:15:07 +0000 (UTC)
+	 MIME-Version; b=N3Mtt7ShLQ/dl7fXA0LwNan3QEEDtOwcF1PSoIf8pmLDfKZ1n1t73nliz+Gb6iUWDEsg4wNOEfzhwPeTjJklVQVm8oa2DlvJll91XmmctKCkI+t2VvxZKoUfV2f6Eleok18KTF4aX1/bzA4SqmCvtmjKiFxWSngvG8I6GwiRvJg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wRq8PfjW; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 449601F00893;
+	Sat, 30 May 2026 18:49:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780164908;
-	bh=FKkkbApDOmjoipnu+8JiHnDCVqLN7ecaeO7NX1ia6rA=;
+	s=korg; t=1780166978;
+	bh=t5JSzqysmAA3F41Tam12C+rGrZku/6YJvsIlH4puejk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=WlubRIT1szWHU/WypoiJ8lHTp1o+yzkazKjZ54EN1ZB7cqrAdKXaqac0g+rCLReKE
-	 4uRePVNwQ1egDbnO9LXgtYKnQ7rlSScJBZDhq+0sVmIeHLm8WunBxBlmjRtuEFy/Xm
-	 7HdeUTkDdfjRsjAF/9YrVoSBkCoyz1pjRe/+RhsE=
+	b=wRq8PfjW8uvjIlOY24JFGXhcW+MSQmcV1Yi8lGZAlvAs1VZ9Yp1yFqr0yec/HUONM
+	 WKba2HCBZfuvSAIXP4fYKKSTgXDAJRVWwYx9utRQIF2b6hpuBEnFmc52clS4ptdhMu
+	 r6ncsCZo+KMuIcQgFUzhgTbmZ/56Xv2SrTFfvY3k=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	John Walker <johnwalker0@gmail.com>,
-	Johannes Berg <johannes.berg@intel.com>
-Subject: [PATCH 5.15 695/776] wifi: cfg80211: advance loop vars in cfg80211_merge_profile()
+	Abdurrahman Hussain <abdurrahman@nexthop.ai>,
+	Guenter Roeck <linux@roeck-us.net>
+Subject: [PATCH 5.10 528/589] hwmon: (pmbus/adm1266) widen blackbox-info buffer to I2C_SMBUS_BLOCK_MAX
 Date: Sat, 30 May 2026 18:06:49 +0200
-Message-ID: <20260530160257.798109378@linuxfoundation.org>
+Message-ID: <20260530160238.547170953@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260530160240.228940103@linuxfoundation.org>
-References: <20260530160240.228940103@linuxfoundation.org>
+In-Reply-To: <20260530160224.570625122@linuxfoundation.org>
+References: <20260530160224.570625122@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,87 +65,85 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-258604-lists,stable=lfdr.de];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,intel.com];
 	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	RCPT_COUNT_FIVE(0.00)[5];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-259211-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-0.994];
-	TAGGED_RCPT(0.00)[stable];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-0.996];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_FIVE(0.00)[5];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,msgid.link:url,intel.com:email]
-X-Rspamd-Queue-Id: 100AB611670
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[roeck-us.net:email,nexthop.ai:email,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
+X-Rspamd-Queue-Id: CDF77612D07
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: John Walker <johnwalker0@gmail.com>
+From: Abdurrahman Hussain <abdurrahman@nexthop.ai>
 
-commit 7666dbb1bacc4ba522b96740cba7283d243d16e1 upstream.
+commit eee213daa1e1b402eb631bcd1b8c5aa340a6b081 upstream.
 
-cfg80211_merge_profile() reassembles a Multi-BSSID non-transmitted BSS
-profile that has been split across multiple consecutive MBSSID elements.
-Its while-loop calls
+adm1266_nvmem_read_blackbox() declares a 5-byte stack buffer and
+passes it to i2c_smbus_read_block_data() to retrieve the 4-byte
+BLACKBOX_INFO response.  i2c_smbus_read_block_data() does not honour
+caller buffer sizes -- it memcpy()s data.block[0] bytes from the
+SMBus transaction (where data.block[0] is the length byte returned by
+the slave device, up to I2C_SMBUS_BLOCK_MAX = 32):
 
-	cfg80211_get_profile_continuation(ie, ielen, mbssid_elem, sub_elem)
+	memcpy(values, &data.block[1], data.block[0]);
 
-but never advances mbssid_elem or sub_elem inside the body.  Each
-iteration therefore searches for a continuation that follows the same
-fixed pair; the helper returns the same next_mbssid; and the same
-next_sub bytes are memcpy()'d into merged_ie at a growing offset until
-the buffer fills.
+If the device returns any block length above 5, the call overflows
+the caller's 5-byte stack buffer before the post-call
 
-Advance both mbssid_elem and sub_elem to the just-consumed continuation
-so the next call to cfg80211_get_profile_continuation() searches for a
-further continuation beyond it (or returns NULL when none exists).
+	if (ret != 4)
+		return -EIO;
 
-A specially-crafted malicious beacon can take advantage of this bug
-to cause the kernel to spend an excessive amount of time in
-cfg80211_merge_profile (up to as much as 2ms per beacon received),
-which could theoretically be abused in some way.
+check has a chance to reject the response.
 
+Widen the local buffer to I2C_SMBUS_BLOCK_MAX so the helper has room
+for any well-formed SMBus block response, matching the convention used
+by the other i2c_smbus_read_block_data() callers in this driver.
+
+Fixes: 15609d189302 ("hwmon: (pmbus/adm1266) read blackbox")
 Cc: stable@vger.kernel.org
-Fixes: fe806e4992c9 ("cfg80211: support profile split between elements")
-Signed-off-by: John Walker <johnwalker0@gmail.com>
-Link: https://patch.msgid.link/20260507230720.64783-1-johnwalker0@gmail.com
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+Signed-off-by: Abdurrahman Hussain <abdurrahman@nexthop.ai>
+Link: https://lore.kernel.org/r/20260515-adm1266-fixes-v1-2-1c1ea1349cfe@nexthop.ai
+Signed-off-by: Guenter Roeck <linux@roeck-us.net>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/wireless/scan.c |    3 +++
- 1 file changed, 3 insertions(+)
+ drivers/hwmon/pmbus/adm1266.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/net/wireless/scan.c
-+++ b/net/wireless/scan.c
-@@ -2180,6 +2180,9 @@ size_t cfg80211_merge_profile(const u8 *
- 		memcpy(merged_ie + copied_len, next_sub->data,
- 		       next_sub->datalen);
- 		copied_len += next_sub->datalen;
-+
-+		mbssid_elem = next_mbssid;
-+		sub_elem = next_sub;
- 	}
+--- a/drivers/hwmon/pmbus/adm1266.c
++++ b/drivers/hwmon/pmbus/adm1266.c
+@@ -351,7 +351,7 @@ static int adm1266_nvmem_read_blackbox(s
+ {
+ 	int record_count;
+ 	char index;
+-	u8 buf[5];
++	u8 buf[I2C_SMBUS_BLOCK_MAX];
+ 	int ret;
  
- 	return copied_len;
+ 	ret = i2c_smbus_read_block_data(data->client, ADM1266_BLACKBOX_INFO, buf);
 
 
 
