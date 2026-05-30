@@ -1,58 +1,59 @@
-Return-Path: <stable+bounces-258059-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-257296-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id nKLeIZUjG2pm/ggAu9opvQ
-	(envelope-from <stable+bounces-258059-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:51:17 +0200
+	id 8HGWAjcaG2oq/QgAu9opvQ
+	(envelope-from <stable+bounces-257296-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:11:19 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 10109610856
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:51:16 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5C9B460F10A
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:11:18 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id CCE6C3039821
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 17:44:43 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 6A4B0305A5C5
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 17:01:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 749A433F8A4;
-	Sat, 30 May 2026 17:44:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F11283A3E74;
+	Sat, 30 May 2026 17:01:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lpwSGN0z"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="B9wvELHj"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 486A521B191;
-	Sat, 30 May 2026 17:44:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 33ABD2690D5;
+	Sat, 30 May 2026 17:01:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780163083; cv=none; b=ni5uu6vdxUR7VWENA/em9MNnPMgtl12c6WchWVZV/Hdi3f7KndpDzFvCXCDuhTWILBWwybociwNuvmKiMP93EYj3Z8xCNX8qe02wUhJFzLm1P7i30u1r9ySHWwG2CL6FzLWq7beFzaCkDCDA8kWOU1DDd8MW1WvthLDrVtiExZg=
+	t=1780160510; cv=none; b=OQJCtG8StxpQs86jFJkDdvHJYQ6HzKSWvYbGEIsI/WsdcJVNm/Btws2WQRjrxpCl4ky1WA1JS4B3b/uDvuHYLEVSX3p/C5TJWpkgRWLbxxAAvpwiZbQRyrbl+CWAzyIrnKlUqQrrIdrHqNgWQu+PZyaoayUO3eCWg0VTvSUOJVM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780163083; c=relaxed/simple;
-	bh=X5z+pdsyRLu9GljFKRbu3jPd486WVOF2baUP3GGPPak=;
+	s=arc-20240116; t=1780160510; c=relaxed/simple;
+	bh=jncns+CMVAUZUYWYeGmfCPU0vfuWNvSpu0peDpdiofU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=mrkCD0lorx4VhUnd5HTzT47sX/Kh82ldZwnaA1duPQEEdOk/2ONwokC47JU2fBfOukVdU2diviXVAaV8hlTpFChZxG9YHYMk9H0J3u2qmZuIz8mvIvlOVntpZtZqPp62RhXLbBAG9Vm2LCeNnUSsaaTqyqBYGMsR/qfmFzVEgLc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lpwSGN0z; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8E1731F00893;
-	Sat, 30 May 2026 17:44:41 +0000 (UTC)
+	 MIME-Version; b=JAHu5AqCgg7qMH/84iLcfj7FjxkE7RsoFsJ+p0VbiCtZPhBLDtSe86hA/f9lGk9SsJHa43GloH9gSCYPwEN9v2EQB9XwqgmHYBkKbHCxXrne3ZiCJbap2C6IGDHcheXgimMnjRPYjv/6i7ZE0u+GQMFOkvB2aYPfGJo/ovvqXLA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=B9wvELHj; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6B81F1F00898;
+	Sat, 30 May 2026 17:01:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780163082;
-	bh=33d6Hl4tveScE8+AatM5F8hcEU6mz4785QqW/hqxBic=;
+	s=korg; t=1780160505;
+	bh=kiUyZaYo/hthBqyamGjkk2+RsWJVqdVB0zOF/rOZ95U=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=lpwSGN0zzY9OXVq7KtBkSiDMZSRoSFyCBDXbjMCLdnh7IiKUrN72VSMb93puoBQ/6
-	 6HhYQ2XxOyA9McAZen6jQSoJqYRENDBGBLek7ZLtCAyj+hGG0QX4YidR2V8U7rEoc2
-	 oQrHGckWHM3GQCf2INe5I3GYYNXB3yg2qppaqOWg=
+	b=B9wvELHjTnzO9vhxtauxM7G/3DO6O0kOsFVv3kCp6zpuvypjge+0KUA/upZObzhMw
+	 kVo3/ENNV1q/ilKh0x4EiuUrzpMUCYOmDyBCxgM9mowUlRFVc4JFW4+tNV/DoZ9jcY
+	 Jrd0U5S9UMHHAaIkJcdNy5IehT/oEybgnPOAhmNM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Marc Kleine-Budde <mkl@pengutronix.de>,
-	Charles Xu <charles_xu@189.cn>
-Subject: [PATCH 5.15 149/776] can: gs_usb: gs_usb_xmit_callback(): fix handling of failed transmitted URBs
+	Tomoya MORINAGA <tomoya-linux@dsn.okisemi.com>,
+	Johan Hovold <johan@kernel.org>,
+	Mark Brown <broonie@kernel.org>
+Subject: [PATCH 6.1 339/969] spi: topcliff-pch: fix use-after-free on unbind
 Date: Sat, 30 May 2026 17:57:43 +0200
-Message-ID: <20260530160244.305397364@linuxfoundation.org>
+Message-ID: <20260530160309.729989621@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260530160240.228940103@linuxfoundation.org>
-References: <20260530160240.228940103@linuxfoundation.org>
+In-Reply-To: <20260530160300.485627683@linuxfoundation.org>
+References: <20260530160300.485627683@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -68,86 +69,75 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-258059-lists,stable=lfdr.de];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,pengutronix.de,189.cn];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
-	TO_DN_SOME(0.00)[];
+	TAGGED_FROM(0.00)[bounces-257296-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
 	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TO_DN_SOME(0.00)[];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	RCPT_COUNT_FIVE(0.00)[5];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	RCPT_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
 	TAGGED_RCPT(0.00)[stable];
 	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,189.cn:email,pengutronix.de:email,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim]
-X-Rspamd-Queue-Id: 10109610856
+	FROM_HAS_DN(0.00)[]
+X-Rspamd-Queue-Id: 5C9B460F10A
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Marc Kleine-Budde <mkl@pengutronix.de>
+From: Johan Hovold <johan@kernel.org>
 
-[ Upstream commit 516a0cd1c03fa266bb67dd87940a209fd4e53ce7 ]
+commit 9d72732fe70c11424bc90ed466c7ccfa58b42a9a upstream.
 
-The driver lacks the cleanup of failed transfers of URBs. This reduces the
-number of available URBs per error by 1. This leads to reduced performance
-and ultimately to a complete stop of the transmission.
+Give the driver a chance to flush its queue before releasing the DMA
+buffers on driver unbind
 
-If the sending of a bulk URB fails do proper cleanup:
-- increase netdev stats
-- mark the echo_sbk as free
-- free the driver's context and do accounting
-- wake the send queue
-
-Closes: https://github.com/candle-usb/candleLight_fw/issues/187
-Fixes: d08e973a77d1 ("can: gs_usb: Added support for the GS_USB CAN devices")
-Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
-Signed-off-by: Charles Xu <charles_xu@189.cn>
+Fixes: c37f3c2749b5 ("spi/topcliff_pch: DMA support")
+Cc: stable@vger.kernel.org	# 3.1
+Cc: Tomoya MORINAGA <tomoya-linux@dsn.okisemi.com>
+Signed-off-by: Johan Hovold <johan@kernel.org>
+Link: https://patch.msgid.link/20260414134319.978196-9-johan@kernel.org
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/can/usb/gs_usb.c |   17 +++++++++++++++--
- 1 file changed, 15 insertions(+), 2 deletions(-)
+ drivers/spi/spi-topcliff-pch.c |    6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
---- a/drivers/net/can/usb/gs_usb.c
-+++ b/drivers/net/can/usb/gs_usb.c
-@@ -467,8 +467,21 @@ static void gs_usb_xmit_callback(struct
- 	struct gs_can *dev = txc->dev;
- 	struct net_device *netdev = dev->netdev;
+--- a/drivers/spi/spi-topcliff-pch.c
++++ b/drivers/spi/spi-topcliff-pch.c
+@@ -1406,9 +1406,6 @@ static int pch_spi_pd_remove(struct plat
+ 	dev_dbg(&plat_dev->dev, "%s:[ch%d] irq=%d\n",
+ 		__func__, plat_dev->id, board_dat->pdev->irq);
  
--	if (urb->status)
--		netdev_info(netdev, "usb xmit fail %d\n", txc->echo_id);
-+	if (!urb->status)
-+		return;
-+
-+	if (urb->status != -ESHUTDOWN && net_ratelimit())
-+		netdev_info(netdev, "failed to xmit URB %u: %pe\n",
-+			    txc->echo_id, ERR_PTR(urb->status));
-+
-+	netdev->stats.tx_dropped++;
-+	netdev->stats.tx_errors++;
-+
-+	can_free_echo_skb(netdev, txc->echo_id, NULL);
-+	gs_free_tx_context(txc);
-+	atomic_dec(&dev->active_tx_urbs);
-+
-+	netif_wake_queue(netdev);
+-	if (use_dma)
+-		pch_free_dma_buf(board_dat, data);
+-
+ 	/* check for any pending messages; no action is taken if the queue
+ 	 * is still full; but at least we tried.  Unload anyway */
+ 	count = 500;
+@@ -1432,6 +1429,9 @@ static int pch_spi_pd_remove(struct plat
+ 		free_irq(board_dat->pdev->irq, data);
+ 	}
  
- 	usb_free_coherent(urb->dev,
- 			  urb->transfer_buffer_length,
++	if (use_dma)
++		pch_free_dma_buf(board_dat, data);
++
+ 	pci_iounmap(board_dat->pdev, data->io_remap_addr);
+ 	spi_unregister_master(data->master);
+ 
 
 
 
