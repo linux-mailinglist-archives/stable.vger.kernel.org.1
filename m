@@ -1,59 +1,58 @@
-Return-Path: <stable+bounces-257341-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-258116-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id mJfVDvoaG2oq/QgAu9opvQ
-	(envelope-from <stable+bounces-257341-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:14:34 +0200
+	id 4JSsH3AkG2rO/QgAu9opvQ
+	(envelope-from <stable+bounces-258116-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:54:56 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id AA02760F353
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:14:33 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id D3C64610A4C
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:54:55 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 93C6A30D10A5
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 17:04:18 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 0FB3030D5F3C
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 17:47:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 35DD934BA42;
-	Sat, 30 May 2026 17:04:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 713A23546EA;
+	Sat, 30 May 2026 17:47:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="I/4R3fMs"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Y3FHqM3A"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 04EBA32B11D;
-	Sat, 30 May 2026 17:04:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1BA093AFCF3;
+	Sat, 30 May 2026 17:47:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780160658; cv=none; b=OEOSzK1r4qiZ2aJcpXljwd9sFvKs0lkeYlDpemDVTxQZz2ss2NM1V/i9Y++bum8Zv8E73RqU1fGK/y9Acm1ymnarOzLbv5zIub3XEsPUwQaUsVQiYzMq85aRUxwynrkJnjvxDN3NXB/cIaRzVFpu4nNHs4AHB7R/7QbGo22oZQg=
+	t=1780163270; cv=none; b=UsaWo9U9Z6yoPaJiXruS/Cpf4ZDsnM51d+IgqRXr0i4mtK0ro0iJxJVgRQYHvrYDo4GA0S6+H8wLFfpDUAOS8Es1HIM6lS+vhe/U9K44DjSoODN3quUb8b9MglTq++s7NVtOjT9FsPVvrbQvZmgIBRw033eq9fg4X4W+T/dwXlo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780160658; c=relaxed/simple;
-	bh=2yzU1Q3Ac0Nf+Vp83Km8r9KCsHg8+uzWwRNHpKiMwKI=;
+	s=arc-20240116; t=1780163270; c=relaxed/simple;
+	bh=JBwPQj2puTUBYQ0Cq/5zfbNOhDkxG8CdQZcjqev+zsM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=olZW3KVA9AuXzX5/pdeqOuNUg+UpgK2wmRbsFSuWCbaUj+n1vEudcqiarEzqJwQam8JLmXMzz7xAvjgHfJ5hFrLoUHhMDHSA40YNbLDNIcUbjk0F3pvHXs3lZXNV54UTQE99Nyn1KJ/G/wIVkNfHjOPsCqLhGWZPdbmB5zpUedI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=I/4R3fMs; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3FD7C1F00893;
-	Sat, 30 May 2026 17:04:16 +0000 (UTC)
+	 MIME-Version:Content-Type; b=JBAk9vVMhaZSiWqySTZxAoMznxZ7VqMR7nzbBRcMHjOXHRIxdFh/7EzH4jhPIAAo7GF5+cUqqC8jcgkcYSCAEBUrjdx7piAHy4yPSUU0u42V8+7dZHae/m7phowDGmOv3ceeAqqHzd2fMn/fouW61Yu9u1o/NM5IixZhCqV2pW0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Y3FHqM3A; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5834C1F00893;
+	Sat, 30 May 2026 17:47:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780160656;
-	bh=+LKLVpDzYMZuE4KktYa+geK5MniOBIFHr0ttmI+3Zkk=;
+	s=korg; t=1780163269;
+	bh=LMvz3qkBb/q14Zob7TEjDf/zOaP6Kj9BCUmI3f/B/oE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=I/4R3fMs39evz6tsO+hq/W9fMcS6vy1TX+u5BCpm0yqoqAoh5EvkYRlIJyw8RrLbn
-	 xfBmUjhVw7wzJHDLxS8hNcPpiH1+jrR4Xh6wecTnTt3yqUmAkxclrlWtAUsdBDi+R+
-	 NtQiRZfmxueKrYXeM6+K8HR8jzwMp6+gpf1YwCGs=
+	b=Y3FHqM3AtNp38/yJgZFz4TK4VmmXeJ70Wg/icZk7rjqMsYjElOdKBZxZzrLNPJi10
+	 d/sxwH1FfOPK5mXoWAZ+62UOrrJRvucASNum6MGDVt9DoQvRQLoMvD85QyuNjni9oR
+	 A5Xf1REx/YyDfc15p1UZW9FUCLAgmPMcpPR/TOJk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Matthias Fend <matthias.fend@emfend.at>,
-	Sakari Ailus <sakari.ailus@linux.intel.com>,
-	Hans Verkuil <hverkuil+cisco@kernel.org>
-Subject: [PATCH 6.1 397/969] media: i2c: ov08d10: fix image vertical start setting
-Date: Sat, 30 May 2026 17:58:41 +0200
-Message-ID: <20260530160311.257861892@linuxfoundation.org>
+	=?UTF-8?q?C=C3=A1ssio=20Gabriel?= <cassiogabrielcontato@gmail.com>,
+	Takashi Iwai <tiwai@suse.de>
+Subject: [PATCH 5.15 208/776] ALSA: aoa: i2sbus: fix OF node lifetime handling
+Date: Sat, 30 May 2026 17:58:42 +0200
+Message-ID: <20260530160245.888206092@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260530160300.485627683@linuxfoundation.org>
-References: <20260530160300.485627683@linuxfoundation.org>
+In-Reply-To: <20260530160240.228940103@linuxfoundation.org>
+References: <20260530160240.228940103@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,24 +62,25 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-257341-lists,stable=lfdr.de];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TO_DN_SOME(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-258116-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,suse.de];
+	TO_DN_SOME(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
 	PRECEDENCE_BULK(0.00)[];
@@ -88,79 +88,95 @@ X-Spamd-Result: default: False [-0.16 / 15.00];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable,cisco];
-	RCPT_COUNT_FIVE(0.00)[6];
-	FROM_HAS_DN(0.00)[]
-X-Rspamd-Queue-Id: AA02760F353
+	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_FIVE(0.00)[5];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,suse.de:email,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim]
+X-Rspamd-Queue-Id: D3C64610A4C
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Matthias Fend <matthias.fend@emfend.at>
+From: Cássio Gabriel <cassiogabrielcontato@gmail.com>
 
-commit 5d150fa0f16096d736bd24d13e04495da5116fab upstream.
+commit 4ec93f070eda6b765b62efcaed9241c3b3b0b6ad upstream.
 
-The current settings for the "image vertical start" register appear to be
-incorrect. While this only results in an incorrect start line for native
-modes, this faulty setting causes actual problems in binning mode. At least
-on an i.MX8MP test system, only corrupted frames could be received.
-To correct this, the recommended settings from the reference register sets
-are used for all modes. Since this shifts the start by one line, the Bayer
-pattern also changes, which has also been corrected.
+i2sbus_add_dev() keeps the matched "sound" child pointer after
+for_each_child_of_node() has dropped the iterator reference. Take an
+extra reference before saving that node and drop it after the
+layout-id/device-id lookup is complete.
 
-Fixes: 7be91e02ed57 ("media: i2c: Add ov08d10 camera sensor driver")
+The function also stores np in dev->sound.ofdev.dev.of_node without
+taking a reference for the embedded soundbus device. Since i2sbus
+overrides the embedded platform device release callback, balance that
+reference explicitly in the local error path and in i2sbus_release_dev().
+
+Fixes: f3d9478b2ce4 ("[ALSA] snd-aoa: add snd-aoa")
 Cc: stable@vger.kernel.org
-Signed-off-by: Matthias Fend <matthias.fend@emfend.at>
-Signed-off-by: Sakari Ailus <sakari.ailus@linux.intel.com>
-Signed-off-by: Hans Verkuil <hverkuil+cisco@kernel.org>
+Signed-off-by: Cássio Gabriel <cassiogabrielcontato@gmail.com>
+Link: https://patch.msgid.link/20260330-aoa-i2sbus-ofnode-lifetime-v1-1-51c309f4ff06@gmail.com
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/media/i2c/ov08d10.c |   10 +++++-----
- 1 file changed, 5 insertions(+), 5 deletions(-)
+ sound/aoa/soundbus/i2sbus/core.c |    9 ++++++---
+ 1 file changed, 6 insertions(+), 3 deletions(-)
 
---- a/drivers/media/i2c/ov08d10.c
-+++ b/drivers/media/i2c/ov08d10.c
-@@ -217,7 +217,7 @@ static const struct ov08d10_reg lane_2_m
- 	{0x9a, 0x30},
- 	{0xa8, 0x02},
- 	{0xfd, 0x02},
--	{0xa1, 0x01},
-+	{0xa1, 0x00},
- 	{0xa2, 0x09},
- 	{0xa3, 0x9c},
- 	{0xa5, 0x00},
-@@ -335,7 +335,7 @@ static const struct ov08d10_reg lane_2_m
- 	{0x9a, 0x30},
- 	{0xa8, 0x02},
- 	{0xfd, 0x02},
--	{0xa1, 0x09},
-+	{0xa1, 0x08},
- 	{0xa2, 0x09},
- 	{0xa3, 0x90},
- 	{0xa5, 0x08},
-@@ -467,7 +467,7 @@ static const struct ov08d10_reg lane_2_m
- 	{0xaa, 0xd0},
- 	{0xab, 0x06},
- 	{0xac, 0x68},
--	{0xa1, 0x09},
-+	{0xa1, 0x04},
- 	{0xa2, 0x04},
- 	{0xa3, 0xc8},
- 	{0xa5, 0x04},
-@@ -615,8 +615,8 @@ static const struct ov08d10_lane_cfg lan
- static u32 ov08d10_get_format_code(struct ov08d10 *ov08d10)
- {
- 	static const u32 codes[2][2] = {
--		{ MEDIA_BUS_FMT_SGRBG10_1X10, MEDIA_BUS_FMT_SRGGB10_1X10},
--		{ MEDIA_BUS_FMT_SBGGR10_1X10, MEDIA_BUS_FMT_SGBRG10_1X10},
-+		{ MEDIA_BUS_FMT_SBGGR10_1X10, MEDIA_BUS_FMT_SGBRG10_1X10 },
-+		{ MEDIA_BUS_FMT_SGRBG10_1X10, MEDIA_BUS_FMT_SRGGB10_1X10 },
- 	};
+--- a/sound/aoa/soundbus/i2sbus/core.c
++++ b/sound/aoa/soundbus/i2sbus/core.c
+@@ -83,6 +83,7 @@ static void i2sbus_release_dev(struct de
+ 	for (i = aoa_resource_i2smmio; i <= aoa_resource_rxdbdma; i++)
+ 		free_irq(i2sdev->interrupts[i], i2sdev);
+ 	i2sbus_control_remove_dev(i2sdev->control, i2sdev);
++	of_node_put(i2sdev->sound.ofdev.dev.of_node);
+ 	mutex_destroy(&i2sdev->lock);
+ 	kfree(i2sdev);
+ }
+@@ -148,7 +149,6 @@ static int i2sbus_get_and_fixup_rsrc(str
+ }
  
- 	return codes[ov08d10->vflip->val][ov08d10->hflip->val];
+ /* Returns 1 if added, 0 for otherwise; don't return a negative value! */
+-/* FIXME: look at device node refcounting */
+ static int i2sbus_add_dev(struct macio_dev *macio,
+ 			  struct i2sbus_control *control,
+ 			  struct device_node *np)
+@@ -179,8 +179,9 @@ static int i2sbus_add_dev(struct macio_d
+ 	i = 0;
+ 	for_each_child_of_node(np, child) {
+ 		if (of_node_name_eq(child, "sound")) {
++			of_node_put(sound);
+ 			i++;
+-			sound = child;
++			sound = of_node_get(child);
+ 		}
+ 	}
+ 	if (i == 1) {
+@@ -206,6 +207,7 @@ static int i2sbus_add_dev(struct macio_d
+ 			}
+ 		}
+ 	}
++	of_node_put(sound);
+ 	/* for the time being, until we can handle non-layout-id
+ 	 * things in some fabric, refuse to attach if there is no
+ 	 * layout-id property or we haven't been forced to attach.
+@@ -220,7 +222,7 @@ static int i2sbus_add_dev(struct macio_d
+ 	mutex_init(&dev->lock);
+ 	spin_lock_init(&dev->low_lock);
+ 	dev->sound.ofdev.archdata.dma_mask = macio->ofdev.archdata.dma_mask;
+-	dev->sound.ofdev.dev.of_node = np;
++	dev->sound.ofdev.dev.of_node = of_node_get(np);
+ 	dev->sound.ofdev.dev.dma_mask = &dev->sound.ofdev.archdata.dma_mask;
+ 	dev->sound.ofdev.dev.parent = &macio->ofdev.dev;
+ 	dev->sound.ofdev.dev.release = i2sbus_release_dev;
+@@ -328,6 +330,7 @@ static int i2sbus_add_dev(struct macio_d
+ 	for (i=0;i<3;i++)
+ 		release_and_free_resource(dev->allocated_resource[i]);
+ 	mutex_destroy(&dev->lock);
++	of_node_put(dev->sound.ofdev.dev.of_node);
+ 	kfree(dev);
+ 	return 0;
+ }
 
 
 
