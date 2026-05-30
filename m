@@ -1,60 +1,63 @@
-Return-Path: <stable+bounces-257392-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-258781-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id AKpkN4sZG2pV/AgAu9opvQ
-	(envelope-from <stable+bounces-257392-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:08:27 +0200
+	id WK+xDyotG2pa/wgAu9opvQ
+	(envelope-from <stable+bounces-258781-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:32:10 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7E9BA60EF1E
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:08:27 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id A0126611EB4
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:32:09 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id DD8343031C2E
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 17:07:24 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 27B94302EE88
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 18:25:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4938834104B;
-	Sat, 30 May 2026 17:07:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A8C6C219303;
+	Sat, 30 May 2026 18:25:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ecKT6Ikj"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="y0qUj6Rh"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 23E2A366567;
-	Sat, 30 May 2026 17:07:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7A35F25B0B3;
+	Sat, 30 May 2026 18:25:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780160840; cv=none; b=Ri8EnsmLcz0fduiMwE/S4jhZFMrfb432XHYBznEyzqG1fpJn0BG3aqnQbN1RVsQyB9cl87lAddjX5lzUbDGRb1B1DozHtjiGydDg5PsHsMl96Qatgdx7TARoUuF+WL1FeuWOkX7yk9l98F7QfQClmaeRJKhEAeX17d2nVT4dMLI=
+	t=1780165517; cv=none; b=sQ4dYRIGLnSagIzRTLSHd3hcwUbT+yDBmQtJ9AVKbgFqrYTjzSyhCxY2AX5CGMyonSEbFpu6a5TkzyXJul/y9gsnx7oRwh9wEUHt070ZbmzBwxb79xDe8njAPAu2tuVsW3xdZXMv7IUyS6vaEz3s1ep9MKJFBZrIjpy7xX/q4eY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780160840; c=relaxed/simple;
-	bh=thb2GH04hDVpLPc5Ig2zbBpmQN3qQmFum8dXMmhpt3w=;
+	s=arc-20240116; t=1780165517; c=relaxed/simple;
+	bh=YLTCxmlRXm9tuMnRsvz2mnt2Uh1EDf1EMqbdPnT2PQc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=t5VaLf4DsJhxfWHuVXijTgPPGLpVX8BU3qv/6YIlDVP4AFanpTFGMlL1o0LJyMkgnBDlRus2WScCmcwgzVSGaXllCIhcvCElwwDwCGbOt4ePQnZbOHiyszXAUNzlNycUtcSuLMqkk1W9jILqUr3Dz4Hih1STJTuMFFRLkpQ/sF0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ecKT6Ikj; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 684AF1F00893;
-	Sat, 30 May 2026 17:07:18 +0000 (UTC)
+	 MIME-Version; b=oZByehfN6gRbm7VtSfhvty55+VXf1MTrk0Qckv3pxYiZyf2aiJA34gxSI5v+JSxDDlPs/VArqZjqG0EUnKeNbcamhmr1u0XKnStyhg5WGa9Ys/Ei31TCIhPKcX4wAcyCcsW5milXR/SfiF+BHLeb2q64QEZqulJlId07M+hpPUk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=y0qUj6Rh; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BDEC51F00893;
+	Sat, 30 May 2026 18:25:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780160839;
-	bh=CEV2+0SF4poX+ZBxJgQ6m/KJOK7shxX6iUeejaMgWus=;
+	s=korg; t=1780165516;
+	bh=ADUOyzuBEp37s4vrHYCm5gY1zk3rJ7eM7HYjl85WLUM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=ecKT6IkjaZ6PoyXrSiVCfCXfPtsI7zvkcHmDDlUErU+Z6HPa8L81YzznpeKLoYAm2
-	 g7wzdZ6tKtfB4pxmb5adh3WKCHKKFPVN6b8vJrr+tj/8EIQHX/x0JIJ7Lr96GRV7QS
-	 WyJUgYGxuYolAUCr1DtFlSfNQ5NLwBX1AGblCjMs=
+	b=y0qUj6Rhj662YJrLyZl5V3YcTfgnZ2ND5v2lHxfdzM6NygwFlxBj39DZfV8YEt/E/
+	 J0XdIkIUHcX5YwNZjGq3Iqx/XkFJIMhNjQ9+1H9SRIHZm3HSvKkMyQ8vVfjHXVS522
+	 zgsaZQlgxc7QhKTBACWa7tHxuBg3Lg8oih5hcWzM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ioana Ciornei <ioana.ciornei@nxp.com>,
-	Cai Xinchen <caixinchen1@huawei.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Waiman Long <longman@redhat.com>,
+	Ming Lei <ming.lei@redhat.com>,
+	Tejun Heo <tj@kernel.org>,
+	Jens Axboe <axboe@kernel.dk>,
+	Alva Lan <alvalan9@foxmail.com>,
+	Vasiliy Kovalev <kovalev@altlinux.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 450/969] dpaa2: add independent dependencies for FSL_DPAA2_SWITCH
-Date: Sat, 30 May 2026 17:59:34 +0200
-Message-ID: <20260530160312.705117553@linuxfoundation.org>
+Subject: [PATCH 5.10 094/589] blk-cgroup: Reinit blkg_iostat_set after clearing in blkcg_reset_stats()
+Date: Sat, 30 May 2026 17:59:35 +0200
+Message-ID: <20260530160227.165115952@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260530160300.485627683@linuxfoundation.org>
-References: <20260530160300.485627683@linuxfoundation.org>
+In-Reply-To: <20260530160224.570625122@linuxfoundation.org>
+References: <20260530160224.570625122@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,82 +72,94 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-257392-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,redhat.com,kernel.org,kernel.dk,foxmail.com,altlinux.org];
+	TAGGED_FROM(0.00)[bounces-258781-lists,stable=lfdr.de];
+	PRECEDENCE_BULK(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
-	PRECEDENCE_BULK(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	NEURAL_HAM(-0.00)[-0.996];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[7];
+	RCPT_COUNT_SEVEN(0.00)[10];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
 	TO_DN_SOME(0.00)[];
-	FROM_HAS_DN(0.00)[]
-X-Rspamd-Queue-Id: 7E9BA60EF1E
+	DBL_BLOCKED_OPENRESOLVER(0.00)[altlinux.org:email,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,foxmail.com:email]
+X-Rspamd-Queue-Id: A0126611EB4
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Cai Xinchen <caixinchen1@huawei.com>
+From: Waiman Long <longman@redhat.com>
 
-[ Upstream commit 12589892f41c4c645c80ef9f036f7451a6045624 ]
+[ Upstream commit 3d2af77e31ade05ff7ccc3658c3635ec1bea0979 ]
 
-Since the commit 84cba72956fd ("dpaa2-switch: integrate
-the MAC endpoint support") included dpaa2-mac.o in the driver,
-but it didn't select PCS_LYNX, PHYLINK and FSL_XGMAC_MDIO. it
-will lead to link error, such as
-undefined reference to `phylink_ethtool_ksettings_set'
-undefined reference to `lynx_pcs_create_fwnode'
+When blkg_alloc() is called to allocate a blkcg_gq structure
+with the associated blkg_iostat_set's, there are 2 fields within
+blkg_iostat_set that requires proper initialization - blkg & sync.
+The former field was introduced by commit 3b8cc6298724 ("blk-cgroup:
+Optimize blkcg_rstat_flush()") while the later one was introduced by
+commit f73316482977 ("blk-cgroup: reimplement basic IO stats using
+cgroup rstat").
 
-And the same reason as the commit d2624e70a2f53 ("dpaa2-eth: select
-XGMAC_MDIO for MDIO bus support"), enable the FSL_XGMAC_MDIO Kconfig
-option in order to have MDIO access to internal and external PHYs.
+Unfortunately those fields in the blkg_iostat_set's are not properly
+re-initialized when they are cleared in v1's blkcg_reset_stats(). This
+can lead to a kernel panic due to NULL pointer access of the blkg
+pointer. The missing initialization of sync is less problematic and
+can be a problem in a debug kernel due to missing lockdep initialization.
 
-Because dpaa2-switch uses fsl_mc_driver APIs, add depends on FSL_MC_BUS
-&& FSL_MC_DPIO as FSL_DPAA2_SWITCH do.
+Fix these problems by re-initializing them after memory clearing.
 
-FSL_XGMAC_MDIO and FSL_MC_BUS depend on OF, thus the dependence of
-FSL_MC_BUS can satisfy FSL_XGMAC_MDIO's OF requirement.
-
-Fixes: 84cba72956fd ("dpaa2-switch: integrate the MAC endpoint support")
-Suggested-by: Ioana Ciornei <ioana.ciornei@nxp.com>
-Signed-off-by: Cai Xinchen <caixinchen1@huawei.com>
-Link: https://patch.msgid.link/20260312065907.476663-2-caixinchen1@huawei.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Fixes: 3b8cc6298724 ("blk-cgroup: Optimize blkcg_rstat_flush()")
+Fixes: f73316482977 ("blk-cgroup: reimplement basic IO stats using cgroup rstat")
+Signed-off-by: Waiman Long <longman@redhat.com>
+Reviewed-by: Ming Lei <ming.lei@redhat.com>
+Acked-by: Tejun Heo <tj@kernel.org>
+Link: https://lore.kernel.org/r/20230606180724.2455066-1-longman@redhat.com
+Signed-off-by: Jens Axboe <axboe@kernel.dk>
+[ Remove this line: bis -> blkg = blkg for blkg was introduced by commit
+  3b8cc6298724 ("blk-cgroup: Optimize blkcg_rstat_flush()") since v6.2. ]
+Signed-off-by: Alva Lan <alvalan9@foxmail.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+(cherry picked from commit 0561aa6033dd181594116d705c41fc16e97161a2)
+[ kovalev: bp to fix CVE-2023-53421 ]
+Signed-off-by: Vasiliy Kovalev <kovalev@altlinux.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/freescale/dpaa2/Kconfig | 4 ++++
+ block/blk-cgroup.c | 4 ++++
  1 file changed, 4 insertions(+)
 
-diff --git a/drivers/net/ethernet/freescale/dpaa2/Kconfig b/drivers/net/ethernet/freescale/dpaa2/Kconfig
-index d029b69c3f183..36280e5d99e1f 100644
---- a/drivers/net/ethernet/freescale/dpaa2/Kconfig
-+++ b/drivers/net/ethernet/freescale/dpaa2/Kconfig
-@@ -34,6 +34,10 @@ config FSL_DPAA2_SWITCH
- 	tristate "Freescale DPAA2 Ethernet Switch"
- 	depends on BRIDGE || BRIDGE=n
- 	depends on NET_SWITCHDEV
-+	depends on FSL_MC_BUS && FSL_MC_DPIO
-+	select PHYLINK
-+	select PCS_LYNX
-+	select FSL_XGMAC_MDIO
- 	help
- 	  Driver for Freescale DPAA2 Ethernet Switch. This driver manages
- 	  switch objects discovered on the Freeescale MC bus.
+diff --git a/block/blk-cgroup.c b/block/blk-cgroup.c
+index dbd18b75ec915..7ffdc3360a6c2 100644
+--- a/block/blk-cgroup.c
++++ b/block/blk-cgroup.c
+@@ -464,8 +464,12 @@ static int blkcg_reset_stats(struct cgroup_subsys_state *css,
+ 			struct blkg_iostat_set *bis =
+ 				per_cpu_ptr(blkg->iostat_cpu, cpu);
+ 			memset(bis, 0, sizeof(*bis));
++
++			/* Re-initialize the cleared blkg_iostat_set */
++			u64_stats_init(&bis->sync);
+ 		}
+ 		memset(&blkg->iostat, 0, sizeof(blkg->iostat));
++		u64_stats_init(&blkg->iostat.sync);
+ 
+ 		for (i = 0; i < BLKCG_MAX_POLS; i++) {
+ 			struct blkcg_policy *pol = blkcg_policy[i];
 -- 
 2.53.0
 
