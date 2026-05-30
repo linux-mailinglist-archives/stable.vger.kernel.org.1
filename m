@@ -1,65 +1,60 @@
-Return-Path: <stable+bounces-258519-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-259162-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id YJs3O0AoG2qS/ggAu9opvQ
-	(envelope-from <stable+bounces-258519-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:11:12 +0200
+	id WM5oAq4xG2qKAAkAu9opvQ
+	(envelope-from <stable+bounces-259162-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:51:26 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 83750611322
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:11:12 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7F3906129FC
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:51:24 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id B41673021D3A
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 18:10:22 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id C05A7307B773
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 18:46:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5EC8F39A7FE;
-	Sat, 30 May 2026 18:10:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1D5C2137750;
+	Sat, 30 May 2026 18:46:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YtxgLvG4"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="b6BwCwtK"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3574931F98D;
-	Sat, 30 May 2026 18:10:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 00B7F86334;
+	Sat, 30 May 2026 18:46:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780164622; cv=none; b=MSmVFBhAyGgB9zMLzLLnUUSx+Iy88/5Tt4F2Qusr/AAtVIDpulNsjvfo1V9uC94/gKMNj8XbQM6EErCjmSBj/o0KzlAAIv3zkgaGqnI9LEZKNqBD5fPZ+a+VfswNMq/VqY+AXdDOPiFtZvVV+3E4LcqrkwIyFUxgqadxMeUGCXM=
+	t=1780166814; cv=none; b=m4aavdsmmYO14t4QzCmeX9lbhXwZtKQ0BX3FTaRueTC6P6eFR9QMOfDVv8wWZlC79SbOiRCQBGoXB0foZ6wqS1pTbWg4jsOrvUqUhOPE7fAsC4ad61UcIG5JTYmSYP+0zOGSPUM0+S2NIXGQngvgIbwFNGWUKrD1sk8g7xU5+i4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780164622; c=relaxed/simple;
-	bh=Ub+lgZ1yOGnCFDpAuH+Y8uQkfFKTthXchbxuCRGOsPU=;
+	s=arc-20240116; t=1780166814; c=relaxed/simple;
+	bh=uoKF8knCYI+mIdaY0XobhYQlYUYhN9VsJgFjhrc4HVE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=e3MqcSqt32Hd5SmGQIpGbAqYZLWu/GszMGEUyqe9B6WlfFQsvYQ03MrG88Al7bktKgWyULNB7Gk5Hx9pfCUs5kmBEfGPvhmBNzPeRi5KiPsWM7Rtp6Qpvum4xY1s1GWpUAsMgg+cChSH1kNcDcutN3eweU1tvr+7dMpTYvqAZvE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YtxgLvG4; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 77BF01F00893;
-	Sat, 30 May 2026 18:10:20 +0000 (UTC)
+	 MIME-Version; b=iPjZPQTrwJ9uplGUibpFwle5eIs9sIuuyJrZCIVNKG1HmDbjFdTjs6mO/lu9IyIeeP2mzVzohuKj+Bluju/N0+E3TDUS6ksKA9lCdsw89SdfwcavLb1IDrziB61rOKIc8RMk/HgJr19+3h1xQTC9tbfEjtAA+yGKocE4ZKM4UI8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=b6BwCwtK; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 43A371F00893;
+	Sat, 30 May 2026 18:46:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780164621;
-	bh=7HrbfGadCzxLcHYRqDk92DKdNNbUW6ozNHg7SNC1kR8=;
+	s=korg; t=1780166813;
+	bh=Iwp7iA4WoBBd46eKYSe3FEbf+VHwaHLh3Gh+jTtvhLA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=YtxgLvG4HacAcNitttcSmnwR8mfDE/odJ5qNytmO7JugHweb1YNYKI41Rw9hQyVDl
-	 ulocwDuLmX5tdHEfWUeHaotV3UqTFG9Fcox66LzJOMNj/+sSBsFXYhxLFlpOoc1Ukq
-	 /OeeIzkzNS3A5k9qUqpr3ia3aT7Lm1zIEVl1PnPw=
+	b=b6BwCwtK+TGqm+8G2gEC3AnURxxj5JoMlJzdoya9TIX3ocaNg3QUoGz5h/tF+YjmF
+	 gO3rx0htVFrqBil7szOH/yHbOEvlDzpEV8yYfZE+o5BcIA9KYOOIdV5O6sEx5oUzuC
+	 2yaI+fFxb4rc6xM+YidmLdMq/Beneliup+cbgSjg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yuan Tan <yuantan098@gmail.com>,
-	Yifan Wu <yifanwucs@gmail.com>,
-	Juefei Pu <tomapufckgml@gmail.com>,
-	Xin Liu <bird@lzu.edu.cn>,
-	Jiexun Wang <wangjiexun2025@gmail.com>,
-	Ren Wei <n05ec@lzu.edu.cn>,
-	Florian Westphal <fw@strlen.de>,
-	Pablo Neira Ayuso <pablo@netfilter.org>,
+	Jun Yan <jerrysteve1101@gmail.com>,
+	Martin Blumenstingl <martin.blumenstingl@googlemail.com>,
+	Neil Armstrong <neil.armstrong@linaro.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 609/776] netfilter: xt_policy: fix strict mode inbound policy matching
+Subject: [PATCH 5.10 442/589] arm64: dts: meson-gxl-p230: fix ethernet PHY interrupt number
 Date: Sat, 30 May 2026 18:05:23 +0200
-Message-ID: <20260530160255.752700539@linuxfoundation.org>
+Message-ID: <20260530160236.319659692@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260530160240.228940103@linuxfoundation.org>
-References: <20260530160240.228940103@linuxfoundation.org>
+In-Reply-To: <20260530160224.570625122@linuxfoundation.org>
+References: <20260530160224.570625122@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -70,80 +65,79 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_MISSING_CHARSET(0.50)[];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-258519-lists,stable=lfdr.de];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,lzu.edu.cn,strlen.de,netfilter.org,kernel.org];
-	RCPT_COUNT_TWELVE(0.00)[12];
+	RCVD_COUNT_THREE(0.00)[4];
+	TAGGED_FROM(0.00)[bounces-259162-lists,stable=lfdr.de];
+	FROM_HAS_DN(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	PRECEDENCE_BULK(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,googlemail.com,linaro.org,kernel.org];
+	MIME_TRACE(0.00)[0:+];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	MID_RHS_MATCH_FROM(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	NEURAL_HAM(-0.00)[-0.999];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
 	TO_DN_SOME(0.00)[];
-	FROM_HAS_DN(0.00)[]
-X-Rspamd-Queue-Id: 83750611322
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,linuxfoundation.org:mid,linuxfoundation.org:dkim,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,0.0.0.0:email,linaro.org:email]
+X-Rspamd-Queue-Id: 7F3906129FC
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jiexun Wang <wangjiexun2025@gmail.com>
+From: Jun Yan <jerrysteve1101@gmail.com>
 
-[ Upstream commit 4b2b4d7d4e203c92db8966b163edfacb1f0e1e29 ]
+[ Upstream commit 174a0ef3b33434f475c87e66f37980e39b73805a ]
 
-match_policy_in() walks sec_path entries from the last transform to the
-first one, but strict policy matching needs to consume info->pol[] in
-the same forward order as the rule layout.
+Correct the interrupt number assigned to the Realtek PHY in the p230
 
-Derive the strict-match policy position from the number of transforms
-already consumed so that multi-element inbound rules are matched
-consistently.
+following the same logic as commit 3106507e1004 ("ARM64: dts: meson-gxm:
+fix q200 interrupt number"),as reported in [PATCH 0/2] Ethernet PHY
+interrupt improvements [1].
 
-Fixes: c4b885139203 ("[NETFILTER]: x_tables: replace IPv4/IPv6 policy match by address family independant version")
-Reported-by: Yuan Tan <yuantan098@gmail.com>
-Reported-by: Yifan Wu <yifanwucs@gmail.com>
-Reported-by: Juefei Pu <tomapufckgml@gmail.com>
-Reported-by: Xin Liu <bird@lzu.edu.cn>
-Signed-off-by: Jiexun Wang <wangjiexun2025@gmail.com>
-Signed-off-by: Ren Wei <n05ec@lzu.edu.cn>
-Acked-by: Florian Westphal <fw@strlen.de>
-Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
+[1] https://lore.kernel.org/all/20171202214037.17017-1-martin.blumenstingl@googlemail.com/
+
+Fixes: b94d22d94ad2 ("ARM64: dts: meson-gx: add external PHY interrupt on some platforms")
+Signed-off-by: Jun Yan <jerrysteve1101@gmail.com>
+Reviewed-by: Martin Blumenstingl <martin.blumenstingl@googlemail.com>
+Link: https://patch.msgid.link/20260330145111.115318-1-jerrysteve1101@gmail.com
+Signed-off-by: Neil Armstrong <neil.armstrong@linaro.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/netfilter/xt_policy.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ arch/arm64/boot/dts/amlogic/meson-gxl-s905d-p230.dts | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/net/netfilter/xt_policy.c b/net/netfilter/xt_policy.c
-index cb6e8279010a4..b5fa65558318f 100644
---- a/net/netfilter/xt_policy.c
-+++ b/net/netfilter/xt_policy.c
-@@ -63,7 +63,7 @@ match_policy_in(const struct sk_buff *skb, const struct xt_policy_info *info,
- 		return 0;
+diff --git a/arch/arm64/boot/dts/amlogic/meson-gxl-s905d-p230.dts b/arch/arm64/boot/dts/amlogic/meson-gxl-s905d-p230.dts
+index b2ab05c220903..67c952fe8abc1 100644
+--- a/arch/arm64/boot/dts/amlogic/meson-gxl-s905d-p230.dts
++++ b/arch/arm64/boot/dts/amlogic/meson-gxl-s905d-p230.dts
+@@ -86,7 +86,8 @@ external_phy: ethernet-phy@0 {
+ 		reset-gpios = <&gpio GPIOZ_14 GPIO_ACTIVE_LOW>;
  
- 	for (i = sp->len - 1; i >= 0; i--) {
--		pos = strict ? i - sp->len + 1 : 0;
-+		pos = strict ? sp->len - i - 1 : 0;
- 		if (pos >= info->len)
- 			return 0;
- 		e = &info->pol[pos];
+ 		interrupt-parent = <&gpio_intc>;
+-		interrupts = <29 IRQ_TYPE_LEVEL_LOW>;
++		/* MAC_INTR on GPIOZ_15 */
++		interrupts = <25 IRQ_TYPE_LEVEL_LOW>;
+ 		eee-broken-1000t;
+ 	};
+ };
 -- 
 2.53.0
 
