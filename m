@@ -1,59 +1,61 @@
-Return-Path: <stable+bounces-258089-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-258713-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 6CGgIxQkG2rO/QgAu9opvQ
-	(envelope-from <stable+bounces-258089-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:53:24 +0200
+	id GAvhI60qG2r//ggAu9opvQ
+	(envelope-from <stable+bounces-258713-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:21:33 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2589D610950
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:53:23 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 44044611911
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:21:33 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 3FDEA3009F1A
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 17:46:24 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id B2CE83014830
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 18:21:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C6A593AB482;
-	Sat, 30 May 2026 17:46:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 00B0F284690;
+	Sat, 30 May 2026 18:21:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rJFv1GA+"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cq6gQlzH"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 65BF83546EA;
-	Sat, 30 May 2026 17:46:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D2A6C2641C6;
+	Sat, 30 May 2026 18:21:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780163183; cv=none; b=tdA4maRpPSP/WGl2FvzLlTVWyhQ0oWt7LEaexzd/MgwxccaqeR0Vvs/Mb/++CTmiFHyZUtrUUd4BhEV2cAkEne6ZvLEoO1tuVwpbPW4uNB4kvDJN4wV3aayn8RueosAJGmJE95czW0RcKUGPkp0AfmFGCMmb8QMEeoQYNiW8yJw=
+	t=1780165287; cv=none; b=GjUnRmBaDZVIcvC6fGt4Up5Zd8l4prFnVseN1FQnM3Eajmhd1lcN2w6T49flYD49I1l7416yGRmo+Gunyb3PR0N+Jt/BO8TwaSKM406xdD7ljE5uw0o04hFInxDaXem5+zcs5c16sT5t1uNck4Pq3LKJ6PDKWTQvusyllWw/yw0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780163183; c=relaxed/simple;
-	bh=m4yIFz+U6vFoBl3n9F5sAOFLXV2saBgLLPdpzjj0qS0=;
+	s=arc-20240116; t=1780165287; c=relaxed/simple;
+	bh=9FdTAwNprs6qjMD6qbHPcgRtsVu/seDXslU9JMEBUO4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=VTLsldrJaacCS08JGOMJiny0Xg6EQn8ALNKG0BFyv0FhLawReMOsPQIHpBdb0IAnYxjkcOEtdqRyYCUvR08VtmDZSAXIbBwK+8Yt/lkf53HviUkZiAnYVR/6lqhCYvUXXU/W4BGSrLzPFoih+QfaUgWQ4onipQti3L18BKsekYA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rJFv1GA+; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A58721F00898;
-	Sat, 30 May 2026 17:46:21 +0000 (UTC)
+	 MIME-Version; b=GIXmCdzLMcyJ9YL+EBDJkNcDklN3JImlv+dhGLIlYrBr8n6YZ9rjmJQdK1ShIHR4hsbQEYy3S7qrDp256nq0x9nYeuwTpZ7YWgKN4BjpFbv0o7sNL00dCCnsDRy5na01vjc7rJ+RApPQAZ9nBvz1B1M7dEtMkErDr4wcwWsgBek=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cq6gQlzH; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D92391F00893;
+	Sat, 30 May 2026 18:21:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780163182;
-	bh=hUT0ocIqx/U2/3v6Xdl+r7Gzh5jWP30mOWbqNKVeQSQ=;
+	s=korg; t=1780165286;
+	bh=MXeBigRS+2dlS1u9emjK3aDRUIkUXsKIR7lh4mDzzdA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=rJFv1GA+CpacOfxm5Dym15UbSJBY1ZnBWne9BTzWtcXaKBb14YKzOO8KAayBFDWoj
-	 azpPheQ1z/1GMjx3MGyiJqb29QirUR+Qjc00pffpnw/+c5vANafnu+Hz646zFAsDCO
-	 dAyVodFNo9J13AlASOOByCSQ+3UESgdDFW7Sh4Gs=
+	b=cq6gQlzHxmCL/EsR9Ev7jPE6Fczgrka6uwHdsG5OPMlYytYRoGZKHviTqGm5X+708
+	 tXJZdrOXeEv343CpvtmSsWjwU1TMpQsZuoqbDDDMtzBgCZpE/q6dP1iezXDQReRg72
+	 +mxwv1EngXKVuXaMT7UnlKgo3yzlMk21Wb8X5vbE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+d56178c27a4710960820@syzkaller.appspotmail.com,
-	=?UTF-8?q?C=C3=A1ssio=20Gabriel?= <cassiogabrielcontato@gmail.com>,
-	Takashi Iwai <tiwai@suse.de>
-Subject: [PATCH 5.15 181/776] ALSA: usb-audio: stop parsing UAC2 rates at MAX_NR_RATES
+	Frank Li <Frank.Li@nxp.com>,
+	Sebastian Krzyszkowiak <sebastian.krzyszkowiak@puri.sm>,
+	Peng Fan <peng.fan@nxp.com>,
+	Fabio Estevam <festevam@gmail.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 014/589] arm64: dts: imx8mq: Set the correct gpu_ahb clock frequency
 Date: Sat, 30 May 2026 17:58:15 +0200
-Message-ID: <20260530160245.174404965@linuxfoundation.org>
+Message-ID: <20260530160224.954121247@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260530160240.228940103@linuxfoundation.org>
-References: <20260530160240.228940103@linuxfoundation.org>
+In-Reply-To: <20260530160224.570625122@linuxfoundation.org>
+References: <20260530160224.570625122@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,80 +65,78 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-0.66 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,syzkaller.appspotmail.com,gmail.com,suse.de];
 	FORGED_SENDER_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	MIME_TRACE(0.00)[0:+];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,nxp.com,puri.sm,gmail.com,kernel.org];
+	RCVD_TLS_LAST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-258713-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
-	TAGGED_FROM(0.00)[bounces-258089-lists,stable=lfdr.de];
-	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	DBL_PROHIBIT(0.00)[2.67.213.128:email];
 	MID_RHS_MATCH_FROM(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable,d56178c27a4710960820];
-	TO_DN_SOME(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[6]
-X-Rspamd-Queue-Id: 2589D610950
+	NEURAL_HAM(-0.00)[-0.995];
+	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_SEVEN(0.00)[8];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[puri.sm:email,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,nxp.com:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,i.mx:url]
+X-Rspamd-Queue-Id: 44044611911
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Cássio Gabriel <cassiogabrielcontato@gmail.com>
+From: Sebastian Krzyszkowiak <sebastian.krzyszkowiak@puri.sm>
 
-commit 3c318f97dcc50b2e0556a1813bd6958678e881fd upstream.
+[ Upstream commit 1f99b5d93d99ca17d50b386a674d0ce1f20932d8 ]
 
-parse_uac2_sample_rate_range() caps the number of enumerated
-rates at MAX_NR_RATES, but it only breaks out of the current
-rate loop. A malformed UAC2 RANGE response with additional
-triplets continues parsing the remaining triplets and repeatedly
-prints "invalid uac2 rates" while probe still holds
-register_mutex.
+According to i.MX 8M Quad Reference Manual, GPU_AHB_CLK_ROOT's maximum
+frequency is 400MHz.
 
-Stop the whole parse once the cap is reached and return the
-number of rates collected so far.
-
-Fixes: 4fa0e81b8350 ("ALSA: usb-audio: fix possible hang and overflow in parse_uac2_sample_rate_range()")
-Cc: stable@vger.kernel.org
-Reported-by: syzbot+d56178c27a4710960820@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=d56178c27a4710960820
-Signed-off-by: Cássio Gabriel <cassiogabrielcontato@gmail.com>
-Link: https://patch.msgid.link/20260415-usb-audio-uac2-rate-cap-v1-1-5ecbafc120d8@gmail.com
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 45d2c84eb3a2 ("arm64: dts: imx8mq: add GPU node")
+Reviewed-by: Frank Li <Frank.Li@nxp.com>
+Signed-off-by: Sebastian Krzyszkowiak <sebastian.krzyszkowiak@puri.sm>
+Reviewed-by: Peng Fan <peng.fan@nxp.com>
+Reviewed-by: Fabio Estevam <festevam@gmail.com>
+Signed-off-by: Frank Li <Frank.Li@nxp.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/usb/format.c |    2 +-
+ arch/arm64/boot/dts/freescale/imx8mq.dtsi | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/sound/usb/format.c
-+++ b/sound/usb/format.c
-@@ -461,7 +461,7 @@ static int parse_uac2_sample_rate_range(
- 			nr_rates++;
- 			if (nr_rates >= MAX_NR_RATES) {
- 				usb_audio_err(chip, "invalid uac2 rates\n");
--				break;
-+				return nr_rates;
- 			}
+diff --git a/arch/arm64/boot/dts/freescale/imx8mq.dtsi b/arch/arm64/boot/dts/freescale/imx8mq.dtsi
+index 8d0d41973ff54..995cbe6cf0a26 100644
+--- a/arch/arm64/boot/dts/freescale/imx8mq.dtsi
++++ b/arch/arm64/boot/dts/freescale/imx8mq.dtsi
+@@ -1137,7 +1137,7 @@ gpu: gpu@38000000 {
+ 			                         <&clk IMX8MQ_GPU_PLL_OUT>,
+ 			                         <&clk IMX8MQ_GPU_PLL>;
+ 			assigned-clock-rates = <800000000>, <800000000>,
+-			                       <800000000>, <800000000>, <0>;
++			                       <800000000>, <400000000>, <0>;
+ 			power-domains = <&pgc_gpu>;
+ 		};
  
- skip_rate:
+-- 
+2.53.0
+
 
 
 
