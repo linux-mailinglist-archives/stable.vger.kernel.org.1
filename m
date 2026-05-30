@@ -1,59 +1,62 @@
-Return-Path: <stable+bounces-257318-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-258100-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id yJwjE5QaG2pR/QgAu9opvQ
-	(envelope-from <stable+bounces-257318-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:12:52 +0200
+	id kCn2LC8kG2pm/ggAu9opvQ
+	(envelope-from <stable+bounces-258100-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:53:51 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id C3B2E60F247
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:12:51 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 10153610991
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:53:50 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 14A0F3089E66
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 17:03:14 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 5786E30570C0
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 17:46:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6659C32D42B;
-	Sat, 30 May 2026 17:03:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F306C3AEB5C;
+	Sat, 30 May 2026 17:46:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vfa2rk8H"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UsUHzj67"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 42D152690D5;
-	Sat, 30 May 2026 17:03:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CCD4E3AB482;
+	Sat, 30 May 2026 17:46:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780160593; cv=none; b=KmMUVUKF+dCFqiQ3S6mpKLuDFn/Uk/9OCUEU56y9teoheldG6ysFfoNe79KqUU3BRCe3chVkiJZuihe9HFLgZf87+vPq3LqGwyHJa1b1SXujVaotk+TuIXtWid1Hxe/PqF8DNT45NNl+BKBzUWSApHQ+0dacd9HIgeQO8vWHO+w=
+	t=1780163216; cv=none; b=KHdbn1MwkMa3EPmbhs0XoBDivJBgon5QK1ENgvMU5uHqWIJ2Z8wAAMrjO0fHchYBQa+FDUhZMqMs1Re4t3Zb8543nnLQSAo79RYMa/QIkEIxQdIlD7c/IZhUA9bF+FAVsZdV0dZRUqYPlnTfLp6An+koB21Nde50N+VGYmB6/cg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780160593; c=relaxed/simple;
-	bh=zPWuMBvi+HMpnD23PXzjYKsphyw1SJyb2witQdImLdk=;
+	s=arc-20240116; t=1780163216; c=relaxed/simple;
+	bh=bjyBiqMl+dgfEM3QOjC2yROKLns9d95hv21h4cwFyaE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=OTP6yrIu2un7Zq0Oeflemakk211C4f0Lu8EqYmD0WX+55LvmjAJzJPZx2GY692eMhnGOvfsdcz0Lt9Qul7TXqRbmrjzI172DZXobfVCaYdTXwOveAFn1Bk641abyv2v6lSYtcpOmBVbnIx20hahloUDYXNbPl54VjBF401rpoGs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vfa2rk8H; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7CE8E1F00893;
-	Sat, 30 May 2026 17:03:11 +0000 (UTC)
+	 MIME-Version; b=nKAE1c2nwUpAfRCU0tE41K/ILv9U5Q9ATzxEEB1oYAg+h+Ey1kJ3ym5EozmTS96QjoGm1r58J0599awkfSOSCGPvqKYhWnHasPq44h6UodAuiwnvEnQZ+5GD8YuWfhe90AIrO28ZHN2ywMWUVu3X0kmfk63Gb+pFQryPIVICFRo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UsUHzj67; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 234C61F00893;
+	Sat, 30 May 2026 17:46:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780160592;
-	bh=682HuJp+U5IogcBQnNO4/ED6CAHtnEjkBc0mtLvjHJo=;
+	s=korg; t=1780163215;
+	bh=jwNXa8bI5zP86/5aRxsCp91dHQvgwaewCmKFGtUpR1M=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=vfa2rk8HbqCgowNln2bIQ9aEjVDY6gmGcEXX37RBet9cZUjOF+YqCZbmG6ML25q8z
-	 eQCGi5bOgbnZ1FKfRikBVGLGZLH54ugbpgi9sbMQoX09uq3R+br7LyRr5na5u27ZHW
-	 BUisP65nXDoqpy0PhClj5SqSYd9RqWMZ3zc6G0WE=
+	b=UsUHzj67dGqYibAF2zzOxKsxOt6J4NUo29R4EPieFpZAhEdgwtbOKc7X0TxskVhMk
+	 Ra8ATBX7W45e3cDblnLxr/9OFY6/7zQns0eAjC4KCHSKC+MZuKhkOVlky3bF1hBsrx
+	 Gzth7vN8kGVscnbHcnLKjm+UYr1eaIHmiIe2lc68=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Chao Li <lichao@loongson.cn>,
-	Dongyan Qian <qiandongyan@loongson.cn>,
-	Huacai Chen <chenhuacai@loongson.cn>
-Subject: [PATCH 6.1 380/969] LoongArch: Use per-root-bridge PCIH flag to skip mem resource fixup
+	Thomas Zimmermann <tzimmermann@suse.de>,
+	Tzung-Bi Shih <tzungbi@kernel.org>,
+	Julius Werner <jwerner@chromium.org>,
+	Samuel Holland <samuel@sholland.org>,
+	Brian Norris <briannorris@chromium.org>,
+	chrome-platform@lists.linux.dev
+Subject: [PATCH 5.15 190/776] firmware: google: framebuffer: Do not mark framebuffer as busy
 Date: Sat, 30 May 2026 17:58:24 +0200
-Message-ID: <20260530160310.791443418@linuxfoundation.org>
+Message-ID: <20260530160245.410916682@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260530160300.485627683@linuxfoundation.org>
-References: <20260530160300.485627683@linuxfoundation.org>
+In-Reply-To: <20260530160240.228940103@linuxfoundation.org>
+References: <20260530160240.228940103@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,91 +69,80 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_MISSING_CHARSET(0.50)[];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-257318-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-258100-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
-	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TO_DN_SOME(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	RCPT_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[stable];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[9];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[]
-X-Rspamd-Queue-Id: C3B2E60F247
+X-Rspamd-Queue-Id: 10153610991
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Huacai Chen <chenhuacai@loongson.cn>
+From: Thomas Zimmermann <tzimmermann@suse.de>
 
-commit 49f33840dcc907d21313d369e34872880846b61c upstream.
+commit f3850d399de3b6142b02315227ef9e772ed0c302 upstream.
 
-When firmware enables 64-bit PCI host bridge support, some root bridges
-already provide valid 64-bit mem resource windows through ACPI.
+Remove the flag IORESOURCE_BUSY flag from coreboot's framebuffer
+resource. It prevents simpledrm from successfully requesting the
+range for its own use; resulting in errors such as
 
-In this case, the LoongArch-specific mem resource high-bits fixup in
-acpi_prepare_root_resources() should not be applied unconditionally.
-Otherwise, the kernel may override the native resource layout derived
-from firmware, and later BAR assignment can fail to place device BARs
-into the intended 64-bit address space correctly.
+[    2.775430] simple-framebuffer simple-framebuffer.0: [drm] could not acquire memory region [mem 0x80000000-0x80407fff flags 0x80000200]
 
-Add a per-root-bridge ACPI flag, PCIH, and evaluate it from the current
-root bridge device scope. When PCIH is set, skip the mem resource high-
-bits fixup path and let the kernel use the firmware-provided resource
-description directly. When PCIH is absent or cleared, keep the existing
-behavior and continue filling the high address bits from the host bridge
-address.
+As with other uses of simple-framebuffer, the simple-framebuffer
+device should only declare it's I/O resources, but not actively use
+them.
 
-This makes the behavior per-root-bridge configurable and avoids breaking
-valid 64-bit BAR space allocation on bridges whose 64-bit windows have
-already been fully described by firmware.
-
-Cc: stable@vger.kernel.org
-Suggested-by: Chao Li <lichao@loongson.cn>
-Tested-by: Dongyan Qian <qiandongyan@loongson.cn>
-Signed-off-by: Dongyan Qian <qiandongyan@loongson.cn>
-Signed-off-by: Huacai Chen <chenhuacai@loongson.cn>
+Signed-off-by: Thomas Zimmermann <tzimmermann@suse.de>
+Fixes: 851b4c14532d ("firmware: coreboot: Add coreboot framebuffer driver")
+Acked-by: Tzung-Bi Shih <tzungbi@kernel.org>
+Acked-by: Julius Werner <jwerner@chromium.org>
+Cc: Samuel Holland <samuel@sholland.org>
+Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: Tzung-Bi Shih <tzungbi@kernel.org>
+Cc: Brian Norris <briannorris@chromium.org>
+Cc: Julius Werner <jwerner@chromium.org>
+Cc: chrome-platform@lists.linux.dev
+Cc: <stable@vger.kernel.org> # v4.18+
+Link: https://patch.msgid.link/20260217155836.96267-3-tzimmermann@suse.de
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/loongarch/pci/acpi.c |    5 +++++
- 1 file changed, 5 insertions(+)
+ drivers/firmware/google/framebuffer-coreboot.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/arch/loongarch/pci/acpi.c
-+++ b/arch/loongarch/pci/acpi.c
-@@ -58,11 +58,16 @@ static void acpi_release_root_info(struc
- static int acpi_prepare_root_resources(struct acpi_pci_root_info *ci)
- {
- 	int status;
-+	unsigned long long pci_h = 0;
- 	struct resource_entry *entry, *tmp;
- 	struct acpi_device *device = ci->bridge;
+--- a/drivers/firmware/google/framebuffer-coreboot.c
++++ b/drivers/firmware/google/framebuffer-coreboot.c
+@@ -50,7 +50,7 @@ static int framebuffer_probe(struct core
+ 		return -ENODEV;
  
- 	status = acpi_pci_probe_root_resources(ci);
- 	if (status > 0) {
-+		acpi_evaluate_integer(device->handle, "PCIH", NULL, &pci_h);
-+		if (pci_h)
-+			return status;
-+
- 		resource_list_for_each_entry_safe(entry, tmp, &ci->resources) {
- 			if (entry->res->flags & IORESOURCE_MEM) {
- 				entry->offset = ci->root->mcfg_addr & GENMASK_ULL(63, 40);
+ 	memset(&res, 0, sizeof(res));
+-	res.flags = IORESOURCE_MEM | IORESOURCE_BUSY;
++	res.flags = IORESOURCE_MEM;
+ 	res.name = "Coreboot Framebuffer";
+ 	res.start = fb->physical_address;
+ 	length = PAGE_ALIGN(fb->y_resolution * fb->bytes_per_line);
 
 
 
