@@ -1,60 +1,58 @@
-Return-Path: <stable+bounces-256939-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-257167-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id CNkCMNcNG2q/+ggAu9opvQ
-	(envelope-from <stable+bounces-256939-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 18:18:31 +0200
+	id iGFKMDAWG2pV/AgAu9opvQ
+	(envelope-from <stable+bounces-257167-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 18:54:08 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3E83560E11B
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 18:18:30 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id 66F7F60E91D
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 18:54:08 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id CDB993073720
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 16:13:25 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id EB3283017ADD
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 16:54:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 30C02334695;
-	Sat, 30 May 2026 16:13:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EE24233FE15;
+	Sat, 30 May 2026 16:53:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sURBsfTv"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GgfwX8Gr"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0BE1B31DD96;
-	Sat, 30 May 2026 16:13:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C285D32D42B;
+	Sat, 30 May 2026 16:53:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780157605; cv=none; b=QRuSIcB16U/LHXaqkefMi09uK2NaTgKKwXP/QVf+GWrfTFTblQXZ88S/joKXePEq+qEOb6KvgTFaX91jvDXMq0RHdiV/PeS+WQcMkhTe/1DIXlvOW7Sj6W4ncmM03dTIzcZi8cNuMQ29UzPYxO1QDgXWueElD3/ncNEZqrUHxNU=
+	t=1780160039; cv=none; b=oo9j8/mwd0TCdN/5S4KLZJvNQzw1Vsa5YwDMkse4eUXPH9cixrC4PCJZzcsskjtdAel9Kq1d3zdV4eUZcDOC28WZldmjex7R/06wkU/M52nRWjnuZGEFJyCvk7vqlEDZ0qk3AbymmZtZa8rGTrt0g3N6B6JUk5L/XdZw/idxIbg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780157605; c=relaxed/simple;
-	bh=1o7kuhGQvHIMSBHBcSEYUv7i8OkPsCZiz8HjtjrEQto=;
+	s=arc-20240116; t=1780160039; c=relaxed/simple;
+	bh=iaUoIUhtKx709PbCR9JugEd2b2kHCkqQ5eT0a7LnQZ8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=a2tiPd5bppCk1ih6ie/c1f9j4pPdPl4RYsXshokMV9LVCTixkI4oNFzUwAKMsNEvgMqC+WAGZvhn02ZjaUqsS8o5rKpDCVXOTuU8n/jlgsvaBpCFmhORGGDFolm63EPZUBq3I19IUChvn/+KQRIeshkHIrnv8+Oj6ZoO1///B0E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sURBsfTv; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CF84D1F00893;
-	Sat, 30 May 2026 16:13:21 +0000 (UTC)
+	 MIME-Version; b=iQDN3BGmbFTlp4J7x+zSrXMOYVhBDfYUJJpFU6P+sDQHW8A/l9j02GRnccCCRwQHuD9vcaeVg1IEhLdmIyuPjeCb7UdXkRKVyy1uCic9/gE7wAIEJH8gAM47OiCVSM82EoCHEcfotHOWobzU8ZI0d5RGcssl3emvFYgWs36vln0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GgfwX8Gr; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 185A71F00893;
+	Sat, 30 May 2026 16:53:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780157603;
-	bh=ur+FcSdyxk8tN3dYiepQwyPNWTco+o9a2Ar3uQ6cMq0=;
+	s=korg; t=1780160038;
+	bh=YEk6k3cupXquMEQRu7WzdZ8p7N7gMNiNlaEkj/p/unw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=sURBsfTvJ/5JLfkHYE6fofoTgJ5UxtGcPL8RjfiebTMOrewe6/EtiTiL8Bwjnvlvx
-	 maMughN9Ll6mRRL1KlEsYHpVoRIv2fTIIocd9xLEJpqxTkXG2oJTVYHju4kUK0s1C6
-	 MR2O+hiG79grH3ksU5wUPf8y+WXMIsUytTPk/g9Y=
+	b=GgfwX8GrX8O0jIsyBufLymVvInyoNZpcnDHA66UiehPGXbWW6nB28qNS5sNN5Zls2
+	 WsL6FZfPMj17ov3G5vZ7Xxx8tvVauoRY1+gGe8LqXS7G8n/JXd4TA5ifw2CFVKYcVo
+	 nW5lfBtCsSEsWktG8NuZ+OMZ2xVdf49eWUh8NlsA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Boris Burkov <boris@bur.io>,
-	Goldwyn Rodrigues <rgoldwyn@suse.com>,
-	David Sterba <dsterba@suse.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 004/776] btrfs: tracepoints: get correct superblock from dentry in event btrfs_sync_file()
-Date: Sat, 30 May 2026 17:55:18 +0200
-Message-ID: <20260530160240.356212925@linuxfoundation.org>
+	Harin Lee <me@harin.net>,
+	Takashi Iwai <tiwai@suse.de>
+Subject: [PATCH 6.1 195/969] ALSA: ctxfi: Add fallback to default RSR for S/PDIF
+Date: Sat, 30 May 2026 17:55:19 +0200
+Message-ID: <20260530160305.858511714@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260530160240.228940103@linuxfoundation.org>
-References: <20260530160240.228940103@linuxfoundation.org>
+In-Reply-To: <20260530160300.485627683@linuxfoundation.org>
+References: <20260530160300.485627683@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -67,83 +65,77 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-256939-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TAGGED_FROM(0.00)[bounces-257167-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	TO_DN_SOME(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	RCPT_COUNT_FIVE(0.00)[5];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[7];
-	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,bur.io:email,suse.com:email]
-X-Rspamd-Queue-Id: 3E83560E11B
+	MID_RHS_MATCH_FROM(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	FROM_HAS_DN(0.00)[]
+X-Rspamd-Queue-Id: 66F7F60E91D
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Goldwyn Rodrigues <rgoldwyn@suse.de>
+From: Harin Lee <me@harin.net>
 
-[ Upstream commit a85b46db143fda5869e7d8df8f258ccef5fa1719 ]
+commit 7d61662197ecdc458e33e475b6ada7f6da61d364 upstream.
 
-If overlay is used on top of btrfs, dentry->d_sb translates to overlay's
-super block and fsid assignment will lead to a crash.
+spdif_passthru_playback_get_resources() uses atc->pll_rate as the RSR
+for the MSR calculation loop. However, pll_rate is only updated in
+atc_pll_init() and not in hw_pll_init(), so it remains 0 after the
+card init.
 
-Use file_inode(file)->i_sb to always get btrfs_sb.
+When spdif_passthru_playback_setup() skips atc_pll_init() for
+32000 Hz, (rsr * desc.msr) always becomes 0, causing the loop to spin
+indefinitely.
 
-Reviewed-by: Boris Burkov <boris@bur.io>
-Signed-off-by: Goldwyn Rodrigues <rgoldwyn@suse.com>
-Signed-off-by: David Sterba <dsterba@suse.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Add fallback to use atc->rsr when atc->pll_rate is 0. This reflects
+the hardware state, since hw_card_init() already configures the PLL
+to the default RSR.
+
+Fixes: 8cc72361481f ("ALSA: SB X-Fi driver merge")
+Cc: stable@vger.kernel.org
+Signed-off-by: Harin Lee <me@harin.net>
+Link: https://patch.msgid.link/20260406074913.217374-1-me@harin.net
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- include/trace/events/btrfs.h | 11 +++++++----
- 1 file changed, 7 insertions(+), 4 deletions(-)
+ sound/pci/ctxfi/ctatc.c |    3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/include/trace/events/btrfs.h b/include/trace/events/btrfs.h
-index a5f77b685c55f..058c85534f3f1 100644
---- a/include/trace/events/btrfs.h
-+++ b/include/trace/events/btrfs.h
-@@ -695,12 +695,15 @@ TRACE_EVENT(btrfs_sync_file,
- 	),
+--- a/sound/pci/ctxfi/ctatc.c
++++ b/sound/pci/ctxfi/ctatc.c
+@@ -791,7 +791,8 @@ static int spdif_passthru_playback_get_r
+ 	struct src *src;
+ 	int err;
+ 	int n_amixer = apcm->substream->runtime->channels, i;
+-	unsigned int pitch, rsr = atc->pll_rate;
++	unsigned int pitch;
++	unsigned int rsr = atc->pll_rate ? atc->pll_rate : atc->rsr;
  
- 	TP_fast_assign(
--		const struct dentry *dentry = file->f_path.dentry;
--		const struct inode *inode = d_inode(dentry);
-+		struct dentry *dentry = file_dentry(file);
-+		struct inode *inode = file_inode(file);
-+		struct dentry *parent = dget_parent(dentry);
-+		struct inode *parent_inode = d_inode(parent);
- 
--		TP_fast_assign_fsid(btrfs_sb(file->f_path.dentry->d_sb));
-+		dput(parent);
-+		TP_fast_assign_fsid(btrfs_sb(inode->i_sb));
- 		__entry->ino		= btrfs_ino(BTRFS_I(inode));
--		__entry->parent		= btrfs_ino(BTRFS_I(d_inode(dentry->d_parent)));
-+		__entry->parent		= btrfs_ino(BTRFS_I(parent_inode));
- 		__entry->datasync	= datasync;
- 		__entry->root_objectid	=
- 				 BTRFS_I(inode)->root->root_key.objectid;
--- 
-2.53.0
-
+ 	/* first release old resources */
+ 	atc_pcm_release_resources(atc, apcm);
 
 
 
