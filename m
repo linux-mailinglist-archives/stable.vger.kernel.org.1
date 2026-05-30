@@ -1,61 +1,60 @@
-Return-Path: <stable+bounces-258343-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-257522-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id mKa8MYkoG2qS/ggAu9opvQ
-	(envelope-from <stable+bounces-258343-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:12:25 +0200
+	id SDj6DMocG2p3/QgAu9opvQ
+	(envelope-from <stable+bounces-257522-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:22:18 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 26EAB611385
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:12:25 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id A58AE60F831
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:22:17 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 292AA30BCC79
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 18:00:34 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id E1AE530B9AFB
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 17:14:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C76E5348C5E;
-	Sat, 30 May 2026 18:00:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8D2803A7848;
+	Sat, 30 May 2026 17:14:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PbMghMIQ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cXMLgTks"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AC3A733F5A0;
-	Sat, 30 May 2026 18:00:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6A283395AD8;
+	Sat, 30 May 2026 17:14:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780164033; cv=none; b=lPWv8992pKc6pfscPzMOkEC03oFMUdsdHi0bvjS6Nm2vmewAlOuw8BT609cZd5en678Jw1tOOETRP2cIEfFElF2SUkKPEYHprf1x9b8Jo4Uc3NC/ODo7XO0u1Z4vlvsvEJwDXtSDk36x3MGObkWYstVYuL2Byg6nwMp2OByHlFE=
+	t=1780161287; cv=none; b=uUBEwodCqCuZ9E/LF7SwcQuuN3kqxyGxGbJPrry/xj0awQooBQhfTJHxWEJiJEZjASJrw5yh2C4SzUyJX1s/t8OxHBLte3LXR5bCfej9h/keFsLda2bGHh7Nipx1HtboHpxTG/zVwOgXsknCwSg3vpmxfzn9TBFKQRdOihairC4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780164033; c=relaxed/simple;
-	bh=DKg1yUZOBTTxKEmdWO1c9zIPMxP3fB75JMM82GsKEnU=;
+	s=arc-20240116; t=1780161287; c=relaxed/simple;
+	bh=me4O/vcR6rB1QatCC9G/6eT0MveelUGvN6Bfjy7riVc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=P9NnQCKYhtxueGV+PUCFLBmN5X+rHjL1dXrsVB2PRm6J0ZOTfNaszJ/BW9vCg/i5yPDeObdl0Bx/G2wOqGcUptl77xwAIPKklV4pqg6eMJLk6g470xnxdVjLTG0wks6H2ZmBVz1hmKHX2gTpeFQE0MFIvlNqZPO+d9z6z3gOgps=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PbMghMIQ; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F14061F00893;
-	Sat, 30 May 2026 18:00:31 +0000 (UTC)
+	 MIME-Version; b=LACo5++85xRYKJ95/J6j7cyxuy7M5gES2oHz2WckxFtsf3JzazdgMo0hvO0AsbwOcwZdcM1ImuP4al03XyyxalmARxXBPBZtCmCEseqdVU0blBYRT7dq6OY5HaUNYzhOxzkcwCEBOWT6jjo06EEKFAaf/oIZUZ2MnUlca12OdVE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cXMLgTks; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id ABBAB1F00893;
+	Sat, 30 May 2026 17:14:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780164032;
-	bh=oG9mQhNJlt88ziH0zCRdMEVWQJjepg5vq2pB9gHyqzM=;
+	s=korg; t=1780161286;
+	bh=BJXPqufOBRpKfrwmwIxAoEHaT//VOC1+xatjc4+IoSY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=PbMghMIQ3vj6yLS34gn3RLHheV7w7T/RaKheYk8qbfrudwv+9mXFInlBmcnKOQIgK
-	 SyWRdX95KL1VGQiO+FWTUP9IxVTk3/vPq+6Lb++pWwaOQbhP5TvsqDPKYWH/lhb55L
-	 v4E8QLaxVKNuxzjFe5FqpdZ45WI1w5RQBTk8CY/E=
+	b=cXMLgTksTJ1LVcJFnyNrd0RPsRSGJRExbac62C2nhdFirnQiUV5RTPNL+XsIBfmyE
+	 SyNLNq01gDQCvXh8IxMn1CT00YENyHEW2K3jdtTHh9smK79sgOY1bvPPtueEVM8hBO
+	 00CVozgIx1cTUYJEStMXAxSTBFoxY2rE6Q/5dP+Y=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Gopi Krishna Menon <krishnagopi487@gmail.com>,
-	Daniel Lezcano <daniel.lezcano@kernel.org>,
-	Daniel Baluta <daniel.baluta@nxp.com>,
-	Lukasz Luba <lukasz.luba@arm.com>,
+	Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>,
+	Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>,
+	Bjorn Andersson <andersson@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 390/776] thermal/drivers/spear: Fix error condition for reading st,thermal-flags
+Subject: [PATCH 6.1 580/969] soc: qcom: ocmem: return -EPROBE_DEFER is ocmem is not available
 Date: Sat, 30 May 2026 18:01:44 +0200
-Message-ID: <20260530160250.575777117@linuxfoundation.org>
+Message-ID: <20260530160316.426914690@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260530160240.228940103@linuxfoundation.org>
-References: <20260530160240.228940103@linuxfoundation.org>
+In-Reply-To: <20260530160300.485627683@linuxfoundation.org>
+References: <20260530160300.485627683@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -70,71 +69,74 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,kernel.org,nxp.com,arm.com];
-	TAGGED_FROM(0.00)[bounces-258343-lists,stable=lfdr.de];
-	PRECEDENCE_BULK(0.00)[];
+	TAGGED_FROM(0.00)[bounces-257522-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	PRECEDENCE_BULK(0.00)[];
 	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-0.995];
+	NEURAL_HAM(-0.00)[-1.000];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[8];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
 	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,linuxfoundation.org:mid,linuxfoundation.org:dkim,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,nxp.com:email,arm.com:email]
-X-Rspamd-Queue-Id: 26EAB611385
+	FROM_HAS_DN(0.00)[]
+X-Rspamd-Queue-Id: A58AE60F831
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Gopi Krishna Menon <krishnagopi487@gmail.com>
+From: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
 
-[ Upstream commit da2c4f332a0504d9c284e7626a561d343c8d6f57 ]
+[ Upstream commit 91b59009c7d48b58dbc50fecb27f2ad20749a05a ]
 
-of_property_read_u32 returns 0 on success. The current check returns
--EINVAL if the property is read successfully.
+If OCMEM is declared in DT, it is expected that it is present and
+handled by the driver. The GPU driver will ignore -ENODEV error, which
+typically means that OCMEM isn't defined in DT. Let ocmem return
+-EPROBE_DEFER if it supposed to be used, but it is not probed (yet).
 
-Fix the check by removing ! from of_property_read_u32
-
-Fixes: b9c7aff481f1 ("drivers/thermal/spear_thermal.c: add Device Tree probing capability")
-Signed-off-by: Gopi Krishna Menon <krishnagopi487@gmail.com>
-Signed-off-by: Daniel Lezcano <daniel.lezcano@kernel.org>
-Suggested-by: Daniel Baluta <daniel.baluta@nxp.com>
-Reviewed-by: Lukasz Luba <lukasz.luba@arm.com>
-Link: https://patch.msgid.link/20260327090526.59330-1-krishnagopi487@gmail.com
+Fixes: 88c1e9404f1d ("soc: qcom: add OCMEM driver")
+Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
+Reviewed-by: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
+Link: https://lore.kernel.org/r/20260323-ocmem-v1-3-ad9bcae44763@oss.qualcomm.com
+[bjorn: s/ERR_PTR(dev_err_probe)/dev_err_ptr_probe/
+Signed-off-by: Bjorn Andersson <andersson@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/thermal/spear_thermal.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/soc/qcom/ocmem.c | 7 +++----
+ 1 file changed, 3 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/thermal/spear_thermal.c b/drivers/thermal/spear_thermal.c
-index ee33ed692e4f7..42d8736d5ba49 100644
---- a/drivers/thermal/spear_thermal.c
-+++ b/drivers/thermal/spear_thermal.c
-@@ -94,7 +94,7 @@ static int spear_thermal_probe(struct platform_device *pdev)
- 	struct resource *res;
- 	int ret = 0, val;
+diff --git a/drivers/soc/qcom/ocmem.c b/drivers/soc/qcom/ocmem.c
+index 087271120ce3e..2ecde3a275282 100644
+--- a/drivers/soc/qcom/ocmem.c
++++ b/drivers/soc/qcom/ocmem.c
+@@ -209,10 +209,9 @@ struct ocmem *of_get_ocmem(struct device *dev)
  
--	if (!np || !of_property_read_u32(np, "st,thermal-flags", &val)) {
-+	if (!np || of_property_read_u32(np, "st,thermal-flags", &val)) {
- 		dev_err(&pdev->dev, "Failed: DT Pdata not passed\n");
- 		return -EINVAL;
- 	}
+ 	ocmem = platform_get_drvdata(pdev);
+ 	put_device(&pdev->dev);
+-	if (!ocmem) {
+-		dev_err(dev, "Cannot get ocmem\n");
+-		return ERR_PTR(-ENODEV);
+-	}
++	if (!ocmem)
++		return dev_err_ptr_probe(dev, -EPROBE_DEFER, "Cannot get ocmem\n");
++
+ 	return ocmem;
+ }
+ EXPORT_SYMBOL(of_get_ocmem);
 -- 
 2.53.0
 
