@@ -1,59 +1,59 @@
-Return-Path: <stable+bounces-258397-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-259038-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id kJ45KTQpG2ra/ggAu9opvQ
-	(envelope-from <stable+bounces-258397-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:15:16 +0200
+	id CGhUIqwvG2qU/wgAu9opvQ
+	(envelope-from <stable+bounces-259038-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:42:52 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 03EAD61158D
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:15:15 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 31E436124E6
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:42:52 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 8A1CC30D22BA
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 18:03:36 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 5055D30956F5
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 18:39:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4E6FB348C5E;
-	Sat, 30 May 2026 18:03:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4F09D3546F6;
+	Sat, 30 May 2026 18:39:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Z/PGrQAV"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="w/51CZ2C"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3733829B78B;
-	Sat, 30 May 2026 18:03:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2BC2633AD99;
+	Sat, 30 May 2026 18:39:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780164216; cv=none; b=YGiym6Y4YIuhyguBgLt/3q+Qav0KKhYqpTYHghMlbpbbS0Jk5z76c4KZQCEfWGuh/qielTzgThmwwh3z+kS82wbExvozZ2peqBUBzR33i0WquYRjZ/uTDyfKTxj1BZLOA4meHm9vcI5LguBYAhC76+UEAPaP+ZzdEo6EwWysq+o=
+	t=1780166382; cv=none; b=vEmhafIf1dMcY/7taCYVMxIRt2sOBrg0UBEym0mzzqc42wikohIsiMZxQiPkaY1t0xfIwET513fSLZb3KQOey5tuCEEIkB1kiPth+4CslNMVuetSORFIeZ6wktLcTp9QBBxR9dvapKH7D4J/0kHoHQKzZKo8/nhGp37V2Yii0DU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780164216; c=relaxed/simple;
-	bh=S359eRj5BEOLDi8TLokZQXiOits3lvw6O5/n5lx9fDQ=;
+	s=arc-20240116; t=1780166382; c=relaxed/simple;
+	bh=V52BM1fm3obM3o0GfdX1TaX2uifRP6M/eh8+Bw9df1o=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=GUW+nkJ9WiAU1EZspWphU+IJAH+xsvpwKu4/Pnt6GqGHuxQKl/mzuQ95urbzoLC2Dt7ZroAHhMwJcjxMhlSzCR1Sl2gNa8msatdefAgXv3CZBCjH6S/V2W9TxLGdgvMVj5N53OXxFecEFMgw+EWpI6HNSPiYHgoZpVgImwePqFo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Z/PGrQAV; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5BD841F00893;
-	Sat, 30 May 2026 18:03:34 +0000 (UTC)
+	 MIME-Version; b=QOxK7kC5Y3FK7L0L/kcwzzudh/v3+FhlTFsA6SPn5REUAm/tm8MU+V42dpm7Svg/de41NH1kdDMhPr7RmFsva6FavIZwIt13LnFCX38KhqWJ7GBNe/wgFC6hh3kR8MtLjvJ0FFeGyCUyJySAemIZdmxYxbPjkJglRe28oVJnE7g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=w/51CZ2C; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5DFAE1F00893;
+	Sat, 30 May 2026 18:39:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780164215;
-	bh=mstB/X2L1+R0dlrvjT/eeVHK4B1oAK8PaltDaneBRzU=;
+	s=korg; t=1780166381;
+	bh=7GN7+AWz2vkiJwRg4H4/hUhGFWW5qiq8I0sn6t0nHqY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=Z/PGrQAVHIyezmINkcU8YHHvuIjyu/sKI+vsB7xvvDMvc3xu7AgJQ9f6bNWB6VNPc
-	 RaLY7FhLm4wGp1TMik1zef0lv1Uj6w8Jg3xTxfVGNzzvLiavmglS/YtU2BKPE+lD8+
-	 Qtlga+VhZ386DOAszn5UrlmI8XpkmZc0l8W+6VlY=
+	b=w/51CZ2Cz5IUZhtKerYnC1bmMQy3IM6sKKFeXUOiWxmmMTgQusvaRsjHfVddUuSIT
+	 nNiGuU9N31eMxQv5VFWgkFGjvaG//JLdCBando+MtdlWiaZ70J7itj5Wqq4BXjzNC/
+	 tjksiXUdYBgQZxUPS3wV0Jdw0+OTC51IBUU8Ogpo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mikko Perttunen <mperttunen@nvidia.com>,
-	Krzysztof Kozlowski <krzk@kernel.org>,
+	Ming-Hung Tsai <mtsai@redhat.com>,
+	Mikulas Patocka <mpatocka@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 488/776] memory: tegra30-emc: Fix dll_change check
-Date: Sat, 30 May 2026 18:03:22 +0200
-Message-ID: <20260530160252.934615836@linuxfoundation.org>
+Subject: [PATCH 5.10 322/589] dm cache: fix null-deref with concurrent writes in passthrough mode
+Date: Sat, 30 May 2026 18:03:23 +0200
+Message-ID: <20260530160233.392640044@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260530160240.228940103@linuxfoundation.org>
-References: <20260530160240.228940103@linuxfoundation.org>
+In-Reply-To: <20260530160224.570625122@linuxfoundation.org>
+References: <20260530160224.570625122@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -68,7 +68,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
@@ -78,66 +78,105 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-258397-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-259038-lists,stable=lfdr.de];
 	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-0.996];
+	NEURAL_HAM(-0.00)[-1.000];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
 	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim,msgid.link:url,nvidia.com:email]
-X-Rspamd-Queue-Id: 03EAD61158D
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo]
+X-Rspamd-Queue-Id: 31E436124E6
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mikko Perttunen <mperttunen@nvidia.com>
+From: Ming-Hung Tsai <mtsai@redhat.com>
 
-[ Upstream commit 0a93f2355cf4922ad2399dbef5ea1049fef116d4 ]
+[ Upstream commit 7d1f98d668ee34c1d15bdc0420fdd062f24a27c0 ]
 
-The code checking whether the specified memory timing enables DLL
-in the EMRS register was reversed. DLL is enabled if bit A0 is low.
-Fix the check.
+In passthrough mode, when dm-cache starts to invalidate a cache
+entry and bio prison cell lock fails due to concurrent write to
+the same cached block, mg->cell remains NULL. The error path in
+invalidate_complete() attempts to unlock and free the cell
+unconditionally, causing a NULL pointer dereference:
 
-Fixes: e34212c75a68 ("memory: tegra: Introduce Tegra30 EMC driver")
-Signed-off-by: Mikko Perttunen <mperttunen@nvidia.com>
-Link: https://patch.msgid.link/20260126-fix-emc-dllchange-v1-2-47ad3bb63262@nvidia.com
-Signed-off-by: Krzysztof Kozlowski <krzk@kernel.org>
+KASAN: null-ptr-deref in range [0x0000000000000000-0x0000000000000007]
+CPU: 0 UID: 0 PID: 134 Comm: fio Not tainted 6.19.0-rc7 #3 PREEMPT
+RIP: 0010:dm_cell_unlock_v2+0x3f/0x210
+<snip>
+Call Trace:
+ invalidate_complete+0xef/0x430
+ map_bio+0x130f/0x1a10
+ cache_map+0x320/0x6b0
+ __map_bio+0x458/0x510
+ dm_submit_bio+0x40e/0x16d0
+ __submit_bio+0x419/0x870
+<snip>
+
+Reproduce steps:
+
+1. Create a cache device
+
+dmsetup create cmeta --table "0 8192 linear /dev/sdc 0"
+dmsetup create cdata --table "0 131072 linear /dev/sdc 8192"
+dmsetup create corig --table "0 262144 linear /dev/sdc 262144"
+dd if=/dev/zero of=/dev/mapper/cmeta bs=4k count=1 oflag=direct
+dmsetup create cache --table "0 262144 cache /dev/mapper/cmeta \
+/dev/mapper/cdata /dev/mapper/corig 128 2 metadata2 writethrough smq 0"
+
+2. Promote the first data block into cache
+
+fio --filename=/dev/mapper/cache --name=populate --rw=write --bs=4k \
+--direct=1 --size=64k
+
+3. Reload the cache into passthrough mode
+
+dmsetup suspend cache
+dmsetup reload cache --table "0 262144 cache /dev/mapper/cmeta \
+/dev/mapper/cdata /dev/mapper/corig 128 2 metadata2 passthrough smq 0"
+dmsetup resume cache
+
+4. Write to the first cached block concurrently
+
+fio --filename=/dev/mapper/cache --name test --rw=randwrite --bs=4k \
+--randrepeat=0 --direct=1 --numjobs=2 --size 64k
+
+Fix by checking if mg->cell is valid before attempting to unlock it.
+
+Fixes: b29d4986d0da ("dm cache: significant rework to leverage dm-bio-prison-v2")
+Signed-off-by: Ming-Hung Tsai <mtsai@redhat.com>
+Signed-off-by: Mikulas Patocka <mpatocka@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/memory/tegra/tegra30-emc.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ drivers/md/dm-cache-target.c | 6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/memory/tegra/tegra30-emc.c b/drivers/memory/tegra/tegra30-emc.c
-index 7e21a852f2e1f..ed4b74540714e 100644
---- a/drivers/memory/tegra/tegra30-emc.c
-+++ b/drivers/memory/tegra/tegra30-emc.c
-@@ -539,14 +539,14 @@ static int emc_prepare_timing_change(struct tegra_emc *emc, unsigned long rate)
- 	emc->emc_cfg = readl_relaxed(emc->regs + EMC_CFG);
- 	emc_dbg = readl_relaxed(emc->regs + EMC_DBG);
+diff --git a/drivers/md/dm-cache-target.c b/drivers/md/dm-cache-target.c
+index fc6ad47c08b58..a3cb0a68dc1fa 100644
+--- a/drivers/md/dm-cache-target.c
++++ b/drivers/md/dm-cache-target.c
+@@ -1518,8 +1518,10 @@ static void invalidate_complete(struct dm_cache_migration *mg, bool success)
+ 	struct cache *cache = mg->cache;
  
--	if (emc->dll_on == !!(timing->emc_mode_1 & 0x1))
-+	if (emc->dll_on == !(timing->emc_mode_1 & 0x1))
- 		dll_change = DLL_CHANGE_NONE;
--	else if (timing->emc_mode_1 & 0x1)
-+	else if (!(timing->emc_mode_1 & 0x1))
- 		dll_change = DLL_CHANGE_ON;
- 	else
- 		dll_change = DLL_CHANGE_OFF;
+ 	bio_list_init(&bios);
+-	if (dm_cell_unlock_v2(cache->prison, mg->cell, &bios))
+-		free_prison_cell(cache, mg->cell);
++	if (mg->cell) {
++		if (dm_cell_unlock_v2(cache->prison, mg->cell, &bios))
++			free_prison_cell(cache, mg->cell);
++	}
  
--	emc->dll_on = !!(timing->emc_mode_1 & 0x1);
-+	emc->dll_on = !(timing->emc_mode_1 & 0x1);
- 
- 	if (timing->data[80] && !readl_relaxed(emc->regs + EMC_ZCAL_INTERVAL))
- 		emc->zcal_long = true;
+ 	if (!success && mg->overwrite_bio)
+ 		bio_io_error(mg->overwrite_bio);
 -- 
 2.53.0
 
