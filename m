@@ -1,58 +1,59 @@
-Return-Path: <stable+bounces-258271-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-257464-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id OLKDCtwkG2rO/QgAu9opvQ
-	(envelope-from <stable+bounces-258271-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:56:44 +0200
+	id qC0AOdUaG2pR/QgAu9opvQ
+	(envelope-from <stable+bounces-257464-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:13:57 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id B881D610AEE
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:56:43 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id E96F460F2F7
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:13:56 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 9A39C300B463
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 17:56:31 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id ECA4C3016694
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 17:11:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 92F8E3546EA;
-	Sat, 30 May 2026 17:56:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 152F534EF07;
+	Sat, 30 May 2026 17:11:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="efz/Dlxp"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dnscPPHs"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7A8C7261B9E;
-	Sat, 30 May 2026 17:56:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E623434389B;
+	Sat, 30 May 2026 17:11:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780163789; cv=none; b=KIubtoAFXo0QpoY3/V4VrNx8QMRwm3O29oUrZ/0/iyXMkjozdEEIdmhKA2CydhkbF2l1NbtQyj+PUG26rAYberpeOv9dz7NlnhDDZqNGk0qevNiYD9SkQmaZm30cYgRKOZ62ka5GxBr75dV6ysANvpSkKVRVRX3PKicPebMNsiQ=
+	t=1780161086; cv=none; b=uzxbMmZ7AEsbwRu7upX5bwkRCIPXg7mpqRKPhiLgWIm0AQIGQZ/EKQqAe+hWyPLnN1wIzGCkp+sYkfgr41ed2EPB+wdkMmeooKbra2nbIXE0Q47BCT0r4u95dTrNCG7B0dycwGBuLuxzAI0LP4zwIbe/4rCrtNB2/8RvgFeXv3k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780163789; c=relaxed/simple;
-	bh=2hhyzXkgjvgPaLQWZy59ymrDplVQDAKQ/17NCY+1atg=;
+	s=arc-20240116; t=1780161086; c=relaxed/simple;
+	bh=+eZmsAKfsJigzf6ZoqpOFkeFt2hmPeSyexbMSUpLZvQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=jvloFHtcVD2O/8Y1jYuI/8h9zNKwLKNRMEsycTpdpYeDL0OdSTdrkXQN6d4trUdmUoz+Vqs2rN/T1ehzHZ86Zmop+J39tnyj3AjXFFqI64ikrVjFkXqb4WGs7/wn+3cVQSySI935nwSCrLySkyhipgQAsd7rsMgazkzBuViccK8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=efz/Dlxp; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BFD451F00893;
-	Sat, 30 May 2026 17:56:27 +0000 (UTC)
+	 MIME-Version:Content-Type; b=CxixPd+mRy4VD/lm3GpgSiXZ5vMRMXJncAUn6g4D/ctlzJ7gy1c7rjSreJFl5WVQEJMenzKYb7itIrDhDishCco0fB7BUthz9xF7SF5pr9NH1vxdATA3/Yd5aqZQpdV4xFdCbNEa1tisZEpF7Wm6DtGYdtVms92RNg/VbeMQUDc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dnscPPHs; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3FE3C1F00893;
+	Sat, 30 May 2026 17:11:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780163788;
-	bh=IVJ9VSFBz2ApugICJ50+bN9pe4Fs4vWcknyz8iJ/C4s=;
+	s=korg; t=1780161085;
+	bh=Ff+IsprVpOv1+nW5qtD4f4dnGlOPbWFP6iZu1T59K9U=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=efz/DlxpvKOxnNifxZzcxvFL3UACcOEY831gBWFhpRS2ljuhotb5lpubkgUXKEzul
-	 hNVqHe7FcvRKrn9JCWXEJO78cZsaqLmPrRHml7bJtoblGLKQ4JC6TGpAEnKeF4QVoi
-	 REZjWkY7DQ/aYRuePaE80goMKPCWZUsQggbg1pgU=
+	b=dnscPPHsIuqCFx9kwuyU/qfSxjoirWSifUTHFJ62XW3CL26Qu6k1EY78qNajgWZFe
+	 42r+wa2P+S0drthrGRsjRXEZW4fL07E3VmnQy9PC04NPyQrNuQ4/Avj2obfW5m4vag
+	 yRGJ7LPFoxOQAro+QdZPqnQC8oRX0m2Hwe0YRaw8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Eric Biggers <ebiggers@kernel.org>,
-	Mikulas Patocka <mpatocka@redhat.com>
-Subject: [PATCH 5.15 331/776] dm-verity-fec: correctly reject too-small hash devices
+	=?UTF-8?q?Timur=20Krist=C3=B3f?= <timur.kristof@gmail.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 521/969] drm/amd/pm/ci: Clear EnabledForActivity field for memory levels
 Date: Sat, 30 May 2026 18:00:45 +0200
-Message-ID: <20260530160249.128190198@linuxfoundation.org>
+Message-ID: <20260530160314.740823761@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260530160240.228940103@linuxfoundation.org>
-References: <20260530160240.228940103@linuxfoundation.org>
+In-Reply-To: <20260530160300.485627683@linuxfoundation.org>
+References: <20260530160300.485627683@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,77 +63,73 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-0.66 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-258271-lists,stable=lfdr.de];
-	TO_DN_SOME(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,amd.com,kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	TAGGED_FROM(0.00)[bounces-257464-lists,stable=lfdr.de];
 	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[5];
+	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim]
-X-Rspamd-Queue-Id: B881D610AEE
+	TAGGED_RCPT(0.00)[stable];
+	TO_DN_SOME(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[6]
+X-Rspamd-Queue-Id: E96F460F2F7
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Eric Biggers <ebiggers@kernel.org>
+From: Timur Kristóf <timur.kristof@gmail.com>
 
-commit 4355142245f7e55336dcc005ec03592df4d546f8 upstream.
+[ Upstream commit 5facfd4c4c67e8500116ffec0d9da35d92b9c787 ]
 
-Fix verity_fec_ctr() to reject too-small hash devices by correctly
-taking hash_start into account.
+Follow what radeon did and what amdgpu does for other GPUs with SMU7.
 
-Note that this is necessary because dm-verity doesn't call
-dm_bufio_set_sector_offset() on the hash device's bufio client
-(v->bufio).  Thus, dm_bufio_get_device_size(v->bufio) returns a size
-relative to 0 rather than hash_start.  An alternative fix would be to
-call dm_bufio_set_sector_offset() on v->bufio, but then all the code
-that reads from the hash device would have to be adjusted accordingly.
-
-Fixes: a739ff3f543a ("dm verity: add support for forward error correction")
-Cc: stable@vger.kernel.org
-Signed-off-by: Eric Biggers <ebiggers@kernel.org>
-Signed-off-by: Mikulas Patocka <mpatocka@redhat.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 9f4b35411cfe ("drm/amd/powerplay: add CI asics support to smumgr (v3)")
+Signed-off-by: Timur Kristóf <timur.kristof@gmail.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/md/dm-verity-fec.c |    3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/gpu/drm/amd/pm/powerplay/smumgr/ci_smumgr.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/md/dm-verity-fec.c
-+++ b/drivers/md/dm-verity-fec.c
-@@ -731,7 +731,8 @@ int verity_fec_ctr(struct dm_verity *v)
- 	 * it to be large enough.
- 	 */
- 	f->hash_blocks = f->blocks - v->data_blocks;
--	if (dm_bufio_get_device_size(v->bufio) < f->hash_blocks) {
-+	if (dm_bufio_get_device_size(v->bufio) <
-+	    v->hash_start + f->hash_blocks) {
- 		ti->error = "Hash device is too small for "
- 			DM_VERITY_OPT_FEC_BLOCKS;
- 		return -E2BIG;
+diff --git a/drivers/gpu/drm/amd/pm/powerplay/smumgr/ci_smumgr.c b/drivers/gpu/drm/amd/pm/powerplay/smumgr/ci_smumgr.c
+index a43753f11ee96..0839be4dc38c7 100644
+--- a/drivers/gpu/drm/amd/pm/powerplay/smumgr/ci_smumgr.c
++++ b/drivers/gpu/drm/amd/pm/powerplay/smumgr/ci_smumgr.c
+@@ -1218,7 +1218,7 @@ static int ci_populate_single_memory_level(
+ 	}
+ 
+ 	memory_level->EnabledForThrottle = 1;
+-	memory_level->EnabledForActivity = 1;
++	memory_level->EnabledForActivity = 0;
+ 	memory_level->UpH = data->current_profile_setting.mclk_up_hyst;
+ 	memory_level->DownH = data->current_profile_setting.mclk_down_hyst;
+ 	memory_level->VoltageDownH = 0;
+-- 
+2.53.0
+
 
 
 
