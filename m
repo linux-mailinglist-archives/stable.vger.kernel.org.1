@@ -1,59 +1,60 @@
-Return-Path: <stable+bounces-256941-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-257299-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 8C99CN4NG2q/+ggAu9opvQ
-	(envelope-from <stable+bounces-256941-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 18:18:38 +0200
+	id cG4eA0QaG2oq/QgAu9opvQ
+	(envelope-from <stable+bounces-257299-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:11:32 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8067460E12A
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 18:18:37 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7C19860F12D
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:11:31 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id C2A203075428
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 16:13:45 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id A9295306261E
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 17:02:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EB751334695;
-	Sat, 30 May 2026 16:13:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E2625366567;
+	Sat, 30 May 2026 17:02:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QBsvjAq5"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TEYAnNpB"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BC0E32BE05F;
-	Sat, 30 May 2026 16:13:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B619E26F288;
+	Sat, 30 May 2026 17:01:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780157624; cv=none; b=T2gz5M6jusEH05d4OtTU0TlQMPGVmFqYRsFt3UFZwkVulP+U5xbg7DZi5nrXLgcjwj2upDRe8RwnTwvnfOLJeu5J0mzyvfw66hT9ZpPhhMrNLp8In/LGiiF1dlD0r9dollwrVczC8ZdtfvLcJHkJO3tWrO5z8dqMGs7IS+Vx93I=
+	t=1780160520; cv=none; b=csnwoIJMYQxIGHfAJ3nwLFa+tzCck4iC0qObGK/OngHz7ykbiOvk3sx8ymQc3xaYTir3g6hT7NIeRLg42oYGGrNEHhXFHNCadnetoLrccPaNRKR/DE5fk/K36TzxQO9aNtH6IHWmDc4IHtTike7r+qruCdWpnxEqz0Y5jQSuZj0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780157624; c=relaxed/simple;
-	bh=POWReJoGEY5EtN04OlxL5YIJLt81pP/d6EzJvQ++xC4=;
+	s=arc-20240116; t=1780160520; c=relaxed/simple;
+	bh=iu9Rc1PXsqL+YudGhKC5sMWkiYe7HQJr/vrtkRG7/XI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=PJu2XAvxqHRCTKlIWjKrVTxZ9WqXx8CjdS8S/zgVsCqPJ/wEigGFvCgmoUGH127xZuuCYN9jz1eVw5RFkIqvk8YW/aknE9hw0qfmUfxcNA4CeZL6F+dIQcyGu8qUv2ccMKr5LOir6MdpXG1R1kSyXhPJkIHKrlwD7euJZhIHaPY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QBsvjAq5; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6E1E71F00893;
-	Sat, 30 May 2026 16:13:40 +0000 (UTC)
+	 MIME-Version; b=lktOmBVxyi+lEyyWeSar7D3dp2uUEkIQbhZyt7ZskeKpt+f9b5KepiaLvgJgqWX7yMwM3zciyJobr1BZXRfe8IpEZlCLA1nP1DRgZMcndAdyMZmC9H0RdgpwFILVgfV9J4Nx0TZK5DkFp4CZLxCpYIe9aAVPHOKXcmGOYNoKu8w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TEYAnNpB; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0775F1F00893;
+	Sat, 30 May 2026 17:01:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780157623;
-	bh=3COSfN4Tav8HAIsxYKlwwMquIMzuUMMbWK+/FcO4FBQ=;
+	s=korg; t=1780160519;
+	bh=bi7IedU5yDQnGZkn0d+HCzbQG1R4Q/+0RVGalfaXfNw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=QBsvjAq5gBO9pmv9id98jsts+MSOsppFjrdUox8FyRk8QuBW1jdZPS66Ynfl4ibuS
-	 17KH27L3X6fuEq0pDKel0cYLTR4M2HwW7DlJFPm/X+KUqu9H6OjeYFdzbo07BphI0U
-	 6BQ4XdTC7JdhDre6ladKwbboYkPFv4cMxFAFRMnE=
+	b=TEYAnNpBbp28qYFy3ILkFBsW8tYFMUN5aAqj09gLQ6dZZA+mBTxP0rvfhvu429uaC
+	 hPGWQi/yhregowpSU0J06kU/Fer7HRRuEXIkBWi1NTCh+kwvmlbKAu5AHKPzwOYqXz
+	 68GeAr/fVQN51n9hD01ooVkaB67Q+1wWyuFN5fP4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Wenyuan Li <2063309626@qq.com>,
-	Marc Kleine-Budde <mkl@pengutronix.de>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 003/589] can: mcp251x: add error handling for power enable in open and resume
+	Eelco Chaudron <echaudro@redhat.com>,
+	Ilya Maximets <i.maximets@ovn.org>,
+	Aaron Conole <aconole@redhat.com>,
+	Paolo Abeni <pabeni@redhat.com>
+Subject: [PATCH 6.1 360/969] openvswitch: vport: fix self-deadlock on release of tunnel ports
 Date: Sat, 30 May 2026 17:58:04 +0200
-Message-ID: <20260530160224.667218064@linuxfoundation.org>
+Message-ID: <20260530160310.274695218@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260530160224.570625122@linuxfoundation.org>
-References: <20260530160224.570625122@linuxfoundation.org>
+In-Reply-To: <20260530160300.485627683@linuxfoundation.org>
+References: <20260530160300.485627683@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,125 +67,91 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_MISSING_CHARSET(0.50)[];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-256941-lists,stable=lfdr.de];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,qq.com,pengutronix.de,kernel.org];
+	RCVD_TLS_LAST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-257299-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_TLS_LAST(0.00)[];
-	TO_DN_SOME(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	RCPT_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[stable];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim]
-X-Rspamd-Queue-Id: 8067460E12A
+	TAGGED_RCPT(0.00)[stable];
+	TO_DN_SOME(0.00)[];
+	FROM_HAS_DN(0.00)[]
+X-Rspamd-Queue-Id: 7C19860F12D
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Wenyuan Li <2063309626@qq.com>
+From: Ilya Maximets <i.maximets@ovn.org>
 
-[ Upstream commit 7a57354756c7df223abe2c33774235ad70cb4231 ]
+commit aa69918bd418e700309fdd08509dba324fb24296 upstream.
 
-Add missing error handling for mcp251x_power_enable() calls in both
-mcp251x_open() and mcp251x_can_resume() functions.
+vports are used concurrently and protected by RCU, so netdev_put()
+must happen after the RCU grace period.  So, either in an RCU call or
+after the synchronize_net().  The rtnl_delete_link() must happen under
+RTNL and so can't be executed in RCU context.  Calling synchronize_net()
+while holding RTNL is not a good idea for performance and system
+stability under load in general, so calling netdev_put() in RCU call
+is the right solution here.
 
-In mcp251x_open(), if power enable fails, jump to error path to close
-candev without attempting to disable power again.
+However,
+when the device is deleted, rtnl_unlock() will call netdev_run_todo()
+and block until all the references are gone.  In the current code this
+means that we never reach the call_rcu() and the vport is never freed
+and the reference is never released, causing a self-deadlock on device
+removal.
 
-In mcp251x_can_resume(), properly check return values of power enable calls
-for both power and transceiver regulators. If any fails, return the error
-code to the PM framework and log the failure.
+Fix that by moving the rcu_call() before the rtnl_unlock(), so the
+scheduled RCU callback will be executed when synchronize_net() is
+called from the rtnl_unlock()->netdev_run_todo() while the RTNL itself
+is already released.
 
-This ensures the driver properly handles power control failures and
-maintains correct device state.
-
-Signed-off-by: Wenyuan Li <2063309626@qq.com>
-Link: https://patch.msgid.link/tencent_F3EFC5D7738AC548857B91657715E2D3AA06@qq.com
-[mkl: fix patch description]
-[mkl: mcp251x_can_resume(): replace goto by return]
-Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 6931d21f87bc ("openvswitch: defer tunnel netdev_put to RCU release")
+Cc: stable@vger.kernel.org
+Acked-by: Eelco Chaudron <echaudro@redhat.com>
+Signed-off-by: Ilya Maximets <i.maximets@ovn.org>
+Acked-by: Aaron Conole <aconole@redhat.com>
+Link: https://patch.msgid.link/20260430233848.440994-2-i.maximets@ovn.org
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/can/spi/mcp251x.c | 29 ++++++++++++++++++++++++-----
- 1 file changed, 24 insertions(+), 5 deletions(-)
+ net/openvswitch/vport-netdev.c |    6 +++++-
+ 1 file changed, 5 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/net/can/spi/mcp251x.c b/drivers/net/can/spi/mcp251x.c
-index b06b15debafac..e4d5f60f13f47 100644
---- a/drivers/net/can/spi/mcp251x.c
-+++ b/drivers/net/can/spi/mcp251x.c
-@@ -1218,7 +1218,11 @@ static int mcp251x_open(struct net_device *net)
- 	}
+--- a/net/openvswitch/vport-netdev.c
++++ b/net/openvswitch/vport-netdev.c
+@@ -189,9 +189,13 @@ void ovs_netdev_tunnel_destroy(struct vp
+ 	 */
+ 	if (vport->dev->reg_state == NETREG_REGISTERED)
+ 		rtnl_delete_link(vport->dev, 0, NULL);
+-	rtnl_unlock();
  
- 	mutex_lock(&priv->mcp_lock);
--	mcp251x_power_enable(priv->transceiver, 1);
-+	ret = mcp251x_power_enable(priv->transceiver, 1);
-+	if (ret) {
-+		dev_err(&spi->dev, "failed to enable transceiver power: %pe\n", ERR_PTR(ret));
-+		goto out_close_candev;
-+	}
++	/* We can't put the device reference yet, since it can still be in
++	 * use, but rtnl_unlock()->netdev_run_todo() will block until all
++	 * the references are released, so the RCU call must be before it.
++	 */
+ 	call_rcu(&vport->rcu, vport_netdev_free);
++	rtnl_unlock();
+ }
+ EXPORT_SYMBOL_GPL(ovs_netdev_tunnel_destroy);
  
- 	priv->force_quit = 0;
- 	priv->tx_skb = NULL;
-@@ -1267,6 +1271,7 @@ static int mcp251x_open(struct net_device *net)
- 	mcp251x_hw_sleep(spi);
- out_close:
- 	mcp251x_power_enable(priv->transceiver, 0);
-+out_close_candev:
- 	close_candev(net);
- 	mutex_unlock(&priv->mcp_lock);
- 	if (release_irq)
-@@ -1505,11 +1510,25 @@ static int __maybe_unused mcp251x_can_resume(struct device *dev)
- {
- 	struct spi_device *spi = to_spi_device(dev);
- 	struct mcp251x_priv *priv = spi_get_drvdata(spi);
-+	int ret = 0;
- 
--	if (priv->after_suspend & AFTER_SUSPEND_POWER)
--		mcp251x_power_enable(priv->power, 1);
--	if (priv->after_suspend & AFTER_SUSPEND_UP)
--		mcp251x_power_enable(priv->transceiver, 1);
-+	if (priv->after_suspend & AFTER_SUSPEND_POWER) {
-+		ret = mcp251x_power_enable(priv->power, 1);
-+		if (ret) {
-+			dev_err(dev, "failed to restore power: %pe\n", ERR_PTR(ret));
-+			return ret;
-+		}
-+	}
-+
-+	if (priv->after_suspend & AFTER_SUSPEND_UP) {
-+		ret = mcp251x_power_enable(priv->transceiver, 1);
-+		if (ret) {
-+			dev_err(dev, "failed to restore transceiver power: %pe\n", ERR_PTR(ret));
-+			if (priv->after_suspend & AFTER_SUSPEND_POWER)
-+				mcp251x_power_enable(priv->power, 0);
-+			return ret;
-+		}
-+	}
- 
- 	if (priv->after_suspend & (AFTER_SUSPEND_POWER | AFTER_SUSPEND_UP))
- 		queue_work(priv->wq, &priv->restart_work);
--- 
-2.53.0
-
 
 
 
