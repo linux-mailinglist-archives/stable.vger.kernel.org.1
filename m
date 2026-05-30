@@ -1,59 +1,60 @@
-Return-Path: <stable+bounces-257765-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-259147-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 8NRGF5ceG2q4/QgAu9opvQ
-	(envelope-from <stable+bounces-257765-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:29:59 +0200
+	id 8NrmEVAyG2qkAAkAu9opvQ
+	(envelope-from <stable+bounces-259147-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:54:08 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9B8D160FCD1
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:29:54 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id ACFD4612C46
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:54:07 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 021C730217AB
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 17:28:18 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id D1F2B3125FF8
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 18:46:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9CB11334695;
-	Sat, 30 May 2026 17:28:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F414E21E098;
+	Sat, 30 May 2026 18:46:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="g1t0AUWK"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cRifDosd"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 725B6340298;
-	Sat, 30 May 2026 17:28:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4A23025B0B5;
+	Sat, 30 May 2026 18:46:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780162097; cv=none; b=VG5zTp4RJ81uKkPq53DT7Ghb6ZUSAziOhzCF59X6Yz90iI2iMpYhP2fro5fseIXRq5BZQaLmdmBoC7rLrwM/1RRlvP6TyG7Ax7a6WDWqNqNzZLNvy/L/qkgn0/hSOTmenOo4yQ5qf/jfzxakK8QayFzvSFx2NJv2RjdGEd9zvhc=
+	t=1780166767; cv=none; b=s1e6KVCo7pHAabEnnn+cf8+t8G5GdtotbOLjeRN3/VcHPVb20Fw4yAvxR5wpdlFJ1QGuqe/95vQL1KkH+wVY/Ntfm2s4aaIUrm7+gTly6NLpKlbU/+3ywG9q/c7fEjWEb45niPQLrjiuaqQOyVFg6nO5G2sESYx70MiL/efAlqg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780162097; c=relaxed/simple;
-	bh=UGENDnLdU8z5uSnatV/JA5+QKWVzTfgT/LsVkDoj+Cg=;
+	s=arc-20240116; t=1780166767; c=relaxed/simple;
+	bh=LI9HXvnzhLnK2obWM2Hy0R8dVZV8FcmOFNWZg2UEzas=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=sMJEuAB9yrifb4CtKtkSe4fhiOU9OBS2HZLEl8WXAVCsOeV+XKXOWbKUxej6fzOv7Ds7P0iMpzk8EegPLhwhFIwztFNUJNsXHLJVbBaM3VLPtX5GsXB0ZfR+76GkszJ//qNzY84dPUcj5esKMVLuQVwreQt18Ec5W77o1QNmRzI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=g1t0AUWK; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B7C531F00893;
-	Sat, 30 May 2026 17:28:15 +0000 (UTC)
+	 MIME-Version; b=PX87Vk3tT0QFFGiGNQQTVP85jjECPGyiJh5IEL9WAM56JElMMatUpX3nPbffFskxXFzxKeAljsymXk1qOM9OlbxReFwMNV9+uOQN4GbJWMI7KLRq6Z9VpSicnAObV9HHX5KJyIXOMnuqihjqLZULdmFUDP/fBgplKJrVrMNnpNI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cRifDosd; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6E7AC1F00893;
+	Sat, 30 May 2026 18:46:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780162096;
-	bh=5CgzdLXuJq0gwLI9smFavdo56qw7lE8E2mCylofKJT0=;
+	s=korg; t=1780166764;
+	bh=EyUdiCUhajJPxWmBCGEJnM4Yzlh83T4bUsxrMIbDdtE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=g1t0AUWKK2c1ULbjU731HhApTAzBfbbkT882Yuhm4HoM+RxK2obwHm09EVUdeNpOn
-	 gCLsRKD2DEPW/hlPliKpKySoCZCI66bS4Sg1KVKKSVnbame6HcrVeTzs2tixEW93LH
-	 nnbpjf/HnRo80kKqTsu6AtswYCDq+0TwF+q8/JLM=
+	b=cRifDosdxi0WneN3XXB1UX+HL7dbc/FuF3bIhgDVHuxFlRpMVFOWjy17ak5zuzEIp
+	 lu/fEFS2rTrDcK86N6dq/azWEUnlG0AfKZSCLZYlSadqqIyl68VmrZW0EpSdopQTTk
+	 f86nsvNBrJtrxN++VyLo33WM40bt8gEunlNfBWrk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ma Ke <make24@iscas.ac.cn>,
-	Christophe Leroy <christophe.leroy@csgroup.eu>,
-	Madhavan Srinivasan <maddy@linux.ibm.com>
-Subject: [PATCH 6.1 819/969] powerpc/warp: Fix error handling in pika_dtm_thread
-Date: Sat, 30 May 2026 18:05:43 +0200
-Message-ID: <20260530160323.257987059@linuxfoundation.org>
+	Josef Bacik <josef@toxicpanda.com>,
+	Qu Wenruo <wqu@suse.com>,
+	David Sterba <dsterba@suse.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 463/589] btrfs: merge PAGE_CLEAR_DIRTY and PAGE_SET_WRITEBACK to PAGE_START_WRITEBACK
+Date: Sat, 30 May 2026 18:05:44 +0200
+Message-ID: <20260530160236.837222381@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260530160300.485627683@linuxfoundation.org>
-References: <20260530160300.485627683@linuxfoundation.org>
+In-Reply-To: <20260530160224.570625122@linuxfoundation.org>
+References: <20260530160224.570625122@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -68,71 +69,195 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-259147-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-257765-lists,stable=lfdr.de];
-	TO_DN_SOME(0.00)[];
-	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,msgid.link:url,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,csgroup.eu:email,iscas.ac.cn:email]
-X-Rspamd-Queue-Id: 9B8D160FCD1
+	TO_DN_SOME(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_SEVEN(0.00)[7];
+	MID_RHS_MATCH_FROM(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[suse.com:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,toxicpanda.com:email]
+X-Rspamd-Queue-Id: ACFD4612C46
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ma Ke <make24@iscas.ac.cn>
+From: Qu Wenruo <wqu@suse.com>
 
-commit 108d7f951271cbd36ca36efc5e5d106966f5180c upstream.
+[ Upstream commit 6869b0a8be775e920be54ee9b69a743ca20d8332 ]
 
-pika_dtm_thread() acquires client through of_find_i2c_device_by_node()
-but fails to release it in error handling path. This could result in a
-reference count leak, preventing proper cleanup and potentially
-leading to resource exhaustion. Add put_device() to release the
-reference in the error handling path.
+PAGE_CLEAR_DIRTY and PAGE_SET_WRITEBACK are two defines used in
+__process_pages_contig(), to let the function know to clear page dirty
+bit and then set page writeback.
 
-Found by code review.
+However page writeback and dirty bits are conflicting (at least for
+sector size == PAGE_SIZE case), this means these two have to be always
+updated together.
 
-Cc: stable@vger.kernel.org
-Fixes: 3984114f0562 ("powerpc/warp: Platform fix for i2c change")
-Signed-off-by: Ma Ke <make24@iscas.ac.cn>
-Reviewed-by: Christophe Leroy <christophe.leroy@csgroup.eu>
-Signed-off-by: Madhavan Srinivasan <maddy@linux.ibm.com>
-Link: https://patch.msgid.link/20251116024411.21968-1-make24@iscas.ac.cn
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+This means we can merge PAGE_CLEAR_DIRTY and PAGE_SET_WRITEBACK to
+PAGE_START_WRITEBACK.
+
+Reviewed-by: Josef Bacik <josef@toxicpanda.com>
+Signed-off-by: Qu Wenruo <wqu@suse.com>
+Reviewed-by: David Sterba <dsterba@suse.com>
+Signed-off-by: David Sterba <dsterba@suse.com>
+Stable-dep-of: 82323b1a7088 ("btrfs: fix double-decrement of bytes_may_use in submit_one_async_extent()")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/powerpc/platforms/44x/warp.c |    2 ++
- 1 file changed, 2 insertions(+)
+ fs/btrfs/extent_io.c |  4 ++--
+ fs/btrfs/extent_io.h | 12 ++++++------
+ fs/btrfs/inode.c     | 28 ++++++++++------------------
+ 3 files changed, 18 insertions(+), 26 deletions(-)
 
---- a/arch/powerpc/platforms/44x/warp.c
-+++ b/arch/powerpc/platforms/44x/warp.c
-@@ -262,6 +262,8 @@ static int pika_dtm_thread(void __iomem
- 		schedule_timeout(HZ);
+diff --git a/fs/btrfs/extent_io.c b/fs/btrfs/extent_io.c
+index 3d0b854e0c19d..38405087cc842 100644
+--- a/fs/btrfs/extent_io.c
++++ b/fs/btrfs/extent_io.c
+@@ -1983,10 +1983,10 @@ static int __process_pages_contig(struct address_space *mapping,
+ 				pages_locked++;
+ 				continue;
+ 			}
+-			if (page_ops & PAGE_CLEAR_DIRTY)
++			if (page_ops & PAGE_START_WRITEBACK) {
+ 				clear_page_dirty_for_io(pages[i]);
+-			if (page_ops & PAGE_SET_WRITEBACK)
+ 				set_page_writeback(pages[i]);
++			}
+ 			if (page_ops & PAGE_SET_ERROR)
+ 				SetPageError(pages[i]);
+ 			if (page_ops & PAGE_END_WRITEBACK)
+diff --git a/fs/btrfs/extent_io.h b/fs/btrfs/extent_io.h
+index e8ab48e5f282d..03aa1e6b3d332 100644
+--- a/fs/btrfs/extent_io.h
++++ b/fs/btrfs/extent_io.h
+@@ -34,12 +34,12 @@ enum {
+ 
+ /* these are flags for __process_pages_contig */
+ #define PAGE_UNLOCK		(1 << 0)
+-#define PAGE_CLEAR_DIRTY	(1 << 1)
+-#define PAGE_SET_WRITEBACK	(1 << 2)
+-#define PAGE_END_WRITEBACK	(1 << 3)
+-#define PAGE_SET_PRIVATE2	(1 << 4)
+-#define PAGE_SET_ERROR		(1 << 5)
+-#define PAGE_LOCK		(1 << 6)
++/* Page starts writeback, clear dirty bit and set writeback bit */
++#define PAGE_START_WRITEBACK	(1 << 1)
++#define PAGE_END_WRITEBACK	(1 << 2)
++#define PAGE_SET_PRIVATE2	(1 << 3)
++#define PAGE_SET_ERROR		(1 << 4)
++#define PAGE_LOCK		(1 << 5)
+ 
+ /*
+  * page->private values.  Every page that is controlled by the extent
+diff --git a/fs/btrfs/inode.c b/fs/btrfs/inode.c
+index 7e66ebb91af78..6d2d799a0ed25 100644
+--- a/fs/btrfs/inode.c
++++ b/fs/btrfs/inode.c
+@@ -642,8 +642,7 @@ static noinline int compress_file_range(struct async_chunk *async_chunk)
+ 						     NULL,
+ 						     clear_flags,
+ 						     PAGE_UNLOCK |
+-						     PAGE_CLEAR_DIRTY |
+-						     PAGE_SET_WRITEBACK |
++						     PAGE_START_WRITEBACK |
+ 						     page_error_op |
+ 						     PAGE_END_WRITEBACK);
+ 
+@@ -884,8 +883,7 @@ static noinline void submit_compressed_extents(struct async_chunk *async_chunk)
+ 				async_extent->start +
+ 				async_extent->ram_size - 1,
+ 				NULL, EXTENT_LOCKED | EXTENT_DELALLOC,
+-				PAGE_UNLOCK | PAGE_CLEAR_DIRTY |
+-				PAGE_SET_WRITEBACK);
++				PAGE_UNLOCK | PAGE_START_WRITEBACK);
+ 		if (btrfs_submit_compressed_write(inode, async_extent->start,
+ 				    async_extent->ram_size,
+ 				    ins.objectid,
+@@ -921,9 +919,8 @@ static noinline void submit_compressed_extents(struct async_chunk *async_chunk)
+ 				     NULL, EXTENT_LOCKED | EXTENT_DELALLOC |
+ 				     EXTENT_DELALLOC_NEW |
+ 				     EXTENT_DEFRAG | EXTENT_DO_ACCOUNTING,
+-				     PAGE_UNLOCK | PAGE_CLEAR_DIRTY |
+-				     PAGE_SET_WRITEBACK | PAGE_END_WRITEBACK |
+-				     PAGE_SET_ERROR);
++				     PAGE_UNLOCK | PAGE_START_WRITEBACK |
++				     PAGE_END_WRITEBACK | PAGE_SET_ERROR);
+ 	free_async_extent_pages(async_extent);
+ 	kfree(async_extent);
+ 	goto again;
+@@ -1020,8 +1017,7 @@ static noinline int cow_file_range(struct btrfs_inode *inode,
+ 				     EXTENT_LOCKED | EXTENT_DELALLOC |
+ 				     EXTENT_DELALLOC_NEW | EXTENT_DEFRAG |
+ 				     EXTENT_DO_ACCOUNTING, PAGE_UNLOCK |
+-				     PAGE_CLEAR_DIRTY | PAGE_SET_WRITEBACK |
+-				     PAGE_END_WRITEBACK);
++				     PAGE_START_WRITEBACK | PAGE_END_WRITEBACK);
+ 			*nr_written = *nr_written +
+ 			     (end - start + PAGE_SIZE) / PAGE_SIZE;
+ 			*page_started = 1;
+@@ -1143,8 +1139,7 @@ static noinline int cow_file_range(struct btrfs_inode *inode,
+ out_unlock:
+ 	clear_bits = EXTENT_LOCKED | EXTENT_DELALLOC | EXTENT_DELALLOC_NEW |
+ 		EXTENT_DEFRAG | EXTENT_CLEAR_META_RESV;
+-	page_ops = PAGE_UNLOCK | PAGE_CLEAR_DIRTY | PAGE_SET_WRITEBACK |
+-		PAGE_END_WRITEBACK;
++	page_ops = PAGE_UNLOCK | PAGE_START_WRITEBACK | PAGE_END_WRITEBACK;
+ 	/*
+ 	 * If we reserved an extent for our delalloc range (or a subrange) and
+ 	 * failed to create the respective ordered extent, then it means that
+@@ -1269,9 +1264,8 @@ static int cow_file_range_async(struct btrfs_inode *inode,
+ 		unsigned clear_bits = EXTENT_LOCKED | EXTENT_DELALLOC |
+ 			EXTENT_DELALLOC_NEW | EXTENT_DEFRAG |
+ 			EXTENT_DO_ACCOUNTING;
+-		unsigned long page_ops = PAGE_UNLOCK | PAGE_CLEAR_DIRTY |
+-			PAGE_SET_WRITEBACK | PAGE_END_WRITEBACK |
+-			PAGE_SET_ERROR;
++		unsigned long page_ops = PAGE_UNLOCK | PAGE_START_WRITEBACK |
++					 PAGE_END_WRITEBACK | PAGE_SET_ERROR;
+ 
+ 		extent_clear_unlock_delalloc(inode, start, end, locked_page,
+ 					     clear_bits, page_ops);
+@@ -1468,8 +1462,7 @@ static noinline int run_delalloc_nocow(struct btrfs_inode *inode,
+ 					     EXTENT_LOCKED | EXTENT_DELALLOC |
+ 					     EXTENT_DO_ACCOUNTING |
+ 					     EXTENT_DEFRAG, PAGE_UNLOCK |
+-					     PAGE_CLEAR_DIRTY |
+-					     PAGE_SET_WRITEBACK |
++					     PAGE_START_WRITEBACK |
+ 					     PAGE_END_WRITEBACK);
+ 		return -ENOMEM;
  	}
- 
-+	put_device(&client->dev);
-+
- 	return 0;
- }
- 
+@@ -1782,8 +1775,7 @@ static noinline int run_delalloc_nocow(struct btrfs_inode *inode,
+ 					     locked_page, EXTENT_LOCKED |
+ 					     EXTENT_DELALLOC | EXTENT_DEFRAG |
+ 					     EXTENT_DO_ACCOUNTING, PAGE_UNLOCK |
+-					     PAGE_CLEAR_DIRTY |
+-					     PAGE_SET_WRITEBACK |
++					     PAGE_START_WRITEBACK |
+ 					     PAGE_END_WRITEBACK);
+ 	btrfs_free_path(path);
+ 	return ret;
+-- 
+2.53.0
+
 
 
 
