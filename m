@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-257106-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-257107-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id KLD1MYwVG2pV/AgAu9opvQ
-	(envelope-from <stable+bounces-257106-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 18:51:24 +0200
+	id UB+jGuYVG2pV/AgAu9opvQ
+	(envelope-from <stable+bounces-257107-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 18:52:54 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 47EA960E804
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 18:51:24 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id C39A860E865
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 18:52:53 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 4F2263023313
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 16:50:19 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 54FA23009CE1
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 16:50:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D13FB332EA7;
-	Sat, 30 May 2026 16:50:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E392F331A56;
+	Sat, 30 May 2026 16:50:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oVByuF3r"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vVtKEgIe"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A2F6E3438AE;
-	Sat, 30 May 2026 16:50:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B465B33A9DA;
+	Sat, 30 May 2026 16:50:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780159818; cv=none; b=dXXPRLMoEGrR3MmG4K4ArwgNtN+v6WB2X1dzYONFGjxGFpbX3hsBFEOXDMHjcAYLIr5tqrmQQwaU0wUe1XFhoZxcA645tMapImpjRPKP+lcDNzl/j0saWaci/mFeildMN/xhgI0q8Xk8irqp81S7nF7Q1OUiLvbZ+9KPFvpiZYQ=
+	t=1780159822; cv=none; b=q5DoFOyt/wGRU6RxSGNPx0pcQRVZKWvR194l/JI7LbLCkhgKtR8mleIqKk9PyXzkkir6JU/nwzB+FGpp/DdugLV0dC1KqN3/U+Uo70XZ3y5Ft7P9NkwuDnrp1RHq5s0j0osuH27NAr1HkdrHFoWaTouLAPHfv32VDAGpS2GNdcY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780159818; c=relaxed/simple;
-	bh=Bc7e2sG1Pz+iKve2fp+CVYRUoBmaVEAGFTXga3PS93c=;
+	s=arc-20240116; t=1780159822; c=relaxed/simple;
+	bh=As/8KC+VtVbggM/mBHEND5Sz/wNUPF1DYcOIw/BHagc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=CTCCKTeUKlUAeXpoVO1+WAZGPjRzi5iTfk/Hr6tqjuS5rQvilDBjWVNAXtJwa/SMMULkyVE4sRDhpj7XDer4fK5UHk0tHIszzfDcNNcnAVEZOkqf6AgQzV6yHHr+KaTdnQTxcBcNrr3hCnffcXw7Md4SnW4oxMQSyKICaFMlPKs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oVByuF3r; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C7B431F00893;
-	Sat, 30 May 2026 16:50:16 +0000 (UTC)
+	 MIME-Version; b=QlkkD8SC0nbntXZRXl+EoLB2vlfwf9D5BVdxVXiBa0kUIozaWP17fkawazWjYGIPlxF1XY7FOXJoyfUHRI9o8hSd1C/fD/AcsFB/ApsQvOgZBuI9rhjPvWGzVPP9naEpESUEGzFs+OJjiRLMmH6OVovznJSnquU5WnwdfQ67eDM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vVtKEgIe; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9426B1F00893;
+	Sat, 30 May 2026 16:50:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780159817;
-	bh=qgsAbTsUFnPY5cIJMS7pfmXVlVDyphBoDbEf52AQouA=;
+	s=korg; t=1780159821;
+	bh=Ttfh1HNalmLmyFg8tKW964wxmHLxqYDD5bEj3YtDzOs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=oVByuF3rbuTafsN/H+76lo44W6oK510eaaeZywAmYha5o8Kaf1syrNqi5l0Khz8sY
-	 9fajRv6oSW21A7KJsTPwtVHaKNeDIrQSN+l0rech9g13qIr2LiiX0QlmIShwRqN7hp
-	 m6/xRz+ECEfSdBU0CjApWvsqpARD3AgwZ8jCSu/I=
+	b=vVtKEgIeWLS5xPW56lbh8phMSzFuhWCiJCBXOZGPi9EVsDBAGVb7CprHExi/pD1BP
+	 9birKTk+mhK3QFN7A/LtkVVmpnak5XMhaPJBHf4+3eZTu5XkAd4XZCoRLaYO+1bMyo
+	 osE5PfC3Cou2JigoZipsaNFCw8OprH/OI5qop3Es=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Stephen Rothwell <sfr@canb.auug.org.au>,
-	Herbert Xu <herbert@gondor.apana.org.au>,
-	Bin Lan <lanbincn@139.com>,
+	Tvrtko Ursulin <tvrtko.ursulin@igalia.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
+	Fang Wang <32840572@qq.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 170/969] padata: Remove comment for reorder_work
-Date: Sat, 30 May 2026 17:54:54 +0200
-Message-ID: <20260530160305.202799331@linuxfoundation.org>
+Subject: [PATCH 6.1 171/969] drm/amdgpu: Use vmemdup_array_user in amdgpu_bo_create_list_entry_array
+Date: Sat, 30 May 2026 17:54:55 +0200
+Message-ID: <20260530160305.227757603@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
 In-Reply-To: <20260530160300.485627683@linuxfoundation.org>
 References: <20260530160300.485627683@linuxfoundation.org>
@@ -70,20 +70,20 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	TAGGED_FROM(0.00)[bounces-257106-lists,stable=lfdr.de];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,canb.auug.org.au,gondor.apana.org.au,139.com,kernel.org];
+	TAGGED_FROM(0.00)[bounces-257107-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,igalia.com,amd.com,qq.com,kernel.org];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	MID_RHS_MATCH_FROM(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
 	PRECEDENCE_BULK(0.00)[];
@@ -92,7 +92,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	TAGGED_RCPT(0.00)[stable];
 	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[]
-X-Rspamd-Queue-Id: 47EA960E804
+X-Rspamd-Queue-Id: C39A860E865
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
@@ -100,33 +100,89 @@ X-Rspamd-Server: lfdr
 
 ------------------
 
-From: Herbert Xu <herbert@gondor.apana.org.au>
+From: Tvrtko Ursulin <tvrtko.ursulin@igalia.com>
 
-[ Upstream commit 82a0302e7167d0b7c6cde56613db3748f8dd806d ]
+[ Upstream commit c4ac100e9ae252b09986766ad23b1f83ca3a369d ]
 
-Remove comment for reorder_work which no longer exists.
+Replace kvmalloc_array() + copy_from_user() with vmemdup_array_user() on
+the fast path.
 
-Reported-by: Stephen Rothwell <sfr@canb.auug.org.au>
-Fixes: 71203f68c774 ("padata: Fix pd UAF once and for all")
-Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
-Signed-off-by: Bin Lan <lanbincn@139.com>
+This shrinks the source code and improves separation between the kernel
+and userspace slabs.
+
+Signed-off-by: Tvrtko Ursulin <tvrtko.ursulin@igalia.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Signed-off-by: Fang Wang <32840572@qq.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/linux/padata.h | 1 -
- 1 file changed, 1 deletion(-)
+ drivers/gpu/drm/amd/amdgpu/amdgpu_bo_list.c | 41 +++++++++------------
+ 1 file changed, 17 insertions(+), 24 deletions(-)
 
-diff --git a/include/linux/padata.h b/include/linux/padata.h
-index 9ca779d7e310e..6f07e12a43819 100644
---- a/include/linux/padata.h
-+++ b/include/linux/padata.h
-@@ -90,7 +90,6 @@ struct padata_cpumask {
-  * @processed: Number of already processed objects.
-  * @cpu: Next CPU to be processed.
-  * @cpumask: The cpumasks in use for parallel and serial workers.
-- * @reorder_work: work struct for reordering.
-  */
- struct parallel_data {
- 	struct padata_shell		*ps;
+diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_bo_list.c b/drivers/gpu/drm/amd/amdgpu/amdgpu_bo_list.c
+index fdc302aa59e7b..79e43896edddb 100644
+--- a/drivers/gpu/drm/amd/amdgpu/amdgpu_bo_list.c
++++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_bo_list.c
+@@ -226,43 +226,36 @@ void amdgpu_bo_list_put(struct amdgpu_bo_list *list)
+ int amdgpu_bo_create_list_entry_array(struct drm_amdgpu_bo_list_in *in,
+ 				      struct drm_amdgpu_bo_list_entry **info_param)
+ {
+-	const void __user *uptr = u64_to_user_ptr(in->bo_info_ptr);
+ 	const uint32_t info_size = sizeof(struct drm_amdgpu_bo_list_entry);
++	const void __user *uptr = u64_to_user_ptr(in->bo_info_ptr);
++	const uint32_t bo_info_size = in->bo_info_size;
++	const uint32_t bo_number = in->bo_number;
+ 	struct drm_amdgpu_bo_list_entry *info;
+-	int r;
+-
+-	info = kvmalloc_array(in->bo_number, info_size, GFP_KERNEL);
+-	if (!info)
+-		return -ENOMEM;
+ 
+ 	/* copy the handle array from userspace to a kernel buffer */
+-	r = -EFAULT;
+-	if (likely(info_size == in->bo_info_size)) {
+-		unsigned long bytes = in->bo_number *
+-			in->bo_info_size;
+-
+-		if (copy_from_user(info, uptr, bytes))
+-			goto error_free;
+-
++	if (likely(info_size == bo_info_size)) {
++		info = vmemdup_array_user(uptr, bo_number, info_size);
++		if (IS_ERR(info))
++			return PTR_ERR(info);
+ 	} else {
+-		unsigned long bytes = min(in->bo_info_size, info_size);
++		const uint32_t bytes = min(bo_info_size, info_size);
+ 		unsigned i;
+ 
+-		memset(info, 0, in->bo_number * info_size);
+-		for (i = 0; i < in->bo_number; ++i) {
+-			if (copy_from_user(&info[i], uptr, bytes))
+-				goto error_free;
++		info = kvmalloc_array(bo_number, info_size, GFP_KERNEL);
++		if (!info)
++			return -ENOMEM;
+ 
+-			uptr += in->bo_info_size;
++		memset(info, 0, bo_number * info_size);
++		for (i = 0; i < bo_number; ++i, uptr += bo_info_size) {
++			if (copy_from_user(&info[i], uptr, bytes)) {
++				kvfree(info);
++				return -EFAULT;
++			}
+ 		}
+ 	}
+ 
+ 	*info_param = info;
+ 	return 0;
+-
+-error_free:
+-	kvfree(info);
+-	return r;
+ }
+ 
+ int amdgpu_bo_list_ioctl(struct drm_device *dev, void *data,
 -- 
 2.53.0
 
