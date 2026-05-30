@@ -1,59 +1,60 @@
-Return-Path: <stable+bounces-258911-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-258341-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id yAAAMpkwG2qKAAkAu9opvQ
-	(envelope-from <stable+bounces-258911-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:46:49 +0200
+	id 4IYgFPMnG2qS/ggAu9opvQ
+	(envelope-from <stable+bounces-258341-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:09:55 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5E3A56127BE
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:46:49 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id CBB7361120F
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:09:54 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 37E173026A8E
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 18:32:37 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id B96E13147B6D
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 18:00:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E567941A8F;
-	Sat, 30 May 2026 18:32:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 910213BFE4D;
+	Sat, 30 May 2026 18:00:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KPgcAYNf"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0U8Y1fq0"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CEC8721E098;
-	Sat, 30 May 2026 18:32:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 275432C11D9;
+	Sat, 30 May 2026 18:00:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780165956; cv=none; b=ngS2FjvXJ77BXAtoJeNmm1pYSYF8nYR9shNb38f9dw7VbXUTeLhCtNi+3wXqosYZfkGNk+kAQfFUl1Xfxy6plrMb+byDgJ7/NMrSyJqp5g4dyrIysNkdXxMxJUhmJICev1/kRJleiVHVV11IiQXmVQX+xJoZZW1uHEezodonnL4=
+	t=1780164027; cv=none; b=L7TrVYcXwrcV4Ku+6bzfDaO0I/+ie1tIEsGjW/h7FWWq5sI3OUWyrwKeT6fx+uvaQulJIFAh7ygBZREfTla61ONNpuSGRv78yDzTvryV9CLx64LxggrIIeRYltCvuCG46tOVG5b4PcMI4AtQWd+f9O0KLE+6YvmckCNkMLB9GkQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780165956; c=relaxed/simple;
-	bh=PbIPap2PnW+2o8qK7LBWThznt/8kPNmHB9FhG11Q8fc=;
+	s=arc-20240116; t=1780164027; c=relaxed/simple;
+	bh=rvpy5uUk/y5XP6Lh8GcEFfP8yljhIcXpgOxfY2C95O4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=G9coX7B0PzOLXdyHP5/GWPbCrk6wbn509+IXbNDBhumcUQN8vVPFKVbiAtxcioiOw5cBfT1i9XW4MS6IroAg4hU+9CpsVun/5lff4SaWlxkgPcarm2ggHVCPxVRttj7ZlMrviQIPqWa7nXMAEeFuFRCoHX8RXmu9RzVMjJGB+p8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KPgcAYNf; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1EA811F00893;
-	Sat, 30 May 2026 18:32:34 +0000 (UTC)
+	 MIME-Version; b=dkHwR4p9/MnJP0XtMD1NopVrNWw7u+9r2haBDicuDiMW17LCrjyVoH5b15O2GD6AXyqkslGccdQvjKV1nudvBtN/M3bfJ2r4u2SwWlPRakrT+OLdiApi+5tzgpALtk9p7RP3fb1bb9Mb2QAUH/gNXja5ig+xJ5i7gF4VsCje6O0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0U8Y1fq0; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5F7051F00893;
+	Sat, 30 May 2026 18:00:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780165955;
-	bh=nOk366RtIHiWieqfa9cxOEONfM5+k6GxGVss9hWCIGw=;
+	s=korg; t=1780164026;
+	bh=yct4aGMCrbaZsfXniIkm+Y9Wx34qSRCkdEtvi7oltgg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=KPgcAYNf+zDOC0izGPxgb3qw6N61q6L+YoIzVyhlm8MlK5kZG7mW/NUozwUUBxITr
-	 Q1c29IgXDF9Ly8KV11fR6j6nTAxtB2SSW59lWFNJVwWLYMMSOwc9GlBHnBbrbuoC9c
-	 XKC6KGSkatk5JIWrAFwdEVvhIuxhtXc3eyEVQFFA=
+	b=0U8Y1fq0gRQPgWV+yLyeXQLapah/HSkAPqmGGuqaB7BaCOJOfG/jt8gAfQ8bAZREb
+	 C2SjBP3pb8zgIcOUWbW0W32veWuATlADwVDUwCeLO3jyrFNHxxuIeEMYvxwzlxwKNv
+	 gm5BdK2C49rsSCzLbxh1QGjhv5mNq+yUgV4xE64g=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable@kernel.org,
-	Siwei Zhang <oss@fourdim.xyz>,
-	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
-Subject: [PATCH 5.10 231/589] Bluetooth: L2CAP: Fix null-ptr-deref in l2cap_sock_state_change_cb()
+	Ioana Ciornei <ioana.ciornei@nxp.com>,
+	Cai Xinchen <caixinchen1@huawei.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 398/776] dpaa2: compile dpaa2 even CONFIG_FSL_DPAA2_ETH=n
 Date: Sat, 30 May 2026 18:01:52 +0200
-Message-ID: <20260530160231.054801133@linuxfoundation.org>
+Message-ID: <20260530160250.789766905@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260530160224.570625122@linuxfoundation.org>
-References: <20260530160224.570625122@linuxfoundation.org>
+In-Reply-To: <20260530160240.228940103@linuxfoundation.org>
+References: <20260530160240.228940103@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -68,65 +69,73 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
+	TAGGED_FROM(0.00)[bounces-258341-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-258911-lists,stable=lfdr.de];
-	TO_DN_SOME(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	PRECEDENCE_BULK(0.00)[];
+	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-0.996];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,fourdim.xyz:email,intel.com:email,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
-X-Rspamd-Queue-Id: 5E3A56127BE
+	TAGGED_RCPT(0.00)[stable];
+	TO_DN_SOME(0.00)[];
+	FROM_HAS_DN(0.00)[]
+X-Rspamd-Queue-Id: CBB7361120F
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Siwei Zhang <oss@fourdim.xyz>
+From: Cai Xinchen <caixinchen1@huawei.com>
 
-commit 2ff1a41a912de8517b4482e946dd951b7d80edbf upstream.
+[ Upstream commit 97daf00745f7f9f261b0e91418de6e79d7826c36 ]
 
-Add the same NULL guard already present in
-l2cap_sock_resume_cb() and l2cap_sock_ready_cb().
+CONFIG_FSL_DPAA2_ETH and CONFIG_FSL_DPAA2_SWITCH are not
+associated, but the compilation of FSL_DPAA2_SWITCH depends on
+the compilation of the dpaa2 folder. The files controlled by
+CONFIG_FSL_DPAA2_SWITCH in the dpaa2 folder are not controlled
+by CONFIG_FSL_DPAA2_ETH, except for the files controlled by
+CONFIG_FSL_DPAA2_SWITCH. Therefore, removing the restriction will
+not affect the compilation of the files in the directory.
 
-Fixes: 89bc500e41fc ("Bluetooth: Add state tracking to struct l2cap_chan")
-Cc: stable@kernel.org
-Signed-off-by: Siwei Zhang <oss@fourdim.xyz>
-Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: f48298d3fbfaa ("staging: dpaa2-switch: move the driver out of staging")
+Suggested-by: Ioana Ciornei <ioana.ciornei@nxp.com>
+Signed-off-by: Cai Xinchen <caixinchen1@huawei.com>
+Link: https://patch.msgid.link/20260312065907.476663-3-caixinchen1@huawei.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/bluetooth/l2cap_sock.c |    3 +++
- 1 file changed, 3 insertions(+)
+ drivers/net/ethernet/freescale/Makefile | 3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
 
---- a/net/bluetooth/l2cap_sock.c
-+++ b/net/bluetooth/l2cap_sock.c
-@@ -1599,6 +1599,9 @@ static void l2cap_sock_state_change_cb(s
- {
- 	struct sock *sk = chan->data;
+diff --git a/drivers/net/ethernet/freescale/Makefile b/drivers/net/ethernet/freescale/Makefile
+index de7b318422330..d0a259e47960f 100644
+--- a/drivers/net/ethernet/freescale/Makefile
++++ b/drivers/net/ethernet/freescale/Makefile
+@@ -22,6 +22,5 @@ ucc_geth_driver-objs := ucc_geth.o ucc_geth_ethtool.o
+ obj-$(CONFIG_FSL_FMAN) += fman/
+ obj-$(CONFIG_FSL_DPAA_ETH) += dpaa/
  
-+	if (!sk)
-+		return;
-+
- 	sk->sk_state = state;
- 
- 	if (err)
+-obj-$(CONFIG_FSL_DPAA2_ETH) += dpaa2/
+-
++obj-y += dpaa2/
+ obj-y += enetc/
+-- 
+2.53.0
+
 
 
 
