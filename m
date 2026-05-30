@@ -1,59 +1,59 @@
-Return-Path: <stable+bounces-257572-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-258345-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 0LkiJqIdG2qW/QgAu9opvQ
-	(envelope-from <stable+bounces-257572-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:25:54 +0200
+	id MI9kO/UnG2qS/ggAu9opvQ
+	(envelope-from <stable+bounces-258345-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:09:57 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 271DF60FA00
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:25:54 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6387E611216
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:09:57 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 0587630686D3
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 17:17:29 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id EB7FE3038C5C
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 18:00:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 38A17395AEA;
-	Sat, 30 May 2026 17:17:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 92A2A39478D;
+	Sat, 30 May 2026 18:00:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Urct9U5P"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="iG/N5JUn"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 19A6D263F44;
-	Sat, 30 May 2026 17:17:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4A7232C11D9;
+	Sat, 30 May 2026 18:00:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780161448; cv=none; b=UQj2zds40I7/oE4VG3IDmIzhmc/n8rObP093j+EdhzH8/AYXDmZ9rlD4y3aerD0+W+4SoaWhXqB93iC4Hc3cmT2b8bVxVF0ovJe8vJi6CfERxa3thbEkB+6C2M8IlnDbm67M/oOE6v1WRDr9gNhhxJi89ZsmCOfmgZwy7XbEt3Q=
+	t=1780164040; cv=none; b=E0uYvZr2h0kevhObpEqWVDXNEGxwwdkks7Giu1jKh0mbAAwr0EDMjMtcdWHbfQ/oB3hxs3DRnQeoTYjlWKeuRr5aqdTOyZIdekTo+474zIKR4bc8bA/3Em3uqezSyC9Mv8A1FRpBhYuUqLwx2LdvdqSMsz4eClul/BZG9kGxpck=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780161448; c=relaxed/simple;
-	bh=PUmChrO0zhVyMQDt0Vgbjm0+fLQh01T0ar/rI6D7Tlw=;
+	s=arc-20240116; t=1780164040; c=relaxed/simple;
+	bh=AyEnkKmPgqlboqUCHb80BsC/HXzdnCpvOYNAf7w22yA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=MHQpT6f/eKMTOobPJNvN3GBIrt11yLY34BVXUbD0sOPmrPeVHjEfvxtZ8C/T96zVs1CR46iH5sme1B6QBtiimyQEDKQKA94G9E6f1zT48Jg4e357/V8p6SOEwIvYKvkqrG8oyWLrxVkfyEbm8i0PS+NOSwrdiws3G2FWQ0kArOI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Urct9U5P; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 16BFE1F00893;
-	Sat, 30 May 2026 17:17:25 +0000 (UTC)
+	 MIME-Version; b=hsRFhxOaOxuQ302HbJNkuazJ9iSkB0JpQs0uzPM1NKIH8BCGOuT4s3RWR/TB4cmtICDIgSDYRIKJu7NhUvjw0Yh08lrgP7HnBtXTy8Y3TFriZCjJjjKHIeibH+DeFEv8puqE0kgOTRiDwbfYYYtTf52Y4nv+1T5dky38kv0kOsU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=iG/N5JUn; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 908F61F00893;
+	Sat, 30 May 2026 18:00:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780161446;
-	bh=CMXhVPYnPLqVRPfe+7U1MD5HmqD8PoOhUqUdM13PBqQ=;
+	s=korg; t=1780164039;
+	bh=dDe4aLPg+c4FKypBN5PCjuwwuuhslyFqIo6L35aGsjs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=Urct9U5PSj7TH+Lyjl9fVAA5hAIcTv5mBCkLpzmBYtCtZ0db4hxezB0I1DEB43NmP
-	 2viUJC2UwN6dBrN7Hus/nWYZNvSnZ3hPGk35+JFwXneXbzILNH0Vyj/EOFZHchLsXd
-	 0Kf4P9w5k5byqR5Z465FYkpfd8MBNdejTXfEjLiM=
+	b=iG/N5JUnW0ljZxknQ+2kRuZyrLtqyEXRxOYsQ5XFD/pHWILhEVTH72KbjXRT3PvlF
+	 LB/CROrfLHuqXMkwwfPgCBsCAeCeVk1KHWXo4ZnZX31qtXEOuN63d2YiJjfW4FzfhR
+	 xX1Wt1pZtQia8MAK5TlmYErf2pCvzYPkMPjE/Ig0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-	Linus Walleij <linusw@kernel.org>,
+	Ming-Hung Tsai <mtsai@redhat.com>,
+	Mikulas Patocka <mpatocka@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 626/969] pinctrl: cy8c95x0: remove duplicate error message
-Date: Sat, 30 May 2026 18:02:30 +0200
-Message-ID: <20260530160317.734516345@linuxfoundation.org>
+Subject: [PATCH 5.15 437/776] dm cache: support shrinking the origin device
+Date: Sat, 30 May 2026 18:02:31 +0200
+Message-ID: <20260530160251.722140806@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260530160300.485627683@linuxfoundation.org>
-References: <20260530160300.485627683@linuxfoundation.org>
+In-Reply-To: <20260530160240.228940103@linuxfoundation.org>
+References: <20260530160240.228940103@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,18 +69,18 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-257572-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-258345-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	TO_DN_SOME(0.00)[];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	RCPT_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
@@ -90,79 +90,203 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	FROM_HAS_DN(0.00)[]
-X-Rspamd-Queue-Id: 271DF60FA00
+X-Rspamd-Queue-Id: 6387E611216
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+From: Ming-Hung Tsai <mtsai@redhat.com>
 
-[ Upstream commit 970dacb3b9f0fedbbbcfd7dbf1f4f22340b3f359 ]
+[ Upstream commit c2662b1544cbd8ea3181381bb899b8e681dfedc7 ]
 
-The pin control core is covered to report any error via message.
-The devm_request_threaded_irq() already prints an error message.
-Remove the duplicates.
+This patch introduces formal support for shrinking the cache origin by
+reducing the cache target length via table reloads. Cache blocks mapped
+beyond the new target length must be clean and are invalidated during
+preresume. If any dirty blocks exist in the area being removed, the
+preresume operation fails without setting the NEEDS_CHECK flag in
+superblock, and the resume ioctl returns EFBIG. The cache device remains
+suspended until a table reload with target length that fits existing
+mappings is performed.
 
-While at it, drop the info message as the same information about
-an IRQ in use can be retrieved differently.
+Without this patch, reducing the cache target length could result in
+io errors (RHBZ: 2134334), out-of-bounds memory access to the discard
+bitset, and security concerns regarding data leakage.
 
-Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Signed-off-by: Linus Walleij <linusw@kernel.org>
-Stable-dep-of: 5ad32c3607cf ("pinctrl: cy8c95x0: Avoid returning positive values to user space")
+Verification steps:
+
+1. create a cache metadata with some cached blocks mapped to the tail
+   of the origin device. Here we use cache_restore v1.0 to build a
+   metadata with one clean block mapped to the last origin block.
+
+cat <<EOF >> cmeta.xml
+<superblock uuid="" block_size="128" nr_cache_blocks="512" \
+policy="smq" hint_width="4">
+  <mappings>
+    <mapping cache_block="0" origin_block="4095" dirty="false"/>
+  </mappings>
+</superblock>
+EOF
+dmsetup create cmeta --table "0 8192 linear /dev/sdc 0"
+cache_restore -i cmeta.xml -o /dev/mapper/cmeta --metadata-version=2
+dmsetup remove cmeta
+
+2. bring up the cache whilst shrinking the cache origin by one block:
+
+dmsetup create cmeta --table "0 8192 linear /dev/sdc 0"
+dmsetup create cdata --table "0 65536 linear /dev/sdc 8192"
+dmsetup create corig --table "0 524160 linear /dev/sdc 262144"
+dmsetup create cache --table "0 524160 cache /dev/mapper/cmeta \
+/dev/mapper/cdata /dev/mapper/corig 128 2 metadata2 writethrough smq 0"
+
+3. check the number of cached data blocks via dmsetup status. It is
+   expected to be zero.
+
+dmsetup status cache | cut -d ' ' -f 7
+
+In addition to the script above, this patch can be verified using the
+"cache/resize" tests in dmtest-python:
+
+./dmtest run --rx cache/resize/shrink_origin --result-set default
+
+Signed-off-by: Ming-Hung Tsai <mtsai@redhat.com>
+Signed-off-by: Mikulas Patocka <mpatocka@redhat.com>
+Stable-dep-of: 322586745bd1 ("dm cache: fix dirty mapping checking in passthrough mode switching")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/pinctrl/pinctrl-cy8c95x0.c | 21 +++++----------------
- 1 file changed, 5 insertions(+), 16 deletions(-)
+ drivers/md/dm-cache-target.c | 72 ++++++++++++++++++++++++++++++++++--
+ 1 file changed, 69 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/pinctrl/pinctrl-cy8c95x0.c b/drivers/pinctrl/pinctrl-cy8c95x0.c
-index f7c8ae9808133..c60886d804ce0 100644
---- a/drivers/pinctrl/pinctrl-cy8c95x0.c
-+++ b/drivers/pinctrl/pinctrl-cy8c95x0.c
-@@ -1206,6 +1206,7 @@ static int cy8c95x0_irq_setup(struct cy8c95x0_pinctrl *chip, int irq)
+diff --git a/drivers/md/dm-cache-target.c b/drivers/md/dm-cache-target.c
+index 1498ffbcb0e03..238d2bea41d8d 100644
+--- a/drivers/md/dm-cache-target.c
++++ b/drivers/md/dm-cache-target.c
+@@ -405,6 +405,12 @@ struct cache {
+ 	mempool_t migration_pool;
+ 
+ 	struct bio_set bs;
++
++	/*
++	 * Cache_size entries. Set bits indicate blocks mapped beyond the
++	 * target length, which are marked for invalidation.
++	 */
++	unsigned long *invalid_bitset;
+ };
+ 
+ struct per_bio_data {
+@@ -1918,6 +1924,9 @@ static void __destroy(struct cache *cache)
+ 	if (cache->discard_bitset)
+ 		free_bitset(cache->discard_bitset);
+ 
++	if (cache->invalid_bitset)
++		free_bitset(cache->invalid_bitset);
++
+ 	if (cache->copier)
+ 		dm_kcopyd_client_destroy(cache->copier);
+ 
+@@ -2506,6 +2515,13 @@ static int cache_create(struct cache_args *ca, struct cache **result)
+ 	}
+ 	clear_bitset(cache->discard_bitset, from_dblock(cache->discard_nr_blocks));
+ 
++	cache->invalid_bitset = alloc_bitset(from_cblock(cache->cache_size));
++	if (!cache->invalid_bitset) {
++		*error = "could not allocate bitset for invalid blocks";
++		goto bad;
++	}
++	clear_bitset(cache->invalid_bitset, from_cblock(cache->cache_size));
++
+ 	cache->copier = dm_kcopyd_client_create(&dm_kcopyd_throttle);
+ 	if (IS_ERR(cache->copier)) {
+ 		*error = "could not create kcopyd client";
+@@ -2804,6 +2820,24 @@ static int load_mapping(void *context, dm_oblock_t oblock, dm_cblock_t cblock,
+ 	return policy_load_mapping(cache->policy, oblock, cblock, dirty, hint, hint_valid);
+ }
+ 
++static int load_filtered_mapping(void *context, dm_oblock_t oblock, dm_cblock_t cblock,
++				 bool dirty, uint32_t hint, bool hint_valid)
++{
++	struct cache *cache = context;
++
++	if (from_oblock(oblock) >= from_oblock(cache->origin_blocks)) {
++		if (dirty) {
++			DMERR("%s: unable to shrink origin; cache block %u is dirty",
++			      cache_device_name(cache), from_cblock(cblock));
++			return -EFBIG;
++		}
++		set_bit(from_cblock(cblock), cache->invalid_bitset);
++		return 0;
++	}
++
++	return load_mapping(context, oblock, cblock, dirty, hint, hint_valid);
++}
++
+ /*
+  * The discard block size in the on disk metadata is not
+  * neccessarily the same as we're currently using.  So we have to
+@@ -2958,6 +2992,24 @@ static int resize_cache_dev(struct cache *cache, dm_cblock_t new_size)
+ 	return 0;
+ }
+ 
++static int truncate_oblocks(struct cache *cache)
++{
++	uint32_t nr_blocks = from_cblock(cache->cache_size);
++	uint32_t i;
++	int r;
++
++	for_each_set_bit(i, cache->invalid_bitset, nr_blocks) {
++		r = dm_cache_remove_mapping(cache->cmd, to_cblock(i));
++		if (r) {
++			DMERR_LIMIT("%s: invalidation failed; couldn't update on disk metadata",
++				    cache_device_name(cache));
++			return r;
++		}
++	}
++
++	return 0;
++}
++
+ static int cache_preresume(struct dm_target *ti)
  {
- 	struct gpio_irq_chip *girq = &chip->gpio_chip.irq;
- 	DECLARE_BITMAP(pending_irqs, MAX_LINE);
-+	struct device *dev = chip->dev;
- 	int ret;
+ 	int r = 0;
+@@ -2982,11 +3034,25 @@ static int cache_preresume(struct dm_target *ti)
+ 	}
  
- 	mutex_init(&chip->irq_lock);
-@@ -1232,17 +1233,9 @@ static int cy8c95x0_irq_setup(struct cy8c95x0_pinctrl *chip, int irq)
- 	girq->handler = handle_simple_irq;
- 	girq->threaded = true;
+ 	if (!cache->loaded_mappings) {
++		/*
++		 * The fast device could have been resized since the last
++		 * failed preresume attempt.  To be safe we start by a blank
++		 * bitset for cache blocks.
++		 */
++		clear_bitset(cache->invalid_bitset, from_cblock(cache->cache_size));
++
+ 		r = dm_cache_load_mappings(cache->cmd, cache->policy,
+-					   load_mapping, cache);
++					   load_filtered_mapping, cache);
+ 		if (r) {
+ 			DMERR("%s: could not load cache mappings", cache_device_name(cache));
+-			metadata_operation_failed(cache, "dm_cache_load_mappings", r);
++			if (r != -EFBIG)
++				metadata_operation_failed(cache, "dm_cache_load_mappings", r);
++			return r;
++		}
++
++		r = truncate_oblocks(cache);
++		if (r) {
++			metadata_operation_failed(cache, "dm_cache_remove_mapping", r);
+ 			return r;
+ 		}
  
--	ret = devm_request_threaded_irq(chip->dev, irq,
--					NULL, cy8c95x0_irq_handler,
--					IRQF_ONESHOT | IRQF_SHARED,
--					dev_name(chip->dev), chip);
--	if (ret) {
--		dev_err(chip->dev, "failed to request irq %d\n", irq);
--		return ret;
--	}
--	dev_info(chip->dev, "Registered threaded IRQ\n");
--
--	return 0;
-+	return devm_request_threaded_irq(dev, irq, NULL, cy8c95x0_irq_handler,
-+					 IRQF_ONESHOT | IRQF_SHARED,
-+					 dev_name(chip->dev), chip);
- }
+@@ -3460,7 +3526,7 @@ static void cache_io_hints(struct dm_target *ti, struct queue_limits *limits)
  
- static int cy8c95x0_setup_pinctrl(struct cy8c95x0_pinctrl *chip)
-@@ -1258,11 +1251,7 @@ static int cy8c95x0_setup_pinctrl(struct cy8c95x0_pinctrl *chip)
- 	pd->owner = THIS_MODULE;
- 
- 	chip->pctldev = devm_pinctrl_register(chip->dev, pd, chip);
--	if (IS_ERR(chip->pctldev))
--		return dev_err_probe(chip->dev, PTR_ERR(chip->pctldev),
--			"can't register controller\n");
--
--	return 0;
-+	return PTR_ERR_OR_ZERO(chip->pctldev);
- }
- 
- static int cy8c95x0_detect(struct i2c_client *client,
+ static struct target_type cache_target = {
+ 	.name = "cache",
+-	.version = {2, 2, 0},
++	.version = {2, 3, 0},
+ 	.module = THIS_MODULE,
+ 	.ctr = cache_ctr,
+ 	.dtr = cache_dtr,
 -- 
 2.53.0
 
