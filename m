@@ -1,60 +1,59 @@
-Return-Path: <stable+bounces-259015-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-258410-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id mAn4GqguG2oLAAkAu9opvQ
-	(envelope-from <stable+bounces-259015-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:38:32 +0200
+	id kNYTEv0oG2rg/ggAu9opvQ
+	(envelope-from <stable+bounces-258410-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:14:21 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6522561228A
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:38:31 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id C2C506114C6
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:14:20 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 5158F3008479
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 18:38:28 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id DA566310EC5D
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 18:04:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F1EA339478D;
-	Sat, 30 May 2026 18:38:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 22366341AC7;
+	Sat, 30 May 2026 18:04:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bI1TRVyZ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="g9po43wv"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D8423331200;
-	Sat, 30 May 2026 18:38:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0225823392B;
+	Sat, 30 May 2026 18:04:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780166304; cv=none; b=OzVXegkE9ij8RlikPqecZM8ecnBDPfDl18XhW+cezaU75aPljSXHI/HGuYQNSKKGi2ITVbi911zritsVy/TwC3+xJopOnoZVTy4KOxKA2skoSBJl6kVmUV8BtHAMJ32y4/MRkKmjCpbE3a92LazlHUfTkrVNeOAzFvJlY/HjhQw=
+	t=1780164256; cv=none; b=aJrFMM4fDlnqiFMl23Ec9GUDs4y9fm9M7RR3E4f2w5+EMOyHz88FHRCvjacxyKS8U2NgL32Aqod7yO3H76wbCspBthEhL+nx1lEl4zULQf3b2EXXFTbggpZJDwzAx2JelhuJC5Aqro0Chb2oLjYFkh5FWoNuL9vM+HksK8BahWg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780166304; c=relaxed/simple;
-	bh=3vhalJVmp96w92gYl6TCsWtg2/CLnYYxkhI0x8/lrRA=;
+	s=arc-20240116; t=1780164256; c=relaxed/simple;
+	bh=KApk8uxzXOjGAD+bVZI2Us1W08OLuh3Xy6gOKEOGAxc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=T3owCGc1Uz1i8ivQGtikelQmvhkUDTt5nv7sD7MHj95/CgJKsLGWbeSEYYPb1RIA4iG/WwKTWtFHtTXRetogHtnqD/XQtj8gk0uNbDOw4vQCFVHzXGzcv9Aw919pSnOzDfEqRcYjrD0oQFBNLmD77+z77X1gswEzeef8P0Ndq40=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bI1TRVyZ; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 295931F00893;
-	Sat, 30 May 2026 18:38:22 +0000 (UTC)
+	 MIME-Version; b=Kb1/Z2qJmzjV4Jaq2FH5FvFuO6k3OaOm8Guz+Rd3Yf/paiEhucpS+qW2URuADUbfiKsWjNbZttKKUvZuE4mvt1Wpc2yNUrwzatGA3l6ZzFZcoM+ul2Fn2JbVbn3gwbG9+ds49Tu7y1OY0exuzinkmKFftI20G2kZaovwqBnRSUo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=g9po43wv; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 46BBA1F00893;
+	Sat, 30 May 2026 18:04:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780166303;
-	bh=ZU6jshQKcydDhh71pZNGj/FWWP5hfM8oS4n1xw0h4Xo=;
+	s=korg; t=1780164255;
+	bh=EILfFk3gAelawK+R3Qn0eb5ycg65AFS2Ir82MPEd6KE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=bI1TRVyZwkHzDAGlJNw4n9ig0k4KDY9EmJyyPsV0UimPZ2bGCI6Yb5mJ4Yh7uERQ4
-	 5PWIdF74Klq/MteyC5eat9XriyIma1qjaCW3Y6aMPoIAdTRw5ptNxJlNOab2AuFF5K
-	 J6LQZjQLpCrSU/Ed6RIRdF1XrttGrDXk2L1fNhvI=
+	b=g9po43wvGghAQdYtzxhVIj5wAWR1zD7c+vbH6/2Qzc/qt3K2gMdwhEzPJQEeYYCrD
+	 1ZXNBU2qJkCK0G+onqf2/wucm41ssSIoGJq1g3yKf4SZyhYmmU7nCGJf9BcnGCGj1A
+	 QO1K7yrCDXHn/W5dUDkqK5nIpTf3fL+zdRvh5nXk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sebastian Reichel <sebastian.reichel@collabora.com>,
-	Ian Ray <ian.ray@gehealthcare.com>,
-	Neil Armstrong <neil.armstrong@linaro.org>,
+	Frank Li <Frank.Li@nxp.com>,
+	Vinod Koul <vkoul@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 334/589] drm/panel: simple: Correct G190EAN01 prepare timing
+Subject: [PATCH 5.15 501/776] dmaengine: mxs-dma: Fix missing return value from of_dma_controller_register()
 Date: Sat, 30 May 2026 18:03:35 +0200
-Message-ID: <20260530160233.683175183@linuxfoundation.org>
+Message-ID: <20260530160253.237938216@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260530160224.570625122@linuxfoundation.org>
-References: <20260530160224.570625122@linuxfoundation.org>
+In-Reply-To: <20260530160240.228940103@linuxfoundation.org>
+References: <20260530160240.228940103@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,70 +68,65 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-259015-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-258410-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
-	NEURAL_HAM(-0.00)[-0.996];
-	RCPT_COUNT_SEVEN(0.00)[7];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-0.997];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,linaro.org:email,collabora.com:email,msgid.link:url,gehealthcare.com:email,linuxfoundation.org:mid,linuxfoundation.org:dkim]
-X-Rspamd-Queue-Id: 6522561228A
+	RCPT_COUNT_FIVE(0.00)[6];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim,nxp.com:email,msgid.link:url]
+X-Rspamd-Queue-Id: C2C506114C6
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sebastian Reichel <sebastian.reichel@collabora.com>
+From: Frank Li <Frank.Li@nxp.com>
 
-[ Upstream commit f1080f82570b797598c1ba7e9c800ae9e94aafc6 ]
+[ Upstream commit ab2bf6d4c0a0152907b18d25c1b118ea5ea779df ]
 
-The prepare timing specified by the G190EAN01 datasheet should be
-between 30 and 50 ms. Considering it might take some time for the
-LVDS encoder to enable the signal, we should only wait the min.
-required time in the panel driver and not the max. allowed time.
+Propagate the return value of of_dma_controller_register() in probe()
+instead of ignoring it.
 
-Fixes: 2f7b832fc992 ("drm/panel: simple: Add support for AUO G190EAN01 panel")
-Signed-off-by: Sebastian Reichel <sebastian.reichel@collabora.com>
-Signed-off-by: Ian Ray <ian.ray@gehealthcare.com>
-Reviewed-by: Neil Armstrong <neil.armstrong@linaro.org>
-Signed-off-by: Neil Armstrong <neil.armstrong@linaro.org>
-Link: https://patch.msgid.link/20260217142528.68613-1-ian.ray@gehealthcare.com
+Fixes: a580b8c5429a6 ("dmaengine: mxs-dma: add dma support for i.MX23/28")
+Signed-off-by: Frank Li <Frank.Li@nxp.com>
+Link: https://patch.msgid.link/20260225-mxsdma-module-v3-2-8f798b13baa6@nxp.com
+Signed-off-by: Vinod Koul <vkoul@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/panel/panel-simple.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/dma/mxs-dma.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/gpu/drm/panel/panel-simple.c b/drivers/gpu/drm/panel/panel-simple.c
-index d4bd72347245a..a59adc08267f5 100644
---- a/drivers/gpu/drm/panel/panel-simple.c
-+++ b/drivers/gpu/drm/panel/panel-simple.c
-@@ -1140,7 +1140,7 @@ static const struct panel_desc auo_g190ean01 = {
- 		.height = 301,
- 	},
- 	.delay = {
--		.prepare = 50,
-+		.prepare = 30,
- 		.enable = 200,
- 		.disable = 110,
- 		.unprepare = 1000,
+diff --git a/drivers/dma/mxs-dma.c b/drivers/dma/mxs-dma.c
+index dc147cc2436e9..5d34440b9e127 100644
+--- a/drivers/dma/mxs-dma.c
++++ b/drivers/dma/mxs-dma.c
+@@ -827,6 +827,7 @@ static int mxs_dma_probe(struct platform_device *pdev)
+ 	if (ret) {
+ 		dev_err(mxs_dma->dma_device.dev,
+ 			"failed to register controller\n");
++		return ret;
+ 	}
+ 
+ 	dev_info(mxs_dma->dma_device.dev, "initialized\n");
 -- 
 2.53.0
 
