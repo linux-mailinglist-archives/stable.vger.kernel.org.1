@@ -1,59 +1,59 @@
-Return-Path: <stable+bounces-258567-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-257753-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id oHrLMrEoG2ra/ggAu9opvQ
-	(envelope-from <stable+bounces-258567-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:13:05 +0200
+	id oBVRHFMeG2qu/QgAu9opvQ
+	(envelope-from <stable+bounces-257753-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:28:51 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8F34C6113F0
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:13:05 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2EC3360FC39
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:28:51 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id D2733300B1E8
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 18:13:04 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 78EC73026F1B
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 17:27:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C8A4D31F98D;
-	Sat, 30 May 2026 18:13:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B221D39B4A6;
+	Sat, 30 May 2026 17:27:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DhUzsLdp"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AHe1F7aG"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B2C3B29B799;
-	Sat, 30 May 2026 18:13:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8804739A4A4;
+	Sat, 30 May 2026 17:27:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780164781; cv=none; b=M49j4Le7VhL//JnLfEZappxDYw4/yIJyUb0970eUg0AOuNGBQspjbfhL4DuP/2Fb8b4CyzyPN4PN5+MMfKuZe6Xv8zu5edyMoZQAwRy0CloYFWh0zbPQ/oRU7BsX9ShX8Rt8D/Sj3qnnW4eeiKr189GPDrmkyneok8GxGQ5VAvw=
+	t=1780162056; cv=none; b=XCuYXZ+NT7A8LGKiWEz6mBJRJsptmAiOoLBWTTpcqHFjGZGolaXyR8rDENeOLdAIYIFNfUr2kw6BRYdRy2p/oGa83nDGCf7N7zTC9BMZijuRVDSh0IknVJlJvVe9iyAIAIN0ajpcFEOlisnVRrZzfIBajycPXrX9Csayz9TQ9Jg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780164781; c=relaxed/simple;
-	bh=TB4NWzM8rw3TaPEAOYmMrMUb8Zu/0iol4XlS22xVOBM=;
+	s=arc-20240116; t=1780162056; c=relaxed/simple;
+	bh=53Eo+iJrAQk6UV7GMMiFeZ3i7bB7QZJpCNy0lnJyiVY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=s7WNoXnAnzeMQx33XCsFvPwZs682RnPNxnpBWBne6sLEXletdMwu9YVTCCmnRWSUl+UWt+IBL7Bs95MNjh0K6s2IV6eZbHeCmGzzwEBhpvwzPFO2g9s5Z/VIMTfSaHGuJJ27IWZnbIwKjBAaBIPaGEQXRXELWNC1za2eFZEJ1sA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DhUzsLdp; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 02D2A1F00893;
-	Sat, 30 May 2026 18:12:59 +0000 (UTC)
+	 MIME-Version; b=oRRzrMLINB7CQN5Wr/YiVEgwQZkbIklA2S708gdoHKGKsH02FW7fEM27oonjPUs9XXjY97Gb0iNTRaAqIp8BgCzB/4ZfSMGfGvE6xujlpldo157orirmWrw9RYCdIpoKzcguGFVpJV6nerq9f2F9caklyoxhzw3ss08bzSrghAQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AHe1F7aG; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C99D61F00893;
+	Sat, 30 May 2026 17:27:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780164780;
-	bh=GNoYjfRsUviuu2vE6W50+HUccqslU1vbfrvVX65v/68=;
+	s=korg; t=1780162055;
+	bh=Kbr8oWYB4igwpUXS0vo1/ghGX0EMpw7D+o3q12Xv7YU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=DhUzsLdpnpfd+MN8TN4RS362U4VwzbXBAMPKCxhXjs/bUgRFR7B7wrdjRljKenhnF
-	 E2ksluArQmmD3UucCCGA9aVrUDLXz2igTc+Hk9j2ldN1uPrn1yw6hAJ09YfxOTU/AH
-	 pq9fXMlxbm5HBS5Y/7LCCnoPMQuJykcJ88bMP+jQ=
+	b=AHe1F7aGOfweozAzTABFzG/1QFeSCjdOZWZsuKjuEJYYKOy6suvvpV50w74qVMbHL
+	 pZBXh6Zcf7kLaw7TUH29GsO/2Of4ZcbgKlYttDU5OCZlFeajcDmYU3ufrifZkNIrH+
+	 7YizyTEhtK2eAq5jBILDyTOtXYm6M35sneZTqRnA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Zhengchao Shao <shaozhengchao@huawei.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 618/776] net: sched: choke: remove unused variables in struct choke_sched_data
+	Ricardo Robaina <rrobaina@redhat.com>,
+	Sergio Correia <scorreia@redhat.com>,
+	Paul Moore <paul@paul-moore.com>
+Subject: [PATCH 6.1 808/969] audit: fix incorrect inheritable capability in CAPSET records
 Date: Sat, 30 May 2026 18:05:32 +0200
-Message-ID: <20260530160255.961713158@linuxfoundation.org>
+Message-ID: <20260530160322.944433698@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260530160240.228940103@linuxfoundation.org>
-References: <20260530160240.228940103@linuxfoundation.org>
+In-Reply-To: <20260530160300.485627683@linuxfoundation.org>
+References: <20260530160300.485627683@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -78,7 +78,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-258567-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-257753-lists,stable=lfdr.de];
 	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
@@ -90,52 +90,54 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,huawei.com:email,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo]
-X-Rspamd-Queue-Id: 8F34C6113F0
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo]
+X-Rspamd-Queue-Id: 2EC3360FC39
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Zhengchao Shao <shaozhengchao@huawei.com>
+From: Sergio Correia <scorreia@redhat.com>
 
-[ Upstream commit 38af11717b386560f10f2891350933fc5200aeea ]
+commit e4a640475e43f406fdfd56d370b1f34b0cbbc18d upstream.
 
-The variable "other" in the struct choke_sched_data is not used. Remove it.
+__audit_log_capset() records the effective capability set into the
+inheritable field due to a copy-paste error. Every CAPSET audit
+record therefore reports cap_pi (process inheritable) with the value
+of cap_effective instead of cap_inheritable.
 
-Signed-off-by: Zhengchao Shao <shaozhengchao@huawei.com>
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Stable-dep-of: d3aeb889dcbd ("net/sched: sch_choke: annotate data-races in choke_dump_stats()")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+This silently corrupts audit data used for compliance and forensic
+analysis: an attacker who modifies inheritable capabilities to
+prepare for a privilege-escalating exec would have the change masked
+in the audit trail.
+
+The bug has been present since the original introduction of CAPSET
+audit records in 2008.
+
+Cc: stable@vger.kernel.org
+Fixes: e68b75a027bb ("When the capset syscall is used it is not possible for audit to record the actual capbilities being added/removed.  This patch adds a new record type which emits the target pid and the eff, inh, and perm cap sets.")
+Reviewed-by: Ricardo Robaina <rrobaina@redhat.com>
+Assisted-by: Claude:claude-opus-4-6
+Signed-off-by: Sergio Correia <scorreia@redhat.com>
+Signed-off-by: Paul Moore <paul@paul-moore.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/sched/sch_choke.c | 2 --
- 1 file changed, 2 deletions(-)
+ kernel/auditsc.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/net/sched/sch_choke.c b/net/sched/sch_choke.c
-index f3805bee995bb..e38cf34287018 100644
---- a/net/sched/sch_choke.c
-+++ b/net/sched/sch_choke.c
-@@ -60,7 +60,6 @@ struct choke_sched_data {
- 		u32	forced_drop;	/* Forced drops, qavg > max_thresh */
- 		u32	forced_mark;	/* Forced marks, qavg > max_thresh */
- 		u32	pdrop;          /* Drops due to queue limits */
--		u32	other;          /* Drops due to drop() calls */
- 		u32	matched;	/* Drops to flow match */
- 	} stats;
+--- a/kernel/auditsc.c
++++ b/kernel/auditsc.c
+@@ -2841,7 +2841,7 @@ void __audit_log_capset(const struct cre
  
-@@ -464,7 +463,6 @@ static int choke_dump_stats(struct Qdisc *sch, struct gnet_dump *d)
- 		.early	= q->stats.prob_drop + q->stats.forced_drop,
- 		.marked	= q->stats.prob_mark + q->stats.forced_mark,
- 		.pdrop	= q->stats.pdrop,
--		.other	= q->stats.other,
- 		.matched = q->stats.matched,
- 	};
- 
--- 
-2.53.0
-
+ 	context->capset.pid = task_tgid_nr(current);
+ 	context->capset.cap.effective   = new->cap_effective;
+-	context->capset.cap.inheritable = new->cap_effective;
++	context->capset.cap.inheritable = new->cap_inheritable;
+ 	context->capset.cap.permitted   = new->cap_permitted;
+ 	context->capset.cap.ambient     = new->cap_ambient;
+ 	context->type = AUDIT_CAPSET;
 
 
 
