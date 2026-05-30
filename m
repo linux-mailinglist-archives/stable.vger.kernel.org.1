@@ -1,65 +1,60 @@
-Return-Path: <stable+bounces-257829-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-259209-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id CDLxM3sgG2qu/QgAu9opvQ
-	(envelope-from <stable+bounces-257829-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:38:03 +0200
+	id 4EMEHvYyG2qqAAkAu9opvQ
+	(envelope-from <stable+bounces-259209-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:56:54 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8A8CF610104
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:38:03 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id CD667612CE9
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:56:53 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id E27EB300B3DA
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 17:31:51 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 6A5CB3026C26
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 18:49:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DBA8730E0DC;
-	Sat, 30 May 2026 17:31:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 529411D63E4;
+	Sat, 30 May 2026 18:49:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="s3UjTmqB"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VTRVfwAF"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9EF5830676E;
-	Sat, 30 May 2026 17:31:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2E84D137750;
+	Sat, 30 May 2026 18:49:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780162309; cv=none; b=nrHcAyWneBZdlPMb5+iggkr+yCoB/EJCVxe9bKB1L0T79Pv9r54RhQyVoICDfbmBIkkBMbY79acPQDKWrUZIE4XE2rYNnMRJdrGhNF7cW86GT+OdA0EChpvrrMW7OY+NhoeG4RcKQ1R8QvBVFp+6EybjCJUZp22WWtSbDf0dEvc=
+	t=1780166973; cv=none; b=daAQBQJaxsQrMT+B67pK50sLjgy9bin2B4+UpZdNY2rZJPA9C7wNGzSVaHwzJMMJAKhjaOiNMi9Jg5vPjM7z6/6WKYvsirRx9oQxfUdNm1BgwqTmDZ6HGG//A8q6jeAMH2EMCzpmpWRKo2h3pbxDnX/M3HcXqXTP7nnG0NKoshA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780162309; c=relaxed/simple;
-	bh=RbZ9nRIEGNDO8SGxk3bpAVE6bLAzCRe2lY4Iav86gGQ=;
+	s=arc-20240116; t=1780166973; c=relaxed/simple;
+	bh=/qkMHi1i12j/VnxbRWp0i49k6BwGujx+5N9eApPaMIc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=qUj21ePkel3fxbp82yECDazRcZAfEs+jHLQWsuGtHd9tslJxUBLCDFJHlANv7iPLL3yo6goSMNUKGaXMl05LH/z0G6ChHI+Cc+5lrBclM0XLTzSFDdzLJPTjVHl48rwkd0bWTVsCrUajA0i3H9kQ8j6HA6RKl3DKOXdFDl1dKVQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=s3UjTmqB; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CB9561F00893;
-	Sat, 30 May 2026 17:31:47 +0000 (UTC)
+	 MIME-Version; b=ceWmYxbS75w0Sl7TKTtNSRrU7Vfb8ODqCxaP6R5n6sBP9Xf7Cnyamm4zBFYMztC4quHPeFU3hNCNIrbY0O14NKuPwtmoAv7YZHHygIdvI7kHLumY4L7Yp8QvWz+TSjaWp2FzyXSnkmw7NX+R9Y7WeOBn8r94YCiHWZuDywWtj3E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VTRVfwAF; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 704C91F00893;
+	Sat, 30 May 2026 18:49:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780162308;
-	bh=UL0SUqGX9OuYjo79nrBrilzUAEopfz/NrT/3FZ87KpM=;
+	s=korg; t=1780166972;
+	bh=f7mWcQf9NebD+REBUkxJE2jDPgubZFx0tgylEYk33jk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=s3UjTmqB+yDHXuh0ZUCf/4GWYN/aF5lg31dj/qud9xa8dKGK3nTd9YiUlWWervlSm
-	 5ASU1tfHoKRUpazNr3Yzmiiiolr8slr0p3Gpi987q9yGQBbkPHc0Btzox6InsfVkeP
-	 Xi97cDPu1UdOYiM0d7ndsDlw5CjSN8KdxSMWTsq4=
+	b=VTRVfwAFAUL9OqU3bWFi9rdFlCYCPWhYuK3WNqaSw0anjdL4wI3nc0aYufMXoYyWo
+	 piQPF3DF2Bu7KANeoJqcB/MER2f0uqDopaNZp/RhYXK/9KN7cJtRYoK+TsoANdk6AS
+	 /AabltA4PS7VJ/f2OZNAMrZirZvF9jmIN3sVybTo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable@kernel.org,
-	Yuan Tan <yuantan098@gmail.com>,
-	Yifan Wu <yifanwucs@gmail.com>,
-	Juefei Pu <tomapufckgml@gmail.com>,
-	Xin Liu <bird@lzu.edu.cn>,
-	Ruide Cao <caoruide123@gmail.com>,
-	Ren Wei <enjou1224z@gmail.com>,
-	Ren Wei <n05ec@lzu.edu.cn>,
-	Sven Eckelmann <sven@narfation.org>
-Subject: [PATCH 6.1 883/969] batman-adv: fix fragment reassembly length accounting
+	David Howells <dhowells@redhat.com>,
+	Asim Viladi Oglu Manizada <manizada@pm.me>,
+	Steve French <stfrench@microsoft.com>,
+	Salvatore Bonaccorso <carnil@debian.org>
+Subject: [PATCH 5.10 526/589] smb: client: reject userspace cifs.spnego descriptions
 Date: Sat, 30 May 2026 18:06:47 +0200
-Message-ID: <20260530160325.076555941@linuxfoundation.org>
+Message-ID: <20260530160238.502197146@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260530160300.485627683@linuxfoundation.org>
-References: <20260530160300.485627683@linuxfoundation.org>
+In-Reply-To: <20260530160224.570625122@linuxfoundation.org>
+References: <20260530160224.570625122@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -72,167 +67,104 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-257829-lists,stable=lfdr.de];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,kernel.org,gmail.com,lzu.edu.cn,narfation.org];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_TLS_LAST(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[12];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-259209-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	MID_RHS_MATCH_FROM(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[lzu.edu.cn:email,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,narfation.org:email,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim]
-X-Rspamd-Queue-Id: 8A8CF610104
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,pm.me:email]
+X-Rspamd-Queue-Id: CD667612CE9
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ruide Cao <caoruide123@gmail.com>
+From: Asim Viladi Oglu Manizada <manizada@pm.me>
 
-commit 9cd3f16c320bfdadd4509358122368deb56a5741 upstream.
+commit 3da1fdf4efbc490041eb4f836bf596201203f8f2 upstream.
 
-batman-adv keeps a running payload length for queued fragments and uses it
-to validate a fragment chain before reassembly.
+cifs.spnego key descriptions contain authority-bearing fields such as
+pid, uid, creduid, and upcall_target that cifs.upcall treats as
+kernel-originating inputs. However, userspace can also create keys of
+this type through request_key(2) or add_key(2), allowing those fields to
+be supplied without CIFS origin.
 
-That accounting currently allows the accumulated fragment length to be
-truncated during updates. As a result, malformed fragment chains can
-bypass the intended validation and drive reassembly with inconsistent
-length state, leading to a local denial of service.
+Only accept cifs.spnego descriptions while CIFS is using its private
+spnego_cred to request the key.
 
-Fix the accounting by storing the accumulated length in a length-typed
-field and rejecting update overflows before the existing validation logic
-runs.
-
-The fix was verified against the original reproducer and against valid
-fragment reassembly paths.
-
-Fixes: 610bfc6bc99b ("batman-adv: Receive fragmented packets and merge")
-Cc: stable@kernel.org
-Reported-by: Yuan Tan <yuantan098@gmail.com>
-Reported-by: Yifan Wu <yifanwucs@gmail.com>
-Reported-by: Juefei Pu <tomapufckgml@gmail.com>
-Reported-by: Xin Liu <bird@lzu.edu.cn>
-Signed-off-by: Ruide Cao <caoruide123@gmail.com>
-Tested-by: Ren Wei <enjou1224z@gmail.com>
-Signed-off-by: Ren Wei <n05ec@lzu.edu.cn>
-Signed-off-by: Sven Eckelmann <sven@narfation.org>
+Fixes: f1d662a7d5e5 ("[CIFS] Add upcall files for cifs to use spnego/kerberos")
+Assisted-by: avom-custom-harness:gpt-5.5-qwen3.6-mod-mix
+Reviewed-by: David Howells <dhowells@redhat.com>
+Signed-off-by: Asim Viladi Oglu Manizada <manizada@pm.me>
+Signed-off-by: Steve French <stfrench@microsoft.com>
+[Salvatore Bonaccorso: Apply changes to fs/cifs/cifs_spnego.c instead of
+fs/smb/client/cifs_spnego.c before 38c8a9a52082 ("smb: move client and server
+files to common directory fs/smb") in v6.4-rc1 and backported to v6.1.36]
+Signed-off-by: Salvatore Bonaccorso <carnil@debian.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/batman-adv/fragmentation.c |   23 +++++++++++++++++------
- net/batman-adv/types.h         |    2 +-
- 2 files changed, 18 insertions(+), 7 deletions(-)
+ fs/cifs/cifs_spnego.c |   16 ++++++++++++++++
+ 1 file changed, 16 insertions(+)
 
---- a/net/batman-adv/fragmentation.c
-+++ b/net/batman-adv/fragmentation.c
-@@ -17,6 +17,7 @@
- #include <linux/lockdep.h>
- #include <linux/minmax.h>
- #include <linux/netdevice.h>
-+#include <linux/overflow.h>
- #include <linux/skbuff.h>
- #include <linux/slab.h>
- #include <linux/spinlock.h>
-@@ -81,9 +82,9 @@ void batadv_frag_purge_orig(struct batad
-  *
-  * Return: the maximum size of payload that can be fragmented.
+--- a/fs/cifs/cifs_spnego.c
++++ b/fs/cifs/cifs_spnego.c
+@@ -20,6 +20,7 @@
   */
--static int batadv_frag_size_limit(void)
-+static size_t batadv_frag_size_limit(void)
- {
--	int limit = BATADV_FRAG_MAX_FRAG_SIZE;
-+	size_t limit = BATADV_FRAG_MAX_FRAG_SIZE;
  
- 	limit -= sizeof(struct batadv_frag_packet);
- 	limit *= BATADV_FRAG_MAX_FRAGMENTS;
-@@ -144,7 +145,9 @@ static bool batadv_frag_insert_packet(st
- 	struct batadv_frag_packet *frag_packet;
- 	u8 bucket;
- 	u16 seqno, hdr_size = sizeof(struct batadv_frag_packet);
-+	bool overflow = false;
- 	bool ret = false;
-+	size_t data_len;
+ #include <linux/list.h>
++#include <linux/cred.h>
+ #include <linux/slab.h>
+ #include <linux/string.h>
+ #include <keys/user-type.h>
+@@ -58,12 +59,27 @@ cifs_spnego_key_destroy(struct key *key)
+ 	kfree(key->payload.data[0]);
+ }
  
- 	/* Linearize packet to avoid linearizing 16 packets in a row when doing
- 	 * the later merge. Non-linear merge should be added to remove this
-@@ -154,6 +157,7 @@ static bool batadv_frag_insert_packet(st
- 		goto err;
++static int
++cifs_spnego_key_vet_description(const char *description)
++{
++	/*
++	 * cifs.spnego descriptions are authority-bearing inputs to cifs.upcall.
++	 * They are only valid when produced by CIFS while using the private
++	 * spnego_cred installed below.  Do not let userspace create this type
++	 * of key through request_key(2)/add_key(2), since the helper treats
++	 * pid/uid/creduid/upcall_target as kernel-originating fields.
++	 */
++	if (current_cred() != spnego_cred)
++		return -EPERM;
++	return 0;
++}
  
- 	frag_packet = (struct batadv_frag_packet *)skb->data;
-+	data_len = skb->len - hdr_size;
- 	seqno = ntohs(frag_packet->seqno);
- 	bucket = seqno % BATADV_FRAG_BUFFER_COUNT;
- 
-@@ -172,7 +176,7 @@ static bool batadv_frag_insert_packet(st
- 	spin_lock_bh(&chain->lock);
- 	if (batadv_frag_init_chain(chain, seqno)) {
- 		hlist_add_head(&frag_entry_new->list, &chain->fragment_list);
--		chain->size = skb->len - hdr_size;
-+		chain->size = data_len;
- 		chain->timestamp = jiffies;
- 		chain->total_size = ntohs(frag_packet->total_size);
- 		ret = true;
-@@ -189,7 +193,11 @@ static bool batadv_frag_insert_packet(st
- 		if (frag_entry_curr->no < frag_entry_new->no) {
- 			hlist_add_before(&frag_entry_new->list,
- 					 &frag_entry_curr->list);
--			chain->size += skb->len - hdr_size;
-+
-+			if (check_add_overflow(chain->size, data_len,
-+					       &chain->size))
-+				overflow = true;
-+
- 			chain->timestamp = jiffies;
- 			ret = true;
- 			goto out;
-@@ -202,13 +210,16 @@ static bool batadv_frag_insert_packet(st
- 	/* Reached the end of the list, so insert after 'frag_entry_last'. */
- 	if (likely(frag_entry_last)) {
- 		hlist_add_behind(&frag_entry_new->list, &frag_entry_last->list);
--		chain->size += skb->len - hdr_size;
-+
-+		if (check_add_overflow(chain->size, data_len, &chain->size))
-+			overflow = true;
-+
- 		chain->timestamp = jiffies;
- 		ret = true;
- 	}
- 
- out:
--	if (chain->size > batadv_frag_size_limit() ||
-+	if (overflow || chain->size > batadv_frag_size_limit() ||
- 	    chain->total_size != ntohs(frag_packet->total_size) ||
- 	    chain->total_size > batadv_frag_size_limit()) {
- 		/* Clear chain if total size of either the list or the packet
---- a/net/batman-adv/types.h
-+++ b/net/batman-adv/types.h
-@@ -294,7 +294,7 @@ struct batadv_frag_table_entry {
- 	u16 seqno;
- 
- 	/** @size: accumulated size of packets in list */
--	u16 size;
-+	size_t size;
- 
- 	/** @total_size: expected size of the assembled packet */
- 	u16 total_size;
+ /*
+  * keytype for CIFS spnego keys
+  */
+ struct key_type cifs_spnego_key_type = {
+ 	.name		= "cifs.spnego",
++	.vet_description = cifs_spnego_key_vet_description,
+ 	.instantiate	= cifs_spnego_key_instantiate,
+ 	.destroy	= cifs_spnego_key_destroy,
+ 	.describe	= user_describe,
 
 
 
