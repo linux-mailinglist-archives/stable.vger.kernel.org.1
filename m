@@ -1,59 +1,58 @@
-Return-Path: <stable+bounces-257990-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-257246-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id sBhQMqIiG2rO/QgAu9opvQ
-	(envelope-from <stable+bounces-257990-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:47:14 +0200
+	id 2HvJI7kXG2pV/AgAu9opvQ
+	(envelope-from <stable+bounces-257246-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:00:41 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2A7D461060C
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:47:14 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6CF3560EB74
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:00:41 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id CF7B43076F18
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 17:40:57 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 5A8613014364
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 16:58:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A31CC3469FC;
-	Sat, 30 May 2026 17:40:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 75B26332EA7;
+	Sat, 30 May 2026 16:58:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xpKPu2PU"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="J+WQMQ5v"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 741B334389F;
-	Sat, 30 May 2026 17:40:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4CFBE2E92B3;
+	Sat, 30 May 2026 16:58:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780162856; cv=none; b=oAb1fN6Xb3//DESKMZSPbBY2Nm8Mopj4YBbSWVjDcfTQOMKJBpX/r6sPeocMdUwpjj1ihUOT7DxtgyTn0B8hioQLn+0eqFCBibhiI9DoL0oiudw3jrh5/jMrFIMwBRAhwbN9dQl6bUYb1w6+aMiVAC7p5zrXyhJSXugmOK9j5yM=
+	t=1780160327; cv=none; b=ZrQ7oOgS1bRaOyE5eEn1HFM1XlWZ88via8X+qVe/S/JpP1nBTUf60VB5wwOFsg0rvgaJMMxIdyRvsCv3QZ3pyH0POo1JyxussnXrxCQN/0iVlVrcmuIk9RUFd7DL/UrjaFdydtKF2oT9AuC9bGyPkkc8MYcjyETubVyN+JWQrfo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780162856; c=relaxed/simple;
-	bh=Y6C5GKVbzm555gBcUJS1vAPAL6WF+SBEkztodODnV5Q=;
+	s=arc-20240116; t=1780160327; c=relaxed/simple;
+	bh=lVTV53IZLcLRnvvWJF2lu1dxEEMcmmd1FLY1iowLvco=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=NQgudIutPRrdWcqu+Uzy5zvqxUQQt9VDMTO6EF3Elz0vySDf9el5gEfGLM1FzJJ5YDMchzJEUic06VRuK1awqUjInwfIF51d2syMsx8+jWtkIjDsxPmq3KCYlGSKvM85P/EOg2xJQTRXfOd0CivV6TXivdRfzBnouoMC0/51F70=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xpKPu2PU; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B835D1F00893;
-	Sat, 30 May 2026 17:40:54 +0000 (UTC)
+	 MIME-Version; b=H3oVCN7Zzn4ZL7OJ3Rj5hiHWzvXBAMRRZUd0+WdWp13VDC8iL++tzl7Ipxjo6Jh5BfHcu3XKoTuAfY1QjbXLDEfpHOsEqPGWy3QZmrzQ6Rp83hDMnwHAFfQwDBwxhsF7nAk2unkjzOxv3LWaqDTcy93UkqtEMH/D72+33UK0/5w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=J+WQMQ5v; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6BED21F00893;
+	Sat, 30 May 2026 16:58:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780162855;
-	bh=irAp/ilsW5JPCibHBPY45maDztGxBesyeUYOY/0XDFM=;
+	s=korg; t=1780160326;
+	bh=JxvIhMMeTl7P/lb7cMetYahq0eu7A4iAvtG017DXmzc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=xpKPu2PUIyp24Mv8esDqpW9Q5zZAXc8CwBlCYxhcsTgIZ6C3r/DboVYdOzjNmmyy5
-	 uBXPElWdmugfABne3JTtz/O+TGhtAuFpqSPV75PF8Bf8YcDGLaUtCEhayo0BbElFkx
-	 4wBVyqAVG6s5s8uEfW7Jc+xXepMzOLeLghHv5X7Y=
+	b=J+WQMQ5vKJ3OiMMP5dY4s3TmbxIXJ7swIxbm43KoH5PIBy2QPeg7BnbrkLF59EgB+
+	 wIpN6F1QSS5TcoqRwQYjFEEkqgEHH2eX2kmX2t04HA2EsiUxW1U1gUb3urdkTj/Z0y
+	 LXs0Hnf6MfXTzke2M3HLLxaWCrlTdA05v0MLJ1r8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Andrey Konovalov <andreyknvl@gmail.com>,
-	Berk Cem Goksel <berkcgoksel@gmail.com>,
-	Takashi Iwai <tiwai@suse.de>
-Subject: [PATCH 5.15 084/776] ALSA: 6fire: fix use-after-free on disconnect
+	stable <stable@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 6.1 274/969] ipv6: rpl: reserve mac_len headroom when recompressed SRH grows
 Date: Sat, 30 May 2026 17:56:38 +0200
-Message-ID: <20260530160242.507482785@linuxfoundation.org>
+Message-ID: <20260530160308.047010611@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260530160240.228940103@linuxfoundation.org>
-References: <20260530160240.228940103@linuxfoundation.org>
+In-Reply-To: <20260530160300.485627683@linuxfoundation.org>
+References: <20260530160300.485627683@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,114 +68,108 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-257990-lists,stable=lfdr.de];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,suse.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
-	TO_DN_SOME(0.00)[];
+	TAGGED_FROM(0.00)[bounces-257246-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
 	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TO_DN_SOME(0.00)[];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	RCPT_COUNT_FIVE(0.00)[6];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	RCPT_COUNT_FIVE(0.00)[5];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
 	TAGGED_RCPT(0.00)[stable];
 	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[suse.de:email,msgid.link:url,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim]
-X-Rspamd-Queue-Id: 2A7D461060C
+	FROM_HAS_DN(0.00)[]
+X-Rspamd-Queue-Id: 6CF3560EB74
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Berk Cem Goksel <berkcgoksel@gmail.com>
+From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 
-commit b9c826916fdce6419b94eb0cd8810fdac18c2386 upstream.
+commit 9e6bf146b55999a095bb14f73a843942456d1adc upstream.
 
-In usb6fire_chip_abort(), the chip struct is allocated as the card's
-private data (via snd_card_new with sizeof(struct sfire_chip)).  When
-snd_card_free_when_closed() is called and no file handles are open, the
-card and embedded chip are freed synchronously.  The subsequent
-chip->card = NULL write then hits freed slab memory.
+ipv6_rpl_srh_rcv() decompresses an RFC 6554 Source Routing Header, swaps
+the next segment into ipv6_hdr->daddr, recompresses, then pulls the old
+header and pushes the new one plus the IPv6 header back.  The
+recompressed header can be larger than the received one when the swap
+reduces the common-prefix length the segments share with daddr (CmprI=0,
+CmprE>0, seg[0][0] != daddr[0] gives the maximum +8 bytes).
 
-Call trace:
-  usb6fire_chip_abort sound/usb/6fire/chip.c:59 [inline]
-  usb6fire_chip_disconnect+0x348/0x358 sound/usb/6fire/chip.c:182
-  usb_unbind_interface+0x1a8/0x88c drivers/usb/core/driver.c:458
-  ...
-  hub_event+0x1a04/0x4518 drivers/usb/core/hub.c:5953
+pskb_expand_head() was gated on segments_left == 0, so on earlier
+segments the push consumed unchecked headroom.  Once skb_push() leaves
+fewer than skb->mac_len bytes in front of data,
+skb_mac_header_rebuild()'s call to:
 
-Fix by moving the card lifecycle out of usb6fire_chip_abort() and into
-usb6fire_chip_disconnect().  The card pointer is saved in a local
-before any teardown, snd_card_disconnect() is called first to prevent
-new opens, URBs are aborted while chip is still valid, and
-snd_card_free_when_closed() is called last so chip is never accessed
-after the card may be freed.
+	skb_set_mac_header(skb, -skb->mac_len);
 
-Fixes: a0810c3d6dd2 ("ALSA: 6fire: Release resources at card release")
-Cc: stable@vger.kernel.org
-Cc: Andrey Konovalov <andreyknvl@gmail.com>
-Signed-off-by: Berk Cem Goksel <berkcgoksel@gmail.com>
-Link: https://patch.msgid.link/20260410051341.1069716-1-berkcgoksel@gmail.com
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
+will store (data - head) - mac_len into the u16 mac_header field, which
+wraps to ~65530, and the following memmove() writes mac_len bytes ~64KiB
+past skb->head.
+
+A single AF_INET6/SOCK_RAW/IPV6_HDRINCL packet over lo with a two
+segment type-3 SRH (CmprI=0, CmprE=15) reaches headroom 8 after one
+pass; KASAN reports a 14-byte OOB write in ipv6_rthdr_rcv.
+
+Fix this by expanding the head whenever the remaining room is less than
+the push size plus mac_len, and request that much extra so the rebuilt
+MAC header fits afterwards.
+
+Fixes: 8610c7c6e3bd ("net: ipv6: add support for rpl sr exthdr")
+Cc: stable <stable@kernel.org>
+Reported-by: Anthropic
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Link: https://patch.msgid.link/2026042133-gout-unvented-1bd9@gregkh
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- sound/usb/6fire/chip.c |   17 ++++++++++++-----
- 1 file changed, 12 insertions(+), 5 deletions(-)
+ net/ipv6/exthdrs.c |    9 ++++++---
+ 1 file changed, 6 insertions(+), 3 deletions(-)
 
---- a/sound/usb/6fire/chip.c
-+++ b/sound/usb/6fire/chip.c
-@@ -53,11 +53,6 @@ static void usb6fire_chip_abort(struct s
- 			usb6fire_comm_abort(chip);
- 		if (chip->control)
- 			usb6fire_control_abort(chip);
--		if (chip->card) {
--			snd_card_disconnect(chip->card);
--			snd_card_free_when_closed(chip->card);
--			chip->card = NULL;
--		}
+--- a/net/ipv6/exthdrs.c
++++ b/net/ipv6/exthdrs.c
+@@ -500,6 +500,7 @@ static int ipv6_rpl_srh_rcv(struct sk_bu
+ 	struct net *net = dev_net(skb->dev);
+ 	struct inet6_dev *idev;
+ 	struct ipv6hdr *oldhdr;
++	unsigned int chdr_len;
+ 	unsigned char *buf;
+ 	int accept_rpl_seg;
+ 	int i, err;
+@@ -619,8 +620,10 @@ looped_back:
+ 	skb_pull(skb, ((hdr->hdrlen + 1) << 3));
+ 	skb_postpull_rcsum(skb, oldhdr,
+ 			   sizeof(struct ipv6hdr) + ((hdr->hdrlen + 1) << 3));
+-	if (unlikely(!hdr->segments_left)) {
+-		if (pskb_expand_head(skb, sizeof(struct ipv6hdr) + ((chdr->hdrlen + 1) << 3), 0,
++	chdr_len = sizeof(struct ipv6hdr) + ((chdr->hdrlen + 1) << 3);
++	if (unlikely(!hdr->segments_left ||
++		     skb_headroom(skb) < chdr_len + skb->mac_len)) {
++		if (pskb_expand_head(skb, chdr_len + skb->mac_len, 0,
+ 				     GFP_ATOMIC)) {
+ 			__IP6_INC_STATS(net, ip6_dst_idev(skb_dst(skb)), IPSTATS_MIB_OUTDISCARDS);
+ 			kfree_skb(skb);
+@@ -630,7 +633,7 @@ looped_back:
+ 
+ 		oldhdr = ipv6_hdr(skb);
  	}
- }
- 
-@@ -170,6 +165,7 @@ destroy_chip:
- static void usb6fire_chip_disconnect(struct usb_interface *intf)
- {
- 	struct sfire_chip *chip;
-+	struct snd_card *card;
- 
- 	chip = usb_get_intfdata(intf);
- 	if (chip) { /* if !chip, fw upload has been performed */
-@@ -180,8 +176,19 @@ static void usb6fire_chip_disconnect(str
- 			chips[chip->regidx] = NULL;
- 			mutex_unlock(&register_mutex);
- 
-+			/*
-+			 * Save card pointer before teardown.
-+			 * snd_card_free_when_closed() may free card (and
-+			 * the embedded chip) immediately, so it must be
-+			 * called last and chip must not be accessed after.
-+			 */
-+			card = chip->card;
- 			chip->shutdown = true;
-+			if (card)
-+				snd_card_disconnect(card);
- 			usb6fire_chip_abort(chip);
-+			if (card)
-+				snd_card_free_when_closed(card);
- 		}
- 	}
- }
+-	skb_push(skb, ((chdr->hdrlen + 1) << 3) + sizeof(struct ipv6hdr));
++	skb_push(skb, chdr_len);
+ 	skb_reset_network_header(skb);
+ 	skb_mac_header_rebuild(skb);
+ 	skb_set_transport_header(skb, sizeof(struct ipv6hdr));
 
 
 
