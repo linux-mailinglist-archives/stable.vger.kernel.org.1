@@ -1,46 +1,46 @@
-Return-Path: <stable+bounces-257827-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-257828-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id cIE/OFIfG2rO/QgAu9opvQ
-	(envelope-from <stable+bounces-257827-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:33:06 +0200
+	id wJGXFnsgG2qu/QgAu9opvQ
+	(envelope-from <stable+bounces-257828-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:38:03 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id E95D060FE55
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:33:05 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id CDC696100F8
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:38:02 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 1EEDD3003718
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 17:31:46 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id D8EC6300A7FD
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 17:31:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 471203ACEEA;
-	Sat, 30 May 2026 17:31:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B075E30E853;
+	Sat, 30 May 2026 17:31:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pnCzvqnW"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="D+fd5v81"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3ACA530E853;
-	Sat, 30 May 2026 17:31:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5192930676E;
+	Sat, 30 May 2026 17:31:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780162304; cv=none; b=XYMBD7yI/HM6KKxZ8hoeaUBF/v8VBFcKzJHnSrUxZJHmHrfTR01iQMD8kHQ7z5VpjfEDFX3VeK3PiQEuB3wusqUCUa9BioMTVvc3fl8SiQvYlFWBQ4jHOCiVtwYTc4FM7OhxKrT1wZD4SnEHFurBWd63vd7bqXHPVVEqIOJBO48=
+	t=1780162306; cv=none; b=AVJWrLVetoMzR7FZ335cKgWJXrc+HsT4sObnGOVufPTuEyZKDzza5zTVP7I3rNmRjXmHyRVnp9P/YkzG6oFjBsxQ+kr7vDaOZN9Rw0Z71LrgJ08W/4uIaig1/k1bAJHRHMCC4aSt2guqzkfCQ9Uz8zXXLp+jK1xoZTfoYbGqUmM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780162304; c=relaxed/simple;
-	bh=5PJW3CEby3ZU2aQMmLNpMZ1FMFD8jV+N/KgDXHW1d5s=;
+	s=arc-20240116; t=1780162306; c=relaxed/simple;
+	bh=9qKGrs4aLCN4pz3SojgFe1waPb+e3D5irGta45Kn63w=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=iDDaAbslWzZdKYWZhkmgw6kbzNCEpOdpUorwX9Ggryjx/1y+Dgo4FL4F8yA3eQTuBYnZRjt+X6k1sSmOGcVBfjHXQ+EDpYChrfh2gJM1DEa+9SkQ6ELR6LslLUoyyJQ/3kfMtYqSZWAzIRaeD2tMxA6lVb01BaIh7LK/3LWnhgM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pnCzvqnW; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 393AB1F00893;
-	Sat, 30 May 2026 17:31:41 +0000 (UTC)
+	 MIME-Version; b=Uf6g8YRT+qvNlI4h+NwT8nzXn913JuiS5EjWY/1KnpKv3iYyx/gkNcr80E1ZEeq5bsn6VHZfC0wEsDyiw8tMNdSBOwXF2N2lLU2SUwh6ym7t7pyEKQc8IDiHJEGr9ZRhN4eUBahSbvAfvxlzRqWd+8vOQxqVtMX5mjWuCuuqH94=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=D+fd5v81; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 82D0D1F00893;
+	Sat, 30 May 2026 17:31:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780162301;
-	bh=6oMqNCKb/bUpXDKKO06gEIiG73N5m3GuZha3dnOtda4=;
+	s=korg; t=1780162305;
+	bh=LcrFtK1HBqZUt0p+vIHhKw2jW5y2lgWhYd5LHifl+nc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=pnCzvqnWvyF8P6gfBRLyqK9PlEnto6cRBheyBZyTciyd9qTWZ2YLDxWCvAmm+2qeO
-	 Jwax+gnSXiut2NHWZNT/zz/4n/Iy1HLOgOqlYvMwg8yI1rRUy8D64Eq9egWSxt5Vrm
-	 lQp2fntXSw9LGnWpsKBoXrmzdPaHOZSt9X/hiGiY=
+	b=D+fd5v81auHP5GButp0TY8iiWr3wckdrL7aE+hLZBWeHkEfalKp2iA5oDIZtAQvVU
+	 pQv8zRbGJtWbhENOruzU1JFE02+czpuvM9wx5DcwEK+jKmc03mmTreSwrNB70tU+jJ
+	 hoJX8PCy51mFw413aennClf9T297YGFn+CHMLCQg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -50,13 +50,10 @@ Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	Yifan Wu <yifanwucs@gmail.com>,
 	Juefei Pu <tomapufckgml@gmail.com>,
 	Xin Liu <bird@lzu.edu.cn>,
-	Ruijie Li <ruijieli51@gmail.com>,
-	Zhanpeng Li <lzhanpeng2025@lzu.edu.cn>,
-	Ren Wei <n05ec@lzu.edu.cn>,
 	Sven Eckelmann <sven@narfation.org>
-Subject: [PATCH 6.1 881/969] batman-adv: clear current gateway during teardown
-Date: Sat, 30 May 2026 18:06:45 +0200
-Message-ID: <20260530160325.017528042@linuxfoundation.org>
+Subject: [PATCH 6.1 882/969] batman-adv: dat: handle forward allocation error
+Date: Sat, 30 May 2026 18:06:46 +0200
+Message-ID: <20260530160325.046134893@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
 In-Reply-To: <20260530160300.485627683@linuxfoundation.org>
 References: <20260530160300.485627683@linuxfoundation.org>
@@ -72,33 +69,33 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-257827-lists,stable=lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
 	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,kernel.org,gmail.com,lzu.edu.cn,narfation.org];
+	TAGGED_FROM(0.00)[bounces-257828-lists,stable=lfdr.de];
+	PRECEDENCE_BULK(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_TLS_LAST(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[12];
+	FROM_HAS_DN(0.00)[];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
-	TO_DN_SOME(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[stable];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[9];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,lzu.edu.cn:email,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim]
-X-Rspamd-Queue-Id: E95D060FE55
+	TAGGED_RCPT(0.00)[stable];
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,narfation.org:email,lzu.edu.cn:email]
+X-Rspamd-Queue-Id: CDC696100F8
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
@@ -106,49 +103,43 @@ X-Rspamd-Server: lfdr
 
 ------------------
 
-From: Ruijie Li <ruijieli51@gmail.com>
+From: Sven Eckelmann <sven@narfation.org>
 
-commit a340a51ed801eab7bb454150c226323b865263cc upstream.
+commit 2d8826a2d3657cea66fb0370f9e521575a673871 upstream.
 
-batadv_gw_node_free() removes the gateway list entries during mesh teardown,
-but it does not clear the currently selected gateway. This leaves stale
-gateway state behind across cleanup and can break a later mesh recreation.
+batadv_dat_forward_data() calls pskb_copy_for_clone() to duplicate an skb
+for each DHT candidate, but does not check the return value before passing
+it to batadv_send_skb_prepare_unicast_4addr(). That function dereferences
+the skb unconditionally, so a failed allocation triggers a NULL pointer
+dereference.
 
-Clear bat_priv->gw.curr_gw before walking the gateway list so the selected
-gateway reference is dropped as part of teardown.
+Skip forwarding to the current DHT candidate on allocation failure.
 
-Fixes: 2265c1410864 ("batman-adv: gateway election code refactoring")
 Cc: stable@kernel.org
+Fixes: 785ea1144182 ("batman-adv: Distributed ARP Table - create DHT helper functions")
 Reported-by: Yuan Tan <yuantan098@gmail.com>
 Reported-by: Yifan Wu <yifanwucs@gmail.com>
 Reported-by: Juefei Pu <tomapufckgml@gmail.com>
 Reported-by: Xin Liu <bird@lzu.edu.cn>
-Signed-off-by: Ruijie Li <ruijieli51@gmail.com>
-Signed-off-by: Zhanpeng Li <lzhanpeng2025@lzu.edu.cn>
-Signed-off-by: Ren Wei <n05ec@lzu.edu.cn>
+Reviewed-by: Yuan Tan <yuantan098@gmail.com>
 Signed-off-by: Sven Eckelmann <sven@narfation.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/batman-adv/gateway_client.c |    4 ++++
- 1 file changed, 4 insertions(+)
+ net/batman-adv/distributed-arp-table.c |    3 +++
+ 1 file changed, 3 insertions(+)
 
---- a/net/batman-adv/gateway_client.c
-+++ b/net/batman-adv/gateway_client.c
-@@ -479,10 +479,14 @@ void batadv_gw_node_delete(struct batadv
-  */
- void batadv_gw_node_free(struct batadv_priv *bat_priv)
- {
-+	struct batadv_gw_node *curr_gw;
- 	struct batadv_gw_node *gw_node;
- 	struct hlist_node *node_tmp;
+--- a/net/batman-adv/distributed-arp-table.c
++++ b/net/batman-adv/distributed-arp-table.c
+@@ -698,6 +698,9 @@ static bool batadv_dat_forward_data(stru
+ 			goto free_orig;
  
- 	spin_lock_bh(&bat_priv->gw.list_lock);
-+	curr_gw = rcu_replace_pointer(bat_priv->gw.curr_gw, NULL, true);
-+	batadv_gw_node_put(curr_gw);
+ 		tmp_skb = pskb_copy_for_clone(skb, GFP_ATOMIC);
++		if (!tmp_skb)
++			goto free_neigh;
 +
- 	hlist_for_each_entry_safe(gw_node, node_tmp,
- 				  &bat_priv->gw.gateway_list, list) {
- 		hlist_del_init_rcu(&gw_node->list);
+ 		if (!batadv_send_skb_prepare_unicast_4addr(bat_priv, tmp_skb,
+ 							   cand[i].orig_node,
+ 							   packet_subtype)) {
 
 
 
