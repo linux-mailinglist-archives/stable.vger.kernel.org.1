@@ -1,59 +1,61 @@
-Return-Path: <stable+bounces-257526-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-258337-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id WNg1JtUcG2p3/QgAu9opvQ
-	(envelope-from <stable+bounces-257526-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:22:29 +0200
+	id 8NeRAF4mG2qS/ggAu9opvQ
+	(envelope-from <stable+bounces-258337-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:03:10 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3404360F847
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:22:29 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 823C3610E03
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:03:09 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id BC45F30BF8A5
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 17:15:02 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id E8EE93073A16
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 18:00:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E7DF63148DA;
-	Sat, 30 May 2026 17:15:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AF068355F53;
+	Sat, 30 May 2026 18:00:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="N+ap+xpd"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2L3ePwgF"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CF1AC3016E1;
-	Sat, 30 May 2026 17:14:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DEF9E3BFE4D;
+	Sat, 30 May 2026 18:00:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780161300; cv=none; b=pE2kFRAasc9wA34WPoA5Hgd1o1KMIb0ipmSTpp8mA7mtTgzMIS9FxdMxEVz70IYqU0QfKRBE0T4KwVw3ybICJZDWRd4i5cYQVuyX+1eo0LlXpVkkghwW+psQJ4JGTcXiP07w1aCpVTZnWYUa1NnTDXYkN3rPNsywUsTK9MLg2AU=
+	t=1780164014; cv=none; b=QSzNoDS4bi23UXITm4UG4AmuaO1IhzAWY5evmMEZbNjdVF695R4ifA8L7VLoW/QueWQvfnvX2J/bULKzW8w2KLeGXXdTIJqpi7ka+W0Lbi9b2ifQaLWFZpi32XQp3dF4NkIP7ke1YxdBu2e3iz2fAqtif7B9FxS9GQsO3bsocYk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780161300; c=relaxed/simple;
-	bh=ZLkW+q0chPHY06CiUMSHVkVcu/ltoAn8fDF7MTTqTNc=;
+	s=arc-20240116; t=1780164014; c=relaxed/simple;
+	bh=ZYFJgoikUMz29pjDLHcRp5HoWqBzXzHA/QJkg+zNUIA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=gxsX6QnEKesTHVYZc1k3aQ37ACHAt649LIvf0bP5fbWRpp1vPWX1nWYsDATsmzSgw2y+Jin4fq+e1fI8DGPhPPZdM8SYv9OuQopxndnIjfdLhaQ5sfTZ8rK15H1jL5L/rat7d4/eeDdBmYmW7iThvg0GUTQ1/Zgh2ZwJAXDb1qI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=N+ap+xpd; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DCD1B1F00893;
-	Sat, 30 May 2026 17:14:58 +0000 (UTC)
+	 MIME-Version:Content-Type; b=DwSaHgGauSpDpYViN+pbmUhtbIZVDBiSbxyzjSkFzOwjyD0+SmuHkHR3SMM9LUX2x/TXcmdRDNXgH/itdINAqVT+ne7YJ9oZ/ejoxCrT6HNh4Aiph/oajrjmrkhQ8qn7OLpa82aR/ifl04XFhCIdJEdR+Ia8G8dJL1JFlUgVYFo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2L3ePwgF; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id ED8121F00893;
+	Sat, 30 May 2026 18:00:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780161299;
-	bh=le7kyHbMPWBCD96+NGeA0GvmeQzTHb1Gqv/bEHFm9Bg=;
+	s=korg; t=1780164012;
+	bh=hCsP0kvzs8ptxWXwjsG5641ui7YoQ/6UwimvpzaZps4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=N+ap+xpddNSZybym4A4b1YFNojNksnASwz0FnBZv9xunVHZVLvkSpQ8MPUU6txdFI
-	 9TCJWXi1KoPvcB/xITAG/qXbB2JWqbwqwSdqxLeeNP8nBIDS+AHWFJ/v4qWkq5DdXd
-	 fniwVrr0TbCa+3ekT8kNaU6V05O9FRB4SX0SfvyQ=
+	b=2L3ePwgFDPNTHtjSO1w1Fh6dpAKDQHUymQWSXQY4FwVqOHi/z235etqQNtVZ+25B8
+	 6S4Lo3/MQj4NORiHbzTj8i9pfItqXI9kQnxj28FItFgyEV+wKJSnzTE65qGTqhfPmG
+	 3l2/BEg3aHr2DRI8KsX+v5qyhTVEh9dMZjGMFUx4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sumit Gupta <sumitg@nvidia.com>,
-	Thierry Reding <treding@nvidia.com>,
+	"Mario Limonciello (AMD)" <superm1@kernel.org>,
+	"Borislav Petkov (AMD)" <bp@alien8.de>,
+	Jean Delvare <jdelvare@suse.de>,
+	Yazen Ghannam <yazen.ghannam@amd.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 584/969] soc/tegra: cbb: Set ERD on resume for err interrupt
+Subject: [PATCH 5.15 394/776] firmware: dmi: Correct an indexing error in dmi.h
 Date: Sat, 30 May 2026 18:01:48 +0200
-Message-ID: <20260530160316.537451305@linuxfoundation.org>
+Message-ID: <20260530160250.670684091@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260530160300.485627683@linuxfoundation.org>
-References: <20260530160300.485627683@linuxfoundation.org>
+In-Reply-To: <20260530160240.228940103@linuxfoundation.org>
+References: <20260530160240.228940103@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,76 +65,94 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	TAGGED_FROM(0.00)[bounces-258337-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-257526-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
-	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TO_DN_SOME(0.00)[];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	RCPT_COUNT_FIVE(0.00)[6];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	TO_DN_SOME(0.00)[];
+	NEURAL_HAM(-0.00)[-0.997];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[stable];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
 	MID_RHS_MATCH_FROM(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_SEVEN(0.00)[8];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	FROM_HAS_DN(0.00)[]
-X-Rspamd-Queue-Id: 3404360F847
+	DBL_BLOCKED_OPENRESOLVER(0.00)[suse.de:email,msgid.link:url,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,amd.com:email,linuxfoundation.org:mid,linuxfoundation.org:dkim]
+X-Rspamd-Queue-Id: 823C3610E03
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sumit Gupta <sumitg@nvidia.com>
+From: Mario Limonciello (AMD) <superm1@kernel.org>
 
-[ Upstream commit b6ff71c5d1d4ad858ddf6f39394d169c96689596 ]
+[ Upstream commit c064abc68e009d2cc18416e7132d9c25e03125b6 ]
 
-Set the Error Response Disable (ERD) bit to mask SError responses
-and use interrupt-based error reporting. When the ERD bit is set,
-inband error responses to the initiator via SError are suppressed,
-and fabric errors are reported via an interrupt instead.
+The entries later in enum dmi_entry_type don't match the SMBIOS
+specification¹.
 
-The register is set during boot but the info is lost during system
-suspend and needs to be set again on resume.
+The entry for type 33: `64-Bit Memory Error Information` is not present and
+thus the index for all later entries is incorrect.
 
-Fixes: fc2f151d2314 ("soc/tegra: cbb: Add driver for Tegra234 CBB 2.0")
-Signed-off-by: Sumit Gupta <sumitg@nvidia.com>
-Signed-off-by: Thierry Reding <treding@nvidia.com>
+Add it.
+
+Also, add missing entry types 43-46, while at it.
+
+  ¹ Search for "System Management BIOS (SMBIOS) Reference Specification"
+
+  [ bp: Drop the flaky SMBIOS spec URL. ]
+
+Fixes: 93c890dbe5287 ("firmware: Add DMI entry types to the headers")
+Signed-off-by: Mario Limonciello (AMD) <superm1@kernel.org>
+Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
+Reviewed-by: Jean Delvare <jdelvare@suse.de>
+Reviewed-by: Yazen Ghannam <yazen.ghannam@amd.com>
+Link: https://patch.msgid.link/20260307141024.819807-2-superm1@kernel.org
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/soc/tegra/cbb/tegra234-cbb.c | 4 ++++
- 1 file changed, 4 insertions(+)
+ include/linux/dmi.h | 5 +++++
+ 1 file changed, 5 insertions(+)
 
-diff --git a/drivers/soc/tegra/cbb/tegra234-cbb.c b/drivers/soc/tegra/cbb/tegra234-cbb.c
-index 5813c55222ca3..2cf0ceb60bd0f 100644
---- a/drivers/soc/tegra/cbb/tegra234-cbb.c
-+++ b/drivers/soc/tegra/cbb/tegra234-cbb.c
-@@ -1185,6 +1185,10 @@ static int __maybe_unused tegra234_cbb_resume_noirq(struct device *dev)
- {
- 	struct tegra234_cbb *cbb = dev_get_drvdata(dev);
- 
-+	/* set ERD bit to mask SError and generate interrupt to report error */
-+	if (cbb->fabric->off_mask_erd)
-+		tegra234_cbb_mask_serror(cbb);
-+
- 	tegra234_cbb_error_enable(&cbb->base);
- 
- 	dev_dbg(dev, "%s resumed\n", cbb->fabric->name);
+diff --git a/include/linux/dmi.h b/include/linux/dmi.h
+index 927f8a8b7a1dd..2eedf44e68012 100644
+--- a/include/linux/dmi.h
++++ b/include/linux/dmi.h
+@@ -60,6 +60,7 @@ enum dmi_entry_type {
+ 	DMI_ENTRY_OOB_REMOTE_ACCESS,
+ 	DMI_ENTRY_BIS_ENTRY,
+ 	DMI_ENTRY_SYSTEM_BOOT,
++	DMI_ENTRY_64_MEM_ERROR,
+ 	DMI_ENTRY_MGMT_DEV,
+ 	DMI_ENTRY_MGMT_DEV_COMPONENT,
+ 	DMI_ENTRY_MGMT_DEV_THRES,
+@@ -69,6 +70,10 @@ enum dmi_entry_type {
+ 	DMI_ENTRY_ADDITIONAL,
+ 	DMI_ENTRY_ONBOARD_DEV_EXT,
+ 	DMI_ENTRY_MGMT_CONTROLLER_HOST,
++	DMI_ENTRY_TPM_DEVICE,
++	DMI_ENTRY_PROCESSOR_ADDITIONAL,
++	DMI_ENTRY_FIRMWARE_INVENTORY,
++	DMI_ENTRY_STRING_PROPERTY,
+ 	DMI_ENTRY_INACTIVE = 126,
+ 	DMI_ENTRY_END_OF_TABLE = 127,
+ };
 -- 
 2.53.0
 
