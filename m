@@ -1,58 +1,62 @@
-Return-Path: <stable+bounces-258181-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-258786-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id yPWOFxMkG2rO/QgAu9opvQ
-	(envelope-from <stable+bounces-258181-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:53:23 +0200
+	id qJMyGUAtG2pa/wgAu9opvQ
+	(envelope-from <stable+bounces-258786-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:32:32 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id 61A97610941
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:53:22 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id BE81B611F0A
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:32:31 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 136863010DC4
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 17:51:29 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 19702302D5D0
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 18:25:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5FD993C0608;
-	Sat, 30 May 2026 17:51:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 596CC27E05E;
+	Sat, 30 May 2026 18:25:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QI/9noX4"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Urm6/xbd"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1DFFD3BF667;
-	Sat, 30 May 2026 17:51:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F33C521ADC7;
+	Sat, 30 May 2026 18:25:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780163486; cv=none; b=V3D5GKg1iUKj6vSs4vyb5fEJPRIlGezG8kf2Gsh8qVF12eD/y9KT/XYvMeKoWHtXGJVrrURcaUUmNrV45Sgye+Logvfn3YxH2z8ueZh+h/djPyyxetvKVuTIz2a2Rje56F/GR6ev7LDPAc8Tvb2lF+aOK4J8o/1t3WqH3ICDSnE=
+	t=1780165534; cv=none; b=pSd1Ykuv3ujl0mKQ9glTIWiMgI0woHMBsWMln9AABt+3TeE6HJeTB/bw6WGHgnwEj4c6u+7W+H2Fp5FFwZutBco03o80PtfqlS0ze/j9+Z/bDp0t8UCJzqpIXwbYV5PQlKsivky7/bprseze0q7ikHjj0gqz+NnlPKLX4OoGwL8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780163486; c=relaxed/simple;
-	bh=9ADxpyPbSSt2cMtfIkHavY0BsLJuoohBY1EzisTJ1ls=;
+	s=arc-20240116; t=1780165534; c=relaxed/simple;
+	bh=2VaKEX/p/vhpHTXn7Dz/RzBNtTWy7ptm3UNWLY5N7ss=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=LDEGkh9p7y2dP8Jn7RLGiIaGVTbQrEYVDKS2yAQpySvAaJdWBYGMkA2FtSK8iplwLUg188++FB59XIbjwRG4IYJflY5VCVFl0iwguujS1S62hYCOcyRqNj6O2lrpOpocZ/zyyMoz2YKvf+sKASQVbY0sdLq93D8dfJGd6MIujVk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QI/9noX4; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 622081F00893;
-	Sat, 30 May 2026 17:51:24 +0000 (UTC)
+	 MIME-Version; b=p8xL3uR/W0xBAPrNVUMUEiZJOCVWeepYykS6pT8akqfvSxfc012baqbOF35CFOs6JbwMhpWAARWaooZCOR6iox7IbGDyMnE7Ucn3vwtBhQ/PkC/Av6aPv7LJFgA3fagNlDrJdEXZPi1o4IGvbyURB/P385IQr41cmQPc3QNKSqQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Urm6/xbd; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 439AB1F00893;
+	Sat, 30 May 2026 18:25:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780163485;
-	bh=zzYLoH+TsZ2odrrFj89ANsz20T0dCSQKBaA6CbhvaMw=;
+	s=korg; t=1780165532;
+	bh=suoku9vRYHli+cd5Iicd/yI8fAXUCGlfoDXeNOAJJcg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=QI/9noX4PFhsORJMsBNsZfwHmIqoPjyilVhi4i8swyfzJQkv8m3lPb1hki1BgfE14
-	 +Y5+KRUpWcA5JyoSk4uhpYMDlw+FHcXqwbbo6Fa/y0u02Tuvqq0ittmAHUK/DCI0mx
-	 UTfyV1rQpysDHaatF4vXVkEej2VvWi4wmm+Nktg8=
+	b=Urm6/xbdk3yUAqRvKuPJyXaZ0cUw5VTaO5TvCDotk+IMPQKZGLRF2qAf4F6NsEInV
+	 mPwJ375NI3ucrfm9W0NrvfSlzv4LsOCnAzIFHrST3G6P7MobPL8CJa1Y44QLvHb1/W
+	 wTj+JXJz3iUjXXPWG+h4KYuBJ+Mz/Q8ZiRZEYxFw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Matt Fleming <mfleming@cloudflare.com>,
-	Corey Minyard <corey@minyard.net>
-Subject: [PATCH 5.15 273/776] ipmi: Check event message buffer response for bad data
-Date: Sat, 30 May 2026 17:59:47 +0200
-Message-ID: <20260530160247.613694070@linuxfoundation.org>
+	Keith Busch <kbusch@kernel.org>,
+	Ming Lei <ming.lei@redhat.com>,
+	Christoph Hellwig <hch@lst.de>,
+	Jens Axboe <axboe@kernel.dk>,
+	Sasha Levin <sashal@kernel.org>,
+	Brennan Lamoreaux <brennan.lamoreaux@broadcom.com>
+Subject: [PATCH 5.10 107/589] blk-mq: use quiesced elevator switch when reinitializing queues
+Date: Sat, 30 May 2026 17:59:48 +0200
+Message-ID: <20260530160227.559296606@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260530160240.228940103@linuxfoundation.org>
-References: <20260530160240.228940103@linuxfoundation.org>
+In-Reply-To: <20260530160224.570625122@linuxfoundation.org>
+References: <20260530160224.570625122@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,76 +69,144 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-258181-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
 	MIME_TRACE(0.00)[0:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TO_DN_SOME(0.00)[];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
-	RCPT_COUNT_FIVE(0.00)[5];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-258786-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[stable];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	NEURAL_HAM(-0.00)[-0.996];
+	RCPT_COUNT_SEVEN(0.00)[9];
 	MID_RHS_MATCH_FROM(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	FROM_HAS_DN(0.00)[]
-X-Rspamd-Queue-Id: 61A97610941
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,broadcom.com:email,kernel.dk:email]
+X-Rspamd-Queue-Id: BE81B611F0A
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Corey Minyard <corey@minyard.net>
+From: Keith Busch <kbusch@kernel.org>
 
-commit 36920f30e78e69df01f9691c470b6f3ba8aebf98 upstream.
+[ Upstream commit 8237c01f1696bc53c470493bf1fe092a107648a6 ]
 
-The event message buffer response data size got checked later when
-processing, but check it right after the response comes back.  It
-appears some BMCs may return an empty message instead of an error
-when fetching events.
+The hctx's run_work may be racing with the elevator switch when
+reinitializing hardware queues. The queue is merely frozen in this
+context, but that only prevents requests from allocating and doesn't
+stop the hctx work from running. The work may get an elevator pointer
+that's being torn down, and can result in use-after-free errors and
+kernel panics (example below). Use the quiesced elevator switch instead,
+and make the previous one static since it is now only used locally.
 
-There are apparently some new BMCs that make this error, so we need to
-compensate.
+  nvme nvme0: resetting controller
+  nvme nvme0: 32/0/0 default/read/poll queues
+  BUG: kernel NULL pointer dereference, address: 0000000000000008
+  #PF: supervisor read access in kernel mode
+  #PF: error_code(0x0000) - not-present page
+  PGD 80000020c8861067 P4D 80000020c8861067 PUD 250f8c8067 PMD 0
+  Oops: 0000 [#1] SMP PTI
+  Workqueue: kblockd blk_mq_run_work_fn
+  RIP: 0010:kyber_has_work+0x29/0x70
 
-Reported-by: Matt Fleming <mfleming@cloudflare.com>
-Closes: https://lore.kernel.org/lkml/20260415115930.3428942-1-matt@readmodwrite.com/
-Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Corey Minyard <corey@minyard.net>
+...
+
+  Call Trace:
+   __blk_mq_do_dispatch_sched+0x83/0x2b0
+   __blk_mq_sched_dispatch_requests+0x12e/0x170
+   blk_mq_sched_dispatch_requests+0x30/0x60
+   __blk_mq_run_hw_queue+0x2b/0x50
+   process_one_work+0x1ef/0x380
+   worker_thread+0x2d/0x3e0
+
+Signed-off-by: Keith Busch <kbusch@kernel.org>
+Reviewed-by: Ming Lei <ming.lei@redhat.com>
+Reviewed-by: Christoph Hellwig <hch@lst.de>
+Link: https://lore.kernel.org/r/20220927155652.3260724-1-kbusch@fb.com
+Signed-off-by: Jens Axboe <axboe@kernel.dk>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Brennan Lamoreaux <brennan.lamoreaux@broadcom.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/char/ipmi/ipmi_si_intf.c |    8 +++++++-
- 1 file changed, 7 insertions(+), 1 deletion(-)
+ block/blk-mq.c   |    6 +++---
+ block/blk.h      |    3 +--
+ block/elevator.c |    4 ++--
+ 3 files changed, 6 insertions(+), 7 deletions(-)
 
---- a/drivers/char/ipmi/ipmi_si_intf.c
-+++ b/drivers/char/ipmi/ipmi_si_intf.c
-@@ -624,7 +624,13 @@ static void handle_transaction_done(stru
- 		 */
- 		msg = smi_info->curr_msg;
- 		smi_info->curr_msg = NULL;
--		if (msg->rsp[2] != 0) {
-+		/*
-+		 * It appears some BMCs, with no event data, return no
-+		 * data in the message and not a 0x80 error as the
-+		 * spec says they should.  Shut down processing if
-+		 * the data is not the right length.
-+		 */
-+		if (msg->rsp[2] != 0 || msg->rsp_size != 19) {
- 			/* Error getting event, probably done. */
- 			msg->done(msg);
+--- a/block/blk-mq.c
++++ b/block/blk-mq.c
+@@ -3689,14 +3689,14 @@ static bool blk_mq_elv_switch_none(struc
+ 
+ 	mutex_lock(&q->sysfs_lock);
+ 	/*
+-	 * After elevator_switch_mq, the previous elevator_queue will be
++	 * After elevator_switch, the previous elevator_queue will be
+ 	 * released by elevator_release. The reference of the io scheduler
+ 	 * module get by elevator_get will also be put. So we need to get
+ 	 * a reference of the io scheduler module here to prevent it to be
+ 	 * removed.
+ 	 */
+ 	__module_get(qe->type->elevator_owner);
+-	elevator_switch_mq(q, NULL);
++	elevator_switch(q, NULL);
+ 	mutex_unlock(&q->sysfs_lock);
+ 
+ 	return true;
+@@ -3721,7 +3721,7 @@ static void blk_mq_elv_switch_back(struc
+ 	kfree(qe);
+ 
+ 	mutex_lock(&q->sysfs_lock);
+-	elevator_switch_mq(q, t);
++	elevator_switch(q, t);
+ 	mutex_unlock(&q->sysfs_lock);
+ }
+ 
+--- a/block/blk.h
++++ b/block/blk.h
+@@ -202,8 +202,7 @@ void blk_account_io_done(struct request
+ void blk_insert_flush(struct request *rq);
+ 
+ void elevator_init_mq(struct request_queue *q);
+-int elevator_switch_mq(struct request_queue *q,
+-			      struct elevator_type *new_e);
++int elevator_switch(struct request_queue *q, struct elevator_type *new_e);
+ void __elevator_exit(struct request_queue *, struct elevator_queue *);
+ int elv_register_queue(struct request_queue *q, bool uevent);
+ void elv_unregister_queue(struct request_queue *q);
+--- a/block/elevator.c
++++ b/block/elevator.c
+@@ -572,7 +572,7 @@ void elv_unregister(struct elevator_type
+ }
+ EXPORT_SYMBOL_GPL(elv_unregister);
+ 
+-int elevator_switch_mq(struct request_queue *q,
++static int elevator_switch_mq(struct request_queue *q,
+ 			      struct elevator_type *new_e)
+ {
+ 	int ret;
+@@ -701,7 +701,7 @@ void elevator_init_mq(struct request_que
+  * need for the new one. this way we have a chance of going back to the old
+  * one, if the new one fails init for some reason.
+  */
+-static int elevator_switch(struct request_queue *q, struct elevator_type *new_e)
++int elevator_switch(struct request_queue *q, struct elevator_type *new_e)
+ {
+ 	int err;
  
 
 
