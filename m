@@ -1,59 +1,67 @@
-Return-Path: <stable+bounces-258511-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-257739-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id iM3+DxQoG2qS/ggAu9opvQ
-	(envelope-from <stable+bounces-258511-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:10:28 +0200
+	id gDgWO4IfG2rO/QgAu9opvQ
+	(envelope-from <stable+bounces-257739-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:33:54 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0106F611294
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:10:27 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 47AE660FEF6
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:33:54 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id C6217300071F
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 18:09:58 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 2B9AB307D8FF
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 17:26:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 29B9739A7FE;
-	Sat, 30 May 2026 18:09:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EEB703438AE;
+	Sat, 30 May 2026 17:26:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xh1GEU81"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gfVFat1S"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D8E823B9D80;
-	Sat, 30 May 2026 18:09:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A6C98334695;
+	Sat, 30 May 2026 17:26:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780164596; cv=none; b=RyoUoZZTRMN1gz+NcclPgsU7PdklTOtiLsUONJrcjXoQNW+h4z6N7b9nJTYg24m79OzgnCeSV+42qvwe05iggStNyLIAV99y95+mB0CXn4/z1nTffoIVym9GpFN+JbWSNLj/phIrRTn2aAP+CDvfM3gqAeqA+OLxi1loMk9zuf0=
+	t=1780162009; cv=none; b=rW/qOg64MnkVAH4hPgCKwmZLpuZODLPTGcOYrAo+inEWfSR0a+dC030X25JsoSSE2Ro+rRVS23tuy+rU0F9TZC70pUyZO1odh5Poaj6ca6X61p2dtl2ZQBT8Vs5EQmvuVupb1gi1vg43m0OfV4w+4UwNeyqdmcjbZC8drcW3iis=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780164596; c=relaxed/simple;
-	bh=Pog2dH2T7RFpqCoEJ8XIn/YhhsQbjP7zT8XEQdghIEA=;
+	s=arc-20240116; t=1780162009; c=relaxed/simple;
+	bh=ypIHPzmt3v3THYGM33ATqP0LRwM1U0sUjhkn9JjCnJ0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=n6bnnck7vwFjHy2M6HotpZKRbMZCX0a2C7dCdksxrc3U+SyZVzTm0v0r3J9am16qjEUTVlw/pSwqckVuxg8NgX4a5783LtpGdfc+xIid+PIjpMSGfF8Xvt8aq1dVrnjX8WToFFHOTyxrhySWz7lalTE3/28Nh3iIFhGdHKwBF+I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xh1GEU81; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D49251F00893;
-	Sat, 30 May 2026 18:09:53 +0000 (UTC)
+	 MIME-Version; b=rFjpzVoWmmzcTs1Esv4rzY0aklLy657FUvl+nG1sIBaGj5JvYj4f3j5mrzvsPnA2einfFde+jRPyv4VZSfwVGa34ysiVsTQmqcEngUCnFyTbDPQoG+IQctK1EZ318lw0sfMg2zo7cQm7SWLUC0hDFSKlFtcfwRBvube93EXt4Io=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gfVFat1S; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F04F11F00893;
+	Sat, 30 May 2026 17:26:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780164594;
-	bh=P76rFOblqM9LiqPvUR/JEdQ99L64SxSlFbfJ/AS8S84=;
+	s=korg; t=1780162008;
+	bh=NF67nHtEPSSVRD2t196+k3XONfBa03XMlvHG/oqt/Zs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=xh1GEU81ClTYcNb+KU492CKQhlx+G3gSbi3sd9u4UoHdxvU0J0eNjGt2bNKHIHoRu
-	 ROEfVpwiaAi7iFytasPjpgLJtZkqNrjOSfrlmPbYUpS7CZgbwxHMSngh+LOouKC57Y
-	 8RhxpaGYiHFDnIrzhTuU/+E3biZNWIz/yFdx/bzQ=
+	b=gfVFat1SgwSyS0f9h7sTHTf8+bOKuVA+4vWSchctUUo6zdQsGyi9B0bxor7KdxhRw
+	 7gmbydqFk3yEKTc5vAzIF56xKhkXoqVOJqfSKVHFG6Nlxyukh5Y9anuINZLiordTNt
+	 /v5SYmUoiw3OOhrPMnqYmPCmt9QWUUUN2+G4mWc4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Wolfram Sang <wsa+renesas@sang-engineering.com>,
-	Jassi Brar <jassisinghbrar@gmail.com>,
+	Ronnie Sahlberg <ronniesahlberg@gmail.com>,
+	Shyam Prasad N <sprasad@microsoft.com>,
+	Tom Talpey <tom@talpey.com>,
+	Bharath SM <bharathsm@microsoft.com>,
+	linux-cifs@vger.kernel.org,
+	samba-technical@lists.samba.org,
+	stable <stable@kernel.org>,
+	"Paulo Alcantara (Red Hat)" <pc@manguebit.org>,
+	Steve French <stfrench@microsoft.com>,
+	Alva Lan <alvalan9@foxmail.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 602/776] mailbox: mailbox-test: make data_ready a per-instance variable
+Subject: [PATCH 6.1 792/969] smb: client: fix OOB reads parsing symlink error response
 Date: Sat, 30 May 2026 18:05:16 +0200
-Message-ID: <20260530160255.586878400@linuxfoundation.org>
+Message-ID: <20260530160322.483459003@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260530160240.228940103@linuxfoundation.org>
-References: <20260530160240.228940103@linuxfoundation.org>
+In-Reply-To: <20260530160300.485627683@linuxfoundation.org>
+References: <20260530160300.485627683@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,107 +72,155 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TO_DN_SOME(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-258511-lists,stable=lfdr.de];
-	MIME_TRACE(0.00)[0:+];
-	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,sang-engineering.com,gmail.com,kernel.org];
+	TAGGED_FROM(0.00)[bounces-257739-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,microsoft.com,talpey.com,vger.kernel.org,lists.samba.org,kernel.org,manguebit.org,foxmail.com];
 	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[6];
-	NEURAL_HAM(-0.00)[-1.000];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	RCPT_COUNT_TWELVE(0.00)[14];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	TAGGED_RCPT(0.00)[stable];
 	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable,renesas];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	FROM_HAS_DN(0.00)[]
-X-Rspamd-Queue-Id: 0106F611294
+	DBL_BLOCKED_OPENRESOLVER(0.00)[talpey.com:email,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
+X-Rspamd-Queue-Id: 47AE660FEF6
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Wolfram Sang <wsa+renesas@sang-engineering.com>
+From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 
-[ Upstream commit 6e937f4e769e60947909e3525965f0137b9039e8 ]
+[ Upstream commit 3df690bba28edec865cf7190be10708ad0ddd67e ]
 
-While not the default case, multiple tests can be run simultaneously.
-Then, data_ready being a global variable will be overwritten and the
-per-instance lock will not help. Turn the global variable into a
-per-instance one to avoid this problem.
+When a CREATE returns STATUS_STOPPED_ON_SYMLINK, smb2_check_message()
+returns success without any length validation, leaving the symlink
+parsers as the only defense against an untrusted server.
 
-Fixes: e339c80af95e ("mailbox: mailbox-test: don't rely on rx_buffer content to signal data ready")
-Signed-off-by: Wolfram Sang <wsa+renesas@sang-engineering.com>
-Signed-off-by: Jassi Brar <jassisinghbrar@gmail.com>
+symlink_data() walks SMB 3.1.1 error contexts with the loop test "p <
+end", but reads p->ErrorId at offset 4 and p->ErrorDataLength at offset
+0.  When the server-controlled ErrorDataLength advances p to within 1-7
+bytes of end, the next iteration will read past it.  When the matching
+context is found, sym->SymLinkErrorTag is read at offset 4 from
+p->ErrorContextData with no check that the symlink header itself fits.
+
+smb2_parse_symlink_response() then bounds-checks the substitute name
+using SMB2_SYMLINK_STRUCT_SIZE as the offset of PathBuffer from
+iov_base.  That value is computed as sizeof(smb2_err_rsp) +
+sizeof(smb2_symlink_err_rsp), which is correct only when
+ErrorContextCount == 0.
+
+With at least one error context the symlink data sits 8 bytes deeper,
+and each skipped non-matching context shifts it further by 8 +
+ALIGN(ErrorDataLength, 8).  The check is too short, allowing the
+substitute name read to run past iov_len.  The out-of-bound heap bytes
+are UTF-16-decoded into the symlink target and returned to userspace via
+readlink(2).
+
+Fix this all up by making the loops test require the full context header
+to fit, rejecting sym if its header runs past end, and bound the
+substitute name against the actual position of sym->PathBuffer rather
+than a fixed offset.
+
+Because sub_offs and sub_len are 16bits, the pointer math will not
+overflow here with the new greater-than.
+
+Cc: Ronnie Sahlberg <ronniesahlberg@gmail.com>
+Cc: Shyam Prasad N <sprasad@microsoft.com>
+Cc: Tom Talpey <tom@talpey.com>
+Cc: Bharath SM <bharathsm@microsoft.com>
+Cc: linux-cifs@vger.kernel.org
+Cc: samba-technical@lists.samba.org
+Cc: stable <stable@kernel.org>
+Reviewed-by: Paulo Alcantara (Red Hat) <pc@manguebit.org>
+Assisted-by: gregkh_clanker_t1000
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Steve French <stfrench@microsoft.com>
+Signed-off-by: Alva Lan <alvalan9@foxmail.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/mailbox/mailbox-test.c | 9 ++++-----
- 1 file changed, 4 insertions(+), 5 deletions(-)
+ fs/smb/client/smb2file.c | 20 ++++++++++++--------
+ 1 file changed, 12 insertions(+), 8 deletions(-)
 
-diff --git a/drivers/mailbox/mailbox-test.c b/drivers/mailbox/mailbox-test.c
-index 41efe64976598..113858fe168c3 100644
---- a/drivers/mailbox/mailbox-test.c
-+++ b/drivers/mailbox/mailbox-test.c
-@@ -27,8 +27,6 @@
- #define MBOX_HEXDUMP_MAX_LEN	(MBOX_HEXDUMP_LINE_LEN *		\
- 				 (MBOX_MAX_MSG_LEN / MBOX_BYTES_PER_LINE))
+diff --git a/fs/smb/client/smb2file.c b/fs/smb/client/smb2file.c
+index def2602ea0fb9..43e38909e20bb 100644
+--- a/fs/smb/client/smb2file.c
++++ b/fs/smb/client/smb2file.c
+@@ -26,10 +26,11 @@ static struct smb2_symlink_err_rsp *symlink_data(const struct kvec *iov)
+ {
+ 	struct smb2_err_rsp *err = iov->iov_base;
+ 	struct smb2_symlink_err_rsp *sym = ERR_PTR(-EINVAL);
++	u8 *end = (u8 *)err + iov->iov_len;
+ 	u32 len;
  
--static bool mbox_data_ready;
--
- struct mbox_test_device {
- 	struct device		*dev;
- 	void __iomem		*tx_mmio;
-@@ -41,6 +39,7 @@ struct mbox_test_device {
- 	spinlock_t		lock;
- 	struct mutex		mutex;
- 	wait_queue_head_t	waitq;
-+	bool			data_ready;
- 	struct fasync_struct	*async_queue;
- 	struct dentry		*root_debugfs_dir;
- };
-@@ -161,7 +160,7 @@ static bool mbox_test_message_data_ready(struct mbox_test_device *tdev)
- 	unsigned long flags;
+ 	if (err->ErrorContextCount) {
+-		struct smb2_error_context_rsp *p, *end;
++		struct smb2_error_context_rsp *p;
  
- 	spin_lock_irqsave(&tdev->lock, flags);
--	data_ready = mbox_data_ready;
-+	data_ready = tdev->data_ready;
- 	spin_unlock_irqrestore(&tdev->lock, flags);
+ 		len = (u32)err->ErrorContextCount * (offsetof(struct smb2_error_context_rsp,
+ 							      ErrorContextData) +
+@@ -38,8 +39,7 @@ static struct smb2_symlink_err_rsp *symlink_data(const struct kvec *iov)
+ 			return ERR_PTR(-EINVAL);
  
- 	return data_ready;
-@@ -226,7 +225,7 @@ static ssize_t mbox_test_message_read(struct file *filp, char __user *userbuf,
- 	*(touser + l) = '\0';
+ 		p = (struct smb2_error_context_rsp *)err->ErrorData;
+-		end = (struct smb2_error_context_rsp *)((u8 *)err + iov->iov_len);
+-		do {
++		while ((u8 *)p + sizeof(*p) <= end) {
+ 			if (le32_to_cpu(p->ErrorId) == SMB2_ERROR_ID_DEFAULT) {
+ 				sym = (struct smb2_symlink_err_rsp *)p->ErrorContextData;
+ 				break;
+@@ -49,14 +49,16 @@ static struct smb2_symlink_err_rsp *symlink_data(const struct kvec *iov)
  
- 	memset(tdev->rx_buffer, 0, MBOX_MAX_MSG_LEN);
--	mbox_data_ready = false;
-+	tdev->data_ready = false;
- 
- 	spin_unlock_irqrestore(&tdev->lock, flags);
- 
-@@ -296,7 +295,7 @@ static void mbox_test_receive_message(struct mbox_client *client, void *message)
- 				     message, MBOX_MAX_MSG_LEN);
- 		memcpy(tdev->rx_buffer, message, MBOX_MAX_MSG_LEN);
+ 			len = ALIGN(le32_to_cpu(p->ErrorDataLength), 8);
+ 			p = (struct smb2_error_context_rsp *)(p->ErrorContextData + len);
+-		} while (p < end);
++		}
+ 	} else if (le32_to_cpu(err->ByteCount) >= sizeof(*sym) &&
+ 		   iov->iov_len >= SMB2_SYMLINK_STRUCT_SIZE) {
+ 		sym = (struct smb2_symlink_err_rsp *)err->ErrorData;
  	}
--	mbox_data_ready = true;
-+	tdev->data_ready = true;
- 	spin_unlock_irqrestore(&tdev->lock, flags);
  
- 	wake_up_interruptible(&tdev->waitq);
+-	if (!IS_ERR(sym) && (le32_to_cpu(sym->SymLinkErrorTag) != SYMLINK_ERROR_TAG ||
+-			     le32_to_cpu(sym->ReparseTag) != IO_REPARSE_TAG_SYMLINK))
++	if (!IS_ERR(sym) &&
++	    ((u8 *)sym + sizeof(*sym) > end ||
++	     le32_to_cpu(sym->SymLinkErrorTag) != SYMLINK_ERROR_TAG ||
++	     le32_to_cpu(sym->ReparseTag) != IO_REPARSE_TAG_SYMLINK))
+ 		sym = ERR_PTR(-EINVAL);
+ 
+ 	return sym;
+@@ -81,8 +83,10 @@ int smb2_parse_symlink_response(struct cifs_sb_info *cifs_sb, const struct kvec
+ 	print_len = le16_to_cpu(sym->PrintNameLength);
+ 	print_offs = le16_to_cpu(sym->PrintNameOffset);
+ 
+-	if (iov->iov_len < SMB2_SYMLINK_STRUCT_SIZE + sub_offs + sub_len ||
+-	    iov->iov_len < SMB2_SYMLINK_STRUCT_SIZE + print_offs + print_len)
++	if ((char *)sym->PathBuffer + sub_offs + sub_len >
++		(char *)iov->iov_base + iov->iov_len ||
++	    (char *)sym->PathBuffer + print_offs + print_len >
++		(char *)iov->iov_base + iov->iov_len)
+ 		return -EINVAL;
+ 
+ 	s = cifs_strndup_from_utf16((char *)sym->PathBuffer + sub_offs, sub_len, true,
 -- 
 2.53.0
 
