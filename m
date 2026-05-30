@@ -1,57 +1,59 @@
-Return-Path: <stable+bounces-257780-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-258556-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id SEG/IOMfG2rO/QgAu9opvQ
-	(envelope-from <stable+bounces-257780-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:35:31 +0200
+	id eNfDFLoqG2r//ggAu9opvQ
+	(envelope-from <stable+bounces-258556-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:21:46 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id F04D060FFBD
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:35:30 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id D381A611945
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:21:45 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 5D2993026147
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 17:29:07 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id BE026303AB63
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 18:12:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1038833B6C4;
-	Sat, 30 May 2026 17:29:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5244A31F98D;
+	Sat, 30 May 2026 18:12:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="D+kpCr9Z"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="niSA7/mk"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 024732FDC5E;
-	Sat, 30 May 2026 17:29:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 30EBF29B799;
+	Sat, 30 May 2026 18:12:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780162146; cv=none; b=Qyl6dZAIta3A9f/gXkt1a8CfEvN7yBOP3knK5qWajtwin+gw5drrnIGl90K/cpMpgmGzOwhG0BpNeM8E3+cR4qRnJqnJDvhr1+bQ9KkGe5GSDnGVRIzKR1yuyhoK1PX6xraOMKdhP1P8alK5z6Zq7rlZ7ipMezS0aUi5Ck74T3k=
+	t=1780164745; cv=none; b=kqIQnjhtQy1vzEc712RLvUwrs5qpeGcxt13At9KSYHUaZdC0+hihlv6hucOAXNcvL+vSh6vYvV/c8KZOPvDXNhrRPbuv8Nw0MxrGWzNZGmtYKSWIBdDfifOoiO3Skfcvd+hpmwRaqYhiQ3cAqVsZa94CVZqAMeHpwr6en6B3EGI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780162146; c=relaxed/simple;
-	bh=bhTVasjP9OZ5aAlsHxbfHMnjGHEzwglFX0KI4Zirdi8=;
+	s=arc-20240116; t=1780164745; c=relaxed/simple;
+	bh=1uS2AgbUH5bOL673vJaA9hzJ7/OE2Y+gkWZfubgMS0k=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=CtBodohxF/G0oMe3mLIC56+zQQg9vbYWTmbjxgGk8A4RywnPGxLnX289RdxP31eTzOv75t5bFD3c0DpODwkJDm/vxDXjpp/BfSTDpeL/WciJUYw6s72mdiVWlqdzsW+ZOs23vimfzpmgSipu3ezZ4rxi9PLet3OFpbvaASlHgP8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=D+kpCr9Z; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3D34B1F00893;
-	Sat, 30 May 2026 17:29:05 +0000 (UTC)
+	 MIME-Version; b=FQR4h4FaadeJgXMG9T7WPDDomWL5U2mbBgb5I+jtKX+N5mzy3lmw+NzDAEtMrzP0JhMCrpZMud4UoLgbAvX56utxBwox+5cL49mO8McTshFn9AR10zhoTA6JVF/J+s4Ph0riG+DZjX7LWzczma7QLuV5aDt7bZxANRqxrgHcL1I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=niSA7/mk; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 74A871F00893;
+	Sat, 30 May 2026 18:12:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780162145;
-	bh=hokq08pwkrQFuBL1XeXh9A8m0xU4O7hd9Gn4L9EOt2k=;
+	s=korg; t=1780164744;
+	bh=WLfPazNIsDGd3+wVO+RIsj5XXL9v6zUpvGudAcqtCq8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=D+kpCr9ZJONt7VzqK8Zlmi7Ek+07m6Y/66zkN+8rOtqlYyHbHNuwAzXsEccgfbdxR
-	 wrRRdy8rCNOuKeUUzM2ZuI41tT292/TOXA9dBJ5jqAjFzTuTSVItbBeDVipDrlRGqn
-	 fPnB/bSR6jBaugZ2lcEJ08ulvyCVrF5yKVY6OZZo=
+	b=niSA7/mkvuIFAsWtHNq6vSp6zCCwbutRrVGhWoxsATrDV9Si4nM9YGQuc8V097sSx
+	 bHT4u9v+px9IoWVPKqqgvrWOewd4laUT1tTDa7C0hU5U3WbsZ3kmryMa2HTehzRP5B
+	 XZJwbDjdX2mrr6mYl5XGFh/EwtqG/ekCC7orehZg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 835/969] Revert "x86/vdso: Fix output operand size of RDPID"
-Date: Sat, 30 May 2026 18:05:59 +0200
-Message-ID: <20260530160323.707175408@linuxfoundation.org>
+Subject: [PATCH 5.15 646/776] net/sched: sch_pie: annotate more data-races in pie_dump_stats()
+Date: Sat, 30 May 2026 18:06:00 +0200
+Message-ID: <20260530160256.630849176@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260530160300.485627683@linuxfoundation.org>
-References: <20260530160300.485627683@linuxfoundation.org>
+In-Reply-To: <20260530160240.228940103@linuxfoundation.org>
+References: <20260530160240.228940103@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,71 +68,111 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-257780-lists,stable=lfdr.de];
-	PRECEDENCE_BULK(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
+	RCVD_TLS_LAST(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-258556-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
-	RCPT_COUNT_THREE(0.00)[4];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	NEURAL_HAM(-0.00)[-0.996];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	TO_DN_SOME(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
-X-Rspamd-Queue-Id: F04D060FFBD
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,linuxfoundation.org:mid,linuxfoundation.org:dkim,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
+X-Rspamd-Queue-Id: D381A611945
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-This reverts commit 757a9e78a1c5b824d0a2b7de14c3cd8d841dfbee.
+From: Eric Dumazet <edumazet@google.com>
 
+[ Upstream commit 6d4106e8df94c0c52cf3ca6a6a0d01567fb3844e ]
+
+My prior patch missed few READ_ONCE()/WRITE_ONCE() annotations.
+
+Fixes: 5154561d9b11 ("net/sched: sch_pie: annotate data-races in pie_dump_stats()")
+Signed-off-by: Eric Dumazet <edumazet@google.com>
+Link: https://patch.msgid.link/20260430080056.35104-1-edumazet@google.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/x86/include/asm/segment.h | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ net/sched/sch_pie.c | 14 ++++++--------
+ 1 file changed, 6 insertions(+), 8 deletions(-)
 
-diff --git a/arch/x86/include/asm/segment.h b/arch/x86/include/asm/segment.h
-index 7865f180eb087..2e7890dd58a47 100644
---- a/arch/x86/include/asm/segment.h
-+++ b/arch/x86/include/asm/segment.h
-@@ -243,7 +243,7 @@ static inline unsigned long vdso_encode_cpunode(int cpu, unsigned long node)
- 
- static inline void vdso_read_cpunode(unsigned *cpu, unsigned *node)
- {
--	unsigned long p;
-+	unsigned int p;
- 
- 	/*
- 	 * Load CPU and node number from the GDT.  LSL is faster than RDTSCP
-@@ -253,10 +253,10 @@ static inline void vdso_read_cpunode(unsigned *cpu, unsigned *node)
- 	 *
- 	 * If RDPID is available, use it.
+diff --git a/net/sched/sch_pie.c b/net/sched/sch_pie.c
+index 1e4c84535c0e3..ad0d8c892f120 100644
+--- a/net/sched/sch_pie.c
++++ b/net/sched/sch_pie.c
+@@ -215,16 +215,14 @@ void pie_process_dequeue(struct sk_buff *skb, struct pie_params *params,
+ 	 * packet timestamp.
  	 */
--	alternative_io ("lsl %[seg],%k[p]",
--			"rdpid %[p]",
-+	alternative_io ("lsl %[seg],%[p]",
-+			".byte 0xf3,0x0f,0xc7,0xf8", /* RDPID %eax/rax */
- 			X86_FEATURE_RDPID,
--			[p] "=r" (p), [seg] "r" (__CPUNODE_SEG));
-+			[p] "=a" (p), [seg] "r" (__CPUNODE_SEG));
+ 	if (!params->dq_rate_estimator) {
+-		vars->qdelay = now - pie_get_enqueue_time(skb);
++		WRITE_ONCE(vars->qdelay,
++			   backlog ? now - pie_get_enqueue_time(skb) : 0);
  
- 	if (cpu)
- 		*cpu = (p & VDSO_CPUNODE_MASK);
+ 		if (vars->dq_tstamp != DTIME_INVALID)
+ 			dtime = now - vars->dq_tstamp;
+ 
+ 		vars->dq_tstamp = now;
+ 
+-		if (backlog == 0)
+-			vars->qdelay = 0;
+-
+ 		if (dtime == 0)
+ 			return;
+ 
+@@ -372,7 +370,7 @@ void pie_calculate_probability(struct pie_params *params, struct pie_vars *vars,
+ 	if (qdelay > (PSCHED_NS2TICKS(250 * NSEC_PER_MSEC)))
+ 		delta += MAX_PROB / (100 / 2);
+ 
+-	vars->prob += delta;
++	WRITE_ONCE(vars->prob, vars->prob + delta);
+ 
+ 	if (delta > 0) {
+ 		/* prevent overflow */
+@@ -397,7 +395,7 @@ void pie_calculate_probability(struct pie_params *params, struct pie_vars *vars,
+ 
+ 	if (qdelay == 0 && qdelay_old == 0 && update_prob)
+ 		/* Reduce drop probability to 98.4% */
+-		vars->prob -= vars->prob / 64;
++		WRITE_ONCE(vars->prob, vars->prob - vars->prob / 64);
+ 
+ 	WRITE_ONCE(vars->qdelay, qdelay);
+ 	vars->backlog_old = backlog;
+@@ -493,7 +491,7 @@ static int pie_dump_stats(struct Qdisc *sch, struct gnet_dump *d)
+ {
+ 	struct pie_sched_data *q = qdisc_priv(sch);
+ 	struct tc_pie_xstats st = {
+-		.prob		= q->vars.prob << BITS_PER_BYTE,
++		.prob		= READ_ONCE(q->vars.prob) << BITS_PER_BYTE,
+ 		.delay		= ((u32)PSCHED_TICKS2NS(READ_ONCE(q->vars.qdelay))) /
+ 				   NSEC_PER_USEC,
+ 		.packets_in	= READ_ONCE(q->stats.packets_in),
+@@ -504,7 +502,7 @@ static int pie_dump_stats(struct Qdisc *sch, struct gnet_dump *d)
+ 	};
+ 
+ 	/* avg_dq_rate is only valid if dq_rate_estimator is enabled */
+-	st.dq_rate_estimating = q->params.dq_rate_estimator;
++	st.dq_rate_estimating = READ_ONCE(q->params.dq_rate_estimator);
+ 
+ 	/* unscale and return dq_rate in bytes per sec */
+ 	if (st.dq_rate_estimating)
 -- 
 2.53.0
 
