@@ -1,58 +1,61 @@
-Return-Path: <stable+bounces-258625-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-257894-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id +HMHI2YqG2r//ggAu9opvQ
-	(envelope-from <stable+bounces-258625-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:20:22 +0200
+	id KEXCOSchG2rO/QgAu9opvQ
+	(envelope-from <stable+bounces-257894-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:40:55 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0B6C2611842
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:20:21 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4FB9B6102AF
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:40:55 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id DF3B83061188
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 18:16:22 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 4268B30AE162
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 17:35:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 86BF232F770;
-	Sat, 30 May 2026 18:16:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 30EF134D38B;
+	Sat, 30 May 2026 17:35:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WT3qUWAD"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Qwvtxigk"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6EFF8241C8C;
-	Sat, 30 May 2026 18:16:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 02B2634A3C4;
+	Sat, 30 May 2026 17:35:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780164982; cv=none; b=A5aELN/fnRYjxOjMDfRAunpP0Hi4s53pZtN78F4BNLF010kOl8l999EwZbuKNH9YfbKZiMzhp/XAa2jYcuvlOEyjB/47EthCglF1sh7BoIZfPj5w+qKJm948/mjA4pESZFJZwj8Vdn7fPmg4MKWo6OcSJ26krndDqZluPh3XQl4=
+	t=1780162528; cv=none; b=pgA7nPQbm4xPmhYbML/FvZnhWQEk1I/FGsEKmVCG8HcRZmcSGeNNTrwA/pnc4DU8bnX37zlJdg0Xthoq9bFpjQQ8WYmP5vy9Jscb1yvmilVq/hv5JWgrnOp+HSYxfr5D4wgkUVKJusdsumG7ygVvVdjH6WB6zeEI1Wl1ZcWLluc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780164982; c=relaxed/simple;
-	bh=4asvzPisuQGJOHUQlNO1Ythnu5lJiHh8rFdtHGYtWtQ=;
+	s=arc-20240116; t=1780162528; c=relaxed/simple;
+	bh=fxYJAOq/M7e03xEKs5FFywYjRK/uysNv/Sj6UpNC/8I=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=jwyYY4cDA+wcuYDrzDkPmbxJgohyv7B3lvDDworZ0LnJBo/Em9Im9iTBA7sANiCvZaN3kxyvPHBraQiqEL/indhHvu3NkH8V5Rb1AP17KxnmpmIomg/DP+7Y+H+wK+tknzNahmca0KaeH9ldC8RL25+W7PGS1DTuScFZkQEf2h4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WT3qUWAD; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B47751F00893;
-	Sat, 30 May 2026 18:16:20 +0000 (UTC)
+	 MIME-Version; b=DrPLYrAlqI7BWLq44hxX/Kt9RaUxkxnNz7kg3TtwIdQ1Dxda0kBq9CIXeitae4fq2bLBjr1vnuX+7TVgoFWqaIquPu5tip9wP5CtnfxBO7y7zMIlKc1F0jQa2p5dcruBf7YfKVdkpy3RlVQAdzbfaWS95j5FP12253FDb4gLIdE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Qwvtxigk; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 473A61F00893;
+	Sat, 30 May 2026 17:35:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780164981;
-	bh=EkJP6PErGV2vp5qec5Cvr1dH/7G1j4mJ6vVNVldEvE8=;
+	s=korg; t=1780162526;
+	bh=hMCiMJ+JPmr9jrOR8doMDrZvVuAMfo79HqreKT8vARo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=WT3qUWADcbKIudJX1cBSDPjzLbpFpZHP3ISEGdVDoe7sM6mSF5bK2mBadgGdfI5IR
-	 swcFEz0R4rm0wG/Fvjk9ht8aIVfs5l8ArzO5dy6cxbtuAG4+GzlpBTbZyX5gBCu+7Y
-	 8hEFpc9gYESjLQ6g4RJWVGnN4VWZfpqg5c2sGaRc=
+	b=QwvtxigkuVbOz/56N1E0iF0Wq/AUdDhN8Q7IhpASl5WzxBCLQSnGkjY1Vxcqsz9Fr
+	 P4/ZWUIo2VoCV/7i8eEeL+VLs3SLf2w4gbbkdTJO83MmNkFwMc9WFGzj+lf46hxrEI
+	 gYbSfJOa/PZbrKkHO4EhKeYxkE98mC5JA58bctxM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable@kernel.org,
-	Sven Eckelmann <sven@narfation.org>
-Subject: [PATCH 5.15 714/776] batman-adv: tt: fix negative last_changeset_len
+	Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>,
+	Maulik Shah <maulik.shah@oss.qualcomm.com>,
+	Navya Malempati <navya.malempati@oss.qualcomm.com>,
+	Linus Walleij <linusw@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 904/969] pinctrl: qcom: Fix wakeirq map by removing disconnected irqs for sm8150
 Date: Sat, 30 May 2026 18:07:08 +0200
-Message-ID: <20260530160258.279641017@linuxfoundation.org>
+Message-ID: <20260530160325.675236280@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260530160240.228940103@linuxfoundation.org>
-References: <20260530160240.228940103@linuxfoundation.org>
+In-Reply-To: <20260530160300.485627683@linuxfoundation.org>
+References: <20260530160300.485627683@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -67,73 +70,87 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-257894-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-258625-lists,stable=lfdr.de];
-	TO_DN_SOME(0.00)[];
-	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[5];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,narfation.org:email,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo]
-X-Rspamd-Queue-Id: 0B6C2611842
+	TO_DN_SOME(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_SEVEN(0.00)[8];
+	MID_RHS_MATCH_FROM(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[qualcomm.com:email,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim]
+X-Rspamd-Queue-Id: 4FB9B6102AF
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sven Eckelmann <sven@narfation.org>
+From: Maulik Shah <maulik.shah@oss.qualcomm.com>
 
-commit fc92cdfcb295cefa4344d71a527d61b638b7bfc4 upstream.
+[ Upstream commit 52ac35b8a151446481496404af3a8e5e889b3c5a ]
 
-batadv_piv_tt::last_changeset_len len was declared as s16, but the field is
-never intended to hold a negative value. When a value greater than 32767 is
-assigned, it wraps to a negative signed integer.
+PDC interrupts 122-125 were meant for ibi_i3c wakeup but sm8150 do not
+support i3c. GPIOs 39,51,88 and 144 are also connected to different PDC
+pin and already reflected in the wake irq map.
 
-In batadv_send_my_tt_response(), last_changeset_len is temporarily widened
-to s32. The incorrectly negative s16 value propagates into the s32, causing
-batadv_tt_prepare_tvlv_local_data() to allocate a full sized buffer but
-populates only a small portion of it with the collected changeset. All
-remaining bits are kept uninitialized.
+Remove the unsupported wakeup interrupts from the map.
 
-Using an u16 avoids this type confusion and ensures that no (negative) sign
-extension is performed in batadv_send_my_tt_response().
-
-Cc: stable@kernel.org
-Fixes: a73105b8d4c7 ("batman-adv: improved client announcement mechanism")
-Signed-off-by: Sven Eckelmann <sven@narfation.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 90337380c809 ("pinctrl: qcom: sm8150: Specify PDC map")
+Reviewed-by: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
+Signed-off-by: Maulik Shah <maulik.shah@oss.qualcomm.com>
+Signed-off-by: Navya Malempati <navya.malempati@oss.qualcomm.com>
+Signed-off-by: Linus Walleij <linusw@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/batman-adv/types.h |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/pinctrl/qcom/pinctrl-sm8150.c | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
---- a/net/batman-adv/types.h
-+++ b/net/batman-adv/types.h
-@@ -993,7 +993,7 @@ struct batadv_priv_tt {
- 	 * @last_changeset_len: length of last tt changeset this host has
- 	 *  generated
- 	 */
--	s16 last_changeset_len;
-+	u16 last_changeset_len;
+diff --git a/drivers/pinctrl/qcom/pinctrl-sm8150.c b/drivers/pinctrl/qcom/pinctrl-sm8150.c
+index 1cc622694553d..2bda8c1c89583 100644
+--- a/drivers/pinctrl/qcom/pinctrl-sm8150.c
++++ b/drivers/pinctrl/qcom/pinctrl-sm8150.c
+@@ -1504,18 +1504,18 @@ static const struct msm_gpio_wakeirq_map sm8150_pdc_map[] = {
+ 	{ 3, 31 }, { 5, 32 }, { 8, 33 }, { 9, 34 }, { 10, 100 },
+ 	{ 12, 104 }, { 24, 37 }, { 26, 38 }, { 27, 41 }, { 28, 42 },
+ 	{ 30, 39 }, { 36, 43 }, { 37, 44 }, { 38, 30 }, { 39, 118 },
+-	{ 39, 125 }, { 41, 47 }, { 42, 48 }, { 46, 50 }, { 47, 49 },
+-	{ 48, 51 }, { 49, 53 }, { 50, 52 }, { 51, 116 }, { 51, 123 },
++	{ 41, 47 }, { 42, 48 }, { 46, 50 }, { 47, 49 },
++	{ 48, 51 }, { 49, 53 }, { 50, 52 }, { 51, 116 },
+ 	{ 53, 54 }, { 54, 55 }, { 55, 56 }, { 56, 57 }, { 58, 58 },
+ 	{ 60, 60 }, { 61, 61 }, { 68, 62 }, { 70, 63 }, { 76, 71 },
+ 	{ 77, 66 }, { 81, 64 }, { 83, 65 }, { 86, 67 }, { 87, 84 },
+-	{ 88, 117 }, { 88, 124 }, { 90, 69 }, { 91, 70 }, { 93, 75 },
++	{ 88, 117 }, { 90, 69 }, { 91, 70 }, { 93, 75 },
+ 	{ 95, 72 }, { 96, 73 }, { 97, 74 }, { 101, 40 }, { 103, 77 },
+ 	{ 104, 78 }, { 108, 79 }, { 112, 80 }, { 113, 81 }, { 114, 82 },
+ 	{ 117, 85 }, { 118, 101 }, { 119, 87 }, { 120, 88 }, { 121, 89 },
+ 	{ 122, 90 }, { 123, 91 }, { 124, 92 }, { 125, 93 }, { 129, 94 },
+ 	{ 132, 105 }, { 133, 83 }, { 134, 36 }, { 136, 97 }, { 142, 103 },
+-	{ 144, 115 }, { 144, 122 }, { 147, 102 }, { 150, 107 },
++	{ 144, 115 }, { 147, 102 }, { 150, 107 },
+ 	{ 152, 108 }, { 153, 109 }
+ };
  
- 	/**
- 	 * @last_changeset_lock: lock protecting last_changeset &
+-- 
+2.53.0
+
 
 
 
