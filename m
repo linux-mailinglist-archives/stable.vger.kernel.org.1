@@ -1,59 +1,60 @@
-Return-Path: <stable+bounces-257480-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-258226-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id eCGJADYcG2p3/QgAu9opvQ
-	(envelope-from <stable+bounces-257480-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:19:50 +0200
+	id YH8OEicnG2qS/ggAu9opvQ
+	(envelope-from <stable+bounces-258226-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:06:31 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8EEA160F66D
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:19:49 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id BEFD1611017
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:06:30 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id B07133077024
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 17:12:24 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id ABC4630F245B
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 17:53:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 576F734389B;
-	Sat, 30 May 2026 17:12:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 64866341AC7;
+	Sat, 30 May 2026 17:53:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JRSzktEe"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MpMOkjFL"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3D11F481DD;
-	Sat, 30 May 2026 17:12:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4014D261B9E;
+	Sat, 30 May 2026 17:53:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780161142; cv=none; b=aixuUZmRGcv3305hNZmtWjEVSx8z8yAyNXOqdlPJgx2QmWm3s/8SFees0ttW7hrs6R152PQNFpbvWQKFdyleBykIxRgoWeOKywzdPpVxHNUETiUiwyXyYqMAfK5Mf6Tn1FIs22GGhuOf6/xl44Emrp8iCXFAzXDpueIFENg0B6w=
+	t=1780163637; cv=none; b=QhzVFuMwRLFrJv9sQG6J4FRcg5YdKMxIfSYas1MYCsN3zKrvSPqRG7ENl1ceVQtuNqXkSQgyjO0LhRN6U0OwURr7gE/cz+feY81UjJ4odbTz6Mr1iEs846f3gfELSgLFSPComy6G7wG6kjwv9+wCF8CBQskZ7LzfiIpNGzJ/eOM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780161142; c=relaxed/simple;
-	bh=JUOYDfX67cykOTwWzMomC5e98Spgb/wy6hhMNZaEPZ0=;
+	s=arc-20240116; t=1780163637; c=relaxed/simple;
+	bh=72s0oXtUkz+nt6kf20vhDsj0hHyluEz2sMdGXkWY/1k=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=shu6VP5PWN6v1GsvvDa4rBSU+GwiwJbou3qwWjhcBuYCpE0vZLZQNpRnGcIXtdj4pXp6EYHDIlf6Bb0eDTj8ZhlCYkNVUuAl2FabVQkW02mVwjUn9bQ08zW9XIggyFNkc8c4MfPxqnHVa2ChnSBJisQsn9rOQjX9I/VVSTXTqAc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JRSzktEe; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 898281F00893;
-	Sat, 30 May 2026 17:12:20 +0000 (UTC)
+	 MIME-Version; b=RtCvTZfj0vFFMwXY+DNRUayhh/LrdnFX5tmD8GSFy2hbEZcPMOeLOhiQsBDs4lMmbvtM/HzNKSn7sbNHr4siuRqFhica6EE5OUkR6GdCc2heNxBHXCdPTK171EWt6zFk3EjTki9TNXD5cqF0stTlZZ+Lh48Uzj+VI1W+6C0iMXA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MpMOkjFL; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 849491F00893;
+	Sat, 30 May 2026 17:53:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780161141;
-	bh=/VfGUbwT/BalWM8EXZ+ZTUrATvp4w36uvp7Wl0mk12o=;
+	s=korg; t=1780163636;
+	bh=KZi8yiv3/XZP/ypVH9hOdJe2mgb2hK9rA7srICnXWRY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=JRSzktEelhYS7wYY4q5E11LULEGmoVEWYAg+XGbk2sEopmXamW094sX2feZ+6lziT
-	 DhKroS4kBXpKanxyGNJMFrgY+oyJVMwGOqivdLfgxKNkDkifUX4uabjdRUEmzbv3Nn
-	 n44pG9Ff6HV+Y2G+AJIFp1Zw8VBiKTr/vMKj7U1g=
+	b=MpMOkjFL2hxLsCmWEugpqs+WvHsxJKO/+eNQrjCD36/gF6R3AO3/JVRXk8AiB7m7z
+	 zW3fK2N5gHc677b9opzAzkj8Bi4H3TJm4IzNRac6zB1o4NcJETKR/qYaAGu6l3jeFv
+	 Q0cGly8gk/ZStxabdwbkc7lNH4qkv54g5I7ldv3Q=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Guillaume Gonnet <ggonnet.linux@gmail.com>,
-	Mikulas Patocka <mpatocka@redhat.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 507/969] dm init: ensure device probing has finished in dm-mod.waitfor=
+	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
+	MyungJoo Ham <myungjoo.ham@samsung.com>,
+	Xu Yang <xu.yang_2@nxp.com>,
+	Chanwoo Choi <cw00.choi@samsung.com>
+Subject: [PATCH 5.15 317/776] extcon: ptn5150: handle pending IRQ events during system resume
 Date: Sat, 30 May 2026 18:00:31 +0200
-Message-ID: <20260530160314.332647192@linuxfoundation.org>
+Message-ID: <20260530160248.761363791@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260530160300.485627683@linuxfoundation.org>
-References: <20260530160300.485627683@linuxfoundation.org>
+In-Reply-To: <20260530160240.228940103@linuxfoundation.org>
+References: <20260530160240.228940103@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,95 +65,94 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TO_DN_SOME(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-257480-lists,stable=lfdr.de];
 	MIME_TRACE(0.00)[0:+];
-	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,redhat.com,kernel.org];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-258226-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
+	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[6];
-	NEURAL_HAM(-0.00)[-1.000];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	NEURAL_HAM(-0.00)[-0.996];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	MID_RHS_MATCH_FROM(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	FROM_HAS_DN(0.00)[]
-X-Rspamd-Queue-Id: 8EEA160F66D
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,nxp.com:email,linaro.org:email,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,samsung.com:email]
+X-Rspamd-Queue-Id: BEFD1611017
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Guillaume Gonnet <ggonnet.linux@gmail.com>
+From: Xu Yang <xu.yang_2@nxp.com>
 
-[ Upstream commit 99a2312f69805f4ba92d98a757625e0300a747ab ]
+commit 4652fefcda3c604c83d1ae28ede94544e2142f06 upstream.
 
-The early_lookup_bdev() function returns successfully when the disk
-device is present but not necessarily its partitions. In this situation,
-dm_early_create() fails as the partition block device does not exist
-yet.
+When the system is suspended and ptn5150 wakeup interrupt is disabled,
+any changes on ptn5150 will only be record in interrupt status
+registers and won't fire an IRQ since its trigger type is falling
+edge. So the HW interrupt line will keep at low state and any further
+changes won't trigger IRQ anymore. To fix it, this will schedule a
+work to check whether any IRQ are pending and handle it accordingly.
 
-In my case, this phenomenon occurs quite often because the device is
-an SD card with slow reading times, on which kernel takes time to
-enumerate available partitions.
-
-Fortunately, the underlying device is back to "probing" state while
-enumerating partitions. Waiting for all probing to end is enough to fix
-this issue.
-
-That's also the reason why this problem never occurs with rootwait=
-parameter: the while loop inside wait_for_root() explicitly waits for
-probing to be done and then the function calls async_synchronize_full().
-These lines were omitted in 035641b, even though the commit says it's
-based on the rootwait logic...
-
-Anyway, calling wait_for_device_probe() after our while loop does the
-job (it both waits for probing and calls async_synchronize_full).
-
-Fixes: 035641b01e72 ("dm init: add dm-mod.waitfor to wait for asynchronously probed block devices")
-Signed-off-by: Guillaume Gonnet <ggonnet.linux@gmail.com>
-Signed-off-by: Mikulas Patocka <mpatocka@redhat.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 4ed754de2d66 ("extcon: Add support for ptn5150 extcon driver")
+Cc: stable@vger.kernel.org
+Reviewed-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Acked-by: MyungJoo Ham <myungjoo.ham@samsung.com>
+Signed-off-by: Xu Yang <xu.yang_2@nxp.com>
+Signed-off-by: Chanwoo Choi <cw00.choi@samsung.com>
+Link: https://lore.kernel.org/lkml/20251115025905.1395347-1-xu.yang_2@nxp.com/
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/md/dm-init.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ drivers/extcon/extcon-ptn5150.c |   14 ++++++++++++++
+ 1 file changed, 14 insertions(+)
 
-diff --git a/drivers/md/dm-init.c b/drivers/md/dm-init.c
-index 6e9e73a558740..882dc385cf068 100644
---- a/drivers/md/dm-init.c
-+++ b/drivers/md/dm-init.c
-@@ -302,8 +302,10 @@ static int __init dm_init_init(void)
- 		}
- 	}
+--- a/drivers/extcon/extcon-ptn5150.c
++++ b/drivers/extcon/extcon-ptn5150.c
+@@ -306,6 +306,19 @@ static int ptn5150_i2c_probe(struct i2c_
+ 	return 0;
+ }
  
--	if (waitfor[0])
-+	if (waitfor[0]) {
-+		wait_for_device_probe();
- 		DMINFO("all devices available");
-+	}
- 
- 	list_for_each_entry(dev, &devices, list) {
- 		if (dm_early_create(&dev->dmi, dev->table,
--- 
-2.53.0
-
++static int ptn5150_resume(struct device *dev)
++{
++	struct i2c_client *i2c = to_i2c_client(dev);
++	struct ptn5150_info *info = i2c_get_clientdata(i2c);
++
++	/* Need to check possible pending interrupt events */
++	schedule_work(&info->irq_work);
++
++	return 0;
++}
++
++static DEFINE_SIMPLE_DEV_PM_OPS(ptn5150_pm_ops, NULL, ptn5150_resume);
++
+ static const struct of_device_id ptn5150_dt_match[] = {
+ 	{ .compatible = "nxp,ptn5150" },
+ 	{ },
+@@ -321,6 +334,7 @@ MODULE_DEVICE_TABLE(i2c, ptn5150_i2c_id)
+ static struct i2c_driver ptn5150_i2c_driver = {
+ 	.driver		= {
+ 		.name	= "ptn5150",
++		.pm = pm_sleep_ptr(&ptn5150_pm_ops),
+ 		.of_match_table = ptn5150_dt_match,
+ 	},
+ 	.probe_new	= ptn5150_i2c_probe,
 
 
 
