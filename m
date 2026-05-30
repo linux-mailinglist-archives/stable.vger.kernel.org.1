@@ -1,59 +1,58 @@
-Return-Path: <stable+bounces-258145-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-257363-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id iOmDAD0jG2rO/QgAu9opvQ
-	(envelope-from <stable+bounces-258145-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:49:49 +0200
+	id 2BUtK1YbG2oq/QgAu9opvQ
+	(envelope-from <stable+bounces-257363-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:16:06 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id C260661079F
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:49:48 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 13F6A60F44C
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:16:05 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 2704D3011EB4
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 17:49:28 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id A522330DBC3E
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 17:05:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6680B341AC7;
-	Sat, 30 May 2026 17:49:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6D6E335200B;
+	Sat, 30 May 2026 17:05:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ORo7BsVM"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cWIjT7+e"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4E6FE320CAD;
-	Sat, 30 May 2026 17:49:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 50869481DD;
+	Sat, 30 May 2026 17:05:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780163367; cv=none; b=pL+xYv/ZqgmPbDK72WOFSoHJMoophc+eyAIgOHHGMM6E2iixi2llum7klzn6SJWat/gf8XqyNDYHcarLFE0UAcRFv0UqmOzw+oHmMrPdXBSijQ8qvtNxU0nVAGViRakawfAUQZOLbblezQc7tNiX2p1U9bcqgfI2wZdbWyGjgJM=
+	t=1780160734; cv=none; b=ZaLiWUI74fUILcoXNGWP3dfMBqmlywkVyKwNuzaxGpbSFxi8rvDzLLyuUHOw6Nk9Bhe2edOe6kLxlAOmWU61Xq3pJotNM5yrjtSOC5bBHAWzo+3BYPVBLNZScrrL+sA+5MvLdIK+nxhtZZeWku9N/fwrlOT0HTBEpCOuXYrySG0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780163367; c=relaxed/simple;
-	bh=ziDOV7zbHUAJk67WpMd0aKwpZHyd3xO85Kd4zawaSvE=;
+	s=arc-20240116; t=1780160734; c=relaxed/simple;
+	bh=WZDQGBCj/+6J8J8Db5sul4K31Cv5NlOgioqjdWZobcU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=O4QAF6dCxJ+9iGBAYOm+tKkUn3UyVn2hS0Tn4a5McOPtZcd5kqC9zvq1YUG4Q2mqCZDCMUNlhYIjUU8kyoO8KrJUFNKCNjGqHKza99G9f/7Q1RcEjQer9zz+j43/tqjhatl5Sla4AEzY8Y2GUlBfrcD3BI6wOYLJBkk85LIJEEM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ORo7BsVM; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 90A331F0089D;
-	Sat, 30 May 2026 17:49:25 +0000 (UTC)
+	 MIME-Version; b=XnVnj9yxurhRM0bee9ade4q3SK5rlFIqDQ2Npgyv43aHrkYITA44K1O234MZAF4gusrou0Rg6p7/SXJq+kdAxSSsuPc25QziLV6RxAXhp8cT50iqnDRlMfsxkBvVlxF+e8Fzd2vL/jPP1cTMwetDG/BsUBJkZ7fbMRlArJHsdc0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cWIjT7+e; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5E6C81F00893;
+	Sat, 30 May 2026 17:05:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780163366;
-	bh=rUZqIqQVQbv2JSCkAE5+PL5avzLzCG5j0gKOZuWUAmI=;
+	s=korg; t=1780160733;
+	bh=ebkgrIR5nmtMKZNtyjowfx1RAqq8/Jfpg3DFmh86zSM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=ORo7BsVMvT95VnPcJLIuUye/806Q14fDJRJIB9tUaq3r687k7YKZlogbQFSiItp5z
-	 gG76xtaGPyPEixhQU0TsEKgkLD98est7wWiFDpUOc2qyFG253ReQapCTdLmSUZZBDy
-	 undM1ZkzRxqN5Z90U+osvHH5S9zAxibKzEYJ4fBU=
+	b=cWIjT7+e4X41bGVEMQYkeXgnWhv9deZxsDN7j0Yw5OaTcWTrZqurasqDMwOiGE/oa
+	 L540fnuiI1lax+lW8H4xGLkOx9XNoYQK4cii1lZoXvvElr1xFdv26ADH51Unfz00AR
+	 XHyVLZEEFVG7nPziXWS9C0GsPGrpa+mvcDdpcZR0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Jonathan=20Neusch=C3=A4fer?= <j.neuschaefer@gmx.net>,
-	Johan Hovold <johan@kernel.org>,
-	Alexandre Belloni <alexandre.belloni@bootlin.com>
-Subject: [PATCH 5.15 229/776] rtc: ntxec: fix OF node reference imbalance
-Date: Sat, 30 May 2026 17:59:03 +0200
-Message-ID: <20260530160246.444999608@linuxfoundation.org>
+	stable@kernel.org,
+	Sven Eckelmann <sven@narfation.org>
+Subject: [PATCH 6.1 420/969] batman-adv: bla: only purge non-released claims
+Date: Sat, 30 May 2026 17:59:04 +0200
+Message-ID: <20260530160311.865858988@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260530160240.228940103@linuxfoundation.org>
-References: <20260530160240.228940103@linuxfoundation.org>
+In-Reply-To: <20260530160300.485627683@linuxfoundation.org>
+References: <20260530160300.485627683@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,76 +62,88 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-2.16 / 15.00];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-258145-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-257363-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmx.net,kernel.org,bootlin.com];
-	TO_DN_SOME(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TO_DN_SOME(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	RCPT_COUNT_FIVE(0.00)[5];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	TAGGED_RCPT(0.00)[stable];
 	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,bootlin.com:email,msgid.link:url,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim]
-X-Rspamd-Queue-Id: C260661079F
+	FROM_HAS_DN(0.00)[]
+X-Rspamd-Queue-Id: 13F6A60F44C
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Johan Hovold <johan@kernel.org>
+From: Sven Eckelmann <sven@narfation.org>
 
-commit 30c4d2f26bb3538c328035cea2e6265c8320539e upstream.
+commit cf6b604011591865ae39ac82de8978c1120d17af upstream.
 
-The driver reuses the OF node of the parent multi-function device but
-fails to take another reference to balance the one dropped by the
-platform bus code when unbinding the MFD and deregistering the child
-devices.
+When batadv_bla_purge_claims() goes through the list of claims, it is only
+traversing the hash list with an rcu_read_lock(). Due to a potential
+parallel batadv_claim_put(), it can happen that it encounters a claim which
+was actually in the process of being released+freed by
+batadv_claim_release(). In this case, backbone_gw is set to NULL before the
+delayed RCU kfree is started. Calling batadv_bla_claim_get_backbone_gw() is
+then no longer allowed because it would cause a NULL-ptr derefence.
 
-Fix this by using the intended helper for reusing OF nodes.
+To avoid this, only claims with a valid reference counter must be purged.
+All others are already taken care of.
 
-Fixes: 435af89786c6 ("rtc: New driver for RTC in Netronix embedded controller")
-Cc: stable@vger.kernel.org	# 5.13
-Cc: Jonathan Neuschäfer <j.neuschaefer@gmx.net>
-Signed-off-by: Johan Hovold <johan@kernel.org>
-Link: https://patch.msgid.link/20260407122717.2676774-1-johan@kernel.org
-Signed-off-by: Alexandre Belloni <alexandre.belloni@bootlin.com>
+Cc: stable@kernel.org
+Fixes: 23721387c409 ("batman-adv: add basic bridge loop avoidance code")
+Signed-off-by: Sven Eckelmann <sven@narfation.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/rtc/rtc-ntxec.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ net/batman-adv/bridge_loop_avoidance.c |    8 ++++++++
+ 1 file changed, 8 insertions(+)
 
---- a/drivers/rtc/rtc-ntxec.c
-+++ b/drivers/rtc/rtc-ntxec.c
-@@ -110,7 +110,7 @@ static int ntxec_rtc_probe(struct platfo
- 	struct rtc_device *dev;
- 	struct ntxec_rtc *rtc;
+--- a/net/batman-adv/bridge_loop_avoidance.c
++++ b/net/batman-adv/bridge_loop_avoidance.c
+@@ -1288,6 +1288,13 @@ static void batadv_bla_purge_claims(stru
  
--	pdev->dev.of_node = pdev->dev.parent->of_node;
-+	device_set_of_node_from_dev(&pdev->dev, pdev->dev.parent);
- 
- 	rtc = devm_kzalloc(&pdev->dev, sizeof(*rtc), GFP_KERNEL);
- 	if (!rtc)
+ 		rcu_read_lock();
+ 		hlist_for_each_entry_rcu(claim, head, hash_entry) {
++			/* only purge claims not currently in the process of being released.
++			 * Such claims could otherwise have a NULL-ptr backbone_gw set because
++			 * they already went through batadv_claim_release()
++			 */
++			if (!kref_get_unless_zero(&claim->refcount))
++				continue;
++
+ 			backbone_gw = batadv_bla_claim_get_backbone_gw(claim);
+ 			if (now)
+ 				goto purge_now;
+@@ -1313,6 +1320,7 @@ purge_now:
+ 					      claim->addr, claim->vid);
+ skip:
+ 			batadv_backbone_gw_put(backbone_gw);
++			batadv_claim_put(claim);
+ 		}
+ 		rcu_read_unlock();
+ 	}
 
 
 
