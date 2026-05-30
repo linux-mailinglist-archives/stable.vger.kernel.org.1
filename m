@@ -1,62 +1,61 @@
-Return-Path: <stable+bounces-259174-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-257795-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 6PRnOMoxG2qkAAkAu9opvQ
-	(envelope-from <stable+bounces-259174-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:51:54 +0200
+	id aAusEpAfG2rO/QgAu9opvQ
+	(envelope-from <stable+bounces-257795-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:34:08 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 69625612A78
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:51:54 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id B7B2360FF2B
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:34:07 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 4E852308CC07
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 18:47:35 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id C30453071CBC
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 17:29:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EBA19137750;
-	Sat, 30 May 2026 18:47:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6E0183403F3;
+	Sat, 30 May 2026 17:29:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Rv7f/yMB"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YWeEB2M4"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C79721A9F90;
-	Sat, 30 May 2026 18:47:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DF131344DB9;
+	Sat, 30 May 2026 17:29:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780166854; cv=none; b=Uv9wrSCPp/sOZHMh4MSFTgby2uTSY4a9kr66X6k1A/flB5ufV6k54cB9cfhcmQYOzgf7OFnp+SU+H9bFsgaeGebbHsuKbg5FRXpLWioWfNma8YF9GYlFBSX13sILByRv5OOlZ0+9KIshQX4if8VyCJ9shbf0paY1q6OG/Yftt3E=
+	t=1780162197; cv=none; b=Po9uUFXTfjibgtIFh1l1NzCER0ne7bV7GzK+4Pmh7unlhDSwfFaCSLbLQ3hLzjm50hIwfn4sPW3517/ww85Gaok0kOYRpYqqznq28N6UWx7OtXkt9ogpbdJwK0B5Cscyrnx4uKSMKGP/Cf3EiHx7Rj9ODToUx8a2pc4KTuVqKYc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780166854; c=relaxed/simple;
-	bh=tKe6/NU6qoprU8TxfRuMyyrzBqTDmIKQ3f1vP8XyYUo=;
+	s=arc-20240116; t=1780162197; c=relaxed/simple;
+	bh=KbRPtppkN1OCtdcD1L6uTWBztCy3dd8SUxn0WKZjsNQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=pWk6V5iqwo+Nm33GBT1iKCOInkcWjyewo9N045CWuWk3mskuGKnFsmB/bPXGxbFm6lEq/QsRVnd5+q1r0hz0fKNojZugn5s5hwN0Ur/K6v/bwReHmJEJiUAIqWa/ySNTcXbfZK1rgNerjJXbj1toFuuNpa/RJSz2Y40TAMX1r4o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Rv7f/yMB; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 195581F00893;
-	Sat, 30 May 2026 18:47:32 +0000 (UTC)
+	 MIME-Version:Content-Type; b=LrzqWhc5GfC0Emrxe/RCoAa7nJ7CMv5Mo7cB3vF+vdXbC7+zmWIQ4kmy8fr1baHuxvyAenVpvbpmec7DgxFzQcZnyJkRr/RzudMR3wQ3K5Le7KL3wulHzFv2sQEjUHGuKa1Y4rZAwfxgpIjaRIZj6TJS5zC4KQtpcjH+d6Ic7DM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YWeEB2M4; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2DBFA1F00893;
+	Sat, 30 May 2026 17:29:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780166853;
-	bh=Ukb4jhPOMCuFEftKy4/9/J5weepER+n+5hBtFnMq5rI=;
+	s=korg; t=1780162195;
+	bh=bOKzX60IEoS7W21ifHPfNm83wqPaMwIJfORXl6hkHNg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=Rv7f/yMBuBpjnirr+k+jq37qtGlbhfpqDA9p/nrPmzZWCvayxqXZklJ95s9HNaitF
-	 vlTf4qyXATPvVYQnl7trxEOTj5PRdQSuvhjY71fso7rnltcUMUpOJUrKopZk+WN1Xm
-	 H6SKKqmWI64BcDpKJu21u+IjFVCYnCiM9/yTchB0=
+	b=YWeEB2M4ysai5ixrUMcyP8mH4HucoVjxQ7RqroksonizrugM4La8xXDBZUC2EoK4M
+	 FDu+vb/tHo7j3zNVwLZsm0bnRZcUrOvgYRJtNIHB4vJxIt9D5wtFm8p0yhv6iLD3Eh
+	 uWkYvAWegBK1GIerWar7FHq2ILSIqSyB2mDLBUes=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Xiang Mei <xmei5@asu.edu>,
-	Weiming Shi <bestswngs@gmail.com>,
-	Kuniyuki Iwashima <kuniyu@google.com>,
+	Zijing Yin <yzjaurora@gmail.com>,
+	=?UTF-8?q?R=C3=A9mi=20Denis-Courmont?= <remi@remlab.net>,
+	syzbot+9f4a135646b66c509935@syzkaller.appspotmail.com,
 	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 492/589] bareudp: fix NULL pointer dereference in bareudp_fill_metadata_dst()
+	Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 6.1 849/969] phonet/pep: disable BH around forwarded sk_receive_skb()
 Date: Sat, 30 May 2026 18:06:13 +0200
-Message-ID: <20260530160237.560482742@linuxfoundation.org>
+Message-ID: <20260530160324.108266159@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260530160224.570625122@linuxfoundation.org>
-References: <20260530160224.570625122@linuxfoundation.org>
+In-Reply-To: <20260530160300.485627683@linuxfoundation.org>
+References: <20260530160300.485627683@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,98 +65,141 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-0.66 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,asu.edu,gmail.com,google.com,kernel.org];
-	TAGGED_FROM(0.00)[bounces-259174-lists,stable=lfdr.de];
-	PRECEDENCE_BULK(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,remlab.net,syzkaller.appspotmail.com,google.com,kernel.org];
+	TAGGED_FROM(0.00)[bounces-257795-lists,stable=lfdr.de];
 	FROM_HAS_DN(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	RCVD_TLS_LAST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-0.995];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[9];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
 	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,msgid.link:url,asu.edu:email]
-X-Rspamd-Queue-Id: 69625612A78
+	NEURAL_HAM(-0.00)[-1.000];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	MID_RHS_MATCH_FROM(0.00)[];
+	TAGGED_RCPT(0.00)[stable,9f4a135646b66c509935];
+	RCPT_COUNT_SEVEN(0.00)[8];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,appspotmail.com:email,syzkaller.appspot.com:url]
+X-Rspamd-Queue-Id: B7B2360FF2B
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Weiming Shi <bestswngs@gmail.com>
+From: Zijing Yin <yzjaurora@gmail.com>
 
-[ Upstream commit aa6c6d9ee064aabfede4402fd1283424e649ca19 ]
+commit dbc81608e3a653dea6cf403f20cae35468b8ab9c upstream.
 
-bareudp_fill_metadata_dst() passes bareudp->sock to
-udp_tunnel6_dst_lookup() in the IPv6 path without a NULL check.
-The socket is only created in bareudp_open() and NULLed in
-bareudp_stop(), so calling this function while the device is down
-triggers a NULL dereference via sock->sk.
+The networking receive path is usually run from softirq context, but
+protocols that take the socket lock may have packets stored in the
+backlog and processed later from process context. In that case
+release_sock() -> __release_sock() drops the slock with spin_unlock_bh()
+and then calls sk->sk_backlog_rcv() with bottom halves enabled.
 
- BUG: kernel NULL pointer dereference, address: 0000000000000018
- RIP: 0010:udp_tunnel6_dst_lookup (net/ipv6/ip6_udp_tunnel.c:160)
- Call Trace:
-  <TASK>
-  bareudp_fill_metadata_dst (drivers/net/bareudp.c:532)
-  do_execute_actions (net/openvswitch/actions.c:901)
-  ovs_execute_actions (net/openvswitch/actions.c:1589)
-  ovs_packet_cmd_execute (net/openvswitch/datapath.c:700)
-  genl_family_rcv_msg_doit (net/netlink/genetlink.c:1114)
-  genl_rcv_msg (net/netlink/genetlink.c:1209)
-  netlink_rcv_skb (net/netlink/af_netlink.c:2550)
-  </TASK>
+Typical sk_backlog_rcv handlers process the socket whose backlog is
+being drained, so the BH state at entry is irrelevant for the slocks
+they touch. pep_do_rcv() is different: when the inbound skb targets an
+existing PEP pipe, it forwards the skb to a different *child* socket
+via sk_receive_skb(). That helper takes the child slock with
+bh_lock_sock_nested(), which is just spin_lock_nested() and assumes BH
+is already off. The same child slock therefore ends up acquired with
+BH on (process path) and with BH off (softirq path):
 
-Add a NULL check returning -ESHUTDOWN, consistent with the xmit paths
-in the same driver.
+  process context                   softirq context
+  ---------------                   ---------------
+  release_sock(listener)            __netif_receive_skb()
+   __release_sock()                  phonet_rcv()
+    spin_unlock_bh()                  __sk_receive_skb(listener)
+    [BH now ENABLED]                  [BH already disabled]
+    sk_backlog_rcv:                   sk_backlog_rcv:
+     pep_do_rcv()                      pep_do_rcv()
+      sk_receive_skb(child)             sk_receive_skb(child)
+       bh_lock_sock_nested(child)        bh_lock_sock_nested(child)
+       => SOFTIRQ-ON-W                   => IN-SOFTIRQ-W
 
-Fixes: 571912c69f0e ("net: UDP tunnel encapsulation module for tunnelling different protocols like MPLS, IP, NSH etc.")
-Reported-by: Xiang Mei <xmei5@asu.edu>
-Signed-off-by: Weiming Shi <bestswngs@gmail.com>
-Reviewed-by: Kuniyuki Iwashima <kuniyu@google.com>
+Lockdep flags this as inconsistent lock state, and it can become a real
+self-deadlock if a softirq on the same CPU tries to receive to the same
+child socket while its slock is held in the BH-enabled path:
+
+  WARNING: inconsistent lock state
+  inconsistent {SOFTIRQ-ON-W} -> {IN-SOFTIRQ-W} usage.
+   (slock-AF_PHONET/1){+.?.}-{3:3}, at: __sk_receive_skb+0x1cf/0x900
+    __sk_receive_skb              net/core/sock.c:563
+    sk_receive_skb                include/net/sock.h:2022 [inline]
+    pep_do_rcv                    net/phonet/pep.c:675
+    sk_backlog_rcv                include/net/sock.h:1190
+    __release_sock                net/core/sock.c:3216
+    release_sock                  net/core/sock.c:3815
+    pep_sock_accept               net/phonet/pep.c:879
+
+Wrap the forwarded sk_receive_skb() in local_bh_disable() /
+local_bh_enable() so the child slock is always acquired with BH off.
+local_bh_disable() nests safely on the softirq path.
+
+Discovered via in-house syzkaller fuzzing; the same root cause also
+on the linux-6.1.y syzbot dashboard as extid 44f0626dd6284f02663c.
+Reproduced under KASAN + LOCKDEP + PROVE_LOCKING, reproducer:
+https://pastebin.com/A3t8xzCR
+
+Fixes: 9641458d3ec4 ("Phonet: Pipe End Point for Phonet Pipes protocol")
+Link: https://syzkaller.appspot.com/bug?extid=44f0626dd6284f02663c
+Cc: stable@vger.kernel.org
+Signed-off-by: Zijing Yin <yzjaurora@gmail.com>
+Acked-by: Rémi Denis-Courmont <remi@remlab.net>
+Reported-by: syzbot+9f4a135646b66c509935@syzkaller.appspotmail.com
 Reviewed-by: Eric Dumazet <edumazet@google.com>
-Link: https://patch.msgid.link/20260426165350.1663137-2-bestswngs@gmail.com
+Link: https://patch.msgid.link/20260519172635.86304-1-yzjaurora@gmail.com
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/bareudp.c | 3 +++
- 1 file changed, 3 insertions(+)
+ net/phonet/pep.c |   19 +++++++++++++++++--
+ 1 file changed, 17 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/net/bareudp.c b/drivers/net/bareudp.c
-index d5210b5b8cbf8..b3ed3447c84cb 100644
---- a/drivers/net/bareudp.c
-+++ b/drivers/net/bareudp.c
-@@ -512,6 +512,9 @@ static int bareudp_fill_metadata_dst(struct net_device *dev,
- 		struct in6_addr saddr;
- 		struct socket *sock = rcu_dereference(bareudp->sock);
+--- a/net/phonet/pep.c
++++ b/net/phonet/pep.c
+@@ -671,8 +671,23 @@ static int pep_do_rcv(struct sock *sk, s
  
-+		if (!sock)
-+			return -ESHUTDOWN;
+ 	/* Look for an existing pipe handle */
+ 	sknode = pep_find_pipe(&pn->hlist, &dst, pipe_handle);
+-	if (sknode)
+-		return sk_receive_skb(sknode, skb, 1);
++	if (sknode) {
++		int rc;
 +
- 		dst = udp_tunnel6_dst_lookup(skb, dev, bareudp->net, sock,
- 					     &saddr, info, IPPROTO_UDP,
- 					     use_cache);
--- 
-2.53.0
-
++		/* pep_do_rcv() runs from two contexts: from softirq via
++		 * phonet_rcv() -> __sk_receive_skb() with BH disabled,
++		 * and from process context via
++		 * release_sock() -> __release_sock(), which drops
++		 * the listener slock with spin_unlock_bh() before draining
++		 * the backlog.  The child pipe slock is taken below via
++		 * bh_lock_sock_nested(), which does not itself disable BH, so
++		 * disable BH here to keep both acquire contexts consistent.
++		 */
++		local_bh_disable();
++		rc = sk_receive_skb(sknode, skb, 1);
++		local_bh_enable();
++		return rc;
++	}
+ 
+ 	switch (hdr->message_id) {
+ 	case PNS_PEP_CONNECT_REQ:
 
 
 
