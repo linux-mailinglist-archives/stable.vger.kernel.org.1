@@ -1,59 +1,61 @@
-Return-Path: <stable+bounces-258816-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-257399-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id UDpDCpktG2pa/wgAu9opvQ
-	(envelope-from <stable+bounces-258816-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:34:01 +0200
+	id eEYBJ5kZG2pV/AgAu9opvQ
+	(envelope-from <stable+bounces-257399-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:08:41 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7ADEE611FCC
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:34:00 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6DAD660EF5D
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:08:41 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 3EBFC305020A
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 18:27:16 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 3806230202AE
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 17:07:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5840A2773DE;
-	Sat, 30 May 2026 18:27:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C317A366567;
+	Sat, 30 May 2026 17:07:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ecouLjSH"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ceX+D7u+"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 30215274FDC;
-	Sat, 30 May 2026 18:27:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A619A34104B;
+	Sat, 30 May 2026 17:07:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780165635; cv=none; b=IAWVnNB5KdKQOSjJBxxRDhAswhJQUg4Bu1QRTJnfR8JlfPKPQ5/m5MeGWH79HLnxiTqj+tw2U9DvxdxXrL8C2u/xT+HPx2tDOpiDdneF8Px0/WmYRLOJ9q2zVuUkAEb2Uj8F9BQAnKGLDr86DX8sT+7y5RPMALwmjVkLgK1Pyr8=
+	t=1780160863; cv=none; b=D3juoeh2nNoEbRGUqqSsQ78dKfNxmaWTl+gidz5eZ82WbzE3Wka8I3Fh3sp/ogEAfrR2rUiFVSIVCDQXh1adyp6eBFRsUVRyPFkG4WgLEDzK1mvind2yNt3NiFhtInTIdwxFOdkFbLHkoi+OwMi77vXKY++PnZvQdVc54HFsl/s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780165635; c=relaxed/simple;
-	bh=BjtYD7F8PmWVB3Ae6iizKVDxbKv2CMzmrIXL2udZU4o=;
+	s=arc-20240116; t=1780160863; c=relaxed/simple;
+	bh=VSAODh/vCvaKL/apxHWGzql+MBS/hThSMpfb1EA2iW4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=PFEdBYq6EGo4yEElwtnGwFG1RXjUHvB7dvI064y+T4JVsIss+XPRkuMlCh6uCFShshlQs5CU3D//ukiQIyr9ilLbq2A6qqTzRDO+wW+HSX0ySmNxB4mlGQ70QZHdlacZyW6O6IzYFdaxNIkJfHXidVTftHsIySI9raKctADlCRQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ecouLjSH; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 765941F00893;
-	Sat, 30 May 2026 18:27:13 +0000 (UTC)
+	 MIME-Version:Content-Type; b=fKPEaREAnFc4TzBkBCdZQuwamy7YNR2eXHRbVMTp/XhE1ZB/Q8cOIzUq4X+8hFP+kNgzLj4hxioYRS2ns+CuKp4hjYldkxME4Txhn3cUUyXB7q9qg1a9rOhX2XNR/p1vUNwNQavLOkeBYBR9EL75AFjzRA3fQOmUVyV1gjR+i8U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ceX+D7u+; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id ECC111F00893;
+	Sat, 30 May 2026 17:07:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780165634;
-	bh=fLP9Glxa5BHfrvO59Y4WwYGe38yS+RnUYUbejkEkCww=;
+	s=korg; t=1780160862;
+	bh=4fP4rPjdh68DrbtL11tY+ZuE2orTBtrhHhq0hdU8ozk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=ecouLjSH+rbCQ+sptO3BO94VQzInwuJkTavTFO3OlVdM18cuqjTaORH/10geIqkxg
-	 cJ9K2nzu46Xv3PgVbBSGOIlHqfgfq5gQ3CDHGgL0CCk5G+sksY2qDlF2PFulamojv+
-	 xSGfuS+h9/v2lG4iOVG8RShB1wxvJu08XY5GXDZY=
+	b=ceX+D7u+bEZ1Eky/gpmXxPAhGXaATXvmTk+2Vt6GOsoUfy4RhG2r+V+VYB+ptkiMC
+	 Sl91igc2SBmK0NYPOxkXylETpVniS7sEFNTsJHb+ebBZiJfcvCFdijts+GypnVskmk
+	 n/RRWVXB2Po+TpVjBtZnxdwnRKnIkAbgzJh9giak=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Venkat Rao Bagalkote <venkat88@linux.ibm.com>,
-	Hari Bathini <hbathini@linux.ibm.com>,
-	Madhavan Srinivasan <maddy@linux.ibm.com>
-Subject: [PATCH 5.10 098/589] powerpc64/bpf: do not increment tailcall count when prog is NULL
-Date: Sat, 30 May 2026 17:59:39 +0200
-Message-ID: <20260530160227.270148236@linuxfoundation.org>
+	Thorsten Blum <thorsten.blum@toblux.com>,
+	Daniel Borkmann <daniel@iogearbox.net>,
+	=?UTF-8?q?Toke=20H=C3=B8iland-J=C3=B8rgensen?= <toke@redhat.com>,
+	Jiri Olsa <jolsa@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 456/969] bpf, devmap: Remove unnecessary if check in for loop
+Date: Sat, 30 May 2026 17:59:40 +0200
+Message-ID: <20260530160312.873311922@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260530160224.570625122@linuxfoundation.org>
-References: <20260530160224.570625122@linuxfoundation.org>
+In-Reply-To: <20260530160300.485627683@linuxfoundation.org>
+References: <20260530160300.485627683@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,111 +65,79 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	TAGGED_FROM(0.00)[bounces-257399-lists,stable=lfdr.de];
+	FROM_HAS_DN(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-258816-lists,stable=lfdr.de];
-	TO_DN_SOME(0.00)[];
-	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-0.995];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,msgid.link:url,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim]
-X-Rspamd-Queue-Id: 7ADEE611FCC
+	MIME_TRACE(0.00)[0:+];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_SEVEN(0.00)[8];
+	MID_RHS_MATCH_FROM(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	TO_DN_SOME(0.00)[]
+X-Rspamd-Queue-Id: 6DAD660EF5D
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Hari Bathini <hbathini@linux.ibm.com>
+From: Thorsten Blum <thorsten.blum@toblux.com>
 
-commit 521bd39d9d28ce54cbfec7f9b89c94ad4fdb8350 upstream.
+[ Upstream commit 2317dc2c22cc353b699c7d1db47b2fe91f54055c ]
 
-Do not increment tailcall count, if tailcall did not succeed due to
-missing BPF program.
+The iterator variable dst cannot be NULL and the if check can be removed.
+Remove it and fix the following Coccinelle/coccicheck warning reported
+by itnull.cocci:
 
-Fixes: ce0761419fae ("powerpc/bpf: Implement support for tail calls")
-Cc: stable@vger.kernel.org
-Tested-by: Venkat Rao Bagalkote <venkat88@linux.ibm.com>
-Signed-off-by: Hari Bathini <hbathini@linux.ibm.com>
-Signed-off-by: Madhavan Srinivasan <maddy@linux.ibm.com>
-Link: https://patch.msgid.link/20260303181031.390073-2-hbathini@linux.ibm.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-[ Conflicts due to missing clean up commits
-    b10cb163c4b3 ("powerpc64/bpf elfv2: Setup kernel TOC in r2 on entry")
-    49c3af43e65f ("powerpc/bpf:   Simplify bpf_to_ppc() and adopt it for powerpc64")
-    036d559c0bde ("powerpc/bpf: Use _Rn macros for GPRs")
-  and missing feature commit 2ed2d8f6fb38 ("powerpc64/bpf: Support
-  tailcalls with subprogs") resolved accordingly. ]
-Signed-off-by: Hari Bathini <hbathini@linux.ibm.com>
+	ERROR: iterator variable bound on line 762 cannot be NULL
+
+Signed-off-by: Thorsten Blum <thorsten.blum@toblux.com>
+Signed-off-by: Daniel Borkmann <daniel@iogearbox.net>
+Reviewed-by: Toke Høiland-Jørgensen <toke@redhat.com>
+Acked-by: Jiri Olsa <jolsa@kernel.org>
+Link: https://lore.kernel.org/bpf/20240529101900.103913-2-thorsten.blum@toblux.com
+Stable-dep-of: 8ed82f807bb0 ("bpf: Use RCU-safe iteration in dev_map_redirect_multi() SKB path")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/powerpc/net/bpf_jit_comp64.c |   20 +++++++++++---------
- 1 file changed, 11 insertions(+), 9 deletions(-)
+ kernel/bpf/devmap.c | 3 ---
+ 1 file changed, 3 deletions(-)
 
---- a/arch/powerpc/net/bpf_jit_comp64.c
-+++ b/arch/powerpc/net/bpf_jit_comp64.c
-@@ -257,30 +257,32 @@ static int bpf_jit_emit_tail_call(u32 *i
- 	 * tail_call_cnt++;
- 	 */
- 	EMIT(PPC_RAW_ADDI(b2p[TMP_REG_1], b2p[TMP_REG_1], 1));
--	PPC_BPF_STL(b2p[TMP_REG_1], 1, bpf_jit_stack_tailcallcnt(ctx));
- 
- 	/* prog = array->ptrs[index]; */
--	EMIT(PPC_RAW_MULI(b2p[TMP_REG_1], b2p_index, 8));
--	EMIT(PPC_RAW_ADD(b2p[TMP_REG_1], b2p[TMP_REG_1], b2p_bpf_array));
--	PPC_BPF_LL(b2p[TMP_REG_1], b2p[TMP_REG_1], offsetof(struct bpf_array, ptrs));
-+	EMIT(PPC_RAW_MULI(b2p[TMP_REG_2], b2p_index, 8));
-+	EMIT(PPC_RAW_ADD(b2p[TMP_REG_2], b2p[TMP_REG_2], b2p_bpf_array));
-+	PPC_BPF_LL(b2p[TMP_REG_2], b2p[TMP_REG_2], offsetof(struct bpf_array, ptrs));
- 
- 	/*
- 	 * if (prog == NULL)
- 	 *   goto out;
- 	 */
--	EMIT(PPC_RAW_CMPLDI(b2p[TMP_REG_1], 0));
-+	EMIT(PPC_RAW_CMPLDI(b2p[TMP_REG_2], 0));
- 	PPC_BCC(COND_EQ, out);
- 
- 	/* goto *(prog->bpf_func + prologue_size); */
--	PPC_BPF_LL(b2p[TMP_REG_1], b2p[TMP_REG_1], offsetof(struct bpf_prog, bpf_func));
-+	PPC_BPF_LL(b2p[TMP_REG_2], b2p[TMP_REG_2], offsetof(struct bpf_prog, bpf_func));
- #ifdef PPC64_ELF_ABI_v1
- 	/* skip past the function descriptor */
--	EMIT(PPC_RAW_ADDI(b2p[TMP_REG_1], b2p[TMP_REG_1],
-+	EMIT(PPC_RAW_ADDI(b2p[TMP_REG_2], b2p[TMP_REG_2],
- 			FUNCTION_DESCR_SIZE + BPF_TAILCALL_PROLOGUE_SIZE));
- #else
--	EMIT(PPC_RAW_ADDI(b2p[TMP_REG_1], b2p[TMP_REG_1], BPF_TAILCALL_PROLOGUE_SIZE));
-+	EMIT(PPC_RAW_ADDI(b2p[TMP_REG_2], b2p[TMP_REG_2], BPF_TAILCALL_PROLOGUE_SIZE));
- #endif
--	EMIT(PPC_RAW_MTCTR(b2p[TMP_REG_1]));
-+	EMIT(PPC_RAW_MTCTR(b2p[TMP_REG_2]));
-+
-+	/* Writeback updated tailcall count */
-+	PPC_BPF_STL(b2p[TMP_REG_1], 1, bpf_jit_stack_tailcallcnt(ctx));
- 
- 	/* tear down stack, restore NVRs, ... */
- 	bpf_jit_emit_common_epilogue(image, ctx);
+diff --git a/kernel/bpf/devmap.c b/kernel/bpf/devmap.c
+index 5e05732db2368..71025d1311a57 100644
+--- a/kernel/bpf/devmap.c
++++ b/kernel/bpf/devmap.c
+@@ -759,9 +759,6 @@ int dev_map_redirect_multi(struct net_device *dev, struct sk_buff *skb,
+ 		for (i = 0; i < dtab->n_buckets; i++) {
+ 			head = dev_map_index_hash(dtab, i);
+ 			hlist_for_each_entry_safe(dst, next, head, index_hlist) {
+-				if (!dst)
+-					continue;
+-
+ 				if (is_ifindex_excluded(excluded_devices, num_excluded,
+ 							dst->dev->ifindex))
+ 					continue;
+-- 
+2.53.0
+
 
 
 
