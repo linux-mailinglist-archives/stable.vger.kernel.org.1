@@ -1,59 +1,59 @@
-Return-Path: <stable+bounces-258306-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-258870-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id uOfPCM0nG2qf/ggAu9opvQ
-	(envelope-from <stable+bounces-258306-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:09:17 +0200
+	id 8EpMBS4wG2qU/wgAu9opvQ
+	(envelope-from <stable+bounces-258870-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:45:02 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7BCF6611182
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:09:16 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A5CCF61266A
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:45:01 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 17BE5309EBC0
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 17:58:29 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 8B189318ECAD
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 18:30:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DF069332EA7;
-	Sat, 30 May 2026 17:58:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 51A423C76BC;
+	Sat, 30 May 2026 18:30:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="h0Mxkvtx"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1Sdm1AAj"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C95E021E098;
-	Sat, 30 May 2026 17:58:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8242D3A7848;
+	Sat, 30 May 2026 18:30:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780163906; cv=none; b=j4ryhjV1UL0QYmXtxgdg6tIAA5PfAbtjmDUi6H1pg6CajiaprO6vjY1I02R/XtQS+nI15QVANq6Tp5sp9Vj1clA+cCwtziuXOqq9jisshUpf2oxXQwS687afwsrFMoZsXPM7rHW7evX88x22bVHg8PoiG35uNX7dITey5IzX+qE=
+	t=1780165819; cv=none; b=hwtckDSq8EsPxFo/xFk9+H2eTununCinr10O+PKcjJam7j1xZCVWC2NRgc/0xWZrnmTnr2YRCESKjV5koOTpyaSsb8LUZO8SfQ894pfxles9qHwF16Z53k9xS2mqfKJpJFcMLl2KI/J0EYOwjxf74czwgJm6jr/hy52HQ6YR3dE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780163906; c=relaxed/simple;
-	bh=fNiwnRPFRI9HmCKFU77wU0VOMA78Lmqr0NAuu15Ngis=;
+	s=arc-20240116; t=1780165819; c=relaxed/simple;
+	bh=sP8JCz4dUJCqte8hnU8VCeOLGdn0sK5npwb3fq2CkSo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=IwPoGTvvO2fUZwrUrpZv5uT2Iuyy449lV4KvfMtB9AVc4T/J+E1LUzcmQ6awBSerJnTXRD5iKr2+0kp85wUuJUoUeRbAvy2oUs7GHFm7WhYdKxujEKpZb+2l11FSxhfPVfn0afaspSejZqXiM5qAourGtuPPiokRIeixbJmvTLs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=h0Mxkvtx; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0CCE81F00893;
-	Sat, 30 May 2026 17:58:24 +0000 (UTC)
+	 MIME-Version; b=CNu1A5JTNDDxT+2geZPkZY5jH+ybLS/LrI27nUQkXxXUXcM6TUKpkvRaztJgJnXCU6+qk/XCoTRqcuM1PBPWHbGIe4lJwRlO1azImegnAV1qNJvGwDx9nDHOyO8K7liJjZJkO/6EIeWKb8I1i9r7NouOcAlzEmeNlLOhbNmArqk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1Sdm1AAj; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 371541F00893;
+	Sat, 30 May 2026 18:30:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780163905;
-	bh=AUKYyCNm74aGtLh7YHQ5ByqOcPJ968ti1nTFK4hFH80=;
+	s=korg; t=1780165815;
+	bh=FtMRvU74lpib0VrHOAwKFLnA7Nbibfg6WvJaQJF8aes=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=h0MxkvtxfCQsrJR+3JaQYPZKQEc5WyCCljGjQ6I3f99boewe7GHFAozAeQeuLW24w
-	 iXKJwbiISZGtF2cByEp4SstdfBWe88HtNNoBH2xhj0pR/CFCZowBYNILRK6+IWpolr
-	 PvkXbC2vEwGPKpX36t24nwMlvwyqY3t/dlA30E8U=
+	b=1Sdm1AAjPW7GLx2UyR3Wth3lBAZRmojIMYG3N9e3OOm6phexA0z/bmOpXas9La6+C
+	 XP14H+clY4Uk0eJ3Z02QcLdx5pdd+bo28RvO5cH11u7fvCginCidLiYYmuXHjbr/2M
+	 IMflUk1chtp905xkk2B0Ole9qzXTiQW6K3n8PesA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Marek Vasut <marek.vasut@gmail.com>,
-	Johan Hovold <johan@kernel.org>,
-	Mark Brown <broonie@kernel.org>
-Subject: [PATCH 5.15 358/776] regulator: bd9571mwv: fix OF node reference imbalance
+	Thomas Fourier <fourier.thomas@gmail.com>,
+	Thorsten Blum <thorsten.blum@linux.dev>,
+	Herbert Xu <herbert@gondor.apana.org.au>
+Subject: [PATCH 5.10 191/589] crypto: hisilicon - Fix dma_unmap_single() direction
 Date: Sat, 30 May 2026 18:01:12 +0200
-Message-ID: <20260530160249.830137303@linuxfoundation.org>
+Message-ID: <20260530160229.927015156@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260530160240.228940103@linuxfoundation.org>
-References: <20260530160240.228940103@linuxfoundation.org>
+In-Reply-To: <20260530160224.570625122@linuxfoundation.org>
+References: <20260530160224.570625122@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -74,67 +74,63 @@ X-Spamd-Result: default: False [-0.16 / 15.00];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TO_DN_SOME(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-258306-lists,stable=lfdr.de];
 	MIME_TRACE(0.00)[0:+];
+	TO_DN_SOME(0.00)[];
+	TAGGED_FROM(0.00)[bounces-258870-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,kernel.org];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,linux.dev,gondor.apana.org.au];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[6];
-	NEURAL_HAM(-0.00)[-0.996];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	MID_RHS_MATCH_FROM(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
 	TAGGED_RCPT(0.00)[stable];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	FROM_HAS_DN(0.00)[]
-X-Rspamd-Queue-Id: 7BCF6611182
+	MID_RHS_MATCH_FROM(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[6];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,linux.dev:email,apana.org.au:email,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim]
+X-Rspamd-Queue-Id: A5CCF61266A
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Johan Hovold <johan@kernel.org>
+From: Thomas Fourier <fourier.thomas@gmail.com>
 
-commit 8498100ee1d00422b8c5b161b3e332278b92a59a upstream.
+commit 1ee57ab93b75eb59f426aef37b5498a7ffc28278 upstream.
 
-The driver reuses the OF node of the parent multi-function device but
-fails to take another reference to balance the one dropped by the
-platform bus code when unbinding the MFD and deregistering the child
-devices.
+The direction used to map the buffer skreq->iv is DMA_TO_DEVICE but it is
+unmapped with direction DMA_BIDIRECTIONAL in the error path.
 
-Fix this by using the intended helper for reusing OF nodes.
+Change the unmap to match the mapping.
 
-Fixes: e85c5a153fe2 ("regulator: Add ROHM BD9571MWV-M PMIC regulator driver")
-Cc: stable@vger.kernel.org	# 4.12
-Cc: Marek Vasut <marek.vasut@gmail.com>
-Signed-off-by: Johan Hovold <johan@kernel.org>
-Link: https://patch.msgid.link/20260408073055.5183-8-johan@kernel.org
-Signed-off-by: Mark Brown <broonie@kernel.org>
+Fixes: 915e4e8413da ("crypto: hisilicon - SEC security accelerator driver")
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Thomas Fourier <fourier.thomas@gmail.com>
+Reviewed-by: Thorsten Blum <thorsten.blum@linux.dev>
+Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/regulator/bd9571mwv-regulator.c |    3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/crypto/hisilicon/sec/sec_algs.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/regulator/bd9571mwv-regulator.c
-+++ b/drivers/regulator/bd9571mwv-regulator.c
-@@ -288,8 +288,9 @@ static int bd9571mwv_regulator_probe(str
- 
- 	platform_set_drvdata(pdev, bdreg);
- 
-+	device_set_of_node_from_dev(&pdev->dev, pdev->dev.parent);
-+
- 	config.dev = &pdev->dev;
--	config.dev->of_node = pdev->dev.parent->of_node;
- 	config.driver_data = bdreg;
- 	config.regmap = bdreg->regmap;
- 
+--- a/drivers/crypto/hisilicon/sec/sec_algs.c
++++ b/drivers/crypto/hisilicon/sec/sec_algs.c
+@@ -844,7 +844,7 @@ err_free_elements:
+ 	if (crypto_skcipher_ivsize(atfm))
+ 		dma_unmap_single(info->dev, sec_req->dma_iv,
+ 				 crypto_skcipher_ivsize(atfm),
+-				 DMA_BIDIRECTIONAL);
++				 DMA_TO_DEVICE);
+ err_unmap_out_sg:
+ 	if (split)
+ 		sec_unmap_sg_on_err(skreq->dst, steps, splits_out,
 
 
 
