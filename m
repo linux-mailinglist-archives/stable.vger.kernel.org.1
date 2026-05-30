@@ -1,68 +1,61 @@
-Return-Path: <stable+bounces-258014-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-257234-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id kH+yLg4jG2pa/ggAu9opvQ
-	(envelope-from <stable+bounces-258014-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:49:02 +0200
+	id EAktI3oYG2r2/AgAu9opvQ
+	(envelope-from <stable+bounces-257234-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:03:54 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 72EE26106F9
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:49:02 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2521C60ED3E
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:03:54 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id D449E307CD8D
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 17:42:16 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 0C7C9304F258
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 16:58:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 183B034389F;
-	Sat, 30 May 2026 17:42:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 87EBA33F5A3;
+	Sat, 30 May 2026 16:58:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tWDT+JuV"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ig+1xiO/"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DCA6A348C5E;
-	Sat, 30 May 2026 17:42:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4CD0D332EA7;
+	Sat, 30 May 2026 16:58:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780162935; cv=none; b=YIXz9mnv3z1UOAZOyweWsz2QJ7fLDePXa3+/X+o26/c3iFTsSbczbIWkH5A7f+KviAh4IF7VeuAfReXl4q8c6sfMOSoY8wpbxcGTYu3uEG20zXTKXVfBFdbct/W99UF/3txr7BYLsgA5PTTNPsp1V3U7sPqqw7oJIKl7jNetFJ8=
+	t=1780160283; cv=none; b=G5QpW3gqQDjvsEvAZeF2kqT8HA39B9RzywOAYAqTVQ65n5BYXRHqgBueZrIIiKs5k8pJBY1+gI8u2wj74ODjojbBKqA59fGL2MS0OeXuDnb10UT1G3n79sZRzTz3AkBdBkpGYOHnlGcabjCvIw+rkoWGPufMM/C4fDkytdo1OMk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780162935; c=relaxed/simple;
-	bh=vzkyhW/ArS1YzU/eVCQu4JtlYaFxq+drKNz3qzn6Wn4=;
+	s=arc-20240116; t=1780160283; c=relaxed/simple;
+	bh=NprZ+7wE/eyxyWeMawKxYyWDADGgA02vbd93IaU9Ba8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=UesxH+oMA0OVt+Qn883lMJdf0ik9nAXm/JY78BoTCxWs4TmW0MgEBaA+/+jVqUgYqqMmaw9e1Hxqaxfx6S5F9SDXQaR5n6BdKyXrHom95thBOPar3/kS05YVyQvgihzv/GTUGX+bd64d/ClAg+tJd8UMNOTpfncyeH0PbDcd784=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tWDT+JuV; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EA0FA1F00893;
-	Sat, 30 May 2026 17:42:13 +0000 (UTC)
+	 MIME-Version; b=sNjbxAuw7Z06pN4HcxQVchl3rur8Z7pB2+v7/R5J/qBKq7apPr87wGZvDjbQpkXKGnC0oLYza32KUQJvy8kxDh7pcM8/FTF1CG1GTVZ09AyytYvWM73qFnRyvF69WEuPJuigEN7R3QUNRrJFqROkyBe+Nc7H4ClcnNvhyfaJwjw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ig+1xiO/; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 90CAF1F00893;
+	Sat, 30 May 2026 16:58:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780162934;
-	bh=XGdh4YCIi0GVnT7Nd3I5r/59ob5+NSs375rI8cbOh7A=;
+	s=korg; t=1780160282;
+	bh=x+QrzIblStNpukfBXTU7YIfOBM6AbvSSQO4n1S0SN2o=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=tWDT+JuVOBW2AZFbZKnQ0Vl8KGprq4JeylpKcxBk+pPz+/gx5cXfq4F/owGlhPYHH
-	 GOykXrQCOgFYKZzjP+ZCKC8W45MR+dVeePBY9EDD0TY35iDQa/XQGGLQII3rmZ+NLC
-	 vp8Uz4TD7eygJw8bnJHwtxTTEtTQsmK+jLdJfNWE=
+	b=ig+1xiO/bUF3i9wCWSDtIVfkp6G4MoyJM5LZJLHjRF4NFW36SzDW6+gvv4vGj1gan
+	 sCeoIFXSKRZJpYSa3pOIWZYCYhIdeZXOZMKkjmtqQJq8+vmKfzIUktmWiklH5c+qwp
+	 XAclDX5F2VS2ezCGnhPrLzmWMbhbTR8OgJO2kbVU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dmitry Antipov <dmantipov@yandex.ru>,
-	syzbot+c16daba279a1161acfb0@syzkaller.appspotmail.com,
-	Joseph Qi <joseph.qi@linux.alibaba.com>,
-	Joseph Qi <jiangqi903@gmail.com>,
-	Mark Fasheh <mark@fasheh.com>,
-	Joel Becker <jlbec@evilplan.org>,
-	Junxiao Bi <junxiao.bi@oracle.com>,
-	Changwei Ge <gechangwei@live.cn>,
-	Jun Piao <piaojun@huawei.com>,
-	Heming Zhao <heming.zhao@suse.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 105/776] ocfs2: add inline inode consistency check to ocfs2_validate_inode_block()
+	Manas <ghandatmanas@gmail.com>,
+	Rakshit Awasthi <rakshitawasthi17@gmail.com>,
+	Jamal Hadi Salim <jhs@mojatatu.com>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 6.1 295/969] net/sched: sch_red: Replace direct dequeue call with peek and qdisc_dequeue_peeked
 Date: Sat, 30 May 2026 17:56:59 +0200
-Message-ID: <20260530160243.062501285@linuxfoundation.org>
+Message-ID: <20260530160308.591522677@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260530160240.228940103@linuxfoundation.org>
-References: <20260530160240.228940103@linuxfoundation.org>
+In-Reply-To: <20260530160300.485627683@linuxfoundation.org>
+References: <20260530160300.485627683@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -73,88 +66,112 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	R_MISSING_CHARSET(0.50)[];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	RCPT_COUNT_TWELVE(0.00)[15];
-	TAGGED_FROM(0.00)[bounces-258014-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,yandex.ru,syzkaller.appspotmail.com,linux.alibaba.com,gmail.com,fasheh.com,evilplan.org,oracle.com,live.cn,huawei.com,suse.com,linux-foundation.org,kernel.org];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
+	TAGGED_FROM(0.00)[bounces-257234-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,mojatatu.com,google.com,kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
+	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[stable,c16daba279a1161acfb0];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
 	MID_RHS_MATCH_FROM(0.00)[];
-	TO_DN_SOME(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	PRECEDENCE_BULK(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[8];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo]
-X-Rspamd-Queue-Id: 72EE26106F9
+	TAGGED_RCPT(0.00)[stable];
+	TO_DN_SOME(0.00)[];
+	FROM_HAS_DN(0.00)[]
+X-Rspamd-Queue-Id: 2521C60ED3E
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dmitry Antipov <dmantipov@yandex.ru>
+From: Jamal Hadi Salim <jhs@mojatatu.com>
 
-[ Upstream commit a2b1c419ff72ec62ff5831684e30cd1d4f0b09ee ]
+commit 458d5615272d3de535748342eb68ca492343048c upstream.
 
-In 'ocfs2_validate_inode_block()', add an extra check whether an inode
-with inline data (i.e.  self-contained) has no clusters, thus preventing
-an invalid inode from being passed to 'ocfs2_evict_inode()' and below.
+When red qdisc has children (eg qfq qdisc) whose peek() callback is
+qdisc_peek_dequeued(), we could get a kernel panic. When the parent of such
+qdiscs (eg illustrated in patch #3 as tbf) wants to retrieve an skb from
+its child (red in this case), it will do the following:
+ 1a. do a peek() - and when sensing there's an skb the child can offer, then
+     - the child in this case(red) calls its child's (qfq) peek.
+        qfq does the right thing and will return the gso_skb queue packet.
+        Note: if there wasnt a gso_skb entry then qfq will store it there.
+ 1b. invoke a dequeue() on the child (red). And herein lies the problem.
+     - red will call the child's dequeue() which will essentially just
+       try to grab something of qfq's queue.
 
-Link: https://lkml.kernel.org/r/20251023141650.417129-1-dmantipov@yandex.ru
-Signed-off-by: Dmitry Antipov <dmantipov@yandex.ru>
-Reported-by: syzbot+c16daba279a1161acfb0@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=c16daba279a1161acfb0
-Reviewed-by: Joseph Qi <joseph.qi@linux.alibaba.com>
-Cc: Joseph Qi <jiangqi903@gmail.com>
-Cc: Mark Fasheh <mark@fasheh.com>
-Cc: Joel Becker <jlbec@evilplan.org>
-Cc: Junxiao Bi <junxiao.bi@oracle.com>
-Cc: Changwei Ge <gechangwei@live.cn>
-Cc: Jun Piao <piaojun@huawei.com>
-Cc: Heming Zhao <heming.zhao@suse.com>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-Stable-dep-of: 7bc5da4842be ("ocfs2: fix out-of-bounds write in ocfs2_write_end_inline")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+[   78.667668][  T363] KASAN: null-ptr-deref in range [0x0000000000000048-0x000000000000004f]
+[   78.667927][  T363] CPU: 1 UID: 0 PID: 363 Comm: ping Not tainted 7.1.0-rc1-00033-g46f74a3f7d57-dirty #790 PREEMPT(full)
+[   78.668263][  T363] Hardware name: Bochs Bochs, BIOS Bochs 01/01/2011
+[   78.668486][  T363] RIP: 0010:qfq_dequeue+0x446/0xc90 [sch_qfq]
+[   78.668718][  T363] Code: 54 c0 e8 dd 90 00 f1 48 c7 c7 e0 03 54 c0 48 89 de e8 ce 90 00 f1 48 8d 7b 48 b8 ff ff 37 00 48 89 fa 48 c1 e0 2a 48 c1 ea 03 <80> 3c 02 00 74 05 e8 ef a1 e1 f1 48 8b 7b 48 48 8d 54 24 58 48 8d
+[   78.669312][  T363] RSP: 0018:ffff88810de573e0 EFLAGS: 00010216
+[   78.669533][  T363] RAX: dffffc0000000000 RBX: 0000000000000000 RCX: 0000000000000000
+[   78.669790][  T363] RDX: 0000000000000009 RSI: 0000000000000004 RDI: 0000000000000048
+[   78.670044][  T363] RBP: ffff888110dc4000 R08: ffffffffb1b0885a R09: fffffbfff6ba9078
+[   78.670297][  T363] R10: 0000000000000003 R11: ffff888110e31c80 R12: 0000001880000000
+[   78.670560][  T363] R13: ffff888110dc4150 R14: ffff888110dc42b8 R15: 0000000000000200
+[   78.670814][  T363] FS:  00007f66a8f09c40(0000) GS:ffff888163428000(0000) knlGS:0000000000000000
+[   78.671110][  T363] CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+[   78.671324][  T363] CR2: 000055db4c6a30a8 CR3: 000000010da67000 CR4: 0000000000750ef0
+[   78.671585][  T363] PKRU: 55555554
+[   78.671713][  T363] Call Trace:
+[   78.671843][  T363]  <TASK>
+[   78.671936][  T363]  ? __pfx_qfq_dequeue+0x10/0x10 [sch_qfq]
+[   78.672148][  T363]  ? __pfx__printk+0x10/0x10
+[   78.672322][  T363]  ? srso_alias_return_thunk+0x5/0xfbef5
+[   78.672496][  T363]  ? lockdep_hardirqs_on_prepare+0xa8/0x1a0
+[   78.672706][  T363]  ? srso_alias_return_thunk+0x5/0xfbef5
+[   78.672875][  T363]  ? trace_hardirqs_on+0x19/0x1a0
+[   78.673047][  T363]  red_dequeue+0x65/0x270 [sch_red]
+[   78.673217][  T363]  ? srso_alias_return_thunk+0x5/0xfbef5
+[   78.673385][  T363]  tbf_dequeue.cold+0xb0/0x70c [sch_tbf]
+[   78.673566][  T363]  __qdisc_run+0x169/0x1900
+
+The right thing to do in #1b is to grab the skb off gso_skb queue.
+This patchset fixes that issue by changing #1b to use qdisc_dequeue_peeked()
+method instead.
+
+Fixes: 77be155cba4e ("pkt_sched: Add peek emulation for non-work-conserving qdiscs.")
+Reported-by: Manas <ghandatmanas@gmail.com>
+Reported-by: Rakshit Awasthi <rakshitawasthi17@gmail.com>
+Signed-off-by: Jamal Hadi Salim <jhs@mojatatu.com>
+Reviewed-by: Eric Dumazet <edumazet@google.com>
+Link: https://patch.msgid.link/20260430152957.194015-2-jhs@mojatatu.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/ocfs2/inode.c |    8 ++++++++
- 1 file changed, 8 insertions(+)
+ net/sched/sch_red.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/fs/ocfs2/inode.c
-+++ b/fs/ocfs2/inode.c
-@@ -1416,6 +1416,14 @@ int ocfs2_validate_inode_block(struct su
- 		goto bail;
- 	}
+--- a/net/sched/sch_red.c
++++ b/net/sched/sch_red.c
+@@ -153,7 +153,7 @@ static struct sk_buff *red_dequeue(struc
+ 	struct red_sched_data *q = qdisc_priv(sch);
+ 	struct Qdisc *child = q->qdisc;
  
-+	if ((le16_to_cpu(di->i_dyn_features) & OCFS2_INLINE_DATA_FL) &&
-+	    le32_to_cpu(di->i_clusters)) {
-+		rc = ocfs2_error(sb, "Invalid dinode %llu: %u clusters\n",
-+				 (unsigned long long)bh->b_blocknr,
-+				 le32_to_cpu(di->i_clusters));
-+		goto bail;
-+	}
-+
- 	rc = 0;
- 
- bail:
+-	skb = child->dequeue(child);
++	skb = qdisc_dequeue_peeked(child);
+ 	if (skb) {
+ 		qdisc_bstats_update(sch, skb);
+ 		qdisc_qstats_backlog_dec(sch, skb);
 
 
 
