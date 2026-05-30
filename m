@@ -1,59 +1,59 @@
-Return-Path: <stable+bounces-258399-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-259039-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id AD8uAUYpG2ra/ggAu9opvQ
-	(envelope-from <stable+bounces-258399-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:15:34 +0200
+	id uJe9Ka4vG2qU/wgAu9opvQ
+	(envelope-from <stable+bounces-259039-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:42:54 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5C83F6115C6
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:15:33 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 237666124F5
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:42:53 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id DA1A930EB9DF
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 18:03:44 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 54DAA3098F34
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 18:39:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6F32E39478D;
-	Sat, 30 May 2026 18:03:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F320F39989B;
+	Sat, 30 May 2026 18:39:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GO0F4KXK"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FI3A/v7I"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 54B123191D0;
-	Sat, 30 May 2026 18:03:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C6327351C2F;
+	Sat, 30 May 2026 18:39:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780164223; cv=none; b=THlmNYMqSLfk/joFt43UQjFtKuGdEH/wou124E/0hhyZrzpzJPEd7yFDKTEtizPRej+AB12mpE0evhOSGiirhJUOVvqhJ9i0WhMFBpmYdGhCD1jEQg7UVIDKXOEwfvCRciDxUxv+sIH0FNZ/GZBFcLRCu0y0Qj11BVXVr2yarRI=
+	t=1780166385; cv=none; b=nUkpRJWhY4QZf4fwN46b6MHrIgzLj8zHDLOS40kSVknCzACylv/tL8+SOUInoEeuDnISszAXn2Nrc5kktUIcKKe1bVhP2yWQQYxUj75Jcw88opkzuq8/5AmXKLfdewXQkObK7RmsYvs16yDdm8seEO9oK+zU3sApcUaCKN5Cy/g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780164223; c=relaxed/simple;
-	bh=GUV7WdrrV36+qMIDKNI/pOY3l1RhQOECLRWphIgFrCM=;
+	s=arc-20240116; t=1780166385; c=relaxed/simple;
+	bh=v/niTT7GrwOk7vlAvfSVZeB8U5nNJwuB1Ppj97u2Xto=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=mfKD975xy5HJv63GfWWu9q8WsbcSB3sY6S5tWEs8r5/AiOMUZSTciZqo6T4a3g+0wTRjVft6YH+45Yi9TBAk8lrbMiMsgHsr57gDG7ele6NgpFePJSmSShcvJkaewF9WWJI49QjAV6zhQQRqREsiUZiA/VWCiqNbtfh6exn573o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GO0F4KXK; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 99BEE1F00893;
-	Sat, 30 May 2026 18:03:41 +0000 (UTC)
+	 MIME-Version; b=LAUkASrIUCQy2YhHqKqkr+wy5Q7bHFwdRk/s3Wd5T1hekL9Rk1XYLAcG4X5PhVh/iWHJMtJCaEmsq6Q0j3jH4FW17VBUnFZLf38mqYzSkrXQ+i35XM0sV5imOhvy1Kc+OQLiAj2kLP+90ldZZbTBxCC4byFaBTxjTBlmX4bFH+8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FI3A/v7I; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DCA311F00893;
+	Sat, 30 May 2026 18:39:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780164222;
-	bh=FQLPkY/jknFI951f9KrAhxmXpRHDeG8vxE3poJ/7Eoc=;
+	s=korg; t=1780166384;
+	bh=Fgpfkzo6iegRvj19Ry4ywJr8cRpqfHYKsO+lT5jCXe8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=GO0F4KXKRYGIU6qclOzbu1XWRRQT+NFTHeNywn6DURl7JCo4kpqehSpLRQjmwzwQu
-	 j7JVw8sJH13QOVxh6YIOHXCIpuwgCM63XzLjqP7hvHA+HBlfmTlPdT5EnMC33IFhZK
-	 9ZJX4io0cul8+cHUjpwdJSeeKMNRcmTeXQP33Esw=
+	b=FI3A/v7IHbNxfBZ8KXltJFUooxZZU5EOIUUn9kcYMSBxH5fsvjz9PAtz/pog+Kiav
+	 mTyDZGE4UXNTOxgEn6BYiBmYFJ0C+yYLeHtSnygwPwb38dTBaktyp6Ao7n5CNijiib
+	 sH46rY3VgvujrCi39TWz3qSKLFLrGBF6cYCwATFU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
-	Bjorn Andersson <andersson@kernel.org>,
+	Ming-Hung Tsai <mtsai@redhat.com>,
+	Mikulas Patocka <mpatocka@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 489/776] soc: qcom: ocmem: use scoped device node handling to simplify error paths
-Date: Sat, 30 May 2026 18:03:23 +0200
-Message-ID: <20260530160252.958288261@linuxfoundation.org>
+Subject: [PATCH 5.10 323/589] dm cache: fix write path cache coherency in passthrough mode
+Date: Sat, 30 May 2026 18:03:24 +0200
+Message-ID: <20260530160233.418267955@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260530160240.228940103@linuxfoundation.org>
-References: <20260530160240.228940103@linuxfoundation.org>
+In-Reply-To: <20260530160224.570625122@linuxfoundation.org>
+References: <20260530160224.570625122@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -68,7 +68,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
@@ -78,73 +78,104 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-258399-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-259039-lists,stable=lfdr.de];
 	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-0.996];
+	NEURAL_HAM(-0.00)[-1.000];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
 	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,linaro.org:email,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
-X-Rspamd-Queue-Id: 5C83F6115C6
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo]
+X-Rspamd-Queue-Id: 237666124F5
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+From: Ming-Hung Tsai <mtsai@redhat.com>
 
-[ Upstream commit f4c1c19f5c0e5cf2870df91dedc6b40400fd9c8a ]
+[ Upstream commit 0c5eef0aad508231d8e43ff8392692925e131b68 ]
 
-Obtain the device node reference with scoped/cleanup.h to reduce error
-handling and make the code a bit simpler.
+In passthrough mode, dm-cache defers write bio submission until cache
+invalidation completes to maintain existing coherency, requiring the
+target map function to return DM_MAPIO_SUBMITTED. The current map_bio()
+returns DM_MAPIO_REMAPPED, violating the required ordering constraint.
 
-Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Link: https://lore.kernel.org/r/20240813-b4-cleanup-h-of-node-put-other-v1-4-cfb67323a95c@linaro.org
-Signed-off-by: Bjorn Andersson <andersson@kernel.org>
-Stable-dep-of: 9dfd69cd89cd ("soc: qcom: ocmem: register reasons for probe deferrals")
+Reproduce steps:
+
+1. Create a cache device
+
+dmsetup create cmeta --table "0 8192 linear /dev/sdc 0"
+dmsetup create cdata --table "0 131072 linear /dev/sdc 8192"
+dmsetup create corig --table "0 262144 linear /dev/sdc 262144"
+dd if=/dev/zero of=/dev/mapper/cmeta bs=4k count=1 oflag=direct
+dmsetup create cache --table "0 262144 cache /dev/mapper/cmeta \
+/dev/mapper/cdata /dev/mapper/corig 128 2 metadata2 writethrough smq 0"
+
+2. Promote the first data block into the cache
+
+fio --filename=/dev/mapper/cache --name=populate --rw=write --bs=4k \
+--direct=1 --size=64k
+
+3. Reload the cache into passthrough mode
+
+dmsetup suspend cache
+dmsetup reload cache --table "0 262144 cache /dev/mapper/cmeta \
+/dev/mapper/cdata /dev/mapper/corig 128 2 metadata2 passthrough smq 0"
+dmsetup resume cache
+
+4. Write to the first data block, and check io ordering using ftrace
+
+echo 1 > /sys/kernel/debug/tracing/events/block/block_bio_queue/enable
+echo 1 > /sys/kernel/debug/tracing/events/block/block_bio_complete/enable
+echo 1 > /sys/kernel/debug/tracing/events/block/block_rq_complete/enable
+fio --filename=/dev/mapper/cache --name=test --rw=write --bs=64k \
+--direct=1 --size 64k
+
+5. ftrace logs show that write operations to the cache origin (252:2)
+   and metadata operations (252:0) are unsynchronized: the origin write
+   occurs before metadata commit.
+
+ <snip>
+       fio-146  [000] .....  420.139562: block_bio_queue: 252,3 WS 0 + 128 [fio]
+       fio-146  [000] .....  420.149395: block_bio_queue: 252,2 WS 0 + 128 [fio]
+       fio-146  [000] .....  420.149763: block_bio_queue: 8,32 WS 262144 + 128 [fio]
+       fio-146  [000] dNh1.  420.151446: block_rq_complete: 8,32 WS () 262144 + 128 be,0,4 [0]
+       fio-146  [000] dNh1.  420.152731: block_bio_complete: 252,2 WS 0 + 128 [0]
+       fio-146  [000] dNh1.  420.154229: block_bio_complete: 252,3 WS 0 + 128 [0]
+ kworker/0:0-9  [000] .....  420.160530: block_bio_queue: 252,0 W 408 + 8 [kworker/0:0]
+ kworker/0:0-9  [000] .....  420.161641: block_bio_queue: 8,32 W 408 + 8 [kworker/0:0]
+ kworker/0:0-9  [000] .....  420.162533: block_bio_queue: 252,0 W 416 + 8 [kworker/0:0]
+ kworker/0:0-9  [000] .....  420.162821: block_bio_queue: 8,32 W 416 + 8 [kworker/0:0]
+ <snip>
+
+Fixes: b29d4986d0da ("dm cache: significant rework to leverage dm-bio-prison-v2")
+Signed-off-by: Ming-Hung Tsai <mtsai@redhat.com>
+Signed-off-by: Mikulas Patocka <mpatocka@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/soc/qcom/ocmem.c | 7 ++-----
- 1 file changed, 2 insertions(+), 5 deletions(-)
+ drivers/md/dm-cache-target.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/soc/qcom/ocmem.c b/drivers/soc/qcom/ocmem.c
-index bfebdcaf88146..0ac0a5426734b 100644
---- a/drivers/soc/qcom/ocmem.c
-+++ b/drivers/soc/qcom/ocmem.c
-@@ -192,23 +192,20 @@ static void update_range(struct ocmem *ocmem, struct ocmem_buf *buf,
- struct ocmem *of_get_ocmem(struct device *dev)
- {
- 	struct platform_device *pdev;
--	struct device_node *devnode;
- 	struct ocmem *ocmem;
- 
--	devnode = of_parse_phandle(dev->of_node, "sram", 0);
-+	struct device_node *devnode __free(device_node) = of_parse_phandle(dev->of_node,
-+									   "sram", 0);
- 	if (!devnode || !devnode->parent) {
- 		dev_err(dev, "Cannot look up sram phandle\n");
--		of_node_put(devnode);
- 		return ERR_PTR(-ENODEV);
- 	}
- 
- 	pdev = of_find_device_by_node(devnode->parent);
- 	if (!pdev) {
- 		dev_err(dev, "Cannot find device node %s\n", devnode->name);
--		of_node_put(devnode);
- 		return ERR_PTR(-EPROBE_DEFER);
- 	}
--	of_node_put(devnode);
- 
- 	ocmem = platform_get_drvdata(pdev);
- 	put_device(&pdev->dev);
+diff --git a/drivers/md/dm-cache-target.c b/drivers/md/dm-cache-target.c
+index a3cb0a68dc1fa..28a1444328566 100644
+--- a/drivers/md/dm-cache-target.c
++++ b/drivers/md/dm-cache-target.c
+@@ -1754,6 +1754,7 @@ static int map_bio(struct cache *cache, struct bio *bio, dm_oblock_t block,
+ 				bio_drop_shared_lock(cache, bio);
+ 				atomic_inc(&cache->stats.demotion);
+ 				invalidate_start(cache, cblock, block, bio);
++				return DM_MAPIO_SUBMITTED;
+ 			} else
+ 				remap_to_origin_clear_discard(cache, bio, block);
+ 		} else {
 -- 
 2.53.0
 
