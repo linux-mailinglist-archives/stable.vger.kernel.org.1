@@ -1,58 +1,64 @@
-Return-Path: <stable+bounces-257840-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-259220-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id GHoMOYwgG2qu/QgAu9opvQ
-	(envelope-from <stable+bounces-257840-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:38:20 +0200
+	id 4JkrIxozG2qqAAkAu9opvQ
+	(envelope-from <stable+bounces-259220-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:57:30 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8E00E61012A
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:38:20 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 18B67612D63
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:57:30 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id D6F1E301D4F6
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 17:32:28 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id E9DAA303D2DC
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 18:50:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6BA9C3403F9;
-	Sat, 30 May 2026 17:32:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 172EE231A21;
+	Sat, 30 May 2026 18:50:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Tnv91tyg"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KkGPVR8R"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 47AB830676E;
-	Sat, 30 May 2026 17:32:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DBA70137750;
+	Sat, 30 May 2026 18:50:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780162346; cv=none; b=BjyS3hjl/akvSXEUq5mmGC1PxI5HtpJQNpgMwfdnyrH1/jlAcLNUAjEh7m9G6sRYTjbncKB70kEDCRsHPCcYyxCB78k/LBjBE11wjFhDs4QrahkP5wkzm8u0Glo7CpHJA07BwPCNjmHdOIeK1nJP+bdzFCMARBDJwlzoSLUxp7U=
+	t=1780167011; cv=none; b=lMgnK1lEflg5F+6bLSV3ASsmuAxG4Emod87cKD5nwZd3q20KJ2ZXSxq6ttlMnkM8JhpOoDh0CBNr0Xt9dMjh8o55i2GM4x6T97pmWg5ViodKoH79dIpO6dUfZQfM18xrte7R1q62YhiLUXyavHJP0XUdyqgyFP/h5juPg97hbwc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780162346; c=relaxed/simple;
-	bh=/5rQ8l8SaQ7VRnJLuAmZI+jdIVccaxJOMPPzau85OV0=;
+	s=arc-20240116; t=1780167011; c=relaxed/simple;
+	bh=Ik0ow9buupzsKQkD7yK9oO01Gs+SKRQE91/HzG5Wi2w=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=XH2drEsKrbX/Uax7aHBk9ZQZfUmvvGp/7DGnaejzRytzolApy8n2Tcfce6mukfDCiNZ8KI5tHroMtl+QyA4BJq08PsV/RZ/d0yR6gVDA6blyDc655UmrKkvrwuhWIbMARlAx3vOR8j95rs7cmBE5TzBqSHdqQyv3KpYGgfzU3LM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Tnv91tyg; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8C2261F00893;
-	Sat, 30 May 2026 17:32:24 +0000 (UTC)
+	 MIME-Version; b=unA+yp5+27VJDy5L+924CVjtRCz6cmlab9bddBpEEXFKVvYbDSvKHIbaBDJuHqjUaiqoCRTiOMXsEJd8TEHgeV3DO+iUe4Rggr5u8da+faw1DsOruAPGE/IkonSwP+8RCVZotbGr06eZHEOKsz2xMMDqRe+tPudhbmn03KoJOkg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KkGPVR8R; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2B2471F00893;
+	Sat, 30 May 2026 18:50:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780162345;
-	bh=cd2m8yUZ5G4ISwTqrUo2X1SGuG6j3W2XCxy5IoLvVCg=;
+	s=korg; t=1780167010;
+	bh=kPRTiJMqBdL7X2/YbnBF2SrspX+0hpLuchrPGjjmQWA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=Tnv91tygyANajLn+ANxUzAkW0jCNig9jkAU+2WE3m+u5SPGGhCa2yVyyFSIJfrSrd
-	 wJut/r4cYDIXlZjF4LMBlvT2wqK2xcQb4/51WqAuR6J02O1sEO7Ya1B5rshZRmiF4I
-	 bceuQIs/x4nRaQymmKLGo4S6lQV7M4qrhr4uIGFs=
+	b=KkGPVR8Rga5wg0H8p3BQUQnl1ylW7kD6AVkk17w200opxtBd/gIh1FvRbia+zYgOg
+	 wsqqgoL13xN3eH8zjfTOMrVT+Of0IYO4OwxQcjGFwuThTg4V//siGlSI1R5+oa0Z0o
+	 vBi3NV7gUcWYXbAothTiSR6uxKBeYX3UlNuY4O3w=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Abdurrahman Hussain <abdurrahman@nexthop.ai>,
-	Guenter Roeck <linux@roeck-us.net>
-Subject: [PATCH 6.1 893/969] hwmon: (pmbus/adm1266) bounce blackbox records through a protocol-sized buffer
+	stable@kernel.org,
+	Yuan Tan <yuantan098@gmail.com>,
+	Yifan Wu <yifanwucs@gmail.com>,
+	Juefei Pu <tomapufckgml@gmail.com>,
+	Xin Liu <bird@lzu.edu.cn>,
+	Nan Li <tonanli66@gmail.com>,
+	Ren Wei <n05ec@lzu.edu.cn>,
+	Pablo Neira Ayuso <pablo@netfilter.org>
+Subject: [PATCH 5.10 536/589] netfilter: ipset: stop hash:* range iteration at end
 Date: Sat, 30 May 2026 18:06:57 +0200
-Message-ID: <20260530160325.363657403@linuxfoundation.org>
+Message-ID: <20260530160238.781181025@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260530160300.485627683@linuxfoundation.org>
-References: <20260530160300.485627683@linuxfoundation.org>
+In-Reply-To: <20260530160224.570625122@linuxfoundation.org>
+References: <20260530160224.570625122@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -67,101 +73,163 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,kernel.org,gmail.com,lzu.edu.cn,netfilter.org];
+	TAGGED_FROM(0.00)[bounces-259220-lists,stable=lfdr.de];
 	PRECEDENCE_BULK(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-257840-lists,stable=lfdr.de];
-	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[5];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[11];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,nexthop.ai:email,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo]
-X-Rspamd-Queue-Id: 8E00E61012A
+	TAGGED_RCPT(0.00)[stable];
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[netfilter.org:email,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
+X-Rspamd-Queue-Id: 18B67612D63
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Abdurrahman Hussain <abdurrahman@nexthop.ai>
+From: Nan Li <tonanli66@gmail.com>
 
-commit 43cae21424ff8e33894a0f86c6b80b840c049fd7 upstream.
+commit 0d3a282ab5f165fc207ff49ea5b6ad8f54616bd6 upstream.
 
-adm1266_pmbus_block_xfer() copies the device-supplied block payload
-into the caller-provided buffer using the device-supplied length:
+The following hash set variants:
 
-	memcpy(data_r, &msgs[1].buf[1], msgs[1].buf[0]);
+hash:ip,mark
+hash:ip,port
+hash:ip,port,ip
+hash:ip,port,net
 
-The helper does not know how large data_r is and trusts the device to
-return at most one record's worth of bytes.  adm1266_nvmem_read_blackbox()
-violates that contract: it advances read_buff inside data->dev_mem in
-ADM1266_BLACKBOX_SIZE (64-byte) strides while the helper is willing to
-write up to ADM1266_PMBUS_BLOCK_MAX (255) bytes.  A device that returns
-more than 64 bytes on the trailing record (read_buff offset 1984 in
-the 2048-byte dev_mem allocation) overflows dev_mem by up to 191 bytes
-before the post-call
+iterate IPv4 ranges with a 32-bit iterator.
 
-	if (ret != ADM1266_BLACKBOX_SIZE)
-		return -EIO;
+The iterator must stop once the last address in the requested range has
+been processed. Advancing it once more can move the traversal state past
+the end of the request, so a later retry may continue from an unintended
+position.
 
-can reject the response.
+Handle the iterator increment explicitly at the end of the loop and stop
+once the upper bound has been processed. This keeps the existing retry
+behaviour intact for valid ranges while preventing traversal from
+continuing past the original boundary.
 
-Contain the fix in the caller without changing the helper signature:
-read each record into a 255-byte local bounce buffer that matches the
-helper's maximum output, validate the returned length, and only then
-copy exactly ADM1266_BLACKBOX_SIZE bytes into the dev_mem slot.
-
-Fixes: 407dc802a9c0 ("hwmon: (pmbus/adm1266) Add Block process call")
-Cc: stable@vger.kernel.org
-Signed-off-by: Abdurrahman Hussain <abdurrahman@nexthop.ai>
-Link: https://lore.kernel.org/r/20260515-adm1266-fixes-v1-5-1c1ea1349cfe@nexthop.ai
-Signed-off-by: Guenter Roeck <linux@roeck-us.net>
+Fixes: 48596a8ddc46 ("netfilter: ipset: Fix adding an IPv4 range containing more than 2^31 addresses")
+Cc: stable@kernel.org
+Reported-by: Yuan Tan <yuantan098@gmail.com>
+Reported-by: Yifan Wu <yifanwucs@gmail.com>
+Reported-by: Juefei Pu <tomapufckgml@gmail.com>
+Reported-by: Xin Liu <bird@lzu.edu.cn>
+Signed-off-by: Nan Li <tonanli66@gmail.com>
+Signed-off-by: Ren Wei <n05ec@lzu.edu.cn>
+Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/hwmon/pmbus/adm1266.c |    4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ net/netfilter/ipset/ip_set_hash_ipmark.c    |    6 +++++-
+ net/netfilter/ipset/ip_set_hash_ipport.c    |    5 ++++-
+ net/netfilter/ipset/ip_set_hash_ipportip.c  |    5 ++++-
+ net/netfilter/ipset/ip_set_hash_ipportnet.c |    5 ++++-
+ 4 files changed, 17 insertions(+), 4 deletions(-)
 
---- a/drivers/hwmon/pmbus/adm1266.c
-+++ b/drivers/hwmon/pmbus/adm1266.c
-@@ -350,6 +350,7 @@ static void adm1266_init_debugfs(struct
+--- a/net/netfilter/ipset/ip_set_hash_ipmark.c
++++ b/net/netfilter/ipset/ip_set_hash_ipmark.c
+@@ -149,7 +149,7 @@ hash_ipmark4_uadt(struct ip_set *set, st
  
- static int adm1266_nvmem_read_blackbox(struct adm1266_data *data, u8 *read_buff)
- {
-+	u8 record[ADM1266_PMBUS_BLOCK_MAX];
- 	int record_count;
- 	char index;
- 	u8 buf[I2C_SMBUS_BLOCK_MAX];
-@@ -367,13 +368,14 @@ static int adm1266_nvmem_read_blackbox(s
- 		return -EIO;
- 
- 	for (index = 0; index < record_count; index++) {
--		ret = adm1266_pmbus_block_xfer(data, ADM1266_READ_BLACKBOX, 1, &index, read_buff);
-+		ret = adm1266_pmbus_block_xfer(data, ADM1266_READ_BLACKBOX, 1, &index, record);
- 		if (ret < 0)
+ 	if (retried)
+ 		ip = ntohl(h->next.ip);
+-	for (; ip <= ip_to; ip++, i++) {
++	for (; ip <= ip_to; i++) {
+ 		e.ip = htonl(ip);
+ 		if (i > IPSET_MAX_RANGE) {
+ 			hash_ipmark4_data_next(&h->next, &e);
+@@ -161,6 +161,10 @@ hash_ipmark4_uadt(struct ip_set *set, st
  			return ret;
  
- 		if (ret != ADM1266_BLACKBOX_SIZE)
- 			return -EIO;
- 
-+		memcpy(read_buff, record, ADM1266_BLACKBOX_SIZE);
- 		read_buff += ADM1266_BLACKBOX_SIZE;
+ 		ret = 0;
++
++		if (ip == ip_to)
++			break;
++		ip++;
  	}
+ 	return ret;
+ }
+--- a/net/netfilter/ipset/ip_set_hash_ipport.c
++++ b/net/netfilter/ipset/ip_set_hash_ipport.c
+@@ -174,7 +174,7 @@ hash_ipport4_uadt(struct ip_set *set, st
  
+ 	if (retried)
+ 		ip = ntohl(h->next.ip);
+-	for (; ip <= ip_to; ip++) {
++	for (; ip <= ip_to;) {
+ 		p = retried && ip == ntohl(h->next.ip) ? ntohs(h->next.port)
+ 						       : port;
+ 		for (; p <= port_to; p++, i++) {
+@@ -191,6 +191,9 @@ hash_ipport4_uadt(struct ip_set *set, st
+ 
+ 			ret = 0;
+ 		}
++		if (ip == ip_to)
++			break;
++		ip++;
+ 	}
+ 	return ret;
+ }
+--- a/net/netfilter/ipset/ip_set_hash_ipportip.c
++++ b/net/netfilter/ipset/ip_set_hash_ipportip.c
+@@ -181,7 +181,7 @@ hash_ipportip4_uadt(struct ip_set *set,
+ 
+ 	if (retried)
+ 		ip = ntohl(h->next.ip);
+-	for (; ip <= ip_to; ip++) {
++	for (; ip <= ip_to;) {
+ 		p = retried && ip == ntohl(h->next.ip) ? ntohs(h->next.port)
+ 						       : port;
+ 		for (; p <= port_to; p++, i++) {
+@@ -198,6 +198,9 @@ hash_ipportip4_uadt(struct ip_set *set,
+ 
+ 			ret = 0;
+ 		}
++		if (ip == ip_to)
++			break;
++		ip++;
+ 	}
+ 	return ret;
+ }
+--- a/net/netfilter/ipset/ip_set_hash_ipportnet.c
++++ b/net/netfilter/ipset/ip_set_hash_ipportnet.c
+@@ -273,7 +273,7 @@ hash_ipportnet4_uadt(struct ip_set *set,
+ 		p = port;
+ 		ip2 = ip2_from;
+ 	}
+-	for (; ip <= ip_to; ip++) {
++	for (; ip <= ip_to;) {
+ 		e.ip = htonl(ip);
+ 		for (; p <= port_to; p++) {
+ 			e.port = htons(p);
+@@ -297,6 +297,9 @@ hash_ipportnet4_uadt(struct ip_set *set,
+ 			ip2 = ip2_from;
+ 		}
+ 		p = port;
++		if (ip == ip_to)
++			break;
++		ip++;
+ 	}
+ 	return ret;
+ }
 
 
 
