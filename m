@@ -1,62 +1,59 @@
-Return-Path: <stable+bounces-259240-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-258664-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id IPAZIcMxG2qkAAkAu9opvQ
-	(envelope-from <stable+bounces-259240-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:51:47 +0200
+	id wDs7BcYrG2r//ggAu9opvQ
+	(envelope-from <stable+bounces-258664-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:26:14 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id AF5CC612A5A
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:51:46 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 72E1A611B98
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:26:13 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 57691300F275
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 18:51:21 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 190AC303467C
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 18:18:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 25496238D52;
-	Sat, 30 May 2026 18:51:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B07BF284690;
+	Sat, 30 May 2026 18:18:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="o50dkzev"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fP9ZvKY1"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F3C43137750;
-	Sat, 30 May 2026 18:51:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 863D0233D9E;
+	Sat, 30 May 2026 18:18:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780167078; cv=none; b=PDImBu/J/Tnj+tZr1T/XFQ3D1cw4dfdVVl3z/99ehWcMRhTFcARbuhZf3iqsd7Q5d0Uf8u3lgw+jzFpYoVQZuxHflwrQaXIltClzlQjp/rQSEaOEDd9CjK473u0YFM63kpFTINa7Ezfj/r8f+ByLRgurGNhG8FOfKOGlh2n3IWs=
+	t=1780165115; cv=none; b=U5Ye2mFJOnEk5M3bQHrY0YftCzuH9JajDouo+1x6151rg5ZTIiEk8fXXlSfIOjR+NP0TgY9NS6YX/L7D794gJVg4xtbn/3wt8BcllU121hwpI8swUNesxYlZLieD2ulEVfXEyZMkiZEHAl9l0sIjidE7ziNHVkNWzyw/ExvuCHg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780167078; c=relaxed/simple;
-	bh=+QmCEB5sEPg0TFyn7r1V9F6nczKDivTZA6Ob2l9jtdo=;
+	s=arc-20240116; t=1780165115; c=relaxed/simple;
+	bh=vrcbqwFZHa+Ge5n0/dfnEaWaynaDqsnogdIy6pTZ0+E=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=SyfoxshPCZ3RDQjWzCS9w84ceLK5jVU2omFUcVcUfLlciV0F/fG91+4N9QdGuSjXZqqs0SIdjx4GP1gFC3ojyIaZAkYTCS1h7ANmN3AlUv0Ns45S3df0W0mj7cJj6QrGTk3oQpEdq1wJqXlO6quBHrrESFOLEGRTOxsZfb+yD/4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=o50dkzev; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4419A1F00893;
-	Sat, 30 May 2026 18:51:17 +0000 (UTC)
+	 MIME-Version; b=lpP+nmwupByh6NkRa0qAMFWmHoFBVvlNDcq9VdSh7Tszh73+rJvsKyLD6PX3DQDBt1J41E/ip64yHx2+pfPySKBIlXFXCCrAQt0qeQFKkfJmwc1VgtOh0+he2I8uyQZAQzJdK85RHhvMUZn3OYHgjMMjFrQsIq6XmjL2MV+j7v4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fP9ZvKY1; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CBDA51F00893;
+	Sat, 30 May 2026 18:18:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780167077;
-	bh=USLZvLZIUAnh6cWKC7rxUkAjiu63hrh5SI0S7YNzkyE=;
+	s=korg; t=1780165114;
+	bh=he9D7rd2wkazJY6hCgIJSESymGT+1Y3bVh/zy+60jw4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=o50dkzevnzYDCGq/jjNODZDFflPBo+2pKyXRkkQwT2bGKQU+6LRz1lnLImhtYtKXH
-	 nJoBE7PRSZl/ODf5FEGGgYDhaimBsaPisoYr/6VP4M5+jRGZNWiQYaSH6U45U9Fe93
-	 lzgzfOuGqk0JLekTBD3W3bznAZHC4P/wtgs1IF+Q=
+	b=fP9ZvKY1Td7CgNlmt/dbDC9kPGIWyZAuwxDo8Ly3dGG0H/GQTp21VavBUI6zEN1Tb
+	 hYcL8gLFi7R2cQ5Wg6+mtuANvt64DffTu15qfwSnAm6cq6V9OMS3hOlPT+Evf2HeJf
+	 20cjNFCrFM1BWWl9eU+NoY7L27AbanRP0sC43xQI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable@kernel.org,
-	Yuan Tan <yuantan098@gmail.com>,
-	Yifan Wu <yifanwucs@gmail.com>,
-	Juefei Pu <tomapufckgml@gmail.com>,
-	Xin Liu <bird@lzu.edu.cn>,
-	Sven Eckelmann <sven@narfation.org>
-Subject: [PATCH 5.10 557/589] batman-adv: tp_meter: avoid use of uninit sender vars
+	Abdurrahman Hussain <abdurrahman@nexthop.ai>,
+	Bartosz Golaszewski <bartosz.golaszewski@oss.qualcomm.com>,
+	Guenter Roeck <linux@roeck-us.net>
+Subject: [PATCH 5.15 724/776] hwmon: (pmbus/adm1266) reject short block-read responses in the GPIO accessors
 Date: Sat, 30 May 2026 18:07:18 +0200
-Message-ID: <20260530160239.295329034@linuxfoundation.org>
+Message-ID: <20260530160258.532840262@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260530160224.570625122@linuxfoundation.org>
-References: <20260530160224.570625122@linuxfoundation.org>
+In-Reply-To: <20260530160240.228940103@linuxfoundation.org>
+References: <20260530160240.228940103@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -71,97 +68,102 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,kernel.org,gmail.com,lzu.edu.cn,narfation.org];
-	TAGGED_FROM(0.00)[bounces-259240-lists,stable=lfdr.de];
-	PRECEDENCE_BULK(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
+	RCVD_TLS_LAST(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	TAGGED_FROM(0.00)[bounces-258664-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[9];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	NEURAL_HAM(-0.00)[-0.996];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,lzu.edu.cn:email,narfation.org:email]
-X-Rspamd-Queue-Id: AF5CC612A5A
+	RCPT_COUNT_FIVE(0.00)[6];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[qualcomm.com:email,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,nexthop.ai:email,roeck-us.net:email]
+X-Rspamd-Queue-Id: 72E1A611B98
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sven Eckelmann <sven@narfation.org>
+From: Abdurrahman Hussain <abdurrahman@nexthop.ai>
 
-commit 6c65cf23d4c6170fcf5714c32aa64689718cb142 upstream.
+commit a7232f68c43ca62f545049b7f5fbfc75137b843b upstream.
 
-batadv_tp_recv_ack() and batadv_tp_stop() are only valid for tp_vars in the
-BATADV_TP_SENDER role. When called with a BATADV_TP_RECEIVER role, it
-proceeds to read sender-only members that were never initialized, leading
-to undefined behavior.
+adm1266_gpio_get() and adm1266_gpio_get_multiple() both compose the
+pin-status word as
 
-This can be triggered when a node that is currently acting as a receiver in
-an ongoing tp_meter session receives a malicious ACK packet.
+	pins_status = read_buf[0] + (read_buf[1] << 8);
 
-Guard against this by checking tp_vars->role immediately after the
-lookup and bailing out if it is not BATADV_TP_SENDER, before any of
-those members are accessed.
+right after i2c_smbus_read_block_data(), guarding only against an
+error return.  A well-behaved device returns 2 bytes for
+GPIO_STATUS/PDIO_STATUS, but the helper happily reports a 0- or
+1-byte response too.  If the device returns 0 bytes, both read_buf
+slots are uninitialized stack memory; if it returns 1 byte, read_buf[1]
+is.
 
-Cc: stable@kernel.org
-Fixes: 33a3bb4a3345 ("batman-adv: throughput meter implementation")
-Reported-by: Yuan Tan <yuantan098@gmail.com>
-Reported-by: Yifan Wu <yifanwucs@gmail.com>
-Reported-by: Juefei Pu <tomapufckgml@gmail.com>
-Reported-by: Xin Liu <bird@lzu.edu.cn>
-Reviewed-by: Yuan Tan <yuantan098@gmail.com>
-Signed-off-by: Sven Eckelmann <sven@narfation.org>
+The composed value then flows through set_bit() into the caller's
+*bits in adm1266_gpio_get_multiple(), or into the return value of
+adm1266_gpio_get(), and ends up in userspace via gpiolib (sysfs and
+the char-dev ioctls).  That leaks a few bits of kernel stack per
+request on any device whose firmware glitch, bus error, or hostile
+slave produces a short block-read response.
+
+Add the missing length check to both call sites and surface a short
+response as -EIO.
+
+Fixes: d98dfad35c38 ("hwmon: (pmbus/adm1266) Add support for GPIOs")
+Cc: stable@vger.kernel.org
+Signed-off-by: Abdurrahman Hussain <abdurrahman@nexthop.ai>
+Reviewed-by: Bartosz Golaszewski <bartosz.golaszewski@oss.qualcomm.com>
+Link: https://lore.kernel.org/r/20260518-adm1266-gpio-fixes-v3-3-e425e4f88139@nexthop.ai
+Signed-off-by: Guenter Roeck <linux@roeck-us.net>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/batman-adv/tp_meter.c |   11 +++++++++--
- 1 file changed, 9 insertions(+), 2 deletions(-)
+ drivers/hwmon/pmbus/adm1266.c |    6 ++++++
+ 1 file changed, 6 insertions(+)
 
---- a/net/batman-adv/tp_meter.c
-+++ b/net/batman-adv/tp_meter.c
-@@ -647,6 +647,9 @@ static void batadv_tp_recv_ack(struct ba
- 	if (unlikely(!tp_vars))
- 		return;
+--- a/drivers/hwmon/pmbus/adm1266.c
++++ b/drivers/hwmon/pmbus/adm1266.c
+@@ -176,6 +176,8 @@ static int adm1266_gpio_get(struct gpio_
+ 	ret = i2c_smbus_read_block_data(data->client, pmbus_cmd, read_buf);
+ 	if (ret < 0)
+ 		return ret;
++	if (ret < 2)
++		return -EIO;
  
-+	if (unlikely(tp_vars->role != BATADV_TP_SENDER))
-+		goto out;
-+
- 	if (unlikely(atomic_read(&tp_vars->sending) == 0))
- 		goto out;
+ 	pins_status = read_buf[0] + (read_buf[1] << 8);
+ 	if (offset < ADM1266_GPIO_NR)
+@@ -196,6 +198,8 @@ static int adm1266_gpio_get_multiple(str
+ 	ret = i2c_smbus_read_block_data(data->client, ADM1266_GPIO_STATUS, read_buf);
+ 	if (ret < 0)
+ 		return ret;
++	if (ret < 2)
++		return -EIO;
  
-@@ -1085,12 +1088,16 @@ void batadv_tp_stop(struct batadv_priv *
- 	if (!tp_vars) {
- 		batadv_dbg(BATADV_DBG_TP_METER, bat_priv,
- 			   "Meter: trying to interrupt an already over connection\n");
--		goto out;
-+		goto out_put_orig_node;
- 	}
+ 	status = read_buf[0] + (read_buf[1] << 8);
  
-+	if (unlikely(tp_vars->role != BATADV_TP_SENDER))
-+		goto out_put_tp_vars;
-+
- 	batadv_tp_sender_shutdown(tp_vars, return_value);
-+out_put_tp_vars:
- 	batadv_tp_vars_put(tp_vars);
--out:
-+out_put_orig_node:
- 	batadv_orig_node_put(orig_node);
- }
+@@ -208,6 +212,8 @@ static int adm1266_gpio_get_multiple(str
+ 	ret = i2c_smbus_read_block_data(data->client, ADM1266_PDIO_STATUS, read_buf);
+ 	if (ret < 0)
+ 		return ret;
++	if (ret < 2)
++		return -EIO;
+ 
+ 	status = read_buf[0] + (read_buf[1] << 8);
  
 
 
