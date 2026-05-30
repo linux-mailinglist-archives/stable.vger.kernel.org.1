@@ -1,65 +1,59 @@
-Return-Path: <stable+bounces-258617-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-259251-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id UOjHBEkqG2ra/ggAu9opvQ
-	(envelope-from <stable+bounces-258617-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:19:53 +0200
+	id mIDsMZAyG2qqAAkAu9opvQ
+	(envelope-from <stable+bounces-259251-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:55:12 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 959066117DD
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:19:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3A2ED612C99
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:55:12 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 559A3304F43E
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 18:15:55 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 2596330434FA
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 18:51:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0144C3AB26B;
-	Sat, 30 May 2026 18:15:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DF4AF238D52;
+	Sat, 30 May 2026 18:51:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="i5+3nlwP"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CeNk8qFR"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C99333BE175;
-	Sat, 30 May 2026 18:15:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A2338137750;
+	Sat, 30 May 2026 18:51:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780164954; cv=none; b=fvnsP131EAnNEf5tzZ268fvZ8j0xBYkvX64SkVunWOFvx1E/5/YCurjglx8vSsLp1w7wFKxnUoie7y0Kg+iJboT+jUR64/cSTY8J2YwZmvRWak5MqcfBS+078VwJJlYEJuirAwpmq1lcs/3ZDYyL8PSIPun+Tx+dqiIF4pqaNO0=
+	t=1780167114; cv=none; b=o/XgkGC3leu1NhR+ZMW/2EZogL8UtINsWIrve4KoKu+hEFYUR5AOjQM4TMsWi93oYYf8uPPL3ycYq/VJZ4E7a6yG6069f80A5AK5FAnj0y6pHG4L0wp/JA16KIZcUeIhYfo4hQrdTHCHPf71LHdlcaTyZYSiFo9wqfIFOVq0hig=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780164954; c=relaxed/simple;
-	bh=QGC2er1p2hFpw9w1gR2PF3IYsHweEUwtuDUOZdl9IAk=;
+	s=arc-20240116; t=1780167114; c=relaxed/simple;
+	bh=XP0yxRApEZpbMNFRiOFwC+kqp+cSxl4pnbcwYYOsH7M=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=c9Eqhn/8rDXez09NLN3W9pvpcgJthcmaOWcINh8TrZbNw2mpfKmzKfSeMlcJbEsbviDe2YS0swfhms75pnhK/+n6DJOFGFsP5rYbvUYRqG+0a7FDy+r4I+oa6klA2lMP8u7gmR9FVXshLAi+Q35SkyewpcyT9n6KYctm3Rv2F10=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=i5+3nlwP; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C1F051F00893;
-	Sat, 30 May 2026 18:15:52 +0000 (UTC)
+	 MIME-Version; b=BUIuX74rGdCjVkEaF9atBj6M6c2mLpGcu2MGhN8VfopOgseZKOL2HEb5qsWPP94BqwEEMJsbJzgK74iY665kNL2/eMk4UoIEPClIbP6Mn6VMunnklHLcbeDqqAOWMoaW0yik2U5cy+/VZSz4mAVlYFVy4sGJofSRHI9URNbS2JE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CeNk8qFR; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DE2B01F00893;
+	Sat, 30 May 2026 18:51:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780164953;
-	bh=2x5CtFsgTuGkF8V6HRLU+fdSr6kb3S4biDRcWdRxYo8=;
+	s=korg; t=1780167113;
+	bh=x+sa/pEUWi8VgRMaft5Qt9HZQT9BqQPcWWyd6Q2oJwk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=i5+3nlwPP6O3ZKxUZeeX2KUeT35+JyKZydluqedDYqSSOCDYw4XZXqeIlz4wO5qve
-	 jKrvyxhInfWVRXPj9vE0hZ29Xb8m/mbxegeKsYh+MsP4PqRu1sp4NOvwbty2Eq5Lrf
-	 ovh9BjAhmhwl2hyKOia8apNRt1uhASH7MbyIHWS0=
+	b=CeNk8qFRhTyKBPwcmoC3hwzLVc2QifpY4e+5u0HmzQWL5ZET/ozJcsbNDeHql0cyt
+	 lVsyZ3G/MGiqQDh6VW99zzIrt6+H6s2DGcWBcInFWBPEHMyP8KdKOVD6UmAFUZoafz
+	 uG1s605572MuKbJoJNtLx5+So89vJBzPiEQeLawM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable@kernel.org,
-	Yuan Tan <yuantan098@gmail.com>,
-	Yifan Wu <yifanwucs@gmail.com>,
-	Juefei Pu <tomapufckgml@gmail.com>,
-	Xin Liu <bird@lzu.edu.cn>,
-	Ruijie Li <ruijieli51@gmail.com>,
-	Zhanpeng Li <lzhanpeng2025@lzu.edu.cn>,
-	Ren Wei <n05ec@lzu.edu.cn>,
-	Sven Eckelmann <sven@narfation.org>
-Subject: [PATCH 5.15 707/776] batman-adv: clear current gateway during teardown
+	Herbert Xu <herbert@gondor.apana.org.au>,
+	Michael Bommarito <michael.bommarito@gmail.com>,
+	Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 5.10 540/589] ipv4: raw: reject IP_HDRINCL packets with ihl < 5
 Date: Sat, 30 May 2026 18:07:01 +0200
-Message-ID: <20260530160258.118825730@linuxfoundation.org>
+Message-ID: <20260530160238.878101663@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260530160240.228940103@linuxfoundation.org>
-References: <20260530160240.228940103@linuxfoundation.org>
+In-Reply-To: <20260530160224.570625122@linuxfoundation.org>
+References: <20260530160224.570625122@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -70,85 +64,124 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-258617-lists,stable=lfdr.de];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,kernel.org,gmail.com,lzu.edu.cn,narfation.org];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_TLS_LAST(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[12];
 	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
 	TO_DN_SOME(0.00)[];
+	TAGGED_FROM(0.00)[bounces-259251-lists,stable=lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gondor.apana.org.au,gmail.com,kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	NEURAL_HAM(-0.00)[-0.996];
 	TAGGED_RCPT(0.00)[stable];
 	MID_RHS_MATCH_FROM(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,narfation.org:email,lzu.edu.cn:email]
-X-Rspamd-Queue-Id: 959066117DD
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,apana.org.au:email,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo]
+X-Rspamd-Queue-Id: 3A2ED612C99
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ruijie Li <ruijieli51@gmail.com>
+From: Michael Bommarito <michael.bommarito@gmail.com>
 
-commit a340a51ed801eab7bb454150c226323b865263cc upstream.
+commit 915fab69823a14c170dbaa3b41978768e0fe62fc upstream.
 
-batadv_gw_node_free() removes the gateway list entries during mesh teardown,
-but it does not clear the currently selected gateway. This leaves stale
-gateway state behind across cleanup and can break a later mesh recreation.
+raw_send_hdrinc() validates that the caller-supplied IPv4 header
+fits within the message length:
 
-Clear bat_priv->gw.curr_gw before walking the gateway list so the selected
-gateway reference is dropped as part of teardown.
+    iphlen = iph->ihl * 4;
+    err = -EINVAL;
+    if (iphlen > length)
+        goto error_free;
 
-Fixes: 2265c1410864 ("batman-adv: gateway election code refactoring")
-Cc: stable@kernel.org
-Reported-by: Yuan Tan <yuantan098@gmail.com>
-Reported-by: Yifan Wu <yifanwucs@gmail.com>
-Reported-by: Juefei Pu <tomapufckgml@gmail.com>
-Reported-by: Xin Liu <bird@lzu.edu.cn>
-Signed-off-by: Ruijie Li <ruijieli51@gmail.com>
-Signed-off-by: Zhanpeng Li <lzhanpeng2025@lzu.edu.cn>
-Signed-off-by: Ren Wei <n05ec@lzu.edu.cn>
-Signed-off-by: Sven Eckelmann <sven@narfation.org>
+    if (iphlen >= sizeof(*iph)) {
+        /* fix up saddr, tot_len, id, csum, transport_header */
+    }
+
+It does not, however, reject ihl < 5.  For such a packet the
+"if (iphlen >= sizeof(*iph))" branch is skipped, leaving the
+crafted iphdr untouched, but the packet is still handed to
+__ip_local_out() and onward.  Downstream consumers that read
+iph->ihl assume a sane value: net/ipv4/ah4.c:ah_output() in
+particular subtracts sizeof(struct iphdr) from top_iph->ihl * 4
+and passes the (signed-int-negative, then cast to size_t)
+result to memcpy(), producing an OOB access of length close to
+SIZE_MAX and a host kernel panic.
+
+An IPv4 header with ihl < 5 is malformed by definition (RFC 791:
+"Internet Header Length is the length of the internet header in
+32 bit words ... Note that the minimum value for a correct header
+is 5.").  The kernel should not be willing to inject such a
+packet into its own output path.
+
+Reject "iphlen < sizeof(*iph)" alongside the existing
+"iphlen > length" check.  This matches the principle that locally
+constructed packets that re-enter the IP stack must pass the same
+basic sanity tests that a foreign packet would be subjected to.
+
+Once this lands, the "if (iphlen >= sizeof(*iph))" wrapper around
+the fixup branch becomes redundant; left in place to keep the
+patch minimal and backport-friendly.  A follow-up can unwrap it.
+
+Note that commit 86f4c90a1c5c ("ipv4, ipv6: ensure raw socket
+message is big enough to hold an IP header") ensures the message
+buffer is large enough to hold an iphdr, but does not constrain
+the self-reported iph->ihl.
+
+Reachability: the malformed packet source is any caller with
+CAP_NET_RAW, including an unprivileged process in a user+net
+namespace on a kernel with CONFIG_USER_NS=y.  The reproduced AH
+crash also requires a matching xfrm AH policy on the outgoing
+route; a container granted CAP_NET_ADMIN can install that state
+and policy in its netns.  Loopback bypasses xfrm_output, so the
+trigger uses a real netdev.
+
+Reproduced on UML + KASAN: kernel-mode fault at addr 0x0 with
+memcpy_orig at the crash site.  Same shape reproduces inside a
+rootless Docker container with --cap-add NET_ADMIN on a stock
+distro kernel.
+
+Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
+Cc: stable@vger.kernel.org
+Suggested-by: Herbert Xu <herbert@gondor.apana.org.au>
+Signed-off-by: Michael Bommarito <michael.bommarito@gmail.com>
+Link: https://patch.msgid.link/77ec2b5e8111961c2c39883c92e8aa2709039c17.1778614451.git.michael.bommarito@gmail.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/batman-adv/gateway_client.c |    4 ++++
- 1 file changed, 4 insertions(+)
+ net/ipv4/raw.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/net/batman-adv/gateway_client.c
-+++ b/net/batman-adv/gateway_client.c
-@@ -478,10 +478,14 @@ void batadv_gw_node_delete(struct batadv
-  */
- void batadv_gw_node_free(struct batadv_priv *bat_priv)
- {
-+	struct batadv_gw_node *curr_gw;
- 	struct batadv_gw_node *gw_node;
- 	struct hlist_node *node_tmp;
+--- a/net/ipv4/raw.c
++++ b/net/ipv4/raw.c
+@@ -407,7 +407,7 @@ static int raw_send_hdrinc(struct sock *
+ 	 * in, reject the frame as invalid
+ 	 */
+ 	err = -EINVAL;
+-	if (iphlen > length)
++	if (iphlen > length || iphlen < sizeof(*iph))
+ 		goto error_free;
  
- 	spin_lock_bh(&bat_priv->gw.list_lock);
-+	curr_gw = rcu_replace_pointer(bat_priv->gw.curr_gw, NULL, true);
-+	batadv_gw_node_put(curr_gw);
-+
- 	hlist_for_each_entry_safe(gw_node, node_tmp,
- 				  &bat_priv->gw.gateway_list, list) {
- 		hlist_del_init_rcu(&gw_node->list);
+ 	if (iphlen >= sizeof(*iph)) {
 
 
 
