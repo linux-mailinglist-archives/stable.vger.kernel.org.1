@@ -1,46 +1,46 @@
-Return-Path: <stable+bounces-257693-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-257695-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 2CcwKsMdG2qu/QgAu9opvQ
-	(envelope-from <stable+bounces-257693-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:26:27 +0200
+	id cAneDMYdG2qV/QgAu9opvQ
+	(envelope-from <stable+bounces-257695-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:26:30 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4C51960FA81
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:26:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 015E360FA90
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:26:29 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 6FBC430546EE
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 17:24:17 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id A7E7530552E3
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 17:24:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 12644340293;
-	Sat, 30 May 2026 17:24:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B7A5A344DA4;
+	Sat, 30 May 2026 17:24:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zytG0L7W"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WrC3iUkW"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C231D263F44;
-	Sat, 30 May 2026 17:24:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 95817334695;
+	Sat, 30 May 2026 17:24:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780161856; cv=none; b=HTnymavOLgkUwpqWgBvKkoUnW5aqQ6sulEIeBTFMe4wBiFK3jOlyEogvfsT/NUz+GOLRuXOoRDSpdGOHtQzFQCbILI1qPmzpnRoFk/BgwlIopWYAAzpf3wAEqtY4hTVJu2jQCuAnxKJaPApymkv5IO7qXqk2+2TFEXFdAC1iVRY=
+	t=1780161863; cv=none; b=HHVjj5lpGAQCZx3/bZuTzrxvvgaNNGdqhL9Lok5CbYWbvx9jkD7gGKxq4boEF0Z0k9yj4Kx9Bew8OMUttdatQ1cUOb5CZzHs6g7a6e9QTUTykDtBTocjXbLdwSBegvYoOsgopyaAOJhYNd9Z7kcxYI3Dl8ofvR+iSl5NCfy+D28=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780161856; c=relaxed/simple;
-	bh=OQGO2ehjQ/jS9SCazKUXS6YpJVdrGgUE0X8HjTD98bE=;
+	s=arc-20240116; t=1780161863; c=relaxed/simple;
+	bh=81RrSrxcVfxzgnIwjWtSdPXmCoy6EvXbtAh6ffNEmBA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=cBXHqJ4KEA1zzoLkllVfuGOMdWqjiglziQ1Ja5QTwrr9PGUusg4Y+/WSGGraiKoYId8Dc/cu5M2QOPUX/aJ7ZGoA7JEEdBVGOZpqM7k8+q29BBqUJNf9U2YUGG36eYhyewiocChD/MPcmTZrtrrBm2w5+Qp92Wnvb791RUU6ALo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zytG0L7W; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 116291F00893;
-	Sat, 30 May 2026 17:24:14 +0000 (UTC)
+	 MIME-Version; b=n1zmgKvti8AD6af1g09CHGVD2ImB5O8PEqCKOkoarUdhSRleUwTsFR90qkBC36vyuVtzCMwH8UXkwNK5bjVygsYDXgw5mTCMQVo0+l5BifO/+a+CKvRXCeBGyobWSmZF3+9F8OSdYldXB+WEoupkEdGohxNRFzKulpGxg+hMGyE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WrC3iUkW; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D88EB1F00893;
+	Sat, 30 May 2026 17:24:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780161855;
-	bh=SXt+vD/Hq0EL7/wPfzHFBNbptmG2bf+25IIwqMhjLmc=;
+	s=korg; t=1780161862;
+	bh=WWBn0cMIvhMtqhM8gEX9cjOAnVEGY6LUOTIYz76cuTA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=zytG0L7WsmGgHjkMuxIa1dIO2lPgJyvDIHAMt7i1GgxtQFvu4rLRnl1KzWRsqXNv2
-	 vuO+8zXEj9x0xmD8BbsUqvUSaSVTNYT4Qv+p+MwBZ9vVFJJnyiTfDJAsGT14GqqPsO
-	 kZKTJLUdGnq6L/RCQ8qEVm/K5hMGKLyB/5aVHToI=
+	b=WrC3iUkWBJy6aMb3+4yQY4MqjBBQixibaMtXSGh4yGKazX8+AsGhSNRw5NxvXT52l
+	 5rMQcG7JK9kL0UsAVeZxL8CGOeg6FpCNVeXsm4BzLHLVNuTRtYD1U5ieNaimc34uIQ
+	 DoIYyk+aiUdqtmHbl2Unpt+Hvw8kQWs6NJbbOEUs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -49,9 +49,9 @@ Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	Simon Horman <horms@kernel.org>,
 	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 748/969] net/sched: netem: validate slot configuration
-Date: Sat, 30 May 2026 18:04:32 +0200
-Message-ID: <20260530160321.215209281@linuxfoundation.org>
+Subject: [PATCH 6.1 749/969] net/sched: netem: fix slot delay calculation overflow
+Date: Sat, 30 May 2026 18:04:33 +0200
+Message-ID: <20260530160321.242762995@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
 In-Reply-To: <20260530160300.485627683@linuxfoundation.org>
 References: <20260530160300.485627683@linuxfoundation.org>
@@ -75,7 +75,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-257693-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-257695-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
@@ -91,7 +91,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	TAGGED_RCPT(0.00)[stable];
 	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[]
-X-Rspamd-Queue-Id: 4C51960FA81
+X-Rspamd-Queue-Id: 015E360FA90
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
@@ -101,82 +101,47 @@ X-Rspamd-Server: lfdr
 
 From: Stephen Hemminger <stephen@networkplumber.org>
 
-[ Upstream commit 01801c359a74737b9b1aa28568b60374d857241a ]
+[ Upstream commit 51e94e1e2fef351c74d69eb53666df808d26af95 ]
 
-Reject slot configurations that have no defensible meaning:
+get_slot_next() computes a random delay between min_delay and
+max_delay using:
 
-  - negative min_delay or max_delay
-  - min_delay greater than max_delay
-  - negative dist_delay or dist_jitter
-  - negative max_packets or max_bytes
+  get_random_u32() * (max_delay - min_delay) >> 32
 
-Negative or out-of-order delays underflow in get_slot_next(),
-producing garbage intervals. Negative limits trip the per-slot
-accounting (packets_left/bytes_left <= 0) on the first packet of
-every slot, defeating the rate-limiting half of the slot feature.
+This overflows signed 64-bit arithmetic when the delay range exceeds
+approximately 2.1 seconds (2^31 nanoseconds), producing a negative
+result that effectively disables slot-based pacing. This is a
+realistic configuration for WAN emulation (e.g., slot 1s 5s).
 
-Note that dist_jitter has been silently coerced to its absolute
-value by get_slot() since the feature was introduced; rejecting
-negatives here converts that silent coercion into -EINVAL. The
-abs() can be removed in a follow-up.
+Use mul_u64_u32_shr() which handles the widening multiply without
+overflow.
 
-Fixes: 836af83b54e3 ("netem: support delivering packets in delayed time slots")
+Fixes: 0a9fe5c375b5 ("netem: slotting with non-uniform distribution")
 Signed-off-by: Stephen Hemminger <stephen@networkplumber.org>
 Reviewed-by: Simon Horman <horms@kernel.org>
-Link: https://patch.msgid.link/20260418032027.900913-5-stephen@networkplumber.org
+Link: https://patch.msgid.link/20260418032027.900913-6-stephen@networkplumber.org
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/sched/sch_netem.c | 29 +++++++++++++++++++++++++++++
- 1 file changed, 29 insertions(+)
+ net/sched/sch_netem.c | 5 ++---
+ 1 file changed, 2 insertions(+), 3 deletions(-)
 
 diff --git a/net/sched/sch_netem.c b/net/sched/sch_netem.c
-index 288df378321d9..adb2bab79c87c 100644
+index adb2bab79c87c..2c47bd8dba647 100644
 --- a/net/sched/sch_netem.c
 +++ b/net/sched/sch_netem.c
-@@ -815,6 +815,29 @@ static int get_dist_table(struct disttable **tbl, const struct nlattr *attr)
- 	return 0;
- }
+@@ -647,9 +647,8 @@ static void get_slot_next(struct netem_sched_data *q, u64 now)
  
-+static int validate_slot(const struct nlattr *attr, struct netlink_ext_ack *extack)
-+{
-+	const struct tc_netem_slot *c = nla_data(attr);
-+
-+	if (c->min_delay < 0 || c->max_delay < 0) {
-+		NL_SET_ERR_MSG_ATTR(extack, attr, "negative slot delay");
-+		return -EINVAL;
-+	}
-+	if (c->min_delay > c->max_delay) {
-+		NL_SET_ERR_MSG_ATTR(extack, attr, "slot min delay greater than max delay");
-+		return -EINVAL;
-+	}
-+	if (c->dist_delay < 0 || c->dist_jitter < 0) {
-+		NL_SET_ERR_MSG_ATTR(extack, attr, "negative dist delay");
-+		return -EINVAL;
-+	}
-+	if (c->max_packets < 0 || c->max_bytes < 0) {
-+		NL_SET_ERR_MSG_ATTR(extack, attr, "negative slot limit");
-+		return -EINVAL;
-+	}
-+	return 0;
-+}
-+
- static void get_slot(struct netem_sched_data *q, const struct nlattr *attr)
- {
- 	const struct tc_netem_slot *c = nla_data(attr);
-@@ -1027,6 +1050,12 @@ static int netem_change(struct Qdisc *sch, struct nlattr *opt,
- 			goto table_free;
- 	}
- 
-+	if (tb[TCA_NETEM_SLOT]) {
-+		ret = validate_slot(tb[TCA_NETEM_SLOT], extack);
-+		if (ret)
-+			goto table_free;
-+	}
-+
- 	sch_tree_lock(sch);
- 	/* backup q->clg and q->loss_model */
- 	old_clg = q->clg;
+ 	if (!q->slot_dist)
+ 		next_delay = q->slot_config.min_delay +
+-				(get_random_u32() *
+-				 (q->slot_config.max_delay -
+-				  q->slot_config.min_delay) >> 32);
++			mul_u64_u32_shr(q->slot_config.max_delay - q->slot_config.min_delay,
++					get_random_u32(), 32);
+ 	else
+ 		next_delay = tabledist(q->slot_config.dist_delay,
+ 				       (s32)(q->slot_config.dist_jitter),
 -- 
 2.53.0
 
