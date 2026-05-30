@@ -1,59 +1,62 @@
-Return-Path: <stable+bounces-257548-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-258291-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id IGKDNmkdG2qW/QgAu9opvQ
-	(envelope-from <stable+bounces-257548-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:24:57 +0200
+	id 8GZvL5onG2qf/ggAu9opvQ
+	(envelope-from <stable+bounces-258291-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:08:26 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 36F4A60F930
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:24:57 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2F3E26110CE
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:08:26 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 98CA3304E419
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 17:16:05 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 9622E31346D1
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 17:57:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 06E5D3998B1;
-	Sat, 30 May 2026 17:16:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4675A352027;
+	Sat, 30 May 2026 17:57:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="iBsAAadb"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WT39R65X"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D2A4E263F44;
-	Sat, 30 May 2026 17:16:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2806130E0DC;
+	Sat, 30 May 2026 17:57:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780161364; cv=none; b=YsiWMKkuoid0giFLijnhgxThJUfgo9oqxzTrfMJNbSEKC35EArCNlzyqLJvG8wwOpYwq6ejlMPlEVLB1twpksTiHu26JMfq5ngXq/mE/BkAOj7zHBsvtU4JaxgEtPlgEWMH4AeqXZq10T6lR7SzfrPjR1V+tOUAVqROLbEADTio=
+	t=1780163856; cv=none; b=bVu3BLIbnElhquQ5VHATU8CbxGBnHIt271tto/V3WMM82RrdfxlMfZMlX05m17PZH0XYF2+hdkO6dAluFFtq5sV7gDB/TDdbiH/SeYpnkXzzRfK+RaPCaNf3CgpsGPADU33w92iNwRsJmdDKyUaxC86cG7JdjB45wc4HBEX494E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780161364; c=relaxed/simple;
-	bh=6cDxA3U26jQUz9tfRSZL1Jpe6rfncru46OrRw8/IIAQ=;
+	s=arc-20240116; t=1780163856; c=relaxed/simple;
+	bh=VuftIgEo+2vEWkN1umeY85h6tgEmtyb6Eu2+4yi6NQQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=UFMaWMp82ffyrSA9ghO61g9I+ZfcZqNjf+DQK0RVQUFa9t4g70H6O4dc8enNcifj+kTZAiCmugsxroqTcTqWTnlBoe7oriOm1cm8ILS3q3JXq2Lng23NmyIUHN7h/NCXrvjCTz5jm4Twtz5itKZlT32Sr7UUgjEvpKqMa1gJG/0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=iBsAAadb; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 22B621F00893;
-	Sat, 30 May 2026 17:16:02 +0000 (UTC)
+	 MIME-Version; b=BWX9TIiROYn3zi+x6LZ4aSd5aXjyiXSRqO8o0bOMGQCJ1GqaJQg3ZDNacvq6vfzVL7+6iE6P3jSCDrtWfmlR2+RLUsNp0Q5DznbRPr8Opb8U3ATbjUVnC4p6Nba5khjLLWT8qcLXSyUh1KJgHL6Gw/Nb93xU7vkhz7+RD6p2AU0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WT39R65X; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6DB341F00893;
+	Sat, 30 May 2026 17:57:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780161363;
-	bh=MqZblK1viCCIZ9vxNAbyKPRrPgtlxVFyPdsIqb+bcZ8=;
+	s=korg; t=1780163855;
+	bh=rcR0mTGCKO6k6ebQPg7TPxPvNd4JaYDX8/JMVrU7HUg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=iBsAAadbkGbv2JaoYLyJyahjVteuTRhFs7Zfh4B9Fv55QyQRpU5M5gYftNamWv4B8
-	 kHhYIcJLnX8xqp7jkjgTZEolYj2ABQC6aB/QvmdI4WBLXfA7lwjI2LmqlHLyOs1L0u
-	 X6AcYSMeHDjS8Yfst3zBcjo+ypLqMzR9LVLaXC6A=
+	b=WT39R65Xjsatywcw8y6Q1OpSOPZXgzzK+dcxDbXnhcGTsf9SpS9++tdYZ3iQA/CNr
+	 oD30LpGgJaXJKPlnWlA/qPhl2erAFijejATMmNECQcm3fjri8HSKHoJBhAbfEInLll
+	 YiYJseGOVLxtS1NzKiOrbVwnqjuNR1adYDFiDLwE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Rafa=C5=82=20Mi=C5=82ecki?= <rafal@milecki.pl>,
-	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 572/969] ARM: dts: mediatek: mt7623: fix efuse fallback compatible
+	Dudu Lu <phx0fer@gmail.com>,
+	Bobby Eshleman <bobbyeshleman@meta.com>,
+	Luigi Leonardi <leonardi@redhat.com>,
+	Stefano Garzarella <sgarzare@redhat.com>,
+	"Michael S. Tsirkin" <mst@redhat.com>,
+	Paolo Abeni <pabeni@redhat.com>
+Subject: [PATCH 5.15 382/776] vsock/virtio: fix accept queue count leak on transport mismatch
 Date: Sat, 30 May 2026 18:01:36 +0200
-Message-ID: <20260530160316.195629475@linuxfoundation.org>
+Message-ID: <20260530160250.388961106@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260530160300.485627683@linuxfoundation.org>
-References: <20260530160300.485627683@linuxfoundation.org>
+In-Reply-To: <20260530160240.228940103@linuxfoundation.org>
+References: <20260530160240.228940103@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,79 +66,91 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-2.16 / 15.00];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_MISSING_CHARSET(0.50)[];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-257548-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
+	TAGGED_FROM(0.00)[bounces-258291-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,meta.com,redhat.com];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	TO_DN_SOME(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[stable];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-0.996];
+	PRECEDENCE_BULK(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[9];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[6]
-X-Rspamd-Queue-Id: 36F4A60F930
+	TAGGED_RCPT(0.00)[stable];
+	TO_DN_SOME(0.00)[];
+	FROM_HAS_DN(0.00)[]
+X-Rspamd-Queue-Id: 2F3E26110CE
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Rafał Miłecki <rafal@milecki.pl>
+From: Dudu Lu <phx0fer@gmail.com>
 
-[ Upstream commit 5978ff33cc6f0988388a2830dc5cd2ea4e81f36a ]
+commit 52bcb57a4e8a0865a76c587c2451906342ae1b2d upstream.
 
-Fix following validation error:
-arch/arm/boot/dts/mediatek/mt7623a-rfb-emmc.dtb: efuse@10206000: compatible: 'oneOf' conditional failed, one must be fixed:
-        ['mediatek,mt7623-efuse', 'mediatek,mt8173-efuse'] is too long
-        'mediatek,mt8173-efuse' was expected
-        'mediatek,efuse' was expected
-        from schema $id: http://devicetree.org/schemas/nvmem/mediatek,efuse.yaml#
-arch/arm/boot/dts/mediatek/mt7623a-rfb-emmc.dtb: efuse@10206000: Unevaluated properties are not allowed ('compatible' was unexpected)
-        from schema $id: http://devicetree.org/schemas/nvmem/mediatek,efuse.yaml#
+virtio_transport_recv_listen() calls sk_acceptq_added() before
+vsock_assign_transport(). If vsock_assign_transport() fails or
+selects a different transport, the error path returns without
+calling sk_acceptq_removed(), permanently incrementing
+sk_ack_backlog.
 
-Fixes: 43c7a91b4b3a ("arm: dts: mt7623: add efuse nodes to the mt7623.dtsi file")
-Signed-off-by: Rafał Miłecki <rafal@milecki.pl>
-Reviewed-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
-Signed-off-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+After approximately backlog+1 such failures, sk_acceptq_is_full()
+returns true, causing the listener to reject all new connections.
+
+Fix by moving sk_acceptq_added() to after the transport validation,
+matching the pattern used by vmci_transport and hyperv_transport.
+
+Fixes: c0cfa2d8a788 ("vsock: add multi-transports support")
+Signed-off-by: Dudu Lu <phx0fer@gmail.com>
+Reviewed-by: Bobby Eshleman <bobbyeshleman@meta.com>
+Reviewed-by: Luigi Leonardi <leonardi@redhat.com>
+Reviewed-by: Stefano Garzarella <sgarzare@redhat.com>
+Acked-by: Michael S. Tsirkin <mst@redhat.com>
+Link: https://patch.msgid.link/20260413131409.19022-1-phx0fer@gmail.com
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Signed-off-by: Luigi Leonardi <leonardi@redhat.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/arm/boot/dts/mt7623.dtsi | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ net/vmw_vsock/virtio_transport_common.c |    3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
 
-diff --git a/arch/arm/boot/dts/mt7623.dtsi b/arch/arm/boot/dts/mt7623.dtsi
-index 74767b6703720..e7b09d0c3030a 100644
---- a/arch/arm/boot/dts/mt7623.dtsi
-+++ b/arch/arm/boot/dts/mt7623.dtsi
-@@ -329,7 +329,7 @@ sysirq: interrupt-controller@10200100 {
+--- a/net/vmw_vsock/virtio_transport_common.c
++++ b/net/vmw_vsock/virtio_transport_common.c
+@@ -1223,8 +1223,6 @@ virtio_transport_recv_listen(struct sock
+ 		return -ENOMEM;
+ 	}
  
- 	efuse: efuse@10206000 {
- 		compatible = "mediatek,mt7623-efuse",
--			     "mediatek,mt8173-efuse";
-+			     "mediatek,efuse";
- 		reg = <0 0x10206000 0 0x1000>;
- 		#address-cells = <1>;
- 		#size-cells = <1>;
--- 
-2.53.0
-
+-	sk_acceptq_added(sk);
+-
+ 	lock_sock_nested(child, SINGLE_DEPTH_NESTING);
+ 
+ 	child->sk_state = TCP_ESTABLISHED;
+@@ -1246,6 +1244,7 @@ virtio_transport_recv_listen(struct sock
+ 		return ret;
+ 	}
+ 
++	sk_acceptq_added(sk);
+ 	if (virtio_transport_space_update(child, pkt))
+ 		child->sk_write_space(child);
+ 
 
 
 
