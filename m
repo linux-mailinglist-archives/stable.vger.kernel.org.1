@@ -1,60 +1,60 @@
-Return-Path: <stable+bounces-258528-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-259133-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id UMmfD6AqG2ra/ggAu9opvQ
-	(envelope-from <stable+bounces-258528-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:21:20 +0200
+	id qMQuAEcyG2qkAAkAu9opvQ
+	(envelope-from <stable+bounces-259133-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:53:59 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 999AB6118ED
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:21:19 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 69689612C31
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:53:58 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 58558309E975
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 18:10:53 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id B0FC23115A48
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 18:45:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4DF383B7B72;
-	Sat, 30 May 2026 18:10:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6687E15E5BB;
+	Sat, 30 May 2026 18:45:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="U56JP0un"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CZm0CPRk"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 214FD31F98D;
-	Sat, 30 May 2026 18:10:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4A04F2E7398;
+	Sat, 30 May 2026 18:45:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780164652; cv=none; b=CG72X8yHiJJWP4dSgGtmRllgHPAjk3baT/jRcMPCMHQWklAWFHWFEpVbAGsl/8fUZhpBAGrnBHjdUD4d24iPSwt875Ldz9yMDhZ6kEzHu4QubDuZRafLxJOmBa+UvwJASuhtqlN9m0Xme6Js/oEQjcclw1J4MjITYJByN1uM9jo=
+	t=1780166720; cv=none; b=uiacKUGK+fpQ64EN0j6CMVMnR+tuUGhSgzsl5i/OqfNIfqtMogtiRc913QdKyJvp0vScIIrTemvnlgQjSq13dqoi2cKIjm1OIrnN7Ns001OT7smghA27/5rt4fndhAintK8tzf9roa4TFoJ8lgfCThQHmkopTW8YmyOVWB2ahD8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780164652; c=relaxed/simple;
-	bh=743gMninsXlotvIiaAzqOui+3YtkuMWZehWn47xe0Hc=;
+	s=arc-20240116; t=1780166720; c=relaxed/simple;
+	bh=SzLHxAjysjyQddzVxQ4kwW43RZhr+bhIeqLx4u5ddI4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ol71VknNM+vecFLP0Q4f6hvmuKirXvgJSuJ5jaUTyyEpnL1usSb3oAHA1iaE+DX8A00FvCJe2v1Rwx8uB6XRKkM/tbuhuPTxqC/A62abJGNk8DxlLHu6yrqg9TiUQ7WyrQPK/vmskCnHD0Am2HyV7ZblFAFJm37rRL3yxbprYSI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=U56JP0un; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 648041F00893;
-	Sat, 30 May 2026 18:10:50 +0000 (UTC)
+	 MIME-Version; b=IIzUfT+DeNTIgIhZSZqY/kddStxvTci8C2dUVPYQp4te4r67eF2rlk4/hfP00YpwJUsJwI1mDWZ5+LkJRsX5wAYZtzI07k4vkTjDr0sjebkTKKvXKK/UMVc1S9lJpAVMHWHxgP2H6hYkmzL4VLeptWr0I72Tf0JWbh478yPm/e4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CZm0CPRk; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 93FB61F00893;
+	Sat, 30 May 2026 18:45:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780164651;
-	bh=kXAlwhQBl5ZULclUHfzVsp2X+TfUlmRMCwa9XwA/VIY=;
+	s=korg; t=1780166719;
+	bh=fmk2+IIkK4DwHmV8na92zmn7XCb1LmDWd6+acOjZs28=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=U56JP0unUN2yHbfSEkC7IEp2I7GKM/SY05VGtA6iZt9BecsLsCmuQwSG0HtwwkTK7
-	 JjGB7drwXw9g8w8iJgXkiD3FAOipurGzHGFLOf1WiJz27bJY0gSEo6Q6brDuBpau0V
-	 qUWbyi757fDZ/2tGSiaRlFGPo6pHMxzQ6R3d23k0=
+	b=CZm0CPRk2hQFRANvuN6VwlSLLOQigGI2wk45gOkQh/9L4ybLqbRPg+fXUbUntlsJp
+	 28WMQY0rSlfbfxRUngjU0NG9FFpbKPQ05HeI72Td+4UjFsbB61gjbtOT/RXdbeXGNG
+	 EnqfJu+SDbGAqQcEoO2x6iCUdxk3JHklnWxA/6nM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Stephen Hemminger <stephen@networkplumber.org>,
-	Simon Horman <horms@kernel.org>,
+	Tung Nguyen <tung.quang.nguyen@est.tech>,
+	Lee Jones <lee@kernel.org>,
 	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 617/776] net/sched: netem: validate slot configuration
-Date: Sat, 30 May 2026 18:05:31 +0200
-Message-ID: <20260530160255.938474099@linuxfoundation.org>
+Subject: [PATCH 5.10 451/589] tipc: fix double-free in tipc_buf_append()
+Date: Sat, 30 May 2026 18:05:32 +0200
+Message-ID: <20260530160236.544244962@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260530160240.228940103@linuxfoundation.org>
-References: <20260530160240.228940103@linuxfoundation.org>
+In-Reply-To: <20260530160224.570625122@linuxfoundation.org>
+References: <20260530160224.570625122@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,7 +69,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
@@ -77,7 +77,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-258528-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-259133-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
@@ -86,98 +86,72 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	NEURAL_HAM(-0.00)[-0.996];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	NEURAL_HAM(-0.00)[-1.000];
 	RCPT_COUNT_SEVEN(0.00)[7];
 	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,linuxfoundation.org:mid,linuxfoundation.org:dkim,networkplumber.org:email,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
-X-Rspamd-Queue-Id: 999AB6118ED
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,est.tech:email]
+X-Rspamd-Queue-Id: 69689612C31
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Stephen Hemminger <stephen@networkplumber.org>
+From: Lee Jones <lee@kernel.org>
 
-[ Upstream commit 01801c359a74737b9b1aa28568b60374d857241a ]
+[ Upstream commit d293ca716e7d5dffdaecaf6b9b2f857a33dc3d3a ]
 
-Reject slot configurations that have no defensible meaning:
+tipc_msg_validate() can potentially reallocate the skb it is validating,
+freeing the old one.  In tipc_buf_append(), it was being called with a
+pointer to a local variable which was a copy of the caller's skb
+pointer.
 
-  - negative min_delay or max_delay
-  - min_delay greater than max_delay
-  - negative dist_delay or dist_jitter
-  - negative max_packets or max_bytes
+If the skb was reallocated and validation subsequently failed, the error
+handling path would free the original skb pointer, which had already
+been freed, leading to double-free.
 
-Negative or out-of-order delays underflow in get_slot_next(),
-producing garbage intervals. Negative limits trip the per-slot
-accounting (packets_left/bytes_left <= 0) on the first packet of
-every slot, defeating the rate-limiting half of the slot feature.
+Fix this by checking if head now points to a newly allocated reassembled
+skb.  If it does, reassign *headbuf for later freeing operations.
 
-Note that dist_jitter has been silently coerced to its absolute
-value by get_slot() since the feature was introduced; rejecting
-negatives here converts that silent coercion into -EINVAL. The
-abs() can be removed in a follow-up.
-
-Fixes: 836af83b54e3 ("netem: support delivering packets in delayed time slots")
-Signed-off-by: Stephen Hemminger <stephen@networkplumber.org>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Link: https://patch.msgid.link/20260418032027.900913-5-stephen@networkplumber.org
+Fixes: d618d09a68e4 ("tipc: enforce valid ratio between skb truesize and contents")
+Suggested-by: Tung Nguyen <tung.quang.nguyen@est.tech>
+Signed-off-by: Lee Jones <lee@kernel.org>
+Reviewed-by: Tung Nguyen <tung.quang.nguyen@est.tech>
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/sched/sch_netem.c | 29 +++++++++++++++++++++++++++++
- 1 file changed, 29 insertions(+)
+ net/tipc/msg.c | 14 +++++++++++++-
+ 1 file changed, 13 insertions(+), 1 deletion(-)
 
-diff --git a/net/sched/sch_netem.c b/net/sched/sch_netem.c
-index 64542c9c15340..3e3bced82c564 100644
---- a/net/sched/sch_netem.c
-+++ b/net/sched/sch_netem.c
-@@ -815,6 +815,29 @@ static int get_dist_table(struct disttable **tbl, const struct nlattr *attr)
- 	return 0;
- }
+diff --git a/net/tipc/msg.c b/net/tipc/msg.c
+index 1fcd676133eb1..721f37d301a70 100644
+--- a/net/tipc/msg.c
++++ b/net/tipc/msg.c
+@@ -183,8 +183,20 @@ int tipc_buf_append(struct sk_buff **headbuf, struct sk_buff **buf)
  
-+static int validate_slot(const struct nlattr *attr, struct netlink_ext_ack *extack)
-+{
-+	const struct tc_netem_slot *c = nla_data(attr);
+ 	if (fragid == LAST_FRAGMENT) {
+ 		TIPC_SKB_CB(head)->validated = 0;
+-		if (unlikely(!tipc_msg_validate(&head)))
 +
-+	if (c->min_delay < 0 || c->max_delay < 0) {
-+		NL_SET_ERR_MSG_ATTR(extack, attr, "negative slot delay");
-+		return -EINVAL;
-+	}
-+	if (c->min_delay > c->max_delay) {
-+		NL_SET_ERR_MSG_ATTR(extack, attr, "slot min delay greater than max delay");
-+		return -EINVAL;
-+	}
-+	if (c->dist_delay < 0 || c->dist_jitter < 0) {
-+		NL_SET_ERR_MSG_ATTR(extack, attr, "negative dist delay");
-+		return -EINVAL;
-+	}
-+	if (c->max_packets < 0 || c->max_bytes < 0) {
-+		NL_SET_ERR_MSG_ATTR(extack, attr, "negative slot limit");
-+		return -EINVAL;
-+	}
-+	return 0;
-+}
++		/* If the reassembled skb has been freed in
++		 * tipc_msg_validate() because of an invalid truesize,
++		 * then head will point to a newly allocated reassembled
++		 * skb, while *headbuf points to freed reassembled skb.
++		 * In such cases, correct *headbuf for freeing the newly
++		 * allocated reassembled skb later.
++		 */
++		if (unlikely(!tipc_msg_validate(&head))) {
++			if (head != *headbuf)
++				*headbuf = head;
+ 			goto err;
++		}
 +
- static void get_slot(struct netem_sched_data *q, const struct nlattr *attr)
- {
- 	const struct tc_netem_slot *c = nla_data(attr);
-@@ -1030,6 +1053,12 @@ static int netem_change(struct Qdisc *sch, struct nlattr *opt,
- 			goto table_free;
- 	}
- 
-+	if (tb[TCA_NETEM_SLOT]) {
-+		ret = validate_slot(tb[TCA_NETEM_SLOT], extack);
-+		if (ret)
-+			goto table_free;
-+	}
-+
- 	sch_tree_lock(sch);
- 	/* backup q->clg and q->loss_model */
- 	old_clg = q->clg;
+ 		*buf = head;
+ 		TIPC_SKB_CB(head)->tail = NULL;
+ 		*headbuf = NULL;
 -- 
 2.53.0
 
