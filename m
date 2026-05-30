@@ -1,60 +1,59 @@
-Return-Path: <stable+bounces-257631-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-259007-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id ANgoHT0eG2q4/QgAu9opvQ
-	(envelope-from <stable+bounces-257631-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:28:29 +0200
+	id cIY8J3gxG2qKAAkAu9opvQ
+	(envelope-from <stable+bounces-259007-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:50:32 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id CC5AE60FBE4
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:28:28 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3D73B612960
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:50:32 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 307AB302E7B4
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 17:20:50 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 677053115178
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 18:38:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 83C633242D7;
-	Sat, 30 May 2026 17:20:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EACEA33E36A;
+	Sat, 30 May 2026 18:38:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="b0pVlxuh"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="11Gp+w9N"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 51DF9340293;
-	Sat, 30 May 2026 17:20:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BB61333AD99;
+	Sat, 30 May 2026 18:38:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780161649; cv=none; b=pADAw09TYAVY3WDk7SZlFDa9LCLgljZNhJXCUeLaLTRVRdfe5buz5MHVo1X23y62duP7Ues0nWVlmfTN9CdHAJFk7C572h1wBIeBxI1PDkuQeUpQjv7diMG/+LWWK4qByqpLhNmikpNhnTi1uPJl2QxSD1pSMD2RxXtGq+oH2Lk=
+	t=1780166283; cv=none; b=jyY8wExDJ2+vEOCzIiPgmdAj3RMQtXEfdFmQUw1FOb9zwlofqH+62o3KA8zebUE/m3PRaO0d/M4+K0lNlL6QiUH+lqdG+AfkWD5tCh5ussQQSv3V9Aw0rOtj05XqD+8+0rn/SZEg0WFWiUQsBt2b+r94sDafVjgvjWmdvTxg5ms=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780161649; c=relaxed/simple;
-	bh=6RjE1c2fYY8ewrMgxh/r63o/1z58OIpnwOAYIWXMU/s=;
+	s=arc-20240116; t=1780166283; c=relaxed/simple;
+	bh=spRRuw46p67DEPfe5PEVvoWKRDty/gOOnS0vKetKeBs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=YFsk/Rses4tz6kiDu3QPmMubviSSpwYJ2/M5rIDH3cvdym2lxdkEeGQ8vLa0B9eXLn0CFwYfWpSQKKCeg+0vfQEVZudq8vmTbz3GpPVaCYAO8/+S9Znujx+FH9KBHlKTTA3lT8fv3YkePiTWsYAXLofVQjgHlAFhnQyDg3S3r00=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=b0pVlxuh; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9487E1F00893;
-	Sat, 30 May 2026 17:20:47 +0000 (UTC)
+	 MIME-Version; b=qJA93ng0XZRdr/rCM5SiDm48mFHsCKAFc4y4pxalbdc/X19SyV4Zk/pVm95zSIdJizUnUg9sbXmB+EHZOPE8f1HLcW8bHfyT1nOMkYvm6pQSYXjJAhAh96khmrxmeLKNxeSk5Ry65ngh38t2mY7+sBQP5Y9z/FLjQbqhkOOWtDI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=11Gp+w9N; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0B3C71F00893;
+	Sat, 30 May 2026 18:38:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780161648;
-	bh=ikGAWtpVvkVCx4k8BeokdLfQVF3j5chhMkSP0Jv2PUs=;
+	s=korg; t=1780166282;
+	bh=DbsKuYjXEufoy0CPscX3XYaN5u7Q00EUomP9ngpv0Uw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=b0pVlxuhzwbnalFGZdtzAgpjgLA75VWGAXJeQ4NBZxh9MaJHJfH3lCs0oSm+ijDNK
-	 fRMIKh8109wwNvp885EF/h6oERJBiuHG8Beeimx2/NuwrM18SiKcQ6Z8U1crYlVo6V
-	 U6O3ioIzxGnehHQgcjWA9MzdssiY4De3GnM1YwD4=
+	b=11Gp+w9NQjZ9OQXdOHDWzDLRVMDlek49ZVzqIylrev9+i6f3l/Rs6xrp0Lz9XFrDh
+	 FEJKU9wMHcb2X31m8h2wc4RHKpNP5S1HbCNibdv5IkqIgO1t8M+e/1U2vUvupAGYm9
+	 hv+PyH6XTJf6iKXlHRVA1s7AT1q5+m5mWElS9/Nc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Junxi Qian <qjx1298677004@gmail.com>,
-	Vinicius Costa Gomes <vinicius.gomes@intel.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Ming-Hung Tsai <mtsai@redhat.com>,
+	Mikulas Patocka <mpatocka@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 685/969] net/sched: taprio: fix use-after-free in advance_sched() on schedule switch
+Subject: [PATCH 5.10 328/589] dm cache metadata: fix memory leak on metadata abort retry
 Date: Sat, 30 May 2026 18:03:29 +0200
-Message-ID: <20260530160319.422949820@linuxfoundation.org>
+Message-ID: <20260530160233.537782947@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260530160300.485627683@linuxfoundation.org>
-References: <20260530160300.485627683@linuxfoundation.org>
+In-Reply-To: <20260530160224.570625122@linuxfoundation.org>
+References: <20260530160224.570625122@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,89 +68,150 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,intel.com,kernel.org];
-	TAGGED_FROM(0.00)[bounces-257631-lists,stable=lfdr.de];
-	PRECEDENCE_BULK(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
+	RCVD_TLS_LAST(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	TAGGED_FROM(0.00)[bounces-259007-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[7];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[intel.com:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
-X-Rspamd-Queue-Id: CC5AE60FBE4
+	RCPT_COUNT_FIVE(0.00)[6];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
+X-Rspamd-Queue-Id: 3D73B612960
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Vinicius Costa Gomes <vinicius.gomes@intel.com>
+From: Ming-Hung Tsai <mtsai@redhat.com>
 
-[ Upstream commit 105425b1969c5affe532713cfac1c0b320d7ac2b ]
+[ Upstream commit 044ca491d4086dc5bf233e9fcb71db52df32f633 ]
 
-In advance_sched(), when should_change_schedules() returns true,
-switch_schedules() is called to promote the admin schedule to oper.
-switch_schedules() queues the old oper schedule for RCU freeing via
-call_rcu(), but 'next' still points into an entry of the old oper
-schedule. The subsequent 'next->end_time = end_time' and
-rcu_assign_pointer(q->current_entry, next) are use-after-free.
+When failing to acquire the root_lock in dm_cache_metadata_abort because
+the block_manager is read-only, the temporary block_manager created
+outside the root_lock is not properly released, causing a memory leak.
 
-Fix this by selecting 'next' from the new oper schedule immediately
-after switch_schedules(), and using its pre-calculated end_time.
-setup_first_end_time() sets the first entry's end_time to
-base_time + interval when the schedule is installed, so the value
-is already correct.
+Reproduce steps:
 
-The deleted 'end_time = sched_base_time(admin)' assignment was also
-harmful independently: it would overwrite the new first entry's
-pre-calculated end_time with just base_time.
+This can be reproduced by reloading a new table while the metadata
+is read-only. While the second call to dm_cache_metadata_abort is
+caused by lack of support for table preload in dm-cache, mentioned
+in commit 9b1cc9f251af ("dm cache: share cache-metadata object across
+inactive and active DM tables"), it exposes the memory leak in
+dm_cache_metadata_abort when the function is called multiple times.
+Specifically, dm-cache fails to sync the new cache object's mode during
+preresume, creating the reproducer condition.
 
-Fixes: a3d43c0d56f1 ("taprio: Add support adding an admin schedule")
-Reported-by: Junxi Qian <qjx1298677004@gmail.com>
-Signed-off-by: Vinicius Costa Gomes <vinicius.gomes@intel.com>
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+This issue could also occur through concurrent metadata_operation_failed
+calls due to races in cache mode updates, but the table preload scenario
+below provides a reliable reproducer.
+
+1. Create a cache device with some faulty trailing metadata blocks
+
+dmsetup create cmeta <<EOF
+0 200 linear /dev/sdc 0
+200 7992 error
+EOF
+dmsetup create cdata --table "0 131072 linear /dev/sdc 8192"
+dmsetup create corig --table "0 262144 linear /dev/sdc 262144"
+dd if=/dev/zero of=/dev/mapper/cmeta bs=4k count=1 oflag=direct
+dmsetup create cache --table "0 131072 cache /dev/mapper/cmeta \
+/dev/mapper/cdata /dev/mapper/corig 128 1 writethrough smq 0"
+
+2. Suspend and resume the cache to start a new metadata transaction and
+   trigger metadata io errors on the next metadata commit.
+
+dmsetup suspend cache
+dmsetup resume cache
+
+3. Write to the cache device to update metadata
+
+fio --filename=/dev/mapper/cache --name test --rw=randwrite --bs=4k \
+--randrepeat=0 --direct=1 --size 64k
+
+4. Preload the same table
+
+dmsetup reload cache --table "$(dmsetup table cache)"
+
+5. Resume the new table. This triggers the memory leak.
+
+dmsetup suspend cache
+dmsetup resume cache
+
+kmemleak logs:
+
+<snip>
+unreferenced object 0xffff8880080c2010 (size 16):
+  comm "dmsetup", pid 132, jiffies 4294982580
+  hex dump (first 16 bytes):
+    00 38 b9 07 80 88 ff ff 6a 6b 6b 6b 6b 6b 6b a5 ...
+  backtrace (crc 3118f31c):
+    kmemleak_alloc+0x28/0x40
+    __kmalloc_cache_noprof+0x3d9/0x510
+    dm_block_manager_create+0x51/0x140
+    dm_cache_metadata_abort+0x85/0x320
+    metadata_operation_failed+0x103/0x1e0
+    cache_preresume+0xacd/0xe70
+    dm_table_resume_targets+0xd3/0x320
+    __dm_resume+0x1b/0xf0
+    dm_resume+0x127/0x170
+<snip>
+
+Fixes: 352b837a5541 ("dm cache: Fix ABBA deadlock between shrink_slab and dm_cache_metadata_abort")
+Signed-off-by: Ming-Hung Tsai <mtsai@redhat.com>
+Signed-off-by: Mikulas Patocka <mpatocka@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/sched/sch_taprio.c | 9 +++++----
- 1 file changed, 5 insertions(+), 4 deletions(-)
+ drivers/md/dm-cache-metadata.c | 13 ++++++++-----
+ 1 file changed, 8 insertions(+), 5 deletions(-)
 
-diff --git a/net/sched/sch_taprio.c b/net/sched/sch_taprio.c
-index ce529b9448819..8da723f054f56 100644
---- a/net/sched/sch_taprio.c
-+++ b/net/sched/sch_taprio.c
-@@ -739,11 +739,12 @@ static enum hrtimer_restart advance_sched(struct hrtimer *timer)
- 	end_time = min_t(ktime_t, end_time, oper->cycle_end_time);
+diff --git a/drivers/md/dm-cache-metadata.c b/drivers/md/dm-cache-metadata.c
+index 715ff419b63ba..43d271c358858 100644
+--- a/drivers/md/dm-cache-metadata.c
++++ b/drivers/md/dm-cache-metadata.c
+@@ -1017,6 +1017,12 @@ static bool cmd_write_lock(struct dm_cache_metadata *cmd)
+ 			return;			\
+ 	} while(0)
  
- 	if (should_change_schedules(admin, oper, end_time)) {
--		/* Set things so the next time this runs, the new
--		 * schedule runs.
--		 */
--		end_time = sched_base_time(admin);
- 		switch_schedules(q, &admin, &oper);
-+		/* After changing schedules, the next entry is the first one
-+		 * in the new schedule, with a pre-calculated end_time.
-+		 */
-+		next = list_first_entry(&oper->entries, struct sched_entry, list);
-+		end_time = next->end_time;
- 	}
++#define WRITE_LOCK_OR_GOTO(cmd, label)		\
++	do {					\
++		if (!cmd_write_lock((cmd)))	\
++			goto label;		\
++	} while (0)
++
+ #define WRITE_UNLOCK(cmd) \
+ 	up_write(&(cmd)->root_lock)
  
- 	next->end_time = end_time;
+@@ -1815,11 +1821,8 @@ int dm_cache_metadata_abort(struct dm_cache_metadata *cmd)
+ 	new_bm = dm_block_manager_create(cmd->bdev, DM_CACHE_METADATA_BLOCK_SIZE << SECTOR_SHIFT,
+ 					 CACHE_MAX_CONCURRENT_LOCKS);
+ 
+-	WRITE_LOCK(cmd);
+-	if (cmd->fail_io) {
+-		WRITE_UNLOCK(cmd);
+-		goto out;
+-	}
++	/* cmd_write_lock() already checks fail_io with cmd->root_lock held */
++	WRITE_LOCK_OR_GOTO(cmd, out);
+ 
+ 	__destroy_persistent_data_objects(cmd, false);
+ 	old_bm = cmd->bm;
 -- 
 2.53.0
 
