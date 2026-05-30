@@ -1,59 +1,58 @@
-Return-Path: <stable+bounces-258257-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-258894-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 0I4mKpMmG2qS/ggAu9opvQ
-	(envelope-from <stable+bounces-258257-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:04:03 +0200
+	id eBZWL2wwG2p5AAkAu9opvQ
+	(envelope-from <stable+bounces-258894-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:46:04 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3026F610E8E
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:04:03 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3A852612727
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:46:04 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 11BC8310F037
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 17:55:43 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 10A84301CA6F
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 18:31:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BEDCB342CA7;
-	Sat, 30 May 2026 17:55:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 92A0A329E79;
+	Sat, 30 May 2026 18:31:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="W9U/bNxH"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PHyZzGEH"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9D80B320CAD;
-	Sat, 30 May 2026 17:55:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 782852FDC5E;
+	Sat, 30 May 2026 18:31:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780163742; cv=none; b=iZOWR8Ml8B5WZ/2oolih/Zhtt+/NYzLzQYwy1guG/E4M0oQTsZ0TTaSGHm57seHJbyqAMoIEJA/qulkyoI5fyEqN7t8xxOpsiBygOnO2gXMweLapJ8DqwzztIB7NiW0dABcLsI0cajgwRonPodOUJf0/MUXI4iXTXyWMmxLsBXk=
+	t=1780165899; cv=none; b=ujnA+Gnb+ZZOVwSixI6U4vm17tAhdw+q3kLmsyG4tL6IyCFkfsrB9Bcq9BUo7pAQihomiaIrcrl7ByfGFiKCYdmicJ/sTlhsO+LWBMrFS1l7PQH7kYVDIky9UlEESpMrSPRVdhfU0NrwUzil6ByHYUrOmrLvnKkf7OWcKMaooSA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780163742; c=relaxed/simple;
-	bh=Tv8VtlDFIHrJgJ3GLkp9W1CLdFRwvzC7PoSaCEPLDIc=;
+	s=arc-20240116; t=1780165899; c=relaxed/simple;
+	bh=BnyjMCAAwabDy1hnGDhrLXkSSwu7S/tbSYptzXftJKY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=XCLlddplO8mbGSEt7H1p2yFJX26tMx0RRD65e2C+NTnbaAosQ3n1zdtF7tyrBcfRvF06UfkifUUtxaNbEDRh4HqkCLuWv561J9FJTaBpdOJu1H3TpRkM10ZDbIPX8fV8ZcDg0F6KByd7e8Jv2xAck/0Y5lsbVfF2eF4wJFOwu3Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=W9U/bNxH; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E1BB61F00893;
-	Sat, 30 May 2026 17:55:40 +0000 (UTC)
+	 MIME-Version; b=RVkw7gnTymcEMbiaUL5tvGI+3AfzRpX2Pgk0BzChNvBS9Ht7Ft4nISrQJitbQSpEokVv5f9ODJRDiCP1+XrSmcYfk8y+NzGhOUdxPQufVO1rN8BkI6eo8JYavLtzjmwTxdkB0UmkviSgRzNzox5ynGTLj5cUAlXRwI5gmHBx+So=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PHyZzGEH; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 758C71F00893;
+	Sat, 30 May 2026 18:31:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780163741;
-	bh=XYV56CxnwjXEdVrAq/kJ+tfT++b/jyr2OJxDhrUfHSw=;
+	s=korg; t=1780165898;
+	bh=MKd1Z+WozyWvO8/NSGLTx9GuIYw0A7Gphy5TMfTFUG4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=W9U/bNxHYzmRB4pAKxDbF6+6ZrtzVYCnYnwywwaABaMDbeK4YMvZa/rmWKW3caFqM
-	 FaPH1Khk+esgOw+O+dSfxvQkZPMlxXxBkol9E+xwi7uGZdEgvb2MerPVIVruWG7a3z
-	 +cJwyQ98xqhR8wkO8WYdRIdXmtCbIS5sWgoFxjbY=
+	b=PHyZzGEHNT/RnQMjEV1CConx8I8tsTB+DH8plpUIILrbnz5KPTe8e21Y70rUmHp9J
+	 uDvvo5YcgKem/RaVxkaeZqm3ZLvDW/HxvktdKlKT0hOAzrhlNQXy/VBZsi6vuUt541
+	 xJsIMxm3cBk9bSwdELS8zRAb3K4DzrsRFUeQD5+k=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Gang Yan <yangang@kylinos.cn>,
-	"Matthieu Baerts (NGI0)" <matttbe@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 5.15 348/776] mptcp: sockopt: set timestamp flags on subflow socket, not msk
+	Jens Axboe <axboe@kernel.dk>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 181/589] io_uring/poll: fix EPOLL_URING_WAKE sometimes not being honored
 Date: Sat, 30 May 2026 18:01:02 +0200
-Message-ID: <20260530160249.572894108@linuxfoundation.org>
+Message-ID: <20260530160229.644724641@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260530160240.228940103@linuxfoundation.org>
-References: <20260530160240.228940103@linuxfoundation.org>
+In-Reply-To: <20260530160224.570625122@linuxfoundation.org>
+References: <20260530160224.570625122@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -78,72 +77,76 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-258257-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-258894-lists,stable=lfdr.de];
 	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-0.996];
+	NEURAL_HAM(-0.00)[-1.000];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
+	RCPT_COUNT_FIVE(0.00)[5];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,kylinos.cn:email,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim]
-X-Rspamd-Queue-Id: 3026F610E8E
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,kernel.dk:email,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
+X-Rspamd-Queue-Id: 3A852612727
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Gang Yan <yangang@kylinos.cn>
+From: Jens Axboe <axboe@kernel.dk>
 
-commit 5f95c21fc23a7ef22b4d27d1ed9bb55557ffb926 upstream.
+Rather than do the masking  only when we jump straight to execution,
+mark it as EPOLLONESHOT regardless. This ensures it doesn't get lost.
+And just kill the poll entry upfront, if marked. This is an optimization
+in later kernels, but it's actually required on the older kernels to
+note the EPOLL_URING_WAKE mask correctly.
 
-Both mptcp_setsockopt_sol_socket_tstamp() and
-mptcp_setsockopt_sol_socket_timestamping() iterate over subflows,
-acquire the subflow socket lock, but then erroneously pass the MPTCP
-msk socket to sock_set_timestamp() / sock_set_timestamping() instead
-of the subflow ssk. As a result, the timestamp flags are set on the
-wrong socket and have no effect on the actual subflows.
-
-Pass ssk instead of sk to both helpers.
-
-Fixes: 9061f24bf82e ("mptcp: sockopt: propagate timestamp request to subflows")
-Cc: stable@vger.kernel.org
-Signed-off-by: Gang Yan <yangang@kylinos.cn>
-Reviewed-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
-Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
-Link: https://patch.msgid.link/20260427-net-mptcp-misc-fixes-7-1-rc2-v1-1-7432b7f279fa@kernel.org
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: ccf06b5a981c ("io_uring: pass in EPOLL_URING_WAKE for eventfd signaling and wakeups")
+Signed-off-by: Jens Axboe <axboe@kernel.dk>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/mptcp/sockopt.c |    4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ io_uring/io_uring.c | 19 ++++++++++++-------
+ 1 file changed, 12 insertions(+), 7 deletions(-)
 
---- a/net/mptcp/sockopt.c
-+++ b/net/mptcp/sockopt.c
-@@ -157,7 +157,7 @@ static int mptcp_setsockopt_sol_socket_t
- 		struct sock *ssk = mptcp_subflow_tcp_sock(subflow);
- 		bool slow = lock_sock_fast(ssk);
+diff --git a/io_uring/io_uring.c b/io_uring/io_uring.c
+index dea1fb22c0efb..7cb4eeefd3cf4 100644
+--- a/io_uring/io_uring.c
++++ b/io_uring/io_uring.c
+@@ -5647,14 +5647,19 @@ static int io_poll_wake(struct wait_queue_entry *wait, unsigned mode, int sync,
+ 	if (mask && !(mask & poll->events))
+ 		return 0;
  
--		sock_set_timestamp(sk, optname, !!val);
-+		sock_set_timestamp(ssk, optname, !!val);
- 		unlock_sock_fast(ssk, slow);
++	/*
++	 * If we trigger a multishot poll off our own wakeup path,
++	 * disable multishot as there is a circular dependency between
++	 * CQ posting and triggering the event.
++	 */
++	if (mask & EPOLL_URING_WAKE)
++		poll->events |= EPOLLONESHOT;
++
+ 	if (io_poll_get_ownership(req)) {
+-		/*
+-		 * If we trigger a multishot poll off our own wakeup path,
+-		 * disable multishot as there is a circular dependency between
+-		 * CQ posting and triggering the event.
+-		 */
+-		if (mask & EPOLL_URING_WAKE)
+-			poll->events |= EPOLLONESHOT;
++		if (mask && poll->events & EPOLLONESHOT) {
++			list_del_init(&poll->wait.entry);
++			smp_store_release(&poll->head, NULL);
++		}
+ 
+ 		__io_poll_execute(req, mask);
  	}
- 
-@@ -233,7 +233,7 @@ static int mptcp_setsockopt_sol_socket_t
- 		struct sock *ssk = mptcp_subflow_tcp_sock(subflow);
- 		bool slow = lock_sock_fast(ssk);
- 
--		sock_set_timestamping(sk, optname, timestamping);
-+		sock_set_timestamping(ssk, optname, timestamping);
- 		unlock_sock_fast(ssk, slow);
- 	}
- 
+-- 
+2.53.0
+
 
 
 
