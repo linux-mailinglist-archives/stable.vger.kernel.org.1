@@ -1,54 +1,67 @@
-Return-Path: <stable+bounces-257103-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-257070-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id MOh2OXcVG2pV/AgAu9opvQ
-	(envelope-from <stable+bounces-257103-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 18:51:03 +0200
+	id sIy1FywVG2pV/AgAu9opvQ
+	(envelope-from <stable+bounces-257070-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 18:49:48 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id E6E4F60E7EF
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 18:51:02 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id B723760E76B
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 18:49:47 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 5798F300721E
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 16:50:17 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id C2E3D302BE3C
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 16:46:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3FB913998B1;
-	Sat, 30 May 2026 16:50:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5702031CA4E;
+	Sat, 30 May 2026 16:46:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LPrzrWzx"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oCY9KH9v"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 184C83ACA4D;
-	Sat, 30 May 2026 16:50:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2B4163403F3;
+	Sat, 30 May 2026 16:46:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780159808; cv=none; b=VWCBphLwXURPvKwbvahDOcQEQfWIE/fwG6wgAP5sh0Xp8T/BklDjh9QZ+kHPHi4ZaBPHto1iZn1OK6lmg7YO+hp/LHx3h7TF/mlnJnIEpl4zhTxNwlbuj5WsMWrKmpqjQOg8Yz3JsH0P8ukjpwEBuSEBFvMJve/cVMjl1KLqyGY=
+	t=1780159611; cv=none; b=Gu3L5d3wBAWQLS0a/UkcqdpciNqPOITGG4Tqm4ym8lTQJyY2D9kaQVtm8s16sdfpzqP+DSIIW2sjGRVDjeuSTxcu+I9tyX6XmqOE46MKYsoUCS9sONM67IXEbQ9EVxzA7h8xIxP4PTTaIDJ+fa1RAXRUdeSvHZhkVhPgj+dIzhM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780159808; c=relaxed/simple;
-	bh=NTv1NtgtZl/xNXaSSfvHhFLWfg102n3HXCYK2JQTRgk=;
+	s=arc-20240116; t=1780159611; c=relaxed/simple;
+	bh=vBcs0cpkL2FlAD6mkeQUzyvTk/LwfCdVgq2NCXEY/iw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=rsys2+AOMCOW1j66vGls/21fI5IRom1iFjVwnxyd/FTctl+LbM+Y9JjlQi28+HVnLFwoFUYGnxoTL+h57++QI3TYhJrpCYaQAfIXeBc10fQoSCLKb/fyrfJ0U+D/SUWa2xC52M1FlOiArt89DcUEIFn8jumDwTbFKg1H/pnXfpI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LPrzrWzx; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 11AB31F00893;
-	Sat, 30 May 2026 16:50:05 +0000 (UTC)
+	 MIME-Version; b=hpEZCyUvSr8BBpzHu7GX0TjUrUCM4DjT6b8/XczhC9mgY+VYIwMz0it/sfilKYTShSIdjSmIHBR+YLv8Rh+TTbWlWkNfyINphVsJjAgSJYAwwMpedXY/FAJcIegpDOPmxdAeNxPootmHyVskR/ZF0lAsSW4crjKg+DabwOhzXeQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oCY9KH9v; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E6E571F00893;
+	Sat, 30 May 2026 16:46:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780159806;
-	bh=mLQjEEWVzOfQF8DPJdbrahB7jk/MooZWayiLB0FBz2A=;
+	s=korg; t=1780159609;
+	bh=hshnHYQ44Hw/oe/ij6HytY9UPRaRAw2CwYor9utt4J0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=LPrzrWzxNDRUnH28tCZjTB2dNIFviMFfCnwZzjnDJZvWVUEnzrGAOPqOIr1kkaQVh
-	 IL/ee6h+y3GY6KGAtf5fG4V2c4tjADnTp1XufthnIG83WNH76oVV+UgQKrAAVe6tYx
-	 E1wlhx7N+aM8qd5ID/Is7Fq/HL4HO8uUHLcIV2nA=
+	b=oCY9KH9vwtofSO6JuuFJOaqxCZoEmo3VZCXwi6JECa2SQlRpQycycAjmxonweXu2R
+	 oNa5aqI6KE0VexXZEDOmgTnHJbuH3QGkIb8KJdNPh7rnFHN2QjvLOg/PAs4QAbDQX2
+	 PAtOlNHH1Vn5TsdDVvylWPudwJpxGYreDqSYGD2A=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Guocai He <guocai.he.cn@windriver.com>
-Subject: [PATCH 6.1 126/969] Revert "wifi: cfg80211: stop NAN and P2P in cfg80211_leave"
-Date: Sat, 30 May 2026 17:54:10 +0200
-Message-ID: <20260530160304.053120695@linuxfoundation.org>
+	Yifan Wu <yifanwucs@gmail.com>,
+	Juefei Pu <tomapufckgml@gmail.com>,
+	Yuan Tan <yuantan098@gmail.com>,
+	Xin Liu <bird@lzu.edu.cn>,
+	Ren Wei <enjou1224z@gmail.com>,
+	Yuqi Xu <xuyuqiabc@gmail.com>,
+	Ren Wei <n05ec@lzu.edu.cn>,
+	David Howells <dhowells@redhat.com>,
+	Marc Dionne <marc.dionne@auristor.com>,
+	Simon Horman <horms@kernel.org>,
+	linux-afs@lists.infradead.org,
+	stable@kernel.org,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 127/969] rxrpc: reject undecryptable rxkad response tickets
+Date: Sat, 30 May 2026 17:54:11 +0200
+Message-ID: <20260530160304.076791932@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
 In-Reply-To: <20260530160300.485627683@linuxfoundation.org>
 References: <20260530160300.485627683@linuxfoundation.org>
@@ -66,29 +79,30 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	TAGGED_FROM(0.00)[bounces-257070-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,lzu.edu.cn,redhat.com,auristor.com,kernel.org,lists.infradead.org];
+	RCPT_COUNT_TWELVE(0.00)[17];
 	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	TAGGED_FROM(0.00)[bounces-257103-lists,stable=lfdr.de];
-	RCPT_COUNT_THREE(0.00)[4];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
-	TO_DN_SOME(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[stable];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[]
-X-Rspamd-Queue-Id: E6E4F60E7EF
+X-Rspamd-Queue-Id: B723760E76B
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
@@ -96,34 +110,61 @@ X-Rspamd-Server: lfdr
 
 ------------------
 
-From: Guocai He <guocai.he.cn@windriver.com>
+From: Yuqi Xu <xuyuqiabc@gmail.com>
 
-This reverts commit 0c4f1c02d27a880b10b58c63f574f13bed4f711d which is commit 
-e1696c8bd0056bc1a5f7766f58ac333adc203e8a upstream.
+[ Upstream commit fe4447cd95623b1cfacc15f280aab73a6d7340b2 ]
 
-The reverted patch introduced a deadlock. The locking situation in mainline is 
-totally different, so it is incorrect to directly backport the commit from mainline.
+rxkad_decrypt_ticket() decrypts the RXKAD response ticket and then
+parses the buffer as plaintext without checking whether
+crypto_skcipher_decrypt() succeeded.
 
-Signed-off-by: Guocai He <guocai.he.cn@windriver.com>
+A malformed RESPONSE can therefore use a non-block-aligned ticket
+length, make the decrypt operation fail, and still drive the ticket
+parser with attacker-controlled bytes.
+
+Check the decrypt result and abort the connection with RXKADBADTICKET
+when ticket decryption fails.
+
+Fixes: 17926a79320a ("[AF_RXRPC]: Provide secure RxRPC sockets for use by userspace and kernel both")
+Reported-by: Yifan Wu <yifanwucs@gmail.com>
+Reported-by: Juefei Pu <tomapufckgml@gmail.com>
+Co-developed-by: Yuan Tan <yuantan098@gmail.com>
+Signed-off-by: Yuan Tan <yuantan098@gmail.com>
+Suggested-by: Xin Liu <bird@lzu.edu.cn>
+Tested-by: Ren Wei <enjou1224z@gmail.com>
+Signed-off-by: Yuqi Xu <xuyuqiabc@gmail.com>
+Signed-off-by: Ren Wei <n05ec@lzu.edu.cn>
+Signed-off-by: David Howells <dhowells@redhat.com>
+cc: Marc Dionne <marc.dionne@auristor.com>
+cc: Simon Horman <horms@kernel.org>
+cc: linux-afs@lists.infradead.org
+cc: stable@kernel.org
+Link: https://patch.msgid.link/20260408121252.2249051-12-dhowells@redhat.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+[ adapted `rxrpc_abort_conn()` call to existing `goto other_error` error-handling pattern ]
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/wireless/core.c |    4 +---
- 1 file changed, 1 insertion(+), 3 deletions(-)
+ net/rxrpc/rxkad.c |    7 ++++++-
+ 1 file changed, 6 insertions(+), 1 deletion(-)
 
---- a/net/wireless/core.c
-+++ b/net/wireless/core.c
-@@ -1328,10 +1328,8 @@ void __cfg80211_leave(struct cfg80211_re
- 		__cfg80211_leave_ocb(rdev, dev);
- 		break;
- 	case NL80211_IFTYPE_P2P_DEVICE:
--		cfg80211_stop_p2p_device(rdev, wdev);
--		break;
- 	case NL80211_IFTYPE_NAN:
--		cfg80211_stop_nan(rdev, wdev);
-+		/* cannot happen, has no netdev */
- 		break;
- 	case NL80211_IFTYPE_AP_VLAN:
- 	case NL80211_IFTYPE_MONITOR:
+--- a/net/rxrpc/rxkad.c
++++ b/net/rxrpc/rxkad.c
+@@ -1013,8 +1013,13 @@ static int rxkad_decrypt_ticket(struct r
+ 	sg_init_one(&sg[0], ticket, ticket_len);
+ 	skcipher_request_set_callback(req, 0, NULL, NULL);
+ 	skcipher_request_set_crypt(req, sg, sg, ticket_len, iv.x);
+-	crypto_skcipher_decrypt(req);
++	ret = crypto_skcipher_decrypt(req);
+ 	skcipher_request_free(req);
++	if (ret < 0) {
++		abort_code = RXKADBADTICKET;
++		ret = -EPROTO;
++		goto other_error;
++	}
+ 
+ 	p = ticket;
+ 	end = p + ticket_len;
 
 
 
