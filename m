@@ -1,64 +1,60 @@
-Return-Path: <stable+bounces-258754-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-258150-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id +D1YFzorG2r//ggAu9opvQ
-	(envelope-from <stable+bounces-258754-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:23:54 +0200
+	id aDJmJ04lG2pm/ggAu9opvQ
+	(envelope-from <stable+bounces-258150-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:58:38 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6B8A4611A50
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:23:53 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 058B3610BD2
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:58:37 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 798723003BDE
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 18:23:50 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id D50C3301D07A
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 17:49:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5667825B0B3;
-	Sat, 30 May 2026 18:23:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EEEB8349CCF;
+	Sat, 30 May 2026 17:49:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SlYt8GTs"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wSb52A6r"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1167B17555;
-	Sat, 30 May 2026 18:23:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C7EFA34104B;
+	Sat, 30 May 2026 17:49:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780165427; cv=none; b=qOupaO0chFKWi3I9STMJ3+mWRkxfHu49/NAb85kXpZJxKVCqJuOVKAjZSbeukvvygZ6ogjg6b2NCVrqsNFZBDozNvVWLGn/ifT8as7+yTLRHuPxuXYkmoPIhlMhKHXgbhy/Gf3MgTPL9JSzwKuTDt/E9e3ZGy/VAZj+8a1e3cl0=
+	t=1780163383; cv=none; b=cGsjTkAz32vYfeuBPvq/IZ/JS1Ve8Y541RK3WVK0d/2IYVWLSZwFJaaq09f7SqtzkHMWVgr2SqTpGksHAsCmDHIZdC/x3jmuOy7bmGeBbfcbPHfyD/mbkeHAdb+opgZtTpxCDSt24++T0TBj1nCpJ10LNXNTfbVdhhAC+nAeCII=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780165427; c=relaxed/simple;
-	bh=XBjUi+CPJggP5DO/GQOwUG5fpK06NVEEi89DOUOru2Y=;
+	s=arc-20240116; t=1780163383; c=relaxed/simple;
+	bh=k5ZFZYiRBUZfkCBkZ8j+RjpUntWE4ugwvEh+IXUkeUI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=h9SxDhRdFKnlu3pDOG/u4HEzEKTxfGpQX7SinSNX3TbBt5ps/oN3GiQoXFqeMYrOC4UEeBG3sf+Px/XABq0lE0CE1Ov62FPsfmU+TmnmwLDPjPLZq/NcektwvXQVoETSEExapLVYTfOp7WHNiyA+PY4+3L8EZWoAmRyX3rAimA0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SlYt8GTs; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 58B751F00893;
-	Sat, 30 May 2026 18:23:45 +0000 (UTC)
+	 MIME-Version:Content-Type; b=Qztl54HN7DkMEQ69wn7oIy8YMUH2TNZgl/m54LacOQQaJqltpGRE8/v80uao2dPFAExMwAN3ml3Jx6jiPZUp5Ha6wVv3HkFBcwy1ZwoOnIRe25RWADAn15BrJGUMl1d/IJog+cYcrEC13TqUJ7SATB2MkR87kQaXBLcMqLGjip4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wSb52A6r; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 18F331F00893;
+	Sat, 30 May 2026 17:49:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780165426;
-	bh=D97N7I+3LCj1QlSAHP/ArqkKEYxD3ZAB5DG4K6XOVNI=;
+	s=korg; t=1780163382;
+	bh=wAbeyVtbtstWfWAdfvFatYmfZCgv0ypDRgb6iRhve7Y=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=SlYt8GTsiMNZDwaaOHpJKjR6V8Jjl7f+3DMiHErFWFTLvAwbTbo5jqv5ybiee9ijP
-	 N5BlVnqB1WAk3MLnY7IS7PIz2mqw2mU/D6jiJdcn//x7wKOi5iozixkh+Xo4C5VJQ0
-	 AbybMfFQOGKbsbVYm7M5eowxHB/r7gkREK/EQ674=
+	b=wSb52A6rkW/bMFn4gXxSW2Nl5tB/xAow5qkNV8d5gX0ZF3dQIsiCejtpbqdyfclSt
+	 bdhSrHHFBCw8VmkkTDB75Oa8RtUT8L73JRMKDAyYWA4a5AuZFYIjwAQSirDTYlk6X9
+	 EFfSXQcI23dYxhzwtfWzlsU4avXOl5IUnzAL1KnA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Ritesh Harjani (IBM)" <ritesh.list@gmail.com>,
-	Venkat Rao Bagalkote <venkat88@linux.ibm.com>,
-	Alexander Potapenko <glider@google.com>,
-	Andrey Konovalov <andreyknvl@gmail.com>,
-	Andrey Ryabinin <ryabinin.a.a@gmail.com>,
-	Dmitry Vyukov <dvyukov@google.com>,
-	Vincenzo Frascino <vincenzo.frascino@arm.com>,
-	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 5.10 075/589] mm/kasan: fix double free for kasan pXds
+	=?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>,
+	Miquel Raynal <miquel.raynal@bootlin.com>,
+	Tudor Ambarus <tudor.ambarus@linaro.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 242/776] mtd: docg3: Convert to platform remove callback returning void
 Date: Sat, 30 May 2026 17:59:16 +0200
-Message-ID: <20260530160226.576293780@linuxfoundation.org>
+Message-ID: <20260530160246.786443876@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260530160224.570625122@linuxfoundation.org>
-References: <20260530160224.570625122@linuxfoundation.org>
+In-Reply-To: <20260530160240.228940103@linuxfoundation.org>
+References: <20260530160240.228940103@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -68,178 +64,101 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	TAGGED_FROM(0.00)[bounces-258754-lists,stable=lfdr.de];
-	FROM_HAS_DN(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,linux.ibm.com,google.com,arm.com,linux-foundation.org];
-	MIME_TRACE(0.00)[0:+];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[11];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-0.997];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable];
-	TO_DN_SOME(0.00)[];
+	TAGGED_FROM(0.00)[bounces-258150-lists,stable=lfdr.de];
+	FROM_HAS_DN(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[arm.com:email,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,linux-foundation.org:email,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo]
-X-Rspamd-Queue-Id: 6B8A4611A50
+	MIME_TRACE(0.00)[0:+];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	NEURAL_HAM(-0.00)[-0.997];
+	RCPT_COUNT_SEVEN(0.00)[7];
+	MID_RHS_MATCH_FROM(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	TO_DN_SOME(0.00)[]
+X-Rspamd-Queue-Id: 058B3610BD2
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ritesh Harjani (IBM) <ritesh.list@gmail.com>
+From: Uwe Kleine-König <u.kleine-koenig@pengutronix.de>
 
-commit 51d8c78be0c27ddb91bc2c0263941d8b30a47d3b upstream.
+[ Upstream commit eb0cec77d534413a800ec20944a2b1e37cfecdcf ]
 
-kasan_free_pxd() assumes the page table is always struct page aligned.
-But that's not always the case for all architectures.  E.g.  In case of
-powerpc with 64K pagesize, PUD table (of size 4096) comes from slab cache
-named pgtable-2^9.  Hence instead of page_to_virt(pxd_page()) let's just
-directly pass the start of the pxd table which is passed as the 1st
-argument.
+The .remove() callback for a platform driver returns an int which makes
+many driver authors wrongly assume it's possible to do error handling by
+returning an error code. However the value returned is ignored (apart
+from emitting a warning) and this typically results in resource leaks.
 
-This fixes the below double free kasan issue seen with PMEM:
+To improve here there is a quest to make the remove callback return
+void. In the first step of this quest all drivers are converted to
+.remove_new(), which already returns void. Eventually after all drivers
+are converted, .remove_new() will be renamed to .remove().
 
-radix-mmu: Mapped 0x0000047d10000000-0x0000047f90000000 with 2.00 MiB pages
-==================================================================
-BUG: KASAN: double-free in kasan_remove_zero_shadow+0x9c4/0xa20
-Free of addr c0000003c38e0000 by task ndctl/2164
+Trivially convert this driver from always returning zero in the remove
+callback to the void returning variant.
 
-CPU: 34 UID: 0 PID: 2164 Comm: ndctl Not tainted 6.19.0-rc1-00048-gea1013c15392 #157 VOLUNTARY
-Hardware name: IBM,9080-HEX POWER10 (architected) 0x800200 0xf000006 of:IBM,FW1060.00 (NH1060_012) hv:phyp pSeries
-Call Trace:
- dump_stack_lvl+0x88/0xc4 (unreliable)
- print_report+0x214/0x63c
- kasan_report_invalid_free+0xe4/0x110
- check_slab_allocation+0x100/0x150
- kmem_cache_free+0x128/0x6e0
- kasan_remove_zero_shadow+0x9c4/0xa20
- memunmap_pages+0x2b8/0x5c0
- devm_action_release+0x54/0x70
- release_nodes+0xc8/0x1a0
- devres_release_all+0xe0/0x140
- device_unbind_cleanup+0x30/0x120
- device_release_driver_internal+0x3e4/0x450
- unbind_store+0xfc/0x110
- drv_attr_store+0x78/0xb0
- sysfs_kf_write+0x114/0x140
- kernfs_fop_write_iter+0x264/0x3f0
- vfs_write+0x3bc/0x7d0
- ksys_write+0xa4/0x190
- system_call_exception+0x190/0x480
- system_call_vectored_common+0x15c/0x2ec
----- interrupt: 3000 at 0x7fff93b3d3f4
-NIP:  00007fff93b3d3f4 LR: 00007fff93b3d3f4 CTR: 0000000000000000
-REGS: c0000003f1b07e80 TRAP: 3000   Not tainted  (6.19.0-rc1-00048-gea1013c15392)
-MSR:  800000000280f033 <SF,VEC,VSX,EE,PR,FP,ME,IR,DR,RI,LE>  CR: 48888208  XER: 00000000
-<...>
-NIP [00007fff93b3d3f4] 0x7fff93b3d3f4
-LR [00007fff93b3d3f4] 0x7fff93b3d3f4
----- interrupt: 3000
-
- The buggy address belongs to the object at c0000003c38e0000
-  which belongs to the cache pgtable-2^9 of size 4096
- The buggy address is located 0 bytes inside of
-  4096-byte region [c0000003c38e0000, c0000003c38e1000)
-
- The buggy address belongs to the physical page:
- page: refcount:0 mapcount:0 mapping:0000000000000000 index:0x0 pfn:0x3c38c
- head: order:2 mapcount:0 entire_mapcount:0 nr_pages_mapped:0 pincount:0
- memcg:c0000003bfd63e01
- flags: 0x63ffff800000040(head|node=6|zone=0|lastcpupid=0x7ffff)
- page_type: f5(slab)
- raw: 063ffff800000040 c000000140058980 5deadbeef0000122 0000000000000000
- raw: 0000000000000000 0000000080200020 00000000f5000000 c0000003bfd63e01
- head: 063ffff800000040 c000000140058980 5deadbeef0000122 0000000000000000
- head: 0000000000000000 0000000080200020 00000000f5000000 c0000003bfd63e01
- head: 063ffff800000002 c00c000000f0e301 00000000ffffffff 00000000ffffffff
- head: ffffffffffffffff 0000000000000000 00000000ffffffff 0000000000000004
- page dumped because: kasan: bad access detected
-
-[  138.953636] [   T2164] Memory state around the buggy address:
-[  138.953643] [   T2164]  c0000003c38dff00: fc fc fc fc fc fc fc fc fc fc fc fc fc fc fc fc
-[  138.953652] [   T2164]  c0000003c38dff80: fc fc fc fc fc fc fc fc fc fc fc fc fc fc fc fc
-[  138.953661] [   T2164] >c0000003c38e0000: fc fc fc fc fc fc fc fc fc fc fc fc fc fc fc fc
-[  138.953669] [   T2164]                    ^
-[  138.953675] [   T2164]  c0000003c38e0080: fc fc fc fc fc fc fc fc fc fc fc fc fc fc fc fc
-[  138.953684] [   T2164]  c0000003c38e0100: fc fc fc fc fc fc fc fc fc fc fc fc fc fc fc fc
-[  138.953692] [   T2164] ==================================================================
-[  138.953701] [   T2164] Disabling lock debugging due to kernel taint
-
-Link: https://lkml.kernel.org/r/2f9135c7866c6e0d06e960993b8a5674a9ebc7ec.1771938394.git.ritesh.list@gmail.com
-Fixes: 0207df4fa1a8 ("kernel/memremap, kasan: make ZONE_DEVICE with work with KASAN")
-Signed-off-by: Ritesh Harjani (IBM) <ritesh.list@gmail.com>
-Reported-by: Venkat Rao Bagalkote <venkat88@linux.ibm.com>
-Reviewed-by: Alexander Potapenko <glider@google.com>
-Cc: Andrey Konovalov <andreyknvl@gmail.com>
-Cc: Andrey Ryabinin <ryabinin.a.a@gmail.com>
-Cc: Dmitry Vyukov <dvyukov@google.com>
-Cc: "Ritesh Harjani (IBM)" <ritesh.list@gmail.com>
-Cc: Vincenzo Frascino <vincenzo.frascino@arm.com>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Uwe Kleine-König <u.kleine-koenig@pengutronix.de>
+Signed-off-by: Miquel Raynal <miquel.raynal@bootlin.com>
+Acked-by: Tudor Ambarus <tudor.ambarus@linaro.org>
+Link: https://lore.kernel.org/linux-mtd/20231008200143.196369-5-u.kleine-koenig@pengutronix.de
+Stable-dep-of: ca19808bc6fa ("mtd: docg3: fix use-after-free in docg3_release()")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- mm/kasan/init.c |    8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ drivers/mtd/devices/docg3.c | 5 ++---
+ 1 file changed, 2 insertions(+), 3 deletions(-)
 
---- a/mm/kasan/init.c
-+++ b/mm/kasan/init.c
-@@ -294,7 +294,7 @@ static void kasan_free_pte(pte_t *pte_st
- 			return;
- 	}
+diff --git a/drivers/mtd/devices/docg3.c b/drivers/mtd/devices/docg3.c
+index 27c08f22dec8c..25a7df6448028 100644
+--- a/drivers/mtd/devices/docg3.c
++++ b/drivers/mtd/devices/docg3.c
+@@ -2038,7 +2038,7 @@ static int __init docg3_probe(struct platform_device *pdev)
+  *
+  * Returns 0
+  */
+-static int docg3_release(struct platform_device *pdev)
++static void docg3_release(struct platform_device *pdev)
+ {
+ 	struct docg3_cascade *cascade = platform_get_drvdata(pdev);
+ 	struct docg3 *docg3 = cascade->floors[0]->priv;
+@@ -2050,7 +2050,6 @@ static int docg3_release(struct platform_device *pdev)
+ 			doc_release_device(cascade->floors[floor]);
  
--	pte_free_kernel(&init_mm, (pte_t *)page_to_virt(pmd_page(*pmd)));
-+	pte_free_kernel(&init_mm, pte_start);
- 	pmd_clear(pmd);
+ 	bch_free(docg3->cascade->bch);
+-	return 0;
  }
  
-@@ -309,7 +309,7 @@ static void kasan_free_pmd(pmd_t *pmd_st
- 			return;
- 	}
+ #ifdef CONFIG_OF
+@@ -2068,7 +2067,7 @@ static struct platform_driver g3_driver = {
+ 	},
+ 	.suspend	= docg3_suspend,
+ 	.resume		= docg3_resume,
+-	.remove		= docg3_release,
++	.remove_new	= docg3_release,
+ };
  
--	pmd_free(&init_mm, (pmd_t *)page_to_virt(pud_page(*pud)));
-+	pmd_free(&init_mm, pmd_start);
- 	pud_clear(pud);
- }
- 
-@@ -324,7 +324,7 @@ static void kasan_free_pud(pud_t *pud_st
- 			return;
- 	}
- 
--	pud_free(&init_mm, (pud_t *)page_to_virt(p4d_page(*p4d)));
-+	pud_free(&init_mm, pud_start);
- 	p4d_clear(p4d);
- }
- 
-@@ -339,7 +339,7 @@ static void kasan_free_p4d(p4d_t *p4d_st
- 			return;
- 	}
- 
--	p4d_free(&init_mm, (p4d_t *)page_to_virt(pgd_page(*pgd)));
-+	p4d_free(&init_mm, p4d_start);
- 	pgd_clear(pgd);
- }
- 
+ module_platform_driver_probe(g3_driver, docg3_probe);
+-- 
+2.53.0
+
 
 
 
