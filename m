@@ -1,60 +1,60 @@
-Return-Path: <stable+bounces-258440-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-257627-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id +O0QLHEpG2rg/ggAu9opvQ
-	(envelope-from <stable+bounces-258440-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:16:17 +0200
+	id 0H9RBBkeG2qu/QgAu9opvQ
+	(envelope-from <stable+bounces-257627-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:27:53 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 17663611637
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:16:16 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 858B860FB69
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:27:52 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 3C31E31511BD
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 18:05:58 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id ED4003024C96
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 17:20:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D1DCF39A4A4;
-	Sat, 30 May 2026 18:05:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0A9D93242D7;
+	Sat, 30 May 2026 17:20:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YwcnnDDn"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jf+W5EJs"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BAE9B3AC0FC;
-	Sat, 30 May 2026 18:05:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DD61B14A62B;
+	Sat, 30 May 2026 17:20:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780164357; cv=none; b=AHTjB13PwzZBb+8d5XL1MpzQM3PMXHJAMZgjc1SJM7YgaAdPSTqGWrulW+sBWE5qoKy0A0fRW2k4E6WqtAVvtoXVW9v6/kdtHadOKxmfBMCduwHrlsC/jK5Jo/nOIlOSlCJpESVSTJgZKMIjGXKSXDsmpkyy6H/VSc/oquwyD9M=
+	t=1780161635; cv=none; b=oqaiD70Gf5neseIABDdCGZADc1gTlCBLFQ2885Uu7j0I9JrcxfVv567IgaPxVBbrmXuZK84Q9Y777DrsqBctMbSFP762pu/TARavLRACf4vXJHbNQ4pudyDL5kKfXBHBdK/EDDmQP/fqO8VhCUXhTcqUN4V1GMX4+USSd9kD6Go=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780164357; c=relaxed/simple;
-	bh=LLwWSG1fCRYLfOxde+LPLUQRU7xzkGWx4/48vBzmuVc=;
+	s=arc-20240116; t=1780161635; c=relaxed/simple;
+	bh=FCLOMC9qohpfb4OYXqYlQCZwYy7oaZtGP55leM6XA5M=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Lv1mneDR7B7VE54iYVSzw3Eso/h4yClt3Z3Yh7O7A9akdopqXIcTwvP1XrRjOmg4pZEP4JqAV2D7TULbPTVA+VLJg6HZdXZUv8CvI3jI0nJGm6XdnT3BY/SIqqkd4HtJ1qcxMKyIRDK3NWfaQAVKDPVsJ7zQlOg6qz7R5QlmRh0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YwcnnDDn; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0C2AD1F00893;
-	Sat, 30 May 2026 18:05:55 +0000 (UTC)
+	 MIME-Version; b=o0n/cOCOYyUIoiy3wzNHfEhuCO1/lrPM0OcF6sqqFdIaN57DdHjKDdpao7r8OmoqyjPv7rxWGqexe0U+M+7AvAsTRxwaCAp4tlM2Z/pZgF/W/m7GWQtLDJKSFEO7EPEMw2SV8vr4GmKQYTKjZRwuDWD5uyaiY5IkUulgezF7aC0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jf+W5EJs; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2D7911F00893;
+	Sat, 30 May 2026 17:20:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780164356;
-	bh=KpLzqvb1AjhzsYEks4TMfHyl1X7u9JGA2JLc4u2CBsU=;
+	s=korg; t=1780161634;
+	bh=/EQPLPyh5Zb0dJJLb0dvRoixsAE69D7nBBeudLp9WdM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=YwcnnDDnk4ICbjQl/gtbIXgxUjZC+VtKS3oWxYWC8nuW6JvCTUMNmEfXJQ2X/FhMB
-	 CXpCN5XkGmw2/o0ZA4OaZMx1KU67ECVaks8OlAm2GzRhawvK2lfBCV+OOlRsMHOjbd
-	 MxnyUCCq4wDSz6nGbNi/QAg0JXtZFl85Mugn/ucA=
+	b=jf+W5EJsjzGj6yUqVHnkp0dge9EAjRvE8+kW2HFJhpGAERcB/xnQU3wfkIOoKzmmZ
+	 nVd/5DPnszKHn+jqfRhXDeVtISktWlu3I1NIp/4sNACss3HGETv5PFwEzJcowOHHFr
+	 pGHdk7DlyYHw7HQRGOJ7Vwms8tWrh85FRYUwJPvI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>,
-	Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>,
-	Bjorn Andersson <andersson@kernel.org>,
+	Vladimir Oltean <vladimir.oltean@nxp.com>,
+	Kurt Kanzenbach <kurt@linutronix.de>,
+	"David S. Miller" <davem@davemloft.net>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 491/776] soc: qcom: ocmem: return -EPROBE_DEFER is ocmem is not available
-Date: Sat, 30 May 2026 18:03:25 +0200
-Message-ID: <20260530160253.003776169@linuxfoundation.org>
+Subject: [PATCH 6.1 682/969] net/sched: taprio: continue with other TXQs if one dequeue() failed
+Date: Sat, 30 May 2026 18:03:26 +0200
+Message-ID: <20260530160319.337625560@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260530160240.228940103@linuxfoundation.org>
-References: <20260530160240.228940103@linuxfoundation.org>
+In-Reply-To: <20260530160300.485627683@linuxfoundation.org>
+References: <20260530160300.485627683@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -77,7 +77,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-258440-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-257627-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
@@ -87,57 +87,58 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
 	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	NEURAL_HAM(-0.00)[-0.996];
+	NEURAL_HAM(-0.00)[-1.000];
 	RCPT_COUNT_SEVEN(0.00)[7];
 	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
-X-Rspamd-Queue-Id: 17663611637
+	DBL_BLOCKED_OPENRESOLVER(0.00)[davemloft.net:email,linutronix.de:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,nxp.com:email]
+X-Rspamd-Queue-Id: 858B860FB69
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
+From: Vladimir Oltean <vladimir.oltean@nxp.com>
 
-[ Upstream commit 91b59009c7d48b58dbc50fecb27f2ad20749a05a ]
+[ Upstream commit 1638bbbe4ececa615b273497d347d59ad71060a2 ]
 
-If OCMEM is declared in DT, it is expected that it is present and
-handled by the driver. The GPU driver will ignore -ENODEV error, which
-typically means that OCMEM isn't defined in DT. Let ocmem return
--EPROBE_DEFER if it supposed to be used, but it is not probed (yet).
+This changes the handling of an unlikely condition to not stop dequeuing
+if taprio failed to dequeue the peeked skb in taprio_dequeue().
 
-Fixes: 88c1e9404f1d ("soc: qcom: add OCMEM driver")
-Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
-Reviewed-by: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
-Link: https://lore.kernel.org/r/20260323-ocmem-v1-3-ad9bcae44763@oss.qualcomm.com
-[bjorn: s/ERR_PTR(dev_err_probe)/dev_err_ptr_probe/
-Signed-off-by: Bjorn Andersson <andersson@kernel.org>
+I've no idea when this can happen, but the only side effect seems to be
+that the atomic_sub_return() call right above will have consumed some
+budget. This isn't a big deal, since either that made us remain without
+any budget (and therefore, we'd exit on the next peeked skb anyway), or
+we could send some packets from other TXQs.
+
+I'm making this change because in a future patch I'll be refactoring the
+dequeue procedure to simplify it, and this corner case will have to go
+away.
+
+Signed-off-by: Vladimir Oltean <vladimir.oltean@nxp.com>
+Reviewed-by: Kurt Kanzenbach <kurt@linutronix.de>
+Signed-off-by: David S. Miller <davem@davemloft.net>
+Stable-dep-of: 105425b1969c ("net/sched: taprio: fix use-after-free in advance_sched() on schedule switch")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/soc/qcom/ocmem.c | 7 +++----
- 1 file changed, 3 insertions(+), 4 deletions(-)
+ net/sched/sch_taprio.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/soc/qcom/ocmem.c b/drivers/soc/qcom/ocmem.c
-index 35d96feb6b1e3..1ece9780e555e 100644
---- a/drivers/soc/qcom/ocmem.c
-+++ b/drivers/soc/qcom/ocmem.c
-@@ -209,10 +209,9 @@ struct ocmem *of_get_ocmem(struct device *dev)
+diff --git a/net/sched/sch_taprio.c b/net/sched/sch_taprio.c
+index 62219f23f76ab..aad95b084ae36 100644
+--- a/net/sched/sch_taprio.c
++++ b/net/sched/sch_taprio.c
+@@ -626,7 +626,7 @@ static struct sk_buff *taprio_dequeue(struct Qdisc *sch)
  
- 	ocmem = platform_get_drvdata(pdev);
- 	put_device(&pdev->dev);
--	if (!ocmem) {
--		dev_err(dev, "Cannot get ocmem\n");
--		return ERR_PTR(-ENODEV);
--	}
-+	if (!ocmem)
-+		return dev_err_ptr_probe(dev, -EPROBE_DEFER, "Cannot get ocmem\n");
-+
- 	return ocmem;
- }
- EXPORT_SYMBOL(of_get_ocmem);
+ 		skb = child->ops->dequeue(child);
+ 		if (unlikely(!skb))
+-			goto done;
++			continue;
+ 
+ skb_found:
+ 		qdisc_bstats_update(sch, skb);
 -- 
 2.53.0
 
