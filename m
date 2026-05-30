@@ -1,58 +1,60 @@
-Return-Path: <stable+bounces-257259-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-258039-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id QAZ3GiUZG2pV/AgAu9opvQ
-	(envelope-from <stable+bounces-257259-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:06:45 +0200
+	id oA9eGmUjG2rO/QgAu9opvQ
+	(envelope-from <stable+bounces-258039-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:50:29 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id BB58560EE59
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:06:44 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 019CA610805
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:50:28 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id BC5E73051D0E
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 16:59:41 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 23AF230316E2
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 17:43:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2F26C3AEB26;
-	Sat, 30 May 2026 16:59:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C08A9348C5E;
+	Sat, 30 May 2026 17:43:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="F6zSGHLL"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="b2IElQUd"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 04C253AC0FA;
-	Sat, 30 May 2026 16:59:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 91E4C33F8A4;
+	Sat, 30 May 2026 17:43:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780160374; cv=none; b=CQqkJoU+u0tNtCApycoeZz70SA6/YZeyVQyuJumtR7AMfiQEtfyqog1uhAXm6zdRBq8S/kq/8GKdKMIMGCjBvHlaOmKtFtKQmMu7FyvBg8pRCRdDTdleGbh6ZVXqpCCNTXXc2MdJraHovW7qDklg5Kw6B3DCmurdeSmIurMpwtU=
+	t=1780163020; cv=none; b=C3562uUnj2MqYe6xGO/dEtNFmQdqIhuwLPASKqhvvP9Ztmi3eRkxdtIHk1mJ0RNA4+DIQ346ZCceRvk5qywzTUDQMDgGBlbaYyV1ps7g1iU34IAeqRqi3ZrlU2u6bc/qUiLVD+qfdMiqRH+zPsSsBnyGlzD/mbURxJiiSwvsNys=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780160374; c=relaxed/simple;
-	bh=UAA+rEuk84FyPRCdxtA9/GlESnkoUjTbyvEyevTK3Ac=;
+	s=arc-20240116; t=1780163020; c=relaxed/simple;
+	bh=52rnjJBW4zrC4lSH0ZNbR3BsC/FMQ5F+WUhGmNl4VFg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=BHyGq6AMMzgnwwKzcqtep2wdU1GRF/aSgVkZHjlRBuDr8I+D9gePaBORmy0hK+2sbqayWbf6wwjQ5e9Uplp5GLGcFuNFPy+DkisCpOy+/QKaruJ6NdXipYECBA4exkJ4b/B3tcK8M1lV+6G7Alfw7MTIt+JA/++00u76RHyuHsk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=F6zSGHLL; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E4B321F00893;
-	Sat, 30 May 2026 16:59:31 +0000 (UTC)
+	 MIME-Version; b=q6/09ZmyG2dfFzmUSHb+NbG8oCwq5UOLrtjwWlfbPgxvWmNOEyi/IkWtv142u0HLZPa+5iQI6Snx+Yw2f1zHhpUm1CHv3fGaKKPcSHJ6YoIcaeqSiK24j2ahZzDWf17R0td8+TuP53rNDl5B0qGr4tnNa+oxGTGRsVHdqmEH3vM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=b2IElQUd; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D63751F00893;
+	Sat, 30 May 2026 17:43:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780160372;
-	bh=N7b/YeyD0+3miIOQatF3bXt+NXrWxKzwyzZ+JwRV8EI=;
+	s=korg; t=1780163019;
+	bh=3XUnQKXkT3Z05RodphU4P3ZMT9KiM2YE8YtHyhpimDo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=F6zSGHLLugBCJQemB75waaJ0EaLHFDJM0rfeSQrvZfrN9j9gpmKEnpBvs5ZrYkHPl
-	 NOaT5m1CuugrxxaCA0EH6SQXj7B7jA+WumYB9P2VA5iEMN/Q0fXcWIAtLNuW+fjVma
-	 VndU+tqRKfa5SAOtfaITML68YL/orI1JiH1dIWQo=
+	b=b2IElQUdSk2Y6ZBtCrU5CHnXPOICMErj2mR8zNDVFEF7FByPsWze7lvLpdrpH29aK
+	 yxG4Tygp5XFU+lK2sHMOM+71eO9gsvN+quB38HeifWUruAn5euRDyJ7O2erBuBbcIt
+	 JeRkQhcuChlSKnOkNFBmcEVk/qWy8hwqtfxKD41k=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Martyn Welch <martyn@welchs.me.uk>,
-	Johan Hovold <johan@kernel.org>
-Subject: [PATCH 6.1 321/969] staging: vme_user: fix root device leak on init failure
-Date: Sat, 30 May 2026 17:57:25 +0200
-Message-ID: <20260530160309.266615389@linuxfoundation.org>
+	Filipe Manana <fdmanana@suse.com>,
+	Qu Wenruo <wqu@suse.com>,
+	David Sterba <dsterba@suse.com>,
+	Alva Lan <alvalan9@foxmail.com>
+Subject: [PATCH 5.15 132/776] btrfs: send: check for inline extents in range_is_hole_in_parent()
+Date: Sat, 30 May 2026 17:57:26 +0200
+Message-ID: <20260530160243.812822630@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260530160300.485627683@linuxfoundation.org>
-References: <20260530160300.485627683@linuxfoundation.org>
+In-Reply-To: <20260530160240.228940103@linuxfoundation.org>
+References: <20260530160240.228940103@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,66 +67,79 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-257259-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	RCPT_COUNT_FIVE(0.00)[5];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,suse.com,foxmail.com];
+	TAGGED_FROM(0.00)[bounces-258039-lists,stable=lfdr.de];
 	PRECEDENCE_BULK(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[stable];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	FROM_HAS_DN(0.00)[]
-X-Rspamd-Queue-Id: BB58560EE59
+	TAGGED_RCPT(0.00)[stable];
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[foxmail.com:email,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,suse.com:email,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim]
+X-Rspamd-Queue-Id: 019CA610805
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Johan Hovold <johan@kernel.org>
+From: Qu Wenruo <wqu@suse.com>
 
-commit 32c91e8ee039777d0b95b914633fc6a42607959c upstream.
+[ Upstream commit 08b096c1372cd69627f4f559fb47c9fb67a52b39 ]
 
-Make sure to deregister and free the root device in case module
-initialisation fails.
+Before accessing the disk_bytenr field of a file extent item we need
+to check if we are dealing with an inline extent.
+This is because for inline extents their data starts at the offset of
+the disk_bytenr field. So accessing the disk_bytenr
+means we are accessing inline data or in case the inline data is less
+than 8 bytes we can actually cause an invalid
+memory access if this inline extent item is the first item in the leaf
+or access metadata from other items.
 
-Fixes: 658bcdae9c67 ("vme: Adding Fake VME driver")
-Cc: stable@vger.kernel.org	# 4.9
-Cc: Martyn Welch <martyn@welchs.me.uk>
-Signed-off-by: Johan Hovold <johan@kernel.org>
-Link: https://patch.msgid.link/20260424104910.2619349-1-johan@kernel.org
+Fixes: 82bfb2e7b645 ("Btrfs: incremental send, fix unnecessary hole writes for sparse files")
+Reviewed-by: Filipe Manana <fdmanana@suse.com>
+Signed-off-by: Qu Wenruo <wqu@suse.com>
+Reviewed-by: David Sterba <dsterba@suse.com>
+Signed-off-by: David Sterba <dsterba@suse.com>
+[ Avoid leaking the path by using { ret = 0; goto out; } instead of
+returning directly. ]
+Signed-off-by: Alva Lan <alvalan9@foxmail.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/staging/vme_user/vme_fake.c |    2 ++
- 1 file changed, 2 insertions(+)
+ fs/btrfs/send.c |    4 ++++
+ 1 file changed, 4 insertions(+)
 
---- a/drivers/staging/vme_user/vme_fake.c
-+++ b/drivers/staging/vme_user/vme_fake.c
-@@ -1242,6 +1242,8 @@ err_master:
- err_driver:
- 	kfree(fake_bridge);
- err_struct:
-+	root_device_unregister(vme_root);
-+
- 	return retval;
- 
- }
+--- a/fs/btrfs/send.c
++++ b/fs/btrfs/send.c
+@@ -5892,6 +5892,10 @@ static int range_is_hole_in_parent(struc
+ 		extent_end = btrfs_file_extent_end(path);
+ 		if (extent_end <= start)
+ 			goto next;
++		if (btrfs_file_extent_type(leaf, fi) == BTRFS_FILE_EXTENT_INLINE) {
++			ret = 0;
++			goto out;
++		}
+ 		if (btrfs_file_extent_disk_bytenr(leaf, fi) == 0) {
+ 			search_start = extent_end;
+ 			goto next;
 
 
 
