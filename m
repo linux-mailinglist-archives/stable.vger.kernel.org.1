@@ -1,60 +1,59 @@
-Return-Path: <stable+bounces-258686-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-257912-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id cAuhJDQsG2r//ggAu9opvQ
-	(envelope-from <stable+bounces-258686-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:28:04 +0200
+	id YFVJM2AgG2rO/QgAu9opvQ
+	(envelope-from <stable+bounces-257912-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:37:36 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 08A0D611C96
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:28:03 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id E77606100A1
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:37:35 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id B62223021EBE
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 18:19:54 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id B193C3010719
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 17:36:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 236EC3C1977;
-	Sat, 30 May 2026 18:19:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1594132B11F;
+	Sat, 30 May 2026 17:36:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hUhbSPN5"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IDq0bmO8"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E870917555;
-	Sat, 30 May 2026 18:19:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D02EC33E36A;
+	Sat, 30 May 2026 17:36:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780165193; cv=none; b=SFIAuD48gBdRRkh7GuRjN59iCM2FawsQ5BjEVeVsrycJdekqz7w2K8XGrWX7cqscDQNtokFG57mC0FKgpsTLLRO+N4KIitXXrW67TqGdsDFqGToDs5ZXPx+bJT62BY1yhA/QKKbW+MwhPS6FZotv97YDrzQHXq7dkqLq8JrvfE4=
+	t=1780162587; cv=none; b=toNuEDx4g7U1dhPN61BwgS/9oCcnKVjlFIAycxvM3q5oW4EEJxx82XMfyHE4qVhw7xX88DPn0V1fI891SK8VS6npQRsz0/OleL37LQC/g2mLW0b1yBrmYB4gP/MOD+b/9OisqFbWo9JJD1EjiH2Ai2R/uqZnv39dyDs1RWsPsRc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780165193; c=relaxed/simple;
-	bh=bFF7g0SHRfvbUYdb6L66TOAtETH7/JlOuQ6Qm2EqSwQ=;
+	s=arc-20240116; t=1780162587; c=relaxed/simple;
+	bh=0LXG9/FsczzDgiNQ9MrAhugRzGxVE1jQNtGGG8ZfV78=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=e52/rxHGCaeTJnL7jP5H11GdsQLf6BXug0qEziPBdWaZkOt4vLkR7/l7He+FXVHRdnGP0s8aCw6r3UTZlEqEmXPjZ+ln8/DrURm7A3u/B2SZEu2+/oDUASqqf4snKLCKjKT94mtD9zrt/fiV7W/nId/uhF2weTfvKlQrfDcKNSo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hUhbSPN5; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 35AC01F00893;
-	Sat, 30 May 2026 18:19:51 +0000 (UTC)
+	 MIME-Version; b=Ihzd06Op6nBIX2m2x+I/qO/JGzNWv+0mgCqcWJ07aSh4S0OuS6/NUywdwvIEMy7nmp+ELSomL3Zj7O0h4FbA0SQMP2L+WDC9HGx1xhLq5X84jq2iRec5kAz/CagY5pqHmgy7mpEPIYhCW1KQ+JKyD76/1+NguIsI0Aa5vcZfWC0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IDq0bmO8; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 20D8A1F00898;
+	Sat, 30 May 2026 17:36:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780165192;
-	bh=V8B3qC7KTxCqD9n6xJtGla6jKlpkXRgn+Pl7T6w0VHo=;
+	s=korg; t=1780162586;
+	bh=x797TKxR9Zr4ysf6YPLancIDUlxp26mGDCsGfXv/cyA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=hUhbSPN5KISXV8ZSfQUHTo9tWW5277K1za4xDnkHGyNjzG5yYwZnsorpLsame6v5E
-	 A3X/ccUVroixq6BGzBPyOVyWgjm6QRfWYwmbcMHhwGPRIlmF4In3T2xq7j4jnux4pX
-	 PZGrecuffL6xuzZEJqXV8dB2bg0x+SAOw/rjKVJY=
+	b=IDq0bmO8LjgeSoAnh2+xAB1ezDFofQgOfJ9OgGEJFOnwqOS2DxKMjePztdh2W9QuB
+	 3IoB6mWHL8qrcgKODNZqnFv6ehZX6h77d9EXOR53LQUxxLdP2CLHp6Fz61H0SsK2Lk
+	 YSQpP/2FUF4qTvfjDiIXNeagXcsaZ8A1T98JWq5M=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Aditya Garg <gargaditya@linux.microsoft.com>,
-	Haiyang Zhang <haiyangz@microsoft.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Andy Shevchenko <andy.shevchenko@gmail.com>,
+	Bartosz Golaszewski <bartosz.golaszewski@linaro.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 776/776] net: mana: validate rx_req_idx to prevent out-of-bounds array access
+Subject: [PATCH 6.1 966/969] gpiolib: cdev: use !mem_is_zero() instead of memchr_inv(s, 0, n)
 Date: Sat, 30 May 2026 18:08:10 +0200
-Message-ID: <20260530160259.752242011@linuxfoundation.org>
+Message-ID: <20260530160327.452345769@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260530160240.228940103@linuxfoundation.org>
-References: <20260530160240.228940103@linuxfoundation.org>
+In-Reply-To: <20260530160300.485627683@linuxfoundation.org>
+References: <20260530160300.485627683@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,81 +64,106 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-258686-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	SUBJECT_HAS_EXCLAIM(0.00)[];
+	TAGGED_FROM(0.00)[bounces-257912-lists,stable=lfdr.de];
 	TO_DN_SOME(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,linaro.org,kernel.org];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	NEURAL_HAM(-0.00)[-0.996];
-	RCPT_COUNT_SEVEN(0.00)[7];
-	MID_RHS_MATCH_FROM(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	NEURAL_HAM(-0.00)[-0.999];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,msgid.link:url]
-X-Rspamd-Queue-Id: 08A0D611C96
+	MID_RHS_MATCH_FROM(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linaro.org:email,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim]
+X-Rspamd-Queue-Id: E77606100A1
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Aditya Garg <gargaditya@linux.microsoft.com>
+From: Andy Shevchenko <andy.shevchenko@gmail.com>
 
-[ Upstream commit b809d0409991b75a6cff846a5ac27c3062953f84 ]
+[ Upstream commit e106b1dd38e723ec2bb2bf57ea9b2aff464b9423 ]
 
-In mana_hwc_rx_event_handler(), rx_req_idx is derived from
-sge->address in DMA-coherent memory. In Confidential VMs
-(SEV-SNP/TDX), this memory is shared unencrypted and HW can modify
-WQE contents at any time. No bounds check exists on rx_req_idx,
-which can lead to an out-of-bounds access into reqs[].
+Use the mem_is_zero() helper where possible.
 
-Add bounds check on rx_req_idx in mana_hwc_rx_event_handler() before
-using it to index the reqs[] array.
-
-Fixes: ca9c54d2d6a5 ("net: mana: Add a driver for Microsoft Azure Network Adapter (MANA)")
-Signed-off-by: Aditya Garg <gargaditya@linux.microsoft.com>
-Reviewed-by: Haiyang Zhang <haiyangz@microsoft.com>
-Link: https://patch.msgid.link/20260520051553.857120-1-gargaditya@linux.microsoft.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Andy Shevchenko <andy.shevchenko@gmail.com>
+Link: https://lore.kernel.org/r/20241110201706.16614-1-andy.shevchenko@gmail.com
+Signed-off-by: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
+Stable-dep-of: 3e6ccd790ed6 ("gpio: cdev: check if uAPI v2 config attributes are correctly zeroed")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/microsoft/mana/hw_channel.c | 6 ++++++
- 1 file changed, 6 insertions(+)
+ drivers/gpio/gpiolib-cdev.c | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/net/ethernet/microsoft/mana/hw_channel.c b/drivers/net/ethernet/microsoft/mana/hw_channel.c
-index 91b1af1d72eb8..f2542bb9254fc 100644
---- a/drivers/net/ethernet/microsoft/mana/hw_channel.c
-+++ b/drivers/net/ethernet/microsoft/mana/hw_channel.c
-@@ -206,6 +206,12 @@ static void mana_hwc_rx_event_handler(void *ctx, u32 gdma_rxq_id,
- 	rq_base_addr = hwc_rxq->msg_buf->mem_info.dma_handle;
- 	rx_req_idx = (sge->address - rq_base_addr) / hwc->max_req_msg_size;
+diff --git a/drivers/gpio/gpiolib-cdev.c b/drivers/gpio/gpiolib-cdev.c
+index 897d20996a8c6..944aa0c1cd5c7 100644
+--- a/drivers/gpio/gpiolib-cdev.c
++++ b/drivers/gpio/gpiolib-cdev.c
+@@ -16,7 +16,6 @@
+ #include <linux/hte.h>
+ #include <linux/interrupt.h>
+ #include <linux/irqreturn.h>
+-#include <linux/kernel.h>
+ #include <linux/kfifo.h>
+ #include <linux/module.h>
+ #include <linux/mutex.h>
+@@ -25,6 +24,7 @@
+ #include <linux/rbtree.h>
+ #include <linux/seq_file.h>
+ #include <linux/spinlock.h>
++#include <linux/string.h>
+ #include <linux/timekeeping.h>
+ #include <linux/uaccess.h>
+ #include <linux/workqueue.h>
+@@ -1339,7 +1339,7 @@ static int gpio_v2_line_config_validate(struct gpio_v2_line_config *lc,
+ 	if (lc->num_attrs > GPIO_V2_LINE_NUM_ATTRS_MAX)
+ 		return -EINVAL;
  
-+	if (rx_req_idx >= hwc_rxq->msg_buf->num_reqs) {
-+		dev_err(hwc->dev, "HWC RX: wrong rx_req_idx=%llu, num_reqs=%u\n",
-+			rx_req_idx, hwc_rxq->msg_buf->num_reqs);
-+		return;
-+	}
-+
- 	rx_req = &hwc_rxq->msg_buf->reqs[rx_req_idx];
- 	resp = (struct gdma_resp_hdr *)rx_req->buf_va;
+-	if (memchr_inv(lc->padding, 0, sizeof(lc->padding)))
++	if (!mem_is_zero(lc->padding, sizeof(lc->padding)))
+ 		return -EINVAL;
  
+ 	for (i = 0; i < num_lines; i++) {
+@@ -1781,7 +1781,7 @@ static int linereq_create(struct gpio_device *gdev, void __user *ip)
+ 	if ((ulr.num_lines == 0) || (ulr.num_lines > GPIO_V2_LINES_MAX))
+ 		return -EINVAL;
+ 
+-	if (memchr_inv(ulr.padding, 0, sizeof(ulr.padding)))
++	if (!mem_is_zero(ulr.padding, sizeof(ulr.padding)))
+ 		return -EINVAL;
+ 
+ 	lc = &ulr.config;
+@@ -2541,7 +2541,7 @@ static int lineinfo_get(struct gpio_chardev_data *cdev, void __user *ip,
+ 	if (copy_from_user(&lineinfo, ip, sizeof(lineinfo)))
+ 		return -EFAULT;
+ 
+-	if (memchr_inv(lineinfo.padding, 0, sizeof(lineinfo.padding)))
++	if (!mem_is_zero(lineinfo.padding, sizeof(lineinfo.padding)))
+ 		return -EINVAL;
+ 
+ 	desc = gpiochip_get_desc(cdev->gdev->chip, lineinfo.offset);
 -- 
 2.53.0
 
