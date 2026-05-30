@@ -1,59 +1,60 @@
-Return-Path: <stable+bounces-258690-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-257892-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id oN6MF1oqG2r//ggAu9opvQ
-	(envelope-from <stable+bounces-258690-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:20:10 +0200
+	id sPjZDtwfG2rO/QgAu9opvQ
+	(envelope-from <stable+bounces-257892-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:35:24 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 04541611817
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:20:09 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D219060FFB0
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:35:23 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 515113012233
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 18:20:09 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 44DF83014153
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 17:35:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 45402233D9E;
-	Sat, 30 May 2026 18:20:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8C8643403F9;
+	Sat, 30 May 2026 17:35:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OY0mZIt0"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lqMlpNYN"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2AA1824EA90;
-	Sat, 30 May 2026 18:20:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 333981C5799;
+	Sat, 30 May 2026 17:35:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780165208; cv=none; b=MJJ72fMSszLeK1G63G/71eJ3+lGjWBIWNJcW5tHNikEPxr6jqq1BE0RtlubJnvUmTw7Lh40OYk1AE/szwvmXm81vjmaHNZXZmVFJqNZ1tM2ueqYIaGv/qgAipSshXKZILIPC1hdNq/jhFcPZjU9kSNnEfyXDzf+9wZwGA9qU7Zg=
+	t=1780162521; cv=none; b=hEfKQ5Zs84IxackgB3WG4juS+8Amgc0VIf2b4T8HNeqYAdBrL75De17XMR0wjdhiageHBlE7ok4g8q5cfOiHuHtYSm3cobP9bi+8L9QyNv45inkYxQlyVKlaz4VH6SmMA9IgmstzedM63gWOeFPrDTua548NwwpdfpYI8YoFp4A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780165208; c=relaxed/simple;
-	bh=p/7q4jrfmElQ3iwCbgrqbpDKgTTed0isoQf28QzdwFE=;
+	s=arc-20240116; t=1780162521; c=relaxed/simple;
+	bh=guRYWKSfVfXxSb2gWprlXqS6lFYlER+rE3uXPXGvNw0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=N5jnQrBAutzQElXTzE0Pmylw6fbvHJ1i4qI+r9ZsMSKj9DjWc222JGTyFIGINbuyct/O1ClpRCIwXb9g65Hwh2vmi4C5s1oglLiswYsQeG/El+UhEGUHwTqNDDcZY+ywczaFNQwWyDnNgvfmBeBZuTJcFTmywvzZtDyXSo3jFzM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OY0mZIt0; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6ECED1F00893;
-	Sat, 30 May 2026 18:20:06 +0000 (UTC)
+	 MIME-Version; b=rybTX1UjLMKTQj30Xpeu5EJ/y/js0mUSGfSsWIbJ0Ea4HoCD7p4eAZ4rTEKZUyT5LbCD9Onl+ksaEreo3DSgv0xE9sWopjSmW5JbIdUDsUZLw/3Vsa5U5AlWqVTjUK9KS/gfPqUCE1IPPRmVXy+kWV+Lj8sfl1I7C2cJLoS5IfY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lqMlpNYN; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 768F61F00893;
+	Sat, 30 May 2026 17:35:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780165207;
-	bh=d0aHds9JWfaOuU4Bwt49cmpJgplpjU5/3C+GgLJajuk=;
+	s=korg; t=1780162520;
+	bh=FgRKaccBM6cRAcadVWa9pSr8rZhKjEaKuYDJ7C6LoeI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=OY0mZIt0trEtabGtjLzpgrz2uC4LyYtk+wzuMW9rZepRr6ia6F/x5ZXXMATYPrT32
-	 ZoWKx8+Xt8sDFMT8bTPQK7FeJ+zPTkYC/sOln1kpsfFFW1/N9PijG7ClGzCLS2aMF3
-	 9Xvn6E9VAmG5xIKp/9WW+lMFfSnrDwyMeHjYQDc0=
+	b=lqMlpNYN7cXnuAzEIAMOsgq0+ryVSfC78KwhWMDnVhJDgqcl2oCEUhDNzKs4e+Kv+
+	 iTeTYIi06uX8G48f/NcjCrmMF7bqAEvdbb8JKN//Ii/8C7ZVUZRwDbUtE4ZJr9b4ga
+	 dOvV7rkWEsFrQR/jNuhZM45QZD63BE5J5bEPuAUU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Chenguang Zhao <zhaochenguang@kylinos.cn>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Sriram R <quic_srirrama@quicinc.com>,
+	Karthikeyan Kathirvel <quic_kathirve@quicinc.com>,
+	Kalle Valo <quic_kvalo@quicinc.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 754/776] ethtool: fix ethnl_bitmap32_not_zero() bit interval semantics
+Subject: [PATCH 6.1 944/969] wifi: ath11k: update ce configurations for IPQ5018
 Date: Sat, 30 May 2026 18:07:48 +0200
-Message-ID: <20260530160259.241038511@linuxfoundation.org>
+Message-ID: <20260530160326.825939557@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260530160240.228940103@linuxfoundation.org>
-References: <20260530160240.228940103@linuxfoundation.org>
+In-Reply-To: <20260530160300.485627683@linuxfoundation.org>
+References: <20260530160300.485627683@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -73,82 +74,285 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-257892-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-258690-lists,stable=lfdr.de];
-	TO_DN_SOME(0.00)[];
-	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TO_DN_SOME(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
 	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,kylinos.cn:email]
-X-Rspamd-Queue-Id: 04541611817
+	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_SEVEN(0.00)[7];
+	MID_RHS_MATCH_FROM(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo]
+X-Rspamd-Queue-Id: D219060FFB0
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Chenguang Zhao <zhaochenguang@kylinos.cn>
+From: Sriram R <quic_srirrama@quicinc.com>
 
-[ Upstream commit 3d042592ebd4c7e44974d556de0b727cb7db4dab ]
+[ Upstream commit 26af7aabd2d8225c6b2056234626ba5099610871 ]
 
-ethnl_bitmap32_not_zero() should return true if some bit in [start, end)
-is set:
+IPQ5018 is a single pdev device. Update host
+and target CE configurations accordingly.
 
-- Fix inverted memchr_inv() sense: return true when the scan finds a
-  non-zero byte, not when the middle words are all zero.
-- Return false for an empty interval (end <= start).
-- When end is 32-bit aligned, indices in [start, end) do not include any
-  bits from map[end_word]; return false after earlier checks found no
-  non-zero data.
+Tested-on: IPQ5018 hw1.0 AHB WLAN.HK.2.6.0.1-00861-QCAHKSWPL_SILICONZ-1
 
-Fixes: 10b518d4e6dd ("ethtool: netlink bitset handling")
-Signed-off-by: Chenguang Zhao <zhaochenguang@kylinos.cn>
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sriram R <quic_srirrama@quicinc.com>
+Co-developed-by: Karthikeyan Kathirvel <quic_kathirve@quicinc.com>
+Signed-off-by: Karthikeyan Kathirvel <quic_kathirve@quicinc.com>
+Signed-off-by: Kalle Valo <quic_kvalo@quicinc.com>
+Link: https://lore.kernel.org/r/20221122132152.17771-4-quic_kathirve@quicinc.com
+Stable-dep-of: 2a2451a34afd ("wifi: ath11k: fix peer resolution on rx path when peer_id=0")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/ethtool/bitset.c | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ drivers/net/wireless/ath/ath11k/core.c |   4 +
+ drivers/net/wireless/ath/ath11k/core.h |   3 +
+ drivers/net/wireless/ath/ath11k/hw.c   | 191 +++++++++++++++++++++++++
+ 3 files changed, 198 insertions(+)
 
-diff --git a/net/ethtool/bitset.c b/net/ethtool/bitset.c
-index f0883357d12e5..4691d6d0f2b75 100644
---- a/net/ethtool/bitset.c
-+++ b/net/ethtool/bitset.c
-@@ -91,7 +91,7 @@ static bool ethnl_bitmap32_not_zero(const u32 *map, unsigned int start,
- 	u32 mask;
+diff --git a/drivers/net/wireless/ath/ath11k/core.c b/drivers/net/wireless/ath/ath11k/core.c
+index c8fb72d9613fa..4c234d576b3d9 100644
+--- a/drivers/net/wireless/ath/ath11k/core.c
++++ b/drivers/net/wireless/ath/ath11k/core.c
+@@ -630,6 +630,10 @@ static const struct ath11k_hw_params ath11k_hw_params[] = {
+ 		.internal_sleep_clock = false,
+ 		.host_ce_config = ath11k_host_ce_config_qcn9074,
+ 		.ce_count = CE_CNT_5018,
++		.target_ce_config = ath11k_target_ce_config_wlan_ipq5018,
++		.target_ce_count = TARGET_CE_CNT_5018,
++		.svc_to_ce_map = ath11k_target_service_to_ce_map_wlan_ipq5018,
++		.svc_to_ce_map_len = SVC_CE_MAP_LEN_5018,
+ 		.rxdma1_enable = true,
+ 		.num_rxmda_per_pdev = RXDMA_PER_PDEV_5018,
+ 		.rx_mac_buf_ring = false,
+diff --git a/drivers/net/wireless/ath/ath11k/core.h b/drivers/net/wireless/ath/ath11k/core.h
+index 09e40ff461730..c0ddcf7bcd90b 100644
+--- a/drivers/net/wireless/ath/ath11k/core.h
++++ b/drivers/net/wireless/ath/ath11k/core.h
+@@ -1147,6 +1147,9 @@ extern const struct service_to_pipe ath11k_target_service_to_ce_map_wlan_ipq6018
+ extern const struct ce_pipe_config ath11k_target_ce_config_wlan_qca6390[];
+ extern const struct service_to_pipe ath11k_target_service_to_ce_map_wlan_qca6390[];
  
- 	if (end <= start)
--		return true;
-+		return false;
++extern const struct ce_pipe_config ath11k_target_ce_config_wlan_ipq5018[];
++extern const struct service_to_pipe ath11k_target_service_to_ce_map_wlan_ipq5018[];
++
+ extern const struct ce_pipe_config ath11k_target_ce_config_wlan_qcn9074[];
+ extern const struct service_to_pipe ath11k_target_service_to_ce_map_wlan_qcn9074[];
+ int ath11k_core_qmi_firmware_ready(struct ath11k_base *ab);
+diff --git a/drivers/net/wireless/ath/ath11k/hw.c b/drivers/net/wireless/ath/ath11k/hw.c
+index 332664643c7b4..1928da8415518 100644
+--- a/drivers/net/wireless/ath/ath11k/hw.c
++++ b/drivers/net/wireless/ath/ath11k/hw.c
+@@ -1973,6 +1973,197 @@ const struct ath11k_hw_ring_mask ath11k_hw_ring_mask_wcn6750 = {
+ 	},
+ };
  
- 	if (start % 32) {
- 		mask = ethnl_upper_bits(start);
-@@ -104,11 +104,11 @@ static bool ethnl_bitmap32_not_zero(const u32 *map, unsigned int start,
- 		start_word++;
- 	}
- 
--	if (!memchr_inv(map + start_word, '\0',
--			(end_word - start_word) * sizeof(u32)))
-+	if (memchr_inv(map + start_word, '\0',
-+		       (end_word - start_word) * sizeof(u32)))
- 		return true;
- 	if (end % 32 == 0)
--		return true;
-+		return false;
- 	return map[end_word] & ethnl_lower_bits(end);
- }
- 
++/* Target firmware's Copy Engine configuration for IPQ5018 */
++const struct ce_pipe_config ath11k_target_ce_config_wlan_ipq5018[] = {
++	/* CE0: host->target HTC control and raw streams */
++	{
++		.pipenum = __cpu_to_le32(0),
++		.pipedir = __cpu_to_le32(PIPEDIR_OUT),
++		.nentries = __cpu_to_le32(32),
++		.nbytes_max = __cpu_to_le32(2048),
++		.flags = __cpu_to_le32(CE_ATTR_FLAGS),
++		.reserved = __cpu_to_le32(0),
++	},
++
++	/* CE1: target->host HTT + HTC control */
++	{
++		.pipenum = __cpu_to_le32(1),
++		.pipedir = __cpu_to_le32(PIPEDIR_IN),
++		.nentries = __cpu_to_le32(32),
++		.nbytes_max = __cpu_to_le32(2048),
++		.flags = __cpu_to_le32(CE_ATTR_FLAGS),
++		.reserved = __cpu_to_le32(0),
++	},
++
++	/* CE2: target->host WMI */
++	{
++		.pipenum = __cpu_to_le32(2),
++		.pipedir = __cpu_to_le32(PIPEDIR_IN),
++		.nentries = __cpu_to_le32(32),
++		.nbytes_max = __cpu_to_le32(2048),
++		.flags = __cpu_to_le32(CE_ATTR_FLAGS),
++		.reserved = __cpu_to_le32(0),
++	},
++
++	/* CE3: host->target WMI */
++	{
++		.pipenum = __cpu_to_le32(3),
++		.pipedir = __cpu_to_le32(PIPEDIR_OUT),
++		.nentries = __cpu_to_le32(32),
++		.nbytes_max = __cpu_to_le32(2048),
++		.flags = __cpu_to_le32(CE_ATTR_FLAGS),
++		.reserved = __cpu_to_le32(0),
++	},
++
++	/* CE4: host->target HTT */
++	{
++		.pipenum = __cpu_to_le32(4),
++		.pipedir = __cpu_to_le32(PIPEDIR_OUT),
++		.nentries = __cpu_to_le32(256),
++		.nbytes_max = __cpu_to_le32(256),
++		.flags = __cpu_to_le32(CE_ATTR_FLAGS | CE_ATTR_DIS_INTR),
++		.reserved = __cpu_to_le32(0),
++	},
++
++	/* CE5: target->host Pktlog */
++	{
++		.pipenum = __cpu_to_le32(5),
++		.pipedir = __cpu_to_le32(PIPEDIR_IN),
++		.nentries = __cpu_to_le32(32),
++		.nbytes_max = __cpu_to_le32(2048),
++		.flags = __cpu_to_le32(CE_ATTR_FLAGS),
++		.reserved = __cpu_to_le32(0),
++	},
++
++	/* CE6: Reserved for target autonomous hif_memcpy */
++	{
++		.pipenum = __cpu_to_le32(6),
++		.pipedir = __cpu_to_le32(PIPEDIR_INOUT),
++		.nentries = __cpu_to_le32(32),
++		.nbytes_max = __cpu_to_le32(16384),
++		.flags = __cpu_to_le32(CE_ATTR_FLAGS),
++		.reserved = __cpu_to_le32(0),
++	},
++
++	/* CE7 used only by Host */
++	{
++		.pipenum = __cpu_to_le32(7),
++		.pipedir = __cpu_to_le32(PIPEDIR_OUT),
++		.nentries = __cpu_to_le32(32),
++		.nbytes_max = __cpu_to_le32(2048),
++		.flags = __cpu_to_le32(0x2000),
++		.reserved = __cpu_to_le32(0),
++	},
++
++	/* CE8 target->host used only by IPA */
++	{
++		.pipenum = __cpu_to_le32(8),
++		.pipedir = __cpu_to_le32(PIPEDIR_INOUT),
++		.nentries = __cpu_to_le32(32),
++		.nbytes_max = __cpu_to_le32(16384),
++		.flags = __cpu_to_le32(CE_ATTR_FLAGS),
++		.reserved = __cpu_to_le32(0),
++	},
++};
++
++/* Map from service/endpoint to Copy Engine for IPQ5018.
++ * This table is derived from the CE TABLE, above.
++ * It is passed to the Target at startup for use by firmware.
++ */
++const struct service_to_pipe ath11k_target_service_to_ce_map_wlan_ipq5018[] = {
++	{
++		.service_id = __cpu_to_le32(ATH11K_HTC_SVC_ID_WMI_DATA_VO),
++		.pipedir = __cpu_to_le32(PIPEDIR_OUT),	/* out = UL = host -> target */
++		.pipenum = __cpu_to_le32(3),
++	},
++	{
++		.service_id = __cpu_to_le32(ATH11K_HTC_SVC_ID_WMI_DATA_VO),
++		.pipedir = __cpu_to_le32(PIPEDIR_IN),	/* in = DL = target -> host */
++		.pipenum = __cpu_to_le32(2),
++	},
++	{
++		.service_id = __cpu_to_le32(ATH11K_HTC_SVC_ID_WMI_DATA_BK),
++		.pipedir = __cpu_to_le32(PIPEDIR_OUT),	/* out = UL = host -> target */
++		.pipenum = __cpu_to_le32(3),
++	},
++	{
++		.service_id = __cpu_to_le32(ATH11K_HTC_SVC_ID_WMI_DATA_BK),
++		.pipedir = __cpu_to_le32(PIPEDIR_IN),	/* in = DL = target -> host */
++		.pipenum = __cpu_to_le32(2),
++	},
++	{
++		.service_id = __cpu_to_le32(ATH11K_HTC_SVC_ID_WMI_DATA_BE),
++		.pipedir = __cpu_to_le32(PIPEDIR_OUT),	/* out = UL = host -> target */
++		.pipenum = __cpu_to_le32(3),
++	},
++	{
++		.service_id = __cpu_to_le32(ATH11K_HTC_SVC_ID_WMI_DATA_BE),
++		.pipedir = __cpu_to_le32(PIPEDIR_IN),	/* in = DL = target -> host */
++		.pipenum = __cpu_to_le32(2),
++	},
++	{
++		.service_id = __cpu_to_le32(ATH11K_HTC_SVC_ID_WMI_DATA_VI),
++		.pipedir = __cpu_to_le32(PIPEDIR_OUT),	/* out = UL = host -> target */
++		.pipenum = __cpu_to_le32(3),
++	},
++	{
++		.service_id = __cpu_to_le32(ATH11K_HTC_SVC_ID_WMI_DATA_VI),
++		.pipedir = __cpu_to_le32(PIPEDIR_IN),	/* in = DL = target -> host */
++		.pipenum = __cpu_to_le32(2),
++	},
++	{
++		.service_id = __cpu_to_le32(ATH11K_HTC_SVC_ID_WMI_CONTROL),
++		.pipedir = __cpu_to_le32(PIPEDIR_OUT),	/* out = UL = host -> target */
++		.pipenum = __cpu_to_le32(3),
++	},
++	{
++		.service_id = __cpu_to_le32(ATH11K_HTC_SVC_ID_WMI_CONTROL),
++		.pipedir = __cpu_to_le32(PIPEDIR_IN),	/* in = DL = target -> host */
++		.pipenum = __cpu_to_le32(2),
++	},
++
++	{
++		.service_id = __cpu_to_le32(ATH11K_HTC_SVC_ID_RSVD_CTRL),
++		.pipedir = __cpu_to_le32(PIPEDIR_OUT),	/* out = UL = host -> target */
++		.pipenum = __cpu_to_le32(0),
++	},
++	{
++		.service_id = __cpu_to_le32(ATH11K_HTC_SVC_ID_RSVD_CTRL),
++		.pipedir = __cpu_to_le32(PIPEDIR_IN),	/* in = DL = target -> host */
++		.pipenum = __cpu_to_le32(1),
++	},
++
++	{
++		.service_id = __cpu_to_le32(ATH11K_HTC_SVC_ID_TEST_RAW_STREAMS),
++		.pipedir = __cpu_to_le32(PIPEDIR_OUT),	/* out = UL = host -> target */
++		.pipenum = __cpu_to_le32(0),
++	},
++	{
++		.service_id = __cpu_to_le32(ATH11K_HTC_SVC_ID_TEST_RAW_STREAMS),
++		.pipedir = __cpu_to_le32(PIPEDIR_IN),	/* in = DL = target -> host */
++		.pipenum = __cpu_to_le32(1),
++	},
++	{
++		.service_id = __cpu_to_le32(ATH11K_HTC_SVC_ID_HTT_DATA_MSG),
++		.pipedir = __cpu_to_le32(PIPEDIR_OUT),	/* out = UL = host -> target */
++		.pipenum = __cpu_to_le32(4),
++	},
++	{
++		.service_id = __cpu_to_le32(ATH11K_HTC_SVC_ID_HTT_DATA_MSG),
++		.pipedir = __cpu_to_le32(PIPEDIR_IN),	/* in = DL = target -> host */
++		.pipenum = __cpu_to_le32(1),
++	},
++	{
++		.service_id = __cpu_to_le32(ATH11K_HTC_SVC_ID_PKT_LOG),
++		.pipedir = __cpu_to_le32(PIPEDIR_IN),	/* in = DL = target -> host */
++		.pipenum = __cpu_to_le32(5),
++	},
++
++       /* (Additions here) */
++
++	{ /* terminator entry */ }
++};
++
+ const struct ath11k_hw_regs ipq8074_regs = {
+ 	/* SW2TCL(x) R0 ring configuration address */
+ 	.hal_tcl1_ring_base_lsb = 0x00000510,
 -- 
 2.53.0
 
