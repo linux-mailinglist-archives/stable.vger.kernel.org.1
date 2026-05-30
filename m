@@ -1,58 +1,59 @@
-Return-Path: <stable+bounces-257763-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-259143-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id EN1dI48eG2q4/QgAu9opvQ
-	(envelope-from <stable+bounces-257763-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:29:51 +0200
+	id SIUxGn8xG2qKAAkAu9opvQ
+	(envelope-from <stable+bounces-259143-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:50:39 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id C894260FCB4
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:29:49 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2C18561296E
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:50:39 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id AD2BA300980F
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 17:28:16 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id D102B30347C4
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 18:45:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 26D5B3AE1A3;
-	Sat, 30 May 2026 17:28:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5FABB2E7398;
+	Sat, 30 May 2026 18:45:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MxAoajz8"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QDv8ouLH"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D56CD33B6C4;
-	Sat, 30 May 2026 17:28:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 40577233952;
+	Sat, 30 May 2026 18:45:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780162090; cv=none; b=OGHxKWzXuzbZrg04cf6vjUgnCku5a3c6CEGmRygr7n1RFLtDasNKEbi6AflcL5Y1ymW/KG4TmUJs9BTICcwBg5NYic4lMWFjWUJj2+pftHU4N3nMcqzh+B8dZ9znLXY+Zhv69eJmgUM4T5E99B+kcPlejeVe4fhdFD6TVHnZSLE=
+	t=1780166752; cv=none; b=a2XXSgjsxcFWZ9axfz5Ydd/zTklQ62i8hxRK8LS0IAjLx9pFENnuOxDrfJQ5uODkuxn5acLmUm9E1FFreScjLe+RgJvpQaBEFyaXaTsSvcMP20cXCF4XxKC36z0DvyEsYKhxjdS5ydteUSAWw4AczlZgHAW84L2WWUvb8qjxkJI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780162090; c=relaxed/simple;
-	bh=ILMde/bEhk0rxIuuoH9kq06Hqomgvc2b2cW5A0iYNEY=;
+	s=arc-20240116; t=1780166752; c=relaxed/simple;
+	bh=9o3phrC7WMSwtqoPQXLtu2nQLU2+5d+Lo+D9xqBUQwc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=kaOaBU9D6OrVGsbx+tZSQijoH3RBj5+vMWT1jGr3QB56uijfdNTRR+W0HEaLDI66NqLGZ6KYDLMPu+Dkkat4xMnyw93S25sHS39mm+kX/5mQ2vvoTLv0CYHk0rXuVUxF5JS26PcQaILeWZ+drVEu9746+qIhsLvSpDVY5RHv0rk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MxAoajz8; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 237901F00893;
-	Sat, 30 May 2026 17:28:08 +0000 (UTC)
+	 MIME-Version; b=TCwVFhmwBwW0kCMh/W6weG+JLWcg4+pSa77bUzUINk3EVmXbBOgdOnssiRUxu9yWvOQPnhJcVefSCEOVZk0SgfqRzMhWg3VHITh/bbNuV9g5e5YGL4DkJZ//OP8Nsst15QvC6RaM192ovuw6esj3beo6n7t//LFmBW4aJQ3iejk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QDv8ouLH; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8BFEB1F00893;
+	Sat, 30 May 2026 18:45:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780162089;
-	bh=0dPNziJ+zld+yXkUeugTGffaDWoAnGKOdWxGEClXrfg=;
+	s=korg; t=1780166751;
+	bh=Qcm3s7Z7NHyqFkVDKZtcp+sAecVEh10yR7KsEgKs9OE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=MxAoajz8NuCKUdWjsYk+D4jqUhGu3pJaH2VMknkmNj/2AINy8dUHn216J/iB/VsF6
-	 D+HEBejpkdUD/ZTAGj4s5JM0C4weHbGU6PcbTRghi2uGw/jv79R9R5BsB1t6T4n00R
-	 5rO6VMQSkqNa63m2auWImn6s2I/XWKz0IRsC3Pvk=
+	b=QDv8ouLHq6y+XBIM2xTdfET7vnugHjSupRNVn/5gYa08Hd7ej8p0dG+pWFbi7UqIE
+	 /ie7DQ5JxpOG8ENeyO4TG0QL37hYmYsCHXeXVvCL9yic26CiZomwsXGr2dqzgzJzcN
+	 En0tFnEgKjZs0MoiyDv+xh1Mjl7jq5JHRMDqHI7o=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?C=C3=A1ssio=20Gabriel?= <cassiogabrielcontato@gmail.com>,
-	Takashi Iwai <tiwai@suse.de>
-Subject: [PATCH 6.1 817/969] ALSA: usb-audio: Bound MIDI endpoint descriptor scans
+	Wolfram Sang <wsa+renesas@sang-engineering.com>,
+	Jassi Brar <jassisinghbrar@gmail.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 460/589] mailbox: mailbox-test: dont free the reused channel
 Date: Sat, 30 May 2026 18:05:41 +0200
-Message-ID: <20260530160323.201017941@linuxfoundation.org>
+Message-ID: <20260530160236.764104771@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260530160300.485627683@linuxfoundation.org>
-References: <20260530160300.485627683@linuxfoundation.org>
+In-Reply-To: <20260530160224.570625122@linuxfoundation.org>
+References: <20260530160224.570625122@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,93 +63,85 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-2.16 / 15.00];
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-257763-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,suse.de];
-	TO_DN_SOME(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	TO_DN_SOME(0.00)[];
+	TAGGED_FROM(0.00)[bounces-259143-lists,stable=lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,sang-engineering.com,gmail.com,kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	NEURAL_HAM(-0.00)[-1.000];
+	TAGGED_RCPT(0.00)[stable,renesas];
 	MID_RHS_MATCH_FROM(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[5];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,suse.de:email,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim]
-X-Rspamd-Queue-Id: C894260FCB4
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,sang-engineering.com:email]
+X-Rspamd-Queue-Id: 2C18561296E
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Cássio Gabriel <cassiogabrielcontato@gmail.com>
+From: Wolfram Sang <wsa+renesas@sang-engineering.com>
 
-commit d6854daa67be623860f4e1873fd3d3c275aba4ed upstream.
+[ Upstream commit 88ebadbf0deefdaccdab868b44ff70a0a257f473 ]
 
-snd_usbmidi_get_ms_info() validates the internal MIDIStreaming endpoint
-descriptor size before using baAssocJackID[], but the descriptor walker can
-still return a class-specific endpoint descriptor whose bLength exceeds the
-remaining bytes in the endpoint-extra scan.
+The RX channel can be aliased to the TX channel if it has a different
+MMIO. This special case needs to be handled when freeing the channels
+otherwise a double-free occurs.
 
-That leaves later flexible-array reads bounded by bLength, but not by the
-remaining bytes in the endpoint-extra scan.
-
-Stop walking when bLength is zero or
-extends past the remaining endpoint-extra scan.
-
-Fixes: 5c6cd7021a05 ("ALSA: usb-audio: Fix case when USB MIDI interface has more than one extra endpoint descriptor")
-Cc: stable@vger.kernel.org
-Signed-off-by: Cássio Gabriel <cassiogabrielcontato@gmail.com>
-Link: https://patch.msgid.link/20260507-usb-midi-endpoint-scan-bounds-v1-1-329d7348160e@gmail.com
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 8ea4484d0c2b ("mailbox: Add generic mechanism for testing Mailbox Controllers")
+Signed-off-by: Wolfram Sang <wsa+renesas@sang-engineering.com>
+Signed-off-by: Jassi Brar <jassisinghbrar@gmail.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/usb/midi.c |   12 +++++++-----
- 1 file changed, 7 insertions(+), 5 deletions(-)
+ drivers/mailbox/mailbox-test.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
---- a/sound/usb/midi.c
-+++ b/sound/usb/midi.c
-@@ -1974,15 +1974,17 @@ static struct usb_ms_endpoint_descriptor
- 	while (extralen > 3) {
- 		struct usb_ms_endpoint_descriptor *ms_ep =
- 				(struct usb_ms_endpoint_descriptor *)extra;
-+		int length = ms_ep->bLength;
- 
--		if (ms_ep->bLength > 3 &&
-+		if (!length || length > extralen)
-+			break;
-+
-+		if (length > 3 &&
- 		    ms_ep->bDescriptorType == USB_DT_CS_ENDPOINT &&
- 		    ms_ep->bDescriptorSubtype == UAC_MS_GENERAL)
- 			return ms_ep;
--		if (!extra[0])
--			break;
--		extralen -= extra[0];
--		extra += extra[0];
-+		extralen -= length;
-+		extra += length;
- 	}
- 	return NULL;
+diff --git a/drivers/mailbox/mailbox-test.c b/drivers/mailbox/mailbox-test.c
+index 1d546cae922ce..247e83af060e3 100644
+--- a/drivers/mailbox/mailbox-test.c
++++ b/drivers/mailbox/mailbox-test.c
+@@ -423,7 +423,7 @@ static int mbox_test_probe(struct platform_device *pdev)
+ err_free_chans:
+ 	if (tdev->tx_channel)
+ 		mbox_free_channel(tdev->tx_channel);
+-	if (tdev->rx_channel)
++	if (tdev->rx_channel && tdev->rx_channel != tdev->tx_channel)
+ 		mbox_free_channel(tdev->rx_channel);
+ 	return ret;
  }
+@@ -436,7 +436,7 @@ static int mbox_test_remove(struct platform_device *pdev)
+ 
+ 	if (tdev->tx_channel)
+ 		mbox_free_channel(tdev->tx_channel);
+-	if (tdev->rx_channel)
++	if (tdev->rx_channel && tdev->rx_channel != tdev->tx_channel)
+ 		mbox_free_channel(tdev->rx_channel);
+ 
+ 	return 0;
+-- 
+2.53.0
+
 
 
 
