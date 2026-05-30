@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-257107-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-257108-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id UB+jGuYVG2pV/AgAu9opvQ
-	(envelope-from <stable+bounces-257107-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 18:52:54 +0200
+	id UO+qGl0VG2pV/AgAu9opvQ
+	(envelope-from <stable+bounces-257108-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 18:50:37 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id C39A860E865
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 18:52:53 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1052060E7C9
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 18:50:36 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 54FA23009CE1
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 16:50:23 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 220163014807
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 16:50:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E392F331A56;
-	Sat, 30 May 2026 16:50:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 293ED33F5A3;
+	Sat, 30 May 2026 16:50:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vVtKEgIe"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="J5NBO+yQ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B465B33A9DA;
-	Sat, 30 May 2026 16:50:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E3FF43242BE;
+	Sat, 30 May 2026 16:50:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780159822; cv=none; b=q5DoFOyt/wGRU6RxSGNPx0pcQRVZKWvR194l/JI7LbLCkhgKtR8mleIqKk9PyXzkkir6JU/nwzB+FGpp/DdugLV0dC1KqN3/U+Uo70XZ3y5Ft7P9NkwuDnrp1RHq5s0j0osuH27NAr1HkdrHFoWaTouLAPHfv32VDAGpS2GNdcY=
+	t=1780159826; cv=none; b=IK2TRoRQLuHHBvMYCo21aJZ+Dw89SAgD+at+4wsqYMVDWRgZJQNRbj5Hx6aO9cAUwhbHh9gn9EgRUFsvk9oQX66O+WutegZP5c1IA78abPdJ32ieoDK16duoORku5QnTpeo6kK50zcrVzUAZds14BlLlPrFMUBQcK+DtACkIFWc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780159822; c=relaxed/simple;
-	bh=As/8KC+VtVbggM/mBHEND5Sz/wNUPF1DYcOIw/BHagc=;
+	s=arc-20240116; t=1780159826; c=relaxed/simple;
+	bh=/GRKj51rNMOgO3jfSHmfkSvpYNpCX2QW1y96SrQSrqE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=QlkkD8SC0nbntXZRXl+EoLB2vlfwf9D5BVdxVXiBa0kUIozaWP17fkawazWjYGIPlxF1XY7FOXJoyfUHRI9o8hSd1C/fD/AcsFB/ApsQvOgZBuI9rhjPvWGzVPP9naEpESUEGzFs+OJjiRLMmH6OVovznJSnquU5WnwdfQ67eDM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vVtKEgIe; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9426B1F00893;
-	Sat, 30 May 2026 16:50:20 +0000 (UTC)
+	 MIME-Version:Content-Type; b=VheXYdhNoYG8KDb+r9SaJ6a6hVmc8KXG1YyTSpFp3hk9wpp4LIax9K9ciYt4x6JZPQ/dkhKbiCfLe7cxaj5yn/yBmuExmViFOtKydSqCyAOddKPXPmC++0281sV5YA/pINDkc/xHoUQO5aM41+ef2pKhXQvHJMbmdBykOimX3Qk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=J5NBO+yQ; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F15151F00893;
+	Sat, 30 May 2026 16:50:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780159821;
-	bh=Ttfh1HNalmLmyFg8tKW964wxmHLxqYDD5bEj3YtDzOs=;
+	s=korg; t=1780159824;
+	bh=bbnh01wP4j1RmGMpi1o7nleMHUgkPo0uHwiR01sm2j4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=vVtKEgIeWLS5xPW56lbh8phMSzFuhWCiJCBXOZGPi9EVsDBAGVb7CprHExi/pD1BP
-	 9birKTk+mhK3QFN7A/LtkVVmpnak5XMhaPJBHf4+3eZTu5XkAd4XZCoRLaYO+1bMyo
-	 osE5PfC3Cou2JigoZipsaNFCw8OprH/OI5qop3Es=
+	b=J5NBO+yQLpv/0YH9GpOb1arQmQZTz6iUEgD19+nwh7bGzUsQPpAcjwlQRR8M9Vg2Q
+	 QmMV8Ix1F7SU/LOzLf6KI3O+SE5kdNAICZfxy6CK3PhDnwy8tYtvQhmt+ykJtoZhRS
+	 sFlx+WzY/PA8JNuqYFu0ouwIHkhPLD6Yl4wBmYUY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Tvrtko Ursulin <tvrtko.ursulin@igalia.com>,
+	=?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
+	Jesse Zhang <jesse.zhang@amd.com>,
 	Alex Deucher <alexander.deucher@amd.com>,
 	Fang Wang <32840572@qq.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 171/969] drm/amdgpu: Use vmemdup_array_user in amdgpu_bo_create_list_entry_array
-Date: Sat, 30 May 2026 17:54:55 +0200
-Message-ID: <20260530160305.227757603@linuxfoundation.org>
+Subject: [PATCH 6.1 172/969] drm/amdgpu: Limit BO list entry count to prevent resource exhaustion
+Date: Sat, 30 May 2026 17:54:56 +0200
+Message-ID: <20260530160305.253364142@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
 In-Reply-To: <20260530160300.485627683@linuxfoundation.org>
 References: <20260530160300.485627683@linuxfoundation.org>
@@ -64,35 +65,35 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	TAGGED_FROM(0.00)[bounces-257107-lists,stable=lfdr.de];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,igalia.com,amd.com,qq.com,kernel.org];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_TLS_LAST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MIME_TRACE(0.00)[0:+];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,amd.com,qq.com,kernel.org];
+	TAGGED_FROM(0.00)[bounces-257108-lists,stable=lfdr.de];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	MID_RHS_MATCH_FROM(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	MIME_TRACE(0.00)[0:+];
 	NEURAL_HAM(-0.00)[-1.000];
 	PRECEDENCE_BULK(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[7];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	TO_DN_SOME(0.00)[];
-	FROM_HAS_DN(0.00)[]
-X-Rspamd-Queue-Id: C39A860E865
+	RCPT_COUNT_SEVEN(0.00)[8];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TO_DN_SOME(0.00)[]
+X-Rspamd-Queue-Id: 1052060E7C9
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
@@ -100,89 +101,57 @@ X-Rspamd-Server: lfdr
 
 ------------------
 
-From: Tvrtko Ursulin <tvrtko.ursulin@igalia.com>
+From: Jesse.Zhang <Jesse.Zhang@amd.com>
 
-[ Upstream commit c4ac100e9ae252b09986766ad23b1f83ca3a369d ]
+[ Upstream commit 6270b1a5dab94665d7adce3dc78bc9066ed28bdd ]
 
-Replace kvmalloc_array() + copy_from_user() with vmemdup_array_user() on
-the fast path.
+Userspace can pass an arbitrary number of BO list entries via the
+bo_number field. Although the previous multiplication overflow check
+prevents out-of-bounds allocation, a large number of entries could still
+cause excessive memory allocation (up to potentially gigabytes) and
+unnecessarily long list processing times.
 
-This shrinks the source code and improves separation between the kernel
-and userspace slabs.
+Introduce a hard limit of 128k entries per BO list, which is more than
+sufficient for any realistic use case (e.g., a single list containing all
+buffers in a large scene). This prevents memory exhaustion attacks and
+ensures predictable performance.
 
-Signed-off-by: Tvrtko Ursulin <tvrtko.ursulin@igalia.com>
+Return -EINVAL if the requested entry count exceeds the limit
+
+Reviewed-by: Christian König <christian.koenig@amd.com>
+Suggested-by: Christian König <christian.koenig@amd.com>
+Signed-off-by: Jesse Zhang <jesse.zhang@amd.com>
 Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+(cherry picked from commit 688b87d39e0aa8135105b40dc167d74b5ada5332)
+Cc: stable@vger.kernel.org
 Signed-off-by: Fang Wang <32840572@qq.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/amdgpu/amdgpu_bo_list.c | 41 +++++++++------------
- 1 file changed, 17 insertions(+), 24 deletions(-)
+ drivers/gpu/drm/amd/amdgpu/amdgpu_bo_list.c | 4 ++++
+ 1 file changed, 4 insertions(+)
 
 diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_bo_list.c b/drivers/gpu/drm/amd/amdgpu/amdgpu_bo_list.c
-index fdc302aa59e7b..79e43896edddb 100644
+index 79e43896edddb..28a5b54a3aae1 100644
 --- a/drivers/gpu/drm/amd/amdgpu/amdgpu_bo_list.c
 +++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_bo_list.c
-@@ -226,43 +226,36 @@ void amdgpu_bo_list_put(struct amdgpu_bo_list *list)
- int amdgpu_bo_create_list_entry_array(struct drm_amdgpu_bo_list_in *in,
- 				      struct drm_amdgpu_bo_list_entry **info_param)
+@@ -35,6 +35,7 @@
+ 
+ #define AMDGPU_BO_LIST_MAX_PRIORITY	32u
+ #define AMDGPU_BO_LIST_NUM_BUCKETS	(AMDGPU_BO_LIST_MAX_PRIORITY + 1)
++#define AMDGPU_BO_LIST_MAX_ENTRIES	(128 * 1024)
+ 
+ static void amdgpu_bo_list_free_rcu(struct rcu_head *rcu)
  {
--	const void __user *uptr = u64_to_user_ptr(in->bo_info_ptr);
- 	const uint32_t info_size = sizeof(struct drm_amdgpu_bo_list_entry);
-+	const void __user *uptr = u64_to_user_ptr(in->bo_info_ptr);
-+	const uint32_t bo_info_size = in->bo_info_size;
-+	const uint32_t bo_number = in->bo_number;
+@@ -232,6 +233,9 @@ int amdgpu_bo_create_list_entry_array(struct drm_amdgpu_bo_list_in *in,
+ 	const uint32_t bo_number = in->bo_number;
  	struct drm_amdgpu_bo_list_entry *info;
--	int r;
--
--	info = kvmalloc_array(in->bo_number, info_size, GFP_KERNEL);
--	if (!info)
--		return -ENOMEM;
  
++	if (bo_number > AMDGPU_BO_LIST_MAX_ENTRIES)
++		return -EINVAL;
++
  	/* copy the handle array from userspace to a kernel buffer */
--	r = -EFAULT;
--	if (likely(info_size == in->bo_info_size)) {
--		unsigned long bytes = in->bo_number *
--			in->bo_info_size;
--
--		if (copy_from_user(info, uptr, bytes))
--			goto error_free;
--
-+	if (likely(info_size == bo_info_size)) {
-+		info = vmemdup_array_user(uptr, bo_number, info_size);
-+		if (IS_ERR(info))
-+			return PTR_ERR(info);
- 	} else {
--		unsigned long bytes = min(in->bo_info_size, info_size);
-+		const uint32_t bytes = min(bo_info_size, info_size);
- 		unsigned i;
- 
--		memset(info, 0, in->bo_number * info_size);
--		for (i = 0; i < in->bo_number; ++i) {
--			if (copy_from_user(&info[i], uptr, bytes))
--				goto error_free;
-+		info = kvmalloc_array(bo_number, info_size, GFP_KERNEL);
-+		if (!info)
-+			return -ENOMEM;
- 
--			uptr += in->bo_info_size;
-+		memset(info, 0, bo_number * info_size);
-+		for (i = 0; i < bo_number; ++i, uptr += bo_info_size) {
-+			if (copy_from_user(&info[i], uptr, bytes)) {
-+				kvfree(info);
-+				return -EFAULT;
-+			}
- 		}
- 	}
- 
- 	*info_param = info;
- 	return 0;
--
--error_free:
--	kvfree(info);
--	return r;
- }
- 
- int amdgpu_bo_list_ioctl(struct drm_device *dev, void *data,
+ 	if (likely(info_size == bo_info_size)) {
+ 		info = vmemdup_array_user(uptr, bo_number, info_size);
 -- 
 2.53.0
 
