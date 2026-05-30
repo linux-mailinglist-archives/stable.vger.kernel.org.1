@@ -1,60 +1,60 @@
-Return-Path: <stable+bounces-257690-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-258472-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id SLGtErMdG2qV/QgAu9opvQ
-	(envelope-from <stable+bounces-257690-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:26:11 +0200
+	id WJsSMRIqG2r//ggAu9opvQ
+	(envelope-from <stable+bounces-258472-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:18:58 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id EDE0E60FA40
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:26:10 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2035661174D
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:18:57 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id B931C304CB0A
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 17:24:07 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 9E85D30D5AB5
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 18:07:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2BDDB348C55;
-	Sat, 30 May 2026 17:24:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 185CD3B9D80;
+	Sat, 30 May 2026 18:07:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oK2cbTq6"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="E41eMRs+"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A269533E36A;
-	Sat, 30 May 2026 17:24:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E776A3112C1;
+	Sat, 30 May 2026 18:07:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780161846; cv=none; b=Cv2LR2hKQYKCSULJXet+iBs8ucdC9T47ZX3/uHmaGaMxn0QaZN/APyOWoZ3twRCnBPwCxy1sYUp8g+JU7MkisNO1ttBlysEZz5K1iJSSACwMBEboJ4HWZyIGZiJoLfB1v2dGv0vwaq2Cy2A3QYYqoPEcx3cx17Go2BGkEhua7Qo=
+	t=1780164464; cv=none; b=J+RnMyLWdAb6EPqs1+GfziLtcCORk7GIoo1pxwzSiyCWb9VZLTrlDCELyosiQZNKk5DmyStzVIDx/62VRjihJfIn1VsqYaD504ExMobf+U7o7u/NDFGZMRDcZJa+Hjs4Njb13iRar28woLdxFptK47M9W0WG7EDZlkC08FyScW4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780161846; c=relaxed/simple;
-	bh=6A2ePCxPun4CmCoLqa1YGAPk90BNPZZMP1LnLBr+bt4=;
+	s=arc-20240116; t=1780164464; c=relaxed/simple;
+	bh=GUJhRvwhEjV4Qdme/cFu5dGliUtos4inbn0uasknNmA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=rVJCCTXgKB6bKr7aGUhv6KhjaGibSiDKICbYlHLqg4FJO+HpUyxeoO2eOpsvbp5r8yypcEwygbVXGo2uL1R16TeUPuXidkoPcb2mXRTJvqEZ5nvSHFdm/c4lWg95QnFZV541vRjXxNHoRJBAf6cQtAjyKPV8BiOweQGX07DB2pY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oK2cbTq6; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E74EC1F00893;
-	Sat, 30 May 2026 17:24:04 +0000 (UTC)
+	 MIME-Version; b=D2u1APKMnbsDTWDyDSbrH2fn2RLTp0CrbCq4wRqINkNh7cRRV5o4hQwG0QSSKyisODwqTv4cwUkSy9eqwkqKfFaV+YJLpVFoiziUxeojdv8qZj9cFdEkdA0wLzT2Zv7ht0zPZ+QP9RFtsv+cwBAJHgJNzZruCE57MzXp/KSOp0k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=E41eMRs+; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id ED7AB1F00893;
+	Sat, 30 May 2026 18:07:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780161845;
-	bh=fQOGj7EyOf3gxH2Cq0HeeZoiC21WSEZHBTrIxFiXsa4=;
+	s=korg; t=1780164463;
+	bh=nkbfZ/ShXwvoKbBYAt4J9PkVl32WOk2bH2zmcCCFkBw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=oK2cbTq6DSEWdNCfoM6toxaWrffGK1jaimUPqdzSbBoDH14FrvJAj1F3lYkSExkSl
-	 sbRnQPFASOoxA1/vWMNV7UegujJZehP51kAV3SKUm74nThdyPCbAHI2QmRohII/wyO
-	 XuafNINeo0u8f3OpWf6Ic9SLqtbBUppVAp/EyqJk=
+	b=E41eMRs+XX+RWtJX1mrWwxLp4mH2+pnvOzKTKQysGiNoWahSSiIVpPP45z44bg6jI
+	 Fad/TfDAiZtMpwX193QGD3HChH4LqMyCMvzAQXLwoC8e7Bo/GSUpnTMOYB/+oN9kp1
+	 E4udwoBB68NQ0SEpsfeLf1J5ATDsziTLZc6rRLXs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Nikola Z. Ivanov" <zlatistiv@gmail.com>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Jiayuan Chen <jiayuan.chen@linux.dev>,
+	David Ahern <dsahern@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 745/969] netdevsim: zero initialize struct iphdr in dummy sk_buff
+Subject: [PATCH 5.15 555/776] nexthop: fix IPv6 route referencing IPv4 nexthop
 Date: Sat, 30 May 2026 18:04:29 +0200
-Message-ID: <20260530160321.133228462@linuxfoundation.org>
+Message-ID: <20260530160254.490213980@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260530160300.485627683@linuxfoundation.org>
-References: <20260530160300.485627683@linuxfoundation.org>
+In-Reply-To: <20260530160240.228940103@linuxfoundation.org>
+References: <20260530160240.228940103@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,72 +69,98 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	TAGGED_FROM(0.00)[bounces-257690-lists,stable=lfdr.de];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,google.com,kernel.org];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_TLS_LAST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-258472-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	PRECEDENCE_BULK(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
 	TO_DN_SOME(0.00)[];
-	FROM_HAS_DN(0.00)[]
-X-Rspamd-Queue-Id: EDE0E60FA40
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_SEVEN(0.00)[7];
+	MID_RHS_MATCH_FROM(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,linux.dev:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,msgid.link:url,syzkaller.appspot.com:url]
+X-Rspamd-Queue-Id: 2035661174D
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Nikola Z. Ivanov <zlatistiv@gmail.com>
+From: Jiayuan Chen <jiayuan.chen@linux.dev>
 
-[ Upstream commit 35eaa6d8d6c2ee65e96f507add856e0eacf24591 ]
+[ Upstream commit 29c95185ba32b621fbc3800fb86e7dc3edf5c2be ]
 
-Syzbot reports a KMSAN uninit-value originating from
-nsim_dev_trap_skb_build, with the allocation also
-being performed in the same function.
+syzbot reported a panic [1] [2].
 
-Fix this by calling skb_put_zero instead of skb_put to
-guarantee zero initialization of the whole IP header.
+When an IPv6 nexthop is replaced with an IPv4 nexthop, the has_v4 flag
+of all groups containing this nexthop is not updated. This is because
+nh_group_v4_update is only called when replacing AF_INET to AF_INET6,
+but the reverse direction (AF_INET6 to AF_INET) is missed.
 
-Closes: https://syzkaller.appspot.com/bug?extid=23d7fcd204e3837866ff
-Fixes: da58f90f11f5 ("netdevsim: Add devlink-trap support")
-Signed-off-by: Nikola Z. Ivanov <zlatistiv@gmail.com>
-Reviewed-by: Eric Dumazet <edumazet@google.com>
-Link: https://patch.msgid.link/20260426201434.742030-1-zlatistiv@gmail.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+This allows a stale has_v4=false to bypass fib6_check_nexthop, causing
+IPv6 routes to be attached to groups that effectively contain only AF_INET
+members. Subsequent route lookups then call nexthop_fib6_nh() which
+returns NULL for the AF_INET member, leading to a NULL pointer
+dereference.
+
+Fix by calling nh_group_v4_update whenever the family changes, not just
+AF_INET to AF_INET6.
+
+Reproducer:
+	# AF_INET6 blackhole
+	ip -6 nexthop add id 1 blackhole
+	# group with has_v4=false
+	ip nexthop add id 100 group 1
+	# replace with AF_INET (no -6), has_v4 stays false
+	ip nexthop replace id 1 blackhole
+	# pass stale has_v4 check
+	ip -6 route add 2001:db8::/64 nhid 100
+	# panic
+	ping -6 2001:db8::1
+
+[1] https://syzkaller.appspot.com/bug?id=e17283eb2f8dcf3dd9b47fe6f67a95f71faadad0
+[2] https://syzkaller.appspot.com/bug?id=8699b6ae54c9f35837d925686208402949e12ef3
+Fixes: 7bf4796dd099 ("nexthops: add support for replace")
+Signed-off-by: Jiayuan Chen <jiayuan.chen@linux.dev>
+Reviewed-by: David Ahern <dsahern@kernel.org>
+Link: https://patch.msgid.link/20260413114522.147784-1-jiayuan.chen@linux.dev
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/netdevsim/dev.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ net/ipv4/nexthop.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/net/netdevsim/dev.c b/drivers/net/netdevsim/dev.c
-index 971796b30605a..97ace81b0b4dc 100644
---- a/drivers/net/netdevsim/dev.c
-+++ b/drivers/net/netdevsim/dev.c
-@@ -758,7 +758,7 @@ static struct sk_buff *nsim_dev_trap_skb_build(void)
- 	skb->protocol = htons(ETH_P_IP);
+diff --git a/net/ipv4/nexthop.c b/net/ipv4/nexthop.c
+index 9bd72526000c4..8cd148be09c6b 100644
+--- a/net/ipv4/nexthop.c
++++ b/net/ipv4/nexthop.c
+@@ -2161,10 +2161,10 @@ static int replace_nexthop_single(struct net *net, struct nexthop *old,
+ 			goto err_notify;
+ 	}
  
- 	skb_set_network_header(skb, skb->len);
--	iph = skb_put(skb, sizeof(struct iphdr));
-+	iph = skb_put_zero(skb, sizeof(struct iphdr));
- 	iph->protocol = IPPROTO_UDP;
- 	iph->saddr = in_aton("192.0.2.1");
- 	iph->daddr = in_aton("198.51.100.1");
+-	/* When replacing an IPv4 nexthop with an IPv6 nexthop, potentially
++	/* When replacing a nexthop with one of a different family, potentially
+ 	 * update IPv4 indication in all the groups using the nexthop.
+ 	 */
+-	if (oldi->family == AF_INET && newi->family == AF_INET6) {
++	if (oldi->family != newi->family) {
+ 		list_for_each_entry(nhge, &old->grp_list, nh_list) {
+ 			struct nexthop *nhp = nhge->nh_parent;
+ 			struct nh_group *nhg;
 -- 
 2.53.0
 
