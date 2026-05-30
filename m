@@ -1,61 +1,59 @@
-Return-Path: <stable+bounces-258454-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-257708-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id cFZjDZ4nG2qS/ggAu9opvQ
-	(envelope-from <stable+bounces-258454-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:08:30 +0200
+	id GFOrKgIfG2qu/QgAu9opvQ
+	(envelope-from <stable+bounces-257708-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:31:46 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id C2C276110EA
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:08:29 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0DDA260FD9D
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:31:45 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id E7ACA3037BC1
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 18:06:44 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 3157E3039C9B
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 17:25:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 92A2F31E858;
-	Sat, 30 May 2026 18:06:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0DF27380FEC;
+	Sat, 30 May 2026 17:25:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QGwv2uva"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qvPdtFfz"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6BA8B3B9D80;
-	Sat, 30 May 2026 18:06:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C54DF324B1E;
+	Sat, 30 May 2026 17:25:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780164404; cv=none; b=o+D91dk5iruuKn36qktkZcE+Pz8btfweP7bKtw96u6nDJw43qV7rqbB6g+zykHbOkPitdJyReI6+VPVEf0V5Txs4QchQ5jzvZ5xQeYOL6yIs+xx3EZg8LHa/fuClut1od/rHLVMn6fq9YeJqsv5Av0BptDVOER7KVbkS7G/G2Mk=
+	t=1780161909; cv=none; b=FiY4OICxY0mp9NI/ARwSpfyfDwn0Z5E3YvQPmMaBHCulpEv29dz/2gZErLwfMgZZ6mBRzvuApm5ieQAbRkfj8KEqnflJ/BG3/CcNgqkKYEApdygPoHfNtFJojofKlIZDfsU/xw+u/GANWOxfaWAK/2S0FwnWjzvRrxFS3D9pZv0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780164404; c=relaxed/simple;
-	bh=ag7dSodl40SGLgbWPxtpyo18P3Fz/Evpr9HD/PaP1jg=;
+	s=arc-20240116; t=1780161909; c=relaxed/simple;
+	bh=JkuqZN8vhuMBcUt9BnqvAekUqvslHOFUIHAoPNy3/Jw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=uQbGbq10ydYBMIv8RmFh3ZIlABTfEEsMSFyK7zMu10OpGWqyNb4f3ZTH1dBHxJXCYe9+Fze3WHZLYfWdwNKC8ljbaU5x36OwjtNTaj6T+c8PQoE7T8cS7Evcu89Zo3mLIEOMXZ1hq1sdfpV6qz3wYnZNxtMcMVkMixwjtTXaFY4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QGwv2uva; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A84521F00893;
-	Sat, 30 May 2026 18:06:42 +0000 (UTC)
+	 MIME-Version; b=eN5L0r2/IRcfdXz7szal4Qqnar5HPQ6MnWTC7fsOE7UzcPz+fo0iiKqoDJ70P/YUWROkGV8Hct50PREL5TpwPWCA2yHzpwM7MJwEjSi4h1mbysTDjweyJ9kqlZzw+BTB/o79OqSWdM326dWxUIZl96zcBpdXSCcRv/K3MLnC/D8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qvPdtFfz; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 16D8C1F00898;
+	Sat, 30 May 2026 17:25:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780164403;
-	bh=1K6H0iIhRVpVpJRjpnSaKDxURCJ+urFIV9U+oyTYABw=;
+	s=korg; t=1780161908;
+	bh=KCxL8HBldD0HDfOuvXKJwBFAL5QPmk0bkGoPYRk5PmA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=QGwv2uvaw7fgfcEscbs35v17rOHdIk7Y4gsBYmSyV/o/ngSnsNWkTodLE+MZdl2wI
-	 CooVpoqo3RNPfk/2QwORB5AQdx3ZcVoNZU/heIXQpBE/FUi8o1PJtEzvnRXAJTeMFA
-	 N88tEQDimRmfAbAGJGSSaH/leli46wX6xxtXwkrk=
+	b=qvPdtFfzGbF4NCWeZ8pC0WW4VjqcpB3doJd6iLwyXtdRw+yWzYeU70amir2aCGD4n
+	 EHF1OLSxoic02fSImHNkXeCgVDfGh4YzvU8TNyUwi2G7W8JwpeJSEEE9hsL29kmwrW
+	 56I0HX+i4ul+k4egj3nsfz3aFWaRRc3b17pjjLc4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Felix Gu <ustc.gu@gmail.com>,
-	Frank Li <Frank.Li@nxp.com>,
-	Peng Fan <peng.fan@nxp.com>,
-	Abel Vesa <abel.vesa@oss.qualcomm.com>,
+	Xiang Mei <xmei5@asu.edu>,
+	Pablo Neira Ayuso <pablo@netfilter.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 544/776] clk: imx: imx6q: Fix device node reference leak in of_assigned_ldb_sels()
+Subject: [PATCH 6.1 734/969] netfilter: arp_tables: fix IEEE1394 ARP payload parsing
 Date: Sat, 30 May 2026 18:04:18 +0200
-Message-ID: <20260530160254.233905191@linuxfoundation.org>
+Message-ID: <20260530160320.815564663@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260530160240.228940103@linuxfoundation.org>
-References: <20260530160240.228940103@linuxfoundation.org>
+In-Reply-To: <20260530160300.485627683@linuxfoundation.org>
+References: <20260530160300.485627683@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,91 +64,159 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,nxp.com,oss.qualcomm.com,kernel.org];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-258454-lists,stable=lfdr.de];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	TO_DN_SOME(0.00)[];
-	NEURAL_HAM(-0.00)[-0.999];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-257708-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
+	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_SEVEN(0.00)[8];
+	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	FROM_HAS_DN(0.00)[]
-X-Rspamd-Queue-Id: C2C276110EA
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[netfilter.org:email,asu.edu:email,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim]
+X-Rspamd-Queue-Id: 0DDA260FD9D
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Felix Gu <ustc.gu@gmail.com>
+From: Pablo Neira Ayuso <pablo@netfilter.org>
 
-[ Upstream commit 9faf207208951460f3f7eefbc112246c8d28ff1b ]
+[ Upstream commit 1e8e3f449b1e73b73a843257635b9c50f0cc0f0a ]
 
-The function of_assigned_ldb_sels() calls of_parse_phandle_with_args()
-but never calls of_node_put() to release the reference, causing a memory
-leak.
+Weiming Shi says:
 
-Fix this by adding proper cleanup calls on all exit paths.
+"arp_packet_match() unconditionally parses the ARP payload assuming two
+hardware addresses are present (source and target). However,
+IPv4-over-IEEE1394 ARP (RFC 2734) omits the target hardware address
+field, and arp_hdr_len() already accounts for this by returning a
+shorter length for ARPHRD_IEEE1394 devices.
 
-Fixes: 5d283b083800 ("clk: imx6: Fix procedure to switch the parent of LDB_DI_CLK")
-Signed-off-by: Felix Gu <ustc.gu@gmail.com>
-Reviewed-by: Frank Li <Frank.Li@nxp.com>
-Reviewed-by: Peng Fan <peng.fan@nxp.com>
-Link: https://patch.msgid.link/20260203-clk-imx6q-v3-2-6cd2696bb371@gmail.com
-Signed-off-by: Abel Vesa <abel.vesa@oss.qualcomm.com>
+As a result, on IEEE1394 interfaces arp_packet_match() advances past a
+nonexistent target hardware address and reads the wrong bytes for both
+the target device address comparison and the target IP address. This
+causes arptables rules to match against garbage data, leading to
+incorrect filtering decisions: packets that should be accepted may be
+dropped and vice versa.
+
+The ARP stack in net/ipv4/arp.c (arp_create and arp_process) already
+handles this correctly by skipping the target hardware address for
+ARPHRD_IEEE1394. Apply the same pattern to arp_packet_match()."
+
+Mangle the original patch to always return 0 (no match) in case user
+matches on the target hardware address which is never present in
+IEEE1394.
+
+Note that this returns 0 (no match) for either normal and inverse match
+because matching in the target hardware address in ARPHRD_IEEE1394 has
+never been supported by arptables. This is intentional, matching on the
+target hardware address should never evaluate true for ARPHRD_IEEE1394.
+
+Moreover, adjust arpt_mangle to drop the packet too as AI suggests:
+
+In arpt_mangle, the logic assumes a standard ARP layout. Because
+IEEE1394 (FireWire) omits the target hardware address, the linear
+pointer arithmetic miscalculates the offset for the target IP address.
+This causes mangling operations to write to the wrong location, leading
+to packet corruption. To ensure safety, this patch drops packets
+(NF_DROP) when mangling is requested for these fields on IEEE1394
+devices, as the current implementation cannot correctly map the FireWire
+ARP payload.
+
+This omits both mangling target hardware and IP address. Even if IP
+address mangling should be possible in IEEE1394, this would require
+to adjust arpt_mangle offset calculation, which has never been
+supported.
+
+Based on patch from Weiming Shi <bestswngs@gmail.com>.
+
+Fixes: 6752c8db8e0c ("firewire net, ipv4 arp: Extend hardware address and remove driver-level packet inspection.")
+Reported-by: Xiang Mei <xmei5@asu.edu>
+Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/clk/imx/clk-imx6q.c | 4 ++++
- 1 file changed, 4 insertions(+)
+ net/ipv4/netfilter/arp_tables.c  | 18 +++++++++++++++---
+ net/ipv4/netfilter/arpt_mangle.c |  8 ++++++++
+ 2 files changed, 23 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/clk/imx/clk-imx6q.c b/drivers/clk/imx/clk-imx6q.c
-index b14c1606466d7..a95f07718b653 100644
---- a/drivers/clk/imx/clk-imx6q.c
-+++ b/drivers/clk/imx/clk-imx6q.c
-@@ -183,9 +183,11 @@ static void of_assigned_ldb_sels(struct device_node *node,
- 		}
- 		if (clkspec.np != node || clkspec.args[0] >= IMX6QDL_CLK_END) {
- 			pr_err("ccm: parent clock %d not in ccm\n", index);
-+			of_node_put(clkspec.np);
- 			return;
- 		}
- 		parent = clkspec.args[0];
-+		of_node_put(clkspec.np);
+diff --git a/net/ipv4/netfilter/arp_tables.c b/net/ipv4/netfilter/arp_tables.c
+index 14365b20f1c5c..564054123772a 100644
+--- a/net/ipv4/netfilter/arp_tables.c
++++ b/net/ipv4/netfilter/arp_tables.c
+@@ -110,13 +110,25 @@ static inline int arp_packet_match(const struct arphdr *arphdr,
+ 	arpptr += dev->addr_len;
+ 	memcpy(&src_ipaddr, arpptr, sizeof(u32));
+ 	arpptr += sizeof(u32);
+-	tgt_devaddr = arpptr;
+-	arpptr += dev->addr_len;
++
++	if (IS_ENABLED(CONFIG_FIREWIRE_NET) && dev->type == ARPHRD_IEEE1394) {
++		if (unlikely(memchr_inv(arpinfo->tgt_devaddr.mask, 0,
++					sizeof(arpinfo->tgt_devaddr.mask))))
++			return 0;
++
++		tgt_devaddr = NULL;
++	} else {
++		tgt_devaddr = arpptr;
++		arpptr += dev->addr_len;
++	}
+ 	memcpy(&tgt_ipaddr, arpptr, sizeof(u32));
  
- 		rc = of_parse_phandle_with_args(node, "assigned-clocks",
- 				"#clock-cells", index, &clkspec);
-@@ -193,9 +195,11 @@ static void of_assigned_ldb_sels(struct device_node *node,
- 			return;
- 		if (clkspec.np != node || clkspec.args[0] >= IMX6QDL_CLK_END) {
- 			pr_err("ccm: child clock %d not in ccm\n", index);
-+			of_node_put(clkspec.np);
- 			return;
- 		}
- 		child = clkspec.args[0];
-+		of_node_put(clkspec.np);
- 
- 		if (child != IMX6QDL_CLK_LDB_DI0_SEL &&
- 		    child != IMX6QDL_CLK_LDB_DI1_SEL)
+ 	if (NF_INVF(arpinfo, ARPT_INV_SRCDEVADDR,
+ 		    arp_devaddr_compare(&arpinfo->src_devaddr, src_devaddr,
+-					dev->addr_len)) ||
++					dev->addr_len)))
++		return 0;
++
++	if (tgt_devaddr &&
+ 	    NF_INVF(arpinfo, ARPT_INV_TGTDEVADDR,
+ 		    arp_devaddr_compare(&arpinfo->tgt_devaddr, tgt_devaddr,
+ 					dev->addr_len)))
+diff --git a/net/ipv4/netfilter/arpt_mangle.c b/net/ipv4/netfilter/arpt_mangle.c
+index a4e07e5e9c118..f65dd339208e8 100644
+--- a/net/ipv4/netfilter/arpt_mangle.c
++++ b/net/ipv4/netfilter/arpt_mangle.c
+@@ -40,6 +40,10 @@ target(struct sk_buff *skb, const struct xt_action_param *par)
+ 	}
+ 	arpptr += pln;
+ 	if (mangle->flags & ARPT_MANGLE_TDEV) {
++		if (unlikely(IS_ENABLED(CONFIG_FIREWIRE_NET) &&
++			     skb->dev->type == ARPHRD_IEEE1394))
++			return NF_DROP;
++
+ 		if (ARPT_DEV_ADDR_LEN_MAX < hln ||
+ 		   (arpptr + hln > skb_tail_pointer(skb)))
+ 			return NF_DROP;
+@@ -47,6 +51,10 @@ target(struct sk_buff *skb, const struct xt_action_param *par)
+ 	}
+ 	arpptr += hln;
+ 	if (mangle->flags & ARPT_MANGLE_TIP) {
++		if (unlikely(IS_ENABLED(CONFIG_FIREWIRE_NET) &&
++			     skb->dev->type == ARPHRD_IEEE1394))
++			return NF_DROP;
++
+ 		if (ARPT_MANGLE_ADDR_LEN_MAX < pln ||
+ 		   (arpptr + pln > skb_tail_pointer(skb)))
+ 			return NF_DROP;
 -- 
 2.53.0
 
