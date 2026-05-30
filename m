@@ -1,59 +1,59 @@
-Return-Path: <stable+bounces-258926-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-257517-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id IKmYNIwwG2p5AAkAu9opvQ
-	(envelope-from <stable+bounces-258926-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:46:36 +0200
+	id 6JZzCLQcG2p3/QgAu9opvQ
+	(envelope-from <stable+bounces-257517-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:21:56 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 50539612792
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:46:36 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id ABCDF60F7DD
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:21:55 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 19E9630D80DF
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 18:33:29 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 9EE4030B05D0
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 17:14:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B4FAE313E34;
-	Sat, 30 May 2026 18:33:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AEDC83AB291;
+	Sat, 30 May 2026 17:14:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="iCObz9DC"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="V4lNvgdg"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 864D426738C;
-	Sat, 30 May 2026 18:33:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9172F33F8A2;
+	Sat, 30 May 2026 17:14:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780166008; cv=none; b=CrK7dTgSLVce8OeLzptgaHhQ+vdZzrKIvAXqnbq+vsb7DnBMyQdKQjgBDfviBYpubJcjRt0zED012Ap/rfG4fQGFiCSWL1spRHQlxQgbsJ8j00pVY/uxHJTkfv6NO+5UL1nmByHlug2p3FICt4liQXkEoXlqFCV9A6m6bjpKPCE=
+	t=1780161269; cv=none; b=k4+xP+5fGnNVx2daFfoWEwuE1l7YPwhMh9IHy65VKRwLNK9AH4OudurntzSNJSFnmVltGMby10/akGOhH0r4MtfBnQAb8ahk1No2bftRyCbJPqI73IJAx/h6Yr9LwnM5JS7FlEpAC+R/F9872Msq6Dzx5LFaTKu1vwMyElVjKFw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780166008; c=relaxed/simple;
-	bh=I4HaCpQhHN7XysMq+jssh7SDjE5ZO7s5kolfH0AIipQ=;
+	s=arc-20240116; t=1780161269; c=relaxed/simple;
+	bh=imvNC2ef6QvykF7AqCxfXoIf9YhA+QOo/TDE5/GSoSs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Ai4EyHv57OAu2Exw85yfvbXan+LZ7YNHzlOZd4BCgugS7HY2cX4TigpW6Dd5Dtaz6EtsNs1ZJIJTCkOFPDPpL0oHzelnrsfmEt89pjNEzN1Nxp/leoU7Wm2977YxTtwAYIcZHkPuPp18jv+RzSQjagDlB0g9ygqLPNcyUjtoBLI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=iCObz9DC; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C90531F00893;
-	Sat, 30 May 2026 18:33:26 +0000 (UTC)
+	 MIME-Version; b=RC+EFuitYASvENMRhn/iaYnauV30exyRuJEsmm0y/8EBoIxWYS/4cA/rmPxffPOsojzM17fbPvdQCmRq4aAyh6IG3BpMyGjEkA2umcFLslPMPLKasZcnvhSNyCet1pmKiyusTx/7LcfZ2X0kyDGauyKDGsFy36MIyam3gP67RBE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=V4lNvgdg; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D6ECF1F00893;
+	Sat, 30 May 2026 17:14:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780166007;
-	bh=bLY2+ts2GSvSkAuFNqbNFNrzse2mgW76oH3JHN9tezk=;
+	s=korg; t=1780161268;
+	bh=gE+rVbfMd8QtjBfe6//mYEv7D1G1/ZhPGgN8Z4Lt/9A=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=iCObz9DCw3ijVaTBH02BI6ZAeabUnZ63M2kfZKHCcdE9SmZBqJrab2uZ75m6lUodB
-	 cCCYJjzMeBezCY0OLZBSfq+PkSG78+ClQasl9WCYXQwo8OHcUnCyXxPJ6t1DxvtqIg
-	 xKXr5Om8CwOrBknLKhM8Qsg26ZTRG4yTk3grVqGI=
+	b=V4lNvgdg217TgeX65IYHbUlmMCLCFWopFxw7C1e07KD4luDRFnE4SxPEw+ggavmZH
+	 EXnq4fnqfIqYwdFX7+WbJ0WGTIcIEJ5l6sUGZZ/kwZ2RykjEnC1RQW3SY0GosOxj8F
+	 FtlEZV8obOsV/ejzrp7uf8YIUiuqvdYlWbLe6a/w=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Jiri Slaby (SUSE)" <jirislaby@kernel.org>,
-	Vincent Danjean <vdanjean@debian.org>,
-	Jeff Johnson <jeff.johnson@oss.qualcomm.com>
-Subject: [PATCH 5.10 218/589] wifi: ath5k: do not access array OOB
+	Sherry Sun <sherry.sun@nxp.com>,
+	Frank Li <Frank.Li@nxp.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 575/969] arm64: dts: imx8mp-evk: Enable pull select bit for PCIe regulator GPIO (M.2 W_DISABLE1)
 Date: Sat, 30 May 2026 18:01:39 +0200
-Message-ID: <20260530160230.711425125@linuxfoundation.org>
+Message-ID: <20260530160316.284578569@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260530160224.570625122@linuxfoundation.org>
-References: <20260530160224.570625122@linuxfoundation.org>
+In-Reply-To: <20260530160300.485627683@linuxfoundation.org>
+References: <20260530160300.485627683@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,97 +66,75 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-257517-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-258926-lists,stable=lfdr.de];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	TO_DN_SOME(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
 	RCPT_COUNT_FIVE(0.00)[6];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	TAGGED_RCPT(0.00)[stable];
+	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,qualcomm.com:email,msgid.link:url,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
-X-Rspamd-Queue-Id: 50539612792
+	FROM_HAS_DN(0.00)[]
+X-Rspamd-Queue-Id: ABCDF60F7DD
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jiri Slaby (SUSE) <jirislaby@kernel.org>
+From: Sherry Sun <sherry.sun@nxp.com>
 
-commit d748603f12baff112caa3ab7d39f50100f010dbd upstream.
+[ Upstream commit d1e7eab6033f9885a02c4b4e8f09e34d8e9d21ab ]
 
-Vincent reports:
-> The ath5k driver seems to do an array-index-out-of-bounds access as
-> shown by the UBSAN kernel message:
-> UBSAN: array-index-out-of-bounds in drivers/net/wireless/ath/ath5k/base.c:1741:20
-> index 4 is out of range for type 'ieee80211_tx_rate [4]'
-> ...
-> Call Trace:
->  <TASK>
->  dump_stack_lvl+0x5d/0x80
->  ubsan_epilogue+0x5/0x2b
->  __ubsan_handle_out_of_bounds.cold+0x46/0x4b
->  ath5k_tasklet_tx+0x4e0/0x560 [ath5k]
->  tasklet_action_common+0xb5/0x1c0
+The current pin configuration for MX8MP_IOMUXC_SD1_DATA4__GPIO2_IO06
+sets the weak pull-up but does not enable the pull select field.
+Bit 8 in the IOMUX register must be set in order for the weak pull-up
+to actually take effect.
 
-It is real. 'ts->ts_final_idx' can be 3 on 5212, so:
-   info->status.rates[ts->ts_final_idx + 1].idx = -1;
-with the array defined as:
-   struct ieee80211_tx_rate rates[IEEE80211_TX_MAX_RATES];
-while the size is:
-   #define IEEE80211_TX_MAX_RATES  4
-is indeed bogus.
+Update the pinctrl setting from 0x40 to 0x140 to enable both the pull
+select and the weak pull-up, ensuring the line behaves as expected.
 
-Set this 'idx = -1' sentinel only if the array index is less than the
-array size. As mac80211 will not look at rates beyond the size
-(IEEE80211_TX_MAX_RATES).
-
-Note: The effect of the OOB write is negligible. It just overwrites the
-next member of info->status, i.e. ack_signal.
-
-Signed-off-by: Jiri Slaby (SUSE) <jirislaby@kernel.org>
-Reported-by: Vincent Danjean <vdanjean@debian.org>
-Link: https://lore.kernel.org/all/aQYUkIaT87ccDCin@eldamar.lan
-Closes: https://bugs.debian.org/1119093
-Fixes: 6d7b97b23e11 ("ath5k: fix tx status reporting issues")
-Cc: stable@vger.kernel.org
-Link: https://patch.msgid.link/20251209100459.2253198-1-jirislaby@kernel.org
-Signed-off-by: Jeff Johnson <jeff.johnson@oss.qualcomm.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: d50650500064 ("arm64: dts: imx8mp-evk: Add PCIe support")
+Signed-off-by: Sherry Sun <sherry.sun@nxp.com>
+Reviewed-by: Frank Li <Frank.Li@nxp.com>
+Signed-off-by: Frank Li <Frank.Li@nxp.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/ath/ath5k/base.c |    3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ arch/arm64/boot/dts/freescale/imx8mp-evk.dts | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/net/wireless/ath/ath5k/base.c
-+++ b/drivers/net/wireless/ath/ath5k/base.c
-@@ -1693,7 +1693,8 @@ ath5k_tx_frame_completed(struct ath5k_hw
- 	}
+diff --git a/arch/arm64/boot/dts/freescale/imx8mp-evk.dts b/arch/arm64/boot/dts/freescale/imx8mp-evk.dts
+index 126c839b45f2d..703eec6b0107e 100644
+--- a/arch/arm64/boot/dts/freescale/imx8mp-evk.dts
++++ b/arch/arm64/boot/dts/freescale/imx8mp-evk.dts
+@@ -551,7 +551,7 @@ MX8MP_IOMUXC_SD1_DATA5__GPIO2_IO07	0x40
  
- 	info->status.rates[ts->ts_final_idx].count = ts->ts_final_retry;
--	info->status.rates[ts->ts_final_idx + 1].idx = -1;
-+	if (ts->ts_final_idx + 1 < IEEE80211_TX_MAX_RATES)
-+		info->status.rates[ts->ts_final_idx + 1].idx = -1;
+ 	pinctrl_pcie0_reg: pcie0reggrp {
+ 		fsl,pins = <
+-			MX8MP_IOMUXC_SD1_DATA4__GPIO2_IO06	0x40
++			MX8MP_IOMUXC_SD1_DATA4__GPIO2_IO06	0x140
+ 		>;
+ 	};
  
- 	if (unlikely(ts->ts_status)) {
- 		ah->stats.ack_fail++;
+-- 
+2.53.0
+
 
 
 
