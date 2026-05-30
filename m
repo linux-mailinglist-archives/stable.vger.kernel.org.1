@@ -1,61 +1,59 @@
-Return-Path: <stable+bounces-258064-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-257313-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id IIapBR8iG2rO/QgAu9opvQ
-	(envelope-from <stable+bounces-258064-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:45:03 +0200
+	id MNQcEWMaG2pV/AgAu9opvQ
+	(envelope-from <stable+bounces-257313-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:12:03 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id AD10A6104C1
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:45:02 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id B13B160F1A6
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:12:02 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 73EAA30041E6
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 17:45:01 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 3A85B308E24F
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 17:02:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 67FA13469FC;
-	Sat, 30 May 2026 17:45:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 77A1D35200B;
+	Sat, 30 May 2026 17:02:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NQLHQ5el"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="urZmNNtf"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 03B533242BE;
-	Sat, 30 May 2026 17:44:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5B87932D42B;
+	Sat, 30 May 2026 17:02:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780163100; cv=none; b=sye3Yka4yAxgqQeSVdMCMyXSoItUBUGo1wcVKim42U/j7y5ycu7Tzq0LB/Eu0AJnj9jrWr6OZv2dk5eEVRNZmVZizK7uy+mmOB5eLwTVXARWKIH8SXoB/mpvvj5scQaV95m93MMsHxXfqGy62WDdVEtWae4o7T4abZwS/dfNeBc=
+	t=1780160574; cv=none; b=eBvIOZassGjWidch2YhEoyIFcYlg2LGbpIDv2AqZxyRMnzYmtJBstJbT/D0E0J1cIJ0ztV2wACfsvaDLCvo5c6Yb0/ROKXfHvpxOt5ql9k/l2M4TBCOeyPae/4+yl0xrKwyIyxNl2DhYY1zfFpX3iOyIBqzaJizoYoCVe72pSSk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780163100; c=relaxed/simple;
-	bh=5sIXSWn66qItfgdrXpZI4Ij2s2Dl+M1Dzm96qN9teYM=;
+	s=arc-20240116; t=1780160574; c=relaxed/simple;
+	bh=rCb9iSNS5RPPxqr+DxJJ5dz+vM8G4lO6XdxbL9Jp3VU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=MxCh0bu7S1KMUix2jXpYa8gIeuw0cLSJjkNea3m7rtlxfFGeFIWotmgmiDbw7HPqxQikYbMGZksIYI4PM3qEyyZOgbbg0xOwaf3bNDJuzKyz8PeTzt1odO2vCLlJkl8DoCXc074Zlr4ICUS0d7VDOhs27ldlsLq18BTVE0x+x5M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NQLHQ5el; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 492C51F00893;
-	Sat, 30 May 2026 17:44:58 +0000 (UTC)
+	 MIME-Version; b=q5KMTFQYR2CodKb2kKbcCmvPt16mEaGP0KC9rA4S89dG+l3wmhSErWzOUHH60y73MfQCkSt1lpfGc3Bcnfg4qdqfdKIxYFTlvFb8O56s7LZBJ0xBBGfkajAmpkohCajYQT+QklONZ4gyYDXNVo8alpf1uOAvDRwgJ7Hqd34dl+w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=urZmNNtf; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 831811F00893;
+	Sat, 30 May 2026 17:02:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780163098;
-	bh=Ed4jCYOvuPFvciXVSfng1xRP8TTPv/Qx3C9T5u8zv8w=;
+	s=korg; t=1780160573;
+	bh=KFpM8H8u15s6CL6GPY2wYbVU0g7kB7W4GDrTNagh8pE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=NQLHQ5elyYSBHPweWsAmClaYw5VrnQaV2+2PaUxBCyp6CcJGSj8nLtE66Bd4iv+wS
-	 LYqa0CF+ZsCwWnGVWb5T8qnw02cMy4RL94wtygivJK9xsXov9vdbH05/kG1E5sU40d
-	 zPmk7kvLywS3xtLFQE+Fd4kxVAapMADnUX8wlZKg=
+	b=urZmNNtfGSJShVWoLZJbMsmz5L0dm6Ph2U0OhrPGkltwF7WedcToECDHehhh7qpuO
+	 THmtxUTHrJyIrhtyBMhTnxnoGyM+ZWFoHPiNUV8xv3BR4pIeXmplDeum/uLJtfQe5N
+	 b9il22/IGICAt9zBHKSz1u8UAQkh2Y48X5qVGB9s=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To: stable@vger.kernel.org,
-	"stable@vger.kernel.org, Filipe Manana" <fdmanana@suse.com>
+To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+cc35f55c41e34c30dcb5@syzkaller.appspotmail.com,
-	Josef Bacik <josef@toxicpanda.com>,
-	David Sterba <dsterba@suse.com>,
-	Robert Garcia <rob_garcia@163.com>
-Subject: [PATCH 5.15 154/776] btrfs: lock the inode in shared mode before starting fiemap
-Date: Sat, 30 May 2026 17:57:48 +0200
-Message-ID: <20260530160244.447250254@linuxfoundation.org>
+	Stable@vger.kernel.org,
+	Srinivas Kandagatla <srinivas.kandagatla@oss.qualcomm.com>,
+	Mark Brown <broonie@kernel.org>
+Subject: [PATCH 6.1 345/969] ASoC: qcom: q6apm-dai: reset queue ptr on trigger stop
+Date: Sat, 30 May 2026 17:57:49 +0200
+Message-ID: <20260530160309.893123709@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260530160240.228940103@linuxfoundation.org>
-References: <20260530160240.228940103@linuxfoundation.org>
+In-Reply-To: <20260530160300.485627683@linuxfoundation.org>
+References: <20260530160300.485627683@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,212 +64,82 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	TAGGED_FROM(0.00)[bounces-258064-lists,stable=lfdr.de];
-	FROM_HAS_DN(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,syzkaller.appspotmail.com,toxicpanda.com,suse.com,163.com];
+	TAGGED_FROM(0.00)[bounces-257313-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
 	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TO_DN_SOME(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	RCPT_COUNT_FIVE(0.00)[6];
+	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[8];
-	MID_RHS_MATCH_FROM(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable,cc35f55c41e34c30dcb5];
-	TO_DN_SOME(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[suse.com:email,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,appspotmail.com:email,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,toxicpanda.com:email]
-X-Rspamd-Queue-Id: AD10A6104C1
+	FROM_HAS_DN(0.00)[]
+X-Rspamd-Queue-Id: B13B160F1A6
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Filipe Manana <fdmanana@suse.com>
+From: Srinivas Kandagatla <srinivas.kandagatla@oss.qualcomm.com>
 
-[ Upstream commit 519b7e13b5ae8dd38da1e52275705343be6bb508 ]
+commit cab45ab95ce7600fc0ff84585c77fd45b7b0d67c upstream.
 
-Currently fiemap does not take the inode's lock (VFS lock), it only locks
-a file range in the inode's io tree. This however can lead to a deadlock
-if we have a concurrent fsync on the file and fiemap code triggers a fault
-when accessing the user space buffer with fiemap_fill_next_extent(). The
-deadlock happens on the inode's i_mmap_lock semaphore, which is taken both
-by fsync and btrfs_page_mkwrite(). This deadlock was recently reported by
-syzbot and triggers a trace like the following:
+Reset queue pointer on SNDRV_PCM_TRIGGER_STOP event to be inline
+with resetting appl_ptr. Without this we will end up with a queue_ptr
+out of sync and driver could try to send data that is not ready yet.
 
-   task:syz-executor361 state:D stack:20264 pid:5668  ppid:5119   flags:0x00004004
-   Call Trace:
-    <TASK>
-    context_switch kernel/sched/core.c:5293 [inline]
-    __schedule+0x995/0xe20 kernel/sched/core.c:6606
-    schedule+0xcb/0x190 kernel/sched/core.c:6682
-    wait_on_state fs/btrfs/extent-io-tree.c:707 [inline]
-    wait_extent_bit+0x577/0x6f0 fs/btrfs/extent-io-tree.c:751
-    lock_extent+0x1c2/0x280 fs/btrfs/extent-io-tree.c:1742
-    find_lock_delalloc_range+0x4e6/0x9c0 fs/btrfs/extent_io.c:488
-    writepage_delalloc+0x1ef/0x540 fs/btrfs/extent_io.c:1863
-    __extent_writepage+0x736/0x14e0 fs/btrfs/extent_io.c:2174
-    extent_write_cache_pages+0x983/0x1220 fs/btrfs/extent_io.c:3091
-    extent_writepages+0x219/0x540 fs/btrfs/extent_io.c:3211
-    do_writepages+0x3c3/0x680 mm/page-writeback.c:2581
-    filemap_fdatawrite_wbc+0x11e/0x170 mm/filemap.c:388
-    __filemap_fdatawrite_range mm/filemap.c:421 [inline]
-    filemap_fdatawrite_range+0x175/0x200 mm/filemap.c:439
-    btrfs_fdatawrite_range fs/btrfs/file.c:3850 [inline]
-    start_ordered_ops fs/btrfs/file.c:1737 [inline]
-    btrfs_sync_file+0x4ff/0x1190 fs/btrfs/file.c:1839
-    generic_write_sync include/linux/fs.h:2885 [inline]
-    btrfs_do_write_iter+0xcd3/0x1280 fs/btrfs/file.c:1684
-    call_write_iter include/linux/fs.h:2189 [inline]
-    new_sync_write fs/read_write.c:491 [inline]
-    vfs_write+0x7dc/0xc50 fs/read_write.c:584
-    ksys_write+0x177/0x2a0 fs/read_write.c:637
-    do_syscall_x64 arch/x86/entry/common.c:50 [inline]
-    do_syscall_64+0x3d/0xb0 arch/x86/entry/common.c:80
-    entry_SYSCALL_64_after_hwframe+0x63/0xcd
-   RIP: 0033:0x7f7d4054e9b9
-   RSP: 002b:00007f7d404fa2f8 EFLAGS: 00000246 ORIG_RAX: 0000000000000001
-   RAX: ffffffffffffffda RBX: 00007f7d405d87a0 RCX: 00007f7d4054e9b9
-   RDX: 0000000000000090 RSI: 0000000020000000 RDI: 0000000000000006
-   RBP: 00007f7d405a51d0 R08: 0000000000000000 R09: 0000000000000000
-   R10: 0000000000000000 R11: 0000000000000246 R12: 61635f65646f6e69
-   R13: 65646f7475616f6e R14: 7261637369646f6e R15: 00007f7d405d87a8
-    </TASK>
-   INFO: task syz-executor361:5697 blocked for more than 145 seconds.
-         Not tainted 6.2.0-rc3-syzkaller-00376-g7c6984405241 #0
-   "echo 0 > /proc/sys/kernel/hung_task_timeout_secs" disables this message.
-   task:syz-executor361 state:D stack:21216 pid:5697  ppid:5119   flags:0x00004004
-   Call Trace:
-    <TASK>
-    context_switch kernel/sched/core.c:5293 [inline]
-    __schedule+0x995/0xe20 kernel/sched/core.c:6606
-    schedule+0xcb/0x190 kernel/sched/core.c:6682
-    rwsem_down_read_slowpath+0x5f9/0x930 kernel/locking/rwsem.c:1095
-    __down_read_common+0x54/0x2a0 kernel/locking/rwsem.c:1260
-    btrfs_page_mkwrite+0x417/0xc80 fs/btrfs/inode.c:8526
-    do_page_mkwrite+0x19e/0x5e0 mm/memory.c:2947
-    wp_page_shared+0x15e/0x380 mm/memory.c:3295
-    handle_pte_fault mm/memory.c:4949 [inline]
-    __handle_mm_fault mm/memory.c:5073 [inline]
-    handle_mm_fault+0x1b79/0x26b0 mm/memory.c:5219
-    do_user_addr_fault+0x69b/0xcb0 arch/x86/mm/fault.c:1428
-    handle_page_fault arch/x86/mm/fault.c:1519 [inline]
-    exc_page_fault+0x7a/0x110 arch/x86/mm/fault.c:1575
-    asm_exc_page_fault+0x22/0x30 arch/x86/include/asm/idtentry.h:570
-   RIP: 0010:copy_user_short_string+0xd/0x40 arch/x86/lib/copy_user_64.S:233
-   Code: 74 0a 89 (...)
-   RSP: 0018:ffffc9000570f330 EFLAGS: 00050202
-   RAX: ffffffff843e6601 RBX: 00007fffffffefc8 RCX: 0000000000000007
-   RDX: 0000000000000000 RSI: ffffc9000570f3e0 RDI: 0000000020000120
-   RBP: ffffc9000570f490 R08: 0000000000000000 R09: fffff52000ae1e83
-   R10: fffff52000ae1e83 R11: 1ffff92000ae1e7c R12: 0000000000000038
-   R13: ffffc9000570f3e0 R14: 0000000020000120 R15: ffffc9000570f3e0
-    copy_user_generic arch/x86/include/asm/uaccess_64.h:37 [inline]
-    raw_copy_to_user arch/x86/include/asm/uaccess_64.h:58 [inline]
-    _copy_to_user+0xe9/0x130 lib/usercopy.c:34
-    copy_to_user include/linux/uaccess.h:169 [inline]
-    fiemap_fill_next_extent+0x22e/0x410 fs/ioctl.c:144
-    emit_fiemap_extent+0x22d/0x3c0 fs/btrfs/extent_io.c:3458
-    fiemap_process_hole+0xa00/0xad0 fs/btrfs/extent_io.c:3716
-    extent_fiemap+0xe27/0x2100 fs/btrfs/extent_io.c:3922
-    btrfs_fiemap+0x172/0x1e0 fs/btrfs/inode.c:8209
-    ioctl_fiemap fs/ioctl.c:219 [inline]
-    do_vfs_ioctl+0x185b/0x2980 fs/ioctl.c:810
-    __do_sys_ioctl fs/ioctl.c:868 [inline]
-    __se_sys_ioctl+0x83/0x170 fs/ioctl.c:856
-    do_syscall_x64 arch/x86/entry/common.c:50 [inline]
-    do_syscall_64+0x3d/0xb0 arch/x86/entry/common.c:80
-    entry_SYSCALL_64_after_hwframe+0x63/0xcd
-   RIP: 0033:0x7f7d4054e9b9
-   RSP: 002b:00007f7d390d92f8 EFLAGS: 00000246 ORIG_RAX: 0000000000000010
-   RAX: ffffffffffffffda RBX: 00007f7d405d87b0 RCX: 00007f7d4054e9b9
-   RDX: 0000000020000100 RSI: 00000000c020660b RDI: 0000000000000005
-   RBP: 00007f7d405a51d0 R08: 00007f7d390d9700 R09: 0000000000000000
-   R10: 00007f7d390d9700 R11: 0000000000000246 R12: 61635f65646f6e69
-   R13: 65646f7475616f6e R14: 7261637369646f6e R15: 00007f7d405d87b8
-    </TASK>
+Fix this by resetting the queue_ptr.
 
-What happens is the following:
-
-1) Task A is doing an fsync, enters btrfs_sync_file() and flushes delalloc
-   before locking the inode and the i_mmap_lock semaphore, that is, before
-   calling btrfs_inode_lock();
-
-2) After task A flushes delalloc and before it calls btrfs_inode_lock(),
-   another task dirties a page;
-
-3) Task B starts a fiemap without FIEMAP_FLAG_SYNC, so the page dirtied
-   at step 2 remains dirty and unflushed. Then when it enters
-   extent_fiemap() and it locks a file range that includes the range of
-   the page dirtied in step 2;
-
-4) Task A calls btrfs_inode_lock() and locks the inode (VFS lock) and the
-   inode's i_mmap_lock semaphore in write mode. Then it tries to flush
-   delalloc by calling start_ordered_ops(), which will block, at
-   find_lock_delalloc_range(), when trying to lock the range of the page
-   dirtied at step 2, since this range was locked by the fiemap task (at
-   step 3);
-
-5) Task B generates a page fault when accessing the user space fiemap
-   buffer with a call to fiemap_fill_next_extent().
-
-   The fault handler needs to call btrfs_page_mkwrite() for some other
-   page of our inode, and there we deadlock when trying to lock the
-   inode's i_mmap_lock semaphore in read mode, since the fsync task locked
-   it in write mode (step 4) and the fsync task can not progress because
-   it's waiting to lock a file range that is currently locked by us (the
-   fiemap task, step 3).
-
-Fix this by taking the inode's lock (VFS lock) in shared mode when
-entering fiemap. This effectively serializes fiemap with fsync (except the
-most expensive part of fsync, the log sync), preventing this deadlock.
-
-Reported-by: syzbot+cc35f55c41e34c30dcb5@syzkaller.appspotmail.com
-Link: https://lore.kernel.org/linux-btrfs/00000000000032dc7305f2a66f46@google.com/
-CC: stable@vger.kernel.org # 6.1+
-Reviewed-by: Josef Bacik <josef@toxicpanda.com>
-Signed-off-by: Filipe Manana <fdmanana@suse.com>
-Signed-off-by: David Sterba <dsterba@suse.com>
-Signed-off-by: Robert Garcia <rob_garcia@163.com>
+Fixes: 3d4a4411aa8bb ("ASoC: q6apm-dai: schedule all available frames to avoid dsp under-runs")
+Cc: Stable@vger.kernel.org
+Signed-off-by: Srinivas Kandagatla <srinivas.kandagatla@oss.qualcomm.com>
+Link: https://patch.msgid.link/20260402081118.348071-6-srinivas.kandagatla@oss.qualcomm.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/btrfs/extent_io.c |    2 ++
- 1 file changed, 2 insertions(+)
+ sound/soc/qcom/qdsp6/q6apm-dai.c |    1 +
+ sound/soc/qcom/qdsp6/q6apm.c     |    2 ++
+ 2 files changed, 3 insertions(+)
 
---- a/fs/btrfs/extent_io.c
-+++ b/fs/btrfs/extent_io.c
-@@ -5590,6 +5590,7 @@ int extent_fiemap(struct btrfs_inode *in
- 		last_for_get_extent = isize;
- 	}
+--- a/sound/soc/qcom/qdsp6/q6apm-dai.c
++++ b/sound/soc/qcom/qdsp6/q6apm-dai.c
+@@ -246,6 +246,7 @@ static int q6apm_dai_trigger(struct snd_
+ 	case SNDRV_PCM_TRIGGER_STOP:
+ 		/* TODO support be handled via SoftPause Module */
+ 		prtd->state = Q6APM_STREAM_STOPPED;
++		prtd->queue_ptr = 0;
+ 		break;
+ 	case SNDRV_PCM_TRIGGER_SUSPEND:
+ 	case SNDRV_PCM_TRIGGER_PAUSE_PUSH:
+--- a/sound/soc/qcom/qdsp6/q6apm.c
++++ b/sound/soc/qcom/qdsp6/q6apm.c
+@@ -294,6 +294,8 @@ int q6apm_map_memory_regions(struct q6ap
  
-+	btrfs_inode_lock(&inode->vfs_inode, BTRFS_ILOCK_SHARED);
- 	lock_extent_bits(&inode->io_tree, start, start + len - 1,
- 			 &cached_state);
+ 	mutex_lock(&graph->lock);
  
-@@ -5705,6 +5706,7 @@ out_free:
- out:
- 	unlock_extent_cached(&inode->io_tree, start, start + len - 1,
- 			     &cached_state);
-+	btrfs_inode_unlock(&inode->vfs_inode, BTRFS_ILOCK_SHARED);
- 
- out_free_ulist:
- 	btrfs_free_path(path);
++	data->dsp_buf = 0;
++
+ 	if (data->buf) {
+ 		mutex_unlock(&graph->lock);
+ 		return 0;
 
 
 
