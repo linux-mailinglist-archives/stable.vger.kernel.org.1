@@ -1,59 +1,70 @@
-Return-Path: <stable+bounces-257240-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-258056-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id cMcWL7IXG2r2/AgAu9opvQ
-	(envelope-from <stable+bounces-257240-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:00:34 +0200
+	id AF1EO5IjG2rO/QgAu9opvQ
+	(envelope-from <stable+bounces-258056-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:51:14 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 63ADD60EB57
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:00:34 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 628E161084E
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:51:14 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 5FBB6304E2B2
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 16:58:26 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 092F330038D3
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 17:44:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 34C66332EA7;
-	Sat, 30 May 2026 16:58:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8DA52344DB9;
+	Sat, 30 May 2026 17:44:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hxQCWYh2"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WWCxMuaK"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E15632E92B3;
-	Sat, 30 May 2026 16:58:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 61F4A27A477;
+	Sat, 30 May 2026 17:44:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780160305; cv=none; b=aISr0V9GBvU+HpvyqRET1ILWJuWFGBKO2QMerLA7J8itQTnePuwH6LhBNk62V3KMmZABeKc/h8FnnTut7QBnTxaMfLGVh600x20DIHk+dJi+SBekIib90Fd4nfPbPf37Kt3xKOG9DubI/z/PPPoGapkdqHH11Bfx7RB7/TaIA7w=
+	t=1780163073; cv=none; b=NZdhJUz0e77r/DQAvvyzI07y7mIpbafXgrtYdJEj7FDs0VcIf3zlEMRaS2g+NUdnnZRrRFwyEiTkyY8c4EVj0w/YVQwlL0ICnRjJLwbX5nbRXOMW5y2cMbyC1dpZAyM9AuzLvY9IKh4q5Fk55X0PnXnMQ4EBWAWgytC5EuTaAB8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780160305; c=relaxed/simple;
-	bh=NIf7+V54M/i4hvFiIAPxnk7OrkInf9V6C7pcxPi5n/c=;
+	s=arc-20240116; t=1780163073; c=relaxed/simple;
+	bh=UjR0WD9nIJt7PV5pS/aJPi6LrPJiJVPDc32tpYLGBnA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=uHu37B0EPtEnhUVMile3R5Y4wV6L+SAEym1et4xvCO7kJAGe7n/wkLxDmffDZVl2k1E4tKb6BMo/2t4SRt47pYU6d0nYXsZW/iwbOaEbk4+UBEgi/6ewHFJtMOIlXn7Ov6Dj6p7Dnm7o3BN1b7MWIS0CgJZDfFpMBG1bL2NFqTI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hxQCWYh2; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 256811F00893;
-	Sat, 30 May 2026 16:58:22 +0000 (UTC)
+	 MIME-Version; b=gRYqLfFrNv68WY2X7X5Z+59YBzl8OZn/DVRJfTAGmvpNyv2ez7452UcUCcHMAEfA09Zs9Z7MRh9kt/3VlJvv9geYSKniYRqAF8mvfW/0OgmkGVCrAtvahz2sP1AQl5YZp0qV7ty2o4um24DwYOrBWcTZfiD28w1+O5784yt6Zj0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WWCxMuaK; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 72E2D1F00893;
+	Sat, 30 May 2026 17:44:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780160303;
-	bh=jCTLugJUK47HrA3Nh+KMVmqtglDIwH3jw1j2vuvQAxw=;
+	s=korg; t=1780163072;
+	bh=GWk7Hp1Ko9Th6m35xUcSpJUOjA848Cjclt08z+znC8o=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=hxQCWYh2/WfInugu7MyG70Enr9fwPAQIc/jbJZAUrMuyWVO8CmZvlVT6YOw3GbX4f
-	 oobs7aswrXfibkm5351IrA3knj02jk8g7JJkKk3sESPahJlIT+wv2OrYhgMZ0MVHf4
-	 nomkmXN4/p4iSssL7h+F0DLYe4TQIiT2ZQ5BSptg=
+	b=WWCxMuaKQIL2kUe7KPhH1aYoSTtCnd4qnS7tyYHUclexip32LGM9g91sFjCDcq5iW
+	 omYtEK1DoEHR7mid/fiWhonq/8Jri2Ava70rB8a6g3Ayf2Y2nLxTdcg10lnWBQyQE8
+	 +1GekuIeGs7Y1MlJP+EIUQqwkY0Zy+Uk0ZO2J3jY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Leon Yen <leon.yen@mediatek.com>,
-	Ming Yen Hsieh <mingyen.hsieh@mediatek.com>,
-	Felix Fietkau <nbd@nbd.name>
-Subject: [PATCH 6.1 300/969] wifi: mt76: mt7921: fix a potential clc buffer length underflow
-Date: Sat, 30 May 2026 17:57:04 +0200
-Message-ID: <20260530160308.720888713@linuxfoundation.org>
+	Yifan Wu <yifanwucs@gmail.com>,
+	Juefei Pu <tomapufckgml@gmail.com>,
+	Yuan Tan <yuantan098@gmail.com>,
+	Xin Liu <bird@lzu.edu.cn>,
+	Ren Wei <enjou1224z@gmail.com>,
+	Yuqi Xu <xuyuqiabc@gmail.com>,
+	Ren Wei <n05ec@lzu.edu.cn>,
+	David Howells <dhowells@redhat.com>,
+	Marc Dionne <marc.dionne@auristor.com>,
+	Simon Horman <horms@kernel.org>,
+	linux-afs@lists.infradead.org,
+	stable@kernel.org,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 111/776] rxrpc: reject undecryptable rxkad response tickets
+Date: Sat, 30 May 2026 17:57:05 +0200
+Message-ID: <20260530160243.229264955@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260530160300.485627683@linuxfoundation.org>
-References: <20260530160300.485627683@linuxfoundation.org>
+In-Reply-To: <20260530160240.228940103@linuxfoundation.org>
+References: <20260530160240.228940103@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,69 +80,92 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-257240-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-258056-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,lzu.edu.cn,redhat.com,auristor.com,kernel.org,lists.infradead.org];
 	RCVD_COUNT_THREE(0.00)[4];
-	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TO_DN_SOME(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	RCPT_COUNT_TWELVE(0.00)[17];
+	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
-	RCPT_COUNT_FIVE(0.00)[6];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
 	TAGGED_RCPT(0.00)[stable];
 	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	FROM_HAS_DN(0.00)[]
-X-Rspamd-Queue-Id: 63ADD60EB57
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,msgid.link:url,infradead.org:email,lzu.edu.cn:email]
+X-Rspamd-Queue-Id: 628E161084E
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Leon Yen <leon.yen@mediatek.com>
+From: Yuqi Xu <xuyuqiabc@gmail.com>
 
-commit 5373f8b19e568b5c217832b9bbef165bd2b2df14 upstream.
+[ Upstream commit fe4447cd95623b1cfacc15f280aab73a6d7340b2 ]
 
-The buf_len is used to limit the iterations for retrieving the country
-power setting and may underflow under certain conditions due to changes
-in the power table in CLC.
+rxkad_decrypt_ticket() decrypts the RXKAD response ticket and then
+parses the buffer as plaintext without checking whether
+crypto_skcipher_decrypt() succeeded.
 
-This underflow leads to an almost infinite loop or an invalid power
-setting resulting in driver initialization failure.
+A malformed RESPONSE can therefore use a non-block-aligned ticket
+length, make the decrypt operation fail, and still drive the ticket
+parser with attacker-controlled bytes.
 
-Cc: stable@vger.kernel.org
-Fixes: fa6ad88e023d ("wifi: mt76: mt7921: fix country count limitation for CLC")
-Signed-off-by: Leon Yen <leon.yen@mediatek.com>
-Signed-off-by: Ming Yen Hsieh <mingyen.hsieh@mediatek.com>
-Link: https://patch.msgid.link/20251009020158.1923429-1-mingyen.hsieh@mediatek.com
-Signed-off-by: Felix Fietkau <nbd@nbd.name>
+Check the decrypt result and abort the connection with RXKADBADTICKET
+when ticket decryption fails.
+
+Fixes: 17926a79320a ("[AF_RXRPC]: Provide secure RxRPC sockets for use by userspace and kernel both")
+Reported-by: Yifan Wu <yifanwucs@gmail.com>
+Reported-by: Juefei Pu <tomapufckgml@gmail.com>
+Co-developed-by: Yuan Tan <yuantan098@gmail.com>
+Signed-off-by: Yuan Tan <yuantan098@gmail.com>
+Suggested-by: Xin Liu <bird@lzu.edu.cn>
+Tested-by: Ren Wei <enjou1224z@gmail.com>
+Signed-off-by: Yuqi Xu <xuyuqiabc@gmail.com>
+Signed-off-by: Ren Wei <n05ec@lzu.edu.cn>
+Signed-off-by: David Howells <dhowells@redhat.com>
+cc: Marc Dionne <marc.dionne@auristor.com>
+cc: Simon Horman <horms@kernel.org>
+cc: linux-afs@lists.infradead.org
+cc: stable@kernel.org
+Link: https://patch.msgid.link/20260408121252.2249051-12-dhowells@redhat.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+[ adapted `rxrpc_abort_conn()` call to existing `goto other_error` error-handling pattern ]
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/wireless/mediatek/mt76/mt7921/mcu.c |    3 +++
- 1 file changed, 3 insertions(+)
+ net/rxrpc/rxkad.c |    7 ++++++-
+ 1 file changed, 6 insertions(+), 1 deletion(-)
 
---- a/drivers/net/wireless/mediatek/mt76/mt7921/mcu.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7921/mcu.c
-@@ -1054,6 +1054,9 @@ int __mt7921_mcu_set_clc(struct mt7921_d
- 		u16 len = le16_to_cpu(rule->len);
- 		u16 offset = len + sizeof(*rule);
+--- a/net/rxrpc/rxkad.c
++++ b/net/rxrpc/rxkad.c
+@@ -1013,8 +1013,13 @@ static int rxkad_decrypt_ticket(struct r
+ 	sg_init_one(&sg[0], ticket, ticket_len);
+ 	skcipher_request_set_callback(req, 0, NULL, NULL);
+ 	skcipher_request_set_crypt(req, sg, sg, ticket_len, iv.x);
+-	crypto_skcipher_decrypt(req);
++	ret = crypto_skcipher_decrypt(req);
+ 	skcipher_request_free(req);
++	if (ret < 0) {
++		abort_code = RXKADBADTICKET;
++		ret = -EPROTO;
++		goto other_error;
++	}
  
-+		if (buf_len < offset)
-+			break;
-+
- 		pos += offset;
- 		buf_len -= offset;
- 		if (rule->alpha2[0] != alpha2[0] ||
+ 	p = ticket;
+ 	end = p + ticket_len;
 
 
 
