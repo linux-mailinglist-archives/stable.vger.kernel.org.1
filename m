@@ -1,59 +1,60 @@
-Return-Path: <stable+bounces-258697-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-257350-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id MK56M2AsG2ow/wgAu9opvQ
-	(envelope-from <stable+bounces-258697-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:28:48 +0200
+	id kMKqKq4ZG2pV/AgAu9opvQ
+	(envelope-from <stable+bounces-257350-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:09:02 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6EFC0611CED
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:28:48 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 520BF60EFC7
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:09:02 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id B82E430731D8
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 18:20:32 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 37B153059305
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 17:04:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9B1293BE175;
-	Sat, 30 May 2026 18:20:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8BAEB366567;
+	Sat, 30 May 2026 17:04:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="q0oPUHDw"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vQALaajT"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7BA9224EAB1;
-	Sat, 30 May 2026 18:20:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5543132D42B;
+	Sat, 30 May 2026 17:04:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780165231; cv=none; b=RUhUtTSVymlmRZMbN/k/8Y8cvxtAHcbpOb69XUTsvXqjo+wP/gzWuLpMQJMeER2SYCYZ/6ikXBO9eC8YNZe+AQDfqpe4UwUnzW/SLBCc+66ADKuzqmN4lSG0mOEgY/s5/BZ3mecWVd9OYI2J2l/g5MhUn9ef4XHj4Qcx1IZOWLk=
+	t=1780160688; cv=none; b=M06H/8NiRf+v6TSDpwOBkMKeztHuoS1gY9ftt9wpmQLRad3Mk7gXqXs6oxcWpNitcS0lUywzW4ryrpBLZtWmtIx3uH+d81JwC6Ew9YRkgMzYV0vg46zyOmpvWgz1V+d7veMi8fIDb0LZsKRZqKwLUhcCO9nahKpq8HtXFnt9IfY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780165231; c=relaxed/simple;
-	bh=OfKZm7VXCLWFSXh5V7tnjjPJKhhTj5se+ApCb7ramvg=;
+	s=arc-20240116; t=1780160688; c=relaxed/simple;
+	bh=MYE+VKGakfMyYiJba2tl4utn+1gZpMuPHRqkUQEMSgE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=H63OXGiMFNyFhLwiglNGx57jDMRylmYV4jVBNMXwoBXUQzY7JL3Vzz4pvzYIj8N9rmKQvuCcdZLkPULxEFkKrrhYTISIZ7ft0QimhQRPO7J6jylCyyIlS2Ih8lQaGIhqXmBykdB/GzgTR2AB5dSyNZ/QnmEROGi86cgHDaQ5xKc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=q0oPUHDw; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 868061F00893;
-	Sat, 30 May 2026 18:20:29 +0000 (UTC)
+	 MIME-Version:Content-Type; b=L+059MjzcIrVw99oVVFOiyPOtZ1L9tGUNu+R+GDVkjS3cmxXt3GoaNOmuz3DYPotlvvRwv+VauavdXDmyls0YojCdnWX71QJG++YCR9Eckp9T6vAC6TC/iy7jXHli8cnrPXcOBxSPOgSV3HsFDeMhPfGLmg4F3ChAB8Q8YvAVmI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vQALaajT; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7C1AC1F00893;
+	Sat, 30 May 2026 17:04:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780165230;
-	bh=F13f8o9V+T2Q9vBUWPjFk8UZV/Mx2DFsDcTgSSAuiKw=;
+	s=korg; t=1780160687;
+	bh=0u8og43mdDur5AvLqUPb5U8FPPyBE0s5UW7hlRf2wgU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=q0oPUHDwSgf3MHX5QrA74qliwJ9NhUKxVRcSnk35Rq/wzadPktFu+1gx+WDHIrsme
-	 pgmksDjm03lfZZWs0pWHrK6ubj/NEZzXEi0PS24H78qCQj7tjTkavOrTq13BfIxRxs
-	 G8Vz2bzK3GUJgO4pjVFhmfQP158MG2AuRxtQrx7I=
+	b=vQALaajTx7W1iGinx4rM7dnKiQNvUJHi7HrJIOUO0iREUA/xACB2QqceCJks1/pCy
+	 /IFgEw6YpG8KeMTs4ekjshoGh7g22qHKMtYreTUlhPtpVi2860TpkMlWbtR+qoMKy1
+	 o2Dt4getjmH8z5S2s0IWOD5dvAgYZ517f69WHcMs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Melissa Wen <mwen@igalia.com>,
-	=?UTF-8?q?Ma=C3=ADra=20Canal?= <mcanal@igalia.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 018/589] drm/vc4: Protect madv read in vc4_gem_object_mmap() with madv_lock
-Date: Sat, 30 May 2026 17:58:19 +0200
-Message-ID: <20260530160225.057427194@linuxfoundation.org>
+	stable@kernel.org,
+	Yongpeng Yang <yangyongpeng@xiaomi.com>,
+	Chao Yu <chao@kernel.org>,
+	Jaegeuk Kim <jaegeuk@kernel.org>
+Subject: [PATCH 6.1 376/969] f2fs: fix fiemap boundary handling when read extent cache is incomplete
+Date: Sat, 30 May 2026 17:58:20 +0200
+Message-ID: <20260530160310.691153217@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260530160224.570625122@linuxfoundation.org>
-References: <20260530160224.570625122@linuxfoundation.org>
+In-Reply-To: <20260530160300.485627683@linuxfoundation.org>
+References: <20260530160300.485627683@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -68,77 +69,127 @@ Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-258697-lists,stable=lfdr.de];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	TAGGED_FROM(0.00)[bounces-257350-lists,stable=lfdr.de];
 	FROM_HAS_DN(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	MIME_TRACE(0.00)[0:+];
+	RCVD_TLS_LAST(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	RCPT_COUNT_FIVE(0.00)[6];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	MIME_TRACE(0.00)[0:+];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-0.997];
-	TAGGED_RCPT(0.00)[stable];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	MID_RHS_MATCH_FROM(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,igalia.com:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
-X-Rspamd-Queue-Id: 6EFC0611CED
+	TAGGED_RCPT(0.00)[stable];
+	TO_DN_SOME(0.00)[]
+X-Rspamd-Queue-Id: 520BF60EFC7
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Maíra Canal <mcanal@igalia.com>
+From: Yongpeng Yang <yangyongpeng@xiaomi.com>
 
-[ Upstream commit 338c56050d8e892604da97f67bfa8cc4015a955f ]
+commit 95e159ad3e52f7478cfd22e44ec37c9f334f8993 upstream.
 
-The mmap callback reads bo->madv without holding madv_lock, racing with
-concurrent DRM_IOCTL_VC4_GEM_MADVISE calls that modify the field under
-the same lock. Add the missing locking to prevent the data race.
+f2fs_fiemap() calls f2fs_map_blocks() to obtain the block mapping a
+file, and then merges contiguous mappings into extents. If the mapping
+is found in the read extent cache, node blocks do not need to be read.
+However, in the following scenario, a contiguous extent can be split
+into two extents:
 
-Fixes: b9f19259b84d ("drm/vc4: Add the DRM_IOCTL_VC4_GEM_MADVISE ioctl")
-Reviewed-by: Melissa Wen <mwen@igalia.com>
-Link: https://patch.msgid.link/20260330-vc4-misc-fixes-v1-4-92defc940a29@igalia.com
-Signed-off-by: Maíra Canal <mcanal@igalia.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+$ dd if=/dev/zero of=data.128M bs=1M count=128
+$ losetup -f data.128M
+$ mkfs.f2fs /dev/loop0 -f
+$ mount -o mode=lfs /dev/loop0 /mnt/f2fs/
+$ cd /mnt/f2fs/
+$ dd if=/dev/zero of=data.72M bs=1M count=72 && sync
+$ dd if=/dev/zero of=data.4M bs=1M count=4 && sync
+$ dd if=/dev/zero of=data.4M bs=1M count=2 seek=2 conv=notrunc && sync
+$ echo 3 > /proc/sys/vm/drop_caches
+$ dd if=/dev/zero of=data.4M bs=1M count=2 seek=0 conv=notrunc && sync
+$ dd if=/dev/zero of=data.4M bs=1M count=2 seek=0 conv=notrunc && sync
+$ f2fs_io fiemap 0 1024 data.4M
+Fiemap: offset = 0 len = 1024
+logical addr.    physical addr.   length           flags
+0	0000000000000000 0000000006400000 0000000000200000 00001000
+1	0000000000200000 0000000006600000 0000000000200000 00001001
+
+Although the physical addresses of the ranges 0～2MB and 2M～4MB are
+contiguous, the mapping for the 2M～4MB range is not present in memory.
+When the physical addresses for the 0～2MB range are updated, no merge
+happens because the adjacent mapping is missing from the in-memory
+cache. As a result, fiemap reports two separate extents instead of a
+single contiguous one.
+
+The root cause is that the read extent cache does not guarantee that all
+blocks of an extent are present in memory. Therefore, when the extent
+length returned by f2fs_map_blocks_cached() is smaller than maxblocks,
+the remaining mappings are retrieved via f2fs_get_dnode_of_data() to
+ensure correct fiemap extent boundary handling.
+
+Cc: stable@kernel.org
+Fixes: cd8fc5226bef ("f2fs: remove the create argument to f2fs_map_blocks")
+Signed-off-by: Yongpeng Yang <yangyongpeng@xiaomi.com>
+Reviewed-by: Chao Yu <chao@kernel.org>
+Signed-off-by: Jaegeuk Kim <jaegeuk@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/vc4/vc4_bo.c | 3 +++
- 1 file changed, 3 insertions(+)
+ fs/f2fs/data.c |   25 ++++++++++++++++++++++---
+ 1 file changed, 22 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/gpu/drm/vc4/vc4_bo.c b/drivers/gpu/drm/vc4/vc4_bo.c
-index 9006b9861c90c..437084f7973c6 100644
---- a/drivers/gpu/drm/vc4/vc4_bo.c
-+++ b/drivers/gpu/drm/vc4/vc4_bo.c
-@@ -719,12 +719,15 @@ int vc4_mmap(struct file *filp, struct vm_area_struct *vma)
- 		return -EINVAL;
- 	}
+--- a/fs/f2fs/data.c
++++ b/fs/f2fs/data.c
+@@ -1522,8 +1522,26 @@ int f2fs_map_blocks(struct inode *inode,
+ 	if (!maxblocks)
+ 		return 0;
  
-+	mutex_lock(&bo->madv_lock);
- 	if (bo->madv != VC4_MADV_WILLNEED) {
- 		DRM_DEBUG("mmaping of %s BO not allowed\n",
- 			  bo->madv == VC4_MADV_DONTNEED ?
- 			  "purgeable" : "purged");
-+		mutex_unlock(&bo->madv_lock);
- 		return -EINVAL;
- 	}
-+	mutex_unlock(&bo->madv_lock);
+-	if (!map->m_may_create && f2fs_map_blocks_cached(inode, map, flag))
+-		goto out;
++	if (!map->m_may_create && f2fs_map_blocks_cached(inode, map, flag)) {
++		struct extent_info ei;
++
++		/*
++		 * 1. If map->m_multidev_dio is true, map->m_pblk cannot be
++		 * waitted by f2fs_wait_on_block_writeback_range() and are not
++		 * mergeable.
++		 * 2. If pgofs hits the read extent cache, it means the mapping
++		 * is already cached in the extent cache, but it is not
++		 * mergeable, and there is no need to query the mapping again
++		 * via f2fs_get_dnode_of_data().
++		 */
++		pgofs =	(pgoff_t)map->m_lblk + map->m_len;
++		if (map->m_len == maxblocks ||
++			map->m_multidev_dio ||
++			f2fs_lookup_read_extent_cache(inode, pgofs, &ei))
++			goto out;
++		ofs = map->m_len;
++		goto map_more;
++	}
  
- 	/*
- 	 * Clear the VM_PFNMAP flag that was set by drm_gem_mmap(), and set the
--- 
-2.53.0
-
+ 	map->m_bdev = inode->i_sb->s_bdev;
+ 	map->m_multidev_dio =
+@@ -1534,7 +1552,8 @@ int f2fs_map_blocks(struct inode *inode,
+ 
+ 	/* it only supports block size == page size */
+ 	pgofs =	(pgoff_t)map->m_lblk;
+-	end = pgofs + maxblocks;
++map_more:
++	end = (pgoff_t)map->m_lblk + maxblocks;
+ 
+ next_dnode:
+ 	if (map->m_may_create) {
 
 
 
