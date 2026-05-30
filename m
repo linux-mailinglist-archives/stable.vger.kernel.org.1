@@ -1,58 +1,58 @@
-Return-Path: <stable+bounces-258235-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-258811-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id kLU/Fn8mG2qS/ggAu9opvQ
-	(envelope-from <stable+bounces-258235-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:03:43 +0200
+	id GCGjCvgrG2r//ggAu9opvQ
+	(envelope-from <stable+bounces-258811-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:27:04 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id AB4B1610E2D
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:03:42 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 271A9611C1A
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:27:02 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id ADB883103747
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 17:54:30 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 14B033007A44
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 18:27:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 621183BF66D;
-	Sat, 30 May 2026 17:54:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 28201219303;
+	Sat, 30 May 2026 18:26:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="t1NiD/G6"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WqmsTAiA"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 27FAD3546EA;
-	Sat, 30 May 2026 17:54:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0A608279DC9;
+	Sat, 30 May 2026 18:26:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780163669; cv=none; b=tqNmAkgCydtwEX/IZcvWi0au49yJp9e4Km9M3+Hn6qNsndTBwbm4/Uwju7WnlecxnSohAtvMFBtkKC20i8QkFkfTK/yTOXwAJdrDyvq4UPFltugw+WsAJck7jRSnmdFAfhEDdWvkKn+a9Ta494pbxfV7oURpBFA8zJMOSTXaKkc=
+	t=1780165618; cv=none; b=F783/pRktH64P3xBa/iSBhn2yWT+aeqgLUBx78K6No/dXcSNxIwZeUHhNxnB0WPXf4omz20OAWV6BD/H+rz1wk8KO9ah+l0gGvFTcZea/yYbOzwkUmXQhHnWkyTn6FEeWtXEEknPnvIIe6T6ck3XdWTalZ8VDMshAAeKof5907E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780163669; c=relaxed/simple;
-	bh=glmAUAXtl4nAWYIPmuKhUbXPiP1DmbjO1CzW4AgMK+0=;
+	s=arc-20240116; t=1780165618; c=relaxed/simple;
+	bh=ng7HICWLceGnlGispZm2FILpRq2DmIrTjr4E/XIr6CM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=NKpgDf9lwc5jYKtEcfMklkKZPExf4uBS3u/5cXyCmUvAz9t+grpJAMgzzIb9zq68Kjmos31rxm29GuGv844BkHKhPBRQnRdn7icW/IdJiebZdMgQmtHDB7Xjp2FSwAr9/dysMHybl1ASQ8wvliRXRKtV2/tXBdslIEVFK//QoJY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=t1NiD/G6; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6E5281F00898;
-	Sat, 30 May 2026 17:54:27 +0000 (UTC)
+	 MIME-Version:Content-Type; b=qU/pRLWYJEwJ+RcEVBAAn7/WaT+718OLfo08+iIIupAuMGBtDEf9rUaf2FjrygtD05yh17d3pKmZzHCPRMRVHrYTHBfG/MNpJQtwGZJqXC8jery2Uy2yRWcmQ20RZVXTNaI3RBtxz2GVpWCc/2h9MT5sPsyJsJf/vh8kLD8tKCk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WqmsTAiA; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4DFD51F00893;
+	Sat, 30 May 2026 18:26:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780163668;
-	bh=NJht8fY/hhVSXBMkORNDine+wuuXEcXQAmL9FweYiYs=;
+	s=korg; t=1780165616;
+	bh=R9ReAKiSwa5u0f/bmHlSsH3H1Sao+BpqV9tVtYs+6eg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=t1NiD/G6UYXP039mwAqe1Rxjz82KjWI7ju0qQZwsPIFkgjPbzwN/okJa2UHfWHqc0
-	 g9fQbPdOlz+bL3043MvBY1AJnbbUBcz6QnLuLWxl0TeR1sZULZZY8giBtorKo7v2vu
-	 gfjf+rFeGsy14zH9PxzSF6Cu0PC9Ahd6lzkSaaaE=
+	b=WqmsTAiADMUnGclZcyKngQeUKvTCYlK93ZK3NRBnxqBMOylnS7y4on/YoBIgwxVpr
+	 A7+C9UdhMGBYu5xRA7YtIAQWuJa6oKSMWilP++TEUSUHiscS0LUqosEfOY32KpmB3V
+	 JVAZYZ4FdUnQFaGrGHB3q7H4Vezx/yG0qknzTC58=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable <stable@kernel.org>,
-	Aaro Koskinen <aaro.koskinen@iki.fi>
-Subject: [PATCH 5.15 297/776] USB: omap_udc: DMA: Dont enable burst 4 mode
+	"Darrick J. Wong" <djwong@kernel.org>,
+	Miklos Szeredi <mszeredi@redhat.com>
+Subject: [PATCH 5.10 130/589] fuse: quiet down complaints in fuse_conn_limit_write
 Date: Sat, 30 May 2026 18:00:11 +0200
-Message-ID: <20260530160248.240615571@linuxfoundation.org>
+Message-ID: <20260530160228.191926655@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260530160240.228940103@linuxfoundation.org>
-References: <20260530160240.228940103@linuxfoundation.org>
+In-Reply-To: <20260530160224.570625122@linuxfoundation.org>
+References: <20260530160224.570625122@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,97 +62,101 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-258235-lists,stable=lfdr.de];
-	TO_DN_SOME(0.00)[];
+	TAGGED_FROM(0.00)[bounces-258811-lists,stable=lfdr.de];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-0.995];
+	RCVD_COUNT_THREE(0.00)[4];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TO_DN_SOME(0.00)[];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable];
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
 	RCPT_COUNT_FIVE(0.00)[5];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	TAGGED_RCPT(0.00)[stable];
+	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,iki.fi:email,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim]
-X-Rspamd-Queue-Id: AB4B1610E2D
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo]
+X-Rspamd-Queue-Id: 271A9611C1A
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Aaro Koskinen <aaro.koskinen@iki.fi>
+From: Darrick J. Wong <djwong@kernel.org>
 
-commit 3f91484f6c13c434bd573ca6b6779c26adb0ddab upstream.
+commit 129a45f9755a89f573c6a513a6b9e3d234ce89b0 upstream.
 
-Commit 65111084c63d7 ("USB: more omap_udc updates (dma and omap1710)")
-added setting for DMA burst 4 mode. But I think this should be undone for
-two reasons:
+gcc 15 complains about an uninitialized variable val that is passed by
+reference into fuse_conn_limit_write:
 
-- It breaks DMA on 15xx boards - transfers just silently stall.
+ control.c: In function ‘fuse_conn_congestion_threshold_write’:
+ include/asm-generic/rwonce.h:55:37: warning: ‘val’ may be used uninitialized [-Wmaybe-uninitialized]
+    55 |         *(volatile typeof(x) *)&(x) = (val);                            \
+       |         ~~~~~~~~~~~~~~~~~~~~~~~~~~~~^~~~~~~
+ include/asm-generic/rwonce.h:61:9: note: in expansion of macro ‘__WRITE_ONCE’
+    61 |         __WRITE_ONCE(x, val);                                           \
+       |         ^~~~~~~~~~~~
+ control.c:178:9: note: in expansion of macro ‘WRITE_ONCE’
+   178 |         WRITE_ONCE(fc->congestion_threshold, val);
+       |         ^~~~~~~~~~
+ control.c:166:18: note: ‘val’ was declared here
+   166 |         unsigned val;
+       |                  ^~~
 
-- On newer OMAP1 boards, like Nokia 770 (omap1710), there is no measurable
-performance impact when testing TCP throughput with g_ether with large
-15000 byte MTU size.
+Unfortunately there's enough macro spew involved in kstrtoul_from_user
+that I think gcc gives up on its analysis and sprays the above warning.
+AFAICT it's not actually a bug, but we could just zero-initialize the
+variable to enable using -Wmaybe-uninitialized to find real problems.
 
-It's also worth noting that when the original change was made, the
-OMAP_DMA_DATA_BURST_4 handling in arch/arm/plat-omap/dma.c was broken, and
-actually resulted in the same as the OMAP_DMA_DATA_BURST_DIS i.e. burst
-disabled. This was fixed not until a couple kernel releases later in an
-unrelated commit 1a8bfa1eb998a ("[ARM] 3142/1: OMAP 2/5: Update files
-common to omap1 and omap2").
+Previously we would use some weird uninitialized_var annotation to quiet
+down the warnings, so clearly this code has been like this for quite
+some time.
 
-So based on this it seems there was never really a very good reason to
-enable this burst mode in omap_udc, so remove it now to allow 15xx DMA
-to work again (it provides 2x throughput compared to PIO mode).
-
-Fixes: 65111084c63d ("[PATCH] USB: more omap_udc updates (dma and omap1710)")
-Cc: stable <stable@kernel.org>
-Signed-off-by: Aaro Koskinen <aaro.koskinen@iki.fi>
-Link: https://patch.msgid.link/ad06qHLclWHeSGnV@darkstar.musicnaut.iki.fi
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: stable@vger.kernel.org # v5.9
+Fixes: 3f649ab728cda8 ("treewide: Remove uninitialized_var() usage")
+Signed-off-by: Darrick J. Wong <djwong@kernel.org>
+Signed-off-by: Miklos Szeredi <mszeredi@redhat.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/usb/gadget/udc/omap_udc.c |    4 ----
- 1 file changed, 4 deletions(-)
+ fs/fuse/control.c |    4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
---- a/drivers/usb/gadget/udc/omap_udc.c
-+++ b/drivers/usb/gadget/udc/omap_udc.c
-@@ -731,8 +731,6 @@ static void dma_channel_claim(struct oma
- 		if (status == 0) {
- 			omap_writew(reg, UDC_TXDMA_CFG);
- 			/* EMIFF or SDRC */
--			omap_set_dma_src_burst_mode(ep->lch,
--						OMAP_DMA_DATA_BURST_4);
- 			omap_set_dma_src_data_pack(ep->lch, 1);
- 			/* TIPB */
- 			omap_set_dma_dest_params(ep->lch,
-@@ -754,8 +752,6 @@ static void dma_channel_claim(struct oma
- 				UDC_DATA_DMA,
- 				0, 0);
- 			/* EMIFF or SDRC */
--			omap_set_dma_dest_burst_mode(ep->lch,
--						OMAP_DMA_DATA_BURST_4);
- 			omap_set_dma_dest_data_pack(ep->lch, 1);
- 		}
- 	}
+--- a/fs/fuse/control.c
++++ b/fs/fuse/control.c
+@@ -120,7 +120,7 @@ static ssize_t fuse_conn_max_background_
+ 					      const char __user *buf,
+ 					      size_t count, loff_t *ppos)
+ {
+-	unsigned val;
++	unsigned int val = 0;
+ 	ssize_t ret;
+ 
+ 	ret = fuse_conn_limit_write(file, buf, count, ppos, &val,
+@@ -162,7 +162,7 @@ static ssize_t fuse_conn_congestion_thre
+ 						    const char __user *buf,
+ 						    size_t count, loff_t *ppos)
+ {
+-	unsigned val;
++	unsigned int val = 0;
+ 	struct fuse_conn *fc;
+ 	struct fuse_mount *fm;
+ 	ssize_t ret;
 
 
 
