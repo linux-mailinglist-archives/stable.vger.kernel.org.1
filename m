@@ -1,58 +1,59 @@
-Return-Path: <stable+bounces-258216-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-257482-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id cL6vNT0mG2qS/ggAu9opvQ
-	(envelope-from <stable+bounces-258216-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:02:37 +0200
+	id 8JFbBD4cG2pk/QgAu9opvQ
+	(envelope-from <stable+bounces-257482-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:19:58 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3EF1E610DC9
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:02:37 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9827160F685
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:19:57 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id B359D30CE9E8
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 17:53:23 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 6185C307A1E0
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 17:12:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6596B342CA7;
-	Sat, 30 May 2026 17:53:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EDEE334104B;
+	Sat, 30 May 2026 17:12:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qgrasAGK"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="C6UFr8cL"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 38B03261B9E;
-	Sat, 30 May 2026 17:53:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C934D481DD;
+	Sat, 30 May 2026 17:12:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780163603; cv=none; b=ac8YhREiy9JPATYYD6D9jzgL/rn3ZLFSi2fl2OspDpZSrfxoxQN28JrIEE1MPC2MOH40rPT7KExQ0KUbk8wHXtvZ35inRNjr2uZYk0jjaP/DheAWT8KsBNEkyk1KIIOgL4cIp1P2tuFfDMiZynLZuWJGofmMMneXgaL9Yzt6470=
+	t=1780161148; cv=none; b=JiGKpFh6pM91nZi52VHopR9lkdh1Q5VlC6dbDmiIdyjautQVDznuX71IYEW4Jv9wkytNZVuVKUJ0zXt0/1gckbLBWN4v3PBgRBhU21rH0AkEv6uHuJkxNUXUvUTlfqr2Q+dJD8/zp5hG/JVHZRqKEK6boPAYSDRmEztlzNnyDBo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780163603; c=relaxed/simple;
-	bh=Xoha3fasvNkwbb3Wb2ZAboaO4J8Jds4TSvo2m0R7kJI=;
+	s=arc-20240116; t=1780161148; c=relaxed/simple;
+	bh=dJ5B6yNokpVXHhJBY+hmyd5Wf2X6xpoRmSNduwZQ33M=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=GDlUAc55KENpCt/3Jh8yK3l7nzcHj1XU5ruICoGHZnH1Xi5+0FZos9PmN/SKu34MgkPhz9l+89bzCEVb+eIygzo9A+7JO4u4+JU+4nwY6XQ/bPzUL6COfjFRQrXQNS/iaAzDXLozyd1XFS1HZdxCK8A9tH0slNaIMuIJ2gtZLYU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qgrasAGK; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5BABF1F00893;
-	Sat, 30 May 2026 17:53:21 +0000 (UTC)
+	 MIME-Version; b=eGocYsUrbgTFOAzzdemo/jP62MRBCWLxjWeqCsmJzJypoxgw+H5l5RsfMscUZubC9ZYhy1riB9YfUss7wzbnZFHtByeDtLGxhhfzoMWqGfcj9S1Kd/J+I1B+jd4QG7cWZCtcKFyOgOxKhA+iZ+LT/zP+TKI1rgwmUYfYy997Wmo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=C6UFr8cL; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 181601F00893;
+	Sat, 30 May 2026 17:12:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780163602;
-	bh=7eiOOwr0oobY/aEemP0eDylSy40NTJlEKAV9kPVfDRY=;
+	s=korg; t=1780161147;
+	bh=QVuqY2QMc4FaHUi3Xs5/S9bKWre6s75NV4XGmnO66Xo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=qgrasAGK7+CLsaYmU3NvKV1PxK43lZCyLM2MabrpEEpL1UJU4GfS7LMpWUmiHiBcI
-	 l8w1GEyfpuaqgGYZt+9WBuwrRXeHvXRaZJ3iuVPmMZZkv/9o2xXEfIypwZZ58DSkED
-	 fnIEIA3nXxOOQDmtdO6/ktbAjLGFY/L04gYGnYMo=
+	b=C6UFr8cLQ1C5ktb69rOstHerBgx9VYF2ZUcvxkJxf4lWAvJOPH/0ICuRgKC+S58Rz
+	 ytS+lo1WbN92CztbGeq/ic+5LeFHO+LfR6+xZEAfI0/iExe0C+KRjYyh9vNed+mAi6
+	 ccIbuuj0gl7lD+5aE+L/mJKCbmQLyNsIK1jZZNxQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Miklos Szeredi <mszeredi@redhat.com>,
-	Jan Kara <jack@suse.cz>
-Subject: [PATCH 5.15 308/776] fanotify: fix false positive on permission events
-Date: Sat, 30 May 2026 18:00:22 +0200
-Message-ID: <20260530160248.525237947@linuxfoundation.org>
+	Ming-Hung Tsai <mtsai@redhat.com>,
+	Mikulas Patocka <mpatocka@redhat.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 499/969] dm cache: fix concurrent write failure in passthrough mode
+Date: Sat, 30 May 2026 18:00:23 +0200
+Message-ID: <20260530160314.103514556@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260530160240.228940103@linuxfoundation.org>
-References: <20260530160240.228940103@linuxfoundation.org>
+In-Reply-To: <20260530160300.485627683@linuxfoundation.org>
+References: <20260530160300.485627683@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,120 +66,117 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-257482-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-258216-lists,stable=lfdr.de];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	TO_DN_SOME(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-0.996];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	RCPT_COUNT_FIVE(0.00)[6];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[5];
+	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,suse.cz:email,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim]
-X-Rspamd-Queue-Id: 3EF1E610DC9
+	FROM_HAS_DN(0.00)[]
+X-Rspamd-Queue-Id: 9827160F685
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Miklos Szeredi <mszeredi@redhat.com>
+From: Ming-Hung Tsai <mtsai@redhat.com>
 
-commit 7746e3bd4cc19b5092e00d32d676e329bfcb6900 upstream.
+[ Upstream commit e4f66341779d0cf4c83c74793753a84094286d9e ]
 
-fsnotify_get_mark_safe() may return false for a mark on an unrelated group,
-which results in bypassing the permission check.
+When bio prison cell lock acquisition fails due to concurrent writes to
+the same block in passthrough mode, dm-cache incorrectly returns an I/O
+error instead of properly handling the concurrency. This can occur in
+both process and workqueue contexts when invalidate_lock() is called for
+exclusive access to a data block. Fix this by deferring the write bios
+to ensure proper block device behavior.
 
-Fix by skipping over detached marks that are not in the current group.
+Reproduce steps:
 
-CC: stable@vger.kernel.org
-Fixes: abc77577a669 ("fsnotify: Provide framework for dropping SRCU lock in ->handle_event")
-Signed-off-by: Miklos Szeredi <mszeredi@redhat.com>
-Link: https://patch.msgid.link/20260410144950.156160-1-mszeredi@redhat.com
-Signed-off-by: Jan Kara <jack@suse.cz>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+1. Create a cache device
+
+dmsetup create cmeta --table "0 8192 linear /dev/sdc 0"
+dmsetup create cdata --table "0 131072 linear /dev/sdc 8192"
+dmsetup create corig --table "0 262144 linear /dev/sdc 262144"
+dd if=/dev/zero of=/dev/mapper/cmeta bs=4k count=1 oflag=direct
+dmsetup create cache --table "0 262144 cache /dev/mapper/cmeta \
+/dev/mapper/cdata /dev/mapper/corig 128 2 metadata2 writethrough smq 0"
+
+2. Promote the first data block into cache
+
+fio --filename=/dev/mapper/cache --name=populate --rw=write --bs=4k \
+--direct=1 --size=64k
+
+3. Reload the cache into passthrough mode
+
+dmsetup suspend cache
+dmsetup reload cache --table "0 262144 cache /dev/mapper/cmeta \
+/dev/mapper/cdata /dev/mapper/corig 128 2 metadata2 passthrough smq 0"
+dmsetup resume cache
+
+4. Write to the first cached block concurrently. Sometimes one of the
+   processes will receive I/O errors.
+
+fio --filename=/dev/mapper/cache --name test --rw=randwrite --bs=4k \
+--randrepeat=0 --direct=1 --numjobs=2 --size 64k
+
+ <snip>
+ fio-3.41
+ fio: io_u error on file /dev/mapper/cache: Input/output error: write offset=4096, buflen=4096
+ fio: pid=106, err=5/file:io_u.c:2008, func=io_u error, error=Input/output error
+ test: (groupid=0, jobs=1): err= 0: pid=105
+ test: (groupid=0, jobs=1): err= 5 (file:io_u.c:2008, func=io_u error, error=Input/output error): pid=106
+ <snip>
+
+Fixes: b29d4986d0da ("dm cache: significant rework to leverage dm-bio-prison-v2")
+Signed-off-by: Ming-Hung Tsai <mtsai@redhat.com>
+Signed-off-by: Mikulas Patocka <mpatocka@redhat.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/notify/fsnotify.c             |    2 +-
- fs/notify/mark.c                 |   18 +++++++++++-------
- include/linux/fsnotify_backend.h |    1 +
- 3 files changed, 13 insertions(+), 8 deletions(-)
+ drivers/md/dm-cache-target.c | 9 +++++++++
+ 1 file changed, 9 insertions(+)
 
---- a/fs/notify/fsnotify.c
-+++ b/fs/notify/fsnotify.c
-@@ -398,7 +398,7 @@ static struct fsnotify_mark *fsnotify_fi
- 	return hlist_entry_safe(node, struct fsnotify_mark, obj_list);
- }
- 
--static struct fsnotify_mark *fsnotify_next_mark(struct fsnotify_mark *mark)
-+struct fsnotify_mark *fsnotify_next_mark(struct fsnotify_mark *mark)
- {
- 	struct hlist_node *node = NULL;
- 
---- a/fs/notify/mark.c
-+++ b/fs/notify/mark.c
-@@ -380,9 +380,6 @@ EXPORT_SYMBOL_GPL(fsnotify_put_mark);
-  */
- static bool fsnotify_get_mark_safe(struct fsnotify_mark *mark)
- {
--	if (!mark)
--		return true;
--
- 	if (refcount_inc_not_zero(&mark->refcnt)) {
- 		spin_lock(&mark->lock);
- 		if (mark->flags & FSNOTIFY_MARK_FLAG_ATTACHED) {
-@@ -423,15 +420,22 @@ bool fsnotify_prepare_user_wait(struct f
- 	int type;
- 
- 	fsnotify_foreach_iter_type(type) {
-+		struct fsnotify_mark *mark = iter_info->marks[type];
+diff --git a/drivers/md/dm-cache-target.c b/drivers/md/dm-cache-target.c
+index f7da6f853ec33..c57df4d91c9b2 100644
+--- a/drivers/md/dm-cache-target.c
++++ b/drivers/md/dm-cache-target.c
+@@ -1536,6 +1536,15 @@ static int invalidate_lock(struct dm_cache_migration *mg)
+ 			    READ_WRITE_LOCK_LEVEL, prealloc, &mg->cell);
+ 	if (r < 0) {
+ 		free_prison_cell(cache, prealloc);
 +
- 		/* This can fail if mark is being removed */
--		if (!fsnotify_get_mark_safe(iter_info->marks[type])) {
--			__release(&fsnotify_mark_srcu);
--			goto fail;
-+		while (mark && !fsnotify_get_mark_safe(mark)) {
-+			if (mark->group == iter_info->current_group) {
-+				__release(&fsnotify_mark_srcu);
-+				goto fail;
-+			}
-+			/* This is a mark in an unrelated group, skip */
-+			mark = fsnotify_next_mark(mark);
-+			iter_info->marks[type] = mark;
- 		}
++		/* Defer the bio for retrying the cell lock */
++		if (mg->overwrite_bio) {
++			struct bio *bio = mg->overwrite_bio;
++
++			mg->overwrite_bio = NULL;
++			defer_bio(cache, bio);
++		}
++
+ 		invalidate_complete(mg, false);
+ 		return r;
  	}
- 
- 	/*
--	 * Now that both marks are pinned by refcount in the inode / vfsmount
-+	 * Now that all marks are pinned by refcount in the inode / vfsmount / etc
- 	 * lists, we can drop SRCU lock, and safely resume the list iteration
- 	 * once userspace returns.
- 	 */
---- a/include/linux/fsnotify_backend.h
-+++ b/include/linux/fsnotify_backend.h
-@@ -820,6 +820,7 @@ static inline void fsnotify_clear_sb_mar
- }
- extern void fsnotify_get_mark(struct fsnotify_mark *mark);
- extern void fsnotify_put_mark(struct fsnotify_mark *mark);
-+struct fsnotify_mark *fsnotify_next_mark(struct fsnotify_mark *mark);
- extern void fsnotify_finish_user_wait(struct fsnotify_iter_info *iter_info);
- extern bool fsnotify_prepare_user_wait(struct fsnotify_iter_info *iter_info);
- 
+-- 
+2.53.0
+
 
 
 
