@@ -1,62 +1,60 @@
-Return-Path: <stable+bounces-256920-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-256922-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id mPzXOEz9GmpX+QgAu9opvQ
-	(envelope-from <stable+bounces-256920-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 17:07:56 +0200
+	id iPFvEccFG2oZ+ggAu9opvQ
+	(envelope-from <stable+bounces-256922-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 17:44:07 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4186160DA84
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 17:07:56 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id AB45A60DCF3
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 17:44:06 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 3BE973029AC3
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 15:07:46 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id A76553018283
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 15:40:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0F9252FD7D3;
-	Sat, 30 May 2026 15:07:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4122C32F770;
+	Sat, 30 May 2026 15:40:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="aOeOJnz5"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="VP3DwqrF"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D22B72F6596
-	for <stable@vger.kernel.org>; Sat, 30 May 2026 15:07:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1CB4232A3FE
+	for <stable@vger.kernel.org>; Sat, 30 May 2026 15:40:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780153665; cv=none; b=tTZyp2YQqV12v4LF40SBUJmCRTxZbIlqTsev+3KUtgX/mzVtkscKP531EQLM5UIrzLOGSbIpf6YY2qfFFykVnk99rx+k9FMLoRyXwppVRg+PRFnlYGtQwbkrG9beWDK9kFepptdp1MOlBUjv7/Kuop3WrbW1JwRG1cwt+D0Tbgg=
+	t=1780155641; cv=none; b=twE9MEAAyFwH87/nNEoly0GoOZxUGKVGG2LYir4f6x0VXzFwldlvmDYMUbyQDGecbsU/5i8GcL6Cajz5Q+cuyihvoDx61iS28fva1gCmtdPime/KHIbE02+gGYOSDuPxZjKQiSaEaR85Q5/HSi3y1ix2iNhj8jPmaK8lDR00YWs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780153665; c=relaxed/simple;
-	bh=D0JZZjtlSaf5IW0k4HZAXEh6TYjj0rkAuM1sAEi5xlU=;
+	s=arc-20240116; t=1780155641; c=relaxed/simple;
+	bh=IcXtRd1xRTwpRllVcbjz0iDygABbwXS7segaEh1MOC8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=sH5+5REfIi1cBXb433OmBjTMJVPD2bxEiSnW33VbpVLfLYTThgLfKudSkMUF/TMjJ/eNlkNjnU5g5dTknJuJKcAzOYYafuZaBwEKQoZ8T2UmbKMRWj8LAwxpyS0likT/eirv9NSEOjJSaKZjBEX+frgKfrjLsDCcdzVx2w+JsFo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=aOeOJnz5; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F15B71F00898;
-	Sat, 30 May 2026 15:07:43 +0000 (UTC)
+	 MIME-Version; b=QsawxlK5UX+we22EcpQTp1xS3Sb/0NqMvEgeCwA1Sp+0e8bj6Z2NtVIYdKPTDgcxXB6biHXIw9qYwRGXuuUd5xT+IfWFmdn2eSNrIP8OCiXzmi6DZl4coPq8gvjbvfWpoen8Pf85x2YMpVxmUOAeoAlh0poTfluXAv9TiJYFMkg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=VP3DwqrF; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5B9511F00899;
+	Sat, 30 May 2026 15:40:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1780153664;
-	bh=S2seu65oFiWgutipHR8gNHg/HFaeREsyKqeb6A+uMmo=;
+	s=k20260515; t=1780155639;
+	bh=N+459GfZdsw++VWaoEjxNQmReIV1wx4sw5D8iVVcEWk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=aOeOJnz561EaAsBSltLKOXsQwER2iNjbyurMdyI5saZ2d1Ecv/sCcPJx3MVSLJdGE
-	 xHYMJAIPJX9E7x8bFOZl4w1AUmhm1qcpu/vGUw+hml1bWjiPEqdEX6Cvr3xW0ymuQS
-	 H9pjxomL4VSL5o+4SBxqCillOpQjV8HcKT9TLeMQJ97XjyLQbmQtTy1b84mxeBjPbm
-	 t9A5H0O2DNtUa/TFyouDtrvIPcGITAIL2V21lNuvhQqXsomzdKEYgwhv4WipK+BwOy
-	 s4aqTrQdv/8ufHLT/x9h98UAQZUOl9u5jk/d3gnn+Ww5j13a6G3c6yLokhGkzJXa9c
-	 9GHYMpz0+irOQ==
+	b=VP3DwqrF6sknd9vnZ/O2y5uurVGSVccEjin8x3udPzlTX97Zq1xIjq1uQECETul68
+	 Nh5YR9r+M8bD+5krlx9U5BeekkD8TiyDgaXQsRMwtnrU1FDVLsQGOKrWAv1gy90bHc
+	 eDWkkrIYG0M1xJBi7uC5ppsTv9Qpm2uhpp85uM6grDnpyreMQ3Ongx34EMGm4WifLz
+	 XpZ4Ovm7zs/C8Qkd30KR75/0yzr+QLjh9dLIMw8qm+FXoK8nuLET6lwL0XzdhkWcRG
+	 Z8dlIElh5PccWkub9VJFWOeNSFBfH+W4/hrV/w/p7iFY131BOmoE7fEuBCz2ID7Nge
+	 1kHGZuOxcGoHQ==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org
-Cc: Shardul Bankar <shardul.b@mpiricsoftware.com>,
+Cc: "Matthieu Baerts (NGI0)" <matttbe@kernel.org>,
 	Paolo Abeni <pabeni@redhat.com>,
-	"Matthieu Baerts (NGI0)" <matttbe@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6.y 3/3] mptcp: do not drop partial packets
-Date: Sat, 30 May 2026 11:07:40 -0400
-Message-ID: <20260530150740.2598142-3-sashal@kernel.org>
+Subject: [PATCH 5.10.y] selftests: mptcp: drop nanoseconds width specifier
+Date: Sat, 30 May 2026 11:40:36 -0400
+Message-ID: <20260530154036.2741872-1-sashal@kernel.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260530150740.2598142-1-sashal@kernel.org>
-References: <2026052837-repave-immovable-cfa4@gregkh>
- <20260530150740.2598142-1-sashal@kernel.org>
+In-Reply-To: <2026052830-expansion-earlobe-eedc@gregkh>
+References: <2026052830-expansion-earlobe-eedc@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -70,101 +68,93 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
 	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20260515];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-256920-lists,stable=lfdr.de];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	RCVD_TLS_LAST(0.00)[];
-	TO_DN_SOME(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[5];
+	RCVD_TLS_LAST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-256922-lists,stable=lfdr.de];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	RCPT_COUNT_THREE(0.00)[4];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
 	DKIM_TRACE(0.00)[kernel.org:+];
 	NEURAL_HAM(-0.00)[-1.000];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	FROM_HAS_DN(0.00)[]
-X-Rspamd-Queue-Id: 4186160DA84
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
+X-Rspamd-Queue-Id: AB45A60DCF3
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-From: Shardul Bankar <shardul.b@mpiricsoftware.com>
+From: "Matthieu Baerts (NGI0)" <matttbe@kernel.org>
 
-[ Upstream commit 50c2d91c5dfa0e465826ec1f8dbad9cdc254bd85 ]
+[ Upstream commit 01ff78e4b3d98689184c52d97f9575dfbdc3b10f ]
 
-When a packet arrives with map_seq < ack_seq < end_seq, the beginning
-of the packet has already been acknowledged but the end contains new
-data. Currently the entire packet is dropped as "old data," forcing
-the sender to retransmit.
+Using the format specifier +%s%3N with GNU date is honoured, and only
+prints 3 digits of the nanoseconds portion of the seconds since epoch,
+which corresponds to the milliseconds.
 
-Instead, skip the already-acked bytes by adjusting the skb offset and
-enqueue only the new portion. Update bytes_received and ack_seq to
-reflect the new data consumed.
+The uutils implementation of date currently does not honour this, and
+always prints all 9 digits. This is a known issue [1], but can be worked
+around by adapting this test to use nanoseconds instead of microseconds,
+and then divide it by 1e6.
 
-A previous attempt at this fix has been sent by Paolo Abeni [1], but had
-issues [2]: it also added a zero-window check and changed rcv_wnd_sent
-initialization, which caused test regressions. This version addresses
-only the partial packet handling without modifying receive window
-accounting.
+This fix is similar to what has been done on systemd side [2], and it is
+needed to run the selftests on Ubuntu 26.04, containing uutils 0.8.0.
 
-Fixes: ab174ad8ef76 ("mptcp: move ooo skbs into msk out of order queue.")
+Note that the Fixes tag is there even if this patch doesn't fix an issue
+in the kernel selftests, but it is useful for those using uutils 0.8.0.
+
+Fixes: 048d19d444be ("mptcp: add basic kselftest for mptcp")
 Cc: stable@vger.kernel.org
-Link: https://lore.kernel.org/c9b426a4e163aa3c4fe8b80c79f1a610f47ae7d8.1763075056.git.pabeni@redhat.com [1]
-Closes: https://github.com/multipath-tcp/mptcp_net-next/issues/600 [2]
-Signed-off-by: Shardul Bankar <shardul.b@mpiricsoftware.com>
-[pabeni@redhat.com: update map]
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
-Reviewed-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+Link: https://github.com/uutils/coreutils/issues/11658 [1]
+Link: https://github.com/systemd/systemd/pull/41627 [2]
 Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
-Link: https://patch.msgid.link/20260515-net-mptcp-misc-fixes-7-1-rc4-v2-1-701e96419f2f@kernel.org
+Link: https://patch.msgid.link/20260515-net-mptcp-misc-fixes-7-1-rc4-v2-6-701e96419f2f@kernel.org
 Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/mptcp/protocol.c | 24 +++++++++++++++++++-----
- 1 file changed, 19 insertions(+), 5 deletions(-)
+ tools/testing/selftests/net/mptcp/mptcp_connect.sh | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/net/mptcp/protocol.c b/net/mptcp/protocol.c
-index 959385b1e564c..a933d61488c80 100644
---- a/net/mptcp/protocol.c
-+++ b/net/mptcp/protocol.c
-@@ -392,12 +392,26 @@ static bool __mptcp_move_skb(struct sock *sk, struct sk_buff *skb)
- 		return false;
- 	}
+diff --git a/tools/testing/selftests/net/mptcp/mptcp_connect.sh b/tools/testing/selftests/net/mptcp/mptcp_connect.sh
+index fb89298bdde4c..4e7c82eddf713 100755
+--- a/tools/testing/selftests/net/mptcp/mptcp_connect.sh
++++ b/tools/testing/selftests/net/mptcp/mptcp_connect.sh
+@@ -421,7 +421,7 @@ do_transfer()
+ 	wait_local_port_listen "${listener_ns}" "${port}"
  
--	/* old data, keep it simple and drop the whole pkt, sender
--	 * will retransmit as needed, if needed.
-+	/* Completely old data? */
-+	if (!after64(MPTCP_SKB_CB(skb)->end_seq, msk->ack_seq)) {
-+		MPTCP_INC_STATS(sock_net(sk), MPTCP_MIB_DUPDATA);
-+		mptcp_drop(sk, skb);
-+		return false;
-+	}
-+
-+	/* Partial packet: map_seq < ack_seq < end_seq.
-+	 * Skip the already-acked bytes and enqueue the new data.
- 	 */
--	MPTCP_INC_STATS(sock_net(sk), MPTCP_MIB_DUPDATA);
--	mptcp_drop(sk, skb);
--	return false;
-+	copy_len = MPTCP_SKB_CB(skb)->end_seq - msk->ack_seq;
-+	MPTCP_SKB_CB(skb)->offset += msk->ack_seq - MPTCP_SKB_CB(skb)->map_seq;
-+	MPTCP_SKB_CB(skb)->map_seq += msk->ack_seq -
-+				      MPTCP_SKB_CB(skb)->map_seq;
-+	msk->bytes_received += copy_len;
-+	WRITE_ONCE(msk->ack_seq, msk->ack_seq + copy_len);
-+
-+	skb_set_owner_r(skb, sk);
-+	__skb_queue_tail(&sk->sk_receive_queue, skb);
-+	return true;
- }
+ 	local start
+-	start=$(date +%s%3N)
++	start=$(date +%s%N)
+ 	ip netns exec ${connector_ns} ./mptcp_connect -t $timeout -p $port -s ${cl_proto} $extra_args $connect_addr < "$cin" > "$cout" &
+ 	local cpid=$!
  
- static void mptcp_stop_rtx_timer(struct sock *sk)
+@@ -431,7 +431,7 @@ do_transfer()
+ 	local rets=$?
+ 
+ 	local stop
+-	stop=$(date +%s%3N)
++	stop=$(date +%s%N)
+ 
+ 	if $capture; then
+ 		sleep 1
+@@ -440,7 +440,7 @@ do_transfer()
+ 	fi
+ 
+ 	local duration
+-	duration=$((stop-start))
++	duration=$(((stop-start) / 1000000))
+ 	duration=$(printf "(duration %05sms)" $duration)
+ 	if [ ${rets} -ne 0 ] || [ ${retc} -ne 0 ]; then
+ 		echo "$duration [ FAIL ] client exit code $retc, server $rets" 1>&2
 -- 
 2.53.0
 
