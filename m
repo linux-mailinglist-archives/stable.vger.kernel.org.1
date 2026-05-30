@@ -1,58 +1,58 @@
-Return-Path: <stable+bounces-257981-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-257205-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id ELzdGZshG2oN/ggAu9opvQ
-	(envelope-from <stable+bounces-257981-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:42:51 +0200
+	id +B/aF38YG2r2/AgAu9opvQ
+	(envelope-from <stable+bounces-257205-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:03:59 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6FB1C610360
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:42:50 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id AA74160ED47
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:03:58 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id AF19430080A1
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 17:40:27 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 7E29E30E63AF
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 16:56:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B04CD344DB9;
-	Sat, 30 May 2026 17:40:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6AAD1366567;
+	Sat, 30 May 2026 16:56:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rr4C5TmH"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cC5vP7ft"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 842B934389F;
-	Sat, 30 May 2026 17:40:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 42B9534F48F;
+	Sat, 30 May 2026 16:56:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780162826; cv=none; b=WdSYRf83jHenGI9d77LAYj+TPVEHnlHiJXQBU6334EYafYe6xjh9t7z1TYivtC7C+VA5+WLZvtknSALN9bAkPM4u27Yjs4tTquAdxBd2YF6ruE4IiZ3DRp736jr+mTtYr4QjfU2m+bWcbt6wAS7i13WhTOUZqp713CjPAZoP48Q=
+	t=1780160177; cv=none; b=eyBJgJ02P3EYS61eQ2s9tXbnmI20bN6w0gRbQja64EuQX3NgLsuJmuohVMJRlAdI/XgsIzvR5SPEmxw6O9By6tFdrYyfcAq71VMbtTA2Qj64LPAs16M2JBRu7z3st7vl9kJP0R0r92yoWuVmiaNDNj3/mjxCJMY/xRO/E/jNBwQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780162826; c=relaxed/simple;
-	bh=RenFjc1mzmjVr+xRQ2KJ4D+BckJt1XcymsymWibDvNo=;
+	s=arc-20240116; t=1780160177; c=relaxed/simple;
+	bh=UOKchgcunj0riXlVQf6gbmzahOvWi/QZ4QT7/wT2iIM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=coFWli4S+NXX4fwcAWycFWZOoSMvDRnN8wIJRRgaTwDzuQclAi5N/SLB4/v1JavzEVitS+p+AZBVqchQBjbu8z30GV2eFtNLumznn5v3SITEcrORyRrF91+hFx48C7cA/CyPtaTCYtr0f4RArJ/2RXAJUTqOaAbBiISfT3bXDDM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rr4C5TmH; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 968941F00893;
-	Sat, 30 May 2026 17:40:24 +0000 (UTC)
+	 MIME-Version; b=Oyt5BvVMZ3+sIdCJKRHh3VsjHc0sodDe1Rs4daZvwTcx45zyu+4Ga6pzzdqkwKtjnb+YM4Ws+YUe+kCmdnpZaRi4V6YBCjIzl49jUJ6BirbcjoPFoiICfY2uGgftHuJi6OuW6ATkbnpH7h6kQ+qONPHIKyN/ONxtGFSZluttccA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cC5vP7ft; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 599221F00893;
+	Sat, 30 May 2026 16:56:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780162825;
-	bh=XlYP10tkxzK8Iv1W3VWQ7BiGgtsjVWtidWrKwKyiFvw=;
+	s=korg; t=1780160176;
+	bh=fjGxTGFnwQNqQaqS23MS/s1Bdz4L3t3fAZ7R1dYGBIs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=rr4C5TmHlqX6iXzJrlYYE8cMD7Jl/tLV3d0lvfwN6TN3CjCD1xZNYemzcUNpDRa0o
-	 qsEn20s7eMmDwgXiuKVe4qr0RQZYMJYpo1MVsQG6qCzrspYNQj8WZ6dDil/wmTFofX
-	 hj4vACxcPIrl8Ko69IWAWDECN5es3I5AtfBWXZwk=
+	b=cC5vP7ftLuzsBPbT7pK0MUQdsutorGChY7VT1g0aDBQjICCTGJ7isqfCwS3n9Aqg3
+	 RSuptz1EcFgvku/XjqwZ3XeZN1V4kEkm8xUrxnNw/BF5jjnzUbqrk2IJLyaAM7CwQZ
+	 L+USgz44OKpzvyO0Gvq+rZlXU/O0cis2lf4KOZUE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 075/776] fsl-mc: Use driver_set_override() instead of open-coding
+	Tobias Gaertner <tob.gaertner@me.com>,
+	Konstantin Komarov <almaz.alexandrovich@paragon-software.com>
+Subject: [PATCH 6.1 265/969] ntfs3: add buffer boundary checks to run_unpack()
 Date: Sat, 30 May 2026 17:56:29 +0200
-Message-ID: <20260530160242.262278831@linuxfoundation.org>
+Message-ID: <20260530160307.792796223@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260530160240.228940103@linuxfoundation.org>
-References: <20260530160240.228940103@linuxfoundation.org>
+In-Reply-To: <20260530160300.485627683@linuxfoundation.org>
+References: <20260530160300.485627683@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,123 +65,85 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	RCVD_TLS_LAST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-257981-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-257205-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,me.com,paragon-software.com];
 	TO_DN_SOME(0.00)[];
-	FROM_HAS_DN(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	MID_RHS_MATCH_FROM(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
 	RCPT_COUNT_FIVE(0.00)[5];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linaro.org:email,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim]
-X-Rspamd-Queue-Id: 6FB1C610360
+	FROM_HAS_DN(0.00)[]
+X-Rspamd-Queue-Id: AA74160ED47
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+From: Tobias Gaertner <tob.gaertner@me.com>
 
-[ Upstream commit 5688f212e98a2469583a067fa5da4312ddc4e357 ]
+commit b62567bca47408e6739dee75f02a2113548af875 upstream.
 
-Use a helper to set driver_override to reduce the amount of duplicated
-code.  Make the driver_override field const char, because it is not
-modified by the core and it matches other subsystems.
+run_unpack() checks `run_buf < run_last` at the top of the while loop
+but then reads size_size and offset_size bytes via run_unpack_s64()
+without verifying they fit within the remaining buffer.  A crafted NTFS
+image with truncated run data in an MFT attribute triggers an OOB heap
+read of up to 15 bytes when the filesystem is mounted.
 
-Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Link: https://lore.kernel.org/r/20220419113435.246203-4-krzysztof.kozlowski@linaro.org
+Add boundary checks before each run_unpack_s64() call to ensure the
+declared field size does not exceed the remaining buffer.
+
+Found by fuzzing with a source-patched harness (LibAFL + QEMU).
+
+Fixes: 82cae269cfa95 ("fs/ntfs3: Add initialization of super block")
+Cc: stable@vger.kernel.org
+Signed-off-by: Tobias Gaertner <tob.gaertner@me.com>
+Signed-off-by: Konstantin Komarov <almaz.alexandrovich@paragon-software.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/bus/fsl-mc/fsl-mc-bus.c | 25 ++++---------------------
- include/linux/fsl/mc.h          |  6 ++++--
- 2 files changed, 8 insertions(+), 23 deletions(-)
+ fs/ntfs3/run.c |    6 ++++++
+ 1 file changed, 6 insertions(+)
 
-diff --git a/drivers/bus/fsl-mc/fsl-mc-bus.c b/drivers/bus/fsl-mc/fsl-mc-bus.c
-index bd086f8c4faa4..f958d6cfe4793 100644
---- a/drivers/bus/fsl-mc/fsl-mc-bus.c
-+++ b/drivers/bus/fsl-mc/fsl-mc-bus.c
-@@ -166,31 +166,14 @@ static ssize_t driver_override_store(struct device *dev,
- 				     const char *buf, size_t count)
- {
- 	struct fsl_mc_device *mc_dev = to_fsl_mc_device(dev);
--	char *driver_override, *old = mc_dev->driver_override;
--	char *cp;
-+	int ret;
+--- a/fs/ntfs3/run.c
++++ b/fs/ntfs3/run.c
+@@ -963,6 +963,9 @@ int run_unpack(struct runs_tree *run, st
+ 		if (size_size > 8)
+ 			return -EINVAL;
  
- 	if (WARN_ON(dev->bus != &fsl_mc_bus_type))
- 		return -EINVAL;
++		if (run_buf + size_size > run_last)
++			return -EINVAL;
++
+ 		len = run_unpack_s64(run_buf, size_size, 0);
+ 		/* Skip size_size. */
+ 		run_buf += size_size;
+@@ -975,6 +978,9 @@ int run_unpack(struct runs_tree *run, st
+ 		else if (offset_size <= 8) {
+ 			s64 dlcn;
  
--	if (count >= (PAGE_SIZE - 1))
--		return -EINVAL;
--
--	driver_override = kstrndup(buf, count, GFP_KERNEL);
--	if (!driver_override)
--		return -ENOMEM;
--
--	cp = strchr(driver_override, '\n');
--	if (cp)
--		*cp = '\0';
--
--	if (strlen(driver_override)) {
--		mc_dev->driver_override = driver_override;
--	} else {
--		kfree(driver_override);
--		mc_dev->driver_override = NULL;
--	}
--
--	kfree(old);
-+	ret = driver_set_override(dev, &mc_dev->driver_override, buf, count);
-+	if (ret)
-+		return ret;
- 
- 	return count;
- }
-diff --git a/include/linux/fsl/mc.h b/include/linux/fsl/mc.h
-index 30ece3ae6df7b..bfc062ff8b42c 100644
---- a/include/linux/fsl/mc.h
-+++ b/include/linux/fsl/mc.h
-@@ -170,7 +170,9 @@ struct fsl_mc_obj_desc {
-  * @regions: pointer to array of MMIO region entries
-  * @irqs: pointer to array of pointers to interrupts allocated to this device
-  * @resource: generic resource associated with this MC object device, if any.
-- * @driver_override: driver name to force a match
-+ * @driver_override: driver name to force a match; do not set directly,
-+ *                   because core frees it; use driver_set_override() to
-+ *                   set or clear it.
-  *
-  * Generic device object for MC object devices that are "attached" to a
-  * MC bus.
-@@ -204,7 +206,7 @@ struct fsl_mc_device {
- 	struct fsl_mc_device_irq **irqs;
- 	struct fsl_mc_resource *resource;
- 	struct device_link *consumer_link;
--	char   *driver_override;
-+	const char *driver_override;
- };
- 
- #define to_fsl_mc_device(_dev) \
--- 
-2.53.0
-
++			if (run_buf + offset_size > run_last)
++				return -EINVAL;
++
+ 			/* Initial value of dlcn is -1 or 0. */
+ 			dlcn = (run_buf[offset_size - 1] & 0x80) ? (s64)-1 : 0;
+ 			dlcn = run_unpack_s64(run_buf, offset_size, dlcn);
 
 
 
