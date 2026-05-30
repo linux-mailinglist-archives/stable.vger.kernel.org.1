@@ -1,63 +1,60 @@
-Return-Path: <stable+bounces-257751-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-258527-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id gIXlBeseG2qu/QgAu9opvQ
-	(envelope-from <stable+bounces-257751-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:31:23 +0200
+	id sMFDLIoqG2r//ggAu9opvQ
+	(envelope-from <stable+bounces-258527-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:20:58 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 85A6260FD6B
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:31:22 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4F3EB6118AC
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:20:58 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 80A03301B918
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 17:27:30 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 2D0F23090D9D
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 18:10:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2D08333E36A;
-	Sat, 30 May 2026 17:27:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E475E362157;
+	Sat, 30 May 2026 18:10:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IfXQU3ML"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="t6nPkNOb"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E7EA533B6C4;
-	Sat, 30 May 2026 17:27:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CCDAC31F98D;
+	Sat, 30 May 2026 18:10:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780162050; cv=none; b=p95SrX90UP8KW4lg3kLinuYWZM9Q+FfSvmvpsE3lOzxToiOrWM28BLjJy+xpV+daMNiQJQCTRGjy9Ub13K/Hmpz1S7y/6eN3UhozJnL2Rx0eeJxYlE0vnAh1Ta99zTQUv/2iqAAm6XUzrjPGJb4+TIRVJkjJgJ+qxZ/j9kStLXA=
+	t=1780164648; cv=none; b=RSoZ5OvT38OkxrBVBUVavl7GhTHGtqRZbevl7e424gxdcgs+fSJLh4qOjCLEXHUr+pf3LHhH7qP8ecN6VatOSAIQEKG4qckjWwcLsKVBOzVrpi8+h4Uz34eykRxX7+kjox0hvCMfQZjBe12aqOoiIOI2iyRtK0K7iGBMyDLVsPk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780162050; c=relaxed/simple;
-	bh=V/N336eT59zEDCosXHogBq6ID7FInx5VZ2q+evavxCA=;
+	s=arc-20240116; t=1780164648; c=relaxed/simple;
+	bh=8cPf7ojOLlORYX1OrQyXJGi45XBdDiZJZU0+A7s1SjQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ncPR+yLMNy3vpxCZ8PvQYQA4DOYZCg8cvzRTRU/p3UBBn8NpcR+UGwoB0gaZd9THp62NmZpS7GRs1wFiIyGA3IKQetsFrAj5GXx8mMnrj7LyRCZfjG16r66GAD+EIITaZk5xy72WBQ4Gl+zIYQ3M7kd/mS1B3oGUgP/NbBPVioA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IfXQU3ML; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 36F871F00893;
-	Sat, 30 May 2026 17:27:28 +0000 (UTC)
+	 MIME-Version; b=kQPk3KdRjrWuynSYSYxrC3ZTaLkYa4GVS8karlX5YrRypIjyLN+64wwsB+LXLWAqcK/rlqx6CZ8f/ii/U4O3yNXhQLxiWZ4apuKfMgdSb4XRE0asEE/fnAP7XENAXqEf0sdAAsE3QyxYgvj2oBN3JEZdPPYxt2XJQw7MHvG8n9A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=t6nPkNOb; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1BAE31F00893;
+	Sat, 30 May 2026 18:10:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780162048;
-	bh=eiFyP+4+feldYwqgjcoX2BVMyh2xvYBTpFnZFv4GQuc=;
+	s=korg; t=1780164647;
+	bh=JV292duZCBd9QNNDHRwKK2uYXzdKNGft9h2SfE7wIKo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=IfXQU3ML+LNAnPhIIVRQrq2aGnN3on41h0ZAk1EIaRmU8EhdliwX2f768b3/eyUNB
-	 /UUdCuVK7LYaJWbzwbPKiJXbGL3Eu7HqhxWyyQ/QVQIfVxeBP7ejb2woWnHmoqsQ/C
-	 4tiIHPrIjQXpMscufxkzFEoOziL/miC59GAHVPiU=
+	b=t6nPkNObKoaqNtChEnhIZS2+3YuCLQo0IFdWSBCa7ZtlMt3gfc9T1WE/X42sZt43U
+	 SMw5r5ige2ZyOt8nJd6GSnMa+e6lheTNYuG/0nWh/CXcua89rx5Sbl17D6odhjg09O
+	 0afOeUUqkOdUMLtg+NqnB4BZHxaUOTAYTxOGeHqY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Kohei Enju <kohei@enjuk.jp>,
-	Matt Vollrath <tactii@gmail.com>,
-	Paul Menzel <pmenzel@molgen.mpg.de>,
-	Aleksandr Loktionov <aleksandr.loktionov@intel.com>,
-	Sunitha Mekala <sunithax.d.mekala@intel.com>,
-	Jacob Keller <jacob.e.keller@intel.com>,
-	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 6.1 806/969] i40e: Cleanup PTP pins on probe failure
+	Stephen Hemminger <stephen@networkplumber.org>,
+	Simon Horman <horms@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 616/776] net/sched: netem: fix queue limit check to include reordered packets
 Date: Sat, 30 May 2026 18:05:30 +0200
-Message-ID: <20260530160322.889040130@linuxfoundation.org>
+Message-ID: <20260530160255.916328544@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260530160300.485627683@linuxfoundation.org>
-References: <20260530160300.485627683@linuxfoundation.org>
+In-Reply-To: <20260530160240.228940103@linuxfoundation.org>
+References: <20260530160240.228940103@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -72,106 +69,74 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,enjuk.jp,gmail.com,molgen.mpg.de,intel.com,kernel.org];
-	TAGGED_FROM(0.00)[bounces-257751-lists,stable=lfdr.de];
-	PRECEDENCE_BULK(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-258527-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[10];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
 	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,mpg.de:email,msgid.link:url,enjuk.jp:email,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,intel.com:email]
-X-Rspamd-Queue-Id: 85A6260FD6B
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	NEURAL_HAM(-0.00)[-0.996];
+	RCPT_COUNT_SEVEN(0.00)[7];
+	MID_RHS_MATCH_FROM(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,linuxfoundation.org:mid,linuxfoundation.org:dkim,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,networkplumber.org:email]
+X-Rspamd-Queue-Id: 4F3EB6118AC
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Matt Vollrath <tactii@gmail.com>
+From: Stephen Hemminger <stephen@networkplumber.org>
 
-commit 678b713ece1e853f11e670a84cb887c35e1381b7 upstream.
+[ Upstream commit 4185701fcce6b426b6c3630b25330dddd9c47b0d ]
 
-PTP pin structs are allocated early in probe, but never cleaned up.
+The queue limit check in netem_enqueue() uses q->t_len which only
+counts packets in the internal tfifo. Packets placed in sch->q by
+the reorder path (__qdisc_enqueue_head) are not counted, allowing
+the total queue occupancy to exceed sch->limit under reordering.
 
-Fix this by calling i40e_ptp_free_pins in the error path.
+Include sch->q.qlen in the limit check.
 
-To support this, i40e_ptp_free_pins is added to the header and
-pin_config is correctly nullified after being freed.
-
-This has been an issue since i40e_ptp_alloc_pins was introduced.
-
-Fixes: 1050713026a08 ("i40e: add support for PTP external synchronization clock")
-Reported-by: Kohei Enju <kohei@enjuk.jp>
-Cc: stable@vger.kernel.org
-Signed-off-by: Matt Vollrath <tactii@gmail.com>
-Reviewed-by: Paul Menzel <pmenzel@molgen.mpg.de>
-Reviewed-by: Aleksandr Loktionov <aleksandr.loktionov@intel.com>
-Reviewed-by: Kohei Enju <kohei@enjuk.jp>
-Tested-by: Sunitha Mekala <sunithax.d.mekala@intel.com>
-Signed-off-by: Jacob Keller <jacob.e.keller@intel.com>
-Link: https://patch.msgid.link/20260506-jk-iwl-net-2026-05-04-v2-2-a5ea4dc837a9@intel.com
+Fixes: f8d4bc455047 ("net/sched: netem: account for backlog updates from child qdisc")
+Signed-off-by: Stephen Hemminger <stephen@networkplumber.org>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Link: https://patch.msgid.link/20260418032027.900913-3-stephen@networkplumber.org
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/intel/i40e/i40e.h      |    1 +
- drivers/net/ethernet/intel/i40e/i40e_main.c |    1 +
- drivers/net/ethernet/intel/i40e/i40e_ptp.c  |    3 ++-
- 3 files changed, 4 insertions(+), 1 deletion(-)
+ net/sched/sch_netem.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/net/ethernet/intel/i40e/i40e.h
-+++ b/drivers/net/ethernet/intel/i40e/i40e.h
-@@ -1289,6 +1289,7 @@ void i40e_ptp_restore_hw_time(struct i40
- void i40e_ptp_init(struct i40e_pf *pf);
- void i40e_ptp_stop(struct i40e_pf *pf);
- int i40e_ptp_alloc_pins(struct i40e_pf *pf);
-+void i40e_ptp_free_pins(struct i40e_pf *pf);
- int i40e_update_adq_vsi_queues(struct i40e_vsi *vsi, int vsi_offset);
- int i40e_is_vsi_uplink_mode_veb(struct i40e_vsi *vsi);
- int i40e_get_partition_bw_setting(struct i40e_pf *pf);
---- a/drivers/net/ethernet/intel/i40e/i40e_main.c
-+++ b/drivers/net/ethernet/intel/i40e/i40e_main.c
-@@ -16227,6 +16227,7 @@ err_vsis:
- 	i40e_clear_interrupt_scheme(pf);
- 	kfree(pf->vsi);
- err_switch_setup:
-+	i40e_ptp_free_pins(pf);
- 	i40e_reset_interrupt_capability(pf);
- 	del_timer_sync(&pf->service_timer);
- err_mac_addr:
---- a/drivers/net/ethernet/intel/i40e/i40e_ptp.c
-+++ b/drivers/net/ethernet/intel/i40e/i40e_ptp.c
-@@ -947,12 +947,13 @@ int i40e_ptp_get_ts_config(struct i40e_p
-  *
-  * Release memory allocated for PTP pins.
-  **/
--static void i40e_ptp_free_pins(struct i40e_pf *pf)
-+void i40e_ptp_free_pins(struct i40e_pf *pf)
- {
- 	if (i40e_is_ptp_pin_dev(&pf->hw)) {
- 		kfree(pf->ptp_pins);
- 		kfree(pf->ptp_caps.pin_config);
- 		pf->ptp_pins = NULL;
-+		pf->ptp_caps.pin_config = NULL;
+diff --git a/net/sched/sch_netem.c b/net/sched/sch_netem.c
+index 1f47711cb1667..64542c9c15340 100644
+--- a/net/sched/sch_netem.c
++++ b/net/sched/sch_netem.c
+@@ -512,7 +512,7 @@ static int netem_enqueue(struct sk_buff *skb, struct Qdisc *sch,
+ 			1<<(prandom_u32() % 8);
  	}
- }
  
+-	if (unlikely(q->t_len >= sch->limit)) {
++	if (unlikely(sch->q.qlen >= sch->limit)) {
+ 		/* re-link segs, so that qdisc_drop_all() frees them all */
+ 		skb->next = segs;
+ 		qdisc_drop_all(skb, sch, to_free);
+-- 
+2.53.0
+
 
 
 
