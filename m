@@ -1,62 +1,58 @@
-Return-Path: <stable+bounces-257831-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-259212-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id wE0UC2cgG2qu/QgAu9opvQ
-	(envelope-from <stable+bounces-257831-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:37:43 +0200
+	id kPX9OhgyG2qqAAkAu9opvQ
+	(envelope-from <stable+bounces-259212-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:53:12 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 811F66100AF
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:37:42 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8807D612BBE
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:53:12 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 54EF430945C9
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 17:31:57 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 0F7A330D9D65
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 18:49:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 55BF032B106;
-	Sat, 30 May 2026 17:31:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6F6861D63E4;
+	Sat, 30 May 2026 18:49:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EuGDk8/f"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uqLyUxyg"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2A79A1624DF;
-	Sat, 30 May 2026 17:31:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5450D2E7398;
+	Sat, 30 May 2026 18:49:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780162316; cv=none; b=TP6mVlS/71tFKy590/SSc9utfRaNUTCFs0ql41u/DVPo5n5EUxLLGKgLWwTOYw+4DI0RX6tGGybzWmHRGI39zzxenGF0t7uSiVht4wgVVd1jxxseJO8AbYK1UN1nNcLgAYAiWRC5Z5ar7hO9UZc7AATVImwUk4A6yVtqSDuoDNk=
+	t=1780166983; cv=none; b=bnaaIaWwTUNFeMJn/296j4OnR4PfQ1Wgyky8K23CRgQ3e0+XOLszswAf1JRPsfpMTpSGPhA8tDjVPoHPsYskTcJ2qh/eWgSTqEa8R+q6owMfvRrXKBIE/PjRG8ULbMCnejTJw6XFcTx/zIUsbpEtBHcqv9vADKbtY+BggrGylQ4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780162316; c=relaxed/simple;
-	bh=wupli2qUtSGxXeHfFnL++StVck92pmKafEb/H24Iy2M=;
+	s=arc-20240116; t=1780166983; c=relaxed/simple;
+	bh=3J0pvNm+fp3QiVVT8CdGyKbvC2ieFqULpNzYwM+0SNw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=KtXIudbPSAyCm82Ul9dH9pqB2cePnaQWmUAh329+atV+EvJNFkUOrfoSbgbHiOHc5YDTM8tSKUPhqOlWVIyTp+Cw03kylgMnT3/oH0J8rOYo55+NOWw/NkvSZWIV+BzkbST9P9UyMol4IDU9L5j1puypzNP22R+eOwD1MNqvPUw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EuGDk8/f; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 690A61F00893;
-	Sat, 30 May 2026 17:31:54 +0000 (UTC)
+	 MIME-Version:Content-Type; b=pMiXQqKRPLXd5238otNoXvg3pFDk+Mlv3LsWQW7uECAIT8UoQaEmYy4867JgwlQ5R/5PqWEJ796/Zd78dwXjUl39aJOl8y5HjVgSdWwUMzMR8l+iG/8jyiegsY0IGPLX4mK/bXEMzO8EsuKNAc6dzX3VJFZzzFNGohiF0Lfdy1w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uqLyUxyg; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 94BEB1F00893;
+	Sat, 30 May 2026 18:49:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780162315;
-	bh=FqdT/IeTjxtL5Z6KfMb5ENxrNiTFp06Mg8mm3q2civ0=;
+	s=korg; t=1780166982;
+	bh=O+VE/CuX6Bw2yc4O8j0Jh/mgacXuj3z30615mhefc0E=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=EuGDk8/fgKLRsMHDJxNnrgNL4XuGeUMglyDPMZd7Zul5T+maUIuqnIwDdmW+tCaLI
-	 XZBXkmO9Gggx/dsK6YHg4e5L4QVvWNK4j3Botc41izyGN/LR/L5zhlbkNhGU5H9O4t
-	 6h5w1n49spmhtO4GxcnbNf6gxn3w0B80ABS1So0Q=
+	b=uqLyUxygZNDCxUSyUyjp6zkUAzz0ecBCpXet19QMv4IbQWGGYA8yv4Lr98lCJJtgV
+	 HQsUdH6jWhUZAlY5TR8DQWN/YNO0O6ENDZ2YNZNLSyep4Lg6hRqvNcXEHwRpBN/9K/
+	 9PgnSS6oz6TLEZ35IJYUgAmLo1V32zuxdyJDPV3M=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable@kernel.org,
-	Yuan Tan <yuantan098@gmail.com>,
-	Yifan Wu <yifanwucs@gmail.com>,
-	Juefei Pu <tomapufckgml@gmail.com>,
-	Xin Liu <bird@lzu.edu.cn>,
-	Sven Eckelmann <sven@narfation.org>
-Subject: [PATCH 6.1 885/969] batman-adv: frag: disallow unicast fragment in fragment
-Date: Sat, 30 May 2026 18:06:49 +0200
-Message-ID: <20260530160325.135862856@linuxfoundation.org>
+	=?UTF-8?q?C=C3=A1ssio=20Gabriel?= <cassiogabrielcontato@gmail.com>,
+	Takashi Iwai <tiwai@suse.de>
+Subject: [PATCH 5.10 529/589] ALSA: ua101: Reject too-short USB descriptors
+Date: Sat, 30 May 2026 18:06:50 +0200
+Message-ID: <20260530160238.573428134@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260530160300.485627683@linuxfoundation.org>
-References: <20260530160300.485627683@linuxfoundation.org>
+In-Reply-To: <20260530160224.570625122@linuxfoundation.org>
+References: <20260530160224.570625122@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,125 +62,80 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,kernel.org,gmail.com,lzu.edu.cn,narfation.org];
-	TAGGED_FROM(0.00)[bounces-257831-lists,stable=lfdr.de];
-	PRECEDENCE_BULK(0.00)[];
+	TAGGED_FROM(0.00)[bounces-259212-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,suse.de];
+	TO_DN_SOME(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[9];
+	NEURAL_HAM(-0.00)[-0.996];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,lzu.edu.cn:email,narfation.org:email]
-X-Rspamd-Queue-Id: 811F66100AF
+	RCPT_COUNT_FIVE(0.00)[5];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,suse.de:email]
+X-Rspamd-Queue-Id: 8807D612BBE
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sven Eckelmann <sven@narfation.org>
+From: Cássio Gabriel <cassiogabrielcontato@gmail.com>
 
-commit bc62216dc8e221e3781afa14430f45208bfa9af9 upstream.
+commit b59d5c51bb328a60749b4dd5fe7e649bfb4089b4 upstream.
 
-batadv_frag_skb_buffer() is called by batadv_batman_skb_recv() when a
-BATADV_UNICAST_FRAG packet is received. Once all fragments are collected
-and the packet is reassembled, batadv_recv_frag_packet() calls
-batadv_batman_skb_recv() again to process the defragmented payload.
+find_format_descriptor() walks the class-specific interface extras by
+advancing with bLength. It rejects descriptors that extend past the
+remaining buffer, but it does not reject descriptor lengths smaller than
+a USB descriptor header.
 
-A malicious sender can craft a BATADV_UNICAST_FRAG packet whose reassembled
-payload is itself a BATADV_UNICAST_FRAG packet (matryoshka-style nesting).
-Each nesting level recurses through batadv_batman_skb_recv() without bound,
-growing the kernel stack until it is exhausted.
+Reject too-short descriptors before using bLength to advance the local
+scan. This keeps the UA-101 parser robust against malformed descriptor
+data and matches the usual USB descriptor walking rules.
 
-Since refragmentation or fragments in fragments are not actually allowed,
-discard all packets which are still BATADV_UNICAST_FRAG packets after the
-defragmentation process.
-
-Cc: stable@kernel.org
-Fixes: 610bfc6bc99b ("batman-adv: Receive fragmented packets and merge")
-Reported-by: Yuan Tan <yuantan098@gmail.com>
-Reported-by: Yifan Wu <yifanwucs@gmail.com>
-Reported-by: Juefei Pu <tomapufckgml@gmail.com>
-Reported-by: Xin Liu <bird@lzu.edu.cn>
-Reviewed-by: Yuan Tan <yuantan098@gmail.com>
-Signed-off-by: Sven Eckelmann <sven@narfation.org>
+Fixes: 63978ab3e3e9 ("sound: add Edirol UA-101 support")
+Cc: stable@vger.kernel.org
+Signed-off-by: Cássio Gabriel <cassiogabrielcontato@gmail.com>
+Link: https://patch.msgid.link/20260519-alsa-ua101-desc-len-v1-1-4307d1a5e054@gmail.com
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/batman-adv/fragmentation.c |   35 +++++++++++++++++++++++++++++++++++
- 1 file changed, 35 insertions(+)
+ sound/usb/misc/ua101.c |    5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
---- a/net/batman-adv/fragmentation.c
-+++ b/net/batman-adv/fragmentation.c
-@@ -306,6 +306,31 @@ free:
- }
+--- a/sound/usb/misc/ua101.c
++++ b/sound/usb/misc/ua101.c
+@@ -915,8 +915,9 @@ find_format_descriptor(struct usb_interf
+ 		struct uac_format_type_i_discrete_descriptor *desc;
  
- /**
-+ * batadv_skb_is_frag() - check if newly merged skb is gain a unicast packet
-+ * @skb: newly merged skb
-+ *
-+ * Return: if newly skb is of type BATADV_UNICAST_FRAG
-+ */
-+static bool batadv_skb_is_frag(struct sk_buff *skb)
-+{
-+	struct batadv_ogm_packet *batadv_ogm_packet;
-+
-+	/* packet should hold at least type and version */
-+	if (unlikely(!pskb_may_pull(skb, 2)))
-+		return false;
-+
-+	batadv_ogm_packet = (struct batadv_ogm_packet *)skb->data;
-+
-+	if (batadv_ogm_packet->version != BATADV_COMPAT_VERSION)
-+		return false;
-+
-+	if (batadv_ogm_packet->packet_type != BATADV_UNICAST_FRAG)
-+		return false;
-+
-+	return true;
-+}
-+
-+/**
-  * batadv_frag_skb_buffer() - buffer fragment for later merge
-  * @skb: skb to buffer
-  * @orig_node_src: originator that the skb is received from
-@@ -338,6 +363,16 @@ bool batadv_frag_skb_buffer(struct sk_bu
- 	if (!skb_out)
- 		goto out_err;
- 
-+	/* fragment in fragment is not allowed. otherwise it is possible
-+	 * to exhaust the stack when receiving a matryoshka-style
-+	 * "fragments in a fragment packet"
-+	 */
-+	if (batadv_skb_is_frag(skb_out)) {
-+		kfree_skb(skb_out);
-+		skb_out = NULL;
-+		goto out_err;
-+	}
-+
- out:
- 	ret = true;
- out_err:
+ 		desc = (struct uac_format_type_i_discrete_descriptor *)extra;
+-		if (desc->bLength > extralen) {
+-			dev_err(&interface->dev, "descriptor overflow\n");
++		if (desc->bLength < sizeof(struct usb_descriptor_header) ||
++		    desc->bLength > extralen) {
++			dev_err(&interface->dev, "invalid descriptor length\n");
+ 			return NULL;
+ 		}
+ 		if (desc->bLength == UAC_FORMAT_TYPE_I_DISCRETE_DESC_SIZE(1) &&
 
 
 
