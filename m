@@ -1,61 +1,59 @@
-Return-Path: <stable+bounces-258775-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-257367-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 4F5/KHsrG2r//ggAu9opvQ
-	(envelope-from <stable+bounces-258775-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:24:59 +0200
+	id MHliNfMYG2pV/AgAu9opvQ
+	(envelope-from <stable+bounces-257367-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:05:55 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 743EF611ABE
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:24:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7166360EE1B
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:05:55 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 98AF53014263
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 18:24:58 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 7590E300B9C5
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 17:05:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8F745274FDC;
-	Sat, 30 May 2026 18:24:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E63DD34104B;
+	Sat, 30 May 2026 17:05:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZypNYVyc"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wmuPiTHb"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7483F17555;
-	Sat, 30 May 2026 18:24:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C6A40481DD;
+	Sat, 30 May 2026 17:05:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780165497; cv=none; b=YldOop+BhmpnljzLx7xKgmr67q+ZaYMgmvlQxEWqScp4RePdpQh0cpcu4tCgc3B8NdQ/1yWjL/FDao5hEvyU4Qu+NRL84ivrtY+mLn8DcUgUzlP0FSu+0jYVS6twgFft2T0XUJHT49TF2Q6ZbEf+g6U6llLeu37MNGZTf3DACak=
+	t=1780160752; cv=none; b=uasf2gNQyrrUN5RYHtZIUxGznEueulC4HPxPCCHJDIvKY0lttb49O3ynIlWBFy2tGhOAdc07rLN3+vEqQv6ffv3BQkxL38ATI6/AuGbi28LQxrtTV+7InfR6XSkCSFjdu3AK1JOLCCdZRC037071mYjuZq7OYMcyjAaGgh+KgJ0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780165497; c=relaxed/simple;
-	bh=C58atzpYPE360QQE4BguFKXhb80ShZ2T4Hn9jBcGnPk=;
+	s=arc-20240116; t=1780160752; c=relaxed/simple;
+	bh=PYSzRLuRVjHnISvZVJuJ4YjPQz9gIaHTOANNBLdi0Ys=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=BIbckTWt2P3P13evsuSpIEBiLpLnaFbVW4yCv1US+8wy7lKJNpAPzMhC3LPwmjKHbUHkf7oBVlByhlodDVvwwsH7Ex8Q39RO3Ufz9hAPaHgA/Y1VMiUr5z9AQ5LGfURyEF0rOms7RTgPGvTVrlJ3JxnpHy9puCywBfNHr/6RR/g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZypNYVyc; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B99CC1F00893;
-	Sat, 30 May 2026 18:24:55 +0000 (UTC)
+	 MIME-Version; b=ggwLmJi5DwyP3BpcMaCL5yU4d1kxCYtuQnZLLW26YgXgdP7tMH49Ql0/Q/j2CWdgj+INU6+UOfygPQyBVOlEwczSfliSGbSUzU8lfQA3zekk0XcuA6B0cvPG+hi0jv4MqdCSehgzYCYlkmgbEdtRtXeDAD0Hn2X3ISUCwxUpTLE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wmuPiTHb; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 15C0F1F00893;
+	Sat, 30 May 2026 17:05:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780165496;
-	bh=X04e7vKrO5U5bLJJ7d5HGbInkjDCHS4Auc5+oGR0/0A=;
+	s=korg; t=1780160751;
+	bh=RPfzTXHh/UClxmxGRGIaVzEm2KcsO67SRRH44GR3uVQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=ZypNYVycDl66KP2Lpy5CQvuCVvCfwb6r07O3CB75kyZIO52IixAtjujQ/XTiSl8of
-	 MZDvUfDF1cGUFVOhj9AxW7WY5lRQhDwdPZvjjh4aZrbvLrnmlKk4zu0nCHjqJyDNFQ
-	 kCR2fHVqe2SJkinA2JaG/ckhecHg39RRhBa2w7gU=
+	b=wmuPiTHbrw6/Iio+Ai3ADgrqJiUhK+XWEzc4MEjSaXvVGZ1jqCYtXdqC5rJfiC/Rq
+	 eSJPUX6hxoS4dOja56mcYRsdDWOMGOzM0QGifdOd+bdpCHmuiGqmpCivpBv4VT54tL
+	 da+xusdG0o61RDY3JyNqi7TH7DWamFXT8MgtOttA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	kernel test robot <lkp@intel.com>,
-	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
-	Nathan Chancellor <nathan@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 066/589] ACPI: property: Constify stubs for CONFIG_ACPI=n case
-Date: Sat, 30 May 2026 17:59:07 +0200
-Message-ID: <20260530160226.334699224@linuxfoundation.org>
+	Sanjaikumar V S <sanjaikumar.vs@dicortech.com>,
+	Hendrik Donner <hd@os-cillation.de>,
+	"Pratyush Yadav (Google)" <pratyush@kernel.org>
+Subject: [PATCH 6.1 424/969] mtd: spi-nor: sst: Fix write enable before AAI sequence
+Date: Sat, 30 May 2026 17:59:08 +0200
+Message-ID: <20260530160311.971978841@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260530160224.570625122@linuxfoundation.org>
-References: <20260530160224.570625122@linuxfoundation.org>
+In-Reply-To: <20260530160300.485627683@linuxfoundation.org>
+References: <20260530160300.485627683@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -68,88 +66,94 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-258775-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TAGGED_FROM(0.00)[bounces-257367-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	TO_DN_SOME(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	RCPT_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[8];
-	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,intel.com:email,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo]
-X-Rspamd-Queue-Id: 743EF611ABE
+	MID_RHS_MATCH_FROM(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	FROM_HAS_DN(0.00)[]
+X-Rspamd-Queue-Id: 7166360EE1B
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+From: Sanjaikumar V S <sanjaikumar.vs@dicortech.com>
 
-commit 5c1a72a0fbe1b02c3ce0537f85f92ea935e0beec upstream.
+commit a0f64241d3566a49c0a9b33ba7ae458ae22003a9 upstream.
 
-There is a few stubs that left untouched during constification of
-the fwnode related APIs. Constify three more stubs here.
+When writing to SST flash starting at an odd address, a single byte is
+first programmed using the byte program (BP) command. After this
+operation completes, the flash hardware automatically clears the Write
+Enable Latch (WEL) bit.
 
-Fixes: 8b9d6802583a ("ACPI: Constify acpi_bus helper functions, switch to macros")
-Reported-by: kernel test robot <lkp@intel.com>
-Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-[ rjw: Subject edit ]
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
-Signed-off-by: Nathan Chancellor <nathan@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+If an AAI (Auto Address Increment) word program sequence follows, it
+requires WEL to be set. Without re-enabling writes, the AAI sequence
+fails.
+
+Add spi_nor_write_enable() after the odd-address byte program when more
+data needs to be written. Use a local boolean for clarity.
+
+Fixes: b199489d37b2 ("mtd: spi-nor: add the framework for SPI NOR")
+Cc: stable@vger.kernel.org
+Signed-off-by: Sanjaikumar V S <sanjaikumar.vs@dicortech.com>
+Tested-by: Hendrik Donner <hd@os-cillation.de>
+Reviewed-by: Hendrik Donner <hd@os-cillation.de>
+Signed-off-by: Pratyush Yadav (Google) <pratyush@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- include/linux/acpi.h | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ drivers/mtd/spi-nor/sst.c |   13 +++++++++++++
+ 1 file changed, 13 insertions(+)
 
-diff --git a/include/linux/acpi.h b/include/linux/acpi.h
-index 9c184dbceba47..c5b51d8dcbe18 100644
---- a/include/linux/acpi.h
-+++ b/include/linux/acpi.h
-@@ -753,7 +753,7 @@ static inline bool is_acpi_device_node(struct fwnode_handle *fwnode)
- 	return false;
- }
+--- a/drivers/mtd/spi-nor/sst.c
++++ b/drivers/mtd/spi-nor/sst.c
+@@ -153,6 +153,8 @@ static int sst_nor_write(struct mtd_info
  
--static inline struct acpi_device *to_acpi_device_node(struct fwnode_handle *fwnode)
-+static inline struct acpi_device *to_acpi_device_node(const struct fwnode_handle *fwnode)
- {
- 	return NULL;
- }
-@@ -763,12 +763,12 @@ static inline bool is_acpi_data_node(struct fwnode_handle *fwnode)
- 	return false;
- }
+ 	/* Start write from odd address. */
+ 	if (to % 2) {
++		bool needs_write_enable = (len > 1);
++
+ 		/* write one byte. */
+ 		ret = sst_nor_write_data(nor, to, 1, buf);
+ 		if (ret < 0)
+@@ -160,6 +162,17 @@ static int sst_nor_write(struct mtd_info
  
--static inline struct acpi_data_node *to_acpi_data_node(struct fwnode_handle *fwnode)
-+static inline struct acpi_data_node *to_acpi_data_node(const struct fwnode_handle *fwnode)
- {
- 	return NULL;
- }
+ 		to++;
+ 		actual++;
++
++		/*
++		 * Byte program clears the write enable latch. If more
++		 * data needs to be written using the AAI sequence,
++		 * re-enable writes.
++		 */
++		if (needs_write_enable) {
++			ret = spi_nor_write_enable(nor);
++			if (ret)
++				goto out;
++		}
+ 	}
  
--static inline bool acpi_data_node_match(struct fwnode_handle *fwnode,
-+static inline bool acpi_data_node_match(const struct fwnode_handle *fwnode,
- 					const char *name)
- {
- 	return false;
--- 
-2.53.0
-
+ 	/* Write out most of the data here. */
 
 
 
