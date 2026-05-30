@@ -1,61 +1,60 @@
-Return-Path: <stable+bounces-258615-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-257842-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id oESkOj4qG2r//ggAu9opvQ
-	(envelope-from <stable+bounces-258615-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:19:42 +0200
+	id CPpBL3EfG2qu/QgAu9opvQ
+	(envelope-from <stable+bounces-257842-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:33:37 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7319F6117B6
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:19:42 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id C286E60FEBE
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:33:36 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 87E893047754
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 18:15:48 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id EE697300B9F1
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 17:32:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 101473ACA4D;
-	Sat, 30 May 2026 18:15:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2C1FF329E46;
+	Sat, 30 May 2026 17:32:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AWNXF8OP"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0VgnjVPe"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DDD5C241C8C;
-	Sat, 30 May 2026 18:15:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 03F003403F9;
+	Sat, 30 May 2026 17:32:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780164947; cv=none; b=iIusW6ExE/6cUsbyr2z8p7fI6OL+WHJGz1M2fNSE0ZBaU2xWYjehtg6HPFpoVJJHzDukIqaJ4pAdsjP2jcCKADndvfjjkOuYRlITO3MAuhgUmA7PI1EOXQcsT2NdIblxLGZfFBDiyA2kNl0FLNDYauWtyIoyQKLB5ok5i3ZgtC0=
+	t=1780162354; cv=none; b=P3yaAi+kijwSYrvOI3znCO8FT0pRv3sIWmK2cUwiOKNh5s+Z09b6sP5Yeai851KsHDcCiUz2CFiKhPOYhFKos7CFF8bxD4LYB5A0SkUlbb9wEXHjwlmvpSf1heokrx7cQhYUR14L+f6awAZDdwwLrkMCxbvUqs93DcM/RX5TRvY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780164947; c=relaxed/simple;
-	bh=1S1+oX6ZUmlMNnwYj7H/fLronfaWRj0sWDc2uhAMtOc=;
+	s=arc-20240116; t=1780162354; c=relaxed/simple;
+	bh=YX3x7U8gM8RFKVTJWDEzbOU6OOLqD9p5GKl7rAe73Es=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=FQ2ZOHEraIJ9Q3v0VSvHtU/HyN/QsGMMIoWnU7OhrmT0rOqFx/VbDKeCz2AXjTCANLXbnpnKRQr4QW7eoHeAjeF7Aw1dunY76J1Ooqw6mq7RkVcQf8YEkMHCVmv7vMhvomrYVecjrZ4M6gse3d5WQJkBTBnQq0aA8TL+bkRkCqg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AWNXF8OP; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2FB271F00893;
-	Sat, 30 May 2026 18:15:45 +0000 (UTC)
+	 MIME-Version; b=nf+7z+PwnbQJ/kpfQcDtbKDK8fz3p7E9HpQu/08F/gTBP8mH3d0mHHZuboP65EZg+jAnyOqPv5ieeA/ffYrzcsAhiI/Kdj9aNTHmqM5BAP1/e3WrltX9EeKkD7gyCDjlgr1Fmbbn2KFQdc68SFsjvGUL/RD9cQaROcFx3R0H4us=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0VgnjVPe; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0CFCB1F00893;
+	Sat, 30 May 2026 17:32:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780164946;
-	bh=A3NtKT9g/qc1/cyDJKarugHK0y/zrHMFDO11RBErdXY=;
+	s=korg; t=1780162352;
+	bh=PzD7aHGICZVt5W1twf1mK8Xy2N8a0wlnIpZKNua13WA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=AWNXF8OP4l8bUQYM8UsR+L6XxjRi8VmiUl+SPMMhuXLQs+YeXGJvmAdT755DUAS6Y
-	 ziFrL2iAdfpHnWGoUxMSJUXxc1U5qzViRXw+GZdeH23ofueLozfzvrT6r7nTwMmPDr
-	 C7vZlAEF1CIMklWjzoy/N1n7XgP90e/H3/ok+bbM=
+	b=0VgnjVPeHUgPskQ7UQXDiTZWB9zHxt3qBKFgiwJ+Hn/uxKHNRhsOYqpIjIgB+UIz5
+	 wk1icG0Fsey+fPyMG9SKQaMtsGuNcO3h5fgcbARrbUutPKOBOvIdBZi6rkZuaG/6eK
+	 Lg/2ivrGOejeZQh0Grxk5ncz/Ktn6Yf3ovA3LiPI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alex Hung <alex.hung@amd.com>,
-	Harry Wentland <harry.wentland@amd.com>,
-	Ivan Lipski <ivan.lipski@amd.com>,
-	Dan Wheeler <daniel.wheeler@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>
-Subject: [PATCH 5.15 705/776] drm/amd/display: Validate payload length and link_index in dc_process_dmub_aux_transfer_async
+	Abdurrahman Hussain <abdurrahman@nexthop.ai>,
+	Bartosz Golaszewski <bartosz.golaszewski@oss.qualcomm.com>,
+	Linus Walleij <linusw@kernel.org>,
+	Guenter Roeck <linux@roeck-us.net>
+Subject: [PATCH 6.1 895/969] hwmon: (pmbus/adm1266) dont clobber GPIO bits before PDIO read in get_multiple
 Date: Sat, 30 May 2026 18:06:59 +0200
-Message-ID: <20260530160258.064230029@linuxfoundation.org>
+Message-ID: <20260530160325.421093130@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260530160240.228940103@linuxfoundation.org>
-References: <20260530160240.228940103@linuxfoundation.org>
+In-Reply-To: <20260530160300.485627683@linuxfoundation.org>
+References: <20260530160300.485627683@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -70,7 +69,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
@@ -78,7 +77,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-258615-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-257842-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
@@ -87,65 +86,70 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	NEURAL_HAM(-0.00)[-0.996];
-	RCPT_COUNT_SEVEN(0.00)[8];
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,amd.com:email,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo]
-X-Rspamd-Queue-Id: 7319F6117B6
+	DBL_BLOCKED_OPENRESOLVER(0.00)[roeck-us.net:email,nexthop.ai:email,qualcomm.com:email,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim]
+X-Rspamd-Queue-Id: C286E60FEBE
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Harry Wentland <harry.wentland@amd.com>
+From: Abdurrahman Hussain <abdurrahman@nexthop.ai>
 
-commit 6c92f6d9600efa3ef0d9e560a2b52776d9803c29 upstream.
+commit 3327a12aee9e10ffa903e28b8445dfd1af5307c0 upstream.
 
-[Why&How]
-dc_process_dmub_aux_transfer_async() copies payload->length bytes into a
-16-byte stack buffer (dpaux.data[16]) guarded only by an ASSERT(), which
-is a no-op in release builds. If a caller ever passes length > 16 this
-results in a stack buffer overflow via memcpy.
+adm1266_gpio_get_multiple() zeroes *bits before the GPIO_STATUS loop
+and then a second time before the PDIO_STATUS loop:
 
-Additionally, link_index is used to dereference dc->links[] without
-bounds checking against dc->link_count, risking an out-of-bounds access.
+	*bits = 0;
+	for_each_set_bit(gpio_nr, mask, ADM1266_GPIO_NR) {
+		...
+		set_bit(gpio_nr, bits);
+	}
 
-Replace the ASSERT with a hard runtime check that returns false when
-payload->length exceeds the destination buffer size, and add a bounds
-check for link_index before it is used.
+	ret = i2c_smbus_read_block_data(data->client, ADM1266_PDIO_STATUS, ...);
+	...
+	*bits = 0;
+	for_each_set_bit_from(gpio_nr, mask, ADM1266_GPIO_NR + ADM1266_PDIO_NR) {
+		...
+		set_bit(gpio_nr, bits);
+	}
 
-Assisted-by: GitHub Copilot:Claude claude-4-opus
-Reviewed-by: Alex Hung <alex.hung@amd.com>
-Signed-off-by: Harry Wentland <harry.wentland@amd.com>
-Signed-off-by: Ivan Lipski <ivan.lipski@amd.com>
-Tested-by: Dan Wheeler <daniel.wheeler@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-(cherry picked from commit ba4caa9fecdf7a38f98c878ad05a8a64148b6881)
+The second *bits = 0 throws away every GPIO bit the first loop just
+populated, so callers asking for any combination of GPIO and PDIO
+pins always see the GPIO portion of the returned bits as zero.
+
+Drop the redundant second assignment so both halves of the result
+survive.
+
+Fixes: d98dfad35c38 ("hwmon: (pmbus/adm1266) Add support for GPIOs")
 Cc: stable@vger.kernel.org
+Signed-off-by: Abdurrahman Hussain <abdurrahman@nexthop.ai>
+Reviewed-by: Bartosz Golaszewski <bartosz.golaszewski@oss.qualcomm.com>
+Reviewed-by: Linus Walleij <linusw@kernel.org>
+Link: https://lore.kernel.org/r/20260518-adm1266-gpio-fixes-v3-2-e425e4f88139@nexthop.ai
+Signed-off-by: Guenter Roeck <linux@roeck-us.net>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/amd/display/dc/core/dc.c |    6 +++++-
- 1 file changed, 5 insertions(+), 1 deletion(-)
+ drivers/hwmon/pmbus/adm1266.c |    1 -
+ 1 file changed, 1 deletion(-)
 
---- a/drivers/gpu/drm/amd/display/dc/core/dc.c
-+++ b/drivers/gpu/drm/amd/display/dc/core/dc.c
-@@ -3755,7 +3755,11 @@ bool dc_process_dmub_aux_transfer_async(
- 	union dmub_rb_cmd cmd = {0};
- 	struct dc_dmub_srv *dmub_srv = dc->ctx->dmub_srv;
+--- a/drivers/hwmon/pmbus/adm1266.c
++++ b/drivers/hwmon/pmbus/adm1266.c
+@@ -211,7 +211,6 @@ static int adm1266_gpio_get_multiple(str
  
--	ASSERT(payload->length <= 16);
-+	if (link_index >= dc->link_count || !dc->links[link_index])
-+		return false;
-+
-+	if (payload->length > sizeof(cmd.dp_aux_access.aux_control.dpaux.data))
-+		return false;
+ 	status = read_buf[0] + (read_buf[1] << 8);
  
- 	cmd.dp_aux_access.header.type = DMUB_CMD__DP_AUX_ACCESS;
- 	cmd.dp_aux_access.header.payload_bytes = 0;
+-	*bits = 0;
+ 	for_each_set_bit_from(gpio_nr, mask, ADM1266_GPIO_NR + ADM1266_PDIO_NR) {
+ 		if (test_bit(gpio_nr - ADM1266_GPIO_NR, &status))
+ 			set_bit(gpio_nr, bits);
 
 
 
