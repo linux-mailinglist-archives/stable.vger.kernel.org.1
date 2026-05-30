@@ -1,64 +1,61 @@
-Return-Path: <stable+bounces-258627-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-257823-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id QBKBGG4qG2ra/ggAu9opvQ
-	(envelope-from <stable+bounces-258627-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:20:30 +0200
+	id 4GxZJ0ofG2qu/QgAu9opvQ
+	(envelope-from <stable+bounces-257823-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:32:58 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id D2184611850
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:20:29 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id A080360FE39
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:32:57 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id C062D3065C35
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 18:16:29 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 1011D301237F
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 17:31:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6BFD6284690;
-	Sat, 30 May 2026 18:16:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 21319329E46;
+	Sat, 30 May 2026 17:31:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="deVnCgHt"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kOOKdt/c"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4A384241C8C;
-	Sat, 30 May 2026 18:16:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 007682E7379;
+	Sat, 30 May 2026 17:31:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780164989; cv=none; b=efsRprhpk3VZzL+RU1Qn1E+jv7YkrNlKq/DRUrY7CWROwzP29fuIvCjBxYBopFOcnP0UwwOQc9ea/6/avE4mgT9ynOh6GvkgvRXzknuIcwwVA0MK03yVZKs3hEEYyTZJF4LOeQ9jc68Q0L4DqssxQBxAIabrKjEcmLoZgxK2ZHo=
+	t=1780162289; cv=none; b=t2KtMay7IbmCbWqrY4F+FrxcGwWViAZmrEf/TUYxR9kVfxbdrvTl52G2tNfASHCLYDALKT/dgfA0zW932IclMIzsEvlmi6sW6Dc+ZVMVMharm8KcXk8fSImA7kbtl3OjVGryU3BlTk9Tqn/bYsSsaHSoX6/6yuKmOgput8gh4Xs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780164989; c=relaxed/simple;
-	bh=lVqLVHGgd27+ETa1lbnRUdrAM/9I45zD5rWX5manRzE=;
+	s=arc-20240116; t=1780162289; c=relaxed/simple;
+	bh=1xuH/34sczTn3p2kcWbVBCI0yR+S+UHb62I6fGY4q/Q=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=gAvdlFWegnZcaw//6pxjpfOLJI9zcdIi6IfHhHN5WVv3PJb6eiOFQQLNOcjD+szq1crfA570MRqTw2NLtE+pVAWfPMnI73pPFUOS2ShuwGqSdOfvWr3JmTaR6KOuefLkVNlGwF8jKQByeDv//Uo2tkIRJ3t3E2JZ/5MIR2qoXM8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=deVnCgHt; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8809F1F00893;
-	Sat, 30 May 2026 18:16:27 +0000 (UTC)
+	 MIME-Version; b=R9zaIm5MMjhtFcGQ+xAxhXWq6MzcsrdJAcnIYxC8AUJwqr8akJiVobfWtk4p2y7huuCyf+bCLqGxmmfCDcc+iSEYHejqUaQVLi9kBRESb+SpoYlZUhxr4J2kpjYZI64ruxM+2SydYkvAJKr8MGfTtW95Ebe4+W2pg/fiUQxSiC8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kOOKdt/c; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 07CD31F00893;
+	Sat, 30 May 2026 17:31:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780164988;
-	bh=LV4wTb0ISJb+4PuS62p67itgIR5ghOZvf36TYT2MHhc=;
+	s=korg; t=1780162288;
+	bh=z0co9dQSBFJhk619Q3+mTFgPgHSdfWBB40cHa1o+830=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=deVnCgHtHtlw1wU2T8+44wCqH1+eaIshL4YlDOCpAUp0zCWmOEn+QWbBoUX5pA1IV
-	 qk3LxFJdC3I7PILEUb1D1ufy6roLWJir8TY+6Tgs8tArclJRsPoKWNxiIS50BXRxcK
-	 1I1/3TPAJA4lI3LmJib2kvKNgvOB9vqN0cHMY8N8=
+	b=kOOKdt/cOPxCnjgWWCGql0s547+lE1C6gpX5S6f+A2TGNWPSblDEJLLZ+cn3OVxzv
+	 a+AxnjpdWA2XwlCDAUY1A2bV6iPc/yU1MEGaFLnZMF4L6TV7oAwBo9RyL1OqPJVBcz
+	 gaMbtJMALCF2z8GGOwlO8N1Icid16NAguYF78NjI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable@kernel.org,
-	Yuan Tan <yuantan098@gmail.com>,
-	Yifan Wu <yifanwucs@gmail.com>,
-	Juefei Pu <tomapufckgml@gmail.com>,
-	Xin Liu <bird@lzu.edu.cn>,
-	Zhengchuan Liang <zcliangcn@gmail.com>,
-	Ren Wei <n05ec@lzu.edu.cn>,
-	Pablo Neira Ayuso <pablo@netfilter.org>
-Subject: [PATCH 5.15 687/776] netfilter: ip6t_hbh: reject oversized option lists
+	Alex Hung <alex.hung@amd.com>,
+	Harry Wentland <harry.wentland@amd.com>,
+	Ivan Lipski <ivan.lipski@amd.com>,
+	Dan Wheeler <daniel.wheeler@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>
+Subject: [PATCH 6.1 877/969] drm/amd/display: Fix integer overflow in bios_get_image()
 Date: Sat, 30 May 2026 18:06:41 +0200
-Message-ID: <20260530160257.611946383@linuxfoundation.org>
+Message-ID: <20260530160324.905725762@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260530160240.228940103@linuxfoundation.org>
-References: <20260530160240.228940103@linuxfoundation.org>
+In-Reply-To: <20260530160300.485627683@linuxfoundation.org>
+References: <20260530160300.485627683@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -73,84 +70,88 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,kernel.org,gmail.com,lzu.edu.cn,netfilter.org];
-	TAGGED_FROM(0.00)[bounces-258627-lists,stable=lfdr.de];
-	PRECEDENCE_BULK(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-257823-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[11];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
 	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,lzu.edu.cn:email,netfilter.org:email]
-X-Rspamd-Queue-Id: D2184611850
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_SEVEN(0.00)[8];
+	MID_RHS_MATCH_FROM(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,amd.com:email,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo]
+X-Rspamd-Queue-Id: A080360FE39
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Zhengchuan Liang <zcliangcn@gmail.com>
+From: Harry Wentland <harry.wentland@amd.com>
 
-commit 4322dcde6b4173c2d8e8e6118ed290794263bcc8 upstream.
+commit cd86529ec61474a38c3837fb7823790a7c3f8cce upstream.
 
-struct ip6t_opts stores at most IP6T_OPTS_OPTSNR option descriptors,
-but hbh_mt6_check() does not reject larger optsnr values supplied from
-userspace.
+[Why&How]
+The bounds check in bios_get_image() computes 'offset + size' using
+unsigned 32-bit arithmetic before comparing against bios_size. If a
+VBIOS image contains a near-UINT32_MAX offset the addition wraps to a
+small value, the comparison passes, and the function returns a wild
+pointer past the VBIOS mapping.
 
-Validate optsnr in the rule setup path so only match data that fits the
-fixed-size opts array can be installed. This follows the existing xtables
-pattern of rejecting invalid user-provided counts in checkentry() and
-keeps the packet matching path unchanged.
+Additionally, the comparison uses '<' (strict), which incorrectly
+rejects the valid exact-fit case where offset + size == bios_size.
 
-`struct ip6t_opts` has a fixed `opts[IP6T_OPTS_OPTSNR]` array,
-where `IP6T_OPTS_OPTSNR` is 16, then off-by-one array access is possible:
+Fix both issues by restructuring the check to avoid the addition
+entirely: first reject if offset alone exceeds bios_size, then check
+size against the remaining space (bios_size - offset). This eliminates
+the overflow and correctly permits exact-fit accesses.
 
-[  137.924693][ T8692] UBSAN: array-index-out-of-bounds in ../net/ipv6/netfilter/ip6t_hbh.c:110:29
-[  137.926167][ T8692] index 16 is out of range for type '__u16 [16]'
-
-Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
-Cc: stable@kernel.org
-Reported-by: Yuan Tan <yuantan098@gmail.com>
-Reported-by: Yifan Wu <yifanwucs@gmail.com>
-Reported-by: Juefei Pu <tomapufckgml@gmail.com>
-Reported-by: Xin Liu <bird@lzu.edu.cn>
-Signed-off-by: Zhengchuan Liang <zcliangcn@gmail.com>
-Signed-off-by: Ren Wei <n05ec@lzu.edu.cn>
-Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
+Assisted-by: GitHub Copilot:claude-opus-4.6
+Reviewed-by: Alex Hung <alex.hung@amd.com>
+Signed-off-by: Harry Wentland <harry.wentland@amd.com>
+Signed-off-by: Ivan Lipski <ivan.lipski@amd.com>
+Tested-by: Dan Wheeler <daniel.wheeler@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+(cherry picked from commit d40fb392af659c4a02b560319f226842f6ec1a95)
+Cc: stable@vger.kernel.org
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/ipv6/netfilter/ip6t_hbh.c |    4 ++++
- 1 file changed, 4 insertions(+)
+ drivers/gpu/drm/amd/display/dc/bios/bios_parser_helper.c |    9 ++++++---
+ 1 file changed, 6 insertions(+), 3 deletions(-)
 
---- a/net/ipv6/netfilter/ip6t_hbh.c
-+++ b/net/ipv6/netfilter/ip6t_hbh.c
-@@ -168,6 +168,10 @@ static int hbh_mt6_check(const struct xt
- 		pr_debug("unknown flags %X\n", optsinfo->invflags);
- 		return -EINVAL;
- 	}
-+	if (optsinfo->optsnr > IP6T_OPTS_OPTSNR) {
-+		pr_debug("too many supported opts specified\n");
-+		return -EINVAL;
-+	}
+--- a/drivers/gpu/drm/amd/display/dc/bios/bios_parser_helper.c
++++ b/drivers/gpu/drm/amd/display/dc/bios/bios_parser_helper.c
+@@ -37,10 +37,13 @@ uint8_t *bios_get_image(struct dc_bios *
+ 	uint32_t offset,
+ 	uint32_t size)
+ {
+-	if (bp->bios && offset + size < bp->bios_size)
+-		return bp->bios + offset;
+-	else
++	if (!bp->bios)
+ 		return NULL;
++
++	if (offset > bp->bios_size || size > bp->bios_size - offset)
++		return NULL;
++
++	return bp->bios + offset;
+ }
  
- 	if (optsinfo->flags & IP6T_OPTS_NSTRICT) {
- 		pr_debug("Not strict - not implemented");
+ #include "reg_helper.h"
 
 
 
