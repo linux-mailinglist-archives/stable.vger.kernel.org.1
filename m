@@ -1,68 +1,60 @@
-Return-Path: <stable+bounces-257207-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-257977-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id qMrAJu8YG2r2/AgAu9opvQ
-	(envelope-from <stable+bounces-257207-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:05:51 +0200
+	id wwIXC3khG2oN/ggAu9opvQ
+	(envelope-from <stable+bounces-257977-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:42:17 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0451960EE11
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:05:50 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id 375B9610312
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:42:15 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 9844130E8545
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 16:56:40 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id EF7763007B1E
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 17:40:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8E3E533FE15;
-	Sat, 30 May 2026 16:56:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 43BDA34389F;
+	Sat, 30 May 2026 17:40:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Y/Ynww4v"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kL3V+QYk"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4C57B39478D;
-	Sat, 30 May 2026 16:56:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1D8A72E7379;
+	Sat, 30 May 2026 17:40:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780160184; cv=none; b=PDEP++yrLOig4j9039EXg/XjrnM1sNUEFkfG1C14k/vaUt5QvRI8vmppBN5usQtrMb2C4B+zM8/taj+oq2B/HRKSnPOxBpBsPl6uk9kUtFwQUVZBV65D0dWWLNornkDa3ALay36ZOZ1vO6nm3kQVQylJyG2rEIhypvcAx0DuoVg=
+	t=1780162813; cv=none; b=GG88i/ahLFKMi3e3HxJqDbg/vtsRF5EWG90xdEVSxnzosagBaOLdec/UkWnCQInL62AlPimKPRE8L1U2uSaEqXOxP7YZ7ioLjn0hxF62PCn9iFbR5qGKq0mTU09JFk1rAISGJPzspsiD2CYEfwaR6YbLoexT6g4v42csg/pd1b0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780160184; c=relaxed/simple;
-	bh=24NPGCwjg3bf+YyY0ocwzXj0QyRyon5/EmhN9cgCutg=;
+	s=arc-20240116; t=1780162813; c=relaxed/simple;
+	bh=ob3I+h753WRpWvlvQplWuw4yJ5dcZLXauqepdmssAbI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=khdxc8HCKzEkFF+kaiM9/T3Mq9YncYQpUf+tdGgU2PE8ld1W79f6Ax/RA1iGiBy47xg8cXQOKQ5LUCVNrbQ364W+yCpoAsrfZdIyvIwfO5gQrajgoLtomiMmWjwPM4l1t12QO+LYHz/N/wKcvfAp5XiVVbJcu+INBoAd5GJ4pKg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Y/Ynww4v; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 90DF71F00893;
-	Sat, 30 May 2026 16:56:22 +0000 (UTC)
+	 MIME-Version; b=hv72AI/3Bq0hqS/9AKmyD6cOqtzNYKLEgaNXYBtdFBH/bfqa74vWnxbbmfNQjscu+2g62I+ms2CsNAdaTBwkXo7PeCches8R18Y0JHDA/Pv0Vdl2LxHzjq8qWfGlYWG8rqt2+kvLxr9MO8e/4vgeaPosnp8FQ2Hu6hC/WFcR3I4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kL3V+QYk; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2FC521F00898;
+	Sat, 30 May 2026 17:40:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780160183;
-	bh=EUc7Ra8E0HFrqHaZ/vtDt2LgZxSWN2mjspBwkws0yGQ=;
+	s=korg; t=1780162811;
+	bh=pIinjg6STCPaemDyMCO9ferLnNEkGEENNtPtlMkYiEE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=Y/Ynww4vOq8aPu3i/FTmWut7mpsvG/iwaVCGgOZsPY/oIN0r8dKadtDbJlRRcuJna
-	 I5t+iMjlqHvloQ9ADqxd8TnFa7aLCmDNf4Mpkhl9qW4nkcXsxCewGL+x+vZrEVP6M1
-	 HSo8KyoBIOQyJLiWbsFEhvBSYY7wpBVw3Uvnna48=
+	b=kL3V+QYkEBtrJ8x1r51NDE8tXU6kmoe4HgaB/pmXzCY/CfaHu66vXGiUBtcZNwG3d
+	 gOjZZdCekFOKh1dTS8MwiMaLzBpL5Ek1M6VjAXAnPHWci05KCVtDnm2QadoZtArqc1
+	 Xy/XN2nw4BqmdajOLBGM7ksYC20AlchuxqLhV0PE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Denis M. Karpov" <komlomal@gmail.com>,
-	Lorenzo Stoakes <ljs@kernel.org>,
-	"Harry Yoo (Oracle)" <harry@kernel.org>,
-	Pedro Falcato <pfalcato@suse.de>,
-	"Liam R. Howlett" <Liam.Howlett@oracle.com>,
-	"Mike Rapoport (Microsoft)" <rppt@kernel.org>,
-	Alexander Viro <viro@zeniv.linux.org.uk>,
-	Christian Brauner <brauner@kernel.org>,
-	Jan Kara <jack@suse.cz>,
-	Jann Horn <jannh@google.com>,
-	Peter Xu <peterx@redhat.com>,
-	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 6.1 231/969] userfaultfd: allow registration of ranges below mmap_min_addr
+	kernel test robot <lkp@intel.com>,
+	Alexandre Belloni <alexandre.belloni@bootlin.com>,
+	Jamie Iles <quic_jiles@quicinc.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 041/776] i3c: fix uninitialized variable use in i2c setup
 Date: Sat, 30 May 2026 17:55:55 +0200
-Message-ID: <20260530160306.837339987@linuxfoundation.org>
+Message-ID: <20260530160241.359570855@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260530160300.485627683@linuxfoundation.org>
-References: <20260530160300.485627683@linuxfoundation.org>
+In-Reply-To: <20260530160240.228940103@linuxfoundation.org>
+References: <20260530160240.228940103@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -75,94 +67,84 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-257207-lists,stable=lfdr.de];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,kernel.org,suse.de,oracle.com,zeniv.linux.org.uk,suse.cz,google.com,redhat.com,linux-foundation.org];
-	RCPT_COUNT_TWELVE(0.00)[15];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_TLS_LAST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-257977-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	MID_RHS_MATCH_FROM(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	TO_DN_SOME(0.00)[];
-	FROM_HAS_DN(0.00)[]
-X-Rspamd-Queue-Id: 0451960EE11
+	DBL_BLOCKED_OPENRESOLVER(0.00)[intel.com:email,quicinc.com:email,bootlin.com:email,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim]
+X-Rspamd-Queue-Id: 375B9610312
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Denis M. Karpov <komlomal@gmail.com>
+From: Jamie Iles <quic_jiles@quicinc.com>
 
-commit 161ce69c2c89781784b945d8e281ff2da9dede9c upstream.
+[ Upstream commit 6cbf8b38dfe3aabe330f2c356949bc4d6a1f034f ]
 
-The current implementation of validate_range() in fs/userfaultfd.c
-performs a hard check against mmap_min_addr.  This is redundant because
-UFFDIO_REGISTER operates on memory ranges that must already be backed by a
-VMA.
+Commit 31b9887c7258 ("i3c: remove i2c board info from i2c_dev_desc")
+removed the boardinfo from i2c_dev_desc to decouple device enumeration from
+setup but did not correctly lookup the i2c_dev_desc to store the new
+device, instead dereferencing an uninitialized variable.
 
-Enforcing mmap_min_addr or capability checks again in userfaultfd is
-unnecessary and prevents applications like binary compilers from using
-UFFD for valid memory regions mapped by application.
+Lookup the device that has already been registered by address to store
+the i2c client device.
 
-Remove the redundant check for mmap_min_addr.
-
-We started using UFFD instead of the classic mprotect approach in the
-binary translator to track application writes.  During development, we
-encountered this bug.  The translator cannot control where the translated
-application chooses to map its memory and if the app requires a
-low-address area, UFFD fails, whereas mprotect would work just fine.  I
-believe this is a genuine logic bug rather than an improvement, and I
-would appreciate including the fix in stable.
-
-Link: https://lore.kernel.org/20260409103345.15044-1-komlomal@gmail.com
-Fixes: 86039bd3b4e6 ("userfaultfd: add new syscall to provide memory externalization")
-Signed-off-by: Denis M. Karpov <komlomal@gmail.com>
-Reviewed-by: Lorenzo Stoakes <ljs@kernel.org>
-Acked-by: Harry Yoo (Oracle) <harry@kernel.org>
-Reviewed-by: Pedro Falcato <pfalcato@suse.de>
-Reviewed-by: Liam R. Howlett <Liam.Howlett@oracle.com>
-Reviewed-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
-Cc: Alexander Viro <viro@zeniv.linux.org.uk>
-Cc: Al Viro <viro@zeniv.linux.org.uk>
-Cc: Christian Brauner <brauner@kernel.org>
-Cc: Jan Kara <jack@suse.cz>
-Cc: Jann Horn <jannh@google.com>
-Cc: Peter Xu <peterx@redhat.com>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 31b9887c7258 ("i3c: remove i2c board info from i2c_dev_desc")
+Reported-by: kernel test robot <lkp@intel.com>
+Cc: Alexandre Belloni <alexandre.belloni@bootlin.com>
+Signed-off-by: Jamie Iles <quic_jiles@quicinc.com>
+Signed-off-by: Alexandre Belloni <alexandre.belloni@bootlin.com>
+Link: https://lore.kernel.org/r/20220308134226.1042367-1-quic_jiles@quicinc.com
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/userfaultfd.c |    2 --
- 1 file changed, 2 deletions(-)
+ drivers/i3c/master.c | 7 ++++++-
+ 1 file changed, 6 insertions(+), 1 deletion(-)
 
---- a/fs/userfaultfd.c
-+++ b/fs/userfaultfd.c
-@@ -1271,8 +1271,6 @@ static __always_inline int validate_rang
- 		return -EINVAL;
- 	if (!len)
- 		return -EINVAL;
--	if (start < mmap_min_addr)
--		return -EINVAL;
- 	if (start >= task_size)
- 		return -EINVAL;
- 	if (len > task_size - start)
+diff --git a/drivers/i3c/master.c b/drivers/i3c/master.c
+index dee694024f280..5df943d25cf0a 100644
+--- a/drivers/i3c/master.c
++++ b/drivers/i3c/master.c
+@@ -2199,8 +2199,13 @@ static int i3c_master_i2c_adapter_init(struct i3c_master_controller *master)
+ 	 * We silently ignore failures here. The bus should keep working
+ 	 * correctly even if one or more i2c devices are not registered.
+ 	 */
+-	list_for_each_entry(i2cboardinfo, &master->boardinfo.i2c, node)
++	list_for_each_entry(i2cboardinfo, &master->boardinfo.i2c, node) {
++		i2cdev = i3c_master_find_i2c_dev_by_addr(master,
++							 i2cboardinfo->base.addr);
++		if (WARN_ON(!i2cdev))
++			continue;
+ 		i2cdev->dev = i2c_new_client_device(adap, &i2cboardinfo->base);
++	}
+ 
+ 	return 0;
+ }
+-- 
+2.53.0
+
 
 
 
