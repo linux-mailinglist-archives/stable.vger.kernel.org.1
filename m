@@ -1,59 +1,59 @@
-Return-Path: <stable+bounces-258936-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-258335-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id AMVXLu4wG2qKAAkAu9opvQ
-	(envelope-from <stable+bounces-258936-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:48:14 +0200
+	id 2J4VBbwlG2rO/QgAu9opvQ
+	(envelope-from <stable+bounces-258335-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:00:28 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 42C05612870
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:48:14 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0CB1A610CC5
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:00:26 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 78A7530E9827
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 18:34:03 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 6B2F13006012
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 18:00:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5E7A4329E79;
-	Sat, 30 May 2026 18:34:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 651D33AE18D;
+	Sat, 30 May 2026 18:00:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mtgadl7W"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="R1u7zfKx"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3157F331200;
-	Sat, 30 May 2026 18:34:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3D2C131E858;
+	Sat, 30 May 2026 18:00:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780166042; cv=none; b=XiIOkS8idq1sNqSd50lSK/kEo2Zwvz7L2CHHh8FtZO74qnl9KFLrqTQ3/+fEg8dGQ3lWZHHXNBeUi0d6VKm1uo+CzF4eo56o2FvJFv3slac8cGm2+KR6CO7klzs/JrIiotYqoh1oJ/DLDiA7TvK+204Ek6AA50o8JtgcEzFF7Iw=
+	t=1780164006; cv=none; b=jNE9KmgP4A3UikYfn5J/WTExWBlnkKyM0oJ6mrZaABbnXp8DU1EGi9OZGWTALyBCZTyxwSjWdTgU6Te5GWX4mQmYOywUQk8eTTF+hSGjeklpfOQVx5+DVrRQMk73F1qMqvda3In+wku/9sF3xt+SvV/VR3rCZg4EZl4PQcEMdiU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780166042; c=relaxed/simple;
-	bh=ysXuTmXd7YK+2fzBI6h39WfDx4vQFhmZhsaO6etlejM=;
+	s=arc-20240116; t=1780164006; c=relaxed/simple;
+	bh=stJ3M3hPBoi9GfJHHwk2GajrN5wIWdnnPBtUnl8kmEI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=NuAdYNSQMZ4O+GI1sjwaQSVUUcX259VnRl0lk7pqrh5knRPuVHOzFFTmKT38ptChWFsyRbdXU1Z2M2d/I45/0hplUnpKCmW0pM+dCcj16zYzGrVwArW1PCd/mUQVSYrDFX014kf1KAh9ihIxBHXpRkiq9IAap6diZ7D1FRFqUGA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mtgadl7W; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AC5E21F00893;
-	Sat, 30 May 2026 18:34:00 +0000 (UTC)
+	 MIME-Version; b=AzZF6ZheMyj+/LW96L/XS6Ammpl+haL02Zx/5ayGlPPX/+fjnKuvuqxbo5UOmYTQAlDlm94PEb9gOw9aOUZeUo3xxqaBIR1s0Ol+Dy7q/QinTOu3ohMOzu7RloyU08TW8GuBL3oEH06oU0tkv3jCv2nki+dzpiOJyCnu97v89rA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=R1u7zfKx; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 125C71F0089D;
+	Sat, 30 May 2026 18:00:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780166041;
-	bh=ZAlIMvpGydhLOltVYE3ncD5ZtSsIPiYvOI5ZpVSd8lo=;
+	s=korg; t=1780164005;
+	bh=LRvV92IpPxJbvd1mONJY0gyw2CUyzMIjKD2EuHipjeI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=mtgadl7WTXdOwVZqQi75y5oe7URpdpXkjgfzuW/UgASQFAjB/lA5+2ULa3VDmw4CL
-	 idRccfU8jMkCFXxko9xmxnhTUuHS5AFdTcfmh/qJFJK6wmeBzcP35NKOnS642raPII
-	 rzMN3SRmnxJs90JslMBPFcVG9VDWoTYzB863kuMM=
+	b=R1u7zfKxISAWPOva+9b+GWW9u8Ok8caPzly6R3EC7CHQze8nUrlnLB7HDs//wTGBq
+	 I6UME+AlKUztbl3Sy03jLWnwM+lYqIIJFbbzsToXfh+JZ2bAW9eCVo/TSeD/z7dax/
+	 1zFhciqL8pzolIIa+0MRc1V1Ko/riILvg8wkI9T0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Lukas Wunner <lukas@wunner.de>,
-	Bjorn Helgaas <bhelgaas@google.com>,
-	Stefan Roese <stefan.roese@mailbox.org>
-Subject: [PATCH 5.10 257/589] PCI/AER: Stop ruling out unbound devices as error source
-Date: Sat, 30 May 2026 18:02:18 +0200
-Message-ID: <20260530160231.730576543@linuxfoundation.org>
+	Pauli Virtanen <pav@iki.fi>,
+	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 425/776] Bluetooth: fix locking in hci_conn_request_evt() with HCI_PROTO_DEFER
+Date: Sat, 30 May 2026 18:02:19 +0200
+Message-ID: <20260530160251.438797154@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260530160224.570625122@linuxfoundation.org>
-References: <20260530160224.570625122@linuxfoundation.org>
+In-Reply-To: <20260530160240.228940103@linuxfoundation.org>
+References: <20260530160240.228940103@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,87 +66,85 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-258335-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-258936-lists,stable=lfdr.de];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	TO_DN_SOME(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-0.996];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable];
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
 	RCPT_COUNT_FIVE(0.00)[6];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	TAGGED_RCPT(0.00)[stable];
+	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[wunner.de:email,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,msgid.link:url,mailbox.org:email,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
-X-Rspamd-Queue-Id: 42C05612870
+	FROM_HAS_DN(0.00)[]
+X-Rspamd-Queue-Id: 0CB1A610CC5
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Lukas Wunner <lukas@wunner.de>
+From: Pauli Virtanen <pav@iki.fi>
 
-commit 1ab4a3c805084d752ec571efc78272295a9f2f74 upstream.
+[ Upstream commit 5c7209a341ff2ac338b2b0375c34a307b37c9ac2 ]
 
-When searching for the error source, the AER driver rules out devices whose
-enable_cnt is zero.  This was introduced in 2009 by commit 28eb27cf0839
-("PCI AER: support invalid error source IDs") without providing a
-rationale.
+When protocol sets HCI_PROTO_DEFER, hci_conn_request_evt() calls
+hci_connect_cfm(conn) without hdev->lock. Generally hci_connect_cfm()
+assumes it is held, and if conn is deleted concurrently -> UAF.
 
-Drivers typically call pci_enable_device() on probe, hence the enable_cnt
-check essentially filters out unbound devices.  At the time of the commit,
-drivers had to opt in to AER by calling pci_enable_pcie_error_reporting()
-and so any AER-enabled device could be assumed to be bound to a driver.
-The check thus made sense because it allowed skipping config space accesses
-to devices which were known not to be the error source.
+Only SCO and ISO set HCI_PROTO_DEFER and only for defer setup listen,
+and HCI_EV_CONN_REQUEST is not generated for ISO.  In the non-deferred
+listening socket code paths, hci_connect_cfm(conn) is called with
+hdev->lock held.
 
-But since 2022, AER is universally enabled on all devices when they are
-enumerated, cf. commit f26e58bf6f54 ("PCI/AER: Enable error reporting when
-AER is native").
+Fix by holding the lock.
 
-Errors may very well be reported by unbound devices, e.g. due to link
-instability.  By ruling them out as error source, errors reported by them
-are neither logged nor cleared.  When they do get bound and another error
-occurs, the earlier error is reported together with the new error, which
-may confuse users.  Stop doing so.
-
-Fixes: f26e58bf6f54 ("PCI/AER: Enable error reporting when AER is native")
-Signed-off-by: Lukas Wunner <lukas@wunner.de>
-Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
-Reviewed-by: Stefan Roese <stefan.roese@mailbox.org>
-Cc: stable@vger.kernel.org # v6.0+
-Link: https://patch.msgid.link/734338c2e8b669db5a5a3b45d34131b55ffebfca.1774605029.git.lukas@wunner.de
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 70c464256310 ("Bluetooth: Refactor connection request handling")
+Signed-off-by: Pauli Virtanen <pav@iki.fi>
+Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/pci/pcie/aer.c |    2 --
- 1 file changed, 2 deletions(-)
+ net/bluetooth/hci_event.c | 3 ---
+ 1 file changed, 3 deletions(-)
 
---- a/drivers/pci/pcie/aer.c
-+++ b/drivers/pci/pcie/aer.c
-@@ -853,8 +853,6 @@ static bool is_error_source(struct pci_d
- 	 *      3) There are multiple errors and prior ID comparing fails;
- 	 * We check AER status registers to find possible reporter.
- 	 */
--	if (atomic_read(&dev->enable_cnt) == 0)
--		return false;
+diff --git a/net/bluetooth/hci_event.c b/net/bluetooth/hci_event.c
+index 8d6fc3a0c9a7e..dc79a362aef7f 100644
+--- a/net/bluetooth/hci_event.c
++++ b/net/bluetooth/hci_event.c
+@@ -2882,8 +2882,6 @@ static void hci_conn_request_evt(struct hci_dev *hdev, struct sk_buff *skb)
  
- 	/* Check if AER is enabled */
- 	pcie_capability_read_word(dev, PCI_EXP_DEVCTL, &reg16);
+ 	memcpy(conn->dev_class, ev->dev_class, 3);
+ 
+-	hci_dev_unlock(hdev);
+-
+ 	if (ev->link_type == ACL_LINK ||
+ 	    (!(flags & HCI_PROTO_DEFER) && !lmp_esco_capable(hdev))) {
+ 		struct hci_cp_accept_conn_req cp;
+@@ -2917,7 +2915,6 @@ static void hci_conn_request_evt(struct hci_dev *hdev, struct sk_buff *skb)
+ 		hci_connect_cfm(conn, 0);
+ 	}
+ 
+-	return;
+ unlock:
+ 	hci_dev_unlock(hdev);
+ }
+-- 
+2.53.0
+
 
 
 
