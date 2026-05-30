@@ -1,60 +1,59 @@
-Return-Path: <stable+bounces-258488-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-259093-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id MCD/BTsqG2ra/ggAu9opvQ
-	(envelope-from <stable+bounces-258488-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:19:39 +0200
+	id iF85JcIvG2p5AAkAu9opvQ
+	(envelope-from <stable+bounces-259093-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:43:14 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 922B86117A8
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:19:38 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3A659612554
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:43:13 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id D8C2E30EDFD4
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 18:08:38 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 0C2AC3011EBB
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 18:43:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D5E1C3B7B72;
-	Sat, 30 May 2026 18:08:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A054A2F6184;
+	Sat, 30 May 2026 18:43:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FRLy/x2y"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gslduudb"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B15313AFCE3;
-	Sat, 30 May 2026 18:08:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 827BC21B191;
+	Sat, 30 May 2026 18:43:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780164517; cv=none; b=uj9zHkA3Fg4LoxtjOUKb0aVNVSY+ROJx+VTBMxfNS6bwQUiiMQD1W7ho7uLs7G1hsb5CM2B1RHvYuj9wrd9JY2QngtXXBJqEHy3EtE5TQZG88eEjohTx4GxHMQ/exMUaINyVZBfjl8jRpV5tZnMXQtC4yEaA9GpeO5v7HeSpkFo=
+	t=1780166589; cv=none; b=OhC7UqwRJNgHNCVvMK2+D21PwjXJ/b2H6+lvAer1NXs283rUFrtI5N3QNtA24Y2F7lr7Vxzpt+Xj9Jw3pz8OdmHS6Hs+JheFSXo/zvLy+Oque72JiFXcUSrYmSocp6d2bDyo+Tan0f+1FDyUlhaBXWvKlTfxx5oI/D2ieYu/w7k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780164517; c=relaxed/simple;
-	bh=S4tXdE5B6AiguL8g/I48HSlpZ53whSHzOAM5Snf02PE=;
+	s=arc-20240116; t=1780166589; c=relaxed/simple;
+	bh=WoRhqSShPtfgTO4DK1RbVTLt2lvT2MGr8Dn5vC3FcjA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=eymXdKeMW0VyoYedbVUiW+sHF0BIHZk+dQ4sGK1vZCI4OO7WQXEkh3AOQj1e3ieT+covB6rvd1Jf6mM+/bkqTueDKavdkhGcs3x+kTQs9Rux0Se3Q4Rp2vVXJAb8X3N2CKOe0T7fysPB7bbBEL8iBgqp//1blxlA0u/7F8raqEY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FRLy/x2y; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 077291F00893;
-	Sat, 30 May 2026 18:08:35 +0000 (UTC)
+	 MIME-Version:Content-Type; b=ajiWcpaxWlYhYOGrY4/spegogUAl1vKL5JBGLDq2pCdba1zj870pji/VBeXwm/GLfnBTWMwV7UpdxuhOqo6Oz26acP1zwd1lzEOFjd8XNhKuuIsC9iato+PE6dUTsoTVes2C8WpRNzBLChtRPVos716o6GuXSNd8XSFCWgfnhcE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gslduudb; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CDCA81F00893;
+	Sat, 30 May 2026 18:43:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780164516;
-	bh=vv0gAIJCDxVS+zXp6gCPcZZWhmhWEhQZQAaiMdO4yh8=;
+	s=korg; t=1780166588;
+	bh=Jx06TU3E+52iBsVE7xqSSuEEATAktUyQpcyTy6b/NTU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=FRLy/x2yO1k62rubgLR8PFYqs5W7rXjx5H6c2ZdrF83AmTY9k9baRccfCs30t8wcB
-	 W1fXRRN9NjyR6AJIWwARoJEtx5V8SVqRf7bznGxboJPTHHZGo7MyOUpABqJwD07Nhc
-	 ZzxnIjBE9T/dBqZOtN/A66I812neuDmB9qqeqsZ0=
+	b=gslduudbZgDsVV2MHdAHZXhSOdf3e57LUXGEmB7OQ1WM5BUuHIE4tE5aUnDbS6Zw/
+	 wCz3Dsx509W+OS9IQiA7oil48T1IEFsuWfxaI+X8FZNMeMRx768suppdt5wEVHeS3U
+	 3DQ85MWZK0zsgfmRUblyAg4gNLfJ5ZM3UDhoYaXs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Kito Xu (veritas501)" <hxzene@gmail.com>,
-	Fernando Fernandez Mancera <fmancera@suse.de>,
-	Pablo Neira Ayuso <pablo@netfilter.org>,
+	=?UTF-8?q?Ren=C3=A9=20Rebe?= <rene@exactco.de>,
+	Dominik Brodowski <linux@dominikbrodowski.net>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 578/776] netfilter: nfnetlink_osf: fix potential NULL dereference in ttl check
+Subject: [PATCH 5.10 411/589] PCMCIA: Fix garbled log messages for KERN_CONT
 Date: Sat, 30 May 2026 18:04:52 +0200
-Message-ID: <20260530160255.028218444@linuxfoundation.org>
+Message-ID: <20260530160235.558574269@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260530160240.228940103@linuxfoundation.org>
-References: <20260530160240.228940103@linuxfoundation.org>
+In-Reply-To: <20260530160224.570625122@linuxfoundation.org>
+References: <20260530160224.570625122@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,109 +63,86 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,suse.de,netfilter.org,kernel.org];
-	TAGGED_FROM(0.00)[bounces-258488-lists,stable=lfdr.de];
-	PRECEDENCE_BULK(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-259093-lists,stable=lfdr.de];
 	FROM_HAS_DN(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
 	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-0.995];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[7];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[netfilter.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,suse.de:email,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
-X-Rspamd-Queue-Id: 922B86117A8
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	RCPT_COUNT_FIVE(0.00)[6];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	TAGGED_RCPT(0.00)[stable];
+	MID_RHS_MATCH_FROM(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,exactco.de:email]
+X-Rspamd-Queue-Id: 3A659612554
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Fernando Fernandez Mancera <fmancera@suse.de>
+From: René Rebe <rene@exactco.de>
 
-[ Upstream commit 711987ba281fd806322a7cd244e98e2a81903114 ]
+[ Upstream commit bfeaa6814bd3f9a1f6d525b3b35a03b9a0368961 ]
 
-The nf_osf_ttl() function accessed skb->dev to perform a local interface
-address lookup without verifying that the device pointer was valid.
+For years the PCMCIA info messages are messed up by superfluous
+newlines. While f2e6cf76751d ("pcmcia: Convert dev_printk to
+dev_<level>") converted the code to pr_cont(), dev_info enforces a \n
+via vprintk_store setting LOG_NEWLINE, breaking subsequent pr_cont.
 
-Additionally, the implementation utilized an in_dev_for_each_ifa_rcu
-loop to match the packet source address against local interface
-addresses. It assumed that packets from the same subnet should not see a
-decrement on the initial TTL. A packet might appear it is from the same
-subnet but it actually isn't especially in modern environments with
-containers and virtual switching.
+Fix by logging the device name manually to allow pr_cont to work for
+more readable and not \n distorted logs.
 
-Remove the device dereference and interface loop. Replace the logic with
-a switch statement that evaluates the TTL according to the ttl_check.
-
-Fixes: 11eeef41d5f6 ("netfilter: passive OS fingerprint xtables match")
-Reported-by: Kito Xu (veritas501) <hxzene@gmail.com>
-Closes: https://lore.kernel.org/netfilter-devel/20260414074556.2512750-1-hxzene@gmail.com/
-Signed-off-by: Fernando Fernandez Mancera <fmancera@suse.de>
-Reviewed-by: Pablo Neira Ayuso <pablo@netfilter.org>
-Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
+Fixes: f2e6cf76751d ("pcmcia: Convert dev_printk to dev_<level>")
+Signed-off-by: René Rebe <rene@exactco.de>
+Signed-off-by: Dominik Brodowski <linux@dominikbrodowski.net>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/netfilter/nfnetlink_osf.c | 22 +++++++---------------
- 1 file changed, 7 insertions(+), 15 deletions(-)
+ drivers/pcmcia/rsrc_nonstatic.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/net/netfilter/nfnetlink_osf.c b/net/netfilter/nfnetlink_osf.c
-index 2207bda442d54..6d3dfbeb398cb 100644
---- a/net/netfilter/nfnetlink_osf.c
-+++ b/net/netfilter/nfnetlink_osf.c
-@@ -31,26 +31,18 @@ EXPORT_SYMBOL_GPL(nf_osf_fingers);
- static inline int nf_osf_ttl(const struct sk_buff *skb,
- 			     int ttl_check, unsigned char f_ttl)
- {
--	struct in_device *in_dev = __in_dev_get_rcu(skb->dev);
- 	const struct iphdr *ip = ip_hdr(skb);
--	const struct in_ifaddr *ifa;
--	int ret = 0;
+diff --git a/drivers/pcmcia/rsrc_nonstatic.c b/drivers/pcmcia/rsrc_nonstatic.c
+index ab487edec2e5b..9b3ff50cfdc6a 100644
+--- a/drivers/pcmcia/rsrc_nonstatic.c
++++ b/drivers/pcmcia/rsrc_nonstatic.c
+@@ -188,7 +188,7 @@ static void do_io_probe(struct pcmcia_socket *s, unsigned int base,
+ 	int any;
+ 	u_char *b, hole, most;
  
--	if (ttl_check == NF_OSF_TTL_TRUE)
-+	switch (ttl_check) {
-+	case NF_OSF_TTL_TRUE:
- 		return ip->ttl == f_ttl;
--	if (ttl_check == NF_OSF_TTL_NOCHECK)
--		return 1;
--	else if (ip->ttl <= f_ttl)
-+		break;
-+	case NF_OSF_TTL_NOCHECK:
- 		return 1;
--
--	in_dev_for_each_ifa_rcu(ifa, in_dev) {
--		if (inet_ifa_match(ip->saddr, ifa)) {
--			ret = (ip->ttl == f_ttl);
--			break;
--		}
-+	case NF_OSF_TTL_LESS:
-+	default:
-+		return ip->ttl <= f_ttl;
- 	}
--
--	return ret;
- }
+-	dev_info(&s->dev, "cs: IO port probe %#x-%#x:", base, base+num-1);
++	pr_info("%s: cs: IO port probe %#x-%#x:", dev_name(&s->dev), base, base+num-1);
  
- struct nf_osf_hdr_ctx {
+ 	/* First, what does a floating port look like? */
+ 	b = kzalloc(256, GFP_KERNEL);
+@@ -410,8 +410,8 @@ static int do_mem_probe(struct pcmcia_socket *s, u_long base, u_long num,
+ 	struct socket_data *s_data = s->resource_data;
+ 	u_long i, j, bad, fail, step;
+ 
+-	dev_info(&s->dev, "cs: memory probe 0x%06lx-0x%06lx:",
+-		 base, base+num-1);
++	pr_info("%s: cs: memory probe 0x%06lx-0x%06lx:",
++	       dev_name(&s->dev), base, base+num-1);
+ 	bad = fail = 0;
+ 	step = (num < 0x20000) ? 0x2000 : ((num>>4) & ~0x1fff);
+ 	/* don't allow too large steps */
 -- 
 2.53.0
 
