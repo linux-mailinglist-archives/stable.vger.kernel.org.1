@@ -1,60 +1,59 @@
-Return-Path: <stable+bounces-258822-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-257435-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id sNOUHqEtG2pa/wgAu9opvQ
-	(envelope-from <stable+bounces-258822-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:34:09 +0200
+	id oMT1ItkbG2pk/QgAu9opvQ
+	(envelope-from <stable+bounces-257435-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:18:17 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id D12BE611FF2
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:34:08 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 04DCC60F587
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:18:16 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 93048301E237
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 18:27:36 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 50DBC309F4AA
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 17:09:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 91DD7282F23;
-	Sat, 30 May 2026 18:27:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BED093191D0;
+	Sat, 30 May 2026 17:09:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="g+R4TwJt"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Zh1L2ykD"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 018FE33F8A4;
-	Sat, 30 May 2026 18:27:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AA72A481DD;
+	Sat, 30 May 2026 17:09:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780165655; cv=none; b=CTDlcs9pLJtVeIx0DWkmE+kopWcKfV2KHid9JLifJM9W03OYhbKRWBcxkpEjqTouMpuA2ZNYvRA1BljVq3zHmE8cR4xS6zbj7wb3kK+ecfRvj47o3RQPvqt430pCeGKODHOBaC3VicFKmKUXtejy+kQHce+UJ6tFEd6ZMpDvkQ8=
+	t=1780160986; cv=none; b=UuAzpP3I2K+xiPtCZNiWCSz+Loy1ZC3NE3H/8zGGtymfK0OMrRVXpfKBwG585ZHHhVLgNRPzR2slKcD2yw39YrPu8sKTOXhC0vK23uOSdwgXqA0MZ+HKaH1cqNZ/Ux8D2gokpgxjB4UEedwJ5MoeuNYRHdE/rnuzY0H2GzuVWn4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780165655; c=relaxed/simple;
-	bh=KgrLL6yAxK+JqKjFXsFDjzX0Kv2MVBLdOTexg+irGng=;
+	s=arc-20240116; t=1780160986; c=relaxed/simple;
+	bh=q4o2QLWwS13uNJGWsitdZbWAjS+PJnG5ckZL52arGo0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Aa3EXH0SGxTJYTyPxDyT1MDFf3zAXYlg1YlIvPxlDQUFR8Z/pvsGgxGH5f1yJWsxx9FyddDkBhgq2xLatxglYBFt/qY0Rr0FWsHEjDkFvN/em4GOf+UAD9lq7Ot9NOYQ+8rHm2XiM9mdlvYuRFz03XbOPlaMh4LWYHmBHcVI8vU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=g+R4TwJt; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 48E311F00893;
-	Sat, 30 May 2026 18:27:33 +0000 (UTC)
+	 MIME-Version; b=Q5T9moq9Fezu4bYNvIO4TeaplnS0k4eRPk/OJiCsiZbzl0SVm1CvbbYoSzAekPPJUrEgzC8tOx3P7TFLfMp9h6SH0R1NCz3USROHUfYYZoqn/smqtNDfAoeykciJfxk9rJ4oDfbnc00kQGgxG6khvmNgUG+ndwc+V7ROk5mgHvY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Zh1L2ykD; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BF48A1F00893;
+	Sat, 30 May 2026 17:09:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780165653;
-	bh=JjmfaoGbXGqqZOUooE3hqMi39JR9rlbpoDdaj1oUNNk=;
+	s=korg; t=1780160985;
+	bh=S/8Gl+jvrtxi3txN7Kdv6hr7ysd/GLjmHKoSf293NRM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=g+R4TwJt79/v554IoCw5L8+A0Tpy2dXv431U9lHKIiBuBumGdyatYQ9UOTsEZ7gDV
-	 dwEW18wjyryRmlMxx8sILngbwWGfBNFOsEyL0aNNrU4GdsAdrKYK6X9kb/MgHEdgnK
-	 mSOzZng/VOVarrB5BtG28mRLr4U4shZk6odLthUQ=
+	b=Zh1L2ykDbxP/M7PCUKUNQU6iVxJ+7BgNhaj2vw0Rlinvje6ctgs2gU6UTjQo/a1Ir
+	 5kdBHFsfwtY035yYkRO0u3GqtFmwfvpKbADyha4Q/eSvi01EYaxasTxdjmJgW3hksx
+	 N1lumuqATS0AQXcB2Qnl2pmagLQxhv/v6e5+3x64=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alexander Potapenko <glider@google.com>,
-	Sebastian Alba Vives <sebasjosue84@gmail.com>,
-	Sean Christopherson <seanjc@google.com>,
-	Herbert Xu <herbert@gondor.apana.org.au>
-Subject: [PATCH 5.10 135/589] crypto: ccp: Dont attempt to copy ID to userspace if PSP command failed
+	Ethan Tidmore <ethantidmore06@gmail.com>,
+	Chen-Yu Tsai <wens@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 492/969] drm/sun4i: backend: fix error pointer dereference
 Date: Sat, 30 May 2026 18:00:16 +0200
-Message-ID: <20260530160228.328582724@linuxfoundation.org>
+Message-ID: <20260530160313.902763184@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260530160224.570625122@linuxfoundation.org>
-References: <20260530160224.570625122@linuxfoundation.org>
+In-Reply-To: <20260530160300.485627683@linuxfoundation.org>
+References: <20260530160300.485627683@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -67,107 +66,77 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,google.com,gmail.com,gondor.apana.org.au];
-	TAGGED_FROM(0.00)[bounces-258822-lists,stable=lfdr.de];
-	PRECEDENCE_BULK(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	TAGGED_FROM(0.00)[bounces-257435-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,kernel.org];
+	TO_DN_SOME(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[7];
+	NEURAL_HAM(-0.00)[-1.000];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim]
-X-Rspamd-Queue-Id: D12BE611FF2
+	RCPT_COUNT_FIVE(0.00)[6];
+	FROM_HAS_DN(0.00)[]
+X-Rspamd-Queue-Id: 04DCC60F587
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sean Christopherson <seanjc@google.com>
+From: Ethan Tidmore <ethantidmore06@gmail.com>
 
-commit 4f685dbfa87c546e51d9dc6cab379d20f275e114 upstream.
+[ Upstream commit 06277983eca4a31d3c2114fa33d99a6e82484b11 ]
 
-When retrieving the ID for the CPU, don't attempt to copy the ID blob to
-userspace if the firmware command failed.  If the failure was due to an
-invalid length, i.e. the userspace buffer+length was too small, copying
-the number of bytes _firmware_ requires will overflow the kernel-allocated
-buffer and leak data to userspace.
+The function drm_atomic_get_plane_state() can return an error pointer
+and is not checked for it. Add error pointer check.
 
-  BUG: KASAN: slab-out-of-bounds in instrument_copy_to_user ../include/linux/instrumented.h:129 [inline]
-  BUG: KASAN: slab-out-of-bounds in _inline_copy_to_user ../include/linux/uaccess.h:205 [inline]
-  BUG: KASAN: slab-out-of-bounds in _copy_to_user+0x66/0xa0 ../lib/usercopy.c:26
-  Read of size 64 at addr ffff8881867f5960 by task syz.0.906/24388
+Detected by Smatch:
+drivers/gpu/drm/sun4i/sun4i_backend.c:496 sun4i_backend_atomic_check() error:
+'plane_state' dereferencing possible ERR_PTR()
 
-  CPU: 130 UID: 0 PID: 24388 Comm: syz.0.906 Tainted: G     U     O        7.0.0-smp-DEV #28 PREEMPTLAZY
-  Tainted: [U]=USER, [O]=OOT_MODULE
-  Hardware name: Google, Inc. Arcadia_IT_80/Arcadia_IT_80, BIOS 12.62.0-0 11/19/2025
-  Call Trace:
-   <TASK>
-   dump_stack_lvl+0xc5/0x110 ../lib/dump_stack.c:120
-   print_address_description ../mm/kasan/report.c:378 [inline]
-   print_report+0xbc/0x260 ../mm/kasan/report.c:482
-   kasan_report+0xa2/0xe0 ../mm/kasan/report.c:595
-   check_region_inline ../mm/kasan/generic.c:-1 [inline]
-   kasan_check_range+0x264/0x2c0 ../mm/kasan/generic.c:200
-   instrument_copy_to_user ../include/linux/instrumented.h:129 [inline]
-   _inline_copy_to_user ../include/linux/uaccess.h:205 [inline]
-   _copy_to_user+0x66/0xa0 ../lib/usercopy.c:26
-   copy_to_user ../include/linux/uaccess.h:236 [inline]
-   sev_ioctl_do_get_id2+0x361/0x490 ../drivers/crypto/ccp/sev-dev.c:2222
-   sev_ioctl+0x25f/0x490 ../drivers/crypto/ccp/sev-dev.c:2575
-   vfs_ioctl ../fs/ioctl.c:51 [inline]
-   __do_sys_ioctl ../fs/ioctl.c:597 [inline]
-   __se_sys_ioctl+0x11d/0x1b0 ../fs/ioctl.c:583
-   do_syscall_x64 ../arch/x86/entry/syscall_64.c:63 [inline]
-   do_syscall_64+0xe0/0x800 ../arch/x86/entry/syscall_64.c:94
-   entry_SYSCALL_64_after_hwframe+0x76/0x7e
-   </TASK>
-
-WARN if the driver says the command succeeded, but the firmware error code
-says otherwise, as __sev_do_cmd_locked() is expected to return -EIO on any
-firwmware error.
-
-Reported-by: Alexander Potapenko <glider@google.com>
-Reported-by: Sebastian Alba Vives <sebasjosue84@gmail.com>
-Fixes: d6112ea0cb34 ("crypto: ccp - introduce SEV_GET_ID2 command")
-Cc: stable@vger.kernel.org
-Signed-off-by: Sean Christopherson <seanjc@google.com>
-Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 96180dde23b79 ("drm/sun4i: backend: Add a custom atomic_check for the frontend")
+Signed-off-by: Ethan Tidmore <ethantidmore06@gmail.com>
+Reviewed-by: Chen-Yu Tsai <wens@kernel.org>
+Link: https://patch.msgid.link/20260217014801.60760-1-ethantidmore06@gmail.com
+Signed-off-by: Chen-Yu Tsai <wens@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/crypto/ccp/sev-dev.c |    3 +++
+ drivers/gpu/drm/sun4i/sun4i_backend.c | 3 +++
  1 file changed, 3 insertions(+)
 
---- a/drivers/crypto/ccp/sev-dev.c
-+++ b/drivers/crypto/ccp/sev-dev.c
-@@ -703,6 +703,9 @@ static int sev_ioctl_do_get_id2(struct s
- 		goto e_free;
- 	}
- 
-+	if (ret || WARN_ON_ONCE(argp->error))
-+		goto e_free;
+diff --git a/drivers/gpu/drm/sun4i/sun4i_backend.c b/drivers/gpu/drm/sun4i/sun4i_backend.c
+index 38070fc261f3a..d4fd621e33158 100644
+--- a/drivers/gpu/drm/sun4i/sun4i_backend.c
++++ b/drivers/gpu/drm/sun4i/sun4i_backend.c
+@@ -488,6 +488,9 @@ static int sun4i_backend_atomic_check(struct sunxi_engine *engine,
+ 	drm_for_each_plane_mask(plane, drm, crtc_state->plane_mask) {
+ 		struct drm_plane_state *plane_state =
+ 			drm_atomic_get_plane_state(state, plane);
++		if (IS_ERR(plane_state))
++			return PTR_ERR(plane_state);
 +
- 	if (id_blob) {
- 		if (copy_to_user(input_address, id_blob, data.len)) {
- 			ret = -EFAULT;
+ 		struct sun4i_layer_state *layer_state =
+ 			state_to_sun4i_layer_state(plane_state);
+ 		struct drm_framebuffer *fb = plane_state->fb;
+-- 
+2.53.0
+
 
 
 
