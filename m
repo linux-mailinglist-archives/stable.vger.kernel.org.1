@@ -1,59 +1,58 @@
-Return-Path: <stable+bounces-257553-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-258930-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 2HJvE3wdG2qV/QgAu9opvQ
-	(envelope-from <stable+bounces-257553-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:25:16 +0200
+	id 0GElIdctG2qU/wgAu9opvQ
+	(envelope-from <stable+bounces-258930-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:35:03 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id B43F660F98E
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:25:15 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2D029612055
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:35:03 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 15F303019838
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 17:16:23 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id D0D6230437E5
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 18:33:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BEDA2395AEA;
-	Sat, 30 May 2026 17:16:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 52EB721E098;
+	Sat, 30 May 2026 18:33:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KZkE1DnW"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="I7POEkOW"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 86CF7350A05;
-	Sat, 30 May 2026 17:16:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2D873329E79;
+	Sat, 30 May 2026 18:33:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780161382; cv=none; b=eGyO8+/qnV0vcnzSCsR+nPmewDY5bXv4t8OD3NhZ8sqCimjXs+lnSFMVGTlrbhNn92SpExoqdt1Cz26NFKRqggmcNuZ/ygfCWX6DVHw966bsDgyVSXsKhtYmBPUidOdRBsT7+/VfpVK2mQ/HdINgbBw1Oj6g47csG8xmhVr6/E4=
+	t=1780166022; cv=none; b=CDPfwlckWfuCa78f8vjfHtuXQYOIj4I2lDG3PrM3qOIBBt71PFKXkCJuYqXvagmYuDegzcOq07eD87+nU/9RbK0fkj0IXQJblvZYG9H6dVxkIb6ErnHwvdwO7bhW/d8gMmUgXq9ysc9Rm+nPgO39UsJUX3+uiitvDQt1g9D6gjU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780161382; c=relaxed/simple;
-	bh=CW9R31PE9c2XL7ZbFjKMhG19u93sbi97Gcz0KMWnIEY=;
+	s=arc-20240116; t=1780166022; c=relaxed/simple;
+	bh=Z3j6yxkNyMgiTuHNL+UUDMNaBZG3k4lUSa0+RIJEnNI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=C8/dvtFqNvr/nEBnka1fCXsTs7eQTF4GGY6WbFC1ZxZs31zx+pfBSvAS6MQc6o2QJql+IXlI53L9MTTP2BnjzBOAnOrA5rBBtnfl9z1Na7Xn3GpKC1BfhmfvBPzGE1L9H2rQmuWQdVqhdNCM02rMfvOS/auOTMRIieSt95iZhxc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KZkE1DnW; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9FD521F00893;
-	Sat, 30 May 2026 17:16:20 +0000 (UTC)
+	 MIME-Version; b=MwZJ6k0rm+X0CYewrhp9f510QbdZ6zk4WffMz7LFfXjyZGjJSMqTpvTRHF5Zo+BCXP61PcvSfSSdEHm0YOfYKzN1ImL67Y/virFjbkiF8cf6nB374f9chUtY69JYYv4JDnOcnWkMreBe78uvr7tywPzvDDzsFlhNaVR1qdIGuEo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=I7POEkOW; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 71C871F00893;
+	Sat, 30 May 2026 18:33:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780161381;
-	bh=EDBkhVrGWDiD9gK0oyHdReowacaDc/WEI1TMo0Atk1Q=;
+	s=korg; t=1780166021;
+	bh=qUaxRnxxVrkiQ+UIGrcLyKXwZUR5ogKm8cAQbcGOL2k=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=KZkE1DnWTrJ6NTWBQyy/FZTzaN4qjCyh4WKTwzskXPS5czMXmAaiU4jD8L3fdiCGs
-	 6b0Bt4ndJr+qNUFvsXaitsKFX8qrGS6+8x75/wMUnw7rFjo+8FCK0zELYQINV+F1My
-	 thvzm7bF8KfbpxdU0ZGRH4TO+ZYIG+pzpp+hjQKk=
+	b=I7POEkOWqWwOp+O+FYFSgVWaE6UHuaSosybqeZyaHakmX87BR54XKyJWcX3owYUIn
+	 qpKcal6HZP27+cKX1WRC8G0LACCkjc2x82j+TcoLv54kHJ58KtIOGjsj4XpI0XM+8U
+	 IIAFCjFBuQF8ZUtUGfCsTig+foCCvn3v14a+6kpI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Takahiro Kuwano <Takahiro.Kuwano@infineon.com>,
-	Tudor Ambarus <tudor.ambarus@linaro.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 608/969] mtd: spi-nor: spansion: Add support for Infineon S25FS256T
+	Michael Bommarito <michael.bommarito@gmail.com>,
+	Jan Kara <jack@suse.cz>
+Subject: [PATCH 5.10 251/589] isofs: validate Rock Ridge CE continuation extent against volume size
 Date: Sat, 30 May 2026 18:02:12 +0200
-Message-ID: <20260530160317.219749752@linuxfoundation.org>
+Message-ID: <20260530160231.583253754@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260530160300.485627683@linuxfoundation.org>
-References: <20260530160300.485627683@linuxfoundation.org>
+In-Reply-To: <20260530160224.570625122@linuxfoundation.org>
+References: <20260530160224.570625122@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,153 +63,102 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-257553-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
 	MIME_TRACE(0.00)[0:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	TO_DN_SOME(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	RCPT_COUNT_FIVE(0.00)[6];
+	TAGGED_FROM(0.00)[bounces-258930-lists,stable=lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,suse.cz];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	FROM_HAS_DN(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	NEURAL_HAM(-0.00)[-0.996];
 	TAGGED_RCPT(0.00)[stable];
 	MID_RHS_MATCH_FROM(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[5];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	FROM_HAS_DN(0.00)[]
-X-Rspamd-Queue-Id: B43F660F98E
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo]
+X-Rspamd-Queue-Id: 2D029612055
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Takahiro Kuwano <Takahiro.Kuwano@infineon.com>
+From: Michael Bommarito <michael.bommarito@gmail.com>
 
-[ Upstream commit 6afcc84080c415df81765c6d773edcba8fc30f6c ]
+commit a36d990f591320e9dd379ab30063ebfe91d47e1f upstream.
 
-Infineon S25FS256T is 256Mbit Quad SPI NOR flash. The key features and
-differences comparing to other Spansion/Cypress flash familes are:
-  - 4-byte address mode by factory default
-  - Quad mode is enabled by factory default
-  - OP_READ_FAST_4B(0Ch) is not supported
-  - Supports mixture of 128KB and 64KB sectors by OTP configuration
-    (this patch supports uniform 128KB only due to complexity of
-     non-uniform layout)
+rock_continue() reads rs->cont_extent verbatim from the Rock Ridge CE
+record and passes it to sb_bread() without checking that the block
+number is within the mounted ISO 9660 volume.  commit e595447e177b
+("[PATCH] rock.c: handle corrupted directories") added cont_offset
+and cont_size rejection for the CE continuation but did not validate
+the extent block number itself.  commit f54e18f1b831 ("isofs: Fix
+infinite looping over CE entries") later capped the CE chain length
+at RR_MAX_CE_ENTRIES = 32 but again left the block number unchecked.
 
-Tested on Xilinx Zynq-7000 FPGA board.
+With a crafted ISO mounted via udisks2 (desktop optical auto-mount)
+or via CAP_SYS_ADMIN mount, rs->cont_extent can therefore point at
+an out-of-range block or at blocks belonging to an adjacent
+filesystem on the same block device.  sb_bread() on an out-of-range
+block returns NULL cleanly via the block layer EIO path, so there
+is no memory-safety violation.  For in-range reads of adjacent-
+filesystem data, the CE buffer is parsed as Rock Ridge records and
+only the text of SL sub-records reaches userspace through
+readlink(), which makes the info-leak channel narrow and difficult
+to exploit; still, rejecting the malformed CE outright matches the
+rejection shape already present in the same function for
+cont_offset and cont_size.
 
-Link: https://www.infineon.com/dgdlac/Infineon-S25FS256T_256Mb_SEMPER_Nano_Flash_Quad_SPI_1.8V-DataSheet-v12_00-EN.pdf?fileId=8ac78c8c80027ecd0180740c5a46707a
-Signed-off-by: Takahiro Kuwano <Takahiro.Kuwano@infineon.com>
-Link: https://lore.kernel.org/r/097ef04484966593ba1326d0a99462753d7d1073.1677557525.git.Takahiro.Kuwano@infineon.com
-Signed-off-by: Tudor Ambarus <tudor.ambarus@linaro.org>
-Stable-dep-of: 3620d67b4849 ("mtd: spi-nor: update spi_nor_fixups::post_sfdp() documentation")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Add an ISOFS_SB(sb)->s_nzones bounds check to rock_continue() next
+to the existing offset/size rejection, printing the same
+corrupted-directory-entry notice.
+
+Fixes: f54e18f1b831 ("isofs: Fix infinite looping over CE entries")
+Cc: stable@vger.kernel.org
+Assisted-by: Claude:claude-opus-4-7
+Signed-off-by: Michael Bommarito <michael.bommarito@gmail.com>
+Link: https://patch.msgid.link/20260419212155.2169382-2-michael.bommarito@gmail.com
+Signed-off-by: Jan Kara <jack@suse.cz>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/mtd/spi-nor/spansion.c | 60 ++++++++++++++++++++++++++++++++++
- 1 file changed, 60 insertions(+)
+ fs/isofs/rock.c |    9 +++++++++
+ 1 file changed, 9 insertions(+)
 
-diff --git a/drivers/mtd/spi-nor/spansion.c b/drivers/mtd/spi-nor/spansion.c
-index 3ae59c7822039..5914a6074a11e 100644
---- a/drivers/mtd/spi-nor/spansion.c
-+++ b/drivers/mtd/spi-nor/spansion.c
-@@ -29,6 +29,7 @@
- 	 SPINOR_REG_CYPRESS_CFR5_OPI)
- #define SPINOR_REG_CYPRESS_CFR5V_OCT_DTR_DS	SPINOR_REG_CYPRESS_CFR5_BIT6
- #define SPINOR_OP_CYPRESS_RD_FAST		0xee
-+#define SPINOR_REG_CYPRESS_ARCFN		0x00000006
+--- a/fs/isofs/rock.c
++++ b/fs/isofs/rock.c
+@@ -101,6 +101,15 @@ static int rock_continue(struct rock_sta
+ 		goto out;
+ 	}
  
- /* Cypress SPI NOR flash operations. */
- #define CYPRESS_NOR_WR_ANY_REG_OP(naddr, addr, ndata, buf)		\
-@@ -229,6 +230,62 @@ static void cypress_nor_ecc_init(struct spi_nor *nor)
- 	nor->flags |= SNOR_F_ECC;
- }
++	if ((unsigned)rs->cont_extent >= ISOFS_SB(rs->inode->i_sb)->s_nzones) {
++		printk(KERN_NOTICE "rock: corrupted directory entry. "
++			"extent=%u out of volume (nzones=%lu)\n",
++			(unsigned)rs->cont_extent,
++			ISOFS_SB(rs->inode->i_sb)->s_nzones);
++		ret = -EIO;
++		goto out;
++	}
++
+ 	if (rs->cont_extent) {
+ 		struct buffer_head *bh;
  
-+static int
-+s25fs256t_post_bfpt_fixup(struct spi_nor *nor,
-+			  const struct sfdp_parameter_header *bfpt_header,
-+			  const struct sfdp_bfpt *bfpt)
-+{
-+	struct spi_mem_op op;
-+	int ret;
-+
-+	/* 4-byte address mode is enabled by default */
-+	nor->params->addr_nbytes = 4;
-+	nor->params->addr_mode_nbytes = 4;
-+
-+	/* Read Architecture Configuration Register (ARCFN) */
-+	op = (struct spi_mem_op)
-+		CYPRESS_NOR_RD_ANY_REG_OP(nor->params->addr_mode_nbytes,
-+					  SPINOR_REG_CYPRESS_ARCFN, 1,
-+					  nor->bouncebuf);
-+	ret = spi_nor_read_any_reg(nor, &op, nor->reg_proto);
-+	if (ret)
-+		return ret;
-+
-+	/* ARCFN value must be 0 if uniform sector is selected  */
-+	if (nor->bouncebuf[0])
-+		return -ENODEV;
-+
-+	return cypress_nor_set_page_size(nor);
-+}
-+
-+static void s25fs256t_post_sfdp_fixup(struct spi_nor *nor)
-+{
-+	struct spi_nor_flash_parameter *params = nor->params;
-+
-+	/* PP_1_1_4_4B is supported but missing in 4BAIT. */
-+	params->hwcaps.mask |= SNOR_HWCAPS_PP_1_1_4;
-+	spi_nor_set_pp_settings(&params->page_programs[SNOR_CMD_PP_1_1_4],
-+				SPINOR_OP_PP_1_1_4_4B,
-+				SNOR_PROTO_1_1_4);
-+}
-+
-+static void s25fs256t_late_init(struct spi_nor *nor)
-+{
-+	/*
-+	 * Programming is supported only in 16-byte ECC data unit granularity.
-+	 * Byte-programming, bit-walking, or multiple program operations to the
-+	 * same ECC data unit without an erase are not allowed. See chapter
-+	 * 5.3.1 and 5.6 in the datasheet.
-+	 */
-+	nor->params->writesize = 16;
-+}
-+
-+static struct spi_nor_fixups s25fs256t_fixups = {
-+	.post_bfpt = s25fs256t_post_bfpt_fixup,
-+	.post_sfdp = s25fs256t_post_sfdp_fixup,
-+	.late_init = s25fs256t_late_init,
-+};
-+
- static int
- s25hx_t_post_bfpt_fixup(struct spi_nor *nor,
- 			const struct sfdp_parameter_header *bfpt_header,
-@@ -454,6 +511,9 @@ static const struct flash_info spansion_nor_parts[] = {
- 	{ "s25fl256l",  INFO(0x016019,      0,  64 * 1024, 512)
- 		NO_SFDP_FLAGS(SECT_4K | SPI_NOR_DUAL_READ | SPI_NOR_QUAD_READ)
- 		FIXUP_FLAGS(SPI_NOR_4B_OPCODES) },
-+	{ "s25fs256t",  INFO6(0x342b19, 0x0f0890, 0, 0)
-+		PARSE_SFDP
-+		.fixups = &s25fs256t_fixups },
- 	{ "s25hl512t",  INFO6(0x342a1a, 0x0f0390, 256 * 1024, 256)
- 		PARSE_SFDP
- 		MFR_FLAGS(USE_CLSR)
--- 
-2.53.0
-
 
 
 
