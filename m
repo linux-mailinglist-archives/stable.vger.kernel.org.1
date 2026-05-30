@@ -1,58 +1,61 @@
-Return-Path: <stable+bounces-257261-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-258040-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id qMPhOScZG2pV/AgAu9opvQ
-	(envelope-from <stable+bounces-257261-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:06:47 +0200
+	id +P5BEtIhG2oN/ggAu9opvQ
+	(envelope-from <stable+bounces-258040-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:43:46 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4B07B60EE68
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:06:47 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id C11CA610401
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:43:45 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 47AE43073429
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 16:59:44 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 3375330041E2
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 17:43:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1458234BA42;
-	Sat, 30 May 2026 16:59:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4250C39478D;
+	Sat, 30 May 2026 17:43:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VNG7Y9KS"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yUmhrs1Z"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DC25632D42B;
-	Sat, 30 May 2026 16:59:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DB22633F8A4;
+	Sat, 30 May 2026 17:43:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780160381; cv=none; b=NGePF7XfBDTTyociERGzEHoU+Q4oW646M7/2GkV8BykWuuGSMjAZDx8cJv4uWqJ9DHu5RcNxHqESFWxNgn66ZTUCNzXDl3mYZApvAozfJ/ON52g7gE84G8gt2IInSVTItYnni+kE8WyCijdWIIbfgY3hiRQvReRnaaimA1ICNRU=
+	t=1780163024; cv=none; b=ajzFJMRSfqkvlpF5teBfuDE9TxI7rUCGiINB63DvhcERHSJnhBd6EB8sLbD3g01EHEJcnEOPrqQ8Bko6lgFAg1k3iYeSjTf5PCRbxB6qHlnMu+WgiuGvg/1oE+6V2HA3mwpZzHa07epJ+VFW2ga4P8atWCiLBJy1QbRxCEhD4Ts=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780160381; c=relaxed/simple;
-	bh=xDhOaPWH4ItygZIQ2ei1o4QjIllavad101dOJzvZAHo=;
+	s=arc-20240116; t=1780163024; c=relaxed/simple;
+	bh=DtaBQ+jq3CfEtLUMTpq3uAhsNEXvswR9FblcblP4lQc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=hAdavEUEkYUj3Ra6Fl2/EwH9A36CS/YVaBE9hWuGy4y8UPIzC3VyIUfhZtxf0yVSoRsAHh5RU43IqBnbtkUrIwYe48+VwxScyE0T6/KNC+vkTqxe9rdD/Is2tHYUPV+7E1e9iBCoeRBC/0+2Z9GBERw8sA4jmimdHAtsIsc+1Rg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VNG7Y9KS; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E65121F00893;
-	Sat, 30 May 2026 16:59:39 +0000 (UTC)
+	 MIME-Version; b=cHNu4QWsnkJGqQFaeqWxhlXYzg+LCV3Ogi+aLdhrYOAvrfBNetfjN3U3JRJlabibv/I0ifusUrCE/zpub1q9DyM2R9C2x5bmMV7G9c3VJ4gf3K0eHyNYlUw570r1U1oD98yPglA4uZLBF/0LnaoDEu+SSEJeSenLeqPBl9nySvA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yUmhrs1Z; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2AC021F00893;
+	Sat, 30 May 2026 17:43:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780160380;
-	bh=GTru09v5ZRFJ8/4czUbefH2PbGBuSbh6lobYP43P9CY=;
+	s=korg; t=1780163022;
+	bh=6wFVHg7GScDe74kh+0E3nTqrFLt+ca7xcOEQZhJCLTs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=VNG7Y9KSu7ztxk03VOoKCFjmI7o8ezDVCvCCDTCMVA9ku284hawsOn4LVi+U0qAsn
-	 LSvzKX7tBqvOAMq5dJRG+yqwZRoZFMnz1kxhEkVkx+766CAMVISlr+eIbn0LmEdznI
-	 ZnnKs8SSZKxIPiAwHykNWbiLYNMAGvL/JyKgMCEs=
+	b=yUmhrs1Z122bq5WK2uPRXu2W6E9ID9alOT4Lt1Lbs8INimagRrHQkgOUyeRH3m3RO
+	 3IGhadkwUp9nLadNySWCi1VR/h4IL0Z6b7NWcfO8kjtVRqrYbH3D6lzTInyslbWH79
+	 nhmjtQmbvBor6t+0x0Fd5CqvgRNSr2TibQ+2HJxQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Kai Zen <kai.aizen.dev@gmail.com>,
-	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 6.1 323/969] net: rtnetlink: zero ifla_vf_broadcast to avoid stack infoleak in rtnl_fill_vfinfo
+	Jan Kara <jack@suse.cz>,
+	Boris Burkov <boris@bur.io>,
+	Qu Wenruo <wqu@suse.com>,
+	David Sterba <dsterba@suse.com>,
+	Rahul Sharma <black.hawk@163.com>
+Subject: [PATCH 5.15 133/776] btrfs: do not strictly require dirty metadata threshold for metadata writepages
 Date: Sat, 30 May 2026 17:57:27 +0200
-Message-ID: <20260530160309.317345235@linuxfoundation.org>
+Message-ID: <20260530160243.840149570@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260530160300.485627683@linuxfoundation.org>
-References: <20260530160300.485627683@linuxfoundation.org>
+In-Reply-To: <20260530160240.228940103@linuxfoundation.org>
+References: <20260530160240.228940103@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,111 +66,202 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TO_DN_SOME(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-257261-lists,stable=lfdr.de];
-	MIME_TRACE(0.00)[0:+];
 	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,kernel.org];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[5];
-	NEURAL_HAM(-0.00)[-0.999];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,suse.cz,bur.io,suse.com,163.com];
+	TAGGED_FROM(0.00)[bounces-258040-lists,stable=lfdr.de];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[8];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	FROM_HAS_DN(0.00)[]
-X-Rspamd-Queue-Id: 4B07B60EE68
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[suse.com:email,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,bur.io:email]
+X-Rspamd-Queue-Id: C11CA610401
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kai Zen <kai.aizen.dev@gmail.com>
+From: Qu Wenruo <wqu@suse.com>
 
-commit 4b9e327991815e128ad3af75c3a04630a63ce3e0 upstream.
+[ Upstream commit 4e159150a9a56d66d247f4b5510bed46fe58aa1c ]
 
-rtnl_fill_vfinfo() declares struct ifla_vf_broadcast on the stack
-without initialisation:
+[BUG]
+There is an internal report that over 1000 processes are
+waiting at the io_schedule_timeout() of balance_dirty_pages(), causing
+a system hang and trigger a kernel coredump.
 
-	struct ifla_vf_broadcast vf_broadcast;
+The kernel is v6.4 kernel based, but the root problem still applies to
+any upstream kernel before v6.18.
 
-The struct contains a single fixed 32-byte field:
+[CAUSE]
+>From Jan Kara for his wisdom on the dirty page balance behavior first.
 
-	/* include/uapi/linux/if_link.h */
-	struct ifla_vf_broadcast {
-		__u8 broadcast[32];
-	};
+  This cgroup dirty limit was what was actually playing the role here
+  because the cgroup had only a small amount of memory and so the dirty
+  limit for it was something like 16MB.
 
-The function then copies dev->broadcast into it using dev->addr_len
-as the length:
+  Dirty throttling is responsible for enforcing that nobody can dirty
+  (significantly) more dirty memory than there's dirty limit. Thus when
+  a task is dirtying pages it periodically enters into balance_dirty_pages()
+  and we let it sleep there to slow down the dirtying.
 
-	memcpy(vf_broadcast.broadcast, dev->broadcast, dev->addr_len);
+  When the system is over dirty limit already (either globally or within
+  a cgroup of the running task), we will not let the task exit from
+  balance_dirty_pages() until the number of dirty pages drops below the
+  limit.
 
-On Ethernet devices (the overwhelming majority of SR-IOV NICs)
-dev->addr_len is 6, so only the first 6 bytes of broadcast[] are
-written. The remaining 26 bytes retain whatever was previously on
-the kernel stack. The full struct is then handed to userspace via:
+  So in this particular case, as I already mentioned, there was a cgroup
+  with relatively small amount of memory and as a result with dirty limit
+  set at 16MB. A task from that cgroup has dirtied about 28MB worth of
+  pages in btrfs btree inode and these were practically the only dirty
+  pages in that cgroup.
 
-	nla_put(skb, IFLA_VF_BROADCAST,
-		sizeof(vf_broadcast), &vf_broadcast)
+So that means the only way to reduce the dirty pages of that cgroup is
+to writeback the dirty pages of btrfs btree inode, and only after that
+those processes can exit balance_dirty_pages().
 
-leaking up to 26 bytes of uninitialised kernel stack per VF per
-RTM_GETLINK request, repeatable.
+Now back to the btrfs part, btree_writepages() is responsible for
+writing back dirty btree inode pages.
 
-The other vf_* structs in the same function are explicitly zeroed
-for exactly this reason - see the memset() calls for ivi,
-vf_vlan_info, node_guid and port_guid a few lines above.
-vf_broadcast was simply missed when it was added.
+The problem here is, there is a btrfs internal threshold that if the
+btree inode's dirty bytes are below the 32M threshold, it will not
+do any writeback.
 
-Reachability: any unprivileged local process can open AF_NETLINK /
-NETLINK_ROUTE without capabilities and send RTM_GETLINK with an
-IFLA_EXT_MASK attribute carrying RTEXT_FILTER_VF. The kernel walks
-each VF and emits IFLA_VF_BROADCAST, leaking 26 bytes of stack per
-VF per request. Stack residue at this call site can include return
-addresses and transient sensitive data; KASAN with stack
-instrumentation, or KMSAN, will flag the nla_put() when reproduced.
+This behavior is to batch as much metadata as possible so we won't write
+back those tree blocks and then later re-COW them again for another
+modification.
 
-Zero the on-stack struct before the partial memcpy, matching the
-existing pattern used for the other vf_* structs in the same
-function.
+This internal 32MiB is higher than the existing dirty page size (28MiB),
+meaning no writeback will happen, causing a deadlock between btrfs and
+cgroup:
 
-Fixes: 75345f888f70 ("ipoib: show VF broadcast address")
-Cc: stable@vger.kernel.org
-Signed-off-by: Kai Zen <kai.aizen.dev@gmail.com>
-Link: https://patch.msgid.link/3c506e8f936e52b57620269b55c348af05d413a2.1777557228.git.kai.aizen.dev@gmail.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+- Btrfs doesn't want to write back btree inode until more dirty pages
+
+- Cgroup/MM doesn't want more dirty pages for btrfs btree inode
+  Thus any process touching that btree inode is put into sleep until
+  the number of dirty pages is reduced.
+
+Thanks Jan Kara a lot for the analysis of the root cause.
+
+[ENHANCEMENT]
+Since kernel commit b55102826d7d ("btrfs: set AS_KERNEL_FILE on the
+btree_inode"), btrfs btree inode pages will only be charged to the root
+cgroup which should have a much larger limit than btrfs' 32MiB
+threshold.
+So it should not affect newer kernels.
+
+But for all current LTS kernels, they are all affected by this problem,
+and backporting the whole AS_KERNEL_FILE may not be a good idea.
+
+Even for newer kernels I still think it's a good idea to get
+rid of the internal threshold at btree_writepages(), since for most cases
+cgroup/MM has a better view of full system memory usage than btrfs' fixed
+threshold.
+
+For internal callers using btrfs_btree_balance_dirty() since that
+function is already doing internal threshold check, we don't need to
+bother them.
+
+But for external callers of btree_writepages(), just respect their
+requests and write back whatever they want, ignoring the internal
+btrfs threshold to avoid such deadlock on btree inode dirty page
+balancing.
+
+CC: stable@vger.kernel.org
+CC: Jan Kara <jack@suse.cz>
+Reviewed-by: Boris Burkov <boris@bur.io>
+Signed-off-by: Qu Wenruo <wqu@suse.com>
+Signed-off-by: David Sterba <dsterba@suse.com>
+[ The context change is due to the commit 41044b41ad2c
+("btrfs: add helper to get fs_info from struct inode pointer")
+in v6.9 and the commit c66f2afc7148
+("btrfs: remove pointless writepages callback wrapper")
+in v6.10 which are irrelevant to the logic of this patch. ]
+Signed-off-by: Rahul Sharma <black.hawk@163.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/core/rtnetlink.c |    1 +
- 1 file changed, 1 insertion(+)
+ fs/btrfs/disk-io.c   |   23 -----------------------
+ fs/btrfs/extent_io.c |    3 +--
+ fs/btrfs/extent_io.h |    3 +--
+ 3 files changed, 2 insertions(+), 27 deletions(-)
 
---- a/net/core/rtnetlink.c
-+++ b/net/core/rtnetlink.c
-@@ -1346,6 +1346,7 @@ static noinline_for_stack int rtnl_fill_
- 		port_guid.vf = ivi.vf;
+--- a/fs/btrfs/disk-io.c
++++ b/fs/btrfs/disk-io.c
+@@ -912,29 +912,6 @@ static int btree_migratepage(struct addr
+ }
+ #endif
  
- 	memcpy(vf_mac.mac, ivi.mac, sizeof(ivi.mac));
-+	memset(&vf_broadcast, 0, sizeof(vf_broadcast));
- 	memcpy(vf_broadcast.broadcast, dev->broadcast, dev->addr_len);
- 	vf_vlan.vlan = ivi.vlan;
- 	vf_vlan.qos = ivi.qos;
+-
+-static int btree_writepages(struct address_space *mapping,
+-			    struct writeback_control *wbc)
+-{
+-	struct btrfs_fs_info *fs_info;
+-	int ret;
+-
+-	if (wbc->sync_mode == WB_SYNC_NONE) {
+-
+-		if (wbc->for_kupdate)
+-			return 0;
+-
+-		fs_info = BTRFS_I(mapping->host)->root->fs_info;
+-		/* this is a bit racy, but that's ok */
+-		ret = __percpu_counter_compare(&fs_info->dirty_metadata_bytes,
+-					     BTRFS_DIRTY_METADATA_THRESH,
+-					     fs_info->dirty_metadata_batch);
+-		if (ret < 0)
+-			return 0;
+-	}
+-	return btree_write_cache_pages(mapping, wbc);
+-}
+-
+ static int btree_releasepage(struct page *page, gfp_t gfp_flags)
+ {
+ 	if (PageWriteback(page) || PageDirty(page))
+--- a/fs/btrfs/extent_io.c
++++ b/fs/btrfs/extent_io.c
+@@ -4792,8 +4792,7 @@ static int submit_eb_page(struct page *p
+ 	return 1;
+ }
+ 
+-int btree_write_cache_pages(struct address_space *mapping,
+-				   struct writeback_control *wbc)
++int btree_writepages(struct address_space *mapping, struct writeback_control *wbc)
+ {
+ 	struct extent_buffer *eb_context = NULL;
+ 	struct extent_page_data epd = {
+--- a/fs/btrfs/extent_io.h
++++ b/fs/btrfs/extent_io.h
+@@ -187,8 +187,7 @@ int extent_write_locked_range(struct ino
+ 			      int mode);
+ int extent_writepages(struct address_space *mapping,
+ 		      struct writeback_control *wbc);
+-int btree_write_cache_pages(struct address_space *mapping,
+-			    struct writeback_control *wbc);
++int btree_writepages(struct address_space *mapping, struct writeback_control *wbc);
+ void extent_readahead(struct readahead_control *rac);
+ int extent_fiemap(struct btrfs_inode *inode, struct fiemap_extent_info *fieinfo,
+ 		  u64 start, u64 len);
 
 
 
