@@ -1,59 +1,59 @@
-Return-Path: <stable+bounces-257573-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-258346-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 8AxJIzEcG2p3/QgAu9opvQ
-	(envelope-from <stable+bounces-257573-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:19:45 +0200
+	id 0FOBGf4lG2rO/QgAu9opvQ
+	(envelope-from <stable+bounces-258346-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:01:34 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 363B360F660
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:19:45 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 671AC610D54
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:01:33 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id D8FC6302B260
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 17:17:32 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 4320B30086B1
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 18:00:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7F3FD3A7848;
-	Sat, 30 May 2026 17:17:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1D45939A4A4;
+	Sat, 30 May 2026 18:00:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PxaG/oxn"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="d0cWptLD"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 69B2533FE15;
-	Sat, 30 May 2026 17:17:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D704D2FDC5E;
+	Sat, 30 May 2026 18:00:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780161451; cv=none; b=X9wNNagL14U698eUsFUatZdtkbdHgbFucmSQPgfvTOzMqscN7IkM+vqvGuCgZxWJ9pegVYkjuRMHM7PD59bW+j1/+ab+PWRxOz9ge1jM5Bzy6s72RjvA0IBgVoj/A5iFAf/6/s5et4y20TJsvHRxA6xYNdFpndx6dgSfI6zHbYA=
+	t=1780164043; cv=none; b=XWXiT2AQQNCWYOeKpWxNMq2Q9KmIRZ2KUlgpPEDZBKm8LOrym7ZRGE6b3LG1f91SamGch0pItAl8d13vBFyvcGB5vU8k+39Y7CwPikeQLjFStgNxk84v/sFZ75ZloFnbgS6S0FSsY/PePZp7rWZRLoU5r6aYzITu9Sjgyehf6J0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780161451; c=relaxed/simple;
-	bh=yM4K3vxgoYGL6nNj2Qr2JRENDurWUZ7GJFMANDs54e4=;
+	s=arc-20240116; t=1780164043; c=relaxed/simple;
+	bh=ggFCdyQlGgSVa0VP1dgkjNdxTW3h652nmGGRQr49fJM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=cgf4iyfJhrlI7C3p+8VWBGJEf21pav+FVeIz4kpGUDWowHncQ7CIHgqr8mvGh4mbIKiNnaE8amO5sQrkaXa4HTk7fMNsPDcw6WeVg/tRgkxqLKQ9NcnQpyy/8MoSFzMRhEzsVgDJep90CrgcvUqCPqQ3YkR/ScqKMYgjkfHoDX0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PxaG/oxn; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5DE8D1F00893;
-	Sat, 30 May 2026 17:17:29 +0000 (UTC)
+	 MIME-Version; b=NHO8Soigcsdt9UJlzzHqpxXEQpA5/EF1DYX6x00l4P6dKl9FEZz/lF/AZt8QZkUaATn89aBjGkwPh/LBgmlrA6/dqc5wJ7uNUvr0+e6h+xhmj1Q8afS3DXN7l7UzIsajsxKeMudwmhY0xr174K6CfWmAZve4425dH3aXYMgfjNM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=d0cWptLD; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D6E781F00893;
+	Sat, 30 May 2026 18:00:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780161450;
-	bh=nwQ2lLaQwQj6N2eROMFqnVvflmHWXfuYS10gqu35eoA=;
+	s=korg; t=1780164042;
+	bh=Z95tcb3JzVADBx0namca81kRYNW267PZWtPsKg1X/ko=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=PxaG/oxnvHlLYdWrYq4/K8IgcjM5OM40JRRxvRJEDmVj959rPXNsYsA6DPFfO3o5D
-	 J2QPvn9oqNx0yXfKZ6LNKKPlh1bQ2woLjFk4/ExTsZQxsUSGnNJkYvpEX7YXJd/DL0
-	 MP/xw1PxskZX/+9OJ8ra2wwuv2iIBZ1J+ZRveyZo=
+	b=d0cWptLDsGYgQ0ru1ZN6DfqZZJ9vtWbRMTIb+7NhN821jce0ACkriNzf+TXPU2U3P
+	 dIpDaq5NPW4368FS20heubG7U7vfDse+OIjPbqLBwh7h3IOMiXr68ZCECmaSaonIp6
+	 cvc+BfOl2ntPDbb91f15alEd1nYJSA6t4Tj2Z07k=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-	Linus Walleij <linusw@kernel.org>,
+	Ming-Hung Tsai <mtsai@redhat.com>,
+	Mikulas Patocka <mpatocka@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 627/969] pinctrl: cy8c95x0: Unify messages with help of dev_err_probe()
-Date: Sat, 30 May 2026 18:02:31 +0200
-Message-ID: <20260530160317.763766714@linuxfoundation.org>
+Subject: [PATCH 5.15 438/776] dm cache: fix dirty mapping checking in passthrough mode switching
+Date: Sat, 30 May 2026 18:02:32 +0200
+Message-ID: <20260530160251.744034652@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260530160300.485627683@linuxfoundation.org>
-References: <20260530160300.485627683@linuxfoundation.org>
+In-Reply-To: <20260530160240.228940103@linuxfoundation.org>
+References: <20260530160240.228940103@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,18 +69,18 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-257573-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-258346-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	TO_DN_SOME(0.00)[];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
 	RCPT_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
@@ -90,46 +90,157 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	FROM_HAS_DN(0.00)[]
-X-Rspamd-Queue-Id: 363B360F660
+X-Rspamd-Queue-Id: 671AC610D54
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+From: Ming-Hung Tsai <mtsai@redhat.com>
 
-[ Upstream commit 014884732095b982412d13d3220c3fe8483b9b3e ]
+[ Upstream commit 322586745bd1a0e5f3559fd1635fdeb4dbd1d6b8 ]
 
-Unify error messages that might appear during probe phase by
-switching to use dev_err_probe().
+As mentioned in commit 9b1cc9f251af ("dm cache: share cache-metadata
+object across inactive and active DM tables"), dm-cache assumed table
+reload occurs after suspension, while LVM's table preload breaks this
+assumption. The dirty mapping check for passthrough mode was designed
+around this assumption and is performed during table creation, causing
+the check to fail with preload while metadata updates are ongoing. This
+risks loading dirty mappings into passthrough mode, resulting in data
+loss.
 
-Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Signed-off-by: Linus Walleij <linusw@kernel.org>
-Stable-dep-of: 5ad32c3607cf ("pinctrl: cy8c95x0: Avoid returning positive values to user space")
+Reproduce steps:
+
+1. Create a writeback cache with zero migration_threshold to produce
+   dirty mappings
+
+dmsetup create cmeta --table "0 8192 linear /dev/sdc 0"
+dmsetup create cdata --table "0 131072 linear /dev/sdc 8192"
+dmsetup create corig --table "0 262144 linear /dev/sdc 262144"
+dd if=/dev/zero of=/dev/mapper/cmeta bs=4k count=1 oflag=direct
+dmsetup create cache --table "0 262144 cache /dev/mapper/cmeta \
+/dev/mapper/cdata /dev/mapper/corig 128 2 metadata2 writeback smq \
+2 migration_threshold 0"
+
+2. Preload a table in passthrough mode
+
+dmsetup reload cache --table "0 262144 cache /dev/mapper/cmeta \
+/dev/mapper/cdata /dev/mapper/corig 128 2 metadata2 passthrough smq 0"
+
+3. Write to the first cache block to make it dirty
+
+fio --filename=/dev/mapper/cache --name=populate --rw=write --bs=4k \
+--direct=1 --size=64k
+
+4. Resume the inactive table. Now it's possible to load the dirty block
+   into passthrough mode.
+
+dmsetup resume cache
+
+Fix by moving the checks to the preresume phase to support table
+preloading. Also remove the unused function dm_cache_metadata_all_clean.
+
+Fixes: 2ee57d587357 ("dm cache: add passthrough mode")
+Signed-off-by: Ming-Hung Tsai <mtsai@redhat.com>
+Signed-off-by: Mikulas Patocka <mpatocka@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/pinctrl/pinctrl-cy8c95x0.c | 6 ++----
- 1 file changed, 2 insertions(+), 4 deletions(-)
+ drivers/md/dm-cache-metadata.c | 11 -----------
+ drivers/md/dm-cache-metadata.h |  5 -----
+ drivers/md/dm-cache-target.c   | 25 ++++++++-----------------
+ 3 files changed, 8 insertions(+), 33 deletions(-)
 
-diff --git a/drivers/pinctrl/pinctrl-cy8c95x0.c b/drivers/pinctrl/pinctrl-cy8c95x0.c
-index c60886d804ce0..01f3c74f3dfa4 100644
---- a/drivers/pinctrl/pinctrl-cy8c95x0.c
-+++ b/drivers/pinctrl/pinctrl-cy8c95x0.c
-@@ -1215,10 +1215,8 @@ static int cy8c95x0_irq_setup(struct cy8c95x0_pinctrl *chip, int irq)
+diff --git a/drivers/md/dm-cache-metadata.c b/drivers/md/dm-cache-metadata.c
+index 0f6f74e3030f7..61808d888dc45 100644
+--- a/drivers/md/dm-cache-metadata.c
++++ b/drivers/md/dm-cache-metadata.c
+@@ -1749,17 +1749,6 @@ int dm_cache_write_hints(struct dm_cache_metadata *cmd, struct dm_cache_policy *
+ 	return r;
+ }
  
- 	/* Read IRQ status register to clear all pending interrupts */
- 	ret = cy8c95x0_irq_pending(chip, pending_irqs);
--	if (ret) {
--		dev_err(chip->dev, "failed to clear irq status register\n");
--		return ret;
+-int dm_cache_metadata_all_clean(struct dm_cache_metadata *cmd, bool *result)
+-{
+-	int r;
+-
+-	READ_LOCK(cmd);
+-	r = blocks_are_unmapped_or_clean(cmd, 0, cmd->cache_blocks, result);
+-	READ_UNLOCK(cmd);
+-
+-	return r;
+-}
+-
+ void dm_cache_metadata_set_read_only(struct dm_cache_metadata *cmd)
+ {
+ 	WRITE_LOCK_VOID(cmd);
+diff --git a/drivers/md/dm-cache-metadata.h b/drivers/md/dm-cache-metadata.h
+index 179ed5bf81a3e..79747130a48f7 100644
+--- a/drivers/md/dm-cache-metadata.h
++++ b/drivers/md/dm-cache-metadata.h
+@@ -137,11 +137,6 @@ void dm_cache_dump(struct dm_cache_metadata *cmd);
+  */
+ int dm_cache_write_hints(struct dm_cache_metadata *cmd, struct dm_cache_policy *p);
+ 
+-/*
+- * Query method.  Are all the blocks in the cache clean?
+- */
+-int dm_cache_metadata_all_clean(struct dm_cache_metadata *cmd, bool *result);
+-
+ int dm_cache_metadata_needs_check(struct dm_cache_metadata *cmd, bool *result);
+ int dm_cache_metadata_set_needs_check(struct dm_cache_metadata *cmd);
+ void dm_cache_metadata_set_read_only(struct dm_cache_metadata *cmd);
+diff --git a/drivers/md/dm-cache-target.c b/drivers/md/dm-cache-target.c
+index 238d2bea41d8d..37c8740d6d996 100644
+--- a/drivers/md/dm-cache-target.c
++++ b/drivers/md/dm-cache-target.c
+@@ -2470,23 +2470,8 @@ static int cache_create(struct cache_args *ca, struct cache **result)
+ 		goto bad;
+ 	}
+ 
+-	if (passthrough_mode(cache)) {
+-		bool all_clean;
+-
+-		r = dm_cache_metadata_all_clean(cache->cmd, &all_clean);
+-		if (r) {
+-			*error = "dm_cache_metadata_all_clean() failed";
+-			goto bad;
+-		}
+-
+-		if (!all_clean) {
+-			*error = "Cannot enter passthrough mode unless all blocks are clean";
+-			r = -EINVAL;
+-			goto bad;
+-		}
+-
++	if (passthrough_mode(cache))
+ 		policy_allow_migrations(cache->policy, false);
 -	}
-+	if (ret)
-+		return dev_err_probe(dev, ret, "failed to clear irq status register\n");
  
- 	/* Mask all interrupts */
- 	bitmap_fill(chip->irq_mask, MAX_LINE);
+ 	spin_lock_init(&cache->lock);
+ 	bio_list_init(&cache->deferred_bios);
+@@ -2812,6 +2797,12 @@ static int load_mapping(void *context, dm_oblock_t oblock, dm_cblock_t cblock,
+ 	struct cache *cache = context;
+ 
+ 	if (dirty) {
++		if (passthrough_mode(cache)) {
++			DMERR("%s: cannot enter passthrough mode unless all blocks are clean",
++			      cache_device_name(cache));
++			return -EBUSY;
++		}
++
+ 		set_bit(from_cblock(cblock), cache->dirty_bitset);
+ 		atomic_inc(&cache->nr_dirty);
+ 	} else
+@@ -3045,7 +3036,7 @@ static int cache_preresume(struct dm_target *ti)
+ 					   load_filtered_mapping, cache);
+ 		if (r) {
+ 			DMERR("%s: could not load cache mappings", cache_device_name(cache));
+-			if (r != -EFBIG)
++			if (r != -EFBIG && r != -EBUSY)
+ 				metadata_operation_failed(cache, "dm_cache_load_mappings", r);
+ 			return r;
+ 		}
 -- 
 2.53.0
 
