@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-257374-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-257376-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id UPPYLkwbG2oq/QgAu9opvQ
-	(envelope-from <stable+bounces-257374-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:15:56 +0200
+	id mGyLHzobG2oq/QgAu9opvQ
+	(envelope-from <stable+bounces-257376-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:15:38 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 222EA60F42C
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:15:55 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E74DF60F3F5
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:15:37 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id EBDD830F3403
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 17:06:17 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id D48B931063F3
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 17:06:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2374E34BA42;
-	Sat, 30 May 2026 17:06:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 344FF35200B;
+	Sat, 30 May 2026 17:06:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mn+iuyjM"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vRJbRmG7"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 020B0481DD;
-	Sat, 30 May 2026 17:06:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0B92D32D42B;
+	Sat, 30 May 2026 17:06:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780160776; cv=none; b=RRhLGX60JFrZ7Ekht5toDbsYMk8CwjOWw867gQdxcELKn2BZH2PffHQ7oh/W0D/+cngWlNHbmMvrHOTz4Ow4W6X/5ww0NXzAId+yTOLFnMLvbZf3eE3s1U1C1DEAykER4hojkAUslxdrENxr9SGcft9Ut8GdGzTvBpDR8Wc9T50=
+	t=1780160784; cv=none; b=HwBphC+m0fK6lX+X8cNgZ9HSWvh8QDKnQhifY/Ac6mzkSTNSn8Px8gwDV0ehE+oSmqwiN2ELYMvEIYkEWZfD9U5N+lTjjnpNiWRjMBtjARK3eMcWPfHm+AEoiHKausf7jZnEZM12CKjK8RvNYA/+NCrqW8unKrCNDsZ3OT5s0vo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780160776; c=relaxed/simple;
-	bh=5uAjR2NEvfnFoJNKZzL4eQxI4bR7Zq9a5wdWdYRN81I=;
+	s=arc-20240116; t=1780160784; c=relaxed/simple;
+	bh=sHn//o/Af7yyXB7632soR4LUoT7iSOidJpy3DSd9t44=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=g52YHqfZYWZZmVK0BYiVIF0HdfY5TY+jzQbiPSWPKqZ0jyTTc23Pm9uFYU/lE4b7zha0sw5y0Bn/kojbn8HMT7oBjNsOY4aALTAWUDL7GaWrxRc2pOEem6fYUAy6JxkuzFT9szgkdga04Uc8uhVsVbjqD7WW7y2cZNY9bGdrpIM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mn+iuyjM; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4677C1F00893;
-	Sat, 30 May 2026 17:06:15 +0000 (UTC)
+	 MIME-Version; b=odTVsXSyEfdxWkJKNMK1opPgr1HZNGZ0zoomB0Zi9977Yme+7lsZQbqz5weo8hs70796rAtvHQztoQ/re+RlWsbExyoK0C7PB6Tl/Q+4L9qswRlu5GNq3npAGhvF5aO1HlDT/pv/vhEWbpVLuT+fUKZ5rLy2L1QmerI/ji1egBY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vRJbRmG7; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 509911F00893;
+	Sat, 30 May 2026 17:06:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780160775;
-	bh=/XbOxj25JCFzjPD5ECNZt/I1ePP+wVEfgRGno9rIAdY=;
+	s=korg; t=1780160782;
+	bh=I0MYLkPFwMetaMaiCO6D0ggkdsiwxauFmbFw8fBfHyg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=mn+iuyjMGl0iy9pqvYcWEQrpj5GaQujPZ483ddXTq41AXSd3ucDo4AJBG1pqhuzgZ
-	 nvIZDiLFhc2i2PIvw9KdaeYZVNGTspxuZ+7NBV9jLve9fIn8bghXn3q/YMidYWjqKu
-	 Zz7JasKZRnUfwWHjo1MQOy/WWdW6AuHhwACII6hw=
+	b=vRJbRmG7h/5U4XvPt0ECIDNmwZHjaNuIXR6aAKBsLMrvHBfc9Q0rnskPvj5VoAqML
+	 Y+g2P5xsHHZYZFoUTk2+jGiv2NFcMw2QPBLPAzfhN/E3jqRpJ1zf/lO8RQe7wmwgAn
+	 ovRcnm4hC6yAlyXGW/jWA++FyVGn2U8Np98iVHnU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mingzhe Zou <mingzhe.zou@easystack.cn>,
-	Coly Li <colyli@fnnas.com>,
-	Jens Axboe <axboe@kernel.dk>
-Subject: [PATCH 6.1 431/969] bcache: fix uninitialized closure object
-Date: Sat, 30 May 2026 17:59:15 +0200
-Message-ID: <20260530160312.161639627@linuxfoundation.org>
+	Yi Zhang <yi.zhang@redhat.com>,
+	Ming Lei <ming.lei@redhat.com>,
+	Christoph Hellwig <hch@lst.de>,
+	Jens Axboe <axboe@kernel.dk>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 432/969] blk-cgroup: wait for blkcg cleanup before initializing new disk
+Date: Sat, 30 May 2026 17:59:16 +0200
+Message-ID: <20260530160312.189504414@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
 In-Reply-To: <20260530160300.485627683@linuxfoundation.org>
 References: <20260530160300.485627683@linuxfoundation.org>
@@ -66,31 +68,31 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_MISSING_CHARSET(0.50)[];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-257374-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-257376-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
-	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TO_DN_SOME(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	RCPT_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[stable];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[8];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[]
-X-Rspamd-Queue-Id: 222EA60F42C
+X-Rspamd-Queue-Id: E74DF60F3F5
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
@@ -98,43 +100,76 @@ X-Rspamd-Server: lfdr
 
 ------------------
 
-From: Mingzhe Zou <mingzhe.zou@easystack.cn>
+From: Ming Lei <ming.lei@redhat.com>
 
-commit 20a8e451ec1c7e99060b1bbaaad03ce88c39ddb8 upstream.
+[ Upstream commit 3dbaacf6ab68f81e3375fe769a2ecdbd3ce386fd ]
 
-In the previous patch ("bcache: fix cached_dev.sb_bio use-after-free and
-crash"), we adopted a simple modification suggestion from AI to fix the
-use-after-free.
+When a queue is shared across disk rebind (e.g., SCSI unbind/bind), the
+previous disk's blkcg state is cleaned up asynchronously via
+disk_release() -> blkcg_exit_disk(). If the new disk's blkcg_init_disk()
+runs before that cleanup finishes, we may overwrite q->root_blkg while
+the old one is still alive, and radix_tree_insert() in blkg_create()
+fails with -EEXIST because the old blkg entries still occupy the same
+queue id slot in blkcg->blkg_tree. This causes the sd probe to fail
+with -ENOMEM.
 
-But in actual testing, we found an extreme case where the device is
-stopped before calling bch_write_bdev_super().
+Fix it by waiting in blkcg_init_disk() for root_blkg to become NULL,
+which indicates the previous disk's blkcg cleanup has completed.
 
-At this point, struct closure sb_write has not been initialized yet.
-For this patch, we ensure that sb_bio has been completed via
-sb_write_mutex.
-
-Signed-off-by: Mingzhe Zou <mingzhe.zou@easystack.cn>
-Signed-off-by: Coly Li <colyli@fnnas.com>
-Link: https://patch.msgid.link/20260403042135.2221247-1-colyli@fnnas.com
-Fixes: fec114a98b87 ("bcache: fix cached_dev.sb_bio use-after-free and crash")
+Fixes: 1059699f87eb ("block: move blkcg initialization/destroy into disk allocation/release handler")
+Cc: Yi Zhang <yi.zhang@redhat.com>
+Signed-off-by: Ming Lei <ming.lei@redhat.com>
+Reviewed-by: Christoph Hellwig <hch@lst.de>
+Link: https://patch.msgid.link/20260311032837.2368714-1-ming.lei@redhat.com
 Signed-off-by: Jens Axboe <axboe@kernel.dk>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/md/bcache/super.c |    3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ block/blk-cgroup.c | 15 +++++++++++++++
+ 1 file changed, 15 insertions(+)
 
---- a/drivers/md/bcache/super.c
-+++ b/drivers/md/bcache/super.c
-@@ -1373,7 +1373,8 @@ static void cached_dev_free(struct closu
- 	 * The sb_bio is embedded in struct cached_dev, so we must
- 	 * ensure no I/O is in progress.
- 	 */
--	closure_sync(&dc->sb_write);
-+	down(&dc->sb_write_mutex);
-+	up(&dc->sb_write_mutex);
+diff --git a/block/blk-cgroup.c b/block/blk-cgroup.c
+index f314192b6de84..9b081dfba9007 100644
+--- a/block/blk-cgroup.c
++++ b/block/blk-cgroup.c
+@@ -24,6 +24,7 @@
+ #include <linux/backing-dev.h>
+ #include <linux/slab.h>
+ #include <linux/delay.h>
++#include <linux/wait_bit.h>
+ #include <linux/atomic.h>
+ #include <linux/ctype.h>
+ #include <linux/resume_user_mode.h>
+@@ -509,6 +510,8 @@ static void blkg_destroy_all(struct gendisk *disk)
  
- 	if (dc->sb_disk)
- 		put_page(virt_to_page(dc->sb_disk));
+ 	q->root_blkg = NULL;
+ 	spin_unlock_irq(&q->queue_lock);
++
++	wake_up_var(&q->root_blkg);
+ }
+ 
+ static int blkcg_reset_stats(struct cgroup_subsys_state *css,
+@@ -1259,6 +1262,18 @@ int blkcg_init_disk(struct gendisk *disk)
+ 
+ 	INIT_LIST_HEAD(&q->blkg_list);
+ 
++	/*
++	 * If the queue is shared across disk rebind (e.g., SCSI), the
++	 * previous disk's blkcg state is cleaned up asynchronously via
++	 * disk_release() -> blkcg_exit_disk(). Wait for that cleanup to
++	 * finish (indicated by root_blkg becoming NULL) before setting up
++	 * new blkcg state. Otherwise, we may overwrite q->root_blkg while
++	 * the old one is still alive, and radix_tree_insert() in
++	 * blkg_create() will fail with -EEXIST because the old entries
++	 * still occupy the same queue id slot in blkcg->blkg_tree.
++	 */
++	wait_var_event(&q->root_blkg, !READ_ONCE(q->root_blkg));
++
+ 	new_blkg = blkg_alloc(&blkcg_root, disk, GFP_KERNEL);
+ 	if (!new_blkg)
+ 		return -ENOMEM;
+-- 
+2.53.0
+
 
 
 
