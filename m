@@ -1,66 +1,62 @@
-Return-Path: <stable+bounces-258989-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-258383-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id SMZ7OVcuG2qU/wgAu9opvQ
-	(envelope-from <stable+bounces-258989-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:37:11 +0200
+	id 2HEqIvMmG2qS/ggAu9opvQ
+	(envelope-from <stable+bounces-258383-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:05:39 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1B53E6121BF
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:37:11 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 09084610F68
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:05:38 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 710193008D37
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 18:37:04 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 2CD04305D117
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 18:02:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9BDC039A7FE;
-	Sat, 30 May 2026 18:37:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C69C939478D;
+	Sat, 30 May 2026 18:02:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pZovPycl"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RzHLVig7"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5F09933E36A;
-	Sat, 30 May 2026 18:37:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A142B3AC0FA;
+	Sat, 30 May 2026 18:02:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780166222; cv=none; b=ZpH4JpEjx+ibGrAQyN4E3ARRtcHN0R3P0tcIlkQgsR4yvJltOhAn/DnKVIy7PeayzsOiYXy1M/pDiT+xecr0jgHdOFDOB3z8zyyOmmLlWz2BkgVOxvkD3Wl72BDFdSy0UlZIHH6F2XA0LhYxZCmRgLks0h9+3u+xRjaEAMj3blM=
+	t=1780164169; cv=none; b=L5/JZE2S6dXdPFgn0XWVcLb5wvA2dXiPOVILFYup6EEEHWkO2TxyT5WAu6q0NgVEG8ZAvqjd0hmMmA2c5bbX3j+XfLCv7GEkbadjI/a5sr4A4kmHC8F+yDU4gSvkSJxie/BETHOkANOpyQL2g3aOUE5zIGtqLd/L1mv/Dt/8CvI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780166222; c=relaxed/simple;
-	bh=8pyl6TTw/507P8GidiHnfP7c5dcRE8Gv0AfHjyzoPPI=;
+	s=arc-20240116; t=1780164169; c=relaxed/simple;
+	bh=xqzDzd2Df4a3gtjEaK0mihS5lTwHyO139RMfJvq4Ogo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=HBcIzuxiUCvIV73+WtDqt5YJwKyX/DU0yii4jHVOh/NkyuGGOqt+jMJhosdMZnwTy6FAHGkKBo1kMgIEI8CDu3yb3AojXoy343V15z/oBBQ58gBV6j1z54h3HHuQFnM+xj7GHoMSojlgetwQQOoflKmAPNHawbt1Ss6S7J1p6tU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pZovPycl; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6D63A1F00898;
-	Sat, 30 May 2026 18:37:00 +0000 (UTC)
+	 MIME-Version; b=hqwow3MlEvo8gFIzRe56gu7NpBxtVDPsmBhraOEcj1jWpK8rbspKxMelJ3ZfOqHlCrI8K+PXFg9W5lpWE0e/TMwgf0Ytz4MR+zekmxjleyEB00JX0T0Y+up209SnQZwy3VTrPNncYQyBxPKImLOKQJOniaehDTiiCKWO0vXFgQ0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RzHLVig7; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E7DF41F00898;
+	Sat, 30 May 2026 18:02:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780166221;
-	bh=HrjVyo9XIm45mzCT+kcIWHQttqvfkOLvG2Cy+OzZ3YI=;
+	s=korg; t=1780164168;
+	bh=LTIdvtBIj7q8oLs5g1J5tGPYNPiKZEXW7jg2z+lzWRw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=pZovPyclAyJc3EY1zRK/X4MBU7AKnUDTJ5Qww00gF5dYENTJ59ibfDiFU7jO9Qcs7
-	 7sWHlaiFNB+2DoVaat61gBEx8D+/5spQh8AXSBOY3bel3P3b1+PkOl9YHIzxB+znls
-	 VI+o5ZRFYvm7jIp3PZt/rLTmye5HQdB7S6HpPG6k=
+	b=RzHLVig7t8sTISchc0WHJMiDTuJZzeu2Fv5RPA7MRB+yDKlCnQyGDKESm7SEgbSVq
+	 9g/3dK51VCUHmBbFjdK6MYlYLN+UkNz4OQiUZDfO2b6UHgCQTL00K9hxjmmkOJX6a8
+	 b/OpXUXi6xRRZXpoutYs1v44DqZYFYdEwVNxlhAo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Jiri Slaby (SUSE)" <jirislaby@kernel.org>,
-	Andreas Koensgen <ajk@comnets.uni-bremen.de>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	linux-hams@vger.kernel.org,
-	netdev@vger.kernel.org,
-	Jeremy Kerr <jk@codeconstruct.com.au>,
+	Vidya Sagar <vidyas@nvidia.com>,
+	Manikanta Maddireddy <mmaddireddy@nvidia.com>,
+	Manivannan Sadhasivam <mani@kernel.org>,
+	Bjorn Helgaas <bhelgaas@google.com>,
+	Jon Hunter <jonathanh@nvidia.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 308/589] 6pack: propagage new tty types
+Subject: [PATCH 5.15 475/776] PCI: tegra194: Disable direct speed change for Endpoint mode
 Date: Sat, 30 May 2026 18:03:09 +0200
-Message-ID: <20260530160233.047547197@linuxfoundation.org>
+Message-ID: <20260530160252.619863301@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260530160224.570625122@linuxfoundation.org>
-References: <20260530160224.570625122@linuxfoundation.org>
+In-Reply-To: <20260530160240.228940103@linuxfoundation.org>
+References: <20260530160240.228940103@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -75,165 +71,81 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-258383-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-258989-lists,stable=lfdr.de];
-	RCPT_COUNT_TWELVE(0.00)[13];
-	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-0.996];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable];
-	TO_DN_SOME(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,davemloft.net:email,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim]
-X-Rspamd-Queue-Id: 1B53E6121BF
+	TO_DN_SOME(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	NEURAL_HAM(-0.00)[-0.996];
+	RCPT_COUNT_SEVEN(0.00)[9];
+	MID_RHS_MATCH_FROM(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim,msgid.link:url]
+X-Rspamd-Queue-Id: 09084610F68
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jiri Slaby (SUSE) <jirislaby@kernel.org>
+From: Vidya Sagar <vidyas@nvidia.com>
 
-[ Upstream commit 1241b384efa53f4b7a95fe2b34d69359bb3ae1b5 ]
+[ Upstream commit 976f6763f57970388bcd7118931f33f447916927 ]
 
-In tty, u8 is now used for data, ssize_t for sizes (with possible
-negative error codes). Propagate these types to 6pack.
+Pre-silicon simulation showed the controller operating in Endpoint mode
+initiating link speed change after completing Secondary Bus Reset. Ideally,
+the Root Port or the Switch Downstream Port should initiate the link speed
+change post SBR, not the Endpoint.
 
-Signed-off-by: Jiri Slaby (SUSE) <jirislaby@kernel.org>
-Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: Andreas Koensgen <ajk@comnets.uni-bremen.de>
-Cc: David S. Miller <davem@davemloft.net>
-Cc: Eric Dumazet <edumazet@google.com>
-Cc: Jakub Kicinski <kuba@kernel.org>
-Cc: Paolo Abeni <pabeni@redhat.com>
-Cc: linux-hams@vger.kernel.org
-Cc: netdev@vger.kernel.org
-Reviewed-by: Jeremy Kerr <jk@codeconstruct.com.au>
-Link: https://lore.kernel.org/r/20240808103549.429349-12-jirislaby@kernel.org
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Stable-dep-of: bf9a38803b26 ("net: hamradio: 6pack: fix uninit-value in sixpack_receive_buf")
+So, as per the hardware team recommendation, disable direct speed change
+for the Endpoint mode to prevent it from initiating speed change after the
+physical layer link is up at Gen1, leaving speed change ownership with the
+host.
+
+Fixes: c57247f940e8 ("PCI: tegra: Add support for PCIe endpoint mode in Tegra194")
+Signed-off-by: Vidya Sagar <vidyas@nvidia.com>
+Signed-off-by: Manikanta Maddireddy <mmaddireddy@nvidia.com>
+[mani: commit log]
+Signed-off-by: Manivannan Sadhasivam <mani@kernel.org>
+Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
+Tested-by: Jon Hunter <jonathanh@nvidia.com>
+Reviewed-by: Jon Hunter <jonathanh@nvidia.com>
+Reviewed-by: Vidya Sagar <vidyas@nvidia.com>
+Link: https://patch.msgid.link/20260324190755.1094879-8-mmaddireddy@nvidia.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/hamradio/6pack.c | 32 ++++++++++++++++----------------
- 1 file changed, 16 insertions(+), 16 deletions(-)
+ drivers/pci/controller/dwc/pcie-tegra194.c | 4 ++++
+ 1 file changed, 4 insertions(+)
 
-diff --git a/drivers/net/hamradio/6pack.c b/drivers/net/hamradio/6pack.c
-index 83dc1c2c3b84b..1964ccbb62c6f 100644
---- a/drivers/net/hamradio/6pack.c
-+++ b/drivers/net/hamradio/6pack.c
-@@ -94,8 +94,8 @@ struct sixpack {
- 	unsigned char		*xhead;         /* next byte to XMIT */
- 	int			xleft;          /* bytes left in XMIT queue  */
+diff --git a/drivers/pci/controller/dwc/pcie-tegra194.c b/drivers/pci/controller/dwc/pcie-tegra194.c
+index d5f48aa6bf5a2..3fd89a983f6d2 100644
+--- a/drivers/pci/controller/dwc/pcie-tegra194.c
++++ b/drivers/pci/controller/dwc/pcie-tegra194.c
+@@ -1774,6 +1774,10 @@ static void pex_ep_event_pex_rst_deassert(struct tegra_pcie_dw *pcie)
  
--	unsigned char		raw_buf[4];
--	unsigned char		cooked_buf[400];
-+	u8			raw_buf[4];
-+	u8			cooked_buf[400];
+ 	reset_control_deassert(pcie->core_rst);
  
- 	unsigned int		rx_count;
- 	unsigned int		rx_count_cooked;
-@@ -112,8 +112,8 @@ struct sixpack {
- 	unsigned char		slottime;
- 	unsigned char		duplex;
- 	unsigned char		led_state;
--	unsigned char		status;
--	unsigned char		status1;
-+	u8			status;
-+	u8			status1;
- 	unsigned char		status2;
- 	unsigned char		tx_enable;
- 	unsigned char		tnc_state;
-@@ -127,7 +127,7 @@ struct sixpack {
- 
- #define AX25_6PACK_HEADER_LEN 0
- 
--static void sixpack_decode(struct sixpack *, const unsigned char[], int);
-+static void sixpack_decode(struct sixpack *, const u8 *, size_t);
- static int encode_sixpack(unsigned char *, unsigned char *, int, unsigned char);
- 
- /*
-@@ -337,7 +337,7 @@ static void sp_bump(struct sixpack *sp, char cmd)
- {
- 	struct sk_buff *skb;
- 	int count;
--	unsigned char *ptr;
-+	u8 *ptr;
- 
- 	count = sp->rcount + 1;
- 
-@@ -435,7 +435,7 @@ static void sixpack_receive_buf(struct tty_struct *tty,
- 	const unsigned char *cp, char *fp, int count)
- {
- 	struct sixpack *sp;
--	int count1;
-+	size_t count1;
- 
- 	if (!count)
- 		return;
-@@ -830,9 +830,9 @@ static int encode_sixpack(unsigned char *tx_buf, unsigned char *tx_buf_raw,
- 
- /* decode 4 sixpack-encoded bytes into 3 data bytes */
- 
--static void decode_data(struct sixpack *sp, unsigned char inbyte)
-+static void decode_data(struct sixpack *sp, u8 inbyte)
- {
--	unsigned char *buf;
-+	u8 *buf;
- 
- 	if (sp->rx_count != 3) {
- 		sp->raw_buf[sp->rx_count++] = inbyte;
-@@ -858,9 +858,9 @@ static void decode_data(struct sixpack *sp, unsigned char inbyte)
- 
- /* identify and execute a 6pack priority command byte */
- 
--static void decode_prio_command(struct sixpack *sp, unsigned char cmd)
-+static void decode_prio_command(struct sixpack *sp, u8 cmd)
- {
--	int actual;
-+	ssize_t actual;
- 
- 	if ((cmd & SIXP_PRIO_DATA_MASK) != 0) {     /* idle ? */
- 
-@@ -908,9 +908,9 @@ static void decode_prio_command(struct sixpack *sp, unsigned char cmd)
- 
- /* identify and execute a standard 6pack command byte */
- 
--static void decode_std_command(struct sixpack *sp, unsigned char cmd)
-+static void decode_std_command(struct sixpack *sp, u8 cmd)
- {
--	unsigned char checksum = 0, rest = 0;
-+	u8 checksum = 0, rest = 0;
- 	short i;
- 
- 	switch (cmd & SIXP_CMD_MASK) {     /* normal command */
-@@ -956,10 +956,10 @@ static void decode_std_command(struct sixpack *sp, unsigned char cmd)
- /* decode a 6pack packet */
- 
- static void
--sixpack_decode(struct sixpack *sp, const unsigned char *pre_rbuff, int count)
-+sixpack_decode(struct sixpack *sp, const u8 *pre_rbuff, size_t count)
- {
--	unsigned char inbyte;
--	int count1;
-+	size_t count1;
-+	u8 inbyte;
- 
- 	for (count1 = 0; count1 < count; count1++) {
- 		inbyte = pre_rbuff[count1];
++	val = dw_pcie_readl_dbi(pci, PCIE_LINK_WIDTH_SPEED_CONTROL);
++	val &= ~PORT_LOGIC_SPEED_CHANGE;
++	dw_pcie_writel_dbi(pci, PCIE_LINK_WIDTH_SPEED_CONTROL, val);
++
+ 	if (pcie->update_fc_fixup) {
+ 		val = dw_pcie_readl_dbi(pci, CFG_TIMER_CTRL_MAX_FUNC_NUM_OFF);
+ 		val |= 0x1 << CFG_TIMER_CTRL_ACK_NAK_SHIFT;
 -- 
 2.53.0
 
