@@ -1,59 +1,56 @@
-Return-Path: <stable+bounces-256996-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-256999-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id yCOHHusRG2qC+wgAu9opvQ
-	(envelope-from <stable+bounces-256996-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 18:35:55 +0200
+	id YJc/HvQRG2qC+wgAu9opvQ
+	(envelope-from <stable+bounces-256999-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 18:36:04 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id D0AA060E49A
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 18:35:54 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id BFE4260E4A8
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 18:36:03 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id C48CB30BF893
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 16:28:56 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id B7BBF3005D2B
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 16:29:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E8606346A04;
-	Sat, 30 May 2026 16:28:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4BE70341AC7;
+	Sat, 30 May 2026 16:29:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hzdxIpM/"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rm/JxTx/"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C60442F25E4;
-	Sat, 30 May 2026 16:28:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 334042F25E4;
+	Sat, 30 May 2026 16:29:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780158534; cv=none; b=cIBLM50nCRBB1AVufW7OCdQUu4jp6OMDri8qgNgOGNkschuBo0AeCgT+k7dAcPYRHE1qo3qx7o5s+lEejgZbQkCEa+8hnf7qcq/fP+bz0ITvvO3fCRPA8x8/+dguXeD11NMzEdxVwm9LG/oLe1VABB29oMKDcx7TBgCFiv1izBw=
+	t=1780158575; cv=none; b=aTKegS/buTMqCkBQFubX3rVlz24YweRsqe58yTyEiVCSF+TV6O3C4uIia6b4o6dvG0b+rqTvvmAnyD2gu6nT/OwPcC7uMT1iAkV3j/D/BHADUWW4lz5fzUMcFYxpHzf06zg2uUs6orD7CKbAXb3G2x93TdTGqdL+COoV0ZfjXKc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780158534; c=relaxed/simple;
-	bh=Y5xeR9pkaxxWlA7LIOrnFhjxnFRln7ZFCGSgxxDnHOg=;
+	s=arc-20240116; t=1780158575; c=relaxed/simple;
+	bh=ErBUAvBNMpFhdFMszEwgqVJXRt/CHqEkybEW1dfQBEk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=r1AvIOmXBWCnPiNtgKRohioqOKaEW21o0GVFdb6XaADrxe83ySMWDPOfVxTFBJ6P5i7qduqurcvBqZ7ywd9Blt6oabIYDM7OmQM57c8KFrFsbXdnajOYM4OZHAZsgZRMVVhCztqWPP56GW7hE629yAwOUyZKbyHouWjAVKKNPy4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hzdxIpM/; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6C9B51F00893;
-	Sat, 30 May 2026 16:28:50 +0000 (UTC)
+	 MIME-Version; b=bj8xWh4MV1m0OdfxVkdyPEqxO6pa46PEYW4nKAzDI2on1i3FS8AOM1U+twZPnoSCU/MYtbwwkYC9B3+nL/9HI0zwPcAFxXrc0XM0iaq88UN/R1xviKs7/0/Gf/WGr/7UUTjUosO2FXVsjukWyFoAMCYM3mLOUWeCqzKtDOrjqA0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rm/JxTx/; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4EA1E1F00893;
+	Sat, 30 May 2026 16:29:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780158533;
-	bh=2cO3aSB2tsLttjns6TZ0tPlZzkaAkrllnq0cjCESYDg=;
+	s=korg; t=1780158573;
+	bh=07CYtraxm6jvclQbM2CiZRHMhea+JRkRR2MSiRn+zvI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=hzdxIpM/ZClmRvEG4qB9j5q/nzpO7ZKtePxYyfGHs8KYh0lsm74JnqkEw94JSlRYO
-	 sFUxIMZXVH7Pc9E/h8cYS1Abej12pGnPFo8R18HxFgCv7/fWsBlA58Tjkq28aElnxQ
-	 NB7fnQ/LdoidMD/5FjpmtUfItsaQuBCFhHxZoEWg=
+	b=rm/JxTx/b8yuWrHzsv91/REVUNC5h/Hemes67u2QztOUG1dq34cpx7F5HJavnR1mQ
+	 csdlDc+30Ccw9zn00ueqW0lF/uYWoDS1SgePGWuOAOYOB1liiNLNx0eaGuq3bpX47v
+	 hoBA60n4LY73HILbScaqB6x3HDc1+VBGnwO+ArXw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+d8c285748fa7292580a9@syzkaller.appspotmail.com,
-	Eric Dumazet <edumazet@google.com>,
-	Martin Schiller <ms@dev.tdt.de>,
-	Simon Horman <horms@kernel.org>,
+	Yiqi Sun <sunyiqixm@gmail.com>,
 	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 034/969] net: lapbether: handle NETDEV_PRE_TYPE_CHANGE
-Date: Sat, 30 May 2026 17:52:38 +0200
-Message-ID: <20260530160301.370731534@linuxfoundation.org>
+Subject: [PATCH 6.1 035/969] ipv4: icmp: fix null-ptr-deref in icmp_build_probe()
+Date: Sat, 30 May 2026 17:52:39 +0200
+Message-ID: <20260530160301.398177204@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
 In-Reply-To: <20260530160300.485627683@linuxfoundation.org>
 References: <20260530160300.485627683@linuxfoundation.org>
@@ -67,35 +64,35 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	TAGGED_FROM(0.00)[bounces-256999-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,kernel.org];
 	RCVD_COUNT_THREE(0.00)[4];
-	TAGGED_FROM(0.00)[bounces-256996-lists,stable=lfdr.de];
-	FROM_HAS_DN(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	TO_DN_SOME(0.00)[];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[9];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	TAGGED_RCPT(0.00)[stable];
+	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable,d8c285748fa7292580a9];
-	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,appspotmail.com:email,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,msgid.link:url,tdt.de:email]
-X-Rspamd-Queue-Id: D0AA060E49A
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,msgid.link:url,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
+X-Rspamd-Queue-Id: BFE4260E4A8
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
@@ -103,75 +100,48 @@ X-Rspamd-Server: lfdr
 
 ------------------
 
-From: Eric Dumazet <edumazet@google.com>
+From: Yiqi Sun <sunyiqixm@gmail.com>
 
-[ Upstream commit b120e4432f9f56c7103133d6a11245e617695adb ]
+[ Upstream commit fde29fd9349327acc50d19a0b5f3d5a6c964dfd8 ]
 
-lapbeth_data_transmit() expects the underlying device type
-to be ARPHRD_ETHER.
+ipv6_stub->ipv6_dev_find() may return ERR_PTR(-EAFNOSUPPORT) when the
+IPv6 stack is not active (CONFIG_IPV6=m and not loaded), and passing
+this error pointer to dev_hold() will cause a kernel crash with
+null-ptr-deref.
 
-Returning NOTIFY_BAD from lapbeth_device_event() makes sure
-bonding driver can not break this expectation.
+Instead, silently discard the request. RFC 8335 does not appear to
+define a specific response for the case where an IPv6 interface
+identifier is syntactically valid but the implementation cannot perform
+the lookup at runtime, and silently dropping the request may safer than
+misreporting "No Such Interface".
 
-Fixes: 872254dd6b1f ("net/bonding: Enable bonding to enslave non ARPHRD_ETHER")
-Reported-by: syzbot+d8c285748fa7292580a9@syzkaller.appspotmail.com
-Closes: https://lore.kernel.org/netdev/69cd22a1.050a0220.70c3a.0002.GAE@google.com/T/#u
-Signed-off-by: Eric Dumazet <edumazet@google.com>
-Cc: Martin Schiller <ms@dev.tdt.de>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Link: https://patch.msgid.link/20260402103519.1201565-1-edumazet@google.com
+Fixes: d329ea5bd884 ("icmp: add response to RFC 8335 PROBE messages")
+Signed-off-by: Yiqi Sun <sunyiqixm@gmail.com>
+Link: https://patch.msgid.link/20260402070419.2291578-1-sunyiqixm@gmail.com
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wan/lapbether.c | 13 ++++++++-----
- 1 file changed, 8 insertions(+), 5 deletions(-)
+ net/ipv4/icmp.c | 7 +++++++
+ 1 file changed, 7 insertions(+)
 
-diff --git a/drivers/net/wan/lapbether.c b/drivers/net/wan/lapbether.c
-index 56326f38fe8a3..da61716a66c46 100644
---- a/drivers/net/wan/lapbether.c
-+++ b/drivers/net/wan/lapbether.c
-@@ -444,33 +444,36 @@ static void lapbeth_free_device(struct lapbethdev *lapbeth)
- static int lapbeth_device_event(struct notifier_block *this,
- 				unsigned long event, void *ptr)
- {
--	struct lapbethdev *lapbeth;
- 	struct net_device *dev = netdev_notifier_info_to_dev(ptr);
-+	struct lapbethdev *lapbeth;
- 
- 	if (dev_net(dev) != &init_net)
- 		return NOTIFY_DONE;
- 
--	if (!dev_is_ethdev(dev) && !lapbeth_get_x25_dev(dev))
-+	lapbeth = lapbeth_get_x25_dev(dev);
-+	if (!dev_is_ethdev(dev) && !lapbeth)
- 		return NOTIFY_DONE;
- 
- 	switch (event) {
- 	case NETDEV_UP:
- 		/* New ethernet device -> new LAPB interface	 */
--		if (!lapbeth_get_x25_dev(dev))
-+		if (!lapbeth)
- 			lapbeth_new_device(dev);
- 		break;
- 	case NETDEV_GOING_DOWN:
- 		/* ethernet device closes -> close LAPB interface */
--		lapbeth = lapbeth_get_x25_dev(dev);
- 		if (lapbeth)
- 			dev_close(lapbeth->axdev);
- 		break;
- 	case NETDEV_UNREGISTER:
- 		/* ethernet device disappears -> remove LAPB interface */
--		lapbeth = lapbeth_get_x25_dev(dev);
- 		if (lapbeth)
- 			lapbeth_free_device(lapbeth);
- 		break;
-+	case NETDEV_PRE_TYPE_CHANGE:
-+		/* Our underlying device type must not change. */
-+		if (lapbeth)
-+			return NOTIFY_BAD;
- 	}
- 
- 	return NOTIFY_DONE;
+diff --git a/net/ipv4/icmp.c b/net/ipv4/icmp.c
+index 309d22f2858cc..7a6e4853cf98d 100644
+--- a/net/ipv4/icmp.c
++++ b/net/ipv4/icmp.c
+@@ -1130,6 +1130,13 @@ bool icmp_build_probe(struct sk_buff *skb, struct icmphdr *icmphdr)
+ 			if (iio->ident.addr.ctype3_hdr.addrlen != sizeof(struct in6_addr))
+ 				goto send_mal_query;
+ 			dev = ipv6_stub->ipv6_dev_find(net, &iio->ident.addr.ip_addr.ipv6_addr, dev);
++			/*
++			 * If IPv6 identifier lookup is unavailable, silently
++			 * discard the request instead of misreporting NO_IF.
++			 */
++			if (IS_ERR(dev))
++				return false;
++
+ 			dev_hold(dev);
+ 			break;
+ #endif
 -- 
 2.53.0
 
