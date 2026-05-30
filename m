@@ -1,60 +1,59 @@
-Return-Path: <stable+bounces-258753-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-258149-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id aBBrNccrG2ow/wgAu9opvQ
-	(envelope-from <stable+bounces-258753-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:26:15 +0200
+	id yAWeG0QlG2pm/ggAu9opvQ
+	(envelope-from <stable+bounces-258149-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:58:28 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 502BD611B9F
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:26:15 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id B32FB610BAF
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:58:27 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 7D905309714F
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 18:23:44 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 2D4E530E37BD
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 17:49:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 26BA9219303;
-	Sat, 30 May 2026 18:23:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E7E82320CAD;
+	Sat, 30 May 2026 17:49:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XuP64twt"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TctVfBL/"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BF6042773DE;
-	Sat, 30 May 2026 18:23:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B6A21349CCF;
+	Sat, 30 May 2026 17:49:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780165423; cv=none; b=c8Yyg5TQjwV1IpGJkJ92DtjzyVL3dlEz965EEYA6s3shQ8pUy4lZXz3YccmGHaFIhWvOGDiFmI8kASMe6lQlBn0wB163ebMkRHDD74td3LZbXEC9bTS0NBkUd+8jljgfxPpYarQUcE7/yI6hPgt82e/LnRUbbqff+2Ib+oqOXLA=
+	t=1780163380; cv=none; b=qFP5p8jtJMCG6oEW/DVpRkraN4rl/vFBWls61c0iUHZeW9wT8ZkxTrpAsZMLGE/E741hfap3GDyrri12Ro2iHhC4rfhI2WSoXOGkxsp/FuqtVukM7yicE6tnXOxzzMAvNIpwwpd59hWReJ/9zGlo/yvVzFf/rdx1J2DQ9T8DJ3U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780165423; c=relaxed/simple;
-	bh=lIpIODMYYaCUs5WbXYbV2+Lnyo/qzHLnyCZ8YcDMC6o=;
+	s=arc-20240116; t=1780163380; c=relaxed/simple;
+	bh=rO598c8ZtJVx2zIQ2l/qDSXdsXaAvd6bqXYdIxoJtso=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=bn7jujmkWl46gi9NpCBZ1MoGE2oEgCBcD/ylSWEQ6mgrPnT9pacQM6EIkEchP2GdNRAhbuXt2sICne8v0xeao1dOv+xlJOWOPI9KfdZKZphEnbZU6t/hfXxTWgt8uEl1kMVbOzuHNB16974mlCJX1lmSCfrSw3I0i2EbwMPzbYo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XuP64twt; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0F4981F00893;
-	Sat, 30 May 2026 18:23:41 +0000 (UTC)
+	 MIME-Version; b=gh9LhFOkp87ypJsPVlVPESrrCfVoR4hdBRtmCx+GIdWtojEkhO8PhkAsezy6e6ry8Anuu3E9Iu/zn1IQtdOXNg27S/ZwHbYGbfUJKFOnkqwcG1hN2OEalGlVSLoUWWVuIROyKB8sFXY7bcK0NTkTnavbbCV/gz3YSXRk7fRFDhY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TctVfBL/; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C31CB1F00893;
+	Sat, 30 May 2026 17:49:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780165422;
-	bh=TAfJCWb2Atlg2b6jR9hYARba8RJ53EQyyvA5K0GcagI=;
+	s=korg; t=1780163379;
+	bh=f6IWJivzao6wNUUwmYxzvXs7IJ1AQbHwHhYtNBnaI0w=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=XuP64twtNgX6jxOraomITgmOMYpNr/ekR9fXZTr+bHSJM5+OuToA4v6bUpRQ59T36
-	 ZR5Lu67BcV1hdrvcrit4hJXY0vNEhAL041a83uzUeztmAvSL+e22neJKs/vM2QPFug
-	 lUVZM1SiaAkV9qQ3IqLa4Gb1C+yBEH6rDXzXC03Q=
+	b=TctVfBL/1KE6zVvIkjgdTwcDIWpoI8pWYKbVmZBvTx6HUzgR5R4vcdjZWwjrWHEtO
+	 CVRfEu2b1gYFWUTGfY+IzH5L6vll/7O3EaI+GbK48KfymYZiRkVKPYIIU3eii9LfvX
+	 hlnruaE71+mQItae+usRrWNvij9XtgTjpRil5WFg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yashu Zhang <zhangjiaji1@huawei.com>,
-	Tom Lendacky <thomas.lendacky@gmail.com>,
-	Rick Edgecombe <rick.p.edgecombe@intel.com>,
-	Sean Christopherson <seanjc@google.com>
-Subject: [PATCH 5.10 074/589] KVM: x86: Use scratch field in MMIO fragment to hold small write values
+	Ben Hutchings <ben@decadent.org.uk>,
+	Jens Axboe <axboe@kernel.dk>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 241/776] io_uring/poll: fix backport of io_poll_add() changes
 Date: Sat, 30 May 2026 17:59:15 +0200
-Message-ID: <20260530160226.550556638@linuxfoundation.org>
+Message-ID: <20260530160246.759511121@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260530160224.570625122@linuxfoundation.org>
-References: <20260530160224.570625122@linuxfoundation.org>
+In-Reply-To: <20260530160240.228940103@linuxfoundation.org>
+References: <20260530160240.228940103@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,195 +64,103 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	TAGGED_FROM(0.00)[bounces-258753-lists,stable=lfdr.de];
-	FROM_HAS_DN(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,huawei.com,gmail.com,intel.com,google.com];
-	MIME_TRACE(0.00)[0:+];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[7];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-258149-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	TO_DN_SOME(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,msgid.link:url,qemu.org:url,intel.com:email,huawei.com:email,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim]
-X-Rspamd-Queue-Id: 502BD611B9F
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,kernel.dk:email,decadent.org.uk:email,linuxfoundation.org:mid,linuxfoundation.org:dkim]
+X-Rspamd-Queue-Id: B32FB610BAF
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sean Christopherson <seanjc@google.com>
+From: Jens Axboe <axboe@kernel.dk>
 
-commit 0b16e69d17d8c35c5c9d5918bf596c75a44655d3 upstream.
+The 5.15/5.10 backport of 84230ad2d2af had a few issues, due to the
+older poll base. Notably return value handling __io_arm_poll_handler()
+and in return __io_poll_add() as well. Fix them up.
 
-When exiting to userspace to service an emulated MMIO write, copy the
-to-be-written value to a scratch field in the MMIO fragment if the size
-of the data payload is 8 bytes or less, i.e. can fit in a single chunk,
-instead of pointing the fragment directly at the source value.
-
-This fixes a class of use-after-free bugs that occur when the emulator
-initiates a write using an on-stack, local variable as the source, the
-write splits a page boundary, *and* both pages are MMIO pages.  Because
-KVM's ABI only allows for physically contiguous MMIO requests, accesses
-that split MMIO pages are separated into two fragments, and are sent to
-userspace one at a time.  When KVM attempts to complete userspace MMIO in
-response to KVM_RUN after the first fragment, KVM will detect the second
-fragment and generate a second userspace exit, and reference the on-stack
-variable.
-
-The issue is most visible if the second KVM_RUN is performed by a separate
-task, in which case the stack of the initiating task can show up as truly
-freed data.
-
-  ==================================================================
-  BUG: KASAN: use-after-free in complete_emulated_mmio+0x305/0x420
-  Read of size 1 at addr ffff888009c378d1 by task syz-executor417/984
-
-  CPU: 1 PID: 984 Comm: syz-executor417 Not tainted 5.10.0-182.0.0.95.h2627.eulerosv2r13.x86_64 #3
-  Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS rel-1.15.0-0-g2dd4b9b3f840-prebuilt.qemu.org 04/01/2014 Call Trace:
-  dump_stack+0xbe/0xfd
-  print_address_description.constprop.0+0x19/0x170
-  __kasan_report.cold+0x6c/0x84
-  kasan_report+0x3a/0x50
-  check_memory_region+0xfd/0x1f0
-  memcpy+0x20/0x60
-  complete_emulated_mmio+0x305/0x420
-  kvm_arch_vcpu_ioctl_run+0x63f/0x6d0
-  kvm_vcpu_ioctl+0x413/0xb20
-  __se_sys_ioctl+0x111/0x160
-  do_syscall_64+0x30/0x40
-  entry_SYSCALL_64_after_hwframe+0x67/0xd1
-  RIP: 0033:0x42477d
-  Code: <48> 3d 01 f0 ff ff 73 01 c3 48 c7 c1 b0 ff ff ff f7 d8 64 89 01 48
-  RSP: 002b:00007faa8e6890e8 EFLAGS: 00000246 ORIG_RAX: 0000000000000010
-  RAX: ffffffffffffffda RBX: 00000000004d7338 RCX: 000000000042477d
-  RDX: 0000000000000000 RSI: 000000000000ae80 RDI: 0000000000000005
-  RBP: 00000000004d7330 R08: 00007fff28d546df R09: 0000000000000000
-  R10: 0000000000000000 R11: 0000000000000246 R12: 00000000004d733c
-  R13: 0000000000000000 R14: 000000000040a200 R15: 00007fff28d54720
-
-  The buggy address belongs to the page:
-  page:0000000029f6a428 refcount:0 mapcount:0 mapping:0000000000000000 index:0x0 pfn:0x9c37
-  flags: 0xfffffc0000000(node=0|zone=1|lastcpupid=0x1fffff)
-  raw: 000fffffc0000000 0000000000000000 ffffea0000270dc8 0000000000000000
-  raw: 0000000000000000 0000000000000000 00000000ffffffff 0000000000000000 page dumped because: kasan: bad access detected
-
-  Memory state around the buggy address:
-  ffff888009c37780: ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff
-  ffff888009c37800: ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff
-  >ffff888009c37880: ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff
-                                                   ^
-  ffff888009c37900: ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff
-  ffff888009c37980: ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff
-  ==================================================================
-
-The bug can also be reproduced with a targeted KVM-Unit-Test by hacking
-KVM to fill a large on-stack variable in complete_emulated_mmio(), i.e. by
-overwrite the data value with garbage.
-
-Limit the use of the scratch fields to 8-byte or smaller accesses, and to
-just writes, as larger accesses and reads are not affected thanks to
-implementation details in the emulator, but add a sanity check to ensure
-those details don't change in the future.  Specifically, KVM never uses
-on-stack variables for accesses larger that 8 bytes, e.g. uses an operand
-in the emulator context, and *all* reads are buffered through the mem_read
-cache.
-
-Note!  Using the scratch field for reads is not only unnecessary, it's
-also extremely difficult to handle correctly.  As above, KVM buffers all
-reads through the mem_read cache, and heavily relies on that behavior when
-re-emulating the instruction after a userspace MMIO read exit.  If a read
-splits a page, the first page is NOT an MMIO page, and the second page IS
-an MMIO page, then the MMIO fragment needs to point at _just_ the second
-chunk of the destination, i.e. its position in the mem_read cache.  Taking
-the "obvious" approach of copying the fragment value into the destination
-when re-emulating the instruction would clobber the first chunk of the
-destination, i.e. would clobber the data that was read from guest memory.
-
-Fixes: f78146b0f923 ("KVM: Fix page-crossing MMIO")
-Suggested-by: Yashu Zhang <zhangjiaji1@huawei.com>
-Reported-by: Yashu Zhang <zhangjiaji1@huawei.com>
-Closes: https://lore.kernel.org/all/369eaaa2b3c1425c85e8477066391bc7@huawei.com
-Cc: stable@vger.kernel.org
-Tested-by: Tom Lendacky <thomas.lendacky@gmail.com>
-Tested-by: Rick Edgecombe <rick.p.edgecombe@intel.com>
-Link: https://patch.msgid.link/20260225012049.920665-2-seanjc@google.com
-Signed-off-by: Sean Christopherson <seanjc@google.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Reported-by: Ben Hutchings <ben@decadent.org.uk>
+Fixes: 349ef5d2e7bf ("io_uring/poll: correctly handle io_poll_add() return value on update")
+Signed-off-by: Jens Axboe <axboe@kernel.dk>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/x86/kvm/x86.c       |   14 +++++++++++++-
- include/linux/kvm_host.h |    3 ++-
- 2 files changed, 15 insertions(+), 2 deletions(-)
+ io_uring/io_uring.c | 16 ++++++----------
+ 1 file changed, 6 insertions(+), 10 deletions(-)
 
---- a/arch/x86/kvm/x86.c
-+++ b/arch/x86/kvm/x86.c
-@@ -6489,7 +6489,13 @@ static int emulator_read_write_onepage(u
- 	WARN_ON(vcpu->mmio_nr_fragments >= KVM_MAX_MMIO_FRAGMENTS);
- 	frag = &vcpu->mmio_fragments[vcpu->mmio_nr_fragments++];
- 	frag->gpa = gpa;
--	frag->data = val;
-+	if (write && bytes <= 8u) {
-+		frag->val = 0;
-+		frag->data = &frag->val;
-+		memcpy(&frag->val, val, bytes);
-+	} else {
-+		frag->data = val;
-+	}
- 	frag->len = bytes;
- 	return X86EMUL_CONTINUE;
+diff --git a/io_uring/io_uring.c b/io_uring/io_uring.c
+index 4f1dda7d68c22..cb54ebda0a8a7 100644
+--- a/io_uring/io_uring.c
++++ b/io_uring/io_uring.c
+@@ -6144,26 +6144,22 @@ static int __io_poll_add(struct io_kiocb *req, unsigned int issue_flags)
+ 	if (!ret && ipt.error)
+ 		req_set_fail(req);
+ 	ret = ret ?: ipt.error;
+-	if (ret > 0) {
++	if (ret)
+ 		__io_req_complete(req, issue_flags, ret, 0);
+-		return ret;
+-	}
+-	return 0;
++	return ret;
  }
-@@ -6504,6 +6510,9 @@ static int emulator_read_write(struct x8
- 	gpa_t gpa;
- 	int rc;
  
-+	if (WARN_ON_ONCE((bytes > 8u || !ops->write) && object_is_on_stack(val)))
-+		return X86EMUL_UNHANDLEABLE;
-+
- 	if (ops->read_write_prepare &&
- 		  ops->read_write_prepare(vcpu, val, bytes))
- 		return X86EMUL_CONTINUE;
-@@ -9554,6 +9563,9 @@ static int complete_emulated_mmio(struct
- 		frag++;
- 		vcpu->mmio_cur_fragment++;
- 	} else {
-+		if (WARN_ON_ONCE(frag->data == &frag->val))
-+			return -EIO;
-+
- 		/* Go forward to the next mmio piece. */
- 		frag->data += len;
- 		frag->gpa += len;
---- a/include/linux/kvm_host.h
-+++ b/include/linux/kvm_host.h
-@@ -257,7 +257,8 @@ static inline bool kvm_vcpu_mapped(struc
- struct kvm_mmio_fragment {
- 	gpa_t gpa;
- 	void *data;
--	unsigned len;
-+	u64 val;
-+	unsigned int len;
- };
+ static int io_poll_add(struct io_kiocb *req, unsigned int issue_flags)
+ {
+-	int ret;
+-
+-	ret = __io_poll_add(req, issue_flags);
+-	return ret < 0 ? ret : 0;
++	__io_poll_add(req, issue_flags);
++	return 0;
+ }
  
- struct kvm_vcpu {
+ static int io_poll_update(struct io_kiocb *req, unsigned int issue_flags)
+ {
+ 	struct io_ring_ctx *ctx = req->ctx;
+ 	struct io_kiocb *preq;
+-	int ret2, ret = 0;
++	int ret2 = -ECANCELED, ret = 0;
+ 
+ 	io_ring_submit_lock(ctx, !(issue_flags & IO_URING_F_NONBLOCK));
+ 
+@@ -6194,7 +6190,7 @@ static int io_poll_update(struct io_kiocb *req, unsigned int issue_flags)
+ 		preq->result = ret2;
+ 
+ 	}
+-	if (preq->result < 0)
++	if (ret2 < 0)
+ 		req_set_fail(preq);
+ 	io_req_complete(preq, preq->result);
+ out:
+-- 
+2.53.0
+
 
 
 
