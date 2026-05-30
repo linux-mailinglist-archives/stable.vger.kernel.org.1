@@ -1,59 +1,62 @@
-Return-Path: <stable+bounces-257187-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-257965-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 6LysNVYYG2pV/AgAu9opvQ
-	(envelope-from <stable+bounces-257187-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:03:18 +0200
+	id MJVkJqgiG2rO/QgAu9opvQ
+	(envelope-from <stable+bounces-257965-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:47:20 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 27A2760ECE7
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:03:18 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2308F610622
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:47:19 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 0960B308B21D
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 16:55:15 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 3DF4C305DB58
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 17:39:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7CB983403F3;
-	Sat, 30 May 2026 16:55:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 889F43469FC;
+	Sat, 30 May 2026 17:39:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CEmZfSy4"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="olN1UDjd"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 55F7732D42B;
-	Sat, 30 May 2026 16:55:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 662C534A3C4;
+	Sat, 30 May 2026 17:39:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780160114; cv=none; b=cVkJwwI5pQSVwx/U04no7yq7AL2INZIHds2fM14zPGvCFY6ub4UxcSmG2kATZuZMrR7BgRqvaA72rjvd5aW0oWkSdC2o6juDnXK+867Zj0kNNpgKkoQ9P3FpRInvrwlOhl6t9uBRKonlalDDr2glSYJ5v5DZvwtDWuJBRRN9WCw=
+	t=1780162772; cv=none; b=bQAVU7noKeTLYie5rnMVNkEbyDDGOewHEldaRxMQDPOFVbTBMB4MJoAuGUuX6UT0oKM914pUPjmlLydLKDHODRmn6nEyX4hQQQSRly6TQZrLYB17bZZLVWnsoW/1b/b7s/yJPeNGPPbW8GbQ2zMUfI1Fvxq7G+HB86Ya2cTO160=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780160114; c=relaxed/simple;
-	bh=FavHy8x1gvBCkLu35kolt/2daztjYw7GoRP74YuKPMs=;
+	s=arc-20240116; t=1780162772; c=relaxed/simple;
+	bh=/05Rdx5JRMlB1pqc9hjg7Z1oCJPD/y1XXySBlgh1oEw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=dnrc9zvq3c2JzXARhd6SxVSuXQE3qCBOU98AiT+A8MyXUUtzzSNuDsYvOhpssnyGDkZ9wAMQtjLH02qGVqthLo7sF9pZ3ghewB9nwUDY7VaiRJIIHNlO11b/KNBN+DcGbEd6yh5HSOteVMENftFgqg37OGdS/tIR6xDusa8PUoY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CEmZfSy4; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9EFDB1F00893;
-	Sat, 30 May 2026 16:55:12 +0000 (UTC)
+	 MIME-Version; b=kMPlJlJpphZL6fQmGNtLi00mOizLkvSGDfuRxerV0ku5pRbGeyHFUDDbmwJ0NTe9xF8QsMafvBDO/wa+7bDj/aNVcEYXNv5FDjXPja11KuaNKu9PWDorO/0+2vDHwbnzC1y15sd1Uoi3ptBjBNe5Zi6+0Jgzb4wTSj6jaw62bcE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=olN1UDjd; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B74E41F00893;
+	Sat, 30 May 2026 17:39:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780160113;
-	bh=HjCzXAiVZHzD0epoQ3qoJbsFe9wuaegbl4hrhZiXqao=;
+	s=korg; t=1780162771;
+	bh=QDnSJVtjvcvZ0R0l0+boRgSUcyGt5PTOYqk4RyYSwYk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=CEmZfSy48e6+QKeK0BwRKUt0JTlgXCBUy4gQaWAziNXRep7EzVWTZZJaZoPHvgXh0
-	 7obJ2PXoN7z9XWFIpmRzZ/6rtJhNrKBhgbOOijMnjbK7ed4i4cjB+GMotx5G5xLwme
-	 ie83HhHN/HondMM3rWtZKO+BO+JERRQM4JMNOfsg=
+	b=olN1UDjdr1LUv/QHh6ADowUIrh9iDKuo4cSqsGjHaILVs+JgruPhiYTX+FChURB6Y
+	 2VmHXH7IaJEKgsSaYoM1y7he6WVwDj81oIfB25BDRkM2ous3OumfC3KTQSOqtmcDnG
+	 hUN0oIZRCf4TcnmtYt5zba7B10ieeykKOVIPfEgA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	FengWei Shih <dannyshih@synology.com>,
-	Chia-Ming Chang <chiamingc@synology.com>,
-	Yu Kuai <yukuai@fnnas.com>
-Subject: [PATCH 6.1 248/969] md/raid5: fix soft lockup in retry_aligned_read()
+	Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	stable <stable@kernel.org>
+Subject: [PATCH 5.15 058/776] net: usb: cdc-phonet: fix skb frags[] overflow in rx_complete()
 Date: Sat, 30 May 2026 17:56:12 +0200
-Message-ID: <20260530160307.316343861@linuxfoundation.org>
+Message-ID: <20260530160241.813694818@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260530160300.485627683@linuxfoundation.org>
-References: <20260530160300.485627683@linuxfoundation.org>
+In-Reply-To: <20260530160240.228940103@linuxfoundation.org>
+References: <20260530160240.228940103@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,88 +67,91 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_MISSING_CHARSET(0.50)[];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-257187-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
-	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-257965-lists,stable=lfdr.de];
+	FROM_HAS_DN(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	RCPT_COUNT_FIVE(0.00)[6];
-	PRECEDENCE_BULK(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[stable];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	PRECEDENCE_BULK(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[9];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	FROM_HAS_DN(0.00)[]
-X-Rspamd-Queue-Id: 27A2760ECE7
+	TAGGED_RCPT(0.00)[stable,netdev];
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[lunn.ch:email,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,davemloft.net:email,msgid.link:url]
+X-Rspamd-Queue-Id: 2308F610622
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Chia-Ming Chang <chiamingc@synology.com>
+From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 
-commit 7f9f7c697474268d9ef9479df3ddfe7cdcfbbffc upstream.
+commit 600dc40554dc5ad1e6f3af51f700228033f43ea7 upstream.
 
-When retry_aligned_read() encounters an overlapped stripe, it releases
-the stripe via raid5_release_stripe() which puts it on the lockless
-released_stripes llist. In the next raid5d loop iteration,
-release_stripe_list() drains the stripe onto handle_list (since
-STRIPE_HANDLE is set by the original IO), but retry_aligned_read()
-runs before handle_active_stripes() and removes the stripe from
-handle_list via find_get_stripe() -> list_del_init(). This prevents
-handle_stripe() from ever processing the stripe to resolve the
-overlap, causing an infinite loop and soft lockup.
+A malicious USB device claiming to be a CDC Phonet modem can overflow
+the skb_shared_info->frags[] array by sending an unbounded sequence of
+full-page bulk transfers.
 
-Fix this by using __release_stripe() with temp_inactive_list instead
-of raid5_release_stripe() in the failure path, so the stripe does not
-go through the released_stripes llist. This allows raid5d to break out
-of its loop, and the overlap will be resolved when the stripe is
-eventually processed by handle_stripe().
+Drop the skb and increment the length error when the frag limit is
+reached.  This matches the same fix that commit f0813bcd2d9d ("net:
+wwan: t7xx: fix potential skb->frags overflow in RX path") did for the
+t7xx driver.
 
-Fixes: 773ca82fa1ee ("raid5: make release_stripe lockless")
-Cc: stable@vger.kernel.org
-Signed-off-by: FengWei Shih <dannyshih@synology.com>
-Signed-off-by: Chia-Ming Chang <chiamingc@synology.com>
-Link: https://lore.kernel.org/linux-raid/20260402061406.455755-1-chiamingc@synology.com/
-Signed-off-by: Yu Kuai <yukuai@fnnas.com>
+Cc: Andrew Lunn <andrew+netdev@lunn.ch>
+Cc: "David S. Miller" <davem@davemloft.net>
+Cc: Eric Dumazet <edumazet@google.com>
+Cc: Jakub Kicinski <kuba@kernel.org>
+Cc: Paolo Abeni <pabeni@redhat.com>
+Cc: stable <stable@kernel.org>
+Assisted-by: gregkh_clanker_t1000
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Link: https://patch.msgid.link/2026041134-dreamboat-buddhism-d1ec@gregkh
+Fixes: 87cf65601e17 ("USB host CDC Phonet network interface driver")
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/md/raid5.c |    8 +++++++-
- 1 file changed, 7 insertions(+), 1 deletion(-)
+ drivers/net/usb/cdc-phonet.c |    7 ++++++-
+ 1 file changed, 6 insertions(+), 1 deletion(-)
 
---- a/drivers/md/raid5.c
-+++ b/drivers/md/raid5.c
-@@ -6664,7 +6664,13 @@ static int  retry_aligned_read(struct r5
+--- a/drivers/net/usb/cdc-phonet.c
++++ b/drivers/net/usb/cdc-phonet.c
+@@ -157,11 +157,16 @@ static void rx_complete(struct urb *req)
+ 						PAGE_SIZE);
+ 				page = NULL;
+ 			}
+-		} else {
++		} else if (skb_shinfo(skb)->nr_frags < MAX_SKB_FRAGS) {
+ 			skb_add_rx_frag(skb, skb_shinfo(skb)->nr_frags,
+ 					page, 0, req->actual_length,
+ 					PAGE_SIZE);
+ 			page = NULL;
++		} else {
++			dev_kfree_skb_any(skb);
++			pnd->rx_skb = NULL;
++			skb = NULL;
++			dev->stats.rx_length_errors++;
  		}
- 
- 		if (!add_stripe_bio(sh, raid_bio, dd_idx, 0, 0)) {
--			raid5_release_stripe(sh);
-+			int hash;
-+
-+			spin_lock_irq(&conf->device_lock);
-+			hash = sh->hash_lock_index;
-+			__release_stripe(conf, sh,
-+					 &conf->temp_inactive_list[hash]);
-+			spin_unlock_irq(&conf->device_lock);
- 			conf->retry_read_aligned = raid_bio;
- 			conf->retry_read_offset = scnt;
- 			return handled;
+ 		if (req->actual_length < PAGE_SIZE)
+ 			pnd->rx_skb = NULL; /* Last fragment */
 
 
 
