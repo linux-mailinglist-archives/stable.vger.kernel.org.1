@@ -1,60 +1,60 @@
-Return-Path: <stable+bounces-258227-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-257481-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id EBClNTokG2pm/ggAu9opvQ
-	(envelope-from <stable+bounces-258227-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:54:02 +0200
+	id OA7kLzccG2p3/QgAu9opvQ
+	(envelope-from <stable+bounces-257481-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:19:51 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 747E76109AF
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:54:02 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5554160F677
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:19:51 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id DA1F6300145C
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 17:54:01 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 1A5C63078E54
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 17:12:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A98383546EA;
-	Sat, 30 May 2026 17:54:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B6C9333F8A2;
+	Sat, 30 May 2026 17:12:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kAj8CQGz"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="aLixAQbL"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 894133AEB5C;
-	Sat, 30 May 2026 17:53:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 873303148DA;
+	Sat, 30 May 2026 17:12:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780163640; cv=none; b=ruryK+A4i/Nyrh26tG442NofCdxaqeM6wNFM5dP2Gf/T3UDH56PkuJW4YJaGO/BfhNXXzdNKD/N/r1JM88Jli4LfGHn63fIiBOFnl+brILbA+ZSiPE5DGuJLAVTflCyMDioVcRKgVXmCCy3iJx/NOhTQA411LafBq9tvjSJSgFU=
+	t=1780161145; cv=none; b=dWDD/gFfLXMfZAy3980Sim9ltzz68tIY5kbrzUyl6AtXk63BJ2riSRnMNPWFdpam7Ljo2SUdDfHCHnjhtXVUMJ9OmjoWNDGFAp8aQXu52DzcQJCofwiXYB6fuu8G6r4ThxjevH9qJU4YeVEFOPV/e5zggI25nnGv96b9q7yXz0A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780163640; c=relaxed/simple;
-	bh=BLBYhwd31pcSv0NO9MJT1WEJjzooQv41JYMZwQywK6o=;
+	s=arc-20240116; t=1780161145; c=relaxed/simple;
+	bh=pb9394vX1NAEXOEiDzN41z/rGNtPq77ny+733Ccbgzc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=b23JPJCv3B3fpVnD73Jp6AuFrOJHT8h9RZRhOzWMA0SQGLwUtkQmBYzYmd9biOTzGwRbcneFZfV5CHZBLx7zw41aLES6eWzs1zaIs/5iKxKE01ln6edFzpoiuU04QPeLmrxQ1JOt0XF53iGTYbH0IxDbhKu8hARv+OUZSeMoXeA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kAj8CQGz; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CEBBE1F00893;
-	Sat, 30 May 2026 17:53:58 +0000 (UTC)
+	 MIME-Version; b=X2oH87IEZAlXx0dDZb61h/QZ8Hb5BkFuhC/7LOSJZkT6t5CWT9+m/b3mvPFoCsLqt8+UORdZ81GMjfNIXPRijXaiNJH3fewhRP9M/vNGYUtn1eaLGJpsJMOYqlbxtIsnmn11wG2tILSV42CyqT02thFkbx1sMSMi83RBX7aqhjc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=aLixAQbL; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C32E31F00893;
+	Sat, 30 May 2026 17:12:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780163639;
-	bh=BRAbv0Wb6XI+/2qMeG51uhjE4oZMFkGKybUpkyoGQJs=;
+	s=korg; t=1780161144;
+	bh=pRqfJ52H2nxtHVg8BS2EpQnNKDinpKo1WQMc7H4htJk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=kAj8CQGzJXvht8r9rwUh9HaJvbMBdhnp5mhGSemG6RRZo36beuOMXwZ2tgee4rn3e
-	 NklAX2ZsT/AI76XdN4Q+ELcUKh6hZVttUri5EF3b4xKWs/SncYUmUBVR9Aft00hNUa
-	 NE5ozFIhv2R/rb/YZx0+o23ug37CIkJGBjIl0xVw=
+	b=aLixAQbLQfJ4ns/fJoDfye3zeW0LHXFqUV4V29TnYuf3dkYbQ5QHtaO3FSNPdWdGs
+	 JmQq/YgSbKZezEJLeO49upXun+jwRM3QE5r1SedRRlHu3kwbMQc6YkiEqevfIVdJHJ
+	 /DWa1JsP42Am/gK2jgOKd3/vwE+Nd3U0FuWwrmbM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dexuan Cui <decui@microsoft.com>,
-	Hamza Mahfooz <hamzamahfooz@linux.microsoft.com>,
-	Stefano Garzarella <sgarzare@redhat.com>,
-	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 5.15 318/776] hv_sock: fix ARM64 support
+	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+	Jason Yan <yanaijie@huawei.com>,
+	Helge Deller <deller@gmx.de>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 508/969] fbdev: matroxfb: Mark variable with __maybe_unused to avoid W=1 build break
 Date: Sat, 30 May 2026 18:00:32 +0200
-Message-ID: <20260530160248.786808857@linuxfoundation.org>
+Message-ID: <20260530160314.359698678@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260530160240.228940103@linuxfoundation.org>
-References: <20260530160240.228940103@linuxfoundation.org>
+In-Reply-To: <20260530160300.485627683@linuxfoundation.org>
+References: <20260530160300.485627683@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -70,72 +70,101 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-258227-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
+	TAGGED_FROM(0.00)[bounces-257481-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,linux.intel.com,huawei.com,gmx.de,kernel.org];
 	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
-	PRECEDENCE_BULK(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
 	MID_RHS_MATCH_FROM(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
 	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
 	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[]
-X-Rspamd-Queue-Id: 747E76109AF
+X-Rspamd-Queue-Id: 5554160F677
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Hamza Mahfooz <hamzamahfooz@linux.microsoft.com>
+From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
 
-commit b31681206e3f527970a7c7ed807fbf6a028fc25b upstream.
+[ Upstream commit caf6144053b4e1c815aa56afb54745a176f999df ]
 
-VMBUS ring buffers must be page aligned. Therefore, the current value of
-24K presents a challenge on ARM64 kernels (with 64K pages). So, use
-VMBUS_RING_SIZE() to ensure they are always aligned and large enough to
-hold all of the relevant data.
+Clang is not happy about set but unused variable:
 
-Cc: stable@vger.kernel.org
-Fixes: 77ffe33363c0 ("hv_sock: use HV_HYP_PAGE_SIZE for Hyper-V communication")
-Tested-by: Dexuan Cui <decui@microsoft.com>
-Reviewed-by: Dexuan Cui <decui@microsoft.com>
-Signed-off-by: Hamza Mahfooz <hamzamahfooz@linux.microsoft.com>
-Acked-by: Stefano Garzarella <sgarzare@redhat.com>
-Link: https://patch.msgid.link/20260428125339.13963-1-hamzamahfooz@linux.microsoft.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+drivers/video/fbdev/matrox/g450_pll.c:412:18: error: variable 'mnp' set but not used
+   412 |         unsigned int mnp;
+       |                      ^
+1 error generated.
+
+Since the commit 7b987887f97b ("video: fbdev: matroxfb: remove dead code
+and set but not used variable") the 'mnp' became unused, but eliminating
+that code might have side-effects. The question here is what should we do
+with 'mnp'? The easiest way out is just mark it with __maybe_unused which
+will shut the compiler up and won't change any possible IO flow. So does
+this change.
+
+A dive into the history of the driver:
+
+The problem was revealed when the #if 0 guarded code along with unused
+pixel_vco variable was removed. That code was introduced in the original
+commit 213d22146d1f ("[PATCH] (1/3) matroxfb for 2.5.3"). And then guarded
+in the commit 705e41f82988 ("matroxfb DVI updates: Handle DVI output on
+G450/G550. Powerdown unused portions of G450/G550 DAC. Split G450/G550 DAC
+from older DAC1064 handling. Modify PLL setting when both CRTCs use same
+pixel clocks.").
+
+NOTE: The two commits mentioned above pre-date Git era and available in
+history.git repository for archaeological purposes.
+
+Even without that guard the modern compilers may see that the pixel_vco
+wasn't ever used and seems a leftover after some debug or review made
+25 years ago.
+
+The g450_mnp2vco() doesn't have any IO and as Jason said doesn't seem
+to have any side effects either than some unneeded CPU processing during
+runtime. I agree that's unlikely that timeout (or heating up the CPU) has
+any effect on the HW (GPU/display) functionality.
+
+Fixes: 7b987887f97b ("video: fbdev: matroxfb: remove dead code and set but not used variable")
+Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Reviewed-by: Jason Yan <yanaijie@huawei.com>
+Signed-off-by: Helge Deller <deller@gmx.de>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/vmw_vsock/hyperv_transport.c |    4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/video/fbdev/matrox/g450_pll.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/net/vmw_vsock/hyperv_transport.c
-+++ b/net/vmw_vsock/hyperv_transport.c
-@@ -366,10 +366,10 @@ static void hvs_open_connection(struct v
- 	} else {
- 		sndbuf = max_t(int, sk->sk_sndbuf, RINGBUFFER_HVS_SND_SIZE);
- 		sndbuf = min_t(int, sndbuf, RINGBUFFER_HVS_MAX_SIZE);
--		sndbuf = ALIGN(sndbuf, HV_HYP_PAGE_SIZE);
-+		sndbuf = VMBUS_RING_SIZE(sndbuf);
- 		rcvbuf = max_t(int, sk->sk_rcvbuf, RINGBUFFER_HVS_RCV_SIZE);
- 		rcvbuf = min_t(int, rcvbuf, RINGBUFFER_HVS_MAX_SIZE);
--		rcvbuf = ALIGN(rcvbuf, HV_HYP_PAGE_SIZE);
-+		rcvbuf = VMBUS_RING_SIZE(rcvbuf);
- 	}
- 
- 	ret = vmbus_open(chan, sndbuf, rcvbuf, NULL, 0, hvs_channel_cb,
+diff --git a/drivers/video/fbdev/matrox/g450_pll.c b/drivers/video/fbdev/matrox/g450_pll.c
+index ff8e321a22cef..b2d3f7328ea83 100644
+--- a/drivers/video/fbdev/matrox/g450_pll.c
++++ b/drivers/video/fbdev/matrox/g450_pll.c
+@@ -407,7 +407,7 @@ static int __g450_setclk(struct matrox_fb_info *minfo, unsigned int fout,
+ 		case M_VIDEO_PLL:
+ 			{
+ 				u_int8_t tmp;
+-				unsigned int mnp;
++				unsigned int mnp __maybe_unused;
+ 				unsigned long flags;
+ 				
+ 				matroxfb_DAC_lock_irqsave(flags);
+-- 
+2.53.0
+
 
 
 
