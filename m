@@ -1,65 +1,59 @@
-Return-Path: <stable+bounces-257143-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-257945-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 6J5gBKAXG2pV/AgAu9opvQ
-	(envelope-from <stable+bounces-257143-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:00:16 +0200
+	id eC8yHGAiG2rO/QgAu9opvQ
+	(envelope-from <stable+bounces-257945-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:46:08 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 68C9D60EB24
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:00:15 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id E2A10610579
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:46:07 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 6A5C1301F196
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 16:52:36 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 0E8453020FCD
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 17:38:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2A64C3438AE;
-	Sat, 30 May 2026 16:52:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AC0BA349CCF;
+	Sat, 30 May 2026 17:38:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SAxw++Vz"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ViJGeNRQ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 22C46395AE2;
-	Sat, 30 May 2026 16:52:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8722B33E36A;
+	Sat, 30 May 2026 17:38:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780159955; cv=none; b=BokGVWLVcsZrAyPafBhf6Ui2U4ebFMi42PVpCOB69Dli8mZ8Dwnr7noJKV+d+vfArb0nqoEEa5d8OSSbHiZMFGdOY+/tS4Vb+XrbwDaSJGKC0jHTafzZeOLfFQ5blAIv0cINaNNlR6Nesfoi7M0oghbqv2dO3HARJ6KlwwBwQWA=
+	t=1780162705; cv=none; b=qZCAIqYdQVD6s+IHkG8j6i5MHPBn6MR5AxU3gC6oM2wmiJX8LtLA1TmcHvR24LamCSHyKhpD0QbHOLu3FuomrfYFSfkBTZ+ZhpAJVqhECuwgkOzjcE6eOSi7ChR3/zHOmWaWbAw2PowHRcRQu2QHisXG0xYu5vcIpac9CojqiC8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780159955; c=relaxed/simple;
-	bh=YtGnqfCs9aJXvYFVFzr5blna7/gM+CTr7DczFf3VKEA=;
+	s=arc-20240116; t=1780162705; c=relaxed/simple;
+	bh=/ZYrNkNUUPDcdPSDWmPp9L0dO9heY0cBx9Y1sC9S1+I=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=JFHf0nsyRAlKl4XOrRF95l/NCLQk4g2zVpk1JGan1YJEbYvafkYBFJj7LwvXoZ0CQzHDR8GwlvCmeSYGqixFES5gxB9h+yBA6DqvM9Ncc4yDy6aC6jfg6ve/nJCDJEXHIb6P/RvpRcCXDRwEqvru+gHqGNPslsI3WDvLe+YYr30=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SAxw++Vz; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DE4A91F00899;
-	Sat, 30 May 2026 16:52:32 +0000 (UTC)
+	 MIME-Version; b=Kol5eqnSKJpqJ97DNMWD2RC8S1IIB6TKCQQPxrhtEDID9EJRKh6R4VbvoF7HVokd5Jsk8ccDpFed6YHrMcU2fnLprX8mMby3mbVZCSYJu0dqeqBEu0oqAVoG68TcPdH9t6HRps+Z8KDhiBS4k3COyunKrbix/ObG2wZRvGI7ZsY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ViJGeNRQ; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CD2421F00893;
+	Sat, 30 May 2026 17:38:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780159953;
-	bh=2XmM8NLOc5/UYy5/87B6Qi9daJ8Ft0xl5zhrffonvfY=;
+	s=korg; t=1780162704;
+	bh=ujEAKZCRJ+w59D/I6mjMToryOKYM7ym+viQGLviA4RY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=SAxw++Vza55bwrMN7FoUUpK3FtRHzRbAy3TqwjTvoRfgEtJ/dnC12Ztz2GxvMDtSH
-	 HcvKXjBcX82zpmz+YjI2Y9rI6+rpulvTZ6aTp3BFo9ose38clM3CDUwUPL7SE6y8zf
-	 QBjJvdXfvml74WiQ8F9r0+U9z1y8eetwVSOUwvS0=
+	b=ViJGeNRQf5hYCz/wesqt3YY0uFHMnUcO09qkq9X4/lQPHA2TR56C1ADywFex9eOpY
+	 K4Hl+/PPf/PRLo1Ze1YLm+Y56z2AlU4ByAoDUWjHPm7Ite/YFIqrxwbKBWqC910+vj
+	 CNdweYymA0WAGtI4f6hlw9CaSnWGDwxvF+tBuA3U=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yifan Wu <yifanwucs@gmail.com>,
-	Juefei Pu <tomapufckgml@gmail.com>,
-	Yuan Tan <yuantan098@gmail.com>,
-	Xin Liu <bird@lzu.edu.cn>,
-	Zhengchuan Liang <zcliangcn@gmail.com>,
-	Longxuan Yu <ylong030@ucr.edu>,
-	Ren Wei <n05ec@lzu.edu.cn>,
-	Pavel Begunkov <asml.silence@gmail.com>,
-	Jens Axboe <axboe@kernel.dk>
-Subject: [PATCH 6.1 206/969] io_uring/poll: fix signed comparison in io_poll_get_ownership()
+	Tomasz Merta <tommerta@gmail.com>,
+	Mark Brown <broonie@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 016/776] ASoC: stm32_sai: fix incorrect BCLK polarity for DSP_A/B, LEFT_J
 Date: Sat, 30 May 2026 17:55:30 +0200
-Message-ID: <20260530160306.162794621@linuxfoundation.org>
+Message-ID: <20260530160240.684282238@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260530160300.485627683@linuxfoundation.org>
-References: <20260530160300.485627683@linuxfoundation.org>
+In-Reply-To: <20260530160240.228940103@linuxfoundation.org>
+References: <20260530160240.228940103@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -70,89 +64,101 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCPT_COUNT_TWELVE(0.00)[12];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-257143-lists,stable=lfdr.de];
-	MIME_TRACE(0.00)[0:+];
-	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,lzu.edu.cn,ucr.edu,kernel.dk];
+	TAGGED_FROM(0.00)[bounces-257945-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,kernel.org];
 	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
 	TO_DN_SOME(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	RCPT_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	TAGGED_RCPT(0.00)[stable];
 	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	FROM_HAS_DN(0.00)[]
-X-Rspamd-Queue-Id: 68C9D60EB24
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,arrow.com:email,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim]
+X-Rspamd-Queue-Id: E2A10610579
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Longxuan Yu <ylong030@ucr.edu>
+From: Tomasz Merta <tomasz.merta@arrow.com>
 
-commit 326941b22806cbf2df1fbfe902b7908b368cce42 upstream.
+[ Upstream commit 0669631dbccd41cf3ca7aa70213fcd8bb41c4b38 ]
 
-io_poll_get_ownership() uses a signed comparison to check whether
-poll_refs has reached the threshold for the slowpath:
+The STM32 SAI driver do not set the clock strobing bit (CKSTR) for DSP_A,
+DSP_B and LEFT_J formats, causing data to be sampled on the wrong BCLK
+edge when SND_SOC_DAIFMT_NB_NF is used.
 
-    if (unlikely(atomic_read(&req->poll_refs) >= IO_POLL_REF_BIAS))
+Per ALSA convention, NB_NF requires sampling on the rising BCLK edge.
+The STM32MP25 SAI reference manual states that CKSTR=1 is required for
+signals received by the SAI to be sampled on the SCK rising edge.
+Without setting CKSTR=1, the SAI samples on the falling edge, violating
+the NB_NF convention. For comparison, the NXP FSL SAI driver correctly
+sets FSL_SAI_CR2_BCP for DSP_A, DSP_B and LEFT_J, consistent with its
+I2S handling.
 
-atomic_read() returns int (signed). When IO_POLL_CANCEL_FLAG
-(BIT(31)) is set in poll_refs, the value becomes negative in
-signed arithmetic, so the >= 128 comparison always evaluates to
-false and the slowpath is never taken.
+This patch adds SAI_XCR1_CKSTR for DSP_A, DSP_B and LEFT_J in
+stm32_sai_set_dai_fmt which was verified empirically with a cs47l35 codec.
+RIGHT_J (LSB) is not investigated and addressed by this patch.
 
-Fix this by casting the atomic_read() result to unsigned int
-before the comparison, so that the cancel flag is treated as a
-large positive value and correctly triggers the slowpath.
+Note: the STM32 I2S driver (stm32_i2s_set_dai_fmt) may have the same issue
+for DSP_A mode, as I2S_CGFR_CKPOL is not set. This has not been verified
+and is left for a separate investigation.
 
-Fixes: a26a35e9019f ("io_uring: make poll refs more robust")
-Cc: stable@vger.kernel.org
-Reported-by: Yifan Wu <yifanwucs@gmail.com>
-Reported-by: Juefei Pu <tomapufckgml@gmail.com>
-Co-developed-by: Yuan Tan <yuantan098@gmail.com>
-Signed-off-by: Yuan Tan <yuantan098@gmail.com>
-Suggested-by: Xin Liu <bird@lzu.edu.cn>
-Tested-by: Zhengchuan Liang <zcliangcn@gmail.com>
-Signed-off-by: Longxuan Yu <ylong030@ucr.edu>
-Signed-off-by: Ren Wei <n05ec@lzu.edu.cn>
-Reviewed-by: Pavel Begunkov <asml.silence@gmail.com>
-Link: https://patch.msgid.link/3a3508b08bcd7f1bc3beff848ae6e1d73d355043.1775965597.git.ylong030@ucr.edu
-Signed-off-by: Jens Axboe <axboe@kernel.dk>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Tomasz Merta <tommerta@gmail.com>
+Link: https://patch.msgid.link/20260408084056.20588-1-tommerta@gmail.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- io_uring/poll.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ sound/soc/stm/stm32_sai_sub.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
---- a/io_uring/poll.c
-+++ b/io_uring/poll.c
-@@ -88,7 +88,7 @@ static bool io_poll_get_ownership_slowpa
-  */
- static inline bool io_poll_get_ownership(struct io_kiocb *req)
- {
--	if (unlikely(atomic_read(&req->poll_refs) >= IO_POLL_REF_BIAS))
-+	if (unlikely((unsigned int)atomic_read(&req->poll_refs) >= IO_POLL_REF_BIAS))
- 		return io_poll_get_ownership_slowpath(req);
- 	return !(atomic_fetch_inc(&req->poll_refs) & IO_POLL_REF_MASK);
- }
+diff --git a/sound/soc/stm/stm32_sai_sub.c b/sound/soc/stm/stm32_sai_sub.c
+index 5a4551f1a40dd..fa6f06f1d3842 100644
+--- a/sound/soc/stm/stm32_sai_sub.c
++++ b/sound/soc/stm/stm32_sai_sub.c
+@@ -671,6 +671,7 @@ static int stm32_sai_set_dai_fmt(struct snd_soc_dai *cpu_dai, unsigned int fmt)
+ 		break;
+ 	/* Left justified */
+ 	case SND_SOC_DAIFMT_MSB:
++		cr1 |= SAI_XCR1_CKSTR;
+ 		frcr |= SAI_XFRCR_FSPOL | SAI_XFRCR_FSDEF;
+ 		break;
+ 	/* Right justified */
+@@ -678,9 +679,11 @@ static int stm32_sai_set_dai_fmt(struct snd_soc_dai *cpu_dai, unsigned int fmt)
+ 		frcr |= SAI_XFRCR_FSPOL | SAI_XFRCR_FSDEF;
+ 		break;
+ 	case SND_SOC_DAIFMT_DSP_A:
++		cr1 |= SAI_XCR1_CKSTR;
+ 		frcr |= SAI_XFRCR_FSPOL | SAI_XFRCR_FSOFF;
+ 		break;
+ 	case SND_SOC_DAIFMT_DSP_B:
++		cr1 |= SAI_XCR1_CKSTR;
+ 		frcr |= SAI_XFRCR_FSPOL;
+ 		break;
+ 	default:
+-- 
+2.53.0
+
 
 
 
