@@ -1,58 +1,67 @@
-Return-Path: <stable+bounces-257241-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-258067-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id UDg3E3gZG2oq/QgAu9opvQ
-	(envelope-from <stable+bounces-257241-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:08:08 +0200
+	id 2EBrHNgjG2pm/ggAu9opvQ
+	(envelope-from <stable+bounces-258067-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:52:24 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id B1C7C60EF0F
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:08:07 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id E79596108CE
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:52:23 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 992CF30C8569
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 16:58:29 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 9BBA1306BE85
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 17:45:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BDC63348C72;
-	Sat, 30 May 2026 16:58:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1ABE63B1EC0;
+	Sat, 30 May 2026 17:45:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jq87hT2W"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JIbWUxdo"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9589B332EA7;
-	Sat, 30 May 2026 16:58:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AA5B72BE65B;
+	Sat, 30 May 2026 17:45:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780160308; cv=none; b=tPBMkbwGUC8L1D8Ckl41A872cTf5kPfbW1K6KVJF28tjMh34jCNg04DgPSzTouS1j2neQDXYkwK2BkmGvEpu5mNUrpTAE9ngm3nkx9CRmS8ooRsfjWyVzS2xTVxVlqnCZlahyoaybakC4cp1vt1iNUk40slVkxzPOVUOwlLhSnE=
+	t=1780163109; cv=none; b=E4R/zTcnFeQ8fPcDGhAN6bj2XbMDTle75NtZDC80KHxgVI9SYdlkCTEA7rvXBmdXxm1uQmsxU7HgjYmqTCxmcDwkM7gzcJ4JEy4uhniMZXrdNQ3E5CRLnCrBRThEBHtY77o1SmpxMLDMCQRuCEriHAkrkp80l19rMZok7avRyh0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780160308; c=relaxed/simple;
-	bh=4G7CSZgeSMg1JDyz5sV4G9h2z1up7S9AOTT2NDDTv3s=;
+	s=arc-20240116; t=1780163109; c=relaxed/simple;
+	bh=efzooQAI5L+tl+R8pke7d5NbZ911hQTacNrv1sJi04Y=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=egyK6mkUhDoyWTmuN1XDrN3ZGdI+6v33aoP1NbVr8U7Nn8nW0a4nk60XCF4kOtyfZnKNdKyylOaA/T70e0YuOq0kn8e7v0MZy4eq72naR5evKch2nrZORq6WJjueNeOM506vzccG45yRbT5AgxK3+FAbL8GPOpGtaB+PRW2kXs0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jq87hT2W; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AB80A1F00893;
-	Sat, 30 May 2026 16:58:26 +0000 (UTC)
+	 MIME-Version; b=SvTG2P9MXnUxkHSIvAOqyCIpzb3WrKhKeGWizI2eN4fNLdJqSY8/nY/rAUoQfx5oYo9o/AhD7X5l9hY88Orjwe326wD7D5P9rGEOFb24b0QaO93uO7c7XZ6lhdbbLuPxHCXQfUWr8zBaOJr8skrDv1gSb6Z9rO298aFCydRpW24=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JIbWUxdo; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F3B8E1F00893;
+	Sat, 30 May 2026 17:45:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780160307;
-	bh=90bHmQYEzCNk5AS72t2hoH8C+HK3BlmgeuAjfjv/m9s=;
+	s=korg; t=1780163108;
+	bh=StUhpVulYQAyn5pBXJncFQuz9OhbAFy34YMumyqsPfU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=jq87hT2WvzYJ/gUzkzyDvB2L2r24qpMytTj4n7qc0TzSBpIAbJtomqjE29/tkzatq
-	 iT2iYysSTCqQ4Zb6OPkqegWqfZKg+8ny0IoVAjduP7lq3zxxYvQITu75KQ3iyrs+f7
-	 KE0clyr97b8R12cRInUj04oZB4FvS+mKvKQBoVrc=
+	b=JIbWUxdoW0YQ4/rCEmMz9qDv/8mjm4W6dj5z0ztD686iLFZZLLJPS73GIM1fssYJm
+	 L/41b7R5KNrzZ+jaKZdKZl9FQxR9arLdrHJEfu/5jtgqM4YBZoNZXeGV8gz25m2wYt
+	 GALSn1BkqAOxFpD9jAlo03lPWaVcF4bjNffmHvXw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Tristan Madani <tristan@talencesecurity.com>,
-	Johannes Berg <johannes.berg@intel.com>
-Subject: [PATCH 6.1 301/969] wifi: b43legacy: enforce bounds check on firmware key index in RX path
-Date: Sat, 30 May 2026 17:57:05 +0200
-Message-ID: <20260530160308.745529976@linuxfoundation.org>
+	hongnanli <hongnan.li@linux.alibaba.com>,
+	Joseph Qi <joseph.qi@linux.alibaba.com>,
+	Mark Fasheh <mark@fasheh.com>,
+	Joel Becker <jlbec@evilplan.org>,
+	Junxiao Bi <junxiao.bi@oracle.com>,
+	Changwei Ge <gechangwei@live.cn>,
+	Gang He <ghe@suse.com>,
+	Jun Piao <piaojun@huawei.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Linus Torvalds <torvalds@linux-foundation.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 112/776] fs/ocfs2: fix comments mentioning i_mutex
+Date: Sat, 30 May 2026 17:57:06 +0200
+Message-ID: <20260530160243.257016949@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260530160300.485627683@linuxfoundation.org>
-References: <20260530160300.485627683@linuxfoundation.org>
+In-Reply-To: <20260530160240.228940103@linuxfoundation.org>
+References: <20260530160240.228940103@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -68,68 +77,237 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-257241-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
 	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-258067-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,linux.alibaba.com,fasheh.com,evilplan.org,oracle.com,live.cn,suse.com,huawei.com,linux-foundation.org,kernel.org];
+	RCPT_COUNT_TWELVE(0.00)[14];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	RCPT_COUNT_FIVE(0.00)[5];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	RCVD_TLS_LAST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[stable];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[]
-X-Rspamd-Queue-Id: B1C7C60EF0F
+X-Rspamd-Queue-Id: E79596108CE
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Tristan Madani <tristan@talencesecurity.com>
+From: hongnanli <hongnan.li@linux.alibaba.com>
 
-commit a035766f970bde2d4298346a31a80685be5c0205 upstream.
+[ Upstream commit 137cebf9432eae024d0334953ed92a2a78619b52 ]
 
-Same fix as b43: the firmware-controlled key index in b43legacy_rx()
-can exceed dev->max_nr_keys. The existing B43legacy_WARN_ON is
-non-enforcing in production builds, allowing an out-of-bounds read of
-dev->key[].
+inode->i_mutex has been replaced with inode->i_rwsem long ago.  Fix
+comments still mentioning i_mutex.
 
-Make the check enforcing by dropping the frame for invalid indices.
-
-Fixes: 75388acd0cd8 ("[B43LEGACY]: add mac80211-based driver for legacy BCM43xx devices")
-Cc: stable@vger.kernel.org
-Signed-off-by: Tristan Madani <tristan@talencesecurity.com>
-Link: https://patch.msgid.link/20260417111145.2694196-2-tristmd@gmail.com
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+Link: https://lkml.kernel.org/r/20220214031314.100094-1-hongnan.li@linux.alibaba.com
+Signed-off-by: hongnanli <hongnan.li@linux.alibaba.com>
+Acked-by: Joseph Qi <joseph.qi@linux.alibaba.com>
+Cc: Mark Fasheh <mark@fasheh.com>
+Cc: Joel Becker <jlbec@evilplan.org>
+Cc: Junxiao Bi <junxiao.bi@oracle.com>
+Cc: Changwei Ge <gechangwei@live.cn>
+Cc: Gang He <ghe@suse.com>
+Cc: Jun Piao <piaojun@huawei.com>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Signed-off-by: Linus Torvalds <torvalds@linux-foundation.org>
+Stable-dep-of: b02da26a992d ("ocfs2: fix possible deadlock between unlink and dio_end_io_write")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/wireless/broadcom/b43legacy/xmit.c |    3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ fs/ocfs2/alloc.c               |    2 +-
+ fs/ocfs2/aops.c                |    2 +-
+ fs/ocfs2/cluster/nodemanager.c |    2 +-
+ fs/ocfs2/dir.c                 |    4 ++--
+ fs/ocfs2/file.c                |    4 ++--
+ fs/ocfs2/inode.c               |    2 +-
+ fs/ocfs2/localalloc.c          |    6 +++---
+ fs/ocfs2/namei.c               |    2 +-
+ fs/ocfs2/ocfs2.h               |    4 ++--
+ fs/ocfs2/quota_global.c        |    2 +-
+ fs/ocfs2/xattr.c               |    2 +-
+ 11 files changed, 16 insertions(+), 16 deletions(-)
 
---- a/drivers/net/wireless/broadcom/b43legacy/xmit.c
-+++ b/drivers/net/wireless/broadcom/b43legacy/xmit.c
-@@ -476,7 +476,8 @@ void b43legacy_rx(struct b43legacy_wldev
- 		 * key index, but the ucode passed it slightly different.
- 		 */
- 		keyidx = b43legacy_kidx_to_raw(dev, keyidx);
--		B43legacy_WARN_ON(keyidx >= dev->max_nr_keys);
-+		if (B43legacy_WARN_ON(keyidx >= dev->max_nr_keys))
-+			goto drop;
+--- a/fs/ocfs2/alloc.c
++++ b/fs/ocfs2/alloc.c
+@@ -5986,7 +5986,7 @@ bail:
+ 	return status;
+ }
  
- 		if (dev->key[keyidx].algorithm != B43legacy_SEC_ALGO_NONE) {
- 			/* Remove PROTECTED flag to mark it as decrypted. */
+-/* Expects you to already be holding tl_inode->i_mutex */
++/* Expects you to already be holding tl_inode->i_rwsem */
+ int __ocfs2_flush_truncate_log(struct ocfs2_super *osb)
+ {
+ 	int status;
+--- a/fs/ocfs2/aops.c
++++ b/fs/ocfs2/aops.c
+@@ -2324,7 +2324,7 @@ static int ocfs2_dio_end_io_write(struct
+ 
+ 	down_write(&oi->ip_alloc_sem);
+ 
+-	/* Delete orphan before acquire i_mutex. */
++	/* Delete orphan before acquire i_rwsem. */
+ 	if (dwc->dw_orphaned) {
+ 		BUG_ON(dwc->dw_writer_pid != task_pid_nr(current));
+ 
+--- a/fs/ocfs2/cluster/nodemanager.c
++++ b/fs/ocfs2/cluster/nodemanager.c
+@@ -689,7 +689,7 @@ static struct config_group *o2nm_cluster
+ 	struct o2nm_node_group *ns = NULL;
+ 	struct config_group *o2hb_group = NULL, *ret = NULL;
+ 
+-	/* this runs under the parent dir's i_mutex; there can be only
++	/* this runs under the parent dir's i_rwsem; there can be only
+ 	 * one caller in here at a time */
+ 	if (o2nm_single_cluster)
+ 		return ERR_PTR(-ENOSPC);
+--- a/fs/ocfs2/dir.c
++++ b/fs/ocfs2/dir.c
+@@ -1979,7 +1979,7 @@ bail_nolock:
+ }
+ 
+ /*
+- * NOTE: this should always be called with parent dir i_mutex taken.
++ * NOTE: this should always be called with parent dir i_rwsem taken.
+  */
+ int ocfs2_find_files_on_disk(const char *name,
+ 			     int namelen,
+@@ -2026,7 +2026,7 @@ int ocfs2_lookup_ino_from_name(struct in
+  * Return -EEXIST if the directory contains the name
+  * Return -EFSCORRUPTED if found corruption
+  *
+- * Callers should have i_mutex + a cluster lock on dir
++ * Callers should have i_rwsem + a cluster lock on dir
+  */
+ int ocfs2_check_dir_for_entry(struct inode *dir,
+ 			      const char *name,
+--- a/fs/ocfs2/file.c
++++ b/fs/ocfs2/file.c
+@@ -270,7 +270,7 @@ int ocfs2_update_inode_atime(struct inod
+ 
+ 	/*
+ 	 * Don't use ocfs2_mark_inode_dirty() here as we don't always
+-	 * have i_mutex to guard against concurrent changes to other
++	 * have i_rwsem to guard against concurrent changes to other
+ 	 * inode fields.
+ 	 */
+ 	inode->i_atime = current_time(inode);
+@@ -1068,7 +1068,7 @@ static int ocfs2_extend_file(struct inod
+ 	/*
+ 	 * The alloc sem blocks people in read/write from reading our
+ 	 * allocation until we're done changing it. We depend on
+-	 * i_mutex to block other extend/truncate calls while we're
++	 * i_rwsem to block other extend/truncate calls while we're
+ 	 * here.  We even have to hold it for sparse files because there
+ 	 * might be some tail zeroing.
+ 	 */
+--- a/fs/ocfs2/inode.c
++++ b/fs/ocfs2/inode.c
+@@ -713,7 +713,7 @@ bail:
+ /*
+  * Serialize with orphan dir recovery. If the process doing
+  * recovery on this orphan dir does an iget() with the dir
+- * i_mutex held, we'll deadlock here. Instead we detect this
++ * i_rwsem held, we'll deadlock here. Instead we detect this
+  * and exit early - recovery will wipe this inode for us.
+  */
+ static int ocfs2_check_orphan_recovery_state(struct ocfs2_super *osb,
+--- a/fs/ocfs2/localalloc.c
++++ b/fs/ocfs2/localalloc.c
+@@ -606,7 +606,7 @@ out:
+ 
+ /*
+  * make sure we've got at least bits_wanted contiguous bits in the
+- * local alloc. You lose them when you drop i_mutex.
++ * local alloc. You lose them when you drop i_rwsem.
+  *
+  * We will add ourselves to the transaction passed in, but may start
+  * our own in order to shift windows.
+@@ -636,7 +636,7 @@ int ocfs2_reserve_local_alloc_bits(struc
+ 
+ 	/*
+ 	 * We must double check state and allocator bits because
+-	 * another process may have changed them while holding i_mutex.
++	 * another process may have changed them while holding i_rwsem.
+ 	 */
+ 	spin_lock(&osb->osb_lock);
+ 	if (!ocfs2_la_state_enabled(osb) ||
+@@ -1029,7 +1029,7 @@ enum ocfs2_la_event {
+ /*
+  * Given an event, calculate the size of our next local alloc window.
+  *
+- * This should always be called under i_mutex of the local alloc inode
++ * This should always be called under i_rwsem of the local alloc inode
+  * so that local alloc disabling doesn't race with processes trying to
+  * use the allocator.
+  *
+--- a/fs/ocfs2/namei.c
++++ b/fs/ocfs2/namei.c
+@@ -485,7 +485,7 @@ leave:
+ 		ocfs2_free_alloc_context(meta_ac);
+ 
+ 	/*
+-	 * We should call iput after the i_mutex of the bitmap been
++	 * We should call iput after the i_rwsem of the bitmap been
+ 	 * unlocked in ocfs2_free_alloc_context, or the
+ 	 * ocfs2_delete_inode will mutex_lock again.
+ 	 */
+--- a/fs/ocfs2/ocfs2.h
++++ b/fs/ocfs2/ocfs2.h
+@@ -369,7 +369,7 @@ struct ocfs2_super
+ 	struct delayed_work		la_enable_wq;
+ 
+ 	/*
+-	 * Must hold local alloc i_mutex and osb->osb_lock to change
++	 * Must hold local alloc i_rwsem and osb->osb_lock to change
+ 	 * local_alloc_bits. Reads can be done under either lock.
+ 	 */
+ 	unsigned int local_alloc_bits;
+@@ -444,7 +444,7 @@ struct ocfs2_super
+ 	atomic_t			osb_tl_disable;
+ 	/*
+ 	 * How many clusters in our truncate log.
+-	 * It must be protected by osb_tl_inode->i_mutex.
++	 * It must be protected by osb_tl_inode->i_rwsem.
+ 	 */
+ 	unsigned int truncated_clusters;
+ 
+--- a/fs/ocfs2/quota_global.c
++++ b/fs/ocfs2/quota_global.c
+@@ -36,7 +36,7 @@
+  * should be obeyed by all the functions:
+  * - any write of quota structure (either to local or global file) is protected
+  *   by dqio_sem or dquot->dq_lock.
+- * - any modification of global quota file holds inode cluster lock, i_mutex,
++ * - any modification of global quota file holds inode cluster lock, i_rwsem,
+  *   and ip_alloc_sem of the global quota file (achieved by
+  *   ocfs2_lock_global_qf). It also has to hold qinfo_lock.
+  * - an allocation of new blocks for local quota file is protected by
+--- a/fs/ocfs2/xattr.c
++++ b/fs/ocfs2/xattr.c
+@@ -7208,7 +7208,7 @@ out:
+  * Used for reflink a non-preserve-security file.
+  *
+  * It uses common api like ocfs2_xattr_set, so the caller
+- * must not hold any lock expect i_mutex.
++ * must not hold any lock expect i_rwsem.
+  */
+ int ocfs2_init_security_and_acl(struct inode *dir,
+ 				struct inode *inode,
 
 
 
