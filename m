@@ -1,59 +1,59 @@
-Return-Path: <stable+bounces-258637-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-257865-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 8GQuLLEpG2ra/ggAu9opvQ
-	(envelope-from <stable+bounces-258637-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:17:21 +0200
+	id KFgQKdIgG2qu/QgAu9opvQ
+	(envelope-from <stable+bounces-257865-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:39:30 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 59C806116C0
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:17:21 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1D0F06101F0
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:39:29 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 59B1E3012D4D
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 18:17:05 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 257B3305E880
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 17:33:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A86273242BE;
-	Sat, 30 May 2026 18:17:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6E55733F8B4;
+	Sat, 30 May 2026 17:33:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QzK4+9Hz"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="h93PLgbh"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9251F233D9E;
-	Sat, 30 May 2026 18:17:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DC86B33A9DA;
+	Sat, 30 May 2026 17:33:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780165023; cv=none; b=EKXxXqRieFicOQ0DZMp2I1HCSJtjQVanXiGku1SM+TGDlbMc+rFaiXX+QayWjNbPqAgzBgYgaRIkEUaVgT7dgKnHWq8Ytna9E3sWqxxubhe/6Zso4uI1umZ1Kfw3lf1+N1gdUZC7ehezUmMbv/F23KESDmUrOr4UlDimYJUWjKo=
+	t=1780162433; cv=none; b=WsweDuwvLj5/44qqfRPstAgOvtQdv7PL0iLifa8UTUQ27QDpcHauylsrIdnxe/dzTW/Aiyw3nJyx4POvtOP1M+t1MPHj+w5NDID0gTXo+xp9GhQz2++a6ReN8rKEUp+c6+NyIAR75ckUGXqtEiF0jD0ouqlRLV9eM7CfuVT2mxg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780165023; c=relaxed/simple;
-	bh=Qhy+qJjBFoVZeOP8mFmOJreB8wxRZqA2zG9u//Ok2Xg=;
+	s=arc-20240116; t=1780162433; c=relaxed/simple;
+	bh=HjEOZy8InILKwYVU+iR5qkJrS50PJGjxqOfK5WId5RA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=nxblI4PHDpW12PF6mEpPH21qBAL4RGniu0BMlLkx9SR9qOXmSc8+wD18mD3RNkRXdxbUwMm1/QkprjJV1ysNJl9uWn761TDGCn9/ED4TyDF0T2ekyKq/XXNDRI/cTbPiMaOHm2GHc6lTnupWQUWSaStkZbkrGds09FZTKG9lUvY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QzK4+9Hz; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A07791F00893;
-	Sat, 30 May 2026 18:17:01 +0000 (UTC)
+	 MIME-Version; b=XvAa1PRjF9PxfqU3IEzfRhY1BNfVnTr1tzeAMT4Lvi/mpzXG7d77uy1OqayV9lbsy9YM8y35zpI0MAr+nRAMSJQFE1gydc+OqsbdDwDVGTU1zF7T63r6MSZLAHGPOEGTgBiRkPcN3esmHAGNJfumf/CC1l5ERfHPowgI3UopTgA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=h93PLgbh; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2579A1F00893;
+	Sat, 30 May 2026 17:33:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780165022;
-	bh=UomOgOw+jSBP7fbA8wVndPmxzt6UXdcWlrA6MIyQul4=;
+	s=korg; t=1780162430;
+	bh=5lqv+UIvyU89UigqBQDWU8ZdIHZdf7iruKyH2OHNHTk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=QzK4+9HzHMt6odwYj5wt7DqioetukwfAl710A/hak2yqwjXE+TS+YcdYJUwyqemGM
-	 S0k3Pr1o4MxXuErZb4vK2PVE6ul7wpdt9EebFd9Y4OxjmeO8x9TU30fmYZzgskQdlw
-	 QIP+nLTVNBSL3phrFEeIr8h/i35xYRF5waFa8IkA=
+	b=h93PLgbhDacc13XIXmWhrwQvTIRsp+6FckS6D8thUpbnvCJqUNLa9vWsuxqTHyJ9S
+	 uTNVfuUMjHZJl66ouehRqnXe/JVEr6AOY7C7FbFgXNGw40MfhPij+kzEG+ZDeUMtzR
+	 FtCq7Q/lSOy4BdSkRS3/MpBOomn+pFXXboIqqYpI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	David Gow <david@davidgow.net>,
-	Shuah Khan <skhan@linuxfoundation.org>,
+	Florian Westphal <fw@strlen.de>,
+	Pablo Neira Ayuso <pablo@netfilter.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 728/776] kunit: config: KUNIT_DEBUGFS should depend on DEBUG_FS
-Date: Sat, 30 May 2026 18:07:22 +0200
-Message-ID: <20260530160258.636997504@linuxfoundation.org>
+Subject: [PATCH 6.1 919/969] netfilter: bridge: eb_tables: close module init race
+Date: Sat, 30 May 2026 18:07:23 +0200
+Message-ID: <20260530160326.114571211@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260530160240.228940103@linuxfoundation.org>
-References: <20260530160240.228940103@linuxfoundation.org>
+In-Reply-To: <20260530160300.485627683@linuxfoundation.org>
+References: <20260530160300.485627683@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -68,7 +68,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
@@ -78,55 +78,75 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-258637-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-257865-lists,stable=lfdr.de];
 	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-0.996];
+	NEURAL_HAM(-0.00)[-1.000];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
 	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo]
-X-Rspamd-Queue-Id: 59C806116C0
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,netfilter.org:email,strlen.de:email]
+X-Rspamd-Queue-Id: 1D0F06101F0
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: David Gow <david@davidgow.net>
+From: Florian Westphal <fw@strlen.de>
 
-[ Upstream commit 8f80b5b227ef9ea422080487715c841856339aed ]
+[ Upstream commit 27414ff1b287ea9a2a11675149ec28e05539f3cc ]
 
-CONFIG_KUNIT_DEBUGFS is totally useless without debugfs, so it should
-depend on CONFIG_DEBUG_FS.
+sashiko reports for unrelated patch:
+ Does the core ebtables initialization in ebtables.c suffer from a similar race?
+ Once nf_register_sockopt() completes, the sockopts are exposed globally.
 
-Link: https://lore.kernel.org/r/20260425034155.53913-2-david@davidgow.net
-Fixes: e2219db280e3 ("kunit: add debugfs /sys/kernel/debug/kunit/<suite>/results display")
-Signed-off-by: David Gow <david@davidgow.net>
-Signed-off-by: Shuah Khan <skhan@linuxfoundation.org>
+sockopt has to be registered last, just like in ip/ip6/arptables.
+
+Fixes: 5b53951cfc85 ("netfilter: ebtables: use net_generic infra")
+Signed-off-by: Florian Westphal <fw@strlen.de>
+Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- lib/kunit/Kconfig | 1 +
- 1 file changed, 1 insertion(+)
+ net/bridge/netfilter/ebtables.c | 11 ++++++-----
+ 1 file changed, 6 insertions(+), 5 deletions(-)
 
-diff --git a/lib/kunit/Kconfig b/lib/kunit/Kconfig
-index a32943555b67d..b27ef9f1af1d3 100644
---- a/lib/kunit/Kconfig
-+++ b/lib/kunit/Kconfig
-@@ -17,6 +17,7 @@ if KUNIT
+diff --git a/net/bridge/netfilter/ebtables.c b/net/bridge/netfilter/ebtables.c
+index ec286e54229b7..ca426e49ea1a1 100644
+--- a/net/bridge/netfilter/ebtables.c
++++ b/net/bridge/netfilter/ebtables.c
+@@ -2583,19 +2583,20 @@ static int __init ebtables_init(void)
+ {
+ 	int ret;
  
- config KUNIT_DEBUGFS
- 	bool "KUnit - Enable /sys/kernel/debug/kunit debugfs representation"
-+	depends on DEBUG_FS
- 	default y
- 	help
- 	  Enable debugfs representation for kunit.  Currently this consists
+-	ret = xt_register_target(&ebt_standard_target);
++	ret = register_pernet_subsys(&ebt_net_ops);
+ 	if (ret < 0)
+ 		return ret;
+-	ret = nf_register_sockopt(&ebt_sockopts);
++
++	ret = xt_register_target(&ebt_standard_target);
+ 	if (ret < 0) {
+-		xt_unregister_target(&ebt_standard_target);
++		unregister_pernet_subsys(&ebt_net_ops);
+ 		return ret;
+ 	}
+ 
+-	ret = register_pernet_subsys(&ebt_net_ops);
++	ret = nf_register_sockopt(&ebt_sockopts);
+ 	if (ret < 0) {
+-		nf_unregister_sockopt(&ebt_sockopts);
+ 		xt_unregister_target(&ebt_standard_target);
++		unregister_pernet_subsys(&ebt_net_ops);
+ 		return ret;
+ 	}
+ 
 -- 
 2.53.0
 
