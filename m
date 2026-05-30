@@ -1,59 +1,58 @@
-Return-Path: <stable+bounces-259198-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-258600-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id kM7eIQMyG2qqAAkAu9opvQ
-	(envelope-from <stable+bounces-259198-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:52:51 +0200
+	id qLxGGHYpG2ra/ggAu9opvQ
+	(envelope-from <stable+bounces-258600-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:16:22 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 06596612B53
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:52:50 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id E820D611646
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:16:21 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 68E0630D0009
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 18:48:58 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 3AA8C306B50E
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 18:14:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 36A121D63E4;
-	Sat, 30 May 2026 18:48:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D9C253C1961;
+	Sat, 30 May 2026 18:14:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="faYt0ZQI"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KYI+tgwN"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 00800137750;
-	Sat, 30 May 2026 18:48:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B8586175A6B;
+	Sat, 30 May 2026 18:14:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780166936; cv=none; b=mld138PQ7UtRK7oFth3In5IFs4UxujkT4P6AWog72yjqxUvdsindkU1epv4LA9iH/zghVmD6ZGvPzL/q6Oqf4aIye2uGxLSphBoM+KU2Vx9hY1pgYaaa2qp8Gl9yr/RLBQeVpAoLtjrz4JQyP+8cMu2gxa9UJ5OaxpmtPa34K48=
+	t=1780164894; cv=none; b=fRE+wFiWpna8CD7gzfXyyuoLeXzRsptoqpKQ+BOUKnNs3SpyRirg1OxSW64elHfxfZkMES37fRSvXCeNB6+zSkQY8ILvXkcVVc0yHFgyxw+uXGV8YLP8142IGDqBK4FuhJpccRipCvq9zRxdoqAkfzPg7omK+GtCbzd012RQeig=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780166936; c=relaxed/simple;
-	bh=tcVI3/PttgSvSsMo96VPVLb8QlIgTxaPEmGxE1GD8tE=;
+	s=arc-20240116; t=1780164894; c=relaxed/simple;
+	bh=ZGQiB1utHaXO8kslZu+Dc86tnlsfZ2OvgRCPGPUBrDY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=AOTrDFpC2TMqMV4JW2ksWIMYiQanVYxfv02kBljhCRrQX0USyFhmFtF0BlsrqFcuZGAOB5auWNdx9XPU7ME52i5EmrouSzjBGG4oNVC5ADQsHPi32gpuY9Oqk4hu4WM4VSr4cEOdQkFysxCZ234seBFxcLgxjZzh8wg50rqgpwA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=faYt0ZQI; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 456EE1F00893;
-	Sat, 30 May 2026 18:48:54 +0000 (UTC)
+	 MIME-Version; b=K94CcIP+1gKwKjFrpRUeVK/IIRtIj9KAG/H3IMgQZ5NEJ2qfCsEKz6u9lrqJ1ld8C+wA4PPDRZQ6reJk6cD82qI8HcHyCIi3gQ11xrnol8WZwemHNj/Y4Ytdmzw4vIjs6H/Xzq3n+/M87SCkx8QLUY8BC/EwWSJ+w6+2hwZL9tA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KYI+tgwN; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0C9261F00893;
+	Sat, 30 May 2026 18:14:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780166934;
-	bh=30GBYwRmRnkHN20sQpu6gmD3fCbMgiK7TW+3AgGs5TE=;
+	s=korg; t=1780164893;
+	bh=SczVxek6z88+MACiWIrNQGluRSA4/O1jVTwyVGCEhvE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=faYt0ZQI6VX/btf97ULITPna9XWBrjytvYsZUINqUzmGeBZ8uGxRLpF/5/j1wYk57
-	 wKSILbl0Ts6+YEc7kSMSaT41k/Nw55FYMvzVKxP2FqHkqdhHYaD3YTWXrcX3d3nR26
-	 1f1gCvC+Sv27fZF20ferDWvhfNcTLR9F3o9nqGcg=
+	b=KYI+tgwNc0zIdwY5CbhZt2qEwJqSrTqNJ9JW4BDNuSWpeggb7s5X22GAqTMMc8S7O
+	 3OPg2qwSCWtA9ePwXuNa7y0mUfpZJ1MDNf4F1JWnPBaXyfmjDjd/Mt7lk8B7zCZIZD
+	 XUDEmqeqNb9IeNaKKz5coqwgj/10iUzyEGE8gKNg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Naval=20Alcal=C3=A1?= <ari@naval.cat>,
-	Lu Baolu <baolu.lu@linux.intel.com>,
-	Joerg Roedel <joerg.roedel@amd.com>
-Subject: [PATCH 5.10 516/589] iommu/vt-d: Disable DMAR for Intel Q35 IGFX
+	Jann Horn <jannh@google.com>,
+	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+Subject: [PATCH 5.15 683/776] Bluetooth: bnep: Fix UAF read of dev->name
 Date: Sat, 30 May 2026 18:06:37 +0200
-Message-ID: <20260530160238.191163241@linuxfoundation.org>
+Message-ID: <20260530160257.516145371@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260530160224.570625122@linuxfoundation.org>
-References: <20260530160224.570625122@linuxfoundation.org>
+In-Reply-To: <20260530160240.228940103@linuxfoundation.org>
+References: <20260530160240.228940103@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,81 +62,77 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-2.16 / 15.00];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-259198-lists,stable=lfdr.de];
-	FROM_HAS_DN(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	RCPT_COUNT_FIVE(0.00)[6];
+	RCVD_TLS_LAST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-258600-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
+	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[stable];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_FIVE(0.00)[5];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[intel.com:email,amd.com:email,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim]
-X-Rspamd-Queue-Id: 06596612B53
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,intel.com:email]
+X-Rspamd-Queue-Id: E820D611646
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Naval Alcalá <ari@naval.cat>
+From: Jann Horn <jannh@google.com>
 
-commit 2cda2e10dc8343ae01eae9e999a876b7e7d37861 upstream.
+commit 59e932ded949fa6f0340bf7c6d7818f962fa4fd2 upstream.
 
-Intel Q35 integrated graphics (8086:29b2) exhibits broken DMAR
-behaviour similar to other G4x/GM45 devices for which DMAR is
-already disabled via quirks.
+bnep_add_connection() needs to keep holding the bnep_session_sem while
+reading dev->name (just like bnep_get_connlist() does); otherwise the
+bnep_session() thread can concurrently free the net_device, which can for
+example be triggered by a concurrent bnep_del_connection().
 
-When DMAR is enabled, the system may hard lock up during boot or
-early device initialization, requiring a reset.
+(This UAF is fairly uninteresting from a security perspective;
+calling bnep_add_connection() requires passing a capable(CAP_NET_ADMIN)
+check. It also requires completely tearing down a netdev during a fairly
+tight race window.)
 
-Add the missing PCI ID to the existing quirk list to disable
-DMAR for this device.
-
-Fixes: 1f76249cc3be ("iommu/vt-d: Declare Broadwell igfx dmar support snafu")
 Cc: stable@vger.kernel.org
-Closes: https://bugzilla.kernel.org/show_bug.cgi?id=201185
-Closes: https://bugzilla.kernel.org/show_bug.cgi?id=216064
-Signed-off-by: Naval Alcalá <ari@naval.cat>
-Link: https://lore.kernel.org/r/20260410161622.13549-1-ari@naval.cat
-Signed-off-by: Lu Baolu <baolu.lu@linux.intel.com>
-Signed-off-by: Joerg Roedel <joerg.roedel@amd.com>
+Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
+Signed-off-by: Jann Horn <jannh@google.com>
+Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/iommu/intel/iommu.c |    3 +++
- 1 file changed, 3 insertions(+)
+ net/bluetooth/bnep/core.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/iommu/intel/iommu.c
-+++ b/drivers/iommu/intel/iommu.c
-@@ -6225,6 +6225,9 @@ static void quirk_iommu_igfx(struct pci_
- 	dmar_map_gfx = 0;
- }
+--- a/net/bluetooth/bnep/core.c
++++ b/net/bluetooth/bnep/core.c
+@@ -638,8 +638,8 @@ int bnep_add_connection(struct bnep_conn
+ 		goto failed;
+ 	}
  
-+/* Q35 integrated gfx dmar support is totally busted. */
-+DECLARE_PCI_FIXUP_HEADER(PCI_VENDOR_ID_INTEL, 0x29b2, quirk_iommu_igfx);
-+
- /* G4x/GM45 integrated gfx dmar support is totally busted. */
- DECLARE_PCI_FIXUP_HEADER(PCI_VENDOR_ID_INTEL, 0x2a40, quirk_iommu_igfx);
- DECLARE_PCI_FIXUP_HEADER(PCI_VENDOR_ID_INTEL, 0x2e00, quirk_iommu_igfx);
+-	up_write(&bnep_session_sem);
+ 	strcpy(req->device, dev->name);
++	up_write(&bnep_session_sem);
+ 	return 0;
+ 
+ failed:
 
 
 
