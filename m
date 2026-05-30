@@ -1,46 +1,46 @@
-Return-Path: <stable+bounces-257628-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-257630-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id IHhEMgcdG2p3/QgAu9opvQ
-	(envelope-from <stable+bounces-257628-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:23:19 +0200
+	id 8BW7Lw4dG2qV/QgAu9opvQ
+	(envelope-from <stable+bounces-257630-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:23:26 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id CE41660F896
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:23:18 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C24E960F8AB
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:23:25 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 7426B300BC5F
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 17:20:40 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 29848300C3BB
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 17:20:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 66EBB3161A3;
-	Sat, 30 May 2026 17:20:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 26AA73242D7;
+	Sat, 30 May 2026 17:20:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="quLUJ0lK"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Ra8HEsNH"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 311D114A62B;
-	Sat, 30 May 2026 17:20:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C5A6C14A62B;
+	Sat, 30 May 2026 17:20:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780161639; cv=none; b=drizlvrBgK/ubEk4GCWK/k8CuWVpKv86RmIXJwr2zW4U9YPORUlgLNsQSCUzoMO3IYZBDv7mft6WBTN/bpeAyMQY2xJoTV/SihhSZtF2Sdumw07JaAEHZfTf1MEpPyi2bD5ZXejM6NIHHBSIW43xhzdhpZ5f9+AiIzhWfPnoTYY=
+	t=1780161645; cv=none; b=CtZhrS7LgSPZQoZi5NvB5Nbc7RmsQURngnGASiQ+R1PQHrAhGlP2dOLCB6leS8WuQUri+ZHmtaniFfwChoje7dY/7AuwdAihfmLqbthozGdwvr4GVHazL1u5CobAR9ZWJ+mE46528LKrnmXsOp+enAXsWgkxY9Lnd56qVNvDMjY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780161639; c=relaxed/simple;
-	bh=LvqubEgZ7jP09zT8wYQ9U9136QYKPdhd3Gh6aI+2P68=;
+	s=arc-20240116; t=1780161645; c=relaxed/simple;
+	bh=NSIHRtSgrFX3i1yoOif46eFe5HoxJWy3UFJ+qzFDaQo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=UmnQXJz+FUBaRKJa1sUTu4um3TllJUNkZFqZgHMOZtyQ1gal6m79vihrmWv2cDjufwsuS/wZZExP2nl6U8e/xkztozEML6TuPh7E0/tZE2KOdXgAj1UPLP4nydprQhhCYvaWR4f/AOoyODGiIiGX4pUdrVSwPrx7MdAJIaoR3LI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=quLUJ0lK; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 765F31F00893;
-	Sat, 30 May 2026 17:20:37 +0000 (UTC)
+	 MIME-Version; b=et8kOsZ6FuIdQ/73hZA+Dm4AGhhytZJNwqYJR54Ht5VcqDiSdZv/eqZVT2T94zw/Ur99IAyieICFFieqHhgAq0h87Of1efJOYKx7OT7AVLk3tlLl6ik64vFuGM1YLG91fZrJKMRcUHYrRd5tDC3oxK4wlHbXOo2I9z/FScUOlPQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Ra8HEsNH; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1407D1F00893;
+	Sat, 30 May 2026 17:20:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780161638;
-	bh=AZUTv+N0NeNhh2VbesiEdKDdW2XLAFSjtx6HUIvhNw4=;
+	s=korg; t=1780161644;
+	bh=UdMJoBaG9py8Am/+dZwE9sx+MWfUS/IZFHDkUYlaxIc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=quLUJ0lK2eLHFqDJ5LP4M3bxajoWVvOGPyxhizWlg5+g6LfiJdUzqKKHSXK2PivcH
-	 /9wpOKQp+JzB/82S2b7gttUxHR8UJXeovtPPPuBF7f3uR8V5nTl3VzBnjuMyAUAy8Z
-	 fnDxuhjoev6uVSZjpsEhmAvGpmYx1zhfiqqHxDnU=
+	b=Ra8HEsNHxPOcd8qaRuKrQTRP6K2AJXMA16g5jcibgfeb3WA6joFNcyksbH7QdESuE
+	 b2EWpI1kHBzuHCshMl/cHbc6VWE8n472qh52mxhlGLvH6oLhgrDJzIFdijOI0fw0nd
+	 yE7MxbbRdMis9/SUlRaxj9Y8e64mXx/9bRZdiYKI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -49,9 +49,9 @@ Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	Kurt Kanzenbach <kurt@linutronix.de>,
 	"David S. Miller" <davem@davemloft.net>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 683/969] net/sched: taprio: refactor one skb dequeue from TXQ to separate function
-Date: Sat, 30 May 2026 18:03:27 +0200
-Message-ID: <20260530160319.365911839@linuxfoundation.org>
+Subject: [PATCH 6.1 684/969] net/sched: taprio: rename close_time to end_time
+Date: Sat, 30 May 2026 18:03:28 +0200
+Message-ID: <20260530160319.394712220@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
 In-Reply-To: <20260530160300.485627683@linuxfoundation.org>
 References: <20260530160300.485627683@linuxfoundation.org>
@@ -75,7 +75,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-257628-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-257630-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
@@ -91,7 +91,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	TAGGED_RCPT(0.00)[stable];
 	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[]
-X-Rspamd-Queue-Id: CE41660F896
+X-Rspamd-Queue-Id: C24E960F8AB
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
@@ -101,14 +101,21 @@ X-Rspamd-Server: lfdr
 
 From: Vladimir Oltean <vladimir.oltean@nxp.com>
 
-[ Upstream commit 92f966674f6a257eddfa60a85f9b6741d6087ccb ]
+[ Upstream commit e5517551112ff2395611e552443932152f83672d ]
 
-Future changes will refactor the TXQ selection procedure, and a lot of
-stuff will become messy, the indentation of the bulk of the dequeue
-procedure would increase, etc.
+There is a confusion in terms in taprio which makes what is called
+"close_time" to be actually used for 2 things:
 
-Break out the bulk of the function into a new one, which knows the TXQ
-(child qdisc) we should perform a dequeue from.
+1. determining when an entry "closes" such that transmitted skbs are
+   never allowed to overrun that time (?!)
+2. an aid for determining when to advance and/or restart the schedule
+   using the hrtimer
+
+It makes more sense to call this so-called "close_time" "end_time",
+because it's not clear at all to me what "closes". Future patches will
+hopefully make better use of the term "to close".
+
+This is an absolutely mechanical change.
 
 Signed-off-by: Vladimir Oltean <vladimir.oltean@nxp.com>
 Reviewed-by: Kurt Kanzenbach <kurt@linutronix.de>
@@ -116,148 +123,179 @@ Signed-off-by: David S. Miller <davem@davemloft.net>
 Stable-dep-of: 105425b1969c ("net/sched: taprio: fix use-after-free in advance_sched() on schedule switch")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/sched/sch_taprio.c | 121 +++++++++++++++++++++--------------------
- 1 file changed, 63 insertions(+), 58 deletions(-)
+ net/sched/sch_taprio.c | 52 +++++++++++++++++++++---------------------
+ 1 file changed, 26 insertions(+), 26 deletions(-)
 
 diff --git a/net/sched/sch_taprio.c b/net/sched/sch_taprio.c
-index aad95b084ae36..10e1a420d4495 100644
+index 10e1a420d4495..ce529b9448819 100644
 --- a/net/sched/sch_taprio.c
 +++ b/net/sched/sch_taprio.c
-@@ -551,6 +551,66 @@ static void taprio_set_budget(struct taprio_sched *q, struct sched_entry *entry)
- 			     atomic64_read(&q->picos_per_byte)));
- }
+@@ -37,11 +37,11 @@ static LIST_HEAD(taprio_list);
+ struct sched_entry {
+ 	struct list_head list;
  
-+static struct sk_buff *taprio_dequeue_from_txq(struct Qdisc *sch, int txq,
-+					       struct sched_entry *entry,
-+					       u32 gate_mask)
-+{
-+	struct taprio_sched *q = qdisc_priv(sch);
-+	struct net_device *dev = qdisc_dev(sch);
-+	struct Qdisc *child = q->qdiscs[txq];
-+	struct sk_buff *skb;
-+	ktime_t guard;
-+	int prio;
-+	int len;
-+	u8 tc;
-+
-+	if (unlikely(!child))
-+		return NULL;
-+
-+	if (TXTIME_ASSIST_IS_ENABLED(q->flags)) {
-+		skb = child->ops->dequeue(child);
-+		if (!skb)
-+			return NULL;
-+		goto skb_found;
-+	}
-+
-+	skb = child->ops->peek(child);
-+	if (!skb)
-+		return NULL;
-+
-+	prio = skb->priority;
-+	tc = netdev_get_prio_tc_map(dev, prio);
-+
-+	if (!(gate_mask & BIT(tc)))
-+		return NULL;
-+
-+	len = qdisc_pkt_len(skb);
-+	guard = ktime_add_ns(taprio_get_time(q), length_to_duration(q, len));
-+
-+	/* In the case that there's no gate entry, there's no
-+	 * guard band ...
-+	 */
-+	if (gate_mask != TAPRIO_ALL_GATES_OPEN &&
-+	    ktime_after(guard, entry->close_time))
-+		return NULL;
-+
-+	/* ... and no budget. */
-+	if (gate_mask != TAPRIO_ALL_GATES_OPEN &&
-+	    atomic_sub_return(len, &entry->budget) < 0)
-+		return NULL;
-+
-+	skb = child->ops->dequeue(child);
-+	if (unlikely(!skb))
-+		return NULL;
-+
-+skb_found:
-+	qdisc_bstats_update(sch, skb);
-+	qdisc_qstats_backlog_dec(sch, skb);
-+	sch->q.qlen--;
-+
-+	return skb;
-+}
-+
- /* Will not be called in the full offload case, since the TX queues are
-  * attached to the Qdisc created using qdisc_create_dflt()
-  */
-@@ -576,64 +636,9 @@ static struct sk_buff *taprio_dequeue(struct Qdisc *sch)
- 		goto done;
+-	/* The instant that this entry "closes" and the next one
++	/* The instant that this entry ends and the next one
+ 	 * should open, the qdisc will make some effort so that no
+ 	 * packet leaves after this time.
+ 	 */
+-	ktime_t close_time;
++	ktime_t end_time;
+ 	ktime_t next_txtime;
+ 	atomic_t budget;
+ 	int index;
+@@ -54,7 +54,7 @@ struct sched_gate_list {
+ 	struct rcu_head rcu;
+ 	struct list_head entries;
+ 	size_t num_entries;
+-	ktime_t cycle_close_time;
++	ktime_t cycle_end_time;
+ 	s64 cycle_time;
+ 	s64 cycle_time_extension;
+ 	s64 base_time;
+@@ -591,7 +591,7 @@ static struct sk_buff *taprio_dequeue_from_txq(struct Qdisc *sch, int txq,
+ 	 * guard band ...
+ 	 */
+ 	if (gate_mask != TAPRIO_ALL_GATES_OPEN &&
+-	    ktime_after(guard, entry->close_time))
++	    ktime_after(guard, entry->end_time))
+ 		return NULL;
  
- 	for (i = 0; i < dev->num_tx_queues; i++) {
--		struct Qdisc *child = q->qdiscs[i];
--		ktime_t guard;
--		int prio;
--		int len;
--		u8 tc;
--
--		if (unlikely(!child))
--			continue;
--
--		if (TXTIME_ASSIST_IS_ENABLED(q->flags)) {
--			skb = child->ops->dequeue(child);
--			if (!skb)
--				continue;
--			goto skb_found;
--		}
--
--		skb = child->ops->peek(child);
--		if (!skb)
--			continue;
--
--		prio = skb->priority;
--		tc = netdev_get_prio_tc_map(dev, prio);
--
--		if (!(gate_mask & BIT(tc))) {
--			skb = NULL;
--			continue;
--		}
--
--		len = qdisc_pkt_len(skb);
--		guard = ktime_add_ns(taprio_get_time(q),
--				     length_to_duration(q, len));
--
--		/* In the case that there's no gate entry, there's no
--		 * guard band ...
--		 */
--		if (gate_mask != TAPRIO_ALL_GATES_OPEN &&
--		    ktime_after(guard, entry->close_time)) {
--			skb = NULL;
--			continue;
--		}
--
--		/* ... and no budget. */
--		if (gate_mask != TAPRIO_ALL_GATES_OPEN &&
--		    atomic_sub_return(len, &entry->budget) < 0) {
--			skb = NULL;
--			continue;
--		}
--
--		skb = child->ops->dequeue(child);
--		if (unlikely(!skb))
--			continue;
--
--skb_found:
--		qdisc_bstats_update(sch, skb);
--		qdisc_qstats_backlog_dec(sch, skb);
--		sch->q.qlen--;
--
--		goto done;
-+		skb = taprio_dequeue_from_txq(sch, i, entry, gate_mask);
-+		if (skb)
-+			goto done;
+ 	/* ... and no budget. */
+@@ -653,7 +653,7 @@ static bool should_restart_cycle(const struct sched_gate_list *oper,
+ 	if (list_is_last(&entry->list, &oper->entries))
+ 		return true;
+ 
+-	if (ktime_compare(entry->close_time, oper->cycle_close_time) == 0)
++	if (ktime_compare(entry->end_time, oper->cycle_end_time) == 0)
+ 		return true;
+ 
+ 	return false;
+@@ -661,7 +661,7 @@ static bool should_restart_cycle(const struct sched_gate_list *oper,
+ 
+ static bool should_change_schedules(const struct sched_gate_list *admin,
+ 				    const struct sched_gate_list *oper,
+-				    ktime_t close_time)
++				    ktime_t end_time)
+ {
+ 	ktime_t next_base_time, extension_time;
+ 
+@@ -670,18 +670,18 @@ static bool should_change_schedules(const struct sched_gate_list *admin,
+ 
+ 	next_base_time = sched_base_time(admin);
+ 
+-	/* This is the simple case, the close_time would fall after
++	/* This is the simple case, the end_time would fall after
+ 	 * the next schedule base_time.
+ 	 */
+-	if (ktime_compare(next_base_time, close_time) <= 0)
++	if (ktime_compare(next_base_time, end_time) <= 0)
+ 		return true;
+ 
+-	/* This is the cycle_time_extension case, if the close_time
++	/* This is the cycle_time_extension case, if the end_time
+ 	 * plus the amount that can be extended would fall after the
+ 	 * next schedule base_time, we can extend the current schedule
+ 	 * for that amount.
+ 	 */
+-	extension_time = ktime_add_ns(close_time, oper->cycle_time_extension);
++	extension_time = ktime_add_ns(end_time, oper->cycle_time_extension);
+ 
+ 	/* FIXME: the IEEE 802.1Q-2018 Specification isn't clear about
+ 	 * how precisely the extension should be made. So after
+@@ -700,7 +700,7 @@ static enum hrtimer_restart advance_sched(struct hrtimer *timer)
+ 	struct sched_gate_list *oper, *admin;
+ 	struct sched_entry *entry, *next;
+ 	struct Qdisc *sch = q->root;
+-	ktime_t close_time;
++	ktime_t end_time;
+ 
+ 	spin_lock(&q->current_entry_lock);
+ 	entry = rcu_dereference_protected(q->current_entry,
+@@ -719,41 +719,41 @@ static enum hrtimer_restart advance_sched(struct hrtimer *timer)
+ 	 * entry of all schedules are pre-calculated during the
+ 	 * schedule initialization.
+ 	 */
+-	if (unlikely(!entry || entry->close_time == oper->base_time)) {
++	if (unlikely(!entry || entry->end_time == oper->base_time)) {
+ 		next = list_first_entry(&oper->entries, struct sched_entry,
+ 					list);
+-		close_time = next->close_time;
++		end_time = next->end_time;
+ 		goto first_run;
  	}
  
- done:
+ 	if (should_restart_cycle(oper, entry)) {
+ 		next = list_first_entry(&oper->entries, struct sched_entry,
+ 					list);
+-		oper->cycle_close_time = ktime_add_ns(oper->cycle_close_time,
+-						      oper->cycle_time);
++		oper->cycle_end_time = ktime_add_ns(oper->cycle_end_time,
++						    oper->cycle_time);
+ 	} else {
+ 		next = list_next_entry(entry, list);
+ 	}
+ 
+-	close_time = ktime_add_ns(entry->close_time, next->interval);
+-	close_time = min_t(ktime_t, close_time, oper->cycle_close_time);
++	end_time = ktime_add_ns(entry->end_time, next->interval);
++	end_time = min_t(ktime_t, end_time, oper->cycle_end_time);
+ 
+-	if (should_change_schedules(admin, oper, close_time)) {
++	if (should_change_schedules(admin, oper, end_time)) {
+ 		/* Set things so the next time this runs, the new
+ 		 * schedule runs.
+ 		 */
+-		close_time = sched_base_time(admin);
++		end_time = sched_base_time(admin);
+ 		switch_schedules(q, &admin, &oper);
+ 	}
+ 
+-	next->close_time = close_time;
++	next->end_time = end_time;
+ 	taprio_set_budget(q, next);
+ 
+ first_run:
+ 	rcu_assign_pointer(q->current_entry, next);
+ 	spin_unlock(&q->current_entry_lock);
+ 
+-	hrtimer_set_expires(&q->advance_timer, close_time);
++	hrtimer_set_expires(&q->advance_timer, end_time);
+ 
+ 	rcu_read_lock();
+ 	__netif_schedule(sch);
+@@ -1033,8 +1033,8 @@ static int taprio_get_start_time(struct Qdisc *sch,
+ 	return 0;
+ }
+ 
+-static void setup_first_close_time(struct taprio_sched *q,
+-				   struct sched_gate_list *sched, ktime_t base)
++static void setup_first_end_time(struct taprio_sched *q,
++				 struct sched_gate_list *sched, ktime_t base)
+ {
+ 	struct sched_entry *first;
+ 	ktime_t cycle;
+@@ -1045,9 +1045,9 @@ static void setup_first_close_time(struct taprio_sched *q,
+ 	cycle = sched->cycle_time;
+ 
+ 	/* FIXME: find a better place to do this */
+-	sched->cycle_close_time = ktime_add_ns(base, cycle);
++	sched->cycle_end_time = ktime_add_ns(base, cycle);
+ 
+-	first->close_time = ktime_add_ns(base, first->interval);
++	first->end_time = ktime_add_ns(base, first->interval);
+ 	taprio_set_budget(q, first);
+ 	rcu_assign_pointer(q->current_entry, NULL);
+ }
+@@ -1679,7 +1679,7 @@ static int taprio_change(struct Qdisc *sch, struct nlattr *opt,
+ 		if (admin)
+ 			call_rcu(&admin->rcu, taprio_free_sched_cb);
+ 	} else {
+-		setup_first_close_time(q, new_admin, start);
++		setup_first_end_time(q, new_admin, start);
+ 
+ 		/* Protects against advance_sched() */
+ 		spin_lock_irqsave(&q->current_entry_lock, flags);
 -- 
 2.53.0
 
