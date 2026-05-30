@@ -1,58 +1,61 @@
-Return-Path: <stable+bounces-257339-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-258113-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id WOBGHJoaG2oq/QgAu9opvQ
-	(envelope-from <stable+bounces-257339-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:12:58 +0200
+	id aLUxBhkjG2rO/QgAu9opvQ
+	(envelope-from <stable+bounces-258113-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:49:13 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 20B0D60F265
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:12:58 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id AD37C61072A
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:49:12 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 21484301901A
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 17:04:12 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 6D2D03038BBF
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 17:47:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E901635200B;
-	Sat, 30 May 2026 17:04:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7BD483B995E;
+	Sat, 30 May 2026 17:47:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pJNIgo5H"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EQdpJ3Dy"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3B75632B11D;
-	Sat, 30 May 2026 17:04:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A52463AFD11;
+	Sat, 30 May 2026 17:47:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780160650; cv=none; b=sNXC0rzCibvnKuXdkwWab5j6Zqqqsq55Trk6NlgO1RWJVTkbLECof1j+0xkNTnX71sEdXuceYxXt9Yz9v+KpoMrwsjNGipSa+kUhWNjtIQoTdjGnLHG1AtOVhjBB4cRMfd/HAWIZ/caNE6qbZXjJ7zPmWrXR0GWs/yj62dJbl1M=
+	t=1780163263; cv=none; b=tya+9rusdoYJ2aHtXICvfPJLayhAFDpi06tNdskxf8FAkK19H7/FVwyICyblcmtR6Cxupkgpxh4fg13TwyRdMsNEUQE5rL96pusGtz00k6XcBTIP6s7kIq9irwI+a9LYwr8qnXYDLUaUvxnh5n/cPmPyNpFU4fkZGY/k0srbsNA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780160650; c=relaxed/simple;
-	bh=WF9Yxlnt7sWkCQkx69o/r0OfTgmTJFy2uqOoQN0zcJc=;
+	s=arc-20240116; t=1780163263; c=relaxed/simple;
+	bh=mAWZalFcoovaESc6AQuraaNB/wvg2iAXpIyaSuVfK4s=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=BJQL7vFos1wOPp0kKfJfEcnccRdstnT40q+sYYfU6QGSagEO+exHB1HDwItpJJWMMigSJr9XCyZy6W/OK3GMWv/SeqQB9NivPd5VxiTnpdmNR8ac/GvQfzcMjjtJ1DfmB96T4l8E/5QWjwkNg1elewasOVMYFyzUOpM7SsHBBhQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pJNIgo5H; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7203F1F00893;
-	Sat, 30 May 2026 17:04:08 +0000 (UTC)
+	 MIME-Version; b=UbFA8EIQcaEaPcPd/AD8vJgEQ4LhlfoDnB0+erqXYw1/HaOY5+wG2xNYRDJK3B4sFWCDILj4XsgohY1qeWoZaJpBEbGiQMFuZ3LOK6vCk9D8hAihWnRSu5e6p/tVP6sTewMok/3dnnxCrMUDU2nYOr6y8+qRPnRRuKSTHu9AYMo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EQdpJ3Dy; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 709151F00898;
+	Sat, 30 May 2026 17:47:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780160649;
-	bh=OgtVu3TbyhvI7UpNFX5vzzASo49U4PHDRIDmgyXjsSs=;
+	s=korg; t=1780163259;
+	bh=O79isbwYpN8pL4Yfox79wY81/ZINSon2LcGaC/PmfJY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=pJNIgo5HkE4mh9gXdaaC4X2LvZbtQKyWW3CG9buvIMwfbxkYh1h3koXiaH8VPR7aY
-	 WjZ22ADrxkrFm4eou/mz5IJ2x348TNLGioQyPvNMbqF30w7q+Frg/hRkEBhR69afc4
-	 f1sRoezWwBkrScGwn4HXwBcxps4CDnhWjxrcQjDI=
+	b=EQdpJ3DyfjlyldQ8rKn/CS1FeAHIzyPszdrmdA/oK66fVw690b3/w6+Mh7Dxm238v
+	 UYs1sURIAvkLxNiQ/IzcjVkLXGVAimqj7XtDtcs+BuS4oaqVyJFjBiGLsEIrQsX33r
+	 YfgdY6scUTcHD2ydLeNEWV2iX6c/EPg2lDy6ayeU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sergey Shtylyov <s.shtylyov@auroraos.dev>,
-	Hans Verkuil <hverkuil+cisco@kernel.org>
-Subject: [PATCH 6.1 395/969] media: dib8000: avoid division by 0 in dib8000_set_dds()
+	Chen Ni <nichen@iscas.ac.cn>,
+	Dave Stevenson <dave.stevenson@raspberrypi.com>,
+	Jai Luthra <jai.luthra@ideasonboard.com>,
+	Sakari Ailus <sakari.ailus@linux.intel.com>,
+	Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
+Subject: [PATCH 5.15 205/776] media: i2c: imx219: Check return value of devm_gpiod_get_optional() in imx219_probe()
 Date: Sat, 30 May 2026 17:58:39 +0200
-Message-ID: <20260530160311.205404521@linuxfoundation.org>
+Message-ID: <20260530160245.807144245@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260530160300.485627683@linuxfoundation.org>
-References: <20260530160300.485627683@linuxfoundation.org>
+In-Reply-To: <20260530160240.228940103@linuxfoundation.org>
+References: <20260530160240.228940103@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,87 +66,79 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [9.34 / 15.00];
-	URIBL_BLACK(7.50)[linuxtesting.org:url];
+X-Spamd-Result: default: False [-0.16 / 15.00];
 	SUSPICIOUS_RECIPS(1.50)[];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
+	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	MAILLIST(-0.15)[generic];
-	BAD_REP_POLICIES(0.10)[];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-257339-lists,stable=lfdr.de];
-	R_DKIM_ALLOW(0.00)[linuxfoundation.org:s=korg];
-	GREYLIST(0.00)[pass,body];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	TO_DN_SOME(0.00)[];
+	TAGGED_FROM(0.00)[bounces-258113-lists,stable=lfdr.de];
+	FROM_HAS_DN(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MIME_TRACE(0.00)[0:+];
-	DMARC_POLICY_ALLOW(0.00)[linuxfoundation.org,none];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-0.920];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	RCPT_COUNT_FIVE(0.00)[5];
-	TAGGED_RCPT(0.00)[stable,cisco];
+	RCPT_COUNT_SEVEN(0.00)[8];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	R_SPF_ALLOW(0.00)[+ip4:172.232.135.74:c];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
-	ARC_ALLOW(0.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	FROM_HAS_DN(0.00)[]
-X-Rspamd-Queue-Id: 20B0D60F265
-X-Rspamd-Action: add header
+	TAGGED_RCPT(0.00)[stable,huawei];
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,intel.com:email,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,iscas.ac.cn:email,raspberrypi.com:email]
+X-Rspamd-Queue-Id: AD37C61072A
+X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
-X-Spam: Yes
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sergey Shtylyov <s.shtylyov@auroraos.dev>
+From: Chen Ni <nichen@iscas.ac.cn>
 
-commit dde3c37af95cd6fa301c4906f33d627bc9dd874c upstream.
+commit 943b1f27a3eead21b22e2531a5432ea5910b60eb upstream.
 
-In dib8000_set_dds(), 1 << 26 (67108864) divided by e.g. 1 apparently can't
-fit into 16-bit variable unit_khz_dds_val, being truncated to 0; this will
-cause division by 0 while calling dprintk() with debugging enabled (via the
-module parameter).  Use s32 instead of s16 to declare the variable, getting
-rid of the cast to u16 in the *else* branch as well...
+The devm_gpiod_get_optional() function may return an error pointer
+(ERR_PTR) in case of a genuine failure during GPIO acquisition,
+not just NULL which indicates the legitimate absence of an optional
+GPIO.
 
-Found by Linux Verification Center (linuxtesting.org) with the Svace static
-analysis tool.
+Add an IS_ERR() check after the function call to catch such errors and
+propagate them to the probe function, ensuring the driver fails to load
+safely rather than proceeding with an invalid pointer.
 
-Fixes: 173a64cb3fcf ("[media] dib8000: enhancement")
+Fixes: 1283b3b8f82b ("media: i2c: Add driver for Sony IMX219 sensor")
 Cc: stable@vger.kernel.org
-Signed-off-by: Sergey Shtylyov <s.shtylyov@auroraos.dev>
-Signed-off-by: Hans Verkuil <hverkuil+cisco@kernel.org>
+Signed-off-by: Chen Ni <nichen@iscas.ac.cn>
+Reviewed-by: Dave Stevenson <dave.stevenson@raspberrypi.com>
+Reviewed-by: Jai Luthra <jai.luthra@ideasonboard.com>
+Signed-off-by: Sakari Ailus <sakari.ailus@linux.intel.com>
+Signed-off-by: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/media/dvb-frontends/dib8000.c |    4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/media/i2c/imx219.c |    3 +++
+ 1 file changed, 3 insertions(+)
 
---- a/drivers/media/dvb-frontends/dib8000.c
-+++ b/drivers/media/dvb-frontends/dib8000.c
-@@ -2694,7 +2694,7 @@ static void dib8000_viterbi_state(struct
+--- a/drivers/media/i2c/imx219.c
++++ b/drivers/media/i2c/imx219.c
+@@ -1435,6 +1435,9 @@ static int imx219_probe(struct i2c_clien
+ 	/* Request optional enable pin */
+ 	imx219->reset_gpio = devm_gpiod_get_optional(dev, "reset",
+ 						     GPIOD_OUT_HIGH);
++	if (IS_ERR(imx219->reset_gpio))
++		return dev_err_probe(dev, PTR_ERR(imx219->reset_gpio),
++				     "failed to get reset gpio\n");
  
- static void dib8000_set_dds(struct dib8000_state *state, s32 offset_khz)
- {
--	s16 unit_khz_dds_val;
-+	s32 unit_khz_dds_val;
- 	u32 abs_offset_khz = abs(offset_khz);
- 	u32 dds = state->cfg.pll->ifreq & 0x1ffffff;
- 	u8 invert = !!(state->cfg.pll->ifreq & (1 << 25));
-@@ -2715,7 +2715,7 @@ static void dib8000_set_dds(struct dib80
- 			dds = (1<<26) - dds;
- 	} else {
- 		ratio = 2;
--		unit_khz_dds_val = (u16) (67108864 / state->cfg.pll->internal);
-+		unit_khz_dds_val = 67108864 / state->cfg.pll->internal;
- 
- 		if (offset_khz < 0)
- 			unit_khz_dds_val *= -1;
+ 	/*
+ 	 * The sensor must be powered for imx219_identify_module()
 
 
 
