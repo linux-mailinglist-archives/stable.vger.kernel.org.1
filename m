@@ -1,61 +1,60 @@
-Return-Path: <stable+bounces-258473-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-257700-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id iFlAJBcqG2r//ggAu9opvQ
-	(envelope-from <stable+bounces-258473-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:19:03 +0200
+	id yBL4Hc0dG2qW/QgAu9opvQ
+	(envelope-from <stable+bounces-257700-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:26:37 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id EE2BD611757
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:19:02 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2932460FAB4
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:26:37 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id A2A4230D8D87
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 18:07:48 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 6F95B3057351
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 17:24:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 373833B9D80;
-	Sat, 30 May 2026 18:07:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 77CBD352027;
+	Sat, 30 May 2026 17:24:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="D6eloUxE"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lo1FYM42"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 18ABF340A6F;
-	Sat, 30 May 2026 18:07:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4FE013438AE;
+	Sat, 30 May 2026 17:24:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780164468; cv=none; b=c4XR/aL4v012O68bjA3j+1BTiGh/Gh3YBZb7llX+zE/8mrnQu9x3pylOnQ86HoSTXrMkzkP6EzwYpSLXKXVpXQQ3m4uTH1CkBacMuowX0VXUG6kuXJYy+qo1ayg+K7CwjsrjqJ1RicRFKRUopEURPpRH9SVLWM1SyTbR4C8nPuE=
+	t=1780161880; cv=none; b=CW4K6cHk3Cx1eTRttanMEFFTRrXxApr0dPraRcl/O5LPZ05kyF/WXqz3rbH+rBdVVgvS8CGuduXGSuViUyvFwThfgrn+1XyOcztE6CHrFhFQeAzChSpr2GaB0zOmvb+uU4BB7nIBDUSXN5nucC7yU1CP373UVUeAgonOw/vVzoY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780164468; c=relaxed/simple;
-	bh=eRRxJCi34kJq9ZcF6QH6h6yqLlidDquyXWSmbRv4Blk=;
+	s=arc-20240116; t=1780161880; c=relaxed/simple;
+	bh=19/WFCcMp1m5XdhIEwl8SSM9+EeMOOHlou9AeZ1ZPcA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=UxY8tosQ412PjxUa0hFJD5aj775VmWeazp0UpOIfLGk3obXMKaoykNAPzGomBF1AaXuEu9Mbot2FWrJXh3w+eUidKA+WysGDKWpK1KR3nT8XDl6wM1f5Pre/ASr+q5Q1nr1w4pUdz3ilHK2IYW7PeMgBuWXelmQWNUeL13J+TDY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=D6eloUxE; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 416F71F00893;
-	Sat, 30 May 2026 18:07:46 +0000 (UTC)
+	 MIME-Version; b=ql89azMigEUDu/oJUw7/Kq6wzaOKyVbQqkLd2bm4uRqhDFB8GPTJnwrkttwF6HqfGACKz/Ydkda4ZAXkPt44uOWTur+pDE5Dkfkl5q5oDjl0mDew2/o+hesZb0JWyqhgbnHtKv2iZgF7+mczgdbXHOtCGR8Qd1062CwV1rTzYRA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lo1FYM42; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9423A1F00893;
+	Sat, 30 May 2026 17:24:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780164466;
-	bh=F3wQ/i6KGYIW3zWf3zqGw/KGnAn3T7nyA5/+8gNgtFU=;
+	s=korg; t=1780161879;
+	bh=8gaHiVUdXHiQFDpJ8d163EU1KwRpusgidEoxoGgjTfM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=D6eloUxE7lcv7TN455grqiDGouzB5kkzryO2W0v6QzdWyPDHGdchXJaFiesaDiuvp
-	 6KFUDEeiXbCImLhWlVSvx4LwycBB9YeGDZgQaYRbMKn/er7LOYg04arDnNU3dvZNP0
-	 CO52PsDKMxtPBmwv+yf9DBsEbOBVrhCBJs2QpAmA=
+	b=lo1FYM42OdB4Hrc5HKUp5PwdaxHCPQZiFv/LdqcJIvxA7MGGr4Jx420nzDMiSHcae
+	 0pJfTX7pFNbnLf2QnRoiA8x0jLnrJ9h/Qd21cI2f9RPwPqDepsml99EbF44Np6hb/0
+	 XFkf35+fsoVRre2KlkZ+wRK4Y5T7sGxD+djZByxI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Matt Vollrath <tactii@gmail.com>,
-	Avigail Dahan <avigailx.dahan@intel.com>,
-	Jacob Keller <jacob.e.keller@intel.com>,
+	Andrew Lunn <andrew@lunn.ch>,
+	Morduan Zang <zhangdandan@uniontech.com>,
 	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 564/776] e1000e: Unroll PTP in probe error handling
+Subject: [PATCH 6.1 754/969] net: usb: rtl8150: free skb on usb_submit_urb() failure in xmit
 Date: Sat, 30 May 2026 18:04:38 +0200
-Message-ID: <20260530160254.702369386@linuxfoundation.org>
+Message-ID: <20260530160321.384735802@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260530160240.228940103@linuxfoundation.org>
-References: <20260530160240.228940103@linuxfoundation.org>
+In-Reply-To: <20260530160300.485627683@linuxfoundation.org>
+References: <20260530160300.485627683@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -70,71 +69,89 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,intel.com,kernel.org];
-	TAGGED_FROM(0.00)[bounces-258473-lists,stable=lfdr.de];
-	PRECEDENCE_BULK(0.00)[];
+	TAGGED_FROM(0.00)[bounces-257700-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	PRECEDENCE_BULK(0.00)[];
 	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-0.996];
+	NEURAL_HAM(-0.00)[-1.000];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[8];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
 	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,intel.com:email,msgid.link:url,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
-X-Rspamd-Queue-Id: EE2BD611757
+	FROM_HAS_DN(0.00)[]
+X-Rspamd-Queue-Id: 2932460FAB4
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Matt Vollrath <tactii@gmail.com>
+From: Morduan Zang <zhangdandan@uniontech.com>
 
-[ Upstream commit aa3f7fe409350857c25d050482a2eef2cfd69b58 ]
+[ Upstream commit adbe2cdf75461891e50dbe11896ac78e9af1f874 ]
 
-If probe fails after registering the PTP clock and its delayed work,
-these resources must be released.
+When rtl8150_start_xmit() fails to submit the tx URB, the URB is never
+handed to the USB core and write_bulk_callback() will not run.  The
+driver returns NETDEV_TX_OK, which tells the networking stack that the
+skb has been consumed, but nothing actually frees the skb on this
+error path:
 
-This was not an issue until a 2016 fix moved the e1000e_ptp_init() call
-before the jump to err_register.
+  dev->tx_skb = skb;
+  ...
+  if ((res = usb_submit_urb(dev->tx_urb, GFP_ATOMIC))) {
+          ...
+          /* no kfree_skb here */
+  }
+  return NETDEV_TX_OK;
 
-Fixes: aa524b66c5ef ("e1000e: don't modify SYSTIM registers during SIOCSHWTSTAMP ioctl")
-Signed-off-by: Matt Vollrath <tactii@gmail.com>
-Tested-by: Avigail Dahan <avigailx.dahan@intel.com>
-Signed-off-by: Jacob Keller <jacob.e.keller@intel.com>
-Link: https://patch.msgid.link/20260416-iwl-net-submission-2026-04-14-v2-12-686c33c9828d@intel.com
+This leaks the skb on every submit failure and also leaves dev->tx_skb
+pointing at memory that the driver itself may later free, which is
+fragile.
+
+Free the skb with dev_kfree_skb_any() in the error path and clear
+dev->tx_skb so no stale pointer is left behind.
+
+Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
+Reviewed-by: Andrew Lunn <andrew@lunn.ch>
+Signed-off-by: Morduan Zang <zhangdandan@uniontech.com>
+Link: https://patch.msgid.link/E7D3E1C013C5A859+20260424015517.9574-1-zhangdandan@uniontech.com
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/intel/e1000e/netdev.c | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/net/usb/rtl8150.c | 7 +++++++
+ 1 file changed, 7 insertions(+)
 
-diff --git a/drivers/net/ethernet/intel/e1000e/netdev.c b/drivers/net/ethernet/intel/e1000e/netdev.c
-index 3216089642648..2154d476f9da6 100644
---- a/drivers/net/ethernet/intel/e1000e/netdev.c
-+++ b/drivers/net/ethernet/intel/e1000e/netdev.c
-@@ -7708,6 +7708,7 @@ static int e1000_probe(struct pci_dev *pdev, const struct pci_device_id *ent)
- err_register:
- 	if (!(adapter->flags & FLAG_HAS_AMT))
- 		e1000e_release_hw_control(adapter);
-+	e1000e_ptp_remove(adapter);
- err_eeprom:
- 	if (hw->phy.ops.check_reset_block && !hw->phy.ops.check_reset_block(hw))
- 		e1000_phy_hw_reset(&adapter->hw);
+diff --git a/drivers/net/usb/rtl8150.c b/drivers/net/usb/rtl8150.c
+index 8700ae392b10a..647f28b367b99 100644
+--- a/drivers/net/usb/rtl8150.c
++++ b/drivers/net/usb/rtl8150.c
+@@ -712,6 +712,13 @@ static netdev_tx_t rtl8150_start_xmit(struct sk_buff *skb,
+ 			netdev->stats.tx_errors++;
+ 			netif_start_queue(netdev);
+ 		}
++		/*
++		 * The URB was not submitted, so write_bulk_callback() will
++		 * never run to free dev->tx_skb.  Drop the skb here and
++		 * clear tx_skb to avoid leaving a stale pointer.
++		 */
++		dev->tx_skb = NULL;
++		dev_kfree_skb_any(skb);
+ 	} else {
+ 		netdev->stats.tx_packets++;
+ 		netdev->stats.tx_bytes += skb_len;
 -- 
 2.53.0
 
