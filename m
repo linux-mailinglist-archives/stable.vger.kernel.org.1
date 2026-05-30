@@ -1,60 +1,58 @@
-Return-Path: <stable+bounces-258763-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-258159-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id ACviKeMrG2r//ggAu9opvQ
-	(envelope-from <stable+bounces-258763-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:26:43 +0200
+	id 4NeMH1cjG2rO/QgAu9opvQ
+	(envelope-from <stable+bounces-258159-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:50:15 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 606A5611BEE
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:26:43 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id 32AE36107E0
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:50:15 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id DCB6C30A5D61
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 18:24:19 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 752DB3004F1F
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 17:50:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3E0ED339863;
-	Sat, 30 May 2026 18:24:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id ABD963AB482;
+	Sat, 30 May 2026 17:50:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Z5EPRJ7r"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FGt/z83X"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 02554217704;
-	Sat, 30 May 2026 18:24:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 91F43304BCB;
+	Sat, 30 May 2026 17:50:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780165457; cv=none; b=IYkJ67wlZtZztFSxnTcM8P4nYk+0kusIFhnu4FYiXeOh8mC/+8feVdN85COXLKr+rGdHVgifFmtHKlv4G6RPIfm06wOjEbn0F9a31Xnlrgowi37BW4CZIRd1GRK9Nfs2WgbUbfivBfXFdTIuNMoEAkuihvVLAU4gsanIbI/6Bbc=
+	t=1780163413; cv=none; b=OlOXBy7FceyNE2555GYTIL87eMkmDuTjTzCJo6z6GYRTSHOPDstr5TzDa5e5J/j0waV9IxrQwo1f7/DhD6xrzWf9DRBdrsbmKed8T5AitNe8npqLoO3B//80dAOsAQH3+tD2mm04YQjL3yurtA0riVv5cFHoZ4bSH+7b5ij+e7w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780165457; c=relaxed/simple;
-	bh=Z7+2yrgls0k5KK6kqOtSTXZ4glx7qAgXkd8SDcv0pWM=;
+	s=arc-20240116; t=1780163413; c=relaxed/simple;
+	bh=bndwLFz3sY9vjAqe8eB5wuM8YoIjrHdPnCdxFdY/JS4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=RH/kKq99Xjf+NZkUxV6KUnuDOWjXc3m1997FAVTiAJuq60TMrOgCLNIP+joxvfdNLGByP04MwuARIO7vTXbPfoGLD8bB8Qh2s0ebb/UMbiik6Ufk+YYAU2fb57RwdDLzmw73IV07FCkI5ssVkxP+p9IgJr2eJQ6zkstwfxk1dws=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Z5EPRJ7r; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4604F1F00893;
-	Sat, 30 May 2026 18:24:15 +0000 (UTC)
+	 MIME-Version; b=qSPajjpJeBm7B7+tegYUgx3ktBK7t85/NzUKyFPs8UJdfQna5vOgbDuV81OQu3tBFqx9EhWNa35dp1GIGwMmUq7b4ZtUvBRFjf9KUMJgjCf9VXmHsqS7ri76vgKXF/rmuNh0XPVPScewlaBVmArVbA7UUATOMt8VVJn9zXrd8UM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FGt/z83X; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8EB5C1F00893;
+	Sat, 30 May 2026 17:50:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780165455;
-	bh=shejnwcA7C/2AmLS4eTdTFqOeNkmB7N0Iy0s8gooZJs=;
+	s=korg; t=1780163412;
+	bh=YFD6RnKIslig/V7bkA06iF2wzr7ttusETOsyGqe6Zao=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=Z5EPRJ7r/kiCJWTYFUh6wmv2ExYoeZvZ6E69cd7G6q2O9v/hdXM84VX51PJBvP7ZI
-	 jqr1viOFLkSnNgZffqxKHTjkwF9efTqWdBydX//do+ax10gB4udMjqd+S/CJ56/wIK
-	 cKPrxFQQMf1ceeIWg6S8UXq/D+Z4YYllFi7AJqBE=
+	b=FGt/z83XN1fYPVnnsQbFS/U0ZkTtea+gnCBXOsqquDEt9Nbc9+qNoCZ9zOonBsIrz
+	 hhYREQk6HMQkGLMZc9FJY+ud3U6QTrD/F3var5kBNlj4mLjpmaj+s55fHmBOkyA8b2
+	 RN8JyUgjI1LsEDawMsSQ22OLNZSUR2SnspknH7S4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+6ffd76b5405c006a46b7@syzkaller.appspotmail.com,
-	syzbot+f1b20958f93d2d250727@syzkaller.appspotmail.com,
-	Jeongjun Park <aha310510@gmail.com>,
-	Hans Verkuil <hverkuil+cisco@kernel.org>
-Subject: [PATCH 5.10 083/589] media: hackrf: fix to not free memory after the device is registered in hackrf_probe()
+	Ard Biesheuvel <ardb@kernel.org>,
+	Eric Biggers <ebiggers@kernel.org>
+Subject: [PATCH 5.15 250/776] crypto: arm64/aes - Fix 32-bit aes_mac_update() arg treated as 64-bit
 Date: Sat, 30 May 2026 17:59:24 +0200
-Message-ID: <20260530160226.841368418@linuxfoundation.org>
+Message-ID: <20260530160246.994393860@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260530160224.570625122@linuxfoundation.org>
-References: <20260530160224.570625122@linuxfoundation.org>
+In-Reply-To: <20260530160240.228940103@linuxfoundation.org>
+References: <20260530160240.228940103@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,125 +63,80 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	TAGGED_FROM(0.00)[bounces-258763-lists,stable=lfdr.de];
-	FROM_HAS_DN(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,syzkaller.appspotmail.com,gmail.com,kernel.org];
-	MIME_TRACE(0.00)[0:+];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[7];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-0.999];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable,6ffd76b5405c006a46b7,f1b20958f93d2d250727,cisco];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-258159-lists,stable=lfdr.de];
 	TO_DN_SOME(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_FIVE(0.00)[5];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[syzkaller.appspot.com:url,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,appspotmail.com:email]
-X-Rspamd-Queue-Id: 606A5611BEE
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo]
+X-Rspamd-Queue-Id: 32AE36107E0
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jeongjun Park <aha310510@gmail.com>
+From: Eric Biggers <ebiggers@kernel.org>
 
-commit 3b7da2b4d0fe014eff181ed37e3bf832eb8ed258 upstream.
+commit f8f08d7cc43237e91e3aedf7b67d015d24c38fcc upstream.
 
-In hackrf driver, the following race condition occurs:
-```
-		CPU0						CPU1
-hackrf_probe()
-  kzalloc(); // alloc hackrf_dev
-  ....
-  v4l2_device_register();
-  ....
-						fd = sys_open("/path/to/dev"); // open hackrf fd
-						....
-  v4l2_device_unregister();
-  ....
-  kfree(); // free hackrf_dev
-  ....
-						sys_ioctl(fd, ...);
-						  v4l2_ioctl();
-						    video_is_registered() // UAF!!
-						....
-						sys_close(fd);
-						  v4l2_release() // UAF!!
-						    hackrf_video_release()
-						      kfree(); // DFB!!
-```
+Since the 'enc_after' argument to neon_aes_mac_update() and
+ce_aes_mac_update() has type 'int', it needs to be accessed using the
+corresponding 32-bit register, not the 64-bit register.  The upper half
+of the corresponding 64-bit register may contain garbage.
 
-When a V4L2 or video device is unregistered, the device node is removed so
-new open() calls are blocked.
-
-However, file descriptors that are already open-and any in-flight I/O-do
-not terminate immediately; they remain valid until the last reference is
-dropped and the driver's release() is invoked.
-
-Therefore, freeing device memory on the error path after hackrf_probe()
-has registered dev it will lead to a race to use-after-free vuln, since
-those already-open handles haven't been released yet.
-
-And since release() free memory too, race to use-after-free and
-double-free vuln occur.
-
-To prevent this, if device is registered from probe(), it should be
-modified to free memory only through release() rather than calling
-kfree() directly.
-
-Cc: <stable@vger.kernel.org>
-Reported-by: syzbot+6ffd76b5405c006a46b7@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=6ffd76b5405c006a46b7
-Reported-by: syzbot+f1b20958f93d2d250727@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=f1b20958f93d2d250727
-Fixes: 8bc4a9ed8504 ("[media] hackrf: add support for transmitter")
-Signed-off-by: Jeongjun Park <aha310510@gmail.com>
-Signed-off-by: Hans Verkuil <hverkuil+cisco@kernel.org>
+Fixes: 4860620da7e5 ("crypto: arm64/aes - add NEON/Crypto Extensions CBCMAC/CMAC/XCBC driver")
+Cc: stable@vger.kernel.org
+Reviewed-by: Ard Biesheuvel <ardb@kernel.org>
+Link: https://lore.kernel.org/r/20260218213501.136844-4-ebiggers@kernel.org
+Signed-off-by: Eric Biggers <ebiggers@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/media/usb/hackrf/hackrf.c |    7 ++++---
- 1 file changed, 4 insertions(+), 3 deletions(-)
+ arch/arm64/crypto/aes-modes.S |    4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
---- a/drivers/media/usb/hackrf/hackrf.c
-+++ b/drivers/media/usb/hackrf/hackrf.c
-@@ -1488,7 +1488,7 @@ static int hackrf_probe(struct usb_inter
- 	if (ret) {
- 		dev_err(dev->dev,
- 			"Failed to register as video device (%d)\n", ret);
--		goto err_v4l2_device_unregister;
-+		goto err_v4l2_device_put;
- 	}
- 	dev_info(dev->dev, "Registered as %s\n",
- 		 video_device_node_name(&dev->rx_vdev));
-@@ -1517,8 +1517,9 @@ static int hackrf_probe(struct usb_inter
- 	return 0;
- err_video_unregister_device_rx:
- 	video_unregister_device(&dev->rx_vdev);
--err_v4l2_device_unregister:
--	v4l2_device_unregister(&dev->v4l2_dev);
-+err_v4l2_device_put:
-+	v4l2_device_put(&dev->v4l2_dev);
-+	return ret;
- err_v4l2_ctrl_handler_free_tx:
- 	v4l2_ctrl_handler_free(&dev->tx_ctrl_handler);
- err_v4l2_ctrl_handler_free_rx:
+--- a/arch/arm64/crypto/aes-modes.S
++++ b/arch/arm64/crypto/aes-modes.S
+@@ -697,7 +697,7 @@ AES_FUNC_START(aes_mac_update)
+ 	encrypt_block	v0, w2, x1, x7, w8
+ 	eor		v0.16b, v0.16b, v4.16b
+ 	cmp		w3, wzr
+-	csinv		x5, x6, xzr, eq
++	csinv		w5, w6, wzr, eq
+ 	cbz		w5, .Lmacout
+ 	encrypt_block	v0, w2, x1, x7, w8
+ 	st1		{v0.16b}, [x4]			/* return dg */
+@@ -711,7 +711,7 @@ AES_FUNC_START(aes_mac_update)
+ 	eor		v0.16b, v0.16b, v1.16b		/* ..and xor with dg */
+ 
+ 	subs		w3, w3, #1
+-	csinv		x5, x6, xzr, eq
++	csinv		w5, w6, wzr, eq
+ 	cbz		w5, .Lmacout
+ 
+ .Lmacenc:
 
 
 
