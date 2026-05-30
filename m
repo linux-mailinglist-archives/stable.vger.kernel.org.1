@@ -1,59 +1,59 @@
-Return-Path: <stable+bounces-258470-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-257668-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id AO+xCSoqG2ra/ggAu9opvQ
-	(envelope-from <stable+bounces-258470-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:19:22 +0200
+	id UKbjFmkdG2qV/QgAu9opvQ
+	(envelope-from <stable+bounces-257668-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:24:57 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8AFA361177D
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:19:21 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id 666B460F92F
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:24:56 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id D20FB3051A54
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 18:07:38 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 578713016B11
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 17:22:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4F0023BFE4D;
-	Sat, 30 May 2026 18:07:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 68AAD340293;
+	Sat, 30 May 2026 17:22:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="A4nmZRf3"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="z+C5wRZh"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 14E1F340A6F;
-	Sat, 30 May 2026 18:07:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5008630E847;
+	Sat, 30 May 2026 17:22:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780164458; cv=none; b=oIHn6h7SNx5NBcPzPkUf8JJ8O0Ce95U15e7yHyraPtBYZTW0DF+Lolp/O3WmTcEqoYtCz+i5Kmv4BP312u/+5RWlW1iBXzLt0Wa5gScPmhasQSzt4ORUJHFNY5hduP7g6wZvPcybegtBOjKnXLhB0JxQ0Oq5wbGWX/QrBK2WEb0=
+	t=1780161774; cv=none; b=p0z6Y3eCCOoZOzb7fapwIvQEUVg967JkZIfwGZUjR11vDHTQkvPoFhbEt5KhQu0E/RtRyW/bw61gxKg+NJRm6N/cFuaUR0zqK8ZFn8g+oInneuR8fCGuadt2rP/5JLwtxspJwuZb13/IG+N4j6i2ZwPavPCwoReDOPYofncLH5Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780164458; c=relaxed/simple;
-	bh=S+j8eM9dLCr3ni75zTxoRxVwl8mg5m6XaCiNHEptoUg=;
+	s=arc-20240116; t=1780161774; c=relaxed/simple;
+	bh=cRc740wbwLMXHLtBssQe4C4yO6HT0P6lyiBKg8tGN/o=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=E2t2pqzI2am+KWR4WftWF2HIl6aDF51Tl9PQrFKM1EX7zBQZxnYhJMxgb2GX1yIdL2FohjkJ/TO1A6bd8EF9tmqerxnYOQkMQapgVSQg90jLlVcOWKBNW9BIrTsfc2AK4mqktTZQsWPPMbSE0OB3Mm+vY4MwTQJYfHaHcHvN1TE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=A4nmZRf3; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5AB9F1F00893;
-	Sat, 30 May 2026 18:07:36 +0000 (UTC)
+	 MIME-Version; b=e9ukBO3LoD1tlv2CSxKMR2cG8s29NvjHyeAOXFfwq2TbCUxTEC6idUozPEwFdtLWpJRFX8uHlkX99kBGPxVW65oVHfqn/QTjKiQ6lAInZxCA+9WjfCCmpxorOGniYnpbFLgbqwcl8KxcXcgLvmdoOu5VaYX/BimZklX0ZDOxHbA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=z+C5wRZh; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5B6CC1F00893;
+	Sat, 30 May 2026 17:22:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780164457;
-	bh=UCSfQQS6QlqxPyyAfzow1qysz0Oz+NwR8XX5kswmGNc=;
+	s=korg; t=1780161773;
+	bh=u+xMBxj8CxKAKawbUv9zIjs3zW9TZdvPGbVSBHS7/hQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=A4nmZRf3757KdjNRNzMorFhKOLTwqSABQN7s0nI7QJEgjIQPqL4QxxmNS5icHafKt
-	 KRgPQGVI8Jl6Y+p65F72UZ/HsQLklA2S46JYzJiy6nezme81iWBOqd2nXr0fKy9T+9
-	 /eaP+CDA+BvuCM0tKhgxeWICY1qyWog8EQHbF9m8=
+	b=z+C5wRZhfui6Je+w2+8Sc9TJnj9TtZAE0fxSpBVatLOp0KxEhPjWiHSQHTP2MGn21
+	 BU3rgiyJ1gBvuz0R6/wRf1IPV36HetZ6x9RNOmGIcFoMK2mm+x5AfNGCtoN3by8gmM
+	 yZxf6rnx3EWbpaY/uCiIk0n1UtVt4r9pNXD3PoPU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Fedor Pchelkin <pchelkin@ispras.ru>,
-	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
+	Bae Yeonju <iwasbaeyz@gmail.com>,
+	"Russell King (Oracle)" <rmk+kernel@armlinux.org.uk>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 532/776] platform/x86: dell_rbu: avoid uninit value usage in packet_size_write()
+Subject: [PATCH 6.1 722/969] fs/adfs: validate nzones in adfs_validate_bblk()
 Date: Sat, 30 May 2026 18:04:06 +0200
-Message-ID: <20260530160253.953745883@linuxfoundation.org>
+Message-ID: <20260530160320.476272973@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260530160240.228940103@linuxfoundation.org>
-References: <20260530160240.228940103@linuxfoundation.org>
+In-Reply-To: <20260530160300.485627683@linuxfoundation.org>
+References: <20260530160300.485627683@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,94 +63,83 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [7.34 / 15.00];
-	URIBL_BLACK(7.50)[linuxtesting.org:url];
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	R_MISSING_CHARSET(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
+	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
-	BAD_REP_POLICIES(0.10)[];
 	HAS_LIST_UNSUB(-0.01)[];
-	R_DKIM_ALLOW(0.00)[linuxfoundation.org:s=korg];
-	FROM_HAS_DN(0.00)[];
-	TAGGED_FROM(0.00)[bounces-258470-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	GREYLIST(0.00)[pass,body];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	TO_DN_SOME(0.00)[];
-	DMARC_POLICY_ALLOW(0.00)[linuxfoundation.org,none];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-257668-lists,stable=lfdr.de];
+	MIME_TRACE(0.00)[0:+];
+	RCVD_TLS_LAST(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,armlinux.org.uk,kernel.org];
+	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	RCPT_COUNT_FIVE(0.00)[6];
-	MID_RHS_MATCH_FROM(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
+	NEURAL_HAM(-0.00)[-1.000];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	R_SPF_ALLOW(0.00)[+ip4:172.105.105.114:c];
-	ARC_ALLOW(0.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	NEURAL_SPAM(0.00)[0.904];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,ispras.ru:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,linuxtesting.org:url,intel.com:email]
-X-Rspamd-Queue-Id: 8AFA361177D
-X-Rspamd-Action: add header
+	TAGGED_RCPT(0.00)[stable,kernel];
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	FROM_HAS_DN(0.00)[]
+X-Rspamd-Queue-Id: 666B460F92F
+X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
-X-Spam: Yes
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Fedor Pchelkin <pchelkin@ispras.ru>
+From: Bae Yeonju <iwasbaeyz@gmail.com>
 
-[ Upstream commit f8fd138c2363c0e2d3235c32bfb4fb5c6474e4ae ]
+[ Upstream commit dd9d3e16c2d5fa166e13dce07413be51f42c8f5d ]
 
-Ensure the temp value has been properly parsed from the user-provided
-buffer and initialized to be used in later operations.  While at it,
-prefer a convenient kstrtoul() helper.
+Reject ADFS disc records with a zero zone count during boot block
+validation, before the disc record is used.
 
-Found by Linux Verification Center (linuxtesting.org) with Svace static
-analysis tool.
+When nzones is 0, adfs_read_map() passes it to kmalloc_array(0, ...)
+which returns ZERO_SIZE_PTR, and adfs_map_layout() then writes to
+dm[-1], causing an out-of-bounds write before the allocated buffer.
 
-Fixes: ad6ce87e5bd4 ("[PATCH] dell_rbu: changes in packet update mechanism")
-Signed-off-by: Fedor Pchelkin <pchelkin@ispras.ru>
-Link: https://patch.msgid.link/20260403134240.604837-1-pchelkin@ispras.ru
-[ij: add include]
-Reviewed-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
-Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+adfs_validate_dr0() already rejects nzones != 1 for old-format
+images.  Add the equivalent check to adfs_validate_bblk() for
+new-format images so that a crafted image with nzones == 0 is
+rejected at probe time.
+
+Found by syzkaller.
+
+Fixes: f6f14a0d71b0 ("fs/adfs: map: move map-specific sb initialisation to map.c")
+Signed-off-by: Bae Yeonju <iwasbaeyz@gmail.com>
+Signed-off-by: Russell King (Oracle) <rmk+kernel@armlinux.org.uk>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/platform/x86/dell/dell_rbu.c | 6 +++++-
- 1 file changed, 5 insertions(+), 1 deletion(-)
+ fs/adfs/super.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/drivers/platform/x86/dell/dell_rbu.c b/drivers/platform/x86/dell/dell_rbu.c
-index 9fc5d3e9e7934..8f7c790857015 100644
---- a/drivers/platform/x86/dell/dell_rbu.c
-+++ b/drivers/platform/x86/dell/dell_rbu.c
-@@ -30,6 +30,7 @@
- #define pr_fmt(fmt)	KBUILD_MODNAME ": " fmt
+diff --git a/fs/adfs/super.c b/fs/adfs/super.c
+index e8bfc38239cd5..76e37c6d4cad4 100644
+--- a/fs/adfs/super.c
++++ b/fs/adfs/super.c
+@@ -343,6 +343,9 @@ static int adfs_validate_bblk(struct super_block *sb, struct buffer_head *bh,
+ 	if (adfs_checkdiscrecord(dr))
+ 		return -EILSEQ;
  
- #include <linux/init.h>
-+#include <linux/kstrtox.h>
- #include <linux/module.h>
- #include <linux/slab.h>
- #include <linux/string.h>
-@@ -617,9 +618,12 @@ static ssize_t packet_size_write(struct file *filp, struct kobject *kobj,
- 				 char *buffer, loff_t pos, size_t count)
- {
- 	unsigned long temp;
++	if ((dr->nzones | dr->nzones_high << 8) == 0)
++		return -EILSEQ;
 +
-+	if (kstrtoul(buffer, 10, &temp))
-+		return -EINVAL;
-+
- 	spin_lock(&rbu_data.lock);
- 	packet_empty_list();
--	sscanf(buffer, "%lu", &temp);
- 	if (temp < 0xffffffff)
- 		rbu_data.packetsize = temp;
- 
+ 	*drp = dr;
+ 	return 0;
+ }
 -- 
 2.53.0
 
