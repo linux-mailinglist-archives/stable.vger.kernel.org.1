@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-258251-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-258883-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 0OXxJY0kG2pm/ggAu9opvQ
-	(envelope-from <stable+bounces-258251-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:55:25 +0200
+	id SCLrHWktG2qU/wgAu9opvQ
+	(envelope-from <stable+bounces-258883-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:33:13 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3B5CD610A72
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:55:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1F8CE611F4E
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:33:12 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 8190D30055B1
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 17:55:24 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 4AF7D3056B1A
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 18:31:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B2FB9349CCF;
-	Sat, 30 May 2026 17:55:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 740833C3C13;
+	Sat, 30 May 2026 18:31:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yUOIlBcR"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="t/Fx+5yo"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 98776261B9E;
-	Sat, 30 May 2026 17:55:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4DEAA3546F6;
+	Sat, 30 May 2026 18:30:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780163722; cv=none; b=iPte4cdhXNn7jFxdZ6iox+4H/3HK6Fb9kum7wXOJ7m4IPf18ySW2uhdiQPpFCEJUHFLZtEh+DnYQ0Ne1a9CNVUarMHpRy4Rhw+y0kJrxwLHXlro90TLnVwXJMsiK1w27cS41m+JUPgCpJhlY7gGMNiJw8HPszyjpbVhPLrI4frU=
+	t=1780165860; cv=none; b=FezAaDt9En61RMbvABlgrulCXdTh+KOi+8xqPdN2GYW+nCElpQzI6fEH6MaP6x90b3cMwp0rsRj+afNPyVWvm+3Lln/XbtrkmJsWKciTOBA8snZH9ul+v8DKgb/SbS8fNrsTiNrAVgduQ8fWKL9imRvUsLUTOYRgPQKutd49luI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780163722; c=relaxed/simple;
-	bh=lNnofKv4FutHg0jNLyDdhUcTsh3wPSNMrhJcuPf9xu8=;
+	s=arc-20240116; t=1780165860; c=relaxed/simple;
+	bh=oKIjaAnP9Tp4pe2XulAfP51J+bvjOfCxdB//sYAyisI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=gx21rO+8AHXF2LsDU6ign61FMtNM6At81wBVaKWnwrXSkvEGLqHTdwXaaYThJmdxHaRujl5JFDNAhH+n02ucfpJyeWg1u/QVCRB8H1BK5nEoTrWEJoqrC9/pQv22wFZL4wnZfDauNz7I2AkLf9YK6gMUcq5N2fAf75RfeTdp0yY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yUOIlBcR; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DCDDA1F00893;
-	Sat, 30 May 2026 17:55:20 +0000 (UTC)
+	 MIME-Version; b=Qd/KA207lD70y9FINT5hwbvoCyjlVCcSyt+mWaTAM6s2y50EC+S7LaQtcBmj2EKmSg6PG/MYJZ9maknyOFRze5RcItoUa/I8dBYpmV0xYaTqSO9dtxB2nCe4xVQwCkPVHQXA+MV0bDkZgd7RVTH5UkycCPT4U2JiG+p/PDQG2TI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=t/Fx+5yo; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4E99C1F00893;
+	Sat, 30 May 2026 18:30:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780163721;
-	bh=+f1vfM15a6X4JOFaNVDWCV0XwKi20hn0Shxz4RypeEc=;
+	s=korg; t=1780165859;
+	bh=gzcZOGPJKsMKLG+VTlErJSXDUbax8w8itsFtWr1RKnI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=yUOIlBcR2Xd3yfDp13oFtpQaGIrGkcjhBPr1EgrRPLlfsEHAR5JdAADoShH/2Qz/y
-	 G/Hh4ixCXIZj4Qc0KobRE0QpPlvdhHJq0XpaLrpBnfxZxFfgx2+yFmgrKsR8yAFQ9F
-	 5FXnLo9x8Fp5C45Qlwqx72SH50sX/YogOhCQjMBA=
+	b=t/Fx+5yoa+9OJKuQ0Ln3Hoe02tdKisLAoTviyHu11tYnX019U4fNayyOdpfbK8OZX
+	 cTt72dskL4m6kcrAA2S9wD3BtIex8jP/YpxuDXq1xKlIiQ/EYpLsOyYDlszYofKaNJ
+	 ModqQxoz8Md2cgfGy1P1Tqa9lTBpgwtw+oWfMl3M=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jason Gunthorpe <jgg@nvidia.com>
-Subject: [PATCH 5.15 343/776] RDMA/ocrdma: Dont NULL deref uctx on errors in ocrdma_copy_pd_uresp()
+	Yosry Ahmed <yosry.ahmed@linux.dev>,
+	Sean Christopherson <seanjc@google.com>
+Subject: [PATCH 5.10 176/589] KVM: nSVM: Mark all of vmcb02 dirty when restoring nested state
 Date: Sat, 30 May 2026 18:00:57 +0200
-Message-ID: <20260530160249.441301882@linuxfoundation.org>
+Message-ID: <20260530160229.512180199@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260530160240.228940103@linuxfoundation.org>
-References: <20260530160240.228940103@linuxfoundation.org>
+In-Reply-To: <20260530160224.570625122@linuxfoundation.org>
+References: <20260530160224.570625122@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -71,64 +72,69 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-258251-lists,stable=lfdr.de];
-	PRECEDENCE_BULK(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
+	RCVD_TLS_LAST(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-258883-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
-	RCPT_COUNT_THREE(0.00)[4];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	NEURAL_HAM(-0.00)[-0.994];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	TO_DN_SOME(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[5];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,sashiko.dev:url,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,nvidia.com:email]
-X-Rspamd-Queue-Id: 3B5CD610A72
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,linux.dev:email,msgid.link:url,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim]
+X-Rspamd-Queue-Id: 1F8CE611F4E
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jason Gunthorpe <jgg@nvidia.com>
+From: Yosry Ahmed <yosry.ahmed@linux.dev>
 
-commit 34fbf48cf3b410d2a6e8c586fa952a36331ca5ba upstream.
+commit e63fb1379f4b9300a44739964e69549bebbcdca4 upstream.
 
-Sashiko points out that pd->uctx isn't initialized until late in the
-function so all these error flow references are NULL and will crash. Use
-the uctx that isn't NULL.
+When restoring a vCPU in guest mode, any state restored before
+KVM_SET_NESTED_STATE (e.g. KVM_SET_SREGS) will mark the corresponding
+dirty bits in vmcb01, as it is the active VMCB before switching to
+vmcb02 in svm_set_nested_state().
 
-Cc: stable@vger.kernel.org
-Fixes: fe2caefcdf58 ("RDMA/ocrdma: Add driver for Emulex OneConnect IBoE RDMA adapter")
-Link: https://sashiko.dev/#/patchset/0-v1-e911b76a94d1%2B65d95-rdma_udata_rep_jgg%40nvidia.com?part=4
-Link: https://patch.msgid.link/r/9-v1-41f3135e5565+9d2-rdma_ai_fixes1_jgg@nvidia.com
-Signed-off-by: Jason Gunthorpe <jgg@nvidia.com>
+Hence, mark all fields in vmcb02 dirty in svm_set_nested_state() to
+capture any previously restored fields.
+
+Fixes: cc440cdad5b7 ("KVM: nSVM: implement KVM_GET_NESTED_STATE and KVM_SET_NESTED_STATE")
+CC: stable@vger.kernel.org
+Signed-off-by: Yosry Ahmed <yosry.ahmed@linux.dev>
+Link: https://patch.msgid.link/20260210010806.3204289-1-yosry.ahmed@linux.dev
+Signed-off-by: Sean Christopherson <seanjc@google.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/infiniband/hw/ocrdma/ocrdma_verbs.c |    4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ arch/x86/kvm/svm/nested.c |    6 ++++++
+ 1 file changed, 6 insertions(+)
 
---- a/drivers/infiniband/hw/ocrdma/ocrdma_verbs.c
-+++ b/drivers/infiniband/hw/ocrdma/ocrdma_verbs.c
-@@ -618,9 +618,9 @@ static int ocrdma_copy_pd_uresp(struct o
+--- a/arch/x86/kvm/svm/nested.c
++++ b/arch/x86/kvm/svm/nested.c
+@@ -1236,6 +1236,12 @@ static int svm_set_nested_state(struct k
+ 		goto out_free;
  
- ucopy_err:
- 	if (pd->dpp_enabled)
--		ocrdma_del_mmap(pd->uctx, dpp_page_addr, PAGE_SIZE);
-+		ocrdma_del_mmap(uctx, dpp_page_addr, PAGE_SIZE);
- dpp_map_err:
--	ocrdma_del_mmap(pd->uctx, db_page_addr, db_page_size);
-+	ocrdma_del_mmap(uctx, db_page_addr, db_page_size);
- 	return status;
- }
- 
+ 	/*
++	 * Any previously restored state (e.g. KVM_SET_SREGS) would mark fields
++	 * dirty in vmcb01 instead of vmcb02, so mark all of vmcb02 dirty here.
++	 */
++	vmcb_mark_all_dirty(svm->vmcb);
++
++	/*
+ 	 * All checks done, we can enter guest mode.  L1 control fields
+ 	 * come from the nested save state.  Guest state is already
+ 	 * in the registers, the save area of the nested state instead
 
 
 
