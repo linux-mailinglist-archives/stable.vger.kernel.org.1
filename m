@@ -1,58 +1,59 @@
-Return-Path: <stable+bounces-258077-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-256941-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id iEqeNPQjG2rO/QgAu9opvQ
-	(envelope-from <stable+bounces-258077-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:52:52 +0200
+	id 8C99CN4NG2q/+ggAu9opvQ
+	(envelope-from <stable+bounces-256941-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 18:18:38 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 71BDC61091C
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:52:52 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8067460E12A
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 18:18:37 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 5CF79300A4C8
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 17:45:44 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id C2A203075428
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 16:13:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BAED032BF24;
-	Sat, 30 May 2026 17:45:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EB751334695;
+	Sat, 30 May 2026 16:13:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Sr60JTRf"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QBsvjAq5"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 913C2223DC6;
-	Sat, 30 May 2026 17:45:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BC0E32BE05F;
+	Sat, 30 May 2026 16:13:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780163143; cv=none; b=LY/ojjhwFyjKl9Yey06kyveLBBclMyYpvGvhM60TRCvnKoH3bWCVl7H82uS7z5gwlrGN8LXezA1FdLXw21CT2yA0480unhGgUsRGA/3Yxaq95wbh9Ad1kVSwBP9E3HoaIpi7XuS//B6wCK1kfc3Xs+Iqa3/R+VScj0qrq76q98c=
+	t=1780157624; cv=none; b=T2gz5M6jusEH05d4OtTU0TlQMPGVmFqYRsFt3UFZwkVulP+U5xbg7DZi5nrXLgcjwj2upDRe8RwnTwvnfOLJeu5J0mzyvfw66hT9ZpPhhMrNLp8In/LGiiF1dlD0r9dollwrVczC8ZdtfvLcJHkJO3tWrO5z8dqMGs7IS+Vx93I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780163143; c=relaxed/simple;
-	bh=3lao/Yxe/ycLpQTTvWlJg6pNz61szDCfsbJ7cl20dTw=;
+	s=arc-20240116; t=1780157624; c=relaxed/simple;
+	bh=POWReJoGEY5EtN04OlxL5YIJLt81pP/d6EzJvQ++xC4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=SE4LjqYprUFoGbc3Xnfq8aYZHcv2W8Nr9TL67Ir5wKLOMygF/8l1cKP3fNGBulUzFcmdKd+G8deF1ytgfvRpoXdgnol46bDCRRoKYaVN6kXD66PcIWGwKuloK0BP+OQC2bZtXnOC2TIEtyHSwCFbeB8kQi/8VVAg6BGuto9878U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Sr60JTRf; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D96511F00893;
-	Sat, 30 May 2026 17:45:41 +0000 (UTC)
+	 MIME-Version; b=PJu2XAvxqHRCTKlIWjKrVTxZ9WqXx8CjdS8S/zgVsCqPJ/wEigGFvCgmoUGH127xZuuCYN9jz1eVw5RFkIqvk8YW/aknE9hw0qfmUfxcNA4CeZL6F+dIQcyGu8qUv2ccMKr5LOir6MdpXG1R1kSyXhPJkIHKrlwD7euJZhIHaPY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QBsvjAq5; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6E1E71F00893;
+	Sat, 30 May 2026 16:13:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780163142;
-	bh=TsimmXZbvZs3RPhomT9fyXgydMBTmp7oerlukvYQcPE=;
+	s=korg; t=1780157623;
+	bh=3COSfN4Tav8HAIsxYKlwwMquIMzuUMMbWK+/FcO4FBQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=Sr60JTRfIdZlG1UtOiuCt5+AQHKn3uf9pJLXs0cj1ulZbWnhDR7X7Xzl1y1qNPqjU
-	 tLDr6rGY+t7hnFz3xHEPTtkBYOki6oU+i+Q1GkFj+VUcYhl8BHeTad91nKM73zsBbe
-	 Un+gAZemIiofJFHQ1Gsrk3kEEwJvrksorU1L7bXM=
+	b=QBsvjAq5gBO9pmv9id98jsts+MSOsppFjrdUox8FyRk8QuBW1jdZPS66Ynfl4ibuS
+	 17KH27L3X6fuEq0pDKel0cYLTR4M2HwW7DlJFPm/X+KUqu9H6OjeYFdzbo07BphI0U
+	 6BQ4XdTC7JdhDre6ladKwbboYkPFv4cMxFAFRMnE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Konstantin Komarov <almaz.alexandrovich@paragon-software.com>,
-	stable <stable@kernel.org>
-Subject: [PATCH 5.15 170/776] fs/ntfs3: validate rec->used in journal-replay file record check
+	Wenyuan Li <2063309626@qq.com>,
+	Marc Kleine-Budde <mkl@pengutronix.de>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 003/589] can: mcp251x: add error handling for power enable in open and resume
 Date: Sat, 30 May 2026 17:58:04 +0200
-Message-ID: <20260530160244.888965725@linuxfoundation.org>
+Message-ID: <20260530160224.667218064@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260530160240.228940103@linuxfoundation.org>
-References: <20260530160240.228940103@linuxfoundation.org>
+In-Reply-To: <20260530160224.570625122@linuxfoundation.org>
+References: <20260530160224.570625122@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -68,108 +69,122 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-258077-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-256941-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,qq.com,pengutronix.de,kernel.org];
 	RCVD_COUNT_THREE(0.00)[4];
-	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
 	TO_DN_SOME(0.00)[];
+	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	RCPT_COUNT_FIVE(0.00)[5];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	RCPT_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
 	TAGGED_RCPT(0.00)[stable];
 	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	FROM_HAS_DN(0.00)[]
-X-Rspamd-Queue-Id: 71BDC61091C
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim]
+X-Rspamd-Queue-Id: 8067460E12A
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+From: Wenyuan Li <2063309626@qq.com>
 
-commit 0ca0485e4b2e837ebb6cbd4f2451aba665a03e4b upstream.
+[ Upstream commit 7a57354756c7df223abe2c33774235ad70cb4231 ]
 
-check_file_record() validates rec->total against the record size but
-never validates rec->used.  The do_action() journal-replay handlers read
-rec->used from disk and use it to compute memmove lengths:
+Add missing error handling for mcp251x_power_enable() calls in both
+mcp251x_open() and mcp251x_can_resume() functions.
 
-  DeleteAttribute:    memmove(attr, ..., used - asize - roff)
-  CreateAttribute:    memmove(..., attr, used - roff)
-  change_attr_size:   memmove(..., used - PtrOffset(rec, next))
+In mcp251x_open(), if power enable fails, jump to error path to close
+candev without attempting to disable power again.
 
-When rec->used is smaller than the offset of a validated attribute, or
-larger than the record size, these subtractions can underflow allowing
-us to copy huge amounts of memory in to a 4kb buffer, generally
-considered a bad idea overall.
+In mcp251x_can_resume(), properly check return values of power enable calls
+for both power and transceiver regulators. If any fails, return the error
+code to the PM framework and log the failure.
 
-This requires a corrupted filesystem, which isn't a threat model the
-kernel really needs to worry about, but checking for such an obvious
-out-of-bounds value is good to keep things robust, especially on journal
-replay
+This ensures the driver properly handles power control failures and
+maintains correct device state.
 
-Fix this up by bounding rec->used correctly.
-
-This is much like commit b2bc7c44ed17 ("fs/ntfs3: Fix slab-out-of-bounds
-read in DeleteIndexEntryRoot") which checked different values in this
-same switch statement.
-
-Cc: Konstantin Komarov <almaz.alexandrovich@paragon-software.com>
-Fixes: b46acd6a6a62 ("fs/ntfs3: Add NTFS journal")
-Cc: stable <stable@kernel.org>
-Assisted-by: gregkh_clanker_t1000
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Signed-off-by: Konstantin Komarov <almaz.alexandrovich@paragon-software.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Wenyuan Li <2063309626@qq.com>
+Link: https://patch.msgid.link/tencent_F3EFC5D7738AC548857B91657715E2D3AA06@qq.com
+[mkl: fix patch description]
+[mkl: mcp251x_can_resume(): replace goto by return]
+Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/ntfs3/fslog.c |   12 +++++++++++-
- 1 file changed, 11 insertions(+), 1 deletion(-)
+ drivers/net/can/spi/mcp251x.c | 29 ++++++++++++++++++++++++-----
+ 1 file changed, 24 insertions(+), 5 deletions(-)
 
---- a/fs/ntfs3/fslog.c
-+++ b/fs/ntfs3/fslog.c
-@@ -2792,13 +2792,14 @@ static inline bool check_file_record(con
- 	u16 fn = le16_to_cpu(rec->rhdr.fix_num);
- 	u16 ao = le16_to_cpu(rec->attr_off);
- 	u32 rs = sbi->record_size;
-+	u32 used = le32_to_cpu(rec->used);
- 
- 	/* Check the file record header for consistency. */
- 	if (rec->rhdr.sign != NTFS_FILE_SIGNATURE ||
- 	    fo > (SECTOR_SIZE - ((rs >> SECTOR_SHIFT) + 1) * sizeof(short)) ||
- 	    (fn - 1) * SECTOR_SIZE != rs || ao < MFTRECORD_FIXUP_OFFSET_1 ||
- 	    ao > sbi->record_size - SIZEOF_RESIDENT || !is_rec_inuse(rec) ||
--	    le32_to_cpu(rec->total) != rs) {
-+	    le32_to_cpu(rec->total) != rs || used > rs || used < ao) {
- 		return false;
+diff --git a/drivers/net/can/spi/mcp251x.c b/drivers/net/can/spi/mcp251x.c
+index b06b15debafac..e4d5f60f13f47 100644
+--- a/drivers/net/can/spi/mcp251x.c
++++ b/drivers/net/can/spi/mcp251x.c
+@@ -1218,7 +1218,11 @@ static int mcp251x_open(struct net_device *net)
  	}
  
-@@ -2810,6 +2811,15 @@ static inline bool check_file_record(con
- 		return false;
- 	}
+ 	mutex_lock(&priv->mcp_lock);
+-	mcp251x_power_enable(priv->transceiver, 1);
++	ret = mcp251x_power_enable(priv->transceiver, 1);
++	if (ret) {
++		dev_err(&spi->dev, "failed to enable transceiver power: %pe\n", ERR_PTR(ret));
++		goto out_close_candev;
++	}
  
-+	/*
-+	 * The do_action() handlers compute memmove lengths as
-+	 * "rec->used - <offset of validated attr>", which underflows when
-+	 * rec->used is smaller than the attribute walk reached.  At this
-+	 * point attr is the ATTR_END marker; rec->used must cover it.
-+	 */
-+	if (used < PtrOffset(rec, attr) + sizeof(attr->type))
-+		return false;
+ 	priv->force_quit = 0;
+ 	priv->tx_skb = NULL;
+@@ -1267,6 +1271,7 @@ static int mcp251x_open(struct net_device *net)
+ 	mcp251x_hw_sleep(spi);
+ out_close:
+ 	mcp251x_power_enable(priv->transceiver, 0);
++out_close_candev:
+ 	close_candev(net);
+ 	mutex_unlock(&priv->mcp_lock);
+ 	if (release_irq)
+@@ -1505,11 +1510,25 @@ static int __maybe_unused mcp251x_can_resume(struct device *dev)
+ {
+ 	struct spi_device *spi = to_spi_device(dev);
+ 	struct mcp251x_priv *priv = spi_get_drvdata(spi);
++	int ret = 0;
+ 
+-	if (priv->after_suspend & AFTER_SUSPEND_POWER)
+-		mcp251x_power_enable(priv->power, 1);
+-	if (priv->after_suspend & AFTER_SUSPEND_UP)
+-		mcp251x_power_enable(priv->transceiver, 1);
++	if (priv->after_suspend & AFTER_SUSPEND_POWER) {
++		ret = mcp251x_power_enable(priv->power, 1);
++		if (ret) {
++			dev_err(dev, "failed to restore power: %pe\n", ERR_PTR(ret));
++			return ret;
++		}
++	}
 +
- 	return true;
- }
++	if (priv->after_suspend & AFTER_SUSPEND_UP) {
++		ret = mcp251x_power_enable(priv->transceiver, 1);
++		if (ret) {
++			dev_err(dev, "failed to restore transceiver power: %pe\n", ERR_PTR(ret));
++			if (priv->after_suspend & AFTER_SUSPEND_POWER)
++				mcp251x_power_enable(priv->power, 0);
++			return ret;
++		}
++	}
  
+ 	if (priv->after_suspend & (AFTER_SUSPEND_POWER | AFTER_SUSPEND_UP))
+ 		queue_work(priv->wq, &priv->restart_work);
+-- 
+2.53.0
+
 
 
 
