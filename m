@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-258599-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-258568-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id iN6ROWApG2rg/ggAu9opvQ
-	(envelope-from <stable+bounces-258599-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:16:00 +0200
+	id CM12HbYoG2ra/ggAu9opvQ
+	(envelope-from <stable+bounces-258568-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:13:10 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id F3F0F611619
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:15:59 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id 19DC66113FE
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:13:09 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 3D1CF3006209
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 18:14:54 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 62CCD300B5AC
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 18:13:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8103D3B7B72;
-	Sat, 30 May 2026 18:14:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0799631F98D;
+	Sat, 30 May 2026 18:13:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vWxEcHgw"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DqtcTu20"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6CE7E29B799;
-	Sat, 30 May 2026 18:14:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 11E2E29B799;
+	Sat, 30 May 2026 18:13:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780164891; cv=none; b=Zf9EEaWwDZj0+f+ONX4KhB2j3z5t+SCqFbwZLqsiQeFx8i+qz7Q7v4qIDTabTax9le3weXBQMMjO0rNpbjdx99gFjpcGLV/4oJQRyl+4CHeEJ0Nk8zrvKdOmPNkJMvi6aialTRUeGQP0J73gtzYhTotEwTJkFrCYWmFBIkQCOXI=
+	t=1780164785; cv=none; b=FlJ5+bjdnIhBIcxSuIUpRTvp/psP6fIsP6k/OHQ0gQYqHex3ljzcvA9GhyHwXYQqjs36l2WGk1g3giHCuF1raHmcmV8PzmcbBhd6pvkDanf4JltMhcL+R0RPHLvScd52TCWjTGO/RfbhHSVVENe1ox/gTL93I+UD9vXVuEnAfpY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780164891; c=relaxed/simple;
-	bh=+AAfeS6dr4Og/oTKn6nPZUfKJCghsb/dBv4YtJVolcQ=;
+	s=arc-20240116; t=1780164785; c=relaxed/simple;
+	bh=iV5CGXljnNXXm9hiZG0RUS8vpTLoeBDMWeln+DbGI3o=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=i5FF+FbIsMD+t5JEZ/+Zh1mGzCSFGnjE9k6yrTtXi1duZDSKuoezpSYN05rgFgvk3e+TGXIKVRXJnE1vGGZlMtIUUpt5i37aGY+yYP7YC51pGH+yK9aD+aYjBauruAEgVW3CkSqzdwwG4JlwODFQ9y0d5VZqvpCdSD/qVnNYVys=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vWxEcHgw; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B423D1F00893;
-	Sat, 30 May 2026 18:14:49 +0000 (UTC)
+	 MIME-Version; b=N35JT5tRWBvHK4LKcPYYDwvmmeFX5rxqqzdWExgEg49Q1PshR4afG8hV1NP4lqrAV1YR+9dAG/InByU+jVKvpj2XxEu0iIMrbXdGhf8ELX7XRJgUmDE0/aZW6Za/v6ys98gp/kT+YkMuWiFv8bu+lJ4XxwtEGiAjcWrTf5sTo/g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DqtcTu20; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 88EBA1F00893;
+	Sat, 30 May 2026 18:13:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780164890;
-	bh=ynYYAvzS7+qKxo0hvuMC3+2K3tFRt5dYiG5PycIs/NM=;
+	s=korg; t=1780164784;
+	bh=+qaTlc4XzQY5Lduk6FJj/Qa1JflcTqY/yQ6Ik92arsY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=vWxEcHgwlDmujXaEXhawqSknL2BWbXxRdXG4XQw7tq310/cRirbH2cblwR47KffZI
-	 KBspLXXFtRBbrL0K6Jxi3PV20u067Qqpz5wVtxTAmbbSmjnHug3lVLnE56vkirDGoa
-	 J6l3xiUTBCqgOqcRFeFMRmB+/4CGBHJFatjNK4lk=
+	b=DqtcTu20/B9/L5yCYabmwiDzUPBrNCxagV2fm6svzRUmrUTKMIXBVLYrYefXnXnDW
+	 mMPGDXBTO+q1wn+Fbo5zq4JDS5CvezBvzqdTDibiSqj/tpheiyBpiDS16ny0oWB8jE
+	 wfC3r9G50kci4rPEFa2hiiWNkGI+xrvreGc7OlW4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Li Xiasong <lixiasong1@huawei.com>,
-	Pablo Neira Ayuso <pablo@netfilter.org>
-Subject: [PATCH 5.15 650/776] netfilter: nft_ct: fix missing expect put in obj eval
-Date: Sat, 30 May 2026 18:06:04 +0200
-Message-ID: <20260530160256.722610988@linuxfoundation.org>
+	Zoran Ilievski <goodboy@rexbytes.com>,
+	Sukhdeep Singh <sukhdeeps@marvell.com>,
+	Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 5.15 651/776] net: atlantic: preserve PCI wake-from-D3 on shutdown when WOL enabled
+Date: Sat, 30 May 2026 18:06:05 +0200
+Message-ID: <20260530160256.745131729@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
 In-Reply-To: <20260530160240.228940103@linuxfoundation.org>
 References: <20260530160240.228940103@linuxfoundation.org>
@@ -67,7 +68,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
@@ -77,20 +78,20 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-258599-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-258568-lists,stable=lfdr.de];
 	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	NEURAL_HAM(-0.00)[-0.995];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[5];
+	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[huawei.com:email,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,netfilter.org:email,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo]
-X-Rspamd-Queue-Id: F3F0F611619
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,msgid.link:url,rexbytes.com:email,marvell.com:email]
+X-Rspamd-Queue-Id: 19DC66113FE
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
@@ -98,35 +99,51 @@ X-Rspamd-Server: lfdr
 
 ------------------
 
-From: Li Xiasong <lixiasong1@huawei.com>
+From: Zoran Ilievski <goodboy@rexbytes.com>
 
-commit 19f94b6fee75b3ef7fbc06f3745b9a771a8a19a4 upstream.
+commit 2c308cf34284420963607d677d576a2b4124d8bd upstream.
 
-nft_ct_expect_obj_eval() allocates an expectation and may call
-nf_ct_expect_related(), but never drops its local reference.
+The shutdown handler aq_pci_shutdown() unconditionally calls
+pci_wake_from_d3(pdev, false), clearing the PCI PME_En bit even when
+wake-on-LAN has been configured. While aq_nic_shutdown() correctly
+programs the NIC firmware via aq_nic_set_power() to listen for magic
+packets, the PCI subsystem will not propagate the resulting PME wake
+event from D3, so the system never wakes after poweroff.
 
-Add nf_ct_expect_put(exp) before return to balance allocation.
+WOL from suspend (S3) is unaffected because aq_suspend_common() does
+not touch pci_wake_from_d3() and relies on the PM core's wake
+configuration via device_may_wakeup().
 
-Fixes: 857b46027d6f ("netfilter: nft_ct: add ct expectations support")
+This affects all atlantic-supported NICs (AQC107/108/111/112/113);
+users have reported that WOL works if the atlantic driver is never
+loaded, but breaks once it has run its shutdown path.
+
+Pass the configured WOL state to pci_wake_from_d3() instead of a
+literal false, so the PCI PME_En bit is preserved when the user has
+armed WOL via ethtool.
+
+Fixes: 90869ddfefeb ("net: aquantia: Implement pci shutdown callback")
 Cc: stable@vger.kernel.org
-Signed-off-by: Li Xiasong <lixiasong1@huawei.com>
-Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
+Signed-off-by: Zoran Ilievski <goodboy@rexbytes.com>
+Reviewed-by: Sukhdeep Singh <sukhdeeps@marvell.com>
+Link: https://patch.msgid.link/20260511064002.1857-1-goodboy@rexbytes.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/netfilter/nft_ct.c |    2 ++
- 1 file changed, 2 insertions(+)
+ drivers/net/ethernet/aquantia/atlantic/aq_pci_func.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/net/netfilter/nft_ct.c
-+++ b/net/netfilter/nft_ct.c
-@@ -1299,6 +1299,8 @@ static void nft_ct_expect_obj_eval(struc
+--- a/drivers/net/ethernet/aquantia/atlantic/aq_pci_func.c
++++ b/drivers/net/ethernet/aquantia/atlantic/aq_pci_func.c
+@@ -374,7 +374,7 @@ static void aq_pci_shutdown(struct pci_d
+ 	pci_disable_device(pdev);
  
- 	if (nf_ct_expect_related(exp, 0) != 0)
- 		regs->verdict.code = NF_DROP;
-+
-+	nf_ct_expect_put(exp);
+ 	if (system_state == SYSTEM_POWER_OFF) {
+-		pci_wake_from_d3(pdev, false);
++		pci_wake_from_d3(pdev, self->aq_hw->aq_nic_cfg->wol);
+ 		pci_set_power_state(pdev, PCI_D3hot);
+ 	}
  }
- 
- static const struct nla_policy nft_ct_expect_policy[NFTA_CT_EXPECT_MAX + 1] = {
 
 
 
