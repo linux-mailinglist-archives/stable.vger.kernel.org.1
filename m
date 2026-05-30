@@ -1,65 +1,66 @@
-Return-Path: <stable+bounces-257154-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-257932-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id cJr5AMgXG2r2/AgAu9opvQ
-	(envelope-from <stable+bounces-257154-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:00:56 +0200
+	id gCYyIiQiG2rO/QgAu9opvQ
+	(envelope-from <stable+bounces-257932-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:45:08 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6287160EB92
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:00:55 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D28DE6104DA
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:45:07 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 1877030262EB
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 16:53:13 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 61DCD303B4D4
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 17:37:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A31B31CAA6C;
-	Sat, 30 May 2026 16:53:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5673F3B389D;
+	Sat, 30 May 2026 17:37:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="J+sVhiLz"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="q4y8cU8I"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 844BB32D42B;
-	Sat, 30 May 2026 16:53:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 493C23B0ADF;
+	Sat, 30 May 2026 17:37:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780159992; cv=none; b=o8V2AKFMU9H5rHmer2D9b62hY3DBOfsI796Cw8B2arAcK2jrO9ggvcBOtChMNStJCChH7p1y6yPVJX4qptCHpkznxkXMSX7HZ2hsjtFtBqSdqX8G1KXeEIZCWOa+eVos6x0qd0BRA24IEDe5Z7UwGYKLJ+FGsg51TLr6IE/B0vA=
+	t=1780162654; cv=none; b=sYXccKZy9eN6DCiLKRlcEYdX9AL/Z/8II6RwixLt7fEBSUZ+kBTpc/YS5EdwCIsgQOCbuz0Q+5d4fCPZVuGcvKEFlukPibAUEwWmElvMRN6IENoZPN+UOw74Y23A81U6VGjQaH51IvNUe7Ayr6jVIOPNI+lXVIOpjGVEJ/MAMPk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780159992; c=relaxed/simple;
-	bh=iJIGEtO2/7Kf3cBW+c/xczb9rH3K+KLD891pDvPSngc=;
+	s=arc-20240116; t=1780162654; c=relaxed/simple;
+	bh=8omaB/Su2v/uHRbWvHvwf83YAulBOaYJtv7UkNZy57g=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=jb+H2NQFkIllPs5Iwgl9+lfK3lHAX2wmhWnVEgZMJIK8kip3iTZ8R9cDLW9GLxS7MP2YfJXImFIRWX7mg8T6LBFxbU4RVOPLwFEh9yM9hcMArZCwOYapSSqtqRuEiv2+aSybchFcUUox2wEdWqPWDfXOsdDpQwT7a/AzNVpw27w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=J+sVhiLz; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8171F1F00893;
-	Sat, 30 May 2026 16:53:10 +0000 (UTC)
+	 MIME-Version; b=ELR9v9rMwB+NfZJne4gcfIogCOBOfuzJwD0Kb0wrAqnfqpYtEVsYIYH3je8wbkpvpHxn1fRiHKzeY8Yw5g/upK+yz0HpdOkG5PAhn47XfybPapLLPChkNUlm1V4K+8kh/kk/1qZSJTTntWvL5g5iHvnSdYEYJlfA3J1ogSyE+3o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=q4y8cU8I; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8D9241F00893;
+	Sat, 30 May 2026 17:37:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780159991;
-	bh=+XCdBES1oZ1hXxcLM2hcYl/hRbGA8f3I3AmvuSKCkJw=;
+	s=korg; t=1780162653;
+	bh=oSAGo/K11zJdGEDVd2twkdHo/YDBP2MSPLhSOPadIWU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=J+sVhiLzmaEYG0jwqyW33A8kBsbJQdtTYOcEsb680/X23Er8iZbjrOJg951ZXibNn
-	 0I60B5Y27VV6zdaivN+b/mRTlYhnuOX6lhCkzDKcNZn18BqJb/CT6PCanenhaWcMqA
-	 9112zWQiMiHTTo9/GxroUn/zA9hFvNzhNuX/6FKI=
+	b=q4y8cU8IO34vBk45O7Px/q0HVrdCmsKRi06n8apq/xMDlfKZjU27vb1eBkYFN7mZG
+	 /0vK1BQttHpTGJ+Waufzdhjok5J8yjoBWc6p6XjaF79mesKkY6SQpmqH5a5eKc+yNw
+	 L7bDgKamsz4idDZHTeWcZmVClvNEyR3+VMs7ye2Y=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable@kernel.org,
-	Yuan Tan <yuantan098@gmail.com>,
 	Yifan Wu <yifanwucs@gmail.com>,
 	Juefei Pu <tomapufckgml@gmail.com>,
+	Yuan Tan <yuantan098@gmail.com>,
 	Xin Liu <bird@lzu.edu.cn>,
-	Ruijie Li <ruijieli51@gmail.com>,
+	Ren Wei <enjou1224z@gmail.com>,
+	Ruide Cao <caoruide123@gmail.com>,
 	Ren Wei <n05ec@lzu.edu.cn>,
-	Dust Li <dust.li@linux.alibaba.com>,
-	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 6.1 215/969] net/smc: avoid early lgr access in smc_clc_wait_msg
+	Simon Horman <horms@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 025/776] net: sched: act_csum: validate nested VLAN headers
 Date: Sat, 30 May 2026 17:55:39 +0200
-Message-ID: <20260530160306.392592147@linuxfoundation.org>
+Message-ID: <20260530160240.915014170@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260530160300.485627683@linuxfoundation.org>
-References: <20260530160300.485627683@linuxfoundation.org>
+In-Reply-To: <20260530160240.228940103@linuxfoundation.org>
+References: <20260530160240.228940103@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -79,76 +80,88 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-257154-lists,stable=lfdr.de];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,kernel.org,gmail.com,lzu.edu.cn,linux.alibaba.com];
-	RCPT_COUNT_TWELVE(0.00)[12];
+	TAGGED_FROM(0.00)[bounces-257932-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,lzu.edu.cn,kernel.org];
+	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
+	RCPT_COUNT_TWELVE(0.00)[13];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	TAGGED_RCPT(0.00)[stable];
 	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
-	TO_DN_SOME(0.00)[];
-	FROM_HAS_DN(0.00)[]
-X-Rspamd-Queue-Id: 6287160EB92
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,lzu.edu.cn:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
+X-Rspamd-Queue-Id: D28DE6104DA
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ruijie Li <ruijieli51@gmail.com>
+From: Ruide Cao <caoruide123@gmail.com>
 
-commit 5a8db80f721deee8e916c2cfdee78decda02ce4f upstream.
+[ Upstream commit c842743d073bdd683606cb414eb0ca84465dd834 ]
 
-A CLC decline can be received while the handshake is still in an early
-stage, before the connection has been associated with a link group.
+tcf_csum_act() walks nested VLAN headers directly from skb->data when an
+skb still carries in-payload VLAN tags. The current code reads
+vlan->h_vlan_encapsulated_proto and then pulls VLAN_HLEN bytes without
+first ensuring that the full VLAN header is present in the linear area.
 
-The decline handling in smc_clc_wait_msg() updates link-group level sync
-state for first-contact declines, but that state only exists after link
-group setup has completed. Guard the link-group update accordingly and
-keep the per-socket peer diagnosis handling unchanged.
+If only part of an inner VLAN header is linearized, accessing
+h_vlan_encapsulated_proto reads past the linear area, and the following
+skb_pull(VLAN_HLEN) may violate skb invariants.
 
-This preserves the existing sync_err handling for established link-group
-contexts and avoids touching link-group state before it is available.
+Fix this by requiring pskb_may_pull(skb, VLAN_HLEN) before accessing and
+pulling each nested VLAN header. If the header still is not fully
+available, drop the packet through the existing error path.
 
-Fixes: 0cfdd8f92cac ("smc: connection and link group creation")
-Cc: stable@kernel.org
-Reported-by: Yuan Tan <yuantan098@gmail.com>
+Fixes: 2ecba2d1e45b ("net: sched: act_csum: Fix csum calc for tagged packets")
 Reported-by: Yifan Wu <yifanwucs@gmail.com>
 Reported-by: Juefei Pu <tomapufckgml@gmail.com>
-Reported-by: Xin Liu <bird@lzu.edu.cn>
-Signed-off-by: Ruijie Li <ruijieli51@gmail.com>
+Co-developed-by: Yuan Tan <yuantan098@gmail.com>
+Signed-off-by: Yuan Tan <yuantan098@gmail.com>
+Suggested-by: Xin Liu <bird@lzu.edu.cn>
+Tested-by: Ren Wei <enjou1224z@gmail.com>
+Signed-off-by: Ruide Cao <caoruide123@gmail.com>
 Signed-off-by: Ren Wei <n05ec@lzu.edu.cn>
-Reviewed-by: Dust Li <dust.li@linux.alibaba.com>
-Link: https://patch.msgid.link/08c68a5c817acf198cce63d22517e232e8d60718.1776850759.git.ruijieli51@gmail.com
+Reviewed-by: Simon Horman <horms@kernel.org>
+Link: https://patch.msgid.link/22df2fcb49f410203eafa5d97963dd36089f4ecf.1774892775.git.caoruide123@gmail.com
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/smc/smc_clc.c |    4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ net/sched/act_csum.c | 6 +++++-
+ 1 file changed, 5 insertions(+), 1 deletion(-)
 
---- a/net/smc/smc_clc.c
-+++ b/net/smc/smc_clc.c
-@@ -764,8 +764,8 @@ int smc_clc_wait_msg(struct smc_sock *sm
- 		dclc = (struct smc_clc_msg_decline *)clcm;
- 		reason_code = SMC_CLC_DECL_PEERDECL;
- 		smc->peer_diagnosis = ntohl(dclc->peer_diagnosis);
--		if (((struct smc_clc_msg_decline *)buf)->hdr.typev2 &
--						SMC_FIRST_CONTACT_MASK) {
-+		if ((dclc->hdr.typev2 & SMC_FIRST_CONTACT_MASK) &&
-+		    smc->conn.lgr) {
- 			smc->conn.lgr->sync_err = 1;
- 			smc_lgr_terminate_sched(smc->conn.lgr);
- 		}
+diff --git a/net/sched/act_csum.c b/net/sched/act_csum.c
+index 2f2fb0f7cc714..277f6a93cc66e 100644
+--- a/net/sched/act_csum.c
++++ b/net/sched/act_csum.c
+@@ -602,8 +602,12 @@ static int tcf_csum_act(struct sk_buff *skb, const struct tc_action *a,
+ 			protocol = skb->protocol;
+ 			orig_vlan_tag_present = true;
+ 		} else {
+-			struct vlan_hdr *vlan = (struct vlan_hdr *)skb->data;
++			struct vlan_hdr *vlan;
+ 
++			if (!pskb_may_pull(skb, VLAN_HLEN))
++				goto drop;
++
++			vlan = (struct vlan_hdr *)skb->data;
+ 			protocol = vlan->h_vlan_encapsulated_proto;
+ 			skb_pull(skb, VLAN_HLEN);
+ 			skb_reset_network_header(skb);
+-- 
+2.53.0
+
 
 
 
