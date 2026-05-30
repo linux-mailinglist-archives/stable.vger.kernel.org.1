@@ -1,59 +1,61 @@
-Return-Path: <stable+bounces-259071-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-257689-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id YJI3HJUxG2qKAAkAu9opvQ
-	(envelope-from <stable+bounces-259071-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:51:01 +0200
+	id qDG5IVEeG2q4/QgAu9opvQ
+	(envelope-from <stable+bounces-257689-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:28:49 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id D284A61299A
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:51:00 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0CB9D60FC30
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:28:48 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 32D1A31346F2
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 18:41:30 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 8F9E5304F3AA
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 17:24:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 924BA2C11C4;
-	Sat, 30 May 2026 18:41:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 22B0C340293;
+	Sat, 30 May 2026 17:24:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="s47RDN0I"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ByBGZNOW"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 71B4729E11A;
-	Sat, 30 May 2026 18:41:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ACD063242D7;
+	Sat, 30 May 2026 17:24:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780166489; cv=none; b=Ot1eH77OHhlMAaK4LHc+vf0EiGLgPCVKpLWVnnh0/D+K+7oBfZqo/mM0RdvNKSD/A2DwizAEByxL0MKu2uBtiGTOakWbTlOETy1Vx4H8UBfJRKJrsTiDVWwCOJLPVj+2TtpvD9RwfmfmBQPGZz3EkHuq5+3no/Jmc+QjYfWSxaE=
+	t=1780161843; cv=none; b=TIYeXr9I1eCdYo0Si9yABUYtEzzvuL+MzHPAb/aQYyQCeoCUGFfcJo9P+bLz21qCHuh1TOZixCzogwREuD23HOJfNVmUQTAYEUAKiNPo+T3tXHs7VGIKOj4qwU/Ifh1lAgiGMLDXxB9va5gD553U+Lv+zankSJKdEfdOIq8ew5M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780166489; c=relaxed/simple;
-	bh=gHqL4UZPaRSu9rdPzxwAkHQpkBGjOk30uALMkXCpMBQ=;
+	s=arc-20240116; t=1780161843; c=relaxed/simple;
+	bh=Nbovf/oxOm2oThEYjVlOSoeGlpjVvSmxWrnfN+yyTFk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=O2wMpStCtg0iJtLD4qVIshrjbn8Mxp02940+Gy++5x1RrOE1BewDrJvP01a3GQu0Hce0lV/d+kornRlPQJOfmd6RSa9ipxQUxT+qImNDpmDDEfNsc9CETTvIn4f0BDTlQwJJ4BZCjt+9CyO3WbgA5izO8IFrOVEkSWkNPWjSeIk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=s47RDN0I; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B64491F00893;
-	Sat, 30 May 2026 18:41:27 +0000 (UTC)
+	 MIME-Version; b=Cuy/psIETWAYI/PvXlMbeOVpAoCu9j/aT94NHdwX3JAIX5JFvlurL2+CmY9N8wYYoN5BfnubSMc28nD3v0Eh0DghpJjBfwv5ec9K/WYAgcVnXX9MP9jRT75j4WTo9+PXHxFHkelLZpaPu424LDdqe/f8knKzEH0Kk4Jw5LSpTI4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ByBGZNOW; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9DFEB1F00893;
+	Sat, 30 May 2026 17:24:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780166488;
-	bh=/NEXSC4StEb+AjGslFxLJInxweUwgokZg06Uu4rI/F8=;
+	s=korg; t=1780161842;
+	bh=ru/j6JRmuLqAJMp8K2MwYNRZvOosVrbh2LZeRLdKxis=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=s47RDN0Ie0S3fak5EjRSe/tJPhOfKg/5OkjUPMaPMA0T+gS64bQzpko+u3EQqPF8j
-	 13liO1yt6SUDU1/nrPb8Ez0AXtTgWSeDQwQy6smHnM6e1kOLJpf52C98uJwd5+SIL0
-	 T6UUlIUKiiNu3Yz2GqChi+dntdzvwjVDFcZ1HvXc=
+	b=ByBGZNOWAdDrvlwD1VADAlwAYVQwTppwQbNRHyrVzaBV7Dy4S0DKalUaMp+sJcooj
+	 nLbBQ05yA8z5flGoXn7blxsjL+Eik/EIUjVWaiud+Q35vc+xIHNEZV5fvqBNThG6Cp
+	 JVlDyNWXCVJZ+hHwcB5YyE7YKQOXte1u73N/SJtQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-	Andi Shyti <andi.shyti@kernel.org>,
+	Daan De Meyer <daan@amutable.com>,
+	Phillip Potter <phil@philpotter.co.uk>,
+	"Martin K. Petersen" <martin.petersen@oracle.com>,
+	Jens Axboe <axboe@kernel.dk>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 387/589] driver core: Move dev_err_probe() to where it belogs
+Subject: [PATCH 6.1 744/969] cdrom, scsi: sr: propagate read-only status to block layer via set_disk_ro()
 Date: Sat, 30 May 2026 18:04:28 +0200
-Message-ID: <20260530160234.971847685@linuxfoundation.org>
+Message-ID: <20260530160321.103271649@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260530160224.570625122@linuxfoundation.org>
-References: <20260530160224.570625122@linuxfoundation.org>
+In-Reply-To: <20260530160300.485627683@linuxfoundation.org>
+References: <20260530160300.485627683@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -68,83 +70,265 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-257689-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-259071-lists,stable=lfdr.de];
-	TO_DN_SOME(0.00)[];
-	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-0.996];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,intel.com:email]
-X-Rspamd-Queue-Id: D284A61299A
+	TO_DN_SOME(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_SEVEN(0.00)[8];
+	MID_RHS_MATCH_FROM(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,oracle.com:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,kernel.dk:email,philpotter.co.uk:email]
+X-Rspamd-Queue-Id: 0CB9D60FC30
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+From: Daan De Meyer <daan@amutable.com>
 
-[ Upstream commit 9e0cace7a6254070159ebd86497eadc29ea307ca ]
+[ Upstream commit 0898a817621a2f0cddca8122d9b974003fe5036d ]
 
-dev_err_probe() belongs to the printing API, hence
-move the definition from device.h to dev_printk.h.
+The cdrom core never calls set_disk_ro() for a registered device, so
+BLKROGET on a CD-ROM device always returns 0 (writable), even when the
+drive has no write capabilities and writes will inevitably fail. This
+causes problems for userspace that relies on BLKROGET to determine
+whether a block device is read-only. For example, systemd's loop device
+setup uses BLKROGET to decide whether to create a loop device with
+LO_FLAGS_READ_ONLY. Without the read-only flag, writes pass through the
+loop device to the CD-ROM and fail with I/O errors. systemd-fsck
+similarly checks BLKROGET to decide whether to run fsck in no-repair
+mode (-n).
 
-There is no change to the callers at all, since:
-1) implementation is located in the same core.c;
-2) dev_printk.h is guaranteed to be included by device.h.
+The write-capability bits in cdi->mask come from two different sources:
+CDC_DVD_RAM and CDC_CD_RW are populated by the driver from the MODE
+SENSE capabilities page (page 0x2A) before register_cdrom() is called,
+while CDC_MRW_W and CDC_RAM require the MMC GET CONFIGURATION command
+and were only probed by cdrom_open_write() at device open time. This
+meant that any attempt to compute the writable state from the full
+mask at probe time was incorrect, because the GET CONFIGURATION bits
+were still unset (and cdi->mask is initialized such that capabilities
+are assumed present).
 
-Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Reviewed-by: Andi Shyti <andi.shyti@kernel.org>
-Link: https://lore.kernel.org/r/20230721131309.16821-1-andriy.shevchenko@linux.intel.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Stable-dep-of: 797cc011ae02 ("backlight: sky81452-backlight: Check return value of devm_gpiod_get_optional() in sky81452_bl_parse_dt()")
+Fix this by factoring the GET CONFIGURATION probing out of
+cdrom_open_write() into a new exported helper,
+cdrom_probe_write_features(), and having sr call it from sr_probe()
+right after get_capabilities() has populated the MODE SENSE bits.
+register_cdrom() then calls set_disk_ro() based on the full
+write-capability mask (CDC_DVD_RAM | CDC_MRW_W | CDC_RAM | CDC_CD_RW)
+so the block layer reflects the drive's actual write support. The
+feature queries used (CDF_MRW and CDF_RWRT via GET CONFIGURATION with
+RT=00) report drive-level capabilities that are persistent across
+media, so a single probe before register_cdrom() is sufficient and the
+redundant probe at open time is dropped.
+
+With set_disk_ro() now accurate, the long-vestigial cd->writeable flag
+in sr can go: get_capabilities() used to set cd->writeable based on
+the same four mask bits, but because CDC_MRW_W and CDC_RAM default to
+"capability present" in cdi->mask and aren't touched by MODE SENSE,
+the condition that gated cd->writeable was always true, making it
+unconditionally 1. Replace the corresponding gate in sr_init_command()
+with get_disk_ro(cd->disk), which turns a previously no-op check into
+a real one and also catches kernel-internal bio writers that bypass
+blkdev_write_iter()'s bdev_read_only() check.
+
+The sd driver (SCSI disks) does not have this problem because it
+checks the MODE SENSE Write Protect bit and calls set_disk_ro()
+accordingly. The sr driver cannot use the same approach because the
+MMC specification does not define the WP bit in the MODE SENSE
+device-specific parameter byte for CD-ROM devices.
+
+Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
+Signed-off-by: Daan De Meyer <daan@amutable.com>
+Reviewed-by: Phillip Potter <phil@philpotter.co.uk>
+Reviewed-by: Martin K. Petersen <martin.petersen@oracle.com>
+Signed-off-by: Phillip Potter <phil@philpotter.co.uk>
+Link: https://patch.msgid.link/20260427210139.1400-2-phil@philpotter.co.uk
+Signed-off-by: Jens Axboe <axboe@kernel.dk>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/linux/dev_printk.h | 2 ++
- include/linux/device.h     | 2 --
- 2 files changed, 2 insertions(+), 2 deletions(-)
+ drivers/cdrom/cdrom.c | 73 ++++++++++++++++++++++++++++---------------
+ drivers/scsi/sr.c     | 11 ++-----
+ drivers/scsi/sr.h     |  1 -
+ include/linux/cdrom.h |  1 +
+ 4 files changed, 51 insertions(+), 35 deletions(-)
 
-diff --git a/include/linux/dev_printk.h b/include/linux/dev_printk.h
-index 6f009559ee540..6a6a6baa10bac 100644
---- a/include/linux/dev_printk.h
-+++ b/include/linux/dev_printk.h
-@@ -242,4 +242,6 @@ do {									\
- 	WARN_ONCE(condition, "%s %s: " format, \
- 			dev_driver_string(dev), dev_name(dev), ## arg)
+diff --git a/drivers/cdrom/cdrom.c b/drivers/cdrom/cdrom.c
+index 8e3eeb96db63e..bba9eb8e2ca90 100644
+--- a/drivers/cdrom/cdrom.c
++++ b/drivers/cdrom/cdrom.c
+@@ -633,6 +633,16 @@ int register_cdrom(struct gendisk *disk, struct cdrom_device_info *cdi)
  
-+__printf(3, 4) int dev_err_probe(const struct device *dev, int err, const char *fmt, ...);
+ 	WARN_ON(!cdo->generic_packet);
+ 
++	/*
++	 * Propagate the drive's write support to the block layer so BLKROGET
++	 * reflects actual write capability. Drivers that use GET CONFIGURATION
++	 * features (CDC_MRW_W, CDC_RAM) must have called
++	 * cdrom_probe_write_features() before register_cdrom() so the mask is
++	 * complete here.
++	 */
++	set_disk_ro(disk, !CDROM_CAN(CDC_DVD_RAM | CDC_MRW_W | CDC_RAM |
++				     CDC_CD_RW));
 +
- #endif /* _DEVICE_PRINTK_H_ */
-diff --git a/include/linux/device.h b/include/linux/device.h
-index 11709e3ee811f..77d6493c26a48 100644
---- a/include/linux/device.h
-+++ b/include/linux/device.h
-@@ -1032,8 +1032,6 @@ void device_links_supplier_sync_state_pause(void);
- void device_links_supplier_sync_state_resume(void);
- void device_link_wait_removal(void);
+ 	cd_dbg(CD_REG_UNREG, "drive \"/dev/%s\" registered\n", cdi->name);
+ 	mutex_lock(&cdrom_mutex);
+ 	list_add(&cdi->list, &cdrom_list);
+@@ -747,6 +757,44 @@ static int cdrom_is_random_writable(struct cdrom_device_info *cdi, int *write)
+ 	return 0;
+ }
  
--__printf(3, 4) int dev_err_probe(const struct device *dev, int err, const char *fmt, ...);
++/*
++ * Probe write-related MMC features via GET CONFIGURATION and update
++ * cdi->mask accordingly. Drivers that populate cdi->mask from the MODE SENSE
++ * capabilities page (e.g. sr) should call this after those MODE SENSE bits
++ * have been set but before register_cdrom(), so that the full set of
++ * write-capability bits is known by the time register_cdrom() decides on the
++ * initial read-only state of the disk.
++ */
++void cdrom_probe_write_features(struct cdrom_device_info *cdi)
++{
++	int mrw, mrw_write, ram_write;
++
++	mrw = 0;
++	if (!cdrom_is_mrw(cdi, &mrw_write))
++		mrw = 1;
++
++	if (CDROM_CAN(CDC_MO_DRIVE))
++		ram_write = 1;
++	else
++		(void) cdrom_is_random_writable(cdi, &ram_write);
++
++	if (mrw)
++		cdi->mask &= ~CDC_MRW;
++	else
++		cdi->mask |= CDC_MRW;
++
++	if (mrw_write)
++		cdi->mask &= ~CDC_MRW_W;
++	else
++		cdi->mask |= CDC_MRW_W;
++
++	if (ram_write)
++		cdi->mask &= ~CDC_RAM;
++	else
++		cdi->mask |= CDC_RAM;
++}
++EXPORT_SYMBOL(cdrom_probe_write_features);
++
+ static int cdrom_media_erasable(struct cdrom_device_info *cdi)
+ {
+ 	disc_information di;
+@@ -899,33 +947,8 @@ static int cdrom_is_dvd_rw(struct cdrom_device_info *cdi)
+  */
+ static int cdrom_open_write(struct cdrom_device_info *cdi)
+ {
+-	int mrw, mrw_write, ram_write;
+ 	int ret = 1;
+ 
+-	mrw = 0;
+-	if (!cdrom_is_mrw(cdi, &mrw_write))
+-		mrw = 1;
 -
- /* Create alias, so I can be autoloaded. */
- #define MODULE_ALIAS_CHARDEV(major,minor) \
- 	MODULE_ALIAS("char-major-" __stringify(major) "-" __stringify(minor))
+-	if (CDROM_CAN(CDC_MO_DRIVE))
+-		ram_write = 1;
+-	else
+-		(void) cdrom_is_random_writable(cdi, &ram_write);
+-	
+-	if (mrw)
+-		cdi->mask &= ~CDC_MRW;
+-	else
+-		cdi->mask |= CDC_MRW;
+-
+-	if (mrw_write)
+-		cdi->mask &= ~CDC_MRW_W;
+-	else
+-		cdi->mask |= CDC_MRW_W;
+-
+-	if (ram_write)
+-		cdi->mask &= ~CDC_RAM;
+-	else
+-		cdi->mask |= CDC_RAM;
+-
+ 	if (CDROM_CAN(CDC_MRW_W))
+ 		ret = cdrom_mrw_open_write(cdi);
+ 	else if (CDROM_CAN(CDC_DVD_RAM))
+diff --git a/drivers/scsi/sr.c b/drivers/scsi/sr.c
+index a278b739d0c5f..dc9c49dd1d0fd 100644
+--- a/drivers/scsi/sr.c
++++ b/drivers/scsi/sr.c
+@@ -392,7 +392,7 @@ static blk_status_t sr_init_command(struct scsi_cmnd *SCpnt)
+ 
+ 	switch (req_op(rq)) {
+ 	case REQ_OP_WRITE:
+-		if (!cd->writeable)
++		if (get_disk_ro(cd->disk))
+ 			goto out;
+ 		SCpnt->cmnd[0] = WRITE_10;
+ 		cd->cdi.media_written = 1;
+@@ -672,6 +672,7 @@ static int sr_probe(struct device *dev)
+ 	error = -ENOMEM;
+ 	if (get_capabilities(cd))
+ 		goto fail_minor;
++	cdrom_probe_write_features(&cd->cdi);
+ 	sr_vendor_init(cd);
+ 
+ 	set_capacity(disk, cd->capacity);
+@@ -890,14 +891,6 @@ static int get_capabilities(struct scsi_cd *cd)
+ 	/*else    I don't think it can close its tray
+ 		cd->cdi.mask |= CDC_CLOSE_TRAY; */
+ 
+-	/*
+-	 * if DVD-RAM, MRW-W or CD-RW, we are randomly writable
+-	 */
+-	if ((cd->cdi.mask & (CDC_DVD_RAM | CDC_MRW_W | CDC_RAM | CDC_CD_RW)) !=
+-			(CDC_DVD_RAM | CDC_MRW_W | CDC_RAM | CDC_CD_RW)) {
+-		cd->writeable = 1;
+-	}
+-
+ 	kfree(buffer);
+ 	return 0;
+ }
+diff --git a/drivers/scsi/sr.h b/drivers/scsi/sr.h
+index 1175f2e213b56..9809dac8b57d5 100644
+--- a/drivers/scsi/sr.h
++++ b/drivers/scsi/sr.h
+@@ -35,7 +35,6 @@ typedef struct scsi_cd {
+ 	struct scsi_device *device;
+ 	unsigned int vendor;	/* vendor code, see sr_vendor.c         */
+ 	unsigned long ms_offset;	/* for reading multisession-CD's        */
+-	unsigned writeable : 1;
+ 	unsigned use:1;		/* is this device still supportable     */
+ 	unsigned xa_flag:1;	/* CD has XA sectors ? */
+ 	unsigned readcd_known:1;	/* drive supports READ_CD (0xbe) */
+diff --git a/include/linux/cdrom.h b/include/linux/cdrom.h
+index 67caa909e3e61..24a344b15bed1 100644
+--- a/include/linux/cdrom.h
++++ b/include/linux/cdrom.h
+@@ -109,6 +109,7 @@ extern int cdrom_ioctl(struct cdrom_device_info *cdi, struct block_device *bdev,
+ extern unsigned int cdrom_check_events(struct cdrom_device_info *cdi,
+ 				       unsigned int clearing);
+ 
++extern void cdrom_probe_write_features(struct cdrom_device_info *cdi);
+ extern int register_cdrom(struct gendisk *disk, struct cdrom_device_info *cdi);
+ extern void unregister_cdrom(struct cdrom_device_info *cdi);
+ 
 -- 
 2.53.0
 
