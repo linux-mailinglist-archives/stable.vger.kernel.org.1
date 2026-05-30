@@ -1,60 +1,61 @@
-Return-Path: <stable+bounces-257884-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-259277-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id eOXxBdAgG2qu/QgAu9opvQ
-	(envelope-from <stable+bounces-257884-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:39:28 +0200
+	id CPbWOSgyG2qkAAkAu9opvQ
+	(envelope-from <stable+bounces-259277-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:53:28 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 50ED66101E9
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:39:27 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id EC2A4612BEB
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:53:27 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 4DA99306884B
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 17:34:56 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id AC114300373F
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 18:53:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E76C73403F9;
-	Sat, 30 May 2026 17:34:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BF15E248F66;
+	Sat, 30 May 2026 18:53:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GTpBrM6+"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rGpKdSKU"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C26BF30E853;
-	Sat, 30 May 2026 17:34:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9AA492E7389;
+	Sat, 30 May 2026 18:53:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780162494; cv=none; b=MrSxrH+OHCp/mBHKb48TDvAck0XT8RASCX32CGv6/7DsUi1qZJ8ZB+a28FpdW4Bbf0n8Mm/61aVwYM84H8vUPywvBp3uSRsQSUz5Zboh9BtyZkP2nzPjpP+xsN8VmbLBflFVlq79axpj89Z6D2Xoj7L0i5HfexL/kstTTinZwKo=
+	t=1780167203; cv=none; b=AugGpaB7cKYJtKfVaTRRkqSpoxzlpm25jTc1Zp1gvRzAxvk3LMFt9BycbuMP9BZXBLHQFLZopugZ0HfDzOXzI9PpjEjACDbsy6GpGaopzzhG/4jrgm08ZHcUIqY/buMsDRqlpuSgR+Lw5kUQtyY55UDHHaNObYboVoa/H7dnTjc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780162494; c=relaxed/simple;
-	bh=Rxdc+XaK75xxt1GfkL0q6kQ0yPSw5SzbQonVAtn1B18=;
+	s=arc-20240116; t=1780167203; c=relaxed/simple;
+	bh=Y/i/i7wy2E2FbYlWDysFVLQCDZT+31Bbm8/ltTafiNA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=UkqZyv2Y2U2pId4a+V2hglhAIVrzq2MK5acxu8+PAcyTEYYKN8aVQSmzRbXp9yVnDQ6o/W9uSumK2hXkmeegxj+M2VhYBEqWZsXrF5LrdCoSpDD22Smj0pquuR5f69hN5HTm98v3FL9p9LbgjQJbHYOgqB2CB1z7tTsYn5YUiAU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GTpBrM6+; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 110D51F00893;
-	Sat, 30 May 2026 17:34:52 +0000 (UTC)
+	 MIME-Version:Content-Type; b=RRsqiJWPShDsfSGKgt1w5S1yV+wRJOJWD+hioQMnOuniryyaiydiAHsQRtKHB5jThKQLNVYM5IAs16LM90eYLltoasaLgrFDYsFD5Bstpp8o8FngBwT3bZ4IEcgiiF0kWwDIWmFxSquQ/akxDbxK6BqptDdivfA31ACGY3ZqL0k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rGpKdSKU; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8E2551F00893;
+	Sat, 30 May 2026 18:53:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780162493;
-	bh=OVRxCVSf2voRHHitMNG4L8JRA59Z7ZJhPBWewBOKXp8=;
+	s=korg; t=1780167202;
+	bh=1+PeQt5QNY9DHetthFW6JLXPZI5ijZpbbs30Q98bQco=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=GTpBrM6+aOaSXra1NwnL1rSk5XR+ZQX2ACm3ZoBVsEyEGiubft+OAueMzOsaV1MA8
-	 YK9Ho18ryYElS0v2qYHHQ+EnFNUs+yXDBN/J3Q8H+NR0URaoRl35lhuyDZFBFFlsUx
-	 N9IGlrm70ozZWh+qDM/kD3mVGyfQtVZ9+ejlE4tg=
+	b=rGpKdSKUSFUVONpQPBQbGBUeRfoTXYtHr6HG4d6CE0+NdSKQ+B6u/R+TRTOgXXr1n
+	 3NCPhQ+FX5ctmM+lpOEnHTJCc+vU3XGvrthgQSGgQRvdyvC+B6674lnDDOVRAAcGQW
+	 sr0Sn2ySbnwhApAiRmWqaRlh1lfe5tY3vNw1jlbw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Weiming Shi <bestswngs@gmail.com>,
-	Xiang Mei <xmei5@asu.edu>,
+	=?UTF-8?q?=E9=92=B1=E4=B8=80=E9=93=AD?= <yimingqian591@gmail.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sabrina Dubroca <sd@queasysnail.net>,
 	Paolo Abeni <pabeni@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 937/969] net/smc: reject CHID-0 ACCEPT that matches an empty ism_dev slot
-Date: Sat, 30 May 2026 18:07:41 +0200
-Message-ID: <20260530160326.626639067@linuxfoundation.org>
+Subject: [PATCH 5.10 581/589] net: tls: fix off-by-one in sg_chain entry count for wrapped sk_msg ring
+Date: Sat, 30 May 2026 18:07:42 +0200
+Message-ID: <20260530160239.866912770@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260530160300.485627683@linuxfoundation.org>
-References: <20260530160300.485627683@linuxfoundation.org>
+In-Reply-To: <20260530160224.570625122@linuxfoundation.org>
+References: <20260530160224.570625122@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,98 +65,111 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,asu.edu,redhat.com,kernel.org];
-	TAGGED_FROM(0.00)[bounces-257884-lists,stable=lfdr.de];
-	PRECEDENCE_BULK(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,kernel.org,queasysnail.net,redhat.com];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
 	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-259277-lists,stable=lfdr.de];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	RCVD_TLS_LAST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[7];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
+	FROM_HAS_DN(0.00)[];
 	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[asu.edu:email,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,msgid.link:url,linuxfoundation.org:mid,linuxfoundation.org:dkim]
-X-Rspamd-Queue-Id: 50ED66101E9
+	NEURAL_HAM(-0.00)[-0.997];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	MID_RHS_MATCH_FROM(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_SEVEN(0.00)[8];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim,msgid.link:url]
+X-Rspamd-Queue-Id: EC2A4612BEB
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Xiang Mei <xmei5@asu.edu>
+From: Jakub Kicinski <kuba@kernel.org>
 
-[ Upstream commit 277740023def559a4a2ddc3e8e784ee37a0f16a9 ]
+[ Upstream commit 285943c6e7ca309bbea84b253745154241d9788a ]
 
-On the SMC-D client, slot 0 of ini->ism_dev[]/ini->ism_chid[] is
-reserved for an SMC-Dv1 device. smc_find_ism_v2_device_clnt()
-populates V2 entries starting at index 1, so when no V1 device is
-selected slot 0 is left in its kzalloc()'ed state with ism_dev[0] ==
-NULL and ism_chid[0] == 0.
+When an sk_msg scatterlist ring wraps (sg.end < sg.start),
+tls_push_record() chains the tail portion of the ring to the head
+using sg_chain(). An extra entry in the sg array is reserved for
+this:
 
-smc_v2_determine_accepted_chid() then matches the peer's CHID against
-the array starting from index 0 using the CHID alone. A malicious
-peer replying to a SMC-Dv2-only proposal with d1.chid == 0 matches
-the empty slot, ini->ism_selected becomes 0, and the subsequent
-ism_dev[0]->lgr_lock dereference in smc_conn_create() faults at
-offsetof(struct smcd_dev, lgr_lock) == 0x68:
+  struct sk_msg_sg {
+        [...]
+        /* The extra two elements:
+         * 1) used for chaining the front and sections when the list becomes
+         *    partitioned (e.g. end < start). The crypto APIs require the
+         *    chaining;
+         * 2) to chain tailer SG entries after the message.
+         */
+        struct scatterlist              data[MAX_MSG_FRAGS + 2];
 
-  BUG: KASAN: null-ptr-deref in _raw_spin_lock_bh+0x79/0xe0
-  Write of size 4 at addr 0000000000000068 by task exploit/144
-  Call Trace:
-   _raw_spin_lock_bh
-   smc_conn_create (net/smc/smc_core.c:1997)
-   __smc_connect (net/smc/af_smc.c:1447)
-   smc_connect (net/smc/af_smc.c:1720)
-   __sys_connect
-   __x64_sys_connect
-   do_syscall_64
+The current code uses MAX_SKB_FRAGS + 1 as the ring size:
 
-Require ism_dev[i] to be non-NULL before accepting a CHID match.
+    sg_chain(&msg_pl->sg.data[msg_pl->sg.start],
+             MAX_SKB_FRAGS - msg_pl->sg.start + 1,
+             msg_pl->sg.data);
 
-Fixes: a7c9c5f4af7f ("net/smc: CLC accept / confirm V2")
-Reported-by: Weiming Shi <bestswngs@gmail.com>
-Assisted-by: Claude:claude-opus-4-7
-Signed-off-by: Xiang Mei <xmei5@asu.edu>
-Link: https://patch.msgid.link/20260511062138.2839584-1-xmei5@asu.edu
+This places the chain pointer at
+
+  sg_chain(data[start], (MAX_SKB_FRAGS - msg_start + 1) .. =
+  &data[start] + (MAX_SKB_FRAGS - msg_start + 1) - 1 =
+  data[start + (MAX_SKB_FRAGS - start + 1) - 1] =
+  data[MAX_SKB_FRAGS]
+
+instead of the true last entry. This is likely due to a "race" of
+the commit under Fixes landing close to
+commit 031097d9e079 ("bpf: sk_msg, zap ingress queue on psock down")
+
+Convert to ARRAY_SIZE and drop the data[start] / - start (as suggested
+by Sabrina).
+
+Reported-by: 钱一铭 <yimingqian591@gmail.com>
+Fixes: 9aaaa56845a0 ("bpf: Sockmap/tls, skmsg can have wrapped skmsg that needs extra chaining")
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Reviewed-by: Sabrina Dubroca <sd@queasysnail.net>
+Link: https://patch.msgid.link/20260511174920.433155-2-kuba@kernel.org
 Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/smc/af_smc.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ net/tls/tls_sw.c | 6 ++----
+ 1 file changed, 2 insertions(+), 4 deletions(-)
 
-diff --git a/net/smc/af_smc.c b/net/smc/af_smc.c
-index a609b220b215d..b0f8eca077b89 100644
---- a/net/smc/af_smc.c
-+++ b/net/smc/af_smc.c
-@@ -1346,7 +1346,8 @@ smc_v2_determine_accepted_chid(struct smc_clc_msg_accept_confirm_v2 *aclc,
- 	int i;
+diff --git a/net/tls/tls_sw.c b/net/tls/tls_sw.c
+index a300d1ac13a88..9969222dd2150 100644
+--- a/net/tls/tls_sw.c
++++ b/net/tls/tls_sw.c
+@@ -741,11 +741,9 @@ static int tls_push_record(struct sock *sk, int flags,
+ 		sg_mark_end(sk_msg_elem(msg_pl, i));
+ 	}
  
- 	for (i = 0; i < ini->ism_offered_cnt + 1; i++) {
--		if (ini->ism_chid[i] == ntohs(aclc->d1.chid)) {
-+		if (ini->ism_dev[i] &&
-+		    ini->ism_chid[i] == ntohs(aclc->d1.chid)) {
- 			ini->ism_selected = i;
- 			return 0;
- 		}
+-	if (msg_pl->sg.end < msg_pl->sg.start) {
+-		sg_chain(&msg_pl->sg.data[msg_pl->sg.start],
+-			 MAX_SKB_FRAGS - msg_pl->sg.start + 1,
++	if (msg_pl->sg.end < msg_pl->sg.start)
++		sg_chain(msg_pl->sg.data, ARRAY_SIZE(msg_pl->sg.data),
+ 			 msg_pl->sg.data);
+-	}
+ 
+ 	i = msg_pl->sg.start;
+ 	sg_chain(rec->sg_aead_in, 2, &msg_pl->sg.data[i]);
 -- 
 2.53.0
 
