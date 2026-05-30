@@ -1,60 +1,58 @@
-Return-Path: <stable+bounces-257581-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-258324-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id oGVDKkYcG2pk/QgAu9opvQ
-	(envelope-from <stable+bounces-257581-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:20:06 +0200
+	id gMMyLwAmG2qS/ggAu9opvQ
+	(envelope-from <stable+bounces-258324-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:01:36 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4E79860F6A2
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:20:06 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6A34D610D69
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:01:36 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 0421A303321D
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 17:18:01 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id E29F130219A5
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 17:59:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B7086340293;
-	Sat, 30 May 2026 17:17:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 32B29332EA7;
+	Sat, 30 May 2026 17:59:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OfP823Am"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UAE0rO26"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7567F263F44;
-	Sat, 30 May 2026 17:17:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 22857320CAD;
+	Sat, 30 May 2026 17:59:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780161479; cv=none; b=VukS9POI7w0ahGDDppGTS9E4bdOdGxcdYHsN0P3OOZYBLy/EUqekRV6vvSfqtKT8neyiB5U+YZwWJW0GiHRSdKtJyQhk2iDTnJpQkG5Un67jU/FVC0y+5UQwXhV4/bsYUSPLjXuEJIOUGBs6vTsB0cyKHHbRxQwCzbttF+VcMkw=
+	t=1780163968; cv=none; b=XCYYT7b+l7+sdGpmxWNqdGLVmOrpZhIh3s8tXrWHb9FT9dFHvgt0Iuw14UTjedPBoCHHkDMV7YjpEbORBl0GRQx4aiuE1LVcbfsMOTLPz/qCGl16E+l3GjIrINVvNvpIBpmBi2dw+X9liq55I/lpCgGu2hvDoCvfR1RlL1mr8Wo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780161479; c=relaxed/simple;
-	bh=Y7Nz4Nh0Vcm01ahjCTPiK7vkqi7KJjw2hwW78POlXk8=;
+	s=arc-20240116; t=1780163968; c=relaxed/simple;
+	bh=YlelWltdBvgpM47l8K0wV8oazfcGYaTegfnOlEbSMg4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=BEJXT3RBAbcrQlCOPfkOVp6i0A9y9pi62s+hhIiPPv5S9QFoGHi1jd+eNNWPPtUySmkDcUZJMsehos6t8Fh3yuont0ZCdTcOX2/Z77UZNTgLzXDSvafiGS+dIL/RWmyIfMLM39y1nqI45499US5eFXeU0bgADzA/U8qQsD9qnwE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OfP823Am; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BA0361F00893;
-	Sat, 30 May 2026 17:17:57 +0000 (UTC)
+	 MIME-Version; b=RO4+EKAKmhpQLU5KliImCVPqJhNJvoxbAKuiE00mqcSxEvt4gVZleltGUGP64ouoWDjUEy97mxFJi0pYk7WWS6IK3axxIoL/k+5GGGbsbToszmZXE8VWDWmhNGZj9Z+S+jj5aWrrnWAeyk5ZHmb8gg9TcPtDTwIUIgy29fOnMog=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UAE0rO26; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 677121F00893;
+	Sat, 30 May 2026 17:59:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780161478;
-	bh=mCtCGA8DTYN47al5T3SkFMozhhSdbK5OKVqS18mH6zo=;
+	s=korg; t=1780163967;
+	bh=nkzcDhs+zu8hukBu2APrOArs1ZM1IMsUd6Ob5kkKg4w=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=OfP823AmPE2DWTV15ksNPUGhnqIPYxrrB3xoK+PKU/+X/qeiYiE9AsMv9yvNn4zBQ
-	 WpqoEnKy/YpDLQU5bISQNPiApcHC1QkIIvbkMnwF0bTGvM7ZQeqCB28NX/oGkv/yRk
-	 XSF1kOYpq7K4j9zP9bEhmkgV5m0EnIxnx9Nm3QWA=
+	b=UAE0rO26sFDfrDI2yPtdU8mYYUGBt9KlwpYPkDnPvxY8LzzU5cAh2/wYZtUfX7F+q
+	 MwcV9z3l1e1im/e50h0NvwSIeMkx8sii/b0oomfTM3WmWrPcn+Kb201VhVmp6PlvZB
+	 Enm749TCojuoIKWKOu2lNSs2mb/Qnv7jEnYOByZg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Takahiro Kuwano <Takahiro.Kuwano@infineon.com>,
-	Tudor Ambarus <tudor.ambarus@microchip.com>,
-	Michael Walle <michael@walle.cc>,
+	Florian Westphal <fw@strlen.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 605/969] mtd: spi-nor: spansion: Rename s28hs512t prefix
+Subject: [PATCH 5.15 415/776] netfilter: nft_fwd_netdev: check ttl/hl before forwarding
 Date: Sat, 30 May 2026 18:02:09 +0200
-Message-ID: <20260530160317.136206444@linuxfoundation.org>
+Message-ID: <20260530160251.202959824@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260530160300.485627683@linuxfoundation.org>
-References: <20260530160300.485627683@linuxfoundation.org>
+In-Reply-To: <20260530160240.228940103@linuxfoundation.org>
+References: <20260530160240.228940103@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -67,108 +65,79 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-257581-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-258324-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
-	PRECEDENCE_BULK(0.00)[];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[7];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	TO_DN_SOME(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	RCPT_COUNT_FIVE(0.00)[5];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	TAGGED_RCPT(0.00)[stable];
+	MID_RHS_MATCH_FROM(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
 	FROM_HAS_DN(0.00)[]
-X-Rspamd-Queue-Id: 4E79860F6A2
+X-Rspamd-Queue-Id: 6A34D610D69
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Takahiro Kuwano <Takahiro.Kuwano@infineon.com>
+From: Florian Westphal <fw@strlen.de>
 
-[ Upstream commit 06051322704bf38cbd721e14bdbd6e43c8e6d7e1 ]
+[ Upstream commit 1dfd95bdf4d18d263aa8fad06bfb9f4d9c992b18 ]
 
-Change prefix to support all other devices in SEMPER S28 family.
+Drop packets if their ttl/hl is too small for forwarding.
 
-Signed-off-by: Takahiro Kuwano <Takahiro.Kuwano@infineon.com>
-Signed-off-by: Tudor Ambarus <tudor.ambarus@microchip.com>
-Reviewed-by: Michael Walle <michael@walle.cc>
-Link: https://lore.kernel.org/r/8cf6bc9bffd50e486867c0817de1fa56c5d308ec.1661915569.git.Takahiro.Kuwano@infineon.com
-Stable-dep-of: 3620d67b4849 ("mtd: spi-nor: update spi_nor_fixups::post_sfdp() documentation")
+Fixes: d32de98ea70f ("netfilter: nft_fwd_netdev: allow to forward packets via neighbour layer")
+Signed-off-by: Florian Westphal <fw@strlen.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/mtd/spi-nor/spansion.c | 20 ++++++++++----------
- 1 file changed, 10 insertions(+), 10 deletions(-)
+ net/netfilter/nft_fwd_netdev.c | 10 ++++++++++
+ 1 file changed, 10 insertions(+)
 
-diff --git a/drivers/mtd/spi-nor/spansion.c b/drivers/mtd/spi-nor/spansion.c
-index 7e7c68fc7776d..0109fccca7ea2 100644
---- a/drivers/mtd/spi-nor/spansion.c
-+++ b/drivers/mtd/spi-nor/spansion.c
-@@ -288,7 +288,7 @@ static int cypress_nor_octal_dtr_enable(struct spi_nor *nor, bool enable)
- 			cypress_nor_octal_dtr_dis(nor);
- }
- 
--static void s28hs512t_post_sfdp_fixup(struct spi_nor *nor)
-+static void s28hx_t_post_sfdp_fixup(struct spi_nor *nor)
- {
- 	/*
- 	 * On older versions of the flash the xSPI Profile 1.0 table has the
-@@ -316,23 +316,23 @@ static void s28hs512t_post_sfdp_fixup(struct spi_nor *nor)
- 	nor->params->rdsr_addr_nbytes = 4;
- }
- 
--static int s28hs512t_post_bfpt_fixup(struct spi_nor *nor,
--				     const struct sfdp_parameter_header *bfpt_header,
--				     const struct sfdp_bfpt *bfpt)
-+static int s28hx_t_post_bfpt_fixup(struct spi_nor *nor,
-+				   const struct sfdp_parameter_header *bfpt_header,
-+				   const struct sfdp_bfpt *bfpt)
- {
- 	return cypress_nor_set_page_size(nor);
- }
- 
--static void s28hs512t_late_init(struct spi_nor *nor)
-+static void s28hx_t_late_init(struct spi_nor *nor)
- {
- 	nor->params->octal_dtr_enable = cypress_nor_octal_dtr_enable;
- 	cypress_nor_ecc_init(nor);
- }
- 
--static const struct spi_nor_fixups s28hs512t_fixups = {
--	.post_sfdp = s28hs512t_post_sfdp_fixup,
--	.post_bfpt = s28hs512t_post_bfpt_fixup,
--	.late_init = s28hs512t_late_init,
-+static const struct spi_nor_fixups s28hx_t_fixups = {
-+	.post_sfdp = s28hx_t_post_sfdp_fixup,
-+	.post_bfpt = s28hx_t_post_bfpt_fixup,
-+	.late_init = s28hx_t_late_init,
- };
- 
- static int
-@@ -468,7 +468,7 @@ static const struct flash_info spansion_nor_parts[] = {
- 		FLAGS(SPI_NOR_NO_ERASE) },
- 	{ "s28hs512t",   INFO(0x345b1a,      0, 256 * 1024, 256)
- 		PARSE_SFDP
--		.fixups = &s28hs512t_fixups,
-+		.fixups = &s28hx_t_fixups,
- 	},
- };
- 
+diff --git a/net/netfilter/nft_fwd_netdev.c b/net/netfilter/nft_fwd_netdev.c
+index 7730409f6f091..09aff403884b5 100644
+--- a/net/netfilter/nft_fwd_netdev.c
++++ b/net/netfilter/nft_fwd_netdev.c
+@@ -113,6 +113,11 @@ static void nft_fwd_neigh_eval(const struct nft_expr *expr,
+ 			goto out;
+ 		}
+ 		iph = ip_hdr(skb);
++		if (iph->ttl <= 1) {
++			verdict = NF_DROP;
++			goto out;
++		}
++
+ 		ip_decrease_ttl(iph);
+ 		neigh_table = NEIGH_ARP_TABLE;
+ 		break;
+@@ -129,6 +134,11 @@ static void nft_fwd_neigh_eval(const struct nft_expr *expr,
+ 			goto out;
+ 		}
+ 		ip6h = ipv6_hdr(skb);
++		if (ip6h->hop_limit <= 1) {
++			verdict = NF_DROP;
++			goto out;
++		}
++
+ 		ip6h->hop_limit--;
+ 		neigh_table = NEIGH_ND_TABLE;
+ 		break;
 -- 
 2.53.0
 
