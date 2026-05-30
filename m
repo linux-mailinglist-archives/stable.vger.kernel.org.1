@@ -1,60 +1,66 @@
-Return-Path: <stable+bounces-257394-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-258188-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id eBAVOp0ZG2oq/QgAu9opvQ
-	(envelope-from <stable+bounces-257394-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:08:45 +0200
+	id iOqVONElG2rO/QgAu9opvQ
+	(envelope-from <stable+bounces-258188-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:00:49 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0F5BD60EF73
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:08:44 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 55F27610CEF
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:00:49 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 931003017CEA
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 17:07:29 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 6874230BE5C3
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 17:51:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D3DD2395AEA;
-	Sat, 30 May 2026 17:07:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 62BE5342CA7;
+	Sat, 30 May 2026 17:51:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1zdHdYZt"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rcUnzxnj"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B623D34BA42;
-	Sat, 30 May 2026 17:07:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 374771A680F;
+	Sat, 30 May 2026 17:51:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780160846; cv=none; b=qGOfr1yyupHlLu9Z15QYhz++AsgZjx6fL+t6yqCRFsmVNZATsr8Q3LjMzdIS+ZYBvowAp4X1D9Td7ztr0TIq4LtJc/J96hqanT2AkQia4xxve/ASTONU6nTdZnrWaa0EvAyQtT8PqBH3wIGulNFo07SYBi4qL0Jlt2N5K/t0wUA=
+	t=1780163509; cv=none; b=jokgVoFFrwtnhEzX8UfibrenEtBY3L9c5uRA3ynwfeKksUrRJR9eZqxRN77p17qZhYAgjy/3sk0BuouUUCrPbQq6H7tn7z+puobVRVS4y7WAjTKGZOs4a37B6FfgKOBXnvj0tQDrO8Z5zibuchCQKj6Z9kRShEUt/GWvvnK5cPA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780160846; c=relaxed/simple;
-	bh=JYbY0Vqeq2fytn7TBEU4m2cCn90Z12kXA3LBdSPvoJ8=;
+	s=arc-20240116; t=1780163509; c=relaxed/simple;
+	bh=DkKaNEiux0yBRtb2Li4SxUqDzmGnaEPI+MJY1ABTkYg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=jMg+0YVKpsa+Jh24btE1A67k8IOhOJ3Wm8nfSGBHOtqCYtr04frTILhwnKOmOinoQNbPcX65KeIKZmdaNbj/W0nyhxWL8wR4SqHZaJ824e6cvmrENzXRkdEnpVXP4ioLu6MsWrynHJHRrK5fjQJGjJl2QjgNE+jLq0HQ89BC+zE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1zdHdYZt; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 077D81F00893;
-	Sat, 30 May 2026 17:07:24 +0000 (UTC)
+	 MIME-Version; b=T0cxy09g+pJ0ymhV2lZYCV4Cg/ssiiGZz9aAJgsHL/eOyEYCs+uQ8cu7sZI8DlgnqxLjJIoKT5DGZzd2HRQDlnaccTVhrDxML8fVQnvCQKzs8XRift/xDvAF2f3GTtEwo3RS/VbyyF4JIUv9Js5bkBx/36focbDWqRRT6wi4umc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rcUnzxnj; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7AEBB1F00893;
+	Sat, 30 May 2026 17:51:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780160845;
-	bh=QDRAJVYg+MGAijF474NkfBXZsqWA1763PBJPwj44uqw=;
+	s=korg; t=1780163508;
+	bh=AFWCrG4Jas/4FyLA4tNPt3H+d9eYw/ngt1RT1YY1P/M=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=1zdHdYZtWixnsKgzqPumg4oayInv7bzhUx6ueMVPqAZPvosCpZPs2Dv/gPekSVMjK
-	 W1fMp3uDm/caryjNLePIE/ayysRdO2NUUZKNRNir2UlhxqRfZ0PM9nEwGiw72FKlEt
-	 iseDiXfx4a38SlXqi/0ZL77RtKbnxFGMWSQYQBPE=
+	b=rcUnzxnjtftRLCNFnvK3IWeM3zc4IatT4vOTpj19MRSwA7x/bJN13mYkVBCPGiume
+	 A4DMj/M4pAwWnlWs3I1MDCvKzgm00Halt4q8vTd88MjW0BspR5UBGIF5F4gaw+Y8K9
+	 yWt7FWiOKcvcai+wRWT79Mw3vA3UNnP7U+O8EzKQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Rasmus Villemoes <linux@rasmusvillemoes.dk>,
-	Shyam Saini <shyamsaini@linux.microsoft.com>,
-	Petr Pavlu <petr.pavlu@suse.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 452/969] kernel: param: rename locate_module_kobject
+	stable@kernel.org,
+	Yifan Wu <yifanwucs@gmail.com>,
+	Juefei Pu <tomapufckgml@gmail.com>,
+	Yuan Tan <yuantan098@gmail.com>,
+	Xin Liu <bird@lzu.edu.cn>,
+	Yuhang Zheng <z1652074432@gmail.com>,
+	Eric Biggers <ebiggers@kernel.org>,
+	Yucheng Lu <kanolyc@gmail.com>,
+	Ren Wei <n05ec@lzu.edu.cn>,
+	Herbert Xu <herbert@gondor.apana.org.au>
+Subject: [PATCH 5.15 262/776] crypto: authencesn - reject short ahash digests during instance creation
 Date: Sat, 30 May 2026 17:59:36 +0200
-Message-ID: <20260530160312.759064988@linuxfoundation.org>
+Message-ID: <20260530160247.311823761@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260530160300.485627683@linuxfoundation.org>
-References: <20260530160300.485627683@linuxfoundation.org>
+In-Reply-To: <20260530160240.228940103@linuxfoundation.org>
+References: <20260530160240.228940103@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -67,95 +73,94 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-257394-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
-	PRECEDENCE_BULK(0.00)[];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	TAGGED_FROM(0.00)[bounces-258188-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,kernel.org,gmail.com,lzu.edu.cn,gondor.apana.org.au];
+	RCPT_COUNT_TWELVE(0.00)[13];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[7];
+	NEURAL_HAM(-0.00)[-1.000];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
 	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[]
-X-Rspamd-Queue-Id: 0F5BD60EF73
+X-Rspamd-Queue-Id: 55F27610CEF
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Shyam Saini <shyamsaini@linux.microsoft.com>
+From: Yucheng Lu <kanolyc@gmail.com>
 
-[ Upstream commit bbc9462f0cb0c8917a4908e856731708f0cee910 ]
+commit 5db6ef9847717329f12c5ea8aba7e9f588a980c0 upstream.
 
-The locate_module_kobject() function looks up an existing
-module_kobject for a given module name. If it cannot find the
-corresponding module_kobject, it creates one for the given name.
+authencesn requires either a zero authsize or an authsize of at least
+4 bytes because the ESN encrypt/decrypt paths always move 4 bytes of
+high-order sequence number data at the end of the authenticated data.
 
-This commit renames locate_module_kobject() to
-lookup_or_create_module_kobject() to better describe its operations.
+While crypto_authenc_esn_setauthsize() already rejects explicit
+non-zero authsizes in the range 1..3, crypto_authenc_esn_create()
+still copied auth->digestsize into inst->alg.maxauthsize without
+validating it.  The AEAD core then initialized the tfm's default
+authsize from that value.
 
-This doesn't change anything functionality wise.
+As a result, selecting an ahash with digest size 1..3, such as
+cbcmac(cipher_null), exposed authencesn instances whose default
+authsize was invalid even though setauthsize() would have rejected the
+same value.  AF_ALG could then trigger the ESN tail handling with a
+too-short tag and hit an out-of-bounds access.
 
-Suggested-by: Rasmus Villemoes <linux@rasmusvillemoes.dk>
-Signed-off-by: Shyam Saini <shyamsaini@linux.microsoft.com>
-Link: https://lore.kernel.org/r/20250227184930.34163-2-shyamsaini@linux.microsoft.com
-Signed-off-by: Petr Pavlu <petr.pavlu@suse.com>
-Stable-dep-of: deffe1edba62 ("module: Fix freeing of charp module parameters when CONFIG_SYSFS=n")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Reject authencesn instances whose ahash digest size is in the invalid
+non-zero range 1..3 so that no tfm can inherit an unsupported default
+authsize.
+
+Fixes: f15f05b0a5de ("crypto: ccm - switch to separate cbcmac driver")
+Cc: stable@kernel.org
+Reported-by: Yifan Wu <yifanwucs@gmail.com>
+Reported-by: Juefei Pu <tomapufckgml@gmail.com>
+Co-developed-by: Yuan Tan <yuantan098@gmail.com>
+Signed-off-by: Yuan Tan <yuantan098@gmail.com>
+Suggested-by: Xin Liu <bird@lzu.edu.cn>
+Tested-by: Yuhang Zheng <z1652074432@gmail.com>
+Reviewed-by: Eric Biggers <ebiggers@kernel.org>
+Signed-off-by: Yucheng Lu <kanolyc@gmail.com>
+Signed-off-by: Ren Wei <n05ec@lzu.edu.cn>
+Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- kernel/params.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ crypto/authencesn.c |    5 +++++
+ 1 file changed, 5 insertions(+)
 
-diff --git a/kernel/params.c b/kernel/params.c
-index 27954dfe3d204..6e41ecc54b534 100644
---- a/kernel/params.c
-+++ b/kernel/params.c
-@@ -758,7 +758,7 @@ void destroy_params(const struct kernel_param *params, unsigned num)
- 			params[i].ops->free(params[i].arg);
- }
+--- a/crypto/authencesn.c
++++ b/crypto/authencesn.c
+@@ -400,6 +400,11 @@ static int crypto_authenc_esn_create(str
+ 	auth = crypto_spawn_ahash_alg(&ctx->auth);
+ 	auth_base = &auth->base;
  
--static struct module_kobject * __init locate_module_kobject(const char *name)
-+static struct module_kobject * __init lookup_or_create_module_kobject(const char *name)
- {
- 	struct module_kobject *mk;
- 	struct kobject *kobj;
-@@ -800,7 +800,7 @@ static void __init kernel_add_sysfs_param(const char *name,
- 	struct module_kobject *mk;
- 	int err;
- 
--	mk = locate_module_kobject(name);
-+	mk = lookup_or_create_module_kobject(name);
- 	if (!mk)
- 		return;
- 
-@@ -871,7 +871,7 @@ static void __init version_sysfs_builtin(void)
- 	int err;
- 
- 	for (vattr = __start___modver; vattr < __stop___modver; vattr++) {
--		mk = locate_module_kobject(vattr->module_name);
-+		mk = lookup_or_create_module_kobject(vattr->module_name);
- 		if (mk) {
- 			err = sysfs_create_file(&mk->kobj, &vattr->mattr.attr);
- 			WARN_ON_ONCE(err);
--- 
-2.53.0
-
++	if (auth->digestsize > 0 && auth->digestsize < 4) {
++		err = -EINVAL;
++		goto err_free_inst;
++	}
++
+ 	err = crypto_grab_skcipher(&ctx->enc, aead_crypto_instance(inst),
+ 				   crypto_attr_alg_name(tb[2]), 0, mask);
+ 	if (err)
 
 
 
