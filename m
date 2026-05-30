@@ -1,65 +1,59 @@
-Return-Path: <stable+bounces-257360-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-258137-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id MAf+M0cbG2oq/QgAu9opvQ
-	(envelope-from <stable+bounces-257360-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:15:51 +0200
+	id iH+9HBklG2pm/ggAu9opvQ
+	(envelope-from <stable+bounces-258137-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:57:45 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3F3A560F41E
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:15:51 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id D4E3F610B4D
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:57:44 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 1E3CC30AE14B
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 17:05:23 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 66A31308888C
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 17:49:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C50B535200B;
-	Sat, 30 May 2026 17:05:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1D84F346E55;
+	Sat, 30 May 2026 17:49:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PZp99vMo"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Qhd9UkLB"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A07B532B11D;
-	Sat, 30 May 2026 17:05:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DFE8519D8AC;
+	Sat, 30 May 2026 17:48:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780160722; cv=none; b=SklZg9IAxjUiWnOxkHoRfKw3kskyCv/qtBG9GISyYWFQoG/A0K+b2IlSI2ArHIlhbGEh41pui6UYz5KAoWXNcSLcGPuNgau8x2AWwP15sC4UUAvMbojYrWRpo/b6y+vpuQTFZG2ybh6M3tqLBurBSnhb4xEQTDxX+0B087LUMeY=
+	t=1780163340; cv=none; b=EcCuvMqUHJUHyQro5YD1o6wjsTFQTyzqMcBEyGRbEwubf68945o78Z7Ck9o97Po3wJ/ZREEotdJZJz27AVe6plNG+i2h2gXpaTVefRXO/PY/PyNIwqzjzZ9sba+vNwsQ0MDTE1NQ5w629m9lXjHLNsjSvUrKrvpixVh9eDPFPgg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780160722; c=relaxed/simple;
-	bh=FHJmOxn4LC/Yx1HChgiFxuq+9srNmWXT1yARBmX9UfA=;
+	s=arc-20240116; t=1780163340; c=relaxed/simple;
+	bh=BK1a8pDN79W66P3ABawm8qpGNeB7jspaiKOnopDADGE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=lfkEA5jb8u/6o7yRiCJ4Qzz+ZZiWq1HyZ5ucJk1FNhlyP9KHOP56vf7nIT+XT0K42hDFKMpOSN6pcYqxzpky8TUgGVRu3T+Dav12TyWv4g23tFdEY9lcaYlUpFiyIAOezy0rN4SLpGO+9Qzn61HSf+xIKauIicFUQmqbo66nt7s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PZp99vMo; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E816F1F00893;
-	Sat, 30 May 2026 17:05:20 +0000 (UTC)
+	 MIME-Version; b=rt7KFz0TIdhG9MhwplflwgPtxjNwu6tYmUqkvt4BNl8RSZ/Oj+uxgOxaFSnWo4UUaDRz5imFP+4Rn+J3altlBo6M5DEZ4YZ+FmF17L/ps3IrNGg2rj76NG7kRb6L7+YirmXlWTCMNu46OnvHrxchFzwodGZMMoXrbm90BC6HuIs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Qhd9UkLB; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3157F1F00893;
+	Sat, 30 May 2026 17:48:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780160721;
-	bh=LLU2d5jRVQtF/HIBqxxiPEQtqiVU7kVS3+Euu2Yt1Pk=;
+	s=korg; t=1780163339;
+	bh=2YRbBctd3tv2wYcPjDxn7cpuDRl0YcteoWv2pqMcdqQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=PZp99vMoV//9SjbpsouxzhhWVx5iso9II6a4OkDDAoq5ETASKrv2PaURYyWreNwds
-	 VAGQ/TugAfOnAFonIXd6UYQ5VJc7ACaGuGuzI20N0B+1NiFrc1yPXSFVsximAyL/Z8
-	 5INVDooE3GvESEqet1/ja7SQs7EkHda2hNhCJYYI=
+	b=Qhd9UkLBGAZFgwKJACANQoGnMSBf/K9iOUsAJKEiTDnQYm1iruIL1Zw4Hb1T4ty+f
+	 xn1yGdfzQGVP8lojkBaEdFBaIJjdFRghfCX72bSHBwGZ3rwL1iybPJkMy4IxWDR0ML
+	 diEFc+o6Opmhy1VC6qwmzBI3ybsv4Co0Svm4WAoM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable@kernel.org,
-	Yuan Tan <yuantan098@gmail.com>,
-	Yifan Wu <yifanwucs@gmail.com>,
-	Juefei Pu <tomapufckgml@gmail.com>,
-	Xin Liu <bird@lzu.edu.cn>,
-	Luxing Yin <tr0jan@lzu.edu.cn>,
-	Jiexun Wang <wangjiexun2025@gmail.com>,
-	Ren Wei <n05ec@lzu.edu.cn>,
-	Sven Eckelmann <sven@narfation.org>
-Subject: [PATCH 6.1 417/969] batman-adv: reject new tp_meter sessions during teardown
+	Jens Axboe <axboe@kernel.dk>,
+	Bin Liu <b-liu@ti.com>,
+	Ulf Hansson <ulf.hansson@linaro.org>
+Subject: [PATCH 5.15 227/776] mmc: block: use single block write in retry
 Date: Sat, 30 May 2026 17:59:01 +0200
-Message-ID: <20260530160311.785860964@linuxfoundation.org>
+Message-ID: <20260530160246.391049799@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260530160300.485627683@linuxfoundation.org>
-References: <20260530160300.485627683@linuxfoundation.org>
+In-Reply-To: <20260530160240.228940103@linuxfoundation.org>
+References: <20260530160240.228940103@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -72,111 +66,126 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-257360-lists,stable=lfdr.de];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,kernel.org,gmail.com,lzu.edu.cn,narfation.org];
-	RCPT_COUNT_TWELVE(0.00)[12];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_TLS_LAST(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	RCVD_TLS_LAST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	MID_RHS_MATCH_FROM(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-258137-lists,stable=lfdr.de];
 	TO_DN_SOME(0.00)[];
-	FROM_HAS_DN(0.00)[]
-X-Rspamd-Queue-Id: 3F3A560F41E
+	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-0.995];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_FIVE(0.00)[6];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[kernel.dk:email,ti.com:url,ti.com:email,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,linaro.org:email,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim]
+X-Rspamd-Queue-Id: D4E3F610B4D
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jiexun Wang <wangjiexun2025@gmail.com>
+From: Bin Liu <b-liu@ti.com>
 
-commit 3243543592425beec83d453793e9d27caa0d8e66 upstream.
+commit c7c6d4f5103864f73ee3a78bfd6da241f84197dd upstream.
 
-Prevent tp_meter from starting new sender or receiver sessions after
-mesh_state has left BATADV_MESH_ACTIVE.
+Due to errata i2493[0], multi-block write would still fail in retries.
 
-Fixes: 33a3bb4a3345 ("batman-adv: throughput meter implementation")
-Cc: stable@kernel.org
-Reported-by: Yuan Tan <yuantan098@gmail.com>
-Reported-by: Yifan Wu <yifanwucs@gmail.com>
-Reported-by: Juefei Pu <tomapufckgml@gmail.com>
-Reported-by: Xin Liu <bird@lzu.edu.cn>
-Co-developed-by: Luxing Yin <tr0jan@lzu.edu.cn>
-Signed-off-by: Luxing Yin <tr0jan@lzu.edu.cn>
-Signed-off-by: Jiexun Wang <wangjiexun2025@gmail.com>
-Signed-off-by: Ren Wei <n05ec@lzu.edu.cn>
-Signed-off-by: Sven Eckelmann <sven@narfation.org>
+With i2493, the MMC interface has the potential of write failures when
+issuing multi-block writes operating in HS200 mode with excessive IO
+supply noise.
+
+While the errata provides guidance in hardware design and layout to
+minimize the IO supply noise, in theory the write failure cannot be
+resolved in hardware. The software solution to ensure the data integrity
+is to add minimum 5us delay between block writes. Single-block write is
+the practical way to introduce the delay.
+
+This patch reuses recovery_mode flag, and switches to single-block
+write in retry when multi-block write fails. It covers both CQE and
+non-CQE cases.
+
+[0] https://www.ti.com/lit/pdf/sprz582
+Cc: stable@vger.kernel.org
+Suggested-by: Jens Axboe <axboe@kernel.dk>
+Signed-off-by: Bin Liu <b-liu@ti.com>
+Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/batman-adv/tp_meter.c |   17 ++++++++++++++++-
- 1 file changed, 16 insertions(+), 1 deletion(-)
+ drivers/mmc/core/block.c |   12 ++++++++++--
+ drivers/mmc/core/queue.h |    3 +++
+ 2 files changed, 13 insertions(+), 2 deletions(-)
 
---- a/net/batman-adv/tp_meter.c
-+++ b/net/batman-adv/tp_meter.c
-@@ -947,6 +947,13 @@ void batadv_tp_start(struct batadv_priv
+--- a/drivers/mmc/core/block.c
++++ b/drivers/mmc/core/block.c
+@@ -1361,6 +1361,9 @@ static void mmc_blk_data_prep(struct mmc
+ 		    rq_data_dir(req) == WRITE &&
+ 		    (md->flags & MMC_BLK_REL_WR);
  
- 	/* look for an already existing test towards this node */
- 	spin_lock_bh(&bat_priv->tp_list_lock);
-+	if (atomic_read(&bat_priv->mesh_state) != BATADV_MESH_ACTIVE) {
-+		spin_unlock_bh(&bat_priv->tp_list_lock);
-+		batadv_tp_batctl_error_notify(BATADV_TP_REASON_DST_UNREACHABLE,
-+					      dst, bat_priv, session_cookie);
-+		return;
-+	}
++	if (mqrq->flags & MQRQ_XFER_SINGLE_BLOCK)
++		recovery_mode = 1;
 +
- 	tp_vars = batadv_tp_list_find(bat_priv, dst);
- 	if (tp_vars) {
- 		spin_unlock_bh(&bat_priv->tp_list_lock);
-@@ -1329,9 +1336,12 @@ static struct batadv_tp_vars *
- batadv_tp_init_recv(struct batadv_priv *bat_priv,
- 		    const struct batadv_icmp_tp_packet *icmp)
- {
--	struct batadv_tp_vars *tp_vars;
-+	struct batadv_tp_vars *tp_vars = NULL;
+ 	memset(brq, 0, sizeof(struct mmc_blk_request));
  
- 	spin_lock_bh(&bat_priv->tp_list_lock);
-+	if (atomic_read(&bat_priv->mesh_state) != BATADV_MESH_ACTIVE)
-+		goto out_unlock;
+ 	mmc_crypto_prepare_req(mqrq);
+@@ -1500,10 +1503,13 @@ static void mmc_blk_cqe_complete_rq(stru
+ 		err = 0;
+ 
+ 	if (err) {
+-		if (mqrq->retries++ < MMC_CQE_RETRIES)
++		if (mqrq->retries++ < MMC_CQE_RETRIES) {
++			if (rq_data_dir(req) == WRITE)
++				mqrq->flags |= MQRQ_XFER_SINGLE_BLOCK;
+ 			blk_mq_requeue_request(req, true);
+-		else
++		} else {
+ 			blk_mq_end_request(req, BLK_STS_IOERR);
++		}
+ 	} else if (mrq->data) {
+ 		if (blk_update_request(req, BLK_STS_OK, mrq->data->bytes_xfered))
+ 			blk_mq_requeue_request(req, true);
+@@ -2041,6 +2047,8 @@ static void mmc_blk_mq_complete_rq(struc
+ 	} else if (!blk_rq_bytes(req)) {
+ 		__blk_mq_end_request(req, BLK_STS_IOERR);
+ 	} else if (mqrq->retries++ < MMC_MAX_RETRIES) {
++		if (rq_data_dir(req) == WRITE)
++			mqrq->flags |= MQRQ_XFER_SINGLE_BLOCK;
+ 		blk_mq_requeue_request(req, true);
+ 	} else {
+ 		if (mmc_card_removed(mq->card))
+--- a/drivers/mmc/core/queue.h
++++ b/drivers/mmc/core/queue.h
+@@ -61,6 +61,8 @@ enum mmc_drv_op {
+ 	MMC_DRV_OP_GET_EXT_CSD,
+ };
+ 
++#define	MQRQ_XFER_SINGLE_BLOCK		BIT(0)
 +
- 	tp_vars = batadv_tp_list_find_session(bat_priv, icmp->orig,
- 					      icmp->session);
- 	if (tp_vars)
-@@ -1464,6 +1474,9 @@ void batadv_tp_meter_recv(struct batadv_
- {
- 	struct batadv_icmp_tp_packet *icmp;
+ struct mmc_queue_req {
+ 	struct mmc_blk_request	brq;
+ 	struct scatterlist	*sg;
+@@ -69,6 +71,7 @@ struct mmc_queue_req {
+ 	void			*drv_op_data;
+ 	unsigned int		ioc_count;
+ 	int			retries;
++	u32			flags;
+ };
  
-+	if (atomic_read(&bat_priv->mesh_state) != BATADV_MESH_ACTIVE)
-+		goto out;
-+
- 	icmp = (struct batadv_icmp_tp_packet *)skb->data;
- 
- 	switch (icmp->subtype) {
-@@ -1478,6 +1491,8 @@ void batadv_tp_meter_recv(struct batadv_
- 			   "Received unknown TP Metric packet type %u\n",
- 			   icmp->subtype);
- 	}
-+
-+out:
- 	consume_skb(skb);
- }
- 
+ struct mmc_queue {
 
 
 
