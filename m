@@ -1,162 +1,164 @@
-Return-Path: <stable+bounces-258769-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-256925-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id YPDBM/crG2r//ggAu9opvQ
-	(envelope-from <stable+bounces-258769-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:27:03 +0200
+	id ADp+Gu4JG2pg+ggAu9opvQ
+	(envelope-from <stable+bounces-256925-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 18:01:50 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5C20D611C1B
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:27:03 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id D738960DDF3
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 18:01:49 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 43D4F303D08A
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 18:24:40 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 7D32A301FA5E
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 15:59:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 936A921B191;
-	Sat, 30 May 2026 18:24:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E752233B6C4;
+	Sat, 30 May 2026 15:59:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="o8q/MCnu"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="PiP1tY4G"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pj1-f53.google.com (mail-pj1-f53.google.com [209.85.216.53])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7016D17555;
-	Sat, 30 May 2026 18:24:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B2D5E2D9EDB
+	for <stable@vger.kernel.org>; Sat, 30 May 2026 15:59:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.53
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780165477; cv=none; b=msrtUPrwvE6Y/LiCLLQCTjfFqeUrCXmf1T53YiN0lTZkiK1Kq7v4GTm5ln4Qmbcnv/qnb0x9vW4rBIDhYCcD0qSaSB1E/Niiph2icpPadZQJOPnF62GdMnynceybG7aLzUBYMEojUtAaA6ExM4gB6iFXX4OewdK+BP+7lpf+76A=
+	t=1780156776; cv=none; b=gJygwarRYU9enoowdd2v/wH0UfYwVOQRDQeu7HCvYgBPw9ArqzTxfxYhtAjeH0JoDyKlTPTxgFnyHBLZSyvy12zCo4O7/+Kv9MQGJpTlVwGrtsk/+jZEkpBmmsrNPj+UnVV7X+lR8PoB2m3ASnJic9sRvgLBSZsCWwP8mo/7STc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780165477; c=relaxed/simple;
-	bh=SNgIyiLvDdLKa6blhu6T3WxnWH8XxqDs/8dbIDZNn04=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=KKt4uHqD0nqLLrEXScQ8F+upcFpmOWZJapZasrTLHdO/UP8oqEzCF7giw03PqgIJIzP76uzcl0syF4lI63Itms9YWlIolqr0ZkM5/n9LWS9FULTyEgEzj0hkP4RVu99lpvgX47SuRdozixRhw0az0HzLTf2zlQuhd2lFa80IxJ0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=o8q/MCnu; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B42641F00893;
-	Sat, 30 May 2026 18:24:35 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780165476;
-	bh=hfxtN2CurQXz63Z5kEtpPLNpusuZG9nD/Mv++0h/uwk=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=o8q/MCnuOMhmQSxD6T8ZvKh7iJ+1jxxoMiw6/SRMQDI9KijckMHcewxq57AFxy/J3
-	 f1z9VoqLQe8mZvnBxYbClMfTs/rpvtxdaMEV0g3Q4fOgZEccwuUedx7ezLPLJPEt7g
-	 +gMsYPY+CmCb8pW4Xcz+AqQd/Q1WdGQX+kO8UT5M=
-From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To: stable@vger.kernel.org
-Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	patches@lists.linux.dev,
-	Minhong He <heminhong@kylinos.cn>,
-	Andrea Mayer <andrea.mayer@uniroma2.it>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Li hongliang <1468888505@139.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 089/589] ipv6: add NULL checks for idev in SRv6 paths
-Date: Sat, 30 May 2026 17:59:30 +0200
-Message-ID: <20260530160227.025783704@linuxfoundation.org>
+	s=arc-20240116; t=1780156776; c=relaxed/simple;
+	bh=ZqY9+9AxGyC/ye74Rz/F2gbLiidC9axpzQweMBEGG3E=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=S+9/fsICdQVmo7/j/K93hma7jvj8MX4tDpelQV4LRFiMPNI5PC5aDQyZNaqE6GFMiBVOaTw7zSLFpFaJHQuvAw61uRDxWZjV8JEjIqeSuCyMwGvKQMpbu8fD5xBr3v73gLyGxMvt4TJepO9xI2XynzkIm/K+9dnSne+DcbRb5Yg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=PiP1tY4G; arc=none smtp.client-ip=209.85.216.53
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-pj1-f53.google.com with SMTP id 98e67ed59e1d1-36ab8816a35so4017480a91.1
+        for <stable@vger.kernel.org>; Sat, 30 May 2026 08:59:35 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1780156775; x=1780761575; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=TAgj73NhO/Qgky2vRa5up3EF0NXAk1X9eWrQb+RpU04=;
+        b=PiP1tY4GvLzoRJZ1KFDryraLfItH68wPY+t+8KHirnD1pzY4/wkAo5pNcDm+EAR3pf
+         bV0FAB2t+M5PdgsQBqPrONsKojvGzQ7CjZFIIN2GdWQlJqYCO5uJrq4uqZiEi2kwG5RM
+         TznFMMmNAoY2O0JroCra19t8VHDI+LX9H8fS4OdvN8JBbfU0Ewo08eF0elSyeNL3o4ih
+         XhITUGz1h4GOsaBgTEYJRdTBabgYZhQXgYVr3cdNof6A1G0syEsv4rKBadgIFGbsSVTz
+         IBjJdBOcy6ItKfdxuLQ/lXa7/GNu/O9R1d1AoAhp9pUJYV0YAeqGAXNO6f3HACgPP/NS
+         XhjA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1780156775; x=1780761575;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=TAgj73NhO/Qgky2vRa5up3EF0NXAk1X9eWrQb+RpU04=;
+        b=bEQVKPPNV6jt95/MlJhK+HijpHeKnt5yUlH2efBIx71Xi/yf/l/hkDMtQSJ+oplp1t
+         8x88DUckgYRab3bgc3k12lFkeZqyIhgmoiNKlnxNx1Za+8HInWeK3DFs6gsmNCYsddEt
+         hma7FrVGIUTUQdI2SNb5pwMBAubuKP5KyByQlccck1eQvjvuVDopwltc2nakv8NH6VtY
+         vVu5eJMgXh4o19kRj6V7OdN3kxV9yYdK9320T7ywgUDsRdOFrhCE5I1qkHhCsnatMf3T
+         4wKDYoCNbBppHTCKkpL55i5gNUrafJZQh/GfaFZ6GiqqkS8oKYlO79bB9cm5tQ0ESoN3
+         fIrQ==
+X-Forwarded-Encrypted: i=1; AFNElJ+7S/992pbT0wK4QgiB26WXzCErN6FeLgmxrvETT85nMBFRKuQ+eQwT8CMRedn6SlfAkhYNHKM=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yw3GpFIv3U4JZQyyYa4gbyHGkqjb0VRYA9nRWSe+zAoDAkxMIwE
+	9glOQ4g7mXLycW9+RX9wOfMgBZERwNrcR3CJ7wjJPG8ODShyjLnm3de9
+X-Gm-Gg: Acq92OGxBzCUdQZTwWyBuyONJxLH5F7kYnFQBd7WAzxUy9p6rEADv4a85fARFtZNBxs
+	raF9xmIb1587Few+It/CEuSWmB1Y1OCxe0XfLdR8hrn2GjRUhKGSxtEeDLFcCWnoO97/kP9WmMo
+	SDlgOUgRAjfMGNsZwRkLYqKc3iEl1iQZMUhxksNmlxLeQosYQCmU2vPRMc4qq5Lr8rg3PuvFH09
+	0m9Z54Y53tJ5y3r4wSeBNqABkoEQRrQRY/YUtqVd0Gxn6OB72tfuigySs2R8Z3P9LdoUPXR6okD
+	grpDnpLrEG7ngER+jx3aF9/Bsoekpa6gYUGCglywHjmFxqHeRqFa6Hbuhcce6CttNJk0uJgMHEi
+	TP2Z2+MAAv/S+cJ5MW/7GWu7qQ1zEnXkPXvGjmPgu3tFjCLQKAQxTdNk8+Gd86NKjirw+BDrtHL
+	8XX9skZ6MaiWTovqtLcVMahqchArh4WnPzxr+MAY06usXi8A4HwCnAYgnSN2E=
+X-Received: by 2002:a17:90b:1d4d:b0:369:f48a:f21f with SMTP id 98e67ed59e1d1-36c4ff3559amr4144848a91.6.1780156774849;
+        Sat, 30 May 2026 08:59:34 -0700 (PDT)
+Received: from jmoon ([118.220.156.4])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-36bc0befe7asm5776983a91.11.2026.05.30.08.59.32
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sat, 30 May 2026 08:59:34 -0700 (PDT)
+From: Jinmo Yang <jinmo44.yang@gmail.com>
+To: Ping Cheng <ping.cheng@wacom.com>,
+	Jason Gerecke <jason.gerecke@wacom.com>,
+	Jiri Kosina <jikos@kernel.org>,
+	Benjamin Tissoires <bentiss@kernel.org>
+Cc: Dmitry Torokhov <dmitry.torokhov@gmail.com>,
+	linux-input@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Jinmo Yang <jinmo44.yang@gmail.com>,
+	stable@vger.kernel.org
+Subject: [PATCH] HID: wacom: use GFP_ATOMIC in wacom_wac_queue_flush()
+Date: Sun, 31 May 2026 00:59:30 +0900
+Message-ID: <20260530155930.128183-1-jinmo44.yang@gmail.com>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260530160224.570625122@linuxfoundation.org>
-References: <20260530160224.570625122@linuxfoundation.org>
-User-Agent: quilt/0.69
-X-stable: review
-X-Patchwork-Hint: ignore
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
-	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,kylinos.cn,uniroma2.it,kernel.org,139.com];
-	TAGGED_FROM(0.00)[bounces-258769-lists,stable=lfdr.de];
-	PRECEDENCE_BULK(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
+	TO_DN_SOME(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-0.995];
+	FREEMAIL_CC(0.00)[gmail.com,vger.kernel.org];
+	TAGGED_FROM(0.00)[bounces-256925-lists,stable=lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[gmail.com:+];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[8];
+	FROM_HAS_DN(0.00)[];
+	FREEMAIL_FROM(0.00)[gmail.com];
+	RCVD_COUNT_FIVE(0.00)[5];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[jinmo44yang@gmail.com,stable@vger.kernel.org];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_SEVEN(0.00)[9];
+	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[kylinos.cn:email,msgid.link:url,linuxfoundation.org:mid,linuxfoundation.org:dkim,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,uniroma2.it:email,139.com:email]
-X-Rspamd-Queue-Id: 5C20D611C1B
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
+X-Rspamd-Queue-Id: D738960DDF3
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+wacom_wac_queue_flush() is called via the .raw_event callback
+(wacom_raw_event → wacom_wac_pen_serial_enforce → wacom_wac_queue_flush).
+For USB HID devices, this callback is invoked from hid_irq_in(), which
+is a URB completion handler running in atomic context. Using GFP_KERNEL
+in this path can sleep, leading to a "scheduling while atomic" bug.
 
-------------------
+Use GFP_ATOMIC instead. The existing code already handles allocation
+failure by skipping the fifo entry and continuing.
 
-From: Minhong He <heminhong@kylinos.cn>
-
-[ Upstream commit 06413793526251870e20402c39930804f14d59c0 ]
-
-__in6_dev_get() can return NULL when the device has no IPv6 configuration
-(e.g. MTU < IPV6_MIN_MTU or after NETDEV_UNREGISTER).
-
-Add NULL checks for idev returned by __in6_dev_get() in both
-seg6_hmac_validate_skb() and ipv6_srh_rcv() to prevent potential NULL
-pointer dereferences.
-
-Fixes: 1ababeba4a21 ("ipv6: implement dataplane support for rthdr type 4 (Segment Routing Header)")
-Fixes: bf355b8d2c30 ("ipv6: sr: add core files for SR HMAC support")
-Signed-off-by: Minhong He <heminhong@kylinos.cn>
-Reviewed-by: Andrea Mayer <andrea.mayer@uniroma2.it>
-Link: https://patch.msgid.link/20260316073301.106643-1-heminhong@kylinos.cn
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Li hongliang <1468888505@139.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Suggested-by: Dmitry Torokhov <dmitry.torokhov@gmail.com>
+Fixes: 5e013ad20689 ("HID: wacom: Remove static WACOM_PKGLEN_MAX limit")
+Cc: stable@vger.kernel.org
+Signed-off-by: Jinmo Yang <jinmo44.yang@gmail.com>
 ---
- net/ipv6/exthdrs.c   | 4 ++++
- net/ipv6/seg6_hmac.c | 2 ++
- 2 files changed, 6 insertions(+)
+ drivers/hid/wacom_sys.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/net/ipv6/exthdrs.c b/net/ipv6/exthdrs.c
-index cdad9019c77c4..dfa0fb3d6c35f 100644
---- a/net/ipv6/exthdrs.c
-+++ b/net/ipv6/exthdrs.c
-@@ -361,6 +361,10 @@ static int ipv6_srh_rcv(struct sk_buff *skb)
- 	hdr = (struct ipv6_sr_hdr *)skb_transport_header(skb);
+diff --git a/drivers/hid/wacom_sys.c b/drivers/hid/wacom_sys.c
+index a32320b35..2e237bdd2 100644
+--- a/drivers/hid/wacom_sys.c
++++ b/drivers/hid/wacom_sys.c
+@@ -74,7 +74,7 @@ static void wacom_wac_queue_flush(struct hid_device *hdev,
+ 		unsigned int count;
+ 		int err;
  
- 	idev = __in6_dev_get(skb->dev);
-+	if (!idev) {
-+		kfree_skb(skb);
-+		return -1;
-+	}
- 
- 	accept_seg6 = net->ipv6.devconf_all->seg6_enabled;
- 	if (accept_seg6 > idev->cnf.seg6_enabled)
-diff --git a/net/ipv6/seg6_hmac.c b/net/ipv6/seg6_hmac.c
-index f82fcd8908e14..b52985c867c29 100644
---- a/net/ipv6/seg6_hmac.c
-+++ b/net/ipv6/seg6_hmac.c
-@@ -245,6 +245,8 @@ bool seg6_hmac_validate_skb(struct sk_buff *skb)
- 	struct inet6_dev *idev;
- 
- 	idev = __in6_dev_get(skb->dev);
-+	if (!idev)
-+		return false;
- 
- 	srh = (struct ipv6_sr_hdr *)skb_transport_header(skb);
- 
+-		buf = kzalloc(size, GFP_KERNEL);
++		buf = kzalloc(size, GFP_ATOMIC);
+ 		if (!buf) {
+ 			kfifo_skip(fifo);
+ 			continue;
 -- 
 2.53.0
-
-
 
 
