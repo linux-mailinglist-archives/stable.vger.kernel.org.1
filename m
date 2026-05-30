@@ -1,60 +1,57 @@
-Return-Path: <stable+bounces-256874-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-256876-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id OAJMHxnNGmoh9AgAu9opvQ
-	(envelope-from <stable+bounces-256874-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 13:42:17 +0200
+	id UHMwFijNGmoh9AgAu9opvQ
+	(envelope-from <stable+bounces-256876-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 13:42:32 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id D5E1F60C943
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 13:42:16 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id B065F60C951
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 13:42:31 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 10FED302A043
+	by sea.lore.kernel.org (Postfix) with ESMTP id 8785D302D08B
 	for <lists+stable@lfdr.de>; Sat, 30 May 2026 11:40:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D01383AC0DC;
-	Sat, 30 May 2026 11:40:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5B7E639D3D9;
+	Sat, 30 May 2026 11:40:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="VcdcWldm"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="espUjeOL"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 53E793AB274
-	for <stable@vger.kernel.org>; Sat, 30 May 2026 11:40:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 328903AB283
+	for <stable@vger.kernel.org>; Sat, 30 May 2026 11:40:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780141252; cv=none; b=cfzlq/rQnUC4AJuDDhaumYpo1Z/VPL2czKfzCBSlQ8CrfSpqCPpIbkwXP+8I/L0Rf1RodJp6COZx5bdeiB6Qy5bYrqvVwwa9CCg5VTQaLt54dCKkhfffi7QnOylL0k21NVMqjexv7o6lLnSJMOJNYBo7ylJmPtYl4NqCl+k/1hk=
+	t=1780141253; cv=none; b=FOPw15AHmesUXy3Rgrxb06CxwCzzPP5DMPWvKFSfzekjGywgIEJZ06w9vMVOzJ5Kh5Q1qxqfVM4y1ixXmKViE2aFWtAIBe78Jqfvkmaa1CeOiGVrBlVYI+XxdRUTTh6AkGPmixZTHVTGMPB6BNORP5oTfaShxxaxXXZD3IOTNxw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780141252; c=relaxed/simple;
-	bh=5oqLrBeKdZjv8hB8nzqPTZSeNhUt5+QBQ7CZ/v3+VUI=;
+	s=arc-20240116; t=1780141253; c=relaxed/simple;
+	bh=/fCMtxJHBDmriaBO0rfkagHSE8XB9BQe5/qCuM9Ccpg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=L17y0GI9wIXy9cU6Iyv1vpY8MhC+5r9chvq6byGexCfaFtNqrTaGjEH5VpD3OGPIegFs0SLv5tiOthm0FzZMXygHX6fo/5ctZTr5M3kgmi3mm85zjVND5WrTdlLVjXULZmdP56qglNyrZv6Meo7CD7tJ1EFv4fM34xe8N2+iInE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=VcdcWldm; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6282E1F00898;
-	Sat, 30 May 2026 11:40:50 +0000 (UTC)
+	 MIME-Version; b=ewFdCvXT0JeX5+dolfCIztGfje0qmHk2l98Ij+Y9RrCUrM4AOQrYPt38XTt8zGlOp9T/N+pG5JxL6f7ikZBRJ8Lvh+j7DGOp0hw+VTSEjT/Pu0iZbk7/Q3H2tkcrstZrEzDttgjmI7qFrH6kMDLQtGAsei4xetiJ/0EOZKoRnrE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=espUjeOL; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 613EF1F0089A;
+	Sat, 30 May 2026 11:40:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
 	s=k20260515; t=1780141251;
-	bh=o5yq2zQTJiPiu6fSRzpNtJRrf9Clz46Zan0s6UGQdEo=;
+	bh=J7bJdJWTpfnpw/1GLCEPDCFx82m8DbdxLIB7FWGWEb4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=VcdcWldmpOltm5jmCWXNdOuD/E+mI8s4rb+gK3lFI2Avm3b9RQrHAdM/Cs2TZ0jQZ
-	 rJWtwYmp+hmGg7ifeS46ZZgnT5VwGep4xqi4Wf4396FifKkqrsci+oPAayyTj9JGmg
-	 +hXhqEO63MDzn/OEJzAsTJ7Jt6qICFqoAvDctKKKNLa87Euf/ioGEgEK1wYKjB1IYA
-	 Bwswz+/DbXSsxIOcWMU65YMFCG3zJOz5kNn8PTIONLvfuvSXBUQNRW1nhBaSNPVufB
-	 DSCZBVNbNljzfl9oCP1iFLC6vXG9i+BhMlrN9FVFx/2P5O4ZtlBFihXMJW8lMk2B5R
-	 QTq2E8Bz2SiRA==
+	b=espUjeOLIIWMggkuRejUAAbOYVstG1v0V2S1JnL9n+tu/BNpYquehO4R2M5faL3Ea
+	 5402pqmYtZLnyIl3mD125yXF5+d6JUJvuTBlh+UAdlRELuXbtaOUlDDU3LOfcSJEgr
+	 wY7IxS29ZN9Ozrnpw26zlRpT37zLBpyn5FspGzKGT+GBec7SCqhvrzE7EpXh/i8C3F
+	 x1ko3dj4EsgjMCyqeQpmnpc/7L7QbMv87CP446Wc9pBUALNTdd9/Q0Dl8Qr+pXQosH
+	 YuvuLiXGRqfBvZZZUo1JAEhBlg5ZLMBW+fHjiZg/Zrdu6z/P3wcBEELKm+zVDiIOQ+
+	 sUAW/GCO2gQsQ==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org
-Cc: Arseniy Krasnov <avkrasnov@sberdevices.ru>,
-	Arseniy Krasnov <AVKrasnov@sberdevices.ru>,
-	Stefano Garzarella <sgarzare@redhat.com>,
-	Bobby Eshleman <bobby.eshleman@bytedance.com>,
-	"David S. Miller" <davem@davemloft.net>,
+Cc: Stefano Garzarella <sgarzare@redhat.com>,
+	Paolo Abeni <pabeni@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15.y 3/4] virtio/vsock: don't use skbuff state to account credit
-Date: Sat, 30 May 2026 07:40:45 -0400
-Message-ID: <20260530114046.1945359-3-sashal@kernel.org>
+Subject: [PATCH 5.15.y 4/4] vsock/virtio: reset connection on receiving queue overflow
+Date: Sat, 30 May 2026 07:40:46 -0400
+Message-ID: <20260530114046.1945359-4-sashal@kernel.org>
 X-Mailer: git-send-email 2.53.0
 In-Reply-To: <20260530114046.1945359-1-sashal@kernel.org>
 References: <2026052841-mobility-surgery-8063@gregkh>
@@ -67,142 +64,118 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-0.66 / 15.00];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	MID_CONTAINS_FROM(1.00)[];
-	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
 	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20260515];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-256874-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-256876-lists,stable=lfdr.de];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	RCPT_COUNT_THREE(0.00)[4];
 	PRECEDENCE_BULK(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[7];
-	NEURAL_HAM(-0.00)[-1.000];
+	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
 	DKIM_TRACE(0.00)[kernel.org:+];
+	NEURAL_HAM(-0.00)[-1.000];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
 	TO_DN_SOME(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,davemloft.net:email,bytedance.com:email,sberdevices.ru:email]
-X-Rspamd-Queue-Id: D5E1F60C943
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
+X-Rspamd-Queue-Id: B065F60C951
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-From: Arseniy Krasnov <avkrasnov@sberdevices.ru>
+From: Stefano Garzarella <sgarzare@redhat.com>
 
-[ Upstream commit 077706165717686a2a6a71405fef036cd5b37ae0 ]
+[ Upstream commit a4f0b001782b21663d10df983b4b208195bec66c ]
 
-'skb->len' can vary when we partially read the data, this complicates the
-calculation of credit to be updated in 'virtio_transport_inc_rx_pkt()/
-virtio_transport_dec_rx_pkt()'.
+When there is no more space to queue an incoming packet, the packet is
+silently dropped. This causes data loss without any notification to
+either peer, since there is no retransmission.
 
-Also in 'virtio_transport_dec_rx_pkt()' we were miscalculating the
-credit since 'skb->len' was redundant.
+Under normal circumstances, this should never happen. However, it could
+happen if the other peer doesn't respect the credit, or if the skb
+overhead, which we recently began to take into account with commit
+059b7dbd20a6 ("vsock/virtio: fix potential unbounded skb queue"),
+is too high.
 
-For these reasons, let's replace the use of skbuff state to calculate new
-'rx_bytes'/'fwd_cnt' values with explicit value as input argument. This
-makes code more simple, because it is not needed to change skbuff state
-before each call to update 'rx_bytes'/'fwd_cnt'.
+Fix this by resetting the connection and setting the local socket error
+to ENOBUFS when virtio_transport_recv_enqueue() can no longer queue a
+packet, so both peers are explicitly notified of the failure rather than
+silently losing data.
 
-Fixes: 71dc9ec9ac7d ("virtio/vsock: replace virtio_vsock_pkt with sk_buff")
-Signed-off-by: Arseniy Krasnov <AVKrasnov@sberdevices.ru>
-Reviewed-by: Stefano Garzarella <sgarzare@redhat.com>
-Acked-by: Bobby Eshleman <bobby.eshleman@bytedance.com>
-Signed-off-by: David S. Miller <davem@davemloft.net>
-Stable-dep-of: a4f0b001782b ("vsock/virtio: reset connection on receiving queue overflow")
+Fixes: ae6fcfbf5f03 ("vsock/virtio: discard packets if credit is not respected")
+Cc: stable@vger.kernel.org
+Signed-off-by: Stefano Garzarella <sgarzare@redhat.com>
+Link: https://patch.msgid.link/20260518090656.134588-2-sgarzare@redhat.com
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/vmw_vsock/virtio_transport_common.c | 23 +++++++++++------------
- 1 file changed, 11 insertions(+), 12 deletions(-)
+ net/vmw_vsock/virtio_transport_common.c | 20 +++++++++++++++-----
+ 1 file changed, 15 insertions(+), 5 deletions(-)
 
 diff --git a/net/vmw_vsock/virtio_transport_common.c b/net/vmw_vsock/virtio_transport_common.c
-index 0742653e2b915..441ca63743ce3 100644
+index 441ca63743ce3..4a0c0840ebdbc 100644
 --- a/net/vmw_vsock/virtio_transport_common.c
 +++ b/net/vmw_vsock/virtio_transport_common.c
-@@ -244,21 +244,18 @@ static int virtio_transport_send_pkt_info(struct vsock_sock *vsk,
+@@ -1049,7 +1049,7 @@ virtio_transport_recv_connecting(struct sock *sk,
+ 	return err;
  }
  
- static bool virtio_transport_inc_rx_pkt(struct virtio_vsock_sock *vvs,
--					struct sk_buff *skb)
-+					u32 len)
+-static void
++static bool
+ virtio_transport_recv_enqueue(struct vsock_sock *vsk,
+ 			      struct sk_buff *skb)
  {
--	if (vvs->rx_bytes + skb->len > vvs->buf_alloc)
-+	if (vvs->rx_bytes + len > vvs->buf_alloc)
- 		return false;
- 
--	vvs->rx_bytes += skb->len;
-+	vvs->rx_bytes += len;
- 	return true;
- }
- 
- static void virtio_transport_dec_rx_pkt(struct virtio_vsock_sock *vvs,
--					struct sk_buff *skb)
-+					u32 len)
- {
--	int len;
--
--	len = skb_headroom(skb) - sizeof(struct virtio_vsock_hdr) - skb->len;
- 	vvs->rx_bytes -= len;
- 	vvs->fwd_cnt += len;
- }
-@@ -393,7 +390,9 @@ virtio_transport_stream_do_dequeue(struct vsock_sock *vsk,
- 		skb_pull(skb, bytes);
- 
- 		if (skb->len == 0) {
--			virtio_transport_dec_rx_pkt(vvs, skb);
-+			u32 pkt_len = le32_to_cpu(virtio_vsock_hdr(skb)->len);
-+
-+			virtio_transport_dec_rx_pkt(vvs, pkt_len);
- 			consume_skb(skb);
- 		} else {
- 			__skb_queue_head(&vvs->rx_queue, skb);
-@@ -447,17 +446,17 @@ static int virtio_transport_seqpacket_do_dequeue(struct vsock_sock *vsk,
- 
- 	while (!msg_ready) {
- 		struct virtio_vsock_hdr *hdr;
-+		size_t pkt_len;
- 
- 		skb = __skb_dequeue(&vvs->rx_queue);
- 		if (!skb)
- 			break;
- 		hdr = virtio_vsock_hdr(skb);
-+		pkt_len = (size_t)le32_to_cpu(hdr->len);
- 
- 		if (dequeued_len >= 0) {
--			size_t pkt_len;
- 			size_t bytes_to_copy;
- 
--			pkt_len = (size_t)le32_to_cpu(hdr->len);
- 			bytes_to_copy = min(user_buf_len, pkt_len);
- 
- 			if (bytes_to_copy) {
-@@ -494,7 +493,7 @@ static int virtio_transport_seqpacket_do_dequeue(struct vsock_sock *vsk,
- 				msg->msg_flags |= MSG_EOR;
- 		}
- 
--		virtio_transport_dec_rx_pkt(vvs, skb);
-+		virtio_transport_dec_rx_pkt(vvs, pkt_len);
- 		kfree_skb(skb);
- 	}
- 
-@@ -1064,7 +1063,7 @@ virtio_transport_recv_enqueue(struct vsock_sock *vsk,
- 
+@@ -1064,10 +1064,8 @@ virtio_transport_recv_enqueue(struct vsock_sock *vsk,
  	spin_lock_bh(&vvs->rx_lock);
  
--	can_enqueue = virtio_transport_inc_rx_pkt(vvs, skb);
-+	can_enqueue = virtio_transport_inc_rx_pkt(vvs, len);
- 	if (!can_enqueue) {
- 		free_pkt = true;
+ 	can_enqueue = virtio_transport_inc_rx_pkt(vvs, len);
+-	if (!can_enqueue) {
+-		free_pkt = true;
++	if (!can_enqueue)
  		goto out;
+-	}
+ 
+ 	if (le32_to_cpu(hdr->flags) & VIRTIO_VSOCK_SEQ_EOM)
+ 		vvs->msg_count++;
+@@ -1105,6 +1103,8 @@ virtio_transport_recv_enqueue(struct vsock_sock *vsk,
+ 	spin_unlock_bh(&vvs->rx_lock);
+ 	if (free_pkt)
+ 		kfree_skb(skb);
++
++	return can_enqueue;
+ }
+ 
+ static int
+@@ -1117,7 +1117,17 @@ virtio_transport_recv_connected(struct sock *sk,
+ 
+ 	switch (le16_to_cpu(hdr->op)) {
+ 	case VIRTIO_VSOCK_OP_RW:
+-		virtio_transport_recv_enqueue(vsk, skb);
++		if (!virtio_transport_recv_enqueue(vsk, skb)) {
++			/* There is no more space to queue the packet, so let's
++			 * close the connection; otherwise, we'll lose data.
++			 */
++			(void)virtio_transport_reset(vsk, skb);
++			virtio_transport_do_close(vsk, true);
++			sk->sk_err = ENOBUFS;
++			sk_error_report(sk);
++			vsock_remove_sock(vsk);
++			break;
++		}
+ 		sk->sk_data_ready(sk);
+ 		return err;
+ 	case VIRTIO_VSOCK_OP_CREDIT_REQUEST:
 -- 
 2.53.0
 
