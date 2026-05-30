@@ -1,64 +1,60 @@
-Return-Path: <stable+bounces-257830-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-259210-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id CE3eK2IgG2qu/QgAu9opvQ
-	(envelope-from <stable+bounces-257830-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:37:38 +0200
+	id uCgzD/kyG2qqAAkAu9opvQ
+	(envelope-from <stable+bounces-259210-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:56:57 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1CBC86100A8
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:37:37 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B7498612CF1
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:56:56 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id BC3EA303C4EE
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 17:31:54 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 3A0E1302C16C
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 18:49:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0AA9230676E;
-	Sat, 30 May 2026 17:31:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C27A41D63E4;
+	Sat, 30 May 2026 18:49:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="u+OyYIC4"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="K/gfjdvf"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D967F30E853;
-	Sat, 30 May 2026 17:31:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AA91515E5BB;
+	Sat, 30 May 2026 18:49:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780162312; cv=none; b=LDIB3sIjZZeuEfeV3HTOnzhxjYlnXgelMhnXeMbPLRRlhXJIvXH/X3EgCnlz7MOyp6q9fe5LyMup4HbmZtHLifmhzIUQhVK/yVNGOSfkt/kvvAMACgejLxjWrqmYZKC2NdV2A7oFEcFdu7DpJo6wSyJM4h6Qi6iee4iKQ5lWLVs=
+	t=1780166976; cv=none; b=oaBfibekZ/uo2rlMo5g6THPF0/hfmifIc2Kusa1fyLln3HyfDLqfJ04OK9x1Hl1ICSlT0X2jBs5Pdrw9yH9aGqVAX6sINiTjHXHFEZgkEshbzReTvV/zTAC6wXJg7aClWoN9CD33ynHWdVZp7Iz2U5uR/522dPb6sELT9EzEYKc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780162312; c=relaxed/simple;
-	bh=rIXbcvQ5A0pub/KlMuFBhsLL1QnsGvCISiNSpLIk0BU=;
+	s=arc-20240116; t=1780166976; c=relaxed/simple;
+	bh=oiwnatGLF5wU84TGaU9ocr5t4//YEfrsZPap+A54WW8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=dDro+xXCHQF9LFKYekeu/F6t0wnOoKZBnyi9FmXsH2s5QNLYB5KlaYme1L727J8habA3+BFhQEq4rsdL4bYoHr6a6NNYBr8Cng0l96WZGhPyBHMi9pufS/+Yz9ziu8SkvgFpma+8Hj03IrZ/C7YMmk7XluOAC6Wihf6zDZv85TM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=u+OyYIC4; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 329431F00893;
-	Sat, 30 May 2026 17:31:50 +0000 (UTC)
+	 MIME-Version; b=NvXybVFfjn4PKSzkOSHmMnLFkogOYde8NTKAlWDCx2UecLlrBmbB/rrl5XFDbavrUULiZG6py1ULOeI3mDcdbQd0Sth8Wxtwj/Kn4oX0V7cWD23HRq/41akRXtFX+2vmSvPJJrXDVm0TxpV4vaSWwXvIZAgW6RY7LdNIvZaKMDM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=K/gfjdvf; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EE0C81F00893;
+	Sat, 30 May 2026 18:49:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780162311;
-	bh=zrJJrJLhua0AWA+9+Lnf+hVfuvlUPklZNdXJWPItur8=;
+	s=korg; t=1780166975;
+	bh=xLOC/k4nckMGR4ZZeaHyOLpZdg7eYp9XWI1hEngdo78=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=u+OyYIC43D7Z7GwJuvMhDmQNHcA6q2afhJTTBnW/2Ozag7BilmvTTMTrtY/9XJpnf
-	 qITUit3K3yR8nkCJTPyXLAfW7bBzLgRfvU+p9ynakFMImE09Btlvunsb9zZxE1Q6Ew
-	 qSt2g235vfDR7OkojzHhhE05ArTOur0MCrqvmJNQ=
+	b=K/gfjdvfCMY5uQ2ymPtVxHxm97//ZrD86YYRJqQdlzQSaw/R4QApmSjR332qszUIj
+	 S8eCRRBBwIWNFwggZdP8atrSrePZnoj8AGBX2Ha6Yp8aX2zhcIhR65CEWxYSGwDaSX
+	 f9aPXigkHFUaU8HiKNym/lnUK+Eutva+qicCffSo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable@kernel.org,
-	Yuan Tan <yuantan098@gmail.com>,
-	Yifan Wu <yifanwucs@gmail.com>,
-	Juefei Pu <tomapufckgml@gmail.com>,
-	Xin Liu <bird@lzu.edu.cn>,
-	Luxiao Xu <rakukuip@gmail.com>,
-	Ren Wei <n05ec@lzu.edu.cn>,
-	Sven Eckelmann <sven@narfation.org>
-Subject: [PATCH 6.1 884/969] batman-adv: fix tp_meter counter underflow during shutdown
+	Rajat Jain <rajatja@google.com>,
+	stable <stable@kernel.org>,
+	"Rafael J. Wysocki (Intel)" <rafael@kernel.org>,
+	Danilo Krummrich <dakr@kernel.org>
+Subject: [PATCH 5.10 527/589] sysfs: dont remove existing directory on update failure
 Date: Sat, 30 May 2026 18:06:48 +0200
-Message-ID: <20260530160325.106611300@linuxfoundation.org>
+Message-ID: <20260530160238.525518129@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260530160300.485627683@linuxfoundation.org>
-References: <20260530160300.485627683@linuxfoundation.org>
+In-Reply-To: <20260530160224.570625122@linuxfoundation.org>
+References: <20260530160224.570625122@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -78,84 +74,70 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,kernel.org,gmail.com,lzu.edu.cn,narfation.org];
-	TAGGED_FROM(0.00)[bounces-257830-lists,stable=lfdr.de];
-	PRECEDENCE_BULK(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-259210-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[11];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
 	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,lzu.edu.cn:email,narfation.org:email]
-X-Rspamd-Queue-Id: 1CBC86100A8
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	NEURAL_HAM(-0.00)[-0.996];
+	RCPT_COUNT_SEVEN(0.00)[7];
+	MID_RHS_MATCH_FROM(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
+X-Rspamd-Queue-Id: B7498612CF1
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Luxiao Xu <rakukuip@gmail.com>
+From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 
-commit 94f3b133168d1c49895e7cc6afbcf1cc0b354602 upstream.
+commit 237557b8a81ab948e8332f7c0058e758f081c0a3 upstream.
 
-batadv_tp_sender_shutdown() unconditionally decrements the "sending"
-atomic counter. If multiple paths (e.g. timeout, user cancel, and
-normal finish) call this function, the counter can underflow to -1.
+When sysfs_update_group() is called for a named group and create_files()
+fails (e.g. -ENOMEM), internal_create_group() calls kernfs_remove(kn) on
+the group directory.  In the update path, kn was obtained via
+kernfs_find_and_get() and refers to a directory that already existed
+before this call.  Removing it silently destroys a sysfs group that the
+caller did not create.
 
-Since the sender logic treats any non-zero value as "still sending",
-a negative value causes the sender kthread to loop indefinitely.
-This leads to a use-after-free when the interface is removed while
-the zombie thread is still active.
+Only remove the directory if we created it ourselves.  On update failure
+the directory remains as it is left empty by remove_files() inside
+create_files(), but can be repopulated by a retry.
 
-Fix this by using atomic_xchg() to ensure the counter only transitions
-from 1 to 0 once.
-
-Fixes: 33a3bb4a3345 ("batman-adv: throughput meter implementation")
-Cc: stable@kernel.org
-Reported-by: Yuan Tan <yuantan098@gmail.com>
-Reported-by: Yifan Wu <yifanwucs@gmail.com>
-Reported-by: Juefei Pu <tomapufckgml@gmail.com>
-Reported-by: Xin Liu <bird@lzu.edu.cn>
-Signed-off-by: Luxiao Xu <rakukuip@gmail.com>
-Signed-off-by: Ren Wei <n05ec@lzu.edu.cn>
-[sven: added missing change in batadv_tp_send]
-Signed-off-by: Sven Eckelmann <sven@narfation.org>
+Cc: Rajat Jain <rajatja@google.com>
+Fixes: c855cf2759d2 ("sysfs: Fix internal_create_group() for named group updates")
+Cc: stable <stable@kernel.org>
+Assisted-by: gkh_clanker_t1000
+Reviewed-by: Rafael J. Wysocki (Intel) <rafael@kernel.org>
+Reviewed-by: Danilo Krummrich <dakr@kernel.org>
+Link: https://patch.msgid.link/2026052003-uniquely-hastily-c093@gregkh
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/batman-adv/tp_meter.c |    4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ fs/sysfs/group.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/net/batman-adv/tp_meter.c
-+++ b/net/batman-adv/tp_meter.c
-@@ -435,7 +435,7 @@ static void batadv_tp_sender_end(struct
- static void batadv_tp_sender_shutdown(struct batadv_tp_vars *tp_vars,
- 				      enum batadv_tp_meter_reason reason)
- {
--	if (!atomic_dec_and_test(&tp_vars->sending))
-+	if (atomic_xchg(&tp_vars->sending, 0) != 1)
- 		return;
- 
- 	tp_vars->reason = reason;
-@@ -869,7 +869,7 @@ static int batadv_tp_send(void *arg)
- 				   "Meter: %s() cannot send packets (%d)\n",
- 				   __func__, err);
- 			/* ensure nobody else tries to stop the thread now */
--			if (atomic_dec_and_test(&tp_vars->sending))
-+			if (atomic_xchg(&tp_vars->sending, 0) == 1)
- 				tp_vars->reason = err;
- 			break;
- 		}
+--- a/fs/sysfs/group.c
++++ b/fs/sysfs/group.c
+@@ -148,7 +148,7 @@ static int internal_create_group(struct
+ 	kernfs_get(kn);
+ 	error = create_files(kn, kobj, uid, gid, grp, update);
+ 	if (error) {
+-		if (grp->name)
++		if (grp->name && !update)
+ 			kernfs_remove(kn);
+ 	}
+ 	kernfs_put(kn);
 
 
 
