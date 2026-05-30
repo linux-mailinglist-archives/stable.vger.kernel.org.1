@@ -1,59 +1,60 @@
-Return-Path: <stable+bounces-259249-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-257869-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 6Ku/GqQzG2qqAAkAu9opvQ
-	(envelope-from <stable+bounces-259249-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:59:48 +0200
+	id IN9QAN4gG2qu/QgAu9opvQ
+	(envelope-from <stable+bounces-257869-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:39:42 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id C68CB612EAC
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:59:47 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9825961021A
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:39:41 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 2E47D30C9398
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 18:51:52 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id F228E3072447
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 17:34:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 701FA23C4F2;
-	Sat, 30 May 2026 18:51:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 68F1934389F;
+	Sat, 30 May 2026 17:34:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YCd1B6cP"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fp6aSj+q"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AAFBD25B0B0;
-	Sat, 30 May 2026 18:51:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4A85F33A9DA;
+	Sat, 30 May 2026 17:34:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780167111; cv=none; b=YWRH5QebDL4g86wJ9+Z4QBKRo1uXmypNt2AZHSZj8kXaPOjiK3QMCjGZRw5Ix6T5d2d5l1ENvesNaQ/TQS6xI/AOK2OVpLA+J2yQyuT/UEg/PRJAKdKeVV28NT2gtNfjx9gWdD6SeTAGAPsdIJo7p5aqZBWqHTmrsVv8VJnVubo=
+	t=1780162445; cv=none; b=H1n3TOZfKUGua00Wkh/IPi6vH6gRHJp3/WMDDPT7IxTnn1YjtPYbO5xcM+za4xwu+o7Q/iC1R0pn4GIdlqS/yJAu7q+xqIVwQZHx4xLz/FCHWIoFzJ3AHVSu1Q8Hi5E++RQ02x4O1Tiyqg97wXF5nbPR7uyUFkdXB07nnuOX84g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780167111; c=relaxed/simple;
-	bh=YEvQslNq18FOlm8PJQWtTlch4Wdwko8dVzzQK4wfHfg=;
+	s=arc-20240116; t=1780162445; c=relaxed/simple;
+	bh=LVUHbmijV4a2aPvnEYEOmoRmfIkeBj1kXgYaHSa1wPc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=CcgF/bEQycQE623GkkwsyueLtD1S/ahAo7PMs3e15vlEOIiOBDxwKLGyEvMmA16W4LqktuDzbw9uYe6CGOqVAk7TSHQe7JXOG0bobpBLjRYA9KkOqYk0uEeEEay+qGbx9Z0q4yS9mpSqWvHXZG5UXC8dSVT/kEQUfriGNyhC4ws=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YCd1B6cP; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C9AFB1F00893;
-	Sat, 30 May 2026 18:51:48 +0000 (UTC)
+	 MIME-Version:Content-Type; b=X269hPVr/IV/xt8rftqKL+/oICm8UwmnHjhD5lH2CoEiFAeMTSfwBMPlS2vqEuHRNwQe72LEkonGUNflocf6k6ocK32qFbW2NkwnjO2bQqhi+HxRAPR/1f2m9JmrqbXWxSRYLUzmZPiUcNNU6I2OGbjEn2HxhfRr+m/VOr52/kQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fp6aSj+q; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8E4FB1F00893;
+	Sat, 30 May 2026 17:34:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780167109;
-	bh=ac0bBpf0JNzlEY43V+f6kErb5ErFkwrb9fOtttBotTo=;
+	s=korg; t=1780162444;
+	bh=UAVlwlIOsQfJuFUrE8sWYthAC4w1iV4lxf5rnZl0CgI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=YCd1B6cP6g/lvW7KRwN4jzLzGfkqj3qpeqslqF917qDKuDs8/uH/oJs9uN16CKTc2
-	 1azK8/WK0n+8iDdolTX+UlIfViv2kHyT4Iz8+X7t9ZQqaWiyQgUKCZk60elagf1qa1
-	 SsjBKqLSaZNz338PQaj6yoiVtgjoNK9Km7QwV/Q8=
+	b=fp6aSj+qLnMVTEw4rxjskZ4JPiacei82AuTxiu4yEOdoadt9ZqsXxp29IGQB5AcRO
+	 OSM1rTBJYZTz+RuyaIRMvd3/eLvPvnot26MAj0joZNTmx4DvhtNKYBoINJjRZb8H3+
+	 8ehR8LJ8ZM7SyYZibJKw1CrapBXXGHyvYbdyDua8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Abdurrahman Hussain <abdurrahman@nexthop.ai>,
-	Bartosz Golaszewski <bartosz.golaszewski@oss.qualcomm.com>,
-	Guenter Roeck <linux@roeck-us.net>
-Subject: [PATCH 5.10 566/589] hwmon: (pmbus/adm1266) register the gpio_chip after pmbus_do_probe()
+	Gabor Juhos <j4g8y7@gmail.com>,
+	Miquel Raynal <miquel.raynal@bootlin.com>,
+	Vinod Koul <vkoul@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 923/969] phy: marvell: mvebu-a3700-utmi: fix incorrect USB2_PHY_CTRL register access
 Date: Sat, 30 May 2026 18:07:27 +0200
-Message-ID: <20260530160239.508837965@linuxfoundation.org>
+Message-ID: <20260530160326.225839205@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260530160224.570625122@linuxfoundation.org>
-References: <20260530160224.570625122@linuxfoundation.org>
+In-Reply-To: <20260530160300.485627683@linuxfoundation.org>
+References: <20260530160300.485627683@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,97 +64,85 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	RCVD_TLS_LAST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,bootlin.com,kernel.org];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-259249-lists,stable=lfdr.de];
-	TO_DN_SOME(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-0.996];
+	TAGGED_FROM(0.00)[bounces-257869-lists,stable=lfdr.de];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	RCVD_TLS_LAST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	TO_DN_SOME(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[nexthop.ai:email,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,roeck-us.net:email,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,qualcomm.com:email]
-X-Rspamd-Queue-Id: C68CB612EAC
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,msgid.link:url,linuxfoundation.org:mid,linuxfoundation.org:dkim,bootlin.com:email]
+X-Rspamd-Queue-Id: 9825961021A
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Abdurrahman Hussain <abdurrahman@nexthop.ai>
+From: Gabor Juhos <j4g8y7@gmail.com>
 
-commit 491403b9b76cf66abd81301c5901aa4a4549f1e8 upstream.
+[ Upstream commit 91ddf6f722084383fb05be731c0107814b055c0c ]
 
-adm1266_probe() calls adm1266_config_gpio() -- which goes on to
-devm_gpiochip_add_data() and exposes the gpio_chip callbacks to
-gpiolib -- before pmbus_do_probe() has initialised the per-client
-PMBus state (notably the pmbus_lock mutex the core hands out via
-pmbus_get_data()).
+The mvebu_a3700_utmi_phy_power_off() function tries to modify the
+USB2_PHY_CTRL register by using the IO address of the PHY IP block along
+with the readl/writel IO accessors. However, the register exist in the
+USB miscellaneous register space, and as such it must be accessed via
+regmap like it is done in the mvebu_a3700_utmi_phy_power_on() function.
 
-That ordering is already a latent hazard: any GPIO access that lands
-between adm1266_config_gpio() and the end of pmbus_do_probe() (for
-example a sysfs read from a user space agent that opens the gpiochip
-the instant gpiolib advertises it) races pmbus_do_probe()'s own
-device accesses with no serialisation.
+Change the code to use regmap_update_bits() for modífying the register
+to fix this.
 
-Move adm1266_config_gpio() down past pmbus_do_probe() so the chip
-isn't reachable from userspace until the PMBus state it depends on
-is fully initialised.
-
-Fixes: d98dfad35c38 ("hwmon: (pmbus/adm1266) Add support for GPIOs")
-Cc: stable@vger.kernel.org
-Signed-off-by: Abdurrahman Hussain <abdurrahman@nexthop.ai>
-Reviewed-by: Bartosz Golaszewski <bartosz.golaszewski@oss.qualcomm.com>
-Link: https://lore.kernel.org/r/20260518-adm1266-gpio-fixes-v3-4-e425e4f88139@nexthop.ai
-Signed-off-by: Guenter Roeck <linux@roeck-us.net>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: cc8b7a0ae866 ("phy: add A3700 UTMI PHY driver")
+Signed-off-by: Gabor Juhos <j4g8y7@gmail.com>
+Reviewed-by: Miquel Raynal <miquel.raynal@bootlin.com>
+Link: https://patch.msgid.link/20260321-a3700-utmi-fix-usb2_phy_ctrl-access-v1-1-6005ff4b5058@gmail.com
+Signed-off-by: Vinod Koul <vkoul@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/hwmon/pmbus/adm1266.c |    8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ drivers/phy/marvell/phy-mvebu-a3700-utmi.c | 5 ++---
+ 1 file changed, 2 insertions(+), 3 deletions(-)
 
---- a/drivers/hwmon/pmbus/adm1266.c
-+++ b/drivers/hwmon/pmbus/adm1266.c
-@@ -468,10 +468,6 @@ static int adm1266_probe(struct i2c_clie
- 	crc8_populate_msb(pmbus_crc_table, 0x7);
- 	mutex_init(&data->buf_mutex);
+diff --git a/drivers/phy/marvell/phy-mvebu-a3700-utmi.c b/drivers/phy/marvell/phy-mvebu-a3700-utmi.c
+index 8834436bc9dbc..e3a9278c06842 100644
+--- a/drivers/phy/marvell/phy-mvebu-a3700-utmi.c
++++ b/drivers/phy/marvell/phy-mvebu-a3700-utmi.c
+@@ -168,9 +168,8 @@ static int mvebu_a3700_utmi_phy_power_off(struct phy *phy)
+ 	u32 reg;
  
--	ret = adm1266_config_gpio(data);
--	if (ret < 0)
--		return ret;
--
- 	ret = adm1266_set_rtc(data);
- 	if (ret < 0)
- 		return ret;
-@@ -484,6 +480,10 @@ static int adm1266_probe(struct i2c_clie
- 	if (ret)
- 		return ret;
+ 	/* Disable PHY pull-up and enable USB2 suspend */
+-	reg = readl(utmi->regs + USB2_PHY_CTRL(usb32));
+-	reg &= ~(RB_USB2PHY_PU | RB_USB2PHY_SUSPM(usb32));
+-	writel(reg, utmi->regs + USB2_PHY_CTRL(usb32));
++	regmap_update_bits(utmi->usb_misc, USB2_PHY_CTRL(usb32),
++			   RB_USB2PHY_PU | RB_USB2PHY_SUSPM(usb32), 0);
  
-+	ret = adm1266_config_gpio(data);
-+	if (ret < 0)
-+		return ret;
-+
- 	adm1266_init_debugfs(data);
- 
- 	return 0;
+ 	/* Power down OTG module */
+ 	if (usb32) {
+-- 
+2.53.0
+
 
 
 
