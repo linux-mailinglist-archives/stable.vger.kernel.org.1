@@ -1,59 +1,59 @@
-Return-Path: <stable+bounces-257612-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-258976-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id OMTpN6cdG2qW/QgAu9opvQ
-	(envelope-from <stable+bounces-257612-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:25:59 +0200
+	id eGkREjMvG2paAAkAu9opvQ
+	(envelope-from <stable+bounces-258976-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:40:51 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 677A460FA15
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:25:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D36686123BD
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:40:50 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id E1AC330640B7
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 17:19:44 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 9FAB43040C56
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 18:36:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8C347334695;
-	Sat, 30 May 2026 17:19:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1D06A313E34;
+	Sat, 30 May 2026 18:36:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lyz8x+Cg"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WO0nhYJ4"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 67F36332EA7;
-	Sat, 30 May 2026 17:19:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D9B4C3AB285;
+	Sat, 30 May 2026 18:36:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780161584; cv=none; b=cEuxmrXyynja2RyuxQmbLQwvDrvXA/T1zADo3M026F75ceYabY99AIM/AfoUfqJmETfrxFHbiw3Pod9ildM4NoUHYoIzr5G/TI2zDxHKZRWO4q2quGlvlJVXSlNTpGkWr831rw7uC9LUtp4b1dSsKziqLvgmDiBpbBVh6JJxhp0=
+	t=1780166176; cv=none; b=bRUPm04dwuoFkpy4GKFAEcBUYK+jHpSeVtlE3AQcYIWh47SANZtV5oJry5X+CjNXiTzqjcrh1QnUTMSnEPJy/SCTlDEwRJtEqHSLQoF0pe4JbRfLfMy+F3pcdkBhNhWEF9yuIXFDmgmIx+Uac3naXMBFzzwhj/ZlRSaHlWQ0A8A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780161584; c=relaxed/simple;
-	bh=+YpRsJ3u3Yqg/UdO7V8CPcGuhNNZZFb0LHV6uZhzkVU=;
+	s=arc-20240116; t=1780166176; c=relaxed/simple;
+	bh=H/5bHN/8j6h600CKQQbD9iv9Qt4Yd2jRKozFlVjVV2c=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=TQVPlvse8YYIx/1lNXLOqMkp/P3NcMXQmCw+fJhzSuRNfoxLQu+Bzxc/93x/nwoggvRfNy67jHncVbMxa/xW7n/qO9M5b85Ux8t6gN9YjWGy3+UTGX4Gnsi9Kbtv74gCPIN0rC/OjqcnelJrqaCzUonmFaeTLfOyBYr2SUtgU60=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lyz8x+Cg; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AC2C01F00893;
-	Sat, 30 May 2026 17:19:42 +0000 (UTC)
+	 MIME-Version:Content-Type; b=uT97y0LUsN1ZkjOeg22DQ8jx518BZeKDKrJDtO+Trhva3SdbaIhBUNliGxTuq3z8UQ0g4gaOcPtFQP8I2mc6qg9rHr9l3SYQbNJuohvmDXduaFfIuggVCo5FXVPgKc4hYR8YuGrzW+FKmPQTOvv30wUVCjhq+oFaHL1tfjoaNQ8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WO0nhYJ4; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 26F931F00898;
+	Sat, 30 May 2026 18:36:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780161583;
-	bh=fePezc/4xaStN1uQ3XH6Wjd6Mwqbv9Li6GgjY81q+qc=;
+	s=korg; t=1780166175;
+	bh=wE/J9Dvy0+/TDe6NzL29FRgMRJK2Fa35gCv4JnRwAas=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=lyz8x+CgIgRpx38evBIUEs34RfdV++Y/xatbK3Bq0t3QN8zA9K1L6x+LfFnhVEy4b
-	 rBI5G5Yc6r0qeVwPXzPh2Owkfn/S3fpHPFhZ+avyUZmfB3m/w5n6N9g2IIPDfYSHlC
-	 9cvS9aQaibO8QDll4SRNX25OGd3kWdSVUQQnTWuI=
+	b=WO0nhYJ4gAttjNphryBwCHqZesjbVu+QdX96owqQvyk2ksA4Kf199AYhEPDV3Same
+	 JOHM3TDZuEPvKrddVOVYjKkeuQpsBgXSWzeX2rHrsbaC+kxEd2+iGSHcYKk38mygU3
+	 JfOHAeByyGgCk33Los20k6D+PpMcAAfWCyQ9T3Rg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-	Andi Shyti <andi.shyti@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 636/969] driver core: Move dev_err_probe() to where it belogs
+	=?UTF-8?q?Timur=20Krist=C3=B3f?= <timur.kristof@gmail.com>,
+	Kent Russell <kent.russell@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>
+Subject: [PATCH 5.10 279/589] drm/amdgpu/pm: align Hawaii mclk workaround with radeon
 Date: Sat, 30 May 2026 18:02:40 +0200
-Message-ID: <20260530160318.015412968@linuxfoundation.org>
+Message-ID: <20260530160232.293212772@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260530160300.485627683@linuxfoundation.org>
-References: <20260530160300.485627683@linuxfoundation.org>
+In-Reply-To: <20260530160224.570625122@linuxfoundation.org>
+References: <20260530160224.570625122@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,90 +63,79 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-0.66 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	TAGGED_FROM(0.00)[bounces-258976-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-257612-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
-	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,amd.com];
 	TO_DN_SOME(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	MIME_TRACE(0.00)[0:+];
+	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	RCPT_COUNT_FIVE(0.00)[6];
+	NEURAL_HAM(-0.00)[-0.997];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[stable];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	FROM_HAS_DN(0.00)[]
-X-Rspamd-Queue-Id: 677A460FA15
+	TAGGED_RCPT(0.00)[stable];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[amd.com:email,gitlab.freedesktop.org:url,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo]
+X-Rspamd-Queue-Id: D36686123BD
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+From: Alex Deucher <alexander.deucher@amd.com>
 
-[ Upstream commit 9e0cace7a6254070159ebd86497eadc29ea307ca ]
+commit 1987c79b4fe5789dfa14423e78b5c25f6acf3e9d upstream.
 
-dev_err_probe() belongs to the printing API, hence
-move the definition from device.h to dev_printk.h.
+Align the hawaii mclk workaround with radeon and windows.
 
-There is no change to the callers at all, since:
-1) implementation is located in the same core.c;
-2) dev_printk.h is guaranteed to be included by device.h.
-
-Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Reviewed-by: Andi Shyti <andi.shyti@kernel.org>
-Link: https://lore.kernel.org/r/20230721131309.16821-1-andriy.shevchenko@linux.intel.com
+Link: https://gitlab.freedesktop.org/drm/amd/-/work_items/1816
+Fixes: 9f4b35411cfe ("drm/amd/powerplay: add CI asics support to smumgr (v3)")
+Reviewed-by: Timur Kristóf <timur.kristof@gmail.com>
+Reviewed-by: Kent Russell <kent.russell@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+(cherry picked from commit 9649528b637f668c5af9f2b83ca4ad8576ae2121)
+Cc: stable@vger.kernel.org
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Stable-dep-of: 797cc011ae02 ("backlight: sky81452-backlight: Check return value of devm_gpiod_get_optional() in sky81452_bl_parse_dt()")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/linux/dev_printk.h | 2 ++
- include/linux/device.h     | 2 --
- 2 files changed, 2 insertions(+), 2 deletions(-)
+ drivers/gpu/drm/amd/pm/powerplay/smumgr/ci_smumgr.c |    8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
-diff --git a/include/linux/dev_printk.h b/include/linux/dev_printk.h
-index 65eec5be8ccb9..ae80a303c216b 100644
---- a/include/linux/dev_printk.h
-+++ b/include/linux/dev_printk.h
-@@ -275,4 +275,6 @@ do {									\
- 	WARN_ONCE(condition, "%s %s: " format, \
- 			dev_driver_string(dev), dev_name(dev), ## arg)
- 
-+__printf(3, 4) int dev_err_probe(const struct device *dev, int err, const char *fmt, ...);
-+
- #endif /* _DEVICE_PRINTK_H_ */
-diff --git a/include/linux/device.h b/include/linux/device.h
-index 428c96ce6b4c4..e642b366aa380 100644
---- a/include/linux/device.h
-+++ b/include/linux/device.h
-@@ -1149,8 +1149,6 @@ void device_links_supplier_sync_state_pause(void);
- void device_links_supplier_sync_state_resume(void);
- void device_link_wait_removal(void);
- 
--__printf(3, 4) int dev_err_probe(const struct device *dev, int err, const char *fmt, ...);
--
- /* Create alias, so I can be autoloaded. */
- #define MODULE_ALIAS_CHARDEV(major,minor) \
- 	MODULE_ALIAS("char-major-" __stringify(major) "-" __stringify(minor))
--- 
-2.53.0
-
+--- a/drivers/gpu/drm/amd/pm/powerplay/smumgr/ci_smumgr.c
++++ b/drivers/gpu/drm/amd/pm/powerplay/smumgr/ci_smumgr.c
+@@ -1328,10 +1328,10 @@ static int ci_populate_all_memory_levels
+ 	if ((dpm_table->mclk_table.count >= 2) &&
+ 	    ((dev_id == 0x67B0) ||  (dev_id == 0x67B1)) &&
+ 	    (adev->pdev->revision == 0)) {
+-		smu_data->smc_state_table.MemoryLevel[1].MinVddci =
+-				smu_data->smc_state_table.MemoryLevel[0].MinVddci;
+-		smu_data->smc_state_table.MemoryLevel[1].MinMvdd =
+-				smu_data->smc_state_table.MemoryLevel[0].MinMvdd;
++		smu_data->smc_state_table.MemoryLevel[1].MinVddc =
++				smu_data->smc_state_table.MemoryLevel[0].MinVddc;
++		smu_data->smc_state_table.MemoryLevel[1].MinVddcPhases =
++				smu_data->smc_state_table.MemoryLevel[0].MinVddcPhases;
+ 	}
+ 	smu_data->smc_state_table.MemoryLevel[0].ActivityLevel = 0x1F;
+ 	CONVERT_FROM_HOST_TO_SMC_US(smu_data->smc_state_table.MemoryLevel[0].ActivityLevel);
 
 
 
