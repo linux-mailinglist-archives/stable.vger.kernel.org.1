@@ -1,60 +1,59 @@
-Return-Path: <stable+bounces-258658-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-259276-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id +ARSJPgpG2ra/ggAu9opvQ
-	(envelope-from <stable+bounces-258658-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:18:32 +0200
+	id +JxvFNEzG2qqAAkAu9opvQ
+	(envelope-from <stable+bounces-259276-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 21:00:33 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4184161173E
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:18:32 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id AF663612EEF
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 21:00:32 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id E5C623012546
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 18:18:18 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id A7C28303F053
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 18:53:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A28C4274FDC;
-	Sat, 30 May 2026 18:18:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 27903242D67;
+	Sat, 30 May 2026 18:53:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tdcXKVz4"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GPL0pMFe"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 893DD233D9E;
-	Sat, 30 May 2026 18:18:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0BD2C2E7389;
+	Sat, 30 May 2026 18:53:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780165095; cv=none; b=Pi4UNnFzpDZ8DKj8960HMwG+0OCjI8+pUb1Fasd19qYF3GvSaBG77p49BrOjL0O7X+lmWtX2xb6g7LuMBxNS76oGEFQ1rlWKF1H6XKHMNrFe6BHJRHKJQhesZzagaxF1BKKFhvk739sxYiGIU8PKF+5mNZR+vsTJNxuzAVQp/oM=
+	t=1780167199; cv=none; b=rTi8Lq4bHOqx90KFYNVBmTmk73w/CmwoukpO2sbkatAgKip4cZ+kFNgOZX2EB5l7SmFgGKE5Ba2DytgpwEbplB4kKO+jntEB2SaN+b/XgwIq1kSzQz/YYjz2vR4kkBXnzATutjCZmPJVNFGZrCzvkova5gGSCMndqBafhm+VBkg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780165095; c=relaxed/simple;
-	bh=eiEWH06mLJPrYNbMYsI7/igL6ok7wBkUvMVGpnefNKg=;
+	s=arc-20240116; t=1780167199; c=relaxed/simple;
+	bh=81YXtHo34dCEyrIJ0AQ96imJtUmy0u30jyswzJR4XCI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=SlwCzvNpz7Xv14tN3Y2AZCV1W7UYJTiKnZdyewv10zaFfhu5O6xhGhSvd7qnxDIWDe2pqwQfhfR5K9zplSUy+gu+MJ8Aatre3cL7rpCsHsw4p3pc00BbX0MOzQpN86hrhUf3+1dyR1TS1grZgDnEKTA11wLOs5Qe/dqMESsY194=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tdcXKVz4; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 28D681F00893;
-	Sat, 30 May 2026 18:18:12 +0000 (UTC)
+	 MIME-Version; b=CnEEzhnU1O4t4yLLMdYNVgUi5YXbvV9SW5/pZqh8iWUU4j6xDyQPqkGjwEVwXZkFT1TmplNLjxI1Eu+3VbRlFjW7EPkOK9KlBN1kyWyV75tp5H8vveiw6w2ALRrg03IsrQTvyUQQFsRuLziTAqu4ks1kYhG1zoyerDXJWlgZZ58=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GPL0pMFe; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 44CC71F00893;
+	Sat, 30 May 2026 18:53:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780165094;
-	bh=MaO3MbL/0/CK12TJkS1bmTpTDjTdbb+Uh0BeTvD34uY=;
+	s=korg; t=1780167198;
+	bh=Nfv5i4XLFUohEfOEGIxWVEG0D2LG55qeGkD+3wbCBPQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=tdcXKVz4TLbgc5dbLKbJ0xY0QT2HZPyhVm2BScvnBuJFna2QqUH3JRKAKPaHJ81ls
-	 NnAwMaTg0qjCSGyMzv4TGYUERiNBCEbhhIgwL2ptN5nQbt73fWPMK/DrSwltxVw+jn
-	 PuHVFnR/VtfhUvYKfdOrNtjJZ0IHAwxT9DAk7ff4=
+	b=GPL0pMFe6PIzrgIc2vcKO8UxBnoQaHmOT7vr4N+xrfDmE4lFJ/pm70h/BGnHPqSxO
+	 QPy/T8i3EnWsOnwCw7bN2IHR57LwwhNEsDR5jCTsWImcp/spMlFU/zfeZJikoJ5JfG
+	 ytF0mE0l8rOybOh4mBfQKlgfc2FfK1zr3eQxLxNM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	kernel test robot <lkp@intel.com>,
-	Rosen Penev <rosenp@gmail.com>,
-	Thomas Gleixner <tglx@kernel.org>,
+	Chenguang Zhao <zhaochenguang@kylinos.cn>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 747/776] irqchip/ath79-cpu: Remove unused function
+Subject: [PATCH 5.10 580/589] ethtool: fix ethnl_bitmap32_not_zero() bit interval semantics
 Date: Sat, 30 May 2026 18:07:41 +0200
-Message-ID: <20260530160259.080371637@linuxfoundation.org>
+Message-ID: <20260530160239.841511634@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260530160240.228940103@linuxfoundation.org>
-References: <20260530160240.228940103@linuxfoundation.org>
+In-Reply-To: <20260530160224.570625122@linuxfoundation.org>
+References: <20260530160224.570625122@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,76 +68,87 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,intel.com,gmail.com,kernel.org];
-	TAGGED_FROM(0.00)[bounces-258658-lists,stable=lfdr.de];
-	PRECEDENCE_BULK(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
+	RCVD_TLS_LAST(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	TAGGED_FROM(0.00)[bounces-259276-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-0.999];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[7];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[intel.com:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,msgid.link:url,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo]
-X-Rspamd-Queue-Id: 4184161173E
+	RCPT_COUNT_FIVE(0.00)[6];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
+X-Rspamd-Queue-Id: AF663612EEF
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Rosen Penev <rosenp@gmail.com>
+From: Chenguang Zhao <zhaochenguang@kylinos.cn>
 
-[ Upstream commit 0fa10fb77069fb67aa51384868ef3702b7791465 ]
+[ Upstream commit 3d042592ebd4c7e44974d556de0b727cb7db4dab ]
 
-ath79_cpu_irq_init() was part of the legacy pre-OF code that got removed a
-while back.
+ethnl_bitmap32_not_zero() should return true if some bit in [start, end)
+is set:
 
-Remove it to get rid of a missing prototype warning, reported by the kernel test
-robot.
+- Fix inverted memchr_inv() sense: return true when the scan finds a
+  non-zero byte, not when the middle words are all zero.
+- Return false for an empty interval (end <= start).
+- When end is 32-bit aligned, indices in [start, end) do not include any
+  bits from map[end_word]; return false after earlier checks found no
+  non-zero data.
 
-[ tglx: Fix the subject prefix. Sigh ... ]
-
-Fixes: 51fa4f8912c0 ("MIPS: ath79: drop legacy IRQ code")
-Reported-by: kernel test robot <lkp@intel.com>
-Signed-off-by: Rosen Penev <rosenp@gmail.com>
-Signed-off-by: Thomas Gleixner <tglx@kernel.org>
-Link: https://patch.msgid.link/20260506085522.1210143-1-rosenp@gmail.com
-Closes: https://lore.kernel.org/oe-kbuild-all/202412011509.kGQkDr1y-lkp@intel.com/
+Fixes: 10b518d4e6dd ("ethtool: netlink bitset handling")
+Signed-off-by: Chenguang Zhao <zhaochenguang@kylinos.cn>
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/irqchip/irq-ath79-cpu.c | 7 -------
- 1 file changed, 7 deletions(-)
+ net/ethtool/bitset.c | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/irqchip/irq-ath79-cpu.c b/drivers/irqchip/irq-ath79-cpu.c
-index 923e4bba37767..9b7273a7f8ced 100644
---- a/drivers/irqchip/irq-ath79-cpu.c
-+++ b/drivers/irqchip/irq-ath79-cpu.c
-@@ -85,10 +85,3 @@ static int __init ar79_cpu_intc_of_init(
+diff --git a/net/ethtool/bitset.c b/net/ethtool/bitset.c
+index f0883357d12e5..4691d6d0f2b75 100644
+--- a/net/ethtool/bitset.c
++++ b/net/ethtool/bitset.c
+@@ -91,7 +91,7 @@ static bool ethnl_bitmap32_not_zero(const u32 *map, unsigned int start,
+ 	u32 mask;
+ 
+ 	if (end <= start)
+-		return true;
++		return false;
+ 
+ 	if (start % 32) {
+ 		mask = ethnl_upper_bits(start);
+@@ -104,11 +104,11 @@ static bool ethnl_bitmap32_not_zero(const u32 *map, unsigned int start,
+ 		start_word++;
+ 	}
+ 
+-	if (!memchr_inv(map + start_word, '\0',
+-			(end_word - start_word) * sizeof(u32)))
++	if (memchr_inv(map + start_word, '\0',
++		       (end_word - start_word) * sizeof(u32)))
+ 		return true;
+ 	if (end % 32 == 0)
+-		return true;
++		return false;
+ 	return map[end_word] & ethnl_lower_bits(end);
  }
- IRQCHIP_DECLARE(ar79_cpu_intc, "qca,ar7100-cpu-intc",
- 		ar79_cpu_intc_of_init);
--
--void __init ath79_cpu_irq_init(unsigned irq_wb_chan2, unsigned irq_wb_chan3)
--{
--	irq_wb_chan[2] = irq_wb_chan2;
--	irq_wb_chan[3] = irq_wb_chan3;
--	mips_cpu_irq_init();
--}
+ 
 -- 
 2.53.0
 
