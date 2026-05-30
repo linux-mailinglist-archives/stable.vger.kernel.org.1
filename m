@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-257115-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-257126-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id sASRBVEWG2rJ/AgAu9opvQ
-	(envelope-from <stable+bounces-257115-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 18:54:41 +0200
+	id iPisGGYWG2rJ/AgAu9opvQ
+	(envelope-from <stable+bounces-257126-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 18:55:02 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6F80660E956
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 18:54:39 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id CE16E60E98C
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 18:55:01 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 517973081120
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 16:50:56 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 7A5EF308AD6A
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 16:51:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 46D0B34E745;
-	Sat, 30 May 2026 16:50:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D0A813403F3;
+	Sat, 30 May 2026 16:51:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rXNZWcWG"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="V+af/B2k"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E212C3A1A26;
-	Sat, 30 May 2026 16:50:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A35C333FE15;
+	Sat, 30 May 2026 16:51:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780159853; cv=none; b=rpfYJqYrYYTX8mLuQrtSO7cvOZ3/lIbp9EKhjEnkwJGACu5RhwdFGVPjjJ7Bke+lJBKTtm2gjDxVFp9wN7x2tOCgKUDJwx4C5oRwY/7vOw0lekajoaty2Hba7FcM0KxtUBKPPWxqhhSjL8GdT9oBt6sEYA8+8n/YjWx/d0c2Cyc=
+	t=1780159894; cv=none; b=pjlcEwPg+1hGYR+8EVXSeBoWPdC7xNoBzmcHFtL+tZqlTqvzNBhccsbO+2ZU3o2UXUYcOzUwtMDWImhBSp5+EpeWPqjbPBAraR0yeoyMOZ8hqSCFE3LQw766joh/kHzBvIcAYsOSvaKvrtXu010CFjohItwMEivK2Um24p5k4Hk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780159853; c=relaxed/simple;
-	bh=9c2bd/T2FSYkE+fqb1zS3PDV4JW/IjYTcw4vTNNand0=;
+	s=arc-20240116; t=1780159894; c=relaxed/simple;
+	bh=2HDyJQ6ZDUJTg7Pw6jHjwei1Eobkip0s50BiQPy9P/g=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=njFS4VbC7gvvlJhlA6p00Yak/v3BS5t7/ONfPb8c6zLkpTJzikAPWSXjQ+4C4VU8BTbli1dB5NLMCmdx815YFPT9fjIGNtiCzP37A6aOVGxb7sNQmIZ6UmpYwAuEjjyJVTtqhbLXy98Ad+Q8uqse+MZo7qBf7IzkV+rrOwsUjhw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rXNZWcWG; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2A0D31F00898;
-	Sat, 30 May 2026 16:50:49 +0000 (UTC)
+	 MIME-Version; b=rURV6jq2IqWK53PRh4MYfw1YCXXBniNENo47NfSX0/ixIvdn/sP5N3o++I4nIn0wsKvc7jCl+Ne0nb8GqYxVxrcuuSqGmHpVLnS2EUmBja4rd2zTXq58uo0uwcX30nWAqRohLgEO6rUDmlA/LShQTWJrynUvXr4r3ypHHBWQMno=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=V+af/B2k; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A93C51F00893;
+	Sat, 30 May 2026 16:51:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780159850;
-	bh=7DpulDi9/EiMwXMwwwW+dDwkqgs1ZZrCpwMpHHUzQOU=;
+	s=korg; t=1780159893;
+	bh=vFDK6TxOyxQ6JR2ccAzUm2KSy+7qmC2XcECJbN2a4xI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=rXNZWcWGxk4DR5EBuaovoeneBE/BH4BBxzPcOYhr1fxI5+Tb8pbY+AfPJ1p13QOIM
-	 y1Xqq79NpFIysaprsnJEe8JsQAPHHbGv6ALrXwXxHnprCbJDslfw6bDZglTRPCvOvg
-	 N8yfzhY9JAXOeRihnfaNA6NGcJp5uI7gLzhNcz04=
+	b=V+af/B2kV1xlcUx/EpcvB5Aaoa2QQtvD845obM9oWtVoc3tUeyLzWbnQzdDBob30v
+	 DfDLkI2pJS9ry4Gubt2G9emDwQB9/N9TeGKLWnifdnm3hodEaUfx4Ix859VK2tKjcK
+	 50TY2/cJb4+4eH3nrDoNFPWYlHmKIjGK1HuTnTPk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?C=C3=A1ssio=20Gabriel?= <cassiogabrielcontato@gmail.com>,
-	Takashi Iwai <tiwai@suse.de>
-Subject: [PATCH 6.1 161/969] ALSA: usb-audio: Fix Audio Advantage Micro II SPDIF switch
-Date: Sat, 30 May 2026 17:54:45 +0200
-Message-ID: <20260530160304.973481475@linuxfoundation.org>
+	Michal Pecio <michal.pecio@gmail.com>,
+	Mathias Nyman <mathias.nyman@linux.intel.com>
+Subject: [PATCH 6.1 162/969] usb: xhci: Make usb_host_endpoint.hcpriv survive endpoint_disable()
+Date: Sat, 30 May 2026 17:54:46 +0200
+Message-ID: <20260530160304.997834224@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
 In-Reply-To: <20260530160300.485627683@linuxfoundation.org>
 References: <20260530160300.485627683@linuxfoundation.org>
@@ -62,35 +62,36 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-2.16 / 15.00];
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-257115-lists,stable=lfdr.de];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,suse.de];
-	FROM_HAS_DN(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	RCVD_TLS_LAST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	TO_DN_SOME(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-257126-lists,stable=lfdr.de];
+	MIME_TRACE(0.00)[0:+];
+	RCVD_TLS_LAST(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,linux.intel.com];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[5];
+	NEURAL_HAM(-0.00)[-0.999];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[stable];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[5]
-X-Rspamd-Queue-Id: 6F80660E956
+	TAGGED_RCPT(0.00)[stable];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	FROM_HAS_DN(0.00)[]
+X-Rspamd-Queue-Id: CE16E60E98C
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
@@ -98,40 +99,64 @@ X-Rspamd-Server: lfdr
 
 ------------------
 
-From: Cássio Gabriel <cassiogabrielcontato@gmail.com>
+From: Michal Pecio <michal.pecio@gmail.com>
 
-commit a9224f26b754b5034719248891ff3c2ea0d11144 upstream.
+commit 25e531b422dc2ac90cdae3b6e74b5cdeb081440d upstream.
 
-snd_microii_spdif_switch_put() returns 0 when the requested
-vendor register value differs from the cached one.
+xHCI hardware maintains its endpoint state between add_endpoint()
+and drop_endpoint() calls followed by successful check_bandwidth().
+So does the driver.
 
-This comparison was inverted by the resume-support conversion,
-so real SPDIF switch toggles are ignored while no-op writes still
-issue SET_CUR and report success.
+Core may call endpoint_disable() during xHCI endpoint life, so don't
+clear host_ep->hcpriv then, because this breaks endpoint_reset().
 
-Return early only when the requested value matches the cached one.
+If a driver calls usb_set_interface(), submits URBs which make host
+sequence state non-zero and calls usb_clear_halt(), the device clears
+its sequence state but xhci_endpoint_reset() bails out. The next URB
+malfunctions: USB2 loses one packet, USB3 gets Transaction Error or
+may not complete at all on some (buggy?) HCs from ASMedia and AMD.
+This is triggered by uvcvideo on bulk video devices.
 
-Fixes: 288673beae6c ("ALSA: usb-audio: Add resume support for MicroII SPDIF ctls")
+The code was copied from ehci_endpoint_disable() but it isn't needed
+here - hcpriv should only be NULL on emulated root hub endpoints.
+It might prevent resetting and inadvertently enabling a disabled and
+dropped endpoint, but core shouldn't try to reset dropped endpoints.
+
+Document xhci requirements regarding hcpriv. They are currently met.
+
+Fixes: 18b74067ac78 ("xhci: Fix use-after-free regression in xhci clear hub TT implementation")
 Cc: stable@vger.kernel.org
-Signed-off-by: Cássio Gabriel <cassiogabrielcontato@gmail.com>
-Link: https://patch.msgid.link/20260421-microii-spdif-switch-fix-v1-1-5c50dc28b88f@gmail.com
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
+Signed-off-by: Michal Pecio <michal.pecio@gmail.com>
+Signed-off-by: Mathias Nyman <mathias.nyman@linux.intel.com>
+Link: https://patch.msgid.link/20260402131342.2628648-26-mathias.nyman@linux.intel.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- sound/usb/mixer_quirks.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/usb/host/xhci.c |    1 -
+ include/linux/usb.h     |    3 ++-
+ 2 files changed, 2 insertions(+), 2 deletions(-)
 
---- a/sound/usb/mixer_quirks.c
-+++ b/sound/usb/mixer_quirks.c
-@@ -2066,7 +2066,7 @@ static int snd_microii_spdif_switch_put(
- 	int err;
+--- a/drivers/usb/host/xhci.c
++++ b/drivers/usb/host/xhci.c
+@@ -3248,7 +3248,6 @@ rescan:
+ 		xhci_dbg(xhci, "endpoint disable with ep_state 0x%x\n",
+ 			 ep->ep_state);
+ done:
+-	host_ep->hcpriv = NULL;
+ 	spin_unlock_irqrestore(&xhci->lock, flags);
+ }
  
- 	reg = ucontrol->value.integer.value[0] ? 0x28 : 0x2a;
--	if (reg != list->kctl->private_value)
-+	if (reg == list->kctl->private_value)
- 		return 0;
- 
- 	kcontrol->private_value = reg;
+--- a/include/linux/usb.h
++++ b/include/linux/usb.h
+@@ -54,7 +54,8 @@ struct ep_device;
+  * @ssp_isoc_ep_comp: SuperSpeedPlus isoc companion descriptor for this endpoint
+  * @urb_list: urbs queued to this endpoint; maintained by usbcore
+  * @hcpriv: for use by HCD; typically holds hardware dma queue head (QH)
+- *	with one or more transfer descriptors (TDs) per urb
++ *	with one or more transfer descriptors (TDs) per urb; must be preserved
++ *	by core while BW is allocated for the endpoint
+  * @ep_dev: ep_device for sysfs info
+  * @extra: descriptors following this endpoint in the configuration
+  * @extralen: how many bytes of "extra" are valid
 
 
 
