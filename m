@@ -1,58 +1,59 @@
-Return-Path: <stable+bounces-258633-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-259232-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 8L+4D4YqG2ra/ggAu9opvQ
-	(envelope-from <stable+bounces-258633-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:20:54 +0200
+	id EH8CGUQzG2rIAAkAu9opvQ
+	(envelope-from <stable+bounces-259232-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:58:12 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id BB910611897
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:20:53 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id BC9F2612E38
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:58:11 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 4A5613079570
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 18:16:50 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id DCB573053334
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 18:50:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EA3CD284690;
-	Sat, 30 May 2026 18:16:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0829F25B0B5;
+	Sat, 30 May 2026 18:50:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2pjFI3ej"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZoIFXLtH"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8C6963ACA4D;
-	Sat, 30 May 2026 18:16:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 65B4324468C;
+	Sat, 30 May 2026 18:50:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780165009; cv=none; b=SsQUyQxCbg9oh9JfC0Yy7Or2iAQUkFAjAiA1TN7C81zyNGKYCEG4S77Tv4rhoz1DBmjNB4pQYZ5NtErmodoWx34wA9PTAwu1EYtVdb2OhVFdcRJOL0qYfl6oczdVRXQ3w9B93KkQvnFW0y154ddF//E+cx9nHfj1Ef881Ui4dxQ=
+	t=1780167053; cv=none; b=NZXw5f6C65VxpcWRFq8CFVa+Q1A5cOS7y24uEl6vZ3McTBBPFdpcsWCV+B+Q2bHcvg769Cx5yJpwlS7OtSP0tS3Y7VXhzDGiqP+PsJHdyjt8Vc/VMnAVxo+2/NOmpuuErAK0zCcHaqQ9F4i9Qj9BNYvJA2qgwlbFPi4fnpRkL1U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780165009; c=relaxed/simple;
-	bh=aSZJsUK7g9C1XPfEZRlWVrEPiU+0TXJo0mL+UmOwz4E=;
+	s=arc-20240116; t=1780167053; c=relaxed/simple;
+	bh=HWoywexH/JuTWNpmvrlqGLYy33ZadZQFlUK7osRdqPQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=fwJMZN//AVnpq1hTAeqCR75wqiFOa/qsRsloajYq5gkpri4Xi1ecM0u47MU3MFapIgFkjUi9RNTRePonuOIVuaDpd+jictkyxQaKPAagPq0EdjmozKoZKz1xSbjk0n89lBX7/z/xOUTd8ee7iUWGf9tmnVAHLxsa6E0eBTz4G7Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2pjFI3ej; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8C7D71F00893;
-	Sat, 30 May 2026 18:16:47 +0000 (UTC)
+	 MIME-Version:Content-Type; b=uoWI1wAcy7ZsCpvrdpX2Yo8kl/LYTtPlwYYFGwhZehzie1SbmnV2UpbKnO/yOzH/d2wvB5881psPaDNJYITAtnxe6IL/+zyP8lbkp4F3JzBB5/SrkSZV878gDrTqmG4xCZMLrm4VHG6HOysC6g0CMTEug3kPQwp1x7gTJIac/NE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZoIFXLtH; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A0EAF1F00893;
+	Sat, 30 May 2026 18:50:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780165008;
-	bh=KzrRgGrESfzhoWOp8ptSV0aOoGQ2jdkig4e8lcJi4k4=;
+	s=korg; t=1780167051;
+	bh=s5Y8FgEVDzeXX/vRMbiFuQ/hTKzf03qiwLVTb1otq/g=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=2pjFI3ej1yFx7v2CLvtfHdOoA13hUGZrq33piySpsdiDhbK7O20zBmCzhLVr/pL9m
-	 BUhVO6owV0gofj9WdUo83fbcSzwDMRvEGjb1Wa8JBdb1guMA4wcTZL3BHUwEPAQHpp
-	 lzLMgsBNbcQTZKx+fFnavE5Z15CaRwLH/fUD+OW8=
+	b=ZoIFXLtHesUjRjqc+p29N1OmhAfbFvRR2dxuGDTeQUwJUyXd4xnB2l/fyrKncO+Vf
+	 Wn2/v7MWU6oE5HHk8zlgyf6nmA229gFBGJJy0GIhBCemMFwyVaBg3MdkLCNbCybLb6
+	 bV27+cn/FsmnRaECH4uRyEfd/vOO/hBX5h9rPUMc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Abdurrahman Hussain <abdurrahman@nexthop.ai>,
-	Guenter Roeck <linux@roeck-us.net>
-Subject: [PATCH 5.15 716/776] hwmon: (pmbus/adm1266) seed timestamp from the real-time clock
-Date: Sat, 30 May 2026 18:07:10 +0200
-Message-ID: <20260530160258.326499072@linuxfoundation.org>
+	stable@kernel.org,
+	=?UTF-8?q?Linus=20L=C3=BCssing?= <linus.luessing@c0d3.blue>,
+	Sven Eckelmann <sven@narfation.org>
+Subject: [PATCH 5.10 550/589] batman-adv: mcast: fix use-after-free in orig_node RCU release
+Date: Sat, 30 May 2026 18:07:11 +0200
+Message-ID: <20260530160239.122702468@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260530160240.228940103@linuxfoundation.org>
-References: <20260530160240.228940103@linuxfoundation.org>
+In-Reply-To: <20260530160224.570625122@linuxfoundation.org>
+References: <20260530160224.570625122@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,81 +63,84 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-258633-lists,stable=lfdr.de];
-	TO_DN_SOME(0.00)[];
+	TAGGED_FROM(0.00)[bounces-259232-lists,stable=lfdr.de];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-0.996];
+	RCVD_COUNT_THREE(0.00)[4];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TO_DN_SOME(0.00)[];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	RCPT_COUNT_FIVE(0.00)[6];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[5];
+	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[roeck-us.net:email,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,nexthop.ai:email]
-X-Rspamd-Queue-Id: BB910611897
+	DBL_BLOCKED_OPENRESOLVER(0.00)[narfation.org:email,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,c0d3.blue:email]
+X-Rspamd-Queue-Id: BC9F2612E38
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Abdurrahman Hussain <abdurrahman@nexthop.ai>
+From: Sven Eckelmann <sven@narfation.org>
 
-commit b86095e3d7dcf2bf80c747349a35912a87a85098 upstream.
+commit 20c2d6a20ca936f5aaa6dd40f73f262ac45c87cc upstream.
 
-adm1266_set_rtc() seeds the chip's SET_RTC register from
-ktime_get_seconds(), which returns CLOCK_MONOTONIC -- i.e. seconds
-since the host last booted, not seconds since the Unix epoch.
+batadv_mcast_purge_orig() removes entries from RCU-protected hlists but
+does not wait for an RCU grace period before returning. Concurrent RCU
+readers may still accesses references to those entries at the point of
+removal. RCU-protected readers trying to operate on entries like
+orig->mcast_want_all_ipv6_node will then access already freed memory.
 
-The chip stamps that value into every blackbox record it captures.
-Userspace reading those timestamps back expects wall-clock seconds:
-that's what the SET_RTC frame layout documents (datasheet Rev. D,
-Table 84) and what every other consumer of "seconds since epoch"
-assumes.  Seeding from CLOCK_MONOTONIC gives blackbox records a
-timestamp that is only meaningful within a single boot of the host
-and silently resets to small values on every reboot.
+Fix this by moving batadv_mcast_purge_orig() to batadv_orig_node_release(),
+just before the call_rcu() invocation. This ensures RCU readers that were
+active at purge time have drained before the orig_node memory is reclaimed.
 
-Switch to ktime_get_real_seconds() so the seed matches what the
-register is documented to hold.
-
-Fixes: 15609d189302 ("hwmon: (pmbus/adm1266) read blackbox")
-Cc: stable@vger.kernel.org
-Signed-off-by: Abdurrahman Hussain <abdurrahman@nexthop.ai>
-Link: https://lore.kernel.org/r/20260515-adm1266-fixes-v1-1-1c1ea1349cfe@nexthop.ai
-Signed-off-by: Guenter Roeck <linux@roeck-us.net>
+Cc: stable@kernel.org
+Fixes: ab49886e3da7 ("batman-adv: Add IPv4 link-local/IPv6-ll-all-nodes multicast support")
+Acked-by: Linus Lüssing <linus.luessing@c0d3.blue>
+Signed-off-by: Sven Eckelmann <sven@narfation.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/hwmon/pmbus/adm1266.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ net/batman-adv/originator.c |    4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
---- a/drivers/hwmon/pmbus/adm1266.c
-+++ b/drivers/hwmon/pmbus/adm1266.c
-@@ -434,7 +434,7 @@ static int adm1266_set_rtc(struct adm126
- 	char write_buf[6];
- 	int i;
+--- a/net/batman-adv/originator.c
++++ b/net/batman-adv/originator.c
+@@ -866,8 +866,6 @@ static void batadv_orig_node_free_rcu(st
  
--	kt = ktime_get_seconds();
-+	kt = ktime_get_real_seconds();
+ 	orig_node = container_of(rcu, struct batadv_orig_node, rcu);
  
- 	memset(write_buf, 0, sizeof(write_buf));
+-	batadv_mcast_purge_orig(orig_node);
+-
+ 	batadv_frag_purge_orig(orig_node, NULL);
+ 
+ 	kfree(orig_node->tt_buff);
+@@ -922,6 +920,8 @@ void batadv_orig_node_release(struct kre
+ 	/* Free nc_nodes */
+ 	batadv_nc_purge_orig(orig_node->bat_priv, orig_node, NULL);
+ 
++	batadv_mcast_purge_orig(orig_node);
++
+ 	call_rcu(&orig_node->rcu, batadv_orig_node_free_rcu);
+ }
  
 
 
