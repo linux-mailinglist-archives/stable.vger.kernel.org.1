@@ -1,62 +1,56 @@
-Return-Path: <stable+bounces-259056-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-259068-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id eM9TGZ4xG2qkAAkAu9opvQ
-	(envelope-from <stable+bounces-259056-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:51:10 +0200
+	id qDcAFmwvG2qU/wgAu9opvQ
+	(envelope-from <stable+bounces-259068-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:41:48 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id DAC1D6129C7
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:51:09 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id 699E3612436
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:41:47 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 14AFE309BDCD
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 18:40:43 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 5AE773007AE6
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 18:41:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6326621B191;
-	Sat, 30 May 2026 18:40:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 56CED39478D;
+	Sat, 30 May 2026 18:41:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Rkrnj9sw"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lJpABtt5"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 27FA21B87C0;
-	Sat, 30 May 2026 18:40:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4F6F2351C2F;
+	Sat, 30 May 2026 18:41:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780166442; cv=none; b=j54ygGb3HBvig49wyUaXwyDWlydWNFr6w9jB3sFxMrqkY7GccHB/IRiX6TXNgIRxJv5NMtXZG06EWI0Qp8YmyaBVS6u8nP8CnOBnE7Aont4vSS6ja5wwWizC15CYBnrSLn2pzl0SUQ/EejBeXwmKkEcuM4BPY8wXOlgINZylVoM=
+	t=1780166480; cv=none; b=WT/GngNYXO1W8+mgJFwQ1iENKM78jBsf3bjYMh1YJZcWzy6e25x9zxByOpvtVdyLFKyj6QLTie0MhKzFhGIluMzVgY3VxdhuBWscuG9zcwDF7+DB85KljK1O/ggETV5XkT8M4iBuOjp6aiiSOQ7rmVJOfOYsziUr+DgtHSOQIS0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780166442; c=relaxed/simple;
-	bh=h4PER/U2LvoQvtBLU1WJyuaoEQmDpVto1X4EXmDTR0U=;
+	s=arc-20240116; t=1780166480; c=relaxed/simple;
+	bh=7tKtsMtvgiFZ+JnBvh5B9eRoZW9ql2zJHNkxLMuXW9g=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=OWmcPcLoGCbZ40bVeGPZTHGGBrkhspHxFoTL+M+lDfp05V4A4ZvIz5we8Iha+5U3t27C/fVSUdo2iw3mKALGiXdChThWRd4SF4bSNcDZ/MbYCQDc20t2O1kBKoM9jibOeX4zapf9MRsr4+N/7Nc4rx8qt2gp0VsngQzOrBHRgJQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Rkrnj9sw; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6C8ED1F00893;
-	Sat, 30 May 2026 18:40:40 +0000 (UTC)
+	 MIME-Version; b=qT+fgHs2daKsBxz3bnnmBfC2BoqXQFVMhOLniDjlPTRnPD0Yl1TM06BAyTrsp387VSmljRE+bN+E9O/SToS5LIfMb7aEk8DJLgmPC433ZjdxRHC5+NnUHADMnSDR/UvjTN7BPF7VUBWTD+ctozJiG/0E8rjccfoToM6w1Zf1MDc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lJpABtt5; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 643F01F00893;
+	Sat, 30 May 2026 18:41:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780166441;
-	bh=4PQ8Im96SEf3S+UJEOyUR3Cq8B2oSH5bYMGWLfG5RY8=;
+	s=korg; t=1780166478;
+	bh=oYlB/B2OdaOR7romx5RwekrrI7ErA+Mmo4XFvC9QVcg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=Rkrnj9swCFJY21kluFBBhmYqpMHMU2STCyp5tKiVutCFgh0af6e/7fG5jWChiikgf
-	 qoMln99NhDIHn9sf48e19nd1wmwCydfdENr2JwYh+LDztIjMzSg9xGlKtmZ4w9SIrb
-	 Wa2UU41U1BxILK5lvlGoujXxjnOjuQgpmJK5xm/E=
+	b=lJpABtt5oiEWyGrUxObTHK+PVGH/YcdcTEtQ7vePWDVT1LNrR/76COwuhkWj0eu1D
+	 j1EIRe6QF+50AYpqO/xYu+6sR1eBfLIfk3NLF71hwT24zVFWqNQKfi8r7KwuLZgp04
+	 G8KkmlQpitBMFVuqIN3A38gP1Rh/9lQy+D4XIz58=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	John Hawley <warthog9@eaglescrag.net>,
-	Andrea Righi <arighi@nvidia.com>,
-	Marcos Paulo de Souza <mpdesouza@suse.com>,
-	Matthieu Baerts <matttbe@kernel.org>,
-	Fernando Fernandez Mancera <fmancera@suse.de>,
-	Pedro Falcato <pfalcato@suse.de>,
-	"=?UTF-8?q?Ricardo=20B . =20Marli=C3=A8re?=" <rbm@suse.com>,
-	Steven Rostedt <rostedt@goodmis.org>,
+	Sam Sun <samsun1006219@gmail.com>,
+	Jan Kara <jack@suse.cz>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 357/589] ktest: Run POST_KTEST hooks on failure and cancellation
-Date: Sat, 30 May 2026 18:03:58 +0200
-Message-ID: <20260530160234.235722908@linuxfoundation.org>
+Subject: [PATCH 5.10 358/589] quota: Fix race of dquot_scan_active() with quota deactivation
+Date: Sat, 30 May 2026 18:03:59 +0200
+Message-ID: <20260530160234.260051911@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
 In-Reply-To: <20260530160224.570625122@linuxfoundation.org>
 References: <20260530160224.570625122@linuxfoundation.org>
@@ -69,35 +63,36 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-2.16 / 15.00];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-259056-lists,stable=lfdr.de];
-	FROM_HAS_DN(0.00)[];
+	TAGGED_FROM(0.00)[bounces-259068-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,suse.cz,kernel.org];
 	RCVD_COUNT_THREE(0.00)[4];
-	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[12];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	RCVD_TLS_LAST(0.00)[];
 	TO_DN_SOME(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	RCPT_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-0.998];
+	NEURAL_HAM(-0.00)[-0.995];
 	TAGGED_RCPT(0.00)[stable];
 	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,suse.de:email,msgid.link:url,linuxfoundation.org:mid,linuxfoundation.org:dkim,nvidia.com:email,suse.com:email,goodmis.org:email,eaglescrag.net:email]
-X-Rspamd-Queue-Id: DAC1D6129C7
+	DBL_BLOCKED_OPENRESOLVER(0.00)[suse.cz:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo]
+X-Rspamd-Queue-Id: 699E3612436
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
@@ -105,100 +100,146 @@ X-Rspamd-Server: lfdr
 
 ------------------
 
-From: Ricardo B. Marlière <rbm@suse.com>
+From: Jan Kara <jack@suse.cz>
 
-[ Upstream commit bc6e165a452da909cef0efbc286e6695624db372 ]
+[ Upstream commit e93ab401da4b2e2c1b8ef2424de2f238d51c8b2d ]
 
-PRE_KTEST can be useful for setting up the environment and POST_KTEST to
-tear it down, however POST_KTEST only runs on the normal end-of-run path.
-It is skipped when ktest exits through dodie() or cancel_test(). Final
-cleanup hooks are skipped.
+dquot_scan_active() can race with quota deactivation in
+quota_release_workfn() like:
 
-Factor the final hook execution into run_post_ktest(), call it from the
-normal exit path and from the early exit paths, and guard it so the hook
-runs at most once.
+  CPU0 (quota_release_workfn)         CPU1 (dquot_scan_active)
+  ==============================      ==============================
+  spin_lock(&dq_list_lock);
+  list_replace_init(
+    &releasing_dquots, &rls_head);
+    /* dquot X on rls_head,
+       dq_count == 0,
+       DQ_ACTIVE_B still set */
+  spin_unlock(&dq_list_lock);
+  synchronize_srcu(&dquot_srcu);
+                                      spin_lock(&dq_list_lock);
+                                      list_for_each_entry(dquot,
+                                          &inuse_list, dq_inuse) {
+                                        /* finds dquot X */
+                                        dquot_active(X) -> true
+                                        atomic_inc(&X->dq_count);
+                                      }
+                                      spin_unlock(&dq_list_lock);
+  spin_lock(&dq_list_lock);
+  dquot = list_first_entry(&rls_head);
+  WARN_ON_ONCE(atomic_read(&dquot->dq_count));
 
-Cc: John Hawley <warthog9@eaglescrag.net>
-Cc: Andrea Righi <arighi@nvidia.com>
-Cc: Marcos Paulo de Souza <mpdesouza@suse.com>
-Cc: Matthieu Baerts <matttbe@kernel.org>
-Cc: Fernando Fernandez Mancera <fmancera@suse.de>
-Cc: Pedro Falcato <pfalcato@suse.de>
-Link: https://patch.msgid.link/20260307-ktest-fixes-v1-8-565d412f4925@suse.com
-Fixes: 921ed4c7208e ("ktest: Add PRE/POST_KTEST and TEST options")
-Signed-off-by: Ricardo B. Marlière <rbm@suse.com>
-Signed-off-by: Steven Rostedt <rostedt@goodmis.org>
+The problem is not only a cosmetic one as under memory pressure the
+caller of dquot_scan_active() can end up working on freed dquot.
+
+Fix the problem by making sure the dquot is removed from releasing list
+when we acquire a reference to it.
+
+Fixes: 869b6ea1609f ("quota: Fix slow quotaoff")
+Reported-by: Sam Sun <samsun1006219@gmail.com>
+Link: https://lore.kernel.org/all/CAEkJfYPTt3uP1vAYnQ5V2ZWn5O9PLhhGi5HbOcAzyP9vbXyjeg@mail.gmail.com
+Signed-off-by: Jan Kara <jack@suse.cz>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/testing/ktest/ktest.pl | 27 ++++++++++++++++++++++-----
- 1 file changed, 22 insertions(+), 5 deletions(-)
+ fs/quota/dquot.c         | 38 ++++++++++++++++++++++++++++++--------
+ include/linux/quotaops.h |  9 +--------
+ 2 files changed, 31 insertions(+), 16 deletions(-)
 
-diff --git a/tools/testing/ktest/ktest.pl b/tools/testing/ktest/ktest.pl
-index a54ad3115dc17..cadeaa54a71be 100755
---- a/tools/testing/ktest/ktest.pl
-+++ b/tools/testing/ktest/ktest.pl
-@@ -98,6 +98,7 @@ my $test_type;
- my $build_type;
- my $build_options;
- my $final_post_ktest;
-+my $post_ktest_done = 0;
- my $pre_ktest;
- my $post_ktest;
- my $pre_test;
-@@ -1477,6 +1478,24 @@ sub get_test_name() {
-     return $name;
+diff --git a/fs/quota/dquot.c b/fs/quota/dquot.c
+index 525ae0f11818c..b4326fc1d90fd 100644
+--- a/fs/quota/dquot.c
++++ b/fs/quota/dquot.c
+@@ -364,6 +364,31 @@ static inline int dquot_active(struct dquot *dquot)
+ 	return test_bit(DQ_ACTIVE_B, &dquot->dq_flags);
  }
  
-+sub run_post_ktest {
-+    my $cmd;
-+
-+    return if ($post_ktest_done);
-+
-+    if (defined($final_post_ktest)) {
-+	$cmd = $final_post_ktest;
-+    } elsif (defined($post_ktest)) {
-+	$cmd = $post_ktest;
-+    } else {
-+	return;
-+    }
-+
-+    my $cp_post_ktest = eval_kernel_version($cmd);
-+    run_command $cp_post_ktest;
-+    $post_ktest_done = 1;
++static struct dquot *__dqgrab(struct dquot *dquot)
++{
++	lockdep_assert_held(&dq_list_lock);
++	if (!atomic_read(&dquot->dq_count))
++		remove_free_dquot(dquot);
++	atomic_inc(&dquot->dq_count);
++	return dquot;
 +}
 +
- sub dodie {
- 
-     # avoid recursion
-@@ -1538,6 +1557,7 @@ sub dodie {
-     if (defined($post_test)) {
- 	run_command $post_test;
-     }
-+    run_post_ktest;
- 
-     die @_, "\n";
- }
-@@ -4313,6 +4333,7 @@ sub cancel_test {
-         send_email("KTEST: Your [$name] test was cancelled",
-                 "Your test started at $script_start_time was cancelled: sig int");
-     }
-+    run_post_ktest;
-     die "\nCaught Sig Int, test interrupted: $!\n"
- }
- 
-@@ -4524,11 +4545,7 @@ for (my $i = 1; $i <= $opt{"NUM_TESTS"}; $i++) {
-     success $i;
- }
- 
--if (defined($final_post_ktest)) {
--
--    my $cp_final_post_ktest = eval_kernel_version $final_post_ktest;
--    run_command $cp_final_post_ktest;
++/*
++ * Get reference to dquot when we got pointer to it by some other means. The
++ * dquot has to be active and the caller has to make sure it cannot get
++ * deactivated under our hands.
++ */
++struct dquot *dqgrab(struct dquot *dquot)
++{
++	spin_lock(&dq_list_lock);
++	WARN_ON_ONCE(!dquot_active(dquot));
++	dquot = __dqgrab(dquot);
++	spin_unlock(&dq_list_lock);
++
++	return dquot;
++}
++EXPORT_SYMBOL_GPL(dqgrab);
++
+ static inline int dquot_dirty(struct dquot *dquot)
+ {
+ 	return test_bit(DQ_MOD_B, &dquot->dq_flags);
+@@ -642,15 +667,14 @@ int dquot_scan_active(struct super_block *sb,
+ 			continue;
+ 		if (dquot->dq_sb != sb)
+ 			continue;
+-		/* Now we have active dquot so we can just increase use count */
+-		atomic_inc(&dquot->dq_count);
++		__dqgrab(dquot);
+ 		spin_unlock(&dq_list_lock);
+ 		dqput(old_dquot);
+ 		old_dquot = dquot;
+ 		/*
+ 		 * ->release_dquot() can be racing with us. Our reference
+-		 * protects us from new calls to it so just wait for any
+-		 * outstanding call and recheck the DQ_ACTIVE_B after that.
++		 * protects us from dquot_release() proceeding so just wait for
++		 * any outstanding call and recheck the DQ_ACTIVE_B after that.
+ 		 */
+ 		wait_on_dquot(dquot);
+ 		if (dquot_active(dquot)) {
+@@ -718,7 +742,7 @@ int dquot_writeback_dquots(struct super_block *sb, int type)
+ 			/* Now we have active dquot from which someone is
+  			 * holding reference so we can safely just increase
+ 			 * use count */
+-			dqgrab(dquot);
++			__dqgrab(dquot);
+ 			spin_unlock(&dq_list_lock);
+ 			err = dquot_write_dquot(dquot);
+ 			if (err && !ret)
+@@ -973,9 +997,7 @@ struct dquot *dqget(struct super_block *sb, struct kqid qid)
+ 		spin_unlock(&dq_list_lock);
+ 		dqstats_inc(DQST_LOOKUPS);
+ 	} else {
+-		if (!atomic_read(&dquot->dq_count))
+-			remove_free_dquot(dquot);
+-		atomic_inc(&dquot->dq_count);
++		__dqgrab(dquot);
+ 		spin_unlock(&dq_list_lock);
+ 		dqstats_inc(DQST_CACHE_HITS);
+ 		dqstats_inc(DQST_LOOKUPS);
+diff --git a/include/linux/quotaops.h b/include/linux/quotaops.h
+index 4bc8ff2a66143..8a1ad23da3a11 100644
+--- a/include/linux/quotaops.h
++++ b/include/linux/quotaops.h
+@@ -43,14 +43,7 @@ int dquot_initialize(struct inode *inode);
+ bool dquot_initialize_needed(struct inode *inode);
+ void dquot_drop(struct inode *inode);
+ struct dquot *dqget(struct super_block *sb, struct kqid qid);
+-static inline struct dquot *dqgrab(struct dquot *dquot)
+-{
+-	/* Make sure someone else has active reference to dquot */
+-	WARN_ON_ONCE(!atomic_read(&dquot->dq_count));
+-	WARN_ON_ONCE(!test_bit(DQ_ACTIVE_B, &dquot->dq_flags));
+-	atomic_inc(&dquot->dq_count);
+-	return dquot;
 -}
-+run_post_ktest;
++struct dquot *dqgrab(struct dquot *dquot);
  
- if ($opt{"POWEROFF_ON_SUCCESS"}) {
-     halt;
+ static inline bool dquot_is_busy(struct dquot *dquot)
+ {
 -- 
 2.53.0
 
