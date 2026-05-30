@@ -1,61 +1,61 @@
-Return-Path: <stable+bounces-258330-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-257555-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id WLzVGlooG2qS/ggAu9opvQ
-	(envelope-from <stable+bounces-258330-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:11:38 +0200
+	id iMs/ITgdG2qV/QgAu9opvQ
+	(envelope-from <stable+bounces-257555-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:24:08 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id D95C9611346
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:11:37 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 06D1860F8D3
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:24:07 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 380F830252BE
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 17:59:48 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 4E5AF3054CC1
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 17:16:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D885434041A;
-	Sat, 30 May 2026 17:59:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EBCC13A7848;
+	Sat, 30 May 2026 17:16:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JzwzPbG1"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QXRXp8QE"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B10C7329C6D;
-	Sat, 30 May 2026 17:59:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AFC3C3AB26B;
+	Sat, 30 May 2026 17:16:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780163987; cv=none; b=PWZw7Sqi1XgZQaC4W+Plyb4rtwQLwloDmb3ld3Rg3s30iDI+gUGIm+yKceZoBd+e4lQsG5d+2F0qncqR8w4z/UbCoKfkD8GCpF2M54F/Dl2WV8dUBGvhUL8GY8kmELUiBihqAB8sYsypIYdUqWCq6XKvrUNXVJD9wdgJN1XCnI0=
+	t=1780161389; cv=none; b=EG2aTv9ExKfcvJ7wb0/fua1xFLU8Cf9ckU87O1SHl4+Up8KNliuhkDu4vPtA/tCxIDfgz3jBWBVaMhy+Fmfq9s3Srot8BkZ981HRg2anrICSgnGqXUhyR/mpxqZTNSHBUTY1r8s890LT2ld/mmIDGn2wwoCgQz7bPsGRIv8Ae1s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780163987; c=relaxed/simple;
-	bh=/6l/Jj0s3YmQ4V0//A1IewihW+7dhzh2MmBkVlQ9ys0=;
+	s=arc-20240116; t=1780161389; c=relaxed/simple;
+	bh=ib2JD1o2gz1GMwbLBCRUmlj/H1C8ruN0QN+OmE1yj58=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=MKuaZT/uCoVJmKAgwcRbSQMLGpjcmCPpHYZ5NEC7KOv4bBDPCNnKA3rpH8W/lyBKSAWJ86X9p78AZ2rZowA5tRDfxN6y27fkbfk2TeMdbUx/HQgA4mWymO1na0Yx/Ib8W0HRkP3iFQQ/Dhs0iv8+/bQfuzXPv5VDiREniJ+4GoE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JzwzPbG1; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 01B3E1F00893;
-	Sat, 30 May 2026 17:59:45 +0000 (UTC)
+	 MIME-Version; b=krRyn9me3/to2921tcnhDnhDdDMILUHuvHGnUNf6Eb5E8+PsvKB8h8WBAf+DegdpbhatVVMwkZrbtycdGKyROT4aUwU1wAWQI79e2zysWZbBKwWSh/1G7cAjn14ACP3Y9D1+aQqTdGHCAikDolQYneFbEDRgmelDxCkDQmHLC3U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QXRXp8QE; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 00A3A1F00893;
+	Sat, 30 May 2026 17:16:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780163986;
-	bh=HDhsFEmLrfx3MZlF6RhzGtpFCPK5mux6v/JUhk8ajEA=;
+	s=korg; t=1780161388;
+	bh=plUBV/Z2e92EZ2o3bmLHFR21bbwsERBnlBeVeAxUOAQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=JzwzPbG1UH6V3gTXQmgfZAKnrtpq+iN/lwyycaMD25l/ZA29JhWFeCnogAnNwAz52
-	 7W8hwIj1Uk3fGgUGhXd3mYtCFBNbdGBdt/xbHguocGnMeQkKNhpMc8VdDnnaWpxHCd
-	 Iqkw/WGdZ5lCcu1DZqCSvRohz4wbSBaNpWpexYv0=
+	b=QXRXp8QEy/wTiDl1KxQeu3cZ8xu5mdm4Mb5xz0TGaNTXMdmvUhUxSAySFdL/rk8MX
+	 epCks7t0dFogGPIbsi/hb43xqXDyw+RRzZ7DdQYCFqCv2gngH2enV5+jG5u8VDUnCw
+	 AdWzP3C8cmQSg3X4vt+xAqbj3lXu9h5AJ75HH0Nw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+da8e060735ae02c8f3d1@syzkaller.appspotmail.com,
-	Greg Jumper <greg.jumper@oracle.com>,
-	Allison Henderson <achender@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 420/776] net/rds: Restrict use of RDS/IB to the initial network namespace
+	Tudor Ambarus <tudor.ambarus@linaro.org>,
+	Takahiro Kuwano <Takahiro.Kuwano@infineon.com>,
+	Pratyush Yadav <pratyush@kernel.org>,
+	Sasha Levin <sashal@kernel.org>,
+	Marek Vasut <marek.vasut+renesas@mailbox.org>
+Subject: [PATCH 6.1 610/969] mtd: spi-nor: sfdp: introduce smpt_read_dummy fixup hook
 Date: Sat, 30 May 2026 18:02:14 +0200
-Message-ID: <20260530160251.322116251@linuxfoundation.org>
+Message-ID: <20260530160317.276001739@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260530160240.228940103@linuxfoundation.org>
-References: <20260530160240.228940103@linuxfoundation.org>
+In-Reply-To: <20260530160300.485627683@linuxfoundation.org>
+References: <20260530160300.485627683@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -72,114 +72,119 @@ X-Spamd-Result: default: False [-0.16 / 15.00];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	TAGGED_FROM(0.00)[bounces-258330-lists,stable=lfdr.de];
-	FROM_HAS_DN(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_TLS_LAST(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	RCVD_COUNT_THREE(0.00)[4];
+	TAGGED_FROM(0.00)[bounces-257555-lists,stable=lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-0.999];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	RCPT_COUNT_SEVEN(0.00)[8];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable,da8e060735ae02c8f3d1];
+	TAGGED_RCPT(0.00)[stable,renesas];
 	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[oracle.com:email,msgid.link:url,syzkaller.appspot.com:url,linuxfoundation.org:mid,linuxfoundation.org:dkim,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,appspotmail.com:email]
-X-Rspamd-Queue-Id: D95C9611346
+	FROM_HAS_DN(0.00)[]
+X-Rspamd-Queue-Id: 06D1860F8D3
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Greg Jumper <greg.jumper@oracle.com>
+From: Takahiro Kuwano <Takahiro.Kuwano@infineon.com>
 
-[ Upstream commit ebf71dd4aff46e8e421d455db3e231ba43d2fa8a ]
+[ Upstream commit 653f6def567c81f37302f9591ffd54df3e2a11eb ]
 
-Prevent using RDS/IB in network namespaces other than the initial one.
-The existing RDS/IB code will not work properly in non-initial network
-namespaces.
+SMPT contains config detection info that describes opcode, address, and
+dummy cycles to read sector map config. The dummy cycles parameter can
+be SMPT_CMD_READ_DUMMY_IS_VARIABLE and in that case nor->read_dummy
+(initialized as 0) is used. In Infineon flash chips, Read Any Register
+command with variable dummy cycle is defined in SMPT. S25Hx/S28Hx flash
+has 0 dummy cycle by default to read volatile regiters and
+nor->read_dummy can work. S25FS-S flash has 8 dummy cycles so we need a
+hook that can fix dummy cycles with actually used value.
 
-Fixes: d5a8ac28a7ff ("RDS-TCP: Make RDS-TCP work correctly when it is set up in a netns other than init_net")
-Reported-by: syzbot+da8e060735ae02c8f3d1@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=da8e060735ae02c8f3d1
-Signed-off-by: Greg Jumper <greg.jumper@oracle.com>
-Signed-off-by: Allison Henderson <achender@kernel.org>
-Link: https://patch.msgid.link/20260408080420.540032-3-achender@kernel.org
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Inroduce smpt_read_dummy() in struct spi_nor_fixups. It is called when
+the dummy cycle field in SMPT config detection is 'varialble'.
+
+Reviewed-by: Tudor Ambarus <tudor.ambarus@linaro.org>
+Tested-by: Marek Vasut <marek.vasut+renesas@mailbox.org> # S25FS512S
+Signed-off-by: Takahiro Kuwano <Takahiro.Kuwano@infineon.com>
+Signed-off-by: Pratyush Yadav <pratyush@kernel.org>
+Stable-dep-of: 3620d67b4849 ("mtd: spi-nor: update spi_nor_fixups::post_sfdp() documentation")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/rds/af_rds.c | 10 ++++++++--
- net/rds/ib.c     |  4 ++++
- 2 files changed, 12 insertions(+), 2 deletions(-)
+ drivers/mtd/spi-nor/core.h |  3 +++
+ drivers/mtd/spi-nor/sfdp.c | 18 ++++++++++++++++--
+ 2 files changed, 19 insertions(+), 2 deletions(-)
 
-diff --git a/net/rds/af_rds.c b/net/rds/af_rds.c
-index 0ec0ae1483492..ca1b52372ab29 100644
---- a/net/rds/af_rds.c
-+++ b/net/rds/af_rds.c
-@@ -357,7 +357,8 @@ static int rds_cong_monitor(struct rds_sock *rs, sockptr_t optval, int optlen)
- 	return ret;
+diff --git a/drivers/mtd/spi-nor/core.h b/drivers/mtd/spi-nor/core.h
+index cc70a2092494c..4aac34f06c7bb 100644
+--- a/drivers/mtd/spi-nor/core.h
++++ b/drivers/mtd/spi-nor/core.h
+@@ -407,6 +407,8 @@ struct spi_nor_flash_parameter {
+  *                flash parameters when information provided by the flash_info
+  *                table is incomplete or wrong.
+  * @post_bfpt: called after the BFPT table has been parsed
++ * @smpt_read_dummy: called during SMPT table is being parsed. Used to fix the
++ *                   number of dummy cycles in read register ops.
+  * @post_sfdp: called after SFDP has been parsed (is also called for SPI NORs
+  *             that do not support RDSFDP). Typically used to tweak various
+  *             parameters that could not be extracted by other means (i.e.
+@@ -424,6 +426,7 @@ struct spi_nor_fixups {
+ 	int (*post_bfpt)(struct spi_nor *nor,
+ 			 const struct sfdp_parameter_header *bfpt_header,
+ 			 const struct sfdp_bfpt *bfpt);
++	void (*smpt_read_dummy)(const struct spi_nor *nor, u8 *read_dummy);
+ 	int (*post_sfdp)(struct spi_nor *nor);
+ 	void (*late_init)(struct spi_nor *nor);
+ };
+diff --git a/drivers/mtd/spi-nor/sfdp.c b/drivers/mtd/spi-nor/sfdp.c
+index 6f47982105bd9..66c233db20e8e 100644
+--- a/drivers/mtd/spi-nor/sfdp.c
++++ b/drivers/mtd/spi-nor/sfdp.c
+@@ -659,6 +659,17 @@ static u8 spi_nor_smpt_addr_nbytes(const struct spi_nor *nor, const u32 settings
+ 	}
  }
  
--static int rds_set_transport(struct rds_sock *rs, sockptr_t optval, int optlen)
-+static int rds_set_transport(struct net *net, struct rds_sock *rs,
-+			     sockptr_t optval, int optlen)
- {
- 	int t_type;
- 
-@@ -373,6 +374,10 @@ static int rds_set_transport(struct rds_sock *rs, sockptr_t optval, int optlen)
- 	if (t_type < 0 || t_type >= RDS_TRANS_COUNT)
- 		return -EINVAL;
- 
-+	/* RDS/IB is restricted to the initial network namespace */
-+	if (t_type != RDS_TRANS_TCP && !net_eq(net, &init_net))
-+		return -EPROTOTYPE;
++static void spi_nor_smpt_read_dummy_fixups(const struct spi_nor *nor,
++					   u8 *read_dummy)
++{
++	if (nor->manufacturer && nor->manufacturer->fixups &&
++	    nor->manufacturer->fixups->smpt_read_dummy)
++		nor->manufacturer->fixups->smpt_read_dummy(nor, read_dummy);
 +
- 	rs->rs_transport = rds_trans_get(t_type);
- 
- 	return rs->rs_transport ? 0 : -ENOPROTOOPT;
-@@ -433,6 +438,7 @@ static int rds_setsockopt(struct socket *sock, int level, int optname,
- 			  sockptr_t optval, unsigned int optlen)
- {
- 	struct rds_sock *rs = rds_sk_to_rs(sock->sk);
-+	struct net *net = sock_net(sock->sk);
- 	int ret;
- 
- 	if (level != SOL_RDS) {
-@@ -461,7 +467,7 @@ static int rds_setsockopt(struct socket *sock, int level, int optname,
- 		break;
- 	case SO_RDS_TRANSPORT:
- 		lock_sock(sock->sk);
--		ret = rds_set_transport(rs, optval, optlen);
-+		ret = rds_set_transport(net, rs, optval, optlen);
- 		release_sock(sock->sk);
- 		break;
- 	case SO_TIMESTAMP_OLD:
-diff --git a/net/rds/ib.c b/net/rds/ib.c
-index dbc63493ade70..ec45664f38767 100644
---- a/net/rds/ib.c
-+++ b/net/rds/ib.c
-@@ -494,6 +494,10 @@ static int rds_ib_laddr_check(struct net *net, const struct in6_addr *addr,
- {
- 	struct rds_ib_device *rds_ibdev = NULL;
- 
-+	/* RDS/IB is restricted to the initial network namespace */
-+	if (!net_eq(net, &init_net))
-+		return -EPROTOTYPE;
++	if (nor->info->fixups && nor->info->fixups->smpt_read_dummy)
++		nor->info->fixups->smpt_read_dummy(nor, read_dummy);
++}
 +
- 	if (ipv6_addr_v4mapped(addr)) {
- 		rds_ibdev = rds_ib_get_device(addr->s6_addr32[3]);
- 		if (rds_ibdev) {
+ /**
+  * spi_nor_smpt_read_dummy() - return the configuration detection command read
+  *			       latency, in clock cycles.
+@@ -671,8 +682,11 @@ static u8 spi_nor_smpt_read_dummy(const struct spi_nor *nor, const u32 settings)
+ {
+ 	u8 read_dummy = SMPT_CMD_READ_DUMMY(settings);
+ 
+-	if (read_dummy == SMPT_CMD_READ_DUMMY_IS_VARIABLE)
+-		return nor->read_dummy;
++	if (read_dummy == SMPT_CMD_READ_DUMMY_IS_VARIABLE) {
++		read_dummy = nor->read_dummy;
++		spi_nor_smpt_read_dummy_fixups(nor, &read_dummy);
++	}
++
+ 	return read_dummy;
+ }
+ 
 -- 
 2.53.0
 
