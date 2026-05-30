@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-258734-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-258130-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id qAaJBPMqG2ra/ggAu9opvQ
-	(envelope-from <stable+bounces-258734-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:22:43 +0200
+	id kLy+EiwjG2rO/QgAu9opvQ
+	(envelope-from <stable+bounces-258130-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:49:32 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id AA4586119FF
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:22:42 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0DFF961076E
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:49:31 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 003803011780
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 18:22:42 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 5AA0A3016B73
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 17:48:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9477525B0B3;
-	Sat, 30 May 2026 18:22:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AF5423AC0FC;
+	Sat, 30 May 2026 17:48:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bXm5KDu3"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="eOQsGeRy"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7305321ADC7;
-	Sat, 30 May 2026 18:22:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 94A303AB482;
+	Sat, 30 May 2026 17:48:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780165358; cv=none; b=aJVcrrQZmKFpA89h6sCe5GkXHTZIbwjffyVvBP6VfDIk8flvMs+cEVkiX+acBP9WAqAmUbcn1hgAPY/vYOlSZwV9u8jxv+ls5Qe7oaFETLCcY0pN0Ou0FxmvYT/Bm9S901jKmZfdcmhsiKcDDFOln/5hDj6d1Fk1PhYKtzRrGvs=
+	t=1780163317; cv=none; b=XOedQWlxndFesOaa4h0UZQjJ4cT+18Q5X+QvaVIpCcnyUbl1meJPEMedqo0ATRTF/bAz5kk7rN9g/J2NFq+arR2fsHHOLlsmqJZ+2lczoSTYTj0s5lStPj16RsWd/24FS0zxenNz+rJplTHHX+NZwA5jSiZzhBioeWQgOytvhCI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780165358; c=relaxed/simple;
-	bh=gaT+WIHVTw9i2N+OFMdBj+emb5S4W29WpVmYbgzqApI=;
+	s=arc-20240116; t=1780163317; c=relaxed/simple;
+	bh=w0sisKJp8+bZk/QGGrY9P6bYzrbAcrLSrOz6jR6nI2E=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=GfWvYvKU8lF+yuqtjF63juL7HdWLcnVvH2EXUaOf1TaFaPkcCql1Dke9YMNPsQrQWqG1xxHx0g9Tx9h7yogsmbWCKUMCLHf3zXXBcdJ7FSBMtBjywRG2u7inhxA5VNUP/8SS6Lg/xPQUjaHjt3IIoPiMsEVmSu817NRB4CVKkx4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bXm5KDu3; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 78A2F1F00893;
-	Sat, 30 May 2026 18:22:36 +0000 (UTC)
+	 MIME-Version; b=HPbL3FUoyaPIABf4qbz3TY0mQI6UcNcqGawJPCxgnjVgQ4FRaAcjpOOaSnfS/7xuNO6Eq5JSA/WVhcqe2A24AGPb46axflukQS3rcq+cwQiQjUjDOOo5ZRfsyQPfwRawwqWLKkJAy5ZPumOhYhKNjfdYTwcjrnonxyxtZklyQ8g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=eOQsGeRy; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D6CD81F00893;
+	Sat, 30 May 2026 17:48:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780165357;
-	bh=KtOIEDNG75j4Qy0+G6aiiirH/iwyQUsXdjDXiNz8mNw=;
+	s=korg; t=1780163316;
+	bh=aC5QsmzGlieSElXFnos8+H/e4wJEL4a5Acbp2X1XFag=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=bXm5KDu3XfxtNcB2tFz4HV3tZeTTgSXtiObQLmdkTf23J4voZyc8J14DBDGnKhX3O
-	 G+gz2n24vHM3GE8/oIbfPAIPlYSTDCRfRBDagTIKTuf1L/5tPl6VYA9hSoBwt5RrHO
-	 3d5T5N3doxPXghCZfLn0U8NuUKBgOLgEI/vr2V+k=
+	b=eOQsGeRyk+z5Bottu/0U13Bu8zZlGve1DFgNT3Tn7H9NA+P5NsrM+QtF0Mdm79vz5
+	 A+HbRYNlmUzMy/lsd1HRTVkeeIykkoXq1+5YEPV6LJhpK3dwCk3JJoiFfWLZlBXQEw
+	 VGSqTOFCpo84bQlxya4Q91x17ibmYZ7I3M5n0WFI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable <stable@kernel.org>
-Subject: [PATCH 5.10 054/589] usb: gadget: f_phonet: fix skb frags[] overflow in pn_rx_complete()
+	Louis Chauvet <louis.chauvet@bootlin.com>,
+	Luca Ceresoli <luca.ceresoli@bootlin.com>
+Subject: [PATCH 5.15 221/776] drm/arcpgu: fix device node leak
 Date: Sat, 30 May 2026 17:58:55 +0200
-Message-ID: <20260530160226.012499932@linuxfoundation.org>
+Message-ID: <20260530160246.234100367@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260530160224.570625122@linuxfoundation.org>
-References: <20260530160224.570625122@linuxfoundation.org>
+In-Reply-To: <20260530160240.228940103@linuxfoundation.org>
+References: <20260530160240.228940103@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,83 +67,71 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-258734-lists,stable=lfdr.de];
-	PRECEDENCE_BULK(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
+	RCVD_TLS_LAST(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-258130-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
-	RCPT_COUNT_THREE(0.00)[4];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-0.994];
+	NEURAL_HAM(-0.00)[-1.000];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	TO_DN_SOME(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[5];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo]
-X-Rspamd-Queue-Id: AA4586119FF
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,bootlin.com:email]
+X-Rspamd-Queue-Id: 0DFF961076E
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+From: Luca Ceresoli <luca.ceresoli@bootlin.com>
 
-commit c088d5dd2fffb4de1fb8e7f57751c8b82942180a upstream.
+commit ad3ac32a3893a2bbcad545efc005a8e4e7ecf10c upstream.
 
-A broken/bored/mean USB host can overflow the skb_shared_info->frags[]
-array on a Linux gadget exposing a Phonet function by sending an
-unbounded sequence of full-page OUT transfers.
+This function gets a device_node reference via
+of_graph_get_remote_port_parent() and stores it in encoder_node, but never
+puts that reference. Add it.
 
-pn_rx_complete() finalizes the skb only when req->actual < req->length,
-where req->length is set to PAGE_SIZE by the gadget.  If the host always
-sends exactly PAGE_SIZE bytes per transfer, fp->rx.skb will never be
-reset and each completion will add another fragment via
-skb_add_rx_frag().  Once nr_frags exceeds MAX_SKB_FRAGS (default 17),
-subsequent frag stores overwrite memory adjacent to the shinfo on the
-heap.
+There used to be a of_node_put(encoder_node) but it has been removed by
+mistake during a rework in commit 3ea66a794fdc ("drm/arc: Inline
+arcpgu_drm_hdmi_init").
 
-Drop the skb and account a length error when the frag limit is reached,
-matching the fix applied in t7xx by commit f0813bcd2d9d ("net: wwan:
-t7xx: fix potential skb->frags overflow in RX path").
-
-Cc: stable <stable@kernel.org>
-Assisted-by: gregkh_clanker_t1000
-Link: https://patch.msgid.link/2026040705-fruit-unloved-0701@gregkh
+Fixes: 3ea66a794fdc ("drm/arc: Inline arcpgu_drm_hdmi_init")
+Cc: stable@vger.kernel.org
+Reviewed-by: Louis Chauvet <louis.chauvet@bootlin.com>
+Link: https://patch.msgid.link/20260402-drm-arcgpu-fix-device-node-leak-v2-1-d773cf754ae5@bootlin.com
+Signed-off-by: Luca Ceresoli <luca.ceresoli@bootlin.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/usb/gadget/function/f_phonet.c |    9 +++++++++
- 1 file changed, 9 insertions(+)
+ drivers/gpu/drm/tiny/arcpgu.c |    3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
---- a/drivers/usb/gadget/function/f_phonet.c
-+++ b/drivers/usb/gadget/function/f_phonet.c
-@@ -330,6 +330,15 @@ static void pn_rx_complete(struct usb_ep
- 		if (unlikely(!skb))
- 			break;
- 
-+		if (unlikely(skb_shinfo(skb)->nr_frags >= MAX_SKB_FRAGS)) {
-+			/* Frame count from host exceeds frags[] capacity */
-+			dev_kfree_skb_any(skb);
-+			if (fp->rx.skb == skb)
-+				fp->rx.skb = NULL;
-+			dev->stats.rx_length_errors++;
-+			break;
-+		}
-+
- 		if (skb->len == 0) { /* First fragment */
- 			skb->protocol = htons(ETH_P_PHONET);
- 			skb_reset_mac_header(skb);
+--- a/drivers/gpu/drm/tiny/arcpgu.c
++++ b/drivers/gpu/drm/tiny/arcpgu.c
+@@ -245,7 +245,8 @@ DEFINE_DRM_GEM_CMA_FOPS(arcpgu_drm_ops);
+ static int arcpgu_load(struct arcpgu_drm_private *arcpgu)
+ {
+ 	struct platform_device *pdev = to_platform_device(arcpgu->drm.dev);
+-	struct device_node *encoder_node = NULL, *endpoint_node = NULL;
++	struct device_node *encoder_node __free(device_node) = NULL;
++	struct device_node *endpoint_node = NULL;
+ 	struct drm_connector *connector = NULL;
+ 	struct drm_device *drm = &arcpgu->drm;
+ 	struct resource *res;
 
 
 
