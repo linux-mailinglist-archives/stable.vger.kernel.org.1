@@ -1,59 +1,60 @@
-Return-Path: <stable+bounces-258912-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-258342-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id kIBuIacwG2p5AAkAu9opvQ
-	(envelope-from <stable+bounces-258912-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:47:03 +0200
+	id SPGVMO8lG2rO/QgAu9opvQ
+	(envelope-from <stable+bounces-258342-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:01:19 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0DE7B6127DE
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:47:02 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id C5A42610D37
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:01:18 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 62074302A6AB
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 18:32:41 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id AC3493002D0D
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 18:00:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 844D72FDC5E;
-	Sat, 30 May 2026 18:32:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B37AA3B7B72;
+	Sat, 30 May 2026 18:00:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HtW9lkel"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cCSXdgdH"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6763C21E098;
-	Sat, 30 May 2026 18:32:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 672233C1406;
+	Sat, 30 May 2026 18:00:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780165960; cv=none; b=RAS79b5qzTQQGNY9AoHDSLj/JprLeBMKA97PbkP2Naj8jG4a5eDAZmUw1dYJ8Zfq3qpjLfpfNJNO8yiZPFG/N/WkqE8JcnZS9D/HIGDfU9jk0XEP5E/ZECEe4PNhuYL/VPiyujpxW2Kbheikn5yS5921op8wg3V3L0Hx9jmSJlc=
+	t=1780164030; cv=none; b=mNx47n+j/JPlAaehXSsEt/RKcSK1zyoDxy0jh1utaY3tQv5ll4aY74tIUkwcmvlcByo5cNl3pZOwYushT3GqzqG5XpVy9qICTNn/T59FcUOoO+yNBQJH/252ru7Yy2A+IyKnW+147ktD28hcEo1G1v7tcGIP4+nw07P52qNTfR0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780165960; c=relaxed/simple;
-	bh=a3ltCbPFd8OMLIOoLNMaIX/Lb1guvserTTMt1siOHw0=;
+	s=arc-20240116; t=1780164030; c=relaxed/simple;
+	bh=otAQXdqr9SE/QIC5N4cboCgiEGS7dL+PH7gfXQJG1FI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=sao+hLQ4yXtm0z8SKGLEaniJIqX1J5zpRqLhB+6Gdd32sBJl82k0N8TO2uAF1jvnasF80sYAYrxhG9AoQoZoKAaAS3LHLpLVBPcTUj6qbtn4kS9UM4Nh84+cZu6ft1yxk/kn/Nh12FL6LIxi2HvN4fMkm6AUS37DxS5Ju/VKEAE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HtW9lkel; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9C0951F00893;
-	Sat, 30 May 2026 18:32:38 +0000 (UTC)
+	 MIME-Version; b=mBLG5ryqMgltkD0SycxSXhY4joPITcGMc0IqgUxLjbNjn0l+heRHXSradaqcSBEoSZ1kuH/01QUsV6wHhv+YnVj4u3BzGBMlkL+4oxPivCkyNg/9+XqW9jrkK3wRRVV13qJ9zBZ3i0okNJe9mtFL8KyZG5PcPZk9cO3m5WCLtYA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cCSXdgdH; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A758A1F00893;
+	Sat, 30 May 2026 18:00:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780165959;
-	bh=U12pBnEw0cxFHo0s75xMRu1wLsy97nh2cARiFAX2MPM=;
+	s=korg; t=1780164029;
+	bh=NxZ3pnhzp06bGxewpfk9RTtAo7l688jcLyC4fAPl+nQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=HtW9lkelDSpvypArF18hTEZzXCJmbIeZHtw/ahHQWGGGvN+ul19OCBRsdUlLafmAa
-	 haDsWlR2FYD6XzlI7rzSZUqBTh9HJhmVoqbcI07XPX/vKtfXwyN1jFQauQMbZMb4Ca
-	 ygUXkFnTMaOkQvibWG2ppCZa1qGjJlWnMeiA9qzE=
+	b=cCSXdgdHfwqKblEq0krldBVZI5nNFNX9ikdn4VyqDk3934gnn/1+W74bdzaNwk0bm
+	 6Rm22VUBba7qGhj2IiGP5grj/B76wU2nyUIp2WjtkGnAI3ektZbh6bqCWO8rHZ3v6C
+	 xTVHBoRk9h0sIs/udYvLArZ+CKRRvp+qH9XL47vI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ranjit Waghmode <ranjit.waghmode@xilinx.com>,
-	Johan Hovold <johan@kernel.org>,
-	Mark Brown <broonie@kernel.org>
-Subject: [PATCH 5.10 232/589] spi: zynqmp-gqspi: fix controller deregistration
+	Rasmus Villemoes <linux@rasmusvillemoes.dk>,
+	Shyam Saini <shyamsaini@linux.microsoft.com>,
+	Petr Pavlu <petr.pavlu@suse.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 399/776] kernel: param: rename locate_module_kobject
 Date: Sat, 30 May 2026 18:01:53 +0200
-Message-ID: <20260530160231.081726764@linuxfoundation.org>
+Message-ID: <20260530160250.818993528@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260530160224.570625122@linuxfoundation.org>
-References: <20260530160224.570625122@linuxfoundation.org>
+In-Reply-To: <20260530160240.228940103@linuxfoundation.org>
+References: <20260530160240.228940103@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -68,76 +69,93 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
+	TAGGED_FROM(0.00)[bounces-258342-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-258912-lists,stable=lfdr.de];
-	TO_DN_SOME(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	PRECEDENCE_BULK(0.00)[];
 	MID_RHS_MATCH_FROM(0.00)[];
 	NEURAL_HAM(-0.00)[-0.996];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,msgid.link:url,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,xilinx.com:email]
-X-Rspamd-Queue-Id: 0DE7B6127DE
+	TAGGED_RCPT(0.00)[stable];
+	TO_DN_SOME(0.00)[];
+	FROM_HAS_DN(0.00)[]
+X-Rspamd-Queue-Id: C5A42610D37
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Johan Hovold <johan@kernel.org>
+From: Shyam Saini <shyamsaini@linux.microsoft.com>
 
-commit 6895fc4faafc9082e15e4e624b23dd5f0c98feb5 upstream.
+[ Upstream commit bbc9462f0cb0c8917a4908e856731708f0cee910 ]
 
-Make sure to deregister the controller before disabling underlying
-resources like clocks during driver unbind.
+The locate_module_kobject() function looks up an existing
+module_kobject for a given module name. If it cannot find the
+corresponding module_kobject, it creates one for the given name.
 
-Fixes: dfe11a11d523 ("spi: Add support for Zynq Ultrascale+ MPSoC GQSPI controller")
-Cc: stable@vger.kernel.org	# 4.2: 64640f6c972e
-Cc: stable@vger.kernel.org	# 4.2
-Cc: Ranjit Waghmode <ranjit.waghmode@xilinx.com>
-Signed-off-by: Johan Hovold <johan@kernel.org>
-Link: https://patch.msgid.link/20260410081757.503099-26-johan@kernel.org
-Signed-off-by: Mark Brown <broonie@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+This commit renames locate_module_kobject() to
+lookup_or_create_module_kobject() to better describe its operations.
+
+This doesn't change anything functionality wise.
+
+Suggested-by: Rasmus Villemoes <linux@rasmusvillemoes.dk>
+Signed-off-by: Shyam Saini <shyamsaini@linux.microsoft.com>
+Link: https://lore.kernel.org/r/20250227184930.34163-2-shyamsaini@linux.microsoft.com
+Signed-off-by: Petr Pavlu <petr.pavlu@suse.com>
+Stable-dep-of: deffe1edba62 ("module: Fix freeing of charp module parameters when CONFIG_SYSFS=n")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/spi/spi-zynqmp-gqspi.c |    4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ kernel/params.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
---- a/drivers/spi/spi-zynqmp-gqspi.c
-+++ b/drivers/spi/spi-zynqmp-gqspi.c
-@@ -1175,7 +1175,7 @@ static int zynqmp_qspi_probe(struct plat
- 			    SPI_TX_DUAL | SPI_TX_QUAD;
- 	ctlr->dev.of_node = np;
+diff --git a/kernel/params.c b/kernel/params.c
+index 1b856942d82d4..2c1b9559ff9b6 100644
+--- a/kernel/params.c
++++ b/kernel/params.c
+@@ -758,7 +758,7 @@ void destroy_params(const struct kernel_param *params, unsigned num)
+ 			params[i].ops->free(params[i].arg);
+ }
  
--	ret = devm_spi_register_controller(&pdev->dev, ctlr);
-+	ret = spi_register_controller(ctlr);
- 	if (ret) {
- 		dev_err(&pdev->dev, "spi_register_controller failed\n");
- 		goto clk_dis_all;
-@@ -1209,6 +1209,8 @@ static int zynqmp_qspi_remove(struct pla
+-static struct module_kobject * __init locate_module_kobject(const char *name)
++static struct module_kobject * __init lookup_or_create_module_kobject(const char *name)
  {
- 	struct zynqmp_qspi *xqspi = platform_get_drvdata(pdev);
+ 	struct module_kobject *mk;
+ 	struct kobject *kobj;
+@@ -800,7 +800,7 @@ static void __init kernel_add_sysfs_param(const char *name,
+ 	struct module_kobject *mk;
+ 	int err;
  
-+	spi_unregister_controller(xqspi->ctlr);
-+
- 	zynqmp_gqspi_write(xqspi, GQSPI_EN_OFST, 0x0);
- 	clk_disable_unprepare(xqspi->refclk);
- 	clk_disable_unprepare(xqspi->pclk);
+-	mk = locate_module_kobject(name);
++	mk = lookup_or_create_module_kobject(name);
+ 	if (!mk)
+ 		return;
+ 
+@@ -871,7 +871,7 @@ static void __init version_sysfs_builtin(void)
+ 	int err;
+ 
+ 	for (vattr = __start___modver; vattr < __stop___modver; vattr++) {
+-		mk = locate_module_kobject(vattr->module_name);
++		mk = lookup_or_create_module_kobject(vattr->module_name);
+ 		if (mk) {
+ 			err = sysfs_create_file(&mk->kobj, &vattr->mattr.attr);
+ 			WARN_ON_ONCE(err);
+-- 
+2.53.0
+
 
 
 
