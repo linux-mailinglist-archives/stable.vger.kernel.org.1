@@ -1,67 +1,56 @@
-Return-Path: <stable+bounces-257070-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-257082-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id sIy1FywVG2pV/AgAu9opvQ
-	(envelope-from <stable+bounces-257070-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 18:49:48 +0200
+	id WEE/LNEVG2pV/AgAu9opvQ
+	(envelope-from <stable+bounces-257082-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 18:52:33 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id B723760E76B
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 18:49:47 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 10E1D60E84F
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 18:52:32 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id C2E3D302BE3C
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 16:46:51 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 756B93050472
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 16:48:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5702031CA4E;
-	Sat, 30 May 2026 16:46:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C0A9A33F5A3;
+	Sat, 30 May 2026 16:48:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oCY9KH9v"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Kt3rWiCC"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2B4163403F3;
-	Sat, 30 May 2026 16:46:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8EE153264DC;
+	Sat, 30 May 2026 16:48:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780159611; cv=none; b=Gu3L5d3wBAWQLS0a/UkcqdpciNqPOITGG4Tqm4ym8lTQJyY2D9kaQVtm8s16sdfpzqP+DSIIW2sjGRVDjeuSTxcu+I9tyX6XmqOE46MKYsoUCS9sONM67IXEbQ9EVxzA7h8xIxP4PTTaIDJ+fa1RAXRUdeSvHZhkVhPgj+dIzhM=
+	t=1780159727; cv=none; b=eejOmBEqnOi1W98vVSSPtY0rsotaUGgeed6k+HFyZ5aOQ8gK0XNa722MvK+uUUjF+5jw0QH0z5DELoSO9aFf9Tq/U0akiWUyjIVxzExHEOtrOHV1O/JpcbQga/xaMsEOMFRxkr2V4ep/8ofmG5MFwzveLYcr2OlfizW9OMy4X5A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780159611; c=relaxed/simple;
-	bh=vBcs0cpkL2FlAD6mkeQUzyvTk/LwfCdVgq2NCXEY/iw=;
+	s=arc-20240116; t=1780159727; c=relaxed/simple;
+	bh=t1AH/+aKbaXktDkZVW/K5dGW6gBdeqgTlSidHpLaH9I=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=hpEZCyUvSr8BBpzHu7GX0TjUrUCM4DjT6b8/XczhC9mgY+VYIwMz0it/sfilKYTShSIdjSmIHBR+YLv8Rh+TTbWlWkNfyINphVsJjAgSJYAwwMpedXY/FAJcIegpDOPmxdAeNxPootmHyVskR/ZF0lAsSW4crjKg+DabwOhzXeQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oCY9KH9v; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E6E571F00893;
-	Sat, 30 May 2026 16:46:43 +0000 (UTC)
+	 MIME-Version; b=e5vGUZZ7mrdMFQ0FTJ7/RhRFWZ6XHJLhfVcBi/IsXEW5KrrueYZZpWYjc1h0Tfj1QG0Stfr2JhOL6bFOdmSwaFWJhISteTdSbZ3X1vK44nFWaFiRDZKwank45uBjRAkUC+RBaS558NxkzSJUA1maIo9yQVeKCAS9eNGpSfqQRzc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Kt3rWiCC; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9E1AD1F00893;
+	Sat, 30 May 2026 16:48:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780159609;
-	bh=hshnHYQ44Hw/oe/ij6HytY9UPRaRAw2CwYor9utt4J0=;
+	s=korg; t=1780159726;
+	bh=sgcJ6qG7d3AOtb13v2xjBJG/hUtFESCb1Yq5EGV/kOI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=oCY9KH9vwtofSO6JuuFJOaqxCZoEmo3VZCXwi6JECa2SQlRpQycycAjmxonweXu2R
-	 oNa5aqI6KE0VexXZEDOmgTnHJbuH3QGkIb8KJdNPh7rnFHN2QjvLOg/PAs4QAbDQX2
-	 PAtOlNHH1Vn5TsdDVvylWPudwJpxGYreDqSYGD2A=
+	b=Kt3rWiCCbjC/ESDx9cHupYgFxY82HZc2cRyEHjhNCHNiBGbcZY4oTxpOtZR34d0+r
+	 vqcAFyYDbQqRXzVZBTSKVt56avi5Pop6mBiDx+8qw7BSC7SiWq3kMJU9GG0Z6/2Ie9
+	 J+EuJ/23xRYOCuOlZouLgmPa4Baq48EDRC8PowkE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yifan Wu <yifanwucs@gmail.com>,
-	Juefei Pu <tomapufckgml@gmail.com>,
-	Yuan Tan <yuantan098@gmail.com>,
-	Xin Liu <bird@lzu.edu.cn>,
-	Ren Wei <enjou1224z@gmail.com>,
-	Yuqi Xu <xuyuqiabc@gmail.com>,
-	Ren Wei <n05ec@lzu.edu.cn>,
-	David Howells <dhowells@redhat.com>,
-	Marc Dionne <marc.dionne@auristor.com>,
-	Simon Horman <horms@kernel.org>,
-	linux-afs@lists.infradead.org,
-	stable@kernel.org,
-	Jakub Kicinski <kuba@kernel.org>,
+	David Woodhouse <dwmw@amazon.co.uk>,
+	Sean Christopherson <seanjc@google.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 127/969] rxrpc: reject undecryptable rxkad response tickets
-Date: Sat, 30 May 2026 17:54:11 +0200
-Message-ID: <20260530160304.076791932@linuxfoundation.org>
+Subject: [PATCH 6.1 128/969] KVM: x86: Use __DECLARE_FLEX_ARRAY() for UAPI structures with VLAs
+Date: Sat, 30 May 2026 17:54:12 +0200
+Message-ID: <20260530160304.103541843@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
 In-Reply-To: <20260530160300.485627683@linuxfoundation.org>
 References: <20260530160300.485627683@linuxfoundation.org>
@@ -84,25 +73,24 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-257070-lists,stable=lfdr.de];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,lzu.edu.cn,redhat.com,auristor.com,kernel.org,lists.infradead.org];
-	RCPT_COUNT_TWELVE(0.00)[17];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-257082-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TO_DN_SOME(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	TAGGED_RCPT(0.00)[stable];
 	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
-	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[]
-X-Rspamd-Queue-Id: B723760E76B
+X-Rspamd-Queue-Id: 10E1D60E84F
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
@@ -110,61 +98,152 @@ X-Rspamd-Server: lfdr
 
 ------------------
 
-From: Yuqi Xu <xuyuqiabc@gmail.com>
+From: David Woodhouse <dwmw@amazon.co.uk>
 
-[ Upstream commit fe4447cd95623b1cfacc15f280aab73a6d7340b2 ]
+[ Upstream commit 2619da73bb2f10d88f7e1087125c40144fdf0987 ]
 
-rxkad_decrypt_ticket() decrypts the RXKAD response ticket and then
-parses the buffer as plaintext without checking whether
-crypto_skcipher_decrypt() succeeded.
+Commit 94dfc73e7cf4 ("treewide: uapi: Replace zero-length arrays with
+flexible-array members") broke the userspace API for C++.
 
-A malformed RESPONSE can therefore use a non-block-aligned ticket
-length, make the decrypt operation fail, and still drive the ticket
-parser with attacker-controlled bytes.
+These structures ending in VLAs are typically a *header*, which can be
+followed by an arbitrary number of entries. Userspace typically creates
+a larger structure with some non-zero number of entries, for example in
+QEMU's kvm_arch_get_supported_msr_feature():
 
-Check the decrypt result and abort the connection with RXKADBADTICKET
-when ticket decryption fails.
+    struct {
+        struct kvm_msrs info;
+        struct kvm_msr_entry entries[1];
+    } msr_data = {};
 
-Fixes: 17926a79320a ("[AF_RXRPC]: Provide secure RxRPC sockets for use by userspace and kernel both")
-Reported-by: Yifan Wu <yifanwucs@gmail.com>
-Reported-by: Juefei Pu <tomapufckgml@gmail.com>
-Co-developed-by: Yuan Tan <yuantan098@gmail.com>
-Signed-off-by: Yuan Tan <yuantan098@gmail.com>
-Suggested-by: Xin Liu <bird@lzu.edu.cn>
-Tested-by: Ren Wei <enjou1224z@gmail.com>
-Signed-off-by: Yuqi Xu <xuyuqiabc@gmail.com>
-Signed-off-by: Ren Wei <n05ec@lzu.edu.cn>
-Signed-off-by: David Howells <dhowells@redhat.com>
-cc: Marc Dionne <marc.dionne@auristor.com>
-cc: Simon Horman <horms@kernel.org>
-cc: linux-afs@lists.infradead.org
-cc: stable@kernel.org
-Link: https://patch.msgid.link/20260408121252.2249051-12-dhowells@redhat.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-[ adapted `rxrpc_abort_conn()` call to existing `goto other_error` error-handling pattern ]
+While that works in C, it fails in C++ with an error like:
+ flexible array member 'kvm_msrs::entries' not at end of 'struct msr_data'
+
+Fix this by using __DECLARE_FLEX_ARRAY() for the VLA, which uses [0]
+for C++ compilation.
+
+Fixes: 94dfc73e7cf4 ("treewide: uapi: Replace zero-length arrays with flexible-array members")
+Cc: stable@vger.kernel.org
+Signed-off-by: David Woodhouse <dwmw@amazon.co.uk>
+Link: https://patch.msgid.link/3abaf6aefd6e5efeff3b860ac38421d9dec908db.camel@infradead.org
+[sean: tag for stable@]
+Signed-off-by: Sean Christopherson <seanjc@google.com>
+[ applied `__DECLARE_FLEX_ARRAY(char, name)` change directly instead of inside missing `#ifdef __KERNEL__` else branch ]
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/rxrpc/rxkad.c |    7 ++++++-
- 1 file changed, 6 insertions(+), 1 deletion(-)
+ arch/x86/include/uapi/asm/kvm.h |   12 ++++++------
+ include/uapi/linux/kvm.h        |   11 ++++++-----
+ 2 files changed, 12 insertions(+), 11 deletions(-)
 
---- a/net/rxrpc/rxkad.c
-+++ b/net/rxrpc/rxkad.c
-@@ -1013,8 +1013,13 @@ static int rxkad_decrypt_ticket(struct r
- 	sg_init_one(&sg[0], ticket, ticket_len);
- 	skcipher_request_set_callback(req, 0, NULL, NULL);
- 	skcipher_request_set_crypt(req, sg, sg, ticket_len, iv.x);
--	crypto_skcipher_decrypt(req);
-+	ret = crypto_skcipher_decrypt(req);
- 	skcipher_request_free(req);
-+	if (ret < 0) {
-+		abort_code = RXKADBADTICKET;
-+		ret = -EPROTO;
-+		goto other_error;
-+	}
+--- a/arch/x86/include/uapi/asm/kvm.h
++++ b/arch/x86/include/uapi/asm/kvm.h
+@@ -198,13 +198,13 @@ struct kvm_msrs {
+ 	__u32 nmsrs; /* number of msrs in entries */
+ 	__u32 pad;
  
- 	p = ticket;
- 	end = p + ticket_len;
+-	struct kvm_msr_entry entries[];
++	__DECLARE_FLEX_ARRAY(struct kvm_msr_entry, entries);
+ };
+ 
+ /* for KVM_GET_MSR_INDEX_LIST */
+ struct kvm_msr_list {
+ 	__u32 nmsrs; /* number of msrs in entries */
+-	__u32 indices[];
++	__DECLARE_FLEX_ARRAY(__u32, indices);
+ };
+ 
+ /* Maximum size of any access bitmap in bytes */
+@@ -241,7 +241,7 @@ struct kvm_cpuid_entry {
+ struct kvm_cpuid {
+ 	__u32 nent;
+ 	__u32 padding;
+-	struct kvm_cpuid_entry entries[];
++	__DECLARE_FLEX_ARRAY(struct kvm_cpuid_entry, entries);
+ };
+ 
+ struct kvm_cpuid_entry2 {
+@@ -263,7 +263,7 @@ struct kvm_cpuid_entry2 {
+ struct kvm_cpuid2 {
+ 	__u32 nent;
+ 	__u32 padding;
+-	struct kvm_cpuid_entry2 entries[];
++	__DECLARE_FLEX_ARRAY(struct kvm_cpuid_entry2, entries);
+ };
+ 
+ /* for KVM_GET_PIT and KVM_SET_PIT */
+@@ -394,7 +394,7 @@ struct kvm_xsave {
+ 	 * the contents of CPUID leaf 0xD on the host.
+ 	 */
+ 	__u32 region[1024];
+-	__u32 extra[];
++	__DECLARE_FLEX_ARRAY(__u32, extra);
+ };
+ 
+ #define KVM_MAX_XCRS	16
+@@ -522,7 +522,7 @@ struct kvm_pmu_event_filter {
+ 	__u32 fixed_counter_bitmap;
+ 	__u32 flags;
+ 	__u32 pad[4];
+-	__u64 events[];
++	__DECLARE_FLEX_ARRAY(__u64, events);
+ };
+ 
+ #define KVM_PMU_EVENT_ALLOW 0
+--- a/include/uapi/linux/kvm.h
++++ b/include/uapi/linux/kvm.h
+@@ -11,6 +11,7 @@
+ #include <linux/const.h>
+ #include <linux/types.h>
+ #include <linux/compiler.h>
++#include <linux/stddef.h>
+ #include <linux/ioctl.h>
+ #include <asm/kvm.h>
+ 
+@@ -556,7 +557,7 @@ struct kvm_coalesced_mmio {
+ 
+ struct kvm_coalesced_mmio_ring {
+ 	__u32 first, last;
+-	struct kvm_coalesced_mmio coalesced_mmio[];
++	__DECLARE_FLEX_ARRAY(struct kvm_coalesced_mmio, coalesced_mmio);
+ };
+ 
+ #define KVM_COALESCED_MMIO_MAX \
+@@ -635,7 +636,7 @@ struct kvm_clear_dirty_log {
+ /* for KVM_SET_SIGNAL_MASK */
+ struct kvm_signal_mask {
+ 	__u32 len;
+-	__u8  sigset[];
++	__DECLARE_FLEX_ARRAY(__u8, sigset);
+ };
+ 
+ /* for KVM_TPR_ACCESS_REPORTING */
+@@ -1242,7 +1243,7 @@ struct kvm_irq_routing_entry {
+ struct kvm_irq_routing {
+ 	__u32 nr;
+ 	__u32 flags;
+-	struct kvm_irq_routing_entry entries[];
++	__DECLARE_FLEX_ARRAY(struct kvm_irq_routing_entry, entries);
+ };
+ 
+ #endif
+@@ -1362,7 +1363,7 @@ struct kvm_dirty_tlb {
+ 
+ struct kvm_reg_list {
+ 	__u64 n; /* number of regs */
+-	__u64 reg[];
++	__DECLARE_FLEX_ARRAY(__u64, reg);
+ };
+ 
+ struct kvm_one_reg {
+@@ -2183,7 +2184,7 @@ struct kvm_stats_desc {
+ 	__u16 size;
+ 	__u32 offset;
+ 	__u32 bucket_size;
+-	char name[];
++	__DECLARE_FLEX_ARRAY(char, name);
+ };
+ 
+ #define KVM_GET_STATS_FD  _IO(KVMIO,  0xce)
 
 
 
