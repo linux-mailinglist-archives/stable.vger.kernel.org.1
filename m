@@ -1,59 +1,58 @@
-Return-Path: <stable+bounces-258262-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-258865-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 2BPQAm8nG2qS/ggAu9opvQ
-	(envelope-from <stable+bounces-258262-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:07:43 +0200
+	id CLbtMEItG2qU/wgAu9opvQ
+	(envelope-from <stable+bounces-258865-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:32:34 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 836F7611077
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:07:42 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9223B611F11
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:32:34 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 165F731124D2
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 17:56:00 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 5C9B73063F29
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 18:30:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 74BB2349CCF;
-	Sat, 30 May 2026 17:55:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B3C9A3C73EC;
+	Sat, 30 May 2026 18:30:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YzL4BVM1"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IbefJxM1"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 58844320CAD;
-	Sat, 30 May 2026 17:55:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 67D30279DC9;
+	Sat, 30 May 2026 18:29:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780163759; cv=none; b=hqIxnFzHiFJflAo0nFFQFXbTmA672ROCpjRR2GTOQOhQokMZoX+7Q8FzEzvfJDzXwQvuwE+EztU0lwxUHqxMkSaxhjW9lpKrS1YJn3Gvc2ipQPXBWmwgpM7b9VDahXEuhAbfRtHjdkF92nYMJp7F9MLTc/QlZlKuoAcYdhw5j9Q=
+	t=1780165800; cv=none; b=fwZZaKxsu6ZOGVBysPTMzCxxQK1kkI+E/MfzLNrdvW2KGwZAPbBJeOc/tu9sPdru1UkBg7HTKR815WqycyvSzFobmh01C2TEtlHTenFFgxTLL96iCNN4feRWj76hV/sxxjdxXTkaVzJB2Kt/2luDRMpmlaFVvzallcHJ61/zJXM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780163759; c=relaxed/simple;
-	bh=JcJFQ2JFUOzCNgOpE6BedvoPAgUc/e9kQJZaKwKitS8=;
+	s=arc-20240116; t=1780165800; c=relaxed/simple;
+	bh=Uj5HHqhHF5KkFt4yzJWJe/l6FquwR6LJ2z1zgHROk50=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=RMruUEnjv956T/awNJhkSHy/b3RYjzWa/lDgXmqK9rqBkyyXzQHcDHOUz4h04mg0wsRUwLeED5Zm9uXv7ibzlqe49c9T3U078BGM6hgUxohVO7pQsT9MmPounAEeVLKqVZy6XTXFmkS4RBeOhQ7KBshApyZPtqiM1c4z/mlgEvI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YzL4BVM1; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A03A41F00893;
-	Sat, 30 May 2026 17:55:57 +0000 (UTC)
+	 MIME-Version; b=lEzuftvcozvkC4F//t+W0k3NSwj2YFC5WE7DJu8xiY1wtK5AaLiOIL0eBNWFxiPBpBvv5FbyRjMGgPV/1XIly+T0IscHTki0BzUEMnigv9c6Mrd9TCDxfSh6/BVYO5NF7qnxWGoShUNYxmiSMHF046jv7RYqvvQ//q53SrzX1Rk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IbefJxM1; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A9D371F00893;
+	Sat, 30 May 2026 18:29:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780163758;
-	bh=UAqN086qs/MX6JRYMR+ULCB1Ko2KXjbwZpLVb4IPNfc=;
+	s=korg; t=1780165799;
+	bh=daBXnxbW3l+Y7Fou4EZJ8m9bUfLy+zdeSMK2RbERHuQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=YzL4BVM13kNykxSY8TKITa4SVARkNrRuxLRYYMYCqoNDlFTD/SSBRyne/pt2eZ/sM
-	 g2Hngrg5IX3mgGUiRL2unrvpi/MysWymyVCCITz3LwITkkHqeGtpqfYWe1CQZm8MFA
-	 +UToxKgqRj3TjK4jo3ixuI0v67EISKWpyXYCi1vE=
+	b=IbefJxM1fu0ZxRnA5r2PbWpEfAGOSRohC+70lHiiBEHPNngeoM3qDrgXoAHvVP8ds
+	 NETR5RU02rfkwJtguEDql49fc4YoSIzwQHayYYLnQ97UV2G4zjWyK9rrFQI3Sb56FS
+	 CAnisrYBZcLdIDIhgDM56ihjVvZjZj8hksWk/Xn4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Soufiane Dani <soufianeda@tutanota.com>,
-	Sakari Ailus <sakari.ailus@linux.intel.com>,
-	Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
-Subject: [PATCH 5.15 353/776] staging: media: atomisp: Disallow all private IOCTLs
+	Junrui Luo <moonafterrain@outlook.com>,
+	Yu Kuai <yukuai@fnnas.com>
+Subject: [PATCH 5.10 186/589] md/raid5: validate payload size before accessing journal metadata
 Date: Sat, 30 May 2026 18:01:07 +0200
-Message-ID: <20260530160249.703878437@linuxfoundation.org>
+Message-ID: <20260530160229.777578970@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260530160240.228940103@linuxfoundation.org>
-References: <20260530160240.228940103@linuxfoundation.org>
+In-Reply-To: <20260530160224.570625122@linuxfoundation.org>
+References: <20260530160224.570625122@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,76 +63,179 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-258262-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-258865-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,outlook.com,fnnas.com];
 	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
 	TO_DN_SOME(0.00)[];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	RCPT_COUNT_FIVE(0.00)[6];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	RCPT_COUNT_FIVE(0.00)[5];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-0.997];
-	TAGGED_RCPT(0.00)[stable,huawei];
+	NEURAL_HAM(-0.00)[-0.992];
+	TAGGED_RCPT(0.00)[stable];
 	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,intel.com:email]
-X-Rspamd-Queue-Id: 836F7611077
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,fnnas.com:email,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,outlook.com:email]
+X-Rspamd-Queue-Id: 9223B611F11
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sakari Ailus <sakari.ailus@linux.intel.com>
+From: Junrui Luo <moonafterrain@outlook.com>
 
-commit 2b7eb2c5dc72f0fc954ac4aa155f9e285e937f7c upstream.
+commit b0cc3ae97e893bf54bbce447f4e9fd2e0b88bff9 upstream.
 
-Disallow all private IOCTLs. These aren't quite as safe as one could
-assume of IOCTL handlers; disable them for now. Instead of removing the
-code, return in the beginning of the function if cmd is non-zero in order
-to keep static checkers happy.
+r5c_recovery_analyze_meta_block() and
+r5l_recovery_verify_data_checksum_for_mb() iterate over payloads in a
+journal metadata block using on-disk payload size fields without
+validating them against the remaining space in the metadata block.
 
-Reported-by: Soufiane Dani <soufianeda@tutanota.com>
-Closes: https://lore.kernel.org/linux-staging/20260210-atomisp-fix-v1-1-024429cbff31@tutanota.com/
+A corrupted journal contains payload sizes extending beyond the PAGE_SIZE
+boundary can cause out-of-bounds reads when accessing payload fields or
+computing offsets.
+
+Add bounds validation for each payload type to ensure the full payload
+fits within meta_size before processing.
+
+Fixes: b4c625c67362 ("md/r5cache: r5cache recovery: part 1")
 Cc: stable@vger.kernel.org
-Fixes: a49d25364dfb ("staging/atomisp: Add support for the Intel IPU v2")
-Fixes: ad85094b293e ("Revert "media: staging: atomisp: Remove driver"")
-Signed-off-by: Sakari Ailus <sakari.ailus@linux.intel.com>
-Signed-off-by: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
+Signed-off-by: Junrui Luo <moonafterrain@outlook.com>
+Link: https://lore.kernel.org/linux-raid/SYBPR01MB78815E78D829BB86CD7C8015AF5FA@SYBPR01MB7881.ausprd01.prod.outlook.com/
+Signed-off-by: Yu Kuai <yukuai@fnnas.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/staging/media/atomisp/pci/atomisp_ioctl.c |    4 ++++
- 1 file changed, 4 insertions(+)
+ drivers/md/raid5-cache.c |   48 ++++++++++++++++++++++++++++++++---------------
+ 1 file changed, 33 insertions(+), 15 deletions(-)
 
---- a/drivers/staging/media/atomisp/pci/atomisp_ioctl.c
-+++ b/drivers/staging/media/atomisp/pci/atomisp_ioctl.c
-@@ -2865,6 +2865,10 @@ static long atomisp_vidioc_default(struc
- 	bool acc_node;
- 	int err;
+--- a/drivers/md/raid5-cache.c
++++ b/drivers/md/raid5-cache.c
+@@ -2017,15 +2017,27 @@ r5l_recovery_verify_data_checksum_for_mb
+ 		return -ENOMEM;
  
-+	/* Disable all private IOCTLs for now! */
-+	if (cmd)
-+		return -EINVAL;
+ 	while (mb_offset < le32_to_cpu(mb->meta_size)) {
++		sector_t payload_len;
 +
- 	acc_node = !strcmp(vdev->name, "ATOMISP ISP ACC");
- 	if (acc_node)
- 		asd = atomisp_to_acc_pipe(vdev)->asd;
+ 		payload = (void *)mb + mb_offset;
+ 		payload_flush = (void *)mb + mb_offset;
+ 
+ 		if (le16_to_cpu(payload->header.type) == R5LOG_PAYLOAD_DATA) {
++			payload_len = sizeof(struct r5l_payload_data_parity) +
++				(sector_t)sizeof(__le32) *
++				(le32_to_cpu(payload->size) >> (PAGE_SHIFT - 9));
++			if (mb_offset + payload_len > le32_to_cpu(mb->meta_size))
++				goto mismatch;
+ 			if (r5l_recovery_verify_data_checksum(
+ 				    log, ctx, page, log_offset,
+ 				    payload->checksum[0]) < 0)
+ 				goto mismatch;
+ 		} else if (le16_to_cpu(payload->header.type) == R5LOG_PAYLOAD_PARITY) {
++			payload_len = sizeof(struct r5l_payload_data_parity) +
++				(sector_t)sizeof(__le32) *
++				(le32_to_cpu(payload->size) >> (PAGE_SHIFT - 9));
++			if (mb_offset + payload_len > le32_to_cpu(mb->meta_size))
++				goto mismatch;
+ 			if (r5l_recovery_verify_data_checksum(
+ 				    log, ctx, page, log_offset,
+ 				    payload->checksum[0]) < 0)
+@@ -2038,22 +2050,18 @@ r5l_recovery_verify_data_checksum_for_mb
+ 				    payload->checksum[1]) < 0)
+ 				goto mismatch;
+ 		} else if (le16_to_cpu(payload->header.type) == R5LOG_PAYLOAD_FLUSH) {
+-			/* nothing to do for R5LOG_PAYLOAD_FLUSH here */
++			payload_len = sizeof(struct r5l_payload_flush) +
++				(sector_t)le32_to_cpu(payload_flush->size);
++			if (mb_offset + payload_len > le32_to_cpu(mb->meta_size))
++				goto mismatch;
+ 		} else /* not R5LOG_PAYLOAD_DATA/PARITY/FLUSH */
+ 			goto mismatch;
+ 
+-		if (le16_to_cpu(payload->header.type) == R5LOG_PAYLOAD_FLUSH) {
+-			mb_offset += sizeof(struct r5l_payload_flush) +
+-				le32_to_cpu(payload_flush->size);
+-		} else {
+-			/* DATA or PARITY payload */
++		if (le16_to_cpu(payload->header.type) != R5LOG_PAYLOAD_FLUSH) {
+ 			log_offset = r5l_ring_add(log, log_offset,
+ 						  le32_to_cpu(payload->size));
+-			mb_offset += sizeof(struct r5l_payload_data_parity) +
+-				sizeof(__le32) *
+-				(le32_to_cpu(payload->size) >> (PAGE_SHIFT - 9));
+ 		}
+-
++		mb_offset += payload_len;
+ 	}
+ 
+ 	put_page(page);
+@@ -2104,6 +2112,7 @@ r5c_recovery_analyze_meta_block(struct r
+ 	log_offset = r5l_ring_add(log, ctx->pos, BLOCK_SECTORS);
+ 
+ 	while (mb_offset < le32_to_cpu(mb->meta_size)) {
++		sector_t payload_len;
+ 		int dd;
+ 
+ 		payload = (void *)mb + mb_offset;
+@@ -2112,6 +2121,12 @@ r5c_recovery_analyze_meta_block(struct r
+ 		if (le16_to_cpu(payload->header.type) == R5LOG_PAYLOAD_FLUSH) {
+ 			int i, count;
+ 
++			payload_len = sizeof(struct r5l_payload_flush) +
++				(sector_t)le32_to_cpu(payload_flush->size);
++			if (mb_offset + payload_len >
++			    le32_to_cpu(mb->meta_size))
++				return -EINVAL;
++
+ 			count = le32_to_cpu(payload_flush->size) / sizeof(__le64);
+ 			for (i = 0; i < count; ++i) {
+ 				stripe_sect = le64_to_cpu(payload_flush->flush_stripes[i]);
+@@ -2125,12 +2140,17 @@ r5c_recovery_analyze_meta_block(struct r
+ 				}
+ 			}
+ 
+-			mb_offset += sizeof(struct r5l_payload_flush) +
+-				le32_to_cpu(payload_flush->size);
++			mb_offset += payload_len;
+ 			continue;
+ 		}
+ 
+ 		/* DATA or PARITY payload */
++		payload_len = sizeof(struct r5l_payload_data_parity) +
++			(sector_t)sizeof(__le32) *
++			(le32_to_cpu(payload->size) >> (PAGE_SHIFT - 9));
++		if (mb_offset + payload_len > le32_to_cpu(mb->meta_size))
++			return -EINVAL;
++
+ 		stripe_sect = (le16_to_cpu(payload->header.type) == R5LOG_PAYLOAD_DATA) ?
+ 			raid5_compute_sector(
+ 				conf, le64_to_cpu(payload->location), 0, &dd,
+@@ -2195,9 +2215,7 @@ r5c_recovery_analyze_meta_block(struct r
+ 		log_offset = r5l_ring_add(log, log_offset,
+ 					  le32_to_cpu(payload->size));
+ 
+-		mb_offset += sizeof(struct r5l_payload_data_parity) +
+-			sizeof(__le32) *
+-			(le32_to_cpu(payload->size) >> (PAGE_SHIFT - 9));
++		mb_offset += payload_len;
+ 	}
+ 
+ 	return 0;
 
 
 
