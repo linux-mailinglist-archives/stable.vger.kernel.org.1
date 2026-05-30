@@ -1,59 +1,59 @@
-Return-Path: <stable+bounces-257454-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-258835-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id mAQmEPYbG2p3/QgAu9opvQ
-	(envelope-from <stable+bounces-257454-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:18:46 +0200
+	id 0OUPIRgtG2qU/wgAu9opvQ
+	(envelope-from <stable+bounces-258835-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:31:52 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id CA1D660F5D0
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:18:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 02927611E78
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:31:51 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id CFEBF306407B
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 17:10:53 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 5C43F30D01DB
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 18:28:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F0FD1395AD8;
-	Sat, 30 May 2026 17:10:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BCD8A3C3BFF;
+	Sat, 30 May 2026 18:28:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rHZwTqLY"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BH1JnhaP"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CF06A3148DA;
-	Sat, 30 May 2026 17:10:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8EB8D33E36A;
+	Sat, 30 May 2026 18:28:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780161052; cv=none; b=OPGAXg1K3+hm+xl/lZEDLOc3khCGCbVQHRXsmN12T+Qqk2V8PeLA22ZD6SHyNiV63Uh/52PARTuNoyYQOrDg3Jcbf5l8uAdMuB27PN39ZS4ZRqZj5MYinBTnZ7qkpScJXmxxCB874gC1P9eb/3hC7B3YmHdkv7lr4FQh5gikTK4=
+	t=1780165698; cv=none; b=cfMQw52SD7d9NkIHZrGsc/a2lx49HoHGFTYz6yrVfbjfEATx7VEdnePKFii7OXOjvJ2iEfLby2W5Iieuvs/juU8SvpraPMzforiAXIv00DOQLMt6h8CCcQKwPdvQktoAizNTqtcW58TTzKJ6yDTxqZAy/eyuaSLqU+zO82YeL5Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780161052; c=relaxed/simple;
-	bh=eA2LAAmzMx6RFyZEgkxp7f0H0ie/s7KnRMXdJK7tdt4=;
+	s=arc-20240116; t=1780165698; c=relaxed/simple;
+	bh=QTDQIn89BEyH3XfC7q0Uo4+KbUx0acLrTAMIc7SOLKY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=OJH6lA86XyMrtKAZs3AqzB6eZtgpkGDOOxL2V4VmQ4LKJyEz1zVEN8CrjhDvScl7PnBDhz4kt/RRwAtFpr5CoOCYGmFCXpvEwxOCMagDfWXsSFKj6vwetzLov24GrUYGt2TsrQ51pxhlItdnWpVHxjhzVmyBj85P5fE4OZDhByM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rHZwTqLY; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 269F31F00893;
-	Sat, 30 May 2026 17:10:50 +0000 (UTC)
+	 MIME-Version; b=VezvBIT+xzQIiDTcLSqSg9Qm93mEMrn6J8g4brpoPlIqUBdVR9VCU9T3XUWOtks3/j3w/z58rguIdDUs9lV+yKUkiNvyvk7RlB1zPsvbmn7t/gCMJ73Q+xvEL1tW6zjir9LqUFjtoeos6KthtOv8ET582r0qz9bxuU+Yi+2vQ7w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BH1JnhaP; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CFA111F00893;
+	Sat, 30 May 2026 18:28:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780161051;
-	bh=Uiv9YqIhEdJrf335en/8i5kWcJ0zIWWxUa/Xqf+eOiI=;
+	s=korg; t=1780165697;
+	bh=b8yHTFT3oUhT3JeFgP23QjjpQklN6SAnbsdgS+gH4n8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=rHZwTqLYuXBvjpezU54cVbOpoUspXdENhK3enn2t85oi8rbu2eU7+Pd1SM7q2JqRP
-	 jQ6YiiVEQHYzajAFUIod4STrtdpkdkPBZBHpt+1qXRNdetLnU/5CFVU5JJq56gX70C
-	 rhVY9qawXd4D6H9T2bVWNkM0Ibmm0+GGsF4oQFmk=
+	b=BH1JnhaP+zuyz34z6rvlqG+/tBt0U0dK/uMQYv9zo2R7+sAmrs2iZhNAob5fDHihm
+	 VICgMJNwBQDT7ZYszg4y87r6/w9I8wjiKnGwMuFRzxwpMqRwyx13j/n3QyQwQHdYdQ
+	 YTj+I9bJJO5xEGflJi0TJyjVzOi2ht3af3lwqqp8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Pei Xiao <xiaopei01@kylinos.cn>,
-	Mark Brown <broonie@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 512/969] spi: hisi-kunpeng: prevent infinite while() loop in hisi_spi_flush_fifo
+	Rong Zhang <i@rong.moe>,
+	Arun Raghavan <arunr@valvesoftware.com>,
+	Takashi Iwai <tiwai@suse.de>
+Subject: [PATCH 5.10 155/589] Revert "ALSA: usb: Increase volume range that triggers a warning"
 Date: Sat, 30 May 2026 18:00:36 +0200
-Message-ID: <20260530160314.475055739@linuxfoundation.org>
+Message-ID: <20260530160228.859850438@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260530160300.485627683@linuxfoundation.org>
-References: <20260530160300.485627683@linuxfoundation.org>
+In-Reply-To: <20260530160224.570625122@linuxfoundation.org>
+References: <20260530160224.570625122@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,87 +66,81 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_MISSING_CHARSET(0.50)[];
 	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-257454-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	RCPT_COUNT_FIVE(0.00)[6];
+	RCVD_TLS_LAST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-258835-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
+	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[stable];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-0.995];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	FROM_HAS_DN(0.00)[]
-X-Rspamd-Queue-Id: CA1D660F5D0
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,suse.de:email,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,valvesoftware.com:email,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim]
+X-Rspamd-Queue-Id: 02927611E78
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Pei Xiao <xiaopei01@kylinos.cn>
+From: Rong Zhang <i@rong.moe>
 
-[ Upstream commit 9f61daf2c2debe9f5cf4e1a4471e56a89a6fe45a ]
+commit 41d78cb724f4b40b7548af420ccfe524b14023bb upstream.
 
-The hisi_spi_flush_fifo()'s inner while loop that lacks any timeout
-mechanism. Maybe the hardware never becomes empty, the loop will spin
-forever, causing the CPU to hang.
+UAC uses 2 bytes to store volume values, so the maximum volume range is
+0xFFFF (65535, val = -32768/32767/1).
 
-Fix this by adding a inner_limit based on loops_per_jiffy. The inner loop
-now exits after approximately one jiffy if the FIFO remains non-empty, logs
-a ratelimited warning, and breaks out of the outer loop. Additionally, add
-a cpu_relax() inside the busy loop to improve power efficiency.
+The reverted commit bumpped the range of triggering the warning to >
+65535, effectively making the range check a no-op. It didn't fix
+anything but covered any potential problems and deviated from the
+original intention of the range check.
 
-Fixes: c770d8631e18 ("spi: Add HiSilicon SPI Controller Driver for Kunpeng SoCs")
-Signed-off-by: Pei Xiao <xiaopei01@kylinos.cn>
-Link: https://patch.msgid.link/d834ce28172886bfaeb9c8ca00cfd9bf1c65d5a1.1773889292.git.xiaopei01@kylinos.cn
-Signed-off-by: Mark Brown <broonie@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+This reverts commit 6b971191fcfc9e3c2c0143eea22534f1f48dbb62.
+
+Fixes: 6b971191fcfc ("ALSA: usb: Increase volume range that triggers a warning")
+Cc: stable@vger.kernel.org
+Signed-off-by: Rong Zhang <i@rong.moe>
+Acked-by: Arun Raghavan <arunr@valvesoftware.com>
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
+Link: https://patch.msgid.link/20260303194805.266158-2-i@rong.moe
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/spi/spi-hisi-kunpeng.c | 12 +++++++++++-
- 1 file changed, 11 insertions(+), 1 deletion(-)
+ sound/usb/mixer.c |    7 ++++---
+ 1 file changed, 4 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/spi/spi-hisi-kunpeng.c b/drivers/spi/spi-hisi-kunpeng.c
-index 54730e93fba45..06c8893243b7d 100644
---- a/drivers/spi/spi-hisi-kunpeng.c
-+++ b/drivers/spi/spi-hisi-kunpeng.c
-@@ -198,8 +198,18 @@ static void hisi_spi_flush_fifo(struct hisi_spi *hs)
- 	unsigned long limit = loops_per_jiffy << 1;
+--- a/sound/usb/mixer.c
++++ b/sound/usb/mixer.c
+@@ -1748,10 +1748,11 @@ static void __build_feature_ctl(struct u
  
- 	do {
--		while (hisi_spi_rx_not_empty(hs))
-+		unsigned long inner_limit = loops_per_jiffy;
-+
-+		while (hisi_spi_rx_not_empty(hs) && --inner_limit) {
- 			readl(hs->regs + HISI_SPI_DOUT);
-+			cpu_relax();
-+		}
-+
-+		if (!inner_limit) {
-+			dev_warn_ratelimited(hs->dev, "RX FIFO flush timeout\n");
-+			break;
-+		}
-+
- 	} while (hisi_spi_busy(hs) && limit--);
- }
- 
--- 
-2.53.0
-
+ 	range = (cval->max - cval->min) / cval->res;
+ 	/*
+-	 * There are definitely devices with a range of ~20,000, so let's be
+-	 * conservative and allow for a bit more.
++	 * Are there devices with volume range more than 255? I use a bit more
++	 * to be sure. 384 is a resolution magic number found on Logitech
++	 * devices. It will definitively catch all buggy Logitech devices.
+ 	 */
+-	if (range > 65535) {
++	if (range > 384) {
+ 		usb_audio_warn(mixer->chip,
+ 			       "Warning! Unlikely big volume range (=%u), cval->res is probably wrong.",
+ 			       range);
 
 
 
