@@ -1,60 +1,60 @@
-Return-Path: <stable+bounces-258650-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-259258-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id wF01DJ4qG2r//ggAu9opvQ
-	(envelope-from <stable+bounces-258650-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:21:18 +0200
+	id yDLsLP0xG2qqAAkAu9opvQ
+	(envelope-from <stable+bounces-259258-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:52:45 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9F4976118E5
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:21:17 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id AD06F612B2F
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:52:44 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 7DCF6308A4FC
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 18:17:48 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 67C1E300BC48
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 18:52:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D6BD43242BE;
-	Sat, 30 May 2026 18:17:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7C1F8231A23;
+	Sat, 30 May 2026 18:52:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Y/xFR3et"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="iWZrtViJ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5C6C117555;
-	Sat, 30 May 2026 18:17:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6209E1D63E4;
+	Sat, 30 May 2026 18:52:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780165067; cv=none; b=ltpm6MCjaAaMAr0DClA2kmI2KRAcrxFtzg9VIjdYjfhIhzGsWv9bDEk4peR1JoV0NGpGSTUw88zwqIGwM1l93D9PMn5H4Lir+G1Nu1O8Ij9S+uS2tsXW02jInA/+0e19IJnYdJtPnIGgrU/X2Dk/DQhicjBX9CzRMKdKRh63ZRE=
+	t=1780167138; cv=none; b=ICxVP+MxTM7IfC7zXuyjp9oFyZtGH8iwOh766WDECTy8YzRX+fMllUoKkh5hTTh/h230GEqFTtehkkCSMR/z67jF+E1srR50xZKhIkYHKpjWVWE6yh6cWv3KxUnG3NuBxZ/KhtSnTUc/kRLk0S+lttcZu+tt1mgupb6yS2PIcXs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780165067; c=relaxed/simple;
-	bh=m33cWInYy8b6CmbumB4NHzHexDeE3J4QHjj+5/dfVKk=;
+	s=arc-20240116; t=1780167138; c=relaxed/simple;
+	bh=Rl49n76eQNNcNGJD1vTlqxf61b0cbkIpWIbZWSLonko=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=DCfevO65JzT0BrxE0YmgA+foAmVUVlq3Gd+gNk2vpBR5ccRU13Yb6Q5wdEUjP3nosX3UqEuBV1TeA60qpFY080q8rGqYTA6KM+yJLPS9zGDWdq2rb7xTGGuNspN0dDKxW9qaqSlJJCWwJLflsGtrBC9Ui0k+vRo95pxhyXjuDtM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Y/xFR3et; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A075E1F00893;
-	Sat, 30 May 2026 18:17:45 +0000 (UTC)
+	 MIME-Version:Content-Type; b=X1APXFeAmT18sZtXdxyAH7LJ5KlL4R8ZtZH48s5dFhD0s3Ijdbk2U2aTBfja6WZ56OpKGmFk01e2Hw59g0u1EL/IXDyqhuvnnDKHVsI6KEHbnOxEyMTqbMbDLkG4u30v2v4vw83ZlIyEFWU8khbBbFRXkj5OpLMJzBDbgiquX08=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=iWZrtViJ; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A61081F00893;
+	Sat, 30 May 2026 18:52:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780165066;
-	bh=JK4fV8Yl6L3wzum3Pezli62fIMx34+aHsNqoiDxx/u0=;
+	s=korg; t=1780167137;
+	bh=gV8OkSFX7TO38ZH2qdZMtBMoy1pyMBZFShc/Sr8hyjI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=Y/xFR3et6RvMmOdlClJyjpb71Bw9howliJVm/bhSrORfM8IZ1DYPmTm7a92ZCf6UC
-	 v7UuQGnMBAzCblxOI4Z7bSfqHPgJj9DMdOJ6W0/ULcEc2TVMUSQeJDolEu5jehr/Rk
-	 cg+DtWEUZzFCx0/3YS1/sE76aVNdwQOSa589ICPI=
+	b=iWZrtViJQUdf7zS277BT2T0xweuFm2z0XtQID/m9hJD8mZzPrSbTIX8Hq5TvXPUqA
+	 LTlTXZAaLE+c9hLNQRWSvwqDmroz3d/wtfNrkiB8Dqc1iaRIgpgQ8xHV+yMgxPfLN/
+	 HWeSAuKwkyVvc/A2TE8gYZEzW5qeHP9NGBlpDMXE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Tristan Madani <tristan@talencesecurity.com>,
-	Florian Westphal <fw@strlen.de>,
-	Pablo Neira Ayuso <pablo@netfilter.org>,
+	Gabor Juhos <j4g8y7@gmail.com>,
+	Miquel Raynal <miquel.raynal@bootlin.com>,
+	Vinod Koul <vkoul@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 740/776] netfilter: x_tables: add and use xtables_unregister_table_exit
+Subject: [PATCH 5.10 573/589] phy: marvell: mvebu-a3700-utmi: fix incorrect USB2_PHY_CTRL register access
 Date: Sat, 30 May 2026 18:07:34 +0200
-Message-ID: <20260530160258.915751047@linuxfoundation.org>
+Message-ID: <20260530160239.674744403@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260530160240.228940103@linuxfoundation.org>
-References: <20260530160240.228940103@linuxfoundation.org>
+In-Reply-To: <20260530160224.570625122@linuxfoundation.org>
+References: <20260530160224.570625122@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,368 +64,82 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,bootlin.com,kernel.org];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-258650-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-259258-lists,stable=lfdr.de];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	RCVD_TLS_LAST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	FROM_HAS_DN(0.00)[];
 	TO_DN_SOME(0.00)[];
+	NEURAL_HAM(-0.00)[-0.996];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	NEURAL_HAM(-0.00)[-0.996];
-	RCPT_COUNT_SEVEN(0.00)[7];
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
 	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[talencesecurity.com:email,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,strlen.de:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,netfilter.org:email]
-X-Rspamd-Queue-Id: 9F4976118E5
+	RCPT_COUNT_SEVEN(0.00)[7];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,bootlin.com:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,msgid.link:url]
+X-Rspamd-Queue-Id: AD06F612B2F
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Florian Westphal <fw@strlen.de>
+From: Gabor Juhos <j4g8y7@gmail.com>
 
-[ Upstream commit b4597d5fd7d2f8cebfffd40dffb5e003cc78964c ]
+[ Upstream commit 91ddf6f722084383fb05be731c0107814b055c0c ]
 
-Previous change added xtables_unregister_table_pre_exit to detach the
-table from the packetpath and to unlink it from the active table list.
-In case of rmmod, userspace that is doing set/getsockopt for this table
-will not be able to re-instantiate the table:
- 1. The larval table has been removed already
- 2. existing instantiated table is no longer on the xt pernet table list.
+The mvebu_a3700_utmi_phy_power_off() function tries to modify the
+USB2_PHY_CTRL register by using the IO address of the PHY IP block along
+with the readl/writel IO accessors. However, the register exist in the
+USB miscellaneous register space, and as such it must be accessed via
+regmap like it is done in the mvebu_a3700_utmi_phy_power_on() function.
 
-This adds the second stage helper:
+Change the code to use regmap_update_bits() for modífying the register
+to fix this.
 
-unlink the table from the dying list, free the hook ops (if any) and do
-the audit notification.  It replaces xt_unregister_table().
-
-Fixes: fdacd57c79b7 ("netfilter: x_tables: never register tables by default")
-Reported-by: Tristan Madani <tristan@talencesecurity.com>
-Reviewed-by: Tristan Madani <tristan@talencesecurity.com>
-Closes: https://lore.kernel.org/netfilter-devel/20260429175613.1459342-1-tristmd@gmail.com/
-Signed-off-by: Florian Westphal <fw@strlen.de>
-Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
+Fixes: cc8b7a0ae866 ("phy: add A3700 UTMI PHY driver")
+Signed-off-by: Gabor Juhos <j4g8y7@gmail.com>
+Reviewed-by: Miquel Raynal <miquel.raynal@bootlin.com>
+Link: https://patch.msgid.link/20260321-a3700-utmi-fix-usb2_phy_ctrl-access-v1-1-6005ff4b5058@gmail.com
+Signed-off-by: Vinod Koul <vkoul@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/linux/netfilter/x_tables.h |  2 +-
- net/ipv4/netfilter/arp_tables.c    |  9 ++--
- net/ipv4/netfilter/ip_tables.c     |  9 ++--
- net/ipv4/netfilter/iptable_nat.c   |  5 +-
- net/ipv6/netfilter/ip6_tables.c    |  9 ++--
- net/ipv6/netfilter/ip6table_nat.c  |  5 +-
- net/netfilter/x_tables.c           | 81 +++++++++++++++++++++++-------
- 7 files changed, 83 insertions(+), 37 deletions(-)
+ drivers/phy/marvell/phy-mvebu-a3700-utmi.c | 5 ++---
+ 1 file changed, 2 insertions(+), 3 deletions(-)
 
-diff --git a/include/linux/netfilter/x_tables.h b/include/linux/netfilter/x_tables.h
-index df2022fe440b0..706f08839050a 100644
---- a/include/linux/netfilter/x_tables.h
-+++ b/include/linux/netfilter/x_tables.h
-@@ -309,8 +309,8 @@ struct xt_table *xt_register_table(struct net *net,
- 				   const struct xt_table *table,
- 				   struct xt_table_info *bootstrap,
- 				   struct xt_table_info *newinfo);
--void *xt_unregister_table(struct xt_table *table);
- void xt_unregister_table_pre_exit(struct net *net, u8 af, const char *name);
-+struct xt_table *xt_unregister_table_exit(struct net *net, u8 af, const char *name);
+diff --git a/drivers/phy/marvell/phy-mvebu-a3700-utmi.c b/drivers/phy/marvell/phy-mvebu-a3700-utmi.c
+index 8834436bc9dbc..e3a9278c06842 100644
+--- a/drivers/phy/marvell/phy-mvebu-a3700-utmi.c
++++ b/drivers/phy/marvell/phy-mvebu-a3700-utmi.c
+@@ -168,9 +168,8 @@ static int mvebu_a3700_utmi_phy_power_off(struct phy *phy)
+ 	u32 reg;
  
- struct xt_table_info *xt_replace_table(struct xt_table *table,
- 				       unsigned int num_counters,
-diff --git a/net/ipv4/netfilter/arp_tables.c b/net/ipv4/netfilter/arp_tables.c
-index 9b905c6562313..f9dd18244f251 100644
---- a/net/ipv4/netfilter/arp_tables.c
-+++ b/net/ipv4/netfilter/arp_tables.c
-@@ -1501,13 +1501,11 @@ static int do_arpt_get_ctl(struct sock *sk, int cmd, void __user *user, int *len
+ 	/* Disable PHY pull-up and enable USB2 suspend */
+-	reg = readl(utmi->regs + USB2_PHY_CTRL(usb32));
+-	reg &= ~(RB_USB2PHY_PU | RB_USB2PHY_SUSPM(usb32));
+-	writel(reg, utmi->regs + USB2_PHY_CTRL(usb32));
++	regmap_update_bits(utmi->usb_misc, USB2_PHY_CTRL(usb32),
++			   RB_USB2PHY_PU | RB_USB2PHY_SUSPM(usb32), 0);
  
- static void __arpt_unregister_table(struct net *net, struct xt_table *table)
- {
--	struct xt_table_info *private;
--	void *loc_cpu_entry;
-+	struct xt_table_info *private = table->private;
- 	struct module *table_owner = table->me;
-+	void *loc_cpu_entry;
- 	struct arpt_entry *iter;
- 
--	private = xt_unregister_table(table);
--
- 	/* Decrease module usage counts and free resources */
- 	loc_cpu_entry = private->entries;
- 	xt_entry_foreach(iter, loc_cpu_entry, private->size)
-@@ -1515,6 +1513,7 @@ static void __arpt_unregister_table(struct net *net, struct xt_table *table)
- 	if (private->number > private->initial_entries)
- 		module_put(table_owner);
- 	xt_free_table_info(private);
-+	kfree(table);
- }
- 
- int arpt_register_table(struct net *net,
-@@ -1583,7 +1582,7 @@ int arpt_register_table(struct net *net,
- 
- void arpt_unregister_table(struct net *net, const char *name)
- {
--	struct xt_table *table = xt_find_table(net, NFPROTO_ARP, name);
-+	struct xt_table *table = xt_unregister_table_exit(net, NFPROTO_ARP, name);
- 
- 	if (table)
- 		__arpt_unregister_table(net, table);
-diff --git a/net/ipv4/netfilter/ip_tables.c b/net/ipv4/netfilter/ip_tables.c
-index a2a267e1b2573..1829bf3774062 100644
---- a/net/ipv4/netfilter/ip_tables.c
-+++ b/net/ipv4/netfilter/ip_tables.c
-@@ -1705,12 +1705,10 @@ do_ipt_get_ctl(struct sock *sk, int cmd, void __user *user, int *len)
- 
- static void __ipt_unregister_table(struct net *net, struct xt_table *table)
- {
--	struct xt_table_info *private;
--	void *loc_cpu_entry;
-+	struct xt_table_info *private = table->private;
- 	struct module *table_owner = table->me;
- 	struct ipt_entry *iter;
--
--	private = xt_unregister_table(table);
-+	void *loc_cpu_entry;
- 
- 	/* Decrease module usage counts and free resources */
- 	loc_cpu_entry = private->entries;
-@@ -1719,6 +1717,7 @@ static void __ipt_unregister_table(struct net *net, struct xt_table *table)
- 	if (private->number > private->initial_entries)
- 		module_put(table_owner);
- 	xt_free_table_info(private);
-+	kfree(table);
- }
- 
- int ipt_register_table(struct net *net, const struct xt_table *table,
-@@ -1792,7 +1791,7 @@ int ipt_register_table(struct net *net, const struct xt_table *table,
- 
- void ipt_unregister_table_exit(struct net *net, const char *name)
- {
--	struct xt_table *table = xt_find_table(net, NFPROTO_IPV4, name);
-+	struct xt_table *table = xt_unregister_table_exit(net, NFPROTO_IPV4, name);
- 
- 	if (table)
- 		__ipt_unregister_table(net, table);
-diff --git a/net/ipv4/netfilter/iptable_nat.c b/net/ipv4/netfilter/iptable_nat.c
-index e5e30d4e37eb0..d5153736f1d8c 100644
---- a/net/ipv4/netfilter/iptable_nat.c
-+++ b/net/ipv4/netfilter/iptable_nat.c
-@@ -126,8 +126,11 @@ static int iptable_nat_table_init(struct net *net)
- 	}
- 
- 	ret = ipt_nat_register_lookups(net);
--	if (ret < 0)
-+	if (ret < 0) {
-+		xt_unregister_table_pre_exit(net, NFPROTO_IPV4, "nat");
-+		synchronize_rcu();
- 		ipt_unregister_table_exit(net, "nat");
-+	}
- 
- 	kfree(repl);
- 	return ret;
-diff --git a/net/ipv6/netfilter/ip6_tables.c b/net/ipv6/netfilter/ip6_tables.c
-index 4fbb6111ed56e..2b4c3fa5a8d08 100644
---- a/net/ipv6/netfilter/ip6_tables.c
-+++ b/net/ipv6/netfilter/ip6_tables.c
-@@ -1715,12 +1715,10 @@ do_ip6t_get_ctl(struct sock *sk, int cmd, void __user *user, int *len)
- 
- static void __ip6t_unregister_table(struct net *net, struct xt_table *table)
- {
--	struct xt_table_info *private;
--	void *loc_cpu_entry;
-+	struct xt_table_info *private = table->private;
- 	struct module *table_owner = table->me;
- 	struct ip6t_entry *iter;
--
--	private = xt_unregister_table(table);
-+	void *loc_cpu_entry;
- 
- 	/* Decrease module usage counts and free resources */
- 	loc_cpu_entry = private->entries;
-@@ -1729,6 +1727,7 @@ static void __ip6t_unregister_table(struct net *net, struct xt_table *table)
- 	if (private->number > private->initial_entries)
- 		module_put(table_owner);
- 	xt_free_table_info(private);
-+	kfree(table);
- }
- 
- int ip6t_register_table(struct net *net, const struct xt_table *table,
-@@ -1799,7 +1798,7 @@ int ip6t_register_table(struct net *net, const struct xt_table *table,
- 
- void ip6t_unregister_table_exit(struct net *net, const char *name)
- {
--	struct xt_table *table = xt_find_table(net, NFPROTO_IPV6, name);
-+	struct xt_table *table = xt_unregister_table_exit(net, NFPROTO_IPV6, name);
- 
- 	if (table)
- 		__ip6t_unregister_table(net, table);
-diff --git a/net/ipv6/netfilter/ip6table_nat.c b/net/ipv6/netfilter/ip6table_nat.c
-index 18d5b39936466..4ba85748bf6d3 100644
---- a/net/ipv6/netfilter/ip6table_nat.c
-+++ b/net/ipv6/netfilter/ip6table_nat.c
-@@ -128,8 +128,11 @@ static int ip6table_nat_table_init(struct net *net)
- 	}
- 
- 	ret = ip6t_nat_register_lookups(net);
--	if (ret < 0)
-+	if (ret < 0) {
-+		xt_unregister_table_pre_exit(net, NFPROTO_IPV6, "nat");
-+		synchronize_rcu();
- 		ip6t_unregister_table_exit(net, "nat");
-+	}
- 
- 	kfree(repl);
- 	return ret;
-diff --git a/net/netfilter/x_tables.c b/net/netfilter/x_tables.c
-index 85155c64d0443..7c87e1a478d68 100644
---- a/net/netfilter/x_tables.c
-+++ b/net/netfilter/x_tables.c
-@@ -55,6 +55,9 @@ static struct list_head xt_templates[NFPROTO_NUMPROTO];
- 
- struct xt_pernet {
- 	struct list_head tables[NFPROTO_NUMPROTO];
-+
-+	/* stash area used during netns exit */
-+	struct list_head dead_tables[NFPROTO_NUMPROTO];
- };
- 
- struct compat_delta {
-@@ -1521,23 +1524,6 @@ struct xt_table *xt_register_table(struct net *net,
- }
- EXPORT_SYMBOL_GPL(xt_register_table);
- 
--void *xt_unregister_table(struct xt_table *table)
--{
--	struct xt_table_info *private;
--
--	mutex_lock(&xt[table->af].mutex);
--	private = table->private;
--	list_del(&table->list);
--	mutex_unlock(&xt[table->af].mutex);
--	audit_log_nfcfg(table->name, table->af, private->number,
--			AUDIT_XT_OP_UNREGISTER, GFP_KERNEL);
--	kfree(table->ops);
--	kfree(table);
--
--	return private;
--}
--EXPORT_SYMBOL_GPL(xt_unregister_table);
--
- /**
-  * xt_unregister_table_pre_exit - pre-shutdown unregister of a table
-  * @net: network namespace
-@@ -1547,6 +1533,14 @@ EXPORT_SYMBOL_GPL(xt_unregister_table);
-  * Unregisters the specified netfilter table from the given network namespace
-  * and also unregisters the hooks from netfilter core: no new packets will be
-  * processed.
-+ *
-+ * This must be called prior to xt_unregister_table_exit() from the pernet
-+ * .pre_exit callback.  After this call, the table is no longer visible to
-+ * the get/setsockopt path.  In case of rmmod, module exit path must have
-+ * called xt_unregister_template() prior to unregistering pernet ops to
-+ * prevent re-instantiation of the table.
-+ *
-+ * See also: xt_unregister_table_exit()
-  */
- void xt_unregister_table_pre_exit(struct net *net, u8 af, const char *name)
- {
-@@ -1556,6 +1550,7 @@ void xt_unregister_table_pre_exit(struct net *net, u8 af, const char *name)
- 	mutex_lock(&xt[af].mutex);
- 	list_for_each_entry(t, &xt_net->tables[af], list) {
- 		if (strcmp(t->name, name) == 0) {
-+			list_move(&t->list, &xt_net->dead_tables[af]);
- 			mutex_unlock(&xt[af].mutex);
- 
- 			if (t->ops) /* nat table registers with nat core, t->ops is NULL. */
-@@ -1566,6 +1561,50 @@ void xt_unregister_table_pre_exit(struct net *net, u8 af, const char *name)
- 	mutex_unlock(&xt[af].mutex);
- }
- EXPORT_SYMBOL(xt_unregister_table_pre_exit);
-+
-+/**
-+ * xt_unregister_table_exit - remove a table during namespace teardown
-+ * @net: the network namespace from which to unregister the table
-+ * @af: address family (e.g., NFPROTO_IPV4, NFPROTO_IPV6)
-+ * @name: name of the table to unregister
-+ *
-+ * Completes the unregister process for a table. This must be called from
-+ * the pernet ops .exit callback. This is the second stage after
-+ * xt_unregister_table_pre_exit().
-+ *
-+ * pair with xt_unregister_table_pre_exit() during namespace shutdown.
-+ *
-+ * Return: the unregistered table or NULL if the table was never
-+ *         instantiated. The caller needs to kfree() the table after it
-+ *         has removed the family specific matches/targets.
-+ */
-+struct xt_table *xt_unregister_table_exit(struct net *net, u8 af, const char *name)
-+{
-+	struct xt_pernet *xt_net = net_generic(net, xt_pernet_id);
-+	struct xt_table *table;
-+
-+	mutex_lock(&xt[af].mutex);
-+	list_for_each_entry(table, &xt_net->dead_tables[af], list) {
-+		struct nf_hook_ops *ops = NULL;
-+
-+		if (strcmp(table->name, name) != 0)
-+			continue;
-+
-+		list_del(&table->list);
-+
-+		audit_log_nfcfg(table->name, table->af, table->private->number,
-+				AUDIT_XT_OP_UNREGISTER, GFP_KERNEL);
-+		swap(table->ops, ops);
-+		mutex_unlock(&xt[af].mutex);
-+
-+		kfree(ops);
-+		return table;
-+	}
-+	mutex_unlock(&xt[af].mutex);
-+
-+	return NULL;
-+}
-+EXPORT_SYMBOL_GPL(xt_unregister_table_exit);
- #endif
- 
- #ifdef CONFIG_PROC_FS
-@@ -2012,8 +2051,10 @@ static int __net_init xt_net_init(struct net *net)
- 	struct xt_pernet *xt_net = net_generic(net, xt_pernet_id);
- 	int i;
- 
--	for (i = 0; i < NFPROTO_NUMPROTO; i++)
-+	for (i = 0; i < NFPROTO_NUMPROTO; i++) {
- 		INIT_LIST_HEAD(&xt_net->tables[i]);
-+		INIT_LIST_HEAD(&xt_net->dead_tables[i]);
-+	}
- 	return 0;
- }
- 
-@@ -2022,8 +2063,10 @@ static void __net_exit xt_net_exit(struct net *net)
- 	struct xt_pernet *xt_net = net_generic(net, xt_pernet_id);
- 	int i;
- 
--	for (i = 0; i < NFPROTO_NUMPROTO; i++)
-+	for (i = 0; i < NFPROTO_NUMPROTO; i++) {
- 		WARN_ON_ONCE(!list_empty(&xt_net->tables[i]));
-+		WARN_ON_ONCE(!list_empty(&xt_net->dead_tables[i]));
-+	}
- }
- 
- static struct pernet_operations xt_net_ops = {
+ 	/* Power down OTG module */
+ 	if (usb32) {
 -- 
 2.53.0
 
