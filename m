@@ -1,59 +1,59 @@
-Return-Path: <stable+bounces-257702-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-258476-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id qOgKBZ4eG2rC/QgAu9opvQ
-	(envelope-from <stable+bounces-257702-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:30:06 +0200
+	id gNVCF9wnG2rM/ggAu9opvQ
+	(envelope-from <stable+bounces-258476-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:09:32 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 812B260FCF7
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:30:05 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id A76686111C6
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:09:31 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id BCB1A30AC087
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 17:24:47 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id EB7263003813
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 18:08:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 59B16263F44;
-	Sat, 30 May 2026 17:24:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 01EC53112C1;
+	Sat, 30 May 2026 18:07:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gWLzcMKq"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZN1Mo3Q7"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 220BF340293;
-	Sat, 30 May 2026 17:24:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D83EE340A6F;
+	Sat, 30 May 2026 18:07:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780161887; cv=none; b=goW5qbjqfBhdRYuSLQqXjO2MeNbUh4mbSR6p6rdu9vzGOnFO+vDNGlraV1OdUhrCA1CVI783RCBV48oh3/22jw98bIBEEmhtYSsgvcMEkpSxG7nqlmDVsIz0JTCxMy4PfnxpgiTy3ITTtDuvtSdXw7xU8AB2ALz5xtQZjeGhJHM=
+	t=1780164477; cv=none; b=IEBWQHFl3AZFSCrM0Y5Y1PTUWTFfddETwm3Hjat02VXhLP08U030QFdklS97mpu3NFrgwWZq6d1yr8Ca0Q4j+vOO38LKSaHv834JsVQvJJ6GmI0q3UFZqABNOcMQI8F6AWHpWMvfgYzzq93ITcSjNDBn2pTsXK3O98DdGSymNQQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780161887; c=relaxed/simple;
-	bh=a8iUkmVY9xkGsypBOi7YD3cvqzTovIT5JO8fFEcifZk=;
+	s=arc-20240116; t=1780164477; c=relaxed/simple;
+	bh=k8Ce2JzHxTQZ/MC4Ob3bXP5OV/61Wn/Vfs9ip3g21fo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=in3PMtYD/CMSZQiQdfQ6Eu9HBJ/sxjB4BF6CVlvLOiplkRx54mW4/5QOLHzlwJJ8SWPN6aGKcL8XM8JMstiC11UDNWgv43N/7esDBXa3sYMefU8qzh1ORumCx1P0rj1ZVP35+MnsPv6QTlkXhPKbTVO6oPRwmlveuWDKAqm1HEc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gWLzcMKq; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 32F2F1F00893;
-	Sat, 30 May 2026 17:24:45 +0000 (UTC)
+	 MIME-Version; b=qJcTfQcCN9PB4pyo999Y9sa3Jc4PbEumrFoXdVe+n8NXnb+HJCjqOlNPOHlKQrNoEAD6naOsuwahYas1B68ETDzM1q0218S5GmkKwDoyF1s9X30dHyU+Fkqvdvus0dXDTV53aCQDKhVm+ZZWF61i93fDeouwNdCI+3WB/NrxsWc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZN1Mo3Q7; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 29FEE1F00893;
+	Sat, 30 May 2026 18:07:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780161885;
-	bh=kohF9OhRFkiJXKp1qS2Yu/DqawArLO6aC/1X+GRbzIY=;
+	s=korg; t=1780164476;
+	bh=zQZzK1p8S81CdEU3kVYKfjZiL+3YmxFCkjolzYpkRmc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=gWLzcMKqHpznvnHTcS4rrBpfxq9IBwaZH+TaJv8dAKWlLTn05omTukK/TBel0YtqE
-	 1tCesGhQR8tMQzz608Z92piJpT4pDGeYjCUT9KHKfInHbz9MIdc4X6/3H8f0NWw8ye
-	 uRVzVDzbHoG/vgT1/SyUr/2AhmkWe3AABxCj0QJA=
+	b=ZN1Mo3Q7ILvT8Q3OFR/iYoe58xPbE5+1B2+ANL6EWPc+ZnXY8zlIq1ITr7KLVw10T
+	 ON0H+NwAg8WQ2k2RjJPVkvlIeqR7rnVBWwRJwGjXg5VuNhzl3481QWLLPMj3uGK21I
+	 RhGJ1Or3wdAo1GQgfZ4nOLzd091VTHYO9od5p+/4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Eric Dumazet <edumazet@google.com>,
+	Boris Sukholitko <boris.sukholitko@broadcom.com>,
 	"David S. Miller" <davem@davemloft.net>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 756/969] neighbour: add RCU protection to neigh_tables[]
-Date: Sat, 30 May 2026 18:04:40 +0200
-Message-ID: <20260530160321.441296488@linuxfoundation.org>
+Subject: [PATCH 5.15 567/776] dissector: do not set invalid PPP protocol
+Date: Sat, 30 May 2026 18:04:41 +0200
+Message-ID: <20260530160254.771576024@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260530160300.485627683@linuxfoundation.org>
-References: <20260530160300.485627683@linuxfoundation.org>
+In-Reply-To: <20260530160240.228940103@linuxfoundation.org>
+References: <20260530160240.228940103@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,157 +66,76 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-258476-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-257702-lists,stable=lfdr.de];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	TO_DN_SOME(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable];
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
 	RCPT_COUNT_FIVE(0.00)[6];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	TAGGED_RCPT(0.00)[stable];
+	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim,davemloft.net:email]
-X-Rspamd-Queue-Id: 812B260FCF7
+	FROM_HAS_DN(0.00)[]
+X-Rspamd-Queue-Id: A76686111C6
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Eric Dumazet <edumazet@google.com>
+From: Boris Sukholitko <boris.sukholitko@broadcom.com>
 
-[ Upstream commit f8f2eb9de69a1119117d198547c13d7a1123a5a9 ]
+[ Upstream commit 2e861e5e97175dfa7b7bc055c45acdc06d2301d3 ]
 
-In order to remove RTNL protection from neightbl_dump_info()
-and neigh_dump_info() later, we need to add
-RCU protection to neigh_tables[].
+The following flower filter fails to match non-PPP_IP{V6} packets
+wrapped in PPP_SES protocol:
 
-Signed-off-by: Eric Dumazet <edumazet@google.com>
+tc filter add dev eth0 ingress protocol ppp_ses flower \
+        action simple sdata hi64
+
+The reason is that proto local variable is being set even when
+FLOW_DISSECT_RET_OUT_BAD status is returned.
+
+The fix is to avoid setting proto variable if the PPP protocol is unknown.
+
+Signed-off-by: Boris Sukholitko <boris.sukholitko@broadcom.com>
 Signed-off-by: David S. Miller <davem@davemloft.net>
-Stable-dep-of: 4438113be604 ("neigh: let neigh_xmit take skb ownership")
+Stable-dep-of: cc1ff87bce1c ("pppoe: drop PFC frames")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/core/neighbour.c | 30 +++++++++++++++++++-----------
- 1 file changed, 19 insertions(+), 11 deletions(-)
+ net/core/flow_dissector.c | 3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
 
-diff --git a/net/core/neighbour.c b/net/core/neighbour.c
-index 92dc1f1788de7..fe0e839972ba7 100644
---- a/net/core/neighbour.c
-+++ b/net/core/neighbour.c
-@@ -1764,7 +1764,7 @@ static void neigh_parms_destroy(struct neigh_parms *parms)
- 
- static struct lock_class_key neigh_table_proxy_queue_class;
- 
--static struct neigh_table *neigh_tables[NEIGH_NR_TABLES] __read_mostly;
-+static struct neigh_table __rcu *neigh_tables[NEIGH_NR_TABLES] __read_mostly;
- 
- void neigh_table_init(int index, struct neigh_table *tbl)
- {
-@@ -1821,13 +1821,19 @@ void neigh_table_init(int index, struct neigh_table *tbl)
- 	tbl->last_flush = now;
- 	tbl->last_rand	= now + tbl->parms.reachable_time * 20;
- 
--	neigh_tables[index] = tbl;
-+	rcu_assign_pointer(neigh_tables[index], tbl);
- }
- EXPORT_SYMBOL(neigh_table_init);
- 
-+/*
-+ * Only called from ndisc_cleanup(), which means this is dead code
-+ * because we no longer can unload IPv6 module.
-+ */
- int neigh_table_clear(int index, struct neigh_table *tbl)
- {
--	neigh_tables[index] = NULL;
-+	RCU_INIT_POINTER(neigh_tables[index], NULL);
-+	synchronize_rcu();
-+
- 	/* It is not clean... Fix it to unload IPv6 module safely */
- 	cancel_delayed_work_sync(&tbl->managed_work);
- 	cancel_delayed_work_sync(&tbl->gc_work);
-@@ -1859,10 +1865,10 @@ static struct neigh_table *neigh_find_table(int family)
- 
- 	switch (family) {
- 	case AF_INET:
--		tbl = neigh_tables[NEIGH_ARP_TABLE];
-+		tbl = rcu_dereference_rtnl(neigh_tables[NEIGH_ARP_TABLE]);
- 		break;
- 	case AF_INET6:
--		tbl = neigh_tables[NEIGH_ND_TABLE];
-+		tbl = rcu_dereference_rtnl(neigh_tables[NEIGH_ND_TABLE]);
- 		break;
- 	}
- 
-@@ -2328,7 +2334,7 @@ static int neightbl_set(struct sk_buff *skb, struct nlmsghdr *nlh,
- 	ndtmsg = nlmsg_data(nlh);
- 
- 	for (tidx = 0; tidx < NEIGH_NR_TABLES; tidx++) {
--		tbl = neigh_tables[tidx];
-+		tbl = rcu_dereference_rtnl(neigh_tables[tidx]);
- 		if (!tbl)
- 			continue;
- 		if (ndtmsg->ndtm_family && tbl->family != ndtmsg->ndtm_family)
-@@ -2516,7 +2522,7 @@ static int neightbl_dump_info(struct sk_buff *skb, struct netlink_callback *cb)
- 	for (tidx = 0; tidx < NEIGH_NR_TABLES; tidx++) {
- 		struct neigh_parms *p;
- 
--		tbl = neigh_tables[tidx];
-+		tbl = rcu_dereference_rtnl(neigh_tables[tidx]);
- 		if (!tbl)
- 			continue;
- 
-@@ -2877,7 +2883,7 @@ static int neigh_dump_info(struct sk_buff *skb, struct netlink_callback *cb)
- 	s_t = cb->args[0];
- 
- 	for (t = 0; t < NEIGH_NR_TABLES; t++) {
--		tbl = neigh_tables[t];
-+		tbl = rcu_dereference_rtnl(neigh_tables[t]);
- 
- 		if (!tbl)
- 			continue;
-@@ -3141,14 +3147,15 @@ int neigh_xmit(int index, struct net_device *dev,
- 	       const void *addr, struct sk_buff *skb)
- {
- 	int err = -EAFNOSUPPORT;
-+
- 	if (likely(index < NEIGH_NR_TABLES)) {
- 		struct neigh_table *tbl;
- 		struct neighbour *neigh;
- 
--		tbl = neigh_tables[index];
--		if (!tbl)
--			goto out;
- 		rcu_read_lock();
-+		tbl = rcu_dereference(neigh_tables[index]);
-+		if (!tbl)
-+			goto out_unlock;
- 		if (index == NEIGH_ARP_TABLE) {
- 			u32 key = *((u32 *)addr);
- 
-@@ -3164,6 +3171,7 @@ int neigh_xmit(int index, struct net_device *dev,
- 			goto out_kfree_skb;
+diff --git a/net/core/flow_dissector.c b/net/core/flow_dissector.c
+index ba437cfcbe90f..537dbd7fc5438 100644
+--- a/net/core/flow_dissector.c
++++ b/net/core/flow_dissector.c
+@@ -1207,9 +1207,8 @@ bool __skb_flow_dissect(const struct net *net,
+ 			break;
  		}
- 		err = READ_ONCE(neigh->output)(neigh, skb);
-+out_unlock:
- 		rcu_read_unlock();
- 	}
- 	else if (index == NEIGH_LINK_TABLE) {
+ 
+-		proto = hdr->proto;
+ 		nhoff += PPPOE_SES_HLEN;
+-		switch (proto) {
++		switch (hdr->proto) {
+ 		case htons(PPP_IP):
+ 			proto = htons(ETH_P_IP);
+ 			fdret = FLOW_DISSECT_RET_PROTO_AGAIN;
 -- 
 2.53.0
 
