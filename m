@@ -1,58 +1,58 @@
-Return-Path: <stable+bounces-257541-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-258287-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 6G3CNxsdG2qV/QgAu9opvQ
-	(envelope-from <stable+bounces-257541-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:23:39 +0200
+	id GBfYOfAmG2qS/ggAu9opvQ
+	(envelope-from <stable+bounces-258287-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:05:36 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7223B60F8B9
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:23:39 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8D132610F5A
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:05:36 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 22DCD30D70FF
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 17:15:54 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 5780330480CD
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 17:57:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CECB2263F44;
-	Sat, 30 May 2026 17:15:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 111B6341AC7;
+	Sat, 30 May 2026 17:57:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oqZozTDK"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0Atv1bO5"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A364D3A7848;
-	Sat, 30 May 2026 17:15:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E4044320CAD;
+	Sat, 30 May 2026 17:57:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780161340; cv=none; b=OcuFcbWgwSFPWZxE9Md9OgmAMqnxy1r5HRW19xianV05vBnhEWZyiYC6QDw+8yswe3UNTr0d5NkEVd0xO+ch3i0LLlQ2Xe5DgVdkjvrV9SHsrFf05ofxN8c1yNAq+tIhX3Wjh2+38qInNxO1UzAL+01hOKo+CPJN4PCm+4Wjchg=
+	t=1780163842; cv=none; b=KsSCBMLPA4oczuS2poCIsk6PQK2/BObmyvH3DcUQfE6uBB9VsA2odBUvMaw0S0pf8ClPsoXAATu4CD+bdzX9lgv5GWwIMO1zeWPuF0FH0TAGtQB1UEdMzmvb4U00y2mh33ePl1KxKeISMs3TdWy+WSCnrfFVGqjtvyrS/+JSHKc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780161340; c=relaxed/simple;
-	bh=sfxUOViDDPYBFis2cyXo6TYP5mQZXx9aSLjCEEyhGk4=;
+	s=arc-20240116; t=1780163842; c=relaxed/simple;
+	bh=XJvwSbSJ90F3e8vn0b5C8hSjngoDMxTOoX1ItGmLQ7c=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=JaJV90shBQh+zXKTiPt8eVHTnRwqtkbanYi/zr6CuNY3OO0VCb5hPKybmInYEF6SFEtQBgow/M+QokhJ2WAwRjx3w0FuObeuYU0xYLKNXMkShTNBenJFyCvzHFLolGsG1ZMDdJQk1DDHEajC2Ikmo7RQ7v84hhdcNnEs+WAdDHI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oqZozTDK; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E66351F00893;
-	Sat, 30 May 2026 17:15:38 +0000 (UTC)
+	 MIME-Version; b=dhwK1TJe0QD1tN9lAdM4+h8neksX7P2lwupD0rLVDJtq4UELBWrfWET3iUOqVTtSSToBJl72rNyAq84hDmHiZoqokX742L2wpOCMbefiuFmCSmaohcRqnVynms43UIa4bK5mQtxT0qVh+jEVrCN8A2R55fqaXS9ep7Uqa3Xd8IQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0Atv1bO5; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 060581F00893;
+	Sat, 30 May 2026 17:57:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780161339;
-	bh=kirhtgvf/UeDRUfeJIzubs2sy72g0CSbw6onaWjvWXs=;
+	s=korg; t=1780163841;
+	bh=SEtebZvbyzFW6JNdCpufAYPbPRkCdODJTACic6QcLzI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=oqZozTDKg4o+LRjkYY+rEdv/aDSNzcCC2LaqUsL5uY8+o7fzNEJHih40qbH3fqsr6
-	 LXmlfFXijzyONbDjLDFh04fjr6nrpaboCPYwl/8d8eTKqTX8n2EOAY6wB15v/CGjH/
-	 5iP07OHOeMdQ6e/vfVP8d3a2LaO1yl8UZ1ZHWLOY=
+	b=0Atv1bO5Viar0Pxzj8UJ4jRoMn5cF2R8OxkQuJJNG7o0uM3sL1YIwOpj0amc+7clD
+	 76IqLy0vsrvFGZdHAHOYVOZiTeyERN2pQUmKuRwH06ejkicFOz+z1LSp2zn69dEK3Q
+	 MQt9qit5Z7ZFZeF78t41RZmGInSe7JS4swrio04c=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Andreas Gruenbacher <agruenba@redhat.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 568/969] gfs2: add some missing log locking
+	stable@kernel.org,
+	Sven Eckelmann <sven@narfation.org>
+Subject: [PATCH 5.15 378/776] batman-adv: bla: only purge non-released claims
 Date: Sat, 30 May 2026 18:01:32 +0200
-Message-ID: <20260530160316.081177138@linuxfoundation.org>
+Message-ID: <20260530160250.293614831@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260530160300.485627683@linuxfoundation.org>
-References: <20260530160300.485627683@linuxfoundation.org>
+In-Reply-To: <20260530160240.228940103@linuxfoundation.org>
+References: <20260530160240.228940103@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,142 +65,86 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-257541-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	RCPT_COUNT_FIVE(0.00)[5];
+	RCVD_TLS_LAST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-258287-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
+	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[stable];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_FIVE(0.00)[5];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	FROM_HAS_DN(0.00)[]
-X-Rspamd-Queue-Id: 7223B60F8B9
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,narfation.org:email]
+X-Rspamd-Queue-Id: 8D132610F5A
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Andreas Gruenbacher <agruenba@redhat.com>
+From: Sven Eckelmann <sven@narfation.org>
 
-[ Upstream commit fe2c8d051150b90b3ccb85f89e3b1d636cb88ec8 ]
+commit cf6b604011591865ae39ac82de8978c1120d17af upstream.
 
-Function gfs2_logd() calls the log flushing functions gfs2_ail1_start(),
-gfs2_ail1_wait(), and gfs2_ail1_empty() without holding sdp->sd_log_flush_lock,
-but these functions require exclusion against concurrent transactions.
+When batadv_bla_purge_claims() goes through the list of claims, it is only
+traversing the hash list with an rcu_read_lock(). Due to a potential
+parallel batadv_claim_put(), it can happen that it encounters a claim which
+was actually in the process of being released+freed by
+batadv_claim_release(). In this case, backbone_gw is set to NULL before the
+delayed RCU kfree is started. Calling batadv_bla_claim_get_backbone_gw() is
+then no longer allowed because it would cause a NULL-ptr derefence.
 
-To fix that, add a non-locking __gfs2_log_flush() function.  Then, in
-gfs2_logd(), take sdp->sd_log_flush_lock before calling the above mentioned log
-flushing functions and __gfs2_log_flush().
+To avoid this, only claims with a valid reference counter must be purged.
+All others are already taken care of.
 
-Fixes: 5e4c7632aae1c ("gfs2: Issue revokes more intelligently")
-Signed-off-by: Andreas Gruenbacher <agruenba@redhat.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: stable@kernel.org
+Fixes: 23721387c409 ("batman-adv: add basic bridge loop avoidance code")
+Signed-off-by: Sven Eckelmann <sven@narfation.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/gfs2/log.c | 28 ++++++++++++++++++++--------
- 1 file changed, 20 insertions(+), 8 deletions(-)
+ net/batman-adv/bridge_loop_avoidance.c |    8 ++++++++
+ 1 file changed, 8 insertions(+)
 
-diff --git a/fs/gfs2/log.c b/fs/gfs2/log.c
-index 45f519ececd97..de6f38523db33 100644
---- a/fs/gfs2/log.c
-+++ b/fs/gfs2/log.c
-@@ -1025,14 +1025,15 @@ static void trans_drain(struct gfs2_trans *tr)
- }
+--- a/net/batman-adv/bridge_loop_avoidance.c
++++ b/net/batman-adv/bridge_loop_avoidance.c
+@@ -1287,6 +1287,13 @@ static void batadv_bla_purge_claims(stru
  
- /**
-- * gfs2_log_flush - flush incore transaction(s)
-+ * __gfs2_log_flush - flush incore transaction(s)
-  * @sdp: The filesystem
-  * @gl: The glock structure to flush.  If NULL, flush the whole incore log
-  * @flags: The log header flags: GFS2_LOG_HEAD_FLUSH_* and debug flags
-  *
-  */
- 
--void gfs2_log_flush(struct gfs2_sbd *sdp, struct gfs2_glock *gl, u32 flags)
-+static void __gfs2_log_flush(struct gfs2_sbd *sdp, struct gfs2_glock *gl,
-+			     u32 flags)
- {
- 	struct gfs2_trans *tr = NULL;
- 	unsigned int reserved_blocks = 0, used_blocks = 0;
-@@ -1040,7 +1041,6 @@ void gfs2_log_flush(struct gfs2_sbd *sdp, struct gfs2_glock *gl, u32 flags)
- 	unsigned int first_log_head;
- 	unsigned int reserved_revokes = 0;
- 
--	down_write(&sdp->sd_log_flush_lock);
- 	trace_gfs2_log_flush(sdp, 1, flags);
- 
- repeat:
-@@ -1151,7 +1151,6 @@ void gfs2_log_flush(struct gfs2_sbd *sdp, struct gfs2_glock *gl, u32 flags)
- 		gfs2_assert_withdraw_delayed(sdp, used_blocks < reserved_blocks);
- 		gfs2_log_release(sdp, reserved_blocks - used_blocks);
- 	}
--	up_write(&sdp->sd_log_flush_lock);
- 	gfs2_trans_free(sdp, tr);
- 	if (gfs2_withdrawing(sdp))
- 		gfs2_withdraw(sdp);
-@@ -1174,6 +1173,13 @@ void gfs2_log_flush(struct gfs2_sbd *sdp, struct gfs2_glock *gl, u32 flags)
- 	goto out_end;
- }
- 
-+void gfs2_log_flush(struct gfs2_sbd *sdp, struct gfs2_glock *gl, u32 flags)
-+{
-+	down_write(&sdp->sd_log_flush_lock);
-+	__gfs2_log_flush(sdp, gl, flags);
-+	up_write(&sdp->sd_log_flush_lock);
-+}
+ 		rcu_read_lock();
+ 		hlist_for_each_entry_rcu(claim, head, hash_entry) {
++			/* only purge claims not currently in the process of being released.
++			 * Such claims could otherwise have a NULL-ptr backbone_gw set because
++			 * they already went through batadv_claim_release()
++			 */
++			if (!kref_get_unless_zero(&claim->refcount))
++				continue;
 +
- /**
-  * gfs2_merge_trans - Merge a new transaction into a cached transaction
-  * @sdp: the filesystem
-@@ -1319,19 +1325,25 @@ int gfs2_logd(void *data)
+ 			backbone_gw = batadv_bla_claim_get_backbone_gw(claim);
+ 			if (now)
+ 				goto purge_now;
+@@ -1312,6 +1319,7 @@ purge_now:
+ 					      claim->addr, claim->vid);
+ skip:
+ 			batadv_backbone_gw_put(backbone_gw);
++			batadv_claim_put(claim);
  		}
- 
- 		if (gfs2_jrnl_flush_reqd(sdp) || t == 0) {
-+			down_write(&sdp->sd_log_flush_lock);
- 			gfs2_ail1_empty(sdp, 0);
--			gfs2_log_flush(sdp, NULL, GFS2_LOG_HEAD_FLUSH_NORMAL |
--						  GFS2_LFC_LOGD_JFLUSH_REQD);
-+			__gfs2_log_flush(sdp, NULL,
-+					 GFS2_LOG_HEAD_FLUSH_NORMAL |
-+					 GFS2_LFC_LOGD_JFLUSH_REQD);
-+			up_write(&sdp->sd_log_flush_lock);
- 		}
- 
- 		if (test_bit(SDF_FORCE_AIL_FLUSH, &sdp->sd_flags) ||
- 		    gfs2_ail_flush_reqd(sdp)) {
- 			clear_bit(SDF_FORCE_AIL_FLUSH, &sdp->sd_flags);
-+			down_write(&sdp->sd_log_flush_lock);
- 			gfs2_ail1_start(sdp);
- 			gfs2_ail1_wait(sdp);
- 			gfs2_ail1_empty(sdp, 0);
--			gfs2_log_flush(sdp, NULL, GFS2_LOG_HEAD_FLUSH_NORMAL |
--						  GFS2_LFC_LOGD_AIL_FLUSH_REQD);
-+			__gfs2_log_flush(sdp, NULL,
-+					 GFS2_LOG_HEAD_FLUSH_NORMAL |
-+					 GFS2_LFC_LOGD_AIL_FLUSH_REQD);
-+			up_write(&sdp->sd_log_flush_lock);
- 		}
- 
- 		t = gfs2_tune_get(sdp, gt_logd_secs) * HZ;
--- 
-2.53.0
-
+ 		rcu_read_unlock();
+ 	}
 
 
 
