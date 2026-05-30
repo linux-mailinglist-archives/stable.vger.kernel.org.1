@@ -1,60 +1,59 @@
-Return-Path: <stable+bounces-258472-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-259072-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id WJsSMRIqG2r//ggAu9opvQ
-	(envelope-from <stable+bounces-258472-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:18:58 +0200
+	id WAWYCtwxG2qkAAkAu9opvQ
+	(envelope-from <stable+bounces-259072-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:52:12 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2035661174D
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:18:57 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7D22D612A96
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:52:10 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 9E85D30D5AB5
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 18:07:45 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 28EE53015451
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 18:41:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 185CD3B9D80;
-	Sat, 30 May 2026 18:07:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DA13B2F3C3E;
+	Sat, 30 May 2026 18:41:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="E41eMRs+"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dycRBR84"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E776A3112C1;
-	Sat, 30 May 2026 18:07:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BE5B121B191;
+	Sat, 30 May 2026 18:41:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780164464; cv=none; b=J+RnMyLWdAb6EPqs1+GfziLtcCORk7GIoo1pxwzSiyCWb9VZLTrlDCELyosiQZNKk5DmyStzVIDx/62VRjihJfIn1VsqYaD504ExMobf+U7o7u/NDFGZMRDcZJa+Hjs4Njb13iRar28woLdxFptK47M9W0WG7EDZlkC08FyScW4=
+	t=1780166492; cv=none; b=HUGWUdqUDOMuwBsj7TgfLjBk0Hmrq416jvX/e6MgF3vnqeYtMimAnfmIsewxMd17udEyGmPwAu5HZWUOgqGNEw80K7OBtwC+PyodOXs6h7bpD9lR11mSEkCsYdzt6eAJtoG3L+Rdm3pzAfQ98KXnwiujbs1eBRATVdUzzY1MwsM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780164464; c=relaxed/simple;
-	bh=GUJhRvwhEjV4Qdme/cFu5dGliUtos4inbn0uasknNmA=;
+	s=arc-20240116; t=1780166492; c=relaxed/simple;
+	bh=jA5tdF1mdXTJCcl8MRwcgPucjS870jv9bv9caTyQcKo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=D2u1APKMnbsDTWDyDSbrH2fn2RLTp0CrbCq4wRqINkNh7cRRV5o4hQwG0QSSKyisODwqTv4cwUkSy9eqwkqKfFaV+YJLpVFoiziUxeojdv8qZj9cFdEkdA0wLzT2Zv7ht0zPZ+QP9RFtsv+cwBAJHgJNzZruCE57MzXp/KSOp0k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=E41eMRs+; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id ED7AB1F00893;
-	Sat, 30 May 2026 18:07:42 +0000 (UTC)
+	 MIME-Version; b=hTzhZZIv/xgF48qvLHWioxSfSa+pFm9igCyPHkOrPr2SruHulViMZNlgwde3A+oowMGxtTk7nVPJp9R0bmHCNWRSHyPlPdVnuA9vMF7MiGGNTn7hFzEfOJcdmpizu+JB8yZfmyzBFLNRufEwccm8CRf5tMwT8dWyfAmfNhkJLR8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dycRBR84; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0BDA21F00893;
+	Sat, 30 May 2026 18:41:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780164463;
-	bh=nkbfZ/ShXwvoKbBYAt4J9PkVl32WOk2bH2zmcCCFkBw=;
+	s=korg; t=1780166491;
+	bh=+dc//LD8NpPKsigvqCWHvc06jFQq1Yw8BVr1Gfu+NJ4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=E41eMRs+XX+RWtJX1mrWwxLp4mH2+pnvOzKTKQysGiNoWahSSiIVpPP45z44bg6jI
-	 Fad/TfDAiZtMpwX193QGD3HChH4LqMyCMvzAQXLwoC8e7Bo/GSUpnTMOYB/+oN9kp1
-	 E4udwoBB68NQ0SEpsfeLf1J5ATDsziTLZc6rRLXs=
+	b=dycRBR84AgJ4MVnDqPeTgykd77fNcWOYqdGlup0nUp5W1kWwyMAhj+mnPPGi5khRW
+	 9NJip5kBwm/eCIYUj5FA40flaF14iXGIFsEgh+sWx3nLttnNbGG/gkflCuwc6kjyAc
+	 2/+ysEcZKg94sXdiRiNNK1V/R5uYc/SiUB+EWwdk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jiayuan Chen <jiayuan.chen@linux.dev>,
-	David Ahern <dsahern@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
+	Nuno Sa <nuno.sa@analog.com>,
+	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 555/776] nexthop: fix IPv6 route referencing IPv4 nexthop
+Subject: [PATCH 5.10 388/589] dev_printk: add new dev_err_probe() helpers
 Date: Sat, 30 May 2026 18:04:29 +0200
-Message-ID: <20260530160254.490213980@linuxfoundation.org>
+Message-ID: <20260530160234.999046396@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260530160240.228940103@linuxfoundation.org>
-References: <20260530160240.228940103@linuxfoundation.org>
+In-Reply-To: <20260530160224.570625122@linuxfoundation.org>
+References: <20260530160224.570625122@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,98 +68,76 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-258472-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-259072-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[7];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-0.996];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,linux.dev:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,msgid.link:url,syzkaller.appspot.com:url]
-X-Rspamd-Queue-Id: 2035661174D
+	RCPT_COUNT_FIVE(0.00)[6];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,analog.com:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,msgid.link:url,huawei.com:email]
+X-Rspamd-Queue-Id: 7D22D612A96
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jiayuan Chen <jiayuan.chen@linux.dev>
+From: Nuno Sa <nuno.sa@analog.com>
 
-[ Upstream commit 29c95185ba32b621fbc3800fb86e7dc3edf5c2be ]
+[ Upstream commit dbbe7eaf0e4795bf003ac06872aaf52b6b6b1310 ]
 
-syzbot reported a panic [1] [2].
+This is similar to dev_err_probe() but for cases where an ERR_PTR() or
+ERR_CAST() is to be returned simplifying patterns like:
 
-When an IPv6 nexthop is replaced with an IPv4 nexthop, the has_v4 flag
-of all groups containing this nexthop is not updated. This is because
-nh_group_v4_update is only called when replacing AF_INET to AF_INET6,
-but the reverse direction (AF_INET6 to AF_INET) is missed.
+	dev_err_probe(dev, ret, ...);
+	return ERR_PTR(ret)
+or
+	dev_err_probe(dev, PTR_ERR(ptr), ...);
+	return ERR_CAST(ptr)
 
-This allows a stale has_v4=false to bypass fib6_check_nexthop, causing
-IPv6 routes to be attached to groups that effectively contain only AF_INET
-members. Subsequent route lookups then call nexthop_fib6_nh() which
-returns NULL for the AF_INET member, leading to a NULL pointer
-dereference.
-
-Fix by calling nh_group_v4_update whenever the family changes, not just
-AF_INET to AF_INET6.
-
-Reproducer:
-	# AF_INET6 blackhole
-	ip -6 nexthop add id 1 blackhole
-	# group with has_v4=false
-	ip nexthop add id 100 group 1
-	# replace with AF_INET (no -6), has_v4 stays false
-	ip nexthop replace id 1 blackhole
-	# pass stale has_v4 check
-	ip -6 route add 2001:db8::/64 nhid 100
-	# panic
-	ping -6 2001:db8::1
-
-[1] https://syzkaller.appspot.com/bug?id=e17283eb2f8dcf3dd9b47fe6f67a95f71faadad0
-[2] https://syzkaller.appspot.com/bug?id=8699b6ae54c9f35837d925686208402949e12ef3
-Fixes: 7bf4796dd099 ("nexthops: add support for replace")
-Signed-off-by: Jiayuan Chen <jiayuan.chen@linux.dev>
-Reviewed-by: David Ahern <dsahern@kernel.org>
-Link: https://patch.msgid.link/20260413114522.147784-1-jiayuan.chen@linux.dev
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Signed-off-by: Nuno Sa <nuno.sa@analog.com>
+Link: https://patch.msgid.link/20240606-dev-add_dev_errp_probe-v3-1-51bb229edd79@analog.com
+Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Stable-dep-of: 797cc011ae02 ("backlight: sky81452-backlight: Check return value of devm_gpiod_get_optional() in sky81452_bl_parse_dt()")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/ipv4/nexthop.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ include/linux/dev_printk.h | 8 ++++++++
+ 1 file changed, 8 insertions(+)
 
-diff --git a/net/ipv4/nexthop.c b/net/ipv4/nexthop.c
-index 9bd72526000c4..8cd148be09c6b 100644
---- a/net/ipv4/nexthop.c
-+++ b/net/ipv4/nexthop.c
-@@ -2161,10 +2161,10 @@ static int replace_nexthop_single(struct net *net, struct nexthop *old,
- 			goto err_notify;
- 	}
+diff --git a/include/linux/dev_printk.h b/include/linux/dev_printk.h
+index 6a6a6baa10bac..7d467d5426576 100644
+--- a/include/linux/dev_printk.h
++++ b/include/linux/dev_printk.h
+@@ -244,4 +244,12 @@ do {									\
  
--	/* When replacing an IPv4 nexthop with an IPv6 nexthop, potentially
-+	/* When replacing a nexthop with one of a different family, potentially
- 	 * update IPv4 indication in all the groups using the nexthop.
- 	 */
--	if (oldi->family == AF_INET && newi->family == AF_INET6) {
-+	if (oldi->family != newi->family) {
- 		list_for_each_entry(nhge, &old->grp_list, nh_list) {
- 			struct nexthop *nhp = nhge->nh_parent;
- 			struct nh_group *nhg;
+ __printf(3, 4) int dev_err_probe(const struct device *dev, int err, const char *fmt, ...);
+ 
++/* Simple helper for dev_err_probe() when ERR_PTR() is to be returned. */
++#define dev_err_ptr_probe(dev, ___err, fmt, ...) \
++	ERR_PTR(dev_err_probe(dev, ___err, fmt, ##__VA_ARGS__))
++
++/* Simple helper for dev_err_probe() when ERR_CAST() is to be returned. */
++#define dev_err_cast_probe(dev, ___err_ptr, fmt, ...) \
++	ERR_PTR(dev_err_probe(dev, PTR_ERR(___err_ptr), fmt, ##__VA_ARGS__))
++
+ #endif /* _DEVICE_PRINTK_H_ */
 -- 
 2.53.0
 
