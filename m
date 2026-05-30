@@ -1,64 +1,59 @@
-Return-Path: <stable+bounces-259220-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-258613-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 4JkrIxozG2qqAAkAu9opvQ
-	(envelope-from <stable+bounces-259220-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:57:30 +0200
+	id ECdSHFApG2rg/ggAu9opvQ
+	(envelope-from <stable+bounces-258613-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:15:44 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 18B67612D63
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:57:30 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1FD8D6115E8
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:15:44 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id E9DAA303D2DC
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 18:50:12 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 8B5583010BD9
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 18:15:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 172EE231A21;
-	Sat, 30 May 2026 18:50:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8FA863AB285;
+	Sat, 30 May 2026 18:15:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KkGPVR8R"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="R+2Pl9EI"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DBA70137750;
-	Sat, 30 May 2026 18:50:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6CE26284690;
+	Sat, 30 May 2026 18:15:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780167011; cv=none; b=lMgnK1lEflg5F+6bLSV3ASsmuAxG4Emod87cKD5nwZd3q20KJ2ZXSxq6ttlMnkM8JhpOoDh0CBNr0Xt9dMjh8o55i2GM4x6T97pmWg5ViodKoH79dIpO6dUfZQfM18xrte7R1q62YhiLUXyavHJP0XUdyqgyFP/h5juPg97hbwc=
+	t=1780164940; cv=none; b=tahioZIDqjm/bsH8w4vkjkCAPtbd/ZwC61ackEyJEtYBH3O4QMzODmmA1d3MHZyU13gaVyEOfCo3flB0trSqEyQmoQLXOj1MchrhbCfOxBXSKPlRzRCQG0ratbJN/5hEItWqn6NUgfI1Yqq7ges8+Q2nAAoQJsx8vwIQ3T1natc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780167011; c=relaxed/simple;
-	bh=Ik0ow9buupzsKQkD7yK9oO01Gs+SKRQE91/HzG5Wi2w=;
+	s=arc-20240116; t=1780164940; c=relaxed/simple;
+	bh=MQp096tmjRxEr+d5SVqdZeKLYMLcl1axV+cUMpPp67k=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=unA+yp5+27VJDy5L+924CVjtRCz6cmlab9bddBpEEXFKVvYbDSvKHIbaBDJuHqjUaiqoCRTiOMXsEJd8TEHgeV3DO+iUe4Rggr5u8da+faw1DsOruAPGE/IkonSwP+8RCVZotbGr06eZHEOKsz2xMMDqRe+tPudhbmn03KoJOkg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KkGPVR8R; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2B2471F00893;
-	Sat, 30 May 2026 18:50:09 +0000 (UTC)
+	 MIME-Version; b=ALI+KAQwETxAgfR6CwvRflX886sudnMIR2esQdPr8P6w5kZQXsOcpUoIhbTzgX6wEDF4qulCUQxgL5D55J+mhf22Jo/Bk9Zt1RztaTZ5bMAqRVKpW7uQgqAlMRGeKJDjaxsmzBQiBsCTxaVBkQzpNChap5sM1WUqOC49XjMORLc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=R+2Pl9EI; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9257A1F00893;
+	Sat, 30 May 2026 18:15:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780167010;
-	bh=kPRTiJMqBdL7X2/YbnBF2SrspX+0hpLuchrPGjjmQWA=;
+	s=korg; t=1780164939;
+	bh=OWA8aef//ZwscjAlQc+mFdiCWyIVJTsMtDYt1Dc23U0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=KkGPVR8Rga5wg0H8p3BQUQnl1ylW7kD6AVkk17w200opxtBd/gIh1FvRbia+zYgOg
-	 wsqqgoL13xN3eH8zjfTOMrVT+Of0IYO4OwxQcjGFwuThTg4V//siGlSI1R5+oa0Z0o
-	 vBi3NV7gUcWYXbAothTiSR6uxKBeYX3UlNuY4O3w=
+	b=R+2Pl9EI5Jf1IemY2L4IgFr8pMlB+HlAgeE6Oc0MWDqEIIPt092y1Vz2sULgB/OKr
+	 AFXJfIuc8CgFo6I6p9lm98Q/hQCxp99XMM0UcykAaEpWnhRg2AlNyMZcRZYMJcUTkh
+	 d5vJrb/94fEwd1n49gRNUFh4SVTzaAPWo+2jbiw8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable@kernel.org,
-	Yuan Tan <yuantan098@gmail.com>,
-	Yifan Wu <yifanwucs@gmail.com>,
-	Juefei Pu <tomapufckgml@gmail.com>,
-	Xin Liu <bird@lzu.edu.cn>,
-	Nan Li <tonanli66@gmail.com>,
-	Ren Wei <n05ec@lzu.edu.cn>,
-	Pablo Neira Ayuso <pablo@netfilter.org>
-Subject: [PATCH 5.10 536/589] netfilter: ipset: stop hash:* range iteration at end
+	Osama Abdelkader <osama.abdelkader@gmail.com>,
+	Luca Ceresoli <luca.ceresoli@bootlin.com>,
+	Ian Ray <ian.ray@gehealthcare.com>
+Subject: [PATCH 5.15 703/776] drm/bridge: megachips: remove bridge when irq request fails
 Date: Sat, 30 May 2026 18:06:57 +0200
-Message-ID: <20260530160238.781181025@linuxfoundation.org>
+Message-ID: <20260530160258.011639680@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260530160224.570625122@linuxfoundation.org>
-References: <20260530160224.570625122@linuxfoundation.org>
+In-Reply-To: <20260530160240.228940103@linuxfoundation.org>
+References: <20260530160240.228940103@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,167 +64,106 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,kernel.org,gmail.com,lzu.edu.cn,netfilter.org];
-	TAGGED_FROM(0.00)[bounces-259220-lists,stable=lfdr.de];
-	PRECEDENCE_BULK(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[11];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
 	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[netfilter.org:email,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
-X-Rspamd-Queue-Id: 18B67612D63
+	TAGGED_FROM(0.00)[bounces-258613-lists,stable=lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,bootlin.com,gehealthcare.com];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	NEURAL_HAM(-0.00)[-0.995];
+	TAGGED_RCPT(0.00)[stable];
+	MID_RHS_MATCH_FROM(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[6];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,bootlin.com:email,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,gehealthcare.com:email,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo]
+X-Rspamd-Queue-Id: 1FD8D6115E8
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Nan Li <tonanli66@gmail.com>
+From: Osama Abdelkader <osama.abdelkader@gmail.com>
 
-commit 0d3a282ab5f165fc207ff49ea5b6ad8f54616bd6 upstream.
+commit d45d5c819f2cd0b6b5d76a194a537a5f4aeefecb upstream.
 
-The following hash set variants:
+If devm_request_threaded_irq() fails after drm_bridge_add(), remove the
+bridge before returning.
 
-hash:ip,mark
-hash:ip,port
-hash:ip,port,ip
-hash:ip,port,net
+Keep drm_bridge_add() rather than devm_drm_bridge_add(): registration is
+tied to the STDP4028 device while ge_b850v3_register() may complete from
+either I2C probe; devm would not unwind the bridge if the other client's
+probe fails.
 
-iterate IPv4 ranges with a 32-bit iterator.
-
-The iterator must stop once the last address in the requested range has
-been processed. Advancing it once more can move the traversal state past
-the end of the request, so a later retry may continue from an unintended
-position.
-
-Handle the iterator increment explicitly at the end of the loop and stop
-once the upper bound has been processed. This keeps the existing retry
-behaviour intact for valid ranges while preventing traversal from
-continuing past the original boundary.
-
-Fixes: 48596a8ddc46 ("netfilter: ipset: Fix adding an IPv4 range containing more than 2^31 addresses")
-Cc: stable@kernel.org
-Reported-by: Yuan Tan <yuantan098@gmail.com>
-Reported-by: Yifan Wu <yifanwucs@gmail.com>
-Reported-by: Juefei Pu <tomapufckgml@gmail.com>
-Reported-by: Xin Liu <bird@lzu.edu.cn>
-Signed-off-by: Nan Li <tonanli66@gmail.com>
-Signed-off-by: Ren Wei <n05ec@lzu.edu.cn>
-Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
+Signed-off-by: Osama Abdelkader <osama.abdelkader@gmail.com>
+Fixes: fcfa0ddc18ed ("drm/bridge: Drivers for megachips-stdpxxxx-ge-b850v3-fw (LVDS-DP++)")
+Cc: stable@vger.kernel.org
+Reviewed-by: Luca Ceresoli <luca.ceresoli@bootlin.com>
+Tested-by: Ian Ray <ian.ray@gehealthcare.com>
+Link: https://patch.msgid.link/20260430195700.80317-1-osama.abdelkader@gmail.com
+Signed-off-by: Luca Ceresoli <luca.ceresoli@bootlin.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/netfilter/ipset/ip_set_hash_ipmark.c    |    6 +++++-
- net/netfilter/ipset/ip_set_hash_ipport.c    |    5 ++++-
- net/netfilter/ipset/ip_set_hash_ipportip.c  |    5 ++++-
- net/netfilter/ipset/ip_set_hash_ipportnet.c |    5 ++++-
- 4 files changed, 17 insertions(+), 4 deletions(-)
+ drivers/gpu/drm/bridge/megachips-stdpxxxx-ge-b850v3-fw.c |   16 +++++++++------
+ 1 file changed, 10 insertions(+), 6 deletions(-)
 
---- a/net/netfilter/ipset/ip_set_hash_ipmark.c
-+++ b/net/netfilter/ipset/ip_set_hash_ipmark.c
-@@ -149,7 +149,7 @@ hash_ipmark4_uadt(struct ip_set *set, st
+--- a/drivers/gpu/drm/bridge/megachips-stdpxxxx-ge-b850v3-fw.c
++++ b/drivers/gpu/drm/bridge/megachips-stdpxxxx-ge-b850v3-fw.c
+@@ -302,7 +302,6 @@ static void ge_b850v3_lvds_remove(void)
+ 		goto out;
  
- 	if (retried)
- 		ip = ntohl(h->next.ip);
--	for (; ip <= ip_to; ip++, i++) {
-+	for (; ip <= ip_to; i++) {
- 		e.ip = htonl(ip);
- 		if (i > IPSET_MAX_RANGE) {
- 			hash_ipmark4_data_next(&h->next, &e);
-@@ -161,6 +161,10 @@ hash_ipmark4_uadt(struct ip_set *set, st
- 			return ret;
+ 	drm_bridge_remove(&ge_b850v3_lvds_ptr->bridge);
+-
+ 	ge_b850v3_lvds_ptr = NULL;
+ out:
+ 	mutex_unlock(&ge_b850v3_lvds_dev_mutex);
+@@ -312,6 +311,7 @@ static int ge_b850v3_register(void)
+ {
+ 	struct i2c_client *stdp4028_i2c = ge_b850v3_lvds_ptr->stdp4028_i2c;
+ 	struct device *dev = &stdp4028_i2c->dev;
++	int ret;
  
- 		ret = 0;
+ 	/* drm bridge initialization */
+ 	ge_b850v3_lvds_ptr->bridge.funcs = &ge_b850v3_lvds_funcs;
+@@ -329,11 +329,15 @@ static int ge_b850v3_register(void)
+ 	if (!stdp4028_i2c->irq)
+ 		return 0;
+ 
+-	return devm_request_threaded_irq(&stdp4028_i2c->dev,
+-			stdp4028_i2c->irq, NULL,
+-			ge_b850v3_lvds_irq_handler,
+-			IRQF_TRIGGER_HIGH | IRQF_ONESHOT,
+-			"ge-b850v3-lvds-dp", ge_b850v3_lvds_ptr);
++	ret = devm_request_threaded_irq(&stdp4028_i2c->dev,
++					stdp4028_i2c->irq, NULL,
++					ge_b850v3_lvds_irq_handler,
++					IRQF_TRIGGER_HIGH | IRQF_ONESHOT,
++					"ge-b850v3-lvds-dp", ge_b850v3_lvds_ptr);
++	if (ret)
++		drm_bridge_remove(&ge_b850v3_lvds_ptr->bridge);
 +
-+		if (ip == ip_to)
-+			break;
-+		ip++;
- 	}
- 	return ret;
++	return ret;
  }
---- a/net/netfilter/ipset/ip_set_hash_ipport.c
-+++ b/net/netfilter/ipset/ip_set_hash_ipport.c
-@@ -174,7 +174,7 @@ hash_ipport4_uadt(struct ip_set *set, st
  
- 	if (retried)
- 		ip = ntohl(h->next.ip);
--	for (; ip <= ip_to; ip++) {
-+	for (; ip <= ip_to;) {
- 		p = retried && ip == ntohl(h->next.ip) ? ntohs(h->next.port)
- 						       : port;
- 		for (; p <= port_to; p++, i++) {
-@@ -191,6 +191,9 @@ hash_ipport4_uadt(struct ip_set *set, st
- 
- 			ret = 0;
- 		}
-+		if (ip == ip_to)
-+			break;
-+		ip++;
- 	}
- 	return ret;
- }
---- a/net/netfilter/ipset/ip_set_hash_ipportip.c
-+++ b/net/netfilter/ipset/ip_set_hash_ipportip.c
-@@ -181,7 +181,7 @@ hash_ipportip4_uadt(struct ip_set *set,
- 
- 	if (retried)
- 		ip = ntohl(h->next.ip);
--	for (; ip <= ip_to; ip++) {
-+	for (; ip <= ip_to;) {
- 		p = retried && ip == ntohl(h->next.ip) ? ntohs(h->next.port)
- 						       : port;
- 		for (; p <= port_to; p++, i++) {
-@@ -198,6 +198,9 @@ hash_ipportip4_uadt(struct ip_set *set,
- 
- 			ret = 0;
- 		}
-+		if (ip == ip_to)
-+			break;
-+		ip++;
- 	}
- 	return ret;
- }
---- a/net/netfilter/ipset/ip_set_hash_ipportnet.c
-+++ b/net/netfilter/ipset/ip_set_hash_ipportnet.c
-@@ -273,7 +273,7 @@ hash_ipportnet4_uadt(struct ip_set *set,
- 		p = port;
- 		ip2 = ip2_from;
- 	}
--	for (; ip <= ip_to; ip++) {
-+	for (; ip <= ip_to;) {
- 		e.ip = htonl(ip);
- 		for (; p <= port_to; p++) {
- 			e.port = htons(p);
-@@ -297,6 +297,9 @@ hash_ipportnet4_uadt(struct ip_set *set,
- 			ip2 = ip2_from;
- 		}
- 		p = port;
-+		if (ip == ip_to)
-+			break;
-+		ip++;
- 	}
- 	return ret;
- }
+ static int stdp4028_ge_b850v3_fw_probe(struct i2c_client *stdp4028_i2c,
 
 
 
