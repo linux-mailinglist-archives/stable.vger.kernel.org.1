@@ -1,59 +1,64 @@
-Return-Path: <stable+bounces-256930-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-258110-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id wBXnGkYMG2q/+ggAu9opvQ
-	(envelope-from <stable+bounces-256930-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 18:11:50 +0200
+	id QDzUCVAkG2pm/ggAu9opvQ
+	(envelope-from <stable+bounces-258110-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:54:24 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 17AE960DFBC
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 18:11:50 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9CDA26109F1
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:54:23 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 548EB30041EE
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 16:11:20 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id E7F2A3000E24
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 17:47:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F149433F8C5;
-	Sat, 30 May 2026 16:11:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 86FA83BE620;
+	Sat, 30 May 2026 17:47:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mVh20xNM"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ecpzAVuf"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BC20332BF24;
-	Sat, 30 May 2026 16:11:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CDC9D3B9DB6;
+	Sat, 30 May 2026 17:47:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780157472; cv=none; b=E12laP1oUbwIeqP20sEEUWPK8N6uCFdbpeyz1nwQS6Q2MgqXOZgFW53UOVyCUR/iHIFj022PWhhZzyq/7KlstruWM74qiJs/gh3/1d5/PsQPB5i75WrX+bqoLn1ANuJceDhohJhGyHu2hEf/gfLxH8hO/26X3ifvdY5RHO/fOLk=
+	t=1780163250; cv=none; b=fleCYGtmOQVPiNDF/EkoyTYCRhtvWewfvkKVaFLiwqWJMv6j6W34FUVjhsLXCSGHABpBHLj4lkwSc947u2bg+BpsHTOUCht7yl3wGbig5xKnBIxHSXqGTNHVwi2fETcRsALTJ1FGDSml5brNy78rP0GtgBeguwR/IkyEdxbu/C4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780157472; c=relaxed/simple;
-	bh=xN7ijb5xDukfhd7kalFEVjLbt2ulgE/y5Dgm5JY8tXw=;
+	s=arc-20240116; t=1780163250; c=relaxed/simple;
+	bh=A10gCUirh5tIvwSZ+9hxoYRR/ZCZPpEdzY1Bt3aI93c=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=BDm1TDCZbmR2WDFCqWhAdGIDHSez8kgmAe0GAQjSHUjJ9D+GqcLaEjAXMMJtuyzcNhngOXmntyz9A6smw370X3ucULdiIaScSP1DqrrBfPLW4KmecnzBJZT+PWQbUDMsLnGWD2vk4bZfxS3xbM0hjCrY4GWgcV9FlgaTQwAeGk0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mVh20xNM; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D3CE11F00893;
-	Sat, 30 May 2026 16:11:10 +0000 (UTC)
+	 MIME-Version; b=Jg4uDdWvEcuczkMd4ZoFJZg0Y48EjytXlhHpyeOsqJ+vkoCVsCxkPutkyV2/MQtR5lQwbAlJdo+VEeXeQlJSl7k9BDjjeqHu3hMLwn4ivHsZ0zezsESzDQ/dIsp+VXBPE1w7zc1PpJD/O3WhL7TM10z3VgWM5KJg2T/9xEoo/RU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ecpzAVuf; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1BFE71F00898;
+	Sat, 30 May 2026 17:47:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780157471;
-	bh=sP1/6Dbl3yp2DgO9579g/oIAcBknr+o/GwgzEgffQj8=;
+	s=korg; t=1780163248;
+	bh=Bdq5aE+3B4fPsaazIRxrp4aKTJM6GAADGe9jyCMVXQM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=mVh20xNMdHpeQqIl6tEHCp0+dvNqnDYnkkxKirSp0GxSlLn34RSIiNYCNx1f8PDhw
-	 +eq5JWZ+RR85BjDFwsaMezZW/JtZBrj+z3+nXTnIQnPz+C4VZUoyZsK1e0xKsCZe9C
-	 bYj83f+aMoJBANscr9UagYw5RM/ANfkVsHbza6hQ=
+	b=ecpzAVufct8TasTLO+gN7R4VSDmmDlvoERG1drcEhSE1BAGw0jYveR05OsRSUq66I
+	 FSH766+Bwj/3/48H+4Nub0F7MMF0UxOWViZT1Q0B6V9yhV4xZz68NmmBeh/v6fKExS
+	 LoMMPIxPXMjd/n7DABbAU8f+4bu/QLD5Wkxyq9YA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Arnd Bergmann <arnd@arndb.de>,
-	Takashi Iwai <tiwai@suse.de>,
+	David Howells <dhowells@redhat.com>,
+	Marc Dionne <marc.dionne@auristor.com>,
+	Jeffrey Altman <jaltman@auristor.com>,
+	Simon Horman <horms@kernel.org>,
+	linux-afs@lists.infradead.org,
+	stable@kernel.org,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 001/589] ALSA: asihpi: avoid write overflow check warning
+Subject: [PATCH 5.15 168/776] rxrpc: Fix anonymous key handling
 Date: Sat, 30 May 2026 17:58:02 +0200
-Message-ID: <20260530160224.616308935@linuxfoundation.org>
+Message-ID: <20260530160244.832825344@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260530160224.570625122@linuxfoundation.org>
-References: <20260530160224.570625122@linuxfoundation.org>
+In-Reply-To: <20260530160240.228940103@linuxfoundation.org>
+References: <20260530160240.228940103@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -68,87 +73,82 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
+	TAGGED_FROM(0.00)[bounces-258110-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-256930-lists,stable=lfdr.de];
-	TO_DN_SOME(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	PRECEDENCE_BULK(0.00)[];
 	MID_RHS_MATCH_FROM(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[11];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,suse.de:email,arndb.de:email,msgid.link:url]
-X-Rspamd-Queue-Id: 17AE960DFBC
+	TAGGED_RCPT(0.00)[stable];
+	TO_DN_SOME(0.00)[];
+	FROM_HAS_DN(0.00)[]
+X-Rspamd-Queue-Id: 9CDA26109F1
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Arnd Bergmann <arnd@arndb.de>
+From: David Howells <dhowells@redhat.com>
 
-[ Upstream commit 591721223be9e28f83489a59289579493b8e3d83 ]
+[ Upstream commit 6a59d84b4fc2f27f7b40e348506cc686712e260b ]
 
-clang-22 rightfully warns that the memcpy() in adapter_prepare() copies
-between different structures, crossing the boundary of nested
-structures inside it:
+In rxrpc_new_client_call_for_sendmsg(), a key with no payload is meant to
+be substituted for a NULL key pointer, but the variable this is done with
+is subsequently not used.
 
-In file included from sound/pci/asihpi/hpimsgx.c:13:
-In file included from include/linux/string.h:386:
-include/linux/fortify-string.h:569:4: error: call to '__write_overflow_field' declared with 'warning' attribute: detected write beyond size of field (1st parameter); maybe use struct_group()? [-Werror,-Wattribute-warning]
-  569 |                         __write_overflow_field(p_size_field, size);
+Fix this by using "key" rather than "rx->key" when filling in the
+connection parameters.
 
-The two structures seem to refer to the same layout, despite the
-separate definitions, so the code is in fact correct.
+Note that this only affects direct use of AF_RXRPC; the kAFS filesystem
+doesn't use sendmsg() directly and so bypasses the issue.  Further,
+AF_RXRPC passes a NULL key in if no key is set, so using an anonymous key
+in that manner works.  Since this hasn't been noticed to this point, it
+might be better just to remove the "key" variable and the code that sets it
+- and, arguably, rxrpc_init_client_call_security() would be a better place
+to handle it.
 
-Avoid the warning by copying the two inner structures separately.
-I see the same pattern happens in other functions in the same file,
-so there is a chance that this may come back in the future, but
-this instance is the only one that I saw in practice, hitting it
-multiple times per day in randconfig build.
-
-Signed-off-by: Arnd Bergmann <arnd@arndb.de>
-Link: https://patch.msgid.link/20260318124016.3488566-1-arnd@kernel.org
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
+Fixes: 19ffa01c9c45 ("rxrpc: Use structs to hold connection params and protocol info")
+Closes: https://sashiko.dev/#/patchset/20260319150150.4189381-1-dhowells%40redhat.com
+Signed-off-by: David Howells <dhowells@redhat.com>
+cc: Marc Dionne <marc.dionne@auristor.com>
+cc: Jeffrey Altman <jaltman@auristor.com>
+cc: Simon Horman <horms@kernel.org>
+cc: linux-afs@lists.infradead.org
+cc: stable@kernel.org
+Link: https://patch.msgid.link/20260408121252.2249051-4-dhowells@redhat.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- sound/pci/asihpi/hpimsgx.c | 6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
+ net/rxrpc/sendmsg.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/sound/pci/asihpi/hpimsgx.c b/sound/pci/asihpi/hpimsgx.c
-index 761fc62f68f16..85a354cf082ff 100644
---- a/sound/pci/asihpi/hpimsgx.c
-+++ b/sound/pci/asihpi/hpimsgx.c
-@@ -586,8 +586,10 @@ static u16 adapter_prepare(u16 adapter)
- 		HPI_ADAPTER_OPEN);
- 	hm.adapter_index = adapter;
- 	hw_entry_point(&hm, &hr);
--	memcpy(&rESP_HPI_ADAPTER_OPEN[adapter], &hr,
--		sizeof(rESP_HPI_ADAPTER_OPEN[0]));
-+	memcpy(&rESP_HPI_ADAPTER_OPEN[adapter].h, &hr,
-+		sizeof(rESP_HPI_ADAPTER_OPEN[adapter].h));
-+	memcpy(&rESP_HPI_ADAPTER_OPEN[adapter].a, &hr.u.ax.info,
-+		sizeof(rESP_HPI_ADAPTER_OPEN[adapter].a));
- 	if (hr.error)
- 		return hr.error;
+--- a/net/rxrpc/sendmsg.c
++++ b/net/rxrpc/sendmsg.c
+@@ -624,7 +624,7 @@ rxrpc_new_client_call_for_sendmsg(struct
  
--- 
-2.53.0
-
+ 	memset(&cp, 0, sizeof(cp));
+ 	cp.local		= rx->local;
+-	cp.key			= rx->key;
++	cp.key			= key;
+ 	cp.security_level	= rx->min_sec_level;
+ 	cp.exclusive		= rx->exclusive | p->exclusive;
+ 	cp.upgrade		= p->upgrade;
 
 
 
