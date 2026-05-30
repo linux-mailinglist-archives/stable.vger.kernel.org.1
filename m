@@ -1,61 +1,59 @@
-Return-Path: <stable+bounces-257825-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-258630-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id oAbxIU8fG2rO/QgAu9opvQ
-	(envelope-from <stable+bounces-257825-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:33:03 +0200
+	id +OsjGyoqG2r//ggAu9opvQ
+	(envelope-from <stable+bounces-258630-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:19:22 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 819C260FE40
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 19:33:02 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id 81F4261177C
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 20:19:21 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 0ACF73014263
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 17:31:38 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 43FEC301B039
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 18:16:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 78E55341AB8;
-	Sat, 30 May 2026 17:31:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 62944274FDC;
+	Sat, 30 May 2026 18:16:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wOhqMNxR"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nET46q9o"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 54AD42E7379;
-	Sat, 30 May 2026 17:31:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2AF46241C8C;
+	Sat, 30 May 2026 18:16:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780162296; cv=none; b=crgqcUhOrlxPfOVFOC2X/lTIjzjyrvyVQUdlYAtMut6Qr5PzqNttaV4zBtf8wZgIfnghDDxHem0PJvktvFWyqmP0+X6+aZzZoMVLtjRkvftT1k0rwkv5CsTDrokZT30oKe2gs1oVy1qWADUfp0yduW01cM9qD8IHRhSbBYAAVZw=
+	t=1780164999; cv=none; b=TCiar7/ihv2LFZNAMQrLeOYmpIBGFQ/dp021yr2eXtpDYO2sVeDOnVF26a6bsoXPcSPpBSMD33Qtbpplg2smYPhRQaaf8Fr81Rug9/ygUTundHpn8IWOwkQ/5t2AYcehu56JRnnnn4X6k7nv7pR1UMRD1QqyPgy1dmMq8iYAQdk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780162296; c=relaxed/simple;
-	bh=hRkMde9IVgJ2lHCXygL3/Ei2Az4aSv5sU7vrd9fPeuQ=;
+	s=arc-20240116; t=1780164999; c=relaxed/simple;
+	bh=dtzQkS6mniZyrnaFd+jnXkSXEV4Vl+5wXT72xlWYSn0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=OFAcSESicptjPKCGGhMBASyHTJvXQ/R6FAWaGl75Mwc3fS6oeMs6FSctotRHfz0jaRziC77ycN41w4bYTradGNXwjByGtizqzQPSTyG0vaDcscVaDrDu/Ea+QsfbnErL96Q2Yq09R39iXnGGXg0WlTednyu3fJ1sgxRNOL5kBRU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wOhqMNxR; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 99B361F00893;
-	Sat, 30 May 2026 17:31:34 +0000 (UTC)
+	 MIME-Version; b=rjAPyMRDqBXckV0Gs4Ge42xccPUIrjlq8Mr6kw1XgO8uuVJaxYFcAHTkPHhU9jEfCBlBtStZu6pKtTwrce+L9UDoCY9MqhMkH0Gjpl/XGAaYOyALM0mojccbBg3g3fX+XpNv9zU6SBTa4FdNeIDxnTVOUs+coLGPIAMvSC7Os9E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nET46q9o; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6EF651F00893;
+	Sat, 30 May 2026 18:16:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780162295;
-	bh=iR9J/ElfvmjkNZ20TKj6TQU+euVe3J91YLvPCgLcKe4=;
+	s=korg; t=1780164998;
+	bh=LchWMPfSPKoEdEddtxSFFR9qOPNQKcVt2s0zLcdzyFk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=wOhqMNxRPCGXgx8OJ7vDBTd/ezDWL2KloIZ8ybbtuZTZvfA/pUV4S5hzgawlefZnx
-	 5hoNOWUyPwuBHbKMlw3b4AO8gpQoIuKwtQ8mdjL46BnJSCmVzMh/z5jRfsMH5FfKQu
-	 TaO7ak9t5CkisX4KvjWR/k4i6qAhPsnjbhyG5kNY=
+	b=nET46q9ozk6fzhwkuG0IKHuaAqjYwggSBmW99uhByX+QLoB3Mwte26zDE1ig18++f
+	 b+nXlWipbmRi53ZLE/9dpCwT0f64J5mFZcrueIbsQw79CRzNwgX/L6n/zl5LfVLoro
+	 oZrZlcpEhbAVAYdtJwvV5ZqSJ7x57p9skEjfLPxI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alex Hung <alex.hung@amd.com>,
-	Harry Wentland <harry.wentland@amd.com>,
-	Ivan Lipski <ivan.lipski@amd.com>,
-	Dan Wheeler <daniel.wheeler@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>
-Subject: [PATCH 6.1 879/969] drm/amd/display: Validate payload length and link_index in dc_process_dmub_aux_transfer_async
-Date: Sat, 30 May 2026 18:06:43 +0200
-Message-ID: <20260530160324.959479667@linuxfoundation.org>
+	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
+	"Masami Hiramatsu (Google)" <mhiramat@kernel.org>,
+	Steven Rostedt <rostedt@goodmis.org>
+Subject: [PATCH 5.15 690/776] ring-buffer: Fix reporting of missed events in iterator
+Date: Sat, 30 May 2026 18:06:44 +0200
+Message-ID: <20260530160257.683601237@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260530160300.485627683@linuxfoundation.org>
-References: <20260530160300.485627683@linuxfoundation.org>
+In-Reply-To: <20260530160240.228940103@linuxfoundation.org>
+References: <20260530160240.228940103@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -70,82 +68,104 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-257825-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-258630-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
-	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[8];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-0.995];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,amd.com:email,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim]
-X-Rspamd-Queue-Id: 819C260FE40
+	RCPT_COUNT_FIVE(0.00)[6];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[efficios.com:email,goodmis.org:email,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,msgid.link:url,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo]
+X-Rspamd-Queue-Id: 81F4261177C
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Harry Wentland <harry.wentland@amd.com>
+From: Steven Rostedt <rostedt@goodmis.org>
 
-commit 6c92f6d9600efa3ef0d9e560a2b52776d9803c29 upstream.
+commit a254b6d13b0edd6272926674d2afc46d46e496b7 upstream.
 
-[Why&How]
-dc_process_dmub_aux_transfer_async() copies payload->length bytes into a
-16-byte stack buffer (dpaux.data[16]) guarded only by an ASSERT(), which
-is a no-op in release builds. If a caller ever passes length > 16 this
-results in a stack buffer overflow via memcpy.
+When tracing is active while reading the trace file, if the iterator
+reading the buffer detects that the writer has passed the iterator head,
+it will reset and set a "missed events" flag. This flag is passed to the
+output processing to show the user that events were missed:
 
-Additionally, link_index is used to dereference dc->links[] without
-bounds checking against dc->link_count, risking an out-of-bounds access.
+  CPU:4 [LOST EVENTS]
 
-Replace the ASSERT with a hard runtime check that returns false when
-payload->length exceeds the destination buffer size, and add a bounds
-check for link_index before it is used.
+The problem is that the flag is reset after it is checked in
+ring_buffer_iter_dropped(). But the "trace" file iterates over all the CPU
+ring buffers and it will check if they are dropped when figuring out which
+buffer to print next. This prematurely clears the missed_events flag if
+the CPU buffer with the missed events is not the one that is printed next.
 
-Assisted-by: GitHub Copilot:Claude claude-4-opus
-Reviewed-by: Alex Hung <alex.hung@amd.com>
-Signed-off-by: Harry Wentland <harry.wentland@amd.com>
-Signed-off-by: Ivan Lipski <ivan.lipski@amd.com>
-Tested-by: Dan Wheeler <daniel.wheeler@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-(cherry picked from commit ba4caa9fecdf7a38f98c878ad05a8a64148b6881)
+On the iteration where the CPU buffer with the missed events is printed,
+the check if it had missed events would return false and the output does
+not show that events were missed.
+
+Do not reset the missed_events flag when checking if there were missed
+events, but instead clear it when moving the iterator head to the next
+event.
+
 Cc: stable@vger.kernel.org
+Cc: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
+Link: https://patch.msgid.link/20260520220801.4fd09d13@fedora
+Fixes: c9b7a4a72ff64 ("ring-buffer/tracing: Have iterator acknowledge dropped events")
+Acked-by: Masami Hiramatsu (Google) <mhiramat@kernel.org>
+Signed-off-by: Steven Rostedt <rostedt@goodmis.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/amd/display/dc/core/dc.c |    6 +++++-
- 1 file changed, 5 insertions(+), 1 deletion(-)
+ kernel/trace/ring_buffer.c |    8 +++-----
+ 1 file changed, 3 insertions(+), 5 deletions(-)
 
---- a/drivers/gpu/drm/amd/display/dc/core/dc.c
-+++ b/drivers/gpu/drm/amd/display/dc/core/dc.c
-@@ -4737,7 +4737,11 @@ bool dc_process_dmub_aux_transfer_async(
- 	union dmub_rb_cmd cmd = {0};
- 	struct dc_dmub_srv *dmub_srv = dc->ctx->dmub_srv;
+--- a/kernel/trace/ring_buffer.c
++++ b/kernel/trace/ring_buffer.c
+@@ -4346,6 +4346,7 @@ static void rb_iter_reset(struct ring_bu
+ 	iter->head_page = cpu_buffer->reader_page;
+ 	iter->head = cpu_buffer->reader_page->read;
+ 	iter->next_event = iter->head;
++	iter->missed_events = 0;
  
--	ASSERT(payload->length <= 16);
-+	if (link_index >= dc->link_count || !dc->links[link_index])
-+		return false;
-+
-+	if (payload->length > sizeof(cmd.dp_aux_access.aux_control.dpaux.data))
-+		return false;
+ 	iter->cache_reader_page = iter->head_page;
+ 	iter->cache_read = cpu_buffer->read;
+@@ -4955,10 +4956,7 @@ ring_buffer_peek(struct trace_buffer *bu
+  */
+ bool ring_buffer_iter_dropped(struct ring_buffer_iter *iter)
+ {
+-	bool ret = iter->missed_events != 0;
+-
+-	iter->missed_events = 0;
+-	return ret;
++	return iter->missed_events != 0;
+ }
+ EXPORT_SYMBOL_GPL(ring_buffer_iter_dropped);
  
- 	cmd.dp_aux_access.header.type = DMUB_CMD__DP_AUX_ACCESS;
- 	cmd.dp_aux_access.header.payload_bytes = 0;
+@@ -5175,7 +5173,7 @@ void ring_buffer_iter_advance(struct rin
+ 	unsigned long flags;
+ 
+ 	raw_spin_lock_irqsave(&cpu_buffer->reader_lock, flags);
+-
++	iter->missed_events = 0;
+ 	rb_advance_iter(iter);
+ 
+ 	raw_spin_unlock_irqrestore(&cpu_buffer->reader_lock, flags);
 
 
 
