@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-257118-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-257120-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id MK3GFQUWG2pV/AgAu9opvQ
-	(envelope-from <stable+bounces-257118-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 18:53:25 +0200
+	id UI6xHxgWG2pV/AgAu9opvQ
+	(envelope-from <stable+bounces-257120-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 18:53:44 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id C90F060E8AC
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 18:53:23 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id F131260E8C7
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 18:53:43 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 36D593051FE5
-	for <lists+stable@lfdr.de>; Sat, 30 May 2026 16:51:07 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 6ADF13019837
+	for <lists+stable@lfdr.de>; Sat, 30 May 2026 16:51:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 02AF13242BE;
-	Sat, 30 May 2026 16:51:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 33E76332EA7;
+	Sat, 30 May 2026 16:51:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HDYX31FW"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OBB3rgw8"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CB1A8352027;
-	Sat, 30 May 2026 16:51:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1237B33F5A3;
+	Sat, 30 May 2026 16:51:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780159866; cv=none; b=AXAsDnE5YYpMm6rd1iU9d1OcRa+QyvSwHXssoHTLLY9OjfNQDv5e0qoUy1ZmCjuj/cpH23BwUuqCQYOqjD6nwAae+doGNcgn/6bS+I0bS8uEap77HA30svh16Pv775WbLJ2Lue8tr5JhcQtLdB0Xem1rgf7bK/osaj5V4bh1NwA=
+	t=1780159871; cv=none; b=CKcKlPZEDG2rC2Q+Nh5nRxnB9VnGd74klqoxj0reP3Mwu1cKSWzr4W95jHYRmkgkrpkSHlDdtXkHZUGhzvGunKJrQggL5wM3dntuwtT4hdUuvG+36xucWSgf4sF4xvTSUeu2qs6KmlO4evUQzBAMHeJAfDs2ukyYAm98/y0VX68=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780159866; c=relaxed/simple;
-	bh=+au/qgwGzZ8rNPtQagQn0khhEo5oPtOvYitipXinJpg=;
+	s=arc-20240116; t=1780159871; c=relaxed/simple;
+	bh=xDB/74RosMhiLsM3d2Bn9g8dZlfW0snTP1y/fR+k9Mc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=MrpWB6sMwFvQmETV4F63KTFDq4hBefy5CLJmrIwVKGe6wS3CFvXW4PSVGQe+rjfc6/7NUjG0SiadwwQJEHGKo90JJlyzGH6uwoIT8VkLhG+koBWYn2Mevg7tpjgbIoqN9TFM/TSQj3DoQ12vLQ9OokRfijyrfcV5AOtCdj+jzlg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HDYX31FW; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F1A5A1F00898;
-	Sat, 30 May 2026 16:51:04 +0000 (UTC)
+	 MIME-Version; b=XhfUMoqXa6ZjjTw83wb8/C5ilM2CE/4MJq0n1iPc4nb6agTz22tLIOevfKA+ga0BsZORPevuKheJ3MpOZI1MEfly66EUlzY3SoEYiCPkjFzeTWSnKb4Kx+5kkgKa8XF27xU5nB7+cSrBXicJYigWyNq6TtG6qiixcYFOUMSjc+0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OBB3rgw8; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4A0C21F00898;
+	Sat, 30 May 2026 16:51:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780159865;
-	bh=zvFAxPtDGj4QqYhXIvmqY9GmQP0s1paOCkGJlPN6Xc4=;
+	s=korg; t=1780159870;
+	bh=ZNmlmXOQjq6iDIIEnjv6rWB7ZptFc8VIY+PZwnk6k/k=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=HDYX31FWih+jt9O4hcr8rjTB8tqibMCPHUzA/TqOooR/x0EKw6qNdFcOLuk1qJIfZ
-	 vueXJOzMM3wMIw0s76jBhnOfk5DjKrD8vEsklpm0Yzstxc0zeecSCh3zAvyRg50osM
-	 ZJTzwz75UPczqPIzW46XwxPlsnG6DfEBkawC2R/I=
+	b=OBB3rgw8aWDdyYE1p/RFhOVun0OsJpZFdnpDMwZNSrfTVS8zpKL3d5lE7sK1NBuu+
+	 0KPyvZFwzQYHmylZrSMpcJacuQ+2snAJl2tilUW6lCMU1l+C6bnNG1OwAiHLsmQtuu
+	 c44sdsHyE4YW5aNrNt8YWU/wSLW4jGbhhSTrYy6Y=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Chao Yu <chao@kernel.org>,
-	Jaegeuk Kim <jaegeuk@kernel.org>,
-	Robert Garcia <rob_garcia@163.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 182/969] f2fs: fix to detect potential corrupted nid in free_nid_list
-Date: Sat, 30 May 2026 17:55:06 +0200
-Message-ID: <20260530160305.516188843@linuxfoundation.org>
+	Yiming Qian <yimingqian591@gmail.com>,
+	Herbert Xu <herbert@gondor.apana.org.au>,
+	Eric Biggers <ebiggers@kernel.org>
+Subject: [PATCH 6.1 183/969] crypto: pcrypt - Fix handling of MAY_BACKLOG requests
+Date: Sat, 30 May 2026 17:55:07 +0200
+Message-ID: <20260530160305.541864246@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
 In-Reply-To: <20260530160300.485627683@linuxfoundation.org>
 References: <20260530160300.485627683@linuxfoundation.org>
@@ -67,32 +66,32 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	TAGGED_FROM(0.00)[bounces-257118-lists,stable=lfdr.de];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,kernel.org,163.com];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-257120-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,gondor.apana.org.au,kernel.org];
+	TO_DN_SOME(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	RCVD_COUNT_THREE(0.00)[4];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	MID_RHS_MATCH_FROM(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
 	PRECEDENCE_BULK(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[7];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	TO_DN_SOME(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[6];
 	FROM_HAS_DN(0.00)[]
-X-Rspamd-Queue-Id: C90F060E8AC
+X-Rspamd-Queue-Id: F131260E8C7
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
@@ -100,78 +99,52 @@ X-Rspamd-Server: lfdr
 
 ------------------
 
-From: Chao Yu <chao@kernel.org>
+From: Herbert Xu <herbert@gondor.apana.org.au>
 
-[ Upstream commit 8fc6056dcf79937c46c97fa4996cda65956437a9 ]
+commit 915b692e6cb723aac658c25eb82c58fd81235110 upstream.
 
-As reported, on-disk footer.ino and footer.nid is the same and
-out-of-range, let's add sanity check on f2fs_alloc_nid() to detect
-any potential corruption in free_nid_list.
+MAY_BACKLOG requests can return EBUSY.  Handle them by checking
+for that value and filtering out EINPROGRESS notifications.
 
-Signed-off-by: Chao Yu <chao@kernel.org>
-Signed-off-by: Jaegeuk Kim <jaegeuk@kernel.org>
-Signed-off-by: Robert Garcia <rob_garcia@163.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Reported-by: Yiming Qian <yimingqian591@gmail.com>
+Fixes: 5a1436beec57 ("crypto: pcrypt - call the complete function on error")
+Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
+Cc: Eric Biggers <ebiggers@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/f2fs/node.c          | 17 ++++++++++++++++-
- include/linux/f2fs_fs.h |  1 +
- 2 files changed, 17 insertions(+), 1 deletion(-)
+ crypto/pcrypt.c |    7 +++++--
+ 1 file changed, 5 insertions(+), 2 deletions(-)
 
-diff --git a/fs/f2fs/node.c b/fs/f2fs/node.c
-index 2555787c79bbe..06c94680ae4e7 100644
---- a/fs/f2fs/node.c
-+++ b/fs/f2fs/node.c
-@@ -27,12 +27,17 @@ static struct kmem_cache *free_nid_slab;
- static struct kmem_cache *nat_entry_set_slab;
- static struct kmem_cache *fsync_node_entry_slab;
+--- a/crypto/pcrypt.c
++++ b/crypto/pcrypt.c
+@@ -69,6 +69,9 @@ static void pcrypt_aead_done(struct cryp
+ 	struct pcrypt_request *preq = aead_request_ctx(req);
+ 	struct padata_priv *padata = pcrypt_request_padata(preq);
  
-+static inline bool is_invalid_nid(struct f2fs_sb_info *sbi, nid_t nid)
-+{
-+	return nid < F2FS_ROOT_INO(sbi) || nid >= NM_I(sbi)->max_nid;
-+}
++	if (err == -EINPROGRESS)
++		return;
 +
- /*
-  * Check whether the given nid is within node id range.
-  */
- int f2fs_check_nid_range(struct f2fs_sb_info *sbi, nid_t nid)
- {
--	if (unlikely(nid < F2FS_ROOT_INO(sbi) || nid >= NM_I(sbi)->max_nid)) {
-+	if (unlikely(is_invalid_nid(sbi, nid))) {
- 		set_sbi_flag(sbi, SBI_NEED_FSCK);
- 		f2fs_warn(sbi, "%s: out-of-range nid=%x, run fsck to fix.",
- 			  __func__, nid);
-@@ -2593,6 +2598,16 @@ bool f2fs_alloc_nid(struct f2fs_sb_info *sbi, nid_t *nid)
- 		f2fs_bug_on(sbi, list_empty(&nm_i->free_nid_list));
- 		i = list_first_entry(&nm_i->free_nid_list,
- 					struct free_nid, list);
-+
-+		if (unlikely(is_invalid_nid(sbi, i->nid))) {
-+			spin_unlock(&nm_i->nid_list_lock);
-+			f2fs_err(sbi, "Corrupted nid %u in free_nid_list",
-+								i->nid);
-+			f2fs_stop_checkpoint(sbi, false,
-+					STOP_CP_REASON_CORRUPTED_NID);
-+			return false;
-+		}
-+
- 		*nid = i->nid;
+ 	padata->info = err;
  
- 		__move_free_nid(sbi, i, FREE_NID, PREALLOC_NID);
-diff --git a/include/linux/f2fs_fs.h b/include/linux/f2fs_fs.h
-index c61d8fc1deb3e..26c7daca99598 100644
---- a/include/linux/f2fs_fs.h
-+++ b/include/linux/f2fs_fs.h
-@@ -81,6 +81,7 @@ enum stop_cp_reason {
- 	STOP_CP_REASON_CORRUPTED_SUMMARY,
- 	STOP_CP_REASON_UPDATE_INODE,
- 	STOP_CP_REASON_FLUSH_FAIL,
-+	STOP_CP_REASON_CORRUPTED_NID,
- 	STOP_CP_REASON_MAX,
- };
+ 	padata_do_serial(padata);
+@@ -82,7 +85,7 @@ static void pcrypt_aead_enc(struct padat
  
--- 
-2.53.0
-
+ 	ret = crypto_aead_encrypt(req);
+ 
+-	if (ret == -EINPROGRESS)
++	if (ret == -EINPROGRESS || ret == -EBUSY)
+ 		return;
+ 
+ 	padata->info = ret;
+@@ -133,7 +136,7 @@ static void pcrypt_aead_dec(struct padat
+ 
+ 	ret = crypto_aead_decrypt(req);
+ 
+-	if (ret == -EINPROGRESS)
++	if (ret == -EINPROGRESS || ret == -EBUSY)
+ 		return;
+ 
+ 	padata->info = ret;
 
 
 
